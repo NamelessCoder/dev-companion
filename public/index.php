@@ -3,30 +3,27 @@
 declare(strict_types=1);
 
 /**
- * Stateless MCP "Streamable HTTP" endpoint for the TYPO3 core knowledge base.
- * Designed for classic PHP shared hosting: each request is handled fresh, no
- * persistent process, no session state.
+ * MCP "Streamable HTTP" endpoint for the TYPO3 core knowledge base, built on the
+ * official mcp/sdk. Designed for classic PHP shared hosting: no persistent
+ * process. Session state is kept in files (var/sessions) so the stateful
+ * Streamable HTTP transport works across independent PHP requests.
+ *
+ * A static bearer token guards every request before the MCP transport runs.
  */
 
-use Typo3CmsMcp\McpServer;
+use Mcp\Server\Session\FileSessionStore;
+use Mcp\Server\Transport\StreamableHttpTransport;
+use Nyholm\Psr7\Factory\Psr17Factory;
+use Nyholm\Psr7Server\ServerRequestCreator;
+use Typo3CmsMcp\ServerFactory;
 
-require dirname(__DIR__) . '/src/autoload.php';
+require dirname(__DIR__) . '/vendor/autoload.php';
 
-header('Content-Type: application/json; charset=utf-8');
-
-// --- Method handling: only POST carries JSON-RPC; GET gets no SSE stream. ---
-$requestMethod = $_SERVER['REQUEST_METHOD'] ?? 'GET';
-if ($requestMethod !== 'POST') {
-    http_response_code(405);
-    header('Allow: POST');
-    echo json_encode(['error' => 'Method Not Allowed. Use POST with a JSON-RPC body.']);
-    exit;
-}
-
-// --- Authentication: static bearer token. ---
+// --- Authentication: static bearer token, enforced before anything else. ---
 $configuredToken = mcp_configured_token();
 if ($configuredToken === null || $configuredToken === '') {
     http_response_code(500);
+    header('Content-Type: application/json; charset=utf-8');
     echo json_encode(['error' => 'Server misconfigured: no auth token set (MCP_AUTH_TOKEN or config.local.php).']);
     exit;
 }
@@ -35,43 +32,31 @@ $presentedToken = mcp_bearer_token();
 if ($presentedToken === null || !hash_equals($configuredToken, $presentedToken)) {
     http_response_code(401);
     header('WWW-Authenticate: Bearer');
+    header('Content-Type: application/json; charset=utf-8');
     echo json_encode(['error' => 'Unauthorized.']);
     exit;
 }
 
-// --- Parse the JSON-RPC body. ---
-$raw = file_get_contents('php://input');
-$decoded = json_decode((string) $raw, true);
-if (!is_array($decoded)) {
-    http_response_code(400);
-    echo json_encode(['jsonrpc' => '2.0', 'id' => null, 'error' => ['code' => -32700, 'message' => 'Parse error']]);
-    exit;
+// --- Build a PSR-7 request from the SAPI globals and run the MCP transport. ---
+$psr17 = new Psr17Factory();
+$request = (new ServerRequestCreator($psr17, $psr17, $psr17, $psr17))->fromGlobals();
+
+$sessionDir = dirname(__DIR__) . '/var/sessions';
+if (!is_dir($sessionDir)) {
+    mkdir($sessionDir, 0775, true);
 }
 
-$server = new McpServer();
+$server = ServerFactory::create(new FileSessionStore($sessionDir));
+$response = $server->run(new StreamableHttpTransport($request, $psr17, $psr17));
 
-// A JSON-RPC batch is a list; a single message is an associative array.
-$isBatch = array_is_list($decoded);
-$messages = $isBatch ? $decoded : [$decoded];
-
-$responses = [];
-foreach ($messages as $message) {
-    if (!is_array($message)) {
-        continue;
-    }
-    $response = $server->handle($message);
-    if ($response !== null) {
-        $responses[] = $response;
+// --- Emit the PSR-7 response. ---
+http_response_code($response->getStatusCode());
+foreach ($response->getHeaders() as $name => $values) {
+    foreach ($values as $value) {
+        header($name . ': ' . $value, false);
     }
 }
-
-// Only notifications/responses in the request → 202 with no body (per spec).
-if ($responses === []) {
-    http_response_code(202);
-    exit;
-}
-
-echo json_encode($isBatch ? $responses : $responses[0], JSON_UNESCAPED_SLASHES);
+echo $response->getBody();
 
 /**
  * The configured secret: environment first, then an optional gitignored

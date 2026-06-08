@@ -1,0 +1,23 @@
+{
+    "name": "typo3-cms-mcp/server",
+    "description": "Stateless MCP server exposing a curated TYPO3 core contribution knowledge base.",
+    "type": "project",
+    "license": "MIT",
+    "require": {
+        "php": ">=8.2",
+        "mcp/sdk": "^0.6.0",
+        "nyholm/psr7": "^1.8",
+        "nyholm/psr7-server": "^1.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "Typo3CmsMcp\\": "src/"
+        }
+    },
+    "bin": [
+        "bin/typo3-cms-mcp"
+    ],
+    "config": {
+        "sort-packages": true
+    }
+}

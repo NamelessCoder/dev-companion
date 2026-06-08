@@ -2,7 +2,7 @@
 
 A remote MCP server (plain PHP) that exposes a curated TYPO3 core contribution **knowledge base**: contribution rules, core script and `runTests.sh` notes, architecture hints, and commit message conventions. It is read-only knowledge — it does not inspect, read, or run anything against a TYPO3 checkout.
 
-It speaks the MCP **Streamable HTTP** transport in a stateless way (one PHP request per JSON-RPC message), so it runs on classic PHP shared hosting with no persistent process. Access is protected by a static bearer token.
+It is built on the official [`mcp/sdk`](https://packagist.org/packages/mcp/sdk) and offers two transports sharing one server definition: **stdio** (`bin/typo3-cms-mcp`, for local use — a client launches it as a subprocess) and **Streamable HTTP** (`public/index.php`, for shared hosting). The HTTP transport keeps MCP session state in files (`var/sessions/`), so it still needs no persistent process. HTTP access is protected by a static bearer token.
 
 ## Goal
 
@@ -22,34 +22,59 @@ The server provides MCP-enabled clients with context that is otherwise spread ac
 ## Layout
 
 ```
-public/index.php   # the single MCP HTTP endpoint (web document root)
+bin/typo3-cms-mcp # stdio entrypoint (local: client launches it as a subprocess)
+public/index.php   # Streamable HTTP endpoint (web document root)
 public/.htaccess   # routing + Authorization header pass-through (Apache)
-src/               # PHP classes (knowledge loading, tools, MCP dispatch)
+src/               # PHP classes (knowledge loading, tools, SDK wiring)
+src/ServerFactory.php  # builds the mcp/sdk server shared by both transports
 knowledge/         # the knowledge base (markdown + JSON), the data source
 config.local.php   # local secret (gitignored); see config.local.php.example
+vendor/            # Composer dependencies (mcp/sdk, nyholm/psr7); gitignored
+var/sessions/      # HTTP session files (gitignored, created at runtime)
 ```
 
-There is no build step and no Composer dependency.
+Install dependencies once with `composer install`. Both entrypoints build the
+same server via `Typo3CmsMcp\ServerFactory`; the tool and resource logic lives in
+`src/Tools.php` and `src/Knowledge.php`, driven entirely by `knowledge/`.
 
 ## Run locally
+
+The simplest local setup is stdio — no server, no token. Point an MCP client at
+the binary:
+
+```json
+{
+  "mcpServers": {
+    "typo3-cms-mcp": {
+      "type": "stdio",
+      "command": "php",
+      "args": ["/absolute/path/to/typo3-cms-mcp/bin/typo3-cms-mcp"]
+    }
+  }
+}
+```
+
+Quick stdio smoke test from the shell:
+
+```bash
+printf '%s\n' \
+  '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2025-03-26","capabilities":{},"clientInfo":{"name":"t","version":"1"}}}' \
+  '{"jsonrpc":"2.0","id":2,"method":"tools/list"}' \
+  | php bin/typo3-cms-mcp
+```
+
+To exercise the HTTP transport locally instead:
 
 ```bash
 MCP_AUTH_TOKEN=dev-secret php -S 127.0.0.1:8765 -t public
 ```
 
-Smoke test:
+The HTTP auth token is read from the `MCP_AUTH_TOKEN` environment variable, or
+from a gitignored `config.local.php` (copy `config.local.php.example`). With no
+token configured the server refuses every request, so it is never accidentally
+open.
 
-```bash
-curl -s -X POST http://127.0.0.1:8765/ \
-  -H "Authorization: Bearer dev-secret" -H "Content-Type: application/json" \
-  -d '{"jsonrpc":"2.0","id":1,"method":"tools/list"}'
-```
-
-The auth token is read from the `MCP_AUTH_TOKEN` environment variable, or from a
-gitignored `config.local.php` (copy `config.local.php.example`). With no token
-configured the server refuses every request, so it is never accidentally open.
-
-## Client configuration
+## Client configuration (remote HTTP)
 
 Point an MCP client at the deployed HTTPS URL with the bearer token:
 

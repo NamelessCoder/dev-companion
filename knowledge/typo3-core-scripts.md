@@ -2,7 +2,8 @@
 
 Default local checkout: `/home/benji/projects/typo3-cms`.
 
-Override with `TYPO3_CORE_PATH` if the checkout moves. The MCP tools expose these entries so an assistant can suggest commands during core work.
+Override with `TYPO3_CORE_PATH` if the checkout moves. The MCP tools expose
+these entries so an assistant can suggest commands during core work.
 
 ## Common Commands
 
@@ -20,7 +21,8 @@ Use this after cloning TYPO3 core or changing PHP dependencies.
 Build/Scripts/runTests.sh -s unit
 ```
 
-Runs the TYPO3 core unit test suite. Add filters or paths when working on a narrow area.
+Runs the TYPO3 core unit test suite. Add filters or paths when working on a
+narrow area.
 
 ### Run Functional Tests
 
@@ -28,7 +30,8 @@ Runs the TYPO3 core unit test suite. Add filters or paths when working on a narr
 Build/Scripts/runTests.sh -s functional
 ```
 
-Runs functional tests. Use these for changes that touch TYPO3 services, persistence, configuration, or integrations.
+Runs functional tests. Use these for changes that touch TYPO3 services,
+persistence, configuration, or integrations.
 
 ### Run Coding Standards
 
@@ -44,7 +47,8 @@ Checks coding guidelines. Run before submitting style-sensitive PHP changes.
 Build/Scripts/runTests.sh -s build
 ```
 
-Useful for backend UI, JavaScript, TypeScript, Sass, contrib, and frontend asset changes.
+Useful for backend UI, JavaScript, TypeScript, Sass, contrib, and frontend asset
+changes.
 
 ### Run SCSS Linting
 
@@ -52,7 +56,8 @@ Useful for backend UI, JavaScript, TypeScript, Sass, contrib, and frontend asset
 Build/Scripts/runTests.sh -s lintScss
 ```
 
-Runs the TYPO3 Core stylelint setup for Sass sources. Internally this runs `grunt stylelint` in the `Build` directory.
+Runs the TYPO3 Core stylelint setup for Sass sources. Internally this runs
+`grunt stylelint` in the `Build` directory.
 
 ### Run CSS Build Only
 
@@ -86,11 +91,14 @@ Build/Scripts/runTests.sh -s npm -- run build
 
 Runs npm commands inside the TYPO3 core test environment.
 
-Useful package scripts for frontend and CSS work include `run build`, `run build-css`, `run lint`, and `run watch:build`.
+Useful package scripts for frontend and CSS work include `run build`, `run
+build-css`, `run lint`, and `run watch:build`.
 
 ## Script Notes
 
 - Prefer running a targeted test while iterating.
 - Run broader checks before marking a task as ready for review.
-- For Sass changes, run `lintScss` for stylelint and `build` or `npm -- run build-css` for generated CSS.
-- Keep command output snippets short in summaries; include the command and pass/fail result.
+- For Sass changes, run `lintScss` for stylelint and `build` or `npm -- run
+  build-css` for generated CSS.
+- Keep command output snippets short in summaries; include the command and
+  pass/fail result.

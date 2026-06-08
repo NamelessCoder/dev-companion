@@ -1,23 +1,39 @@
 # TYPO3 CMS MCP
 
-A remote MCP server (plain PHP) that exposes a curated TYPO3 core contribution **knowledge base**: contribution rules, core script and `runTests.sh` notes, architecture hints, and commit message conventions. It is read-only knowledge — it does not inspect, read, or run anything against a TYPO3 checkout.
+A remote MCP server (plain PHP) that exposes a curated TYPO3 core contribution
+**knowledge base**: contribution rules, core script and `runTests.sh` notes,
+architecture hints, and commit message conventions. It is read-only knowledge —
+it does not inspect, read, or run anything against a TYPO3 checkout.
 
-It is built on the official [`mcp/sdk`](https://packagist.org/packages/mcp/sdk) and offers two transports sharing one server definition: **stdio** (`bin/typo3-cms-mcp`, for local use — a client launches it as a subprocess) and **Streamable HTTP** (`public/index.php`, for shared hosting). The HTTP transport keeps MCP session state in files (`var/sessions/`), so it still needs no persistent process. HTTP access is protected by a static bearer token.
+It is built on the official [`mcp/sdk`](https://packagist.org/packages/mcp/sdk)
+and offers two transports sharing one server definition: **stdio**
+(`bin/typo3-cms-mcp`, for local use — a client launches it as a subprocess) and
+**Streamable HTTP** (`public/index.php`, for shared hosting). The HTTP transport
+keeps MCP session state in files (`var/sessions/`), so it still needs no
+persistent process. HTTP access is protected by a static bearer token.
 
 ## Goal
 
-The server provides MCP-enabled clients with context that is otherwise spread across project knowledge, TYPO3 core conventions, and official contribution documentation. Everything it returns is derived from the bundled `knowledge/` files; the server has no dependency on any project, checkout, or git state.
+The server provides MCP-enabled clients with context that is otherwise spread
+across project knowledge, TYPO3 core conventions, and official contribution
+documentation. Everything it returns is derived from the bundled `knowledge/`
+files; the server has no dependency on any project, checkout, or git state.
 
 ## Tools
 
 - `typo3_rule_lookup`: searches local TYPO3 core rules and script notes.
 - `typo3_script_help`: finds matching notes for TYPO3 core commands.
-- `typo3_core_task_brief`: builds a task checklist enriched with matching architecture hints and relevant core checks.
-- `typo3_core_run_tests_help`: recommends `Build/Scripts/runTests.sh` commands by topic.
-- `typo3_architecture_hint`: returns architecture hints for TYPO3 core paths or task topics, grouped by section.
-- `typo3_commit_message_help`: drafts and checks TYPO3 core commit messages against the contribution rules.
+- `typo3_core_task_brief`: builds a task checklist enriched with matching
+  architecture hints and relevant core checks.
+- `typo3_core_run_tests_help`: recommends `Build/Scripts/runTests.sh` commands
+  by topic.
+- `typo3_architecture_hint`: returns architecture hints for TYPO3 core paths or
+  task topics, grouped by section.
+- `typo3_commit_message_help`: drafts and checks TYPO3 core commit messages
+  against the contribution rules.
 - `typo3://core`: resource index for available knowledge documents.
-- `typo3://core/{documentId}`: Markdown resource for a single knowledge document.
+- `typo3://core/{documentId}`: Markdown resource for a single knowledge
+  document.
 
 ## Layout
 
@@ -34,8 +50,8 @@ var/sessions/      # HTTP session files (gitignored, created at runtime)
 ```
 
 Install dependencies once with `composer install`. Both entrypoints build the
-same server via `Typo3CmsMcp\ServerFactory`; the tool and resource logic lives in
-`src/Tools.php` and `src/Knowledge.php`, driven entirely by `knowledge/`.
+same server via `Typo3CmsMcp\ServerFactory`; the tool and resource logic lives
+in `src/Tools.php` and `src/Knowledge.php`, driven entirely by `knowledge/`.
 
 ## Run locally
 
@@ -104,15 +120,18 @@ The knowledge base lives in `knowledge/`:
 - `knowledge/typo3-css-architecture.md`
 - `knowledge/typo3-commit-messages.md`
 - `knowledge/typo3-contribution-sources.md`
-- `knowledge/architecture-hints/` (one JSON file per section, e.g. `css.json`, `php.json`, `typescript.json`, `general.json`)
+- `knowledge/architecture-hints/` (one JSON file per section, e.g. `css.json`,
+  `php.json`, `typescript.json`, `general.json`)
 - `knowledge/test-suite-hints.json`
 
-All knowledge files are read fresh on every request, so editing them takes effect
-immediately — no restart or rebuild. Tool names, input schemas, and response
-formatting live in `src/`. Add new rules or scripts to `knowledge/` first; promote
-recurring workflow logic to a tool only when it has earned it.
+All knowledge files are read fresh on every request, so editing them takes
+effect immediately — no restart or rebuild. Tool names, input schemas, and
+response formatting live in `src/`. Add new rules or scripts to `knowledge/`
+first; promote recurring workflow logic to a tool only when it has earned it.
 
 Useful upstream sources:
 
-- TYPO3 Core Contribution Guide: https://docs.typo3.org/m/typo3/guide-contributionworkflow/main/en-us/
-- TYPO3 Core Commit Message Rules: https://docs.typo3.org/m/typo3/guide-contributionworkflow/main/en-us/Appendix/CommitMessage.html
+- TYPO3 Core Contribution Guide:
+  https://docs.typo3.org/m/typo3/guide-contributionworkflow/main/en-us/
+- TYPO3 Core Commit Message Rules:
+  https://docs.typo3.org/m/typo3/guide-contributionworkflow/main/en-us/Appendix/CommitMessage.html

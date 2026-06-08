@@ -1,11 +1,12 @@
 # Deploying to Mittwald shared hosting
 
-This server is PHP built on the official [`mcp/sdk`](https://packagist.org/packages/mcp/sdk).
-Deploying means: install the Composer dependencies, upload the files (including
-`vendor/`), point a (sub)domain's document root at `public/`, set a secret token,
-make `var/` writable, and connect the client over HTTPS. There is still no
-persistent process to manage — each request is handled fresh, with MCP session
-state kept in files under `var/sessions/`.
+This server is PHP built on the official
+[`mcp/sdk`](https://packagist.org/packages/mcp/sdk). Deploying means: install
+the Composer dependencies, upload the files (including `vendor/`), point a
+(sub)domain's document root at `public/`, set a secret token, make `var/`
+writable, and connect the client over HTTPS. There is still no persistent
+process to manage — each request is handled fresh, with MCP session state kept
+in files under `var/sessions/`.
 
 ## 0. Install dependencies (build step)
 
@@ -35,8 +36,8 @@ Upload the project (via SFTP, rsync, or Git) into the hosting, for example to:
   var/         # runtime; created automatically, must be writable
 ```
 
-You do **not** need to upload `config.local.php.example`, `DEPLOY.md`, or `.git`.
-You **must** upload `public/`, `src/`, `knowledge/`, and `vendor/`.
+You do **not** need to upload `config.local.php.example`, `DEPLOY.md`, or
+`.git`. You **must** upload `public/`, `src/`, `knowledge/`, and `vendor/`.
 
 Example with rsync over SSH (ship `vendor/`, skip runtime + local secrets):
 
@@ -50,8 +51,8 @@ rsync -av --delete \
 
 In mStudio, set the document root of the subdomain to the `public/` directory of
 the upload, e.g. `/html/typo3-cms-mcp/public`. This keeps `src/`, `knowledge/`,
-`vendor/`, and `var/` outside the web root. The endpoint is then the domain root:
-`https://typo3-mcp.your-domain.example/`.
+`vendor/`, and `var/` outside the web root. The endpoint is then the domain
+root: `https://typo3-mcp.your-domain.example/`.
 
 The web server user must be able to write to `var/sessions/` (created on first
 request). If your hosting runs PHP under a restricted user, `chmod`/`chown` the
@@ -130,5 +131,5 @@ confirm `typo3-cms-mcp` is connected with its tools.
 
 Re-upload changed files. Editing anything under `knowledge/` takes effect on the
 next request — no restart, no rebuild. There is no persistent process to manage.
-Only when dependencies change (`composer.json`) do you need to re-run
-`composer install --no-dev --optimize-autoloader` and re-upload `vendor/`.
+Only when dependencies change (`composer.json`) do you need to re-run `composer
+install --no-dev --optimize-autoloader` and re-upload `vendor/`.

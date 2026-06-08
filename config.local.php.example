@@ -1,0 +1,9 @@
+<?php
+
+// Copy this file to config.local.php and set a long random secret.
+// Used only if the MCP_AUTH_TOKEN environment variable is not set.
+// config.local.php is gitignored and must never be committed.
+
+return [
+    'auth_token' => 'change-me-to-a-long-random-secret',
+];

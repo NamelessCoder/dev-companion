@@ -1,0 +1,74 @@
+[
+  {
+    "suite": "unit",
+    "command": "./Build/Scripts/runTests.sh -s unit",
+    "description": "PHP unit tests.",
+    "whenToUse": "Use for isolated PHP behavior, utility classes, value objects, and narrow bug fixes."
+  },
+  {
+    "suite": "functional",
+    "command": "./Build/Scripts/runTests.sh -s functional",
+    "description": "PHP functional tests, sqlite by default.",
+    "whenToUse": "Use for TYPO3 services, persistence, configuration, authentication, routing, and integration behavior."
+  },
+  {
+    "suite": "cgl",
+    "command": "./Build/Scripts/runTests.sh -s cgl",
+    "description": "Checks and fixes coding guideline issues for all core PHP files.",
+    "whenToUse": "Use before review when PHP formatting or file headers may be affected."
+  },
+  {
+    "suite": "cglGit",
+    "command": "./Build/Scripts/runTests.sh -s cglGit",
+    "description": "Checks and fixes coding guideline issues in the latest committed patch.",
+    "whenToUse": "Use for a focused pre-review check after creating a commit."
+  },
+  {
+    "suite": "lintPhp",
+    "command": "./Build/Scripts/runTests.sh -s lintPhp",
+    "description": "PHP syntax linting.",
+    "whenToUse": "Use for broad PHP syntax confidence after touching many PHP files."
+  },
+  {
+    "suite": "phpstan",
+    "command": "./Build/Scripts/runTests.sh -s phpstan",
+    "description": "Static analysis with phpstan.",
+    "whenToUse": "Use for type-sensitive PHP changes and API contract changes."
+  },
+  {
+    "suite": "build",
+    "command": "./Build/Scripts/runTests.sh -s build",
+    "description": "Frontend build for TypeScript, Sass, Contrib, and assets.",
+    "whenToUse": "Use when backend UI assets, TypeScript, Sass, or generated assets change."
+  },
+  {
+    "suite": "lintScss",
+    "command": "./Build/Scripts/runTests.sh -s lintScss",
+    "description": "SCSS linting with TYPO3's stylelint setup.",
+    "whenToUse": "Use when Sass or CSS sources change. Internally this runs grunt stylelint in the Build directory."
+  },
+  {
+    "suite": "build-css",
+    "command": "./Build/Scripts/runTests.sh -s npm -- run build-css",
+    "description": "Focused CSS build from Build/package.json.",
+    "whenToUse": "Use while iterating on Sass/CSS changes when a full frontend build is not needed. This maps to grunt css."
+  },
+  {
+    "suite": "lintTypescript",
+    "command": "./Build/Scripts/runTests.sh -s lintTypescript",
+    "description": "TypeScript linting.",
+    "whenToUse": "Use when TypeScript or JavaScript code changes."
+  },
+  {
+    "suite": "npm",
+    "command": "./Build/Scripts/runTests.sh -s npm -- <npm command>",
+    "description": "Dispatcher for npm commands inside the TYPO3 core build environment.",
+    "whenToUse": "Use for npm install, audit, build, watch, and package-script tasks."
+  },
+  {
+    "suite": "composer",
+    "command": "./Build/Scripts/runTests.sh -s composer -- <composer command>",
+    "description": "Dispatcher for composer commands inside the TYPO3 core build environment.",
+    "whenToUse": "Use for composer dumpautoload, require, info, and dependency tasks."
+  }
+]

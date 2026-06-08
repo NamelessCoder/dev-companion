@@ -1,0 +1,24 @@
+[
+  {
+    "id": "language-files",
+    "title": "Language Files",
+    "appliesTo": [".xlf", ".xliff", "Resources/Private/Language/"],
+    "hints": [
+      "Use clear, stable label identifiers and concise wording.",
+      "Reuse existing labels where the meaning is identical.",
+      "Check whether language file normalization is needed."
+    ],
+    "checks": ["./Build/Scripts/runTests.sh -s checkIntegrityXliff", "./Build/Scripts/runTests.sh -s normalizeXliff -n"]
+  },
+  {
+    "id": "documentation-changelog",
+    "title": "Documentation and Changelog",
+    "appliesTo": [".rst", "Documentation/", "Changelog/"],
+    "hints": [
+      "User-facing behavior changes may need documentation or changelog entries.",
+      "Deprecations need explicit migration guidance and scanner considerations when applicable.",
+      "Keep ReST changes focused and validate them before review."
+    ],
+    "checks": ["./Build/Scripts/runTests.sh -s checkRst"]
+  }
+]

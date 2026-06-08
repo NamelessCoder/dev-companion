@@ -1,0 +1,68 @@
+[
+  {
+    "id": "system-extension-boundaries",
+    "title": "System Extension Boundaries",
+    "appliesTo": ["typo3/sysext/"],
+    "hints": [
+      "Keep changes inside the owning system extension unless a cross-extension contract really changes.",
+      "Reuse public APIs from other system extensions instead of depending on internal implementation details.",
+      "Check nearby extension-local tests before adding shared behavior."
+    ],
+    "checks": ["./Build/Scripts/runTests.sh -s unit", "./Build/Scripts/runTests.sh -s functional"]
+  },
+  {
+    "id": "dependency-injection-services",
+    "title": "Dependency Injection and Services",
+    "appliesTo": ["Configuration/Services.yaml", "/Service/", "/Services/", "DependencyInjection"],
+    "hints": [
+      "Prefer constructor injection for new service dependencies.",
+      "Use Services.yaml when explicit service wiring is needed.",
+      "Avoid new GeneralUtility::makeInstance() calls for regular service dependencies unless lifecycle constraints require it."
+    ],
+    "checks": ["./Build/Scripts/runTests.sh -s functional", "./Build/Scripts/runTests.sh -s lintServicesYaml"]
+  },
+  {
+    "id": "events-extension-points",
+    "title": "Events and Extension Points",
+    "appliesTo": ["/Event/", "EventListener", "EventDispatcher", "Hooks", "hook"],
+    "hints": [
+      "Prefer modern TYPO3 event APIs for new extension points.",
+      "Keep event payloads minimal and stable.",
+      "Public extension points need careful naming, documentation, and regression coverage."
+    ],
+    "checks": ["./Build/Scripts/runTests.sh -s unit", "./Build/Scripts/runTests.sh -s functional"]
+  },
+  {
+    "id": "tca-formengine",
+    "title": "TCA, FormEngine, and Backend Forms",
+    "appliesTo": ["Configuration/TCA/", "FormEngine", "/Form/", "Tca", "TCA"],
+    "hints": [
+      "TCA changes can affect persisted data, editor workflows, and generated backend forms.",
+      "Prefer established TCA option names and existing FormEngine behavior.",
+      "Add functional coverage for TCA processing, data providers, or backend form rendering behavior."
+    ],
+    "checks": ["./Build/Scripts/runTests.sh -s functional", "./Build/Scripts/runTests.sh -s checkIntegrityXliff"]
+  },
+  {
+    "id": "datahandler-persistence",
+    "title": "DataHandler and Persistence",
+    "appliesTo": ["DataHandler", "/Persistence/", "/Database/", "ext_tables.sql"],
+    "hints": [
+      "DataHandler and persistence changes are high-impact and usually need functional tests.",
+      "Preserve workspace, localization, permissions, and hook or event behavior unless intentionally changed.",
+      "Test edge cases with deleted, hidden, localized, versioned, or workspace records when relevant."
+    ],
+    "checks": ["./Build/Scripts/runTests.sh -s functional", "./Build/Scripts/runTests.sh -s phpstan"]
+  },
+  {
+    "id": "routing-request-handling",
+    "title": "Routing, Middleware, and Request Handling",
+    "appliesTo": ["/Middleware/", "/Routing/", "RequestHandler", "Route", "Controller"],
+    "hints": [
+      "Prefer PSR-7 request and response objects for HTTP behavior.",
+      "Keep middleware focused and ordered deliberately.",
+      "Avoid global state when request-scoped data is available."
+    ],
+    "checks": ["./Build/Scripts/runTests.sh -s functional", "./Build/Scripts/runTests.sh -s unit"]
+  }
+]

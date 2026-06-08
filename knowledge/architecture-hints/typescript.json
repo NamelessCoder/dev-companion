@@ -1,0 +1,40 @@
+[
+  {
+    "id": "backend-typescript",
+    "title": "Backend TypeScript Modules",
+    "appliesTo": ["Build/Sources/TypeScript/", "Resources/Public/JavaScript/"],
+    "hints": [
+      "Keep TypeScript source and generated JavaScript in sync.",
+      "Prefer existing TYPO3 backend imports, event patterns, and custom element conventions used nearby.",
+      "Frontend modules with state transitions should have focused JavaScript unit coverage."
+    ],
+    "checks": [
+      "./Build/Scripts/runTests.sh -s build",
+      "./Build/Scripts/runTests.sh -s lintTypescript",
+      "./Build/Scripts/runTests.sh -s unitJavascript"
+    ]
+  },
+  {
+    "id": "backend-ui",
+    "title": "Backend UI and Web Components",
+    "appliesTo": [
+      "typo3/sysext/backend/",
+      "Build/Sources/TypeScript/backend/",
+      "Resources/Public/JavaScript/backend",
+      "web component",
+      "custom element",
+      "LitElement"
+    ],
+    "hints": [
+      "Keep custom elements focused on rendering and interaction orchestration.",
+      "Keep state transitions explicit and testable.",
+      "Check accessibility behavior for controls, dialogs, drag and drop, and status indicators.",
+      "For custom elements, keep CSS aligned with the host element API, stable attributes, slots, parts, and custom properties."
+    ],
+    "checks": [
+      "./Build/Scripts/runTests.sh -s build",
+      "./Build/Scripts/runTests.sh -s lintTypescript",
+      "./Build/Scripts/runTests.sh -s unitJavascript"
+    ]
+  }
+]

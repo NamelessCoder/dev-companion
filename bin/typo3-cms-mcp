@@ -1,0 +1,68 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+/**
+ * Stdio MCP transport for the TYPO3 core knowledge base.
+ *
+ * Reads newline-delimited JSON-RPC messages from stdin and writes one JSON-RPC
+ * response per line to stdout — the transport Claude Code uses for a local
+ * "type": "stdio" server it launches as a subprocess. No auth: the process
+ * boundary is the trust boundary. The HTTP transport (public/index.php) stays
+ * the path for shared hosting; this is the convenient local-dev entrypoint.
+ *
+ * Same stateless dispatcher (Typo3CmsMcp\McpServer) as the HTTP entrypoint, so
+ * both transports answer identically.
+ */
+
+use Typo3CmsMcp\McpServer;
+
+require dirname(__DIR__) . '/src/autoload.php';
+
+$server = new McpServer();
+
+$stdin = fopen('php://stdin', 'rb');
+$stdout = fopen('php://stdout', 'wb');
+if ($stdin === false || $stdout === false) {
+    fwrite(STDERR, "typo3-cms-mcp: cannot open stdio streams\n");
+    exit(1);
+}
+
+while (($line = fgets($stdin)) !== false) {
+    $line = trim($line);
+    if ($line === '') {
+        continue;
+    }
+
+    $decoded = json_decode($line, true);
+    if (!is_array($decoded)) {
+        $error = ['jsonrpc' => '2.0', 'id' => null, 'error' => ['code' => -32700, 'message' => 'Parse error']];
+        fwrite($stdout, json_encode($error, JSON_UNESCAPED_SLASHES) . "\n");
+        fflush($stdout);
+        continue;
+    }
+
+    // A JSON-RPC batch is a list; a single message is an associative array.
+    $isBatch = array_is_list($decoded);
+    $messages = $isBatch ? $decoded : [$decoded];
+
+    $responses = [];
+    foreach ($messages as $message) {
+        if (!is_array($message)) {
+            continue;
+        }
+        $response = $server->handle($message);
+        if ($response !== null) {
+            $responses[] = $response;
+        }
+    }
+
+    // Notifications only → nothing to write back.
+    if ($responses === []) {
+        continue;
+    }
+
+    fwrite($stdout, json_encode($isBatch ? $responses : $responses[0], JSON_UNESCAPED_SLASHES) . "\n");
+    fflush($stdout);
+}

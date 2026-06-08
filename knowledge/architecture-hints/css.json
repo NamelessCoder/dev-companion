@@ -1,0 +1,419 @@
+[
+  {
+    "id": "css-source-build-boundaries",
+    "title": "CSS Source and Build Boundaries",
+    "appliesTo": ["Build/Sources/Sass/", "Resources/Public/Css/", ".scss", ".css", "sass", "css"],
+    "hints": [
+      "Treat Build/Sources/Sass/ as the source of truth when a Sass source exists.",
+      "Do not hand-edit generated public CSS as the only change.",
+      "Verify generated assets are in sync when public assets are committed.",
+      "Use lintScss for TYPO3's stylelint setup and npm -- run build-css for a focused CSS build while iterating."
+    ],
+    "checks": [
+      "./Build/Scripts/runTests.sh -s build",
+      "./Build/Scripts/runTests.sh -s lintScss",
+      "./Build/Scripts/runTests.sh -s npm -- run build-css"
+    ]
+  },
+  {
+    "id": "css-components",
+    "title": "CSS Component Structure",
+    "appliesTo": [
+      "Build/Sources/Sass/component/",
+      "Build/Sources/Sass/component/forms/",
+      "Build/Sources/Sass/component/scaffold/",
+      "Build/Sources/Sass/dashboard/",
+      "Build/Sources/Sass/element/"
+    ],
+    "hints": [
+      "Prefer focused component partials in the existing Sass structure.",
+      "Keep selectors close to the owning UI component.",
+      "Use forms, scaffold, dashboard, and element folders for their owning concerns instead of creating broad global styles."
+    ],
+    "checks": ["./Build/Scripts/runTests.sh -s build", "./Build/Scripts/runTests.sh -s lintScss"]
+  },
+  {
+    "id": "css-browser-target",
+    "title": "CSS Browser Target",
+    "appliesTo": [
+      "browser",
+      "evergreen",
+      "baseline",
+      "lts",
+      "support",
+      "compatibility",
+      "modern css",
+      "css feature",
+      "fallback",
+      "backport",
+      "backported",
+      "release year",
+      "target branch",
+      "native css",
+      "popover api",
+      "popover",
+      "javascript workaround"
+    ],
+    "hints": [
+      "TYPO3 backend CSS targets evergreen browsers as they exist on the day of the corresponding TYPO3 LTS release.",
+      "Modern CSS features are acceptable when they fit the active LTS evergreen browser target and the build pipeline accepts them.",
+      "CSS features may be adopted before the LTS release when they are expected to be part of the evergreen browser baseline at LTS release time.",
+      "Early adoption must be intentional, reviewable, and limited to features with a clear path into the LTS browser baseline.",
+      "When CSS changes are backported to older TYPO3 versions, the CSS must fully match the evergreen browser baseline of that target release year.",
+      "Do not backport CSS features that only match a newer release baseline unless the target branch already supports them.",
+      "Avoid compatibility workarounds for obsolete browsers outside the active LTS browser target.",
+      "Prefer native CSS capabilities over JavaScript workarounds when the feature is supported by the LTS target.",
+      "The Popover API is an example where native platform behavior should be preferred over custom JavaScript positioning or visibility logic when the target baseline supports it."
+    ],
+    "checks": ["./Build/Scripts/runTests.sh -s build", "./Build/Scripts/runTests.sh -s lintScss"]
+  },
+  {
+    "id": "css-minimal-reusable-components",
+    "title": "Minimal CSS and Reusable Components",
+    "appliesTo": ["utility", "utility class", "reusable", "component", "one-off", "custom css", "new css"],
+    "hints": [
+      "Write as little new CSS as possible.",
+      "Prefer reusing, extending, or composing existing TYPO3 backend components before adding new CSS.",
+      "New CSS should express reusable component behavior, not one-off page-specific tweaks.",
+      "Utility classes should be used only in exceptional cases and must not replace a missing reusable component."
+    ],
+    "checks": ["./Build/Scripts/runTests.sh -s build", "./Build/Scripts/runTests.sh -s lintScss"]
+  },
+  {
+    "id": "css-class-naming",
+    "title": "CSS Class Naming",
+    "appliesTo": ["class name", "naming", "bem", "modifier", "variant", "variants", "t3js", "is-", "has-", "__", "--"],
+    "hints": [
+      "Use existing component naming conventions from nearby Sass files.",
+      "TYPO3 backend component classes usually use a short component root plus hyphenated elements or variants, for example .panel-heading, .toolbar-item, or .module-docheader.",
+      "Variants should customize the base component through custom properties whenever possible.",
+      "Do not introduce a new naming system such as BEM-style block__element--modifier unless the surrounding component already uses it.",
+      "Use t3js-* classes only as JavaScript hooks and keep them separate from visual styling selectors."
+    ],
+    "checks": ["./Build/Scripts/runTests.sh -s build", "./Build/Scripts/runTests.sh -s lintScss"]
+  },
+  {
+    "id": "css-styleguide-demos",
+    "title": "Styleguide Demos for CSS Components",
+    "appliesTo": [
+      "styleguide",
+      "demo",
+      "Build/Sources/Sass/component/",
+      "typo3/sysext/styleguide/Resources/Private/Templates/Backend/Components/"
+    ],
+    "hints": [
+      "All CSS components must be represented with demos in the styleguide extension.",
+      "New CSS components need a matching styleguide demo.",
+      "Changed CSS components should update an existing styleguide demo or add one when no demo exists.",
+      "Backend component demos usually live below typo3/sysext/styleguide/Resources/Private/Templates/Backend/Components/."
+    ],
+    "checks": [
+      "./Build/Scripts/runTests.sh -s build",
+      "./Build/Scripts/runTests.sh -s lintScss",
+      "./Build/Scripts/runTests.sh -s functional"
+    ]
+  },
+  {
+    "id": "css-tokens-specificity",
+    "title": "CSS Tokens and Specificity",
+    "appliesTo": [
+      "variable",
+      "token",
+      "custom property",
+      "css property",
+      "--typo3",
+      "specificity",
+      "!important",
+      "color",
+      "spacing",
+      "z-index",
+      "dark mode",
+      "property contract",
+      "host context"
+    ],
+    "hints": [
+      "Prefer existing --typo3-* custom properties for TYPO3 backend colors, spacing, borders, shadows, transitions, and state styles.",
+      "Use component-local custom properties to map component concepts to global TYPO3 tokens.",
+      "Expose a small, named component property contract when variants, host context, or states need to tune the component.",
+      "Keep specificity low and predictable.",
+      "Avoid !important unless overriding external or unavoidable generated styles."
+    ],
+    "checks": ["./Build/Scripts/runTests.sh -s lintScss", "./Build/Scripts/runTests.sh -s build"]
+  },
+  {
+    "id": "css-web-components",
+    "title": "Web Components and Element Styles",
+    "appliesTo": [
+      "Build/Sources/Sass/element/",
+      "custom element",
+      "web component",
+      "host selector",
+      "::part",
+      "slot",
+      "shadow",
+      "LitElement",
+      "typo3-backend-"
+    ],
+    "hints": [
+      "Styles for TYPO3 custom elements should start at the custom element host selector.",
+      "Keep custom element Sass below Build/Sources/Sass/element/ when the style belongs to a web component.",
+      "Use CSS custom properties, ::part(...), slots, and explicit host attributes as stable styling boundaries.",
+      "Do not style arbitrary internal DOM depth when a host selector, part, slot, or custom property can express the contract."
+    ],
+    "checks": [
+      "./Build/Scripts/runTests.sh -s build",
+      "./Build/Scripts/runTests.sh -s lintScss",
+      "./Build/Scripts/runTests.sh -s lintTypescript",
+      "./Build/Scripts/runTests.sh -s unitJavascript"
+    ]
+  },
+  {
+    "id": "css-state-attributes",
+    "title": "State Attributes and Semantic Selectors",
+    "appliesTo": [
+      "aria-",
+      "aria-selected",
+      "aria-expanded",
+      "aria-current",
+      "disabled",
+      "data-",
+      "data-state",
+      "state attribute",
+      "semantic selector"
+    ],
+    "hints": [
+      "Prefer semantic attributes and explicit state APIs over ad hoc visual classes for component state.",
+      "ARIA attributes must reflect real accessibility state and must not be introduced only as CSS hooks.",
+      "State selectors should map to component properties whenever possible.",
+      "Keep JavaScript, markup, CSS, and tests in sync when a state attribute changes."
+    ],
+    "checks": [
+      "./Build/Scripts/runTests.sh -s build",
+      "./Build/Scripts/runTests.sh -s lintScss",
+      "./Build/Scripts/runTests.sh -s unitJavascript"
+    ]
+  },
+  {
+    "id": "css-color-surface-tokens",
+    "title": "Color and Surface Tokens",
+    "appliesTo": [
+      "surface",
+      "surfaces",
+      "surface-container",
+      "text color",
+      "foreground",
+      "background",
+      "layer",
+      "layering",
+      "palette",
+      "--token-color",
+      "token-color",
+      "--typo3-surface",
+      "--typo3-text-color",
+      "--typo3-state",
+      "--typo3-component"
+    ],
+    "hints": [
+      "Do not use --token-color-* values directly in component CSS; they define the color space for semantic tokens.",
+      "Use --typo3-text-color-* for text and icons, --typo3-surface-* for larger backgrounds, and --typo3-surface-container-* for nested component backgrounds.",
+      "Surface tokens may be used directly, but they must follow the logical layering order: lowest, low, base, high, highest.",
+      "Use matching *-text surface tokens when placing content on stateful surfaces.",
+      "Use --typo3-state-* tokens for interactive or semantic states and derive subtle borders with color-mix(...) plus --typo3-border-mix."
+    ],
+    "checks": ["./Build/Scripts/runTests.sh -s build", "./Build/Scripts/runTests.sh -s lintScss"]
+  },
+  {
+    "id": "css-shadow-layering",
+    "title": "Shadow Tokens and Layering",
+    "appliesTo": ["shadow", "box-shadow", "elevation", "flyout", "dialog", "popover", "tooltip", "window"],
+    "hints": [
+      "Shadows must follow the same logical layering model as surfaces.",
+      "Prefer semantic shadow tokens over raw box-shadow values.",
+      "Use stronger shadows only for higher layers such as flyouts, dialogs, popovers, tooltips, overlays, and windows.",
+      "Keep surface elevation and shadow strength aligned."
+    ],
+    "checks": ["./Build/Scripts/runTests.sh -s build", "./Build/Scripts/runTests.sh -s lintScss"]
+  },
+  {
+    "id": "css-z-index-layering",
+    "title": "Z-Index and Overlay Layering",
+    "appliesTo": [
+      "z-index",
+      "--typo3-zindex",
+      "dropdown",
+      "modal",
+      "modal-backdrop",
+      "popover",
+      "tooltip",
+      "flyout",
+      "overlay",
+      "sticky",
+      "stacking context"
+    ],
+    "hints": [
+      "Prefer existing z-index tokens such as --typo3-zindex-dropdown, --typo3-zindex-modal-backdrop, --typo3-zindex-modal, and --typo3-zindex-header.",
+      "Place overlays, flyouts, menus, sticky headers, dialogs, and popovers deliberately in the backend layering model.",
+      "Avoid raw z-index numbers when an existing token matches the intended layer.",
+      "Do not use extremely high z-index values to win stacking conflicts; fix the owning stacking context or use the correct layer token.",
+      "Keep z-index, shadow strength, and surface elevation aligned."
+    ],
+    "checks": ["./Build/Scripts/runTests.sh -s build", "./Build/Scripts/runTests.sh -s lintScss"]
+  },
+  {
+    "id": "css-motion-transitions",
+    "title": "Motion and Transitions",
+    "appliesTo": [
+      "transition",
+      "animation",
+      "motion",
+      "prefers-reduced-motion",
+      "reduced motion",
+      "--typo3-transition",
+      "fade",
+      "slide",
+      "transform"
+    ],
+    "hints": [
+      "Prefer existing transition tokens such as --typo3-transition-color for interactive color, border, shadow, and opacity transitions.",
+      "New transitions or animations that move, resize, fade large regions, or affect focus/navigation must respect prefers-reduced-motion: reduce.",
+      "Avoid transition: all unless the surrounding component already uses it and the affected properties are intentionally constrained.",
+      "Keep motion functional and subtle so it clarifies state changes."
+    ],
+    "checks": ["./Build/Scripts/runTests.sh -s build", "./Build/Scripts/runTests.sh -s lintScss"]
+  },
+  {
+    "id": "css-container-queries",
+    "title": "Container Queries and Responsive Components",
+    "appliesTo": [
+      "container query",
+      "container-type",
+      "@container",
+      "baseline",
+      "responsive",
+      "breakpoint",
+      "sidebar",
+      "dialog",
+      "module column"
+    ],
+    "hints": [
+      "Prefer component-local responsiveness over viewport-only breakpoints when a component can appear in different backend containers.",
+      "Use container-type: inline-size and container queries for reusable components when layout depends on available container width.",
+      "Container queries are an example of a modern CSS feature that may be introduced before an LTS release when they are expected to be part of the LTS browser baseline.",
+      "Keep container query rules scoped to the owning component.",
+      "Do not add global breakpoints for a component-specific layout problem unless the behavior is truly tied to the viewport or scaffold."
+    ],
+    "checks": ["./Build/Scripts/runTests.sh -s build", "./Build/Scripts/runTests.sh -s lintScss"]
+  },
+  {
+    "id": "css-light-dark-mode",
+    "title": "Light and Dark Mode CSS",
+    "appliesTo": ["light", "dark", "light-dark", "color-scheme", "theme", "contrast", "surface", "text color"],
+    "hints": [
+      "CSS changes must work in both light and dark backend color schemes.",
+      "Prefer semantic TYPO3 custom properties such as surfaces, text colors, component colors, input colors, and state colors.",
+      "Use existing light-dark(...) patterns when a value genuinely needs distinct light and dark variants.",
+      "Check contrast for text, icons, borders, focus outlines, and state backgrounds in both schemes."
+    ],
+    "checks": ["./Build/Scripts/runTests.sh -s build", "./Build/Scripts/runTests.sh -s lintScss"]
+  },
+  {
+    "id": "css-rtl-logical-properties",
+    "title": "RTL and Logical CSS Properties",
+    "appliesTo": [
+      "rtl",
+      "logical",
+      "inline-start",
+      "inline-end",
+      "margin-left",
+      "margin-right",
+      "padding-left",
+      "padding-right",
+      "left",
+      "right",
+      "--typo3-position"
+    ],
+    "hints": [
+      "All backend components must be checked for RTL support.",
+      "Prefer logical properties such as margin-inline, padding-inline, inset-inline, and border-inline over physical left/right properties.",
+      "Use TYPO3 position custom properties such as --typo3-position-start, --typo3-position-end, and --typo3-position-modifier for direction-aware calculations.",
+      "Direction-aware transforms, icons, carets, flyouts, drag handles, resize handles, trees, lists, tables, toolbars, and form controls need explicit RTL review."
+    ],
+    "checks": ["./Build/Scripts/runTests.sh -s build", "./Build/Scripts/runTests.sh -s lintScss"]
+  },
+  {
+    "id": "css-bootstrap-transition",
+    "title": "Bootstrap Transition in Backend CSS",
+    "appliesTo": ["bootstrap", "btn-", "modal", "dropdown", "card", "alert", "utility class"],
+    "hints": [
+      "TYPO3 still uses Bootstrap CSS in parts of the backend, but Bootstrap usage is being actively reduced.",
+      "Treat Bootstrap as existing infrastructure, not as the preferred target architecture for new TYPO3-specific UI.",
+      "Avoid introducing new high-specificity Bootstrap overrides; prefer TYPO3 component styles for TYPO3-specific behavior."
+    ],
+    "checks": ["./Build/Scripts/runTests.sh -s build", "./Build/Scripts/runTests.sh -s lintScss"]
+  },
+  {
+    "id": "css-accessibility-states",
+    "title": "CSS Accessibility, Contrast, and States",
+    "appliesTo": [
+      "focus",
+      "focus-visible",
+      "keyboard",
+      "keyboard focus",
+      "tab",
+      "shift tab",
+      "focus order",
+      "focus trap",
+      "hover",
+      "contrast",
+      "wcag",
+      "active",
+      "disabled",
+      "loading",
+      "empty",
+      "error",
+      "selected",
+      "expanded",
+      "collapsed",
+      "drag",
+      "drop",
+      "modal",
+      "icon-only",
+      "accessible name",
+      "aria-hidden"
+    ],
+    "hints": [
+      "Color contrast must satisfy WCAG requirements in both light and dark color schemes.",
+      "Interactive elements must be reachable and operable by keyboard.",
+      "Keyboard focus must be visible with :focus-visible or an equivalent pattern.",
+      "Focus order must remain logical, and intentional focus traps need a safe escape path.",
+      "Hoverable interactive elements must have hover styles.",
+      "Check hover, focus, active, disabled, loading, empty, error, selected, expanded, and collapsed states when applicable.",
+      "Do not rely on color alone to communicate state.",
+      "Interactive icon-only controls need an accessible name, while decorative icons should be hidden from assistive technology."
+    ],
+    "checks": ["./Build/Scripts/runTests.sh -s build", "./Build/Scripts/runTests.sh -s lintScss"]
+  },
+  {
+    "id": "css-icon-text-layout-stability",
+    "title": "Icons, Text, and Layout Stability",
+    "appliesTo": [
+      "icon",
+      "badge",
+      "caret",
+      "label",
+      "ellipsis",
+      "text-overflow",
+      "layout shift",
+      "white-space",
+      "overflow",
+      "icon-only"
+    ],
+    "hints": [
+      "Components that combine icons, labels, badges, carets, and actions must keep layout stable across hover, focus, active, loading, and disabled states.",
+      "Use logical spacing for icon and text gaps, for example margin-inline-* or gap, so RTL layouts remain correct.",
+      "Define overflow behavior for long labels in compact backend UI.",
+      "Hover and focus styles must not cause avoidable layout shifts."
+    ],
+    "checks": ["./Build/Scripts/runTests.sh -s build", "./Build/Scripts/runTests.sh -s lintScss"]
+  }
+]

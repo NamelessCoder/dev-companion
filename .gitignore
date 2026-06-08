@@ -1,0 +1,5 @@
+config.local.php
+.mcp.json
+vendor/
+.env
+.DS_Store

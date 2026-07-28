@@ -230,24 +230,42 @@ final class Knowledge
     }
 
     /**
-     * The meaningful terms of a query. Singular and plural of the same word are
-     * one term, so "deprecations" finds the "Deprecation" section.
+     * The meaningful terms of a query, reduced to a stem so that word forms of
+     * the same word are one term: "deprecate", "deprecated" and "deprecations"
+     * all become "deprec" and match the "Deprecations" section.
      *
      * @return array<int, string>
      */
     private static function terms(string $query): array
     {
         $terms = [];
-        foreach (preg_split('/[^\p{L}\p{N}_.-]+/u', mb_strtolower(trim($query))) ?: [] as $term) {
-            $term = trim($term, '.-');
-            if ($term === '' || strlen($term) < 3 || in_array($term, self::STOPWORDS, true)) {
+        foreach (preg_split('/[^\p{L}\p{N}_.-]+/u', mb_strtolower(trim($query))) ?: [] as $word) {
+            $word = trim($word, '.-');
+            if ($word === '' || strlen($word) < 3 || in_array($word, self::STOPWORDS, true)) {
                 continue;
             }
-            // Match the stem so plurals and verb forms still hit.
-            $terms[] = preg_replace('/(ies|es|s)$/', '', $term) ?: $term;
+            $terms[] = self::stem($word);
         }
 
         return array_values(array_unique($terms));
+    }
+
+    /**
+     * Cuts a plural ending and shortens long words, so the remaining stem is a
+     * substring of every form of that word. Words are only shortened while at
+     * least four characters remain, so short words like "css" stay intact.
+     */
+    private static function stem(string $word): string
+    {
+        if (strlen($word) >= 6 && str_ends_with($word, 'ies')) {
+            $word = substr($word, 0, -3);
+        } elseif (strlen($word) >= 6 && str_ends_with($word, 'es')) {
+            $word = substr($word, 0, -2);
+        } elseif (strlen($word) >= 5 && str_ends_with($word, 's')) {
+            $word = substr($word, 0, -1);
+        }
+
+        return strlen($word) > 6 ? substr($word, 0, 6) : $word;
     }
 
     /** @return array{0: string, 1: bool} */

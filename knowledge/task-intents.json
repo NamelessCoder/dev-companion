@@ -1,0 +1,116 @@
+[
+  {
+    "id": "deprecation",
+    "title": "Deprecation",
+    "match": ["deprecat"],
+    "rulesQuery": "deprecation changelog",
+    "checklist": [
+      "Add a changelog file below typo3/sysext/core/Documentation/Changelog/<version>/ named Deprecation-<issue>-<Title>.rst.",
+      "Use [TASK] or [FEATURE] as the commit keyword. A deprecation must never use the [!!!] breaking prefix.",
+      "Keep the deprecated API working and let it trigger E_USER_DEPRECATED; removal happens in a later major.",
+      "Document the migration path in the changelog and consider an extension scanner matcher.",
+      "Migrate all core usages of the deprecated API in the same patch."
+    ],
+    "checks": ["CI=true ./Build/Scripts/runTests.sh -s checkRst"],
+    "tools": ["typo3_commit_message_help with isDeprecation=true, to get the keyword and prefix rules checked"]
+  },
+  {
+    "id": "breaking",
+    "title": "Breaking change",
+    "match": ["breaking", "remove public", "removed public", "drop support"],
+    "rulesQuery": "breaking change changelog",
+    "checklist": [
+      "Add a changelog file below typo3/sysext/core/Documentation/Changelog/<version>/ named Breaking-<issue>-<Title>.rst.",
+      "Prefix the commit summary with [!!!] before the keyword.",
+      "Target main; confirm any older release target with the release managers.",
+      "Describe the migration path for extension authors and consider an extension scanner matcher."
+    ],
+    "checks": [
+      "CI=true ./Build/Scripts/runTests.sh -s checkRst",
+      "CI=true ./Build/Scripts/runTests.sh -s checkExtensionScannerRst"
+    ],
+    "tools": ["typo3_commit_message_help with isBreaking=true"]
+  },
+  {
+    "id": "changelog",
+    "title": "Changelog or ReST documentation",
+    "match": ["changelog", "rst", "release note", "documentation"],
+    "rulesQuery": "changelog rst documentation",
+    "checklist": [
+      "Changelog files live below typo3/sysext/core/Documentation/Changelog/<version>/ and use the Breaking-, Deprecation-, Feature-, Important- or Task- prefix with the Forge issue number.",
+      "Include the ..  include:: /Includes.rst.txt header and a reference label, as in the neighbouring files."
+    ],
+    "checks": ["CI=true ./Build/Scripts/runTests.sh -s checkRst"],
+    "tools": []
+  },
+  {
+    "id": "labels",
+    "title": "User-facing labels",
+    "match": ["label", "xlf", "xliff", "translation", "wording", "locallang"],
+    "rulesQuery": "xliff label lifecycle",
+    "checklist": [
+      "Reuse an existing label when the meaning is identical instead of inventing a new key.",
+      "Reference labels by their translation domain (package.resource:key), not by the EXT: file path.",
+      "Never delete a trans-unit: mark it x-unused-since=\"<next version>\" and remove it in a later major.",
+      "Only the English source file is edited; translations come from translate.typo3.org."
+    ],
+    "checks": [
+      "CI=true ./Build/Scripts/runTests.sh -s checkIntegrityXliff",
+      "CI=true ./Build/Scripts/runTests.sh -s normalizeXliff"
+    ],
+    "tools": ["typo3_label_lookup, before inventing a new label key"]
+  },
+  {
+    "id": "backend-ui",
+    "title": "Backend UI markup",
+    "match": ["markup", "css class", "component", "badge", "card", "button", "modal", "template", "fluid", "backend module"],
+    "rulesQuery": "backend ui component",
+    "checklist": [
+      "Use the existing backend component classes and their documented markup instead of new ad-hoc classes.",
+      "Check the styleguide demo of the component for the canonical structure."
+    ],
+    "checks": [
+      "CI=true ./Build/Scripts/runTests.sh -s lintScss",
+      "CI=true ./Build/Scripts/runTests.sh -s build"
+    ],
+    "tools": [
+      "typo3_component_lookup, before writing backend markup or CSS classes",
+      "typo3_icon_lookup, before using an icon identifier"
+    ]
+  },
+  {
+    "id": "icons",
+    "title": "Icons",
+    "match": ["icon"],
+    "rulesQuery": "icon",
+    "checklist": [
+      "Validate the icon identifier against the registered identifiers; an unknown identifier only fails at runtime."
+    ],
+    "checks": [],
+    "tools": ["typo3_icon_lookup, to validate the identifier"]
+  },
+  {
+    "id": "tests",
+    "title": "Test coverage",
+    "match": ["test", "coverage", "regression"],
+    "rulesQuery": "testing strategy",
+    "checklist": [
+      "Confirm the test fails without the change and passes with it.",
+      "Run the single test file or method while iterating instead of the whole suite."
+    ],
+    "checks": [],
+    "tools": ["typo3_core_run_tests_help, for the targeted invocation form"]
+  },
+  {
+    "id": "submission",
+    "title": "Patch submission",
+    "match": ["gerrit", "push", "patch set", "review", "submit", "backport"],
+    "rulesQuery": "gerrit push patch set",
+    "checklist": [
+      "One patch is one commit: improve it by amending, never by adding a second commit.",
+      "Push with git push origin HEAD:refs/for/<branch> and keep the Change-Id line untouched."
+    ],
+    "checks": ["CI=true ./Build/Scripts/runTests.sh -s cglGit"],
+    "tools": ["typo3_commit_message_help, to check the message before pushing"]
+  }
+]

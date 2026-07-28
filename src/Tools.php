@@ -30,6 +30,16 @@ final class Tools
         'unknown' => [],
     ];
 
+    /** Extra domain signal carried by the change type itself. */
+    private const CHANGE_TYPE_TERMS = [
+        'documentation' => 'documentation changelog rst',
+        'test' => 'unit test functional test',
+        'feature' => 'changelog',
+        'bugfix' => '',
+        'cleanup' => '',
+        'unknown' => '',
+    ];
+
     /** @return array<int, array{name: string, description: string, inputSchema: array<string, mixed>}> */
     public static function definitions(): array
     {
@@ -353,20 +363,32 @@ final class Tools
     private static function taskBrief(array $args): string
     {
         $task = (string) ($args['task'] ?? '');
-        $area = isset($args['area']) ? (string) $args['area'] : null;
+        $area = isset($args['area']) ? trim((string) $args['area']) : '';
         $changeType = (string) ($args['changeType'] ?? 'unknown');
 
-        $architecture = ArchitectureHints::find($area !== null && $area !== '' ? [$area] : [], $task, 4);
-        $testHints = array_slice(TestSuiteHints::find(trim($task . ' ' . ($area ?? ''))), 0, 4);
+        $subject = trim($task . ' ' . $area);
+        $paths = $area === '' ? [] : [$area];
+        $domains = Domains::detect($paths, $task . ' ' . (self::CHANGE_TYPE_TERMS[$changeType] ?? ''));
+        $intents = TaskIntents::detect($subject . ' ' . $changeType);
+
+        $architecture = ArchitectureHints::find($paths, $task, 4);
+        $testHints = array_slice(TestSuiteHints::find($subject, $domains), 0, 4);
 
         $lines = [
             'Task: ' . $task,
-            'Area: ' . ($area ?? 'unknown'),
+            'Area: ' . ($area === '' ? 'unknown' : $area),
             'Change type: ' . $changeType,
-            '',
-            'Architecture hints:',
+            'Domains: ' . implode(', ', $domains),
         ];
+        if ($intents !== []) {
+            $lines[] = 'Recognized as: ' . implode(', ', array_map(
+                static fn(array $intent): string => (string) $intent['title'],
+                $intents
+            ));
+        }
 
+        $lines[] = '';
+        $lines[] = 'Architecture hints:';
         if ($architecture['matchedHints'] !== []) {
             foreach (ArchitectureHints::groupByCategory($architecture['matchedHints']) as $section) {
                 $lines[] = '### ' . $section['category'];
@@ -384,18 +406,39 @@ final class Tools
                 }
             }
         } else {
-            $lines[] = '- No specific architecture hint matched. Inspect nearby code and subsystem conventions.';
+            $lines[] = '- No architecture hint matched this task text. That means no convention was recognized, '
+                . 'not that none applies: call typo3_architecture_hint again with the concrete file paths once they are known.';
+        }
+
+        $rules = TaskIntents::rules($intents);
+        if ($rules !== []) {
+            $lines[] = '';
+            $lines[] = 'Rules that apply to this task:';
+            $lines[] = '';
+            $lines[] = self::renderSections($rules);
         }
 
         $lines[] = '';
         $lines[] = 'Relevant TYPO3 core checks:';
+        $intentChecks = [];
+        foreach ($intents as $intent) {
+            foreach ($intent['checks'] as $check) {
+                $intentChecks[$check] = true;
+            }
+        }
+        foreach (array_keys($intentChecks) as $check) {
+            $lines[] = '- `' . $check . '`';
+        }
         if ($testHints !== []) {
             foreach ($testHints as $hint) {
                 $lines[] = '## ' . $hint['suite'];
                 $lines[] = '`' . $hint['command'] . '`';
+                if ($hint['targeted'] !== null) {
+                    $lines[] = 'Targeted: `' . $hint['targeted'] . '`';
+                }
                 $lines[] = $hint['whenToUse'];
             }
-        } else {
+        } elseif ($intentChecks === []) {
             $lines[] = '- No topic-specific check matched. Run the narrowest relevant suite, then broaden before review.';
         }
 
@@ -409,9 +452,47 @@ final class Tools
         foreach (self::CHANGE_TYPE_CHECKLIST[$changeType] ?? [] as $entry) {
             $lines[] = '- ' . $entry;
         }
+        foreach ($intents as $intent) {
+            foreach ($intent['checklist'] as $entry) {
+                $lines[] = '- ' . $entry;
+            }
+        }
         $lines[] = '- Summarize changed behavior, affected area, and executed commands.';
 
+        $lines[] = '';
+        $lines[] = 'Next lookups for this task:';
+        foreach (self::nextTools($intents, $domains) as $suggestion) {
+            $lines[] = '- ' . $suggestion;
+        }
+
         return implode("\n", $lines);
+    }
+
+    /**
+     * Routes to the specialised tools, so an agent that starts here learns that
+     * they exist instead of writing markup or label keys from memory.
+     *
+     * @param array<int, array<string, mixed>> $intents
+     * @param array<int, string> $domains
+     * @return array<int, string>
+     */
+    private static function nextTools(array $intents, array $domains): array
+    {
+        $suggestions = [];
+        foreach ($intents as $intent) {
+            foreach ($intent['tools'] as $tool) {
+                $suggestions[$tool] = true;
+            }
+        }
+
+        if (in_array(Domains::FRONTEND, $domains, true)) {
+            $suggestions['typo3_component_lookup, before writing backend markup or CSS classes'] = true;
+        }
+        $suggestions['typo3_architecture_hint with the concrete file paths, once they are known'] = true;
+        $suggestions['typo3_core_run_tests_help, for the targeted runTests.sh invocation'] = true;
+        $suggestions['typo3_make_me_better, when one of these answers was wrong or incomplete'] = true;
+
+        return array_keys($suggestions);
     }
 
     /** @param array<string, mixed> $args */

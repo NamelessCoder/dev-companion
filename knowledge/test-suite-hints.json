@@ -1,217 +1,217 @@
 {
-    "invocation": {
-        "notes": [
-            "Run runTests.sh from the TYPO3 core checkout root. It starts a container (podman by default, `-b docker` to switch) and runs the suite inside it.",
-            "Prefix scripted and non-interactive runs with `CI=true`. It drops the interactive container flags, skips the SIGINT trap, and selects the CI phpstan config. Without a TTY the script also removes the interactive flags on its own, but `CI=true` is the explicit form and the one to use from an agent.",
-            "Everything after `--` is handed to the underlying tool unchanged: phpunit for the test suites, npm for `-s npm`, composer for `-s composer`.",
-            "While iterating, run a single test file or a single test method instead of a whole suite; a full functional run costs minutes per round.",
-            "`./Build/Scripts/runTests.sh -h` lists the suites and option values the checked-out branch actually supports."
-        ],
-        "options": [
-            {
-                "option": "-- <phpunit arguments>",
-                "description": "Passthrough to phpunit. A path limits the run to one test file, `--filter <methodName>` to one test method."
-            },
-            {
-                "option": "-d sqlite|mariadb|mysql|postgres",
-                "description": "Database for `-s functional` and the installer e2e suites. sqlite is the default and the fastest; use mariadb or postgres to reproduce DBMS-specific behaviour."
-            },
-            {
-                "option": "-a mysqli|pdo_mysql",
-                "description": "Database driver, only with `-s functional` on mysql or mariadb."
-            },
-            {
-                "option": "-i <version>",
-                "description": "Specific database version, for example `-d mariadb -i 11.4`."
-            },
-            {
-                "option": "-p <php minor>",
-                "description": "PHP minor version for the container. Only the versions the branch supports are available; check `-h`."
-            },
-            {
-                "option": "-n",
-                "description": "Dry run for `cgl`, `cglGit`, `cglHeader`, `cglHeaderGit`, and `normalizeXliff`: report issues without modifying files."
-            },
-            {
-                "option": "-c <chunk>/<total>",
-                "description": "Split functional or e2e tests into chunks and run one of them."
-            },
-            {
-                "option": "-x [-y <port>]",
-                "description": "Enable xdebug towards a listening IDE (default port 9003) for unit, functional, and installer e2e runs."
-            },
-            {
-                "option": "-b docker|podman",
-                "description": "Container runtime. podman is the default and docker the fallback."
-            }
-        ],
-        "examples": [
-            {
-                "purpose": "One unit test file",
-                "command": "CI=true ./Build/Scripts/runTests.sh -s unit -- typo3/sysext/core/Tests/Unit/Localization/TranslationDomainResolverTest.php"
-            },
-            {
-                "purpose": "One unit test method",
-                "command": "CI=true ./Build/Scripts/runTests.sh -s unit -- --filter canResolveDomain typo3/sysext/core/Tests/Unit/Localization/TranslationDomainResolverTest.php"
-            },
-            {
-                "purpose": "One functional test file on the default sqlite database",
-                "command": "CI=true ./Build/Scripts/runTests.sh -s functional -- typo3/sysext/core/Tests/Functional/DataHandling/Regular/Modify/ActionTest.php"
-            },
-            {
-                "purpose": "Functional tests on mariadb, to reproduce a DBMS-specific bug",
-                "command": "CI=true ./Build/Scripts/runTests.sh -s functional -d mariadb -- typo3/sysext/impexp/Tests/Functional/"
-            },
-            {
-                "purpose": "Coding guidelines of the latest commit only",
-                "command": "CI=true ./Build/Scripts/runTests.sh -s cglGit"
-            },
-            {
-                "purpose": "A single npm package script",
-                "command": "CI=true ./Build/Scripts/runTests.sh -s npm -- run build-css"
-            },
-            {
-                "purpose": "A composer command inside the core test environment",
-                "command": "CI=true ./Build/Scripts/runTests.sh -s composer -- dumpautoload"
-            }
-        ]
-    },
-    "suites": [
-        {
-            "suite": "unit",
-            "command": "CI=true ./Build/Scripts/runTests.sh -s unit",
-            "domains": ["php"],
-            "description": "PHP unit tests.",
-            "whenToUse": "Use for isolated PHP behavior, utility classes, value objects, and narrow bug fixes.",
-            "targeted": "CI=true ./Build/Scripts/runTests.sh -s unit -- --filter <methodName> <path/to/Test.php>"
-        },
-        {
-            "suite": "functional",
-            "command": "CI=true ./Build/Scripts/runTests.sh -s functional",
-            "domains": ["php"],
-            "description": "PHP functional tests, sqlite by default.",
-            "whenToUse": "Use for TYPO3 services, persistence, configuration, authentication, routing, and integration behavior.",
-            "targeted": "CI=true ./Build/Scripts/runTests.sh -s functional -d sqlite -- <path/to/Test.php>"
-        },
-        {
-            "suite": "cgl",
-            "command": "CI=true ./Build/Scripts/runTests.sh -s cgl",
-            "domains": ["php"],
-            "description": "Checks and fixes coding guideline issues for all core PHP files.",
-            "whenToUse": "Use before review when PHP formatting or file headers may be affected. Add `-n` to only report.",
-            "targeted": "CI=true ./Build/Scripts/runTests.sh -s cgl -n"
-        },
-        {
-            "suite": "cglGit",
-            "command": "CI=true ./Build/Scripts/runTests.sh -s cglGit",
-            "domains": ["php"],
-            "description": "Checks and fixes coding guideline issues in the latest committed patch.",
-            "whenToUse": "Use for a focused pre-review check after creating a commit. Much faster than a full cgl run."
-        },
-        {
-            "suite": "lintPhp",
-            "command": "CI=true ./Build/Scripts/runTests.sh -s lintPhp",
-            "domains": ["php"],
-            "description": "PHP syntax linting.",
-            "whenToUse": "Use for broad PHP syntax confidence after touching many PHP files."
-        },
-        {
-            "suite": "phpstan",
-            "command": "CI=true ./Build/Scripts/runTests.sh -s phpstan",
-            "domains": ["php"],
-            "description": "Static analysis with phpstan.",
-            "whenToUse": "Use for type-sensitive PHP changes and API contract changes."
-        },
-        {
-            "suite": "lintServicesYaml",
-            "command": "CI=true ./Build/Scripts/runTests.sh -s lintServicesYaml",
-            "domains": ["php"],
-            "description": "Lints Services.yaml files with tag parsing enabled.",
-            "whenToUse": "Use after changing dependency injection wiring in a Configuration/Services.yaml."
-        },
-        {
-            "suite": "checkIntegrityXliff",
-            "command": "CI=true ./Build/Scripts/runTests.sh -s checkIntegrityXliff",
-            "domains": ["xliff"],
-            "description": "Checks all .xlf files for validity and deprecated usages.",
-            "whenToUse": "Use after adding, changing, or retiring XLF labels."
-        },
-        {
-            "suite": "normalizeXliff",
-            "command": "CI=true ./Build/Scripts/runTests.sh -s normalizeXliff",
-            "domains": ["xliff"],
-            "description": "Normalizes .xlf files (formatting, attribute order).",
-            "whenToUse": "Use after editing XLF files, so the diff carries no formatting noise. Add `-n` to only report."
-        },
-        {
-            "suite": "checkRst",
-            "command": "CI=true ./Build/Scripts/runTests.sh -s checkRst",
-            "domains": ["docs"],
-            "description": "Checks .rst files for integrity.",
-            "whenToUse": "Use for every changelog entry and other ReST documentation change."
-        },
-        {
-            "suite": "checkExtensionScannerRst",
-            "command": "CI=true ./Build/Scripts/runTests.sh -s checkExtensionScannerRst",
-            "domains": ["docs", "php"],
-            "description": "Verifies that all .rst files referenced by the extension scanner exist.",
-            "whenToUse": "Use when a deprecation or breaking change adds extension scanner matchers."
-        },
-        {
-            "suite": "build",
-            "command": "CI=true ./Build/Scripts/runTests.sh -s build",
-            "domains": ["frontend"],
-            "description": "Frontend build for TypeScript, Sass, Contrib, and assets.",
-            "whenToUse": "Use when backend UI assets, TypeScript, Sass, or generated assets change."
-        },
-        {
-            "suite": "lintScss",
-            "command": "CI=true ./Build/Scripts/runTests.sh -s lintScss",
-            "domains": ["frontend"],
-            "description": "SCSS linting with TYPO3's stylelint setup.",
-            "whenToUse": "Use when Sass or CSS sources change. Internally this runs grunt stylelint in the Build directory."
-        },
-        {
-            "suite": "build-css",
-            "command": "CI=true ./Build/Scripts/runTests.sh -s npm -- run build-css",
-            "domains": ["frontend"],
-            "description": "Focused CSS build from Build/package.json.",
-            "whenToUse": "Use while iterating on Sass/CSS changes when a full frontend build is not needed. This maps to grunt css."
-        },
-        {
-            "suite": "lintTypescript",
-            "command": "CI=true ./Build/Scripts/runTests.sh -s lintTypescript",
-            "domains": ["frontend"],
-            "description": "TypeScript linting.",
-            "whenToUse": "Use when TypeScript or JavaScript code changes."
-        },
-        {
-            "suite": "unitJavascript",
-            "command": "CI=true ./Build/Scripts/runTests.sh -s unitJavascript",
-            "domains": ["frontend"],
-            "description": "JavaScript unit tests for the built backend modules.",
-            "whenToUse": "Use for TypeScript modules with real logic or state transitions. Run `-s build` first so the tests see the current output."
-        },
-        {
-            "suite": "e2e",
-            "command": "CI=true ./Build/Scripts/runTests.sh -s e2e",
-            "domains": ["frontend", "php"],
-            "description": "End-to-end tests driving a real backend with Playwright.",
-            "whenToUse": "Use for editor or administrator workflows that only break in the assembled backend."
-        },
-        {
-            "suite": "npm",
-            "command": "CI=true ./Build/Scripts/runTests.sh -s npm -- <npm command>",
-            "domains": ["frontend"],
-            "description": "Dispatcher for npm commands inside the TYPO3 core build environment.",
-            "whenToUse": "Use for npm install, audit, build, watch, and package-script tasks."
-        },
-        {
-            "suite": "composer",
-            "command": "CI=true ./Build/Scripts/runTests.sh -s composer -- <composer command>",
-            "domains": ["php"],
-            "description": "Dispatcher for composer commands inside the TYPO3 core build environment.",
-            "whenToUse": "Use for composer dumpautoload, require, info, and dependency tasks."
-        }
+  "invocation": {
+    "notes": [
+      "Run runTests.sh from the TYPO3 core checkout root. It starts a container (podman by default, `-b docker` to switch) and runs the suite inside it.",
+      "Prefix scripted and non-interactive runs with `CI=true`. It drops the interactive container flags, skips the SIGINT trap, and selects the CI phpstan config. Without a TTY the script also removes the interactive flags on its own, but `CI=true` is the explicit form and the one to use from an agent.",
+      "Everything after `--` is handed to the underlying tool unchanged: phpunit for the test suites, npm for `-s npm`, composer for `-s composer`.",
+      "While iterating, run a single test file or a single test method instead of a whole suite; a full functional run costs minutes per round.",
+      "`./Build/Scripts/runTests.sh -h` lists the suites and option values the checked-out branch actually supports."
+    ],
+    "options": [
+      {
+        "option": "-- <phpunit arguments>",
+        "description": "Passthrough to phpunit. A path limits the run to one test file, `--filter <methodName>` to one test method."
+      },
+      {
+        "option": "-d sqlite|mariadb|mysql|postgres",
+        "description": "Database for `-s functional` and the installer e2e suites. sqlite is the default and the fastest; use mariadb or postgres to reproduce DBMS-specific behaviour."
+      },
+      {
+        "option": "-a mysqli|pdo_mysql",
+        "description": "Database driver, only with `-s functional` on mysql or mariadb."
+      },
+      {
+        "option": "-i <version>",
+        "description": "Specific database version, for example `-d mariadb -i 11.4`."
+      },
+      {
+        "option": "-p <php minor>",
+        "description": "PHP minor version for the container. Only the versions the branch supports are available; check `-h`."
+      },
+      {
+        "option": "-n",
+        "description": "Dry run for `cgl`, `cglGit`, `cglHeader`, `cglHeaderGit`, and `normalizeXliff`: report issues without modifying files."
+      },
+      {
+        "option": "-c <chunk>/<total>",
+        "description": "Split functional or e2e tests into chunks and run one of them."
+      },
+      {
+        "option": "-x [-y <port>]",
+        "description": "Enable xdebug towards a listening IDE (default port 9003) for unit, functional, and installer e2e runs."
+      },
+      {
+        "option": "-b docker|podman",
+        "description": "Container runtime. podman is the default and docker the fallback."
+      }
+    ],
+    "examples": [
+      {
+        "purpose": "One unit test file",
+        "command": "CI=true ./Build/Scripts/runTests.sh -s unit -- typo3/sysext/core/Tests/Unit/Localization/TranslationDomainResolverTest.php"
+      },
+      {
+        "purpose": "One unit test method",
+        "command": "CI=true ./Build/Scripts/runTests.sh -s unit -- --filter canResolveDomain typo3/sysext/core/Tests/Unit/Localization/TranslationDomainResolverTest.php"
+      },
+      {
+        "purpose": "One functional test file on the default sqlite database",
+        "command": "CI=true ./Build/Scripts/runTests.sh -s functional -- typo3/sysext/core/Tests/Functional/DataHandling/Regular/Modify/ActionTest.php"
+      },
+      {
+        "purpose": "Functional tests on mariadb, to reproduce a DBMS-specific bug",
+        "command": "CI=true ./Build/Scripts/runTests.sh -s functional -d mariadb -- typo3/sysext/impexp/Tests/Functional/"
+      },
+      {
+        "purpose": "Coding guidelines of the latest commit only",
+        "command": "CI=true ./Build/Scripts/runTests.sh -s cglGit"
+      },
+      {
+        "purpose": "A single npm package script",
+        "command": "CI=true ./Build/Scripts/runTests.sh -s npm -- run build-css"
+      },
+      {
+        "purpose": "A composer command inside the core test environment",
+        "command": "CI=true ./Build/Scripts/runTests.sh -s composer -- dumpautoload"
+      }
     ]
+  },
+  "suites": [
+    {
+      "suite": "unit",
+      "command": "CI=true ./Build/Scripts/runTests.sh -s unit",
+      "domains": ["php"],
+      "description": "PHP unit tests.",
+      "whenToUse": "Use for isolated PHP behavior, utility classes, value objects, and narrow bug fixes.",
+      "targeted": "CI=true ./Build/Scripts/runTests.sh -s unit -- --filter <methodName> <path/to/Test.php>"
+    },
+    {
+      "suite": "functional",
+      "command": "CI=true ./Build/Scripts/runTests.sh -s functional",
+      "domains": ["php"],
+      "description": "PHP functional tests, sqlite by default.",
+      "whenToUse": "Use for TYPO3 services, persistence, configuration, authentication, routing, and integration behavior.",
+      "targeted": "CI=true ./Build/Scripts/runTests.sh -s functional -d sqlite -- <path/to/Test.php>"
+    },
+    {
+      "suite": "cgl",
+      "command": "CI=true ./Build/Scripts/runTests.sh -s cgl",
+      "domains": ["php"],
+      "description": "Checks and fixes coding guideline issues for all core PHP files.",
+      "whenToUse": "Use before review when PHP formatting or file headers may be affected. Add `-n` to only report.",
+      "targeted": "CI=true ./Build/Scripts/runTests.sh -s cgl -n"
+    },
+    {
+      "suite": "cglGit",
+      "command": "CI=true ./Build/Scripts/runTests.sh -s cglGit",
+      "domains": ["php"],
+      "description": "Checks and fixes coding guideline issues in the latest committed patch.",
+      "whenToUse": "Use for a focused pre-review check after creating a commit. Much faster than a full cgl run."
+    },
+    {
+      "suite": "lintPhp",
+      "command": "CI=true ./Build/Scripts/runTests.sh -s lintPhp",
+      "domains": ["php"],
+      "description": "PHP syntax linting.",
+      "whenToUse": "Use for broad PHP syntax confidence after touching many PHP files."
+    },
+    {
+      "suite": "phpstan",
+      "command": "CI=true ./Build/Scripts/runTests.sh -s phpstan",
+      "domains": ["php"],
+      "description": "Static analysis with phpstan.",
+      "whenToUse": "Use for type-sensitive PHP changes and API contract changes."
+    },
+    {
+      "suite": "lintServicesYaml",
+      "command": "CI=true ./Build/Scripts/runTests.sh -s lintServicesYaml",
+      "domains": ["php"],
+      "description": "Lints Services.yaml files with tag parsing enabled.",
+      "whenToUse": "Use after changing dependency injection wiring in a Configuration/Services.yaml."
+    },
+    {
+      "suite": "checkIntegrityXliff",
+      "command": "CI=true ./Build/Scripts/runTests.sh -s checkIntegrityXliff",
+      "domains": ["xliff"],
+      "description": "Checks all .xlf files for validity and deprecated usages.",
+      "whenToUse": "Use after adding, changing, or retiring XLF labels."
+    },
+    {
+      "suite": "normalizeXliff",
+      "command": "CI=true ./Build/Scripts/runTests.sh -s normalizeXliff",
+      "domains": ["xliff"],
+      "description": "Normalizes .xlf files (formatting, attribute order).",
+      "whenToUse": "Use after editing XLF files, so the diff carries no formatting noise. Add `-n` to only report."
+    },
+    {
+      "suite": "checkRst",
+      "command": "CI=true ./Build/Scripts/runTests.sh -s checkRst",
+      "domains": ["docs"],
+      "description": "Checks .rst files for integrity.",
+      "whenToUse": "Use for every changelog entry and other ReST documentation change."
+    },
+    {
+      "suite": "checkExtensionScannerRst",
+      "command": "CI=true ./Build/Scripts/runTests.sh -s checkExtensionScannerRst",
+      "domains": ["docs", "php"],
+      "description": "Verifies that all .rst files referenced by the extension scanner exist.",
+      "whenToUse": "Use when a deprecation or breaking change adds extension scanner matchers."
+    },
+    {
+      "suite": "build",
+      "command": "CI=true ./Build/Scripts/runTests.sh -s build",
+      "domains": ["frontend"],
+      "description": "Frontend build for TypeScript, Sass, Contrib, and assets.",
+      "whenToUse": "Use when backend UI assets, TypeScript, Sass, or generated assets change."
+    },
+    {
+      "suite": "lintScss",
+      "command": "CI=true ./Build/Scripts/runTests.sh -s lintScss",
+      "domains": ["frontend"],
+      "description": "SCSS linting with TYPO3's stylelint setup.",
+      "whenToUse": "Use when Sass or CSS sources change. Internally this runs grunt stylelint in the Build directory."
+    },
+    {
+      "suite": "build-css",
+      "command": "CI=true ./Build/Scripts/runTests.sh -s npm -- run build-css",
+      "domains": ["frontend"],
+      "description": "Focused CSS build from Build/package.json.",
+      "whenToUse": "Use while iterating on Sass/CSS changes when a full frontend build is not needed. This maps to grunt css."
+    },
+    {
+      "suite": "lintTypescript",
+      "command": "CI=true ./Build/Scripts/runTests.sh -s lintTypescript",
+      "domains": ["frontend"],
+      "description": "TypeScript linting.",
+      "whenToUse": "Use when TypeScript or JavaScript code changes."
+    },
+    {
+      "suite": "unitJavascript",
+      "command": "CI=true ./Build/Scripts/runTests.sh -s unitJavascript",
+      "domains": ["frontend"],
+      "description": "JavaScript unit tests for the built backend modules.",
+      "whenToUse": "Use for TypeScript modules with real logic or state transitions. Run `-s build` first so the tests see the current output."
+    },
+    {
+      "suite": "e2e",
+      "command": "CI=true ./Build/Scripts/runTests.sh -s e2e",
+      "domains": ["frontend", "php"],
+      "description": "End-to-end tests driving a real backend with Playwright.",
+      "whenToUse": "Use for editor or administrator workflows that only break in the assembled backend."
+    },
+    {
+      "suite": "npm",
+      "command": "CI=true ./Build/Scripts/runTests.sh -s npm -- <npm command>",
+      "domains": ["frontend"],
+      "description": "Dispatcher for npm commands inside the TYPO3 core build environment.",
+      "whenToUse": "Use for npm install, audit, build, watch, and package-script tasks."
+    },
+    {
+      "suite": "composer",
+      "command": "CI=true ./Build/Scripts/runTests.sh -s composer -- <composer command>",
+      "domains": ["php"],
+      "description": "Dispatcher for composer commands inside the TYPO3 core build environment.",
+      "whenToUse": "Use for composer dumpautoload, require, info, and dependency tasks."
+    }
+  ]
 }

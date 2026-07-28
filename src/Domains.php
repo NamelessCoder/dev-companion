@@ -67,7 +67,7 @@ final class Domains
         $haystack = mb_strtolower(implode(' ', $paths) . ' ' . $text);
         foreach (self::KEYWORDS as $domain => $keywords) {
             foreach ($keywords as $keyword) {
-                if (str_contains($haystack, $keyword)) {
+                if (Text::containsWord($haystack, $keyword)) {
                     $detected[$domain] = true;
                     break;
                 }
@@ -85,8 +85,11 @@ final class Domains
             $detected[self::XLIFF] = true;
         }
 
+        // Without any signal, assume PHP: that is what most of the core is, and
+        // an unrelated Sass or TypeScript recommendation is worse than a
+        // slightly narrow one.
         if ($detected === []) {
-            return [self::PHP, self::FRONTEND, self::DOCS, self::XLIFF];
+            return [self::PHP];
         }
 
         // Anything that is not purely about assets, labels or docs involves PHP.

@@ -17,7 +17,7 @@ identifier still exists on the branch you work on — that stays the agent's job
 in the checkout. What it does is answer, for a concrete task or path, which
 conventions apply, which check to run, and which registered component, icon, or
 label already exists. `typo3_server_scope` states this boundary in full, and
-`typo3_core_task_brief` names what has to be established in the checkout.
+`typo3_task_guide` names what has to be established in the checkout.
 
 It is built on the official [`mcp/sdk`](https://packagist.org/packages/mcp/sdk)
 and speaks **stdio** (`bin/typo3-cms-mcp`): the MCP client launches it as a
@@ -128,10 +128,10 @@ writes anything, and then only a new file.
   depth, what it deliberately does not, and which tool to call when. The place
   to start when it is unclear whether a question can be answered here at all.
 - `typo3_rule_lookup`: searches local TYPO3 core rules and script notes.
-- `typo3_script_help`: finds matching notes for TYPO3 core commands.
-- `typo3_core_task_brief`: builds a task checklist enriched with matching
+- `typo3_script_lookup`: finds matching notes for TYPO3 core commands.
+- `typo3_task_guide`: builds a task checklist enriched with matching
   architecture hints and relevant core checks.
-- `typo3_core_run_tests_help`: recommends `Build/Scripts/runTests.sh` commands
+- `typo3_test_run_guide`: recommends `Build/Scripts/runTests.sh` commands
   by topic.
 - `typo3_architecture_hint`: returns architecture hints for TYPO3 core paths or
   task topics, grouped by section.
@@ -145,7 +145,7 @@ writes anything, and then only a new file.
   returns the fully qualified `LLL:` reference and English source text, so
   existing labels get reused instead of new keys invented; `mode: domains` lists
   the registered translation domains instead.
-- `typo3_commit_message_help`: drafts and checks TYPO3 core commit messages
+- `typo3_commit_message_guide`: drafts and checks TYPO3 core commit messages
   against the contribution rules — from parts, or by passing an existing
   `message` to check and correct one in a piece. The emitted draft is ready to
   commit: the body is wrapped at 72 characters, and fenced code, indented

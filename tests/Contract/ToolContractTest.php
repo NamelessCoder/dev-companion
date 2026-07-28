@@ -79,7 +79,7 @@ final class ToolContractTest extends TestCase
     public function theCommitMessageToolNeedsEitherAMessageOrASummary(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        Tools::call('typo3_commit_message_help', ['issue' => '1']);
+        Tools::call('typo3_commit_message_guide', ['issue' => '1']);
     }
 
     /**
@@ -94,17 +94,17 @@ final class ToolContractTest extends TestCase
             'scope' => ['typo3_server_scope', []],
             'rules: hit' => ['typo3_rule_lookup', ['query' => 'deprecation']],
             'rules: miss' => ['typo3_rule_lookup', ['query' => 'quantum entanglement pineapple']],
-            'scripts: hit' => ['typo3_script_help', ['task' => 'functional tests']],
-            'scripts: miss' => ['typo3_script_help', ['task' => 'quantum entanglement pineapple']],
-            'brief: with area' => ['typo3_core_task_brief', [
+            'scripts: hit' => ['typo3_script_lookup', ['task' => 'functional tests']],
+            'scripts: miss' => ['typo3_script_lookup', ['task' => 'quantum entanglement pineapple']],
+            'brief: with area' => ['typo3_task_guide', [
                 'task' => 'Deprecate a public method',
                 'area' => 'typo3/sysext/core/Classes/Utility/GeneralUtility.php',
                 'changeType' => 'cleanup',
             ]],
-            'brief: task only' => ['typo3_core_task_brief', ['task' => 'Add a badge to the list module']],
-            'runTests: all' => ['typo3_core_run_tests_help', []],
-            'runTests: hit' => ['typo3_core_run_tests_help', ['query' => 'phpstan']],
-            'runTests: miss' => ['typo3_core_run_tests_help', ['query' => 'quantumflux']],
+            'brief: task only' => ['typo3_task_guide', ['task' => 'Add a badge to the list module']],
+            'runTests: all' => ['typo3_test_run_guide', []],
+            'runTests: hit' => ['typo3_test_run_guide', ['query' => 'phpstan']],
+            'runTests: miss' => ['typo3_test_run_guide', ['query' => 'quantumflux']],
             'architecture: path' => ['typo3_architecture_hint', ['paths' => ['typo3/sysext/core/Classes/DataHandling/DataHandler.php']]],
             'architecture: topic' => ['typo3_architecture_hint', ['task' => 'sass build']],
             'architecture: miss' => ['typo3_architecture_hint', ['task' => 'quantumflux']],
@@ -120,12 +120,12 @@ final class ToolContractTest extends TestCase
             'labels: domains' => ['typo3_label_lookup', ['mode' => 'domains']],
             'labels: domains miss' => ['typo3_label_lookup', ['mode' => 'domains', 'query' => 'quantumflux']],
             'catalog status' => ['typo3_catalog_status', []],
-            'commit: from parts' => ['typo3_commit_message_help', [
+            'commit: from parts' => ['typo3_commit_message_guide', [
                 'changeType' => 'BUGFIX',
                 'summary' => 'Show hidden records in the import preview',
                 'issue' => '106123',
             ]],
-            'commit: from a message' => ['typo3_commit_message_help', [
+            'commit: from a message' => ['typo3_commit_message_guide', [
                 'message' => "[TASK] Do a thing\n\nBody.\n\nResolves: #1\nReleases: main",
             ]],
         ];

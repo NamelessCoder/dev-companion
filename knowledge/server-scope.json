@@ -1,11 +1,11 @@
 {
   "purpose": "A curated knowledge base for contributing to the TYPO3 core: the contribution rules, the Gerrit workflow, script and test invocation, architecture conventions, and catalogs of registered backend components, icon identifiers, and labels.",
-  "instructions": "A conventions catalog for TYPO3 core contributions, not a patch assistant. Every answer comes from this server's own bundled knowledge; it never reads, inspects, or runs anything against a TYPO3 core checkout and cannot be pointed at one. It therefore does not know your branch, your changed files, which tests cover them, or whether a path or identifier still exists on your branch — discover that in the checkout yourself, then bring the concrete paths back to typo3_architecture_hint and typo3_core_task_brief. Call typo3_server_scope for what is covered, at which depth, and which tool answers what.",
+  "instructions": "A conventions catalog for TYPO3 core contributions, not a patch assistant. Every answer comes from this server's own bundled knowledge; it never reads, inspects, or runs anything against a TYPO3 core checkout and cannot be pointed at one. It therefore does not know your branch, your changed files, which tests cover them, or whether a path or identifier still exists on your branch — discover that in the checkout yourself, then bring the concrete paths back to typo3_architecture_hint and typo3_task_guide. Call typo3_server_scope for what is covered, at which depth, and which tool answers what.",
   "covers": [
     {
       "topic": "Contribution rules and review readiness",
       "depth": "Curated prose. The rules a patch is judged by, not a full style guide.",
-      "tools": ["typo3_rule_lookup", "typo3_core_task_brief"],
+      "tools": ["typo3_rule_lookup", "typo3_task_guide"],
       "source": "typo3://core/typo3-core-rules"
     },
     {
@@ -17,19 +17,19 @@
     {
       "topic": "Commit messages",
       "depth": "Rules plus a working draft and check, including 72-character body wrapping.",
-      "tools": ["typo3_commit_message_help", "typo3_rule_lookup"],
+      "tools": ["typo3_commit_message_guide", "typo3_rule_lookup"],
       "source": "typo3://core/typo3-commit-messages"
     },
     {
       "topic": "runTests.sh suites, options, and targeted invocation",
       "depth": "Every suite this knowledge base knows, with the command, the targeted form, and when to use it.",
-      "tools": ["typo3_core_run_tests_help", "typo3_script_help"],
+      "tools": ["typo3_test_run_guide", "typo3_script_lookup"],
       "source": "knowledge/test-suite-hints.json, typo3://core/typo3-core-scripts"
     },
     {
       "topic": "Core architecture conventions: DI, events and hooks, TCA and FormEngine, DataHandler, routing, language files, testing strategy",
       "depth": "Conventions per subsystem, matched by path or topic. It describes how the core is built, never what your checkout contains.",
-      "tools": ["typo3_architecture_hint", "typo3_core_task_brief"],
+      "tools": ["typo3_architecture_hint", "typo3_task_guide"],
       "source": "knowledge/architecture-hints/, typo3://core/typo3-core-architecture"
     },
     {
@@ -67,7 +67,7 @@
     {
       "topic": "Your checkout: changed files, branch, working tree, local git state",
       "why": "This server answers from its own bundled knowledge and never reads, inspects, or runs anything against a TYPO3 core checkout. It cannot be pointed at one.",
-      "instead": "Determine the changed paths yourself (git status, git diff --name-only), then pass them to typo3_architecture_hint and typo3_core_task_brief to get the conventions and checks that apply to them."
+      "instead": "Determine the changed paths yourself (git status, git diff --name-only), then pass them to typo3_architecture_hint and typo3_task_guide to get the conventions and checks that apply to them."
     },
     {
       "topic": "The core source itself: API signatures, TCA of a table, existing implementations",
@@ -77,7 +77,7 @@
     {
       "topic": "Which test covers a given file",
       "why": "Test coverage is a property of the checkout, and no index of it is bundled.",
-      "instead": "Core tests mirror the class path below typo3/sysext/<ext>/Tests/Unit/ and Tests/Functional/, so typo3/sysext/core/Classes/DataHandling/DataHandler.php is covered by typo3/sysext/core/Tests/Unit/DataHandling/DataHandlerTest.php. Look the file up there, then ask typo3_core_run_tests_help for the targeted runTests.sh invocation."
+      "instead": "Core tests mirror the class path below typo3/sysext/<ext>/Tests/Unit/ and Tests/Functional/, so typo3/sysext/core/Classes/DataHandling/DataHandler.php is covered by typo3/sysext/core/Tests/Unit/DataHandling/DataHandlerTest.php. Look the file up there, then ask typo3_test_run_guide for the targeted runTests.sh invocation."
     },
     {
       "topic": "Whether a path, class, label, icon, or CSS class still exists on your branch",
@@ -102,7 +102,7 @@
     },
     {
       "establish": "Which tests already cover them",
-      "how": "Core tests mirror the class path below typo3/sysext/<ext>/Tests/Unit/ and Tests/Functional/. Find the file there, then ask typo3_core_run_tests_help for the targeted runTests.sh invocation."
+      "how": "Core tests mirror the class path below typo3/sysext/<ext>/Tests/Unit/ and Tests/Functional/. Find the file there, then ask typo3_test_run_guide for the targeted runTests.sh invocation."
     },
     {
       "establish": "The branch you are on and the branches the change is meant for",
@@ -116,7 +116,7 @@
   "routing": [
     {
       "when": "Starting a core task and looking for the applicable conventions and checks",
-      "call": "typo3_core_task_brief"
+      "call": "typo3_task_guide"
     },
     {
       "when": "About to write backend markup or invent a CSS class name",
@@ -132,7 +132,7 @@
     },
     {
       "when": "About to run tests or any other core check",
-      "call": "typo3_core_run_tests_help"
+      "call": "typo3_test_run_guide"
     },
     {
       "when": "Working in a concrete file and unsure about the subsystem's conventions",
@@ -140,7 +140,7 @@
     },
     {
       "when": "Writing or amending the commit message",
-      "call": "typo3_commit_message_help"
+      "call": "typo3_commit_message_guide"
     },
     {
       "when": "Pushing for review, amending a patch set, or backporting",

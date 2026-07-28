@@ -24,15 +24,15 @@ final class ToolSchemas
     {
         return match ($name) {
             'typo3_server_scope' => self::serverScope(),
-            'typo3_rule_lookup', 'typo3_script_help' => self::knowledgeLookup(),
-            'typo3_core_task_brief' => self::taskBrief(),
-            'typo3_core_run_tests_help' => self::runTestsHelp(),
+            'typo3_rule_lookup', 'typo3_script_lookup' => self::knowledgeLookup(),
+            'typo3_task_guide' => self::taskGuide(),
+            'typo3_test_run_guide' => self::testRunGuide(),
             'typo3_architecture_hint' => self::architectureHint(),
             'typo3_component_lookup' => self::componentLookup(),
             'typo3_icon_lookup' => self::iconLookup(),
             'typo3_label_lookup' => self::labelLookup(),
             'typo3_catalog_status' => self::catalogStatus(),
-            'typo3_commit_message_help' => self::commitMessageHelp(),
+            'typo3_commit_message_guide' => self::commitMessageGuide(),
             'typo3_make_me_better' => self::makeMeBetter(),
             'typo3_feedback_list' => self::feedbackList(),
             default => null,
@@ -84,7 +84,7 @@ final class ToolSchemas
     }
 
     /** @return array<string, mixed> */
-    private static function taskBrief(): array
+    private static function taskGuide(): array
     {
         return self::object([
             'task' => self::string(),
@@ -112,7 +112,7 @@ final class ToolSchemas
     }
 
     /** @return array<string, mixed> */
-    private static function runTestsHelp(): array
+    private static function testRunGuide(): array
     {
         return self::object([
             'query' => self::nullableString(),
@@ -232,7 +232,7 @@ final class ToolSchemas
     }
 
     /** @return array<string, mixed> */
-    private static function commitMessageHelp(): array
+    private static function commitMessageGuide(): array
     {
         return self::object([
             'message' => self::string('The commit message, ready to use.'),

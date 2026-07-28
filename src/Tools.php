@@ -92,7 +92,7 @@ final class Tools
                 ],
             ],
             [
-                'name' => 'typo3_script_help',
+                'name' => 'typo3_script_lookup',
                 'description' => 'Find notes for TYPO3 core scripts and commands.',
                 'inputSchema' => [
                     'type' => 'object',
@@ -103,7 +103,7 @@ final class Tools
                 ],
             ],
             [
-                'name' => 'typo3_core_task_brief',
+                'name' => 'typo3_task_guide',
                 'description' => 'Build a task checklist enriched with matching architecture hints and relevant core checks. Built from bundled conventions only: it does not read your checkout, so it also names what you have to establish there yourself and routes to the lookups that fit the task.',
                 'inputSchema' => [
                     'type' => 'object',
@@ -116,7 +116,7 @@ final class Tools
                 ],
             ],
             [
-                'name' => 'typo3_core_run_tests_help',
+                'name' => 'typo3_test_run_guide',
                 'description' => 'Recommend Build/Scripts/runTests.sh commands by topic.',
                 'inputSchema' => [
                     'type' => 'object',
@@ -179,7 +179,7 @@ final class Tools
                 ],
             ],
             [
-                'name' => 'typo3_commit_message_help',
+                'name' => 'typo3_commit_message_guide',
                 'description' => 'Draft and check a TYPO3 core commit message against the contribution rules. Either assemble one from parts (changeType plus summary) or pass an existing message to check and correct it. The returned draft is ready to commit: the body is wrapped at 72 characters, with fenced code, indented blocks, list structure, and long URLs left intact.',
                 'inputSchema' => [
                     'type' => 'object',
@@ -263,15 +263,15 @@ final class Tools
         return match ($name) {
             'typo3_server_scope' => self::serverScope(),
             'typo3_rule_lookup' => self::ruleLookup($args),
-            'typo3_script_help' => self::scriptHelp($args),
-            'typo3_core_task_brief' => self::taskBrief($args),
-            'typo3_core_run_tests_help' => self::runTestsHelp($args),
+            'typo3_script_lookup' => self::scriptLookup($args),
+            'typo3_task_guide' => self::taskGuide($args),
+            'typo3_test_run_guide' => self::testRunGuide($args),
             'typo3_architecture_hint' => self::architectureHint($args),
             'typo3_component_lookup' => self::componentLookup($args),
             'typo3_icon_lookup' => self::iconLookup($args),
             'typo3_label_lookup' => self::labelLookup($args),
             'typo3_catalog_status' => self::catalogStatus($args),
-            'typo3_commit_message_help' => self::commitMessageHelp($args),
+            'typo3_commit_message_guide' => self::commitMessageGuide($args),
             'typo3_make_me_better' => self::makeMeBetter($args),
             'typo3_feedback_list' => self::feedbackList($args),
             default => throw new \InvalidArgumentException(sprintf('Unknown tool: %s', $name)),
@@ -383,7 +383,7 @@ final class Tools
     }
 
     /** @param array<string, mixed> $args */
-    private static function scriptHelp(array $args): ToolResult
+    private static function scriptLookup(array $args): ToolResult
     {
         $task = (string) ($args['task'] ?? '');
         $results = Knowledge::search($task, ['typo3-core-scripts']);
@@ -508,7 +508,7 @@ final class Tools
     }
 
     /** @param array<string, mixed> $args */
-    private static function taskBrief(array $args): ToolResult
+    private static function taskGuide(array $args): ToolResult
     {
         $task = (string) ($args['task'] ?? '');
         $area = isset($args['area']) ? trim((string) $args['area']) : '';
@@ -673,7 +673,7 @@ final class Tools
             $candidates[] = 'typo3_component_lookup, before writing backend markup or CSS classes';
         }
         $candidates[] = 'typo3_architecture_hint with the concrete file paths, once they are known';
-        $candidates[] = 'typo3_core_run_tests_help, for the targeted runTests.sh invocation';
+        $candidates[] = 'typo3_test_run_guide, for the targeted runTests.sh invocation';
         if (Feedback::isAvailable()) {
             $candidates[] = 'typo3_make_me_better, when one of these answers was wrong or incomplete';
         }
@@ -729,7 +729,7 @@ final class Tools
     }
 
     /** @param array<string, mixed> $args */
-    private static function runTestsHelp(array $args): ToolResult
+    private static function testRunGuide(array $args): ToolResult
     {
         $query = isset($args['query']) ? (string) $args['query'] : null;
         $hints = TestSuiteHints::find($query);
@@ -1259,7 +1259,7 @@ final class Tools
     }
 
     /** @param array<string, mixed> $args */
-    private static function commitMessageHelp(array $args): ToolResult
+    private static function commitMessageGuide(array $args): ToolResult
     {
         $existing = isset($args['message']) ? trim((string) $args['message']) : '';
 

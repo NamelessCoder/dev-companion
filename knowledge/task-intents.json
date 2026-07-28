@@ -12,7 +12,7 @@
       "Migrate all core usages of the deprecated API in the same patch."
     ],
     "checks": ["CI=true ./Build/Scripts/runTests.sh -s checkRst"],
-    "tools": ["typo3_commit_message_help with isDeprecation=true, to get the keyword and prefix rules checked"]
+    "tools": ["typo3_commit_message_guide with isDeprecation=true, to get the keyword and prefix rules checked"]
   },
   {
     "id": "breaking",
@@ -29,7 +29,7 @@
       "CI=true ./Build/Scripts/runTests.sh -s checkRst",
       "CI=true ./Build/Scripts/runTests.sh -s checkExtensionScannerRst"
     ],
-    "tools": ["typo3_commit_message_help with isBreaking=true"]
+    "tools": ["typo3_commit_message_guide with isBreaking=true"]
   },
   {
     "id": "changelog",
@@ -99,7 +99,7 @@
       "Run the single test file or method while iterating instead of the whole suite."
     ],
     "checks": [],
-    "tools": ["typo3_core_run_tests_help, for the targeted invocation form"]
+    "tools": ["typo3_test_run_guide, for the targeted invocation form"]
   },
   {
     "id": "submission",
@@ -111,6 +111,6 @@
       "Push with git push origin HEAD:refs/for/<branch> and keep the Change-Id line untouched."
     ],
     "checks": ["CI=true ./Build/Scripts/runTests.sh -s cglGit"],
-    "tools": ["typo3_commit_message_help, to check the message before pushing"]
+    "tools": ["typo3_commit_message_guide, to check the message before pushing"]
   }
 ]

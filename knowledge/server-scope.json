@@ -72,6 +72,14 @@
       "source": "src/Catalog/TranslationDomain.php, typo3://core/typo3-core-architecture"
     },
     {
+      "topic": "Registered labels of the installation you are working in",
+      "depth": "Answered by the installation's own console across the packages it has active, project extensions and resource overrides included. Not a snapshot — and unavailable when no installation is reachable.",
+      "tools": [
+        "typo3_label_lookup"
+      ],
+      "source": "the discovered TYPO3 installation, via language:domain:search"
+    },
+    {
       "topic": "How current the catalogs are",
       "depth": "The core revision, branch, and verification date behind every catalog answer.",
       "tools": [
@@ -180,6 +188,10 @@
     {
       "when": "Needing the translation domain an XLF file resolves to",
       "call": "typo3_translation_domain_lookup with the path"
+    },
+    {
+      "when": "About to write user-facing text or invent a label key",
+      "call": "typo3_label_lookup with words from the wording"
     }
   ]
 }

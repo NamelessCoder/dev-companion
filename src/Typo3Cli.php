@@ -46,7 +46,11 @@ final class Typo3Cli
      */
     public static function resolve(): ?array
     {
-        if (self::$resolved !== false) {
+        // Only a success is remembered. A failure is retried on the next call,
+        // because the usual reason is a DDEV project that is not running yet —
+        // and the caller who reads that and starts it has to be able to ask
+        // again in the same session.
+        if (is_array(self::$resolved)) {
             return self::$resolved;
         }
 
@@ -80,7 +84,7 @@ final class Typo3Cli
         // caller can act on, "install another PHP" is not.
         self::$reason = $ddevReason !== '' ? $ddevReason : $phpReason;
 
-        return self::$resolved = $invocation;
+        return $invocation;
     }
 
     public static function isAvailable(): bool
@@ -125,6 +129,33 @@ final class Typo3Cli
         $command = array_merge($invocation['command'], $arguments, ['--no-interaction', '--no-ansi']);
 
         return self::execute($command, Instance::root() ?? getcwd() ?: '.');
+    }
+
+    /**
+     * Runs a command that speaks JSON and returns what it decoded.
+     *
+     * The console prints a SymfonyStyle title before the payload, so the JSON
+     * starts at the first brace rather than at the first byte.
+     *
+     * @param array<int, string> $arguments
+     * @return array{ok: bool, data: array<string, mixed>, error: string}
+     */
+    public static function json(array $arguments): array
+    {
+        $result = self::run($arguments);
+        if (!$result['ok']) {
+            $error = $result['error'] !== '' ? $result['error'] : trim($result['output']);
+
+            return ['ok' => false, 'data' => [], 'error' => $error];
+        }
+
+        $brace = strpos($result['output'], '{');
+        $decoded = $brace === false ? null : json_decode(substr($result['output'], $brace), true);
+        if (!is_array($decoded)) {
+            return ['ok' => false, 'data' => [], 'error' => 'the console answered with something other than JSON'];
+        }
+
+        return ['ok' => true, 'data' => $decoded, 'error' => ''];
     }
 
     /**

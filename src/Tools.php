@@ -159,6 +159,19 @@ final class Tools
                 ],
             ],
             [
+                'name' => 'typo3_label_lookup',
+                'description' => 'Search the labels registered in the TYPO3 installation you are working in, so an existing label can be reused instead of a new key invented. Answered by the installation itself through its console, across the packages it has active — a project extension\'s labels included, and with the resource overrides the installation applies. Needs a reachable console; typo3_server_scope says whether there is one.',
+                'inputSchema' => [
+                    'type' => 'object',
+                    'properties' => [
+                        'query' => ['type' => 'string', 'minLength' => 1, 'description' => 'Words from the label text or its trans-unit id, for example "save document" or "labels.title".'],
+                        'extension' => ['type' => 'string', 'description' => 'Restrict the search to one extension key.'],
+                        'limit' => ['type' => 'integer', 'minimum' => 1, 'maximum' => 200, 'default' => 25, 'description' => 'Maximum number of labels to return.'],
+                    ],
+                    'required' => ['query'],
+                ],
+            ],
+            [
                 'name' => 'typo3_catalog_scope',
                 'description' => 'Report which TYPO3 core revision the bundled catalogs were taken from, what they cover, and how to re-check them against a checkout. Call this to judge whether a catalog miss is authoritative for the branch you are working on.',
                 'inputSchema' => [
@@ -257,6 +270,7 @@ final class Tools
             'typo3_architecture_lookup' => self::architectureLookup($args),
             'typo3_component_lookup' => self::componentLookup($args),
             'typo3_translation_domain_lookup' => self::translationDomainLookup($args),
+            'typo3_label_lookup' => self::labelLookup($args),
             'typo3_catalog_scope' => self::catalogScope($args),
             'typo3_commit_message_guide' => self::commitMessageGuide($args),
             'typo3_feedback_record' => self::feedbackRecord($args),
@@ -1184,6 +1198,87 @@ final class Tools
             'commit' => $meta['source']['commit'],
             'verifiedAt' => $meta['verifiedAt'],
         ];
+    }
+
+    /**
+     * Labels registered in the installation, answered by the installation.
+     *
+     * The console searches the packages it has active, which is what makes the
+     * answer right: a project extension's labels are in it, and so are the
+     * resource overrides the installation applies. Neither follows from a core
+     * checkout, and neither could be shipped as a snapshot.
+     *
+     * @param array<string, mixed> $args
+     */
+    private static function labelLookup(array $args): ToolResult
+    {
+        $query = trim((string) ($args['query'] ?? ''));
+        $extension = trim((string) ($args['extension'] ?? ''));
+        $limit = (int) ($args['limit'] ?? 25);
+
+        $arguments = ['language:domain:search', '--search=' . $query, '--json', '--crop=0'];
+        if ($extension !== '') {
+            $arguments[] = '--extension=' . $extension;
+        }
+
+        $answer = Typo3Cli::json($arguments);
+        if (!$answer['ok']) {
+            return ToolResult::create(
+                sprintf(
+                    "The installation could not be asked, so this is unanswered rather than empty: %s.\n"
+                    . 'typo3_server_scope reports the installation and its console.',
+                    $answer['error']
+                ),
+                ['query' => $query, 'matchCount' => 0, 'labels' => [], 'answeredBy' => 'nothing'],
+            );
+        }
+
+        $labels = [];
+        foreach ($answer['data']['items'] ?? [] as $item) {
+            foreach ($item['labels'] ?? [] as $label) {
+                $labels[] = [
+                    'ref' => (string) $label['domain'] . ':' . (string) $label['reference'],
+                    'domain' => (string) $label['domain'],
+                    'key' => (string) $label['reference'],
+                    'source' => (string) $label['label'],
+                    'resource' => (string) ($item['resource'] ?? ''),
+                ];
+            }
+        }
+
+        $total = count($labels);
+        $shown = array_slice($labels, 0, $limit);
+        $instance = Instance::describe();
+
+        if ($shown === []) {
+            return ToolResult::create(
+                sprintf(
+                    'No label in %s matches "%s". The search covered the packages this installation has active, '
+                    . 'so this is an answer about your installation rather than about TYPO3 in general.',
+                    $instance['root'] ?? 'the installation',
+                    $query
+                ),
+                ['query' => $query, 'matchCount' => 0, 'labels' => [], 'answeredBy' => 'installation'],
+            );
+        }
+
+        $lines = [sprintf('%d label(s) in %s match "%s"%s:', $total, $instance['root'] ?? '?', $query,
+            $total > count($shown) ? sprintf(' — showing the first %d', count($shown)) : '')];
+        foreach ($shown as $label) {
+            $lines[] = '- ' . $label['ref'];
+            $lines[] = '  "' . $label['source'] . '"';
+            $lines[] = '  ' . $label['resource'];
+        }
+        $lines[] = '';
+        $lines[] = 'Reference a label by the domain form shown first (package.resource:key) — in TCA, in '
+            . 'LanguageService::sL(), and in f:translate as separate domain and key attributes.';
+
+        return ToolResult::create(implode("\n", $lines), [
+            'query' => $query,
+            'matchCount' => $total,
+            'labels' => $shown,
+            'answeredBy' => 'installation',
+        ]);
     }
 
     /**

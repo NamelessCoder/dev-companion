@@ -121,6 +121,9 @@ final class ToolContractTest extends TestCase
                 'path' => 'typo3/sysext/core/Resources/Private/Language/locallang.xlf',
             ]],
             'domain: miss' => ['typo3_translation_domain_lookup', ['path' => 'somewhere/else.xlf']],
+            // No installation is discovered in a test run, so this exercises
+            // the path where the answer is unanswered rather than empty.
+            'labels: no installation' => ['typo3_label_lookup', ['query' => 'save']],
             'catalog scope' => ['typo3_catalog_scope', []],
             'commit: from parts' => ['typo3_commit_message_guide', [
                 'changeType' => 'BUGFIX',

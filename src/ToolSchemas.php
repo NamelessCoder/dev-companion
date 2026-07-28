@@ -30,6 +30,7 @@ final class ToolSchemas
             'typo3_architecture_lookup' => self::architectureLookup(),
             'typo3_component_lookup' => self::componentLookup(),
             'typo3_translation_domain_lookup' => self::translationDomainLookup(),
+            'typo3_label_lookup' => self::labelLookup(),
             'typo3_catalog_scope' => self::catalogScope(),
             'typo3_commit_message_guide' => self::commitMessageGuide(),
             'typo3_feedback_record' => self::feedbackRecord(),
@@ -181,6 +182,23 @@ final class ToolSchemas
             ], ['title', 'items']),
             'catalog' => self::catalogProvenance(),
         ], ['matchCount', 'components', 'catalog']);
+    }
+
+    /** @return array<string, mixed> */
+    private static function labelLookup(): array
+    {
+        return self::object([
+            'query' => self::string(),
+            'matchCount' => self::integer(),
+            'answeredBy' => ['type' => 'string', 'enum' => ['installation', 'nothing'], 'description' => 'nothing: the installation could not be asked, so an empty result is unanswered rather than a miss.'],
+            'labels' => self::listOf(self::object([
+                'ref' => self::string('Translation domain reference (package.resource:key) — the canonical form.'),
+                'domain' => self::string(),
+                'key' => self::string('The trans-unit id.'),
+                'source' => self::string('The label text in the searched locale.'),
+                'resource' => self::string('The XLF file it lives in.'),
+            ], ['ref', 'domain', 'key', 'source'])),
+        ], ['query', 'matchCount', 'answeredBy', 'labels']);
     }
 
     /** @return array<string, mixed> */

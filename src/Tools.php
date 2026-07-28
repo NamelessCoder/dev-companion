@@ -1093,33 +1093,55 @@ final class Tools
             $lines[] = '';
             $lines[] = 'Concept keywords that map to icons: ' . implode(', ', array_keys(Icons::concepts())) . '.';
             $lines[] = '';
+            $lines[] = self::iconUsageBlock();
+            $lines[] = '';
             $lines[] = self::catalogProvenance();
 
             return ToolResult::create(implode("\n", $lines), [
                 'query' => $query,
                 'matchCount' => 0,
+                'exactMatch' => false,
                 'icons' => [],
                 'categories' => Icons::categories(),
                 'concepts' => array_keys(Icons::concepts()),
+                'usage' => self::iconUsage(),
                 'catalog' => self::catalogRecord(),
             ]);
         }
 
+        // A query shaped like an identifier is a validation, not a search. Its
+        // answer is yes or no, and anything else the catalog happens to know is
+        // a suggestion that must not be mistaken for the answer.
+        $isIdentifier = Icons::looksLikeIdentifier($query);
+        $exactMatch = $isIdentifier && Icons::exists($query);
+
         $matches = Icons::find($query);
         if ($matches === []) {
-            return ToolResult::create(
-                sprintf(
-                    "No TYPO3 icon identifier matched \"%s\". Identifiers follow the <category>-<name> convention "
-                    . "and spell the shape, not the intent — try a concept keyword such as %s.\n%s",
+            $miss = $isIdentifier
+                ? sprintf(
+                    '"%s" is not in this snapshot. It is shaped like a registered identifier, so this is not proof '
+                    . 'it does not exist: the catalog covers the T3Icons set, not the identifiers a system extension '
+                    . 'registers in its own Configuration/Icons.php, and not the flags-* family, which is registered '
+                    . 'from the flag SVGs at runtime. Check Configuration/Icons.php in the owning extension, and call '
+                    . 'typo3_catalog_scope for what this snapshot covers.',
+                    $query
+                )
+                : sprintf(
+                    'No TYPO3 icon identifier matched "%s". Identifiers follow the <category>-<name> convention '
+                    . 'and spell the shape, not the intent — try a concept keyword such as %s.',
                     $query,
-                    implode(', ', array_slice(array_keys(Icons::concepts()), 0, 8)),
-                    self::catalogProvenance(),
-                ),
+                    implode(', ', array_slice(array_keys(Icons::concepts()), 0, 8))
+                );
+
+            return ToolResult::create(
+                $miss . "\n" . self::catalogProvenance(),
                 [
                     'query' => $query,
                     'matchCount' => 0,
+                    'exactMatch' => $exactMatch,
                     'icons' => [],
                     'concepts' => array_keys(Icons::concepts()),
+                    'usage' => self::iconUsage(),
                     'catalog' => self::catalogRecord(),
                 ],
             );
@@ -1139,16 +1161,30 @@ final class Tools
             return $line;
         }, $shown);
 
-        $header = sprintf('%d icon identifier(s) matched "%s"', $total, $query);
+        if ($isIdentifier && !$exactMatch) {
+            $header = sprintf(
+                '"%s" is not in this snapshot. It is shaped like a registered identifier, so a miss here is not '
+                . 'proof it does not exist: the catalog covers the T3Icons set, not the identifiers a system '
+                . 'extension registers in its own Configuration/Icons.php, and not the flags-* family. '
+                . 'Check Configuration/Icons.php in the owning extension, and call typo3_catalog_scope for what '
+                . "this snapshot covers.\n\n"
+                . 'The following %d identifier(s) merely share a name part with it — suggestions, not the answer',
+                $query,
+                $total
+            );
+        } else {
+            $header = sprintf('%d icon identifier(s) matched "%s"', $total, $query);
+        }
         if ($total > count($shown)) {
             $header .= sprintf(' — showing the top %d, refine the query to narrow down', count($shown));
         }
 
         return ToolResult::create(
-            $header . ":\n" . implode("\n", $lines) . "\n\n" . self::catalogProvenance(),
+            $header . ":\n" . implode("\n", $lines) . "\n\n" . self::iconUsageBlock() . "\n\n" . self::catalogProvenance(),
             [
                 'query' => $query,
                 'matchCount' => $total,
+                'exactMatch' => $exactMatch,
                 'icons' => array_map(static fn(array $icon): array => [
                     'identifier' => $icon['identifier'],
                     'category' => $icon['category'],
@@ -1157,9 +1193,35 @@ final class Tools
                     'score' => $icon['score'],
                     'why' => $icon['why'],
                 ], $shown),
+                'usage' => self::iconUsage(),
                 'catalog' => self::catalogRecord(),
             ],
         );
+    }
+
+    /**
+     * How to render a validated identifier. Carried with every icon answer,
+     * because getting the identifier right is only half the job: the call
+     * itself has known wrong forms, and nothing else here would state them.
+     *
+     * @return array<int, string>
+     */
+    private static function iconUsage(): array
+    {
+        return ArchitectureHints::byId('icon-usage')['hints'] ?? [];
+    }
+
+    private static function iconUsageBlock(): string
+    {
+        $usage = self::iconUsage();
+        if ($usage === []) {
+            return '';
+        }
+
+        return "Using an identifier:\n" . implode("\n", array_map(
+            static fn(string $hint): string => '- ' . $hint,
+            $usage
+        ));
     }
 
     /** @param array<string, mixed> $args */

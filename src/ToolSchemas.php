@@ -188,6 +188,8 @@ final class ToolSchemas
         return self::object([
             'query' => self::nullableString(),
             'matchCount' => self::integer(),
+            'exactMatch' => ['type' => 'boolean', 'description' => 'Whether the query was a registered identifier. False for a query shaped like one that is not in the snapshot — the listed icons are then suggestions, not the answer.'],
+            'usage' => self::listOf(self::string(), 'How to render an identifier in Fluid, PHP, and TypeScript.'),
             'icons' => self::listOf(self::object([
                 'identifier' => self::string('The registered T3Icons identifier.'),
                 'category' => self::string(),

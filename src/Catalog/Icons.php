@@ -87,6 +87,52 @@ final class Icons
     }
 
     /**
+     * Identifier families the core registers that this catalog does not carry,
+     * so a query naming one is still recognised as an identifier rather than
+     * read as a search phrase.
+     *
+     * flags-* are registered lazily from the flag SVGs; provider-*,
+     * tcarecords-* and theme-* come from a system extension's
+     * Configuration/Icons.php rather than from the T3Icons set.
+     *
+     * @var array<int, string>
+     */
+    private const FAMILIES_OUTSIDE_THE_CATALOG = ['flags', 'provider', 'tcarecords', 'theme'];
+
+    /**
+     * Whether the query is shaped like a registered identifier
+     * (<family>-<name>) rather than like a search phrase.
+     *
+     * The distinction decides what a miss means. "passkey" finding nothing is a
+     * search that came up empty; "status-reference-hard" finding nothing is a
+     * validation result, and answering it with a ranked list of icons that
+     * merely share a name part reads as a confirmation it is not.
+     */
+    public static function looksLikeIdentifier(string $query): bool
+    {
+        $query = strtolower(trim($query));
+        if (preg_match('/^([a-z][a-z0-9]*)-[a-z0-9]+(-[a-z0-9]+)*$/', $query, $matches) !== 1) {
+            return false;
+        }
+
+        return in_array($matches[1], self::categories(), true)
+            || in_array($matches[1], self::FAMILIES_OUTSIDE_THE_CATALOG, true);
+    }
+
+    /** Whether the catalog carries exactly this identifier, alias or not. */
+    public static function exists(string $identifier): bool
+    {
+        $identifier = strtolower(trim($identifier));
+        foreach (self::load() as $icon) {
+            if ($icon['identifier'] === $identifier) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * Ranks icon identifiers against a free-text query. An empty query returns
      * the whole catalog.
      *

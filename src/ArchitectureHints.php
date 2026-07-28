@@ -51,6 +51,23 @@ final class ArchitectureHints
     }
 
     /**
+     * One hint by its id, for the tools that carry a fixed piece of guidance
+     * with their own answer instead of waiting for a matching query.
+     *
+     * @return array{id: string, title: string, appliesTo: array<int, string>, hints: array<int, string>, checks: array<int, string>, category: string}|null
+     */
+    public static function byId(string $id): ?array
+    {
+        foreach (self::load() as $hint) {
+            if ($hint['id'] === $id) {
+                return $hint;
+            }
+        }
+
+        return null;
+    }
+
+    /**
      * Matches hints against paths and task text, restricted to the domains the
      * input actually touches.
      *

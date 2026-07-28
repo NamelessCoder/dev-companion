@@ -108,6 +108,51 @@ final class CatalogTest extends TestCase
     }
 
     #[Test]
+    public function anIdentifierShapedQueryIsToldApartFromASearchPhrase(): void
+    {
+        self::assertTrue(Icons::looksLikeIdentifier('actions-open'));
+        // Registered by an extension or lazily, so outside this catalog but
+        // still an identifier — the shape is what decides, not the coverage.
+        self::assertTrue(Icons::looksLikeIdentifier('status-reference-hard'));
+        self::assertTrue(Icons::looksLikeIdentifier('flags-multiple'));
+
+        self::assertFalse(Icons::looksLikeIdentifier('move record up'));
+        self::assertFalse(Icons::looksLikeIdentifier('warning'));
+        self::assertFalse(Icons::looksLikeIdentifier('quantum-flux'));
+    }
+
+    #[Test]
+    public function anIdentifierThatIsNotInTheSnapshotIsReportedAsAMiss(): void
+    {
+        // The dangerous answer: 21 icons that share a name part, led by an
+        // unrelated one, each with a plausible "why" — read as a confirmation
+        // that the queried identifier resolves to something.
+        $result = Tools::call('typo3_icon_lookup', ['query' => 'status-reference-hard']);
+
+        self::assertFalse($result->data['exactMatch']);
+        self::assertStringContainsString('is not in this snapshot', $result->text);
+        self::assertStringContainsString('suggestions, not the answer', $result->text);
+    }
+
+    #[Test]
+    public function aRegisteredIdentifierIsConfirmedAsOne(): void
+    {
+        $result = Tools::call('typo3_icon_lookup', ['query' => 'actions-open']);
+
+        self::assertTrue($result->data['exactMatch']);
+        self::assertSame('actions-open', $result->data['icons'][0]['identifier']);
+    }
+
+    #[Test]
+    public function everyIconAnswerSaysHowToRenderTheIdentifier(): void
+    {
+        foreach ([['query' => 'actions-open'], ['query' => 'quantumflux'], []] as $arguments) {
+            $data = Tools::call('typo3_icon_lookup', $arguments)->data;
+            self::assertNotSame([], $data['usage'], json_encode($arguments) . ' carries no usage');
+        }
+    }
+
+    #[Test]
     public function aLabelIsAnsweredWithItsTranslationDomainReference(): void
     {
         $labels = Labels::find('save close document');

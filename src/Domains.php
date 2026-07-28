@@ -122,6 +122,58 @@ final class Domains
     }
 
     /**
+     * The domains carried by paths alone: no free-text keywords, no PHP
+     * fallback, and empty when the paths say nothing.
+     *
+     * Free text is the wrong signal for narrowing a recommendation, because a
+     * negated mention reads exactly like a positive one — "without unrelated
+     * PHP or TypeScript suites" names both domains it rules out. A path cannot
+     * be negated that way.
+     *
+     * @param array<int, string> $paths
+     * @return array<int, string>
+     */
+    public static function fromPaths(array $paths): array
+    {
+        $detected = [];
+        foreach ($paths as $path) {
+            $lowered = mb_strtolower($path);
+            $extension = strtolower(pathinfo($path, PATHINFO_EXTENSION));
+            foreach (self::EXTENSIONS as $domain => $extensions) {
+                if ($extension !== '' && in_array($extension, $extensions, true)) {
+                    $detected[$domain] = true;
+                }
+            }
+            foreach (self::DIRECTORIES as $domain => $directories) {
+                foreach ($directories as $directory) {
+                    if (str_contains($lowered, $directory)) {
+                        $detected[$domain] = true;
+                        break;
+                    }
+                }
+            }
+        }
+
+        return array_keys($detected);
+    }
+
+    /**
+     * File paths named inside a free-text description, so a query that spells
+     * out the file it is about narrows the answer the same way an explicit
+     * paths argument would.
+     *
+     * @return array<int, string>
+     */
+    public static function pathsIn(string $text): array
+    {
+        $extensions = array_merge(...array_values(self::EXTENSIONS));
+        $pattern = '#[\w./_-]+\.(' . implode('|', $extensions) . ')\b#i';
+        preg_match_all($pattern, $text, $matches);
+
+        return array_values(array_unique($matches[0]));
+    }
+
+    /**
      * Architecture hint categories that belong to the given domains. General
      * hints always apply.
      *

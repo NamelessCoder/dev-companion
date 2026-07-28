@@ -104,6 +104,10 @@ final class ToolContractTest extends TestCase
             'runTests: all' => ['typo3_test_run_guide', []],
             'runTests: hit' => ['typo3_test_run_guide', ['query' => 'phpstan']],
             'runTests: miss' => ['typo3_test_run_guide', ['query' => 'quantumflux']],
+            'runTests: narrowed by paths' => ['typo3_test_run_guide', [
+                'query' => 'what do I have to run',
+                'paths' => ['Build/Sources/Sass/component/_card.scss'],
+            ]],
             'architecture: path' => ['typo3_architecture_lookup', ['paths' => ['typo3/sysext/core/Classes/DataHandling/DataHandler.php']]],
             'architecture: topic' => ['typo3_architecture_lookup', ['task' => 'sass build']],
             'architecture: miss' => ['typo3_architecture_lookup', ['task' => 'quantumflux']],

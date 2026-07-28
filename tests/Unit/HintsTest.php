@@ -10,6 +10,7 @@ use Typo3CmsMcp\ArchitectureHints;
 use Typo3CmsMcp\Domains;
 use Typo3CmsMcp\TaskIntents;
 use Typo3CmsMcp\TestSuiteHints;
+use Typo3CmsMcp\Tools;
 
 final class HintsTest extends TestCase
 {
@@ -124,6 +125,37 @@ final class HintsTest extends TestCase
         self::assertContains('unit', $suites);
         self::assertNotContains('lintScss', $suites);
         self::assertNotContains('build-css', $suites);
+    }
+
+    #[Test]
+    public function aPathNamedInTheQueryNarrowsTheSuitesAsAnExplicitPathWould(): void
+    {
+        $suites = array_column(Tools::call('typo3_test_run_guide', [
+            'query' => 'Only a Sass change in Build/Sources/Sass/component/_card.scss; recommend the narrow '
+                . 'iteration check and the review-ready checks, without unrelated PHP or TypeScript suites',
+        ])->data['suites'], 'suite');
+
+        self::assertSame(['build', 'build-css', 'lintScss'], $suites);
+    }
+
+    #[Test]
+    public function aNegatedDomainInTheQueryIsNotReadAsASignal(): void
+    {
+        // "without unrelated PHP or TypeScript suites" names both domains it
+        // rules out, which is why only paths narrow the answer.
+        self::assertSame([], Domains::fromPaths(['without unrelated PHP or TypeScript suites']));
+        self::assertSame([Domains::CSS], Domains::fromPaths(['Build/Sources/Sass/component/_card.scss']));
+    }
+
+    #[Test]
+    public function aQueryThatMatchesNoSuiteNameStillAnswersWithinItsDomain(): void
+    {
+        $suites = TestSuiteHints::find('recommend the review-ready checks', [Domains::CSS]);
+
+        self::assertNotSame([], $suites, 'a narrowed list beats an empty answer');
+        foreach ($suites as $suite) {
+            self::assertContains(Domains::CSS, $suite['domains']);
+        }
     }
 
     #[Test]

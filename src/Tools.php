@@ -117,11 +117,12 @@ final class Tools
             ],
             [
                 'name' => 'typo3_test_run_guide',
-                'description' => 'Recommend Build/Scripts/runTests.sh commands by topic.',
+                'description' => 'Recommend Build/Scripts/runTests.sh commands by topic. Pass the changed paths and the answer is narrowed to the suites that can actually fail on them — a Sass-only change gets the CSS suites, not the PHP ones.',
                 'inputSchema' => [
                     'type' => 'object',
                     'properties' => [
                         'query' => ['type' => 'string', 'description' => 'Test or script topic, for example functional, phpstan, TypeScript, composer, or CGL.'],
+                        'paths' => ['type' => 'array', 'items' => ['type' => 'string'], 'default' => [], 'description' => 'The changed TYPO3 core file paths, relative to the core checkout. Given, only suites touching their domains are returned.'],
                     ],
                 ],
             ],
@@ -737,9 +738,22 @@ final class Tools
     private static function testRunGuide(array $args): ToolResult
     {
         $query = isset($args['query']) ? (string) $args['query'] : null;
-        $hints = TestSuiteHints::find($query);
+
+        /** @var array<int, string> $paths */
+        $paths = array_map('strval', $args['paths'] ?? []);
+        $paths = array_values(array_unique(array_merge($paths, Domains::pathsIn((string) $query))));
+        $domains = Domains::fromPaths($paths);
+
+        $hints = TestSuiteHints::find($query, $domains);
 
         $blocks = [];
+        if ($domains !== []) {
+            $blocks[] = sprintf(
+                'Narrowed to the %s domain(s) the given paths touch. Suites outside them cannot fail on this change; '
+                . 'call again without paths to see all of them.',
+                implode(' and ', $domains)
+            );
+        }
         if ($hints === []) {
             $blocks[] = sprintf(
                 'No runTests.sh suite matched "%s". Try "unit", "functional", "phpstan", "checkRst", "build", "composer", or "npm".',
@@ -763,6 +777,8 @@ final class Tools
 
         return ToolResult::create(implode("\n\n", $blocks), [
             'query' => $query,
+            'paths' => $paths,
+            'domains' => $domains,
             'suites' => self::suiteRecords($hints),
             'invocation' => TestSuiteHints::invocation(),
         ]);

@@ -82,12 +82,14 @@ final class TestSuiteHints
     public static function find(?string $query, array $domains = []): array
     {
         $hints = self::load();
+        $narrowed = false;
 
         if ($domains !== []) {
             $hints = array_values(array_filter(
                 $hints,
                 static fn(array $hint): bool => array_intersect($hint['domains'], $domains) !== []
             ));
+            $narrowed = true;
         }
 
         $terms = self::meaningfulTerms(trim($query ?? ''));
@@ -103,6 +105,14 @@ final class TestSuiteHints
             if ($score > 0) {
                 $scored[] = ['hint' => $hint, 'score' => $score];
             }
+        }
+
+        // A query phrased as a request rather than a suite name ("recommend the
+        // narrow iteration check") scores nothing. Once the domains have
+        // narrowed the list, that list is still the right answer; only an
+        // unnarrowed miss is a real miss.
+        if ($scored === []) {
+            return $narrowed ? $hints : [];
         }
 
         usort($scored, static function (array $a, array $b): int {

@@ -116,6 +116,8 @@ final class ToolSchemas
     {
         return self::object([
             'query' => self::nullableString(),
+            'paths' => self::listOf(self::string(), 'The paths the answer was narrowed by, given ones and ones named in the query.'),
+            'domains' => self::listOf(self::string(), 'Domains those paths touch. Empty means nothing was narrowed.'),
             'suites' => self::listOf(self::testSuiteRecord()),
             'invocation' => self::object([
                 'notes' => self::listOf(self::string()),

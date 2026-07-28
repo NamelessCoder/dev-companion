@@ -229,6 +229,65 @@ The form is `package[.subdirectory...].resource`:
 
 ## Documentation and Changelog
 
+### The changelog file format
+
+The format is rigid enough that it is not reproducible from the filename
+prefix, and getting the anchor, the title fence, or the tags wrong fails
+`checkRst` — a slow review round for something purely mechanical.
+`typo3/sysext/core/Documentation/Changelog/Howto.rst` is the authority.
+
+A changelog file is needed for a Breaking change, a Deprecation, a Feature, or
+an Important message. A casual bug fix needs none; its commit message carries
+the information.
+
+The filename is `<Type>-<forgeIssueNumber>-<UpperCamelCaseDescription>.rst`, in
+the directory of the minor version the change is released in. A change
+backported to an LTS branch goes into that branch's `<lts>.x` directory
+instead, in every branch that carries it.
+
+The skeleton:
+
+```rst
+..  include:: /Includes.rst.txt
+
+..  _feature-109444-1759230001:
+
+===============================================
+Feature: #109444 - Short sentence, imperative
+===============================================
+
+See :issue:`109444`
+
+Description
+===========
+
+What changed, and in which part of the core.
+
+Impact
+======
+
+What a user, integrator, or extension author notices.
+
+..  index:: Backend, ext:form
+```
+
+- The anchor is `<type>-<issue>-<unique identifier>`, the identifier a UNIX
+  timestamp by convention.
+- The overline and underline rows of `=` must be at least as long as the title
+  line. The section headings below are underlined only.
+- Every type has a `Description` section. Every type except `Important` has an
+  `Impact` section. `Deprecation` and `Breaking` additionally have
+  `Affected installations` and `Migration`.
+- The `.. index::` line at the end carries at least two and at most about five
+  tags from the fixed list in `Howto.rst` (Backend, CLI, Database, FAL,
+  FlexForm, Fluid, Frontend, LocalConfiguration, JavaScript, PHP-API, RTE, TCA,
+  TSConfig, TypoScript, YAML, `ext:<key>`). A `Deprecation` or `Breaking` file
+  must carry exactly one of `NotScanned`, `PartiallyScanned`, or `FullyScanned`.
+- Prose uses role markup for literals — `:php:`, `:yaml:`, `:typoscript:`,
+  `:file:` — rather than plain double backticks.
+- `Build/Scripts/validateRstFiles.php`, which `checkRst` runs, reports a missing
+  title, issue number, unique identifier, or tag list.
+
 - User-facing behavior changes may need ReST documentation or changelog entries.
 - Deprecations need explicit migration guidance and scanner considerations when
   applicable.

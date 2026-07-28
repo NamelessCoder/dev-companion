@@ -2,7 +2,13 @@
   {
     "id": "language-files",
     "title": "Language Files",
-    "appliesTo": [".xlf", ".xliff", "Resources/Private/Language/", "translation domain", "trans-unit"],
+    "appliesTo": [
+      ".xlf",
+      ".xliff",
+      "Resources/Private/Language/",
+      "translation domain",
+      "trans-unit"
+    ],
     "hints": [
       "Use clear, stable label identifiers and concise wording.",
       "Reuse existing labels where the meaning is identical.",
@@ -10,12 +16,22 @@
       "Because the domain is derived rather than declared, a file a patch is about to add already has one. Call typo3_label_lookup with mode \"derive\" and the path instead of guessing; a wrong guess only fails at runtime.",
       "Check whether language file normalization is needed."
     ],
-    "checks": ["CI=true ./Build/Scripts/runTests.sh -s checkIntegrityXliff", "CI=true ./Build/Scripts/runTests.sh -s normalizeXliff -n"]
+    "checks": [
+      "CI=true ./Build/Scripts/runTests.sh -s checkIntegrityXliff",
+      "CI=true ./Build/Scripts/runTests.sh -s normalizeXliff -n"
+    ]
   },
   {
     "id": "icon-usage",
     "title": "Rendering and Registering Icons",
-    "appliesTo": ["icon", "IconFactory", "IconSize", "iconIdentifier", "Configuration/Icons.php", "typo3-backend-icon"],
+    "appliesTo": [
+      "icon",
+      "IconFactory",
+      "IconSize",
+      "iconIdentifier",
+      "Configuration/Icons.php",
+      "typo3-backend-icon"
+    ],
     "hints": [
       "In Fluid: <core:icon identifier=\"actions-delete\" size=\"small\" /> with the core namespace, which is globally registered. Its arguments are identifier, size, state, overlay, alternativeMarkupIdentifier and title.",
       "In PHP: inject IconFactory and call $this->iconFactory->getIcon('actions-close', IconSize::SMALL)->render(). The size is the TYPO3\\CMS\\Core\\Imaging\\IconSize enum — cases DEFAULT, SMALL, MEDIUM, LARGE, MEGA and OVERLAY — which replaced the Icon::SIZE_* constants. getIconForRecord($table, $row) picks the identifier from the TCA schema.",
@@ -28,18 +44,37 @@
   {
     "id": "documentation-changelog",
     "title": "Documentation and Changelog",
-    "appliesTo": [".rst", "Documentation/", "Changelog/"],
+    "appliesTo": [
+      ".rst",
+      "Documentation/",
+      "Changelog/",
+      "changelog entry",
+      "release note"
+    ],
     "hints": [
       "User-facing behavior changes may need documentation or changelog entries.",
+      "A changelog file is needed for a Breaking change, a Deprecation, a Feature, or an Important message. A casual bug fix needs none — its commit message carries the information.",
+      "The filename is <Type>-<forgeIssueNumber>-<UpperCamelCaseDescription>.rst, in the directory of the minor version the change is released in; a backport goes into the <lts>.x directory of the oldest branch it reaches, in every branch that carries it.",
+      "The file opens with an include of /Includes.rst.txt, then an anchor of the form <type>-<issue>-<unique identifier> (a UNIX timestamp by convention), then the title \"Type: #<issue> - <summary>\" fenced by an overline and underline row of = at least as long as it, then \"See :issue:`<issue>`\".",
+      "Every type has a Description section; every type except Important has an Impact section; Deprecation and Breaking additionally have Affected installations and Migration.",
+      "The file ends with an .. index:: line carrying at least two and at most about five tags from the fixed list in typo3/sysext/core/Documentation/Changelog/Howto.rst. A Deprecation or Breaking file also carries exactly one of NotScanned, PartiallyScanned or FullyScanned.",
       "A deprecation entry names the replacement and the migration path; without both it does not do its job. Add an extension scanner matcher when the deprecated API can be found statically.",
       "Keep ReST changes focused and validate them before review."
     ],
-    "checks": ["CI=true ./Build/Scripts/runTests.sh -s checkRst"]
+    "checks": [
+      "CI=true ./Build/Scripts/runTests.sh -s checkRst"
+    ]
   },
   {
     "id": "deprecated-apis",
     "title": "Deprecated APIs",
-    "appliesTo": ["deprecat", "@deprecated", "e_user_deprecated", "extension scanner", "legacy api"],
+    "appliesTo": [
+      "deprecat",
+      "@deprecated",
+      "e_user_deprecated",
+      "extension scanner",
+      "legacy api"
+    ],
     "hints": [
       "Whether an API is deprecated is a property of the branch you work on, not of TYPO3 as a whole, and this server does not know your branch. Read the declaration itself: an @deprecated annotation together with a trigger_error(..., E_USER_DEPRECATED) call is what marks one.",
       "What a branch deprecated is recorded in typo3/sysext/core/Documentation/Changelog/<version>/Deprecation-<issue>-<Title>.rst and in the matchers below typo3/sysext/install/Configuration/ExtensionScanner/Php/. Take the migration path from there instead of assuming a replacement.",

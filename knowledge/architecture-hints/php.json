@@ -66,6 +66,34 @@
     "checks": ["CI=true ./Build/Scripts/runTests.sh -s functional"]
   },
   {
+    "id": "core-tests",
+    "title": "Writing Core Tests",
+    "appliesTo": [
+      "/Tests/Unit/",
+      "/Tests/Functional/",
+      "FunctionalTestCase",
+      "UnitTestCase",
+      "importCSVDataSet",
+      "assertCSVDataSet",
+      "test fixture",
+      "dataset",
+      "csv"
+    ],
+    "hints": [
+      "A unit test extends TYPO3\\TestingFramework\\Core\\Unit\\UnitTestCase, a functional test TYPO3\\TestingFramework\\Core\\Functional\\FunctionalTestCase. Both are final and mark cases with the #[Test] attribute rather than a test method-name prefix.",
+      "A functional test declares its environment through properties: protected array $coreExtensionsToLoad, $testExtensionsToLoad and $configurationToUseInTestInstance. Load only what the test needs — every extension costs setup time per test class.",
+      "State is set up and asserted with CSV fixtures, not hand-written inserts: $this->importCSVDataSet(__DIR__ . '/Fixtures/pages.csv') in setUp(), $this->assertCSVDataSet(__DIR__ . '/Fixtures/Expected.csv') for the result. The files live in a Fixtures/ directory next to the test class. This is the expected form for persistence behaviour.",
+      "Take services from the container with $this->get(SomeService::class) rather than constructing them, so the test exercises the real wiring.",
+      "DataHandler scenarios extend AbstractDataHandlerActionTestCase instead of FunctionalTestCase; it carries the scenario setup those tests share.",
+      "Tests mirror the class path: typo3/sysext/<ext>/Classes/Foo/Bar.php is tested by typo3/sysext/<ext>/Tests/{Unit,Functional}/Foo/BarTest.php.",
+      "Run the single test file or method while iterating; a full functional run costs minutes per round. typo3_test_run_guide has the targeted invocation."
+    ],
+    "checks": [
+      "CI=true ./Build/Scripts/runTests.sh -s unit -- --filter <methodName> <path/to/Test.php>",
+      "CI=true ./Build/Scripts/runTests.sh -s functional -d sqlite -- <path/to/Test.php>"
+    ]
+  },
+  {
     "id": "datahandler-persistence",
     "title": "DataHandler and Persistence",
     "appliesTo": ["DataHandler", "/Persistence/", "/Database/", "ext_tables.sql", "hidden record", "deleted record", "enable field", "enablecolumns", "restriction", "workspace", "localization", "persistence", "database query", "querybuilder"],

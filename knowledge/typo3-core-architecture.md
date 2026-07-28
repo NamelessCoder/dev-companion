@@ -244,3 +244,27 @@ The form is `package[.subdirectory...].resource`:
   transitions.
 - Run broader checks before review when shared behavior or generated assets are
   touched.
+
+### How a core test is written
+
+A test that does not look like its neighbours is sent back in review, and the
+idiom is not guessable from the strategy above.
+
+- A unit test extends `TYPO3\TestingFramework\Core\Unit\UnitTestCase`, a
+  functional test `TYPO3\TestingFramework\Core\Functional\FunctionalTestCase`.
+  Both are `final` and carry `#[Test]` attributes rather than `test` prefixes.
+- A functional test declares its environment through properties:
+  `protected array $coreExtensionsToLoad`, `$testExtensionsToLoad`, and
+  `$configurationToUseInTestInstance`. Only load what the test needs — every
+  extension costs setup time per test class.
+- State is set up and asserted with CSV fixtures, not with hand-written inserts:
+  `$this->importCSVDataSet(__DIR__ . '/Fixtures/pages.csv')` in `setUp()`, and
+  `$this->assertCSVDataSet(__DIR__ . '/Fixtures/Expected.csv')` for the result.
+  The fixture files live in a `Fixtures/` directory next to the test class. This
+  is the expected form for persistence tests.
+- Services come from the container: `$this->get(SomeService::class)`, not
+  `new`, so the test exercises the real wiring.
+- DataHandler scenarios extend `AbstractDataHandlerActionTestCase` instead of
+  `FunctionalTestCase` — it carries the scenario setup those tests share.
+- Tests mirror the class path: `typo3/sysext/core/Classes/Foo/Bar.php` is tested
+  by `typo3/sysext/core/Tests/{Unit,Functional}/Foo/BarTest.php`.

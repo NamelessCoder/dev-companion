@@ -7,14 +7,15 @@ namespace Typo3CmsMcp\Mcp;
 use Mcp\Server\ClientGateway;
 use Mcp\Server\Handler\ResourceHandlerInterface;
 use Typo3CmsMcp\Knowledge;
+use Typo3CmsMcp\Scope;
 
 /**
  * Serves the typo3://core resources from the knowledge base.
  *
- * One instance backs every registered resource: the typo3://core index (a JSON
- * listing of the available documents) and each typo3://core/{id} markdown
- * document. The SDK wraps the returned string with the mime type declared on the
- * matching resource definition.
+ * One instance backs every registered resource: the typo3://core index (what
+ * this server covers, plus a JSON listing of the available documents) and each
+ * typo3://core/{id} markdown document. The SDK wraps the returned string with
+ * the mime type declared on the matching resource definition.
  */
 final class ResourceHandler implements ResourceHandlerInterface
 {
@@ -38,7 +39,12 @@ final class ResourceHandler implements ResourceHandlerInterface
 
     private function index(): string
     {
+        $scope = Scope::read();
+
         $index = [
+            'purpose' => $scope['purpose'],
+            'covers' => $scope['covers'],
+            'routing' => $scope['routing'],
             'documents' => array_map(static fn(array $document): array => [
                 'id' => $document['id'],
                 'title' => $document['title'],

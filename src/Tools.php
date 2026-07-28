@@ -49,6 +49,14 @@ final class Tools
     {
         $definitions = [
             [
+                'name' => 'typo3_server_scope',
+                'description' => 'Orientation for this server: what it covers and at which depth, what it deliberately does not cover, and which tool to call when. Start here when it is unclear whether this server can answer a question at all, or which of the lookups is the right one.',
+                'inputSchema' => [
+                    'type' => 'object',
+                    'properties' => new \stdClass(),
+                ],
+            ],
+            [
                 'name' => 'typo3_rule_lookup',
                 'description' => 'Search the local TYPO3 core contribution rules and script notes by topic.',
                 'inputSchema' => [
@@ -216,6 +224,7 @@ final class Tools
     public static function call(string $name, array $args): string
     {
         return match ($name) {
+            'typo3_server_scope' => self::serverScope(),
             'typo3_rule_lookup' => self::ruleLookup($args),
             'typo3_script_help' => self::scriptHelp($args),
             'typo3_core_task_brief' => self::taskBrief($args),
@@ -230,6 +239,34 @@ final class Tools
             'typo3_feedback_list' => self::feedbackList($args),
             default => throw new \InvalidArgumentException(sprintf('Unknown tool: %s', $name)),
         };
+    }
+
+    private static function serverScope(): string
+    {
+        $scope = Scope::read();
+
+        $lines = [$scope['purpose'], '', 'Covered, and how deeply:'];
+        foreach ($scope['covers'] as $entry) {
+            $lines[] = '## ' . $entry['topic'];
+            $lines[] = $entry['depth'];
+            $lines[] = 'Tools: ' . implode(', ', $entry['tools']);
+            $lines[] = 'Source: ' . $entry['source'];
+        }
+
+        $lines[] = '';
+        $lines[] = 'Which tool to call when:';
+        foreach ($scope['routing'] as $entry) {
+            $lines[] = '- ' . $entry['when'] . ' → ' . $entry['call'];
+        }
+
+        $lines[] = '';
+        $lines[] = 'Everything is read-only and answered from the bundled knowledge base; '
+            . 'nothing is fetched, executed, or looked up online.';
+        if (Feedback::isAvailable()) {
+            $lines[] = 'Missing something that belongs here? Record it with typo3_make_me_better.';
+        }
+
+        return implode("\n", $lines);
     }
 
     /** @param array<string, mixed> $args */
@@ -359,7 +396,8 @@ final class Tools
         return sprintf(
             "No knowledge section matched \"%s\".\n\nThis knowledge base covers:\n%s\n\n"
             . 'For registered components, icons, or labels use typo3_component_lookup, typo3_icon_lookup, '
-            . 'or typo3_label_lookup instead. If the topic should be covered here, record it with typo3_make_me_better.',
+            . 'or typo3_label_lookup instead, and call typo3_server_scope for what this server covers at all. '
+            . 'If the topic should be covered here, record it with typo3_make_me_better.',
             $query,
             $documents
         );

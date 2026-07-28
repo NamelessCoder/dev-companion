@@ -1,0 +1,103 @@
+{
+  "purpose": "A curated knowledge base for contributing to the TYPO3 core: the contribution rules, the Gerrit workflow, script and test invocation, architecture conventions, and catalogs of registered backend components, icon identifiers, and labels.",
+  "covers": [
+    {
+      "topic": "Contribution rules and review readiness",
+      "depth": "Curated prose. The rules a patch is judged by, not a full style guide.",
+      "tools": ["typo3_rule_lookup", "typo3_core_task_brief"],
+      "source": "typo3://core/typo3-core-rules"
+    },
+    {
+      "topic": "Gerrit workflow: setup, pushing, amending, backports",
+      "depth": "Curated prose, command level. Covers the local git side; it cannot talk to the Gerrit server.",
+      "tools": ["typo3_rule_lookup"],
+      "source": "typo3://core/typo3-gerrit-workflow"
+    },
+    {
+      "topic": "Commit messages",
+      "depth": "Rules plus a working draft and check, including 72-character body wrapping.",
+      "tools": ["typo3_commit_message_help", "typo3_rule_lookup"],
+      "source": "typo3://core/typo3-commit-messages"
+    },
+    {
+      "topic": "runTests.sh suites, options, and targeted invocation",
+      "depth": "Every suite this knowledge base knows, with the command, the targeted form, and when to use it.",
+      "tools": ["typo3_core_run_tests_help", "typo3_script_help"],
+      "source": "knowledge/test-suite-hints.json, typo3://core/typo3-core-scripts"
+    },
+    {
+      "topic": "Core architecture conventions: DI, events and hooks, TCA and FormEngine, DataHandler, routing, language files, testing strategy",
+      "depth": "Conventions per subsystem, matched by path or topic. It describes how the core is built, never what your checkout contains.",
+      "tools": ["typo3_architecture_hint", "typo3_core_task_brief"],
+      "source": "knowledge/architecture-hints/, typo3://core/typo3-core-architecture"
+    },
+    {
+      "topic": "Backend CSS architecture, design tokens, class naming",
+      "depth": "Curated prose covering the Sass sources, the token contract, and the component structure.",
+      "tools": ["typo3_architecture_hint", "typo3_rule_lookup"],
+      "source": "typo3://core/typo3-css-architecture"
+    },
+    {
+      "topic": "Backend UI components: markup, variants, custom properties",
+      "depth": "Hand-curated subset of the backend components, not every CSS class in the core.",
+      "tools": ["typo3_component_lookup"],
+      "source": "knowledge/catalog/components.json"
+    },
+    {
+      "topic": "Icon identifiers",
+      "depth": "Complete for the registered T3Icons of the pinned core revision, aliases included.",
+      "tools": ["typo3_icon_lookup"],
+      "source": "knowledge/catalog/icons.json"
+    },
+    {
+      "topic": "Registered labels (XLF trans-units) and translation domains",
+      "depth": "Curated subset: the English trans-units of about half the default XLF files in the core.",
+      "tools": ["typo3_label_lookup"],
+      "source": "knowledge/catalog/labels.json"
+    },
+    {
+      "topic": "How current the catalogs are",
+      "depth": "The core revision, branch, and verification date behind every catalog answer.",
+      "tools": ["typo3_catalog_status"],
+      "source": "knowledge/catalog/meta.json"
+    }
+  ],
+  "routing": [
+    {
+      "when": "Starting a core task and looking for the applicable conventions and checks",
+      "call": "typo3_core_task_brief"
+    },
+    {
+      "when": "About to write backend markup or invent a CSS class name",
+      "call": "typo3_component_lookup"
+    },
+    {
+      "when": "About to write user-facing text or invent a label key",
+      "call": "typo3_label_lookup"
+    },
+    {
+      "when": "About to reference an icon identifier",
+      "call": "typo3_icon_lookup"
+    },
+    {
+      "when": "About to run tests or any other core check",
+      "call": "typo3_core_run_tests_help"
+    },
+    {
+      "when": "Working in a concrete file and unsure about the subsystem's conventions",
+      "call": "typo3_architecture_hint"
+    },
+    {
+      "when": "Writing or amending the commit message",
+      "call": "typo3_commit_message_help"
+    },
+    {
+      "when": "Pushing for review, amending a patch set, or backporting",
+      "call": "typo3_rule_lookup with a Gerrit query"
+    },
+    {
+      "when": "A catalog lookup found nothing that should exist",
+      "call": "typo3_catalog_status, then typo3_make_me_better"
+    }
+  ]
+}

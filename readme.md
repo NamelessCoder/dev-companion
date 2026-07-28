@@ -97,6 +97,9 @@ printf '%s\n' \
 
 ## Tools
 
+- `typo3_server_scope`: orientation — what this server covers and at which
+  depth, what it deliberately does not, and which tool to call when. The place
+  to start when it is unclear whether a question can be answered here at all.
 - `typo3_rule_lookup`: searches local TYPO3 core rules and script notes.
 - `typo3_script_help`: finds matching notes for TYPO3 core commands.
 - `typo3_core_task_brief`: builds a task checklist enriched with matching
@@ -128,7 +131,8 @@ printf '%s\n' \
 
 ## Resources
 
-- `typo3://core`: resource index for available knowledge documents.
+- `typo3://core`: knowledge index — the server's scope and routing, plus the
+  available knowledge documents.
 - `typo3://core/{documentId}`: Markdown resource for a single knowledge
   document, for example `typo3://core/typo3-core-rules`.
 
@@ -149,7 +153,7 @@ drive the individual tools:
   `typescript.json`, `general.json`)
 - `catalog/` (the lookup catalog: `components.json`, `icons.json`,
   `labels.json`, `component-checklist.json`)
-- `test-suite-hints.json`, `task-intents.json`
+- `test-suite-hints.json`, `task-intents.json`, `server-scope.json`
 
 All knowledge files are read fresh on every request, so editing them takes
 effect immediately — no restart or rebuild.

@@ -133,7 +133,7 @@ writes anything, and then only a new file.
   architecture hints and relevant core checks.
 - `typo3_test_run_guide`: recommends `Build/Scripts/runTests.sh` commands
   by topic.
-- `typo3_architecture_hint`: returns architecture hints for TYPO3 core paths or
+- `typo3_architecture_lookup`: returns architecture hints for TYPO3 core paths or
   task topics, grouped by section.
 - `typo3_component_lookup`: looks up backend UI components by name or topic and
   returns canonical markup, variant and sub-component classes, the custom

@@ -1,6 +1,6 @@
 {
   "purpose": "A curated knowledge base for contributing to the TYPO3 core: the contribution rules, the Gerrit workflow, script and test invocation, architecture conventions, and catalogs of registered backend components, icon identifiers, and labels.",
-  "instructions": "A conventions catalog for TYPO3 core contributions, not a patch assistant. Every answer comes from this server's own bundled knowledge; it never reads, inspects, or runs anything against a TYPO3 core checkout and cannot be pointed at one. It therefore does not know your branch, your changed files, which tests cover them, or whether a path or identifier still exists on your branch — discover that in the checkout yourself, then bring the concrete paths back to typo3_architecture_hint and typo3_task_guide. Call typo3_server_scope for what is covered, at which depth, and which tool answers what.",
+  "instructions": "A conventions catalog for TYPO3 core contributions, not a patch assistant. Every answer comes from this server's own bundled knowledge; it never reads, inspects, or runs anything against a TYPO3 core checkout and cannot be pointed at one. It therefore does not know your branch, your changed files, which tests cover them, or whether a path or identifier still exists on your branch — discover that in the checkout yourself, then bring the concrete paths back to typo3_architecture_lookup and typo3_task_guide. Call typo3_server_scope for what is covered, at which depth, and which tool answers what.",
   "covers": [
     {
       "topic": "Contribution rules and review readiness",
@@ -29,13 +29,13 @@
     {
       "topic": "Core architecture conventions: DI, events and hooks, TCA and FormEngine, DataHandler, routing, language files, testing strategy",
       "depth": "Conventions per subsystem, matched by path or topic. It describes how the core is built, never what your checkout contains.",
-      "tools": ["typo3_architecture_hint", "typo3_task_guide"],
+      "tools": ["typo3_architecture_lookup", "typo3_task_guide"],
       "source": "knowledge/architecture-hints/, typo3://core/typo3-core-architecture"
     },
     {
       "topic": "Backend CSS architecture, design tokens, class naming",
       "depth": "Curated prose covering the Sass sources, the token contract, and the component structure.",
-      "tools": ["typo3_architecture_hint", "typo3_rule_lookup"],
+      "tools": ["typo3_architecture_lookup", "typo3_rule_lookup"],
       "source": "typo3://core/typo3-css-architecture"
     },
     {
@@ -67,7 +67,7 @@
     {
       "topic": "Your checkout: changed files, branch, working tree, local git state",
       "why": "This server answers from its own bundled knowledge and never reads, inspects, or runs anything against a TYPO3 core checkout. It cannot be pointed at one.",
-      "instead": "Determine the changed paths yourself (git status, git diff --name-only), then pass them to typo3_architecture_hint and typo3_task_guide to get the conventions and checks that apply to them."
+      "instead": "Determine the changed paths yourself (git status, git diff --name-only), then pass them to typo3_architecture_lookup and typo3_task_guide to get the conventions and checks that apply to them."
     },
     {
       "topic": "The core source itself: API signatures, TCA of a table, existing implementations",
@@ -98,7 +98,7 @@
   "checkoutDiscovery": [
     {
       "establish": "Which files the task actually touches",
-      "how": "git status --short and git diff --name-only in the core checkout, then call typo3_architecture_hint with those paths for the conventions that apply to them."
+      "how": "git status --short and git diff --name-only in the core checkout, then call typo3_architecture_lookup with those paths for the conventions that apply to them."
     },
     {
       "establish": "Which tests already cover them",
@@ -136,7 +136,7 @@
     },
     {
       "when": "Working in a concrete file and unsure about the subsystem's conventions",
-      "call": "typo3_architecture_hint"
+      "call": "typo3_architecture_lookup"
     },
     {
       "when": "Writing or amending the commit message",

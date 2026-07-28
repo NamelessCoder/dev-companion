@@ -27,7 +27,7 @@ final class ToolSchemas
             'typo3_rule_lookup', 'typo3_script_lookup' => self::knowledgeLookup(),
             'typo3_task_guide' => self::taskGuide(),
             'typo3_test_run_guide' => self::testRunGuide(),
-            'typo3_architecture_hint' => self::architectureHint(),
+            'typo3_architecture_lookup' => self::architectureLookup(),
             'typo3_component_lookup' => self::componentLookup(),
             'typo3_icon_lookup' => self::iconLookup(),
             'typo3_label_lookup' => self::labelLookup(),
@@ -132,7 +132,7 @@ final class ToolSchemas
     }
 
     /** @return array<string, mixed> */
-    private static function architectureHint(): array
+    private static function architectureLookup(): array
     {
         return self::object([
             'task' => self::nullableString(),

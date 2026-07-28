@@ -126,7 +126,7 @@ final class Tools
                 ],
             ],
             [
-                'name' => 'typo3_architecture_hint',
+                'name' => 'typo3_architecture_lookup',
                 'description' => 'Return architecture hints for TYPO3 core paths or task topics, grouped by section.',
                 'inputSchema' => [
                     'type' => 'object',
@@ -266,7 +266,7 @@ final class Tools
             'typo3_script_lookup' => self::scriptLookup($args),
             'typo3_task_guide' => self::taskGuide($args),
             'typo3_test_run_guide' => self::testRunGuide($args),
-            'typo3_architecture_hint' => self::architectureHint($args),
+            'typo3_architecture_lookup' => self::architectureLookup($args),
             'typo3_component_lookup' => self::componentLookup($args),
             'typo3_icon_lookup' => self::iconLookup($args),
             'typo3_label_lookup' => self::labelLookup($args),
@@ -555,7 +555,7 @@ final class Tools
             }
         } else {
             $lines[] = '- No architecture hint matched this task text. That means no convention was recognized, '
-                . 'not that none applies: call typo3_architecture_hint again with the concrete file paths once they are known.';
+                . 'not that none applies: call typo3_architecture_lookup again with the concrete file paths once they are known.';
         }
 
         $rules = TaskIntents::rules($intents);
@@ -672,7 +672,7 @@ final class Tools
         if (in_array(Domains::FRONTEND, $domains, true)) {
             $candidates[] = 'typo3_component_lookup, before writing backend markup or CSS classes';
         }
-        $candidates[] = 'typo3_architecture_hint with the concrete file paths, once they are known';
+        $candidates[] = 'typo3_architecture_lookup with the concrete file paths, once they are known';
         $candidates[] = 'typo3_test_run_guide, for the targeted runTests.sh invocation';
         if (Feedback::isAvailable()) {
             $candidates[] = 'typo3_make_me_better, when one of these answers was wrong or incomplete';
@@ -794,7 +794,7 @@ final class Tools
     }
 
     /** @param array<string, mixed> $args */
-    private static function architectureHint(array $args): ToolResult
+    private static function architectureLookup(array $args): ToolResult
     {
         $paths = array_map('strval', $args['paths'] ?? []);
         $task = isset($args['task']) ? (string) $args['task'] : null;

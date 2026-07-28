@@ -1,5 +1,24 @@
 # Working on this repository
 
+## Layout
+
+```
+bin/typo3-cms-mcp  # stdio entrypoint (the client launches it as a subprocess)
+src/               # PHP classes (knowledge loading, tools, SDK wiring)
+src/ServerFactory.php  # builds the mcp/sdk server from the tool definitions
+src/Mcp/           # SDK handlers: tool dispatch and typo3://core resources
+src/Catalog/       # the component, icon, and label lookups
+src/bootstrap.php  # locates the Composer autoloader
+knowledge/         # the knowledge base (markdown + JSON), the data source
+feedback/          # improvement notes left by agents (standalone checkout only)
+vendor/            # Composer dependencies (mcp/sdk); gitignored
+```
+
+`Typo3CmsMcp\Tools` declares every tool and renders its text output;
+`Typo3CmsMcp\Knowledge` reads and searches the markdown documents. Tool names,
+input schemas, and response formatting live in `src/`; everything they answer
+comes from `knowledge/`.
+
 ## Feedback workflow
 
 Agents using this server record improvement notes through `typo3_make_me_better`.
@@ -34,6 +53,8 @@ has not been addressed yet.
 
 - Everything the tools answer from lives below `knowledge/`. The server never
   reads a TYPO3 core checkout at runtime.
+- Add new rules or scripts to `knowledge/` first; promote recurring workflow
+  logic to a tool only when it has earned it.
 - Verify facts against the local core checkout before writing them into
   `knowledge/`, and keep the wording branch-neutral where the fact is
   branch-specific.

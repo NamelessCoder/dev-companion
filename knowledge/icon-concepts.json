@@ -1,0 +1,262 @@
+{
+  "concepts": {
+    "warning": [
+      "actions-exclamation-triangle",
+      "actions-exclamation",
+      "overlay-warning"
+    ],
+    "caution": [
+      "actions-exclamation-triangle",
+      "overlay-warning"
+    ],
+    "error": [
+      "actions-exclamation-circle",
+      "actions-exclamation",
+      "actions-ban"
+    ],
+    "danger": [
+      "actions-exclamation-circle",
+      "actions-ban"
+    ],
+    "info": [
+      "actions-info-circle",
+      "actions-info"
+    ],
+    "notice": [
+      "actions-info-circle",
+      "actions-info"
+    ],
+    "help": [
+      "actions-question-circle",
+      "actions-question"
+    ],
+    "success": [
+      "actions-check-circle",
+      "actions-check"
+    ],
+    "confirm": [
+      "actions-check",
+      "actions-check-circle"
+    ],
+    "add": [
+      "actions-plus",
+      "actions-plus-circle",
+      "actions-document-add",
+      "actions-file-add",
+      "actions-folder-add"
+    ],
+    "new": [
+      "actions-plus",
+      "actions-document-add",
+      "actions-file-add"
+    ],
+    "create": [
+      "actions-plus",
+      "actions-document-add"
+    ],
+    "edit": [
+      "actions-document-edit",
+      "actions-file-edit",
+      "actions-open",
+      "overlay-edit"
+    ],
+    "delete": [
+      "actions-delete",
+      "actions-minus",
+      "actions-close"
+    ],
+    "remove": [
+      "actions-delete",
+      "actions-minus",
+      "actions-close"
+    ],
+    "save": [
+      "actions-save",
+      "actions-save-close",
+      "actions-save-view"
+    ],
+    "search": [
+      "actions-search",
+      "actions-file-search"
+    ],
+    "filter": [
+      "actions-filter"
+    ],
+    "settings": [
+      "actions-cog",
+      "actions-window-cog",
+      "install-extension-settings"
+    ],
+    "configuration": [
+      "actions-cog",
+      "actions-window-cog"
+    ],
+    "user": [
+      "actions-user",
+      "actions-users",
+      "status-user-admin",
+      "status-user-backend"
+    ],
+    "permission": [
+      "actions-lock",
+      "actions-unlock",
+      "actions-key",
+      "actions-shield"
+    ],
+    "lock": [
+      "actions-lock",
+      "actions-unlock"
+    ],
+    "hidden": [
+      "overlay-hidden",
+      "actions-eye",
+      "form-hidden"
+    ],
+    "visibility": [
+      "actions-eye",
+      "overlay-hidden"
+    ],
+    "preview": [
+      "actions-preview",
+      "actions-eye",
+      "actions-window-open"
+    ],
+    "view": [
+      "actions-eye",
+      "actions-preview",
+      "actions-viewmode-list"
+    ],
+    "upload": [
+      "actions-upload",
+      "actions-cloud-upload"
+    ],
+    "download": [
+      "actions-download",
+      "actions-cloud-download"
+    ],
+    "refresh": [
+      "actions-refresh",
+      "actions-synchronize"
+    ],
+    "reload": [
+      "actions-refresh",
+      "actions-synchronize"
+    ],
+    "sort": [
+      "actions-sort-amount",
+      "actions-sort-amount-up",
+      "actions-sort-amount-down"
+    ],
+    "close": [
+      "actions-close",
+      "actions-save-close"
+    ],
+    "cancel": [
+      "actions-close",
+      "actions-ban"
+    ],
+    "copy": [
+      "actions-duplicate",
+      "actions-clipboard",
+      "actions-clipboard-paste"
+    ],
+    "duplicate": [
+      "actions-duplicate",
+      "actions-duplicates"
+    ],
+    "move": [
+      "actions-move",
+      "actions-document-move",
+      "actions-file-move"
+    ],
+    "link": [
+      "actions-link",
+      "actions-unlink",
+      "actions-eye-link"
+    ],
+    "translation": [
+      "actions-document-localize",
+      "actions-save-translation",
+      "actions-message-localize"
+    ],
+    "localization": [
+      "actions-document-localize",
+      "actions-code-merge-localization"
+    ],
+    "language": [
+      "actions-document-localize",
+      "actions-save-translation"
+    ],
+    "folder": [
+      "actions-folder",
+      "apps-filetree-folder"
+    ],
+    "page": [
+      "apps-pagetree-page-default",
+      "actions-pagetree",
+      "actions-document"
+    ],
+    "record": [
+      "actions-document",
+      "actions-list"
+    ],
+    "history": [
+      "actions-history",
+      "actions-undo"
+    ],
+    "undo": [
+      "actions-undo",
+      "actions-history"
+    ],
+    "import": [
+      "actions-database-import",
+      "actions-extension-import"
+    ],
+    "export": [
+      "actions-database-export"
+    ],
+    "message": [
+      "actions-message",
+      "actions-envelope"
+    ],
+    "notification": [
+      "actions-bell",
+      "actions-message"
+    ],
+    "mail": [
+      "actions-envelope",
+      "actions-envelope-open"
+    ],
+    "calendar": [
+      "actions-calendar"
+    ],
+    "time": [
+      "actions-clock",
+      "actions-calendar"
+    ],
+    "list": [
+      "actions-list",
+      "actions-viewmode-list"
+    ],
+    "menu": [
+      "actions-menu",
+      "actions-menu-alternative"
+    ],
+    "workspace": [
+      "actions-workspace",
+      "module-workspaces"
+    ],
+    "cache": [
+      "install-clear-cache",
+      "actions-save-translation-clearcache"
+    ],
+    "bookmark": [
+      "actions-bookmark",
+      "actions-bookmarks"
+    ],
+    "extension": [
+      "actions-extension",
+      "actions-extension-add"
+    ]
+  }
+}

@@ -134,28 +134,58 @@ final class Typo3Cli
     /**
      * Runs a command that speaks JSON and returns what it decoded.
      *
-     * The console prints a SymfonyStyle title before the payload, so the JSON
-     * starts at the first brace rather than at the first byte.
+     * Some commands print a SymfonyStyle title before the payload and some
+     * answer with a bare scalar, so the payload is looked for rather than
+     * assumed to start at the first byte or at a brace.
      *
      * @param array<int, string> $arguments
-     * @return array{ok: bool, data: array<string, mixed>, error: string}
+     * @return array{ok: bool, data: mixed, error: string, exitCode: int}
      */
     public static function json(array $arguments): array
     {
         $result = self::run($arguments);
-        if (!$result['ok']) {
+        $decoded = self::decode($result['output']);
+
+        if ($decoded === null) {
             $error = $result['error'] !== '' ? $result['error'] : trim($result['output']);
 
-            return ['ok' => false, 'data' => [], 'error' => $error];
+            return [
+                'ok' => false,
+                'data' => null,
+                'error' => $error !== '' ? $error : 'the console answered with something other than JSON',
+                'exitCode' => $result['exitCode'],
+            ];
         }
 
-        $brace = strpos($result['output'], '{');
-        $decoded = $brace === false ? null : json_decode(substr($result['output'], $brace), true);
-        if (!is_array($decoded)) {
-            return ['ok' => false, 'data' => [], 'error' => 'the console answered with something other than JSON'];
+        return ['ok' => $result['ok'], 'data' => $decoded, 'error' => $result['error'], 'exitCode' => $result['exitCode']];
+    }
+
+    /** Returns the decoded payload, or null when the output carries none. */
+    private static function decode(string $output): mixed
+    {
+        $output = trim($output);
+        if ($output === '') {
+            return null;
         }
 
-        return ['ok' => true, 'data' => $decoded, 'error' => ''];
+        foreach ([$output, self::fromFirstStructure($output)] as $candidate) {
+            if ($candidate === null) {
+                continue;
+            }
+            $decoded = json_decode($candidate, true);
+            if ($decoded !== null || $candidate === 'null') {
+                return $decoded;
+            }
+        }
+
+        return null;
+    }
+
+    private static function fromFirstStructure(string $output): ?string
+    {
+        $offsets = array_filter([strpos($output, '{'), strpos($output, '[')], static fn($o): bool => $o !== false);
+
+        return $offsets === [] ? null : substr($output, min($offsets));
     }
 
     /**

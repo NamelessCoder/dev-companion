@@ -124,6 +124,11 @@ final class ToolContractTest extends TestCase
             // No installation is discovered in a test run, so this exercises
             // the path where the answer is unanswered rather than empty.
             'labels: no installation' => ['typo3_label_lookup', ['query' => 'save']],
+            'icons: no installation' => ['typo3_icon_lookup', ['query' => 'actions-open']],
+            'icons: no installation, no query' => ['typo3_icon_lookup', []],
+            'modules: no installation' => ['typo3_backend_module_lookup', []],
+            'namespaces: no installation' => ['typo3_fluid_namespace_list', []],
+            'configuration: no installation' => ['typo3_configuration_lookup', ['path' => 'SYS/fluid']],
             'catalog scope' => ['typo3_catalog_scope', []],
             'commit: from parts' => ['typo3_commit_message_guide', [
                 'changeType' => 'BUGFIX',

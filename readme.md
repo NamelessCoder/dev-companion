@@ -19,11 +19,14 @@ boundary in full, and `typo3_task_guide` names what has to be established in the
 checkout.
 
 **One exception, and it is deliberate.** Some questions have no bundled answer
-that could be right. Which labels exist is a property of an installation, not of
-TYPO3: every installed extension ships its own, and an installation can override
-any language file. So the server finds the installation you are working in and
-asks *it* — through its own console, `language:domain:search`, across the
-packages that installation has active. Discovery starts at the working directory
+that could be right. Which labels exist, which icons are registered, which
+backend modules there are, what a configuration value actually is after every
+extension has had its say — all of those are properties of an installation, not
+of TYPO3. So the server finds the installation you are working in and asks *it*,
+through its own console wherever a command exists: `language:domain:search`,
+`debug:backend:modules`, `fluid:namespaces`, `configuration:show`. The icon
+registry has no command, so it is read from the packages instead — parsed, never
+included. Discovery starts at the working directory
 the MCP client launched the server in, and only `bin/typo3-cms-mcp` enables it:
 a request-serving endpoint has no such relationship to its callers, and its
 document root may itself sit inside an installation. Where the project runs

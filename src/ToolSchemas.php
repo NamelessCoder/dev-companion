@@ -31,6 +31,10 @@ final class ToolSchemas
             'typo3_component_lookup' => self::componentLookup(),
             'typo3_translation_domain_lookup' => self::translationDomainLookup(),
             'typo3_label_lookup' => self::labelLookup(),
+            'typo3_fluid_namespace_list' => self::fluidNamespaceList(),
+            'typo3_configuration_lookup' => self::configurationLookup(),
+            'typo3_backend_module_lookup' => self::backendModuleLookup(),
+            'typo3_icon_lookup' => self::iconLookup(),
             'typo3_catalog_scope' => self::catalogScope(),
             'typo3_commit_message_guide' => self::commitMessageGuide(),
             'typo3_feedback_record' => self::feedbackRecord(),
@@ -182,6 +186,81 @@ final class ToolSchemas
             ], ['title', 'items']),
             'catalog' => self::catalogProvenance(),
         ], ['matchCount', 'components', 'catalog']);
+    }
+
+    /**
+     * Every answer that comes from the installation says so, because an empty
+     * result and an unanswerable question are not the same thing.
+     *
+     * @return array<string, mixed>
+     */
+    private static function answeredBy(): array
+    {
+        return ['type' => 'string', 'enum' => ['installation', 'nothing'], 'description' => 'nothing: the installation could not be asked, so an empty result is unanswered rather than a miss.'];
+    }
+
+    /** @return array<string, mixed> */
+    private static function iconLookup(): array
+    {
+        return self::object([
+            'query' => self::string(),
+            'matchCount' => self::integer(),
+            'exactMatch' => ['type' => 'boolean', 'description' => 'Whether the query was a registered identifier. False for a query shaped like one that is not registered — the listed icons are then suggestions, not the answer.'],
+            'answeredBy' => self::answeredBy(),
+            'icons' => self::listOf(self::object([
+                'identifier' => self::string(),
+                'category' => self::string(),
+                'aliasOf' => self::nullableString('The identifier this one is an alias of.'),
+                'source' => self::string('Where it is registered: t3icons, flags, or the EXT:<key>/Configuration/Icons.php that declares it.'),
+                'matched' => self::integer('Query terms it matched.'),
+                'score' => self::integer(),
+                'why' => self::listOf(self::string()),
+            ], ['identifier', 'category', 'aliasOf', 'source'])),
+            'categories' => self::listOf(self::string(), 'Returned when no query was given.'),
+            'concepts' => self::listOf(self::string(), 'Concept words that map to a shape. Returned when no query was given.'),
+        ], ['query', 'matchCount', 'exactMatch', 'answeredBy', 'icons']);
+    }
+
+    /** @return array<string, mixed> */
+    private static function fluidNamespaceList(): array
+    {
+        return self::object([
+            'matchCount' => self::integer(),
+            'answeredBy' => self::answeredBy(),
+            'namespaces' => self::listOf(self::object([
+                'prefix' => self::string('The prefix usable in a template without declaring it, for example "core".'),
+                'phpNamespaces' => self::listOf(self::string(), 'The PHP namespaces it resolves ViewHelpers from.'),
+            ], ['prefix', 'phpNamespaces'])),
+        ], ['matchCount', 'answeredBy', 'namespaces']);
+    }
+
+    /** @return array<string, mixed> */
+    private static function configurationLookup(): array
+    {
+        return self::object([
+            'path' => self::string('The TYPO3_CONF_VARS path that was read.'),
+            'found' => ['type' => 'boolean', 'description' => 'Whether the installation has a value at that path.'],
+            'value' => ['description' => 'The effective runtime value, of whatever shape the configuration has.'],
+            'answeredBy' => self::answeredBy(),
+        ], ['path', 'found', 'answeredBy']);
+    }
+
+    /** @return array<string, mixed> */
+    private static function backendModuleLookup(): array
+    {
+        return self::object([
+            'query' => self::string(),
+            'matchCount' => self::integer(),
+            'answeredBy' => self::answeredBy(),
+            'modules' => self::listOf(self::object([
+                'identifier' => self::string(),
+                'parents' => self::listOf(self::string(), 'The modules it sits under, outermost first.'),
+                'extension' => self::string('The package that declares it.'),
+                'labels' => self::string('Its label, with the translation domain reference behind it.'),
+                'path' => self::string('The backend route it answers on.'),
+                'position' => self::string('Its declared before/after position, if any.'),
+            ], ['identifier', 'parents', 'extension', 'path'])),
+        ], ['query', 'matchCount', 'answeredBy', 'modules']);
     }
 
     /** @return array<string, mixed> */

@@ -172,6 +172,43 @@ final class Tools
                 ],
             ],
             [
+                'name' => 'typo3_fluid_namespace_list',
+                'description' => 'List the Fluid ViewHelper namespaces that are globally available in the TYPO3 installation you are working in, so a template knows which prefixes it may use without declaring them. Every other namespace has to be declared per template with an xmlns attribute. Answered by the installation itself.',
+                'inputSchema' => ['type' => 'object', 'properties' => new \stdClass()],
+            ],
+            [
+                'name' => 'typo3_configuration_lookup',
+                'description' => 'Read an effective TYPO3_CONF_VARS value from the installation you are working in — the value as it is at runtime after every extension has had its say, not the shipped default. Use it for configuration whose assembled shape matters, such as SYS/formEngine/formDataGroup, SYS/caching/cacheConfigurations, or SYS/fluid.',
+                'inputSchema' => [
+                    'type' => 'object',
+                    'properties' => [
+                        'path' => ['type' => 'string', 'minLength' => 1, 'description' => 'Slash-separated path into TYPO3_CONF_VARS, for example "SYS/fluid" or "SYS/formEngine/formDataGroup".'],
+                    ],
+                    'required' => ['path'],
+                ],
+            ],
+            [
+                'name' => 'typo3_backend_module_lookup',
+                'description' => 'List the backend modules registered in the TYPO3 installation you are working in, with the extension that declares each one, its place in the module tree, its labels and its route. Answered by the installation, so a project extension\'s modules are in it.',
+                'inputSchema' => [
+                    'type' => 'object',
+                    'properties' => [
+                        'query' => ['type' => 'string', 'description' => 'Module identifier, label, route, or extension name to filter by. Omit to list every module.'],
+                    ],
+                ],
+            ],
+            [
+                'name' => 'typo3_icon_lookup',
+                'description' => 'Validate or find an icon identifier in the TYPO3 installation you are working in. The registry is assembled from the T3Icons set, the Configuration/Icons.php of every installed package, and the flag images, so a project extension\'s icons are in the answer. Identifiers spell shapes rather than intents, so concept words are mapped: "warning" finds actions-exclamation-triangle.',
+                'inputSchema' => [
+                    'type' => 'object',
+                    'properties' => [
+                        'query' => ['type' => 'string', 'description' => 'Identifier, identifier fragment, or concept, for example "actions-open", "delete", or "warning". Omit to list the categories and concept words.'],
+                        'limit' => ['type' => 'integer', 'minimum' => 1, 'maximum' => 100, 'default' => 40, 'description' => 'Maximum number of identifiers to return.'],
+                    ],
+                ],
+            ],
+            [
                 'name' => 'typo3_catalog_scope',
                 'description' => 'Report which TYPO3 core revision the bundled catalogs were taken from, what they cover, and how to re-check them against a checkout. Call this to judge whether a catalog miss is authoritative for the branch you are working on.',
                 'inputSchema' => [
@@ -271,6 +308,10 @@ final class Tools
             'typo3_component_lookup' => self::componentLookup($args),
             'typo3_translation_domain_lookup' => self::translationDomainLookup($args),
             'typo3_label_lookup' => self::labelLookup($args),
+            'typo3_fluid_namespace_list' => self::fluidNamespaceList(),
+            'typo3_configuration_lookup' => self::configurationLookup($args),
+            'typo3_backend_module_lookup' => self::backendModuleLookup($args),
+            'typo3_icon_lookup' => self::iconLookup($args),
             'typo3_catalog_scope' => self::catalogScope($args),
             'typo3_commit_message_guide' => self::commitMessageGuide($args),
             'typo3_feedback_record' => self::feedbackRecord($args),
@@ -1201,6 +1242,374 @@ final class Tools
     }
 
     /**
+     * The answer for a question only the installation could have answered, when
+     * it could not be asked.
+     *
+     * Kept in one place because the distinction it draws is the same every
+     * time: an empty result and an unanswerable question look identical, and
+     * only one of them means the thing does not exist.
+     *
+     * @param array<string, mixed> $data
+     */
+    private static function consoleUnavailable(string $error, array $data): ToolResult
+    {
+        return ToolResult::create(
+            sprintf(
+                "The installation could not be asked, so this is unanswered rather than empty: %s.\n"
+                . 'typo3_server_scope reports the installation and its console.',
+                $error
+            ),
+            $data + ['answeredBy' => 'nothing'],
+        );
+    }
+
+    /**
+     * Icon identifiers registered in the installation.
+     *
+     * The only instance question with no console command behind it, so the
+     * registry is read from the three places TYPO3 assembles it from. An
+     * identifier-shaped query is a validation and is answered as one: fuzzy
+     * results for it are suggestions, and saying so is the whole point —
+     * a confident wrong substitute is worse than a miss.
+     *
+     * @param array<string, mixed> $args
+     */
+    private static function iconLookup(array $args): ToolResult
+    {
+        $query = trim((string) ($args['query'] ?? ''));
+        $limit = (int) ($args['limit'] ?? 40);
+
+        if (!Instance::isAvailable()) {
+            return self::consoleUnavailable(
+                'no TYPO3 installation was found from the directory this server was started in',
+                ['query' => $query, 'matchCount' => 0, 'exactMatch' => false, 'icons' => []],
+            );
+        }
+
+        $concepts = InstalledIcons::concepts();
+        if ($query === '') {
+            $lines = ['Icon categories in this installation: ' . implode(', ', InstalledIcons::categories()) . '.'];
+            $lines[] = '';
+            $lines[] = 'Concept words that map to a shape: ' . implode(', ', array_keys($concepts)) . '.';
+
+            return ToolResult::create(implode("\n", $lines), [
+                'query' => $query,
+                'matchCount' => 0,
+                'exactMatch' => false,
+                'icons' => [],
+                'categories' => InstalledIcons::categories(),
+                'concepts' => array_keys($concepts),
+                'answeredBy' => 'installation',
+            ]);
+        }
+
+        $isIdentifier = InstalledIcons::looksLikeIdentifier($query);
+        $exactMatch = $isIdentifier && InstalledIcons::has($query);
+        $matches = self::rankIcons($query, $concepts);
+
+        $total = count($matches);
+        $shown = array_slice($matches, 0, $limit);
+        $root = Instance::root() ?? 'the installation';
+
+        if ($shown === []) {
+            return ToolResult::create(
+                $isIdentifier
+                    ? sprintf('"%s" is not registered in %s.', $query, $root)
+                    : sprintf(
+                        'No icon in %s matches "%s". Identifiers spell the shape, not the intent — try a concept '
+                        . 'word such as %s.',
+                        $root,
+                        $query,
+                        implode(', ', array_slice(array_keys($concepts), 0, 8))
+                    ),
+                ['query' => $query, 'matchCount' => 0, 'exactMatch' => false, 'icons' => [], 'answeredBy' => 'installation'],
+            );
+        }
+
+        $header = $isIdentifier && !$exactMatch
+            ? sprintf(
+                '"%s" is not registered in %s. It is shaped like an identifier, so the %d below merely share a '
+                . 'name part with it — suggestions, not the answer',
+                $query,
+                $root,
+                $total
+            )
+            : sprintf('%d icon identifier(s) in %s match "%s"', $total, $root, $query);
+        if ($total > count($shown)) {
+            $header .= sprintf(' — showing the top %d', count($shown));
+        }
+
+        $lines = [$header . ':'];
+        foreach ($shown as $icon) {
+            $lines[] = '- ' . $icon['identifier'];
+            if ($icon['aliasOf'] !== null) {
+                $lines[] = '  alias of ' . $icon['aliasOf'];
+            }
+            if ($icon['source'] !== InstalledIcons::SOURCE_T3ICONS) {
+                $lines[] = '  registered in ' . $icon['source'];
+            }
+            $lines[] = '  matched: ' . implode(', ', $icon['why']);
+        }
+
+        return ToolResult::create(implode("\n", $lines), [
+            'query' => $query,
+            'matchCount' => $total,
+            'exactMatch' => $exactMatch,
+            'icons' => $shown,
+            'answeredBy' => 'installation',
+        ]);
+    }
+
+    /**
+     * Ranks the registered identifiers against a query.
+     *
+     * A concept only contributes a term the identifier's own name did not
+     * already carry, so a vague identifier cannot outrank a precise one by
+     * matching the same word twice.
+     *
+     * @param array<string, array<int, string>> $concepts
+     * @return array<int, array<string, mixed>>
+     */
+    private static function rankIcons(string $query, array $concepts): array
+    {
+        $terms = array_values(array_unique(array_filter(
+            preg_split('/[\s_-]+/', mb_strtolower(trim($query))) ?: [],
+            static fn(string $term): bool => $term !== ''
+        )));
+        if ($terms === []) {
+            return [];
+        }
+        $normalized = implode('-', $terms);
+
+        $suggested = [];
+        foreach ($terms as $term) {
+            foreach ($concepts[$term] ?? [] as $identifier) {
+                $suggested[$identifier][$term] = true;
+            }
+        }
+
+        $scored = [];
+        foreach (InstalledIcons::all() as $icon) {
+            $segments = explode('-', $icon['identifier']);
+            $matched = [];
+            $score = 0;
+            $why = [];
+
+            foreach ($terms as $term) {
+                if (in_array($term, $segments, true)) {
+                    $matched[] = $term;
+                    $score += 4;
+                    $why[] = 'name part "' . $term . '"';
+                } elseif (str_contains($icon['identifier'], $term)) {
+                    $matched[] = $term;
+                    $score += 2;
+                    $why[] = 'substring "' . $term . '"';
+                }
+            }
+            foreach ($suggested[$icon['identifier']] ?? [] as $concept => $unused) {
+                if (!in_array($concept, $matched, true)) {
+                    $matched[] = $concept;
+                }
+                $score += 3;
+                $why[] = 'concept "' . $concept . '"';
+            }
+            if ($matched === []) {
+                continue;
+            }
+            if ($icon['identifier'] === $normalized) {
+                $score += 1000;
+                $why[] = 'exact identifier';
+            }
+
+            $scored[] = $icon + ['matched' => count($matched), 'score' => $score, 'why' => $why];
+        }
+
+        usort($scored, static function (array $a, array $b): int {
+            return $b['matched'] <=> $a['matched']
+                ?: $b['score'] <=> $a['score']
+                ?: strcmp($a['identifier'], $b['identifier']);
+        });
+
+        return $scored;
+    }
+
+    /** The globally registered Fluid namespaces of the installation. */
+    private static function fluidNamespaceList(): ToolResult
+    {
+        $answer = Typo3Cli::json(['fluid:namespaces', '--json']);
+        if (!$answer['ok'] || !is_array($answer['data'])) {
+            return self::consoleUnavailable($answer['error'], ['namespaces' => [], 'matchCount' => 0]);
+        }
+
+        $namespaces = [];
+        foreach ($answer['data'] as $prefix => $classNames) {
+            $namespaces[] = [
+                'prefix' => (string) $prefix,
+                'phpNamespaces' => array_map('strval', (array) $classNames),
+            ];
+        }
+        usort($namespaces, static fn(array $a, array $b): int => strcmp($a['prefix'], $b['prefix']));
+
+        $lines = [sprintf('%d globally registered Fluid namespace(s):', count($namespaces))];
+        foreach ($namespaces as $namespace) {
+            $lines[] = '- ' . $namespace['prefix'] . ': ' . implode(', ', $namespace['phpNamespaces']);
+        }
+        $lines[] = '';
+        $lines[] = 'These prefixes work in any template without being declared. Every other namespace is declared '
+            . 'in the template itself — xmlns:be="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers" on the root '
+            . 'element, together with data-namespace-typo3-fluid="true" so the declaration is stripped from the output.';
+
+        return ToolResult::create(implode("\n", $lines), [
+            'matchCount' => count($namespaces),
+            'namespaces' => $namespaces,
+            'answeredBy' => 'installation',
+        ]);
+    }
+
+    /**
+     * An effective TYPO3_CONF_VARS value: what it is at runtime after every
+     * extension has had its say, which is rarely what the shipped default says.
+     *
+     * @param array<string, mixed> $args
+     */
+    private static function configurationLookup(array $args): ToolResult
+    {
+        $path = trim((string) ($args['path'] ?? ''), " \t/");
+
+        $answer = Typo3Cli::json(['configuration:show', $path, '--type=active', '--json']);
+
+        // A path that does not exist is a legitimate answer, not a breakage,
+        // and the console says which of the two happened in its exit code.
+        if (!$answer['ok'] && $answer['exitCode'] === 1 && str_contains($answer['error'], 'No configuration found')) {
+            return ToolResult::create(
+                sprintf('The installation has no configuration at "%s".', $path),
+                ['path' => $path, 'found' => false, 'value' => null, 'answeredBy' => 'installation'],
+            );
+        }
+        if (!$answer['ok']) {
+            return self::consoleUnavailable($answer['error'], ['path' => $path, 'found' => false, 'value' => null]);
+        }
+
+        return ToolResult::create(
+            sprintf(
+                "Effective value of TYPO3_CONF_VARS/%s in this installation:\n\n```json\n%s\n```\n\n"
+                . 'This is the assembled runtime value, not the default the core ships.',
+                $path,
+                json_encode($answer['data'], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR)
+            ),
+            ['path' => $path, 'found' => true, 'value' => $answer['data'], 'answeredBy' => 'installation'],
+        );
+    }
+
+    /**
+     * The backend modules the installation has registered.
+     *
+     * The console has no JSON mode here, but it has a CSV one, which is a
+     * format rather than a rendering — so nothing is recovered from a drawn
+     * table.
+     *
+     * @param array<string, mixed> $args
+     */
+    private static function backendModuleLookup(array $args): ToolResult
+    {
+        $query = mb_strtolower(trim((string) ($args['query'] ?? '')));
+
+        $result = Typo3Cli::run(['debug:backend:modules', '--csv-export']);
+        if (!$result['ok']) {
+            return self::consoleUnavailable(
+                $result['error'] !== '' ? $result['error'] : trim($result['output']),
+                ['query' => $query, 'matchCount' => 0, 'modules' => []],
+            );
+        }
+
+        $modules = [];
+        foreach (self::csvRows($result['output']) as $row) {
+            // The three level columns are one path through the module tree, so
+            // the deepest filled one is the module and the rest are above it.
+            $levels = array_values(array_filter([
+                $row['Main level'] ?? '',
+                $row['Second level'] ?? '',
+                $row['Third level'] ?? '',
+            ], static fn(string $level): bool => trim($level) !== ''));
+            if ($levels === []) {
+                continue;
+            }
+
+            $module = [
+                'identifier' => (string) array_pop($levels),
+                'parents' => $levels,
+                'extension' => (string) ($row['Pkg'] ?? ''),
+                'labels' => (string) ($row['Labels'] ?? ''),
+                'path' => (string) ($row['Path'] ?? ''),
+                'position' => (string) ($row['Position'] ?? ''),
+            ];
+
+            $haystack = mb_strtolower(implode(' ', array_merge($module['parents'], [
+                $module['identifier'],
+                $module['extension'],
+                $module['labels'],
+                $module['path'],
+            ])));
+            if ($query !== '' && !str_contains($haystack, $query)) {
+                continue;
+            }
+            $modules[] = $module;
+        }
+
+        if ($modules === []) {
+            return ToolResult::create(
+                sprintf('No backend module in this installation matches "%s".', $query),
+                ['query' => $query, 'matchCount' => 0, 'modules' => [], 'answeredBy' => 'installation'],
+            );
+        }
+
+        $lines = [sprintf('%d backend module(s)%s:', count($modules), $query === '' ? '' : ' matching "' . $query . '"')];
+        foreach ($modules as $module) {
+            $lines[] = '- ' . implode(' > ', array_merge($module['parents'], [$module['identifier']]));
+            $lines[] = '  ' . $module['path'] . '  (' . $module['extension'] . ')';
+            if ($module['labels'] !== '') {
+                $lines[] = '  ' . $module['labels'];
+            }
+        }
+        $lines[] = '';
+        $lines[] = 'A module is declared in its extension\'s Configuration/Backend/Modules.php; the label in '
+            . 'brackets is a translation domain reference.';
+
+        return ToolResult::create(implode("\n", $lines), [
+            'query' => $query,
+            'matchCount' => count($modules),
+            'modules' => $modules,
+            'answeredBy' => 'installation',
+        ]);
+    }
+
+    /**
+     * @return array<int, array<string, string>>
+     */
+    private static function csvRows(string $output): array
+    {
+        $lines = preg_split('/\R/', trim($output)) ?: [];
+        $headers = null;
+        $rows = [];
+        foreach ($lines as $line) {
+            if (trim($line) === '') {
+                continue;
+            }
+            $fields = str_getcsv($line, ';', '"', '\\');
+            if ($headers === null) {
+                $headers = array_map('strval', $fields);
+                continue;
+            }
+            if (count($fields) !== count($headers)) {
+                continue;
+            }
+            $rows[] = array_map(static fn($v): string => (string) $v, array_combine($headers, $fields));
+        }
+
+        return $rows;
+    }
+
+    /**
      * Labels registered in the installation, answered by the installation.
      *
      * The console searches the packages it has active, which is what makes the
@@ -1222,7 +1631,7 @@ final class Tools
         }
 
         $answer = Typo3Cli::json($arguments);
-        if (!$answer['ok']) {
+        if (!$answer['ok'] || !is_array($answer['data'])) {
             return ToolResult::create(
                 sprintf(
                     "The installation could not be asked, so this is unanswered rather than empty: %s.\n"
@@ -1234,7 +1643,9 @@ final class Tools
         }
 
         $labels = [];
-        foreach ($answer['data']['items'] ?? [] as $item) {
+        /** @var array<string, mixed> $data */
+        $data = $answer['data'];
+        foreach ($data['items'] ?? [] as $item) {
             foreach ($item['labels'] ?? [] as $label) {
                 $labels[] = [
                     'ref' => (string) $label['domain'] . ':' . (string) $label['reference'],

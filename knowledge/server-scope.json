@@ -72,20 +72,24 @@
       "source": "src/Catalog/TranslationDomain.php, typo3://core/typo3-core-architecture"
     },
     {
-      "topic": "Registered labels of the installation you are working in",
-      "depth": "Answered by the installation's own console across the packages it has active, project extensions and resource overrides included. Not a snapshot — and unavailable when no installation is reachable.",
-      "tools": [
-        "typo3_label_lookup"
-      ],
-      "source": "the discovered TYPO3 installation, via language:domain:search"
-    },
-    {
       "topic": "How current the catalogs are",
       "depth": "The core revision, branch, and verification date behind every catalog answer.",
       "tools": [
         "typo3_catalog_scope"
       ],
       "source": "knowledge/catalog/meta.json"
+    },
+    {
+      "topic": "What is registered in the installation you are working in: labels, icons, backend modules, Fluid namespaces, effective configuration",
+      "depth": "Answered by that installation rather than from a snapshot, across the packages it has active — project extensions included. Its console does the answering wherever a command exists; the icon registry has none, so it is read from the packages. Unavailable when no installation is reachable, and then said so rather than answered empty.",
+      "tools": [
+        "typo3_label_lookup",
+        "typo3_icon_lookup",
+        "typo3_backend_module_lookup",
+        "typo3_fluid_namespace_list",
+        "typo3_configuration_lookup"
+      ],
+      "source": "the discovered TYPO3 installation"
     }
   ],
   "doesNotCover": [
@@ -118,16 +122,6 @@
       "topic": "Work outside TYPO3 core contribution: site setup, project or third-party extension development, configuring an installation with TypoScript, upgrading an installation",
       "why": "The knowledge base is scoped to contributing to the core. Shipping TypoScript defaults from a system extension is core work and is covered; writing TypoScript to configure a site is not, and neither is a package under packages/ or an extension outside typo3/sysext/.",
       "instead": "Use the TYPO3 documentation at https://docs.typo3.org/."
-    },
-    {
-      "topic": "Which icon identifiers exist",
-      "why": "IconRegistry is assembled at runtime from every installed package, so the registered identifiers are a property of the instance, not of TYPO3. This server does not know which packages you have installed and cannot ship a list that is right for you.",
-      "instead": "Resolve the identifier in your own checkout: the T3Icons set in typo3/sysext/core/Resources/Public/Icons/T3Icons/icons.json, the Configuration/Icons.php of every package, and the flag images under typo3/sysext/core/Resources/Public/Icons/Flags/. typo3_architecture_lookup has how to render one once you have it."
-    },
-    {
-      "topic": "Which labels exist, and what an XLF file contains",
-      "why": "Labels are a property of the instance: every installed extension ships its own, and an installation can override any language file through LANG/resourceOverrides. This server does not read a checkout and cannot ship a list that is right for yours.",
-      "instead": "Search the XLF files of your own checkout for an existing label before inventing a key. typo3_translation_domain_lookup gives you the domain to reference it by once you have found it."
     }
   ],
   "checkoutDiscovery": [
@@ -192,6 +186,22 @@
     {
       "when": "About to write user-facing text or invent a label key",
       "call": "typo3_label_lookup with words from the wording"
+    },
+    {
+      "when": "About to reference an icon identifier",
+      "call": "typo3_icon_lookup"
+    },
+    {
+      "when": "Needing a configuration value as it really is at runtime, not as the core ships it",
+      "call": "typo3_configuration_lookup with the TYPO3_CONF_VARS path"
+    },
+    {
+      "when": "Working on a backend module and needing its registration",
+      "call": "typo3_backend_module_lookup"
+    },
+    {
+      "when": "Unsure which Fluid namespace prefixes a template may use undeclared",
+      "call": "typo3_fluid_namespace_list"
     }
   ]
 }

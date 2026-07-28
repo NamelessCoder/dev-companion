@@ -9,11 +9,21 @@ declare(strict_types=1);
  * The only entrypoint: Claude Code (or any MCP client) launches this as a
  * subprocess and speaks JSON-RPC over stdin/stdout. No auth — the process
  * boundary is the trust boundary. The server itself is built by ServerFactory.
+ *
+ * This is also the one place that hands a working directory to Instance. The
+ * client starts this process inside the session it is working in, so the
+ * working directory is the agent's own and an installation found from it is the
+ * one being worked on. Nothing else may do this: a request-serving endpoint has
+ * no such relationship to its callers, and its document root may itself sit
+ * inside a TYPO3 installation.
  */
 
 use Mcp\Server\Transport\StdioTransport;
+use Typo3CmsMcp\Instance;
 use Typo3CmsMcp\ServerFactory;
 
 require dirname(__DIR__) . '/src/bootstrap.php';
+
+Instance::discoverFrom(getcwd() ?: null);
 
 ServerFactory::create()->run(new StdioTransport());

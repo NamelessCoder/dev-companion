@@ -291,9 +291,28 @@ final class Tools
             $lines[] = '- ' . $entry['when'] . ' → ' . $entry['call'];
         }
 
+        // Which installation is being read is the one thing a caller cannot
+        // check for itself, and reading the wrong one would be worse than
+        // reading none — so it is stated, with where the search started.
+        $instance = Instance::describe();
         $lines[] = '';
-        $lines[] = 'Every lookup and guide is read-only and answered from the bundled knowledge base; '
-            . 'nothing is fetched, executed, or looked up online.';
+        $lines[] = $instance === null
+            ? 'No TYPO3 installation was found from the directory this server was started in, so every answer '
+                . 'comes from the bundled knowledge base alone. Questions about what is registered in an '
+                . 'installation — which icon identifiers exist, which labels — cannot be answered here.'
+            : sprintf(
+                "Reading the TYPO3 installation at %s (%s, found from %s), which holds %d packages. "
+                . 'Registered icons and labels are answered from it rather than from a bundled snapshot. '
+                . 'If that is not the installation you are working on, this server was started in the wrong directory.',
+                $instance['root'],
+                $instance['kind'],
+                $instance['startedFrom'],
+                count(Instance::packages()),
+            );
+
+        $lines[] = '';
+        $lines[] = 'Every lookup and guide is read-only. Apart from the installation named above, nothing is '
+            . 'fetched, executed, or looked up online.';
         if (Feedback::isAvailable()) {
             // Naming the one write next to the read-only claim, not after it:
             // a blanket "everything is read-only" followed by a tool that

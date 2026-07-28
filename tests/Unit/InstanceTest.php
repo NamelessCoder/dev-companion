@@ -1,0 +1,150 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Typo3CmsMcp\Tests\Unit;
+
+use PHPUnit\Framework\Attributes\After;
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\TestCase;
+use Typo3CmsMcp\Instance;
+
+/**
+ * The one place this server reads something other than its own knowledge base,
+ * and the rules that keep that from happening by accident.
+ */
+final class InstanceTest extends TestCase
+{
+    private string $temporaryRoot = '';
+
+    #[After]
+    public function forgetTheInstance(): void
+    {
+        Instance::discoverFrom(null);
+        if ($this->temporaryRoot !== '') {
+            self::removeDirectory($this->temporaryRoot);
+            $this->temporaryRoot = '';
+        }
+    }
+
+    #[Test]
+    public function withoutAnEntrypointHandingInADirectoryThereIsNoInstance(): void
+    {
+        // The HTTP case: a request-serving endpoint never calls discoverFrom(),
+        // so no caller can be answered from whatever installation the document
+        // root happens to sit in.
+        Instance::discoverFrom(null);
+
+        self::assertFalse(Instance::isAvailable());
+        self::assertNull(Instance::root());
+        self::assertSame([], Instance::packages());
+    }
+
+    #[Test]
+    public function aCoreCheckoutIsFoundFromAnyDirectoryInsideIt(): void
+    {
+        $root = $this->coreCheckout();
+        Instance::discoverFrom($root . '/typo3/sysext/backend/Classes/Controller');
+
+        $instance = Instance::describe();
+        self::assertNotNull($instance);
+        self::assertSame(realpath($root), $instance['root']);
+        self::assertSame(Instance::KIND_CORE_CHECKOUT, $instance['kind']);
+        self::assertSame(['backend', 'core'], array_keys(Instance::packages()));
+    }
+
+    #[Test]
+    public function aComposerProjectIsFoundThroughItsInstalledPackages(): void
+    {
+        $root = $this->composerProject();
+        Instance::discoverFrom($root);
+
+        $instance = Instance::describe();
+        self::assertNotNull($instance);
+        self::assertSame(Instance::KIND_COMPOSER_PROJECT, $instance['kind']);
+
+        // A project's own extension registers icons and ships labels exactly
+        // like a system extension does, so it has to be in the list.
+        self::assertSame(['core', 'my_sitepackage'], array_keys(Instance::packages()));
+    }
+
+    #[Test]
+    public function aDirectoryOutsideAnyInstallationFindsNothing(): void
+    {
+        Instance::discoverFrom(sys_get_temp_dir());
+
+        self::assertFalse(Instance::isAvailable());
+    }
+
+    #[Test]
+    public function theAnswerSaysWhereItLookedSoAWrongInstanceIsVisible(): void
+    {
+        $root = $this->coreCheckout();
+        $startedFrom = $root . '/typo3/sysext/core';
+        Instance::discoverFrom($startedFrom);
+
+        self::assertSame(realpath($startedFrom), Instance::describe()['startedFrom']);
+    }
+
+    private function coreCheckout(): string
+    {
+        $root = $this->temporaryDirectory();
+        file_put_contents($root . '/composer.json', '{"name": "typo3/cms", "type": "typo3-cms-core"}');
+        foreach (['core' => 'core', 'backend' => 'backend'] as $directory => $key) {
+            $path = $root . '/typo3/sysext/' . $directory;
+            mkdir($path . '/Classes/Controller', 0o777, true);
+            file_put_contents($path . '/composer.json', json_encode([
+                'name' => 'typo3/cms-' . $directory,
+                'type' => 'typo3-cms-framework',
+                'extra' => ['typo3/cms' => ['extension-key' => $key]],
+            ], JSON_THROW_ON_ERROR));
+        }
+
+        return $root;
+    }
+
+    private function composerProject(): string
+    {
+        $root = $this->temporaryDirectory();
+        mkdir($root . '/vendor/typo3/cms-core', 0o777, true);
+        mkdir($root . '/packages/my_sitepackage', 0o777, true);
+        mkdir($root . '/vendor/composer', 0o777, true);
+        file_put_contents($root . '/vendor/composer/installed.json', json_encode(['packages' => [
+            [
+                'name' => 'typo3/cms-core',
+                'type' => 'typo3-cms-framework',
+                'install-path' => '../typo3/cms-core',
+                'extra' => ['typo3/cms' => ['extension-key' => 'core']],
+            ],
+            [
+                'name' => 'acme/my-sitepackage',
+                'type' => 'typo3-cms-extension',
+                'install-path' => '../../packages/my_sitepackage',
+                'extra' => ['typo3/cms' => ['extension-key' => 'my_sitepackage']],
+            ],
+            ['name' => 'symfony/console', 'type' => 'library', 'install-path' => '../symfony/console'],
+        ]], JSON_THROW_ON_ERROR));
+
+        return $root;
+    }
+
+    private function temporaryDirectory(): string
+    {
+        $this->temporaryRoot = sys_get_temp_dir() . '/typo3-cms-mcp-instance-' . bin2hex(random_bytes(6));
+        mkdir($this->temporaryRoot, 0o777, true);
+
+        return $this->temporaryRoot;
+    }
+
+    private static function removeDirectory(string $path): void
+    {
+        $entries = new \RecursiveIteratorIterator(
+            new \RecursiveDirectoryIterator($path, \FilesystemIterator::SKIP_DOTS),
+            \RecursiveIteratorIterator::CHILD_FIRST
+        );
+        foreach ($entries as $entry) {
+            $entry->isDir() ? rmdir($entry->getPathname()) : unlink($entry->getPathname());
+        }
+        rmdir($path);
+    }
+}

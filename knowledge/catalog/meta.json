@@ -1,0 +1,22 @@
+{
+  "source": {
+    "repository": "https://github.com/TYPO3/typo3",
+    "branch": "main",
+    "version": "15.0",
+    "commit": "4c8b38b2dd07856c3e2666fbdfd77beead87ffe0"
+  },
+  "verifiedAt": "2026-07-28",
+  "verifyCommand": "bin/verify-catalog /path/to/typo3-core-checkout",
+  "scope": {
+    "icons": "Every registered T3Icons identifier from typo3/sysext/core/Resources/Public/Icons/T3Icons/icons.json, plus its registered aliases. Complete for that file.",
+    "labels": "The English trans-units of 118 of the 254 default XLF files in the core, across 29 of the system extensions. A curated subset, not the whole core.",
+    "components": "Hand-curated backend UI components from the styleguide and the backend Sass sources. A subset: not every CSS class in the core is described here."
+  },
+  "counts": {
+    "iconIdentifiers": 796,
+    "iconAliases": 211,
+    "labelDomains": 118,
+    "labels": 5386,
+    "components": 22
+  }
+}

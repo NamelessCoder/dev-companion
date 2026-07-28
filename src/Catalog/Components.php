@@ -95,14 +95,40 @@ final class Components
 
         $scored = [];
         foreach ($components as $component) {
-            $score = self::scoreComponent($component, $terms);
+            [$score, $matched, $why] = self::scoreComponent($component, $terms);
             if ($score > 0) {
-                $scored[] = ['component' => $component, 'score' => $score];
+                $scored[] = [
+                    'component' => $component + ['matchedIn' => $why],
+                    'score' => $score,
+                    'matched' => $matched,
+                ];
             }
         }
 
+        // A component that covers every query term beats one that matched a
+        // single term deep in a sub-component class list.
+        $complete = array_values(array_filter(
+            $scored,
+            static fn(array $entry): bool => $entry['matched'] >= count($terms)
+        ));
+        if ($complete !== []) {
+            $scored = $complete;
+        }
+
+        // As long as a component matched by its own name or keywords, do not
+        // spend result slots on ones that only appeared through a sub-component
+        // class or a word in their description.
+        $direct = array_values(array_filter(
+            $scored,
+            static fn(array $entry): bool => array_intersect(['name', 'keywords'], $entry['component']['matchedIn']) !== []
+        ));
+        if ($direct !== []) {
+            $scored = $direct;
+        }
+
         usort($scored, static function (array $a, array $b): int {
-            return $b['score'] <=> $a['score']
+            return $b['matched'] <=> $a['matched']
+                ?: $b['score'] <=> $a['score']
                 ?: strcmp($a['component']['name'], $b['component']['name']);
         });
 
@@ -124,12 +150,14 @@ final class Components
     }
 
     /**
-     * Name, root class, and keywords weigh most; class lists and prose less.
+     * Returns [weightedScore, distinctTermsMatched, whereTheyMatched]. Name,
+     * root class, and keywords weigh most; class lists and prose less.
      *
      * @param array<string, mixed> $component
      * @param array<int, string> $terms
+     * @return array{0: int, 1: int, 2: array<int, string>}
      */
-    private static function scoreComponent(array $component, array $terms): int
+    private static function scoreComponent(array $component, array $terms): array
     {
         $name = mb_strtolower($component['name'] . ' ' . $component['rootClass']);
         $keywords = mb_strtolower(implode(' ', $component['keywords']));
@@ -141,18 +169,28 @@ final class Components
         $prose = mb_strtolower($component['title'] . ' ' . $component['summary']);
 
         $score = 0;
+        $matched = 0;
+        $why = [];
         foreach ($terms as $term) {
             if (str_contains($name, $term)) {
                 $score += 5;
+                ++$matched;
+                $why['name'] = true;
             } elseif (str_contains($keywords, $term)) {
                 $score += 3;
+                ++$matched;
+                $why['keywords'] = true;
             } elseif (str_contains($classes, $term)) {
                 $score += 2;
+                ++$matched;
+                $why['sub-component classes'] = true;
             } elseif (str_contains($prose, $term)) {
                 $score += 1;
+                ++$matched;
+                $why['description'] = true;
             }
         }
 
-        return $score;
+        return [$score, $matched, array_keys($why)];
     }
 }

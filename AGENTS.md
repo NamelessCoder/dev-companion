@@ -8,6 +8,8 @@ src/               # PHP classes (knowledge loading, tools, SDK wiring)
 src/ServerFactory.php  # builds the mcp/sdk server from the tool definitions
 src/Mcp/           # SDK handlers: tool dispatch and typo3://core resources
 src/Catalog/       # the component catalog and the translation domain derivation
+src/Instance.php   # finds the TYPO3 installation the agent is working in
+src/Typo3Cli.php   # runs that installation's console, via DDEV where there is one
 src/bootstrap.php  # locates the Composer autoloader
 knowledge/         # the knowledge base (markdown + JSON), the data source
 feedback/          # improvement notes left by agents (standalone checkout only)
@@ -101,8 +103,20 @@ has not been addressed yet.
 
 ## Knowledge base
 
-- Everything the tools answer from lives below `knowledge/`. The server never
-  reads a TYPO3 core checkout at runtime.
+- Everything the tools answer from lives below `knowledge/`, with one exception:
+  what is registered in an installation is asked of that installation through
+  `Typo3Cli`, because no bundled answer could be right for it. Add to
+  `knowledge/` by default; reach for the console only when the answer genuinely
+  depends on which packages are active.
+- Checkout discovery is enabled per entrypoint and never derived from `getcwd()`
+  on its own. Only `bin/typo3-cms-mcp` calls `Instance::discoverFrom()`: a
+  request-serving endpoint has no such relationship to its callers, and its
+  document root may itself sit inside an installation.
+- Never load an installation into this process. `Typo3Cli` shells out, so its
+  autoloader, its dependencies, and its PHP version stay on the other side of a
+  process boundary and a failure is an exit code rather than a dead session.
+- Never start something on the caller's machine as a side effect of a lookup. A
+  stopped DDEV project is reported with the command that would fix it.
 - Add new rules or scripts to `knowledge/` first; promote recurring workflow
   logic to a tool only when it has earned it.
 - Verify facts against the local core checkout before writing them into

@@ -3,21 +3,34 @@
 A local MCP server (plain PHP) that gives MCP-enabled clients a curated TYPO3
 core contribution **knowledge base**: contribution rules, the Gerrit workflow,
 core script and `runTests.sh` notes, architecture hints, commit message
-conventions, and a catalog of backend UI components, icon identifiers, and
-registered labels — context that is otherwise spread across project knowledge,
-core conventions, and the official contribution documentation.
+conventions, and a catalog of backend UI components — context that is otherwise
+spread across project knowledge, core conventions, and the official
+contribution documentation.
 
-Everything it answers comes from the bundled `knowledge/` files. It is read-only
-knowledge with no dependency on any project, checkout, or git state: it does not
-inspect, read, or run anything against a TYPO3 checkout.
+Almost everything it answers comes from the bundled `knowledge/` files, and
+those answers hold on every branch because they describe conventions rather
+than code.
 
 **It is a conventions catalog, not a patch assistant.** It cannot see your
-branch, your changed files, which tests cover them, or whether a path or
-identifier still exists on the branch you work on — that stays the agent's job
-in the checkout. What it does is answer, for a concrete task or path, which
-conventions apply, which check to run, and which registered component, icon, or
-label already exists. `typo3_server_scope` states this boundary in full, and
-`typo3_task_guide` names what has to be established in the checkout.
+branch, your changed files, or which tests cover them — that stays the agent's
+job in the checkout. What it does is answer, for a concrete task or path, which
+conventions apply and which check to run. `typo3_server_scope` states this
+boundary in full, and `typo3_task_guide` names what has to be established in the
+checkout.
+
+**One exception, and it is deliberate.** Some questions have no bundled answer
+that could be right. Which labels exist is a property of an installation, not of
+TYPO3: every installed extension ships its own, and an installation can override
+any language file. So the server finds the installation you are working in and
+asks *it* — through its own console, `language:domain:search`, across the
+packages that installation has active. Discovery starts at the working directory
+the MCP client launched the server in, and only `bin/typo3-cms-mcp` enables it:
+a request-serving endpoint has no such relationship to its callers, and its
+document root may itself sit inside an installation. Where the project runs
+under DDEV the console is invoked there, because the project declares the PHP
+version it needs and the host machine may not have it. A stopped project is
+reported, never started. `typo3_server_scope` names the installation it found,
+where it looked, and whether the console is reachable.
 
 It is built on the official [`mcp/sdk`](https://packagist.org/packages/mcp/sdk)
 and speaks **stdio** (`bin/typo3-cms-mcp`): the MCP client launches it as a

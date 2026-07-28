@@ -40,16 +40,16 @@ final class FeedbackTest extends TestCase
         $file = Feedback::record([
             'observation' => self::MARKER . ' the lookup found nothing',
             'category' => 'missing-knowledge',
-            'tool' => 'typo3_icon_lookup',
-            'query' => 'query=warning',
-            'suggestion' => 'add the icon',
+            'tool' => 'typo3_component_lookup',
+            'query' => 'query=badge',
+            'suggestion' => 'add the component',
         ]);
 
         self::assertStringStartsWith('feedback/', $file);
         $contents = (string) file_get_contents(Paths::root() . '/' . $file);
         self::assertStringContainsString('category: missing-knowledge', $contents);
         self::assertStringContainsString('status: open', $contents);
-        self::assertStringContainsString('tool: typo3_icon_lookup', $contents);
+        self::assertStringContainsString('tool: typo3_component_lookup', $contents);
         self::assertStringContainsString('## Observation', $contents);
         self::assertStringContainsString('## Query', $contents);
         self::assertStringContainsString('## Suggestion', $contents);

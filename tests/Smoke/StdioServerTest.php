@@ -51,15 +51,15 @@ final class StdioServerTest extends TestCase
     public function aToolCallReturnsTextAndStructuredContent(): void
     {
         $result = $this->session([$this->request(2, 'tools/call', [
-            'name' => 'typo3_icon_lookup',
-            'arguments' => ['query' => 'warning', 'limit' => 3],
+            'name' => 'typo3_component_lookup',
+            'arguments' => ['query' => 'badge'],
         ])])[2]['result'];
 
         self::assertFalse($result['isError']);
         self::assertSame('text', $result['content'][0]['type']);
         self::assertNotSame('', $result['content'][0]['text']);
         self::assertGreaterThan(0, $result['structuredContent']['matchCount']);
-        self::assertNotSame([], $result['structuredContent']['icons']);
+        self::assertNotSame([], $result['structuredContent']['components']);
     }
 
     #[Test]

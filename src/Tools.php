@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Typo3CmsMcp;
 
 use Typo3CmsMcp\Catalog\Components;
-use Typo3CmsMcp\Catalog\Icons;
 use Typo3CmsMcp\Catalog\Labels;
 use Typo3CmsMcp\Catalog\Meta as CatalogMeta;
 use Typo3CmsMcp\Catalog\TranslationDomain;
@@ -157,17 +156,6 @@ final class Tools
                 ],
             ],
             [
-                'name' => 'typo3_icon_lookup',
-                'description' => 'Validate and discover TYPO3 core icon identifiers (the registered T3Icons names such as actions-open or module-web-list). Matches identifier fragments, registered aliases, and concept keywords ("warning" finds actions-exclamation-triangle), and states why each result matched. Results come from a versioned snapshot, so a miss means "not in the snapshot", not "does not exist".',
-                'inputSchema' => [
-                    'type' => 'object',
-                    'properties' => [
-                        'query' => ['type' => 'string', 'description' => 'Identifier fragment, alias, or concept, for example "warning", "delete", or "actions-open". Omit to list categories and concept keywords.'],
-                        'limit' => ['type' => 'integer', 'minimum' => 1, 'maximum' => 100, 'default' => 40, 'description' => 'Maximum number of identifiers to return.'],
-                    ],
-                ],
-            ],
-            [
                 'name' => 'typo3_label_lookup',
                 'description' => 'Search registered TYPO3 core labels (XLF trans-units) across the core sysexts. Returns the translation domain reference (backend.alt_doc:key), which is the canonical form for TCA, LanguageService::sL() and f:translate, plus the legacy LLL file path, the English source text, and any x-unused-since marker. Use it to reuse an existing label instead of inventing a key. Results come from a versioned snapshot of a subset of the core label files.',
                 'inputSchema' => [
@@ -181,7 +169,7 @@ final class Tools
             ],
             [
                 'name' => 'typo3_catalog_scope',
-                'description' => 'Report which TYPO3 core revision the component, icon, and label catalogs were taken from, what they cover, and how to re-check them against a checkout. Call this to judge whether a catalog miss is authoritative for the branch you are working on.',
+                'description' => 'Report which TYPO3 core revision the bundled catalogs were taken from, what they cover, and how to re-check them against a checkout. Call this to judge whether a catalog miss is authoritative for the branch you are working on.',
                 'inputSchema' => [
                     'type' => 'object',
                     'properties' => new \stdClass(),
@@ -244,7 +232,7 @@ final class Tools
                     'properties' => [
                         'observation' => ['type' => 'string', 'minLength' => 1, 'description' => 'What was missing, wrong, or unhelpful. Be specific enough to act on later.'],
                         'category' => ['type' => 'string', 'enum' => Feedback::CATEGORIES, 'default' => 'idea', 'description' => 'missing-knowledge: the knowledge base lacks the answer. wrong-answer: the answer was incorrect. tool-gap: no tool covers the need. bug: the server misbehaved. idea: anything else.'],
-                        'tool' => ['type' => 'string', 'description' => 'The tool the observation is about, for example typo3_icon_lookup.'],
+                        'tool' => ['type' => 'string', 'description' => 'The tool the observation is about, for example typo3_component_lookup.'],
                         'query' => ['type' => 'string', 'description' => 'The query or arguments that produced the unsatisfying result.'],
                         'suggestion' => ['type' => 'string', 'description' => 'What the server should have answered or should be able to do.'],
                     ],
@@ -277,7 +265,6 @@ final class Tools
             'typo3_test_run_guide' => self::testRunGuide($args),
             'typo3_architecture_lookup' => self::architectureLookup($args),
             'typo3_component_lookup' => self::componentLookup($args),
-            'typo3_icon_lookup' => self::iconLookup($args),
             'typo3_label_lookup' => self::labelLookup($args),
             'typo3_catalog_scope' => self::catalogScope($args),
             'typo3_commit_message_guide' => self::commitMessageGuide($args),
@@ -495,8 +482,8 @@ final class Tools
 
         $text = sprintf(
             "No knowledge section matched \"%s\".\n\nThis knowledge base covers:\n%s\n\n"
-            . 'For registered components, icons, or labels use typo3_component_lookup, typo3_icon_lookup, '
-            . 'or typo3_label_lookup instead, and call typo3_server_scope for what this server covers at all. '
+            . 'For backend UI components use typo3_component_lookup, and call typo3_server_scope for what '
+            . 'this server covers at all. '
             . 'If the topic should be covered here, leave a note with typo3_feedback_record.',
             $query,
             $documents
@@ -1110,154 +1097,6 @@ final class Tools
             'checklist' => $checklist,
             'catalog' => self::catalogRecord(),
         ]);
-    }
-
-    /** @param array<string, mixed> $args */
-    private static function iconLookup(array $args): ToolResult
-    {
-        $query = isset($args['query']) ? (string) $args['query'] : null;
-        $limit = (int) ($args['limit'] ?? 40);
-
-        if ($query === null || trim($query) === '') {
-            $lines = ['Icon categories (query an identifier fragment or a concept to list icons):'];
-            foreach (Icons::categories() as $category) {
-                $lines[] = '- ' . $category;
-            }
-            $lines[] = '';
-            $lines[] = 'Concept keywords that map to icons: ' . implode(', ', array_keys(Icons::concepts())) . '.';
-            $lines[] = '';
-            $lines[] = self::iconUsageBlock();
-            $lines[] = '';
-            $lines[] = self::catalogProvenance();
-
-            return ToolResult::create(implode("\n", $lines), [
-                'query' => $query,
-                'matchCount' => 0,
-                'exactMatch' => false,
-                'icons' => [],
-                'categories' => Icons::categories(),
-                'concepts' => array_keys(Icons::concepts()),
-                'usage' => self::iconUsage(),
-                'catalog' => self::catalogRecord(),
-            ]);
-        }
-
-        // A query shaped like an identifier is a validation, not a search. Its
-        // answer is yes or no, and anything else the catalog happens to know is
-        // a suggestion that must not be mistaken for the answer.
-        $isIdentifier = Icons::looksLikeIdentifier($query);
-        $exactMatch = $isIdentifier && Icons::exists($query);
-
-        $matches = Icons::find($query);
-        if ($matches === []) {
-            $miss = $isIdentifier
-                ? sprintf(
-                    '"%s" is shaped like an identifier but is registered in none of the three places this snapshot '
-                    . 'covers: the T3Icons set, a system extension\'s Configuration/Icons.php, and the flag images. '
-                    . 'On the pinned revision it does not exist; on a newer branch it may. Call typo3_catalog_scope '
-                    . 'for which revision that is.',
-                    $query
-                )
-                : sprintf(
-                    'No TYPO3 icon identifier matched "%s". Identifiers follow the <category>-<name> convention '
-                    . 'and spell the shape, not the intent — try a concept keyword such as %s.',
-                    $query,
-                    implode(', ', array_slice(array_keys(Icons::concepts()), 0, 8))
-                );
-
-            return ToolResult::create(
-                $miss . "\n" . self::catalogProvenance(),
-                [
-                    'query' => $query,
-                    'matchCount' => 0,
-                    'exactMatch' => $exactMatch,
-                    'icons' => [],
-                    'concepts' => array_keys(Icons::concepts()),
-                    'usage' => self::iconUsage(),
-                    'catalog' => self::catalogRecord(),
-                ],
-            );
-        }
-
-        $total = count($matches);
-        $shown = array_slice($matches, 0, $limit);
-        $lines = array_map(static function (array $icon): string {
-            $line = '- ' . $icon['identifier'] . '  (' . $icon['category'] . ')';
-            if ($icon['source'] !== Icons::SOURCE_T3ICONS) {
-                $line .= "\n  registered in " . $icon['source'];
-            }
-            if ($icon['aliasOf'] !== null) {
-                $line .= "\n  alias of " . $icon['aliasOf'];
-            }
-            if ($icon['why'] !== []) {
-                $line .= "\n  matched: " . implode(', ', $icon['why']);
-            }
-
-            return $line;
-        }, $shown);
-
-        if ($isIdentifier && !$exactMatch) {
-            $header = sprintf(
-                '"%s" is not in this snapshot. It is shaped like a registered identifier, so a miss here is not '
-                . 'proof it does not exist: the catalog covers the T3Icons set, not the identifiers a system '
-                . 'extension registers in its own Configuration/Icons.php, and not the flags-* family. '
-                . 'Check Configuration/Icons.php in the owning extension, and call typo3_catalog_scope for what '
-                . "this snapshot covers.\n\n"
-                . 'The following %d identifier(s) merely share a name part with it — suggestions, not the answer',
-                $query,
-                $total
-            );
-        } else {
-            $header = sprintf('%d icon identifier(s) matched "%s"', $total, $query);
-        }
-        if ($total > count($shown)) {
-            $header .= sprintf(' — showing the top %d, refine the query to narrow down', count($shown));
-        }
-
-        return ToolResult::create(
-            $header . ":\n" . implode("\n", $lines) . "\n\n" . self::iconUsageBlock() . "\n\n" . self::catalogProvenance(),
-            [
-                'query' => $query,
-                'matchCount' => $total,
-                'exactMatch' => $exactMatch,
-                'icons' => array_map(static fn(array $icon): array => [
-                    'identifier' => $icon['identifier'],
-                    'category' => $icon['category'],
-                    'aliasOf' => $icon['aliasOf'],
-                    'source' => $icon['source'],
-                    'matched' => $icon['matched'],
-                    'score' => $icon['score'],
-                    'why' => $icon['why'],
-                ], $shown),
-                'usage' => self::iconUsage(),
-                'catalog' => self::catalogRecord(),
-            ],
-        );
-    }
-
-    /**
-     * How to render a validated identifier. Carried with every icon answer,
-     * because getting the identifier right is only half the job: the call
-     * itself has known wrong forms, and nothing else here would state them.
-     *
-     * @return array<int, string>
-     */
-    private static function iconUsage(): array
-    {
-        return ArchitectureHints::byId('icon-usage')['hints'] ?? [];
-    }
-
-    private static function iconUsageBlock(): string
-    {
-        $usage = self::iconUsage();
-        if ($usage === []) {
-            return '';
-        }
-
-        return "Using an identifier:\n" . implode("\n", array_map(
-            static fn(string $hint): string => '- ' . $hint,
-            $usage
-        ));
     }
 
     /** @param array<string, mixed> $args */

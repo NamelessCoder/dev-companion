@@ -2,7 +2,9 @@
   {
     "id": "deprecation",
     "title": "Deprecation",
-    "match": ["deprecat"],
+    "match": [
+      "deprecat"
+    ],
     "rulesQuery": "deprecation changelog",
     "checklist": [
       "Add a changelog file below typo3/sysext/core/Documentation/Changelog/<version>/ named Deprecation-<issue>-<Title>.rst.",
@@ -11,13 +13,22 @@
       "Document the migration path in the changelog and consider an extension scanner matcher.",
       "Migrate all core usages of the deprecated API in the same patch."
     ],
-    "checks": ["CI=true ./Build/Scripts/runTests.sh -s checkRst"],
-    "tools": ["typo3_commit_message_guide with isDeprecation=true, to get the keyword and prefix rules checked"]
+    "checks": [
+      "CI=true ./Build/Scripts/runTests.sh -s checkRst"
+    ],
+    "tools": [
+      "typo3_commit_message_guide with isDeprecation=true, to get the keyword and prefix rules checked"
+    ]
   },
   {
     "id": "breaking",
     "title": "Breaking change",
-    "match": ["breaking", "remove public", "removed public", "drop support"],
+    "match": [
+      "breaking",
+      "remove public",
+      "removed public",
+      "drop support"
+    ],
     "rulesQuery": "breaking change changelog",
     "checklist": [
       "Add a changelog file below typo3/sysext/core/Documentation/Changelog/<version>/ named Breaking-<issue>-<Title>.rst.",
@@ -29,25 +40,44 @@
       "CI=true ./Build/Scripts/runTests.sh -s checkRst",
       "CI=true ./Build/Scripts/runTests.sh -s checkExtensionScannerRst"
     ],
-    "tools": ["typo3_commit_message_guide with isBreaking=true"]
+    "tools": [
+      "typo3_commit_message_guide with isBreaking=true"
+    ]
   },
   {
     "id": "changelog",
     "title": "Changelog or ReST documentation",
-    "match": ["changelog", "rst", "release note", "documentation"],
+    "match": [
+      "changelog",
+      "rst",
+      "release note",
+      "documentation"
+    ],
     "rulesQuery": "changelog rst documentation",
     "checklist": [
       "Changelog files live below typo3/sysext/core/Documentation/Changelog/<version>/ and use the Breaking-, Deprecation-, Feature-, Important- or Task- prefix with the Forge issue number.",
       "Include the ..  include:: /Includes.rst.txt header and a reference label, as in the neighbouring files."
     ],
-    "checks": ["CI=true ./Build/Scripts/runTests.sh -s checkRst"],
+    "checks": [
+      "CI=true ./Build/Scripts/runTests.sh -s checkRst"
+    ],
     "tools": []
   },
   {
     "id": "labels",
     "title": "User-facing labels",
-    "match": ["xlf", "xliff", "trans-unit", "locallang", "translation", "language file"],
-    "matchWeak": ["label", "wording"],
+    "match": [
+      "xlf",
+      "xliff",
+      "trans-unit",
+      "locallang",
+      "translation",
+      "language file"
+    ],
+    "matchWeak": [
+      "label",
+      "wording"
+    ],
     "condition": "only if the change adds, edits, or retires an XLF trans-unit",
     "rulesQuery": "xliff label lifecycle",
     "checklist": [
@@ -60,13 +90,27 @@
       "CI=true ./Build/Scripts/runTests.sh -s checkIntegrityXliff",
       "CI=true ./Build/Scripts/runTests.sh -s normalizeXliff"
     ],
-    "tools": ["typo3_label_lookup, before inventing a new label key"]
+    "tools": [
+      "typo3_label_lookup, before inventing a new label key"
+    ]
   },
   {
     "id": "backend-ui",
     "title": "Backend UI markup",
-    "match": ["markup", "css class", "component", "badge", "card", "button", "modal"],
-    "matchWeak": ["template", "fluid", "backend module"],
+    "match": [
+      "markup",
+      "css class",
+      "component",
+      "badge",
+      "card",
+      "button",
+      "modal"
+    ],
+    "matchWeak": [
+      "template",
+      "fluid",
+      "backend module"
+    ],
     "condition": "only if the change adds or alters backend component markup or CSS classes",
     "rulesQuery": "backend ui component",
     "checklist": [
@@ -78,43 +122,61 @@
       "CI=true ./Build/Scripts/runTests.sh -s build"
     ],
     "tools": [
-      "typo3_component_lookup, before writing backend markup or CSS classes",
-      "typo3_icon_lookup, before using an icon identifier"
+      "typo3_component_lookup, before writing backend markup or CSS classes"
     ]
   },
   {
     "id": "icons",
     "title": "Icons",
-    "match": ["icon"],
+    "match": [
+      "icon"
+    ],
     "rulesQuery": "icon",
     "checklist": [
-      "Validate the icon identifier against the registered identifiers; an unknown identifier only fails at runtime."
+      "Resolve the icon identifier in your own checkout before using it: IconRegistry is built from every installed package, so an identifier that exists in one instance may not exist in another, and an unknown one only fails at runtime."
     ],
     "checks": [],
-    "tools": ["typo3_icon_lookup, to validate the identifier"]
+    "tools": []
   },
   {
     "id": "tests",
     "title": "Test coverage",
-    "match": ["test", "coverage", "regression"],
+    "match": [
+      "test",
+      "coverage",
+      "regression"
+    ],
     "rulesQuery": "testing strategy",
     "checklist": [
       "Confirm the test fails without the change and passes with it.",
       "Run the single test file or method while iterating instead of the whole suite."
     ],
     "checks": [],
-    "tools": ["typo3_test_run_guide, for the targeted invocation form"]
+    "tools": [
+      "typo3_test_run_guide, for the targeted invocation form"
+    ]
   },
   {
     "id": "submission",
     "title": "Patch submission",
-    "match": ["gerrit", "push", "patch set", "review", "submit", "backport"],
+    "match": [
+      "gerrit",
+      "push",
+      "patch set",
+      "review",
+      "submit",
+      "backport"
+    ],
     "rulesQuery": "gerrit push patch set",
     "checklist": [
       "One patch is one commit: improve it by amending, never by adding a second commit.",
       "Push with git push origin HEAD:refs/for/<branch> and keep the Change-Id line untouched."
     ],
-    "checks": ["CI=true ./Build/Scripts/runTests.sh -s cglGit"],
-    "tools": ["typo3_commit_message_guide, to check the message before pushing"]
+    "checks": [
+      "CI=true ./Build/Scripts/runTests.sh -s cglGit"
+    ],
+    "tools": [
+      "typo3_commit_message_guide, to check the message before pushing"
+    ]
   }
 ]

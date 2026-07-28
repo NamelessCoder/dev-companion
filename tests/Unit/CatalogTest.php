@@ -7,7 +7,6 @@ namespace Typo3CmsMcp\Tests\Unit;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Typo3CmsMcp\Catalog\Components;
-use Typo3CmsMcp\Catalog\Icons;
 use Typo3CmsMcp\Catalog\Labels;
 use Typo3CmsMcp\Catalog\Meta;
 use Typo3CmsMcp\Catalog\TranslationDomain;
@@ -95,107 +94,6 @@ final class CatalogTest extends TestCase
     }
 
     #[Test]
-    public function anExactIconIdentifierWins(): void
-    {
-        $icons = Icons::find('actions-open');
-
-        self::assertSame('actions-open', $icons[0]['identifier']);
-        self::assertContains('exact identifier', $icons[0]['why']);
-    }
-
-    #[Test]
-    public function aConceptFindsTheIconThatSpellsTheShape(): void
-    {
-        $icons = Icons::find('warning');
-        $identifiers = array_column($icons, 'identifier');
-
-        self::assertNotSame([], $icons);
-        self::assertContains('actions-exclamation-triangle', $identifiers, 'the warning concept must reach the triangle icon');
-
-        $why = implode(' ', array_merge(...array_column($icons, 'why')));
-        self::assertStringContainsString('concept "warning"', $why);
-    }
-
-    #[Test]
-    public function aCategoryNameAloneDoesNotMatchEveryIconInIt(): void
-    {
-        $icons = Icons::find('actions');
-
-        foreach ($icons as $icon) {
-            self::assertGreaterThan(0, $icon['matched'], $icon['identifier'] . ' matched on its category only');
-        }
-    }
-
-    #[Test]
-    public function anUnknownIconMatchesNothing(): void
-    {
-        self::assertSame([], Icons::find('quantumflux'));
-    }
-
-    #[Test]
-    public function anIdentifierShapedQueryIsToldApartFromASearchPhrase(): void
-    {
-        self::assertTrue(Icons::looksLikeIdentifier('actions-open'));
-        // Registered by an extension or lazily, so outside this catalog but
-        // still an identifier — the shape is what decides, not the coverage.
-        self::assertTrue(Icons::looksLikeIdentifier('status-reference-hard'));
-        self::assertTrue(Icons::looksLikeIdentifier('flags-multiple'));
-
-        self::assertFalse(Icons::looksLikeIdentifier('move record up'));
-        self::assertFalse(Icons::looksLikeIdentifier('warning'));
-        self::assertFalse(Icons::looksLikeIdentifier('quantum-flux'));
-    }
-
-    #[Test]
-    public function anIdentifierThatIsNotInTheSnapshotIsReportedAsAMiss(): void
-    {
-        // The dangerous answer: icons that share a name part, led by an
-        // unrelated one, each with a plausible "why" — read as a confirmation
-        // that the queried identifier resolves to something.
-        $result = Tools::call('typo3_icon_lookup', ['query' => 'status-reference-quantumflux']);
-
-        self::assertFalse($result->data['exactMatch']);
-        self::assertStringContainsString('is not in this snapshot', $result->text);
-        self::assertStringContainsString('suggestions, not the answer', $result->text);
-    }
-
-    #[Test]
-    public function theThreeRegistrationSourcesAreAllCovered(): void
-    {
-        // The T3Icons set, an extension's Configuration/Icons.php, and the
-        // flags registered lazily from the flag images.
-        foreach ([
-            'actions-open' => Icons::SOURCE_T3ICONS,
-            'status-reference-hard' => 'EXT:impexp/Configuration/Icons.php',
-            'flags-multiple' => Icons::SOURCE_FLAGS,
-        ] as $identifier => $source) {
-            self::assertTrue(Icons::exists($identifier), $identifier . ' is not in the catalog');
-
-            $result = Tools::call('typo3_icon_lookup', ['query' => $identifier])->data;
-            self::assertTrue($result['exactMatch'], $identifier . ' is not confirmed as an identifier');
-            self::assertSame($source, $result['icons'][0]['source'], $identifier . ' is attributed wrongly');
-        }
-    }
-
-    #[Test]
-    public function aRegisteredIdentifierIsConfirmedAsOne(): void
-    {
-        $result = Tools::call('typo3_icon_lookup', ['query' => 'actions-open']);
-
-        self::assertTrue($result->data['exactMatch']);
-        self::assertSame('actions-open', $result->data['icons'][0]['identifier']);
-    }
-
-    #[Test]
-    public function everyIconAnswerSaysHowToRenderTheIdentifier(): void
-    {
-        foreach ([['query' => 'actions-open'], ['query' => 'quantumflux'], []] as $arguments) {
-            $data = Tools::call('typo3_icon_lookup', $arguments)->data;
-            self::assertNotSame([], $data['usage'], json_encode($arguments) . ' carries no usage');
-        }
-    }
-
-    #[Test]
     public function aLabelIsAnsweredWithItsTranslationDomainReference(): void
     {
         $labels = Labels::find('save close document');
@@ -235,14 +133,6 @@ final class CatalogTest extends TestCase
         self::assertTrue($result->data['relaxed']);
         self::assertStringStartsWith('No catalogued label matches', $result->text);
         self::assertLessThan(50, $result->data['matchCount'], 'a relaxed answer must stay a suggestion list');
-    }
-
-    #[Test]
-    public function anIdentifierThatCarriesMoreOfTheQueryOutranksAVaguerOne(): void
-    {
-        // A concept hit on a term the name already matched used to count twice,
-        // which put actions-move ahead of actions-move-up for "move record up".
-        self::assertSame('actions-move-up', Icons::find('move record up')[0]['identifier']);
     }
 
     #[Test]

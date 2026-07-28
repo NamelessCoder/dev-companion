@@ -5,61 +5,78 @@
     {
       "topic": "Contribution rules and review readiness",
       "depth": "Curated prose. The rules a patch is judged by, not a full style guide.",
-      "tools": ["typo3_rule_lookup", "typo3_task_guide"],
+      "tools": [
+        "typo3_rule_lookup",
+        "typo3_task_guide"
+      ],
       "source": "typo3://core/typo3-core-rules"
     },
     {
       "topic": "Gerrit workflow: setup, pushing, amending, backports",
       "depth": "Curated prose, command level. Covers the local git side; it cannot talk to the Gerrit server.",
-      "tools": ["typo3_rule_lookup"],
+      "tools": [
+        "typo3_rule_lookup"
+      ],
       "source": "typo3://core/typo3-gerrit-workflow"
     },
     {
       "topic": "Commit messages",
       "depth": "Rules plus a working draft and check, including 72-character body wrapping.",
-      "tools": ["typo3_commit_message_guide", "typo3_rule_lookup"],
+      "tools": [
+        "typo3_commit_message_guide",
+        "typo3_rule_lookup"
+      ],
       "source": "typo3://core/typo3-commit-messages"
     },
     {
       "topic": "runTests.sh suites, options, and targeted invocation",
       "depth": "Every suite this knowledge base knows, with the command, the targeted form, and when to use it.",
-      "tools": ["typo3_test_run_guide", "typo3_script_lookup"],
+      "tools": [
+        "typo3_test_run_guide",
+        "typo3_script_lookup"
+      ],
       "source": "knowledge/test-suite-hints.json, typo3://core/typo3-core-scripts"
     },
     {
       "topic": "Core architecture conventions: DI, events and hooks, TCA and FormEngine, FormEngine data providers, DataHandler, routing, Fluid templates and ViewHelpers, TypoScript site sets and TSconfig, language files, testing strategy",
       "depth": "Conventions per subsystem, matched by path or topic. It describes how the core is built, never what your checkout contains.",
-      "tools": ["typo3_architecture_lookup", "typo3_task_guide"],
+      "tools": [
+        "typo3_architecture_lookup",
+        "typo3_task_guide"
+      ],
       "source": "knowledge/architecture-hints/, typo3://core/typo3-core-architecture"
     },
     {
       "topic": "Backend CSS architecture, design tokens, class naming",
       "depth": "Curated prose covering the Sass sources, the token contract, and the component structure.",
-      "tools": ["typo3_architecture_lookup", "typo3_rule_lookup"],
+      "tools": [
+        "typo3_architecture_lookup",
+        "typo3_rule_lookup"
+      ],
       "source": "typo3://core/typo3-css-architecture"
     },
     {
       "topic": "Backend UI components: markup, variants, custom properties",
       "depth": "Hand-curated subset of the backend components, not every CSS class in the core.",
-      "tools": ["typo3_component_lookup"],
+      "tools": [
+        "typo3_component_lookup"
+      ],
       "source": "knowledge/catalog/components.json"
-    },
-    {
-      "topic": "Icon identifiers",
-      "depth": "Complete for the pinned core revision across all three registration sources: the T3Icons set with its aliases, every system extension Configuration/Icons.php, and the flag images. Each answer names the source of the identifier.",
-      "tools": ["typo3_icon_lookup"],
-      "source": "knowledge/catalog/icons.json"
     },
     {
       "topic": "Registered labels (XLF trans-units) and translation domains",
       "depth": "The English trans-units of every default XLF file that sits directly in a system extension's Resources/Private/Language/. Files in subdirectories of that path are not included. The translation domain of any XLF path is computed rather than looked up, so mode \"derive\" also answers for a file outside the catalog or one a patch is about to add.",
-      "tools": ["typo3_label_lookup"],
+      "tools": [
+        "typo3_label_lookup"
+      ],
       "source": "knowledge/catalog/labels.json"
     },
     {
       "topic": "How current the catalogs are",
       "depth": "The core revision, branch, and verification date behind every catalog answer.",
-      "tools": ["typo3_catalog_scope"],
+      "tools": [
+        "typo3_catalog_scope"
+      ],
       "source": "knowledge/catalog/meta.json"
     }
   ],
@@ -93,6 +110,11 @@
       "topic": "Work outside TYPO3 core contribution: site setup, project or third-party extension development, configuring an installation with TypoScript, upgrading an installation",
       "why": "The knowledge base is scoped to contributing to the core. Shipping TypoScript defaults from a system extension is core work and is covered; writing TypoScript to configure a site is not, and neither is a package under packages/ or an extension outside typo3/sysext/.",
       "instead": "Use the TYPO3 documentation at https://docs.typo3.org/."
+    },
+    {
+      "topic": "Which icon identifiers exist",
+      "why": "IconRegistry is assembled at runtime from every installed package, so the registered identifiers are a property of the instance, not of TYPO3. This server does not know which packages you have installed and cannot ship a list that is right for you.",
+      "instead": "Resolve the identifier in your own checkout: the T3Icons set in typo3/sysext/core/Resources/Public/Icons/T3Icons/icons.json, the Configuration/Icons.php of every package, and the flag images under typo3/sysext/core/Resources/Public/Icons/Flags/. typo3_architecture_lookup has how to render one once you have it."
     }
   ],
   "checkoutDiscovery": [
@@ -111,6 +133,10 @@
     {
       "establish": "Whether the paths, classes, labels, and identifiers named in an answer still exist on that branch",
       "how": "Grep the checkout. The catalogs are a snapshot of one revision — typo3_catalog_scope names it."
+    },
+    {
+      "establish": "Whether an icon identifier is registered, and which one spells the shape you want",
+      "how": "Identifiers are <family>-<name> and spell shapes, not intents. Search typo3/sysext/core/Resources/Public/Icons/T3Icons/icons.json for the T3Icons set, grep typo3/sysext/*/Configuration/Icons.php and the same file in any other installed package for extension-registered ones, and list typo3/sysext/core/Resources/Public/Icons/Flags/ for the flags-* family."
     }
   ],
   "routing": [
@@ -129,10 +155,6 @@
     {
       "when": "Adding an XLF file and needing the translation domain it will resolve to",
       "call": "typo3_label_lookup with mode \"derive\" and the path"
-    },
-    {
-      "when": "About to reference an icon identifier",
-      "call": "typo3_icon_lookup"
     },
     {
       "when": "About to run tests or any other core check",

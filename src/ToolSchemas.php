@@ -29,7 +29,6 @@ final class ToolSchemas
             'typo3_test_run_guide' => self::testRunGuide(),
             'typo3_architecture_lookup' => self::architectureLookup(),
             'typo3_component_lookup' => self::componentLookup(),
-            'typo3_icon_lookup' => self::iconLookup(),
             'typo3_label_lookup' => self::labelLookup(),
             'typo3_catalog_scope' => self::catalogScope(),
             'typo3_commit_message_guide' => self::commitMessageGuide(),
@@ -182,29 +181,6 @@ final class ToolSchemas
             ], ['title', 'items']),
             'catalog' => self::catalogProvenance(),
         ], ['matchCount', 'components', 'catalog']);
-    }
-
-    /** @return array<string, mixed> */
-    private static function iconLookup(): array
-    {
-        return self::object([
-            'query' => self::nullableString(),
-            'matchCount' => self::integer(),
-            'exactMatch' => ['type' => 'boolean', 'description' => 'Whether the query was a registered identifier. False for a query shaped like one that is not in the snapshot — the listed icons are then suggestions, not the answer.'],
-            'usage' => self::listOf(self::string(), 'How to render an identifier in Fluid, PHP, and TypeScript.'),
-            'icons' => self::listOf(self::object([
-                'identifier' => self::string('The registered icon identifier.'),
-                'category' => self::string(),
-                'aliasOf' => self::nullableString('The identifier this one is an alias of.'),
-                'source' => self::string('Where it is registered: t3icons, flags, or the EXT:<key>/Configuration/Icons.php that declares it.'),
-                'matched' => self::integer('Query terms this identifier matched.'),
-                'score' => self::integer(),
-                'why' => self::listOf(self::string(), 'Why it matched: name part, substring, concept, exact identifier.'),
-            ], ['identifier', 'category', 'aliasOf', 'score', 'why'])),
-            'categories' => self::listOf(self::string()),
-            'concepts' => self::listOf(self::string(), 'Concept keywords that map to icons.'),
-            'catalog' => self::catalogProvenance(),
-        ], ['matchCount', 'icons', 'catalog']);
     }
 
     /** @return array<string, mixed> */

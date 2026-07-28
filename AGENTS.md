@@ -27,7 +27,7 @@ subject is what the tool is about, and the verb comes from a closed list of
 five, because the verb is what tells a caller which shape the answer has:
 
 - `lookup` — a query goes in, matching entries come out, and finding nothing is
-  a legitimate answer: `typo3_icon_lookup`, `typo3_rule_lookup`.
+  a legitimate answer: `typo3_component_lookup`, `typo3_rule_lookup`.
 - `guide` — an answer composed for the task at hand, which always exists:
   `typo3_task_guide`, `typo3_commit_message_guide`.
 - `list` — an enumeration of what is there, no query needed:

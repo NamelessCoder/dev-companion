@@ -15,7 +15,7 @@
       "Every other namespace is declared per template, including the backend one: xmlns:be=\"http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers\" on the root element, together with data-namespace-typo3-fluid=\"true\" so the declaration is stripped from the rendered output.",
       "A backend module resolves templates through the templateRootPaths of its view factory, so a partial is referenced by its name below Resources/Private/Partials, never by a file path.",
       "Fluid escapes output by default. Do not work around it in the template; if a ViewHelper has to return markup, that decision belongs in the ViewHelper via escapeOutput.",
-      "Use typo3_component_lookup for the markup of a backend component and typo3_icon_lookup for an icon identifier instead of writing either from memory."
+      "Use typo3_component_lookup for the markup of a backend component instead of writing it from memory, and resolve an icon identifier against your own checkout rather than from memory."
     ],
     "checks": [
       "CI=true ./Build/Scripts/runTests.sh -s functional"

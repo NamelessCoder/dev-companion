@@ -2,7 +2,8 @@
 
 A remote MCP server (plain PHP) that exposes a curated TYPO3 core contribution
 **knowledge base**: contribution rules, core script and `runTests.sh` notes,
-architecture hints, and commit message conventions. It is read-only knowledge —
+architecture hints, commit message conventions, and a catalog of backend UI
+components, icon identifiers, and registered labels. It is read-only knowledge —
 it does not inspect, read, or run anything against a TYPO3 checkout.
 
 It is built on the official [`mcp/sdk`](https://packagist.org/packages/mcp/sdk)
@@ -33,6 +34,15 @@ files; the server has no dependency on any project, checkout, or git state.
   by topic.
 - `typo3_architecture_hint`: returns architecture hints for TYPO3 core paths or
   task topics, grouped by section.
+- `typo3_component_lookup`: looks up backend UI components by name or topic and
+  returns canonical markup, variant and sub-component classes, the custom
+  property contract, and the styleguide demo and Sass source paths.
+- `typo3_icon_lookup`: validates and discovers core icon identifiers (the
+  registered T3Icons names), grouped by category, so unknown identifiers are
+  caught before runtime.
+- `typo3_label_lookup`: searches registered core labels (XLF trans-units) and
+  returns the fully qualified `LLL:` reference and English source text, so
+  existing labels get reused instead of new keys invented.
 - `typo3_commit_message_help`: drafts and checks TYPO3 core commit messages
   against the contribution rules.
 - `typo3://core`: resource index for available knowledge documents.
@@ -169,6 +179,8 @@ The knowledge base lives in `knowledge/`:
 - `knowledge/architecture-hints/` (one JSON file per section, e.g. `css.json`,
   `php.json`, `typescript.json`, `general.json`)
 - `knowledge/test-suite-hints.json`
+- `knowledge/catalog/` (the lookup catalog: `components.json`, `icons.json`,
+  `labels.json`, `component-checklist.json`)
 
 All knowledge files are read fresh on every request, so editing them takes
 effect immediately — no restart or rebuild. Tool names, input schemas, and

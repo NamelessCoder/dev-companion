@@ -23,7 +23,8 @@ final class ServerFactory
     public static function create(): Server
     {
         $builder = Server::builder()
-            ->setServerInfo(self::SERVER_NAME, self::SERVER_VERSION);
+            ->setServerInfo(self::SERVER_NAME, self::SERVER_VERSION)
+            ->setInstructions(Scope::instructions());
 
         foreach (Tools::definitions() as $definition) {
             $tool = new Tool(

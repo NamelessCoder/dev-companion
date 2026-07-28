@@ -80,7 +80,7 @@ final class Tools
             ],
             [
                 'name' => 'typo3_core_task_brief',
-                'description' => 'Build a task checklist enriched with matching architecture hints and relevant core checks.',
+                'description' => 'Build a task checklist enriched with matching architecture hints and relevant core checks. Built from bundled conventions only: it does not read your checkout, so it also names what you have to establish there yourself and routes to the lookups that fit the task.',
                 'inputSchema' => [
                     'type' => 'object',
                     'properties' => [
@@ -251,6 +251,14 @@ final class Tools
             $lines[] = $entry['depth'];
             $lines[] = 'Tools: ' . implode(', ', $entry['tools']);
             $lines[] = 'Source: ' . $entry['source'];
+        }
+
+        $lines[] = '';
+        $lines[] = 'Deliberately not covered:';
+        foreach ($scope['doesNotCover'] as $entry) {
+            $lines[] = '## ' . $entry['topic'];
+            $lines[] = $entry['why'];
+            $lines[] = 'Instead: ' . $entry['instead'];
         }
 
         $lines[] = '';
@@ -514,6 +522,16 @@ final class Tools
         }
         $lines[] = '- Summarize changed behavior, affected area, and executed commands.';
 
+        // The brief is assembled from bundled knowledge alone, so everything
+        // that depends on the working tree is the agent's job. Saying which
+        // parts those are — and how to get them — is more useful than letting
+        // the checklist read as if the brief had already looked.
+        $lines[] = '';
+        $lines[] = 'Establish in your checkout — this server cannot see it:';
+        foreach (Scope::read()['checkoutDiscovery'] as $entry) {
+            $lines[] = '- ' . $entry['establish'] . "\n  " . $entry['how'];
+        }
+
         $lines[] = '';
         $lines[] = 'Next lookups for this task:';
         foreach (self::nextTools($intents, $domains) as $suggestion) {
@@ -533,21 +551,34 @@ final class Tools
      */
     private static function nextTools(array $intents, array $domains): array
     {
-        $suggestions = [];
+        $candidates = [];
         foreach ($intents as $intent) {
             foreach ($intent['tools'] as $tool) {
-                $suggestions[$tool] = true;
+                $candidates[] = (string) $tool;
             }
         }
 
         if (in_array(Domains::FRONTEND, $domains, true)) {
-            $suggestions['typo3_component_lookup, before writing backend markup or CSS classes'] = true;
+            $candidates[] = 'typo3_component_lookup, before writing backend markup or CSS classes';
         }
-        $suggestions['typo3_architecture_hint with the concrete file paths, once they are known'] = true;
-        $suggestions['typo3_core_run_tests_help, for the targeted runTests.sh invocation'] = true;
-        $suggestions['typo3_make_me_better, when one of these answers was wrong or incomplete'] = true;
+        $candidates[] = 'typo3_architecture_hint with the concrete file paths, once they are known';
+        $candidates[] = 'typo3_core_run_tests_help, for the targeted runTests.sh invocation';
+        if (Feedback::isAvailable()) {
+            $candidates[] = 'typo3_make_me_better, when one of these answers was wrong or incomplete';
+        }
 
-        return array_keys($suggestions);
+        // One line per tool: an intent that already suggested a tool keeps its
+        // own wording, the generic fallback for that tool is dropped.
+        $suggestions = [];
+        foreach ($candidates as $candidate) {
+            $tool = strtok($candidate, ' ,');
+            if ($tool === false || isset($suggestions[$tool])) {
+                continue;
+            }
+            $suggestions[$tool] = $candidate;
+        }
+
+        return array_values($suggestions);
     }
 
     /** @param array<string, mixed> $args */

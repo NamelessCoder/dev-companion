@@ -16,9 +16,21 @@ namespace Typo3CmsMcp;
 final class Scope
 {
     /**
+     * The statement handed to clients at initialize time, so the boundary is
+     * known before the first tool call rather than after a fruitless one.
+     */
+    public static function instructions(): string
+    {
+        return self::read()['instructions'];
+    }
+
+    /**
      * @return array{
      *     purpose: string,
+     *     instructions: string,
      *     covers: array<int, array{topic: string, depth: string, tools: array<int, string>, source: string}>,
+     *     doesNotCover: array<int, array{topic: string, why: string, instead: string}>,
+     *     checkoutDiscovery: array<int, array{establish: string, how: string}>,
      *     routing: array<int, array{when: string, call: string}>
      * }
      */
@@ -31,12 +43,22 @@ final class Scope
 
         return [
             'purpose' => (string) ($decoded['purpose'] ?? ''),
+            'instructions' => (string) ($decoded['instructions'] ?? ''),
             'covers' => array_map(static fn(array $entry): array => [
                 'topic' => (string) $entry['topic'],
                 'depth' => (string) ($entry['depth'] ?? ''),
                 'tools' => array_map('strval', $entry['tools'] ?? []),
                 'source' => (string) ($entry['source'] ?? ''),
             ], $decoded['covers']),
+            'doesNotCover' => array_map(static fn(array $entry): array => [
+                'topic' => (string) $entry['topic'],
+                'why' => (string) ($entry['why'] ?? ''),
+                'instead' => (string) ($entry['instead'] ?? ''),
+            ], $decoded['doesNotCover'] ?? []),
+            'checkoutDiscovery' => array_map(static fn(array $entry): array => [
+                'establish' => (string) $entry['establish'],
+                'how' => (string) ($entry['how'] ?? ''),
+            ], $decoded['checkoutDiscovery'] ?? []),
             'routing' => array_map(static fn(array $entry): array => [
                 'when' => (string) $entry['when'],
                 'call' => (string) $entry['call'],

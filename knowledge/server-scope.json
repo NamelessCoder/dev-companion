@@ -1,5 +1,6 @@
 {
   "purpose": "A curated knowledge base for contributing to the TYPO3 core: the contribution rules, the Gerrit workflow, script and test invocation, architecture conventions, and catalogs of registered backend components, icon identifiers, and labels.",
+  "instructions": "A conventions catalog for TYPO3 core contributions, not a patch assistant. Every answer comes from this server's own bundled knowledge; it never reads, inspects, or runs anything against a TYPO3 core checkout and cannot be pointed at one. It therefore does not know your branch, your changed files, which tests cover them, or whether a path or identifier still exists on your branch — discover that in the checkout yourself, then bring the concrete paths back to typo3_architecture_hint and typo3_core_task_brief. Call typo3_server_scope for what is covered, at which depth, and which tool answers what.",
   "covers": [
     {
       "topic": "Contribution rules and review readiness",
@@ -60,6 +61,56 @@
       "depth": "The core revision, branch, and verification date behind every catalog answer.",
       "tools": ["typo3_catalog_status"],
       "source": "knowledge/catalog/meta.json"
+    }
+  ],
+  "doesNotCover": [
+    {
+      "topic": "Your checkout: changed files, branch, working tree, local git state",
+      "why": "This server answers from its own bundled knowledge and never reads, inspects, or runs anything against a TYPO3 core checkout. It cannot be pointed at one.",
+      "instead": "Determine the changed paths yourself (git status, git diff --name-only), then pass them to typo3_architecture_hint and typo3_core_task_brief to get the conventions and checks that apply to them."
+    },
+    {
+      "topic": "The core source itself: API signatures, TCA of a table, existing implementations",
+      "why": "The knowledge base describes conventions, not code. No core sources ship with it.",
+      "instead": "Read the checkout. Use this server for how the subsystem is built and what a patch has to satisfy."
+    },
+    {
+      "topic": "Which test covers a given file",
+      "why": "Test coverage is a property of the checkout, and no index of it is bundled.",
+      "instead": "Core tests mirror the class path below typo3/sysext/<ext>/Tests/Unit/ and Tests/Functional/, so typo3/sysext/core/Classes/DataHandling/DataHandler.php is covered by typo3/sysext/core/Tests/Unit/DataHandling/DataHandlerTest.php. Look the file up there, then ask typo3_core_run_tests_help for the targeted runTests.sh invocation."
+    },
+    {
+      "topic": "Whether a path, class, label, icon, or CSS class still exists on your branch",
+      "why": "The catalogs are a snapshot of one pinned core revision; a miss means \"not in this snapshot\", never \"does not exist\".",
+      "instead": "Call typo3_catalog_status for the revision behind the catalogs, and verify against the checkout when you work on a different branch."
+    },
+    {
+      "topic": "Gerrit server state: review status, patch sets, votes, CI results",
+      "why": "The server talks to nothing over the network.",
+      "instead": "Use the Gerrit web UI or git. The local side of the workflow — pushing, amending, backporting — is covered by typo3://core/typo3-gerrit-workflow."
+    },
+    {
+      "topic": "Work outside TYPO3 core contribution: site setup, extension development, TypoScript authoring, upgrading an installation",
+      "why": "The knowledge base is scoped to contributing to the core.",
+      "instead": "Use the TYPO3 documentation at https://docs.typo3.org/."
+    }
+  ],
+  "checkoutDiscovery": [
+    {
+      "establish": "Which files the task actually touches",
+      "how": "git status --short and git diff --name-only in the core checkout, then call typo3_architecture_hint with those paths for the conventions that apply to them."
+    },
+    {
+      "establish": "Which tests already cover them",
+      "how": "Core tests mirror the class path below typo3/sysext/<ext>/Tests/Unit/ and Tests/Functional/. Find the file there, then ask typo3_core_run_tests_help for the targeted runTests.sh invocation."
+    },
+    {
+      "establish": "The branch you are on and the branches the change is meant for",
+      "how": "git branch --show-current. In the normal case the patch targets main and the merging core team member handles the backport; push to a release branch only when the bug does not exist on main."
+    },
+    {
+      "establish": "Whether the paths, classes, labels, and identifiers named in an answer still exist on that branch",
+      "how": "Grep the checkout. The catalogs are a snapshot of one revision — typo3_catalog_status names it."
     }
   ],
   "routing": [

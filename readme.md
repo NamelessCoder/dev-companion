@@ -11,6 +11,14 @@ Everything it answers comes from the bundled `knowledge/` files. It is read-only
 knowledge with no dependency on any project, checkout, or git state: it does not
 inspect, read, or run anything against a TYPO3 checkout.
 
+**It is a conventions catalog, not a patch assistant.** It cannot see your
+branch, your changed files, which tests cover them, or whether a path or
+identifier still exists on the branch you work on — that stays the agent's job
+in the checkout. What it does is answer, for a concrete task or path, which
+conventions apply, which check to run, and which registered component, icon, or
+label already exists. `typo3_server_scope` states this boundary in full, and
+`typo3_core_task_brief` names what has to be established in the checkout.
+
 It is built on the official [`mcp/sdk`](https://packagist.org/packages/mcp/sdk)
 and speaks **stdio** (`bin/typo3-cms-mcp`): the MCP client launches it as a
 subprocess, so there is no server to host, no network exposure, and no auth to

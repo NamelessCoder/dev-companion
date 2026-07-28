@@ -23,7 +23,6 @@ final class ToolContractTest extends TestCase
         foreach (Tools::definitions() as $definition) {
             $name = $definition['name'];
 
-            self::assertMatchesRegularExpression('/^typo3_[a-z_]+$/', $name);
             self::assertNotSame('', $definition['description'], $name . ' has no description');
             self::assertSame('object', $definition['inputSchema']['type'], $name . ' has no object input schema');
             self::assertNotNull($definition['outputSchema'], $name . ' has no output schema');

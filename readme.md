@@ -124,6 +124,11 @@ composing several tools does not mean parsing headings and code fences back out
 of prose. All tools are annotated `readOnlyHint`; only `typo3_feedback_record`
 writes anything, and then only a new file.
 
+Names are `typo3_<subject>_<verb>`, with the verb taken from a fixed set —
+`lookup` finds and may find nothing, `guide` composes an answer for a task,
+`list` enumerates, `scope` states what a source covers, `record` writes. So the
+name already says what shape the answer has.
+
 - `typo3_server_scope`: orientation — what this server covers and at which
   depth, what it deliberately does not, and which tool to call when. The place
   to start when it is unclear whether a question can be answered here at all.

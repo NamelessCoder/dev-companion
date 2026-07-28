@@ -20,6 +20,31 @@ vendor/            # Composer dependencies (mcp/sdk); gitignored
 schemas, and response formatting live in `src/`; everything they answer comes
 from `knowledge/`.
 
+## Tool names
+
+Every tool is named `typo3_<subject>_<verb>`. The prefix never varies, the
+subject is what the tool is about, and the verb comes from a closed list of
+five, because the verb is what tells a caller which shape the answer has:
+
+- `lookup` — a query goes in, matching entries come out, and finding nothing is
+  a legitimate answer: `typo3_icon_lookup`, `typo3_rule_lookup`.
+- `guide` — an answer composed for the task at hand, which always exists:
+  `typo3_task_guide`, `typo3_commit_message_guide`.
+- `list` — an enumeration of what is there, no query needed:
+  `typo3_feedback_list`.
+- `scope` — what a source covers and where its boundary runs:
+  `typo3_server_scope`, `typo3_catalog_scope`.
+- `record` — the tool writes something: `typo3_feedback_record`.
+
+A new tool takes the verb whose answer shape it already has, and two tools
+sharing an output schema share their verb. When none of the five fits, the tool
+is probably doing two things at once — split it before inventing a sixth verb.
+If a sixth is genuinely needed, add it to `ToolNamingTest` in the same commit,
+so that list stays the only place the vocabulary is defined.
+
+Leave `core` out of a name: this server is about the TYPO3 core throughout, so
+the segment separates nothing.
+
 Every tool returns a `ToolResult`: the text plus the same answer as data. The
 data half is a contract — clients may validate it against the output schema the
 tool declares in `Typo3CmsMcp\ToolSchemas`, so a field a schema requires has to
@@ -36,8 +61,8 @@ composer stan   # phpstan only
 
 - `tests/Unit/` covers the searching, ranking, and rendering logic;
   `tests/Contract/` holds every tool to its declared schemas and annotations, on
-  a hit and on a miss; `tests/Smoke/` drives `bin/typo3-cms-mcp` as a subprocess
-  over JSON-RPC.
+  a hit and on a miss, and to the naming schema; `tests/Smoke/` drives
+  `bin/typo3-cms-mcp` as a subprocess over JSON-RPC.
 - A behaviour worth a rule in `knowledge/` is worth a test: ranking that must
   prefer one match over another, an answer that must say "no match" instead of
   guessing, a catalog field that must stay usable.

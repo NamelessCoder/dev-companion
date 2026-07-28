@@ -1,5 +1,5 @@
 {
-  "purpose": "A curated knowledge base for contributing to the TYPO3 core: the contribution rules, the Gerrit workflow, script and test invocation, architecture conventions, and catalogs of registered backend components, icon identifiers, and labels.",
+  "purpose": "A curated knowledge base for contributing to the TYPO3 core: the contribution rules, the Gerrit workflow, script and test invocation, architecture conventions per subsystem, and a catalog of the registered backend UI components.",
   "instructions": "A conventions catalog for TYPO3 core contributions, not a patch assistant. Every answer comes from this server's own bundled knowledge; it never reads, inspects, or runs anything against a TYPO3 core checkout and cannot be pointed at one. It therefore does not know your branch, your changed files, which tests cover them, or whether a path or identifier still exists on your branch — discover that in the checkout yourself, then bring the concrete paths back to typo3_architecture_lookup and typo3_task_guide. Call typo3_server_scope for what is covered, at which depth, and which tool answers what.",
   "covers": [
     {
@@ -64,20 +64,20 @@
       "source": "knowledge/catalog/components.json"
     },
     {
-      "topic": "How current the catalogs are",
-      "depth": "The core revision, branch, and verification date behind every catalog answer.",
-      "tools": [
-        "typo3_catalog_scope"
-      ],
-      "source": "knowledge/catalog/meta.json"
-    },
-    {
       "topic": "Translation domains: how the domain of an XLF file is derived",
       "depth": "Complete and computed, not a snapshot: the rules of TranslationDomainResolver ported here, so any XLF path in any extension resolves — including a file that does not exist yet.",
       "tools": [
         "typo3_translation_domain_lookup"
       ],
       "source": "src/Catalog/TranslationDomain.php, typo3://core/typo3-core-architecture"
+    },
+    {
+      "topic": "How current the catalogs are",
+      "depth": "The core revision, branch, and verification date behind every catalog answer.",
+      "tools": [
+        "typo3_catalog_scope"
+      ],
+      "source": "knowledge/catalog/meta.json"
     }
   ],
   "doesNotCover": [
@@ -97,9 +97,9 @@
       "instead": "Core tests mirror the class path below typo3/sysext/<ext>/Tests/Unit/ and Tests/Functional/, so typo3/sysext/core/Classes/DataHandling/DataHandler.php is covered by typo3/sysext/core/Tests/Unit/DataHandling/DataHandlerTest.php. Look the file up there, then ask typo3_test_run_guide for the targeted runTests.sh invocation."
     },
     {
-      "topic": "Whether a path, class, label, icon, or CSS class still exists on your branch",
-      "why": "The catalogs are a snapshot of one pinned core revision; a miss means \"not in this snapshot\", never \"does not exist\".",
-      "instead": "Call typo3_catalog_scope for the revision behind the catalogs, and verify against the checkout when you work on a different branch."
+      "topic": "Whether a component or CSS class still exists on your branch",
+      "why": "The component catalog is a snapshot of one pinned core revision; a miss means \"not in this snapshot\", never \"does not exist\".",
+      "instead": "Call typo3_catalog_scope for the revision behind it, and verify against the checkout when you work on a different branch."
     },
     {
       "topic": "Gerrit server state: review status, patch sets, votes, CI results",

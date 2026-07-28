@@ -305,10 +305,15 @@ final class Tools
         }
 
         $lines[] = '';
-        $lines[] = 'Everything is read-only and answered from the bundled knowledge base; '
+        $lines[] = 'Every lookup and guide is read-only and answered from the bundled knowledge base; '
             . 'nothing is fetched, executed, or looked up online.';
         if (Feedback::isAvailable()) {
-            $lines[] = 'Missing something that belongs here? Leave a note with typo3_feedback_record.';
+            // Naming the one write next to the read-only claim, not after it:
+            // a blanket "everything is read-only" followed by a tool that
+            // creates a file contradicts both the annotations and the behaviour.
+            $lines[] = 'The one exception is typo3_feedback_record, this server\'s only write: '
+                . 'it creates a new markdown note under feedback/ and touches nothing else. '
+                . 'Missing something that belongs here? Leave a note with it.';
         }
 
         return ToolResult::create(implode("\n", $lines), $scope);

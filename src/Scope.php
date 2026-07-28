@@ -18,10 +18,21 @@ final class Scope
     /**
      * The statement handed to clients at initialize time, so the boundary is
      * known before the first tool call rather than after a fruitless one.
+     *
+     * The write sentence is appended rather than stored, because whether this
+     * server can write at all depends on the checkout it runs from — and a
+     * client that is told "read-only" must not then be offered a tool that
+     * creates a file.
      */
     public static function instructions(): string
     {
-        return self::read()['instructions'];
+        $instructions = self::read()['instructions'];
+        if (Feedback::isAvailable()) {
+            $instructions .= ' Every tool here is read-only except typo3_feedback_record, '
+                . 'which creates a new markdown note under feedback/ and writes nothing else.';
+        }
+
+        return $instructions;
     }
 
     /**

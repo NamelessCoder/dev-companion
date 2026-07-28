@@ -1,0 +1,168 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+/*
+ * Verifies the static catalogs below knowledge/catalog/ against a TYPO3 core
+ * checkout and reports drift. It never writes: the catalogs stay hand-curated,
+ * this only tells you what a core update invalidated.
+ *
+ * Usage: bin/verify-catalog [path/to/typo3-core-checkout]
+ */
+
+use Typo3CmsMcp\Catalog\TranslationDomain;
+
+require dirname(__DIR__) . '/vendor/autoload.php';
+
+$coreRoot = rtrim($argv[1] ?? getcwd(), '/');
+if (!is_dir($coreRoot . '/typo3/sysext/core')) {
+    fwrite(STDERR, sprintf("Not a TYPO3 core checkout: %s\n", $coreRoot));
+    fwrite(STDERR, "Usage: bin/verify-catalog [path/to/typo3-core-checkout]\n");
+    exit(2);
+}
+
+$catalogDir = dirname(__DIR__) . '/knowledge/catalog';
+$problems = 0;
+
+/** Reads the trans-unit ids of an XLF file, XLIFF 1.2 and 2.0 alike. */
+$readLabelIds = static function (string $path): ?array {
+    $xml = @simplexml_load_file($path);
+    if ($xml === false || !isset($xml->file)) {
+        return null;
+    }
+
+    $ids = [];
+    $collect = static function (\SimpleXMLElement $parent) use (&$ids, &$collect): void {
+        foreach ($parent->children() as $child) {
+            $name = $child->getName();
+            if ($name === 'trans-unit' || $name === 'unit') {
+                $ids[(string) $child['id']] = true;
+            } elseif ($name === 'group') {
+                $collect($child);
+            }
+        }
+    };
+
+    // XLIFF 1.2 nests units in <body>, XLIFF 2.0 puts them directly in <file>.
+    $collect(isset($xml->file->body) ? $xml->file->body : $xml->file);
+
+    return $ids;
+};
+
+echo "Icons\n";
+$icons = json_decode((string) file_get_contents($catalogDir . '/icons.json'), true);
+$coreIconsFile = $coreRoot . '/typo3/sysext/core/Resources/Public/Icons/T3Icons/icons.json';
+if (!is_file($coreIconsFile)) {
+    echo "  core icons.json not found, skipped\n";
+} else {
+    $coreIcons = json_decode((string) file_get_contents($coreIconsFile), true);
+    $registered = array_keys($coreIcons['icons'] ?? []);
+    $aliases = array_keys($coreIcons['aliases'] ?? []);
+    $known = array_flip(array_merge($registered, $aliases));
+
+    $catalogIdentifiers = [];
+    foreach ($icons['icons'] as $category => $identifiers) {
+        foreach ($identifiers as $identifier) {
+            $catalogIdentifiers[$identifier] = (string) $category;
+        }
+    }
+
+    foreach (array_keys($catalogIdentifiers) as $identifier) {
+        if (!isset($known[$identifier])) {
+            echo '  gone from core: ' . $identifier . "\n";
+            ++$problems;
+        }
+    }
+    foreach ($registered as $identifier) {
+        if (!isset($catalogIdentifiers[$identifier])) {
+            echo '  missing in catalog: ' . $identifier . "\n";
+            ++$problems;
+        }
+    }
+
+    foreach ($icons['aliases'] ?? [] as $alias => $target) {
+        if (!isset($coreIcons['aliases'][$alias])) {
+            echo '  alias gone from core: ' . $alias . "\n";
+            ++$problems;
+        } elseif ($coreIcons['aliases'][$alias] !== $target) {
+            echo '  alias target changed: ' . $alias . ' → ' . $coreIcons['aliases'][$alias] . "\n";
+            ++$problems;
+        }
+    }
+
+    // Every icon a concept keyword promises has to exist.
+    foreach ($icons['concepts'] ?? [] as $concept => $identifiers) {
+        foreach ($identifiers as $identifier) {
+            if (!isset($known[$identifier])) {
+                echo '  concept "' . $concept . '" points at unknown icon: ' . $identifier . "\n";
+                ++$problems;
+            }
+        }
+    }
+
+    printf(
+        "  %d catalog identifiers, %d registered in core, %d aliases, %d concepts\n",
+        count($catalogIdentifiers),
+        count($registered),
+        count($icons['aliases'] ?? []),
+        count($icons['concepts'] ?? []),
+    );
+}
+
+echo "Labels\n";
+$labels = json_decode((string) file_get_contents($catalogDir . '/labels.json'), true);
+$staleLabels = 0;
+$idsByDomain = [];
+foreach ($labels['domains'] as $index => $domain) {
+    $path = $coreRoot . '/typo3/sysext/' . str_replace('EXT:', '', $domain['ref']);
+    if (!is_file($path)) {
+        echo '  file gone: ' . $domain['ref'] . "\n";
+        ++$problems;
+        continue;
+    }
+    $ids = $readLabelIds($path);
+    if ($ids === null) {
+        echo '  unreadable: ' . $domain['ref'] . "\n";
+        ++$problems;
+        continue;
+    }
+    $idsByDomain[$index] = $ids;
+
+    $derived = TranslationDomain::fromReference($domain['ref']);
+    if ($derived === null) {
+        echo '  not an EXT: reference: ' . $domain['ref'] . "\n";
+        ++$problems;
+    }
+}
+foreach ($labels['labels'] as $label) {
+    if (isset($idsByDomain[$label['d']]) && !isset($idsByDomain[$label['d']][$label['id']])) {
+        echo '  label gone: ' . $labels['domains'][$label['d']]['ref'] . ':' . $label['id'] . "\n";
+        ++$staleLabels;
+    }
+}
+$problems += $staleLabels;
+printf("  %d domains, %d labels, %d stale\n", count($labels['domains']), count($labels['labels']), $staleLabels);
+
+echo "Components\n";
+$components = json_decode((string) file_get_contents($catalogDir . '/components.json'), true);
+foreach ($components as $component) {
+    foreach (['sassPath', 'demoPath'] as $key) {
+        $path = $component[$key] ?? null;
+        if (is_string($path) && $path !== '' && !file_exists($coreRoot . '/' . $path)) {
+            echo '  path gone: ' . $component['name'] . ' → ' . $path . "\n";
+            ++$problems;
+        }
+    }
+}
+printf("  %d components\n", count($components));
+
+echo "\n";
+if ($problems === 0) {
+    $revision = trim((string) shell_exec(sprintf('git -C %s rev-parse HEAD 2>/dev/null', escapeshellarg($coreRoot))));
+    printf("No drift against %s%s\n", $coreRoot, $revision === '' ? '' : ' @ ' . substr($revision, 0, 12));
+    exit(0);
+}
+
+printf("%d problem(s) found.\n", $problems);
+exit(1);

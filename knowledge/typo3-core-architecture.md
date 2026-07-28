@@ -15,20 +15,56 @@ official documentation or nearby core code over broad framework advice.
 
 ## Dependency Injection and Services
 
-- Prefer constructor injection for new service dependencies.
-- Use `Configuration/Services.yaml` when explicit service wiring is needed.
+- Autowiring and autoconfiguration are on for the core system extensions: their
+  `Configuration/Services.yaml` sets `autowire`, `autoconfigure`, and
+  `public: false` under `_defaults` and registers the whole `Classes/` tree as a
+  resource. A new service under `Classes/` needs no Services.yaml entry.
+- Prefer constructor injection with a readonly promoted property.
+- `Services.yaml` is for what autowiring cannot resolve: a scalar or otherwise
+  non-autowirable argument, an alias, a service that has to be public, or a
+  factory. For a single such argument, the `#[Autowire]` attribute on the
+  constructor parameter keeps the wiring in the class.
 - Avoid new `GeneralUtility::makeInstance()` calls for regular service
   dependencies unless nearby core code or lifecycle constraints require it.
 - Runtime service wiring changes usually need functional tests.
 
 ## Events, Hooks, and Extension Points
 
-- Prefer modern TYPO3 event APIs for new extension points.
-- Avoid adding hooks for new behavior unless the subsystem still intentionally
-  uses hook-based extension points.
+- A listener is registered with the `#[AsEventListener]` attribute from
+  `TYPO3\CMS\Core\Attribute`, on the class or on a single method. Its arguments
+  are `identifier`, `event`, `method`, `before`, and `after`, and it is
+  repeatable. Autoconfiguration picks it up; do not add an `event.listener` tag
+  to `Services.yaml`.
+- Event classes live in `Classes/Event/` of the extension that dispatches them,
+  are `final`, and are `readonly` where the payload is immutable. A listener
+  that may change the outcome gets setters on the event rather than a return
+  value.
+- Prefer a new event over a hook. A hook is only right where the subsystem still
+  has hook-based extension points.
 - Event payloads should expose stable, minimal state and avoid leaking mutable
   internals.
-- Public extension points need careful naming, documentation, and tests.
+- A PSR-14 event is public API: it needs careful naming, a changelog entry, and
+  tests.
+
+## FormEngine Data Providers
+
+- FormEngine assembles its data through providers registered per form data group
+  in `$GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']` in
+  `typo3/sysext/core/Configuration/DefaultConfiguration.php`. The groups are
+  `tcaDatabaseRecord`, `tcaSelectTreeAjaxFieldData`, `flexFormSegment`, and
+  `tcaInputPlaceholderRecord`.
+- Each provider maps to an array with `depends` and `before`, both listing other
+  provider classes. That graph orders the run — not the order the entries are
+  written in. A provider that sees stale data is usually fixed by adding a
+  dependency, not by changing the provider class.
+- A provider that reads merged page TSconfig has to depend on
+  `PageTsConfigMerged`, or it runs before the TSconfig it reads exists.
+- `DefaultConfiguration.php` holds the defaults of `TYPO3_CONF_VARS`. An edit
+  there changes behaviour in every installation, so say what changed and why in
+  the patch description.
+- Registering or reordering a provider is a runtime-configuration change and is
+  covered by a functional test that renders the form data, not by a unit test of
+  the provider in isolation.
 
 ## Backend TypeScript Modules
 

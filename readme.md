@@ -1,10 +1,11 @@
 # TYPO3 CMS MCP
 
 A local MCP server (plain PHP) that exposes a curated TYPO3 core contribution
-**knowledge base**: contribution rules, core script and `runTests.sh` notes,
-architecture hints, commit message conventions, and a catalog of backend UI
-components, icon identifiers, and registered labels. It is read-only knowledge —
-it does not inspect, read, or run anything against a TYPO3 checkout.
+**knowledge base**: contribution rules, the Gerrit workflow, core script and
+`runTests.sh` notes, architecture hints, commit message conventions, and a
+catalog of backend UI components, icon identifiers, and registered labels. It is
+read-only knowledge — it does not inspect, read, or run anything against a TYPO3
+checkout.
 
 It is built on the official [`mcp/sdk`](https://packagist.org/packages/mcp/sdk)
 and speaks **stdio** (`bin/typo3-cms-mcp`): the MCP client launches it as a
@@ -21,6 +22,87 @@ The server provides MCP-enabled clients with context that is otherwise spread
 across project knowledge, TYPO3 core conventions, and official contribution
 documentation. Everything it returns is derived from the bundled `knowledge/`
 files; the server has no dependency on any project, checkout, or git state.
+
+## Install
+
+Requirements: **PHP 8.2+** and Composer. The package works both ways — as a
+standalone checkout and as a Composer dependency of another project.
+`src/bootstrap.php` locates the Composer autoloader at runtime, so no entrypoint
+needs to know which of the two it is in.
+
+### Standalone
+
+Clone the repository and install the dependencies once:
+
+```bash
+composer install
+```
+
+Then point an MCP client at the entrypoint with an absolute path, for example in
+its `.mcp.json`:
+
+```json
+{
+  "mcpServers": {
+    "typo3-cms-mcp": {
+      "type": "stdio",
+      "command": "php",
+      "args": ["/absolute/path/to/typo3-cms-mcp/bin/typo3-cms-mcp"]
+    }
+  }
+}
+```
+
+This is the setup to use when working on the knowledge base itself, since the
+`feedback/` tools only exist in a checkout.
+
+### As a dependency
+
+The package is not published on Packagist, so it is required from a local
+checkout (or a Git URL) through a `repositories` entry in the consuming
+project's `composer.json`:
+
+```json
+{
+  "repositories": [
+    { "type": "path", "url": "/absolute/path/to/typo3-cms-mcp" }
+  ]
+}
+```
+
+```bash
+composer require typo3/cms-mcp
+```
+
+Composer then exposes the stdio entrypoint as `vendor/bin/typo3-cms-mcp`, which
+is what the consuming project's MCP client is pointed at:
+
+```json
+{
+  "mcpServers": {
+    "typo3-cms-mcp": {
+      "type": "stdio",
+      "command": "php",
+      "args": ["vendor/bin/typo3-cms-mcp"]
+    }
+  }
+}
+```
+
+The knowledge base ships inside the package, so nothing else needs to be
+deployed or configured.
+
+### Smoke test
+
+Two JSON-RPC lines on stdin are enough to see the server come up and list its
+tools:
+
+```bash
+printf '%s\n' \
+  '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2025-03-26","capabilities":{},"clientInfo":{"name":"t","version":"1"}}}' \
+  '{"jsonrpc":"2.0","id":2,"method":"tools/list"}' \
+  | php bin/typo3-cms-mcp
+```
 
 ## Tools
 
@@ -40,7 +122,8 @@ files; the server has no dependency on any project, checkout, or git state.
   caught before runtime.
 - `typo3_label_lookup`: searches registered core labels (XLF trans-units) and
   returns the fully qualified `LLL:` reference and English source text, so
-  existing labels get reused instead of new keys invented.
+  existing labels get reused instead of new keys invented; `mode: domains` lists
+  the registered translation domains instead.
 - `typo3_commit_message_help`: drafts and checks TYPO3 core commit messages
   against the contribution rules.
 - `typo3_make_me_better`: records what was missing, wrong, or unhelpful about an
@@ -48,132 +131,31 @@ files; the server has no dependency on any project, checkout, or git state.
   [Improvement notes](#improvement-notes)).
 - `typo3_feedback_list`: lists those notes, newest first, so they can be worked
   off (standalone checkout only).
+
+## Resources
+
 - `typo3://core`: resource index for available knowledge documents.
 - `typo3://core/{documentId}`: Markdown resource for a single knowledge
-  document.
+  document, for example `typo3://core/typo3-core-rules`.
 
-## Layout
+## Knowledge base
 
-```
-bin/typo3-cms-mcp  # stdio entrypoint (the client launches it as a subprocess)
-src/               # PHP classes (knowledge loading, tools, SDK wiring)
-src/ServerFactory.php  # builds the mcp/sdk server
-src/bootstrap.php  # locates the Composer autoloader
-knowledge/         # the knowledge base (markdown + JSON), the data source
-feedback/          # improvement notes left by agents (standalone checkout only)
-vendor/            # Composer dependencies (mcp/sdk); gitignored
-```
+Everything the tools and resources answer from lives in `knowledge/`. The
+markdown documents are what `typo3://core/{documentId}` serves; the JSON files
+drive the individual tools:
 
-The entrypoint builds the server via `Typo3CmsMcp\ServerFactory`; the tool and
-resource logic lives in `src/Tools.php` and `src/Knowledge.php`, driven entirely
-by `knowledge/`.
-
-## Install
-
-The package works both ways: as a Composer dependency of another project, and
-as a standalone checkout. `src/bootstrap.php` locates the Composer autoloader at
-runtime, so no entrypoint needs to know which of the two it is in.
-
-### As a dependency
-
-```bash
-composer require typo3/cms-mcp
-```
-
-Composer exposes the stdio entrypoint as `vendor/bin/typo3-cms-mcp`. Point the
-MCP client of the consuming project at it, for example in its `.mcp.json`:
-
-```json
-{
-  "mcpServers": {
-    "typo3-cms-mcp": {
-      "type": "stdio",
-      "command": "php",
-      "args": ["vendor/bin/typo3-cms-mcp"]
-    }
-  }
-}
-```
-
-The knowledge base ships inside the package, so nothing else needs to be
-deployed or configured.
-
-### Standalone
-
-Clone the repository and install the dependencies once:
-
-```bash
-composer install
-```
-
-This is the setup to use when working on the knowledge base itself, since the
-`feedback/` tools only exist in a checkout.
-
-## Run locally
-
-Point an MCP client at the binary:
-
-```json
-{
-  "mcpServers": {
-    "typo3-cms-mcp": {
-      "type": "stdio",
-      "command": "php",
-      "args": ["/absolute/path/to/typo3-cms-mcp/bin/typo3-cms-mcp"]
-    }
-  }
-}
-```
-
-Quick stdio smoke test from the shell:
-
-```bash
-printf '%s\n' \
-  '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2025-03-26","capabilities":{},"clientInfo":{"name":"t","version":"1"}}}' \
-  '{"jsonrpc":"2.0","id":2,"method":"tools/list"}' \
-  | php bin/typo3-cms-mcp
-```
-
-## Improvement notes
-
-The knowledge base only grows if the gaps are known, so an agent that hits one
-can report it through `typo3_make_me_better`. Every note becomes its own
-markdown file under `feedback/`, named after its timestamp and a slug of the
-observation:
-
-```
-feedback/2026-07-28-133403-typo3-label-lookup-liefert-keine-treffer.md
-```
-
-Front matter carries `date`, `category` (`missing-knowledge`, `wrong-answer`,
-`tool-gap`, `bug`, `idea`), `status`, and the `tool` the note is about.
-`typo3_feedback_list` reads them back, newest first and open ones by default;
-set `status: done` in a note once it has been implemented.
-
-One file per note means concurrent agents never write to the same file, and the
-filename is always derived from the content — an agent cannot choose it and so
-cannot write outside the directory.
-
-Both tools exist **only in a standalone checkout**. Installed as a Composer
-dependency the package lives in `vendor/`, where anything written would be lost
-on the next `composer install`; there the server stays strictly read-only and
-neither tool appears in `tools/list`.
-
-## Knowledge Base
-
-The knowledge base lives in `knowledge/`:
-
-- `knowledge/typo3-core-rules.md`
-- `knowledge/typo3-core-scripts.md`
-- `knowledge/typo3-core-architecture.md`
-- `knowledge/typo3-css-architecture.md`
-- `knowledge/typo3-commit-messages.md`
-- `knowledge/typo3-contribution-sources.md`
-- `knowledge/architecture-hints/` (one JSON file per section, e.g. `css.json`,
-  `php.json`, `typescript.json`, `general.json`)
-- `knowledge/test-suite-hints.json`
-- `knowledge/catalog/` (the lookup catalog: `components.json`, `icons.json`,
+- `typo3-core-rules.md`
+- `typo3-core-scripts.md`
+- `typo3-core-architecture.md`
+- `typo3-css-architecture.md`
+- `typo3-commit-messages.md`
+- `typo3-gerrit-workflow.md`
+- `typo3-contribution-sources.md`
+- `architecture-hints/` (one JSON file per section: `css.json`, `php.json`,
+  `typescript.json`, `general.json`)
+- `catalog/` (the lookup catalog: `components.json`, `icons.json`,
   `labels.json`, `component-checklist.json`)
+- `test-suite-hints.json`, `task-intents.json`
 
 All knowledge files are read fresh on every request, so editing them takes
 effect immediately — no restart or rebuild. Tool names, input schemas, and
@@ -186,3 +168,49 @@ Useful upstream sources:
   https://docs.typo3.org/m/typo3/guide-contributionworkflow/main/en-us/
 - TYPO3 Core Commit Message Rules:
   https://docs.typo3.org/m/typo3/guide-contributionworkflow/main/en-us/Appendix/CommitMessage.html
+
+## Improvement notes
+
+The knowledge base only grows if the gaps are known, so an agent that hits one
+can report it through `typo3_make_me_better`. Every note becomes its own
+markdown file under `feedback/`, named after its timestamp and a slug of the
+observation:
+
+```
+feedback/2026-07-28-134429-typo3-label-lookup-returns-legacy-lll-file-path.md
+```
+
+Front matter carries `date`, `category` (`missing-knowledge`, `wrong-answer`,
+`tool-gap`, `bug`, `idea`), `status`, and the `tool` the note is about.
+`typo3_feedback_list` reads them back, newest first and open ones by default.
+
+A note is closed by **deleting** it in the commit that implements the
+improvement — not by editing its `status`. So `feedback/` only ever holds open
+items, and every note still there is still a gap.
+
+One file per note means concurrent agents never write to the same file, and the
+filename is always derived from the content — an agent cannot choose it and so
+cannot write outside the directory.
+
+Both tools exist **only in a standalone checkout**. Installed as a Composer
+dependency the package lives in `vendor/`, where anything written would be lost
+on the next `composer install`; there the server stays strictly read-only and
+neither tool appears in `tools/list`.
+
+## Layout
+
+```
+bin/typo3-cms-mcp  # stdio entrypoint (the client launches it as a subprocess)
+src/               # PHP classes (knowledge loading, tools, SDK wiring)
+src/ServerFactory.php  # builds the mcp/sdk server from the tool definitions
+src/Mcp/           # SDK handlers: tool dispatch and typo3://core resources
+src/Catalog/       # the component, icon, and label lookups
+src/bootstrap.php  # locates the Composer autoloader
+knowledge/         # the knowledge base (markdown + JSON), the data source
+feedback/          # improvement notes left by agents (standalone checkout only)
+vendor/            # Composer dependencies (mcp/sdk); gitignored
+```
+
+`Typo3CmsMcp\Tools` declares every tool and renders its text output;
+`Typo3CmsMcp\Knowledge` reads and searches the markdown documents. Both are
+driven entirely by `knowledge/`.

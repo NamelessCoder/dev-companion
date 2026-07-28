@@ -91,6 +91,7 @@ final class ToolSchemas
             'area' => self::nullableString('Affected subsystem or path, if one was given.'),
             'changeType' => self::string(),
             'domains' => self::listOf(self::string()),
+            'outsideCore' => ['type' => 'boolean', 'description' => 'True when the task reads as work on a project or third-party extension. The answer then holds core conventions that may transfer, not a checklist for the task.'],
             'intents' => self::listOf(self::object([
                 'id' => self::string(),
                 'title' => self::string(),

@@ -534,12 +534,28 @@ final class Tools
         $architecture = ArchitectureHints::find($paths, $task, 4);
         $testHints = array_slice(TestSuiteHints::find($subject, $domains), 0, 4);
 
-        $lines = [
+        // Several of the conventions below — the changelog, the Gerrit
+        // workflow, the runTests.sh suites — do not exist outside the core, so
+        // handing them over as a checklist for a project extension is worse
+        // than saying the question is outside what this server knows.
+        $outsideCore = Scope::isOutsideCore($paths, $subject);
+
+        $lines = [];
+        if ($outsideCore) {
+            $lines[] = 'This reads as work outside the TYPO3 core — a project or third-party extension. '
+                . 'This server only knows the core\'s own conventions, and several of them (the changelog, '
+                . 'the Gerrit workflow, the runTests.sh suites) have no counterpart there. Take what follows '
+                . 'as conventions that may transfer, not as a checklist for this task, and use '
+                . 'https://docs.typo3.org/ for extension development. typo3_server_scope states the boundary.';
+            $lines[] = '';
+        }
+
+        $lines = array_merge($lines, [
             'Task: ' . $task,
             'Area: ' . ($area === '' ? 'unknown' : $area),
             'Change type: ' . $changeType,
             'Domains: ' . implode(', ', $domains),
-        ];
+        ]);
         if ($confirmed !== []) {
             $lines[] = 'Recognized as: ' . implode(', ', array_map(
                 static fn(array $intent): string => (string) $intent['title'],
@@ -670,6 +686,7 @@ final class Tools
             'area' => $area === '' ? null : $area,
             'changeType' => $changeType,
             'domains' => $domains,
+            'outsideCore' => $outsideCore,
             'intents' => array_map(static fn(array $intent): array => [
                 'id' => (string) $intent['id'],
                 'title' => (string) $intent['title'],

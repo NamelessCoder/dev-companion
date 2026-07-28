@@ -33,6 +33,33 @@ final class ScopeTest extends TestCase
     }
 
     #[Test]
+    public function workOnAProjectExtensionIsRecognizedAsOutsideTheCore(): void
+    {
+        self::assertTrue(Scope::isOutsideCore([], 'Create a new site set in a project extension'));
+        self::assertTrue(Scope::isOutsideCore(['packages/my_sitepackage/Configuration/Sets/Main/config.yaml']));
+
+        self::assertFalse(Scope::isOutsideCore([], 'Add a reusable site set to TYPO3 core'));
+        self::assertFalse(Scope::isOutsideCore(['typo3/sysext/frontend/Configuration/Sets/Fluid/config.yaml']));
+        // A core path wins: a task naming both is core work that mentions the
+        // other side, not the other way round.
+        self::assertFalse(Scope::isOutsideCore(
+            ['typo3/sysext/core/Classes/Foo.php'],
+            'so that a project extension can override it'
+        ));
+    }
+
+    #[Test]
+    public function aTaskOutsideTheCoreIsToldSoBeforeTheChecklist(): void
+    {
+        $result = Tools::call('typo3_task_guide', [
+            'task' => 'Create a new TYPO3 site set in a project extension with config.yaml and TypoScript',
+        ]);
+
+        self::assertTrue($result->data['outsideCore']);
+        self::assertStringStartsWith('This reads as work outside the TYPO3 core', $result->text);
+    }
+
+    #[Test]
     public function everyToolNamedInTheScopeExists(): void
     {
         $known = $this->toolNames();

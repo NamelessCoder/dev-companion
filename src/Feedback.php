@@ -37,7 +37,7 @@ final class Feedback
             return false;
         }
 
-        return (InstalledVersions::getRootPackage()['name'] ?? null) === self::PACKAGE_NAME;
+        return InstalledVersions::getRootPackage()['name'] === self::PACKAGE_NAME;
     }
 
     /**

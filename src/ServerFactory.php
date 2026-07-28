@@ -33,7 +33,12 @@ final class ServerFactory
                 null,
                 $definition['inputSchema'],
                 $definition['description'],
-                ToolAnnotations::fromArray($definition['annotations']),
+                new ToolAnnotations(
+                    readOnlyHint: $definition['annotations']['readOnlyHint'],
+                    destructiveHint: $definition['annotations']['destructiveHint'],
+                    idempotentHint: $definition['annotations']['idempotentHint'],
+                    openWorldHint: $definition['annotations']['openWorldHint'],
+                ),
                 outputSchema: $definition['outputSchema'],
             );
             $builder->add($tool, new ToolHandler($definition['name']));

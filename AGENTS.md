@@ -11,6 +11,7 @@ src/Catalog/       # the component, icon, and label lookups
 src/bootstrap.php  # locates the Composer autoloader
 knowledge/         # the knowledge base (markdown + JSON), the data source
 feedback/          # improvement notes left by agents (standalone checkout only)
+tests/             # unit, tool contract, and stdio smoke tests
 vendor/            # Composer dependencies (mcp/sdk); gitignored
 ```
 
@@ -24,6 +25,24 @@ data half is a contract — clients may validate it against the output schema th
 tool declares in `Typo3CmsMcp\ToolSchemas`, so a field a schema requires has to
 be present on every path through the tool, misses included. Add fields rather
 than renaming them.
+
+## Checks
+
+```bash
+composer ci     # lint, static analysis, tests — what CI runs
+composer test   # phpunit only
+composer stan   # phpstan only
+```
+
+- `tests/Unit/` covers the searching, ranking, and rendering logic;
+  `tests/Contract/` holds every tool to its declared schemas and annotations, on
+  a hit and on a miss; `tests/Smoke/` drives `bin/typo3-cms-mcp` as a subprocess
+  over JSON-RPC.
+- A behaviour worth a rule in `knowledge/` is worth a test: ranking that must
+  prefer one match over another, an answer that must say "no match" instead of
+  guessing, a catalog field that must stay usable.
+- `FeedbackTest` writes real notes below `feedback/` and removes them again.
+  A leftover file carries `phpunit-feedback-fixture` in its text.
 
 ## Feedback workflow
 

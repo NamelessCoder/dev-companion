@@ -169,21 +169,14 @@ final class Knowledge
         $buffer = [];
         $inFence = false;
 
-        $flush = static function () use (&$sections, &$heading, &$buffer): void {
-            $body = trim(implode("\n", $buffer));
-            if ($body !== '' || $heading !== '') {
-                $sections[] = ['heading' => $heading, 'body' => $body];
-            }
-            $buffer = [];
-        };
-
         foreach ($lines as $line) {
             if (str_starts_with(ltrim($line), '```')) {
                 $inFence = !$inFence;
             }
 
             if (!$inFence && preg_match('/^##\s+(.+)$/', $line, $matches) === 1) {
-                $flush();
+                $sections = self::flushSection($sections, $heading, $buffer);
+                $buffer = [];
                 $heading = trim($matches[1]);
                 continue;
             }
@@ -196,9 +189,25 @@ final class Knowledge
             $buffer[] = $line;
         }
 
-        $flush();
+        return self::flushSection($sections, $heading, $buffer);
+    }
 
-        return array_values(array_filter($sections, static fn(array $s): bool => $s['body'] !== ''));
+    /**
+     * Appends the buffered section, unless it has no body: a heading with
+     * nothing under it is not an answer.
+     *
+     * @param array<int, array{heading: string, body: string}> $sections
+     * @param array<int, string> $buffer
+     * @return array<int, array{heading: string, body: string}>
+     */
+    private static function flushSection(array $sections, string $heading, array $buffer): array
+    {
+        $body = trim(implode("\n", $buffer));
+        if ($body !== '') {
+            $sections[] = ['heading' => $heading, 'body' => $body];
+        }
+
+        return $sections;
     }
 
     /**

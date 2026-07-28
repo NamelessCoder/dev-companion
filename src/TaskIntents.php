@@ -68,7 +68,7 @@ final class TaskIntents
      * The rule sections behind the detected intents, deduplicated.
      *
      * @param array<int, array<string, mixed>> $intents
-     * @return array<int, array{id: string, title: string, heading: string, body: string, coverage: float, truncated: bool}>
+     * @return array<int, array{id: string, title: string, heading: string, body: string, score: int, coverage: float, truncated: bool}>
      */
     public static function rules(array $intents, int $limitPerIntent = 2): array
     {

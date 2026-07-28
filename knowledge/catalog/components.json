@@ -302,7 +302,7 @@
       "<div class=\"form-check form-switch\">\n  <input class=\"form-check-input\" type=\"checkbox\" id=\"switch-1\">\n  <label class=\"form-check-label\" for=\"switch-1\">Label</label>\n</div>",
       "<div class=\"form-check\">\n  <input class=\"form-check-input\" type=\"radio\" name=\"r\" id=\"radio-1\">\n  <label class=\"form-check-label\" for=\"radio-1\">Label</label>\n</div>"
     ],
-    "sassPath": "Build/Sources/Sass/component/forms/",
+    "sassPath": "Build/Sources/Sass/component/forms/_form-check.scss",
     "demoPath": "typo3/sysext/styleguide/Resources/Private/Templates/Backend/Components/Checkboxes.fluid.html",
     "keywords": ["checkbox", "radio", "switch", "toggle", "form-check", "form check", "form-switch"]
   },
@@ -319,7 +319,7 @@
     "examples": [
       "<div class=\"input-group\">\n  <input class=\"form-control\" type=\"search\" name=\"searchTerm\">\n</div>"
     ],
-    "sassPath": "Build/Sources/Sass/component/forms/",
+    "sassPath": "Build/Sources/Sass/component/forms/_form-control.scss",
     "demoPath": "typo3/sysext/styleguide/Resources/Private/Templates/Backend/Components/Input.fluid.html",
     "keywords": ["input", "form control", "form-control", "text field", "textarea", "select", "input-group", "input group"]
   },

@@ -429,7 +429,7 @@ final class Tools
      * keeps its own heading and original formatting, so code blocks and nested
      * lists survive.
      *
-     * @param array<int, array{id: string, title: string, heading: string, body: string, coverage: float, truncated: bool}> $results
+     * @param array<int, array{id: string, title: string, heading: string, body: string, score: int, coverage: float, truncated: bool}> $results
      */
     private static function renderSections(array $results): string
     {
@@ -926,7 +926,9 @@ final class Tools
             $appendList('Sub-components', $c['subComponents']);
             $appendList('Custom properties', $c['customProperties']);
 
-            $lines[] = 'Sass source: ' . $c['sassPath'];
+            $lines[] = $c['sassPath'] === null
+                ? 'Sass source: none — this is a web component and carries its styles in its element source.'
+                : 'Sass source: ' . $c['sassPath'];
             $lines[] = 'Styleguide demo: ' . ($c['demoPath'] ?? 'none (not a styleguide component)');
 
             if ($c['examples'] !== []) {

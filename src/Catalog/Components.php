@@ -30,7 +30,7 @@ final class Components
      *     variants: array<int, string>, modifiers: array<int, string>,
      *     subComponents: array<int, string>, customProperties: array<int, string>,
      *     markup: string, examples: array<int, string>,
-     *     sassPath: string, demoPath: ?string, keywords: array<int, string>
+     *     sassPath: ?string, demoPath: ?string, keywords: array<int, string>
      * }>
      */
     public static function load(): array
@@ -51,7 +51,7 @@ final class Components
             'customProperties' => array_map('strval', $entry['customProperties'] ?? []),
             'markup' => (string) ($entry['markup'] ?? ''),
             'examples' => array_map('strval', $entry['examples'] ?? []),
-            'sassPath' => (string) ($entry['sassPath'] ?? ''),
+            'sassPath' => isset($entry['sassPath']) ? (string) $entry['sassPath'] : null,
             'demoPath' => isset($entry['demoPath']) ? (string) $entry['demoPath'] : null,
             'keywords' => array_map('strval', $entry['keywords'] ?? []),
         ], $decoded);

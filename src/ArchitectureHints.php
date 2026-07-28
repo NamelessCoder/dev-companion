@@ -60,7 +60,7 @@ final class ArchitectureHints
      * @param array<int, string> $paths
      * @return array{
      *     matchedHints: array<int, array<string, mixed>>,
-     *     knowledgeSections: array<int, array{id: string, title: string, heading: string, body: string, coverage: float, truncated: bool}>,
+     *     knowledgeSections: array<int, array{id: string, title: string, heading: string, body: string, score: int, coverage: float, truncated: bool}>,
      *     domains: array<int, string>
      * }
      */

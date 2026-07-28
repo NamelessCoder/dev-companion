@@ -218,7 +218,7 @@ final class CommitMessage
                 'issues' => $issues,
                 'relatedIssues' => $relatedIssues,
                 'releases' => $releases,
-                'body' => implode("\n", $lines),
+                'body' => trim(implode("\n", $lines)),
                 'isBreaking' => $isBreaking,
                 'extraTrailers' => $extraTrailers,
             ],
@@ -349,37 +349,34 @@ final class CommitMessage
         $paragraph = [];
         $inFence = false;
 
-        $flush = static function () use (&$paragraph, &$output): void {
-            if ($paragraph !== []) {
-                $output[] = self::wrapParagraph(implode(' ', $paragraph), '', '');
-                $paragraph = [];
-            }
-        };
-
         foreach ($lines as $line) {
             $line = rtrim($line);
 
             if (str_starts_with(ltrim($line), '```')) {
-                $flush();
+                $output = self::flushParagraph($output, $paragraph);
+                $paragraph = [];
                 $inFence = !$inFence;
                 $output[] = $line;
                 continue;
             }
 
             if ($inFence || preg_match('/^\s/', $line) === 1) {
-                $flush();
+                $output = self::flushParagraph($output, $paragraph);
+                $paragraph = [];
                 $output[] = $line;
                 continue;
             }
 
             if (trim($line) === '') {
-                $flush();
+                $output = self::flushParagraph($output, $paragraph);
+                $paragraph = [];
                 $output[] = '';
                 continue;
             }
 
             if (preg_match('/^([-*+]\s+|\d+[.)]\s+)(.*)$/', $line, $matches) === 1) {
-                $flush();
+                $output = self::flushParagraph($output, $paragraph);
+                $paragraph = [];
                 $output[] = self::wrapParagraph(
                     $matches[2],
                     $matches[1],
@@ -391,9 +388,23 @@ final class CommitMessage
             $paragraph[] = $line;
         }
 
-        $flush();
+        return rtrim(implode("\n", self::flushParagraph($output, $paragraph)));
+    }
 
-        return rtrim(implode("\n", $output));
+    /**
+     * Wraps the collected prose lines as one paragraph and appends them.
+     *
+     * @param array<int, string> $output
+     * @param array<int, string> $paragraph
+     * @return array<int, string>
+     */
+    private static function flushParagraph(array $output, array $paragraph): array
+    {
+        if ($paragraph !== []) {
+            $output[] = self::wrapParagraph(implode(' ', $paragraph), '', '');
+        }
+
+        return $output;
     }
 
     /** Greedy word wrap that never splits a word. */

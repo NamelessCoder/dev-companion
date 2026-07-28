@@ -160,10 +160,10 @@ final class ToolSchemas
                 'customProperties' => self::listOf(self::string()),
                 'markup' => self::string('Canonical markup of the component.'),
                 'examples' => self::listOf(self::string()),
-                'sassPath' => self::string('Sass source in the core checkout.'),
+                'sassPath' => self::nullableString('Sass source in the core checkout; null for a web component that carries its own styles.'),
                 'demoPath' => self::nullableString('Styleguide demo in the core checkout, if there is one.'),
                 'matchedIn' => self::listOf(self::string(), 'Where the query matched: name, keywords, sub-component classes, description.'),
-            ], ['name', 'title', 'rootClass', 'sassPath'])),
+            ], ['name', 'title', 'rootClass', 'sassPath', 'demoPath'])),
             'checklist' => self::object([
                 'title' => self::string(),
                 'intro' => self::string(),

@@ -98,10 +98,21 @@ tools:
 
 ```bash
 printf '%s\n' \
-  '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2025-03-26","capabilities":{},"clientInfo":{"name":"t","version":"1"}}}' \
+  '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2025-11-25","capabilities":{},"clientInfo":{"name":"t","version":"1"}}}' \
   '{"jsonrpc":"2.0","id":2,"method":"tools/list"}' \
   | php bin/typo3-cms-mcp
 ```
+
+### Tests
+
+```bash
+composer ci
+```
+
+Lints, runs the static analysis, and runs the test suite: the search and
+ranking logic, every tool against its declared schemas and annotations, and the
+stdio entrypoint driven as a real subprocess. CI runs the same command on every
+supported PHP version.
 
 ## Tools
 

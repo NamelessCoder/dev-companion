@@ -105,6 +105,14 @@ printf '%s\n' \
 
 ## Tools
 
+Every tool answers twice: the readable text, and the same answer as
+`structuredContent` matching the `outputSchema` the tool declares — matches with
+their source, coverage and score, checks as command strings, components, icons
+and labels as typed records, commit diagnostics as `level`/`code`/`message`. So
+composing several tools does not mean parsing headings and code fences back out
+of prose. All tools are annotated `readOnlyHint`; only `typo3_make_me_better`
+writes anything, and then only a new file.
+
 - `typo3_server_scope`: orientation — what this server covers and at which
   depth, what it deliberately does not, and which tool to call when. The place
   to start when it is unclear whether a question can be answered here at all.

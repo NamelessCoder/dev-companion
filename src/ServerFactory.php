@@ -6,6 +6,7 @@ namespace Typo3CmsMcp;
 
 use Mcp\Schema\ResourceDefinition;
 use Mcp\Schema\Tool;
+use Mcp\Schema\ToolAnnotations;
 use Mcp\Server;
 use Typo3CmsMcp\Mcp\ResourceHandler;
 use Typo3CmsMcp\Mcp\ToolHandler;
@@ -32,7 +33,8 @@ final class ServerFactory
                 null,
                 $definition['inputSchema'],
                 $definition['description'],
-                null,
+                ToolAnnotations::fromArray($definition['annotations']),
+                outputSchema: $definition['outputSchema'],
             );
             $builder->add($tool, new ToolHandler($definition['name']));
         }

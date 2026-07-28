@@ -14,10 +14,16 @@ feedback/          # improvement notes left by agents (standalone checkout only)
 vendor/            # Composer dependencies (mcp/sdk); gitignored
 ```
 
-`Typo3CmsMcp\Tools` declares every tool and renders its text output;
+`Typo3CmsMcp\Tools` declares every tool and builds its answer;
 `Typo3CmsMcp\Knowledge` reads and searches the markdown documents. Tool names,
-input schemas, and response formatting live in `src/`; everything they answer
-comes from `knowledge/`.
+schemas, and response formatting live in `src/`; everything they answer comes
+from `knowledge/`.
+
+Every tool returns a `ToolResult`: the text plus the same answer as data. The
+data half is a contract — clients may validate it against the output schema the
+tool declares in `Typo3CmsMcp\ToolSchemas`, so a field a schema requires has to
+be present on every path through the tool, misses included. Add fields rather
+than renaming them.
 
 ## Feedback workflow
 

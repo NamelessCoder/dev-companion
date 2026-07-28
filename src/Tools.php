@@ -10,8 +10,11 @@ use Typo3CmsMcp\Catalog\Labels;
 use Typo3CmsMcp\Catalog\Meta as CatalogMeta;
 
 /**
- * Defines the knowledge tools and renders their text output. Mirrors the
- * behaviour of the former TypeScript tools.
+ * Defines the knowledge tools and builds their answers.
+ *
+ * Every tool returns a ToolResult: the rendered text and the same answer as
+ * data, matching the output schema declared for that tool in ToolSchemas. The
+ * text is what makes an answer usable; the data is what makes it composable.
  */
 final class Tools
 {
@@ -44,7 +47,28 @@ final class Tools
         'unknown' => '',
     ];
 
-    /** @return array<int, array{name: string, description: string, inputSchema: array<string, mixed>}> */
+    /**
+     * Every tool but typo3_make_me_better only reads bundled knowledge: same
+     * arguments, same answer, no side effect, nothing outside this package.
+     *
+     * @var array<string, bool>
+     */
+    private const READ_ONLY_ANNOTATIONS = [
+        'readOnlyHint' => true,
+        'destructiveHint' => false,
+        'idempotentHint' => true,
+        'openWorldHint' => false,
+    ];
+
+    /**
+     * @return array<int, array{
+     *     name: string,
+     *     description: string,
+     *     inputSchema: array<string, mixed>,
+     *     annotations: array<string, bool>,
+     *     outputSchema: array<string, mixed>|null
+     * }>
+     */
     public static function definitions(): array
     {
         $definitions = [
@@ -183,16 +207,29 @@ final class Tools
             array_push($definitions, ...self::feedbackDefinitions());
         }
 
-        return $definitions;
+        return array_map(static function (array $definition): array {
+            $definition['annotations'] ??= self::READ_ONLY_ANNOTATIONS;
+            $definition['outputSchema'] = ToolSchemas::forTool($definition['name']);
+
+            return $definition;
+        }, $definitions);
     }
 
-    /** @return array<int, array{name: string, description: string, inputSchema: array<string, mixed>}> */
+    /** @return array<int, array{name: string, description: string, inputSchema: array<string, mixed>, annotations?: array<string, bool>}> */
     private static function feedbackDefinitions(): array
     {
         return [
             [
                 'name' => 'typo3_make_me_better',
                 'description' => 'Leave a note about a gap, wrong answer, or missing capability of this knowledge server. The note is stored as markdown in this project so it can be implemented later. Use it whenever an answer was incomplete or a lookup found nothing that should have been there.',
+                // The one tool that writes: a new note file per call, never
+                // touching an existing one.
+                'annotations' => [
+                    'readOnlyHint' => false,
+                    'destructiveHint' => false,
+                    'idempotentHint' => false,
+                    'openWorldHint' => false,
+                ],
                 'inputSchema' => [
                     'type' => 'object',
                     'properties' => [
@@ -221,7 +258,7 @@ final class Tools
     }
 
     /** @param array<string, mixed> $args */
-    public static function call(string $name, array $args): string
+    public static function call(string $name, array $args): ToolResult
     {
         return match ($name) {
             'typo3_server_scope' => self::serverScope(),
@@ -241,7 +278,7 @@ final class Tools
         };
     }
 
-    private static function serverScope(): string
+    private static function serverScope(): ToolResult
     {
         $scope = Scope::read();
 
@@ -274,23 +311,26 @@ final class Tools
             $lines[] = 'Missing something that belongs here? Record it with typo3_make_me_better.';
         }
 
-        return implode("\n", $lines);
+        return ToolResult::create(implode("\n", $lines), $scope);
     }
 
     /** @param array<string, mixed> $args */
-    private static function makeMeBetter(array $args): string
+    private static function makeMeBetter(array $args): ToolResult
     {
         $file = Feedback::record($args);
 
-        return sprintf(
-            "Thanks — noted in %s.\n\nIt will be picked up when the knowledge base is next improved; "
-            . 'nothing about the current answer changes.',
-            $file,
+        return ToolResult::create(
+            sprintf(
+                "Thanks — noted in %s.\n\nIt will be picked up when the knowledge base is next improved; "
+                . 'nothing about the current answer changes.',
+                $file,
+            ),
+            ['file' => $file],
         );
     }
 
     /** @param array<string, mixed> $args */
-    private static function feedbackList(array $args): string
+    private static function feedbackList(array $args): ToolResult
     {
         $status = is_string($args['status'] ?? null) ? $args['status'] : 'open';
         $category = is_string($args['category'] ?? null) ? $args['category'] : null;
@@ -299,9 +339,10 @@ final class Tools
         $notes = Feedback::notes($status, $category, $limit);
 
         if ($notes === []) {
-            return $status === 'open'
-                ? 'No open improvement notes.'
-                : 'No improvement notes recorded yet.';
+            return ToolResult::create(
+                $status === 'open' ? 'No open improvement notes.' : 'No improvement notes recorded yet.',
+                ['count' => 0, 'notes' => []],
+            );
         }
 
         $lines = array_map(static function (array $note): string {
@@ -318,11 +359,14 @@ final class Tools
             );
         }, $notes);
 
-        return sprintf("%d improvement note(s):\n\n%s", count($notes), implode("\n", $lines));
+        return ToolResult::create(
+            sprintf("%d improvement note(s):\n\n%s", count($notes), implode("\n", $lines)),
+            ['count' => count($notes), 'notes' => $notes],
+        );
     }
 
     /** @param array<string, mixed> $args */
-    private static function ruleLookup(array $args): string
+    private static function ruleLookup(array $args): ToolResult
     {
         $query = (string) ($args['query'] ?? '');
         $results = Knowledge::search($query);
@@ -331,17 +375,25 @@ final class Tools
             return self::noKnowledgeMatch($query);
         }
 
-        return self::renderSections($results);
+        return ToolResult::create(self::renderSections($results), [
+            'query' => $query,
+            'matchCount' => count($results),
+            'matches' => self::matchRecords($results),
+        ]);
     }
 
     /** @param array<string, mixed> $args */
-    private static function scriptHelp(array $args): string
+    private static function scriptHelp(array $args): ToolResult
     {
         $task = (string) ($args['task'] ?? '');
         $results = Knowledge::search($task, ['typo3-core-scripts']);
 
         if ($results !== []) {
-            return self::renderSections($results);
+            return ToolResult::create(self::renderSections($results), [
+                'query' => $task,
+                'matchCount' => count($results),
+                'matches' => self::matchRecords($results),
+            ]);
         }
 
         // Nothing about scripts matched. Say so, and route to the documents that
@@ -353,18 +405,23 @@ final class Tools
         );
 
         $elsewhere = Knowledge::search($task);
-        if ($elsewhere !== []) {
-            $titles = array_values(array_unique(array_map(
-                static fn(array $result): string => $result['title'],
-                $elsewhere
-            )));
+        $titles = array_values(array_unique(array_map(
+            static fn(array $result): string => $result['title'],
+            $elsewhere
+        )));
+        if ($titles !== []) {
             $message .= sprintf(
                 "\n\nOther knowledge documents do match this query — call typo3_rule_lookup for: %s.",
                 implode(', ', $titles)
             );
         }
 
-        return $message;
+        return ToolResult::create($message, [
+            'query' => $task,
+            'matchCount' => 0,
+            'matches' => [],
+            'elsewhere' => $titles,
+        ]);
     }
 
     /**
@@ -394,14 +451,35 @@ final class Tools
         }, $results));
     }
 
-    private static function noKnowledgeMatch(string $query): string
+    /**
+     * The same matched sections as data: the document they come from, how much
+     * of the query they cover, and the resource holding the full text.
+     *
+     * @param array<int, array{id: string, title: string, heading: string, body: string, score: int, coverage: float, truncated: bool}> $results
+     * @return array<int, array<string, mixed>>
+     */
+    private static function matchRecords(array $results): array
+    {
+        return array_map(static fn(array $result): array => [
+            'documentId' => $result['id'],
+            'title' => $result['title'],
+            'uri' => 'typo3://core/' . $result['id'],
+            'heading' => $result['heading'] === '' ? $result['title'] : $result['heading'],
+            'body' => $result['body'],
+            'coverage' => round($result['coverage'], 3),
+            'score' => $result['score'],
+            'truncated' => $result['truncated'],
+        ], $results);
+    }
+
+    private static function noKnowledgeMatch(string $query): ToolResult
     {
         $documents = implode("\n", array_map(
             static fn(array $document): string => '- ' . $document['title'] . ': ' . implode(', ', $document['topics']),
             Knowledge::topics()
         ));
 
-        return sprintf(
+        $text = sprintf(
             "No knowledge section matched \"%s\".\n\nThis knowledge base covers:\n%s\n\n"
             . 'For registered components, icons, or labels use typo3_component_lookup, typo3_icon_lookup, '
             . 'or typo3_label_lookup instead, and call typo3_server_scope for what this server covers at all. '
@@ -409,6 +487,13 @@ final class Tools
             $query,
             $documents
         );
+
+        return ToolResult::create($text, [
+            'query' => $query,
+            'matchCount' => 0,
+            'matches' => [],
+            'documents' => Knowledge::topics(),
+        ]);
     }
 
     private static function topicList(string $documentId): string
@@ -423,7 +508,7 @@ final class Tools
     }
 
     /** @param array<string, mixed> $args */
-    private static function taskBrief(array $args): string
+    private static function taskBrief(array $args): ToolResult
     {
         $task = (string) ($args['task'] ?? '');
         $area = isset($args['area']) ? trim((string) $args['area']) : '';
@@ -489,7 +574,8 @@ final class Tools
                 $intentChecks[$check] = true;
             }
         }
-        foreach (array_keys($intentChecks) as $check) {
+        $checks = array_keys($intentChecks);
+        foreach ($checks as $check) {
             $lines[] = '- `' . $check . '`';
         }
         if ($testHints !== []) {
@@ -505,40 +591,65 @@ final class Tools
             $lines[] = '- No topic-specific check matched. Run the narrowest relevant suite, then broaden before review.';
         }
 
-        $lines[] = '';
-        $lines[] = 'Suggested checklist:';
-        $lines[] = '- Confirm the target TYPO3 core branch and issue context.';
-        $lines[] = '- Inspect nearby code, tests, and established subsystem conventions.';
-        $lines[] = '- Keep the patch focused on the stated task.';
-        $lines[] = '- Add or update the narrowest useful test coverage.';
-        $lines[] = '- Run targeted tests first; broaden to CGL, functional, or npm checks when relevant.';
+        $checklist = [
+            'Confirm the target TYPO3 core branch and issue context.',
+            'Inspect nearby code, tests, and established subsystem conventions.',
+            'Keep the patch focused on the stated task.',
+            'Add or update the narrowest useful test coverage.',
+            'Run targeted tests first; broaden to CGL, functional, or npm checks when relevant.',
+        ];
         foreach (self::CHANGE_TYPE_CHECKLIST[$changeType] ?? [] as $entry) {
-            $lines[] = '- ' . $entry;
+            $checklist[] = $entry;
         }
         foreach ($intents as $intent) {
             foreach ($intent['checklist'] as $entry) {
-                $lines[] = '- ' . $entry;
+                $checklist[] = (string) $entry;
             }
         }
-        $lines[] = '- Summarize changed behavior, affected area, and executed commands.';
+        $checklist[] = 'Summarize changed behavior, affected area, and executed commands.';
+
+        $lines[] = '';
+        $lines[] = 'Suggested checklist:';
+        foreach ($checklist as $entry) {
+            $lines[] = '- ' . $entry;
+        }
 
         // The brief is assembled from bundled knowledge alone, so everything
         // that depends on the working tree is the agent's job. Saying which
         // parts those are — and how to get them — is more useful than letting
         // the checklist read as if the brief had already looked.
+        $checkoutDiscovery = Scope::read()['checkoutDiscovery'];
         $lines[] = '';
         $lines[] = 'Establish in your checkout — this server cannot see it:';
-        foreach (Scope::read()['checkoutDiscovery'] as $entry) {
+        foreach ($checkoutDiscovery as $entry) {
             $lines[] = '- ' . $entry['establish'] . "\n  " . $entry['how'];
         }
 
+        $nextTools = self::nextTools($intents, $domains);
         $lines[] = '';
         $lines[] = 'Next lookups for this task:';
-        foreach (self::nextTools($intents, $domains) as $suggestion) {
-            $lines[] = '- ' . $suggestion;
+        foreach ($nextTools as $suggestion) {
+            $lines[] = '- ' . $suggestion['tool']
+                . ($suggestion['when'] === '' ? '' : ' ' . $suggestion['when']);
         }
 
-        return implode("\n", $lines);
+        return ToolResult::create(implode("\n", $lines), [
+            'task' => $task,
+            'area' => $area === '' ? null : $area,
+            'changeType' => $changeType,
+            'domains' => $domains,
+            'intents' => array_map(static fn(array $intent): array => [
+                'id' => (string) $intent['id'],
+                'title' => (string) $intent['title'],
+            ], $intents),
+            'architectureHints' => self::hintRecords($architecture['matchedHints']),
+            'rules' => self::matchRecords($rules),
+            'checks' => $checks,
+            'testSuites' => self::suiteRecords($testHints),
+            'checklist' => $checklist,
+            'checkoutDiscovery' => $checkoutDiscovery,
+            'nextTools' => $nextTools,
+        ]);
     }
 
     /**
@@ -547,7 +658,7 @@ final class Tools
      *
      * @param array<int, array<string, mixed>> $intents
      * @param array<int, string> $domains
-     * @return array<int, string>
+     * @return array<int, array{tool: string, when: string}>
      */
     private static function nextTools(array $intents, array $domains): array
     {
@@ -567,7 +678,7 @@ final class Tools
             $candidates[] = 'typo3_make_me_better, when one of these answers was wrong or incomplete';
         }
 
-        // One line per tool: an intent that already suggested a tool keeps its
+        // One entry per tool: an intent that already suggested a tool keeps its
         // own wording, the generic fallback for that tool is dropped.
         $suggestions = [];
         foreach ($candidates as $candidate) {
@@ -575,14 +686,50 @@ final class Tools
             if ($tool === false || isset($suggestions[$tool])) {
                 continue;
             }
-            $suggestions[$tool] = $candidate;
+            $suggestions[$tool] = [
+                'tool' => $tool,
+                'when' => ltrim(substr($candidate, strlen($tool))),
+            ];
         }
 
         return array_values($suggestions);
     }
 
+    /**
+     * Matched architecture hints as data, without the internal match patterns.
+     *
+     * @param array<int, array<string, mixed>> $hints
+     * @return array<int, array<string, mixed>>
+     */
+    private static function hintRecords(array $hints): array
+    {
+        return array_map(static fn(array $hint): array => [
+            'id' => (string) $hint['id'],
+            'title' => (string) $hint['title'],
+            'category' => (string) $hint['category'],
+            'hints' => array_map('strval', $hint['hints']),
+            'checks' => array_map('strval', $hint['checks']),
+        ], array_values($hints));
+    }
+
+    /**
+     * @param array<int, array{suite: string, command: string, description: string, whenToUse: string, domains: array<int, string>, targeted: ?string}> $hints
+     * @return array<int, array<string, mixed>>
+     */
+    private static function suiteRecords(array $hints): array
+    {
+        return array_map(static fn(array $hint): array => [
+            'suite' => $hint['suite'],
+            'command' => $hint['command'],
+            'targeted' => $hint['targeted'],
+            'description' => $hint['description'],
+            'whenToUse' => $hint['whenToUse'],
+            'domains' => $hint['domains'],
+        ], array_values($hints));
+    }
+
     /** @param array<string, mixed> $args */
-    private static function runTestsHelp(array $args): string
+    private static function runTestsHelp(array $args): ToolResult
     {
         $query = isset($args['query']) ? (string) $args['query'] : null;
         $hints = TestSuiteHints::find($query);
@@ -609,7 +756,11 @@ final class Tools
 
         $blocks[] = self::invocationBlock();
 
-        return implode("\n\n", $blocks);
+        return ToolResult::create(implode("\n\n", $blocks), [
+            'query' => $query,
+            'suites' => self::suiteRecords($hints),
+            'invocation' => TestSuiteHints::invocation(),
+        ]);
     }
 
     /**
@@ -643,7 +794,7 @@ final class Tools
     }
 
     /** @param array<string, mixed> $args */
-    private static function architectureHint(array $args): string
+    private static function architectureHint(array $args): ToolResult
     {
         $paths = array_map('strval', $args['paths'] ?? []);
         $task = isset($args['task']) ? (string) $args['task'] : null;
@@ -691,21 +842,35 @@ final class Tools
             $lines[] = 'No architecture hint matched. Add a more specific path or topic, or extend knowledge/typo3-core-architecture.md.';
         }
 
-        return implode("\n", $lines);
+        return ToolResult::create(implode("\n", $lines), [
+            'task' => $task === '' ? null : $task,
+            'paths' => array_values($paths),
+            'domains' => $result['domains'],
+            'hints' => self::hintRecords($result['matchedHints']),
+            'knowledgeSections' => self::matchRecords($result['knowledgeSections']),
+        ]);
     }
 
     /** @param array<string, mixed> $args */
-    private static function componentLookup(array $args): string
+    private static function componentLookup(array $args): ToolResult
     {
         $query = isset($args['query']) ? (string) $args['query'] : null;
         $components = Components::find($query);
 
         if ($components === []) {
-            return sprintf(
-                "No TYPO3 component matched \"%s\". Try a component name (badge, card), a class (input-group), or a topic (search box). %s\n%s",
-                (string) $query,
-                self::CATALOG_MISS_NOTE,
-                self::catalogProvenance(),
+            return ToolResult::create(
+                sprintf(
+                    "No TYPO3 component matched \"%s\". Try a component name (badge, card), a class (input-group), or a topic (search box). %s\n%s",
+                    (string) $query,
+                    self::CATALOG_MISS_NOTE,
+                    self::catalogProvenance(),
+                ),
+                [
+                    'query' => $query,
+                    'matchCount' => 0,
+                    'components' => [],
+                    'catalog' => self::catalogRecord(),
+                ],
             );
         }
 
@@ -715,8 +880,26 @@ final class Tools
                 static fn(array $c): string => '- ' . $c['name'] . ' — ' . $c['title'],
                 $components
             ));
-            return "TYPO3 backend component catalog:\n" . $names;
+
+            return ToolResult::create("TYPO3 backend component catalog:\n" . $names, [
+                'query' => $query,
+                'matchCount' => count($components),
+                // The listing is an overview, so the entries stay lean; query a
+                // component by name for its markup and class contract.
+                'components' => array_map(static fn(array $c): array => [
+                    'name' => $c['name'],
+                    'title' => $c['title'],
+                    'summary' => $c['summary'],
+                    'rootClass' => $c['rootClass'],
+                    'sassPath' => $c['sassPath'],
+                    'demoPath' => $c['demoPath'],
+                ], $components),
+                'catalog' => self::catalogRecord(),
+            ]);
         }
+
+        // Only the best matches are described in full; the rest stay in the count.
+        $described = array_slice($components, 0, 3);
 
         $blocks = array_map(static function (array $c): string {
             $lines = ['## ' . $c['title'] . ' (`' . $c['rootClass'] . '`)'];
@@ -757,7 +940,7 @@ final class Tools
             }
 
             return implode("\n", $lines);
-        }, array_slice($components, 0, 3));
+        }, $described);
 
         $checklist = Components::checklist();
         $checklistLines = ['## ' . $checklist['title']];
@@ -770,11 +953,31 @@ final class Tools
         $blocks[] = implode("\n", $checklistLines);
         $blocks[] = self::catalogProvenance();
 
-        return implode("\n\n", $blocks);
+        return ToolResult::create(implode("\n\n", $blocks), [
+            'query' => $query,
+            'matchCount' => count($components),
+            'components' => array_map(static fn(array $c): array => [
+                'name' => $c['name'],
+                'title' => $c['title'],
+                'summary' => $c['summary'],
+                'rootClass' => $c['rootClass'],
+                'variants' => $c['variants'],
+                'modifiers' => $c['modifiers'],
+                'subComponents' => $c['subComponents'],
+                'customProperties' => $c['customProperties'],
+                'markup' => $c['markup'],
+                'examples' => $c['examples'],
+                'sassPath' => $c['sassPath'],
+                'demoPath' => $c['demoPath'],
+                'matchedIn' => $c['matchedIn'] ?? [],
+            ], $described),
+            'checklist' => $checklist,
+            'catalog' => self::catalogRecord(),
+        ]);
     }
 
     /** @param array<string, mixed> $args */
-    private static function iconLookup(array $args): string
+    private static function iconLookup(array $args): ToolResult
     {
         $query = isset($args['query']) ? (string) $args['query'] : null;
         $limit = (int) ($args['limit'] ?? 40);
@@ -789,17 +992,33 @@ final class Tools
             $lines[] = '';
             $lines[] = self::catalogProvenance();
 
-            return implode("\n", $lines);
+            return ToolResult::create(implode("\n", $lines), [
+                'query' => $query,
+                'matchCount' => 0,
+                'icons' => [],
+                'categories' => Icons::categories(),
+                'concepts' => array_keys(Icons::concepts()),
+                'catalog' => self::catalogRecord(),
+            ]);
         }
 
         $matches = Icons::find($query);
         if ($matches === []) {
-            return sprintf(
-                "No TYPO3 icon identifier matched \"%s\". Identifiers follow the <category>-<name> convention "
-                . "and spell the shape, not the intent — try a concept keyword such as %s.\n%s",
-                $query,
-                implode(', ', array_slice(array_keys(Icons::concepts()), 0, 8)),
-                self::catalogProvenance(),
+            return ToolResult::create(
+                sprintf(
+                    "No TYPO3 icon identifier matched \"%s\". Identifiers follow the <category>-<name> convention "
+                    . "and spell the shape, not the intent — try a concept keyword such as %s.\n%s",
+                    $query,
+                    implode(', ', array_slice(array_keys(Icons::concepts()), 0, 8)),
+                    self::catalogProvenance(),
+                ),
+                [
+                    'query' => $query,
+                    'matchCount' => 0,
+                    'icons' => [],
+                    'concepts' => array_keys(Icons::concepts()),
+                    'catalog' => self::catalogRecord(),
+                ],
             );
         }
 
@@ -822,11 +1041,26 @@ final class Tools
             $header .= sprintf(' — showing the top %d, refine the query to narrow down', count($shown));
         }
 
-        return $header . ":\n" . implode("\n", $lines) . "\n\n" . self::catalogProvenance();
+        return ToolResult::create(
+            $header . ":\n" . implode("\n", $lines) . "\n\n" . self::catalogProvenance(),
+            [
+                'query' => $query,
+                'matchCount' => $total,
+                'icons' => array_map(static fn(array $icon): array => [
+                    'identifier' => $icon['identifier'],
+                    'category' => $icon['category'],
+                    'aliasOf' => $icon['aliasOf'],
+                    'matched' => $icon['matched'],
+                    'score' => $icon['score'],
+                    'why' => $icon['why'],
+                ], $shown),
+                'catalog' => self::catalogRecord(),
+            ],
+        );
     }
 
     /** @param array<string, mixed> $args */
-    private static function catalogStatus(array $args): string
+    private static function catalogStatus(array $args): ToolResult
     {
         $meta = CatalogMeta::read();
 
@@ -855,7 +1089,12 @@ final class Tools
             . 'branch — a 13.4 backport, for example — verify against the checkout before concluding that an '
             . 'identifier or label does not exist.';
 
-        return implode("\n", $lines);
+        return ToolResult::create(implode("\n", $lines), [
+            'catalog' => self::catalogRecord(),
+            'verifyCommand' => $meta['verifyCommand'],
+            'scope' => $meta['scope'],
+            'counts' => $meta['counts'],
+        ]);
     }
 
     private static function catalogProvenance(): string
@@ -863,8 +1102,27 @@ final class Tools
         return CatalogMeta::line();
     }
 
+    /**
+     * The provenance every catalog answer carries, so a client can tell a miss
+     * on an old snapshot from a miss on the branch it works on.
+     *
+     * @return array<string, string>
+     */
+    private static function catalogRecord(): array
+    {
+        $meta = CatalogMeta::read();
+
+        return [
+            'repository' => $meta['source']['repository'],
+            'branch' => $meta['source']['branch'],
+            'version' => $meta['source']['version'],
+            'commit' => $meta['source']['commit'],
+            'verifiedAt' => $meta['verifiedAt'],
+        ];
+    }
+
     /** @param array<string, mixed> $args */
-    private static function labelLookup(array $args): string
+    private static function labelLookup(array $args): ToolResult
     {
         $query = isset($args['query']) ? (string) $args['query'] : null;
         $mode = (string) ($args['mode'] ?? 'keys');
@@ -873,8 +1131,18 @@ final class Tools
         if ($mode === 'domains') {
             $domains = Labels::domains($query);
             if ($domains === []) {
-                return sprintf('No registered label domain matched "%s".', (string) $query);
+                return ToolResult::create(
+                    sprintf('No registered label domain matched "%s".', (string) $query),
+                    [
+                        'query' => $query,
+                        'mode' => $mode,
+                        'matchCount' => 0,
+                        'domains' => [],
+                        'catalog' => self::catalogRecord(),
+                    ],
+                );
             }
+            $shownDomains = array_slice($domains, 0, $limit);
             $lines = array_map(
                 static fn(array $d): string => sprintf(
                     "- %s  (%d labels)\n  %s",
@@ -882,14 +1150,38 @@ final class Tools
                     $d['count'],
                     $d['ref'],
                 ),
-                array_slice($domains, 0, $limit)
+                $shownDomains
             );
 
-            return sprintf("%d label domain(s):\n", count($domains)) . implode("\n", $lines);
+            return ToolResult::create(
+                sprintf("%d label domain(s):\n", count($domains)) . implode("\n", $lines),
+                [
+                    'query' => $query,
+                    'mode' => $mode,
+                    'matchCount' => count($domains),
+                    'domains' => array_map(static fn(array $d): array => [
+                        'domain' => $d['domain'],
+                        'ref' => $d['ref'],
+                        'ext' => $d['ext'],
+                        'file' => $d['file'],
+                        'count' => $d['count'],
+                    ], $shownDomains),
+                    'catalog' => self::catalogRecord(),
+                ],
+            );
         }
 
         if ($query === null || trim($query) === '') {
-            return 'Provide a query to search labels, or pass mode "domains" to list registered translation domains.';
+            return ToolResult::create(
+                'Provide a query to search labels, or pass mode "domains" to list registered translation domains.',
+                [
+                    'query' => $query,
+                    'mode' => $mode,
+                    'matchCount' => 0,
+                    'labels' => [],
+                    'catalog' => self::catalogRecord(),
+                ],
+            );
         }
 
         $labels = Labels::find($query);
@@ -902,10 +1194,20 @@ final class Tools
         }
 
         if ($labels === []) {
-            return sprintf(
-                'No TYPO3 core label matched "%s". Try words from the key or its English text. %s',
-                $query,
-                self::CATALOG_MISS_NOTE,
+            return ToolResult::create(
+                sprintf(
+                    'No TYPO3 core label matched "%s". Try words from the key or its English text. %s',
+                    $query,
+                    self::CATALOG_MISS_NOTE,
+                ),
+                [
+                    'query' => $query,
+                    'mode' => $mode,
+                    'matchCount' => 0,
+                    'relaxed' => false,
+                    'labels' => [],
+                    'catalog' => self::catalogRecord(),
+                ],
             );
         }
 
@@ -932,14 +1234,30 @@ final class Tools
             $header .= sprintf(' — showing the top %d', count($shown));
         }
 
-        return $header . ":\n" . implode("\n", $lines)
+        $text = $header . ":\n" . implode("\n", $lines)
             . "\n\nReference labels by the domain form shown first (package.resource:key). "
             . 'It works in TCA labels and descriptions, LanguageService::sL(), f:translate (domain= and key=), '
             . "and registration configs.\n" . self::catalogProvenance();
+
+        return ToolResult::create($text, [
+            'query' => $query,
+            'mode' => $mode,
+            'matchCount' => $total,
+            'relaxed' => $relaxed,
+            'labels' => array_map(static fn(array $label): array => [
+                'ref' => $label['ref'],
+                'legacyRef' => $label['legacyRef'],
+                'key' => $label['id'],
+                'source' => $label['source'],
+                'unusedSince' => $label['unusedSince'],
+                'matchedIn' => $label['matchedIn'],
+            ], $shown),
+            'catalog' => self::catalogRecord(),
+        ]);
     }
 
     /** @param array<string, mixed> $args */
-    private static function commitMessageHelp(array $args): string
+    private static function commitMessageHelp(array $args): ToolResult
     {
         $existing = isset($args['message']) ? trim((string) $args['message']) : '';
 
@@ -974,12 +1292,17 @@ final class Tools
             ));
         }
 
+        $checks = array_merge($parseChecks, $checks);
+
         $heading = $existing === '' ? 'Commit message draft:' : 'Commit message, corrected:';
         $lines = [$heading, '```text', $result['message'], '```', '', 'Checks:'];
-        foreach (array_merge($parseChecks, $checks) as $check) {
+        foreach ($checks as $check) {
             $lines[] = '- ' . strtoupper($check['level']) . ': ' . $check['message'];
         }
 
-        return implode("\n", $lines);
+        return ToolResult::create(implode("\n", $lines), [
+            'message' => $result['message'],
+            'checks' => $checks,
+        ]);
     }
 }

@@ -37,7 +37,7 @@ final class CommitMessage
      *   isDeprecation?: bool,
      *   extraTrailers?: array<int, string>
      * } $input
-     * @return array{message: string, checks: array<int, array{level: string, message: string}>}
+     * @return array{message: string, checks: array<int, array{level: string, code: string, message: string}>}
      */
     public static function create(array $input): array
     {
@@ -117,7 +117,7 @@ final class CommitMessage
      *
      * @return array{
      *     input: array<string, mixed>,
-     *     checks: array<int, array{level: string, message: string}>
+     *     checks: array<int, array{level: string, code: string, message: string}>
      * }
      */
     public static function parse(string $message): array
@@ -141,6 +141,7 @@ final class CommitMessage
             if (!in_array($changeType, self::KEYWORDS, true)) {
                 $checks[] = [
                     'level' => 'error',
+                    'code' => $changeType === 'SECURITY' ? 'security-keyword' : 'unknown-keyword',
                     'message' => $changeType === 'SECURITY'
                         ? '[SECURITY] is reserved for the TYPO3 Security Team. Use [BUGFIX] or [TASK].'
                         : sprintf('Unknown keyword [%s]. Use [BUGFIX], [FEATURE], [TASK], or [DOCS].', $changeType),
@@ -150,6 +151,7 @@ final class CommitMessage
         } else {
             $checks[] = [
                 'level' => 'error',
+                'code' => 'missing-keyword',
                 'message' => 'The summary line must start with a TYPO3 keyword, for example "[BUGFIX] Fix ...".',
             ];
         }
@@ -157,6 +159,7 @@ final class CommitMessage
         if ($lines !== [] && trim($lines[0]) !== '') {
             $checks[] = [
                 'level' => 'warning',
+                'code' => 'body-blank-line',
                 'message' => 'Separate the summary line and the body with a blank line.',
             ];
         }
@@ -203,6 +206,7 @@ final class CommitMessage
         if ($releases === []) {
             $checks[] = [
                 'level' => 'warning',
+                'code' => 'missing-releases',
                 'message' => 'No Releases: line found. Add the target versions, for example "Releases: main, 13.4".',
             ];
         }
@@ -245,7 +249,7 @@ final class CommitMessage
     /**
      * @param array<int, string> $issues
      * @param array<int, string> $releases
-     * @return array<int, array{level: string, message: string}>
+     * @return array<int, array{level: string, code: string, message: string}>
      */
     private static function checks(
         string $changeType,
@@ -260,27 +264,28 @@ final class CommitMessage
         $checks = [];
 
         if ($issues === []) {
-            $checks[] = ['level' => 'error', 'message' => 'A Forge issue is required. Add a Resolves: #12345 line.'];
+            $checks[] = ['level' => 'error', 'code' => 'missing-issue', 'message' => 'A Forge issue is required. Add a Resolves: #12345 line.'];
         }
 
         $length = mb_strlen($subject);
         if ($length > 72) {
-            $checks[] = ['level' => 'error', 'message' => sprintf('The summary line is %d characters long. Keep it below 72 characters.', $length)];
+            $checks[] = ['level' => 'error', 'code' => 'summary-too-long', 'message' => sprintf('The summary line is %d characters long. Keep it below 72 characters.', $length)];
         } elseif ($length > 52) {
-            $checks[] = ['level' => 'warning', 'message' => sprintf('The summary line is %d characters long. Below 52 characters is preferred.', $length)];
+            $checks[] = ['level' => 'warning', 'code' => 'summary-length-preferred', 'message' => sprintf('The summary line is %d characters long. Below 52 characters is preferred.', $length)];
         }
 
         if (!preg_match('/^[A-Z]/', $summary)) {
-            $checks[] = ['level' => 'warning', 'message' => 'Start the summary text with a capital letter after the keyword.'];
+            $checks[] = ['level' => 'warning', 'code' => 'summary-capitalization', 'message' => 'Start the summary text with a capital letter after the keyword.'];
         }
 
         if (str_contains($summary, 'EXT:')) {
-            $checks[] = ['level' => 'warning', 'message' => 'Avoid EXT:... in the summary when the changed files already show the system extension context.'];
+            $checks[] = ['level' => 'warning', 'code' => 'summary-extension-prefix', 'message' => 'Avoid EXT:... in the summary when the changed files already show the system extension context.'];
         }
 
         foreach (self::overlongBodyLines($body) as $line) {
             $checks[] = [
                 'level' => 'warning',
+                'code' => 'body-line-too-long',
                 'message' => sprintf(
                     'Body line %d is %d characters long and could not be wrapped at %d characters '
                     . '(a URL, a code line, or another unbreakable token). Shorten it if it is prose.',
@@ -292,16 +297,17 @@ final class CommitMessage
         }
 
         if ($isDeprecation && $isBreaking) {
-            $checks[] = ['level' => 'error', 'message' => 'Deprecations must not use the [!!!] breaking prefix.'];
+            $checks[] = ['level' => 'error', 'code' => 'deprecation-breaking-prefix', 'message' => 'Deprecations must not use the [!!!] breaking prefix.'];
         }
 
         if ($isDeprecation && !in_array($changeType, ['TASK', 'FEATURE'], true)) {
-            $checks[] = ['level' => 'error', 'message' => 'Deprecations may only use [TASK] or [FEATURE].'];
+            $checks[] = ['level' => 'error', 'code' => 'deprecation-keyword', 'message' => 'Deprecations may only use [TASK] or [FEATURE].'];
         }
 
         if ($isBreaking || $isDeprecation) {
             $checks[] = [
                 'level' => 'warning',
+                'code' => 'changelog-required',
                 'message' => 'Breaking changes and deprecations require a changelog RST file below typo3/sysext/core/Documentation/Changelog/. Validate it with ./Build/Scripts/runTests.sh -s checkRst.',
             ];
         }
@@ -309,14 +315,14 @@ final class CommitMessage
         if ($isBreaking) {
             foreach ($releases as $release) {
                 if ($release !== 'main') {
-                    $checks[] = ['level' => 'warning', 'message' => 'Breaking changes should usually target main. Confirm older release targets with the release managers.'];
+                    $checks[] = ['level' => 'warning', 'code' => 'breaking-release-target', 'message' => 'Breaking changes should usually target main. Confirm older release targets with the release managers.'];
                     break;
                 }
             }
         }
 
         if ($checks === []) {
-            $checks[] = ['level' => 'info', 'message' => 'No commit message readiness issues found by the local checks.'];
+            $checks[] = ['level' => 'info', 'code' => 'no-issues-found', 'message' => 'No commit message readiness issues found by the local checks.'];
         }
 
         return $checks;

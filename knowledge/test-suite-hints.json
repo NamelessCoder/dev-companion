@@ -88,7 +88,7 @@
     {
       "suite": "functional",
       "command": "CI=true ./Build/Scripts/runTests.sh -s functional",
-      "domains": ["php", "fluid"],
+      "domains": ["php", "fluid", "typoscript"],
       "description": "PHP functional tests, sqlite by default.",
       "whenToUse": "Use for TYPO3 services, persistence, configuration, authentication, routing, and integration behavior.",
       "targeted": "CI=true ./Build/Scripts/runTests.sh -s functional -d sqlite -- <path/to/Test.php>"
@@ -128,6 +128,41 @@
       "domains": ["php"],
       "description": "Lints Services.yaml files with tag parsing enabled.",
       "whenToUse": "Use after changing dependency injection wiring in a Configuration/Services.yaml."
+    },
+    {
+      "suite": "lintYaml",
+      "command": "CI=true ./Build/Scripts/runTests.sh -s lintYaml",
+      "domains": ["php"],
+      "description": "YAML linting for every YAML file below typo3/ except Services.yaml.",
+      "whenToUse": "Use after changing any Configuration YAML: site set config.yaml and settings definitions, route enhancers, form setups, RTE presets. Services.yaml has its own suite, lintServicesYaml, because it needs tag parsing."
+    },
+    {
+      "suite": "checkIntegrityPhp",
+      "command": "CI=true ./Build/Scripts/runTests.sh -s checkIntegrityPhp",
+      "domains": ["php"],
+      "description": "Checks core PHP files against the registered integrity rules.",
+      "whenToUse": "Use before review after touching PHP files; it catches conventions that neither lintPhp nor cgl covers."
+    },
+    {
+      "suite": "checkComposer",
+      "command": "CI=true ./Build/Scripts/runTests.sh -s checkComposer",
+      "domains": ["php"],
+      "description": "Checks the composer.json files of the system extensions for version integrity.",
+      "whenToUse": "Use after editing any composer.json, for example when adding a dependency between system extensions."
+    },
+    {
+      "suite": "checkIntegritySetLabels",
+      "command": "CI=true ./Build/Scripts/runTests.sh -s checkIntegritySetLabels",
+      "domains": ["typoscript"],
+      "description": "Checks the labels.xlf integrity of the site sets.",
+      "whenToUse": "Use after adding or changing a Configuration/Sets/<Set>/labels.xlf. It is the purpose-built check for site set labels; checkIntegrityXliff does not replace it."
+    },
+    {
+      "suite": "lintHtml",
+      "command": "CI=true ./Build/Scripts/runTests.sh -s lintHtml",
+      "domains": ["fluid"],
+      "description": "Whitespace and EditorConfig linting of the templates below typo3/sysext/*/Resources/Private.",
+      "whenToUse": "Use after changing a Fluid template, partial, or layout."
     },
     {
       "suite": "checkIntegrityXliff",

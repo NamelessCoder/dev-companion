@@ -21,6 +21,7 @@ final class Domains
 {
     public const PHP = 'php';
     public const TYPESCRIPT = 'typescript';
+    public const TYPOSCRIPT = 'typoscript';
     public const CSS = 'css';
     public const FLUID = 'fluid';
     public const DOCS = 'docs';
@@ -30,6 +31,7 @@ final class Domains
     private const EXTENSIONS = [
         self::PHP => ['php', 'yaml', 'yml'],
         self::TYPESCRIPT => ['ts', 'js'],
+        self::TYPOSCRIPT => ['typoscript', 'tsconfig'],
         self::CSS => ['scss', 'sass', 'css'],
         self::FLUID => ['html'],
         self::DOCS => ['rst'],
@@ -54,6 +56,10 @@ final class Domains
         self::FLUID => [
             'fluid', 'viewhelper', 'view helper', 'partial',
         ],
+        self::TYPOSCRIPT => [
+            'typoscript', 'tsconfig', 'site set', 'sitesets', 'settings definition',
+            'constants.typoscript', 'setup.typoscript',
+        ],
         self::DOCS => [
             'changelog', 'rst', 'documentation', 'deprecation', 'breaking change',
         ],
@@ -70,6 +76,7 @@ final class Domains
             'resources/private/templates', 'resources/private/partials',
             'resources/private/layouts', 'classes/viewhelpers',
         ],
+        self::TYPOSCRIPT => ['configuration/sets/', 'classes/typoscript/'],
         self::DOCS => ['documentation/changelog'],
         self::XLIFF => ['resources/private/language'],
     ];

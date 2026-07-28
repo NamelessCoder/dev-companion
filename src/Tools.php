@@ -355,13 +355,59 @@ final class Tools
         $query = isset($args['query']) ? (string) $args['query'] : null;
         $hints = TestSuiteHints::find($query);
 
+        $blocks = [];
         if ($hints === []) {
-            return sprintf('No runTests.sh hint matched "%s". Try "unit", "functional", "phpstan", "build", "composer", or "npm".', (string) $query);
+            $blocks[] = sprintf(
+                'No runTests.sh suite matched "%s". Try "unit", "functional", "phpstan", "checkRst", "build", "composer", or "npm".',
+                (string) $query
+            );
+        } else {
+            foreach ($hints as $hint) {
+                $block = ['## ' . $hint['suite'], 'Command from the TYPO3 core root:', '`' . $hint['command'] . '`'];
+                if ($hint['targeted'] !== null) {
+                    $block[] = 'Targeted run while iterating:';
+                    $block[] = '`' . $hint['targeted'] . '`';
+                }
+                $block[] = '';
+                $block[] = $hint['description'];
+                $block[] = $hint['whenToUse'];
+                $blocks[] = implode("\n", $block);
+            }
         }
 
-        return implode("\n\n", array_map(static function (array $hint): string {
-            return '## ' . $hint['suite'] . "\nCommand from TYPO3 core root:\n`" . $hint['command'] . "`\n\n" . $hint['description'] . "\n" . $hint['whenToUse'];
-        }, $hints));
+        $blocks[] = self::invocationBlock();
+
+        return implode("\n\n", $blocks);
+    }
+
+    /**
+     * The invocation rules that apply to every suite. Emitted with every answer:
+     * without CI=true and the passthrough form, a suite command alone is rarely
+     * what a patch actually needs.
+     */
+    private static function invocationBlock(): string
+    {
+        $invocation = TestSuiteHints::invocation();
+
+        $lines = ['## Invoking runTests.sh'];
+        foreach ($invocation['notes'] as $note) {
+            $lines[] = '- ' . $note;
+        }
+
+        $lines[] = '';
+        $lines[] = 'Options:';
+        foreach ($invocation['options'] as $option) {
+            $lines[] = '- `' . $option['option'] . '` — ' . $option['description'];
+        }
+
+        $lines[] = '';
+        $lines[] = 'Examples:';
+        foreach ($invocation['examples'] as $example) {
+            $lines[] = '- ' . $example['purpose'] . ':';
+            $lines[] = '  `' . $example['command'] . '`';
+        }
+
+        return implode("\n", $lines);
     }
 
     /** @param array<string, mixed> $args */

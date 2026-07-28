@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Typo3CmsMcp;
 
 /**
- * Loads and ranks runTests.sh suite hints from test-suite-hints.json.
+ * Loads and ranks runTests.sh suite hints from test-suite-hints.json, plus the
+ * invocation notes (CI=true, targeted runs, option flags) that apply to every
+ * suite.
  */
 final class TestSuiteHints
 {
@@ -15,26 +17,79 @@ final class TestSuiteHints
         'fix', 'fixes', 'core', 'typo3', 'file', 'files', 'code', 'support',
     ];
 
-    /** @return array<int, array{suite: string, command: string, description: string, whenToUse: string}> */
-    public static function load(): array
+    /**
+     * @return array{
+     *     invocation: array{notes: array<int, string>, options: array<int, array{option: string, description: string}>, examples: array<int, array{purpose: string, command: string}>},
+     *     suites: array<int, array{suite: string, command: string, description: string, whenToUse: string, domains: array<int, string>, targeted: ?string}>
+     * }
+     */
+    private static function data(): array
     {
         $decoded = json_decode((string) file_get_contents(Paths::knowledgeFile('test-suite-hints.json')), true);
-        if (!is_array($decoded)) {
+        if (!is_array($decoded) || !isset($decoded['suites'], $decoded['invocation'])) {
             throw new \RuntimeException('Invalid test-suite-hints.json');
         }
 
-        return array_map(static fn(array $entry): array => [
-            'suite' => (string) $entry['suite'],
-            'command' => (string) $entry['command'],
-            'description' => (string) $entry['description'],
-            'whenToUse' => (string) $entry['whenToUse'],
-        ], $decoded);
+        $invocation = $decoded['invocation'];
+
+        return [
+            'invocation' => [
+                'notes' => array_map('strval', $invocation['notes'] ?? []),
+                'options' => array_map(static fn(array $o): array => [
+                    'option' => (string) $o['option'],
+                    'description' => (string) $o['description'],
+                ], $invocation['options'] ?? []),
+                'examples' => array_map(static fn(array $e): array => [
+                    'purpose' => (string) $e['purpose'],
+                    'command' => (string) $e['command'],
+                ], $invocation['examples'] ?? []),
+            ],
+            'suites' => array_map(static fn(array $entry): array => [
+                'suite' => (string) $entry['suite'],
+                'command' => (string) $entry['command'],
+                'description' => (string) $entry['description'],
+                'whenToUse' => (string) $entry['whenToUse'],
+                'domains' => array_map('strval', $entry['domains'] ?? []),
+                'targeted' => isset($entry['targeted']) ? (string) $entry['targeted'] : null,
+            ], $decoded['suites']),
+        ];
     }
 
-    /** @return array<int, array{suite: string, command: string, description: string, whenToUse: string}> */
-    public static function find(?string $query): array
+    /** @return array<int, array{suite: string, command: string, description: string, whenToUse: string, domains: array<int, string>, targeted: ?string}> */
+    public static function load(): array
+    {
+        return self::data()['suites'];
+    }
+
+    /**
+     * The invocation guidance that applies regardless of the chosen suite.
+     *
+     * @return array{notes: array<int, string>, options: array<int, array{option: string, description: string}>, examples: array<int, array{purpose: string, command: string}>}
+     */
+    public static function invocation(): array
+    {
+        return self::data()['invocation'];
+    }
+
+    /**
+     * Ranks suites against a query. When $domains is given, only suites touching
+     * one of those domains are considered — so a PHP-only task never gets a
+     * Sass build recommended.
+     *
+     * @param array<int, string> $domains
+     * @return array<int, array{suite: string, command: string, description: string, whenToUse: string, domains: array<int, string>, targeted: ?string}>
+     */
+    public static function find(?string $query, array $domains = []): array
     {
         $hints = self::load();
+
+        if ($domains !== []) {
+            $hints = array_values(array_filter(
+                $hints,
+                static fn(array $hint): bool => array_intersect($hint['domains'], $domains) !== []
+            ));
+        }
+
         $terms = self::meaningfulTerms(trim($query ?? ''));
 
         // No query (or only stopwords): list everything for browsing.

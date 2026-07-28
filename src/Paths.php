@@ -29,4 +29,13 @@ final class Paths
     {
         return self::knowledge() . '/catalog/' . implode('/', $segments);
     }
+
+    /**
+     * Improvement notes recorded by agents. Only written to in a standalone
+     * checkout; see Feedback.
+     */
+    public static function feedback(): string
+    {
+        return self::root() . '/feedback';
+    }
 }

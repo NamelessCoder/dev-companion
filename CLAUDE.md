@@ -21,6 +21,14 @@ has not been addressed yet.
 - Work directly on `main`; no feature branches.
 - Split changes into small, single-purpose commits and commit as soon as each
   part is verified.
+- Only commit the files you changed yourself in this session. The working tree
+  may already contain unrelated modifications or staged changes from someone
+  else — leave them alone.
+- Always stage explicitly with `git add <path>`. Never use `git add -A`,
+  `git add .`, `git commit -a`, or any other blanket staging.
+- Before committing, check `git status` and `git diff --staged`. If something is
+  staged that you did not change, unstage it (`git restore --staged <path>`)
+  instead of committing it along.
 
 ## Knowledge base
 

@@ -155,7 +155,7 @@
       "A backend module is declared in the owning extension's Configuration/Backend/Modules.php, which returns an array keyed by module identifier. There is no registration call.",
       "The keys of an entry are parent (the identifier of the module it sits under), access (\"user\", \"admin\", ...), path (the backend route it answers on), iconIdentifier, labels, aliases (former identifiers kept working), routes, and moduleData for the module's persisted per-user state.",
       "routes maps a route name to a target of the form Controller::class . '::method'; the entry named _default is what the module opens with.",
-      "labels is a translation domain, not a file path. Validate it with typo3_label_lookup, and derive it for a new file with mode \"derive\".",
+      "labels is a translation domain, not a file path. typo3_translation_domain_lookup computes it for the XLF file the module's labels live in.",
       "Configuration/Backend/Routes.php and AjaxRoutes.php declare backend routes outside a module, in the same declarative style.",
       "These are declarative files with no schema check behind them: a wrong key does not fail at boot, it fails when a user opens the module. Take the shape from a neighbouring extension."
     ],

@@ -11,9 +11,9 @@
     ],
     "hints": [
       "Use clear, stable label identifiers and concise wording.",
-      "Reuse existing labels where the meaning is identical.",
+      "Reuse an existing label where the meaning is identical. Which trans-units exist is a property of the instance — an installation can override a language file through LANG/resourceOverrides — so search the XLF files of your own checkout rather than working from memory.",
       "Reference a label by its translation domain (package.resource:key), not by the EXT: file path. The domain follows from the path and is registered nowhere: Resources/Private/Language/ is dropped, remaining directories become dot-separated snake_case parts, locallang.xlf becomes \"messages\", locallang_<suffix>.xlf becomes \"<suffix>\", any other file name becomes its own snake_case form, and Configuration/Sets/<Set>/labels.xlf becomes \"sets.<set>\".",
-      "Because the domain is derived rather than declared, a file a patch is about to add already has one. Call typo3_label_lookup with mode \"derive\" and the path instead of guessing; a wrong guess only fails at runtime.",
+      "Because the domain is derived rather than declared, a file a patch is about to add already has one. Call typo3_translation_domain_lookup with the path instead of guessing; a wrong guess only fails at runtime.",
       "Check whether language file normalization is needed."
     ],
     "checks": [

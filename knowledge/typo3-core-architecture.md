@@ -207,8 +207,8 @@ not the `tsconfig.json` of the TypeScript build, which is unrelated.
 The domain is not registered anywhere: it follows from the file path, by the
 rules in `TYPO3\CMS\Core\Localization\TranslationDomainResolver`. A file added by
 a patch therefore already has its domain, and guessing it wrong only fails at
-runtime. `typo3_label_lookup` with `mode: "derive"` computes it for any path,
-inside the catalog or not.
+runtime. `typo3_translation_domain_lookup` computes it for any path, in any
+extension.
 
 The form is `package[.subdirectory...].resource`:
 

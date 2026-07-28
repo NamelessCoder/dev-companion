@@ -7,7 +7,6 @@ namespace Typo3CmsMcp\Tests\Unit;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Typo3CmsMcp\Catalog\Components;
-use Typo3CmsMcp\Catalog\Labels;
 use Typo3CmsMcp\Catalog\Meta;
 use Typo3CmsMcp\Catalog\TranslationDomain;
 use Typo3CmsMcp\Tools;
@@ -93,72 +92,6 @@ final class CatalogTest extends TestCase
         }
     }
 
-    #[Test]
-    public function aLabelIsAnsweredWithItsTranslationDomainReference(): void
-    {
-        $labels = Labels::find('save close document');
-
-        self::assertNotSame([], $labels);
-        $label = $labels[0];
-        self::assertMatchesRegularExpression('/^[a-z0-9_]+\.[a-z0-9_]+:/', $label['ref'], 'the primary reference is the domain form');
-        self::assertStringStartsWith('EXT:', $label['legacyRef']);
-        self::assertStringEndsWith(':' . $label['id'], $label['legacyRef']);
-    }
-
-    #[Test]
-    public function aLabelMatchedInItsKeyOutranksOneMatchedInItsText(): void
-    {
-        $labels = Labels::find('saveAndCloseDoc');
-
-        self::assertSame('saveAndCloseDoc', $labels[0]['id']);
-        self::assertContains('key', $labels[0]['matchedIn']);
-    }
-
-    #[Test]
-    public function requiringAllTermsIsWhatSeparatesAHitFromNoise(): void
-    {
-        self::assertSame([], Labels::find('save quantumflux'));
-        self::assertNotSame([], Labels::find('save quantumflux', false));
-    }
-
-    #[Test]
-    public function aRelaxedLabelAnswerSaysThatNothingMatchedClosely(): void
-    {
-        // Any-term matching over a long phrase used to report thousands of
-        // labels as matches, with nothing saying no close match exists.
-        $result = Tools::call('typo3_label_lookup', [
-            'query' => 'permanently quantumflux the deleted records',
-        ]);
-
-        self::assertTrue($result->data['relaxed']);
-        self::assertStringStartsWith('No catalogued label matches', $result->text);
-        self::assertLessThan(50, $result->data['matchCount'], 'a relaxed answer must stay a suggestion list');
-    }
-
-    #[Test]
-    public function everyDefaultLanguageFileOfASystemExtensionIsCatalogued(): void
-    {
-        // The catalog used to hold about half of them, which made a miss
-        // ambiguous: absent from the catalog, or absent from the core?
-        $domains = Labels::domains(null);
-
-        foreach (['recycler.module', 'reactions.db', 'dashboard.db', 'theme_camino.messages'] as $domain) {
-            self::assertContains($domain, array_column($domains, 'domain'));
-        }
-    }
-
-    #[Test]
-    public function registeredDomainsAreListedWithTheirLabelCount(): void
-    {
-        $domains = Labels::domains('alt_doc');
-
-        self::assertNotSame([], $domains);
-        foreach ($domains as $domain) {
-            self::assertSame(TranslationDomain::fromReference($domain['ref']), $domain['domain']);
-            self::assertGreaterThan(0, $domain['count']);
-        }
-    }
-
     /**
      * The cases are the ones TranslationDomainMapperTest states in the core, so
      * this port is held to the same rules as the original.
@@ -182,26 +115,30 @@ final class CatalogTest extends TestCase
     }
 
     #[Test]
-    public function aDomainIsDerivedForAFileTheCatalogDoesNotContain(): void
+    public function aDomainIsDerivedForAFileThatDoesNotExistYet(): void
     {
-        // The point of deriving rather than looking up: a file outside the
-        // snapshot, and a file a patch is about to add, both get an answer.
-        $result = Tools::call('typo3_label_lookup', [
-            'mode' => 'derive',
-            'query' => 'typo3/sysext/backend/Resources/Private/Language/NotYetWritten.xlf',
+        // The point of computing rather than looking up: a file in any
+        // extension, and one a patch is about to add, both get an answer —
+        // which is exactly when it cannot be looked up anywhere.
+        $result = Tools::call('typo3_translation_domain_lookup', [
+            'path' => 'packages/my_extension/Resources/Private/Language/NotYetWritten.xlf',
         ])->data;
 
-        self::assertSame('backend.not_yet_written', $result['domain']);
-        self::assertFalse($result['inSnapshot']);
+        self::assertSame(null, $result['domain'], 'a project path is not an EXT: reference');
+
+        $result = Tools::call('typo3_translation_domain_lookup', [
+            'path' => 'EXT:my_extension/Resources/Private/Language/NotYetWritten.xlf',
+        ])->data;
+
+        self::assertSame('my_extension.not_yet_written', $result['domain']);
     }
 
     #[Test]
     public function aPathThatNamesNoExtensionDerivesNoDomain(): void
     {
-        $result = Tools::call('typo3_label_lookup', ['mode' => 'derive', 'query' => 'somewhere/else.xlf'])->data;
+        $result = Tools::call('typo3_translation_domain_lookup', ['path' => 'somewhere/else.xlf'])->data;
 
-        self::assertSame(0, $result['matchCount']);
-        self::assertArrayNotHasKey('domain', $result);
+        self::assertNull($result['domain']);
     }
 
     #[Test]

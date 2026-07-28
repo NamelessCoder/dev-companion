@@ -11,8 +11,6 @@ declare(strict_types=1);
  * Usage: bin/verify-catalog [path/to/typo3-core-checkout]
  */
 
-use Typo3CmsMcp\Catalog\TranslationDomain;
-
 require dirname(__DIR__) . '/vendor/autoload.php';
 
 $coreRoot = rtrim($argv[1] ?? getcwd(), '/');
@@ -24,65 +22,6 @@ if (!is_dir($coreRoot . '/typo3/sysext/core')) {
 
 $catalogDir = dirname(__DIR__) . '/knowledge/catalog';
 $problems = 0;
-
-/** Reads the trans-unit ids of an XLF file, XLIFF 1.2 and 2.0 alike. */
-$readLabelIds = static function (string $path): ?array {
-    $xml = @simplexml_load_file($path);
-    if ($xml === false || !isset($xml->file)) {
-        return null;
-    }
-
-    $ids = [];
-    $collect = static function (\SimpleXMLElement $parent) use (&$ids, &$collect): void {
-        foreach ($parent->children() as $child) {
-            $name = $child->getName();
-            if ($name === 'trans-unit' || $name === 'unit') {
-                $ids[(string) $child['id']] = true;
-            } elseif ($name === 'group') {
-                $collect($child);
-            }
-        }
-    };
-
-    // XLIFF 1.2 nests units in <body>, XLIFF 2.0 puts them directly in <file>.
-    $collect(isset($xml->file->body) ? $xml->file->body : $xml->file);
-
-    return $ids;
-};
-
-echo "Labels\n";
-$labels = json_decode((string) file_get_contents($catalogDir . '/labels.json'), true);
-$staleLabels = 0;
-$idsByDomain = [];
-foreach ($labels['domains'] as $index => $domain) {
-    $path = $coreRoot . '/typo3/sysext/' . str_replace('EXT:', '', $domain['ref']);
-    if (!is_file($path)) {
-        echo '  file gone: ' . $domain['ref'] . "\n";
-        ++$problems;
-        continue;
-    }
-    $ids = $readLabelIds($path);
-    if ($ids === null) {
-        echo '  unreadable: ' . $domain['ref'] . "\n";
-        ++$problems;
-        continue;
-    }
-    $idsByDomain[$index] = $ids;
-
-    $derived = TranslationDomain::fromReference($domain['ref']);
-    if ($derived === null) {
-        echo '  not an EXT: reference: ' . $domain['ref'] . "\n";
-        ++$problems;
-    }
-}
-foreach ($labels['labels'] as $label) {
-    if (isset($idsByDomain[$label['d']]) && !isset($idsByDomain[$label['d']][$label['id']])) {
-        echo '  label gone: ' . $labels['domains'][$label['d']]['ref'] . ':' . $label['id'] . "\n";
-        ++$staleLabels;
-    }
-}
-$problems += $staleLabels;
-printf("  %d domains, %d labels, %d stale\n", count($labels['domains']), count($labels['labels']), $staleLabels);
 
 echo "Components\n";
 $components = json_decode((string) file_get_contents($catalogDir . '/components.json'), true);

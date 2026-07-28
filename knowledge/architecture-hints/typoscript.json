@@ -13,7 +13,7 @@
       "A site set is how a system extension ships TypoScript. It is a directory Configuration/Sets/<SetName>/ whose config.yaml carries a composer-style name (\"typo3/fluid-styled-content\"), an optional label, and an optional dependencies list naming other sets by that same name.",
       "Next to config.yaml the set may hold setup.typoscript, settings.definitions.yaml, settings.yaml, labels.xlf, page.tsconfig and route-enhancers.yaml. Only config.yaml is required.",
       "settings.definitions.yaml is where a set declares its settings: a categories map and a settings map, each entry with default, type and category. It is the replacement for TypoScript constants — reaching for constants.typoscript in new code is the mistake to avoid here.",
-      "The set's labels.xlf resolves to the translation domain <ext>.sets.<setname>; typo3_label_lookup with mode \"derive\" computes it from the path.",
+      "The set's labels.xlf resolves to the translation domain <ext>.sets.<setname>; typo3_translation_domain_lookup computes it from the path.",
       "ExtensionManagementUtility::addTypoScriptSetup() and addStaticFile() are the predecessor and are still called from a few sysexts, addTypoScriptSetup with an includeInSiteSets flag that folds the content into the set mechanism. Both mechanisms coexist; new code ships a set.",
       "TypoScript files use the .typoscript extension.",
       "Site set resolution is covered by functional tests under typo3/sysext/core/Tests/Functional/Site/Set/; the labels have their own check, checkIntegritySetLabels."

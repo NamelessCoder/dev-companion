@@ -43,7 +43,7 @@ final class Meta
         $meta = self::read();
 
         return sprintf(
-            'Catalog snapshot: TYPO3 %s (%s) @ %s, verified %s. A miss means "not in this snapshot", not "does not exist" — verify against the checkout before concluding an identifier is invalid.',
+            'Catalog snapshot: TYPO3 %s (%s) @ %s, verified %s. A miss means "not in this snapshot", not "does not exist" — verify against the checkout before concluding a class does not exist.',
             $meta['source']['version'],
             $meta['source']['branch'],
             substr($meta['source']['commit'], 0, 12),

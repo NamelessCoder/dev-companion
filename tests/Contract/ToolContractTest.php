@@ -114,11 +114,13 @@ final class ToolContractTest extends TestCase
             'components: list' => ['typo3_component_lookup', []],
             'components: hit' => ['typo3_component_lookup', ['query' => 'badge']],
             'components: miss' => ['typo3_component_lookup', ['query' => 'quantumflux']],
-            'labels: no query' => ['typo3_label_lookup', []],
-            'labels: hit' => ['typo3_label_lookup', ['query' => 'save document']],
-            'labels: miss' => ['typo3_label_lookup', ['query' => 'quantumflux']],
-            'labels: domains' => ['typo3_label_lookup', ['mode' => 'domains']],
-            'labels: domains miss' => ['typo3_label_lookup', ['mode' => 'domains', 'query' => 'quantumflux']],
+            'domain: EXT reference' => ['typo3_translation_domain_lookup', [
+                'path' => 'EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf',
+            ]],
+            'domain: checkout path' => ['typo3_translation_domain_lookup', [
+                'path' => 'typo3/sysext/core/Resources/Private/Language/locallang.xlf',
+            ]],
+            'domain: miss' => ['typo3_translation_domain_lookup', ['path' => 'somewhere/else.xlf']],
             'catalog scope' => ['typo3_catalog_scope', []],
             'commit: from parts' => ['typo3_commit_message_guide', [
                 'changeType' => 'BUGFIX',

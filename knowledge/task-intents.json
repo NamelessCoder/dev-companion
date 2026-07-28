@@ -81,8 +81,8 @@
     "condition": "only if the change adds, edits, or retires an XLF trans-unit",
     "rulesQuery": "xliff label lifecycle",
     "checklist": [
-      "Reuse an existing label when the meaning is identical instead of inventing a new key.",
-      "Reference labels by their translation domain (package.resource:key), not by the EXT: file path.",
+      "Reuse an existing label when the meaning is identical instead of inventing a new key; search the XLF files of your own checkout for it.",
+      "Reference labels by their translation domain (package.resource:key), not by the EXT: file path. typo3_translation_domain_lookup computes the domain of any XLF path.",
       "Never delete a trans-unit: mark it x-unused-since=\"<next version>\" and remove it in a later major.",
       "Only the English source file is edited; translations come from translate.typo3.org."
     ],
@@ -91,7 +91,7 @@
       "CI=true ./Build/Scripts/runTests.sh -s normalizeXliff"
     ],
     "tools": [
-      "typo3_label_lookup, before inventing a new label key"
+      "typo3_translation_domain_lookup, for the domain an XLF file resolves to"
     ]
   },
   {

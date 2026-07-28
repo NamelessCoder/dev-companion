@@ -29,7 +29,7 @@ final class ToolSchemas
             'typo3_test_run_guide' => self::testRunGuide(),
             'typo3_architecture_lookup' => self::architectureLookup(),
             'typo3_component_lookup' => self::componentLookup(),
-            'typo3_label_lookup' => self::labelLookup(),
+            'typo3_translation_domain_lookup' => self::translationDomainLookup(),
             'typo3_catalog_scope' => self::catalogScope(),
             'typo3_commit_message_guide' => self::commitMessageGuide(),
             'typo3_feedback_record' => self::feedbackRecord(),
@@ -184,32 +184,12 @@ final class ToolSchemas
     }
 
     /** @return array<string, mixed> */
-    private static function labelLookup(): array
+    private static function translationDomainLookup(): array
     {
         return self::object([
-            'query' => self::nullableString(),
-            'mode' => self::string('keys, domains, or derive.'),
-            'matchCount' => self::integer(),
-            'domain' => self::string('derive: the translation domain the given XLF path resolves to.'),
-            'inSnapshot' => ['type' => 'boolean', 'description' => 'derive: whether that domain is one the catalog contains. The derivation holds either way.'],
-            'relaxed' => ['type' => 'boolean', 'description' => 'True when no label matched every query term and any-term matching was used.'],
-            'labels' => self::listOf(self::object([
-                'ref' => self::string('Translation domain reference (package.resource:key) — the canonical form.'),
-                'legacyRef' => self::string('LLL: file path form.'),
-                'key' => self::string('The trans-unit id.'),
-                'source' => self::string('English source text.'),
-                'unusedSince' => self::nullableString('x-unused-since marker; the label is retired but must not be deleted.'),
-                'matchedIn' => self::listOf(self::string()),
-            ], ['ref', 'legacyRef', 'key', 'source', 'unusedSince'])),
-            'domains' => self::listOf(self::object([
-                'domain' => self::string(),
-                'ref' => self::string(),
-                'ext' => self::string(),
-                'file' => self::string(),
-                'count' => self::integer(),
-            ], ['domain', 'ref', 'count'])),
-            'catalog' => self::catalogProvenance(),
-        ], ['mode', 'matchCount', 'catalog']);
+            'path' => self::string('The XLF path the domain was computed from.'),
+            'domain' => self::nullableString('The translation domain it resolves to; null when the path names no extension.'),
+        ], ['path', 'domain']);
     }
 
     /** @return array<string, mixed> */

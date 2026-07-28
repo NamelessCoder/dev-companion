@@ -64,20 +64,20 @@
       "source": "knowledge/catalog/components.json"
     },
     {
-      "topic": "Registered labels (XLF trans-units) and translation domains",
-      "depth": "The English trans-units of every default XLF file that sits directly in a system extension's Resources/Private/Language/. Files in subdirectories of that path are not included. The translation domain of any XLF path is computed rather than looked up, so mode \"derive\" also answers for a file outside the catalog or one a patch is about to add.",
-      "tools": [
-        "typo3_label_lookup"
-      ],
-      "source": "knowledge/catalog/labels.json"
-    },
-    {
       "topic": "How current the catalogs are",
       "depth": "The core revision, branch, and verification date behind every catalog answer.",
       "tools": [
         "typo3_catalog_scope"
       ],
       "source": "knowledge/catalog/meta.json"
+    },
+    {
+      "topic": "Translation domains: how the domain of an XLF file is derived",
+      "depth": "Complete and computed, not a snapshot: the rules of TranslationDomainResolver ported here, so any XLF path in any extension resolves — including a file that does not exist yet.",
+      "tools": [
+        "typo3_translation_domain_lookup"
+      ],
+      "source": "src/Catalog/TranslationDomain.php, typo3://core/typo3-core-architecture"
     }
   ],
   "doesNotCover": [
@@ -115,6 +115,11 @@
       "topic": "Which icon identifiers exist",
       "why": "IconRegistry is assembled at runtime from every installed package, so the registered identifiers are a property of the instance, not of TYPO3. This server does not know which packages you have installed and cannot ship a list that is right for you.",
       "instead": "Resolve the identifier in your own checkout: the T3Icons set in typo3/sysext/core/Resources/Public/Icons/T3Icons/icons.json, the Configuration/Icons.php of every package, and the flag images under typo3/sysext/core/Resources/Public/Icons/Flags/. typo3_architecture_lookup has how to render one once you have it."
+    },
+    {
+      "topic": "Which labels exist, and what an XLF file contains",
+      "why": "Labels are a property of the instance: every installed extension ships its own, and an installation can override any language file through LANG/resourceOverrides. This server does not read a checkout and cannot ship a list that is right for yours.",
+      "instead": "Search the XLF files of your own checkout for an existing label before inventing a key. typo3_translation_domain_lookup gives you the domain to reference it by once you have found it."
     }
   ],
   "checkoutDiscovery": [
@@ -137,6 +142,10 @@
     {
       "establish": "Whether an icon identifier is registered, and which one spells the shape you want",
       "how": "Identifiers are <family>-<name> and spell shapes, not intents. Search typo3/sysext/core/Resources/Public/Icons/T3Icons/icons.json for the T3Icons set, grep typo3/sysext/*/Configuration/Icons.php and the same file in any other installed package for extension-registered ones, and list typo3/sysext/core/Resources/Public/Icons/Flags/ for the flags-* family."
+    },
+    {
+      "establish": "Whether a label for this wording already exists",
+      "how": "Grep the English source texts and trans-unit ids in typo3/sysext/*/Resources/Private/Language/*.xlf, and in the same path of any other installed extension. A file may be overridden per installation through LANG/resourceOverrides, so the instance decides what is actually resolved."
     }
   ],
   "routing": [
@@ -147,14 +156,6 @@
     {
       "when": "About to write backend markup or invent a CSS class name",
       "call": "typo3_component_lookup"
-    },
-    {
-      "when": "About to write user-facing text or invent a label key",
-      "call": "typo3_label_lookup"
-    },
-    {
-      "when": "Adding an XLF file and needing the translation domain it will resolve to",
-      "call": "typo3_label_lookup with mode \"derive\" and the path"
     },
     {
       "when": "About to run tests or any other core check",
@@ -175,6 +176,10 @@
     {
       "when": "A catalog lookup found nothing that should exist",
       "call": "typo3_catalog_scope, then typo3_feedback_record"
+    },
+    {
+      "when": "Needing the translation domain an XLF file resolves to",
+      "call": "typo3_translation_domain_lookup with the path"
     }
   ]
 }

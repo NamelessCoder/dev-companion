@@ -7,7 +7,7 @@ bin/typo3-cms-mcp  # stdio entrypoint (the client launches it as a subprocess)
 src/               # PHP classes (knowledge loading, tools, SDK wiring)
 src/ServerFactory.php  # builds the mcp/sdk server from the tool definitions
 src/Mcp/           # SDK handlers: tool dispatch and typo3://core resources
-src/Catalog/       # the component, icon, and label lookups
+src/Catalog/       # the component catalog and the translation domain derivation
 src/bootstrap.php  # locates the Composer autoloader
 knowledge/         # the knowledge base (markdown + JSON), the data source
 feedback/          # improvement notes left by agents (standalone checkout only)

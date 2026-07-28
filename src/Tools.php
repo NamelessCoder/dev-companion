@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Typo3CmsMcp;
 
 use Typo3CmsMcp\Catalog\Components;
-use Typo3CmsMcp\Catalog\Labels;
 use Typo3CmsMcp\Catalog\Meta as CatalogMeta;
 use Typo3CmsMcp\Catalog\TranslationDomain;
 
@@ -36,13 +35,6 @@ final class Tools
 
     /** Appended when a catalog lookup finds nothing at all. */
     private const CATALOG_MISS_NOTE = 'Call typo3_catalog_scope for what this snapshot covers.';
-
-    /**
-     * Share of the query terms a label has to cover to be worth showing once
-     * no label matched all of them. Below it, the list is long enough to look
-     * like an answer and unrelated enough not to be one.
-     */
-    private const RELAXED_COVERAGE = 0.5;
 
     /** Extra domain signal carried by the change type itself. */
     private const CHANGE_TYPE_TERMS = [
@@ -156,15 +148,14 @@ final class Tools
                 ],
             ],
             [
-                'name' => 'typo3_label_lookup',
-                'description' => 'Search registered TYPO3 core labels (XLF trans-units) across the core sysexts. Returns the translation domain reference (backend.alt_doc:key), which is the canonical form for TCA, LanguageService::sL() and f:translate, plus the legacy LLL file path, the English source text, and any x-unused-since marker. Use it to reuse an existing label instead of inventing a key. Results come from a versioned snapshot of a subset of the core label files.',
+                'name' => 'typo3_translation_domain_lookup',
+                'description' => 'Compute the translation domain an XLF file resolves to, from its path. The domain is the canonical way to reference a label (backend.alt_doc:key) in TCA, LanguageService::sL() and f:translate, and it is registered nowhere — it follows from the path by the rules in TranslationDomainResolver. Because it is computed, it also answers for a file outside the core and for one a patch is about to add.',
                 'inputSchema' => [
                     'type' => 'object',
                     'properties' => [
-                        'query' => ['type' => 'string', 'description' => 'keys and domains: words from the label key or its English text, for example "save document" or "labels.title". derive: the XLF file path.'],
-                        'mode' => ['type' => 'string', 'enum' => ['keys', 'domains', 'derive'], 'default' => 'keys', 'description' => 'keys: search individual labels. domains: list registered translation domains. derive: compute the translation domain of an XLF path, which also answers for a file outside the snapshot or one a patch is about to add.'],
-                        'limit' => ['type' => 'integer', 'minimum' => 1, 'maximum' => 100, 'default' => 25, 'description' => 'Maximum number of results to return.'],
+                        'path' => ['type' => 'string', 'minLength' => 1, 'description' => 'The XLF file path, either as an EXT: reference ("EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf") or relative to a core checkout ("typo3/sysext/backend/Resources/Private/Language/locallang_alt_doc.xlf").'],
                     ],
+                    'required' => ['path'],
                 ],
             ],
             [
@@ -265,7 +256,7 @@ final class Tools
             'typo3_test_run_guide' => self::testRunGuide($args),
             'typo3_architecture_lookup' => self::architectureLookup($args),
             'typo3_component_lookup' => self::componentLookup($args),
-            'typo3_label_lookup' => self::labelLookup($args),
+            'typo3_translation_domain_lookup' => self::translationDomainLookup($args),
             'typo3_catalog_scope' => self::catalogScope($args),
             'typo3_commit_message_guide' => self::commitMessageGuide($args),
             'typo3_feedback_record' => self::feedbackRecord($args),
@@ -1126,8 +1117,8 @@ final class Tools
 
         $lines[] = '';
         $lines[] = 'A lookup that finds nothing means the entry is not in this snapshot. On a different core '
-            . 'branch — a 13.4 backport, for example — verify against the checkout before concluding that an '
-            . 'identifier or label does not exist.';
+            . 'branch — a 13.4 backport, for example — verify against the checkout before concluding that a '
+            . 'component or class does not exist.';
 
         return ToolResult::create(implode("\n", $lines), [
             'catalog' => self::catalogRecord(),
@@ -1162,218 +1153,46 @@ final class Tools
     }
 
     /**
-     * The domain an XLF file resolves to, computed from its path.
+     * The translation domain an XLF file resolves to, computed from its path.
      *
-     * The catalog can only answer for the files it contains, which leaves out
-     * every file outside the snapshot and every file a patch is about to add —
-     * and those are exactly the cases where the domain cannot be looked up
-     * anywhere, so a contributor guesses and finds out at runtime.
+     * Nothing registers a domain: it follows from the path by the rules in
+     * TYPO3\CMS\Core\Localization\TranslationDomainResolver. Computing it
+     * rather than looking it up is what makes it answerable at all — for a file
+     * in any extension, in any instance, and for one a patch is about to add,
+     * which is exactly when it cannot be looked up anywhere.
+     *
+     * @param array<string, mixed> $args
      */
-    private static function deriveLabelDomain(string $path): ToolResult
+    private static function translationDomainLookup(array $args): ToolResult
     {
-        $path = trim($path);
+        $path = trim((string) ($args['path'] ?? ''));
         $domain = TranslationDomain::fromPath($path);
 
         if ($domain === null) {
             return ToolResult::create(
                 sprintf(
-                    "\"%s\" is not an extension path, so no translation domain follows from it.\n"
+                    "\"%s\" names no extension, so no translation domain follows from it.\n"
                     . 'Pass either an EXT: reference ("EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf") '
                     . 'or a checkout path ("typo3/sysext/backend/Resources/Private/Language/locallang_alt_doc.xlf").',
                     $path
                 ),
-                [
-                    'query' => $path === '' ? null : $path,
-                    'mode' => 'derive',
-                    'matchCount' => 0,
-                    'catalog' => self::catalogRecord(),
-                ],
+                ['path' => $path, 'domain' => null],
             );
         }
 
-        // Whether the file is in the snapshot decides what a caller may
-        // conclude from the answer: a known domain confirms the derivation, an
-        // unknown one is still authoritative, because it is computed.
-        $known = null;
-        foreach (Labels::domains(null) as $entry) {
-            if ($entry['domain'] === $domain) {
-                $known = $entry;
-                break;
-            }
-        }
-
-        $lines = [
-            sprintf('%s resolves to the translation domain:', $path),
-            '',
-            '  ' . $domain,
-            '',
-            'Reference a label in it as "' . $domain . ':<trans-unit id>" — in TCA, in LanguageService::sL(), '
-                . 'and in f:translate as separate domain and key attributes.',
-        ];
-        $lines[] = $known === null
-            ? 'The file is not in this snapshot, but the domain is computed from the path rather than looked up, '
-                . 'so it also holds for a file that does not exist yet.'
-            : sprintf('The snapshot has this domain with %d label(s); typo3_label_lookup finds them.', $known['count']);
-
-        return ToolResult::create(implode("\n", $lines), [
-            'query' => $path,
-            'mode' => 'derive',
-            'matchCount' => 1,
-            'domain' => $domain,
-            'inSnapshot' => $known !== null,
-            'catalog' => self::catalogRecord(),
-        ]);
-    }
-
-    /** @param array<string, mixed> $args */
-    private static function labelLookup(array $args): ToolResult
-    {
-        $query = isset($args['query']) ? (string) $args['query'] : null;
-        $mode = (string) ($args['mode'] ?? 'keys');
-        $limit = (int) ($args['limit'] ?? 25);
-
-        if ($mode === 'derive') {
-            return self::deriveLabelDomain((string) $query);
-        }
-
-        if ($mode === 'domains') {
-            $domains = Labels::domains($query);
-            if ($domains === []) {
-                return ToolResult::create(
-                    sprintf('No registered label domain matched "%s".', (string) $query),
-                    [
-                        'query' => $query,
-                        'mode' => $mode,
-                        'matchCount' => 0,
-                        'domains' => [],
-                        'catalog' => self::catalogRecord(),
-                    ],
-                );
-            }
-            $shownDomains = array_slice($domains, 0, $limit);
-            $lines = array_map(
-                static fn(array $d): string => sprintf(
-                    "- %s  (%d labels)\n  %s",
-                    $d['domain'],
-                    $d['count'],
-                    $d['ref'],
-                ),
-                $shownDomains
-            );
-
-            return ToolResult::create(
-                sprintf("%d label domain(s):\n", count($domains)) . implode("\n", $lines),
-                [
-                    'query' => $query,
-                    'mode' => $mode,
-                    'matchCount' => count($domains),
-                    'domains' => array_map(static fn(array $d): array => [
-                        'domain' => $d['domain'],
-                        'ref' => $d['ref'],
-                        'ext' => $d['ext'],
-                        'file' => $d['file'],
-                        'count' => $d['count'],
-                    ], $shownDomains),
-                    'catalog' => self::catalogRecord(),
-                ],
-            );
-        }
-
-        if ($query === null || trim($query) === '') {
-            return ToolResult::create(
-                'Provide a query to search labels, or pass mode "domains" to list registered translation domains.',
-                [
-                    'query' => $query,
-                    'mode' => $mode,
-                    'matchCount' => 0,
-                    'labels' => [],
-                    'catalog' => self::catalogRecord(),
-                ],
-            );
-        }
-
-        $labels = Labels::find($query);
-        $relaxed = false;
-        if ($labels === []) {
-            // Nothing matched every term. Any-term matching is a better answer
-            // than claiming the label does not exist, but only above a coverage
-            // threshold: a single common word matching 2336 labels is not a
-            // result set, it is the catalog with a filter that did nothing.
-            $labels = array_values(array_filter(
-                Labels::find($query, false),
-                static fn(array $label): bool => $label['coverage'] >= self::RELAXED_COVERAGE
-            ));
-            $relaxed = $labels !== [];
-        }
-
-        if ($labels === []) {
-            return ToolResult::create(
-                sprintf(
-                    'No TYPO3 core label matched "%s". Try words from the key or its English text. %s',
-                    $query,
-                    self::CATALOG_MISS_NOTE,
-                ),
-                [
-                    'query' => $query,
-                    'mode' => $mode,
-                    'matchCount' => 0,
-                    'relaxed' => false,
-                    'labels' => [],
-                    'catalog' => self::catalogRecord(),
-                ],
-            );
-        }
-
-        $total = count($labels);
-        $shown = array_slice($labels, 0, $limit);
-        $lines = array_map(static function (array $label): string {
-            $line = '- ' . $label['ref'];
-            $line .= "\n  \"" . $label['source'] . '"';
-            $line .= "\n  legacy: " . $label['legacyRef'];
-            $line .= "\n  matched in: " . implode(', ', $label['matchedIn']);
-            if ($label['unusedSince'] !== null) {
-                $line .= "\n  RETIRED: marked x-unused-since=\"" . $label['unusedSince']
-                    . '" — do not use it in new code, and do not delete the trans-unit either.';
-            }
-
-            return $line;
-        }, $shown);
-
-        if ($relaxed) {
-            $header = sprintf(
-                'No catalogued label matches "%s" closely — none covers every query term. '
-                . 'The %d below cover at least half of them and are related suggestions, not the label you asked for. '
-                . 'If none fits, the label may live in an XLF file outside this catalog, or not exist yet',
-                $query,
-                $total
-            );
-        } else {
-            $header = sprintf('%d label(s) matched "%s"', $total, $query);
-        }
-        if ($total > count($shown)) {
-            $header .= sprintf(' — showing the top %d', count($shown));
-        }
-
-        $text = $header . ":\n" . implode("\n", $lines)
-            . "\n\nReference labels by the domain form shown first (package.resource:key). "
-            . 'It works in TCA labels and descriptions, LanguageService::sL(), f:translate (domain= and key=), '
-            . "and registration configs.\n" . self::catalogProvenance();
-
-        return ToolResult::create($text, [
-            'query' => $query,
-            'mode' => $mode,
-            'matchCount' => $total,
-            'relaxed' => $relaxed,
-            'labels' => array_map(static fn(array $label): array => [
-                'ref' => $label['ref'],
-                'legacyRef' => $label['legacyRef'],
-                'key' => $label['id'],
-                'source' => $label['source'],
-                'unusedSince' => $label['unusedSince'],
-                'matchedIn' => $label['matchedIn'],
-            ], $shown),
-            'catalog' => self::catalogRecord(),
-        ]);
+        return ToolResult::create(
+            implode("\n", [
+                sprintf('%s resolves to the translation domain:', $path),
+                '',
+                '  ' . $domain,
+                '',
+                'Reference a label in it as "' . $domain . ':<trans-unit id>" — in TCA, in LanguageService::sL(), '
+                    . 'and in f:translate as separate domain and key attributes.',
+                'Which trans-units the file actually holds is a property of your checkout: read the file, and remember '
+                    . 'that an installation can override it through LANG/resourceOverrides.',
+            ]),
+            ['path' => $path, 'domain' => $domain],
+        );
     }
 
     /** @param array<string, mixed> $args */

@@ -1,0 +1,46 @@
+[
+  {
+    "id": "fluid-templates",
+    "title": "Fluid Templates, Partials and Layouts",
+    "appliesTo": [
+      "Resources/Private/Templates/",
+      "Resources/Private/Partials/",
+      "Resources/Private/Layouts/",
+      ".fluid.html",
+      "fluid template"
+    ],
+    "hints": [
+      "Template files carry the .fluid.html extension. The bare .html form is legacy: at TYPO3 v14 the core has 617 .fluid.html files under typo3/sysext/*/Resources/Private against 3 remaining .html ones.",
+      "Only the f: and core: namespaces are available without declaring them: they are registered globally through Configuration/Fluid/Namespaces.php (fluid registers f: for TYPO3Fluid\\Fluid\\ViewHelpers and TYPO3\\CMS\\Fluid\\ViewHelpers, core registers core: for TYPO3\\CMS\\Core\\ViewHelpers, form registers formvh:).",
+      "Every other namespace is declared per template, including the backend one: xmlns:be=\"http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers\" on the root element, together with data-namespace-typo3-fluid=\"true\" so the declaration is stripped from the rendered output.",
+      "A backend module resolves templates through the templateRootPaths of its view factory, so a partial is referenced by its name below Resources/Private/Partials, never by a file path.",
+      "Fluid escapes output by default. Do not work around it in the template; if a ViewHelper has to return markup, that decision belongs in the ViewHelper via escapeOutput.",
+      "Use typo3_component_lookup for the markup of a backend component and typo3_icon_lookup for an icon identifier instead of writing either from memory."
+    ],
+    "checks": [
+      "CI=true ./Build/Scripts/runTests.sh -s functional"
+    ]
+  },
+  {
+    "id": "fluid-viewhelpers",
+    "title": "ViewHelpers",
+    "appliesTo": [
+      "Classes/ViewHelpers/",
+      "viewhelper",
+      "view helper"
+    ],
+    "hints": [
+      "The current shape is a final class extending AbstractViewHelper with initializeArguments(): void declaring every argument through registerArgument(), and a typed render(): string. Dependencies are constructor-injected.",
+      "renderStatic() and the CompileWithRenderStatic trait are deprecated since 13.3 (Deprecation-104789-RenderStaticForFluidViewHelpers.rst) and must not be used in new code. No core ViewHelper carries them any more; the only remaining mentions are the changelog and the extension scanner matcher.",
+      "Set protected bool $escapeOutput = false when the ViewHelper returns markup, and $escapeChildren = false when its children are markup rather than text. Both are opt-outs from Fluid's default escaping, so state why in the class docblock.",
+      "ViewHelpers are covered by functional tests under Tests/Functional/ViewHelpers/, not unit tests: at TYPO3 v14 the core has 85 functional ViewHelper test classes against 2 unit ones. A ViewHelper needs a rendering context, so a unit test asserts the wrong thing.",
+      "A ViewHelper is public API. A new one, or a changed argument list, needs a changelog entry under typo3/sysext/core/Documentation/Changelog/.",
+      "Fluid parsing itself is configured in $GLOBALS['TYPO3_CONF_VARS']['SYS']['fluid'] in typo3/sysext/core/Configuration/DefaultConfiguration.php — interceptors, preProcessors including NamespaceDetectionTemplateProcessor, and expressionNodeTypes."
+    ],
+    "checks": [
+      "CI=true ./Build/Scripts/runTests.sh -s functional",
+      "CI=true ./Build/Scripts/runTests.sh -s cglGit",
+      "CI=true ./Build/Scripts/runTests.sh -s phpstan"
+    ]
+  }
+]

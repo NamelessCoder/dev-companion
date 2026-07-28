@@ -49,6 +49,42 @@ official documentation or nearby core code over broad framework advice.
 - Check accessibility behavior when adding controls, dialogs, drag and drop, or
   status indicators.
 
+## Fluid Templates and ViewHelpers
+
+- Templates, partials, and layouts live under
+  `typo3/sysext/*/Resources/Private/{Templates,Partials,Layouts}/` and use the
+  `.fluid.html` extension. Plain `.html` is legacy: at TYPO3 v14 the core has
+  617 `.fluid.html` files there against 3 remaining `.html` ones.
+- Only `f:` and `core:` are globally available. Namespaces are registered per
+  extension in `Configuration/Fluid/Namespaces.php`; core registers `f:` (for
+  `TYPO3Fluid\Fluid\ViewHelpers` and `TYPO3\CMS\Fluid\ViewHelpers`), `core:`
+  (for `TYPO3\CMS\Core\ViewHelpers`), and `formvh:`.
+- Every other namespace is declared in the template itself, the backend one
+  included: `xmlns:be="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers"` on
+  the root element, plus `data-namespace-typo3-fluid="true"` so the declaration
+  is stripped from the rendered output.
+- A ViewHelper is a `final` class extending `AbstractViewHelper` with
+  `initializeArguments(): void` declaring every argument through
+  `registerArgument()`, and a typed `render(): string`. Dependencies are
+  constructor-injected.
+- `renderStatic()` and the `CompileWithRenderStatic` trait are deprecated since
+  13.3 (`Deprecation-104789-RenderStaticForFluidViewHelpers.rst`) and must not
+  be used in new code. No core ViewHelper still carries them.
+- Fluid escapes output by default. `protected bool $escapeOutput = false` opts
+  out for a ViewHelper that returns markup, `$escapeChildren = false` for one
+  whose children are markup. Both are security-relevant; say why in the class
+  docblock.
+- ViewHelpers are covered by functional tests under
+  `Tests/Functional/ViewHelpers/`, not unit tests — a ViewHelper needs a
+  rendering context. At TYPO3 v14 the core has 85 functional ViewHelper test
+  classes against 2 unit ones.
+- A new ViewHelper or a changed argument list is a public API change and needs a
+  changelog entry.
+- Fluid parsing is configured in `$GLOBALS['TYPO3_CONF_VARS']['SYS']['fluid']`
+  in `typo3/sysext/core/Configuration/DefaultConfiguration.php`: `interceptors`,
+  `preProcessors` (including `NamespaceDetectionTemplateProcessor`), and
+  `expressionNodeTypes`.
+
 ## TCA, FormEngine, and Backend Forms
 
 - TCA changes can affect persisted data, editor workflows, and generated backend

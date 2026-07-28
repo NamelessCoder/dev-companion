@@ -62,6 +62,24 @@ final class HintsTest extends TestCase
     }
 
     #[Test]
+    public function aFluidPathReachesTheFluidHintsAndNoOthers(): void
+    {
+        $result = ArchitectureHints::find(
+            [
+                'typo3/sysext/backend/Resources/Private/Partials/DocHeader.fluid.html',
+                'typo3/sysext/core/Classes/ViewHelpers/IconViewHelper.php',
+            ],
+            'Fluid template ViewHelper conventions escaping namespace',
+            6
+        );
+
+        $categories = array_column($result['matchedHints'], 'category');
+        self::assertContains('Fluid', $categories);
+        self::assertNotContains('TypeScript', $categories);
+        self::assertNotContains('CSS', $categories);
+    }
+
+    #[Test]
     public function proseIsOnlyAFallbackWhenNoStructuredHintMatched(): void
     {
         $matched = ArchitectureHints::find(['typo3/sysext/core/Classes/DataHandling/DataHandler.php'], 'DataHandler', 6);

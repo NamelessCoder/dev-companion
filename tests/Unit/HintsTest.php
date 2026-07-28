@@ -109,6 +109,38 @@ final class HintsTest extends TestCase
     }
 
     #[Test]
+    public function noHintStatesSomethingThatOnlyHoldsOnOneBranch(): void
+    {
+        // The server does not know the caller's branch, so a hint has to hold on
+        // every one of them. A version number, a concrete changelog file, or a
+        // count taken from a single checkout is a snapshot: it reads as a fact
+        // long after it stopped being one. Where the answer really is
+        // branch-specific, the hint says how to look it up in the checkout.
+        $snapshots = [
+            'a version number' => '/\bv\d+\b|\b\d+\.\d+\b|\bsince \d/i',
+            'a concrete changelog file' => '/\b(Breaking|Deprecation|Feature|Important|Task)-\d+/i',
+            'a count taken from a checkout' => '/\b\d{2,}\b/',
+        ];
+
+        foreach (ArchitectureHints::load() as $hint) {
+            // PSR numbers name an interface, they do not date the statement.
+            $text = (string) preg_replace(
+                '/\bPSR-\d+/i',
+                'PSR',
+                $hint['title'] . "\n" . implode("\n", $hint['hints'])
+            );
+
+            foreach ($snapshots as $what => $pattern) {
+                self::assertDoesNotMatchRegularExpression(
+                    $pattern,
+                    $text,
+                    $hint['id'] . ' states ' . $what . ', which only holds on the branch it was written from'
+                );
+            }
+        }
+    }
+
+    #[Test]
     public function aSuiteIsFoundByItsName(): void
     {
         $hints = TestSuiteHints::find('phpstan');

@@ -16,7 +16,7 @@
     "appliesTo": [".rst", "Documentation/", "Changelog/"],
     "hints": [
       "User-facing behavior changes may need documentation or changelog entries.",
-      "Deprecations need explicit migration guidance and scanner considerations when applicable.",
+      "A deprecation entry names the replacement and the migration path; without both it does not do its job. Add an extension scanner matcher when the deprecated API can be found statically.",
       "Keep ReST changes focused and validate them before review."
     ],
     "checks": ["CI=true ./Build/Scripts/runTests.sh -s checkRst"]

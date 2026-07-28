@@ -108,3 +108,30 @@ has not been addressed yet.
 - Verify facts against the local core checkout before writing them into
   `knowledge/`, and keep the wording branch-neutral where the fact is
   branch-specific.
+
+### How an architecture hint is written
+
+A hint is served without a branch. `typo3_server_scope` promises that the
+server does not know which TYPO3 version the caller works on, so a hint that
+only holds on one version is a hint that is wrong for everyone else. Five rules
+follow from that; `HintsTest` enforces the mechanical ones.
+
+- **State the shape that is current, not the history it replaced.** A bullet
+  whose payload is "X is deprecated" becomes a bullet whose payload is "this is
+  what new code looks like". The predecessor is then implied and stays a clause,
+  not a bullet of its own.
+- **No version numbers, no concrete changelog file names, no counts.** All three
+  are a snapshot of one checkout and go stale silently. Counts measured while
+  writing a hint are evidence for the author and belong in the commit message,
+  not in the answer.
+- **Where the answer is branch-specific, give the procedure, not the result.**
+  Name what to read in the checkout — an `@deprecated` annotation, a
+  `trigger_error(..., E_USER_DEPRECATED)` call, `Documentation/Changelog/`, the
+  extension scanner matchers. A procedure works on every branch, a list only on
+  the one it was taken from.
+- **When a fact holds on some branches only, write the rule that holds on all of
+  them.** `css-browser-target` is the model: not "this feature is allowed from
+  version X", but "the evergreen baseline of the target release year decides".
+- **"Check whether X" is not a hint, it is a check.** `hints` carries
+  statements, `checks` carries commands that run. A check-shaped sentence with
+  no command behind it tells the caller nothing it did not know already.

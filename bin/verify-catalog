@@ -110,6 +110,55 @@ if (!is_file($coreIconsFile)) {
     );
 }
 
+// The other two registration sources: a system extension's own
+// Configuration/Icons.php, and the flag images IconRegistry registers lazily.
+$coreRegistered = [];
+foreach (glob($coreRoot . '/typo3/sysext/*/Configuration/Icons.php') ?: [] as $file) {
+    $extension = basename(dirname($file, 2));
+    $declared = require $file;
+    foreach (array_keys(is_array($declared) ? $declared : []) as $identifier) {
+        $coreRegistered[(string) $identifier] = $extension;
+    }
+}
+foreach ($icons['registered'] ?? [] as $identifier => $extension) {
+    if (!isset($coreRegistered[$identifier])) {
+        echo '  extension icon gone from core: ' . $identifier . "\n";
+        ++$problems;
+    } elseif ($coreRegistered[$identifier] !== $extension) {
+        echo '  extension icon moved: ' . $identifier . ' → ' . $coreRegistered[$identifier] . "\n";
+        ++$problems;
+    }
+}
+foreach ($coreRegistered as $identifier => $extension) {
+    if (!isset($icons['registered'][$identifier])) {
+        echo '  extension icon missing in catalog: ' . $identifier . ' (' . $extension . ")\n";
+        ++$problems;
+    }
+}
+
+$coreFlags = [];
+foreach (glob($coreRoot . '/typo3/sysext/core/Resources/Public/Icons/Flags/*.webp') ?: [] as $file) {
+    $coreFlags['flags-' . strtolower(pathinfo($file, PATHINFO_FILENAME))] = true;
+}
+foreach ($icons['flags'] ?? [] as $identifier) {
+    if (!isset($coreFlags[$identifier])) {
+        echo '  flag gone from core: ' . $identifier . "\n";
+        ++$problems;
+    }
+}
+foreach (array_keys($coreFlags) as $identifier) {
+    if (!in_array($identifier, $icons['flags'] ?? [], true)) {
+        echo '  flag missing in catalog: ' . $identifier . "\n";
+        ++$problems;
+    }
+}
+
+printf(
+    "  %d extension-registered, %d flags\n",
+    count($icons['registered'] ?? []),
+    count($icons['flags'] ?? []),
+);
+
 echo "Labels\n";
 $labels = json_decode((string) file_get_contents($catalogDir . '/labels.json'), true);
 $staleLabels = 0;

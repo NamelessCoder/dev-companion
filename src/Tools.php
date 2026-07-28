@@ -1143,11 +1143,10 @@ final class Tools
         if ($matches === []) {
             $miss = $isIdentifier
                 ? sprintf(
-                    '"%s" is not in this snapshot. It is shaped like a registered identifier, so this is not proof '
-                    . 'it does not exist: the catalog covers the T3Icons set, not the identifiers a system extension '
-                    . 'registers in its own Configuration/Icons.php, and not the flags-* family, which is registered '
-                    . 'from the flag SVGs at runtime. Check Configuration/Icons.php in the owning extension, and call '
-                    . 'typo3_catalog_scope for what this snapshot covers.',
+                    '"%s" is shaped like an identifier but is registered in none of the three places this snapshot '
+                    . 'covers: the T3Icons set, a system extension\'s Configuration/Icons.php, and the flag images. '
+                    . 'On the pinned revision it does not exist; on a newer branch it may. Call typo3_catalog_scope '
+                    . 'for which revision that is.',
                     $query
                 )
                 : sprintf(
@@ -1175,6 +1174,9 @@ final class Tools
         $shown = array_slice($matches, 0, $limit);
         $lines = array_map(static function (array $icon): string {
             $line = '- ' . $icon['identifier'] . '  (' . $icon['category'] . ')';
+            if ($icon['source'] !== Icons::SOURCE_T3ICONS) {
+                $line .= "\n  registered in " . $icon['source'];
+            }
             if ($icon['aliasOf'] !== null) {
                 $line .= "\n  alias of " . $icon['aliasOf'];
             }
@@ -1213,6 +1215,7 @@ final class Tools
                     'identifier' => $icon['identifier'],
                     'category' => $icon['category'],
                     'aliasOf' => $icon['aliasOf'],
+                    'source' => $icon['source'],
                     'matched' => $icon['matched'],
                     'score' => $icon['score'],
                     'why' => $icon['why'],

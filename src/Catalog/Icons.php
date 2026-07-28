@@ -16,14 +16,25 @@ use Typo3CmsMcp\Paths;
  * runtime, and finding one by what it should mean. Identifiers spell shapes
  * ("exclamation-triangle"), not intents ("warning"), so the catalog carries a
  * concept map that connects the two.
+ *
+ * The core registers icons from three places, and every entry says which one it
+ * came from: the T3Icons set, a system extension's Configuration/Icons.php, and
+ * the flag images, which IconRegistry registers lazily from
+ * typo3/sysext/core/Resources/Public/Icons/Flags/. A miss can then be
+ * attributed instead of guessed.
  */
 final class Icons
 {
+    public const SOURCE_T3ICONS = 't3icons';
+    public const SOURCE_FLAGS = 'flags';
+
     /**
      * @return array{
      *     icons: array<string, array<int, string>>,
      *     aliases: array<string, string>,
-     *     concepts: array<string, array<int, string>>
+     *     concepts: array<string, array<int, string>>,
+     *     flags: array<int, string>,
+     *     registered: array<string, string>
      * }
      */
     private static function data(): array
@@ -37,13 +48,16 @@ final class Icons
             'icons' => $decoded['icons'],
             'aliases' => $decoded['aliases'] ?? [],
             'concepts' => $decoded['concepts'] ?? [],
+            'flags' => $decoded['flags'] ?? [],
+            'registered' => $decoded['registered'] ?? [],
         ];
     }
 
     /**
-     * Flat list of every registered identifier with its category.
+     * Flat list of every registered identifier with its category and where it
+     * is registered.
      *
-     * @return array<int, array{identifier: string, category: string, aliasOf: ?string}>
+     * @return array<int, array{identifier: string, category: string, aliasOf: ?string, source: string}>
      */
     public static function load(): array
     {
@@ -56,6 +70,7 @@ final class Icons
                     'identifier' => (string) $identifier,
                     'category' => (string) $category,
                     'aliasOf' => null,
+                    'source' => self::SOURCE_T3ICONS,
                 ];
             }
         }
@@ -65,16 +80,35 @@ final class Icons
                 'identifier' => (string) $alias,
                 'category' => (string) (strstr((string) $alias, '-', true) ?: 'alias'),
                 'aliasOf' => (string) $target,
+                'source' => self::SOURCE_T3ICONS,
+            ];
+        }
+
+        foreach ($data['registered'] as $identifier => $extension) {
+            $icons[] = [
+                'identifier' => (string) $identifier,
+                'category' => (string) (strstr((string) $identifier, '-', true) ?: 'default'),
+                'aliasOf' => null,
+                'source' => 'EXT:' . $extension . '/Configuration/Icons.php',
+            ];
+        }
+
+        foreach ($data['flags'] as $identifier) {
+            $icons[] = [
+                'identifier' => (string) $identifier,
+                'category' => 'flags',
+                'aliasOf' => null,
+                'source' => self::SOURCE_FLAGS,
             ];
         }
 
         return $icons;
     }
 
-    /** @return array<int, string> Available category names. */
+    /** @return array<int, string> Available category names, across all three sources. */
     public static function categories(): array
     {
-        $categories = array_keys(self::data()['icons']);
+        $categories = array_unique(array_column(self::load(), 'category'));
         sort($categories);
 
         return array_map('strval', $categories);
@@ -85,19 +119,6 @@ final class Icons
     {
         return self::data()['concepts'];
     }
-
-    /**
-     * Identifier families the core registers that this catalog does not carry,
-     * so a query naming one is still recognised as an identifier rather than
-     * read as a search phrase.
-     *
-     * flags-* are registered lazily from the flag SVGs; provider-*,
-     * tcarecords-* and theme-* come from a system extension's
-     * Configuration/Icons.php rather than from the T3Icons set.
-     *
-     * @var array<int, string>
-     */
-    private const FAMILIES_OUTSIDE_THE_CATALOG = ['flags', 'provider', 'tcarecords', 'theme'];
 
     /**
      * Whether the query is shaped like a registered identifier
@@ -115,8 +136,7 @@ final class Icons
             return false;
         }
 
-        return in_array($matches[1], self::categories(), true)
-            || in_array($matches[1], self::FAMILIES_OUTSIDE_THE_CATALOG, true);
+        return in_array($matches[1], self::categories(), true);
     }
 
     /** Whether the catalog carries exactly this identifier, alias or not. */
@@ -136,7 +156,7 @@ final class Icons
      * Ranks icon identifiers against a free-text query. An empty query returns
      * the whole catalog.
      *
-     * @return array<int, array{identifier: string, category: string, aliasOf: ?string, matched: int, score: int, why: array<int, string>}>
+     * @return array<int, array{identifier: string, category: string, aliasOf: ?string, source: string, matched: int, score: int, why: array<int, string>}>
      */
     public static function find(?string $query, bool $requireAllTerms = true): array
     {

@@ -46,7 +46,7 @@
     },
     {
       "topic": "Icon identifiers",
-      "depth": "Complete for the registered T3Icons of the pinned core revision, aliases included.",
+      "depth": "Complete for the pinned core revision across all three registration sources: the T3Icons set with its aliases, every system extension Configuration/Icons.php, and the flag images. Each answer names the source of the identifier.",
       "tools": ["typo3_icon_lookup"],
       "source": "knowledge/catalog/icons.json"
     },

@@ -124,14 +124,32 @@ final class CatalogTest extends TestCase
     #[Test]
     public function anIdentifierThatIsNotInTheSnapshotIsReportedAsAMiss(): void
     {
-        // The dangerous answer: 21 icons that share a name part, led by an
+        // The dangerous answer: icons that share a name part, led by an
         // unrelated one, each with a plausible "why" — read as a confirmation
         // that the queried identifier resolves to something.
-        $result = Tools::call('typo3_icon_lookup', ['query' => 'status-reference-hard']);
+        $result = Tools::call('typo3_icon_lookup', ['query' => 'status-reference-quantumflux']);
 
         self::assertFalse($result->data['exactMatch']);
         self::assertStringContainsString('is not in this snapshot', $result->text);
         self::assertStringContainsString('suggestions, not the answer', $result->text);
+    }
+
+    #[Test]
+    public function theThreeRegistrationSourcesAreAllCovered(): void
+    {
+        // The T3Icons set, an extension's Configuration/Icons.php, and the
+        // flags registered lazily from the flag images.
+        foreach ([
+            'actions-open' => Icons::SOURCE_T3ICONS,
+            'status-reference-hard' => 'EXT:impexp/Configuration/Icons.php',
+            'flags-multiple' => Icons::SOURCE_FLAGS,
+        ] as $identifier => $source) {
+            self::assertTrue(Icons::exists($identifier), $identifier . ' is not in the catalog');
+
+            $result = Tools::call('typo3_icon_lookup', ['query' => $identifier])->data;
+            self::assertTrue($result['exactMatch'], $identifier . ' is not confirmed as an identifier');
+            self::assertSame($source, $result['icons'][0]['source'], $identifier . ' is attributed wrongly');
+        }
     }
 
     #[Test]

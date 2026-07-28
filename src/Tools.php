@@ -256,32 +256,97 @@ final class Tools
         $results = Knowledge::search($query);
 
         if ($results === []) {
-            return sprintf(
-                'No local TYPO3 core rule entries matched "%s". Add details to knowledge/typo3-core-rules.md or knowledge/typo3-core-scripts.md.',
-                $query
-            );
+            return self::noKnowledgeMatch($query);
         }
 
-        return implode("\n\n", array_map(static function (array $result): string {
-            $excerpts = implode("\n", array_map(static fn(string $e): string => '- ' . $e, $result['excerpts']));
-            return '## ' . $result['title'] . "\n" . $excerpts;
-        }, $results));
+        return self::renderSections($results);
     }
 
     /** @param array<string, mixed> $args */
     private static function scriptHelp(array $args): string
     {
         $task = (string) ($args['task'] ?? '');
-        $results = array_filter(Knowledge::search($task), static fn(array $r): bool => $r['id'] === 'typo3-core-scripts');
+        $results = Knowledge::search($task, ['typo3-core-scripts']);
 
-        if ($results === []) {
-            return sprintf('No script entry matched "%s". Check knowledge/typo3-core-scripts.md and add the project-specific command.', $task);
+        if ($results !== []) {
+            return self::renderSections($results);
         }
 
+        // Nothing about scripts matched. Say so, and route to the documents that
+        // do cover the topic instead of answering with the nearest script prose.
+        $message = sprintf(
+            'No section of the TYPO3 core script notes matched "%s". They cover: %s.',
+            $task,
+            self::topicList('typo3-core-scripts')
+        );
+
+        $elsewhere = Knowledge::search($task);
+        if ($elsewhere !== []) {
+            $titles = array_values(array_unique(array_map(
+                static fn(array $result): string => $result['title'],
+                $elsewhere
+            )));
+            $message .= sprintf(
+                "\n\nOther knowledge documents do match this query — call typo3_rule_lookup for: %s.",
+                implode(', ', $titles)
+            );
+        }
+
+        return $message;
+    }
+
+    /**
+     * Renders matched knowledge sections as coherent excerpts: the section
+     * keeps its own heading and original formatting, so code blocks and nested
+     * lists survive.
+     *
+     * @param array<int, array{id: string, title: string, heading: string, body: string, coverage: float, truncated: bool}> $results
+     */
+    private static function renderSections(array $results): string
+    {
         return implode("\n\n", array_map(static function (array $result): string {
-            $excerpts = implode("\n", array_map(static fn(string $e): string => '- ' . $e, $result['excerpts']));
-            return '## ' . $result['title'] . "\n" . $excerpts;
+            $heading = $result['heading'] === '' ? $result['title'] : $result['heading'];
+            $source = sprintf(
+                'Source: %s (typo3://core/%s) — matches %d%% of the query terms',
+                $result['title'],
+                $result['id'],
+                (int) round($result['coverage'] * 100),
+            );
+
+            $body = $result['body'];
+            if ($result['truncated']) {
+                $body .= "\n\n(section truncated — read typo3://core/" . $result['id'] . ' for the rest)';
+            }
+
+            return '## ' . $heading . "\n" . $source . "\n\n" . $body;
         }, $results));
+    }
+
+    private static function noKnowledgeMatch(string $query): string
+    {
+        $documents = implode("\n", array_map(
+            static fn(array $document): string => '- ' . $document['title'] . ': ' . implode(', ', $document['topics']),
+            Knowledge::topics()
+        ));
+
+        return sprintf(
+            "No knowledge section matched \"%s\".\n\nThis knowledge base covers:\n%s\n\n"
+            . 'For registered components, icons, or labels use typo3_component_lookup, typo3_icon_lookup, '
+            . 'or typo3_label_lookup instead. If the topic should be covered here, record it with typo3_make_me_better.',
+            $query,
+            $documents
+        );
+    }
+
+    private static function topicList(string $documentId): string
+    {
+        foreach (Knowledge::topics() as $document) {
+            if ($document['id'] === $documentId) {
+                return implode(', ', $document['topics']);
+            }
+        }
+
+        return '';
     }
 
     /** @param array<string, mixed> $args */
@@ -426,6 +491,8 @@ final class Tools
         if ($paths !== []) {
             $lines[] = "Paths:\n" . implode("\n", array_map(static fn(string $p): string => '- ' . $p, $paths));
         }
+        $lines[] = 'Domains: ' . implode(', ', $result['domains'])
+            . ' (hints outside these domains are not shown)';
         $lines[] = '';
         $lines[] = 'Architecture hints:';
 
@@ -438,28 +505,23 @@ final class Tools
                     foreach ($hint['hints'] as $entry) {
                         $block[] = '- ' . $entry;
                     }
-                    $block[] = 'Relevant checks:';
-                    foreach ($hint['checks'] as $check) {
-                        $block[] = '- ' . $check;
+                    if ($hint['checks'] !== []) {
+                        $block[] = 'Relevant checks:';
+                        foreach ($hint['checks'] as $check) {
+                            $block[] = '- ' . $check;
+                        }
                     }
                     $hintTexts[] = implode("\n", $block);
                 }
                 $sectionTexts[] = '### ' . $section['category'] . "\n\n" . implode("\n\n", $hintTexts);
             }
             $lines[] = implode("\n\n", $sectionTexts);
+        } elseif ($result['knowledgeSections'] !== []) {
+            $lines[] = 'No structured hint matched; the closest architecture notes are:';
+            $lines[] = '';
+            $lines[] = self::renderSections($result['knowledgeSections']);
         } else {
             $lines[] = 'No architecture hint matched. Add a more specific path or topic, or extend knowledge/typo3-core-architecture.md.';
-        }
-
-        if ($result['knowledgeExcerpts'] !== []) {
-            $lines[] = '';
-            $lines[] = 'Knowledge excerpts:';
-            foreach ($result['knowledgeExcerpts'] as $entry) {
-                $lines[] = '## ' . $entry['title'];
-                foreach ($entry['excerpts'] as $excerpt) {
-                    $lines[] = '- ' . $excerpt;
-                }
-            }
         }
 
         return implode("\n", $lines);

@@ -9,9 +9,9 @@
       "Frontend modules with state transitions should have focused JavaScript unit coverage."
     ],
     "checks": [
-      "./Build/Scripts/runTests.sh -s build",
-      "./Build/Scripts/runTests.sh -s lintTypescript",
-      "./Build/Scripts/runTests.sh -s unitJavascript"
+      "CI=true ./Build/Scripts/runTests.sh -s build",
+      "CI=true ./Build/Scripts/runTests.sh -s lintTypescript",
+      "CI=true ./Build/Scripts/runTests.sh -s unitJavascript"
     ]
   },
   {
@@ -32,9 +32,9 @@
       "For custom elements, keep CSS aligned with the host element API, stable attributes, slots, parts, and custom properties."
     ],
     "checks": [
-      "./Build/Scripts/runTests.sh -s build",
-      "./Build/Scripts/runTests.sh -s lintTypescript",
-      "./Build/Scripts/runTests.sh -s unitJavascript"
+      "CI=true ./Build/Scripts/runTests.sh -s build",
+      "CI=true ./Build/Scripts/runTests.sh -s lintTypescript",
+      "CI=true ./Build/Scripts/runTests.sh -s unitJavascript"
     ]
   }
 ]

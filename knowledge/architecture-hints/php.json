@@ -8,7 +8,7 @@
       "Reuse public APIs from other system extensions instead of depending on internal implementation details.",
       "Check nearby extension-local tests before adding shared behavior."
     ],
-    "checks": ["./Build/Scripts/runTests.sh -s unit", "./Build/Scripts/runTests.sh -s functional"]
+    "checks": ["CI=true ./Build/Scripts/runTests.sh -s unit", "CI=true ./Build/Scripts/runTests.sh -s functional"]
   },
   {
     "id": "dependency-injection-services",
@@ -19,7 +19,7 @@
       "Use Services.yaml when explicit service wiring is needed.",
       "Avoid new GeneralUtility::makeInstance() calls for regular service dependencies unless lifecycle constraints require it."
     ],
-    "checks": ["./Build/Scripts/runTests.sh -s functional", "./Build/Scripts/runTests.sh -s lintServicesYaml"]
+    "checks": ["CI=true ./Build/Scripts/runTests.sh -s functional", "CI=true ./Build/Scripts/runTests.sh -s lintServicesYaml"]
   },
   {
     "id": "events-extension-points",
@@ -30,7 +30,7 @@
       "Keep event payloads minimal and stable.",
       "Public extension points need careful naming, documentation, and regression coverage."
     ],
-    "checks": ["./Build/Scripts/runTests.sh -s unit", "./Build/Scripts/runTests.sh -s functional"]
+    "checks": ["CI=true ./Build/Scripts/runTests.sh -s unit", "CI=true ./Build/Scripts/runTests.sh -s functional"]
   },
   {
     "id": "tca-formengine",
@@ -41,7 +41,7 @@
       "Prefer established TCA option names and existing FormEngine behavior.",
       "Add functional coverage for TCA processing, data providers, or backend form rendering behavior."
     ],
-    "checks": ["./Build/Scripts/runTests.sh -s functional", "./Build/Scripts/runTests.sh -s checkIntegrityXliff"]
+    "checks": ["CI=true ./Build/Scripts/runTests.sh -s functional", "CI=true ./Build/Scripts/runTests.sh -s checkIntegrityXliff"]
   },
   {
     "id": "datahandler-persistence",
@@ -52,7 +52,7 @@
       "Preserve workspace, localization, permissions, and hook or event behavior unless intentionally changed.",
       "Test edge cases with deleted, hidden, localized, versioned, or workspace records when relevant."
     ],
-    "checks": ["./Build/Scripts/runTests.sh -s functional", "./Build/Scripts/runTests.sh -s phpstan"]
+    "checks": ["CI=true ./Build/Scripts/runTests.sh -s functional", "CI=true ./Build/Scripts/runTests.sh -s phpstan"]
   },
   {
     "id": "routing-request-handling",
@@ -63,6 +63,6 @@
       "Keep middleware focused and ordered deliberately.",
       "Avoid global state when request-scoped data is available."
     ],
-    "checks": ["./Build/Scripts/runTests.sh -s functional", "./Build/Scripts/runTests.sh -s unit"]
+    "checks": ["CI=true ./Build/Scripts/runTests.sh -s functional", "CI=true ./Build/Scripts/runTests.sh -s unit"]
   }
 ]

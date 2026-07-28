@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * Locates and loads the Composer autoloader for the CLI and HTTP entrypoints.
+ * Locates and loads the Composer autoloader for the stdio entrypoint.
  *
  * The file lives in a different place depending on how this package is used:
  * in a standalone checkout it is ./vendor/autoload.php, while as an installed
@@ -32,17 +32,7 @@ declare(strict_types=1);
         }
     }
 
-    $message = "typo3-cms-mcp: Composer autoloader not found."
-        . " Run 'composer install' in the package root.";
-
-    // STDERR only exists on CLI; the HTTP entrypoint must answer with a status.
-    if (PHP_SAPI === 'cli') {
-        fwrite(STDERR, $message . "\n");
-        exit(1);
-    }
-
-    http_response_code(500);
-    header('Content-Type: application/json; charset=utf-8');
-    echo json_encode(['error' => $message]);
+    fwrite(STDERR, "typo3-cms-mcp: Composer autoloader not found."
+        . " Run 'composer install' in the package root.\n");
     exit(1);
 })();

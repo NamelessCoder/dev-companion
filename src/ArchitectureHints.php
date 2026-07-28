@@ -50,16 +50,33 @@ final class ArchitectureHints
     }
 
     /**
+     * Matches hints against paths and task text, restricted to the domains the
+     * input actually touches.
+     *
+     * The prose sections from the architecture documents are a fallback, not an
+     * addition: they are only returned when no structured hint matched, because
+     * otherwise they restate the hints and bury them.
+     *
      * @param array<int, string> $paths
-     * @return array{matchedHints: array<int, array<string, mixed>>, knowledgeExcerpts: array<int, array{title: string, excerpts: array<int, string>}>}
+     * @return array{
+     *     matchedHints: array<int, array<string, mixed>>,
+     *     knowledgeSections: array<int, array{id: string, title: string, heading: string, body: string, coverage: float, truncated: bool}>,
+     *     domains: array<int, string>
+     * }
      */
     public static function find(array $paths, string $task, int $limit): array
     {
         $task = trim($task);
         $haystack = mb_strtolower(implode("\n", array_merge($paths, [$task])));
 
+        $domains = Domains::detect($paths, $task);
+        $categories = Domains::hintCategories($domains);
+
         $scored = [];
         foreach (self::load() as $hint) {
+            if (!in_array($hint['category'], $categories, true)) {
+                continue;
+            }
             $score = self::scoreHint($hint, $haystack);
             if ($score > 0) {
                 $scored[] = ['hint' => $hint, 'score' => $score];
@@ -76,19 +93,20 @@ final class ArchitectureHints
             array_slice($scored, 0, $limit)
         );
 
-        $knowledgeExcerpts = [];
-        if ($task !== '') {
-            foreach (Knowledge::search($task) as $result) {
-                if (in_array($result['id'], ['typo3-core-architecture', 'typo3-css-architecture'], true)) {
-                    $knowledgeExcerpts[] = [
-                        'title' => $result['title'],
-                        'excerpts' => $result['excerpts'],
-                    ];
-                }
+        $knowledgeSections = [];
+        if ($matchedHints === [] && $task !== '') {
+            $documents = ['typo3-core-architecture'];
+            if (in_array(Domains::FRONTEND, $domains, true)) {
+                $documents[] = 'typo3-css-architecture';
             }
+            $knowledgeSections = Knowledge::search($task, $documents, $limit);
         }
 
-        return ['matchedHints' => $matchedHints, 'knowledgeExcerpts' => $knowledgeExcerpts];
+        return [
+            'matchedHints' => $matchedHints,
+            'knowledgeSections' => $knowledgeSections,
+            'domains' => $domains,
+        ];
     }
 
     /**

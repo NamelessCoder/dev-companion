@@ -24,4 +24,9 @@ final class Paths
     {
         return self::knowledge() . '/' . implode('/', $segments);
     }
+
+    public static function catalogFile(string ...$segments): string
+    {
+        return self::knowledge() . '/catalog/' . implode('/', $segments);
+    }
 }

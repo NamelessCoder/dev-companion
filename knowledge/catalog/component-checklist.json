@@ -1,0 +1,19 @@
+{
+  "title": "Component Definition of Done",
+  "intro": "Applies to every backend component. Verify each item before a component change is complete.",
+  "items": [
+    "All relevant variants, sizes, and modifiers are implemented and demoed.",
+    "All applicable states are covered: hover, focus, active, disabled, loading, empty, error, selected, expanded, collapsed.",
+    "Colors come only from semantic --typo3-* tokens (no raw hex/RGB/HSL, no --bs-* Bootstrap variables) and work in light and dark mode.",
+    "Surfaces and shadows follow the elevation sequence; foreground/background token pairs are valid in both schemes.",
+    "Variants tune the base component through custom properties; structure stays in the base component.",
+    "Keyboard reachable and operable, with visible :focus-visible, logical focus order, and WCAG contrast in both schemes.",
+    "Interactive icon-only controls have an accessible name; decorative icons are aria-hidden; ARIA and data-* reflect real state.",
+    "RTL checked with logical properties; layout stays stable across states (no shift on hover or focus).",
+    "New overlays use z-index tokens; new motion respects prefers-reduced-motion.",
+    "Custom elements are styled via the host selector, ::part(), slots, or custom properties.",
+    "t3js-* classes are used only as JavaScript hooks, separate from styling selectors.",
+    "A styleguide demo exists or is updated, covering variants, states, light/dark, and RTL.",
+    "build and lintScss were run; generated assets are in sync."
+  ]
+}

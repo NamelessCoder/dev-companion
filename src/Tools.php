@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace Typo3CmsMcp;
 
+use Typo3CmsMcp\Catalog\Components;
+use Typo3CmsMcp\Catalog\Icons;
+use Typo3CmsMcp\Catalog\Labels;
+
 /**
  * Defines the knowledge tools and renders their text output. Mirrors the
  * behaviour of the former TypeScript tools.
@@ -88,6 +92,39 @@ final class Tools
                 ],
             ],
             [
+                'name' => 'typo3_component_lookup',
+                'description' => 'Look up TYPO3 backend UI components by name or topic. Returns canonical markup, variant/modifier/sub-component classes, the custom-property contract, and the styleguide demo and Sass source paths.',
+                'inputSchema' => [
+                    'type' => 'object',
+                    'properties' => [
+                        'query' => ['type' => 'string', 'description' => 'Component name, class, or topic, for example badge, card, search box, or input-group. Omit to list the catalog.'],
+                    ],
+                ],
+            ],
+            [
+                'name' => 'typo3_icon_lookup',
+                'description' => 'Validate and discover TYPO3 core icon identifiers (the registered T3Icons names such as actions-open or module-web-list). Returns matching identifiers grouped by category so unknown identifiers are caught before runtime.',
+                'inputSchema' => [
+                    'type' => 'object',
+                    'properties' => [
+                        'query' => ['type' => 'string', 'description' => 'Identifier fragment or keywords, for example "status warning", "delete", or "actions-open". Omit to list categories.'],
+                        'limit' => ['type' => 'integer', 'minimum' => 1, 'maximum' => 100, 'default' => 40, 'description' => 'Maximum number of identifiers to return.'],
+                    ],
+                ],
+            ],
+            [
+                'name' => 'typo3_label_lookup',
+                'description' => 'Search registered TYPO3 core labels (XLF trans-units) across the core sysexts. Returns the fully-qualified LLL reference, English source text, and any x-unused-since marker, so existing labels can be reused instead of inventing new keys.',
+                'inputSchema' => [
+                    'type' => 'object',
+                    'properties' => [
+                        'query' => ['type' => 'string', 'description' => 'Words from the label key or its English text, for example "save document" or "labels.title".'],
+                        'mode' => ['type' => 'string', 'enum' => ['keys', 'domains'], 'default' => 'keys', 'description' => 'keys: search individual labels. domains: list registered XLF translation domains.'],
+                        'limit' => ['type' => 'integer', 'minimum' => 1, 'maximum' => 100, 'default' => 25, 'description' => 'Maximum number of results to return.'],
+                    ],
+                ],
+            ],
+            [
                 'name' => 'typo3_commit_message_help',
                 'description' => 'Draft and check a TYPO3 core commit message against the contribution rules.',
                 'inputSchema' => [
@@ -117,6 +154,9 @@ final class Tools
             'typo3_core_task_brief' => self::taskBrief($args),
             'typo3_core_run_tests_help' => self::runTestsHelp($args),
             'typo3_architecture_hint' => self::architectureHint($args),
+            'typo3_component_lookup' => self::componentLookup($args),
+            'typo3_icon_lookup' => self::iconLookup($args),
+            'typo3_label_lookup' => self::labelLookup($args),
             'typo3_commit_message_help' => self::commitMessageHelp($args),
             default => throw new \InvalidArgumentException(sprintf('Unknown tool: %s', $name)),
         };
@@ -290,6 +330,160 @@ final class Tools
         }
 
         return implode("\n", $lines);
+    }
+
+    /** @param array<string, mixed> $args */
+    private static function componentLookup(array $args): string
+    {
+        $query = isset($args['query']) ? (string) $args['query'] : null;
+        $components = Components::find($query);
+
+        if ($components === []) {
+            return sprintf(
+                'No TYPO3 component matched "%s". Try a component name (badge, card), a class (input-group), or a topic (search box). Extend knowledge/catalog/components.json to add more.',
+                (string) $query
+            );
+        }
+
+        // A specific query returns the best matches; an empty query lists names.
+        if ($query === null || trim($query) === '') {
+            $names = implode("\n", array_map(
+                static fn(array $c): string => '- ' . $c['name'] . ' — ' . $c['title'],
+                $components
+            ));
+            return "TYPO3 backend component catalog:\n" . $names;
+        }
+
+        $blocks = array_map(static function (array $c): string {
+            $lines = ['## ' . $c['title'] . ' (`' . $c['rootClass'] . '`)'];
+            if ($c['summary'] !== '') {
+                $lines[] = $c['summary'];
+            }
+
+            $lines[] = '';
+            $lines[] = 'Markup:';
+            $lines[] = '```html';
+            $lines[] = $c['markup'];
+            $lines[] = '```';
+
+            $appendList = static function (string $label, array $items) use (&$lines): void {
+                if ($items !== []) {
+                    $lines[] = $label . ': ' . implode(', ', $items);
+                }
+            };
+            $appendList('Variants', $c['variants']);
+            $appendList('Modifiers', $c['modifiers']);
+            $appendList('Sub-components', $c['subComponents']);
+            $appendList('Custom properties', $c['customProperties']);
+
+            $lines[] = 'Sass source: ' . $c['sassPath'];
+            $lines[] = 'Styleguide demo: ' . ($c['demoPath'] ?? 'none (not a styleguide component)');
+
+            if ($c['examples'] !== []) {
+                $lines[] = '';
+                $lines[] = 'Examples:';
+                foreach ($c['examples'] as $example) {
+                    $lines[] = '```html';
+                    $lines[] = $example;
+                    $lines[] = '```';
+                }
+            }
+
+            return implode("\n", $lines);
+        }, array_slice($components, 0, 3));
+
+        $checklist = Components::checklist();
+        $checklistLines = ['## ' . $checklist['title']];
+        if ($checklist['intro'] !== '') {
+            $checklistLines[] = $checklist['intro'];
+        }
+        foreach ($checklist['items'] as $item) {
+            $checklistLines[] = '- [ ] ' . $item;
+        }
+        $blocks[] = implode("\n", $checklistLines);
+
+        return implode("\n\n", $blocks);
+    }
+
+    /** @param array<string, mixed> $args */
+    private static function iconLookup(array $args): string
+    {
+        $query = isset($args['query']) ? (string) $args['query'] : null;
+        $limit = (int) ($args['limit'] ?? 40);
+
+        if ($query === null || trim($query) === '') {
+            $categories = Icons::categories();
+            return "Icon categories (query an identifier fragment to list icons):\n"
+                . implode("\n", array_map(static fn(string $c): string => '- ' . $c, $categories));
+        }
+
+        $matches = Icons::find($query);
+        if ($matches === []) {
+            return sprintf(
+                'No TYPO3 icon identifier matched "%s". Identifiers follow the <category>-<name> convention, for example actions-open or module-web-list.',
+                $query
+            );
+        }
+
+        $total = count($matches);
+        $shown = array_slice($matches, 0, $limit);
+        $lines = array_map(
+            static fn(array $icon): string => '- ' . $icon['identifier'] . '  (' . $icon['category'] . ')',
+            $shown
+        );
+
+        $header = sprintf('%d icon identifier(s) matched "%s"', $total, $query);
+        if ($total > count($shown)) {
+            $header .= sprintf(' — showing the top %d, refine the query to narrow down', count($shown));
+        }
+
+        return $header . ":\n" . implode("\n", $lines);
+    }
+
+    /** @param array<string, mixed> $args */
+    private static function labelLookup(array $args): string
+    {
+        $query = isset($args['query']) ? (string) $args['query'] : null;
+        $mode = (string) ($args['mode'] ?? 'keys');
+        $limit = (int) ($args['limit'] ?? 25);
+
+        if ($mode === 'domains') {
+            $domains = Labels::domains($query);
+            if ($domains === []) {
+                return sprintf('No registered label domain matched "%s".', (string) $query);
+            }
+            $lines = array_map(
+                static fn(array $d): string => sprintf('- %s  (%s, %d labels)', $d['ref'], $d['ext'], $d['count']),
+                array_slice($domains, 0, $limit)
+            );
+            return sprintf('%d label domain(s):', count($domains)) . "\n" . implode("\n", $lines);
+        }
+
+        if ($query === null || trim($query) === '') {
+            return 'Provide a query to search labels, or pass mode "domains" to list registered XLF files.';
+        }
+
+        $labels = Labels::find($query);
+        if ($labels === []) {
+            return sprintf('No TYPO3 core label matched "%s". Try words from the key or its English text, or extend the catalog scope.', $query);
+        }
+
+        $total = count($labels);
+        $shown = array_slice($labels, 0, $limit);
+        $lines = array_map(static function (array $label): string {
+            $line = '- ' . $label['ref'] . "\n  \"" . $label['source'] . '"';
+            if ($label['unusedSince'] !== null) {
+                $line .= "\n  (unused since " . $label['unusedSince'] . ')';
+            }
+            return $line;
+        }, $shown);
+
+        $header = sprintf('%d label(s) matched "%s"', $total, $query);
+        if ($total > count($shown)) {
+            $header .= sprintf(' — showing the top %d', count($shown));
+        }
+
+        return $header . ":\n" . implode("\n", $lines);
     }
 
     /** @param array<string, mixed> $args */

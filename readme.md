@@ -12,6 +12,10 @@ and offers two transports sharing one server definition: **stdio**
 keeps MCP session state in files (`var/sessions/`), so it still needs no
 persistent process. HTTP access is protected by a static bearer token.
 
+It is a Composer library (`typo3/cms-mcp`) that can either be required as a
+dependency of the codebase it supports, or run from a standalone checkout — see
+[Install](#install).
+
 ## Goal
 
 The server provides MCP-enabled clients with context that is otherwise spread
@@ -43,15 +47,57 @@ public/index.php   # Streamable HTTP endpoint (web document root)
 public/.htaccess   # routing + Authorization header pass-through (Apache)
 src/               # PHP classes (knowledge loading, tools, SDK wiring)
 src/ServerFactory.php  # builds the mcp/sdk server shared by both transports
+src/bootstrap.php  # locates the Composer autoloader for both entrypoints
 knowledge/         # the knowledge base (markdown + JSON), the data source
 config.local.php   # local secret (gitignored); see config.local.php.example
 vendor/            # Composer dependencies (mcp/sdk, nyholm/psr7); gitignored
 var/sessions/      # HTTP session files (gitignored, created at runtime)
 ```
 
-Install dependencies once with `composer install`. Both entrypoints build the
-same server via `Typo3CmsMcp\ServerFactory`; the tool and resource logic lives
-in `src/Tools.php` and `src/Knowledge.php`, driven entirely by `knowledge/`.
+Both entrypoints build the same server via `Typo3CmsMcp\ServerFactory`; the tool
+and resource logic lives in `src/Tools.php` and `src/Knowledge.php`, driven
+entirely by `knowledge/`.
+
+## Install
+
+The package works both ways: as a Composer dependency of another project, and
+as a standalone checkout. `src/bootstrap.php` locates the Composer autoloader at
+runtime, so no entrypoint needs to know which of the two it is in.
+
+### As a dependency
+
+```bash
+composer require typo3/cms-mcp
+```
+
+Composer exposes the stdio entrypoint as `vendor/bin/typo3-cms-mcp`. Point the
+MCP client of the consuming project at it, for example in its `.mcp.json`:
+
+```json
+{
+  "mcpServers": {
+    "typo3-cms-mcp": {
+      "type": "stdio",
+      "command": "php",
+      "args": ["vendor/bin/typo3-cms-mcp"]
+    }
+  }
+}
+```
+
+The knowledge base ships inside the package, so nothing else needs to be
+deployed or configured.
+
+### Standalone
+
+Clone the repository and install the dependencies once:
+
+```bash
+composer install
+```
+
+This is the setup the HTTP transport and [DEPLOY.md](DEPLOY.md) assume, since
+it needs a writable `var/` and its own document root.
 
 ## Run locally
 

@@ -33,7 +33,7 @@ final class Tools
     /** @return array<int, array{name: string, description: string, inputSchema: array<string, mixed>}> */
     public static function definitions(): array
     {
-        return [
+        $definitions = [
             [
                 'name' => 'typo3_rule_lookup',
                 'description' => 'Search the local TYPO3 core contribution rules and script notes by topic.',
@@ -143,6 +143,47 @@ final class Tools
                 ],
             ],
         ];
+
+        // Only offered from a standalone checkout — see Feedback.
+        if (Feedback::isAvailable()) {
+            array_push($definitions, ...self::feedbackDefinitions());
+        }
+
+        return $definitions;
+    }
+
+    /** @return array<int, array{name: string, description: string, inputSchema: array<string, mixed>}> */
+    private static function feedbackDefinitions(): array
+    {
+        return [
+            [
+                'name' => 'typo3_make_me_better',
+                'description' => 'Leave a note about a gap, wrong answer, or missing capability of this knowledge server. The note is stored as markdown in this project so it can be implemented later. Use it whenever an answer was incomplete or a lookup found nothing that should have been there.',
+                'inputSchema' => [
+                    'type' => 'object',
+                    'properties' => [
+                        'observation' => ['type' => 'string', 'minLength' => 1, 'description' => 'What was missing, wrong, or unhelpful. Be specific enough to act on later.'],
+                        'category' => ['type' => 'string', 'enum' => Feedback::CATEGORIES, 'default' => 'idea', 'description' => 'missing-knowledge: the knowledge base lacks the answer. wrong-answer: the answer was incorrect. tool-gap: no tool covers the need. bug: the server misbehaved. idea: anything else.'],
+                        'tool' => ['type' => 'string', 'description' => 'The tool the observation is about, for example typo3_icon_lookup.'],
+                        'query' => ['type' => 'string', 'description' => 'The query or arguments that produced the unsatisfying result.'],
+                        'suggestion' => ['type' => 'string', 'description' => 'What the server should have answered or should be able to do.'],
+                    ],
+                    'required' => ['observation'],
+                ],
+            ],
+            [
+                'name' => 'typo3_feedback_list',
+                'description' => 'List improvement notes recorded via typo3_make_me_better, newest first, so they can be worked off.',
+                'inputSchema' => [
+                    'type' => 'object',
+                    'properties' => [
+                        'status' => ['type' => 'string', 'enum' => ['open', 'all'], 'default' => 'open', 'description' => 'open: only notes still marked open. all: every recorded note.'],
+                        'category' => ['type' => 'string', 'enum' => Feedback::CATEGORIES, 'description' => 'Restrict the list to one category.'],
+                        'limit' => ['type' => 'integer', 'minimum' => 1, 'maximum' => 100, 'default' => 20, 'description' => 'Maximum number of notes to return.'],
+                    ],
+                ],
+            ],
+        ];
     }
 
     /** @param array<string, mixed> $args */
@@ -158,8 +199,54 @@ final class Tools
             'typo3_icon_lookup' => self::iconLookup($args),
             'typo3_label_lookup' => self::labelLookup($args),
             'typo3_commit_message_help' => self::commitMessageHelp($args),
+            'typo3_make_me_better' => self::makeMeBetter($args),
+            'typo3_feedback_list' => self::feedbackList($args),
             default => throw new \InvalidArgumentException(sprintf('Unknown tool: %s', $name)),
         };
+    }
+
+    /** @param array<string, mixed> $args */
+    private static function makeMeBetter(array $args): string
+    {
+        $file = Feedback::record($args);
+
+        return sprintf(
+            "Thanks — noted in %s.\n\nIt will be picked up when the knowledge base is next improved; "
+            . 'nothing about the current answer changes.',
+            $file,
+        );
+    }
+
+    /** @param array<string, mixed> $args */
+    private static function feedbackList(array $args): string
+    {
+        $status = is_string($args['status'] ?? null) ? $args['status'] : 'open';
+        $category = is_string($args['category'] ?? null) ? $args['category'] : null;
+        $limit = is_int($args['limit'] ?? null) ? $args['limit'] : 20;
+
+        $notes = Feedback::notes($status, $category, $limit);
+
+        if ($notes === []) {
+            return $status === 'open'
+                ? 'No open improvement notes.'
+                : 'No improvement notes recorded yet.';
+        }
+
+        $lines = array_map(static function (array $note): string {
+            $date = substr($note['date'], 0, 10);
+            $about = $note['tool'] === '' ? '' : ' — ' . $note['tool'];
+
+            return sprintf(
+                "- [%s] %s%s\n  %s\n  %s",
+                $note['category'],
+                $date,
+                $about,
+                $note['title'],
+                $note['file'],
+            );
+        }, $notes);
+
+        return sprintf("%d improvement note(s):\n\n%s", count($notes), implode("\n", $lines));
     }
 
     /** @param array<string, mixed> $args */

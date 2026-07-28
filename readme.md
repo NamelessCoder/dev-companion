@@ -45,6 +45,11 @@ files; the server has no dependency on any project, checkout, or git state.
   existing labels get reused instead of new keys invented.
 - `typo3_commit_message_help`: drafts and checks TYPO3 core commit messages
   against the contribution rules.
+- `typo3_make_me_better`: records what was missing, wrong, or unhelpful about an
+  answer as a note under `feedback/` (standalone checkout only, see
+  [Improvement notes](#improvement-notes)).
+- `typo3_feedback_list`: lists those notes, newest first, so they can be worked
+  off (standalone checkout only).
 - `typo3://core`: resource index for available knowledge documents.
 - `typo3://core/{documentId}`: Markdown resource for a single knowledge
   document.
@@ -59,6 +64,7 @@ src/               # PHP classes (knowledge loading, tools, SDK wiring)
 src/ServerFactory.php  # builds the mcp/sdk server shared by both transports
 src/bootstrap.php  # locates the Composer autoloader for both entrypoints
 knowledge/         # the knowledge base (markdown + JSON), the data source
+feedback/          # improvement notes left by agents (standalone checkout only)
 config.local.php   # local secret (gitignored); see config.local.php.example
 vendor/            # Composer dependencies (mcp/sdk, nyholm/psr7); gitignored
 var/sessions/      # HTTP session files (gitignored, created at runtime)
@@ -165,6 +171,31 @@ Point an MCP client at the deployed HTTPS URL with the bearer token:
 ```
 
 See [DEPLOY.md](DEPLOY.md) for deploying to Mittwald shared hosting.
+
+## Improvement notes
+
+The knowledge base only grows if the gaps are known, so an agent that hits one
+can report it through `typo3_make_me_better`. Every note becomes its own
+markdown file under `feedback/`, named after its timestamp and a slug of the
+observation:
+
+```
+feedback/2026-07-28-133403-typo3-label-lookup-liefert-keine-treffer.md
+```
+
+Front matter carries `date`, `category` (`missing-knowledge`, `wrong-answer`,
+`tool-gap`, `bug`, `idea`), `status`, and the `tool` the note is about.
+`typo3_feedback_list` reads them back, newest first and open ones by default;
+set `status: done` in a note once it has been implemented.
+
+One file per note means concurrent agents never write to the same file, and the
+filename is always derived from the content — an agent cannot choose it and so
+cannot write outside the directory.
+
+Both tools exist **only in a standalone checkout**. Installed as a Composer
+dependency the package lives in `vendor/`, where anything written would be lost
+on the next `composer install`; there the server stays strictly read-only and
+neither tool appears in `tools/list`.
 
 ## Knowledge Base
 

@@ -2,48 +2,94 @@
   {
     "id": "system-extension-boundaries",
     "title": "System Extension Boundaries",
-    "appliesTo": ["typo3/sysext/", "sysext", "system extension"],
+    "appliesTo": [
+      "typo3/sysext/",
+      "sysext",
+      "system extension"
+    ],
     "hints": [
       "Keep changes inside the owning system extension unless a cross-extension contract really changes.",
       "Reuse public APIs from other system extensions instead of depending on internal implementation details.",
       "Check nearby extension-local tests before adding shared behavior."
     ],
-    "checks": ["CI=true ./Build/Scripts/runTests.sh -s unit", "CI=true ./Build/Scripts/runTests.sh -s functional"]
+    "checks": [
+      "CI=true ./Build/Scripts/runTests.sh -s unit",
+      "CI=true ./Build/Scripts/runTests.sh -s functional"
+    ]
   },
   {
     "id": "dependency-injection-services",
     "title": "Dependency Injection and Services",
-    "appliesTo": ["Configuration/Services.yaml", "/Service/", "/Services/", "DependencyInjection", "constructor injection", "service wiring", "autowiring", "autoconfigure"],
+    "appliesTo": [
+      "Configuration/Services.yaml",
+      "/Service/",
+      "/Services/",
+      "DependencyInjection",
+      "constructor injection",
+      "service wiring",
+      "autowiring",
+      "autoconfigure"
+    ],
     "hints": [
       "Autowiring and autoconfiguration are on for the core sysexts: their Configuration/Services.yaml sets autowire, autoconfigure and public: false under _defaults and registers the whole Classes/ tree as a resource. A new service in Classes/ therefore needs no Services.yaml entry at all.",
       "Prefer constructor injection with a readonly promoted property. Services.yaml is for what autowiring cannot resolve: a scalar or non-autowirable argument, an alias, a service that has to be public, or a factory.",
       "For a single non-autowirable argument, the #[Autowire] attribute on the constructor parameter keeps the wiring in the class instead of splitting it across a YAML file.",
       "Avoid new GeneralUtility::makeInstance() calls for regular service dependencies unless lifecycle constraints require it."
     ],
-    "checks": ["CI=true ./Build/Scripts/runTests.sh -s functional", "CI=true ./Build/Scripts/runTests.sh -s lintServicesYaml"]
+    "checks": [
+      "CI=true ./Build/Scripts/runTests.sh -s functional",
+      "CI=true ./Build/Scripts/runTests.sh -s lintServicesYaml"
+    ]
   },
   {
     "id": "events-extension-points",
     "title": "Events and Extension Points",
-    "appliesTo": ["/Event/", "EventListener", "EventDispatcher", "Hooks", "hook", "event listener", "extension point", "psr-14", "AsEventListener"],
+    "appliesTo": [
+      "/Event/",
+      "EventListener",
+      "EventDispatcher",
+      "Hooks",
+      "hook",
+      "event listener",
+      "extension point",
+      "psr-14",
+      "AsEventListener"
+    ],
     "hints": [
       "A listener is registered with the #[AsEventListener] attribute from TYPO3\\CMS\\Core\\Attribute, on the class or on a single method. Its arguments are identifier, event, method, before and after; the attribute is repeatable, so one class can listen to several events. Autoconfiguration picks it up — do not add an event.listener tag to Services.yaml, no core listener is registered that way.",
       "Event classes live in Classes/Event/ of the extension that dispatches them, are final, and are readonly where the payload is immutable. A listener that may change the outcome gets setters on the event instead of a return value.",
       "Keep event payloads minimal and stable, and prefer a new event over a hook: a hook is only the right answer where the subsystem still has hook-based extension points.",
       "A PSR-14 event is public API. A new one needs a changelog entry, careful naming, and regression coverage."
     ],
-    "checks": ["CI=true ./Build/Scripts/runTests.sh -s unit", "CI=true ./Build/Scripts/runTests.sh -s functional"]
+    "checks": [
+      "CI=true ./Build/Scripts/runTests.sh -s unit",
+      "CI=true ./Build/Scripts/runTests.sh -s functional"
+    ]
   },
   {
     "id": "tca-formengine",
     "title": "TCA, FormEngine, and Backend Forms",
-    "appliesTo": ["Configuration/TCA/", "FormEngine", "/Form/", "Tca", "TCA", "tca field", "backend form", "form element", "field configuration", "record editing"],
+    "appliesTo": [
+      "Configuration/TCA/",
+      "FormEngine",
+      "/Form/",
+      "Tca",
+      "TCA",
+      "tca field",
+      "backend form",
+      "form element",
+      "field configuration",
+      "record editing"
+    ],
     "hints": [
       "TCA changes can affect persisted data, editor workflows, and generated backend forms.",
       "Prefer established TCA option names and existing FormEngine behavior.",
       "Add functional coverage for TCA processing, data providers, or backend form rendering behavior."
     ],
-    "checks": ["CI=true ./Build/Scripts/runTests.sh -s functional", "CI=true ./Build/Scripts/runTests.sh -s checkIntegrityXliff"]
+    "checks": [
+      "CI=true ./Build/Scripts/runTests.sh -s functional",
+      "CI=true ./Build/Scripts/runTests.sh -s checkIntegrityXliff"
+    ]
   },
   {
     "id": "formdata-providers",
@@ -63,7 +109,9 @@
       "DefaultConfiguration.php is the default of TYPO3_CONF_VARS: an edit there changes behaviour in every installation, so say what changed and why in the patch description.",
       "Registering or reordering a provider is a runtime-configuration change. It is covered by a functional test that renders the form data, not by a unit test of the provider in isolation."
     ],
-    "checks": ["CI=true ./Build/Scripts/runTests.sh -s functional"]
+    "checks": [
+      "CI=true ./Build/Scripts/runTests.sh -s functional"
+    ]
   },
   {
     "id": "core-tests",
@@ -94,25 +142,140 @@
     ]
   },
   {
+    "id": "backend-modules",
+    "title": "Backend Module and Route Registration",
+    "appliesTo": [
+      "Configuration/Backend/Modules.php",
+      "Configuration/Backend/Routes.php",
+      "Configuration/Backend/AjaxRoutes.php",
+      "backend module",
+      "module registration"
+    ],
+    "hints": [
+      "A backend module is declared in the owning extension's Configuration/Backend/Modules.php, which returns an array keyed by module identifier. There is no registration call.",
+      "The keys of an entry are parent (the identifier of the module it sits under), access (\"user\", \"admin\", ...), path (the backend route it answers on), iconIdentifier, labels, aliases (former identifiers kept working), routes, and moduleData for the module's persisted per-user state.",
+      "routes maps a route name to a target of the form Controller::class . '::method'; the entry named _default is what the module opens with.",
+      "labels is a translation domain, not a file path. Validate it with typo3_label_lookup, and derive it for a new file with mode \"derive\".",
+      "Configuration/Backend/Routes.php and AjaxRoutes.php declare backend routes outside a module, in the same declarative style.",
+      "These are declarative files with no schema check behind them: a wrong key does not fail at boot, it fails when a user opens the module. Take the shape from a neighbouring extension."
+    ],
+    "checks": [
+      "CI=true ./Build/Scripts/runTests.sh -s functional"
+    ]
+  },
+  {
+    "id": "console-commands",
+    "title": "Console Commands",
+    "appliesTo": [
+      "Classes/Command/",
+      "console command",
+      "symfony command",
+      "AsCommand",
+      "command line"
+    ],
+    "hints": [
+      "A console command is a class under Classes/Command/ extending the Symfony Command, registered with the #[AsCommand] attribute on the class: #[AsCommand('site:sets:list', 'Shows the list of available site sets.')]. A third argument holds former names kept as aliases.",
+      "Autoconfiguration picks the attribute up. A console.command tag in Services.yaml is only for a command that needs explicit wiring on top of it.",
+      "A command name, its arguments and its options are what integrators script against, so a new command belongs in a changelog entry.",
+      "A console request is not an HTTP one: PSR-7 and middleware conventions do not apply to it, whatever the class name suggests. Behaviour is covered by functional tests."
+    ],
+    "checks": [
+      "CI=true ./Build/Scripts/runTests.sh -s functional"
+    ]
+  },
+  {
+    "id": "extension-files",
+    "title": "Extension Registration Files",
+    "appliesTo": [
+      "ext_tables.sql",
+      "ext_localconf.php",
+      "ext_tables.php",
+      "ext_emconf.php",
+      "Configuration/JavaScriptModules.php",
+      "Configuration/Icons.php"
+    ],
+    "hints": [
+      "ext_tables.sql carries only the delta the schema analyzer needs — the tables and columns TCA does not already describe. It is not a schema dump, and a column TCA defines does not belong in it.",
+      "Configuration/JavaScriptModules.php declares the import map for an extension's backend JavaScript: a dependencies list of other extensions and an imports map from bare specifier to an EXT: path, with an optional exclude list.",
+      "Configuration/Icons.php returns an array keyed by icon identifier, each entry naming a provider (SvgIconProvider or BitmapIconProvider) and an EXT: source path.",
+      "Configuration/page.tsconfig and Configuration/user.tsconfig are auto-loaded from that path and need no registration call.",
+      "ext_localconf.php is what is left for what has no declarative file. It runs on every request, so keep it to registration and out of anything that does work."
+    ],
+    "checks": [
+      "CI=true ./Build/Scripts/runTests.sh -s functional"
+    ]
+  },
+  {
+    "id": "tca-schema-api",
+    "title": "TCA Schema API",
+    "appliesTo": [
+      "Classes/Schema/",
+      "TcaSchema",
+      "TcaSchemaFactory",
+      "schema api",
+      "tca schema"
+    ],
+    "hints": [
+      "typo3/sysext/core/Classes/Schema/ is the typed API over TCA. Ask TcaSchemaFactory for a TcaSchema and query it — fields, capabilities, relations, labels — instead of reading $GLOBALS['TCA'] directly.",
+      "A patch that reads TCA is increasingly expected to go through the schema rather than through the array; new code that touches record structure should not add a fresh $GLOBALS['TCA'] access.",
+      "The schema is cached per package set, so a change to how it is built is a functional-test change, not a unit-test one."
+    ],
+    "checks": [
+      "CI=true ./Build/Scripts/runTests.sh -s functional"
+    ]
+  },
+  {
     "id": "datahandler-persistence",
     "title": "DataHandler and Persistence",
-    "appliesTo": ["DataHandler", "/Persistence/", "/Database/", "ext_tables.sql", "hidden record", "deleted record", "enable field", "enablecolumns", "restriction", "workspace", "localization", "persistence", "database query", "querybuilder"],
+    "appliesTo": [
+      "DataHandler",
+      "/Persistence/",
+      "/Database/",
+      "ext_tables.sql",
+      "hidden record",
+      "deleted record",
+      "enable field",
+      "enablecolumns",
+      "restriction",
+      "workspace",
+      "localization",
+      "persistence",
+      "database query",
+      "querybuilder"
+    ],
     "hints": [
       "DataHandler and persistence changes are high-impact and usually need functional tests.",
       "Preserve workspace, localization, permissions, and hook or event behavior unless intentionally changed.",
       "Test edge cases with deleted, hidden, localized, versioned, or workspace records when relevant."
     ],
-    "checks": ["CI=true ./Build/Scripts/runTests.sh -s functional", "CI=true ./Build/Scripts/runTests.sh -s phpstan"]
+    "checks": [
+      "CI=true ./Build/Scripts/runTests.sh -s functional",
+      "CI=true ./Build/Scripts/runTests.sh -s phpstan"
+    ]
   },
   {
     "id": "routing-request-handling",
     "title": "Routing, Middleware, and Request Handling",
-    "appliesTo": ["/Middleware/", "/Routing/", "RequestHandler", "Route", "Controller", "middleware", "psr-7", "psr-15", "request handling", "site configuration"],
+    "appliesTo": [
+      "/Middleware/",
+      "/Routing/",
+      "RequestHandler",
+      "Route",
+      "Controller",
+      "middleware",
+      "psr-7",
+      "psr-15",
+      "request handling",
+      "site configuration"
+    ],
     "hints": [
       "Prefer PSR-7 request and response objects for HTTP behavior.",
       "Keep middleware focused and ordered deliberately.",
       "Avoid global state when request-scoped data is available."
     ],
-    "checks": ["CI=true ./Build/Scripts/runTests.sh -s functional", "CI=true ./Build/Scripts/runTests.sh -s unit"]
+    "checks": [
+      "CI=true ./Build/Scripts/runTests.sh -s functional",
+      "CI=true ./Build/Scripts/runTests.sh -s unit"
+    ]
   }
 ]

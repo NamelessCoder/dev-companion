@@ -20,5 +20,16 @@
       "Keep ReST changes focused and validate them before review."
     ],
     "checks": ["CI=true ./Build/Scripts/runTests.sh -s checkRst"]
+  },
+  {
+    "id": "deprecated-apis",
+    "title": "Deprecated APIs",
+    "appliesTo": ["deprecat", "@deprecated", "e_user_deprecated", "extension scanner", "legacy api"],
+    "hints": [
+      "Whether an API is deprecated is a property of the branch you work on, not of TYPO3 as a whole, and this server does not know your branch. Read the declaration itself: an @deprecated annotation together with a trigger_error(..., E_USER_DEPRECATED) call is what marks one.",
+      "What a branch deprecated is recorded in typo3/sysext/core/Documentation/Changelog/<version>/Deprecation-<issue>-<Title>.rst and in the matchers below typo3/sysext/install/Configuration/ExtensionScanner/Php/. Take the migration path from there instead of assuming a replacement.",
+      "A deprecated API keeps working until the next major release, so an existing call site is not automatically a defect. New code uses the replacement the changelog names."
+    ],
+    "checks": []
   }
 ]

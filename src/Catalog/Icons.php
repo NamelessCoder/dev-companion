@@ -166,11 +166,17 @@ final class Icons
             [$matched, $score, $why] = self::scoreIcon($icon['identifier'], $icon['category'], $terms);
 
             foreach ($suggested[$icon['identifier']] ?? [] as $concept => $unused) {
-                ++$matched;
-                $score += 6;
+                // A concept only adds a term the name did not already carry.
+                // Otherwise "move" would count twice for actions-move and once
+                // for actions-move-up, and the vaguer identifier would win.
+                if (!in_array($concept, $matched, true)) {
+                    $matched[] = $concept;
+                }
+                $score += 3;
                 $why[] = 'concept "' . $concept . '"';
             }
 
+            $matched = count($matched);
             if ($matched === 0) {
                 continue;
             }
@@ -222,30 +228,33 @@ final class Icons
     }
 
     /**
-     * Returns [distinctTermsMatched, weightedScore, reasons]. A term that is a
-     * whole hyphen-segment of the identifier scores higher than a mere
-     * substring; matching the category name contributes a little. A
-     * category-only hit does not count as a matched term, so generic prefixes
-     * like "actions" or "status" do not make every icon in that category a
-     * match on their own.
+     * Returns [matchedTerms, weightedScore, reasons]. A term that is a whole
+     * hyphen-segment of the identifier scores higher than a mere substring;
+     * matching the category name contributes a little. A category-only hit does
+     * not count as a matched term, so generic prefixes like "actions" or
+     * "status" do not make every icon in that category a match on their own.
+     *
+     * The matched terms are returned rather than counted, because a concept hit
+     * on a term the name already matched must not count twice — that is what
+     * let actions-move outrank actions-move-up for "move record up".
      *
      * @param array<int, string> $terms
-     * @return array{0: int, 1: int, 2: array<int, string>}
+     * @return array{0: array<int, string>, 1: int, 2: array<int, string>}
      */
     private static function scoreIcon(string $identifier, string $category, array $terms): array
     {
         $segments = explode('-', $identifier);
 
-        $matched = 0;
+        $matched = [];
         $score = 0;
         $why = [];
         foreach ($terms as $term) {
             if (in_array($term, $segments, true)) {
-                ++$matched;
+                $matched[] = $term;
                 $score += 4;
                 $why[] = 'name part "' . $term . '"';
             } elseif (str_contains($identifier, $term)) {
-                ++$matched;
+                $matched[] = $term;
                 $score += 2;
                 $why[] = 'substring "' . $term . '"';
             } elseif ($term === $category) {

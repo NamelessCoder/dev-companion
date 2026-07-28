@@ -181,6 +181,28 @@ final class CatalogTest extends TestCase
     }
 
     #[Test]
+    public function aRelaxedLabelAnswerSaysThatNothingMatchedClosely(): void
+    {
+        // Any-term matching over a long phrase used to report thousands of
+        // labels as matches, with nothing saying no close match exists.
+        $result = Tools::call('typo3_label_lookup', [
+            'query' => 'Restore or permanently remove deleted records',
+        ]);
+
+        self::assertTrue($result->data['relaxed']);
+        self::assertStringStartsWith('No label in the curated subset matches', $result->text);
+        self::assertLessThan(50, $result->data['matchCount'], 'a relaxed answer must stay a suggestion list');
+    }
+
+    #[Test]
+    public function anIdentifierThatCarriesMoreOfTheQueryOutranksAVaguerOne(): void
+    {
+        // A concept hit on a term the name already matched used to count twice,
+        // which put actions-move ahead of actions-move-up for "move record up".
+        self::assertSame('actions-move-up', Icons::find('move record up')[0]['identifier']);
+    }
+
+    #[Test]
     public function registeredDomainsAreListedWithTheirLabelCount(): void
     {
         $domains = Labels::domains('alt_doc');

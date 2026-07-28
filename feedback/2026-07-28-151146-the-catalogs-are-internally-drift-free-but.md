@@ -1,20 +1,33 @@
 ---
 date: 2026-07-28T15:11:46+00:00
-category: wrong-answer
+category: missing-knowledge
 status: open
-tool: typo3_icon_lookuptypo3_label_lookup
+tool: typo3_label_lookup
 ---
 
-# The catalogs are internally drift-free, but result ranking can mislead. For 'move record up', the...
+# 18 of the 136 default XLF domains in the checkout are missing from the label catalog
 
 ## Observation
 
-The catalogs are internally drift-free, but result ranking can mislead. For 'move record up', the exact existing alias actions-move-up ranks fourth behind generic actions-document-move, actions-file-move and actions-move because concept and name matches outscore the more specific multi-term identifier. For labels whose exact domain is outside the curated subset, relaxed any-term matching reports huge result sets (2336 and 148 matches) and presents unrelated labels without clearly saying that no good semantic match exists. The current checkout has 136 direct Resources/Private/Language XLF domains; 118 are catalogued and 18 are missing, including recycler, reactions, theme_camino, recycler, dashboard and several db/module domains.
+Remaining part of the original note; the ranking half is fixed — a concept hit
+no longer counts a term the identifier name already carried, and a relaxed
+label answer now states that nothing matched closely and is capped by a
+coverage threshold instead of reporting thousands of labels.
+
+Still open is the coverage itself. The checkout has 136 direct
+Resources/Private/Language XLF domains; 118 are catalogued and 18 are missing,
+among them recycler, reactions, theme_camino, dashboard, and several db and
+module domains. Queries whose label lives in one of those cannot be answered
+from the catalog at all, only routed to the derived domain.
 
 ## Query
 
-Icon: move record up; labels: Restore or permanently remove deleted records / Reactions Manage Incoming HTTP Webhooks
+labels: Restore or permanently remove deleted records / Reactions Manage
+Incoming HTTP Webhooks
 
 ## Suggestion
 
-Give exact or ordered identifier phrase matches precedence over concept matches, including aliases. For labels, require a useful coverage threshold before presenting relaxed results, rank phrase/text coverage above common single words, and explicitly say 'no close match in the curated subset' before showing related suggestions. Consider importing the remaining 18 current default XLF domains; update scope counts/wording accordingly.
+Import the remaining 18 default XLF domains into knowledge/catalog/labels.json
+and update the depth wording and counts in knowledge/server-scope.json to match.
+This belongs with the icon catalog coverage gap recorded separately — both are
+about what the catalog build reads.

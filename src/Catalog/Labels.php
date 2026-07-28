@@ -83,7 +83,7 @@ final class Labels
      * ("backend.alt_doc:buttons.confirm.save_and_close"); the LLL file path is
      * carried along as the legacy form.
      *
-     * @return array<int, array{id: string, source: string, ref: string, legacyRef: string, unusedSince: ?string, matchedIn: array<int, string>}>
+     * @return array<int, array{id: string, source: string, ref: string, legacyRef: string, unusedSince: ?string, matchedIn: array<int, string>, coverage: float}>
      */
     public static function find(?string $query, bool $requireAllTerms = true): array
     {
@@ -111,6 +111,7 @@ final class Labels
                     'legacyRef' => $legacyRef,
                     'unusedSince' => $label['unusedSince'] ?? null,
                     'matchedIn' => $matchedIn,
+                    'coverage' => round($matched / count($terms), 3),
                 ],
                 'score' => $score,
             ];

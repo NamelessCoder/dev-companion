@@ -38,6 +38,13 @@ final class Tools
     /** Appended when a catalog lookup finds nothing at all. */
     private const CATALOG_MISS_NOTE = 'Call typo3_catalog_scope for what this snapshot covers.';
 
+    /**
+     * Share of the query terms a label has to cover to be worth showing once
+     * no label matched all of them. Below it, the list is long enough to look
+     * like an answer and unrelated enough not to be one.
+     */
+    private const RELAXED_COVERAGE = 0.5;
+
     /** Extra domain signal carried by the change type itself. */
     private const CHANGE_TYPE_TERMS = [
         'documentation' => 'documentation changelog rst',
@@ -1437,9 +1444,14 @@ final class Tools
         $labels = Labels::find($query);
         $relaxed = false;
         if ($labels === []) {
-            // Nothing matched every term; fall back to any-term matching rather
-            // than claiming the label does not exist.
-            $labels = Labels::find($query, false);
+            // Nothing matched every term. Any-term matching is a better answer
+            // than claiming the label does not exist, but only above a coverage
+            // threshold: a single common word matching 2336 labels is not a
+            // result set, it is the catalog with a filter that did nothing.
+            $labels = array_values(array_filter(
+                Labels::find($query, false),
+                static fn(array $label): bool => $label['coverage'] >= self::RELAXED_COVERAGE
+            ));
             $relaxed = $labels !== [];
         }
 
@@ -1476,9 +1488,16 @@ final class Tools
             return $line;
         }, $shown);
 
-        $header = sprintf('%d label(s) matched "%s"', $total, $query);
         if ($relaxed) {
-            $header .= ' on at least one query term (no label matched all of them)';
+            $header = sprintf(
+                'No label in the curated subset matches "%s" closely — none covers every query term. '
+                . 'The %d below cover at least half of them and are related suggestions, not the label you asked for. '
+                . 'If none fits, the label may live in an XLF file outside this subset, or not exist yet',
+                $query,
+                $total
+            );
+        } else {
+            $header = sprintf('%d label(s) matched "%s"', $total, $query);
         }
         if ($total > count($shown)) {
             $header .= sprintf(' — showing the top %d', count($shown));

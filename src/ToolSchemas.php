@@ -94,10 +94,17 @@ final class ToolSchemas
             'intents' => self::listOf(self::object([
                 'id' => self::string(),
                 'title' => self::string(),
-            ], ['id', 'title']), 'The kinds of core work recognized in the task text.'),
+                'confidence' => ['type' => 'string', 'enum' => ['strong', 'weak'], 'description' => 'weak: a word named the subject without naming the work, so the intent only applies under its condition.'],
+                'condition' => self::string('When a weakly matched intent applies. Empty for a strong match.'),
+            ], ['id', 'title', 'confidence', 'condition']), 'The kinds of core work recognized in the task text.'),
             'architectureHints' => self::listOf(self::architectureHintRecord()),
             'rules' => self::listOf(self::knowledgeMatch(), 'Rule sections that apply to this task.'),
             'checks' => self::listOf(self::string(), 'Commands to run, ready to execute from the core root.'),
+            'conditionalChecks' => self::listOf(self::object([
+                'title' => self::string(),
+                'condition' => self::string(),
+                'checks' => self::listOf(self::string()),
+            ], ['title', 'condition', 'checks']), 'Checks that only apply if the task really is the kind of work a weakly matched intent suggests.'),
             'testSuites' => self::listOf(self::testSuiteRecord()),
             'checklist' => self::listOf(self::string()),
             'checkoutDiscovery' => self::listOf(self::object([

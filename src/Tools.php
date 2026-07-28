@@ -524,6 +524,11 @@ final class Tools
         $paths = $area === '' ? [] : [$area];
         $domains = Domains::detect($paths, $task . ' ' . (self::CHANGE_TYPE_TERMS[$changeType] ?? ''));
         $intents = TaskIntents::detect($subject . ' ' . $changeType);
+        $confirmed = TaskIntents::confirmed($intents);
+        $conditional = array_values(array_filter(
+            $intents,
+            static fn(array $intent): bool => !in_array($intent, $confirmed, true)
+        ));
 
         $architecture = ArchitectureHints::find($paths, $task, 4);
         $testHints = array_slice(TestSuiteHints::find($subject, $domains), 0, 4);
@@ -534,11 +539,15 @@ final class Tools
             'Change type: ' . $changeType,
             'Domains: ' . implode(', ', $domains),
         ];
-        if ($intents !== []) {
+        if ($confirmed !== []) {
             $lines[] = 'Recognized as: ' . implode(', ', array_map(
                 static fn(array $intent): string => (string) $intent['title'],
-                $intents
+                $confirmed
             ));
+        }
+        foreach ($conditional as $intent) {
+            $lines[] = 'Possibly also: ' . $intent['title'] . ', ' . $intent['condition']
+                . '. Its checklist items are marked as conditional below and its checks are listed separately.';
         }
 
         $lines[] = '';
@@ -564,7 +573,10 @@ final class Tools
                 . 'not that none applies: call typo3_architecture_lookup again with the concrete file paths once they are known.';
         }
 
-        $rules = TaskIntents::rules($intents);
+        // Only the confirmed intents may state a rule as applying: a
+        // conditionally matched one would fill the whole section with rules for
+        // work the task may not contain at all.
+        $rules = TaskIntents::rules($confirmed);
         if ($rules !== []) {
             $lines[] = '';
             $lines[] = 'Rules that apply to this task:';
@@ -572,15 +584,15 @@ final class Tools
             $lines[] = self::renderSections($rules);
         }
 
+        // The checks of a matched architecture hint belong in the list as much
+        // as the ones an intent carries. Leaving them out dropped the functional
+        // suite from a FormEngine brief while the FormEngine hint that names it
+        // was right there in the same answer.
+        $checks = self::mergedChecks($confirmed, $architecture['matchedHints']);
+        $conditionalChecks = self::conditionalChecks($conditional, $checks);
+
         $lines[] = '';
         $lines[] = 'Relevant TYPO3 core checks:';
-        $intentChecks = [];
-        foreach ($intents as $intent) {
-            foreach ($intent['checks'] as $check) {
-                $intentChecks[$check] = true;
-            }
-        }
-        $checks = array_keys($intentChecks);
         foreach ($checks as $check) {
             $lines[] = '- `' . $check . '`';
         }
@@ -593,8 +605,16 @@ final class Tools
                 }
                 $lines[] = $hint['whenToUse'];
             }
-        } elseif ($intentChecks === []) {
+        } elseif ($checks === []) {
             $lines[] = '- No topic-specific check matched. Run the narrowest relevant suite, then broaden before review.';
+        }
+
+        foreach ($conditionalChecks as $entry) {
+            $lines[] = '';
+            $lines[] = 'Checks for ' . $entry['title'] . ', ' . $entry['condition'] . ':';
+            foreach ($entry['checks'] as $check) {
+                $lines[] = '- `' . $check . '`';
+            }
         }
 
         $checklist = [
@@ -607,9 +627,14 @@ final class Tools
         foreach (self::CHANGE_TYPE_CHECKLIST[$changeType] ?? [] as $entry) {
             $checklist[] = $entry;
         }
-        foreach ($intents as $intent) {
+        foreach ($confirmed as $intent) {
             foreach ($intent['checklist'] as $entry) {
                 $checklist[] = (string) $entry;
+            }
+        }
+        foreach ($conditional as $intent) {
+            foreach ($intent['checklist'] as $entry) {
+                $checklist[] = ucfirst((string) $intent['condition']) . ': ' . lcfirst((string) $entry);
             }
         }
         $checklist[] = 'Summarize changed behavior, affected area, and executed commands.';
@@ -647,15 +672,69 @@ final class Tools
             'intents' => array_map(static fn(array $intent): array => [
                 'id' => (string) $intent['id'],
                 'title' => (string) $intent['title'],
+                'confidence' => (string) $intent['confidence'],
+                'condition' => (string) $intent['condition'],
             ], $intents),
             'architectureHints' => self::hintRecords($architecture['matchedHints']),
             'rules' => self::matchRecords($rules),
             'checks' => $checks,
+            'conditionalChecks' => $conditionalChecks,
             'testSuites' => self::suiteRecords($testHints),
             'checklist' => $checklist,
             'checkoutDiscovery' => $checkoutDiscovery,
             'nextTools' => $nextTools,
         ]);
+    }
+
+    /**
+     * The checks a brief states as applying: those of the confirmed intents and
+     * those of every matched architecture hint, in that order and deduplicated.
+     *
+     * @param array<int, array<string, mixed>> $intents
+     * @param array<int, array<string, mixed>> $hints
+     * @return array<int, string>
+     */
+    private static function mergedChecks(array $intents, array $hints): array
+    {
+        $checks = [];
+        foreach ($intents as $intent) {
+            foreach ($intent['checks'] as $check) {
+                $checks[(string) $check] = true;
+            }
+        }
+        foreach ($hints as $hint) {
+            foreach ($hint['checks'] as $check) {
+                $checks[(string) $check] = true;
+            }
+        }
+
+        return array_keys($checks);
+    }
+
+    /**
+     * The checks of the conditionally matched intents, minus the ones already
+     * stated as applying.
+     *
+     * @param array<int, array<string, mixed>> $intents
+     * @param array<int, string> $stated
+     * @return array<int, array{title: string, condition: string, checks: array<int, string>}>
+     */
+    private static function conditionalChecks(array $intents, array $stated): array
+    {
+        $entries = [];
+        foreach ($intents as $intent) {
+            $checks = array_values(array_diff(array_map('strval', $intent['checks']), $stated));
+            if ($checks === []) {
+                continue;
+            }
+            $entries[] = [
+                'title' => (string) $intent['title'],
+                'condition' => (string) $intent['condition'],
+                'checks' => $checks,
+            ];
+        }
+
+        return $entries;
     }
 
     /**

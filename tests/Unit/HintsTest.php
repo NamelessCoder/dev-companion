@@ -215,6 +215,45 @@ final class HintsTest extends TestCase
     }
 
     #[Test]
+    public function aWordThatOnlyNamesTheSubjectMatchesConditionally(): void
+    {
+        // "field label" in a FormEngine task is not an XLF change, but the word
+        // alone looks exactly like one.
+        $intents = TaskIntents::detect(
+            'Fix that TSconfig field label overrides are not respected per record type in FormEngine select fields'
+        );
+
+        self::assertSame(['labels'], array_column($intents, 'id'));
+        self::assertSame('weak', $intents[0]['confidence']);
+        self::assertSame([], TaskIntents::confirmed($intents));
+        self::assertSame([], TaskIntents::rules(TaskIntents::confirmed($intents)));
+    }
+
+    #[Test]
+    public function anXlfSignalMatchesTheLabelIntentOutright(): void
+    {
+        $intents = TaskIntents::confirmed(TaskIntents::detect('Add one label to locallang_layout.xlf'));
+
+        self::assertSame(['labels'], array_column($intents, 'id'));
+        self::assertNotSame([], TaskIntents::rules($intents));
+    }
+
+    #[Test]
+    public function theChecksOfAMatchedHintAreStatedAsChecks(): void
+    {
+        // The FormEngine hint names the functional suite; before it was merged
+        // in, the brief listed the XLIFF checks of a weakly matched intent and
+        // dropped the one suite the change could actually fail on.
+        $checks = Tools::call('typo3_task_guide', [
+            'task' => 'Fix that TSconfig field label overrides are not respected per record type in FormEngine select fields',
+            'area' => 'backend/FormEngine',
+            'changeType' => 'bugfix',
+        ])->data['checks'];
+
+        self::assertContains('CI=true ./Build/Scripts/runTests.sh -s functional', $checks);
+    }
+
+    #[Test]
     public function aRecognizedIntentPullsTheRulesThatApply(): void
     {
         $rules = TaskIntents::rules(TaskIntents::detect('deprecate a method'));

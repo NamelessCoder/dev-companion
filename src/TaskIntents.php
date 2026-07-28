@@ -24,7 +24,7 @@ final class TaskIntents
     ];
 
     /**
-     * @return array<int, array{id: string, title: string, match: array<int, string>, rulesQuery: string, checklist: array<int, string>, checks: array<int, string>, tools: array<int, string>}>
+     * @return array<int, array{id: string, title: string, match: array<int, string>, matchWeak: array<int, string>, condition: string, rulesQuery: string, checklist: array<int, string>, checks: array<int, string>, tools: array<int, string>}>
      */
     public static function load(): array
     {
@@ -37,6 +37,8 @@ final class TaskIntents
             'id' => (string) $entry['id'],
             'title' => (string) $entry['title'],
             'match' => array_map('strval', $entry['match'] ?? []),
+            'matchWeak' => array_map('strval', $entry['matchWeak'] ?? []),
+            'condition' => (string) ($entry['condition'] ?? ''),
             'rulesQuery' => (string) ($entry['rulesQuery'] ?? ''),
             'checklist' => array_map('strval', $entry['checklist'] ?? []),
             'checks' => array_map('strval', $entry['checks'] ?? []),
@@ -45,23 +47,65 @@ final class TaskIntents
     }
 
     /**
-     * Intents mentioned in the task text, in catalog order.
+     * Intents mentioned in the task text, in catalog order, each carrying how
+     * sure the match is.
+     *
+     * A word can name a subject without naming the work: "field label" in a
+     * FormEngine task is not an XLF change, but the word alone looks exactly
+     * like one. Such a needle lives in matchWeak, and the intent it triggers is
+     * returned as conditional rather than as recognized — its checklist and
+     * checks apply only if the change really does what the word suggests.
      *
      * @return array<int, array<string, mixed>>
      */
     public static function detect(string $text): array
     {
         $haystack = mb_strtolower($text);
+        $detected = [];
 
-        return array_values(array_filter(self::load(), static function (array $intent) use ($haystack): bool {
+        foreach (self::load() as $intent) {
+            $confidence = null;
             foreach ($intent['match'] as $needle) {
                 if (Text::containsWord($haystack, $needle)) {
-                    return true;
+                    $confidence = 'strong';
+                    break;
                 }
             }
+            if ($confidence === null) {
+                foreach ($intent['matchWeak'] as $needle) {
+                    if (Text::containsWord($haystack, $needle)) {
+                        $confidence = 'weak';
+                        break;
+                    }
+                }
+            }
+            if ($confidence !== null) {
+                $intent['confidence'] = $confidence;
+                $detected[] = $intent;
+            }
+        }
 
-            return false;
-        }));
+        return $detected;
+    }
+
+    /**
+     * The intents a brief may state as fact — the strongly matched ones.
+     *
+     * A weak match is never promoted, not even when it is the only one. The
+     * brief does not know whether the task really is that kind of work, and
+     * saying so is more useful than guessing: the checklist and checks of a
+     * weak intent are still returned, marked with the condition they hold
+     * under.
+     *
+     * @param array<int, array<string, mixed>> $intents
+     * @return array<int, array<string, mixed>>
+     */
+    public static function confirmed(array $intents): array
+    {
+        return array_values(array_filter(
+            $intents,
+            static fn(array $intent): bool => $intent['confidence'] === 'strong'
+        ));
     }
 
     /**

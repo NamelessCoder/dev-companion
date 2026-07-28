@@ -46,7 +46,9 @@
   {
     "id": "labels",
     "title": "User-facing labels",
-    "match": ["label", "xlf", "xliff", "translation", "wording", "locallang"],
+    "match": ["xlf", "xliff", "trans-unit", "locallang", "translation", "language file"],
+    "matchWeak": ["label", "wording"],
+    "condition": "only if the change adds, edits, or retires an XLF trans-unit",
     "rulesQuery": "xliff label lifecycle",
     "checklist": [
       "Reuse an existing label when the meaning is identical instead of inventing a new key.",
@@ -63,7 +65,9 @@
   {
     "id": "backend-ui",
     "title": "Backend UI markup",
-    "match": ["markup", "css class", "component", "badge", "card", "button", "modal", "template", "fluid", "backend module"],
+    "match": ["markup", "css class", "component", "badge", "card", "button", "modal"],
+    "matchWeak": ["template", "fluid", "backend module"],
+    "condition": "only if the change adds or alters backend component markup or CSS classes",
     "rulesQuery": "backend ui component",
     "checklist": [
       "Use the existing backend component classes and their documented markup instead of new ad-hoc classes.",

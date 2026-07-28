@@ -121,7 +121,7 @@ Every tool answers twice: the readable text, and the same answer as
 their source, coverage and score, checks as command strings, components, icons
 and labels as typed records, commit diagnostics as `level`/`code`/`message`. So
 composing several tools does not mean parsing headings and code fences back out
-of prose. All tools are annotated `readOnlyHint`; only `typo3_make_me_better`
+of prose. All tools are annotated `readOnlyHint`; only `typo3_feedback_record`
 writes anything, and then only a new file.
 
 - `typo3_server_scope`: orientation — what this server covers and at which
@@ -150,7 +150,7 @@ writes anything, and then only a new file.
   `message` to check and correct one in a piece. The emitted draft is ready to
   commit: the body is wrapped at 72 characters, and fenced code, indented
   blocks, lists, and long URLs keep their shape.
-- `typo3_make_me_better`: records what was missing, wrong, or unhelpful about an
+- `typo3_feedback_record`: records what was missing, wrong, or unhelpful about an
   answer as a note under `feedback/` (standalone checkout only, see
   [Improvement notes](#improvement-notes)).
 - `typo3_feedback_list`: lists those notes, newest first, so they can be worked
@@ -195,7 +195,7 @@ Useful upstream sources:
 ## Improvement notes
 
 The knowledge base only grows if the gaps are known, so an agent that hits one
-reports it through `typo3_make_me_better`. Every note becomes its own markdown
+reports it through `typo3_feedback_record`. Every note becomes its own markdown
 file under `feedback/`; `typo3_feedback_list` reads them back, newest first. A
 note is closed by deleting it in the commit that implements the improvement, so
 `feedback/` only ever holds open items.

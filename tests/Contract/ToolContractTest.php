@@ -43,7 +43,7 @@ final class ToolContractTest extends TestCase
     {
         foreach (Tools::definitions() as $definition) {
             self::assertSame(
-                $definition['name'] !== 'typo3_make_me_better',
+                $definition['name'] !== 'typo3_feedback_record',
                 $definition['annotations']['readOnlyHint'],
                 $definition['name'] . ' is annotated with the wrong readOnlyHint'
             );

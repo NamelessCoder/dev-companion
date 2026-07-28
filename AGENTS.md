@@ -46,7 +46,7 @@ composer stan   # phpstan only
 
 ## Feedback workflow
 
-Agents using this server record improvement notes through `typo3_make_me_better`.
+Agents using this server record improvement notes through `typo3_feedback_record`.
 Each note is one markdown file below `feedback/`.
 
 A note is worked off in a commit that both implements the improvement **and

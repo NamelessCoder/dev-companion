@@ -33,7 +33,7 @@ final class ToolSchemas
             'typo3_label_lookup' => self::labelLookup(),
             'typo3_catalog_scope' => self::catalogScope(),
             'typo3_commit_message_guide' => self::commitMessageGuide(),
-            'typo3_make_me_better' => self::makeMeBetter(),
+            'typo3_feedback_record' => self::feedbackRecord(),
             'typo3_feedback_list' => self::feedbackList(),
             default => null,
         };
@@ -245,7 +245,7 @@ final class ToolSchemas
     }
 
     /** @return array<string, mixed> */
-    private static function makeMeBetter(): array
+    private static function feedbackRecord(): array
     {
         return self::object([
             'file' => self::string('Path of the recorded note, relative to the project root.'),

@@ -48,7 +48,7 @@ final class Tools
     ];
 
     /**
-     * Every tool but typo3_make_me_better only reads bundled knowledge: same
+     * Every tool but typo3_feedback_record only reads bundled knowledge: same
      * arguments, same answer, no side effect, nothing outside this package.
      *
      * @var array<string, bool>
@@ -220,7 +220,7 @@ final class Tools
     {
         return [
             [
-                'name' => 'typo3_make_me_better',
+                'name' => 'typo3_feedback_record',
                 'description' => 'Leave a note about a gap, wrong answer, or missing capability of this knowledge server. The note is stored as markdown in this project so it can be implemented later. Use it whenever an answer was incomplete or a lookup found nothing that should have been there.',
                 // The one tool that writes: a new note file per call, never
                 // touching an existing one.
@@ -244,7 +244,7 @@ final class Tools
             ],
             [
                 'name' => 'typo3_feedback_list',
-                'description' => 'List improvement notes recorded via typo3_make_me_better, newest first, so they can be worked off.',
+                'description' => 'List improvement notes recorded via typo3_feedback_record, newest first, so they can be worked off.',
                 'inputSchema' => [
                     'type' => 'object',
                     'properties' => [
@@ -272,7 +272,7 @@ final class Tools
             'typo3_label_lookup' => self::labelLookup($args),
             'typo3_catalog_scope' => self::catalogScope($args),
             'typo3_commit_message_guide' => self::commitMessageGuide($args),
-            'typo3_make_me_better' => self::makeMeBetter($args),
+            'typo3_feedback_record' => self::feedbackRecord($args),
             'typo3_feedback_list' => self::feedbackList($args),
             default => throw new \InvalidArgumentException(sprintf('Unknown tool: %s', $name)),
         };
@@ -308,14 +308,14 @@ final class Tools
         $lines[] = 'Everything is read-only and answered from the bundled knowledge base; '
             . 'nothing is fetched, executed, or looked up online.';
         if (Feedback::isAvailable()) {
-            $lines[] = 'Missing something that belongs here? Record it with typo3_make_me_better.';
+            $lines[] = 'Missing something that belongs here? Leave a note with typo3_feedback_record.';
         }
 
         return ToolResult::create(implode("\n", $lines), $scope);
     }
 
     /** @param array<string, mixed> $args */
-    private static function makeMeBetter(array $args): ToolResult
+    private static function feedbackRecord(array $args): ToolResult
     {
         $file = Feedback::record($args);
 
@@ -483,7 +483,7 @@ final class Tools
             "No knowledge section matched \"%s\".\n\nThis knowledge base covers:\n%s\n\n"
             . 'For registered components, icons, or labels use typo3_component_lookup, typo3_icon_lookup, '
             . 'or typo3_label_lookup instead, and call typo3_server_scope for what this server covers at all. '
-            . 'If the topic should be covered here, record it with typo3_make_me_better.',
+            . 'If the topic should be covered here, leave a note with typo3_feedback_record.',
             $query,
             $documents
         );
@@ -675,7 +675,7 @@ final class Tools
         $candidates[] = 'typo3_architecture_lookup with the concrete file paths, once they are known';
         $candidates[] = 'typo3_test_run_guide, for the targeted runTests.sh invocation';
         if (Feedback::isAvailable()) {
-            $candidates[] = 'typo3_make_me_better, when one of these answers was wrong or incomplete';
+            $candidates[] = 'typo3_feedback_record, when one of these answers was wrong or incomplete';
         }
 
         // One entry per tool: an intent that already suggested a tool keeps its

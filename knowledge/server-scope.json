@@ -148,7 +148,7 @@
     },
     {
       "when": "A catalog lookup found nothing that should exist",
-      "call": "typo3_catalog_scope, then typo3_make_me_better"
+      "call": "typo3_catalog_scope, then typo3_feedback_record"
     }
   ]
 }

@@ -61,7 +61,7 @@ final class ScopeTest extends TestCase
         }
 
         foreach ($this->toolNames() as $tool) {
-            if (in_array($tool, ['typo3_server_scope', 'typo3_make_me_better', 'typo3_feedback_list'], true)) {
+            if (in_array($tool, ['typo3_server_scope', 'typo3_feedback_record', 'typo3_feedback_list'], true)) {
                 continue;
             }
             self::assertContains($tool, $mentioned, $tool . ' is registered but no covered topic points at it');
@@ -75,7 +75,7 @@ final class ScopeTest extends TestCase
         // may name them either way.
         return array_merge(
             array_column(Tools::definitions(), 'name'),
-            ['typo3_make_me_better', 'typo3_feedback_list'],
+            ['typo3_feedback_record', 'typo3_feedback_list'],
         );
     }
 }

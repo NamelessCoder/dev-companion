@@ -81,6 +81,26 @@ final class HintsTest extends TestCase
     }
 
     #[Test]
+    public function aTypoScriptPathReachesTheTypoScriptHintsAndNotTheCssOnes(): void
+    {
+        // .typoscript and .tsconfig used to fall into the generic frontend
+        // bucket, which answered a site set with the CSS browser baseline.
+        $result = ArchitectureHints::find(
+            [
+                'typo3/sysext/fluid_styled_content/Configuration/Sets/FluidStyledContent/setup.typoscript',
+                'typo3/sysext/form/Configuration/page.tsconfig',
+            ],
+            '',
+            6
+        );
+
+        self::assertContains(Domains::TYPOSCRIPT, $result['domains']);
+        $categories = array_column($result['matchedHints'], 'category');
+        self::assertContains('TypoScript', $categories);
+        self::assertNotContains('CSS', $categories);
+    }
+
+    #[Test]
     public function proseIsOnlyAFallbackWhenNoStructuredHintMatched(): void
     {
         $matched = ArchitectureHints::find(['typo3/sysext/core/Classes/DataHandling/DataHandler.php'], 'DataHandler', 6);

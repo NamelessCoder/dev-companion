@@ -149,6 +149,48 @@ official documentation or nearby core code over broad framework advice.
   request lifecycle behavior.
 - Avoid global state when request-scoped data is available.
 
+## TypoScript, Site Sets, and TSconfig
+
+Configuring an installation with TypoScript is out of this server's scope.
+Shipping TypoScript defaults *from* a system extension is core contribution work,
+and this is how it is done.
+
+- A site set is how a system extension ships TypoScript: a directory
+  `Configuration/Sets/<SetName>/` whose `config.yaml` carries a composer-style
+  `name` (`typo3/fluid-styled-content`), an optional `label`, and an optional
+  `dependencies` list naming other sets by that same name.
+- Next to `config.yaml` a set may hold `setup.typoscript`,
+  `settings.definitions.yaml`, `settings.yaml`, `labels.xlf`, `page.tsconfig`,
+  and `route-enhancers.yaml`. Only `config.yaml` is required.
+- `settings.definitions.yaml` declares the set's settings — a `categories` map
+  and a `settings` map whose entries carry `default`, `type`, and `category`. It
+  replaces TypoScript constants; reaching for `constants.typoscript` in new code
+  is the mistake to avoid.
+- The set's `labels.xlf` resolves to the translation domain
+  `<ext>.sets.<setname>`.
+- `ExtensionManagementUtility::addTypoScriptSetup()` and `addStaticFile()` are
+  the predecessor, still called from a few system extensions;
+  `addTypoScriptSetup()` has an `includeInSiteSets` flag that folds the content
+  into the set mechanism. Both coexist — new code ships a set.
+- TypoScript files use the `.typoscript` extension.
+- Site set resolution is covered by functional tests under
+  `typo3/sysext/core/Tests/Functional/Site/Set/`. The labels have their own
+  check, `checkIntegritySetLabels`.
+
+TSconfig is a separate mechanism and means TYPO3 page and user TSconfig here —
+not the `tsconfig.json` of the TypeScript build, which is unrelated.
+
+- A system extension ships defaults in `Configuration/page.tsconfig` and
+  `Configuration/user.tsconfig`. Both are auto-loaded from that path; there is
+  nothing to register in `ext_localconf.php`.
+- An option is read from the merged page TSconfig. In FormEngine the merge is
+  done by the `PageTsConfigMerged` data provider, so a provider that reads the
+  option depends on it.
+- A new TSconfig option is user-facing configuration: it needs a Feature
+  changelog entry and documentation, not only the default.
+- The TypoScript and TSconfig parsers live under
+  `typo3/sysext/core/Classes/TypoScript/` and are covered by functional tests.
+
 ## Language Files
 
 - XLIFF labels should use clear, stable identifiers and concise wording.

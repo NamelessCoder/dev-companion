@@ -193,6 +193,9 @@ final class Domains
         if (in_array(self::PHP, $domains, true)) {
             $categories[] = 'PHP';
         }
+        if (in_array(self::TYPOSCRIPT, $domains, true)) {
+            $categories[] = 'TypoScript';
+        }
         if (in_array(self::FLUID, $domains, true)) {
             $categories[] = 'Fluid';
         }

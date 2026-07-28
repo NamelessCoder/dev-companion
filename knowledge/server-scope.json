@@ -27,7 +27,7 @@
       "source": "knowledge/test-suite-hints.json, typo3://core/typo3-core-scripts"
     },
     {
-      "topic": "Core architecture conventions: DI, events and hooks, TCA and FormEngine, DataHandler, routing, Fluid templates and ViewHelpers, language files, testing strategy",
+      "topic": "Core architecture conventions: DI, events and hooks, TCA and FormEngine, FormEngine data providers, DataHandler, routing, Fluid templates and ViewHelpers, TypoScript site sets and TSconfig, language files, testing strategy",
       "depth": "Conventions per subsystem, matched by path or topic. It describes how the core is built, never what your checkout contains.",
       "tools": ["typo3_architecture_lookup", "typo3_task_guide"],
       "source": "knowledge/architecture-hints/, typo3://core/typo3-core-architecture"
@@ -90,8 +90,8 @@
       "instead": "Use the Gerrit web UI or git. The local side of the workflow — pushing, amending, backporting — is covered by typo3://core/typo3-gerrit-workflow."
     },
     {
-      "topic": "Work outside TYPO3 core contribution: site setup, extension development, TypoScript authoring, upgrading an installation",
-      "why": "The knowledge base is scoped to contributing to the core.",
+      "topic": "Work outside TYPO3 core contribution: site setup, project or third-party extension development, configuring an installation with TypoScript, upgrading an installation",
+      "why": "The knowledge base is scoped to contributing to the core. Shipping TypoScript defaults from a system extension is core work and is covered; writing TypoScript to configure a site is not, and neither is a package under packages/ or an extension outside typo3/sysext/.",
       "instead": "Use the TYPO3 documentation at https://docs.typo3.org/."
     }
   ],

@@ -13,6 +13,7 @@ final class ArchitectureHints
     /** @var array<string, string> */
     private const SECTION_LABELS = [
         'php' => 'PHP',
+        'typoscript' => 'TypoScript',
         'fluid' => 'Fluid',
         'typescript' => 'TypeScript',
         'javascript' => 'JavaScript',

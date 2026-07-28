@@ -119,7 +119,7 @@ final class ToolContractTest extends TestCase
             'labels: miss' => ['typo3_label_lookup', ['query' => 'quantumflux']],
             'labels: domains' => ['typo3_label_lookup', ['mode' => 'domains']],
             'labels: domains miss' => ['typo3_label_lookup', ['mode' => 'domains', 'query' => 'quantumflux']],
-            'catalog status' => ['typo3_catalog_status', []],
+            'catalog scope' => ['typo3_catalog_scope', []],
             'commit: from parts' => ['typo3_commit_message_guide', [
                 'changeType' => 'BUGFIX',
                 'summary' => 'Show hidden records in the import preview',

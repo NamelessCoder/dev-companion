@@ -35,7 +35,7 @@ final class Tools
     ];
 
     /** Appended when a catalog lookup finds nothing at all. */
-    private const CATALOG_MISS_NOTE = 'Call typo3_catalog_status for what this snapshot covers.';
+    private const CATALOG_MISS_NOTE = 'Call typo3_catalog_scope for what this snapshot covers.';
 
     /** Extra domain signal carried by the change type itself. */
     private const CHANGE_TYPE_TERMS = [
@@ -171,7 +171,7 @@ final class Tools
                 ],
             ],
             [
-                'name' => 'typo3_catalog_status',
+                'name' => 'typo3_catalog_scope',
                 'description' => 'Report which TYPO3 core revision the component, icon, and label catalogs were taken from, what they cover, and how to re-check them against a checkout. Call this to judge whether a catalog miss is authoritative for the branch you are working on.',
                 'inputSchema' => [
                     'type' => 'object',
@@ -270,7 +270,7 @@ final class Tools
             'typo3_component_lookup' => self::componentLookup($args),
             'typo3_icon_lookup' => self::iconLookup($args),
             'typo3_label_lookup' => self::labelLookup($args),
-            'typo3_catalog_status' => self::catalogStatus($args),
+            'typo3_catalog_scope' => self::catalogScope($args),
             'typo3_commit_message_guide' => self::commitMessageGuide($args),
             'typo3_make_me_better' => self::makeMeBetter($args),
             'typo3_feedback_list' => self::feedbackList($args),
@@ -1062,7 +1062,7 @@ final class Tools
     }
 
     /** @param array<string, mixed> $args */
-    private static function catalogStatus(array $args): ToolResult
+    private static function catalogScope(array $args): ToolResult
     {
         $meta = CatalogMeta::read();
 

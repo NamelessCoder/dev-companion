@@ -59,7 +59,7 @@
     {
       "topic": "How current the catalogs are",
       "depth": "The core revision, branch, and verification date behind every catalog answer.",
-      "tools": ["typo3_catalog_status"],
+      "tools": ["typo3_catalog_scope"],
       "source": "knowledge/catalog/meta.json"
     }
   ],
@@ -82,7 +82,7 @@
     {
       "topic": "Whether a path, class, label, icon, or CSS class still exists on your branch",
       "why": "The catalogs are a snapshot of one pinned core revision; a miss means \"not in this snapshot\", never \"does not exist\".",
-      "instead": "Call typo3_catalog_status for the revision behind the catalogs, and verify against the checkout when you work on a different branch."
+      "instead": "Call typo3_catalog_scope for the revision behind the catalogs, and verify against the checkout when you work on a different branch."
     },
     {
       "topic": "Gerrit server state: review status, patch sets, votes, CI results",
@@ -110,7 +110,7 @@
     },
     {
       "establish": "Whether the paths, classes, labels, and identifiers named in an answer still exist on that branch",
-      "how": "Grep the checkout. The catalogs are a snapshot of one revision — typo3_catalog_status names it."
+      "how": "Grep the checkout. The catalogs are a snapshot of one revision — typo3_catalog_scope names it."
     }
   ],
   "routing": [
@@ -148,7 +148,7 @@
     },
     {
       "when": "A catalog lookup found nothing that should exist",
-      "call": "typo3_catalog_status, then typo3_make_me_better"
+      "call": "typo3_catalog_scope, then typo3_make_me_better"
     }
   ]
 }

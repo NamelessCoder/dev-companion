@@ -31,7 +31,7 @@ final class ToolSchemas
             'typo3_component_lookup' => self::componentLookup(),
             'typo3_icon_lookup' => self::iconLookup(),
             'typo3_label_lookup' => self::labelLookup(),
-            'typo3_catalog_status' => self::catalogStatus(),
+            'typo3_catalog_scope' => self::catalogScope(),
             'typo3_commit_message_guide' => self::commitMessageGuide(),
             'typo3_make_me_better' => self::makeMeBetter(),
             'typo3_feedback_list' => self::feedbackList(),
@@ -221,7 +221,7 @@ final class ToolSchemas
     }
 
     /** @return array<string, mixed> */
-    private static function catalogStatus(): array
+    private static function catalogScope(): array
     {
         return self::object([
             'catalog' => self::catalogProvenance(),

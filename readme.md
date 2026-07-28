@@ -1,17 +1,15 @@
 # TYPO3 CMS MCP
 
-A remote MCP server (plain PHP) that exposes a curated TYPO3 core contribution
+A local MCP server (plain PHP) that exposes a curated TYPO3 core contribution
 **knowledge base**: contribution rules, core script and `runTests.sh` notes,
 architecture hints, commit message conventions, and a catalog of backend UI
 components, icon identifiers, and registered labels. It is read-only knowledge —
 it does not inspect, read, or run anything against a TYPO3 checkout.
 
 It is built on the official [`mcp/sdk`](https://packagist.org/packages/mcp/sdk)
-and offers two transports sharing one server definition: **stdio**
-(`bin/typo3-cms-mcp`, for local use — a client launches it as a subprocess) and
-**Streamable HTTP** (`public/index.php`, for shared hosting). The HTTP transport
-keeps MCP session state in files (`var/sessions/`), so it still needs no
-persistent process. HTTP access is protected by a static bearer token.
+and speaks **stdio** (`bin/typo3-cms-mcp`): the MCP client launches it as a
+subprocess, so there is no server to host, no network exposure, and no auth to
+configure — the process boundary is the trust boundary.
 
 It is a Composer library (`typo3/cms-mcp`) that can either be required as a
 dependency of the codebase it supports, or run from a standalone checkout — see
@@ -57,22 +55,18 @@ files; the server has no dependency on any project, checkout, or git state.
 ## Layout
 
 ```
-bin/typo3-cms-mcp # stdio entrypoint (local: client launches it as a subprocess)
-public/index.php   # Streamable HTTP endpoint (web document root)
-public/.htaccess   # routing + Authorization header pass-through (Apache)
+bin/typo3-cms-mcp  # stdio entrypoint (the client launches it as a subprocess)
 src/               # PHP classes (knowledge loading, tools, SDK wiring)
-src/ServerFactory.php  # builds the mcp/sdk server shared by both transports
-src/bootstrap.php  # locates the Composer autoloader for both entrypoints
+src/ServerFactory.php  # builds the mcp/sdk server
+src/bootstrap.php  # locates the Composer autoloader
 knowledge/         # the knowledge base (markdown + JSON), the data source
 feedback/          # improvement notes left by agents (standalone checkout only)
-config.local.php   # local secret (gitignored); see config.local.php.example
-vendor/            # Composer dependencies (mcp/sdk, nyholm/psr7); gitignored
-var/sessions/      # HTTP session files (gitignored, created at runtime)
+vendor/            # Composer dependencies (mcp/sdk); gitignored
 ```
 
-Both entrypoints build the same server via `Typo3CmsMcp\ServerFactory`; the tool
-and resource logic lives in `src/Tools.php` and `src/Knowledge.php`, driven
-entirely by `knowledge/`.
+The entrypoint builds the server via `Typo3CmsMcp\ServerFactory`; the tool and
+resource logic lives in `src/Tools.php` and `src/Knowledge.php`, driven entirely
+by `knowledge/`.
 
 ## Install
 
@@ -112,13 +106,12 @@ Clone the repository and install the dependencies once:
 composer install
 ```
 
-This is the setup the HTTP transport and [DEPLOY.md](DEPLOY.md) assume, since
-it needs a writable `var/` and its own document root.
+This is the setup to use when working on the knowledge base itself, since the
+`feedback/` tools only exist in a checkout.
 
 ## Run locally
 
-The simplest local setup is stdio — no server, no token. Point an MCP client at
-the binary:
+Point an MCP client at the binary:
 
 ```json
 {
@@ -140,37 +133,6 @@ printf '%s\n' \
   '{"jsonrpc":"2.0","id":2,"method":"tools/list"}' \
   | php bin/typo3-cms-mcp
 ```
-
-To exercise the HTTP transport locally instead:
-
-```bash
-MCP_AUTH_TOKEN=dev-secret php -S 127.0.0.1:8765 -t public
-```
-
-The HTTP auth token is read from the `MCP_AUTH_TOKEN` environment variable, or
-from a gitignored `config.local.php` (copy `config.local.php.example`). With no
-token configured the server refuses every request, so it is never accidentally
-open.
-
-## Client configuration (remote HTTP)
-
-Point an MCP client at the deployed HTTPS URL with the bearer token:
-
-```json
-{
-  "mcpServers": {
-    "typo3-cms-mcp": {
-      "type": "http",
-      "url": "https://your-domain.example/",
-      "headers": {
-        "Authorization": "Bearer YOUR_TOKEN"
-      }
-    }
-  }
-}
-```
-
-See [DEPLOY.md](DEPLOY.md) for deploying to Mittwald shared hosting.
 
 ## Improvement notes
 

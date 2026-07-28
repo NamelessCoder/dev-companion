@@ -30,7 +30,8 @@ final class Components
      *     variants: array<int, string>, modifiers: array<int, string>,
      *     subComponents: array<int, string>, customProperties: array<int, string>,
      *     markup: string, examples: array<int, string>,
-     *     sassPath: ?string, demoPath: ?string, keywords: array<int, string>
+     *     sassPath: ?string, sassPaths: array<int, string>, demoPath: ?string,
+     *     keywords: array<int, string>
      * }>
      */
     public static function load(): array
@@ -40,7 +41,18 @@ final class Components
             throw new \RuntimeException('Invalid catalog/components.json');
         }
 
-        return array_map(static fn(array $entry): array => [
+        return array_map(static function (array $entry): array {
+            // One component can span several Sass files — the input controls
+            // are form-control, form-label, form-text and input-group at once,
+            // and naming only the first made the others look like they were not
+            // part of it. sassPath stays as the primary one for callers that
+            // read a single path.
+            $sassPaths = array_map('strval', $entry['sassPaths'] ?? []);
+            if ($sassPaths === [] && isset($entry['sassPath'])) {
+                $sassPaths = [(string) $entry['sassPath']];
+            }
+
+            return [
             'name' => (string) $entry['name'],
             'title' => (string) $entry['title'],
             'summary' => (string) ($entry['summary'] ?? ''),
@@ -51,10 +63,12 @@ final class Components
             'customProperties' => array_map('strval', $entry['customProperties'] ?? []),
             'markup' => (string) ($entry['markup'] ?? ''),
             'examples' => array_map('strval', $entry['examples'] ?? []),
-            'sassPath' => isset($entry['sassPath']) ? (string) $entry['sassPath'] : null,
+            'sassPath' => $sassPaths[0] ?? null,
+            'sassPaths' => $sassPaths,
             'demoPath' => isset($entry['demoPath']) ? (string) $entry['demoPath'] : null,
             'keywords' => array_map('strval', $entry['keywords'] ?? []),
-        ], $decoded);
+            ];
+        }, $decoded);
     }
 
     /**
@@ -171,6 +185,19 @@ final class Components
         $score = 0;
         $matched = 0;
         $why = [];
+
+        // The whole query naming the component or its root class outright is a
+        // different kind of answer from a word appearing somewhere in it:
+        // "status indicator" must reach status-indicator, not Badge.
+        $phrase = implode(' ', $terms);
+        if ($component['name'] === $phrase
+            || $component['rootClass'] === $phrase
+            || $component['name'] === str_replace(' ', '-', $phrase)
+        ) {
+            $score += 100;
+            $why['name'] = true;
+        }
+
         foreach ($terms as $term) {
             if (str_contains($name, $term)) {
                 $score += 5;

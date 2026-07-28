@@ -54,6 +54,31 @@ final class CatalogTest extends TestCase
     }
 
     #[Test]
+    public function aComponentNamedOutrightWinsOverOneThatMerelyMentionsIt(): void
+    {
+        // "status indicator" used to return Badge, "note" the Tree via its
+        // node-note sub-component, and "dropzone" nothing at all.
+        foreach (['dropzone', 'note', 'status indicator'] as $query) {
+            self::assertSame(
+                str_replace(' ', '-', $query),
+                Components::find($query)[0]['name'] ?? null,
+                $query . ' does not return itself first'
+            );
+        }
+    }
+
+    #[Test]
+    public function aComponentCarriesEverySassFileItSpans(): void
+    {
+        $input = array_values(array_filter(Components::load(), static fn(array $c): bool => $c['name'] === 'input'))[0];
+
+        // The form controls are one component split across four files; naming
+        // only the first made the rest look like they were not part of it.
+        self::assertContains('Build/Sources/Sass/component/forms/_form-text.scss', $input['sassPaths']);
+        self::assertSame($input['sassPaths'][0], $input['sassPath'], 'sassPath stays the primary one');
+    }
+
+    #[Test]
     public function everyComponentCarriesItsSassSource(): void
     {
         foreach (Components::load() as $component) {

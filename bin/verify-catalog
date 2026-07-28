@@ -196,8 +196,14 @@ printf("  %d domains, %d labels, %d stale\n", count($labels['domains']), count($
 echo "Components\n";
 $components = json_decode((string) file_get_contents($catalogDir . '/components.json'), true);
 foreach ($components as $component) {
-    foreach (['sassPath', 'demoPath'] as $key) {
-        $path = $component[$key] ?? null;
+    $paths = $component['sassPaths'] ?? [];
+    if (isset($component['sassPath'])) {
+        $paths[] = $component['sassPath'];
+    }
+    if (isset($component['demoPath'])) {
+        $paths[] = $component['demoPath'];
+    }
+    foreach (array_unique($paths) as $path) {
         if (is_string($path) && $path !== '' && !file_exists($coreRoot . '/' . $path)) {
             echo '  path gone: ' . $component['name'] . ' → ' . $path . "\n";
             ++$problems;

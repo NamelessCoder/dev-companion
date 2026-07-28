@@ -1017,6 +1017,7 @@ final class Tools
                     'summary' => $c['summary'],
                     'rootClass' => $c['rootClass'],
                     'sassPath' => $c['sassPath'],
+                    'sassPaths' => $c['sassPaths'],
                     'demoPath' => $c['demoPath'],
                 ], $components),
                 'catalog' => self::catalogRecord(),
@@ -1030,6 +1031,13 @@ final class Tools
             $lines = ['## ' . $c['title'] . ' (`' . $c['rootClass'] . '`)'];
             if (($c['matchedIn'] ?? []) !== []) {
                 $lines[] = 'Matched in: ' . implode(', ', $c['matchedIn']);
+                // A component reached only through a sub-component class or a
+                // word in its description is a neighbour of what was asked
+                // for, not an answer to it.
+                if (array_intersect(['name', 'keywords'], $c['matchedIn']) === []) {
+                    $lines[] = 'Related, not the component you asked for: it matched through '
+                        . implode(' and ', $c['matchedIn']) . ' only.';
+                }
             }
             if ($c['summary'] !== '') {
                 $lines[] = $c['summary'];
@@ -1051,9 +1059,9 @@ final class Tools
             $appendList('Sub-components', $c['subComponents']);
             $appendList('Custom properties', $c['customProperties']);
 
-            $lines[] = $c['sassPath'] === null
+            $lines[] = $c['sassPaths'] === []
                 ? 'Sass source: none — this is a web component and carries its styles in its element source.'
-                : 'Sass source: ' . $c['sassPath'];
+                : 'Sass source' . (count($c['sassPaths']) > 1 ? 's' : '') . ': ' . implode(', ', $c['sassPaths']);
             $lines[] = 'Styleguide demo: ' . ($c['demoPath'] ?? 'none (not a styleguide component)');
 
             if ($c['examples'] !== []) {
@@ -1095,6 +1103,7 @@ final class Tools
                 'markup' => $c['markup'],
                 'examples' => $c['examples'],
                 'sassPath' => $c['sassPath'],
+                'sassPaths' => $c['sassPaths'],
                 'demoPath' => $c['demoPath'],
                 'matchedIn' => $c['matchedIn'] ?? [],
             ], $described),

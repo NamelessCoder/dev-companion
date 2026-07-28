@@ -6,10 +6,9 @@ declare(strict_types=1);
 /**
  * Stdio MCP transport for the TYPO3 core knowledge base.
  *
- * Local-dev entrypoint: Claude Code (or any MCP client) launches this as a
+ * The only entrypoint: Claude Code (or any MCP client) launches this as a
  * subprocess and speaks JSON-RPC over stdin/stdout. No auth — the process
- * boundary is the trust boundary. The HTTP entrypoint (public/index.php) stays
- * the path for shared hosting. Both build the same server via ServerFactory.
+ * boundary is the trust boundary. The server itself is built by ServerFactory.
  */
 
 use Mcp\Server\Transport\StdioTransport;

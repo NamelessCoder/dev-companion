@@ -172,4 +172,4 @@ on the next `composer install`; there the server stays strictly read-only and
 neither tool appears in `tools/list`.
 
 Working on this repository — layout, conventions, and how notes are worked off —
-is documented in [CLAUDE.md](CLAUDE.md).
+is documented in [AGENTS.md](AGENTS.md).

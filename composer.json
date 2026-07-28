@@ -1,7 +1,7 @@
 {
-    "name": "typo3-cms-mcp/server",
+    "name": "typo3/cms-mcp",
     "description": "Stateless MCP server exposing a curated TYPO3 core contribution knowledge base.",
-    "type": "project",
+    "type": "library",
     "license": "MIT",
     "require": {
         "php": ">=8.2",

@@ -1,16 +1,33 @@
 # TYPO3 Contribution Sources
 
-Official upstream documentation that should guide this MCP server's rules and
-recommendations.
+Official upstream documentation behind this knowledge base. The guide itself is
+not bundled — link to these URLs when a question goes past what the local
+documents cover.
 
 ## Core Contribution Guide
 
-URL: https://docs.typo3.org/m/typo3/guide-contributionworkflow/main/en-us/
+Entry point:
+https://docs.typo3.org/m/typo3/guide-contributionworkflow/main/en-us/
 
-Use this guide for contribution setup, account setup, Git and Gerrit workflow,
-creating patches, building assets, using `runTests.sh`, debugging TYPO3,
-reviewing patches, Forge issue workflow, coding guidelines, commit message
-rules, composer notes, extension scanner notes, and deprecation guidance.
+- Git and Gerrit setup:
+  https://docs.typo3.org/m/typo3/guide-contributionworkflow/main/en-us/Setup/Git/Index.html
+- Commit hooks:
+  https://docs.typo3.org/m/typo3/guide-contributionworkflow/main/en-us/Appendix/CommitHook.html
+- Create a patch:
+  https://docs.typo3.org/m/typo3/guide-contributionworkflow/main/en-us/BugfixingAZ/Index.html
+- Upload a new patch set:
+  https://docs.typo3.org/m/typo3/guide-contributionworkflow/main/en-us/HandlingAPatch/ChangeAPatch.html
+- Cherry-pick a patch from Gerrit:
+  https://docs.typo3.org/m/typo3/guide-contributionworkflow/main/en-us/HandlingAPatch/CherryPick.html
+- Backport a change:
+  https://docs.typo3.org/m/typo3/guide-contributionworkflow/main/en-us/CoreMergers/Backport.html
+- Commit message rules:
+  https://docs.typo3.org/m/typo3/guide-contributionworkflow/main/en-us/Appendix/CommitMessage.html
+- Git cheat sheet:
+  https://docs.typo3.org/m/typo3/guide-contributionworkflow/main/en-us/CheatSheets/Git.html
+
+Review system: https://review.typo3.org — Forge issues:
+https://forge.typo3.org/projects/typo3cms-core
 
 ## Local Policy
 

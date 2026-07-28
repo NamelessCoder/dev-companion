@@ -1493,9 +1493,9 @@ final class Tools
 
         if ($relaxed) {
             $header = sprintf(
-                'No label in the curated subset matches "%s" closely — none covers every query term. '
+                'No catalogued label matches "%s" closely — none covers every query term. '
                 . 'The %d below cover at least half of them and are related suggestions, not the label you asked for. '
-                . 'If none fits, the label may live in an XLF file outside this subset, or not exist yet',
+                . 'If none fits, the label may live in an XLF file outside this catalog, or not exist yet',
                 $query,
                 $total
             );

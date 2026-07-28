@@ -9,14 +9,14 @@
   "verifyCommand": "bin/verify-catalog /path/to/typo3-core-checkout",
   "scope": {
     "icons": "Every registered icon identifier from the three places the core registers them: the T3Icons set in typo3/sysext/core/Resources/Public/Icons/T3Icons/icons.json with its aliases, every typo3/sysext/*/Configuration/Icons.php, and the flag images under typo3/sysext/core/Resources/Public/Icons/Flags/. Each entry names its source. Complete for all three.",
-    "labels": "The English trans-units of 118 of the 254 default XLF files in the core, across 29 of the system extensions. A curated subset, not the whole core.",
+    "labels": "The English trans-units of all 136 default XLF files that sit directly in a system extension's Resources/Private/Language/, across the core. Files in subdirectories of that path are not included; typo3_label_lookup with mode \"derive\" still computes their translation domain.",
     "components": "Hand-curated backend UI components from the styleguide and the backend Sass sources. A subset: not every CSS class in the core is described here."
   },
   "counts": {
     "iconIdentifiers": 796,
     "iconAliases": 211,
-    "labelDomains": 118,
-    "labels": 5386,
+    "labelDomains": 136,
+    "labels": 6321,
     "components": 22,
     "iconExtensionRegistered": 12,
     "iconFlags": 280

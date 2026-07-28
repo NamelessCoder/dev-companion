@@ -52,7 +52,7 @@
     },
     {
       "topic": "Registered labels (XLF trans-units) and translation domains",
-      "depth": "Curated subset: the English trans-units of about half the default XLF files in the core. The translation domain of any XLF path is computed rather than looked up, so mode \"derive\" also answers for a file outside the subset or one a patch is about to add.",
+      "depth": "The English trans-units of every default XLF file that sits directly in a system extension's Resources/Private/Language/. Files in subdirectories of that path are not included. The translation domain of any XLF path is computed rather than looked up, so mode \"derive\" also answers for a file outside the catalog or one a patch is about to add.",
       "tools": ["typo3_label_lookup"],
       "source": "knowledge/catalog/labels.json"
     },

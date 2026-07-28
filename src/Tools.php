@@ -301,14 +301,29 @@ final class Tools
                 . 'comes from the bundled knowledge base alone. Questions about what is registered in an '
                 . 'installation — which icon identifiers exist, which labels — cannot be answered here.'
             : sprintf(
-                "Reading the TYPO3 installation at %s (%s, found from %s), which holds %d packages. "
-                . 'Registered icons and labels are answered from it rather than from a bundled snapshot. '
+                'Found the TYPO3 installation at %s (%s, from %s), which holds %d packages. '
                 . 'If that is not the installation you are working on, this server was started in the wrong directory.',
                 $instance['root'],
                 $instance['kind'],
                 $instance['startedFrom'],
                 count(Instance::packages()),
             );
+
+        // What the installation can be asked is a different question from
+        // whether one was found, and the answer is actionable often enough to
+        // belong here rather than in a failing tool call.
+        $console = Typo3Cli::resolve();
+        if ($instance !== null) {
+            $lines[] = $console === null
+                ? 'Its console cannot be run right now, so questions that only the installation can answer — which '
+                    . 'labels exist, which backend modules are registered — have no answer here: ' . Typo3Cli::reason() . '.'
+                : sprintf(
+                    'Its console is reachable via %s on PHP %s, so those answers come from the installation itself '
+                    . 'rather than from a bundled snapshot.',
+                    $console['via'],
+                    $console['php'] === '' ? 'an unreported version' : $console['php'],
+                );
+        }
 
         $lines[] = '';
         $lines[] = 'Every lookup and guide is read-only. Apart from the installation named above, nothing is '

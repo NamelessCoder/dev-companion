@@ -116,7 +116,10 @@ printf '%s\n' \
   existing labels get reused instead of new keys invented; `mode: domains` lists
   the registered translation domains instead.
 - `typo3_commit_message_help`: drafts and checks TYPO3 core commit messages
-  against the contribution rules.
+  against the contribution rules — from parts, or by passing an existing
+  `message` to check and correct one in a piece. The emitted draft is ready to
+  commit: the body is wrapped at 72 characters, and fenced code, indented
+  blocks, lists, and long URLs keep their shape.
 - `typo3_make_me_better`: records what was missing, wrong, or unhelpful about an
   answer as a note under `feedback/` (standalone checkout only, see
   [Improvement notes](#improvement-notes)).

@@ -148,20 +148,24 @@ final class Tools
             ],
             [
                 'name' => 'typo3_commit_message_help',
-                'description' => 'Draft and check a TYPO3 core commit message against the contribution rules.',
+                'description' => 'Draft and check a TYPO3 core commit message against the contribution rules. Either assemble one from parts (changeType plus summary) or pass an existing message to check and correct it. The returned draft is ready to commit: the body is wrapped at 72 characters, with fenced code, indented blocks, list structure, and long URLs left intact.',
                 'inputSchema' => [
                     'type' => 'object',
                     'properties' => [
+                        'message' => ['type' => 'string', 'minLength' => 1, 'description' => 'A complete existing commit message to check, subject and trailers included. Unknown trailers such as Change-Id are kept, so an amended patch set stays valid.'],
                         'changeType' => ['type' => 'string', 'enum' => ['BUGFIX', 'FEATURE', 'TASK', 'DOCS'], 'description' => 'TYPO3 commit message keyword.'],
                         'summary' => ['type' => 'string', 'minLength' => 1, 'description' => 'Summary text without the TYPO3 keyword prefix.'],
                         'issue' => ['type' => 'string', 'description' => 'Forge issue number, with or without leading #.'],
                         'relatedIssues' => ['type' => 'array', 'items' => ['type' => 'string'], 'default' => [], 'description' => 'Optional related Forge issue numbers.'],
                         'releases' => ['type' => 'array', 'items' => ['type' => 'string'], 'default' => ['main'], 'description' => 'Target releases, for example main or 13.4.'],
-                        'body' => ['type' => 'string', 'description' => 'Optional commit body.'],
+                        'body' => ['type' => 'string', 'description' => 'Optional commit body. It is wrapped at 72 characters in the draft.'],
                         'isBreaking' => ['type' => 'boolean', 'default' => false, 'description' => 'Whether this is a breaking change requiring [!!!].'],
                         'isDeprecation' => ['type' => 'boolean', 'default' => false, 'description' => 'Whether this is a deprecation.'],
                     ],
-                    'required' => ['changeType', 'summary'],
+                    'anyOf' => [
+                        ['required' => ['message']],
+                        ['required' => ['changeType', 'summary']],
+                    ],
                 ],
             ],
         ];
@@ -868,12 +872,42 @@ final class Tools
     /** @param array<string, mixed> $args */
     private static function commitMessageHelp(array $args): string
     {
+        $existing = isset($args['message']) ? trim((string) $args['message']) : '';
+
+        $parseChecks = [];
+        if ($existing !== '') {
+            $parsed = CommitMessage::parse($existing);
+            // Explicit arguments still win, so a message can be checked and
+            // amended in one call: pass the message plus issue=12345.
+            $input = array_merge($parsed['input'], array_intersect_key($args, array_flip([
+                'changeType', 'summary', 'issue', 'relatedIssues', 'releases', 'isBreaking', 'isDeprecation',
+            ])));
+            $parseChecks = $parsed['checks'];
+        } else {
+            $input = $args;
+        }
+
+        if (!isset($input['summary']) || trim((string) $input['summary']) === '') {
+            throw new \InvalidArgumentException(
+                'Provide either a complete message, or changeType and summary.'
+            );
+        }
+
         /** @var array{changeType: string, summary: string} $input */
-        $input = $args;
         $result = CommitMessage::create($input);
 
-        $lines = ['Commit message draft:', '```text', $result['message'], '```', '', 'Checks:'];
-        foreach ($result['checks'] as $check) {
+        $checks = $result['checks'];
+        if ($parseChecks !== []) {
+            // "Nothing to complain about" only holds when nothing complained.
+            $checks = array_values(array_filter(
+                $checks,
+                static fn(array $check): bool => $check['level'] !== 'info'
+            ));
+        }
+
+        $heading = $existing === '' ? 'Commit message draft:' : 'Commit message, corrected:';
+        $lines = [$heading, '```text', $result['message'], '```', '', 'Checks:'];
+        foreach (array_merge($parseChecks, $checks) as $check) {
             $lines[] = '- ' . strtoupper($check['level']) . ': ' . $check['message'];
         }
 

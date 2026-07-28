@@ -19,7 +19,8 @@ final class HintsTest extends TestCase
         $result = ArchitectureHints::find(['typo3/sysext/core/Classes/DataHandling/DataHandler.php'], '', 6);
 
         self::assertContains(Domains::PHP, $result['domains']);
-        self::assertNotContains(Domains::FRONTEND, $result['domains']);
+        self::assertNotContains(Domains::TYPESCRIPT, $result['domains']);
+        self::assertNotContains(Domains::CSS, $result['domains']);
         foreach ($result['matchedHints'] as $hint) {
             self::assertContains($hint['category'], ['PHP', 'General']);
         }
@@ -30,8 +31,34 @@ final class HintsTest extends TestCase
     {
         $result = ArchitectureHints::find(['Build/Sources/Sass/component/_badge.scss'], '', 6);
 
-        self::assertContains(Domains::FRONTEND, $result['domains']);
+        self::assertContains(Domains::CSS, $result['domains']);
         self::assertNotSame([], $result['matchedHints']);
+    }
+
+    #[Test]
+    public function aSassPathIsNeverAnsweredWithTypeScriptConventions(): void
+    {
+        $result = ArchitectureHints::find(['Build/Sources/Sass/component/_card.scss'], 'card component styling', 8);
+
+        self::assertNotContains(Domains::TYPESCRIPT, $result['domains']);
+        foreach ($result['matchedHints'] as $hint) {
+            self::assertNotContains($hint['category'], ['TypeScript', 'JavaScript'], $hint['id']);
+        }
+    }
+
+    #[Test]
+    public function aTypeScriptPathIsNeverAnsweredWithCssConventions(): void
+    {
+        $result = ArchitectureHints::find(
+            ['Build/Sources/TypeScript/backend/form-editor/inspector-component.ts'],
+            'field label override per record type',
+            8
+        );
+
+        self::assertNotContains(Domains::CSS, $result['domains']);
+        foreach ($result['matchedHints'] as $hint) {
+            self::assertNotSame('CSS', $hint['category'], $hint['id']);
+        }
     }
 
     #[Test]
@@ -123,11 +150,26 @@ final class HintsTest extends TestCase
     }
 
     #[Test]
-    public function aLabelChangeAlwaysInvolvesPhpAsWell(): void
+    public function anXlfOnlyChangeStaysAnXlfChange(): void
     {
+        // A label patch that touches no PHP must not pull the PHP suites in:
+        // unit and functional runs cost minutes and cannot fail on an XLF edit.
         $domains = Domains::detect(['typo3/sysext/backend/Resources/Private/Language/locallang.xlf'], '');
 
-        self::assertContains(Domains::XLIFF, $domains);
-        self::assertContains(Domains::PHP, $domains);
+        self::assertSame([Domains::XLIFF], $domains);
+        self::assertSame(
+            ['checkIntegrityXliff', 'normalizeXliff'],
+            array_column(TestSuiteHints::find(null, $domains), 'suite')
+        );
+    }
+
+    #[Test]
+    public function aFluidTemplateIsItsOwnDomain(): void
+    {
+        $domains = Domains::detect(['typo3/sysext/backend/Resources/Private/Partials/DocHeader.fluid.html'], '');
+
+        self::assertContains(Domains::FLUID, $domains);
+        self::assertNotContains(Domains::TYPESCRIPT, $domains);
+        self::assertNotContains(Domains::CSS, $domains);
     }
 }

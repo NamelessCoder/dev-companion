@@ -96,7 +96,7 @@ final class ArchitectureHints
         $knowledgeSections = [];
         if ($matchedHints === [] && $task !== '') {
             $documents = ['typo3-core-architecture'];
-            if (in_array(Domains::FRONTEND, $domains, true)) {
+            if (in_array(Domains::CSS, $domains, true)) {
                 $documents[] = 'typo3-css-architecture';
             }
             $knowledgeSections = Knowledge::search($task, $documents, $limit);

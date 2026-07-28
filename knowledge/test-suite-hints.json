@@ -88,7 +88,7 @@
     {
       "suite": "functional",
       "command": "CI=true ./Build/Scripts/runTests.sh -s functional",
-      "domains": ["php"],
+      "domains": ["php", "fluid"],
       "description": "PHP functional tests, sqlite by default.",
       "whenToUse": "Use for TYPO3 services, persistence, configuration, authentication, routing, and integration behavior.",
       "targeted": "CI=true ./Build/Scripts/runTests.sh -s functional -d sqlite -- <path/to/Test.php>"
@@ -160,49 +160,49 @@
     {
       "suite": "build",
       "command": "CI=true ./Build/Scripts/runTests.sh -s build",
-      "domains": ["frontend"],
+      "domains": ["typescript", "css"],
       "description": "Frontend build for TypeScript, Sass, Contrib, and assets.",
       "whenToUse": "Use when backend UI assets, TypeScript, Sass, or generated assets change."
     },
     {
       "suite": "lintScss",
       "command": "CI=true ./Build/Scripts/runTests.sh -s lintScss",
-      "domains": ["frontend"],
+      "domains": ["css"],
       "description": "SCSS linting with TYPO3's stylelint setup.",
       "whenToUse": "Use when Sass or CSS sources change. Internally this runs grunt stylelint in the Build directory."
     },
     {
       "suite": "build-css",
       "command": "CI=true ./Build/Scripts/runTests.sh -s npm -- run build-css",
-      "domains": ["frontend"],
+      "domains": ["css"],
       "description": "Focused CSS build from Build/package.json.",
       "whenToUse": "Use while iterating on Sass/CSS changes when a full frontend build is not needed. This maps to grunt css."
     },
     {
       "suite": "lintTypescript",
       "command": "CI=true ./Build/Scripts/runTests.sh -s lintTypescript",
-      "domains": ["frontend"],
+      "domains": ["typescript"],
       "description": "TypeScript linting.",
       "whenToUse": "Use when TypeScript or JavaScript code changes."
     },
     {
       "suite": "unitJavascript",
       "command": "CI=true ./Build/Scripts/runTests.sh -s unitJavascript",
-      "domains": ["frontend"],
+      "domains": ["typescript"],
       "description": "JavaScript unit tests for the built backend modules.",
       "whenToUse": "Use for TypeScript modules with real logic or state transitions. Run `-s build` first so the tests see the current output."
     },
     {
       "suite": "e2e",
       "command": "CI=true ./Build/Scripts/runTests.sh -s e2e",
-      "domains": ["frontend", "php"],
+      "domains": ["php", "typescript", "fluid"],
       "description": "End-to-end tests driving a real backend with Playwright.",
       "whenToUse": "Use for editor or administrator workflows that only break in the assembled backend."
     },
     {
       "suite": "npm",
       "command": "CI=true ./Build/Scripts/runTests.sh -s npm -- <npm command>",
-      "domains": ["frontend"],
+      "domains": ["typescript", "css"],
       "description": "Dispatcher for npm commands inside the TYPO3 core build environment.",
       "whenToUse": "Use for npm install, audit, build, watch, and package-script tasks."
     },

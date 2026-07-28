@@ -10,18 +10,28 @@ namespace Typo3CmsMcp;
  * Used to keep answers inside the domain that was actually asked about: a PHP
  * bugfix should never get a Sass build recommended, and a task that only names
  * PHP paths should not be answered with backend TypeScript conventions.
+ *
+ * The asset domains are deliberately separate rather than one "frontend": a
+ * TypeScript module, a Sass partial, and a Fluid template share a directory
+ * tree but not a single convention, test suite, or reviewer. Folding them
+ * together made every .ts path pull CSS conventions and every .scss path pull
+ * TypeScript ones.
  */
 final class Domains
 {
     public const PHP = 'php';
-    public const FRONTEND = 'frontend';
+    public const TYPESCRIPT = 'typescript';
+    public const CSS = 'css';
+    public const FLUID = 'fluid';
     public const DOCS = 'docs';
     public const XLIFF = 'xliff';
 
     /** @var array<string, array<int, string>> Domain to file extensions. */
     private const EXTENSIONS = [
         self::PHP => ['php', 'yaml', 'yml'],
-        self::FRONTEND => ['ts', 'js', 'scss', 'sass', 'css', 'html'],
+        self::TYPESCRIPT => ['ts', 'js'],
+        self::CSS => ['scss', 'sass', 'css'],
+        self::FLUID => ['html'],
         self::DOCS => ['rst'],
         self::XLIFF => ['xlf', 'xliff'],
     ];
@@ -33,10 +43,16 @@ final class Domains
             'middleware', 'repository', 'controller', 'event listener', 'hook',
             'dependency injection', 'unit test', 'functional test', 'phpstan',
         ],
-        self::FRONTEND => [
-            'typescript', 'javascript', 'web component', 'custom element',
+        self::TYPESCRIPT => [
+            'typescript', 'javascript', 'web component', 'custom element', 'lit',
+            'backend ui',
+        ],
+        self::CSS => [
             'sass', 'scss', 'css', 'stylesheet', 'styling', 'frontend build',
-            'backend ui', 'lit', 'template', 'fluid',
+            'backend ui',
+        ],
+        self::FLUID => [
+            'fluid', 'viewhelper', 'view helper', 'partial',
         ],
         self::DOCS => [
             'changelog', 'rst', 'documentation', 'deprecation', 'breaking change',
@@ -46,10 +62,22 @@ final class Domains
         ],
     ];
 
+    /** @var array<string, array<int, string>> Domain to directory conventions the extension alone does not reveal. */
+    private const DIRECTORIES = [
+        self::TYPESCRIPT => ['build/sources/typescript', 'resources/public/javascript'],
+        self::CSS => ['build/sources/sass', 'resources/public/css'],
+        self::FLUID => [
+            'resources/private/templates', 'resources/private/partials',
+            'resources/private/layouts', 'classes/viewhelpers',
+        ],
+        self::DOCS => ['documentation/changelog'],
+        self::XLIFF => ['resources/private/language'],
+    ];
+
     /**
      * @param array<int, string> $paths
-     * @return array<int, string> The matched domains, or every domain when the
-     *                            input carries no signal at all.
+     * @return array<int, string> The matched domains, or PHP when the input
+     *                            carries no signal at all.
      */
     public static function detect(array $paths, string $text = ''): array
     {
@@ -74,15 +102,13 @@ final class Domains
             }
         }
 
-        // Directory conventions that the extension alone does not reveal.
-        if (str_contains($haystack, 'build/sources/typescript') || str_contains($haystack, 'build/sources/sass')) {
-            $detected[self::FRONTEND] = true;
-        }
-        if (str_contains($haystack, 'documentation/changelog')) {
-            $detected[self::DOCS] = true;
-        }
-        if (str_contains($haystack, 'resources/private/language')) {
-            $detected[self::XLIFF] = true;
+        foreach (self::DIRECTORIES as $domain => $directories) {
+            foreach ($directories as $directory) {
+                if (str_contains($haystack, $directory)) {
+                    $detected[$domain] = true;
+                    break;
+                }
+            }
         }
 
         // Without any signal, assume PHP: that is what most of the core is, and
@@ -90,11 +116,6 @@ final class Domains
         // slightly narrow one.
         if ($detected === []) {
             return [self::PHP];
-        }
-
-        // Anything that is not purely about assets, labels or docs involves PHP.
-        if (!isset($detected[self::PHP]) && (isset($detected[self::DOCS]) || isset($detected[self::XLIFF]))) {
-            $detected[self::PHP] = true;
         }
 
         return array_keys($detected);
@@ -113,9 +134,11 @@ final class Domains
         if (in_array(self::PHP, $domains, true)) {
             $categories[] = 'PHP';
         }
-        if (in_array(self::FRONTEND, $domains, true)) {
+        if (in_array(self::TYPESCRIPT, $domains, true)) {
             $categories[] = 'TypeScript';
             $categories[] = 'JavaScript';
+        }
+        if (in_array(self::CSS, $domains, true)) {
             $categories[] = 'CSS';
         }
 

@@ -669,7 +669,7 @@ final class Tools
             }
         }
 
-        if (in_array(Domains::FRONTEND, $domains, true)) {
+        if (array_intersect([Domains::CSS, Domains::FLUID], $domains) !== []) {
             $candidates[] = 'typo3_component_lookup, before writing backend markup or CSS classes';
         }
         $candidates[] = 'typo3_architecture_lookup with the concrete file paths, once they are known';

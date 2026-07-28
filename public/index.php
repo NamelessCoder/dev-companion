@@ -17,7 +17,7 @@ use Nyholm\Psr7\Factory\Psr17Factory;
 use Nyholm\Psr7Server\ServerRequestCreator;
 use Typo3CmsMcp\ServerFactory;
 
-require dirname(__DIR__) . '/vendor/autoload.php';
+require dirname(__DIR__) . '/src/bootstrap.php';
 
 // --- Authentication: static bearer token, enforced before anything else. ---
 $configuredToken = mcp_configured_token();

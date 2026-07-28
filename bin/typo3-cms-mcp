@@ -15,6 +15,6 @@ declare(strict_types=1);
 use Mcp\Server\Transport\StdioTransport;
 use Typo3CmsMcp\ServerFactory;
 
-require dirname(__DIR__) . '/vendor/autoload.php';
+require dirname(__DIR__) . '/src/bootstrap.php';
 
 ServerFactory::create()->run(new StdioTransport());

@@ -79,6 +79,10 @@ official documentation or nearby core code over broad framework advice.
 
 - XLIFF labels should use clear, stable identifiers and concise wording.
 - Reuse existing labels where the meaning is identical.
+- Reference labels by their translation domain (`backend.alt_doc:key`) rather
+  than by the `EXT:.../locallang_alt_doc.xlf:key` file path.
+- Never delete a `trans-unit`; mark it `x-unused-since="<next version>"` and
+  remove it in a later major. See the XLIFF label lifecycle rules.
 - Run `checkIntegrityXliff` and consider `normalizeXliff -n` after editing
   language files.
 

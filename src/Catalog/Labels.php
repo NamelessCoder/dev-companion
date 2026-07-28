@@ -35,9 +35,10 @@ final class Labels
     }
 
     /**
-     * Registered translation domains (one per default XLF file in scope).
+     * Registered translation domains (one per default XLF file in scope), each
+     * with its derived domain name and the file it resolves to.
      *
-     * @return array<int, array{ext: string, file: string, ref: string, count: int}>
+     * @return array<int, array{ext: string, file: string, ref: string, domain: string, count: int}>
      */
     public static function domains(?string $query): array
     {
@@ -50,13 +51,16 @@ final class Labels
 
         $domains = [];
         foreach ($data['domains'] as $index => $domain) {
-            $domains[] = $domain + ['count' => $counts[$index] ?? 0];
+            $domains[] = $domain + [
+                'domain' => TranslationDomain::fromReference($domain['ref']) ?? $domain['ref'],
+                'count' => $counts[$index] ?? 0,
+            ];
         }
 
         $terms = self::terms(trim($query ?? ''));
         if ($terms !== []) {
             $domains = array_values(array_filter($domains, static function (array $domain) use ($terms): bool {
-                $haystack = mb_strtolower($domain['ext'] . ' ' . $domain['file'] . ' ' . $domain['ref']);
+                $haystack = mb_strtolower($domain['ext'] . ' ' . $domain['file'] . ' ' . $domain['ref'] . ' ' . $domain['domain']);
                 foreach ($terms as $term) {
                     if (str_contains($haystack, $term)) {
                         return true;
@@ -66,18 +70,22 @@ final class Labels
             }));
         }
 
-        usort($domains, static fn(array $a, array $b): int => strcmp($a['ref'], $b['ref']));
+        usort($domains, static fn(array $a, array $b): int => strcmp($a['domain'], $b['domain']));
 
         return $domains;
     }
 
     /**
      * Ranks labels against a free-text query, matching the trans-unit id and the
-     * English source text. Returns fully-qualified LLL references.
+     * English source text.
      *
-     * @return array<int, array{id: string, source: string, ref: string, unusedSince: ?string}>
+     * The primary reference is the translation domain form
+     * ("backend.alt_doc:buttons.confirm.save_and_close"); the LLL file path is
+     * carried along as the legacy form.
+     *
+     * @return array<int, array{id: string, source: string, ref: string, legacyRef: string, unusedSince: ?string, matchedIn: array<int, string>}>
      */
-    public static function find(?string $query): array
+    public static function find(?string $query, bool $requireAllTerms = true): array
     {
         $data = self::data();
         $terms = self::terms(trim($query ?? ''));
@@ -87,18 +95,22 @@ final class Labels
 
         $scored = [];
         foreach ($data['labels'] as $label) {
-            $score = self::scoreLabel($label['id'], $label['source'], $terms);
-            if ($score === 0) {
+            [$score, $matched, $matchedIn] = self::scoreLabel($label['id'], $label['source'], $terms);
+            if ($matched === 0 || ($requireAllTerms && $matched < count($terms))) {
                 continue;
             }
             $domain = $data['domains'][$label['d']] ?? null;
-            $ref = $domain !== null ? $domain['ref'] . ':' . $label['id'] : $label['id'];
+            $legacyRef = $domain !== null ? $domain['ref'] . ':' . $label['id'] : $label['id'];
+            $domainName = $domain !== null ? TranslationDomain::fromReference($domain['ref']) : null;
+
             $scored[] = [
                 'label' => [
                     'id' => $label['id'],
                     'source' => $label['source'],
-                    'ref' => $ref,
+                    'ref' => $domainName !== null ? $domainName . ':' . $label['id'] : $legacyRef,
+                    'legacyRef' => $legacyRef,
                     'unusedSince' => $label['unusedSince'] ?? null,
+                    'matchedIn' => $matchedIn,
                 ],
                 'score' => $score,
             ];
@@ -127,28 +139,39 @@ final class Labels
     }
 
     /**
+     * Returns [weightedScore, distinctTermsMatched, whereTheyMatched].
+     *
      * Matches in the key id weigh more than matches in the source text; an exact
      * id segment scores highest.
      *
      * @param array<int, string> $terms
+     * @return array{0: int, 1: int, 2: array<int, string>}
      */
-    private static function scoreLabel(string $id, string $source, array $terms): int
+    private static function scoreLabel(string $id, string $source, array $terms): array
     {
         $idLower = mb_strtolower($id);
         $idSegments = preg_split('/[._-]+/', $idLower) ?: [];
         $sourceLower = mb_strtolower($source);
 
         $score = 0;
+        $matched = 0;
+        $matchedIn = [];
         foreach ($terms as $term) {
             if (in_array($term, $idSegments, true)) {
                 $score += 5;
+                ++$matched;
+                $matchedIn['key'] = true;
             } elseif (str_contains($idLower, $term)) {
                 $score += 3;
+                ++$matched;
+                $matchedIn['key'] = true;
             } elseif (str_contains($sourceLower, $term)) {
                 $score += 1;
+                ++$matched;
+                $matchedIn['text'] = true;
             }
         }
 
-        return $score;
+        return [$score, $matched, array_keys($matchedIn)];
     }
 }

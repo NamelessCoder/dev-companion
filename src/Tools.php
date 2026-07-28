@@ -7,6 +7,7 @@ namespace Typo3CmsMcp;
 use Typo3CmsMcp\Catalog\Components;
 use Typo3CmsMcp\Catalog\Icons;
 use Typo3CmsMcp\Catalog\Labels;
+use Typo3CmsMcp\Catalog\Meta as CatalogMeta;
 
 /**
  * Defines the knowledge tools and renders their text output. Mirrors the
@@ -29,6 +30,9 @@ final class Tools
         'documentation' => ['Run ./Build/Scripts/runTests.sh -s checkRst to validate ReST syntax.'],
         'unknown' => [],
     ];
+
+    /** Appended when a catalog lookup finds nothing at all. */
+    private const CATALOG_MISS_NOTE = 'Call typo3_catalog_status for what this snapshot covers.';
 
     /** Extra domain signal carried by the change type itself. */
     private const CHANGE_TYPE_TERMS = [
@@ -113,25 +117,33 @@ final class Tools
             ],
             [
                 'name' => 'typo3_icon_lookup',
-                'description' => 'Validate and discover TYPO3 core icon identifiers (the registered T3Icons names such as actions-open or module-web-list). Returns matching identifiers grouped by category so unknown identifiers are caught before runtime.',
+                'description' => 'Validate and discover TYPO3 core icon identifiers (the registered T3Icons names such as actions-open or module-web-list). Matches identifier fragments, registered aliases, and concept keywords ("warning" finds actions-exclamation-triangle), and states why each result matched. Results come from a versioned snapshot, so a miss means "not in the snapshot", not "does not exist".',
                 'inputSchema' => [
                     'type' => 'object',
                     'properties' => [
-                        'query' => ['type' => 'string', 'description' => 'Identifier fragment or keywords, for example "status warning", "delete", or "actions-open". Omit to list categories.'],
+                        'query' => ['type' => 'string', 'description' => 'Identifier fragment, alias, or concept, for example "warning", "delete", or "actions-open". Omit to list categories and concept keywords.'],
                         'limit' => ['type' => 'integer', 'minimum' => 1, 'maximum' => 100, 'default' => 40, 'description' => 'Maximum number of identifiers to return.'],
                     ],
                 ],
             ],
             [
                 'name' => 'typo3_label_lookup',
-                'description' => 'Search registered TYPO3 core labels (XLF trans-units) across the core sysexts. Returns the fully-qualified LLL reference, English source text, and any x-unused-since marker, so existing labels can be reused instead of inventing new keys.',
+                'description' => 'Search registered TYPO3 core labels (XLF trans-units) across the core sysexts. Returns the translation domain reference (backend.alt_doc:key), which is the canonical form for TCA, LanguageService::sL() and f:translate, plus the legacy LLL file path, the English source text, and any x-unused-since marker. Use it to reuse an existing label instead of inventing a key. Results come from a versioned snapshot of a subset of the core label files.',
                 'inputSchema' => [
                     'type' => 'object',
                     'properties' => [
                         'query' => ['type' => 'string', 'description' => 'Words from the label key or its English text, for example "save document" or "labels.title".'],
-                        'mode' => ['type' => 'string', 'enum' => ['keys', 'domains'], 'default' => 'keys', 'description' => 'keys: search individual labels. domains: list registered XLF translation domains.'],
+                        'mode' => ['type' => 'string', 'enum' => ['keys', 'domains'], 'default' => 'keys', 'description' => 'keys: search individual labels. domains: list registered translation domains.'],
                         'limit' => ['type' => 'integer', 'minimum' => 1, 'maximum' => 100, 'default' => 25, 'description' => 'Maximum number of results to return.'],
                     ],
+                ],
+            ],
+            [
+                'name' => 'typo3_catalog_status',
+                'description' => 'Report which TYPO3 core revision the component, icon, and label catalogs were taken from, what they cover, and how to re-check them against a checkout. Call this to judge whether a catalog miss is authoritative for the branch you are working on.',
+                'inputSchema' => [
+                    'type' => 'object',
+                    'properties' => new \stdClass(),
                 ],
             ],
             [
@@ -208,6 +220,7 @@ final class Tools
             'typo3_component_lookup' => self::componentLookup($args),
             'typo3_icon_lookup' => self::iconLookup($args),
             'typo3_label_lookup' => self::labelLookup($args),
+            'typo3_catalog_status' => self::catalogStatus($args),
             'typo3_commit_message_help' => self::commitMessageHelp($args),
             'typo3_make_me_better' => self::makeMeBetter($args),
             'typo3_feedback_list' => self::feedbackList($args),
@@ -616,8 +629,10 @@ final class Tools
 
         if ($components === []) {
             return sprintf(
-                'No TYPO3 component matched "%s". Try a component name (badge, card), a class (input-group), or a topic (search box). Extend knowledge/catalog/components.json to add more.',
-                (string) $query
+                "No TYPO3 component matched \"%s\". Try a component name (badge, card), a class (input-group), or a topic (search box). %s\n%s",
+                (string) $query,
+                self::CATALOG_MISS_NOTE,
+                self::catalogProvenance(),
             );
         }
 
@@ -632,6 +647,9 @@ final class Tools
 
         $blocks = array_map(static function (array $c): string {
             $lines = ['## ' . $c['title'] . ' (`' . $c['rootClass'] . '`)'];
+            if (($c['matchedIn'] ?? []) !== []) {
+                $lines[] = 'Matched in: ' . implode(', ', $c['matchedIn']);
+            }
             if ($c['summary'] !== '') {
                 $lines[] = $c['summary'];
             }
@@ -677,6 +695,7 @@ final class Tools
             $checklistLines[] = '- [ ] ' . $item;
         }
         $blocks[] = implode("\n", $checklistLines);
+        $blocks[] = self::catalogProvenance();
 
         return implode("\n\n", $blocks);
     }
@@ -688,32 +707,87 @@ final class Tools
         $limit = (int) ($args['limit'] ?? 40);
 
         if ($query === null || trim($query) === '') {
-            $categories = Icons::categories();
-            return "Icon categories (query an identifier fragment to list icons):\n"
-                . implode("\n", array_map(static fn(string $c): string => '- ' . $c, $categories));
+            $lines = ['Icon categories (query an identifier fragment or a concept to list icons):'];
+            foreach (Icons::categories() as $category) {
+                $lines[] = '- ' . $category;
+            }
+            $lines[] = '';
+            $lines[] = 'Concept keywords that map to icons: ' . implode(', ', array_keys(Icons::concepts())) . '.';
+            $lines[] = '';
+            $lines[] = self::catalogProvenance();
+
+            return implode("\n", $lines);
         }
 
         $matches = Icons::find($query);
         if ($matches === []) {
             return sprintf(
-                'No TYPO3 icon identifier matched "%s". Identifiers follow the <category>-<name> convention, for example actions-open or module-web-list.',
-                $query
+                "No TYPO3 icon identifier matched \"%s\". Identifiers follow the <category>-<name> convention "
+                . "and spell the shape, not the intent — try a concept keyword such as %s.\n%s",
+                $query,
+                implode(', ', array_slice(array_keys(Icons::concepts()), 0, 8)),
+                self::catalogProvenance(),
             );
         }
 
         $total = count($matches);
         $shown = array_slice($matches, 0, $limit);
-        $lines = array_map(
-            static fn(array $icon): string => '- ' . $icon['identifier'] . '  (' . $icon['category'] . ')',
-            $shown
-        );
+        $lines = array_map(static function (array $icon): string {
+            $line = '- ' . $icon['identifier'] . '  (' . $icon['category'] . ')';
+            if ($icon['aliasOf'] !== null) {
+                $line .= "\n  alias of " . $icon['aliasOf'];
+            }
+            if ($icon['why'] !== []) {
+                $line .= "\n  matched: " . implode(', ', $icon['why']);
+            }
+
+            return $line;
+        }, $shown);
 
         $header = sprintf('%d icon identifier(s) matched "%s"', $total, $query);
         if ($total > count($shown)) {
             $header .= sprintf(' — showing the top %d, refine the query to narrow down', count($shown));
         }
 
-        return $header . ":\n" . implode("\n", $lines);
+        return $header . ":\n" . implode("\n", $lines) . "\n\n" . self::catalogProvenance();
+    }
+
+    /** @param array<string, mixed> $args */
+    private static function catalogStatus(array $args): string
+    {
+        $meta = CatalogMeta::read();
+
+        $lines = [
+            'Catalog provenance',
+            '- Source: ' . $meta['source']['repository'],
+            '- Branch: ' . $meta['source']['branch'] . ' (TYPO3 ' . $meta['source']['version'] . ')',
+            '- Commit: ' . $meta['source']['commit'],
+            '- Verified: ' . $meta['verifiedAt'],
+            '- Re-check with: `' . $meta['verifyCommand'] . '`',
+            '',
+            'Scope',
+        ];
+        foreach ($meta['scope'] as $catalog => $scope) {
+            $lines[] = '- ' . $catalog . ': ' . $scope;
+        }
+
+        $lines[] = '';
+        $lines[] = 'Counts';
+        foreach ($meta['counts'] as $name => $count) {
+            $lines[] = '- ' . $name . ': ' . $count;
+        }
+
+        $lines[] = '';
+        $lines[] = 'A lookup that finds nothing means the entry is not in this snapshot. On a different core '
+            . 'branch — a 13.4 backport, for example — verify against the checkout before concluding that an '
+            . 'identifier or label does not exist.';
+
+        return implode("\n", $lines);
+    }
+
+    private static function catalogProvenance(): string
+    {
+        return CatalogMeta::line();
     }
 
     /** @param array<string, mixed> $args */
@@ -729,37 +803,66 @@ final class Tools
                 return sprintf('No registered label domain matched "%s".', (string) $query);
             }
             $lines = array_map(
-                static fn(array $d): string => sprintf('- %s  (%s, %d labels)', $d['ref'], $d['ext'], $d['count']),
+                static fn(array $d): string => sprintf(
+                    "- %s  (%d labels)\n  %s",
+                    $d['domain'],
+                    $d['count'],
+                    $d['ref'],
+                ),
                 array_slice($domains, 0, $limit)
             );
-            return sprintf('%d label domain(s):', count($domains)) . "\n" . implode("\n", $lines);
+
+            return sprintf("%d label domain(s):\n", count($domains)) . implode("\n", $lines);
         }
 
         if ($query === null || trim($query) === '') {
-            return 'Provide a query to search labels, or pass mode "domains" to list registered XLF files.';
+            return 'Provide a query to search labels, or pass mode "domains" to list registered translation domains.';
         }
 
         $labels = Labels::find($query);
+        $relaxed = false;
         if ($labels === []) {
-            return sprintf('No TYPO3 core label matched "%s". Try words from the key or its English text, or extend the catalog scope.', $query);
+            // Nothing matched every term; fall back to any-term matching rather
+            // than claiming the label does not exist.
+            $labels = Labels::find($query, false);
+            $relaxed = $labels !== [];
+        }
+
+        if ($labels === []) {
+            return sprintf(
+                'No TYPO3 core label matched "%s". Try words from the key or its English text. %s',
+                $query,
+                self::CATALOG_MISS_NOTE,
+            );
         }
 
         $total = count($labels);
         $shown = array_slice($labels, 0, $limit);
         $lines = array_map(static function (array $label): string {
-            $line = '- ' . $label['ref'] . "\n  \"" . $label['source'] . '"';
+            $line = '- ' . $label['ref'];
+            $line .= "\n  \"" . $label['source'] . '"';
+            $line .= "\n  legacy: " . $label['legacyRef'];
+            $line .= "\n  matched in: " . implode(', ', $label['matchedIn']);
             if ($label['unusedSince'] !== null) {
-                $line .= "\n  (unused since " . $label['unusedSince'] . ')';
+                $line .= "\n  RETIRED: marked x-unused-since=\"" . $label['unusedSince']
+                    . '" — do not use it in new code, and do not delete the trans-unit either.';
             }
+
             return $line;
         }, $shown);
 
         $header = sprintf('%d label(s) matched "%s"', $total, $query);
+        if ($relaxed) {
+            $header .= ' on at least one query term (no label matched all of them)';
+        }
         if ($total > count($shown)) {
             $header .= sprintf(' — showing the top %d', count($shown));
         }
 
-        return $header . ":\n" . implode("\n", $lines);
+        return $header . ":\n" . implode("\n", $lines)
+            . "\n\nReference labels by the domain form shown first (package.resource:key). "
+            . 'It works in TCA labels and descriptions, LanguageService::sL(), f:translate (domain= and key=), '
+            . "and registration configs.\n" . self::catalogProvenance();
     }
 
     /** @param array<string, mixed> $args */

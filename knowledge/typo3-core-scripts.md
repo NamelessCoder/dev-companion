@@ -1,9 +1,7 @@
 # TYPO3 Core Script Help
 
-Default local checkout: `/home/benji/projects/typo3-cms`.
-
-Override with `TYPO3_CORE_PATH` if the checkout moves. The MCP tools expose
-these entries so an assistant can suggest commands during core work.
+Commands for working on a TYPO3 core checkout. All paths are relative to the
+checkout root.
 
 ## Invoking runTests.sh
 

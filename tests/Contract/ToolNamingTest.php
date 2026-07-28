@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Typo3CmsMcp\Tests\Contract;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Typo3CmsMcp\Tools;
@@ -61,6 +62,67 @@ final class ToolNamingTest extends TestCase
                 );
             }
         }
+    }
+
+    /**
+     * A rename that misses one prose string leaves an answer that tells an
+     * agent to call a tool this server does not have. The tool call fails, and
+     * it fails in exactly the part of the answer meant to steer the next step.
+     */
+    #[Test]
+    public function everyToolNameWrittenInTheKnowledgeBaseIsRegistered(): void
+    {
+        $known = array_column(Tools::definitions(), 'name');
+
+        $unknown = [];
+        foreach ($this->knowledgeFiles() as $file) {
+            preg_match_all('/typo3_[a-z_]+/', (string) file_get_contents($file), $matches);
+            foreach (array_unique($matches[0]) as $name) {
+                if (!in_array($name, $known, true)) {
+                    $unknown[] = basename($file) . ': ' . $name;
+                }
+            }
+        }
+
+        self::assertSame([], $unknown, 'named in the knowledge base but not registered');
+    }
+
+    /** @param array<string, mixed> $arguments */
+    #[DataProvider('toolCalls')]
+    #[Test]
+    public function everyToolNameAnAnswerNamesIsRegistered(string $tool, array $arguments): void
+    {
+        $known = array_column(Tools::definitions(), 'name');
+        $result = Tools::call($tool, $arguments);
+        $answer = $result->text . ' ' . json_encode($result->data, JSON_THROW_ON_ERROR);
+
+        preg_match_all('/typo3_[a-z_]+/', $answer, $matches);
+        self::assertSame(
+            [],
+            array_values(array_diff(array_unique($matches[0]), $known)),
+            $tool . ' points at a tool that is not registered'
+        );
+    }
+
+    /** @return array<string, array{0: string, 1: array<string, mixed>}> */
+    public static function toolCalls(): array
+    {
+        return ToolContractTest::toolCalls();
+    }
+
+    /** @return array<int, string> */
+    private function knowledgeFiles(): array
+    {
+        $files = [];
+        $directory = new \RecursiveDirectoryIterator(dirname(__DIR__, 2) . '/knowledge');
+        foreach (new \RecursiveIteratorIterator($directory) as $file) {
+            if ($file->isFile()) {
+                $files[] = $file->getPathname();
+            }
+        }
+        sort($files);
+
+        return $files;
     }
 
     /**

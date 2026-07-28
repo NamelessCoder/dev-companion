@@ -48,6 +48,30 @@ final class TranslationDomain
     }
 
     /**
+     * Returns the domain for an XLF file written either as an "EXT:key/..."
+     * reference or as a path inside a core checkout
+     * ("typo3/sysext/backend/Resources/Private/Language/locallang.xlf"), or
+     * null when the path names no extension.
+     *
+     * The derivation is computed, so it also answers for a file the catalog
+     * does not contain — including one a patch is about to add, which is
+     * exactly when the domain cannot be looked up anywhere.
+     */
+    public static function fromPath(string $path): ?string
+    {
+        $path = ltrim(trim($path), './');
+        if (str_starts_with($path, 'EXT:')) {
+            return self::fromReference($path);
+        }
+
+        if (preg_match('#(?:^|/)typo3/sysext/([^/]+)/(.+)$#', $path, $matches) === 1) {
+            return self::fromReference('EXT:' . $matches[1] . '/' . $matches[2]);
+        }
+
+        return null;
+    }
+
+    /**
      * Files that map to the same domain are resolved by precedence: a file
      * without the "locallang" prefix wins over "locallang_*", which wins over a
      * plain "locallang.xlf".

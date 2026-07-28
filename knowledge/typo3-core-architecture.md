@@ -160,6 +160,31 @@ official documentation or nearby core code over broad framework advice.
 - Run `checkIntegrityXliff` and consider `normalizeXliff -n` after editing
   language files.
 
+### How the translation domain of an XLF file is derived
+
+The domain is not registered anywhere: it follows from the file path, by the
+rules in `TYPO3\CMS\Core\Localization\TranslationDomainResolver`. A file added by
+a patch therefore already has its domain, and guessing it wrong only fails at
+runtime. `typo3_label_lookup` with `mode: "derive"` computes it for any path,
+inside the catalog or not.
+
+The form is `package[.subdirectory...].resource`:
+
+- The package part is the extension key: `EXT:backend/...` gives `backend`.
+- `Resources/Private/Language/` is dropped from the path.
+- Remaining subdirectories become dot-separated parts, UpperCamelCase converted
+  to snake_case: `Language/SudoMode/locallang.xlf` gives `sudo_mode.messages`.
+- `locallang.xlf` becomes `messages`.
+- `locallang_<suffix>.xlf` becomes `<suffix>`, underscores kept:
+  `locallang_alt_doc.xlf` gives `alt_doc`.
+- Any other file name becomes its own snake_case form: `SudoMode.xlf` gives
+  `sudo_mode`, `Database.xlf` gives `database`.
+- `Configuration/Sets/<Set>/labels.xlf` becomes `sets.<set>`.
+- A locale prefix is ignored: `de.locallang.xlf` derives the same domain as
+  `locallang.xlf`.
+- When two files map to the same domain, the one without the `locallang` prefix
+  wins.
+
 ## Documentation and Changelog
 
 - User-facing behavior changes may need ReST documentation or changelog entries.

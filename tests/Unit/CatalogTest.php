@@ -11,6 +11,7 @@ use Typo3CmsMcp\Catalog\Icons;
 use Typo3CmsMcp\Catalog\Labels;
 use Typo3CmsMcp\Catalog\Meta;
 use Typo3CmsMcp\Catalog\TranslationDomain;
+use Typo3CmsMcp\Tools;
 
 final class CatalogTest extends TestCase
 {
@@ -144,6 +145,51 @@ final class CatalogTest extends TestCase
             self::assertSame(TranslationDomain::fromReference($domain['ref']), $domain['domain']);
             self::assertGreaterThan(0, $domain['count']);
         }
+    }
+
+    /**
+     * The cases are the ones TranslationDomainMapperTest states in the core, so
+     * this port is held to the same rules as the original.
+     */
+    #[Test]
+    public function theTranslationDomainIsDerivedByTheCoreRules(): void
+    {
+        $expected = [
+            'EXT:test_translation_domain/Resources/Private/Language/locallang.xlf' => 'test_translation_domain.messages',
+            'EXT:test_translation_domain/Resources/Private/Language/locallang_toolbar.xlf' => 'test_translation_domain.toolbar',
+            'EXT:test_translation_domain/Resources/Private/Language/locallang_sudo_mode.xlf' => 'test_translation_domain.sudo_mode',
+            'EXT:test_translation_domain/Resources/Private/Language/Form/locallang_tabs.xlf' => 'test_translation_domain.form.tabs',
+            'EXT:test_translation_domain/Resources/Private/Language/SudoMode/locallang.xlf' => 'test_translation_domain.sudo_mode.messages',
+            'EXT:test_translation_domain/Resources/Private/Language/de.locallang.xlf' => 'test_translation_domain.messages',
+            'EXT:core/Resources/Private/Language/locallang.xlf' => 'core.messages',
+        ];
+
+        foreach ($expected as $reference => $domain) {
+            self::assertSame($domain, TranslationDomain::fromPath($reference), $reference);
+        }
+    }
+
+    #[Test]
+    public function aDomainIsDerivedForAFileTheCatalogDoesNotContain(): void
+    {
+        // The point of deriving rather than looking up: a file outside the
+        // snapshot, and a file a patch is about to add, both get an answer.
+        $result = Tools::call('typo3_label_lookup', [
+            'mode' => 'derive',
+            'query' => 'typo3/sysext/backend/Resources/Private/Language/NotYetWritten.xlf',
+        ])->data;
+
+        self::assertSame('backend.not_yet_written', $result['domain']);
+        self::assertFalse($result['inSnapshot']);
+    }
+
+    #[Test]
+    public function aPathThatNamesNoExtensionDerivesNoDomain(): void
+    {
+        $result = Tools::call('typo3_label_lookup', ['mode' => 'derive', 'query' => 'somewhere/else.xlf'])->data;
+
+        self::assertSame(0, $result['matchCount']);
+        self::assertArrayNotHasKey('domain', $result);
     }
 
     #[Test]

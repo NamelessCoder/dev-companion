@@ -8,6 +8,7 @@ use Typo3CmsMcp\Catalog\Components;
 use Typo3CmsMcp\Catalog\Icons;
 use Typo3CmsMcp\Catalog\Labels;
 use Typo3CmsMcp\Catalog\Meta as CatalogMeta;
+use Typo3CmsMcp\Catalog\TranslationDomain;
 
 /**
  * Defines the knowledge tools and builds their answers.
@@ -165,8 +166,8 @@ final class Tools
                 'inputSchema' => [
                     'type' => 'object',
                     'properties' => [
-                        'query' => ['type' => 'string', 'description' => 'Words from the label key or its English text, for example "save document" or "labels.title".'],
-                        'mode' => ['type' => 'string', 'enum' => ['keys', 'domains'], 'default' => 'keys', 'description' => 'keys: search individual labels. domains: list registered translation domains.'],
+                        'query' => ['type' => 'string', 'description' => 'keys and domains: words from the label key or its English text, for example "save document" or "labels.title". derive: the XLF file path.'],
+                        'mode' => ['type' => 'string', 'enum' => ['keys', 'domains', 'derive'], 'default' => 'keys', 'description' => 'keys: search individual labels. domains: list registered translation domains. derive: compute the translation domain of an XLF path, which also answers for a file outside the snapshot or one a patch is about to add.'],
                         'limit' => ['type' => 'integer', 'minimum' => 1, 'maximum' => 100, 'default' => 25, 'description' => 'Maximum number of results to return.'],
                     ],
                 ],
@@ -1223,12 +1224,80 @@ final class Tools
         ];
     }
 
+    /**
+     * The domain an XLF file resolves to, computed from its path.
+     *
+     * The catalog can only answer for the files it contains, which leaves out
+     * every file outside the snapshot and every file a patch is about to add —
+     * and those are exactly the cases where the domain cannot be looked up
+     * anywhere, so a contributor guesses and finds out at runtime.
+     */
+    private static function deriveLabelDomain(string $path): ToolResult
+    {
+        $path = trim($path);
+        $domain = TranslationDomain::fromPath($path);
+
+        if ($domain === null) {
+            return ToolResult::create(
+                sprintf(
+                    "\"%s\" is not an extension path, so no translation domain follows from it.\n"
+                    . 'Pass either an EXT: reference ("EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf") '
+                    . 'or a checkout path ("typo3/sysext/backend/Resources/Private/Language/locallang_alt_doc.xlf").',
+                    $path
+                ),
+                [
+                    'query' => $path === '' ? null : $path,
+                    'mode' => 'derive',
+                    'matchCount' => 0,
+                    'catalog' => self::catalogRecord(),
+                ],
+            );
+        }
+
+        // Whether the file is in the snapshot decides what a caller may
+        // conclude from the answer: a known domain confirms the derivation, an
+        // unknown one is still authoritative, because it is computed.
+        $known = null;
+        foreach (Labels::domains(null) as $entry) {
+            if ($entry['domain'] === $domain) {
+                $known = $entry;
+                break;
+            }
+        }
+
+        $lines = [
+            sprintf('%s resolves to the translation domain:', $path),
+            '',
+            '  ' . $domain,
+            '',
+            'Reference a label in it as "' . $domain . ':<trans-unit id>" — in TCA, in LanguageService::sL(), '
+                . 'and in f:translate as separate domain and key attributes.',
+        ];
+        $lines[] = $known === null
+            ? 'The file is not in this snapshot, but the domain is computed from the path rather than looked up, '
+                . 'so it also holds for a file that does not exist yet.'
+            : sprintf('The snapshot has this domain with %d label(s); typo3_label_lookup finds them.', $known['count']);
+
+        return ToolResult::create(implode("\n", $lines), [
+            'query' => $path,
+            'mode' => 'derive',
+            'matchCount' => 1,
+            'domain' => $domain,
+            'inSnapshot' => $known !== null,
+            'catalog' => self::catalogRecord(),
+        ]);
+    }
+
     /** @param array<string, mixed> $args */
     private static function labelLookup(array $args): ToolResult
     {
         $query = isset($args['query']) ? (string) $args['query'] : null;
         $mode = (string) ($args['mode'] ?? 'keys');
         $limit = (int) ($args['limit'] ?? 25);
+
+        if ($mode === 'derive') {
+            return self::deriveLabelDomain((string) $query);
+        }
 
         if ($mode === 'domains') {
             $domains = Labels::domains($query);

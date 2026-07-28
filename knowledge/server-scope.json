@@ -52,7 +52,7 @@
     },
     {
       "topic": "Registered labels (XLF trans-units) and translation domains",
-      "depth": "Curated subset: the English trans-units of about half the default XLF files in the core.",
+      "depth": "Curated subset: the English trans-units of about half the default XLF files in the core. The translation domain of any XLF path is computed rather than looked up, so mode \"derive\" also answers for a file outside the subset or one a patch is about to add.",
       "tools": ["typo3_label_lookup"],
       "source": "knowledge/catalog/labels.json"
     },
@@ -125,6 +125,10 @@
     {
       "when": "About to write user-facing text or invent a label key",
       "call": "typo3_label_lookup"
+    },
+    {
+      "when": "Adding an XLF file and needing the translation domain it will resolve to",
+      "call": "typo3_label_lookup with mode \"derive\" and the path"
     },
     {
       "when": "About to reference an icon identifier",

@@ -2,10 +2,12 @@
   {
     "id": "language-files",
     "title": "Language Files",
-    "appliesTo": [".xlf", ".xliff", "Resources/Private/Language/"],
+    "appliesTo": [".xlf", ".xliff", "Resources/Private/Language/", "translation domain", "trans-unit"],
     "hints": [
       "Use clear, stable label identifiers and concise wording.",
       "Reuse existing labels where the meaning is identical.",
+      "Reference a label by its translation domain (package.resource:key), not by the EXT: file path. The domain follows from the path and is registered nowhere: Resources/Private/Language/ is dropped, remaining directories become dot-separated snake_case parts, locallang.xlf becomes \"messages\", locallang_<suffix>.xlf becomes \"<suffix>\", any other file name becomes its own snake_case form, and Configuration/Sets/<Set>/labels.xlf becomes \"sets.<set>\".",
+      "Because the domain is derived rather than declared, a file a patch is about to add already has one. Call typo3_label_lookup with mode \"derive\" and the path instead of guessing; a wrong guess only fails at runtime.",
       "Check whether language file normalization is needed."
     ],
     "checks": ["CI=true ./Build/Scripts/runTests.sh -s checkIntegrityXliff", "CI=true ./Build/Scripts/runTests.sh -s normalizeXliff -n"]

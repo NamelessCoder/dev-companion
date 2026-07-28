@@ -207,8 +207,10 @@ final class ToolSchemas
     {
         return self::object([
             'query' => self::nullableString(),
-            'mode' => self::string('keys or domains.'),
+            'mode' => self::string('keys, domains, or derive.'),
             'matchCount' => self::integer(),
+            'domain' => self::string('derive: the translation domain the given XLF path resolves to.'),
+            'inSnapshot' => ['type' => 'boolean', 'description' => 'derive: whether that domain is one the catalog contains. The derivation holds either way.'],
             'relaxed' => ['type' => 'boolean', 'description' => 'True when no label matched every query term and any-term matching was used.'],
             'labels' => self::listOf(self::object([
                 'ref' => self::string('Translation domain reference (package.resource:key) — the canonical form.'),

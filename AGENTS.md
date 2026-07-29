@@ -87,6 +87,33 @@ has not been addressed yet.
 - Do not delete a note that was only partially addressed. Instead, trim the note
   down to the part that is still open and explain the remaining gap.
 
+## What describes this server to someone else
+
+Four things describe this server outward, and a change that leaves any of them
+wrong is not finished — it is a change plus a false statement. They ship with
+the code, so a stale one is not a documentation debt, it is a lie the server
+tells its callers.
+
+- `readme.md` — what the server is and what it will not do. Its opening
+  paragraphs are a promise; when a capability changes what the server may touch,
+  that promise is the first thing that becomes false.
+- `knowledge/server-scope.json` — `covers`, `doesNotCover`, `routing`, and the
+  `instructions` clients receive at initialize time. A new tool belongs in
+  `covers` and in `routing`; a boundary that moved belongs in `doesNotCover`.
+- `AGENTS.md` — the layout list and the rules here, including this one.
+- Every tool `description` and `outputSchema` in `src/`, which is the only
+  documentation a client actually reads.
+
+Some of it is already guarded: `ScopeTest` holds the scope and the tool list to
+each other in both directions, and `ToolNamingTest` holds every tool name
+written in `knowledge/` or in a rendered answer to the registry. Those catch a
+name going stale, not a sentence going false. Prose is on you.
+
+Before committing, reread the paragraphs your change touches rather than
+searching for a keyword. The sentence that goes wrong is usually the general one
+written before the exception existed, and it will not contain the word you would
+grep for.
+
 ## Commits
 
 - Work directly on `main`; no feature branches.

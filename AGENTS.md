@@ -25,6 +25,31 @@ vendor/            # Composer dependencies (mcp/sdk); gitignored
 schemas, and response formatting live in `src/`; everything they answer comes
 from `knowledge/`.
 
+## Less is more
+
+Every task is also an occasion to leave the code smaller than it was. A change
+is finished when what it added is there **and** what it made unnecessary is
+gone; carrying both shapes at once is the expensive half of every feature.
+
+- Before writing an abstraction, look for the one the change makes redundant.
+  Two answers of the same shape share a formatter, and a branch nobody takes is
+  deleted rather than kept for symmetry.
+- Prefer the change that removes a concept to the change that adds one. A
+  parameter that is always passed the same value is not a parameter, and a
+  helper with one caller is that caller.
+- Code written to be general is speculation until the second caller exists. The
+  second caller is also what shows what the two actually have in common — guess
+  before it arrives and the abstraction is built around the wrong thing.
+- Deleting needs no feature to justify it. A simplification that stands on its
+  own is its own commit, and a review of code nobody has touched in a while is
+  a legitimate task.
+- Shorter is not the same as denser. Fewer concepts, fewer branches, fewer
+  moving parts — not fewer lines wrung out of the same logic.
+
+This holds for prose as well. `knowledge/`, `readme.md`, and the tool
+descriptions are read by someone paying per token for every sentence that says
+nothing.
+
 ## Tool names
 
 Every tool is named `typo3_<subject>_<verb>`. The prefix never varies, the

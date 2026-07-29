@@ -13,6 +13,8 @@ src/Typo3Cli.php   # runs that installation's console, via DDEV where there is o
 src/bootstrap.php  # locates the Composer autoloader
 knowledge/         # the knowledge base (markdown + JSON), the data source
 feedback/          # improvement notes left by agents (standalone checkout only)
+requirements.md    # what must hold, and what holds it there; open ones are the backlog
+decisions.md       # what a change assumed, and what would show it to be wrong
 tests/             # unit, tool contract, and stdio smoke tests
 vendor/            # Composer dependencies (mcp/sdk); gitignored
 ```
@@ -86,6 +88,24 @@ has not been addressed yet.
 - Never mark a note as done by editing its `status:` front matter; delete it.
 - Do not delete a note that was only partially addressed. Instead, trim the note
   down to the part that is still open and explain the remaining gap.
+
+Deleting the note removes the question, and the commit message records the
+answer. Two things outlive both, and each has a file:
+
+- `requirements.md` — what must be true from now on. A note is a question; the
+  requirement it established has to keep holding while everything around it
+  changes, so it is written down with what holds it to that: a test, or
+  `not guarded`. A requirement that has been accepted but not yet implemented is
+  in the same list, marked **open** — that is the backlog. Add the entry in the
+  commit that works the note off, and name the test in the same commit that
+  writes it. An entry is deleted only when the requirement is withdrawn.
+- `decisions.md` — what the change rests on. When it rests on an assumption that
+  could later turn out wrong, record what was assumed, what evidence there was
+  at the time, and what would show it to be wrong. Not every commit earns one; a
+  change nobody would need to reconsider does not. When an assumption is later
+  disproved, correct the entry in place rather than deleting it — the wrong
+  assumption is the useful part, because it names where the next one is likely
+  to sit.
 
 ## What describes this server to someone else
 

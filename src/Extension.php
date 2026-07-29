@@ -47,6 +47,7 @@ final class Extension
      *     requires: array<int, array{package: string, constraint: string}>,
      *     tcaTables: array<int, string>,
      *     tcaOverrides: array<int, string>,
+     *     contentElements: array<int, string>,
      *     backendModules: array<int, string>,
      *     backendRoutes: array<int, string>,
      *     icons: array<int, string>,
@@ -73,6 +74,8 @@ final class Extension
             $requires[] = ['package' => (string) $package, 'constraint' => (string) $constraint];
         }
 
+        $overrides = self::overrides($path);
+
         return [
             'key' => $key,
             'path' => $path,
@@ -83,9 +86,10 @@ final class Extension
             // A file below Configuration/TCA/ is named after the table it
             // defines. A file below Overrides/ is not: extensions number them
             // to fix their load order, so which table it extends is read from
-            // what the file does — see overriddenTables().
+            // what the file does — see overrides().
             'tcaTables' => self::baseNames($path . '/Configuration/TCA/*.php'),
-            'tcaOverrides' => self::overriddenTables($path),
+            'tcaOverrides' => $overrides['tables'],
+            'contentElements' => $overrides['contentElements'],
             'backendModules' => PhpArray::keys($path . '/Configuration/Backend/Modules.php'),
             'backendRoutes' => array_merge(
                 PhpArray::keys($path . '/Configuration/Backend/Routes.php'),
@@ -135,7 +139,8 @@ final class Extension
     ];
 
     /**
-     * The tables the override files extend, read from what they do.
+     * What the override files do: the tables they extend, and the content
+     * elements they add.
      *
      * The file name is no answer here — `102_tt_content.php` and
      * `600_ext_container.php` are both ordinary — because the number is what
@@ -143,34 +148,41 @@ final class Extension
      * $GLOBALS['TCA']['<table>'] or the first argument of one of the
      * ExtensionManagementUtility calls above, and both survive tokenising.
      *
-     * @return array<int, string>
+     * @return array{tables: array<int, string>, contentElements: array<int, string>}
      */
-    private static function overriddenTables(string $path): array
+    private static function overrides(string $path): array
     {
         $tables = [];
+        $elements = [];
         foreach (glob($path . '/Configuration/TCA/Overrides/*.php') ?: [] as $file) {
-            $found = self::tablesIn((string) file_get_contents($file));
-            if ($found === []) {
+            $found = self::declarationsIn((string) file_get_contents($file));
+            if ($found['tables'] === []) {
                 // Nothing recognisable: the conventional file name is the best
                 // that is left, and only where it looks like a table at all.
                 $name = substr(basename($file), 0, -strlen('.php'));
-                $found = preg_match('/^[a-z][a-z0-9_]*$/', $name) === 1 ? [$name] : [];
+                $found['tables'] = preg_match('/^[a-z][a-z0-9_]*$/', $name) === 1 ? [$name] : [];
             }
-            foreach ($found as $table) {
+            foreach ($found['tables'] as $table) {
                 $tables[$table] = true;
+            }
+            foreach ($found['contentElements'] as $element) {
+                $elements[$element] = true;
             }
         }
 
         $names = array_keys($tables);
         sort($names);
+        $identifiers = array_keys($elements);
+        sort($identifiers);
 
-        return $names;
+        return ['tables' => $names, 'contentElements' => $identifiers];
     }
 
-    /** @return array<int, string> */
-    private static function tablesIn(string $code): array
+    /** @return array{tables: array<int, string>, contentElements: array<int, string>} */
+    private static function declarationsIn(string $code): array
     {
         $tables = [];
+        $elements = [];
         $tokens = @token_get_all($code);
         $count = count($tokens);
         for ($index = 0; $index < $count; ++$index) {
@@ -187,23 +199,154 @@ final class Extension
                 continue;
             }
 
-            if ($token[0] === T_STRING && in_array($token[1], self::TABLE_FIRST_METHODS, true)) {
-                $first = self::followingStrings($tokens, $index, 1);
-                if (isset($first[0])) {
-                    $tables[] = $first[0];
+            if ($token[0] !== T_STRING || !in_array($token[1], self::TABLE_FIRST_METHODS, true)) {
+                continue;
+            }
+
+            $arguments = self::arguments($tokens, $index);
+            $table = self::firstLiteral($arguments[0] ?? []);
+            if ($table === null) {
+                continue;
+            }
+            $tables[] = $table;
+
+            // A content element is an item of tt_content's CType. Every other
+            // select item this call adds is a value in some other field, and
+            // handing those over as content elements would be worse than the
+            // pointer at tt_content the answer already carried.
+            if (
+                $token[1] === 'addTcaSelectItem'
+                && $table === 'tt_content'
+                && self::firstLiteral($arguments[1] ?? []) === 'CType'
+            ) {
+                $identifier = self::selectItemValue($arguments[2] ?? []);
+                if ($identifier !== null) {
+                    $elements[] = $identifier;
                 }
             }
         }
 
-        return array_values(array_filter(
-            array_unique($tables),
-            static fn(string $table): bool => preg_match('/^[a-z][a-z0-9_]*$/', $table) === 1,
-        ));
+        return [
+            'tables' => array_values(array_filter(
+                array_unique($tables),
+                static fn(string $table): bool => preg_match('/^[a-z][a-z0-9_]*$/', $table) === 1,
+            )),
+            'contentElements' => array_values(array_unique($elements)),
+        ];
+    }
+
+    /**
+     * The identifier the item array of an addTcaSelectItem() call carries.
+     *
+     * Its shape changed inside the covered range: keyed by `value`, and
+     * positional before that, where the value is the second entry after the
+     * label. Both are read, because an extension is written for the line it
+     * supports rather than for the newest one. An item whose value comes from
+     * a constant or a variable has no identifier that a file can be read for.
+     *
+     * @param array<int, array{0: int, 1: string, 2: int}|string> $item
+     */
+    private static function selectItemValue(array $item): ?string
+    {
+        $literals = [];
+        $isKey = [];
+        foreach ($item as $position => $token) {
+            if (!is_array($token) || $token[0] !== T_CONSTANT_ENCAPSED_STRING) {
+                continue;
+            }
+            $isKey[] = self::followedByArrow($item, $position);
+            $literals[] = trim($token[1], "'\"");
+        }
+
+        $keyed = false;
+        foreach ($literals as $position => $literal) {
+            if ($isKey[$position] !== true) {
+                continue;
+            }
+            $keyed = true;
+            if ($literal === 'value' && ($isKey[$position + 1] ?? true) === false) {
+                return $literals[$position + 1];
+            }
+        }
+
+        // Positional: the label comes first and the value second.
+        return $keyed ? null : ($literals[1] ?? null);
+    }
+
+    /** @param array<int, array{0: int, 1: string, 2: int}|string> $tokens */
+    private static function followedByArrow(array $tokens, int $position): bool
+    {
+        for ($next = $position + 1; isset($tokens[$next]); ++$next) {
+            $token = $tokens[$next];
+            if (is_array($token) && $token[0] === T_WHITESPACE) {
+                continue;
+            }
+
+            return is_array($token) && $token[0] === T_DOUBLE_ARROW;
+        }
+
+        return false;
+    }
+
+    /**
+     * The arguments of the call whose name is at $index, one token slice each.
+     *
+     * @param array<int, array{0: int, 1: string, 2: int}|string> $tokens
+     * @return array<int, array<int, array{0: int, 1: string, 2: int}|string>>
+     */
+    private static function arguments(array $tokens, int $index): array
+    {
+        $count = count($tokens);
+        for ($next = $index + 1; $next < $count && $tokens[$next] !== '('; ++$next) {
+            // Whitespace and comments may stand between the two; anything else
+            // means this name was not a call.
+            if (!is_array($tokens[$next])) {
+                return [];
+            }
+        }
+
+        $arguments = [];
+        $current = [];
+        $depth = 0;
+        for (; $next < $count; ++$next) {
+            $token = $tokens[$next];
+            if ($token === '(' || $token === '[') {
+                if (++$depth === 1) {
+                    continue;
+                }
+            } elseif ($token === ')' || $token === ']') {
+                if (--$depth === 0) {
+                    $arguments[] = $current;
+                    break;
+                }
+            } elseif ($token === ',' && $depth === 1) {
+                $arguments[] = $current;
+                $current = [];
+                continue;
+            }
+            $current[] = $token;
+        }
+
+        return $arguments;
+    }
+
+    /**
+     * @param array<int, array{0: int, 1: string, 2: int}|string> $tokens
+     */
+    private static function firstLiteral(array $tokens): ?string
+    {
+        foreach ($tokens as $token) {
+            if (is_array($token) && $token[0] === T_CONSTANT_ENCAPSED_STRING) {
+                return trim($token[1], "'\"");
+            }
+        }
+
+        return null;
     }
 
     /**
      * The next $wanted string literals after $index, in order, stopping at the
-     * end of the call or subscript they belong to.
+     * end of the subscript they belong to.
      *
      * @param array<int, array{0: int, 1: string, 2: int}|string> $tokens
      * @return array<int, string>

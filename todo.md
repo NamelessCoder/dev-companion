@@ -41,19 +41,7 @@ else here was written by someone who already knew what they meant.
 
 ---
 
-## 1. Name the content elements an extension adds
-
-**Serves:** `feedback/2026-07-29-094054`, R-PRJ-5 · **Next step:** in
-`Extension::tablesIn()`'s token scan, keep the third argument of
-`ExtensionManagementUtility::addTcaSelectItem()` as well — the item array, whose
-shape is positional on the older line and keyed by `value` after it — and
-return the identifiers as `contentElements`, saying in the answer how they were
-derived and that a call built at runtime is not in them.
-
-Today the answer says the extension extends `tt_content`, which is a pointer to
-where they are registered rather than the list.
-
-## 2. Let a target version decide in the catalogs, not only inform
+## 1. Let a target version decide in the catalogs, not only inform
 
 **Serves:** `feedback/2026-07-29-094245`, R-AUD-4 · **Next step:** record per
 catalog entry what it was verified against — the same `since`/`until` the hints
@@ -65,3 +53,15 @@ catalogs answer from one pinned revision and say so in a skew sentence, which
 names the difference without acting on it: markup taken from one revision either
 holds on the stated version or it does not, and the honest answer for "does not"
 is to decline it and name what to verify against.
+
+## 2. Say which template a content element renders through
+
+**Serves:** R-PRJ-5 · **Next step:** for each identifier in
+`Extension::describe()`'s `contentElements`, look for `tt_content.<identifier>`
+in the extension's own TypoScript and in its site sets, and report the
+`templateName` found beside it — leaving the identifier without one where the
+TypoScript does not say, rather than deriving a name from the identifier.
+
+The note that asked for the identifiers asked for this beside them. The
+identifiers are the answer to "which content elements are there"; this is the
+answer to "and where do I change one", which is the next thing asked every time.

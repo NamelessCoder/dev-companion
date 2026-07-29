@@ -187,6 +187,54 @@ final class ProjectTest extends TestCase
     }
 
     #[Test]
+    public function theContentElementsAnExtensionAddsAreNamedRatherThanPointedAt(): void
+    {
+        // "It extends tt_content" says where they are registered. What a
+        // sitepackage question is about is which ones — and both item shapes
+        // are in use, because an extension is written for the line it supports.
+        $root = $this->composerProject();
+        $extension = $root . '/packages/my_sitepackage';
+        $this->declare(
+            $extension . '/Configuration/TCA/Overrides/102_tt_content.php',
+            <<<'PHP'
+                <?php
+                ExtensionManagementUtility::addTcaSelectItem('tt_content', 'CType', [
+                    'label' => 'LLL:EXT:my_sitepackage/Resources/Private/Language/locallang.xlf:teaser',
+                    'value' => 'acme_teaser',
+                    'icon' => 'acme-teaser',
+                ], 'header', 'after');
+                ExtensionManagementUtility::addTcaSelectItem('tt_content', 'CType', [
+                    'LLL:EXT:my_sitepackage/Resources/Private/Language/locallang.xlf:slider',
+                    'acme_slider',
+                    'acme-slider',
+                ]);
+                ExtensionManagementUtility::addTcaSelectItem('tt_content', 'CType', [
+                    'label' => 'Built somewhere else',
+                    'value' => self::CTYPE,
+                ]);
+                ExtensionManagementUtility::addTcaSelectItem('tt_content', 'header_layout', [
+                    'label' => 'Quiet',
+                    'value' => 'acme_quiet',
+                ]);
+                PHP
+        );
+        Instance::discoverFrom($root);
+
+        $result = Tools::call('typo3_extension_scope', ['extension' => 'my_sitepackage']);
+
+        self::assertSame(
+            ['acme_slider', 'acme_teaser'],
+            $result->data['contentElements'],
+            'both item shapes are read, and a value that is no literal is left out rather than guessed',
+        );
+        self::assertSame(['tt_content'], $result->data['tcaOverrides']);
+        // An item of another field is a value in that field, not a content element.
+        self::assertNotContains('acme_quiet', $result->data['contentElements']);
+        self::assertStringContainsString('acme_teaser', $result->text);
+        self::assertStringContainsString('at runtime, or takes from a constant', $result->text);
+    }
+
+    #[Test]
     public function anExtensionTheInstallationDoesNotHaveIsAMissWithTheKeysItDoes(): void
     {
         $root = $this->composerProject();

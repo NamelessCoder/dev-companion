@@ -103,7 +103,7 @@
     },
     {
       "topic": "The project around the installation: its extensions, its sites and their sets, its own commands, and what one of those extensions registers",
-      "depth": "Read from the repository's files — composer.json, package.json, config/sites — so it answers on a fresh clone, before anything is installed or migrated. It describes what is there, and does not judge it. Per extension: the tables its TCA defines and extends, its backend modules and routes, its icons, its site sets, its service tags, its middlewares, its Fluid roots and namespaces, and the shape of its Classes/ directory — declared in files, so what ext_localconf.php does with a PHP call is not in it.",
+      "depth": "Read from the repository's files — composer.json, package.json, config/sites — so it answers on a fresh clone, before anything is installed or migrated. It describes what is there, and does not judge it. Per extension: the tables its TCA defines and extends, the content elements it adds to tt_content, its backend modules and routes, its icons, its site sets, its service tags, its middlewares, its Fluid roots and namespaces, and the shape of its Classes/ directory — declared in files, so what ext_localconf.php does with a PHP call is not in it.",
       "tools": [
         "typo3_project_scope",
         "typo3_extension_scope"

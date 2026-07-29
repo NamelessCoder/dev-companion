@@ -217,16 +217,20 @@ them, this section wins and the other one is what needs rewriting.
   `PackageSourcesTest::theChangelogIsNarrowedByTypeAndVersion`,
   `PackageSourcesTest::anInstallationWithoutAChangelogSaysSoRatherThanAnsweringEmpty`
 - **R-PRJ-5** What an extension registers is answered from its own files: the
-  tables its TCA defines and the ones it extends, its backend modules and
-  routes, its icons, its site sets, its service tags, its middlewares, its Fluid
-  roots and namespaces. The table an override file extends is read from what the
-  file does, never from its name — extensions number those files to fix their
-  load order. What is declared is answered; what an extension does at runtime is
-  named as not covered rather than guessed. The project's Composer patches are
-  part of what the project is.
+  tables its TCA defines and the ones it extends, the content elements it adds,
+  its backend modules and routes, its icons, its site sets, its service tags,
+  its middlewares, its Fluid roots and namespaces. The table an override file
+  extends is read from what the file does, never from its name — extensions
+  number those files to fix their load order — and the content elements are the
+  identifiers of the items it adds to `tt_content.CType`, in both the positional
+  and the keyed item shape, rather than the pointer at `tt_content` that says
+  where they are registered. What is declared is answered; what an extension
+  does at runtime is named as not covered rather than guessed. The project's
+  Composer patches are part of what the project is.
   *From:* an evaluation for a site with a sitepackage and its own extension,
   where the scope named the extension and nothing inside it (2026-07-29).
   *Held by:* `ProjectTest::whatAnExtensionRegistersIsReadFromItsOwnFiles`,
+  `ProjectTest::theContentElementsAnExtensionAddsAreNamedRatherThanPointedAt`,
   `ProjectTest::anExtensionTheInstallationDoesNotHaveIsAMissWithTheKeysItDoes`,
   `ProjectTest::aPatchedDependencyIsPartOfWhatThisProjectIs`
 - **R-PRJ-4** Upgrading an installation is answered as an order of operations,

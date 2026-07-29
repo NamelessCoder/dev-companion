@@ -244,7 +244,7 @@ final class Tools
             ],
             [
                 'name' => 'typo3_extension_scope',
-                'description' => 'Describe what one installed extension registers: the tables its TCA defines and the ones it extends, its backend modules and routes, its icons, its site sets, the service tags it hangs into the container, its middlewares, its Fluid roots and namespaces, and the shape of its Classes/ directory. Read from that extension\'s own files — declaration files are parsed, never executed — so it answers on a fresh clone and for a third-party extension as well as for the project\'s own. typo3_project_scope names the extensions this can be called for.',
+                'description' => 'Describe what one installed extension registers: the tables its TCA defines and the ones it extends, the content elements it adds to tt_content, its backend modules and routes, its icons, its site sets, the service tags it hangs into the container, its middlewares, its Fluid roots and namespaces, and the shape of its Classes/ directory. Read from that extension\'s own files — declaration files are parsed, never executed — so it answers on a fresh clone and for a third-party extension as well as for the project\'s own. typo3_project_scope names the extensions this can be called for.',
                 'inputSchema' => [
                     'type' => 'object',
                     'properties' => [
@@ -1829,6 +1829,13 @@ final class Tools
             }
         }
 
+        if ($extension['contentElements'] !== []) {
+            $lines[] = '';
+            $lines[] = 'Content elements it adds: ' . implode(', ', $extension['contentElements']);
+            $lines[] = 'Read from the addTcaSelectItem() calls below Configuration/TCA/Overrides/, so an '
+                . 'identifier a call puts together at runtime, or takes from a constant, is not among them.';
+        }
+
         if ($extension['siteSets'] !== []) {
             $lines[] = '';
             $lines[] = 'Site sets:';
@@ -1900,6 +1907,7 @@ final class Tools
         'requires' => [],
         'tcaTables' => [],
         'tcaOverrides' => [],
+        'contentElements' => [],
         'backendModules' => [],
         'backendRoutes' => [],
         'icons' => [],

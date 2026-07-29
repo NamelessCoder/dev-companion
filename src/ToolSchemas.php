@@ -469,7 +469,8 @@ final class ToolSchemas
                 'constraint' => self::string(),
             ], ['package', 'constraint']), 'What it requires, which is where a version conflict during an upgrade comes from.'),
             'tcaTables' => self::listOf(self::string(), 'Tables its Configuration/TCA/ defines, by file name.'),
-            'tcaOverrides' => self::listOf(self::string(), 'Tables it extends below Configuration/TCA/Overrides/. tt_content here means it adds or changes content elements.'),
+            'tcaOverrides' => self::listOf(self::string(), 'Tables it extends below Configuration/TCA/Overrides/.'),
+            'contentElements' => self::listOf(self::string(), 'CType identifiers it adds to tt_content, read from the addTcaSelectItem() calls in those override files. An identifier assembled at runtime or taken from a constant is not among them.'),
             'backendModules' => self::listOf(self::string(), 'Module identifiers from Configuration/Backend/Modules.php.'),
             'backendRoutes' => self::listOf(self::string(), 'Route names from Configuration/Backend/Routes.php and AjaxRoutes.php.'),
             'icons' => self::listOf(self::string(), 'Identifiers from Configuration/Icons.php. typo3_icon_lookup searches every package at once.'),
@@ -490,7 +491,7 @@ final class ToolSchemas
             'installed' => self::listOf(self::string(), 'On a miss: the extension keys this installation does have.'),
             'answeredBy' => self::answeredBy(),
             'unavailable' => self::unavailable(),
-        ], ['key', 'path', 'origin', 'tcaTables', 'tcaOverrides', 'backendModules', 'icons', 'siteSets', 'serviceTags', 'files', 'answeredBy']);
+        ], ['key', 'path', 'origin', 'tcaTables', 'tcaOverrides', 'contentElements', 'backendModules', 'icons', 'siteSets', 'serviceTags', 'files', 'answeredBy']);
     }
 
     /** @return array<string, mixed> */

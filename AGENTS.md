@@ -17,6 +17,7 @@ feedback/          # improvement notes left by agents (standalone checkout only)
 scenarios/         # test scenarios: user prompts per audience and task, and what has to come out of them
 requirements.md    # what must hold, and what holds it there; open ones are the backlog
 decisions.md       # what a change assumed, and what would show it to be wrong
+todo.md            # the order of the work and where the last session stopped
 tests/             # unit, tool contract, and stdio smoke tests
 vendor/            # Composer dependencies (mcp/sdk); gitignored
 ```
@@ -126,7 +127,8 @@ has not been addressed yet.
   down to the part that is still open and explain the remaining gap.
 
 Deleting the note removes the question, and the commit message records the
-answer. Two things outlive both, and each has a file:
+answer. Three files sit around that, and each holds a different kind of thing —
+keeping them apart is what keeps any of them readable:
 
 - `requirements.md` — what must be true from now on. A note is a question; the
   requirement it established has to keep holding while everything around it
@@ -142,6 +144,12 @@ answer. Two things outlive both, and each has a file:
   disproved, correct the entry in place rather than deleting it — the wrong
   assumption is the useful part, because it names where the next one is likely
   to sit.
+- `todo.md` — the order of the work, and where the last session stopped. The
+  other files say what must be true, what was asked and what was assumed; none
+  of them says what to do next. A session can end anywhere, and the next one
+  starts by reading this. An item names what it serves and what the next
+  concrete step is, and is deleted when done rather than ticked — what it
+  established is in `requirements.md` by then.
 
 ## What describes this server to someone else
 

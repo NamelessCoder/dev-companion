@@ -85,25 +85,36 @@ somebody else writes.
 
 ---
 
-## Go through what is marked `binding: "core"` and say what the project side is
+## Write the two twins the marking pass found
 
 Serves the one note left open,
 `feedback/2026-07-29-180528-project-work-needs-a-second-axis-the-repository.md`.
-The count that item used to ask for has been made: differing answers already
-existed in four shapes, and what was missing was the force of a statement, which
-is now `binding: "core"` on 22 hints and 4 single statements.
+The pass this item used to ask for is done and its outcome is in the note:
+nineteen of the twenty-two marked hints, all four marked statements and the
+marked intent need no twin, and two subjects do. Both are reachable from an
+extension today and hand back the core's obligation with nothing in its place.
 
-Marking says "this is not yours to follow". It does not say what is, and that is
-what a twin hint is for. The next concrete step is one pass over the marked
-entries — `grep -l '"binding": "core"' knowledge/architecture-hints/*.json`, then
-the four statement-level ones — and per subject one of two answers, written into
-the note: marking is enough (the backend CSS rules are wanted unchanged by a
-project that builds a backend module, and a twin would say the same thing
-twice), or the project side is a real answer that is missing.
-`documentation-changelog` is the clearest candidate for the second: a project
-writes release notes too, and the hint says nothing about that. Where the answer
-is the second, the twin is written the way `project-extension-tests` was — same
-subject, its own hint, and each pointing at the other.
+The first is an extension's own documentation, twin of `documentation-changelog`.
+The second is an extension's own asset build, twin of both
+`css-source-build-boundaries` and `backend-typescript` at once, because those two
+say the same thing about `.scss` and `.ts` and neither holds outside the core.
+
+Both are written the way `project-extension-tests` was — same subject, its own
+hint, and each pointing at the other. Two things the pass established and the
+writing has to keep: the asset twin goes in `general.json`, not in `css.json` or
+`typescript.json`, because those two sections are withheld when the task names
+the frontend and a sitepackage's asset build is exactly that case; and it points
+at `public-assets` and `extension-files` rather than repeating what they already
+say, so what is left to write is the boundary itself. The documentation twin also
+takes the project side of two marked statements that have no twin of their own —
+a changed ViewHelper argument list and a retired label are public API for whoever
+installed the extension, so the obligation there is a version bump and a release
+note.
+
+The next concrete step is the documentation twin, because it is the one with
+nothing at all in its place: `guides.xml`, `Documentation/Index` and semantic
+versioning appear nowhere in `knowledge/`. Bind what needs binding against
+`.checkouts/`, and close the note in the commit that writes the second one.
 
 What comes after it is the section below, and after that the work is whatever
 the notes a session finds ask for — or, where there are none, a scenario from

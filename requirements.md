@@ -84,6 +84,14 @@ them, this section wins and the other one is what needs rewriting.
   `InstanceTest::aNamedInstallationThatDoesNotExistIsReportedRatherThanSearchedPast`,
   `Typo3CliTest::aStatedCommandIsUsedInsteadOfWorkingOneOut`,
   `Typo3CliTest::aStatedCommandThatIsNoProgramIsReportedRatherThanReplaced`
+- **R-DIS-9** Nothing that says "there is no installation" is remembered. A
+  successful resolution is memoized for the process; a failure is retried on
+  every call, because the caller who reads that answer is the one likely to
+  install, migrate or start something and ask again in the same session.
+  *From:* a session lost to a cached negative — the agent ran `composer
+  install`, started DDEV, verified `bin/typo3` answered, and every tool kept
+  reporting no installation until the client was restarted (2026-07-29).
+  *Held by:* `InstanceTest::anInstallationThatAppearsDuringTheSessionIsFound`
 - **R-DIS-8** When discovery fails, the answer names where it looked, in text and
   in data, so a layout that cannot be read is distinguishable from a server
   started in the wrong directory.

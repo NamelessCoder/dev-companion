@@ -37,7 +37,10 @@ final class InstalledIcons
 
         $packages = Instance::packages();
         if ($packages === []) {
-            return self::$icons = [];
+            // Not remembered: there being nothing to read is a state of the
+            // machine, and the caller who reads that answer is the one likely
+            // to change it before asking again.
+            return [];
         }
 
         $icons = [];

@@ -145,6 +145,24 @@ final class InstanceTest extends TestCase
     }
 
     #[Test]
+    public function anInstallationThatAppearsDuringTheSessionIsFound(): void
+    {
+        // The stdio process lives as long as the agent session, and an agent
+        // that is told there is nothing to read runs composer install or starts
+        // the containers — because of that answer. Remembering the "nothing"
+        // outlives its reason, and the caller would have to restart the client
+        // to be given an answer that has been true for ten minutes.
+        $root = $this->temporaryDirectory();
+        Instance::discoverFrom($root);
+        self::assertFalse(Instance::isAvailable());
+
+        $this->installPackagesInto($root);
+
+        self::assertTrue(Instance::isAvailable());
+        self::assertSame(['core'], array_keys(Instance::packages()));
+    }
+
+    #[Test]
     public function aDirectoryOutsideAnyInstallationFindsNothing(): void
     {
         Instance::discoverFrom(sys_get_temp_dir());
@@ -212,6 +230,18 @@ final class InstanceTest extends TestCase
         ]], JSON_THROW_ON_ERROR));
 
         return $root;
+    }
+
+    private function installPackagesInto(string $root): void
+    {
+        mkdir($root . '/vendor/typo3/cms-core', 0o777, true);
+        mkdir($root . '/vendor/composer', 0o777, true);
+        file_put_contents($root . '/vendor/composer/installed.json', json_encode(['packages' => [[
+            'name' => 'typo3/cms-core',
+            'type' => 'typo3-cms-framework',
+            'install-path' => '../typo3/cms-core',
+            'extra' => ['typo3/cms' => ['extension-key' => 'core']],
+        ]]], JSON_THROW_ON_ERROR));
     }
 
     private function temporaryDirectory(): string

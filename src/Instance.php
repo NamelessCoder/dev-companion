@@ -83,7 +83,14 @@ final class Instance
      */
     public static function describe(): ?array
     {
-        if (self::$resolved !== false) {
+        // Only a success is remembered. A failure is retried on the next call,
+        // because an installation appearing during a session is the ordinary
+        // case, not the exotic one: the agent runs composer install, or starts
+        // the containers, and does it precisely because the answer said there
+        // was nothing to read. Remembering "nothing" outlives the reason for
+        // it, and the caller has no way to tell — the session would have to be
+        // restarted to get an answer that is already true.
+        if (is_array(self::$resolved)) {
             return self::$resolved;
         }
 
@@ -97,11 +104,11 @@ final class Instance
             return self::$resolved = $configured;
         }
 
-        self::$resolved = self::$startingDirectory === null
+        $located = self::$startingDirectory === null
             ? null
             : self::locate(self::$startingDirectory);
 
-        return self::$resolved;
+        return $located === null ? null : self::$resolved = $located;
     }
 
     /**

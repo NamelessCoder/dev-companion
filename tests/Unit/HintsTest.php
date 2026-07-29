@@ -286,6 +286,26 @@ final class HintsTest extends TestCase
     }
 
     #[Test]
+    public function shippedContentIsAnsweredPastThePointWhereTheFileExists(): void
+    {
+        // The mechanism was covered and the lifecycle was not: the file was
+        // regenerated three times and never imported, because the installation
+        // it came from had already run it and nothing said where else it could
+        // be. What is remapped and what ships as a stale integer was missing
+        // for the same reason — it is only visible on the way back in.
+        $hint = ArchitectureHints::byId('sitepackage-initial-content');
+        self::assertNotNull($hint);
+        $text = implode("\n", array_column($hint['hints'], 'text'));
+
+        // The key is the operative half of the registry entry; the namespace
+        // alone re-triggers nothing.
+        self::assertStringContainsString('Initialisation/dataImported', $text);
+        self::assertStringContainsString('importData()', $text, 'where the artifact can be verified at all');
+        self::assertStringContainsString('ReferenceIndex::getRelations()', $text, 'what decides whether a uid survives');
+        self::assertStringContainsString('--save-files-outside-export-file', $text);
+    }
+
+    #[Test]
     public function aNavigationIsAnsweredWhereMenusAreActuallyConfigured(): void
     {
         // excludeDoktypes replaces the default list instead of extending it,

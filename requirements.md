@@ -404,6 +404,14 @@ took before the requirement above was written down, and it will not survive it.
 
 ## Knowledge — what is covered
 
+- **R-KNW-18** Where an artifact cannot be verified where it is produced, the
+  answer says where it can be. A mechanism that runs once leaves its author
+  reading their own output back and calling that a check, so the hint names the
+  place the artifact can actually be exercised and what re-triggers it.
+  *From:* `Initialisation/data.xml` regenerated three times in one session and
+  never imported once, on an installation that had already run it — with the
+  registry namespace in the hint but not the key that unlocks it (2026-07-29).
+  *Held by:* `HintsTest::shippedContentIsAnsweredPastThePointWhereTheFileExists`
 - **R-KNW-17** A convention read off a core reference implementation is stated
   with the condition that made it right there. The core is not a project, so the
   unconditional form is the one that transfers wrongly — and the condition is

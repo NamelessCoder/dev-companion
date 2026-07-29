@@ -278,8 +278,9 @@ name already says what shape the answer has.
   answer as a note under `feedback/` (standalone checkout only, see
   [Improvement notes](#improvement-notes)).
 - `typo3_feedback_list`: lists those notes, newest first, so they can be worked
-  off, filtered by status, category or the tool they are about (standalone
-  checkout only).
+  off, filtered by status, category or the tool they are about. `status="closed"`
+  reads the ones already worked off out of the commits that deleted them, each
+  with the subject that says what came of it (standalone checkout only).
 
 ## Resources
 
@@ -325,7 +326,10 @@ The knowledge base only grows if the gaps are known, so an agent that hits one
 reports it through `typo3_feedback_record`. Every note becomes its own markdown
 file under `feedback/`; `typo3_feedback_list` reads them back, newest first. A
 note is closed by deleting it in the commit that implements the improvement, so
-`feedback/` only ever holds open items.
+`feedback/` only ever holds open items — and that commit is where the closed
+half is read back from: `typo3_feedback_list` with `status="closed"` answers
+what became of a note, so a gap that was already closed is not reported a second
+time and one that needed a code change does not vanish.
 
 Each note carries the working directory the session that left it ran in, as
 `directory:` in its front matter, so a gap can be checked against the project it

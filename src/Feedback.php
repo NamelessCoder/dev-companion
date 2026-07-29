@@ -27,6 +27,9 @@ final class Feedback
     private const MAX_FIELD_LENGTH = 4000;
     private const MAX_SLUG_LENGTH = 48;
 
+    /** Separates the commits in the log the closed notes are read from. */
+    private const COMMIT_MARKER = "\x00";
+
     /**
      * True only when this package is the Composer root package, i.e. a
      * standalone checkout rather than a dependency in someone's vendor/.
@@ -78,7 +81,7 @@ final class Feedback
     /**
      * Reads recorded notes, newest first.
      *
-     * @return array<int, array{file: string, date: string, category: string, status: string, tool: string, tools: array<int, string>, title: string}>
+     * @return array<int, array{file: string, date: string, category: string, status: string, tool: string, tools: array<int, string>, title: string, closedBy: ?array{commit: string, date: string, subject: string}}>
      */
     public static function notes(
         ?string $status = 'open',
@@ -94,28 +97,148 @@ final class Feedback
         $wanted = $tool === null ? null : (self::toolNames($tool)[0] ?? null);
 
         $notes = [];
-        foreach ($files as $file) {
-            $note = self::parse($file);
-            if ($note === null) {
-                continue;
-            }
-            if ($status !== null && $status !== 'all' && $note['status'] !== $status) {
-                continue;
-            }
-            if ($category !== null && $note['category'] !== $category) {
-                continue;
-            }
-            if ($wanted !== null && !in_array($wanted, $note['tools'], true)) {
-                continue;
-            }
+        if ($status !== 'closed') {
+            foreach ($files as $file) {
+                $note = self::parse($file);
+                if ($note === null) {
+                    continue;
+                }
+                if ($status !== null && $status !== 'all' && $note['status'] !== $status) {
+                    continue;
+                }
+                if ($category !== null && $note['category'] !== $category) {
+                    continue;
+                }
+                if ($wanted !== null && !in_array($wanted, $note['tools'], true)) {
+                    continue;
+                }
 
-            $notes[] = $note;
-            if (count($notes) >= $limit) {
-                break;
+                $notes[] = $note;
+                if (count($notes) >= $limit) {
+                    break;
+                }
+            }
+        }
+
+        // A closed note has no front matter left to filter on, so a query that
+        // asks for a category or a tool is answered from the open half alone
+        // rather than with entries that match neither.
+        if (($status === 'closed' || $status === 'all') && $category === null && $wanted === null) {
+            foreach (self::closed($limit) as $note) {
+                if (count($notes) >= $limit) {
+                    break;
+                }
+                $notes[] = $note;
             }
         }
 
         return $notes;
+    }
+
+    /**
+     * The notes that were worked off, read from the commits that deleted them.
+     *
+     * A note is closed by deleting the file, and the commit that does it is the
+     * record of what came of it. That record is complete and it is also
+     * invisible to the agent that wrote the note: from where it stands the file
+     * it recorded simply stopped existing, which reads as "lost", and the same
+     * gap gets reported again. So the history is read back — the commit, its
+     * date, and its subject, which is the sentence that says what happened.
+     *
+     * Nothing is written and nothing is checked out. Where git is not there or
+     * the checkout has no history, there is no closed half and the list says
+     * so by being empty.
+     *
+     * @return array<int, array{file: string, date: string, category: string, status: string, tool: string, tools: array<int, string>, title: string, closedBy: array{commit: string, date: string, subject: string}}>
+     */
+    private static function closed(int $limit): array
+    {
+        $root = dirname(Paths::feedback());
+        $log = self::git([
+            'log',
+            '--diff-filter=D',
+            '--name-only',
+            '--date=short',
+            // %x00 and %x1f are git's own escapes: the argument carries them as
+            // text, and git writes the separators the output is split on.
+            '--format=%x00%h%x1f%ad%x1f%s',
+            '--max-count=' . max($limit * 4, 40),
+            '--',
+            'feedback',
+        ], $root);
+        if ($log === null) {
+            return [];
+        }
+
+        $notes = [];
+        foreach (explode(self::COMMIT_MARKER, $log) as $block) {
+            $lines = preg_split('/\R/', trim($block)) ?: [];
+            $header = array_shift($lines);
+            if ($header === null || !str_contains($header, "\x1f")) {
+                continue;
+            }
+            [$commit, $date, $subject] = array_pad(explode("\x1f", $header, 3), 3, '');
+
+            foreach ($lines as $path) {
+                $path = trim($path);
+                if (!str_starts_with($path, 'feedback/') || !str_ends_with($path, '.md')) {
+                    continue;
+                }
+                $notes[] = [
+                    'file' => $path,
+                    // The filename carries the timestamp the note was recorded
+                    // at, which is the half a closed note still has.
+                    'date' => substr(basename($path), 0, 10),
+                    // The file is gone, and with it the front matter. What a
+                    // closed note still has is its name, its date and the
+                    // commit that closed it.
+                    'category' => '',
+                    'status' => 'closed',
+                    'tool' => '',
+                    'tools' => [],
+                    'title' => self::titleFromFileName($path),
+                    'closedBy' => ['commit' => $commit, 'date' => $date, 'subject' => $subject],
+                ];
+                if (count($notes) >= $limit) {
+                    return $notes;
+                }
+            }
+        }
+
+        return $notes;
+    }
+
+    /**
+     * Runs one git command in this checkout and returns its output, or null
+     * where git could not answer.
+     *
+     * @param array<int, string> $command
+     */
+    private static function git(array $command, string $workingDirectory): ?string
+    {
+        if (!is_dir($workingDirectory . '/.git')) {
+            return null;
+        }
+
+        $descriptors = [1 => ['pipe', 'w'], 2 => ['pipe', 'w']];
+        $process = @proc_open(array_merge(['git'], $command), $descriptors, $pipes, $workingDirectory, null);
+        if (!is_resource($process)) {
+            return null;
+        }
+
+        $output = (string) stream_get_contents($pipes[1]);
+        fclose($pipes[1]);
+        fclose($pipes[2]);
+
+        return proc_close($process) === 0 ? $output : null;
+    }
+
+    /** The slug a note filename carries, read back as words. */
+    private static function titleFromFileName(string $path): string
+    {
+        $slug = (string) preg_replace('/^\d{4}-\d{2}-\d{2}-\d{6}-?/', '', basename($path, '.md'));
+
+        return $slug === '' ? basename($path) : str_replace('-', ' ', $slug);
     }
 
     private static function assertAvailable(): void
@@ -129,7 +252,7 @@ final class Feedback
     }
 
     /**
-     * @return array{file: string, date: string, category: string, status: string, tool: string, tools: array<int, string>, title: string}|null
+     * @return array{file: string, date: string, category: string, status: string, tool: string, tools: array<int, string>, title: string, closedBy: null}|null
      */
     private static function parse(string $file): ?array
     {
@@ -165,6 +288,9 @@ final class Feedback
             'tool' => implode(', ', $tools),
             'tools' => $tools,
             'title' => $title,
+            // An open note has nothing closing it yet, and the field is present
+            // either way so a caller never has to ask which half it is holding.
+            'closedBy' => null,
         ];
     }
 

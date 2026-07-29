@@ -136,6 +136,38 @@ final class FeedbackTest extends TestCase
     }
 
     #[Test]
+    public function aNoteThatWasWorkedOffIsStillAnswerableFor(): void
+    {
+        // A note is closed by deleting it, and the agent that wrote it sees the
+        // file it recorded simply stop existing — which reads as lost, and the
+        // same gap gets reported a second time. The commit that deleted it is
+        // the record of what came of it, so that is what the closed half is
+        // read back from.
+        $closed = Feedback::notes('closed', null, 10);
+        if ($closed === []) {
+            self::markTestSkipped('No note has been worked off in this checkout yet.');
+        }
+
+        foreach ($closed as $note) {
+            self::assertSame('closed', $note['status']);
+            self::assertStringStartsWith('feedback/', $note['file']);
+            self::assertNotNull($note['closedBy']);
+            self::assertNotSame('', $note['closedBy']['commit']);
+            // The subject is the sentence that says what happened to it.
+            self::assertNotSame('', $note['closedBy']['subject']);
+        }
+
+        // An open note is in the same list and says it is open.
+        $file = Feedback::record(['observation' => self::MARKER . ' open beside the closed ones']);
+        $all = Feedback::notes('all', null, 100);
+        self::assertContains($file, array_column($all, 'file'));
+        self::assertContains('closed', array_column($all, 'status'));
+        foreach ($all as $note) {
+            self::assertSame($note['status'] === 'closed', $note['closedBy'] !== null);
+        }
+    }
+
+    #[Test]
     public function theListCanBeRestrictedToACategory(): void
     {
         Feedback::record(['observation' => self::MARKER . ' a bug note', 'category' => 'bug']);

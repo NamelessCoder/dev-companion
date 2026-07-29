@@ -599,12 +599,21 @@ final class ToolSchemas
             'notes' => self::listOf(self::object([
                 'file' => self::string(),
                 'date' => self::string(),
-                'category' => self::string(),
+                'category' => self::string('Empty for a closed note: the file it stood in is gone, and with it the front matter.'),
                 'status' => self::string(),
-                'tool' => self::string('The tools the note is about, comma-separated. Empty when it names none.'),
+                'tool' => self::string('The tools the note is about, comma-separated. Empty when it names none, and for a closed note.'),
                 'tools' => self::listOf(self::string(), 'The same names as a list, to filter or group by without parsing.'),
                 'title' => self::string(),
-            ], ['file', 'date', 'category', 'status', 'tool', 'tools', 'title'])),
+                'closedBy' => [
+                    'type' => ['object', 'null'],
+                    'description' => 'The commit that worked the note off and deleted its file. Null while the note is open.',
+                    'properties' => [
+                        'commit' => self::string(),
+                        'date' => self::string(),
+                        'subject' => self::string('The commit subject: what came of the note.'),
+                    ],
+                ],
+            ], ['file', 'date', 'category', 'status', 'tool', 'tools', 'title', 'closedBy'])),
         ], ['count', 'notes']);
     }
 

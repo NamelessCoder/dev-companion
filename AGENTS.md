@@ -145,7 +145,10 @@ task needed beyond it.
 A note is worked off in a commit that both implements the improvement **and
 deletes the note file**. The commit is the record that the gap was closed, so
 the `feedback/` directory only ever holds open items — a note that is still there
-has not been addressed yet.
+has not been addressed yet. That record is also read back: `typo3_feedback_list`
+with `status="closed"` lists the deleted notes with the commit subject that
+closed each one, which is what the agent that reported it can see. Write the
+subject so it answers "what came of my note".
 
 - One note per commit where possible. When one change closes several notes,
   delete all of them in that commit and mention them in the commit body.

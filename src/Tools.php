@@ -350,11 +350,11 @@ final class Tools
             ],
             [
                 'name' => 'typo3_feedback_list',
-                'description' => 'List improvement notes recorded via typo3_feedback_record, newest first, so they can be worked off. Filter by status, by category, or by the tool a note is about.',
+                'description' => 'List improvement notes recorded via typo3_feedback_record, newest first, so they can be worked off. Filter by status, by category, or by the tool a note is about. A note is closed by deleting its file, so status="closed" answers "what became of what I reported" from the commit that removed it.',
                 'inputSchema' => [
                     'type' => 'object',
                     'properties' => [
-                        'status' => ['type' => 'string', 'enum' => ['open', 'all'], 'default' => 'open', 'description' => 'open: only notes still marked open. all: every recorded note.'],
+                        'status' => ['type' => 'string', 'enum' => ['open', 'closed', 'all'], 'default' => 'open', 'description' => 'open: the notes still in the backlog. closed: the ones already worked off, read from the commits that deleted them, each with the commit subject saying what came of it. all: both. A closed note carries no category and no tools, so those filters answer from the open half alone.'],
                         'category' => ['type' => 'string', 'enum' => Feedback::CATEGORIES, 'description' => 'Restrict the list to one category.'],
                         'tool' => ['type' => 'string', 'description' => 'Restrict the list to the notes about one tool, for example typo3_label_lookup. A note naming several tools is matched by each of them.'],
                         'limit' => ['type' => 'integer', 'minimum' => 1, 'maximum' => 100, 'default' => 20, 'description' => 'Maximum number of notes to return.'],
@@ -653,7 +653,11 @@ final class Tools
             return ToolResult::create(
                 sprintf(
                     '%s%s',
-                    $status === 'open' ? 'No open improvement notes' : 'No improvement notes recorded yet',
+                    match ($status) {
+                        'open' => 'No open improvement notes',
+                        'closed' => 'No improvement note has been worked off yet',
+                        default => 'No improvement notes recorded yet',
+                    },
                     $tool === null ? '.' : ' about ' . $tool . '.'
                 ),
                 ['count' => 0, 'notes' => []],
@@ -664,14 +668,24 @@ final class Tools
             $date = substr($note['date'], 0, 10);
             $about = $note['tool'] === '' ? '' : ' — ' . $note['tool'];
 
-            return sprintf(
-                "- [%s] %s%s\n  %s\n  %s",
-                $note['category'],
+            $entry = sprintf(
+                "- %s%s%s\n  %s\n  %s",
+                $note['category'] === '' ? '' : '[' . $note['category'] . '] ',
                 $date,
                 $about,
                 $note['title'],
                 $note['file'],
             );
+            if ($note['closedBy'] !== null) {
+                $entry .= sprintf(
+                    "\n  closed %s in %s: %s",
+                    $note['closedBy']['date'],
+                    $note['closedBy']['commit'],
+                    $note['closedBy']['subject'],
+                );
+            }
+
+            return $entry;
         }, $notes);
 
         return ToolResult::create(

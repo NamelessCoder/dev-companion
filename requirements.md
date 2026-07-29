@@ -388,9 +388,12 @@ took before the requirement above was written down, and it will not survive it.
   log has nothing to search for, so the sentence worth writing down is the one
   that says what it looks like when it goes wrong.
   *From:* a variable assigned outside `<f:section>` in a template that declares
-  a layout, never executed and never reported, and an HTML comment whose
-  `{placeholders}` were resolved into the response (2026-07-29).
-  *Held by:* `HintsTest::theTemplateTrapsThatFailWithoutAnErrorAreNamed`
+  a layout, never executed and never reported; an HTML comment whose
+  `{placeholders}` were resolved into the response; a layout root that put the
+  page frame inside every content element; and `excludeDoktypes` replacing the
+  default list so that every storage folder appeared in the menu (2026-07-29).
+  *Held by:* `HintsTest::theTemplateTrapsThatFailWithoutAnErrorAreNamed`,
+  `HintsTest::aNavigationIsAnsweredWhereMenusAreActuallyConfigured`
 - **R-KNW-4** Where an answer covers one side of the authoring-versus-reading
   split, it names the side it is on and points at the other in one line. This is
   R-KNW-3 for the prose, and it is a pointer rather than site documentation, so

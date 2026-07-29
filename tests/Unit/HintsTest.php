@@ -212,6 +212,17 @@ final class HintsTest extends TestCase
     }
 
     #[Test]
+    public function aNavigationIsAnsweredWhereMenusAreActuallyConfigured(): void
+    {
+        // excludeDoktypes replaces the default list instead of extending it,
+        // which puts every storage folder into the menu. The hint that says so
+        // has to be reachable from the word the question is asked with.
+        $result = ArchitectureHints::find([], 'main navigation of the site, menu levels and which pages it shows', 6);
+
+        self::assertContains('frontend-dataprocessors', array_column($result['matchedHints'], 'id'));
+    }
+
+    #[Test]
     public function aSitepackageIsAnsweredWithTheLayoutTheCoreItselfShips(): void
     {
         // A layout was invented for a sitepackage and rejected afterwards,

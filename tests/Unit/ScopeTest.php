@@ -174,6 +174,33 @@ final class ScopeTest extends TestCase
     }
 
     #[Test]
+    public function theBriefPointsAtTheGuideForTheStepItEndsWith(): void
+    {
+        // The brief's last checklist item is the commit message in all but
+        // name, and the tool that writes one was never in its next lookups. A
+        // caller reads the routing table once, at the start, and commits hours
+        // later out of this list.
+        $core = Tools::call('typo3_task_guide', [
+            'task' => 'Fix the DataHandler regression',
+            'area' => 'typo3/sysext/core/Classes/DataHandling/DataHandler.php',
+        ]);
+        self::assertContains('typo3_commit_message_guide', array_column($core->data['nextTools'], 'tool'));
+        self::assertStringContainsString(
+            'typo3_commit_message_guide',
+            implode("\n", $core->data['checklist'])
+        );
+
+        // And with the workflow that repository needs, because the default is
+        // the core's and demands a Forge issue nobody there has.
+        $project = Tools::call('typo3_task_guide', [
+            'task' => 'Add a search to the product plugin',
+            'area' => 'packages/my_sitepackage/Classes/Controller/ProductController.php',
+        ]);
+        self::assertTrue($project->data['outsideCore']);
+        self::assertStringContainsString('workflow="project"', implode("\n", $project->data['checklist']));
+    }
+
+    #[Test]
     public function aBriefOutsideTheCoreKeepsNothingThatOnlyTheCoreHas(): void
     {
         // Saying "this is outside the core" and then listing four runTests.sh

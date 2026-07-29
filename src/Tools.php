@@ -1041,7 +1041,13 @@ final class Tools
                 $checklist[] = ucfirst((string) $intent['condition']) . ': ' . lcfirst((string) $entry);
             }
         }
-        $checklist[] = 'Summarize changed behavior, affected area, and executed commands.';
+        $checklist[] = $outsideCore
+            ? 'Write the commit message with typo3_commit_message_guide and workflow="project": '
+                . 'summarize the changed behavior, the affected area and the commands you ran, and it '
+                . 'hands back a draft that is wrapped and checked.'
+            : 'Write the commit message with typo3_commit_message_guide: summarize the changed behavior, '
+                . 'the affected area and the commands you ran, and it hands back a draft that carries '
+                . 'the keyword, the trailers and the wrapping.';
 
         // Per line, not per section: a checklist mixes "reproduce the bug with
         // a failing test" — true anywhere — with a changelog file below
@@ -1187,6 +1193,10 @@ final class Tools
         }
         $candidates[] = 'typo3_architecture_lookup with the concrete file paths, once they are known';
         $candidates[] = 'typo3_test_run_guide, for the targeted runTests.sh invocation';
+        // The one step this brief describes and never pointed at. A caller who
+        // read the routing table at the start of a session is committing hours
+        // later, from this list.
+        $candidates[] = 'typo3_commit_message_guide, before committing';
         if (Feedback::isAvailable()) {
             $candidates[] = 'typo3_feedback_record, when one of these answers was wrong or incomplete';
         }

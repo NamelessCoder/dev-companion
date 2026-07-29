@@ -360,6 +360,16 @@ took before the requirement above was written down, and it will not survive it.
   *Held by:* the three tests above, and `ToolContractTest` for the `workflow`
   field the output schema now requires.
 
+- **R-GUI-3** A guide that names a step points at the tool that performs it, in
+  the answer where the step appears. The routing table is read once, at the
+  start of a session; the step is taken hours later, out of whatever the last
+  answer listed.
+  *From:* four commit messages written in one session without
+  `typo3_commit_message_guide` ever being called — its brief ended with
+  "Summarize changed behavior", and its next lookups never named the tool that
+  does exactly that (2026-07-29).
+  *Held by:* `ScopeTest::theBriefPointsAtTheGuideForTheStepItEndsWith`
+
 ## Feedback — what the backlog has to stay usable for
 
 - **R-FBK-1** A note is about as many tools as it is about. The names survive

@@ -41,28 +41,13 @@ else here was written by someone who already knew what they meant.
 
 ---
 
-## 1. Bind the rest of the knowledge to versions
-
-**Serves:** R-AUD-4 · **Next step:** go file by file through
-`knowledge/architecture-hints/`, and for every statement that names an API,
-check it against `.checkouts/12.4` and `.checkouts/13.4` — those are where the
-current shape usually is not.
-
-About fifteen statements are bound so far. Everything else is implicitly "holds
-on all four covered lines", and that is not true everywhere: the TCA Schema API,
-the `#[AsEventListener]` attribute, the `.fluid.html` extension, the site set
-label domain, the DataHandler event names and the backend module registration
-all changed inside the covered range.
-
-Order by how much a wrong answer costs: PHP first (the APIs), then Fluid, then
-TypoScript, then the general hints. The prose documents below `knowledge/*.md`
-have no binding mechanism at all yet — decide whether they need one or whether
-the hints carry it.
-
-## 2. A maintenance guide, once the pieces are there
+## 1. A maintenance guide, once the pieces are there
 
 **Serves:** `feedback/2026-07-29-100314`, scenario `SITE-02` · **Next step:**
-none yet — this waits until item 1 is done, because it composes it.
+write the upgrade order of operations into `knowledge/` — which step comes
+first, what runs in which environment, when the wizards run relative to the
+schema, what to do about third-party extensions. A guide that composes it with
+`typo3_project_scope` and `typo3_changelog_lookup` comes after that.
 
 The upgrade question is "what do I do, in which order, and what breaks". Three
 of the four inputs exist now: `typo3_project_scope` knows what is installed,

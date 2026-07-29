@@ -27,7 +27,11 @@
       },
       {
         "text": "The set's labels.xlf resolves to the translation domain <ext>.sets.<setname>; typo3_translation_domain_lookup computes it from the path.",
-        "since": 13
+        "since": 14
+      },
+      {
+        "text": "The set's labels.xlf is picked up from the set's own directory and there is no domain to address it by: a label of the set is referenced with its full LLL:EXT: path.",
+        "until": 13
       },
       {
         "text": "A page layout the set ships in page.tsconfig declares its columns under mod.web_layout.BackendLayouts, and every column needs an explicit `identifier`: that identifier is what the frontend template addresses as {content.<identifier>}. Leaving it out is accepted on the branches that still fall back to a generated one, and the template can then no longer reach its own content — the page renders empty and nothing is logged.",

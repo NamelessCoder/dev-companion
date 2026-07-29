@@ -113,6 +113,21 @@ final class VersionsTest extends TestCase
     }
 
     #[Test]
+    public function proseSaysThatItIsNotTheBoundHalf(): void
+    {
+        // The markdown documents are the long form of what the hints carry, and
+        // they carry no range at all — a section describing a shape that
+        // arrived in v13 reads on v12 exactly as it reads on main. Rather than
+        // a second binding mechanism for prose, the answer says which of the
+        // two the caller is holding and where the bound form is.
+        foreach (['typo3_rule_lookup' => 'event listener', 'typo3_script_lookup' => 'unit tests'] as $tool => $query) {
+            $text = Tools::call($tool, ['query' => $query, 'task' => $query])->text;
+            self::assertStringContainsString('not filtered by version', $text, $tool);
+            self::assertStringContainsString('typo3_architecture_lookup with targetVersion', $text, $tool);
+        }
+    }
+
+    #[Test]
     public function theRangeIsNeverWrittenIntoTheSentence(): void
     {
         // A version in the prose cannot be filtered, re-rendered or checked,

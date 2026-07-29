@@ -48,11 +48,13 @@ them, this section wins and the other one is what needs rewriting.
   of them carries `since`/`until` as data rather than saying so in its prose; and
   an answer is composed for the version the caller stated, else for the one the
   installation being read runs, else for none — and then every statement comes
-  back with the range it holds for.
+  back with the range it holds for. The markdown documents carry no range and
+  are not filtered; a prose answer says so and names where the bound form is.
   *From:* v15 markup handed to a 13.4 caller, and a translation domain handed to
   an installation that resolves none (2026-07-29).
   *Held by:* `VersionsTest` in full — the range model, the precedence, the
-  filtering, and that no statement dates itself in prose —
+  filtering, that no statement dates itself in prose, and that a prose answer
+  says it is not the bound half —
   `CatalogTest::theCatalogSaysHowItRelatesToTheInstallationBeingRead`,
   `CatalogTest::anInstallationWithoutTranslationDomainsIsGivenTheFileReference`,
   `InstanceTest::theTypo3VersionIsReadFromTheCorePackageRatherThanAskedOfTheConsole`

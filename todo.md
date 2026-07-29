@@ -103,29 +103,6 @@ before-reading. Both are done; the readings are in the commits.
 
 ---
 
-## Take the version number out of the rules prose
-
-Serves the version binding, and is independent of everything above — it is a
-wrong answer being given today, and it is two lines.
-
-`knowledge/typo3-core-rules.md:42` reads «Since TYPO3 v14.1 a label marked that
-way raises an `E_USER_DEPRECATED` error». `typo3_rule_lookup` has no
-`targetVersion` and searches every document, so a caller on 13.4 is handed it
-unqualified. AGENTS.md forbids exactly this shape and `HintsTest` does not see
-it, because it reads JSON.
-
-The next concrete step: move the XLIFF label lifecycle statements out of
-`typo3-core-rules.md` into the `language-files` hint, where the version is a
-field and the filter applies. Most of that section is the core's own — the
-`x-unused-since` marker, migrating core usages in the same patch, the changelog
-entry — so it carries `binding: "core"` rather than being dropped; the two
-`runTests.sh` invocations at the end are `checks`, not statements. What is left
-to bind is the sentence itself: verify the label deprecation on both sides,
-against `.checkouts/13.4` and `.checkouts/14`, and name both branches in the
-commit message.
-
----
-
 ## One name for who is obliged, and a binding where there is none
 
 Serves `R-AUD-5`, which describes the mechanism as one and finds it spelled

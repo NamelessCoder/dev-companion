@@ -34,7 +34,16 @@
         "text": "Two files can derive the same domain, and then the one without the locallang prefix wins — SudoMode.xlf takes sudo_mode from locallang_sudo_mode.xlf beside it. A locale prefix changes nothing: de.locallang.xlf is the translation of locallang.xlf and derives its domain, not one of its own.",
         "since": 14
       },
-      "Check whether language file normalization is needed."
+      "Never delete a trans-unit. The key outlives the code that stopped using it: third-party code still references it, so does a translation override in an installation, and removing it breaks both silently.",
+      {
+        "text": "Retire a label instead, by marking its trans-unit x-unused-since=\"<the release it becomes unused in>\" — the upcoming one, not the current one. In XLIFF 2.0 the same thing is subState=\"deprecated\" on the segment. A label marked that way raises an E_USER_DEPRECATED when it is resolved, which is how the remaining usages find their own way to the surface.",
+        "since": 14
+      },
+      "Remove a marked trans-unit only in the breaking-change patch of a later major, together with the other removals. A label that was introduced and dropped again inside the same patch is simply deleted — it was never released, so there is nothing to deprecate.",
+      {
+        "text": "Marking a label unused is a deprecation and is treated as one: it needs its changelog entry, and every usage inside the core migrates in the same patch. The translator history on translate.typo3.org hangs off the key, which is the other thing a deletion throws away.",
+        "binding": "core"
+      }
     ],
     "checks": [
       "CI=true ./Build/Scripts/runTests.sh -s checkIntegrityXliff",

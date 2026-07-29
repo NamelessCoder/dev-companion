@@ -49,6 +49,26 @@ final class KnowledgeTest extends TestCase
     }
 
     #[Test]
+    public function noProseDocumentDatesAStatementInItsSentence(): void
+    {
+        // The same rule VersionsTest holds the hints to, for the corpus it
+        // cannot see. A statement in markdown carries no since/until, so a
+        // version written into the sentence cannot be filtered and typo3_rule_
+        // lookup — which has no targetVersion and searches every document —
+        // hands it to a caller on any branch. That is how "Since TYPO3 v14.1 a
+        // label marked that way raises an E_USER_DEPRECATED" was answering a
+        // 13.4 question. A version inside an example command is a different
+        // thing and stays: "git push origin HEAD:refs/for/13.4" is the command.
+        foreach (Knowledge::documents() as $document) {
+            self::assertDoesNotMatchRegularExpression(
+                '/\bTYPO3 v\d|\bsince v?\d|\bfrom v\d/i',
+                (string) file_get_contents($document['path']),
+                $document['id'] . ' dates a statement in its prose, where nothing can bind it',
+            );
+        }
+    }
+
+    #[Test]
     public function theDiscriminatingTermsOfAQueryDecideTheAnswer(): void
     {
         // "site set settings definitions" was answered with the backend's Sass

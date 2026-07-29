@@ -660,10 +660,12 @@ final class HintsTest extends TestCase
         ];
 
         foreach (ArchitectureHints::load() as $hint) {
-            // PSR numbers name an interface, they do not date the statement.
+            // A PSR number names an interface and an XLIFF number names a file
+            // format. Neither dates the statement against a TYPO3 branch, which
+            // is the only thing this is looking for.
             $text = (string) preg_replace(
-                '/\bPSR-\d+/i',
-                'PSR',
+                ['/\bPSR-\d+/i', '/\bXLIFF \d+\.\d+/i'],
+                ['PSR', 'XLIFF'],
                 $hint['title'] . "\n" . implode("\n", array_column($hint['hints'], 'text'))
             );
 
@@ -772,7 +774,15 @@ final class HintsTest extends TestCase
         $intents = TaskIntents::confirmed(TaskIntents::detect('Add one label to locallang_layout.xlf'));
 
         self::assertSame(['labels'], array_column($intents, 'id'));
-        self::assertNotSame([], TaskIntents::rules($intents));
+
+        // What the intent is worth is the rules the caller ends up with, not
+        // which corpus they came from. The XLIFF lifecycle used to be a prose
+        // section this intent queried by name; it is a bound statement in
+        // language-files now, and the guide reaches it by matching instead.
+        $guide = Tools::call('typo3_task_guide', ['task' => 'Add one label to locallang_layout.xlf']);
+
+        self::assertContains('language-files', array_column($guide->data['architectureHints'], 'id'));
+        self::assertStringContainsString('x-unused-since', $guide->text);
     }
 
     #[Test]

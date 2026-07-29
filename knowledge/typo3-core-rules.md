@@ -30,27 +30,6 @@ documentation when rules depend on a specific branch or current policy.
   the former acceptance suites.
 - Document tests that could not be executed and why.
 
-## XLIFF Label Lifecycle
-
-- Do not delete a `trans-unit` from an XLF file. Removing a label breaks
-  third-party code and translation overrides that still reference the key, and
-  it drops the translator history on translate.typo3.org.
-- Retire a label by marking its `trans-unit` with
-  `x-unused-since="<next upcoming version>"`, for example
-  `<trans-unit id="wizard.progress" x-unused-since="15.0">`. The version is the
-  release the label becomes unused in, not the current one.
-- Since TYPO3 v14.1 a label marked that way raises an `E_USER_DEPRECATED` error
-  when it is resolved, so integrators find remaining usages. XLIFF 2.0 uses
-  `subState="deprecated"` on the segment for the same purpose.
-- Remove the marked `trans-unit` only in the breaking-change patch of a later
-  major release, together with the other deprecation removals.
-- A label introduced and dropped again within the same patch is simply removed —
-  it was never released, so there is nothing to deprecate.
-- Marking a label unused is a deprecation: it needs a changelog entry, and
-  usages inside the core have to be migrated in the same patch.
-- Run `./Build/Scripts/runTests.sh -s checkIntegrityXliff` and
-  `./Build/Scripts/runTests.sh -s normalizeXliff` after editing XLF files.
-
 ## Review Readiness
 
 - The change should be reproducible from the issue or task description.

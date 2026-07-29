@@ -31,6 +31,7 @@ final class ToolSchemas
             'typo3_architecture_lookup' => self::architectureLookup(),
             'typo3_component_lookup' => self::componentLookup(),
             'typo3_system_extension_lookup' => self::systemExtensionLookup(),
+            'typo3_reference_list' => self::referenceList(),
             'typo3_translation_domain_lookup' => self::translationDomainLookup(),
             'typo3_label_lookup' => self::labelLookup(),
             'typo3_fluid_namespace_list' => self::fluidNamespaceList(),
@@ -420,6 +421,27 @@ final class ToolSchemas
                 'resource' => self::string('The XLF file it lives in.'),
             ], ['ref', 'domain', 'key', 'source'])),
         ], ['query', 'matchCount', 'answeredBy', 'terms', 'labels']);
+    }
+
+    /** @return array<string, mixed> */
+    private static function referenceList(): array
+    {
+        return self::object([
+            'targetVersion' => ['type' => ['integer', 'null'], 'description' => 'The TYPO3 major the list was composed for — stated by the caller, or read from the installation. Null means every covered version is in it and each entry carries its own range.'],
+            'matchCount' => self::integer('How many worked examples exist on the version asked about.'),
+            'references' => self::listOf(self::object([
+                'id' => self::string('Stable identifier of the example.'),
+                'path' => self::string('Where it is, relative to the root of a core checkout.'),
+                'package' => ['type' => ['string', 'null'], 'description' => 'The Composer package that ships it, so an installation can read it below vendor/. Null means it exists only in the core repository, as everything below Build/ does.'],
+                'reference' => self::string('What it is a worked example of.'),
+                'caveat' => ['type' => ['string', 'null'], 'description' => 'What not to conclude from it — that it is read rather than depended on, or which part of it is the core\'s own. Null where there is nothing to warn about.'],
+                'hint' => ['type' => ['string', 'null'], 'description' => 'The architecture hint whose conventions it demonstrates, for typo3_architecture_lookup. Null where no hint covers the subject yet, which is exactly when reading the example is worth most.'],
+                'since' => ['type' => ['integer', 'null'], 'description' => 'First covered major that has it. Null means every covered major does.'],
+                'until' => ['type' => ['integer', 'null'], 'description' => 'Last covered major that has it. Null means the newest one still does.'],
+                'existsOn' => self::string('The range in words, empty when every covered version has it.'),
+            ], ['id', 'path', 'package', 'reference', 'caveat', 'hint', 'since', 'until', 'existsOn'])),
+            'coveredVersions' => self::listOf(self::integer(), 'The TYPO3 majors this answer was derived from.'),
+        ], ['targetVersion', 'matchCount', 'references', 'coveredVersions']);
     }
 
     /** @return array<string, mixed> */

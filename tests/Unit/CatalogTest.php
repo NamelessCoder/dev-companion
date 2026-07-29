@@ -7,8 +7,10 @@ namespace Typo3CmsMcp\Tests\Unit;
 use PHPUnit\Framework\Attributes\After;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
+use Typo3CmsMcp\ArchitectureHints;
 use Typo3CmsMcp\Catalog\Components;
 use Typo3CmsMcp\Catalog\Meta;
+use Typo3CmsMcp\Catalog\References;
 use Typo3CmsMcp\Catalog\SystemExtensions;
 use Typo3CmsMcp\Catalog\TranslationDomain;
 use Typo3CmsMcp\Instance;
@@ -262,6 +264,60 @@ final class CatalogTest extends TestCase
             foreach (['since', 'until'] as $bound) {
                 if ($extension[$bound] !== null) {
                     self::assertContains($extension[$bound], $majors, $extension['key'] . ' is bound to a version this knowledge base does not cover');
+                }
+            }
+        }
+    }
+
+    #[Test]
+    public function theCoresOwnWorkedExamplesAreIndexed(): void
+    {
+        // Three times in one session the real answer was a directory inside the
+        // core repository, and all three times it was reached by accident. A
+        // hint per subject fixes the subject it was written for; the index is
+        // for the next one.
+        $everything = Tools::call('typo3_reference_list', []);
+        self::assertGreaterThan(0, $everything->data['matchCount']);
+
+        $paths = array_column($everything->data['references'], 'path');
+        self::assertContains('typo3/sysext/theme_camino', $paths);
+        self::assertContains('typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example', $paths);
+
+        // And the version decides, because a path that is not on that branch
+        // costs a read and answers nothing.
+        $onThirteen = Tools::call('typo3_reference_list', ['targetVersion' => '13.4']);
+        self::assertNotContains('typo3/sysext/theme_camino', array_column($onThirteen->data['references'], 'path'));
+    }
+
+    #[Test]
+    public function aWorkedExampleIsNamedBesideTheHintItIsAnExampleOf(): void
+    {
+        // The layout hint and the theme it was written from were two answers
+        // that never met: the hint was read, the extension was found later by
+        // being told about it.
+        $result = Tools::call('typo3_architecture_lookup', [
+            'task' => 'directory structure of a sitepackage extension',
+            'targetVersion' => '14',
+        ]);
+
+        self::assertStringContainsString('typo3/sysext/theme_camino', $result->text);
+        self::assertStringContainsString('typo3_reference_list', $result->text);
+    }
+
+    #[Test]
+    public function everyIndexedExampleSaysWhatItIsAnExampleOfAndWhereItIs(): void
+    {
+        $majors = Versions::majors();
+        $hintIds = array_column(ArchitectureHints::load(), 'id');
+        foreach (References::load() as $entry) {
+            self::assertNotSame('', $entry['reference'], $entry['id'] . ' says nothing about itself');
+            self::assertStringNotContainsString('..', $entry['path'], $entry['id'] . ' does not name a path in a checkout');
+            if ($entry['hint'] !== null) {
+                self::assertContains($entry['hint'], $hintIds, $entry['id'] . ' points at a hint that does not exist');
+            }
+            foreach (['since', 'until'] as $bound) {
+                if ($entry[$bound] !== null) {
+                    self::assertContains($entry[$bound], $majors, $entry['id'] . ' is bound to a version this knowledge base does not cover');
                 }
             }
         }

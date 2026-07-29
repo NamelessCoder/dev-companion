@@ -80,6 +80,15 @@
       "provenance": "transferable"
     },
     {
+      "topic": "Where the core keeps its own worked examples",
+      "depth": "An index rather than the examples themselves: one line per directory on what it is a reference for, the Composer package an installation can read it from, and the versions it exists on. It is what a hint is a summary of, so it is the better answer where a hint is thin or where a subject has none yet.",
+      "tools": [
+        "typo3_reference_list"
+      ],
+      "source": "knowledge/catalog/references.json",
+      "provenance": "transferable"
+    },
+    {
       "topic": "Translation domains: how the domain of an XLF file is derived",
       "depth": "Complete and computed, not a snapshot: the core's own path-to-domain rules ported here — the class that holds them is TranslationDomainMapper on one branch and TranslationDomainResolver on the next, so compare against whichever your checkout has, so any XLF path in any extension resolves — including a file that does not exist yet. Where the installation being read is older than translation domains, the full LLL:EXT: reference is the answer instead: the domain form renders nothing there.",
       "tools": [
@@ -202,6 +211,10 @@
     {
       "when": "Starting a core task and looking for the applicable conventions and checks",
       "call": "typo3_task_guide"
+    },
+    {
+      "when": "About to invent a layout, a directory structure or a test harness — the core has probably worked one out already",
+      "call": "typo3_reference_list"
     },
     {
       "when": "About to write backend markup or invent a CSS class name",

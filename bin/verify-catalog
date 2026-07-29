@@ -28,6 +28,7 @@ $root = dirname(__DIR__);
 $catalogDir = $root . '/knowledge/catalog';
 $components = json_decode((string) file_get_contents($catalogDir . '/components.json'), true);
 $systemExtensions = json_decode((string) file_get_contents($catalogDir . '/system-extensions.json'), true);
+$references = json_decode((string) file_get_contents($catalogDir . '/references.json'), true);
 
 if (($argv[1] ?? null) !== null) {
     exit(verifyPaths(rtrim($argv[1], '/'), $components));
@@ -36,6 +37,7 @@ if (($argv[1] ?? null) !== null) {
 exit(max(
     verifyBindings($root . '/.checkouts', $components),
     verifySystemExtensions($root . '/.checkouts', $systemExtensions),
+    verifyReferences($root . '/.checkouts', $references),
 ));
 
 /**
@@ -294,6 +296,57 @@ function verifySystemExtensions(string $checkouts, array $recorded): int
     }
 
     printf("%d system extension(s) out of date.\n", $problems);
+
+    return 1;
+}
+
+/**
+ * Re-reads which covered versions have each worked example, and reports every
+ * entry whose recorded range no longer says so.
+ *
+ * An index of paths is the kind of thing a core release invalidates silently: a
+ * directory that moved leaves an answer pointing at nothing, and the caller
+ * reads the miss as "I looked in the wrong place". Existence is the whole test
+ * here — what is inside is prose that a human wrote and a human has to reread.
+ *
+ * @param array<int, array<string, mixed>> $references
+ */
+function verifyReferences(string $checkouts, array $references): int
+{
+    echo "Core references\n";
+    $covered = Versions::covered();
+    $problems = 0;
+    foreach ($references as $entry) {
+        $path = (string) $entry['path'];
+        $majors = [];
+        foreach ($covered as $version) {
+            $branch = $checkouts . '/' . $version['branch'];
+            if (!is_dir($branch)) {
+                fwrite(STDERR, sprintf("No checkout for TYPO3 v%d below %s — run bin/core-checkouts.\n", $version['major'], $checkouts));
+
+                return 2;
+            }
+            if (file_exists($branch . '/' . $path)) {
+                $majors[] = $version['major'];
+            }
+        }
+
+        if ($majors === []) {
+            printf("  %s: on no covered version\n", $path);
+            ++$problems;
+            continue;
+        }
+        $problems += reportRange($path, $entry, $majors, array_column($covered, 'major'));
+    }
+    printf("  %d references against %s\n\n", count($references), implode(', ', array_column($covered, 'branch')));
+
+    if ($problems === 0) {
+        echo "Every worked example is where it is recorded.\n";
+
+        return 0;
+    }
+
+    printf("%d reference(s) out of date.\n", $problems);
 
     return 1;
 }

@@ -254,6 +254,13 @@ name already says what shape the answer has.
   what it is for. It answers for an extension that is not installed, which is
   when the question comes up; a miss means "not a system extension on these
   versions", never "does not exist".
+- `typo3_reference_list`: names the worked examples the core ships of its own
+  conventions — the theme extension, the styleguide, the Extbase fixture
+  extension, the content element rendering, the browser suite, the static
+  analysis setup — with one line on what each is a reference for and which
+  versions have it. Every hint here is a summary of something that exists in
+  full and passing, and where a hint is thin, reading the example is the better
+  answer.
 - `typo3_icon_lookup`: validates and discovers icon identifiers (the registered
   T3Icons names), grouped by category, so unknown identifiers are caught before
   runtime. Every answer says which half of TYPO3 they belong to: the registry is

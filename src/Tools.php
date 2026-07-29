@@ -6,6 +6,7 @@ namespace Typo3CmsMcp;
 
 use Typo3CmsMcp\Catalog\Components;
 use Typo3CmsMcp\Catalog\Meta as CatalogMeta;
+use Typo3CmsMcp\Catalog\References;
 use Typo3CmsMcp\Catalog\SystemExtensions;
 use Typo3CmsMcp\Catalog\TranslationDomain;
 
@@ -183,6 +184,16 @@ final class Tools
                     'properties' => [
                         'query' => ['type' => 'string', 'description' => 'An extension key ("theme_camino"), a Composer package name ("typo3/cms-impexp"), or a word from what it does ("redirects"). Omit to list everything the core ships.'],
                         'targetVersion' => ['type' => 'string', 'description' => 'The TYPO3 version to answer for, for example "13.4" or "14". Restricts the answer to what that line ships. Defaults to the version of the installation this server was started in; where there is none, every entry comes back with the range it is shipped on.'],
+                    ],
+                ],
+            ],
+            [
+                'name' => 'typo3_reference_list',
+                'description' => 'List the worked examples the TYPO3 core ships of its own conventions, and what each one is a reference for: the theme extension, the styleguide, the Extbase fixture extension, the content element rendering, the browser test suite, the static analysis setup. Read one of these before inventing a layout or a test harness — they are the version-correct, currently-passing form of what a convention describes, and every hint here is a summary of one. Paths are relative to a core checkout; where the answer names a Composer package, an installation that has it holds the same files below vendor/.',
+                'inputSchema' => [
+                    'type' => 'object',
+                    'properties' => [
+                        'targetVersion' => ['type' => 'string', 'description' => 'The TYPO3 version to list for, for example "13.4" or "14". An example that branch does not have is left out rather than qualified. Defaults to the version of the installation this server was started in; where there is none, every entry comes back with the range it exists on.'],
                     ],
                 ],
             ],
@@ -389,6 +400,7 @@ final class Tools
             'typo3_architecture_lookup' => self::architectureLookup($args),
             'typo3_component_lookup' => self::componentLookup($args),
             'typo3_system_extension_lookup' => self::systemExtensionLookup($args),
+            'typo3_reference_list' => self::referenceList($args),
             'typo3_translation_domain_lookup' => self::translationDomainLookup($args),
             'typo3_label_lookup' => self::labelLookup($args),
             'typo3_fluid_namespace_list' => self::fluidNamespaceList(),
@@ -971,12 +983,16 @@ final class Tools
         $lines[] = '';
         $lines[] = 'Architecture hints:';
         if ($architecture['matchedHints'] !== []) {
+            $examples = self::examplesByHint($target);
             foreach (ArchitectureHints::groupByCategory($architecture['matchedHints']) as $section) {
                 $lines[] = '### ' . $section['category'];
                 foreach ($section['hints'] as $hint) {
                     $lines[] = '## ' . $hint['title'];
                     foreach ($hint['hints'] as $entry) {
                         $lines[] = '- ' . self::statementLine($entry);
+                    }
+                    if (isset($examples[$hint['id']])) {
+                        $lines[] = $examples[$hint['id']];
                     }
                     if ($hint['checks'] !== []) {
                         $lines[] = 'Checks:';
@@ -1498,12 +1514,16 @@ final class Tools
 
         if ($result['matchedHints'] !== []) {
             $sectionTexts = [];
+            $examples = self::examplesByHint($target);
             foreach (ArchitectureHints::groupByCategory($result['matchedHints']) as $section) {
                 $hintTexts = [];
                 foreach ($section['hints'] as $hint) {
                     $block = ['## ' . $hint['title'], 'Hints:'];
                     foreach ($hint['hints'] as $entry) {
                         $block[] = '- ' . self::statementLine($entry);
+                    }
+                    if (isset($examples[$hint['id']])) {
+                        $block[] = $examples[$hint['id']];
                     }
                     if ($hint['checks'] !== []) {
                         $block[] = 'Relevant checks:';
@@ -2184,6 +2204,83 @@ final class Tools
                 'until' => $entry['until'],
                 'shippedOn' => Versions::label($entry['since'], $entry['until']),
             ], $matches),
+            'coveredVersions' => Versions::majors(),
+        ]);
+    }
+
+    /**
+     * The core's own worked example per hint id, as one line for the answer.
+     *
+     * A hint is a summary of something that exists in full and passing; naming
+     * it beside the summary is what makes "read it" available at the moment the
+     * summary turns out to be thin, rather than in a document read once.
+     *
+     * @return array<string, string>
+     */
+    private static function examplesByHint(?int $target): array
+    {
+        $lines = [];
+        foreach (References::on($target) as $entry) {
+            if ($entry['hint'] !== null) {
+                $lines[$entry['hint']] = 'Worked example: ' . $entry['path']
+                    . ' — typo3_reference_list for what it demonstrates and where an installation has it.';
+            }
+        }
+
+        return $lines;
+    }
+
+    /**
+     * The worked examples the core ships, so "read X" can be the answer.
+     *
+     * @param array<string, mixed> $args
+     */
+    private static function referenceList(array $args): ToolResult
+    {
+        $target = Versions::target(isset($args['targetVersion']) ? (string) $args['targetVersion'] : null);
+        $entries = References::on($target);
+
+        $lines = [
+            $target === null
+                ? 'Worked examples in the TYPO3 core, with the versions each exists on.'
+                : sprintf('Worked examples in the TYPO3 core, as TYPO3 v%d has them.', $target),
+            'Paths are relative to a core checkout. Where none is at hand, they are also the paths in '
+                . 'github.com/TYPO3/typo3 on the matching branch.',
+            '',
+        ];
+        foreach ($entries as $entry) {
+            $range = Versions::label($entry['since'], $entry['until']);
+            $lines[] = '- ' . $entry['path'] . ($range === '' ? '' : ' — ' . $range);
+            $lines[] = '  ' . $entry['reference'];
+            if ($entry['caveat'] !== null) {
+                $lines[] = '  ' . $entry['caveat'];
+            }
+            $lines[] = '  ' . ($entry['package'] === null
+                // Build/ is the repository's own; a Composer installation has
+                // none of it, and saying so beats a caller searching vendor/
+                // for a directory that was never published.
+                ? 'Only in the core repository — no Composer package ships it.'
+                : 'In an installation: vendor/' . $entry['package'] . '/, below the same path with the '
+                    . 'typo3/sysext/<key>/ prefix removed.');
+            if ($entry['hint'] !== null) {
+                $lines[] = '  Conventions: typo3_architecture_lookup id="' . $entry['hint'] . '"';
+            }
+        }
+
+        return ToolResult::create(implode("\n", $lines), [
+            'targetVersion' => $target,
+            'matchCount' => count($entries),
+            'references' => array_map(static fn(array $entry): array => [
+                'id' => $entry['id'],
+                'path' => $entry['path'],
+                'package' => $entry['package'],
+                'reference' => $entry['reference'],
+                'caveat' => $entry['caveat'],
+                'hint' => $entry['hint'],
+                'since' => $entry['since'],
+                'until' => $entry['until'],
+                'existsOn' => Versions::label($entry['since'], $entry['until']),
+            ], $entries),
             'coveredVersions' => Versions::majors(),
         ]);
     }

@@ -5,7 +5,7 @@
 ```
 bin/typo3-cms-mcp  # stdio entrypoint (the client launches it as a subprocess)
 bin/core-checkouts # one TYPO3 core checkout per covered version, below .checkouts/ (gitignored)
-bin/verify-catalog # what a core update invalidated in knowledge/catalog/: paths, the versions each entry holds on, and which system extensions are shipped
+bin/verify-catalog # what a core update invalidated in knowledge/catalog/: paths, the versions each entry holds on, which system extensions are shipped, and where the worked examples still are
 src/               # PHP classes (knowledge loading, tools, SDK wiring)
 src/ServerFactory.php  # builds the mcp/sdk server from the tool definitions
 src/Mcp/           # SDK handlers: tool dispatch and typo3://core resources

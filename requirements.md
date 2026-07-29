@@ -414,6 +414,18 @@ took before the requirement above was written down, and it will not survive it.
 
 ## Knowledge — what is covered
 
+- **R-KNW-19** Where the core keeps its own worked examples is answerable as a
+  list, not only per subject. R-KNW-6 says an answer names the example instead
+  of describing one; that fixes the subject it was written for, and the next one
+  repeats it. The index is reachable on its own, carries the versions each
+  example exists on, and is named beside the hint it is an example of.
+  *From:* three answers in one session that were an existing directory in the
+  core — the theme extension, the browser suite, the Extbase fixture extension —
+  each reached by accident or by being told (2026-07-29).
+  *Held by:* `CatalogTest::theCoresOwnWorkedExamplesAreIndexed`,
+  `CatalogTest::aWorkedExampleIsNamedBesideTheHintItIsAnExampleOf`,
+  `CatalogTest::everyIndexedExampleSaysWhatItIsAnExampleOfAndWhereItIs`, and
+  `bin/verify-catalog` for the paths
 - **R-KNW-18** Where an artifact cannot be verified where it is produced, the
   answer says where it can be. A mechanism that runs once leaves its author
   reading their own output back and calling that a check, so the hint names the

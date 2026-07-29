@@ -24,7 +24,7 @@ final class TaskIntents
     ];
 
     /**
-     * @return array<int, array{id: string, title: string, match: array<int, string>, matchWeak: array<int, string>, condition: string, rulesQuery: string, checklist: array<int, string>, checks: array<int, string>, tools: array<int, string>}>
+     * @return array<int, array{id: string, title: string, coreOnly: bool, match: array<int, string>, matchWeak: array<int, string>, condition: string, rulesQuery: string, checklist: array<int, string>, checks: array<int, string>, tools: array<int, string>}>
      */
     public static function load(): array
     {
@@ -36,6 +36,11 @@ final class TaskIntents
         return array_map(static fn(array $entry): array => [
             'id' => (string) $entry['id'],
             'title' => (string) $entry['title'],
+            // Whether the intent is the core's own contribution process rather
+            // than a kind of work. Patch submission is one: outside the core
+            // there is no Gerrit to submit to, so the intent is not a weaker
+            // match there — it is not one at all.
+            'coreOnly' => (bool) ($entry['coreOnly'] ?? false),
             'match' => array_map('strval', $entry['match'] ?? []),
             'matchWeak' => array_map('strval', $entry['matchWeak'] ?? []),
             'condition' => (string) ($entry['condition'] ?? ''),
@@ -106,6 +111,42 @@ final class TaskIntents
             $intents,
             static fn(array $intent): bool => $intent['confidence'] === 'strong'
         ));
+    }
+
+    /**
+     * The detected intents, with the core-only ones held to the evidence there
+     * is for them.
+     *
+     * The words that select a core-only intent are ordinary ones — "review",
+     * "push", "submit" — and they occur in every description of maintenance
+     * work. Reading one of them as a Gerrit patch submission put the whole core
+     * contribution workflow into an answer about a third-party extension, which
+     * is not a partly wrong answer but a wholly wrong one.
+     *
+     * Outside the core the intent is dropped: there is no Gerrit to submit to,
+     * so it is not a weaker match there but none at all. Where nothing says
+     * either way it is demoted to a conditional match, because most tasks name
+     * neither side and a brief that guesses is what this is fixing.
+     *
+     * @param array<int, array<string, mixed>> $intents
+     * @return array<int, array<string, mixed>>
+     */
+    public static function scoped(array $intents, bool $outsideCore, bool $coreWork): array
+    {
+        $scoped = [];
+        foreach ($intents as $intent) {
+            if ($intent['coreOnly'] !== true || $coreWork) {
+                $scoped[] = $intent;
+                continue;
+            }
+            if ($outsideCore) {
+                continue;
+            }
+            $intent['confidence'] = 'weak';
+            $scoped[] = $intent;
+        }
+
+        return $scoped;
     }
 
     /**

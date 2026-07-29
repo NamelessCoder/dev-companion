@@ -30,6 +30,20 @@ final class Scope
     ];
 
     /**
+     * Paths and phrases that place a task inside core contribution.
+     *
+     * Positive evidence, and deliberately narrow: it decides whether the core's
+     * own contribution process may be stated as applying, and the absence of
+     * outside-core markers is not evidence of anything.
+     *
+     * @var array<int, string>
+     */
+    private const CORE_WORK = [
+        'typo3/sysext/', 'gerrit', 'change-id', 'review.typo3.org', 'forge.typo3.org',
+        'typo3 core', 'core patch', 'core contribution',
+    ];
+
+    /**
      * What every tool says first once it has recognised work outside the core.
      *
      * One sentence in one place, because three tools now say it and a caller
@@ -58,6 +72,29 @@ final class Scope
         }
 
         foreach (self::OUTSIDE_CORE as $marker) {
+            if (str_contains($haystack, $marker)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Whether anything in the task actually says this is core work.
+     *
+     * `isOutsideCore()` returning false means no marker was found, which is the
+     * state most tasks are in — "review the TCA of an extension" says nothing
+     * either way. Where an answer would state the core's own process as
+     * applying, that silence is not enough, so this asks for the evidence
+     * rather than for the absence of the opposite.
+     *
+     * @param array<int, string> $paths
+     */
+    public static function isCoreWork(array $paths, string $text = ''): bool
+    {
+        $haystack = mb_strtolower(implode(' ', $paths) . ' ' . $text);
+        foreach (self::CORE_WORK as $marker) {
             if (str_contains($haystack, $marker)) {
                 return true;
             }

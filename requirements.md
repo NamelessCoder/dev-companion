@@ -166,10 +166,17 @@ took before the requirement above was written down, and it will not survive it.
   `typo3_test_run_guide` answered with four unrunnable commands in the same
   session (2026-07-29).
   *Held by:* the two tests above.
-- **R-SCO-3** **open** — Core-only intents such as patch submission are not
-  selected for work that is not core work.
+- **R-SCO-3** Core-only intents such as patch submission are not selected for
+  work that is not core work. They need positive evidence of core work — a
+  `typo3/sysext/` path or the contribution workflow named outright — because
+  the words that match them ("review", "push", "submit") describe maintenance
+  anywhere. Outside the core they are dropped; where nothing says either way
+  they are offered under their condition, never stated.
   *From:* third-party extension maintenance recognised as a Gerrit patch
   submission (2026-07-29).
+  *Held by:* `ScopeTest::maintainingAnExtensionIsNotSubmittingAPatchToTheCore`,
+  `ScopeTest::aCorePathStillMakesTheSameWordAPatchSubmission`,
+  `ScopeTest::inASitePackageThePatchSubmissionIntentIsNotOfferedAtAll`
 - **R-SCO-4** **open** — The backend CSS conventions are answered as what they
   are — the core backend's — and do not match a frontend theme, nor a PHP file
   whose name merely contains "scss".

@@ -673,7 +673,18 @@ final class Tools
         $subject = trim($task . ' ' . $area);
         $paths = $area === '' ? [] : [$area];
         $domains = Domains::detect($paths, $task . ' ' . (self::CHANGE_TYPE_TERMS[$changeType] ?? ''));
-        $intents = TaskIntents::detect($subject . ' ' . $changeType);
+
+        // Several of the conventions below — the changelog, the Gerrit
+        // workflow, the runTests.sh suites — do not exist outside the core, so
+        // handing them over as a checklist for a project extension is worse
+        // than saying the question is outside what this server knows.
+        $outsideCore = Scope::isOutsideCore($paths, $subject);
+
+        $intents = TaskIntents::scoped(
+            TaskIntents::detect($subject . ' ' . $changeType),
+            $outsideCore,
+            Scope::isCoreWork($paths, $subject)
+        );
         $confirmed = TaskIntents::confirmed($intents);
         $conditional = array_values(array_filter(
             $intents,
@@ -682,12 +693,6 @@ final class Tools
 
         $architecture = ArchitectureHints::find($paths, $task, 4);
         $testHints = array_slice(TestSuiteHints::find($subject, $domains), 0, 4);
-
-        // Several of the conventions below — the changelog, the Gerrit
-        // workflow, the runTests.sh suites — do not exist outside the core, so
-        // handing them over as a checklist for a project extension is worse
-        // than saying the question is outside what this server knows.
-        $outsideCore = Scope::isOutsideCore($paths, $subject);
 
         $lines = [];
         if ($outsideCore) {

@@ -140,7 +140,7 @@ final class ToolSchemas
             'intents' => self::listOf(self::object([
                 'id' => self::string(),
                 'title' => self::string(),
-                'confidence' => ['type' => 'string', 'enum' => ['strong', 'weak'], 'description' => 'weak: a word named the subject without naming the work, so the intent only applies under its condition.'],
+                'confidence' => ['type' => 'string', 'enum' => ['strong', 'weak'], 'description' => 'weak: a word named the subject without naming the work, or the intent is a core-only one and nothing in the task says this is core work. Either way it applies only under its condition.'],
                 'condition' => self::string('When a weakly matched intent applies. Empty for a strong match.'),
             ], ['id', 'title', 'confidence', 'condition']), 'The kinds of core work recognized in the task text.'),
             'architectureHints' => self::listOf(self::architectureHintRecord()),

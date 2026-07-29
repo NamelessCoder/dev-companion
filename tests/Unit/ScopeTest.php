@@ -62,6 +62,52 @@ final class ScopeTest extends TestCase
     }
 
     #[Test]
+    public function maintainingAnExtensionIsNotSubmittingAPatchToTheCore(): void
+    {
+        // "review", "push", "submit" describe maintenance work as readily as
+        // they describe Gerrit. Reading one of them as a patch submission put
+        // the entire core contribution workflow into an answer about a
+        // third-party extension. Nothing here says which side this is, so the
+        // intent is offered under its condition rather than stated.
+        $result = Tools::call('typo3_task_guide', [
+            'task' => 'Maintain and extend the third-party TYPO3 extension bk2k/bootstrap-package for '
+                . 'TYPO3 13.4 and 14.3: review TCA, TypoScript, Fluid templates, data processors and '
+                . 'upgrade wizards for compatibility and choose tests',
+        ]);
+
+        $confidence = array_column($result->data['intents'], 'confidence', 'id');
+        self::assertSame('weak', $confidence['submission'] ?? null);
+        self::assertStringContainsString('Possibly also: Patch submission', $result->text);
+    }
+
+    #[Test]
+    public function aCorePathStillMakesTheSameWordAPatchSubmission(): void
+    {
+        $result = Tools::call('typo3_task_guide', [
+            'task' => 'Push the fix for review',
+            'area' => 'typo3/sysext/core/Classes/Utility/GeneralUtility.php',
+        ]);
+
+        $confidence = array_column($result->data['intents'], 'confidence', 'id');
+        self::assertSame('strong', $confidence['submission'] ?? null);
+    }
+
+    #[Test]
+    public function inASitePackageThePatchSubmissionIntentIsNotOfferedAtAll(): void
+    {
+        // There is no Gerrit to submit to, so this is not a weaker match — it
+        // is not one.
+        $result = Tools::call('typo3_task_guide', [
+            'task' => 'Push the fix for review',
+            'area' => 'packages/my_sitepackage/Classes/Controller/EventController.php',
+        ]);
+
+        self::assertTrue($result->data['outsideCore']);
+        self::assertNotContains('submission', array_column($result->data['intents'], 'id'));
+        self::assertStringNotContainsString('Change-Id', implode("\n", $result->data['checklist']));
+    }
+
+    #[Test]
     public function noRunTestsCommandIsHandedToARepositoryThatHasNoRunTests(): void
     {
         // Every suite this guide knows is a Build/Scripts/runTests.sh

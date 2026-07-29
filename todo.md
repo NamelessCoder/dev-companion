@@ -41,7 +41,25 @@ else here was written by someone who already knew what they meant.
 
 ---
 
-Nothing is queued below it. `feedback/` is empty and every item written down so
-far is in `requirements.md`, so the next session's work is whatever the notes it
-finds ask for — or, where there are none, a scenario from `scenarios/` that is
-still marked `gap`.
+## Decide what the project-shaped twin is: a mechanism or a rule for authors
+
+Serves the one note left open,
+`feedback/2026-07-29-180528-project-work-needs-a-second-axis-the-repository.md`,
+trimmed to this half. `core-tests` and `project-extension-tests` are one subject
+answered twice, and that pair exists because a note asked for it rather than
+because anything makes it the rule.
+
+The next concrete step is to count the evidence before building anything: go
+through `knowledge/architecture-hints/` and list the hints whose text would read
+differently for a project — the ones that name `Build/Scripts/runTests.sh`, a
+path below `typo3/sysext/`, or a harness only the mono repository has. If that
+list is two or three, the answer is a rule in `AGENTS.md` for whoever writes the
+next hint. If it is a dozen, it is a field on the hint plus selection by the
+`outsideCore` flag `Scope::isOutsideCore()` already computes, and the note's
+suggestion holds. Write the count into the note or into `decisions.md` either
+way — it is the evidence nobody can reconstruct later.
+
+Below that, nothing is queued: everything else written down so far is in
+`requirements.md`, so the work after it is whatever the notes a session finds
+ask for — or, where there are none, a scenario from `scenarios/` still marked
+`gap`.

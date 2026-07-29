@@ -280,7 +280,8 @@ took before the requirement above was written down, and it will not survive it.
   *From:* `language-files` matching `.xlf` and `trans-unit` but neither "xlf"
   nor "label" nor "language file" (2026-07-29).
   *Held by:* `HintsTest::aQueryAboutLanguageFilesReachesTheLanguageFilesHint`
-- **R-KNW-1** **open** — Upgrade wizards and frontend DataProcessors have
-  architecture hints; both are core subsystems with none.
+- **R-KNW-1** Upgrade wizards and frontend DataProcessors have architecture
+  hints, reachable from the path alone.
   *From:* an extension maintenance task that got generic TCA and Fluid hints and
   nothing for `Classes/Updates/` or `Classes/DataProcessing/` (2026-07-29).
+  *Held by:* `HintsTest::aPathAloneReachesTheHintForTheSubsystemItIsIn`

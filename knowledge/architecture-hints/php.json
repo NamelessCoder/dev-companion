@@ -347,5 +347,54 @@
     "checks": [
       "CI=true ./Build/Scripts/runTests.sh -s functional"
     ]
+  },
+  {
+    "id": "upgrade-wizards",
+    "title": "Upgrade Wizards",
+    "appliesTo": [
+      "Classes/Upgrades/",
+      "Classes/Updates/",
+      "upgrade wizard",
+      "upgradewizard",
+      "upgrade:run",
+      "data migration",
+      "migrate records",
+      "install tool"
+    ],
+    "hints": [
+      "An upgrade wizard implements UpgradeWizardInterface: getTitle(), getDescription(), updateNecessary(), executeUpdate() and getPrerequisites(). Which namespace ships it has moved between branches — read whether the installed core has it below Core/Classes/Upgrades/ or install/Classes/Updates/, and take the attribute and the marker interfaces from the same place.",
+      "Registration is the #[UpgradeWizard('identifier')] attribute on the class, which tags it for the registry. Nothing about a wizard is registered in ext_localconf.php.",
+      "updateNecessary() answers about data, never about a version number: it decides whether the wizard is offered, it is asked again after a run, and a wizard whose data is already migrated returns false. Writing it as \"has this wizard run\" is what makes a migration unrepeatable and a half-finished one invisible.",
+      "A wizard is marked as done after one successful run. Implement RepeatableInterface where it is meant to be run again — a migration over records that keep being created is the case for it.",
+      "State what the wizard needs through getPrerequisites(): DatabaseUpdatedPrerequisite where it works on tables the schema migration creates, ReferenceIndexUpdatedPrerequisite where it relies on the reference index.",
+      "Implement ChattyInterface to report progress through setOutput(), and ConfirmableInterface where the change needs the user's consent before it runs. Both are what makes the wizard usable in `typo3 upgrade:run` as well as in the Install Tool.",
+      "executeUpdate() returns whether it succeeded, and runs without a request: it is invoked from the console and from the Install Tool, so nothing about it may depend on a frontend or backend context."
+    ],
+    "checks": [
+      "CI=true ./Build/Scripts/runTests.sh -s functional"
+    ]
+  },
+  {
+    "id": "frontend-dataprocessors",
+    "title": "Frontend DataProcessors",
+    "appliesTo": [
+      "Classes/DataProcessing/",
+      "dataprocessor",
+      "data processor",
+      "dataProcessing",
+      "FLUIDTEMPLATE",
+      "processedData",
+      "menuprocessor"
+    ],
+    "hints": [
+      "A DataProcessor implements DataProcessorInterface::process($cObj, $contentObjectConfiguration, $processorConfiguration, $processedData) and returns the key/value store it was handed, with its own result added under the name the `as` option gives.",
+      "Register it as a service tagged data.processor with an identifier in Configuration/Services.yaml. TypoScript then names that identifier rather than a class, the way the core's own processors are referenced; a fully qualified class name still resolves, because the container is asked first and the class is instantiated only when it holds no such service.",
+      "Read the processor's own options from $processorConfiguration and through $cObj->stdWrapValue('option', $processorConfiguration, $default), so every option can be set with stdWrap. $contentObjectConfiguration is the whole content object and belongs to its caller.",
+      "Honour the `if` option before doing any work: `if (isset($processorConfiguration['if.']) && !$cObj->checkIf($processorConfiguration['if.'])) { return $processedData; }`. A processor that ignores it runs on every element the TypoScript applies to.",
+      "Return $processedData unchanged where there is nothing to add. A processor is one of a chain, and the next one is handed what this one returned."
+    ],
+    "checks": [
+      "CI=true ./Build/Scripts/runTests.sh -s functional"
+    ]
   }
 ]

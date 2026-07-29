@@ -38,7 +38,7 @@
       "source": "knowledge/test-suite-hints.json, typo3://core/typo3-core-scripts"
     },
     {
-      "topic": "Core architecture conventions: DI, events and hooks, TCA and FormEngine, FormEngine data providers, DataHandler, routing, Fluid templates and ViewHelpers, TypoScript site sets and TSconfig, language files, testing strategy",
+      "topic": "Core architecture conventions: DI, events and hooks, TCA and FormEngine, FormEngine data providers, DataHandler, routing, Fluid templates and ViewHelpers, TypoScript site sets and TSconfig, language files, upgrade wizards, frontend DataProcessors, testing strategy",
       "depth": "Conventions per subsystem, matched by path or topic. It describes how the core is built, never what your checkout contains.",
       "tools": [
         "typo3_architecture_lookup",

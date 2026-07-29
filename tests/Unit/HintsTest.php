@@ -187,6 +187,20 @@ final class HintsTest extends TestCase
     }
 
     #[Test]
+    public function aPathAloneReachesTheHintForTheSubsystemItIsIn(): void
+    {
+        // Both were subsystems with no hint at all, and an extension
+        // maintenance task got generic TCA and Fluid advice for them.
+        $reached = static fn(string $path): array => array_column(
+            ArchitectureHints::find([$path], '', 6)['matchedHints'],
+            'id'
+        );
+
+        self::assertContains('upgrade-wizards', $reached('Classes/Updates/AccordionElementUpdate.php'));
+        self::assertContains('frontend-dataprocessors', $reached('Classes/DataProcessing/CsvFileProcessor.php'));
+    }
+
+    #[Test]
     public function proseIsOnlyAFallbackWhenNoStructuredHintMatched(): void
     {
         $matched = ArchitectureHints::find(['typo3/sysext/core/Classes/DataHandling/DataHandler.php'], 'DataHandler', 6);

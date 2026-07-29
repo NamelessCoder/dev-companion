@@ -7,6 +7,7 @@ namespace Typo3CmsMcp\Tests\Unit;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Typo3CmsMcp\Feedback;
+use Typo3CmsMcp\Instance;
 use Typo3CmsMcp\Paths;
 
 /**
@@ -27,6 +28,7 @@ final class FeedbackTest extends TestCase
 
     protected function tearDown(): void
     {
+        Instance::discoverFrom(null);
         foreach (glob(Paths::feedback() . '/*.md') ?: [] as $file) {
             if (str_contains((string) file_get_contents($file), self::MARKER)) {
                 unlink($file);
@@ -65,6 +67,36 @@ final class FeedbackTest extends TestCase
         self::assertSame('feedback/' . basename($file), $file);
         self::assertStringNotContainsString('..', $file);
         self::assertFileExists(Paths::feedback() . '/' . basename($file));
+    }
+
+    #[Test]
+    public function aNoteSaysWhichDirectoryItWasWrittenFrom(): void
+    {
+        // What the stdio entrypoint does at startup: the session's own working
+        // directory, which is what makes the note checkable later.
+        Instance::discoverFrom('/home/somebody/projects/a-site');
+
+        $file = Feedback::record(['observation' => self::MARKER . ' asked in a project']);
+
+        self::assertStringContainsString(
+            'directory: /home/somebody/projects/a-site',
+            (string) file_get_contents(Paths::root() . '/' . $file)
+        );
+    }
+
+    #[Test]
+    public function aNoteWithoutACallerDirectoryClaimsNone(): void
+    {
+        // The HTTP case: no entrypoint handed a directory in, so the server's
+        // own working directory is not passed off as the caller's.
+        Instance::discoverFrom(null);
+
+        $file = Feedback::record(['observation' => self::MARKER . ' asked over http']);
+
+        self::assertStringNotContainsString(
+            'directory:',
+            (string) file_get_contents(Paths::root() . '/' . $file)
+        );
     }
 
     #[Test]

@@ -66,7 +66,7 @@ final class Feedback
         }
 
         $file = self::uniquePath($directory, $observation);
-        $document = self::render($observation, $category, $tool, $query, $suggestion);
+        $document = self::render($observation, $category, $tool, $query, $suggestion, self::origin());
 
         if (file_put_contents($file, $document) === false) {
             throw new \RuntimeException(sprintf('Cannot write the feedback note: %s', $file));
@@ -154,12 +154,34 @@ final class Feedback
         ];
     }
 
+    /**
+     * Where the note was written from: the working directory of the session
+     * that left it.
+     *
+     * A note is read long after the session that produced it has ended, and
+     * "the icon lookup returned nothing" means something different depending on
+     * which project it was asked in. The directory is the one thing that says
+     * which — it is how the note gets checked against the installation it came
+     * from instead of against whatever is at hand.
+     *
+     * Only ever the directory an entrypoint handed to Instance, so a note left
+     * through an endpoint that has no caller directory simply carries none
+     * rather than that endpoint's own.
+     */
+    private static function origin(): string
+    {
+        $startedFrom = Instance::startedFrom();
+
+        return $startedFrom === null ? '' : $startedFrom;
+    }
+
     private static function render(
         string $observation,
         string $category,
         string $tool,
         string $query,
         string $suggestion,
+        string $origin,
     ): string {
         $frontMatter = [
             'date: ' . date('c'),
@@ -168,6 +190,9 @@ final class Feedback
         ];
         if ($tool !== '') {
             $frontMatter[] = 'tool: ' . $tool;
+        }
+        if ($origin !== '') {
+            $frontMatter[] = 'directory: ' . $origin;
         }
 
         $document = "---\n" . implode("\n", $frontMatter) . "\n---\n\n";

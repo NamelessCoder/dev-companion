@@ -62,6 +62,22 @@ final class Instance
         self::$resolved = false;
     }
 
+    /**
+     * The working directory the server was started in, when an entrypoint
+     * handed one in, and null otherwise.
+     *
+     * Unlike root() this says nothing about an installation — it is only where
+     * the calling session was, which is worth knowing even when nothing was
+     * found there. The same restriction applies as everywhere else in this
+     * class: it is the agent's directory only because the stdio entrypoint says
+     * so, so an endpoint that never calls discoverFrom() gets null rather than
+     * its own document root.
+     */
+    public static function startedFrom(): ?string
+    {
+        return self::$startingDirectory;
+    }
+
     /** Whether an installation was found to read from. */
     public static function isAvailable(): bool
     {

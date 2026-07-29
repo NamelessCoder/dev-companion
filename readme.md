@@ -224,6 +224,12 @@ file under `feedback/`; `typo3_feedback_list` reads them back, newest first. A
 note is closed by deleting it in the commit that implements the improvement, so
 `feedback/` only ever holds open items.
 
+Each note carries the working directory the session that left it ran in, as
+`directory:` in its front matter, so a gap can be checked against the project it
+was found in rather than against whatever is at hand. It is the same directory
+the stdio entrypoint hands to instance discovery; a note left over an endpoint
+that has none carries none.
+
 Both tools exist **only in a standalone checkout**. Installed as a Composer
 dependency the package lives in `vendor/`, where anything written would be lost
 on the next `composer install`; there the server stays strictly read-only and

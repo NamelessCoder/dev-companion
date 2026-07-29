@@ -162,8 +162,13 @@
       "instead": "Use the Gerrit web UI or git. The local side of the workflow — pushing, amending, backporting — is covered by typo3://core/typo3-gerrit-workflow."
     },
     {
-      "topic": "Work outside TYPO3 core contribution: site setup, project or third-party extension development, configuring an installation with TypoScript, upgrading an installation",
-      "why": "The knowledge base is scoped to contributing to the core. Shipping TypoScript defaults from a system extension is core work and is covered; writing TypoScript to configure a site is not, and neither is a package under packages/ or an extension outside typo3/sysext/.",
+      "topic": "What someone else's extension does: the API, the options and the documentation of a package the core does not ship",
+      "why": "Writing an extension is covered — the extension author is one of the three audiences this exists for, and the registration files, the subsystem conventions, the sitepackage layout and the test suite are all here. What is not here is the inside of somebody else's package: it has its own API, its own release cycle and its own documentation, and none of them is read by this server. Whether a name belongs to the core at all is a different question, and typo3_system_extension_lookup answers it.",
+      "instead": "Read that extension's own documentation. What an installed extension registers — yours or a third party's — is answered by typo3_extension_scope from the files it ships."
+    },
+    {
+      "topic": "Running an installation: server and container setup, deployment, backups, the editorial use of the backend",
+      "why": "The knowledge base is about what is written into a TYPO3 project — its extensions, its configuration, its templates and its tests. Operating the installation around it is a different subject with different sources.",
       "instead": "Use the TYPO3 documentation at https://docs.typo3.org/."
     }
   ],

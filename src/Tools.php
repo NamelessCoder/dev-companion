@@ -428,7 +428,12 @@ final class Tools
             . 'decides, and where there is none nothing is filtered.';
 
         $lines[] = '';
-        $lines[] = 'Deliberately not covered:';
+        // What the list is worth read from the other side. A caller cannot tell
+        // a boundary from a gap by the size of an answer, and the two ask for
+        // opposite reactions: leave, or say what was missing.
+        $lines[] = 'Deliberately not covered — and this list is the boundary: a subject that is not on it is in '
+            . 'scope, so a thin answer to it is a gap in the knowledge base rather than a limit of it.'
+            . (Feedback::isAvailable() ? ' Record one with typo3_feedback_record instead of going elsewhere.' : '');
         foreach ($scope['doesNotCover'] as $entry) {
             $lines[] = '## ' . $entry['topic'];
             $lines[] = $entry['why'];
@@ -914,7 +919,7 @@ final class Tools
         $lines = [];
         if ($outsideCore) {
             $lines[] = Scope::OUTSIDE_CORE_NOTICE . ' Take what follows as conventions that may transfer, not as '
-                . 'a checklist for this task, and use https://docs.typo3.org/ for extension development. '
+                . 'a checklist for this task. '
                 . 'typo3_server_scope states the boundary.';
             $lines[] = '';
         }
@@ -1294,8 +1299,9 @@ final class Tools
             return ToolResult::create(
                 Scope::OUTSIDE_CORE_NOTICE . ' Build/Scripts/runTests.sh is part of the core repository, so the '
                 . 'suites this guide knows cannot be run from here and are left out rather than handed over. '
-                . 'For testing an extension or a site package, see https://docs.typo3.org/. typo3_server_scope '
-                . 'states the boundary.',
+                . 'What such a repository needs instead — assembling a phpunit suite of its own, and the browser '
+                . 'tests that go with it — is typo3_architecture_lookup with id=project-extension-tests and '
+                . 'id=browser-tests. typo3_server_scope states the boundary.',
                 [
                     'query' => $query,
                     'paths' => $paths,

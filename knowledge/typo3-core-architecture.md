@@ -151,9 +151,9 @@ official documentation or nearby core code over broad framework advice.
 
 ## TypoScript, Site Sets, and TSconfig
 
-Configuring an installation with TypoScript is out of this server's scope.
-Shipping TypoScript defaults *from* a system extension is core contribution work,
-and this is how it is done.
+This is how an extension ships TypoScript — a system extension and a project's
+own alike. Configuring a single installation is where this stops being a
+convention and becomes that site's own decision.
 
 - A site set is how a system extension ships TypoScript: a directory
   `Configuration/Sets/<SetName>/` whose `config.yaml` carries a composer-style

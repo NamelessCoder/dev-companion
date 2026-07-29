@@ -331,6 +331,16 @@ took before the requirement above was written down, and it will not survive it.
   *Held by:* `ScopeTest::maintainingAnExtensionIsNotSubmittingAPatchToTheCore`,
   `ScopeTest::aCorePathStillMakesTheSameWordAPatchSubmission`,
   `ScopeTest::inASitePackageThePatchSubmissionIntentIsNotOfferedAtAll`
+- **R-SCO-8** The declared scope says what the server does, and the not-covered
+  list is exhaustive: a subject that is not on it is in scope, so a thin answer
+  to it is a gap rather than a boundary. The two ask for opposite reactions from
+  a caller — leave for the documentation, or say what was missing — and nothing
+  else in an answer distinguishes them.
+  *From:* `doesNotCover` still excluding "project or third-party extension
+  development" and "upgrading an installation" while both had architecture
+  hints of their own, reported as a signal that cost confidence rather than time
+  (2026-07-29).
+  *Held by:* `ScopeTest::whatTheScopeExcludesIsNotWhatTheServerAnswers`
 - **R-SCO-4** The backend CSS conventions are answered as what they are — the
   backend interface's — and do not match a frontend theme, nor a PHP file whose
   name merely contains "scss". They are named `Backend CSS` and

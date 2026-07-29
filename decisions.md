@@ -11,6 +11,37 @@ reconsider does not belong here. When an assumption is later disproved, the
 entry stays and gains a **Corrected** line: the wrong assumption is the useful
 part, because it names the place where the next one is likely to sit.
 
+## 2026-07-29 — Why "project work is out of scope" kept coming back
+
+It has been settled several times that the extension author and the site
+developer are audiences of this server, and the claim that they are not kept
+reappearing. Where it came from, found by reading every place that states a
+boundary:
+
+- `knowledge/server-scope.json` carried it as a `doesNotCover` entry — "The
+  knowledge base is scoped to contributing to the core" — and that entry is the
+  canonical text anyone writing about scope copies from.
+- `knowledge/typo3-core-architecture.md` opened its TypoScript section with
+  "Configuring an installation with TypoScript is out of this server's scope".
+  It is a knowledge document, so the sentence was also handed to callers.
+- `Scope::OUTSIDE_CORE_NOTICE` said the server "only knows the core's own
+  conventions". Every tool opens with it, so the framing was reinforced in the
+  answers themselves.
+- `requirements.md` says the opposite in R-AUD-1 and R-AUD-2 and flags the
+  conflict — but R-AUD-2 is **open**, and nothing decided which side wins.
+
+- **Decided:** all three prose sources now say what is actually true, and the
+  contradiction is guarded: `ScopeTest::whatTheScopeExcludesIsNotWhatTheServerAnswers`
+  fails if the declared scope excludes a subject that has a hint.
+- **Assumed:** the remaining pull is the name `outsideCore`. It is a scope word
+  for what is really a payload rule — "leave out what only the core repository
+  has" — and each session that touches it re-derives a scope sentence from the
+  name.
+- **Would falsify it:** the claim reappearing anyway, in a place the guard does
+  not read — a tool description, the readme, a hint. Then the flag has to be
+  renamed to what it decides (`coreRepositoryOnly`, or the audience of
+  R-AUD-2), rather than the sentences being corrected one at a time.
+
 ## 2026-07-29 — A hint about typo3/testing-framework is verified against tags, not against the checkouts
 
 `project-extension-tests` is the first hint whose subject is not the core: the

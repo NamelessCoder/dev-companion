@@ -51,8 +51,9 @@ final class Scope
      * next. Each tool appends what follows from it for its own payload.
      */
     public const OUTSIDE_CORE_NOTICE = 'This reads as work outside the TYPO3 core — a project or third-party '
-        . 'extension. This server only knows the core\'s own conventions, and several of them (the changelog, '
-        . 'the Gerrit workflow, the runTests.sh suites) have no counterpart there.';
+        . 'extension. That is covered here, as far as the core\'s own conventions reach into it; what belongs to '
+        . 'the core repository alone (the changelog, the Gerrit workflow, the runTests.sh suites) has no '
+        . 'counterpart there and is left out of the answer rather than handed over.';
 
     /**
      * Directories an extension is laid out in. A path that begins with one of

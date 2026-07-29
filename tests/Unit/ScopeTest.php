@@ -7,6 +7,7 @@ namespace Typo3CmsMcp\Tests\Unit;
 use PHPUnit\Framework\Attributes\After;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
+use Typo3CmsMcp\ArchitectureHints;
 use Typo3CmsMcp\Instance;
 use Typo3CmsMcp\Scope;
 use Typo3CmsMcp\Tests\Support\TemporaryInstallation;
@@ -171,6 +172,27 @@ final class ScopeTest extends TestCase
         self::assertTrue($result->data['outsideCore']);
         self::assertNotContains('submission', array_column($result->data['intents'], 'id'));
         self::assertStringNotContainsString('Change-Id', implode("\n", $result->data['checklist']));
+    }
+
+    #[Test]
+    public function whatTheScopeExcludesIsNotWhatTheServerAnswers(): void
+    {
+        // The declared scope still ruled out project and extension work, and
+        // upgrading an installation, while both had hints of their own. A
+        // caller cannot tell a boundary from a gap by the size of an answer,
+        // and the two ask for opposite reactions.
+        $excluded = mb_strtolower(implode("\n", array_column(Scope::read()['doesNotCover'], 'topic')));
+
+        self::assertNotNull(ArchitectureHints::byId('sitepackage-layout'));
+        self::assertStringNotContainsString('extension development', $excluded);
+        self::assertNotNull(ArchitectureHints::byId('installation-upgrade'));
+        self::assertStringNotContainsString('upgrading an installation', $excluded);
+
+        // And the list says what it is worth read from the other side.
+        self::assertStringContainsString(
+            'gap in the knowledge base',
+            Tools::call('typo3_server_scope', [])->text
+        );
     }
 
     #[Test]

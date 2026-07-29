@@ -100,6 +100,15 @@
       ],
       "source": "the discovered TYPO3 installation",
       "provenance": "installation"
+    },
+    {
+      "topic": "The project around the installation: its extensions, its sites and their sets, its own commands",
+      "depth": "Read from the repository's files — composer.json, package.json, config/sites — so it answers on a fresh clone, before anything is installed or migrated. It describes what is there, and does not judge it.",
+      "tools": [
+        "typo3_project_scope"
+      ],
+      "source": "the discovered project",
+      "provenance": "installation"
     }
   ],
   "doesNotCover": [
@@ -217,6 +226,10 @@
     {
       "when": "Unsure which Fluid namespace prefixes a template may use undeclared",
       "call": "typo3_fluid_namespace_list"
+    },
+    {
+      "when": "About to recommend a command, or asking what this project consists of",
+      "call": "typo3_project_scope"
     }
   ]
 }

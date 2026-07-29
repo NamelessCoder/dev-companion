@@ -186,6 +186,11 @@ name already says what shape the answer has.
   `transferable` for a convention that holds wherever TYPO3 is written,
   `installation` for what is read from the installation itself. The place to
   start when it is unclear whether a question can be answered here at all.
+- `typo3_project_scope`: describes the project around the discovered
+  installation — its TYPO3 and PHP constraints, the extensions that are its own,
+  the sites it configures with the site sets they depend on, and the commands it
+  declares in `composer.json` and `package.json`. Files only, so it answers on a
+  fresh clone; and the commands it lists are the ones that exist there.
 - `typo3_rule_lookup`: searches local TYPO3 core rules and script notes, ranked
   by the query terms that separate one section from the rest rather than by
   overlap, and naming the architecture hints that match the same question — the

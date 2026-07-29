@@ -1,0 +1,194 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Typo3CmsMcp;
+
+use Symfony\Component\Yaml\Yaml;
+
+/**
+ * What the project around the discovered installation consists of, read from
+ * its files.
+ *
+ * The knowledge base describes TYPO3; this describes the repository the caller
+ * is standing in — which extensions are its own, which sites it configures,
+ * which commands it declares. None of that could be bundled, and all of it is
+ * what an answer has to be right about before it can recommend anything: a
+ * check that does not exist here is worse than no check.
+ *
+ * Files only. No console, no database, nothing started — the same rule the rest
+ * of this server follows, and the reason this works on a fresh clone.
+ */
+final class Project
+{
+    /** The extension is the repository's own, or one of its path repositories. */
+    public const ORIGIN_PROJECT = 'project';
+
+    /** Installed as a dependency, and not a TYPO3 system extension. */
+    public const ORIGIN_THIRD_PARTY = 'third-party';
+
+    /**
+     * @return array{
+     *     root: string,
+     *     kind: string,
+     *     typo3Version: ?string,
+     *     phpConstraint: ?string,
+     *     coreConstraint: ?string,
+     *     extensions: array<int, array{key: string, path: string, origin: string}>,
+     *     sites: array<int, array{identifier: string, base: string, rootPageId: ?int, sets: array<int, string>, languages: array<int, string>}>,
+     *     commands: array<int, array{command: string, source: string}>
+     * }|null
+     */
+    public static function describe(): ?array
+    {
+        $instance = Instance::describe();
+        if ($instance === null) {
+            return null;
+        }
+
+        $root = $instance['root'];
+        $manifest = self::json($root . '/composer.json');
+
+        return [
+            'root' => $root,
+            'kind' => $instance['kind'],
+            'typo3Version' => Instance::typo3Version(),
+            'phpConstraint' => self::requirement($manifest, 'php'),
+            'coreConstraint' => self::requirement($manifest, 'typo3/cms-core'),
+            'extensions' => self::extensions($root),
+            'sites' => self::sites($root),
+            'commands' => self::commands($root, $manifest),
+        ];
+    }
+
+    /**
+     * The extensions that are not TYPO3's own, with where they come from.
+     *
+     * A system extension is TYPO3; everything else is what this project brought
+     * with it, and the ones inside the repository are the ones it is actually
+     * working on.
+     *
+     * @return array<int, array{key: string, path: string, origin: string}>
+     */
+    private static function extensions(string $root): array
+    {
+        $extensions = [];
+        foreach (Instance::packages() as $key => $path) {
+            if (Instance::isSystemExtension($key) === true) {
+                continue;
+            }
+            $extensions[] = [
+                'key' => $key,
+                'path' => self::relative($root, $path),
+                'origin' => str_contains(str_replace('\\', '/', $path), '/vendor/')
+                    ? self::ORIGIN_THIRD_PARTY
+                    : self::ORIGIN_PROJECT,
+            ];
+        }
+
+        return $extensions;
+    }
+
+    /**
+     * The sites this project configures, with the sets each of them depends on.
+     *
+     * The dependencies are where a site says which TypoScript it gets, so they
+     * are the first thing to look at when a template renders nothing.
+     *
+     * @return array<int, array{identifier: string, base: string, rootPageId: ?int, sets: array<int, string>, languages: array<int, string>}>
+     */
+    private static function sites(string $root): array
+    {
+        $sites = [];
+        foreach (glob($root . '/config/sites/*/config.yaml') ?: [] as $file) {
+            $configuration = self::yaml($file);
+            $languages = [];
+            foreach ($configuration['languages'] ?? [] as $language) {
+                if (is_array($language)) {
+                    $languages[] = (string) ($language['title'] ?? $language['locale'] ?? '');
+                }
+            }
+
+            $sites[] = [
+                'identifier' => basename(dirname($file)),
+                'base' => (string) ($configuration['base'] ?? ''),
+                'rootPageId' => isset($configuration['rootPageId']) ? (int) $configuration['rootPageId'] : null,
+                'sets' => array_map('strval', $configuration['dependencies'] ?? []),
+                'languages' => $languages,
+            ];
+        }
+
+        return $sites;
+    }
+
+    /**
+     * The commands this repository declares, which are the only ones worth
+     * recommending in it.
+     *
+     * Composer scripts and npm scripts are where a project writes down what it
+     * runs; the core's own runTests.sh suites are not there, which is the whole
+     * point of asking.
+     *
+     * @param array<string, mixed> $manifest
+     * @return array<int, array{command: string, source: string}>
+     */
+    private static function commands(string $root, array $manifest): array
+    {
+        $commands = [];
+        foreach (array_keys($manifest['scripts'] ?? []) as $name) {
+            $commands[] = ['command' => 'composer ' . $name, 'source' => 'composer.json'];
+        }
+        foreach (array_keys(self::json($root . '/package.json')['scripts'] ?? []) as $name) {
+            $commands[] = ['command' => 'npm run ' . $name, 'source' => 'package.json'];
+        }
+
+        return $commands;
+    }
+
+    /** @param array<string, mixed> $manifest */
+    private static function requirement(array $manifest, string $package): ?string
+    {
+        $constraint = $manifest['require'][$package] ?? null;
+
+        return is_string($constraint) ? $constraint : null;
+    }
+
+    /** @return array<string, mixed> */
+    private static function json(string $file): array
+    {
+        if (!is_file($file)) {
+            return [];
+        }
+        $decoded = json_decode((string) file_get_contents($file), true);
+
+        return is_array($decoded) ? $decoded : [];
+    }
+
+    /**
+     * A site configuration, or an empty one when it cannot be read.
+     *
+     * A broken config.yaml is a state a project is genuinely in — mid-edit, or
+     * with an environment placeholder a parser rejects — and the answer is the
+     * other sites rather than an exception.
+     *
+     * @return array<string, mixed>
+     */
+    private static function yaml(string $file): array
+    {
+        try {
+            $parsed = Yaml::parseFile($file);
+        } catch (\Throwable) {
+            return [];
+        }
+
+        return is_array($parsed) ? $parsed : [];
+    }
+
+    private static function relative(string $root, string $path): string
+    {
+        $path = str_replace('\\', '/', $path);
+        $root = str_replace('\\', '/', $root) . '/';
+
+        return str_starts_with($path, $root) ? substr($path, strlen($root)) : $path;
+    }
+}

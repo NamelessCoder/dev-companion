@@ -36,6 +36,7 @@ final class ToolSchemas
             'typo3_configuration_lookup' => self::configurationLookup(),
             'typo3_backend_module_lookup' => self::backendModuleLookup(),
             'typo3_icon_lookup' => self::iconLookup(),
+            'typo3_project_scope' => self::projectScope(),
             'typo3_catalog_scope' => self::catalogScope(),
             'typo3_commit_message_guide' => self::commitMessageGuide(),
             'typo3_feedback_record' => self::feedbackRecord(),
@@ -388,6 +389,36 @@ final class ToolSchemas
             'domain' => self::nullableString('The translation domain it resolves to. Null when the path names no extension, and also when the installation being read is too old to resolve domains at all — there the full LLL:EXT: reference is the answer.'),
             'domainOnNewerVersions' => self::nullableString('Set only in that second case: what the domain would be on a version that has them. It is not usable on this installation.'),
         ], ['path', 'domain']);
+    }
+
+    /** @return array<string, mixed> */
+    private static function projectScope(): array
+    {
+        return self::object([
+            'root' => self::nullableString('Absolute path of the project. Null when there is no installation to describe.'),
+            'kind' => self::string('core-checkout or composer-project.'),
+            'typo3Version' => self::nullableString('The TYPO3 version installed here, read from the core package.'),
+            'phpConstraint' => self::nullableString('What composer.json requires of PHP.'),
+            'coreConstraint' => self::nullableString('What it requires of typo3/cms-core.'),
+            'extensions' => self::listOf(self::object([
+                'key' => self::string(),
+                'path' => self::string('Relative to the project root.'),
+                'origin' => ['type' => 'string', 'enum' => ['project', 'third-party'], 'description' => 'project: inside the repository, so what it is working on. third-party: installed as a dependency.'],
+            ], ['key', 'path', 'origin']), 'Extensions that are not TYPO3 system extensions.'),
+            'sites' => self::listOf(self::object([
+                'identifier' => self::string(),
+                'base' => self::string(),
+                'rootPageId' => ['type' => ['integer', 'null']],
+                'sets' => self::listOf(self::string(), 'The site sets this site depends on, by their composer-style name.'),
+                'languages' => self::listOf(self::string()),
+            ], ['identifier', 'base', 'rootPageId', 'sets', 'languages'])),
+            'commands' => self::listOf(self::object([
+                'command' => self::string('Ready to run in this repository.'),
+                'source' => self::string('composer.json or package.json.'),
+            ], ['command', 'source']), 'What this repository declares. A check that is not here does not exist here.'),
+            'answeredBy' => self::answeredBy(),
+            'unavailable' => self::unavailable(),
+        ], ['root', 'extensions', 'sites', 'commands', 'answeredBy']);
     }
 
     /** @return array<string, mixed> */

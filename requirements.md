@@ -194,6 +194,20 @@ them, this section wins and the other one is what needs rewriting.
   and the `describesVersion` field the component schema requires
   (`ToolContractTest`).
 
+## Project — the repository the caller is standing in
+
+- **R-PRJ-1** The project around the installation is describable from its files
+  alone: its TYPO3 and PHP constraints, the extensions that are its own rather
+  than TYPO3's, the sites it configures with the sets they depend on, and the
+  commands it declares. No console, no database, so it answers on a fresh clone.
+  *From:* three sessions asking for a project mode, and a guide that recommended
+  `runTests.sh` to repositories that declare `composer t3g:cgl` (2026-07-29).
+  *Held by:* `ProjectTest::theProjectIsDescribedFromItsFilesAlone`,
+  `ProjectTest::withoutAnInstallationThereIsNoProjectToDescribe`
+- **R-PRJ-2** One unreadable site configuration costs that site and no other. A
+  repository mid-edit is a state it is genuinely in.
+  *Held by:* `ProjectTest::aSiteConfigurationThatCannotBeParsedCostsThatSiteAndNoOther`
+
 ## Scope — core conventions where they apply, and nowhere else
 
 These four are how R-AUD-1 and R-AUD-2 are met in the tools that exist today.

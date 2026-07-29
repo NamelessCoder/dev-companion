@@ -222,6 +222,14 @@ final class Tools
                 ],
             ],
             [
+                'name' => 'typo3_project_scope',
+                'description' => 'Describe the project around the TYPO3 installation this server was started in: its TYPO3 and PHP constraints, the extensions that are its own rather than TYPO3\'s, the sites it configures with the site sets each depends on, and the commands it declares in composer.json and package.json. Read from files only — no console, no database — so it answers on a fresh clone. Call it before recommending a check: the commands listed here are the ones that exist in this repository.',
+                'inputSchema' => [
+                    'type' => 'object',
+                    'properties' => new \stdClass(),
+                ],
+            ],
+            [
                 'name' => 'typo3_catalog_scope',
                 'description' => 'Report which TYPO3 core revision the bundled catalogs were taken from, what they cover, and how to re-check them against a checkout. Call this to judge whether a catalog miss is authoritative for the branch you are working on. Where an installation is being read, the answer contrasts its TYPO3 version with the snapshot.',
                 'inputSchema' => [
@@ -327,6 +335,7 @@ final class Tools
             'typo3_configuration_lookup' => self::configurationLookup($args),
             'typo3_backend_module_lookup' => self::backendModuleLookup($args),
             'typo3_icon_lookup' => self::iconLookup($args),
+            'typo3_project_scope' => self::projectScope(),
             'typo3_catalog_scope' => self::catalogScope($args),
             'typo3_commit_message_guide' => self::commitMessageGuide($args),
             'typo3_feedback_record' => self::feedbackRecord($args),
@@ -1506,6 +1515,66 @@ final class Tools
             'checklist' => $checklist,
             'catalog' => self::catalogRecord(),
         ]);
+    }
+
+    /**
+     * What the repository around the installation consists of.
+     *
+     * The knowledge base describes TYPO3; this describes the project, because
+     * a recommendation is only worth as much as its fit: a check that is not
+     * declared here does not exist here, whatever the core does with the same
+     * name.
+     */
+    private static function projectScope(): ToolResult
+    {
+        $project = Project::describe();
+        if ($project === null) {
+            return self::consoleUnavailable(
+                'no TYPO3 installation was found to describe',
+                ['root' => null, 'extensions' => [], 'sites' => [], 'commands' => []],
+            );
+        }
+
+        $lines = [sprintf(
+            '%s — %s, TYPO3 %s, PHP %s',
+            $project['root'],
+            $project['kind'],
+            $project['typo3Version'] ?? 'version unknown',
+            $project['phpConstraint'] ?? 'unconstrained',
+        )];
+
+        $lines[] = '';
+        $lines[] = $project['extensions'] === []
+            ? 'Extensions: none beyond TYPO3\'s own.'
+            : 'Extensions that are not TYPO3\'s own:';
+        foreach ($project['extensions'] as $extension) {
+            $lines[] = sprintf('- %s (%s) — %s', $extension['key'], $extension['origin'], $extension['path']);
+        }
+
+        $lines[] = '';
+        $lines[] = $project['sites'] === []
+            ? 'Sites: none configured below config/sites/.'
+            : 'Sites, with the sets each one depends on:';
+        foreach ($project['sites'] as $site) {
+            $lines[] = sprintf(
+                '- %s%s%s%s',
+                $site['identifier'],
+                $site['base'] === '' ? '' : ' at ' . $site['base'],
+                $site['rootPageId'] === null ? '' : ', root page ' . $site['rootPageId'],
+                $site['sets'] === [] ? ', no sets' : ', sets: ' . implode(', ', $site['sets']),
+            );
+        }
+
+        $lines[] = '';
+        $lines[] = $project['commands'] === []
+            ? 'This repository declares no commands of its own in composer.json or package.json. What to run is '
+                . 'then whatever its CI configuration does.'
+            : 'Commands this repository declares — these exist here, the core\'s runTests.sh suites do not:';
+        foreach ($project['commands'] as $command) {
+            $lines[] = sprintf('- %s (%s)', $command['command'], $command['source']);
+        }
+
+        return ToolResult::create(implode("\n", $lines), $project + ['answeredBy' => 'packages']);
     }
 
     /** @param array<string, mixed> $args */

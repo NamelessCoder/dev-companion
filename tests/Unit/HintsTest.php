@@ -352,6 +352,23 @@ final class HintsTest extends TestCase
     }
 
     #[Test]
+    public function whereSomethingGoesInTheRepositoryIsAnsweredToo(): void
+    {
+        // The extension was answered and the repository around it was not, so a
+        // project invented the location of its phpunit configurations, its
+        // browser suite and its scripts. The load-bearing rule is which of the
+        // two units a thing belongs to.
+        $result = ArchitectureHints::find([], 'how do I structure the repository around my sitepackage', 6);
+        self::assertContains('project-repository-layout', array_column($result['matchedHints'], 'id'));
+
+        $hint = ArchitectureHints::byId('project-repository-layout');
+        self::assertNotNull($hint);
+        $text = implode("\n", array_column($hint['hints'], 'text'));
+        self::assertStringContainsString('config/sites/', $text);
+        self::assertStringContainsString('composer.json and package.json', $text, 'nothing else says how a project is run');
+    }
+
+    #[Test]
     public function whereBackendLayoutsGoIsAnsweredWithTheConditionItDependsOn(): void
     {
         // The extension-level directory was stated as the rule, read off a

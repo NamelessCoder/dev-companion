@@ -95,7 +95,46 @@
         "text": "The language files are split by who reads them — the frontend messages, the backend field labels, the backend layout titles, the content element previews. Each file is its own translation domain, and the domain is what a label is referenced by, so the split is what makes the references readable.",
         "since": 14
       },
+      "All of this is the extension. What sits around it in a project — where the browser tests go, what belongs in Build/, which scripts the repository exposes — is its own subject, because the core has no answer for it: it is not a project. That is the project repository layout hint.",
       "page.<n> =< lib.fluidPage is a reference and not a copy: it is resolved while the page renders, out of the merged setup, so a data processor added to lib.fluidPage in a file that is imported later still arrives. The copy operator < is the one where the order of the imports decides what the object ends up holding."
+    ],
+    "checks": []
+  },
+  {
+    "id": "project-repository-layout",
+    "title": "How a TYPO3 Project Repository Is Laid Out",
+    "appliesTo": [
+      "project structure",
+      "project layout",
+      "repository layout",
+      "repository structure",
+      "structure the repository",
+      "monorepo",
+      "project repository",
+      "project root",
+      "where does this go",
+      "where do the tests go",
+      "where tests live",
+      "Build/",
+      "composer scripts",
+      "npm scripts",
+      "package.json",
+      "gitignore",
+      "config/sites/",
+      "deployment",
+      "playwright.config.ts",
+      "project setup"
+    ],
+    "hints": [
+      "A project has two units and the answers differ per unit. The extension is a package: it can be required, tested and shipped on its own, and everything that is only true of it lives inside it. The repository around it is what gets deployed — the installation's configuration, the build tooling, the suites that need a running site. The core is the reference for the first one and no reference at all for the second, because the core is not a project.",
+      "Which unit something belongs to has a test: could the extension still be installed into a different project and be tested there? Everything that survives that question belongs in the extension. So the PHP tests do — a functional test builds its own instance per test class and exercises the extension — and their phpunit configurations with them, because a suite whose configuration lives one repository up cannot run anywhere else. How that harness is assembled is the project extension tests hint.",
+      "The browser tests are the other half and belong to the repository. They run against the site as it is served, with its content, its site configuration and its built assets — that is a property of this installation, not of the extension. Merging the two costs the extension its independence and gains nothing: the two suites do not share a single fixture.",
+      "Build/ at the project root is for what runs before or around the site rather than in it: the Playwright configuration and its specs, the static analysis configuration, a one-off script that seeds an installation. None of it is deployed, none of it belongs to a package, and keeping it in one directory is what keeps the root readable.",
+      "How anything is run is answered by the scripts in composer.json and package.json, and nowhere else — there is no runTests.sh here, and a colleague or an agent reads exactly those. Name them after what they do rather than after the tool behind them (test:unit, test:functional, test:e2e, with test running what needs nothing external), so the entry point survives the tool being replaced. typo3_project_scope reads them back.",
+      "A suite that needs a database or a base URL takes it from the environment, with the defaults in the configuration file itself. Then a checkout runs the suite with no setup, and CI overrides the four or five variables it has to — the alternative is a file everyone edits and nobody commits.",
+      "The installation's own site configuration is config/sites/<identifier>/config.yaml at the project root, which is where TYPO3 reads it from. What a sitepackage ships in Initialisation/Site/<identifier>/ is a seed for an installation that has none yet, not the same file: editing the shipped copy changes nothing here, and editing this one ships nothing.",
+      "var/ is TYPO3's writable state — caches, logs, sessions, and var/transient/ for what a temporary file is written to — and is not committed. A script that exists for one run therefore does not go there because it is ignored; it goes into Build/ with the rest of the tooling, or it is not kept at all.",
+      "Whether the built frontend assets are committed is a decision, not a rule, and it has to be made once and written down: committed, a deploy needs no Node and the diff carries generated files; not committed, the build has to run somewhere on the way to production. Both are normal, and the .gitignore is where the answer is read off."
     ],
     "checks": []
   },
@@ -311,7 +350,8 @@
       "The fix for that has a shape: split the palette rather than darken the brand. One custom property for the decorative use, a darker one of the same hue for anything a reader has to read, and the rule that everything textual takes the second — instead of a brand colour bent until it passes everywhere and looks right nowhere.",
       "A functional test with executeFrontendSubRequest() runs no JavaScript, applies no stylesheet and speaks no HTTP. It is a rendering test, and calling it a frontend test is how a suite ends up with no browser in it at all. The two are complements: the rendering test asserts what the template produced, the browser test asserts what a reader gets.",
       "Outside the core the layout transfers but the plumbing does not: the specs run against the site as it is served — a real URL, the development environment's own — rather than against a per-test-class instance, and the browsers belong on the host or in an image of their own. Installing them into the web container of a development environment is the step to skip.",
-      "The suite is a project of its own in playwright.config.ts, with the login setup declared as a dependency so the authenticated state is written once and reused. Give the site's page types one spec each — that is the list that finds a page layout nobody rendered since the template changed."
+      "The suite is a project of its own in playwright.config.ts, with the login setup declared as a dependency so the authenticated state is written once and reused. Give the site's page types one spec each — that is the list that finds a page layout nobody rendered since the template changed.",
+      "Where that configuration and those specs live in a project is the repository's question rather than the extension's — the specs need a running site, so they belong to what is deployed. The project repository layout hint has it."
     ],
     "checks": [
       "CI=true ./Build/Scripts/runTests.sh -s e2e"

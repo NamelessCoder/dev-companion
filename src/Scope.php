@@ -199,12 +199,83 @@ final class Scope
     public static function instructions(): string
     {
         $instructions = self::read()['instructions'];
+        if (Profile::omitted() !== []) {
+            // In front of it, not behind: the stored sentence opens with the
+            // core contribution catalog, which is the half this client is not
+            // being offered, and a client told what the server is and only then
+            // that half of it is missing has been told and then corrected.
+            $instructions = sprintf(
+                'You are offered the "%s" profile of this server: the core contribution surface — the review rules, '
+                . 'the Gerrit workflow, the runTests.sh suites — is not in your tool list, because a project or '
+                . 'extension repository has none of it, and %s=%s offers it anyway. Otherwise: %s',
+                Profile::active(),
+                Profile::VARIABLE,
+                Profile::ALL,
+                $instructions,
+            );
+        }
         if (Feedback::isAvailable()) {
             $instructions .= ' Every tool here is read-only except typo3_feedback_record, '
                 . 'which creates a new markdown note under feedback/ and writes nothing else.';
         }
 
         return $instructions;
+    }
+
+    /**
+     * The scope as the active profile presents it.
+     *
+     * The stored file describes the whole server. A client that is offered half
+     * of it must not be handed the other half as its map: a topic whose answers
+     * are core-only is gone with the tools that answered it, and no entry
+     * anywhere points at a tool this client cannot call.
+     *
+     * @return array{
+     *     purpose: string,
+     *     instructions: string,
+     *     covers: array<int, array{topic: string, depth: string, tools: array<int, string>, source: string, provenance: string}>,
+     *     doesNotCover: array<int, array{topic: string, why: string, instead: string}>,
+     *     checkoutDiscovery: array<int, array{establish: string, how: string}>,
+     *     routing: array<int, array{when: string, call: string}>
+     * }
+     */
+    public static function offered(): array
+    {
+        $scope = self::read();
+        if (Profile::omitted() === []) {
+            return $scope;
+        }
+
+        $covers = [];
+        foreach ($scope['covers'] as $entry) {
+            if ($entry['provenance'] === 'core-only') {
+                continue;
+            }
+            $entry['tools'] = array_values(array_filter($entry['tools'], Profile::offers(...)));
+            if ($entry['tools'] !== []) {
+                $covers[] = $entry;
+            }
+        }
+        $scope['covers'] = $covers;
+
+        $offered = static fn(array $entry): bool => !self::namesOmittedTool(implode(' ', $entry));
+        $scope['doesNotCover'] = array_values(array_filter($scope['doesNotCover'], $offered));
+        $scope['checkoutDiscovery'] = array_values(array_filter($scope['checkoutDiscovery'], $offered));
+        $scope['routing'] = array_values(array_filter($scope['routing'], $offered));
+
+        return $scope;
+    }
+
+    /** Whether a rendered entry sends the caller to a tool it is not offered. */
+    private static function namesOmittedTool(string $text): bool
+    {
+        foreach (Profile::omitted() as $tool) {
+            if (str_contains($text, $tool)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**

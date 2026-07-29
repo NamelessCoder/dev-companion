@@ -29,6 +29,16 @@ somebody's extension, a path in extension layout, and last the installation
 itself, because a Composer project is not a core checkout. What transfers is
 still answered; what only the core has is left out with the reason.
 
+**And where they cannot be followed at all, they are not offered.** Marking an
+answer as core-only tells a site developer what it is worth; it does not keep
+the tool that gives it out of the list, and the tool list is the first thing a
+client pays for. So the list itself varies: started in a Composer project, the
+server leaves out the core contribution surface — the review rules, the Gerrit
+workflow, the `runTests.sh` suites — and keeps everything that transfers plus
+everything the installation answers. `TYPO3_MCP_PROFILE` decides it outright,
+`all` or `project`, and `typo3_server_scope` — which every profile has — names
+the active one and what it left out.
+
 **One exception, and it is deliberate.** Some questions have no bundled answer
 that could be right. Which labels exist, which icons are registered, which
 backend modules there are, what a configuration value actually is after every
@@ -184,8 +194,10 @@ name already says what shape the answer has.
   covered topic says what its answers are worth outside the core: `core-only`
   for the contribution process and the scripts of that repository,
   `transferable` for a convention that holds wherever TYPO3 is written,
-  `installation` for what is read from the installation itself. The place to
-  start when it is unclear whether a question can be answered here at all.
+  `installation` for what is read from the installation itself. It also names
+  the active profile and the tools it leaves out, so a shorter list than this
+  one has a reason a client can read. The place to start when it is unclear
+  whether a question can be answered here at all.
 - `typo3_changelog_lookup`: searches the TYPO3 changelog the installed core
   ships — one entry per breaking change, deprecation, feature and important
   note, by words, type and version. Answers what a release changed rather than

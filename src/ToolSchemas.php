@@ -77,6 +77,13 @@ final class ToolSchemas
                 'branch' => self::string('The branch that line is verified against.'),
                 'status' => self::string('lts, stable, or development.'),
             ], ['major', 'branch', 'status']), 'The TYPO3 versions the knowledge is bound to. A statement outside a range is left out when a target version is known.'),
+            'profile' => self::object([
+                'active' => ['type' => 'string', 'enum' => ['all', 'project'], 'description' => 'Which half of the server this client is offered. all: every tool. project: the same server without the core contribution surface, because a project or extension repository cannot follow it.'],
+                'via' => ['type' => 'string', 'enum' => ['environment', 'installation'], 'description' => 'Whether the profile was named by the environment variable or followed from the kind of installation that was found.'],
+                'omits' => self::listOf(self::string(), 'The tools this profile leaves out of the tool list. Empty in the all profile.'),
+                'variable' => self::string('Environment variable that names the profile outright.'),
+                'misconfiguration' => self::nullableString('Set when the variable named a profile that does not exist. The derived one is used instead.'),
+            ], ['active', 'via', 'omits', 'variable']),
             'installation' => self::object([
                 'found' => ['type' => 'boolean', 'description' => 'Whether there is an installation to read at all.'],
                 'root' => self::nullableString('Absolute path of the installation.'),
@@ -99,7 +106,7 @@ final class ToolSchemas
                     'console' => self::string('Environment variable that names the console command.'),
                 ], ['root', 'console']),
             ], ['found', 'searched', 'packageCount', 'console']),
-        ], ['purpose', 'covers', 'doesNotCover', 'routing', 'versions', 'installation']);
+        ], ['purpose', 'covers', 'doesNotCover', 'routing', 'versions', 'profile', 'installation']);
     }
 
     /**

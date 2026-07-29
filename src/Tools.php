@@ -275,6 +275,13 @@ final class Tools
             ],
         ];
 
+        // The core contribution surface is left out where it cannot be
+        // followed — see Profile.
+        $definitions = array_values(array_filter(
+            $definitions,
+            static fn(array $definition): bool => Profile::offers($definition['name']),
+        ));
+
         // Only offered from a standalone checkout — see Feedback.
         if (Feedback::isAvailable()) {
             array_push($definitions, ...self::feedbackDefinitions());
@@ -360,9 +367,15 @@ final class Tools
 
     private static function serverScope(): ToolResult
     {
-        $scope = Scope::read();
+        $scope = Scope::offered();
 
         $lines = [
+            // Before the purpose rather than after it: the purpose describes
+            // the whole server, and a client that reads what it holds first and
+            // that half of it is missing second has been told and then
+            // corrected.
+            self::profileLine(),
+            '',
             $scope['purpose'],
             '',
             'Covered, and how deeply. Each topic says what its answers are worth outside the core: '
@@ -486,8 +499,51 @@ final class Tools
 
         return ToolResult::create(implode("\n", $lines), $scope + [
             'versions' => Versions::covered(),
+            'profile' => [
+                'active' => Profile::active(),
+                'via' => Profile::via(),
+                'omits' => Profile::omitted(),
+                'variable' => Profile::VARIABLE,
+                'misconfiguration' => Profile::misconfiguration() === '' ? null : Profile::misconfiguration(),
+            ],
             'installation' => self::installationReport(),
         ]);
+    }
+
+    /**
+     * Which half of the server this client is being offered, and why.
+     *
+     * A shorter tool list than the documentation describes is otherwise
+     * indistinguishable from a broken server, and the caller has no way to
+     * check: it sees the list it was given and nothing else.
+     */
+    private static function profileLine(): string
+    {
+        $line = sprintf('Profile "%s", %s. ', Profile::active(), Profile::via() === Profile::VIA_ENVIRONMENT
+            ? 'named by ' . Profile::VARIABLE
+            : 'following from the installation this server was started in');
+
+        $line .= Profile::omitted() === []
+            ? sprintf(
+                'Every tool this server has is offered. In a project or extension repository, %s=%s offers the same '
+                . 'server without the core contribution surface.',
+                Profile::VARIABLE,
+                Profile::PROJECT,
+            )
+            : sprintf(
+                'The core contribution surface is not offered here — a project or extension repository has no '
+                . 'Build/Scripts/, no Gerrit remote and no Forge issue — so %s are missing from the tool list, and so '
+                . 'are the topics they answered. What transfers is still here. %s=%s offers them anyway.',
+                implode(', ', Profile::omitted()),
+                Profile::VARIABLE,
+                Profile::ALL,
+            );
+
+        if (Profile::misconfiguration() !== '') {
+            $line .= ' The configuration says otherwise and could not be followed: ' . Profile::misconfiguration() . '.';
+        }
+
+        return $line;
     }
 
     /**

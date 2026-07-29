@@ -41,23 +41,7 @@ else here was written by someone who already knew what they meant.
 
 ---
 
-## 1. Profile: show a project only the half that fits it
-
-**Serves:** `feedback/2026-07-29-100640`, R-AUD-1 · **Decided:** derived from the
-installation, `TYPO3_MCP_PROFILE` overrides · **Next step:** a `Profile` class
-that resolves `core` / `project` / `all` from `Instance::describe()['kind']` and
-the variable, and a filter in `Tools::definitions()`.
-
-The tool list already varies by environment — `Feedback::isAvailable()` hides
-two tools outside a standalone checkout — so the mechanism exists and the
-precedent with it. What has to be decided per tool is which profile it belongs
-to; the `provenance` field in `knowledge/server-scope.json` already says
-`core-only`, `transferable` or `installation` per topic, and that is the input.
-
-Keep `typo3_server_scope` in every profile, and have it name the active one.
-A client that sees a shorter list must be able to find out why.
-
-## 2. Bind the rest of the knowledge to versions
+## 1. Bind the rest of the knowledge to versions
 
 **Serves:** R-AUD-4 · **Next step:** go file by file through
 `knowledge/architecture-hints/`, and for every statement that names an API,
@@ -75,10 +59,10 @@ TypoScript, then the general hints. The prose documents below `knowledge/*.md`
 have no binding mechanism at all yet — decide whether they need one or whether
 the hints carry it.
 
-## 3. A maintenance guide, once the pieces are there
+## 2. A maintenance guide, once the pieces are there
 
 **Serves:** `feedback/2026-07-29-100314`, scenario `SITE-02` · **Next step:**
-none yet — this waits until items 1 and 2 are done, because it composes them.
+none yet — this waits until item 1 is done, because it composes it.
 
 The upgrade question is "what do I do, in which order, and what breaks". Three
 of the four inputs exist now: `typo3_project_scope` knows what is installed,

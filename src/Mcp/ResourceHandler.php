@@ -39,7 +39,10 @@ final class ResourceHandler implements ResourceHandlerInterface
 
     private function index(): string
     {
-        $scope = Scope::read();
+        // The profile's scope, not the stored one: the index is read by the
+        // same client that gets the tool list, and a topic it cannot reach is
+        // no more useful here than in typo3_server_scope.
+        $scope = Scope::offered();
 
         $index = [
             'purpose' => $scope['purpose'],

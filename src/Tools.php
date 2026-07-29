@@ -535,14 +535,35 @@ final class Tools
         $query = (string) ($args['query'] ?? '');
         $results = Knowledge::search($query);
 
-        if ($results === []) {
+        // The prose and the architecture hints are two corpora, and which one
+        // holds a subject is this server's business, not the caller's: site
+        // sets are a hint, the Gerrit workflow is prose, and the question is
+        // phrased the same way either way.
+        $hints = ArchitectureHints::find([], $query, 3)['matchedHints'];
+
+        if ($results === [] && $hints === []) {
             return self::noKnowledgeMatch($query);
         }
 
-        return ToolResult::create(self::renderSections($results), [
+        $text = $results === []
+            ? sprintf('No section of the knowledge documents matched "%s".', $query)
+            : self::renderSections($results);
+        if ($hints !== []) {
+            $text .= "\n\nThe architecture hints also cover this — call typo3_architecture_lookup with the id:\n"
+                . implode("\n", array_map(
+                    static fn(array $hint): string => '- ' . $hint['id'] . ' — ' . $hint['title'],
+                    $hints,
+                ));
+        }
+
+        return ToolResult::create($text, [
             'query' => $query,
             'matchCount' => count($results),
             'matches' => self::matchRecords($results),
+            'alsoInHints' => array_map(
+                static fn(array $hint): array => ['id' => $hint['id'], 'title' => $hint['title']],
+                $hints,
+            ),
         ]);
     }
 
@@ -679,6 +700,7 @@ final class Tools
             'query' => $query,
             'matchCount' => 0,
             'matches' => [],
+            'alsoInHints' => [],
             'documents' => Knowledge::topics(),
         ]);
     }

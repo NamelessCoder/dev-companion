@@ -145,6 +145,10 @@ final class ToolSchemas
                 'topics' => self::listOf(self::string()),
             ], ['id', 'title', 'topics']), 'Documents in the knowledge base with the topics they cover. Returned when nothing matched.'),
             'elsewhere' => self::listOf(self::string(), 'Documents outside the searched ones that do match the query.'),
+            'alsoInHints' => self::listOf(self::object([
+                'id' => self::string(),
+                'title' => self::string(),
+            ], ['id', 'title']), 'Architecture hints matching the same query. They are a second corpus, searched by typo3_architecture_lookup, which takes one of these ids.'),
         ], ['query', 'matchCount', 'matches']);
     }
 

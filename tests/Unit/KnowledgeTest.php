@@ -48,6 +48,33 @@ final class KnowledgeTest extends TestCase
     }
 
     #[Test]
+    public function theDiscriminatingTermsOfAQueryDecideTheAnswer(): void
+    {
+        // "site set settings definitions" was answered with the backend's Sass
+        // class naming at a confident three quarters of the query terms:
+        // "content", "structure" and "element" are everywhere, and every term
+        // counted the same.
+        $results = Knowledge::search('site set settings definitions');
+
+        self::assertNotSame([], $results);
+        self::assertStringContainsString('Site Sets', $results[0]['heading']);
+        foreach ($results as $result) {
+            self::assertNotSame('typo3-css-architecture', $result['id'], $result['heading']);
+        }
+    }
+
+    #[Test]
+    public function aTermMatchesAWordRatherThanAnythingThatContainsIt(): void
+    {
+        // "set" used to match "offset" and "reset", "site" to match
+        // "composite". Stems still match every form of their word.
+        $carriers = static fn(string $query): array => array_column(Knowledge::search($query), 'heading');
+
+        self::assertContains('Release Branches and Backports', $carriers('release branches'));
+        self::assertSame([], Knowledge::search('ffset'));
+    }
+
+    #[Test]
     public function anUnrelatedQueryAnswersWithNothingRatherThanTheNearestProse(): void
     {
         self::assertSame([], Knowledge::search('quantum entanglement pineapple'));

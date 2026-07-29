@@ -100,7 +100,7 @@ final class Knowledge
             return [];
         }
 
-        $matches = [];
+        $candidates = [];
         foreach (self::documents() as $document) {
             if ($documentIds !== [] && !in_array($document['id'], $documentIds, true)) {
                 continue;
@@ -108,22 +108,31 @@ final class Knowledge
 
             $content = (string) file_get_contents($document['path']);
             foreach (self::sections($content) as $section) {
-                [$score, $covered] = self::scoreSection($section, $terms);
-                $coverage = $covered / count($terms);
-                if ($coverage < self::MIN_COVERAGE) {
-                    continue;
-                }
-
-                $matches[] = [
+                $candidates[] = [
                     'id' => $document['id'],
                     'title' => $document['title'],
                     'heading' => $section['heading'],
                     'body' => $section['body'],
-                    'score' => $score,
-                    'coverage' => $coverage,
-                    'truncated' => false,
                 ];
             }
+        }
+
+        $weights = self::weights($terms, $candidates);
+        $askedFor = array_sum($weights);
+
+        $matches = [];
+        foreach ($candidates as $candidate) {
+            [$score, $covered] = self::scoreSection($candidate, $weights);
+            $coverage = $askedFor > 0.0 ? $covered / $askedFor : 0.0;
+            if ($coverage < self::MIN_COVERAGE) {
+                continue;
+            }
+
+            $matches[] = $candidate + [
+                'score' => $score,
+                'coverage' => $coverage,
+                'truncated' => false,
+            ];
         }
 
         usort($matches, static function (array $a, array $b): int {
@@ -211,31 +220,78 @@ final class Knowledge
     }
 
     /**
-     * Returns [weightedScore, distinctTermsCovered]. A term in the heading
-     * weighs more than the same term in the body.
+     * How much each term of the query separates one section from the rest.
      *
-     * @param array{heading: string, body: string} $section
+     * "content", "structure" and "element" are in half the knowledge base and
+     * say almost nothing about which section answers the question; "tsconfig"
+     * says nearly everything. Weighing them the same is what let a query about
+     * site sets be answered with the backend's Sass class naming, at a
+     * confident three quarters of the query terms.
+     *
      * @param array<int, string> $terms
-     * @return array{0: int, 1: int}
+     * @param array<int, array{heading: string, body: string}> $sections
+     * @return array<string, float>
      */
-    private static function scoreSection(array $section, array $terms): array
+    private static function weights(array $terms, array $sections): array
     {
-        $heading = mb_strtolower($section['heading']);
-        $body = mb_strtolower($section['body']);
-
-        $score = 0;
-        $covered = 0;
+        $total = count($sections);
+        $weights = [];
         foreach ($terms as $term) {
-            if (str_contains($heading, $term)) {
-                $score += 4;
-                ++$covered;
-            } elseif (str_contains($body, $term)) {
-                $score += 1;
-                ++$covered;
+            $carrying = 0;
+            foreach ($sections as $section) {
+                if (self::carries($section, $term) !== 0) {
+                    ++$carrying;
+                }
             }
+            // A term nothing carries weighs nothing either. It cannot tell two
+            // sections apart, and counting it would push the sections that do
+            // answer the rest of the query below the floor.
+            $weights[$term] = $total === 0 || $carrying === 0 ? 0.0 : log($total / $carrying);
         }
 
-        return [$score, $covered];
+        return $weights;
+    }
+
+    /**
+     * Returns [score, weight covered]. A term in the heading weighs more than
+     * the same term in the body, and both are weighted by what the term says.
+     *
+     * @param array{heading: string, body: string} $section
+     * @param array<string, float> $weights
+     * @return array{0: int, 1: float}
+     */
+    private static function scoreSection(array $section, array $weights): array
+    {
+        $score = 0.0;
+        $covered = 0.0;
+        foreach ($weights as $term => $weight) {
+            $where = self::carries($section, (string) $term);
+            if ($where === 0) {
+                continue;
+            }
+            $covered += $weight;
+            $score += $weight * $where;
+        }
+
+        return [(int) round($score * 10), $covered];
+    }
+
+    /**
+     * 4 when the heading carries the term, 1 when the body does, 0 otherwise.
+     *
+     * Terms are matched at a word boundary, so a stem still matches every form
+     * of its word while "set" stops matching "offset" and "site" stops matching
+     * "composite".
+     *
+     * @param array{heading: string, body: string} $section
+     */
+    private static function carries(array $section, string $term): int
+    {
+        if (Text::containsWord($section['heading'], $term)) {
+            return 4;
+        }
+
+        return Text::containsWord($section['body'], $term) ? 1 : 0;
     }
 
     /**

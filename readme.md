@@ -159,7 +159,10 @@ name already says what shape the answer has.
 - `typo3_server_scope`: orientation — what this server covers and at which
   depth, what it deliberately does not, and which tool to call when. The place
   to start when it is unclear whether a question can be answered here at all.
-- `typo3_rule_lookup`: searches local TYPO3 core rules and script notes.
+- `typo3_rule_lookup`: searches local TYPO3 core rules and script notes, ranked
+  by the query terms that separate one section from the rest rather than by
+  overlap, and naming the architecture hints that match the same question — the
+  caller does not have to know which of the two corpora holds a subject.
 - `typo3_script_lookup`: finds matching notes for TYPO3 core commands. They run
   in a core checkout, and the answer says so — outside one it returns the
   boundary instead of commands that are not there.

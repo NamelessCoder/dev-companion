@@ -134,6 +134,17 @@ them, this section wins and the other one is what needs rewriting.
   unreachable installation (2026-07-29).
   *Held by:* `LabelSearchTest::aConsoleThatFoundNothingIsAnAnswerRatherThanAFailure`,
   `LabelSearchTest::aConsoleThatCannotRunIsStillUnanswered`
+- **R-ANS-7** A query is scored by the terms that separate one section from the
+  rest, not by term overlap. A word half the knowledge base carries decides
+  nothing, a term is matched as a word rather than as a substring, and which of
+  the two corpora — the prose or the architecture hints — holds a subject is not
+  the caller's problem: `typo3_rule_lookup` names the hints that match the same
+  query.
+  *From:* "site set settings definitions" answered with the backend's Sass class
+  naming, at a stated 75% of the query terms (2026-07-29).
+  *Held by:* `KnowledgeTest::theDiscriminatingTermsOfAQueryDecideTheAnswer`,
+  `KnowledgeTest::aTermMatchesAWordRatherThanAnythingThatContainsIt`,
+  `ScopeTest::aRuleQueryIsPointedAtTheHintCorpusItBelongsIn`
 - **R-ANS-6** A lookup that returns nothing says what there would have been to
   find, and what it names can be asked for outright. `typo3_architecture_lookup`
   lists the hint ids of the searched domains on every miss and accepts one as

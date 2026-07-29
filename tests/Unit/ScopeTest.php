@@ -209,6 +209,18 @@ final class ScopeTest extends TestCase
     }
 
     #[Test]
+    public function aRuleQueryIsPointedAtTheHintCorpusItBelongsIn(): void
+    {
+        // Which of the two corpora holds a subject is this server's business:
+        // site sets are an architecture hint, the Gerrit workflow is prose, and
+        // the question is phrased the same way either way.
+        $result = Tools::call('typo3_rule_lookup', ['query' => 'site set settings definitions']);
+
+        self::assertContains('site-sets', array_column($result->data['alsoInHints'], 'id'));
+        self::assertStringContainsString('typo3_architecture_lookup', $result->text);
+    }
+
+    #[Test]
     public function noCoreScriptIsHandedToARepositoryThatDoesNotHaveIt(): void
     {
         $result = Tools::call('typo3_script_lookup', [

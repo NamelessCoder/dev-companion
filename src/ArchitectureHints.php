@@ -166,6 +166,10 @@ final class ArchitectureHints
                 continue;
             }
             $hint['hints'] = $statements;
+            // A check is a runTests.sh invocation, and which suites that script
+            // offers changes between majors. The range sits on the suite rather
+            // than on every check naming it, so this asks there.
+            $hint['checks'] = TestSuiteHints::checksFor($hint['checks'], $target);
             $kept[] = $hint;
         }
 

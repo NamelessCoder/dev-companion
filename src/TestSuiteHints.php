@@ -20,7 +20,7 @@ final class TestSuiteHints
     /**
      * @return array{
      *     invocation: array{notes: array<int, string>, options: array<int, array{option: string, description: string}>, examples: array<int, array{purpose: string, command: string}>},
-     *     suites: array<int, array{suite: string, command: string, description: string, whenToUse: string, domains: array<int, string>, targeted: ?string}>
+     *     suites: array<int, array{suite: string, command: string, description: string, whenToUse: string, domains: array<int, string>, targeted: ?string, since: ?int, until: ?int}>
      * }
      */
     private static function data(): array
@@ -51,14 +51,68 @@ final class TestSuiteHints
                 'whenToUse' => (string) $entry['whenToUse'],
                 'domains' => array_map('strval', $entry['domains'] ?? []),
                 'targeted' => isset($entry['targeted']) ? (string) $entry['targeted'] : null,
+                'since' => isset($entry['since']) ? (int) $entry['since'] : null,
+                'until' => isset($entry['until']) ? (int) $entry['until'] : null,
             ], $decoded['suites']),
         ];
     }
 
-    /** @return array<int, array{suite: string, command: string, description: string, whenToUse: string, domains: array<int, string>, targeted: ?string}> */
-    public static function load(): array
+    /** @return array<int, array{suite: string, command: string, description: string, whenToUse: string, domains: array<int, string>, targeted: ?string, since: ?int, until: ?int}> */
+    public static function load(?int $target = null): array
     {
-        return self::data()['suites'];
+        $suites = self::data()['suites'];
+        if ($target === null) {
+            return $suites;
+        }
+
+        return array_values(array_filter(
+            $suites,
+            static fn(array $suite): bool => Versions::holds($suite['since'], $suite['until'], $target),
+        ));
+    }
+
+    /**
+     * The suites that exist on a given major, by name.
+     *
+     * This is what makes a check filterable without repeating the range on
+     * every one of them. A check is a runTests.sh invocation, the script
+     * belongs to one branch of the core, and the suites it offers change
+     * between majors — so the range is declared once, on the suite, and every
+     * hint or intent that names it in `-s <suite>` inherits it.
+     *
+     * @return array<int, string>
+     */
+    public static function availableOn(int $target): array
+    {
+        return array_column(self::load($target), 'suite');
+    }
+
+    /**
+     * The same checks with every command dropped whose suite does not exist on
+     * the target version.
+     *
+     * A check that names a suite the caller's runTests.sh does not have is not
+     * a weaker answer than none, it is a wrong one: it sends them to debug
+     * their checkout for a command this server invented for another branch.
+     *
+     * @param array<int, string> $checks
+     * @return array<int, string>
+     */
+    public static function checksFor(array $checks, ?int $target): array
+    {
+        if ($target === null) {
+            return array_values($checks);
+        }
+
+        $available = self::availableOn($target);
+
+        return array_values(array_filter($checks, static function (string $check) use ($available): bool {
+            if (preg_match('/\s-s\s+([A-Za-z0-9_-]+)/', $check, $matches) !== 1) {
+                return true;
+            }
+
+            return in_array($matches[1], $available, true);
+        }));
     }
 
     /**
@@ -77,11 +131,11 @@ final class TestSuiteHints
      * Sass build recommended.
      *
      * @param array<int, string> $domains
-     * @return array<int, array{suite: string, command: string, description: string, whenToUse: string, domains: array<int, string>, targeted: ?string}>
+     * @return array<int, array{suite: string, command: string, description: string, whenToUse: string, domains: array<int, string>, targeted: ?string, since: ?int, until: ?int}>
      */
-    public static function find(?string $query, array $domains = []): array
+    public static function find(?string $query, array $domains = [], ?int $target = null): array
     {
-        $hints = self::load();
+        $hints = self::load($target);
         $narrowed = false;
 
         if ($domains !== []) {

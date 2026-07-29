@@ -138,6 +138,7 @@
     },
     {
       "suite": "checkIntegrityPhp",
+      "since": 13,
       "command": "CI=true ./Build/Scripts/runTests.sh -s checkIntegrityPhp",
       "domains": ["php"],
       "description": "Checks core PHP files against the registered integrity rules.",
@@ -152,6 +153,7 @@
     },
     {
       "suite": "checkIntegritySetLabels",
+      "since": 13,
       "command": "CI=true ./Build/Scripts/runTests.sh -s checkIntegritySetLabels",
       "domains": ["typoscript"],
       "description": "Checks the labels.xlf integrity of the site sets.",
@@ -166,6 +168,7 @@
     },
     {
       "suite": "checkIntegrityXliff",
+      "since": 14,
       "command": "CI=true ./Build/Scripts/runTests.sh -s checkIntegrityXliff",
       "domains": ["xliff"],
       "description": "Checks all .xlf files for validity and deprecated usages.",
@@ -173,6 +176,7 @@
     },
     {
       "suite": "normalizeXliff",
+      "since": 14,
       "command": "CI=true ./Build/Scripts/runTests.sh -s normalizeXliff",
       "domains": ["xliff"],
       "description": "Normalizes .xlf files (formatting, attribute order).",
@@ -229,6 +233,7 @@
     },
     {
       "suite": "e2e",
+      "since": 13,
       "command": "CI=true ./Build/Scripts/runTests.sh -s e2e",
       "domains": ["php", "typescript", "fluid"],
       "description": "End-to-end tests driving a real backend with Playwright.",

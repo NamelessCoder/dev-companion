@@ -680,6 +680,44 @@ final class HintsTest extends TestCase
     }
 
     #[Test]
+    public function aCheckIsNotOfferedOnABranchWhoseScriptHasNoSuchSuite(): void
+    {
+        // A check is a runTests.sh invocation, and which suites that script
+        // offers changes between majors. Handing over a command the caller's
+        // checkout does not have is not a weaker answer than none — it sends
+        // them to debug their checkout for something this server invented for
+        // another branch.
+        //
+        // Verified against this repository's own checkouts: no suite matching
+        // xlf or xliff exists in Build/Scripts/runTests.sh on 12.4 or 13.4
+        // under any name, while 14.3 and main have checkIntegrityXliff and
+        // normalizeXliff. So empty is the true answer on 13.4, not a gap.
+        self::assertSame([], ArchitectureHints::byId('language-files', 13)['checks']);
+
+        $onFourteen = ArchitectureHints::byId('language-files', 14)['checks'];
+        self::assertNotSame([], $onFourteen);
+        foreach (['checkIntegrityXliff', 'normalizeXliff'] as $suite) {
+            self::assertNotSame(
+                [],
+                array_filter($onFourteen, static fn(string $check): bool => str_contains($check, $suite)),
+                $suite . ' exists on 14 and has to be offered there',
+            );
+        }
+    }
+
+    #[Test]
+    public function theSuiteListItselfIsFilteredByTheBranchItIsAskedFor(): void
+    {
+        $suites = static fn(?string $version): array => array_column(
+            Tools::call('typo3_test_run_guide', ['query' => 'xliff labels', 'targetVersion' => $version])->data['suites'],
+            'suite',
+        );
+
+        self::assertNotContains('checkIntegrityXliff', $suites('13.4'));
+        self::assertContains('checkIntegrityXliff', $suites('14'));
+    }
+
+    #[Test]
     public function aSuiteIsFoundByItsName(): void
     {
         $hints = TestSuiteHints::find('phpstan');

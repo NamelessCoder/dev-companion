@@ -142,12 +142,13 @@ final class Tools
             ],
             [
                 'name' => 'typo3_test_run_guide',
-                'description' => 'Recommend Build/Scripts/runTests.sh commands by topic. Pass the changed paths and the answer is narrowed to the suites that can actually fail on them — a Sass-only change gets the CSS suites, not the PHP ones. The script belongs to the core repository, so paths that read as a project or third-party extension get no suite at all rather than commands that cannot run there.',
+                'description' => 'Recommend Build/Scripts/runTests.sh commands by topic. Pass the changed paths and the answer is narrowed to the suites that can actually fail on them — a Sass-only change gets the CSS suites, not the PHP ones. Which suites the script offers changes between majors, so a suite that branch does not have is left out rather than handed over as a command. The script belongs to the core repository, so paths that read as a project or third-party extension get no suite at all rather than commands that cannot run there.',
                 'inputSchema' => [
                     'type' => 'object',
                     'properties' => [
                         'query' => ['type' => 'string', 'description' => 'Test or script topic, for example functional, phpstan, TypeScript, composer, or CGL.'],
                         'paths' => ['type' => 'array', 'items' => ['type' => 'string'], 'default' => [], 'description' => 'The changed TYPO3 core file paths, relative to the core checkout. Given, only suites touching their domains are returned.'],
+                        'targetVersion' => ['type' => 'string', 'description' => 'The TYPO3 version the commands have to run on, for example "13.4" or "14". Suites that branch\'s runTests.sh does not have are left out. Defaults to the version of the installation this server was started in; where there is none, every suite is listed.'],
                     ],
                 ],
             ],
@@ -950,7 +951,7 @@ final class Tools
 
         $target = Versions::target(isset($args['targetVersion']) ? (string) $args['targetVersion'] : null);
         $architecture = ArchitectureHints::find($paths, $task, 4, null, $target);
-        $testHints = array_slice(TestSuiteHints::find($subject, $domains), 0, 4);
+        $testHints = array_slice(TestSuiteHints::find($subject, $domains, $target), 0, 4);
         if ($outsideCore) {
             $architecture['matchedHints'] = ArchitectureHints::withoutChecks($architecture['matchedHints']);
         }
@@ -1026,8 +1027,8 @@ final class Tools
         // as the ones an intent carries. Leaving them out dropped the functional
         // suite from a FormEngine brief while the FormEngine hint that names it
         // was right there in the same answer.
-        $checks = self::mergedChecks($confirmed, $architecture['matchedHints']);
-        $conditionalChecks = self::conditionalChecks($conditional, $checks);
+        $checks = self::mergedChecks($confirmed, $architecture['matchedHints'], $target);
+        $conditionalChecks = self::conditionalChecks($conditional, $checks, $target);
 
         // Every check this server knows is a runTests.sh invocation against a
         // script in the core repository. Reporting outsideCore and then listing
@@ -1185,7 +1186,7 @@ final class Tools
      * @param array<int, array<string, mixed>> $hints
      * @return array<int, string>
      */
-    private static function mergedChecks(array $intents, array $hints): array
+    private static function mergedChecks(array $intents, array $hints, ?int $target): array
     {
         $checks = [];
         foreach ($intents as $intent) {
@@ -1199,7 +1200,9 @@ final class Tools
             }
         }
 
-        return array_keys($checks);
+        // The hints arrive already filtered; the intents do not, and both name
+        // suites that a given branch's runTests.sh may not have.
+        return TestSuiteHints::checksFor(array_keys($checks), $target);
     }
 
     /**
@@ -1210,11 +1213,14 @@ final class Tools
      * @param array<int, string> $stated
      * @return array<int, array{title: string, condition: string, checks: array<int, string>}>
      */
-    private static function conditionalChecks(array $intents, array $stated): array
+    private static function conditionalChecks(array $intents, array $stated, ?int $target): array
     {
         $entries = [];
         foreach ($intents as $intent) {
-            $checks = array_values(array_diff(array_map('strval', $intent['checks']), $stated));
+            $checks = array_values(array_diff(
+                TestSuiteHints::checksFor(array_map('strval', $intent['checks']), $target),
+                $stated,
+            ));
             if ($checks === []) {
                 continue;
             }
@@ -1345,7 +1351,7 @@ final class Tools
     }
 
     /**
-     * @param array<int, array{suite: string, command: string, description: string, whenToUse: string, domains: array<int, string>, targeted: ?string}> $hints
+     * @param array<int, array{suite: string, command: string, description: string, whenToUse: string, domains: array<int, string>, targeted: ?string, since: ?int, until: ?int}> $hints
      * @return array<int, array<string, mixed>>
      */
     private static function suiteRecords(array $hints): array
@@ -1357,6 +1363,10 @@ final class Tools
             'description' => $hint['description'],
             'whenToUse' => $hint['whenToUse'],
             'domains' => $hint['domains'],
+            // Rendered the same way a statement's range is: beside the entry
+            // rather than inside it, so an unfiltered listing still says which
+            // branches actually have the suite.
+            'versions' => Versions::label($hint['since'], $hint['until']),
         ], array_values($hints));
     }
 
@@ -1369,6 +1379,7 @@ final class Tools
         $paths = array_map('strval', $args['paths'] ?? []);
         $paths = array_values(array_unique(array_merge($paths, Domains::pathsIn((string) $query))));
         $domains = Domains::fromPaths($paths);
+        $target = Versions::target(isset($args['targetVersion']) ? (string) $args['targetVersion'] : null);
 
         // Every suite this guide knows is a Build/Scripts/runTests.sh
         // invocation, and that script is part of the core repository. Handing
@@ -1392,7 +1403,7 @@ final class Tools
             );
         }
 
-        $hints = TestSuiteHints::find($query, $domains);
+        $hints = TestSuiteHints::find($query, $domains, $target);
 
         $blocks = [];
         if ($domains !== []) {

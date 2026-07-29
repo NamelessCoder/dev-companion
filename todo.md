@@ -103,53 +103,6 @@ before-reading. Both are done; the readings are in the commits.
 
 ---
 
-## Bind the suites, so a check is not a command that branch does not have
-
-Serves the version binding, and it is a wrong answer being given today rather
-than a consistency cleanup — which is what the item that used to sit here turned
-into once its evidence was gathered.
-
-Five of the 24 suites in `knowledge/test-suite-hints.json` do not exist on every
-covered branch. Read out of each checkout's `Build/Scripts/runTests.sh`, taking
-the glob labels into account (`build*)` covers `build` and `build-css`, which is
-what an earlier grep got wrong):
-
-- `e2e`, `checkIntegrityPhp`, `checkIntegritySetLabels` — absent on 12.4,
-  present from 13.4.
-- `checkIntegrityXliff`, `normalizeXliff` — absent on 12.4 and 13.4, present on
-  14.3 and `main`.
-
-Seven `checks` entries name one of those five: `typoscript.json` line 51,
-`php.json` line 100, `general.json` lines 49, 50 and 375, and two in
-`task-intents.json`. A core contributor on 13.4 asking about labels is handed
-`runTests.sh -s checkIntegrityXliff`, and their script has no such suite.
-
-The next concrete step is **not** a `since` on every check. The suite list
-already declares each suite once, so the binding belongs there and every check
-that names a suite inherits it:
-
-1. Add `since` to those five entries in `test-suite-hints.json`, with the
-   numbers above.
-2. `TestSuiteHints::availableOn(int $major): array<string>` — the suite names
-   that hold on that major.
-3. In `ArchitectureHints::forVersion`, drop a check whose `-s <suite>` is not in
-   that list, the way a statement outside its range is dropped. Same for
-   `TaskIntents`.
-4. `typo3_test_run_guide` has no `targetVersion` and serves the suite list
-   itself. Add the parameter — a new field, not a rename — and filter.
-
-What holds it: a test that asks for the `language-files` checks at
-`targetVersion` 13.4 and gets neither XLIFF command back, and one that asks at
-14 and gets both.
-
-The naming half of this item is done. `coreOnly: true` on the intents is
-`binding: "core"` now, and `VersionsTest::whoIsObligedIsWrittenAsDataToo` holds
-both corpora to the one value. `provenance` in `knowledge/server-scope.json`
-turned out **not** to be a third spelling of the same thing and stays — see
-`decisions.md`.
-
----
-
 ## Go through what is marked `binding: "core"` and say what the project side is
 
 Serves the one note left open,

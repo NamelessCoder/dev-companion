@@ -702,7 +702,8 @@ final class ToolSchemas
             'description' => self::string(),
             'whenToUse' => self::string(),
             'domains' => self::listOf(self::string()),
-        ], ['suite', 'command', 'targeted']);
+            'versions' => self::nullableString('The TYPO3 majors whose runTests.sh has this suite, where that is not all of them. Null means every covered version.'),
+        ], ['suite', 'command', 'targeted', 'versions']);
     }
 
     /** @return array<string, mixed> */

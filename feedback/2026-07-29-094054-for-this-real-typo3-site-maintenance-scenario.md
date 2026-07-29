@@ -5,16 +5,36 @@ status: open
 tool: typo3_server_scope
 ---
 
-# For this real TYPO3 site-maintenance scenario the server is mostly out of scope. It identifies th...
+# Read-only project discovery is the capability this scenario asks for
 
 ## Observation
 
-For this real TYPO3 site-maintenance scenario the server is mostly out of scope. It identifies the work as outsideCore, but it has no project/site mode and cannot inspect config/sites, Site Sets, TypoScript includes, local extension registrations, Composer scripts, package.json builds, database schema/content, redirects, scheduler tasks, logs, cache state, reference integrity or upgrade status. Passing concrete project paths does not fix the boundary: config/sites/*/config.yaml is silently unclassified, frontend SCSS receives TYPO3 backend-only light/dark and Bootstrap-removal advice, and typo3_test_run_guide returns only core Build/Scripts/runTests.sh commands that do not exist here instead of the repository-native composer t3g:phpstan, t3g:cgl and extension npm scripts. On a fresh checkout with DDEV stopped and dependencies not installed, all five installation-backed lookups answer unavailable, so the MCP provides almost no site-specific maintenance value beyond translation-domain calculation and a few transferable TCA/Fluid reminders.
+The wrong answers this note reported are gone: frontend SCSS no longer receives
+the backend's CSS conventions, `typo3_test_run_guide` no longer hands over
+runTests.sh commands to a repository without it, the labels are readable without
+a booted console, and every covered topic now says whether it is core-only,
+transferable, or read from the installation.
+
+The capability the scenario asks for is untouched. There is no project mode:
+nothing enumerates `config/sites` and the site sets a site depends on, maps the
+local extensions with their TCA, services, routes and Fluid roots, reads the
+Composer scripts a repository declares, or reports its TYPO3 and PHP
+constraints. `config/sites/*/config.yaml` is still classified as an ordinary
+YAML path with no hint behind it.
 
 ## Query
 
-Evaluate whether this MCP helps maintain and further develop /home/benji/projects/site-events: TYPO3 13.4, 19 site configurations, local events_sitepackage and sessionplaner_extended extensions, Fluid, TypoScript, TCA, frontend SCSS and DDEV
+Evaluate whether this MCP helps maintain and further develop a TYPO3 site: 19 site configurations, local sitepackage and extension, Fluid, TypoScript, TCA, frontend SCSS and DDEV
 
 ## Suggestion
 
-Add an explicit project/extension maintenance mode, separate from core contribution mode. Start with read-only project discovery: parse composer.json/package.json and CI scripts; enumerate config/sites and Site Set/TypoScript dependencies; map local extensions, TCA, services, routes, Fluid roots and content-element registrations; report TYPO3/PHP constraints and patches; and recommend only commands that actually exist in the repository. When a console is reachable, add read-only site/configuration diagnostics for sites, extensions, schema, reference index, redirects, scheduler, reports/logs and cache configuration. Tag every recommendation as core-only, transferable, project-derived or installation-derived, and reject backend component/CSS hints for explicit frontend paths. A useful first deliverable would be typo3_project_scope plus typo3_project_check_guide that clearly distinguishes source-only findings from runtime findings.
+Read-only project discovery, as its own tool rather than as an extension of the
+core surface: parse composer.json, package.json and the CI configuration;
+enumerate the sites and their set dependencies; map the local extensions; and
+recommend only commands that exist in that repository. Tag every recommendation
+by where it came from, which the scope now does per topic and would have to do
+per answer.
+
+The note about the v14 maintenance scenario asks for the same capability from
+the other end. Both are a decision about what this server is, not a defect in
+what it does.

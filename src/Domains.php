@@ -56,10 +56,12 @@ final class Domains
         self::FLUID => [
             'fluid', 'viewhelper', 'view helper', 'partial', 'pageview',
             'page template', 'frontend template', 'content area', 'page layout',
+            'sitepackage', 'site package', 'content element',
         ],
         self::TYPOSCRIPT => [
             'typoscript', 'tsconfig', 'site set', 'sitesets', 'settings definition',
             'constants.typoscript', 'setup.typoscript',
+            'sitepackage', 'site package', 'content element',
         ],
         self::DOCS => [
             'changelog', 'rst', 'documentation', 'deprecation', 'breaking change',
@@ -76,7 +78,8 @@ final class Domains
      */
     private const FRONTEND_MARKERS = [
         'frontend', 'front-end', 'front end', 'website theme', 'page template',
-        'bootstrap 5', 'bootstrap5', 'theme extension',
+        'bootstrap 5', 'bootstrap5', 'theme extension', 'sitepackage',
+        'site package',
     ];
 
     /**

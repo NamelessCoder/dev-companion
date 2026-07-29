@@ -212,6 +212,27 @@ final class HintsTest extends TestCase
     }
 
     #[Test]
+    public function aProductSectionInASitepackageIsAnsweredWithHowItIsBuilt(): void
+    {
+        // The task that produced nothing usable: a list, a detail view and a
+        // teaser element for records of an own table. It was answered with two
+        // hints about backend forms and shipping content, and the mechanism the
+        // whole task is made of was not written down anywhere.
+        $result = ArchitectureHints::find(
+            [],
+            'Add a product list and product detail rendering plus a product teaser element to a sitepackage '
+            . 'extension: custom database table, TCA, frontend content elements, routing for the detail view',
+            6
+        );
+        $ids = array_column($result['matchedHints'], 'id');
+
+        self::assertContains('frontend-records', $ids);
+        self::assertContains('sitepackage-layout', $ids);
+        self::assertContains('frontend-page-rendering', $ids, 'a sitepackage is frontend work');
+        self::assertNotContains(ArchitectureHints::CATEGORY_CSS, array_column($result['matchedHints'], 'category'));
+    }
+
+    #[Test]
     public function theSeedingAdviceCarriesTheStepsItAsksFor(): void
     {
         // "Seed with DataHandler, then export" named the way in and stopped

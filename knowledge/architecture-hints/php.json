@@ -220,7 +220,14 @@
       "Configuration/Icons.php"
     ],
     "hints": [
-      "ext_tables.sql carries only the delta the schema analyzer needs — the tables and columns TCA does not already describe. It is not a schema dump, and a column TCA defines does not belong in it.",
+      {
+        "text": "ext_tables.sql carries only the delta the schema analyzer needs — the tables and columns TCA does not already describe. It is not a schema dump, and a column TCA defines does not belong in it.",
+        "since": 13
+      },
+      {
+        "text": "ext_tables.sql declares every table and every column of the extension. Nothing is derived from TCA here, so a column that is missing from the file is missing from the database.",
+        "until": 12
+      },
       "Configuration/JavaScriptModules.php declares the import map for an extension's backend JavaScript: a dependencies list of other extensions and an imports map from bare specifier to an EXT: path, with an optional exclude list.",
       "Configuration/Icons.php returns an array keyed by icon identifier, each entry naming a provider (SvgIconProvider or BitmapIconProvider) and an EXT: source path.",
       "Configuration/page.tsconfig is auto-loaded from that path and needs no registration call.",

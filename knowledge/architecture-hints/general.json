@@ -95,6 +95,41 @@
     "checks": []
   },
   {
+    "id": "frontend-records",
+    "title": "Records in the Frontend Without Extbase",
+    "appliesTo": [
+      "record",
+      "records",
+      "custom table",
+      "database table",
+      "detail view",
+      "list view",
+      "detail page",
+      "teaser",
+      "database-query",
+      "route enhancer",
+      "routeEnhancers",
+      "slug"
+    ],
+    "hints": [
+      {
+        "text": "A table of your own is a TCA file and nothing else: Configuration/TCA/<table>.php declares it and the schema is derived from those columns. Reading its records on a page needs no model, no repository and no controller — that is what a data processor is for, and Extbase enters the picture when pagination, search, validated arguments or forms do.",
+        "since": 13
+      },
+      "The chain is configured as dataProcessing on the PAGEVIEW or on lib.contentElement: database-query with table, pidInList or uidInList and orderBy, and a nested dataProcessing of its own. record-transformation there turns the rows into record objects, files resolves the references of an image field, and comma-separated-value parses a text field that carries a table.",
+      "List and detail can be the same page. Fill the list variable unconditionally, fill the single record only when the request carries the argument — if.isTrue.data = GP:<argument> on that processor — and let the template branch on whether it is there. uidInList.data = GP:<argument> is safe on its own: the select is built by ContentObjectRenderer, which runs uidInList through GeneralUtility::intExplode() before it reaches the query.",
+      {
+        "text": "The site set ships the routing for it, in route-enhancers.yaml next to config.yaml. A detail view of that shape is a Simple enhancer whose routePath carries the argument, with a PersistedAliasMapper aspect naming the table and the slug field.",
+        "since": 14
+      },
+      {
+        "text": "limitToPages takes an Expression Language string as well as a page uid, evaluated with page, site and siteLanguage — so an enhancer can be bound to every page of one backend layout instead of to a uid. That is what makes routing shippable at all: a set is installed into installations whose page ids nobody knows in advance, and of a site configuration shipped with an extension only rootPageId is remapped on import.",
+        "since": 14
+      }
+    ],
+    "checks": []
+  },
+  {
     "id": "documentation-changelog",
     "title": "Documentation and Changelog",
     "appliesTo": [

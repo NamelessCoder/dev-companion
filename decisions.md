@@ -68,11 +68,17 @@ out of.
   or a query that should hit going missing while its hint is plainly about it.
   Both show up in `bin/hints coverage` once that exists; until then the eight
   queries in `HintsTest` are the only tripwire, and they are a sample.
-- **Not decided:** the stopword list is English, so German filler words behave
+- **Decided since:** the stopword list is English, so German filler words behave
   like unknown technical terms and sink the whole query. «wie lege ich ein neues
   Content-Element an» reached `content-elements` before this change and does not
-  now. Nothing else regressed, and the fix is a language question rather than a
-  scoring one, so it was left rather than papered over with a lower floor.
+  now. It was left open here rather than papered over with a lower floor, and
+  the measurement that followed settled it the other way round: the server is
+  queried in English and says so to the agent (`R-AUD-6`). A lexical matcher
+  over an English corpus has nothing else to match on, so the alternative was
+  never a stopword list — it was translating the knowledge base. Twelve German
+  queries also surfaced two genuine bugs on the way, both language-independent
+  and both fixed under `R-ANS-8b`: a three-letter term matched as a prefix, and
+  `appliesTo` matched by plain substring.
 
 ## 2026-07-29 — The index of worked examples is curated, and existence is all that is checked
 

@@ -82,11 +82,16 @@ final class Scope
      */
     public static function isOutsideCore(array $paths, string $text = '', string $area = ''): bool
     {
-        if (self::isCoreWork($paths, $text)) {
+        $haystack = mb_strtolower(implode(' ', $paths) . ' ' . $text);
+
+        // A sysext path is the only marker strong enough to end the question
+        // outright. The prose ones are not, and cannot be: "not TYPO3 core, a
+        // composer package under vendor bk2k" names the core in order to rule
+        // it out, and reads to a substring search exactly like claiming it.
+        if (str_contains($haystack, 'typo3/sysext/')) {
             return false;
         }
 
-        $haystack = mb_strtolower(implode(' ', $paths) . ' ' . $text);
         foreach (self::OUTSIDE_CORE as $marker) {
             if (str_contains($haystack, $marker)) {
                 return true;
@@ -112,10 +117,12 @@ final class Scope
             }
         }
 
-        // Naming a system extension as the area is evidence in the other
-        // direction, and it beats the weakest signal there is: which
-        // installation the session happens to sit in.
-        if ($systemExtension === true) {
+        // Naming a system extension as the area, or naming the contribution
+        // workflow, is evidence in the other direction. Both beat the weakest
+        // signal there is — which installation the session happens to sit in —
+        // and neither beats a marker above, because those describe the work
+        // while these only accompany it.
+        if ($systemExtension === true || self::isCoreWork($paths, $text)) {
             return false;
         }
 

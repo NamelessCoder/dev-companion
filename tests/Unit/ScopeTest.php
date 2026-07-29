@@ -55,6 +55,20 @@ final class ScopeTest extends TestCase
     }
 
     #[Test]
+    public function namingTheCoreInOrderToRuleItOutIsNotEvidenceOfCoreWork(): void
+    {
+        // "not TYPO3 core, a composer package under vendor bk2k" reads to a
+        // substring search exactly like claiming to be the core. What decides
+        // is the marker that describes the work, not the one that accompanies
+        // it — so the order of the signals is the whole answer here.
+        self::assertTrue(Scope::isOutsideCore(
+            [],
+            'Raise the compatibility of the third-party extension bootstrap_package '
+            . '(not TYPO3 core, a composer package under vendor bk2k) to TYPO3 v14'
+        ));
+    }
+
+    #[Test]
     public function aPathInsideAnExtensionIsRecognisedByItsShape(): void
     {
         // No core file is named that way from the core root: everything there

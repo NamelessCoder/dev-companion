@@ -202,10 +202,14 @@ took before the requirement above was written down, and it will not survive it.
   as somebody's extension — rather than from wording. Evidence of core work
   wins over the weaker signals, in this order: a `typo3/sysext/` path or the
   contribution workflow named outright, then an outside-core marker, then the
-  area, then the path shape, then which installation the session sits in.
+  area, then the path shape, then the contribution workflow named in prose, and
+  last which installation the session sits in. A `typo3/sysext/` path is the only
+  marker that ends the question outright: prose that names the core in order to
+  rule it out reads to a substring search exactly like claiming it.
   *From:* `outsideCore` flipping only after the caller spelled out "not TYPO3
   core" in prose (2026-07-29).
-  *Held by:* `ScopeTest::anAreaTheInstallationKnowsAsSomebodysExtensionIsOutsideTheCore`,
+  *Held by:* `ScopeTest::namingTheCoreInOrderToRuleItOutIsNotEvidenceOfCoreWork`,
+  `ScopeTest::anAreaTheInstallationKnowsAsSomebodysExtensionIsOutsideTheCore`,
   `ScopeTest::inASiteInstallationTheWorkIsOutsideTheCoreUnlessSomethingSaysOtherwise`,
   `ScopeTest::inACoreCheckoutNothingIsPushedOutsideByTheInstallationAlone`,
   `ScopeTest::aPathInsideAnExtensionIsRecognisedByItsShape`

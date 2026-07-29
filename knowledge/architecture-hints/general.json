@@ -49,6 +49,7 @@
       "typo3-backend-icon"
     ],
     "hints": [
+      "All of this is the backend's. The icon registry exists for modules, forms, lists and toolbars; a frontend template has no business in it and ships its own inline SVG or asset file. An identifier that looks like the shape a page needs is still a backend icon.",
       "In Fluid: <core:icon identifier=\"actions-delete\" size=\"small\" /> with the core namespace, which is globally registered. Its arguments are identifier, size, state, overlay, alternativeMarkupIdentifier and title.",
       {
         "text": "In PHP: inject IconFactory and call $this->iconFactory->getIcon('actions-close', IconSize::SMALL)->render(). The size is the TYPO3\\CMS\\Core\\Imaging\\IconSize enum — cases DEFAULT, SMALL, MEDIUM, LARGE, MEGA and OVERLAY — which replaced the Icon::SIZE_* constants. getIconForRecord($table, $row) picks the identifier from the TCA schema.",

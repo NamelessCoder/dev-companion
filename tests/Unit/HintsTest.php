@@ -347,6 +347,22 @@ final class HintsTest extends TestCase
     }
 
     #[Test]
+    public function theIconHintSaysWhichHalfOfTypo3ItIsAbout(): void
+    {
+        // Every API the hint names is a backend one, and a reader who is writing
+        // a page template does not infer the boundary from that list — they read
+        // it as how an icon is rendered. The lookup says so on every answer; the
+        // hint describing the same registry has to say it too.
+        $hint = ArchitectureHints::byId('icon-usage');
+        self::assertNotNull($hint);
+        $text = implode("\n", array_column($hint['hints'], 'text'));
+
+        self::assertStringContainsString('backend', mb_strtolower($text));
+        self::assertStringContainsString('frontend template', $text);
+        self::assertStringContainsString('SVG', $text);
+    }
+
+    #[Test]
     public function aBackendModuleQueryIsStillAnsweredAboutBackendModules(): void
     {
         // The frontend hint is reached by naming the frontend, not by naming a

@@ -411,11 +411,16 @@ took before the requirement above was written down, and it will not survive it.
   `typo3_icon_lookup` answer carries that sentence — in the text and in the
   data — rather than only the ones whose query happens to sound like frontend
   work. A tool that is handed a query and not a task cannot tell the two apart.
+  The hint that describes the same registry states the same boundary: a list of
+  backend APIs reads as "here is how you render an icon" to whoever is writing
+  a page template.
   *From:* backend icon identifiers about to be used in a frontend template,
   stopped by the user: "die icons welche du findest sind übrigens nur für das
-  backend gedacht, nicht für das frontend" (2026-07-29).
+  backend gedacht, nicht für das frontend" (2026-07-29); re-reported for the
+  hint after the tool half had shipped.
   *Held by:* `IconLookupTest::everyAnswerSaysTheIdentifiersAreTheBackendRegistrys`,
-  `IconLookupTest::theRoutingEntrySendsCallersThereForBackendWorkOnly`
+  `IconLookupTest::theRoutingEntrySendsCallersThereForBackendWorkOnly`,
+  `HintsTest::theIconHintSaysWhichHalfOfTypo3ItIsAbout`
 - **R-KNW-9** "How do I register this so the core finds it" is a covered
   question. Registering a content type, and registering a class the container
   resolves by name, both fail at request time and neither is a convention of a

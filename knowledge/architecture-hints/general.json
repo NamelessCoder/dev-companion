@@ -121,7 +121,15 @@
     ],
     "hints": [
       "Resources/Public/ of an installed package is published into the document root by the Composer installer, as a symlink below _assets/<hash>/. The hash is the package, not the file.",
-      "That publishing happens when the packages are installed, not at runtime. A file added to Resources/Public/ afterwards is not resolvable until they are installed again — the answer is CanNotResolvePublicResourceException for a path that plainly exists on disk, and the remedy is a Composer install rather than a cache flush.",
+      "That publishing happens when the packages are installed, not at runtime. A file added to Resources/Public/ afterwards is not resolvable until they are installed again, and the remedy is a Composer install rather than a cache flush.",
+      {
+        "text": "The failure has a name: CanNotResolvePublicResourceException, thrown for a path that plainly exists on disk.",
+        "since": 14
+      },
+      {
+        "text": "Nothing throws here — PathUtility computes the URL from the path either way — so the symptom is an asset that 404s in the browser rather than an exception in PHP.",
+        "until": 13
+      },
       "Reference such a file as EXT:<key>/Resources/Public/... and let the resolver produce the published URI. The _assets path is an implementation detail and its hash changes with the layout."
     ],
     "checks": []

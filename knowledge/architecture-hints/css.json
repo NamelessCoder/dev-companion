@@ -214,11 +214,12 @@
       "--typo3-component"
     ],
     "hints": [
-      "Do not use --token-color-* values directly in component CSS; they define the color space for semantic tokens.",
-      "Use --typo3-text-color-* for text and icons, --typo3-surface-* for larger backgrounds, and --typo3-surface-container-* for nested component backgrounds.",
-      "Surface tokens may be used directly, but they must follow the logical layering order: lowest, low, base, high, highest.",
-      "Use matching *-text surface tokens when placing content on stateful surfaces.",
-      "Use --typo3-state-* tokens for interactive or semantic states and derive subtle borders with color-mix(...) plus --typo3-border-mix."
+      { "text": "Do not use --token-color-* values directly in component CSS; they define the color space for semantic tokens.", "since": 13 },
+      { "text": "Use --typo3-text-color-* for text and icons, --typo3-surface-* for larger backgrounds, and --typo3-surface-container-* for nested component backgrounds.", "since": 13 },
+      { "text": "Surface tokens may be used directly, but they must follow the logical layering order: lowest, low, base, high, highest.", "since": 13 },
+      { "text": "Use matching *-text surface tokens when placing content on stateful surfaces.", "since": 13 },
+      { "text": "Use --typo3-state-* tokens for interactive or semantic states and derive subtle borders with color-mix(...) plus --typo3-border-mix.", "since": 13 },
+      { "text": "There is no semantic surface, text-color or state layer here. The backend's custom properties are component-scoped — --typo3-component-bg, --typo3-component-color, --typo3-component-border-color, the --typo3-input-* family — and below them sit the Bootstrap variables the backend still builds on.", "until": 12 }
     ],
     "checks": ["CI=true ./Build/Scripts/runTests.sh -s build", "CI=true ./Build/Scripts/runTests.sh -s lintScss"]
   },
@@ -227,10 +228,10 @@
     "title": "Shadow Tokens and Layering",
     "appliesTo": ["shadow", "box-shadow", "elevation", "flyout", "dialog", "popover", "tooltip", "window"],
     "hints": [
-      "Shadows must follow the same logical layering model as surfaces.",
+      { "text": "Shadows must follow the same logical layering model as surfaces.", "since": 13 },
       "Prefer semantic shadow tokens over raw box-shadow values.",
-      "Use stronger shadows only for higher layers such as flyouts, dialogs, popovers, tooltips, overlays, and windows.",
-      "Keep surface elevation and shadow strength aligned."
+      { "text": "Use stronger shadows only for higher layers such as flyouts, dialogs, popovers, tooltips, overlays, and windows.", "since": 13 },
+      { "text": "Keep surface elevation and shadow strength aligned.", "since": 13 }
     ],
     "checks": ["CI=true ./Build/Scripts/runTests.sh -s build", "CI=true ./Build/Scripts/runTests.sh -s lintScss"]
   },
@@ -251,7 +252,7 @@
       "stacking context"
     ],
     "hints": [
-      "Prefer existing z-index tokens such as --typo3-zindex-dropdown, --typo3-zindex-modal-backdrop, --typo3-zindex-modal, and --typo3-zindex-header.",
+      { "text": "Prefer existing z-index tokens such as --typo3-zindex-dropdown, --typo3-zindex-modal-backdrop, --typo3-zindex-modal, and --typo3-zindex-header.", "since": 13 },
       "Place overlays, flyouts, menus, sticky headers, dialogs, and popovers deliberately in the backend layering model.",
       "Avoid raw z-index numbers when an existing token matches the intended layer.",
       "Do not use extremely high z-index values to win stacking conflicts; fix the owning stacking context or use the correct layer token.",
@@ -274,7 +275,7 @@
       "transform"
     ],
     "hints": [
-      "Prefer existing transition tokens such as --typo3-transition-color for interactive color, border, shadow, and opacity transitions.",
+      { "text": "Prefer existing transition tokens such as --typo3-transition-color for interactive color, border, shadow, and opacity transitions.", "since": 13 },
       "New transitions or animations that move, resize, fade large regions, or affect focus/navigation must respect prefers-reduced-motion: reduce.",
       "Avoid transition: all unless the surrounding component already uses it and the affected properties are intentionally constrained.",
       "Keep motion functional and subtle so it clarifies state changes."
@@ -310,8 +311,8 @@
     "appliesTo": ["light", "dark", "light-dark", "color-scheme", "theme", "contrast", "surface", "text color"],
     "hints": [
       "CSS changes must work in both light and dark backend color schemes.",
-      "Prefer semantic TYPO3 custom properties such as surfaces, text colors, component colors, input colors, and state colors.",
-      "Use existing light-dark(...) patterns when a value genuinely needs distinct light and dark variants.",
+      { "text": "Prefer semantic TYPO3 custom properties such as surfaces, text colors, component colors, input colors, and state colors.", "since": 13 },
+      { "text": "Use existing light-dark(...) patterns when a value genuinely needs distinct light and dark variants.", "since": 13 },
       "Check contrast for text, icons, borders, focus outlines, and state backgrounds in both schemes."
     ],
     "checks": ["CI=true ./Build/Scripts/runTests.sh -s build", "CI=true ./Build/Scripts/runTests.sh -s lintScss"]

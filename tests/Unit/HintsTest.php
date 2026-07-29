@@ -268,7 +268,7 @@ final class HintsTest extends TestCase
             $text = (string) preg_replace(
                 '/\bPSR-\d+/i',
                 'PSR',
-                $hint['title'] . "\n" . implode("\n", $hint['hints'])
+                $hint['title'] . "\n" . implode("\n", array_column($hint['hints'], 'text'))
             );
 
             foreach ($snapshots as $what => $pattern) {

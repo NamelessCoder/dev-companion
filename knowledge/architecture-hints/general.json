@@ -22,8 +22,14 @@
     "hints": [
       "Use clear, stable label identifiers and concise wording.",
       "Reuse an existing label where the meaning is identical. Which trans-units exist is a property of the installation — every extension ships its own and an installation can override a language file through LANG/resourceOverrides — so search with typo3_label_lookup, which asks the installation, rather than working from memory.",
-      "Reference a label by its translation domain (package.resource:key), not by the EXT: file path. The domain follows from the path and is registered nowhere: Resources/Private/Language/ is dropped, remaining directories become dot-separated snake_case parts, locallang.xlf becomes \"messages\", locallang_<suffix>.xlf becomes \"<suffix>\", any other file name becomes its own snake_case form, and Configuration/Sets/<Set>/labels.xlf becomes \"sets.<set>\".",
-      "Because the domain is derived rather than declared, a file a patch is about to add already has one. Call typo3_translation_domain_lookup with the path instead of guessing; a wrong guess only fails at runtime.",
+      {
+        "text": "Reference a label by its translation domain (package.resource:key), not by the EXT: file path. The domain follows from the path and is registered nowhere: Resources/Private/Language/ is dropped, remaining directories become dot-separated snake_case parts, locallang.xlf becomes \"messages\", locallang_<suffix>.xlf becomes \"<suffix>\", any other file name becomes its own snake_case form, and Configuration/Sets/<Set>/labels.xlf becomes \"sets.<set>\".",
+        "since": 14
+      },
+      {
+        "text": "Because the domain is derived rather than declared, a file a patch is about to add already has one. Call typo3_translation_domain_lookup with the path instead of guessing; a wrong guess only fails at runtime.",
+        "since": 14
+      },
       "Check whether language file normalization is needed."
     ],
     "checks": [
@@ -44,7 +50,10 @@
     ],
     "hints": [
       "In Fluid: <core:icon identifier=\"actions-delete\" size=\"small\" /> with the core namespace, which is globally registered. Its arguments are identifier, size, state, overlay, alternativeMarkupIdentifier and title.",
-      "In PHP: inject IconFactory and call $this->iconFactory->getIcon('actions-close', IconSize::SMALL)->render(). The size is the TYPO3\\CMS\\Core\\Imaging\\IconSize enum — cases DEFAULT, SMALL, MEDIUM, LARGE, MEGA and OVERLAY — which replaced the Icon::SIZE_* constants. getIconForRecord($table, $row) picks the identifier from the TCA schema.",
+      {
+        "text": "In PHP: inject IconFactory and call $this->iconFactory->getIcon('actions-close', IconSize::SMALL)->render(). The size is the TYPO3\\CMS\\Core\\Imaging\\IconSize enum — cases DEFAULT, SMALL, MEDIUM, LARGE, MEGA and OVERLAY — which replaced the Icon::SIZE_* constants. getIconForRecord($table, $row) picks the identifier from the TCA schema.",
+        "since": 13
+      },
       "In TypeScript there are two entry points, and they are easy to confuse. For markup, the custom element <typo3-backend-icon identifier=\"actions-open\" size=\"small\"> from @typo3/backend/element/icon-element. For fetching an icon programmatically, the default export of @typo3/backend/icons, imported as Icons.",
       "Identifiers follow <family>-<name> and spell the shape, not the intent: a warning is actions-exclamation-triangle, not actions-warning. Search the registry for the shape you want to see, not for the meaning you want to convey.",
       "Which identifiers exist is a property of the installation, not of TYPO3: IconRegistry is assembled from every installed package. Validate one with typo3_icon_lookup, which reads all three sources of your installation — the T3Icons set, the Configuration/Icons.php of every package, and the flag images. An unknown identifier renders an empty box and fails at runtime, not at build time.",

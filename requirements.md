@@ -24,7 +24,7 @@ holds only what must be true.
 These four govern the rest. Where a requirement below conflicts with one of
 them, this section wins and the other one is what needs rewriting.
 
-- **R-AUD-1** **open** — Three audiences are served, not one: the core
+- **R-AUD-1** Three audiences are served deliberately, not one: the core
   contributor, the extension author, and the site developer. An answer is right
   when it is right for the one that asked. Where knowledge holds only for core
   contribution, it is marked as core-only rather than handed over as the rule —
@@ -43,17 +43,18 @@ them, this section wins and the other one is what needs rewriting.
   *Held by:* `CommitMessageTest::outsideTheCoreNoTrailerIsAddedAndNoneIsDemanded`,
   `CommitMessageTest::outsideTheCoreTheSubjectAndBodyRulesStillHold`,
   `CommitMessageTest::theSecurityKeywordIsTheRepositoryOwnOutsideTheCore`
-- **R-AUD-4** **open** — More than one TYPO3 version is supported. An answer
-  either holds across the versions covered, or names the version it holds for.
-  This is already the rule for architecture hints (see `AGENTS.md`), and for the
-  catalogs, which now carry the version they describe and contrast it with the
-  installation being read. What is still open is the caller who has no
-  installation for this server to read, and the answer that is not merely
-  qualified but wrong below a version — `typo3_translation_domain_lookup` is
-  handled, and nothing generalises it yet.
-  *Held so far by:* `CatalogTest::theCatalogSaysHowItRelatesToTheInstallationBeingRead`,
+- **R-AUD-4** The knowledge is bound to versions. Which TYPO3 lines are covered
+  is declared in `knowledge/versions.json`; a statement that does not hold on all
+  of them carries `since`/`until` as data rather than saying so in its prose; and
+  an answer is composed for the version the caller stated, else for the one the
+  installation being read runs, else for none — and then every statement comes
+  back with the range it holds for.
+  *From:* v15 markup handed to a 13.4 caller, and a translation domain handed to
+  an installation that resolves none (2026-07-29).
+  *Held by:* `VersionsTest` in full — the range model, the precedence, the
+  filtering, and that no statement dates itself in prose —
+  `CatalogTest::theCatalogSaysHowItRelatesToTheInstallationBeingRead`,
   `CatalogTest::anInstallationWithoutTranslationDomainsIsGivenTheFileReference`,
-  `CatalogTest::anInstallationThatResolvesDomainsIsGivenTheDomain`,
   `InstanceTest::theTypo3VersionIsReadFromTheCorePackageRatherThanAskedOfTheConsole`
 
 ## Discovery — which installation is read, and how

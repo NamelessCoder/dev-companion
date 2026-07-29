@@ -187,9 +187,10 @@ grep for.
 
 Three audiences read what is written here: core contributors, extension authors,
 and site developers — and the same person is often two of them in one checkout,
-because extensions are developed inside site installations. Knowledge that holds
-only for core contribution is written as core-only, not as the rule; see the
-audience requirements in `requirements.md`.
+because extensions are developed inside site installations. All three are served
+deliberately, so knowledge that holds only for core contribution is written as
+core-only rather than as the rule, and knowledge that holds only from one TYPO3
+version says so; see the audience requirements in `requirements.md`.
 
 - Everything the tools answer from lives below `knowledge/`, with one exception:
   what is registered in an installation is asked of that installation through
@@ -211,29 +212,51 @@ audience requirements in `requirements.md`.
   `knowledge/`, and keep the wording branch-neutral where the fact is
   branch-specific.
 
-### How an architecture hint is written
+### Which versions an answer holds for
 
-A hint is served without a branch. `typo3_server_scope` promises that the
-server does not know which TYPO3 version the caller works on, so a hint that
-only holds on one version is a hint that is wrong for everyone else. Five rules
-follow from that; `HintsTest` enforces the mechanical ones.
+The knowledge base covers more than one TYPO3. Which ones is declared in
+`knowledge/versions.json` and nowhere else; every check that needs the list
+reads it from there.
 
+A statement that does not hold on all of them says so **as data, not as prose**.
+`since` and `until` carry the major it starts and stops holding at, and the
+answer renders that beside the sentence. A statement without either holds
+everywhere the knowledge base reaches, which is what most of them do.
+
+```json
+"hints": [
+  "Template files below Resources/Private/ are resolved by the view factory.",
+  { "text": "A label is referenced by its translation domain.", "since": 14 },
+  { "text": "Every content column needs an explicit identifier.", "since": 15 }
+]
+```
+
+That is the whole mechanism, and it exists because the alternative is worse:
+a caller on an LTS given a `main` answer changes code that then fails at
+runtime, and the failure is silent. The rules below follow from it.
+
+- **Bind the statement, not the hint.** A subsystem does not change wholesale;
+  one sentence in it does. Splitting a hint per version duplicates the six
+  statements that did not change.
+- **A bound statement is verified on both sides of its boundary.** `since: 14`
+  means it was checked against 13.4 and found absent, and against 14 and found
+  present. Name both branches in the commit message — that is the evidence
+  nobody can reconstruct later.
+- **Prose stays free of version numbers.** The binding is in the field, so the
+  sentence does not need "since v14" in it, and a sentence that carries one
+  cannot be filtered, re-rendered, or checked. `HintsTest` enforces this.
 - **State the shape that is current, not the history it replaced.** A bullet
   whose payload is "X is deprecated" becomes a bullet whose payload is "this is
-  what new code looks like". The predecessor is then implied and stays a clause,
-  not a bullet of its own.
-- **No version numbers, no concrete changelog file names, no counts.** All three
-  are a snapshot of one checkout and go stale silently. Counts measured while
-  writing a hint are evidence for the author and belong in the commit message,
-  not in the answer.
-- **Where the answer is branch-specific, give the procedure, not the result.**
-  Name what to read in the checkout — an `@deprecated` annotation, a
-  `trigger_error(..., E_USER_DEPRECATED)` call, `Documentation/Changelog/`, the
-  extension scanner matchers. A procedure works on every branch, a list only on
-  the one it was taken from.
-- **When a fact holds on some branches only, write the rule that holds on all of
-  them.** `css-browser-target` is the model: not "this feature is allowed from
-  version X", but "the evergreen baseline of the target release year decides".
+  what new code looks like", bound to the version the new shape arrived in. The
+  predecessor is then implied and stays a clause, not a bullet of its own.
+- **Where the answer is branch-specific in a way a range cannot express, give
+  the procedure, not the result.** Name what to read in the checkout — an
+  `@deprecated` annotation, a `trigger_error(..., E_USER_DEPRECATED)` call,
+  `Documentation/Changelog/`, the extension scanner matchers. What a given
+  version deprecated is a list; how to find it is a procedure.
+- **No concrete changelog file names, no counts.** Both are a snapshot of one
+  checkout and go stale silently. Counts measured while writing a hint are
+  evidence for the author and belong in the commit message, not in the answer.
 - **"Check whether X" is not a hint, it is a check.** `hints` carries
   statements, `checks` carries commands that run. A check-shaped sentence with
   no command behind it tells the caller nothing it did not know already.

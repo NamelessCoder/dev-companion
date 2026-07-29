@@ -1,15 +1,18 @@
 # TYPO3 CMS MCP
 
 A local MCP server (plain PHP) that gives MCP-enabled clients a curated TYPO3
-core contribution **knowledge base**: contribution rules, the Gerrit workflow,
-core script and `runTests.sh` notes, architecture hints, commit message
-conventions, and a catalog of backend UI components — context that is otherwise
-spread across project knowledge, core conventions, and the official
-contribution documentation.
+**knowledge base**, for the three audiences that work with TYPO3: the core
+contributor, the extension author, and the site developer. It holds the
+conventions each subsystem is built on and how its mechanisms are used, the
+core's own contribution process — rules, the Gerrit workflow, script and
+`runTests.sh` notes, commit message conventions — and a catalog of backend UI
+components: context that is otherwise spread across project knowledge, core
+conventions, and the official documentation.
 
-Almost everything it answers comes from the bundled `knowledge/` files, and
-those answers hold on every branch because they describe conventions rather
-than code.
+Almost everything it answers comes from the bundled `knowledge/` files, and the
+answers are bound to versions: the knowledge base covers several TYPO3 lines,
+and a statement that does not hold on all of them carries the ones it does hold
+on. Pass a `targetVersion`, or let the installation being read decide.
 
 **It is a conventions catalog, not a patch assistant.** It cannot see your
 branch, your changed files, or which tests cover them — that stays the agent's

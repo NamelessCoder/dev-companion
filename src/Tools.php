@@ -119,6 +119,7 @@ final class Tools
                     'properties' => [
                         'task' => ['type' => 'string', 'minLength' => 1, 'description' => 'Short description of the TYPO3 core task.'],
                         'area' => ['type' => 'string', 'description' => 'Affected subsystem or extension, if known.'],
+                        'targetVersion' => ['type' => 'string', 'description' => 'The TYPO3 version this task is for, for example "13.4" or "14". Conventions that do not hold there are left out. Defaults to the version of the installation this server was started in.'],
                         'changeType' => ['type' => 'string', 'enum' => ['bugfix', 'feature', 'cleanup', 'test', 'documentation', 'unknown'], 'default' => 'unknown'],
                     ],
                     'required' => ['task'],
@@ -144,6 +145,7 @@ final class Tools
                         'paths' => ['type' => 'array', 'items' => ['type' => 'string'], 'default' => [], 'description' => 'TYPO3 core file paths related to the task, relative to the core checkout.'],
                         'task' => ['type' => 'string', 'description' => 'Short task description or architecture topic.'],
                         'id' => ['type' => 'string', 'description' => 'Ask for one hint by its id, for example language-files, instead of matching. Every answer that returns no hint lists the ids there are, so a subject that exists can be requested by name rather than guessed at.'],
+                        'targetVersion' => ['type' => 'string', 'description' => 'The TYPO3 version the answer has to hold for, for example "13.4" or "14". Statements that do not hold there are left out. Defaults to the version of the installation this server was started in; where there is none, nothing is filtered and every statement carries the versions it holds for.'],
                         'limit' => ['type' => 'integer', 'minimum' => 1, 'maximum' => 10, 'default' => 6, 'description' => 'Maximum number of architecture hints.'],
                     ],
                 ],
@@ -353,6 +355,15 @@ final class Tools
         }
 
         $lines[] = '';
+        $lines[] = 'Versions this knowledge is bound to:';
+        foreach (Versions::covered() as $version) {
+            $lines[] = '- TYPO3 v' . $version['major'] . ' (' . $version['branch'] . ', ' . $version['status'] . ')';
+        }
+        $lines[] = 'A statement that does not hold on all of them carries the range it holds on. Pass targetVersion '
+            . 'to have the ones that do not apply left out; without it, the version of the installation being read '
+            . 'decides, and where there is none nothing is filtered.';
+
+        $lines[] = '';
         $lines[] = 'Deliberately not covered:';
         foreach ($scope['doesNotCover'] as $entry) {
             $lines[] = '## ' . $entry['topic'];
@@ -450,7 +461,10 @@ final class Tools
                 . 'Missing something that belongs here? Leave a note with it.';
         }
 
-        return ToolResult::create(implode("\n", $lines), $scope + ['installation' => self::installationReport()]);
+        return ToolResult::create(implode("\n", $lines), $scope + [
+            'versions' => Versions::covered(),
+            'installation' => self::installationReport(),
+        ]);
     }
 
     /**
@@ -769,7 +783,8 @@ final class Tools
             static fn(array $intent): bool => !in_array($intent, $confirmed, true)
         ));
 
-        $architecture = ArchitectureHints::find($paths, $task, 4);
+        $target = Versions::target(isset($args['targetVersion']) ? (string) $args['targetVersion'] : null);
+        $architecture = ArchitectureHints::find($paths, $task, 4, null, $target);
         $testHints = array_slice(TestSuiteHints::find($subject, $domains), 0, 4);
         if ($outsideCore) {
             $architecture['matchedHints'] = ArchitectureHints::withoutChecks($architecture['matchedHints']);
@@ -808,7 +823,7 @@ final class Tools
                 foreach ($section['hints'] as $hint) {
                     $lines[] = '## ' . $hint['title'];
                     foreach ($hint['hints'] as $entry) {
-                        $lines[] = '- ' . $entry;
+                        $lines[] = '- ' . self::statementLine($entry);
                     }
                     if ($hint['checks'] !== []) {
                         $lines[] = 'Checks:';
@@ -958,6 +973,7 @@ final class Tools
             'task' => $task,
             'area' => $area === '' ? null : $area,
             'changeType' => $changeType,
+            'targetVersion' => $target,
             'domains' => $domains,
             'outsideCore' => $outsideCore,
             'intents' => array_map(static fn(array $intent): array => [
@@ -1083,9 +1099,31 @@ final class Tools
             'id' => (string) $hint['id'],
             'title' => (string) $hint['title'],
             'category' => (string) $hint['category'],
-            'hints' => array_map('strval', $hint['hints']),
+            'hints' => array_map(static fn(array $statement): array => [
+                'text' => $statement['text'],
+                'since' => $statement['since'],
+                'until' => $statement['until'],
+                'versions' => Versions::label($statement['since'], $statement['until']),
+            ], $hint['hints']),
             'checks' => array_map('strval', $hint['checks']),
         ], array_values($hints));
+    }
+
+    /**
+     * One statement as a line, with the versions it holds for where that is not
+     * all of them.
+     *
+     * The range is rendered beside the sentence rather than inside it: the
+     * sentence is the same sentence on every version it holds for, and a reader
+     * filtering by version must not have to parse prose to do it.
+     *
+     * @param array{text: string, since: ?int, until: ?int} $statement
+     */
+    private static function statementLine(array $statement): string
+    {
+        $label = Versions::label($statement['since'], $statement['until']);
+
+        return $label === '' ? $statement['text'] : $statement['text'] . ' [' . $label . ']';
     }
 
     /**
@@ -1213,8 +1251,9 @@ final class Tools
         $task = isset($args['task']) ? (string) $args['task'] : null;
         $limit = (int) ($args['limit'] ?? 6);
         $id = isset($args['id']) ? trim((string) $args['id']) : '';
+        $target = Versions::target(isset($args['targetVersion']) ? (string) $args['targetVersion'] : null);
 
-        $result = ArchitectureHints::find($paths, $task ?? '', $limit, $id);
+        $result = ArchitectureHints::find($paths, $task ?? '', $limit, $id, $target);
 
         // The hints transfer — a DataHandler or Fluid convention is the same
         // one outside the core — but the checks attached to them are all
@@ -1251,6 +1290,13 @@ final class Tools
         if ($paths !== []) {
             $lines[] = "Paths:\n" . implode("\n", array_map(static fn(string $p): string => '- ' . $p, $paths));
         }
+        $lines[] = $target === null
+            ? 'No target TYPO3 version was stated and none was found to read, so every statement comes back with '
+                . 'the versions it holds for. Pass targetVersion to have the ones that do not apply left out.'
+            : sprintf(
+                'Answered for TYPO3 v%d: statements that do not hold there are left out.',
+                $target,
+            );
         if ($result['domains'] !== []) {
             $lines[] = 'Domains: ' . implode(', ', $result['domains'])
                 . ' (hints outside these domains are not shown'
@@ -1268,7 +1314,7 @@ final class Tools
                 foreach ($section['hints'] as $hint) {
                     $block = ['## ' . $hint['title'], 'Hints:'];
                     foreach ($hint['hints'] as $entry) {
-                        $block[] = '- ' . $entry;
+                        $block[] = '- ' . self::statementLine($entry);
                     }
                     if ($hint['checks'] !== []) {
                         $block[] = 'Relevant checks:';
@@ -1311,6 +1357,7 @@ final class Tools
         return ToolResult::create(implode("\n", $lines), [
             'task' => $task === '' ? null : $task,
             'paths' => array_values($paths),
+            'targetVersion' => $target,
             'domains' => $result['domains'],
             'withheldCategories' => $result['withheldCategories'],
             'outsideCore' => $outsideCore,

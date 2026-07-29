@@ -63,13 +63,34 @@
       "FLUIDTEMPLATE"
     ],
     "hints": [
-      "A page is rendered by the PAGEVIEW content object: `page.<n> = PAGEVIEW`, with the paths under the same key — `page.<n>.paths.<n> = EXT:<ext>/Resources/Private/`. FLUIDTEMPLATE is the predecessor and still resolves file., templateName. and its own root paths; PAGEVIEW deliberately does none of that.",
-      "One `paths` entry becomes three roots: the configured path plus Pages/ for templates, plus Partials/, plus Layouts/. There is no separate templateRootPaths, partialRootPaths or layoutRootPaths to set.",
-      "The template name is not configurable. It is the page layout identifier with the pagets__ prefix stripped, and \"default\" where the page declares none — so backend_layout = pagets__landingpage renders Pages/Landingpage and nothing else will.",
-      "The content of the page arrives as one variable holding the content areas, named by the `contentAs` option and \"content\" by default. A single area is addressed as {content.<identifier>} and rendered with <f:render.contentArea contentArea=\"{content.main}\" />.",
-      "Those identifiers are the ones the page layout declares for its columns in mod.web_layout.BackendLayouts — see the site set hints. A column without an explicit identifier cannot be addressed by name, and the template then renders empty with no error.",
-      "The site set settings are assigned as {settings.<path>}. PAGEVIEW assigns `site`, `language` and `page` itself and rejects a variables. entry that uses one of those names.",
-      "Data processors are configured on the PAGEVIEW object as dataProcessing., the same way FLUIDTEMPLATE takes them."
+      {
+        "text": "A page is rendered by the PAGEVIEW content object: `page.<n> = PAGEVIEW`, with the paths under the same key — `page.<n>.paths.<n> = EXT:<ext>/Resources/Private/`. FLUIDTEMPLATE is the predecessor and still resolves file., templateName. and its own root paths; PAGEVIEW deliberately does none of that.",
+        "since": 13
+      },
+      {
+        "text": "One `paths` entry becomes three roots: the configured path plus Pages/ for templates, plus Partials/, plus Layouts/. There is no separate templateRootPaths, partialRootPaths or layoutRootPaths to set.",
+        "since": 13
+      },
+      {
+        "text": "The template name is not configurable. It is the page layout identifier with the pagets__ prefix stripped, and \"default\" where the page declares none — so backend_layout = pagets__landingpage renders Pages/Landingpage and nothing else will.",
+        "since": 13
+      },
+      {
+        "text": "The content of the page arrives as one variable holding the content areas, named by the `contentAs` option and \"content\" by default. A single area is addressed as {content.<identifier>} and rendered with <f:render.contentArea contentArea=\"{content.main}\" />.",
+        "since": 14
+      },
+      {
+        "text": "Those identifiers are the ones the page layout declares for its columns in mod.web_layout.BackendLayouts — see the site set hints. A column without an explicit identifier cannot be addressed by name, and the template then renders empty with no error.",
+        "since": 14
+      },
+      {
+        "text": "The site set settings are assigned as {settings.<path>}. PAGEVIEW assigns `site`, `language` and `page` itself and rejects a variables. entry that uses one of those names.",
+        "since": 13
+      },
+      {
+        "text": "Data processors are configured on the PAGEVIEW object as dataProcessing., the same way FLUIDTEMPLATE takes them.",
+        "since": 13
+      }
     ],
     "checks": [
       "CI=true ./Build/Scripts/runTests.sh -s functional"

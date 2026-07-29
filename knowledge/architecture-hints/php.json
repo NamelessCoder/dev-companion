@@ -373,8 +373,14 @@
       "install tool"
     ],
     "hints": [
-      "An upgrade wizard implements UpgradeWizardInterface: getTitle(), getDescription(), updateNecessary(), executeUpdate() and getPrerequisites(). Which namespace ships it has moved between branches — read whether the installed core has it below Core/Classes/Upgrades/ or install/Classes/Updates/, and take the attribute and the marker interfaces from the same place.",
-      "Registration is the #[UpgradeWizard('identifier')] attribute on the class, which tags it for the registry. Nothing about a wizard is registered in ext_localconf.php.",
+      {
+        "text": "An upgrade wizard implements UpgradeWizardInterface: getTitle(), getDescription(), updateNecessary(), executeUpdate() and getPrerequisites(). Which namespace ships it has moved between branches — read whether the installed core has it below Core/Classes/Upgrades/ or install/Classes/Updates/, and take the attribute and the marker interfaces from the same place.",
+        "since": 13
+      },
+      {
+        "text": "Registration is the #[UpgradeWizard('identifier')] attribute on the class, which tags it for the registry. Nothing about a wizard is registered in ext_localconf.php.",
+        "since": 13
+      },
       "updateNecessary() answers about data, never about a version number: it decides whether the wizard is offered, it is asked again after a run, and a wizard whose data is already migrated returns false. Writing it as \"has this wizard run\" is what makes a migration unrepeatable and a half-finished one invisible.",
       "A wizard is marked as done after one successful run. Implement RepeatableInterface where it is meant to be run again — a migration over records that keep being created is the case for it.",
       "State what the wizard needs through getPrerequisites(): DatabaseUpdatedPrerequisite where it works on tables the schema migration creates, ReferenceIndexUpdatedPrerequisite where it relies on the reference index.",

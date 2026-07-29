@@ -1,0 +1,26 @@
+{
+  "covers": [
+    {
+      "major": 12,
+      "branch": "12.4",
+      "status": "lts"
+    },
+    {
+      "major": 13,
+      "branch": "13.4",
+      "status": "lts"
+    },
+    {
+      "major": 14,
+      "branch": "14.3",
+      "status": "stable"
+    },
+    {
+      "major": 15,
+      "branch": "main",
+      "status": "development"
+    }
+  ],
+  "verifiedAt": "2026-07-29",
+  "verifyCommand": "git -C <typo3-core-checkout> branch -r"
+}

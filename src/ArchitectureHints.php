@@ -33,8 +33,8 @@ final class ArchitectureHints
         'general' => 'General',
     ];
 
-    /** @return array<int, array{id: string, title: string, appliesTo: array<int, string>, hints: array<int, string>, checks: array<int, string>, category: string}> */
-    public static function load(): array
+    /** @return array<int, array{id: string, title: string, appliesTo: array<int, string>, hints: array<int, array{text: string, since: ?int, until: ?int}>, checks: array<int, string>, category: string}> */
+    public static function load(?int $target = null): array
     {
         $dir = Paths::knowledge() . '/architecture-hints';
         $files = glob($dir . '/*.json') ?: [];
@@ -53,25 +53,78 @@ final class ArchitectureHints
                     'id' => (string) $entry['id'],
                     'title' => (string) $entry['title'],
                     'appliesTo' => array_map('strval', $entry['appliesTo'] ?? []),
-                    'hints' => array_map('strval', $entry['hints'] ?? []),
+                    'hints' => array_map(self::statement(...), $entry['hints'] ?? []),
                     'checks' => array_map('strval', $entry['checks'] ?? []),
                     'category' => $category,
                 ];
             }
         }
 
-        return $hints;
+        return self::forVersion($hints, $target);
+    }
+
+    /**
+     * One statement, with the versions it holds for.
+     *
+     * A bare string is the ordinary case and means "everywhere this knowledge
+     * base reaches". Only a statement that stops being true somewhere has to
+     * say where, and it says it as data rather than in the sentence — so the
+     * sentence stays the same sentence on every version it holds for, and the
+     * range can be filtered, rendered and checked.
+     *
+     * @return array{text: string, since: ?int, until: ?int}
+     */
+    private static function statement(mixed $entry): array
+    {
+        if (!is_array($entry)) {
+            return ['text' => (string) $entry, 'since' => null, 'until' => null];
+        }
+
+        return [
+            'text' => (string) ($entry['text'] ?? ''),
+            'since' => isset($entry['since']) ? (int) $entry['since'] : null,
+            'until' => isset($entry['until']) ? (int) $entry['until'] : null,
+        ];
+    }
+
+    /**
+     * The same hints with every statement that does not hold on the target
+     * version removed, and a hint that has nothing left removed with them.
+     *
+     * @param array<int, array<string, mixed>> $hints
+     * @return array<int, array<string, mixed>>
+     */
+    public static function forVersion(array $hints, ?int $target): array
+    {
+        if ($target === null) {
+            return $hints;
+        }
+
+        $kept = [];
+        foreach ($hints as $hint) {
+            $statements = array_values(array_filter(
+                $hint['hints'],
+                static fn(array $statement): bool => Versions::holds($statement['since'], $statement['until'], $target),
+            ));
+            if ($statements === []) {
+                continue;
+            }
+            $hint['hints'] = $statements;
+            $kept[] = $hint;
+        }
+
+        return $kept;
     }
 
     /**
      * One hint by its id, for the tools that carry a fixed piece of guidance
      * with their own answer instead of waiting for a matching query.
      *
-     * @return array{id: string, title: string, appliesTo: array<int, string>, hints: array<int, string>, checks: array<int, string>, category: string}|null
+     * @return array{id: string, title: string, appliesTo: array<int, string>, hints: array<int, array{text: string, since: ?int, until: ?int}>, checks: array<int, string>, category: string}|null
      */
-    public static function byId(string $id): ?array
+    public static function byId(string $id, ?int $target = null): ?array
     {
-        foreach (self::load() as $hint) {
+        foreach (self::load($target) as $hint) {
             if ($hint['id'] === $id) {
                 return $hint;
             }
@@ -101,11 +154,11 @@ final class ArchitectureHints
      *     availableHints: array<int, array{id: string, title: string, category: string}>
      * }
      */
-    public static function find(array $paths, string $task, int $limit, ?string $id = null): array
+    public static function find(array $paths, string $task, int $limit, ?string $id = null, ?int $target = null): array
     {
         $id = trim((string) $id);
         if ($id !== '') {
-            $hint = self::byId($id);
+            $hint = self::byId($id, $target);
 
             return [
                 'matchedHints' => $hint === null ? [] : [$hint],
@@ -138,7 +191,7 @@ final class ArchitectureHints
         }
 
         $scored = [];
-        foreach (self::load() as $hint) {
+        foreach (self::load($target) as $hint) {
             if (!in_array($hint['category'], $categories, true)) {
                 continue;
             }

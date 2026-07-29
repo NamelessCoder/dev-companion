@@ -70,6 +70,11 @@ final class ToolSchemas
                 'when' => self::string(),
                 'call' => self::string(),
             ], ['when', 'call'])),
+            'versions' => self::listOf(self::object([
+                'major' => self::integer(),
+                'branch' => self::string('The branch that line is verified against.'),
+                'status' => self::string('lts, stable, or development.'),
+            ], ['major', 'branch', 'status']), 'The TYPO3 versions the knowledge is bound to. A statement outside a range is left out when a target version is known.'),
             'installation' => self::object([
                 'found' => ['type' => 'boolean', 'description' => 'Whether there is an installation to read at all.'],
                 'root' => self::nullableString('Absolute path of the installation.'),
@@ -92,7 +97,7 @@ final class ToolSchemas
                     'console' => self::string('Environment variable that names the console command.'),
                 ], ['root', 'console']),
             ], ['found', 'searched', 'packageCount', 'console']),
-        ], ['purpose', 'covers', 'doesNotCover', 'routing', 'installation']);
+        ], ['purpose', 'covers', 'doesNotCover', 'routing', 'versions', 'installation']);
     }
 
     /**
@@ -162,6 +167,7 @@ final class ToolSchemas
             'task' => self::string(),
             'area' => self::nullableString('Affected subsystem or path, if one was given.'),
             'changeType' => self::string(),
+            'targetVersion' => ['type' => ['integer', 'null'], 'description' => 'The TYPO3 major the answer was composed for — stated by the caller, or read from the installation. Null means nothing was filtered by version.'],
             'domains' => self::listOf(self::string()),
             'outsideCore' => ['type' => 'boolean', 'description' => 'True when the task reads as work on a project or third-party extension. The answer then holds core conventions that may transfer, not a checklist for the task.'],
             'intents' => self::listOf(self::object([
@@ -220,6 +226,7 @@ final class ToolSchemas
         return self::object([
             'task' => self::nullableString(),
             'paths' => self::listOf(self::string()),
+            'targetVersion' => ['type' => ['integer', 'null'], 'description' => 'The TYPO3 major the answer was composed for — stated by the caller, or read from the installation. Null means nothing was filtered and every statement carries its own range.'],
             'domains' => self::listOf(self::string(), 'Hints outside these domains are not returned.'),
             'withheldCategories' => self::listOf(self::string(), 'Categories that matched the domains but were left out because the task names the frontend. "Backend CSS" and "Backend TypeScript" describe the TYPO3 backend interface and are wrong advice for what a website renders; see docs.typo3.org for frontend theming.'),
             'outsideCore' => ['type' => 'boolean', 'description' => 'True when the paths or the task read as a project or third-party extension. The hints still hold; their checks are then empty, because runTests.sh is part of the core repository.'],
@@ -461,7 +468,12 @@ final class ToolSchemas
             'id' => self::string(),
             'title' => self::string(),
             'category' => self::string('PHP, TypeScript, JavaScript, CSS, or General.'),
-            'hints' => self::listOf(self::string()),
+            'hints' => self::listOf(self::object([
+                'text' => self::string('The statement itself. It reads the same on every version it holds for; the range is beside it, never inside it.'),
+                'since' => ['type' => ['integer', 'null'], 'description' => 'First TYPO3 major this holds on. Null means as far back as this knowledge base reaches.'],
+                'until' => ['type' => ['integer', 'null'], 'description' => 'Last TYPO3 major this holds on. Null means it still holds.'],
+                'versions' => self::string('The same range as a sentence, empty when the statement is bound to nothing.'),
+            ], ['text', 'since', 'until', 'versions'])),
             'checks' => self::listOf(self::string(), 'Commands relevant to this hint.'),
         ], ['id', 'title', 'category', 'hints', 'checks']);
     }

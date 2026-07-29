@@ -7,6 +7,7 @@ namespace Typo3CmsMcp\Tests\Unit;
 use PHPUnit\Framework\Attributes\After;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
+use Typo3CmsMcp\Tests\Support\TemporaryInstallation;
 use Typo3CmsMcp\Instance;
 use Typo3CmsMcp\LabelSearch;
 use Typo3CmsMcp\Tools;
@@ -21,7 +22,7 @@ use Typo3CmsMcp\Typo3Cli;
  */
 final class LabelSearchTest extends TestCase
 {
-    private string $temporaryRoot = '';
+    use TemporaryInstallation;
 
     #[After]
     public function forgetTheInstance(): void
@@ -29,10 +30,6 @@ final class LabelSearchTest extends TestCase
         putenv(Typo3Cli::CONSOLE_VARIABLE);
         Instance::discoverFrom(null);
         Typo3Cli::forget();
-        if ($this->temporaryRoot !== '') {
-            self::removeDirectory($this->temporaryRoot);
-            $this->temporaryRoot = '';
-        }
     }
 
     #[Test]
@@ -174,17 +171,5 @@ final class LabelSearchTest extends TestCase
         putenv(Typo3Cli::CONSOLE_VARIABLE . '=' . PHP_BINARY . ' ' . $root . '/console.php');
         Instance::discoverFrom($root);
         Typo3Cli::forget();
-    }
-
-    private static function removeDirectory(string $path): void
-    {
-        $entries = new \RecursiveIteratorIterator(
-            new \RecursiveDirectoryIterator($path, \FilesystemIterator::SKIP_DOTS),
-            \RecursiveIteratorIterator::CHILD_FIRST
-        );
-        foreach ($entries as $entry) {
-            $entry->isDir() ? rmdir($entry->getPathname()) : unlink($entry->getPathname());
-        }
-        rmdir($path);
     }
 }

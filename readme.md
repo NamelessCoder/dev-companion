@@ -18,6 +18,14 @@ conventions apply and which check to run. `typo3_server_scope` states this
 boundary in full, and `typo3_task_guide` names what has to be established in the
 checkout.
 
+**The conventions are the core's own**, and several of them — the changelog, the
+Gerrit workflow, the `runTests.sh` suites — have no counterpart in a project or
+an extension. So the answers say which repository they are for, and they work it
+out from structure rather than from wording: an area the installation knows as
+somebody's extension, a path in extension layout, and last the installation
+itself, because a Composer project is not a core checkout. What transfers is
+still answered; what only the core has is left out with the reason.
+
 **One exception, and it is deliberate.** Some questions have no bundled answer
 that could be right. Which labels exist, which icons are registered, which
 backend modules there are, what a configuration value actually is after every

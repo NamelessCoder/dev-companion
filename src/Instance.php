@@ -223,6 +223,27 @@ final class Instance
     }
 
     /**
+     * Whether an extension key is a system extension of this installation, or
+     * null when the installation does not have it — or when there is none.
+     *
+     * Where a package lives is what decides it, because the key alone cannot:
+     * a system extension is below typo3/sysext/ in a core checkout and comes
+     * from typo3/cms-* in a Composer project, and everything else is somebody's
+     * extension.
+     */
+    public static function isSystemExtension(string $key): ?bool
+    {
+        $path = self::packages()[$key] ?? null;
+        if ($path === null) {
+            return null;
+        }
+
+        $normalized = str_replace('\\', '/', $path);
+
+        return str_contains($normalized, '/typo3/sysext/') || str_contains($normalized, '/typo3/cms-');
+    }
+
+    /**
      * Both the kind of installation and the packages in it are declared by the
      * installation itself, so neither is guessed here: the monorepo root
      * declares "type": "typo3-cms-core", and a Composer installation lists

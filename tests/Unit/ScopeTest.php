@@ -4,15 +4,67 @@ declare(strict_types=1);
 
 namespace Typo3CmsMcp\Tests\Unit;
 
+use PHPUnit\Framework\Attributes\After;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Typo3CmsMcp\Instance;
 use Typo3CmsMcp\Scope;
+use Typo3CmsMcp\Tests\Support\TemporaryInstallation;
 use Typo3CmsMcp\Tools;
 use Typo3CmsMcp\Typo3Cli;
 
 final class ScopeTest extends TestCase
 {
+    use TemporaryInstallation;
+
+    #[After]
+    public function forgetTheInstance(): void
+    {
+        Instance::discoverFrom(null);
+    }
+
+    #[Test]
+    public function anAreaTheInstallationKnowsAsSomebodysExtensionIsOutsideTheCore(): void
+    {
+        // The wording gave nothing away — "bootstrap_package" is an extension
+        // key and matches no phrase. The installation knows what it is.
+        Instance::discoverFrom($this->composerProject());
+
+        $extension = Tools::call('typo3_task_guide', ['task' => 'Add a content element', 'area' => 'my_sitepackage']);
+        self::assertTrue($extension->data['outsideCore']);
+
+        $systemExtension = Tools::call('typo3_task_guide', ['task' => 'Add a content element', 'area' => 'core']);
+        self::assertFalse($systemExtension->data['outsideCore']);
+    }
+
+    #[Test]
+    public function inASiteInstallationTheWorkIsOutsideTheCoreUnlessSomethingSaysOtherwise(): void
+    {
+        Instance::discoverFrom($this->composerProject());
+
+        self::assertTrue(Scope::isOutsideCore([], 'Add a content element with a backend preview'));
+        self::assertFalse(Scope::isOutsideCore(['typo3/sysext/core/Classes/Utility/GeneralUtility.php'], ''));
+    }
+
+    #[Test]
+    public function inACoreCheckoutNothingIsPushedOutsideByTheInstallationAlone(): void
+    {
+        Instance::discoverFrom($this->coreCheckout());
+
+        self::assertFalse(Scope::isOutsideCore([], 'Add a content element with a backend preview'));
+    }
+
+    #[Test]
+    public function aPathInsideAnExtensionIsRecognisedByItsShape(): void
+    {
+        // No core file is named that way from the core root: everything there
+        // is below typo3/sysext/<key>/ or Build/.
+        self::assertTrue(Scope::isOutsideCore(['Classes/DataProcessing/CardGroupProcessor.php'], ''));
+        self::assertTrue(Scope::isOutsideCore(['Configuration/TCA/Overrides/200_content_element.php'], ''));
+        self::assertFalse(Scope::isOutsideCore(['typo3/sysext/core/Classes/Utility/GeneralUtility.php'], ''));
+        self::assertFalse(Scope::isOutsideCore(['Build/Sources/Sass/component/_card.scss'], ''));
+    }
+
     #[Test]
     public function theScopeNamesWhatIsCoveredAndWhatIsNot(): void
     {

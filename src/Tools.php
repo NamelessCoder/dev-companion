@@ -709,7 +709,7 @@ final class Tools
         // workflow, the runTests.sh suites — do not exist outside the core, so
         // handing them over as a checklist for a project extension is worse
         // than saying the question is outside what this server knows.
-        $outsideCore = Scope::isOutsideCore($paths, $subject);
+        $outsideCore = Scope::isOutsideCore($paths, $subject, $area);
 
         $intents = TaskIntents::scoped(
             TaskIntents::detect($subject . ' ' . $changeType),

@@ -55,6 +55,18 @@ final class Scope
         . 'the Gerrit workflow, the runTests.sh suites) have no counterpart there.';
 
     /**
+     * Directories an extension is laid out in. A path that begins with one of
+     * them is inside a package, and no core file is ever named that way from
+     * the core root: there everything is below typo3/sysext/<key>/ or Build/.
+     *
+     * @var array<int, string>
+     */
+    private const EXTENSION_LAYOUT = [
+        'classes/', 'configuration/', 'resources/',
+        'ext_localconf.php', 'ext_tables.php', 'ext_emconf.php',
+    ];
+
+    /**
      * Whether the task is about something other than the TYPO3 core.
      *
      * The conventions here are the core's own, and several of them — the
@@ -62,22 +74,54 @@ final class Scope
      * outside it. Answering a project-extension question with a core patch
      * checklist is worse than saying so.
      *
+     * The evidence is structural where structure exists, because wording is
+     * the weakest of the signals: "bootstrap_package" says everything about
+     * which repository this is and matches none of the phrases below.
+     *
      * @param array<int, string> $paths
      */
-    public static function isOutsideCore(array $paths, string $text = ''): bool
+    public static function isOutsideCore(array $paths, string $text = '', string $area = ''): bool
     {
-        $haystack = mb_strtolower(implode(' ', $paths) . ' ' . $text);
-        if (str_contains($haystack, 'typo3/sysext/')) {
+        if (self::isCoreWork($paths, $text)) {
             return false;
         }
 
+        $haystack = mb_strtolower(implode(' ', $paths) . ' ' . $text);
         foreach (self::OUTSIDE_CORE as $marker) {
             if (str_contains($haystack, $marker)) {
                 return true;
             }
         }
 
-        return false;
+        // An area that names an installed package which is not a system
+        // extension. The installation is asked because only it knows: the same
+        // key is a system extension in one and a vendor package in the next.
+        // An area it does not have at all says nothing — "FormEngine" and
+        // "backend forms" are areas too.
+        $systemExtension = $area === '' ? null : Instance::isSystemExtension($area);
+        if ($systemExtension === false) {
+            return true;
+        }
+
+        foreach ($paths as $path) {
+            $lowered = ltrim(mb_strtolower(str_replace('\\', '/', $path)), './');
+            foreach (self::EXTENSION_LAYOUT as $prefix) {
+                if (str_starts_with($lowered, $prefix)) {
+                    return true;
+                }
+            }
+        }
+
+        // Naming a system extension as the area is evidence in the other
+        // direction, and it beats the weakest signal there is: which
+        // installation the session happens to sit in.
+        if ($systemExtension === true) {
+            return false;
+        }
+
+        // That signal. A Composer project is not a core checkout, and work done
+        // in one is not core work unless something above said it was.
+        return (Instance::describe()['kind'] ?? '') === Instance::KIND_COMPOSER_PROJECT;
     }
 
     /**

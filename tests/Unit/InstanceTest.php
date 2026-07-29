@@ -7,6 +7,7 @@ namespace Typo3CmsMcp\Tests\Unit;
 use PHPUnit\Framework\Attributes\After;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
+use Typo3CmsMcp\Tests\Support\TemporaryInstallation;
 use Typo3CmsMcp\Instance;
 
 /**
@@ -15,17 +16,13 @@ use Typo3CmsMcp\Instance;
  */
 final class InstanceTest extends TestCase
 {
-    private string $temporaryRoot = '';
+    use TemporaryInstallation;
 
     #[After]
     public function forgetTheInstance(): void
     {
         putenv(Instance::ROOT_VARIABLE);
         Instance::discoverFrom(null);
-        if ($this->temporaryRoot !== '') {
-            self::removeDirectory($this->temporaryRoot);
-            $this->temporaryRoot = '';
-        }
     }
 
     #[Test]
@@ -242,25 +239,5 @@ final class InstanceTest extends TestCase
             'install-path' => '../typo3/cms-core',
             'extra' => ['typo3/cms' => ['extension-key' => 'core']],
         ]]], JSON_THROW_ON_ERROR));
-    }
-
-    private function temporaryDirectory(): string
-    {
-        $this->temporaryRoot = sys_get_temp_dir() . '/typo3-cms-mcp-instance-' . bin2hex(random_bytes(6));
-        mkdir($this->temporaryRoot, 0o777, true);
-
-        return $this->temporaryRoot;
-    }
-
-    private static function removeDirectory(string $path): void
-    {
-        $entries = new \RecursiveIteratorIterator(
-            new \RecursiveDirectoryIterator($path, \FilesystemIterator::SKIP_DOTS),
-            \RecursiveIteratorIterator::CHILD_FIRST
-        );
-        foreach ($entries as $entry) {
-            $entry->isDir() ? rmdir($entry->getPathname()) : unlink($entry->getPathname());
-        }
-        rmdir($path);
     }
 }

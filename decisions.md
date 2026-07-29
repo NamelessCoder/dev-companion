@@ -11,6 +11,33 @@ reconsider does not belong here. When an assumption is later disproved, the
 entry stays and gains a **Corrected** line: the wrong assumption is the useful
 part, because it names the place where the next one is likely to sit.
 
+## 2026-07-29 — The installation is evidence about the task, and the weakest kind
+
+`outsideCore` was decided by phrases. "bootstrap_package" as the area matched
+none of them, so a third-party extension got the core's changelog rules until
+the caller wrote "not TYPO3 core" into the prose. Three structural signals are
+now consulted, and the installation this server was started in is one of them.
+
+- **Decided:** an ordering rather than a vote. Core work named outright wins,
+  then an outside-core marker, then an area the installation knows as somebody's
+  extension, then a path in extension layout, and last the kind of installation.
+  Each step is more specific than the one below it, so the general signal never
+  overrules a statement about the task.
+- **Assumed:** in a Composer project, work is not core contribution unless
+  something says it is. That is what the checkout is: core patches are written
+  in a core monorepo, and a site installation that vendors `typo3/cms-*` is not
+  one.
+- **Assumed:** a path starting with `Classes/`, `Configuration/` or
+  `Resources/` is inside a package. From the core root nothing is named that
+  way — `typo3/sysext/<key>/` or `Build/` comes first.
+- **Would falsify it:** a core contributor who runs their client from a site
+  installation that has the core checked out somewhere else, or who passes paths
+  relative to the system extension directory they are standing in. Both then
+  read as extension work, and the way out is to say `typo3/sysext/` once.
+- **Would also falsify it:** `TYPO3_MCP_ROOT` pointing at a site installation
+  for the label and icon lookups while the questions are about the core. The
+  variable now moves the boundary too, which it was not introduced to do.
+
 ## 2026-07-29 — The frontend is recognised by name, and only the two UI sections go
 
 The backend CSS hints were answered for a Bootstrap 5 theme extension, where

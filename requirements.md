@@ -156,12 +156,18 @@ These four are how R-AUD-1 and R-AUD-2 are met in the tools that exist today.
 `outsideCore` is a boolean, and an audience is not — the flag is the shape this
 took before the requirement above was written down, and it will not survive it.
 
-- **R-SCO-1** **open** — Work outside the core is recognised from structural
-  evidence — the kind of installation, the shape of the paths, an area that is
-  no known system extension — rather than from wording, and where it stays
-  uncertain the answer says so instead of defaulting to core.
+- **R-SCO-1** Work outside the core is recognised from structural evidence — the
+  kind of installation, the shape of the paths, an area the installation knows
+  as somebody's extension — rather than from wording. Evidence of core work
+  wins over the weaker signals, in this order: a `typo3/sysext/` path or the
+  contribution workflow named outright, then an outside-core marker, then the
+  area, then the path shape, then which installation the session sits in.
   *From:* `outsideCore` flipping only after the caller spelled out "not TYPO3
   core" in prose (2026-07-29).
+  *Held by:* `ScopeTest::anAreaTheInstallationKnowsAsSomebodysExtensionIsOutsideTheCore`,
+  `ScopeTest::inASiteInstallationTheWorkIsOutsideTheCoreUnlessSomethingSaysOtherwise`,
+  `ScopeTest::inACoreCheckoutNothingIsPushedOutsideByTheInstallationAlone`,
+  `ScopeTest::aPathInsideAnExtensionIsRecognisedByItsShape`
 - **R-SCO-2** `outsideCore` changes the payload. Core-only commands, checklist
   items and checkout discovery are dropped; conventions that transfer stay and
   are marked as such. The line is drawn per entry, not per section, because a

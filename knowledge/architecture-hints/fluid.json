@@ -28,6 +28,8 @@
         "text": "There is no view factory here: a backend module builds its own view — StandaloneView with setTemplateRootPaths() and setPartialRootPaths(), or the Extbase view of an Extbase module — and the rule is the same, a partial is referenced by its name rather than by a file path.",
         "until": 12
       },
+      "A template that declares a layout renders its sections and nothing else. Markup, an <f:variable> assignment or any other ViewHelper call outside <f:section> is never executed — the layout is rendered in place of the template body, so the value is simply absent, no error is raised and nothing is logged. A variable a section uses is declared inside that section.",
+      "Notes in a template belong in <f:comment>, whose children are not rendered at all. An HTML comment is part of the response, and the {expressions} inside it are resolved on the way there — a comment that documents the variables of a loop ships their values to the browser.",
       "Fluid escapes output by default. Do not work around it in the template; if a ViewHelper has to return markup, that decision belongs in the ViewHelper via escapeOutput.",
       "Use typo3_component_lookup for the markup of a backend component and typo3_icon_lookup for an icon identifier, instead of writing either from memory."
     ],

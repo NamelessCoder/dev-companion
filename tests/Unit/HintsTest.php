@@ -212,6 +212,21 @@ final class HintsTest extends TestCase
     }
 
     #[Test]
+    public function theTemplateTrapsThatFailWithoutAnErrorAreNamed(): void
+    {
+        // Both produce a wrong page rather than a failure: a variable assigned
+        // outside a section of a template that declares a layout is never
+        // executed, and an HTML comment is rendered into the response with its
+        // expressions resolved. Neither is logged, so neither is searchable.
+        $hint = ArchitectureHints::byId('fluid-templates');
+        self::assertNotNull($hint);
+        $text = implode("\n", array_column($hint['hints'], 'text'));
+
+        self::assertStringContainsString('<f:section>', $text);
+        self::assertStringContainsString('<f:comment>', $text);
+    }
+
+    #[Test]
     public function aBackendModuleQueryIsStillAnsweredAboutBackendModules(): void
     {
         // The frontend hint is reached by naming the frontend, not by naming a

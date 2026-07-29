@@ -374,6 +374,14 @@ took before the requirement above was written down, and it will not survive it.
 
 ## Knowledge — what is covered
 
+- **R-KNW-5** Where a mechanism fails silently, the hint names the failure, not
+  only the rule. A caller whose page comes back wrong with a 200 and an empty
+  log has nothing to search for, so the sentence worth writing down is the one
+  that says what it looks like when it goes wrong.
+  *From:* a variable assigned outside `<f:section>` in a template that declares
+  a layout, never executed and never reported, and an HTML comment whose
+  `{placeholders}` were resolved into the response (2026-07-29).
+  *Held by:* `HintsTest::theTemplateTrapsThatFailWithoutAnErrorAreNamed`
 - **R-KNW-4** Where an answer covers one side of the authoring-versus-reading
   split, it names the side it is on and points at the other in one line. This is
   R-KNW-3 for the prose, and it is a pointer rather than site documentation, so

@@ -523,6 +523,11 @@
     ],
     "hints": [
       "An extension ships content as Initialisation/data.t3d or Initialisation/data.xml. It is imported once, when the package is set up — typo3 extension:setup is what triggers it. Initialisation/Site/<identifier>/ ships the site configuration alongside it, and Initialisation/Files/ is copied into the fileadmin directory under the extension key.",
+      "typo3 setup and typo3 extension:setup are two commands, and the second one is where the content arrives: it fires the package initialization. The setup command runs it as its last step, so a first install does both — but an extension whose shipped content changed afterwards is set up with the second one on its own.",
+      {
+        "text": "An extension that ships one of those files is a distribution as far as the setup command is concerned: the presence of the file is the entire test. So when such a package is already active, setup skips its own site creation and says that --distribution and --create-site have no effect; the two options exclude each other in any case, and --distribution needs typo3/cms-impexp to be active before it is offered at all.",
+        "since": 14
+      },
       {
         "text": "The setup dispatches a package initialization event, and every import — the content, the site configurations, the static SQL — is a listener on it, so an extension can add its own.",
         "since": 13

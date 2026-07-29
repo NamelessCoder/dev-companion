@@ -23,7 +23,7 @@ final class TaskIntents
     ];
 
     /**
-     * @return array<int, array{id: string, title: string, coreOnly: bool, match: array<int, string>, matchWeak: array<int, string>, condition: string, rulesQuery: string, checklist: array<int, string>, checks: array<int, string>, tools: array<int, string>}>
+     * @return array<int, array{id: string, title: string, binding: ?string, match: array<int, string>, matchWeak: array<int, string>, condition: string, rulesQuery: string, checklist: array<int, string>, checks: array<int, string>, tools: array<int, string>}>
      */
     public static function load(): array
     {
@@ -39,7 +39,7 @@ final class TaskIntents
             // than a kind of work. Patch submission is one: outside the core
             // there is no Gerrit to submit to, so the intent is not a weaker
             // match there — it is not one at all.
-            'coreOnly' => (bool) ($entry['coreOnly'] ?? false),
+            'binding' => isset($entry['binding']) ? (string) $entry['binding'] : null,
             'match' => array_map('strval', $entry['match'] ?? []),
             'matchWeak' => array_map('strval', $entry['matchWeak'] ?? []),
             'condition' => (string) ($entry['condition'] ?? ''),
@@ -134,7 +134,7 @@ final class TaskIntents
     {
         $scoped = [];
         foreach ($intents as $intent) {
-            if ($intent['coreOnly'] !== true || $coreWork) {
+            if ($intent['binding'] !== ArchitectureHints::BINDING_CORE || $coreWork) {
                 $scoped[] = $intent;
                 continue;
             }

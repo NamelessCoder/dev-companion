@@ -11,6 +11,26 @@ reconsider does not belong here. When an assumption is later disproved, the
 entry stays and gains a **Corrected** line: the wrong assumption is the useful
 part, because it names the place where the next one is likely to sit.
 
+## 2026-07-30 — `provenance` is not the third spelling of `binding`, and stays
+
+The plan was one field name for who an answer obliges, because it looked spelled
+three ways: `binding: "core"` on the hints, `coreOnly: true` on the task
+intents, `provenance: "core-only"` in `knowledge/server-scope.json`. Two of them
+are the same axis. The third is not, and reading its values is what showed it.
+
+- **Decided:** the intents move to `binding`, because `coreOnly: true` asks
+  exactly the question `binding` asks and answers it in a boolean — which is the
+  shape that cannot carry a second audience the day one is needed.
+- **Decided:** `provenance` stays as it is. Its values are `core-only`,
+  `transferable` and `installation`, and the third is not an obligation at all —
+  it says the answer is read from the installation rather than from a snapshot.
+  Folding it into `binding` would either drop that value or make "installation"
+  something a caller is obliged by. Two fields overlapping on one value are not
+  one field with a naming problem.
+- **Would falsify it:** a fourth value arriving on either side that reads
+  naturally in both — then they are the same axis after all and the merge is
+  the entry that was right.
+
 ## 2026-07-30 — Three numbers now decide what a lookup answers, and they were measured, not reasoned
 
 Scoring the hint text as well as its keywords is the change; keeping it from

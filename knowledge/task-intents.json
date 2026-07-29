@@ -160,7 +160,7 @@
   {
     "id": "submission",
     "title": "Patch submission",
-    "coreOnly": true,
+    "binding": "core",
     "condition": "if the patch goes to the TYPO3 core itself",
     "match": [
       "gerrit",

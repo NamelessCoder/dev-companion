@@ -9,6 +9,7 @@ use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Typo3CmsMcp\ArchitectureHints;
 use Typo3CmsMcp\Instance;
+use Typo3CmsMcp\TaskIntents;
 use Typo3CmsMcp\Tests\Support\TemporaryInstallation;
 use Typo3CmsMcp\Tools;
 use Typo3CmsMcp\Versions;
@@ -159,6 +160,20 @@ final class VersionsTest extends TestCase
                         $hint['id'] . ' binds to something this server has no vocabulary for',
                     );
                 }
+            }
+        }
+
+        // The task intents answer the same question about the same caller and
+        // spelled it coreOnly: true, which is the same axis in a second
+        // vocabulary — and a boolean cannot carry the value a third audience
+        // would need. One name, one enforced value, both corpora.
+        foreach (TaskIntents::load() as $intent) {
+            if ($intent['binding'] !== null) {
+                self::assertSame(
+                    ArchitectureHints::BINDING_CORE,
+                    $intent['binding'],
+                    $intent['id'] . ' binds to something this server has no vocabulary for',
+                );
             }
         }
     }

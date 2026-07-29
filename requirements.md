@@ -286,6 +286,18 @@ took before the requirement above was written down, and it will not survive it.
 
 ## Knowledge — what is covered
 
+- **R-KNW-3** A hint says how a subsystem is used, not only what a patch to it
+  has to satisfy. Both audiences read the same entry: "DataHandler changes are
+  high-impact and usually need functional tests" is true and answers nobody's
+  question about how to write a datamap. Where a mechanism has a shape that is
+  easy to get wrong — an order, a naming rule, a step that happens at install
+  time — the hint states it.
+  *From:* a session that built a site with this server as its only reference and
+  found the catalog organised around "what must a patch satisfy to be merged"
+  while the questions were "how do I do X with this API" (2026-07-29).
+  *Held by:* `HintsTest::theFrontendRenderingPathIsAnsweredAsWellAsTheBackendOne`,
+  and the shape of `datahandler-persistence`, `sitepackage-initial-content`,
+  `public-assets`, `frontend-page-rendering` — not guarded beyond that.
 - **R-KNW-2** A hint carries the words its subject is asked about in, not only
   its file extensions and its internal vocabulary. `appliesTo` is what the
   matcher scores, so a subject nobody can phrase their way to is a subject the

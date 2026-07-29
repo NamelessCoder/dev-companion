@@ -39,7 +39,7 @@
     },
     {
       "topic": "Core architecture conventions: DI, events and hooks, TCA and FormEngine, FormEngine data providers, DataHandler, routing, Fluid templates and ViewHelpers, frontend page rendering with PAGEVIEW, TypoScript site sets and TSconfig, language files, upgrade wizards, frontend DataProcessors, testing strategy",
-      "depth": "Conventions per subsystem, matched by path or topic. It describes how the core is built, never what your checkout contains.",
+      "depth": "Conventions per subsystem, matched by path or topic, from both angles: what a change to the subsystem has to satisfy, and how the mechanism is used. It describes how the core is built, never what your checkout contains.",
       "tools": [
         "typo3_architecture_lookup",
         "typo3_task_guide"

@@ -242,12 +242,23 @@
       "localization",
       "persistence",
       "database query",
-      "querybuilder"
+      "querybuilder",
+      "datamap",
+      "cmdmap",
+      "seed",
+      "seeding",
+      "create records",
+      "sorting",
+      "sortby"
     ],
     "hints": [
       "DataHandler and persistence changes are high-impact and usually need functional tests.",
       "Preserve workspace, localization, permissions, and hook or event behavior unless intentionally changed.",
-      "Test edge cases with deleted, hidden, localized, versioned, or workspace records when relevant."
+      "Test edge cases with deleted, hidden, localized, versioned, or workspace records when relevant.",
+      "Writing records goes through a datamap: $dataMap[<table>][<uid or \"NEW\" plus a unique suffix>][<field>], handed to start($dataMap, $cmdMap) and then process_datamap(). Moving, copying and deleting go through the command map instead. A new record's real uid comes back in substNEWwithIDs, keyed by the placeholder.",
+      "A new record is placed at the TOP of its page: the pid field is the positioning pid, and a page uid there means \"first record on that page\". A datamap written in reading order therefore comes out reversed — pages in a menu, content elements in a column.",
+      "To place records in order, use the negative form: a pid of -<uid> means \"directly after that record\". A \"NEW\" placeholder may be used there as well, as -NEW..., and resolves once the record it names has been created in the same run.",
+      "DataHandler acts as a backend user: pass one to start() or have one in $GLOBALS['BE_USER']. Permission checks, workspaces and the reference index all hang off it, which is what makes DataHandler the right way to seed and a direct INSERT the wrong one."
     ],
     "checks": [
       "CI=true ./Build/Scripts/runTests.sh -s functional",
@@ -392,6 +403,35 @@
       "Read the processor's own options from $processorConfiguration and through $cObj->stdWrapValue('option', $processorConfiguration, $default), so every option can be set with stdWrap. $contentObjectConfiguration is the whole content object and belongs to its caller.",
       "Honour the `if` option before doing any work: `if (isset($processorConfiguration['if.']) && !$cObj->checkIf($processorConfiguration['if.'])) { return $processedData; }`. A processor that ignores it runs on every element the TypoScript applies to.",
       "Return $processedData unchanged where there is nothing to add. A processor is one of a chain, and the next one is handed what this one returned."
+    ],
+    "checks": [
+      "CI=true ./Build/Scripts/runTests.sh -s functional"
+    ]
+  },
+  {
+    "id": "sitepackage-initial-content",
+    "title": "Shipping Initial Content with an Extension",
+    "appliesTo": [
+      "Initialisation/",
+      "initial content",
+      "distribution",
+      "impexp",
+      "data.t3d",
+      "data.xml",
+      "extension:setup",
+      "seed content",
+      "ship content",
+      "sitepackage",
+      "site package"
+    ],
+    "hints": [
+      "An extension ships content as Initialisation/data.t3d or Initialisation/data.xml. It is imported once, when the package is set up — the console's extension setup dispatches a package initialization event, and the import listens on it. Initialisation/Site/<identifier>/ ships the site configuration alongside it, and Initialisation/Files/ is copied into the fileadmin directory under the extension key.",
+      "The import runs exactly once and remembers that in the registry, namespace extensionDataImport. A second setup imports nothing, which is the point — and also why a changed data file does not reach an installation that already ran it.",
+      "The import lives in EXT:impexp, so an extension that ships content has to require typo3/cms-impexp. Without it the requirement check only logs a warning: the setup succeeds and the installation comes up empty, which is far harder to notice than a failure.",
+      "The site configuration import remaps the root page id to the page that was actually imported, and nothing else. Every other reference in the shipped config.yaml — an error handler naming t3://page?uid=..., a redirect target — keeps the uid it was exported with.",
+      "A site identifier that already exists is skipped with a warning, so a fresh installation and an existing one behave differently. Creating a site during setup and shipping one in Initialisation/Site/ are alternatives, not steps: the first one leaves a site behind that makes the second one be skipped.",
+      "Once content exists, the console's impexp export writes the artifact and impexp import reads it back — which is also the way in for the first build, where there is nothing to export yet and hand-writing T3D is not an option: seed with DataHandler, then export.",
+      "A file path handed to the console is resolved by GeneralUtility::getFileAbsFileName(): a relative path is relative to the public directory, not to the project root. EXT:<key>/Initialisation/data.xml is the form that works from anywhere."
     ],
     "checks": [
       "CI=true ./Build/Scripts/runTests.sh -s functional"

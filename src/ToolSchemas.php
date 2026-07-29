@@ -84,6 +84,7 @@ final class ToolSchemas
                     'php' => self::nullableString('The PHP version it runs on, where that is known.'),
                     'command' => self::nullableString('The invocation, as it is run.'),
                     'reason' => self::nullableString('Why it cannot be run. Null when it can.'),
+                    'caveat' => self::nullableString('What limits the console that was found — a project whose containers are stopped answers what its files say and fails on everything that boots TYPO3 against its database. Null when nothing limits it.'),
                 ], ['reachable']),
                 'settings' => self::object([
                     'root' => self::string('Environment variable that names the installation root.'),

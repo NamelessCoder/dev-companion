@@ -7,8 +7,9 @@ namespace Typo3CmsMcp\Tests\Unit;
 use PHPUnit\Framework\Attributes\After;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Typo3CmsMcp\Tests\Support\TemporaryInstallation;
 use Typo3CmsMcp\Instance;
+use Typo3CmsMcp\Tests\Support\TemporaryInstallation;
+use Typo3CmsMcp\Tools;
 use Typo3CmsMcp\Typo3Cli;
 
 /**
@@ -156,6 +157,29 @@ final class Typo3CliTest extends TestCase
 
         self::assertFalse(Typo3Cli::isAvailable());
         self::assertStringContainsString('ddev', Typo3Cli::reason());
+    }
+
+    #[Test]
+    public function aStoppedProjectReachedThroughHostPhpIsReportedAsTheHalfAnswerItIs(): void
+    {
+        // The console answers, on an interpreter of this machine, because the
+        // project that is meant to run in containers has none running. Every
+        // question that boots TYPO3 against its database fails, and "reachable"
+        // said none of that.
+        $root = $this->installation();
+        mkdir($root . '/bin');
+        file_put_contents($root . '/bin/typo3', "#!/usr/bin/env php\n<?php\n");
+        mkdir($root . '/.ddev');
+        file_put_contents($root . '/.ddev/config.yaml', "name: fixture\ntype: typo3\n");
+        $this->discover($root);
+
+        self::assertTrue(Typo3Cli::isAvailable());
+        self::assertSame('', Typo3Cli::reason(), 'it can be run, so nothing says it cannot');
+        self::assertStringContainsString('database', Typo3Cli::caveat());
+
+        $scope = Tools::call('typo3_server_scope', []);
+        self::assertNotNull($scope->data['installation']['console']['caveat']);
+        self::assertStringContainsString('Reachable is not the same as ready', $scope->text);
     }
 
     #[Test]

@@ -45,6 +45,8 @@ final class Typo3Cli
 
     private static string $reason = '';
 
+    private static string $caveat = '';
+
     /**
      * How this installation's console can be invoked, or null when it cannot.
      *
@@ -62,6 +64,7 @@ final class Typo3Cli
 
         self::$resolved = null;
         self::$reason = '';
+        self::$caveat = '';
 
         $instance = Instance::describe();
         if ($instance === null) {
@@ -109,9 +112,23 @@ final class Typo3Cli
         // A project that ships a DDEV setup is meant to run there, so its
         // reason wins over the direct one: "start the project" is something the
         // caller can act on, "install another PHP" is not.
-        self::$reason = $ddevReason !== '' ? $ddevReason : $phpReason;
+        if ($invocation === null) {
+            self::$reason = $ddevReason !== '' ? $ddevReason : $phpReason;
 
-        return $invocation;
+            return null;
+        }
+
+        // An interpreter on this machine reaches the console of a project that
+        // is meant to run elsewhere. It answers what can be answered from
+        // files, and fails on everything that boots TYPO3 against its database,
+        // because the database is in the containers that are not running. That
+        // is not "unreachable", and it is not "reachable" either.
+        self::$caveat = $ddevReason === '' ? '' : $ddevReason
+            . '. Until then only what the console can answer without booting TYPO3 against its database '
+            . 'is available — the configuration lookup reads files, the label, module and Fluid namespace '
+            . 'lookups need the database';
+
+        return self::$resolved = $invocation;
     }
 
     public static function isAvailable(): bool
@@ -128,6 +145,7 @@ final class Typo3Cli
     {
         self::$resolved = false;
         self::$reason = '';
+        self::$caveat = '';
     }
 
     /** Why the console cannot be invoked. Empty once it can. */
@@ -136,6 +154,21 @@ final class Typo3Cli
         self::resolve();
 
         return self::$reason;
+    }
+
+    /**
+     * What limits the console that was found. Empty when nothing does.
+     *
+     * Reachable is not one state: a project whose containers are stopped can
+     * still be asked what its configuration files say, and cannot be asked
+     * anything that boots TYPO3. Reporting that as reachable is what let five
+     * tools be presented as usable while four of them were not.
+     */
+    public static function caveat(): string
+    {
+        self::resolve();
+
+        return self::$caveat;
     }
 
     /**

@@ -40,7 +40,10 @@ a request-serving endpoint has no such relationship to its callers, and its
 document root may itself sit inside an installation. Where the project runs
 under DDEV the console is invoked there, because the project declares the PHP
 version it needs and the host machine may not have it. A stopped project is
-reported, never started. Where the layout is one discovery cannot walk to, two
+reported, never started — and where an interpreter on this machine reaches its
+console anyway, the answer says what that leaves out: everything that boots
+TYPO3 against a database that is not running. Where the layout is one discovery
+cannot walk to, two
 environment variables end the guessing: `TYPO3_MCP_ROOT` names the installation
 and `TYPO3_MCP_CONSOLE` the command that reaches its console, for example
 `ddev exec .build/bin/typo3`. `typo3_server_scope` names the installation it is

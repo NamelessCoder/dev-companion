@@ -87,6 +87,15 @@ them, this section wins and the other one is what needs rewriting.
   `InstanceTest::aNamedInstallationThatDoesNotExistIsReportedRatherThanSearchedPast`,
   `Typo3CliTest::aStatedCommandIsUsedInsteadOfWorkingOneOut`,
   `Typo3CliTest::aStatedCommandThatIsNoProgramIsReportedRatherThanReplaced`
+- **R-DIS-10** Reachable and ready are two questions. A console found on this
+  machine while the project it belongs to is meant to run elsewhere is reported
+  with what that costs — everything that boots TYPO3 against its database — in
+  the text and in the data, and a failing lookup repeats it where the error
+  alone does not say it.
+  *From:* `typo3_server_scope` reporting the console as reachable via host PHP
+  8.3 with the DDEV project stopped, so five installation-backed tools were
+  presented as usable while four of them could not answer (2026-07-29).
+  *Held by:* `Typo3CliTest::aStoppedProjectReachedThroughHostPhpIsReportedAsTheHalfAnswerItIs`
 - **R-DIS-9** Nothing that says "there is no installation" is remembered. A
   successful resolution is memoized for the process; a failure is retried on
   every call, because the caller who reads that answer is the one likely to

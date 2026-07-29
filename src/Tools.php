@@ -417,6 +417,9 @@ final class Tools
                 $console['php'] === '' ? 'an unreported version' : $console['php'],
             );
         }
+        if ($instance !== null && Typo3Cli::caveat() !== '') {
+            $lines[] = 'Reachable is not the same as ready here: ' . Typo3Cli::caveat() . '.';
+        }
 
         $lines[] = '';
         $lines[] = 'Every lookup and guide is read-only. Apart from the installation named above, nothing is '
@@ -465,6 +468,11 @@ final class Tools
                 'php' => ($console['php'] ?? '') === '' ? null : $console['php'],
                 'command' => $console === null ? null : implode(' ', $console['command']),
                 'reason' => $console === null ? Typo3Cli::reason() : null,
+                // Reachable and ready are two questions, and the second one has
+                // its own answer: a console reached through an interpreter on
+                // this machine while the project's containers are stopped runs,
+                // and cannot boot TYPO3 against a database that is not there.
+                'caveat' => Typo3Cli::caveat() === '' ? null : Typo3Cli::caveat(),
             ],
             'settings' => [
                 'root' => Instance::ROOT_VARIABLE,
@@ -1506,6 +1514,9 @@ final class Tools
     private static function consoleUnavailable(string $error, array $data): ToolResult
     {
         $diagnosis = Typo3Cli::diagnose($error);
+        if ($diagnosis === '' && Typo3Cli::caveat() !== '') {
+            $diagnosis = 'What is known about this console: ' . Typo3Cli::caveat() . '.';
+        }
 
         return ToolResult::create(
             sprintf(

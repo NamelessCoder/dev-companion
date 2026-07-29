@@ -445,18 +445,14 @@
       "data processor",
       "dataProcessing",
       "FLUIDTEMPLATE",
-      "processedData",
-      "menuprocessor",
-      "menu",
-      "navigation"
+      "processedData"
     ],
     "hints": [
       "A DataProcessor implements DataProcessorInterface::process($cObj, $contentObjectConfiguration, $processorConfiguration, $processedData) and returns the key/value store it was handed, with its own result added under the name the `as` option gives.",
       "Register it as a service tagged data.processor with an identifier in Configuration/Services.yaml. TypoScript then names that identifier rather than a class, the way the core's own processors are referenced; a fully qualified class name still resolves, because the container is asked first and the class is instantiated only when it holds no such service.",
       "Read the processor's own options from $processorConfiguration and through $cObj->stdWrapValue('option', $processorConfiguration, $default), so every option can be set with stdWrap. $contentObjectConfiguration is the whole content object and belongs to its caller.",
       "Honour the `if` option before doing any work: `if (isset($processorConfiguration['if.']) && !$cObj->checkIf($processorConfiguration['if.'])) { return $processedData; }`. A processor that ignores it runs on every element the TypoScript applies to.",
-      "Return $processedData unchanged where there is nothing to add. A processor is one of a chain, and the next one is handed what this one returned.",
-      "The menu processor is how a navigation is built, and it hands its options through to HMENU. One of them replaces instead of extending: excludeDoktypes overwrites the default list rather than adding to it, and that default is what keeps backend user sections and storage folders out of the menu. A configured list that does not repeat them puts every storage folder into the navigation — nothing warns, the menu is simply longer."
+      "Return $processedData unchanged where there is nothing to add. A processor is one of a chain, and the next one is handed what this one returned."
     ],
     "checks": [
       "CI=true ./Build/Scripts/runTests.sh -s functional"

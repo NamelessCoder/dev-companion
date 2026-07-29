@@ -57,11 +57,13 @@ final class Domains
             'fluid', 'viewhelper', 'view helper', 'partial', 'pageview',
             'page template', 'frontend template', 'content area', 'page layout',
             'sitepackage', 'site package', 'content element',
+            'menu', 'navigation',
         ],
         self::TYPOSCRIPT => [
             'typoscript', 'tsconfig', 'site set', 'sitesets', 'settings definition',
             'constants.typoscript', 'setup.typoscript',
             'sitepackage', 'site package', 'content element',
+            'menu', 'navigation',
         ],
         self::DOCS => [
             'changelog', 'rst', 'documentation', 'deprecation', 'breaking change',

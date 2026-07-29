@@ -293,7 +293,26 @@ final class HintsTest extends TestCase
         // has to be reachable from the word the question is asked with.
         $result = ArchitectureHints::find([], 'main navigation of the site, menu levels and which pages it shows', 6);
 
-        self::assertContains('frontend-dataprocessors', array_column($result['matchedHints'], 'id'));
+        self::assertContains('frontend-page-rendering', array_column($result['matchedHints'], 'id'));
+    }
+
+    #[Test]
+    public function aMenuQuestionThatReadsAsFrontendWorkStillReachesTheMenuTrap(): void
+    {
+        // The statement was there and was re-reported as missing: it sat in the
+        // PHP category, and a question phrased as sitepackage work has that
+        // whole category withheld from it. Where a statement lives decides who
+        // can see it.
+        $result = ArchitectureHints::find(
+            [],
+            'the main navigation of my sitepackage shows storage folders, menu dataProcessing excludeDoktypes',
+            6
+        );
+        $ids = array_column($result['matchedHints'], 'id');
+        self::assertContains('frontend-page-rendering', $ids);
+
+        $text = implode("\n", array_column((array) ArchitectureHints::byId('frontend-page-rendering')['hints'], 'text'));
+        self::assertStringContainsString('excludeDoktypes', $text);
     }
 
     #[Test]

@@ -347,6 +347,23 @@ final class HintsTest extends TestCase
     }
 
     #[Test]
+    public function theFileAnExtensionNoLongerNeedsIsCoveredWhereItsFilesAre(): void
+    {
+        // "Which files does an extension need" listed every file that is still
+        // current and left out the one that costs something: ext_emconf.php,
+        // absent from the list, reads as "not relevant" rather than as "declare
+        // this in composer.json instead".
+        $hint = ArchitectureHints::byId('extension-files');
+        self::assertNotNull($hint);
+        $text = implode("\n", array_column($hint['hints'], 'text'));
+        self::assertStringContainsString('ext_emconf.php', $text);
+
+        $current = implode("\n", array_column((array) ArchitectureHints::byId('extension-files', 14)['hints'], 'text'));
+        self::assertStringContainsString('providesPackages', $current);
+        self::assertStringContainsString('extra.typo3/cms.version', $current);
+    }
+
+    #[Test]
     public function theIconHintSaysWhichHalfOfTypo3ItIsAbout(): void
     {
         // Every API the hint names is a backend one, and a reader who is writing

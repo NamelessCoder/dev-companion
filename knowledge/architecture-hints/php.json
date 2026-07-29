@@ -229,6 +229,26 @@
         "text": "ext_tables.sql declares every table and every column of the extension. Nothing is derived from TCA here, so a column that is missing from the file is missing from the database.",
         "until": 12
       },
+      {
+        "text": "An extension is recognised by its composer.json, and the package metadata is read from there: the type has to be typo3-cms-extension (typo3-cms-framework for a system extension), the key is extra.typo3/cms.extension-key, the version is extra.typo3/cms.version or the top-level version field, and extra.typo3/cms.Package.providesPackages lists the Composer packages the extension itself ships — present as an empty object where it ships none.",
+        "since": 14
+      },
+      {
+        "text": "ext_emconf.php is the deprecated fallback for exactly that metadata. It is read only where composer.json declares neither the version nor providesPackages, and reading it triggers an E_USER_DEPRECATED during cache warm-up — which a functional test suite running with failOnDeprecation is usually the first thing to surface. Declare the two fields and the file stops being evaluated; a project extension can then delete it, one published to the TER keeps it for Tailor and the TER themselves.",
+        "since": 14
+      },
+      {
+        "text": "There is no fallback left: a composer.json without the version and providesPackages declarations is an invalid package manifest, and the installation says so instead of reading ext_emconf.php.",
+        "since": 15
+      },
+      {
+        "text": "ext_emconf.php is what makes a directory an extension outside Composer — the scan looks for that file — and its $EM_CONF array carries the title, the version, the state and the constraints on other extensions. In a Composer installation composer.json is the authority and the file is TER metadata.",
+        "until": 13
+      },
+      {
+        "text": "The backend title of an extension comes out of the composer.json description, split on the first \" - \": what stands before it becomes the title, the rest the description. An extension whose description is one sentence is listed with that whole sentence as its title.",
+        "since": 14
+      },
       "Configuration/JavaScriptModules.php declares the import map for an extension's backend JavaScript: a dependencies list of other extensions and an imports map from bare specifier to an EXT: path, with an optional exclude list.",
       "Configuration/Icons.php returns an array keyed by icon identifier, each entry naming a provider (SvgIconProvider or BitmapIconProvider) and an EXT: source path.",
       "Configuration/page.tsconfig is auto-loaded from that path and needs no registration call.",

@@ -223,6 +223,43 @@ final class Instance
     }
 
     /**
+     * The TYPO3 version of this installation, or null when there is none to
+     * read.
+     *
+     * Read from the core package's Typo3Version class rather than asked of the
+     * console: the version decides whether an answer holds, so it has to be
+     * available exactly when the console is not — an installation whose
+     * database has no schema still has a version, and knowing it is what keeps
+     * a v15 answer from being handed to a v13 caller.
+     */
+    public static function typo3Version(): ?string
+    {
+        $core = self::packages()['core'] ?? null;
+        if ($core === null) {
+            return null;
+        }
+
+        $file = $core . '/Classes/Information/Typo3Version.php';
+        if (!is_file($file)) {
+            return null;
+        }
+
+        if (preg_match('/const\s+VERSION\s*=\s*[\'"]([^\'"]+)[\'"]/', (string) file_get_contents($file), $matches) !== 1) {
+            return null;
+        }
+
+        return $matches[1];
+    }
+
+    /** The major of that version as a number, for comparing it with another. */
+    public static function typo3Major(): ?int
+    {
+        $version = self::typo3Version();
+
+        return $version === null ? null : (int) $version;
+    }
+
+    /**
      * Whether an extension key is a system extension of this installation, or
      * null when the installation does not have it — or when there is none.
      *

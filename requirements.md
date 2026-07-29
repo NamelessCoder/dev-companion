@@ -45,9 +45,16 @@ them, this section wins and the other one is what needs rewriting.
   `CommitMessageTest::theSecurityKeywordIsTheRepositoryOwnOutsideTheCore`
 - **R-AUD-4** **open** — More than one TYPO3 version is supported. An answer
   either holds across the versions covered, or names the version it holds for.
-  This is already the rule for architecture hints (see `AGENTS.md`); it has to
-  become the rule for catalogs and component markup too, where the pin is
-  currently stated once at the edge of the answer.
+  This is already the rule for architecture hints (see `AGENTS.md`), and for the
+  catalogs, which now carry the version they describe and contrast it with the
+  installation being read. What is still open is the caller who has no
+  installation for this server to read, and the answer that is not merely
+  qualified but wrong below a version — `typo3_translation_domain_lookup` is
+  handled, and nothing generalises it yet.
+  *Held so far by:* `CatalogTest::theCatalogSaysHowItRelatesToTheInstallationBeingRead`,
+  `CatalogTest::anInstallationWithoutTranslationDomainsIsGivenTheFileReference`,
+  `CatalogTest::anInstallationThatResolvesDomainsIsGivenTheDomain`,
+  `InstanceTest::theTypo3VersionIsReadFromTheCorePackageRatherThanAskedOfTheConsole`
 
 ## Discovery — which installation is read, and how
 
@@ -177,10 +184,12 @@ them, this section wins and the other one is what needs rewriting.
   *Held by:* `HintsTest::aMissNamesWhatThereWouldHaveBeenToFind`,
   `HintsTest::aHintCanBeAskedForByItsIdInsteadOfGuessedAt`,
   `HintsTest::anIdThatDoesNotExistIsAnsweredWithTheOnesThatDo`
-- **R-ANS-3** **open** — What a component answer describes is qualified by the
-  revision it was taken from, inside the entry rather than only in a trailing
-  block.
+- **R-ANS-3** What a component answer describes is qualified by the revision it
+  was taken from, inside the entry rather than only in a trailing block.
   *From:* 15.0 markup handed to a caller supporting 13.4 and 14.3 (2026-07-29).
+  *Held by:* `CatalogTest::theCatalogSaysHowItRelatesToTheInstallationBeingRead`,
+  and the `describesVersion` field the component schema requires
+  (`ToolContractTest`).
 
 ## Scope — core conventions where they apply, and nowhere else
 

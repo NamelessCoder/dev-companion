@@ -4,15 +4,81 @@ declare(strict_types=1);
 
 namespace Typo3CmsMcp\Tests\Unit;
 
+use PHPUnit\Framework\Attributes\After;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Typo3CmsMcp\Catalog\Components;
 use Typo3CmsMcp\Catalog\Meta;
 use Typo3CmsMcp\Catalog\TranslationDomain;
+use Typo3CmsMcp\Instance;
+use Typo3CmsMcp\Tests\Support\TemporaryInstallation;
 use Typo3CmsMcp\Tools;
 
 final class CatalogTest extends TestCase
 {
+    use TemporaryInstallation;
+
+    #[After]
+    public function forgetTheInstance(): void
+    {
+        Instance::discoverFrom(null);
+    }
+
+    #[Test]
+    public function theCatalogSaysHowItRelatesToTheInstallationBeingRead(): void
+    {
+        // Both numbers were known and never contrasted, so v15 markup and a
+        // v15 custom-property contract were handed to a v13 backend as fact.
+        Instance::discoverFrom($this->composerProject('vendor', '13.4.33'));
+
+        $result = Tools::call('typo3_catalog_scope', []);
+        self::assertSame('13.4.33', $result->data['catalog']['installedVersion']);
+        self::assertStringContainsString('13.4.33', (string) $result->data['catalog']['skew']);
+        self::assertStringContainsString('13.4.33', $result->text);
+
+        // A component answer carries the pin, so it carries the gap too.
+        self::assertStringContainsString('13.4.33', Tools::call('typo3_component_lookup', ['query' => 'badge'])->text);
+    }
+
+    #[Test]
+    public function anInstallationWithoutTranslationDomainsIsGivenTheFileReference(): void
+    {
+        // The domain string is syntactically fine on a version that cannot
+        // resolve it, and every label written with it renders empty. This is
+        // the one answer that is withheld rather than qualified.
+        Instance::discoverFrom($this->composerProject('vendor', '13.4.33'));
+
+        $result = Tools::call('typo3_translation_domain_lookup', [
+            'path' => 'EXT:my_ext/Resources/Private/Language/locallang_db.xlf',
+        ]);
+
+        self::assertNull($result->data['domain']);
+        self::assertSame('my_ext.db', $result->data['domainOnNewerVersions']);
+        self::assertStringContainsString('LLL:EXT:my_ext/Resources/Private/Language/locallang_db.xlf', $result->text);
+    }
+
+    #[Test]
+    public function anInstallationThatResolvesDomainsIsGivenTheDomain(): void
+    {
+        Instance::discoverFrom($this->composerProject('vendor', '14.3.0'));
+
+        $result = Tools::call('typo3_translation_domain_lookup', [
+            'path' => 'EXT:my_ext/Resources/Private/Language/locallang_db.xlf',
+        ]);
+
+        self::assertSame('my_ext.db', $result->data['domain']);
+        self::assertNull($result->data['domainOnNewerVersions']);
+    }
+
+    #[Test]
+    public function nothingIsSaidAboutASkewThatIsNotThere(): void
+    {
+        Instance::discoverFrom($this->composerProject('vendor', Meta::read()['source']['version'] . '.0'));
+
+        $result = Tools::call('typo3_catalog_scope', []);
+        self::assertNull($result->data['catalog']['skew']);
+    }
+
     #[Test]
     public function aComponentQueryIsAnsweredByTheComponentItself(): void
     {

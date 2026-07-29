@@ -36,7 +36,7 @@ trait TemporaryInstallation
     }
 
     /** A core monorepo checkout holding the core and backend system extensions. */
-    private function coreCheckout(): string
+    private function coreCheckout(string $version = ''): string
     {
         $root = $this->temporaryDirectory();
         file_put_contents($root . '/composer.json', '{"name": "typo3/cms", "type": "typo3-cms-core"}');
@@ -49,12 +49,26 @@ trait TemporaryInstallation
                 'extra' => ['typo3/cms' => ['extension-key' => $key]],
             ], JSON_THROW_ON_ERROR));
         }
+        if ($version !== '') {
+            $this->typo3Version($root . '/typo3/sysext/core', $version);
+        }
 
         return $root;
     }
 
+    /** The class the core states its own version in. */
+    private function typo3Version(string $corePackage, string $version): void
+    {
+        $path = $corePackage . '/Classes/Information';
+        mkdir($path, 0o777, true);
+        file_put_contents(
+            $path . '/Typo3Version.php',
+            sprintf("<?php\nclass Typo3Version\n{\n    protected const VERSION = '%s';\n}\n", $version)
+        );
+    }
+
     /** A Composer project with one system extension and one of its own. */
-    private function composerProject(string $vendorDirectory = 'vendor'): string
+    private function composerProject(string $vendorDirectory = 'vendor', string $version = ''): string
     {
         $root = $this->temporaryDirectory();
         $vendor = $root . '/' . $vendorDirectory;
@@ -85,6 +99,10 @@ trait TemporaryInstallation
             ],
             ['name' => 'symfony/console', 'type' => 'library', 'install-path' => '../symfony/console'],
         ]], JSON_THROW_ON_ERROR));
+
+        if ($version !== '') {
+            $this->typo3Version($vendor . '/typo3/cms-core', $version);
+        }
 
         return $root;
     }

@@ -67,6 +67,27 @@ final class InstanceTest extends TestCase
     }
 
     #[Test]
+    public function theTypo3VersionIsReadFromTheCorePackageRatherThanAskedOfTheConsole(): void
+    {
+        // It has to be available exactly when the console is not: an
+        // installation whose database has no schema still has a version, and
+        // the version is what decides whether an answer holds for it.
+        Instance::discoverFrom($this->composerProject('vendor', '13.4.33'));
+
+        self::assertSame('13.4.33', Instance::typo3Version());
+        self::assertSame(13, Instance::typo3Major());
+    }
+
+    #[Test]
+    public function anInstallationThatStatesNoVersionIsNotGuessedAt(): void
+    {
+        Instance::discoverFrom($this->composerProject());
+
+        self::assertNull(Instance::typo3Version());
+        self::assertNull(Instance::typo3Major());
+    }
+
+    #[Test]
     public function aProjectThatMovedItsVendorDirectoryIsFoundThereRatherThanMissed(): void
     {
         // The layout the TYPO3 extension testing setup produces. Reading the
@@ -175,58 +196,6 @@ final class InstanceTest extends TestCase
         Instance::discoverFrom($startedFrom);
 
         self::assertSame(realpath($startedFrom), Instance::describe()['startedFrom']);
-    }
-
-    private function coreCheckout(): string
-    {
-        $root = $this->temporaryDirectory();
-        file_put_contents($root . '/composer.json', '{"name": "typo3/cms", "type": "typo3-cms-core"}');
-        foreach (['core' => 'core', 'backend' => 'backend'] as $directory => $key) {
-            $path = $root . '/typo3/sysext/' . $directory;
-            mkdir($path . '/Classes/Controller', 0o777, true);
-            file_put_contents($path . '/composer.json', json_encode([
-                'name' => 'typo3/cms-' . $directory,
-                'type' => 'typo3-cms-framework',
-                'extra' => ['typo3/cms' => ['extension-key' => $key]],
-            ], JSON_THROW_ON_ERROR));
-        }
-
-        return $root;
-    }
-
-    private function composerProject(string $vendorDirectory = 'vendor'): string
-    {
-        $root = $this->temporaryDirectory();
-        $vendor = $root . '/' . $vendorDirectory;
-        if ($vendorDirectory !== 'vendor') {
-            file_put_contents($root . '/composer.json', json_encode(
-                ['name' => 'acme/extension', 'config' => ['vendor-dir' => $vendorDirectory]],
-                JSON_THROW_ON_ERROR
-            ));
-        }
-        mkdir($vendor . '/typo3/cms-core', 0o777, true);
-        mkdir($root . '/packages/my_sitepackage', 0o777, true);
-        mkdir($vendor . '/composer', 0o777, true);
-        file_put_contents($vendor . '/composer/installed.json', json_encode(['packages' => [
-            [
-                'name' => 'typo3/cms-core',
-                'type' => 'typo3-cms-framework',
-                'install-path' => '../typo3/cms-core',
-                'extra' => ['typo3/cms' => ['extension-key' => 'core']],
-            ],
-            [
-                'name' => 'acme/my-sitepackage',
-                'type' => 'typo3-cms-extension',
-                // Composer writes install-path relative to the vendor
-                // directory it actually used, so a moved one is deeper.
-                'install-path' => str_repeat('../', substr_count($vendorDirectory, '/') + 2)
-                    . 'packages/my_sitepackage',
-                'extra' => ['typo3/cms' => ['extension-key' => 'my_sitepackage']],
-            ],
-            ['name' => 'symfony/console', 'type' => 'library', 'install-path' => '../symfony/console'],
-        ]], JSON_THROW_ON_ERROR));
-
-        return $root;
     }
 
     private function installPackagesInto(string $root): void

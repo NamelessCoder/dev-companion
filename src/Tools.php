@@ -17,6 +17,16 @@ use Typo3CmsMcp\Catalog\TranslationDomain;
  */
 final class Tools
 {
+    /**
+     * The first TYPO3 major that resolves translation domains.
+     *
+     * Verified against the core: 13.4 has no TranslationDomain* class at all,
+     * 14 ships the mapper. A domain written into a label below this renders
+     * nothing — the failure is silent and at runtime, which is why this is the
+     * one version fact the code carries rather than the knowledge base.
+     */
+    private const TRANSLATION_DOMAIN_SINCE = 14;
+
     /** @var array<string, array<int, string>> */
     private const CHANGE_TYPE_CHECKLIST = [
         'bugfix' => [
@@ -150,7 +160,7 @@ final class Tools
             ],
             [
                 'name' => 'typo3_translation_domain_lookup',
-                'description' => 'Compute the translation domain an XLF file resolves to, from its path. The domain is the canonical way to reference a label (backend.alt_doc:key) in TCA, LanguageService::sL() and f:translate, and it is registered nowhere — it follows from the path by the rules in TranslationDomainResolver. Because it is computed, it also answers for a file outside the core and for one a patch is about to add.',
+                'description' => 'Compute the translation domain an XLF file resolves to, from its path. The domain is the canonical way to reference a label (backend.alt_doc:key) in TCA, LanguageService::sL() and f:translate, and it is registered nowhere — it follows from the path by the rules the core itself applies, which live in TranslationDomainMapper on one branch and TranslationDomainResolver on the next. Because it is computed, it also answers for a file outside the core and for one a patch is about to add. Where the installation being read is older than translation domains, it answers with the full LLL:EXT: reference instead: the domain form renders nothing there and fails at runtime rather than at build time.',
                 'inputSchema' => [
                     'type' => 'object',
                     'properties' => [
@@ -211,7 +221,7 @@ final class Tools
             ],
             [
                 'name' => 'typo3_catalog_scope',
-                'description' => 'Report which TYPO3 core revision the bundled catalogs were taken from, what they cover, and how to re-check them against a checkout. Call this to judge whether a catalog miss is authoritative for the branch you are working on.',
+                'description' => 'Report which TYPO3 core revision the bundled catalogs were taken from, what they cover, and how to re-check them against a checkout. Call this to judge whether a catalog miss is authoritative for the branch you are working on. Where an installation is being read, the answer contrasts its TYPO3 version with the snapshot.',
                 'inputSchema' => [
                     'type' => 'object',
                     'properties' => new \stdClass(),
@@ -1346,6 +1356,7 @@ final class Tools
                     'sassPath' => $c['sassPath'],
                     'sassPaths' => $c['sassPaths'],
                     'demoPath' => $c['demoPath'],
+                    'describesVersion' => CatalogMeta::read()['source']['version'],
                 ], $components),
                 'catalog' => self::catalogRecord(),
             ]);
@@ -1433,6 +1444,10 @@ final class Tools
                 'sassPaths' => $c['sassPaths'],
                 'demoPath' => $c['demoPath'],
                 'matchedIn' => $c['matchedIn'] ?? [],
+                // The revision travels inside the entry, not only in the block
+                // at the end of the answer: a client that renders one component
+                // shows markup with no statement of what it describes.
+                'describesVersion' => CatalogMeta::read()['source']['version'],
             ], $described),
             'checklist' => $checklist,
             'catalog' => self::catalogRecord(),
@@ -1469,6 +1484,11 @@ final class Tools
             . 'branch — a 13.4 backport, for example — verify against the checkout before concluding that a '
             . 'component or class does not exist.';
 
+        if (CatalogMeta::skew() !== '') {
+            $lines[] = '';
+            $lines[] = CatalogMeta::skew();
+        }
+
         return ToolResult::create(implode("\n", $lines), [
             'catalog' => self::catalogRecord(),
             'verifyCommand' => $meta['verifyCommand'],
@@ -1498,6 +1518,10 @@ final class Tools
             'version' => $meta['source']['version'],
             'commit' => $meta['source']['commit'],
             'verifiedAt' => $meta['verifiedAt'],
+            // Both numbers were known and never contrasted. They travel
+            // together now, in every answer that carries the pin at all.
+            'installedVersion' => Instance::typo3Version(),
+            'skew' => CatalogMeta::skew() === '' ? null : CatalogMeta::skew(),
         ];
     }
 
@@ -2025,7 +2049,8 @@ final class Tools
      * The translation domain an XLF file resolves to, computed from its path.
      *
      * Nothing registers a domain: it follows from the path by the rules in
-     * TYPO3\CMS\Core\Localization\TranslationDomainResolver. Computing it
+     * the core's own path-to-domain rules — the class holding them has been
+     * both TranslationDomainMapper and TranslationDomainResolver. Computing it
      * rather than looking it up is what makes it answerable at all — for a file
      * in any extension, in any instance, and for one a patch is about to add,
      * which is exactly when it cannot be looked up anywhere.
@@ -2049,6 +2074,36 @@ final class Tools
             );
         }
 
+        // The domain form is younger than the versions this is asked from. On
+        // an installation that has no resolver for it, the domain string is
+        // syntactically fine and resolves to nothing at runtime: every label it
+        // is written into silently renders empty. That is the one answer here
+        // that has to be withheld rather than qualified.
+        $major = Instance::typo3Major();
+        if ($major !== null && $major < self::TRANSLATION_DOMAIN_SINCE) {
+            $reference = str_starts_with($path, 'EXT:') ? $path : 'EXT:<key>/' . ltrim($path, '/');
+
+            return ToolResult::create(
+                implode("\n", [
+                    sprintf(
+                        'The installation here is TYPO3 %s, which has no translation domains: the API that resolves '
+                        . 'them arrived after it. Reference the file itself instead:',
+                        Instance::typo3Version(),
+                    ),
+                    '',
+                    '  LLL:' . $reference . ':<trans-unit id>',
+                    '',
+                    sprintf(
+                        'For the record, the domain this path would resolve to on a version that has them is "%s". '
+                        . 'Writing it into a label on this installation renders nothing, and fails at runtime rather '
+                        . 'than at build time.',
+                        $domain,
+                    ),
+                ]),
+                ['path' => $path, 'domain' => null, 'domainOnNewerVersions' => $domain],
+            );
+        }
+
         return ToolResult::create(
             implode("\n", [
                 sprintf('%s resolves to the translation domain:', $path),
@@ -2060,7 +2115,7 @@ final class Tools
                 'Which trans-units the file actually holds is a property of your checkout: read the file, and remember '
                     . 'that an installation can override it through LANG/resourceOverrides.',
             ]),
-            ['path' => $path, 'domain' => $domain],
+            ['path' => $path, 'domain' => $domain, 'domainOnNewerVersions' => null],
         );
     }
 

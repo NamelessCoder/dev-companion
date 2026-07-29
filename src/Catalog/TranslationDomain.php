@@ -13,8 +13,10 @@ namespace Typo3CmsMcp\Catalog;
  * The domain works in TCA labels and descriptions, LanguageService::sL(),
  * f:translate (as separate domain and key attributes), and registration configs.
  *
- * This is a port of the rules in TYPO3\CMS\Core\Localization\TranslationDomainResolver,
- * kept here so the catalog needs no core checkout:
+ * This is a port of the core's own path-to-domain rules, kept here so the
+ * catalog needs no core checkout. The class holding them below
+ * TYPO3\CMS\Core\Localization\ has been both TranslationDomainMapper and
+ * TranslationDomainResolver, so verify against whichever the branch has:
  *
  * - domain format: package[.subdir...].resource
  * - "Resources/Private/Language/" is dropped from the path

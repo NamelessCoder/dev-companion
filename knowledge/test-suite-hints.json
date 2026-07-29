@@ -48,11 +48,11 @@
     "examples": [
       {
         "purpose": "One unit test file",
-        "command": "CI=true ./Build/Scripts/runTests.sh -s unit -- typo3/sysext/core/Tests/Unit/Localization/TranslationDomainResolverTest.php"
+        "command": "CI=true ./Build/Scripts/runTests.sh -s unit -- typo3/sysext/core/Tests/Unit/Utility/GeneralUtilityTest.php"
       },
       {
         "purpose": "One unit test method",
-        "command": "CI=true ./Build/Scripts/runTests.sh -s unit -- --filter canResolveDomain typo3/sysext/core/Tests/Unit/Localization/TranslationDomainResolverTest.php"
+        "command": "CI=true ./Build/Scripts/runTests.sh -s unit -- --filter fixPermissionsSetsGroup typo3/sysext/core/Tests/Unit/Utility/GeneralUtilityTest.php"
       },
       {
         "purpose": "One functional test file on the default sqlite database",

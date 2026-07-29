@@ -24,7 +24,7 @@ from the core checkout root.
 CI=true ./Build/Scripts/runTests.sh -s unit -- typo3/sysext/core/Tests/Unit/Utility/GeneralUtilityTest.php
 
 # one unit test method
-CI=true ./Build/Scripts/runTests.sh -s unit -- --filter canResolveDomain typo3/sysext/core/Tests/Unit/Localization/TranslationDomainResolverTest.php
+CI=true ./Build/Scripts/runTests.sh -s unit -- --filter fixPermissionsSetsGroup typo3/sysext/core/Tests/Unit/Utility/GeneralUtilityTest.php
 
 # one functional test file, sqlite (default)
 CI=true ./Build/Scripts/runTests.sh -s functional -- typo3/sysext/impexp/Tests/Functional/Export/ExportTest.php

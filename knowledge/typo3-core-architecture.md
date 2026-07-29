@@ -205,7 +205,10 @@ not the `tsconfig.json` of the TypeScript build, which is unrelated.
 ### How the translation domain of an XLF file is derived
 
 The domain is not registered anywhere: it follows from the file path, by the
-rules in `TYPO3\CMS\Core\Localization\TranslationDomainResolver`. A file added by
+rules the core applies below `TYPO3\CMS\Core\Localization\` — the class that
+transforms a file path into a resource has been both `TranslationDomainMapper`
+and `TranslationDomainResolver`, so read which of them your branch has before
+comparing against it. A file added by
 a patch therefore already has its domain, and guessing it wrong only fails at
 runtime. `typo3_translation_domain_lookup` computes it for any path, in any
 extension.

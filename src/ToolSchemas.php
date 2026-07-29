@@ -253,7 +253,8 @@ final class ToolSchemas
                 'sassPaths' => self::listOf(self::string(), 'Every Sass source the component spans. A component can be split across several files.'),
                 'demoPath' => self::nullableString('Styleguide demo in the core checkout, if there is one.'),
                 'matchedIn' => self::listOf(self::string(), 'Where the query matched: name, keywords, sub-component classes, description.'),
-            ], ['name', 'title', 'rootClass', 'sassPath', 'demoPath'])),
+                'describesVersion' => self::string('The TYPO3 version this entry was taken from. Markup, sub-component classes and the custom-property contract are what that version has; compare with catalog.installedVersion before pasting.'),
+            ], ['name', 'title', 'rootClass', 'sassPath', 'demoPath', 'describesVersion'])),
             'checklist' => self::object([
                 'title' => self::string(),
                 'intro' => self::string(),
@@ -376,7 +377,8 @@ final class ToolSchemas
     {
         return self::object([
             'path' => self::string('The XLF path the domain was computed from.'),
-            'domain' => self::nullableString('The translation domain it resolves to; null when the path names no extension.'),
+            'domain' => self::nullableString('The translation domain it resolves to. Null when the path names no extension, and also when the installation being read is too old to resolve domains at all — there the full LLL:EXT: reference is the answer.'),
+            'domainOnNewerVersions' => self::nullableString('Set only in that second case: what the domain would be on a version that has them. It is not usable on this installation.'),
         ], ['path', 'domain']);
     }
 
@@ -485,7 +487,9 @@ final class ToolSchemas
             'version' => self::string('TYPO3 version of the snapshot.'),
             'commit' => self::string('Core revision the catalogs were taken from.'),
             'verifiedAt' => self::string(),
-        ], ['branch', 'version', 'commit', 'verifiedAt'], 'The core revision behind catalog answers. A miss means "not in this snapshot".');
+            'installedVersion' => self::nullableString('TYPO3 version of the installation this server was started in, where there is one. Null means there was nothing to compare the snapshot with.'),
+            'skew' => self::nullableString('Set when that installation and the snapshot are different TYPO3 majors, and what to do about it. Null when they agree or nothing is known.'),
+        ], ['branch', 'version', 'commit', 'verifiedAt'], 'The core revision behind catalog answers, and how it relates to the installation being read. A miss means "not in this snapshot".');
     }
 
     /**

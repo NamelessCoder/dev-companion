@@ -65,7 +65,7 @@
     },
     {
       "topic": "Translation domains: how the domain of an XLF file is derived",
-      "depth": "Complete and computed, not a snapshot: the rules of TranslationDomainResolver ported here, so any XLF path in any extension resolves — including a file that does not exist yet.",
+      "depth": "Complete and computed, not a snapshot: the core's own path-to-domain rules ported here — the class that holds them is TranslationDomainMapper on one branch and TranslationDomainResolver on the next, so compare against whichever your checkout has, so any XLF path in any extension resolves — including a file that does not exist yet. Where the installation being read is older than translation domains, the full LLL:EXT: reference is the answer instead: the domain form renders nothing there.",
       "tools": [
         "typo3_translation_domain_lookup"
       ],
@@ -73,7 +73,7 @@
     },
     {
       "topic": "How current the catalogs are",
-      "depth": "The core revision, branch, and verification date behind every catalog answer.",
+      "depth": "The core revision, branch, and verification date behind every catalog answer, contrasted with the TYPO3 version of the installation being read.",
       "tools": [
         "typo3_catalog_scope"
       ],

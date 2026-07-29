@@ -136,6 +136,23 @@ printf '%s\n' \
   | php bin/typo3-cms-mcp
 ```
 
+### Core checkouts
+
+The knowledge is bound to TYPO3 versions, so writing it means checking a
+statement on both sides of the boundary it claims. `knowledge/versions.json`
+declares the lines that are covered, and one command turns them into checkouts
+this repository owns:
+
+```bash
+bin/core-checkouts            # create what is missing, update what is there
+bin/core-checkouts --status   # what exists, at which revision
+```
+
+They land below `.checkouts/`, which is gitignored — one treeless clone plus a
+worktree per version, so four lines share one object store (under a gigabyte in
+total). Nothing at runtime reads them: they are how the knowledge is verified,
+not where the answers come from.
+
 ### Tests
 
 ```bash

@@ -1,0 +1,128 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+/*
+ * Keeps one TYPO3 core checkout per covered version below .checkouts/, so that
+ * verifying what a statement holds for is done against this repository's own
+ * sources rather than against whatever checkout happens to be on the machine.
+ *
+ * The versions come from knowledge/versions.json and from nowhere else. One
+ * treeless clone carries the history; each covered branch is a worktree of it,
+ * so four lines cost one object store.
+ *
+ * Usage:
+ *   bin/core-checkouts            create what is missing, update what is there
+ *   bin/core-checkouts --status   report what exists, at which revision
+ */
+
+require dirname(__DIR__) . '/vendor/autoload.php';
+
+use Typo3CmsMcp\Versions;
+
+$root = dirname(__DIR__);
+$checkouts = $root . '/.checkouts';
+$mirror = $checkouts . '/typo3.git';
+$repository = 'https://github.com/TYPO3/typo3.git';
+$status = in_array('--status', array_slice($argv, 1), true);
+
+/** Runs a command and returns [exitCode, output]; output is streamed when verbose. */
+$run = static function (array $command, ?string $cwd = null, bool $quiet = false): array {
+    $process = proc_open(
+        $command,
+        [1 => ['pipe', 'w'], 2 => ['pipe', 'w']],
+        $pipes,
+        $cwd,
+    );
+    if (!is_resource($process)) {
+        return [1, ''];
+    }
+    $output = (string) stream_get_contents($pipes[1]) . (string) stream_get_contents($pipes[2]);
+    fclose($pipes[1]);
+    fclose($pipes[2]);
+    $exitCode = proc_close($process);
+    if (!$quiet && trim($output) !== '') {
+        echo '    ' . str_replace("\n", "\n    ", rtrim($output)) . "\n";
+    }
+
+    return [$exitCode, $output];
+};
+
+$revision = static function (string $path) use ($run): string {
+    [$exitCode, $output] = $run(['git', '-C', $path, 'log', '-1', '--format=%h %ci %s'], null, true);
+
+    return $exitCode === 0 ? trim($output) : '';
+};
+
+if ($status) {
+    printf("Core checkouts below %s\n", $checkouts);
+    foreach (Versions::covered() as $version) {
+        $path = $checkouts . '/' . $version['branch'];
+        printf(
+            "  %-6s %s\n",
+            $version['branch'],
+            is_dir($path . '/typo3/sysext/core') ? $revision($path) : 'missing — run bin/core-checkouts',
+        );
+    }
+
+    exit(0);
+}
+
+if (!is_dir($checkouts) && !mkdir($checkouts, 0o777, true) && !is_dir($checkouts)) {
+    fwrite(STDERR, sprintf("Cannot create %s\n", $checkouts));
+    exit(2);
+}
+
+if (!is_dir($mirror)) {
+    printf("Cloning %s (treeless; blobs are fetched as they are read)\n", $repository);
+    // --filter=blob:none keeps the history and the trees and leaves the file
+    // contents on the server until something asks for them. A full clone of the
+    // core is several gigabytes; this is a fraction of it, and the worktrees
+    // below still read like ordinary checkouts.
+    [$exitCode] = $run(['git', 'clone', '--bare', '--filter=blob:none', $repository, $mirror]);
+    if ($exitCode !== 0) {
+        fwrite(STDERR, "Clone failed.\n");
+        exit(1);
+    }
+}
+
+// A bare clone keeps the branches as its own refs and configures no refspec, so
+// a later fetch would update nothing. This is what makes the mirror updatable.
+$run(['git', '-C', $mirror, 'config', 'remote.origin.fetch', '+refs/heads/*:refs/heads/*'], null, true);
+
+echo "Fetching\n";
+$run(['git', '-C', $mirror, 'fetch', '--quiet', '--force', '--prune', 'origin']);
+
+$failed = 0;
+foreach (Versions::covered() as $version) {
+    $branch = $version['branch'];
+    $path = $checkouts . '/' . $branch;
+    printf("%s (TYPO3 v%d, %s)\n", $branch, $version['major'], $version['status']);
+
+    if (!is_dir($path)) {
+        [$exitCode] = $run(['git', '-C', $mirror, 'worktree', 'add', '--quiet', '--detach', '--force', $path, $branch]);
+        if ($exitCode !== 0) {
+            ++$failed;
+            continue;
+        }
+    } else {
+        // Detached on the branch tip: these are read, never committed to, so
+        // there is nothing to merge and nothing to lose.
+        [$exitCode] = $run(['git', '-C', $path, 'checkout', '--quiet', '--force', '--detach', $branch]);
+        if ($exitCode !== 0) {
+            ++$failed;
+            continue;
+        }
+    }
+
+    printf("    %s\n", $revision($path));
+}
+
+if ($failed > 0) {
+    printf("\n%d checkout(s) failed.\n", $failed);
+    exit(1);
+}
+
+printf("\nReady. Verify a statement against .checkouts/<branch>, on both sides of its boundary.\n");
+exit(0);

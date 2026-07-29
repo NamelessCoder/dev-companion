@@ -4,6 +4,7 @@
 
 ```
 bin/typo3-cms-mcp  # stdio entrypoint (the client launches it as a subprocess)
+bin/core-checkouts # one TYPO3 core checkout per covered version, below .checkouts/ (gitignored)
 src/               # PHP classes (knowledge loading, tools, SDK wiring)
 src/ServerFactory.php  # builds the mcp/sdk server from the tool definitions
 src/Mcp/           # SDK handlers: tool dispatch and typo3://core resources
@@ -208,9 +209,12 @@ version says so; see the audience requirements in `requirements.md`.
   stopped DDEV project is reported with the command that would fix it.
 - Add new rules or scripts to `knowledge/` first; promote recurring workflow
   logic to a tool only when it has earned it.
-- Verify facts against the local core checkout before writing them into
-  `knowledge/`, and keep the wording branch-neutral where the fact is
-  branch-specific.
+- Verify facts against the core checkouts below `.checkouts/` before writing
+  them into `knowledge/`, and bind what does not hold on all of them. The
+  checkouts are this repository's own — one worktree per covered version,
+  created and updated by `bin/core-checkouts`, gitignored and re-fetchable at
+  any time. Verifying against whatever checkout happens to be on the machine
+  makes the evidence unreproducible for the next person.
 
 ### Which versions an answer holds for
 

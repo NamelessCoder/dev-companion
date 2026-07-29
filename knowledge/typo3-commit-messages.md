@@ -50,6 +50,13 @@ Guide.
 - Deprecations must be documented with a changelog RST file.
 - Deprecations need migration guidance and may need extension scanner
   considerations.
+- All of the above is the authoring side. Reading it — what a given version
+  deprecated, and what that means for code that uses it — works the other way
+  round: the changelog files below `Documentation/Changelog/` of the core
+  package and the matchers below the install package's
+  `Configuration/ExtensionScanner/Php/` are what an installation is checked
+  against, by the Extension Scanner in the Install Tool. Both directories ship
+  with a Composer installation.
 
 ## Changelog Files
 
@@ -58,3 +65,6 @@ Guide.
   `Important-`, and `Task-`.
 - Include the Forge issue number in changelog filenames when possible.
 - Run `./Build/Scripts/runTests.sh -s checkRst` for ReST changes.
+- These rules are for writing an entry. An installation reads them instead: the
+  same files ship with the core package, and `typo3 upgrade:list` and
+  `typo3 upgrade:run` are what acts on the migrations behind them.

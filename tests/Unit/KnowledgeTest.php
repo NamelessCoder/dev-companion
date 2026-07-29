@@ -75,6 +75,17 @@ final class KnowledgeTest extends TestCase
     }
 
     #[Test]
+    public function anAnswerAboutAuthoringPointsAtTheReadingSideOfTheSameThing(): void
+    {
+        // "deprecation" was answered with how to write one — correct for a core
+        // contributor, inverted for the reader who wants to know what a version
+        // deprecated, and nothing said which of the two it was.
+        $bodies = implode("\n", array_column(Knowledge::search('deprecation'), 'body'));
+
+        self::assertStringContainsString('Extension Scanner', $bodies);
+    }
+
+    #[Test]
     public function anUnrelatedQueryAnswersWithNothingRatherThanTheNearestProse(): void
     {
         self::assertSame([], Knowledge::search('quantum entanglement pineapple'));

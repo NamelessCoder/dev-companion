@@ -463,6 +463,49 @@
     ]
   },
   {
+    "id": "extbase",
+    "title": "Extbase Plugins",
+    "appliesTo": [
+      "extbase",
+      "plugin",
+      "Classes/Controller/",
+      "Classes/Domain/Model/",
+      "Classes/Domain/Repository/",
+      "repository",
+      "domain model",
+      "pagination",
+      "paginate",
+      "search form",
+      "flexform",
+      "FlexForm"
+    ],
+    "hints": [
+      "Extbase is what a frontend needs beyond reading records: pagination, a search with arguments, validation, forms. Rendering records read-only needs none of it — see the records hint — and mixing the two questions is where most of the wrong answers here come from.",
+      "A plugin is registered by two calls that do different things. ExtensionUtility::registerPlugin() belongs in Configuration/TCA/Overrides/tt_content.php and adds the item to the CType selector, optionally with a FlexForm; ExtensionUtility::configurePlugin() belongs in ext_localconf.php and declares which controller actions exist and which of them are not cacheable. Neither one replaces the other.",
+      "The plugin signature both calls derive — the extension name and the plugin name, lowercased and joined by an underscore — is four things at once: the value in the CType column, the TypoScript key below tt_content, the key the FlexForm is registered under, and the namespace the plugin's own arguments arrive in. Renaming a plugin renames all four, and existing content keeps the old value.",
+      {
+        "text": "configurePlugin() takes a plugin type as its last argument that has to be omitted or given as \"CType\": a plugin is a content type of its own and nothing else, and anything else throws.",
+        "since": 14
+      },
+      {
+        "text": "configurePlugin() still takes \"list_type\" as its last argument and warns about it. New code omits the argument or passes \"CType\", because that is the shape that survives the next major.",
+        "since": 13,
+        "until": 13
+      },
+      "A model maps onto the table its class name implies. Configuration/Extbase/Persistence/Classes.php is where a table named differently is mapped, together with the per-property column names and the record type of a single-table inheritance.",
+      "Which paginator to use follows from what is being paginated: QueryResultPaginator for an Extbase query result, QueryBuilderPaginator for a Doctrine query builder, ArrayPaginator for an array that is already in memory. The last one paginates in PHP, so choosing it for a query means every record is fetched in order to show one page. SlidingWindowPagination on top of any of them produces the page numbers.",
+      "A search form submitted by GET on a cacheable action answers with a page-not-found, and putting the action into the non-cacheable list does not fix it: the cache hash is validated by a middleware, long before Extbase knows which action was called. The plugin's arguments have to be excluded from the hash as well, in $GLOBALS['TYPO3_CONF_VARS']['FE']['cacheHash']['excludedParameters']. A name there carries an indicator: ^ matches the beginning of a parameter name, ~ any part of it, and no indicator at all is an exact match — the one entry that covers a whole plugin is the prefix form. The hidden fields a Fluid form adds need the same treatment.",
+      "An object argument maps nothing until its properties are allowed. A request that hands a controller an object other than a persisted entity fails with \"It is not allowed to map property\" until the matching initialize<Action>Action() calls allowProperties() on that argument's property mapping configuration. That is the secure default rather than a defect.",
+      "An object that is not persisted is dropped from a generated link without a word: the URI builder serialises an entity by its uid, and something built for the request has none — so the filter of a search is gone on page two while the link looks correct. Pass such state to a link as plain arguments.",
+      "A paginator clamps a page number outside its range, so a page beyond the last one answers with the first page rather than with a not-found. Compare the current page against the number of pages in the controller and answer with the not-found response yourself, or the same list is served under an unbounded number of URLs.",
+      "A paginated plugin needs a route for the list as well as one for the paginated form. A single route with the page number defaulted only omits the variable when a link is built, and the literal part of the segment stays behind — a link to the first page then points at a path that ends in the prefix of a number that is not there. Routes are tried in the order they are declared, so the paginated one goes before a route whose slug would otherwise swallow it.",
+      "Orderings are property names, not column names. Ordering by the order records have in the backend therefore needs a property for that field on the model, although it is not a domain concept."
+    ],
+    "checks": [
+      "CI=true ./Build/Scripts/runTests.sh -s functional"
+    ]
+  },
+  {
     "id": "sitepackage-initial-content",
     "title": "Shipping Initial Content with an Extension",
     "appliesTo": [

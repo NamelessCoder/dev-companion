@@ -212,6 +212,26 @@ final class HintsTest extends TestCase
     }
 
     #[Test]
+    public function anExtbasePluginHasAHintOfItsOwn(): void
+    {
+        // There was none at all: the task returned datahandler-persistence,
+        // which is about DataHandler, and asking by id returned the index.
+        $result = ArchitectureHints::find(
+            [],
+            'Extbase plugin in a project extension: domain model, repository, controller, plugin registration, '
+            . 'persistence mapping to a custom table, pagination and search',
+            6
+        );
+        self::assertContains('extbase', array_column($result['matchedHints'], 'id'));
+
+        // The failures are the half that cost the session, and each of them
+        // answers with a wrong page rather than with an error.
+        $text = implode("\n", array_column((array) ArchitectureHints::byId('extbase')['hints'], 'text'));
+        self::assertStringContainsString('cacheHash', $text);
+        self::assertStringContainsString('allowProperties', $text);
+    }
+
+    #[Test]
     public function registeringSomethingSoTheCoreFindsItIsCovered(): void
     {
         // "How do I register X so the core actually finds it" fell between the

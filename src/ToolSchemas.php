@@ -282,7 +282,7 @@ final class ToolSchemas
     {
         return self::object([
             'path' => self::string('The TYPO3_CONF_VARS path that was read.'),
-            'found' => ['type' => 'boolean', 'description' => 'Whether the installation has a value at that path.'],
+            'found' => ['type' => ['boolean', 'null'], 'description' => 'Whether the installation has a value at that path. Null when nothing was consulted — see unavailable; false is a statement about the installation and is never made without one.'],
             'value' => ['description' => 'The effective runtime value, of whatever shape the configuration has.'],
             'answeredBy' => self::answeredBy(),
             'unavailable' => self::unavailable(),

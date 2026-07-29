@@ -1575,7 +1575,10 @@ final class Tools
             );
         }
         if (!$answer['ok']) {
-            return self::consoleUnavailable($answer['error'], ['path' => $path, 'found' => false, 'value' => null]);
+            // found stays null rather than false: false is a statement about
+            // the installation — "it has no value at that path" — and nothing
+            // was consulted to make it.
+            return self::consoleUnavailable($answer['error'], ['path' => $path, 'found' => null, 'value' => null]);
         }
 
         return ToolResult::create(

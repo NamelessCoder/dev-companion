@@ -11,6 +11,26 @@ reconsider does not belong here. When an assumption is later disproved, the
 entry stays and gains a **Corrected** line: the wrong assumption is the useful
 part, because it names the place where the next one is likely to sit.
 
+## 2026-07-29 — The unanswered result keeps its shape and gains a reason
+
+Two notes asked for the unavailable case to stop looking like an empty one. One
+proposed dropping `matchCount`, `icons`, `found` altogether and returning an
+error-shaped object instead, or renaming `answeredBy: "nothing"` to something
+that cannot be read as "no source had it".
+
+- **Decided:** the shape stays, an `unavailable` object carries the reason, and
+  `found` is null rather than false when nothing was consulted. A field a schema
+  requires has to be present on every path through the tool, and dropping keys
+  in one case would make the declared output schema a shape a client cannot
+  rely on — which is the same defect one level up.
+- **Assumed:** a caller that reads `unavailable.reason` is better served than
+  one that has to interpret an enum value, so renaming `nothing` buys little
+  and breaks every client that already matches on it.
+- **Would falsify it:** clients ignoring `unavailable` and still reading a miss
+  as a registry answer. `isError: true` on the result is then the next lever —
+  bluntest, and it would make the answer an error rather than an answer, which
+  is why it was not taken first.
+
 ## 2026-07-29 — Three audiences, and the positioning that has not caught up
 
 The server is to serve core contributors, extension authors and site developers

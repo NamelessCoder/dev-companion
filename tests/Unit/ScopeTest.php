@@ -98,6 +98,20 @@ final class ScopeTest extends TestCase
     }
 
     #[Test]
+    public function anUnconsultedConfigurationPathIsNotReportedAsAbsent(): void
+    {
+        Instance::discoverFrom(null);
+        Typo3Cli::forget();
+
+        $result = Tools::call('typo3_configuration_lookup', ['path' => 'SYS/fluid']);
+
+        // found: false says the installation has no value there, which is a
+        // statement about an installation nothing asked.
+        self::assertNull($result->data['found']);
+        self::assertSame('nothing', $result->data['answeredBy']);
+    }
+
+    #[Test]
     public function everyToolNamedInTheScopeExists(): void
     {
         $known = $this->toolNames();

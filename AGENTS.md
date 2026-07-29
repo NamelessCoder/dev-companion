@@ -27,6 +27,30 @@ vendor/            # Composer dependencies (mcp/sdk); gitignored
 schemas, and response formatting live in `src/`; everything they answer comes
 from `knowledge/`.
 
+## Where a session starts, and what it owes the next one
+
+Read [todo.md](todo.md) first. It says what is being worked on, in which order,
+and where the last session stopped — and its first item is standing: read
+`feedback/` again and run each note's own query against the server as it is now.
+Notes arrive while work is happening, and a note that was open yesterday is
+often half answered by what shipped since.
+
+Keeping it current is part of the work, not a step after it:
+
+- The commit that finishes an item **deletes that item**, the way the commit that
+  works a note off deletes the note. What the item established is in
+  `requirements.md` by then, and the commit is the record that it happened.
+- An item that turns out to be half done is trimmed to the part that is left,
+  with the next concrete step rewritten. An item nobody can start from is worse
+  than no item.
+- A change of order is written down **before** the work starts, so the reason
+  exists in the file rather than in a session that has ended.
+- New work found along the way is added as an item that names what it serves. If
+  it serves nothing yet, it is an idea and belongs in the note that had it.
+
+A session that ends with the list matching what is actually true has handed over
+correctly, whatever else it did.
+
 ## Less is more
 
 Every task is also an occasion to leave the code smaller than it was. A change

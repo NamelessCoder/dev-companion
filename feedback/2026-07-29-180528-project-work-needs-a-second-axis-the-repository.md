@@ -6,33 +6,33 @@ tool: typo3_architecture_lookup, typo3_task_guide
 directory: /home/benji/projects/site-new
 ---
 
-# TWO ANSWER SHAPES FOR ONE SUBJECT, SELECTED BY WHO IS ASKING
+# WHICH SUBSYSTEM HINTS STILL NEED A PROJECT-SHAPED TWIN
 
 ## Observation
 
-*Trimmed after the repository level was answered: `project-repository-layout`
-now covers what sits around the extension — the two units and the test that
-tells them apart, Build/, the scripts, config/sites/ against the shipped
-`Initialisation/Site/`, var/, and the built-assets decision. What follows is the
-half of the original note that is still open.*
+*Trimmed twice. The repository level is answered by `project-repository-layout`,
+and the force of a statement is now data: `binding: "core"` marks what is a
+condition of a core patch and a convention elsewhere, on the hint for a whole
+subject and on the statement for a single sentence. What is left of the note is
+the part that marking cannot do.*
 
 The catalog is organised by subsystem — fluid-templates, tca-formengine,
 icon-usage, caching. That is a core contributor's model: "I am touching
 FormEngine, what are the rules." A project developer never asks that. The
-question is always "where does this go", and the hints that carried the session
-are the ones that cut across subsystems to answer a project situation instead.
+question is always "where does this go".
 
-`core-tests` and `project-extension-tests` are the shape that works: one subject,
-two answers, because the conventions are the same and everything around them —
-the harness, the paths, what is available at all — is not. That pair exists
-because a note asked for it, not because anything makes it the rule.
+Marking answers "is this mine to follow". It does not answer "then what is mine
+to do instead", and that is what a twin is for: `project-extension-tests` exists
+because the conventions of `core-tests` transfer and everything around them —
+the harness, the paths, what is available at all — does not. Two pairs exist
+now, both because a note asked for one.
 
-The general form: where a subsystem hint would read differently for a project,
-that is the signal it needs its project-shaped twin, and the `outsideCore` flag
-the server already computes is what would select between them. Whether that is
-worth a mechanism or stays a rule for whoever writes the next hint is the open
-question — a mechanism needs an audience field per hint, and the evidence for
-one is currently a single pair.
+Open: go through the hints that carry `binding: "core"` and decide, per subject,
+whether marking is enough or whether the project side is a real answer that is
+missing. `documentation-changelog` is the clearest candidate — a project does
+release notes too, and the hint currently says nothing about that. The backend
+CSS hints are probably the opposite case: a project styling a backend module
+wants the core's rules unchanged, and a twin would say the same thing twice.
 
 ## Query
 

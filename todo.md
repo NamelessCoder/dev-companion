@@ -41,23 +41,25 @@ else here was written by someone who already knew what they meant.
 
 ---
 
-## Decide what the project-shaped twin is: a mechanism or a rule for authors
+## Go through what is marked `binding: "core"` and say what the project side is
 
 Serves the one note left open,
-`feedback/2026-07-29-180528-project-work-needs-a-second-axis-the-repository.md`,
-trimmed to this half. `core-tests` and `project-extension-tests` are one subject
-answered twice, and that pair exists because a note asked for it rather than
-because anything makes it the rule.
+`feedback/2026-07-29-180528-project-work-needs-a-second-axis-the-repository.md`.
+The count that item used to ask for has been made: differing answers already
+existed in four shapes, and what was missing was the force of a statement, which
+is now `binding: "core"` on 22 hints and 4 single statements.
 
-The next concrete step is to count the evidence before building anything: go
-through `knowledge/architecture-hints/` and list the hints whose text would read
-differently for a project — the ones that name `Build/Scripts/runTests.sh`, a
-path below `typo3/sysext/`, or a harness only the mono repository has. If that
-list is two or three, the answer is a rule in `AGENTS.md` for whoever writes the
-next hint. If it is a dozen, it is a field on the hint plus selection by the
-`outsideCore` flag `Scope::isOutsideCore()` already computes, and the note's
-suggestion holds. Write the count into the note or into `decisions.md` either
-way — it is the evidence nobody can reconstruct later.
+Marking says "this is not yours to follow". It does not say what is, and that is
+what a twin hint is for. The next concrete step is one pass over the marked
+entries — `grep -l '"binding": "core"' knowledge/architecture-hints/*.json`, then
+the four statement-level ones — and per subject one of two answers, written into
+the note: marking is enough (the backend CSS rules are wanted unchanged by a
+project that builds a backend module, and a twin would say the same thing
+twice), or the project side is a real answer that is missing.
+`documentation-changelog` is the clearest candidate for the second: a project
+writes release notes too, and the hint says nothing about that. Where the answer
+is the second, the twin is written the way `project-extension-tests` was — same
+subject, its own hint, and each pointing at the other.
 
 Below that, nothing is queued: everything else written down so far is in
 `requirements.md`, so the work after it is whatever the notes a session finds

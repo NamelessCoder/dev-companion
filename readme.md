@@ -163,7 +163,10 @@ name already says what shape the answer has.
   the script is part of the core repository.
 - `typo3_architecture_lookup`: returns architecture hints for TYPO3 core paths or
   task topics, grouped by section. Outside the core the hints stay and their
-  check commands are dropped.
+  check commands are dropped. Two sections are the backend interface's own —
+  `Backend CSS` and `Backend TypeScript` — and are withheld with a reason when
+  the task names the frontend, because there they would be inverted advice
+  rather than merely irrelevant.
 - `typo3_component_lookup`: looks up backend UI components by name or topic and
   returns canonical markup, variant and sub-component classes, the custom
   property contract, and the styleguide demo and Sass source paths.

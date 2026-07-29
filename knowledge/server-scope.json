@@ -109,6 +109,11 @@
       "instead": "Core tests mirror the class path below typo3/sysext/<ext>/Tests/Unit/ and Tests/Functional/, so typo3/sysext/core/Classes/DataHandling/DataHandler.php is covered by typo3/sysext/core/Tests/Unit/DataHandling/DataHandlerTest.php. Look the file up there, then ask typo3_test_run_guide for the targeted runTests.sh invocation."
     },
     {
+      "topic": "Frontend theming: the CSS and the JavaScript a website renders",
+      "why": "Everything here about CSS and TypeScript describes the TYPO3 backend interface — its Sass sources, its --typo3-* token contract, its light and dark color schemes, its move away from Bootstrap. For a theme extension those are not a milder version of the right answer, they are the opposite of it.",
+      "instead": "typo3_architecture_lookup withholds the Backend CSS and Backend TypeScript hints where a task names the frontend, and returns what does transfer — Fluid, TypoScript, PHP. Frontend theming itself is documented at https://docs.typo3.org."
+    },
+    {
       "topic": "Whether a component or CSS class still exists on your branch",
       "why": "The component catalog is a snapshot of one pinned core revision; a miss means \"not in this snapshot\", never \"does not exist\".",
       "instead": "Call typo3_catalog_scope for the revision behind it, and verify against the checkout when you work on a different branch."

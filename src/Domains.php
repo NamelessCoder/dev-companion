@@ -68,6 +68,28 @@ final class Domains
         ],
     ];
 
+    /**
+     * Words that place a task in the website output rather than in the backend.
+     *
+     * @var array<int, string>
+     */
+    private const FRONTEND_MARKERS = [
+        'frontend', 'front-end', 'front end', 'website theme', 'page template',
+        'bootstrap 5', 'bootstrap5', 'theme extension',
+    ];
+
+    /**
+     * Words that place it in the backend after all. They win, because the
+     * frontend markers are the weaker signal: a backend module is named
+     * outright, while "frontend" also appears in a sentence about the boundary
+     * between the two.
+     *
+     * @var array<int, string>
+     */
+    private const BACKEND_MARKERS = [
+        'backend', 'typo3/sysext/backend', 'install tool', 'styleguide',
+    ];
+
     /** @var array<string, array<int, string>> Domain to directory conventions the extension alone does not reveal. */
     private const DIRECTORIES = [
         self::TYPESCRIPT => ['build/sources/typescript', 'resources/public/javascript'],
@@ -99,16 +121,22 @@ final class Domains
             }
         }
 
-        $haystack = mb_strtolower(implode(' ', $paths) . ' ' . $text);
+        // Keywords are read from the description alone. A path carries its
+        // domain in its extension and its directory, and matching words inside
+        // it makes a file name mean something it does not: Classes/ViewHelpers/
+        // Format/ScssViewHelper.php is PHP, and every word in it is a PHP
+        // identifier, not a topic.
+        $description = mb_strtolower($text);
         foreach (self::KEYWORDS as $domain => $keywords) {
             foreach ($keywords as $keyword) {
-                if (Text::containsWord($haystack, $keyword)) {
+                if (Text::containsWord($description, $keyword)) {
                     $detected[$domain] = true;
                     break;
                 }
             }
         }
 
+        $haystack = mb_strtolower(implode(' ', $paths) . ' ' . $text);
         foreach (self::DIRECTORIES as $domain => $directories) {
             foreach ($directories as $directory) {
                 if (str_contains($haystack, $directory)) {
@@ -181,6 +209,36 @@ final class Domains
     }
 
     /**
+     * Whether the task is about what the website renders rather than about the
+     * TYPO3 backend.
+     *
+     * The CSS and TypeScript conventions this server holds are the backend's:
+     * its Sass sources, its `--typo3-*` custom properties, its light and dark
+     * color schemes, its Bootstrap removal. For a theme extension they are not
+     * merely irrelevant, they are the opposite of correct, so the frontend has
+     * to be recognisable before an answer is composed.
+     *
+     * @param array<int, string> $paths
+     */
+    public static function namesTheFrontend(array $paths, string $text = ''): bool
+    {
+        $haystack = mb_strtolower(implode(' ', $paths) . ' ' . $text);
+        foreach (self::BACKEND_MARKERS as $marker) {
+            if (Text::containsWord($haystack, $marker)) {
+                return false;
+            }
+        }
+
+        foreach (self::FRONTEND_MARKERS as $marker) {
+            if (Text::containsWord($haystack, $marker)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * Architecture hint categories that belong to the given domains. General
      * hints always apply.
      *
@@ -200,11 +258,11 @@ final class Domains
             $categories[] = 'Fluid';
         }
         if (in_array(self::TYPESCRIPT, $domains, true)) {
-            $categories[] = 'TypeScript';
+            $categories[] = ArchitectureHints::CATEGORY_TYPESCRIPT;
             $categories[] = 'JavaScript';
         }
         if (in_array(self::CSS, $domains, true)) {
-            $categories[] = 'CSS';
+            $categories[] = ArchitectureHints::CATEGORY_CSS;
         }
 
         return $categories;

@@ -10,14 +10,26 @@ namespace Typo3CmsMcp;
  */
 final class ArchitectureHints
 {
+    /**
+     * The two categories that describe the TYPO3 backend's own interface.
+     *
+     * They are named that way because they read as general otherwise: the Sass
+     * structure, the `--typo3-*` custom properties and the Lit components are
+     * the backend's, and a frontend theme that follows them is following the
+     * wrong conventions. Every other category — PHP, Fluid, TypoScript — holds
+     * for whatever is written in it.
+     */
+    public const CATEGORY_CSS = 'Backend CSS';
+    public const CATEGORY_TYPESCRIPT = 'Backend TypeScript';
+
     /** @var array<string, string> */
     private const SECTION_LABELS = [
         'php' => 'PHP',
         'typoscript' => 'TypoScript',
         'fluid' => 'Fluid',
-        'typescript' => 'TypeScript',
+        'typescript' => self::CATEGORY_TYPESCRIPT,
         'javascript' => 'JavaScript',
-        'css' => 'CSS',
+        'css' => self::CATEGORY_CSS,
         'general' => 'General',
     ];
 
@@ -80,7 +92,8 @@ final class ArchitectureHints
      * @return array{
      *     matchedHints: array<int, array<string, mixed>>,
      *     knowledgeSections: array<int, array{id: string, title: string, heading: string, body: string, score: int, coverage: float, truncated: bool}>,
-     *     domains: array<int, string>
+     *     domains: array<int, string>,
+     *     withheldCategories: array<int, string>
      * }
      */
     public static function find(array $paths, string $task, int $limit): array
@@ -90,6 +103,19 @@ final class ArchitectureHints
 
         $domains = Domains::detect($paths, $task);
         $categories = Domains::hintCategories($domains);
+
+        // Where the task is about the website, the two backend UI categories
+        // are withheld rather than applied. A missing answer sends the caller
+        // to the frontend documentation; an inverted one sends them to rewrite
+        // a working theme against the backend's tokens.
+        $withheld = [];
+        if (Domains::namesTheFrontend($paths, $task)) {
+            $withheld = array_values(array_intersect(
+                $categories,
+                [self::CATEGORY_CSS, self::CATEGORY_TYPESCRIPT],
+            ));
+            $categories = array_values(array_diff($categories, $withheld));
+        }
 
         $scored = [];
         foreach (self::load() as $hint) {
@@ -115,7 +141,9 @@ final class ArchitectureHints
         $knowledgeSections = [];
         if ($matchedHints === [] && $task !== '') {
             $documents = ['typo3-core-architecture'];
-            if (in_array(Domains::CSS, $domains, true)) {
+            // The CSS architecture document describes the same backend, so it
+            // is withheld on the same condition as the hints taken from it.
+            if (in_array(Domains::CSS, $domains, true) && !in_array(self::CATEGORY_CSS, $withheld, true)) {
                 $documents[] = 'typo3-css-architecture';
             }
             $knowledgeSections = Knowledge::search($task, $documents, $limit);
@@ -125,6 +153,7 @@ final class ArchitectureHints
             'matchedHints' => $matchedHints,
             'knowledgeSections' => $knowledgeSections,
             'domains' => $domains,
+            'withheldCategories' => $withheld,
         ];
     }
 

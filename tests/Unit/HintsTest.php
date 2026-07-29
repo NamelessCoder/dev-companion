@@ -43,7 +43,7 @@ final class HintsTest extends TestCase
 
         self::assertNotContains(Domains::TYPESCRIPT, $result['domains']);
         foreach ($result['matchedHints'] as $hint) {
-            self::assertNotContains($hint['category'], ['TypeScript', 'JavaScript'], $hint['id']);
+            self::assertNotContains($hint['category'], [ArchitectureHints::CATEGORY_TYPESCRIPT, 'JavaScript'], $hint['id']);
         }
     }
 
@@ -58,7 +58,7 @@ final class HintsTest extends TestCase
 
         self::assertNotContains(Domains::CSS, $result['domains']);
         foreach ($result['matchedHints'] as $hint) {
-            self::assertNotSame('CSS', $hint['category'], $hint['id']);
+            self::assertNotSame(ArchitectureHints::CATEGORY_CSS, $hint['category'], $hint['id']);
         }
     }
 
@@ -76,8 +76,8 @@ final class HintsTest extends TestCase
 
         $categories = array_column($result['matchedHints'], 'category');
         self::assertContains('Fluid', $categories);
-        self::assertNotContains('TypeScript', $categories);
-        self::assertNotContains('CSS', $categories);
+        self::assertNotContains(ArchitectureHints::CATEGORY_TYPESCRIPT, $categories);
+        self::assertNotContains(ArchitectureHints::CATEGORY_CSS, $categories);
     }
 
     #[Test]
@@ -97,7 +97,51 @@ final class HintsTest extends TestCase
         self::assertContains(Domains::TYPOSCRIPT, $result['domains']);
         $categories = array_column($result['matchedHints'], 'category');
         self::assertContains('TypoScript', $categories);
-        self::assertNotContains('CSS', $categories);
+        self::assertNotContains(ArchitectureHints::CATEGORY_CSS, $categories);
+    }
+
+    #[Test]
+    public function aFrontendThemeIsNotAnsweredWithTheBackendsOwnCssConventions(): void
+    {
+        $result = ArchitectureHints::find(
+            ['Resources/Public/Scss/bootstrap.scss', 'Build/Sources/Sass/_variables.scss'],
+            'Sass architecture, variables and build pipeline for a Bootstrap 5 based frontend theme',
+            8
+        );
+
+        self::assertContains(ArchitectureHints::CATEGORY_CSS, $result['withheldCategories']);
+        foreach ($result['matchedHints'] as $hint) {
+            self::assertNotSame(ArchitectureHints::CATEGORY_CSS, $hint['category'], $hint['id']);
+        }
+        self::assertSame([], $result['knowledgeSections'], 'the CSS document describes the same backend');
+    }
+
+    #[Test]
+    public function stylingABackendModuleStillReachesTheBackendCssHints(): void
+    {
+        $result = ArchitectureHints::find(
+            ['Resources/Public/Css/backend-icon-search.css'],
+            'styling for the backend module of a site package',
+            8
+        );
+
+        self::assertSame([], $result['withheldCategories']);
+        self::assertContains(ArchitectureHints::CATEGORY_CSS, array_column($result['matchedHints'], 'category'));
+    }
+
+    #[Test]
+    public function aPhpClassNameThatCarriesTheWordScssIsStillPhp(): void
+    {
+        $result = ArchitectureHints::find(
+            ['Classes/ViewHelpers/Format/ScssViewHelper.php', 'Configuration/Services.yaml'],
+            '',
+            8
+        );
+
+        self::assertNotContains(Domains::CSS, $result['domains']);
+        foreach ($result['matchedHints'] as $hint) {
+            self::assertNotSame(ArchitectureHints::CATEGORY_CSS, $hint['category'], $hint['id']);
+        }
     }
 
     #[Test]

@@ -127,7 +127,7 @@ final class Tools
             ],
             [
                 'name' => 'typo3_architecture_lookup',
-                'description' => 'Return architecture hints for TYPO3 core paths or task topics, grouped by section. Where the paths read as a project or third-party extension the hints still come back — the conventions transfer — but without their core check commands.',
+                'description' => 'Return architecture hints for TYPO3 core paths or task topics, grouped by section. Where the paths read as a project or third-party extension the hints still come back — the conventions transfer — but without their core check commands. The "Backend CSS" and "Backend TypeScript" sections describe the TYPO3 backend interface and are withheld, with the reason, where the task names the frontend.',
                 'inputSchema' => [
                     'type' => 'object',
                     'properties' => [
@@ -1160,6 +1160,17 @@ final class Tools
                 . 'of the core repository and does not exist here. typo3_server_scope states the boundary.';
             $lines[] = '';
         }
+        if ($result['withheldCategories'] !== []) {
+            $lines[] = sprintf(
+                'This task names the frontend, so %s hints are not part of this answer. What this server holds '
+                . 'under that heading describes the TYPO3 backend interface — its Sass sources, its --typo3-* '
+                . 'custom properties, its light and dark color schemes, its move away from Bootstrap — and none '
+                . 'of it is advice for what a website renders. Frontend theming is documented at '
+                . 'https://docs.typo3.org. Name the backend in the task if you are styling a backend module.',
+                implode(' and ', $result['withheldCategories']),
+            );
+            $lines[] = '';
+        }
         if ($task !== null && $task !== '') {
             $lines[] = 'Task: ' . $task;
         }
@@ -1167,7 +1178,10 @@ final class Tools
             $lines[] = "Paths:\n" . implode("\n", array_map(static fn(string $p): string => '- ' . $p, $paths));
         }
         $lines[] = 'Domains: ' . implode(', ', $result['domains'])
-            . ' (hints outside these domains are not shown)';
+            . ' (hints outside these domains are not shown'
+            . ($result['withheldCategories'] === []
+                ? ')'
+                : ', and ' . implode(' and ', $result['withheldCategories']) . ' was withheld inside them)');
         $lines[] = '';
         $lines[] = 'Architecture hints:';
 
@@ -1195,6 +1209,9 @@ final class Tools
             $lines[] = 'No structured hint matched; the closest architecture notes are:';
             $lines[] = '';
             $lines[] = self::renderSections($result['knowledgeSections']);
+        } elseif ($result['withheldCategories'] !== []) {
+            $lines[] = 'Nothing is left to show: the only domain this task touched is one this server answers for '
+                . 'the backend alone.';
         } else {
             $lines[] = 'No architecture hint matched. Add a more specific path or topic, or extend knowledge/typo3-core-architecture.md.';
         }
@@ -1203,6 +1220,7 @@ final class Tools
             'task' => $task === '' ? null : $task,
             'paths' => array_values($paths),
             'domains' => $result['domains'],
+            'withheldCategories' => $result['withheldCategories'],
             'outsideCore' => $outsideCore,
             'hints' => self::hintRecords($result['matchedHints']),
             'knowledgeSections' => self::matchRecords($result['knowledgeSections']),

@@ -374,6 +374,13 @@ took before the requirement above was written down, and it will not survive it.
 
 ## Knowledge — what is covered
 
+- **R-KNW-7** A hint that ends in an instruction says how the instruction is
+  carried out. Naming the way in and stopping where the work starts leaves the
+  caller with the traps the sentence just sent them into.
+  *From:* "seed with DataHandler, then export" — with no way to get a
+  DataHandler, three steps of a hand-written boot each of which fails on its
+  own, and an export that silently omits every table nobody named (2026-07-29).
+  *Held by:* `HintsTest::theSeedingAdviceCarriesTheStepsItAsksFor`
 - **R-KNW-6** Where the core itself ships the worked example of a convention,
   the answer names it instead of describing one. A theme extension is part of
   the core and is the reference a sitepackage is compared against, so it is

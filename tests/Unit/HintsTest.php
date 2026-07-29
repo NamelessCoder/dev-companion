@@ -212,6 +212,21 @@ final class HintsTest extends TestCase
     }
 
     #[Test]
+    public function theSeedingAdviceCarriesTheStepsItAsksFor(): void
+    {
+        // "Seed with DataHandler, then export" named the way in and stopped
+        // where the work starts. Getting a DataHandler at all is a hand-written
+        // boot, and each of its steps is a trap.
+        $hint = ArchitectureHints::byId('sitepackage-initial-content');
+        self::assertNotNull($hint);
+        $text = implode("\n", array_column($hint['hints'], 'text'));
+
+        self::assertStringContainsString('Bootstrap::init', $text);
+        self::assertStringContainsString('initializeBackendUser', $text);
+        self::assertStringContainsString('--table', $text);
+    }
+
+    #[Test]
     public function aNavigationIsAnsweredWhereMenusAreActuallyConfigured(): void
     {
         // excludeDoktypes replaces the default list instead of extending it,

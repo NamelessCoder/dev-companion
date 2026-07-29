@@ -160,8 +160,12 @@ Names are `typo3_<subject>_<verb>`, with the verb taken from a fixed set —
 name already says what shape the answer has.
 
 - `typo3_server_scope`: orientation — what this server covers and at which
-  depth, what it deliberately does not, and which tool to call when. The place
-  to start when it is unclear whether a question can be answered here at all.
+  depth, what it deliberately does not, and which tool to call when. Every
+  covered topic says what its answers are worth outside the core: `core-only`
+  for the contribution process and the scripts of that repository,
+  `transferable` for a convention that holds wherever TYPO3 is written,
+  `installation` for what is read from the installation itself. The place to
+  start when it is unclear whether a question can be answered here at all.
 - `typo3_rule_lookup`: searches local TYPO3 core rules and script notes, ranked
   by the query terms that separate one section from the rest rather than by
   overlap, and naming the architecture hints that match the same question — the

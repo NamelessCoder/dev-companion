@@ -55,7 +55,8 @@ final class ToolSchemas
                 'depth' => self::string('How deeply the topic is covered.'),
                 'tools' => self::listOf(self::string()),
                 'source' => self::string('Knowledge file or typo3:// resource behind the topic.'),
-            ], ['topic', 'depth', 'tools', 'source'])),
+                'provenance' => ['type' => 'string', 'enum' => ['core-only', 'transferable', 'installation'], 'description' => 'What the answers are worth outside the core. core-only: the contribution process and the scripts of that repository. transferable: a convention that holds wherever TYPO3 is written. installation: answered by the installation being read rather than from a snapshot.'],
+            ], ['topic', 'depth', 'tools', 'source', 'provenance'])),
             'doesNotCover' => self::listOf(self::object([
                 'topic' => self::string(),
                 'why' => self::string(),

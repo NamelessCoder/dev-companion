@@ -211,7 +211,7 @@ final class Scope
      * @return array{
      *     purpose: string,
      *     instructions: string,
-     *     covers: array<int, array{topic: string, depth: string, tools: array<int, string>, source: string}>,
+     *     covers: array<int, array{topic: string, depth: string, tools: array<int, string>, source: string, provenance: string}>,
      *     doesNotCover: array<int, array{topic: string, why: string, instead: string}>,
      *     checkoutDiscovery: array<int, array{establish: string, how: string}>,
      *     routing: array<int, array{when: string, call: string}>
@@ -232,6 +232,9 @@ final class Scope
                 'depth' => (string) ($entry['depth'] ?? ''),
                 'tools' => array_map('strval', $entry['tools'] ?? []),
                 'source' => (string) ($entry['source'] ?? ''),
+                // What the answer is worth outside the core: the boundary runs
+                // through the middle of this server, not around it.
+                'provenance' => (string) ($entry['provenance'] ?? ''),
             ], $decoded['covers']),
             'doesNotCover' => array_map(static fn(array $entry): array => [
                 'topic' => (string) $entry['topic'],

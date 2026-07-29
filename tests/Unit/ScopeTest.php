@@ -328,6 +328,22 @@ final class ScopeTest extends TestCase
     }
 
     #[Test]
+    public function everyCoveredTopicSaysWhatItIsWorthOutsideTheCore(): void
+    {
+        // The boundary runs through the middle of this server: the installation
+        // half is a property of TYPO3 installations, the conventions transfer,
+        // and only the contribution process is core-only. A caller that has to
+        // work that out per tool trusts either all of it or none of it.
+        foreach (Scope::read()['covers'] as $entry) {
+            self::assertContains(
+                $entry['provenance'],
+                ['core-only', 'transferable', 'installation'],
+                $entry['topic'],
+            );
+        }
+    }
+
+    #[Test]
     public function everyToolNamedInTheScopeExists(): void
     {
         $known = $this->toolNames();

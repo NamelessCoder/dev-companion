@@ -337,12 +337,19 @@ final class Tools
     {
         $scope = Scope::read();
 
-        $lines = [$scope['purpose'], '', 'Covered, and how deeply:'];
+        $lines = [
+            $scope['purpose'],
+            '',
+            'Covered, and how deeply. Each topic says what its answers are worth outside the core: '
+            . 'core-only is the contribution process and the scripts that belong to that repository, '
+            . 'transferable is a convention that holds wherever TYPO3 is written, and installation is '
+            . 'answered by the installation this server was started in rather than from any snapshot.',
+        ];
         foreach ($scope['covers'] as $entry) {
             $lines[] = '## ' . $entry['topic'];
             $lines[] = $entry['depth'];
             $lines[] = 'Tools: ' . implode(', ', $entry['tools']);
-            $lines[] = 'Source: ' . $entry['source'];
+            $lines[] = 'Source: ' . $entry['source'] . ' (' . $entry['provenance'] . ')';
         }
 
         $lines[] = '';

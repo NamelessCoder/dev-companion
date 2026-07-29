@@ -12,7 +12,8 @@ See [readme.md](readme.md) for how to run one and what the marks mean.
 
 ## EXT-01 — Making the extension run on the next major
 
-**Environment:** `E-EXT` · **Status today:** `gap` — `R-AUD-1`, `R-SCO-2`
+**Environment:** `E-EXT` · **Status today:** `partial` — `R-AUD-1` and `R-SCO-2`
+held; what an extension author gets is still the core's conventions, filtered
 
 > Our extension supports TYPO3 12 and 13. The next major is out and I want to add
 > support for it without dropping 13. Go through the extension, find what breaks,
@@ -51,7 +52,7 @@ See [readme.md](readme.md) for how to run one and what the marks mean.
 ## EXT-02 — A new extension from nothing
 
 **Environment:** `E-SITE`, in a project where the new extension will live
-under `packages/` · **Status today:** `partial` — `R-SCO-1`, `R-SCO-2`
+under `packages/` · **Status today:** `covered` — `R-SCO-1`, `R-SCO-2`
 
 > I need a new extension `acme_events` in this project: a record type for events
 > with dates and a location, editable in the backend, listed in the frontend by a
@@ -87,7 +88,7 @@ under `packages/` · **Status today:** `partial` — `R-SCO-1`, `R-SCO-2`
 
 ## EXT-03 — A bug report from a user of the extension
 
-**Environment:** `E-EXT` · **Status today:** `gap` — `R-AUD-3`, `R-GUI-2`
+**Environment:** `E-EXT` · **Status today:** `covered` — `R-AUD-3`, `R-GUI-2`
 
 > Somebody reported that our list plugin crashes when the storage page is empty.
 > Reproduce it, fix it, and commit it — we tag a patch release afterwards.

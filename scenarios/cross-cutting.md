@@ -78,7 +78,7 @@ environment changes.
 ## META-03 — Two audiences in one directory
 
 **Environment:** `E-SITE` with the extension under `packages/` ·
-**Status today:** `gap` — `R-AUD-2`, `R-SCO-1`
+**Status today:** `partial` — `R-SCO-1` held, `R-AUD-2` open
 
 > I am touching `packages/acme_events/Classes/Domain/Repository/EventRepository.php`
 > and `typo3/sysext/core/Classes/Database/Query/QueryBuilder.php` in the same

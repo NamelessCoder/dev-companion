@@ -51,7 +51,9 @@ partly `gap`
 
 ## SITE-02 — The installation has to go up a major
 
-**Environment:** `E-SITE` on the previous major · **Status today:** `gap`
+**Environment:** `E-SITE` on the previous major · **Status today:** `partial` —
+`typo3_changelog_lookup` and `typo3_project_scope` answer what changed and what
+is installed; the order of operations is still not written down
 
 > This site is on the previous LTS and we need to be on the current one before
 > support ends. Plan the upgrade, tell me what will break, and start with the
@@ -120,7 +122,7 @@ partly `gap`
 ## SITE-04 — The frontend theme
 
 **Environment:** `E-SITE` with a site package using Bootstrap ·
-**Status today:** `gap` — `R-SCO-4`
+**Status today:** `covered` — `R-SCO-4`
 
 > Our site package theme is Bootstrap 5 with our own SCSS on top. The card
 > component looks wrong on mobile and the spacing is inconsistent across
@@ -151,7 +153,7 @@ partly `gap`
 
 ## SITE-05 — Content elements for the editors
 
-**Environment:** `E-SITE` · **Status today:** `partial` — `R-KNW-1`
+**Environment:** `E-SITE` · **Status today:** `covered` — `R-KNW-1`
 
 > Editors need a "team members" content element: a list of people picked from a
 > folder, rendered as cards. Build it in our site package — the element, its

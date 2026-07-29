@@ -51,7 +51,7 @@ See [readme.md](readme.md) for how to run one and what the marks mean.
 
 ## CORE-02 — A new state on a backend list row
 
-**Environment:** `E-CORE` · **Status today:** `covered`, with `R-ANS-3` open
+**Environment:** `E-CORE` · **Status today:** `covered` — `R-ANS-3` held
 
 > Records that are scheduled for publication should be marked in the page module
 > list — some badge next to the title, with an icon and a tooltip. Build it the
@@ -130,7 +130,7 @@ See [readme.md](readme.md) for how to run one and what the marks mean.
 
 ## CORE-04 — Deprecating a public API
 
-**Environment:** `E-CORE` · **Status today:** `partial` — `R-KNW-1` open
+**Environment:** `E-CORE` · **Status today:** `covered` — `R-KNW-1` held
 
 > `\TYPO3\CMS\Core\Utility\GeneralUtility::getUrl()` should go away in favour of
 > the request factory. Deprecate it properly for the next major, including

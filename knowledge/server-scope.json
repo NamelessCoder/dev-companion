@@ -256,7 +256,7 @@
       "call": "typo3_project_scope"
     },
     {
-      "when": "Asking what a version changed, or whether an API is still there",
+      "when": "Starting work on a TYPO3 major you have not built on recently — before asking what a version changed or whether an API is still there",
       "call": "typo3_changelog_lookup"
     },
     {

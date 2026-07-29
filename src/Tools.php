@@ -47,6 +47,19 @@ final class Tools
     /** Appended when a catalog lookup finds nothing at all. */
     private const CATALOG_MISS_NOTE = 'Call typo3_catalog_scope for what this snapshot covers.';
 
+    /**
+     * The tool that answers a matched subject from the installation instead of
+     * from memory. Both of these are invented in bulk when nobody points at
+     * them, and both fail at runtime rather than at build time.
+     *
+     * @var array<string, string>
+     */
+    private const HINT_TOOLS = [
+        'language-files' => 'typo3_label_lookup, while writing labels: which trans-units exist is a property '
+            . 'of the installation, not something to remember',
+        'icon-usage' => 'typo3_icon_lookup, before writing an icon identifier: an unknown one renders an empty box',
+    ];
+
     /** Extra domain signal carried by the change type itself. */
     private const CHANGE_TYPE_TERMS = [
         'documentation' => 'documentation changelog rst',
@@ -236,7 +249,7 @@ final class Tools
             ],
             [
                 'name' => 'typo3_changelog_lookup',
-                'description' => 'Search the TYPO3 changelog of the installation you are working in: one entry per breaking change, deprecation, feature and important note, in the version it was released in. Answers "what did this version deprecate", "what changed about X", "which release introduced Y". Read from the core package on disk, so it covers exactly the versions that installation ships and grows with a Composer update. Every word of the query has to be carried by an entry; narrow further with type and version.',
+                'description' => 'Search the TYPO3 changelog of the installation you are working in: one entry per breaking change, deprecation, feature and important note, in the version it was released in. This is the first stop when building on a major you have not built on recently, not only a lookup after the fact — what separates a current answer from a two-major-old one is written down here and almost nowhere else. Answers "what did this version deprecate", "what changed about X", "which release introduced Y". Read from the core package on disk, so it covers exactly the versions that installation ships and grows with a Composer update. Every word of the query has to be carried by an entry; narrow further with type and version.',
                 'inputSchema' => [
                     'type' => 'object',
                     'properties' => [
@@ -1101,7 +1114,12 @@ final class Tools
             $lines[] = '- ' . $entry['establish'] . "\n  " . $entry['how'];
         }
 
-        $nextTools = self::nextTools($intents, $domains);
+        $nextTools = self::nextTools(
+            $intents,
+            $domains,
+            array_column($architecture['matchedHints'], 'id'),
+            $target
+        );
         if ($outsideCore) {
             $nextTools = array_values(array_filter(
                 $nextTools,
@@ -1196,9 +1214,10 @@ final class Tools
      *
      * @param array<int, array<string, mixed>> $intents
      * @param array<int, string> $domains
+     * @param array<int, string> $hintIds ids of the architecture hints this brief matched
      * @return array<int, array{tool: string, when: string}>
      */
-    private static function nextTools(array $intents, array $domains): array
+    private static function nextTools(array $intents, array $domains, array $hintIds, ?int $target): array
     {
         $candidates = [];
         foreach ($intents as $intent) {
@@ -1210,6 +1229,22 @@ final class Tools
         if (array_intersect([Domains::CSS, Domains::FLUID], $domains) !== []) {
             $candidates[] = 'typo3_component_lookup, before writing backend markup or CSS classes';
         }
+        // A subject whose hint matched is a subject the caller is about to write
+        // in, and both of these answer from the installation rather than from
+        // memory. The pointer is in the hint text as well, which is exactly the
+        // place nobody rereads while writing the fortieth label key.
+        foreach (self::HINT_TOOLS as $hintId => $suggestion) {
+            if (in_array($hintId, $hintIds, true)) {
+                $candidates[] = $suggestion;
+            }
+        }
+        $candidates[] = $target === null
+            ? 'typo3_changelog_lookup, for what the version you are building on changed about this area'
+            : sprintf(
+                'typo3_changelog_lookup, for what %d changed about this area — the first stop when you have not '
+                    . 'built on it recently, not only a lookup after the fact',
+                $target
+            );
         $candidates[] = 'typo3_architecture_lookup with the concrete file paths, once they are known';
         $candidates[] = 'typo3_test_run_guide, for the targeted runTests.sh invocation';
         // The one step this brief describes and never pointed at. A caller who

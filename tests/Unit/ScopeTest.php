@@ -223,6 +223,26 @@ final class ScopeTest extends TestCase
     }
 
     #[Test]
+    public function theBriefRoutesToTheToolsItsOwnSubjectsAreAnsweredBy(): void
+    {
+        // Forty label keys were invented in one session while typo3_label_lookup
+        // was never called: the pointer was in the routing table and in the
+        // hint, both read once, and the moment of need was hours later. The
+        // brief is what a caller comes back to, so it carries them.
+        $labels = Tools::call('typo3_task_guide', [
+            'task' => 'Write the XLF language files for the sitepackage backend labels',
+            'targetVersion' => '14',
+        ]);
+        $tools = array_column($labels->data['nextTools'], 'tool');
+        self::assertContains('typo3_label_lookup', $tools);
+
+        // And the changelog, which is where a version one has not built on
+        // recently differs from the one in memory — not a retrospective lookup.
+        self::assertContains('typo3_changelog_lookup', $tools);
+        self::assertStringContainsString('14', implode("\n", array_column($labels->data['nextTools'], 'when')));
+    }
+
+    #[Test]
     public function aBriefOutsideTheCoreKeepsNothingThatOnlyTheCoreHas(): void
     {
         // Saying "this is outside the core" and then listing four runTests.sh

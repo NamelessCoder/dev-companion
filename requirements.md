@@ -379,6 +379,16 @@ took before the requirement above was written down, and it will not survive it.
   "Summarize changed behavior", and its next lookups never named the tool that
   does exactly that (2026-07-29).
   *Held by:* `ScopeTest::theBriefPointsAtTheGuideForTheStepItEndsWith`
+- **R-GUI-4** The same holds for the subjects a guide matched, not only for the
+  steps it names. A hint that says "ask the installation" is read once, in a
+  section about the subject; the label keys are written afterwards. Where a
+  matched subject has a tool that answers it from the installation, the brief's
+  next lookups carry it, and the changelog is carried whatever the subject is —
+  what separates the version being built on from the one in memory is in there.
+  *From:* forty invented label keys with `typo3_label_lookup` never called, in a
+  session where `typo3_changelog_lookup` turned out to be the tool that carried
+  the work while the routing table named it last (2026-07-29).
+  *Held by:* `ScopeTest::theBriefRoutesToTheToolsItsOwnSubjectsAreAnsweredBy`
 
 ## Feedback — what the backlog has to stay usable for
 

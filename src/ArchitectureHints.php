@@ -46,6 +46,42 @@ final class ArchitectureHints
      */
     public const BINDING_CORE = 'core';
 
+    /**
+     * What a hint is searched by, and what each field is worth.
+     *
+     * `appliesTo` was long the only one, and the cost of that is what put this
+     * here: a hint was reachable through the handful of keywords somebody
+     * thought of while writing it, and its own 200 words were invisible. The
+     * statements a hint is made of are the part that names the symptom — «the
+     * failure is a service-not-found at request time» — and a caller arriving
+     * with the symptom is the caller the hint was written for.
+     *
+     * The curated vocabulary still outweighs the prose, so where somebody
+     * anticipated a phrasing, that hint is what comes back.
+     *
+     * @var array<string, int>
+     */
+    private const FIELD_WEIGHTS = ['title' => 4, 'appliesTo' => 4, 'text' => 1];
+
+    /**
+     * Share of the query a hint's own words have to cover to answer on their
+     * own, when no `appliesTo` pattern was matched. Below it the hint mentions
+     * the subject rather than being about it.
+     */
+    private const MIN_COVERAGE = 0.5;
+
+    /**
+     * Hint length that still counts for what its terms say.
+     *
+     * The mean hint body, so the ordinary hint is undamped and the outliers are
+     * what this corrects — and they are why it is needed: hint bodies are
+     * uncapped and differ by more than twenty times, from thirty words to over
+     * a thousand. Without it the longest hint in the corpus answered "file
+     * upload storage configuration" at full confidence, because a text that
+     * long contains every one of those words somewhere.
+     */
+    private const UNDILUTED_WORDS = 200;
+
     /** @return array<int, array{id: string, title: string, appliesTo: array<int, string>, hints: array<int, array{text: string, since: ?int, until: ?int, binding: ?string}>, checks: array<int, string>, category: string, binding: ?string}> */
     public static function load(?int $target = null): array
     {
@@ -210,19 +246,48 @@ final class ArchitectureHints
             $categories = array_values(array_diff($categories, $withheld));
         }
 
+        $candidates = array_values(array_filter(
+            self::load($target),
+            static fn(array $hint): bool => in_array($hint['category'], $categories, true),
+        ));
+
+        // The weights are taken over the candidates rather than over every
+        // hint there is, so a term says what it separates within the domains
+        // actually being searched.
+        $searchable = array_map(self::searchable(...), $candidates);
+        $weights = TermSearch::weights(TermSearch::terms($task), $searchable);
+        $askedFor = array_sum($weights);
+
         $scored = [];
-        foreach (self::load($target) as $hint) {
-            if (!in_array($hint['category'], $categories, true)) {
+        foreach ($candidates as $index => $hint) {
+            $keywords = self::scoreKeywords($hint, $haystack);
+            [$score, $covered] = TermSearch::score(
+                $searchable[$index],
+                $weights,
+                self::FIELD_WEIGHTS,
+                self::UNDILUTED_WORDS,
+            );
+            $coverage = $askedFor > 0.0 ? $covered / $askedFor : 0.0;
+
+            // Two ways in, and they answer different questions. A matched
+            // pattern means somebody anticipated this phrasing — or the caller
+            // named a path, which no term match can read. Coverage means the
+            // hint is about what was asked whether or not anybody anticipated
+            // it.
+            if ($keywords === 0 && $coverage < self::MIN_COVERAGE) {
                 continue;
             }
-            $score = self::scoreHint($hint, $haystack);
-            if ($score > 0) {
-                $scored[] = ['hint' => $hint, 'score' => $score];
-            }
+
+            $scored[] = ['hint' => $hint, 'keywords' => $keywords, 'score' => $score];
         }
 
+        // Curation first: where a pattern was written for this phrasing, that
+        // hint outranks one that merely reads well against it, and the longer
+        // pattern is the more specific claim. Everything the matcher answered
+        // before this field layout existed therefore still answers the same.
         usort($scored, static function (array $a, array $b): int {
-            return $b['score'] <=> $a['score']
+            return $b['keywords'] <=> $a['keywords']
+                ?: $b['score'] <=> $a['score']
                 ?: strcmp($a['hint']['title'], $b['hint']['title']);
         });
 
@@ -326,8 +391,34 @@ final class ArchitectureHints
         return $sections;
     }
 
-    /** @param array{appliesTo: array<int, string>} $hint */
-    private static function scoreHint(array $hint, string $haystack): int
+    /**
+     * The fields of a hint the matcher reads, keyed the way FIELD_WEIGHTS
+     * names them.
+     *
+     * @param array<string, mixed> $hint
+     * @return array<string, string>
+     */
+    private static function searchable(array $hint): array
+    {
+        return [
+            'title' => (string) $hint['title'],
+            'appliesTo' => implode("\n", $hint['appliesTo']),
+            'text' => implode("\n", array_column($hint['hints'], 'text')),
+        ];
+    }
+
+    /**
+     * How much of the curated vocabulary the query spells out.
+     *
+     * This runs the other way round from the term scoring beside it: the
+     * pattern is searched in the query, not the query in the hint, because a
+     * pattern is a phrase or a path fragment — `Configuration/Services.yaml`,
+     * `/Service/` — and what makes it a match is the caller naming it. A longer
+     * pattern is the more specific claim and counts for more.
+     *
+     * @param array{appliesTo: array<int, string>} $hint
+     */
+    private static function scoreKeywords(array $hint, string $haystack): int
     {
         $score = 0;
         foreach ($hint['appliesTo'] as $pattern) {

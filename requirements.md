@@ -430,6 +430,26 @@ took before the requirement above was written down, and it will not survive it.
 
 ## Knowledge — what is covered
 
+- **R-KNW-21** A hint is reachable by what it says, not only by the words it was
+  indexed under. `appliesTo` is a curator's guess at how the subject will be
+  asked about, and a hint's own statements are where the symptom is written
+  down — «the failure is a service-not-found at request time» is the sentence a
+  caller arrives with and was the one thing the matcher could not see. Both are
+  scored, the curated vocabulary above the prose, so a phrasing somebody
+  anticipated still decides. This does not withdraw `R-KNW-2`; it removes its
+  cost, which was that every phrasing had to be foreseen at authoring time.
+  Because the corollary of matching more is answering everything, the other half
+  is held too: a term the corpus does not carry lowers what any answer can
+  cover, so a query about a subject nobody wrote down still misses and is
+  answered by the index `R-ANS-6` requires.
+  *From:* a measurement of the matcher on 2026-07-30 — 57 hints and 11,501 words
+  of hint body reachable through 9.3 keywords each; of eighteen realistic
+  queries, seven reached nothing, two of them the `dependency-injection-services`
+  hint that names the symptom outright.
+  *Held by:* `HintsTest::aHintIsReachedByTheSymptomItDescribesAndNotOnlyByItsKeywords`
+  (eight queries that reached nothing before),
+  `HintsTest::aQueryTheCorpusHasNoAnswerForStillMisses`,
+  `HintsTest::theCuratedVocabularyStillDecidesWhereItWasWritten`
 - **R-KNW-20** The repository around the extension is a subject of its own. The
   catalog is organised by subsystem, which is the model of someone who already
   knows where their file goes; a project developer asks "where does this go",

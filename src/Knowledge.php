@@ -21,14 +21,24 @@ final class Knowledge
      */
     private const MIN_COVERAGE = 0.5;
 
-    /** Words that carry no topic signal. */
-    private const STOPWORDS = [
-        'a', 'an', 'and', 'are', 'as', 'at', 'be', 'but', 'by', 'can', 'do',
-        'does', 'for', 'from', 'how', 'i', 'in', 'is', 'it', 'its', 'me', 'my',
-        'not', 'of', 'on', 'or', 'the', 'their', 'them', 'then', 'there',
-        'these', 'this', 'to', 'was', 'what', 'when', 'where', 'which', 'why',
-        'will', 'with', 'you', 'your', 'typo3', 'core',
-    ];
+    /**
+     * A term in the heading weighs more than the same term in the body: a
+     * section titled "Design Tokens" is about design tokens, and one that
+     * mentions them in passing is not.
+     *
+     * @var array<string, int>
+     */
+    private const FIELD_WEIGHTS = ['heading' => 4, 'body' => 1];
+
+    /**
+     * Section length that still counts for what its terms say.
+     *
+     * A section is cut at MAX_SECTION_LENGTH, which is roughly this many words,
+     * so a section at that length is an ordinary one rather than an outlier and
+     * nothing here is long enough to contain a term by accident. The hint
+     * corpus is the other case and sets its own reference.
+     */
+    private const UNDILUTED_WORDS = 400;
 
     /** Longest section body returned verbatim before it is cut on a line boundary. */
     private const MAX_SECTION_LENGTH = 2400;
@@ -95,7 +105,7 @@ final class Knowledge
      */
     public static function search(string $query, array $documentIds = [], int $limit = 6): array
     {
-        $terms = self::terms($query);
+        $terms = TermSearch::terms($query);
         if ($terms === []) {
             return [];
         }
@@ -117,12 +127,17 @@ final class Knowledge
             }
         }
 
-        $weights = self::weights($terms, $candidates);
+        $weights = TermSearch::weights($terms, array_map(self::searchable(...), $candidates));
         $askedFor = array_sum($weights);
 
         $matches = [];
         foreach ($candidates as $candidate) {
-            [$score, $covered] = self::scoreSection($candidate, $weights);
+            [$score, $covered] = TermSearch::score(
+                self::searchable($candidate),
+                $weights,
+                self::FIELD_WEIGHTS,
+                self::UNDILUTED_WORDS,
+            );
             $coverage = $askedFor > 0.0 ? $covered / $askedFor : 0.0;
             if ($coverage < self::MIN_COVERAGE) {
                 continue;
@@ -220,117 +235,15 @@ final class Knowledge
     }
 
     /**
-     * How much each term of the query separates one section from the rest.
+     * The fields of a section the matcher reads, keyed the way FIELD_WEIGHTS
+     * names them.
      *
-     * "content", "structure" and "element" are in half the knowledge base and
-     * say almost nothing about which section answers the question; "tsconfig"
-     * says nearly everything. Weighing them the same is what let a query about
-     * site sets be answered with the backend's Sass class naming, at a
-     * confident three quarters of the query terms.
-     *
-     * @param array<int, string> $terms
-     * @param array<int, array{heading: string, body: string}> $sections
-     * @return array<string, float>
+     * @param array<string, mixed> $candidate
+     * @return array<string, string>
      */
-    private static function weights(array $terms, array $sections): array
+    private static function searchable(array $candidate): array
     {
-        $total = count($sections);
-        $weights = [];
-        foreach ($terms as $term) {
-            $carrying = 0;
-            foreach ($sections as $section) {
-                if (self::carries($section, $term) !== 0) {
-                    ++$carrying;
-                }
-            }
-            // A term nothing carries weighs nothing either. It cannot tell two
-            // sections apart, and counting it would push the sections that do
-            // answer the rest of the query below the floor.
-            $weights[$term] = $total === 0 || $carrying === 0 ? 0.0 : log($total / $carrying);
-        }
-
-        return $weights;
-    }
-
-    /**
-     * Returns [score, weight covered]. A term in the heading weighs more than
-     * the same term in the body, and both are weighted by what the term says.
-     *
-     * @param array{heading: string, body: string} $section
-     * @param array<string, float> $weights
-     * @return array{0: int, 1: float}
-     */
-    private static function scoreSection(array $section, array $weights): array
-    {
-        $score = 0.0;
-        $covered = 0.0;
-        foreach ($weights as $term => $weight) {
-            $where = self::carries($section, (string) $term);
-            if ($where === 0) {
-                continue;
-            }
-            $covered += $weight;
-            $score += $weight * $where;
-        }
-
-        return [(int) round($score * 10), $covered];
-    }
-
-    /**
-     * 4 when the heading carries the term, 1 when the body does, 0 otherwise.
-     *
-     * Terms are matched at a word boundary, so a stem still matches every form
-     * of its word while "set" stops matching "offset" and "site" stops matching
-     * "composite".
-     *
-     * @param array{heading: string, body: string} $section
-     */
-    private static function carries(array $section, string $term): int
-    {
-        if (Text::containsWord($section['heading'], $term)) {
-            return 4;
-        }
-
-        return Text::containsWord($section['body'], $term) ? 1 : 0;
-    }
-
-    /**
-     * The meaningful terms of a query, reduced to a stem so that word forms of
-     * the same word are one term: "deprecate", "deprecated" and "deprecations"
-     * all become "deprec" and match the "Deprecations" section.
-     *
-     * @return array<int, string>
-     */
-    private static function terms(string $query): array
-    {
-        $terms = [];
-        foreach (preg_split('/[^\p{L}\p{N}_.-]+/u', mb_strtolower(trim($query))) ?: [] as $word) {
-            $word = trim($word, '.-');
-            if ($word === '' || strlen($word) < 3 || in_array($word, self::STOPWORDS, true)) {
-                continue;
-            }
-            $terms[] = self::stem($word);
-        }
-
-        return array_values(array_unique($terms));
-    }
-
-    /**
-     * Cuts a plural ending and shortens long words, so the remaining stem is a
-     * substring of every form of that word. Words are only shortened while at
-     * least four characters remain, so short words like "css" stay intact.
-     */
-    private static function stem(string $word): string
-    {
-        if (strlen($word) >= 6 && str_ends_with($word, 'ies')) {
-            $word = substr($word, 0, -3);
-        } elseif (strlen($word) >= 6 && str_ends_with($word, 'es')) {
-            $word = substr($word, 0, -2);
-        } elseif (strlen($word) >= 5 && str_ends_with($word, 's')) {
-            $word = substr($word, 0, -1);
-        }
-
-        return strlen($word) > 6 ? substr($word, 0, 6) : $word;
+        return ['heading' => (string) $candidate['heading'], 'body' => (string) $candidate['body']];
     }
 
     /** @return array{0: string, 1: bool} */

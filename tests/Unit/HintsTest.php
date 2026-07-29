@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Typo3CmsMcp\Tests\Unit;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Typo3CmsMcp\ArchitectureHints;
@@ -150,6 +151,72 @@ final class HintsTest extends TestCase
         $result = ArchitectureHints::find([], 'Language files, XLF labels and how to reference them in TCA', 6);
 
         self::assertContains('language-files', array_column($result['matchedHints'], 'id'));
+    }
+
+    /**
+     * The symptom a caller arrives with is not the vocabulary a hint was
+     * indexed under, and for a long time only the vocabulary was searched: a
+     * hint's own two hundred words were invisible to the matcher, so the
+     * subject was reachable through the handful of keywords whoever wrote it
+     * happened to think of. Every query here reached nothing at all before the
+     * hint text was scored, and each one is answered by a hint that says the
+     * thing in so many words.
+     *
+     * @return array<int, array{0: string, 1: string}>
+     */
+    public static function symptoms(): array
+    {
+        return [
+            // The two that named the case: the hint says "the failure is a
+            // service-not-found at request time" and names
+            // PageTitleProviderManager, and neither phrasing reached it.
+            ['my extension service is not found at runtime', 'dependency-injection-services'],
+            ['page title provider does not work', 'dependency-injection-services'],
+            ['file upload storage configuration', 'file-abstraction-layer'],
+            ['validate a form field in the backend', 'tca-formengine'],
+            ['where do I put my backend layouts', 'sitepackage-layout'],
+            ['caching does not invalidate', 'caching'],
+            ['menu does not show all pages', 'frontend-page-rendering'],
+            ['the frontend shows the wrong language label', 'language-files'],
+        ];
+    }
+
+    #[Test]
+    #[DataProvider('symptoms')]
+    public function aHintIsReachedByTheSymptomItDescribesAndNotOnlyByItsKeywords(
+        string $query,
+        string $expected,
+    ): void {
+        $result = ArchitectureHints::find([], $query, 6);
+
+        self::assertContains($expected, array_column($result['matchedHints'], 'id'), $query);
+    }
+
+    #[Test]
+    public function aQueryTheCorpusHasNoAnswerForStillMisses(): void
+    {
+        // The other half of scoring the hint text: everything now matches
+        // something a little, and a lookup that answers everything is worth
+        // what one that answers nothing is. A term nothing in the corpus
+        // carries is what has to hold the line, because it is the term that
+        // says the query is about something else.
+        foreach (['how do I write a good sonnet', 'what is the weather in Düsseldorf'] as $query) {
+            $result = ArchitectureHints::find([], $query, 6);
+
+            self::assertSame([], $result['matchedHints'], $query);
+            self::assertNotSame([], $result['availableHints'], 'a miss says what there would have been to find');
+        }
+    }
+
+    #[Test]
+    public function theCuratedVocabularyStillDecidesWhereItWasWritten(): void
+    {
+        // Scoring the text is additive: where somebody anticipated a phrasing,
+        // that hint is still what comes back first. Otherwise every hint that
+        // mentions a subject in passing would compete with the one about it.
+        $result = ArchitectureHints::find([], 'event listener', 6);
+
+        self::assertSame('events-extension-points', $result['matchedHints'][0]['id']);
     }
 
     #[Test]

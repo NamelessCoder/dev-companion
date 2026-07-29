@@ -41,14 +41,7 @@ else here was written by someone who already knew what they meant.
 
 ---
 
-## 1. Say which template a content element renders through
-
-**Serves:** R-PRJ-5 · **Next step:** for each identifier in
-`Extension::describe()`'s `contentElements`, look for `tt_content.<identifier>`
-in the extension's own TypoScript and in its site sets, and report the
-`templateName` found beside it — leaving the identifier without one where the
-TypoScript does not say, rather than deriving a name from the identifier.
-
-The note that asked for the identifiers asked for this beside them. The
-identifiers are the answer to "which content elements are there"; this is the
-answer to "and where do I change one", which is the next thing asked every time.
+Nothing is queued below it. `feedback/` is empty and every item written down so
+far is in `requirements.md`, so the next session's work is whatever the notes it
+finds ask for — or, where there are none, a scenario from `scenarios/` that is
+still marked `gap`.

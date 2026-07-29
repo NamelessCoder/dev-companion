@@ -211,8 +211,9 @@ name already says what shape the answer has.
   dependencies it patches are in it too, because a patched package does not
   behave as its version says.
 - `typo3_extension_scope`: what one of those extensions registers — the tables
-  its TCA defines and the ones it extends, its backend modules and routes, its
-  icons, its site sets, its service tags, its middlewares, its Fluid roots and
+  its TCA defines and the ones it extends, the content elements it adds and the
+  template each renders through, its backend modules and routes, its icons, its
+  site sets, its service tags, its middlewares, its Fluid roots and
   namespaces, the shape of its `Classes/`. Declaration files are parsed, never
   executed, so it answers for a third-party extension as well as for the
   project's own; the table an override file extends is read from what the file

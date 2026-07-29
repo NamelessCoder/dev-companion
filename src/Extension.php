@@ -47,7 +47,7 @@ final class Extension
      *     requires: array<int, array{package: string, constraint: string}>,
      *     tcaTables: array<int, string>,
      *     tcaOverrides: array<int, string>,
-     *     contentElements: array<int, string>,
+     *     contentElements: array<int, array{identifier: string, templateName: ?string, source: ?string}>,
      *     backendModules: array<int, string>,
      *     backendRoutes: array<int, string>,
      *     icons: array<int, string>,
@@ -89,7 +89,7 @@ final class Extension
             // what the file does — see overrides().
             'tcaTables' => self::baseNames($path . '/Configuration/TCA/*.php'),
             'tcaOverrides' => $overrides['tables'],
-            'contentElements' => $overrides['contentElements'],
+            'contentElements' => self::contentElements($overrides['contentElements'], $path),
             'backendModules' => PhpArray::keys($path . '/Configuration/Backend/Modules.php'),
             'backendRoutes' => array_merge(
                 PhpArray::keys($path . '/Configuration/Backend/Routes.php'),
@@ -367,6 +367,118 @@ final class Extension
         }
 
         return $found;
+    }
+
+    /**
+     * The content elements it adds, each with the template it renders through.
+     *
+     * Which one that is is the next question after which ones there are, and
+     * the answer is in this extension's own TypoScript — `templateName` under
+     * the identifier. Where it says nothing the template stays unknown rather
+     * than being derived from the identifier: the convention is a convention,
+     * and a guessed file name sends the caller to a file that is not there.
+     *
+     * @param array<int, string> $identifiers
+     * @return array<int, array{identifier: string, templateName: ?string, source: ?string}>
+     */
+    private static function contentElements(array $identifiers, string $path): array
+    {
+        if ($identifiers === []) {
+            return [];
+        }
+
+        $typoScript = self::typoScriptValues($path);
+
+        return array_map(static function (string $identifier) use ($typoScript): array {
+            $set = $typoScript['tt_content.' . $identifier . '.templateName'] ?? null;
+
+            return [
+                'identifier' => $identifier,
+                'templateName' => $set['value'] ?? null,
+                'source' => $set['file'] ?? null,
+            ];
+        }, $identifiers);
+    }
+
+    /**
+     * Every value this extension's TypoScript sets, by its full path.
+     *
+     * Not a TypoScript parser: it tracks the nesting so that a value can be
+     * addressed however it was written — `tt_content.x.templateName = T`, a
+     * `tt_content.x { }` block, or a `tt_content { x { } }` one. Conditions are
+     * ignored rather than evaluated, so a value set only inside one reads as
+     * though it were set outright; the file it came from travels with it, which
+     * is where a caller checks that.
+     *
+     * @return array<string, array{value: string, file: string}>
+     */
+    private static function typoScriptValues(string $path): array
+    {
+        $values = [];
+        foreach (self::typoScriptFiles($path) as $file) {
+            $stack = [];
+            $inMultiline = false;
+            foreach (preg_split('/\R/', (string) file_get_contents($file)) ?: [] as $raw) {
+                $line = trim($raw);
+                if ($inMultiline) {
+                    $inMultiline = $line !== ')';
+                    continue;
+                }
+                if ($line === '' || $line[0] === '#' || $line[0] === '[' || str_starts_with($line, '//')) {
+                    continue;
+                }
+                if ($line === '}') {
+                    array_pop($stack);
+                    continue;
+                }
+                if (preg_match('/^([\w.\-]+)\s*\{$/', $line, $matches) === 1) {
+                    $stack[] = $matches[1];
+                    continue;
+                }
+                if (preg_match('/^([\w.\-]+)\s*=\s*(.*)$/', $line, $matches) !== 1) {
+                    continue;
+                }
+                if ($matches[2] === '(') {
+                    $inMultiline = true;
+                    continue;
+                }
+                $key = ($stack === [] ? '' : implode('.', $stack) . '.') . $matches[1];
+                $values[$key] = [
+                    'value' => trim($matches[2]),
+                    'file' => substr($file, strlen($path) + 1),
+                ];
+            }
+        }
+
+        return $values;
+    }
+
+    /**
+     * The TypoScript files it ships, from both places it can put them: the
+     * Configuration/TypoScript/ directory an extension is included from, and
+     * the site sets a site depends on.
+     *
+     * @return array<int, string>
+     */
+    private static function typoScriptFiles(string $path): array
+    {
+        $files = [];
+        foreach (['/Configuration/TypoScript', '/Configuration/Sets'] as $directory) {
+            if (!is_dir($path . $directory)) {
+                continue;
+            }
+            $entries = new \RecursiveIteratorIterator(
+                new \RecursiveDirectoryIterator($path . $directory, \FilesystemIterator::SKIP_DOTS)
+            );
+            foreach ($entries as $entry) {
+                if ($entry instanceof \SplFileInfo && $entry->getExtension() === 'typoscript') {
+                    $files[] = $entry->getPathname();
+                }
+            }
+        }
+        sort($files);
+
+        return $files;
     }
 
     /** @return array<int, array{name: string, path: string}> */

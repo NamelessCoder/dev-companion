@@ -500,7 +500,11 @@ final class ToolSchemas
             ], ['package', 'constraint']), 'What it requires, which is where a version conflict during an upgrade comes from.'),
             'tcaTables' => self::listOf(self::string(), 'Tables its Configuration/TCA/ defines, by file name.'),
             'tcaOverrides' => self::listOf(self::string(), 'Tables it extends below Configuration/TCA/Overrides/.'),
-            'contentElements' => self::listOf(self::string(), 'CType identifiers it adds to tt_content, read from the addTcaSelectItem() calls in those override files. An identifier assembled at runtime or taken from a constant is not among them.'),
+            'contentElements' => self::listOf(self::object([
+                'identifier' => self::string('The CType value, read from an addTcaSelectItem() call in one of those override files. An identifier assembled at runtime or taken from a constant is not among them.'),
+                'templateName' => self::nullableString('The Fluid template it renders through, from tt_content.<identifier>.templateName in this extension\'s TypoScript. Null where its TypoScript does not set one — another extension or the site configuration may.'),
+                'source' => self::nullableString('The TypoScript file that set it, relative to the extension.'),
+            ], ['identifier', 'templateName', 'source']), 'The content elements it adds to tt_content, and where each renders.'),
             'backendModules' => self::listOf(self::string(), 'Module identifiers from Configuration/Backend/Modules.php.'),
             'backendRoutes' => self::listOf(self::string(), 'Route names from Configuration/Backend/Routes.php and AjaxRoutes.php.'),
             'icons' => self::listOf(self::string(), 'Identifiers from Configuration/Icons.php. typo3_icon_lookup searches every package at once.'),

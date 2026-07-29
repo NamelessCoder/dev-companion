@@ -218,19 +218,38 @@ final class ProjectTest extends TestCase
                 ]);
                 PHP
         );
+        // Which template one renders through is the next question after which
+        // ones there are, and both TypoScript shapes are in use.
+        $this->declare(
+            $extension . '/Configuration/Sets/AcmeSite/setup.typoscript',
+            <<<'TYPOSCRIPT'
+                tt_content.acme_teaser =< lib.contentElement
+                tt_content.acme_teaser {
+                    templateName = Teaser
+                }
+                tt_content {
+                    acme_quiet =< lib.contentElement
+                    acme_quiet.templateName = Quiet
+                }
+                TYPOSCRIPT
+        );
         Instance::discoverFrom($root);
 
         $result = Tools::call('typo3_extension_scope', ['extension' => 'my_sitepackage']);
 
         self::assertSame(
-            ['acme_slider', 'acme_teaser'],
+            [
+                ['identifier' => 'acme_slider', 'templateName' => null, 'source' => null],
+                ['identifier' => 'acme_teaser', 'templateName' => 'Teaser', 'source' => 'Configuration/Sets/AcmeSite/setup.typoscript'],
+            ],
             $result->data['contentElements'],
             'both item shapes are read, and a value that is no literal is left out rather than guessed',
         );
         self::assertSame(['tt_content'], $result->data['tcaOverrides']);
-        // An item of another field is a value in that field, not a content element.
-        self::assertNotContains('acme_quiet', $result->data['contentElements']);
-        self::assertStringContainsString('acme_teaser', $result->text);
+        // An item of another field is a value in that field, not a content
+        // element — not even when the TypoScript renders one under that name.
+        self::assertNotContains('acme_quiet', array_column($result->data['contentElements'], 'identifier'));
+        self::assertStringContainsString('acme_teaser — renders through Teaser', $result->text);
         self::assertStringContainsString('at runtime, or takes from a constant', $result->text);
     }
 

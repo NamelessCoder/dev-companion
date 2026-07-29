@@ -54,7 +54,8 @@ final class Domains
             'backend ui',
         ],
         self::FLUID => [
-            'fluid', 'viewhelper', 'view helper', 'partial',
+            'fluid', 'viewhelper', 'view helper', 'partial', 'pageview',
+            'page template', 'frontend template', 'content area', 'page layout',
         ],
         self::TYPOSCRIPT => [
             'typoscript', 'tsconfig', 'site set', 'sitesets', 'settings definition',

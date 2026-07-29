@@ -201,6 +201,27 @@ final class HintsTest extends TestCase
     }
 
     #[Test]
+    public function theFrontendRenderingPathIsAnsweredAsWellAsTheBackendOne(): void
+    {
+        // Every Fluid hint was about backend modules, and the mechanism every
+        // site is built on — how a page template is found and how it reaches
+        // its content — was not written down at all.
+        $result = ArchitectureHints::find([], 'Fluid templates frontend', 6);
+
+        self::assertContains('frontend-page-rendering', array_column($result['matchedHints'], 'id'));
+    }
+
+    #[Test]
+    public function aBackendModuleQueryIsStillAnsweredAboutBackendModules(): void
+    {
+        // The frontend hint is reached by naming the frontend, not by naming a
+        // template: "backend module template" is a PHP question.
+        $result = ArchitectureHints::find([], 'backend module template', 6);
+
+        self::assertContains('backend-modules', array_column($result['matchedHints'], 'id'));
+    }
+
+    #[Test]
     public function proseIsOnlyAFallbackWhenNoStructuredHintMatched(): void
     {
         $matched = ArchitectureHints::find(['typo3/sysext/core/Classes/DataHandling/DataHandler.php'], 'DataHandler', 6);

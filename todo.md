@@ -85,49 +85,43 @@ somebody else writes.
 
 ---
 
-## Why the four items below come before the twin hints
+## Why the items below come before the twin hints
 
 Written down before the work starts, because it is a change of order. The twin
 hint item served the one open note and was next; a measurement on 2026-07-30 put
-four items in front of it, and the reason is that they are its precondition
-rather than a better use of the time.
+the items below in front of it, and the reason is that they are its precondition
+rather than a better use of the time. `ArchitectureHints::scoreHint` scored a
+query against `appliesTo` and against nothing else, so a twin hint written into
+that corpus would have inherited the same problem: 11,501 words reachable
+through 9.3 keywords each, and seven of eighteen realistic queries reaching
+nothing. That is fixed as of `R-KNW-21`; what is left below is the corpus the
+twin hints get written into.
 
-`ArchitectureHints::scoreHint` scores a query against `appliesTo` and against
-nothing else — not the title, not the hint text. That is 57 entries and 11,501
-words of hint body reachable through an average of 9.3 hand-written keywords
-each. Eighteen realistic queries were put through the matcher and seven of them
-reached nothing at all, among them `my extension service is not found at
-runtime` and `page title provider does not work` — both of which are the
-`dependency-injection-services` hint, which says «The failure is a
-service-not-found at request time» in so many words. A twin hint written into
-that corpus inherits the same problem, so it is worth writing after the corpus
-can be found in, not before.
+Second change of order, same day: `bin/hints` moves ahead of the prose
+dissolution. The dissolution moves some thirty sections of text into the hint
+corpus, and `decisions.md` names longer hints as the thing that would falsify
+the dilution constant the matcher now depends on. A measurement taken after the
+change cannot say what the change did, so the tool that takes it goes first.
 
 ---
 
-## Make the hint text searchable, not only its keywords
+## `bin/hints` — make an unreachable hint loud
 
-Serves `R-KNW-2`, and revises what that requirement assumed. R-KNW-2 accepted
-`appliesTo` as the thing the matcher scores and made curation the answer: carry
-the words the subject is asked about. The measurement above is what that costs
-at 57 entries — every phrasing has to have been thought of in advance, and the
-index `R-ANS-6` returns on a miss is the mitigation that made it survivable
-rather than the fix.
+Serves `R-KNW-21` by making it measurable rather than sampled — the eight
+queries in `HintsTest` are a tripwire, not a coverage number — and it is the
+before-reading for the dissolution below. `bin/verify-catalog` exists because a
+core update invalidates the catalog silently; a hint nobody can phrase their way
+to decays the same way and nothing says so.
 
-The next concrete step is in `ArchitectureHints::scoreHint`: score title and
-hint text alongside `appliesTo` with the weighted term scorer `Knowledge`
-already has (`Knowledge::weights`/`scoreSection`), keeping `appliesTo` weighted
-above body text so the curation still decides where it exists. Two of the four
-matchers in `src/` become one that way.
+Same shape as `verify-catalog`: a script in `bin/`, no new dependency, runnable
+in CI.
 
-What holds it: the eighteen queries are the test. They belong in `HintsTest` as
-a table of query and the id that has to come back, with the seven that reach
-nothing today named explicitly — `my extension service is not found at
-runtime` → `dependency-injection-services`, `file upload storage configuration`
-→ `file-abstraction-layer`, `my button looks wrong` → the CSS components,
-`validate a form field in the backend` → `tca-formengine`. Add the one that
-matched the wrong hint too: `dark mode colors in my backend module` returns
-`backend-modules` and has to also reach `css-light-dark-mode`.
+- `bin/hints probe "<query>"` — what that query reaches, with the score and
+  which field earned it.
+- `bin/hints coverage` — which hints no prompt in `scenarios/` reaches, and
+  which scenario prompts reach nothing. Neither number is known today.
+- `bin/hints lint` — statements carrying a version number in their text without
+  a binding, and hints whose `appliesTo` is fully contained in another's.
 
 ---
 
@@ -189,26 +183,6 @@ entry — so it carries `binding: "core"` rather than being dropped; the two
 to bind is the sentence itself: verify the label deprecation on both sides,
 against `.checkouts/13.4` and `.checkouts/14`, and name both branches in the
 commit message.
-
----
-
-## `bin/hints` — make an unreachable hint loud
-
-Serves the two items above by making their effect measurable, and every hint
-written after them. `bin/verify-catalog` exists because a core update
-invalidates the catalog silently; a hint nobody can phrase their way to decays
-the same way and nothing says so.
-
-Same shape as `verify-catalog`: a script in `bin/`, no new dependency, runnable
-in CI.
-
-- `bin/hints probe "<query>"` — what that query reaches, with the score and
-  which field earned it. The eighteen-query table becomes a command instead of a
-  throwaway script.
-- `bin/hints coverage` — which hints no prompt in `scenarios/` reaches, and
-  which scenario prompts reach nothing. Neither number is known today.
-- `bin/hints lint` — statements carrying a version number in their text without
-  a binding, and hints whose `appliesTo` is fully contained in another's.
 
 ---
 

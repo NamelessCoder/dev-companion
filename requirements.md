@@ -374,6 +374,15 @@ took before the requirement above was written down, and it will not survive it.
 
 ## Knowledge — what is covered
 
+- **R-KNW-9** "How do I register this so the core finds it" is a covered
+  question. Registering a content type, and registering a class the container
+  resolves by name, both fail at request time and neither is a convention of a
+  subsystem or a piece of backend markup — the two places an answer was looked
+  for.
+  *From:* a content element registered with a call signature from the previous
+  major, and a page title provider that was not public and therefore not found
+  (2026-07-29).
+  *Held by:* `HintsTest::registeringSomethingSoTheCoreFindsItIsCovered`
 - **R-KNW-8** Putting records of an own table on a page is covered as its own
   subject: the TCA-only table, the data processor chain that reads it, the
   single view fed by a request argument, and the routing a site set ships for

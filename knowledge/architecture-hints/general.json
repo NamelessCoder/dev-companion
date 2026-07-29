@@ -125,7 +125,44 @@
       {
         "text": "limitToPages takes an Expression Language string as well as a page uid, evaluated with page, site and siteLanguage — so an enhancer can be bound to every page of one backend layout instead of to a uid. That is what makes routing shippable at all: a set is installed into installations whose page ids nobody knows in advance, and of a site configuration shipped with an extension only rootPageId is remapped on import.",
         "since": 14
-      }
+      },
+      "The <title> of such a detail view is a PageTitleProvider and nothing else. RecordTitleProvider only reports a title that something else has set through setTitle(), and on a page that renders the record itself nothing does — so there is no TypoScript-only way to put a record's title into the head. The provider is a small class listed in config.pageTitleProviders, and it has to be public in Services.yaml."
+    ],
+    "checks": []
+  },
+  {
+    "id": "content-elements",
+    "title": "Registering a Content Element",
+    "appliesTo": [
+      "content element",
+      "CType",
+      "tt_content",
+      "plugin",
+      "Configuration/TCA/Overrides/",
+      "addPlugin",
+      "addRecordType",
+      "content type",
+      "wizard"
+    ],
+    "hints": [
+      {
+        "text": "A content element is a record type of tt_content, registered in Configuration/TCA/Overrides/tt_content.php with ExtensionManagementUtility::addRecordType(): the item — label, description, value, icon, group — then the showitem list for the type, then per-type overrides such as columnsOverrides, and optionally a position. The showitem list is the point: a type that does not bring one is a type whose backend form is somebody else's.",
+        "since": 13
+      },
+      {
+        "text": "The predecessor is addPlugin() plus addToAllTCAtypes(), which registers the item and then patches the field list of every type. It is what an older extension looks like; a new record type is better added in one call.",
+        "until": 12
+      },
+      {
+        "text": "addPlugin() is what is left for a plugin with a FlexForm, and it takes two arguments here — the item array and the FlexForm. The $field and $extensionKey arguments are gone, so the example that passes 'CType' and the extension key is from the branch before this one and is a TypeError on this one. It also seeds the new type's field list from the header type when the type declares none, so a plugin registered that way silently shows the header element's fields until a showitem replaces them.",
+        "since": 14
+      },
+      {
+        "text": "A plugin is a CType like any other. The list_type detour, where one CType held every plugin and a second field chose between them, is gone, so what used to be a list_type value is a CType value now.",
+        "since": 14
+      },
+      "ExtensionManagementUtility::addTcaSelectItemGroup() adds a group to the CType selector, positioned with before:<group> or after:<group>, so several elements of one extension arrive together instead of scattered through the list.",
+      "The backend preview of an element is a Fluid template registered in page TSconfig as mod.web_layout.tt_content.preview.<CType>, and the rendering definition is TypoScript: tt_content.<CType> on top of lib.contentElement. How the template name follows from the CType is in the sitepackage layout hint."
     ],
     "checks": []
   },

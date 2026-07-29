@@ -212,6 +212,24 @@ final class HintsTest extends TestCase
     }
 
     #[Test]
+    public function registeringSomethingSoTheCoreFindsItIsCovered(): void
+    {
+        // "How do I register X so the core actually finds it" fell between the
+        // component catalog and the subsystem conventions, and was answered by
+        // reading the core sources by hand.
+        $element = ArchitectureHints::find([], 'register a new content element with its own CType', 6);
+        self::assertContains('content-elements', array_column($element['matchedHints'], 'id'));
+
+        $di = ArchitectureHints::byId('dependency-injection-services');
+        self::assertNotNull($di);
+        self::assertStringContainsString(
+            'public: true',
+            implode("\n", array_column($di['hints'], 'text')),
+            'a provider the container resolves by class name is not found unless it is public'
+        );
+    }
+
+    #[Test]
     public function aProductSectionInASitepackageIsAnsweredWithHowItIsBuilt(): void
     {
         // The task that produced nothing usable: a list, a detail view and a

@@ -34,7 +34,8 @@
       "Autowiring and autoconfiguration are on for the core sysexts: their Configuration/Services.yaml sets autowire, autoconfigure and public: false under _defaults and registers the whole Classes/ tree as a resource. A new service in Classes/ therefore needs no Services.yaml entry at all.",
       "Prefer constructor injection with a readonly promoted property. Services.yaml is for what autowiring cannot resolve: a scalar or non-autowirable argument, an alias, a service that has to be public, or a factory.",
       "For a single non-autowirable argument, the #[Autowire] attribute on the constructor parameter keeps the wiring in the class instead of splitting it across a YAML file.",
-      "Avoid new GeneralUtility::makeInstance() calls for regular service dependencies unless lifecycle constraints require it."
+      "Avoid new GeneralUtility::makeInstance() calls for regular service dependencies unless lifecycle constraints require it.",
+      "Some extension points are resolved by class name through the container rather than through makeInstance(), and there a service that is not public simply is not found. Autoconfiguration covers the singletons, the middlewares, the request handlers and the icon providers; anything else that the core looks up that way — the page title providers are the one that bites, because PageTitleProviderManager reads the class name out of TypoScript and asks the container for it — needs its own Services.yaml entry with public: true. The failure is a service-not-found at request time, not a wiring error at build time."
     ],
     "checks": [
       "CI=true ./Build/Scripts/runTests.sh -s functional",

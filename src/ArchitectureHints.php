@@ -193,10 +193,6 @@ final class ArchitectureHints
      * Matches hints against paths and task text, restricted to the domains the
      * input actually touches.
      *
-     * The prose sections from the architecture documents are a fallback, not an
-     * addition: they are only returned when no structured hint matched, because
-     * otherwise they restate the hints and bury them.
-     *
      * A hint asked for by id is returned as it is. Matching is a guess about
      * what the caller meant; an id is not, and the index returned on a miss
      * exists so that guessing at phrasings can be replaced by naming one.
@@ -204,7 +200,6 @@ final class ArchitectureHints
      * @param array<int, string> $paths
      * @return array{
      *     matchedHints: array<int, array<string, mixed>>,
-     *     knowledgeSections: array<int, array{id: string, title: string, heading: string, body: string, score: int, coverage: float, truncated: bool}>,
      *     domains: array<int, string>,
      *     withheldCategories: array<int, string>,
      *     availableHints: array<int, array{id: string, title: string, category: string}>
@@ -218,7 +213,6 @@ final class ArchitectureHints
 
             return [
                 'matchedHints' => $hint === null ? [] : [$hint],
-                'knowledgeSections' => [],
                 // Nothing was inferred from paths or a task, so nothing is
                 // claimed about them.
                 'domains' => [],
@@ -300,20 +294,8 @@ final class ArchitectureHints
             array_slice($scored, 0, $limit)
         );
 
-        $knowledgeSections = [];
-        if ($matchedHints === [] && $task !== '') {
-            $documents = ['typo3-core-architecture'];
-            // The CSS architecture document describes the same backend, so it
-            // is withheld on the same condition as the hints taken from it.
-            if (in_array(Domains::CSS, $domains, true) && !in_array(self::CATEGORY_CSS, $withheld, true)) {
-                $documents[] = 'typo3-css-architecture';
-            }
-            $knowledgeSections = Knowledge::search($task, $documents, $limit);
-        }
-
         return [
             'matchedHints' => $matchedHints,
-            'knowledgeSections' => $knowledgeSections,
             'domains' => $domains,
             'withheldCategories' => $withheld,
             // What there would have been to find. A caller that phrased the

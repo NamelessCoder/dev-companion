@@ -114,7 +114,6 @@ final class HintsTest extends TestCase
         foreach ($result['matchedHints'] as $hint) {
             self::assertNotSame(ArchitectureHints::CATEGORY_CSS, $hint['category'], $hint['id']);
         }
-        self::assertSame([], $result['knowledgeSections'], 'the CSS document describes the same backend');
     }
 
     #[Test]
@@ -624,14 +623,6 @@ final class HintsTest extends TestCase
         $result = ArchitectureHints::find([], 'backend module template', 6);
 
         self::assertContains('backend-modules', array_column($result['matchedHints'], 'id'));
-    }
-
-    #[Test]
-    public function proseIsOnlyAFallbackWhenNoStructuredHintMatched(): void
-    {
-        $matched = ArchitectureHints::find(['typo3/sysext/core/Classes/DataHandling/DataHandler.php'], 'DataHandler', 6);
-        self::assertNotSame([], $matched['matchedHints']);
-        self::assertSame([], $matched['knowledgeSections'], 'prose would only bury the hints it restates');
     }
 
     #[Test]

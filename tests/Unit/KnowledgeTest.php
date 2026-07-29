@@ -6,6 +6,7 @@ namespace Typo3CmsMcp\Tests\Unit;
 
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
+use Typo3CmsMcp\ArchitectureHints;
 use Typo3CmsMcp\Knowledge;
 
 final class KnowledgeTest extends TestCase
@@ -53,13 +54,18 @@ final class KnowledgeTest extends TestCase
         // "site set settings definitions" was answered with the backend's Sass
         // class naming at a confident three quarters of the query terms:
         // "content", "structure" and "element" are everywhere, and every term
-        // counted the same.
-        $results = Knowledge::search('site set settings definitions');
+        // counted the same. The subject now lives in the hint corpus rather
+        // than in prose, and the weighting is the same weighting — so the case
+        // is asked of the corpus that holds the answer.
+        $result = ArchitectureHints::find([], 'site set settings definitions', 6);
 
-        self::assertNotSame([], $results);
-        self::assertStringContainsString('Site Sets', $results[0]['heading']);
-        foreach ($results as $result) {
-            self::assertNotSame('typo3-css-architecture', $result['id'], $result['heading']);
+        self::assertSame('site-sets', $result['matchedHints'][0]['id']);
+        foreach ($result['matchedHints'] as $hint) {
+            self::assertNotSame(
+                ArchitectureHints::CATEGORY_CSS,
+                $hint['category'],
+                $hint['id'] . ' answers a TypoScript question with backend CSS',
+            );
         }
     }
 

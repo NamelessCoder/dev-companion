@@ -20,7 +20,6 @@ final class TaskIntents
         'typo3-core-rules',
         'typo3-commit-messages',
         'typo3-gerrit-workflow',
-        'typo3-core-architecture',
     ];
 
     /**

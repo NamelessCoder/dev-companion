@@ -248,8 +248,7 @@ final class ToolSchemas
                 'title' => self::string(),
                 'category' => self::string(),
             ], ['id', 'title', 'category']), 'The hints that exist in the searched domains, returned when none matched. Empty on a hit.'),
-            'knowledgeSections' => self::listOf(self::knowledgeMatch(), 'Fallback prose, returned only when no structured hint matched.'),
-        ], ['paths', 'domains', 'withheldCategories', 'outsideCore', 'hints', 'availableHints', 'knowledgeSections']);
+        ], ['paths', 'domains', 'withheldCategories', 'outsideCore', 'hints', 'availableHints']);
     }
 
     /** @return array<string, mixed> */

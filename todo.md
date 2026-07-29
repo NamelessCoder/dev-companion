@@ -97,49 +97,9 @@ through 9.3 keywords each, and seven of eighteen realistic queries reaching
 nothing. That is fixed as of `R-KNW-21`; what is left below is the corpus the
 twin hints get written into.
 
-Second change of order, same day: `bin/hints` moves ahead of the prose
-dissolution. The dissolution moves some thirty sections of text into the hint
-corpus, and `decisions.md` names longer hints as the thing that would falsify
-the dilution constant the matcher now depends on. A measurement taken after the
-change cannot say what the change did, so the tool that takes it goes first.
-
----
-
-## Dissolve the architecture prose into the hint corpus
-
-Serves `R-ANS-7` and the version binding, and depends on the item above.
-
-`knowledge/typo3-core-architecture.md` has 14 `##` sections and every one of
-them is a hint by the same name; `knowledge/typo3-css-architecture.md` has 21
-and 19 of them are. The prose copies are the older ones — its «Dependency
-Injection and Services» is the hint minus the page title provider trap, which is
-the one statement in it that fails silently at runtime. And markdown carries
-neither `since`/`until` nor `binding`, so both documents are the one corner of
-the knowledge base where the two mechanisms this repository spent its last work
-on cannot reach.
-
-They are also reachable unfiltered three ways: `typo3_rule_lookup` searches
-every document, `typo3_task_guide` does the same, and `typo3://core/{id}` serves
-any of them raw.
-
-The fallback in `ArchitectureHints::find` was the argument for keeping them —
-prose as a second matcher where no hint scored. The measurement says it is not
-one: of the seven misses it rescues one and answers four with noise, and `file
-upload storage configuration` comes back as «Language Files, Fluid Templates,
-Testing Strategy, Documentation and Changelog».
-
-The next concrete step is one pass, section by section, over both documents:
-diff each against the hint of the same name, move what the hint does not have
-into it as statements — bound where it is bound — and delete the document when
-its sections are empty. Four sections have no hint counterpart and are the ones
-that need a decision rather than a move: «Core Principles» and «Definition of
-Done» in the CSS document, and the Sass bundle taxonomy under «Component
-Structure». Then remove the `knowledgeSections` fallback, its field in the tool
-result, and the CSS-document special case beside it.
-
-Left standing as prose: `typo3-core-rules`, `typo3-gerrit-workflow`,
-`typo3-commit-messages`, `typo3-contribution-sources`, `typo3-core-scripts` —
-narrative with no per-statement obligation on it.
+Second change of order, same day: `bin/hints` moved ahead of the prose
+dissolution, so that the dilution reference the matcher rests on had a
+before-reading. Both are done; the readings are in the commits.
 
 ---
 

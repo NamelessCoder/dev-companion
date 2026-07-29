@@ -48,7 +48,7 @@
         "typo3_architecture_lookup",
         "typo3_task_guide"
       ],
-      "source": "knowledge/architecture-hints/, typo3://core/typo3-core-architecture",
+      "source": "knowledge/architecture-hints/",
       "provenance": "transferable"
     },
     {
@@ -58,7 +58,7 @@
         "typo3_architecture_lookup",
         "typo3_rule_lookup"
       ],
-      "source": "typo3://core/typo3-css-architecture",
+      "source": "knowledge/architecture-hints/css.json",
       "provenance": "transferable"
     },
     {
@@ -94,7 +94,7 @@
       "tools": [
         "typo3_translation_domain_lookup"
       ],
-      "source": "src/Catalog/TranslationDomain.php, typo3://core/typo3-core-architecture",
+      "source": "src/Catalog/TranslationDomain.php, knowledge/architecture-hints/general.json",
       "provenance": "transferable"
     },
     {

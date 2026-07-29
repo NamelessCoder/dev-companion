@@ -304,8 +304,6 @@ drive the individual tools:
 
 - `typo3-core-rules.md`
 - `typo3-core-scripts.md`
-- `typo3-core-architecture.md`
-- `typo3-css-architecture.md`
 - `typo3-commit-messages.md`
 - `typo3-gerrit-workflow.md`
 - `typo3-contribution-sources.md`

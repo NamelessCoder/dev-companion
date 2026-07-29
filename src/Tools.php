@@ -1555,17 +1555,13 @@ final class Tools
                 $sectionTexts[] = '### ' . $section['category'] . "\n\n" . implode("\n\n", $hintTexts);
             }
             $lines[] = implode("\n\n", $sectionTexts);
-        } elseif ($result['knowledgeSections'] !== []) {
-            $lines[] = 'No structured hint matched; the closest architecture notes are:';
-            $lines[] = '';
-            $lines[] = self::renderSections($result['knowledgeSections']);
         } elseif ($result['withheldCategories'] !== []) {
             $lines[] = 'Nothing is left to show: the only domain this task touched is one this server answers for '
                 . 'the backend alone.';
         } elseif ($id !== '') {
             $lines[] = sprintf('There is no hint with the id "%s".', $id);
         } else {
-            $lines[] = 'No architecture hint matched. Add a more specific path or topic, or extend knowledge/typo3-core-architecture.md.';
+            $lines[] = 'No architecture hint matched. Name a path or a more specific topic, or ask for one of the ids below.';
         }
 
         // The index is the difference between "nothing matched your words" and
@@ -1591,7 +1587,6 @@ final class Tools
             'outsideCore' => $outsideCore,
             'hints' => self::hintRecords($result['matchedHints']),
             'availableHints' => $result['availableHints'],
-            'knowledgeSections' => self::matchRecords($result['knowledgeSections']),
         ]);
     }
 

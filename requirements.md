@@ -449,7 +449,11 @@ took before the requirement above was written down, and it will not survive it.
   *Held by:* `HintsTest::aHintIsReachedByTheSymptomItDescribesAndNotOnlyByItsKeywords`
   (eight queries that reached nothing before),
   `HintsTest::aQueryTheCorpusHasNoAnswerForStillMisses`,
-  `HintsTest::theCuratedVocabularyStillDecidesWhereItWasWritten`
+  `HintsTest::theCuratedVocabularyStillDecidesWhereItWasWritten` — and those
+  eight queries are a tripwire rather than a measurement, so `bin/hints
+  coverage` is what says how much of the corpus is reachable at all: which
+  hints their own title does not reach, which no scenario prompt reaches, and
+  which prompts reach nothing.
 - **R-KNW-20** The repository around the extension is a subject of its own. The
   catalog is organised by subsystem, which is the model of someone who already
   knows where their file goes; a project developer asks "where does this go",

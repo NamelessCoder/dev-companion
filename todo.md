@@ -105,23 +105,38 @@ change cannot say what the change did, so the tool that takes it goes first.
 
 ---
 
-## `bin/hints` — make an unreachable hint loud
+## The Backend CSS hints are filed where no question can see them
 
-Serves `R-KNW-21` by making it measurable rather than sampled — the eight
-queries in `HintsTest` are a tripwire, not a coverage number — and it is the
-before-reading for the dissolution below. `bin/verify-catalog` exists because a
-core update invalidates the catalog silently; a hint nobody can phrase their way
-to decays the same way and nothing says so.
+Serves `R-KNW-21` and `R-KNW-13`, and it is the first reading `bin/hints
+coverage` produced. Eight of the nineteen Backend CSS hints are not reached by
+**their own title**: `css-color-surface-tokens` asked for as «Color and Surface
+Tokens» returns nothing, because `Domains::detect` finds no CSS signal in those
+words, falls back to PHP, and the CSS category is then never a candidate. All
+nineteen are unreached by every scenario prompt. This is not the scoring —
+`R-KNW-21` fixed that — it is the gate in front of it, and it is `R-KNW-13` in
+another subsystem: a statement is invisible to every query that does not already
+know which domain it was filed under.
 
-Same shape as `verify-catalog`: a script in `bin/`, no new dependency, runnable
-in CI.
+The next concrete step is `Domains::KEYWORDS[self::CSS]`, which today holds
+`sass`, `scss`, `css`, `stylesheet`, `styling`, `frontend build`, `backend ui` —
+the vocabulary of somebody who knows the answer is CSS. What a caller arrives
+with is the thing they can see: a colour, a spacing, a shadow, a dark mode, a
+button that looks wrong. Take the words from the eight titles that fail and from
+the CSS hint titles generally, add them, and re-run `bin/hints coverage` until
+no CSS hint is unreachable by its own title.
 
-- `bin/hints probe "<query>"` — what that query reaches, with the score and
-  which field earned it.
-- `bin/hints coverage` — which hints no prompt in `scenarios/` reaches, and
-  which scenario prompts reach nothing. Neither number is known today.
-- `bin/hints lint` — statements carrying a version number in their text without
-  a binding, and hints whose `appliesTo` is fully contained in another's.
+Two things guard the widening, and both already exist: `namesTheFrontend`
+withholds the backend categories where the task is about the website, and
+`HintsTest::aPhpPathIsNeverAnsweredWithFrontendConventions` holds the other
+direction. Check both still pass with the wider list, and add the two queries
+this came from — `my button looks wrong` and `dark mode colors in my backend
+module`, which has to reach `css-light-dark-mode` and not only
+`backend-modules`.
+
+Not to be done here: the same reading says 42 of 57 hints and 6 of 22 scenario
+prompts are unreached. Nineteen of the 42 are the CSS ones above. The rest is a
+question about the scenario prompts as much as about the hints, and it is worth
+asking after the dissolution below rather than before it.
 
 ---
 

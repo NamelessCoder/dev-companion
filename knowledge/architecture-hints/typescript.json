@@ -5,6 +5,7 @@
     "binding": "core",
     "appliesTo": ["Build/Sources/TypeScript/", "Resources/Public/JavaScript/"],
     "hints": [
+      "TypeScript source lives in Build/Sources/TypeScript/ and the JavaScript generated from it in the owning system extension's Resources/Public/JavaScript/. The generated file is committed, so a source change that is not built leaves the two disagreeing and the browser running the old one.",
       "Keep TypeScript source and generated JavaScript in sync.",
       "Prefer existing TYPO3 backend imports, event patterns, and custom element conventions used nearby.",
       "Frontend modules with state transitions should have focused JavaScript unit coverage."

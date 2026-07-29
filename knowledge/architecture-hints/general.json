@@ -30,6 +30,10 @@
         "text": "Because the domain is derived rather than declared, a file a patch is about to add already has one. Call typo3_translation_domain_lookup with the path instead of guessing; a wrong guess only fails at runtime.",
         "since": 14
       },
+      {
+        "text": "Two files can derive the same domain, and then the one without the locallang prefix wins — SudoMode.xlf takes sudo_mode from locallang_sudo_mode.xlf beside it. A locale prefix changes nothing: de.locallang.xlf is the translation of locallang.xlf and derives its domain, not one of its own.",
+        "since": 14
+      },
       "Check whether language file normalization is needed."
     ],
     "checks": [
@@ -229,6 +233,10 @@
       "Every type has a Description section; every type except Important has an Impact section; Deprecation and Breaking additionally have Affected installations and Migration.",
       "The file ends with an .. index:: line carrying at least two and at most about five tags from the fixed list in typo3/sysext/core/Documentation/Changelog/Howto.rst. A Deprecation or Breaking file also carries exactly one of NotScanned, PartiallyScanned or FullyScanned.",
       "A deprecation entry names the replacement and the migration path; without both it does not do its job. Add an extension scanner matcher when the deprecated API can be found statically.",
+      {
+        "text": "Literals in the prose take role markup — :php:, :yaml:, :typoscript:, :file: — rather than plain double backticks, and the section headings under the title are underlined only, while the title itself is fenced above and below. Getting either wrong fails checkRst, which is a review round lost to something mechanical: typo3/sysext/core/Documentation/Changelog/Howto.rst is the authority, and Build/Scripts/validateRstFiles.php is what reports the missing piece.",
+        "binding": "core"
+      },
       "Keep ReST changes focused and validate them before review."
     ],
     "checks": [

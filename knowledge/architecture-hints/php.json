@@ -92,7 +92,8 @@
     "hints": [
       "TCA changes can affect persisted data, editor workflows, and generated backend forms.",
       "Prefer established TCA option names and existing FormEngine behavior.",
-      "Add functional coverage for TCA processing, data providers, or backend form rendering behavior."
+      "Add functional coverage for TCA processing, data providers, or backend form rendering behavior.",
+      "A new field or option is user-facing, so it needs its labels in the same change — the field label, and the item labels of a select. An unlabelled field renders its own key to the editor. typo3_label_lookup says which trans-units the installation already has."
     ],
     "checks": [
       "CI=true ./Build/Scripts/runTests.sh -s functional",
@@ -107,6 +108,8 @@
       "FormDataProvider",
       "formDataGroup",
       "tcaDatabaseRecord",
+      "tcaSelectTreeAjaxFieldData",
+      "tcaInputPlaceholderRecord",
       "flexFormSegment",
       "form data provider"
     ],
@@ -145,7 +148,8 @@
         "text": "Tests mirror the class path: typo3/sysext/<ext>/Classes/Foo/Bar.php is tested by typo3/sysext/<ext>/Tests/{Unit,Functional}/Foo/BarTest.php.",
         "binding": "core"
       },
-      "Run the single test file or method while iterating; a full functional run costs minutes per round. typo3_test_run_guide has the targeted invocation."
+      "Run the single test file or method while iterating; a full functional run costs minutes per round. typo3_test_run_guide has the targeted invocation.",
+      "Write the narrowest test that exercises the change, and let what the change touches decide the kind: isolated logic is a unit test, while service wiring, persistence, TCA, DataHandler, routing and anything reading configuration only behave like themselves in a functional test. A unit test of those asserts the mock."
     ],
     "checks": [
       "CI=true ./Build/Scripts/runTests.sh -s unit -- --filter <methodName> <path/to/Test.php>",

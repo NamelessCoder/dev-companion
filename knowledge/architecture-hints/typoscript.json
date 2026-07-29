@@ -41,7 +41,8 @@
       "TypoScript files use the .typoscript extension.",
       {
         "text": "Site set resolution is covered by functional tests under typo3/sysext/core/Tests/Functional/Site/Set/; the labels have their own check, checkIntegritySetLabels.",
-        "since": 13
+        "since": 13,
+        "binding": "core"
       }
     ],
     "checks": [

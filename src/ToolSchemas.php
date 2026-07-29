@@ -654,6 +654,26 @@ final class ToolSchemas
         ], ['documentId', 'title', 'uri', 'heading', 'body', 'coverage', 'score', 'truncated']);
     }
 
+    /**
+     * Who is obliged by something, where that is not everyone.
+     *
+     * @return array<string, mixed>
+     */
+    private static function binding(string $subject): array
+    {
+        return [
+            'type' => ['string', 'null'],
+            'enum' => ['core', null],
+            'description' => sprintf(
+                'Who %s obliges. "core" means it is a condition of a patch to the TYPO3 core and a convention '
+                . 'anywhere else — the backend\'s own design system, the changelog artifact, the paths of the mono '
+                . 'repository. Null, the ordinary case, means it holds wherever TYPO3 is written: an API that '
+                . 'throws throws in a sitepackage too.',
+                $subject,
+            ),
+        ];
+    }
+
     /** @return array<string, mixed> */
     private static function architectureHintRecord(): array
     {
@@ -661,14 +681,16 @@ final class ToolSchemas
             'id' => self::string(),
             'title' => self::string(),
             'category' => self::string('PHP, TypeScript, JavaScript, CSS, or General.'),
+            'binding' => self::binding('the whole hint'),
             'hints' => self::listOf(self::object([
                 'text' => self::string('The statement itself. It reads the same on every version it holds for; the range is beside it, never inside it.'),
                 'since' => ['type' => ['integer', 'null'], 'description' => 'First TYPO3 major this holds on. Null means as far back as this knowledge base reaches.'],
                 'until' => ['type' => ['integer', 'null'], 'description' => 'Last TYPO3 major this holds on. Null means it still holds.'],
                 'versions' => self::string('The same range as a sentence, empty when the statement is bound to nothing.'),
-            ], ['text', 'since', 'until', 'versions'])),
+                'binding' => self::binding('this statement'),
+            ], ['text', 'since', 'until', 'versions', 'binding'])),
             'checks' => self::listOf(self::string(), 'Commands relevant to this hint.'),
-        ], ['id', 'title', 'category', 'hints', 'checks']);
+        ], ['id', 'title', 'category', 'binding', 'hints', 'checks']);
     }
 
     /** @return array<string, mixed> */

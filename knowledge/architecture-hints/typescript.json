@@ -2,6 +2,7 @@
   {
     "id": "backend-typescript",
     "title": "Backend TypeScript Modules",
+    "binding": "core",
     "appliesTo": ["Build/Sources/TypeScript/", "Resources/Public/JavaScript/"],
     "hints": [
       "Keep TypeScript source and generated JavaScript in sync.",
@@ -17,6 +18,7 @@
   {
     "id": "backend-ui",
     "title": "Backend UI and Web Components",
+    "binding": "core",
     "appliesTo": [
       "typo3/sysext/backend/",
       "Build/Sources/TypeScript/backend/",

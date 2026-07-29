@@ -33,7 +33,20 @@ final class ArchitectureHints
         'general' => 'General',
     ];
 
-    /** @return array<int, array{id: string, title: string, appliesTo: array<int, string>, hints: array<int, array{text: string, since: ?int, until: ?int}>, checks: array<int, string>, category: string}> */
+    /**
+     * What a statement or a whole hint is binding for.
+     *
+     * Absent is the ordinary case and means "wherever TYPO3 is written": an API
+     * that throws is an API that throws, in the core and in a sitepackage
+     * alike. CORE marks what is only binding for a patch to the core — the
+     * backend's own design system, the changelog artifact, the test paths of
+     * the mono repository. Outside the core those are not dropped, because a
+     * project styling a backend module needs exactly them; they are marked, so
+     * a caller can tell an obligation from a convention worth adopting.
+     */
+    public const BINDING_CORE = 'core';
+
+    /** @return array<int, array{id: string, title: string, appliesTo: array<int, string>, hints: array<int, array{text: string, since: ?int, until: ?int, binding: ?string}>, checks: array<int, string>, category: string, binding: ?string}> */
     public static function load(?int $target = null): array
     {
         $dir = Paths::knowledge() . '/architecture-hints';
@@ -56,6 +69,7 @@ final class ArchitectureHints
                     'hints' => array_map(self::statement(...), $entry['hints'] ?? []),
                     'checks' => array_map('strval', $entry['checks'] ?? []),
                     'category' => $category,
+                    'binding' => isset($entry['binding']) ? (string) $entry['binding'] : null,
                 ];
             }
         }
@@ -72,18 +86,24 @@ final class ArchitectureHints
      * sentence stays the same sentence on every version it holds for, and the
      * range can be filtered, rendered and checked.
      *
-     * @return array{text: string, since: ?int, until: ?int}
+     * `binding` is the same idea for who a statement obliges rather than which
+     * version it holds on, and it sits here for the same reason: one sentence
+     * in an otherwise transferable hint is what a changelog obligation is, and
+     * splitting the hint to say so would duplicate the six statements around it.
+     *
+     * @return array{text: string, since: ?int, until: ?int, binding: ?string}
      */
     private static function statement(mixed $entry): array
     {
         if (!is_array($entry)) {
-            return ['text' => (string) $entry, 'since' => null, 'until' => null];
+            return ['text' => (string) $entry, 'since' => null, 'until' => null, 'binding' => null];
         }
 
         return [
             'text' => (string) ($entry['text'] ?? ''),
             'since' => isset($entry['since']) ? (int) $entry['since'] : null,
             'until' => isset($entry['until']) ? (int) $entry['until'] : null,
+            'binding' => isset($entry['binding']) ? (string) $entry['binding'] : null,
         ];
     }
 

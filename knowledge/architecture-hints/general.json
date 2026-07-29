@@ -213,6 +213,7 @@
   {
     "id": "documentation-changelog",
     "title": "Documentation and Changelog",
+    "binding": "core",
     "appliesTo": [
       ".rst",
       "Documentation/",

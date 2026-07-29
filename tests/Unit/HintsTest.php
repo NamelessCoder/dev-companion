@@ -352,6 +352,52 @@ final class HintsTest extends TestCase
     }
 
     #[Test]
+    public function whatOnlyBindsACorePatchSaysSoOutsideTheCore(): void
+    {
+        // The backend's design system is a condition of a core patch and of
+        // nothing in a project — which does not make it useless there, so it is
+        // marked rather than dropped. Inside the core the marker would be on
+        // every line and say nothing.
+        $project = Tools::call('typo3_architecture_lookup', [
+            'id' => 'css-class-naming',
+            'paths' => ['packages/my_sitepackage/Classes/Controller/ProductController.php'],
+        ]);
+        self::assertTrue($project->data['outsideCore']);
+        self::assertSame(ArchitectureHints::BINDING_CORE, $project->data['hints'][0]['binding']);
+        self::assertStringContainsString('Binding for a patch to the TYPO3 core', $project->text);
+        self::assertStringContainsString('conventions you may adopt', $project->text);
+
+        $core = Tools::call('typo3_architecture_lookup', [
+            'id' => 'css-class-naming',
+            'paths' => ['Build/Sources/Sass/component/_card.scss'],
+        ]);
+        self::assertStringNotContainsString('Binding for a patch', $core->text);
+    }
+
+    #[Test]
+    public function oneCoreObligationInATransferableHintIsMarkedOnItsOwn(): void
+    {
+        // The ViewHelper conventions hold wherever TYPO3 is written; the
+        // changelog file under typo3/sysext/ is the one sentence in them that
+        // does not. Splitting the hint to say so would duplicate the six
+        // statements around it, so the statement carries it — the same place
+        // since/until sits.
+        $result = Tools::call('typo3_architecture_lookup', [
+            'id' => 'fluid-viewhelpers',
+            'paths' => ['packages/my_sitepackage/Classes/ViewHelpers/GreetingViewHelper.php'],
+        ]);
+
+        self::assertNull($result->data['hints'][0]['binding'], 'the hint as a whole transfers');
+        $bound = array_values(array_filter(
+            $result->data['hints'][0]['hints'],
+            static fn(array $statement): bool => $statement['binding'] !== null,
+        ));
+        self::assertCount(1, $bound);
+        self::assertStringContainsString('changelog entry', $bound[0]['text']);
+        self::assertStringContainsString('binding for a core patch', $result->text);
+    }
+
+    #[Test]
     public function whereSomethingGoesInTheRepositoryIsAnsweredToo(): void
     {
         // The extension was answered and the repository around it was not, so a

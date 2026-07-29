@@ -988,8 +988,12 @@ final class Tools
                 $lines[] = '### ' . $section['category'];
                 foreach ($section['hints'] as $hint) {
                     $lines[] = '## ' . $hint['title'];
+                    $notice = self::bindingNotice($hint, $outsideCore);
+                    if ($notice !== null) {
+                        $lines[] = $notice;
+                    }
                     foreach ($hint['hints'] as $entry) {
-                        $lines[] = '- ' . self::statementLine($entry);
+                        $lines[] = '- ' . self::statementLine($entry, $outsideCore);
                     }
                     if (isset($examples[$hint['id']])) {
                         $lines[] = $examples[$hint['id']];
@@ -1303,11 +1307,13 @@ final class Tools
             'id' => (string) $hint['id'],
             'title' => (string) $hint['title'],
             'category' => (string) $hint['category'],
+            'binding' => $hint['binding'] ?? null,
             'hints' => array_map(static fn(array $statement): array => [
                 'text' => $statement['text'],
                 'since' => $statement['since'],
                 'until' => $statement['until'],
                 'versions' => Versions::label($statement['since'], $statement['until']),
+                'binding' => $statement['binding'] ?? null,
             ], $hint['hints']),
             'checks' => array_map('strval', $hint['checks']),
         ], array_values($hints));
@@ -1319,15 +1325,23 @@ final class Tools
      *
      * The range is rendered beside the sentence rather than inside it: the
      * sentence is the same sentence on every version it holds for, and a reader
-     * filtering by version must not have to parse prose to do it.
+     * filtering by version must not have to parse prose to do it. What it is
+     * binding for is rendered the same way, and only where it is not this
+     * caller's obligation — inside the core everything listed applies, so the
+     * marker would be on every line and say nothing.
      *
-     * @param array{text: string, since: ?int, until: ?int} $statement
+     * @param array{text: string, since: ?int, until: ?int, binding: ?string} $statement
      */
-    private static function statementLine(array $statement): string
+    private static function statementLine(array $statement, bool $outsideCore = false): string
     {
-        $label = Versions::label($statement['since'], $statement['until']);
+        $labels = array_filter([
+            Versions::label($statement['since'], $statement['until']),
+            $outsideCore && ($statement['binding'] ?? null) === ArchitectureHints::BINDING_CORE
+                ? 'binding for a core patch, a convention here'
+                : '',
+        ]);
 
-        return $label === '' ? $statement['text'] : $statement['text'] . ' [' . $label . ']';
+        return $labels === [] ? $statement['text'] : $statement['text'] . ' [' . implode('; ', $labels) . ']';
     }
 
     /**
@@ -1518,9 +1532,14 @@ final class Tools
             foreach (ArchitectureHints::groupByCategory($result['matchedHints']) as $section) {
                 $hintTexts = [];
                 foreach ($section['hints'] as $hint) {
-                    $block = ['## ' . $hint['title'], 'Hints:'];
+                    $block = ['## ' . $hint['title']];
+                    $notice = self::bindingNotice($hint, $outsideCore);
+                    if ($notice !== null) {
+                        $block[] = $notice;
+                    }
+                    $block[] = 'Hints:';
                     foreach ($hint['hints'] as $entry) {
-                        $block[] = '- ' . self::statementLine($entry);
+                        $block[] = '- ' . self::statementLine($entry, $outsideCore);
                     }
                     if (isset($examples[$hint['id']])) {
                         $block[] = $examples[$hint['id']];
@@ -2206,6 +2225,27 @@ final class Tools
             ], $matches),
             'coveredVersions' => Versions::majors(),
         ]);
+    }
+
+    /**
+     * What a whole hint is binding for, where that is not this caller.
+     *
+     * The backend's design system is the case this exists for: every rule in it
+     * is a condition of a core patch and none of it is a condition of anything
+     * in a project — which does not make it useless there, because a project
+     * building a backend module wants exactly those rules. So the answer keeps
+     * them and says which of the two it is handing over.
+     *
+     * @param array<string, mixed> $hint
+     */
+    private static function bindingNotice(array $hint, bool $outsideCore): ?string
+    {
+        if (!$outsideCore || ($hint['binding'] ?? null) !== ArchitectureHints::BINDING_CORE) {
+            return null;
+        }
+
+        return 'Binding for a patch to the TYPO3 core. Here they are conventions you may adopt — worth having '
+            . 'where this repository builds the same thing, and no condition of anything in it.';
     }
 
     /**

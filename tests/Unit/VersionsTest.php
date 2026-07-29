@@ -142,4 +142,24 @@ final class VersionsTest extends TestCase
             }
         }
     }
+
+    #[Test]
+    public function whoIsObligedIsWrittenAsDataToo(): void
+    {
+        // Same rule as the version range, for the other question a statement
+        // can answer differently per caller: an answer cannot filter or mark
+        // what is phrased inside the sentence, and "core" is the only value
+        // there is — a second one is a vocabulary change, not a data entry.
+        foreach (ArchitectureHints::load() as $hint) {
+            foreach (array_merge([$hint], $hint['hints']) as $entry) {
+                if (($entry['binding'] ?? null) !== null) {
+                    self::assertSame(
+                        ArchitectureHints::BINDING_CORE,
+                        $entry['binding'],
+                        $hint['id'] . ' binds to something this server has no vocabulary for',
+                    );
+                }
+            }
+        }
+    }
 }

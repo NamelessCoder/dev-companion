@@ -141,7 +141,10 @@
       "State is set up and asserted with CSV fixtures, not hand-written inserts: $this->importCSVDataSet(__DIR__ . '/Fixtures/pages.csv') in setUp(), $this->assertCSVDataSet(__DIR__ . '/Fixtures/Expected.csv') for the result. The files live in a Fixtures/ directory next to the test class. This is the expected form for persistence behaviour.",
       "Take services from the container with $this->get(SomeService::class) rather than constructing them, so the test exercises the real wiring.",
       "DataHandler scenarios extend AbstractDataHandlerActionTestCase instead of FunctionalTestCase; it carries the scenario setup those tests share.",
-      "Tests mirror the class path: typo3/sysext/<ext>/Classes/Foo/Bar.php is tested by typo3/sysext/<ext>/Tests/{Unit,Functional}/Foo/BarTest.php.",
+      {
+        "text": "Tests mirror the class path: typo3/sysext/<ext>/Classes/Foo/Bar.php is tested by typo3/sysext/<ext>/Tests/{Unit,Functional}/Foo/BarTest.php.",
+        "binding": "core"
+      },
       "Run the single test file or method while iterating; a full functional run costs minutes per round. typo3_test_run_guide has the targeted invocation."
     ],
     "checks": [

@@ -305,6 +305,17 @@ runtime, and the failure is silent. The rules below follow from it.
 - **"Check whether X" is not a hint, it is a check.** `hints` carries
   statements, `checks` carries commands that run. A check-shaped sentence with
   no command behind it tells the caller nothing it did not know already.
+- **Who is obliged is data as well.** A version range is not the only thing an
+  answer has to know per caller. `binding: "core"` marks what is a condition of
+  a patch to the core and a convention anywhere else — the backend's own design
+  system, the changelog artifact, the paths of the mono repository. It sits on
+  the hint where the whole subject is that, and on the single statement where
+  one sentence in an otherwise transferable hint is. Nothing is dropped for it:
+  outside the core the content stays and carries the marker, because a project
+  building a backend module wants exactly those rules. Absent is the ordinary
+  case and means it holds wherever TYPO3 is written — an API that throws throws
+  in a sitepackage too. `VersionsTest::whoIsObligedIsWrittenAsDataToo` holds the
+  vocabulary to that one value; a second one is a decision, not a data entry.
 - **The catalogs carry the same binding, and it decides.** A `knowledge/catalog/`
   entry is markup taken from one revision, so `since`/`until` there is the whole
   entry rather than one sentence, and `targetVersion` withholds it instead of

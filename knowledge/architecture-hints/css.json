@@ -2,6 +2,7 @@
   {
     "id": "css-source-build-boundaries",
     "title": "CSS Source and Build Boundaries",
+    "binding": "core",
     "appliesTo": ["Build/Sources/Sass/", "Resources/Public/Css/", ".scss", ".css", "sass", "css"],
     "hints": [
       "Treat Build/Sources/Sass/ as the source of truth when a Sass source exists.",
@@ -18,6 +19,7 @@
   {
     "id": "css-components",
     "title": "CSS Component Structure",
+    "binding": "core",
     "appliesTo": [
       "Build/Sources/Sass/component/",
       "Build/Sources/Sass/component/forms/",
@@ -35,6 +37,7 @@
   {
     "id": "css-browser-target",
     "title": "CSS Browser Target",
+    "binding": "core",
     "appliesTo": [
       "browser",
       "evergreen",
@@ -70,6 +73,7 @@
   {
     "id": "css-minimal-reusable-components",
     "title": "Minimal CSS and Reusable Components",
+    "binding": "core",
     "appliesTo": ["utility", "utility class", "reusable", "component", "one-off", "custom css", "new css"],
     "hints": [
       "Write as little new CSS as possible.",
@@ -82,6 +86,7 @@
   {
     "id": "css-class-naming",
     "title": "CSS Class Naming",
+    "binding": "core",
     "appliesTo": ["class name", "naming", "bem", "modifier", "variant", "variants", "t3js", "is-", "has-", "__", "--"],
     "hints": [
       "Use existing component naming conventions from nearby Sass files.",
@@ -95,6 +100,7 @@
   {
     "id": "css-styleguide-demos",
     "title": "Styleguide Demos for CSS Components",
+    "binding": "core",
     "appliesTo": [
       "styleguide",
       "demo",
@@ -116,6 +122,7 @@
   {
     "id": "css-tokens-specificity",
     "title": "CSS Tokens and Specificity",
+    "binding": "core",
     "appliesTo": [
       "variable",
       "token",
@@ -143,6 +150,7 @@
   {
     "id": "css-web-components",
     "title": "Web Components and Element Styles",
+    "binding": "core",
     "appliesTo": [
       "Build/Sources/Sass/element/",
       "custom element",
@@ -170,6 +178,7 @@
   {
     "id": "css-state-attributes",
     "title": "State Attributes and Semantic Selectors",
+    "binding": "core",
     "appliesTo": [
       "aria-",
       "aria-selected",
@@ -196,6 +205,7 @@
   {
     "id": "css-color-surface-tokens",
     "title": "Color and Surface Tokens",
+    "binding": "core",
     "appliesTo": [
       "surface",
       "surfaces",
@@ -226,6 +236,7 @@
   {
     "id": "css-shadow-layering",
     "title": "Shadow Tokens and Layering",
+    "binding": "core",
     "appliesTo": ["shadow", "box-shadow", "elevation", "flyout", "dialog", "popover", "tooltip", "window"],
     "hints": [
       { "text": "Shadows must follow the same logical layering model as surfaces.", "since": 13 },
@@ -238,6 +249,7 @@
   {
     "id": "css-z-index-layering",
     "title": "Z-Index and Overlay Layering",
+    "binding": "core",
     "appliesTo": [
       "z-index",
       "--typo3-zindex",
@@ -263,6 +275,7 @@
   {
     "id": "css-motion-transitions",
     "title": "Motion and Transitions",
+    "binding": "core",
     "appliesTo": [
       "transition",
       "animation",
@@ -285,6 +298,7 @@
   {
     "id": "css-container-queries",
     "title": "Container Queries and Responsive Components",
+    "binding": "core",
     "appliesTo": [
       "container query",
       "container-type",
@@ -308,6 +322,7 @@
   {
     "id": "css-light-dark-mode",
     "title": "Light and Dark Mode CSS",
+    "binding": "core",
     "appliesTo": ["light", "dark", "light-dark", "color-scheme", "theme", "contrast", "surface", "text color"],
     "hints": [
       "CSS changes must work in both light and dark backend color schemes.",
@@ -320,6 +335,7 @@
   {
     "id": "css-rtl-logical-properties",
     "title": "RTL and Logical CSS Properties",
+    "binding": "core",
     "appliesTo": [
       "rtl",
       "logical",
@@ -344,6 +360,7 @@
   {
     "id": "css-bootstrap-transition",
     "title": "Bootstrap Transition in Backend CSS",
+    "binding": "core",
     "appliesTo": ["bootstrap", "btn-", "modal", "dropdown", "card", "alert", "utility class"],
     "hints": [
       "TYPO3 still uses Bootstrap CSS in parts of the backend, but Bootstrap usage is being actively reduced.",
@@ -355,6 +372,7 @@
   {
     "id": "css-accessibility-states",
     "title": "CSS Accessibility, Contrast, and States",
+    "binding": "core",
     "appliesTo": [
       "focus",
       "focus-visible",
@@ -397,6 +415,7 @@
   {
     "id": "css-icon-text-layout-stability",
     "title": "Icons, Text, and Layout Stability",
+    "binding": "core",
     "appliesTo": [
       "icon",
       "badge",

@@ -31,6 +31,15 @@
       "A template that declares a layout renders its sections and nothing else. Markup, an <f:variable> assignment or any other ViewHelper call outside <f:section> is never executed — the layout is rendered in place of the template body, so the value is simply absent, no error is raised and nothing is logged. A variable a section uses is declared inside that section.",
       "Notes in a template belong in <f:comment>, whose children are not rendered at all. An HTML comment is part of the response, and the {expressions} inside it are resolved on the way there — a comment that documents the variables of a loop ships their values to the browser.",
       "Fluid escapes output by default. Do not work around it in the template; if a ViewHelper has to return markup, that decision belongs in the ViewHelper via escapeOutput.",
+      "An array literal needs at least one key-value pair: there is no {} and it is not an empty array. It evaluates to null wherever it stands — an attribute value, an inline argument, the body of an f:variable — and a null argument is not one that was given, so the ViewHelper gets the default declared for it. additionalParams=\"{}\" therefore passes no array rather than an empty one, which is usually what was meant anyway.",
+      {
+        "text": "An array-typed argument that has to be absent under a condition is therefore one call and not two: additionalParams=\"{f:if(condition: c, then: params)}\" evaluates to null when the condition is false, which is the same as leaving the argument out. The array in then may be a variable or a literal; both arrive as an array.",
+        "since": 13
+      },
+      {
+        "text": "An array-typed argument that has to be absent under a condition needs two calls here, one in f:then and one in f:else. Written as one — additionalParams=\"{f:if(condition: c, then: params)}\" — it hands the argument an empty string instead, because an f:if with no else evaluates to that rather than to null. A ViewHelper that casts it then builds a query parameter out of nothing, (array)'' being a one-element array holding an empty string, and nothing reports it.",
+        "until": 12
+      },
       "Use typo3_component_lookup for the markup of a backend component and typo3_icon_lookup for an icon identifier, instead of writing either from memory."
     ],
     "checks": [
@@ -56,6 +65,14 @@
         "until": 12
       },
       "Set protected bool $escapeOutput = false when the ViewHelper returns markup, and $escapeChildren = false when its children are markup rather than text. Both are opt-outs from Fluid's default escaping, so state why in the class docblock.",
+      {
+        "text": "The type in registerArgument() is enforced on every argument that was given, and a value that does not match it stops the render: \"The argument \"x\" was registered with type \"array\", but is of type \"string\"\". An empty string is what usually walks into that — a variable assigned \"\", or a template expression that came back empty — because null does not: a null argument counts as not given and the declared default is used instead. Which strictness applies is an injectable service, ArgumentProcessorInterface, and the strict one is what an installation gets unless it says otherwise.",
+        "since": 14
+      },
+      {
+        "text": "A value that does not match the type declared in registerArgument() is passed to the ViewHelper unchanged. An empty string reaches an array-typed argument as a string, and what happens next is that ViewHelper's own cast rather than an error — so the render succeeds and the output is wrong.",
+        "until": 13
+      },
       "ViewHelpers are covered by functional tests under Tests/Functional/ViewHelpers/, not unit tests: a ViewHelper needs a rendering context, so a unit test asserts the wrong thing.",
       {
         "text": "A ViewHelper is public API. A new one, or a changed argument list, needs a changelog entry under typo3/sysext/core/Documentation/Changelog/.",

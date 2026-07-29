@@ -85,14 +85,14 @@ somebody else writes.
 
 ---
 
-## Four notes arrived during the marking pass, and they go before the twins
+## Three notes from one session, and why they are before the twins
 
-Written down before the work starts, because it is a change of order. All four
+Written down before the work starts, because it is a change of order. Four notes
 were recorded on 2026-07-29 at 23:43 from one session in
 `/home/benji/projects/site-new`, working on one task: an EXT:form form definition
-in a sitepackage, prefilling a field from the URL. Each one was re-run against
-the server as it is now, after today's two matcher commits, and all four still
-hold:
+in a sitepackage, prefilling a field from the URL. Each was re-run against the
+server as it is now, after today's two matcher commits, and each still held.
+Three of them are still open:
 
 - `typo3_architecture_lookup` for the EXT:form task answers `site-sets`,
   `frontend-page-rendering` and `sitepackage-layout` — correct for "a
@@ -103,27 +103,17 @@ hold:
   still has hook-based extension points" without naming one.
 - `project-extension-tests` carries none of the four facts that make a frontend
   functional test in a project extension pass.
-- No statement in `fluid.json` mentions arrays at all.
+
+The fourth was the Fluid array literal and it is closed — its note is gone and
+the measurement it needed is in `decisions.md`, because verifying a Fluid
+statement turned out to need the engine per major rather than the checkouts.
+Three are left.
 
 They go before the twins below, and the reason is what each input is worth. The
 twins serve a note whose own category is `idea` — a synthesis of what the catalog
-has no shape for, and nobody has reported being stopped by it. These four are a
-session that was stopped, four times, and read the answers out of `vendor/` by
+has no shape for, and nobody has reported being stopped by it. These are a
+session that was stopped four times and read the answers out of `vendor/` by
 hand. Friction that happened outranks a mismatch that was noticed.
-
-### The Fluid array literal, first because it is one sentence
-
-Serves `feedback/2026-07-29-234410-fluid-has-no-empty-array-literal-and-nothing-in.md`.
-Fluid has no `{}`, and an array-typed argument that has to be conditionally
-absent needs two ViewHelper calls rather than one with a variable argument. The
-error names the wrong culprit — "was registered with type array, but is of type
-string" — so the message itself belongs in the statement, because that is what
-somebody will search for.
-
-The next concrete step is to check the claim on both sides of the Fluid v4
-boundary before writing it: `.checkouts/13.4` and `.checkouts/14.3` ship
-different Fluid parsers, and a statement that only holds on one of them carries
-`since`. Then one statement in `fluid-templates`, with the error message in it.
 
 ### The four facts that make a project functional test pass
 

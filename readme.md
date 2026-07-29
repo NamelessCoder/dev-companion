@@ -207,7 +207,16 @@ name already says what shape the answer has.
   installation — its TYPO3 and PHP constraints, the extensions that are its own,
   the sites it configures with the site sets they depend on, and the commands it
   declares in `composer.json` and `package.json`. Files only, so it answers on a
-  fresh clone; and the commands it lists are the ones that exist there.
+  fresh clone; and the commands it lists are the ones that exist there. The
+  dependencies it patches are in it too, because a patched package does not
+  behave as its version says.
+- `typo3_extension_scope`: what one of those extensions registers — the tables
+  its TCA defines and the ones it extends, its backend modules and routes, its
+  icons, its site sets, its service tags, its middlewares, its Fluid roots and
+  namespaces, the shape of its `Classes/`. Declaration files are parsed, never
+  executed, so it answers for a third-party extension as well as for the
+  project's own; the table an override file extends is read from what the file
+  does, because those files are numbered rather than named after their table.
 - `typo3_rule_lookup`: searches local TYPO3 core rules and script notes, ranked
   by the query terms that separate one section from the rest rather than by
   overlap, and naming the architecture hints that match the same question — the

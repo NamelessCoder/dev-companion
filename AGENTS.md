@@ -10,6 +10,7 @@ src/ServerFactory.php  # builds the mcp/sdk server from the tool definitions
 src/Mcp/           # SDK handlers: tool dispatch and typo3://core resources
 src/Catalog/       # the component catalog and the translation domain derivation
 src/Instance.php   # finds the TYPO3 installation the agent is working in
+src/Project.php    # the repository around it; src/Extension.php one extension in it
 src/Profile.php    # which half of the server a client is offered (TYPO3_MCP_PROFILE)
 src/Typo3Cli.php   # runs that installation's console, via DDEV where there is one
 src/bootstrap.php  # locates the Composer autoloader

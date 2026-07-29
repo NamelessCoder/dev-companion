@@ -243,6 +243,17 @@ final class Tools
                 ],
             ],
             [
+                'name' => 'typo3_extension_scope',
+                'description' => 'Describe what one installed extension registers: the tables its TCA defines and the ones it extends, its backend modules and routes, its icons, its site sets, the service tags it hangs into the container, its middlewares, its Fluid roots and namespaces, and the shape of its Classes/ directory. Read from that extension\'s own files — declaration files are parsed, never executed — so it answers on a fresh clone and for a third-party extension as well as for the project\'s own. typo3_project_scope names the extensions this can be called for.',
+                'inputSchema' => [
+                    'type' => 'object',
+                    'properties' => [
+                        'extension' => ['type' => 'string', 'minLength' => 1, 'description' => 'The extension key, as typo3_project_scope reports it, for example "my_sitepackage" or "news".'],
+                    ],
+                    'required' => ['extension'],
+                ],
+            ],
+            [
                 'name' => 'typo3_catalog_scope',
                 'description' => 'Report which TYPO3 core revision the bundled catalogs were taken from, what they cover, and how to re-check them against a checkout. Call this to judge whether a catalog miss is authoritative for the branch you are working on. Where an installation is being read, the answer contrasts its TYPO3 version with the snapshot.',
                 'inputSchema' => [
@@ -357,6 +368,7 @@ final class Tools
             'typo3_icon_lookup' => self::iconLookup($args),
             'typo3_changelog_lookup' => self::changelogLookup($args),
             'typo3_project_scope' => self::projectScope(),
+            'typo3_extension_scope' => self::extensionScope($args),
             'typo3_catalog_scope' => self::catalogScope($args),
             'typo3_commit_message_guide' => self::commitMessageGuide($args),
             'typo3_feedback_record' => self::feedbackRecord($args),
@@ -1716,7 +1728,7 @@ final class Tools
         if ($project === null) {
             return self::consoleUnavailable(
                 'no TYPO3 installation was found to describe',
-                ['root' => null, 'extensions' => [], 'sites' => [], 'commands' => []],
+                ['root' => null, 'extensions' => [], 'sites' => [], 'commands' => [], 'patches' => []],
             );
         }
 
@@ -1759,8 +1771,148 @@ final class Tools
             $lines[] = sprintf('- %s (%s)', $command['command'], $command['source']);
         }
 
+        if ($project['patches'] !== []) {
+            $lines[] = '';
+            $lines[] = 'Patched dependencies — these packages do not behave as their version says, and the next '
+                . 'composer update either reapplies the patch or fails on it:';
+            foreach ($project['patches'] as $patch) {
+                $lines[] = sprintf(
+                    '- %s: %s (%s)',
+                    $patch['package'],
+                    $patch['description'] === '' ? 'no description given' : $patch['description'],
+                    $patch['file'],
+                );
+            }
+        }
+
         return ToolResult::create(implode("\n", $lines), $project + ['answeredBy' => 'packages']);
     }
+
+    /**
+     * What one extension registers, from its own files.
+     *
+     * @param array<string, mixed> $args
+     */
+    private static function extensionScope(array $args): ToolResult
+    {
+        $key = trim((string) ($args['extension'] ?? ''));
+        $extension = $key === '' ? null : Extension::describe($key);
+        if ($extension === null) {
+            return self::extensionMiss($key);
+        }
+
+        $lines = [sprintf(
+            '%s (%s) — %s%s',
+            $extension['key'],
+            $extension['origin'],
+            $extension['path'],
+            $extension['description'] === null ? '' : "\n" . $extension['description'],
+        )];
+
+        $sections = [
+            'TCA tables it defines' => $extension['tcaTables'],
+            'TCA tables it extends' => $extension['tcaOverrides'],
+            'Backend modules' => $extension['backendModules'],
+            'Backend routes' => $extension['backendRoutes'],
+            'Icons' => $extension['icons'],
+            'Middlewares' => $extension['middlewares'],
+            'Service tags' => $extension['serviceTags'],
+            'Fluid roots' => $extension['fluidRoots'],
+            'Fluid namespaces declared globally' => $extension['fluidNamespaces'],
+            'TypoScript files' => $extension['typoScript'],
+            'Registration files' => $extension['files'],
+        ];
+        foreach ($sections as $heading => $entries) {
+            if ($entries !== []) {
+                $lines[] = '';
+                $lines[] = $heading . ': ' . implode(', ', $entries);
+            }
+        }
+
+        if ($extension['siteSets'] !== []) {
+            $lines[] = '';
+            $lines[] = 'Site sets:';
+            foreach ($extension['siteSets'] as $set) {
+                $lines[] = '- ' . $set['name'] . ' (' . $set['path'] . ')';
+            }
+        }
+
+        if ($extension['classes'] !== []) {
+            $lines[] = '';
+            $lines[] = 'Classes: ' . implode(', ', array_map(
+                static fn(array $kind): string => $kind['kind'] . ' (' . $kind['files'] . ')',
+                $extension['classes'],
+            ));
+        }
+
+        if ($extension['requires'] !== []) {
+            $lines[] = '';
+            $lines[] = 'Requires: ' . implode(', ', array_map(
+                static fn(array $requirement): string => $requirement['package'] . ' ' . $requirement['constraint'],
+                $extension['requires'],
+            ));
+        }
+
+        $lines[] = '';
+        // The boundary of this answer, stated rather than implied: what is
+        // declared in a file is here, what an extension does at runtime is not.
+        $lines[] = 'Read from the files, so this is what the extension declares — not what it does at runtime. '
+            . 'Registrations made in ext_localconf.php with a PHP call, and anything a hook or an event listener '
+            . 'changes, are not in this list; the files that could hold them are named above.';
+
+        return ToolResult::create(implode("\n", $lines), $extension + ['answeredBy' => 'packages']);
+    }
+
+    /** The keys there are, so a miss is a question a caller can ask again. */
+    private static function extensionMiss(string $key): ToolResult
+    {
+        $installed = array_keys(Instance::packages());
+        if ($installed === []) {
+            return self::consoleUnavailable(
+                'no TYPO3 installation was found, so there are no extensions to describe',
+                self::EXTENSION_MISS_FIELDS + ['key' => $key],
+            );
+        }
+
+        return ToolResult::create(
+            $key === ''
+                ? 'Name the extension to describe. This installation has: ' . implode(', ', $installed) . '.'
+                : sprintf(
+                    'This installation has no extension "%s". It has: %s.',
+                    $key,
+                    implode(', ', $installed),
+                ),
+            self::EXTENSION_MISS_FIELDS + ['key' => $key, 'installed' => $installed],
+        );
+    }
+
+    /**
+     * The fields the extension schema requires, empty. A miss answers with the
+     * same shape as a hit, so a client never has to branch on which it got.
+     *
+     * @var array<string, mixed>
+     */
+    private const EXTENSION_MISS_FIELDS = [
+        'path' => null,
+        'origin' => null,
+        'composerName' => null,
+        'description' => null,
+        'requires' => [],
+        'tcaTables' => [],
+        'tcaOverrides' => [],
+        'backendModules' => [],
+        'backendRoutes' => [],
+        'icons' => [],
+        'siteSets' => [],
+        'middlewares' => [],
+        'serviceTags' => [],
+        'fluidRoots' => [],
+        'fluidNamespaces' => [],
+        'typoScript' => [],
+        'classes' => [],
+        'files' => [],
+        'answeredBy' => 'nothing',
+    ];
 
     /** @param array<string, mixed> $args */
     private static function catalogScope(array $args): ToolResult

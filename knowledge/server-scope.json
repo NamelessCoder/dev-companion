@@ -102,10 +102,11 @@
       "provenance": "installation"
     },
     {
-      "topic": "The project around the installation: its extensions, its sites and their sets, its own commands",
-      "depth": "Read from the repository's files — composer.json, package.json, config/sites — so it answers on a fresh clone, before anything is installed or migrated. It describes what is there, and does not judge it.",
+      "topic": "The project around the installation: its extensions, its sites and their sets, its own commands, and what one of those extensions registers",
+      "depth": "Read from the repository's files — composer.json, package.json, config/sites — so it answers on a fresh clone, before anything is installed or migrated. It describes what is there, and does not judge it. Per extension: the tables its TCA defines and extends, its backend modules and routes, its icons, its site sets, its service tags, its middlewares, its Fluid roots and namespaces, and the shape of its Classes/ directory — declared in files, so what ext_localconf.php does with a PHP call is not in it.",
       "tools": [
-        "typo3_project_scope"
+        "typo3_project_scope",
+        "typo3_extension_scope"
       ],
       "source": "the discovered project",
       "provenance": "installation"
@@ -247,6 +248,10 @@
     {
       "when": "Upgrading or maintaining an installation, and needing the order of operations",
       "call": "typo3_task_guide, then typo3_project_scope and typo3_changelog_lookup for what this one is and what the target version changed"
+    },
+    {
+      "when": "Working in one extension and needing what it registers",
+      "call": "typo3_extension_scope with its key"
     }
   ]
 }

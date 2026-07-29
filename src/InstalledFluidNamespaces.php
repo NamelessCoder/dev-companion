@@ -28,7 +28,7 @@ final class InstalledFluidNamespaces
     {
         $namespaces = [];
         foreach (Instance::packages() as $path) {
-            foreach (self::fromRegistrationFile($path) as $prefix => $phpNamespaces) {
+            foreach (self::declaredBy($path) as $prefix => $phpNamespaces) {
                 foreach ($phpNamespaces as $phpNamespace) {
                     $namespaces[$prefix][] = $phpNamespace;
                 }
@@ -49,7 +49,7 @@ final class InstalledFluidNamespaces
      *
      * @return array<string, array<int, string>>
      */
-    private static function fromRegistrationFile(string $packagePath): array
+    public static function declaredBy(string $packagePath): array
     {
         $file = $packagePath . '/Configuration/Fluid/Namespaces.php';
         if (!is_file($file)) {

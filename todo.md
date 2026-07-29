@@ -41,17 +41,17 @@ else here was written by someone who already knew what they meant.
 
 ---
 
-## 1. What an extension registers, not only that it is installed
+## 1. Name the content elements an extension adds
 
-**Serves:** `feedback/2026-07-29-094054` · **Next step:** decide where it goes —
-a `registers` section per extension in `typo3_project_scope`, or an extension of
-its own with a key as its argument — then read it from the files the way the
-sites are read: `Configuration/TCA/` and `Configuration/TCA/Overrides/`,
-`Configuration/Services.yaml`, `Configuration/Icons.php`, the Fluid roots, the
-content elements it adds. Report the Composer patches from `extra` while there.
+**Serves:** `feedback/2026-07-29-094054`, R-PRJ-5 · **Next step:** in
+`Extension::tablesIn()`'s token scan, keep the third argument of
+`ExtensionManagementUtility::addTcaSelectItem()` as well — the item array, whose
+shape is positional on the older line and keyed by `value` after it — and
+return the identifiers as `contentElements`, saying in the answer how they were
+derived and that a call built at runtime is not in them.
 
-The scope names an extension and its path today. A maintenance question is
-usually about what is inside it, and that is readable without a console.
+Today the answer says the extension extends `tt_content`, which is a pointer to
+where they are registered rather than the list.
 
 ## 2. Let a target version decide in the catalogs, not only inform
 

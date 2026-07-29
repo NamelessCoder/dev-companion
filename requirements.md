@@ -216,6 +216,19 @@ them, this section wins and the other one is what needs rewriting.
   *Held by:* `PackageSourcesTest::theChangelogOfTheInstalledCoreIsSearchable`,
   `PackageSourcesTest::theChangelogIsNarrowedByTypeAndVersion`,
   `PackageSourcesTest::anInstallationWithoutAChangelogSaysSoRatherThanAnsweringEmpty`
+- **R-PRJ-5** What an extension registers is answered from its own files: the
+  tables its TCA defines and the ones it extends, its backend modules and
+  routes, its icons, its site sets, its service tags, its middlewares, its Fluid
+  roots and namespaces. The table an override file extends is read from what the
+  file does, never from its name — extensions number those files to fix their
+  load order. What is declared is answered; what an extension does at runtime is
+  named as not covered rather than guessed. The project's Composer patches are
+  part of what the project is.
+  *From:* an evaluation for a site with a sitepackage and its own extension,
+  where the scope named the extension and nothing inside it (2026-07-29).
+  *Held by:* `ProjectTest::whatAnExtensionRegistersIsReadFromItsOwnFiles`,
+  `ProjectTest::anExtensionTheInstallationDoesNotHaveIsAMissWithTheKeysItDoes`,
+  `ProjectTest::aPatchedDependencyIsPartOfWhatThisProjectIs`
 - **R-PRJ-4** Upgrading an installation is answered as an order of operations,
   not as a list of commands: the code, then the schema, then the wizards, then
   the caches, with what is irreversible named before the first step that is.

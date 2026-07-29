@@ -38,6 +38,7 @@ final class ToolSchemas
             'typo3_icon_lookup' => self::iconLookup(),
             'typo3_changelog_lookup' => self::changelogLookup(),
             'typo3_project_scope' => self::projectScope(),
+            'typo3_extension_scope' => self::extensionScope(),
             'typo3_catalog_scope' => self::catalogScope(),
             'typo3_commit_message_guide' => self::commitMessageGuide(),
             'typo3_feedback_record' => self::feedbackRecord(),
@@ -444,9 +445,52 @@ final class ToolSchemas
                 'command' => self::string('Ready to run in this repository.'),
                 'source' => self::string('composer.json or package.json.'),
             ], ['command', 'source']), 'What this repository declares. A check that is not here does not exist here.'),
+            'patches' => self::listOf(self::object([
+                'package' => self::string('The dependency being patched.'),
+                'description' => self::string('What the patch is for, where composer.json says.'),
+                'file' => self::string('The patch file, relative to the project root.'),
+            ], ['package', 'description', 'file']), 'Patches from extra.patches. A patched package does not behave as its version says.'),
             'answeredBy' => self::answeredBy(),
             'unavailable' => self::unavailable(),
-        ], ['root', 'extensions', 'sites', 'commands', 'answeredBy']);
+        ], ['root', 'extensions', 'sites', 'commands', 'patches', 'answeredBy']);
+    }
+
+    /** @return array<string, mixed> */
+    private static function extensionScope(): array
+    {
+        return self::object([
+            'key' => self::string('The extension key that was asked for.'),
+            'path' => self::nullableString('Absolute path of the extension. Null when the installation does not have it.'),
+            'origin' => ['type' => ['string', 'null'], 'enum' => ['system', 'project', 'third-party', null], 'description' => 'system: TYPO3\'s own. project: inside the repository. third-party: installed as a dependency.'],
+            'composerName' => self::nullableString('The Composer package name it declares.'),
+            'description' => self::nullableString('What its composer.json says it is.'),
+            'requires' => self::listOf(self::object([
+                'package' => self::string(),
+                'constraint' => self::string(),
+            ], ['package', 'constraint']), 'What it requires, which is where a version conflict during an upgrade comes from.'),
+            'tcaTables' => self::listOf(self::string(), 'Tables its Configuration/TCA/ defines, by file name.'),
+            'tcaOverrides' => self::listOf(self::string(), 'Tables it extends below Configuration/TCA/Overrides/. tt_content here means it adds or changes content elements.'),
+            'backendModules' => self::listOf(self::string(), 'Module identifiers from Configuration/Backend/Modules.php.'),
+            'backendRoutes' => self::listOf(self::string(), 'Route names from Configuration/Backend/Routes.php and AjaxRoutes.php.'),
+            'icons' => self::listOf(self::string(), 'Identifiers from Configuration/Icons.php. typo3_icon_lookup searches every package at once.'),
+            'siteSets' => self::listOf(self::object([
+                'name' => self::string('The composer-style set name a site depends on.'),
+                'path' => self::string('Relative to the extension.'),
+            ], ['name', 'path'])),
+            'middlewares' => self::listOf(self::string(), 'Middleware identifiers from Configuration/RequestMiddlewares.php, across the request scopes.'),
+            'serviceTags' => self::listOf(self::string(), 'Tags its Services.yaml carries, such as data.processor, event.listener or console.command.'),
+            'fluidRoots' => self::listOf(self::string(), 'Which of Resources/Private/Templates, Partials and Layouts exist.'),
+            'fluidNamespaces' => self::listOf(self::string(), 'Prefixes it registers globally in Configuration/Fluid/Namespaces.php.'),
+            'typoScript' => self::listOf(self::string(), 'Files below Configuration/TypoScript/.'),
+            'classes' => self::listOf(self::object([
+                'kind' => self::string('The Classes/ subdirectory, for example EventListener or DataProcessing.'),
+                'files' => self::integer('PHP files below it.'),
+            ], ['kind', 'files'])),
+            'files' => self::listOf(self::string(), 'Registration files it ships, from ext_localconf.php to Initialisation/data.t3d.'),
+            'installed' => self::listOf(self::string(), 'On a miss: the extension keys this installation does have.'),
+            'answeredBy' => self::answeredBy(),
+            'unavailable' => self::unavailable(),
+        ], ['key', 'path', 'origin', 'tcaTables', 'tcaOverrides', 'backendModules', 'icons', 'siteSets', 'serviceTags', 'files', 'answeredBy']);
     }
 
     /** @return array<string, mixed> */

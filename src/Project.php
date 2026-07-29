@@ -36,7 +36,8 @@ final class Project
      *     coreConstraint: ?string,
      *     extensions: array<int, array{key: string, path: string, origin: string}>,
      *     sites: array<int, array{identifier: string, base: string, rootPageId: ?int, sets: array<int, string>, languages: array<int, string>}>,
-     *     commands: array<int, array{command: string, source: string}>
+     *     commands: array<int, array{command: string, source: string}>,
+     *     patches: array<int, array{package: string, description: string, file: string}>
      * }|null
      */
     public static function describe(): ?array
@@ -58,7 +59,41 @@ final class Project
             'extensions' => self::extensions($root),
             'sites' => self::sites($root),
             'commands' => self::commands($root, $manifest),
+            'patches' => self::patches($manifest),
         ];
+    }
+
+    /**
+     * The patches this project applies to its dependencies.
+     *
+     * A patched package is a package whose behaviour is not what its version
+     * says, and the next composer update either reapplies the patch or fails on
+     * it. Nothing else in an answer about this project matters more to an
+     * upgrade, and it is one entry in composer.json.
+     *
+     * @param array<string, mixed> $manifest
+     * @return array<int, array{package: string, description: string, file: string}>
+     */
+    private static function patches(array $manifest): array
+    {
+        $declared = $manifest['extra']['patches'] ?? null;
+        if (!is_array($declared)) {
+            return [];
+        }
+
+        $patches = [];
+        foreach ($declared as $package => $entries) {
+            foreach (is_array($entries) ? $entries : [] as $description => $file) {
+                $patches[] = [
+                    'package' => (string) $package,
+                    // The list form carries no description, only the file.
+                    'description' => is_string($description) ? $description : '',
+                    'file' => (string) $file,
+                ];
+            }
+        }
+
+        return $patches;
     }
 
     /**

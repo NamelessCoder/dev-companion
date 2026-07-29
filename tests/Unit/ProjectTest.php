@@ -107,6 +107,106 @@ final class ProjectTest extends TestCase
         self::assertStringContainsString('runTests.sh suites do not', $text);
     }
 
+    #[Test]
+    public function aPatchedDependencyIsPartOfWhatThisProjectIs(): void
+    {
+        // A patched package does not behave as its version says, and the next
+        // composer update either reapplies the patch or fails on it. Nothing
+        // else about this project matters more to an upgrade.
+        $root = $this->composerProject();
+        $this->manifest($root, ['extra' => ['patches' => [
+            'typo3/cms-core' => ['Keep the old redirect behaviour' => 'patches/core-redirects.patch'],
+        ]]]);
+        Instance::discoverFrom($root);
+
+        self::assertSame(
+            [['package' => 'typo3/cms-core', 'description' => 'Keep the old redirect behaviour', 'file' => 'patches/core-redirects.patch']],
+            Project::describe()['patches'],
+        );
+        self::assertStringContainsString('Patched dependencies', Tools::call('typo3_project_scope', [])->text);
+    }
+
+    #[Test]
+    public function whatAnExtensionRegistersIsReadFromItsOwnFiles(): void
+    {
+        // The project scope names an extension and its path. A maintenance
+        // question is about what is inside it, and all of it is declarative.
+        $root = $this->composerProject();
+        $extension = $root . '/packages/my_sitepackage';
+        $this->declare($extension . '/Configuration/TCA/tx_acme_event.php', "<?php\nreturn ['ctrl' => []];\n");
+        // Numbered, because that is what fixes the order overrides load in —
+        // so the file name says nothing and the table has to be read.
+        $this->declare(
+            $extension . '/Configuration/TCA/Overrides/102_tt_content.php',
+            "<?php\n\$GLOBALS['TCA']['tt_content']['columns']['header']['label'] = 'x';\n"
+        );
+        $this->declare(
+            $extension . '/Configuration/TCA/Overrides/900_pages.php',
+            "<?php\nExtensionManagementUtility::addToAllTCAtypes(\n 'pages',\n '--div--;Acme',\n);\n"
+        );
+        $this->declare($extension . '/Configuration/Icons.php', "<?php\nreturn [\n 'acme-event' => ['provider' => 'x'],\n];\n");
+        $this->declare(
+            $extension . '/Configuration/Backend/Modules.php',
+            "<?php\nreturn [\n 'acme_events' => ['parent' => 'web', 'labels' => 'acme.modules.events'],\n];\n"
+        );
+        $this->declare(
+            $extension . '/Configuration/RequestMiddlewares.php',
+            "<?php\nreturn [\n 'frontend' => [\n  'acme/tracking' => ['target' => 'X'],\n ],\n];\n"
+        );
+        $this->declare(
+            $extension . '/Configuration/Services.yaml',
+            "services:\n  Acme\\\\SitePackage\\\\Processor:\n    tags:\n      - name: 'data.processor'\n        identifier: 'acme-events'\n"
+        );
+        $this->declare($extension . '/Configuration/Sets/AcmeEvents/config.yaml', "name: acme/events-set\n");
+        $this->declare($extension . '/Resources/Private/Partials/Event.fluid.html', '');
+        $this->declare($extension . '/Classes/DataProcessing/EventProcessor.php', "<?php\n");
+        $this->declare($extension . '/ext_localconf.php', "<?php\n");
+        Instance::discoverFrom($root);
+
+        $result = Tools::call('typo3_extension_scope', ['extension' => 'my_sitepackage']);
+
+        self::assertSame(['tx_acme_event'], $result->data['tcaTables']);
+        self::assertSame(
+            ['pages', 'tt_content'],
+            $result->data['tcaOverrides'],
+            'the table is read from what the file does, not from what it is called',
+        );
+        self::assertSame(['acme-event'], $result->data['icons']);
+        self::assertSame(['acme_events'], $result->data['backendModules']);
+        self::assertSame(['acme/tracking'], $result->data['middlewares']);
+        self::assertSame(['data.processor'], $result->data['serviceTags']);
+        self::assertSame([['name' => 'acme/events-set', 'path' => 'Configuration/Sets/AcmeEvents/']], $result->data['siteSets']);
+        self::assertSame(['Resources/Private/Partials/'], $result->data['fluidRoots']);
+        self::assertSame([['kind' => 'DataProcessing', 'files' => 1]], $result->data['classes']);
+        self::assertContains('ext_localconf.php', $result->data['files']);
+        self::assertSame(Project::ORIGIN_PROJECT, $result->data['origin']);
+
+        // What is declared is here; what ext_localconf.php does at runtime is
+        // not, and the answer says so rather than letting it be assumed.
+        self::assertStringContainsString('not what it does at runtime', $result->text);
+    }
+
+    #[Test]
+    public function anExtensionTheInstallationDoesNotHaveIsAMissWithTheKeysItDoes(): void
+    {
+        $root = $this->composerProject();
+        Instance::discoverFrom($root);
+
+        $result = Tools::call('typo3_extension_scope', ['extension' => 'news']);
+
+        self::assertNull($result->data['path']);
+        self::assertContains('my_sitepackage', $result->data['installed']);
+        self::assertStringContainsString('my_sitepackage', $result->text);
+    }
+
+    private function declare(string $file, string $content): void
+    {
+        if (!is_dir(dirname($file))) {
+            mkdir(dirname($file), 0o777, true);
+        }
+        file_put_contents($file, $content);
+    }
+
     /** @param array<string, mixed> $manifest */
     private function manifest(string $root, array $manifest): void
     {

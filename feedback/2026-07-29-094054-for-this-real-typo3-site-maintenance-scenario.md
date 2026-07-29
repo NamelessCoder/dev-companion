@@ -2,25 +2,27 @@
 date: 2026-07-29T09:40:54+00:00
 category: tool-gap
 status: open
-tool: typo3_server_scope
+tool: typo3_extension_scope
 ---
 
-# Read-only project discovery is the capability this scenario asks for
+# The content elements an extension adds are still not named
 
 ## Observation
 
-Read again against the current server, and most of it is answered.
-`typo3_project_scope` enumerates the sites with the sets each depends on, the
-extensions separated into the project's own and the ones it pulled in, the TYPO3
-and PHP constraints, and the commands the repository declares — from files, so
-it works on a fresh clone. `typo3_changelog_lookup` answers what a version
-changed. Every covered topic states whether it is core-only, transferable or
-read from the installation.
+Most of this note is answered. `typo3_extension_scope` reads what an extension
+registers from its own files — the tables its TCA defines and the ones it
+extends, its backend modules and routes, its icons, its site sets, its service
+tags, its middlewares, its Fluid roots and namespaces, the shape of its
+`Classes/` — and `typo3_project_scope` reports the Composer patches.
 
-What is left is the depth inside an extension. The scope names an extension and
-its path; it does not map its TCA, its services, its routes, its Fluid roots or
-its content element registrations, and those are what a maintenance question is
-usually actually about. Composer patches are not reported either.
+What is left is the thing a sitepackage question is most often actually about:
+which content elements the extension adds. The answer says that it extends
+`tt_content`, which is where they are registered, and stops there. The
+identifiers themselves sit in the third argument of
+`ExtensionManagementUtility::addTcaSelectItem()` — a nested array whose shape
+changed inside the covered range, positional on the older line and keyed by
+`value` after it — and in the TypoScript of the set that renders them, where
+only some of them appear as `tt_content.<identifier>`.
 
 ## Query
 
@@ -28,8 +30,7 @@ Evaluate whether this MCP helps maintain and further develop a TYPO3 site: 19 si
 
 ## Suggestion
 
-Extend `typo3_project_scope`, or give an extension its own lookup: what it
-registers is readable from its files the same way the sites are — TCA overrides
-below `Configuration/TCA/`, services in `Configuration/Services.yaml`, icons,
-Fluid roots, the content elements it adds. Report Composer patches from the
-`extra` section while there.
+Read the identifiers out of the `addTcaSelectItem()` calls, both shapes, and
+list them as the content elements the extension adds — with the template each
+one renders through where the set says so. A list that is nearly complete is
+worth more here than none, as long as the answer says how it was derived.

@@ -180,40 +180,10 @@ final class InstalledIcons
      */
     private static function fromRegistrationFile(string $packagePath): array
     {
-        $file = $packagePath . '/Configuration/Icons.php';
-        if (!is_file($file)) {
-            return [];
-        }
-
-        $identifiers = [];
-        $depth = 0;
-        $tokens = @token_get_all((string) file_get_contents($file));
-        foreach ($tokens as $index => $token) {
-            if ($token === '[') {
-                ++$depth;
-                continue;
-            }
-            if ($token === ']') {
-                --$depth;
-                continue;
-            }
-            if ($depth !== 1 || !is_array($token) || $token[0] !== T_CONSTANT_ENCAPSED_STRING) {
-                continue;
-            }
-            // Only a string that is a key — the next meaningful token is "=>".
-            for ($next = $index + 1; isset($tokens[$next]); ++$next) {
-                $following = $tokens[$next];
-                if (is_array($following) && in_array($following[0], [T_WHITESPACE, T_COMMENT, T_DOC_COMMENT], true)) {
-                    continue;
-                }
-                if (is_array($following) && $following[0] === T_DOUBLE_ARROW) {
-                    $identifiers[] = strtolower(trim($token[1], "'\""));
-                }
-                break;
-            }
-        }
-
-        return $identifiers;
+        return array_map(
+            'strtolower',
+            PhpArray::keys($packagePath . '/Configuration/Icons.php'),
+        );
     }
 
     /** @return array<int, string> */

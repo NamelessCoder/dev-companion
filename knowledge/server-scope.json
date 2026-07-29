@@ -1,6 +1,6 @@
 {
   "purpose": "A curated knowledge base for contributing to the TYPO3 core: the contribution rules, the Gerrit workflow, script and test invocation, architecture conventions per subsystem, and a catalog of the registered backend UI components.",
-  "instructions": "A conventions catalog for TYPO3 core contributions, not a patch assistant. Every answer comes from this server's own bundled knowledge; it never reads, inspects, or runs anything against a TYPO3 core checkout and cannot be pointed at one. It therefore does not know your branch, your changed files, which tests cover them, or whether a path or identifier still exists on your branch — discover that in the checkout yourself, then bring the concrete paths back to typo3_architecture_lookup and typo3_task_guide. Call typo3_server_scope for what is covered, at which depth, and which tool answers what.",
+  "instructions": "A conventions catalog for TYPO3 core contributions, not a patch assistant. Almost everything here comes from this server's own bundled knowledge: it does not read your working tree, so it does not know your branch, your changed files, which tests cover them, or whether a path or identifier still exists on your branch — discover that in the checkout yourself, then bring the concrete paths back to typo3_architecture_lookup and typo3_task_guide. The exception is what no bundled answer could get right, because it is a property of an installation rather than of TYPO3: which icons are registered, which labels exist, which backend modules there are, and what a configuration value actually is at runtime. Those are asked of the TYPO3 installation this server was started in, through its own console. Call typo3_server_scope for what is covered, at which depth, which tool answers what, and which installation — if any — is being read.",
   "covers": [
     {
       "topic": "Contribution rules and review readiness",
@@ -143,11 +143,11 @@
     },
     {
       "establish": "Whether an icon identifier is registered, and which one spells the shape you want",
-      "how": "Identifiers are <family>-<name> and spell shapes, not intents. Search typo3/sysext/core/Resources/Public/Icons/T3Icons/icons.json for the T3Icons set, grep typo3/sysext/*/Configuration/Icons.php and the same file in any other installed package for extension-registered ones, and list typo3/sysext/core/Resources/Public/Icons/Flags/ for the flags-* family."
+      "how": "Ask typo3_icon_lookup: it reads the registry of the installation this server was started in, the T3Icons set and every installed package included. Where there is no reachable installation, the same three places can be read by hand — typo3/sysext/core/Resources/Public/Icons/T3Icons/icons.json, the Configuration/Icons.php of each package, and typo3/sysext/core/Resources/Public/Icons/Flags/ for the flags-* family."
     },
     {
       "establish": "Whether a label for this wording already exists",
-      "how": "Grep the English source texts and trans-unit ids in typo3/sysext/*/Resources/Private/Language/*.xlf, and in the same path of any other installed extension. A file may be overridden per installation through LANG/resourceOverrides, so the instance decides what is actually resolved."
+      "how": "Ask typo3_label_lookup: it searches the labels of the installation this server was started in, across the packages it has active and with the resource overrides it applies — neither of which a grep can tell you. Where there is no reachable installation, grep the source texts and trans-unit ids in Resources/Private/Language/*.xlf of every installed extension."
     }
   ],
   "routing": [

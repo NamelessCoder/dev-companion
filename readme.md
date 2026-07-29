@@ -32,8 +32,11 @@ a request-serving endpoint has no such relationship to its callers, and its
 document root may itself sit inside an installation. Where the project runs
 under DDEV the console is invoked there, because the project declares the PHP
 version it needs and the host machine may not have it. A stopped project is
-reported, never started. `typo3_server_scope` names the installation it found,
-where it looked, and whether the console is reachable.
+reported, never started. Where the layout is one discovery cannot walk to, two
+environment variables end the guessing: `TYPO3_MCP_ROOT` names the installation
+and `TYPO3_MCP_CONSOLE` the command that reaches its console, for example
+`ddev exec .build/bin/typo3`. `typo3_server_scope` names the installation it is
+reading, how it got there, and whether the console is reachable.
 
 It is built on the official [`mcp/sdk`](https://packagist.org/packages/mcp/sdk)
 and speaks **stdio** (`bin/typo3-cms-mcp`): the MCP client launches it as a

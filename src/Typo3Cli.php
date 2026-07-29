@@ -31,6 +31,12 @@ final class Typo3Cli
     /** Invoked directly with an interpreter on this machine. */
     public const VIA_PHP = 'php';
 
+    /** Invoked exactly as the caller said to invoke it. */
+    public const VIA_OVERRIDE = 'override';
+
+    /** The command that reaches the console, for the layouts autodiscovery cannot. */
+    public const CONSOLE_VARIABLE = 'TYPO3_MCP_CONSOLE';
+
     /** A TYPO3 bootstrap can hang on a broken configuration; an MCP session must not. */
     private const TIMEOUT_SECONDS = 90;
 
@@ -65,6 +71,20 @@ final class Typo3Cli
         }
 
         $root = $instance['root'];
+
+        [$invocation, $overrideReason] = self::viaOverride();
+        if ($invocation !== null) {
+            return self::$resolved = $invocation;
+        }
+        if ($overrideReason !== '') {
+            // A stated command that cannot be used is not quietly replaced by a
+            // discovered one. The caller would then be answered from something
+            // other than what it named, and never learn its setting was ignored.
+            self::$reason = $overrideReason;
+
+            return null;
+        }
+
         $binary = self::consoleBinary($root);
         if ($binary === null) {
             // Naming every probed path rather than the two defaults: a console
@@ -193,6 +213,72 @@ final class Typo3Cli
         $offsets = array_filter([strpos($output, '{'), strpos($output, '[')], static fn($o): bool => $o !== false);
 
         return $offsets === [] ? null : substr($output, min($offsets));
+    }
+
+    /**
+     * The command the caller stated, before anything is worked out.
+     *
+     * Autodiscovery is a chain — a binary at a known path, then DDEV, then an
+     * interpreter that satisfies the platform — and every link is something
+     * about a machine this server does not control. When one breaks there is
+     * nothing left to try, and five tools go quiet over a layout its owner
+     * could have described in a sentence: TYPO3_MCP_CONSOLE="ddev exec
+     * .build/bin/typo3". Lando, a compose stack, a container this server has
+     * never heard of are then all one setting rather than a feature request.
+     *
+     * The command is run as given, never through a shell, so quoting a
+     * multi-word argument is all the syntax there is.
+     *
+     * @return array{0: array{command: array<int, string>, via: string, php: string}|null, 1: string}
+     */
+    private static function viaOverride(): array
+    {
+        $configured = getenv(self::CONSOLE_VARIABLE);
+        if (!is_string($configured) || trim($configured) === '') {
+            return [null, ''];
+        }
+
+        $command = self::tokenize($configured);
+        if ($command === []) {
+            return [null, sprintf('%s is set but empty', self::CONSOLE_VARIABLE)];
+        }
+
+        // Only that the program exists is checked here, not that it answers:
+        // running it to find out would put a subprocess in front of every
+        // lookup, and a wrong argument surfaces as the failing call it is.
+        $program = $command[0];
+        $found = str_contains($program, '/') ? is_file($program) : self::locateBinary($program) !== null;
+        if (!$found) {
+            return [null, sprintf(
+                '%s starts with "%s", which is not a program on this machine',
+                self::CONSOLE_VARIABLE,
+                $program
+            )];
+        }
+
+        return [['command' => $command, 'via' => self::VIA_OVERRIDE, 'php' => ''], ''];
+    }
+
+    /**
+     * Splits a command line into arguments, honouring quotes. proc_open is
+     * given an array and runs no shell, so nothing else in a shell's syntax
+     * would do anything here.
+     *
+     * @return array<int, string>
+     */
+    private static function tokenize(string $commandLine): array
+    {
+        preg_match_all('/"([^"]*)"|\'([^\']*)\'|(\S+)/', trim($commandLine), $matches, PREG_SET_ORDER);
+
+        $arguments = [];
+        foreach ($matches as $match) {
+            // Whichever alternative matched; the groups after it are not set.
+            $bare = $match[3] ?? '';
+            $single = $match[2] ?? '';
+            $arguments[] = $bare !== '' ? $bare : ($single !== '' ? $single : ($match[1] ?? ''));
+        }
+
+        return $arguments;
     }
 
     /**

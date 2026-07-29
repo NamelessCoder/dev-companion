@@ -20,6 +20,7 @@ final class InstanceTest extends TestCase
     #[After]
     public function forgetTheInstance(): void
     {
+        putenv(Instance::ROOT_VARIABLE);
         Instance::discoverFrom(null);
         if ($this->temporaryRoot !== '') {
             self::removeDirectory($this->temporaryRoot);
@@ -111,6 +112,36 @@ final class InstanceTest extends TestCase
         // nothing to answer from, and saying so beats reporting an
         // installation that holds a single package and no console.
         self::assertFalse(Instance::isAvailable());
+    }
+
+    #[Test]
+    public function anInstallationNamedOutrightIsReadWithoutAnySearch(): void
+    {
+        // The way out of every layout this server cannot walk to: a stack it
+        // has never heard of, an installation in a subdirectory, a client that
+        // starts the server beside the checkout rather than inside it.
+        $root = $this->composerProject();
+        putenv(Instance::ROOT_VARIABLE . '=' . $root);
+        Instance::discoverFrom(sys_get_temp_dir());
+
+        $instance = Instance::describe();
+        self::assertSame(realpath($root), $instance['root']);
+        self::assertSame(Instance::VIA_ENVIRONMENT, $instance['via']);
+        self::assertSame('', Instance::misconfiguration());
+    }
+
+    #[Test]
+    public function aNamedInstallationThatDoesNotExistIsReportedRatherThanSearchedPast(): void
+    {
+        $root = $this->composerProject();
+        putenv(Instance::ROOT_VARIABLE . '=' . $root . '/nowhere');
+        Instance::discoverFrom($root);
+
+        // Falling back to the discoverable one would answer about an
+        // installation other than the one the caller named, and the setting
+        // that was ignored would never be mentioned again.
+        self::assertFalse(Instance::isAvailable());
+        self::assertStringContainsString(Instance::ROOT_VARIABLE, Instance::misconfiguration());
     }
 
     #[Test]

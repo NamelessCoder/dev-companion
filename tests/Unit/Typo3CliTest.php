@@ -21,6 +21,7 @@ final class Typo3CliTest extends TestCase
     #[After]
     public function forgetTheInstance(): void
     {
+        putenv(Typo3Cli::CONSOLE_VARIABLE);
         Instance::discoverFrom(null);
         Typo3Cli::forget();
         if ($this->temporaryRoot !== '') {
@@ -75,6 +76,48 @@ final class Typo3CliTest extends TestCase
         $reason = Typo3Cli::reason();
         self::assertStringContainsString('.build/bin/typo3', $reason);
         self::assertStringContainsString('vendor/bin/typo3', $reason);
+    }
+
+    #[Test]
+    public function aStatedCommandIsUsedInsteadOfWorkingOneOut(): void
+    {
+        // Autodiscovery is a chain of guesses about a machine this server does
+        // not control. When a link breaks, this is the whole repair.
+        $root = $this->installation(['config' => ['platform' => ['php' => '99.0.0']]]);
+        putenv(Typo3Cli::CONSOLE_VARIABLE . '=' . PHP_BINARY . ' /some/where/typo3');
+        $this->discover($root);
+
+        $console = Typo3Cli::resolve();
+        self::assertSame(Typo3Cli::VIA_OVERRIDE, $console['via']);
+        self::assertSame([PHP_BINARY, '/some/where/typo3'], $console['command']);
+    }
+
+    #[Test]
+    public function aStatedCommandThatIsNoProgramIsReportedRatherThanReplaced(): void
+    {
+        $root = $this->installation();
+        mkdir($root . '/bin');
+        file_put_contents($root . '/bin/typo3', "#!/usr/bin/env php\n<?php\n");
+        putenv(Typo3Cli::CONSOLE_VARIABLE . '=/nowhere/at/all typo3');
+        $this->discover($root);
+
+        // Falling through to the discovered console would answer from
+        // something other than what the caller named.
+        self::assertFalse(Typo3Cli::isAvailable());
+        self::assertStringContainsString(Typo3Cli::CONSOLE_VARIABLE, Typo3Cli::reason());
+    }
+
+    #[Test]
+    public function aQuotedArgumentInAStatedCommandStaysOneArgument(): void
+    {
+        $this->discover($this->installation());
+        putenv(Typo3Cli::CONSOLE_VARIABLE . '=' . PHP_BINARY . ' "-d memory_limit=512M" typo3');
+        Typo3Cli::forget();
+
+        self::assertSame(
+            [PHP_BINARY, '-d memory_limit=512M', 'typo3'],
+            Typo3Cli::resolve()['command']
+        );
     }
 
     #[Test]

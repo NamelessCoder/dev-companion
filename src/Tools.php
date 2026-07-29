@@ -351,33 +351,61 @@ final class Tools
         // reading none — so it is stated, with where the search started.
         $instance = Instance::describe();
         $lines[] = '';
-        $lines[] = $instance === null
-            ? 'No TYPO3 installation was found from the directory this server was started in, so every answer '
+        if ($instance === null) {
+            $lines[] = 'No TYPO3 installation was found from the directory this server was started in, so every answer '
                 . 'comes from the bundled knowledge base alone. Questions about what is registered in an '
-                . 'installation — which icon identifiers exist, which labels — cannot be answered here.'
-            : sprintf(
-                'Found the TYPO3 installation at %s (%s, from %s), which holds %d packages. '
-                . 'If that is not the installation you are working on, this server was started in the wrong directory.',
+                . 'installation — which icon identifiers exist, which labels — cannot be answered here.';
+            $lines[] = sprintf(
+                'Naming it outright is the way out: set %s to the installation root, and %s to the command that '
+                . 'reaches its console where that is not a path this server would find on its own.',
+                Instance::ROOT_VARIABLE,
+                Typo3Cli::CONSOLE_VARIABLE,
+            );
+        } else {
+            $lines[] = sprintf(
+                'Found the TYPO3 installation at %s (%s, %s, from %s), which holds %d packages. '
+                . 'If that is not the installation you are working on, this server was started in the wrong '
+                . 'directory — or set %s to the one you mean.',
                 $instance['root'],
                 $instance['kind'],
+                $instance['via'] === Instance::VIA_ENVIRONMENT
+                    ? 'named by ' . Instance::ROOT_VARIABLE
+                    : 'found by walking up',
                 $instance['startedFrom'],
                 count(Instance::packages()),
+                Instance::ROOT_VARIABLE,
             );
+        }
+        if (Instance::misconfiguration() !== '') {
+            $lines[] = 'The configuration says otherwise and could not be followed: '
+                . Instance::misconfiguration() . '.';
+        }
 
         // What the installation can be asked is a different question from
         // whether one was found, and the answer is actionable often enough to
         // belong here rather than in a failing tool call.
         $console = Typo3Cli::resolve();
-        if ($instance !== null) {
-            $lines[] = $console === null
-                ? 'Its console cannot be run right now, so questions that only the installation can answer — which '
-                    . 'labels exist, which backend modules are registered — have no answer here: ' . Typo3Cli::reason() . '.'
-                : sprintf(
-                    'Its console is reachable via %s on PHP %s, so those answers come from the installation itself '
-                    . 'rather than from a bundled snapshot.',
-                    $console['via'],
-                    $console['php'] === '' ? 'an unreported version' : $console['php'],
-                );
+        if ($instance !== null && $console === null) {
+            $lines[] = 'Its console cannot be run right now, so questions that only the installation can answer — which '
+                . 'labels exist, which backend modules are registered — have no answer here: ' . Typo3Cli::reason() . '. '
+                . 'Where the command that would work is known, ' . Typo3Cli::CONSOLE_VARIABLE
+                . ' states it, for example "ddev exec .build/bin/typo3".';
+        }
+        if ($instance !== null && $console !== null && $console['via'] === Typo3Cli::VIA_OVERRIDE) {
+            $lines[] = sprintf(
+                'Its console is invoked as "%s", which %s states, so those answers come from the installation '
+                . 'itself rather than from a bundled snapshot.',
+                implode(' ', $console['command']),
+                Typo3Cli::CONSOLE_VARIABLE,
+            );
+        }
+        if ($instance !== null && $console !== null && $console['via'] !== Typo3Cli::VIA_OVERRIDE) {
+            $lines[] = sprintf(
+                'Its console is reachable via %s on PHP %s, so those answers come from the installation itself '
+                . 'rather than from a bundled snapshot.',
+                $console['via'],
+                $console['php'] === '' ? 'an unreported version' : $console['php'],
+            );
         }
 
         $lines[] = '';

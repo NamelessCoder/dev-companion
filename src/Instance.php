@@ -30,13 +30,24 @@ final class Instance
     /** A Composer-installed project: packages live where Composer put them. */
     public const KIND_COMPOSER_PROJECT = 'composer-project';
 
+    /** Found by walking up from the directory the server was started in. */
+    public const VIA_DISCOVERY = 'discovery';
+
+    /** Named outright by the caller, and then not searched for at all. */
+    public const VIA_ENVIRONMENT = 'environment';
+
+    /** Names the installation to read, whatever the working directory says. */
+    public const ROOT_VARIABLE = 'TYPO3_MCP_ROOT';
+
     /** How far up from the starting directory to look before giving up. */
     private const MAX_DEPTH = 12;
 
     private static ?string $startingDirectory = null;
 
-    /** @var array{root: string, kind: string, startedFrom: string}|null|false false = not resolved yet */
+    /** @var array{root: string, kind: string, startedFrom: string, via: string}|null|false false = not resolved yet */
     private static array|null|false $resolved = false;
+
+    private static string $misconfiguration = '';
 
     /**
      * Hands the working directory the server was started in to the discovery.
@@ -61,11 +72,11 @@ final class Instance
     }
 
     /**
-     * What was found and where the search started, so a caller can tell whether
-     * the server is reading the installation it means. A silently wrong
+     * What was found, how, and where the search started, so a caller can tell
+     * whether the server is reading the installation it means. A silently wrong
      * instance would be worse than none at all.
      *
-     * @return array{root: string, kind: string, startedFrom: string}|null
+     * @return array{root: string, kind: string, startedFrom: string, via: string}|null
      */
     public static function describe(): ?array
     {
@@ -73,11 +84,72 @@ final class Instance
             return self::$resolved;
         }
 
+        [$configured, self::$misconfiguration] = self::fromEnvironment();
+        if ($configured !== null || self::$misconfiguration !== '') {
+            // A configured root that cannot be used is not quietly replaced by
+            // a discovered one: the caller stated which installation it means,
+            // and answering about a different one is the failure this whole
+            // class exists to avoid.
+            return self::$resolved = $configured;
+        }
+
         self::$resolved = self::$startingDirectory === null
             ? null
             : self::locate(self::$startingDirectory);
 
         return self::$resolved;
+    }
+
+    /**
+     * What is wrong with the configuration, if anything. Empty otherwise.
+     *
+     * A variable that was set and could not be used has to be said out loud.
+     * Silence would look exactly like not having set it, which is the one thing
+     * the caller knows it did.
+     */
+    public static function misconfiguration(): string
+    {
+        self::describe();
+
+        return self::$misconfiguration;
+    }
+
+    /**
+     * The installation named outright, for the layouts discovery cannot reach:
+     * an installation in a subdirectory, a checkout the client starts the
+     * server beside rather than inside, a stack this server has never heard of.
+     *
+     * Unlike the working directory this is not derived from anything — it is a
+     * decision someone made — so it holds for every entrypoint, the HTTP one
+     * included, where it is the only way to name an installation at all.
+     *
+     * @return array{0: array{root: string, kind: string, startedFrom: string, via: string}|null, 1: string}
+     */
+    private static function fromEnvironment(): array
+    {
+        $configured = getenv(self::ROOT_VARIABLE);
+        if (!is_string($configured) || trim($configured) === '') {
+            return [null, ''];
+        }
+
+        $configured = trim($configured);
+        $root = realpath($configured);
+        if ($root === false || !is_dir($root)) {
+            return [null, sprintf(
+                '%s is set to "%s", which is not a directory on this machine',
+                self::ROOT_VARIABLE,
+                $configured
+            )];
+        }
+
+        return [[
+            'root' => $root,
+            'kind' => (self::readJson($root . '/composer.json')['type'] ?? '') === 'typo3-cms-core'
+                ? self::KIND_CORE_CHECKOUT
+                : self::KIND_COMPOSER_PROJECT,
+            'startedFrom' => $configured,
+            'via' => self::VIA_ENVIRONMENT,
+        ], ''];
     }
 
     /**
@@ -112,7 +184,7 @@ final class Instance
      * every TYPO3 package in composer/installed.json below the vendor directory
      * it declares — the same source TYPO3's own PackageArtifactBuilder reads.
      *
-     * @return array{root: string, kind: string, startedFrom: string}|null
+     * @return array{root: string, kind: string, startedFrom: string, via: string}|null
      */
     private static function locate(string $startingDirectory): ?array
     {
@@ -124,10 +196,20 @@ final class Instance
 
         for ($depth = 0; $depth < self::MAX_DEPTH; ++$depth) {
             if ((self::readJson($directory . '/composer.json')['type'] ?? '') === 'typo3-cms-core') {
-                return ['root' => $directory, 'kind' => self::KIND_CORE_CHECKOUT, 'startedFrom' => $startedFrom];
+                return [
+                    'root' => $directory,
+                    'kind' => self::KIND_CORE_CHECKOUT,
+                    'startedFrom' => $startedFrom,
+                    'via' => self::VIA_DISCOVERY,
+                ];
             }
             if (self::composerPackages($directory) !== []) {
-                return ['root' => $directory, 'kind' => self::KIND_COMPOSER_PROJECT, 'startedFrom' => $startedFrom];
+                return [
+                    'root' => $directory,
+                    'kind' => self::KIND_COMPOSER_PROJECT,
+                    'startedFrom' => $startedFrom,
+                    'via' => self::VIA_DISCOVERY,
+                ];
             }
 
             $parent = dirname($directory);

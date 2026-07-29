@@ -46,12 +46,17 @@ holds only what must be true.
 - **R-DIS-6** Nothing on the caller's machine is started as a side effect of a
   lookup; a stopped DDEV project is reported with the command that would fix it.
   *Held by:* `Typo3CliTest::aDdevProjectThatIsNotRunningIsReportedRatherThanStarted`
-- **R-DIS-7** **open** — The installation root and the console command can be
-  set explicitly, and the answer says which of the two was used. Every
+- **R-DIS-7** The installation root and the console command can be set
+  explicitly, and the answer says which of the two was used. Every
   layout-specific discovery failure is then a one-line fix for the user instead
-  of five tools silently going quiet.
+  of five tools silently going quiet. A stated setting that cannot be used is
+  reported, never quietly replaced by a discovered one.
   *From:* a session where two links broke at once — a moved bin-dir and a host
   PHP below the required one — with no lever available (2026-07-29).
+  *Held by:* `InstanceTest::anInstallationNamedOutrightIsReadWithoutAnySearch`,
+  `InstanceTest::aNamedInstallationThatDoesNotExistIsReportedRatherThanSearchedPast`,
+  `Typo3CliTest::aStatedCommandIsUsedInsteadOfWorkingOneOut`,
+  `Typo3CliTest::aStatedCommandThatIsNoProgramIsReportedRatherThanReplaced`
 - **R-DIS-8** **open** — When discovery fails, the answer names where it started
   and why each candidate was rejected.
   *From:* the same session; "no installation found" was indistinguishable from

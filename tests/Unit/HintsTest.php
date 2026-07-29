@@ -332,6 +332,20 @@ final class HintsTest extends TestCase
     }
 
     #[Test]
+    public function whereBackendLayoutsGoIsAnsweredWithTheConditionItDependsOn(): void
+    {
+        // The extension-level directory was stated as the rule, read off a
+        // distributable theme. In a sitepackage with one set and no
+        // Configuration/page.tsconfig it is an indirection with no effect,
+        // because the set is the only path into any backend.
+        $hint = ArchitectureHints::byId('sitepackage-layout');
+        self::assertNotNull($hint);
+        $text = implode("\n", array_column($hint['hints'], 'text'));
+        self::assertStringContainsString('Configuration/Sets/<Set>/BackendLayouts/', $text);
+        self::assertStringContainsString('Configuration/page.tsconfig', $text, 'the condition is what makes it transfer');
+    }
+
+    #[Test]
     public function theTemplateTrapsThatFailWithoutAnErrorAreNamed(): void
     {
         // Both produce a wrong page rather than a failure: a variable assigned

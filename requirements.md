@@ -404,6 +404,16 @@ took before the requirement above was written down, and it will not survive it.
 
 ## Knowledge — what is covered
 
+- **R-KNW-17** A convention read off a core reference implementation is stated
+  with the condition that made it right there. The core is not a project, so the
+  unconditional form is the one that transfers wrongly — and the condition is
+  written as the test a reader can run on their own extension, not as "camino
+  does it differently".
+  *From:* backend layouts placed at extension level in a project sitepackage
+  whose set was the only path into any backend, so the placement had no effect
+  at all — stated as the rule because `theme_camino`, which ships an
+  extension-level `page.tsconfig` as well, has them there (2026-07-29).
+  *Held by:* `HintsTest::whereBackendLayoutsGoIsAnsweredWithTheConditionItDependsOn`
 - **R-KNW-16** The kind of test that needs a browser is covered, and is kept
   apart from the one that does not. A rendering test through
   `executeFrontendSubRequest()` runs no script, applies no stylesheet and speaks

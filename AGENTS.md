@@ -13,6 +13,7 @@ src/Typo3Cli.php   # runs that installation's console, via DDEV where there is o
 src/bootstrap.php  # locates the Composer autoloader
 knowledge/         # the knowledge base (markdown + JSON), the data source
 feedback/          # improvement notes left by agents (standalone checkout only)
+scenarios/         # test scenarios: user prompts per audience and task, and what has to come out of them
 requirements.md    # what must hold, and what holds it there; open ones are the backlog
 decisions.md       # what a change assumed, and what would show it to be wrong
 tests/             # unit, tool contract, and stdio smoke tests
@@ -77,6 +78,15 @@ composer stan   # phpstan only
 
 Agents using this server record improvement notes through `typo3_feedback_record`.
 Each note is one markdown file below `feedback/`.
+
+Where a note comes from is usually a real session. `scenarios/` is where those
+sessions are written down so they can be run again: one prompt per audience and
+task, in the words a user would use, with the environment it has to be run in
+and what has to come out of it. Scenarios the server cannot answer yet belong
+there too — the suite is the map of what the three audiences need, not a
+regression net around what already works. A scenario marked `gap` names the
+requirement that is still open; a run of it produces the note that says what the
+task needed beyond it.
 
 A note is worked off in a commit that both implements the improvement **and
 deletes the note file**. The commit is the record that the gap was closed, so

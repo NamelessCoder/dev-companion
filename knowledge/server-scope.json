@@ -81,7 +81,7 @@
     },
     {
       "topic": "What is registered in the installation you are working in: labels, icons, backend modules, Fluid namespaces, effective configuration",
-      "depth": "Answered by that installation rather than from a snapshot, across the packages it has active — project extensions included. Its console does the answering wherever a command exists; the icon registry has none, so it is read from the packages, and the labels are read from there too when the console cannot be reached. Every answer carries answeredBy, so a weaker source is visible as one. Unavailable when no installation is reachable, and then said so rather than answered empty.",
+      "depth": "Answered by that installation rather than from a snapshot, across the packages it has active — project extensions included. Its console does the answering wherever a command exists; the icon registry has none, so it is read from the packages, and the labels and the Fluid namespaces are read from there too when the console cannot be reached. Every answer carries answeredBy, so a weaker source is visible as one. Unavailable when no installation is reachable, and then said so rather than answered empty.",
       "tools": [
         "typo3_label_lookup",
         "typo3_icon_lookup",

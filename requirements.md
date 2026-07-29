@@ -204,6 +204,16 @@ them, this section wins and the other one is what needs rewriting.
   `runTests.sh` to repositories that declare `composer t3g:cgl` (2026-07-29).
   *Held by:* `ProjectTest::theProjectIsDescribedFromItsFilesAlone`,
   `ProjectTest::withoutAnInstallationThereIsNoProjectToDescribe`
+- **R-PRJ-3** What a version changed is read from the changelog the installed
+  core ships, never bundled. A snapshot would answer for the version it was
+  taken from; the installation's copy answers for the version the caller runs,
+  and the answer names the versions it covers so a gap is visible rather than
+  silent.
+  *From:* "what did v14 deprecate that affects my code" answered with how to
+  author a deprecation (2026-07-29).
+  *Held by:* `PackageSourcesTest::theChangelogOfTheInstalledCoreIsSearchable`,
+  `PackageSourcesTest::theChangelogIsNarrowedByTypeAndVersion`,
+  `PackageSourcesTest::anInstallationWithoutAChangelogSaysSoRatherThanAnsweringEmpty`
 - **R-PRJ-2** One unreadable site configuration costs that site and no other. A
   repository mid-edit is a state it is genuinely in.
   *Held by:* `ProjectTest::aSiteConfigurationThatCannotBeParsedCostsThatSiteAndNoOther`

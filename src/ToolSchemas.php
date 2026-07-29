@@ -36,6 +36,7 @@ final class ToolSchemas
             'typo3_configuration_lookup' => self::configurationLookup(),
             'typo3_backend_module_lookup' => self::backendModuleLookup(),
             'typo3_icon_lookup' => self::iconLookup(),
+            'typo3_changelog_lookup' => self::changelogLookup(),
             'typo3_project_scope' => self::projectScope(),
             'typo3_catalog_scope' => self::catalogScope(),
             'typo3_commit_message_guide' => self::commitMessageGuide(),
@@ -389,6 +390,26 @@ final class ToolSchemas
             'domain' => self::nullableString('The translation domain it resolves to. Null when the path names no extension, and also when the installation being read is too old to resolve domains at all — there the full LLL:EXT: reference is the answer.'),
             'domainOnNewerVersions' => self::nullableString('Set only in that second case: what the domain would be on a version that has them. It is not usable on this installation.'),
         ], ['path', 'domain']);
+    }
+
+    /** @return array<string, mixed> */
+    private static function changelogLookup(): array
+    {
+        return self::object([
+            'query' => self::string(),
+            'matchCount' => self::integer('Entries carrying every word of the query, before the limit.'),
+            'entries' => self::listOf(self::object([
+                'type' => ['type' => 'string', 'enum' => ['Breaking', 'Deprecation', 'Feature', 'Important']],
+                'version' => self::string('The version directory it was released in.'),
+                'issue' => self::string('Forge issue number.'),
+                'title' => self::string(),
+                'tags' => self::listOf(self::string(), 'Index tags. FullyScanned or PartiallyScanned means the extension scanner has a matcher for it.'),
+                'file' => self::string('EXT: reference of the entry, to read the description and the migration.'),
+            ], ['type', 'version', 'issue', 'title', 'tags', 'file'])),
+            'versions' => self::listOf(self::string(), 'The versions this installation ships changelog entries for, newest first. Anything outside them is not in this answer.'),
+            'answeredBy' => self::answeredBy(),
+            'unavailable' => self::unavailable(),
+        ], ['query', 'matchCount', 'entries', 'versions', 'answeredBy']);
     }
 
     /** @return array<string, mixed> */

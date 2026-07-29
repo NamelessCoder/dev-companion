@@ -109,6 +109,15 @@
       ],
       "source": "the discovered project",
       "provenance": "installation"
+    },
+    {
+      "topic": "What a TYPO3 version broke, deprecated, added or noted",
+      "depth": "The changelog the installed core ships, one entry per change, searched by words, type and version. It covers exactly the versions that installation has — a newer one is not in it.",
+      "tools": [
+        "typo3_changelog_lookup"
+      ],
+      "source": "the discovered installation",
+      "provenance": "installation"
     }
   ],
   "doesNotCover": [
@@ -230,6 +239,10 @@
     {
       "when": "About to recommend a command, or asking what this project consists of",
       "call": "typo3_project_scope"
+    },
+    {
+      "when": "Asking what a version changed, or whether an API is still there",
+      "call": "typo3_changelog_lookup"
     }
   ]
 }

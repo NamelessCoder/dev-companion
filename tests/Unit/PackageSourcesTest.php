@@ -69,6 +69,75 @@ final class PackageSourcesTest extends TestCase
         self::assertSame([], InstalledFluidNamespaces::all());
     }
 
+    #[Test]
+    public function theChangelogOfTheInstalledCoreIsSearchable(): void
+    {
+        // What a version deprecated is a list, not a convention, and every
+        // installation has it on disk.
+        $root = $this->composerProject();
+        $this->changelogEntry($root, '14.0', 'Deprecation-107208-FdebugrenderViewHelper', 'Deprecation: #107208 - <f:debug.render> ViewHelper', ['Fluid', 'NotScanned', 'ext:fluid']);
+        $this->changelogEntry($root, '13.4', 'Breaking-101392-GetIdentifierRemoved', 'Breaking: #101392 - getIdentifier() removed', ['PHP-API', 'FullyScanned']);
+        Instance::discoverFrom($root);
+
+        $result = Tools::call('typo3_changelog_lookup', ['query' => 'viewhelper']);
+
+        self::assertSame(1, $result->data['matchCount']);
+        $entry = $result->data['entries'][0];
+        self::assertSame('Deprecation', $entry['type']);
+        self::assertSame('14.0', $entry['version']);
+        self::assertSame('107208', $entry['issue']);
+        self::assertSame('<f:debug.render> ViewHelper', $entry['title'], 'the type and the issue are fields of their own');
+        self::assertSame(['Fluid', 'NotScanned', 'ext:fluid'], $entry['tags']);
+        self::assertSame(['14.0', '13.4'], $result->data['versions'], 'newest first');
+    }
+
+    #[Test]
+    public function theChangelogIsNarrowedByTypeAndVersion(): void
+    {
+        $root = $this->composerProject();
+        $this->changelogEntry($root, '14.0', 'Deprecation-1-SomethingOld', 'Deprecation: #1 - Something old', []);
+        $this->changelogEntry($root, '14.0', 'Feature-2-SomethingNew', 'Feature: #2 - Something new', []);
+        $this->changelogEntry($root, '13.4', 'Feature-3-SomethingOlder', 'Feature: #3 - Something older', []);
+        Instance::discoverFrom($root);
+
+        $byType = Tools::call('typo3_changelog_lookup', ['type' => 'feature']);
+        self::assertSame(['2', '3'], array_column($byType->data['entries'], 'issue'));
+
+        // A prefix, so "14" reaches 14.0 through 14.3.x.
+        $byVersion = Tools::call('typo3_changelog_lookup', ['version' => '14']);
+        self::assertSame(['1', '2'], array_column($byVersion->data['entries'], 'issue'));
+    }
+
+    #[Test]
+    public function anInstallationWithoutAChangelogSaysSoRatherThanAnsweringEmpty(): void
+    {
+        Instance::discoverFrom($this->composerProject());
+
+        $result = Tools::call('typo3_changelog_lookup', ['query' => 'anything']);
+
+        self::assertSame('nothing', $result->data['answeredBy']);
+    }
+
+    /** @param array<int, string> $tags */
+    private function changelogEntry(string $root, string $version, string $name, string $title, array $tags): void
+    {
+        $path = $root . '/vendor/typo3/cms-core/Documentation/Changelog/' . $version;
+        if (!is_dir($path)) {
+            mkdir($path, 0o777, true);
+        }
+        file_put_contents($path . '/' . $name . '.rst', implode("\n", [
+            '.. include:: /Includes.rst.txt',
+            '',
+            str_repeat('=', mb_strlen($title)),
+            $title,
+            str_repeat('=', mb_strlen($title)),
+            '',
+            'Description',
+            '',
+            $tags === [] ? '' : '..  index:: ' . implode(', ', $tags),
+        ]));
+    }
+
     /** @param array<string, array<int, string>> $namespaces */
     private function namespaceFile(string $packagePath, array $namespaces): void
     {

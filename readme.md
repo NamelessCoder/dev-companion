@@ -186,6 +186,11 @@ name already says what shape the answer has.
   `transferable` for a convention that holds wherever TYPO3 is written,
   `installation` for what is read from the installation itself. The place to
   start when it is unclear whether a question can be answered here at all.
+- `typo3_changelog_lookup`: searches the TYPO3 changelog the installed core
+  ships — one entry per breaking change, deprecation, feature and important
+  note, by words, type and version. Answers what a release changed rather than
+  how to write such an entry, and names the versions that installation covers so
+  a gap is visible. Nothing is bundled: it grows with a Composer update.
 - `typo3_project_scope`: describes the project around the discovered
   installation — its TYPO3 and PHP constraints, the extensions that are its own,
   the sites it configures with the site sets they depend on, and the commands it

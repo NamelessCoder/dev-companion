@@ -235,6 +235,14 @@ deliberately, so knowledge that holds only for core contribution is written as
 core-only rather than as the rule, and knowledge that holds only from one TYPO3
 version says so; see the audience requirements in `requirements.md`.
 
+- **Everything below `knowledge/` is written in English**, and so is every query
+  that reaches it. That is a property of the matcher rather than a preference:
+  matching is lexical, so a query in another language reaches only the loanwords
+  the two share. The server tells the calling agent to translate — in the
+  `instructions` it sends at initialize, in `typo3_server_scope`, and on the
+  free-text parameters of the tools that match against prose. Adding a second
+  query language would mean translating the corpus, not the query, so a German
+  sentence in a hint is not a nice extra, it is a statement nothing can find.
 - Everything the tools answer from lives below `knowledge/`, with one exception:
   what is registered in an installation is asked of that installation through
   `Typo3Cli`, because no bundled answer could be right for it. Add to

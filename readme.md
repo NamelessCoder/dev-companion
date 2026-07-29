@@ -14,6 +14,15 @@ answers are bound to versions: the knowledge base covers several TYPO3 lines,
 and a statement that does not hold on all of them carries the ones it does hold
 on. Pass a `targetVersion`, or let the installation being read decide.
 
+**It is queried in English**, whatever language the user is speaking. The
+knowledge is written in English and the matching is lexical, so a query in
+another language reaches only the words the two happen to share — the technical
+loanwords — and otherwise comes back empty. The agent translates the subject
+before calling and the answer back afterwards; the server states this in the
+instructions it sends at initialize and in `typo3_server_scope`. Supporting a
+second query language would mean translating the knowledge base, not the
+query — a lexical matcher has nothing else to match on.
+
 **It is a conventions catalog, not a patch assistant.** It cannot see your
 branch, your changed files, or which tests cover them — that stays the agent's
 job in the checkout. What it does is answer, for a concrete task or path, which

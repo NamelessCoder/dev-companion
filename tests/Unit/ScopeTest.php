@@ -102,6 +102,20 @@ final class ScopeTest extends TestCase
     }
 
     #[Test]
+    public function theQueryLanguageIsStatedWhereTheCallingAgentReadsIt(): void
+    {
+        // The one limitation the server cannot answer its way out of: the
+        // corpus is English and the matching is lexical, so a query in another
+        // language reaches the loanwords and nothing else. Telling the agent to
+        // translate is the whole mitigation, which makes the sentence
+        // load-bearing rather than decorative — and a client is free not to
+        // surface the initialize instructions, so the orientation tool says it
+        // too.
+        self::assertStringContainsString('in English', Scope::instructions());
+        self::assertStringContainsString('in English', Tools::call('typo3_server_scope', [])->text);
+    }
+
+    #[Test]
     public function workOnAProjectExtensionIsRecognizedAsOutsideTheCore(): void
     {
         self::assertTrue(Scope::isOutsideCore([], 'Create a new site set in a project extension'));

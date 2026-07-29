@@ -193,6 +193,19 @@ them, this section wins and the other one is what needs rewriting.
   `LabelSearchTest::aConsoleThatCannotBootIsAnsweredFromTheFilesItWouldHaveRead`,
   `LabelSearchTest::aDatabaseWithoutASchemaIsNamedRatherThanLeftAsAStackTrace`,
   `Typo3CliTest::aFailureIsDiagnosedOnlyWhereTheMessageDoesNotSayEnough`
+- **R-ANS-8b** A short term is matched as a whole word, not as the prefix of a
+  longer one, on both the query side and the curated vocabulary. Prefix
+  matching exists so a stem finds every form of its word; at three characters
+  there is no form left to find and it matches whatever starts with those
+  letters. It compounds with `R-ANS-7`, which weighs a term by how few
+  documents carry it: an accident landing in exactly one document becomes the
+  most discriminating term in the query and decides the answer. A pattern
+  carrying punctuation — a path fragment, `.xlf`, `lll:` — keeps plain
+  containment, being specific enough not to land by accident.
+  *From:* `fal`, the File Abstraction Layer, prefix-matching seven hints
+  through "fallback" and "false"; and the same pattern reaching that hint from
+  a query about a label, as a plain substring of a longer word (2026-07-30).
+  *Held by:* `HintsTest::aShortTermIsNotMatchedAsThePrefixOfALongerWord`
 - **R-ANS-7** A query is scored by the terms that separate one section from the
   rest, not by term overlap. A word half the knowledge base carries decides
   nothing, a term is matched as a word rather than as a substring, and which of

@@ -413,7 +413,18 @@ final class ArchitectureHints
         $score = 0;
         foreach ($hint['appliesTo'] as $pattern) {
             $normalized = mb_strtolower($pattern);
-            if (str_contains($haystack, $normalized)) {
+            // A pattern carrying punctuation is a path fragment or a token —
+            // `Classes/Resource/`, `.xlf`, `lll:` — and is specific enough that
+            // it cannot land by accident, while anchoring it at a word boundary
+            // would break on the punctuation itself. A pattern that is a bare
+            // word gets the same treatment a query term does, because it goes
+            // wrong the same way: `fal` matched "falsch" as a plain substring
+            // and handed the File Abstraction Layer to a question about a
+            // label.
+            $matched = preg_match('/^[\p{L}\p{N} ]+$/u', $normalized) === 1
+                ? TermSearch::carries($haystack, $normalized)
+                : str_contains($haystack, $normalized);
+            if ($matched) {
                 $score += strlen($normalized);
             }
         }

@@ -30,6 +30,22 @@ final class TermSearch
     ];
 
     /**
+     * Longest term still matched as a whole word rather than as a prefix.
+     *
+     * Prefix matching is how a stem finds every form of its word — "label"
+     * finds "labels". At three characters there is no word form left to find
+     * and the prefix matches whatever happens to start with those letters, so
+     * the tolerance turns into noise. Measured over the hint corpus: "fal", the
+     * File Abstraction Layer, prefix-matched seven hints through "fallback" and
+     * "false" and the right one once. And because a term is weighed by how few
+     * documents carry it, an accident that lands in exactly one document
+     * becomes the most discriminating term in the query — "ist", which occurs
+     * in no hint as a word at all, outweighed everything in "die Beschriftung
+     * im Frontend ist falsch" and decided the answer.
+     */
+    private const PREFIX_FROM_LENGTH = 4;
+
+    /**
      * The meaningful terms of a query, reduced to a stem so that word forms of
      * the same word are one term: "deprecate", "deprecated" and "deprecations"
      * all become "deprec" and match the "Deprecations" section.
@@ -71,7 +87,7 @@ final class TermSearch
             $carrying = 0;
             foreach ($documents as $document) {
                 foreach ($document as $text) {
-                    if (Text::containsWord($text, $term)) {
+                    if (self::carries($text, $term)) {
                         ++$carrying;
                         break;
                     }
@@ -131,7 +147,7 @@ final class TermSearch
             $dilution = 1.0;
             foreach ($fieldWeights as $field => $fieldWeight) {
                 $text = $document[$field] ?? '';
-                if (!Text::containsWord($text, (string) $term)) {
+                if (!self::carries($text, (string) $term)) {
                     continue;
                 }
                 $diluted = self::dilution($text, $undilutedWords);
@@ -148,6 +164,25 @@ final class TermSearch
         }
 
         return [(int) round($score * 10), $covered];
+    }
+
+    /**
+     * Whether the text carries the term: as a word prefix from
+     * PREFIX_FROM_LENGTH characters up, as a whole word below it.
+     *
+     * Public because the curated vocabulary needs the same rule for the same
+     * reason. It is matched the other way round — the pattern is looked for in
+     * the query rather than the query in the document — but "needle occurs in
+     * haystack" is the same question, and a bare short pattern goes wrong there
+     * in exactly the same way.
+     */
+    public static function carries(string $text, string $term): bool
+    {
+        if (strlen($term) >= self::PREFIX_FROM_LENGTH) {
+            return Text::containsWord($text, $term);
+        }
+
+        return preg_match('/\b' . preg_quote($term, '/') . '\b/i', $text) === 1;
     }
 
     /**

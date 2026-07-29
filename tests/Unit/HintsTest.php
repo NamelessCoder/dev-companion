@@ -222,6 +222,32 @@ final class HintsTest extends TestCase
     }
 
     #[Test]
+    public function aShortTermIsNotMatchedAsThePrefixOfALongerWord(): void
+    {
+        // Prefix matching is how a stem finds every form of its word. At three
+        // characters there is no form left to find, and what it finds instead
+        // is whatever starts with those letters — "fal" reaching seven hints
+        // through "fallback" and "false". It is worse than ordinary noise
+        // because a term is weighed by how few documents carry it: an accident
+        // landing in exactly one document becomes the most discriminating term
+        // in the query and decides the answer.
+        $reached = static fn(string $query): array => array_column(
+            ArchitectureHints::find([], $query, 6)['matchedHints'],
+            'id',
+        );
+
+        self::assertSame(['file-abstraction-layer'], $reached('fal storage driver'));
+
+        // The same rule on the curated vocabulary, which is the stronger path:
+        // an appliesTo hit is admitted whatever the coverage. "fal" is one of
+        // this hint's patterns and it used to be found by plain substring.
+        self::assertNotContains('file-abstraction-layer', $reached('the label is falsch'));
+
+        // And the tolerance itself is intact from four characters up.
+        self::assertContains('events-extension-points', $reached('hooks'));
+    }
+
+    #[Test]
     public function aQueryTheCorpusHasNoAnswerForStillMisses(): void
     {
         // The other half of scoring the hint text: everything now matches

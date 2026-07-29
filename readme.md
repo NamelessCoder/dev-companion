@@ -176,11 +176,14 @@ name already says what shape the answer has.
   Several words are matched independently, ignoring case and order: a label has
   to carry every one of them, and where none does, the answer says how far each
   word reaches on its own.
-- `typo3_commit_message_guide`: drafts and checks TYPO3 core commit messages
-  against the contribution rules — from parts, or by passing an existing
-  `message` to check and correct one in a piece. The emitted draft is ready to
-  commit: the body is wrapped at 72 characters, and fenced code, indented
-  blocks, lists, and long URLs keep their shape.
+- `typo3_commit_message_guide`: drafts and checks TYPO3 commit messages — from
+  parts, or by passing an existing `message` to check and correct one in a
+  piece. The emitted draft is ready to commit: the body is wrapped at 72
+  characters, and fenced code, indented blocks, lists, and long URLs keep their
+  shape. It defaults to the core contribution rules, Forge issue and `Releases:`
+  trailer included; `workflow="project"` keeps the subject and body conventions
+  and drops the trailers, for the repositories that use the one without having
+  the other.
 - `typo3_feedback_record`: records what was missing, wrong, or unhelpful about an
   answer as a note under `feedback/` (standalone checkout only, see
   [Improvement notes](#improvement-notes)).

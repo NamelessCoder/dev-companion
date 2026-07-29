@@ -21,7 +21,7 @@
     },
     {
       "topic": "Commit messages",
-      "depth": "Rules plus a working draft and check, including 72-character body wrapping.",
+      "depth": "Rules plus a working draft and check, including 72-character body wrapping. The subject and body conventions are also served without the core workflow, for a commit in a repository that has no Forge issue and no release branches: workflow=\"project\".",
       "tools": [
         "typo3_commit_message_guide",
         "typo3_rule_lookup"

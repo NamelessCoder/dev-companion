@@ -35,11 +35,14 @@ them, this section wins and the other one is what needs rewriting.
   site package is an extension, and a core checkout can be the place someone
   debugs their site. Signals are combined, and where they disagree the answer
   says the audience is uncertain instead of picking one silently.
-- **R-AUD-3** **open** — Commit conventions differ by audience. The subject line
-  and body rules transfer; `Releases:`, Forge issue numbers, and the Gerrit
-  `Change-Id` are core rules and belong to core work only. A site or extension
-  repository has its own workflow, and the guide must be usable there without
-  producing trailers that mean nothing in it.
+- **R-AUD-3** Commit conventions differ by audience. The subject line and body
+  rules transfer; `Releases:`, Forge issue numbers, and the Gerrit `Change-Id`
+  are core rules and belong to core work only. A site or extension repository
+  has its own workflow, and the guide must be usable there without producing
+  trailers that mean nothing in it.
+  *Held by:* `CommitMessageTest::outsideTheCoreNoTrailerIsAddedAndNoneIsDemanded`,
+  `CommitMessageTest::outsideTheCoreTheSubjectAndBodyRulesStillHold`,
+  `CommitMessageTest::theSecurityKeywordIsTheRepositoryOwnOutsideTheCore`
 - **R-AUD-4** **open** — More than one TYPO3 version is supported. An answer
   either holds across the versions covered, or names the version it holds for.
   This is already the rule for architecture hints (see `AGENTS.md`); it has to
@@ -191,11 +194,14 @@ took before the requirement above was written down, and it will not survive it.
   same answer (2026-07-29).
   *Held by:* `CommitMessageTest::theDraftNeverCarriesAReleaseTheCallerDidNotName`,
   `CommitMessageTest::aTrailerTheDraftCarriesIsNotAlsoReportedAsMissing`
-- **R-GUI-2** **open** — The TYPO3 commit message rules are available without the
-  Gerrit trailers, because the conventions are used well outside the core and
-  the trailers are not. This is R-AUD-3 for the one guide that has the problem
-  today.
+- **R-GUI-2** The TYPO3 commit message rules are available without the Gerrit
+  trailers, because the conventions are used well outside the core and the
+  trailers are not. This is R-AUD-3 for the one guide that has the problem
+  today. Which of the two rule sets was applied is part of the answer, in the
+  text and in the data.
   *From:* the same note.
+  *Held by:* the three tests above, and `ToolContractTest` for the `workflow`
+  field the output schema now requires.
 
 ## Feedback — what the backlog has to stay usable for
 

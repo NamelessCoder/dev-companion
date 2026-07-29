@@ -22,8 +22,30 @@ final class CommitMessage
     /** Column the body is wrapped at, per the TYPO3 commit message rules. */
     public const BODY_WIDTH = 72;
 
+    /**
+     * The core's own workflow: Forge issues, release targets, Gerrit.
+     *
+     * What a commit message looks like and what a commit message has to be
+     * accompanied by are two different rules, and only the first one travels.
+     * The subject keyword, the 52/72 limits and the wrapping are used in
+     * TYPO3 projects and extensions throughout; `Resolves:`, `Releases:` and
+     * the Forge issue behind them exist in the core repository alone.
+     */
+    public const WORKFLOW_CORE = 'core';
+
+    /** Any other repository: the same message rules, none of the trailers. */
+    public const WORKFLOW_PROJECT = 'project';
+
     /** Keywords a contributor may use; [SECURITY] belongs to the Security Team. */
     private const KEYWORDS = ['BUGFIX', 'FEATURE', 'TASK', 'DOCS'];
+
+    /**
+     * [SECURITY] is a keyword the core uses — it is the Security Team that
+     * writes those commits, which is why a contributor may not. Outside the
+     * core nobody holds that reservation, and a repository that updates a
+     * vulnerable dependency has the same word for it.
+     */
+    private const PROJECT_KEYWORDS = ['BUGFIX', 'FEATURE', 'TASK', 'DOCS', 'SECURITY'];
 
     /** Trailers this class understands; anything else is carried through as written. */
     private const KNOWN_TRAILERS = ['resolves', 'related', 'releases'];
@@ -39,12 +61,14 @@ final class CommitMessage
      *   body?: ?string,
      *   isBreaking?: bool,
      *   isDeprecation?: bool,
-     *   extraTrailers?: array<int, string>
+     *   extraTrailers?: array<int, string>,
+     *   workflow?: string
      * } $input
      * @return array{message: string, checks: array<int, array{level: string, code: string, message: string}>}
      */
     public static function create(array $input): array
     {
+        $workflow = self::workflow($input['workflow'] ?? null);
         $changeType = trim((string) ($input['changeType'] ?? ''));
         $summary = self::normalizeSummary((string) $input['summary']);
         $isBreaking = (bool) ($input['isBreaking'] ?? false);
@@ -78,22 +102,35 @@ final class CommitMessage
         if ($body !== '') {
             $parts[] = "\n" . $body;
         }
-        $parts[] = '';
-        if ($issues === []) {
-            $parts[] = 'Resolves: #ISSUE_NUMBER';
+
+        $isCore = $workflow === self::WORKFLOW_CORE;
+        $trailers = [];
+        if ($isCore && $issues === []) {
+            $trailers[] = 'Resolves: #ISSUE_NUMBER';
         }
         foreach ($issues as $issue) {
-            $parts[] = 'Resolves: ' . $issue;
+            $trailers[] = 'Resolves: ' . $issue;
         }
         foreach ($relatedIssues as $related) {
-            $parts[] = 'Related: ' . $related;
+            $trailers[] = 'Related: ' . $related;
         }
         // A placeholder rather than a plausible default: which branches a change
         // is released on is a decision, and a draft that quietly says "main" is
-        // one the caller cannot tell from one they made.
-        $parts[] = 'Releases: ' . ($releases === [] ? 'RELEASE_TARGET' : implode(', ', $releases));
+        // one the caller cannot tell from one they made. Outside the core there
+        // is nothing to place it against, so it is left out entirely unless the
+        // caller named the releases themselves.
+        if ($isCore) {
+            $trailers[] = 'Releases: ' . ($releases === [] ? 'RELEASE_TARGET' : implode(', ', $releases));
+        } elseif ($releases !== []) {
+            $trailers[] = 'Releases: ' . implode(', ', $releases);
+        }
         foreach ($input['extraTrailers'] ?? [] as $trailer) {
-            $parts[] = $trailer;
+            $trailers[] = $trailer;
+        }
+
+        if ($trailers !== []) {
+            $parts[] = '';
+            $parts = array_merge($parts, $trailers);
         }
 
         return [
@@ -107,8 +144,23 @@ final class CommitMessage
                 $isBreaking,
                 $isDeprecation,
                 $releases,
+                $workflow,
             ),
         ];
+    }
+
+    /**
+     * The workflow a message is written for, defaulting to the core's.
+     *
+     * An unknown value is the core's too rather than an exception: the argument
+     * exists to take rules away, and a typo must not be a way to end up with
+     * fewer of them than the caller asked for.
+     */
+    public static function workflow(mixed $workflow): string
+    {
+        return strtolower(trim((string) $workflow)) === self::WORKFLOW_PROJECT
+            ? self::WORKFLOW_PROJECT
+            : self::WORKFLOW_CORE;
     }
 
     /**
@@ -124,8 +176,9 @@ final class CommitMessage
      *     checks: array<int, array{level: string, code: string, message: string}>
      * }
      */
-    public static function parse(string $message): array
+    public static function parse(string $message, string $workflow = self::WORKFLOW_CORE): array
     {
+        $workflow = self::workflow($workflow);
         $lines = preg_split('/\R/', trim($message)) ?: [];
         $checks = [];
 
@@ -142,14 +195,9 @@ final class CommitMessage
             $changeType = strtoupper($matches[2]);
             $summary = trim($matches[3]);
 
-            if (!in_array($changeType, self::KEYWORDS, true)) {
-                $checks[] = [
-                    'level' => 'error',
-                    'code' => $changeType === 'SECURITY' ? 'security-keyword' : 'unknown-keyword',
-                    'message' => $changeType === 'SECURITY'
-                        ? '[SECURITY] is reserved for the TYPO3 Security Team. Use [BUGFIX] or [TASK].'
-                        : sprintf('Unknown keyword [%s]. Use [BUGFIX], [FEATURE], [TASK], or [DOCS].', $changeType),
-                ];
+            $keywordCheck = self::keywordCheck($changeType, $workflow);
+            if ($keywordCheck !== null) {
+                $checks[] = $keywordCheck;
                 $changeType = '';
             }
         } else {
@@ -222,6 +270,43 @@ final class CommitMessage
         ];
     }
 
+    /**
+     * What is wrong with the keyword, or null when nothing is.
+     *
+     * Written once because both entry points need the same verdict: a message
+     * that is parsed carries its keyword in the subject, one that is assembled
+     * carries it as an argument, and a keyword the core reserves has to be
+     * refused on both paths.
+     *
+     * @return array{level: string, code: string, message: string}|null
+     */
+    private static function keywordCheck(string $changeType, string $workflow): ?array
+    {
+        $allowed = $workflow === self::WORKFLOW_PROJECT ? self::PROJECT_KEYWORDS : self::KEYWORDS;
+        if (in_array($changeType, $allowed, true)) {
+            return null;
+        }
+
+        if ($changeType === 'SECURITY') {
+            return [
+                'level' => 'error',
+                'code' => 'security-keyword',
+                'message' => '[SECURITY] is reserved for the TYPO3 Security Team. Use [BUGFIX] or [TASK]. '
+                    . 'In a repository of your own, pass workflow="project" — there the keyword is yours to use.',
+            ];
+        }
+
+        return [
+            'level' => 'error',
+            'code' => 'unknown-keyword',
+            'message' => sprintf(
+                'Unknown keyword [%s]. Use %s.',
+                $changeType,
+                implode(', ', array_map(static fn(string $keyword): string => '[' . $keyword . ']', $allowed)),
+            ),
+        ];
+    }
+
     private static function isTrailer(string $line): bool
     {
         if (preg_match('/^([A-Za-z][A-Za-z-]*):\s*\S/', $line, $matches) !== 1) {
@@ -255,15 +340,24 @@ final class CommitMessage
         array $issues,
         bool $isBreaking,
         bool $isDeprecation,
-        array $releases
+        array $releases,
+        string $workflow
     ): array {
         $checks = [];
+        $isCore = $workflow === self::WORKFLOW_CORE;
 
-        if ($issues === []) {
+        if ($changeType !== '') {
+            $keywordCheck = self::keywordCheck($changeType, $workflow);
+            if ($keywordCheck !== null) {
+                $checks[] = $keywordCheck;
+            }
+        }
+
+        if ($isCore && $issues === []) {
             $checks[] = ['level' => 'error', 'code' => 'missing-issue', 'message' => 'A Forge issue is required. Add a Resolves: #12345 line.'];
         }
 
-        if ($releases === []) {
+        if ($isCore && $releases === []) {
             $checks[] = [
                 'level' => 'warning',
                 'code' => 'missing-releases',
@@ -283,7 +377,7 @@ final class CommitMessage
             $checks[] = ['level' => 'warning', 'code' => 'summary-capitalization', 'message' => 'Start the summary text with a capital letter after the keyword.'];
         }
 
-        if (str_contains($summary, 'EXT:')) {
+        if ($isCore && str_contains($summary, 'EXT:')) {
             $checks[] = ['level' => 'warning', 'code' => 'summary-extension-prefix', 'message' => 'Avoid EXT:... in the summary when the changed files already show the system extension context.'];
         }
 
@@ -309,7 +403,10 @@ final class CommitMessage
             $checks[] = ['level' => 'error', 'code' => 'deprecation-keyword', 'message' => 'Deprecations may only use [TASK] or [FEATURE].'];
         }
 
-        if ($isBreaking || $isDeprecation) {
+        // The changelog and the release targets are the core's process, not the
+        // message's shape: both name a file and a role that exist in the core
+        // repository alone.
+        if ($isCore && ($isBreaking || $isDeprecation)) {
             $checks[] = [
                 'level' => 'warning',
                 'code' => 'changelog-required',
@@ -317,7 +414,7 @@ final class CommitMessage
             ];
         }
 
-        if ($isBreaking) {
+        if ($isCore && $isBreaking) {
             foreach ($releases as $release) {
                 if ($release !== 'main') {
                     $checks[] = ['level' => 'warning', 'code' => 'breaking-release-target', 'message' => 'Breaking changes should usually target main. Confirm older release targets with the release managers.'];

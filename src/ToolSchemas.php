@@ -362,7 +362,14 @@ final class ToolSchemas
                 'code' => self::string('Stable identifier of the check, for example summary-too-long.'),
                 'message' => self::string(),
             ], ['level', 'code', 'message'])),
-        ], ['message', 'checks']);
+            'workflow' => [
+                'type' => 'string',
+                'enum' => ['core', 'project'],
+                'description' => 'Which rules the draft was written and checked against. "core" adds the Forge '
+                    . 'issue and the Releases: trailer and demands them; "project" applies the subject and body '
+                    . 'rules alone.',
+            ],
+        ], ['message', 'checks', 'workflow']);
     }
 
     /** @return array<string, mixed> */

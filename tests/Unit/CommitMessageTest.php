@@ -171,6 +171,83 @@ final class CommitMessageTest extends TestCase
     }
 
     #[Test]
+    public function outsideTheCoreNoTrailerIsAddedAndNoneIsDemanded(): void
+    {
+        $result = CommitMessage::create([
+            'changeType' => 'TASK',
+            'summary' => 'Add a sponsor logo field',
+            'workflow' => CommitMessage::WORKFLOW_PROJECT,
+        ]);
+
+        self::assertStringNotContainsString('Resolves:', $result['message']);
+        self::assertStringNotContainsString('Releases:', $result['message']);
+        self::assertSame(['no-issues-found'], array_column($result['checks'], 'code'));
+    }
+
+    #[Test]
+    public function outsideTheCoreTheSubjectAndBodyRulesStillHold(): void
+    {
+        $result = CommitMessage::create([
+            'changeType' => 'TASK',
+            'summary' => str_repeat('a', 80),
+            'workflow' => CommitMessage::WORKFLOW_PROJECT,
+            'body' => 'The sponsor records need an additional logo field because the '
+                . 'rendering has to fall back to the organisation logo otherwise.',
+        ]);
+
+        self::assertContains('summary-too-long', array_column($result['checks'], 'code'));
+        foreach ($this->bodyLines($result['message']) as $line) {
+            self::assertLessThanOrEqual(72, mb_strlen($line), 'unwrapped line: ' . $line);
+        }
+    }
+
+    #[Test]
+    public function outsideTheCoreATrailerTheCallerWroteIsStillKept(): void
+    {
+        $result = CommitMessage::create([
+            'changeType' => 'TASK',
+            'summary' => 'Add a sponsor logo field',
+            'issue' => '66',
+            'workflow' => CommitMessage::WORKFLOW_PROJECT,
+        ]);
+
+        self::assertStringContainsString("\nResolves: #66", $result['message']);
+    }
+
+    #[Test]
+    public function theSecurityKeywordIsTheRepositoryOwnOutsideTheCore(): void
+    {
+        $parsed = CommitMessage::parse(
+            "[SECURITY] Update typo3/cms-* to 13.4.33\n",
+            CommitMessage::WORKFLOW_PROJECT
+        );
+
+        self::assertSame('SECURITY', $parsed['input']['changeType']);
+        self::assertNotContains('security-keyword', array_column($parsed['checks'], 'code'));
+    }
+
+    #[Test]
+    public function aSecurityCommitAssembledForTheCoreIsRefusedToo(): void
+    {
+        $result = CommitMessage::create([
+            'changeType' => 'SECURITY',
+            'summary' => 'Fix the thing',
+            'issue' => '1',
+            'releases' => ['main'],
+        ]);
+
+        self::assertContains('security-keyword', array_column($result['checks'], 'code'));
+    }
+
+    #[Test]
+    public function aWorkflowNobodyKnowsIsTheCoreOne(): void
+    {
+        self::assertSame(CommitMessage::WORKFLOW_CORE, CommitMessage::workflow('githubb'));
+        self::assertSame(CommitMessage::WORKFLOW_CORE, CommitMessage::workflow(null));
+        self::assertSame(CommitMessage::WORKFLOW_PROJECT, CommitMessage::workflow('Project'));
+    }
+
+    #[Test]
     public function anExistingMessageIsSplitBackIntoItsParts(): void
     {
         $parsed = CommitMessage::parse(

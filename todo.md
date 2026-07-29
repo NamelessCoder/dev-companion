@@ -85,6 +85,153 @@ somebody else writes.
 
 ---
 
+## Why the four items below come before the twin hints
+
+Written down before the work starts, because it is a change of order. The twin
+hint item served the one open note and was next; a measurement on 2026-07-30 put
+four items in front of it, and the reason is that they are its precondition
+rather than a better use of the time.
+
+`ArchitectureHints::scoreHint` scores a query against `appliesTo` and against
+nothing else — not the title, not the hint text. That is 57 entries and 11,501
+words of hint body reachable through an average of 9.3 hand-written keywords
+each. Eighteen realistic queries were put through the matcher and seven of them
+reached nothing at all, among them `my extension service is not found at
+runtime` and `page title provider does not work` — both of which are the
+`dependency-injection-services` hint, which says «The failure is a
+service-not-found at request time» in so many words. A twin hint written into
+that corpus inherits the same problem, so it is worth writing after the corpus
+can be found in, not before.
+
+---
+
+## Make the hint text searchable, not only its keywords
+
+Serves `R-KNW-2`, and revises what that requirement assumed. R-KNW-2 accepted
+`appliesTo` as the thing the matcher scores and made curation the answer: carry
+the words the subject is asked about. The measurement above is what that costs
+at 57 entries — every phrasing has to have been thought of in advance, and the
+index `R-ANS-6` returns on a miss is the mitigation that made it survivable
+rather than the fix.
+
+The next concrete step is in `ArchitectureHints::scoreHint`: score title and
+hint text alongside `appliesTo` with the weighted term scorer `Knowledge`
+already has (`Knowledge::weights`/`scoreSection`), keeping `appliesTo` weighted
+above body text so the curation still decides where it exists. Two of the four
+matchers in `src/` become one that way.
+
+What holds it: the eighteen queries are the test. They belong in `HintsTest` as
+a table of query and the id that has to come back, with the seven that reach
+nothing today named explicitly — `my extension service is not found at
+runtime` → `dependency-injection-services`, `file upload storage configuration`
+→ `file-abstraction-layer`, `my button looks wrong` → the CSS components,
+`validate a form field in the backend` → `tca-formengine`. Add the one that
+matched the wrong hint too: `dark mode colors in my backend module` returns
+`backend-modules` and has to also reach `css-light-dark-mode`.
+
+---
+
+## Dissolve the architecture prose into the hint corpus
+
+Serves `R-ANS-7` and the version binding, and depends on the item above.
+
+`knowledge/typo3-core-architecture.md` has 14 `##` sections and every one of
+them is a hint by the same name; `knowledge/typo3-css-architecture.md` has 21
+and 19 of them are. The prose copies are the older ones — its «Dependency
+Injection and Services» is the hint minus the page title provider trap, which is
+the one statement in it that fails silently at runtime. And markdown carries
+neither `since`/`until` nor `binding`, so both documents are the one corner of
+the knowledge base where the two mechanisms this repository spent its last work
+on cannot reach.
+
+They are also reachable unfiltered three ways: `typo3_rule_lookup` searches
+every document, `typo3_task_guide` does the same, and `typo3://core/{id}` serves
+any of them raw.
+
+The fallback in `ArchitectureHints::find` was the argument for keeping them —
+prose as a second matcher where no hint scored. The measurement says it is not
+one: of the seven misses it rescues one and answers four with noise, and `file
+upload storage configuration` comes back as «Language Files, Fluid Templates,
+Testing Strategy, Documentation and Changelog».
+
+The next concrete step is one pass, section by section, over both documents:
+diff each against the hint of the same name, move what the hint does not have
+into it as statements — bound where it is bound — and delete the document when
+its sections are empty. Four sections have no hint counterpart and are the ones
+that need a decision rather than a move: «Core Principles» and «Definition of
+Done» in the CSS document, and the Sass bundle taxonomy under «Component
+Structure». Then remove the `knowledgeSections` fallback, its field in the tool
+result, and the CSS-document special case beside it.
+
+Left standing as prose: `typo3-core-rules`, `typo3-gerrit-workflow`,
+`typo3-commit-messages`, `typo3-contribution-sources`, `typo3-core-scripts` —
+narrative with no per-statement obligation on it.
+
+---
+
+## Take the version number out of the rules prose
+
+Serves the version binding, and is independent of everything above — it is a
+wrong answer being given today, and it is two lines.
+
+`knowledge/typo3-core-rules.md:42` reads «Since TYPO3 v14.1 a label marked that
+way raises an `E_USER_DEPRECATED` error». `typo3_rule_lookup` has no
+`targetVersion` and searches every document, so a caller on 13.4 is handed it
+unqualified. AGENTS.md forbids exactly this shape and `HintsTest` does not see
+it, because it reads JSON.
+
+The next concrete step: move the XLIFF label lifecycle statements out of
+`typo3-core-rules.md` into the `language-files` hint, where the version is a
+field and the filter applies. Most of that section is the core's own — the
+`x-unused-since` marker, migrating core usages in the same patch, the changelog
+entry — so it carries `binding: "core"` rather than being dropped; the two
+`runTests.sh` invocations at the end are `checks`, not statements. What is left
+to bind is the sentence itself: verify the label deprecation on both sides,
+against `.checkouts/13.4` and `.checkouts/14`, and name both branches in the
+commit message.
+
+---
+
+## `bin/hints` — make an unreachable hint loud
+
+Serves the two items above by making their effect measurable, and every hint
+written after them. `bin/verify-catalog` exists because a core update
+invalidates the catalog silently; a hint nobody can phrase their way to decays
+the same way and nothing says so.
+
+Same shape as `verify-catalog`: a script in `bin/`, no new dependency, runnable
+in CI.
+
+- `bin/hints probe "<query>"` — what that query reaches, with the score and
+  which field earned it. The eighteen-query table becomes a command instead of a
+  throwaway script.
+- `bin/hints coverage` — which hints no prompt in `scenarios/` reaches, and
+  which scenario prompts reach nothing. Neither number is known today.
+- `bin/hints lint` — statements carrying a version number in their text without
+  a binding, and hints whose `appliesTo` is fully contained in another's.
+
+---
+
+## One name for who is obliged, and a binding where there is none
+
+Serves `R-AUD-5`, which describes the mechanism as one and finds it spelled
+three ways: `binding: "core"` on hints, `coreOnly: true` in
+`knowledge/task-intents.json`, `provenance: "core-only"` in
+`knowledge/server-scope.json`. Three field names, three readers, one axis.
+
+Nothing is wrong today, which is why this is last — it is the shape going wrong
+the next time somebody adds a fourth.
+
+The next concrete step is one name across the three files and the readers that
+consume them, with `VersionsTest::whoIsObligedIsWrittenAsDataToo` extended to
+hold all three rather than only the hints. In the same pass: `task-intents.json`
+has no version binding on 9 entries whose checklists name changelog paths and
+extension scanner rules, and `test-suite-hints.json` has none on 24 suites that
+come and go between majors. Give both `since`/`until` and filter them by
+`targetVersion` the way the hints are filtered.
+
+---
+
 ## Go through what is marked `binding: "core"` and say what the project side is
 
 Serves the one note left open,

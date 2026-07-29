@@ -105,7 +105,144 @@ writes release notes too, and the hint says nothing about that. Where the answer
 is the second, the twin is written the way `project-extension-tests` was — same
 subject, its own hint, and each pointing at the other.
 
-Below that, nothing is queued: everything else written down so far is in
-`requirements.md`, so the work after it is whatever the notes a session finds
-ask for — or, where there are none, a scenario from `scenarios/` still marked
-`gap`.
+What comes after it is the section below, and after that the work is whatever
+the notes a session finds ask for — or, where there are none, a scenario from
+`scenarios/` still marked `gap`.
+
+---
+
+## What reading laravel/boost put in the queue, and why it is below the note
+
+These four items come from one outside input that is not a note: a comparison,
+on 2026-07-30, with [laravel/boost](https://github.com/laravel/boost) — the same
+idea for the same language, an MCP server that makes an agent write
+framework-shaped code. That is worth writing down because it is the only reading
+of somebody else's answer to this problem that this repository has.
+
+They sit **below** the item above, and the reason is what each input is worth. A
+note is evidence from a session that actually asked something and did not get
+it; this is a reading of a server nobody here is using. So the note outranks it,
+and none of these four jumps ahead of it.
+
+They also serve nothing yet, which by the rule at the top of this file makes
+them ideas rather than tasks. So each one names the requirement it would
+establish, and the first concrete step for each is to write that entry in
+`requirements.md` — accepted and **open** — or to decide against it there. Two
+of them touch what the server may write outside itself, which is the promise the
+opening of `readme.md` makes, so deciding against one is a real outcome and not
+a failure to get to it.
+
+The one difference that explains all four: Boost runs **inside** the
+application, as `php artisan boost:mcp` behind a service provider, and gets its
+knowledge to the agent **before** the first question — `boost:install` writes it
+into `CLAUDE.md`. This server runs beside an installation and answers only when
+called. The second half of that is the part worth reconsidering; the first is
+not, and `decisions.md` says why a booting TYPO3 was never a precondition here.
+
+### Write the client configuration instead of describing it
+
+Would establish a requirement under `## Discovery`: that the entrypoint can
+write the configuration a client needs, rather than a readme telling somebody to
+paste an absolute path into JSON. Today `readme.md` asks for exactly that, twice
+— standalone and as a dependency — and it is the first thing between somebody
+hearing about this server and using it.
+
+Boost detects which agents are present per platform (`command -v claude` on
+Darwin and Linux, `cmd /c where claude` on Windows) plus project markers
+(`.claude/`, `CLAUDE.md`), then writes each one's own file: `.mcp.json` for most,
+TOML for Codex. One class per agent, three optional contracts, and the writing
+is idempotent — an existing block is replaced in place and anything the user put
+around it survives.
+
+The next concrete step is a decision, not code: whether `bin/typo3-cms-mcp` may
+write into the caller's project at all. It is the entrypoint that already does
+instance discovery from the working directory, so it is the place that knows
+where such a file would go; but everything it does today is read-only, and
+`readme.md` says the process boundary is the trust boundary. Write the outcome
+in `requirements.md` under `## Discovery`, and if it is yes, one subcommand
+(`bin/typo3-cms-mcp install`) writing `.mcp.json` with an absolute path to
+itself, refusing rather than guessing when the file exists with a different
+command.
+
+### Say what to call before the client has a reason to ask
+
+Would establish a requirement under `## Answers`. This is the item with the most
+behind it, and it is a gap in this server's own terms: a tool nobody calls
+answers nothing, and every guarantee in `requirements.md` is about the answer
+once the call has happened.
+
+Boost does not rely on tool descriptions to get itself called. It writes
+instructions into the agent's own guideline file — `.ai/boost/core.blade.php`
+becomes a section of `CLAUDE.md` — and they are imperative: *"Always use
+`search-docs` before making code changes. Do not skip this step."* An agent that
+does not know `typo3_component_lookup` exists writes v15 markup into a v13
+backend, and the withholding that `typo3_component_lookup` does — the thing this
+server is most careful about — never runs.
+
+There is a smaller version of this that needs no writing outside the server, and
+it should be measured first: `knowledge/server-scope.json` already carries the
+`instructions` clients receive at initialize time, and `routing` already says
+which tool answers which question. So the next concrete step is to read those
+`instructions` as an agent would and ask whether they say *when to call*, in the
+imperative, for the three cases where a wrong answer is invisible until runtime
+— backend markup, icon identifiers, label keys. Where they do not, that is a
+`knowledge/server-scope.json` change and nothing else. Only if that is not
+enough does the generated-fragment question arise, and then it is the same
+decision as the item above.
+
+### Prompts, the primitive this server does not use
+
+Would establish a requirement under `## Guides`, which is where what a returned
+draft is worth is already written down. Boost ships four prompts — upgrade
+Laravel v13, upgrade Livewire v4, upgrade Inertia v3, and a code simplifier —
+and they cost no context until somebody picks one, because a prompt is invoked
+by the user rather than offered to the model.
+
+`src/` has no prompt at all. The candidates are the ones a TYPO3 session
+actually starts with and this server already has the material for: a v12→v13
+upgrade pass, and a commit message for work already done (which
+`typo3_commit_message_guide` answers, but only once somebody thinks to call it —
+same problem as the item above, different half of it).
+
+The next concrete step is to check what `mcp/sdk` v0.7.0 offers for prompts and
+whether `ToolContractTest` has anything to say about a primitive that is not a
+tool; then one prompt, the commit message one, because its answer already exists
+and it tests the plumbing without any new knowledge.
+
+### Withholding one tool without withholding half the server
+
+Would establish a requirement under `## Scope`, next to the two profiles.
+`Profile` is a boundary through the middle of this server and it has exactly two
+positions; Boost is finer in two ways worth having. `Tinker::shouldRegister()`
+returns `config('boost.tinker_tool_enabled', false)` — the tool that executes
+code is off unless somebody turns it on — and `boost.mcp.tools.exclude` lets a
+caller drop any single tool by class name.
+
+The argument for it is already written in the `Profile` docblock: the tool list
+is the first thing a client pays for. What is missing is that a caller who wants
+21 of the 22 tools has no way to say so, and the one they do not want may be one
+this server has no opinion about.
+
+The next concrete step is the smaller half: an environment variable naming tools
+to leave out (`TYPO3_MCP_EXCLUDE_TOOLS`), applied after the profile rather than
+instead of it, with `typo3_server_scope` naming what it dropped for the same
+reason it already names what the profile dropped — a shorter list than the
+readme's has to have a reason a client can read. The default-off half has no
+counterpart here: nothing in this server executes anything.
+
+### Two things read and deliberately not queued
+
+Written down so the next session does not have to read Boost again to find out
+they were considered.
+
+`search-docs` takes a `token_limit` (3,000 by default, capped at a million) and
+every guideline Boost composes carries a token estimate. No tool here takes
+anything of the kind, and `typo3_architecture_lookup` over a broad topic is the
+one that could get large. Not queued because there is no measurement saying it
+does: the honest first step is to measure the largest realistic answer, and that
+is cheap enough that whoever needs it can do it then.
+
+`get-absolute-url` exists because agents invent URLs with the wrong scheme and
+port. It is a one-purpose tool against one named failure, and this server has no
+tool of that shape. Not queued because no note has named the TYPO3 equivalent —
+and `scenarios/` is where such a thing would be found, not here.

@@ -56,7 +56,14 @@
       "AsEventListener"
     ],
     "hints": [
-      "A listener is registered with the #[AsEventListener] attribute from TYPO3\\CMS\\Core\\Attribute, on the class or on a single method. Its arguments are identifier, event, method, before and after; the attribute is repeatable, so one class can listen to several events. Autoconfiguration picks it up — do not add an event.listener tag to Services.yaml, no core listener is registered that way.",
+      {
+        "text": "A listener is registered with the #[AsEventListener] attribute from TYPO3\\CMS\\Core\\Attribute, on the class or on a single method. Its arguments are identifier, event, method, before and after; the attribute is repeatable, so one class can listen to several events. Autoconfiguration picks it up — do not add an event.listener tag to Services.yaml, no core listener is registered that way.",
+        "since": 13
+      },
+      {
+        "text": "Without the attribute, a listener is registered with an event.listener tag in Configuration/Services.yaml, carrying an identifier and the method; the event itself is taken from that method's parameter type. That is the only mechanism there, and every core listener uses it.",
+        "until": 12
+      },
       "Event classes live in Classes/Event/ of the extension that dispatches them, are final, and are readonly where the payload is immutable. A listener that may change the outcome gets setters on the event instead of a return value.",
       "Keep event payloads minimal and stable, and prefer a new event over a hook: a hook is only the right answer where the subsystem still has hook-based extension points.",
       "A PSR-14 event is public API. A new one needs a changelog entry, careful naming, and regression coverage."
@@ -155,7 +162,14 @@
       "A backend module is declared in the owning extension's Configuration/Backend/Modules.php, which returns an array keyed by module identifier. There is no registration call.",
       "The keys of an entry are parent (the identifier of the module it sits under), access (\"user\", \"admin\", ...), path (the backend route it answers on), iconIdentifier, labels, aliases (former identifiers kept working), routes, and moduleData for the module's persisted per-user state.",
       "routes maps a route name to a target of the form Controller::class . '::method'; the entry named _default is what the module opens with.",
-      "labels is a translation domain, not a file path. typo3_translation_domain_lookup computes it for the XLF file the module's labels live in.",
+      {
+        "text": "labels is a translation domain, not a file path. typo3_translation_domain_lookup computes it for the XLF file the module's labels live in.",
+        "since": 14
+      },
+      {
+        "text": "labels is the LLL:EXT: reference of the XLF file the module's labels live in, not a domain.",
+        "until": 13
+      },
       "Configuration/Backend/Routes.php and AjaxRoutes.php declare backend routes outside a module, in the same declarative style.",
       "These are declarative files with no schema check behind them: a wrong key does not fail at boot, it fails when a user opens the module. Take the shape from a neighbouring extension."
     ],
@@ -175,8 +189,18 @@
       "command line"
     ],
     "hints": [
-      "A console command is a class under Classes/Command/ extending the Symfony Command, registered with the #[AsCommand] attribute on the class: #[AsCommand('site:sets:list', 'Shows the list of available site sets.')]. A third argument holds former names kept as aliases.",
-      "Autoconfiguration picks the attribute up. A console.command tag in Services.yaml is only for a command that needs explicit wiring on top of it.",
+      {
+        "text": "A console command is a class under Classes/Command/ extending the Symfony Command, registered with the #[AsCommand] attribute on the class: #[AsCommand('site:sets:list', 'Shows the list of available site sets.')]. A third argument holds former names kept as aliases.",
+        "since": 13
+      },
+      {
+        "text": "Autoconfiguration picks the attribute up. A console.command tag in Services.yaml is only for a command that needs explicit wiring on top of it.",
+        "since": 13
+      },
+      {
+        "text": "Without the attribute, a command is registered with a console.command tag in Configuration/Services.yaml, carrying the command name, its description, whether it may be scheduled, and an alias entry per former name.",
+        "until": 12
+      },
       "A command name, its arguments and its options are what integrators script against, so a new command belongs in a changelog entry.",
       "A console request is not an HTTP one: PSR-7 and middleware conventions do not apply to it, whatever the class name suggests. Behaviour is covered by functional tests."
     ],
@@ -199,7 +223,11 @@
       "ext_tables.sql carries only the delta the schema analyzer needs — the tables and columns TCA does not already describe. It is not a schema dump, and a column TCA defines does not belong in it.",
       "Configuration/JavaScriptModules.php declares the import map for an extension's backend JavaScript: a dependencies list of other extensions and an imports map from bare specifier to an EXT: path, with an optional exclude list.",
       "Configuration/Icons.php returns an array keyed by icon identifier, each entry naming a provider (SvgIconProvider or BitmapIconProvider) and an EXT: source path.",
-      "Configuration/page.tsconfig and Configuration/user.tsconfig are auto-loaded from that path and need no registration call.",
+      "Configuration/page.tsconfig is auto-loaded from that path and needs no registration call.",
+      {
+        "text": "Configuration/user.tsconfig is auto-loaded the same way.",
+        "since": 13
+      },
       "ext_localconf.php is what is left for what has no declarative file. It runs on every request, so keep it to registration and out of anything that does work."
     ],
     "checks": [
@@ -217,9 +245,18 @@
       "tca schema"
     ],
     "hints": [
-      "typo3/sysext/core/Classes/Schema/ is the typed API over TCA. Ask TcaSchemaFactory for a TcaSchema and query it — fields, capabilities, relations, labels — instead of reading $GLOBALS['TCA'] directly.",
-      "A patch that reads TCA is increasingly expected to go through the schema rather than through the array; new code that touches record structure should not add a fresh $GLOBALS['TCA'] access.",
-      "The schema is cached per package set, so a change to how it is built is a functional-test change, not a unit-test one."
+      {
+        "text": "typo3/sysext/core/Classes/Schema/ is the typed API over TCA. Ask TcaSchemaFactory for a TcaSchema and query it — fields, capabilities, relations, labels — instead of reading $GLOBALS['TCA'] directly.",
+        "since": 13
+      },
+      {
+        "text": "A patch that reads TCA is increasingly expected to go through the schema rather than through the array; new code that touches record structure should not add a fresh $GLOBALS['TCA'] access.",
+        "since": 13
+      },
+      {
+        "text": "The schema is cached per package set, so a change to how it is built is a functional-test change, not a unit-test one.",
+        "since": 13
+      }
     ],
     "checks": [
       "CI=true ./Build/Scripts/runTests.sh -s functional"
@@ -431,9 +468,17 @@
       "site package"
     ],
     "hints": [
-      "An extension ships content as Initialisation/data.t3d or Initialisation/data.xml. It is imported once, when the package is set up — the console's extension setup dispatches a package initialization event, and the import listens on it. Initialisation/Site/<identifier>/ ships the site configuration alongside it, and Initialisation/Files/ is copied into the fileadmin directory under the extension key.",
+      "An extension ships content as Initialisation/data.t3d or Initialisation/data.xml. It is imported once, when the package is set up — typo3 extension:setup is what triggers it. Initialisation/Site/<identifier>/ ships the site configuration alongside it, and Initialisation/Files/ is copied into the fileadmin directory under the extension key.",
+      {
+        "text": "The setup dispatches a package initialization event, and every import — the content, the site configurations, the static SQL — is a listener on it, so an extension can add its own.",
+        "since": 13
+      },
       "The import runs exactly once and remembers that in the registry, namespace extensionDataImport. A second setup imports nothing, which is the point — and also why a changed data file does not reach an installation that already ran it.",
-      "The import lives in EXT:impexp, so an extension that ships content has to require typo3/cms-impexp. Without it the requirement check only logs a warning: the setup succeeds and the installation comes up empty, which is far harder to notice than a failure.",
+      "The import lives in EXT:impexp, so an extension that ships content has to require typo3/cms-impexp.",
+      {
+        "text": "Without it the requirement check only logs a warning: the setup succeeds and the installation comes up empty, which is far harder to notice than a failure.",
+        "since": 13
+      },
       "The site configuration import remaps the root page id to the page that was actually imported, and nothing else. Every other reference in the shipped config.yaml — an error handler naming t3://page?uid=..., a redirect target — keeps the uid it was exported with.",
       "A site identifier that already exists is skipped with a warning, so a fresh installation and an existing one behave differently. Creating a site during setup and shipping one in Initialisation/Site/ are alternatives, not steps: the first one leaves a site behind that makes the second one be skipped.",
       "Once content exists, the console's impexp export writes the artifact and impexp import reads it back — which is also the way in for the first build, where there is nothing to export yet and hand-writing T3D is not an option: seed with DataHandler, then export.",

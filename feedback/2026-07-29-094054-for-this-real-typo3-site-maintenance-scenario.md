@@ -9,18 +9,18 @@ tool: typo3_server_scope
 
 ## Observation
 
-The wrong answers this note reported are gone: frontend SCSS no longer receives
-the backend's CSS conventions, `typo3_test_run_guide` no longer hands over
-runTests.sh commands to a repository without it, the labels are readable without
-a booted console, and every covered topic now says whether it is core-only,
-transferable, or read from the installation.
+Read again against the current server, and most of it is answered.
+`typo3_project_scope` enumerates the sites with the sets each depends on, the
+extensions separated into the project's own and the ones it pulled in, the TYPO3
+and PHP constraints, and the commands the repository declares — from files, so
+it works on a fresh clone. `typo3_changelog_lookup` answers what a version
+changed. Every covered topic states whether it is core-only, transferable or
+read from the installation.
 
-The capability the scenario asks for is untouched. There is no project mode:
-nothing enumerates `config/sites` and the site sets a site depends on, maps the
-local extensions with their TCA, services, routes and Fluid roots, reads the
-Composer scripts a repository declares, or reports its TYPO3 and PHP
-constraints. `config/sites/*/config.yaml` is still classified as an ordinary
-YAML path with no hint behind it.
+What is left is the depth inside an extension. The scope names an extension and
+its path; it does not map its TCA, its services, its routes, its Fluid roots or
+its content element registrations, and those are what a maintenance question is
+usually actually about. Composer patches are not reported either.
 
 ## Query
 
@@ -28,13 +28,8 @@ Evaluate whether this MCP helps maintain and further develop a TYPO3 site: 19 si
 
 ## Suggestion
 
-Read-only project discovery, as its own tool rather than as an extension of the
-core surface: parse composer.json, package.json and the CI configuration;
-enumerate the sites and their set dependencies; map the local extensions; and
-recommend only commands that exist in that repository. Tag every recommendation
-by where it came from, which the scope now does per topic and would have to do
-per answer.
-
-The note about the v14 maintenance scenario asks for the same capability from
-the other end. Both are a decision about what this server is, not a defect in
-what it does.
+Extend `typo3_project_scope`, or give an extension its own lookup: what it
+registers is readable from its files the same way the sites are — TCA overrides
+below `Configuration/TCA/`, services in `Configuration/Services.yaml`, icons,
+Fluid roots, the content elements it adds. Report Composer patches from the
+`extra` section while there.

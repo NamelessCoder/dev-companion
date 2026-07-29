@@ -9,21 +9,17 @@ tool: typo3_task_guide
 
 ## Observation
 
-The three defects this note opened with are closed. `outsideCore` no longer
-leaves the core checks, the changelog item and the Gerrit steps in the payload;
-the patch submission intent needs positive evidence of core work; and the
-installed TYPO3 version is now read from the core package and contrasted with
-the catalog pin.
+Read again against the current server. The defects are closed, and two of the
+four inputs the guide would need now exist: `typo3_project_scope` reports the
+installed TYPO3 and PHP versions, the extensions and the commands this
+repository declares, and `typo3_changelog_lookup` searches what a version broke,
+deprecated or added — with the extension scanner tags that say whether the
+Install Tool can find the call sites.
 
-What remains is the capability, not a defect: there is no guide for maintaining
-an installation. Nothing reads composer.json and composer.lock, compares the
-installed version with what is current, ranks the changelog entries between two
-versions against the code in the project's own extensions, or recommends the
-project-level commands — `fluid:analyze`, `upgrade:list`, the extension scanner,
-`composer validate`, `audit`, `outdated`.
-
-The note about the site-maintenance scenario asks for the same thing from the
-other end.
+What is still missing is the guide itself: the order of operations. Which comes
+first, what has to run in which environment, when the wizards run relative to
+the schema, what to do about the third-party extensions. That is knowledge to be
+written rather than a tool to be built, and none of it is written down yet.
 
 ## Query
 
@@ -31,8 +27,7 @@ Maintain and further develop a TYPO3 v14 Composer site project; review project s
 
 ## Suggestion
 
-A maintenance guide that reads the discovered installation, states the TYPO3 and
-PHP versions it found, and recommends only commands that exist in that
-repository. It is a new tool surface rather than a correction, and the scope
-statement currently says installation maintenance is out of scope — so this is a
-decision about what this server is, not a bug to fix.
+Write the upgrade procedure into `knowledge/` first — it is core process, it
+holds for every installation, and it is the part a wrong answer is most
+expensive in. A guide that composes it with what the project scope and the
+changelog lookup already know comes after that, not before.

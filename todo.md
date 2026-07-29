@@ -85,24 +85,6 @@ somebody else writes.
 
 ---
 
-## Why the items below come before the twin hints
-
-Written down before the work starts, because it is a change of order. The twin
-hint item served the one open note and was next; a measurement on 2026-07-30 put
-the items below in front of it, and the reason is that they are its precondition
-rather than a better use of the time. `ArchitectureHints::scoreHint` scored a
-query against `appliesTo` and against nothing else, so a twin hint written into
-that corpus would have inherited the same problem: 11,501 words reachable
-through 9.3 keywords each, and seven of eighteen realistic queries reaching
-nothing. That is fixed as of `R-KNW-21`; what is left below is the corpus the
-twin hints get written into.
-
-Second change of order, same day: `bin/hints` moved ahead of the prose
-dissolution, so that the dilution reference the matcher rests on had a
-before-reading. Both are done; the readings are in the commits.
-
----
-
 ## Go through what is marked `binding: "core"` and say what the project side is
 
 Serves the one note left open,

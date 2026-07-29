@@ -212,6 +212,22 @@ final class HintsTest extends TestCase
     }
 
     #[Test]
+    public function aSitepackageIsAnsweredWithTheLayoutTheCoreItselfShips(): void
+    {
+        // A layout was invented for a sitepackage and rejected afterwards,
+        // because the core ships a theme extension that establishes one and
+        // nothing here pointed at it.
+        $result = ArchitectureHints::find([], 'directory structure of a sitepackage extension', 6);
+        self::assertContains('sitepackage-layout', array_column($result['matchedHints'], 'id'));
+
+        $hint = ArchitectureHints::byId('sitepackage-layout');
+        self::assertNotNull($hint);
+        $text = implode("\n", array_column($hint['hints'], 'text'));
+        self::assertStringContainsString('theme_camino', $text);
+        self::assertStringContainsString('Content/Default', $text, 'the layout name collision is the load-bearing half');
+    }
+
+    #[Test]
     public function theTemplateTrapsThatFailWithoutAnErrorAreNamed(): void
     {
         // Both produce a wrong page rather than a failure: a variable assigned

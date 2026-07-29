@@ -62,6 +62,39 @@
     "checks": []
   },
   {
+    "id": "sitepackage-layout",
+    "title": "How a Sitepackage Is Laid Out",
+    "appliesTo": [
+      "sitepackage",
+      "site package",
+      "theme extension",
+      "theme",
+      "directory structure",
+      "folder structure",
+      "Resources/Private/Templates/",
+      "Configuration/BackendLayouts/",
+      "content element template",
+      "page layout",
+      "backend layout"
+    ],
+    "hints": [
+      {
+        "text": "The core ships a theme of its own — the package typo3/theme-camino, typo3/sysext/theme_camino in a core checkout, absent from a Composer project that did not require it. It is where the layout below is worked out in full, so read it rather than invent one. Read, not depend on: it is the theme of one release line, announced to move out of the core into a repository of its own, and a project sitepackage that requires it or extends its set buys that migration for nothing.",
+        "since": 14
+      },
+      "One template root carries all of it: Resources/Private/Templates/, with Pages/ for the page templates, Content/ for the content element templates, ContentPreviews/ for their backend previews, Layouts/, and Partials/ grouped in subdirectories. That directory is the single paths entry PAGEVIEW is given, and lib.contentElement is pointed at Templates/Content/ with the same Layouts/ and Partials/ — so the page and its content elements are rendered out of one tree instead of two.",
+      "A layout is addressed with its subdirectory: <f:layout name=\"Pages/Default\" /> in a page template, <f:layout name=\"Content/Default\" /> in a content element. The page frame and the content element frame are both called Default, and fluid_styled_content ships a Default of its own, so a shared Layouts/ root without those subdirectories renders the site header and footer inside every single content element — on a page that still comes back without an error.",
+      "One page layout per file in Configuration/BackendLayouts/<Name>.tsconfig, pulled in by the set's page.tsconfig with a single @import over that directory. The identifier the file declares below mod.web_layout.BackendLayouts is also what the page template is named after, so the file name, the identifier and Pages/<Name>.fluid.html are one name written in three places.",
+      "The template of a content element is derived from its CType rather than configured per element: lib.contentElement carries templateName.ifEmpty.cObject with case = uppercamelcase, so my_ext_text_teaser renders Content/MyExtTextTeaser.fluid.html. That is what makes a snake_case CType a requirement rather than a habit — words the identifier does not separate the file name does not separate either.",
+      {
+        "text": "The language files are split by who reads them — the frontend messages, the backend field labels, the backend layout titles, the content element previews. Each file is its own translation domain, and the domain is what a label is referenced by, so the split is what makes the references readable.",
+        "since": 14
+      },
+      "page.<n> =< lib.fluidPage is a reference and not a copy: it is resolved while the page renders, out of the merged setup, so a data processor added to lib.fluidPage in a file that is imported later still arrives. The copy operator < is the one where the order of the imports decides what the object ends up holding."
+    ],
+    "checks": []
+  },
+  {
     "id": "documentation-changelog",
     "title": "Documentation and Changelog",
     "appliesTo": [

@@ -374,6 +374,15 @@ took before the requirement above was written down, and it will not survive it.
 
 ## Knowledge — what is covered
 
+- **R-KNW-6** Where the core itself ships the worked example of a convention,
+  the answer names it instead of describing one. A theme extension is part of
+  the core and is the reference a sitepackage is compared against, so it is
+  covered here — the frontend-theming boundary excludes a project's own CSS,
+  not the core's own extension.
+  *From:* a sitepackage built with an invented directory layout, rejected with
+  "die ordner passen nicht zu den best practices, bitte prüfe camino"
+  (2026-07-29).
+  *Held by:* `HintsTest::aSitepackageIsAnsweredWithTheLayoutTheCoreItselfShips`
 - **R-KNW-5** Where a mechanism fails silently, the hint names the failure, not
   only the rule. A caller whose page comes back wrong with a 200 and an empty
   log has nothing to search for, so the sentence worth writing down is the one

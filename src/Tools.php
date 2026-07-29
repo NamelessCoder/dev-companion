@@ -92,7 +92,7 @@ final class Tools
             ],
             [
                 'name' => 'typo3_script_lookup',
-                'description' => 'Find notes for TYPO3 core scripts and commands.',
+                'description' => 'Find notes for TYPO3 core scripts and commands. They are the core checkout\'s own: a query that reads as a project or third-party extension is answered with the boundary instead of with commands that do not exist there.',
                 'inputSchema' => [
                     'type' => 'object',
                     'properties' => [
@@ -550,13 +550,35 @@ final class Tools
     private static function scriptLookup(array $args): ToolResult
     {
         $task = (string) ($args['task'] ?? '');
+
+        // Every command in these notes runs in a core checkout. Handing them to
+        // a repository that has none is the same mistake typo3_test_run_guide
+        // used to make, and the same answer applies.
+        if (Scope::isOutsideCore([], $task)) {
+            return ToolResult::create(
+                Scope::OUTSIDE_CORE_NOTICE . ' The scripts these notes describe are the core checkout\'s own, so '
+                . 'none is returned. What to run here is declared in this repository: its composer.json scripts, '
+                . 'its package.json, its CI configuration.',
+                ['query' => $task, 'matchCount' => 0, 'matches' => [], 'outsideCore' => true],
+            );
+        }
+
         $results = Knowledge::search($task, ['typo3-core-scripts']);
 
         if ($results !== []) {
-            return ToolResult::create(self::renderSections($results), [
+            $text = self::renderSections($results);
+            // Where nothing said which repository this is, the commands are
+            // offered under their condition rather than stated as the answer.
+            if (!Scope::isCoreWork([], $task)) {
+                $text .= "\n\nThese commands run in a TYPO3 core checkout. In any other repository, what to run is "
+                    . 'declared in its own composer.json, package.json and CI configuration.';
+            }
+
+            return ToolResult::create($text, [
                 'query' => $task,
                 'matchCount' => count($results),
                 'matches' => self::matchRecords($results),
+                'outsideCore' => false,
             ]);
         }
 
@@ -585,6 +607,7 @@ final class Tools
             'matchCount' => 0,
             'matches' => [],
             'elsewhere' => $titles,
+            'outsideCore' => false,
         ]);
     }
 

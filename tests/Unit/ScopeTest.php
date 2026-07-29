@@ -157,6 +157,32 @@ final class ScopeTest extends TestCase
     }
 
     #[Test]
+    public function noCoreScriptIsHandedToARepositoryThatDoesNotHaveIt(): void
+    {
+        $result = Tools::call('typo3_script_lookup', [
+            'task' => 'run the unit tests of my site package extension',
+        ]);
+
+        self::assertTrue($result->data['outsideCore']);
+        self::assertSame([], $result->data['matches']);
+        self::assertStringNotContainsString('CI=true', $result->text);
+    }
+
+    #[Test]
+    public function aScriptAnswerSaysWhichRepositoryItsCommandsRunIn(): void
+    {
+        // Nothing in this query says either way, so the commands are offered
+        // under their condition rather than stated as the answer.
+        $unstated = Tools::call('typo3_script_lookup', ['task' => 'php-cs-fixer and phpstan']);
+        self::assertFalse($unstated->data['outsideCore']);
+        self::assertNotSame([], $unstated->data['matches']);
+        self::assertStringContainsString('run in a TYPO3 core checkout', $unstated->text);
+
+        $stated = Tools::call('typo3_script_lookup', ['task' => 'unit tests for a typo3/sysext/core patch']);
+        self::assertStringNotContainsString('run in a TYPO3 core checkout', $stated->text);
+    }
+
+    #[Test]
     public function anArchitectureHintKeepsItsAdviceOutsideTheCoreAndLosesItsCoreChecks(): void
     {
         // The conventions transfer — the commands do not.

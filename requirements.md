@@ -178,7 +178,9 @@ took before the requirement above was written down, and it will not survive it.
   *From:* `typo3_task_guide` prefixing the disclaimer for paths that
   `typo3_test_run_guide` answered with four unrunnable commands in the same
   session (2026-07-29).
-  *Held by:* the two tests above.
+  *Held by:* the two tests above, and
+  `ScopeTest::noCoreScriptIsHandedToARepositoryThatDoesNotHaveIt`,
+  `ScopeTest::aScriptAnswerSaysWhichRepositoryItsCommandsRunIn`
 - **R-SCO-3** Core-only intents such as patch submission are not selected for
   work that is not core work. They need positive evidence of core work — a
   `typo3/sysext/` path or the contribution workflow named outright — because

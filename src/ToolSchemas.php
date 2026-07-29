@@ -24,7 +24,8 @@ final class ToolSchemas
     {
         return match ($name) {
             'typo3_server_scope' => self::serverScope(),
-            'typo3_rule_lookup', 'typo3_script_lookup' => self::knowledgeLookup(),
+            'typo3_rule_lookup' => self::knowledgeLookup(),
+            'typo3_script_lookup' => self::scriptLookup(),
             'typo3_task_guide' => self::taskGuide(),
             'typo3_test_run_guide' => self::testRunGuide(),
             'typo3_architecture_lookup' => self::architectureLookup(),
@@ -110,6 +111,25 @@ final class ToolSchemas
                 'console' => self::string('Environment variable that names the console command.'),
             ], ['root', 'console']),
         ], ['reason']);
+    }
+
+    /**
+     * The knowledge lookup shape plus the boundary, because every command in
+     * the script notes is a command in the core repository.
+     *
+     * @return array<string, mixed>
+     */
+    private static function scriptLookup(): array
+    {
+        $schema = self::knowledgeLookup();
+        $schema['properties']['outsideCore'] = [
+            'type' => 'boolean',
+            'description' => 'True when the query reads as a project or third-party extension. No script is then '
+                . 'returned: these are the core checkout\'s own, and that repository declares its commands itself.',
+        ];
+        $schema['required'][] = 'outsideCore';
+
+        return $schema;
     }
 
     /** @return array<string, mixed> */

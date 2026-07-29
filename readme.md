@@ -152,7 +152,9 @@ name already says what shape the answer has.
   depth, what it deliberately does not, and which tool to call when. The place
   to start when it is unclear whether a question can be answered here at all.
 - `typo3_rule_lookup`: searches local TYPO3 core rules and script notes.
-- `typo3_script_lookup`: finds matching notes for TYPO3 core commands.
+- `typo3_script_lookup`: finds matching notes for TYPO3 core commands. They run
+  in a core checkout, and the answer says so — outside one it returns the
+  boundary instead of commands that are not there.
 - `typo3_task_guide`: builds a task checklist enriched with matching
   architecture hints and relevant core checks. A task that reads as work on a
   project or third-party extension says so first and keeps only what transfers:

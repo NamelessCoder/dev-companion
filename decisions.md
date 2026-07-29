@@ -11,6 +11,31 @@ reconsider does not belong here. When an assumption is later disproved, the
 entry stays and gains a **Corrected** line: the wrong assumption is the useful
 part, because it names the place where the next one is likely to sit.
 
+## 2026-07-29 — A label query is words, and the console is asked with a regex
+
+`language:domain:search --search=` matches one literal string, so the words of a
+query had to be recomposed into something the console can answer at once.
+
+- **Decided:** the words go over as `--regex=/(one|two)/i` — the union — and the
+  intersection is taken here. One call per query rather than one per word,
+  because a console call boots TYPO3, and the union is also what makes "save
+  alone matches 65 labels" answerable without asking a second time.
+- **Assumed:** `--regex` is available wherever the command itself is. It was
+  added in the same commit as `--search`, `--json` and the command
+  ([TASK] Add CLI command and service to search labels, on 14.0 and later), so
+  an installation that answers the one answers the other.
+- **Assumed:** matching is a plain case-insensitive substring on both sides, not
+  a word boundary as elsewhere in this server. A trans-unit id is
+  `labels.save_document` and an underscore is a word character, so anchoring
+  would drop exactly the ids a caller searches by.
+- **Assumed:** a console that exits 0 without a JSON payload found nothing.
+  That is what this command does — it prints `[WARNING] No language resource
+  files found.` and returns SUCCESS — and no other command this server calls
+  answers `--json` with anything but JSON.
+- **Would falsify it:** a command that exits 0 and prints nothing usable for a
+  reason other than an empty result; the answer would then be a confident "none"
+  where nothing was established. The exit code is the only signal being read.
+
 ## 2026-07-29 — The unanswered result keeps its shape and gains a reason
 
 Two notes asked for the unavailable case to stop looking like an empty one. One

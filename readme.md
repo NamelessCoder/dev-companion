@@ -165,10 +165,12 @@ name already says what shape the answer has.
 - `typo3_icon_lookup`: validates and discovers core icon identifiers (the
   registered T3Icons names), grouped by category, so unknown identifiers are
   caught before runtime.
-- `typo3_label_lookup`: searches registered core labels (XLF trans-units) and
-  returns the fully qualified `LLL:` reference and English source text, so
-  existing labels get reused instead of new keys invented; `mode: domains` lists
-  the registered translation domains instead.
+- `typo3_label_lookup`: searches the labels the installation has registered (XLF
+  trans-units) and returns the domain reference (`package.resource:key`) and the
+  source text, so an existing label gets reused instead of a new key invented.
+  Several words are matched independently, ignoring case and order: a label has
+  to carry every one of them, and where none does, the answer says how far each
+  word reaches on its own.
 - `typo3_commit_message_guide`: drafts and checks TYPO3 core commit messages
   against the contribution rules — from parts, or by passing an existing
   `message` to check and correct one in a piece. The emitted draft is ready to

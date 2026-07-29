@@ -164,7 +164,7 @@ final class Tools
                 'inputSchema' => [
                     'type' => 'object',
                     'properties' => [
-                        'query' => ['type' => 'string', 'minLength' => 1, 'description' => 'Words from the label text or its trans-unit id, for example "save document" or "labels.title".'],
+                        'query' => ['type' => 'string', 'minLength' => 1, 'description' => 'Words from the label text or its trans-unit id, for example "save document" or "labels.title". Several words are matched independently, ignoring case and order: a label has to carry every one of them, in its text or in its id. When none carries all of them, the answer says how far each word reaches on its own.'],
                         'extension' => ['type' => 'string', 'description' => 'Restrict the search to one extension key.'],
                         'limit' => ['type' => 'integer', 'minimum' => 1, 'maximum' => 200, 'default' => 25, 'description' => 'Maximum number of labels to return.'],
                     ],
@@ -1715,26 +1715,33 @@ final class Tools
         $query = trim((string) ($args['query'] ?? ''));
         $extension = trim((string) ($args['extension'] ?? ''));
         $limit = (int) ($args['limit'] ?? 25);
+        $terms = LabelSearch::terms($query);
 
-        $arguments = ['language:domain:search', '--search=' . $query, '--json', '--crop=0'];
+        $arguments = ['language:domain:search', LabelSearch::consoleOption($terms), '--json', '--crop=0'];
         if ($extension !== '') {
             $arguments[] = '--extension=' . $extension;
         }
 
         $answer = Typo3Cli::json($arguments);
-        if (!$answer['ok'] || !is_array($answer['data'])) {
+
+        // The console prints a warning instead of a payload when nothing
+        // matched, and exits successfully while doing it. That is an
+        // installation that answered "none", not one that could not be asked —
+        // and the difference decides whether the caller refines the query or
+        // goes looking for a console that is not broken.
+        if (!is_array($answer['data']) && $answer['exitCode'] !== 0) {
             return self::consoleUnavailable(
                 $answer['error'],
-                ['query' => $query, 'matchCount' => 0, 'labels' => []],
+                ['query' => $query, 'matchCount' => 0, 'labels' => [], 'terms' => []],
             );
         }
 
-        $labels = [];
+        $candidates = [];
         /** @var array<string, mixed> $data */
-        $data = $answer['data'];
+        $data = is_array($answer['data']) ? $answer['data'] : [];
         foreach ($data['items'] ?? [] as $item) {
             foreach ($item['labels'] ?? [] as $label) {
-                $labels[] = [
+                $candidates[] = [
                     'ref' => (string) $label['domain'] . ':' . (string) $label['reference'],
                     'domain' => (string) $label['domain'],
                     'key' => (string) $label['reference'],
@@ -1744,20 +1751,39 @@ final class Tools
             }
         }
 
+        // The console returned everything carrying any of the words; the query
+        // asked for the labels carrying all of them.
+        $labels = LabelSearch::carryingEvery($candidates, $terms);
+        $termCounts = LabelSearch::perTermCounts($candidates, $terms);
+
         $total = count($labels);
         $shown = array_slice($labels, 0, $limit);
         $instance = Instance::describe();
 
         if ($shown === []) {
-            return ToolResult::create(
-                sprintf(
-                    'No label in %s matches "%s". The search covered the packages this installation has active, '
-                    . 'so this is an answer about your installation rather than about TYPO3 in general.',
-                    $instance['root'] ?? 'the installation',
-                    $query
-                ),
-                ['query' => $query, 'matchCount' => 0, 'labels' => [], 'answeredBy' => 'installation'],
-            );
+            $lines = [sprintf(
+                'No label in %s %s. The search covered the packages this installation has active, '
+                . 'so this is an answer about your installation rather than about TYPO3 in general.',
+                $instance['root'] ?? 'the installation',
+                count($terms) > 1 ? 'carries all of ' . self::quotedTerms($terms) : sprintf('matches "%s"', $query)
+            )];
+
+            $reached = array_values(array_filter($termCounts, static fn(array $t): bool => $t['matchCount'] > 0));
+            if (count($terms) > 1 && $reached !== []) {
+                $lines[] = '';
+                $lines[] = 'On its own, ' . implode(', ', array_map(
+                    static fn(array $t): string => sprintf('"%s" matches %d label(s)', $t['term'], $t['matchCount']),
+                    $reached
+                )) . ' — ask again with the one that narrows best.';
+            }
+
+            return ToolResult::create(implode("\n", $lines), [
+                'query' => $query,
+                'matchCount' => 0,
+                'labels' => [],
+                'terms' => $termCounts,
+                'answeredBy' => 'installation',
+            ]);
         }
 
         $lines = [sprintf('%d label(s) in %s match "%s"%s:', $total, $instance['root'] ?? '?', $query,
@@ -1775,8 +1801,17 @@ final class Tools
             'query' => $query,
             'matchCount' => $total,
             'labels' => $shown,
+            'terms' => $termCounts,
             'answeredBy' => 'installation',
         ]);
+    }
+
+    /**
+     * @param array<int, string> $terms
+     */
+    private static function quotedTerms(array $terms): string
+    {
+        return implode(', ', array_map(static fn(string $term): string => '"' . $term . '"', $terms));
     }
 
     /**

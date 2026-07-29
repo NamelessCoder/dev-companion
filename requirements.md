@@ -114,6 +114,23 @@ them, this section wins and the other one is what needs rewriting.
   (2026-07-29).
   *Held by:* `ScopeTest::anUnanswerableLookupCarriesItsReasonInTheData`,
   `ScopeTest::theInstallationDiagnosticIsDataRatherThanProse`
+- **R-ANS-4** The query language a tool documents is the one it implements.
+  Where the command behind it can only match a literal string, the tool composes
+  the search out of the words rather than handing the phrase through, so a
+  multi-word query means what the description says it means.
+  *From:* every multi-word label query coming back empty, the tool's own
+  documented example included (2026-07-29).
+  *Held by:* `LabelSearchTest::aLabelAnswersOnlyWhenItCarriesEveryWord`,
+  `LabelSearchTest::theWordsMayComeInAnyOrderAndAnyCase`
+- **R-ANS-5** A console that ran and answered "none" is an empty answer.
+  `answeredBy: "nothing"` is reserved for a console that could not be reached or
+  that failed — this is R-ANS-1 in the other direction, and a zero-hit answer
+  dressed as a breakage sends the caller to fix an installation instead of
+  narrowing a query.
+  *From:* the same note; the console's zero-match warning was read as an
+  unreachable installation (2026-07-29).
+  *Held by:* `LabelSearchTest::aConsoleThatFoundNothingIsAnAnswerRatherThanAFailure`,
+  `LabelSearchTest::aConsoleThatCannotRunIsStillUnanswered`
 - **R-ANS-3** **open** — What a component answer describes is qualified by the
   revision it was taken from, inside the entry rather than only in a trailing
   block.

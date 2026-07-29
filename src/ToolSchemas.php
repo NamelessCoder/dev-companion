@@ -316,6 +316,10 @@ final class ToolSchemas
             'matchCount' => self::integer(),
             'answeredBy' => self::answeredBy(),
             'unavailable' => self::unavailable(),
+            'terms' => self::listOf(self::object([
+                'term' => self::string('One word of the query; a label has to carry every one of them.'),
+                'matchCount' => self::integer('How many labels this word alone reaches — where to narrow when the query as a whole reaches none.'),
+            ], ['term', 'matchCount'])),
             'labels' => self::listOf(self::object([
                 'ref' => self::string('Translation domain reference (package.resource:key) — the canonical form.'),
                 'domain' => self::string(),
@@ -323,7 +327,7 @@ final class ToolSchemas
                 'source' => self::string('The label text in the searched locale.'),
                 'resource' => self::string('The XLF file it lives in.'),
             ], ['ref', 'domain', 'key', 'source'])),
-        ], ['query', 'matchCount', 'answeredBy', 'labels']);
+        ], ['query', 'matchCount', 'answeredBy', 'terms', 'labels']);
     }
 
     /** @return array<string, mixed> */

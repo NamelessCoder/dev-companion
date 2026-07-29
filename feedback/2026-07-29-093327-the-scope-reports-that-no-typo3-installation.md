@@ -5,11 +5,18 @@ status: open
 tool: typo3_server_scope
 ---
 
-# The scope reports that no TYPO3 installation was found, although this extension checkout has .bui...
+# A discovery failure cannot be diagnosed from what the scope reports
 
 ## Observation
 
-The scope reports that no TYPO3 installation was found, although this extension checkout has .build/bin/typo3 and Composer-installed TYPO3 13/14 dependencies. Consequently typo3_icon_lookup and typo3_label_lookup return answeredBy=nothing and cannot validate the extension own registered icon content-bootstrappackage-accordion or labels. This makes the installation-aware tools unavailable in a common extension-development layout.
+Partially addressed: the declared vendor-dir and bin-dir are honoured now, so
+the extension development layout this note was written in is discovered.
+
+What remains is the diagnosability the note asked for on top of that: when
+discovery does fail, the scope says only that nothing was found. It does not
+say where it started, which directories it walked, or why each was rejected —
+so the caller cannot tell a layout this server cannot read from a server
+started in the wrong directory, and has no lever to correct either.
 
 ## Query
 
@@ -17,4 +24,6 @@ Run from /home/benji/projects/bootstrap_package, a Composer TYPO3 extension chec
 
 ## Suggestion
 
-Teach Instance discovery to recognize Composer extension development checkouts with a configured bin-dir/vendor-dir, for example .build/bin/typo3 and .build/vendor, or allow an explicit installation root/console path in MCP configuration. Scope output should list searched candidates and rejection reasons so discovery failures are diagnosable.
+Allow an explicit installation root and console command in the MCP
+configuration, and have the scope output list the searched candidates with the
+reason each was rejected.

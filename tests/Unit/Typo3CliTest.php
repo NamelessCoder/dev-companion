@@ -49,6 +49,35 @@ final class Typo3CliTest extends TestCase
     }
 
     #[Test]
+    public function aConsoleInTheDeclaredBinDirectoryIsFound(): void
+    {
+        // What the TYPO3 extension testing setup produces: the console exists
+        // and runs, but not under either Composer default. Probing only those
+        // left five installation-backed tools without an answer in a checkout
+        // whose console was one directory away.
+        $root = $this->installation([
+            'config' => ['bin-dir' => '.build/bin', 'vendor-dir' => '.build/vendor'],
+        ]);
+        mkdir($root . '/.build/bin', 0o777, true);
+        file_put_contents($root . '/.build/bin/typo3', "#!/usr/bin/env php\n<?php\n");
+        $this->discover($root);
+
+        // Nothing here says the console can be run — that depends on the
+        // machine. It says the reason is no longer that none was found.
+        self::assertStringNotContainsString('has no TYPO3 console', Typo3Cli::reason());
+    }
+
+    #[Test]
+    public function aMissingConsoleNamesEveryPathThatWasProbed(): void
+    {
+        $this->discover($this->installation(['config' => ['bin-dir' => '.build/bin']]));
+
+        $reason = Typo3Cli::reason();
+        self::assertStringContainsString('.build/bin/typo3', $reason);
+        self::assertStringContainsString('vendor/bin/typo3', $reason);
+    }
+
+    #[Test]
     public function aPhpBelowWhatTheInstallationPinsIsNotUsed(): void
     {
         // Composer pins the platform, so a lower interpreter aborts in

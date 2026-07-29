@@ -69,6 +69,51 @@ final class InstanceTest extends TestCase
     }
 
     #[Test]
+    public function aProjectThatMovedItsVendorDirectoryIsFoundThereRatherThanMissed(): void
+    {
+        // The layout the TYPO3 extension testing setup produces. Reading the
+        // default vendor/ instead walked past the installation entirely, and
+        // every question only it can answer came back as if nothing existed.
+        $root = $this->composerProject('.build/vendor');
+        Instance::discoverFrom($root);
+
+        self::assertSame(Instance::KIND_COMPOSER_PROJECT, Instance::describe()['kind']);
+        self::assertSame(['core', 'my_sitepackage'], array_keys(Instance::packages()));
+    }
+
+    #[Test]
+    public function theExtensionBeingWorkedOnIsAmongThePackagesAlthoughComposerListsOnlyDependencies(): void
+    {
+        $root = $this->composerProject('.build/vendor');
+        file_put_contents($root . '/composer.json', json_encode([
+            'name' => 'acme/bootstrap-package',
+            'type' => 'typo3-cms-extension',
+            'config' => ['vendor-dir' => '.build/vendor'],
+        ], JSON_THROW_ON_ERROR));
+        Instance::discoverFrom($root);
+
+        // Without this the one package the agent is editing is the only one
+        // missing from the answers about its own installation.
+        self::assertSame(realpath($root), Instance::packages()['bootstrap_package'] ?? null);
+    }
+
+    #[Test]
+    public function aRepositoryWithNoInstallationAroundItIsNotReportedAsOne(): void
+    {
+        $root = $this->temporaryDirectory();
+        file_put_contents($root . '/composer.json', json_encode(
+            ['name' => 'acme/bootstrap-package', 'type' => 'typo3-cms-extension'],
+            JSON_THROW_ON_ERROR
+        ));
+        Instance::discoverFrom($root);
+
+        // An extension checkout whose dependencies were never installed has
+        // nothing to answer from, and saying so beats reporting an
+        // installation that holds a single package and no console.
+        self::assertFalse(Instance::isAvailable());
+    }
+
+    #[Test]
     public function aDirectoryOutsideAnyInstallationFindsNothing(): void
     {
         Instance::discoverFrom(sys_get_temp_dir());
@@ -103,13 +148,20 @@ final class InstanceTest extends TestCase
         return $root;
     }
 
-    private function composerProject(): string
+    private function composerProject(string $vendorDirectory = 'vendor'): string
     {
         $root = $this->temporaryDirectory();
-        mkdir($root . '/vendor/typo3/cms-core', 0o777, true);
+        $vendor = $root . '/' . $vendorDirectory;
+        if ($vendorDirectory !== 'vendor') {
+            file_put_contents($root . '/composer.json', json_encode(
+                ['name' => 'acme/extension', 'config' => ['vendor-dir' => $vendorDirectory]],
+                JSON_THROW_ON_ERROR
+            ));
+        }
+        mkdir($vendor . '/typo3/cms-core', 0o777, true);
         mkdir($root . '/packages/my_sitepackage', 0o777, true);
-        mkdir($root . '/vendor/composer', 0o777, true);
-        file_put_contents($root . '/vendor/composer/installed.json', json_encode(['packages' => [
+        mkdir($vendor . '/composer', 0o777, true);
+        file_put_contents($vendor . '/composer/installed.json', json_encode(['packages' => [
             [
                 'name' => 'typo3/cms-core',
                 'type' => 'typo3-cms-framework',
@@ -119,7 +171,10 @@ final class InstanceTest extends TestCase
             [
                 'name' => 'acme/my-sitepackage',
                 'type' => 'typo3-cms-extension',
-                'install-path' => '../../packages/my_sitepackage',
+                // Composer writes install-path relative to the vendor
+                // directory it actually used, so a moved one is deeper.
+                'install-path' => str_repeat('../', substr_count($vendorDirectory, '/') + 2)
+                    . 'packages/my_sitepackage',
                 'extra' => ['typo3/cms' => ['extension-key' => 'my_sitepackage']],
             ],
             ['name' => 'symfony/console', 'type' => 'library', 'install-path' => '../symfony/console'],

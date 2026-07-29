@@ -109,8 +109,8 @@ final class Instance
      * Both the kind of installation and the packages in it are declared by the
      * installation itself, so neither is guessed here: the monorepo root
      * declares "type": "typo3-cms-core", and a Composer installation lists
-     * every TYPO3 package in vendor/composer/installed.json — the same source
-     * TYPO3's own PackageArtifactBuilder reads.
+     * every TYPO3 package in composer/installed.json below the vendor directory
+     * it declares — the same source TYPO3's own PackageArtifactBuilder reads.
      *
      * @return array{root: string, kind: string, startedFrom: string}|null
      */
@@ -176,6 +176,29 @@ final class Instance
     }
 
     /**
+     * Where this root keeps its dependencies.
+     *
+     * Composer's default is vendor/, and a root that declares nothing is
+     * resolved exactly as before. But the layout the TYPO3 extension testing
+     * setup produces moves it — `"vendor-dir": ".build/vendor"` — and an
+     * installation whose metadata is looked for in the wrong place is an
+     * installation that does not exist as far as this server is concerned:
+     * discovery walks past it and every question only it could answer goes
+     * unanswered.
+     */
+    private static function vendorDirectory(string $root): string
+    {
+        $configured = self::readJson($root . '/composer.json')['config']['vendor-dir'] ?? null;
+        if (!is_string($configured) || trim($configured) === '') {
+            return $root . '/vendor';
+        }
+
+        $configured = rtrim(trim($configured), '/');
+
+        return str_starts_with($configured, '/') ? $configured : $root . '/' . $configured;
+    }
+
+    /**
      * The TYPO3 packages a Composer installation declares, read from the same
      * metadata TYPO3's own PackageArtifactBuilder reads. Only the two TYPO3
      * package types count; every other dependency is irrelevant here.
@@ -187,7 +210,8 @@ final class Instance
      */
     private static function composerPackages(string $root): array
     {
-        $decoded = self::readJson($root . '/vendor/composer/installed.json');
+        $vendor = self::vendorDirectory($root);
+        $decoded = self::readJson($vendor . '/composer/installed.json');
         $entries = $decoded['packages'] ?? $decoded;
         if (!is_array($entries)) {
             return [];
@@ -208,12 +232,46 @@ final class Instance
             }
 
             $relative = (string) ($entry['install-path'] ?? '');
-            $path = $relative === '' ? false : realpath($root . '/vendor/composer/' . $relative);
+            $path = $relative === '' ? false : realpath($vendor . '/composer/' . $relative);
             if ($key !== '' && $path !== false) {
                 $packages[$key] = $path;
             }
         }
 
+        // The extension being worked on is the root package, and Composer lists
+        // dependencies rather than the root — so in an extension development
+        // checkout the one package the agent is actually editing would be the
+        // only one missing from its own answers. It is added only when the
+        // installation around it is real: a package list of nothing but the
+        // root would report an installation where there is only a repository.
+        if ($packages !== []) {
+            $rootKey = self::rootPackage($root);
+            if ($rootKey !== null) {
+                $packages[$rootKey] = $root;
+            }
+        }
+
         return $packages;
+    }
+
+    /**
+     * The extension key the root itself declares, when the root is a TYPO3
+     * package rather than a project.
+     */
+    private static function rootPackage(string $root): ?string
+    {
+        $manifest = self::readJson($root . '/composer.json');
+        if (!in_array($manifest['type'] ?? '', ['typo3-cms-framework', 'typo3-cms-extension'], true)) {
+            return null;
+        }
+
+        $key = $manifest['extra']['typo3/cms']['extension-key'] ?? null;
+        if (is_string($key) && $key !== '') {
+            return $key;
+        }
+
+        $name = (string) ($manifest['name'] ?? '');
+
+        return $name === '' ? null : str_replace('-', '_', substr($name, (int) strrpos($name, '/') + 1));
     }
 }

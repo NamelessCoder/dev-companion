@@ -67,7 +67,14 @@ final class Typo3Cli
         $root = $instance['root'];
         $binary = self::consoleBinary($root);
         if ($binary === null) {
-            self::$reason = sprintf('%s has no bin/typo3 or vendor/bin/typo3', $root);
+            // Naming every probed path rather than the two defaults: a console
+            // that sits somewhere else is the likely case here, and a reason
+            // that lists where this looked is one the caller can act on.
+            self::$reason = sprintf(
+                '%s has no TYPO3 console — none of %s exists',
+                $root,
+                implode(', ', self::consoleCandidates($root))
+            );
 
             return null;
         }
@@ -264,7 +271,7 @@ final class Typo3Cli
 
     private static function consoleBinary(string $root): ?string
     {
-        foreach (['vendor/bin/typo3', 'bin/typo3'] as $candidate) {
+        foreach (self::consoleCandidates($root) as $candidate) {
             if (is_file($root . '/' . $candidate)) {
                 return $candidate;
             }
@@ -274,20 +281,67 @@ final class Typo3Cli
     }
 
     /**
+     * Where the console may sit, what the installation declares first.
+     *
+     * Composer's default bin-dir is vendor/bin, so an installation that
+     * declares nothing is probed exactly as before. One that declares
+     * `"bin-dir": ".build/bin"` — the layout the TYPO3 extension testing setup
+     * produces, and with it a large share of the published extensions — has its
+     * console there and nowhere else, and probing only the default meant every
+     * question the installation alone can answer came back unanswered in a
+     * checkout whose console was one directory away.
+     *
+     * @return array<int, string>
+     */
+    private static function consoleCandidates(string $root): array
+    {
+        $candidates = [];
+        $declared = self::binDirectory($root);
+        if ($declared !== null) {
+            $candidates[] = $declared . '/typo3';
+        }
+
+        return array_values(array_unique(array_merge($candidates, ['vendor/bin/typo3', 'bin/typo3'])));
+    }
+
+    /**
+     * The bin directory the installation declares, relative to its root.
+     *
+     * Composer expands `$vendor-dir` inside bin-dir, so that spelling is
+     * expanded here too. An absolute declaration is left to the defaults: the
+     * console is invoked relative to the root — inside a DDEV container the
+     * host path would not exist anyway.
+     */
+    private static function binDirectory(string $root): ?string
+    {
+        $config = self::manifest($root)['config'] ?? [];
+        if (!is_array($config)) {
+            return null;
+        }
+
+        $binDir = $config['bin-dir'] ?? null;
+        if (!is_string($binDir) || trim($binDir) === '') {
+            return null;
+        }
+
+        $vendorDir = $config['vendor-dir'] ?? null;
+        $binDir = str_replace(
+            '$vendor-dir',
+            is_string($vendorDir) && trim($vendorDir) !== '' ? trim($vendorDir) : 'vendor',
+            trim($binDir)
+        );
+        $binDir = rtrim($binDir, '/');
+
+        return $binDir === '' || str_starts_with($binDir, '/') ? null : $binDir;
+    }
+
+    /**
      * The lowest PHP the installation accepts, taken from what it declares:
      * the pinned Composer platform first, then the requirement itself.
      */
     private static function requiredPhpVersion(string $root): ?string
     {
-        $manifest = $root . '/composer.json';
-        if (!is_file($manifest)) {
-            return null;
-        }
-
-        $decoded = json_decode((string) file_get_contents($manifest), true);
-        if (!is_array($decoded)) {
-            return null;
-        }
+        $decoded = self::manifest($root);
 
         $platform = $decoded['config']['platform']['php'] ?? null;
         if (is_string($platform) && $platform !== '') {
@@ -300,6 +354,24 @@ final class Typo3Cli
         }
 
         return $matches[1] . '.' . $matches[2] . '.0';
+    }
+
+    /**
+     * What the installation declares about itself. Its manifest answers both
+     * where the console is and which PHP may run it, so it is read in one place.
+     *
+     * @return array<string, mixed>
+     */
+    private static function manifest(string $root): array
+    {
+        $path = $root . '/composer.json';
+        if (!is_file($path)) {
+            return [];
+        }
+
+        $decoded = json_decode((string) file_get_contents($path), true);
+
+        return is_array($decoded) ? $decoded : [];
     }
 
     /** @return array<int, string> */

@@ -574,6 +574,10 @@ final class Typo3Cli
 
         $output = '';
         $error = '';
+        // Taken from the status rather than from proc_close: before PHP 8.3 the
+        // status call reaps the child itself, and proc_close then has nothing
+        // left to wait for and answers -1. Every command would read as failed.
+        $exitCode = -1;
         $deadline = time() + self::TIMEOUT_SECONDS;
         while (true) {
             $output .= (string) stream_get_contents($pipes[1]);
@@ -581,6 +585,7 @@ final class Typo3Cli
 
             $status = proc_get_status($process);
             if (!$status['running']) {
+                $exitCode = $status['exitcode'];
                 break;
             }
             if (time() >= $deadline) {
@@ -600,7 +605,10 @@ final class Typo3Cli
         $error .= (string) stream_get_contents($pipes[2]);
         fclose($pipes[1]);
         fclose($pipes[2]);
-        $exitCode = proc_close($process);
+        $closed = proc_close($process);
+        if ($exitCode < 0) {
+            $exitCode = $closed;
+        }
 
         return [
             'ok' => $exitCode === 0,

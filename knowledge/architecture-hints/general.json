@@ -5,6 +5,16 @@
     "appliesTo": [
       ".xlf",
       ".xliff",
+      "xlf",
+      "xliff",
+      "language file",
+      "locallang",
+      "label",
+      "translation",
+      "translate",
+      "localization",
+      "localisation",
+      "lll:",
       "Resources/Private/Language/",
       "translation domain",
       "trans-unit"

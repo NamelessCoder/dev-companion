@@ -145,6 +145,48 @@ final class HintsTest extends TestCase
     }
 
     #[Test]
+    public function aQueryAboutLanguageFilesReachesTheLanguageFilesHint(): void
+    {
+        $result = ArchitectureHints::find([], 'Language files, XLF labels and how to reference them in TCA', 6);
+
+        self::assertContains('language-files', array_column($result['matchedHints'], 'id'));
+    }
+
+    #[Test]
+    public function aHintCanBeAskedForByItsIdInsteadOfGuessedAt(): void
+    {
+        $result = ArchitectureHints::find([], '', 6, 'language-files');
+
+        self::assertSame(['language-files'], array_column($result['matchedHints'], 'id'));
+        self::assertSame([], $result['domains'], 'nothing was inferred, so nothing is claimed');
+        self::assertSame([], $result['availableHints']);
+    }
+
+    #[Test]
+    public function anIdThatDoesNotExistIsAnsweredWithTheOnesThatDo(): void
+    {
+        $result = ArchitectureHints::find([], '', 6, 'language-file');
+
+        self::assertSame([], $result['matchedHints']);
+        self::assertContains('language-files', array_column($result['availableHints'], 'id'));
+    }
+
+    #[Test]
+    public function aMissNamesWhatThereWouldHaveBeenToFind(): void
+    {
+        $hit = ArchitectureHints::find(['typo3/sysext/core/Classes/DataHandling/DataHandler.php'], 'DataHandler', 6);
+        self::assertSame([], $hit['availableHints'], 'an index would only bury the hints it lists');
+
+        $miss = ArchitectureHints::find([], 'how do I write a good sonnet', 6);
+        self::assertSame([], $miss['matchedHints']);
+        self::assertContains('language-files', array_column($miss['availableHints'], 'id'));
+        foreach ($miss['availableHints'] as $entry) {
+            self::assertNotSame('', $entry['title']);
+            self::assertNotSame('', $entry['category']);
+        }
+    }
+
+    #[Test]
     public function proseIsOnlyAFallbackWhenNoStructuredHintMatched(): void
     {
         $matched = ArchitectureHints::find(['typo3/sysext/core/Classes/DataHandling/DataHandler.php'], 'DataHandler', 6);

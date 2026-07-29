@@ -88,16 +88,36 @@ final class ArchitectureHints
      * addition: they are only returned when no structured hint matched, because
      * otherwise they restate the hints and bury them.
      *
+     * A hint asked for by id is returned as it is. Matching is a guess about
+     * what the caller meant; an id is not, and the index returned on a miss
+     * exists so that guessing at phrasings can be replaced by naming one.
+     *
      * @param array<int, string> $paths
      * @return array{
      *     matchedHints: array<int, array<string, mixed>>,
      *     knowledgeSections: array<int, array{id: string, title: string, heading: string, body: string, score: int, coverage: float, truncated: bool}>,
      *     domains: array<int, string>,
-     *     withheldCategories: array<int, string>
+     *     withheldCategories: array<int, string>,
+     *     availableHints: array<int, array{id: string, title: string, category: string}>
      * }
      */
-    public static function find(array $paths, string $task, int $limit): array
+    public static function find(array $paths, string $task, int $limit, ?string $id = null): array
     {
+        $id = trim((string) $id);
+        if ($id !== '') {
+            $hint = self::byId($id);
+
+            return [
+                'matchedHints' => $hint === null ? [] : [$hint],
+                'knowledgeSections' => [],
+                // Nothing was inferred from paths or a task, so nothing is
+                // claimed about them.
+                'domains' => [],
+                'withheldCategories' => [],
+                'availableHints' => $hint === null ? self::index(null) : [],
+            ];
+        }
+
         $task = trim($task);
         $haystack = mb_strtolower(implode("\n", array_merge($paths, [$task])));
 
@@ -154,7 +174,30 @@ final class ArchitectureHints
             'knowledgeSections' => $knowledgeSections,
             'domains' => $domains,
             'withheldCategories' => $withheld,
+            // What there would have been to find. A caller that phrased the
+            // query differently from the hint has no way to tell that from a
+            // subject nobody wrote down, and tries another phrasing either way.
+            'availableHints' => $matchedHints === [] ? self::index($categories) : [],
         ];
+    }
+
+    /**
+     * Every hint there is, by id and title, optionally narrowed to categories.
+     *
+     * @param array<int, string>|null $categories
+     * @return array<int, array{id: string, title: string, category: string}>
+     */
+    public static function index(?array $categories): array
+    {
+        $index = [];
+        foreach (self::load() as $hint) {
+            if ($categories !== null && !in_array($hint['category'], $categories, true)) {
+                continue;
+            }
+            $index[] = ['id' => $hint['id'], 'title' => $hint['title'], 'category' => $hint['category']];
+        }
+
+        return $index;
     }
 
     /**

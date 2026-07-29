@@ -134,6 +134,17 @@ them, this section wins and the other one is what needs rewriting.
   unreachable installation (2026-07-29).
   *Held by:* `LabelSearchTest::aConsoleThatFoundNothingIsAnAnswerRatherThanAFailure`,
   `LabelSearchTest::aConsoleThatCannotRunIsStillUnanswered`
+- **R-ANS-6** A lookup that returns nothing says what there would have been to
+  find, and what it names can be asked for outright. `typo3_architecture_lookup`
+  lists the hint ids of the searched domains on every miss and accepts one as
+  `id`, so "your words did not match" is distinguishable from "nobody wrote this
+  down" without trying another phrasing.
+  *From:* a query naming XLF, labels and language files returning the TCA hint
+  and nothing else, with no way to see that a Language Files hint existed
+  (2026-07-29).
+  *Held by:* `HintsTest::aMissNamesWhatThereWouldHaveBeenToFind`,
+  `HintsTest::aHintCanBeAskedForByItsIdInsteadOfGuessedAt`,
+  `HintsTest::anIdThatDoesNotExistIsAnsweredWithTheOnesThatDo`
 - **R-ANS-3** **open** — What a component answer describes is qualified by the
   revision it was taken from, inside the entry rather than only in a trailing
   block.
@@ -222,6 +233,13 @@ took before the requirement above was written down, and it will not survive it.
 
 ## Knowledge — what is covered
 
+- **R-KNW-2** A hint carries the words its subject is asked about in, not only
+  its file extensions and its internal vocabulary. `appliesTo` is what the
+  matcher scores, so a subject nobody can phrase their way to is a subject the
+  server does not have.
+  *From:* `language-files` matching `.xlf` and `trans-unit` but neither "xlf"
+  nor "label" nor "language file" (2026-07-29).
+  *Held by:* `HintsTest::aQueryAboutLanguageFilesReachesTheLanguageFilesHint`
 - **R-KNW-1** **open** — Upgrade wizards and frontend DataProcessors have
   architecture hints; both are core subsystems with none.
   *From:* an extension maintenance task that got generic TCA and Fluid hints and

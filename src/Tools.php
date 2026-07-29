@@ -133,6 +133,7 @@ final class Tools
                     'properties' => [
                         'paths' => ['type' => 'array', 'items' => ['type' => 'string'], 'default' => [], 'description' => 'TYPO3 core file paths related to the task, relative to the core checkout.'],
                         'task' => ['type' => 'string', 'description' => 'Short task description or architecture topic.'],
+                        'id' => ['type' => 'string', 'description' => 'Ask for one hint by its id, for example language-files, instead of matching. Every answer that returns no hint lists the ids there are, so a subject that exists can be requested by name rather than guessed at.'],
                         'limit' => ['type' => 'integer', 'minimum' => 1, 'maximum' => 10, 'default' => 6, 'description' => 'Maximum number of architecture hints.'],
                     ],
                 ],
@@ -1141,8 +1142,9 @@ final class Tools
         $paths = array_map('strval', $args['paths'] ?? []);
         $task = isset($args['task']) ? (string) $args['task'] : null;
         $limit = (int) ($args['limit'] ?? 6);
+        $id = isset($args['id']) ? trim((string) $args['id']) : '';
 
-        $result = ArchitectureHints::find($paths, $task ?? '', $limit);
+        $result = ArchitectureHints::find($paths, $task ?? '', $limit, $id);
 
         // The hints transfer — a DataHandler or Fluid convention is the same
         // one outside the core — but the checks attached to them are all
@@ -1171,17 +1173,22 @@ final class Tools
             );
             $lines[] = '';
         }
+        if ($id !== '') {
+            $lines[] = 'Hint requested by id: ' . $id;
+        }
         if ($task !== null && $task !== '') {
             $lines[] = 'Task: ' . $task;
         }
         if ($paths !== []) {
             $lines[] = "Paths:\n" . implode("\n", array_map(static fn(string $p): string => '- ' . $p, $paths));
         }
-        $lines[] = 'Domains: ' . implode(', ', $result['domains'])
-            . ' (hints outside these domains are not shown'
-            . ($result['withheldCategories'] === []
-                ? ')'
-                : ', and ' . implode(' and ', $result['withheldCategories']) . ' was withheld inside them)');
+        if ($result['domains'] !== []) {
+            $lines[] = 'Domains: ' . implode(', ', $result['domains'])
+                . ' (hints outside these domains are not shown'
+                . ($result['withheldCategories'] === []
+                    ? ')'
+                    : ', and ' . implode(' and ', $result['withheldCategories']) . ' was withheld inside them)');
+        }
         $lines[] = '';
         $lines[] = 'Architecture hints:';
 
@@ -1212,8 +1219,24 @@ final class Tools
         } elseif ($result['withheldCategories'] !== []) {
             $lines[] = 'Nothing is left to show: the only domain this task touched is one this server answers for '
                 . 'the backend alone.';
+        } elseif ($id !== '') {
+            $lines[] = sprintf('There is no hint with the id "%s".', $id);
         } else {
             $lines[] = 'No architecture hint matched. Add a more specific path or topic, or extend knowledge/typo3-core-architecture.md.';
+        }
+
+        // The index is the difference between "nothing matched your words" and
+        // "nobody wrote this down". Without it both answers read the same, and
+        // the caller tries another phrasing for a subject that does not exist —
+        // or gives up on one that does.
+        if ($result['availableHints'] !== []) {
+            $lines[] = '';
+            $lines[] = $id !== ''
+                ? 'The ids there are:'
+                : 'Hints that exist in these domains, requestable by id:';
+            foreach ($result['availableHints'] as $entry) {
+                $lines[] = '- ' . $entry['id'] . ' — ' . $entry['title'] . ' (' . $entry['category'] . ')';
+            }
         }
 
         return ToolResult::create(implode("\n", $lines), [
@@ -1223,6 +1246,7 @@ final class Tools
             'withheldCategories' => $result['withheldCategories'],
             'outsideCore' => $outsideCore,
             'hints' => self::hintRecords($result['matchedHints']),
+            'availableHints' => $result['availableHints'],
             'knowledgeSections' => self::matchRecords($result['knowledgeSections']),
         ]);
     }

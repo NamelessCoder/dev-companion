@@ -166,7 +166,8 @@ name already says what shape the answer has.
   check commands are dropped. Two sections are the backend interface's own —
   `Backend CSS` and `Backend TypeScript` — and are withheld with a reason when
   the task names the frontend, because there they would be inverted advice
-  rather than merely irrelevant.
+  rather than merely irrelevant. An answer that matched nothing lists the hint
+  ids there are, and `id` asks for one of them outright.
 - `typo3_component_lookup`: looks up backend UI components by name or topic and
   returns canonical markup, variant and sub-component classes, the custom
   property contract, and the styleguide demo and Sass source paths.

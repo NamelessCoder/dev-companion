@@ -197,8 +197,13 @@ final class ToolSchemas
             'withheldCategories' => self::listOf(self::string(), 'Categories that matched the domains but were left out because the task names the frontend. "Backend CSS" and "Backend TypeScript" describe the TYPO3 backend interface and are wrong advice for what a website renders; see docs.typo3.org for frontend theming.'),
             'outsideCore' => ['type' => 'boolean', 'description' => 'True when the paths or the task read as a project or third-party extension. The hints still hold; their checks are then empty, because runTests.sh is part of the core repository.'],
             'hints' => self::listOf(self::architectureHintRecord()),
+            'availableHints' => self::listOf(self::object([
+                'id' => self::string('Ask for this hint outright by passing it as id.'),
+                'title' => self::string(),
+                'category' => self::string(),
+            ], ['id', 'title', 'category']), 'The hints that exist in the searched domains, returned when none matched. Empty on a hit.'),
             'knowledgeSections' => self::listOf(self::knowledgeMatch(), 'Fallback prose, returned only when no structured hint matched.'),
-        ], ['paths', 'domains', 'withheldCategories', 'outsideCore', 'hints', 'knowledgeSections']);
+        ], ['paths', 'domains', 'withheldCategories', 'outsideCore', 'hints', 'availableHints', 'knowledgeSections']);
     }
 
     /** @return array<string, mixed> */

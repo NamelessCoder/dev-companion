@@ -81,6 +81,39 @@ final class Scope
     }
 
     /**
+     * Things that exist in the core repository and nowhere else. A line of
+     * advice naming one of them cannot be followed outside it.
+     *
+     * @var array<int, string>
+     */
+    private const CORE_ONLY_ARTIFACTS = [
+        'typo3/sysext/', 'build/scripts/', 'runtests.sh', 'gerrit', 'change-id',
+        'refs/for/', 'forge.typo3.org', 'core checkout', 'core branch', 'core root',
+        'core team',
+    ];
+
+    /**
+     * Whether a single step, check or checklist item is core-only.
+     *
+     * The distinction the notice draws in prose has to be drawn in the payload
+     * too, and it is drawn per line rather than per section: a checklist mixes
+     * "reproduce the bug with a failing test" — true anywhere — with "add a
+     * changelog file under typo3/sysext/", which is a path that does not exist
+     * in the repository the caller is in.
+     */
+    public static function isCoreOnly(string $text): bool
+    {
+        $haystack = mb_strtolower($text);
+        foreach (self::CORE_ONLY_ARTIFACTS as $artifact) {
+            if (str_contains($haystack, $artifact)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * Whether anything in the task actually says this is core work.
      *
      * `isOutsideCore()` returning false means no marker was found, which is the

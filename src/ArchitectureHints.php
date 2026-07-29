@@ -129,6 +129,26 @@ final class ArchitectureHints
     }
 
     /**
+     * The same hints without their checks.
+     *
+     * A hint is a convention and holds wherever TYPO3 is written; the checks
+     * attached to it are runTests.sh invocations against a script that is part
+     * of the core repository. Outside the core the advice therefore stays and
+     * the commands go.
+     *
+     * @param array<int, array<string, mixed>> $hints
+     * @return array<int, array<string, mixed>>
+     */
+    public static function withoutChecks(array $hints): array
+    {
+        return array_map(static function (array $hint): array {
+            $hint['checks'] = [];
+
+            return $hint;
+        }, $hints);
+    }
+
+    /**
      * Groups matched hints into sections, preserving each hint's relative order
      * within a section and ordering sections by the known section order.
      *

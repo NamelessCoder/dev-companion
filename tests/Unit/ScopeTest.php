@@ -108,6 +108,35 @@ final class ScopeTest extends TestCase
     }
 
     #[Test]
+    public function aBriefOutsideTheCoreKeepsNothingThatOnlyTheCoreHas(): void
+    {
+        // Saying "this is outside the core" and then listing four runTests.sh
+        // suites, a changelog file below typo3/sysext/ and the core branch
+        // policy is not a partly right answer: the flag says the brief knew.
+        $result = Tools::call('typo3_task_guide', [
+            'task' => 'Add a data processor and an upgrade wizard to my site package',
+            'area' => 'packages/my_sitepackage/Classes/DataProcessing/CsvProcessor.php',
+            'changeType' => 'feature',
+        ]);
+
+        self::assertTrue($result->data['outsideCore']);
+        self::assertSame([], $result->data['checks']);
+        self::assertSame([], $result->data['testSuites']);
+        self::assertSame([], $result->data['conditionalChecks']);
+        foreach ($result->data['architectureHints'] as $hint) {
+            self::assertSame([], $hint['checks'], $hint['id'] . ' kept its core checks');
+        }
+        foreach ($result->data['checklist'] as $entry) {
+            self::assertFalse(Scope::isCoreOnly($entry), $entry . ' cannot be done outside the core');
+        }
+        foreach ($result->data['checkoutDiscovery'] as $entry) {
+            self::assertFalse(Scope::isCoreOnly($entry['establish'] . ' ' . $entry['how']), $entry['establish']);
+        }
+        // The notice names the script once, to say it does not apply here.
+        self::assertSame(1, substr_count($result->text, 'runTests.sh'));
+    }
+
+    #[Test]
     public function noRunTestsCommandIsHandedToARepositoryThatHasNoRunTests(): void
     {
         // Every suite this guide knows is a Build/Scripts/runTests.sh

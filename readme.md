@@ -154,7 +154,10 @@ name already says what shape the answer has.
 - `typo3_rule_lookup`: searches local TYPO3 core rules and script notes.
 - `typo3_script_lookup`: finds matching notes for TYPO3 core commands.
 - `typo3_task_guide`: builds a task checklist enriched with matching
-  architecture hints and relevant core checks.
+  architecture hints and relevant core checks. A task that reads as work on a
+  project or third-party extension says so first and keeps only what transfers:
+  no core checks, no checklist item and no follow-up naming something that only
+  the core repository has.
 - `typo3_test_run_guide`: recommends `Build/Scripts/runTests.sh` commands
   by topic. Paths that read as a project or third-party extension get no suite:
   the script is part of the core repository.

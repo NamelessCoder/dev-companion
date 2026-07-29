@@ -103,7 +103,7 @@ final class Tools
             ],
             [
                 'name' => 'typo3_task_guide',
-                'description' => 'Build a task checklist enriched with matching architecture hints and relevant core checks. Built from bundled conventions only: it does not read your checkout, so it also names what you have to establish there yourself and routes to the lookups that fit the task.',
+                'description' => 'Build a task checklist enriched with matching architecture hints and relevant core checks. Built from bundled conventions only: it does not read your checkout, so it also names what you have to establish there yourself and routes to the lookups that fit the task. Work that reads as a project or third-party extension is answered with what transfers only — the core checks, checklist items and steps that name something only the core repository has are left out rather than handed over.',
                 'inputSchema' => [
                     'type' => 'object',
                     'properties' => [
@@ -693,6 +693,9 @@ final class Tools
 
         $architecture = ArchitectureHints::find($paths, $task, 4);
         $testHints = array_slice(TestSuiteHints::find($subject, $domains), 0, 4);
+        if ($outsideCore) {
+            $architecture['matchedHints'] = ArchitectureHints::withoutChecks($architecture['matchedHints']);
+        }
 
         $lines = [];
         if ($outsideCore) {
@@ -760,34 +763,52 @@ final class Tools
         $checks = self::mergedChecks($confirmed, $architecture['matchedHints']);
         $conditionalChecks = self::conditionalChecks($conditional, $checks);
 
-        $lines[] = '';
-        $lines[] = 'Relevant TYPO3 core checks:';
-        foreach ($checks as $check) {
-            $lines[] = '- `' . $check . '`';
-        }
-        if ($testHints !== []) {
-            foreach ($testHints as $hint) {
-                $lines[] = '## ' . $hint['suite'];
-                $lines[] = '`' . $hint['command'] . '`';
-                if ($hint['targeted'] !== null) {
-                    $lines[] = 'Targeted: `' . $hint['targeted'] . '`';
-                }
-                $lines[] = $hint['whenToUse'];
-            }
-        } elseif ($checks === []) {
-            $lines[] = '- No topic-specific check matched. Run the narrowest relevant suite, then broaden before review.';
+        // Every check this server knows is a runTests.sh invocation against a
+        // script in the core repository. Reporting outsideCore and then listing
+        // four of them was the whole complaint: the flag said the answer knew,
+        // and the payload said it had not acted on it.
+        if ($outsideCore) {
+            $checks = [];
+            $conditionalChecks = [];
+            $testHints = [];
         }
 
-        foreach ($conditionalChecks as $entry) {
-            $lines[] = '';
-            $lines[] = 'Checks for ' . $entry['title'] . ', ' . $entry['condition'] . ':';
-            foreach ($entry['checks'] as $check) {
+        $lines[] = '';
+        if ($outsideCore) {
+            $lines[] = 'Checks: none of the core\'s own apply here, so none is listed. Verify with what this '
+                . 'repository provides — the scripts in its composer.json, its package.json, and its CI '
+                . 'configuration are where its own suites are declared.';
+        } else {
+            $lines[] = 'Relevant TYPO3 core checks:';
+            foreach ($checks as $check) {
                 $lines[] = '- `' . $check . '`';
+            }
+            if ($testHints !== []) {
+                foreach ($testHints as $hint) {
+                    $lines[] = '## ' . $hint['suite'];
+                    $lines[] = '`' . $hint['command'] . '`';
+                    if ($hint['targeted'] !== null) {
+                        $lines[] = 'Targeted: `' . $hint['targeted'] . '`';
+                    }
+                    $lines[] = $hint['whenToUse'];
+                }
+            } elseif ($checks === []) {
+                $lines[] = '- No topic-specific check matched. Run the narrowest relevant suite, then broaden before review.';
+            }
+
+            foreach ($conditionalChecks as $entry) {
+                $lines[] = '';
+                $lines[] = 'Checks for ' . $entry['title'] . ', ' . $entry['condition'] . ':';
+                foreach ($entry['checks'] as $check) {
+                    $lines[] = '- `' . $check . '`';
+                }
             }
         }
 
         $checklist = [
-            'Confirm the target TYPO3 core branch and issue context.',
+            $outsideCore
+                ? 'Confirm the target branch and the issue context of this repository.'
+                : 'Confirm the target TYPO3 core branch and issue context.',
             'Inspect nearby code, tests, and established subsystem conventions.',
             'Keep the patch focused on the stated task.',
             'Add or update the narrowest useful test coverage.',
@@ -808,6 +829,16 @@ final class Tools
         }
         $checklist[] = 'Summarize changed behavior, affected area, and executed commands.';
 
+        // Per line, not per section: a checklist mixes "reproduce the bug with
+        // a failing test" — true anywhere — with a changelog file below
+        // typo3/sysext/, which is a path the caller's repository does not have.
+        if ($outsideCore) {
+            $checklist = array_values(array_filter(
+                $checklist,
+                static fn(string $entry): bool => !Scope::isCoreOnly($entry)
+            ));
+        }
+
         $lines[] = '';
         $lines[] = 'Suggested checklist:';
         foreach ($checklist as $entry) {
@@ -819,6 +850,12 @@ final class Tools
         // parts those are — and how to get them — is more useful than letting
         // the checklist read as if the brief had already looked.
         $checkoutDiscovery = Scope::read()['checkoutDiscovery'];
+        if ($outsideCore) {
+            $checkoutDiscovery = array_values(array_filter(
+                $checkoutDiscovery,
+                static fn(array $entry): bool => !Scope::isCoreOnly($entry['establish'] . ' ' . $entry['how'])
+            ));
+        }
         $lines[] = '';
         $lines[] = 'Establish in your checkout — this server cannot see it:';
         foreach ($checkoutDiscovery as $entry) {
@@ -826,6 +863,12 @@ final class Tools
         }
 
         $nextTools = self::nextTools($intents, $domains);
+        if ($outsideCore) {
+            $nextTools = array_values(array_filter(
+                $nextTools,
+                static fn(array $suggestion): bool => !Scope::isCoreOnly($suggestion['tool'] . ' ' . $suggestion['when'])
+            ));
+        }
         $lines[] = '';
         $lines[] = 'Next lookups for this task:';
         foreach ($nextTools as $suggestion) {
@@ -1100,11 +1143,7 @@ final class Tools
         // repository. So the hints stay and the commands go.
         $outsideCore = Scope::isOutsideCore($paths, $task ?? '');
         if ($outsideCore) {
-            $result['matchedHints'] = array_map(static function (array $hint): array {
-                $hint['checks'] = [];
-
-                return $hint;
-            }, $result['matchedHints']);
+            $result['matchedHints'] = ArchitectureHints::withoutChecks($result['matchedHints']);
         }
 
         $lines = [];

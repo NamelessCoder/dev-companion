@@ -11,6 +11,26 @@ reconsider does not belong here. When an assumption is later disproved, the
 entry stays and gains a **Corrected** line: the wrong assumption is the useful
 part, because it names the place where the next one is likely to sit.
 
+## 2026-07-29 — What is core-only is decided per line, by what it names
+
+`typo3_task_guide` now drops core-only material outside the core. What counts
+as core-only is not a flag on each entry but a check on its text: does it name
+something that exists in the core repository and nowhere else —
+`typo3/sysext/`, `Build/Scripts/`, Gerrit, a Change-Id, the core branch policy.
+
+- **Decided:** a mechanical check over the rendered line, in `Scope`, applied
+  to the checklist, the checkout discovery steps and the follow-up tools. The
+  alternative — marking every checklist item, every intent item and every scope
+  entry in the knowledge files — is a flag on a hundred strings that has to be
+  set correctly each time one is added, and forgetting it fails silently.
+- **Assumed:** naming a core artefact is a reliable proxy for being unusable
+  outside the core, and the cost of the two error directions is asymmetric: a
+  transferable line dropped because it mentioned a core path as an example is a
+  smaller loss than an unrunnable command handed over as a step.
+- **Would falsify it:** a checklist item that has to survive although it names
+  a core path — advice about reading the core as a reference rather than
+  changing it would be exactly that. It would then need the flag after all.
+
 ## 2026-07-29 — A core-only intent asks for evidence, not for silence
 
 `outsideCore` was to be the gate for the patch submission intent. It is not

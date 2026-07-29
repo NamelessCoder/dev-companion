@@ -148,17 +148,16 @@ took before the requirement above was written down, and it will not survive it.
   uncertain the answer says so instead of defaulting to core.
   *From:* `outsideCore` flipping only after the caller spelled out "not TYPO3
   core" in prose (2026-07-29).
-- **R-SCO-2** **open** — `outsideCore` changes the payload. Core-only commands,
-  checklists and checkout discovery are dropped; conventions that transfer stay
-  and are marked as such.
+- **R-SCO-2** `outsideCore` changes the payload. Core-only commands, checklist
+  items and checkout discovery are dropped; conventions that transfer stay and
+  are marked as such. The line is drawn per entry, not per section, because a
+  checklist mixes both.
   *From:* an answer that reported `outsideCore: true` and then returned four
   `runTests.sh` suites for a repository that has no `Build/Scripts/`
   (2026-07-29).
-  *Held by:* `ScopeTest::noRunTestsCommandIsHandedToARepositoryThatHasNoRunTests`
-  and `ScopeTest::anArchitectureHintKeepsItsAdviceOutsideTheCoreAndLosesItsCoreChecks`,
-  for `typo3_test_run_guide` and `typo3_architecture_lookup`. Still open for
-  `typo3_task_guide`, which states the boundary and then hands over the core
-  checks, the core checklist and the checkout discovery regardless.
+  *Held by:* `ScopeTest::aBriefOutsideTheCoreKeepsNothingThatOnlyTheCoreHas`,
+  `ScopeTest::noRunTestsCommandIsHandedToARepositoryThatHasNoRunTests`,
+  `ScopeTest::anArchitectureHintKeepsItsAdviceOutsideTheCoreAndLosesItsCoreChecks`
 - **R-SCO-5** Recognising work outside the core is not one tool's business.
   Every tool whose payload is core-only applies the same check and opens with
   the same sentence, so a caller does not have to know which of them looked.

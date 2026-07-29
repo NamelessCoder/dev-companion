@@ -1164,11 +1164,10 @@ final class Tools
         }
         if ($result['withheldCategories'] !== []) {
             $lines[] = sprintf(
-                'This task names the frontend, so %s hints are not part of this answer. What this server holds '
-                . 'under that heading describes the TYPO3 backend interface — its Sass sources, its --typo3-* '
-                . 'custom properties, its light and dark color schemes, its move away from Bootstrap — and none '
-                . 'of it is advice for what a website renders. Frontend theming is documented at '
-                . 'https://docs.typo3.org. Name the backend in the task if you are styling a backend module.',
+                'This task names the frontend, so %s is withheld: it describes the TYPO3 backend interface — its '
+                . 'Sass sources, its --typo3-* properties, its color schemes — and would be inverted advice for '
+                . 'what a website renders. Frontend theming: https://docs.typo3.org. Name the backend in the task '
+                . 'if you are styling a backend module.',
                 implode(' and ', $result['withheldCategories']),
             );
             $lines[] = '';
@@ -2042,12 +2041,10 @@ final class Tools
         // issue as a defect in their commit message.
         $lines[] = '';
         $lines[] = $workflow === CommitMessage::WORKFLOW_PROJECT
-            ? 'Checked against the TYPO3 message rules without the core workflow: the subject keyword, the 52/72 '
-                . 'character limits and the body wrapping apply, the Forge issue, the Releases: trailer and the '
-                . 'changelog do not. Pass workflow="core" for a patch against the TYPO3 core itself.'
-            : 'Checked against the core contribution rules, trailers included. For a commit in a project or '
-                . 'extension repository of your own, pass workflow="project": same subject and body rules, without '
-                . 'the Forge issue and the Releases: trailer.';
+            ? 'Checked without the core workflow: keyword, 52/72 limits and wrapping apply, the Forge issue and '
+                . 'the Releases: trailer do not. workflow="core" for a patch against the TYPO3 core.'
+            : 'Checked against the core contribution rules, trailers included. workflow="project" applies the same '
+                . 'subject and body rules without the Forge issue and the Releases: trailer.';
 
         return ToolResult::create(implode("\n", $lines), [
             'message' => $result['message'],

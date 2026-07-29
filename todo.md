@@ -41,16 +41,27 @@ else here was written by someone who already knew what they meant.
 
 ---
 
-## 1. A maintenance guide, once the pieces are there
+## 1. What an extension registers, not only that it is installed
 
-**Serves:** `feedback/2026-07-29-100314`, scenario `SITE-02` · **Next step:**
-write the upgrade order of operations into `knowledge/` — which step comes
-first, what runs in which environment, when the wizards run relative to the
-schema, what to do about third-party extensions. A guide that composes it with
-`typo3_project_scope` and `typo3_changelog_lookup` comes after that.
+**Serves:** `feedback/2026-07-29-094054` · **Next step:** decide where it goes —
+a `registers` section per extension in `typo3_project_scope`, or an extension of
+its own with a key as its argument — then read it from the files the way the
+sites are read: `Configuration/TCA/` and `Configuration/TCA/Overrides/`,
+`Configuration/Services.yaml`, `Configuration/Icons.php`, the Fluid roots, the
+content elements it adds. Report the Composer patches from `extra` while there.
 
-The upgrade question is "what do I do, in which order, and what breaks". Three
-of the four inputs exist now: `typo3_project_scope` knows what is installed,
-`typo3_changelog_lookup` knows what changed, the console knows `upgrade:list`.
-What is missing is the order of operations, and that is knowledge to be written
-rather than a tool to be built — it belongs in `knowledge/` first.
+The scope names an extension and its path today. A maintenance question is
+usually about what is inside it, and that is readable without a console.
+
+## 2. Let a target version decide in the catalogs, not only inform
+
+**Serves:** `feedback/2026-07-29-094245`, R-AUD-4 · **Next step:** record per
+catalog entry what it was verified against — the same `since`/`until` the hints
+use — then accept `targetVersion` on `typo3_component_lookup` and
+`typo3_catalog_scope` and leave out what does not hold there.
+
+The hints and `typo3_task_guide` take a target version and filter by it. The
+catalogs answer from one pinned revision and say so in a skew sentence, which
+names the difference without acting on it: markup taken from one revision either
+holds on the stated version or it does not, and the honest answer for "does not"
+is to decline it and name what to verify against.

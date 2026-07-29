@@ -51,9 +51,9 @@ partly `gap`
 
 ## SITE-02 — The installation has to go up a major
 
-**Environment:** `E-SITE` on the previous major · **Status today:** `partial` —
-`typo3_changelog_lookup` and `typo3_project_scope` answer what changed and what
-is installed; the order of operations is still not written down
+**Environment:** `E-SITE` on the previous major · **Status today:** `covered` —
+`R-PRJ-4`: `typo3_task_guide` recognises the task and composes the order of
+operations with what `typo3_project_scope` and `typo3_changelog_lookup` know
 
 > This site is on the previous LTS and we need to be on the current one before
 > support ends. Plan the upgrade, tell me what will break, and start with the

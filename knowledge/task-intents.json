@@ -180,5 +180,35 @@
     "tools": [
       "typo3_commit_message_guide, to check the message before pushing"
     ]
+  },
+  {
+    "id": "installation-upgrade",
+    "title": "Upgrading or maintaining an installation",
+    "match": [
+      "upgrade",
+      "maintain",
+      "maintenance",
+      "composer update",
+      "new major"
+    ],
+    "matchWeak": [
+      "updates"
+    ],
+    "condition": "only if the task is about an installation rather than about the code in it",
+    "rulesQuery": "",
+    "checklist": [
+      "Establish where you are before changing anything: typo3_project_scope for the installed TYPO3 and PHP and for which extensions are the project's own, typo3_changelog_lookup with type=breaking for what the target version did to them.",
+      "Check every third-party extension for a release that supports the target major. One that has none decides the schedule, and Composer reports it as a conflict rather than as advice.",
+      "Dump the database and work on a copy. From the first schema change on, the upgrade cannot be reverted with git.",
+      "Raise the PHP version where the target requires it — in composer.json and in the environment that runs it — then require the new TYPO3 constraints together with every extension in one composer call.",
+      "Then, in this order: typo3 extension:setup for the schema and the static data, typo3 upgrade:list and typo3 upgrade:run for the wizards, typo3 cache:flush.",
+      "Run the Extension Scanner over the project's own extensions for the call sites the changelog named, and re-check the site configuration, the TypoScript and the TSconfig — then repeat the same commands in the same order on every other environment."
+    ],
+    "checks": [],
+    "tools": [
+      "typo3_project_scope, for what this installation is and which commands this repository declares",
+      "typo3_changelog_lookup with type=breaking or deprecation and the target version",
+      "typo3_architecture_lookup with id=installation-upgrade, for the order of operations and why it is that order"
+    ]
   }
 ]

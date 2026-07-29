@@ -282,11 +282,12 @@ drive the individual tools:
 - `typo3-commit-messages.md`
 - `typo3-gerrit-workflow.md`
 - `typo3-contribution-sources.md`
-- `architecture-hints/` (one JSON file per section: `css.json`, `php.json`,
-  `typescript.json`, `general.json`)
-- `catalog/` (the lookup catalog: `components.json`, `icons.json`,
-  `labels.json`, `component-checklist.json`)
-- `test-suite-hints.json`, `task-intents.json`, `server-scope.json`
+- `architecture-hints/` (one JSON file per section: `php.json`, `fluid.json`,
+  `typoscript.json`, `css.json`, `typescript.json`, `general.json`)
+- `catalog/` (the component catalog: `components.json`,
+  `component-checklist.json`, `meta.json`)
+- `test-suite-hints.json`, `task-intents.json`, `icon-concepts.json`,
+  `server-scope.json`, `versions.json`
 
 All knowledge files are read fresh on every request, so editing them takes
 effect immediately — no restart or rebuild.

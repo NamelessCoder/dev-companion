@@ -133,5 +133,41 @@
       "Reference such a file as EXT:<key>/Resources/Public/... and let the resolver produce the published URI. The _assets path is an implementation detail and its hash changes with the layout."
     ],
     "checks": []
+  },
+  {
+    "id": "installation-upgrade",
+    "title": "Upgrading an Installation",
+    "appliesTo": [
+      "upgrade",
+      "update typo3",
+      "major upgrade",
+      "composer update",
+      "upgrade wizard",
+      "extension scanner",
+      "migration",
+      "maintenance",
+      "new major",
+      "version jump",
+      "composer.json",
+      "maintain",
+      "updates",
+      "site maintenance"
+    ],
+    "hints": [
+      "The order is: find out what breaks, move the code, then the database, then the caches. Reading first is what makes it one pass instead of three — typo3_project_scope says which TYPO3 and PHP this installation is on and which extensions are its own, and typo3_changelog_lookup with type breaking or deprecation says what the target version did to them.",
+      "The third-party extensions decide when the upgrade can happen, not whether it should. One without a release for the target major blocks the whole step, and Composer's own resolution is where that surfaces — so require the new constraints for typo3/cms-* and for every extension in one call rather than one at a time, and read the conflict it reports as the list of what has to be replaced, patched or dropped.",
+      "Raise the PHP version the target requires before the TYPO3 constraint, in composer.json and in the environment that actually runs it — a DDEV project states its own in .ddev/config.yaml. Resolving against a PHP nobody runs produces a lock file that installs and an installation that does not boot.",
+      "Everything up to here is revertible with git and everything after it is not. Take a database dump before the first command that writes, and do the pass on a copy: the schema changes and the upgrade wizards are what makes an upgrade one-way.",
+      "After the packages changed, `typo3 extension:setup` is the step that applies them: database schema changes, static data, the setup of every installed extension. It is the core's own command — `database:updateschema` belongs to the TYPO3 Console extension (helhum/typo3-console), which an installation only has if it required it.",
+      "Then the wizards. `typo3 upgrade:list` shows what is pending and why, `typo3 upgrade:run` runs all of them and takes a single wizard identifier as an argument. A wizard states its own prerequisites — a schema that is up to date, a current reference index — so one that refuses usually means a step above was skipped.",
+      {
+        "text": "`typo3 upgrade:mark:undone <identifier>` marks a wizard as not run, which is the way back from one that ran against the wrong data. Without it a wizard is done for good.",
+        "since": 13
+      },
+      "Then `typo3 cache:flush`, and `typo3 cache:warmup` where the first request must not pay for the rebuild.",
+      "What no wizard touches is your own code. The Extension Scanner in the Install Tool runs the core's matchers from typo3/sysext/install/Configuration/ExtensionScanner/Php/ over an extension and finds the call sites a changelog entry named. How much of a change it can find at all is what that entry's FullyScanned, PartiallyScanned or NotScanned tag says, and typo3_changelog_lookup returns it.",
+      "Run the sequence in the environment that is safe to break first, then the same commands in the same order everywhere else. An upgrade that was done differently on production is an installation nobody can reproduce — and the site configuration, the TypoScript and the TSconfig are part of what has to be re-checked there, not only the PHP."
+    ],
+    "checks": []
   }
 ]

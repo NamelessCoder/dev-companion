@@ -1059,7 +1059,7 @@ final class Tools
         $lines[] = 'Next lookups for this task:';
         foreach ($nextTools as $suggestion) {
             $lines[] = '- ' . $suggestion['tool']
-                . ($suggestion['when'] === '' ? '' : ' ' . $suggestion['when']);
+                . ($suggestion['when'] === '' ? '' : ' — ' . $suggestion['when']);
         }
 
         return ToolResult::create(implode("\n", $lines), [
@@ -1173,7 +1173,10 @@ final class Tools
             }
             $suggestions[$tool] = [
                 'tool' => $tool,
-                'when' => ltrim(substr($candidate, strlen($tool))),
+                // The candidates are written as one sentence, "tool, when", so
+                // the separator has to come off with the tool name — otherwise
+                // both halves carry it and the answer reads "tool , when".
+                'when' => ltrim(substr($candidate, strlen($tool)), ' ,'),
             ];
         }
 

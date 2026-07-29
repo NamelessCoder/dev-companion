@@ -406,6 +406,34 @@ final class HintsTest extends TestCase
     }
 
     #[Test]
+    public function upgradingAnInstallationIsAnsweredAsAnOrderOfOperations(): void
+    {
+        // The question a site maintainer asks first — "what do I do, in which
+        // order" — used to be answered with how to author a deprecation, which
+        // is the same subject seen from the core's side and useless here.
+        $result = Tools::call('typo3_task_guide', ['task' => 'upgrade this composer site project to TYPO3 v14']);
+
+        self::assertContains('installation-upgrade', array_column($result->data['intents'], 'id'));
+
+        $group = array_values(array_filter(
+            $result->data['architectureHints'],
+            static fn(array $hint): bool => $hint['id'] === 'installation-upgrade',
+        ));
+        self::assertCount(1, $group, 'the order of operations is part of the answer');
+
+        // The steps are only worth anything in this order: the schema before
+        // the wizards that declare it as their prerequisite, the caches last.
+        $statements = implode("\n", array_column($group[0]['hints'], 'text'));
+        $order = array_map(
+            static fn(string $command): int => (int) strpos($statements, $command),
+            ['extension:setup', 'upgrade:run', 'cache:flush'],
+        );
+        self::assertNotContains(0, $order, 'every step of the sequence is named');
+        self::assertLessThan($order[1], $order[0], 'the schema is applied before the wizards run');
+        self::assertLessThan($order[2], $order[1], 'the caches are flushed after the wizards');
+    }
+
+    #[Test]
     public function withoutAnySignalTheDomainIsPhp(): void
     {
         self::assertSame([Domains::PHP], Domains::detect([], 'do something'));

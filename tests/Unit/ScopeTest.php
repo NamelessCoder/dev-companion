@@ -6,8 +6,10 @@ namespace Typo3CmsMcp\Tests\Unit;
 
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
+use Typo3CmsMcp\Instance;
 use Typo3CmsMcp\Scope;
 use Typo3CmsMcp\Tools;
+use Typo3CmsMcp\Typo3Cli;
 
 final class ScopeTest extends TestCase
 {
@@ -57,6 +59,42 @@ final class ScopeTest extends TestCase
 
         self::assertTrue($result->data['outsideCore']);
         self::assertStringStartsWith('This reads as work outside the TYPO3 core', $result->text);
+    }
+
+    #[Test]
+    public function theInstallationDiagnosticIsDataRatherThanProse(): void
+    {
+        Instance::discoverFrom(sys_get_temp_dir());
+        Typo3Cli::forget();
+
+        try {
+            $installation = Tools::call('typo3_server_scope', [])->data['installation'];
+        } finally {
+            Instance::discoverFrom(null);
+            Typo3Cli::forget();
+        }
+
+        // A client that renders structuredContent and drops the text block saw
+        // none of this, and read five empty results as five empty registries.
+        self::assertFalse($installation['found']);
+        self::assertNotSame([], $installation['searched']);
+        self::assertFalse($installation['console']['reachable']);
+        self::assertNotSame('', $installation['console']['reason']);
+        self::assertSame(Instance::ROOT_VARIABLE, $installation['settings']['root']);
+        self::assertSame(Typo3Cli::CONSOLE_VARIABLE, $installation['settings']['console']);
+    }
+
+    #[Test]
+    public function anUnanswerableLookupCarriesItsReasonInTheData(): void
+    {
+        Instance::discoverFrom(null);
+        Typo3Cli::forget();
+
+        $result = Tools::call('typo3_label_lookup', ['query' => 'save']);
+
+        self::assertSame('nothing', $result->data['answeredBy']);
+        self::assertNotSame('', $result->data['unavailable']['reason']);
+        self::assertSame([], $result->data['labels']);
     }
 
     #[Test]

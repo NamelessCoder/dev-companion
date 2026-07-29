@@ -355,6 +355,13 @@ final class Tools
             $lines[] = 'No TYPO3 installation was found from the directory this server was started in, so every answer '
                 . 'comes from the bundled knowledge base alone. Questions about what is registered in an '
                 . 'installation — which icon identifiers exist, which labels — cannot be answered here.';
+            if (Instance::searched() !== []) {
+                // Where it looked is the difference between "this layout cannot
+                // be read" and "the client started the server somewhere else",
+                // and the caller can check neither without being told.
+                $lines[] = 'Looked in: ' . implode(', ', Instance::searched())
+                    . ' — none of them declares a TYPO3 core checkout or holds Composer metadata with TYPO3 packages in it.';
+            }
             $lines[] = sprintf(
                 'Naming it outright is the way out: set %s to the installation root, and %s to the command that '
                 . 'reaches its console where that is not a path this server would find on its own.',
@@ -420,7 +427,47 @@ final class Tools
                 . 'Missing something that belongs here? Leave a note with it.';
         }
 
-        return ToolResult::create(implode("\n", $lines), $scope);
+        return ToolResult::create(implode("\n", $lines), $scope + ['installation' => self::installationReport()]);
+    }
+
+    /**
+     * The installation diagnostic as data.
+     *
+     * It used to be in the text alone, and a client that renders
+     * structuredContent and drops the text block never saw it. What the caller
+     * got instead was five tools answering {"matchCount": 0, "answeredBy":
+     * "nothing"} — indistinguishable from a registry that really is empty, and
+     * read as one: an extension with forty registered icons was reported as
+     * registering none, twice.
+     *
+     * @return array<string, mixed>
+     */
+    private static function installationReport(): array
+    {
+        $instance = Instance::describe();
+        $console = Typo3Cli::resolve();
+
+        return [
+            'found' => $instance !== null,
+            'root' => $instance['root'] ?? null,
+            'kind' => $instance['kind'] ?? null,
+            'via' => $instance['via'] ?? null,
+            'startedFrom' => $instance['startedFrom'] ?? null,
+            'searched' => Instance::searched(),
+            'packageCount' => count(Instance::packages()),
+            'misconfiguration' => Instance::misconfiguration() === '' ? null : Instance::misconfiguration(),
+            'console' => [
+                'reachable' => $console !== null,
+                'via' => $console['via'] ?? null,
+                'php' => ($console['php'] ?? '') === '' ? null : $console['php'],
+                'command' => $console === null ? null : implode(' ', $console['command']),
+                'reason' => $console === null ? Typo3Cli::reason() : null,
+            ],
+            'settings' => [
+                'root' => Instance::ROOT_VARIABLE,
+                'console' => Typo3Cli::CONSOLE_VARIABLE,
+            ],
+        ];
     }
 
     /** @param array<string, mixed> $args */
@@ -1287,7 +1334,20 @@ final class Tools
                 . 'typo3_server_scope reports the installation and its console.',
                 $error
             ),
-            $data + ['answeredBy' => 'nothing'],
+            $data + [
+                'answeredBy' => 'nothing',
+                // The reason travels with the answer, not only in the text
+                // beside it: a client that renders structuredContent alone
+                // would otherwise see an empty result and nothing else, which
+                // is exactly what a registry that really is empty looks like.
+                'unavailable' => [
+                    'reason' => $error,
+                    'settings' => [
+                        'root' => Instance::ROOT_VARIABLE,
+                        'console' => Typo3Cli::CONSOLE_VARIABLE,
+                    ],
+                ],
+            ],
         );
     }
 
@@ -1660,13 +1720,9 @@ final class Tools
 
         $answer = Typo3Cli::json($arguments);
         if (!$answer['ok'] || !is_array($answer['data'])) {
-            return ToolResult::create(
-                sprintf(
-                    "The installation could not be asked, so this is unanswered rather than empty: %s.\n"
-                    . 'typo3_server_scope reports the installation and its console.',
-                    $answer['error']
-                ),
-                ['query' => $query, 'matchCount' => 0, 'labels' => [], 'answeredBy' => 'nothing'],
+            return self::consoleUnavailable(
+                $answer['error'],
+                ['query' => $query, 'matchCount' => 0, 'labels' => []],
             );
         }
 

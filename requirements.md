@@ -84,10 +84,12 @@ them, this section wins and the other one is what needs rewriting.
   `InstanceTest::aNamedInstallationThatDoesNotExistIsReportedRatherThanSearchedPast`,
   `Typo3CliTest::aStatedCommandIsUsedInsteadOfWorkingOneOut`,
   `Typo3CliTest::aStatedCommandThatIsNoProgramIsReportedRatherThanReplaced`
-- **R-DIS-8** **open** — When discovery fails, the answer names where it started
-  and why each candidate was rejected.
+- **R-DIS-8** When discovery fails, the answer names where it looked, in text and
+  in data, so a layout that cannot be read is distinguishable from a server
+  started in the wrong directory.
   *From:* the same session; "no installation found" was indistinguishable from
   "started in the wrong directory".
+  *Held by:* `ScopeTest::theInstallationDiagnosticIsDataRatherThanProse`
 
 ## Answers — what a caller may conclude from one
 
@@ -95,12 +97,15 @@ them, this section wins and the other one is what needs rewriting.
   that means "does not exist". Every installation-backed tool carries
   `answeredBy`.
   *Held by:* `ToolContractTest`
-- **R-ANS-2** **open** — The reason behind `answeredBy: "nothing"` is in the
-  structured data, not only in the text, and `typo3_server_scope` carries the
-  installation and console diagnostic as data too.
+- **R-ANS-2** The reason behind `answeredBy: "nothing"` is in the structured
+  data, not only in the text, and `typo3_server_scope` carries the installation
+  and console diagnostic as data too. Nothing a caller needs in order to act
+  lives in the text alone.
   *From:* a client that renders `structuredContent` and drops the text block; the
   agent twice concluded an extension registered no icons and no labels
   (2026-07-29).
+  *Held by:* `ScopeTest::anUnanswerableLookupCarriesItsReasonInTheData`,
+  `ScopeTest::theInstallationDiagnosticIsDataRatherThanProse`
 - **R-ANS-3** **open** — What a component answer describes is qualified by the
   revision it was taken from, inside the entry rather than only in a trailing
   block.

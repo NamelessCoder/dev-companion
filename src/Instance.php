@@ -49,6 +49,9 @@ final class Instance
 
     private static string $misconfiguration = '';
 
+    /** @var array<int, string> The directories the last search walked. */
+    private static array $searched = [];
+
     /**
      * Hands the working directory the server was started in to the discovery.
      * Called by the stdio entrypoint and by nothing else.
@@ -84,6 +87,7 @@ final class Instance
             return self::$resolved;
         }
 
+        self::$searched = [];
         [$configured, self::$misconfiguration] = self::fromEnvironment();
         if ($configured !== null || self::$misconfiguration !== '') {
             // A configured root that cannot be used is not quietly replaced by
@@ -112,6 +116,24 @@ final class Instance
         self::describe();
 
         return self::$misconfiguration;
+    }
+
+    /**
+     * The directories the search walked, so a failure can be told apart from a
+     * server started in the wrong place.
+     *
+     * "No installation was found" is two very different situations wearing one
+     * sentence: a layout this cannot read, and a client that launched the
+     * server somewhere else entirely. Which one it is follows from where it
+     * looked, and from nothing else the caller has access to.
+     *
+     * @return array<int, string>
+     */
+    public static function searched(): array
+    {
+        self::describe();
+
+        return self::$searched;
     }
 
     /**
@@ -195,6 +217,7 @@ final class Instance
         $startedFrom = $directory;
 
         for ($depth = 0; $depth < self::MAX_DEPTH; ++$depth) {
+            self::$searched[] = $directory;
             if ((self::readJson($directory . '/composer.json')['type'] ?? '') === 'typo3-cms-core') {
                 return [
                     'root' => $directory,

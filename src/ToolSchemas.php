@@ -68,7 +68,48 @@ final class ToolSchemas
                 'when' => self::string(),
                 'call' => self::string(),
             ], ['when', 'call'])),
-        ], ['purpose', 'covers', 'doesNotCover', 'routing']);
+            'installation' => self::object([
+                'found' => ['type' => 'boolean', 'description' => 'Whether there is an installation to read at all.'],
+                'root' => self::nullableString('Absolute path of the installation.'),
+                'kind' => self::nullableString('core-checkout or composer-project.'),
+                'via' => self::nullableString('How it was determined: discovery (walked up from the start directory) or environment (named by TYPO3_MCP_ROOT).'),
+                'startedFrom' => self::nullableString('Where the search started, or the configured value.'),
+                'searched' => self::listOf(self::string(), 'The directories the search walked. A failure here means a layout that cannot be read or a server started in the wrong place — this says which.'),
+                'packageCount' => self::integer('TYPO3 packages found in it.'),
+                'misconfiguration' => self::nullableString('Set when a configured value could not be followed. Nothing falls back to a discovered installation.'),
+                'console' => self::object([
+                    'reachable' => ['type' => 'boolean', 'description' => 'False means every installation-backed tool answers with answeredBy: nothing.'],
+                    'via' => self::nullableString('ddev, php, or override.'),
+                    'php' => self::nullableString('The PHP version it runs on, where that is known.'),
+                    'command' => self::nullableString('The invocation, as it is run.'),
+                    'reason' => self::nullableString('Why it cannot be run. Null when it can.'),
+                ], ['reachable']),
+                'settings' => self::object([
+                    'root' => self::string('Environment variable that names the installation root.'),
+                    'console' => self::string('Environment variable that names the console command.'),
+                ], ['root', 'console']),
+            ], ['found', 'searched', 'packageCount', 'console']),
+        ], ['purpose', 'covers', 'doesNotCover', 'routing', 'installation']);
+    }
+
+    /**
+     * Why an installation-backed answer is unanswered rather than empty.
+     *
+     * Present exactly when answeredBy is "nothing". The text said this all
+     * along; a client that renders structuredContent and drops the text block
+     * saw an empty result and nothing else.
+     *
+     * @return array<string, mixed>
+     */
+    private static function unavailable(): array
+    {
+        return self::object([
+            'reason' => self::string('What stopped the installation from being asked.'),
+            'settings' => self::object([
+                'root' => self::string('Environment variable that names the installation root.'),
+                'console' => self::string('Environment variable that names the console command.'),
+            ], ['root', 'console']),
+        ], ['reason']);
     }
 
     /** @return array<string, mixed> */
@@ -207,6 +248,7 @@ final class ToolSchemas
             'matchCount' => self::integer(),
             'exactMatch' => ['type' => 'boolean', 'description' => 'Whether the query was a registered identifier. False for a query shaped like one that is not registered — the listed icons are then suggestions, not the answer.'],
             'answeredBy' => self::answeredBy(),
+            'unavailable' => self::unavailable(),
             'icons' => self::listOf(self::object([
                 'identifier' => self::string(),
                 'category' => self::string(),
@@ -227,6 +269,7 @@ final class ToolSchemas
         return self::object([
             'matchCount' => self::integer(),
             'answeredBy' => self::answeredBy(),
+            'unavailable' => self::unavailable(),
             'namespaces' => self::listOf(self::object([
                 'prefix' => self::string('The prefix usable in a template without declaring it, for example "core".'),
                 'phpNamespaces' => self::listOf(self::string(), 'The PHP namespaces it resolves ViewHelpers from.'),
@@ -242,6 +285,7 @@ final class ToolSchemas
             'found' => ['type' => 'boolean', 'description' => 'Whether the installation has a value at that path.'],
             'value' => ['description' => 'The effective runtime value, of whatever shape the configuration has.'],
             'answeredBy' => self::answeredBy(),
+            'unavailable' => self::unavailable(),
         ], ['path', 'found', 'answeredBy']);
     }
 
@@ -252,6 +296,7 @@ final class ToolSchemas
             'query' => self::string(),
             'matchCount' => self::integer(),
             'answeredBy' => self::answeredBy(),
+            'unavailable' => self::unavailable(),
             'modules' => self::listOf(self::object([
                 'identifier' => self::string(),
                 'parents' => self::listOf(self::string(), 'The modules it sits under, outermost first.'),
@@ -269,7 +314,8 @@ final class ToolSchemas
         return self::object([
             'query' => self::string(),
             'matchCount' => self::integer(),
-            'answeredBy' => ['type' => 'string', 'enum' => ['installation', 'nothing'], 'description' => 'nothing: the installation could not be asked, so an empty result is unanswered rather than a miss.'],
+            'answeredBy' => self::answeredBy(),
+            'unavailable' => self::unavailable(),
             'labels' => self::listOf(self::object([
                 'ref' => self::string('Translation domain reference (package.resource:key) — the canonical form.'),
                 'domain' => self::string(),

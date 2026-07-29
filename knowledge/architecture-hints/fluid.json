@@ -114,7 +114,8 @@
         "text": "Data processors are configured on the PAGEVIEW object as dataProcessing., the same way FLUIDTEMPLATE takes them.",
         "since": 13
       },
-      "The content elements on that page are rendered by lib.contentElement, which is a FLUIDTEMPLATE of its own with its own template, partial and layout roots — fluid_styled_content's by default, extended through the styles.templates settings. Pointing one of those roots at the directory PAGEVIEW resolves its own templates from is what makes the page frame collide with the content element frame; the sitepackage layout hint has the naming that keeps them apart."
+      "The content elements on that page are rendered by lib.contentElement, which is a FLUIDTEMPLATE of its own with its own template, partial and layout roots — fluid_styled_content's by default, extended through the styles.templates settings. Pointing one of those roots at the directory PAGEVIEW resolves its own templates from is what makes the page frame collide with the content element frame; the sitepackage layout hint has the naming that keeps them apart.",
+      "config.sendCacheHeaders answers a cacheable page with the page cache lifetime as its max-age and an Expires to match — for a page with nothing that expires that is close to a year out. It is suppressed while a backend user is logged in, which is why it bites exactly where nobody is: a browser that has such a response will not ask again, so a fixed template keeps rendering the old page and flushing the server cache changes nothing. Bind it to the application context — [applicationContext == \"Development\"] config.sendCacheHeaders = 0 [END] — and read \"it is right in curl and wrong in the browser\" as the response headers rather than as a bug in the code."
     ],
     "checks": [
       "CI=true ./Build/Scripts/runTests.sh -s functional"

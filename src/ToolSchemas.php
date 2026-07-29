@@ -171,6 +171,7 @@ final class ToolSchemas
             'query' => self::nullableString(),
             'paths' => self::listOf(self::string(), 'The paths the answer was narrowed by, given ones and ones named in the query.'),
             'domains' => self::listOf(self::string(), 'Domains those paths touch. Empty means nothing was narrowed.'),
+            'outsideCore' => ['type' => 'boolean', 'description' => 'True when the paths read as a project or third-party extension. No suite is then returned: runTests.sh is part of the core repository and cannot be run there.'],
             'suites' => self::listOf(self::testSuiteRecord()),
             'invocation' => self::object([
                 'notes' => self::listOf(self::string()),
@@ -183,7 +184,7 @@ final class ToolSchemas
                     'command' => self::string(),
                 ], ['purpose', 'command'])),
             ], ['notes', 'options', 'examples']),
-        ], ['suites', 'invocation']);
+        ], ['outsideCore', 'suites', 'invocation']);
     }
 
     /** @return array<string, mixed> */
@@ -193,9 +194,10 @@ final class ToolSchemas
             'task' => self::nullableString(),
             'paths' => self::listOf(self::string()),
             'domains' => self::listOf(self::string(), 'Hints outside these domains are not returned.'),
+            'outsideCore' => ['type' => 'boolean', 'description' => 'True when the paths or the task read as a project or third-party extension. The hints still hold; their checks are then empty, because runTests.sh is part of the core repository.'],
             'hints' => self::listOf(self::architectureHintRecord()),
             'knowledgeSections' => self::listOf(self::knowledgeMatch(), 'Fallback prose, returned only when no structured hint matched.'),
-        ], ['paths', 'domains', 'hints', 'knowledgeSections']);
+        ], ['paths', 'domains', 'outsideCore', 'hints', 'knowledgeSections']);
     }
 
     /** @return array<string, mixed> */

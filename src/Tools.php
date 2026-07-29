@@ -116,7 +116,7 @@ final class Tools
             ],
             [
                 'name' => 'typo3_test_run_guide',
-                'description' => 'Recommend Build/Scripts/runTests.sh commands by topic. Pass the changed paths and the answer is narrowed to the suites that can actually fail on them — a Sass-only change gets the CSS suites, not the PHP ones.',
+                'description' => 'Recommend Build/Scripts/runTests.sh commands by topic. Pass the changed paths and the answer is narrowed to the suites that can actually fail on them — a Sass-only change gets the CSS suites, not the PHP ones. The script belongs to the core repository, so paths that read as a project or third-party extension get no suite at all rather than commands that cannot run there.',
                 'inputSchema' => [
                     'type' => 'object',
                     'properties' => [
@@ -127,7 +127,7 @@ final class Tools
             ],
             [
                 'name' => 'typo3_architecture_lookup',
-                'description' => 'Return architecture hints for TYPO3 core paths or task topics, grouped by section.',
+                'description' => 'Return architecture hints for TYPO3 core paths or task topics, grouped by section. Where the paths read as a project or third-party extension the hints still come back — the conventions transfer — but without their core check commands.',
                 'inputSchema' => [
                     'type' => 'object',
                     'properties' => [
@@ -691,11 +691,9 @@ final class Tools
 
         $lines = [];
         if ($outsideCore) {
-            $lines[] = 'This reads as work outside the TYPO3 core — a project or third-party extension. '
-                . 'This server only knows the core\'s own conventions, and several of them (the changelog, '
-                . 'the Gerrit workflow, the runTests.sh suites) have no counterpart there. Take what follows '
-                . 'as conventions that may transfer, not as a checklist for this task, and use '
-                . 'https://docs.typo3.org/ for extension development. typo3_server_scope states the boundary.';
+            $lines[] = Scope::OUTSIDE_CORE_NOTICE . ' Take what follows as conventions that may transfer, not as '
+                . 'a checklist for this task, and use https://docs.typo3.org/ for extension development. '
+                . 'typo3_server_scope states the boundary.';
             $lines[] = '';
         }
 
@@ -990,6 +988,27 @@ final class Tools
         $paths = array_values(array_unique(array_merge($paths, Domains::pathsIn((string) $query))));
         $domains = Domains::fromPaths($paths);
 
+        // Every suite this guide knows is a Build/Scripts/runTests.sh
+        // invocation, and that script is part of the core repository. Handing
+        // it to a site package is worse than declining: the commands look
+        // copy-pasteable and none of them exists there.
+        if (Scope::isOutsideCore($paths, (string) $query)) {
+            return ToolResult::create(
+                Scope::OUTSIDE_CORE_NOTICE . ' Build/Scripts/runTests.sh is part of the core repository, so the '
+                . 'suites this guide knows cannot be run from here and are left out rather than handed over. '
+                . 'For testing an extension or a site package, see https://docs.typo3.org/. typo3_server_scope '
+                . 'states the boundary.',
+                [
+                    'query' => $query,
+                    'paths' => $paths,
+                    'domains' => $domains,
+                    'outsideCore' => true,
+                    'suites' => [],
+                    'invocation' => ['notes' => [], 'options' => [], 'examples' => []],
+                ],
+            );
+        }
+
         $hints = TestSuiteHints::find($query, $domains);
 
         $blocks = [];
@@ -1025,6 +1044,7 @@ final class Tools
             'query' => $query,
             'paths' => $paths,
             'domains' => $domains,
+            'outsideCore' => false,
             'suites' => self::suiteRecords($hints),
             'invocation' => TestSuiteHints::invocation(),
         ]);
@@ -1069,7 +1089,26 @@ final class Tools
 
         $result = ArchitectureHints::find($paths, $task ?? '', $limit);
 
+        // The hints transfer — a DataHandler or Fluid convention is the same
+        // one outside the core — but the checks attached to them are all
+        // runTests.sh invocations, and that script lives in the core
+        // repository. So the hints stay and the commands go.
+        $outsideCore = Scope::isOutsideCore($paths, $task ?? '');
+        if ($outsideCore) {
+            $result['matchedHints'] = array_map(static function (array $hint): array {
+                $hint['checks'] = [];
+
+                return $hint;
+            }, $result['matchedHints']);
+        }
+
         $lines = [];
+        if ($outsideCore) {
+            $lines[] = Scope::OUTSIDE_CORE_NOTICE . ' The hints below are conventions that may transfer; the '
+                . 'checks that normally come with them are left out, because Build/Scripts/runTests.sh is part '
+                . 'of the core repository and does not exist here. typo3_server_scope states the boundary.';
+            $lines[] = '';
+        }
         if ($task !== null && $task !== '') {
             $lines[] = 'Task: ' . $task;
         }
@@ -1113,6 +1152,7 @@ final class Tools
             'task' => $task === '' ? null : $task,
             'paths' => array_values($paths),
             'domains' => $result['domains'],
+            'outsideCore' => $outsideCore,
             'hints' => self::hintRecords($result['matchedHints']),
             'knowledgeSections' => self::matchRecords($result['knowledgeSections']),
         ]);

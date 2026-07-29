@@ -154,6 +154,18 @@ took before the requirement above was written down, and it will not survive it.
   *From:* an answer that reported `outsideCore: true` and then returned four
   `runTests.sh` suites for a repository that has no `Build/Scripts/`
   (2026-07-29).
+  *Held by:* `ScopeTest::noRunTestsCommandIsHandedToARepositoryThatHasNoRunTests`
+  and `ScopeTest::anArchitectureHintKeepsItsAdviceOutsideTheCoreAndLosesItsCoreChecks`,
+  for `typo3_test_run_guide` and `typo3_architecture_lookup`. Still open for
+  `typo3_task_guide`, which states the boundary and then hands over the core
+  checks, the core checklist and the checkout discovery regardless.
+- **R-SCO-5** Recognising work outside the core is not one tool's business.
+  Every tool whose payload is core-only applies the same check and opens with
+  the same sentence, so a caller does not have to know which of them looked.
+  *From:* `typo3_task_guide` prefixing the disclaimer for paths that
+  `typo3_test_run_guide` answered with four unrunnable commands in the same
+  session (2026-07-29).
+  *Held by:* the two tests above.
 - **R-SCO-3** **open** — Core-only intents such as patch submission are not
   selected for work that is not core work.
   *From:* third-party extension maintenance recognised as a Gerrit patch

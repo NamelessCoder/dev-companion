@@ -11,6 +11,24 @@ reconsider does not belong here. When an assumption is later disproved, the
 entry stays and gains a **Corrected** line: the wrong assumption is the useful
 part, because it names the place where the next one is likely to sit.
 
+## 2026-07-29 — Outside the core the test guide declines rather than adapts
+
+`typo3_test_run_guide` recognises work outside the core and now returns no
+suite at all, while `typo3_architecture_lookup` keeps its hints and drops only
+their check commands.
+
+- **Decided:** the difference between the two is what the payload is made of. A
+  hint is a convention and travels; a suite is a command against a script that
+  lives in the core repository and does not.
+- **Assumed:** nothing in `knowledge/` describes how an extension runs its
+  tests, so anything the guide offered instead would be invented on the spot —
+  and an invented command is the failure the note reported, one level further
+  along. A pointer to https://docs.typo3.org/ is the honest answer until that
+  knowledge exists.
+- **Would falsify it:** extension testing conventions in `knowledge/`. The
+  guard then becomes a branch to the other corpus rather than a decline, and
+  this entry is what says why it was ever a decline.
+
 ## 2026-07-29 — A label query is words, and the console is asked with a regex
 
 `language:domain:search --search=` matches one literal string, so the words of a

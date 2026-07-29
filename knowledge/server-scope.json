@@ -30,7 +30,7 @@
     },
     {
       "topic": "runTests.sh suites, options, and targeted invocation",
-      "depth": "Every suite this knowledge base knows, with the command, the targeted form, and when to use it.",
+      "depth": "Every suite this knowledge base knows, with the command, the targeted form, and when to use it. The script is part of the core repository, so paths that read as a project or third-party extension get the boundary stated instead of a command.",
       "tools": [
         "typo3_test_run_guide",
         "typo3_script_lookup"

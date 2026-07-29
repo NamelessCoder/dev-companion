@@ -62,6 +62,43 @@ final class ScopeTest extends TestCase
     }
 
     #[Test]
+    public function noRunTestsCommandIsHandedToARepositoryThatHasNoRunTests(): void
+    {
+        // Every suite this guide knows is a Build/Scripts/runTests.sh
+        // invocation, and that script is part of the core repository. Handed to
+        // a site package, every command in the answer is unrunnable — and it
+        // looks copy-pasteable, which is worse than declining.
+        $result = Tools::call('typo3_test_run_guide', [
+            'query' => 'how do I test my sitepackage',
+            'paths' => ['packages/my_sitepackage/Classes/Command/SeedCommand.php'],
+        ]);
+
+        self::assertTrue($result->data['outsideCore']);
+        self::assertSame([], $result->data['suites']);
+        // The script is named in the sentence that explains why nothing is
+        // returned; what must not appear is a command shaped to be run.
+        self::assertStringNotContainsString('CI=true', $result->text);
+        self::assertStringStartsWith('This reads as work outside the TYPO3 core', $result->text);
+    }
+
+    #[Test]
+    public function anArchitectureHintKeepsItsAdviceOutsideTheCoreAndLosesItsCoreChecks(): void
+    {
+        // The conventions transfer — the commands do not.
+        $result = Tools::call('typo3_architecture_lookup', [
+            'task' => 'add a console command to my site package',
+            'paths' => ['packages/my_sitepackage/Classes/Command/SeedCommand.php'],
+        ]);
+
+        self::assertTrue($result->data['outsideCore']);
+        self::assertNotSame([], $result->data['hints']);
+        foreach ($result->data['hints'] as $hint) {
+            self::assertSame([], $hint['checks'], $hint['id'] . ' handed over a core check');
+        }
+        self::assertStringNotContainsString('CI=true', $result->text);
+    }
+
+    #[Test]
     public function theInstallationDiagnosticIsDataRatherThanProse(): void
     {
         Instance::discoverFrom(sys_get_temp_dir());

@@ -156,9 +156,11 @@ name already says what shape the answer has.
 - `typo3_task_guide`: builds a task checklist enriched with matching
   architecture hints and relevant core checks.
 - `typo3_test_run_guide`: recommends `Build/Scripts/runTests.sh` commands
-  by topic.
+  by topic. Paths that read as a project or third-party extension get no suite:
+  the script is part of the core repository.
 - `typo3_architecture_lookup`: returns architecture hints for TYPO3 core paths or
-  task topics, grouped by section.
+  task topics, grouped by section. Outside the core the hints stay and their
+  check commands are dropped.
 - `typo3_component_lookup`: looks up backend UI components by name or topic and
   returns canonical markup, variant and sub-component classes, the custom
   property contract, and the styleguide demo and Sass source paths.

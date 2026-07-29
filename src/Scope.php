@@ -30,6 +30,17 @@ final class Scope
     ];
 
     /**
+     * What every tool says first once it has recognised work outside the core.
+     *
+     * One sentence in one place, because three tools now say it and a caller
+     * that learns to recognise it in one answer has to find it unchanged in the
+     * next. Each tool appends what follows from it for its own payload.
+     */
+    public const OUTSIDE_CORE_NOTICE = 'This reads as work outside the TYPO3 core — a project or third-party '
+        . 'extension. This server only knows the core\'s own conventions, and several of them (the changelog, '
+        . 'the Gerrit workflow, the runTests.sh suites) have no counterpart there.';
+
+    /**
      * Whether the task is about something other than the TYPO3 core.
      *
      * The conventions here are the core's own, and several of them — the

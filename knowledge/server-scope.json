@@ -222,7 +222,7 @@
       "call": "typo3_label_lookup with words from the wording"
     },
     {
-      "when": "About to reference an icon identifier",
+      "when": "About to reference an icon identifier in the backend — TCA, a module, a content element wizard, a backend template. The registry is the backend's; frontend rendering has no access to it.",
       "call": "typo3_icon_lookup"
     },
     {

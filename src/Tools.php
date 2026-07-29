@@ -213,7 +213,7 @@ final class Tools
             ],
             [
                 'name' => 'typo3_icon_lookup',
-                'description' => 'Validate or find an icon identifier in the TYPO3 installation you are working in. The registry is assembled from the T3Icons set, the Configuration/Icons.php of every installed package, and the flag images, so a project extension\'s icons are in the answer. Identifiers spell shapes rather than intents, so concept words are mapped: "warning" finds actions-exclamation-triangle.',
+                'description' => 'Validate or find an icon identifier in the TYPO3 backend icon registry of the installation you are working in. The registry is assembled from the T3Icons set, the Configuration/Icons.php of every installed package, and the flag images, so a project extension\'s icons are in the answer. Identifiers spell shapes rather than intents, so concept words are mapped: "warning" finds actions-exclamation-triangle. Backend only: the identifiers are resolved by IconFactory and rendered by <core:icon>, and a frontend template can use neither.',
                 'inputSchema' => [
                     'type' => 'object',
                     'properties' => [
@@ -2176,6 +2176,20 @@ final class Tools
     }
 
     /**
+     * Where the identifiers this tool answers with may be used.
+     *
+     * It travels with every answer rather than with the ones that look like
+     * frontend work, because the tool is handed a query and not a task: nothing
+     * in "product package box" says which half of TYPO3 it is for. An
+     * identifier is resolved by IconFactory and rendered by <core:icon>, and a
+     * frontend template reaches neither — so an answer without this sentence is
+     * usable in a place where it is wrong.
+     */
+    private const ICON_SCOPE = 'These identifiers address the backend icon registry. They are resolved by '
+        . 'IconFactory and rendered by the backend <core:icon> ViewHelper; frontend rendering reaches neither, '
+        . 'and needs its own inline SVG or asset file.';
+
+    /**
      * Icon identifiers registered in the installation.
      *
      * The only instance question with no console command behind it, so the
@@ -2190,6 +2204,7 @@ final class Tools
     {
         $query = trim((string) ($args['query'] ?? ''));
         $limit = (int) ($args['limit'] ?? 40);
+        $scope = self::ICON_SCOPE;
 
         if (!Instance::isAvailable()) {
             return self::consoleUnavailable(
@@ -2200,7 +2215,8 @@ final class Tools
 
         $concepts = InstalledIcons::concepts();
         if ($query === '') {
-            $lines = ['Icon categories in this installation: ' . implode(', ', InstalledIcons::categories()) . '.'];
+            $lines = [$scope, ''];
+            $lines[] = 'Icon categories in this installation: ' . implode(', ', InstalledIcons::categories()) . '.';
             $lines[] = '';
             $lines[] = 'Concept words that map to a shape: ' . implode(', ', array_keys($concepts)) . '.';
 
@@ -2211,6 +2227,7 @@ final class Tools
                 'icons' => [],
                 'categories' => InstalledIcons::categories(),
                 'concepts' => array_keys($concepts),
+                'scope' => $scope,
                 'answeredBy' => 'installation',
             ]);
         }
@@ -2225,7 +2242,7 @@ final class Tools
 
         if ($shown === []) {
             return ToolResult::create(
-                $isIdentifier
+                ($isIdentifier
                     ? sprintf('"%s" is not registered in %s.', $query, $root)
                     : sprintf(
                         'No icon in %s matches "%s". Identifiers spell the shape, not the intent — try a concept '
@@ -2233,8 +2250,15 @@ final class Tools
                         $root,
                         $query,
                         implode(', ', array_slice(array_keys($concepts), 0, 8))
-                    ),
-                ['query' => $query, 'matchCount' => 0, 'exactMatch' => false, 'icons' => [], 'answeredBy' => 'installation'],
+                    )) . "\n" . $scope,
+                [
+                    'query' => $query,
+                    'matchCount' => 0,
+                    'exactMatch' => false,
+                    'icons' => [],
+                    'scope' => $scope,
+                    'answeredBy' => 'installation',
+                ],
             );
         }
 
@@ -2251,7 +2275,7 @@ final class Tools
             $header .= sprintf(' — showing the top %d', count($shown));
         }
 
-        $lines = [$header . ':'];
+        $lines = [$scope, '', $header . ':'];
         foreach ($shown as $icon) {
             $lines[] = '- ' . $icon['identifier'];
             if ($icon['aliasOf'] !== null) {
@@ -2268,6 +2292,7 @@ final class Tools
             'matchCount' => $total,
             'exactMatch' => $exactMatch,
             'icons' => $shown,
+            'scope' => $scope,
             'answeredBy' => 'installation',
         ]);
     }

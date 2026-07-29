@@ -350,6 +350,7 @@ final class ToolSchemas
             ], ['identifier', 'category', 'aliasOf', 'source'])),
             'categories' => self::listOf(self::string(), 'Returned when no query was given.'),
             'concepts' => self::listOf(self::string(), 'Concept words that map to a shape. Returned when no query was given.'),
+            'scope' => self::string('Where these identifiers may be used: the backend registry, not frontend rendering. Carried by every answered lookup.'),
         ], ['query', 'matchCount', 'exactMatch', 'answeredBy', 'icons']);
     }
 

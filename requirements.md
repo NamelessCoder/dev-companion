@@ -374,6 +374,16 @@ took before the requirement above was written down, and it will not survive it.
 
 ## Knowledge — what is covered
 
+- **R-KNW-10** An answer says where it may be used when it is only usable in
+  half of TYPO3. The icon identifiers are the backend registry's, so every
+  `typo3_icon_lookup` answer carries that sentence — in the text and in the
+  data — rather than only the ones whose query happens to sound like frontend
+  work. A tool that is handed a query and not a task cannot tell the two apart.
+  *From:* backend icon identifiers about to be used in a frontend template,
+  stopped by the user: "die icons welche du findest sind übrigens nur für das
+  backend gedacht, nicht für das frontend" (2026-07-29).
+  *Held by:* `IconLookupTest::everyAnswerSaysTheIdentifiersAreTheBackendRegistrys`,
+  `IconLookupTest::theRoutingEntrySendsCallersThereForBackendWorkOnly`
 - **R-KNW-9** "How do I register this so the core finds it" is a covered
   question. Registering a content type, and registering a class the container
   resolves by name, both fail at request time and neither is a convention of a

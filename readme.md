@@ -247,9 +247,10 @@ name already says what shape the answer has.
   `targetVersion` decides rather than informs: a component never verified there
   is withheld with what to check instead — v15 markup in a v13 backend is the
   kind of wrong that only shows up in a browser.
-- `typo3_icon_lookup`: validates and discovers core icon identifiers (the
-  registered T3Icons names), grouped by category, so unknown identifiers are
-  caught before runtime.
+- `typo3_icon_lookup`: validates and discovers icon identifiers (the registered
+  T3Icons names), grouped by category, so unknown identifiers are caught before
+  runtime. Every answer says which half of TYPO3 they belong to: the registry is
+  the backend's, and frontend rendering reaches none of it.
 - `typo3_label_lookup`: searches the labels the installation has registered (XLF
   trans-units) and returns the domain reference (`package.resource:key`) and the
   source text, so an existing label gets reused instead of a new key invented.

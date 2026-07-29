@@ -85,6 +85,98 @@ somebody else writes.
 
 ---
 
+## Four notes arrived during the marking pass, and they go before the twins
+
+Written down before the work starts, because it is a change of order. All four
+were recorded on 2026-07-29 at 23:43 from one session in
+`/home/benji/projects/site-new`, working on one task: an EXT:form form definition
+in a sitepackage, prefilling a field from the URL. Each one was re-run against
+the server as it is now, after today's two matcher commits, and all four still
+hold:
+
+- `typo3_architecture_lookup` for the EXT:form task answers `site-sets`,
+  `frontend-page-rendering` and `sitepackage-layout` — correct for "a
+  sitepackage", silent about the form framework. None of the 57 hint ids is about
+  it.
+- `typo3_changelog_lookup query="prefill"` returns nothing across 14.3 down to
+  13.3, and `events-extension-points` says a hook is right "where the subsystem
+  still has hook-based extension points" without naming one.
+- `project-extension-tests` carries none of the four facts that make a frontend
+  functional test in a project extension pass.
+- No statement in `fluid.json` mentions arrays at all.
+
+They go before the twins below, and the reason is what each input is worth. The
+twins serve a note whose own category is `idea` — a synthesis of what the catalog
+has no shape for, and nobody has reported being stopped by it. These four are a
+session that was stopped, four times, and read the answers out of `vendor/` by
+hand. Friction that happened outranks a mismatch that was noticed.
+
+### The Fluid array literal, first because it is one sentence
+
+Serves `feedback/2026-07-29-234410-fluid-has-no-empty-array-literal-and-nothing-in.md`.
+Fluid has no `{}`, and an array-typed argument that has to be conditionally
+absent needs two ViewHelper calls rather than one with a variable argument. The
+error names the wrong culprit — "was registered with type array, but is of type
+string" — so the message itself belongs in the statement, because that is what
+somebody will search for.
+
+The next concrete step is to check the claim on both sides of the Fluid v4
+boundary before writing it: `.checkouts/13.4` and `.checkouts/14.3` ship
+different Fluid parsers, and a statement that only holds on one of them carries
+`since`. Then one statement in `fluid-templates`, with the error message in it.
+
+### The four facts that make a project functional test pass
+
+Serves `feedback/2026-07-29-234358-the-task-guide-correctly-insists-on-functional.md`.
+`project-extension-tests` already says the harness is the whole first day; what
+it does not say is what fails after the harness runs. The four are the
+`$coreExtensionsToLoad` coupling to every new Composer require, that
+`SiteWriter::write()` merges rather than replaces and its file outlives the
+per-test database reset, that the file-backed caches do too so a class varying a
+site setting needs `CacheManager::flushCaches()`, and that `settings` takes flat
+dotted keys. The common thread is worth one sentence of its own: all four fail
+order-dependently and pass under `--filter`, so "it works alone" is not evidence.
+
+The next concrete step is to confirm the merge-not-replace behaviour of
+`SiteWriter::write()` in `.checkouts/14.3` and `.checkouts/13.4` — the note read
+it as built for the backend GUI, and the statement has to say which branches it
+holds for. The `CacheHashCalculator` encoding detail rides along.
+
+### The form framework, the one whole subsystem the catalog has no hint for
+
+Serves `feedback/2026-07-29-234316-there-is-no-architecture-hint-about-ext-form.md`
+and the first half of
+`feedback/2026-07-29-234339-nothing-in-the-server-answers-which-extension.md`,
+because the prefilling answer is a form fact and belongs in the same hint.
+
+The next concrete step is verification in `.checkouts/14.3`, and it is most of
+the work: that `Configuration/Form/<SetName>/config.yaml` is auto-discovered
+since 14.2 with `persistenceManager.allowedExtensionPaths` pointing at
+`Resources/Private/Forms/`, that a definition file has to end in `.form.yaml`,
+that the predecessor needed two TypoScript registrations and is deprecated for
+removal in v15, that `FormFrontendController::renderAction()` suffixes the
+identifier with the content element uid and keeps the declared one in
+`renderingOptions._originalIdentifier`, and that
+`AfterCurrentPageIsResolvedEvent` sits between `initializeFormStateFromRequest()`
+and `processSubmittedFormValues()` — which is the whole reason a submitted value
+still wins over a prefilled one. Every statement gets its range from what the
+checkouts say, and the hint goes in `general.json` unless the writing shows the
+subject is TypoScript-shaped.
+
+### The hooks that outlived the PSR-14 conversion, and routing by intent
+
+Serves the second half of the same note, and it is last because it is the only
+one of the four that is a change to this server rather than to what it knows.
+Two things, and they are worth different amounts. Naming the SC_OPTIONS hooks
+that survived their subsystem's conversion is cheap to carry and expensive to
+derive — `grep -rn "SC_OPTIONS" .checkouts/14.3/typo3/sysext` is the whole
+research step, and `ext/form/afterFormStateInitialized` is one the note already
+found. Answering "which extension point for this intent" is not a hint at all:
+the changelog is organised by release, so a task word like "prefill" reaches
+nothing, and the honest first step is to decide whether intent words belong in
+`appliesTo` — which is what the matcher ranks on — or whether that is a new
+lookup. Decide it in `requirements.md` before writing either.
+
 ## Write the two twins the marking pass found
 
 Serves the one note left open,

@@ -63,7 +63,7 @@
     },
     {
       "topic": "Backend UI components: markup, variants, custom properties",
-      "depth": "Hand-curated subset of the backend components, not every CSS class in the core.",
+      "depth": "Hand-curated subset of the backend components, not every CSS class in the core. Each entry carries the TYPO3 majors it was verified on; with targetVersion, one that was not verified there is withheld with what to check instead of handed over.",
       "tools": [
         "typo3_component_lookup"
       ],
@@ -81,7 +81,7 @@
     },
     {
       "topic": "How current the catalogs are",
-      "depth": "The core revision, branch, and verification date behind every catalog answer, contrasted with the TYPO3 version of the installation being read.",
+      "depth": "The core revision, branch, and verification date behind every catalog answer, contrasted with the TYPO3 version of the installation being read, and how many entries were verified on a stated target version.",
       "tools": [
         "typo3_catalog_scope"
       ],

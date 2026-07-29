@@ -13,6 +13,7 @@ use Typo3CmsMcp\Catalog\TranslationDomain;
 use Typo3CmsMcp\Instance;
 use Typo3CmsMcp\Tests\Support\TemporaryInstallation;
 use Typo3CmsMcp\Tools;
+use Typo3CmsMcp\Versions;
 
 final class CatalogTest extends TestCase
 {
@@ -132,6 +133,70 @@ final class CatalogTest extends TestCase
     }
 
     #[Test]
+    public function aComponentNotVerifiedOnTheTargetIsDeclinedRatherThanHandedOver(): void
+    {
+        // The skew sentence named the difference without acting on it. Markup
+        // taken from one revision either holds on the stated version or it does
+        // not, and the answer for "does not" is to decline it.
+        $result = Tools::call('typo3_component_lookup', ['query' => 'status indicator', 'targetVersion' => '13.4']);
+
+        self::assertNotContains(
+            'status-indicator',
+            array_column($result->data['components'], 'name'),
+            'a v14 custom-property contract is not handed to a 13.4 caller',
+        );
+        self::assertSame(['status-indicator'], array_column($result->data['withheld'], 'name'));
+        self::assertSame(13, $result->data['targetVersion']);
+
+        // Silently dropping it would read as "this component does not exist",
+        // so the withholding names itself and what to check instead.
+        self::assertStringContainsString('Withheld for TYPO3 v13', $result->text);
+        self::assertStringContainsString('_status-indicator.scss', $result->text);
+        self::assertStringContainsString('13.4 branch', $result->text);
+    }
+
+    #[Test]
+    public function aComponentVerifiedOnTheTargetIsAnsweredWithTheRangeItHoldsFor(): void
+    {
+        $result = Tools::call('typo3_component_lookup', ['query' => 'status indicator', 'targetVersion' => '14.3']);
+
+        $described = $result->data['components'][0];
+        self::assertSame('status-indicator', $described['name']);
+        self::assertSame(14, $described['since']);
+        self::assertSame('TYPO3 v14 and newer', $described['verifiedOn']);
+        self::assertSame([], $result->data['withheld']);
+        self::assertStringContainsString('Verified on: TYPO3 v14 and newer', $result->text);
+    }
+
+    #[Test]
+    public function withoutATargetTheWholeCatalogAnswersAndEachEntryCarriesItsRange(): void
+    {
+        // Nobody said which version this is for, so nothing is withheld and the
+        // caller is told the range instead — the same rule the hints follow.
+        $result = Tools::call('typo3_component_lookup', ['query' => 'status indicator']);
+
+        self::assertNull($result->data['targetVersion']);
+        self::assertSame('status-indicator', $result->data['components'][0]['name']);
+        self::assertSame([], $result->data['withheld']);
+    }
+
+    #[Test]
+    public function theCatalogSaysHowMuchOfItWasVerifiedOnAStatedVersion(): void
+    {
+        $result = Tools::call('typo3_catalog_scope', ['targetVersion' => '14']);
+
+        self::assertSame(14, $result->data['targetVersion']);
+        self::assertSame(count(Components::load()), $result->data['verifiedCount']);
+        self::assertSame([], $result->data['withheld']);
+
+        // The custom-property contract the catalog describes arrived after
+        // 12.4, so most of it is not verified there and the scope says so.
+        $onTwelve = Tools::call('typo3_catalog_scope', ['targetVersion' => '12.4']);
+        self::assertLessThan(count(Components::load()), $onTwelve->data['verifiedCount']);
+        self::assertStringContainsString('Withheld for TYPO3 v12', $onTwelve->text);
+    }
+
+    #[Test]
     public function aComponentCarriesEverySassFileItSpans(): void
     {
         $input = array_values(array_filter(Components::load(), static fn(array $c): bool => $c['name'] === 'input'))[0];
@@ -140,6 +205,22 @@ final class CatalogTest extends TestCase
         // only the first made the rest look like they were not part of it.
         self::assertContains('Build/Sources/Sass/component/forms/_form-text.scss', $input['sassPaths']);
         self::assertSame($input['sassPaths'][0], $input['sassPath'], 'sassPath stays the primary one');
+    }
+
+    #[Test]
+    public function everyRecordedBindingNamesACoveredVersion(): void
+    {
+        // A binding outside the covered range withholds an entry from every
+        // caller or from none, and both are silent — bin/verify-catalog is what
+        // holds the numbers to the checkouts, this holds them to versions.json.
+        $majors = Versions::majors();
+        foreach (Components::load() as $component) {
+            foreach (['since', 'until'] as $bound) {
+                if ($component[$bound] !== null) {
+                    self::assertContains($component[$bound], $majors, $component['name'] . ' is bound to a version this knowledge base does not cover');
+                }
+            }
+        }
     }
 
     #[Test]

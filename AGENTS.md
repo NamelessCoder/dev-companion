@@ -5,6 +5,7 @@
 ```
 bin/typo3-cms-mcp  # stdio entrypoint (the client launches it as a subprocess)
 bin/core-checkouts # one TYPO3 core checkout per covered version, below .checkouts/ (gitignored)
+bin/verify-catalog # what a core update invalidated in knowledge/catalog/: paths, and the versions each entry holds on
 src/               # PHP classes (knowledge loading, tools, SDK wiring)
 src/ServerFactory.php  # builds the mcp/sdk server from the tool definitions
 src/Mcp/           # SDK handlers: tool dispatch and typo3://core resources
@@ -301,3 +302,10 @@ runtime, and the failure is silent. The rules below follow from it.
 - **"Check whether X" is not a hint, it is a check.** `hints` carries
   statements, `checks` carries commands that run. A check-shaped sentence with
   no command behind it tells the caller nothing it did not know already.
+- **The catalogs carry the same binding, and it decides.** A `knowledge/catalog/`
+  entry is markup taken from one revision, so `since`/`until` there is the whole
+  entry rather than one sentence, and `targetVersion` withholds it instead of
+  qualifying it — a class that does not exist fails in a browser, silently.
+  The binding is derived, not judged: `bin/verify-catalog` with no argument
+  re-reads every covered checkout and reports each entry whose recorded range no
+  longer matches, so a core update invalidates it loudly.

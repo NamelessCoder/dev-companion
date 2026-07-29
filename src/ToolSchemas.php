@@ -255,7 +255,8 @@ final class ToolSchemas
     {
         return self::object([
             'query' => self::nullableString(),
-            'matchCount' => self::integer(),
+            'targetVersion' => ['type' => ['integer', 'null'], 'description' => 'The TYPO3 major the answer was composed for — stated by the caller, or read from the installation. Null means nothing was withheld and every entry carries the versions it was verified on.'],
+            'matchCount' => self::integer('How many components hold on the target version. Ones withheld for it are in withheld, not here.'),
             'components' => self::listOf(self::object([
                 'name' => self::string(),
                 'title' => self::string(),
@@ -272,14 +273,43 @@ final class ToolSchemas
                 'demoPath' => self::nullableString('Styleguide demo in the core checkout, if there is one.'),
                 'matchedIn' => self::listOf(self::string(), 'Where the query matched: name, keywords, sub-component classes, description.'),
                 'describesVersion' => self::string('The TYPO3 version this entry was taken from. Markup, sub-component classes and the custom-property contract are what that version has; compare with catalog.installedVersion before pasting.'),
-            ], ['name', 'title', 'rootClass', 'sassPath', 'demoPath', 'describesVersion'])),
+            ] + self::verifiedOn(), ['name', 'title', 'rootClass', 'sassPath', 'demoPath', 'describesVersion', 'verifiedOn'])),
+            'withheld' => self::withheldComponents(),
             'checklist' => self::object([
                 'title' => self::string(),
                 'intro' => self::string(),
                 'items' => self::listOf(self::string()),
             ], ['title', 'items']),
             'catalog' => self::catalogProvenance(),
-        ], ['matchCount', 'components', 'catalog']);
+        ], ['matchCount', 'components', 'withheld', 'catalog']);
+    }
+
+    /**
+     * The majors a catalog entry was verified on — the same since/until the
+     * architecture hints carry, so a client reads one model rather than two.
+     *
+     * @return array<string, mixed>
+     */
+    private static function verifiedOn(): array
+    {
+        return [
+            'since' => ['type' => ['integer', 'null'], 'description' => 'The TYPO3 major this entry starts holding at, or null when it holds on every covered version.'],
+            'until' => ['type' => ['integer', 'null'], 'description' => 'The TYPO3 major it stops holding after, or null when nothing has replaced it.'],
+            'verifiedOn' => self::string('The same range as a sentence, empty when the entry holds on every covered version.'),
+        ];
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private static function withheldComponents(): array
+    {
+        return self::listOf(self::object([
+            'name' => self::string(),
+            'title' => self::string(),
+            'sassPaths' => self::listOf(self::string(), 'What to verify the entry against on the target version.'),
+            'demoPath' => self::nullableString(),
+        ] + self::verifiedOn(), ['name', 'title', 'verifiedOn']), 'Components this catalog has but was never verified on the target version. Left out of components rather than handed over — an empty answer here means "not verified where you are", not "does not exist".');
     }
 
     /**
@@ -502,7 +532,10 @@ final class ToolSchemas
             'verifyCommand' => self::string(),
             'scope' => self::object([], [], 'One entry per catalog describing what it contains.'),
             'counts' => self::object([], [], 'One entry per catalog with its number of entries.'),
-        ], ['catalog', 'verifyCommand', 'scope', 'counts']);
+            'targetVersion' => ['type' => ['integer', 'null'], 'description' => 'The TYPO3 major the coverage was reported for — stated by the caller, or read from the installation. Null means the whole catalog answers.'],
+            'verifiedCount' => self::integer('How many components were verified on that version.'),
+            'withheld' => self::withheldComponents(),
+        ], ['catalog', 'verifyCommand', 'scope', 'counts', 'verifiedCount', 'withheld']);
     }
 
     /** @return array<string, mixed> */

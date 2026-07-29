@@ -242,8 +242,9 @@ name already says what shape the answer has.
 - `typo3_component_lookup`: looks up backend UI components by name or topic and
   returns canonical markup, variant and sub-component classes, the custom
   property contract, and the styleguide demo and Sass source paths. Every entry
-  names the TYPO3 version it describes, and where the installation being read is
-  a different major, the answer says so — v15 markup in a v13 backend is the
+  names the TYPO3 version it describes and the majors it was verified on, and
+  `targetVersion` decides rather than informs: a component never verified there
+  is withheld with what to check instead — v15 markup in a v13 backend is the
   kind of wrong that only shows up in a browser.
 - `typo3_icon_lookup`: validates and discovers core icon identifiers (the
   registered T3Icons names), grouped by category, so unknown identifiers are

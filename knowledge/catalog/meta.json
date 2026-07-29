@@ -8,7 +8,7 @@
   "verifiedAt": "2026-07-28",
   "verifyCommand": "bin/verify-catalog /path/to/typo3-core-checkout",
   "scope": {
-    "components": "Hand-curated backend UI components from the styleguide and the backend Sass sources, each with every Sass file it spans. A subset: not every CSS class in the core is described here."
+    "components": "Hand-curated backend UI components from the styleguide and the backend Sass sources, each with every Sass file it spans and the TYPO3 majors it was verified on. A subset: not every CSS class in the core is described here. `bin/verify-catalog` with no argument re-derives those majors from one checkout per covered version."
   },
   "counts": {
     "components": 25

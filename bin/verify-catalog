@@ -4,50 +4,223 @@
 declare(strict_types=1);
 
 /*
- * Verifies the static catalogs below knowledge/catalog/ against a TYPO3 core
- * checkout and reports drift. It never writes: the catalogs stay hand-curated,
+ * Verifies the static catalogs below knowledge/catalog/ against TYPO3 core
+ * checkouts and reports drift. It never writes: the catalogs stay hand-curated,
  * this only tells you what a core update invalidated.
  *
- * Usage: bin/verify-catalog [path/to/typo3-core-checkout]
+ * Two things can be wrong with an entry, and each has its own run:
+ *
+ *   bin/verify-catalog path/to/typo3-core-checkout
+ *     The paths it names are gone from that checkout — the snapshot is stale.
+ *
+ *   bin/verify-catalog
+ *     Its `since`/`until` no longer say which versions it holds on. Every
+ *     covered version is read from .checkouts/ (bin/core-checkouts), so the
+ *     binding is re-derived from this repository's own sources rather than
+ *     from whatever checkout happens to be on the machine.
  */
 
 require dirname(__DIR__) . '/vendor/autoload.php';
 
-$coreRoot = rtrim($argv[1] ?? getcwd(), '/');
-if (!is_dir($coreRoot . '/typo3/sysext/core')) {
-    fwrite(STDERR, sprintf("Not a TYPO3 core checkout: %s\n", $coreRoot));
-    fwrite(STDERR, "Usage: bin/verify-catalog [path/to/typo3-core-checkout]\n");
-    exit(2);
+use Typo3CmsMcp\Versions;
+
+$root = dirname(__DIR__);
+$catalogDir = $root . '/knowledge/catalog';
+$components = json_decode((string) file_get_contents($catalogDir . '/components.json'), true);
+
+if (($argv[1] ?? null) !== null) {
+    exit(verifyPaths(rtrim($argv[1], '/'), $components));
 }
 
-$catalogDir = dirname(__DIR__) . '/knowledge/catalog';
-$problems = 0;
+exit(verifyBindings($root . '/.checkouts', $components));
 
-echo "Components\n";
-$components = json_decode((string) file_get_contents($catalogDir . '/components.json'), true);
-foreach ($components as $component) {
-    $paths = $component['sassPaths'] ?? [];
-    if (isset($component['sassPath'])) {
-        $paths[] = $component['sassPath'];
+/**
+ * Whether every path an entry names still exists in one checkout.
+ *
+ * @param array<int, array<string, mixed>> $components
+ */
+function verifyPaths(string $coreRoot, array $components): int
+{
+    if (!is_dir($coreRoot . '/typo3/sysext/core')) {
+        fwrite(STDERR, sprintf("Not a TYPO3 core checkout: %s\n", $coreRoot));
+        fwrite(STDERR, "Usage: bin/verify-catalog [path/to/typo3-core-checkout]\n");
+
+        return 2;
     }
-    if (isset($component['demoPath'])) {
-        $paths[] = $component['demoPath'];
+
+    echo "Components\n";
+    $problems = 0;
+    foreach ($components as $component) {
+        $paths = $component['sassPaths'] ?? [];
+        if (isset($component['sassPath'])) {
+            $paths[] = $component['sassPath'];
+        }
+        if (isset($component['demoPath'])) {
+            $paths[] = $component['demoPath'];
+        }
+        foreach (array_unique($paths) as $path) {
+            if (is_string($path) && $path !== '' && !file_exists($coreRoot . '/' . $path)) {
+                echo '  path gone: ' . $component['name'] . ' → ' . $path . "\n";
+                ++$problems;
+            }
+        }
     }
-    foreach (array_unique($paths) as $path) {
-        if (is_string($path) && $path !== '' && !file_exists($coreRoot . '/' . $path)) {
-            echo '  path gone: ' . $component['name'] . ' → ' . $path . "\n";
+    printf("  %d components\n\n", count($components));
+
+    if ($problems === 0) {
+        $revision = trim((string) shell_exec(sprintf('git -C %s rev-parse HEAD 2>/dev/null', escapeshellarg($coreRoot))));
+        printf("No drift against %s%s\n", $coreRoot, $revision === '' ? '' : ' @ ' . substr($revision, 0, 12));
+
+        return 0;
+    }
+
+    printf("%d problem(s) found.\n", $problems);
+
+    return 1;
+}
+
+/**
+ * Re-derives which majors each entry holds on, and reports where that differs
+ * from what it records.
+ *
+ * An entry holds on a version when everything it describes is there: its Sass
+ * sources, and every class and custom property it names that the newest covered
+ * version has. Missing a custom property is not a detail — a caller pasting one
+ * that does not exist gets CSS that silently does nothing.
+ *
+ * @param array<int, array<string, mixed>> $components
+ */
+function verifyBindings(string $checkouts, array $components): int
+{
+    $covered = Versions::covered();
+    $sources = [];
+    foreach ($covered as $version) {
+        $directory = $checkouts . '/' . $version['branch'] . '/Build/Sources';
+        if (!is_dir($directory)) {
+            fwrite(STDERR, sprintf("No checkout for TYPO3 v%d below %s — run bin/core-checkouts.\n", $version['major'], $checkouts));
+
+            return 2;
+        }
+        // Two corpora, because the core writes the two kinds of name in
+        // different places: a class or a custom property is in the Sass, and a
+        // custom element's tag name is in the TypeScript that defines it.
+        $sources[$version['major']] = [
+            'scss' => readSources($directory . '/Sass', 'scss'),
+            'ts' => readSources($directory . '/TypeScript', 'ts'),
+        ];
+    }
+
+    $newest = end($covered)['major'];
+    echo "Component bindings\n";
+    $problems = 0;
+    foreach ($components as $component) {
+        $holds = [];
+        foreach ($covered as $version) {
+            $holds[$version['major']] = describesTheSame($component, $sources, $version, $newest, $checkouts);
+        }
+
+        $found = derivedSince($holds);
+        $recorded = isset($component['since']) ? (int) $component['since'] : null;
+        if ($found !== $recorded) {
+            printf(
+                "  %s: records %s, holds %s\n",
+                $component['name'],
+                $recorded === null ? 'no binding' : 'since v' . $recorded,
+                $found === null ? 'on every covered version' : 'from v' . $found,
+            );
             ++$problems;
         }
     }
-}
-printf("  %d components\n", count($components));
+    printf("  %d components against %s\n\n", count($components), implode(', ', array_column($covered, 'branch')));
 
-echo "\n";
-if ($problems === 0) {
-    $revision = trim((string) shell_exec(sprintf('git -C %s rev-parse HEAD 2>/dev/null', escapeshellarg($coreRoot))));
-    printf("No drift against %s%s\n", $coreRoot, $revision === '' ? '' : ' @ ' . substr($revision, 0, 12));
-    exit(0);
+    if ($problems === 0) {
+        echo "Every binding still says what the checkouts say.\n";
+
+        return 0;
+    }
+
+    printf("%d binding(s) out of date.\n", $problems);
+
+    return 1;
 }
 
-printf("%d problem(s) found.\n", $problems);
-exit(1);
+/**
+ * The first covered major from which an entry holds without a gap up to the
+ * newest, or null when it holds everywhere. A gap in the middle is reported as
+ * no binding at all — a range cannot express it, and the entry needs splitting
+ * rather than a number.
+ *
+ * @param array<int, bool> $holds
+ */
+function derivedSince(array $holds): ?int
+{
+    $since = null;
+    foreach (array_reverse($holds, true) as $major => $holdsHere) {
+        if (!$holdsHere) {
+            break;
+        }
+        $since = $major;
+    }
+
+    return $since === array_key_first($holds) ? null : $since;
+}
+
+/**
+ * @param array<string, mixed> $component
+ * @param array<int, array{scss: string, ts: string}> $sources
+ * @param array{major: int, branch: string, status: string} $version
+ */
+function describesTheSame(array $component, array $sources, array $version, int $newest, string $checkouts): bool
+{
+    $major = $version['major'];
+    foreach ($component['sassPaths'] ?? [] as $path) {
+        if (!file_exists($checkouts . '/' . $version['branch'] . '/' . $path)) {
+            return false;
+        }
+    }
+
+    // An entry with no Sass source is a custom element, and what it is called
+    // is in the TypeScript that defines it rather than in any stylesheet.
+    if (($component['sassPaths'] ?? []) === []
+        && !carries($sources[$major]['ts'], (string) $component['rootClass'])
+    ) {
+        return false;
+    }
+
+    $named = array_merge(
+        $component['customProperties'] ?? [],
+        $component['variants'] ?? [],
+        $component['modifiers'] ?? [],
+        $component['subComponents'] ?? [],
+    );
+    foreach ($named as $token) {
+        // Only what the newest covered version actually writes in its Sass. A
+        // Bootstrap class the core never spells out — btn-secondary comes from
+        // a state map loop — is absent on every version and says nothing about
+        // which ones this entry holds on.
+        if (carries($sources[$newest]['scss'], $token) && !carries($sources[$major]['scss'], $token)) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+function carries(string $haystack, string $token): bool
+{
+    return preg_match('/(^|[^a-z0-9-])' . preg_quote($token, '/') . '([^a-z0-9-]|$)/', $haystack) === 1;
+}
+
+/** Every file of one extension below a directory, as one corpus to search. */
+function readSources(string $directory, string $extension): string
+{
+    $sources = '';
+    $entries = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($directory, FilesystemIterator::SKIP_DOTS));
+    foreach ($entries as $entry) {
+        if ($entry instanceof SplFileInfo && $entry->getExtension() === $extension) {
+            $sources .= (string) file_get_contents($entry->getPathname());
+        }
+    }
+
+    return $sources;
+}

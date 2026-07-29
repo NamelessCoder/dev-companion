@@ -41,20 +41,7 @@ else here was written by someone who already knew what they meant.
 
 ---
 
-## 1. Let a target version decide in the catalogs, not only inform
-
-**Serves:** `feedback/2026-07-29-094245`, R-AUD-4 · **Next step:** record per
-catalog entry what it was verified against — the same `since`/`until` the hints
-use — then accept `targetVersion` on `typo3_component_lookup` and
-`typo3_catalog_scope` and leave out what does not hold there.
-
-The hints and `typo3_task_guide` take a target version and filter by it. The
-catalogs answer from one pinned revision and say so in a skew sentence, which
-names the difference without acting on it: markup taken from one revision either
-holds on the stated version or it does not, and the honest answer for "does not"
-is to decline it and name what to verify against.
-
-## 2. Say which template a content element renders through
+## 1. Say which template a content element renders through
 
 **Serves:** R-PRJ-5 · **Next step:** for each identifier in
 `Extension::describe()`'s `contentElements`, look for `tt_content.<identifier>`

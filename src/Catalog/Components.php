@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Typo3CmsMcp\Catalog;
 
 use Typo3CmsMcp\Paths;
+use Typo3CmsMcp\Versions;
 
 /**
  * Loads and ranks the curated TYPO3 backend component catalog from
@@ -14,6 +15,12 @@ use Typo3CmsMcp\Paths;
  *
  * The data is hand-curated from the core sources (no runtime core dependency);
  * search mirrors the term-scoring approach used by TestSuiteHints.
+ *
+ * An entry also carries the majors it was verified on, as `since`/`until` — the
+ * same binding the architecture hints use. The catalog is taken from one
+ * revision, so without that a component whose custom-property contract does not
+ * exist on the caller's LTS is handed over as fact; with it, the entry is
+ * withheld and what to verify against is named instead.
  */
 final class Components
 {
@@ -31,7 +38,7 @@ final class Components
      *     subComponents: array<int, string>, customProperties: array<int, string>,
      *     markup: string, examples: array<int, string>,
      *     sassPath: ?string, sassPaths: array<int, string>, demoPath: ?string,
-     *     keywords: array<int, string>
+     *     keywords: array<int, string>, since: ?int, until: ?int
      * }>
      */
     public static function load(): array
@@ -67,8 +74,31 @@ final class Components
             'sassPaths' => $sassPaths,
             'demoPath' => isset($entry['demoPath']) ? (string) $entry['demoPath'] : null,
             'keywords' => array_map('strval', $entry['keywords'] ?? []),
+            'since' => isset($entry['since']) ? (int) $entry['since'] : null,
+            'until' => isset($entry['until']) ? (int) $entry['until'] : null,
             ];
         }, $decoded);
+    }
+
+    /**
+     * The entries split by whether they were verified on $target.
+     *
+     * Without a target nothing is withheld: the caller is told each entry's
+     * range instead, which is the honest answer when nobody said which version
+     * this is for.
+     *
+     * @param array<int, array<string, mixed>> $components
+     * @return array{holds: array<int, array<string, mixed>>, withheld: array<int, array<string, mixed>>}
+     */
+    public static function splitByTarget(array $components, ?int $target): array
+    {
+        $split = ['holds' => [], 'withheld' => []];
+        foreach ($components as $component) {
+            $holds = Versions::holds($component['since'] ?? null, $component['until'] ?? null, $target);
+            $split[$holds ? 'holds' : 'withheld'][] = $component;
+        }
+
+        return $split;
     }
 
     /**

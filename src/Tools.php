@@ -152,11 +152,12 @@ final class Tools
             ],
             [
                 'name' => 'typo3_component_lookup',
-                'description' => 'Look up TYPO3 backend UI components by name or topic. Returns canonical markup, variant/modifier/sub-component classes, the custom-property contract, and the styleguide demo and Sass source paths.',
+                'description' => 'Look up TYPO3 backend UI components by name or topic. Returns canonical markup, variant/modifier/sub-component classes, the custom-property contract, and the styleguide demo and Sass source paths. Each entry carries the TYPO3 majors it was verified on; pass targetVersion and one that was not verified there is withheld with what to verify against, rather than handed over as fact.',
                 'inputSchema' => [
                     'type' => 'object',
                     'properties' => [
                         'query' => ['type' => 'string', 'description' => 'Component name, class, or topic, for example badge, card, search box, or input-group. Omit to list the catalog.'],
+                        'targetVersion' => ['type' => 'string', 'description' => 'The TYPO3 version the markup has to hold for, for example "13.4" or "14". Components not verified there are withheld. Defaults to the version of the installation this server was started in; where there is none, the whole catalog is returned and every entry carries the versions it was verified on.'],
                     ],
                 ],
             ],
@@ -255,10 +256,12 @@ final class Tools
             ],
             [
                 'name' => 'typo3_catalog_scope',
-                'description' => 'Report which TYPO3 core revision the bundled catalogs were taken from, what they cover, and how to re-check them against a checkout. Call this to judge whether a catalog miss is authoritative for the branch you are working on. Where an installation is being read, the answer contrasts its TYPO3 version with the snapshot.',
+                'description' => 'Report which TYPO3 core revision the bundled catalogs were taken from, what they cover, and how to re-check them against a checkout. Call this to judge whether a catalog miss is authoritative for the branch you are working on. Where an installation is being read, the answer contrasts its TYPO3 version with the snapshot, and with targetVersion it says how much of the catalog was verified on that version and which entries were not.',
                 'inputSchema' => [
                     'type' => 'object',
-                    'properties' => new \stdClass(),
+                    'properties' => [
+                        'targetVersion' => ['type' => 'string', 'description' => 'The TYPO3 version to report the catalog\'s coverage for, for example "13.4" or "14". Defaults to the version of the installation this server was started in.'],
+                    ],
                 ],
             ],
             [
@@ -1479,20 +1482,28 @@ final class Tools
     private static function componentLookup(array $args): ToolResult
     {
         $query = isset($args['query']) ? (string) $args['query'] : null;
-        $components = Components::find($query);
+        $target = Versions::target(isset($args['targetVersion']) ? (string) $args['targetVersion'] : null);
+        $split = Components::splitByTarget(Components::find($query), $target);
+        $components = $split['holds'];
+        $withheld = $split['withheld'];
+        $withheldNote = self::withheldComponents($withheld, $target);
 
         if ($components === []) {
             return ToolResult::create(
                 sprintf(
-                    "No TYPO3 component matched \"%s\". Try a component name (badge, card), a class (input-group), or a topic (search box). %s\n%s",
+                    "No TYPO3 component%s matched \"%s\". Try a component name (badge, card), a class (input-group), or a topic (search box). %s\n%s%s",
+                    $withheld === [] ? '' : sprintf(' verified on TYPO3 v%d', (int) $target),
                     (string) $query,
                     self::CATALOG_MISS_NOTE,
+                    $withheldNote === '' ? '' : $withheldNote . "\n",
                     self::catalogProvenance(),
                 ),
                 [
                     'query' => $query,
+                    'targetVersion' => $target,
                     'matchCount' => 0,
                     'components' => [],
+                    'withheld' => self::withheldRecords($withheld),
                     'catalog' => self::catalogRecord(),
                 ],
             );
@@ -1505,23 +1516,29 @@ final class Tools
                 $components
             ));
 
-            return ToolResult::create("TYPO3 backend component catalog:\n" . $names, [
-                'query' => $query,
-                'matchCount' => count($components),
-                // The listing is an overview, so the entries stay lean; query a
-                // component by name for its markup and class contract.
-                'components' => array_map(static fn(array $c): array => [
-                    'name' => $c['name'],
-                    'title' => $c['title'],
-                    'summary' => $c['summary'],
-                    'rootClass' => $c['rootClass'],
-                    'sassPath' => $c['sassPath'],
-                    'sassPaths' => $c['sassPaths'],
-                    'demoPath' => $c['demoPath'],
-                    'describesVersion' => CatalogMeta::read()['source']['version'],
-                ], $components),
-                'catalog' => self::catalogRecord(),
-            ]);
+            return ToolResult::create(
+                "TYPO3 backend component catalog:\n" . $names
+                    . ($withheldNote === '' ? '' : "\n\n" . $withheldNote),
+                [
+                    'query' => $query,
+                    'targetVersion' => $target,
+                    'matchCount' => count($components),
+                    // The listing is an overview, so the entries stay lean; query a
+                    // component by name for its markup and class contract.
+                    'components' => array_map(static fn(array $c): array => [
+                        'name' => $c['name'],
+                        'title' => $c['title'],
+                        'summary' => $c['summary'],
+                        'rootClass' => $c['rootClass'],
+                        'sassPath' => $c['sassPath'],
+                        'sassPaths' => $c['sassPaths'],
+                        'demoPath' => $c['demoPath'],
+                        'describesVersion' => CatalogMeta::read()['source']['version'],
+                    ] + self::verifiedRecord($c), $components),
+                    'withheld' => self::withheldRecords($withheld),
+                    'catalog' => self::catalogRecord(),
+                ],
+            );
         }
 
         // Only the best matches are described in full; the rest stay in the count.
@@ -1563,6 +1580,13 @@ final class Tools
                 ? 'Sass source: none — this is a web component and carries its styles in its element source.'
                 : 'Sass source' . (count($c['sassPaths']) > 1 ? 's' : '') . ': ' . implode(', ', $c['sassPaths']);
             $lines[] = 'Styleguide demo: ' . ($c['demoPath'] ?? 'none (not a styleguide component)');
+            $label = Versions::label($c['since'], $c['until']);
+            if ($label !== '') {
+                // Beside the markup rather than in the block at the end: a
+                // client that renders one component shows the classes without
+                // any statement of where they exist.
+                $lines[] = 'Verified on: ' . $label . '.';
+            }
 
             if ($c['examples'] !== []) {
                 $lines[] = '';
@@ -1577,6 +1601,10 @@ final class Tools
             return implode("\n", $lines);
         }, $described);
 
+        if ($withheldNote !== '') {
+            $blocks[] = $withheldNote;
+        }
+
         $checklist = Components::checklist();
         $checklistLines = ['## ' . $checklist['title']];
         if ($checklist['intro'] !== '') {
@@ -1590,6 +1618,7 @@ final class Tools
 
         return ToolResult::create(implode("\n\n", $blocks), [
             'query' => $query,
+            'targetVersion' => $target,
             'matchCount' => count($components),
             'components' => array_map(static fn(array $c): array => [
                 'name' => $c['name'],
@@ -1610,10 +1639,81 @@ final class Tools
                 // at the end of the answer: a client that renders one component
                 // shows markup with no statement of what it describes.
                 'describesVersion' => CatalogMeta::read()['source']['version'],
-            ], $described),
+            ] + self::verifiedRecord($c), $described),
+            'withheld' => self::withheldRecords($withheld),
             'checklist' => $checklist,
             'catalog' => self::catalogRecord(),
         ]);
+    }
+
+    /**
+     * The majors a catalog entry was verified on, as data beside the label.
+     *
+     * @param array<string, mixed> $component
+     * @return array{since: ?int, until: ?int, verifiedOn: string}
+     */
+    private static function verifiedRecord(array $component): array
+    {
+        return [
+            'since' => $component['since'],
+            'until' => $component['until'],
+            'verifiedOn' => Versions::label($component['since'], $component['until']),
+        ];
+    }
+
+    /**
+     * @param array<int, array<string, mixed>> $withheld
+     * @return array<int, array<string, mixed>>
+     */
+    private static function withheldRecords(array $withheld): array
+    {
+        return array_map(static fn(array $c): array => [
+            'name' => $c['name'],
+            'title' => $c['title'],
+            'sassPaths' => $c['sassPaths'],
+            'demoPath' => $c['demoPath'],
+        ] + self::verifiedRecord($c), $withheld);
+    }
+
+    /**
+     * What the stated version cost the answer, and what to check instead.
+     *
+     * Dropping the entry silently would be the one thing worse than handing it
+     * over: the caller then reads "this component does not exist" into an
+     * answer that means "the catalog has it and was never verified where you
+     * are". So it is named, with the branch and the sources to verify against.
+     *
+     * @param array<int, array<string, mixed>> $withheld
+     */
+    private static function withheldComponents(array $withheld, ?int $target): string
+    {
+        if ($withheld === [] || $target === null) {
+            return '';
+        }
+
+        $branch = Versions::branch($target);
+        $lines = [sprintf(
+            'Withheld for TYPO3 v%d — in this catalog, and never verified there, so the classes and custom '
+            . 'properties they describe may not exist on that version:',
+            $target,
+        )];
+        foreach ($withheld as $component) {
+            $lines[] = sprintf(
+                '- %s (%s) — verified on %s; verify against %s',
+                $component['name'],
+                $component['title'],
+                Versions::label($component['since'], $component['until']),
+                $component['sassPaths'] === []
+                    ? ($component['demoPath'] ?? 'the core checkout')
+                    : implode(', ', $component['sassPaths']),
+            );
+        }
+        $lines[] = sprintf(
+            'Check those paths against %s before using any of them — a path that is not there is the answer too.',
+            $branch === null ? 'a core checkout of that version' : 'the core repository\'s ' . $branch . ' branch',
+        );
+
+        return implode("\n", $lines);
     }
 
     /**
@@ -1952,6 +2052,28 @@ final class Tools
             . 'branch — a 13.4 backport, for example — verify against the checkout before concluding that a '
             . 'component or class does not exist.';
 
+        // The pin says which revision the catalog was taken from. What a caller
+        // on another line needs is how much of it survives there, and that is
+        // per entry rather than per snapshot.
+        $target = Versions::target(isset($args['targetVersion']) ? (string) $args['targetVersion'] : null);
+        $split = Components::splitByTarget(Components::load(), $target);
+        $lines[] = '';
+        $lines[] = $target === null
+            ? 'No target TYPO3 version was stated and none was found to read, so the whole catalog answers and '
+                . 'every entry carries the versions it was verified on. Pass targetVersion to have the ones that '
+                . 'were not verified there withheld.'
+            : sprintf(
+                'Verified on TYPO3 v%d: %d of %d components.',
+                $target,
+                count($split['holds']),
+                count($split['holds']) + count($split['withheld']),
+            );
+        $withheldNote = self::withheldComponents($split['withheld'], $target);
+        if ($withheldNote !== '') {
+            $lines[] = '';
+            $lines[] = $withheldNote;
+        }
+
         if (CatalogMeta::skew() !== '') {
             $lines[] = '';
             $lines[] = CatalogMeta::skew();
@@ -1962,6 +2084,9 @@ final class Tools
             'verifyCommand' => $meta['verifyCommand'],
             'scope' => $meta['scope'],
             'counts' => $meta['counts'],
+            'targetVersion' => $target,
+            'verifiedCount' => count($split['holds']),
+            'withheld' => self::withheldRecords($split['withheld']),
         ]);
     }
 

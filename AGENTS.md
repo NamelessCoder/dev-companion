@@ -149,7 +149,10 @@ keeping them apart is what keeps any of them readable:
   of them says what to do next. A session can end anywhere, and the next one
   starts by reading this. An item names what it serves and what the next
   concrete step is, and is deleted when done rather than ticked — what it
-  established is in `requirements.md` by then.
+  established is in `requirements.md` by then. Its first item is standing and is
+  never deleted: read `feedback/` again, and run each note's own query against
+  the server as it is now. Notes arrive while work is happening, and the ones
+  that were open yesterday are often half answered by what shipped since.
 
 ## What describes this server to someone else
 

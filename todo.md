@@ -21,19 +21,27 @@ Rules that keep it from becoming a fourth backlog:
 
 ---
 
-## 1. Re-read the four open notes against what now exists
+## Every session starts here: read `feedback/` again
 
-**Serves:** `feedback/` · **Next step:** run each note's own query against the
-current server and trim what has been answered.
+This item is never done and is never deleted. Notes arrive while work is
+happening — a session somewhere records what it was missing, and the file lands
+in `feedback/` without anyone being told. And notes that were open yesterday are
+often half answered by what shipped since, without their text saying so.
 
-Two of them (`094054`, `100314`) asked for a project mode that now partly
-exists: `typo3_project_scope` reads the sites, the extensions and the commands,
-`typo3_changelog_lookup` reads what a version changed. `100640` asked for the
-profile, which is item 2. `094245` asked for `targetVersion`, which now exists
-on `typo3_architecture_lookup` and `typo3_task_guide` but not on the catalog
-tools.
+So, before picking anything up:
 
-## 2. Profile: show a project only the half that fits it
+1. `typo3_feedback_list` — or read `feedback/` — for what is there now.
+2. For each note, **run its own query against the current server**. A note is
+   evidence about a version of this server that may no longer exist.
+3. Close what is answered, trim what is half answered down to the part that is
+   still open, and let a new note that changes the order move the items below.
+
+The notes are the only input that comes from outside this repository. Everything
+else here was written by someone who already knew what they meant.
+
+---
+
+## 1. Profile: show a project only the half that fits it
 
 **Serves:** `feedback/2026-07-29-100640`, R-AUD-1 · **Decided:** derived from the
 installation, `TYPO3_MCP_PROFILE` overrides · **Next step:** a `Profile` class
@@ -49,7 +57,7 @@ to; the `provenance` field in `knowledge/server-scope.json` already says
 Keep `typo3_server_scope` in every profile, and have it name the active one.
 A client that sees a shorter list must be able to find out why.
 
-## 3. Bind the rest of the knowledge to versions
+## 2. Bind the rest of the knowledge to versions
 
 **Serves:** R-AUD-4 · **Next step:** go file by file through
 `knowledge/architecture-hints/`, and for every statement that names an API,
@@ -67,10 +75,10 @@ TypoScript, then the general hints. The prose documents below `knowledge/*.md`
 have no binding mechanism at all yet — decide whether they need one or whether
 the hints carry it.
 
-## 4. A maintenance guide, once the pieces are there
+## 3. A maintenance guide, once the pieces are there
 
 **Serves:** `feedback/2026-07-29-100314`, scenario `SITE-02` · **Next step:**
-none yet — this waits until items 2 and 3 are done, because it composes them.
+none yet — this waits until items 1 and 2 are done, because it composes them.
 
 The upgrade question is "what do I do, in which order, and what breaks". Three
 of the four inputs exist now: `typo3_project_scope` knows what is installed,

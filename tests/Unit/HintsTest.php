@@ -347,6 +347,29 @@ final class HintsTest extends TestCase
     }
 
     #[Test]
+    public function aProjectExtensionIsToldHowToGetASuiteAtAll(): void
+    {
+        // core-tests describes how a test is written inside the mono repository,
+        // where the harness already exists. In a project everything between
+        // "composer require" and the first green run is the work, and none of it
+        // was written down.
+        $result = ArchitectureHints::find(
+            [],
+            'Add automated tests for a project sitepackage extension: unit and functional tests for an Extbase '
+            . 'model, repository and controller, plus frontend tests for the rendered pages',
+            6
+        );
+        self::assertContains('project-extension-tests', array_column($result['matchedHints'], 'id'));
+
+        $text = implode("\n", array_column((array) ArchitectureHints::byId('project-extension-tests', 14)['hints'], 'text'));
+        // Each of these is a failure whose message does not name its cause.
+        self::assertStringContainsString('typo3DatabaseUsername', $text);
+        self::assertStringContainsString('$testExtensionsToLoad', $text);
+        self::assertStringContainsString('SiteBasedTestTrait', $text);
+        self::assertStringContainsString('setUpFrontendRootPage', $text);
+    }
+
+    #[Test]
     public function theFileAnExtensionNoLongerNeedsIsCoveredWhereItsFilesAre(): void
     {
         // "Which files does an extension need" listed every file that is still

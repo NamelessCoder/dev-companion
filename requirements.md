@@ -374,6 +374,16 @@ took before the requirement above was written down, and it will not survive it.
 
 ## Knowledge — what is covered
 
+- **R-KNW-15** Where a core answer assumes a harness the core already has,
+  building that harness is covered as its own subject. The conventions of a core
+  test transfer to a project extension unchanged; everything between
+  `composer require` and the first green run does not exist there and is the
+  larger half of the work.
+  *From:* a session that took `core-tests` into a project and paid for the
+  phpunit boilerplate, the database credentials, the document-root-relative
+  extension paths, the missing `SiteBasedTestTrait` and a `sys_template` that
+  silently dropped the site set TypoScript (2026-07-29).
+  *Held by:* `HintsTest::aProjectExtensionIsToldHowToGetASuiteAtAll`
 - **R-KNW-14** A list of the files a subject is made of covers the one that is
   on its way out, with the shape that replaces it. Absence reads as "not
   relevant", which is the one thing a deprecated file is not.

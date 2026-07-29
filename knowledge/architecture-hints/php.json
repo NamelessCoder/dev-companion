@@ -150,6 +150,47 @@
     ]
   },
   {
+    "id": "project-extension-tests",
+    "title": "Testing a Project Extension",
+    "appliesTo": [
+      "automated tests",
+      "test suite",
+      "phpunit",
+      "unit test",
+      "functional test",
+      "testExtensionsToLoad",
+      "coreExtensionsToLoad",
+      "FunctionalTests.xml",
+      "UnitTests.xml",
+      "testing-framework",
+      "SiteBasedTestTrait",
+      "setUpFrontendRootPage"
+    ],
+    "hints": [
+      "The conventions of a core test hold here — UnitTestCase, FunctionalTestCase, final classes, #[Test], CSV fixtures, $this->get() for services — but the harness they run in does not exist yet and is the whole first day.",
+      "typo3/testing-framework ships UnitTests.xml, FunctionalTests.xml and the two bootstraps under Resources/Core/Build/, and the files say in their own header that extensions should copy them rather than reference them: their testsuite directory points into the core mono repository. Copy all four to Build/ in the extension, point each testsuite at Tests/Unit/ and Tests/Functional/, and run them as vendor/bin/phpunit -c Build/UnitTests.xml. There is no runTests.sh outside the core.",
+      "A functional run needs database credentials in the environment: typo3DatabaseDriver, typo3DatabaseHost, typo3DatabaseName, typo3DatabaseUsername, typo3DatabasePassword. Without them it stops with \"Database credentials for tests are neither set through environment variables, and can not be found in an existing LocalConfiguration file\", which does not name the variables it is missing.",
+      "Every test class gets a database of its own — the configured name plus a hash of the class — so that account has to be allowed to create databases. Under DDEV that means root rather than the user the site itself runs as.",
+      "$testExtensionsToLoad takes paths relative to the document root, not to the project root: in a Composer installation with a public/ web directory, \"extensions/my_sitepackage\" is looked for below public/ and fails with \"Test extension path ... not found\". Name the extension key or the Composer package name instead — those are resolved against the installed packages, and that is the form a project wants.",
+      "Every TYPO3 extension the extension under test requires has to be loaded as well, in $coreExtensionsToLoad or $testExtensionsToLoad. A missing one fails at setup with 'Package \"x\" depends on package \"y\" which does not exist' — the list to mirror is the extension's own require entries.",
+      "SiteBasedTestTrait is not available. The core's Tests/ directories are export-ignored, so the typo3/cms-core Composer package ships none of them, and the trait every core frontend test builds on cannot be used outside the mono repository. Writing the site configuration in setUp() is what it does anyway.",
+      {
+        "text": "That is one call: $this->get(SiteWriter::class)->write($identifier, $configuration), with the same array the site's config.yaml holds — rootPageId, base, languages, and the sets the site depends on.",
+        "since": 13
+      },
+      {
+        "text": "That is one call: $this->get(SiteConfiguration::class)->write($identifier, $configuration), with the same array the site's config.yaml holds — rootPageId, base, languages.",
+        "until": 12
+      },
+      {
+        "text": "setUpFrontendRootPage() and site sets exclude each other. It writes a sys_template row with the clear flag set, and a sys_template that clears resets the AST — dropping the set TypoScript that was included before it. The frontend then answers \"No page configured for type=0\" and nothing points at the sys_template as the cause. A test whose site takes its TypoScript from a set must not call it, and the settings a plugin needs belong in the pi_flexform of the fixture content element, which is where the site keeps them too.",
+        "since": 13
+      },
+      "InternalRequest::withQueryParameters() takes scalar values. An Extbase plugin argument is nested two levels deep, so a request that carries one is built with http_build_query() into the URI instead."
+    ],
+    "checks": []
+  },
+  {
     "id": "backend-modules",
     "title": "Backend Module and Route Registration",
     "appliesTo": [

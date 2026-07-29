@@ -232,7 +232,9 @@ name already says what shape the answer has.
   the core repository has.
 - `typo3_test_run_guide`: recommends `Build/Scripts/runTests.sh` commands
   by topic. Paths that read as a project or third-party extension get no suite:
-  the script is part of the core repository.
+  the script is part of the core repository. What such an extension needs
+  instead — assembling a phpunit suite of its own — is the
+  `project-extension-tests` architecture hint.
 - `typo3_architecture_lookup`: returns architecture hints for TYPO3 core paths or
   task topics, grouped by section. Outside the core the hints stay and their
   check commands are dropped. Two sections are the backend interface's own —
@@ -302,7 +304,8 @@ drive the individual tools:
 - `architecture-hints/` (one JSON file per section: `php.json`, `fluid.json`,
   `typoscript.json`, `css.json`, `typescript.json`, `general.json`)
 - `catalog/` (the component catalog: `components.json`,
-  `component-checklist.json`, `meta.json`)
+  `component-checklist.json`, `meta.json`, and the system extensions:
+  `system-extensions.json`)
 - `test-suite-hints.json`, `task-intents.json`, `icon-concepts.json`,
   `server-scope.json`, `versions.json`
 

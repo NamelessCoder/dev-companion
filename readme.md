@@ -192,7 +192,9 @@ name already says what shape the answer has.
   source text, so an existing label gets reused instead of a new key invented.
   Several words are matched independently, ignoring case and order: a label has
   to carry every one of them, and where none does, the answer says how far each
-  word reaches on its own.
+  word reaches on its own. Where the console cannot be reached — an installed
+  TYPO3 whose database has no schema yet — the same packages' XLF files are read
+  instead, and `answeredBy` says which of the two answered.
 - `typo3_commit_message_guide`: drafts and checks TYPO3 commit messages — from
   parts, or by passing an existing `message` to check and correct one in a
   piece. The emitted draft is ready to commit: the body is wrapped at 72

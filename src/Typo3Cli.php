@@ -139,6 +139,28 @@ final class Typo3Cli
     }
 
     /**
+     * What a failure means, where the message alone does not say it.
+     *
+     * A console that starts and then fails on a missing table has a specific
+     * remedy, and the caller cannot see it in the stack trace: the code is
+     * installed, the database behind it is not. Empty for everything else —
+     * guessing at the rest would bury the one diagnosis worth having.
+     */
+    public static function diagnose(string $error): string
+    {
+        $needles = ['doesn\'t exist', 'base table or view not found', '42s02', 'no such table'];
+        $haystack = mb_strtolower($error);
+        foreach ($needles as $needle) {
+            if (str_contains($haystack, $needle)) {
+                return 'The console runs, so the code is installed — the database it connects to has no TYPO3 '
+                    . 'schema yet. Import the dump, or run the setup, before asking again.';
+            }
+        }
+
+        return '';
+    }
+
+    /**
      * Runs a console command and returns what it printed.
      *
      * @param array<int, string> $arguments

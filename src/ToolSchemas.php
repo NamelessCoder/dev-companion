@@ -106,6 +106,7 @@ final class ToolSchemas
     {
         return self::object([
             'reason' => self::string('What stopped the installation from being asked.'),
+            'diagnosis' => self::string('What the reason means where the message alone does not say it — a console that starts and then fails on a missing table has a database without a schema, not a broken installation. Empty where nothing beyond the reason is known.'),
             'settings' => self::object([
                 'root' => self::string('Environment variable that names the installation root.'),
                 'console' => self::string('Environment variable that names the console command.'),
@@ -269,7 +270,14 @@ final class ToolSchemas
      */
     private static function answeredBy(): array
     {
-        return ['type' => 'string', 'enum' => ['installation', 'nothing'], 'description' => 'nothing: the installation could not be asked, so an empty result is unanswered rather than a miss.'];
+        return [
+            'type' => 'string',
+            'enum' => ['installation', 'packages', 'nothing'],
+            'description' => 'installation: its assembled runtime state answered. packages: read from the files '
+                . 'the installed packages ship, because the console could not be asked — overrides applied at '
+                . 'runtime are not reflected. nothing: the installation could not be asked at all, so an empty '
+                . 'result is unanswered rather than a miss.',
+        ];
     }
 
     /** @return array<string, mixed> */

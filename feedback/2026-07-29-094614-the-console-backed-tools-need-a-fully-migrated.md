@@ -2,19 +2,32 @@
 date: 2026-07-29T09:46:14+00:00
 category: tool-gap
 status: open
-tool: typo3_label_lookup, typo3_fluid_namespace_list, typo3_backend_module_lookup, typo3_configuration_lookup
+tool: typo3_fluid_namespace_list
 ---
 
-# The console-backed tools need a fully migrated database, not merely an installed TYPO3, and a sit...
+# typo3_fluid_namespace_list still needs a database it does not use
 
 ## Observation
 
-The console-backed tools need a fully migrated database, not merely an installed TYPO3, and a site project spends a lot of its life not having one. With code fully installed and bin/typo3 --version answering "TYPO3 CMS 13.4.33", typo3_label_lookup and typo3_fluid_namespace_list both failed with a raw console stack trace: "An exception occurred while executing a query: Table 'db.tx_scheduler_task' doesn't exist". The schema had not been imported yet. Fresh clone before a database dump is restored, a colleague onboarding, CI, a container that is up but empty — in all of them the labels are sitting right there in the XLF files on disk and the tool cannot reach them. The contrast with typo3_icon_lookup makes the point: it reads the packages directly, needs no console, and was the single most useful thing this server did for me. Asked for content-element-map it answered "registered in EXT:events_sitepackage/Configuration/Icons.php" — my own project extension, correctly attributed. That is exactly what a site developer needs and it works without a database. There is no reason a label lookup should be strictly less available than an icon lookup when both are answered by files in the same packages. Two things this does well and should keep: the failure is honest rather than silent, and it passes the real console error through instead of flattening it, which is what let me diagnose the cause in one call.
+Two thirds of this note are closed: `typo3_label_lookup` now reads the XLF files
+of the installed packages when the console cannot be reached and reports
+`answeredBy: "packages"`, and a console that fails on a missing table is
+diagnosed as a database without a schema rather than passed through as a stack
+trace.
+
+What remains is `typo3_fluid_namespace_list`. With code fully installed and
+`bin/typo3 --version` answering "TYPO3 CMS 13.4.33" it failed the same way,
+although what it answers — the shipped default namespaces plus what each package
+registers — is on disk like the labels are.
 
 ## Query
 
-typo3_label_lookup{query:"sponsor", extension:"events_sitepackage"} and typo3_fluid_namespace_list{} against an installed but not yet migrated TYPO3 13.4.33
+typo3_fluid_namespace_list{} against an installed but not yet migrated TYPO3 13.4.33
 
 ## Suggestion
 
-Give typo3_label_lookup a console-free fallback: it already enumerates the installed packages for the icon registry, so parse Resources/Private/Language/*.xlf from those same packages and search the trans-unit ids and source texts. Report which path answered, for example answeredBy:"packages" versus answeredBy:"console", and note in the payload that the file-based answer does not apply LANG/resourceOverrides, so the caller knows what the weaker answer is missing. typo3_fluid_namespace_list can be served the same way from the shipped defaults plus each package's ext_localconf.php registrations. typo3_configuration_lookup and typo3_backend_module_lookup genuinely need the assembled runtime state and should stay console-only, but their error should say that the database is not migrated rather than surfacing a bare SQL stack trace, since the remedy is a specific one.
+Serve it from the shipped defaults plus each package's `ext_localconf.php`
+registrations, the way the labels and the icon registry are served, and report
+`answeredBy: "packages"` for that path. Note that a registration file is
+ordinary PHP: `InstalledIcons` parses rather than includes it, and this would
+have to do the same.

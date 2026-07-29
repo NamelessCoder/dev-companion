@@ -161,7 +161,7 @@ final class Tools
             ],
             [
                 'name' => 'typo3_label_lookup',
-                'description' => 'Search the labels registered in the TYPO3 installation you are working in, so an existing label can be reused instead of a new key invented. Answered by the installation itself through its console, across the packages it has active — a project extension\'s labels included, and with the resource overrides the installation applies. Needs a reachable console; typo3_server_scope says whether there is one.',
+                'description' => 'Search the labels registered in the TYPO3 installation you are working in, so an existing label can be reused instead of a new key invented. Answered by the installation itself through its console, across the packages it has active — a project extension\'s labels included, and with the resource overrides the installation applies. Where the console cannot be reached — an installed TYPO3 whose database has no schema yet is the common case — the same packages\' XLF files are read instead, and answeredBy says which of the two answered.',
                 'inputSchema' => [
                     'type' => 'object',
                     'properties' => [
@@ -1505,11 +1505,14 @@ final class Tools
      */
     private static function consoleUnavailable(string $error, array $data): ToolResult
     {
+        $diagnosis = Typo3Cli::diagnose($error);
+
         return ToolResult::create(
             sprintf(
-                "The installation could not be asked, so this is unanswered rather than empty: %s.\n"
+                "The installation could not be asked, so this is unanswered rather than empty: %s.\n%s"
                 . 'typo3_server_scope reports the installation and its console.',
-                $error
+                $error,
+                $diagnosis === '' ? '' : $diagnosis . "\n",
             ),
             $data + [
                 'answeredBy' => 'nothing',
@@ -1519,6 +1522,7 @@ final class Tools
                 // is exactly what a registry that really is empty looks like.
                 'unavailable' => [
                     'reason' => $error,
+                    'diagnosis' => $diagnosis,
                     'settings' => [
                         'root' => Instance::ROOT_VARIABLE,
                         'console' => Typo3Cli::CONSOLE_VARIABLE,
@@ -1906,14 +1910,22 @@ final class Tools
         // installation that answered "none", not one that could not be asked —
         // and the difference decides whether the caller refines the query or
         // goes looking for a console that is not broken.
+        $answeredBy = 'installation';
+        $candidates = [];
         if (!is_array($answer['data']) && $answer['exitCode'] !== 0) {
-            return self::consoleUnavailable(
-                $answer['error'],
-                ['query' => $query, 'matchCount' => 0, 'labels' => [], 'terms' => []],
-            );
+            // The labels are in the packages' files whether or not the console
+            // boots, and it needs a migrated database to boot. A weaker answer
+            // beats none, as long as it says which one it is.
+            $candidates = InstalledLabels::all($extension);
+            if ($candidates === []) {
+                return self::consoleUnavailable(
+                    $answer['error'],
+                    ['query' => $query, 'matchCount' => 0, 'labels' => [], 'terms' => []],
+                );
+            }
+            $answeredBy = 'packages';
         }
 
-        $candidates = [];
         /** @var array<string, mixed> $data */
         $data = is_array($answer['data']) ? $answer['data'] : [];
         foreach ($data['items'] ?? [] as $item) {
@@ -1937,6 +1949,13 @@ final class Tools
         $shown = array_slice($labels, 0, $limit);
         $instance = Instance::describe();
 
+        $fromFiles = $answeredBy === 'packages' ? sprintf(
+            "\n\nRead from the XLF files of the installed packages: the console could not be asked (%s). "
+            . 'What that leaves out is the assembled runtime state — a label an installation replaces through '
+            . 'LANG/resourceOverrides is shown here as its package ships it.',
+            $answer['error'],
+        ) : '';
+
         if ($shown === []) {
             $lines = [sprintf(
                 'No label in %s %s. The search covered the packages this installation has active, '
@@ -1954,12 +1973,12 @@ final class Tools
                 )) . ' — ask again with the one that narrows best.';
             }
 
-            return ToolResult::create(implode("\n", $lines), [
+            return ToolResult::create(implode("\n", $lines) . $fromFiles, [
                 'query' => $query,
                 'matchCount' => 0,
                 'labels' => [],
                 'terms' => $termCounts,
-                'answeredBy' => 'installation',
+                'answeredBy' => $answeredBy,
             ]);
         }
 
@@ -1974,12 +1993,12 @@ final class Tools
         $lines[] = 'Reference a label by the domain form shown first (package.resource:key) — in TCA, in '
             . 'LanguageService::sL(), and in f:translate as separate domain and key attributes.';
 
-        return ToolResult::create(implode("\n", $lines), [
+        return ToolResult::create(implode("\n", $lines) . $fromFiles, [
             'query' => $query,
             'matchCount' => $total,
             'labels' => $shown,
             'terms' => $termCounts,
-            'answeredBy' => 'installation',
+            'answeredBy' => $answeredBy,
         ]);
     }
 

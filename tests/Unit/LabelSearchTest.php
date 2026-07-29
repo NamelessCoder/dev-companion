@@ -140,6 +140,53 @@ final class LabelSearchTest extends TestCase
         self::assertStringContainsString('"save" matches 1 label(s)', $result->text);
     }
 
+    #[Test]
+    public function aConsoleThatCannotBootIsAnsweredFromTheFilesItWouldHaveRead(): void
+    {
+        // An installed TYPO3 whose database has no schema yet: the console
+        // fails on the first query, and the labels are sitting in the XLF files
+        // of the same packages the icon lookup already reads.
+        $this->consoleThatFails('An exception occurred while executing a query: '
+            . "Table 'db.tx_scheduler_task' doesn't exist");
+        $this->labelFile('Resources/Private/Language/locallang.xlf', ['labels.save' => 'Save document']);
+
+        $result = Tools::call('typo3_label_lookup', ['query' => 'save document']);
+
+        self::assertSame('packages', $result->data['answeredBy']);
+        self::assertSame('core.messages:labels.save', $result->data['labels'][0]['ref']);
+        self::assertStringContainsString('LANG/resourceOverrides', $result->text);
+    }
+
+    #[Test]
+    public function aDatabaseWithoutASchemaIsNamedRatherThanLeftAsAStackTrace(): void
+    {
+        $this->consoleThatFails('An exception occurred while executing a query: '
+            . "Table 'db.tx_scheduler_task' doesn't exist");
+
+        // Nothing to fall back on here — this package ships no labels — so the
+        // answer is unanswered, and says what to do about it.
+        $result = Tools::call('typo3_label_lookup', ['query' => 'save']);
+
+        self::assertSame('nothing', $result->data['answeredBy']);
+        self::assertStringContainsString('no TYPO3 schema yet', $result->text);
+        self::assertStringContainsString('no TYPO3 schema yet', $result->data['unavailable']['diagnosis']);
+    }
+
+    /** @param array<string, string> $units */
+    private function labelFile(string $path, array $units): void
+    {
+        $file = $this->temporaryRoot . '/typo3/sysext/core/' . $path;
+        mkdir(dirname($file), 0o777, true);
+
+        $body = '';
+        foreach ($units as $id => $source) {
+            $body .= sprintf('<trans-unit id="%s"><source>%s</source></trans-unit>', $id, $source);
+        }
+        file_put_contents($file, '<?xml version="1.0" encoding="UTF-8"?>'
+            . '<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">'
+            . '<file source-language="en" datatype="plaintext"><body>' . $body . '</body></file></xliff>');
+    }
+
     /** A console that answers every call with $output and exits successfully. */
     private function consoleThatPrints(string $output): void
     {

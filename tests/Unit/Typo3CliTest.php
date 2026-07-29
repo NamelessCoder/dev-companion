@@ -28,6 +28,17 @@ final class Typo3CliTest extends TestCase
     }
 
     #[Test]
+    public function aFailureIsDiagnosedOnlyWhereTheMessageDoesNotSayEnough(): void
+    {
+        self::assertStringContainsString(
+            'no TYPO3 schema yet',
+            Typo3Cli::diagnose("An exception occurred while executing a query: Table 'db.tx_scheduler_task' doesn't exist")
+        );
+        self::assertStringContainsString('no TYPO3 schema yet', Typo3Cli::diagnose('SQLSTATE[42S02]: Base table or view not found'));
+        self::assertSame('', Typo3Cli::diagnose('php_network_getaddresses: getaddrinfo for db failed'));
+    }
+
+    #[Test]
     public function withoutAnInstallationThereIsNothingToRun(): void
     {
         Instance::discoverFrom(null);

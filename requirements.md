@@ -134,6 +134,18 @@ them, this section wins and the other one is what needs rewriting.
   unreachable installation (2026-07-29).
   *Held by:* `LabelSearchTest::aConsoleThatFoundNothingIsAnAnswerRatherThanAFailure`,
   `LabelSearchTest::aConsoleThatCannotRunIsStillUnanswered`
+- **R-ANS-8** An installation-backed answer is not lost to a console that cannot
+  boot where the files hold it anyway. `typo3_label_lookup` falls back to the
+  XLF files of the same packages and reports `answeredBy: "packages"`, naming
+  what the weaker source leaves out. Where nothing can answer, the failure is
+  diagnosed rather than passed through: a query against a missing table means
+  the database has no schema, not that the installation is broken.
+  *From:* an installed TYPO3 13.4.33 before the dump was imported, where the
+  labels sat in the files and both console-backed lookups returned a raw SQL
+  stack trace (2026-07-29).
+  *Held by:* `LabelSearchTest::aConsoleThatCannotBootIsAnsweredFromTheFilesItWouldHaveRead`,
+  `LabelSearchTest::aDatabaseWithoutASchemaIsNamedRatherThanLeftAsAStackTrace`,
+  `Typo3CliTest::aFailureIsDiagnosedOnlyWhereTheMessageDoesNotSayEnough`
 - **R-ANS-7** A query is scored by the terms that separate one section from the
   rest, not by term overlap. A word half the knowledge base carries decides
   nothing, a term is matched as a word rather than as a substring, and which of

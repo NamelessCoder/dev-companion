@@ -2,7 +2,7 @@
 date: 2026-07-29T09:46:14+00:00
 category: tool-gap
 status: open
-tool: typo3_label_lookuptypo3_fluid_namespace_listtypo3_backend_module_lookuptypo3_configuration_lookup
+tool: typo3_label_lookup, typo3_fluid_namespace_list, typo3_backend_module_lookup, typo3_configuration_lookup
 ---
 
 # The console-backed tools need a fully migrated database, not merely an installed TYPO3, and a sit...

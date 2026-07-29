@@ -2,7 +2,7 @@
 date: 2026-07-29T09:42:45+00:00
 category: wrong-answer
 status: open
-tool: typo3_translation_domain_lookuptypo3_component_lookuptypo3_architecture_lookup
+tool: typo3_translation_domain_lookup, typo3_component_lookup, typo3_architecture_lookup
 ---
 
 # The server has no notion of a target TYPO3 version. Every catalog and every hint is pinned to one...

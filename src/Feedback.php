@@ -56,7 +56,7 @@ final class Feedback
         }
 
         $category = self::category($args['category'] ?? null);
-        $tool = self::toolName($args['tool'] ?? null);
+        $tools = self::toolNames($args['tool'] ?? null);
         $query = self::text($args['query'] ?? '');
         $suggestion = self::text($args['suggestion'] ?? '');
 
@@ -66,7 +66,7 @@ final class Feedback
         }
 
         $file = self::uniquePath($directory, $observation);
-        $document = self::render($observation, $category, $tool, $query, $suggestion, self::origin());
+        $document = self::render($observation, $category, $tools, $query, $suggestion, self::origin());
 
         if (file_put_contents($file, $document) === false) {
             throw new \RuntimeException(sprintf('Cannot write the feedback note: %s', $file));
@@ -78,14 +78,20 @@ final class Feedback
     /**
      * Reads recorded notes, newest first.
      *
-     * @return array<int, array{file: string, date: string, category: string, status: string, tool: string, title: string}>
+     * @return array<int, array{file: string, date: string, category: string, status: string, tool: string, tools: array<int, string>, title: string}>
      */
-    public static function notes(?string $status = 'open', ?string $category = null, int $limit = 20): array
-    {
+    public static function notes(
+        ?string $status = 'open',
+        ?string $category = null,
+        int $limit = 20,
+        ?string $tool = null,
+    ): array {
         self::assertAvailable();
 
         $files = glob(Paths::feedback() . '/*.md') ?: [];
         rsort($files); // filenames start with the timestamp, so this is newest first
+
+        $wanted = $tool === null ? null : (self::toolNames($tool)[0] ?? null);
 
         $notes = [];
         foreach ($files as $file) {
@@ -97,6 +103,9 @@ final class Feedback
                 continue;
             }
             if ($category !== null && $note['category'] !== $category) {
+                continue;
+            }
+            if ($wanted !== null && !in_array($wanted, $note['tools'], true)) {
                 continue;
             }
 
@@ -120,7 +129,7 @@ final class Feedback
     }
 
     /**
-     * @return array{file: string, date: string, category: string, status: string, tool: string, title: string}|null
+     * @return array{file: string, date: string, category: string, status: string, tool: string, tools: array<int, string>, title: string}|null
      */
     private static function parse(string $file): ?array
     {
@@ -144,12 +153,17 @@ final class Feedback
             $title = trim($heading[1]);
         }
 
+        $tools = self::toolNames($meta['tool'] ?? '');
+
         return [
             'file' => 'feedback/' . basename($file),
             'date' => $meta['date'] ?? '',
             'category' => $meta['category'] ?? 'idea',
             'status' => $meta['status'] ?? 'open',
-            'tool' => $meta['tool'] ?? '',
+            // Both: the string is what a note has always carried, the list is
+            // what a caller can filter or group by without parsing it back.
+            'tool' => implode(', ', $tools),
+            'tools' => $tools,
             'title' => $title,
         ];
     }
@@ -175,10 +189,13 @@ final class Feedback
         return $startedFrom === null ? '' : $startedFrom;
     }
 
+    /**
+     * @param array<int, string> $tools
+     */
     private static function render(
         string $observation,
         string $category,
-        string $tool,
+        array $tools,
         string $query,
         string $suggestion,
         string $origin,
@@ -188,8 +205,8 @@ final class Feedback
             'category: ' . $category,
             'status: open',
         ];
-        if ($tool !== '') {
-            $frontMatter[] = 'tool: ' . $tool;
+        if ($tools !== []) {
+            $frontMatter[] = 'tool: ' . implode(', ', $tools);
         }
         if ($origin !== '') {
             $frontMatter[] = 'directory: ' . $origin;
@@ -268,12 +285,38 @@ final class Feedback
         return is_string($value) && in_array($value, self::CATEGORIES, true) ? $value : 'idea';
     }
 
-    private static function toolName(mixed $value): string
+    /**
+     * The tools a note is about.
+     *
+     * An observation is regularly about several tools at once — the four that
+     * go quiet together when the console cannot be reached, say. Stripping
+     * everything but [a-z0-9_] from one string ran their names together into
+     * one unsearchable word, which is what a backlog is least able to afford:
+     * the obvious thing to want from the list is every note about one tool.
+     *
+     * A list is accepted as a list, and a string is split on what separates
+     * names in one — a comma or a space — rather than having the separator
+     * deleted.
+     *
+     * @return array<int, string>
+     */
+    private static function toolNames(mixed $value): array
     {
-        if (!is_string($value)) {
-            return '';
+        $candidates = is_array($value)
+            ? $value
+            : (preg_split('/[\s,;]+/', is_string($value) ? $value : '') ?: []);
+
+        $names = [];
+        foreach ($candidates as $candidate) {
+            if (!is_string($candidate)) {
+                continue;
+            }
+            $name = (string) preg_replace('/[^a-z0-9_]/', '', strtolower(trim($candidate)));
+            if ($name !== '') {
+                $names[] = $name;
+            }
         }
 
-        return (string) preg_replace('/[^a-z0-9_]/', '', strtolower(trim($value)));
+        return array_values(array_unique($names));
     }
 }

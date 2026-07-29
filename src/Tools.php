@@ -273,7 +273,7 @@ final class Tools
                     'properties' => [
                         'observation' => ['type' => 'string', 'minLength' => 1, 'description' => 'What was missing, wrong, or unhelpful. Be specific enough to act on later.'],
                         'category' => ['type' => 'string', 'enum' => Feedback::CATEGORIES, 'default' => 'idea', 'description' => 'missing-knowledge: the knowledge base lacks the answer. wrong-answer: the answer was incorrect. tool-gap: no tool covers the need. bug: the server misbehaved. idea: anything else.'],
-                        'tool' => ['type' => 'string', 'description' => 'The tool the observation is about, for example typo3_component_lookup.'],
+                        'tool' => ['type' => ['string', 'array'], 'items' => ['type' => 'string'], 'description' => 'The tool the observation is about, for example typo3_component_lookup. Several tools may be named, as a list or separated by commas.'],
                         'query' => ['type' => 'string', 'description' => 'The query or arguments that produced the unsatisfying result.'],
                         'suggestion' => ['type' => 'string', 'description' => 'What the server should have answered or should be able to do.'],
                     ],
@@ -282,12 +282,13 @@ final class Tools
             ],
             [
                 'name' => 'typo3_feedback_list',
-                'description' => 'List improvement notes recorded via typo3_feedback_record, newest first, so they can be worked off.',
+                'description' => 'List improvement notes recorded via typo3_feedback_record, newest first, so they can be worked off. Filter by status, by category, or by the tool a note is about.',
                 'inputSchema' => [
                     'type' => 'object',
                     'properties' => [
                         'status' => ['type' => 'string', 'enum' => ['open', 'all'], 'default' => 'open', 'description' => 'open: only notes still marked open. all: every recorded note.'],
                         'category' => ['type' => 'string', 'enum' => Feedback::CATEGORIES, 'description' => 'Restrict the list to one category.'],
+                        'tool' => ['type' => 'string', 'description' => 'Restrict the list to the notes about one tool, for example typo3_label_lookup. A note naming several tools is matched by each of them.'],
                         'limit' => ['type' => 'integer', 'minimum' => 1, 'maximum' => 100, 'default' => 20, 'description' => 'Maximum number of notes to return.'],
                     ],
                 ],
@@ -491,12 +492,17 @@ final class Tools
         $status = is_string($args['status'] ?? null) ? $args['status'] : 'open';
         $category = is_string($args['category'] ?? null) ? $args['category'] : null;
         $limit = is_int($args['limit'] ?? null) ? $args['limit'] : 20;
+        $tool = is_string($args['tool'] ?? null) && trim($args['tool']) !== '' ? trim($args['tool']) : null;
 
-        $notes = Feedback::notes($status, $category, $limit);
+        $notes = Feedback::notes($status, $category, $limit, $tool);
 
         if ($notes === []) {
             return ToolResult::create(
-                $status === 'open' ? 'No open improvement notes.' : 'No improvement notes recorded yet.',
+                sprintf(
+                    '%s%s',
+                    $status === 'open' ? 'No open improvement notes' : 'No improvement notes recorded yet',
+                    $tool === null ? '.' : ' about ' . $tool . '.'
+                ),
                 ['count' => 0, 'notes' => []],
             );
         }

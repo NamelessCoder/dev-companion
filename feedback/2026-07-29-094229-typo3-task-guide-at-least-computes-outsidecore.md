@@ -2,7 +2,7 @@
 date: 2026-07-29T09:42:29+00:00
 category: tool-gap
 status: open
-tool: typo3_test_run_guidetypo3_script_lookup
+tool: typo3_test_run_guide, typo3_script_lookup
 ---
 
 # typo3_task_guide at least computes outsideCore; typo3_test_run_guide and typo3_script_lookup have...

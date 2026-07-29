@@ -383,9 +383,10 @@ final class ToolSchemas
                 'date' => self::string(),
                 'category' => self::string(),
                 'status' => self::string(),
-                'tool' => self::string(),
+                'tool' => self::string('The tools the note is about, comma-separated. Empty when it names none.'),
+                'tools' => self::listOf(self::string(), 'The same names as a list, to filter or group by without parsing.'),
                 'title' => self::string(),
-            ], ['file', 'date', 'category', 'status', 'tool', 'title'])),
+            ], ['file', 'date', 'category', 'status', 'tool', 'tools', 'title'])),
         ], ['count', 'notes']);
     }
 

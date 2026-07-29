@@ -185,7 +185,8 @@ name already says what shape the answer has.
   answer as a note under `feedback/` (standalone checkout only, see
   [Improvement notes](#improvement-notes)).
 - `typo3_feedback_list`: lists those notes, newest first, so they can be worked
-  off (standalone checkout only).
+  off, filtered by status, category or the tool they are about (standalone
+  checkout only).
 
 ## Resources
 

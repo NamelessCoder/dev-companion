@@ -144,4 +144,68 @@ final class FeedbackTest extends TestCase
             self::assertSame('bug', $note['category']);
         }
     }
+
+    #[Test]
+    public function severalToolsStaySeveralToolsRatherThanOneWord(): void
+    {
+        // An observation about the four tools that go quiet together is a
+        // normal one. Stripping the separator ran their names into
+        // "typo3_label_lookuptypo3_icon_lookup", which no filter can match.
+        $file = Feedback::record([
+            'observation' => self::MARKER . ' both lookups went quiet',
+            'tool' => 'typo3_label_lookup, typo3_icon_lookup',
+        ]);
+
+        self::assertStringContainsString(
+            'tool: typo3_label_lookup, typo3_icon_lookup',
+            (string) file_get_contents(Paths::root() . '/' . $file)
+        );
+
+        $note = self::noteFor($file);
+        self::assertSame(['typo3_label_lookup', 'typo3_icon_lookup'], $note['tools']);
+    }
+
+    #[Test]
+    public function aListOfToolsIsAcceptedAsOne(): void
+    {
+        $file = Feedback::record([
+            'observation' => self::MARKER . ' recorded with a list',
+            'tool' => ['typo3_label_lookup', 'typo3_icon_lookup'],
+        ]);
+
+        self::assertSame(['typo3_label_lookup', 'typo3_icon_lookup'], self::noteFor($file)['tools']);
+    }
+
+    #[Test]
+    public function theListCanBeRestrictedToOneTool(): void
+    {
+        $file = Feedback::record([
+            'observation' => self::MARKER . ' about two tools',
+            'tool' => 'typo3_label_lookup typo3_icon_lookup',
+        ]);
+
+        // The obvious thing to want from a backlog: every note about one tool,
+        // including the ones that name it alongside others.
+        $files = array_column(Feedback::notes('all', null, 100, 'typo3_icon_lookup'), 'file');
+        self::assertContains($file, $files);
+
+        foreach (Feedback::notes('all', null, 100, 'typo3_icon_lookup') as $note) {
+            self::assertContains('typo3_icon_lookup', $note['tools']);
+        }
+        self::assertNotContains($file, array_column(Feedback::notes('all', null, 100, 'typo3_rule_lookup'), 'file'));
+    }
+
+    /**
+     * @return array{file: string, date: string, category: string, status: string, tool: string, tools: array<int, string>, title: string}
+     */
+    private static function noteFor(string $file): array
+    {
+        foreach (Feedback::notes('all', null, 200) as $note) {
+            if ($note['file'] === $file) {
+                return $note;
+            }
+        }
+
+        self::fail($file . ' was written but is not listed');
+    }
 }

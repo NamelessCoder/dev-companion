@@ -193,6 +193,36 @@ final class HintsTest extends TestCase
     }
 
     #[Test]
+    public function everyHintIsReachedByItsOwnTitle(): void
+    {
+        // The weakest thing that can be asked of a lookup, and eight of the
+        // nineteen Backend CSS hints failed it: "Color and Surface Tokens"
+        // returned nothing, because none of those words is a CSS signal, the
+        // domain fell back to PHP, and the hint's own category was then never a
+        // candidate. Scoring had nothing to do with it — the hint never reached
+        // the matcher. This holds the gate rather than the ranking, so it is
+        // about candidacy: the hint has to be somewhere in the answer.
+        foreach (ArchitectureHints::load() as $hint) {
+            $reached = array_column(ArchitectureHints::find([], $hint['title'], 6)['matchedHints'], 'id');
+
+            self::assertContains($hint['id'], $reached, $hint['title'] . ' does not reach ' . $hint['id']);
+        }
+    }
+
+    #[Test]
+    public function whatACallerCanSeeReachesTheHintAboutIt(): void
+    {
+        // A caller names the symptom in the words of what is in front of them —
+        // a colour, a dark mode, a shadow — not in the vocabulary of the
+        // subsystem that produces it. A component by name is the other case and
+        // is deliberately not here: "button" is typo3_component_lookup's, and
+        // it answers it with the markup.
+        $result = ArchitectureHints::find([], 'dark mode colors in my backend module', 6);
+
+        self::assertContains('css-light-dark-mode', array_column($result['matchedHints'], 'id'));
+    }
+
+    #[Test]
     public function aQueryTheCorpusHasNoAnswerForStillMisses(): void
     {
         // The other half of scoring the hint text: everything now matches

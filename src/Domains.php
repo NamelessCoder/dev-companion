@@ -49,9 +49,24 @@ final class Domains
             'typescript', 'javascript', 'web component', 'custom element', 'lit',
             'backend ui',
         ],
+        // The first seven are the vocabulary of somebody who already knows the
+        // answer is CSS. The rest is what a caller can actually see, and it is
+        // there because eight of the nineteen Backend CSS hints could not be
+        // reached by their own title: "Color and Surface Tokens" carried no CSS
+        // signal, fell back to PHP, and its own category was never a candidate.
         self::CSS => [
             'sass', 'scss', 'css', 'stylesheet', 'styling', 'frontend build',
             'backend ui',
+            'color', 'colour', 'dark mode', 'light mode', 'color scheme',
+            'design token', 'custom property', 'custom properties',
+            'shadow', 'elevation', 'z-index', 'overlay', 'layering',
+            'transition', 'animation', 'motion',
+            'container query', 'container queries', 'responsive',
+            'spacing', 'padding', 'margin', 'border radius',
+            'selector', 'specificity', 'contrast', 'focus ring',
+            'rtl', 'logical property', 'logical properties',
+            'web component', 'custom element',
+            'layout shift', 'layout stability', 'text-overflow', 'ellipsis',
         ],
         self::FLUID => [
             'fluid', 'viewhelper', 'view helper', 'partial', 'pageview',

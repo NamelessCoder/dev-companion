@@ -114,6 +114,9 @@ final class ToolContractTest extends TestCase
             'components: list' => ['typo3_component_lookup', []],
             'components: hit' => ['typo3_component_lookup', ['query' => 'badge']],
             'components: miss' => ['typo3_component_lookup', ['query' => 'quantumflux']],
+            'system extensions: hit' => ['typo3_system_extension_lookup', ['query' => 'impexp']],
+            'system extensions: miss' => ['typo3_system_extension_lookup', ['query' => 'typo3/cms-content-blocks']],
+            'system extensions: everything' => ['typo3_system_extension_lookup', []],
             'domain: EXT reference' => ['typo3_translation_domain_lookup', [
                 'path' => 'EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf',
             ]],

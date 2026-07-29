@@ -9,6 +9,7 @@ use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Typo3CmsMcp\Catalog\Components;
 use Typo3CmsMcp\Catalog\Meta;
+use Typo3CmsMcp\Catalog\SystemExtensions;
 use Typo3CmsMcp\Catalog\TranslationDomain;
 use Typo3CmsMcp\Instance;
 use Typo3CmsMcp\Tests\Support\TemporaryInstallation;
@@ -218,6 +219,49 @@ final class CatalogTest extends TestCase
             foreach (['since', 'until'] as $bound) {
                 if ($component[$bound] !== null) {
                     self::assertContains($component[$bound], $majors, $component['name'] . ' is bound to a version this knowledge base does not cover');
+                }
+            }
+        }
+    }
+
+    #[Test]
+    public function whetherAnExtensionIsPartOfTheCoreIsAnswerable(): void
+    {
+        // It was answered from memory in both directions in one session: a
+        // community package cited as evidence of what the core does, and a
+        // system extension nobody knew was there.
+        $camino = Tools::call('typo3_system_extension_lookup', ['query' => 'typo3/theme-camino']);
+        self::assertSame(1, $camino->data['matchCount']);
+        self::assertSame('theme_camino', $camino->data['extensions'][0]['key']);
+        self::assertNotSame('', $camino->data['extensions'][0]['shippedOn'], 'it is not shipped on every covered line');
+
+        $contentBlocks = Tools::call('typo3_system_extension_lookup', ['query' => 'typo3/cms-content-blocks']);
+        self::assertSame(0, $contentBlocks->data['matchCount']);
+        self::assertStringContainsString('third-party', $contentBlocks->text, 'a miss is about the core, not about the package');
+    }
+
+    #[Test]
+    public function aTargetVersionDecidesWhichExtensionsAreShipped(): void
+    {
+        $onThirteen = Tools::call('typo3_system_extension_lookup', ['query' => 'theme_camino', 'targetVersion' => '13.4']);
+        self::assertSame(0, $onThirteen->data['matchCount'], 'the theme is not part of that line');
+
+        $everything = Tools::call('typo3_system_extension_lookup', []);
+        self::assertGreaterThan($onThirteen->data['matchCount'], $everything->data['matchCount']);
+        foreach ($everything->data['extensions'] as $extension) {
+            self::assertStringStartsWith('typo3/', $extension['package'], $extension['key'] . ' has no package to require it by');
+        }
+    }
+
+    #[Test]
+    public function everyShippedRangeNamesACoveredVersion(): void
+    {
+        $majors = Versions::majors();
+        foreach (SystemExtensions::load() as $extension) {
+            self::assertNotSame('', $extension['description'], $extension['key'] . ' says nothing about itself');
+            foreach (['since', 'until'] as $bound) {
+                if ($extension[$bound] !== null) {
+                    self::assertContains($extension[$bound], $majors, $extension['key'] . ' is bound to a version this knowledge base does not cover');
                 }
             }
         }

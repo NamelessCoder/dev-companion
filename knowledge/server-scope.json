@@ -71,6 +71,15 @@
       "provenance": "transferable"
     },
     {
+      "topic": "Which extensions the TYPO3 core ships, and on which versions",
+      "depth": "Every system extension of every covered TYPO3 line, by extension key and Composer package name, with what it is for and the range it is shipped on. Derived from one checkout per covered version, so it answers for an extension that is not installed — which is the case the question is asked in. A miss says the name is not a system extension there, never that it does not exist.",
+      "tools": [
+        "typo3_system_extension_lookup"
+      ],
+      "source": "knowledge/catalog/system-extensions.json",
+      "provenance": "transferable"
+    },
+    {
       "topic": "Translation domains: how the domain of an XLF file is derived",
       "depth": "Complete and computed, not a snapshot: the core's own path-to-domain rules ported here — the class that holds them is TranslationDomainMapper on one branch and TranslationDomainResolver on the next, so compare against whichever your checkout has, so any XLF path in any extension resolves — including a file that does not exist yet. Where the installation being read is older than translation domains, the full LLL:EXT: reference is the answer instead: the domain form renders nothing there.",
       "tools": [
@@ -252,6 +261,10 @@
     {
       "when": "Working in one extension and needing what it registers",
       "call": "typo3_extension_scope with its key"
+    },
+    {
+      "when": "About to claim that an extension is (or is not) part of the core, or to require one",
+      "call": "typo3_system_extension_lookup"
     }
   ]
 }

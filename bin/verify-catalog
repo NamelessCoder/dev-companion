@@ -27,12 +27,16 @@ use Typo3CmsMcp\Versions;
 $root = dirname(__DIR__);
 $catalogDir = $root . '/knowledge/catalog';
 $components = json_decode((string) file_get_contents($catalogDir . '/components.json'), true);
+$systemExtensions = json_decode((string) file_get_contents($catalogDir . '/system-extensions.json'), true);
 
 if (($argv[1] ?? null) !== null) {
     exit(verifyPaths(rtrim($argv[1], '/'), $components));
 }
 
-exit(verifyBindings($root . '/.checkouts', $components));
+exit(max(
+    verifyBindings($root . '/.checkouts', $components),
+    verifySystemExtensions($root . '/.checkouts', $systemExtensions),
+));
 
 /**
  * Whether every path an entry names still exists in one checkout.
@@ -223,4 +227,115 @@ function readSources(string $directory, string $extension): string
     }
 
     return $sources;
+}
+
+/**
+ * Re-reads which system extensions each covered version ships, and reports
+ * every difference from what the catalog records.
+ *
+ * Nothing is judged here: the extension keys below typo3/sysext are the answer,
+ * and the Composer package name is what that directory's own composer.json says.
+ * A core release that adds or drops a system extension therefore invalidates the
+ * catalog loudly rather than leaving it to be noticed by a caller.
+ *
+ * @param array<int, array<string, mixed>> $recorded
+ */
+function verifySystemExtensions(string $checkouts, array $recorded): int
+{
+    echo "System extensions\n";
+    $covered = Versions::covered();
+    $shipped = [];
+    foreach ($covered as $version) {
+        $directory = $checkouts . '/' . $version['branch'] . '/typo3/sysext';
+        if (!is_dir($directory)) {
+            fwrite(STDERR, sprintf("No checkout for TYPO3 v%d below %s — run bin/core-checkouts.\n", $version['major'], $checkouts));
+
+            return 2;
+        }
+        foreach (scandir($directory) ?: [] as $key) {
+            $manifest = $directory . '/' . $key . '/composer.json';
+            if ($key === '.' || $key === '..' || !is_file($manifest)) {
+                continue;
+            }
+            $shipped[$key][$version['major']] = (string) (json_decode((string) file_get_contents($manifest), true)['name'] ?? '');
+        }
+    }
+
+    $problems = 0;
+    $byKey = array_column($recorded, null, 'key');
+    foreach ($shipped as $key => $packages) {
+        $majors = array_keys($packages);
+        $entry = $byKey[$key] ?? null;
+        if ($entry === null) {
+            printf("  %s: shipped on v%s, not in the catalog\n", $key, implode(', v', $majors));
+            ++$problems;
+            continue;
+        }
+        $problems += reportRange($key, $entry, $majors, array_column($covered, 'major'));
+
+        $package = end($packages);
+        if (($entry['package'] ?? '') !== $package) {
+            printf("  %s: records package %s, ships as %s\n", $key, (string) ($entry['package'] ?? ''), $package);
+            ++$problems;
+        }
+    }
+    foreach ($byKey as $key => $entry) {
+        if (!isset($shipped[$key])) {
+            printf("  %s: in the catalog, shipped by no covered version\n", $key);
+            ++$problems;
+        }
+    }
+    printf("  %d system extensions against %s\n\n", count($shipped), implode(', ', array_column($covered, 'branch')));
+
+    if ($problems === 0) {
+        echo "Every system extension is recorded as the checkouts ship it.\n";
+
+        return 0;
+    }
+
+    printf("%d system extension(s) out of date.\n", $problems);
+
+    return 1;
+}
+
+/**
+ * Whether the recorded since/until still says which versions ship an extension.
+ * A range with a hole in it is reported as such: it cannot be expressed, and an
+ * extension that came back is a different statement from one that never left.
+ *
+ * @param array<string, mixed> $entry
+ * @param array<int, int> $majors
+ * @param array<int, int> $covered
+ */
+function reportRange(string $key, array $entry, array $majors, array $covered): int
+{
+    if ($majors !== range((int) $majors[0], (int) end($majors))) {
+        printf("  %s: shipped on v%s, which no range can express\n", $key, implode(', v', $majors));
+
+        return 1;
+    }
+
+    $since = $majors[0] === $covered[0] ? null : $majors[0];
+    $until = end($majors) === end($covered) ? null : end($majors);
+    $recordedSince = isset($entry['since']) ? (int) $entry['since'] : null;
+    $recordedUntil = isset($entry['until']) ? (int) $entry['until'] : null;
+    if ($since === $recordedSince && $until === $recordedUntil) {
+        return 0;
+    }
+
+    printf(
+        "  %s: records %s, ships %s\n",
+        $key,
+        range_label($recordedSince, $recordedUntil),
+        range_label($since, $until),
+    );
+
+    return 1;
+}
+
+function range_label(?int $since, ?int $until): string
+{
+    $label = Versions::label($since, $until);
+
+    return $label === '' ? 'on every covered version' : $label;
 }

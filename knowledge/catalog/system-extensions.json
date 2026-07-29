@@ -1,0 +1,196 @@
+[
+  {
+    "key": "adminpanel",
+    "package": "typo3/cms-adminpanel",
+    "description": "Admin Panel - The Admin Panel displays information about your site in the frontend and contains a range of metrics including debug and caching information."
+  },
+  {
+    "key": "backend",
+    "package": "typo3/cms-backend",
+    "description": "Backend"
+  },
+  {
+    "key": "belog",
+    "package": "typo3/cms-belog",
+    "description": "Log - View logs from the sys_log table in the TYPO3 backend modules System>Log"
+  },
+  {
+    "key": "beuser",
+    "package": "typo3/cms-beuser",
+    "description": "Backend User - TYPO3 backend module Administration > Users for managing backend users and groups."
+  },
+  {
+    "key": "core",
+    "package": "typo3/cms-core",
+    "description": "Core"
+  },
+  {
+    "key": "dashboard",
+    "package": "typo3/cms-dashboard",
+    "description": "Dashboard - TYPO3 backend module used to configure and create backend widgets."
+  },
+  {
+    "key": "extbase",
+    "package": "typo3/cms-extbase",
+    "description": "Extbase - Extension framework to create TYPO3 frontend plugins and TYPO3 backend modules."
+  },
+  {
+    "key": "extensionmanager",
+    "package": "typo3/cms-extensionmanager",
+    "description": "Extension Manager - Backend module (System > Extensions) for viewing and managing extensions."
+  },
+  {
+    "key": "felogin",
+    "package": "typo3/cms-felogin",
+    "description": "Frontend Login - A template-based plugin to log in website users in the TYPO3 frontend."
+  },
+  {
+    "key": "filelist",
+    "package": "typo3/cms-filelist",
+    "description": "Filelist - TYPO3 backend module 'Media' used for managing files."
+  },
+  {
+    "key": "filemetadata",
+    "package": "typo3/cms-filemetadata",
+    "description": "File Metadata - Adds additional metadata to file management."
+  },
+  {
+    "key": "fluid",
+    "package": "typo3/cms-fluid",
+    "description": "Fluid Integration - Integration of the Fluid templating engine into TYPO3."
+  },
+  {
+    "key": "fluid_styled_content",
+    "package": "typo3/cms-fluid-styled-content",
+    "description": "Fluid Styled Content - Fluid templates for TYPO3 content elements."
+  },
+  {
+    "key": "form",
+    "package": "typo3/cms-form",
+    "description": "Form - Flexible TYPO3 frontend form framework that comes with a backend editor interface."
+  },
+  {
+    "key": "frontend",
+    "package": "typo3/cms-frontend",
+    "description": "Frontend"
+  },
+  {
+    "key": "impexp",
+    "package": "typo3/cms-impexp",
+    "description": "Import/Export - Tool for importing and exporting records using XML or the custom T3D format."
+  },
+  {
+    "key": "indexed_search",
+    "package": "typo3/cms-indexed-search",
+    "description": "Indexed Search - Provides indexing functionality for TYPO3 pages and records as well as files including PDF, Word, HTML and plain text."
+  },
+  {
+    "key": "info",
+    "package": "typo3/cms-info",
+    "description": "Info - TYPO3 backend module for displaying information, such as a pagetree overview and localization information."
+  },
+  {
+    "key": "install",
+    "package": "typo3/cms-install",
+    "description": "Install Tool - The Install Tool is used for installation, upgrade, system administration and setup tasks."
+  },
+  {
+    "key": "linkvalidator",
+    "package": "typo3/cms-linkvalidator",
+    "description": "LinkValidator - Checks for broken links and displays results in the (Info>LinkValidator) backend module."
+  },
+  {
+    "key": "lowlevel",
+    "package": "typo3/cms-lowlevel",
+    "description": "Lowlevel - Technical analysis of the system. This includes raw database search, checking relations, counting pages and records etc."
+  },
+  {
+    "key": "opendocs",
+    "package": "typo3/cms-opendocs",
+    "description": "Open Docs - Shows opened documents for the TYPO3 backend user."
+  },
+  {
+    "key": "reactions",
+    "package": "typo3/cms-reactions",
+    "description": "Reactions - Handle incoming Webhooks for TYPO3"
+  },
+  {
+    "key": "recycler",
+    "package": "typo3/cms-recycler",
+    "description": "Recycler - Restore deleted records or remove them from the database permanently."
+  },
+  {
+    "key": "redirects",
+    "package": "typo3/cms-redirects",
+    "description": "Redirects - Create manual redirects, list existing redirects and automatically create\nredirects on slug changes."
+  },
+  {
+    "key": "reports",
+    "package": "typo3/cms-reports",
+    "description": "Reports - Show status reports and installed services in the (System>Reports) backend module."
+  },
+  {
+    "key": "rte_ckeditor",
+    "package": "typo3/cms-rte-ckeditor",
+    "description": "RTE CKEditor - Integration of CKEditor as a Rich Text Editor for the TYPO3 backend."
+  },
+  {
+    "key": "scheduler",
+    "package": "typo3/cms-scheduler",
+    "description": "Scheduler - Schedule tasks to run once or periodically at a specific time."
+  },
+  {
+    "key": "seo",
+    "package": "typo3/cms-seo",
+    "description": "SEO - SEO features including specific fields for SEO purposes, rendering of HTML meta tags and sitemaps."
+  },
+  {
+    "key": "setup",
+    "package": "typo3/cms-setup",
+    "description": "Setup - Allows users to edit a limited set of options for their user profile, including preferred language, their name and email address.",
+    "until": 13
+  },
+  {
+    "key": "styleguide",
+    "package": "typo3/cms-styleguide",
+    "description": "Styleguide - Showcase of the TYPO3 backend components and their markup.",
+    "since": 13
+  },
+  {
+    "key": "sys_note",
+    "package": "typo3/cms-sys-note",
+    "description": "System Notes - Records with messages which can be placed on any page and contain instructions or other information related to a page or section."
+  },
+  {
+    "key": "t3editor",
+    "package": "typo3/cms-t3editor",
+    "description": "T3Editor - JavaScript-driven editor with syntax highlighting and code completion. Based on CodeMirror.",
+    "until": 12
+  },
+  {
+    "key": "theme_camino",
+    "package": "typo3/theme-camino",
+    "description": "Theme: \"Camino\" - The default theme for TYPO3 sites in the TYPO3 v14 series.",
+    "since": 14
+  },
+  {
+    "key": "tstemplate",
+    "package": "typo3/cms-tstemplate",
+    "description": "TypoScript - TYPO3 backend module for the management of TypoScript records for the CMS frontend."
+  },
+  {
+    "key": "viewpage",
+    "package": "typo3/cms-viewpage",
+    "description": "Viewpage - Use the (Web>View) backend module to view a frontend page inside the TYPO3 backend."
+  },
+  {
+    "key": "webhooks",
+    "package": "typo3/cms-webhooks",
+    "description": "Webhooks - Handle outgoing Webhooks for TYPO3"
+  },
+  {
+    "key": "workspaces",
+    "package": "typo3/cms-workspaces",
+    "description": "Workspaces - Workflows with custom stages and versioning for a better editing and publishing experience."
+  }
+]

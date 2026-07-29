@@ -6,6 +6,7 @@ namespace Typo3CmsMcp;
 
 use Typo3CmsMcp\Catalog\Components;
 use Typo3CmsMcp\Catalog\Meta as CatalogMeta;
+use Typo3CmsMcp\Catalog\SystemExtensions;
 use Typo3CmsMcp\Catalog\TranslationDomain;
 
 /**
@@ -158,6 +159,17 @@ final class Tools
                     'properties' => [
                         'query' => ['type' => 'string', 'description' => 'Component name, class, or topic, for example badge, card, search box, or input-group. Omit to list the catalog.'],
                         'targetVersion' => ['type' => 'string', 'description' => 'The TYPO3 version the markup has to hold for, for example "13.4" or "14". Components not verified there are withheld. Defaults to the version of the installation this server was started in; where there is none, the whole catalog is returned and every entry carries the versions it was verified on.'],
+                    ],
+                ],
+            ],
+            [
+                'name' => 'typo3_system_extension_lookup',
+                'description' => 'Answer whether an extension is part of the TYPO3 core, and on which versions: the system extensions of every covered TYPO3 line, by extension key and Composer package name, each with what it is for and the range it is shipped on. Independent of any installation, which is the point — the question comes up for a package that is not installed, and "is this core" is otherwise answered from memory. A miss means the name is not a system extension on the covered versions, never that it does not exist.',
+                'inputSchema' => [
+                    'type' => 'object',
+                    'properties' => [
+                        'query' => ['type' => 'string', 'description' => 'An extension key ("theme_camino"), a Composer package name ("typo3/cms-impexp"), or a word from what it does ("redirects"). Omit to list everything the core ships.'],
+                        'targetVersion' => ['type' => 'string', 'description' => 'The TYPO3 version to answer for, for example "13.4" or "14". Restricts the answer to what that line ships. Defaults to the version of the installation this server was started in; where there is none, every entry comes back with the range it is shipped on.'],
                     ],
                 ],
             ],
@@ -363,6 +375,7 @@ final class Tools
             'typo3_test_run_guide' => self::testRunGuide($args),
             'typo3_architecture_lookup' => self::architectureLookup($args),
             'typo3_component_lookup' => self::componentLookup($args),
+            'typo3_system_extension_lookup' => self::systemExtensionLookup($args),
             'typo3_translation_domain_lookup' => self::translationDomainLookup($args),
             'typo3_label_lookup' => self::labelLookup($args),
             'typo3_fluid_namespace_list' => self::fluidNamespaceList(),
@@ -2036,6 +2049,79 @@ final class Tools
         'files' => [],
         'answeredBy' => 'nothing',
     ];
+
+    /**
+     * Whether an extension is part of the core, and since when.
+     *
+     * Answered from the catalog rather than from the installation being read,
+     * because the case that matters is the extension that is not installed:
+     * that is when the question is asked, and answering it from memory is how a
+     * community package gets cited as evidence of what the core does.
+     *
+     * @param array<string, mixed> $args
+     */
+    private static function systemExtensionLookup(array $args): ToolResult
+    {
+        $query = trim((string) ($args['query'] ?? ''));
+        $target = Versions::target(isset($args['targetVersion']) ? (string) $args['targetVersion'] : null);
+        $matches = SystemExtensions::find($query, $target);
+
+        $covered = implode(', ', array_map(
+            static fn(array $version): string => $version['branch'],
+            Versions::covered(),
+        ));
+        $shipped = $target === null
+            ? sprintf('The core ships these on %s.', $covered)
+            : sprintf('The core ships these on TYPO3 v%d.', $target);
+
+        if ($matches === []) {
+            return ToolResult::create(
+                sprintf(
+                    '"%s" is not a system extension on %s. That is an answer about the core, not about the '
+                    . 'package: it may well exist on Packagist or in the TER, where it is a third-party extension '
+                    . 'with its own release cycle. Call this without a query for everything the core does ship.',
+                    $query,
+                    $target === null ? $covered : 'TYPO3 v' . $target,
+                ),
+                [
+                    'query' => $query,
+                    'targetVersion' => $target,
+                    'matchCount' => 0,
+                    'extensions' => [],
+                    'coveredVersions' => Versions::majors(),
+                ],
+            );
+        }
+
+        $lines = [$shipped, ''];
+        foreach ($matches as $entry) {
+            $range = Versions::label($entry['since'], $entry['until']);
+            $lines[] = sprintf(
+                '- %s (%s)%s',
+                $entry['key'],
+                $entry['package'],
+                $range === '' ? '' : ' — ' . $range,
+            );
+            if ($entry['description'] !== '') {
+                $lines[] = '  ' . $entry['description'];
+            }
+        }
+
+        return ToolResult::create(implode("\n", $lines), [
+            'query' => $query,
+            'targetVersion' => $target,
+            'matchCount' => count($matches),
+            'extensions' => array_map(static fn(array $entry): array => [
+                'key' => $entry['key'],
+                'package' => $entry['package'],
+                'description' => $entry['description'],
+                'since' => $entry['since'],
+                'until' => $entry['until'],
+                'shippedOn' => Versions::label($entry['since'], $entry['until']),
+            ], $matches),
+            'coveredVersions' => Versions::majors(),
+        ]);
+    }
 
     /** @param array<string, mixed> $args */
     private static function catalogScope(array $args): ToolResult

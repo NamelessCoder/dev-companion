@@ -8,9 +8,11 @@
   "verifiedAt": "2026-07-28",
   "verifyCommand": "bin/verify-catalog /path/to/typo3-core-checkout",
   "scope": {
-    "components": "Hand-curated backend UI components from the styleguide and the backend Sass sources, each with every Sass file it spans and the TYPO3 majors it was verified on. A subset: not every CSS class in the core is described here. `bin/verify-catalog` with no argument re-derives those majors from one checkout per covered version."
+    "components": "Hand-curated backend UI components from the styleguide and the backend Sass sources, each with every Sass file it spans and the TYPO3 majors it was verified on. A subset: not every CSS class in the core is described here. `bin/verify-catalog` with no argument re-derives those majors from one checkout per covered version.",
+    "systemExtensions": "Every system extension of every covered TYPO3 line, read off one checkout per version: the extension key, the Composer package name to require it by, what it is for, and the majors that ship it. Complete rather than curated — `bin/verify-catalog` with no argument re-derives it, so a release that adds or drops one is reported."
   },
   "counts": {
-    "components": 25
+    "components": 25,
+    "systemExtensions": 38
   }
 }

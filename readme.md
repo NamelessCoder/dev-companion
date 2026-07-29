@@ -247,6 +247,11 @@ name already says what shape the answer has.
   `targetVersion` decides rather than informs: a component never verified there
   is withheld with what to check instead — v15 markup in a v13 backend is the
   kind of wrong that only shows up in a browser.
+- `typo3_system_extension_lookup`: says whether an extension is part of the
+  core and on which versions, by extension key or Composer package name, with
+  what it is for. It answers for an extension that is not installed, which is
+  when the question comes up; a miss means "not a system extension on these
+  versions", never "does not exist".
 - `typo3_icon_lookup`: validates and discovers icon identifiers (the registered
   T3Icons names), grouped by category, so unknown identifiers are caught before
   runtime. Every answer says which half of TYPO3 they belong to: the registry is

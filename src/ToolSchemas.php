@@ -30,6 +30,7 @@ final class ToolSchemas
             'typo3_test_run_guide' => self::testRunGuide(),
             'typo3_architecture_lookup' => self::architectureLookup(),
             'typo3_component_lookup' => self::componentLookup(),
+            'typo3_system_extension_lookup' => self::systemExtensionLookup(),
             'typo3_translation_domain_lookup' => self::translationDomainLookup(),
             'typo3_label_lookup' => self::labelLookup(),
             'typo3_fluid_namespace_list' => self::fluidNamespaceList(),
@@ -419,6 +420,25 @@ final class ToolSchemas
                 'resource' => self::string('The XLF file it lives in.'),
             ], ['ref', 'domain', 'key', 'source'])),
         ], ['query', 'matchCount', 'answeredBy', 'terms', 'labels']);
+    }
+
+    /** @return array<string, mixed> */
+    private static function systemExtensionLookup(): array
+    {
+        return self::object([
+            'query' => self::string(),
+            'targetVersion' => ['type' => ['integer', 'null'], 'description' => 'The TYPO3 major the answer was composed for — stated by the caller, or read from the installation. Null means every covered version is in the answer and each entry carries its own range.'],
+            'matchCount' => self::integer('How many system extensions matched. Zero means the name is not one of them on the versions asked about, not that no such package exists.'),
+            'extensions' => self::listOf(self::object([
+                'key' => self::string('The extension key, as the directory below typo3/sysext is named.'),
+                'package' => self::string('The Composer package name to require it by, where an installation does not have it already.'),
+                'description' => self::string('What it is for.'),
+                'since' => ['type' => ['integer', 'null'], 'description' => 'First covered major that ships it. Null means every covered major does.'],
+                'until' => ['type' => ['integer', 'null'], 'description' => 'Last covered major that ships it. Null means it is still shipped on the newest one.'],
+                'shippedOn' => self::string('The range in words, empty when it is shipped everywhere this knowledge base reaches.'),
+            ], ['key', 'package', 'description', 'since', 'until', 'shippedOn'])),
+            'coveredVersions' => self::listOf(self::integer(), 'The TYPO3 majors this answer was derived from.'),
+        ], ['query', 'matchCount', 'extensions', 'coveredVersions']);
     }
 
     /** @return array<string, mixed> */

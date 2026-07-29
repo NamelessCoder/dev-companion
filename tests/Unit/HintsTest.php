@@ -347,6 +347,26 @@ final class HintsTest extends TestCase
     }
 
     #[Test]
+    public function theTestKindThatNeedsABrowserIsCovered(): void
+    {
+        // Asking for browser tests returned the id index and a knowledge section
+        // about site sets. The core works the conventions out in
+        // Build/tests/playwright/, and nothing here pointed at them.
+        $result = ArchitectureHints::find(
+            [],
+            'acceptance and end-to-end browser tests for a TYPO3 site with Playwright',
+            6
+        );
+        self::assertContains('browser-tests', array_column($result['matchedHints'], 'id'));
+
+        $text = implode("\n", array_column((array) ArchitectureHints::byId('browser-tests')['hints'], 'text'));
+        // The accessibility half is the one that finds defects no PHP test can,
+        // and the rendering test is what gets mistaken for a frontend test.
+        self::assertStringContainsString('@axe-core/playwright', $text);
+        self::assertStringContainsString('executeFrontendSubRequest', $text);
+    }
+
+    #[Test]
     public function aProjectExtensionIsToldHowToGetASuiteAtAll(): void
     {
         // core-tests describes how a test is written inside the mono repository,

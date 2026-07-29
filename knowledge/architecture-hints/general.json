@@ -275,5 +275,38 @@
       "Run the sequence in the environment that is safe to break first, then the same commands in the same order everywhere else. An upgrade that was done differently on production is an installation nobody can reproduce — and the site configuration, the TypoScript and the TSconfig are part of what has to be re-checked there, not only the PHP."
     ],
     "checks": []
+  },
+  {
+    "id": "browser-tests",
+    "title": "Browser Tests with Playwright",
+    "appliesTo": [
+      "playwright",
+      "browser test",
+      "end-to-end",
+      "end to end",
+      "e2e",
+      "acceptance test",
+      "accessibility",
+      "axe",
+      "wcag",
+      "contrast",
+      "spec.ts"
+    ],
+    "hints": [
+      "Playwright is where a browser is involved, and the core is the worked example: Build/playwright.config.ts, and Build/tests/playwright/ with e2e/ one directory per module, e2e-install/ for the installer, fixtures/ for the page objects a spec composes itself from and helper/ for the login setup that every other project depends on.",
+      {
+        "text": "Codeception acceptance tests still sit next to it under typo3/sysext/core/Tests/Acceptance/. New specs are written in Playwright; the two suites are not merged, they replace each other module by module.",
+        "until": 13
+      },
+      "Accessibility is checked from the same specs, with @axe-core/playwright: build an AxeBuilder over the page, scan, and assert the violation list is empty. This is the part no PHP test can stand in for, and the one that finds something on the first run.",
+      "The core's own scan disables the color-contrast rule, because it scans the backend it also styles. A site suite must not copy that line: contrast is where a theme actually fails. A brand colour that carries a decorative surface fails as text and as a button background, and a disabled control styled with the border grey fails hardest of all — none of which any assertion on the markup can see, because the markup is correct.",
+      "The fix for that has a shape: split the palette rather than darken the brand. One custom property for the decorative use, a darker one of the same hue for anything a reader has to read, and the rule that everything textual takes the second — instead of a brand colour bent until it passes everywhere and looks right nowhere.",
+      "A functional test with executeFrontendSubRequest() runs no JavaScript, applies no stylesheet and speaks no HTTP. It is a rendering test, and calling it a frontend test is how a suite ends up with no browser in it at all. The two are complements: the rendering test asserts what the template produced, the browser test asserts what a reader gets.",
+      "Outside the core the layout transfers but the plumbing does not: the specs run against the site as it is served — a real URL, the development environment's own — rather than against a per-test-class instance, and the browsers belong on the host or in an image of their own. Installing them into the web container of a development environment is the step to skip.",
+      "The suite is a project of its own in playwright.config.ts, with the login setup declared as a dependency so the authenticated state is written once and reused. Give the site's page types one spec each — that is the list that finds a page layout nobody rendered since the template changed."
+    ],
+    "checks": [
+      "CI=true ./Build/Scripts/runTests.sh -s e2e"
+    ]
   }
 ]

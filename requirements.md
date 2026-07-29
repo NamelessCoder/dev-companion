@@ -184,10 +184,13 @@ took before the requirement above was written down, and it will not survive it.
 
 ## Guides — what a returned draft is worth
 
-- **R-GUI-1** **open** — The checks a guide returns describe the draft it
-  returns. A trailer the tool adds itself is never reported as missing.
+- **R-GUI-1** The checks a guide returns describe the draft it returns. A
+  trailer the tool adds itself is never reported as missing, and what the draft
+  cannot know it carries as a placeholder rather than as a default.
   *From:* `Releases: main` being appended and `missing-releases` warned in the
   same answer (2026-07-29).
+  *Held by:* `CommitMessageTest::theDraftNeverCarriesAReleaseTheCallerDidNotName`,
+  `CommitMessageTest::aTrailerTheDraftCarriesIsNotAlsoReportedAsMissing`
 - **R-GUI-2** **open** — The TYPO3 commit message rules are available without the
   Gerrit trailers, because the conventions are used well outside the core and
   the trailers are not. This is R-AUD-3 for the one guide that has the problem

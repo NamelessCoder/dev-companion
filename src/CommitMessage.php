@@ -12,6 +12,10 @@ namespace Typo3CmsMcp;
  * message has to hold for what this class returns: an agent copies the block
  * verbatim, and a defect in it lands in the patch. That is why the body is
  * wrapped at 72 characters here instead of only being complained about.
+ *
+ * For the same reason the checks judge the draft rather than the input it was
+ * built from. Whatever the draft is missing, it says so as a placeholder — and
+ * a trailer this class fills in is never also reported as absent.
  */
 final class CommitMessage
 {
@@ -65,9 +69,6 @@ final class CommitMessage
         $relatedIssues = array_keys($relatedIssues);
 
         $releases = $input['releases'] ?? [];
-        if ($releases === []) {
-            $releases = ['main'];
-        }
 
         $prefix = ($isBreaking ? '[!!!]' : '') . '[' . ($changeType === '' ? 'KEYWORD' : $changeType) . ']';
         $subject = $prefix . ' ' . $summary;
@@ -87,7 +88,10 @@ final class CommitMessage
         foreach ($relatedIssues as $related) {
             $parts[] = 'Related: ' . $related;
         }
-        $parts[] = 'Releases: ' . implode(', ', $releases);
+        // A placeholder rather than a plausible default: which branches a change
+        // is released on is a decision, and a draft that quietly says "main" is
+        // one the caller cannot tell from one they made.
+        $parts[] = 'Releases: ' . ($releases === [] ? 'RELEASE_TARGET' : implode(', ', $releases));
         foreach ($input['extraTrailers'] ?? [] as $trailer) {
             $parts[] = $trailer;
         }
@@ -203,14 +207,6 @@ final class CommitMessage
             };
         }
 
-        if ($releases === []) {
-            $checks[] = [
-                'level' => 'warning',
-                'code' => 'missing-releases',
-                'message' => 'No Releases: line found. Add the target versions, for example "Releases: main, 13.4".',
-            ];
-        }
-
         return [
             'input' => [
                 'changeType' => $changeType,
@@ -265,6 +261,15 @@ final class CommitMessage
 
         if ($issues === []) {
             $checks[] = ['level' => 'error', 'code' => 'missing-issue', 'message' => 'A Forge issue is required. Add a Resolves: #12345 line.'];
+        }
+
+        if ($releases === []) {
+            $checks[] = [
+                'level' => 'warning',
+                'code' => 'missing-releases',
+                'message' => 'The draft carries "Releases: RELEASE_TARGET". Replace it with the target versions, '
+                    . 'for example "Releases: main, 13.4".',
+            ];
         }
 
         $length = mb_strlen($subject);

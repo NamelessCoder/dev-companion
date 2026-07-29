@@ -128,9 +128,34 @@ final class CommitMessageTest extends TestCase
     #[Test]
     public function aCleanDraftReportsThatNothingIsWrong(): void
     {
-        $result = CommitMessage::create(['changeType' => 'TASK', 'summary' => 'Do a thing', 'issue' => '1']);
+        $result = CommitMessage::create([
+            'changeType' => 'TASK',
+            'summary' => 'Do a thing',
+            'issue' => '1',
+            'releases' => ['main'],
+        ]);
 
         self::assertSame(['no-issues-found'], array_column($result['checks'], 'code'));
+    }
+
+    #[Test]
+    public function theDraftNeverCarriesAReleaseTheCallerDidNotName(): void
+    {
+        $result = CommitMessage::create(['changeType' => 'TASK', 'summary' => 'Do a thing', 'issue' => '1']);
+
+        self::assertStringContainsString('Releases: RELEASE_TARGET', $result['message']);
+        self::assertContains('missing-releases', array_column($result['checks'], 'code'));
+    }
+
+    #[Test]
+    public function aTrailerTheDraftCarriesIsNotAlsoReportedAsMissing(): void
+    {
+        $parsed = CommitMessage::parse("Fix the thing\n\nBody.\n\nResolves: #1\n");
+        $result = CommitMessage::create($parsed['input']);
+
+        $codes = array_column(array_merge($parsed['checks'], $result['checks']), 'code');
+        self::assertContains('missing-releases', $codes, 'the draft has no release target either');
+        self::assertStringNotContainsString('Releases: main', $result['message']);
     }
 
     #[Test]
@@ -175,13 +200,11 @@ final class CommitMessageTest extends TestCase
     }
 
     #[Test]
-    public function aMissingKeywordAndMissingReleasesAreReported(): void
+    public function aMissingKeywordIsReported(): void
     {
         $parsed = CommitMessage::parse("Fix the thing\n\nBody.\n\nResolves: #1\n");
 
-        $codes = array_column($parsed['checks'], 'code');
-        self::assertContains('missing-keyword', $codes);
-        self::assertContains('missing-releases', $codes);
+        self::assertContains('missing-keyword', array_column($parsed['checks'], 'code'));
     }
 
     #[Test]

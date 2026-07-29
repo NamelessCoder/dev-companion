@@ -19,6 +19,33 @@ requirement itself is withdrawn, and then the reason goes in
 [decisions.md](decisions.md). Assumptions and evidence live there too; this file
 holds only what must be true.
 
+## Audience — who the answer has to be right for
+
+These four govern the rest. Where a requirement below conflicts with one of
+them, this section wins and the other one is what needs rewriting.
+
+- **R-AUD-1** **open** — Three audiences are served, not one: the core
+  contributor, the extension author, and the site developer. An answer is right
+  when it is right for the one that asked. Where knowledge holds only for core
+  contribution, it is marked as core-only rather than handed over as the rule —
+  a core checklist given to an extension author is a wrong answer, not a partial
+  one.
+- **R-AUD-2** **open** — The audience is a property of the task, not of the
+  directory. Extensions are routinely developed inside a site installation, a
+  site package is an extension, and a core checkout can be the place someone
+  debugs their site. Signals are combined, and where they disagree the answer
+  says the audience is uncertain instead of picking one silently.
+- **R-AUD-3** **open** — Commit conventions differ by audience. The subject line
+  and body rules transfer; `Releases:`, Forge issue numbers, and the Gerrit
+  `Change-Id` are core rules and belong to core work only. A site or extension
+  repository has its own workflow, and the guide must be usable there without
+  producing trailers that mean nothing in it.
+- **R-AUD-4** **open** — More than one TYPO3 version is supported. An answer
+  either holds across the versions covered, or names the version it holds for.
+  This is already the rule for architecture hints (see `AGENTS.md`); it has to
+  become the rule for catalogs and component markup too, where the pin is
+  currently stated once at the edge of the answer.
+
 ## Discovery — which installation is read, and how
 
 - **R-DIS-1** The installation is never derived from `getcwd()` on its own; only
@@ -81,6 +108,10 @@ holds only what must be true.
 
 ## Scope — core conventions where they apply, and nowhere else
 
+These four are how R-AUD-1 and R-AUD-2 are met in the tools that exist today.
+`outsideCore` is a boolean, and an audience is not — the flag is the shape this
+took before the requirement above was written down, and it will not survive it.
+
 - **R-SCO-1** **open** — Work outside the core is recognised from structural
   evidence — the kind of installation, the shape of the paths, an area that is
   no known system extension — rather than from wording, and where it stays
@@ -111,7 +142,8 @@ holds only what must be true.
   same answer (2026-07-29).
 - **R-GUI-2** **open** — The TYPO3 commit message rules are available without the
   Gerrit trailers, because the conventions are used well outside the core and
-  the trailers are not.
+  the trailers are not. This is R-AUD-3 for the one guide that has the problem
+  today.
   *From:* the same note.
 
 ## Knowledge — what is covered

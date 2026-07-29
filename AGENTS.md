@@ -150,6 +150,12 @@ grep for.
 
 ## Knowledge base
 
+Three audiences read what is written here: core contributors, extension authors,
+and site developers — and the same person is often two of them in one checkout,
+because extensions are developed inside site installations. Knowledge that holds
+only for core contribution is written as core-only, not as the rule; see the
+audience requirements in `requirements.md`.
+
 - Everything the tools answer from lives below `knowledge/`, with one exception:
   what is registered in an installation is asked of that installation through
   `Typo3Cli`, because no bundled answer could be right for it. Add to

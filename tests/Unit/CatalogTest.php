@@ -136,6 +136,35 @@ final class CatalogTest extends TestCase
     }
 
     #[Test]
+    public function aQueryTheCatalogWasNotWrittenForIsAMissRatherThanItsNearestWords(): void
+    {
+        // Three components came back for this, each on one word out of five:
+        // Dropdown and Form Inputs through a keyword, Card because its summary
+        // is written in the words any question about content is written in.
+        self::assertSame([], Components::find('content element preview heading text'));
+
+        // What the query names is still the answer, however the rest of the
+        // sentence reads — the coverage rule is for what nobody named.
+        self::assertSame('badge', Components::find('add a badge to the module header')[0]['name']);
+        // And a class is a way in of its own: it is what the miss suggests.
+        self::assertNotSame([], Components::find('input-group'));
+    }
+
+    #[Test]
+    public function aStatedVersionSaysWhatItDidToTheAnswerBesideTheSnapshotItWasReadFrom(): void
+    {
+        $result = Tools::call('typo3_component_lookup', ['query' => 'badge', 'targetVersion' => '14.3']);
+
+        self::assertStringContainsString('Answered for TYPO3 v14', $result->text);
+        self::assertStringContainsString('not which versions an entry holds on', $result->text);
+        self::assertStringNotContainsString(
+            'Answered for TYPO3',
+            Tools::call('typo3_component_lookup', ['query' => 'badge'])->text,
+            'nobody stated a version, so nothing is claimed about one',
+        );
+    }
+
+    #[Test]
     public function aComponentNotVerifiedOnTheTargetIsDeclinedRatherThanHandedOver(): void
     {
         // The skew sentence named the difference without acting on it. Markup

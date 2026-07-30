@@ -24,6 +24,14 @@ use Typo3CmsMcp\Versions;
  */
 final class Components
 {
+    /**
+     * Share of the query a component has to cover to be an answer to it, when
+     * the query did not name it outright. The same threshold the architecture
+     * hints hold their prose matches to, for the same reason: below it the
+     * entry shares a word with the question rather than answering it.
+     */
+    private const MIN_COVERAGE = 0.5;
+
     /** Generic words that carry no component signal. */
     private const STOPWORDS = [
         'the', 'and', 'for', 'with', 'add', 'new', 'use', 'using', 'component',
@@ -149,6 +157,17 @@ final class Components
             }
         }
 
+        // What the query does not ask for is not an answer to it. A component
+        // the query names is one however the rest of it reads — "add a badge to
+        // the module header" is about the badge — and everything else has to
+        // cover half of what was asked. Without this a five-word question about
+        // something nobody catalogued came back with three components that each
+        // shared one word with it, and a miss would have been the true answer.
+        $asked = count($terms);
+        $scored = array_values(array_filter($scored, static fn(array $entry): bool =>
+            in_array('name', $entry['component']['matchedIn'], true)
+            || $entry['matched'] / $asked >= self::MIN_COVERAGE));
+
         // A component that covers every query term beats one that matched a
         // single term deep in a sub-component class list.
         $complete = array_values(array_filter(
@@ -185,7 +204,11 @@ final class Components
         $terms = [];
         foreach (preg_split('/\s+/', mb_strtolower($query)) ?: [] as $term) {
             $term = preg_replace('/[^a-z0-9-]/', '', $term) ?? '';
-            if ($term !== '' && strlen($term) >= 2 && !in_array($term, self::STOPWORDS, true)) {
+            // Three characters, because a term is matched as a substring: "to"
+            // is carried by form-check-type-toggle, and a question phrased as a
+            // sentence then covers half of itself through its function words.
+            // No component name or class in the catalog is shorter.
+            if ($term !== '' && strlen($term) >= 3 && !in_array($term, self::STOPWORDS, true)) {
                 $terms[] = $term;
             }
         }
@@ -194,8 +217,9 @@ final class Components
     }
 
     /**
-     * Returns [weightedScore, distinctTermsMatched, whereTheyMatched]. Name,
-     * root class, and keywords weigh most; class lists and prose less.
+     * Returns [weightedScore, distinctTermsCovered, whereTheyMatched]. Name,
+     * root class, and keywords weigh most; class lists and prose less, and
+     * prose alone covers nothing.
      *
      * @param array<string, mixed> $component
      * @param array<int, string> $terms
@@ -242,8 +266,11 @@ final class Components
                 ++$matched;
                 $why['sub-component classes'] = true;
             } elseif (str_contains($prose, $term)) {
+                // Scored but not counted as covered: a summary is written in
+                // ordinary words — "content", "container", "elements" — and a
+                // term found only there says the component was described with
+                // that word, not that it is what the word was asking for.
                 $score += 1;
-                ++$matched;
                 $why['description'] = true;
             }
         }

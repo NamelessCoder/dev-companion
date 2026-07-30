@@ -310,11 +310,26 @@ them, this section wins and the other one is what needs rewriting.
   `HintsTest::aHintCanBeAskedForByItsIdInsteadOfGuessedAt`,
   `HintsTest::anIdThatDoesNotExistIsAnsweredWithTheOnesThatDo`
 - **R-ANS-3** What a component answer describes is qualified by the revision it
-  was taken from, inside the entry rather than only in a trailing block.
-  *From:* 15.0 markup handed to a caller supporting 13.4 and 14.3 (2026-07-29).
+  was taken from, inside the entry rather than only in a trailing block. Where a
+  version was stated, the answer says what that did to it — every entry was
+  verified there, one that was not is withheld — so the revision the catalog was
+  read from cannot be read as the version the markup holds on.
+  *From:* 15.0 markup handed to a caller supporting 13.4 and 14.3 (2026-07-29);
+  and an answer for 14.3 whose loudest version number was the 15.0 snapshot
+  (2026-07-30).
   *Held by:* `CatalogTest::theCatalogSaysHowItRelatesToTheInstallationBeingRead`,
+  `CatalogTest::aStatedVersionSaysWhatItDidToTheAnswerBesideTheSnapshotItWasReadFrom`,
   and the `describesVersion` field the component schema requires
   (`ToolContractTest`).
+- **R-ANS-10** A component is an answer to a query that names it, or to one it
+  covers half of. What a query only brushes past is a miss, and the miss says
+  what a query that would land looks like: a summary is written in the words any
+  question is written in, so a term found only there is not what makes an entry
+  an answer.
+  *From:* "content element preview heading text" answered with Dropdown, Infobox
+  and Form Inputs, each on one word out of five (2026-07-30).
+  *Held by:* `CatalogTest::aQueryTheCatalogWasNotWrittenForIsAMissRatherThanItsNearestWords`,
+  `CatalogTest::aComponentNamedOutrightWinsOverOneThatMerelyMentionsIt`
 
 ## Project — the repository the caller is standing in
 

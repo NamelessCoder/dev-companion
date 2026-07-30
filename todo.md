@@ -85,20 +85,6 @@ somebody else writes.
 
 ---
 
-## Answer a multi-token component query with a miss instead of a stranger
-
-Serves `feedback/2026-07-30-093311-typo3-component-lookup-returned-unrelated.md`.
-
-`query="content element preview heading text"` returns Dropdown, Infobox and
-Form Inputs, each on a single term out of five, and the catalog snapshot line
-(TYPO3 15.0) reads as the version the markup was verified on. Require a share
-of the query terms before a component is handed over, so a query nothing was
-written for comes back as a miss, and say per component which majors it was
-verified on when `targetVersion` was passed. Hold both with a lookup test on
-the note's exact query.
-
----
-
 ## Make inline-record, AssetCollector and testing-API guidance findable
 
 Serves `feedback/2026-07-30-073632-typo3-documentation-lookup-returned-weak-or.md`

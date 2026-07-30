@@ -1829,6 +1829,18 @@ final class Tools
             $checklistLines[] = '- [ ] ' . $item;
         }
         $blocks[] = implode("\n", $checklistLines);
+        if ($target !== null) {
+            // The two version numbers in this answer say different things, and
+            // the snapshot line is the louder one: a caller on 14.3 read
+            // "TYPO3 15.0 (main)" and could no longer tell whether the markup
+            // above was verified for the version being worked on.
+            $blocks[] = sprintf(
+                'Answered for TYPO3 v%d: every component above was verified there, and one that was not is '
+                . 'withheld instead. The snapshot below says which revision the catalog was read from, not '
+                . 'which versions an entry holds on — each entry states that itself.',
+                $target,
+            );
+        }
         $blocks[] = self::catalogProvenance();
 
         return ToolResult::create(implode("\n\n", $blocks), [

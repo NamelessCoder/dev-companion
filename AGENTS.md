@@ -7,6 +7,7 @@ bin/typo3-cms-mcp  # stdio entrypoint (the client launches it as a subprocess)
 bin/core-checkouts # one TYPO3 core checkout per covered version, below .checkouts/ (gitignored)
 bin/verify-catalog # what a core update invalidated in knowledge/catalog/: paths, the versions each entry holds on, which system extensions are shipped, and where the worked examples still are
 bin/hints          # what cannot be found in the hint corpus: `probe` for one query, `coverage` for the hints no title and no scenario prompt reaches
+bin/scenarios      # forward runs: `show` what to paste, `record` the empty run, `check` every recorded one against its scenario
 src/               # PHP classes (knowledge loading, tools, SDK wiring)
 src/ServerFactory.php  # builds the mcp/sdk server from the tool definitions
 src/Mcp/           # SDK handlers: tool dispatch and typo3://core resources
@@ -21,6 +22,7 @@ src/bootstrap.php  # locates the Composer autoloader
 knowledge/         # the knowledge base (markdown + JSON), the data source
 feedback/          # improvement notes left by agents (standalone checkout only)
 scenarios/         # test scenarios: user prompts per audience and task, and what has to come out of them
+scenarios/runs/    # one recorded forward run per scenario: where it ran, against which server, and the judgment per criterion
 skills/            # canonical task skills installed into supported agent clients
 requirements.md    # what must hold, and what holds it there; open ones are the backlog
 decisions.md       # what a change assumed, and what would show it to be wrong

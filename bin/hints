@@ -28,12 +28,11 @@ require dirname(__DIR__) . '/vendor/autoload.php';
 
 use Typo3CmsMcp\ArchitectureHints;
 use Typo3CmsMcp\Domains;
-
-$root = dirname(__DIR__);
+use Typo3CmsMcp\Scenarios;
 
 exit(match ($argv[1] ?? '') {
     'probe' => probe($argv[2] ?? ''),
-    'coverage' => coverage($root),
+    'coverage' => coverage(),
     default => usage(),
 });
 
@@ -85,7 +84,7 @@ function probe(string $query): int
 }
 
 /** What the corpus cannot be found by. */
-function coverage(string $root): int
+function coverage(): int
 {
     $hints = ArchitectureHints::load();
 
@@ -107,7 +106,13 @@ function coverage(string $root): int
         printf("  %-34s %-16s (candidates: %s)\n", $hint['id'], $hint['category'], implode(', ', Domains::hintCategories(Domains::detect([], $hint['title']))));
     }
 
-    $prompts = scenarioPrompts($root);
+    // The scenarios are the only corpus of real phrasings this repository has,
+    // and deliberately not a list kept beside the matcher: a query written to
+    // test a matcher is written by someone who knows what it should return.
+    $prompts = array_map(
+        static fn(array $scenario): string => $scenario['prompt'],
+        Scenarios::load(),
+    );
     $reached = [];
     $silent = [];
     foreach ($prompts as $id => $prompt) {
@@ -163,36 +168,4 @@ function coverage(string $root): int
 function reaches(string $query): array
 {
     return array_column(ArchitectureHints::find([], $query, 6)['matchedHints'], 'id');
-}
-
-/**
- * The prompts from scenarios/, keyed by scenario id.
- *
- * A scenario is a prompt a user would actually type, which is the only corpus
- * of real phrasings this repository has. It is deliberately not a list kept
- * beside the matcher: a query written to test a matcher is written by someone
- * who knows what it should return.
- *
- * @return array<string, string>
- */
-function scenarioPrompts(string $root): array
-{
-    $prompts = [];
-    foreach (glob($root . '/scenarios/*.md') ?: [] as $path) {
-        $id = null;
-        $buffer = [];
-        foreach (preg_split('/\R/', (string) file_get_contents($path)) ?: [] as $line) {
-            if (preg_match('/^##\s+([A-Z]+-\d+)\b/', $line, $matches) === 1) {
-                $id = $matches[1];
-                $buffer = [];
-                continue;
-            }
-            if ($id !== null && str_starts_with($line, '> ')) {
-                $buffer[] = substr($line, 2);
-                $prompts[$id] = implode(' ', $buffer);
-            }
-        }
-    }
-
-    return $prompts;
 }

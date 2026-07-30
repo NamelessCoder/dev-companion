@@ -1,0 +1,162 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+/*
+ * Runs a scenario from scenarios/ in the only sense a script can: it hands over
+ * what has to be pasted, takes back what the run established, and refuses the
+ * result when it does not add up. The session itself happens in a client, in
+ * the environment the scenario names, and no part of that is automated here.
+ *
+ * What this replaces is a judgment that was only ever in somebody's head. A
+ * scenario carries a `Status today`, and that line is the whole record of the
+ * last forward run — so it goes stale the moment the server changes, and
+ * nothing about the file looks any different.
+ *
+ *   bin/scenarios show <id>
+ *     The environment, the prompt to paste verbatim, and the criteria to judge
+ *     the session against, numbered the way the recorded run indexes them.
+ *
+ *   bin/scenarios record <id> <client>
+ *     Writes the empty run for that scenario to scenarios/runs/, with every
+ *     criterion unjudged and the digest of the criteria as they read now. Fill
+ *     in the judgments, the evidence and the tool trace after the session.
+ *
+ *   bin/scenarios check
+ *     Holds every recorded run to its scenario: judged in full, evidenced, run
+ *     in the right environment, judged against the criteria as they read now,
+ *     and adding up to the status the scenario claims. `composer test` runs the
+ *     same check through ScenarioTest; this is the readable half.
+ */
+
+require dirname(__DIR__) . '/vendor/autoload.php';
+
+use Typo3CmsMcp\Scenarios;
+
+exit(match ($argv[1] ?? '') {
+    'show' => show($argv[2] ?? ''),
+    'record' => record($argv[2] ?? '', $argv[3] ?? ''),
+    'check' => check(),
+    default => usage(),
+});
+
+function usage(): int
+{
+    fwrite(STDERR, "Usage: bin/scenarios show <id>\n       bin/scenarios record <id> <client>\n       bin/scenarios check\n");
+
+    return 2;
+}
+
+/** What has to be pasted, and what the session is judged against. */
+function show(string $id): int
+{
+    $scenario = Scenarios::load()[strtoupper($id)] ?? null;
+    if ($scenario === null) {
+        fwrite(STDERR, sprintf("There is no scenario %s.\n", $id));
+
+        return 2;
+    }
+
+    printf("%s — %s\n%s\n\n", $scenario['id'], $scenario['title'], $scenario['file']);
+    printf("Environment  %s\n", $scenario['environment']);
+    printf("Status today %s%s\n", $scenario['status'], $scenario['requirements'] === [] ? '' : ' — ' . implode(', ', $scenario['requirements']));
+    printf("Criteria     %s\n", $scenario['criteria']);
+
+    // Verbatim, on its own, with nothing around it: a prompt read off a screen
+    // that also explains what it is testing is no longer the prompt.
+    printf("\nPaste this and add nothing:\n\n%s\n", $scenario['prompt']);
+
+    foreach ([['outcomes', 'What has to come out of it'], ['failures', 'How it fails']] as [$section, $heading]) {
+        printf("\n%s\n", $heading);
+        foreach ($scenario[$section] as $index => $criterion) {
+            printf("  %s %d  %s\n", $section === 'outcomes' ? 'met' : 'avoided', $index + 1, $criterion);
+        }
+    }
+
+    return 0;
+}
+
+/** The empty run, ready to be filled in after the session. */
+function record(string $id, string $client): int
+{
+    if (trim($client) === '') {
+        return usage();
+    }
+
+    try {
+        $run = Scenarios::skeleton(strtoupper($id), server(), $client, date('Y-m-d'));
+    } catch (InvalidArgumentException $exception) {
+        fwrite(STDERR, $exception->getMessage() . "\n");
+
+        return 2;
+    }
+
+    $directory = Scenarios::runsDirectory();
+    if (!is_dir($directory) && !mkdir($directory, 0775, true) && !is_dir($directory)) {
+        fwrite(STDERR, sprintf("Cannot create %s.\n", $directory));
+
+        return 1;
+    }
+
+    $file = $directory . '/' . $run['scenario'] . '.json';
+    $existed = file_exists($file);
+    file_put_contents($file, json_encode($run, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES) . "\n");
+
+    printf(
+        "%s the run of %s in scenarios/runs/%s.json\n",
+        $existed ? 'Replaced' : 'Wrote',
+        $run['scenario'],
+        $run['scenario'],
+    );
+    printf("Judge it against: bin/scenarios show %s\n", $run['scenario']);
+
+    return 0;
+}
+
+/** Every recorded run against the scenario it claims to answer. */
+function check(): int
+{
+    $runs = Scenarios::runs();
+    $problems = 0;
+
+    foreach ($runs as $id => $recorded) {
+        printf(
+            "%-10s %-8s %-10s %s\n",
+            $id,
+            $recorded['verdict'] === '' ? '—' : $recorded['verdict'],
+            is_string($recorded['run']['date'] ?? null) ? $recorded['run']['date'] : '',
+            $recorded['problems'] === [] ? 'ok' : '',
+        );
+        foreach ($recorded['problems'] as $problem) {
+            ++$problems;
+            printf("  %s\n", $problem);
+        }
+    }
+
+    // Not a failure. Most scenarios have never been run forward, and a suite
+    // that fails for that would be a suite nobody could add a scenario to.
+    $unrun = array_values(array_diff(array_keys(Scenarios::load()), array_keys($runs)));
+    printf("\n%d of %d scenarios have a recorded run.\n", count($runs), count($runs) + count($unrun));
+    if ($unrun !== []) {
+        printf("Never run forward: %s\n", implode(', ', $unrun));
+    }
+
+    return $problems === 0 ? 0 : 1;
+}
+
+/** The server the run happened against, as precisely as this checkout can say. */
+function server(): string
+{
+    $descriptors = [1 => ['pipe', 'w'], 2 => ['pipe', 'w']];
+    $process = @proc_open(['git', 'rev-parse', '--short', 'HEAD'], $descriptors, $pipes, dirname(__DIR__), null);
+    if (!is_resource($process)) {
+        return 'unknown';
+    }
+
+    $commit = trim((string) stream_get_contents($pipes[1]));
+    fclose($pipes[1]);
+    fclose($pipes[2]);
+
+    return proc_close($process) === 0 && $commit !== '' ? $commit : 'unknown';
+}

@@ -68,19 +68,31 @@ perfectly. A gap is an answer that ought to exist and does not.
 ## Running one
 
 1. Start the MCP client in the environment the scenario names.
-2. Paste the prompt verbatim. Add nothing: no tool names, no hints that a
+2. `bin/scenarios record <id> <client>` writes the empty run, and
+   `bin/scenarios show <id>` prints the prompt and the numbered criteria.
+3. Paste the prompt verbatim. Add nothing: no tool names, no hints that a
    TYPO3 knowledge server is attached, no correction when the agent goes the
    wrong way. What the agent does with an under-specified request is part of
    what is being measured.
-3. Let the session run to the end of the task, not to the first tool call.
+4. Let the session run to the end of the task, not to the first tool call.
    Whether a checklist is usable shows up when it is worked off, not when it
    is printed.
-4. Grade against **What has to come out of it** and **How it fails**.
+5. Grade against **What has to come out of it** and **How it fails**, and write
+   the judgment and its evidence into the recorded run, together with the tools
+   the session actually called. `bin/scenarios check` — and `composer test` —
+   then hold that run to this file.
 
 ## What a run produces
 
-A run that went well produces nothing but a note in your head. A run that did
-not produces one of two things:
+The run itself, as one file below [runs/](runs/). That file is what the
+**Status today** line above every scenario now rests on: the environment, the
+server it ran against, one judgment with evidence per criterion, and the tools
+the session reached for. The verdict is not written into it — it follows from
+the judgments, and a scenario whose mark disagrees with what its run establishes
+is a failing check rather than a sentence nobody rereads.
+
+Everything else a run produces, it produces on top of that. A run that went well
+produces nothing more. A run that did not produces one of two things:
 
 - `typo3_feedback_record` for what was missing, wrong, or unhelpful — with the
   scenario id in the observation, so the note can be traced back to the task

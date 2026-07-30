@@ -585,6 +585,16 @@ took before the requirement above was written down, and it will not survive it.
   three, and a re-report of a request that had shipped in the meantime
   (2026-07-29).
   *Held by:* `FeedbackTest::aNoteThatWasWorkedOffIsStillAnswerableFor`
+- **R-FBK-3** A forward run of a scenario is a recorded result rather than a
+  status line somebody remembers. The prose stays the only copy of the prompt
+  and the criteria; the run adds where it happened, which server it ran against,
+  one judgment with evidence per criterion, and the tools the session called.
+  The verdict follows from those judgments instead of being stated beside them,
+  and the run carries a digest of the criteria it was judged against — so a
+  scenario reworded after its run says so rather than keeping the old answer.
+  *From:* `EXT-04` standing at `partial` next to a `SITE-07` marked `covered`
+  that it shares its subject with, with no run behind either mark (2026-07-30).
+  *Held by:* `ScenariosTest`
 
 ## Knowledge — what is covered
 

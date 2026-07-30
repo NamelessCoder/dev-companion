@@ -112,20 +112,6 @@ has no shape for, and nobody has reported being stopped by it. These are a
 session that was stopped and read the answers out of `vendor/` by hand. Friction
 that happened outranks a mismatch that was noticed.
 
-### The hooks that outlived the PSR-14 conversion, and routing by intent
-
-Serves the second half of the same note, and it is last because it is the only
-one of the four that is a change to this server rather than to what it knows.
-Two things, and they are worth different amounts. Naming the SC_OPTIONS hooks
-that survived their subsystem's conversion is cheap to carry and expensive to
-derive — `grep -rn "SC_OPTIONS" .checkouts/14.3/typo3/sysext` is the whole
-research step, and `ext/form/afterFormStateInitialized` is one the note already
-found. Answering "which extension point for this intent" is not a hint at all:
-the changelog is organised by release, so a task word like "prefill" reaches
-nothing, and the honest first step is to decide whether intent words belong in
-`appliesTo` — which is what the matcher ranks on — or whether that is a new
-lookup. Decide it in `requirements.md` before writing either.
-
 ## Write the two twins the marking pass found
 
 Serves the one note left open,

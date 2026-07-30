@@ -454,6 +454,22 @@ final class HintsTest extends TestCase
     }
 
     #[Test]
+    public function survivingHooksAreNamedByTheirSubsystemAndIntent(): void
+    {
+        $form = ArchitectureHints::byId('form-framework');
+        self::assertNotNull($form);
+        $formText = implode("\n", array_column($form['hints'], 'text'));
+        self::assertStringContainsString('ext/form/afterFormStateInitialized', $formText);
+        self::assertStringContainsString('ext/form/buildFormDefinitionValidationConfiguration', $formText);
+
+        $events = ArchitectureHints::byId('events-extension-points');
+        self::assertNotNull($events);
+        $eventText = implode("\n", array_column($events['hints'], 'text'));
+        self::assertStringContainsString('subsystem hint with the intent', $eventText);
+        self::assertStringContainsString('form-framework', $eventText);
+    }
+
+    #[Test]
     public function theSeedingAdviceCarriesTheStepsItAsksFor(): void
     {
         // "Seed with DataHandler, then export" named the way in and stopped

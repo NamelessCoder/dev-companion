@@ -67,6 +67,7 @@
       },
       "Event classes live in Classes/Event/ of the extension that dispatches them, are final, and are readonly where the payload is immutable. A listener that may change the outcome gets setters on the event instead of a return value.",
       "Keep event payloads minimal and stable, and prefer a new event over a hook: a hook is only the right answer where the subsystem still has hook-based extension points.",
+      "The surviving hooks are a subsystem fact, not a second extension-point registry. Ask the subsystem hint with the intent — for example prefilling a form field — so it can name both the remaining hook and the narrower event; the form-framework hint records EXT:form's two remaining SC_OPTIONS calls.",
       "A PSR-14 event is public API. A new one needs a changelog entry, careful naming, and regression coverage."
     ],
     "checks": [

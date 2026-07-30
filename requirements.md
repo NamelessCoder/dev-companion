@@ -458,6 +458,14 @@ took before the requirement above was written down, and it will not survive it.
 
 ## Knowledge — what is covered
 
+- **R-KNW-28** A surviving hook is named by the subsystem that still calls it,
+  alongside the narrower event for a concrete intent. Intent words belong in
+  that hint's `appliesTo`; there is no parallel extension-point lookup whose
+  registry would duplicate and drift from the subsystem knowledge.
+  *From:* prefilling an EXT:form field requiring a grep to discover both a
+  surviving hook and the request-aware event that should be used instead
+  (2026-07-29).
+  *Held by:* `HintsTest::survivingHooksAreNamedByTheirSubsystemAndIntent`
 - **R-KNW-27** EXT:form is covered as a subsystem: extension form sets and
   definitions, storage choices, runtime identifier rewriting, overrides, and
   the request-aware point where a field can be prefilled without overriding a

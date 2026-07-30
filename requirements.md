@@ -458,6 +458,13 @@ took before the requirement above was written down, and it will not survive it.
 
 ## Knowledge — what is covered
 
+- **R-KNW-26** Routing answers distinguish static mapped arguments from dynamic
+  query arguments: a persisted or enumerated aspect needs no cHash, while a
+  free argument on a cacheable page does. A task phrased in those terms reaches
+  the routing answer before the unrelated cache-framework hint.
+  *From:* a route-enhancer answer that described the mapper but could not say
+  whether the resulting URL still carried a cache hash (2026-07-30).
+  *Held by:* `HintsTest::routedArgumentsAreAnsweredWithTheirCacheHashBoundary`
 - **R-KNW-25** The two site-local settings sources are answered with their
   precedence: `config/sites/<identifier>/settings.yaml` replaces the inline
   `settings:` block of `config.yaml` rather than merging with it, and the

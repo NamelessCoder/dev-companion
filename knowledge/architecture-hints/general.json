@@ -166,6 +166,9 @@
       "database-query",
       "route enhancer",
       "routeEnhancers",
+      "routing argument",
+      "cache hash",
+      "cHash",
       "slug"
     ],
     "hints": [
@@ -177,6 +180,10 @@
       "List and detail can be the same page. Fill the list variable unconditionally, fill the single record only when the request carries the argument — if.isTrue.data = GP:<argument> on that processor — and let the template branch on whether it is there. uidInList.data = GP:<argument> is safe on its own: the select is built by ContentObjectRenderer, which runs uidInList through GeneralUtility::intExplode() before it reaches the query.",
       {
         "text": "The site set ships the routing for it, in route-enhancers.yaml next to config.yaml. A detail view of that shape is a Simple enhancer whose routePath carries the argument, with a PersistedAliasMapper aspect naming the table and the slug field.",
+        "since": 14
+      },
+      {
+        "text": "An argument that an enhancer maps through a static aspect — including PersistedAliasMapper and StaticValueMapper — is a routing argument and needs no cHash: the mapper restricts it to a finite or persisted set and PageArguments keeps it out of dynamicArguments. An argument left in the query string is dynamic and does need the hash on a cacheable page, so each value gets its own page-cache variant instead of reusing the first response.",
         "since": 14
       },
       {

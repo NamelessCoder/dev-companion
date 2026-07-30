@@ -415,6 +415,25 @@ final class HintsTest extends TestCase
     }
 
     #[Test]
+    public function routedArgumentsAreAnsweredWithTheirCacheHashBoundary(): void
+    {
+        $result = ArchitectureHints::find(
+            ['Configuration/Sets/Printworks/route-enhancers.yaml'],
+            'Route enhancer aspects and the cache hash: when does a mapped route argument still need cHash in the URL',
+            6
+        );
+        $ids = array_column($result['matchedHints'], 'id');
+        self::assertSame('frontend-records', $ids[0]);
+
+        $hint = ArchitectureHints::byId('frontend-records');
+        self::assertNotNull($hint);
+        $text = implode("\n", array_column($hint['hints'], 'text'));
+        self::assertStringContainsString('PersistedAliasMapper and StaticValueMapper', $text);
+        self::assertStringContainsString('needs no cHash', $text);
+        self::assertStringContainsString('dynamicArguments', $text);
+    }
+
+    #[Test]
     public function theSeedingAdviceCarriesTheStepsItAsksFor(): void
     {
         // "Seed with DataHandler, then export" named the way in and stopped

@@ -114,7 +114,9 @@ them, this section wins and the other one is what needs rewriting.
   task skills through an explicit agent option, and an update refreshes only
   files this package can prove it owns. Unrelated configuration, a conflicting
   server entry and a user-modified generated file are preserved and reported;
-  repeated install and update calls are idempotent.
+  repeated install and update calls are idempotent. In a DDEV project the
+  generated client entry runs the Composer binary through DDEV, while the
+  skills are published into the host-mounted project.
   *From:* `META-05`.
   *Held by:* `InstallerTest`
 - **R-DIS-1** The installation is never derived from `getcwd()` on its own; only

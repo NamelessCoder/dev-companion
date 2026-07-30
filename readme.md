@@ -179,7 +179,30 @@ Use `vendor/bin/typo3-cms-mcp install --agent=codex` and
 `vendor/bin/typo3-cms-mcp update --agent=codex` for the corresponding Codex
 setup.
 
-That writes the same `.mcp.json` shape with an absolute path:
+That writes the same `.mcp.json` shape with an absolute path. In a DDEV project,
+run the installer inside DDEV:
+
+```bash
+ddev exec vendor/bin/typo3-cms-mcp install --agent=codex
+```
+
+The project directory is mounted, so the skills are available to the host at
+`.agents/skills`. The generated MCP entry deliberately starts the server with
+the project's container PHP:
+
+```json
+{
+  "mcpServers": {
+    "typo3-cms-mcp": {
+      "type": "stdio",
+      "command": "ddev",
+      "args": ["exec", "php", "vendor/bin/typo3-cms-mcp"]
+    }
+  }
+}
+```
+
+Outside DDEV, the generated configuration uses the absolute entrypoint:
 
 ```json
 {

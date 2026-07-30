@@ -79,6 +79,14 @@ final class Installer
     /** @return array{type: string, command: string, args: list<string>} */
     private function jsonServer(): array
     {
+        if (is_file($this->project . '/.ddev/config.yaml')) {
+            return [
+                'type' => 'stdio',
+                'command' => 'ddev',
+                'args' => ['exec', 'php', 'vendor/bin/typo3-cms-mcp'],
+            ];
+        }
+
         return ['type' => 'stdio', 'command' => 'php', 'args' => [$this->entrypoint]];
     }
 
@@ -118,10 +126,13 @@ final class Installer
 
     private function expectedCodexSection(): string
     {
+        $server = $this->jsonServer();
+
         return sprintf(
-            "[mcp_servers.%s]\ncommand = \"php\"\nargs = [%s]\n",
+            "[mcp_servers.%s]\ncommand = %s\nargs = %s\n",
             self::SERVER,
-            json_encode($this->entrypoint, JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR),
+            json_encode($server['command'], JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR),
+            json_encode($server['args'], JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR),
         );
     }
 
@@ -140,12 +151,17 @@ final class Installer
 
     private function assertMatchingCodexSection(string $section): void
     {
-        $commandMatches = preg_match('/^command\s*=\s*"php"\s*$/m', $section) === 1;
-        $expectedArgument = preg_quote(
-            json_encode($this->entrypoint, JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR),
+        $server = $this->jsonServer();
+        $command = preg_quote(
+            json_encode($server['command'], JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR),
             '/',
         );
-        $argumentMatches = preg_match('/^args\s*=\s*\[\s*' . $expectedArgument . '\s*\]\s*$/m', $section) === 1;
+        $arguments = preg_quote(
+            json_encode($server['args'], JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR),
+            '/',
+        );
+        $commandMatches = preg_match('/^command\s*=\s*' . $command . '\s*$/m', $section) === 1;
+        $argumentMatches = preg_match('/^args\s*=\s*' . $arguments . '\s*$/m', $section) === 1;
         if (!$commandMatches || !$argumentMatches) {
             throw new \RuntimeException(
                 '.codex/config.toml already has a different typo3-cms-mcp server; refusing to replace it',

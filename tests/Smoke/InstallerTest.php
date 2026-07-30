@@ -100,6 +100,47 @@ final class InstallerTest extends TestCase
     }
 
     #[Test]
+    public function ddevProjectUsesTheContainerPhpForMcpAndPublishesTheSkillToTheProject(): void
+    {
+        $directory = $this->directory();
+        self::assertTrue(mkdir($directory . '/.ddev'));
+        file_put_contents($directory . '/.ddev/config.yaml', "name: fixture\n");
+
+        try {
+            $stderr = '';
+            self::assertSame(0, $this->execute($directory, ['install'], $stderr), $stderr);
+            self::assertSame(0, $this->execute($directory, ['install', '--agent=codex'], $stderr), $stderr);
+
+            $server = [
+                'type' => 'stdio',
+                'command' => 'ddev',
+                'args' => ['exec', 'php', 'vendor/bin/typo3-cms-mcp'],
+            ];
+            $mcpConfiguration = json_decode(
+                (string) file_get_contents($directory . '/.mcp.json'),
+                true,
+                flags: JSON_THROW_ON_ERROR,
+            );
+            self::assertSame($server, $mcpConfiguration['mcpServers']['typo3-cms-mcp']);
+
+            $codexConfiguration = (string) file_get_contents($directory . '/.codex/config.toml');
+            self::assertStringContainsString('command = "ddev"', $codexConfiguration);
+            self::assertStringContainsString(
+                'args = ["exec","php","vendor/bin/typo3-cms-mcp"]',
+                $codexConfiguration,
+            );
+            self::assertFileExists(
+                $directory . '/.agents/skills/typo3-backend-module-development/SKILL.md',
+            );
+        } finally {
+            @unlink($directory . '/.mcp.json');
+            @unlink($directory . '/.ddev/config.yaml');
+            @rmdir($directory . '/.ddev');
+            $this->removeCodexFixture($directory);
+        }
+    }
+
+    #[Test]
     public function codexInstallRefusesAConflictingServerEntry(): void
     {
         $directory = $this->directory();

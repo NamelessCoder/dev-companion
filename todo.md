@@ -84,20 +84,3 @@ Before then the only thing that has to happen is a version bump behind a release
 somebody else writes.
 
 ---
-
-## Three notes from the German-site session
-
-All three arrived from `/home/benji/projects/site-new` just after the previous
-queue was emptied, and each has been re-run against the current server. They
-stay in arrival order: first the site-language failure, then the routing design
-that followed from it, then the repository file whose ownership was discovered
-while committing the result.
-
-### The project and DDEV can contest additional.php
-
-Serves
-`feedback/2026-07-30-003418-the-project-repository-layout-hint-covers.md`.
-Verify the core's loading order for `settings.php` and `additional.php`, then
-verify the `#ddev-generated` and `.gitignore` behavior from DDEV's own source or
-documentation before adding the ownership boundary to
-`project-repository-layout`.

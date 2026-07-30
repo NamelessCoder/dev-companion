@@ -486,6 +486,15 @@ took before the requirement above was written down, and it will not survive it.
 
 ## Knowledge — what is covered
 
+- **R-KNW-32** Project configuration answers distinguish TYPO3-owned
+  `settings.php` from project-owned, subsequently loaded `additional.php`, and
+  state how DDEV's generated marker changes that ownership. They warn that a
+  regenerated ignore file can hide an as-yet-untracked deployment configuration
+  and require checking that the project file remains tracked.
+  *From:* DDEV replacing deployment overrides and re-ignoring the replaced file
+  in the same project-configuration change (2026-07-30).
+  *Held by:*
+  `HintsTest::projectSystemConfigurationStatesItsOwnershipBoundary`
 - **R-KNW-31** A PersistedAliasMapper answer states both directions: link
   generation takes a record uid and emits the configured route-field value,
   while route matching resolves that value back to the uid. It also states the

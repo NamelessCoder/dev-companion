@@ -448,6 +448,26 @@ final class HintsTest extends TestCase
     }
 
     #[Test]
+    public function projectSystemConfigurationStatesItsOwnershipBoundary(): void
+    {
+        $result = ArchitectureHints::find(
+            ['config/system/additional.php', 'config/system/.gitignore'],
+            'Who owns additional.php in a TYPO3 project that uses DDEV?',
+            6,
+        );
+        self::assertSame('project-repository-layout', $result['matchedHints'][0]['id']);
+
+        $hint = ArchitectureHints::byId('project-repository-layout');
+        self::assertNotNull($hint);
+        $text = implode("\n", array_column($hint['hints'], 'text'));
+        self::assertStringContainsString('settings.php is the configuration array written by TYPO3', $text);
+        self::assertStringContainsString('additional.php is optional PHP loaded afterwards', $text);
+        self::assertStringContainsString('Remove that marker to take the file over', $text);
+        self::assertStringContainsString('config/system/.gitignore', $text);
+        self::assertStringContainsString('verify additional.php is still tracked', $text);
+    }
+
+    #[Test]
     public function routedArgumentsAreAnsweredWithTheirCacheHashBoundary(): void
     {
         $result = ArchitectureHints::find(

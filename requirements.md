@@ -129,10 +129,10 @@ them, this section wins and the other one is what needs rewriting.
 - **R-DIS-14** Installed task skills are evaluated workflows rather than static
   prompt fragments. Task-shaped testing and conformance work is routed through
   the task guide before subsystem evidence; repeated test, audit, and
-  documentation judgment lives in on-demand references; each skill states what
-  it owns; and core-only test guidance is offered only when the active server
-  profile provides it. Realistic prompts and their acceptance criteria remain
-  runnable without naming tools or intended answers.
+  documentation and content-element judgment lives in on-demand references;
+  each skill states what it owns; and core-only test guidance is offered only
+  when the active server profile provides it. Realistic prompts and their
+  acceptance criteria remain runnable without naming tools or intended answers.
   *From:* forward tests of the testing, conformance, documentation, and backend
   module skills against the Printworks sitepackage (2026-07-30).
   *Held by:* `SkillTest`

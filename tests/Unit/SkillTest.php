@@ -11,6 +11,15 @@ use Typo3CmsMcp\Paths;
 final class SkillTest extends TestCase
 {
     private const ROUTING_SKILLS = [
+        'typo3-content-element-development' => [
+            'typo3_project_scope',
+            'typo3_extension_scope',
+            'typo3_task_guide',
+            'typo3_architecture_lookup',
+            'typo3_documentation_lookup',
+            'typo3_label_lookup',
+            'typo3_icon_lookup',
+        ],
         'typo3-extension-testing' => [
             'typo3_project_scope',
             'typo3_extension_scope',
@@ -106,6 +115,7 @@ final class SkillTest extends TestCase
     public function judgmentHeavySkillsLoadTheirChecklistOnDemand(): void
     {
         foreach ([
+            'typo3-content-element-development',
             'typo3-extension-testing',
             'typo3-extension-conformance',
             'typo3-extension-documentation',
@@ -126,6 +136,7 @@ final class SkillTest extends TestCase
     public function taskSkillsStateTheirOwnershipBoundaries(): void
     {
         $expectations = [
+            'typo3-content-element-development' => 'This skill owns content-element architecture and implementation.',
             'typo3-extension-testing' => 'This skill owns test changes and test execution.',
             'typo3-extension-conformance' => 'This skill owns assessment and prioritization.',
             'typo3-extension-documentation' => 'This skill owns documentation and user-facing wording changes.',
@@ -158,11 +169,11 @@ final class SkillTest extends TestCase
     {
         $scenarios = (string) file_get_contents(Paths::root() . '/scenarios/task-skills.md');
 
-        foreach (['SKILL-01', 'SKILL-02', 'SKILL-03'] as $id) {
+        foreach (['SKILL-01', 'SKILL-02', 'SKILL-03', 'SKILL-04'] as $id) {
             self::assertStringContainsString('## ' . $id, $scenarios);
         }
-        self::assertSame(3, substr_count($scenarios, '**What has to come out of it**'));
-        self::assertSame(3, substr_count($scenarios, '**How it fails**'));
+        self::assertSame(4, substr_count($scenarios, '**What has to come out of it**'));
+        self::assertSame(4, substr_count($scenarios, '**How it fails**'));
         self::assertStringNotContainsString('typo3_task_guide', $scenarios);
         self::assertStringNotContainsString('typo3_project_scope', $scenarios);
     }

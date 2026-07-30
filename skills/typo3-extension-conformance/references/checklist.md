@@ -18,6 +18,24 @@ extension audit. Absence of an optional subsystem is not a defect.
 - Quality: tests, declared validation commands, documentation, deprecations,
   and upgrade readiness.
 
+## Content element architecture
+
+Before accepting a content-element implementation, verify the editor workflow
+and ownership model rather than only the CType registration:
+
+- Repeatable content owned by one element should normally use a dedicated
+  inline child table. References to existing records require an explicit reuse
+  requirement and reviewed visibility, localization, lifecycle and duplicate
+  rendering behavior.
+- Keep shared content-element setup in the generic override and move one
+  element's fields and CType registration into a named sibling.
+- Keep one content element per TypoScript file under the project's established
+  content-element directory.
+- Load element-only CSS and JavaScript through the template AssetCollector.
+  Page-level inclusion is for assets needed across the site.
+- Require functional coverage for inline persistence and rendering; require
+  browser coverage for JavaScript interaction and accessibility.
+
 For each surface, compare checkout declarations, runtime evidence when
 available, applicable architecture guidance, and versioned official
 documentation. When an installation parser misses a dynamic PHP registration,

@@ -9,6 +9,7 @@ final class Installer
     private const SERVER = 'typo3-cms-mcp';
     private const SKILLS = [
         'typo3-backend-module-development',
+        'typo3-content-element-development',
         'typo3-extension-conformance',
         'typo3-extension-documentation',
         'typo3-extension-testing',

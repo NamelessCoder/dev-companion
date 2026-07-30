@@ -89,6 +89,7 @@ final class InstallerTest extends TestCase
                 'version' => 1,
                 'skills' => [
                     'typo3-backend-module-development',
+                    'typo3-content-element-development',
                     'typo3-extension-conformance',
                     'typo3-extension-documentation',
                     'typo3-extension-testing',
@@ -99,6 +100,7 @@ final class InstallerTest extends TestCase
             self::assertStringContainsString("/typo3-cms-mcp.json\n", $gitignore);
             foreach ([
                 'typo3-backend-module-development',
+                'typo3-content-element-development',
                 'typo3-extension-conformance',
                 'typo3-extension-documentation',
                 'typo3-extension-testing',
@@ -110,6 +112,7 @@ final class InstallerTest extends TestCase
             }
             self::assertStringNotContainsString('/.codex/config.toml', $gitignore);
             foreach ([
+                'typo3-content-element-development',
                 'typo3-extension-conformance',
                 'typo3-extension-documentation',
                 'typo3-extension-testing',
@@ -304,6 +307,7 @@ final class InstallerTest extends TestCase
         @rmdir($directory . '/.agents/skills/obsolete-typo3-skill');
         foreach ([
             'typo3-backend-module-development',
+            'typo3-content-element-development',
             'typo3-extension-conformance',
             'typo3-extension-documentation',
             'typo3-extension-testing',

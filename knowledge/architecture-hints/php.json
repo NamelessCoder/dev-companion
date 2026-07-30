@@ -247,7 +247,7 @@
         "text": "Build a module shortcut through $moduleTemplate->getDocHeaderComponent()->getButtonBar()->makeShortcutButton(), set its route identifier, display name and arguments, then add it to that button bar.",
         "until": 13
       },
-      "After a module POST changes state, return a RedirectResponse with status 303. The browser then follows with GET; a 302 does not state that method change and can repeat the POST.",
+      "After a module POST changes state, return a RedirectResponse with HTTP 303 status. The browser then follows with GET; HTTP 302 does not state that method change and can repeat the POST.",
       "Configuration/Backend/Routes.php and AjaxRoutes.php declare backend routes outside a module, in the same declarative style.",
       "These are declarative files with no schema check behind them: a wrong key does not fail at boot, it fails when a user opens the module. Take the shape from a neighbouring extension."
     ],

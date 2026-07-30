@@ -204,7 +204,7 @@ final class HintsTest extends TestCase
         ])->text;
         self::assertStringContainsString('makeShortcutButton()', $onThirteen);
         self::assertStringNotContainsString('setShortcutContext(', $onThirteen);
-        self::assertStringContainsString('RedirectResponse with status 303', $onThirteen);
+        self::assertStringContainsString('RedirectResponse with HTTP 303 status', $onThirteen);
 
         $onFourteen = Tools::call('typo3_architecture_lookup', [
             'task' => $query,
@@ -212,7 +212,7 @@ final class HintsTest extends TestCase
         ])->text;
         self::assertStringContainsString('setShortcutContext(', $onFourteen);
         self::assertStringNotContainsString('makeShortcutButton()', $onFourteen);
-        self::assertStringContainsString('RedirectResponse with status 303', $onFourteen);
+        self::assertStringContainsString('RedirectResponse with HTTP 303 status', $onFourteen);
     }
 
     #[Test]

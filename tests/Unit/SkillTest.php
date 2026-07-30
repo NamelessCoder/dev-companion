@@ -245,6 +245,50 @@ final class SkillTest extends TestCase
     }
 
     #[Test]
+    public function theBaseIsEstablishedBeforeTheCheckoutIsOpened(): void
+    {
+        // A base that is stated but reachable in any order is not a base. Three
+        // runs of REVIEW-01 established that the reading phase swallows
+        // whatever the skill left after it: the third read the checklist, then
+        // listed the file tree and spent five minutes in it before calling
+        // task_guide or a single conventions lookup. So the four owning calls
+        // and the surface list come first here, in one block, and the sentence
+        // that sends the session into the files comes after all of them.
+        $skill = (string) file_get_contents(
+            Paths::root() . '/skills/typo3-extension-conformance/SKILL.md',
+        );
+
+        $base = [
+            'typo3_project_scope',
+            'typo3_extension_scope',
+            'typo3_task_guide',
+            'references/checklist.md',
+            'Write the surface list down before opening a single file',
+        ];
+
+        $position = -1;
+        foreach ($base as $step) {
+            $next = strpos($skill, $step);
+            self::assertNotFalse($next, $step . ' is not part of the conformance base');
+            self::assertGreaterThan($position, $next, $step . ' is stated out of order');
+            $position = $next;
+        }
+
+        // The file tree is a trap where a surface has no files, so the list is
+        // derived from the surfaces and never from what a listing happens to
+        // show.
+        self::assertMatchesRegularExpression(
+            '/A surface is in scope because the checklist names it, not because\s+the file tree\s+shows it/',
+            $skill,
+        );
+        self::assertGreaterThan(
+            $position,
+            strpos($skill, 'Read the checkout for what none of those can know'),
+            'the skill sends the session into the checkout before its base is established',
+        );
+    }
+
+    #[Test]
     public function anAssessmentAsksBeforeItJudgesAndSaysWhatItDidNotAsk(): void
     {
         // The order is the whole requirement. A conventions lookup that happens
@@ -269,10 +313,20 @@ final class SkillTest extends TestCase
             $skill,
         );
 
+        // The runtime lookup is the near miss, not the omission: the third run
+        // reached for a translation tool and picked the one that reports what a
+        // path resolves to, then filed the surface as clean.
+        self::assertMatchesRegularExpression(
+            '/confirmed by its own runtime\s+lookup and still break every rule that governs it/',
+            $skill,
+        );
+
         // And a surface nobody asked about is named, because silence about it
-        // is indistinguishable from a clean result.
+        // is indistinguishable from a clean result — read off the written list
+        // rather than off what the session remembers having skipped.
         self::assertStringContainsString('**unassessed**, and unassessed is', $skill);
-        self::assertStringContainsString('each marked assessed or unassessed', $skill);
+        self::assertStringContainsString('every entry marked assessed or unassessed', $skill);
+        self::assertStringContainsString('not a recollection at the end', $skill);
     }
 
     #[Test]

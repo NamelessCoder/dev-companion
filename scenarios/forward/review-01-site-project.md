@@ -9,14 +9,17 @@
 **What has to come out of it**
 
 - The review establishes the installation, project, site package, TYPO3 version,
-  and available project-owned checks before drawing conclusions.
+  available project-owned checks, and the surfaces it intends to cover before it
+  starts reading the checkout — not alongside the reading and not after it.
 - Findings come from concrete checkout or installation evidence and name the
   affected location, consequence, confidence, and next action.
 - Priorities follow user impact and failure risk rather than file count,
   stylistic preference, or the order in which files were opened.
 - A subsystem is judged against the conventions that govern it, asked for before
-  the judgment rather than after, and a subsystem present in the checkout but
-  never asked about is reported as unassessed rather than left out.
+  the judgment rather than after, and established facts about it are not mistaken
+  for a verdict on it. A surface this kind of checkout could have — including one
+  with no files at all, whose absence the file tree cannot show — is reported as
+  unassessed rather than left out.
 - Confirmed defects, recommendations, missing evidence, and subjects outside
   this server's scope remain visibly distinct.
 - The answer stops at a short prioritized review and routes follow-up work to

@@ -17,9 +17,18 @@ method; do not embed versioned TYPO3 facts.
 3. Call `typo3_task_guide` with a short English task, affected area, target
    version, and change type to establish task-shaped checks.
 4. Read [references/checklist.md](references/checklist.md) for the audit
-   surfaces, the finding gate, and the severity rubric. An assessment walks the
-   surfaces the checkout supports; it does not report whichever of them the
-   files happened to show first.
+   surfaces, the finding gate, and the severity rubric.
+5. Write the surface list down before opening a single file, from the
+   checklist's surfaces narrowed to the ones this kind of checkout can have. It
+   is the work list, and the coverage the report closes on is this same list
+   with every entry answered.
+
+A surface is in scope because the checklist names it, not because the file tree
+shows it. Listing the files first inverts that: `find` cannot show a manual that
+was never written, a test that does not exist, or a documentation tree that is
+absent, so the surfaces it hides are exactly the ones whose absence is the
+finding. Derive the list from the checklist and `typo3_extension_scope`, then
+let reading answer it.
 
 ## Ask before judging, on every surface in scope
 
@@ -42,6 +51,13 @@ one that already exists:
 - `typo3_changelog_lookup` for the installed core when an upgrade or a
   deprecated API is in scope, and verify each identifier it names in the
   checkout.
+
+The first two answer different questions and neither stands in for the other. A
+runtime lookup reports what is registered, what a path resolves to, what a value
+really is — the facts of this installation. The conventions lookup reports
+whether those facts are right. A surface can be confirmed by its own runtime
+lookup and still break every rule that governs it, so a surface is not assessed
+until both have been asked.
 
 Read the checkout for what none of those can know: the files themselves, the
 registrations, the tests, the documentation, and the conventions the project has
@@ -73,10 +89,12 @@ For a requested audit, stop after findings unless fixes were also requested.
 For requested improvements, make the smallest coherent changes, preserve local
 project conventions, and run the commands declared by `typo3_project_scope`.
 
-Close on coverage rather than on a summary: every surface the checkout supports,
-each marked assessed or unassessed, clean ones briefly. That list is what makes
-an audit readable as one. Without it a thorough report and a narrow report look
-alike, and the cheapest way to look thorough is to examine less.
+Close on coverage rather than on a summary: the surface list written in step 5,
+every entry marked assessed or unassessed, clean ones briefly. It is that list
+and not a recollection at the end — a summary assembled from memory reports what
+the session noticed it skipped, never what it never reached. Without the list a
+thorough report and a narrow one look alike, and the cheapest way to look
+thorough is to examine less.
 
 This skill owns assessment and prioritization, and it owns saying who takes each
 finding onward. Name the workflow the follow-up belongs to — the testing,

@@ -458,6 +458,14 @@ took before the requirement above was written down, and it will not survive it.
 
 ## Knowledge — what is covered
 
+- **R-KNW-29** A core-only convention that is reachable from extension work
+  points to the project-shaped answer instead of stopping at its binding.
+  Extension documentation uses its own manual, semantic version and release
+  notes; extension assets use their own build and publishing decision rather
+  than the core's source trees.
+  *From:* the binding pass finding two subjects whose core obligation had no
+  project counterpart (2026-07-29).
+  *Held by:* `HintsTest::coreOnlyDocumentationAndBuildHintsHaveProjectTwins`
 - **R-KNW-28** A surviving hook is named by the subsystem that still calls it,
   alongside the narrower event for a concrete intent. Intent words belong in
   that hint's `appliesTo`; there is no parallel extension-point lookup whose

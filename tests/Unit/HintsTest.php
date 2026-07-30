@@ -470,6 +470,37 @@ final class HintsTest extends TestCase
     }
 
     #[Test]
+    public function coreOnlyDocumentationAndBuildHintsHaveProjectTwins(): void
+    {
+        $documentation = ArchitectureHints::byId('extension-documentation');
+        self::assertNotNull($documentation);
+        $documentationText = implode("\n", array_column($documentation['hints'], 'text'));
+        self::assertStringContainsString('guides.xml', $documentationText);
+        self::assertStringContainsString('semantic version', $documentationText);
+        self::assertStringContainsString('documentation-changelog', $documentationText);
+
+        $assets = ArchitectureHints::byId('extension-asset-build');
+        self::assertNotNull($assets);
+        $assetText = implode("\n", array_column($assets['hints'], 'text'));
+        self::assertStringContainsString('does not attach', $assetText);
+        self::assertStringContainsString('public-assets', $assetText);
+        self::assertStringContainsString('extension-files', $assetText);
+
+        $docsQuery = ArchitectureHints::find(
+            [],
+            'guides.xml and Documentation/Index.rst for my extension documentation and release notes',
+            6
+        );
+        self::assertSame('extension-documentation', $docsQuery['matchedHints'][0]['id']);
+        $assetQuery = ArchitectureHints::find(
+            [],
+            'build scss and typescript frontend assets in a sitepackage extension',
+            6
+        );
+        self::assertContains('extension-asset-build', array_column($assetQuery['matchedHints'], 'id'));
+    }
+
+    #[Test]
     public function theSeedingAdviceCarriesTheStepsItAsksFor(): void
     {
         // "Seed with DataHandler, then export" named the way in and stopped

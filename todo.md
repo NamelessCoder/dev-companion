@@ -112,43 +112,6 @@ has no shape for, and nobody has reported being stopped by it. These are a
 session that was stopped and read the answers out of `vendor/` by hand. Friction
 that happened outranks a mismatch that was noticed.
 
-## Write the two twins the marking pass found
-
-Serves the one note left open,
-`feedback/2026-07-29-180528-project-work-needs-a-second-axis-the-repository.md`.
-The pass this item used to ask for is done and its outcome is in the note:
-nineteen of the twenty-two marked hints, all four marked statements and the
-marked intent need no twin, and two subjects do. Both are reachable from an
-extension today and hand back the core's obligation with nothing in its place.
-
-The first is an extension's own documentation, twin of `documentation-changelog`.
-The second is an extension's own asset build, twin of both
-`css-source-build-boundaries` and `backend-typescript` at once, because those two
-say the same thing about `.scss` and `.ts` and neither holds outside the core.
-
-Both are written the way `project-extension-tests` was — same subject, its own
-hint, and each pointing at the other. Two things the pass established and the
-writing has to keep: the asset twin goes in `general.json`, not in `css.json` or
-`typescript.json`, because those two sections are withheld when the task names
-the frontend and a sitepackage's asset build is exactly that case; and it points
-at `public-assets` and `extension-files` rather than repeating what they already
-say, so what is left to write is the boundary itself. The documentation twin also
-takes the project side of two marked statements that have no twin of their own —
-a changed ViewHelper argument list and a retired label are public API for whoever
-installed the extension, so the obligation there is a version bump and a release
-note.
-
-The next concrete step is the documentation twin, because it is the one with
-nothing at all in its place: `guides.xml`, `Documentation/Index` and semantic
-versioning appear nowhere in `knowledge/`. Bind what needs binding against
-`.checkouts/`, and close the note in the commit that writes the second one.
-
-What comes after it is the section below, and after that the work is whatever
-the notes a session finds ask for — or, where there are none, a scenario from
-`scenarios/` still marked `gap`.
-
----
-
 ## What reading laravel/boost put in the queue, and why it is below the note
 
 These four items come from one outside input that is not a note: a comparison,

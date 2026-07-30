@@ -6,6 +6,7 @@
     "appliesTo": ["Build/Sources/Sass/", "Resources/Public/Css/", ".scss", ".css", "sass", "css"],
     "hints": [
       "Treat Build/Sources/Sass/ as the source of truth when a Sass source exists.",
+      "This is the core's asset pipeline. A project extension owns a separate build; see extension-asset-build.",
       "Do not hand-edit generated public CSS as the only change.",
       "Not every asset comes out of the Sass build. The CKEditor CSS is built through Build/rollup/ckeditor.js, so a change there is not picked up by a CSS build and looks like nothing happened.",
       "Verify generated assets are in sync when public assets are committed.",

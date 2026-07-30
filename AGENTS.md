@@ -22,7 +22,7 @@ src/bootstrap.php  # locates the Composer autoloader
 knowledge/         # the knowledge base (markdown + JSON), the data source
 feedback/          # improvement notes left by agents (standalone checkout only)
 scenarios/         # test scenarios: user prompts per audience and task, and what has to come out of them
-scenarios/runs/    # one recorded forward run per scenario: where it ran, against which server, and the judgment per criterion
+scenarios/runs/    # one recorded forward run per scenario: where it ran, against which server, which skills and tools it reached for, and the judgment per criterion
 skills/            # canonical task skills installed into supported agent clients
 requirements.md    # what must hold, and what holds it there; open ones are the backlog
 decisions.md       # what a change assumed, and what would show it to be wrong

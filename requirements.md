@@ -593,7 +593,8 @@ took before the requirement above was written down, and it will not survive it.
 - **R-FBK-3** A forward run of a scenario is a recorded result rather than a
   status line somebody remembers. The prose stays the only copy of the prompt
   and the criteria; the run adds where it happened, which server it ran against,
-  one judgment with evidence per criterion, and the tools the session called.
+  which skills activated, which tools the session called, and one judgment with
+  evidence per criterion.
   The verdict follows from those judgments instead of being stated beside them,
   and the run carries a digest of the criteria it was judged against — so a
   scenario reworded after its run says so rather than keeping the old answer.

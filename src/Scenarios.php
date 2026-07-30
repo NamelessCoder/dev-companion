@@ -21,7 +21,9 @@ namespace Typo3CmsMcp;
  * earned it stopped being true, and nothing says so out loud.
  *
  * So a run is one file below scenarios/runs/, and it holds only what the run
- * adds. Two things follow from that:
+ * adds: where it ran, against which server, which skills the session activated
+ * and which tools it called, and one judgment with evidence per criterion. Two
+ * things follow from that:
  *
  * - The verdict is derived, never written down. All criteria met and no failure
  *   condition hit is `covered`; some is `partial`; none is `gap`. A verdict a
@@ -307,8 +309,13 @@ final class Scenarios
                 $scenario['environment'],
             );
         }
-        if (!is_array($run['toolTrace'] ?? null)) {
-            $problems[] = $file . ' has no tool trace, not even an empty one';
+        // Both empty is a legitimate and damning result: an agent that reached
+        // for neither is the run this suite exists to catch. Both absent is
+        // not a result at all — nobody looked.
+        foreach (['skills' => 'which skills activated', 'toolTrace' => 'which tools were called'] as $field => $what) {
+            if (!is_array($run[$field] ?? null)) {
+                $problems[] = $file . ' does not say ' . $what . ', not even that it was nothing';
+            }
         }
         if (($run['criteria'] ?? null) !== $scenario['criteria']) {
             // The scenario was rewritten after the run, so the judgments below
@@ -392,6 +399,7 @@ final class Scenarios
             'client' => $client,
             'environment' => $scenario['environment'],
             'criteria' => $scenario['criteria'],
+            'skills' => [],
             'toolTrace' => [],
             'outcomes' => array_map(
                 static fn(): array => ['met' => null, 'evidence' => ''],

@@ -78,16 +78,16 @@ perfectly. A gap is an answer that ought to exist and does not.
    Whether a checklist is usable shows up when it is worked off, not when it
    is printed.
 5. Grade against **What has to come out of it** and **How it fails**, and write
-   the judgment and its evidence into the recorded run, together with the tools
-   the session actually called. `bin/scenarios check` — and `composer test` —
-   then hold that run to this file.
+   the judgment and its evidence into the recorded run, together with the skills
+   that activated and the tools the session actually called. `bin/scenarios
+   check` — and `composer test` — then hold that run to this file.
 
 ## What a run produces
 
 The run itself, as one file below [runs/](runs/). That file is what the
 **Status today** line above every scenario now rests on: the environment, the
-server it ran against, one judgment with evidence per criterion, and the tools
-the session reached for. The verdict is not written into it — it follows from
+server it ran against, the skills the session activated, the tools it reached
+for, and one judgment with evidence per criterion. The verdict is not written into it — it follows from
 the judgments, and a scenario whose mark disagrees with what its run establishes
 is a failing check rather than a sentence nobody rereads.
 

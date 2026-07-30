@@ -97,16 +97,33 @@ hold the discovered CType and template mapping with that regression test.
 
 ---
 
-## Make inline-record and AssetCollector guidance findable
+## Answer a multi-token component query with a miss instead of a stranger
 
-Serves
-`feedback/2026-07-30-073632-typo3-documentation-lookup-returned-weak-or.md`.
+Serves `feedback/2026-07-30-093311-typo3-component-lookup-returned-unrelated.md`.
 
-Run the note's four documentation queries separately against every covered
-manual line, record which canonical pages are actually indexed, then add the
-smallest query normalization or version-bound architecture hints that make TCA
-inline ownership and frontend AssetCollector usage reachable. Add lookup or
-hint tests for the exact note queries.
+`query="content element preview heading text"` returns Dropdown, Infobox and
+Form Inputs, each on a single term out of five, and the catalog snapshot line
+(TYPO3 15.0) reads as the version the markup was verified on. Require a share
+of the query terms before a component is handed over, so a query nothing was
+written for comes back as a miss, and say per component which majors it was
+verified on when `targetVersion` was passed. Hold both with a lookup test on
+the note's exact query.
+
+---
+
+## Make inline-record, AssetCollector and testing-API guidance findable
+
+Serves `feedback/2026-07-30-073632-typo3-documentation-lookup-returned-weak-or.md`
+and `feedback/2026-07-30-093311-typo3-documentation-lookup-returned-generic.md`.
+
+The manual index carries page titles and paths only, so an API identifier —
+`AssetCollector`, `FunctionalTestCase`, `executeFrontendSubRequest`,
+`foreign_field` — appears nowhere in it and reaches the pages that share a
+generic word instead. Two parts, both verified against the covered lines:
+`typo3/reference-tca` is not among the searched manuals at all although it
+holds `ColumnsConfig/Type/Inline/Index.html` on 12.4, 13.4 and 14.3; and the
+identifiers need an alias into the vocabulary the index actually uses (Assets,
+Functional tests). Add lookup tests for the exact note queries.
 
 ---
 

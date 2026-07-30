@@ -91,12 +91,11 @@ This serves the seven notes recorded on 2026-07-30, all from one forward run of
 `EXT-04` against the Printworks sitepackage on TYPO3 14.3.5. They are worked off
 in this order, cheapest and most certain first:
 
-1. The three knowledge gaps: which language a new label is authored in, where a
-   setting belongs when its reach is one site rather than one installation, and
-   what a backend module builds after it is registered — the doc-header button
-   API and the redirect its own POST answers with. All three are verifiable
-   against the checkouts below `.checkouts/`, and the shortcut button changed in
-   a major, so it is bound.
+1. The two remaining knowledge gaps: where a setting belongs when its reach is
+   one site rather than one installation, and what a backend module builds after
+   it is registered — the doc-header button API and the redirect its own POST
+   answers with. Both are verified against the checkouts below `.checkouts/`,
+   and the shortcut button changed in a major, so it is bound.
 2. The catalog provenance: `typo3_catalog_scope` announces one branch for the
    whole catalog and a caller reads that as the version of every entry under it.
    Say what the branch is — the checkout the entries were read from — and let

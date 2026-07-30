@@ -604,6 +604,14 @@ took before the requirement above was written down, and it will not survive it.
 
 ## Knowledge — what is covered
 
+- **R-KNW-33** A label-authoring answer says that the source XLF is English and
+  that a locale's translation goes into the locale-prefixed file beside it with
+  the same unit id. A non-English source file already present in a package is a
+  defect to report rather than a local convention to continue.
+  *From:* a sitepackage whose German source XLF led a forward run to add every
+  new backend-module label in German too (2026-07-30).
+  *Held by:*
+  `HintsTest::aNewLabelNamesTheSourceLanguageAndWhereItsTranslationGoes`
 - **R-KNW-32** Project configuration answers distinguish TYPO3-owned
   `settings.php` from project-owned, subsequently loaded `additional.php`, and
   state how DDEV's generated marker changes that ownership. They warn that a

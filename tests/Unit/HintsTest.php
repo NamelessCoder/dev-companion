@@ -153,6 +153,19 @@ final class HintsTest extends TestCase
     }
 
     #[Test]
+    public function aNewLabelNamesTheSourceLanguageAndWhereItsTranslationGoes(): void
+    {
+        $result = Tools::call('typo3_architecture_lookup', [
+            'task' => 'backend module registration controller and language files in a project sitepackage extension',
+            'targetVersion' => '14',
+        ]);
+
+        self::assertStringContainsString('new labels in English in the source XLF', $result->text);
+        self::assertStringContainsString('de.locallang.xlf', $result->text);
+        self::assertStringContainsString('a defect to report', $result->text);
+    }
+
+    #[Test]
     public function aGermanSiteTaskReachesItsLabelLanguageSetup(): void
     {
         $query = 'Set up a German-language site whose core and form labels still render in English';

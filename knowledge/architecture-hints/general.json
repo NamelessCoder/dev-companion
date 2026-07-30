@@ -21,6 +21,7 @@
     ],
     "hints": [
       "Use clear, stable label identifiers and concise wording.",
+      "Author new labels in English in the source XLF. Put a translation in the locale-prefixed file beside it — for example de.locallang.xlf for locallang.xlf — with the same unit id. An existing source file whose labels are not English is a defect to report, not a convention to continue.",
       "Reuse an existing label where the meaning is identical. Which trans-units exist is a property of the installation — every extension ships its own and an installation can override a language file through LANG/resourceOverrides — so search with typo3_label_lookup, which asks the installation, rather than working from memory.",
       {
         "text": "Reference a label by its translation domain (package.resource:key), not by the EXT: file path. The domain follows from the path and is registered nowhere: Resources/Private/Language/ is dropped, remaining directories become dot-separated snake_case parts, locallang.xlf becomes \"messages\", locallang_<suffix>.xlf becomes \"<suffix>\", any other file name becomes its own snake_case form, and Configuration/Sets/<Set>/labels.xlf becomes \"sets.<set>\".",

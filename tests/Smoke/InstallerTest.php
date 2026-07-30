@@ -122,6 +122,12 @@ final class InstallerTest extends TestCase
                     $directory . '/.agents/skills/' . $publishedSkill . '/SKILL.md',
                 );
             }
+            foreach (['checklist', 'phpunit', 'playwright'] as $reference) {
+                self::assertFileEquals(
+                    Paths::root() . '/skills/typo3-extension-testing/references/' . $reference . '.md',
+                    $directory . '/.agents/skills/typo3-extension-testing/references/' . $reference . '.md',
+                );
+            }
 
             $before = [
                 'configuration' => file_get_contents($directory . '/.codex/config.toml'),
@@ -314,6 +320,10 @@ final class InstallerTest extends TestCase
         ] as $skill) {
             $skillDirectory = $directory . '/.agents/skills/' . $skill;
             @unlink($skillDirectory . '/SKILL.md');
+            foreach (glob($skillDirectory . '/references/*') ?: [] as $reference) {
+                @unlink($reference);
+            }
+            @rmdir($skillDirectory . '/references');
             @rmdir($skillDirectory);
         }
         @rmdir($directory . '/.agents/skills');

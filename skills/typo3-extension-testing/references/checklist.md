@@ -1,7 +1,17 @@
 # Test strategy checklist
 
-Read this when choosing test layers, reviewing coverage, or selecting commands.
-Use only rows supported by the task and checkout.
+Read this when choosing test layers, setting up or repairing their harnesses,
+reviewing coverage, or selecting commands. Use only rows supported by the task
+and checkout.
+
+## Verify the starting point
+
+- Identify the layers the requested behavior needs.
+- Run or inspect each layer's discovery command before relying on it.
+- Establish or repair missing prerequisites before adding coverage.
+- Preserve a review-only boundary: report setup defects without changing them.
+- Do not force behavior into an existing lower layer merely because the correct
+  layer has no harness yet.
 
 ## Select the layer
 
@@ -30,15 +40,32 @@ Use only rows supported by the task and checkout.
 Prefer the lowest layer that observes the contract and would fail for the
 reported defect. Record why a higher layer is necessary.
 
+## Complete setup
+
+- Resolve development dependencies against the package's declared TYPO3 and PHP
+  constraints; do not copy a version from another project.
+- Reuse installed template configuration and existing project conventions.
+- Keep extension-owned unit and functional tests in the extension. Keep
+  browser-owned configuration in the project that serves the tested site.
+- Establish a stable local command before CI, then make CI call that command.
+- Keep credentials and machine-specific URLs out of tracked configuration.
+- Prove every newly established layer with a meaningful test or real browser
+  spec. When no unit-testable behavior exists, report an empty discovered suite
+  instead of manufacturing behavior or a vacuous assertion.
+- Treat a missing runner or environment as infrastructure failure, not as a
+  failed product assertion.
+
 ## Select commands
 
 1. Prefer the narrowest existing command that names the affected test or suite.
-2. Use a direct PHPUnit or browser-runner invocation only when its executable,
+2. During setup, introduce one project-owned command per selected layer and run
+   it before wiring CI.
+3. Use a direct PHPUnit or browser-runner invocation only when its executable,
    configuration, and target path exist in the checkout.
-3. Then run the containing command declared by `typo3_project_scope` or the
+4. Then run the containing command declared by `typo3_project_scope` or the
    repository's documented test setup.
-4. Never translate TYPO3 core commands into extension commands by analogy.
-5. Separate missing infrastructure or environment prerequisites from a failing
+5. Never translate TYPO3 core commands into extension commands by analogy.
+6. Separate missing infrastructure or environment prerequisites from a failing
    test.
 
 ## Coverage review

@@ -186,29 +186,44 @@ operations with what `typo3_project_scope` and `typo3_changelog_lookup` know
 
 ## SITE-06 — Testing a site project
 
-**Environment:** `E-SITE` · **Status today:** `boundary`
+**Environment:** `E-SITE` · **Status today:** `covered` — `R-KNW-16`,
+`R-SKL-2`
 
 > Before every deployment I want a smoke test: the important pages render, the
 > forms submit, the backend login works. Set that up for this project.
 
 **What the agent needs from this server**
 
-- The honest statement that testing a site installation is not covered, and
-  where it is documented.
-- Whatever testing conventions transfer at the level of what to test rather than
-  how to run it.
+- A workflow that inspects and proves existing PHP or browser harnesses before
+  extending them, and establishes the browser layer if the requested journeys
+  have none.
+- The boundary between a functional frontend response and a real browser:
+  rendering alone does not submit forms, execute JavaScript, log into the
+  backend or inspect accessibility.
+- Project-owned Playwright guidance for real mounted URLs, shared
+  authentication, stable scripts, artifacts and CI, without assuming one
+  host-versus-container topology.
 
 **What has to come out of it**
 
-- No core suite, no `runTests.sh`, and no acceptance-test setup borrowed from the
-  core repository presented as this project's.
-- The decline is one sentence and a route, not a paragraph of apology.
+- Existing test commands and configuration survive. Missing browser
+  infrastructure is added to the runnable project rather than to one extension
+  package or a core test directory.
+- At least one important page, form journey and backend login path is grounded
+  in a real mounted URL and run locally before CI calls the same project script.
+- Reports, traces or screenshots have declared artifact paths; credentials and
+  developer-specific hosts stay out of tracked configuration.
+- No core `runTests.sh` command or core acceptance-test setup is presented as
+  this project's.
 
 **How it fails**
 
-- The core's own acceptance testing setup described as though a site project had
-  it.
-- The boundary stated and then a full invented setup delivered anyway.
+- A functional subrequest presented as proof that forms and backend login work
+  in a browser.
+- Playwright configuration written without running one real spec.
+- A URL, login or browser location copied from another project and treated as a
+  TYPO3 convention.
+- Snapshots created or updated without reviewing what they establish.
 
 ---
 

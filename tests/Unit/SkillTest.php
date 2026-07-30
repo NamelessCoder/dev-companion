@@ -137,7 +137,7 @@ final class SkillTest extends TestCase
     {
         $expectations = [
             'typo3-content-element-development' => 'This skill owns content-element architecture and implementation.',
-            'typo3-extension-testing' => 'This skill owns test changes and test execution.',
+            'typo3-extension-testing' => 'This skill owns testing infrastructure, test changes, and test execution.',
             'typo3-extension-conformance' => 'This skill owns assessment and prioritization.',
             'typo3-extension-documentation' => 'This skill owns documentation and user-facing wording changes.',
         ];
@@ -146,6 +146,53 @@ final class SkillTest extends TestCase
             $skill = (string) file_get_contents(Paths::root() . '/skills/' . $name . '/SKILL.md');
             self::assertStringContainsString($expectation, $skill);
         }
+    }
+
+    #[Test]
+    public function extensionTestingVerifiesItsHarnessBeforeAddingCoverage(): void
+    {
+        $skill = (string) file_get_contents(
+            Paths::root() . '/skills/typo3-extension-testing/SKILL.md',
+        );
+
+        $verify = strpos($skill, 'Verify that the harness');
+        $establish = strpos($skill, '## Establish or repair the required harness');
+        $add = strpos($skill, '## Add or extend tests');
+        self::assertNotFalse($verify);
+        self::assertNotFalse($establish);
+        self::assertNotFalse($add);
+        self::assertLessThan($establish, $verify);
+        self::assertLessThan($add, $establish);
+        self::assertStringContainsString('for a review-only request, report the defect without changing it', $skill);
+        self::assertStringContainsString('Keep unit and functional infrastructure with the extension', $skill);
+        self::assertStringContainsString('Keep browser infrastructure with the runnable project', $skill);
+        self::assertStringNotContainsString('Classify the work as setup', $skill);
+    }
+
+    #[Test]
+    public function extensionTestingLoadsOnlyTheSelectedLayerGuide(): void
+    {
+        $directory = Paths::root() . '/skills/typo3-extension-testing';
+        $skill = (string) file_get_contents($directory . '/SKILL.md');
+
+        foreach (['phpunit', 'playwright'] as $guide) {
+            self::assertFileExists($directory . '/references/' . $guide . '.md');
+            self::assertStringContainsString(
+                '[references/' . $guide . '.md](references/' . $guide . '.md)',
+                $skill,
+            );
+            $guidance = (string) file_get_contents($directory . '/references/' . $guide . '.md');
+            self::assertStringContainsString('## Choose the folders', $guidance);
+        }
+        self::assertStringContainsString('read only its implementation guide', $skill);
+        self::assertStringContainsString(
+            'FunctionalTests.xml',
+            (string) file_get_contents($directory . '/references/phpunit.md'),
+        );
+        self::assertStringContainsString(
+            'playwright.config.ts',
+            (string) file_get_contents($directory . '/references/playwright.md'),
+        );
     }
 
     #[Test]
@@ -169,11 +216,11 @@ final class SkillTest extends TestCase
     {
         $scenarios = (string) file_get_contents(Paths::root() . '/scenarios/task-skills.md');
 
-        foreach (['SKILL-01', 'SKILL-02', 'SKILL-03', 'SKILL-04'] as $id) {
+        foreach (['SKILL-01', 'SKILL-02', 'SKILL-03', 'SKILL-04', 'SKILL-05', 'SKILL-06'] as $id) {
             self::assertStringContainsString('## ' . $id, $scenarios);
         }
-        self::assertSame(4, substr_count($scenarios, '**What has to come out of it**'));
-        self::assertSame(4, substr_count($scenarios, '**How it fails**'));
+        self::assertSame(6, substr_count($scenarios, '**What has to come out of it**'));
+        self::assertSame(6, substr_count($scenarios, '**How it fails**'));
         self::assertStringNotContainsString('typo3_task_guide', $scenarios);
         self::assertStringNotContainsString('typo3_project_scope', $scenarios);
     }

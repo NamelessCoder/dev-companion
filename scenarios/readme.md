@@ -36,7 +36,7 @@ audience is a property of the task rather than of the directory
 - [extension-author.md](extension-author.md) — `EXT-01` … `EXT-07`
 - [site-developer.md](site-developer.md) — `SITE-01` … `SITE-07`
 - [cross-cutting.md](cross-cutting.md) — `META-01` … `META-05`
-- [task-skills.md](task-skills.md) — `SKILL-01` … `SKILL-03`
+- [task-skills.md](task-skills.md) — `SKILL-01` … `SKILL-06`
 
 ## Environments
 

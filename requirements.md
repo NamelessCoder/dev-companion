@@ -229,6 +229,18 @@ them, this section wins and the other one is what needs rewriting.
   no second copy of versioned knowledge is generated or permanently loaded.
   *From:* `SITE-07`.
   *Held by:* `SkillTest`, `InstallerTest`
+- **R-SKL-2** A project or extension testing task verifies the harness for the
+  behavior's required layer before relying on it. Missing or broken
+  infrastructure is established or repaired when changes are in scope, then
+  the requested coverage is added or extended without replacing working tests
+  and commands. Unit and functional harnesses stay with the extension; browser
+  harnesses stay with the runnable project. Every newly established layer has a
+  meaningful local proof before CI calls the same command, and review-only work
+  reports setup defects without changing them.
+  *From:* `EXT-05`, `SITE-06`, `SKILL-05`, `SKILL-06`; and a request for one
+  testing skill that can add or extend PHPUnit and Playwright coverage while
+  checking and repairing its setup (2026-07-30).
+  *Held by:* `SkillTest`, `InstallerTest`
 
 - **R-ANS-9** Initialize instructions say when to call the three lookups whose
   value exists only before a runtime-only mistake is made: components before

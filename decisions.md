@@ -544,7 +544,7 @@ answered exactly as before.
   rather than as fact. That is the cost of not guessing, and the condition line
   is what keeps it cheap.
 
-## 2026-07-29 — Outside the core the test guide declines rather than adapts
+## 2026-07-29 — Outside the core the core test guide declines rather than adapts
 
 `typo3_test_run_guide` recognises work outside the core and now returns no
 suite at all, while `typo3_architecture_lookup` keeps its hints and drops only
@@ -553,14 +553,18 @@ their check commands.
 - **Decided:** the difference between the two is what the payload is made of. A
   hint is a convention and travels; a suite is a command against a script that
   lives in the core repository and does not.
-- **Assumed:** nothing in `knowledge/` describes how an extension runs its
-  tests, so anything the guide offered instead would be invented on the spot —
-  and an invented command is the failure the note reported, one level further
-  along. A pointer to https://docs.typo3.org/ is the honest answer until that
-  knowledge exists.
-- **Would falsify it:** extension testing conventions in `knowledge/`. The
-  guard then becomes a branch to the other corpus rather than a decline, and
-  this entry is what says why it was ever a decline.
+- **Assumed, and disproved on 2026-07-29:** nothing in `knowledge/` described
+  how an extension runs its tests, so anything the guide offered instead would
+  have been invented. `project-extension-tests` now carries that harness,
+  verified against the matching `typo3/testing-framework` tags. The
+  `typo3_test_run_guide` still declines because its answer shape is a core suite
+  invocation; the `typo3-extension-testing` skill takes the other branch,
+  verifies the checkout's harness, and routes setup or repair through the
+  extension-test hint and versioned documentation before adding coverage.
+- **Would falsify the remaining decision:** a project-suite source whose answer
+  has the same targeted invocation shape as `typo3_test_run_guide`. Until then,
+  project commands come from the checkout and the task skill, not from a core
+  suite adapted by analogy.
 
 ## 2026-07-29 — A label query is words, and the console is asked with a regex
 

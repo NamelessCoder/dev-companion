@@ -121,3 +121,68 @@ or intended answer. See [readme.md](readme.md) for the general procedure.
 - A generic TCA or TypoScript file accumulating the whole element.
 - A unit test of mocks presented as proof that inline persistence or frontend
   interaction works.
+
+---
+
+## SKILL-05 — Add coverage through the harness the behavior needs
+
+**Environment:** `E-EXT`, in an extension that has unit tests but no working
+functional suite · **Status today:** `covered`
+
+> Our extension already has some unit tests. Add coverage for the repository's
+> persistence behavior and make whatever test setup that requires work locally
+> and in CI. Preserve the tests and commands we already have.
+
+**What has to come out of it**
+
+- The answer inspects and runs or diagnoses the existing unit harness before
+  changing test infrastructure.
+- Persistence is assigned to a functional test. The missing functional harness
+  is established from the package constraints, installed testing framework and
+  versioned documentation rather than guessed or replaced with mocks.
+- Existing unit configuration and commands survive; one stable local functional
+  command passes before CI calls the same command.
+- Database prerequisites are derived from the declared environment, credentials
+  stay untracked, and an infrastructure failure is not reported as a failed
+  persistence assertion.
+- The new test exercises observable repository behavior with deterministic
+  fixtures. No core `runTests.sh` command or vacuous assertion appears.
+
+**How it fails**
+
+- The repository receives another unit test because that runner already exists.
+- Setup becomes a competing test tree or replaces working scripts.
+- A CI matrix is copied from another extension without resolving this package's
+  supported constraints.
+- Configuration files exist, but no local functional test is actually run.
+
+---
+
+## SKILL-06 — Add browser coverage without replacing PHP tests
+
+**Environment:** `E-SITE`, in a project with working PHPUnit tests but no
+browser runner · **Status today:** `covered`
+
+> A frontend regression reached production even though our PHP tests passed.
+> Add browser coverage for the important page, its form, and backend login. Keep
+> the PHP suite, and make the browser setup work locally and in CI.
+
+**What has to come out of it**
+
+- The answer verifies the existing PHP harness and keeps it; browser coverage is
+  added because JavaScript, form interaction and login cannot be proved there.
+- Playwright belongs to the runnable project, uses real mounted URLs and derives
+  its base URL, authentication and browser execution location from the project.
+- Stable project scripts exist before CI calls the same commands, and at least
+  one real spec plus its report or trace runs locally.
+- Credentials, developer hosts and temporary authentication state are not
+  committed. Snapshot updates, if used, require an understood visual change.
+
+**How it fails**
+
+- Working PHP tests are replaced or described as useless.
+- Browser packages or URLs are imposed from a generic DDEV recipe without
+  inspecting how this project runs.
+- Configuration and CI are added, but no served page is exercised.
+- A screenshot-only assertion is presented as proof that the form submitted or
+  login succeeded.

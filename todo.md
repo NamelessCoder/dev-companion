@@ -140,32 +140,6 @@ into `CLAUDE.md`. This server runs beside an installation and answers only when
 called. The second half of that is the part worth reconsidering; the first is
 not, and `decisions.md` says why a booting TYPO3 was never a precondition here.
 
-### Say what to call before the client has a reason to ask
-
-Would establish a requirement under `## Answers`. This is the item with the most
-behind it, and it is a gap in this server's own terms: a tool nobody calls
-answers nothing, and every guarantee in `requirements.md` is about the answer
-once the call has happened.
-
-Boost does not rely on tool descriptions to get itself called. It writes
-instructions into the agent's own guideline file — `.ai/boost/core.blade.php`
-becomes a section of `CLAUDE.md` — and they are imperative: *"Always use
-`search-docs` before making code changes. Do not skip this step."* An agent that
-does not know `typo3_component_lookup` exists writes v15 markup into a v13
-backend, and the withholding that `typo3_component_lookup` does — the thing this
-server is most careful about — never runs.
-
-There is a smaller version of this that needs no writing outside the server, and
-it should be measured first: `knowledge/server-scope.json` already carries the
-`instructions` clients receive at initialize time, and `routing` already says
-which tool answers which question. So the next concrete step is to read those
-`instructions` as an agent would and ask whether they say *when to call*, in the
-imperative, for the three cases where a wrong answer is invisible until runtime
-— backend markup, icon identifiers, label keys. Where they do not, that is a
-`knowledge/server-scope.json` change and nothing else. Only if that is not
-enough does the generated-fragment question arise, and then it is the same
-decision as the item above.
-
 ### Prompts, the primitive this server does not use
 
 Would establish a requirement under `## Guides`, which is where what a returned

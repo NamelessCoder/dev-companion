@@ -172,6 +172,13 @@ them, this section wins and the other one is what needs rewriting.
 
 ## Answers — what a caller may conclude from one
 
+- **R-ANS-9** Initialize instructions say when to call the three lookups whose
+  value exists only before a runtime-only mistake is made: components before
+  backend markup, icons before choosing an identifier, and labels before adding
+  or rewording one.
+  *From:* a comparison with a server that tells the agent what to call before
+  its first question instead of relying on tool descriptions (2026-07-30).
+  *Held by:* `ScopeTest::theScopeInstructionsOrientTheClientBeforeItsFirstCall`
 - **R-ANS-1** An empty answer that means "could not ask" is never shaped like one
   that means "does not exist". Every installation-backed tool carries
   `answeredBy`.

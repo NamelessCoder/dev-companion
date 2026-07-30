@@ -116,6 +116,14 @@ final class ScopeTest extends TestCase
     }
 
     #[Test]
+    public function theScopeInstructionsOrientTheClientBeforeItsFirstCall(): void
+    {
+        self::assertStringContainsString('Before writing backend markup', Scope::instructions());
+        self::assertStringContainsString('Before choosing or emitting a backend icon', Scope::instructions());
+        self::assertStringContainsString('Before adding or rewording a label', Scope::instructions());
+    }
+
+    #[Test]
     public function workOnAProjectExtensionIsRecognizedAsOutsideTheCore(): void
     {
         self::assertTrue(Scope::isOutsideCore([], 'Create a new site set in a project extension'));

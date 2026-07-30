@@ -686,12 +686,17 @@ final class HintsTest extends TestCase
         ];
 
         foreach (ArchitectureHints::load() as $hint) {
-            // A PSR number names an interface and an XLIFF number names a file
-            // format. Neither dates the statement against a TYPO3 branch, which
-            // is the only thing this is looking for.
+            // A PSR number names an interface, an XLIFF number names a file
+            // format, and an HTTP number names a response status. None of them
+            // dates the statement against a TYPO3 branch, which is the only
+            // thing this is looking for. The status is worth carrying because it
+            // is the symptom a caller arrives with — so it is written as
+            // "HTTP 404" rather than bare, which is what makes it exemptible
+            // here without also exempting a count that happens to be three
+            // digits long.
             $text = (string) preg_replace(
-                ['/\bPSR-\d+/i', '/\bXLIFF \d+\.\d+/i'],
-                ['PSR', 'XLIFF'],
+                ['/\bPSR-\d+/i', '/\bXLIFF \d+\.\d+/i', '/\bHTTP \d{3}\b/i'],
+                ['PSR', 'XLIFF', 'HTTP'],
                 $hint['title'] . "\n" . implode("\n", array_column($hint['hints'], 'text'))
             );
 

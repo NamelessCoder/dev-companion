@@ -24,6 +24,7 @@ final class Typo3CliTest extends TestCase
     public function forgetTheInstance(): void
     {
         putenv(Typo3Cli::CONSOLE_VARIABLE);
+        putenv('IS_DDEV_PROJECT');
         Instance::discoverFrom(null);
         Typo3Cli::forget();
     }
@@ -180,6 +181,26 @@ final class Typo3CliTest extends TestCase
         $scope = Tools::call('typo3_server_scope', []);
         self::assertNotNull($scope->data['installation']['console']['caveat']);
         self::assertStringContainsString('Reachable is not the same as ready', $scope->text);
+    }
+
+    #[Test]
+    public function aConsoleAlreadyInsideDdevIsReadyThroughItsDirectPhp(): void
+    {
+        $root = $this->installation();
+        mkdir($root . '/bin');
+        file_put_contents($root . '/bin/typo3', "#!/usr/bin/env php\n<?php\n");
+        mkdir($root . '/.ddev');
+        file_put_contents($root . '/.ddev/config.yaml', "name: fixture\ntype: typo3\n");
+        putenv('IS_DDEV_PROJECT=true');
+        $this->discover($root);
+
+        self::assertTrue(Typo3Cli::isAvailable());
+        self::assertSame(Typo3Cli::VIA_PHP, Typo3Cli::resolve()['via']);
+        self::assertSame('', Typo3Cli::caveat());
+
+        $scope = Tools::call('typo3_server_scope', []);
+        self::assertNull($scope->data['installation']['console']['caveat']);
+        self::assertStringNotContainsString('Reachable is not the same as ready', $scope->text);
     }
 
     #[Test]

@@ -349,6 +349,14 @@ final class Typo3Cli
         if (!is_file($root . '/.ddev/config.yaml')) {
             return [null, ''];
         }
+        // The server may itself have been started with `ddev exec`. There is
+        // deliberately no nested DDEV binary in the web container; the direct
+        // PHP process is already the project's declared runtime and reaches its
+        // services. Treating the missing host-side binary as a stopped project
+        // adds a false database caveat to an otherwise fully ready console.
+        if (filter_var(getenv('IS_DDEV_PROJECT'), FILTER_VALIDATE_BOOL)) {
+            return [null, ''];
+        }
         if (self::locateBinary('ddev') === null) {
             return [null, 'the installation is a DDEV project but ddev is not installed on this machine'];
         }

@@ -85,14 +85,17 @@ somebody else writes.
 
 ---
 
-## Three notes from one session, and why they are before the twins
+## What is left of one session's notes, and why they are before the twins
 
-Written down before the work starts, because it is a change of order. Four notes
-were recorded on 2026-07-29 at 23:43 from one session in
-`/home/benji/projects/site-new`, working on one task: an EXT:form form definition
-in a sitepackage, prefilling a field from the URL. Each was re-run against the
-server as it is now, after today's two matcher commits, and each still held.
-Three of them are still open:
+Written down before the work starts, because it is a change of order. Five notes
+came out of one session in `/home/benji/projects/site-new` on 2026-07-29 — four at
+23:43 from one task, an EXT:form form definition in a sitepackage prefilling a
+field from the URL, and one at 23:51 from setting the installation up in the first
+place. Each was re-run against the server as it is now, and each still held. Two
+are closed: the Fluid array literal, whose measurement is in `decisions.md`
+because verifying it needed the engine per major rather than the checkouts, and
+the functional test facts, one of which the source disproved on the way in.
+Three are open:
 
 - `typo3_architecture_lookup` for the EXT:form task answers `site-sets`,
   `frontend-page-rendering` and `sitepackage-layout` — correct for "a
@@ -101,36 +104,41 @@ Three of them are still open:
 - `typo3_changelog_lookup query="prefill"` returns nothing across 14.3 down to
   13.3, and `events-extension-points` says a hook is right "where the subsystem
   still has hook-based extension points" without naming one.
-- `project-extension-tests` carries none of the four facts that make a frontend
-  functional test in a project extension pass.
-
-The fourth was the Fluid array literal and it is closed — its note is gone and
-the measurement it needed is in `decisions.md`, because verifying a Fluid
-statement turned out to need the engine per major rather than the checkouts.
-Three are left.
+- `typo3_task_guide` for setting an installation up with `typo3 setup` answers
+  with hints on how to *write* a console command, plus the generic checklist —
+  nothing about the credentials that command produces.
 
 They go before the twins below, and the reason is what each input is worth. The
 twins serve a note whose own category is `idea` — a synthesis of what the catalog
 has no shape for, and nobody has reported being stopped by it. These are a
-session that was stopped four times and read the answers out of `vendor/` by
-hand. Friction that happened outranks a mismatch that was noticed.
+session that was stopped and read the answers out of `vendor/` by hand. Friction
+that happened outranks a mismatch that was noticed.
 
-### The four facts that make a project functional test pass
+### The credentials `typo3 setup` produces and nobody reports
 
-Serves `feedback/2026-07-29-234358-the-task-guide-correctly-insists-on-functional.md`.
-`project-extension-tests` already says the harness is the whole first day; what
-it does not say is what fails after the harness runs. The four are the
-`$coreExtensionsToLoad` coupling to every new Composer require, that
-`SiteWriter::write()` merges rather than replaces and its file outlives the
-per-test database reset, that the file-backed caches do too so a class varying a
-site setting needs `CacheManager::flushCaches()`, and that `settings` takes flat
-dotted keys. The common thread is worth one sentence of its own: all four fail
-order-dependently and pass under `--filter`, so "it works alone" is not evidence.
+Serves `feedback/2026-07-29-235145-setting-up-an-installation-with-typo3-setup.md`,
+and it is first among the three because its consequence is the hardest and its
+verification the smallest: one extension's source, and the session it came from
+had a user locked out of the backend an earlier session had set up.
 
-The next concrete step is to confirm the merge-not-replace behaviour of
-`SiteWriter::write()` in `.checkouts/14.3` and `.checkouts/13.4` — the note read
-it as built for the backend GUI, and the statement has to say which branches it
-holds for. The `CacheHashCalculator` encoding detail rides along.
+The command prints neither the admin user nor the password it used, so an agent
+running it non-interactively with `--admin-user-password` is the only party that
+knows the value. That makes reporting it back a step of the task rather than
+courtesy. Two more facts belong with it: the same value also becomes
+`BE/installToolPassword` — `SetupCommand` calls `SetupService::createUser()` and
+then `setInstallToolPassword()` with it, and there is no separate option — so the
+two diverge silently the moment the backend password changes; and the way back is
+`install:password:set` and `backend:resetpassword`, because only the Argon2i hash
+is left.
+
+The next concrete step is to verify all of it in `.checkouts/14.3` against
+`typo3/sysext/install/Classes/Command/`, then decide where it lives: this is a
+task shape rather than a subsystem, so it is an entry in
+`knowledge/task-intents.json` with its own checklist items, not an architecture
+hint. Check on the older branches whether the command and the coupling are the
+same before leaving the statements unbound. The `--create-site` caveat the note
+names rides along — a sitepackage that ships a root page and a site configuration
+has to be set up without it.
 
 ### The form framework, the one whole subsystem the catalog has no hint for
 

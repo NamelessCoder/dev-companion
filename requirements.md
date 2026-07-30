@@ -609,7 +609,7 @@ took before the requirement above was written down, and it will not survive it.
   three, and a re-report of a request that had shipped in the meantime
   (2026-07-29).
   *Held by:* `FeedbackTest::aNoteThatWasWorkedOffIsStillAnswerableFor`
-- **R-FBK-3** A forward run of a scenario is a recorded result rather than a
+- **R-FBK-3** A forward run of a review is a recorded result rather than a
   status line somebody remembers. The prose stays the only copy of the prompt
   and the criteria; the run adds where it happened, which server it ran against,
   which skills activated, which tools the session called, and one judgment with
@@ -620,6 +620,22 @@ took before the requirement above was written down, and it will not survive it.
   *From:* `EXT-04` standing at `partial` next to a `SITE-07` marked `covered`
   that it shares its subject with, with no run behind either mark (2026-07-30).
   *Held by:* `ScenariosTest`
+- **R-FBK-4** Only a prompt that names no subsystem, skill, tool, expected
+  defect or implementation shape produces forward evidence. Those are the open
+  forward reviews in `scenarios/forward/`, one per working context, and they are
+  the only cases a run can be recorded for. A case that names its own task shape
+  lives in `scenarios/contracts/`, carries a contract state instead of a mark,
+  and is printed for inspection rather than run. Either kind is one file with one
+  prompt, so a judgment cannot be about a prompt nobody can identify, and the
+  environment a prompt names is a kind of working directory rather than one
+  installation on somebody's machine — which checkout plays it belongs in
+  `todo.md`.
+  *From:* a suite whose prompts prescribed the feature, subsystem and often the
+  implementation shape they were meant to discover, and whose site prompts named
+  one person's project (2026-07-31).
+  *Held by:* `ScenariosTest::everyCaseHasAFileOfItsOwn`,
+  `ScenariosTest::aTargetedContractCaseIsNotSomethingARunCanAnswer`; that a
+  prompt stays free of a named installation is not guarded.
 
 ## Knowledge — what is covered
 

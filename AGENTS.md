@@ -7,7 +7,7 @@ bin/typo3-cms-mcp  # stdio entrypoint (the client launches it as a subprocess)
 bin/core-checkouts # one TYPO3 core checkout per covered version, below .checkouts/ (gitignored)
 bin/verify-catalog # what a core update invalidated in knowledge/catalog/: paths, the versions each entry holds on, which system extensions are shipped, and where the worked examples still are
 bin/hints          # what cannot be found in the hint corpus: `probe` for one query, `coverage` for the hints no title and no scenario prompt reaches
-bin/scenarios      # forward runs: `show` what to paste, `record` the empty run, `check` every recorded one against its scenario
+bin/scenarios      # forward runs: `show` what to paste, `record` the empty run, `check` every recorded one against its review; `contract` prints a targeted case
 src/               # PHP classes (knowledge loading, tools, SDK wiring)
 src/ServerFactory.php  # builds the mcp/sdk server from the tool definitions
 src/Mcp/           # SDK handlers: tool dispatch and typo3://core resources
@@ -21,8 +21,10 @@ src/Typo3Cli.php   # runs that installation's console, via DDEV where there is o
 src/bootstrap.php  # locates the Composer autoloader
 knowledge/         # the knowledge base (markdown + JSON), the data source
 feedback/          # improvement notes left by agents (standalone checkout only)
-scenarios/         # test scenarios: user prompts per audience and task, and what has to come out of them
-scenarios/runs/    # one recorded forward run per scenario: where it ran, against which server, which skills and tools it reached for, and the judgment per criterion
+scenarios/         # user prompts and what has to come out of them, one case per file
+scenarios/forward/ # open forward reviews: a repository review and nothing more; the only kind that is run and recorded
+scenarios/contracts/ # targeted cases per audience, task skill and cross-cutting situation: one named task shape each
+scenarios/runs/    # one recorded forward run per review: where it ran, against which server, which skills and tools it reached for, and the judgment per criterion
 skills/            # canonical task skills installed into supported agent clients
 requirements.md    # what must hold, and what holds it there; open ones are the backlog
 decisions.md       # what a change assumed, and what would show it to be wrong
@@ -141,13 +143,22 @@ Agents using this server record improvement notes through `typo3_feedback_record
 Each note is one markdown file below `feedback/`.
 
 Where a note comes from is usually a real session. `scenarios/` is where those
-sessions are written down so they can be run again: one prompt per audience and
-task, in the words a user would use, with the environment it has to be run in
-and what has to come out of it. Scenarios the server cannot answer yet belong
-there too — the suite is the map of what the three audiences need, not a
-regression net around what already works. A scenario marked `gap` names the
-requirement that is still open; a run of it produces the note that says what the
-task needed beyond it.
+sessions are written down so they can be run again: one prompt per file, in the
+words a user would use, with the environment it has to be run in and what has to
+come out of it. It holds two kinds, and mixing them is what the split of
+2026-07-31 undid. An **open forward review** in `scenarios/forward/` asks for a
+review of the repository and names no subsystem, skill, tool or expected
+finding — what the agent chooses to inspect is the evidence, and only these are
+run and recorded. A **targeted contract case** in `scenarios/contracts/` names
+one task shape so its routing stays held; it proves that a known task still gets
+its workflow, never that an agent discovered the subject.
+
+A prompt names a kind of project, never one installation on somebody's machine —
+that lives in `todo.md`, where it can go stale without taking a case with it.
+Cases the server cannot answer yet belong here too: the suite is the map of what
+the three audiences need, not a regression net around what already works. A
+review marked `gap` names the requirement that is still open; a run of it
+produces the note that says what the task needed beyond it.
 
 A note is worked off in a commit that both implements the improvement **and
 deletes the note file**. The commit is the record that the gap was closed, so

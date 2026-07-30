@@ -83,28 +83,24 @@ The deprecation windows are twelve months, so the outer edge is around July 2027
 Before then the only thing that has to happen is a version bump behind a release
 somebody else writes.
 
-## Run EXT-04, SITE-07 and SKILL-07 forward and correct what they claim
+## Run REVIEW-01 in the site project and correct what it establishes
 
-This serves
+This serves `R-FBK-3`, `R-FBK-4`,
 `feedback/2026-07-30-173821-task-skill-forward-evidence-is-not-repeatable.md`
 and
-`feedback/2026-07-30-185543-a-task-skill-keeps-documentation-work-that.md`,
-`R-FBK-3` and `R-SKL-3`. The format, the runner and the authoring invariants
-exist; what is left of those notes is the evidence itself.
+`feedback/2026-07-30-185543-a-task-skill-keeps-documentation-work-that.md`.
+The format, the runner and the split exist since 2026-07-31; what is left of
+those notes is the evidence itself, and there is none: no forward review has a
+recorded run.
 
-`EXT-04` was run once, on 2026-07-30, and that run is void. It met all five
-criteria of the day and produced six defects none of them measured, so the
-criteria were widened and the digest dropped the run with them. It now waits
-behind the item above, decided on 2026-07-30: the new criteria are exactly the
-gaps those notes describe, so a run today fails the documentation criterion by
-construction and reproduces the label and configuration defects — it would
-confirm what is already written down, at the price of a full session. `SITE-07`
-depends on none of it and can go at any time.
+`REVIEW-01` goes first because the site project is the environment that is set
+up. It asks for a review of the project and its site package and names nothing
+else, so what the session inspects — scope first or files first, which skills
+activate, whether documentation and testing work is routed or started — is the
+result. The two notes are then answered by what the run shows, not by the
+criteria a targeted case already spelled out.
 
-`SKILL-07` is the hand-off case: it must activate the backend-module workflow
-first and the documentation workflow before documentation is edited.
-
-`E-SITE` is `/home/benji/projects/site-new`; the Printworks package is below
+`E-SITE` is `/home/benji/projects/site-new`; its site package is below
 `extensions/printworks_sitepackage`. It was located on 2026-07-30 with an
 existing modification to the project's `.gitignore`, which belongs to another
 session and must be preserved. No run was started from this repository session:
@@ -112,17 +108,21 @@ a forward run is a fresh MCP client session with the installed skills, while
 this session neither activated those installed skills nor may grade its own
 implementation as behavioral evidence.
 
-Next step for each: `bin/scenarios record <id> claude-code`, paste what
-`bin/scenarios show <id>` prints into a session in the Printworks project and
-nothing else, fill in the judgments with their evidence, and correct the
-`Status today` lines to what the runs establish.
+Next step: `bin/scenarios record REVIEW-01 claude-code`, paste what
+`bin/scenarios show REVIEW-01` prints into a session in that project and nothing
+else, fill in the judgments with their evidence and the tools the session
+called, and correct the `Status today` line to what the run establishes.
+`SKILL-07` — the hand-off from the backend-module workflow to the documentation
+workflow — stays a contract case and is read with `bin/scenarios contract
+SKILL-07` when that route has to be checked by hand.
 
 ## Complete the extension author's multi-major upgrade workflow
 
 This serves
 `feedback/2026-07-30-173821-extension-upgrades-need-a-task-owned-workflow.md`
-and `EXT-01`. Run `EXT-01` verbatim in its `E-EXT` environment against the
-current server and reduce the note to the demonstrated gaps. Then add a thin
+and `EXT-01`. Run `REVIEW-02` in an extension repository that has a major to go
+up, reduce the note to what the run demonstrates, and read `bin/scenarios
+contract EXT-01` for the routing that has to survive. Then add a thin
 `typo3-extension-upgrade` skill that orders project and extension scope,
 installed changelog and scanner/deprecation evidence, official versioned
 documentation, shared-versus-version-specific implementation decisions, and a
@@ -135,11 +135,11 @@ requirement and tests that hold only the behavior the run proves.
 This serves
 `feedback/2026-07-30-174423-extension-static-quality-needs-an-explicit-workflow.md`
 and `R-SKL-2`. It sits behind the two items above because the note asks for a
-run it cannot have yet: no scenario covers static quality, and the runner that
-would record one is the first item here. So write the missing forward scenario
-first — a reusable extension whose PHPStan and code-style infrastructure is
-incomplete — run its prompt verbatim in `E-EXT`, and reduce the note to the
-demonstrated gaps. Then add an on-demand static-quality reference to
+run it cannot have yet. `REVIEW-02` is the run: static quality is one of the
+concerns its criteria admit, so an extension whose PHPStan and code-style
+infrastructure is incomplete is the environment to run it in — and whether the
+review raises that on its own is part of the result. Reduce the note to what it
+demonstrates. Then add an on-demand static-quality reference to
 `typo3-extension-testing`: inspect the existing packages, configuration,
 baselines, scripts and CI before changing any of them; resolve development
 dependencies from the extension's declared TYPO3 and PHP range; establish one
@@ -164,6 +164,6 @@ the publication steps deliberately not taken. Registry requirements come from
 current official documentation rather than from the skill, and the artifact is
 built through the repository's own release command where one exists. Tagging,
 pushing and registry publication stay a separate phase that needs an explicit
-request and a confirmed repository, version and credentials. The forward
-scenario has to fail on an artifact carrying development files or secrets while
-the checkout itself is green.
+request and a confirmed repository, version and credentials. What has to fail is
+an artifact carrying development files or secrets while the checkout itself is
+green; if that shape survives the work, it earns a contract case of its own.

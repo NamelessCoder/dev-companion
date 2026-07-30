@@ -5,22 +5,18 @@ status: open
 tool: typo3_task_guide
 ---
 
-# A task skill keeps documentation work that another skill owns. In a forward run
+# The backend-to-documentation hand-off still needs forward evidence
 
 ## Observation
 
-A task skill keeps documentation work that another skill owns. In a forward run
-of EXT-04 the backend-module skill activated and stayed the only active one for
-the whole session. When it came to writing down what it had built, it edited the
-project's readme: it updated passages that were already correct, carried
-implementation detail into a project-level document, and left the wording mixed
-between two languages because the labels it had written were.
+The backend-module skill now stops after verified implementation, explicitly
+activates `typo3-extension-documentation`, carries forward the extension scope
+and verified public behavior, and states that extension functionality is
+documented in the extension rather than the project around it. `SKILL-07`
+exercises a task that has to cross that boundary.
 
-The extension's own readme was not touched, although the functionality is
-encapsulated in that package and belongs there. The backend-module skill names
-the documentation skill as the owner of manuals, and the documentation skill was
-never activated — so the ownership sentence describes a hand-off that does not
-happen.
+What remains is the forward evidence: no recorded run yet shows that a client
+actually activates the second skill before editing documentation.
 
 ## Query
 
@@ -28,8 +24,6 @@ document the backend module that was just built
 
 ## Suggestion
 
-Make the hand-off an act rather than a sentence: name the moment a skill has to
-stop and which skill takes over, and say that documentation for an extension
-belongs to that extension. Cover it with a forward scenario in which a task that
-starts in one skill has to end in another, so the boundary is measured rather
-than declared.
+Run `SKILL-07` verbatim in `E-SITE`, record the activated skills in order, and
+close this note only when documentation begins after the hand-off and lands in
+the sitepackage.

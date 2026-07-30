@@ -91,19 +91,18 @@ This serves the seven notes recorded on 2026-07-30, all from one forward run of
 `EXT-04` against the Printworks sitepackage on TYPO3 14.3.5. They are worked off
 in this order, cheapest and most certain first:
 
-1. The skill hand-off, which is a sentence in every skill and does not happen.
-   The note asks for a forward scenario in which a task that starts in one skill
-   has to end in another, so the boundary is measured rather than declared.
-2. Deriving the component catalog from the installation, last, because it
+1. Deriving the component catalog from the installation, last, because it
    reverses a recorded decision. It needs a `decisions.md` entry that says what
    changed, not only a commit.
 
-## Run EXT-04 and SITE-07 forward and correct what they claim
+## Run EXT-04, SITE-07 and SKILL-07 forward and correct what they claim
 
 This serves
 `feedback/2026-07-30-173821-task-skill-forward-evidence-is-not-repeatable.md`
-and `R-FBK-3`. The format, the runner and the authoring invariants exist; what
-is left of that note is the evidence itself.
+and
+`feedback/2026-07-30-185543-a-task-skill-keeps-documentation-work-that.md`,
+`R-FBK-3` and `R-SKL-3`. The format, the runner and the authoring invariants
+exist; what is left of those notes is the evidence itself.
 
 `EXT-04` was run once, on 2026-07-30, and that run is void. It met all five
 criteria of the day and produced six defects none of them measured, so the
@@ -114,7 +113,10 @@ construction and reproduces the label and configuration defects — it would
 confirm what is already written down, at the price of a full session. `SITE-07`
 depends on none of it and can go at any time.
 
-Next step for either: `bin/scenarios record <id> claude-code`, paste what
+`SKILL-07` is the hand-off case: it must activate the backend-module workflow
+first and the documentation workflow before documentation is edited.
+
+Next step for each: `bin/scenarios record <id> claude-code`, paste what
 `bin/scenarios show <id>` prints into a session in the Printworks project and
 nothing else, fill in the judgments with their evidence, and correct the
 `Status today` lines to what the runs establish.

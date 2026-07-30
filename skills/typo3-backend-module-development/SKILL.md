@@ -56,6 +56,15 @@ live documentation is unavailable, keep the failure distinct from no match.
   choice changes; do not treat an earlier result as universal.
 
 This skill owns backend module registration, controllers, routes, and backend UI
-implementation. Hand test infrastructure to the testing skill, manuals to the
-documentation skill, a broader audit to the conformance skill, and frontend
-content elements to the content-element skill.
+implementation.
+
+When implementation is verified and only documentation remains, stop this workflow.
+Activate `typo3-extension-documentation` before editing documentation.
+Carry forward the extension key, target version, and verified public behavior;
+let that skill select the documentation surface.
+Documentation for functionality encapsulated in an extension belongs to that
+extension, not to the project around it.
+
+Stop and activate the testing skill before changing test infrastructure, the
+conformance skill before broadening into an audit, and the content-element skill
+before implementing frontend content elements.

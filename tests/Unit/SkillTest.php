@@ -223,15 +223,36 @@ final class SkillTest extends TestCase
     }
 
     #[Test]
+    public function backendModuleDocumentationIsAnExplicitSkillTransition(): void
+    {
+        $skill = (string) file_get_contents(
+            Paths::root() . '/skills/typo3-backend-module-development/SKILL.md',
+        );
+
+        $verified = strpos($skill, 'implementation is verified');
+        $stop = strpos($skill, 'stop this workflow');
+        $activate = strpos($skill, 'Activate `typo3-extension-documentation` before editing documentation');
+        self::assertNotFalse($verified);
+        self::assertNotFalse($stop);
+        self::assertNotFalse($activate);
+        self::assertLessThan($stop, $verified);
+        self::assertLessThan($activate, $stop);
+        self::assertMatchesRegularExpression(
+            '/belongs to that\s+extension, not to the project around it/',
+            $skill,
+        );
+    }
+
+    #[Test]
     public function forwardScenariosExerciseTaskSkillBehavior(): void
     {
         $scenarios = (string) file_get_contents(Paths::root() . '/scenarios/task-skills.md');
 
-        foreach (['SKILL-01', 'SKILL-02', 'SKILL-03', 'SKILL-04', 'SKILL-05', 'SKILL-06'] as $id) {
+        foreach (['SKILL-01', 'SKILL-02', 'SKILL-03', 'SKILL-04', 'SKILL-05', 'SKILL-06', 'SKILL-07'] as $id) {
             self::assertStringContainsString('## ' . $id, $scenarios);
         }
-        self::assertSame(6, substr_count($scenarios, '**What has to come out of it**'));
-        self::assertSame(6, substr_count($scenarios, '**How it fails**'));
+        self::assertSame(7, substr_count($scenarios, '**What has to come out of it**'));
+        self::assertSame(7, substr_count($scenarios, '**How it fails**'));
         self::assertStringNotContainsString('typo3_task_guide', $scenarios);
         self::assertStringNotContainsString('typo3_project_scope', $scenarios);
     }

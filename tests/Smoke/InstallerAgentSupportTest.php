@@ -44,8 +44,15 @@ final class InstallerAgentSupportTest extends TestCase
                     $directory . '/' . $paths['skills']
                     . '/typo3-backend-module-development/SKILL.md',
                 );
+                $gitignore = (string) file_get_contents($directory . '/.gitignore');
+                self::assertStringContainsString("/typo3-cms-mcp.json\n", $gitignore);
+                self::assertStringContainsString(
+                    '/' . $paths['skills'] . "/typo3-backend-module-development/\n",
+                    $gitignore,
+                );
                 if (isset($paths['mcp'])) {
                     self::assertFileExists($directory . '/' . $paths['mcp']);
+                    self::assertStringNotContainsString('/' . $paths['mcp'], $gitignore);
                 }
             } finally {
                 $this->removeDirectory($directory);

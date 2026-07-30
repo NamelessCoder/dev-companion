@@ -95,9 +95,9 @@ configure — the process boundary is the trust boundary. Request serving is
 read-only apart from the explicit feedback tool. Setup writes only when
 requested: `bin/typo3-cms-mcp install` adds this server to `.mcp.json`;
 `install --agent=codex` adds the Codex MCP entry and publishes the task skills,
-and `update --agent=codex` refreshes only unmodified files this package
-previously generated. Existing unrelated settings are preserved and a different
-entry or modified generated file is never replaced.
+and `update --agent=codex` replaces the complete task-skill directories this
+package owns. Existing unrelated settings and skills are preserved, and a
+different server entry is never replaced.
 
 ## Install
 
@@ -130,8 +130,10 @@ Refresh them after updating this package:
 /absolute/path/to/typo3-cms-mcp/bin/typo3-cms-mcp update --agent=codex
 ```
 
-The update records hashes beside the installed skill and refuses to overwrite a
-file changed since it generated it.
+Install and update add `typo3-cms-mcp.json` and the package-owned skill
+directories to the project's `.gitignore`. They do not ignore merged agent or
+MCP configuration such as `.codex/config.toml` or `.mcp.json`, which may be
+shared by the project.
 
 It writes the following shape with the actual absolute path:
 

@@ -67,6 +67,7 @@ final class InstallerTest extends TestCase
         self::assertTrue(mkdir($directory . '/.codex', 0777, true));
         $unrelated = "model = \"gpt-5\"\n\n[features]\nweb_search = true\n";
         file_put_contents($directory . '/.codex/config.toml', $unrelated);
+        file_put_contents($directory . '/.gitignore', "/vendor/\n");
 
         try {
             $stderr = '';
@@ -93,6 +94,21 @@ final class InstallerTest extends TestCase
                     'typo3-extension-testing',
                 ],
             ], json_decode((string) file_get_contents($state), true, flags: JSON_THROW_ON_ERROR));
+            $gitignore = (string) file_get_contents($directory . '/.gitignore');
+            self::assertStringStartsWith("/vendor/\n", $gitignore);
+            self::assertStringContainsString("/typo3-cms-mcp.json\n", $gitignore);
+            foreach ([
+                'typo3-backend-module-development',
+                'typo3-extension-conformance',
+                'typo3-extension-documentation',
+                'typo3-extension-testing',
+            ] as $publishedSkill) {
+                self::assertStringContainsString(
+                    '/.agents/skills/' . $publishedSkill . "/\n",
+                    $gitignore,
+                );
+            }
+            self::assertStringNotContainsString('/.codex/config.toml', $gitignore);
             foreach ([
                 'typo3-extension-conformance',
                 'typo3-extension-documentation',
@@ -108,12 +124,14 @@ final class InstallerTest extends TestCase
                 'configuration' => file_get_contents($directory . '/.codex/config.toml'),
                 'skill' => file_get_contents($skill),
                 'state' => file_get_contents($state),
+                'gitignore' => file_get_contents($directory . '/.gitignore'),
             ];
             self::assertSame(0, $this->execute($directory, ['install', '--agent=codex'], $stderr), $stderr);
             self::assertSame(0, $this->execute($directory, ['update', '--agent=codex'], $stderr), $stderr);
             self::assertSame($before['configuration'], file_get_contents($directory . '/.codex/config.toml'));
             self::assertSame($before['skill'], file_get_contents($skill));
             self::assertSame($before['state'], file_get_contents($state));
+            self::assertSame($before['gitignore'], file_get_contents($directory . '/.gitignore'));
         } finally {
             $this->removeCodexFixture($directory);
         }
@@ -297,6 +315,7 @@ final class InstallerTest extends TestCase
         @rmdir($directory . '/.agents/skills');
         @rmdir($directory . '/.agents');
         @unlink($directory . '/typo3-cms-mcp.json');
+        @unlink($directory . '/.gitignore');
         @unlink($directory . '/.codex/config.toml');
         @rmdir($directory . '/.codex');
         @rmdir($directory);

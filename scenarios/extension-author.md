@@ -119,12 +119,12 @@ under `packages/` · **Status today:** `covered` — `R-SCO-1`, `R-SCO-2`
 
 ## EXT-04 — A backend module in the extension
 
-**Environment:** `E-SITE` with the extension under `packages/` ·
-**Status today:** `partial`
+**Environment:** `E-SITE` with the extension under `packages/`, owning records
+of its own · **Status today:** `partial`
 
-> Our editors need a backend module that lists all events with their state and
-> lets them trigger a re-import. It should look like a normal TYPO3 backend
-> module, not like something bolted on.
+> Our editors need a backend module that lists the records this extension
+> manages with their state, and one action they can trigger on the list. It
+> should look like a normal TYPO3 backend module, not like something bolted on.
 
 **What the agent needs from this server**
 
@@ -135,7 +135,9 @@ under `packages/` · **Status today:** `covered` — `R-SCO-1`, `R-SCO-2`
   their real markup.
 - Registered icons for the module and its actions.
 - Existing labels for the recurring wordings — save, delete, refresh — before new
-  ones are invented.
+  ones are invented, and which language a new one is written in.
+- The official module API documentation for the installation's version, far
+  enough to write the controller from.
 
 **What has to come out of it**
 
@@ -145,12 +147,24 @@ under `packages/` · **Status today:** `covered` — `R-SCO-1`, `R-SCO-2`
   agent verifies against the installation's TYPO3 version where they differ.
 - The backend look comes from core classes, not from custom CSS reimplementing
   them.
+- New labels follow the package's source-language convention, and a package that
+  already breaks it is reported rather than continued.
+- A value the module needs is configured at the reach it has — per site where it
+  differs per site, on the task where a task acts on it — rather than
+  instance-wide by default.
+- The official manual for the installation's version answers what it describes,
+  and the installed core sources are read where it does not.
 
 **How it fails**
 
 - Backend CSS source paths in the core handed over as the place to write the
   module's styles.
 - Component markup from a newer core silently used on an older installation.
+- Documentation about the extension written into the project around it instead
+  of into the package the functionality is encapsulated in.
+- The API re-derived from the installed core sources although the manual
+  describes it, or a runtime-only mistake made and then corrected from a test
+  rather than avoided from the lookups.
 
 ---
 

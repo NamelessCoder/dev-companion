@@ -85,17 +85,4 @@ somebody else writes.
 
 ---
 
-## Reassess search and runtime inspection only after the new source boundary
-
-This serves R-ANS-7 and R-ANS-8b. Do not add embeddings or broad inspection
-tools until live documentation has shown which misses remain.
-
-The next concrete step is to rerun `bin/hints coverage` and the scenario suite
-after `typo3_documentation_lookup` is in use, classify the remaining misses, and
-compare lexical retrieval with a local hybrid candidate search. Semantic search
-may select candidates but version, audience and binding data must still decide
-what is returned. In the same review, record whether concrete sessions needed
-log or database-schema inspection; add narrow read-only tools only from that
-evidence, not a generic SQL executor.
-
 ---

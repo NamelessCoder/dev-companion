@@ -35,6 +35,7 @@ final class DocumentationTest extends TestCase
 
         self::assertSame('answered', $answer['status']);
         self::assertNotEmpty($answer['results']);
+        self::assertSame('Page title API', $answer['results'][0]['title']);
         self::assertSame('13.4', $answer['results'][0]['documentVersion']);
         self::assertSame('typo3/reference-coreapi', $answer['results'][0]['document']);
         self::assertStringStartsWith(

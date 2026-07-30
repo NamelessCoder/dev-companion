@@ -161,6 +161,12 @@ final class Documentation
                     $queryScore += 3;
                 }
             }
+            for ($index = 0; $index < count($words) - 1; ++$index) {
+                $pair = $words[$index] . ' ' . $words[$index + 1];
+                if (str_contains($candidate, $pair)) {
+                    $queryScore += 8;
+                }
+            }
             $score += $queryScore;
         }
 

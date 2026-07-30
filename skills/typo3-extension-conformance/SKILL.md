@@ -1,6 +1,6 @@
 ---
 name: typo3-extension-conformance
-description: Audit or improve a TYPO3 project, sitepackage, or extension for compatibility with its active TYPO3 version and project conventions. Use for extension reviews, modernization, quality or readiness assessments, suspicious registration or configuration, TCA, services, backend modules, content elements, site sets, TypoScript, Fluid, labels, icons, security boundaries, deprecated APIs, and before or after a TYPO3 upgrade.
+description: Review, audit, or improve a TYPO3 project, sitepackage, or extension against its checkout and active installation, and report what is wrong with it in priority order. Use for any open-ended request to look over a repository and say what matters — reviews, readiness, quality and security assessments, modernization, compatibility with the active TYPO3 version, suspicious registration or configuration, TCA, services, backend modules, content elements, site sets, TypoScript, Fluid, labels, icons, security boundaries, deprecated APIs, and before or after a TYPO3 upgrade.
 ---
 
 # TYPO3 Extension Conformance

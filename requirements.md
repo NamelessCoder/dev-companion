@@ -259,6 +259,20 @@ them, this section wins and the other one is what needs rewriting.
   the project README and never activated the documentation skill (2026-07-30).
   *Held by:*
   `SkillTest::backendModuleDocumentationIsAnExplicitSkillTransition`, `SKILL-07`
+- **R-SKL-4** An assessment asks the owner of a surface's conventions before
+  forming a view of it, not afterwards to confirm one, and reads what comes back
+  against the checkout in both directions: a file that has settled into the
+  opposite of a rule is a finding rather than a local style. A surface the
+  checkout supports and the assessment never asked about is reported as
+  unassessed, because a defect nobody looked for and a defect that is not there
+  are indistinguishable in a report that does not separate them.
+  *From:* the second `REVIEW-01` run (2026-07-31), which followed two of the
+  conformance skill's seven evidence steps, read the site package's three XLF
+  files without asking what governs them, and so missed the German
+  `source-language` that `R-KNW-33` already covers and a run on 2026-07-30 had
+  already found in the same checkout.
+  *Held by:* `SkillTest::anAssessmentAsksBeforeItJudgesAndSaysWhatItDidNotAsk`,
+  `REVIEW-01`
 
 - **R-ANS-9** Initialize instructions say when to call the three lookups whose
   value exists only before a runtime-only mistake is made: components before

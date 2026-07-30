@@ -14,43 +14,50 @@ method; do not embed versioned TYPO3 facts.
 1. Call `typo3_project_scope` to identify the project type, TYPO3 and PHP
    constraints, own extensions, sites, site sets, and declared commands.
 2. Call `typo3_extension_scope` for every extension in scope.
-3. Inspect its Composer metadata, registration/configuration files, Classes/,
-   Resources/, Tests/, documentation, and nearby project conventions.
-4. Call `typo3_task_guide` with a short English task, affected area, target
+3. Call `typo3_task_guide` with a short English task, affected area, target
    version, and change type to establish task-shaped checks.
-5. Call `typo3_architecture_lookup` with concrete paths and short English task
-   descriptions for each affected subsystem. Do not use one broad query as a
-   substitute for subsystem evidence.
-6. Call `typo3_documentation_lookup` with several short English queries and the
-   target version where official API or configuration details matter.
-7. When an upgrade or deprecated API is in scope, call
-   `typo3_changelog_lookup` for the installed core and verify any referenced
-   identifier in the checkout.
+4. Read [references/checklist.md](references/checklist.md) for the audit
+   surfaces, the finding gate, and the severity rubric. An assessment walks the
+   surfaces the checkout supports; it does not report whichever of them the
+   files happened to show first.
 
-Use installation-backed lookups for facts an abstract checklist cannot know:
+## Ask before judging, on every surface in scope
 
-- `typo3_backend_module_lookup` for registered modules and routes.
-- `typo3_icon_lookup` for backend icon identifiers.
-- `typo3_label_lookup` for labels and overrides.
-- `typo3_fluid_namespace_list` for globally available Fluid prefixes.
-- `typo3_configuration_lookup` for effective runtime configuration.
+Scope says which surfaces are in play, and reading says what is there. Neither
+says whether it is right. That comes from the owner of the convention, and it is
+asked for **before** a view of the subsystem is formed rather than to confirm
+one that already exists:
 
-## Assess by subsystem
+- `typo3_architecture_lookup` with the subsystem's concrete paths and a short
+  English description. One query per surface in scope; a single broad query is
+  not subsystem evidence.
+- The lookup that owns that surface's runtime facts, where one exists:
+  `typo3_backend_module_lookup` for registered modules and routes,
+  `typo3_icon_lookup` for icon identifiers, `typo3_label_lookup` for labels and
+  overrides, `typo3_fluid_namespace_list` for globally available Fluid
+  prefixes, `typo3_configuration_lookup` for effective runtime configuration.
+- `typo3_documentation_lookup` with several short English queries and the
+  target version where an official API or configuration detail decides the
+  finding.
+- `typo3_changelog_lookup` for the installed core when an upgrade or a
+  deprecated API is in scope, and verify each identifier it names in the
+  checkout.
 
-Read [references/checklist.md](references/checklist.md) for the relevant audit
-surfaces, finding gate, and severity rubric.
+Read the checkout for what none of those can know: the files themselves, the
+registrations, the tests, the documentation, and the conventions the project has
+settled into.
 
-Review only categories supported by files or behavior in scope:
+Then read every returned rule in both directions. It says what new code should
+do, and it says what this checkout is already doing wrong. A file that has
+settled into the opposite of a rule is a finding, not a local style to preserve
+— the project's own habits are part of what is being assessed, so consistency
+with them establishes nothing.
 
-- package metadata, autoloading, PHP/TYPO3 constraints, and extension identity;
-- services, dependency injection, events, middleware, and security boundaries;
-- TCA, database schema, DataHandler behavior, content elements, and plugins;
-- site sets, TypoScript, TSconfig, Fluid roots, namespaces, and translations;
-- backend modules, routes, components, labels, icons, and access control;
-- tests, declared quality commands, documentation, and upgrade readiness.
-
-Do not report absence of an optional subsystem as a defect. Distinguish a
-verified violation from a recommendation and from missing evidence.
+Do not report the absence of an optional subsystem as a defect. But a surface
+that is present and was never asked about is **unassessed**, and unassessed is
+not clean: say so in the result. A defect nobody looked for and a defect that is
+not there read identically in a report that does not separate them. Distinguish
+a verified violation from a recommendation and from missing evidence.
 
 ## Report and improve
 
@@ -65,8 +72,16 @@ Order findings by severity and include:
 For a requested audit, stop after findings unless fixes were also requested.
 For requested improvements, make the smallest coherent changes, preserve local
 project conventions, and run the commands declared by `typo3_project_scope`.
-Report clean categories briefly and list unverified categories explicitly.
 
-This skill owns assessment and prioritization. When fixes are requested, use
-the testing, documentation, or backend-module skill for changes in those areas;
-keep conformance responsible for re-checking the resulting finding.
+Close on coverage rather than on a summary: every surface the checkout supports,
+each marked assessed or unassessed, clean ones briefly. That list is what makes
+an audit readable as one. Without it a thorough report and a narrow report look
+alike, and the cheapest way to look thorough is to examine less.
+
+This skill owns assessment and prioritization, and it owns saying who takes each
+finding onward. Name the workflow the follow-up belongs to — the testing,
+documentation, backend-module or content-element skill — in the result itself,
+whether or not fixes were requested: a reader deciding what to do next needs
+that as much as a session that was told to do it. When fixes are requested, hand
+over to that skill for the changes in its area and keep conformance responsible
+for re-checking the resulting finding.

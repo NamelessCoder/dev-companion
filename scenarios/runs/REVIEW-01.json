@@ -1,60 +1,59 @@
 {
     "scenario": "REVIEW-01",
-    "date": "2026-07-31",
-    "server": "b85036b",
+    "date": "2026-07-30",
+    "server": "021eac8",
     "client": "claude-code",
     "environment": "E-SITE",
-    "criteria": "0a5de20c091e",
-    "skills": [
-        "typo3-extension-conformance"
-    ],
-    "toolTrace": [
-        "typo3_project_scope",
-        "typo3_extension_scope"
-    ],
+    "criteria": "eead978c8c77",
+    "skills": [],
+    "toolTrace": [],
     "outcomes": [
         {
-            "met": true,
-            "evidence": "The first call of the session was the skill, the second was `typo3_project_scope`, and it returned what the previous run never established: typo3Version 14.3.5, phpConstraint ^8.4, coreConstraint ^14.3, the one project-owned extension, the site with its set and language, and the six declared commands from composer.json and package.json. `typo3_extension_scope` followed for the site package. The answer opens on that footing — 'I reviewed the project against the installed core (TYPO3 14.3.5 / PHP 8.4) and ran both declared PHP suites' — and it ran the declared commands rather than invented ones: `ddev composer test:unit` (26) and `ddev composer test:functional` (47)."
+            "met": null,
+            "evidence": ""
         },
         {
-            "met": true,
-            "evidence": "Locations carry line ranges (readme.md:467-479, DefaultTcaSchema.php#L843-L857, Form.yaml:503, RequestPageResolver.php:842), consequences are stated per setting in a table, and every finding ends in a next action. Confidence is now explicit rather than implied: a 'What I verified working' section lists what was checked against the installed 14.3.5 vendor tree and found sound, and a closing 'Not verified:' names the Playwright suite it did not run and the part of data.xml it did not audit, each with the reason."
+            "met": null,
+            "evidence": ""
         },
         {
-            "met": true,
-            "evidence": "P0 is the deployment story and the committed secrets that become live configuration without it; P1 the published backend credentials; P2 a good suite with no CI; P3 an Apache-only hardening file under nginx; P4 latent site-package gaps; P5 compliance for a German business site. The order tracks consequence, and the sitepackage — where the session spent most of its reading — sits at P4 because that is where the risk is, not where the files were."
+            "met": null,
+            "evidence": ""
         },
         {
-            "met": true,
-            "evidence": "Four categories carry their own headings and stay apart: 'What I verified working' for confirmed-sound, P0-P5 for defects, 'What I'd do next, in order' for recommendations, and 'Not verified:' for missing evidence. The fourth category the criterion names — subjects outside this server's scope — is still not marked as such: P3's production webserver config and P5's Impressum and Datenschutz page are what `doesNotCover` calls operating the installation, and they are reported like any other finding."
+            "met": null,
+            "evidence": ""
         },
         {
-            "met": false,
-            "evidence": "The same half fails as in the previous run, for a different reason. It stops correctly, implements nothing, and changes no file. But no workflow is named: 'Add CI running the two composer scripts plus Playwright' and 'Add PHPStan + typo3/coding-standards' are handed back as prose, and `typo3-extension-testing` — which owns exactly that work and was in the same skill listing — is not mentioned. This time the skill was entered and its own closing paragraph routes only 'when fixes are requested', so a review that correctly stops at findings never reaches the sentence that would hand the work on."
+            "met": null,
+            "evidence": ""
+        },
+        {
+            "met": null,
+            "evidence": ""
         }
     ],
     "failures": [
         {
-            "avoided": true,
-            "evidence": "Every finding is tied to this checkout and most are verified against its installed vendor tree: the ddev-generated additional.php against what readme.md claims it does, the `parent` passthrough column against DefaultTcaSchema, the honeypot default against the shipped EXT:form YAML, `RecordTitleProvider` against `SingletonInterface`. Nothing in the answer would transfer to another TYPO3 project unchanged."
+            "avoided": null,
+            "evidence": ""
         },
         {
-            "avoided": true,
-            "evidence": "The closest it comes is P5, which asks for a privacy-consent checkbox, an Impressum and a Datenschutz page that the checkout does not have and the user did not request. It is grounded rather than invented — the shipped form collects name, company, email and free text, and the site is German — and it is ranked last of six. P2's CI and static analysis are again recommendations rather than reported defects."
+            "avoided": null,
+            "evidence": ""
         },
         {
-            "avoided": true,
-            "evidence": "Twice. A grep for `pageTitleProviders` across TypoScript came back empty at 23:15:02, and instead of concluding the provider is unregistered it widened the search and found `recordTitle {` in cms-core/ext_localconf.php. The honeypot check failed the same way and was resolved by reading Form.yaml at lines 495-515, which is where the answer's citation comes from. An `ArgumentCountError` in the project's own log was read and attributed rather than treated as a finding."
+            "avoided": null,
+            "evidence": ""
         },
         {
-            "avoided": true,
-            "evidence": "The commands are the project's own throughout: `ddev composer test:unit`, `ddev composer test:functional`, and one direct `vendor/bin/phpunit -c Build/phpunit/UnitTests.xml` against the project's own PHPUnit configuration. No runTests.sh, no core Build/Scripts path, no core contribution step. The recommendations name composer scripts this repository would declare, not core equivalents."
+            "avoided": null,
+            "evidence": ""
         },
         {
-            "avoided": true,
-            "evidence": "No Write, Edit or NotebookEdit call in the transcript. Of the 45 tool calls, 38 are Bash and 4 are Read, all of them reading, plus the skill, one ToolSearch and the two server tools. `git status --short` in the project afterwards shows only the ` M .gitignore` that predates both runs."
+            "avoided": null,
+            "evidence": ""
         }
     ],
-    "notes": "Both channel fixes worked, and one gap they were not aimed at is now the visible one.\n\nWhat changed: the skill activated as the very first action of the session, before any file was opened — 'I'll start with the TYPO3 conformance review workflow, which is built for exactly this' — and the session then called ToolSearch to load five deferred tools by name. The installed TYPO3 version, the missing half of the previous run's first criterion, came from `typo3_project_scope` in the second call.\n\nWhat did not: of the skill's seven scope-and-evidence steps only 1 and 2 were followed. `typo3_task_guide`, `typo3_architecture_lookup` and `typo3_documentation_lookup` were loaded through ToolSearch and never called; `typo3_changelog_lookup`, `typo3_backend_module_lookup`, `typo3_icon_lookup`, `typo3_label_lookup`, `typo3_fluid_namespace_list` and `typo3_configuration_lookup` were never loaded. references/checklist.md, which the skill tells it to read for the audit surfaces and the severity rubric, was not read. After step 2 the session reverted to reading files and judged what it found against its own TYPO3 knowledge.\n\nThe cost is measurable in this repository. All three XLF files in the site package declare `source-language=\"de\"` with German source strings. `typo3_architecture_lookup` returns the rule for a query as loose as 'review sitepackage language files and labels' — 'An existing source file whose labels are not English is a defect to report, not a convention to continue' — and it is an accepted requirement, R-KNW-33, written after a forward run on 2026-07-30 found this same file. The review inspected those XLF files at 23:14:46, reported nothing about them, and the defect survived a second review of the same repository.\n\nNo criterion here measures that, which is the other finding: the five outcomes ask whether findings are evidenced, prioritized and bounded, and none asks whether the conventions this server owns were consulted before the checkout was graded.\n\nSession 5ecd8122-0c3b-451e-a961-db6ea65ca3d2, 2026-07-31 01:12-01:19 CEST, seven minutes. The previous run, against 34524dd with no skill and no tool, is in commit 77882f1."
+    "notes": ""
 }

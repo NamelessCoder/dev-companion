@@ -1,6 +1,6 @@
 # REVIEW-01 — Review a TYPO3 site project
 
-**Environment:** `E-SITE` · **Status today:** `partial`
+**Environment:** `E-SITE` · **Status today:** `unrun`
 
 > Review this TYPO3 project and its site package. Identify the most important
 > concrete problems, risks, or missing safeguards, prioritize them, and tell me
@@ -14,6 +14,9 @@
   affected location, consequence, confidence, and next action.
 - Priorities follow user impact and failure risk rather than file count,
   stylistic preference, or the order in which files were opened.
+- A subsystem is judged against the conventions that govern it, asked for before
+  the judgment rather than after, and a subsystem present in the checkout but
+  never asked about is reported as unassessed rather than left out.
 - Confirmed defects, recommendations, missing evidence, and subjects outside
   this server's scope remain visibly distinct.
 - The answer stops at a short prioritized review and routes follow-up work to

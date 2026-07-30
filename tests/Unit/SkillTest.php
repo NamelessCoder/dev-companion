@@ -245,6 +245,37 @@ final class SkillTest extends TestCase
     }
 
     #[Test]
+    public function anAssessmentAsksBeforeItJudgesAndSaysWhatItDidNotAsk(): void
+    {
+        // The order is the whole requirement. A conventions lookup that happens
+        // after the view has formed confirms it instead of testing it, and the
+        // run that established this read three XLF files, judged them sound and
+        // never asked what governs them — so the rule that calls a non-English
+        // source file a defect was in the corpus, one query away, unread.
+        $skill = (string) file_get_contents(
+            Paths::root() . '/skills/typo3-extension-conformance/SKILL.md',
+        );
+
+        $ask = strpos($skill, 'asked for **before** a view of the subsystem is formed');
+        $lookup = strpos($skill, 'typo3_architecture_lookup');
+        self::assertNotFalse($ask, 'the conformance skill does not say when the conventions are asked for');
+        self::assertNotFalse($lookup);
+        self::assertLessThan($lookup, $ask, 'the skill asks for conventions after naming what to read');
+
+        // Read in both directions: the rule judges the checkout that exists,
+        // not only the code about to be written.
+        self::assertMatchesRegularExpression(
+            '/settled into the opposite of a rule is a finding, not a local style/',
+            $skill,
+        );
+
+        // And a surface nobody asked about is named, because silence about it
+        // is indistinguishable from a clean result.
+        self::assertStringContainsString('**unassessed**, and unassessed is', $skill);
+        self::assertStringContainsString('each marked assessed or unassessed', $skill);
+    }
+
+    #[Test]
     public function contractCasesExerciseTaskSkillBehavior(): void
     {
         $cases = Scenarios::contracts();

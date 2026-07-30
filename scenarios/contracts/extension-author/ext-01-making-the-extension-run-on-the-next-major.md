@@ -2,6 +2,9 @@
 
 **Environment:** `E-EXT` · **Contract:** `open` — `R-AUD-1` and `R-SCO-2`
 held; what an extension author gets is still the core's conventions, filtered
+**Held by:** `ScopeTest::noCoreScriptIsHandedToARepositoryThatDoesNotHaveIt`,
+`PackageSourcesTest::theChangelogOfTheInstalledCoreIsSearchable`; the
+multi-major upgrade workflow itself does not exist yet and is not guarded
 
 > Our extension supports TYPO3 12 and 13. The next major is out and I want to add
 > support for it without dropping 13. Go through the extension, find what breaks,

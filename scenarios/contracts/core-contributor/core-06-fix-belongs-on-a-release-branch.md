@@ -2,6 +2,10 @@
 
 **Environment:** `E-CORE`, checked out on a release branch · **Contract:**
 `open` — `R-AUD-4`
+**Held by:** `VersionsTest::aStatedVersionWinsOverTheInstallationBeingRead`,
+`CatalogTest::aComponentNotVerifiedOnTheTargetIsDeclinedRatherThanHandedOver`;
+that a release-branch patch changes trailer and refspec is not guarded
+(`R-AUD-4` open)
 
 > This bug only exists on 13.4, on main the code was rewritten and the problem is
 > gone. Prepare the patch for 13.4 and tell me what is different about pushing it

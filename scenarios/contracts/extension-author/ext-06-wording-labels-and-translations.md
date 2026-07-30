@@ -2,6 +2,9 @@
 
 **Environment:** `E-SITE` with the extension under `packages/` ·
 **Contract:** `held`
+**Held by:** `LabelSearchTest::aQueryOfSeveralWordsAsksForAllOfThemAtOnce`,
+`LabelSearchTest::anEmptyResultSaysHowFarEachWordReachesOnItsOwn`,
+`CatalogTest::aDomainIsDerivedForAFileThatDoesNotExistYet`
 
 > The new module needs its texts. Use the wording TYPO3 already uses where there
 > is one, and put the rest in our own language file so the translation server can

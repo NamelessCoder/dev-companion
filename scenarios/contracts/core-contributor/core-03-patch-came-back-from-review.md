@@ -1,6 +1,9 @@
 # CORE-03 — The patch came back from review
 
 **Environment:** `E-CORE` · **Contract:** `held`
+**Held by:** `CommitMessageTest::anExistingMessageIsSplitBackIntoItsParts`,
+`CommitMessageTest::anAmendKeepsTheChangeId`,
+`CommitMessageTest::summaryLengthIsCheckedAgainstBothLimits`
 
 > Review says my commit message is wrong and the subject is too long. Here it is:
 >

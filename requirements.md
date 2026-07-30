@@ -629,13 +629,16 @@ took before the requirement above was written down, and it will not survive it.
   prompt, so a judgment cannot be about a prompt nobody can identify, and the
   environment a prompt names is a kind of working directory rather than one
   installation on somebody's machine — which checkout plays it belongs in
-  `todo.md`.
+  `todo.md`. A contract state is settled by no run, so every case names the
+  tests that hold it, or that something is not guarded, and a test it names has
+  to exist.
   *From:* a suite whose prompts prescribed the feature, subsystem and often the
   implementation shape they were meant to discover, and whose site prompts named
   one person's project (2026-07-31).
   *Held by:* `ScenariosTest::everyCaseHasAFileOfItsOwn`,
-  `ScenariosTest::aTargetedContractCaseIsNotSomethingARunCanAnswer`; that a
-  prompt stays free of a named installation is not guarded.
+  `ScenariosTest::aTargetedContractCaseIsNotSomethingARunCanAnswer`,
+  `ScenariosTest::everyContractCaseNamesWhatHoldsIt`; that a prompt stays free
+  of a named installation is not guarded.
 
 ## Knowledge — what is covered
 

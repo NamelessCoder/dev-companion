@@ -1,6 +1,9 @@
 # CORE-01 — A bug in DataHandler
 
 **Environment:** `E-CORE` · **Contract:** `held`
+**Held by:** `CommitMessageTest::theDraftCarriesKeywordIssueAndReleases`,
+`CommitMessageTest::aTrailerTheDraftCarriesIsNotAlsoReportedAsMissing`,
+`HintsTest::aSuiteIsFoundByItsName`
 
 > Copying a page with `l10n_mode=exclude` fields loses those field values on the
 > copy, but only when the page has translations. I want to fix that in

@@ -1,6 +1,9 @@
 # SITE-05 — Content elements for the editors
 
 **Environment:** `E-SITE` · **Contract:** `held` — `R-KNW-1`
+**Held by:** `HintsTest::aRepeatableContentElementIsRoutedThroughWhatItOwns`,
+`ProjectTest::theContentElementsAnExtensionAddsAreNamedRatherThanPointedAt`,
+`IconLookupTest::aMissingIdentifierHasNoMatchesEvenWhenRelatedIconsExist`
 
 > Editors need a "team members" content element: a list of people picked from a
 > folder, rendered as cards. Build it in our site package — the element, its

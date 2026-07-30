@@ -2,6 +2,10 @@
 
 **Environment:** `E-SITE` · **Contract:** `held` — `R-KNW-16`,
 `R-SKL-2`
+**Held by:**
+`SkillTest::extensionTestingVerifiesItsHarnessBeforeAddingCoverage`,
+`HintsTest::theTestKindThatNeedsABrowserIsCovered`,
+`ScopeTest::noRunTestsCommandIsHandedToARepositoryThatHasNoRunTests`
 
 > Before every deployment I want a smoke test: the important pages render, the
 > forms submit, the backend login works. Set that up for this project.

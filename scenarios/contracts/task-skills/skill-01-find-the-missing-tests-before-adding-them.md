@@ -1,6 +1,10 @@
 # SKILL-01 — Find the missing tests before adding them
 
 **Environment:** `E-SITE`, in the project's site package · **Contract:** `held`
+**Held by:**
+`SkillTest::extensionTestingVerifiesItsHarnessBeforeAddingCoverage`,
+`SkillTest::judgmentHeavySkillsKeepTheirChecklistBesideThem`,
+`ScopeTest::noRunTestsCommandIsHandedToARepositoryThatHasNoRunTests`
 
 > Review our site package's test coverage. Tell me which important
 > behaviors are not protected, choose the right test layer for each gap, and

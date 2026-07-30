@@ -2,6 +2,11 @@
 
 **Environment:** `E-NONE`, then `E-STOPPED` · **Contract:** `held`
 — `R-DIS-6` … `R-DIS-9`, `R-ANS-1`, `R-ANS-5`
+**Held by:**
+`Typo3CliTest::aDdevProjectThatIsNotRunningIsReportedRatherThanStarted`,
+`Typo3CliTest::aMissingConsoleNamesEveryPathThatWasProbed`,
+`InstanceTest::anInstallationThatAppearsDuringTheSessionIsFound`,
+`LabelSearchTest::aConsoleThatCannotRunIsStillUnanswered`
 
 > Which icons can I use for a "publish" action, and is there already a label for
 > "Publish page"?

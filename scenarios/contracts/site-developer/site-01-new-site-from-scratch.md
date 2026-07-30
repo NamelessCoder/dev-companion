@@ -1,6 +1,12 @@
 # SITE-01 — A new site from scratch
 
 **Environment:** `E-SITE`, freshly installed · **Contract:** `open`
+**Held by:**
+`HintsTest::aSitepackageIsAnsweredWithTheLayoutTheCoreItselfShips`,
+`HintsTest::siteLocalSettingsSourcesAreAnsweredWithTheirPrecedence`,
+`PackageSourcesTest::fluidNamespacesAreReadFromThePackagesThatDeclareThem`;
+that the site configuration and the installation steps are declined as a
+boundary is not guarded
 
 > Fresh TYPO3 here. Set up the site: a site configuration with two languages, a
 > site package with our templates, and the TypoScript so the frontend renders.

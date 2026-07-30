@@ -2,6 +2,10 @@
 
 **Environment:** `E-SITE` with a site package using Bootstrap ·
 **Contract:** `held` — `R-SCO-4`
+**Held by:**
+`HintsTest::aFrontendThemeIsNotAnsweredWithTheBackendsOwnCssConventions`,
+`HintsTest::stylingABackendModuleStillReachesTheBackendCssHints`,
+`HintsTest::aPhpClassNameThatCarriesTheWordScssIsStillPhp`
 
 > Our site package theme is Bootstrap 5 with our own SCSS on top. The card
 > component looks wrong on mobile and the spacing is inconsistent across

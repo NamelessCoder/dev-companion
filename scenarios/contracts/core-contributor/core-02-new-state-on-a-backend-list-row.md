@@ -1,6 +1,10 @@
 # CORE-02 — A new state on a backend list row
 
 **Environment:** `E-CORE` · **Contract:** `held` — `R-ANS-3` held
+**Held by:**
+`CatalogTest::aStatedVersionSaysWhatItDidToTheAnswerBesideTheSnapshotItWasReadFrom`,
+`IconLookupTest::aMissingIdentifierHasNoMatchesEvenWhenRelatedIconsExist`,
+`LabelSearchTest::aResourceRestrictsReuseToTheUsageContext`
 
 > Records that are scheduled for publication should be marked in the page module
 > list — some badge next to the title, with an icon and a tooltip. Build it the

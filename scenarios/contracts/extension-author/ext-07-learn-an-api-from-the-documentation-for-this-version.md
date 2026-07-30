@@ -1,6 +1,10 @@
 # EXT-07 — Learn an API from the documentation for this version
 
 **Environment:** `E-EXT` on TYPO3 13.4 · **Contract:** `held` — `R-DOC-1`
+**Held by:**
+`DocumentationTest::itSearchesTheRequestedVersionAndKeepsProvenanceOnEveryResult`,
+`DocumentationTest::itRefusesAPageOutsideTheSelectedManualVersion`,
+`DocumentationTest::anUnreachableIndexIsDifferentFromNoMatch`
 
 > I need to add a PSR-14 listener that changes the page title. Find the official
 > API and show me the registration and event shape that applies to TYPO3 13.4.

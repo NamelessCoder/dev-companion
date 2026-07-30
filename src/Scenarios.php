@@ -89,7 +89,7 @@ final class Scenarios
      * Every open forward review, keyed and sorted by id. These are the ones a
      * recorded run answers.
      *
-     * @return array<string, array{id: string, title: string, file: string, environment: string, status: string, requirements: array<int, string>, prompt: string, needs: array<int, string>, outcomes: array<int, string>, failures: array<int, string>, criteria: string}>
+     * @return array<string, array{id: string, title: string, file: string, environment: string, status: string, requirements: array<int, string>, heldBy: string, prompt: string, needs: array<int, string>, outcomes: array<int, string>, failures: array<int, string>, criteria: string}>
      */
     public static function load(): array
     {
@@ -100,7 +100,7 @@ final class Scenarios
      * Every targeted contract case, keyed and sorted by id. Printed for
      * inspection; never recorded as a forward run.
      *
-     * @return array<string, array{id: string, title: string, file: string, environment: string, status: string, requirements: array<int, string>, prompt: string, needs: array<int, string>, outcomes: array<int, string>, failures: array<int, string>, criteria: string}>
+     * @return array<string, array{id: string, title: string, file: string, environment: string, status: string, requirements: array<int, string>, heldBy: string, prompt: string, needs: array<int, string>, outcomes: array<int, string>, failures: array<int, string>, criteria: string}>
      */
     public static function contracts(): array
     {
@@ -108,7 +108,7 @@ final class Scenarios
     }
 
     /**
-     * @return array<string, array{id: string, title: string, file: string, environment: string, status: string, requirements: array<int, string>, prompt: string, needs: array<int, string>, outcomes: array<int, string>, failures: array<int, string>, criteria: string}>
+     * @return array<string, array{id: string, title: string, file: string, environment: string, status: string, requirements: array<int, string>, heldBy: string, prompt: string, needs: array<int, string>, outcomes: array<int, string>, failures: array<int, string>, criteria: string}>
      */
     private static function read(string $directory, string $label): array
     {
@@ -162,7 +162,7 @@ final class Scenarios
     }
 
     /**
-     * @return array{id: string, title: string, file: string, environment: string, status: string, requirements: array<int, string>, prompt: string, needs: array<int, string>, outcomes: array<int, string>, failures: array<int, string>, criteria: string}
+     * @return array{id: string, title: string, file: string, environment: string, status: string, requirements: array<int, string>, heldBy: string, prompt: string, needs: array<int, string>, outcomes: array<int, string>, failures: array<int, string>, criteria: string}
      */
     private static function parse(string $path, string $label, string $section): array
     {
@@ -188,12 +188,34 @@ final class Scenarios
             'environment' => self::field($section, 'Environment'),
             'status' => self::field($section, $label),
             'requirements' => self::requirements($section, $label),
+            'heldBy' => self::statement($section, 'Held by'),
             'prompt' => $promptText,
             'needs' => self::bullets($section, 'What the agent needs from this server'),
             'outcomes' => $outcomes,
             'failures' => $failures,
             'criteria' => self::digest($promptText, $outcomes, $failures),
         ];
+    }
+
+    /**
+     * The whole of a labelled statement, wrapped lines folded back together.
+     *
+     * A contract case cannot be answered by a run, so what holds it has to be
+     * named beside it: the tests that do, or that nothing does. The state line
+     * above it is a claim either way, and this is the only thing that makes the
+     * claim checkable.
+     */
+    private static function statement(string $section, string $label): string
+    {
+        $marker = '**' . $label . ':**';
+        $start = strpos($section, $marker);
+        if ($start === false) {
+            return '';
+        }
+
+        $paragraph = (string) preg_split('/\R\R/', substr($section, $start + strlen($marker)), 2)[0];
+
+        return trim((string) preg_replace('/\s+/', ' ', $paragraph));
     }
 
     /** The first code span after a bold label, which is where both vocabularies sit. */
@@ -362,7 +384,7 @@ final class Scenarios
 
     /**
      * @param array<string, mixed> $run
-     * @param array{id: string, title: string, file: string, environment: string, status: string, requirements: array<int, string>, prompt: string, needs: array<int, string>, outcomes: array<int, string>, failures: array<int, string>, criteria: string}|null $scenario
+     * @param array{id: string, title: string, file: string, environment: string, status: string, requirements: array<int, string>, heldBy: string, prompt: string, needs: array<int, string>, outcomes: array<int, string>, failures: array<int, string>, criteria: string}|null $scenario
      * @return array<int, string>
      */
     private static function problems(string $file, array $run, ?array $scenario): array

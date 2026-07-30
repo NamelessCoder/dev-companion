@@ -1,6 +1,9 @@
 # SITE-03 — Something behaves differently than documented
 
 **Environment:** `E-SITE` · **Contract:** `held`
+**Held by:** `ScopeTest::anUnconsultedConfigurationPathIsNotReportedAsAbsent`,
+`ProjectTest::whatAnExtensionRegistersIsReadFromItsOwnFiles`,
+`Typo3CliTest::aDdevProjectThatIsNotRunningIsReportedRatherThanStarted`
 
 > Editors report that a field in one of our record forms is suddenly read-only,
 > and I cannot find where that comes from. Nothing in our own configuration does

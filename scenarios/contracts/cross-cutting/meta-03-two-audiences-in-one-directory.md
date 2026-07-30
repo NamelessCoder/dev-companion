@@ -2,6 +2,10 @@
 
 **Environment:** `E-SITE` with the extension under `packages/` ·
 **Contract:** `open` — `R-SCO-1` held, `R-AUD-2` open
+**Held by:** `ScopeTest::aPathInsideAnExtensionIsRecognisedByItsShape`,
+`ScopeTest::anAreaTheInstallationKnowsAsSomebodysExtensionIsOutsideTheCore`;
+that two paths of different audience in one session stay apart is not guarded
+(`R-AUD-2` open)
 
 > I am touching `packages/acme_events/Classes/Domain/Repository/EventRepository.php`
 > and `typo3/sysext/core/Classes/Database/Query/QueryBuilder.php` in the same

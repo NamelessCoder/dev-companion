@@ -2,6 +2,9 @@
 
 **Environment:** `E-EXT`, in an extension that has unit tests but no working
 functional suite · **Contract:** `held`
+**Held by:**
+`SkillTest::extensionTestingVerifiesItsHarnessBeforeAddingCoverage`,
+`SkillTest::extensionTestingLoadsOnlyTheSelectedLayerGuide`
 
 > Our extension already has some unit tests. Add coverage for the repository's
 > persistence behavior and make whatever test setup that requires work locally

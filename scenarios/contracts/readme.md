@@ -22,6 +22,18 @@ behavior directly.
 | `open` | Accepted behavior is still missing or only partly held. |
 | `boundary` | A clean decline and correct route elsewhere is the required behavior. |
 
+A forward review settles its mark with a run. A contract case has no run, so its
+state would be a claim nobody ever answers — which is the drift the forward side
+was just rid of. So every case carries a **Held by** line naming the tests that
+hold it, or saying in as many words that something is not guarded. A test named
+there has to exist: `ScenariosTest::everyContractCaseNamesWhatHoldsIt` checks
+both halves, so a test renamed or deleted takes the case's claim down with it
+rather than leaving it standing.
+
+`held` and `not guarded` can appear together — the case names the tests that
+hold most of it and the part nothing covers, the way `requirements.md` does. A
+case with nothing behind it at all is a case whose state is fiction.
+
 ## Where a case lives
 
 One case is one file, named after its id, in the group whose behavior it holds.

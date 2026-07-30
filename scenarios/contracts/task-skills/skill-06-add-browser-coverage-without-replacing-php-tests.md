@@ -2,6 +2,8 @@
 
 **Environment:** `E-SITE`, in a project with working PHPUnit tests but no
 browser runner · **Contract:** `held`
+**Held by:** `SkillTest::extensionTestingLoadsOnlyTheSelectedLayerGuide`,
+`HintsTest::theTestKindThatNeedsABrowserIsCovered`
 
 > A frontend regression reached production even though our PHP tests passed.
 > Add browser coverage for the important page, its form, and backend login. Keep

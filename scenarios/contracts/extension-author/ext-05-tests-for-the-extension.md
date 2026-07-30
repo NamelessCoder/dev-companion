@@ -2,6 +2,10 @@
 
 **Environment:** `E-EXT` · **Contract:** `held` — `R-KNW-15`,
 `R-SKL-2`
+**Held by:**
+`SkillTest::extensionTestingVerifiesItsHarnessBeforeAddingCoverage`,
+`SkillTest::extensionTestingLoadsOnlyTheSelectedLayerGuide`,
+`ScopeTest::noRunTestsCommandIsHandedToARepositoryThatHasNoRunTests`
 
 > Set up tests for this extension — unit and functional — and wire them into our
 > GitHub Actions so every pull request runs them against all supported TYPO3

@@ -2,6 +2,10 @@
 
 **Environment:** `E-SITE`, with the site package under `packages/` ·
 **Contract:** `held` — `R-SKL-1`
+**Held by:**
+`SkillTest::theBackendModuleSkillRoutesThroughTheOwnersOfItsFactsInOrder`,
+`HintsTest::aBackendModuleNamesItsShortcutApiAndPostRedirect`,
+`DocumentationTest::itSearchesTheRequestedVersionAndKeepsProvenanceOnEveryResult`
 
 > Add a backend module to our site package for reviewing imported records. Start
 > with the module shell, a refresh action, status markers and the texts; I want

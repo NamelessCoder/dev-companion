@@ -1,6 +1,9 @@
 # CORE-05 — A test fails and nobody knows on what
 
 **Environment:** `E-CORE` · **Contract:** `held`
+**Held by:** `HintsTest::aSuiteIsFoundByItsName`,
+`HintsTest::theInvocationNotesApplyToEverySuite`,
+`HintsTest::aCheckIsNotOfferedOnABranchWhoseScriptHasNoSuchSuite`
 
 > A functional test fails for me locally but passes in CI. It is in
 > `typo3/sysext/core/Tests/Functional/DataHandling/`. Get it running the way CI

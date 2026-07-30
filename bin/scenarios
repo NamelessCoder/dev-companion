@@ -94,6 +94,10 @@ function print_scenario(array $scenario, string $label): int
     printf("%s — %s\n%s\n\n", $scenario['id'], $scenario['title'], $scenario['file']);
     printf("Environment  %s\n", $scenario['environment']);
     printf("%-12s %s%s\n", $label, $scenario['status'], $scenario['requirements'] === [] ? '' : ' — ' . implode(', ', $scenario['requirements']));
+    if ($scenario['heldBy'] !== '') {
+        // A case nobody runs claims its state on the strength of this line.
+        printf("Held by      %s\n", str_replace('`', '', $scenario['heldBy']));
+    }
     printf("Criteria     %s\n", $scenario['criteria']);
 
     // Verbatim, on its own, with nothing around it: a prompt read off a screen

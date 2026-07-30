@@ -2,6 +2,11 @@
 
 **Environment:** `E-SITE`, in the project's site package ·
 **Contract:** `open` — `R-SKL-3`
+**Held by:**
+`SkillTest::backendModuleDocumentationIsAnExplicitSkillTransition`,
+`SkillTest::theBackendModuleSkillRoutesThroughTheOwnersOfItsFactsInOrder`;
+that a session actually hands over at that point is not guarded (`R-SKL-3`
+open)
 
 > Add a backend module for reviewing imported records, including the module
 > shell, status list and refresh action. Once it works, document the public

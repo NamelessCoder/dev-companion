@@ -2,6 +2,10 @@
 
 **Environment:** `E-SITE` with the extension under `packages/`, owning records
 of its own · **Contract:** `open`
+**Held by:**
+`SkillTest::theBackendModuleSkillRoutesThroughTheOwnersOfItsFactsInOrder`,
+`SkillTest::backendModuleDocumentationIsAnExplicitSkillTransition`,
+`CatalogTest::anInstalledContractDoesNotAnswerForAnotherTargetMajor`
 
 > Our editors need a backend module that lists the records this extension
 > manages with their state, and one action they can trigger on the list. It

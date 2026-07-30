@@ -2,6 +2,10 @@
 
 **Environment:** `E-SITE`, with Codex project configuration containing unrelated
 settings · **Contract:** `held` — `R-DIS-12`
+**Held by:**
+`InstallerTest::codexInstallAndUpdatePreserveConfigurationAndTrackTheirSkillsCentrally`,
+`InstallerTest::codexInstallRefusesAConflictingServerEntry`,
+`InstallerTest::codexUpdateReplacesAModifiedGeneratedSkill`
 
 > Set this TYPO3 assistant up for Codex in this project. Keep everything already
 > configured. Then update the generated integration once so I know future

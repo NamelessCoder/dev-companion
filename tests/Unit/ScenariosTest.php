@@ -72,6 +72,52 @@ final class ScenariosTest extends TestCase
     }
 
     /**
+     * A contract case is never run, so its state is a claim no session ever
+     * answers. What holds it therefore has to be named beside it — and a test
+     * named there that does not exist is worth less than saying nothing.
+     */
+    #[Test]
+    public function everyContractCaseNamesWhatHoldsIt(): void
+    {
+        $tests = $this->testMethods();
+
+        foreach (Scenarios::contracts() as $id => $case) {
+            self::assertNotSame('', $case['heldBy'], $id . ' does not say what holds it');
+
+            preg_match_all('/`(\w+Test::\w+)`/', $case['heldBy'], $matches);
+            self::assertTrue(
+                $matches[1] !== [] || str_contains($case['heldBy'], 'not guarded'),
+                $id . ' names neither a test nor that it is not guarded',
+            );
+            foreach ($matches[1] as $test) {
+                self::assertContains($test, $tests, $id . ' names ' . $test . ', which no test declares');
+            }
+        }
+    }
+
+    /**
+     * Every test method in this suite as `Class::method`, read from the files
+     * rather than from reflection: a case may name a test in any of the three
+     * directories, and loading them all to ask would be the heavier half.
+     *
+     * @return array<int, string>
+     */
+    private function testMethods(): array
+    {
+        $methods = [];
+        foreach (['Unit', 'Contract', 'Smoke'] as $suite) {
+            foreach (glob(Paths::root() . '/tests/' . $suite . '/*Test.php') ?: [] as $path) {
+                preg_match_all('/public function (\w+)\(/', (string) file_get_contents($path), $matches);
+                foreach ($matches[1] as $method) {
+                    $methods[] = basename($path, '.php') . '::' . $method;
+                }
+            }
+        }
+
+        return $methods;
+    }
+
+    /**
      * @param array<string, array{title: string, prompt: string, environment: string, status: string, outcomes: array<int, string>, failures: array<int, string>}> $scenarios
      * @param array<int, string> $states
      */

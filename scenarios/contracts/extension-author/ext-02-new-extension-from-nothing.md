@@ -2,6 +2,9 @@
 
 **Environment:** `E-SITE`, in a project where the new extension will live
 under `packages/` · **Contract:** `held` — `R-SCO-1`, `R-SCO-2`
+**Held by:** `ScopeTest::workOnAProjectExtensionIsRecognizedAsOutsideTheCore`,
+`CatalogTest::aDomainIsDerivedForAFileThatDoesNotExistYet`,
+`IconLookupTest::everyAnswerSaysTheIdentifiersAreTheBackendRegistrys`
 
 > I need a new extension `acme_events` in this project: a record type for events
 > with dates and a location, editable in the backend, listed in the frontend by a

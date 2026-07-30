@@ -1,6 +1,10 @@
 # SKILL-04 — Build an editor-owned carousel
 
 **Environment:** `E-SITE`, in the project's site package · **Contract:** `held`
+**Held by:**
+`SkillTest::extensionSkillsRouteThroughTheirPrimaryEvidenceSourcesInOrder`,
+`HintsTest::aRepeatableContentElementIsRoutedThroughWhatItOwns`,
+`SkillTest::judgmentHeavySkillsKeepTheirChecklistBesideThem`
 
 > Add a hero carousel content element whose slides editors can create, order,
 > translate and hide directly inside the element. Keep its implementation

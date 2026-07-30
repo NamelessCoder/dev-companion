@@ -3,6 +3,10 @@
 **Environment:** `E-SITE` on the previous major · **Contract:** `held` —
 `R-PRJ-4`: `typo3_task_guide` recognises the task and composes the order of
 operations with what `typo3_project_scope` and `typo3_changelog_lookup` know
+**Held by:**
+`HintsTest::upgradingAnInstallationIsAnsweredAsAnOrderOfOperations`,
+`PackageSourcesTest::theChangelogIsNarrowedByTypeAndVersion`,
+`ProjectTest::theProjectIsDescribedFromItsFilesAlone`
 
 > This site is on the previous LTS and we need to be on the current one before
 > support ends. Plan the upgrade, tell me what will break, and start with the

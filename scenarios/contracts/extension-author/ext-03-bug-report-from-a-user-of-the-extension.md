@@ -1,6 +1,10 @@
 # EXT-03 — A bug report from a user of the extension
 
 **Environment:** `E-EXT` · **Contract:** `held` — `R-AUD-3`, `R-GUI-2`
+**Held by:**
+`CommitMessageTest::outsideTheCoreNoTrailerIsAddedAndNoneIsDemanded`,
+`CommitMessageTest::outsideTheCoreTheSubjectAndBodyRulesStillHold`,
+`ScopeTest::maintainingAnExtensionIsNotSubmittingAPatchToTheCore`
 
 > Somebody reported that our list plugin crashes when the storage page is empty.
 > Reproduce it, fix it, and commit it — we tag a patch release afterwards.

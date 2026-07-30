@@ -1,6 +1,10 @@
 # SKILL-03 — Make the documentation match the package
 
 **Environment:** `E-SITE`, in the project's site package · **Contract:** `held`
+**Held by:**
+`SkillTest::extensionSkillsRouteThroughTheirPrimaryEvidenceSourcesInOrder`,
+`SkillTest::everySkillStatesWhatItOwns`,
+`SkillTest::noSkillKeepsASecondCopyOfWhatAToolOwns`
 
 > Review and improve our site package's documentation for integrators and
 > editors. Make it match what the package really implements, remove unsafe

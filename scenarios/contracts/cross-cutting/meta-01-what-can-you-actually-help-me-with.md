@@ -1,6 +1,9 @@
 # META-01 — What can you actually help me with
 
 **Environment:** `E-SITE` · **Contract:** `held`
+**Held by:** `ScopeTest::theScopeNamesWhatIsCoveredAndWhatIsNot`,
+`ScopeTest::theScopeInstructionsOrientTheClientBeforeItsFirstCall`,
+`InstanceTest::theAnswerSaysWhereItLookedSoAWrongInstanceIsVisible`
 
 > Before I let you loose on this project: what do you know about TYPO3, and where
 > do you stop? Be specific, I have been burned by confident nonsense before.

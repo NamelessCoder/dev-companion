@@ -1,6 +1,10 @@
 # SKILL-02 — Audit the site package for TYPO3 conformance
 
 **Environment:** `E-SITE`, in the project's site package · **Contract:** `held`
+**Held by:**
+`SkillTest::extensionSkillsRouteThroughTheirPrimaryEvidenceSourcesInOrder`,
+`SkillTest::judgmentHeavySkillsKeepTheirChecklistBesideThem`,
+`ScopeTest::anArchitectureHintKeepsItsAdviceOutsideTheCoreAndLosesItsCoreChecks`
 
 > Audit our site package for TYPO3 conformance and upgrade readiness.
 > Prioritize real findings with evidence and severity. This is a review only;

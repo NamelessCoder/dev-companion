@@ -1,6 +1,9 @@
 # CORE-04 — Deprecating a public API
 
 **Environment:** `E-CORE` · **Contract:** `held` — `R-KNW-1` held
+**Held by:** `HintsTest::aDeprecationTaskIsRecognizedAsOne`,
+`CommitMessageTest::deprecationRulesAreEnforced`; what an upgrade wizard looks
+like is the thin part `R-KNW-1` names and is not guarded
 
 > `\TYPO3\CMS\Core\Utility\GeneralUtility::getUrl()` should go away in favour of
 > the request factory. Deprecate it properly for the next major, including

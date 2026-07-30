@@ -14,6 +14,18 @@ answers are bound to versions: the knowledge base covers several TYPO3 lines,
 and a statement that does not hold on all of them carries the ones it does hold
 on. Pass a `targetVersion`, or let the installation being read decide.
 
+**Those files are trained by being used.** An agent gets a real task in a real
+checkout and works under one rule: whatever it would otherwise search for — a
+convention, a class name, the markup a component expects — it asks this server
+first. Where the server answers, that answer is what the task is done from. Where
+it does not, the agent solves the task on its own, the way it would have without
+the server at all — and that is the half worth something, because the agent now
+holds an answer the knowledge base did not have. So the session ends by handing it
+back: every avoidable mistake it ran into, and every recommendation it would give
+the next agent on the same task. A gap found that way arrives with its answer
+attached, which is what separates it from one guessed at from the outside; see
+[Improvement notes](#improvement-notes) for how such a note is written and closed.
+
 **It is queried in English**, whatever language the user is speaking. The
 knowledge is written in English and the matching is lexical, so a query in
 another language reaches only the words the two happen to share — the technical
@@ -336,14 +348,14 @@ Useful upstream sources:
 
 ## Improvement notes
 
-The knowledge base only grows if the gaps are known, so an agent that hits one
-reports it through `typo3_feedback_record`. Every note becomes its own markdown
-file under `feedback/`; `typo3_feedback_list` reads them back, newest first. A
-note is closed by deleting it in the commit that implements the improvement, so
-`feedback/` only ever holds open items — and that commit is where the closed
-half is read back from: `typo3_feedback_list` with `status="closed"` answers
-what became of a note, so a gap that was already closed is not reported a second
-time and one that needed a code change does not vanish.
+What an agent hands back at the end of a task is recorded through
+`typo3_feedback_record`, and every note becomes its own markdown file under
+`feedback/`; `typo3_feedback_list` reads them back, newest first. A note is
+closed by deleting it in the commit that implements the improvement, so
+`feedback/` only ever holds open items — and that commit is where
+the closed half is read back from: `typo3_feedback_list` with `status="closed"`
+answers what became of a note, so a gap that was already closed is not reported a
+second time and one that needed a code change does not vanish.
 
 Each note carries the working directory the session that left it ran in, as
 `directory:` in its front matter, so a gap can be checked against the project it

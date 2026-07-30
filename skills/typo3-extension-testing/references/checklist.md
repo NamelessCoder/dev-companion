@@ -13,6 +13,17 @@ Use only rows supported by the task and checkout.
   behavior that cannot be established below the UI.
 - Architecture/static: structural rules already enforced by the project, or
   infrastructure the task explicitly asks to establish.
+
+## Respect the functional frontend boundary
+
+- A TYPO3 functional frontend subrequest proves server-side routing, rendering
+  and the generated response.
+- An asset URL or AssetCollector tag in that response proves registration, not
+  that the browser loaded or executed the asset.
+- Functional tests do not execute JavaScript, apply CSS, calculate layout,
+  exercise focus behavior or inspect the browser accessibility tree.
+- Use a browser test for interactive claims, and describe untested interaction
+  as unverified rather than as frontend-tested.
 - Documentation/configuration: validate examples and declarations directly;
   do not disguise a file-presence assertion as a behavioral test.
 

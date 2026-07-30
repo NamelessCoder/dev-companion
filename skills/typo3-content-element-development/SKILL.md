@@ -76,6 +76,9 @@ changing a content element.
 - Add unit tests only for isolated logic.
 - Add functional coverage for TCA, schema, inline persistence, localization
   and rendered output.
+- Treat a functional frontend subrequest as proof of server-side HTML rendering
+  and AssetCollector registration only. It does not execute JavaScript, apply
+  CSS, measure layout or prove interaction. Report that boundary explicitly.
 - Add browser coverage when JavaScript interaction, editor workflow or
   accessibility is part of the feature.
 - Re-run `typo3_extension_scope` after the change and report parser blind spots

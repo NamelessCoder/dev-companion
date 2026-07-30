@@ -51,3 +51,9 @@ Require:
 - browser coverage for interactive or accessible behavior;
 - a backend workflow test when inline editing is business-critical and the
   project has suitable E2E infrastructure.
+
+A functional frontend request verifies the server-rendered response and can
+assert that AssetCollector references are present. It does not load those
+assets, execute JavaScript, apply CSS, measure layout, move focus or expose the
+browser accessibility tree. Use a real browser test before claiming that a
+carousel or another interactive element works in the frontend.

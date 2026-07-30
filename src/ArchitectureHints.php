@@ -227,6 +227,7 @@ final class ArchitectureHints
 
         $task = trim($task);
         $haystack = mb_strtolower(implode("\n", array_merge($paths, [$task])));
+        $backendModule = Domains::namesBackendModule($paths, $task);
 
         $domains = Domains::detect($paths, $task);
         $categories = Domains::hintCategories($domains);
@@ -248,6 +249,26 @@ final class ArchitectureHints
             self::load($target),
             static fn(array $hint): bool => in_array($hint['category'], $categories, true),
         ));
+        if ($backendModule) {
+            // "sitepackage" is ownership context and "records" are what this
+            // module reviews. Neither asks for the package's frontend layout or
+            // for rendering records on a page. Those two large hints otherwise
+            // displace the module registration the task explicitly named.
+            $excluded = [];
+            if (!self::asksForFrontendRendering($haystack)) {
+                $excluded[] = 'frontend-records';
+            }
+            if (!self::asksForPackageLayout($haystack)) {
+                $excluded[] = 'sitepackage-layout';
+            }
+            if (!self::asksForInitialContent($haystack)) {
+                $excluded[] = 'sitepackage-initial-content';
+            }
+            $candidates = array_values(array_filter(
+                $candidates,
+                static fn(array $hint): bool => !in_array($hint['id'], $excluded, true),
+            ));
+        }
 
         // The weights are taken over the candidates rather than over every
         // hint there is, so a term says what it separates within the domains
@@ -292,6 +313,14 @@ final class ArchitectureHints
                 ?: $b['score'] <=> $a['score']
                 ?: strcmp($a['hint']['title'], $b['hint']['title']);
         });
+        if ($backendModule) {
+            usort($scored, static function (array $a, array $b): int {
+                $aModule = $a['hint']['id'] === 'backend-modules';
+                $bModule = $b['hint']['id'] === 'backend-modules';
+
+                return $bModule <=> $aModule;
+            });
+        }
 
         $matchedHints = array_map(
             static fn(array $entry): array => $entry['hint'],
@@ -307,6 +336,48 @@ final class ArchitectureHints
             // subject nobody wrote down, and tries another phrasing either way.
             'availableHints' => $matchedHints === [] ? self::index($categories) : [],
         ];
+    }
+
+    private static function asksForFrontendRendering(string $haystack): bool
+    {
+        foreach ([
+            'frontend', 'front-end', 'front end', 'page rendering', 'page template',
+            'content element', 'detail view', 'list view', 'route enhancer',
+        ] as $marker) {
+            if (Text::containsWord($haystack, $marker)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private static function asksForPackageLayout(string $haystack): bool
+    {
+        foreach ([
+            'sitepackage layout', 'site package layout', 'directory structure',
+            'folder structure', 'page layout', 'backend layout',
+        ] as $marker) {
+            if (Text::containsWord($haystack, $marker)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private static function asksForInitialContent(string $haystack): bool
+    {
+        foreach ([
+            'initial content', 'initialisation/', 'extension:setup', 'seed content',
+            'ship content', 'data.t3d', 'data.xml', 'impexp', 'distribution',
+        ] as $marker) {
+            if (Text::containsWord($haystack, $marker)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**

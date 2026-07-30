@@ -44,6 +44,7 @@ final class Domains
             'php', 'class', 'service', 'datahandler', 'tca', 'formengine',
             'middleware', 'repository', 'controller', 'event listener', 'hook',
             'dependency injection', 'unit test', 'functional test', 'phpstan',
+            'backend module', 'module registration', 'backend route',
         ],
         self::TYPESCRIPT => [
             'typescript', 'javascript', 'web component', 'custom element', 'lit',
@@ -132,6 +133,7 @@ final class Domains
     public static function detect(array $paths, string $text = ''): array
     {
         $detected = [];
+        $backendModule = self::namesBackendModule($paths, $text);
 
         foreach ($paths as $path) {
             $extension = strtolower(pathinfo($path, PATHINFO_EXTENSION));
@@ -150,6 +152,18 @@ final class Domains
         $description = mb_strtolower($text);
         foreach (self::KEYWORDS as $domain => $keywords) {
             foreach ($keywords as $keyword) {
+                // "sitepackage" says who owns the extension, not that every
+                // task in it renders the website. A backend module in that
+                // package must not acquire the whole Fluid/TypoScript frontend
+                // merely from its owner; explicit frontend terms below still
+                // add their respective domains.
+                if (
+                    $backendModule
+                    && in_array($domain, [self::FLUID, self::TYPOSCRIPT], true)
+                    && in_array($keyword, ['sitepackage', 'site package'], true)
+                ) {
+                    continue;
+                }
                 if (Text::containsWord($description, $keyword)) {
                     $detected[$domain] = true;
                     break;
@@ -175,6 +189,23 @@ final class Domains
         }
 
         return array_keys($detected);
+    }
+
+    /**
+     * Whether the subject explicitly names a backend module or its declaration.
+     *
+     * This is narrower than merely saying "backend": a backend layout is
+     * frontend page configuration, while a backend module is PHP registration
+     * plus its own interface.
+     *
+     * @param array<int, string> $paths
+     */
+    public static function namesBackendModule(array $paths, string $text = ''): bool
+    {
+        $haystack = mb_strtolower(implode(' ', $paths) . ' ' . $text);
+
+        return Text::containsWord($haystack, 'backend module')
+            || str_contains($haystack, 'configuration/backend/modules.php');
     }
 
     /**

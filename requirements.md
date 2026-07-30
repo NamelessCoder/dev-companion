@@ -776,6 +776,17 @@ took before the requirement above was written down, and it will not survive it.
   text while its structured answer claimed 556 matches from the `actions-`
   prefix (2026-07-30).
   *Held by:* `IconLookupTest::aMissingIdentifierHasNoMatchesEvenWhenRelatedIconsExist`
+- **R-KNW-13** A backend module owned by a sitepackage remains backend-module
+  work. Its domains include PHP, its registration hint ranks first, and generic
+  mentions of `sitepackage` and `records` do not pull in the package-layout or
+  initial-content or frontend-record-rendering guides. Those guides apply only
+  when the task asks for that layout, content shipping or frontend rendering,
+  not when the words merely name the owner and the data a backend module
+  reviews.
+  *From:* a backend review module with actions, badges, icons and translated
+  labels whose 17 KB guide was dominated by frontend records and the complete
+  sitepackage layout while omitting PHP/module registration (2026-07-30).
+  *Held by:* `HintsTest::aBackendModuleInASitepackageDoesNotBecomeFrontendWork`
 - **R-KNW-10** An answer says where it may be used when it is only usable in
   half of TYPO3. The icon identifiers are the backend registry's, so every
   `typo3_icon_lookup` answer carries that sentence — in the text and in the

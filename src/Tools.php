@@ -50,12 +50,14 @@ final class Tools
 
     /**
      * The tool that answers a matched subject from the installation instead of
-     * from memory. Both of these are invented in bulk when nobody points at
-     * them, and both fail at runtime rather than at build time.
+     * from memory. These are invented or misregistered in bulk when nobody
+     * points at them, and fail at runtime rather than at build time.
      *
      * @var array<string, string>
      */
     private const HINT_TOOLS = [
+        'backend-modules' => 'typo3_backend_module_lookup, to compare the declaration with modules registered '
+            . 'by the active installation',
         'language-files' => 'typo3_label_lookup, while writing labels: which trans-units exist is a property '
             . 'of the installation, not something to remember',
         'icon-usage' => 'typo3_icon_lookup, before writing an icon identifier: an unknown one renders an empty box',

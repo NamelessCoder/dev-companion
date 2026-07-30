@@ -839,6 +839,28 @@ final class HintsTest extends TestCase
     }
 
     #[Test]
+    public function aBackendModuleInASitepackageDoesNotBecomeFrontendWork(): void
+    {
+        $task = 'Add a backend module to the project site package for reviewing imported product records, '
+            . 'with a refresh action, status badges, icons and translated labels';
+        $guide = Tools::call('typo3_task_guide', ['task' => $task]);
+        $hintIds = array_column($guide->data['architectureHints'], 'id');
+        $tools = array_column($guide->data['nextTools'], 'tool');
+
+        self::assertContains(Domains::PHP, $guide->data['domains']);
+        self::assertNotContains(Domains::FLUID, $guide->data['domains']);
+        self::assertNotContains(Domains::TYPOSCRIPT, $guide->data['domains']);
+        self::assertSame('backend-modules', $hintIds[0]);
+        self::assertNotContains('frontend-records', $hintIds);
+        self::assertNotContains('sitepackage-layout', $hintIds);
+        self::assertNotContains('sitepackage-initial-content', $hintIds);
+        self::assertContains('typo3_component_lookup', $tools);
+        self::assertContains('typo3_backend_module_lookup', $tools);
+        self::assertContains('typo3_icon_lookup', $tools);
+        self::assertContains('typo3_label_lookup', $tools);
+    }
+
+    #[Test]
     public function hintsAreGroupedWithGeneralFirst(): void
     {
         $hints = ArchitectureHints::load();

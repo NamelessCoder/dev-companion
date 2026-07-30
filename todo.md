@@ -104,6 +104,14 @@ depends on none of it and can go at any time.
 `SKILL-07` is the hand-off case: it must activate the backend-module workflow
 first and the documentation workflow before documentation is edited.
 
+`E-SITE` is `/home/benji/projects/site-new`; the Printworks package is below
+`extensions/printworks_sitepackage`. It was located on 2026-07-30 with an
+existing modification to the project's `.gitignore`, which belongs to another
+session and must be preserved. No run was started from this repository session:
+a forward run is a fresh MCP client session with the installed skills, while
+this session neither activated those installed skills nor may grade its own
+implementation as behavioral evidence.
+
 Next step for each: `bin/scenarios record <id> claude-code`, paste what
 `bin/scenarios show <id>` prints into a session in the Printworks project and
 nothing else, fill in the judgments with their evidence, and correct the

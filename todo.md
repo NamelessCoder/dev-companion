@@ -85,18 +85,6 @@ somebody else writes.
 
 ---
 
-## Evaluate package-provided TYPO3 knowledge after skills work
-
-This serves R-AUD-1, R-AUD-5 and the extension-author scenarios: an installed
-extension may know its own workflow, but its advice must not be presented as a
-TYPO3 core rule.
-
-The next concrete step is to specify provenance and trust data for one fixture
-extension contribution before defining discovery paths. At minimum an answer
-must retain package name, package version, authority and applicability; package
-content may augment or explicitly override only package-owned material, never a
-core convention by path collision alone.
-
 ## Reassess search and runtime inspection only after the new source boundary
 
 This serves R-ANS-7 and R-ANS-8b. Do not add embeddings or broad inspection

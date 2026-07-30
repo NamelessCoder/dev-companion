@@ -85,6 +85,32 @@ somebody else writes.
 
 ---
 
+## Two later notes from the same session go first
+
+Written down before their work starts. Two notes arrived at 00:01 after the
+23:43 form notes below and were not present when that order was last written.
+Both are narrower facts from the same real sitepackage session, both have now
+been re-run against the current server, and both still fail. They go first
+because each can be closed without making the larger form-framework verification
+carry an unrelated open note through it.
+
+### Site-local settings are alternatives, not layers
+
+Serves
+`feedback/2026-07-30-000113-the-precedence-between-the-two-places-a-site-s.md`.
+Verify the `loadLocalSettings() ?? $inlineSettings` boundary on both sides of
+the version where site settings arrived, add it to `site-sets`, and make the
+note's own query hold it there.
+
+### A routed static argument is not a cache-hash argument
+
+Serves
+`feedback/2026-07-30-000124-asked-directly-about-route-enhancer-aspects-and.md`.
+Verify how `PageArguments` divides static and dynamic arguments on every
+covered branch, add that consequence beside the existing
+Simple/PersistedAliasMapper routing shape in `frontend-records`, and make the
+note's own query prefer that hint over the unrelated cache-framework hint.
+
 ## What is left of one session's notes, and why they are before the twins
 
 Written down before the work starts, because it is a change of order. Five notes

@@ -241,5 +241,36 @@
       "typo3_changelog_lookup with type=breaking or deprecation and the target version",
       "typo3_architecture_lookup with id=installation-upgrade, for the order of operations and why it is that order"
     ]
+  },
+  {
+    "id": "content-element",
+    "title": "Adding or changing a content element",
+    "match": [
+      "content element",
+      "CType",
+      "tt_content",
+      "backend preview"
+    ],
+    "matchWeak": [
+      "carousel",
+      "slider",
+      "accordion",
+      "slides",
+      "teaser"
+    ],
+    "condition": "only if the task adds or changes a content element rather than the page or the plugin around it",
+    "rulesQuery": "",
+    "checklist": [
+      "Describe the editor workflow before naming a single field: who creates each piece of this element, in which order, and what translating, hiding and deleting the element does to it. The data model is the answer to that, not a choice made afterwards.",
+      "Own repeatable content in a child table of its own with type=inline. Referencing existing records is right where reuse was asked for and nesting arbitrary tt_content where nesting was; neither is a way to store a list of slides, and both are technically possible, which is why an element that skipped the workflow question ends up with one of them.",
+      "Register this element in a file of its own under Configuration/TCA/Overrides/ and give it its own TypoScript file and template, so the generic files stay what is genuinely shared.",
+      "Load the CSS and JavaScript only this element needs through the Fluid AssetCollector in its template, rather than on every page of the site.",
+      "Cover the persistence of the child records and the order they render in with functional tests. A unit test of mocks asserts the mock, and browser behaviour that was not tested is reported as untested."
+    ],
+    "checks": [],
+    "tools": [
+      "typo3_architecture_lookup with id=content-elements, for what the element owns and how the record type is registered",
+      "typo3_extension_scope, for the content elements this extension already registers and the templates they render through"
+    ]
   }
 ]

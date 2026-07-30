@@ -82,21 +82,3 @@ a `tools/list` that only changes when this repository releases.
 The deprecation windows are twelve months, so the outer edge is around July 2027.
 Before then the only thing that has to happen is a version bump behind a release
 somebody else writes.
-
----
-
-## Route content-element tasks through the ownership decision
-
-Serves
-`feedback/2026-07-30-073632-the-content-element-workflow-initially.md` and
-scenario `SKILL-04`.
-
-Run `SKILL-04` from a fresh installed client without naming the new skill. If
-implicit skill routing does not reliably introduce the editor-ownership gate,
-extend the content-element task intent and the matching architecture hints,
-then hold the route with a task-guide test and rerun the scenario.
-
----
-
-
----

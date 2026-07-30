@@ -337,6 +337,17 @@ them, this section wins and the other one is what needs rewriting.
   and Form Inputs, each on one word out of five (2026-07-30).
   *Held by:* `CatalogTest::aQueryTheCatalogWasNotWrittenForIsAMissRatherThanItsNearestWords`,
   `CatalogTest::aComponentNamedOutrightWinsOverOneThatMerelyMentionsIt`
+- **R-ANS-11** A content-element task is answered with what the element owns
+  before it is answered with how it is registered: fields on `tt_content`, a
+  child table of its own, a reference to existing records, or a container of
+  arbitrary content — and which one it is follows from the editor workflow, not
+  from what is technically possible for a list. The shapes that decide it —
+  a carousel, a slider, an accordion, slides — reach that answer without the
+  task having to call itself a content element.
+  *From:* a hero carousel designed out of generic record references and
+  validated as technically possible, with the ownership decision never forced
+  (2026-07-30); scenario `SKILL-04`.
+  *Held by:* `HintsTest::aRepeatableContentElementIsRoutedThroughWhatItOwns`
 
 ## Project — the repository the caller is standing in
 

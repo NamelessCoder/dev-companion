@@ -1139,6 +1139,40 @@ final class HintsTest extends TestCase
     }
 
     #[Test]
+    public function aRepeatableContentElementIsRoutedThroughWhatItOwns(): void
+    {
+        // A session designed a hero carousel out of generic record references —
+        // technically possible, and what an element ends up with when nobody
+        // asked who creates, orders, translates and hides a slide. The decision
+        // has to be in the answer before the registration is, and the task that
+        // asks for it does not have to say "content element" to get there.
+        $result = Tools::call('typo3_task_guide', [
+            'task' => 'Add a hero carousel content element whose slides editors can create, order, translate and hide inside the element',
+            'area' => 'packages/printworks_sitepackage/',
+        ]);
+
+        self::assertContains('content-element', array_column($result->data['intents'], 'id'));
+
+        $hint = array_values(array_filter(
+            $result->data['architectureHints'],
+            static fn(array $entry): bool => $entry['id'] === 'content-elements',
+        ));
+        self::assertCount(1, $hint);
+        $ownership = $hint[0]['hints'][0]['text'];
+        self::assertStringContainsString('type=inline', $ownership);
+        self::assertStringContainsString('reuse is a requirement somebody stated', $ownership);
+
+        // The wording a first question actually arrives with reaches it too,
+        // and stays a conditional match, because nothing in it says the work is
+        // a content element.
+        $vague = Tools::call('typo3_task_guide', ['task' => 'Add a Hero Carousel that rotates different elements']);
+        self::assertContains(
+            'content-elements',
+            array_column($vague->data['architectureHints'], 'id'),
+        );
+    }
+
+    #[Test]
     public function withoutAnySignalTheDomainIsPhp(): void
     {
         self::assertSame([Domains::PHP], Domains::detect([], 'do something'));

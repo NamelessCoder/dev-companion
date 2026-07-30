@@ -290,9 +290,16 @@
       "addPlugin",
       "addRecordType",
       "content type",
-      "wizard"
+      "wizard",
+      "carousel",
+      "slider",
+      "accordion",
+      "slides"
     ],
     "hints": [
+      {
+        "text": "What the element owns is decided before its first field, and it is the one decision the rest of it cannot be refactored out of: fields on tt_content for a bounded element; a child table of its own with type=inline for a repeatable ordered collection — slides, tabs, accordion panels — where the parent owns each child's sorting, translation, visibility and deletion; a reference to existing records where reuse is a requirement somebody stated, and the referenced record keeps its own lifecycle and renders wherever else it is referenced; a container of arbitrary tt_content where arbitrary nesting is a requirement somebody stated. The last two are technically possible for a list of slides and are what an element ends up with when the editor workflow was never described: they hand the editor a lifecycle that belongs somewhere else."
+      },
       {
         "text": "A content element is a record type of tt_content, registered in Configuration/TCA/Overrides/tt_content.php with ExtensionManagementUtility::addRecordType(): the item — label, description, value, icon, group — then the showitem list for the type, then per-type overrides such as columnsOverrides, and optionally a position. The showitem list is the point: a type that does not bring one is a type whose backend form is somebody else's.",
         "since": 13

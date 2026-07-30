@@ -110,3 +110,41 @@ documentation, shared-versus-version-specific implementation decisions, and a
 Composer-resolved test matrix. Keep concrete version facts out of the skill,
 publish it through `Installer`, add its forward acceptance result, and add the
 requirement and tests that hold only the behavior the run proves.
+
+## Add the static-quality branch to `typo3-extension-testing`
+
+This serves
+`feedback/2026-07-30-174423-extension-static-quality-needs-an-explicit-workflow.md`
+and `R-SKL-2`. It sits behind the two items above because the note asks for a
+run it cannot have yet: no scenario covers static quality, and the runner that
+would record one is the first item here. So write the missing forward scenario
+first — a reusable extension whose PHPStan and code-style infrastructure is
+incomplete — run its prompt verbatim in `E-EXT`, and reduce the note to the
+demonstrated gaps. Then add an on-demand static-quality reference to
+`typo3-extension-testing`: inspect the existing packages, configuration,
+baselines, scripts and CI before changing any of them; resolve development
+dependencies from the extension's declared TYPO3 and PHP range; establish one
+project-owned command per check and keep check and fix modes apart; let CI call
+the commands that passed locally. New errors are fixed rather than added to a
+baseline, and automatic formatting stays inside intended first-party files.
+Split it into a skill of its own only if the run shows that
+`typo3-extension-testing` does not activate or ends up owning two unrelated
+workflows.
+
+## Carry an extension from release candidate to verified artifact
+
+This serves
+`feedback/2026-07-30-174423-extension-releases-need-a-preparation-and-publication-workflow.md`.
+It is last because it is the largest of the four and composes the conformance,
+testing and documentation workflows the three items above still change. Run the
+note's query verbatim in `E-EXT`, then add a `typo3-extension-release` skill
+that starts from project and extension scope, selects the intended registries
+and version, and ends preparation with the artifact path, its checksum, what the
+archive includes and excludes, the verification results, the open blockers and
+the publication steps deliberately not taken. Registry requirements come from
+current official documentation rather than from the skill, and the artifact is
+built through the repository's own release command where one exists. Tagging,
+pushing and registry publication stay a separate phase that needs an explicit
+request and a confirmed repository, version and credentials. The forward
+scenario has to fail on an artifact carrying development files or secrets while
+the checkout itself is green.

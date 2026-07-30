@@ -152,6 +152,40 @@
     "checks": []
   },
   {
+    "id": "form-framework",
+    "title": "EXT:form Configuration and Runtime",
+    "appliesTo": [
+      "EXT:form",
+      "form framework",
+      "form definition",
+      ".form.yaml",
+      "Configuration/Form/",
+      "allowedExtensionPaths",
+      "prefill form",
+      "prefill field",
+      "AfterCurrentPageIsResolvedEvent",
+      "afterFormStateInitialized"
+    ],
+    "hints": [
+      {
+        "text": "An extension's form setup is auto-discovered from Configuration/Form/<SetName>/config.yaml. The file carries name, label and priority plus the setup itself; the core base set is typo3/form-base at priority 10, so an extension set normally uses the default 100 or another higher priority. No TypoScript registration is needed.",
+        "since": 14
+      },
+      {
+        "text": "On older branches the same setup path has to be registered twice, under plugin.tx_form.settings.yamlConfigurations and module.tx_form.settings.yamlConfigurations. That registration is the predecessor of form sets and is deprecated for removal in the next major.",
+        "until": 13
+      },
+      "A version-controlled definition shipped by an extension lives below a path listed in persistenceManager.allowedExtensionPaths — conventionally Resources/Private/Forms/ — and its filename ends in .form.yaml. Database records are for editable definitions; file-mount storage is the predecessor, not a replacement for read-only extension storage.",
+      "In the frontend FormFrontendController appends the content-element uid to the declared form identifier and retains the declared value in renderingOptions._originalIdentifier. Match the latter when code must identify the form; matching FormDefinition::getIdentifier() against the YAML value works in an isolated test and misses at runtime.",
+      {
+        "text": "To prefill from the current request, listen to AfterCurrentPageIsResolvedEvent: it carries the FormRuntime and the request and is dispatched after request state was initialized but before submitted values are processed. Set an element's default value there, so a submitted value still wins. Form variants expose form values and root-form properties, not arbitrary request values, and cannot carry a dynamic value into a field.",
+        "since": 14
+      },
+      "plugin.tx_form.settings.formDefinitionOverrides is keyed by the declared, unsuffixed identifier. It is merged with ArrayUtility::mergeRecursiveWithOverrule, so nested maps such as finisher recipients are merged unless their keys are explicitly replaced."
+    ],
+    "checks": []
+  },
+  {
     "id": "frontend-records",
     "title": "Records in the Frontend Without Extbase",
     "appliesTo": [

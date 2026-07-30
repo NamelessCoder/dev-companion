@@ -434,6 +434,26 @@ final class HintsTest extends TestCase
     }
 
     #[Test]
+    public function theFormFrameworkIsCoveredAsAWholeSubsystem(): void
+    {
+        $result = ArchitectureHints::find(
+            [],
+            'EXT:form form definition YAML, form setup in sitepackage, prefill form fields',
+            6
+        );
+        self::assertSame('form-framework', $result['matchedHints'][0]['id']);
+
+        $hint = ArchitectureHints::byId('form-framework');
+        self::assertNotNull($hint);
+        $text = implode("\n", array_column($hint['hints'], 'text'));
+        self::assertStringContainsString('Configuration/Form/<SetName>/config.yaml', $text);
+        self::assertStringContainsString('.form.yaml', $text);
+        self::assertStringContainsString('_originalIdentifier', $text);
+        self::assertStringContainsString('AfterCurrentPageIsResolvedEvent', $text);
+        self::assertStringContainsString('submitted value still wins', $text);
+    }
+
+    #[Test]
     public function theSeedingAdviceCarriesTheStepsItAsksFor(): void
     {
         // "Seed with DataHandler, then export" named the way in and stopped

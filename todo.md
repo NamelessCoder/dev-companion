@@ -112,27 +112,6 @@ has no shape for, and nobody has reported being stopped by it. These are a
 session that was stopped and read the answers out of `vendor/` by hand. Friction
 that happened outranks a mismatch that was noticed.
 
-### The form framework, the one whole subsystem the catalog has no hint for
-
-Serves `feedback/2026-07-29-234316-there-is-no-architecture-hint-about-ext-form.md`
-and the first half of
-`feedback/2026-07-29-234339-nothing-in-the-server-answers-which-extension.md`,
-because the prefilling answer is a form fact and belongs in the same hint.
-
-The next concrete step is verification in `.checkouts/14.3`, and it is most of
-the work: that `Configuration/Form/<SetName>/config.yaml` is auto-discovered
-since 14.2 with `persistenceManager.allowedExtensionPaths` pointing at
-`Resources/Private/Forms/`, that a definition file has to end in `.form.yaml`,
-that the predecessor needed two TypoScript registrations and is deprecated for
-removal in v15, that `FormFrontendController::renderAction()` suffixes the
-identifier with the content element uid and keeps the declared one in
-`renderingOptions._originalIdentifier`, and that
-`AfterCurrentPageIsResolvedEvent` sits between `initializeFormStateFromRequest()`
-and `processSubmittedFormValues()` — which is the whole reason a submitted value
-still wins over a prefilled one. Every statement gets its range from what the
-checkouts say, and the hint goes in `general.json` unless the writing shows the
-subject is TypoScript-shaped.
-
 ### The hooks that outlived the PSR-14 conversion, and routing by intent
 
 Serves the second half of the same note, and it is last because it is the only

@@ -124,6 +124,16 @@ them, this section wins and the other one is what needs rewriting.
   Each writes the client's native MCP and skill paths; Antigravity and Pi
   receive skills only.
   *Held by:* `InstallerAgentSupportTest`
+- **R-DIS-14** Installed task skills are evaluated workflows rather than static
+  prompt fragments. Task-shaped testing and conformance work is routed through
+  the task guide before subsystem evidence; repeated test, audit, and
+  documentation judgment lives in on-demand references; each skill states what
+  it owns; and core-only test guidance is offered only when the active server
+  profile provides it. Realistic prompts and their acceptance criteria remain
+  runnable without naming tools or intended answers.
+  *From:* forward tests of the testing, conformance, documentation, and backend
+  module skills against the Printworks sitepackage (2026-07-30).
+  *Held by:* `SkillTest`
 - **R-DIS-1** The installation is never derived from `getcwd()` on its own; only
   `bin/typo3-cms-mcp` enables discovery, because an HTTP endpoint has no such
   relationship to its callers.

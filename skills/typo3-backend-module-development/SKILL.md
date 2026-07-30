@@ -14,22 +14,24 @@ labels, API signatures, or version facts here.
 1. Call `typo3_project_scope` to identify the project, TYPO3 version, own
    extensions, and commands. If the target extension is known, call
    `typo3_extension_scope` with its key.
-2. Decide whether this is a core patch, extension, or site task from the task and
+2. Call `typo3_server_scope` to establish the active profile and available
+   knowledge depth.
+3. Decide whether this is a core patch, extension, or site task from the task and
    affected paths. If signals disagree, state the uncertainty; do not attach
    core-only checks to project work.
-3. Call `typo3_backend_module_lookup` before choosing the module identifier,
+4. Call `typo3_backend_module_lookup` before choosing the module identifier,
    parent, position, route, or registration shape.
-4. Call `typo3_icon_lookup` for every proposed module or action icon. Do not
+5. Call `typo3_icon_lookup` for every proposed module or action icon. Do not
    invent an identifier.
-5. Call `typo3_label_lookup` with words from recurring backend wording before
+6. Call `typo3_label_lookup` with words from recurring backend wording before
    adding a label. Use `typo3_translation_domain_lookup` for the extension's own
    XLF path.
-6. Call `typo3_component_lookup` with the target TYPO3 version before writing
+7. Call `typo3_component_lookup` with the target TYPO3 version before writing
    buttons, status markers, cards, tables, or other backend markup.
-7. Call `typo3_documentation_lookup` with several short English queries and the
+8. Call `typo3_documentation_lookup` with several short English queries and the
    target TYPO3 version for module registration, controller, routing, security,
    and other official API details.
-8. Call `typo3_architecture_lookup` with the concrete paths and task for
+9. Call `typo3_architecture_lookup` with the concrete paths and task for
    conventions that connect these pieces.
 
 If an installation-backed lookup is unavailable, report that gap and its
@@ -46,7 +48,9 @@ live documentation is unavailable, keep the failure distinct from no match.
 - Keep project paths and commands in the project. Use core-only checks,
   changelogs, Gerrit rules, and `Build/Scripts/runTests.sh` only for an actual
   core patch.
-- Run the repository's own relevant checks. For a core patch, use
-  `typo3_test_run_guide` with the changed paths.
+- Run the repository's own relevant checks. Only for an actual core patch and
+  when `typo3_server_scope` reports the all/core contribution profile, use
+  `typo3_test_run_guide` with the changed paths. It is unavailable in the
+  project profile; never present it as a project command.
 - Re-run the lookups when the target version, extension, or implementation
   choice changes; do not treat an earlier result as universal.

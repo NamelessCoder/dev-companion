@@ -61,7 +61,7 @@ final class InstallerTest extends TestCase
     }
 
     #[Test]
-    public function codexInstallAndUpdatePreserveConfigurationAndOwnTheirSkill(): void
+    public function codexInstallAndUpdatePreserveConfigurationAndTrackTheirSkillsCentrally(): void
     {
         $directory = $this->directory();
         self::assertTrue(mkdir($directory . '/.codex', 0777, true));
@@ -77,23 +77,43 @@ final class InstallerTest extends TestCase
             self::assertStringContainsString(Paths::root() . '/bin/typo3-cms-mcp', $configuration);
 
             $skill = $directory . '/.agents/skills/typo3-backend-module-development/SKILL.md';
-            $manifest = dirname($skill) . '/.typo3-cms-mcp.json';
+            $state = $directory . '/typo3-cms-mcp.json';
             self::assertFileEquals(
                 Paths::root() . '/skills/typo3-backend-module-development/SKILL.md',
                 $skill,
             );
-            self::assertFileExists($manifest);
+            self::assertFileDoesNotExist(dirname($skill) . '/.typo3-cms-mcp.json');
+            self::assertFileExists($state);
+            self::assertSame([
+                'version' => 1,
+                'skills' => [
+                    'typo3-backend-module-development',
+                    'typo3-extension-conformance',
+                    'typo3-extension-documentation',
+                    'typo3-extension-testing',
+                ],
+            ], json_decode((string) file_get_contents($state), true, flags: JSON_THROW_ON_ERROR));
+            foreach ([
+                'typo3-extension-conformance',
+                'typo3-extension-documentation',
+                'typo3-extension-testing',
+            ] as $publishedSkill) {
+                self::assertFileEquals(
+                    Paths::root() . '/skills/' . $publishedSkill . '/SKILL.md',
+                    $directory . '/.agents/skills/' . $publishedSkill . '/SKILL.md',
+                );
+            }
 
             $before = [
                 'configuration' => file_get_contents($directory . '/.codex/config.toml'),
                 'skill' => file_get_contents($skill),
-                'manifest' => file_get_contents($manifest),
+                'state' => file_get_contents($state),
             ];
             self::assertSame(0, $this->execute($directory, ['install', '--agent=codex'], $stderr), $stderr);
             self::assertSame(0, $this->execute($directory, ['update', '--agent=codex'], $stderr), $stderr);
             self::assertSame($before['configuration'], file_get_contents($directory . '/.codex/config.toml'));
             self::assertSame($before['skill'], file_get_contents($skill));
-            self::assertSame($before['manifest'], file_get_contents($manifest));
+            self::assertSame($before['state'], file_get_contents($state));
         } finally {
             $this->removeCodexFixture($directory);
         }
@@ -160,7 +180,7 @@ final class InstallerTest extends TestCase
     }
 
     #[Test]
-    public function codexUpdateRefusesToOverwriteAModifiedGeneratedSkill(): void
+    public function codexUpdateReplacesAModifiedGeneratedSkill(): void
     {
         $directory = $this->directory();
         try {
@@ -169,9 +189,60 @@ final class InstallerTest extends TestCase
             $skill = $directory . '/.agents/skills/typo3-backend-module-development/SKILL.md';
             file_put_contents($skill, (string) file_get_contents($skill) . "\nUser change.\n");
 
-            self::assertSame(1, $this->execute($directory, ['update', '--agent=codex'], $stderr));
-            self::assertStringContainsString('was modified', $stderr);
-            self::assertStringContainsString('User change.', (string) file_get_contents($skill));
+            self::assertSame(0, $this->execute($directory, ['update', '--agent=codex'], $stderr), $stderr);
+            self::assertFileEquals(
+                Paths::root() . '/skills/typo3-backend-module-development/SKILL.md',
+                $skill,
+            );
+            self::assertStringNotContainsString('User change.', (string) file_get_contents($skill));
+        } finally {
+            $this->removeCodexFixture($directory);
+        }
+    }
+
+    #[Test]
+    public function codexUpdateReplacesTheCompleteGeneratedSkillDirectory(): void
+    {
+        $directory = $this->directory();
+        try {
+            $stderr = '';
+            self::assertSame(0, $this->execute($directory, ['install', '--agent=codex'], $stderr), $stderr);
+            $skillDirectory = $directory . '/.agents/skills/typo3-extension-testing';
+            $obsolete = $skillDirectory . '/agents/openai.yaml';
+            self::assertTrue(mkdir(dirname($obsolete)));
+            self::assertNotFalse(file_put_contents($obsolete, "interface: {}\n"));
+
+            self::assertSame(0, $this->execute($directory, ['update', '--agent=codex'], $stderr), $stderr);
+            self::assertFileDoesNotExist($obsolete);
+            self::assertDirectoryDoesNotExist(dirname($obsolete));
+        } finally {
+            $this->removeCodexFixture($directory);
+        }
+    }
+
+    #[Test]
+    public function codexUpdateRemovesSkillsTrackedByThePreviousCentralState(): void
+    {
+        $directory = $this->directory();
+        try {
+            $stderr = '';
+            self::assertSame(0, $this->execute($directory, ['install', '--agent=codex'], $stderr), $stderr);
+            $stale = $directory . '/.agents/skills/obsolete-typo3-skill';
+            self::assertTrue(mkdir($stale));
+            self::assertNotFalse(file_put_contents($stale . '/SKILL.md', "obsolete\n"));
+            $state = json_decode(
+                (string) file_get_contents($directory . '/typo3-cms-mcp.json'),
+                true,
+                flags: JSON_THROW_ON_ERROR,
+            );
+            $state['skills'][] = 'obsolete-typo3-skill';
+            file_put_contents(
+                $directory . '/typo3-cms-mcp.json',
+                json_encode($state, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR) . "\n",
+            );
+
+            self::assertSame(0, $this->execute($directory, ['update', '--agent=codex'], $stderr), $stderr);
+            self::assertDirectoryDoesNotExist($stale);
         } finally {
             $this->removeCodexFixture($directory);
         }
@@ -211,13 +282,21 @@ final class InstallerTest extends TestCase
 
     private function removeCodexFixture(string $directory): void
     {
-        @unlink($directory . '/.agents/skills/typo3-backend-module-development/agents/openai.yaml');
-        @rmdir($directory . '/.agents/skills/typo3-backend-module-development/agents');
-        @unlink($directory . '/.agents/skills/typo3-backend-module-development/SKILL.md');
-        @unlink($directory . '/.agents/skills/typo3-backend-module-development/.typo3-cms-mcp.json');
-        @rmdir($directory . '/.agents/skills/typo3-backend-module-development');
+        @unlink($directory . '/.agents/skills/obsolete-typo3-skill/SKILL.md');
+        @rmdir($directory . '/.agents/skills/obsolete-typo3-skill');
+        foreach ([
+            'typo3-backend-module-development',
+            'typo3-extension-conformance',
+            'typo3-extension-documentation',
+            'typo3-extension-testing',
+        ] as $skill) {
+            $skillDirectory = $directory . '/.agents/skills/' . $skill;
+            @unlink($skillDirectory . '/SKILL.md');
+            @rmdir($skillDirectory);
+        }
         @rmdir($directory . '/.agents/skills');
         @rmdir($directory . '/.agents');
+        @unlink($directory . '/typo3-cms-mcp.json');
         @unlink($directory . '/.codex/config.toml');
         @rmdir($directory . '/.codex');
         @rmdir($directory);

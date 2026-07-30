@@ -29,6 +29,7 @@ final class ToolSchemas
             'typo3_task_guide' => self::taskGuide(),
             'typo3_test_run_guide' => self::testRunGuide(),
             'typo3_architecture_lookup' => self::architectureLookup(),
+            'typo3_documentation_lookup' => self::documentationLookup(),
             'typo3_component_lookup' => self::componentLookup(),
             'typo3_system_extension_lookup' => self::systemExtensionLookup(),
             'typo3_reference_list' => self::referenceList(),
@@ -249,6 +250,33 @@ final class ToolSchemas
                 'category' => self::string(),
             ], ['id', 'title', 'category']), 'The hints that exist in the searched domains, returned when none matched. Empty on a hit.'),
         ], ['paths', 'domains', 'withheldCategories', 'outsideCore', 'hints', 'availableHints']);
+    }
+
+    /** @return array<string, mixed> */
+    private static function documentationLookup(): array
+    {
+        return self::object([
+            'status' => ['type' => 'string', 'enum' => ['answered', 'empty', 'unavailable']],
+            'targetVersion' => self::string('The exact documentation release searched.'),
+            'source' => self::string('The external documentation host.'),
+            'queries' => self::listOf(self::string()),
+            'results' => self::listOf(self::object([
+                'title' => self::string(),
+                'url' => self::string('Canonical URL of the matching documentation page.'),
+                'document' => self::string('Official document identifier.'),
+                'documentTitle' => self::string(),
+                'documentVersion' => self::string(),
+                'section' => self::string(),
+                'excerpt' => self::string('Short route into the source, empty only when the result page could not be read after its index matched.'),
+            ], ['title', 'url', 'document', 'documentTitle', 'documentVersion', 'section', 'excerpt'])),
+            'unavailable' => [
+                'type' => ['object', 'null'],
+                'properties' => [
+                    'reason' => self::string(),
+                ],
+                'required' => ['reason'],
+            ],
+        ], ['status', 'targetVersion', 'source', 'queries', 'results', 'unavailable']);
     }
 
     /** @return array<string, mixed> */

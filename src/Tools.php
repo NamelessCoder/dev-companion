@@ -167,6 +167,30 @@ final class Tools
                 ],
             ],
             [
+                'name' => 'typo3_documentation_lookup',
+                'description' => 'Search the official live TYPO3 documentation for broad API, reference, and tutorial questions. Results are bound to the requested covered TYPO3 line and carry their canonical source; this reaches docs.typo3.org, unlike the bundled convention lookups. Use several short English queries when the API may be described by different words.',
+                'annotations' => [
+                    'readOnlyHint' => true,
+                    'destructiveHint' => false,
+                    'idempotentHint' => true,
+                    'openWorldHint' => true,
+                ],
+                'inputSchema' => [
+                    'type' => 'object',
+                    'properties' => [
+                        'queries' => [
+                            'type' => 'array',
+                            'items' => ['type' => 'string', 'minLength' => 1],
+                            'minItems' => 1,
+                            'description' => 'Short search queries in English. Pass alternatives separately, for example ["page title event", "page title provider"].',
+                        ],
+                        'targetVersion' => ['type' => 'string', 'minLength' => 1, 'description' => 'Covered TYPO3 version whose official manual must answer, for example "13.4" or "14". There is no fallback to another release.'],
+                        'limit' => ['type' => 'integer', 'minimum' => 1, 'maximum' => 10, 'default' => 6],
+                    ],
+                    'required' => ['queries', 'targetVersion'],
+                ],
+            ],
+            [
                 'name' => 'typo3_component_lookup',
                 'description' => 'Look up TYPO3 backend UI components by name or topic. Returns canonical markup, variant/modifier/sub-component classes, the custom-property contract, and the styleguide demo and Sass source paths. Each entry carries the TYPO3 majors it was verified on; pass targetVersion and one that was not verified there is withheld with what to verify against, rather than handed over as fact.',
                 'inputSchema' => [
@@ -399,6 +423,7 @@ final class Tools
             'typo3_task_guide' => self::taskGuide($args),
             'typo3_test_run_guide' => self::testRunGuide($args),
             'typo3_architecture_lookup' => self::architectureLookup($args),
+            'typo3_documentation_lookup' => self::documentationLookup($args),
             'typo3_component_lookup' => self::componentLookup($args),
             'typo3_system_extension_lookup' => self::systemExtensionLookup($args),
             'typo3_reference_list' => self::referenceList($args),
@@ -417,6 +442,62 @@ final class Tools
             'typo3_feedback_list' => self::feedbackList($args),
             default => throw new \InvalidArgumentException(sprintf('Unknown tool: %s', $name)),
         };
+    }
+
+    /** @param array<string, mixed> $args */
+    private static function documentationLookup(array $args): ToolResult
+    {
+        $queries = is_array($args['queries'] ?? null)
+            ? array_values(array_filter($args['queries'], is_string(...)))
+            : [];
+        $statedVersion = is_string($args['targetVersion'] ?? null) ? trim($args['targetVersion']) : '';
+        $major = Versions::major($statedVersion);
+        $branch = $major === null ? null : Versions::branch($major);
+        $limit = is_int($args['limit'] ?? null) ? max(1, min(10, $args['limit'])) : 6;
+
+        if ($queries === [] || $statedVersion === '') {
+            throw new \InvalidArgumentException('queries and targetVersion are required');
+        }
+
+        if ($branch === null) {
+            $answer = [
+                'status' => 'unavailable',
+                'targetVersion' => $statedVersion,
+                'source' => 'https://docs.typo3.org',
+                'queries' => $queries,
+                'results' => [],
+                'unavailable' => [
+                    'reason' => sprintf(
+                        'TYPO3 %s is outside the covered versions: %s.',
+                        $statedVersion,
+                        implode(', ', array_map(static fn(array $version): string => $version['branch'], Versions::covered())),
+                    ),
+                ],
+            ];
+        } else {
+            $answer = (new Documentation())->lookup($queries, $branch, $limit);
+        }
+
+        $lines = [
+            sprintf('Official TYPO3 documentation for %s.', $answer['targetVersion']),
+            'Source: ' . $answer['source'],
+        ];
+        if ($answer['status'] === 'unavailable') {
+            $lines[] = 'Could not answer: ' . $answer['unavailable']['reason'];
+        } elseif ($answer['status'] === 'empty') {
+            $lines[] = 'No matching section was found. The documentation service answered; narrow or rephrase the queries.';
+        } else {
+            foreach ($answer['results'] as $result) {
+                $lines[] = '';
+                $lines[] = '## ' . $result['title'];
+                $lines[] = sprintf('%s · %s · %s', $result['document'], $result['documentVersion'], $result['url']);
+                if ($result['excerpt'] !== '') {
+                    $lines[] = $result['excerpt'];
+                }
+            }
+        }
+
+        return ToolResult::create(implode("\n", $lines), $answer);
     }
 
     private static function serverScope(): ToolResult
@@ -553,8 +634,9 @@ final class Tools
         }
 
         $lines[] = '';
-        $lines[] = 'Every lookup and guide is read-only. Apart from the installation named above, nothing is '
-            . 'fetched, executed, or looked up online.';
+        $lines[] = 'Every lookup and guide is read-only. typo3_documentation_lookup reads the official, versioned '
+            . 'manuals at docs.typo3.org; apart from that and the installation named above, nothing is fetched, '
+            . 'executed, or looked up online.';
         if (Feedback::isAvailable()) {
             // Naming the one write next to the read-only claim, not after it:
             // a blanket "everything is read-only" followed by a tool that

@@ -4,6 +4,8 @@
     "type": "library",
     "license": "MIT",
     "require": {
+        "ext-curl": "*",
+        "ext-dom": "*",
         "php": ">=8.2",
         "mcp/sdk": "^0.7.0",
         "symfony/yaml": "^7.4"

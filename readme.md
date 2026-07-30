@@ -9,10 +9,13 @@ core's own contribution process — rules, the Gerrit workflow, script and
 components: context that is otherwise spread across project knowledge, core
 conventions, and the official documentation.
 
-Almost everything it answers comes from the bundled `knowledge/` files, and the
-answers are bound to versions: the knowledge base covers several TYPO3 lines,
-and a statement that does not hold on all of them carries the ones it does hold
-on. Pass a `targetVersion`, or let the installation being read decide.
+Almost everything it answers comes from the bundled `knowledge/` files. Broad
+API, reference and tutorial questions can instead be searched in the official
+live TYPO3 documentation, with the requested documentation release and
+canonical source kept on every result. The bundled answers are bound to
+versions: the knowledge base covers several TYPO3 lines, and a statement that
+does not hold on all of them carries the ones it does hold on. Pass a
+`targetVersion`, or let the installation being read decide.
 
 **Those files are trained by being used.** An agent gets a real task in a real
 checkout and works under one rule: whatever it would otherwise search for — a
@@ -283,6 +286,11 @@ name already says what shape the answer has.
   the task names the frontend, because there they would be inverted advice
   rather than merely irrelevant. An answer that matched nothing lists the hint
   ids there are, and `id` asks for one of them outright.
+- `typo3_documentation_lookup`: searches the public tables of contents of TYPO3
+  Explained and TypoScript Explained on `docs.typo3.org`, for an explicitly
+  requested covered release. Every result carries its canonical URL, document,
+  version and section. It never falls through to another release, and an
+  unreachable service is distinct from a search that answered with no match.
 - `typo3_component_lookup`: looks up backend UI components by name or topic and
   returns canonical markup, variant and sub-component classes, the custom
   property contract, and the styleguide demo and Sass source paths. Every entry

@@ -85,23 +85,6 @@ somebody else writes.
 
 ---
 
-## Add versioned TYPO3 live-documentation lookup
-
-This serves `EXT-07` and `R-DOC-1`. The
-bundled knowledge remains the source for curated conventions, scopes, silent
-failure modes and verified catalog markup; live docs answer broad API, reference
-and tutorial questions.
-
-The next concrete step is a read-only spike against one covered version of
-`typo3/reference-coreapi` and `typo3/reference-typoscript`: establish the
-supported search or index interface, record its availability and response shape,
-and write a contract for `typo3_documentation_lookup` before implementing it.
-The contract must accept several English queries and `targetVersion`, return the
-canonical URL, document identifier, document version, section and source for
-every result, carry `openWorldHint: true`, and distinguish no match from an
-unreachable documentation service. It must never silently fall back from a
-requested release to another release or `main`.
-
 ## Publish task skills without duplicating the knowledge base
 
 This serves `SITE-07`, `R-SKL-1` and R-ANS-9. Skills describe when and in which

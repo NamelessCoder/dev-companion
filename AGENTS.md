@@ -11,6 +11,7 @@ src/               # PHP classes (knowledge loading, tools, SDK wiring)
 src/ServerFactory.php  # builds the mcp/sdk server from the tool definitions
 src/Mcp/           # SDK handlers: tool dispatch and typo3://core resources
 src/Catalog/       # the component catalog and the translation domain derivation
+src/Documentation.php  # reads the public index and pages of versioned TYPO3 manuals
 src/Instance.php   # finds the TYPO3 installation the agent is working in
 src/Project.php    # the repository around it; src/Extension.php one extension in it
 src/Profile.php    # which half of the server a client is offered (TYPO3_MCP_PROFILE)
@@ -28,8 +29,9 @@ vendor/            # Composer dependencies (mcp/sdk); gitignored
 
 `Typo3CmsMcp\Tools` declares every tool and builds its answer;
 `Typo3CmsMcp\Knowledge` reads and searches the markdown documents. Tool names,
-schemas, and response formatting live in `src/`; everything they answer comes
-from `knowledge/`.
+schemas, and response formatting live in `src/`; bundled answers come from
+`knowledge/`, live manual results from `docs.typo3.org`, and installation facts
+from the installation being read.
 
 ## Where a session starts, and what it owes the next one
 

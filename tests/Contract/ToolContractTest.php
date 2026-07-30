@@ -33,7 +33,11 @@ final class ToolContractTest extends TestCase
                 array_keys($definition['annotations']),
                 $name . ' is missing annotations'
             );
-            self::assertFalse($definition['annotations']['openWorldHint'], $name . ' reaches nothing outside this package');
+            self::assertSame(
+                $name === 'typo3_documentation_lookup',
+                $definition['annotations']['openWorldHint'],
+                $name . ' has the wrong open-world annotation',
+            );
         }
     }
 
@@ -111,6 +115,10 @@ final class ToolContractTest extends TestCase
             'architecture: path' => ['typo3_architecture_lookup', ['paths' => ['typo3/sysext/core/Classes/DataHandling/DataHandler.php']]],
             'architecture: topic' => ['typo3_architecture_lookup', ['task' => 'sass build']],
             'architecture: miss' => ['typo3_architecture_lookup', ['task' => 'quantumflux']],
+            'documentation: unsupported version' => ['typo3_documentation_lookup', [
+                'queries' => ['page title event'],
+                'targetVersion' => '999',
+            ]],
             'components: list' => ['typo3_component_lookup', []],
             'components: hit' => ['typo3_component_lookup', ['query' => 'badge']],
             'components: miss' => ['typo3_component_lookup', ['query' => 'quantumflux']],

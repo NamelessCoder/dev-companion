@@ -223,7 +223,7 @@ in [decisions.md](../decisions.md)
 
 ## EXT-07 — Learn an API from the documentation for this version
 
-**Environment:** `E-EXT` on TYPO3 13.4 · **Status today:** `gap` — `R-DOC-1`
+**Environment:** `E-EXT` on TYPO3 13.4 · **Status today:** `covered` — `R-DOC-1`
 
 > I need to add a PSR-14 listener that changes the page title. Find the official
 > API and show me the registration and event shape that applies to TYPO3 13.4.

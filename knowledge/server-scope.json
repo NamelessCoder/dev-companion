@@ -52,6 +52,15 @@
       "provenance": "transferable"
     },
     {
+      "topic": "Official TYPO3 API, reference and tutorial documentation",
+      "depth": "Live lookup in the public tables of contents of TYPO3 Explained and TypoScript Explained, bound to one covered documentation release. Every result keeps its canonical URL, document, version and section; an unreachable service is not an empty search.",
+      "tools": [
+        "typo3_documentation_lookup"
+      ],
+      "source": "https://docs.typo3.org",
+      "provenance": "transferable"
+    },
+    {
       "topic": "Backend CSS architecture, design tokens, class naming",
       "depth": "Curated prose covering the Sass sources, the token contract, and the component structure.",
       "tools": [
@@ -227,6 +236,10 @@
     {
       "when": "Working in a concrete file and unsure about the subsystem's conventions",
       "call": "typo3_architecture_lookup"
+    },
+    {
+      "when": "Needing the official API, reference or tutorial documentation for a covered TYPO3 version",
+      "call": "typo3_documentation_lookup with several short English queries and targetVersion"
     },
     {
       "when": "Writing or amending the commit message",

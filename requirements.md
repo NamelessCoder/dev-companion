@@ -179,7 +179,7 @@ them, this section wins and the other one is what needs rewriting.
 
 ## Answers — what a caller may conclude from one
 
-- **R-DOC-1** **open** — Broad API, reference and tutorial questions can be
+- **R-DOC-1** Broad API, reference and tutorial questions can be
   answered from the official live documentation for an explicitly selected
   TYPO3 version. Every result carries its canonical URL, document identifier,
   document version, section and source; a requested release never silently
@@ -188,7 +188,10 @@ them, this section wins and the other one is what needs rewriting.
   replaces the bundled conventions and their version, audience and binding
   data.
   *From:* `EXT-07`.
-  *Held by:* not guarded
+  *Held by:* `DocumentationTest`,
+  `ToolContractTest::everyToolDeclaresSchemasAndAnnotations`,
+  `ToolContractTest::aToolCallAnswersWithTextAndMatchingData`,
+  `ScopeTest::everyToolNamedByTheScopeIsRegisteredAndEveryRegisteredToolIsCovered`
 - **R-SKL-1** **open** — A backend-module task can activate concise,
   task-specific guidance that establishes scope and routes through registered
   modules, icons, labels, component markup and live documentation before code is

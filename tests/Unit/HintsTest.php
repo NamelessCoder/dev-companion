@@ -467,6 +467,29 @@ final class HintsTest extends TestCase
     }
 
     #[Test]
+    public function persistedAliasesStateBothDirectionsAndTheirValidationBoundary(): void
+    {
+        $query = 'What does PersistedAliasMapper map, which value belongs in the query argument, and why is there no cHash?';
+        $result = ArchitectureHints::find(
+            ['Configuration/Sets/Printworks/route-enhancers.yaml'],
+            $query,
+            6,
+        );
+        self::assertSame('frontend-records', $result['matchedHints'][0]['id']);
+
+        $guide = Tools::call('typo3_task_guide', [
+            'task' => $query,
+            'targetVersion' => '14',
+        ]);
+        $text = $guide->text;
+        self::assertStringContainsString('record uid as the query argument', $text);
+        self::assertStringContainsString('routeFieldName in the path', $text);
+        self::assertStringContainsString('uniqueInSite', $text);
+        self::assertStringContainsString('rejects the enhanced route before rendering', $text);
+        self::assertStringContainsString('needs no cHash', $text);
+    }
+
+    #[Test]
     public function theFormFrameworkIsCoveredAsAWholeSubsystem(): void
     {
         $result = ArchitectureHints::find(

@@ -236,6 +236,9 @@
       "route enhancer",
       "routeEnhancers",
       "routing argument",
+      "PersistedAliasMapper",
+      "routeFieldName",
+      "record uid",
       "cache hash",
       "cHash",
       "slug"
@@ -248,7 +251,11 @@
       "The chain is configured as dataProcessing on the PAGEVIEW or on lib.contentElement: database-query with table, pidInList or uidInList and orderBy, and a nested dataProcessing of its own. record-transformation there turns the rows into record objects, files resolves the references of an image field, and comma-separated-value parses a text field that carries a table.",
       "List and detail can be the same page. Fill the list variable unconditionally, fill the single record only when the request carries the argument — if.isTrue.data = GP:<argument> on that processor — and let the template branch on whether it is there. uidInList.data = GP:<argument> is safe on its own: the select is built by ContentObjectRenderer, which runs uidInList through GeneralUtility::intExplode() before it reaches the query.",
       {
-        "text": "The site set ships the routing for it, in route-enhancers.yaml next to config.yaml. A detail view of that shape is a Simple enhancer whose routePath carries the argument, with a PersistedAliasMapper aspect naming the table and the slug field.",
+        "text": "The site set ships the routing for it, in route-enhancers.yaml next to config.yaml. A detail view of that shape is a Simple enhancer whose routePath carries the argument, with a PersistedAliasMapper aspect naming the table and the slug field. The mapper's direction matters: link generation receives the record uid as the query argument and replaces it with routeFieldName in the path; route matching looks that field value up and hands the uid to the application. Thus ?record=<uid> becomes /detail/<route-field-value> — do not pass the route-field value as the query argument or validate it there.",
+        "since": 14
+      },
+      {
+        "text": "Make routeFieldName a TCA slug with eval uniqueInSite so the reverse lookup is unambiguous within the current site. A path value for which the mapper finds no visible record rejects the enhanced route before rendering, so the record lookup is the input validation; load the selected record by the resolved uid rather than trusting display data from the request.",
         "since": 14
       },
       {

@@ -486,6 +486,15 @@ took before the requirement above was written down, and it will not survive it.
 
 ## Knowledge — what is covered
 
+- **R-KNW-31** A PersistedAliasMapper answer states both directions: link
+  generation takes a record uid and emits the configured route-field value,
+  while route matching resolves that value back to the uid. It also states the
+  consequences that make the design useful: site-unique values, rejection of
+  unmatched paths before rendering, and no cHash for the mapped argument.
+  *From:* an implementation passing and validating the display value as a
+  query argument because the mapper's direction was left implicit (2026-07-30).
+  *Held by:*
+  `HintsTest::persistedAliasesStateBothDirectionsAndTheirValidationBoundary`
 - **R-KNW-30** A non-English site setup reaches the complete label-language
   chain: the site language selects the pack key explicitly, the pack is
   activated through the configuration key of the target branch before it is

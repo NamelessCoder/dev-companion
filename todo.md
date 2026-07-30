@@ -93,14 +93,6 @@ stay in arrival order: first the site-language failure, then the routing design
 that followed from it, then the repository file whose ownership was discovered
 while committing the result.
 
-### PersistedAliasMapper maps a uid to a route field
-
-Serves
-`feedback/2026-07-30-003400-which-direction-persistedaliasmapper-maps-is.md`.
-Verify `generate()` and `resolve()` on every covered checkout, including the
-uniqueness and not-found behavior, then put the direction and its validation
-consequence beside the existing cHash statement in `frontend-records`.
-
 ### The project and DDEV can contest additional.php
 
 Serves

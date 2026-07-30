@@ -183,6 +183,36 @@
     ]
   },
   {
+    "id": "installation-setup",
+    "title": "Setting an installation up",
+    "match": [
+      "typo3 setup",
+      "set up a new",
+      "set up an installation",
+      "install typo3",
+      "fresh installation",
+      "bootstrap the installation"
+    ],
+    "matchWeak": [
+      "setup",
+      "install"
+    ],
+    "condition": "only if the task is setting an installation up rather than working on the code in one",
+    "rulesQuery": "",
+    "checklist": [
+      "State the admin username and the password in your reply, with the URL of the backend they belong to. The setup command prints neither, so where it ran non-interactively the party that chose the value is the only one that has it — and a password nobody reports is a lockout of the installation that was just created.",
+      "Generate that password rather than inventing a quiet default, and keep it out of the shell history: --admin-user-password and TYPO3_SETUP_ADMIN_PASSWORD both end up in it, which is what the command's own help warns about. The interactive mode avoids it, and so does a leading space in bash and zsh.",
+      "The same value becomes the install tool password. The command creates the backend user and then sets BE/installToolPassword in config/system/settings.php to what it was handed, and there is no option of its own for it — so the two start out identical and diverge silently the first time somebody changes the backend password.",
+      "Neither is stored reversibly, so recovery is a reset and not a lookup: backend:resetpassword for the backend user, and for the install tool the BE/installToolPassword hash in config/system/settings.php — which install:password:set rewrites where the installation has that command.",
+      "Leave --create-site out where a sitepackage ships a root page and a site configuration. It creates both itself, and the sitepackage's own import then lands beside them: a second root page, and its site configuration skipped because the identifier already exists."
+    ],
+    "checks": [],
+    "tools": [
+      "typo3_project_scope, for what the installation around this repository already is",
+      "typo3_architecture_lookup with id=sitepackage-initial-content, for what a sitepackage seeds an empty installation with and why the order of the two setup commands decides it"
+    ]
+  },
+  {
     "id": "installation-upgrade",
     "title": "Upgrading or maintaining an installation",
     "match": [

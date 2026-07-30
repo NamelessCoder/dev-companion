@@ -91,11 +91,12 @@ Written down before the work starts, because it is a change of order. Five notes
 came out of one session in `/home/benji/projects/site-new` on 2026-07-29 — four at
 23:43 from one task, an EXT:form form definition in a sitepackage prefilling a
 field from the URL, and one at 23:51 from setting the installation up in the first
-place. Each was re-run against the server as it is now, and each still held. Two
-are closed: the Fluid array literal, whose measurement is in `decisions.md`
-because verifying it needed the engine per major rather than the checkouts, and
-the functional test facts, one of which the source disproved on the way in.
-Three are open:
+place. Each was re-run against the server as it is now, and each still held.
+Three are closed: the Fluid array literal, whose measurement is in
+`decisions.md` because verifying it needed the engine per major rather than the
+checkouts; the functional test facts, one of which the source disproved on the
+way in; and the credentials `typo3 setup` produces, which turned out to be a task
+intent rather than a hint. Two are open:
 
 - `typo3_architecture_lookup` for the EXT:form task answers `site-sets`,
   `frontend-page-rendering` and `sitepackage-layout` — correct for "a
@@ -104,41 +105,12 @@ Three are open:
 - `typo3_changelog_lookup query="prefill"` returns nothing across 14.3 down to
   13.3, and `events-extension-points` says a hook is right "where the subsystem
   still has hook-based extension points" without naming one.
-- `typo3_task_guide` for setting an installation up with `typo3 setup` answers
-  with hints on how to *write* a console command, plus the generic checklist —
-  nothing about the credentials that command produces.
 
 They go before the twins below, and the reason is what each input is worth. The
 twins serve a note whose own category is `idea` — a synthesis of what the catalog
 has no shape for, and nobody has reported being stopped by it. These are a
 session that was stopped and read the answers out of `vendor/` by hand. Friction
 that happened outranks a mismatch that was noticed.
-
-### The credentials `typo3 setup` produces and nobody reports
-
-Serves `feedback/2026-07-29-235145-setting-up-an-installation-with-typo3-setup.md`,
-and it is first among the three because its consequence is the hardest and its
-verification the smallest: one extension's source, and the session it came from
-had a user locked out of the backend an earlier session had set up.
-
-The command prints neither the admin user nor the password it used, so an agent
-running it non-interactively with `--admin-user-password` is the only party that
-knows the value. That makes reporting it back a step of the task rather than
-courtesy. Two more facts belong with it: the same value also becomes
-`BE/installToolPassword` — `SetupCommand` calls `SetupService::createUser()` and
-then `setInstallToolPassword()` with it, and there is no separate option — so the
-two diverge silently the moment the backend password changes; and the way back is
-`install:password:set` and `backend:resetpassword`, because only the Argon2i hash
-is left.
-
-The next concrete step is to verify all of it in `.checkouts/14.3` against
-`typo3/sysext/install/Classes/Command/`, then decide where it lives: this is a
-task shape rather than a subsystem, so it is an entry in
-`knowledge/task-intents.json` with its own checklist items, not an architecture
-hint. Check on the older branches whether the command and the coupling are the
-same before leaving the statements unbound. The `--create-site` caveat the note
-names rides along — a sitepackage that ships a root page and a site configuration
-has to be set up without it.
 
 ### The form framework, the one whole subsystem the catalog has no hint for
 

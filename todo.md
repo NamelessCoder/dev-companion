@@ -140,25 +140,6 @@ into `CLAUDE.md`. This server runs beside an installation and answers only when
 called. The second half of that is the part worth reconsidering; the first is
 not, and `decisions.md` says why a booting TYPO3 was never a precondition here.
 
-### Prompts, the primitive this server does not use
-
-Would establish a requirement under `## Guides`, which is where what a returned
-draft is worth is already written down. Boost ships four prompts — upgrade
-Laravel v13, upgrade Livewire v4, upgrade Inertia v3, and a code simplifier —
-and they cost no context until somebody picks one, because a prompt is invoked
-by the user rather than offered to the model.
-
-`src/` has no prompt at all. The candidates are the ones a TYPO3 session
-actually starts with and this server already has the material for: a v12→v13
-upgrade pass, and a commit message for work already done (which
-`typo3_commit_message_guide` answers, but only once somebody thinks to call it —
-same problem as the item above, different half of it).
-
-The next concrete step is to check what `mcp/sdk` v0.7.0 offers for prompts and
-whether `ToolContractTest` has anything to say about a primitive that is not a
-tool; then one prompt, the commit message one, because its answer already exists
-and it tests the plumbing without any new knowledge.
-
 ### Withholding one tool without withholding half the server
 
 Would establish a requirement under `## Scope`, next to the two profiles.

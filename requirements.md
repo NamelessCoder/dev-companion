@@ -413,6 +413,13 @@ took before the requirement above was written down, and it will not survive it.
 
 ## Guides — what a returned draft is worth
 
+- **R-GUI-5** The existing commit-message guide is also exposed as an MCP
+  prompt, so a user can invoke it without first discovering the corresponding
+  tool. The prompt delegates to the guide and does not maintain a second set of
+  commit-message rules.
+  *From:* the SDK prompt primitive being unused while the most naturally
+  user-invoked guide already existed (2026-07-30).
+  *Held by:* `StdioServerTest::theCommitMessageGuideIsAvailableAsAPrompt`
 - **R-GUI-1** The checks a guide returns describe the draft it returns. A
   trailer the tool adds itself is never reported as missing, and what the draft
   cannot know it carries as a placeholder rather than as a default.

@@ -48,6 +48,27 @@ final class StdioServerTest extends TestCase
     }
 
     #[Test]
+    public function theCommitMessageGuideIsAvailableAsAPrompt(): void
+    {
+        $prompts = $this->session([$this->request(2, 'prompts/list')])[2]['result']['prompts'];
+        self::assertContains('typo3_commit_message', array_column($prompts, 'name'));
+
+        $result = $this->session([$this->request(2, 'prompts/get', [
+            'name' => 'typo3_commit_message',
+            'arguments' => [
+                'summary' => 'Explain the prompt primitive',
+                'workflow' => 'project',
+            ],
+        ])])[2]['result'];
+
+        self::assertSame('user', $result['messages'][0]['role']);
+        self::assertStringContainsString(
+            '[TASK] Explain the prompt primitive',
+            $result['messages'][0]['content']['text']
+        );
+    }
+
+    #[Test]
     public function aToolCallReturnsTextAndStructuredContent(): void
     {
         $result = $this->session([$this->request(2, 'tools/call', [

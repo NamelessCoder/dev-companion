@@ -169,6 +169,10 @@ That writes the same `.mcp.json` shape with an absolute path:
 The knowledge base ships inside the package, so nothing else needs to be
 deployed or configured.
 
+Clients that expose MCP prompts also list `typo3_commit_message`. It turns a
+summary into the same checked draft as `typo3_commit_message_guide`; the rules
+remain in the guide rather than being duplicated in the prompt.
+
 ### Smoke test
 
 Two JSON-RPC lines on stdin are enough to see the server come up and list its

@@ -85,5 +85,43 @@ somebody else writes.
 
 ---
 
+## Detect `addRecordType()` content elements in extension scope
+
+Serves
+`feedback/2026-07-30-073632-typo3-extension-scope-reports-contentelements.md`.
+
+Add a fixture extension whose CType is registered with `addRecordType()` in a
+split `Configuration/TCA/Overrides/tt_content_<element>.php`, reproduce the
+empty `contentElements` result in `Extension` tests, then extend the parser and
+hold the discovered CType and template mapping with that regression test.
+
+---
+
+## Make inline-record and AssetCollector guidance findable
+
+Serves
+`feedback/2026-07-30-073632-typo3-documentation-lookup-returned-weak-or.md`.
+
+Run the note's four documentation queries separately against every covered
+manual line, record which canonical pages are actually indexed, then add the
+smallest query normalization or version-bound architecture hints that make TCA
+inline ownership and frontend AssetCollector usage reachable. Add lookup or
+hint tests for the exact note queries.
+
+---
+
+## Route content-element tasks through the ownership decision
+
+Serves
+`feedback/2026-07-30-073632-the-content-element-workflow-initially.md` and
+scenario `SKILL-04`.
+
+Run `SKILL-04` from a fresh installed client without naming the new skill. If
+implicit skill routing does not reliably introduce the editor-ownership gate,
+extend the content-element task intent and the matching architecture hints,
+then hold the route with a task-guide test and rerun the scenario.
+
+---
+
 
 ---

@@ -121,10 +121,14 @@ function check(): int
     $problems = 0;
 
     foreach ($runs as $id => $recorded) {
+        $state = $recorded['verdict'];
+        if ($state === '' && Scenarios::isOpen($recorded['run'])) {
+            $state = 'open';
+        }
         printf(
             "%-10s %-8s %-10s %s\n",
             $id,
-            $recorded['verdict'] === '' ? '—' : $recorded['verdict'],
+            $state === '' ? '—' : $state,
             is_string($recorded['run']['date'] ?? null) ? $recorded['run']['date'] : '',
             $recorded['problems'] === [] ? 'ok' : '',
         );

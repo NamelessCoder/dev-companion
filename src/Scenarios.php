@@ -269,6 +269,21 @@ final class Scenarios
     }
 
     /**
+     * A run nobody has judged yet: written, and waiting for its session.
+     *
+     * @param array<string, mixed> $run
+     */
+    public static function isOpen(array $run): bool
+    {
+        $judgments = [
+            ...self::judgments($run, 'outcomes', 'met'),
+            ...self::judgments($run, 'failures', 'avoided'),
+        ];
+
+        return $judgments !== [] && array_filter($judgments, static fn(?bool $j): bool => $j !== null) === [];
+    }
+
+    /**
      * @param array<string, mixed> $run
      * @return array<int, bool|null>
      */
@@ -329,6 +344,14 @@ final class Scenarios
                 $scenario['criteria'],
             );
 
+            return $problems;
+        }
+
+        // The empty run `record` writes, before the session it belongs to has
+        // happened. It claims nothing, so there is nothing to hold it to — and
+        // a checker that fails on it stops the repository for as long as a run
+        // is open, which is the one time it has to stay usable.
+        if (self::isOpen($run)) {
             return $problems;
         }
 

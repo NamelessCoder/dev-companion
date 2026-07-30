@@ -65,11 +65,8 @@ final class ScenariosTest extends TestCase
     }
 
     #[Test]
-    public function anUnjudgedRunIsNotAResult(): void
+    public function aHalfJudgedRunIsNotAResult(): void
     {
-        // What `bin/scenarios record` writes before the session happens. It is
-        // in the same shape as a finished run and worth nothing, so the check
-        // has to be the thing that knows the difference.
         $recorded = $this->record('SITE-07', static function (array $run): array {
             $run['outcomes'] = array_map(static fn(): array => ['met' => null, 'evidence' => ''], $run['outcomes']);
 
@@ -79,6 +76,20 @@ final class ScenariosTest extends TestCase
         self::assertSame('', $recorded['verdict']);
         self::assertContains('scenarios/runs/SITE-07.json leaves outcomes 1 unjudged', $recorded['problems']);
         self::assertContains('scenarios/runs/SITE-07.json gives no evidence for outcomes 1', $recorded['problems']);
+    }
+
+    #[Test]
+    public function aRunWhoseSessionHasNotHappenedYetIsOpenRatherThanBroken(): void
+    {
+        // What `bin/scenarios record` writes. A checker that fails on it stops
+        // the repository for as long as a run is open — which is the one time
+        // it has to stay usable.
+        $skeleton = Scenarios::skeleton('SITE-07', 'testing', 'phpunit', '2026-07-30');
+        $recorded = $this->record('SITE-07', static fn(): array => $skeleton);
+
+        self::assertTrue(Scenarios::isOpen($recorded['run']));
+        self::assertSame('', $recorded['verdict']);
+        self::assertSame([], $recorded['problems']);
     }
 
     #[Test]

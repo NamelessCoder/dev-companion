@@ -58,8 +58,8 @@ final class Tools
     private const HINT_TOOLS = [
         'backend-modules' => 'typo3_backend_module_lookup, to compare the declaration with modules registered '
             . 'by the active installation',
-        'language-files' => 'typo3_label_lookup, while writing labels: which trans-units exist is a property '
-            . 'of the installation, not something to remember',
+        'language-files' => 'typo3_label_lookup with the XLF resource used at the consuming code, while writing '
+            . 'labels: a matching label elsewhere in the installation is not reusable in that context',
         'icon-usage' => 'typo3_icon_lookup, before writing an icon identifier: an unknown one renders an empty box',
     ];
 
@@ -237,12 +237,13 @@ final class Tools
             ],
             [
                 'name' => 'typo3_label_lookup',
-                'description' => 'Search the labels registered in the TYPO3 installation you are working in, so an existing label can be reused instead of a new key invented. Answered by the installation itself through its console, across the packages it has active — a project extension\'s labels included, and with the resource overrides the installation applies. Where the console cannot be reached — an installed TYPO3 whose database has no schema yet is the common case — the same packages\' XLF files are read instead, and answeredBy says which of the two answered.',
+                'description' => 'Search the labels registered in the TYPO3 installation you are working in. Reuse is local to the translation resource already used at the consuming code: pass resource whenever it is known, and do not reference a match from another module or package merely because its text is identical. Answered by the installation itself through its console, with the resource overrides it applies. Where the console cannot be reached — an installed TYPO3 whose database has no schema yet is the common case — the same packages\' XLF files are read instead, and answeredBy says which of the two answered.',
                 'inputSchema' => [
                     'type' => 'object',
                     'properties' => [
                         'query' => ['type' => 'string', 'minLength' => 1, 'description' => 'Words from the label text or its trans-unit id, for example "save document" or "labels.title". Several words are matched independently, ignoring case and order: a label has to carry every one of them, in its text or in its id. When none carries all of them, the answer says how far each word reaches on its own.'],
-                        'extension' => ['type' => 'string', 'description' => 'Restrict the search to one extension key.'],
+                        'extension' => ['type' => 'string', 'description' => 'Restrict the search to the extension that owns the consuming code.'],
+                        'resource' => ['type' => 'string', 'description' => 'Restrict the search to the exact XLF resource already used at the consuming code, for example "EXT:my_sitepackage/Resources/Private/Language/Backend/Import.xlf". A match from another resource is not a reuse candidate.'],
                         'limit' => ['type' => 'integer', 'minimum' => 1, 'maximum' => 200, 'default' => 25, 'description' => 'Maximum number of labels to return.'],
                     ],
                     'required' => ['query'],
@@ -3006,9 +3007,13 @@ final class Tools
     {
         $query = trim((string) ($args['query'] ?? ''));
         $extension = trim((string) ($args['extension'] ?? ''));
+        $resource = trim((string) ($args['resource'] ?? ''));
         $limit = (int) ($args['limit'] ?? 25);
         $terms = LabelSearch::terms($query);
 
+        if ($extension === '' && preg_match('#^EXT:([^/]+)/#', $resource, $matches) === 1) {
+            $extension = $matches[1];
+        }
         $arguments = ['language:domain:search', LabelSearch::consoleOption($terms), '--json', '--crop=0'];
         if ($extension !== '') {
             $arguments[] = '--extension=' . $extension;
@@ -3031,7 +3036,13 @@ final class Tools
             if ($candidates === []) {
                 return self::consoleUnavailable(
                     $answer['error'],
-                    ['query' => $query, 'matchCount' => 0, 'labels' => [], 'terms' => []],
+                    [
+                        'query' => $query,
+                        'resource' => $resource === '' ? null : $resource,
+                        'matchCount' => 0,
+                        'labels' => [],
+                        'terms' => [],
+                    ],
                 );
             }
             $answeredBy = 'packages';
@@ -3051,6 +3062,13 @@ final class Tools
             }
         }
 
+        if ($resource !== '') {
+            $candidates = array_values(array_filter(
+                $candidates,
+                static fn(array $label): bool => $label['resource'] === $resource,
+            ));
+        }
+
         // The console returned everything carrying any of the words; the query
         // asked for the labels carrying all of them.
         $labels = LabelSearch::carryingEvery($candidates, $terms);
@@ -3066,12 +3084,16 @@ final class Tools
             . 'LANG/resourceOverrides is shown here as its package ships it.',
             $answer['error'],
         ) : '';
+        $reuseBoundary = $resource === ''
+            ? "\n\nA match is reusable only when its resource is the one already used at the consuming code. "
+                . 'A label from another module or package is not a shared vocabulary merely because its text matches; '
+                . 'call again with resource once that usage context is known.'
+            : "\n\nSearch restricted to the translation resource used at the consuming code: " . $resource . '.';
 
         if ($shown === []) {
             $lines = [sprintf(
-                'No label in %s %s. The search covered the packages this installation has active, '
-                . 'so this is an answer about your installation rather than about TYPO3 in general.',
-                $instance['root'] ?? 'the installation',
+                'No label in %s %s. This is an answer about your installation rather than about TYPO3 in general.',
+                $resource !== '' ? $resource : ($instance['root'] ?? 'the installation'),
                 count($terms) > 1 ? 'carries all of ' . self::quotedTerms($terms) : sprintf('matches "%s"', $query)
             )];
 
@@ -3084,8 +3106,9 @@ final class Tools
                 )) . ' — ask again with the one that narrows best.';
             }
 
-            return ToolResult::create(implode("\n", $lines) . $fromFiles, [
+            return ToolResult::create(implode("\n", $lines) . $reuseBoundary . $fromFiles, [
                 'query' => $query,
+                'resource' => $resource === '' ? null : $resource,
                 'matchCount' => 0,
                 'labels' => [],
                 'terms' => $termCounts,
@@ -3093,7 +3116,8 @@ final class Tools
             ]);
         }
 
-        $lines = [sprintf('%d label(s) in %s match "%s"%s:', $total, $instance['root'] ?? '?', $query,
+        $lines = [sprintf('%d label(s) in %s match "%s"%s:', $total,
+            $resource !== '' ? $resource : ($instance['root'] ?? '?'), $query,
             $total > count($shown) ? sprintf(' — showing the first %d', count($shown)) : '')];
         foreach ($shown as $label) {
             $lines[] = '- ' . $label['ref'];
@@ -3104,8 +3128,9 @@ final class Tools
         $lines[] = 'Reference a label by the domain form shown first (package.resource:key) — in TCA, in '
             . 'LanguageService::sL(), and in f:translate as separate domain and key attributes.';
 
-        return ToolResult::create(implode("\n", $lines) . $fromFiles, [
+        return ToolResult::create(implode("\n", $lines) . $reuseBoundary . $fromFiles, [
             'query' => $query,
+            'resource' => $resource === '' ? null : $resource,
             'matchCount' => $total,
             'labels' => $shown,
             'terms' => $termCounts,

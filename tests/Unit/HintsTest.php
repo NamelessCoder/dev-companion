@@ -166,6 +166,20 @@ final class HintsTest extends TestCase
     }
 
     #[Test]
+    public function labelReuseStaysAtTheUsageContext(): void
+    {
+        $result = Tools::call('typo3_architecture_lookup', [
+            'id' => 'language-files',
+            'targetVersion' => '14',
+        ]);
+
+        self::assertStringContainsString('translation resource it already uses', $result->text);
+        self::assertStringContainsString('matching label elsewhere in the installation is not', $result->text);
+        self::assertStringContainsString('actions.createRecord', $result->text);
+        self::assertStringContainsString('context-free id such as new', $result->text);
+    }
+
+    #[Test]
     public function aGermanSiteTaskReachesItsLabelLanguageSetup(): void
     {
         $query = 'Set up a German-language site whose core and form labels still render in English';

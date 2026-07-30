@@ -158,6 +158,7 @@ final class ToolSchemas
     {
         return self::object([
             'query' => self::string(),
+            'resource' => self::nullableString('The exact XLF resource the result was restricted to. Null means the caller did not yet provide the usage context.'),
             'matchCount' => self::integer(),
             'matches' => self::listOf(self::knowledgeMatch()),
             'documents' => self::listOf(self::object([
@@ -448,7 +449,7 @@ final class ToolSchemas
                 'source' => self::string('The label text in the searched locale.'),
                 'resource' => self::string('The XLF file it lives in.'),
             ], ['ref', 'domain', 'key', 'source'])),
-        ], ['query', 'matchCount', 'answeredBy', 'terms', 'labels']);
+        ], ['query', 'resource', 'matchCount', 'answeredBy', 'terms', 'labels']);
     }
 
     /** @return array<string, mixed> */

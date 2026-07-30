@@ -141,6 +141,38 @@ final class LabelSearchTest extends TestCase
     }
 
     #[Test]
+    public function aResourceRestrictsReuseToTheUsageContext(): void
+    {
+        $this->consoleThatPrints((string) json_encode(['items' => [
+            [
+                'resource' => 'EXT:backend/Resources/Private/Language/locallang.xlf',
+                'labels' => [
+                    ['domain' => 'backend.messages', 'reference' => 'action.new', 'label' => 'New'],
+                ],
+            ],
+            [
+                'resource' => 'EXT:sitepackage/Resources/Private/Language/Backend/Import.xlf',
+                'labels' => [
+                    ['domain' => 'sitepackage.backend.import', 'reference' => 'actions.createImport', 'label' => 'New import'],
+                ],
+            ],
+        ]], JSON_THROW_ON_ERROR));
+
+        $resource = 'EXT:sitepackage/Resources/Private/Language/Backend/Import.xlf';
+        $result = Tools::call('typo3_label_lookup', [
+            'query' => 'new',
+            'resource' => $resource,
+        ]);
+
+        self::assertSame(1, $result->data['matchCount']);
+        self::assertSame($resource, $result->data['resource']);
+        self::assertSame('actions.createImport', $result->data['labels'][0]['key']);
+        self::assertStringNotContainsString('backend.messages:action.new', $result->text);
+        self::assertStringContainsString('Search restricted to the translation resource used', $result->text);
+        self::assertStringContainsString($resource, $result->text);
+    }
+
+    #[Test]
     public function aConsoleThatCannotBootIsAnsweredFromTheFilesItWouldHaveRead(): void
     {
         // An installed TYPO3 whose database has no schema yet: the console

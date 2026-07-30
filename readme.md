@@ -374,7 +374,9 @@ name already says what shape the answer has.
   the backend's, and frontend rendering reaches none of it.
 - `typo3_label_lookup`: searches the labels the installation has registered (XLF
   trans-units) and returns the domain reference (`package.resource:key`) and the
-  source text, so an existing label gets reused instead of a new key invented.
+  source text. Pass the XLF `resource` already used at the consuming code:
+  reuse is local to that resource, and a matching label in another module or
+  package is not a shared vocabulary.
   Several words are matched independently, ignoring case and order: a label has
   to carry every one of them, and where none does, the answer says how far each
   word reaches on its own. Where the console cannot be reached — an installed

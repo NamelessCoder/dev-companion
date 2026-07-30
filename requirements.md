@@ -605,6 +605,15 @@ took before the requirement above was written down, and it will not survive it.
 
 ## Knowledge — what is covered
 
+- **R-KNW-36** Label reuse is local to the translation resource and semantic
+  context already used at the consuming code. An identical string elsewhere in
+  the installation is not a cross-module vocabulary, and a new unit id names
+  its concrete use within the local resource rather than using a context-free
+  word such as `new`.
+  *From:* a label search whose installation-wide matches looked reusable even
+  though they belonged to unrelated modules and packages (2026-07-30).
+  *Held by:* `HintsTest::labelReuseStaysAtTheUsageContext`,
+  `LabelSearchTest::aResourceRestrictsReuseToTheUsageContext`
 - **R-KNW-35** Backend-module guidance continues past registration: it names
   the version-bound shortcut API used by the doc header and requires a 303
   redirect after a state-changing POST so the browser follows with GET.

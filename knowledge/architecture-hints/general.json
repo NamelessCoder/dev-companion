@@ -92,17 +92,11 @@
     "title": "Configuration Belongs to Its Reach",
     "appliesTo": [
       "configuration scope",
-      "setting",
-      "settings",
       "storage pid",
-      "site setting",
-      "site settings",
-      "settings.definitions.yaml",
       "ext_conf_template.txt",
       "ExtensionConfiguration",
       "scheduler task",
-      "task configuration",
-      "sitepackage"
+      "task configuration"
     ],
     "hints": [
       "Choose the owner of a configuration value by where the value may differ, not by which extension reads it.",

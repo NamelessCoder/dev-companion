@@ -458,6 +458,13 @@ took before the requirement above was written down, and it will not survive it.
 
 ## Knowledge — what is covered
 
+- **R-KNW-25** The two site-local settings sources are answered with their
+  precedence: `config/sites/<identifier>/settings.yaml` replaces the inline
+  `settings:` block of `config.yaml` rather than merging with it, and the
+  backend editor persists to the former.
+  *From:* adding one setting in the backend silently dropping every value a
+  sitepackage seed carried inline (2026-07-30).
+  *Held by:* `HintsTest::siteLocalSettingsSourcesAreAnsweredWithTheirPrecedence`
 - **R-KNW-24** A check is offered only where the command exists. Every check
   this server carries is a `runTests.sh` invocation, and which suites that
   script offers changes between majors — so a check names a suite, and the suite

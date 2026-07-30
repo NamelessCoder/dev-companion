@@ -393,6 +393,28 @@ final class HintsTest extends TestCase
     }
 
     #[Test]
+    public function siteLocalSettingsSourcesAreAnsweredWithTheirPrecedence(): void
+    {
+        $result = ArchitectureHints::find(
+            [
+                'config/sites/main/config.yaml',
+                'config/sites/main/settings.yaml',
+                'Configuration/Sets/Printworks/settings.definitions.yaml',
+            ],
+            'Site settings: settings.yaml of a site versus the inline settings key in config.yaml, and settings shipped by a site set',
+            6
+        );
+        self::assertContains('site-sets', array_column($result['matchedHints'], 'id'));
+
+        $hint = ArchitectureHints::byId('site-sets');
+        self::assertNotNull($hint);
+        $text = implode("\n", array_column($hint['hints'], 'text'));
+        self::assertStringContainsString('alternatives, not layers', $text);
+        self::assertStringContainsString('does not merge', $text);
+        self::assertStringContainsString('backend settings editor', $text);
+    }
+
+    #[Test]
     public function theSeedingAdviceCarriesTheStepsItAsksFor(): void
     {
         // "Seed with DataHandler, then export" named the way in and stopped

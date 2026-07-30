@@ -94,14 +94,6 @@ been re-run against the current server, and both still fail. They go first
 because each can be closed without making the larger form-framework verification
 carry an unrelated open note through it.
 
-### Site-local settings are alternatives, not layers
-
-Serves
-`feedback/2026-07-30-000113-the-precedence-between-the-two-places-a-site-s.md`.
-Verify the `loadLocalSettings() ?? $inlineSettings` boundary on both sides of
-the version where site settings arrived, add it to `site-sets`, and make the
-note's own query hold it there.
-
 ### A routed static argument is not a cache-hash argument
 
 Serves

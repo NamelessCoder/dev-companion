@@ -6,6 +6,8 @@
       "Configuration/Sets/",
       "site set",
       "settings.definitions.yaml",
+      "settings.yaml",
+      "config/sites/",
       "setup.typoscript",
       "constants.typoscript",
       "BackendLayouts",
@@ -27,6 +29,10 @@
       },
       {
         "text": "A settings value is addressed by its dotted path, and both spellings of it resolve: the set's own settings.yaml writes a nested tree, and the site's config.yaml or a test fixture may hand the same thing over as flat dotted keys — 'my_ext.products.requestPage' => 4 — because SiteSettings flattens a tree into those keys itself and reads either. So the nested form in the set is a convention rather than a requirement.",
+        "since": 13
+      },
+      {
+        "text": "A site's config/sites/<identifier>/settings.yaml and the settings key inline in its config.yaml are alternatives, not layers: when settings.yaml exists, TYPO3 uses it wholesale and does not merge the inline values into it. Set defaults sit below whichever site-local source wins. The backend settings editor persists to settings.yaml, so keep a site's own values in one place or the first backend save can silently leave inline values behind.",
         "since": 13
       },
       {

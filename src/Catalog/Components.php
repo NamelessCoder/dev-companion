@@ -8,13 +8,14 @@ use Typo3CmsMcp\Paths;
 use Typo3CmsMcp\Versions;
 
 /**
- * Loads and ranks the curated TYPO3 backend component catalog from
- * catalog/components.json. Each entry records a component's canonical markup,
- * its variant/modifier/sub-component classes, custom-property contract, and the
- * concrete styleguide demo and Sass source paths in the TYPO3 core checkout.
+ * Loads and ranks the curated TYPO3 backend component index from
+ * catalog/components.json. Where the active installation can be read,
+ * InstalledComponents replaces its contract fields with evidence from the
+ * installed backend CSS, JavaScript, and styleguide templates.
  *
- * The data is hand-curated from the core sources (no runtime core dependency);
- * search mirrors the term-scoring approach used by TestSuiteHints.
+ * The searchable index is hand-curated from the core sources; lookup can
+ * enrich it from installed package files without loading TYPO3 into this
+ * process. Search mirrors the term-scoring approach used by TestSuiteHints.
  *
  * An entry also carries the majors it was verified on, as `since`/`until` — the
  * same binding the architecture hints use. The catalog is taken from one
@@ -36,7 +37,7 @@ final class Components
     private const STOPWORDS = [
         'the', 'and', 'for', 'with', 'add', 'new', 'use', 'using', 'component',
         'components', 'css', 'class', 'classes', 'backend', 'typo3', 'style',
-        'styles', 'how', 'what', 'show', 'find',
+        'styles', 'markup', 'installed', 'version', 'how', 'what', 'show', 'find',
     ];
 
     /**
@@ -102,7 +103,9 @@ final class Components
     {
         $split = ['holds' => [], 'withheld' => []];
         foreach ($components as $component) {
-            $holds = Versions::holds($component['since'] ?? null, $component['until'] ?? null, $target);
+            $holds = ($component['_installed'] ?? false) === true
+                ? ($component['_installedPresent'] ?? false) === true
+                : Versions::holds($component['since'] ?? null, $component['until'] ?? null, $target);
             $split[$holds ? 'holds' : 'withheld'][] = $component;
         }
 
@@ -135,9 +138,10 @@ final class Components
      *
      * @return array<int, array<string, mixed>>
      */
-    public static function find(?string $query): array
+    public static function find(?string $query, ?int $target = null): array
     {
         $components = self::load();
+        $components = InstalledComponents::derive($components, $target) ?? $components;
         $terms = self::meaningfulTerms(trim($query ?? ''));
 
         if ($terms === []) {
@@ -233,6 +237,7 @@ final class Components
             $component['variants'],
             $component['modifiers'],
             $component['subComponents'],
+            $component['classes'] ?? [],
         )));
         $prose = mb_strtolower($component['title'] . ' ' . $component['summary']);
 

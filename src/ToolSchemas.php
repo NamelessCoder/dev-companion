@@ -304,16 +304,21 @@ final class ToolSchemas
                 'sassPaths' => self::listOf(self::string(), 'Every Sass source the component spans. A component can be split across several files.'),
                 'demoPath' => self::nullableString('Styleguide demo in the core checkout, if there is one.'),
                 'matchedIn' => self::listOf(self::string(), 'Where the query matched: name, keywords, sub-component classes, description.'),
-                'describesVersion' => self::string('The TYPO3 version this entry was taken from. Markup, sub-component classes and the custom-property contract are what that version has; compare with catalog.installedVersion before pasting.'),
-            ] + self::verifiedOn(), ['name', 'title', 'rootClass', 'sassPath', 'demoPath', 'describesVersion', 'verifiedOn'])),
+                'classes' => self::listOf(self::string(), 'Every class of this component found in the installed backend CSS. Empty for a bundled fallback or a custom element without external CSS.'),
+                'sourceFiles' => self::listOf(self::string(), 'Installed package files consulted for the component contract. Empty for the bundled fallback.'),
+                'markupSource' => ['type' => 'string', 'enum' => ['installation', 'catalog'], 'description' => 'Whether markup came from an installed styleguide example or the bundled curated fallback.'],
+                'contractVersion' => self::string('TYPO3 version whose classes and custom properties this entry describes.'),
+                'describesVersion' => self::string('TYPO3 version whose markup this entry describes. It can differ from contractVersion when the installed styleguide has no matching example and bundled markup is the fallback.'),
+            ] + self::verifiedOn(), ['name', 'title', 'rootClass', 'sassPath', 'demoPath', 'classes', 'sourceFiles', 'markupSource', 'contractVersion', 'describesVersion', 'verifiedOn'])),
             'withheld' => self::withheldComponents(),
             'checklist' => self::object([
                 'title' => self::string(),
                 'intro' => self::string(),
                 'items' => self::listOf(self::string()),
             ], ['title', 'items']),
+            'componentSource' => ['type' => 'string', 'enum' => ['installation', 'catalog'], 'description' => 'installation when the class and custom-property contract was read from the active TYPO3 packages; catalog when the bundled snapshot answered.'],
             'catalog' => self::catalogProvenance(),
-        ], ['matchCount', 'components', 'withheld', 'catalog']);
+        ], ['matchCount', 'components', 'withheld', 'componentSource', 'catalog']);
     }
 
     /**
@@ -612,8 +617,9 @@ final class ToolSchemas
             'counts' => self::object([], [], 'One entry per catalog with its number of entries.'),
             'targetVersion' => ['type' => ['integer', 'null'], 'description' => 'The TYPO3 major the coverage was reported for — stated by the caller, or read from the installation. Null means the whole catalog answers.'],
             'verifiedCount' => self::integer('How many components were verified on that version.'),
+            'componentSource' => ['type' => 'string', 'enum' => ['installation', 'catalog']],
             'withheld' => self::withheldComponents(),
-        ], ['catalog', 'verifyCommand', 'scope', 'counts', 'verifiedCount', 'withheld']);
+        ], ['catalog', 'verifyCommand', 'scope', 'counts', 'verifiedCount', 'componentSource', 'withheld']);
     }
 
     /** @return array<string, mixed> */

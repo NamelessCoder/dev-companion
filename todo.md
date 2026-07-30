@@ -83,18 +83,6 @@ The deprecation windows are twelve months, so the outer edge is around July 2027
 Before then the only thing that has to happen is a version bump behind a release
 somebody else writes.
 
----
-
-## Close what the first EXT-04 run exposed
-
-This serves the seven notes recorded on 2026-07-30, all from one forward run of
-`EXT-04` against the Printworks sitepackage on TYPO3 14.3.5. They are worked off
-in this order, cheapest and most certain first:
-
-1. Deriving the component catalog from the installation, last, because it
-   reverses a recorded decision. It needs a `decisions.md` entry that says what
-   changed, not only a commit.
-
 ## Run EXT-04, SITE-07 and SKILL-07 forward and correct what they claim
 
 This serves

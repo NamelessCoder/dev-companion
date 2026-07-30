@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Typo3CmsMcp;
 
 use Typo3CmsMcp\Catalog\Components;
+use Typo3CmsMcp\Catalog\InstalledComponents;
 use Typo3CmsMcp\Catalog\Meta as CatalogMeta;
 use Typo3CmsMcp\Catalog\References;
 use Typo3CmsMcp\Catalog\SystemExtensions;
@@ -203,7 +204,7 @@ final class Tools
             ],
             [
                 'name' => 'typo3_component_lookup',
-                'description' => 'Look up TYPO3 backend UI components by name or topic. Returns canonical markup, variant/modifier/sub-component classes, the custom-property contract, and the styleguide demo and Sass source paths. Each entry carries the TYPO3 majors it was verified on; pass targetVersion and one that was not verified there is withheld with what to verify against, rather than handed over as fact.',
+                'description' => 'Look up TYPO3 backend UI components by name or topic. Where the target is the active installation, its backend CSS, JavaScript, and installed styleguide templates supply the component contract; the curated catalog supplies the searchable names and fallback markup. Without usable installed sources, the bundled version-bound snapshot answers. Returns markup, classes, custom properties, and every source used.',
                 'inputSchema' => [
                     'type' => 'object',
                     'properties' => [
@@ -329,7 +330,7 @@ final class Tools
             ],
             [
                 'name' => 'typo3_catalog_scope',
-                'description' => 'Report which TYPO3 core revision the bundled catalogs were taken from, what they cover, and how to re-check them against a checkout. Call this to judge whether a catalog miss is authoritative for the branch you are working on. Where an installation is being read, the answer contrasts its TYPO3 version with the snapshot, and with targetVersion it says how much of the catalog was verified on that version and which entries were not.',
+                'description' => 'Report whether component contracts come from the active installation or the bundled fallback, which TYPO3 core revision the fallback catalogs were taken from, what they cover, and how to re-check them. Call this to judge whether a lookup miss is authoritative: even with installed sources, component names remain a curated index rather than every backend class.',
                 'inputSchema' => [
                     'type' => 'object',
                     'properties' => [
@@ -1722,10 +1723,12 @@ final class Tools
     {
         $query = isset($args['query']) ? (string) $args['query'] : null;
         $target = Versions::target(isset($args['targetVersion']) ? (string) $args['targetVersion'] : null);
-        $split = Components::splitByTarget(Components::find($query), $target);
+        $installed = InstalledComponents::isAvailable($target);
+        $split = Components::splitByTarget(Components::find($query, $target), $target);
         $components = $split['holds'];
         $withheld = $split['withheld'];
         $withheldNote = self::withheldComponents($withheld, $target);
+        $sourceNote = self::componentSourceNote($installed);
 
         if ($components === []) {
             return ToolResult::create(
@@ -1733,9 +1736,11 @@ final class Tools
                     "No TYPO3 component%s matched \"%s\". Try a component name (badge, card), a class (input-group), or a topic (search box). %s\n%s%s",
                     $withheld === [] ? '' : sprintf(' verified on TYPO3 v%d', (int) $target),
                     (string) $query,
-                    self::CATALOG_MISS_NOTE,
+                    $installed
+                        ? 'The installed packages were checked, but the searchable component index remains curated; inspect the installed backend CSS for an uncatalogued class.'
+                        : self::CATALOG_MISS_NOTE,
                     $withheldNote === '' ? '' : $withheldNote . "\n",
-                    self::catalogProvenance(),
+                    $sourceNote,
                 ),
                 [
                     'query' => $query,
@@ -1743,7 +1748,8 @@ final class Tools
                     'matchCount' => 0,
                     'components' => [],
                     'withheld' => self::withheldRecords($withheld),
-                    'catalog' => self::catalogRecord(),
+                    'componentSource' => $installed ? 'installation' : 'catalog',
+                    'catalog' => self::catalogRecord($installed),
                 ],
             );
         }
@@ -1757,7 +1763,8 @@ final class Tools
 
             return ToolResult::create(
                 "TYPO3 backend component catalog:\n" . $names
-                    . ($withheldNote === '' ? '' : "\n\n" . $withheldNote),
+                    . ($withheldNote === '' ? '' : "\n\n" . $withheldNote)
+                    . "\n\n" . $sourceNote,
                 [
                     'query' => $query,
                     'targetVersion' => $target,
@@ -1772,10 +1779,10 @@ final class Tools
                         'sassPath' => $c['sassPath'],
                         'sassPaths' => $c['sassPaths'],
                         'demoPath' => $c['demoPath'],
-                        'describesVersion' => CatalogMeta::read()['source']['version'],
-                    ] + self::verifiedRecord($c), $components),
+                    ] + self::componentSourceRecord($c) + self::verifiedRecord($c), $components),
                     'withheld' => self::withheldRecords($withheld),
-                    'catalog' => self::catalogRecord(),
+                    'componentSource' => $installed ? 'installation' : 'catalog',
+                    'catalog' => self::catalogRecord($installed),
                 ],
             );
         }
@@ -1814,11 +1821,28 @@ final class Tools
             $appendList('Modifiers', $c['modifiers']);
             $appendList('Sub-components', $c['subComponents']);
             $appendList('Custom properties', $c['customProperties']);
+            if (($c['_installed'] ?? false) === true) {
+                $cataloguedClasses = array_merge(
+                    [$c['rootClass']],
+                    $c['variants'],
+                    $c['modifiers'],
+                    $c['subComponents'],
+                );
+                $appendList('Other installed classes', array_values(array_diff($c['classes'], $cataloguedClasses)));
+            }
 
             $lines[] = $c['sassPaths'] === []
                 ? 'Sass source: none — this is a web component and carries its styles in its element source.'
-                : 'Sass source' . (count($c['sassPaths']) > 1 ? 's' : '') . ': ' . implode(', ', $c['sassPaths']);
+                : (($c['_installed'] ?? false) ? 'Curated Sass source path' : 'Sass source')
+                    . (count($c['sassPaths']) > 1 ? 's' : '') . ': ' . implode(', ', $c['sassPaths']);
             $lines[] = 'Styleguide demo: ' . ($c['demoPath'] ?? 'none (not a styleguide component)');
+            if (($c['_installed'] ?? false) === true) {
+                $lines[] = 'Installed sources: ' . implode(', ', $c['sourceFiles']);
+                $lines[] = $c['markupSource'] === 'installation'
+                    ? 'Markup source: installed styleguide template.'
+                    : 'Markup source: bundled TYPO3 ' . CatalogMeta::read()['source']['version']
+                        . ' fallback; no matching example was available in the installed packages.';
+            }
             $label = Versions::label($c['since'], $c['until']);
             if ($label !== '') {
                 // Beside the markup rather than in the block at the end: a
@@ -1854,18 +1878,19 @@ final class Tools
         }
         $blocks[] = implode("\n", $checklistLines);
         if ($target !== null) {
-            // The two version numbers in this answer say different things, and
-            // the snapshot line is the louder one: a caller on 14.3 read
-            // "TYPO3 15.0 (main)" and could no longer tell whether the markup
-            // above was verified for the version being worked on.
-            $blocks[] = sprintf(
-                'Answered for TYPO3 v%d: every component above was verified there, and one that was not is '
-                . 'withheld instead. The snapshot below says which revision the catalog was read from, not '
-                . 'which versions an entry holds on — each entry states that itself.',
-                $target,
-            );
+            $blocks[] = $installed
+                ? sprintf(
+                    'Answered from installed TYPO3 v%d package evidence; an indexed component absent there is withheld.',
+                    $target,
+                )
+                : sprintf(
+                    'Answered for TYPO3 v%d: every component above was verified there, and one that was not is '
+                        . 'withheld instead. The snapshot below says which revision the catalog was read from, not '
+                        . 'which versions an entry holds on — each entry states that itself.',
+                    $target,
+                );
         }
-        $blocks[] = self::catalogProvenance();
+        $blocks[] = $sourceNote;
 
         return ToolResult::create(implode("\n\n", $blocks), [
             'query' => $query,
@@ -1886,15 +1911,52 @@ final class Tools
                 'sassPaths' => $c['sassPaths'],
                 'demoPath' => $c['demoPath'],
                 'matchedIn' => $c['matchedIn'] ?? [],
-                // The revision travels inside the entry, not only in the block
-                // at the end of the answer: a client that renders one component
-                // shows markup with no statement of what it describes.
-                'describesVersion' => CatalogMeta::read()['source']['version'],
-            ] + self::verifiedRecord($c), $described),
+            ] + self::componentSourceRecord($c) + self::verifiedRecord($c), $described),
             'withheld' => self::withheldRecords($withheld),
             'checklist' => $checklist,
-            'catalog' => self::catalogRecord(),
+            'componentSource' => $installed ? 'installation' : 'catalog',
+            'catalog' => self::catalogRecord($installed),
         ]);
+    }
+
+    private static function componentSourceNote(bool $installed): string
+    {
+        if (!$installed) {
+            return self::catalogProvenance();
+        }
+
+        return sprintf(
+            'Component contract: installed TYPO3 %s packages. Names, summaries, keywords, and fallback markup '
+                . 'come from the curated catalog; classes and custom properties come from '
+                . 'EXT:backend/Resources/Public/Css/backend.css, and an installed styleguide example replaces '
+                . 'the fallback markup where available.',
+            Instance::typo3Version(),
+        );
+    }
+
+    /**
+     * The evidence version travels inside the component, not only in the block
+     * after it: clients often render one record without its surrounding answer.
+     *
+     * @param array<string, mixed> $component
+     * @return array{
+     *     classes: array<int, string>, sourceFiles: array<int, string>,
+     *     markupSource: string, contractVersion: string, describesVersion: string
+     * }
+     */
+    private static function componentSourceRecord(array $component): array
+    {
+        $snapshot = CatalogMeta::read()['source']['version'];
+        $markupSource = $component['markupSource'] ?? 'catalog';
+        $contractVersion = $component['contractVersion'] ?? $snapshot;
+
+        return [
+            'classes' => $component['classes'] ?? [],
+            'sourceFiles' => $component['sourceFiles'] ?? [],
+            'markupSource' => $markupSource,
+            'contractVersion' => $contractVersion,
+            'describesVersion' => $markupSource === 'installation' ? $contractVersion : $snapshot,
+        ];
     }
 
     /**
@@ -1940,6 +2002,19 @@ final class Tools
     {
         if ($withheld === [] || $target === null) {
             return '';
+        }
+
+        if (($withheld[0]['_installed'] ?? false) === true) {
+            $lines = [sprintf(
+                'Not found in the installed TYPO3 v%d backend component contract:',
+                $target,
+            )];
+            foreach ($withheld as $component) {
+                $lines[] = sprintf('- %s (%s)', $component['name'], $component['title']);
+            }
+            $lines[] = 'Their root class or custom element was absent from the installed backend CSS and JavaScript.';
+
+            return implode("\n", $lines);
         }
 
         $branch = Versions::branch($target);
@@ -2464,23 +2539,34 @@ final class Tools
     {
         $meta = CatalogMeta::read();
         $target = Versions::target(isset($args['targetVersion']) ? (string) $args['targetVersion'] : null);
-        $split = Components::splitByTarget(Components::load(), $target);
+        $installed = InstalledComponents::isAvailable($target);
+        $split = Components::splitByTarget(Components::find(null, $target), $target);
 
         $lines = [
-            'Catalog validity',
+            $installed ? 'Installed component contract' : 'Catalog validity',
             $target === null
                 ? 'No target TYPO3 version was stated and none was found to read, so the whole catalog answers and '
                     . 'every entry carries the versions it was verified on. Pass targetVersion to have the ones that '
                     . 'were not verified there withheld.'
-                : sprintf(
+                : ($installed
+                    ? sprintf(
+                        'For TYPO3 v%d, %d of the %d curated component entries were found in the installed backend '
+                            . 'CSS or JavaScript. Their class and custom-property contracts were read from those packages.',
+                        $target,
+                        count($split['holds']),
+                        count($split['holds']) + count($split['withheld']),
+                    )
+                    : sprintf(
                     'For TYPO3 v%d, %d of %d components were verified; entries that were not are withheld.',
                     $target,
                     count($split['holds']),
                     count($split['holds']) + count($split['withheld']),
-                ),
-            'Each component entry owns this validity range. It does not inherit the version of the source checkout below.',
+                )),
+            $installed
+                ? 'The bundled catalog remains the curated search index and markup fallback; it does not override installed classes.'
+                : 'Each component entry owns this validity range. It does not inherit the version of the source checkout below.',
             '',
-            'Catalog source checkout',
+            'Bundled fallback source checkout',
             '- Source: ' . $meta['source']['repository'],
             '- Checkout branch: ' . $meta['source']['branch'] . ' (TYPO3 ' . $meta['source']['version'] . ')',
             '- Commit: ' . $meta['source']['commit'],
@@ -2500,9 +2586,12 @@ final class Tools
         }
 
         $lines[] = '';
-        $lines[] = 'A lookup that finds nothing means the entry is not in this snapshot. On a different core '
-            . 'branch — a 13.4 backport, for example — verify against the checkout before concluding that a '
-            . 'component or class does not exist.';
+        $lines[] = $installed
+            ? 'A lookup miss means the component is not in the curated search index. The installed backend CSS may '
+                . 'still contain an uncatalogued class, so inspect it before concluding the class does not exist.'
+            : 'A lookup that finds nothing means the entry is not in this snapshot. On a different core '
+                . 'branch — a 13.4 backport, for example — verify against the checkout before concluding that a '
+                . 'component or class does not exist.';
 
         $withheldNote = self::withheldComponents($split['withheld'], $target);
         if ($withheldNote !== '') {
@@ -2510,18 +2599,19 @@ final class Tools
             $lines[] = $withheldNote;
         }
 
-        if (CatalogMeta::skew() !== '') {
+        if (!$installed && CatalogMeta::skew() !== '') {
             $lines[] = '';
             $lines[] = CatalogMeta::skew();
         }
 
         return ToolResult::create(implode("\n", $lines), [
-            'catalog' => self::catalogRecord(),
+            'catalog' => self::catalogRecord($installed),
             'verifyCommand' => $meta['verifyCommand'],
             'scope' => $meta['scope'],
             'counts' => $meta['counts'],
             'targetVersion' => $target,
             'verifiedCount' => count($split['holds']),
+            'componentSource' => $installed ? 'installation' : 'catalog',
             'withheld' => self::withheldRecords($split['withheld']),
         ]);
     }
@@ -2537,7 +2627,7 @@ final class Tools
      *
      * @return array<string, string>
      */
-    private static function catalogRecord(): array
+    private static function catalogRecord(bool $componentsDerived = false): array
     {
         $meta = CatalogMeta::read();
 
@@ -2550,7 +2640,7 @@ final class Tools
             // Both numbers were known and never contrasted. They travel
             // together now, in every answer that carries the pin at all.
             'installedVersion' => Instance::typo3Version(),
-            'skew' => CatalogMeta::skew() === '' ? null : CatalogMeta::skew(),
+            'skew' => $componentsDerived || CatalogMeta::skew() === '' ? null : CatalogMeta::skew(),
         ];
     }
 

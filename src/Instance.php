@@ -7,12 +7,11 @@ namespace Typo3CmsMcp;
 /**
  * The TYPO3 installation the calling agent is working in, if there is one.
  *
- * Everything else in this server answers from bundled knowledge. This is the
- * one exception, and it exists because some questions have no bundled answer
- * that could be right: which icon identifiers are registered, and which labels
- * exist, are properties of the installation. Both registries are assembled at
- * runtime from every installed package, so a snapshot of one core revision
- * describes an installation nobody works in.
+ * Most of this server answers from bundled knowledge. This class supplies the
+ * exception for questions whose answer belongs to an installation: registered
+ * icons and labels, and the backend CSS, JavaScript, and styleguide files that
+ * define its component contract. A snapshot of one core revision cannot be the
+ * primary answer for those.
  *
  * Discovery is opt-in per entrypoint and is never derived from getcwd() on its
  * own. Only bin/typo3-cms-mcp hands its working directory in, because only

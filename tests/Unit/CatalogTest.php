@@ -84,6 +84,86 @@ final class CatalogTest extends TestCase
     }
 
     #[Test]
+    public function theInstalledComponentContractWinsOverTheBundledSnapshot(): void
+    {
+        $root = $this->coreCheckout('14.3.5');
+        $backendCss = $root . '/typo3/sysext/backend/Resources/Public/Css';
+        mkdir($backendCss, 0o777, true);
+        file_put_contents(
+            $backendCss . '/backend.css',
+            '.badge { --typo3-badge-bg: green; } .badge-success {} .badge-installed {} .dropzone {}',
+        );
+
+        $styleguide = $root . '/typo3/sysext/styleguide';
+        mkdir($styleguide . '/Resources/Private/Templates/Backend/Components', 0o777, true);
+        file_put_contents($styleguide . '/composer.json', json_encode([
+            'name' => 'typo3/cms-styleguide',
+            'type' => 'typo3-cms-framework',
+            'extra' => ['typo3/cms' => ['extension-key' => 'styleguide']],
+        ], JSON_THROW_ON_ERROR));
+        file_put_contents(
+            $styleguide . '/Resources/Private/Templates/Backend/Components/Badges.fluid.html',
+            '<sg:example><span class="badge badge-installed">Installed</span></sg:example>',
+        );
+        Instance::discoverFrom($root);
+
+        $result = Tools::call('typo3_component_lookup', ['query' => 'badge-installed']);
+        $badge = $result->data['components'][0];
+
+        self::assertSame('installation', $result->data['componentSource']);
+        self::assertSame('14.3.5', $badge['contractVersion']);
+        self::assertSame('14.3.5', $badge['describesVersion']);
+        self::assertSame('installation', $badge['markupSource']);
+        self::assertContains('badge-installed', $badge['classes']);
+        self::assertSame(['badge-success'], $badge['variants']);
+        self::assertSame(['--typo3-badge-bg'], $badge['customProperties']);
+        self::assertSame('<span class="badge badge-installed">Installed</span>', $badge['markup']);
+        self::assertContains(
+            'EXT:styleguide/Resources/Private/Templates/Backend/Components/Badges.fluid.html',
+            $badge['sourceFiles'],
+        );
+        self::assertNull($result->data['catalog']['skew']);
+        self::assertStringContainsString('Other installed classes: badge-installed', $result->text);
+        self::assertStringContainsString('installed TYPO3 14.3.5 packages', $result->text);
+
+        $fallback = Tools::call('typo3_component_lookup', ['query' => 'dropzone']);
+        self::assertSame('installation', $fallback->data['componentSource']);
+        self::assertSame('14.3.5', $fallback->data['components'][0]['contractVersion']);
+        self::assertSame('catalog', $fallback->data['components'][0]['markupSource']);
+        self::assertSame(Meta::read()['source']['version'], $fallback->data['components'][0]['describesVersion']);
+        self::assertStringContainsString('bundled TYPO3 15.0 fallback', $fallback->text);
+
+        $scope = Tools::call('typo3_catalog_scope', []);
+        self::assertSame('installation', $scope->data['componentSource']);
+        self::assertStringContainsString('Installed component contract', $scope->text);
+
+        $broad = Tools::call('typo3_component_lookup', [
+            'query' => 'backend component markup for the installed TYPO3 version',
+        ]);
+        self::assertGreaterThan(0, $broad->data['matchCount']);
+        self::assertSame('installation', $broad->data['componentSource']);
+    }
+
+    #[Test]
+    public function anInstalledContractDoesNotAnswerForAnotherTargetMajor(): void
+    {
+        $root = $this->coreCheckout('14.3.5');
+        $backendCss = $root . '/typo3/sysext/backend/Resources/Public/Css';
+        mkdir($backendCss, 0o777, true);
+        file_put_contents($backendCss . '/backend.css', '.badge {} .badge-installed {}');
+        Instance::discoverFrom($root);
+
+        $result = Tools::call('typo3_component_lookup', [
+            'query' => 'badge',
+            'targetVersion' => '13.4',
+        ]);
+
+        self::assertSame('catalog', $result->data['componentSource']);
+        self::assertSame(Meta::read()['source']['version'], $result->data['components'][0]['contractVersion']);
+        self::assertNotContains('badge-installed', $result->data['components'][0]['classes']);
+    }
+
+    #[Test]
     public function aComponentQueryIsAnsweredByTheComponentItself(): void
     {
         $components = Components::find('badge');

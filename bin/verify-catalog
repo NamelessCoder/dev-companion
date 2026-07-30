@@ -4,9 +4,10 @@
 declare(strict_types=1);
 
 /*
- * Verifies the static catalogs below knowledge/catalog/ against TYPO3 core
- * checkouts and reports drift. It never writes: the catalogs stay hand-curated,
- * this only tells you what a core update invalidated.
+ * Verifies the bundled catalogs below knowledge/catalog/ against TYPO3 core
+ * checkouts and reports drift. It never writes: the component catalog stays
+ * the curated search index and fallback, while an active installation supplies
+ * the primary component contract at lookup time.
  *
  * Two things can be wrong with an entry, and each has its own run:
  *

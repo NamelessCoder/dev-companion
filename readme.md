@@ -12,7 +12,10 @@ conventions, and the official documentation.
 Almost everything it answers comes from the bundled `knowledge/` files. Broad
 API, reference and tutorial questions can instead be searched in the official
 live TYPO3 documentation, with the requested documentation release and
-canonical source kept on every result. The bundled answers are bound to
+canonical source kept on every result. Component names and summaries are a
+curated bundled index, but when an installation is available its backend CSS,
+JavaScript, and styleguide templates supply the component contract; the bundled
+markup is the fallback. The bundled answers are bound to
 versions: the knowledge base covers several TYPO3 lines, and a statement that
 does not hold on all of them carries the ones it does hold on. Pass a
 `targetVersion`, or let the installation being read decide.
@@ -352,12 +355,12 @@ name already says what shape the answer has.
   never falls through to another release, and an unreachable service is
   distinct from a search that answered with no match.
 - `typo3_component_lookup`: looks up backend UI components by name or topic and
-  returns canonical markup, variant and sub-component classes, the custom
-  property contract, and the styleguide demo and Sass source paths. Every entry
-  names the TYPO3 version it describes and the majors it was verified on, and
-  `targetVersion` decides rather than informs: a component never verified there
-  is withheld with what to check instead — v15 markup in a v13 backend is the
-  kind of wrong that only shows up in a browser.
+  returns markup, classes, the custom-property contract, and every source used.
+  When `targetVersion` is the active installation, the installed backend CSS
+  and JavaScript decide the contract and an installed styleguide example wins
+  over bundled markup. The curated catalog remains the searchable index and
+  fallback for other versions or missing package evidence; every field says
+  which version and source it describes.
 - `typo3_system_extension_lookup`: says whether an extension is part of the
   core and on which versions, by extension key or Composer package name, with
   what it is for. It answers for an extension that is not installed, which is

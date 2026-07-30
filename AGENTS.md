@@ -252,10 +252,12 @@ version says so; see the audience requirements in `requirements.md`.
   query language would mean translating the corpus, not the query, so a German
   sentence in a hint is not a nice extra, it is a statement nothing can find.
 - Everything the tools answer from lives below `knowledge/`, with one exception:
-  what is registered in an installation is asked of that installation through
-  `Typo3Cli`, because no bundled answer could be right for it. Add to
-  `knowledge/` by default; reach for the console only when the answer genuinely
-  depends on which packages are active.
+  facts owned by an installation are read from that installation, because no
+  bundled answer could be right for it. Runtime registries use `Typo3Cli` where
+  TYPO3 exposes a command; package-owned registries and component contracts read
+  the files those packages ship without executing them. Add to `knowledge/` by
+  default; reach for the installation only when the answer genuinely depends on
+  which packages and TYPO3 version are active.
 - Checkout discovery is enabled per entrypoint and never derived from `getcwd()`
   on its own. Only `bin/typo3-cms-mcp` calls `Instance::discoverFrom()`: a
   request-serving endpoint has no such relationship to its callers, and its

@@ -2439,11 +2439,26 @@ final class Tools
     private static function catalogScope(array $args): ToolResult
     {
         $meta = CatalogMeta::read();
+        $target = Versions::target(isset($args['targetVersion']) ? (string) $args['targetVersion'] : null);
+        $split = Components::splitByTarget(Components::load(), $target);
 
         $lines = [
-            'Catalog provenance',
+            'Catalog validity',
+            $target === null
+                ? 'No target TYPO3 version was stated and none was found to read, so the whole catalog answers and '
+                    . 'every entry carries the versions it was verified on. Pass targetVersion to have the ones that '
+                    . 'were not verified there withheld.'
+                : sprintf(
+                    'For TYPO3 v%d, %d of %d components were verified; entries that were not are withheld.',
+                    $target,
+                    count($split['holds']),
+                    count($split['holds']) + count($split['withheld']),
+                ),
+            'Each component entry owns this validity range. It does not inherit the version of the source checkout below.',
+            '',
+            'Catalog source checkout',
             '- Source: ' . $meta['source']['repository'],
-            '- Branch: ' . $meta['source']['branch'] . ' (TYPO3 ' . $meta['source']['version'] . ')',
+            '- Checkout branch: ' . $meta['source']['branch'] . ' (TYPO3 ' . $meta['source']['version'] . ')',
             '- Commit: ' . $meta['source']['commit'],
             '- Verified: ' . $meta['verifiedAt'],
             '- Re-check with: `' . $meta['verifyCommand'] . '`',
@@ -2465,22 +2480,6 @@ final class Tools
             . 'branch — a 13.4 backport, for example — verify against the checkout before concluding that a '
             . 'component or class does not exist.';
 
-        // The pin says which revision the catalog was taken from. What a caller
-        // on another line needs is how much of it survives there, and that is
-        // per entry rather than per snapshot.
-        $target = Versions::target(isset($args['targetVersion']) ? (string) $args['targetVersion'] : null);
-        $split = Components::splitByTarget(Components::load(), $target);
-        $lines[] = '';
-        $lines[] = $target === null
-            ? 'No target TYPO3 version was stated and none was found to read, so the whole catalog answers and '
-                . 'every entry carries the versions it was verified on. Pass targetVersion to have the ones that '
-                . 'were not verified there withheld.'
-            : sprintf(
-                'Verified on TYPO3 v%d: %d of %d components.',
-                $target,
-                count($split['holds']),
-                count($split['holds']) + count($split['withheld']),
-            );
         $withheldNote = self::withheldComponents($split['withheld'], $target);
         if ($withheldNote !== '') {
             $lines[] = '';

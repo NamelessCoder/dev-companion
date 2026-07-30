@@ -229,6 +229,21 @@ final class CatalogTest extends TestCase
     }
 
     #[Test]
+    public function theCatalogScopeSeparatesEntryValidityFromItsSourceCheckout(): void
+    {
+        $result = Tools::call('typo3_catalog_scope', ['targetVersion' => '14.3']);
+
+        self::assertStringContainsString('For TYPO3 v14', $result->text);
+        self::assertStringContainsString('Each component entry owns this validity range', $result->text);
+        self::assertStringContainsString('Checkout branch: main', $result->text);
+        self::assertLessThan(
+            strpos($result->text, 'Checkout branch: main'),
+            strpos($result->text, 'For TYPO3 v14'),
+            'the requested version is stated before the provenance version',
+        );
+    }
+
+    #[Test]
     public function aComponentCarriesEverySassFileItSpans(): void
     {
         $input = array_values(array_filter(Components::load(), static fn(array $c): bool => $c['name'] === 'input'))[0];

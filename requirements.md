@@ -343,6 +343,7 @@ them, this section wins and the other one is what needs rewriting.
   (2026-07-30).
   *Held by:* `CatalogTest::theCatalogSaysHowItRelatesToTheInstallationBeingRead`,
   `CatalogTest::aStatedVersionSaysWhatItDidToTheAnswerBesideTheSnapshotItWasReadFrom`,
+  `CatalogTest::theCatalogScopeSeparatesEntryValidityFromItsSourceCheckout`,
   and the `describesVersion` field the component schema requires
   (`ToolContractTest`).
 - **R-ANS-10** A component is an answer to a query that names it, or to one it

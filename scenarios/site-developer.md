@@ -215,7 +215,7 @@ operations with what `typo3_project_scope` and `typo3_changelog_lookup` know
 ## SITE-07 — Start a backend module with the right references
 
 **Environment:** `E-SITE`, with the site package under `packages/` ·
-**Status today:** `gap` — `R-SKL-1`
+**Status today:** `covered` — `R-SKL-1`
 
 > Add a backend module to our site package for reviewing imported records. Start
 > with the module shell, a refresh action, status markers and the texts; I want

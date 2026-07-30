@@ -92,9 +92,12 @@ It is built on the official [`mcp/sdk`](https://packagist.org/packages/mcp/sdk)
 and speaks **stdio** (`bin/typo3-cms-mcp`): the MCP client launches it as a
 subprocess, so there is no server to host, no network exposure, and no auth to
 configure — the process boundary is the trust boundary. Request serving is
-read-only apart from the explicit feedback tool. One setup command writes:
-`bin/typo3-cms-mcp install` adds this server to `.mcp.json` in the current
-project, preserves other servers, and refuses to replace a different entry.
+read-only apart from the explicit feedback tool. Setup writes only when
+requested: `bin/typo3-cms-mcp install` adds this server to `.mcp.json`;
+`install --agent=codex` adds the Codex MCP entry and publishes the task skills,
+and `update --agent=codex` refreshes only unmodified files this package
+previously generated. Existing unrelated settings are preserved and a different
+entry or modified generated file is never replaced.
 
 ## Install
 
@@ -114,6 +117,21 @@ Then install the entrypoint into the current project's `.mcp.json`:
 ```bash
 /absolute/path/to/typo3-cms-mcp/bin/typo3-cms-mcp install
 ```
+
+For Codex, install its project configuration and task skills directly:
+
+```bash
+/absolute/path/to/typo3-cms-mcp/bin/typo3-cms-mcp install --agent=codex
+```
+
+Refresh them after updating this package:
+
+```bash
+/absolute/path/to/typo3-cms-mcp/bin/typo3-cms-mcp update --agent=codex
+```
+
+The update records hashes beside the installed skill and refuses to overwrite a
+file changed since it generated it.
 
 It writes the following shape with the actual absolute path:
 
@@ -156,6 +174,10 @@ Install it from the consuming project's root:
 ```bash
 vendor/bin/typo3-cms-mcp install
 ```
+
+Use `vendor/bin/typo3-cms-mcp install --agent=codex` and
+`vendor/bin/typo3-cms-mcp update --agent=codex` for the corresponding Codex
+setup.
 
 That writes the same `.mcp.json` shape with an absolute path:
 

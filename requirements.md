@@ -110,13 +110,13 @@ them, this section wins and the other one is what needs rewriting.
   *From:* the two manual absolute-path JSON snippets between discovering the
   package and being able to call it (2026-07-30).
   *Held by:* `InstallerTest`
-- **R-DIS-12** **open** — Codex setup installs both the MCP entry and the
+- **R-DIS-12** Codex setup installs both the MCP entry and the
   task skills through an explicit agent option, and an update refreshes only
   files this package can prove it owns. Unrelated configuration, a conflicting
   server entry and a user-modified generated file are preserved and reported;
   repeated install and update calls are idempotent.
   *From:* `META-05`.
-  *Held by:* not guarded
+  *Held by:* `InstallerTest`
 - **R-DIS-1** The installation is never derived from `getcwd()` on its own; only
   `bin/typo3-cms-mcp` enables discovery, because an HTTP endpoint has no such
   relationship to its callers.
@@ -192,13 +192,13 @@ them, this section wins and the other one is what needs rewriting.
   `ToolContractTest::everyToolDeclaresSchemasAndAnnotations`,
   `ToolContractTest::aToolCallAnswersWithTextAndMatchingData`,
   `ScopeTest::everyToolNamedByTheScopeIsRegisteredAndEveryRegisteredToolIsCovered`
-- **R-SKL-1** **open** — A backend-module task can activate concise,
+- **R-SKL-1** A backend-module task can activate concise,
   task-specific guidance that establishes scope and routes through registered
   modules, icons, labels, component markup and live documentation before code is
   written. The guidance owns order and routing only: facts stay in the tools, so
   no second copy of versioned knowledge is generated or permanently loaded.
   *From:* `SITE-07`.
-  *Held by:* not guarded
+  *Held by:* `SkillTest`, `InstallerTest`
 
 - **R-ANS-9** Initialize instructions say when to call the three lookups whose
   value exists only before a runtime-only mistake is made: components before

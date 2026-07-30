@@ -85,19 +85,6 @@ somebody else writes.
 
 ---
 
-## Extend installation to agent-specific configuration and updates
-
-This serves `META-05`, `R-DIS-12` and R-DIS-11. Preserve
-the existing refusal to replace a different server entry.
-
-The next concrete step is Codex only: detect its project configuration, install
-the MCP entry and the backend-module skill through an explicit agent option, and
-add an idempotent update path that refreshes only files this package owns.
-Contract tests must cover an absent configuration, an existing matching entry,
-a conflicting entry, unrelated settings and user-modified generated files.
-Claude and Cursor are follow-up implementations only after the Codex shape has
-proved what is actually shared.
-
 ## Evaluate package-provided TYPO3 knowledge after skills work
 
 This serves R-AUD-1, R-AUD-5 and the extension-author scenarios: an installed

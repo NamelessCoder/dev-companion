@@ -131,7 +131,7 @@ drops the text block · **Status today:** `covered` — `R-ANS-2`
 ## META-05 — Install and update Codex support
 
 **Environment:** `E-SITE`, with Codex project configuration containing unrelated
-settings · **Status today:** `gap` — `R-DIS-12`
+settings · **Status today:** `covered` — `R-DIS-12`
 
 > Set this TYPO3 assistant up for Codex in this project. Keep everything already
 > configured. Then update the generated integration once so I know future

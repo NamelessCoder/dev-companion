@@ -60,10 +60,92 @@ final class InstallerTest extends TestCase
         }
     }
 
+    #[Test]
+    public function codexInstallAndUpdatePreserveConfigurationAndOwnTheirSkill(): void
+    {
+        $directory = $this->directory();
+        self::assertTrue(mkdir($directory . '/.codex', 0777, true));
+        $unrelated = "model = \"gpt-5\"\n\n[features]\nweb_search = true\n";
+        file_put_contents($directory . '/.codex/config.toml', $unrelated);
+
+        try {
+            $stderr = '';
+            self::assertSame(0, $this->execute($directory, ['install', '--agent=codex'], $stderr), $stderr);
+            $configuration = (string) file_get_contents($directory . '/.codex/config.toml');
+            self::assertStringStartsWith($unrelated, $configuration);
+            self::assertStringContainsString('[mcp_servers.typo3-cms-mcp]', $configuration);
+            self::assertStringContainsString(Paths::root() . '/bin/typo3-cms-mcp', $configuration);
+
+            $skill = $directory . '/.agents/skills/typo3-backend-module-development/SKILL.md';
+            $manifest = dirname($skill) . '/.typo3-cms-mcp.json';
+            self::assertFileEquals(
+                Paths::root() . '/skills/typo3-backend-module-development/SKILL.md',
+                $skill,
+            );
+            self::assertFileExists($manifest);
+
+            $before = [
+                'configuration' => file_get_contents($directory . '/.codex/config.toml'),
+                'skill' => file_get_contents($skill),
+                'manifest' => file_get_contents($manifest),
+            ];
+            self::assertSame(0, $this->execute($directory, ['install', '--agent=codex'], $stderr), $stderr);
+            self::assertSame(0, $this->execute($directory, ['update', '--agent=codex'], $stderr), $stderr);
+            self::assertSame($before['configuration'], file_get_contents($directory . '/.codex/config.toml'));
+            self::assertSame($before['skill'], file_get_contents($skill));
+            self::assertSame($before['manifest'], file_get_contents($manifest));
+        } finally {
+            $this->removeCodexFixture($directory);
+        }
+    }
+
+    #[Test]
+    public function codexInstallRefusesAConflictingServerEntry(): void
+    {
+        $directory = $this->directory();
+        self::assertTrue(mkdir($directory . '/.codex', 0777, true));
+        $original = "[mcp_servers.typo3-cms-mcp]\ncommand = \"other\"\nargs = [\"elsewhere\"]\n";
+        file_put_contents($directory . '/.codex/config.toml', $original);
+
+        try {
+            $stderr = '';
+            self::assertSame(1, $this->execute($directory, ['install', '--agent=codex'], $stderr));
+            self::assertStringContainsString('refusing to replace', $stderr);
+            self::assertSame($original, file_get_contents($directory . '/.codex/config.toml'));
+            self::assertDirectoryDoesNotExist($directory . '/.agents');
+        } finally {
+            $this->removeCodexFixture($directory);
+        }
+    }
+
+    #[Test]
+    public function codexUpdateRefusesToOverwriteAModifiedGeneratedSkill(): void
+    {
+        $directory = $this->directory();
+        try {
+            $stderr = '';
+            self::assertSame(0, $this->execute($directory, ['install', '--agent=codex'], $stderr), $stderr);
+            $skill = $directory . '/.agents/skills/typo3-backend-module-development/SKILL.md';
+            file_put_contents($skill, (string) file_get_contents($skill) . "\nUser change.\n");
+
+            self::assertSame(1, $this->execute($directory, ['update', '--agent=codex'], $stderr));
+            self::assertStringContainsString('was modified', $stderr);
+            self::assertStringContainsString('User change.', (string) file_get_contents($skill));
+        } finally {
+            $this->removeCodexFixture($directory);
+        }
+    }
+
     private function install(string $directory, string &$stderr): int
     {
+        return $this->execute($directory, ['install'], $stderr);
+    }
+
+    /** @param list<string> $arguments */
+    private function execute(string $directory, array $arguments, string &$stderr): int
+    {
         $process = proc_open(
-            [PHP_BINARY, Paths::root() . '/bin/typo3-cms-mcp', 'install'],
+            [PHP_BINARY, Paths::root() . '/bin/typo3-cms-mcp', ...$arguments],
             [0 => ['pipe', 'r'], 1 => ['pipe', 'w'], 2 => ['pipe', 'w']],
             $pipes,
             $directory
@@ -76,5 +158,27 @@ final class InstallerTest extends TestCase
         fclose($pipes[2]);
 
         return proc_close($process);
+    }
+
+    private function directory(): string
+    {
+        $directory = sys_get_temp_dir() . '/typo3-cms-mcp-install-' . bin2hex(random_bytes(8));
+        self::assertTrue(mkdir($directory));
+
+        return $directory;
+    }
+
+    private function removeCodexFixture(string $directory): void
+    {
+        @unlink($directory . '/.agents/skills/typo3-backend-module-development/agents/openai.yaml');
+        @rmdir($directory . '/.agents/skills/typo3-backend-module-development/agents');
+        @unlink($directory . '/.agents/skills/typo3-backend-module-development/SKILL.md');
+        @unlink($directory . '/.agents/skills/typo3-backend-module-development/.typo3-cms-mcp.json');
+        @rmdir($directory . '/.agents/skills/typo3-backend-module-development');
+        @rmdir($directory . '/.agents/skills');
+        @rmdir($directory . '/.agents');
+        @unlink($directory . '/.codex/config.toml');
+        @rmdir($directory . '/.codex');
+        @rmdir($directory);
     }
 }

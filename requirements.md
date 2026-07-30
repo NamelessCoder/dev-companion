@@ -119,6 +119,11 @@ them, this section wins and the other one is what needs rewriting.
   skills are published into the host-mounted project.
   *From:* `META-05`.
   *Held by:* `InstallerTest`
+- **R-DIS-13** Agent installation supports Amp, Junie, Cursor, Claude, Codex,
+  GitHub Copilot, Factory Droid, Kiro, OpenCode, Antigravity, Zed, Pi and Grok.
+  Each writes the client's native MCP and skill paths; Antigravity and Pi
+  receive skills only.
+  *Held by:* `InstallerAgentSupportTest`
 - **R-DIS-1** The installation is never derived from `getcwd()` on its own; only
   `bin/typo3-cms-mcp` enables discovery, because an HTTP endpoint has no such
   relationship to its callers.

@@ -179,6 +179,12 @@ Use `vendor/bin/typo3-cms-mcp install --agent=codex` and
 `vendor/bin/typo3-cms-mcp update --agent=codex` for the corresponding Codex
 setup.
 
+The same commands support the agent identifiers `amp`, `junie`, `cursor`,
+`claude`, `copilot`, `factory`, `kiro`, `opencode`, `antigravity`, `zed`,
+`pi`, and `grok`. Each receives the skill at its native project path and,
+where the client supports it, its native MCP configuration. Antigravity and Pi
+receive skills only.
+
 That writes the same `.mcp.json` shape with an absolute path. In a DDEV project,
 run the installer inside DDEV:
 

@@ -604,6 +604,14 @@ took before the requirement above was written down, and it will not survive it.
 
 ## Knowledge — what is covered
 
+- **R-KNW-34** Configuration is placed by the reach of its value: site-specific
+  values are site settings, one-per-installation values are extension
+  configuration, and a scheduler task's parameters are stored with that task.
+  The site-settings form is bound to the versions that have it.
+  *From:* a per-site storage pid put into a new `ext_conf_template.txt` after
+  the same sitepackage's set settings had already been read (2026-07-30).
+  *Held by:* `HintsTest::aSettingIsPlacedByTheReachOfItsValue`,
+  `HintsTest::siteScopedConfigurationIsOfferedOnlyWhereSiteSettingsExist`
 - **R-KNW-33** A label-authoring answer says that the source XLF is English and
   that a locale's translation goes into the locale-prefixed file beside it with
   the same unit id. A non-English source file already present in a package is a

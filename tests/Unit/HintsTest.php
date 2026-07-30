@@ -181,6 +181,37 @@ final class HintsTest extends TestCase
     }
 
     #[Test]
+    public function aSettingIsPlacedByTheReachOfItsValue(): void
+    {
+        $result = Tools::call('typo3_architecture_lookup', [
+            'task' => 'where a backend module stores a configurable storage pid in a sitepackage',
+            'targetVersion' => '14',
+        ]);
+
+        self::assertStringContainsString('Configuration Belongs to Its Reach', $result->text);
+        self::assertStringContainsString('Configuration/Sets/<Set>/settings.definitions.yaml', $result->text);
+        self::assertStringContainsString('Extension configuration is installation-wide', $result->text);
+        self::assertStringContainsString("scheduler task's own parameters", $result->text);
+    }
+
+    #[Test]
+    public function siteScopedConfigurationIsOfferedOnlyWhereSiteSettingsExist(): void
+    {
+        $onTwelve = implode("\n", array_column(
+            ArchitectureHints::byId('configuration-reach', 12)['hints'],
+            'text',
+        ));
+        self::assertStringNotContainsString('settings.definitions.yaml', $onTwelve);
+        self::assertStringContainsString('installation-wide', $onTwelve);
+
+        $onThirteen = implode("\n", array_column(
+            ArchitectureHints::byId('configuration-reach', 13)['hints'],
+            'text',
+        ));
+        self::assertStringContainsString('settings.definitions.yaml', $onThirteen);
+    }
+
+    #[Test]
     public function languagePackActivationUsesTheConfigurationOfTheTargetBranch(): void
     {
         $onThirteen = implode("\n", array_column(

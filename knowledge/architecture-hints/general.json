@@ -86,6 +86,34 @@
     "checks": []
   },
   {
+    "id": "configuration-reach",
+    "title": "Configuration Belongs to Its Reach",
+    "appliesTo": [
+      "configuration scope",
+      "setting",
+      "settings",
+      "storage pid",
+      "site setting",
+      "site settings",
+      "settings.definitions.yaml",
+      "ext_conf_template.txt",
+      "ExtensionConfiguration",
+      "scheduler task",
+      "task configuration",
+      "sitepackage"
+    ],
+    "hints": [
+      "Choose the owner of a configuration value by where the value may differ, not by which extension reads it.",
+      {
+        "text": "A value that may differ per site belongs to the site's settings. A set declares its key, type and default in Configuration/Sets/<Set>/settings.definitions.yaml; the site can override it in config/sites/<site>/settings.yaml.",
+        "since": 13
+      },
+      "Extension configuration is installation-wide. Define there only a value that is genuinely one per TYPO3 installation, and read it through ExtensionConfiguration rather than accessing TYPO3_CONF_VARS['EXTENSIONS'] directly.",
+      "A scheduler task's own parameters belong to that task instance. Expose them as fields when the task is configured and persist them with the task instead of turning one task's choice into site or installation configuration."
+    ],
+    "checks": []
+  },
+  {
     "id": "icon-usage",
     "title": "Rendering and Registering Icons",
     "appliesTo": [

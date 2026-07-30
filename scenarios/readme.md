@@ -33,9 +33,9 @@ audience is a property of the task rather than of the directory
 ## Files
 
 - [core-contributor.md](core-contributor.md) — `CORE-01` … `CORE-06`
-- [extension-author.md](extension-author.md) — `EXT-01` … `EXT-06`
-- [site-developer.md](site-developer.md) — `SITE-01` … `SITE-06`
-- [cross-cutting.md](cross-cutting.md) — `META-01` … `META-04`
+- [extension-author.md](extension-author.md) — `EXT-01` … `EXT-07`
+- [site-developer.md](site-developer.md) — `SITE-01` … `SITE-07`
+- [cross-cutting.md](cross-cutting.md) — `META-01` … `META-05`
 
 ## Environments
 
@@ -109,6 +109,7 @@ cover it; an empty cell is a hole in this suite, not a hole in the server.
 | Testing | `CORE-05` | `EXT-05` | `SITE-06` |
 | Review, commit, submission | `CORE-03` | `EXT-03` | — |
 | Labels, icons, i18n | `CORE-02` | `EXT-06` | `EXT-06` |
+| Official API documentation | — | `EXT-07` | `SITE-07` |
 | Frontend / theming | — | — | `SITE-04` |
 | Version and branch spread | `CORE-06` | `EXT-01` | `SITE-02` |
-| Orientation and degraded setup | `META-01` … `META-04` | | |
+| Orientation, setup and degraded state | `META-01` … `META-05` | | |

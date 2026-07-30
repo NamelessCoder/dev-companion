@@ -85,32 +85,9 @@ somebody else writes.
 
 ---
 
-## Turn the next delivery targets into scenarios
-
-This serves the next delivery targets: retain this server's version, audience,
-provenance and read-only guarantees while adding live documentation, on-demand
-skills and agent setup. Test them as user tasks before choosing their technical
-shape.
-
-The next concrete step is to add three prompts to the existing audience scenario
-files:
-
-1. an extension author asks a broad API question whose answer belongs in the
-   versioned TYPO3 live documentation rather than in the curated conventions;
-2. a site developer starts a backend-module task and has to be routed through
-   project scope, registered modules, icons, labels and component markup before
-   writing code;
-3. a user installs and later updates the server for Codex without an existing
-   agent configuration being overwritten.
-
-Each scenario must state what source and version the answer has to expose, and
-must be marked `gap` against a new open requirement in `requirements.md`. Once
-those scenarios and requirements exist, replace this item with their identifiers
-on the implementation items below.
-
 ## Add versioned TYPO3 live-documentation lookup
 
-This will serve the live-documentation scenario created by the item above. The
+This serves `EXT-07` and `R-DOC-1`. The
 bundled knowledge remains the source for curated conventions, scopes, silent
 failure modes and verified catalog markup; live docs answer broad API, reference
 and tutorial questions.
@@ -127,8 +104,8 @@ requested release to another release or `main`.
 
 ## Publish task skills without duplicating the knowledge base
 
-This will serve the backend-module routing scenario created above and
-R-ANS-9. Skills describe when and in which order to call tools; facts and
+This serves `SITE-07`, `R-SKL-1` and R-ANS-9. Skills describe when and in which
+order to call tools; facts and
 versioned answers stay in the tools.
 
 The next concrete step is one `typo3-backend-module-development` skill as a
@@ -141,7 +118,7 @@ independently maintained copies.
 
 ## Extend installation to agent-specific configuration and updates
 
-This will serve the install/update scenario created above and R-DIS-11. Preserve
+This serves `META-05`, `R-DIS-12` and R-DIS-11. Preserve
 the existing refusal to replace a different server entry.
 
 The next concrete step is Codex only: detect its project configuration, install

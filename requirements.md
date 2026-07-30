@@ -110,6 +110,13 @@ them, this section wins and the other one is what needs rewriting.
   *From:* the two manual absolute-path JSON snippets between discovering the
   package and being able to call it (2026-07-30).
   *Held by:* `InstallerTest`
+- **R-DIS-12** **open** — Codex setup installs both the MCP entry and the
+  task skills through an explicit agent option, and an update refreshes only
+  files this package can prove it owns. Unrelated configuration, a conflicting
+  server entry and a user-modified generated file are preserved and reported;
+  repeated install and update calls are idempotent.
+  *From:* `META-05`.
+  *Held by:* not guarded
 - **R-DIS-1** The installation is never derived from `getcwd()` on its own; only
   `bin/typo3-cms-mcp` enables discovery, because an HTTP endpoint has no such
   relationship to its callers.
@@ -171,6 +178,24 @@ them, this section wins and the other one is what needs rewriting.
   *Held by:* `ScopeTest::theInstallationDiagnosticIsDataRatherThanProse`
 
 ## Answers — what a caller may conclude from one
+
+- **R-DOC-1** **open** — Broad API, reference and tutorial questions can be
+  answered from the official live documentation for an explicitly selected
+  TYPO3 version. Every result carries its canonical URL, document identifier,
+  document version, section and source; a requested release never silently
+  falls back to another release or `main`; no match and an unreachable service
+  are different structured answers. Live documentation augments rather than
+  replaces the bundled conventions and their version, audience and binding
+  data.
+  *From:* `EXT-07`.
+  *Held by:* not guarded
+- **R-SKL-1** **open** — A backend-module task can activate concise,
+  task-specific guidance that establishes scope and routes through registered
+  modules, icons, labels, component markup and live documentation before code is
+  written. The guidance owns order and routing only: facts stay in the tools, so
+  no second copy of versioned knowledge is generated or permanently loaded.
+  *From:* `SITE-07`.
+  *Held by:* not guarded
 
 - **R-ANS-9** Initialize instructions say when to call the three lookups whose
   value exists only before a runtime-only mistake is made: components before

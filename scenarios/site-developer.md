@@ -209,3 +209,40 @@ operations with what `typo3_project_scope` and `typo3_changelog_lookup` know
 - The core's own acceptance testing setup described as though a site project had
   it.
 - The boundary stated and then a full invented setup delivered anyway.
+
+---
+
+## SITE-07 — Start a backend module with the right references
+
+**Environment:** `E-SITE`, with the site package under `packages/` ·
+**Status today:** `gap` — `R-SKL-1`
+
+> Add a backend module to our site package for reviewing imported records. Start
+> with the module shell, a refresh action, status markers and the texts; I want
+> it to use the TYPO3 backend rather than recreate it.
+
+**What the agent needs from this server**
+
+- Task-level orientation that makes the relevant sources available before code
+  is written instead of relying on the agent to discover each lookup by chance.
+- Project and extension scope, the modules already registered, valid icons and
+  existing labels in this installation.
+- Version-correct component markup from the catalog and the official module API
+  documentation for the installation's TYPO3 version.
+
+**What has to come out of it**
+
+- The agent establishes project and extension scope first, then reads modules,
+  icons, labels, components and live documentation before implementing them.
+- Facts stay in the tools that own them; the task guidance contains routing and
+  order rather than a duplicate copy of their answers.
+- No core-only path, check or obligation is imposed on the site package.
+
+**How it fails**
+
+- The agent starts coding after one generic hint and invents an icon, wording or
+  component class.
+- A permanently loaded instruction repeats the catalog markup and becomes a
+  second version of it.
+- The extension task is answered as a core patch because it concerns the
+  backend.

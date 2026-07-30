@@ -21,7 +21,33 @@ final class Documentation
     private const DOCUMENTS = [
         'typo3/reference-coreapi' => 'TYPO3 Explained',
         'typo3/reference-typoscript' => 'TypoScript Explained',
+        // The TCA reference is its own manual, and TYPO3 Explained does not
+        // repeat it: a question about `inline`, `foreign_field` or a column
+        // type was searched in two manuals that describe everything around TCA
+        // and never TCA itself, and came back with whatever else carried the
+        // word.
+        'typo3/reference-tca' => 'TCA Reference',
     ];
+
+    /**
+     * What a page is searched by. The title is what it is called; the path is
+     * the section it sits in, which is the other half of what a table of
+     * contents knows — "Assets" says little, `ApiOverview/Assets/Index.html`
+     * says where it belongs. The manual is the third thing a caller names
+     * without meaning to name a page: a question about TCA belongs in the TCA
+     * reference before it belongs in any page of another manual that carries
+     * the word.
+     *
+     * @var array<string, int>
+     */
+    private const FIELD_WEIGHTS = ['title' => 4, 'path' => 2, 'manual' => 2];
+
+    /**
+     * A title and a path are a handful of words each, so nothing here is long
+     * enough to be diluted — except a deep path, which is exactly the candidate
+     * that collects accidental terms.
+     */
+    private const UNDILUTED_WORDS = 12;
 
     /** @param \Closure(string): ?string|null $fetch */
     public function __construct(private readonly ?\Closure $fetch = null)
@@ -50,7 +76,7 @@ final class Documentation
     public function lookup(array $queries, string $targetVersion, int $limit = 6): array
     {
         $queries = array_values(array_filter(array_map(trim(...), $queries), static fn(string $query): bool => $query !== ''));
-        $candidates = [];
+        $pages = [];
         $reachable = 0;
 
         foreach (self::DOCUMENTS as $document => $documentTitle) {
@@ -62,20 +88,18 @@ final class Documentation
             ++$reachable;
 
             foreach ($this->links($html, $base) as $link) {
-                $score = $this->score($queries, $link['title'] . ' ' . $link['path']);
-                if ($score === 0) {
-                    continue;
-                }
-                $key = $document . '|' . $link['url'];
-                if (!isset($candidates[$key]) || $score > $candidates[$key]['score']) {
-                    $candidates[$key] = [
-                        'score' => $score,
-                        'title' => $link['title'],
-                        'url' => $link['url'],
-                        'document' => $document,
-                        'documentTitle' => $documentTitle,
-                    ];
-                }
+                $pages[$document . '|' . $link['url']] = [
+                    'score' => 0,
+                    'title' => $link['title'],
+                    'url' => $link['url'],
+                    'document' => $document,
+                    'documentTitle' => $documentTitle,
+                    'searchable' => [
+                        'title' => self::split($link['title']),
+                        'path' => self::split($link['path']),
+                        'manual' => $documentTitle,
+                    ],
+                ];
             }
         }
 
@@ -85,6 +109,36 @@ final class Documentation
             ]);
         }
 
+        // Every manual is weighed against every other manual's pages, because
+        // what makes a term worth something is how few of all the pages there
+        // are carry it.
+        $searchable = array_column($pages, 'searchable');
+        foreach ($queries as $query) {
+            $weights = TermSearch::weights(TermSearch::terms(self::split($query)), $searchable);
+            $scores = [];
+            foreach ($pages as $key => $page) {
+                [$scores[$key]] = TermSearch::score(
+                    $page['searchable'],
+                    $weights,
+                    self::FIELD_WEIGHTS,
+                    self::UNDILUTED_WORDS,
+                );
+            }
+
+            // Each query is its own question and its scores are its own scale —
+            // one made of common words scores everything higher than one made of
+            // rare ones. So a page is worth how well it answers a question
+            // rather than what that question's words happen to be worth, and it
+            // keeps the best question it answers rather than the sum of the ones
+            // it brushes past. Two questions in one call otherwise return one
+            // question's pages twice over.
+            $best = max([0, ...$scores]);
+            foreach ($scores as $key => $score) {
+                $pages[$key]['score'] = max($pages[$key]['score'], $best === 0 ? 0 : (int) round($score / $best * 1000));
+            }
+        }
+
+        $candidates = array_filter($pages, static fn(array $page): bool => $page['score'] > 0);
         uasort($candidates, static fn(array $left, array $right): int => $right['score'] <=> $left['score']);
         $results = [];
         foreach (array_slice($candidates, 0, $limit) as $candidate) {
@@ -147,30 +201,26 @@ final class Documentation
             && str_ends_with(explode('#', $href, 2)[0], '.html');
     }
 
-    /** @param list<string> $queries */
-    private function score(array $queries, string $candidate): int
+    /**
+     * The same text with the compound names in it taken apart.
+     *
+     * Both sides need it, and for the same reason. What is searched is a table
+     * of contents — page titles and paths — and no page is titled after the
+     * class it documents, while a caller arrives with the words that are in the
+     * code: `AssetCollector`, `FunctionalTestCase`, `executeFrontendSubRequest`.
+     * Split, those reach the pages that are actually called "Assets" and
+     * "Functional tests", and no list of the identifiers there are has to be
+     * kept. The candidate side is split for the mirror image of it: a term is
+     * matched at a word boundary, and `AfterPageColumnsSelectedForLocalizationEvent`
+     * has one word in it until it is taken apart.
+     */
+    private static function split(string $text): string
     {
-        $candidate = strtolower($candidate);
-        $score = 0;
-        foreach ($queries as $query) {
-            $query = strtolower($query);
-            $queryScore = str_contains($candidate, $query) ? 20 : 0;
-            $words = array_values(array_unique(preg_split('/[^\pL\pN]+/u', $query, -1, PREG_SPLIT_NO_EMPTY) ?: []));
-            foreach ($words as $word) {
-                if (strlen($word) >= 3 && str_contains($candidate, $word)) {
-                    $queryScore += 3;
-                }
-            }
-            for ($index = 0; $index < count($words) - 1; ++$index) {
-                $pair = $words[$index] . ' ' . $words[$index + 1];
-                if (str_contains($candidate, $pair)) {
-                    $queryScore += 8;
-                }
-            }
-            $score += $queryScore;
-        }
-
-        return $score;
+        return (string) preg_replace(
+            '/(?<=\p{Ll})(?=\p{Lu})|(?<=\p{Lu})(?=\p{Lu}\p{Ll})/u',
+            ' ',
+            $text,
+        );
     }
 
     private function excerpt(string $html): string

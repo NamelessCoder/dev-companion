@@ -172,7 +172,13 @@
       "UnitTests.xml",
       "testing-framework",
       "SiteBasedTestTrait",
-      "setUpFrontendRootPage"
+      "setUpFrontendRootPage",
+      "FunctionalTestCase",
+      "importCSVDataSet",
+      "csv fixture",
+      "executeFrontendSubRequest",
+      "InternalRequest",
+      "SiteWriter"
     ],
     "hints": [
       "The conventions of a core test hold here — UnitTestCase, FunctionalTestCase, final classes, #[Test], CSV fixtures, $this->get() for services — but the harness they run in does not exist yet and is the whole first day.",
@@ -200,7 +206,7 @@
         "text": "setUpFrontendRootPage() and site sets exclude each other. It writes a sys_template row with the clear flag set, and a sys_template that clears resets the AST — dropping the set TypoScript that was included before it. The frontend then answers \"No page configured for type=0\" and nothing points at the sys_template as the cause. A test whose site takes its TypoScript from a set must not call it, and the settings a plugin needs belong in the pi_flexform of the fixture content element, which is where the site keeps them too.",
         "since": 13
       },
-      "InternalRequest::withQueryParameters() takes scalar values. An Extbase plugin argument is nested two levels deep, so a request that carries one is built with http_build_query() into the URI instead.",
+      "A frontend response is asserted through $this->executeFrontendSubRequest(new InternalRequest($uri)), which runs the request in the test instance and returns a PSR-7 response. InternalRequest::withQueryParameters() takes scalar values. An Extbase plugin argument is nested two levels deep, so a request that carries one is built with http_build_query() into the URI instead.",
       "A query string built by hand for a cache hash has two more conditions. CacheHashCalculator refuses one that carries relevant parameters without id=<pageId> — 'ID parameter needs to be passed for the cHash calculation!' — and it rawurldecode()s every name and value, which leaves a + as a literal plus where the request the browser sends would have arrived with a space. So encode with PHP_QUERY_RFC3986; otherwise a value containing a space hashes differently than it arrives and the page answers HTTP 404 for something the test never intended to exercise."
     ],
     "checks": []

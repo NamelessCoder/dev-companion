@@ -53,7 +53,7 @@
     },
     {
       "topic": "Official TYPO3 API, reference and tutorial documentation",
-      "depth": "Live lookup in the public tables of contents of TYPO3 Explained and TypoScript Explained, bound to one covered documentation release. Every result keeps its canonical URL, document, version and section; an unreachable service is not an empty search.",
+      "depth": "Live lookup in the public tables of contents of TYPO3 Explained, TypoScript Explained and the TCA Reference, bound to one covered documentation release. Every result keeps its canonical URL, document, version and section; an unreachable service is not an empty search.",
       "tools": [
         "typo3_documentation_lookup"
       ],

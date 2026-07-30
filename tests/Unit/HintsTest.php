@@ -255,6 +255,27 @@ final class HintsTest extends TestCase
     }
 
     #[Test]
+    public function theTestApiAProjectWritesItsTestsWithReachesTheProjectHint(): void
+    {
+        // The API is the same one the core tests are written with, so the two
+        // testing hints both answer here — but a test in a package of this
+        // repository runs in a harness the core hint knows nothing about, and
+        // that hint is the one that has to come first.
+        $result = ArchitectureHints::find(
+            ['packages/my_sitepackage/Tests/Functional/HeroCarouselTest.php'],
+            'FunctionalTestCase executeFrontendSubRequest CSV fixture for my content element',
+            6,
+        );
+
+        $ids = array_column($result['matchedHints'], 'id');
+        self::assertContains('project-extension-tests', $ids);
+        self::assertLessThan(
+            array_search('core-tests', $ids, true) ?: PHP_INT_MAX,
+            array_search('project-extension-tests', $ids, true),
+        );
+    }
+
+    #[Test]
     public function aShortTermIsNotMatchedAsThePrefixOfALongerWord(): void
     {
         // Prefix matching is how a stem finds every form of its word. At three

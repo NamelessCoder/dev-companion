@@ -85,22 +85,6 @@ somebody else writes.
 
 ---
 
-## Make inline-record, AssetCollector and testing-API guidance findable
-
-Serves `feedback/2026-07-30-073632-typo3-documentation-lookup-returned-weak-or.md`
-and `feedback/2026-07-30-093311-typo3-documentation-lookup-returned-generic.md`.
-
-The manual index carries page titles and paths only, so an API identifier —
-`AssetCollector`, `FunctionalTestCase`, `executeFrontendSubRequest`,
-`foreign_field` — appears nowhere in it and reaches the pages that share a
-generic word instead. Two parts, both verified against the covered lines:
-`typo3/reference-tca` is not among the searched manuals at all although it
-holds `ColumnsConfig/Type/Inline/Index.html` on 12.4, 13.4 and 14.3; and the
-identifiers need an alias into the vocabulary the index actually uses (Assets,
-Functional tests). Add lookup tests for the exact note queries.
-
----
-
 ## Route content-element tasks through the ownership decision
 
 Serves

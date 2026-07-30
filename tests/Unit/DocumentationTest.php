@@ -47,6 +47,40 @@ final class DocumentationTest extends TestCase
     }
 
     #[Test]
+    public function aTcaQuestionIsAnsweredFromTheTcaReferenceRatherThanFromWhatElseCarriesTheWord(): void
+    {
+        // TYPO3 Explained documents everything around TCA and not TCA itself,
+        // so this used to come back as the events that carry "inline" and
+        // "localization" in their class names.
+        $answer = (new Documentation($this->manuals()))->lookup(
+            ['TCA inline foreign_field foreign_sortby localization children'],
+            '14.3',
+            3,
+        );
+
+        self::assertSame('IRRE / inline', $answer['results'][0]['title']);
+        self::assertSame('typo3/reference-tca', $answer['results'][0]['document']);
+    }
+
+    #[Test]
+    public function anApiIdentifierReachesThePageThatIsNotNamedAfterIt(): void
+    {
+        // Nothing in a table of contents is called AssetCollector or
+        // FunctionalTestCase; the pages that answer them are called "Assets"
+        // and "Functional tests".
+        $documentation = new Documentation($this->manuals());
+
+        self::assertContains(
+            'Assets',
+            array_column($documentation->lookup(['Fluid AssetCollector css javascript ViewHelper'], '14.3', 3)['results'], 'title'),
+        );
+        self::assertContains(
+            'Functional tests',
+            array_column($documentation->lookup(['FunctionalTestCase executeFrontendSubRequest CSV fixture TYPO3 14'], '14.3', 3)['results'], 'title'),
+        );
+    }
+
+    #[Test]
     public function anAnsweredIndexWithNoMatchIsNotAnUnavailableService(): void
     {
         $documentation = new Documentation(static fn(string $url): ?string => str_ends_with($url, '/en-us/')
@@ -58,6 +92,53 @@ final class DocumentationTest extends TestCase
         self::assertSame('empty', $answer['status']);
         self::assertSame([], $answer['results']);
         self::assertNull($answer['unavailable']);
+    }
+
+    /**
+     * The tables of contents as they are published, cut down to the pages this
+     * is about: the ones that answer, and the ones that used to be answered
+     * instead because they carry one of the words.
+     */
+    private function manuals(): \Closure
+    {
+        $manuals = [
+            'typo3/reference-coreapi' => [
+                'ApiOverview/Events/Events/Backend/ModifyInlineElementControlsEvent.html' => 'ModifyInlineElementControlsEvent',
+                'ApiOverview/Events/Events/Backend/AfterPageColumnsSelectedForLocalizationEvent.html' => 'AfterPageColumnsSelectedForLocalizationEvent',
+                'ApiOverview/Events/Events/Frontend/AfterStdWrapFunctionsExecutedEvent.html' => 'AfterStdWrapFunctionsExecutedEvent',
+                'ApiOverview/Assets/Index.html' => 'Assets',
+                'ApiOverview/Fluid/DevelopCustomViewhelper.html' => 'Developing a custom ViewHelper',
+                'ApiOverview/ContentElements/AddingYourOwnContentElements.html' => 'Create a custom content element type (CType)',
+                'Testing/FunctionalTesting/Index.html' => 'Functional tests',
+            ],
+            'typo3/reference-typoscript' => [
+                'ContentObjects/Case/Index.html' => 'CASE',
+            ],
+            'typo3/reference-tca' => [
+                'ColumnsConfig/Type/Inline/Index.html' => 'IRRE / inline',
+                'ColumnsConfig/CommonProperties/FieldInformation/TcaDescription.html' => 'tcaDescription',
+            ],
+        ];
+
+        return static function (string $url) use ($manuals): ?string {
+            foreach ($manuals as $manual => $pages) {
+                if (!str_contains($url, $manual)) {
+                    continue;
+                }
+                if (!str_ends_with($url, '/en-us/')) {
+                    return '<html><article role="main"><p>What this page says.</p></article></html>';
+                }
+
+                $links = '';
+                foreach ($pages as $path => $title) {
+                    $links .= sprintf('<a href="%s">%s</a>', $path, $title);
+                }
+
+                return '<html><body>' . $links . '</body></html>';
+            }
+
+            return null;
+        };
     }
 
     #[Test]

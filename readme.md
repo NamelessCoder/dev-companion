@@ -344,8 +344,9 @@ name already says what shape the answer has.
   rather than merely irrelevant. An answer that matched nothing lists the hint
   ids there are, and `id` asks for one of them outright.
 - `typo3_documentation_lookup`: searches the public tables of contents of TYPO3
-  Explained and TypoScript Explained on `docs.typo3.org`, for an explicitly
-  requested covered release. Every result carries its canonical URL, document,
+  Explained, TypoScript Explained and the TCA Reference on `docs.typo3.org`, for
+  an explicitly requested covered release. A compound name is taken apart, so
+  `AssetCollector` reaches the page called "Assets". Every result carries its canonical URL, document,
   version and section. It never falls through to another release, and an
   unreachable service is distinct from a search that answered with no match.
 - `typo3_component_lookup`: looks up backend UI components by name or topic and

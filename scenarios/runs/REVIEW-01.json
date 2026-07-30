@@ -1,59 +1,70 @@
 {
     "scenario": "REVIEW-01",
-    "date": "2026-07-30",
-    "server": "021eac8",
+    "date": "2026-07-31",
+    "server": "23750d3",
     "client": "claude-code",
     "environment": "E-SITE",
     "criteria": "eead978c8c77",
-    "skills": [],
-    "toolTrace": [],
+    "skills": [
+        "typo3-extension-conformance"
+    ],
+    "toolTrace": [
+        "typo3_project_scope",
+        "typo3_extension_scope",
+        "typo3_translation_domain_lookup",
+        "typo3_changelog_lookup",
+        "typo3_task_guide",
+        "typo3_architecture_lookup",
+        "typo3_icon_lookup",
+        "typo3_architecture_lookup"
+    ],
     "outcomes": [
         {
-            "met": null,
-            "evidence": ""
+            "met": true,
+            "evidence": "The answer opens on a Scope section stating all five: TYPO3 14.3.5, PHP ^8.4, a Composer project with one own extension, one single-language site on the `bk2k/printworks` set, and the three declared commands — all of them run, `composer test:unit` (26), `composer test:functional` (47) and `npm run test:e2e` (33), the first run of this review to execute the browser suite. The facts come from `typo3_project_scope` and `typo3_extension_scope`, called second and third in the session."
         },
         {
-            "met": null,
-            "evidence": ""
+            "met": true,
+            "evidence": "Every finding names its file with line ranges (settings.php#L3-L10, page.tsconfig#L16-L20, route-enhancers.yaml#L65-L86, Detail.fluid.html#L144-L162), states the consequence in operational terms — the enquiry form's finisher failing silently on a non-DDEV host is named as the site's business purpose — and ends in a Fix. Confidence is stated where it is short: the multi-language and workspace risks sit under Unassessed with the reason, 'I am not reporting them as violations because there is no second language to demonstrate one'."
         },
         {
-            "met": null,
-            "evidence": ""
+            "met": true,
+            "evidence": "High is the two deployment findings, and the ordering sentence is explicit about why: 'Nothing else on this list can harm anyone; these two can.' Medium starts with the placeholder record because it is 'the only finding a first deployment shows to a visitor'. The missing CI and the unusable path repository sit at Low despite being infrastructure, which is the right call for a project nobody deploys today, and the stale comments rank above them because one of them invites deleting a live Extbase layer as dead code."
         },
         {
-            "met": null,
-            "evidence": ""
+            "met": false,
+            "evidence": "Half of it holds, and the half that fails is the one this criterion was written for. Conventions were asked for on two surfaces — `typo3_architecture_lookup` for content elements and again for security boundaries, plus `typo3_task_guide`, `typo3_icon_lookup` against the live registry and `typo3_changelog_lookup` for the v14.0 translation-domain feature. Translations were not among them, and translations were nevertheless declared clean: at 23:36:46 the session read `head -30 Resources/Private/Language/messages.xlf`, the header carrying `source-language=\"de\"`, then called `typo3_translation_domain_lookup`, verified the domain resolves correctly, and listed 'translation domains … correctly short-forms' and 'carousel labels complete in both XLF files' under **Assessed and clean**. A runtime lookup was taken for the convention lookup, which it is not: `typo3_architecture_lookup` holds the rule and returns it for a query as loose as 'review sitepackage language files and labels'. Documentation fails the other half — the extension ships no `Documentation/` and no README, the checklist names documentation under Quality, and the surface appears in neither the findings nor the Unassessed list. Absent is what 'reported as unassessed rather than left out' forbids."
         },
         {
-            "met": null,
-            "evidence": ""
+            "met": true,
+            "evidence": "Four categories are separated by construction: High/Medium/Low for verified defects, a 'Recommendations:' paragraph for PHPStan, CGL and the Build/ layout question, 'Unassessed — not clean, just untested' for missing evidence with a reason per entry, and 'Assessed and clean' for what was checked and found sound. The category still unmarked is subjects outside this server's scope — the deployment and secret-rotation findings are what `doesNotCover` calls operating the installation, and they are reported like any other finding."
         },
         {
-            "met": null,
-            "evidence": ""
+            "met": true,
+            "evidence": "The first of the three runs to satisfy both halves. It stops at findings, changes nothing, and asks before acting. And the follow-up is routed by name: 'The preview template belongs to the **content-element** workflow, the missing specs to the **testing** workflow', CI to the **testing** workflow, the comment and readme drift to the **documentation** workflow, closing with 'conformance re-checks the resulting findings'. No workflow was named in either earlier run."
         }
     ],
     "failures": [
         {
-            "avoided": null,
-            "evidence": ""
+            "avoided": true,
+            "evidence": "Every finding is bound to this checkout, several to its history: commit e69ab99 adding the carousel without touching a content file, and 9f7773b re-exporting data.xml and sweeping in a scratch record with `headline = \"Some\"`, traced to `tt_content:38` on pid 1 at colPos 1, sorting 16 — above the existing hero. Nothing in the answer would transfer to another project."
         },
         {
-            "avoided": null,
-            "evidence": ""
+            "avoided": true,
+            "evidence": "PHPStan, CGL and ESLint sit in a 'Recommendations:' paragraph, and the `Build/` layout question is bounded as 'worth one decision, not urgent'. No absent optional subsystem is reported as a defect. The uniqueness constraint asked of `product_number` is not invented: it follows from the field already being a `routeFieldName` in route-enhancers.yaml, and the answer contrasts it with `slug`, which does carry `uniqueInSite`."
         },
         {
-            "avoided": null,
-            "evidence": ""
+            "avoided": true,
+            "evidence": "Twice, in both directions. A `git grep` for the four documented environment variables found them nowhere outside the readme; rather than stopping there the session read additional.php in full and established that everything in it sits inside `if (getenv('IS_DDEV_PROJECT') == 'true')`. And where a file appeared to be missing something — `ext_tables.sql` carrying only the FULLTEXT index — it read `DefaultTcaSchema` and `TcaEnrichment` in the installed core, found the `parent` passthrough column and the enablecolumns are generated, and reported the file as correct rather than incomplete."
         },
         {
-            "avoided": null,
-            "evidence": ""
+            "avoided": true,
+            "evidence": "The commands are the project's own throughout — `composer test:unit`, `composer test:functional`, `npm run test:e2e` — and the remediations name project-level configuration: `ddev config --disable-settings-management`, a committed `displayErrors => -1` baseline, `config/sites/main/settings.yaml`. No runTests.sh, no core Build/Scripts path, no core contribution step."
         },
         {
-            "avoided": null,
-            "evidence": ""
+            "avoided": true,
+            "evidence": "No Write, Edit or NotebookEdit call in the transcript; of 55 tool calls, 45 are Bash and 2 Read, all of them reading or running the project's declared suites. `git status --short` afterwards shows only the ` M .gitignore` that predates all three runs — which the answer itself notices and correctly reads as somebody else's intentional edit rather than as a finding."
         }
     ],
-    "notes": ""
+    "notes": "The third run of the same prompt in the same checkout, and the first where the workflow was walked rather than sampled: the skill activated as the opening action and eight server calls followed across five tools, against two in the previous run and none in the first. Both changes aimed at something hit. Coverage is now a section of the answer — 'Assessed and clean' beside 'Unassessed — not clean, just untested', with a reason per entry — and the follow-up work is handed to the content-element, testing and documentation workflows by name. The review also reached four things neither earlier run did: a placeholder hero slide shipping in `Initialisation/data.xml` above the homepage hero, inline site settings the backend settings editor will silently stop reading on first save, an `errorContentSource` pointing at uid 2 in the shipped site config, and a Fluid workaround whose justifying comment stopped being true in v13.\n\nThe new criterion is the one it fails, and it fails it in the most useful way available. Translations were declared clean without their conventions being asked for, with the offending line on screen: `head -30` of messages.xlf prints the `source-language=\"de\"` header. Three runs, three times unasked. What this establishes is narrower and more actionable than 'the lookup was skipped' — the session did reach for a translation tool, and picked the one that answers what a domain resolves to rather than the one that answers what governs the file. A surface with a runtime lookup of its own can be assessed by it and still never meet its rules.\n\nDocumentation fails the other half. The extension ships no `Documentation/` and no README, `references/checklist.md` names documentation under Quality, and the answer's only uses of the word are readme drift and the carousel's missing docs. The coverage section is real but self-reported: it lists what the session knew it had skipped, not what the checklist says it should have walked.\n\nSession 04515bc8-c13d-4884-ac68-68bcb69082b8, 2026-07-31 01:33-01:44 CEST, eleven minutes against seven and six. The two earlier runs are in commits 77882f1 and 021eac8, judged against the five criteria that preceded this one."
 }

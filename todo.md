@@ -89,14 +89,21 @@ somebody else writes.
 
 This serves
 `feedback/2026-07-30-173821-task-skill-forward-evidence-is-not-repeatable.md`
-and `R-DIS-14`. Start by running `EXT-04` and `SITE-07` verbatim in the
-Printworks sitepackage against the current server, then correct their status and
-acceptance criteria to what the runs establish. Use those two runs to define a
-machine-readable result beside the existing human-readable scenarios: prompt,
-environment, required outcomes, failure conditions, tool trace and verdict.
-Add the smallest runner that records and checks that result, and put the
-task-skill authoring invariants it can enforce in `SkillTest`; do not duplicate
-the scenario prose or versioned tool answers.
+and `R-DIS-14`. The note asks for the two runs first and the format after them.
+That order is turned around here, decided on 2026-07-30: the runs are what the
+format has to survive, but a run recorded by hand is the thing that drifted in
+the first place, so the recording comes first and `EXT-04` and `SITE-07` become
+its first two entries.
+
+So: define a machine-readable result beside the existing human-readable
+scenarios — prompt, environment, required outcomes, failure conditions, tool
+trace and verdict — reading the scenario half out of the markdown rather than
+copying it, so the prose stays the only source of the prompt and the criteria.
+Add the smallest runner that records and checks such a result, and put the
+task-skill authoring invariants it can enforce in `SkillTest`. Then run `EXT-04`
+and `SITE-07` verbatim in the Printworks sitepackage against the current server,
+record both, and correct their status and acceptance criteria to what the runs
+establish. Do not duplicate the scenario prose or versioned tool answers.
 
 ## Complete the extension author's multi-major upgrade workflow
 

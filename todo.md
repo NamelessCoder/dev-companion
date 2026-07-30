@@ -85,25 +85,53 @@ somebody else writes.
 
 ---
 
-## Reconcile and make task-skill forward evidence repeatable
+## Close what the first EXT-04 run exposed
+
+This serves the seven notes recorded on 2026-07-30, all from one forward run of
+`EXT-04` against the Printworks sitepackage on TYPO3 14.3.5. They are worked off
+in this order, cheapest and most certain first:
+
+1. The three knowledge gaps: which language a new label is authored in, where a
+   setting belongs when its reach is one site rather than one installation, and
+   what a backend module builds after it is registered — the doc-header button
+   API and the redirect its own POST answers with. All three are verifiable
+   against the checkouts below `.checkouts/`, and the shortcut button changed in
+   a major, so it is bound.
+2. The catalog provenance: `typo3_catalog_scope` announces one branch for the
+   whole catalog and a caller reads that as the version of every entry under it.
+   Say what the branch is — the checkout the entries were read from — and let
+   the entry's own range speak for the answer.
+3. Reading a page of the manual. The largest of the seven and the one that
+   changes the most: `typo3_documentation_lookup` finds the right page and
+   cannot hand it over, so a session that asked it well still rebuilt the API
+   from twenty-five greps through `vendor/typo3`.
+4. The skill hand-off, which is a sentence in every skill and does not happen.
+   The note asks for a forward scenario in which a task that starts in one skill
+   has to end in another, so the boundary is measured rather than declared.
+5. Deriving the component catalog from the installation, last, because it
+   reverses a recorded decision. It needs a `decisions.md` entry that says what
+   changed, not only a commit.
+
+## Run EXT-04 and SITE-07 forward and correct what they claim
 
 This serves
 `feedback/2026-07-30-173821-task-skill-forward-evidence-is-not-repeatable.md`
-and `R-DIS-14`. The note asks for the two runs first and the format after them.
-That order is turned around here, decided on 2026-07-30: the runs are what the
-format has to survive, but a run recorded by hand is the thing that drifted in
-the first place, so the recording comes first and `EXT-04` and `SITE-07` become
-its first two entries.
+and `R-FBK-3`. The format, the runner and the authoring invariants exist; what
+is left of that note is the evidence itself.
 
-So: define a machine-readable result beside the existing human-readable
-scenarios — prompt, environment, required outcomes, failure conditions, tool
-trace and verdict — reading the scenario half out of the markdown rather than
-copying it, so the prose stays the only source of the prompt and the criteria.
-Add the smallest runner that records and checks such a result, and put the
-task-skill authoring invariants it can enforce in `SkillTest`. Then run `EXT-04`
-and `SITE-07` verbatim in the Printworks sitepackage against the current server,
-record both, and correct their status and acceptance criteria to what the runs
-establish. Do not duplicate the scenario prose or versioned tool answers.
+`EXT-04` was run once, on 2026-07-30, and that run is void. It met all five
+criteria of the day and produced six defects none of them measured, so the
+criteria were widened and the digest dropped the run with them. It now waits
+behind the item above, decided on 2026-07-30: the new criteria are exactly the
+gaps those notes describe, so a run today fails the documentation criterion by
+construction and reproduces the label and configuration defects — it would
+confirm what is already written down, at the price of a full session. `SITE-07`
+depends on none of it and can go at any time.
+
+Next step for either: `bin/scenarios record <id> claude-code`, paste what
+`bin/scenarios show <id>` prints into a session in the Printworks project and
+nothing else, fill in the judgments with their evidence, and correct the
+`Status today` lines to what the runs establish.
 
 ## Complete the extension author's multi-major upgrade workflow
 

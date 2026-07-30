@@ -465,6 +465,9 @@ final class HintsTest extends TestCase
         self::assertStringContainsString('Remove that marker to take the file over', $text);
         self::assertStringContainsString('config/system/.gitignore', $text);
         self::assertStringContainsString('verify additional.php is still tracked', $text);
+        self::assertStringContainsString('local-development environment, not the production configuration source', $text);
+        self::assertStringContainsString('IS_DDEV_PROJECT', $text);
+        self::assertStringContainsString('never commit production secrets', $text);
     }
 
     #[Test]

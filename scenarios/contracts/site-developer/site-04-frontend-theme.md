@@ -1,0 +1,29 @@
+# SITE-04 — The frontend theme
+
+**Environment:** `E-SITE` with a site package using Bootstrap ·
+**Contract:** `held` — `R-SCO-4`
+
+> Our site package theme is Bootstrap 5 with our own SCSS on top. The card
+> component looks wrong on mobile and the spacing is inconsistent across
+> breakpoints. Clean up the SCSS and make the components consistent.
+
+**What the agent needs from this server**
+
+- Nothing, honestly, beyond recognising that this is not the TYPO3 backend. The
+  server's CSS knowledge is the backend's, and the backend left Bootstrap behind.
+- The Fluid side of the templates, where it comes up.
+
+**What has to come out of it**
+
+- The backend CSS architecture, its design tokens and its class naming do **not**
+  come back as advice for a Bootstrap frontend theme.
+- If CSS knowledge is offered at all, it is marked as the core backend's and as
+  not applying here.
+
+**How it fails**
+
+- Backend token names, backend component class naming, and "the backend has
+  moved off Bootstrap" handed over as instructions for a Bootstrap theme — four
+  confidently inverted hints, which is the note this scenario exists for
+  (`R-SCO-4`).
+- A `.scss` path being enough to trigger core CSS conventions.

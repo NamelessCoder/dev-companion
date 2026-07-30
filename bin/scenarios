@@ -18,6 +18,11 @@ declare(strict_types=1);
  *     The environment, the prompt to paste verbatim, and the criteria to judge
  *     the session against, numbered the way the recorded run indexes them.
  *
+ *   bin/scenarios contract <id>
+ *     The same, for a targeted contract case below scenarios/contracts/. It
+ *     names its own task shape, so it is read and pasted for inspection but
+ *     never recorded as forward evidence.
+ *
  *   bin/scenarios record <id> <client>
  *     Writes the empty run for that scenario to scenarios/runs/, with every
  *     criterion unjudged and the digest of the criteria as they read now. Fill
@@ -36,6 +41,7 @@ use Typo3CmsMcp\Scenarios;
 
 exit(match ($argv[1] ?? '') {
     'show' => show($argv[2] ?? ''),
+    'contract' => contract($argv[2] ?? ''),
     'record' => record($argv[2] ?? '', $argv[3] ?? ''),
     'check' => check(),
     default => usage(),
@@ -43,7 +49,7 @@ exit(match ($argv[1] ?? '') {
 
 function usage(): int
 {
-    fwrite(STDERR, "Usage: bin/scenarios show <id>\n       bin/scenarios record <id> <client>\n       bin/scenarios check\n");
+    fwrite(STDERR, "Usage: bin/scenarios show <id>\n       bin/scenarios contract <id>\n       bin/scenarios record <id> <client>\n       bin/scenarios check\n");
 
     return 2;
 }
@@ -51,21 +57,55 @@ function usage(): int
 /** What has to be pasted, and what the session is judged against. */
 function show(string $id): int
 {
-    $scenario = Scenarios::load()[strtoupper($id)] ?? null;
+    $id = strtoupper($id);
+    $scenario = Scenarios::load()[$id] ?? null;
     if ($scenario === null) {
-        fwrite(STDERR, sprintf("There is no scenario %s.\n", $id));
+        fwrite(STDERR, isset(Scenarios::contracts()[$id])
+            ? sprintf("%s is a targeted contract case: bin/scenarios contract %s\n", $id, $id)
+            : sprintf("There is no forward review %s.\n", $id));
 
         return 2;
     }
 
+    return print_scenario($scenario, 'Status today');
+}
+
+/** The same for a targeted case, which is read rather than run forward. */
+function contract(string $id): int
+{
+    $id = strtoupper($id);
+    $case = Scenarios::contracts()[$id] ?? null;
+    if ($case === null) {
+        fwrite(STDERR, isset(Scenarios::load()[$id])
+            ? sprintf("%s is an open forward review: bin/scenarios show %s\n", $id, $id)
+            : sprintf("There is no contract case %s.\n", $id));
+
+        return 2;
+    }
+
+    return print_scenario($case, 'Contract');
+}
+
+/**
+ * @param array{id: string, title: string, file: string, environment: string, status: string, requirements: array<int, string>, prompt: string, needs: array<int, string>, outcomes: array<int, string>, failures: array<int, string>, criteria: string} $scenario
+ */
+function print_scenario(array $scenario, string $label): int
+{
     printf("%s — %s\n%s\n\n", $scenario['id'], $scenario['title'], $scenario['file']);
     printf("Environment  %s\n", $scenario['environment']);
-    printf("Status today %s%s\n", $scenario['status'], $scenario['requirements'] === [] ? '' : ' — ' . implode(', ', $scenario['requirements']));
+    printf("%-12s %s%s\n", $label, $scenario['status'], $scenario['requirements'] === [] ? '' : ' — ' . implode(', ', $scenario['requirements']));
     printf("Criteria     %s\n", $scenario['criteria']);
 
     // Verbatim, on its own, with nothing around it: a prompt read off a screen
     // that also explains what it is testing is no longer the prompt.
     printf("\nPaste this and add nothing:\n\n%s\n", $scenario['prompt']);
+
+    if ($scenario['needs'] !== []) {
+        printf("\nWhat the agent needs from this server\n");
+        foreach ($scenario['needs'] as $need) {
+            printf("  - %s\n", $need);
+        }
+    }
 
     foreach ([['outcomes', 'What has to come out of it'], ['failures', 'How it fails']] as [$section, $heading]) {
         printf("\n%s\n", $heading);
@@ -84,8 +124,17 @@ function record(string $id, string $client): int
         return usage();
     }
 
+    $id = strtoupper($id);
+    if (isset(Scenarios::contracts()[$id])) {
+        // Not an oversight to be worked around: a case that names its own task
+        // shape cannot be evidence that an agent found it.
+        fwrite(STDERR, sprintf("%s is a targeted contract case and is not run forward.\n", $id));
+
+        return 2;
+    }
+
     try {
-        $run = Scenarios::skeleton(strtoupper($id), server(), $client, date('Y-m-d'));
+        $run = Scenarios::skeleton($id, server(), $client, date('Y-m-d'));
     } catch (InvalidArgumentException $exception) {
         fwrite(STDERR, $exception->getMessage() . "\n");
 
@@ -141,7 +190,7 @@ function check(): int
     // Not a failure. Most scenarios have never been run forward, and a suite
     // that fails for that would be a suite nobody could add a scenario to.
     $unrun = array_values(array_diff(array_keys(Scenarios::load()), array_keys($runs)));
-    printf("\n%d of %d scenarios have a recorded run.\n", count($runs), count($runs) + count($unrun));
+    printf("\n%d of %d forward reviews have a recorded run.\n", count($runs), count($runs) + count($unrun));
     if ($unrun !== []) {
         printf("Never run forward: %s\n", implode(', ', $unrun));
     }

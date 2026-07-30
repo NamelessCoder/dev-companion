@@ -111,7 +111,7 @@ function coverage(): int
     // test a matcher is written by someone who knows what it should return.
     $prompts = array_map(
         static fn(array $scenario): string => $scenario['prompt'],
-        Scenarios::load(),
+        [...Scenarios::load(), ...Scenarios::contracts()],
     );
     $reached = [];
     $silent = [];

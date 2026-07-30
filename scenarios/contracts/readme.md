@@ -1,0 +1,56 @@
+# Targeted contract cases
+
+These cases name a concrete task or failure mode so one behavior can be held
+still: routing to a backend-module workflow, preserving an existing test
+harness, withholding a version-bound component, or handing verified behavior
+from one skill to another.
+
+They are intentionally more specific than a forward review. They answer “does
+this known task shape still receive the required workflow?” They do not answer
+“can an agent inspect an unfamiliar repository and decide what matters?” and
+therefore do not receive recorded forward runs or a `Status today`.
+
+`bin/scenarios contract <id>` prints a case and its criteria. PHPUnit holds the
+files to the contract format; the relevant tool and skill tests hold the
+behavior directly.
+
+## Contract states
+
+| Contract | Meaning |
+| --- | --- |
+| `held` | The current implementation is expected to satisfy this targeted case. |
+| `open` | Accepted behavior is still missing or only partly held. |
+| `boundary` | A clean decline and correct route elsewhere is the required behavior. |
+
+## Where a case lives
+
+One case is one file, named after its id, in the group whose behavior it holds.
+Each group's `readme.md` says what that group is about; the directory listing is
+the index.
+
+| Group | Cases |
+| --- | --- |
+| [core-contributor/](core-contributor/readme.md) | `CORE-01` … `CORE-06` |
+| [extension-author/](extension-author/readme.md) | `EXT-01` … `EXT-07` |
+| [site-developer/](site-developer/readme.md) | `SITE-01` … `SITE-07` |
+| [cross-cutting/](cross-cutting/readme.md) | `META-01` … `META-05` |
+| [task-skills/](task-skills/readme.md) | `SKILL-01` … `SKILL-07` |
+
+## Coverage
+
+Rows are task shapes, columns are audiences. A cell names the targeted cases
+that hold it; an empty cell is a hole in the contract suite.
+
+| Task | Core contributor | Extension author | Site developer |
+| --- | --- | --- | --- |
+| Bug fix | `CORE-01` | `EXT-03` | `SITE-03` |
+| New feature / new code | `CORE-02` | `EXT-04` | `SITE-05` |
+| New project from scratch | — | `EXT-02` | `SITE-01` |
+| Upgrade to a new TYPO3 version | `CORE-04` | `EXT-01` | `SITE-02` |
+| Testing | `CORE-05` | `EXT-05` | `SITE-06` |
+| Review, commit, submission | `CORE-03` | `EXT-03` | — |
+| Labels, icons, i18n | `CORE-02` | `EXT-06` | `EXT-06` |
+| Official API documentation | — | `EXT-07` | `SITE-07` |
+| Frontend / theming | — | — | `SITE-04` |
+| Version and branch spread | `CORE-06` | `EXT-01` | `SITE-02` |
+| Orientation, setup and degraded state | `META-01` … `META-05` | | |

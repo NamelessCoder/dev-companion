@@ -8,6 +8,14 @@ namespace Typo3CmsMcp;
  * Reads scenarios/ back as data, and holds a recorded forward run to the
  * scenario it says it is a run of.
  *
+ * Two kinds live there and only one of them is run forward. An open forward
+ * review below scenarios/forward/ asks for a review of the repository and
+ * nothing more, carries a `Status today`, and is what a recorded run answers. A
+ * targeted contract case below scenarios/contracts/ names one task shape so its
+ * routing can be held still, carries a `Contract` state instead, and is read for
+ * inspection only. Both are the same file shape, which is why they parse
+ * through the same code and differ in one label.
+ *
  * A scenario is prose because it is written for a person: a prompt in the words
  * a user would use, and the criteria somebody has to judge an answer against.
  * Nothing here changes that. The prose stays the only copy of the prompt and of
@@ -36,35 +44,41 @@ namespace Typo3CmsMcp;
 final class Scenarios
 {
     /**
-     * The two vocabularies a scenario is written in, read out of the tables in
-     * scenarios/readme.md that define them.
+     * The vocabularies a scenario is written in, read out of the tables that
+     * define them: the environments in scenarios/readme.md, the marks a forward
+     * review carries in scenarios/forward/readme.md, and the contract states in
+     * scenarios/contracts/readme.md.
      *
-     * They are defined there because that is where somebody writing a scenario
-     * reads what the marks mean and which environments exist. A copy here would
-     * be the second definition, and the one that goes stale is always the one
-     * nobody is reading.
+     * Each is defined where somebody writing that kind of case reads it. A copy
+     * here would be the second definition, and the one that goes stale is always
+     * the one nobody is reading — so this looks through every readme below
+     * scenarios/ for the column rather than naming one file.
      *
      * @return array<int, string>
      */
     public static function vocabulary(string $column): array
     {
-        $readme = (string) file_get_contents(self::directory() . '/readme.md');
-
         $codes = [];
-        $inTable = false;
-        foreach (preg_split('/\R/', $readme) ?: [] as $line) {
-            if (str_starts_with($line, '| ' . $column . ' |')) {
-                $inTable = true;
+        foreach (self::documents(self::directory()) as $path) {
+            if (basename($path) !== 'readme.md') {
                 continue;
             }
-            if (!$inTable) {
-                continue;
-            }
-            if (!str_starts_with($line, '|')) {
-                break;
-            }
-            if (preg_match('/^\|\s*`([^`]+)`/', $line, $matches) === 1) {
-                $codes[] = $matches[1];
+
+            $inTable = false;
+            foreach (preg_split('/\R/', (string) file_get_contents($path)) ?: [] as $line) {
+                if (str_starts_with($line, '| ' . $column . ' |')) {
+                    $inTable = true;
+                    continue;
+                }
+                if (!$inTable) {
+                    continue;
+                }
+                if (!str_starts_with($line, '|')) {
+                    break;
+                }
+                if (preg_match('/^\|\s*`([^`]+)`/', $line, $matches) === 1) {
+                    $codes[] = $matches[1];
+                }
             }
         }
 
@@ -72,26 +86,47 @@ final class Scenarios
     }
 
     /**
-     * Every scenario, keyed and sorted by id.
+     * Every open forward review, keyed and sorted by id. These are the ones a
+     * recorded run answers.
      *
-     * @return array<string, array{id: string, title: string, file: string, environment: string, status: string, requirements: array<int, string>, prompt: string, outcomes: array<int, string>, failures: array<int, string>, criteria: string}>
+     * @return array<string, array{id: string, title: string, file: string, environment: string, status: string, requirements: array<int, string>, prompt: string, needs: array<int, string>, outcomes: array<int, string>, failures: array<int, string>, criteria: string}>
      */
     public static function load(): array
     {
+        return self::read(self::directory() . '/forward', 'Status today');
+    }
+
+    /**
+     * Every targeted contract case, keyed and sorted by id. Printed for
+     * inspection; never recorded as a forward run.
+     *
+     * @return array<string, array{id: string, title: string, file: string, environment: string, status: string, requirements: array<int, string>, prompt: string, needs: array<int, string>, outcomes: array<int, string>, failures: array<int, string>, criteria: string}>
+     */
+    public static function contracts(): array
+    {
+        return self::read(self::directory() . '/contracts', 'Contract');
+    }
+
+    /**
+     * @return array<string, array{id: string, title: string, file: string, environment: string, status: string, requirements: array<int, string>, prompt: string, needs: array<int, string>, outcomes: array<int, string>, failures: array<int, string>, criteria: string}>
+     */
+    private static function read(string $directory, string $label): array
+    {
         $scenarios = [];
-        foreach (glob(self::directory() . '/*.md') ?: [] as $path) {
-            $file = basename($path);
-            if ($file === 'readme.md') {
+        foreach (self::documents($directory) as $path) {
+            if (basename($path) === 'readme.md') {
                 continue;
             }
 
             $contents = (string) file_get_contents($path);
             // Split on the headings rather than scanning line by line: every
             // field of a scenario is inside its own section, so the section is
-            // the unit both this and the criteria digest are built from.
-            $parts = preg_split('/^## (?=[A-Z]+-\d+\b)/m', $contents) ?: [];
+            // the unit both this and the criteria digest are built from. One
+            // file holds one case, and a second heading in it is what the tests
+            // catch rather than something to parse around.
+            $parts = preg_split('/^#{1,2} (?=[A-Z]+-\d+\b)/m', $contents) ?: [];
             foreach (array_slice($parts, 1) as $section) {
-                $scenario = self::parse($file, $section);
+                $scenario = self::parse($path, $label, $section);
                 $scenarios[$scenario['id']] = $scenario;
             }
         }
@@ -102,9 +137,34 @@ final class Scenarios
     }
 
     /**
-     * @return array{id: string, title: string, file: string, environment: string, status: string, requirements: array<int, string>, prompt: string, outcomes: array<int, string>, failures: array<int, string>, criteria: string}
+     * Every markdown file below a directory, at whatever depth it sits.
+     *
+     * @return array<int, string>
      */
-    private static function parse(string $file, string $section): array
+    private static function documents(string $directory): array
+    {
+        if (!is_dir($directory)) {
+            return [];
+        }
+
+        $paths = [];
+        $files = new \RecursiveIteratorIterator(
+            new \RecursiveDirectoryIterator($directory, \FilesystemIterator::SKIP_DOTS),
+        );
+        foreach ($files as $file) {
+            if ($file instanceof \SplFileInfo && $file->getExtension() === 'md') {
+                $paths[] = $file->getPathname();
+            }
+        }
+        sort($paths);
+
+        return $paths;
+    }
+
+    /**
+     * @return array{id: string, title: string, file: string, environment: string, status: string, requirements: array<int, string>, prompt: string, needs: array<int, string>, outcomes: array<int, string>, failures: array<int, string>, criteria: string}
+     */
+    private static function parse(string $path, string $label, string $section): array
     {
         $heading = trim((string) strtok($section, "\n"));
         [$id, $title] = array_pad(preg_split('/\s+—\s+/', $heading, 2) ?: [], 2, '');
@@ -124,11 +184,12 @@ final class Scenarios
         return [
             'id' => $id,
             'title' => $title,
-            'file' => 'scenarios/' . $file,
+            'file' => substr($path, strlen(Paths::root()) + 1),
             'environment' => self::field($section, 'Environment'),
-            'status' => self::field($section, 'Status today'),
-            'requirements' => self::requirements($section),
+            'status' => self::field($section, $label),
+            'requirements' => self::requirements($section, $label),
             'prompt' => $promptText,
+            'needs' => self::bullets($section, 'What the agent needs from this server'),
             'outcomes' => $outcomes,
             'failures' => $failures,
             'criteria' => self::digest($promptText, $outcomes, $failures),
@@ -144,14 +205,15 @@ final class Scenarios
     }
 
     /**
-     * The requirements a status line names, which is where a `partial` or `gap`
-     * says what is already written down and what a run should not re-file.
+     * The requirements a state line names, which is where a `partial`, `gap` or
+     * `open` says what is already written down and what a run should not
+     * re-file.
      *
      * @return array<int, string>
      */
-    private static function requirements(string $section): array
+    private static function requirements(string $section, string $label): array
     {
-        $start = strpos($section, '**Status today:**');
+        $start = strpos($section, '**' . $label . ':**');
         if ($start === false) {
             return [];
         }
@@ -300,13 +362,13 @@ final class Scenarios
 
     /**
      * @param array<string, mixed> $run
-     * @param array{id: string, title: string, file: string, environment: string, status: string, requirements: array<int, string>, prompt: string, outcomes: array<int, string>, failures: array<int, string>, criteria: string}|null $scenario
+     * @param array{id: string, title: string, file: string, environment: string, status: string, requirements: array<int, string>, prompt: string, needs: array<int, string>, outcomes: array<int, string>, failures: array<int, string>, criteria: string}|null $scenario
      * @return array<int, string>
      */
     private static function problems(string $file, array $run, ?array $scenario): array
     {
         if ($scenario === null) {
-            return [$file . ' records a run of no scenario in scenarios/'];
+            return [$file . ' records a run of no forward review in scenarios/forward/'];
         }
 
         $problems = [];
@@ -412,7 +474,7 @@ final class Scenarios
     {
         $scenario = self::load()[$id] ?? null;
         if ($scenario === null) {
-            throw new \InvalidArgumentException(sprintf('There is no scenario %s.', $id));
+            throw new \InvalidArgumentException(sprintf('There is no forward review %s.', $id));
         }
 
         return [

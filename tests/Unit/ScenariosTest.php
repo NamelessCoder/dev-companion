@@ -25,14 +25,59 @@ final class ScenariosTest extends TestCase
     }
 
     #[Test]
-    public function everyScenarioIsReadableAsData(): void
+    public function everyForwardReviewIsReadableAsData(): void
     {
-        $scenarios = Scenarios::load();
-        $environments = Scenarios::vocabulary('Id');
-        $statuses = Scenarios::vocabulary('Mark');
+        $reviews = Scenarios::load();
 
-        self::assertNotSame([], $scenarios);
-        self::assertSame($this->headings(), array_keys($scenarios), 'a scenario heading was not parsed, or was parsed twice');
+        self::assertNotSame([], $reviews);
+        self::assertSame(
+            $this->headings('/scenarios/forward'),
+            array_keys($reviews),
+            'a forward review heading was not parsed, or was parsed twice',
+        );
+        $this->assertReadable($reviews, Scenarios::vocabulary('Mark'));
+    }
+
+    #[Test]
+    public function everyContractCaseIsReadableAsData(): void
+    {
+        $cases = Scenarios::contracts();
+
+        self::assertNotSame([], $cases);
+        self::assertSame(
+            $this->headings('/scenarios/contracts'),
+            array_keys($cases),
+            'a contract case heading was not parsed, or was parsed twice',
+        );
+        $this->assertReadable($cases, Scenarios::vocabulary('Contract'));
+    }
+
+    /**
+     * One case is one file. A file holding a second prompt is a file where
+     * nobody can tell which criteria a judgment answered — and the runner would
+     * print two prompts under one id.
+     */
+    #[Test]
+    public function everyCaseHasAFileOfItsOwn(): void
+    {
+        $files = [];
+        foreach ([...Scenarios::load(), ...Scenarios::contracts()] as $id => $scenario) {
+            $files[$scenario['file']][] = $id;
+        }
+
+        self::assertSame(
+            [],
+            array_filter($files, static fn(array $ids): bool => count($ids) > 1),
+        );
+    }
+
+    /**
+     * @param array<string, array{title: string, prompt: string, environment: string, status: string, outcomes: array<int, string>, failures: array<int, string>}> $scenarios
+     * @param array<int, string> $states
+     */
+    private function assertReadable(array $scenarios, array $states): void
+    {
+        $environments = Scenarios::vocabulary('Id');
 
         foreach ($scenarios as $id => $scenario) {
             self::assertNotSame('', $scenario['title'], $id . ' has no title');
@@ -40,7 +85,7 @@ final class ScenariosTest extends TestCase
             self::assertNotSame([], $scenario['outcomes'], $id . ' says nothing about what has to come out of it');
             self::assertNotSame([], $scenario['failures'], $id . ' says nothing about how it fails');
             self::assertContains($scenario['environment'], $environments, $id . ' runs in no environment the readme names');
-            self::assertContains($scenario['status'], $statuses, $id . ' carries no mark the readme names');
+            self::assertContains($scenario['status'], $states, $id . ' carries no state its readme names');
         }
     }
 
@@ -56,26 +101,38 @@ final class ScenariosTest extends TestCase
     }
 
     #[Test]
-    public function aRunThatMeetsEveryCriterionIsTheStatusItsScenarioClaims(): void
+    public function aTargetedContractCaseIsNotSomethingARunCanAnswer(): void
     {
-        $recorded = $this->record('SITE-07', static fn(array $run): array => $run);
+        $this->expectException(\InvalidArgumentException::class);
 
-        self::assertSame('covered', $recorded['verdict']);
-        self::assertSame([], $recorded['problems']);
+        Scenarios::skeleton('SKILL-07', 'testing', 'phpunit', '2026-07-30');
+    }
+
+    #[Test]
+    public function aRunAddsUpToTheVerdictItsJudgmentsMake(): void
+    {
+        $missed = $this->record('REVIEW-01', static function (array $run): array {
+            $run['outcomes'][0]['met'] = false;
+
+            return $run;
+        });
+
+        self::assertSame('covered', $this->record('REVIEW-01', static fn(array $run): array => $run)['verdict']);
+        self::assertSame('partial', $missed['verdict']);
     }
 
     #[Test]
     public function aHalfJudgedRunIsNotAResult(): void
     {
-        $recorded = $this->record('SITE-07', static function (array $run): array {
+        $recorded = $this->record('REVIEW-01', static function (array $run): array {
             $run['outcomes'] = array_map(static fn(): array => ['met' => null, 'evidence' => ''], $run['outcomes']);
 
             return $run;
         });
 
         self::assertSame('', $recorded['verdict']);
-        self::assertContains('scenarios/runs/SITE-07.json leaves outcomes 1 unjudged', $recorded['problems']);
-        self::assertContains('scenarios/runs/SITE-07.json gives no evidence for outcomes 1', $recorded['problems']);
+        self::assertContains('scenarios/runs/REVIEW-01.json leaves outcomes 1 unjudged', $recorded['problems']);
+        self::assertContains('scenarios/runs/REVIEW-01.json gives no evidence for outcomes 1', $recorded['problems']);
     }
 
     #[Test]
@@ -84,8 +141,8 @@ final class ScenariosTest extends TestCase
         // What `bin/scenarios record` writes. A checker that fails on it stops
         // the repository for as long as a run is open — which is the one time
         // it has to stay usable.
-        $skeleton = Scenarios::skeleton('SITE-07', 'testing', 'phpunit', '2026-07-30');
-        $recorded = $this->record('SITE-07', static fn(): array => $skeleton);
+        $skeleton = Scenarios::skeleton('REVIEW-01', 'testing', 'phpunit', '2026-07-30');
+        $recorded = $this->record('REVIEW-01', static fn(): array => $skeleton);
 
         self::assertTrue(Scenarios::isOpen($recorded['run']));
         self::assertSame('', $recorded['verdict']);
@@ -93,17 +150,30 @@ final class ScenariosTest extends TestCase
     }
 
     #[Test]
-    public function aRunThatMissesACriterionContradictsAScenarioThatClaimsToBeCovered(): void
+    public function aRunContradictsAReviewWhoseMarkIsNotWhatTheJudgmentsAddUpTo(): void
     {
-        $recorded = $this->record('SITE-07', static function (array $run): array {
-            $run['outcomes'][0]['met'] = false;
+        $review = Scenarios::load()['REVIEW-01'];
+        // Judged into whichever result REVIEW-01 does not currently claim, so
+        // this stays a contradiction whatever its mark says today.
+        $met = !in_array($review['status'], ['covered', 'boundary'], true);
+        $recorded = $this->record('REVIEW-01', static function (array $run) use ($met): array {
+            foreach (['outcomes' => 'met', 'failures' => 'avoided'] as $section => $key) {
+                $run[$section] = array_map(
+                    static fn(array $entry): array => [$key => $met, 'evidence' => $entry['evidence']],
+                    is_array($run[$section]) ? $run[$section] : [],
+                );
+            }
 
             return $run;
         });
 
-        self::assertSame('partial', $recorded['verdict']);
         self::assertContains(
-            'scenarios/runs/SITE-07.json says SITE-07 is `partial`, and scenarios/site-developer.md stands at `covered`',
+            sprintf(
+                'scenarios/runs/REVIEW-01.json says REVIEW-01 is `%s`, and %s stands at `%s`',
+                $met ? 'covered' : 'gap',
+                $review['file'],
+                $review['status'],
+            ),
             $recorded['problems'],
         );
     }
@@ -111,7 +181,7 @@ final class ScenariosTest extends TestCase
     #[Test]
     public function aRunJudgedAgainstOlderCriteriaIsNotReadAsAnAnswerToTheCurrentOnes(): void
     {
-        $recorded = $this->record('SITE-07', static function (array $run): array {
+        $recorded = $this->record('REVIEW-01', static function (array $run): array {
             $run['criteria'] = 'aaaaaaaaaaaa';
 
             return $run;
@@ -122,15 +192,18 @@ final class ScenariosTest extends TestCase
     }
 
     #[Test]
-    public function aRunOfNoScenarioIsNotARun(): void
+    public function aRunOfNoForwardReviewIsNotARun(): void
     {
-        $recorded = $this->record('SITE-07', static function (array $run): array {
-            $run['scenario'] = 'SITE-99';
+        $recorded = $this->record('REVIEW-01', static function (array $run): array {
+            $run['scenario'] = 'REVIEW-99';
 
             return $run;
         });
 
-        self::assertSame(['scenarios/runs/SITE-99.json records a run of no scenario in scenarios/'], $recorded['problems']);
+        self::assertSame(
+            ['scenarios/runs/REVIEW-99.json records a run of no forward review in scenarios/forward/'],
+            $recorded['problems'],
+        );
     }
 
     /**
@@ -167,20 +240,21 @@ final class ScenariosTest extends TestCase
     }
 
     /**
-     * The scenario ids as the markdown writes them, found without the parser
-     * under test.
+     * The ids as the markdown writes them, found without the parser under test.
      *
      * @return array<int, string>
      */
-    private function headings(): array
+    private function headings(string $directory): array
     {
         $ids = [];
-        foreach (glob(Paths::root() . '/scenarios/*.md') ?: [] as $path) {
-            if (basename($path) === 'readme.md') {
-                continue;
+        foreach ([Paths::root() . $directory . '/*.md', Paths::root() . $directory . '/*/*.md'] as $pattern) {
+            foreach (glob($pattern) ?: [] as $path) {
+                if (basename($path) === 'readme.md') {
+                    continue;
+                }
+                preg_match_all('/^#{1,2} ([A-Z]+-\d+)\b/m', (string) file_get_contents($path), $matches);
+                $ids = array_merge($ids, $matches[1]);
             }
-            preg_match_all('/^## ([A-Z]+-\d+)\b/m', (string) file_get_contents($path), $matches);
-            $ids = array_merge($ids, $matches[1]);
         }
         sort($ids);
 

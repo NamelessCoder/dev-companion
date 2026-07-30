@@ -7,6 +7,7 @@ namespace Typo3CmsMcp\Tests\Unit;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Typo3CmsMcp\Paths;
+use Typo3CmsMcp\Scenarios;
 
 final class SkillTest extends TestCase
 {
@@ -244,17 +245,21 @@ final class SkillTest extends TestCase
     }
 
     #[Test]
-    public function forwardScenariosExerciseTaskSkillBehavior(): void
+    public function contractCasesExerciseTaskSkillBehavior(): void
     {
-        $scenarios = (string) file_get_contents(Paths::root() . '/scenarios/task-skills.md');
+        $cases = Scenarios::contracts();
 
         foreach (['SKILL-01', 'SKILL-02', 'SKILL-03', 'SKILL-04', 'SKILL-05', 'SKILL-06', 'SKILL-07'] as $id) {
-            self::assertStringContainsString('## ' . $id, $scenarios);
+            self::assertArrayHasKey($id, $cases);
+            self::assertStringStartsWith('scenarios/contracts/task-skills/', $cases[$id]['file']);
+            self::assertNotSame([], $cases[$id]['outcomes'], $id . ' says nothing about what has to come out of it');
+            self::assertNotSame([], $cases[$id]['failures'], $id . ' says nothing about how it fails');
+
+            // A case names the task a user brings, never the tool or workflow
+            // the answer is supposed to reach for.
+            $text = implode(' ', [$cases[$id]['prompt'], ...$cases[$id]['outcomes'], ...$cases[$id]['failures']]);
+            self::assertStringNotContainsString('typo3_', $text, $id . ' names a tool of this server');
         }
-        self::assertSame(7, substr_count($scenarios, '**What has to come out of it**'));
-        self::assertSame(7, substr_count($scenarios, '**How it fails**'));
-        self::assertStringNotContainsString('typo3_task_guide', $scenarios);
-        self::assertStringNotContainsString('typo3_project_scope', $scenarios);
     }
 
     /**

@@ -2593,7 +2593,7 @@ final class Tools
         if (!Instance::isAvailable()) {
             return self::consoleUnavailable(
                 'no TYPO3 installation was found from the directory this server was started in',
-                ['query' => $query, 'matchCount' => 0, 'exactMatch' => false, 'icons' => []],
+                ['query' => $query, 'matchCount' => 0, 'suggestionCount' => 0, 'exactMatch' => false, 'icons' => []],
             );
         }
 
@@ -2607,6 +2607,7 @@ final class Tools
             return ToolResult::create(implode("\n", $lines), [
                 'query' => $query,
                 'matchCount' => 0,
+                'suggestionCount' => 0,
                 'exactMatch' => false,
                 'icons' => [],
                 'categories' => InstalledIcons::categories(),
@@ -2621,6 +2622,12 @@ final class Tools
         $matches = self::rankIcons($query, $concepts);
 
         $total = count($matches);
+        $suggestionCount = $isIdentifier
+            ? count(array_filter(
+                $matches,
+                static fn(array $icon): bool => $icon['identifier'] !== mb_strtolower($query)
+            ))
+            : 0;
         $shown = array_slice($matches, 0, $limit);
         $root = Instance::root() ?? 'the installation';
 
@@ -2638,6 +2645,7 @@ final class Tools
                 [
                     'query' => $query,
                     'matchCount' => 0,
+                    'suggestionCount' => 0,
                     'exactMatch' => false,
                     'icons' => [],
                     'scope' => $scope,
@@ -2652,9 +2660,18 @@ final class Tools
                 . 'name part with it — suggestions, not the answer',
                 $query,
                 $root,
-                $total
+                $suggestionCount
             )
-            : sprintf('%d icon identifier(s) in %s match "%s"', $total, $root, $query);
+            : ($isIdentifier
+                ? sprintf(
+                    '"%s" is registered in %s%s',
+                    $query,
+                    $root,
+                    $suggestionCount === 0
+                        ? ''
+                        : sprintf('; %d related identifier(s) follow as suggestions', $suggestionCount)
+                )
+                : sprintf('%d icon identifier(s) in %s match "%s"', $total, $root, $query));
         if ($total > count($shown)) {
             $header .= sprintf(' — showing the top %d', count($shown));
         }
@@ -2673,7 +2690,13 @@ final class Tools
 
         return ToolResult::create(implode("\n", $lines), [
             'query' => $query,
-            'matchCount' => $total,
+            // A complete identifier is a validation question. Its only match is
+            // the identifier itself; same-category or same-name results are
+            // suggestions and travel under their own count. In particular,
+            // the usage prefixes actions-/content- must not turn one missing
+            // identifier into hundreds of apparent matches.
+            'matchCount' => $isIdentifier ? ($exactMatch ? 1 : 0) : $total,
+            'suggestionCount' => $suggestionCount,
             'exactMatch' => $exactMatch,
             'icons' => $shown,
             'scope' => $scope,
@@ -2701,6 +2724,12 @@ final class Tools
             return [];
         }
         $normalized = implode('-', $terms);
+        if (InstalledIcons::looksLikeIdentifier($query)) {
+            // actions-, content-, status- and the other leading categories say
+            // where/how an icon is used. They are not a distinguishing shape
+            // and therefore contribute nothing to related suggestions.
+            array_shift($terms);
+        }
 
         $suggested = [];
         foreach ($terms as $term) {

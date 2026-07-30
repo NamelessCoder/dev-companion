@@ -59,6 +59,31 @@ final class IconLookupTest extends TestCase
         self::assertStringContainsString('backend', $entries[0]['when']);
     }
 
+    #[Test]
+    public function aMissingIdentifierHasNoMatchesEvenWhenRelatedIconsExist(): void
+    {
+        Instance::discoverFrom($this->installationWithItsOwnIcon());
+
+        $categoryOnly = Tools::call('typo3_icon_lookup', [
+            'query' => 'actions-definitely-does-not-exist',
+        ]);
+        self::assertSame(0, $categoryOnly->data['matchCount']);
+        self::assertSame(0, $categoryOnly->data['suggestionCount']);
+
+        $missing = Tools::call('typo3_icon_lookup', [
+            'query' => 'actions-open-definitely-does-not-exist',
+        ]);
+
+        self::assertFalse($missing->data['exactMatch']);
+        self::assertSame(0, $missing->data['matchCount']);
+        self::assertGreaterThan(0, $missing->data['suggestionCount']);
+        self::assertStringContainsString('suggestions, not the answer', $missing->text);
+
+        $exact = Tools::call('typo3_icon_lookup', ['query' => 'actions-open']);
+        self::assertTrue($exact->data['exactMatch']);
+        self::assertSame(1, $exact->data['matchCount']);
+    }
+
     /** A Composer project whose own extension registers an icon. */
     private function installationWithItsOwnIcon(): string
     {
@@ -67,7 +92,11 @@ final class IconLookupTest extends TestCase
         mkdir($extension . '/Configuration', 0o777, true);
         file_put_contents(
             $extension . '/Configuration/Icons.php',
-            "<?php\nreturn ['acme-product' => ['provider' => 'x', 'source' => 'y']];\n"
+            "<?php\nreturn [\n"
+            . "    'acme-product' => ['provider' => 'x', 'source' => 'y'],\n"
+            . "    'actions-open' => ['provider' => 'x', 'source' => 'y'],\n"
+            . "    'actions-close' => ['provider' => 'x', 'source' => 'y'],\n"
+            . "];\n"
         );
         InstalledIcons::forget();
 

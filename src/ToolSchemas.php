@@ -364,7 +364,8 @@ final class ToolSchemas
     {
         return self::object([
             'query' => self::string(),
-            'matchCount' => self::integer(),
+            'matchCount' => self::integer('For a complete identifier, 1 only when that exact identifier is registered and otherwise 0. For a concept search, the number of matching icons.'),
+            'suggestionCount' => self::integer('Related identifiers returned beside an identifier validation. The actions-/content- usage prefix alone never makes an icon a suggestion.'),
             'exactMatch' => ['type' => 'boolean', 'description' => 'Whether the query was a registered identifier. False for a query shaped like one that is not registered — the listed icons are then suggestions, not the answer.'],
             'answeredBy' => self::answeredBy(),
             'unavailable' => self::unavailable(),
@@ -380,7 +381,7 @@ final class ToolSchemas
             'categories' => self::listOf(self::string(), 'Returned when no query was given.'),
             'concepts' => self::listOf(self::string(), 'Concept words that map to a shape. Returned when no query was given.'),
             'scope' => self::string('Where these identifiers may be used: the backend registry, not frontend rendering. Carried by every answered lookup.'),
-        ], ['query', 'matchCount', 'exactMatch', 'answeredBy', 'icons']);
+        ], ['query', 'matchCount', 'suggestionCount', 'exactMatch', 'answeredBy', 'icons']);
     }
 
     /** @return array<string, mixed> */

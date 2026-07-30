@@ -766,6 +766,16 @@ took before the requirement above was written down, and it will not survive it.
   failure modes met afterwards while building the plugin it had nothing to say
   about (2026-07-29).
   *Held by:* `HintsTest::anExtbasePluginHasAHintOfItsOwn`
+- **R-KNW-12** A complete backend icon identifier is validated exactly. A
+  missing identifier has `matchCount: 0` in structured data even when related
+  identifiers are offered, and those carry a separate `suggestionCount`.
+  Leading categories such as `actions-` and `content-` describe the icon's
+  usage and do not by themselves make every icon in that category a match or a
+  suggestion.
+  *From:* `actions-definitely-does-not-exist` correctly described as missing in
+  text while its structured answer claimed 556 matches from the `actions-`
+  prefix (2026-07-30).
+  *Held by:* `IconLookupTest::aMissingIdentifierHasNoMatchesEvenWhenRelatedIconsExist`
 - **R-KNW-10** An answer says where it may be used when it is only usable in
   half of TYPO3. The icon identifiers are the backend registry's, so every
   `typo3_icon_lookup` answer carries that sentence — in the text and in the

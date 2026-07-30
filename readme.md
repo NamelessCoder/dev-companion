@@ -58,7 +58,9 @@ server leaves out the core contribution surface — the review rules, the Gerrit
 workflow, the `runTests.sh` suites — and keeps everything that transfers plus
 everything the installation answers. `TYPO3_MCP_PROFILE` decides it outright,
 `all` or `project`, and `typo3_server_scope` — which every profile has — names
-the active one and what it left out.
+the active one and what it left out. A caller that wants to remove only selected
+tools sets `TYPO3_MCP_EXCLUDE_TOOLS` to their comma-separated names; this is
+applied after the profile, and the scope answer names those omissions too.
 
 **One exception, and it is deliberate.** Some questions have no bundled answer
 that could be right. Which labels exist, which icons are registered, which
@@ -169,7 +171,7 @@ That writes the same `.mcp.json` shape with an absolute path:
 The knowledge base ships inside the package, so nothing else needs to be
 deployed or configured.
 
-Clients that expose MCP prompts also list `typo3_commit_message`. It turns a
+Clients that expose MCP prompts also list `commit_message`. It turns a
 summary into the same checked draft as `typo3_commit_message_guide`; the rules
 remain in the guide rather than being duplicated in the prompt.
 

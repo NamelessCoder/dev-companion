@@ -168,7 +168,7 @@
     ],
     "hints": [
       {
-        "text": "An extension's form setup is auto-discovered from Configuration/Form/<SetName>/config.yaml. The file carries name, label and priority plus the setup itself; the core base set is typo3/form-base at priority 10, so an extension set normally uses the default 100 or another higher priority. No TypoScript registration is needed.",
+        "text": "An extension's form setup is auto-discovered from Configuration/Form/<SetName>/config.yaml. The file carries name, label and priority plus the setup itself; the core base set typo3/form-base deliberately has a lower priority than an extension set's default. No TypoScript registration is needed.",
         "since": 14
       },
       {

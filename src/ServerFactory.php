@@ -62,7 +62,7 @@ final class ServerFactory
 
                 return ['user' => Tools::call('typo3_commit_message_guide', $arguments)->text];
             },
-            name: 'typo3_commit_message',
+            name: 'commit_message',
             title: 'Draft a TYPO3 commit message',
             description: 'Turn a summary into the checked commit-message draft already provided by typo3_commit_message_guide.',
         );

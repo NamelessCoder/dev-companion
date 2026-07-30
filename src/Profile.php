@@ -35,6 +35,9 @@ final class Profile
     /** Names the profile outright, whatever the installation would suggest. */
     public const VARIABLE = 'TYPO3_MCP_PROFILE';
 
+    /** Comma-separated tool names the caller does not want offered. */
+    public const EXCLUDE_VARIABLE = 'TYPO3_MCP_EXCLUDE_TOOLS';
+
     /** Chosen by the caller. */
     public const VIA_ENVIRONMENT = 'environment';
 
@@ -111,7 +114,17 @@ final class Profile
      */
     public static function omitted(): array
     {
-        return self::active() === self::PROJECT ? self::CORE_ONLY_TOOLS : [];
+        $omitted = self::active() === self::PROJECT ? self::CORE_ONLY_TOOLS : [];
+        $excluded = getenv(self::EXCLUDE_VARIABLE);
+        if (is_string($excluded)) {
+            foreach (preg_split('/[,\s]+/', strtolower(trim($excluded))) ?: [] as $tool) {
+                if ($tool !== '') {
+                    $omitted[] = $tool;
+                }
+            }
+        }
+
+        return array_values(array_unique($omitted));
     }
 
     /**

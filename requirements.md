@@ -323,6 +323,12 @@ These four are how R-AUD-1 and R-AUD-2 are met in the tools that exist today.
 `outsideCore` is a boolean, and an audience is not — the flag is the shape this
 took before the requirement above was written down, and it will not survive it.
 
+- **R-SCO-5** A caller can exclude individual tools with
+  `TYPO3_MCP_EXCLUDE_TOOLS` after the profile has been applied. The scope answer
+  names the resulting omissions, so a shorter tool list carries its reason.
+  *From:* the two fixed profiles forcing a caller that wants all but one tool to
+  pay for all of them (2026-07-30).
+  *Held by:* `ProfileTest::individualToolsCanBeExcludedAfterTheProfileIsChosen`
 - **R-SCO-1** Work outside the core is recognised from structural evidence — the
   kind of installation, the shape of the paths, an area the installation knows
   as somebody's extension — rather than from wording. Evidence of core work

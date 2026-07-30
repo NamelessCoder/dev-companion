@@ -21,6 +21,7 @@ final class ProfileTest extends TestCase
     public function forgetTheProfileAndTheInstance(): void
     {
         putenv(Profile::VARIABLE);
+        putenv(Profile::EXCLUDE_VARIABLE);
         Instance::discoverFrom(null);
     }
 
@@ -101,6 +102,23 @@ final class ProfileTest extends TestCase
         self::assertContains('typo3_rule_lookup', $result->data['profile']['omits']);
         self::assertStringContainsString('typo3_rule_lookup', $result->text);
         self::assertStringContainsString(Profile::VARIABLE, $result->text);
+    }
+
+    #[Test]
+    public function individualToolsCanBeExcludedAfterTheProfileIsChosen(): void
+    {
+        putenv(Profile::VARIABLE . '=' . Profile::ALL);
+        putenv(Profile::EXCLUDE_VARIABLE . '=typo3_icon_lookup, typo3_label_lookup');
+
+        $offered = $this->toolNames();
+        self::assertNotContains('typo3_icon_lookup', $offered);
+        self::assertNotContains('typo3_label_lookup', $offered);
+        self::assertContains('typo3_architecture_lookup', $offered);
+
+        $scope = Tools::call('typo3_server_scope', []);
+        self::assertSame(['typo3_icon_lookup', 'typo3_label_lookup'], $scope->data['profile']['omits']);
+        self::assertStringContainsString('typo3_icon_lookup', $scope->text);
+        self::assertStringContainsString('typo3_label_lookup', $scope->text);
     }
 
     #[Test]

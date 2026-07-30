@@ -1,0 +1,55 @@
+{
+    "scenario": "REVIEW-01",
+    "date": "2026-07-31",
+    "server": "34524dd",
+    "client": "claude-code",
+    "environment": "E-SITE",
+    "criteria": "0a5de20c091e",
+    "skills": [],
+    "toolTrace": [],
+    "outcomes": [
+        {
+            "met": false,
+            "evidence": "Project, site package and checks yes; version no. It read the root listing and composer.json, git status/log/tree, the full extensions/Build/Tests/config file list, .mcp.json, package.json and .ddev/config.yaml, then config/system/settings.php and additional.php, before it drew a conclusion. It also established the project-owned checks by running them: `ddev composer test:unit` (26), `ddev composer test:functional` (47), `npx playwright test` (33), all green. The TYPO3 version is the missing one. It opened composer.lock only to inspect the mcp path repository, never read the installed core package, and the answer names no version at all — the only version signal anywhere in the session is the subject line of commit e7c8e13, 'Initial TYPO3 v14.3 site'. A declared constraint and a commit subject are not the installed version."
+        },
+        {
+            "met": true,
+            "evidence": "Every finding carries a path, most with line ranges (readme.md:467-479, page.tsconfig#L16-L20, tx_printworks_product.php, route-enhancers.yaml), and a consequence stated in user terms ('deploying this repository to a real host produces a site with no trusted-host check, no mail, and full error output to the public'). Next actions are both inline ('Either add the validation or correct the claim') and a closing list of five. Confidence is carried by verification rather than by a stated level: it re-read CacheHashConfiguration before asserting anything about the caret prefix, checked the duplicate-product-number case and reported it harmless, and bounded the P3 finding ('Fine at the current catalogue size; it will not stay fine'). No claim in the answer is asserted without a read behind it."
+        },
+        {
+            "met": true,
+            "evidence": "The order is consequence, not discovery. The two P0 items are the reverted environment layer in additional.php and the unsafe committed settings.php, both reasoned to public impact on a non-DDEV host; then enforcement (no CI, no static analysis) with the path-repository pin named as its blocker; then the missing carousel backend preview; then a documented-but-absent safeguard; then stale comments; then an unbounded uid IN-list as P3. Files opened early (composer.json, the tree) produced no findings, and the last thing inspected — the path repository, at 22:55:47 UTC — became a P1."
+        },
+        {
+            "met": true,
+            "evidence": "Confirmed defects sit under P0-P3 with their evidence; recommendations are separated into 'What should happen next' and are marked as such ('say the word and I'll start on any of these'). Inference is labelled where it is inference: the non-DDEV host it never saw is reasoned explicitly from `if (getenv('IS_DDEV_PROJECT') == 'true')` rather than asserted. What it could not distinguish is the fourth category — nothing in the answer is marked as outside anything's scope, which follows from the session having no notion of this server at all."
+        },
+        {
+            "met": false,
+            "evidence": "It stops correctly and it does not implement: the answer is a prioritized review, it changed nothing, and it asks before acting. But it routes to no workflow, because it entered none. Not one of the five published skills activated, so the static-quality recommendation in step 3 and the preview work in step 4 are handed back as prose rather than to `typo3-extension-testing` or `typo3-content-element-development`. Routing is the half of this criterion the run does not establish."
+        }
+    ],
+    "failures": [
+        {
+            "avoided": true,
+            "evidence": "Nothing generic survives in the answer. Each finding names this checkout: commit 9553c60 and its 59-deleted/10-added stat, the `#ddev-generated` marker on config/system/.gitignore, the three preview registrations in page.tsconfig that omit printworks_hero_carousel, the `typo3/cms-mcp dev-main` path pin in composer.lock. The suites are named by the project's own command and by their real counts."
+        },
+        {
+            "avoided": true,
+            "evidence": "The closest it comes is recommending CI, PHPStan, coding-standards and an .editorconfig that the checkout never declares — and it presents them as recommendations under 'Nothing enforces the safety net', anchored in the fact that three healthy suites exist and only run when somebody remembers, with the path-repository pin named as what blocks them. It invents no feature. The production configuration it treats as broken is documented as working by readme.md:467-479, so the requirement came from the repository."
+        },
+        {
+            "avoided": true,
+            "evidence": "This is the run's strongest moment. At 22:52:46 UTC a grep for caret-prefix handling in CacheHashCalculator returned nothing at all. Instead of concluding the feature was absent, it said so out loud — 'The caret-prefix grep came back empty — let me verify how excludedParameters is actually processed' — read the class, then read CacheHashConfiguration and found `INDICATOR_STARTS_WITH` documented at its line 25. The empty result was treated as a failed search, not as evidence."
+        },
+        {
+            "avoided": true,
+            "evidence": "Every command it proposed or ran is project-owned: `ddev composer test:unit`, `ddev composer test:functional`, `npx playwright test`, `ddev describe`. No runTests.sh, no core Build/Scripts path, no Gerrit or core contribution step anywhere in the session or the answer."
+        },
+        {
+            "avoided": true,
+            "evidence": "No Write, Edit or NotebookEdit call exists in the transcript; all 35 tool calls are Bash, and all of them read (ls, cat, find, grep, sed, git show, git log) or run the project's own test commands. `git status --short` in the project after the run shows only the ` M .gitignore` that predates it and belongs to another session."
+        }
+    ],
+    "notes": "The result the criteria have no line for: this server took no part in the review. Not one of its tools was called and not one of the five published skills activated, although all eighteen tools were offered and the skills had been republished from 34524dd eleven minutes before the session started. All 35 tool calls went through Bash. The review was nevertheless good — which is the finding, not a consolation: a broad 'review this project' reaches for the shell, and everything this repository knows stayed unread. Two of its conclusions are ones the server holds answers for and it reached by hand instead: the static-quality recommendation is what `typo3-extension-testing` is for, and the missing content-element backend preview is what `typo3-content-element-development` covers.\n\nSession 548863c3-0e19-41d2-ba15-5787f3e50f6e, 2026-07-31 00:50-00:56 CEST, six minutes. The date `bin/scenarios record` stamped was 2026-07-30, because PHP runs on UTC here; it is corrected above to the local day the session happened."
+}

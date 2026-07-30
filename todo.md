@@ -82,3 +82,31 @@ a `tools/list` that only changes when this repository releases.
 The deprecation windows are twelve months, so the outer edge is around July 2027.
 Before then the only thing that has to happen is a version bump behind a release
 somebody else writes.
+
+---
+
+## Reconcile and make task-skill forward evidence repeatable
+
+This serves
+`feedback/2026-07-30-173821-task-skill-forward-evidence-is-not-repeatable.md`
+and `R-DIS-14`. Start by running `EXT-04` and `SITE-07` verbatim in the
+Printworks sitepackage against the current server, then correct their status and
+acceptance criteria to what the runs establish. Use those two runs to define a
+machine-readable result beside the existing human-readable scenarios: prompt,
+environment, required outcomes, failure conditions, tool trace and verdict.
+Add the smallest runner that records and checks that result, and put the
+task-skill authoring invariants it can enforce in `SkillTest`; do not duplicate
+the scenario prose or versioned tool answers.
+
+## Complete the extension author's multi-major upgrade workflow
+
+This serves
+`feedback/2026-07-30-173821-extension-upgrades-need-a-task-owned-workflow.md`
+and `EXT-01`. Run `EXT-01` verbatim in its `E-EXT` environment against the
+current server and reduce the note to the demonstrated gaps. Then add a thin
+`typo3-extension-upgrade` skill that orders project and extension scope,
+installed changelog and scanner/deprecation evidence, official versioned
+documentation, shared-versus-version-specific implementation decisions, and a
+Composer-resolved test matrix. Keep concrete version facts out of the skill,
+publish it through `Installer`, add its forward acceptance result, and add the
+requirement and tests that hold only the behavior the run proves.

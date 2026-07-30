@@ -254,6 +254,64 @@ final class ProjectTest extends TestCase
     }
 
     #[Test]
+    public function aContentElementRegisteredWithAddRecordTypeIsFoundAsWell(): void
+    {
+        // The call that carries no table in front of it: since 13.4 the
+        // registration is one addRecordType() whose table argument is the fifth
+        // and defaults to tt_content — and it is written in a file per element,
+        // so the file name is the one thing that must not be believed.
+        $root = $this->composerProject();
+        $extension = $root . '/packages/my_sitepackage';
+        $this->declare(
+            $extension . '/Configuration/TCA/Overrides/tt_content_hero_carousel.php',
+            <<<'PHP'
+                <?php
+                ExtensionManagementUtility::addRecordType(
+                    [
+                        'label' => 'LLL:EXT:my_sitepackage/Resources/Private/Language/locallang.xlf:hero_carousel',
+                        'value' => 'acme_hero_carousel',
+                        'icon' => 'acme-hero-carousel',
+                        'group' => 'default',
+                    ],
+                    '--div--;General,header,acme_slides',
+                );
+                PHP
+        );
+        // The same call registers record types of other tables, and those are
+        // page types rather than content elements.
+        $this->declare(
+            $extension . '/Configuration/TCA/Overrides/pages_landing.php',
+            <<<'PHP'
+                <?php
+                ExtensionManagementUtility::addRecordType(
+                    ['label' => 'Landing page', 'value' => '117', 'icon' => 'acme-landing'],
+                    '--div--;General,title',
+                    [],
+                    '',
+                    'pages',
+                );
+                PHP
+        );
+        $this->declare(
+            $extension . '/Configuration/Sets/AcmeSite/setup.typoscript',
+            "tt_content.acme_hero_carousel =< lib.contentElement\ntt_content.acme_hero_carousel.templateName = HeroCarousel\n"
+        );
+        Instance::discoverFrom($root);
+
+        $result = Tools::call('typo3_extension_scope', ['extension' => 'my_sitepackage']);
+
+        self::assertSame(
+            [['identifier' => 'acme_hero_carousel', 'templateName' => 'HeroCarousel', 'source' => 'Configuration/Sets/AcmeSite/setup.typoscript']],
+            $result->data['contentElements'],
+        );
+        self::assertSame(
+            ['pages', 'tt_content'],
+            $result->data['tcaOverrides'],
+            'the table comes from the call, so the per-element file name is never mistaken for one',
+        );
+    }
+
+    #[Test]
     public function anExtensionTheInstallationDoesNotHaveIsAMissWithTheKeysItDoes(): void
     {
         $root = $this->composerProject();

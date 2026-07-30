@@ -199,6 +199,26 @@ final class Extension
                 continue;
             }
 
+            if ($token[0] === T_STRING && $token[1] === 'addRecordType') {
+                $arguments = self::arguments($tokens, $index);
+                // The one registration call that does not name its table first
+                // and often does not name it at all: the table is the fifth
+                // argument and defaults to tt_content, which is what makes this
+                // the short way to register a content element on 13.4 and newer.
+                // Read positionally — a call that passes `table:` by name keeps
+                // the default here, the same way an identifier that is not a
+                // literal is left out rather than guessed.
+                $table = self::firstLiteral($arguments[4] ?? []) ?? 'tt_content';
+                $tables[] = $table;
+                if ($table === 'tt_content') {
+                    $identifier = self::selectItemValue($arguments[0] ?? []);
+                    if ($identifier !== null) {
+                        $elements[] = $identifier;
+                    }
+                }
+                continue;
+            }
+
             if ($token[0] !== T_STRING || !in_array($token[1], self::TABLE_FIRST_METHODS, true)) {
                 continue;
             }

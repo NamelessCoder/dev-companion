@@ -85,18 +85,6 @@ somebody else writes.
 
 ---
 
-## Detect `addRecordType()` content elements in extension scope
-
-Serves
-`feedback/2026-07-30-073632-typo3-extension-scope-reports-contentelements.md`.
-
-Add a fixture extension whose CType is registered with `addRecordType()` in a
-split `Configuration/TCA/Overrides/tt_content_<element>.php`, reproduce the
-empty `contentElements` result in `Extension` tests, then extend the parser and
-hold the discovered CType and template mapping with that regression test.
-
----
-
 ## Answer a multi-token component query with a miss instead of a stranger
 
 Serves `feedback/2026-07-30-093311-typo3-component-lookup-returned-unrelated.md`.

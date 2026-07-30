@@ -155,15 +155,10 @@ TOML for Codex. One class per agent, three optional contracts, and the writing
 is idempotent — an existing block is replaced in place and anything the user put
 around it survives.
 
-The next concrete step is a decision, not code: whether `bin/typo3-cms-mcp` may
-write into the caller's project at all. It is the entrypoint that already does
-instance discovery from the working directory, so it is the place that knows
-where such a file would go; but everything it does today is read-only, and
-`readme.md` says the process boundary is the trust boundary. Write the outcome
-in `requirements.md` under `## Discovery`, and if it is yes, one subcommand
-(`bin/typo3-cms-mcp install`) writing `.mcp.json` with an absolute path to
-itself, refusing rather than guessing when the file exists with a different
-command.
+The decision is R-DIS-11: only an explicit `bin/typo3-cms-mcp install` may
+write, and only `.mcp.json` in the caller's current project. Implement it
+idempotently, preserve unrelated servers, refuse an existing `typo3-cms-mcp`
+entry with a different command, and update the readme's trust-boundary promise.
 
 ### Say what to call before the client has a reason to ask
 

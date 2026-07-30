@@ -91,14 +91,10 @@ This serves the seven notes recorded on 2026-07-30, all from one forward run of
 `EXT-04` against the Printworks sitepackage on TYPO3 14.3.5. They are worked off
 in this order, cheapest and most certain first:
 
-1. Reading a page of the manual. The largest of the seven and the one that
-   changes the most: `typo3_documentation_lookup` finds the right page and
-   cannot hand it over, so a session that asked it well still rebuilt the API
-   from twenty-five greps through `vendor/typo3`.
-2. The skill hand-off, which is a sentence in every skill and does not happen.
+1. The skill hand-off, which is a sentence in every skill and does not happen.
    The note asks for a forward scenario in which a task that starts in one skill
    has to end in another, so the boundary is measured rather than declared.
-3. Deriving the component catalog from the installation, last, because it
+2. Deriving the component catalog from the installation, last, because it
    reverses a recorded decision. It needs a `decisions.md` entry that says what
    changed, not only a commit.
 

@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace Typo3CmsMcp;
 
 /**
- * Searches the table of contents of the official, versioned TYPO3 manuals.
+ * Searches and reads the official, versioned TYPO3 manuals.
  *
  * docs.typo3.org publishes one complete table of contents at each manual root.
  * That is the public index used here; /search/ is deliberately not called
  * because robots.txt excludes it. The selected result pages are then read for a
- * short excerpt, so the answer remains a route into the canonical source rather
- * than a second copy of it.
+ * short excerpt. A canonical result URL can then be handed back to read that
+ * page as text, without re-deriving its API from an installed source tree.
  */
 final class Documentation
 {
@@ -57,6 +57,7 @@ final class Documentation
     /**
      * @param list<string> $queries
      * @return array{
+     *   mode: 'search'|'page',
      *   status: 'answered'|'empty'|'unavailable',
      *   targetVersion: string,
      *   source: string,
@@ -68,7 +69,8 @@ final class Documentation
      *     documentTitle: string,
      *     documentVersion: string,
      *     section: string,
-     *     excerpt: string
+     *     excerpt: string,
+     *     content: string
      *   }>,
      *   unavailable: array{reason: string}|null
      * }
@@ -104,7 +106,7 @@ final class Documentation
         }
 
         if ($reachable === 0) {
-            return $this->answer('unavailable', $queries, $targetVersion, [], [
+            return $this->answer('search', 'unavailable', $queries, $targetVersion, [], [
                 'reason' => 'The versioned TYPO3 documentation indexes could not be reached.',
             ]);
         }
@@ -151,10 +153,74 @@ final class Documentation
                 'documentVersion' => $targetVersion,
                 'section' => $candidate['title'],
                 'excerpt' => $page === null ? '' : $this->excerpt($page),
+                'content' => '',
             ];
         }
 
-        return $this->answer($results === [] ? 'empty' : 'answered', $queries, $targetVersion, $results, null);
+        return $this->answer('search', $results === [] ? 'empty' : 'answered', $queries, $targetVersion, $results, null);
+    }
+
+    /**
+     * Read one canonical URL returned by lookup(), on the same version.
+     *
+     * @return array{
+     *   mode: 'search'|'page',
+     *   status: 'answered'|'empty'|'unavailable',
+     *   targetVersion: string,
+     *   source: string,
+     *   queries: list<string>,
+     *   results: list<array{
+     *     title: string,
+     *     url: string,
+     *     document: string,
+     *     documentTitle: string,
+     *     documentVersion: string,
+     *     section: string,
+     *     excerpt: string,
+     *     content: string
+     *   }>,
+     *   unavailable: array{reason: string}|null
+     * }
+     */
+    public function page(string $url, string $targetVersion): array
+    {
+        $owner = null;
+        foreach (self::DOCUMENTS as $document => $documentTitle) {
+            $base = sprintf('%s/m/%s/%s/en-us/', self::HOST, $document, rawurlencode($targetVersion));
+            if (str_starts_with($url, $base) && str_ends_with(explode('#', $url, 2)[0], '.html')) {
+                $owner = ['document' => $document, 'title' => $documentTitle];
+                break;
+            }
+        }
+        if ($owner === null) {
+            throw new \InvalidArgumentException(
+                'page must be a canonical result URL for targetVersion from typo3_documentation_lookup',
+            );
+        }
+
+        $html = $this->get($url);
+        if ($html === null) {
+            return $this->answer('page', 'unavailable', [], $targetVersion, [], [
+                'reason' => 'The selected TYPO3 documentation page could not be reached.',
+            ]);
+        }
+
+        $content = $this->content($html);
+        $title = $this->title($html);
+        if ($content === '') {
+            return $this->answer('page', 'empty', [], $targetVersion, [], null);
+        }
+
+        return $this->answer('page', 'answered', [], $targetVersion, [[
+            'title' => $title,
+            'url' => $url,
+            'document' => $owner['document'],
+            'documentTitle' => $owner['title'],
+            'documentVersion' => $targetVersion,
+            'section' => $title,
+            'excerpt' => substr($content, 0, 700),
+            'content' => $content,
+        ]], null);
     }
 
     /**
@@ -246,6 +312,81 @@ final class Documentation
         return substr(implode(' ', $parts), 0, 700);
     }
 
+    private function title(string $html): string
+    {
+        $document = new \DOMDocument();
+        if (!@$document->loadHTML($html, LIBXML_NONET | LIBXML_NOWARNING | LIBXML_NOERROR)) {
+            return '';
+        }
+
+        $xpath = new \DOMXPath($document);
+        $heading = $xpath->query('//article[@role="main"]//h1[1]')->item(0)
+            ?? $xpath->query('//h1[1]')->item(0)
+            ?? $xpath->query('//title[1]')->item(0);
+
+        return $heading === null ? '' : self::plain($heading->textContent);
+    }
+
+    /**
+     * The page body as compact Markdown-like text. Code examples and headings
+     * keep their boundaries; navigation outside the main article is omitted.
+     */
+    private function content(string $html): string
+    {
+        $document = new \DOMDocument();
+        if (!@$document->loadHTML($html, LIBXML_NONET | LIBXML_NOWARNING | LIBXML_NOERROR)) {
+            return '';
+        }
+
+        $xpath = new \DOMXPath($document);
+        $article = $xpath->query('//article[@role="main"]')->item(0);
+        if (!$article instanceof \DOMElement) {
+            return '';
+        }
+
+        $blocks = [];
+        foreach ($xpath->query('.//h1|.//h2|.//h3|.//h4|.//h5|.//h6|.//p|.//pre|.//li|.//dt', $article) ?: [] as $node) {
+            if (!$node instanceof \DOMElement) {
+                continue;
+            }
+            $nestedList = $xpath->query('ancestor::li', $node);
+            if (in_array($node->tagName, ['p', 'li'], true) && $nestedList !== false && $nestedList->length > 0) {
+                continue;
+            }
+
+            if ($node->tagName === 'pre') {
+                $text = trim($node->textContent);
+                $block = $text === '' ? '' : "```\n" . $text . "\n```";
+            } else {
+                $text = self::plain($node->textContent);
+                if ($node->tagName === 'dt' && strlen($text) > 300) {
+                    $names = $xpath->query(
+                        './/*[contains(concat(" ", normalize-space(@class), " "), " sig-name ")]',
+                        $node,
+                    );
+                    $name = $names === false ? null : $names->item(0);
+                    $text = $name === null ? '' : self::plain($name->textContent);
+                }
+                $block = match ($node->tagName) {
+                    'h1', 'h2', 'h3', 'h4', 'h5', 'h6' => str_repeat('#', (int) substr($node->tagName, 1)) . ' ' . $text,
+                    'li' => '- ' . $text,
+                    'dt' => $text === '' ? '' : '**' . $text . '**',
+                    default => $text,
+                };
+            }
+            if ($block !== '' && end($blocks) !== $block) {
+                $blocks[] = $block;
+            }
+        }
+
+        return implode("\n\n", $blocks);
+    }
+
+    private static function plain(string $text): string
+    {
+        return trim((string) preg_replace('/\s+/u', ' ', $text));
+    }
+
     private function get(string $url): ?string
     {
         if ($this->fetch !== null) {
@@ -274,18 +415,21 @@ final class Documentation
     /**
      * @param 'answered'|'empty'|'unavailable' $status
      * @param list<string> $queries
-     * @param list<array{title: string, url: string, document: string, documentTitle: string, documentVersion: string, section: string, excerpt: string}> $results
+     * @param 'search'|'page' $mode
+     * @param list<array{title: string, url: string, document: string, documentTitle: string, documentVersion: string, section: string, excerpt: string, content: string}> $results
      * @param array{reason: string}|null $unavailable
      * @return array{
+     *   mode: 'search'|'page',
      *   status: 'answered'|'empty'|'unavailable',
      *   targetVersion: string,
      *   source: string,
      *   queries: list<string>,
-     *   results: list<array{title: string, url: string, document: string, documentTitle: string, documentVersion: string, section: string, excerpt: string}>,
+     *   results: list<array{title: string, url: string, document: string, documentTitle: string, documentVersion: string, section: string, excerpt: string, content: string}>,
      *   unavailable: array{reason: string}|null
      * }
      */
     private function answer(
+        string $mode,
         string $status,
         array $queries,
         string $targetVersion,
@@ -293,6 +437,7 @@ final class Documentation
         ?array $unavailable,
     ): array {
         return [
+            'mode' => $mode,
             'status' => $status,
             'targetVersion' => $targetVersion,
             'source' => self::HOST,

@@ -33,6 +33,7 @@ final class DocumentationTest extends TestCase
 
         $answer = $documentation->lookup(['page title event', 'page title provider'], '13.4', 2);
 
+        self::assertSame('search', $answer['mode']);
         self::assertSame('answered', $answer['status']);
         self::assertNotEmpty($answer['results']);
         self::assertSame('Page title API', $answer['results'][0]['title']);
@@ -43,7 +44,46 @@ final class DocumentationTest extends TestCase
             $answer['results'][0]['url'],
         );
         self::assertNotSame('', $answer['results'][0]['excerpt']);
+        self::assertSame('', $answer['results'][0]['content']);
         self::assertSame([], array_filter($requested, static fn(string $url): bool => !str_contains($url, '/13.4/')));
+    }
+
+    #[Test]
+    public function itReadsACanonicalSearchResultAsStructuredText(): void
+    {
+        $url = 'https://docs.typo3.org/m/typo3/reference-coreapi/14.3/en-us/ApiOverview/Backend/BackendModules/DocHeaderComponent.html';
+        $documentation = new Documentation(static fn(string $requested): ?string => $requested === $url
+            ? <<<'HTML'
+                <html><body><nav>Not page content</nav><article role="main">
+                <h1>DocHeaderComponent</h1>
+                <p>Use the document header for module buttons.</p>
+                <h2>Shortcut context</h2>
+                <pre><code>$docHeader->setShortcutContext('records', 'Records');</code></pre>
+                <ul><li>The route and arguments describe the current module.</li></ul>
+                </article></body></html>
+                HTML
+            : null);
+
+        $answer = $documentation->page($url, '14.3');
+
+        self::assertSame('page', $answer['mode']);
+        self::assertSame('answered', $answer['status']);
+        self::assertSame($url, $answer['results'][0]['url']);
+        self::assertSame('DocHeaderComponent', $answer['results'][0]['title']);
+        self::assertStringContainsString('# DocHeaderComponent', $answer['results'][0]['content']);
+        self::assertStringContainsString('setShortcutContext', $answer['results'][0]['content']);
+        self::assertStringNotContainsString('Not page content', $answer['results'][0]['content']);
+    }
+
+    #[Test]
+    public function itRefusesAPageOutsideTheSelectedManualVersion(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+
+        (new Documentation(static fn(string $url): ?string => null))->page(
+            'https://docs.typo3.org/m/typo3/reference-coreapi/13.4/en-us/ApiOverview/Backend/Index.html',
+            '14.3',
+        );
     }
 
     #[Test]

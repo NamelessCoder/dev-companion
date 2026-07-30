@@ -53,7 +53,7 @@
     },
     {
       "topic": "Official TYPO3 API, reference and tutorial documentation",
-      "depth": "Live lookup in the public tables of contents of TYPO3 Explained, TypoScript Explained and the TCA Reference, bound to one covered documentation release. Every result keeps its canonical URL, document, version and section; an unreachable service is not an empty search.",
+      "depth": "Live lookup in the public tables of contents of TYPO3 Explained, TypoScript Explained and the TCA Reference, bound to one covered documentation release. Every result keeps its canonical URL, document, version and section; pass that URL back with the same target version to read the page as text, including headings and code examples. An unreachable service is not an empty search.",
       "tools": [
         "typo3_documentation_lookup"
       ],
@@ -239,7 +239,7 @@
     },
     {
       "when": "Needing the official API, reference or tutorial documentation for a covered TYPO3 version",
-      "call": "typo3_documentation_lookup with several short English queries and targetVersion"
+      "call": "typo3_documentation_lookup with several short English queries and targetVersion, then with page and the same targetVersion to read a selected result"
     },
     {
       "when": "Writing or amending the commit message",

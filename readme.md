@@ -347,8 +347,10 @@ name already says what shape the answer has.
   Explained, TypoScript Explained and the TCA Reference on `docs.typo3.org`, for
   an explicitly requested covered release. A compound name is taken apart, so
   `AssetCollector` reaches the page called "Assets". Every result carries its canonical URL, document,
-  version and section. It never falls through to another release, and an
-  unreachable service is distinct from a search that answered with no match.
+  version and section. Pass that URL back as `page` with the same
+  `targetVersion` to read its headings, prose and code examples as text. It
+  never falls through to another release, and an unreachable service is
+  distinct from a search that answered with no match.
 - `typo3_component_lookup`: looks up backend UI components by name or topic and
   returns canonical markup, variant and sub-component classes, the custom
   property contract, and the styleguide demo and Sass source paths. Every entry

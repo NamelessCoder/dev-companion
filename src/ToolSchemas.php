@@ -257,6 +257,7 @@ final class ToolSchemas
     private static function documentationLookup(): array
     {
         return self::object([
+            'mode' => ['type' => 'string', 'enum' => ['search', 'page']],
             'status' => ['type' => 'string', 'enum' => ['answered', 'empty', 'unavailable']],
             'targetVersion' => self::string('The exact documentation release searched.'),
             'source' => self::string('The external documentation host.'),
@@ -269,7 +270,8 @@ final class ToolSchemas
                 'documentVersion' => self::string(),
                 'section' => self::string(),
                 'excerpt' => self::string('Short route into the source, empty only when the result page could not be read after its index matched.'),
-            ], ['title', 'url', 'document', 'documentTitle', 'documentVersion', 'section', 'excerpt'])),
+                'content' => self::string('The selected page as text in page mode; empty in search mode.'),
+            ], ['title', 'url', 'document', 'documentTitle', 'documentVersion', 'section', 'excerpt', 'content'])),
             'unavailable' => [
                 'type' => ['object', 'null'],
                 'properties' => [
@@ -277,7 +279,7 @@ final class ToolSchemas
                 ],
                 'required' => ['reason'],
             ],
-        ], ['status', 'targetVersion', 'source', 'queries', 'results', 'unavailable']);
+        ], ['mode', 'status', 'targetVersion', 'source', 'queries', 'results', 'unavailable']);
     }
 
     /** @return array<string, mixed> */

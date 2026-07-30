@@ -219,7 +219,10 @@ them, this section wins and the other one is what needs rewriting.
   a term is worth what it separates one page from the others, and a compound
   name is taken apart on both sides — a table of contents holds page titles, so
   `AssetCollector` and `FunctionalTestCase` appear in it nowhere and the pages
-  that answer them are called "Assets" and "Functional tests".
+  that answer them are called "Assets" and "Functional tests". A canonical
+  result URL can be passed back with the same target version to read the page as
+  text with its headings and code examples; a caller need not reconstruct the
+  API from installed sources after the right manual page was already found.
   *From:* `EXT-07`; and two sessions answered with whatever else carried one of
   their words — TCA `inline` with PSR-14 events, the testing APIs with the
   content-element pages (2026-07-30).

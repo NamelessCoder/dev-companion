@@ -170,7 +170,7 @@ final class Tools
             ],
             [
                 'name' => 'typo3_documentation_lookup',
-                'description' => 'Search the official live TYPO3 documentation for broad API, reference, and tutorial questions. Results are bound to the requested covered TYPO3 line and carry their canonical source; this reaches docs.typo3.org, unlike the bundled convention lookups. Use several short English queries when the API may be described by different words.',
+                'description' => 'Search or read the official live TYPO3 documentation for a covered TYPO3 line. Search with several short English queries; every result carries a canonical URL. Pass one of those URLs back as page with the same targetVersion to receive that page as text, including headings and code examples. This reaches docs.typo3.org, unlike the bundled convention lookups.',
                 'annotations' => [
                     'readOnlyHint' => true,
                     'destructiveHint' => false,
@@ -186,10 +186,19 @@ final class Tools
                             'minItems' => 1,
                             'description' => 'Short search queries in English. Pass alternatives separately, for example ["page title event", "page title provider"].',
                         ],
+                        'page' => [
+                            'type' => 'string',
+                            'minLength' => 1,
+                            'description' => 'Canonical page URL returned by an earlier search. Pass it with the same targetVersion and without queries to read the page as text.',
+                        ],
                         'targetVersion' => ['type' => 'string', 'minLength' => 1, 'description' => 'Covered TYPO3 version whose official manual must answer, for example "13.4" or "14". There is no fallback to another release.'],
                         'limit' => ['type' => 'integer', 'minimum' => 1, 'maximum' => 10, 'default' => 6],
                     ],
-                    'required' => ['queries', 'targetVersion'],
+                    'required' => ['targetVersion'],
+                    'oneOf' => [
+                        ['required' => ['queries']],
+                        ['required' => ['page']],
+                    ],
                 ],
             ],
             [
@@ -453,17 +462,19 @@ final class Tools
         $queries = is_array($args['queries'] ?? null)
             ? array_values(array_filter($args['queries'], is_string(...)))
             : [];
+        $page = is_string($args['page'] ?? null) ? trim($args['page']) : '';
         $statedVersion = is_string($args['targetVersion'] ?? null) ? trim($args['targetVersion']) : '';
         $major = Versions::major($statedVersion);
         $branch = $major === null ? null : Versions::branch($major);
         $limit = is_int($args['limit'] ?? null) ? max(1, min(10, $args['limit'])) : 6;
 
-        if ($queries === [] || $statedVersion === '') {
-            throw new \InvalidArgumentException('queries and targetVersion are required');
+        if ($statedVersion === '' || ($queries === []) === ($page === '')) {
+            throw new \InvalidArgumentException('Pass targetVersion and exactly one of queries or page');
         }
 
         if ($branch === null) {
             $answer = [
+                'mode' => $page === '' ? 'search' : 'page',
                 'status' => 'unavailable',
                 'targetVersion' => $statedVersion,
                 'source' => 'https://docs.typo3.org',
@@ -478,7 +489,10 @@ final class Tools
                 ],
             ];
         } else {
-            $answer = (new Documentation())->lookup($queries, $branch, $limit);
+            $documentation = new Documentation();
+            $answer = $page === ''
+                ? $documentation->lookup($queries, $branch, $limit)
+                : $documentation->page($page, $branch);
         }
 
         $lines = [
@@ -488,7 +502,16 @@ final class Tools
         if ($answer['status'] === 'unavailable') {
             $lines[] = 'Could not answer: ' . $answer['unavailable']['reason'];
         } elseif ($answer['status'] === 'empty') {
-            $lines[] = 'No matching section was found. The documentation service answered; narrow or rephrase the queries.';
+            $lines[] = $answer['mode'] === 'page'
+                ? 'The selected page answered without a readable main article.'
+                : 'No matching section was found. The documentation service answered; narrow or rephrase the queries.';
+        } elseif ($answer['mode'] === 'page') {
+            $result = $answer['results'][0];
+            $lines[] = '';
+            $lines[] = '## ' . $result['title'];
+            $lines[] = sprintf('%s · %s · %s', $result['document'], $result['documentVersion'], $result['url']);
+            $lines[] = '';
+            $lines[] = $result['content'];
         } else {
             foreach ($answer['results'] as $result) {
                 $lines[] = '';

@@ -195,6 +195,27 @@ final class HintsTest extends TestCase
     }
 
     #[Test]
+    public function aBackendModuleNamesItsShortcutApiAndPostRedirect(): void
+    {
+        $query = 'doc header buttons and the redirect after a POST in a backend module';
+        $onThirteen = Tools::call('typo3_architecture_lookup', [
+            'task' => $query,
+            'targetVersion' => '13',
+        ])->text;
+        self::assertStringContainsString('makeShortcutButton()', $onThirteen);
+        self::assertStringNotContainsString('setShortcutContext(', $onThirteen);
+        self::assertStringContainsString('RedirectResponse with status 303', $onThirteen);
+
+        $onFourteen = Tools::call('typo3_architecture_lookup', [
+            'task' => $query,
+            'targetVersion' => '14',
+        ])->text;
+        self::assertStringContainsString('setShortcutContext(', $onFourteen);
+        self::assertStringNotContainsString('makeShortcutButton()', $onFourteen);
+        self::assertStringContainsString('RedirectResponse with status 303', $onFourteen);
+    }
+
+    #[Test]
     public function siteScopedConfigurationIsOfferedOnlyWhereSiteSettingsExist(): void
     {
         $onTwelve = implode("\n", array_column(

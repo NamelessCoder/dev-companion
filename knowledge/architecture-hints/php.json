@@ -219,7 +219,13 @@
       "Configuration/Backend/Routes.php",
       "Configuration/Backend/AjaxRoutes.php",
       "backend module",
-      "module registration"
+      "module registration",
+      "doc header",
+      "button bar",
+      "shortcut button",
+      "setShortcutContext",
+      "POST redirect",
+      "redirect after POST"
     ],
     "hints": [
       "A backend module is declared in the owning extension's Configuration/Backend/Modules.php, which returns an array keyed by module identifier. There is no registration call.",
@@ -233,6 +239,15 @@
         "text": "labels is the LLL:EXT: reference of the XLF file the module's labels live in, not a domain.",
         "until": 13
       },
+      {
+        "text": "Configure a module shortcut with $moduleTemplate->getDocHeaderComponent()->setShortcutContext($routeIdentifier, $displayName, $arguments). The doc header creates and positions the ShortcutButton; do not add one to its button bar manually.",
+        "since": 14
+      },
+      {
+        "text": "Build a module shortcut through $moduleTemplate->getDocHeaderComponent()->getButtonBar()->makeShortcutButton(), set its route identifier, display name and arguments, then add it to that button bar.",
+        "until": 13
+      },
+      "After a module POST changes state, return a RedirectResponse with status 303. The browser then follows with GET; a 302 does not state that method change and can repeat the POST.",
       "Configuration/Backend/Routes.php and AjaxRoutes.php declare backend routes outside a module, in the same declarative style.",
       "These are declarative files with no schema check behind them: a wrong key does not fail at boot, it fails when a user opens the module. Take the shape from a neighbouring extension."
     ],

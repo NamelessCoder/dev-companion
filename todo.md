@@ -91,22 +91,18 @@ This serves the seven notes recorded on 2026-07-30, all from one forward run of
 `EXT-04` against the Printworks sitepackage on TYPO3 14.3.5. They are worked off
 in this order, cheapest and most certain first:
 
-1. The remaining knowledge gap: what a backend module builds after it is
-   registered — the doc-header button API and the redirect its own POST answers
-   with. Both are verified against the checkouts below `.checkouts/`, and the
-   shortcut button changed in a major, so it is bound.
-2. The catalog provenance: `typo3_catalog_scope` announces one branch for the
+1. The catalog provenance: `typo3_catalog_scope` announces one branch for the
    whole catalog and a caller reads that as the version of every entry under it.
    Say what the branch is — the checkout the entries were read from — and let
    the entry's own range speak for the answer.
-3. Reading a page of the manual. The largest of the seven and the one that
+2. Reading a page of the manual. The largest of the seven and the one that
    changes the most: `typo3_documentation_lookup` finds the right page and
    cannot hand it over, so a session that asked it well still rebuilt the API
    from twenty-five greps through `vendor/typo3`.
-4. The skill hand-off, which is a sentence in every skill and does not happen.
+3. The skill hand-off, which is a sentence in every skill and does not happen.
    The note asks for a forward scenario in which a task that starts in one skill
    has to end in another, so the boundary is measured rather than declared.
-5. Deriving the component catalog from the installation, last, because it
+4. Deriving the component catalog from the installation, last, because it
    reverses a recorded decision. It needs a `decisions.md` entry that says what
    changed, not only a commit.
 

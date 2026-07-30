@@ -604,6 +604,12 @@ took before the requirement above was written down, and it will not survive it.
 
 ## Knowledge — what is covered
 
+- **R-KNW-35** Backend-module guidance continues past registration: it names
+  the version-bound shortcut API used by the doc header and requires a 303
+  redirect after a state-changing POST so the browser follows with GET.
+  *From:* a module that manually added the superseded shortcut button and
+  answered its import POST with a redirect that could repeat it (2026-07-30).
+  *Held by:* `HintsTest::aBackendModuleNamesItsShortcutApiAndPostRedirect`
 - **R-KNW-34** Configuration is placed by the reach of its value: site-specific
   values are site settings, one-per-installation values are extension
   configuration, and a scheduler task's parameters are stored with that task.

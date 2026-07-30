@@ -24,6 +24,57 @@ use Typo3CmsMcp\ServerFactory;
 
 require dirname(__DIR__) . '/src/bootstrap.php';
 
+if (($argv[1] ?? null) === 'install') {
+    $directory = getcwd();
+    if ($directory === false) {
+        fwrite(STDERR, "typo3-cms-mcp: cannot determine the current directory.\n");
+        exit(1);
+    }
+
+    $configurationPath = $directory . '/.mcp.json';
+    $configuration = ['mcpServers' => []];
+    if (is_file($configurationPath)) {
+        try {
+            $decoded = json_decode((string) file_get_contents($configurationPath), true, flags: JSON_THROW_ON_ERROR);
+        } catch (\JsonException $exception) {
+            fwrite(STDERR, "typo3-cms-mcp: .mcp.json is not valid JSON: {$exception->getMessage()}\n");
+            exit(1);
+        }
+        if (!is_array($decoded)) {
+            fwrite(STDERR, "typo3-cms-mcp: .mcp.json must contain a JSON object.\n");
+            exit(1);
+        }
+        $configuration = $decoded;
+        $configuration['mcpServers'] ??= [];
+        if (!is_array($configuration['mcpServers'])) {
+            fwrite(STDERR, "typo3-cms-mcp: mcpServers in .mcp.json must be an object.\n");
+            exit(1);
+        }
+    }
+
+    $entrypoint = realpath($argv[0]) ?: $argv[0];
+    $server = [
+        'type' => 'stdio',
+        'command' => 'php',
+        'args' => [$entrypoint],
+    ];
+    $existing = $configuration['mcpServers']['typo3-cms-mcp'] ?? null;
+    if ($existing !== null && $existing !== $server) {
+        fwrite(STDERR, "typo3-cms-mcp: .mcp.json already has a different typo3-cms-mcp server; refusing to replace it.\n");
+        exit(1);
+    }
+
+    $configuration['mcpServers']['typo3-cms-mcp'] = $server;
+    $json = json_encode($configuration, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR) . "\n";
+    if (file_put_contents($configurationPath, $json) === false) {
+        fwrite(STDERR, "typo3-cms-mcp: could not write {$configurationPath}.\n");
+        exit(1);
+    }
+
+    fwrite(STDOUT, "Configured typo3-cms-mcp in {$configurationPath}.\n");
+    exit(0);
+}
+
 Instance::discoverFrom(getcwd() ?: null);
 
 ServerFactory::create()->run(new StdioTransport());

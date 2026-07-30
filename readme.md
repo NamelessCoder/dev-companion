@@ -86,7 +86,10 @@ reading, how it got there, and whether the console is reachable.
 It is built on the official [`mcp/sdk`](https://packagist.org/packages/mcp/sdk)
 and speaks **stdio** (`bin/typo3-cms-mcp`): the MCP client launches it as a
 subprocess, so there is no server to host, no network exposure, and no auth to
-configure — the process boundary is the trust boundary.
+configure — the process boundary is the trust boundary. Request serving is
+read-only apart from the explicit feedback tool. One setup command writes:
+`bin/typo3-cms-mcp install` adds this server to `.mcp.json` in the current
+project, preserves other servers, and refuses to replace a different entry.
 
 ## Install
 
@@ -101,8 +104,13 @@ Clone the repository and install the dependencies once:
 composer install
 ```
 
-Then point an MCP client at the entrypoint with an absolute path, for example in
-its `.mcp.json`:
+Then install the entrypoint into the current project's `.mcp.json`:
+
+```bash
+/absolute/path/to/typo3-cms-mcp/bin/typo3-cms-mcp install
+```
+
+It writes the following shape with the actual absolute path:
 
 ```json
 {
@@ -137,8 +145,14 @@ project's `composer.json`:
 composer require typo3/cms-mcp
 ```
 
-Composer then exposes the stdio entrypoint as `vendor/bin/typo3-cms-mcp`, which
-is what the consuming project's MCP client is pointed at:
+Composer then exposes the stdio entrypoint as `vendor/bin/typo3-cms-mcp`.
+Install it from the consuming project's root:
+
+```bash
+vendor/bin/typo3-cms-mcp install
+```
+
+That writes the same `.mcp.json` shape with an absolute path:
 
 ```json
 {
@@ -146,7 +160,7 @@ is what the consuming project's MCP client is pointed at:
     "typo3-cms-mcp": {
       "type": "stdio",
       "command": "php",
-      "args": ["vendor/bin/typo3-cms-mcp"]
+      "args": ["/absolute/path/to/project/vendor/bin/typo3-cms-mcp"]
     }
   }
 }

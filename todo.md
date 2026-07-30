@@ -140,26 +140,6 @@ into `CLAUDE.md`. This server runs beside an installation and answers only when
 called. The second half of that is the part worth reconsidering; the first is
 not, and `decisions.md` says why a booting TYPO3 was never a precondition here.
 
-### Write the client configuration instead of describing it
-
-Would establish a requirement under `## Discovery`: that the entrypoint can
-write the configuration a client needs, rather than a readme telling somebody to
-paste an absolute path into JSON. Today `readme.md` asks for exactly that, twice
-— standalone and as a dependency — and it is the first thing between somebody
-hearing about this server and using it.
-
-Boost detects which agents are present per platform (`command -v claude` on
-Darwin and Linux, `cmd /c where claude` on Windows) plus project markers
-(`.claude/`, `CLAUDE.md`), then writes each one's own file: `.mcp.json` for most,
-TOML for Codex. One class per agent, three optional contracts, and the writing
-is idempotent — an existing block is replaced in place and anything the user put
-around it survives.
-
-The decision is R-DIS-11: only an explicit `bin/typo3-cms-mcp install` may
-write, and only `.mcp.json` in the caller's current project. Implement it
-idempotently, preserve unrelated servers, refuse an existing `typo3-cms-mcp`
-entry with a different command, and update the readme's trust-boundary promise.
-
 ### Say what to call before the client has a reason to ask
 
 Would establish a requirement under `## Answers`. This is the item with the most

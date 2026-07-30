@@ -102,14 +102,14 @@ them, this section wins and the other one is what needs rewriting.
 
 ## Discovery — which installation is read, and how
 
-- **R-DIS-11 (open)** The entrypoint can install its own stdio configuration
+- **R-DIS-11** The entrypoint can install its own stdio configuration
   into the caller's `.mcp.json` on an explicit `install` command. It preserves
   every unrelated entry, is idempotent for its own command, and refuses to
   replace a `typo3-cms-mcp` entry that points somewhere else. Serving requests
   remains read-only; no ordinary lookup writes client configuration.
   *From:* the two manual absolute-path JSON snippets between discovering the
   package and being able to call it (2026-07-30).
-  *Held by:* not guarded until implemented
+  *Held by:* `InstallerTest`
 - **R-DIS-1** The installation is never derived from `getcwd()` on its own; only
   `bin/typo3-cms-mcp` enables discovery, because an HTTP endpoint has no such
   relationship to its callers.

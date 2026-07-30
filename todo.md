@@ -84,3 +84,97 @@ Before then the only thing that has to happen is a version bump behind a release
 somebody else writes.
 
 ---
+
+## Turn the next delivery targets into scenarios
+
+This serves the next delivery targets: retain this server's version, audience,
+provenance and read-only guarantees while adding live documentation, on-demand
+skills and agent setup. Test them as user tasks before choosing their technical
+shape.
+
+The next concrete step is to add three prompts to the existing audience scenario
+files:
+
+1. an extension author asks a broad API question whose answer belongs in the
+   versioned TYPO3 live documentation rather than in the curated conventions;
+2. a site developer starts a backend-module task and has to be routed through
+   project scope, registered modules, icons, labels and component markup before
+   writing code;
+3. a user installs and later updates the server for Codex without an existing
+   agent configuration being overwritten.
+
+Each scenario must state what source and version the answer has to expose, and
+must be marked `gap` against a new open requirement in `requirements.md`. Once
+those scenarios and requirements exist, replace this item with their identifiers
+on the implementation items below.
+
+## Add versioned TYPO3 live-documentation lookup
+
+This will serve the live-documentation scenario created by the item above. The
+bundled knowledge remains the source for curated conventions, scopes, silent
+failure modes and verified catalog markup; live docs answer broad API, reference
+and tutorial questions.
+
+The next concrete step is a read-only spike against one covered version of
+`typo3/reference-coreapi` and `typo3/reference-typoscript`: establish the
+supported search or index interface, record its availability and response shape,
+and write a contract for `typo3_documentation_lookup` before implementing it.
+The contract must accept several English queries and `targetVersion`, return the
+canonical URL, document identifier, document version, section and source for
+every result, carry `openWorldHint: true`, and distinguish no match from an
+unreachable documentation service. It must never silently fall back from a
+requested release to another release or `main`.
+
+## Publish task skills without duplicating the knowledge base
+
+This will serve the backend-module routing scenario created above and
+R-ANS-9. Skills describe when and in which order to call tools; facts and
+versioned answers stay in the tools.
+
+The next concrete step is one `typo3-backend-module-development` skill as a
+vertical slice. It must route through project/extension scope, registered
+modules, icon and label lookup, component lookup and live documentation, then be
+tested with the scenario before deciding whether Fluid, TCA, testing and core
+contribution deserve separate skills. Define one source location and generated
+client locations so `install` and a future `update` command never create two
+independently maintained copies.
+
+## Extend installation to agent-specific configuration and updates
+
+This will serve the install/update scenario created above and R-DIS-11. Preserve
+the existing refusal to replace a different server entry.
+
+The next concrete step is Codex only: detect its project configuration, install
+the MCP entry and the backend-module skill through an explicit agent option, and
+add an idempotent update path that refreshes only files this package owns.
+Contract tests must cover an absent configuration, an existing matching entry,
+a conflicting entry, unrelated settings and user-modified generated files.
+Claude and Cursor are follow-up implementations only after the Codex shape has
+proved what is actually shared.
+
+## Evaluate package-provided TYPO3 knowledge after skills work
+
+This serves R-AUD-1, R-AUD-5 and the extension-author scenarios: an installed
+extension may know its own workflow, but its advice must not be presented as a
+TYPO3 core rule.
+
+The next concrete step is to specify provenance and trust data for one fixture
+extension contribution before defining discovery paths. At minimum an answer
+must retain package name, package version, authority and applicability; package
+content may augment or explicitly override only package-owned material, never a
+core convention by path collision alone.
+
+## Reassess search and runtime inspection only after the new source boundary
+
+This serves R-ANS-7 and R-ANS-8b. Do not add embeddings or broad inspection
+tools until live documentation has shown which misses remain.
+
+The next concrete step is to rerun `bin/hints coverage` and the scenario suite
+after `typo3_documentation_lookup` is in use, classify the remaining misses, and
+compare lexical retrieval with a local hybrid candidate search. Semantic search
+may select candidates but version, audience and binding data must still decide
+what is returned. In the same review, record whether concrete sessions needed
+log or database-schema inspection; add narrow read-only tools only from that
+evidence, not a generic SQL executor.
+
+---

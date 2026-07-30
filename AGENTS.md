@@ -210,7 +210,9 @@ tells its callers.
 
 Some of it is already guarded: `ScopeTest` holds the scope and the tool list to
 each other in both directions, and `ToolNamingTest` holds every tool name
-written in `knowledge/` or in a rendered answer to the registry. Those catch a
+written in `knowledge/`, in a skill, or in a rendered answer to the registry —
+a skill matters twice over, because it is installed into somebody else's
+project, where a stale name is not corrected by the next release of this server. Those catch a
 name going stale, not a sentence going false. Prose is on you.
 
 Before committing, reread the paragraphs your change touches rather than

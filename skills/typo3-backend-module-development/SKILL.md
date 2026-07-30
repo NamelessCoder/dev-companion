@@ -54,3 +54,8 @@ live documentation is unavailable, keep the failure distinct from no match.
   project profile; never present it as a project command.
 - Re-run the lookups when the target version, extension, or implementation
   choice changes; do not treat an earlier result as universal.
+
+This skill owns backend module registration, controllers, routes, and backend UI
+implementation. Hand test infrastructure to the testing skill, manuals to the
+documentation skill, a broader audit to the conformance skill, and frontend
+content elements to the content-element skill.

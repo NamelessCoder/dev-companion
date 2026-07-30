@@ -68,6 +68,11 @@ final class ToolNamingTest extends TestCase
      * A rename that misses one prose string leaves an answer that tells an
      * agent to call a tool this server does not have. The tool call fails, and
      * it fails in exactly the part of the answer meant to steer the next step.
+     *
+     * The skills are read the same way and for the same reason. They are almost
+     * nothing but tool names in an order, they are installed into somebody
+     * else's project, and there a stale name is not corrected by the next
+     * release of this server.
      */
     #[Test]
     public function everyToolNameWrittenInTheKnowledgeBaseIsRegistered(): void
@@ -75,7 +80,7 @@ final class ToolNamingTest extends TestCase
         $known = array_column(Tools::definitions(), 'name');
 
         $unknown = [];
-        foreach ($this->knowledgeFiles() as $file) {
+        foreach ([...$this->knowledgeFiles(), ...$this->skillFiles()] as $file) {
             preg_match_all('/typo3_[a-z_]+/', (string) file_get_contents($file), $matches);
             foreach (array_unique($matches[0]) as $name) {
                 if (!in_array($name, $known, true)) {
@@ -84,7 +89,7 @@ final class ToolNamingTest extends TestCase
             }
         }
 
-        self::assertSame([], $unknown, 'named in the knowledge base but not registered');
+        self::assertSame([], $unknown, 'named in the knowledge base or in a skill, but not registered');
     }
 
     /** @param array<string, mixed> $arguments */
@@ -120,6 +125,15 @@ final class ToolNamingTest extends TestCase
                 $files[] = $file->getPathname();
             }
         }
+        sort($files);
+
+        return $files;
+    }
+
+    /** @return array<int, string> */
+    private function skillFiles(): array
+    {
+        $files = glob(dirname(__DIR__, 2) . '/skills/*/{SKILL.md,references/*.md}', GLOB_BRACE) ?: [];
         sort($files);
 
         return $files;

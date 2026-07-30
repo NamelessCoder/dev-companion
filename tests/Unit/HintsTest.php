@@ -152,6 +152,39 @@ final class HintsTest extends TestCase
         self::assertContains('language-files', array_column($result['matchedHints'], 'id'));
     }
 
+    #[Test]
+    public function aGermanSiteTaskReachesItsLabelLanguageSetup(): void
+    {
+        $query = 'Set up a German-language site whose core and form labels still render in English';
+        $result = ArchitectureHints::find([], $query, 6);
+
+        self::assertContains('site-label-language', array_column($result['matchedHints'], 'id'));
+
+        $guide = Tools::call('typo3_task_guide', ['task' => $query]);
+        self::assertContains('site-label-language', array_column($guide->data['architectureHints'], 'id'));
+        self::assertStringContainsString('typo3Language: de', $guide->text);
+        self::assertStringContainsString('language:update de', $guide->text);
+        self::assertStringContainsString('renderingOptions.submitButtonLabel', $guide->text);
+    }
+
+    #[Test]
+    public function languagePackActivationUsesTheConfigurationOfTheTargetBranch(): void
+    {
+        $onThirteen = implode("\n", array_column(
+            ArchitectureHints::byId('site-label-language', 13)['hints'],
+            'text',
+        ));
+        self::assertStringContainsString('EXTCONF', $onThirteen);
+        self::assertStringNotContainsString('LANG/availableLocales', $onThirteen);
+
+        $onFourteen = implode("\n", array_column(
+            ArchitectureHints::byId('site-label-language', 14)['hints'],
+            'text',
+        ));
+        self::assertStringContainsString('LANG/availableLocales', $onFourteen);
+        self::assertStringNotContainsString('EXTCONF', $onFourteen);
+    }
+
     /**
      * The symptom a caller arrives with is not the vocabulary a hint was
      * indexed under, and for a long time only the vocabulary was searched: a

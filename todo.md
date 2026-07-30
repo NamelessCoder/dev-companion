@@ -93,15 +93,6 @@ stay in arrival order: first the site-language failure, then the routing design
 that followed from it, then the repository file whose ownership was discovered
 while committing the result.
 
-### A non-English site needs a TYPO3 label language and an active pack
-
-Serves
-`feedback/2026-07-30-003348-a-site-whose-only-language-is-german-renders.md`.
-Verify the locale-to-`typo3Language` derivation and
-`LANG/availableLocales` gate on every covered checkout, verify the form submit
-fallback on both sides of any boundary, then add a general hint reached by site
-configuration and installation setup tasks.
-
 ### PersistedAliasMapper maps a uid to a route field
 
 Serves

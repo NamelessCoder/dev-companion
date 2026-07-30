@@ -51,6 +51,40 @@
     ]
   },
   {
+    "id": "site-label-language",
+    "title": "Core Labels on a Non-English Site",
+    "appliesTo": [
+      "site language",
+      "site configuration",
+      "site settings",
+      "site set",
+      "non-English",
+      "German site",
+      "core labels",
+      "English labels",
+      "typo3Language",
+      "locale",
+      "language pack",
+      "language:update",
+      "availableLocales",
+      "availableLanguages",
+      "submitButtonLabel"
+    ],
+    "hints": [
+      "A site's locale and its TYPO3 label language are separate. When typo3Language is absent, SiteLanguage derives it from the locale including its country, so de_DE.UTF-8 becomes de_DE although the German pack is named de. Set typo3Language: de on that site language; a mismatch silently falls back to the English source instead of reporting an error.",
+      {
+        "text": "Activate the locale before downloading its pack: set LANG/availableLocales to an array containing de, then run typo3 language:update de. The CLI can write the array with typo3 configuration:set LANG/availableLocales '[\"de\"]' --json.",
+        "since": 14
+      },
+      {
+        "text": "Activate the language before downloading its pack: set $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['lang']['availableLanguages'] to an array containing de in config/system/additional.php, then run typo3 language:update de.",
+        "until": 13
+      },
+      "A pack only translates labels that are translation references. EXT:form's standard submit button fallback is the literal Submit; set renderingOptions.submitButtonLabel in the form definition for the site's language."
+    ],
+    "checks": []
+  },
+  {
     "id": "icon-usage",
     "title": "Rendering and Registering Icons",
     "appliesTo": [

@@ -85,20 +85,6 @@ somebody else writes.
 
 ---
 
-## Publish task skills without duplicating the knowledge base
-
-This serves `SITE-07`, `R-SKL-1` and R-ANS-9. Skills describe when and in which
-order to call tools; facts and
-versioned answers stay in the tools.
-
-The next concrete step is one `typo3-backend-module-development` skill as a
-vertical slice. It must route through project/extension scope, registered
-modules, icon and label lookup, component lookup and live documentation, then be
-tested with the scenario before deciding whether Fluid, TCA, testing and core
-contribution deserve separate skills. Define one source location and generated
-client locations so `install` and a future `update` command never create two
-independently maintained copies.
-
 ## Extend installation to agent-specific configuration and updates
 
 This serves `META-05`, `R-DIS-12` and R-DIS-11. Preserve

@@ -1,0 +1,4 @@
+interface:
+  display_name: "TYPO3 Backend Module Development"
+  short_description: "Build version-correct TYPO3 backend modules"
+  default_prompt: "Use $typo3-backend-module-development to add a backend module to this TYPO3 project."

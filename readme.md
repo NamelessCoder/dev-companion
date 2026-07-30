@@ -178,6 +178,10 @@ Clients that expose MCP prompts also list `commit_message`. It turns a
 summary into the same checked draft as `typo3_commit_message_guide`; the rules
 remain in the guide rather than being duplicated in the prompt.
 
+Task skills are authored once below `skills/`. They contain routing and order,
+not a second copy of tool answers; client installation publishes them from that
+source.
+
 ### Smoke test
 
 Two JSON-RPC lines on stdin are enough to see the server come up and list its

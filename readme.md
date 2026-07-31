@@ -262,7 +262,8 @@ supports:
 
 ```bash
 bin/cli          # every subject, and every command it carries
-bin/cli check    # requirements, decisions and scenarios against their formats
+bin/cli next     # what to do next, for whoever is starting a session
+bin/cli check    # requirements, decisions, scenarios and todo.md against their formats
 ```
 
 `bin/typo3-cms-mcp` is the server itself and carries none of this.

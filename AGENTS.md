@@ -27,7 +27,8 @@ skills/            # canonical task skills installed into supported agent client
 skills/base.md     # the order every task starts in, copied into each published skill as references/base.md
 requirements/      # what must hold, and what holds it there: one requirement per file, grouped by what it is about; open ones are the backlog
 decisions/         # what a change assumed, and what would show it to be wrong: one decision per file, grouped by what it is about
-todo.md            # the order of the work and where the last session stopped
+todo.md            # the order of the work and where the last session stopped; `bin/cli next` reads it out
+src/Todo.php       # todo.md as data: which section is standing, which is the queue, what each item serves
 tests/             # unit, tool contract, and stdio smoke tests
 vendor/            # Composer dependencies (mcp/sdk); gitignored
 ```
@@ -40,13 +41,21 @@ from the installation being read.
 
 ## Where a session starts, and what it owes the next one
 
-Read [todo.md](todo.md) first. It says what is being worked on, in which order,
-and where the last session stopped — and it opens with two standing items. Read
-`feedback/` again and run each note's own query against the server as it is now:
-notes arrive while work is happening, and one that was open yesterday is often
-half answered by what shipped since. Then run `bin/cli backlog list` for what
-was written down inside and waited — the requirements nothing answers for, and
-the decisions nobody has been back to.
+    bin/cli next
+
+That is the whole of it. It reads out the standing items of [todo.md](todo.md),
+performs the two readings they ask for — the notes that arrived in `feedback/`
+while work was happening, and what `bin/cli backlog list` says was written down
+inside and then waited — and prints the item at the front of the queue whole,
+because the paragraph under its heading is the next concrete step. What follows
+that item is named rather than printed: the queue after the first entry is
+context, and reading it as a plan is how work happens in the wrong order.
+
+Each of the four is still a file somebody can read on its own, and the command
+is the one place to ask rather than a fifth thing to keep current. What it can
+never do is run a note's own query against the server as it is now — a note is
+evidence about a version of this server that may no longer exist, and that
+reading is the session's.
 
 Keeping it current is part of the work, not a step after it:
 
@@ -199,21 +208,24 @@ keeping them apart is what keeps any of them readable:
   of them says what to do next. A session can end anywhere, and the next one
   starts by reading this. An item names what it serves and what the next
   concrete step is, and is deleted when done rather than ticked — what it
-  established is in `requirements/` by then. Its first two items are standing and
-  are never deleted: read `feedback/` again and run each note's own query against
-  the server as it is now — notes arrive while work is happening, and the ones
-  that were open yesterday are often half answered by what shipped since — and
-  then read the backlog the other two files have been keeping.
+  established is in `requirements/` by then. Every section opens with one line
+  saying which of three things it is: `**Standing:**` for the ones that are
+  never deleted, `**Serves:**` with the ids it answers for for an item of the
+  queue, `**Not an item.**` for what a session would otherwise mistake for work.
+  That line is what `bin/cli next` reads and what `bin/cli todo check` holds —
+  the prose under it is untouched, because the next concrete step is a paragraph
+  written for a person to start from.
 
 Three of those states mean unfinished: a requirement marked **open**, one held
 by `not guarded`, and a decision still `standing`, whose **Wrong if** nobody has
 been back to. All three are legitimate — a principle no test can hold and a
 decision nothing has come back about are not defects — so no check may fail on
 them, which is exactly why nothing read them for as long as they existed.
-`bin/cli backlog list` is that reading, and `bin/cli check` closes with the same
-block. It names every requirement nothing answers for, says whether an item in
-`todo.md` names it, and gives the oldest standing decision as the one the
-repository has moved furthest away from. Standing on that list is not the
+`bin/cli backlog list` is that reading; `bin/cli next` opens with it and
+`bin/cli check` closes with it. It names every requirement nothing answers for,
+says whether an item in `todo.md` names it, and gives the oldest standing
+decision as the one the repository has moved furthest away from. Standing on
+that list is not the
 problem. Standing on it with nothing in `todo.md` naming it is a decision nobody
 has taken, and taking it — an item, or the sentence in `decisions/` that says
 why not — is what a session owes it.

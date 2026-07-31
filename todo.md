@@ -6,11 +6,21 @@ work** and where the last one stopped — not what must be true (that is
 is `feedback/`), not the map of what the audiences need (that is `scenarios/`).
 Those three outlive the work; this one is consumed by it.
 
+Every section opens with one line that says which of three things it is, so a
+reader that has read nothing else can tell the queue from what surrounds it —
+and so `bin/cli next` can read it out:
+
+| Line | The section is |
+| --- | --- |
+| `**Standing:** notes` / `backlog` / `by hand` | never deleted, and read before anything is picked up. The first two are what `bin/cli next` runs for you; `by hand` prints the commands the section names. |
+| `**Serves:** <ids>` | an item, in the order the queue has it, answering for the requirements, notes and scenarios it names. |
+| `**Not an item.**` | neither — something a session would otherwise rediscover and mistake for work. |
+
 Rules that keep it from becoming a fourth backlog:
 
-- An item names what it serves — a requirement, a note, a scenario. An item that
-  serves nothing is not a task, it is an idea, and ideas go in the note that had
-  them.
+- An item names what it serves — a requirement, a note, a scenario — on that
+  line, where it can be read. An item that serves nothing is not a task, it is
+  an idea, and ideas go in the note that had them.
 - An item says what the **next concrete step** is, in enough detail that someone
   who has read nothing else can start. "Continue with the bindings" is not that;
   "bind the statements in `php.json` against `.checkouts/12.4` and `13.4`" is.
@@ -22,6 +32,8 @@ Rules that keep it from becoming a fourth backlog:
 ---
 
 ## Every session starts here: read `feedback/` again
+
+**Standing:** notes
 
 This item is never done and is never deleted. Notes arrive while work is
 happening — a session somewhere records what it was missing, and the file lands
@@ -42,6 +54,8 @@ else here was written by someone who already knew what they meant.
 ---
 
 ## And then reads the backlog
+
+**Standing:** backlog
 
 Standing as well, and never deleted. `feedback/` is what arrives from outside;
 this is what was written down inside and then waited.
@@ -65,6 +79,8 @@ judged is not.
 ---
 
 ## Standing check: has `mcp/sdk` released a newer version?
+
+**Standing:** by hand
 
 This item is never done and is never deleted either, and unlike everything else
 here it serves no single requirement. That is the point: it serves the
@@ -109,7 +125,9 @@ somebody else writes.
 
 ## Which checkout plays which environment
 
-Not an item — the standing answer to a question every run below asks first. A
+**Not an item.**
+
+The standing answer to a question every run below asks first. A
 scenario names a kind of directory; which one on this machine plays it belongs
 here, where it can go stale without taking a case with it. A forward run is a
 fresh MCP client session with the installed skills, and a session in this
@@ -138,9 +156,9 @@ infrastructure. Whichever plays it for the next run is named here first.
 
 ## Add the static-quality branch to `typo3-extension-testing`
 
-This serves
-`feedback/2026-07-30-174423-extension-static-quality-needs-an-explicit-workflow.md`
-and `R-SKL-2`. It moved ahead of the upgrade item on 2026-07-31 for one reason:
+**Serves:** R-SKL-2, feedback/2026-07-30-174423-extension-static-quality-needs-an-explicit-workflow.md
+
+It moved ahead of the upgrade item on 2026-07-31 for one reason:
 it is the only one of the four whose next step can be taken today. The upgrade
 item lost its environment when `E-EXT` turned out to have no major in front of
 it, and this one gained half its evidence from the same run.
@@ -177,9 +195,9 @@ workflows.
 
 ## Complete the extension author's multi-major upgrade workflow
 
-This serves
-`feedback/2026-07-30-173821-extension-upgrades-need-a-task-owned-workflow.md`
-and `EXT-01`, and it has no environment: `E-EXT` supports `^13.4 || ^14.3`, so
+**Serves:** EXT-01, feedback/2026-07-30-173821-extension-upgrades-need-a-task-owned-workflow.md
+
+It has no environment: `E-EXT` supports `^13.4 || ^14.3`, so
 there is no major in front of it, and no other extension checkout on this
 machine is behind either. What it needs is one that is — an extension still
 declaring `^12.4` or `^13.4` alone, cloned for the purpose if none turns up.
@@ -197,9 +215,9 @@ that hold only the behavior the run proves.
 
 ## Carry an extension from release candidate to verified artifact
 
-This serves
-`feedback/2026-07-30-174423-extension-releases-need-a-preparation-and-publication-workflow.md`.
-It is last because it is the largest of the four and composes the conformance,
+**Serves:** feedback/2026-07-30-174423-extension-releases-need-a-preparation-and-publication-workflow.md
+
+It is last of the four because it is the largest of them and composes the conformance,
 testing and documentation workflows the three items above still change. Run the
 note's query verbatim in `E-EXT`, then add a `typo3-extension-release` skill
 that starts from `skills/base.md` like every other skill, selects the intended
@@ -216,9 +234,10 @@ green; if that shape survives the work, it earns a contract case of its own.
 
 ## State the skill authoring contract in one place
 
-This serves what is left of
-`feedback/2026-07-30-173821-task-skill-forward-evidence-is-not-repeatable.md`
-after it was trimmed on 2026-08-01. Its runner half is done and `skills/base.md`
+**Serves:** feedback/2026-07-30-173821-task-skill-forward-evidence-is-not-repeatable.md
+
+What is left of the note after it was trimmed on 2026-08-01: its runner half is
+done and `skills/base.md`
 now holds the order a task runs in; what stays distributed is how a skill is
 *written* — body procedural, versioned facts left in their owning tools,
 references one hop away and loaded on demand, ownership and failure boundaries
@@ -232,8 +251,9 @@ items above are what would write one.
 
 ## Judge the two audience requirements nobody has judged
 
-This serves `R-AUD-1` and `R-AUD-2`. It sits here rather than further up for the
-reason that produced it: both have been waiting since `requirements/` was
+**Serves:** R-AUD-1, R-AUD-2
+
+It sits here rather than further up for the reason that produced it: both have been waiting since `requirements/` was
 created on 2026-07-29, no item ever named either of them, and what was urgent
 about them was being invisible — not being late. The four items above serve open
 notes and keep their order.
@@ -256,7 +276,9 @@ clause why nothing can, and that is the end of it.
 
 ## Sort the standing decisions by what could check them
 
-This serves `decisions/` itself. Twenty-nine of thirty-one entries are standing:
+**Serves:** decisions/
+
+Twenty-nine of thirty-one entries are standing:
 each one wrote down what would show it wrong, and nobody has been back to any of
 them. Most are standing because they are still true, so reading all twenty-nine
 for their own sake is not the task and would not finish.
@@ -269,6 +291,8 @@ becomes items. The pass is cheap — the field is the last one in every file —
 it is what turns a count into a queue. Nothing is checked while sorting.
 
 ## Not queued, and deliberately so
+
+**Not an item.**
 
 Things a session may otherwise rediscover and mistake for work:
 

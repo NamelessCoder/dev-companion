@@ -12,6 +12,7 @@ use Typo3CmsMcp\Cli\Hint;
 use Typo3CmsMcp\Cli\Requirement;
 use Typo3CmsMcp\Cli\Scenario;
 use Typo3CmsMcp\Cli\Subject;
+use Typo3CmsMcp\Cli\Todo as TodoSubject;
 
 /**
  * Everything this repository is kept in order by, as one command.
@@ -34,6 +35,7 @@ final class Cli
         'requirements' => Requirement::class,
         'decisions' => Decision::class,
         'scenarios' => Scenario::class,
+        'todo' => TodoSubject::class,
         'backlog' => Backlog::class,
         'hints' => Hint::class,
         'catalog' => Catalog::class,
@@ -45,7 +47,7 @@ final class Cli
      * this checkout. `catalog` reads .checkouts/ and `hints coverage` reports
      * gaps rather than failures, so both are asked for by name.
      */
-    private const CHECKED = ['requirements', 'decisions', 'scenarios'];
+    private const CHECKED = ['requirements', 'decisions', 'scenarios', 'todo'];
 
     /** @param array<int, string> $arguments */
     public static function run(array $arguments): int
@@ -54,6 +56,10 @@ final class Cli
 
         if ($subject === 'check') {
             return self::checkEverything();
+        }
+
+        if ($subject === 'next') {
+            return self::next();
         }
 
         if (!isset(self::SUBJECTS[$subject])) {
@@ -120,6 +126,92 @@ final class Cli
         return $worst;
     }
 
+    /**
+     * What to do next, for whoever is starting a session.
+     *
+     * Everything this prints was already written down, and it was written down
+     * in four places: the notes that arrived from outside, the two directories
+     * that say what is unfinished, and the file that says in which order. A
+     * session had to read all four and know how they relate before it could
+     * begin, and the instruction to do so was itself prose in a fifth. What was
+     * missing was never the information — it was one place to ask.
+     *
+     * So the standing sections are read out in the order todo.md has them, and
+     * the two that are readings this checkout can perform are performed rather
+     * than named. The next item is printed whole, because the paragraph under
+     * the heading *is* the next concrete step and summarising it here would be
+     * the second copy that goes stale. What follows it is named, not printed:
+     * the queue after the first entry is context, and a session that reads it
+     * as a plan will do the wrong thing in the wrong order.
+     */
+    private static function next(): int
+    {
+        print "── standing, before anything is picked up\n";
+        foreach (Todo::standing() as $section) {
+            printf("\n%s\n", $section['title']);
+            print self::indent(self::capture(static fn (): mixed => match ($section['runs']) {
+                'notes' => self::openNotes(),
+                'backlog' => (Backlog::commands()['list'][2])([]),
+                default => print implode("\n", $section['commands']) . "\n",
+            }));
+        }
+
+        $items = Todo::items();
+        if ($items === []) {
+            print "\n── next\n\nNothing is queued. What is waiting is above, and taking it on is an item here.\n";
+
+            return 0;
+        }
+
+        $next = array_shift($items);
+        printf("\n── next\n\n%s\n%s\n%s\n", $next['title'], self::indent('serves ' . implode(', ', $next['serves'])), $next['body']);
+
+        if ($items !== []) {
+            print "\n── and after it, in this order\n\n";
+            foreach ($items as $item) {
+                printf("%s\n", $item['title']);
+            }
+        }
+
+        return 0;
+    }
+
+    /**
+     * The notes that arrived from outside this repository and are still open.
+     *
+     * Listed rather than read out: what a note says is not what it is worth
+     * today, and the instruction above every one of them is to run its own
+     * query against the server as it is now.
+     */
+    private static function openNotes(): void
+    {
+        $notes = Feedback::notes('open', null, 100);
+        if ($notes === []) {
+            print "No open notes.\n";
+
+            return;
+        }
+
+        printf("%d open. Run each one's own query against the server as it is now.\n", count($notes));
+        foreach ($notes as $note) {
+            printf("%s\n", $note['file']);
+        }
+    }
+
+    /** What a callable printed, so a reading written for stdout can be placed. */
+    private static function capture(callable $print): string
+    {
+        ob_start();
+        $print();
+
+        return (string) ob_get_clean();
+    }
+
+    private static function indent(string $block): string
+    {
+        return (string) preg_replace('/^(?!$)/m', '    ', rtrim($block) . "\n");
+    }
+
     /** What this command supports, read off the subjects themselves. */
     private static function help(): string
     {
@@ -130,9 +222,11 @@ final class Cli
         }
 
         return $help . sprintf(
-            "  %-14s %s, and what none of them fails on\n",
+            "  %-14s %s, and what none of them fails on\n  %-14s %s\n",
             'check',
             implode(', ', self::CHECKED),
+            'next',
+            'what to do next: the open notes, the backlog, and the item at the front of the queue',
         );
     }
 

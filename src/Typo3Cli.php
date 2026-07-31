@@ -460,8 +460,12 @@ final class Typo3Cli
      * expanded here too. An absolute declaration is left to the defaults: the
      * console is invoked relative to the root — inside a DDEV container the
      * host path would not exist anyway.
+     *
+     * `Installer` asks the same question about a different binary: where this
+     * server's own entrypoint sits once a project has required it. One rule,
+     * because a project that moved its bin directory moved both.
      */
-    private static function binDirectory(string $root): ?string
+    public static function binDirectory(string $root): ?string
     {
         $config = self::manifest($root)['config'] ?? [];
         if (!is_array($config)) {

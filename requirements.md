@@ -141,6 +141,16 @@ them, this section wins and the other one is what needs rewriting.
   *From:* forward tests of the testing, conformance, documentation, and backend
   module skills against the Printworks sitepackage (2026-07-30).
   *Held by:* `SkillTest`
+- **R-DIS-15** The DDEV client entry names this server's entrypoint at the
+  `config.bin-dir` the project declares, and a project that never required the
+  server keeps the absolute host entrypoint instead — the container sees the
+  project directory, so a path that is not below it is a path that is not there.
+  *From:* naming `E-EXT`: `install --agent=claude` in an extension repository
+  with `"bin-dir": ".build/bin"` wrote `ddev exec php vendor/bin/typo3-cms-mcp`,
+  a file that does not exist in that checkout, and nothing reported it until a
+  client tried to start the server (2026-07-31).
+  *Held by:* `InstallerTest::ddevProjectNamesTheEntrypointAtTheBinDirectoryItDeclares`,
+  `InstallerTest::ddevProjectThatNeverRequiredTheServerKeepsTheAbsoluteEntrypoint`
 - **R-DIS-1** The installation is never derived from `getcwd()` on its own; only
   `bin/typo3-cms-mcp` enables discovery, because an HTTP endpoint has no such
   relationship to its callers.

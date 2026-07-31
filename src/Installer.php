@@ -209,15 +209,43 @@ final class Installer
     {
         $command = 'php';
         $args = [$this->entrypoint];
-        if (is_file($this->project . '/.ddev/config.yaml')) {
+        $installed = $this->installedEntrypoint();
+        if ($installed !== null && is_file($this->project . '/.ddev/config.yaml')) {
             $command = 'ddev';
-            $args = ['exec', 'php', 'vendor/bin/typo3-cms-mcp'];
+            $args = ['exec', 'php', $installed];
         }
         if ($shape === 'opencode') {
             return ['type' => 'local', 'enabled' => true, 'command' => [$command, ...$args]];
         }
 
         return ['type' => 'stdio', 'command' => $command, 'args' => $args];
+    }
+
+    /**
+     * This server's entrypoint inside the project, relative to its root.
+     *
+     * A DDEV project is started through the container PHP, and the container
+     * sees the project directory rather than the host — so the entrypoint has
+     * to be named relative to the root, at the bin directory the project
+     * declares. `vendor/bin` was written unconditionally, which is right until
+     * a project moves it, and a TYPO3 extension repository routinely does
+     * (`"bin-dir": ".build/bin"`). The entry then pointed at a file that does
+     * not exist, and nothing said so until a client tried to start the server.
+     *
+     * Null means the server is not a dependency of this project at all — it is
+     * being run from a checkout elsewhere, which the container cannot see
+     * either, so the absolute entrypoint is the only path that exists for it.
+     */
+    private function installedEntrypoint(): ?string
+    {
+        $directories = [Typo3Cli::binDirectory($this->project), 'vendor/bin'];
+        foreach (array_unique(array_filter($directories)) as $directory) {
+            if (is_file($this->project . '/' . $directory . '/' . self::SERVER)) {
+                return $directory . '/' . self::SERVER;
+            }
+        }
+
+        return null;
     }
 
     private function installTomlConfiguration(string $relativePath, string $key): string

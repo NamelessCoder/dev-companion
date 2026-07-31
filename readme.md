@@ -199,7 +199,8 @@ ddev exec vendor/bin/typo3-cms-mcp install --agent=codex
 
 The project directory is mounted, so the skills are available to the host at
 `.agents/skills`. The generated MCP entry deliberately starts the server with
-the project's container PHP:
+the project's container PHP, at the `config.bin-dir` the project declares —
+`.build/bin/typo3-cms-mcp` in the layout most extension repositories use:
 
 ```json
 {
@@ -213,7 +214,9 @@ the project's container PHP:
 }
 ```
 
-Outside DDEV, the generated configuration uses the absolute entrypoint:
+Outside DDEV — and in a DDEV project that never required the package, where the
+container would not see the checkout the server runs from — the generated
+configuration uses the absolute entrypoint:
 
 ```json
 {

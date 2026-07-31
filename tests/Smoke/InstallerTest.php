@@ -168,6 +168,7 @@ final class InstallerTest extends TestCase
         $directory = $this->directory();
         self::assertTrue(mkdir($directory . '/.ddev'));
         file_put_contents($directory . '/.ddev/config.yaml', "name: fixture\n");
+        $this->installEntrypoint($directory, 'vendor/bin');
 
         try {
             $stderr = '';
@@ -199,7 +200,72 @@ final class InstallerTest extends TestCase
             @unlink($directory . '/.mcp.json');
             @unlink($directory . '/.ddev/config.yaml');
             @rmdir($directory . '/.ddev');
+            $this->removeEntrypoint($directory, 'vendor/bin');
             $this->removeCodexFixture($directory);
+        }
+    }
+
+    #[Test]
+    public function ddevProjectNamesTheEntrypointAtTheBinDirectoryItDeclares(): void
+    {
+        $directory = $this->directory();
+        self::assertTrue(mkdir($directory . '/.ddev'));
+        file_put_contents($directory . '/.ddev/config.yaml', "name: fixture\n");
+        file_put_contents($directory . '/composer.json', json_encode([
+            'config' => ['vendor-dir' => '.build/vendor', 'bin-dir' => '.build/bin'],
+        ], JSON_THROW_ON_ERROR));
+        $this->installEntrypoint($directory, '.build/bin');
+
+        try {
+            $stderr = '';
+            self::assertSame(0, $this->execute($directory, ['install'], $stderr), $stderr);
+
+            $configuration = json_decode(
+                (string) file_get_contents($directory . '/.mcp.json'),
+                true,
+                flags: JSON_THROW_ON_ERROR,
+            );
+            self::assertSame([
+                'type' => 'stdio',
+                'command' => 'ddev',
+                'args' => ['exec', 'php', '.build/bin/typo3-cms-mcp'],
+            ], $configuration['mcpServers']['typo3-cms-mcp']);
+        } finally {
+            @unlink($directory . '/.mcp.json');
+            @unlink($directory . '/composer.json');
+            @unlink($directory . '/.ddev/config.yaml');
+            @rmdir($directory . '/.ddev');
+            $this->removeEntrypoint($directory, '.build/bin');
+            @rmdir($directory);
+        }
+    }
+
+    #[Test]
+    public function ddevProjectThatNeverRequiredTheServerKeepsTheAbsoluteEntrypoint(): void
+    {
+        $directory = $this->directory();
+        self::assertTrue(mkdir($directory . '/.ddev'));
+        file_put_contents($directory . '/.ddev/config.yaml', "name: fixture\n");
+
+        try {
+            $stderr = '';
+            self::assertSame(0, $this->execute($directory, ['install'], $stderr), $stderr);
+
+            $configuration = json_decode(
+                (string) file_get_contents($directory . '/.mcp.json'),
+                true,
+                flags: JSON_THROW_ON_ERROR,
+            );
+            self::assertSame([
+                'type' => 'stdio',
+                'command' => 'php',
+                'args' => [Paths::root() . '/bin/typo3-cms-mcp'],
+            ], $configuration['mcpServers']['typo3-cms-mcp']);
+        } finally {
+            @unlink($directory . '/.mcp.json');
+            @unlink($directory . '/.ddev/config.yaml');
+            @rmdir($directory . '/.ddev');
+            @rmdir($directory);
         }
     }
 
@@ -321,6 +387,21 @@ final class InstallerTest extends TestCase
         self::assertTrue(mkdir($directory));
 
         return $directory;
+    }
+
+    /** A project that has required this server has its entrypoint below its bin directory. */
+    private function installEntrypoint(string $directory, string $binDirectory): void
+    {
+        self::assertTrue(mkdir($directory . '/' . $binDirectory, 0777, true));
+        file_put_contents($directory . '/' . $binDirectory . '/typo3-cms-mcp', "#!/usr/bin/env php\n");
+    }
+
+    private function removeEntrypoint(string $directory, string $binDirectory): void
+    {
+        @unlink($directory . '/' . $binDirectory . '/typo3-cms-mcp');
+        for ($path = $binDirectory; $path !== '.'; $path = dirname($path)) {
+            @rmdir($directory . '/' . $path);
+        }
     }
 
     private function removeCodexFixture(string $directory): void

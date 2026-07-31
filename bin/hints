@@ -143,7 +143,7 @@ function coverage(): int
     printf("\nHints no scenario prompt reaches (%d of %d)\n", count($never), count($hints));
     print $never === [] ? "  none\n" : '  ' . implode("\n  ", $never) . "\n";
 
-    // The tripwire decisions.md asks for. The matcher discounts a term found in
+    // The tripwire D-ANS-2 asks for. The matcher discounts a term found in
     // a body longer than the corpus's ordinary one, and 200 words is what
     // "ordinary" was measured at. A corpus whose mean has walked away from that
     // is a corpus this constant no longer describes.

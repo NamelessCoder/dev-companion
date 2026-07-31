@@ -1,0 +1,76 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+/*
+ * Reads decisions/, where one decision is one file.
+ *
+ * What this replaces is one document of thirty entries that called itself
+ * newest-first and was not: two had arrived at its foot, and the labels a
+ * reader navigates by had drifted into thirteen spellings of four things.
+ * An id now decides the directory and the file name, and the order is
+ * generated from the dates rather than maintained by where a paragraph
+ * was pasted.
+ *
+ *   bin/decisions list [group]
+ *     Every decision newest first, or one group of them.
+ *
+ *   bin/decisions index
+ *     Rewrites the listing at the foot of the readme and of each group readme
+ *     from the files.
+ */
+
+require dirname(__DIR__) . '/vendor/autoload.php';
+
+use Typo3CmsMcp\Decisions;
+
+exit(match ($argv[1] ?? '') {
+    'list' => list_($argv[2] ?? ''),
+    'index' => index(),
+    default => usage(),
+});
+
+function usage(): int
+{
+    fwrite(STDERR, "Usage: bin/decisions list [group]\n       bin/decisions index\n");
+
+    return 2;
+}
+
+/** What was decided, newest first. */
+function list_(string $group): int
+{
+    if ($group !== '' && !in_array($group, Decisions::GROUPS, true)) {
+        fwrite(STDERR, 'No such group: ' . $group . "\nGroups: " . implode(', ', Decisions::GROUPS) . "\n");
+
+        return 2;
+    }
+
+    foreach (Decisions::group($group) as $decision) {
+        printf(
+            "%s  %-10s %-12s %-10s %s\n",
+            $decision['date'],
+            $decision['id'],
+            $decision['group'],
+            $decision['status'],
+            $decision['title'],
+        );
+    }
+
+    return 0;
+}
+
+/** Writes the listing of every group, and of all of them, back into the readmes. */
+function index(): int
+{
+    foreach (['', ...array_values(Decisions::GROUPS)] as $group) {
+        $readme = Decisions::directory() . '/' . ($group === '' ? '' : $group . '/') . 'readme.md';
+        $contents = (string) file_get_contents($readme);
+        $head = (string) preg_replace('/\| Decided \| Id \|.*$/s', '', $contents);
+        file_put_contents($readme, $head . Decisions::listing($group));
+        echo substr($readme, strlen(dirname(__DIR__)) + 1), "\n";
+    }
+
+    return 0;
+}

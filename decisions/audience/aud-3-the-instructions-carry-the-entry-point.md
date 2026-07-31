@@ -1,0 +1,48 @@
+---
+id: D-AUD-3
+date: 2026-07-31
+status: standing
+---
+
+# D-AUD-3 — The instructions carry the entry point, because the tool descriptions never arrive
+
+**The entry point into this server is stated in the `instructions`, because
+under deferral the tool descriptions are not a channel at all.**
+
+`REVIEW-01` ran in `E-SITE` and this server took no part in it: no tool called,
+no skill activated, all thirty-five calls through Bash. Reading the client's own
+attachments back showed why, and the three channels behaved differently enough
+that one fix would have been the wrong fix.
+
+- **Evidence:** the eighteen tools arrived as a `deferred_tools_delta` — names
+  only, no schemas and no descriptions, so every `description` in `src/Tools.php`
+  was outside the session's context and `ToolSearch` would have had to be called
+  first to see one. The `instructions` did arrive, in full, from the first turn —
+  and they opened with a profile caveat, then "not a patch assistant", then "it
+  does not read your working tree", and named no entry point for the commonest
+  request there is. The twenty `routing` entries, which do name one, sit behind
+  `typo3_server_scope`: a tool has to be called to learn that tools should be
+  called. The skills arrived with their full descriptions, and
+  `typo3-extension-conformance` — "Audit or improve a TYPO3 project, sitepackage,
+  or extension … Use for extension reviews, … quality or readiness assessments" —
+  did not activate against "Review this TYPO3 project and its site package.
+  Identify the most important concrete problems, risks, or missing safeguards".
+  Its body would have met both criteria the run failed: step 1 is
+  `typo3_project_scope`, and it hands fixes to the testing and documentation
+  skills.
+- **Decided:** the `instructions` open with `typo3_project_scope` as the first
+  call of any task and name reviewing alongside upgrading and writing code, the
+  working-tree sentence stops being a disclaimer and becomes a division of
+  labour, and the review shape gets a `routing` entry of its own. The skill
+  description leads with the open request — review a repository and say what is
+  wrong with it, in priority order — instead of promising compatibility, which
+  described one of the seven things that run actually found. The tool
+  descriptions are left alone: they are not the channel that failed, because
+  under deferral they are not a channel at all.
+- **Wrong if:** the second `REVIEW-01` run still reaches for Bash alone. Then the
+  wording was never the obstacle, and what is left to suspect is the skill's
+  name — `extension-conformance` for a site project — and, past that, the
+  possibility that a repository review genuinely needs nothing this server has
+  except the installed version, the icon and label registries and the component
+  contract. That answer would be worth having; it is much smaller than the
+  current surface implies.

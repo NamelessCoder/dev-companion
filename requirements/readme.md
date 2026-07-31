@@ -16,8 +16,8 @@ Rules for keeping it usable: an entry is added when a note is worked off, not
 when it arrives — a note nobody has judged yet is a note, not a requirement. An
 entry is never deleted because it was implemented; it is deleted only when the
 requirement itself is withdrawn, and then the reason goes in
-[decisions.md](../decisions.md). Assumptions and evidence live there too; these
-files hold only what must be true.
+[decisions/](../decisions/readme.md). Assumptions and evidence live there too;
+these files hold only what must be true.
 
 ## Where an entry lives
 

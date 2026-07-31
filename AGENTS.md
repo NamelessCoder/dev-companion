@@ -8,6 +8,7 @@ bin/core-checkouts # one TYPO3 core checkout per covered version, below .checkou
 bin/verify-catalog # what a core update invalidated in knowledge/catalog/: paths, the versions each entry holds on, which system extensions are shipped, and where the worked examples still are
 bin/hints          # what cannot be found in the hint corpus: `probe` for one query, `coverage` for the hints no title and no scenario prompt reaches
 bin/requirements   # what must hold: `list` the entries, `check` the files against the format, `index` the group listings
+bin/decisions      # what was decided and on what evidence: `list` the entries newest first, `index` the group listings
 bin/scenarios      # forward runs: `show` what to paste, `record` the empty run, `check` every recorded one against its review; `contract` prints a targeted case
 src/               # PHP classes (knowledge loading, tools, SDK wiring)
 src/ServerFactory.php  # builds the mcp/sdk server from the tool definitions
@@ -29,7 +30,7 @@ scenarios/runs/    # one recorded forward run per review: where it ran, against 
 skills/            # canonical task skills installed into supported agent clients
 skills/base.md     # the order every task starts in, copied into each published skill as references/base.md
 requirements/      # what must hold, and what holds it there: one requirement per file, grouped by what it is about; open ones are the backlog
-decisions.md       # what a change assumed, and what would show it to be wrong
+decisions/         # what a change assumed, and what would show it to be wrong: one decision per file, grouped by what it is about
 todo.md            # the order of the work and where the last session stopped
 tests/             # unit, tool contract, and stdio smoke tests
 vendor/            # Composer dependencies (mcp/sdk); gitignored
@@ -187,13 +188,14 @@ keeping them apart is what keeps any of them readable:
   in the same group, marked **open** — that is the backlog. Add the entry in the
   commit that works the note off, and name the test in the same commit that
   writes it. An entry is deleted only when the requirement is withdrawn.
-- `decisions.md` — what the change rests on. When it rests on an assumption that
+- `decisions/` — what the change rests on. When it rests on an assumption that
   could later turn out wrong, record what was assumed, what evidence there was
-  at the time, and what would show it to be wrong. Not every commit earns one; a
-  change nobody would need to reconsider does not. When an assumption is later
-  disproved, correct the entry in place rather than deleting it — the wrong
-  assumption is the useful part, because it names where the next one is likely
-  to sit.
+  at the time, and what would show it to be wrong. One decision is one file, in
+  the group its id names, and the entry opens with the decision in one sentence.
+  Not every commit earns one; a change nobody would need to reconsider does not.
+  When an assumption is later disproved, correct the entry in place rather than
+  deleting it — the wrong assumption is the useful part, because it names where
+  the next one is likely to sit.
 - `todo.md` — the order of the work, and where the last session stopped. The
   other files say what must be true, what was asked and what was assumed; none
   of them says what to do next. A session can end anywhere, and the next one

@@ -1,6 +1,6 @@
 {
     "name": "typo3/cms-mcp",
-    "description": "Local stdio MCP server exposing a curated TYPO3 core contribution knowledge base.",
+    "description": "Local stdio MCP server exposing a curated TYPO3 knowledge base, the core contribution process included.",
     "type": "library",
     "license": "MIT",
     "require": {

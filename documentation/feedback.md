@@ -49,6 +49,68 @@ Part of the work, not a step after it:
 A session that ends with the file matching what is actually true has handed over
 correctly, whatever else it did.
 
+## Asking a session to file its own notes
+
+A session in a client this repository can read leaves a transcript, and which
+skills activated and which tools were called are evidence in it. A session in
+somebody else's agent leaves nothing here. The only thing that can report such a
+run is the session itself, and it will not do so unprompted — an agent that
+finished its task considers itself done.
+
+So it is asked, in a message of its own **after** the work is finished. Before or
+alongside it, the debrief becomes part of the task: an agent told it will be
+asked which tools helped calls tools to have an answer. The prompt below is
+generic on purpose — it names no scenario, no skill and no tool, so the same text
+works after a review, an implementation, or a question the server could not
+answer at all.
+
+```text
+The work is done. What follows is a debrief about the TYPO3 knowledge server you
+had available, not about the repository you just worked in. Change no files.
+
+That server records notes about itself with typo3_feedback_record, and the
+people who maintain it read them. Report the session you just had from your own
+transcript, not from how it felt:
+
+- Which of its skills you activated, whether the skill fitted the task, and what
+  in it you would keep or drop. Name the skill. If none activated, say so — that
+  is a result.
+- Which tool calls the task actually needed, in the order you made them, and how
+  many round trips each answer cost. Name the ones you would not make again: a
+  lookup that returned nothing usable, one you had to repeat with different
+  arguments to get an answer, one that only restated what the previous answer
+  already said.
+- Where something went wrong: an error, an answer that was incorrect, an
+  argument or a schema you had to guess at, a call you could not complete.
+- What the server saved you from — a wrong path you did not take, a file you did
+  not have to read, an assumption it corrected before you acted on it. Be as
+  concrete here as about the failures; what worked is what must not be broken
+  later.
+- What you had to establish elsewhere — from the checkout, from your own
+  knowledge, from the web — that this server should have answered.
+
+Record one note per subject rather than one long one, and on every call:
+
+- model: identify yourself exactly as your provider names you. Send "unknown"
+  rather than guessing; an invented identifier is worse than none.
+- tool: the tool or skill the note is about.
+- query: the arguments or the task text that produced it, so somebody can re-run
+  it against a later version of the server.
+- category: missing-knowledge, wrong-answer, tool-gap, bug, or idea.
+- suggestion: what should have happened instead.
+
+Open the observation with one line naming the task you were given, so the note
+can be traced back to what exposed it. Write in English. The note is stored in
+the server's own checkout, not in the project you worked in, so do not look for
+the file there.
+
+Then tell me which notes you filed and what each one says.
+```
+
+Paste it verbatim and add nothing — no tool names, no hint about what the last
+session reported. The summary the agent gives afterwards is not the record; the
+notes are, and `typo3_feedback_list` is where they are read back.
+
 ## Working a note off
 
 A note is worked off in a commit that both implements the improvement **and

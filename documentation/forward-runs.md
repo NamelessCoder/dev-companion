@@ -86,6 +86,14 @@ repository, and file each answer where the recurring work already walks:
 - A new contract case, when the session exposes a repeatable task or failure
   shape worth holding directly. That is the more valuable outcome of the two.
 
+Both of those are written by whoever judged the run, from the transcript. When
+the run happened in an agent whose transcript is not readable here, the session
+is the only thing that can report it, and it is asked for its own debrief after
+the work is finished — the generic prompt for that is in
+[the feedback page](feedback.md). What comes back is weaker evidence than a
+transcript and the run says so: it is what the session claims about itself, and
+the answer it gave is still judged the usual way.
+
 A defect the same session fixes is the exception: that is a requirement and the
 commit that closed it, not a note that would be deleted on creation. Otherwise
 the usual route applies — the note is worked off in a commit that deletes it,

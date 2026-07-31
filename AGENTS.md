@@ -64,7 +64,7 @@ and that reading is the session's.
 
 How `next` decides what is due, and how the work moves between `feedback/`,
 `requirements/`, `decisions/` and `todo.md`:
-[documentation/the-record.md](documentation/the-record.md).
+[documentation/feedback.md](documentation/feedback.md).
 
 ## Less is more
 
@@ -154,7 +154,10 @@ is verified against:
 ## Feedback workflow
 
 Agents using this server record improvement notes through `typo3_feedback_record`.
-Each note is one markdown file below `feedback/`.
+Each note is one markdown file below `feedback/`. A session in an agent whose
+transcript this repository cannot read files its own: it is handed the debrief
+prompt in [documentation/feedback.md](documentation/feedback.md) after its work
+is finished, never before, so the debrief cannot steer the session it reports on.
 
 Where a note comes from is usually a real session. `scenarios/` is where those
 sessions are written down so they can be run again: one prompt per file, in the
@@ -202,7 +205,7 @@ reading, and what a session owes anything on it is a judgement: an item in
 
 The full account — the note lifecycle, what each of the three files holds, and
 what `bin/cli backlog list` reports — is in
-[documentation/the-record.md](documentation/the-record.md).
+[documentation/feedback.md](documentation/feedback.md).
 
 ## What describes this server to someone else
 

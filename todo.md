@@ -211,8 +211,10 @@ those skills nor grade its own implementation as behavioral evidence.
   - `/home/benji/projects/syntax` — `bk2k/syntax` 5.0.0, TYPO3 14.3.0 below
     `.build/vendor`, DDEV project `syntax` on PHP 8.2, declared `^13.4 ||
     ^14.3`. **Static quality infrastructure is incomplete**: php-cs-fixer and
-    phplint in CI, no PHPStan, no `Tests/` at all. `REVIEW-02` ran here
-    `covered` on 2026-07-31.
+    phplint in CI, no PHPStan, no `Tests/` at all. `REVIEW-02` ran here twice
+    on 2026-07-31, `covered` at 12:21 and `covered` again at 13:32 — the second
+    against the server that runs the checks, and the first run of any kind to
+    reach the console half from an extension checkout.
   - `/home/benji/projects/bootstrap_package` — TYPO3 14.3.0 below
     `.build/vendor`, DDEV project `bootstrap-package` on PHP 8.5. **Complete**
     infrastructure, which is what it plays. `REVIEW-02` ran here twice on

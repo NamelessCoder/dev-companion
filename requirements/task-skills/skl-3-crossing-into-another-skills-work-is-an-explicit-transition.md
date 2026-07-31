@@ -18,4 +18,6 @@ editing the project README and never activated the documentation skill
 (2026-07-30).
 
 **Held by:**
-`SkillTest::backendModuleDocumentationIsAnExplicitSkillTransition`, `SKILL-07`
+`SkillTest::backendModuleDocumentationIsAnExplicitSkillTransition`, `SKILL-07`;
+that a session actually performs the transition is not guarded, and will not be
+— see `D-EVI-2`.

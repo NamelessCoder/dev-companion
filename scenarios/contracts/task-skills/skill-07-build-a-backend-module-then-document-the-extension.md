@@ -6,8 +6,8 @@
 `SkillTest::backendModuleDocumentationIsAnExplicitSkillTransition`,
 `SkillTest::theBaseFixesTheOrderEveryTaskStartsIn`,
 `SkillTest::everySkillRoutesThroughTheOwnersOfItsOwnFactsInOrder`;
-that a session actually hands over at that point is not guarded (`R-SKL-3`
-open)
+that a session actually hands over at that point is not guarded, and this case
+read by hand is what stands in for it (`D-EVI-2`)
 
 > Add a backend module for reviewing imported records, including the module
 > shell, status list and refresh action. Once it works, document the public

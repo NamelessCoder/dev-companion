@@ -90,6 +90,7 @@ the repository has moved furthest away from since. Going back to one and adding
 | 2026-08-01 | [`D-SKL-1`](task-skills/skl-1-the-order-a-task-starts-in-is-one-file.md) | The order a task starts in is one file, and the reading comes last in it | task-skills | tested |
 | 2026-07-31 | [`D-AUD-3`](audience/aud-3-the-instructions-carry-the-entry-point.md) | The instructions carry the entry point, because the tool descriptions never arrive | audience | standing |
 | 2026-07-31 | [`D-EVI-1`](evidence/evi-1-forward-evidence-comes-from-a-review.md) | Forward evidence comes from a review, not from a prompt that knows the answer | evidence | standing |
+| 2026-07-31 | [`D-EVI-2`](evidence/evi-2-a-skill-crossing-is-read-rather-than-run.md) | A skill crossing is read rather than run | evidence | standing |
 | 2026-07-31 | [`D-FBK-1`](feedback/fbk-1-the-backlog-is-read-out-rather-than-enforced.md) | The backlog is read out rather than enforced | feedback | standing |
 | 2026-07-31 | [`D-FBK-2`](feedback/fbk-2-the-order-of-the-work-is-declared-not-inferred.md) | The order of the work is declared, not inferred | feedback | standing |
 | 2026-07-31 | [`D-FBK-3`](feedback/fbk-3-a-session-is-handed-one-todo-not-the-file.md) | A session is handed one todo, not the file | feedback | standing |

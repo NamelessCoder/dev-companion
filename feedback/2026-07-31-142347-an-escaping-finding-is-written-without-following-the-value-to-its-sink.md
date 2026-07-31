@@ -45,7 +45,4 @@ opt-out is correct because its sink escapes is a small, checkable repository,
 and "does the review follow the value or stop at the opt-out" is exactly the
 kind of question a targeted contract case answers better than a forward run —
 a forward review reaches this shape only when a checkout happens to contain it,
-which is how the run above found it once and by accident. The case needs a
-repository built for it: no `E-EXT` checkout on this machine is known to carry a
-correct opt-out, so naming the environment is part of the work rather than a
-detail of writing the file.
+which is how the run above found it once and by accident.

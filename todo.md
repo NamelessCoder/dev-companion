@@ -86,6 +86,22 @@ that version, every requirement fails at once and not one of them says so.
 
 ---
 
+## Measure the sink gate, which so far only its own wording holds
+
+**Serves:** feedback/2026-07-31-142347-an-escaping-finding-is-written-without-following-the-value-to-its-sink.md
+
+Write the targeted contract case the note still asks for, below
+`scenarios/contracts/task-skills/`: a review of an extension whose escaping
+opt-out is correct because the sink escapes, and the question is whether the
+review follows the value or stops at the opt-out. The environment is `E-EXT` in
+the `news` checkout, whose shape is described below — the case names the
+environment, never the path. It goes ahead of the skills above it because the
+gate it measures is a security verdict held by
+`SkillTest::anEscapingFindingIsNotEstablishedUntilItsSinkIs`, which reads back
+the sentence the checklist writes: every todo above it edits skill text, and a
+wording assertion is the kind of hold a reorganization satisfies while the
+behaviour goes.
+
 ## Add the `typo3-extension-upgrade` skill
 
 **Serves:** EXT-01, feedback/2026-07-30-173821-extension-upgrades-need-a-task-owned-workflow.md
@@ -223,7 +239,14 @@ those skills nor grade its own implementation as behavioral evidence.
     **on purpose**: `origin/main` carries the finished v14 migration, and the
     checkout that plays this environment for `EXT-01` must not hand that answer
     over with one `git log` — fetching another branch into it ends its
-    usefulness for that scenario. `REVIEW-02` ran here on 2026-07-31, `partial`
+    usefulness for that scenario. It is also the one checkout here that carries
+    a **correct escaping opt-out**: six `<f:format.htmlentitiesDecode>` around
+    `{newsItem.title}` and `{newsItem.alternativeTitle}` in `Detail.html` and
+    its two `Styles/` copies, all inside `<n:titleTag>`, whose
+    `TitleTagViewHelper` returns nothing and hands the rendered children to
+    `NewsTitleProvider`; the installed 13.4.33 core puts the resolved title
+    through `htmlspecialchars()` into `<title>|</title>` in `PageRenderer`.
+    `REVIEW-02` ran here on 2026-07-31, `partial`
     at 14:23; a first attempt at 14:02 on the `12-13` branch was discarded
     rather than judged, because that branch is 185 commits behind `13.x` and 0
     ahead, and the run spent its top finding saying so.

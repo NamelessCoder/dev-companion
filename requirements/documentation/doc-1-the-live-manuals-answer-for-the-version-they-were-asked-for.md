@@ -30,4 +30,5 @@ content-element pages (2026-07-30).
 **Held by:** `DocumentationTest`,
 `ToolContractTest::everyToolDeclaresSchemasAndAnnotations`,
 `ToolContractTest::aToolCallAnswersWithTextAndMatchingData`,
-`ScopeTest::everyToolNamedByTheScopeIsRegisteredAndEveryRegisteredToolIsCovered`
+`ScopeTest::everyToolNamedInTheScopeExists`,
+`ScopeTest::everyToolIsReachableThroughTheScope`

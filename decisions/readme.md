@@ -91,6 +91,7 @@ the repository has moved furthest away from since. Going back to one and adding
 | 2026-07-31 | [`D-AUD-3`](audience/aud-3-the-instructions-carry-the-entry-point.md) | The instructions carry the entry point, because the tool descriptions never arrive | audience | standing |
 | 2026-07-31 | [`D-EVI-1`](evidence/evi-1-forward-evidence-comes-from-a-review.md) | Forward evidence comes from a review, not from a prompt that knows the answer | evidence | standing |
 | 2026-07-31 | [`D-FBK-1`](feedback/fbk-1-the-backlog-is-read-out-rather-than-enforced.md) | The backlog is read out rather than enforced | feedback | standing |
+| 2026-07-31 | [`D-FBK-2`](feedback/fbk-2-the-order-of-the-work-is-declared-not-inferred.md) | The order of the work is declared, not inferred | feedback | standing |
 | 2026-07-31 | [`D-VER-4`](versions/ver-4-a-supported-range-is-a-property-of-the-package.md) | A supported range is a property of the package, not of the checkout | versions | standing |
 | 2026-07-30 | [`D-ANS-2`](answers/ans-2-three-numbers-decide-what-a-lookup-answers.md) | Three numbers now decide what a lookup answers, and they were measured, not reasoned | answers | standing |
 | 2026-07-30 | [`D-ANS-3`](answers/ans-3-retrieval-stays-lexical-and-runtime-inspection-stays-narrow.md) | Retrieval stays lexical and runtime inspection stays narrow | answers | standing |

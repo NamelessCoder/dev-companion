@@ -171,6 +171,12 @@ run and recorded. A **targeted contract case** in `scenarios/contracts/` names
 one task shape so its routing stays held; it proves that a known task still gets
 its workflow, never that an agent discovered the subject.
 
+A recorded run is a source of notes in its own right, and the good ones are a
+source too. Whatever a run taught that is not specific to the repository it ran
+against becomes a note here rather than a paragraph in the run's own evidence:
+that field is read once, by whoever judged that run, while `feedback/` is what
+every later session walks. `scenarios/forward/readme.md` has the rest of it.
+
 A prompt names a kind of project, never one installation on somebody's machine —
 that lives in `todo.md`, where it can go stale without taking a case with it.
 Cases the server cannot answer yet belong here too: the suite is the map of what

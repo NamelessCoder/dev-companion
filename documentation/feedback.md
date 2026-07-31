@@ -64,6 +64,12 @@ generic on purpose — it names no scenario, no skill and no tool, so the same t
 works after a review, an implementation, or a question the server could not
 answer at all.
 
+The one field it spends words on is the model. Asked who it is, a session
+introspects, finds nothing it trusts, and takes the fallback the tool offers —
+an afternoon of notes all filed as `unknown`, which is the one value that cannot
+separate one model's behaviour from the next. So the prompt sends it to where
+the identifier is written down instead of asking it to remember.
+
 ```text
 The work is done. What follows is a debrief about the TYPO3 knowledge server you
 had available, not about the repository you just worked in. Change no files.
@@ -91,8 +97,10 @@ transcript, not from how it felt:
 
 Record one note per subject rather than one long one, and on every call:
 
-- model: identify yourself exactly as your provider names you. Send "unknown"
-  rather than guessing; an invented identifier is worse than none.
+- model: read it where it is written down — what your client reports for the
+  current session, its configuration, the model you were started with — rather
+  than from what you remember about yourself. Ask me if it is not there.
+  "unknown" only after you have looked, and never a guess.
 - tool: the tool or skill the note is about.
 - query: the arguments or the task text that produced it, so somebody can re-run
   it against a later version of the server.

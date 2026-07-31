@@ -1,0 +1,21 @@
+# How the work is done
+
+One page per procedure that is long enough to get wrong from memory. The
+directories keep saying what a thing **is** — a requirement, a decision, a
+forward review, a note — and each links here for how it is carried out.
+
+The split is deliberate. A readme that also holds the workflow is read by
+someone looking for one paragraph and finding six; a workflow with no home ends
+up in an agent's private memory, where nobody else can read it and no checkout
+carries it. Both happened here before this directory existed.
+
+| Page | What it carries |
+| --- | --- |
+| [forward-runs.md](forward-runs.md) | Running a forward review, judging it, and what to do when one stops without an error |
+
+What does **not** belong here: what must hold — that is
+[requirements/](../requirements/readme.md); what a change assumed —
+[decisions/](../decisions/readme.md); the order of the work —
+[todo.md](../todo.md), which is also where this machine's checkouts are named;
+and the conventions every session works under, which stay in
+[AGENTS.md](../AGENTS.md) because they are read before anything else is.

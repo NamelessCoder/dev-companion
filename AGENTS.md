@@ -29,6 +29,7 @@ requirements/      # what must hold, and what holds it there: one requirement pe
 decisions/         # what a change assumed, and what would show it to be wrong: one decision per file, grouped by what it is about
 todo.md            # the order of the work and where the last session stopped; `bin/cli next` prints one of them
 src/Todo.php       # todo.md as data: what recurs and how often, what is queued, what each todo serves
+documentation/     # how a procedure is carried out, one page each; the rules stay here, the steps live there
 tests/             # unit, tool contract, and stdio smoke tests
 vendor/            # Composer dependencies (mcp/sdk); gitignored
 ```
@@ -175,7 +176,8 @@ A recorded run is a source of notes in its own right, and the good ones are a
 source too. Whatever a run taught that is not specific to the repository it ran
 against becomes a note here rather than a paragraph in the run's own evidence:
 that field is read once, by whoever judged that run, while `feedback/` is what
-every later session walks. `scenarios/forward/readme.md` has the rest of it.
+every later session walks. Running a review, judging it, and reading one that
+stopped without an error: [documentation/forward-runs.md](documentation/forward-runs.md).
 
 A prompt names a kind of project, never one installation on somebody's machine —
 that lives in `todo.md`, where it can go stale without taking a case with it.

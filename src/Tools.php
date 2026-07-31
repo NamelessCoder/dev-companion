@@ -311,7 +311,7 @@ final class Tools
             ],
             [
                 'name' => 'typo3_project_scope',
-                'description' => 'Describe the project around the TYPO3 installation this server was started in: its TYPO3 and PHP constraints, the extensions that are its own rather than TYPO3\'s, the sites it configures with the site sets each depends on, and the commands it declares in composer.json and package.json. Read from files only — no console, no database — so it answers on a fresh clone. Call it before recommending a check: the commands listed here are the ones that exist in this repository.',
+                'description' => 'Describe the project around the TYPO3 installation this server was started in: its TYPO3 and PHP constraints, the extensions that are its own rather than TYPO3\'s, the sites it configures with the site sets each depends on, and the commands it declares in composer.json and package.json, each with what running it does to the sources: a check that hands the code back as it was, a change that rewrites something, or unknown where the declared body does not say. Read from files only — no console, no database — so it answers on a fresh clone. Call it before recommending or running a check: the commands listed here are the ones that exist in this repository, and the ones marked check are the ones a task told not to change files can run.',
                 'inputSchema' => [
                     'type' => 'object',
                     'properties' => new \stdClass(),
@@ -2281,9 +2281,20 @@ final class Tools
         $lines[] = $project['commands'] === []
             ? 'This repository declares no commands of its own in composer.json or package.json. What to run is '
                 . 'then whatever its CI configuration does.'
-            : 'Commands this repository declares — these exist here, the core\'s runTests.sh suites do not:';
+            : 'Commands this repository declares — these exist here, the core\'s runTests.sh suites do not. '
+                . 'What each one does to the sources is read off its body, never by running it: a check reports '
+                . 'and leaves them as they are, a change rewrites something, and unknown is a body that does not '
+                . 'say — a test suite runs the project\'s own code, and no declaration covers that. A task told '
+                . 'not to change files can run the checks and nothing else. A check may still write a cache of '
+                . 'its own; what it does not do is hand the code back different.';
         foreach ($project['commands'] as $command) {
-            $lines[] = sprintf('- %s (%s)', $command['command'], $command['source']);
+            $lines[] = sprintf(
+                '- %s (%s) — %s: %s',
+                $command['command'],
+                $command['source'],
+                $command['runs'],
+                $command['declares'],
+            );
         }
 
         if ($project['patches'] !== []) {

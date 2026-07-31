@@ -40,6 +40,15 @@ final class Project
      */
     public const ORIGIN_FIXTURE = 'fixture';
 
+    /** A declared command that reports on the sources and leaves them as they are. */
+    public const RUNS_AS_CHECK = 'check';
+
+    /** One that rewrites something. */
+    public const RUNS_AS_CHANGE = 'change';
+
+    /** One whose declaration does not say which of the two it is. */
+    public const RUNS_UNDECLARED = 'unknown';
+
     /**
      * @return array{
      *     root: string,
@@ -49,7 +58,7 @@ final class Project
      *     coreConstraint: ?string,
      *     extensions: array<int, array{key: string, path: string, origin: string}>,
      *     sites: array<int, array{identifier: string, base: string, rootPageId: ?int, sets: array<int, string>, languages: array<int, string>}>,
-     *     commands: array<int, array{command: string, source: string}>,
+     *     commands: array<int, array{command: string, source: string, declares: string, runs: string}>,
      *     patches: array<int, array{package: string, description: string, file: string}>
      * }|null
      */
@@ -195,19 +204,186 @@ final class Project
      * point of asking.
      *
      * @param array<string, mixed> $manifest
-     * @return array<int, array{command: string, source: string}>
+     * @return array<int, array{command: string, source: string, declares: string, runs: string}>
      */
     private static function commands(string $root, array $manifest): array
     {
         $commands = [];
-        foreach (array_keys($manifest['scripts'] ?? []) as $name) {
-            $commands[] = ['command' => 'composer ' . $name, 'source' => 'composer.json'];
+        $scripts = is_array($manifest['scripts'] ?? null) ? $manifest['scripts'] : [];
+        foreach ($scripts as $name => $declaration) {
+            $commands[] = [
+                'command' => 'composer ' . $name,
+                'source' => 'composer.json',
+                'declares' => self::declaration($declaration),
+                'runs' => self::runs($declaration, $scripts),
+            ];
         }
-        foreach (array_keys(self::json($root . '/package.json')['scripts'] ?? []) as $name) {
-            $commands[] = ['command' => 'npm run ' . $name, 'source' => 'package.json'];
+
+        $packageScripts = self::json($root . '/package.json')['scripts'] ?? [];
+        foreach (is_array($packageScripts) ? $packageScripts : [] as $name => $declaration) {
+            $commands[] = [
+                'command' => 'npm run ' . $name,
+                'source' => 'package.json',
+                'declares' => self::declaration($declaration),
+                'runs' => self::runs($declaration, []),
+            ];
         }
 
         return $commands;
+    }
+
+    /**
+     * What running a declared command does to the sources, read off what it
+     * declares.
+     *
+     * A task told not to change files still wants the checks, and no script
+     * name carries the difference: `cgl` and `cgl:ci` are one `--dry-run` apart
+     * and are the same tool. So it is read out of the body — the tool that is
+     * invoked, and the flags that decide which way that tool runs.
+     *
+     * Three answers rather than two, because a `no` covering everything
+     * unrecognised makes the undecided look decided. A test suite is the
+     * ordinary undeclared case: it runs the project's own code, and nothing in
+     * a composer.json says what that code writes.
+     *
+     * "The sources", not "nothing": a checker may still write a cache of its
+     * own — `php-cs-fixer --dry-run` writes `.php-cs-fixer.cache` unless told
+     * not to — and this answers whether the code it was pointed at comes back
+     * different, which is what a review is asked about.
+     *
+     * @param array<int, mixed>|string $declaration one composer or npm script, as declared
+     * @param array<string, mixed> $scripts the declaring manifest's scripts, for `@name` references
+     * @param array<int, string> $seen the references already followed, so a cycle ends
+     */
+    public static function runs(array|string $declaration, array $scripts = [], array $seen = []): string
+    {
+        $lines = array_filter(is_array($declaration) ? $declaration : [$declaration], is_string(...));
+        if ($lines === []) {
+            return self::RUNS_UNDECLARED;
+        }
+
+        $answers = [];
+        foreach ($lines as $line) {
+            $answers[] = self::runsLine($line, $scripts, $seen);
+        }
+
+        // The strongest claim any line makes is the claim about all of them: a
+        // script that lints and then fixes changes the sources, and one that
+        // lints and then runs a suite is as undeclared as the suite is.
+        return match (true) {
+            in_array(self::RUNS_AS_CHANGE, $answers, true) => self::RUNS_AS_CHANGE,
+            in_array(self::RUNS_UNDECLARED, $answers, true) => self::RUNS_UNDECLARED,
+            default => self::RUNS_AS_CHECK,
+        };
+    }
+
+    /**
+     * @param array<string, mixed> $scripts
+     * @param array<int, string> $seen
+     */
+    private static function runsLine(string $line, array $scripts, array $seen): string
+    {
+        $line = trim($line);
+
+        // Composer's own prefixes come before any tool: @php picks the PHP the
+        // project runs on, @putenv sets a variable for the lines after it, and
+        // a bare @name is another script of the same manifest.
+        while ($line !== '' && $line[0] === '@') {
+            [$prefix, $rest] = array_pad(preg_split('/\s+/', $line, 2) ?: [], 2, '');
+            if ($prefix === '@php' || $prefix === '@php_binary' || $prefix === '@composer') {
+                $line = $prefix === '@composer' ? 'composer ' . $rest : $rest;
+                continue;
+            }
+            if ($prefix === '@putenv') {
+                return self::RUNS_AS_CHECK;
+            }
+
+            $name = substr($prefix, 1);
+
+            return isset($scripts[$name]) && !in_array($name, $seen, true)
+                && (is_array($scripts[$name]) || is_string($scripts[$name]))
+                ? self::runs($scripts[$name], $scripts, [...$seen, $name])
+                : self::RUNS_UNDECLARED;
+        }
+
+        $tokens = array_values(array_filter(preg_split('/\s+/', $line) ?: []));
+        if ($tokens === []) {
+            return self::RUNS_UNDECLARED;
+        }
+
+        $tool = self::tool(array_shift($tokens));
+        // `php vendor/bin/phpstan` is phpstan; `php -l` is the linter itself.
+        if ($tool === 'php' && $tokens !== [] && !str_starts_with($tokens[0], '-')) {
+            $tool = self::tool((string) array_shift($tokens));
+        }
+
+        $carries = static function (string ...$flags) use ($tokens): bool {
+            foreach ($tokens as $token) {
+                foreach ($flags as $flag) {
+                    if (strcasecmp($token, $flag) === 0 || stripos($token, $flag . '=') === 0) {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        };
+        $first = strtolower($tokens[0] ?? '');
+
+        return match ($tool) {
+            // Linters and analysers: they read, they report, and their exit
+            // code is the whole of what they do to the checkout.
+            'phplint', 'parallel-lint', 'typoscript-lint', 'phpcs', 'phpmd', 'phpcpd',
+            'composer-require-checker', 'composer-unused', 'composer-dependency-analyser' => self::RUNS_AS_CHECK,
+            'php' => $carries('-l') ? self::RUNS_AS_CHECK : self::RUNS_UNDECLARED,
+            'phpstan' => $carries('--generate-baseline') ? self::RUNS_AS_CHANGE : self::RUNS_AS_CHECK,
+            'psalm' => $carries('--set-baseline', '--alter') ? self::RUNS_AS_CHANGE : self::RUNS_AS_CHECK,
+            // Both directions of one tool, and the flag is the only difference.
+            'php-cs-fixer' => $first === 'check' || $carries('--dry-run') ? self::RUNS_AS_CHECK : self::RUNS_AS_CHANGE,
+            'ecs' => $carries('--fix') ? self::RUNS_AS_CHANGE : self::RUNS_AS_CHECK,
+            'rector' => $carries('--dry-run') ? self::RUNS_AS_CHECK : self::RUNS_AS_CHANGE,
+            'eslint', 'stylelint' => $carries('--fix') ? self::RUNS_AS_CHANGE : self::RUNS_AS_CHECK,
+            'tsc' => $carries('--noEmit') ? self::RUNS_AS_CHECK : self::RUNS_AS_CHANGE,
+            'phpcbf' => self::RUNS_AS_CHANGE,
+            // Build steps exist to produce files, and the composer commands
+            // that write are the ones that touch the tree the review is about.
+            'vite', 'webpack', 'rollup', 'esbuild', 'sass', 'postcss', 'gulp', 'grunt',
+            'git', 'rm', 'cp', 'mv', 'mkdir', 'touch' => self::RUNS_AS_CHANGE,
+            'composer' => match ($first) {
+                'validate', 'audit', 'show', 'outdated', 'licenses', 'diagnose', 'check-platform-reqs' => self::RUNS_AS_CHECK,
+                'install', 'update', 'require', 'remove', 'dump-autoload', 'dumpautoload' => self::RUNS_AS_CHANGE,
+                default => self::RUNS_UNDECLARED,
+            },
+            'npm', 'yarn', 'pnpm' => match ($first) {
+                'install', 'ci', 'update', 'add' => self::RUNS_AS_CHANGE,
+                default => self::RUNS_UNDECLARED,
+            },
+            // Its two writing subcommands are what TYPO3 extensions declare it
+            // for; the rest of it is not read here.
+            'extension-helper' => in_array($first, ['version:set', 'changelog:create'], true)
+                ? self::RUNS_AS_CHANGE
+                : self::RUNS_UNDECLARED,
+            // A suite runs the project's own code, and `bin/typo3` runs whatever
+            // command it is handed. Neither is readable from the declaration.
+            default => self::RUNS_UNDECLARED,
+        };
+    }
+
+    /** The tool a declared line invokes, without the path, the extension, or the runner in front of it. */
+    private static function tool(string $token): string
+    {
+        $token = basename(str_replace('\\', '/', $token));
+        $token = (string) preg_replace('/\.(phar|bat|cmd|sh)$/i', '', $token);
+
+        return strtolower($token);
+    }
+
+    /** @param array<int, mixed>|string $declaration */
+    private static function declaration(array|string $declaration): string
+    {
+        $lines = array_filter(is_array($declaration) ? $declaration : [$declaration], is_string(...));
+
+        return implode(' && ', array_map(trim(...), $lines));
     }
 
     /** @param array<string, mixed> $manifest */

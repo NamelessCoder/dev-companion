@@ -108,6 +108,87 @@ final class ProjectTest extends TestCase
     }
 
     #[Test]
+    public function aDeclaredCommandSaysWhetherRunningItChangesTheSources(): void
+    {
+        // Three recorded REVIEW-02 runs were told not to change files and ran
+        // none of the fifteen commands they were offered — among them a
+        // php-cs-fixer line and a phplint line that change nothing. A name
+        // cannot carry that: cgl and cgl:ci are the same tool one flag apart,
+        // so the body is what is read.
+        $root = $this->composerProject();
+        $this->manifest($root, ['scripts' => [
+            'cgl' => ['php-cs-fixer --diff -v fix'],
+            'cgl:ci' => ['php-cs-fixer --diff -v --dry-run fix'],
+            'phpstan' => ['phpstan analyze --configuration Build/phpstan.neon'],
+            'phpstan:baseline' => ['phpstan analyze --generate-baseline Build/phpstan-baseline.neon'],
+            'test:php:lint' => ['phplint'],
+            'test:php:unit' => ['phpunit -c Build/phpunit-unit.xml'],
+            'lint' => ['@test:php:lint'],
+            'test' => ['@test:php:lint', '@test:php:unit'],
+            'set-version' => ['extension-helper version:set'],
+        ]]);
+        file_put_contents($root . '/package.json', json_encode([
+            'scripts' => ['lint:js' => 'eslint Resources/Private', 'build' => 'vite build'],
+        ], JSON_THROW_ON_ERROR));
+        Instance::discoverFrom($root);
+
+        $runs = array_column(Project::describe()['commands'], 'runs', 'command');
+
+        self::assertSame([
+            'composer cgl' => Project::RUNS_AS_CHANGE,
+            'composer cgl:ci' => Project::RUNS_AS_CHECK,
+            'composer phpstan' => Project::RUNS_AS_CHECK,
+            'composer phpstan:baseline' => Project::RUNS_AS_CHANGE,
+            'composer test:php:lint' => Project::RUNS_AS_CHECK,
+            // It runs the project's own code, and no declaration says what that
+            // writes. Undeclared is not a quiet no.
+            'composer test:php:unit' => Project::RUNS_UNDECLARED,
+            // A reference is followed, so a wrapper is worth what it wraps —
+            // and a script that reaches one undeclared line is undeclared.
+            'composer lint' => Project::RUNS_AS_CHECK,
+            'composer test' => Project::RUNS_UNDECLARED,
+            'composer set-version' => Project::RUNS_AS_CHANGE,
+            'npm run lint:js' => Project::RUNS_AS_CHECK,
+            'npm run build' => Project::RUNS_AS_CHANGE,
+        ], $runs);
+
+        $text = Tools::call('typo3_project_scope', [])->text;
+        self::assertStringContainsString('composer cgl:ci (composer.json) — check: php-cs-fixer --diff -v --dry-run fix', $text);
+        self::assertStringContainsString('A task told not to change files can run the checks and nothing else', $text);
+    }
+
+    #[Test]
+    public function aCommandThatDeclaresNothingReadableIsNotCalledSafe(): void
+    {
+        // The failure that matters is the other direction: a body nobody can
+        // read reported as a check would send a review into a script that
+        // rewrites the checkout it was told to leave alone.
+        $root = $this->composerProject();
+        $this->manifest($root, ['scripts' => [
+            'shell' => ["find src -name '*.php' -print0 | xargs -0 -n1 php -l"],
+            'handler' => 'Acme\\Composer\\Scripts::install',
+            'console' => ['@php vendor/bin/typo3 extension:setup'],
+            'itself' => ['@itself'],
+            'linted' => ['@php vendor/bin/phplint'],
+        ]]);
+        Instance::discoverFrom($root);
+
+        self::assertSame(
+            [
+                'composer shell' => Project::RUNS_UNDECLARED,
+                'composer handler' => Project::RUNS_UNDECLARED,
+                'composer console' => Project::RUNS_UNDECLARED,
+                // A script that references itself ends, and ends undeclared.
+                'composer itself' => Project::RUNS_UNDECLARED,
+                // @php is which PHP, not what is run: the tool behind it is
+                // still read.
+                'composer linted' => Project::RUNS_AS_CHECK,
+            ],
+            array_column(Project::describe()['commands'], 'runs', 'command'),
+        );
+    }
+
+    #[Test]
     public function aPatchedDependencyIsPartOfWhatThisProjectIs(): void
     {
         // A patched package does not behave as its version says, and the next

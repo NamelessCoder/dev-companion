@@ -555,7 +555,9 @@ final class ToolSchemas
             'commands' => self::listOf(self::object([
                 'command' => self::string('Ready to run in this repository.'),
                 'source' => self::string('composer.json or package.json.'),
-            ], ['command', 'source']), 'What this repository declares. A check that is not here does not exist here.'),
+                'declares' => self::string('The body the manifest declares for it, lines joined with &&.'),
+                'runs' => ['type' => 'string', 'enum' => ['check', 'change', 'unknown'], 'description' => 'What running it does to the sources, read off the body rather than by running it. check: it reports and hands the code back as it was, so a task told not to change files can run it — it may still write a cache of its own. change: it rewrites something. unknown: the body does not say, which is what a test suite is, because it runs the project\'s own code.'],
+            ], ['command', 'source', 'declares', 'runs']), 'What this repository declares. A check that is not here does not exist here.'),
             'patches' => self::listOf(self::object([
                 'package' => self::string('The dependency being patched.'),
                 'description' => self::string('What the patch is for, where composer.json says.'),

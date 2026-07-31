@@ -259,6 +259,18 @@ them, this section wins and the other one is what needs rewriting.
   the project README and never activated the documentation skill (2026-07-30).
   *Held by:*
   `SkillTest::backendModuleDocumentationIsAnExplicitSkillTransition`, `SKILL-07`
+- **R-KNW-34** An installation answer that cannot read something says so instead
+  of returning a shorter list. Reading a declaration file follows a value the
+  file assigns to a variable once; a value assembled at runtime, taken from a
+  constant, or read from a variable the file reassigns is still declined, and
+  the answer names which of those it cannot follow.
+  *From:* the third `REVIEW-01` run (2026-07-31), where `typo3_extension_scope`
+  reported three content elements of four. The fourth wrote
+  `$contentType = '…'` above its `addRecordType()` call, and an earlier run had
+  already read the omission as a template with no registration — a defect the
+  extension does not have.
+  *Held by:*
+  `ProjectTest::anIdentifierThatTookADetourThroughAVariableIsStillRead`
 - **R-SKL-4** An assessment establishes its base — scope, the owning tools, and
   the list of surfaces it will cover — before it opens the checkout, and derives
   that list from the audit surfaces rather than from the file tree: a surface

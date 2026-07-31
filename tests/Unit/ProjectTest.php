@@ -250,7 +250,7 @@ final class ProjectTest extends TestCase
         // element — not even when the TypoScript renders one under that name.
         self::assertNotContains('acme_quiet', array_column($result->data['contentElements'], 'identifier'));
         self::assertStringContainsString('acme_teaser — renders through Teaser', $result->text);
-        self::assertStringContainsString('at runtime, or takes from a constant', $result->text);
+        self::assertStringContainsString('at runtime, takes from a constant', $result->text);
     }
 
     #[Test]
@@ -308,6 +308,56 @@ final class ProjectTest extends TestCase
             ['pages', 'tt_content'],
             $result->data['tcaOverrides'],
             'the table comes from the call, so the per-element file name is never mistaken for one',
+        );
+    }
+
+    #[Test]
+    public function anIdentifierThatTookADetourThroughAVariableIsStillRead(): void
+    {
+        // A forward review of a real sitepackage on 2026-07-31 was told the
+        // extension had three content elements. It had four: the fourth wrote
+        // `$contentType = '…'` at the top of its override and used the variable
+        // in the item, and the parser only saw literals. A tool that answers
+        // three when there are four is worse than one that declines — the
+        // session that trusts it concludes the template is dead code.
+        $root = $this->composerProject();
+        $extension = $root . '/packages/my_sitepackage';
+        $this->declare(
+            $extension . '/Configuration/TCA/Overrides/tt_content_hero_carousel.php',
+            <<<'PHP'
+                <?php
+                $contentType = 'acme_hero_carousel';
+                ExtensionManagementUtility::addTCAcolumns('tt_content', ['acme_slides' => []]);
+                ExtensionManagementUtility::addRecordType(
+                    [
+                        'label' => 'LLL:EXT:my_sitepackage/Resources/Private/Language/locallang.xlf:carousel',
+                        'value' => $contentType,
+                        'icon' => 'acme-hero-carousel',
+                    ],
+                    '--div--;General,header,acme_slides',
+                );
+                PHP
+        );
+        // Reassigned, so what it holds at the call depends on the order the file
+        // runs in — which is the one thing reading cannot establish.
+        $this->declare(
+            $extension . '/Configuration/TCA/Overrides/tt_content_reused.php',
+            <<<'PHP'
+                <?php
+                $type = 'acme_first';
+                ExtensionManagementUtility::addRecordType(['label' => 'First', 'value' => $type], 'header');
+                $type = 'acme_second';
+                ExtensionManagementUtility::addRecordType(['label' => 'Second', 'value' => $type], 'header');
+                PHP
+        );
+        Instance::discoverFrom($root);
+
+        $result = Tools::call('typo3_extension_scope', ['extension' => 'my_sitepackage']);
+
+        self::assertSame(
+            ['acme_hero_carousel'],
+            array_column($result->data['contentElements'], 'identifier'),
+            'a single-assignment string variable resolves, and a reassigned one is still declined',
         );
     }
 

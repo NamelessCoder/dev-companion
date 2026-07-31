@@ -2272,9 +2272,11 @@ final class Tools
                         $element['source'],
                     );
             }
-            $lines[] = 'The identifiers come from the addTcaSelectItem() calls below Configuration/TCA/Overrides/ '
-                . 'and the templates from tt_content.<identifier>.templateName in its TypoScript, so one a call '
-                . 'puts together at runtime, or takes from a constant, is in neither.';
+            $lines[] = 'The identifiers come from the addRecordType() and addTcaSelectItem() calls below '
+                . 'Configuration/TCA/Overrides/ and the templates from tt_content.<identifier>.templateName in its '
+                . 'TypoScript. A value the file assigns to a variable once is followed there; one a call puts '
+                . 'together at runtime, takes from a constant, or reads from a variable that file assigns more than '
+                . 'once, is in neither.';
         }
 
         if ($extension['siteSets'] !== []) {

@@ -184,6 +184,7 @@ final class Extension
         $tables = [];
         $elements = [];
         $tokens = @token_get_all($code);
+        $variables = self::stringVariables($tokens);
         $count = count($tokens);
         for ($index = 0; $index < $count; ++$index) {
             $token = $tokens[$index];
@@ -208,10 +209,10 @@ final class Extension
                 // Read positionally — a call that passes `table:` by name keeps
                 // the default here, the same way an identifier that is not a
                 // literal is left out rather than guessed.
-                $table = self::firstLiteral($arguments[4] ?? []) ?? 'tt_content';
+                $table = self::firstLiteral($arguments[4] ?? [], $variables) ?? 'tt_content';
                 $tables[] = $table;
                 if ($table === 'tt_content') {
-                    $identifier = self::selectItemValue($arguments[0] ?? []);
+                    $identifier = self::selectItemValue($arguments[0] ?? [], $variables);
                     if ($identifier !== null) {
                         $elements[] = $identifier;
                     }
@@ -224,7 +225,7 @@ final class Extension
             }
 
             $arguments = self::arguments($tokens, $index);
-            $table = self::firstLiteral($arguments[0] ?? []);
+            $table = self::firstLiteral($arguments[0] ?? [], $variables);
             if ($table === null) {
                 continue;
             }
@@ -237,9 +238,9 @@ final class Extension
             if (
                 $token[1] === 'addTcaSelectItem'
                 && $table === 'tt_content'
-                && self::firstLiteral($arguments[1] ?? []) === 'CType'
+                && self::firstLiteral($arguments[1] ?? [], $variables) === 'CType'
             ) {
-                $identifier = self::selectItemValue($arguments[2] ?? []);
+                $identifier = self::selectItemValue($arguments[2] ?? [], $variables);
                 if ($identifier !== null) {
                     $elements[] = $identifier;
                 }
@@ -256,22 +257,106 @@ final class Extension
     }
 
     /**
+     * The string variables a declaration file assigns to itself, once each.
+     *
+     * A registration file is read and never executed, so a value that arrives
+     * through a variable used to be a value this parser could not see. Most of
+     * them do not need executing: `$contentType = 'my_element';` at the top of a
+     * TCA override, used further down, is a plain literal that took a detour,
+     * and refusing it drops a whole content element from the answer.
+     *
+     * Only that shape is resolved — one assignment, one string literal, the
+     * whole statement. A variable assigned twice, or assigned anything else, is
+     * dropped rather than resolved to its first value: what it holds at the call
+     * depends on the order the file runs in, and that is the thing this parser
+     * deliberately does not know.
+     *
+     * @param array<int, array{0: int, 1: string, 2: int}|string> $tokens
+     * @return array<string, string>
+     */
+    private static function stringVariables(array $tokens): array
+    {
+        $values = [];
+        $ambiguous = [];
+        $count = count($tokens);
+        for ($index = 0; $index < $count; ++$index) {
+            $token = $tokens[$index];
+            if (!is_array($token) || $token[0] !== T_VARIABLE || $token[1] === '$GLOBALS') {
+                continue;
+            }
+
+            $name = $token[1];
+            $assignment = self::nextSignificant($tokens, $index);
+            if ($assignment === null || $tokens[$assignment] !== '=') {
+                continue;
+            }
+
+            $value = self::nextSignificant($tokens, $assignment);
+            $end = $value === null ? null : self::nextSignificant($tokens, $value);
+            $literal = $value !== null && is_array($tokens[$value]) && $tokens[$value][0] === T_CONSTANT_ENCAPSED_STRING
+                && $end !== null && $tokens[$end] === ';';
+            if (!$literal || isset($values[$name])) {
+                $ambiguous[$name] = true;
+                continue;
+            }
+
+            /** @var array{0: int, 1: string, 2: int} $token */
+            $token = $tokens[(int) $value];
+            $values[$name] = trim($token[1], "'\"");
+        }
+
+        return array_diff_key($values, $ambiguous);
+    }
+
+    /**
+     * The index of the next token that is not whitespace or a comment.
+     *
+     * @param array<int, array{0: int, 1: string, 2: int}|string> $tokens
+     */
+    private static function nextSignificant(array $tokens, int $index): ?int
+    {
+        for ($next = $index + 1; isset($tokens[$next]); ++$next) {
+            $token = $tokens[$next];
+            if (is_array($token) && in_array($token[0], [T_WHITESPACE, T_COMMENT, T_DOC_COMMENT], true)) {
+                continue;
+            }
+
+            return $next;
+        }
+
+        return null;
+    }
+
+    /**
      * The identifier the item array of an addTcaSelectItem() call carries.
      *
      * Its shape changed inside the covered range: keyed by `value`, and
      * positional before that, where the value is the second entry after the
      * label. Both are read, because an extension is written for the line it
-     * supports rather than for the newest one. An item whose value comes from
-     * a constant or a variable has no identifier that a file can be read for.
+     * supports rather than for the newest one. An item whose value comes from a
+     * constant, or from a variable this file assigns more than once, still has
+     * no identifier that reading can establish.
      *
      * @param array<int, array{0: int, 1: string, 2: int}|string> $item
+     * @param array<string, string> $variables
      */
-    private static function selectItemValue(array $item): ?string
+    private static function selectItemValue(array $item, array $variables = []): ?string
     {
         $literals = [];
         $isKey = [];
         foreach ($item as $position => $token) {
-            if (!is_array($token) || $token[0] !== T_CONSTANT_ENCAPSED_STRING) {
+            if (!is_array($token)) {
+                continue;
+            }
+            if ($token[0] === T_VARIABLE) {
+                if (!isset($variables[$token[1]])) {
+                    continue;
+                }
+                $isKey[] = self::followedByArrow($item, $position);
+                $literals[] = $variables[$token[1]];
+                continue;
+            }
+            if ($token[0] !== T_CONSTANT_ENCAPSED_STRING) {
                 continue;
             }
             $isKey[] = self::followedByArrow($item, $position);
@@ -352,12 +437,19 @@ final class Extension
 
     /**
      * @param array<int, array{0: int, 1: string, 2: int}|string> $tokens
+     * @param array<string, string> $variables
      */
-    private static function firstLiteral(array $tokens): ?string
+    private static function firstLiteral(array $tokens, array $variables = []): ?string
     {
         foreach ($tokens as $token) {
-            if (is_array($token) && $token[0] === T_CONSTANT_ENCAPSED_STRING) {
+            if (!is_array($token)) {
+                continue;
+            }
+            if ($token[0] === T_CONSTANT_ENCAPSED_STRING) {
                 return trim($token[1], "'\"");
+            }
+            if ($token[0] === T_VARIABLE && isset($variables[$token[1]])) {
+                return $variables[$token[1]];
             }
         }
 

@@ -29,6 +29,30 @@ final class HintsTest extends TestCase
     }
 
     #[Test]
+    public function aDistributedExtensionIsNotAnsweredWithTheProjectRepositoryLayout(): void
+    {
+        // The two hints describe different repositories, and the one that was
+        // written first describes the one with an installation in it. A review
+        // of a package quoted it and moved the browser suite out of the only
+        // repository there is.
+        $result = ArchitectureHints::find(
+            ['composer.json', 'Tests/', 'Build/'],
+            'reusable extension published for several TYPO3 versions: lock file, supported range, browser tests',
+            6,
+        );
+        $ids = array_column($result['matchedHints'], 'id');
+
+        self::assertContains('extension-repository-layout', $ids);
+        self::assertLessThan(
+            array_search('project-repository-layout', $ids, true) === false
+                ? PHP_INT_MAX
+                : (int) array_search('project-repository-layout', $ids, true),
+            (int) array_search('extension-repository-layout', $ids, true),
+            'the repository that is only the extension answers before the one that holds an installation',
+        );
+    }
+
+    #[Test]
     public function aSassPathReachesTheCssHints(): void
     {
         $result = ArchitectureHints::find(['Build/Sources/Sass/component/_badge.scss'], '', 6);

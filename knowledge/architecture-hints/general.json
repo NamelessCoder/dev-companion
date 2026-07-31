@@ -203,7 +203,7 @@
       "project setup"
     ],
     "hints": [
-      "A project has two units and the answers differ per unit. The extension is a package: it can be required, tested and shipped on its own, and everything that is only true of it lives inside it. The repository around it is what gets deployed — the installation's configuration, the build tooling, the suites that need a running site. The core is the reference for the first one and no reference at all for the second, because the core is not a project.",
+      "A project has two units and the answers differ per unit. The extension is a package: it can be required, tested and shipped on its own, and everything that is only true of it lives inside it. The repository around it is what gets deployed — the installation's configuration, the build tooling, the suites that need a running site. The core is the reference for the first one and no reference at all for the second, because the core is not a project. This is the layout of a repository that holds an installation; a repository that is only the extension has one unit and its own hint.",
       "Which unit something belongs to has a test: could the extension still be installed into a different project and be tested there? Everything that survives that question belongs in the extension. So the PHP tests do — a functional test builds its own instance per test class and exercises the extension — and their phpunit configurations with them, because a suite whose configuration lives one repository up cannot run anywhere else. How that harness is assembled is the project extension tests hint.",
       "The browser tests are the other half and belong to the repository. They run against the site as it is served, with its content, its site configuration and its built assets — that is a property of this installation, not of the extension. Merging the two costs the extension its independence and gains nothing: the two suites do not share a single fixture.",
       "Build/ at the project root is for what runs before or around the site rather than in it: the Playwright configuration and its specs, the static analysis configuration, a one-off script that seeds an installation. None of it is deployed, none of it belongs to a package, and keeping it in one directory is what keeps the root readable.",
@@ -215,6 +215,37 @@
       "DDEV is a local-development environment, not the production configuration source. Keep a DDEV-managed additional.php generated and ignored when it only supplies local database settings. When the repository owns one additional.php for every environment, read deployment values and secrets from environment variables and guard DDEV-only overrides with IS_DDEV_PROJECT; never commit production secrets. Disabling DDEV settings management is the other clean choice when the project-owned file handles the local environment too.",
       "var/ is TYPO3's writable state — caches, logs, sessions, and var/transient/ for what a temporary file is written to — and is not committed. A script that exists for one run therefore does not go there because it is ignored; it goes into Build/ with the rest of the tooling, or it is not kept at all.",
       "Whether the built frontend assets are committed is a decision, not a rule, and it has to be made once and written down: committed, a deploy needs no Node and the diff carries generated files; not committed, the build has to run somewhere on the way to production. Both are normal, and the .gitignore is where the answer is read off."
+    ],
+    "checks": []
+  },
+  {
+    "id": "extension-repository-layout",
+    "title": "How a Distributed Extension Repository Is Laid Out",
+    "appliesTo": [
+      "distributed extension",
+      "reusable extension",
+      "published extension",
+      "standalone extension",
+      "extension repository",
+      "extension package",
+      "composer.lock",
+      "lock file",
+      "supported versions",
+      "version matrix",
+      "vendored dependency",
+      "Contrib",
+      "classic mode",
+      "TER",
+      "extension release"
+    ],
+    "hints": [
+      "A distributed extension repository has one unit, and it is the package. The test setup, the build tooling, the CI matrix and the release script all exist to develop, verify and ship that one package, and none of it is deployed anywhere. The question that sorts a project repository into two units — could this be installed into a different project — has one answer here, and it is everything.",
+      "What the package supports is the constraint in its composer.json, and every judgment about compatibility is made against that. The version the development setup happens to run is one of the supported majors, not the range: an interface that is deprecated on the newest one is still the interface the code has to call while an older one is supported.",
+      "One branch usually serves every supported major. What exists only on the newer one is used behind a check, what the newer one deprecates stays until the older one is dropped, and the file the older one still reads stays with it. A recorded suppression for such a deprecation is the work list for the release that drops that major, not debt that release is waiting on.",
+      "The lock file is not committed. A package states the boundaries it supports and the installing project resolves inside them; a resolution committed here pins nothing where it matters and hides the range that has to hold. What stands in for it is a matrix that resolves per supported version — the lowest and the highest of each supported major — so that green means the declared range is green rather than one resolution of it.",
+      "An extension that is also installed outside Composer ships what it needs. Nothing installs its dependencies there, so a library it requires is vendored into the repository and loaded where the class is absent. That copy is a second source of the same dependency: it moves with the declared constraint, or it is a fork nobody bumps.",
+      "There is no installation around the extension, so the test setup builds one. The testing framework creates an instance per functional test class from the extensions that test names, and a package below Tests/ is a fixture such an instance loads rather than something the repository ships.",
+      "Browser tests belong to the extension here. There is no project around it to own the site they run against, and the development setup that serves that site is part of this repository too — so the configuration, the specs and the command that runs them sit with everything else the package owns."
     ],
     "checks": []
   },
@@ -535,7 +566,7 @@
       "A functional test with executeFrontendSubRequest() runs no JavaScript, applies no stylesheet and speaks no HTTP. It is a rendering test, and calling it a frontend test is how a suite ends up with no browser in it at all. The two are complements: the rendering test asserts what the template produced, the browser test asserts what a reader gets.",
       "Outside the core the layout transfers but the plumbing does not: the specs run against the site as it is served — a real URL, the development environment's own — rather than against a per-test-class instance, and the browsers belong on the host or in an image of their own. Installing them into the web container of a development environment is the step to skip.",
       "The suite is a project of its own in playwright.config.ts, with the login setup declared as a dependency so the authenticated state is written once and reused. Give the site's page types one spec each — that is the list that finds a page layout nobody rendered since the template changed.",
-      "Where that configuration and those specs live in a project is the repository's question rather than the extension's — the specs need a running site, so they belong to what is deployed. The project repository layout hint has it."
+      "Where that configuration and those specs live in a project is the repository's question rather than the extension's — the specs need a running site, so they belong to what is deployed. The project repository layout hint has it. In a repository that is only the extension there is no such split, and the suite belongs to the package like everything else there."
     ],
     "checks": [
       "CI=true ./Build/Scripts/runTests.sh -s e2e"

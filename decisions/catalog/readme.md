@@ -1,6 +1,6 @@
 # Catalog — the curated indexes and where their contract comes from
 
-The component index, the worked examples and what `bin/verify-catalog` derives
+The component index, the worked examples and what `bin/cli catalog check` derives
 from the covered checkouts. A curated index rots silently, so each entry says
 what is machine-checked and what is a judgement.
 

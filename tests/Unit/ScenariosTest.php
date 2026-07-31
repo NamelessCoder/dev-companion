@@ -184,7 +184,7 @@ final class ScenariosTest extends TestCase
     #[Test]
     public function aRunWhoseSessionHasNotHappenedYetIsOpenRatherThanBroken(): void
     {
-        // What `bin/scenarios record` writes. A checker that fails on it stops
+        // What `bin/cli scenarios record` writes. A checker that fails on it stops
         // the repository for as long as a run is open — which is the one time
         // it has to stay usable.
         $skeleton = Scenarios::skeleton('REVIEW-01', 'testing', 'phpunit', '2026-07-30');

@@ -31,8 +31,8 @@ perfectly. A gap is an answer that ought to exist and does not.
 ## Running a forward review
 
 1. Start the MCP client in the environment the review names.
-2. `bin/scenarios record <id> <client>` writes the empty run, and
-   `bin/scenarios show <id>` prints the prompt and the numbered criteria.
+2. `bin/cli scenarios record <id> <client>` writes the empty run, and
+   `bin/cli scenarios show <id>` prints the prompt and the numbered criteria.
 3. Paste the prompt verbatim. Add nothing: no tool names, no hints that a
    TYPO3 knowledge server is attached, no correction when the agent goes the
    wrong way. What the agent does with an under-specified request is part of
@@ -41,7 +41,7 @@ perfectly. A gap is an answer that ought to exist and does not.
    subsystem or finding.
 5. Grade against **What has to come out of it** and **How it fails**, and write
    the judgment and its evidence into the recorded run, together with the skills
-   that activated and the tools the session actually called. `bin/scenarios
+   that activated and the tools the session actually called. `bin/cli scenarios
    check` — and `composer test` — then hold that run to this file.
 
 ## What a forward run produces

@@ -25,7 +25,7 @@ with its own release cycle that `.checkouts/` does not contain.
   hardcoded `clear` flag and the document-root-relative extension paths — are
   identical in all four.
 - **Wrong if:** a testing-framework release changes one of them inside a major.
-  Nothing here would notice: `bin/verify-catalog` re-reads the core checkouts,
+  Nothing here would notice: `bin/cli catalog check` re-reads the core checkouts,
   and this package is not one of them. The cheap fix is to teach that script the
   tag-to-major pairing; the honest alternative is to bind the statements to the
   package version instead of the TYPO3 one, which the hint format has no field

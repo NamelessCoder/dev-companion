@@ -31,8 +31,8 @@ decides its path and two entries cannot quietly share a number.
 | [task-skills/](task-skills/readme.md) | What an installed workflow owes the task |
 
 Each group's `readme.md` says what that group is about, and the listing at the
-foot of it is generated from the files below it by `bin/decisions index`, as is
-the listing at the foot of this file. `bin/decisions check` holds the files to
+foot of it is generated from the files below it by `bin/cli decisions index`, as is
+the listing at the foot of this file. `bin/cli decisions check` holds the files to
 the shape described below, and `composer test` runs the same check through
 `DecisionsTest`.
 

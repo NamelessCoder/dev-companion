@@ -4,12 +4,8 @@
 
 ```
 bin/typo3-cms-mcp  # stdio entrypoint (the client launches it as a subprocess)
-bin/core-checkouts # one TYPO3 core checkout per covered version, below .checkouts/ (gitignored)
-bin/verify-catalog # what a core update invalidated in knowledge/catalog/: paths, the versions each entry holds on, which system extensions are shipped, and where the worked examples still are
-bin/hints          # what cannot be found in the hint corpus: `probe` for one query, `coverage` for the hints no title and no scenario prompt reaches
-bin/requirements   # what must hold: `list` the entries, `check` the files against the format, `index` the group listings
-bin/decisions      # what was decided and on what evidence: `list` the entries newest first, `check` the files against the format, `index` the group listings
-bin/scenarios      # forward runs: `show` what to paste, `record` the empty run, `check` every recorded one against its review; `contract` prints a targeted case
+bin/cli            # everything this repository is kept in order by; run it with nothing for the list
+src/Cli.php        # what `bin/cli` supports, and src/Cli/ one class per subject
 src/               # PHP classes (knowledge loading, tools, SDK wiring)
 src/ServerFactory.php  # builds the mcp/sdk server from the tool definitions
 src/Mcp/           # SDK handlers: tool dispatch and typo3://core resources
@@ -287,8 +283,8 @@ version says so; see the audience requirements in `requirements/audience/`.
 - Verify facts against the core checkouts below `.checkouts/` before writing
   them into `knowledge/`, and bind what does not hold on all of them. The
   checkouts are this repository's own — one worktree per covered version,
-  created and updated by `bin/core-checkouts`, gitignored and re-fetchable at
-  any time. Verifying against whatever checkout happens to be on the machine
+  created and updated by `bin/cli checkouts update`, gitignored and re-fetchable
+  at any time. Verifying against whatever checkout happens to be on the machine
   makes the evidence unreproducible for the next person.
 
 ### Which versions an answer holds for
@@ -354,6 +350,6 @@ runtime, and the failure is silent. The rules below follow from it.
   entry is markup taken from one revision, so `since`/`until` there is the whole
   entry rather than one sentence, and `targetVersion` withholds it instead of
   qualifying it — a class that does not exist fails in a browser, silently.
-  The binding is derived, not judged: `bin/verify-catalog` with no argument
-  re-reads every covered checkout and reports each entry whose recorded range no
-  longer matches, so a core update invalidates it loudly.
+  The binding is derived, not judged: `bin/cli catalog check` re-reads every
+  covered checkout and reports each entry whose recorded range no longer
+  matches, so a core update invalidates it loudly.

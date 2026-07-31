@@ -33,7 +33,7 @@ hint that names the symptom outright.
 (eight queries that reached nothing before),
 `HintsTest::aQueryTheCorpusHasNoAnswerForStillMisses`,
 `HintsTest::theCuratedVocabularyStillDecidesWhereItWasWritten` — and those
-eight queries are a tripwire rather than a measurement, so `bin/hints coverage`
+eight queries are a tripwire rather than a measurement, so `bin/cli hints coverage`
 is what says how much of the corpus is reachable at all: which hints their own
 title does not reach, which no scenario prompt reaches, and which prompts reach
 nothing.

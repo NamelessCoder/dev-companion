@@ -13,7 +13,7 @@ gap a semantic match would close.**
 The live-documentation source created the point at which the remaining search
 and inspection gaps could be measured instead of anticipated.
 
-- **Evidence:** `bin/hints coverage` finds every one of the 61 hints from its
+- **Evidence:** `bin/cli hints coverage` finds every one of the 61 hints from its
   own title. Seven of 25 scenario prompts reach no architecture hint:
   `CORE-06`, `META-01`, `META-04`, `META-05`, `EXT-01`, `EXT-05`, `SITE-03`.
   They are respectively version spread, orientation, structured-only output,

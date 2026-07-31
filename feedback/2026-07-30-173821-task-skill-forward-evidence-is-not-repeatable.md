@@ -8,7 +8,7 @@ status: open
 
 ## Observation
 
-**Trimmed 2026-08-01.** The runner half is done: `bin/scenarios` and
+**Trimmed 2026-08-01.** The runner half is done: `bin/cli scenarios` and
 `scenarios/runs/` retain the prompt, environment, criteria digest, activated
 skills, tool trace and one judgment with evidence per criterion, and the verdict
 is derived rather than written down. Four recorded `REVIEW-01` runs took it from

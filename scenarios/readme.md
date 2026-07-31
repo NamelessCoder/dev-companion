@@ -56,9 +56,9 @@ prompt that names somebody's project is a prompt only that person can run.
 
 ## Running one
 
-- A forward review: [forward/readme.md](forward/readme.md). `bin/scenarios show
+- A forward review: [forward/readme.md](forward/readme.md). `bin/cli scenarios show
   <id>` prints what to paste, `record` writes the empty run, `check` holds every
   recorded run to its review.
-- A contract case: [contracts/readme.md](contracts/readme.md). `bin/scenarios
+- A contract case: [contracts/readme.md](contracts/readme.md). `bin/cli scenarios
   contract <id>` prints it for inspection; it cannot be recorded as a forward
   run.

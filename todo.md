@@ -161,7 +161,7 @@ there is no major in front of it, and no other extension checkout on this
 machine is behind either. What it needs is one that is — an extension still
 declaring `^12.4` or `^13.4` alone, cloned for the purpose if none turns up.
 Name it above before starting, run `REVIEW-02`'s prompt there as a recorded run,
-reduce the note to what that run demonstrates, and read `bin/scenarios contract
+reduce the note to what that run demonstrates, and read `bin/cli scenarios contract
 EXT-01` for the routing that has to survive. Then add a thin
 `typo3-extension-upgrade` skill that orders
 installed changelog and scanner/deprecation evidence, official versioned

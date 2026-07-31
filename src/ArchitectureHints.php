@@ -320,7 +320,7 @@ final class ArchitectureHints
             }
 
             // How it got here travels with it. Nothing in an answer reads it —
-            // `bin/hints` does, and a matcher that cannot say why it returned
+            // `bin/cli hints` does, and a matcher that cannot say why it returned
             // something is one nobody can tune without guessing.
             $hint['matchedOn'] = ['keywords' => $keywords, 'score' => $score];
             $scored[] = ['hint' => $hint, 'keywords' => $keywords, 'score' => $score];

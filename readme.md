@@ -253,6 +253,20 @@ printf '%s\n' \
   | php bin/typo3-cms-mcp
 ```
 
+### Keeping the repository in order
+
+Everything this repository is kept in order by is one command — the requirement
+and decision files, the forward-run scenarios, the hint corpus, the bundled
+catalogs, and the core checkouts below. Run it with nothing and it says what it
+supports:
+
+```bash
+bin/cli          # every subject, and every command it carries
+bin/cli check    # requirements, decisions and scenarios against their formats
+```
+
+`bin/typo3-cms-mcp` is the server itself and carries none of this.
+
 ### Core checkouts
 
 The knowledge is bound to TYPO3 versions, so writing it means checking a
@@ -261,8 +275,8 @@ declares the lines that are covered, and one command turns them into checkouts
 this repository owns:
 
 ```bash
-bin/core-checkouts            # create what is missing, update what is there
-bin/core-checkouts --status   # what exists, at which revision
+bin/cli checkouts update   # create what is missing, update what is there
+bin/cli checkouts status   # what exists, at which revision
 ```
 
 They land below `.checkouts/`, which is gitignored — one treeless clone plus a

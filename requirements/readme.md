@@ -40,9 +40,9 @@ quietly share a number.
 | [knowledge/](knowledge/readme.md) | What the knowledge base has to cover |
 
 Each group's `readme.md` says what that group is about, and the listing at the
-foot of it is generated from the files below it by `bin/requirements index` —
+foot of it is generated from the files below it by `bin/cli requirements index` —
 a listing kept by hand is a second copy of the directory that only says what
-was true once. `bin/requirements check` holds the files to the shape described
+was true once. `bin/cli requirements check` holds the files to the shape described
 below, and `composer test` runs the same check through `RequirementsTest`.
 
 An id is never reused: a withdrawn requirement takes its number with it, so a

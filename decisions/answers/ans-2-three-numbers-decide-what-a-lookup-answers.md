@@ -43,7 +43,7 @@ out of.
 - **Wrong if:** hints get longer on average — the dissolution of the
   architecture prose into this corpus is queued and moves in that direction —
   or a query that should hit goes missing while its hint is plainly about it.
-  Both show up in `bin/hints coverage` once that exists; until then the eight
+  Both show up in `bin/cli hints coverage` once that exists; until then the eight
   queries in `HintsTest` are the only tripwire, and they are a sample.
 - **Since then:** the stopword list is English, so German filler words behave
   like unknown technical terms and sink the whole query. «wie lege ich ein neues

@@ -11,7 +11,7 @@ present, the installed files decide the component contract, and the curated
 index stays the searchable subset and the complete fallback.**
 
 The component catalog was deliberately pinned to one core revision and guarded
-by `bin/verify-catalog`. In the first `EXT-04` run that safeguard was not enough:
+by `bin/cli catalog check`. In the first `EXT-04` run that safeguard was not enough:
 the installation was TYPO3 14.3.5, the snapshot described main, and the session
 made about twenty-five shell reads into the installed core before it trusted the
 markup and classes it had already been given.

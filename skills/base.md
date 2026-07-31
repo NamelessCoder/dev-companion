@@ -53,6 +53,16 @@ cannot find one, the finding says that it could not be established rather than
 that none exists. This is the other direction of the rule above, and skipping it
 turns a review into a list of everything the author did on purpose.
 
+## What a finding rests on is part of the finding
+
+Three things carry one: a file that was read, at its path and its line; a
+command that was run, with what it printed; a mechanism traced into an installed
+package. Say which of the three it is. Running none of the project's own
+commands is a legitimate way to work — the configuration that would make a check
+fail tells you more than one failing run does — but leaving that unsaid gives a
+finding read out of a CI file the weight of one with a verified line, and the
+reader has no way to separate them again.
+
 ## What this server does not know
 
 It does not read your working tree. Which files changed, which branch you are

@@ -20,6 +20,12 @@ documented purpose makes it a trade-off to name with its cost rather than a
 finding. Where no purpose can be established, the finding says that instead of
 concluding there is none.
 
+It also names the three things a finding can rest on — a file that was read at
+its path and line, a command that was run, or a mechanism traced into an
+installed package — and requires the finding to say which of them it is.
+Reading rather than running is a legitimate way to work; not saying so is what
+gives a derived finding the weight of an established one.
+
 **From:** three `REVIEW-01` runs (2026-07-31) and the divergence they exposed
 — the conformance skill was repaired while the content-element, documentation
 and testing skills still ordered reading the checkout ahead of the conventions
@@ -27,7 +33,9 @@ lookup, which is the arrangement those runs measured. Extended after
 `REVIEW-02` (2026-07-31) reported five of six priorities against mechanisms the
 package ships deliberately — a compile step a setting drives, a vendored copy
 that makes a non-Composer install work, a font download that keeps the file on
-the site's own host.
+the site's own host. Extended again after three recorded `REVIEW-02` runs in two
+repositories (2026-07-31) executed no project-owned command of the ten and five
+they were offered, and said so nowhere in their answers.
 
 **Held by:** `SkillTest::theBaseFixesTheOrderEveryTaskStartsIn`,
 `SkillTest::everySkillStartsFromTheBaseBeforeItsOwnEvidence`,

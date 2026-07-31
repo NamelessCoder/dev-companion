@@ -86,20 +86,17 @@ that version, every requirement fails at once and not one of them says so.
 
 ---
 
-## Say in `skills/base.md` what a finding rests on
+## Decide whether a review-only task runs the project's read-only checks
 
 **Serves:** feedback/2026-07-31-124500-a-review-reads-the-checks-it-never-runs.md
 
-It sits this high because everything below it produces forward runs, and this
-decides what those runs are worth as evidence. Three recorded `REVIEW-02` runs
-in two repositories executed no project-owned command at all and said nothing
-about it, so a finding read out of a CI file carries the same confidence as one
-with a verified path and line. Add the distinction to `skills/base.md`, which
-already fixes the order a task starts in: a finding rests on a file that was
-read, a command that was run, or a mechanism traced into an installed package,
-and which of the three belongs in the finding. Leave the second half of the note
-alone for now — whether a review-only task should run the read-only checks is a
-decision, not a wording change.
+The other half of that note, and a decision rather than a wording change:
+`cgl:ci` and `phplint` change nothing and would have turned two findings of the
+syntax run from derived into established, while a command that fails still tells
+you less than the configuration that would make it fail. Whichever way it goes,
+it needs the property `typo3_project_scope` does not report today — which of the
+commands it returns write anything — because "run the read-only ones" is not an
+instruction an agent can follow against a list that does not say.
 
 ## Find an extension checkout with a major in front of it, and run `REVIEW-02` there
 

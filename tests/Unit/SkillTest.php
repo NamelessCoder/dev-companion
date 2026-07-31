@@ -95,6 +95,21 @@ final class SkillTest extends TestCase
             '/trade-off to name with its cost/',
             $base,
         );
+        // And what the answer owes about its own evidence. Three recorded
+        // REVIEW-02 runs in two repositories ran not one project-owned command
+        // — ten were offered in the first checkout, five in the second — and
+        // said nothing about it, so findings read out of a CI file stood beside
+        // findings with a verified path and line at the same confidence.
+        self::assertStringContainsString('What a finding rests on is part of the finding', $base);
+        self::assertMatchesRegularExpression(
+            '/a file that was read, at its path and its line; a\s+command that was run, with what it printed; a mechanism traced into an\s+installed\s+package/',
+            $base,
+        );
+        self::assertMatchesRegularExpression(
+            '/Running none of the project\'s own\s+commands is a legitimate way to work/',
+            $base,
+        );
+
         // One hop, like every other reference: the base is read, not followed
         // onward.
         self::assertStringNotContainsString('(references/', $base);

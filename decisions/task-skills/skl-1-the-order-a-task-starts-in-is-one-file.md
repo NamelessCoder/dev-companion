@@ -52,3 +52,10 @@ the checkout sat relative to everything else.
   was opened. So the order survives a checkout of another kind — by the same
   skill. The four whose order was corrected without a forward run are still
   unproven, and the base is still short.
+- **Since then:** the base grew, on 2026-07-31, by one section on what a finding
+  rests on. The three `REVIEW-02` runs that tested this decision are the same
+  ones that showed the base saying nothing about the evidence behind an answer,
+  and the section costs eight lines against a whole class of findings that read
+  as established when they were derived. It is the first addition since the file
+  was written, and the budget it spends is real: the next one is measured
+  against a base a fifth longer than the one this decision called short.

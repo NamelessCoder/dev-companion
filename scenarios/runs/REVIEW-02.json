@@ -1,51 +1,65 @@
 {
     "scenario": "REVIEW-02",
     "date": "2026-07-31",
-    "server": "82ee892",
+    "server": "f9442ac",
     "client": "claude-code",
     "environment": "E-EXT",
     "criteria": "dbedb33852e2",
-    "skills": [],
-    "toolTrace": [],
+    "skills": [
+        "typo3-extension-conformance"
+    ],
+    "toolTrace": [
+        "typo3_project_scope",
+        "typo3_extension_scope",
+        "typo3_task_guide",
+        "typo3_architecture_lookup",
+        "typo3_architecture_lookup",
+        "typo3_architecture_lookup",
+        "typo3_architecture_lookup",
+        "typo3_architecture_lookup",
+        "typo3_changelog_lookup",
+        "typo3_changelog_lookup",
+        "typo3_documentation_lookup"
+    ],
     "outcomes": [
         {
-            "met": null,
-            "evidence": ""
+            "met": true,
+            "evidence": "`typo3_project_scope` at 00:55:52Z, before a single project file was opened, returned all four facts at once: kind `composer-project`, the root extension `bootstrap_package` as `project` beside `container` (third-party) and `demo_package`, `coreConstraint` \"^13.4 || ^14.3\", `phpConstraint` \">=8.2.0\", and ten repository-owned commands read from composer.json. `typo3_extension_scope` narrowed to bootstrap_package six seconds later. The declared range is what the findings are then measured against rather than the installed 14.3.0: Priority 6 reports the README badges for 13, 12 and 11 as wrong because support is ^13.4 || ^14.3, and Priority 2 reports the CI matrix gating unit and functional tests on PHP 8.5 while the declared floor is >=8.2.0. Package versus repository is answered where it decides a handoff — the Playwright suite \"belongs to the repository, not the extension package\". What the answer never names is one of the ten commands: no project-owned check was executed, and the test and static-quality findings rest on reading configuration and counting files."
         },
         {
-            "met": null,
-            "evidence": ""
+            "met": true,
+            "evidence": "The surface list written at 00:56:22Z, before the first file was read, is explicitly \"narrowed to what this checkout can have\" and carries counts taken from the scope answers — 24 content elements, 6 own TCA tables plus 7 overrides, 27 upgrade wizards, 11 site sets, 18 ViewHelpers, 9 DataProcessors. Every finding then carries a path and mostly a line: Build/phpstan-baseline-14.neon and its 73 entries, ScssParser.php:31 for the require_once of the vendored copy and :164 for the blanket E_DEPRECATED handler, GoogleFontService.php:60, :86 and :102-103, Build/package.json:46-49, ext_localconf.php:13-14, README.rst:6-16. Five were re-checked against the checkout while judging this run and all five hold exactly as reported: `audit` and `fix` are in Build/package.json's dependencies, the contentRenderingTemplates registration uses the key `bootstrappackage` for a `Configuration/TypoScript/` that does not exist, the README carries badges for 13, 12 and 11 and none for 14, the baseline holds exactly 73 `message:` entries under `reportUnmatchedIgnoredErrors: false`, and .crowdin.yml syncs FormGridColumn.xlf while the directory holds Backend.xlf, ExtConfTemplate.xlf and locallang.xlf."
         },
         {
-            "met": null,
-            "evidence": ""
+            "met": true,
+            "evidence": "All six are present and each is anchored in something the repository shows. Compatibility: 73 suppressed errors, every one of them a deprecation that says \"will be removed in TYPO3 v15\", with the replacement namespace verified to exist in the installed core, plus ext_emconf.php still being read on v14 because composer.json declares neither `extra.typo3/cms.version` nor `providesPackages`. Behavioral correctness: the dead contentRenderingTemplates registration, the `set_error_handler(fn () => true, E_DEPRECATED)` around compileString(), and the unbounded HTTP transfer read out of the installed core's DefaultConfiguration.php. Test evidence: 26 files and 57 methods, 20 files of them on upgrade wizards, no browser or accessibility suite for a product that ships a frontend theme. Documentation: README badges, Settings.cfg pinned to the 11.5 manuals, no guides.xml, and Build/render-docs.sh invoking docker-compose against a retired image. Static quality: both baselines included unconditionally with unmatched ignores not reported. Release: composer.lock gitignored while minimum-stability is dev and dev-master/dev-main are permitted, and ext_emconf's 16.0.0 as a second version source beside the branch alias. Nothing is raised that the checkout does not contain — site sets come back reported as fully migrated."
         },
         {
-            "met": null,
-            "evidence": ""
+            "met": true,
+            "evidence": "Six priorities and a \"Lower — accumulated drift\" tail, and the first one is argued rather than asserted: \"pure mechanical debt with confirmed replacements already on disk, and it is currently invisible in every green build\", with the consequence named — \"the v15 port is a 73-site sweep discovered at porting time instead of a shrinking counter\". Uncertainty is stated where it is short: the font-URL fetch \"needs a compromised or MITM'd upstream response to matter, so it is not directly exploitable — but an extension allowlist on the written filename is a cheap close\", and ConstantViewHelper is admin-controlled and \"low severity\". Two sections exist for what is not a finding: \"Verified clean\", opened with \"because these are the ones a review usually flags wrongly\", and \"Unassessed\", opened with \"Not clean — not looked at\" and closing on what this checkout cannot answer at all: \"The shipped markup's actual accessibility is unassessed and, given no browser suite exists, unassessable from this checkout.\""
         },
         {
-            "met": null,
-            "evidence": ""
+            "met": true,
+            "evidence": "The Handoff section routes by priority and by name: Priority 1 and the addPiFlexFormValue migration to **typo3-content-element-development** \"with conformance re-checking the baseline shrinks\", Priority 2 to **typo3-extension-testing** with the order inside it (functional ViewHelper and content-element rendering first, then a Playwright + axe project), Priority 6 to **typo3-extension-documentation**, and \"Priorities 3–5 and the drift items stay with conformance\". It closes on \"No files were changed\", and the transcript agrees: of 54 tool calls there is not one Write, Edit or NotebookEdit — 23 Bash, 17 Read, 11 server calls, 2 ToolSearch, 1 Skill. `git status` in the checkout afterwards shows only the ` M .gitignore` and `?? .mcp.json` the setup itself left."
         }
     ],
     "failures": [
         {
-            "avoided": null,
-            "evidence": ""
+            "avoided": true,
+            "evidence": "The surface list was narrowed before the reading started, and the answer keeps \"Verified clean\" and \"Unassessed\" apart from the findings. Site sets come back as migrated — \"No constants.typoscript anywhere; 7 sets carry settings.definitions.yaml, and the flat dotted keys match exactly what the PHP reads via getFlatSettings()\" — rather than as a missing file. Nothing installation-level is demanded of a distributed extension: no site configuration, no deployment, no environment layer. The documentation findings are about the configuration this extension does ship, Settings.cfg and render-docs.sh, rather than about a Documentation/ directory being absent, which it is not."
         },
         {
-            "avoided": null,
-            "evidence": ""
+            "avoided": true,
+            "evidence": "Compatibility is measured against the declaration throughout. The one lead that would have been a headline finding was checked instead of assumed: two `typo3_changelog_lookup` calls, then a read of the installed core's Breaking-108055-RemovedPageRendererRelatedHooksAndMethods.rst, then \"render-preProcess survives in v14 — only the compress/excludeFromConcatenation keys are gone, and neither hook reads them. Not a finding.\" The installed 14.3.0 is never taken for the supported range: the README is wrong because support is ^13.4 || ^14.3, and PHP 8.2 is reported as linted and analyzed but never executed."
         },
         {
-            "avoided": null,
-            "evidence": ""
+            "avoided": true,
+            "evidence": "A grep of the answer for `runTests.sh`, `Build/Scripts` and Gerrit returns nothing. Every command and configuration named is this repository's own — Build/phpstan.neon and its two baselines, Build/package.json, Build/render-docs.sh, .github/workflows/ci.yml — and the CI finding is precisely that this project's own matrix does not execute what this project's own composer.json declares. No other extension's setup is held up as the shape to copy."
         },
         {
-            "avoided": null,
-            "evidence": ""
+            "avoided": true,
+            "evidence": "The lead that did not survive verification was retracted in the transcript rather than shipped as a finding. Recommendations are separated from defects by section and by wording: the filename allowlist is \"a cheap close\", the `#[AsEventListener]` attribute is named as the v13+ convention rather than as a violation, and the escapeOutput survey concludes that most of the eight are justified. No file was changed and no tool that could change one was called."
         }
     ],
-    "notes": "Setup, written before the session because the run outlives the todo item that says it. E-EXT is played by /home/benji/projects/bootstrap_package: a standalone extension repository, TYPO3 14.3.0 below .build/vendor, DDEV project bootstrap-package, ^13.4 || ^14.3 and complete static quality infrastructure.\n\nThis server is not a Composer dependency of that checkout. The tools therefore run live out of this repository — `php /home/benji/projects/typo3-cms-mcp/bin/typo3-cms-mcp`, the absolute entrypoint the installer falls back to when nothing sits at the project's bin directory — so `server` above is exact for them. The skills are a copy, published into .claude/skills by `install --agent=claude` run from the project root, and nothing reports it when that copy is older than the server. Republish immediately before the session and the two agree.\n\nWhat the setup left in the working tree, so a finding about it can be told from a defect of the checkout: an untracked .mcp.json, a .gitignore carrying the generated ignore block, and .claude/ plus typo3-cms-mcp.json ignored by it. A staged composer.json change and the .mcp.json predate this work and belong to another session."
+    "notes": "The first run of REVIEW-02, and the first forward run outside E-SITE. Session c6fa4216-3d4a-4f39-b904-ffdc5eceedcd, 2026-07-31 02:55-03:02 CEST, seven minutes, one prompt and no steering.\n\nSetup, because the run outlives the todo item that holds it. E-EXT is played by /home/benji/projects/bootstrap_package at 1f4e6b3d, pulled fifteen minutes before the run: a standalone extension repository, TYPO3 14.3.0 below .build/vendor, DDEV project bootstrap-package running on PHP 8.5, ^13.4 || ^14.3, and static quality infrastructure that is complete. This server is not a Composer dependency there. The tools ran live out of this repository through the absolute entrypoint the installer falls back to when nothing sits at the project's declared bin directory, so `server` is exact for them; the skills are a copy, published at 02:49 from the same commit, and nothing reports it when that copy is older than the server. `record` had written 82ee892 into this file; the two commits between that and f9442ac touched todo.md and this run only.\n\nWhat the setup itself left in the working tree, so a finding about it could be told from a defect of the checkout: an untracked .mcp.json and a .gitignore carrying the generated ignore block. Neither was reported, and neither was touched.\n\nThe order held in an environment it had never been tried in. The skill activated at 00:55:40Z, references/base.md and references/checklist.md were read three seconds later, the three scope calls came next, and the six-surface list was written out at 00:56:22Z — before the first project file was opened at 00:56:44Z. Five `typo3_architecture_lookup` calls, one per surface in scope, sit between the two. Eleven server calls across six tools, against fifteen across eight in the fourth REVIEW-01 run.\n\nTwo things are worth carrying forward rather than celebrating. No project-owned command was ever executed — not `composer test:php:unit`, not `composer phpstan` — so every test and static-quality finding rests on reading configuration and counting files, and the criteria admit that (\"a concrete path, behavior, or failed project-owned check\"). And the console was reachable for the first time in a forward run, DDEV running and answering, yet no question arose that needed it: no label, module or Fluid namespace lookup was called. What the installation alone can answer is therefore still untested outside E-SITE."
 }

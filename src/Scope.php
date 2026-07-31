@@ -189,6 +189,17 @@ final class Scope
     }
 
     /**
+     * How much of the statement below a client can be relied on to keep.
+     *
+     * Measured rather than agreed: the client the recorded runs use truncates
+     * at 2048 characters and says so only in its own debug output, so a server
+     * that writes more loses the end of what it wrote to nobody's error. The
+     * budget covers everything assembled — the profile prefix and the write
+     * sentence included — because the client counts what it receives.
+     */
+    public const INSTRUCTIONS_BUDGET = 2048;
+
+    /**
      * The statement handed to clients at initialize time, so the boundary is
      * known before the first tool call rather than after a fruitless one.
      *
@@ -196,19 +207,23 @@ final class Scope
      * server can write at all depends on the checkout it runs from — and a
      * client that is told "read-only" must not then be offered a tool that
      * creates a file.
+     *
+     * Everything assembled here has to fit what a client keeps: a sentence past
+     * the limit is a sentence nobody reads, and neither side says so. R-ANS-13
+     * holds the whole of it, prefix and suffix included, to that budget.
      */
     public static function instructions(): string
     {
         $instructions = self::read()['instructions'];
         if (Profile::omitted() !== []) {
-            // In front of it, not behind: the stored sentence opens with the
-            // core contribution catalog, which is the half this client is not
-            // being offered, and a client told what the server is and only then
-            // that half of it is missing has been told and then corrected.
+            // In front of it, not behind: what a client is not being offered
+            // belongs before the routing it is offered, and a client told where
+            // to start and only then that half the server is missing has been
+            // told and then corrected.
             $instructions = sprintf(
-                'You are offered the "%s" profile of this server: the core contribution surface — the review rules, '
-                . 'the Gerrit workflow, the runTests.sh suites — is not in your tool list, because a project or '
-                . 'extension repository has none of it, and %s=%s offers it anyway. Otherwise: %s',
+                'You are offered the "%s" profile: the core contribution surface is not in your tool list, '
+                . 'because a project or extension repository has none of it; %s=%s offers it anyway. '
+                . 'Otherwise: %s',
                 Profile::active(),
                 Profile::VARIABLE,
                 Profile::ALL,

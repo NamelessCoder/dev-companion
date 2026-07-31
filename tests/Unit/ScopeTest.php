@@ -9,6 +9,7 @@ use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Typo3CmsMcp\ArchitectureHints;
 use Typo3CmsMcp\Instance;
+use Typo3CmsMcp\Profile;
 use Typo3CmsMcp\Scope;
 use Typo3CmsMcp\Tests\Support\TemporaryInstallation;
 use Typo3CmsMcp\Tools;
@@ -22,6 +23,7 @@ final class ScopeTest extends TestCase
     public function forgetTheInstance(): void
     {
         Instance::discoverFrom(null);
+        putenv(Profile::VARIABLE);
     }
 
     #[Test]
@@ -99,6 +101,25 @@ final class ScopeTest extends TestCase
 
         self::assertNotSame('', $instructions);
         self::assertStringContainsString('checkout', $instructions);
+    }
+
+    #[Test]
+    public function theInstructionsFitWhatAClientKeeps(): void
+    {
+        // The sentence below this one is why the length is held at all: both
+        // release runs of 2026-07-31 were handed instructions cut from 3662 to
+        // 2048 characters, and the half that fell off ended with "in English".
+        // Every profile is measured, because the one that prefixes what it is
+        // not being offered is the longest.
+        foreach ([Profile::ALL, Profile::PROJECT] as $profile) {
+            putenv(Profile::VARIABLE . '=' . $profile);
+
+            self::assertLessThanOrEqual(
+                Scope::INSTRUCTIONS_BUDGET,
+                mb_strlen(Scope::instructions()),
+                sprintf('instructions of the "%s" profile', $profile),
+            );
+        }
     }
 
     #[Test]

@@ -22,3 +22,4 @@ when it is added.
 | [`R-ANS-10`](ans-10-a-component-answers-the-query-that-names-it.md) | A component answers the query that names it | held |
 | [`R-ANS-11`](ans-11-a-content-element-is-answered-by-what-it-owns.md) | A content element is answered by what it owns | held |
 | [`R-ANS-12`](ans-12-an-answer-that-cannot-read-something-says-so.md) | An answer that cannot read something says so | held |
+| [`R-ANS-13`](ans-13-the-instructions-fit-what-a-client-keeps.md) | The instructions fit what a client keeps | held |

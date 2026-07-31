@@ -14,7 +14,9 @@ technical loanwords — and otherwise comes back empty. Supporting a second one
 would mean translating the corpus, not the query; the agent translates the
 subject before calling and the answer back afterwards. Because that instruction
 is the entire mitigation for a limit nothing else covers, it is stated where an
-agent actually reads it: the `instructions` sent at initialize,
+agent actually reads it — which is a length as well as a place, and
+[`R-ANS-13`](../answers/ans-13-the-instructions-fit-what-a-client-keeps.md)
+holds that half: the `instructions` sent at initialize,
 `typo3_server_scope` for a client that does not surface them, and the free-text
 parameters of the tools that match against prose. This binds what may enter
 `knowledge/` too — a statement in another language is one nothing can find.

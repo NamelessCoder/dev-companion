@@ -11,3 +11,4 @@ one is added.
 | --- | --- | --- | --- |
 | 2026-07-31 | [`D-EVI-1`](evi-1-forward-evidence-comes-from-a-review.md) | Forward evidence comes from a review, not from a prompt that knows the answer | standing |
 | 2026-07-31 | [`D-EVI-2`](evi-2-a-skill-crossing-is-read-rather-than-run.md) | A skill crossing is read rather than run | standing |
+| 2026-07-31 | [`D-EVI-3`](evi-3-a-review-runs-the-checks-that-cannot-change-the-code.md) | A review runs the checks that cannot change the code | standing |

@@ -86,18 +86,6 @@ that version, every requirement fails at once and not one of them says so.
 
 ---
 
-## Decide whether a review-only task runs the project's read-only checks
-
-**Serves:** feedback/2026-07-31-124500-a-review-reads-the-checks-it-never-runs.md
-
-The other half of that note, and a decision rather than a wording change:
-`cgl:ci` and `phplint` change nothing and would have turned two findings of the
-syntax run from derived into established, while a command that fails still tells
-you less than the configuration that would make it fail. Whichever way it goes,
-it needs the property `typo3_project_scope` does not report today — which of the
-commands it returns write anything — because "run the read-only ones" is not an
-instruction an agent can follow against a list that does not say.
-
 ## Find an extension checkout with a major in front of it, and run `REVIEW-02` there
 
 **Serves:** EXT-01, feedback/2026-07-30-173821-extension-upgrades-need-a-task-owned-workflow.md

@@ -22,9 +22,12 @@ concluding there is none.
 
 It also names the three things a finding can rest on — a file that was read at
 its path and line, a command that was run, or a mechanism traced into an
-installed package — and requires the finding to say which of them it is.
-Reading rather than running is a legitimate way to work; not saying so is what
-gives a derived finding the weight of an established one.
+installed package — and requires the finding to say which of them it is, because
+not saying so gives a derived finding the weight of an established one. And it
+sends the session to the second of the three where the repository already
+declares it: the commands `typo3_project_scope` marks as checks are run even by
+a task told not to change files, the ones it marks as changes are not, and an
+unknown is named as evidence that is available rather than run unasked.
 
 **From:** three `REVIEW-01` runs (2026-07-31) and the divergence they exposed
 — the conformance skill was repaired while the content-element, documentation
@@ -35,8 +38,11 @@ package ships deliberately — a compile step a setting drives, a vendored copy
 that makes a non-Composer install work, a font download that keeps the file on
 the site's own host. Extended again after three recorded `REVIEW-02` runs in two
 repositories (2026-07-31) executed no project-owned command of the ten and five
-they were offered, and said so nowhere in their answers.
+they were offered, and said so nowhere in their answers. What those runs should
+have done about it was decided separately and afterwards, in `D-EVI-3`: two of
+the fifteen were checks, and a check is run.
 
 **Held by:** `SkillTest::theBaseFixesTheOrderEveryTaskStartsIn`,
 `SkillTest::everySkillStartsFromTheBaseBeforeItsOwnEvidence`,
+`SkillTest::anAssessmentAsksBeforeItJudgesAndSaysWhatItDidNotAsk`,
 `InstallerTest::codexInstallAndUpdatePreserveConfigurationAndTrackTheirSkillsCentrally`

@@ -85,8 +85,12 @@ Order findings by severity and include:
 5. a scoped remediation and relevant project check.
 
 For a requested audit, stop after findings unless fixes were also requested.
-For requested improvements, make the smallest coherent changes, preserve local
-project conventions, and run the commands declared by `typo3_project_scope`.
+Stopping at findings is not stopping at reading: the commands
+`typo3_project_scope` marks as checks hand the code back as it was, and an audit
+told not to change files runs them and reports what they printed. For requested
+improvements, make the smallest coherent changes, preserve local project
+conventions, and run the commands declared by `typo3_project_scope`, the ones
+that change files included.
 
 Close on coverage rather than on a summary: the surface list written in step 5,
 every entry marked assessed or unassessed, clean ones briefly. It is that list

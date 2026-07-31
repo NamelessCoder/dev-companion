@@ -105,8 +105,20 @@ final class SkillTest extends TestCase
             '/a file that was read, at its path and its line; a\s+command that was run, with what it printed; a mechanism traced into an\s+installed\s+package/',
             $base,
         );
+        // And what it owes to the commands the repository already declares.
+        // The same three runs were told not to change files and read that as
+        // permission to run nothing, while two of the checks on offer change
+        // nothing by declaration and would have settled two of the findings.
         self::assertMatchesRegularExpression(
-            '/Running none of the project\'s own\s+commands is a legitimate way to work/',
+            '/Where one of the project\'s own commands would settle it, run\s+it/',
+            $base,
+        );
+        self::assertMatchesRegularExpression(
+            '/a check reports and hands the code back\s+as it was, so even a task told not to change files runs it/',
+            $base,
+        );
+        self::assertMatchesRegularExpression(
+            '/an unknown — a test suite, a shell pipeline, a\s+console command — is named in the answer as evidence that is available rather\s+than run unasked/',
             $base,
         );
 
@@ -462,6 +474,17 @@ final class SkillTest extends TestCase
         self::assertStringContainsString('**unassessed**, and unassessed is', $skill);
         self::assertStringContainsString('every entry marked assessed or unassessed', $skill);
         self::assertStringContainsString('not a recollection at the end', $skill);
+
+        // "Do not change files" had been read as "run nothing": the audit
+        // branch named no command at all, and only the improvement branch did.
+        self::assertMatchesRegularExpression(
+            '/Stopping at findings is not stopping at reading/',
+            $skill,
+        );
+        self::assertMatchesRegularExpression(
+            '/marks as checks hand the code back as it was, and an audit\s+told not to change files runs them/',
+            $skill,
+        );
     }
 
     #[Test]

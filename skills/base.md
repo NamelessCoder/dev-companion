@@ -57,11 +57,20 @@ turns a review into a list of everything the author did on purpose.
 
 Three things carry one: a file that was read, at its path and its line; a
 command that was run, with what it printed; a mechanism traced into an installed
-package. Say which of the three it is. Running none of the project's own
-commands is a legitimate way to work — the configuration that would make a check
-fail tells you more than one failing run does — but leaving that unsaid gives a
-finding read out of a CI file the weight of one with a verified line, and the
-reader has no way to separate them again.
+package. Say which of the three it is. Leaving it unsaid gives a finding read out
+of a CI file the weight of one with a verified line, and the reader has no way to
+separate them again.
+
+Where one of the project's own commands would settle it, run it.
+`typo3_project_scope` marks each command it lists **check**, **change** or
+**unknown**, read off the declared body: a check reports and hands the code back
+as it was, so even a task told not to change files runs it, and the linter the
+repository already declares is the cheapest evidence in it. A change is not run
+under that instruction, and an unknown — a test suite, a shell pipeline, a
+console command — is named in the answer as evidence that is available rather
+than run unasked. What a check prints is not the finding: the configuration that
+makes it fail is still what the finding is about, and the run is what takes that
+finding from derived to established.
 
 ## What this server does not know
 

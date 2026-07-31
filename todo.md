@@ -49,7 +49,8 @@ precondition of all of them. Every answer this server gives travels over the
 protocol version the SDK speaks, and on the day a client stops offering that
 version, every requirement fails at once and not one of them says so. So the
 check is cheap and it is standing — one command, and only actionable when the
-answer has changed since the last session:
+answer has changed since the last session. Checked 2026-08-01: still v0.7.0,
+nothing to do.
 
     composer outdated mcp/sdk
 
@@ -83,52 +84,58 @@ The deprecation windows are twelve months, so the outer edge is around July 2027
 Before then the only thing that has to happen is a version bump behind a release
 somebody else writes.
 
-## Run REVIEW-01 in the site project and correct what it establishes
+## Name an `E-EXT`, then run REVIEW-02 in it
 
-This serves `R-FBK-3`, `R-FBK-4`,
-`feedback/2026-07-30-173821-task-skill-forward-evidence-is-not-repeatable.md`
-and
-`feedback/2026-07-30-185543-a-task-skill-keeps-documentation-work-that.md`.
-The format, the runner and the split exist since 2026-07-31; what is left of
-those notes is the evidence itself, and there is none: no forward review has a
-recorded run.
+This is first because everything below it waits on the same missing thing, and
+because what it would test has only ever been seen in one checkout.
 
-`REVIEW-01` goes first because the site project is the environment that is set
-up. It asks for a review of the project and its site package and names nothing
-else, so what the session inspects — scope first or files first, which skills
-activate, whether documentation and testing work is routed or started — is the
-result. The two notes are then answered by what the run shows, not by the
-criteria a targeted case already spelled out.
+`REVIEW-01` reached `covered` on 2026-08-01 after four recorded runs, and what
+got it there is in `decisions.md`: the initialize instructions name an entry
+point, the conformance description leads with the open review, `skills/base.md`
+fixes the order every task starts in, and two tool defects were repaired. All of
+that is proven in exactly one environment, by one skill, against one site
+package. `REVIEW-02` is the first run that would show whether the base holds when
+the checkout is an extension repository rather than a project — and whether the
+three skills whose order was corrected without ever being run forward behave
+like the one that was.
+
+The blocker is the environment, not the work: **no `E-EXT` is named anywhere.**
+`scenarios/readme.md` describes it as a standalone extension repository with its
+dependencies installed, TYPO3 among them; which checkout on this machine plays
+that role has never been decided. Decide it, write it here the way `E-SITE` is
+written below, install its dependencies, then
+`bin/scenarios record REVIEW-02 claude-code`, paste what `bin/scenarios show
+REVIEW-02` prints into a fresh client session in that directory and nothing
+else, and fill in the judgments from the client transcript.
+
+Prefer a repository that has a TYPO3 major to go up, because that makes the same
+run serve the upgrade item below. If none is available, run it in one that does
+not and record the upgrade item as still unblocked.
 
 `E-SITE` is `/home/benji/projects/site-new`; its site package is below
-`extensions/printworks_sitepackage`. It was located on 2026-07-30 with an
-existing modification to the project's `.gitignore`, which belongs to another
-session and must be preserved. No run was started from this repository session:
-a forward run is a fresh MCP client session with the installed skills, while
-this session neither activated those installed skills nor may grade its own
+`extensions/printworks_sitepackage`, TYPO3 14.3.5 under DDEV. It carries an
+existing modification to the project's `.gitignore` that belongs to another
+session and must be preserved. A forward run is a fresh MCP client session with
+the installed skills — refresh them first with
+`ddev exec php vendor/bin/typo3-cms-mcp update --agent=claude` — and a session in
+this repository may neither activate those skills nor grade its own
 implementation as behavioral evidence.
-
-Next step: `bin/scenarios record REVIEW-01 claude-code`, paste what
-`bin/scenarios show REVIEW-01` prints into a session in that project and nothing
-else, fill in the judgments with their evidence and the tools the session
-called, and correct the `Status today` line to what the run establishes.
-`SKILL-07` — the hand-off from the backend-module workflow to the documentation
-workflow — stays a contract case and is read with `bin/scenarios contract
-SKILL-07` when that route has to be checked by hand.
 
 ## Complete the extension author's multi-major upgrade workflow
 
 This serves
 `feedback/2026-07-30-173821-extension-upgrades-need-a-task-owned-workflow.md`
-and `EXT-01`. Run `REVIEW-02` in an extension repository that has a major to go
-up, reduce the note to what the run demonstrates, and read `bin/scenarios
-contract EXT-01` for the routing that has to survive. Then add a thin
-`typo3-extension-upgrade` skill that orders project and extension scope,
+and `EXT-01`, and it waits on the item above for its environment. Run `REVIEW-02`
+in an extension repository that has a major to go up, reduce the note to what the
+run demonstrates, and read `bin/scenarios contract EXT-01` for the routing that
+has to survive. Then add a thin `typo3-extension-upgrade` skill that orders
 installed changelog and scanner/deprecation evidence, official versioned
 documentation, shared-versus-version-specific implementation decisions, and a
-Composer-resolved test matrix. Keep concrete version facts out of the skill,
-publish it through `Installer`, add its forward acceptance result, and add the
-requirement and tests that hold only the behavior the run proves.
+Composer-resolved test matrix — it starts from `skills/base.md` like every other
+skill and states only what it adds, so project and extension scope are not
+restated in it. Keep concrete version facts out of the skill, publish it through
+`Installer`, add its forward acceptance result, and add the requirement and tests
+that hold only the behavior the run proves.
 
 ## Add the static-quality branch to `typo3-extension-testing`
 
@@ -157,8 +164,9 @@ This serves
 It is last because it is the largest of the four and composes the conformance,
 testing and documentation workflows the three items above still change. Run the
 note's query verbatim in `E-EXT`, then add a `typo3-extension-release` skill
-that starts from project and extension scope, selects the intended registries
-and version, and ends preparation with the artifact path, its checksum, what the
+that starts from `skills/base.md` like every other skill, selects the intended
+registries and version, and ends preparation with the artifact path, its
+checksum, what the
 archive includes and excludes, the verification results, the open blockers and
 the publication steps deliberately not taken. Registry requirements come from
 current official documentation rather than from the skill, and the artifact is
@@ -167,3 +175,33 @@ pushing and registry publication stay a separate phase that needs an explicit
 request and a confirmed repository, version and credentials. What has to fail is
 an artifact carrying development files or secrets while the checkout itself is
 green; if that shape survives the work, it earns a contract case of its own.
+
+## State the skill authoring contract in one place
+
+This serves what is left of
+`feedback/2026-07-30-173821-task-skill-forward-evidence-is-not-repeatable.md`
+after it was trimmed on 2026-08-01. Its runner half is done and `skills/base.md`
+now holds the order a task runs in; what stays distributed is how a skill is
+*written* — body procedural, versioned facts left in their owning tools,
+references one hop away and loaded on demand, ownership and failure boundaries
+stated, a realistic scenario before a new domain becomes a skill.
+
+Several of those are already assertions in `SkillTest` that each skill restates
+in its own words. The step is to give them one written form the way the evidence
+order has one, and to read the assertions from that instead of from five copies.
+It sits last because it pays off when the next skill is written, and the three
+items above are what would write one.
+
+## Not queued, and deliberately so
+
+Things a session may otherwise rediscover and mistake for work:
+
+- **`REVIEW-03`** needs a core checkout with actual uncommitted changes.
+  `/home/benji/projects/typo3-cms` is on `main` with a clean tree, so the review
+  has nothing to read. It needs a patch in progress before it can run at all.
+- **The catalog roadmap** — an API signature lookup, a changelog scaffold, a test
+  scaffold, and the structured-output envelope that needs a spike of
+  `vendor/mcp/sdk` first. None of it is blocked; none of it serves an open note
+  or a forward review either, which is why it is below everything that does.
+- **`phpstan/phpstan` 2.2.6 → 2.2.7 and `phpunit` 11.5 → 12.5.** Ordinary
+  maintenance, not an item.

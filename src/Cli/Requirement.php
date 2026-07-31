@@ -58,7 +58,7 @@ final class Requirement implements Subject
                 "%-10s %-13s %-14s %s\n",
                 $requirement['id'],
                 $requirement['group'],
-                strip_tags(str_replace('*', '', Requirements::state($requirement))),
+                Requirements::state($requirement),
                 $requirement['title'],
             );
         }

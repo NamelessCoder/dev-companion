@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Typo3CmsMcp;
 
+use Typo3CmsMcp\Cli\Backlog;
 use Typo3CmsMcp\Cli\Catalog;
 use Typo3CmsMcp\Cli\Checkout;
 use Typo3CmsMcp\Cli\Decision;
@@ -33,6 +34,7 @@ final class Cli
         'requirements' => Requirement::class,
         'decisions' => Decision::class,
         'scenarios' => Scenario::class,
+        'backlog' => Backlog::class,
         'hints' => Hint::class,
         'catalog' => Catalog::class,
         'checkouts' => Checkout::class,
@@ -92,7 +94,17 @@ final class Cli
         return 2;
     }
 
-    /** Every check this checkout can answer on its own, one after the other. */
+    /**
+     * Every check this checkout can answer on its own, one after the other,
+     * and what none of them fails on.
+     *
+     * The checks hold the files to their shape, and a file can be perfectly
+     * shaped and still say that nobody has built the requirement or been back
+     * to the decision. That state is legitimate, so it cannot be an error —
+     * but it was invisible, and an entry sat in requirements/ unbuilt from the
+     * day the directory was created because nothing ever read it out. The
+     * block below is that reading. It changes no exit code.
+     */
     private static function checkEverything(): int
     {
         $worst = 0;
@@ -101,6 +113,9 @@ final class Cli
             $worst = max($worst, (self::SUBJECTS[$subject]::commands()['check'][2])([]));
             print "\n";
         }
+
+        print "── unresolved\n";
+        (Backlog::commands()['list'][2])([]);
 
         return $worst;
     }
@@ -115,7 +130,7 @@ final class Cli
         }
 
         return $help . sprintf(
-            "  %-14s %s, one check after the other\n",
+            "  %-14s %s, and what none of them fails on\n",
             'check',
             implode(', ', self::CHECKED),
         );

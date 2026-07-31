@@ -75,6 +75,13 @@ timeless fact, while the server had the other number all along.
 - `status` says which of those is there: `tested`, `corrected`, or `standing`
   for a decision nothing has come back about yet.
 
+Most decisions are standing and stay that way, which is what makes the state
+easy to stop seeing: a **Wrong if** written and never read is a promise, and
+nothing here says when to keep it. `bin/cli backlog list` counts them and names
+the oldest — not because age disproves anything, but because that is the entry
+the repository has moved furthest away from since. Going back to one and adding
+**Tested on** or **Corrected on** is a legitimate task with no feature behind it.
+
 ## Every decision, newest first
 
 | Decided | Id | What was decided | About | State |

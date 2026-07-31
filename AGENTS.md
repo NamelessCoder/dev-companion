@@ -202,6 +202,19 @@ keeping them apart is what keeps any of them readable:
   the server as it is now. Notes arrive while work is happening, and the ones
   that were open yesterday are often half answered by what shipped since.
 
+Three of those states mean unfinished: a requirement marked **open**, one held
+by `not guarded`, and a decision still `standing`, whose **Wrong if** nobody has
+been back to. All three are legitimate — a principle no test can hold and a
+decision nothing has come back about are not defects — so no check may fail on
+them, which is exactly why nothing read them for as long as they existed.
+`bin/cli backlog list` is that reading, and `bin/cli check` closes with the same
+block. It names every requirement nothing answers for, says whether an item in
+`todo.md` names it, and gives the oldest standing decision as the one the
+repository has moved furthest away from. Standing on that list is not the
+problem. Standing on it with nothing in `todo.md` naming it is a decision nobody
+has taken, and taking it — an item, or the sentence in `decisions/` that says
+why not — is what a session owes it.
+
 ## What describes this server to someone else
 
 Four things describe this server outward, and a change that leaves any of them

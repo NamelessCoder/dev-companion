@@ -77,12 +77,13 @@ final class Requirements
     {
         $table = "| Id | What must hold | State |\n| --- | --- | --- |\n";
         foreach (self::group($group) as $requirement) {
+            $state = self::state($requirement);
             $table .= sprintf(
                 "| [`%s`](%s) | %s | %s |\n",
                 $requirement['id'],
                 $requirement['file'],
                 $requirement['title'],
-                self::state($requirement),
+                $state === 'open' ? '**open**' : $state,
             );
         }
 
@@ -94,12 +95,16 @@ final class Requirements
      * says outright that nothing holds it — the third state is the one worth
      * seeing in a listing, because it looks exactly like the first from afar.
      *
+     * The three words are the state itself, and a reader that wants one of them
+     * emphasised says so where it renders. Bolding `open` in here is what made
+     * every caller strip the asterisks back off.
+     *
      * @param array{status: string, heldBy: string, tests: array<int, string>} $requirement
      */
     public static function state(array $requirement): string
     {
         if ($requirement['status'] === 'open') {
-            return '**open**';
+            return 'open';
         }
 
         return $requirement['tests'] === [] ? 'not guarded' : 'held';

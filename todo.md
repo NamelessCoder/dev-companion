@@ -86,6 +86,25 @@ that version, every requirement fails at once and not one of them says so.
 
 ---
 
+## State the skill authoring contract in one place
+
+**Serves:** feedback/2026-07-30-173821-task-skill-forward-evidence-is-not-repeatable.md
+
+What is left of the note after 2026-08-01 is how a skill is *written* — body
+procedural, versioned facts left in their owning tools, references one hop away
+and loaded on demand, ownership and failure boundaries stated, a realistic
+scenario before a new domain becomes a skill. Several of those are already
+assertions in `SkillTest` that each skill restates in its own words; give them
+one written form the way `skills/base.md` holds the evidence order, and read the
+assertions from that instead of from five copies.
+
+Moved in front of the upgrade skill on 2026-07-31, where it sat behind it: the
+payoff was always "when the next skill is written", and the next skill is the
+todo directly below. Written second, it is a description of what that skill
+happened to do; written first, it is what that skill is held to — and the
+authoring rules are the half of a skill no forward run measures, because a run
+grades the answer and not the file it came from.
+
 ## Add the `typo3-extension-upgrade` skill
 
 **Serves:** EXT-01, feedback/2026-07-30-173821-extension-upgrades-need-a-task-owned-workflow.md
@@ -126,19 +145,6 @@ phase that needs an explicit request and a confirmed repository, version and
 credentials. What has to fail is an artifact carrying development files or
 secrets while the checkout itself is green; if that shape survives the work, it
 earns a contract case of its own.
-
-## State the skill authoring contract in one place
-
-**Serves:** feedback/2026-07-30-173821-task-skill-forward-evidence-is-not-repeatable.md
-
-What is left of the note after 2026-08-01 is how a skill is *written* — body
-procedural, versioned facts left in their owning tools, references one hop away
-and loaded on demand, ownership and failure boundaries stated, a realistic
-scenario before a new domain becomes a skill. Several of those are already
-assertions in `SkillTest` that each skill restates in its own words; give them
-one written form the way `skills/base.md` holds the evidence order, and read the
-assertions from that instead of from five copies. It pays off when the next
-skill is written, which is what the todos above would do.
 
 ## Settle `R-AUD-2` against `META-03`
 

@@ -9,19 +9,101 @@
         "typo3-extension-conformance"
     ],
     "toolTrace": [
-        "typo3_project_scope",
-        "typo3_extension_scope",
-        "typo3_task_guide",
-        "typo3_architecture_lookup",
-        "typo3_architecture_lookup",
-        "typo3_architecture_lookup",
-        "typo3_changelog_lookup",
-        "typo3_changelog_lookup",
-        "typo3_changelog_lookup",
-        "typo3_changelog_lookup",
-        "typo3_configuration_lookup",
-        "typo3_icon_lookup",
-        "typo3_architecture_lookup"
+        {
+            "tool": "typo3_project_scope",
+            "arguments": {}
+        },
+        {
+            "tool": "typo3_extension_scope",
+            "arguments": {
+                "extension": "syntax"
+            }
+        },
+        {
+            "tool": "typo3_task_guide",
+            "arguments": {
+                "task": "Audit a TYPO3 extension that ships one content element with PrismJS assets, a CKEditor integration, a site set and an event listener",
+                "area": "syntax",
+                "changeType": "cleanup"
+            }
+        },
+        {
+            "tool": "typo3_architecture_lookup",
+            "arguments": {
+                "task": "Composer extension package identity, ext_emconf metadata, autoloading and supported TYPO3 version range",
+                "paths": [
+                    "composer.json",
+                    "ext_emconf.php",
+                    "ext_localconf.php",
+                    "ext_tables.php"
+                ]
+            }
+        },
+        {
+            "tool": "typo3_architecture_lookup",
+            "arguments": {
+                "task": "Fluid template escaping, raw output of user-supplied code, and secure rendering in frontend content element templates",
+                "paths": [
+                    "Resources/Private/Templates/Syntax.html"
+                ]
+            }
+        },
+        {
+            "tool": "typo3_architecture_lookup",
+            "arguments": {
+                "task": "CKEditor RTE integration and frontend JavaScript and CSS assets shipped by an extension",
+                "paths": [
+                    "Configuration/RTE",
+                    "Resources/Public/JavaScript",
+                    "Resources/Public/Css"
+                ]
+            }
+        },
+        {
+            "tool": "typo3_changelog_lookup",
+            "arguments": {
+                "query": "ext_emconf",
+                "version": "14"
+            }
+        },
+        {
+            "tool": "typo3_changelog_lookup",
+            "arguments": {
+                "query": "addTcaSelectItem"
+            }
+        },
+        {
+            "tool": "typo3_changelog_lookup",
+            "arguments": {
+                "query": "content element registration",
+                "version": "14"
+            }
+        },
+        {
+            "tool": "typo3_changelog_lookup",
+            "arguments": {
+                "query": "extension metadata composer",
+                "type": "deprecation"
+            }
+        },
+        {
+            "tool": "typo3_configuration_lookup",
+            "arguments": {
+                "path": "SYS/formEngine/formDataGroup/tcaDatabaseRecord"
+            }
+        },
+        {
+            "tool": "typo3_icon_lookup",
+            "arguments": {
+                "query": "content-element-syntax"
+            }
+        },
+        {
+            "tool": "typo3_architecture_lookup",
+            "arguments": {
+                "id": "language-files"
+            }
+        }
     ],
     "outcomes": [
         {

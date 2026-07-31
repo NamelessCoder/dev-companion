@@ -30,8 +30,8 @@ namespace Typo3CmsMcp;
  *
  * So a run is one file below scenarios/runs/, and it holds only what the run
  * adds: where it ran, against which server, which skills the session activated
- * and which tools it called, and one judgment with evidence per criterion. Two
- * things follow from that:
+ * and which tools it called with what, and one judgment with evidence per
+ * criterion. Two things follow from that:
  *
  * - The verdict is derived, never written down. All criteria met and no failure
  *   condition hit is `covered`; some is `partial`; none is `gap`. A verdict a
@@ -414,6 +414,22 @@ final class Scenarios
         foreach (['skills' => 'which skills activated', 'toolTrace' => 'which tools were called'] as $field => $what) {
             if (!is_array($run[$field] ?? null)) {
                 $problems[] = $file . ' does not say ' . $what . ', not even that it was nothing';
+            }
+        }
+        // A tool name says a lookup happened, never what was asked of it, and
+        // most of what a run is judged on is the difference: one query per
+        // surface or one broad one, the version a lookup was given, whether a
+        // returned id was followed. So each call carries the arguments it was
+        // made with, `{}` where it takes none, read out of the transcript with
+        // the name.
+        foreach (is_array($run['toolTrace'] ?? null) ? $run['toolTrace'] : [] as $index => $call) {
+            $position = $file . ' tool call ' . ((int) $index + 1);
+            if (!is_array($call) || !is_string($call['tool'] ?? null) || trim((string) $call['tool']) === '') {
+                $problems[] = $position . ' does not name the tool it called';
+                continue;
+            }
+            if (!is_array($call['arguments'] ?? null)) {
+                $problems[] = $position . ', ' . $call['tool'] . ', does not say what it was called with';
             }
         }
         if (($run['criteria'] ?? null) !== $scenario['criteria']) {

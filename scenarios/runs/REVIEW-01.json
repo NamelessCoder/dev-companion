@@ -9,21 +9,143 @@
         "typo3-extension-conformance"
     ],
     "toolTrace": [
-        "typo3_project_scope",
-        "typo3_extension_scope",
-        "typo3_task_guide",
-        "typo3_architecture_lookup",
-        "typo3_architecture_lookup",
-        "typo3_architecture_lookup",
-        "typo3_architecture_lookup",
-        "typo3_translation_domain_lookup",
-        "typo3_icon_lookup",
-        "typo3_documentation_lookup",
-        "typo3_changelog_lookup",
-        "typo3_changelog_lookup",
-        "typo3_configuration_lookup",
-        "typo3_icon_lookup",
-        "typo3_icon_lookup"
+        {
+            "tool": "typo3_project_scope",
+            "arguments": {}
+        },
+        {
+            "tool": "typo3_extension_scope",
+            "arguments": {
+                "extension": "printworks_sitepackage"
+            }
+        },
+        {
+            "tool": "typo3_task_guide",
+            "arguments": {
+                "task": "Audit a TYPO3 site package and the surrounding composer project for conformance, security and upgrade readiness",
+                "area": "printworks_sitepackage",
+                "changeType": "cleanup",
+                "targetVersion": "14.3"
+            }
+        },
+        {
+            "tool": "typo3_architecture_lookup",
+            "arguments": {
+                "task": "Project repository layout for a composer TYPO3 project: composer.json, Build/, Tests/E2E, config/system, public/",
+                "paths": [
+                    "composer.json",
+                    "Build/phpunit/UnitTests.xml",
+                    "Tests/E2E/catalogue.spec.ts",
+                    "config/system/settings.php",
+                    "public/index.php"
+                ],
+                "targetVersion": "14.3",
+                "limit": 8
+            }
+        },
+        {
+            "tool": "typo3_architecture_lookup",
+            "arguments": {
+                "task": "Content element registration, TCA overrides for tt_content, inline child tables, TypoScript per content element, Fluid templates and backend previews",
+                "paths": [
+                    "extensions/printworks_sitepackage/Configuration/TCA/Overrides/tt_content_hero.php",
+                    "extensions/printworks_sitepackage/Configuration/TCA/tx_printworks_hero_slide.php",
+                    "extensions/printworks_sitepackage/Configuration/Sets/Printworks/TypoScript/ContentElement/Hero.typoscript",
+                    "extensions/printworks_sitepackage/Resources/Private/Templates/Content/PrintworksHero.fluid.html"
+                ],
+                "targetVersion": "14.3",
+                "limit": 8
+            }
+        },
+        {
+            "tool": "typo3_architecture_lookup",
+            "arguments": {
+                "task": "Frontend security: escaping user input in Fluid, query building, DTO from GET arguments, repository queries, secrets in configuration",
+                "paths": [
+                    "extensions/printworks_sitepackage/Classes/Controller/ProductController.php",
+                    "extensions/printworks_sitepackage/Classes/Domain/Repository/ProductRepository.php",
+                    "extensions/printworks_sitepackage/Classes/Domain/Model/Dto/ProductDemand.php",
+                    "config/system/settings.php"
+                ],
+                "targetVersion": "14.3",
+                "limit": 8
+            }
+        },
+        {
+            "tool": "typo3_architecture_lookup",
+            "arguments": {
+                "task": "XLF language files, source language, translation domains, icon registration and event listeners with Services.yaml",
+                "paths": [
+                    "extensions/printworks_sitepackage/Resources/Private/Language/messages.xlf",
+                    "extensions/printworks_sitepackage/Configuration/Icons.php",
+                    "extensions/printworks_sitepackage/Configuration/Services.yaml",
+                    "extensions/printworks_sitepackage/Classes/EventListener/PrefillProductRequestForm.php"
+                ],
+                "targetVersion": "14.3",
+                "limit": 8
+            }
+        },
+        {
+            "tool": "typo3_translation_domain_lookup",
+            "arguments": {
+                "path": "EXT:printworks_sitepackage/Resources/Private/Language/messages.xlf"
+            }
+        },
+        {
+            "tool": "typo3_icon_lookup",
+            "arguments": {
+                "query": "content-carousel",
+                "limit": 30
+            }
+        },
+        {
+            "tool": "typo3_documentation_lookup",
+            "arguments": {
+                "queries": [
+                    "f:translate ViewHelper arguments",
+                    "translation domain f:translate",
+                    "translate viewhelper key extensionName"
+                ],
+                "targetVersion": "14",
+                "limit": 8
+            }
+        },
+        {
+            "tool": "typo3_changelog_lookup",
+            "arguments": {
+                "query": "ErrorController",
+                "version": "14",
+                "limit": 15
+            }
+        },
+        {
+            "tool": "typo3_changelog_lookup",
+            "arguments": {
+                "query": "Content Security Policy",
+                "version": "14",
+                "limit": 10
+            }
+        },
+        {
+            "tool": "typo3_configuration_lookup",
+            "arguments": {
+                "path": "SYS/features"
+            }
+        },
+        {
+            "tool": "typo3_icon_lookup",
+            "arguments": {
+                "query": "content-text-teaser",
+                "limit": 5
+            }
+        },
+        {
+            "tool": "typo3_icon_lookup",
+            "arguments": {
+                "query": "content-text-columns",
+                "limit": 5
+            }
+        }
     ],
     "outcomes": [
         {

@@ -23,8 +23,13 @@ carried out.
    subsystem or finding.
 5. Grade against **What has to come out of it** and **How it fails**, and write
    the judgment and its evidence into the recorded run, together with the skills
-   that activated and the tools the session actually called. `bin/cli scenarios
-   check` — and `composer test` — then hold that run to its review.
+   that activated and the tools the session actually called. A call is the name
+   **and** the arguments it was made with, copied from the transcript, `{}`
+   where the tool takes none: the name says a lookup happened, and what it was
+   asked is most of what the judgment turns on — one query per surface or one
+   broad one, which version a lookup was given, whether a returned id was
+   followed. `bin/cli scenarios check` — and `composer test` — then hold that
+   run to its review.
 
 ## Judging one
 
@@ -55,7 +60,8 @@ things.
 
 The run itself, as one file below [scenarios/runs/](../scenarios/runs/): the
 environment, the server it ran against, the skills the session activated, the
-tools it reached for, and one judgment with evidence per criterion. The verdict
+tools it reached for and what it asked them, and one judgment with evidence per
+criterion. The verdict
 is not written into it — it follows from the judgments, and a review whose mark
 disagrees with what its run establishes is a failing check rather than a
 sentence nobody rereads.

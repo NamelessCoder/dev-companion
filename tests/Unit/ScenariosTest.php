@@ -196,6 +196,42 @@ final class ScenariosTest extends TestCase
     }
 
     #[Test]
+    public function aRecordedCallSaysWhatItAskedAndNotOnlyWhichToolItAsked(): void
+    {
+        // A bare name cannot answer what the runs are judged on: whether the
+        // conventions lookup was asked once per surface or once broadly,
+        // which version it was given, whether a returned id was followed. All
+        // three are in the arguments and nowhere else in the record.
+        $recorded = $this->record('REVIEW-01', static function (array $run): array {
+            $run['toolTrace'] = [
+                ['tool' => 'typo3_project_scope', 'arguments' => []],
+                ['tool' => 'typo3_architecture_lookup'],
+                ['arguments' => ['query' => 'icons']],
+            ];
+
+            return $run;
+        });
+
+        self::assertSame([
+            'scenarios/runs/REVIEW-01.json tool call 2, typo3_architecture_lookup, does not say what it was called with',
+            'scenarios/runs/REVIEW-01.json tool call 3 does not name the tool it called',
+        ], $recorded['problems']);
+
+        // Recorded as a bare name, the way every run was written before the
+        // arguments were part of one.
+        $named = $this->record('REVIEW-01', static function (array $run): array {
+            $run['toolTrace'] = ['typo3_project_scope'];
+
+            return $run;
+        });
+
+        self::assertSame(
+            ['scenarios/runs/REVIEW-01.json tool call 1 does not name the tool it called'],
+            $named['problems'],
+        );
+    }
+
+    #[Test]
     public function aRunContradictsAReviewWhoseMarkIsNotWhatTheJudgmentsAddUpTo(): void
     {
         $review = Scenarios::load()['REVIEW-01'];

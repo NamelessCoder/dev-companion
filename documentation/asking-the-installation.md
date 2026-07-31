@@ -90,7 +90,7 @@ The reason is half of it. The other half is which files it cost: a section a
 tool leaves out because it is empty says the same nothing whether the file does
 not exist or exists and builds its list while it runs, and only the second is a
 casualty of the degradation. `typo3_extension_scope` carries those in
-`notDeterminable` and names them in its text; anything else that parses a
+`notReadStatically` and names them in its text; anything else that parses a
 declaration file owes its callers the same distinction.
 
 ## Checking it against a real installation

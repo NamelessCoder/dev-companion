@@ -66,7 +66,7 @@ final class Extension
      *     typoScript: array<int, string>,
      *     classes: array<int, array{kind: string, files: int}>,
      *     files: array<int, string>,
-     *     notDeterminable: array<int, string>,
+     *     notReadStatically: array<int, string>,
      *     artifacts: array{
      *         manual: ?string,
      *         readme: ?string,
@@ -120,7 +120,7 @@ final class Extension
             'typoScript' => self::baseNames($path . '/Configuration/TypoScript/*.typoscript', ''),
             'classes' => self::classes($path),
             'files' => self::files($path),
-            'notDeterminable' => self::notDeterminable($path),
+            'notReadStatically' => self::notReadStatically($path),
             'artifacts' => self::artifacts($path),
         ];
     }
@@ -809,18 +809,18 @@ final class Extension
     }
 
     /**
-     * The registration files that are there and yielded nothing to reading.
+     * The registration files whose entries do not stand in their own text.
      *
-     * Every list above is omitted where it is empty, so a file that assembles
-     * its registrations at runtime arrives as the same silence as a file that
-     * does not exist — and the difference is the whole of what the caller is
-     * missing. These are named instead: the file is there, reading it is what
-     * came back empty, and the booted installation is what would raise that
-     * floor.
+     * Not a statement about the file — its content is read in full — but about
+     * what reading it yields: a list assembled in a `foreach` exists only once
+     * the file has run. Every list above is omitted where it is empty, so such
+     * a file arrives as the same silence as one that does not exist, and the
+     * difference is the whole of what the caller is missing. These are named
+     * instead, and the booted installation is what would answer for them.
      *
      * @return array<int, string>
      */
-    private static function notDeterminable(string $path): array
+    private static function notReadStatically(string $path): array
     {
         $files = [
             'Configuration/Backend/Modules.php',
@@ -837,7 +837,7 @@ final class Extension
 
         return array_values(array_filter(
             $files,
-            static fn(string $file): bool => PhpArray::undeterminable($path . '/' . $file),
+            static fn(string $file): bool => PhpArray::assembledAtRuntime($path . '/' . $file),
         ));
     }
 

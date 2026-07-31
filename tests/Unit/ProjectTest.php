@@ -537,8 +537,8 @@ final class ProjectTest extends TestCase
         // An empty section is left out of the answer, so nothing above tells
         // "there is no Icons.php" from "there is one and it is a foreach". The
         // file that came back empty is named, and the one that was read is not.
-        self::assertSame(['Configuration/Icons.php'], $result->data['notDeterminable']);
-        self::assertStringContainsString('Nothing could be read from Configuration/Icons.php', $result->text);
+        self::assertSame(['Configuration/Icons.php'], $result->data['notReadStatically']);
+        self::assertStringContainsString('Nothing could be read statically from Configuration/Icons.php', $result->text);
     }
 
     #[Test]

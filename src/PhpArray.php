@@ -71,16 +71,17 @@ final class PhpArray
     }
 
     /**
-     * Whether the file is there and returns something reading cannot follow.
+     * Whether the file is there and returns something other than a literal — so
+     * its entries do not stand in its text and exist only once it has run.
      *
      * The empty list `keys()` answers with says two different things: the file
-     * is not there, or it is there and builds its list at runtime. A caller that
-     * omits an empty section reports both as silence, and a reader cannot tell
-     * "this extension registers no icons" from "its Icons.php is a foreach".
-     * This separates them, and false for a file that returns `[]` outright:
-     * that one was read, and what it says is that there is nothing.
+     * is not there, or it is there and assembles its list while it runs. A
+     * caller that omits an empty section reports both as silence, and a reader
+     * cannot tell "this extension registers no icons" from "its Icons.php is a
+     * foreach". This separates them, and is false for a file that returns `[]`
+     * outright: that one was read, and what it says is that there is nothing.
      */
-    public static function undeterminable(string $file): bool
+    public static function assembledAtRuntime(string $file): bool
     {
         $tokens = self::tokens($file);
 

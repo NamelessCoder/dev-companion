@@ -48,6 +48,13 @@ the checkout sat relative to everything else.
   swallow. It is also unproven for four of the five skills — their order was
   corrected on the strength of a defect measured in the fifth, and no forward run
   has touched them.
+- **Tested on 2026-07-31:** `REVIEW-02` ran in `bootstrap_package` and the base
+  was not outrun. The skill activated on its own, `references/base.md` and the
+  checklist were read three seconds later, the three scope calls followed, and
+  the six-surface list was written out 22 seconds before the first project file
+  was opened. So the order survives a checkout of another kind — by the same
+  skill. The four whose order was corrected without a forward run are still
+  unproven, and the base is still short.
 
 ## 2026-07-31 — The instructions carry the entry point, because the tool descriptions never arrive
 

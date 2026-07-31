@@ -84,90 +84,58 @@ The deprecation windows are twelve months, so the outer edge is around July 2027
 Before then the only thing that has to happen is a version bump behind a release
 somebody else writes.
 
-## Run `REVIEW-02` in `E-EXT`
+## Which checkout plays which environment
 
-This is first because everything below it waits on this one run, and because
-what it would test has only ever been seen in one checkout.
+Not an item — the standing answer to a question every run below asks first. A
+scenario names a kind of directory; which one on this machine plays it belongs
+here, where it can go stale without taking a case with it. A forward run is a
+fresh MCP client session with the installed skills, and a session in this
+repository may neither activate those skills nor grade its own implementation as
+behavioral evidence.
 
-`REVIEW-01` reached `covered` on 2026-08-01 after four recorded runs, and what
-got it there is in `decisions.md`: the initialize instructions name an entry
-point, the conformance description leads with the open review, `skills/base.md`
-fixes the order every task starts in, and two tool defects were repaired. All of
-that is proven in exactly one environment, by one skill, against one site
-package. `REVIEW-02` is the first run that would show whether the base holds when
-the checkout is an extension repository rather than a project — and whether the
-three skills whose order was corrected without ever being run forward behave
-like the one that was.
+- **`E-SITE`** — `/home/benji/projects/site-new`, site package below
+  `extensions/printworks_sitepackage`, TYPO3 14.3.5 under DDEV. The server is a
+  dependency there: refresh the skills with `ddev exec php
+  vendor/bin/typo3-cms-mcp update --agent=claude`. It carries a `.gitignore`
+  modification belonging to another session; leave it.
+- **`E-EXT`** — `/home/benji/projects/bootstrap_package`, TYPO3 14.3.0 below
+  `.build/vendor`, DDEV project `bootstrap-package` on PHP 8.5. The server is
+  **not** a dependency there, so it is reached from this checkout: `php
+  /home/benji/projects/typo3-cms-mcp/bin/typo3-cms-mcp install --agent=claude`
+  from the project root publishes the skills and writes the host-php `.mcp.json`.
+  Repeat it after any skill change — the published skills are a copy and nothing
+  reports it when they are older than the server. The generated ignore block in
+  its `.gitignore` and the untracked `.mcp.json` are from that install and stay.
+  `REVIEW-02` ran here on 2026-07-31 and reached `covered`.
 
-The environment is named and prepared, and the empty run is written
-(`scenarios/runs/REVIEW-02.json`, server `82ee892`). What is left is the run
-itself: paste what `bin/scenarios show REVIEW-02` prints into a fresh client
-session in `E-EXT` and nothing else, then fill in the judgments, the skills that
-activated and the tools the session called from the client transcript. A session
-in this repository may neither activate those skills nor grade its own
-implementation as behavioral evidence.
-
-`E-EXT` is a kind of checkout, and the two items below need it played by
-different ones; whichever plays it for the next run is named here first. Today
-it is `/home/benji/projects/bootstrap_package`, TYPO3 14.3.0 below
-`.build/vendor`, DDEV project `bootstrap-package`. The server is **not** a
-dependency there, so it is reached from this checkout — install and refresh the
-skills by running `php /home/benji/projects/typo3-cms-mcp/bin/typo3-cms-mcp
-install --agent=claude` from the project root, which is also what writes the
-host-php `.mcp.json`. Done once on 2026-07-31; repeat it after any skill change.
-The checkout carries a staged `composer.json` change and an untracked
-`.mcp.json` from another session, and now the generated ignore block in
-`.gitignore` — all three stay.
-
-Two things it is not, which the items below depend on:
-
-- It has **no TYPO3 major to go up** — `^13.4 || ^14.3`, and 14 is current. The
-  upgrade item stays without its environment.
-- Its **static quality infrastructure is complete**: PHPStan with a baseline,
-  php-cs-fixer, phplint, and a CI matrix that calls the project's own commands.
-  So the run measures whether the review stays quiet about a setup that is
-  already there, not what it does with one that is missing.
-
-`E-SITE` is `/home/benji/projects/site-new`; its site package is below
-`extensions/printworks_sitepackage`, TYPO3 14.3.5 under DDEV. It carries an
-existing modification to the project's `.gitignore` that belongs to another
-session and must be preserved. There the server is a dependency, so the skills
-are refreshed with `ddev exec php vendor/bin/typo3-cms-mcp update
---agent=claude`.
-
-## Complete the extension author's multi-major upgrade workflow
-
-This serves
-`feedback/2026-07-30-173821-extension-upgrades-need-a-task-owned-workflow.md`
-and `EXT-01`, and it still has no environment: `E-EXT` supports `^13.4 ||
-^14.3`, so there is no major in front of it, and no other extension checkout on
-this machine is behind either. What it needs is one that is — an extension still
-declaring `^12.4` or `^13.4` alone, cloned for the purpose if none turns up.
-Name it here before starting, run `REVIEW-02`'s prompt there as a second
-recorded run, reduce the note to what that run demonstrates, and read
-`bin/scenarios contract EXT-01` for the routing that has to survive. Then add a
-thin `typo3-extension-upgrade` skill that orders
-installed changelog and scanner/deprecation evidence, official versioned
-documentation, shared-versus-version-specific implementation decisions, and a
-Composer-resolved test matrix — it starts from `skills/base.md` like every other
-skill and states only what it adds, so project and extension scope are not
-restated in it. Keep concrete version facts out of the skill, publish it through
-`Installer`, add its forward acceptance result, and add the requirement and tests
-that hold only the behavior the run proves.
+`E-EXT` is a kind, and the two items below need it played by other checkouts —
+one with a TYPO3 major in front of it, one without complete static quality
+infrastructure. Whichever plays it for the next run is named here first.
 
 ## Add the static-quality branch to `typo3-extension-testing`
 
 This serves
 `feedback/2026-07-30-174423-extension-static-quality-needs-an-explicit-workflow.md`
-and `R-SKL-2`. It sits behind the two items above because the note asks for a
-run it cannot have yet. Static quality is one of the concerns `REVIEW-02`'s
-criteria admit, so the run in `E-EXT` answers one half of it: whether a complete
-PHPStan and code-style setup is left alone rather than restated as work. The
-other half needs a checkout where that infrastructure is missing, and
+and `R-SKL-2`. It moved ahead of the upgrade item on 2026-07-31 for one reason:
+it is the only one of the four whose next step can be taken today. The upgrade
+item lost its environment when `E-EXT` turned out to have no major in front of
+it, and this one gained half its evidence from the same run.
+
+That half: with a complete PHPStan and code-style setup in front of it, the
+review did not restate the tooling as work. It read the configuration and found
+two defects in it — both baselines included unconditionally under
+`reportUnmatchedIgnoredErrors: false`, so 73 suppressed v15 deprecations cannot
+go stale loudly and a new call to the same API is swallowed; and a CI matrix
+that gates unit and functional tests on PHP 8.5 while the declared floor is
+8.2. What it never did is run one of the ten commands the project declares, so
+the findings rest on reading rather than on a failing check.
+
+The other half needs a checkout where that infrastructure is missing, and
 `/home/benji/projects/syntax` is one — php-cs-fixer and phplint, no PHPStan, no
-tests, dependencies installed, TYPO3 14.3.0, DDEV. Run `REVIEW-02`'s prompt
-there once `E-EXT` has its run, and reduce the note to what the two together
-demonstrate. Then add an on-demand static-quality reference to
+tests, dependencies installed, TYPO3 14.3.0, DDEV. Name it as `E-EXT` above,
+install the skills there the same way, run `REVIEW-02`'s prompt, record it, and
+reduce the note to what the two runs together demonstrate. Then add an on-demand
+static-quality reference to
 `typo3-extension-testing`: inspect the existing packages, configuration,
 baselines, scripts and CI before changing any of them; resolve development
 dependencies from the extension's declared TYPO3 and PHP range; establish one
@@ -177,6 +145,26 @@ baseline, and automatic formatting stays inside intended first-party files.
 Split it into a skill of its own only if the run shows that
 `typo3-extension-testing` does not activate or ends up owning two unrelated
 workflows.
+
+## Complete the extension author's multi-major upgrade workflow
+
+This serves
+`feedback/2026-07-30-173821-extension-upgrades-need-a-task-owned-workflow.md`
+and `EXT-01`, and it has no environment: `E-EXT` supports `^13.4 || ^14.3`, so
+there is no major in front of it, and no other extension checkout on this
+machine is behind either. What it needs is one that is — an extension still
+declaring `^12.4` or `^13.4` alone, cloned for the purpose if none turns up.
+Name it above before starting, run `REVIEW-02`'s prompt there as a recorded run,
+reduce the note to what that run demonstrates, and read `bin/scenarios contract
+EXT-01` for the routing that has to survive. Then add a thin
+`typo3-extension-upgrade` skill that orders
+installed changelog and scanner/deprecation evidence, official versioned
+documentation, shared-versus-version-specific implementation decisions, and a
+Composer-resolved test matrix — it starts from `skills/base.md` like every other
+skill and states only what it adds, so project and extension scope are not
+restated in it. Keep concrete version facts out of the skill, publish it through
+`Installer`, add its forward acceptance result, and add the requirement and tests
+that hold only the behavior the run proves.
 
 ## Carry an extension from release candidate to verified artifact
 

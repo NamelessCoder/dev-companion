@@ -66,6 +66,7 @@ final class Extension
      *     typoScript: array<int, string>,
      *     classes: array<int, array{kind: string, files: int}>,
      *     files: array<int, string>,
+     *     notDeterminable: array<int, string>,
      *     artifacts: array{
      *         manual: ?string,
      *         readme: ?string,
@@ -119,6 +120,7 @@ final class Extension
             'typoScript' => self::baseNames($path . '/Configuration/TypoScript/*.typoscript', ''),
             'classes' => self::classes($path),
             'files' => self::files($path),
+            'notDeterminable' => self::notDeterminable($path),
             'artifacts' => self::artifacts($path),
         ];
     }
@@ -803,6 +805,39 @@ final class Extension
         return array_values(array_filter(
             self::ROOT_FILES,
             static fn(string $file): bool => is_file($path . '/' . $file),
+        ));
+    }
+
+    /**
+     * The registration files that are there and yielded nothing to reading.
+     *
+     * Every list above is omitted where it is empty, so a file that assembles
+     * its registrations at runtime arrives as the same silence as a file that
+     * does not exist — and the difference is the whole of what the caller is
+     * missing. These are named instead: the file is there, reading it is what
+     * came back empty, and the booted installation is what would raise that
+     * floor.
+     *
+     * @return array<int, string>
+     */
+    private static function notDeterminable(string $path): array
+    {
+        $files = [
+            'Configuration/Backend/Modules.php',
+            'Configuration/Backend/Routes.php',
+            'Configuration/Backend/AjaxRoutes.php',
+            'Configuration/RequestMiddlewares.php',
+        ];
+        // Where the container answered, the icons are its and this file is no
+        // longer what the answer rests on. The four above have no such source:
+        // no registry hands them over, so reading them is all there ever is.
+        if (self::answeredBy() === 'packages') {
+            array_unshift($files, 'Configuration/Icons.php');
+        }
+
+        return array_values(array_filter(
+            $files,
+            static fn(string $file): bool => PhpArray::undeterminable($path . '/' . $file),
         ));
     }
 

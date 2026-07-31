@@ -86,6 +86,13 @@ and why it was read that way, in the text and not only in the data — a caller
 reading the matches would skip a line of its own, and a registry that reads as
 complete is what makes a review report defects nobody has.
 
+The reason is half of it. The other half is which files it cost: a section a
+tool leaves out because it is empty says the same nothing whether the file does
+not exist or exists and builds its list while it runs, and only the second is a
+casualty of the degradation. `typo3_extension_scope` carries those in
+`notDeterminable` and names them in its text; anything else that parses a
+declaration file owes its callers the same distinction.
+
 ## Checking it against a real installation
 
 The suite cannot boot TYPO3 — this repository has no core and never will, so

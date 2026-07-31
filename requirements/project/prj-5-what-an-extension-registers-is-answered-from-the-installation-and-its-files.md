@@ -33,7 +33,8 @@ a template name derived from the identifier sends the caller to a file that is
 not there. A file that returns an array is read for *that* array and for no
 other literal in it, and where its list is only knowable by running the file —
 built in a `foreach`, assembled into a variable — nothing is returned rather
-than the keys of the literal lying beside it; that is the parser's floor, and
+than the keys of the literal lying beside it, and the file that hit that floor
+is named rather than left as an omitted section; that is the parser's floor, and
 the booted installation is what raises it. What is declared is answered; what
 an extension does at runtime is named as not covered rather than guessed. The
 project's Composer patches are part of what the project is.

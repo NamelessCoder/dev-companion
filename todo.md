@@ -86,21 +86,6 @@ that version, every requirement fails at once and not one of them says so.
 
 ---
 
-## Say which registration file could not be read statically
-
-**Serves:** R-ANS-12, R-PRJ-5
-
-Only where the installation could not be booted, which is now the whole of the
-gap: an extension repository with no `settings.php` gets the parsed lists, and
-`PhpArray::keys()` returns nothing for a file that builds its list at runtime.
-An empty section is omitted from the `typo3_extension_scope` answer, so "there
-is no `Configuration/Icons.php`" and "there is one and nothing in it can be read
-statically" arrive as the same silence — which R-ANS-12 asks to tell apart. The
-degradation sentence already names the reason the boot did not happen; what it
-does not name is which files were the casualties. Carry the ones that exist and
-yielded nothing out of `Extension::describe()` as a field of their own, declare
-it in `ToolSchemas` on every path including the miss, and name them in one line.
-
 ## Put the deprecation sweep and the escaping sink into the ordered work
 
 **Serves:** REVIEW-02, feedback/2026-07-31-142347-an-extension-review-never-sweeps-the-installed-cores-deprecations.md, feedback/2026-07-31-142347-an-escaping-finding-is-written-without-following-the-value-to-its-sink.md

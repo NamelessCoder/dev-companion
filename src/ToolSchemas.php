@@ -605,6 +605,7 @@ final class ToolSchemas
                 'files' => self::integer('PHP files below it.'),
             ], ['kind', 'files'])),
             'files' => self::listOf(self::string(), 'Registration files it ships, from ext_localconf.php to Initialisation/data.t3d.'),
+            'notDeterminable' => self::listOf(self::string(), 'Registration files that are there and yielded nothing to reading, because they assemble their list while they run. What each registers is missing from the lists above rather than absent — an empty list here means every file that exists was read.'),
             'artifacts' => self::object([
                 'manual' => self::nullableString('Its manual entry point, "Documentation/" where the directory exists without one, null where the extension ships no manual at all.'),
                 'readme' => self::nullableString('The README it ships, null where there is none.'),
@@ -618,7 +619,7 @@ final class ToolSchemas
             'installed' => self::listOf(self::string(), 'On a miss: the extension keys this installation does have.'),
             'answeredBy' => self::answeredBy(),
             'unavailable' => self::unavailable(),
-        ], ['key', 'path', 'origin', 'tcaTables', 'tcaOverrides', 'contentElements', 'backendModules', 'icons', 'siteSets', 'serviceTags', 'files', 'artifacts', 'answeredBy']);
+        ], ['key', 'path', 'origin', 'tcaTables', 'tcaOverrides', 'contentElements', 'backendModules', 'icons', 'siteSets', 'serviceTags', 'files', 'notDeterminable', 'artifacts', 'answeredBy']);
     }
 
     /** @return array<string, mixed> */

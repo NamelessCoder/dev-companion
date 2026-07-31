@@ -2442,6 +2442,15 @@ final class Tools
                 . 'could hold them are named above. The installation itself was not asked: '
                 . Typo3Runtime::reason() . '.';
 
+        if ($extension['notDeterminable'] !== []) {
+            // Which files the degradation cost, beside the reason it names: an
+            // omitted section is otherwise the same silence as a file that is
+            // not there at all.
+            $lines[] = 'Nothing could be read from ' . implode(', ', $extension['notDeterminable'])
+                . ': each is there and builds its list while it runs, so what it registers is missing from the '
+                . 'lists above rather than absent.';
+        }
+
         return ToolResult::create(implode("\n", $lines), $extension + ['answeredBy' => Extension::answeredBy()]);
     }
 
@@ -2494,6 +2503,7 @@ final class Tools
         'typoScript' => [],
         'classes' => [],
         'files' => [],
+        'notDeterminable' => [],
         'artifacts' => ['manual' => null, 'readme' => null, 'tests' => [], 'languageFiles' => []],
         'answeredBy' => 'nothing',
     ];

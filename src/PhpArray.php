@@ -38,13 +38,9 @@ final class PhpArray
      */
     public static function keys(string $file, int $level = 1): array
     {
-        if (!is_file($file)) {
-            return [];
-        }
-
-        $tokens = @token_get_all((string) file_get_contents($file));
-        $start = self::returnedLiteral($tokens);
-        if ($start === null) {
+        $tokens = self::tokens($file);
+        $start = $tokens === null ? null : self::returnedLiteral($tokens);
+        if ($tokens === null || $start === null) {
             return [];
         }
 
@@ -72,6 +68,33 @@ final class PhpArray
         }
 
         return $keys;
+    }
+
+    /**
+     * Whether the file is there and returns something reading cannot follow.
+     *
+     * The empty list `keys()` answers with says two different things: the file
+     * is not there, or it is there and builds its list at runtime. A caller that
+     * omits an empty section reports both as silence, and a reader cannot tell
+     * "this extension registers no icons" from "its Icons.php is a foreach".
+     * This separates them, and false for a file that returns `[]` outright:
+     * that one was read, and what it says is that there is nothing.
+     */
+    public static function undeterminable(string $file): bool
+    {
+        $tokens = self::tokens($file);
+
+        return $tokens !== null && self::returnedLiteral($tokens) === null;
+    }
+
+    /**
+     * The file's tokens, or null where there is no such file.
+     *
+     * @return array<int, array{0: int, 1: string, 2: int}|string>|null
+     */
+    private static function tokens(string $file): ?array
+    {
+        return is_file($file) ? @token_get_all((string) file_get_contents($file)) : null;
     }
 
     /**

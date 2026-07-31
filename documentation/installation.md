@@ -88,6 +88,24 @@ The same commands support the agent identifiers `amp`, `junie`, `cursor`,
 where the client supports it, its native MCP configuration. Antigravity and Pi
 receive skills only.
 
+### VS Code reads the skills only once it is told to
+
+`--agent=copilot` writes them to `.github/skills`, which is one of the two
+locations VS Code searches by default — but only if `chat.useAgentSkills` is
+on, and it is not:
+
+```json
+"chat.useAgentSkills": true
+```
+
+Without it the client assembles no search paths at all, so nothing reports that
+six skills are sitting in the repository unread; a session there answers from
+the checkout as if none had been installed (measured on VS Code 1.131.0,
+2026-07-31). `chat.agentSkillsLocations` is the list itself and needs no change:
+it already covers `.github/skills` and `.claude/skills` per workspace.
+`github.copilot.chat.skillTool.enabled` is a different, experimental switch and
+not the one that makes them visible.
+
 That writes the same `.mcp.json` shape with an absolute path.
 
 ## In a DDEV project

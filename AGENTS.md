@@ -8,7 +8,7 @@ bin/core-checkouts # one TYPO3 core checkout per covered version, below .checkou
 bin/verify-catalog # what a core update invalidated in knowledge/catalog/: paths, the versions each entry holds on, which system extensions are shipped, and where the worked examples still are
 bin/hints          # what cannot be found in the hint corpus: `probe` for one query, `coverage` for the hints no title and no scenario prompt reaches
 bin/requirements   # what must hold: `list` the entries, `check` the files against the format, `index` the group listings
-bin/decisions      # what was decided and on what evidence: `list` the entries newest first, `index` the group listings
+bin/decisions      # what was decided and on what evidence: `list` the entries newest first, `check` the files against the format, `index` the group listings
 bin/scenarios      # forward runs: `show` what to paste, `record` the empty run, `check` every recorded one against its review; `contract` prints a targeted case
 src/               # PHP classes (knowledge loading, tools, SDK wiring)
 src/ServerFactory.php  # builds the mcp/sdk server from the tool definitions

@@ -210,6 +210,18 @@ final class Decisions
     }
 
     /**
+     * Where a field sits in the order an entry is written in. Everything a
+     * later session added ranks last and behind all of them, whichever of the
+     * three it is.
+     */
+    public static function rank(string $field): int
+    {
+        $rank = array_search($field, self::FIELDS, true);
+
+        return $rank === false ? count(self::FIELDS) : $rank;
+    }
+
+    /**
      * What a status promises the reader is a line further down: `tested` says a
      * later run confirmed the decision, `corrected` that one did not. The field
      * that carries it has to be there, or the status is a claim about nothing.

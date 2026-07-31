@@ -53,8 +53,8 @@ development files or secrets even when the checkout itself is green.
 
 Verbatim in `E-EXT` — `/home/benji/projects/bootstrap_package`, seven commits
 past its `16.0.0` tag — against server `8983a3c`, client `claude-code` 2.1.220,
-session `d8a3529d`, with the six skills of that revision published into the
-checkout first.
+sessions `d8a3529d` and `65c4868d`, with the six skills of that revision
+published into the checkout first.
 
 **No skill activated and no tool was called.** Forty-one `Bash` calls, three
 `TodoWrite`, one `ToolSearch` — and that one selected `TodoWrite`. It is not a
@@ -80,3 +80,18 @@ it holds in that checkout:
 
 So a green checkout hands the two registries different file sets, and nothing in
 the repository says so.
+
+The second session took the same road and was stopped at its fourteenth call —
+nine `Bash`, five `Read`, no skill, no tool: `git`, `composer.json`,
+`ext_emconf.php`, both workflows, then `test:php:lint`, `cgl:ci` and `phpstan`.
+Twice out of twice, an under-specified release request is answered entirely from
+the checkout.
+
+**Why nothing activated.** The choice was offered and declined, not missed: the
+session is handed all six skills with their full descriptions. None of them
+carries a word of the task — not *release*, *publish*, *registry*, *Packagist*,
+*TER*, *artifact*, *archive* or *tag*. The nearest is
+`typo3-extension-conformance` with "readiness" and "report what is wrong with it
+in priority order", which covers "tell me what is still blocking" and says
+nothing about building and verifying the thing that ships. The skill this note
+asks for is the missing trigger surface, not a better one.

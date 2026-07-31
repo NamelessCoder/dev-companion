@@ -86,6 +86,22 @@ that version, every requirement fails at once and not one of them says so.
 
 ---
 
+## Bring the initialize instructions under what a client keeps
+
+**Serves:** R-AUD-6
+
+`claude-code` 2.1.220 cuts them — `Server instructions truncated from 3662 to
+2048 chars`, in both release runs of 2026-07-31. `Scope::instructions()` writes
+3387, and what falls off the end is the installation-bound half, the version
+filtering, `typo3_server_scope`, and the sentence that says to query in English.
+`R-AUD-6` calls that sentence "the entire mitigation" for a limit nothing else
+covers and puts it "where an agent actually reads it";
+`ScopeTest::theQueryLanguageIsStatedWhereTheCallingAgentReadsIt` holds it in the
+string rather than in the part a client keeps, so the requirement reads as held
+while no session receives it. Cut the instructions to what fits — the routing
+paragraph is already inside the limit — and give that test the length as well as
+the sentence.
+
 ## Add the `typo3-extension-release` skill
 
 **Serves:** feedback/2026-07-30-174423-extension-releases-need-a-preparation-and-publication-workflow.md

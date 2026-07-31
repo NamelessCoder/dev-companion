@@ -17,6 +17,8 @@ final class Installer
     ];
     private const BASE = 'references/base.md';
     private const STATE = 'typo3-cms-mcp.json';
+    private const IGNORE_BEGIN = '# BEGIN typo3-cms-mcp (generated)';
+    private const IGNORE_END = '# END typo3-cms-mcp';
     /** @var array<string, array{skills: string, mcp?: array{format: string, path: string, key: string, shape?: string}}> */
     private const AGENTS = [
         'amp' => [
@@ -93,24 +95,80 @@ final class Installer
             return $this->installJsonConfiguration('.mcp.json', 'mcpServers');
         }
         $definition = $this->agent($agent);
+        $state = $this->readState();
 
         $messages = [];
         if (isset($definition['mcp'])) {
             $messages[] = $this->installAgentConfiguration($agent, $definition['mcp']);
         }
-        $messages[] = $this->publishSkills($definition['skills']);
+        $messages[] = $this->publishSkills($definition['skills'], $state['skills']);
 
-        return implode("\n", $messages);
+        return implode("\n", $this->record($state, [$agent], $messages));
     }
 
-    public function update(string $agent): string
+    /**
+     * Republish the skills of the clients installed here.
+     *
+     * Without an agent that is every client `typo3-cms-mcp.json` records, which
+     * is the case that matters: a project is usually worked on by more than one
+     * client, and naming them one at a time meant remembering which of them the
+     * project had — a list nobody keeps, so the second client silently kept the
+     * skills of the version it was installed with.
+     */
+    public function update(?string $agent): string
     {
-        $definition = $this->agent($agent);
-        if (isset($definition['mcp'])) {
-            $this->assertAgentConfiguration($definition['mcp']);
+        $state = $this->readState();
+        $update = $agent !== null ? [$agent] : $state['agents'];
+        if ($update === []) {
+            throw new \RuntimeException(
+                'no client is recorded in ' . self::STATE . '; run install --agent=<client> first',
+            );
         }
 
-        return $this->publishSkills($definition['skills']);
+        $messages = [];
+        $published = [];
+        foreach ($update as $name) {
+            $definition = $this->agent($name);
+            if (isset($definition['mcp'])) {
+                $this->assertAgentConfiguration($definition['mcp']);
+            }
+            // Clients that share a skills directory — .agents/skills is four of
+            // them — are one publication, not four identical ones.
+            if (in_array($definition['skills'], $published, true)) {
+                continue;
+            }
+            $published[] = $definition['skills'];
+            $messages[] = $this->publishSkills($definition['skills'], $state['skills']);
+        }
+
+        return implode("\n", $this->record($state, $update, $messages));
+    }
+
+    /**
+     * What the run leaves behind: the clients installed here, and the ignores
+     * that follow from them.
+     *
+     * Both are written once per run rather than per client, because both are
+     * one file for the whole project. Writing them inside the loop would let
+     * the first client of a run decide what the second one sees.
+     *
+     * @param array{skills: list<string>, agents: list<string>} $state
+     * @param list<string> $installed
+     * @param list<string> $messages
+     * @return list<string>
+     */
+    private function record(array $state, array $installed, array $messages): array
+    {
+        $agents = array_values(array_unique([...$state['agents'], ...$installed]));
+        sort($agents);
+        $this->writeJson($this->project . '/' . self::STATE, [
+            'version' => 1,
+            'agents' => $agents,
+            'skills' => self::SKILLS,
+        ]);
+        $messages[] = $this->ignoreGenerated($agents);
+
+        return $messages;
     }
 
     /** @return array{skills: string, mcp?: array{format: string, path: string, key: string, shape?: string}} */
@@ -323,10 +381,9 @@ final class Installer
         }
     }
 
-    private function publishSkills(string $skillsPath): string
+    /** @param list<string> $previousSkills */
+    private function publishSkills(string $skillsPath, array $previousSkills): string
     {
-        $state = $this->readState();
-        $previousSkills = $state['skills'];
         $messages = [];
         foreach (self::SKILLS as $skill) {
             $messages[] = $this->publishSkill($skillsPath, $skill);
@@ -335,16 +392,25 @@ final class Installer
             $this->removeDirectory($this->project . '/' . $skillsPath . '/' . $skill);
             $messages[] = 'Removed stale ' . $skill . ' from ' . $this->project . '/' . $skillsPath . '.';
         }
-        $this->writeJson($this->project . '/' . self::STATE, [
-            'version' => 1,
-            'skills' => self::SKILLS,
-        ]);
-        $messages[] = $this->ignoreGeneratedSkills($skillsPath);
 
         return implode("\n", $messages);
     }
 
-    private function ignoreGeneratedSkills(string $skillsPath): string
+    /**
+     * The ignore block, between its markers, written whole every time.
+     *
+     * What it has to ignore follows from which clients are installed and which
+     * skills exist, and both change. Adding the missing lines left the ones
+     * that had become wrong — a skill that was renamed, a client nobody
+     * publishes to any more — in a file the project shares, where a line that
+     * ignores nothing looks exactly like one that ignores something. The
+     * markers are what makes replacing it safe: everything between them is
+     * this installer's and goes, everything outside is the project's and stays,
+     * and neither has to be recognised by what it says.
+     *
+     * @param list<string> $agents
+     */
+    private function ignoreGenerated(array $agents): string
     {
         $path = $this->project . '/.gitignore';
         $contents = is_file($path) ? (string) file_get_contents($path) : '';
@@ -353,24 +419,61 @@ final class Installer
             throw new \RuntimeException('could not read ' . $path);
         }
 
-        $entries = ['/' . self::STATE];
-        foreach (self::SKILLS as $skill) {
-            $entries[] = '/' . trim($skillsPath, '/') . '/' . $skill . '/';
+        $block = [self::IGNORE_BEGIN, '/' . self::STATE];
+        foreach ($agents as $agent) {
+            foreach (self::SKILLS as $skill) {
+                $block[] = '/' . trim(self::AGENTS[$agent]['skills'], '/') . '/' . $skill . '/';
+            }
         }
-        $missing = array_values(array_diff($entries, $lines));
-        if ($missing === []) {
+        $block = array_values(array_unique($block));
+        $block[] = self::IGNORE_END;
+
+        $kept = $this->withoutGeneratedBlock($lines);
+        $rewritten = ($kept === [] ? '' : implode("\n", $kept) . "\n\n") . implode("\n", $block) . "\n";
+        if ($rewritten === $contents) {
             return 'Reused generated skill ignores in ' . $path . '.';
         }
+        $this->write($path, $rewritten);
 
-        $separator = $contents === ''
-            ? ''
-            : (str_ends_with($contents, "\n") ? "\n" : "\n\n");
-        $heading = in_array('# Generated by typo3-cms-mcp', $lines, true)
-            ? ''
-            : "# Generated by typo3-cms-mcp\n";
-        $this->write($path, $contents . $separator . $heading . implode("\n", $missing) . "\n");
+        return 'Wrote generated skill ignores in ' . $path . '.';
+    }
 
-        return 'Ignored generated skill state in ' . $path . '.';
+    /**
+     * The file without the block, and without the gap it leaves behind.
+     *
+     * The blank line that separated the block from what is above it is the
+     * block's, so a run that takes the block out and puts it back has to leave
+     * the file it found — otherwise every run adds an empty line.
+     *
+     * @param list<string> $lines
+     * @return list<string>
+     */
+    private function withoutGeneratedBlock(array $lines): array
+    {
+        $kept = [];
+        $inside = false;
+        $closed = false;
+        foreach ($lines as $line) {
+            if ($inside) {
+                $inside = $line !== self::IGNORE_END;
+                $closed = !$inside;
+                continue;
+            }
+            if ($line === self::IGNORE_BEGIN) {
+                $inside = true;
+                continue;
+            }
+            if ($closed && $line === '' && ($kept === [] || end($kept) === '')) {
+                continue;
+            }
+            $closed = false;
+            $kept[] = $line;
+        }
+        while ($kept !== [] && end($kept) === '') {
+            array_pop($kept);
+        }
+
+        return $kept;
     }
 
     private function publishSkill(string $skillsPath, string $skill): string
@@ -400,12 +503,22 @@ final class Installer
         ) . "\n");
     }
 
-    /** @return array{version: int, skills: list<string>} */
+    /**
+     * What the last run left here: the skills it published, and the clients it
+     * published them for.
+     *
+     * A file written before clients were recorded has no `agents`, and so does
+     * one from a project set up with the generic `.mcp.json` alone. Both are an
+     * empty list rather than an error — nothing is wrong there, there is just
+     * nothing an `update` without an agent could act on.
+     *
+     * @return array{skills: list<string>, agents: list<string>}
+     */
     private function readState(): array
     {
         $path = $this->project . '/' . self::STATE;
         if (!is_file($path)) {
-            return ['version' => 1, 'skills' => []];
+            return ['skills' => [], 'agents' => []];
         }
         try {
             $state = json_decode((string) file_get_contents($path), true, flags: JSON_THROW_ON_ERROR);
@@ -419,8 +532,12 @@ final class Installer
             $state['skills'],
             static fn(mixed $skill): bool => is_string($skill) && $skill !== '',
         ));
+        $agents = array_values(array_filter(
+            is_array($state['agents'] ?? null) ? $state['agents'] : [],
+            static fn(mixed $agent): bool => is_string($agent) && isset(self::AGENTS[$agent]),
+        ));
 
-        return ['version' => 1, 'skills' => $skills];
+        return ['skills' => $skills, 'agents' => $agents];
     }
 
     private function copyDirectory(string $source, string $target): void

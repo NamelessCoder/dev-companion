@@ -87,6 +87,7 @@ final class InstallerTest extends TestCase
             self::assertFileExists($state);
             self::assertSame([
                 'version' => 1,
+                'agents' => ['codex'],
                 'skills' => [
                     'typo3-backend-module-development',
                     'typo3-content-element-development',

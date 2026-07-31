@@ -28,13 +28,21 @@ For Codex, install its project configuration and task skills directly:
 Refresh them after updating this package:
 
 ```bash
-/absolute/path/to/typo3-cms-mcp/bin/typo3-cms-mcp update --agent=codex
+/absolute/path/to/typo3-cms-mcp/bin/typo3-cms-mcp update
 ```
 
-Install and update add `typo3-cms-mcp.json` and the package-owned skill
-directories to the project's `.gitignore`. They do not ignore merged agent or
-MCP configuration such as `.codex/config.toml` or `.mcp.json`, which may be
-shared by the project.
+`update` takes `--agent=<client>` as well, but rarely needs to: `install`
+records every client it set up in `typo3-cms-mcp.json`, and without an agent
+`update` refreshes all of them. A project is usually worked on by more than one,
+and which ones is knowledge only the project has.
+
+Install and update write `typo3-cms-mcp.json` and the package-owned skill
+directories into the project's `.gitignore`, between `# BEGIN typo3-cms-mcp` and
+`# END typo3-cms-mcp`. Everything between those markers belongs to this package
+and is replaced whole on every run, so a client that is gone or a skill that was
+renamed leaves no line behind; everything outside them is the project's and is
+never touched. Merged agent or MCP configuration such as `.codex/config.toml` or
+`.mcp.json` is not ignored, because the project may share it.
 
 It writes the following shape with the actual absolute path:
 
@@ -78,9 +86,9 @@ Install it from the consuming project's root:
 vendor/bin/typo3-cms-mcp install
 ```
 
-Use `vendor/bin/typo3-cms-mcp install --agent=codex` and
-`vendor/bin/typo3-cms-mcp update --agent=codex` for the corresponding Codex
-setup.
+Use `vendor/bin/typo3-cms-mcp install --agent=codex` for the corresponding Codex
+setup, and `vendor/bin/typo3-cms-mcp update` to refresh it and every other
+client installed there.
 
 `vendor/bin/typo3-cms-mcp help` lists both commands and every client they
 accept. Passing anything else fails with that same text: without an argument

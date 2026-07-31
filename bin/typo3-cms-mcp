@@ -45,7 +45,7 @@ if (in_array($command, ['install', 'update'], true)) {
         $installer = new Installer($directory, $entrypoint);
         $message = $command === 'install'
             ? $installer->install($agent)
-            : $installer->update($agent ?? '');
+            : $installer->update($agent);
     } catch (\RuntimeException $exception) {
         fwrite(STDERR, 'typo3-cms-mcp: ' . $exception->getMessage() . ".\n");
         exit(1);
@@ -65,8 +65,8 @@ if ($command !== null) {
         . "  install [--agent=<client>]  Write the client configuration, and for a\n"
         . "                              named client its task skills as well.\n"
         . "                              Without --agent, a generic .mcp.json.\n"
-        . "  update --agent=<client>     Republish the skills of a client that was\n"
-        . "                              installed before.\n"
+        . "  update [--agent=<client>]   Republish the skills. Without --agent,\n"
+        . "                              for every client installed here.\n"
         . "  help                        This text.\n\n"
         . 'Clients: ' . implode(', ', Installer::agents()) . "\n";
 

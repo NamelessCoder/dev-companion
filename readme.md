@@ -103,9 +103,9 @@ configure — the process boundary is the trust boundary. Request serving is
 read-only apart from the explicit feedback tool. Setup writes only when
 requested: `bin/typo3-cms-mcp install` adds this server to `.mcp.json`;
 `install --agent=codex` adds the Codex MCP entry and publishes the task skills,
-and `update --agent=codex` replaces the complete task-skill directories this
-package owns. Existing unrelated settings and skills are preserved, and a
-different server entry is never replaced.
+and `update` replaces the complete task-skill directories this package owns, for
+every client installed here. Existing unrelated settings and skills are
+preserved, and a different server entry is never replaced.
 
 ## Quickstart
 
@@ -123,9 +123,10 @@ vendor/bin/typo3-cms-mcp install
 
 `install` writes the `typo3-cms-mcp` entry into the project's `.mcp.json` and
 leaves every other entry alone. `--agent=<id>` additionally publishes the task
-skills at that client's native path; `update --agent=<id>` refreshes them after
-this package changes. The knowledge base ships inside the package, so nothing
-else needs to be deployed or configured.
+skills at that client's native path and records that client in
+`typo3-cms-mcp.json`, so a later `update` refreshes all of them without being
+told which. The knowledge base ships inside the package, so nothing else needs
+to be deployed or configured.
 
 Codex, Claude, Cursor, Copilot, Zed and eight more clients, DDEV projects where
 the server has to start inside the container, the generated `.mcp.json` shapes,

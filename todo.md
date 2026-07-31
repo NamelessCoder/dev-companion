@@ -103,6 +103,21 @@ inside intended first-party files. It stays inside that skill: neither run shows
 it owning two unrelated workflows, and both reached it by routing rather than by
 activating it.
 
+## Say in `skills/base.md` what a finding rests on
+
+**Serves:** feedback/2026-07-31-124500-a-review-reads-the-checks-it-never-runs.md
+
+It sits this high because everything below it produces forward runs, and this
+decides what those runs are worth as evidence. Three recorded `REVIEW-02` runs
+in two repositories executed no project-owned command at all and said nothing
+about it, so a finding read out of a CI file carries the same confidence as one
+with a verified path and line. Add the distinction to `skills/base.md`, which
+already fixes the order a task starts in: a finding rests on a file that was
+read, a command that was run, or a mechanism traced into an installed package,
+and which of the three belongs in the finding. Leave the second half of the note
+alone for now — whether a review-only task should run the read-only checks is a
+decision, not a wording change.
+
 ## Find an extension checkout with a major in front of it, and run `REVIEW-02` there
 
 **Serves:** EXT-01, feedback/2026-07-30-173821-extension-upgrades-need-a-task-owned-workflow.md

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Typo3CmsMcp\Cli;
 
 use Typo3CmsMcp\Decisions;
+use Typo3CmsMcp\Todo;
 use Typo3CmsMcp\Unresolved;
 
 /**
@@ -41,6 +42,10 @@ final class Backlog implements Subject
      * true, and a report that prints all of them every time is one nobody
      * reads twice. The oldest is named because it is the one the repository
      * has moved furthest away from.
+     *
+     * Nonzero says there is something to do, which is how `bin/cli next` knows
+     * the todo that starts here is still the next thing. Not a failure: a
+     * backlog nobody owes anything to is the good outcome and exits 0.
      */
     private static function list(): int
     {
@@ -58,12 +63,19 @@ final class Backlog implements Subject
             print "Every requirement is met and guarded.\n";
         }
 
+        // What is owed here is the judgement, not the work: a requirement some
+        // todo names has had it, and the standing decisions have had it as soon
+        // as a todo takes on sorting them. Everything else would make a backlog
+        // that is legitimately long the only thing a session is ever offered.
+        $unjudged = array_filter($requirements, static fn (array $r): bool => !$r['queued']);
+        $sorting = in_array('decisions/', Todo::serves(), true);
+
         $standing = Unresolved::decisions();
         $total = count(Decisions::all());
         if ($standing === []) {
             printf("All %d decisions have been back-checked.\n", $total);
 
-            return 0;
+            return $unjudged === [] ? 0 : 1;
         }
 
         printf(
@@ -75,6 +87,6 @@ final class Backlog implements Subject
             $standing[0]['date'],
         );
 
-        return 0;
+        return $unjudged === [] && $sorting ? 0 : 1;
     }
 }

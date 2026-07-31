@@ -82,6 +82,11 @@ Use `vendor/bin/typo3-cms-mcp install --agent=codex` and
 `vendor/bin/typo3-cms-mcp update --agent=codex` for the corresponding Codex
 setup.
 
+`vendor/bin/typo3-cms-mcp help` lists both commands and every client they
+accept. Passing anything else fails with that same text: without an argument
+the entrypoint is the MCP transport itself and waits on stdin, which at a
+terminal is indistinguishable from a hang.
+
 The same commands support the agent identifiers `amp`, `junie`, `cursor`,
 `claude`, `copilot`, `factory`, `kiro`, `opencode`, `antigravity`, `zed`,
 `pi`, and `grok`. Each receives the skill at its native project path and,

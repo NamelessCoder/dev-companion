@@ -25,7 +25,9 @@ use Typo3CmsMcp\ServerFactory;
 
 require dirname(__DIR__) . '/src/bootstrap.php';
 
-if (in_array($argv[1] ?? null, ['install', 'update'], true)) {
+$command = $argv[1] ?? null;
+
+if (in_array($command, ['install', 'update'], true)) {
     $directory = getcwd();
     if ($directory === false) {
         fwrite(STDERR, "typo3-cms-mcp: cannot determine the current directory.\n");
@@ -41,7 +43,7 @@ if (in_array($argv[1] ?? null, ['install', 'update'], true)) {
     $entrypoint = realpath($argv[0]) ?: $argv[0];
     try {
         $installer = new Installer($directory, $entrypoint);
-        $message = $argv[1] === 'install'
+        $message = $command === 'install'
             ? $installer->install($agent)
             : $installer->update($agent ?? '');
     } catch (\RuntimeException $exception) {
@@ -51,6 +53,30 @@ if (in_array($argv[1] ?? null, ['install', 'update'], true)) {
 
     fwrite(STDOUT, $message . "\n");
     exit(0);
+}
+
+// Only a client launching the server passes nothing. Anything else is someone
+// at a terminal, and starting the transport for them would look like a hang.
+if ($command !== null) {
+    $usage = "Usage: typo3-cms-mcp [command]\n\n"
+        . "With no command this speaks MCP over stdin and stdout, which is how a\n"
+        . "client launches it. The commands below set that up, in the directory\n"
+        . "they are run in.\n\n"
+        . "  install [--agent=<client>]  Write the client configuration, and for a\n"
+        . "                              named client its task skills as well.\n"
+        . "                              Without --agent, a generic .mcp.json.\n"
+        . "  update --agent=<client>     Republish the skills of a client that was\n"
+        . "                              installed before.\n"
+        . "  help                        This text.\n\n"
+        . 'Clients: ' . implode(', ', Installer::agents()) . "\n";
+
+    if (in_array($command, ['help', '--help', '-h'], true)) {
+        fwrite(STDOUT, $usage);
+        exit(0);
+    }
+
+    fwrite(STDERR, 'typo3-cms-mcp: no such command "' . $command . "\".\n\n" . $usage);
+    exit(2);
 }
 
 Instance::discoverFrom(getcwd() ?: null);

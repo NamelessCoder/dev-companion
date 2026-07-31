@@ -77,6 +77,16 @@ final class Installer
         private readonly string $entrypoint,
     ) {}
 
+    /**
+     * The clients `--agent=` accepts, for the entrypoint's own help.
+     *
+     * @return array<int, string>
+     */
+    public static function agents(): array
+    {
+        return array_keys(self::AGENTS);
+    }
+
     public function install(?string $agent): string
     {
         if ($agent === null) {

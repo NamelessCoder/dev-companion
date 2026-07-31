@@ -102,199 +102,32 @@ and `update --agent=codex` replaces the complete task-skill directories this
 package owns. Existing unrelated settings and skills are preserved, and a
 different server entry is never replaced.
 
-## Install
+## Quickstart
 
 Requirements: **PHP 8.2+** and Composer. The package works both ways — as a
 standalone checkout and as a Composer dependency of another project.
 
-### Standalone
-
-Clone the repository and install the dependencies once:
-
 ```bash
+# standalone: clone, install once, then point a project at it
 composer install
-```
-
-Then install the entrypoint into the current project's `.mcp.json`:
-
-```bash
 /absolute/path/to/typo3-cms-mcp/bin/typo3-cms-mcp install
-```
 
-For Codex, install its project configuration and task skills directly:
-
-```bash
-/absolute/path/to/typo3-cms-mcp/bin/typo3-cms-mcp install --agent=codex
-```
-
-Refresh them after updating this package:
-
-```bash
-/absolute/path/to/typo3-cms-mcp/bin/typo3-cms-mcp update --agent=codex
-```
-
-Install and update add `typo3-cms-mcp.json` and the package-owned skill
-directories to the project's `.gitignore`. They do not ignore merged agent or
-MCP configuration such as `.codex/config.toml` or `.mcp.json`, which may be
-shared by the project.
-
-It writes the following shape with the actual absolute path:
-
-```json
-{
-  "mcpServers": {
-    "typo3-cms-mcp": {
-      "type": "stdio",
-      "command": "php",
-      "args": ["/absolute/path/to/typo3-cms-mcp/bin/typo3-cms-mcp"]
-    }
-  }
-}
-```
-
-This is the setup to use when working on the knowledge base itself, since the
-`feedback/` tools only exist in a checkout.
-
-### As a dependency
-
-The package is not published on Packagist, so it is required from a local
-checkout (or a Git URL) through a `repositories` entry in the consuming
-project's `composer.json`:
-
-```json
-{
-  "repositories": [
-    { "type": "path", "url": "/absolute/path/to/typo3-cms-mcp" }
-  ]
-}
-```
-
-```bash
-composer require typo3/cms-mcp
-```
-
-Composer then exposes the stdio entrypoint as `vendor/bin/typo3-cms-mcp`.
-Install it from the consuming project's root:
-
-```bash
+# as a dependency: from the consuming project's root
 vendor/bin/typo3-cms-mcp install
 ```
 
-Use `vendor/bin/typo3-cms-mcp install --agent=codex` and
-`vendor/bin/typo3-cms-mcp update --agent=codex` for the corresponding Codex
-setup.
+`install` writes the `typo3-cms-mcp` entry into the project's `.mcp.json` and
+leaves every other entry alone. `--agent=<id>` additionally publishes the task
+skills at that client's native path; `update --agent=<id>` refreshes them after
+this package changes. The knowledge base ships inside the package, so nothing
+else needs to be deployed or configured.
 
-The same commands support the agent identifiers `amp`, `junie`, `cursor`,
-`claude`, `copilot`, `factory`, `kiro`, `opencode`, `antigravity`, `zed`,
-`pi`, and `grok`. Each receives the skill at its native project path and,
-where the client supports it, its native MCP configuration. Antigravity and Pi
-receive skills only.
-
-That writes the same `.mcp.json` shape with an absolute path. In a DDEV project,
-run the installer inside DDEV:
-
-```bash
-ddev exec vendor/bin/typo3-cms-mcp install --agent=codex
-```
-
-The project directory is mounted, so the skills are available to the host at
-`.agents/skills`. The generated MCP entry deliberately starts the server with
-the project's container PHP, at the `config.bin-dir` the project declares —
-`.build/bin/typo3-cms-mcp` in the layout most extension repositories use:
-
-```json
-{
-  "mcpServers": {
-    "typo3-cms-mcp": {
-      "type": "stdio",
-      "command": "ddev",
-      "args": ["exec", "php", "vendor/bin/typo3-cms-mcp"]
-    }
-  }
-}
-```
-
-Outside DDEV — and in a DDEV project that never required the package, where the
-container would not see the checkout the server runs from — the generated
-configuration uses the absolute entrypoint:
-
-```json
-{
-  "mcpServers": {
-    "typo3-cms-mcp": {
-      "type": "stdio",
-      "command": "php",
-      "args": ["/absolute/path/to/project/vendor/bin/typo3-cms-mcp"]
-    }
-  }
-}
-```
-
-The knowledge base ships inside the package, so nothing else needs to be
-deployed or configured.
-
-Clients that expose MCP prompts also list `commit_message`. It turns a
-summary into the same checked draft as `typo3_commit_message_guide`; the rules
-remain in the guide rather than being duplicated in the prompt.
-
-Task skills are authored once below `skills/`. They contain routing and order,
-not a second copy of tool answers; client installation publishes them from that
-source.
-
-### Smoke test
-
-Two JSON-RPC lines on stdin are enough to see the server come up and list its
-tools:
-
-```bash
-printf '%s\n' \
-  '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2025-11-25","capabilities":{},"clientInfo":{"name":"t","version":"1"}}}' \
-  '{"jsonrpc":"2.0","id":2,"method":"tools/list"}' \
-  | php bin/typo3-cms-mcp
-```
-
-### Keeping the repository in order
-
-Everything this repository is kept in order by is one command — the requirement
-and decision files, the forward-run scenarios, the hint corpus, the bundled
-catalogs, and the core checkouts below. Run it with nothing and it says what it
-supports:
-
-```bash
-bin/cli          # every subject, and every command it carries
-bin/cli next     # the one todo that is due now, and nothing else
-bin/cli check    # requirements, decisions, scenarios and todo.md against their formats
-```
-
-`bin/typo3-cms-mcp` is the server itself and carries none of this.
-
-### Core checkouts
-
-The knowledge is bound to TYPO3 versions, so writing it means checking a
-statement on both sides of the boundary it claims. `knowledge/versions.json`
-declares the lines that are covered, and one command turns them into checkouts
-this repository owns:
-
-```bash
-bin/cli checkouts update   # create what is missing, update what is there
-bin/cli checkouts status   # what exists, at which revision
-```
-
-They land below `.checkouts/`, which is gitignored — one treeless clone plus a
-worktree per version, so four lines share one object store (under a gigabyte in
-total). Nothing at runtime reads them: they are how the knowledge is verified,
-not where the answers come from.
-
-### Tests
-
-```bash
-composer ci
-```
-
-Lints, runs the static analysis, and runs the test suite: the search and
-ranking logic, every tool against its declared schemas and annotations, and the
-stdio entrypoint driven as a real subprocess. CI runs the same command on every
-supported PHP version.
+Codex, Claude, Cursor, Copilot, Zed and eight more clients, DDEV projects where
+the server has to start inside the container, the generated `.mcp.json` shapes,
+and the two environment variables that end a failed discovery:
+[documentation/installation.md](documentation/installation.md). Changing this
+repository rather than using it:
+[documentation/working-on-the-server.md](documentation/working-on-the-server.md).
 
 ## Tools
 

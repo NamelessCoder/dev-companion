@@ -1066,8 +1066,10 @@ final class Tools
             static fn(array $intent): bool => !in_array($intent, $confirmed, true)
         ));
 
-        $target = Versions::target(isset($args['targetVersion']) ? (string) $args['targetVersion'] : null);
-        $architecture = ArchitectureHints::find($paths, $task, 4, null, $target);
+        $stated = isset($args['targetVersion']) ? (string) $args['targetVersion'] : null;
+        $target = Versions::target($stated);
+        $targets = Versions::targets($stated);
+        $architecture = ArchitectureHints::find($paths, $task, 4, null, $targets);
         $testHints = array_slice(TestSuiteHints::find($subject, $domains, $target), 0, 4);
         if ($outsideCore) {
             $architecture['matchedHints'] = ArchitectureHints::withoutChecks($architecture['matchedHints']);
@@ -1087,6 +1089,9 @@ final class Tools
             'Change type: ' . $changeType,
             'Domains: ' . implode(', ', $domains),
         ]);
+        if (count($targets) > 1) {
+            $lines[] = self::versionScopeLine($targets);
+        }
         if ($confirmed !== []) {
             $lines[] = 'Recognized as: ' . implode(', ', array_map(
                 static fn(array $intent): string => (string) $intent['title'],
@@ -1276,6 +1281,7 @@ final class Tools
             'area' => $area === '' ? null : $area,
             'changeType' => $changeType,
             'targetVersion' => $target,
+            'targetVersions' => $targets,
             'domains' => $domains,
             'outsideCore' => $outsideCore,
             'intents' => array_map(static fn(array $intent): array => [
@@ -1591,6 +1597,50 @@ final class Tools
         return implode("\n", $lines);
     }
 
+    /**
+     * Which TYPO3 versions the statements below were selected for, and why.
+     *
+     * The interesting case is the one this said nothing about for a long time:
+     * a repository declaring `^13.4 || ^14.3` gets both majors, and a caller
+     * that does not know this reads a statement labelled for one of them as the
+     * current shape and the other as drift. It is the difference between the
+     * two that the code is built around — the file kept for the older major,
+     * the interface not replaced yet — so the sentence names it as a constraint
+     * rather than leaving it to be discovered.
+     *
+     * @param array<int, int> $targets
+     */
+    private static function versionScopeLine(array $targets): string
+    {
+        if ($targets === []) {
+            return 'No target TYPO3 version was stated and none was found to read, so every statement comes back '
+                . 'with the versions it holds for. Pass targetVersion to have the ones that do not apply left out.';
+        }
+        if (count($targets) === 1) {
+            return sprintf('Answered for TYPO3 v%d: statements that do not hold there are left out.', $targets[0]);
+        }
+
+        $constraint = Project::coreConstraint();
+
+        return sprintf(
+            'Answered for TYPO3 %s at once, because this repository declares typo3/cms-core as %s and one codebase '
+            . 'serves all of them. A statement is kept when it holds on any of them, and the range beside it says '
+            . 'which — where two statements about the same subject differ, that difference is the constraint this '
+            . 'code lives under rather than something to clean up. Pass targetVersion to answer for one of them.',
+            self::majorList($targets),
+            $constraint === null ? 'a range' : '"' . $constraint . '"',
+        );
+    }
+
+    /** @param array<int, int> $majors */
+    private static function majorList(array $majors): string
+    {
+        $labels = array_map(static fn(int $major): string => 'v' . $major, $majors);
+        $last = array_pop($labels);
+
+        return $labels === [] ? $last : implode(', ', $labels) . ' and ' . $last;
+    }
+
     /** @param array<string, mixed> $args */
     private static function architectureLookup(array $args): ToolResult
     {
@@ -1598,9 +1648,11 @@ final class Tools
         $task = isset($args['task']) ? (string) $args['task'] : null;
         $limit = (int) ($args['limit'] ?? 6);
         $id = isset($args['id']) ? trim((string) $args['id']) : '';
-        $target = Versions::target(isset($args['targetVersion']) ? (string) $args['targetVersion'] : null);
+        $stated = isset($args['targetVersion']) ? (string) $args['targetVersion'] : null;
+        $target = Versions::target($stated);
+        $targets = Versions::targets($stated);
 
-        $result = ArchitectureHints::find($paths, $task ?? '', $limit, $id, $target);
+        $result = ArchitectureHints::find($paths, $task ?? '', $limit, $id, $targets);
 
         // The hints transfer — a DataHandler or Fluid convention is the same
         // one outside the core — but the checks attached to them are all
@@ -1637,13 +1689,7 @@ final class Tools
         if ($paths !== []) {
             $lines[] = "Paths:\n" . implode("\n", array_map(static fn(string $p): string => '- ' . $p, $paths));
         }
-        $lines[] = $target === null
-            ? 'No target TYPO3 version was stated and none was found to read, so every statement comes back with '
-                . 'the versions it holds for. Pass targetVersion to have the ones that do not apply left out.'
-            : sprintf(
-                'Answered for TYPO3 v%d: statements that do not hold there are left out.',
-                $target,
-            );
+        $lines[] = self::versionScopeLine($targets);
         if ($result['domains'] !== []) {
             $lines[] = 'Domains: ' . implode(', ', $result['domains'])
                 . ' (hints outside these domains are not shown'
@@ -1710,6 +1756,7 @@ final class Tools
             'task' => $task === '' ? null : $task,
             'paths' => array_values($paths),
             'targetVersion' => $target,
+            'targetVersions' => $targets,
             'domains' => $result['domains'],
             'withheldCategories' => $result['withheldCategories'],
             'outsideCore' => $outsideCore,

@@ -188,6 +188,24 @@ final class Project
         return is_string($constraint) ? $constraint : null;
     }
 
+    /**
+     * What this repository declares it needs of the core, straight from its
+     * root manifest.
+     *
+     * `describe()` returns it too, but everything else there costs file reads
+     * this has no use for, and the version an answer is composed for is decided
+     * before any of it.
+     */
+    public static function coreConstraint(): ?string
+    {
+        $instance = Instance::describe();
+        if ($instance === null) {
+            return null;
+        }
+
+        return self::requirement(self::json($instance['root'] . '/composer.json'), 'typo3/cms-core');
+    }
+
     /** @return array<string, mixed> */
     private static function json(string $file): array
     {

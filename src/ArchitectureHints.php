@@ -82,8 +82,11 @@ final class ArchitectureHints
      */
     private const UNDILUTED_WORDS = 200;
 
-    /** @return array<int, array{id: string, title: string, appliesTo: array<int, string>, hints: array<int, array{text: string, since: ?int, until: ?int, binding: ?string}>, checks: array<int, string>, category: string, binding: ?string}> */
-    public static function load(?int $target = null): array
+    /**
+     * @param int|array<int, int>|null $target
+     * @return array<int, array{id: string, title: string, appliesTo: array<int, string>, hints: array<int, array{text: string, since: ?int, until: ?int, binding: ?string}>, checks: array<int, string>, category: string, binding: ?string}>
+     */
+    public static function load(int|array|null $target = null): array
     {
         $dir = Paths::knowledge() . '/architecture-hints';
         $files = glob($dir . '/*.json') ?: [];
@@ -145,14 +148,23 @@ final class ArchitectureHints
 
     /**
      * The same hints with every statement that does not hold on the target
-     * version removed, and a hint that has nothing left removed with them.
+     * removed, and a hint that has nothing left removed with them.
+     *
+     * The target is one major, or the several a repository serves at once. A
+     * statement kept for the range is one that holds on at least one of them:
+     * an extension declaring `^13.4 || ^14.3` has to know both the rule that
+     * arrived in 14 and the one that is still true on 13, and dropping either
+     * makes the other read as the whole answer. Which majors a statement holds
+     * on it says beside itself, as always.
      *
      * @param array<int, array<string, mixed>> $hints
+     * @param int|array<int, int>|null $target
      * @return array<int, array<string, mixed>>
      */
-    public static function forVersion(array $hints, ?int $target): array
+    public static function forVersion(array $hints, int|array|null $target): array
     {
-        if ($target === null) {
+        $targets = is_array($target) ? array_values($target) : ($target === null ? [] : [$target]);
+        if ($targets === []) {
             return $hints;
         }
 
@@ -160,7 +172,15 @@ final class ArchitectureHints
         foreach ($hints as $hint) {
             $statements = array_values(array_filter(
                 $hint['hints'],
-                static fn(array $statement): bool => Versions::holds($statement['since'], $statement['until'], $target),
+                static function (array $statement) use ($targets): bool {
+                    foreach ($targets as $major) {
+                        if (Versions::holds($statement['since'], $statement['until'], $major)) {
+                            return true;
+                        }
+                    }
+
+                    return false;
+                },
             ));
             if ($statements === []) {
                 continue;
@@ -169,7 +189,7 @@ final class ArchitectureHints
             // A check is a runTests.sh invocation, and which suites that script
             // offers changes between majors. The range sits on the suite rather
             // than on every check naming it, so this asks there.
-            $hint['checks'] = TestSuiteHints::checksFor($hint['checks'], $target);
+            $hint['checks'] = TestSuiteHints::checksFor($hint['checks'], max($targets));
             $kept[] = $hint;
         }
 
@@ -180,9 +200,10 @@ final class ArchitectureHints
      * One hint by its id, for the tools that carry a fixed piece of guidance
      * with their own answer instead of waiting for a matching query.
      *
+     * @param int|array<int, int>|null $target
      * @return array{id: string, title: string, appliesTo: array<int, string>, hints: array<int, array{text: string, since: ?int, until: ?int}>, checks: array<int, string>, category: string}|null
      */
-    public static function byId(string $id, ?int $target = null): ?array
+    public static function byId(string $id, int|array|null $target = null): ?array
     {
         foreach (self::load($target) as $hint) {
             if ($hint['id'] === $id) {
@@ -202,6 +223,7 @@ final class ArchitectureHints
      * exists so that guessing at phrasings can be replaced by naming one.
      *
      * @param array<int, string> $paths
+     * @param int|array<int, int>|null $target
      * @return array{
      *     matchedHints: array<int, array<string, mixed>>,
      *     domains: array<int, string>,
@@ -209,7 +231,7 @@ final class ArchitectureHints
      *     availableHints: array<int, array{id: string, title: string, category: string}>
      * }
      */
-    public static function find(array $paths, string $task, int $limit, ?string $id = null, ?int $target = null): array
+    public static function find(array $paths, string $task, int $limit, ?string $id = null, int|array|null $target = null): array
     {
         $id = trim((string) $id);
         if ($id !== '') {

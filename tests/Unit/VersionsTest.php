@@ -177,4 +177,90 @@ final class VersionsTest extends TestCase
             }
         }
     }
+
+    #[Test]
+    public function anExtensionThatServesTwoMajorsIsAnsweredForBoth(): void
+    {
+        // One codebase, two majors: what arrived in 14 and what is still true
+        // on 13 are both rules its author has to hold, and the difference
+        // between them is the constraint the code is written around.
+        $root = $this->composerProject('vendor', '14.3.5');
+        file_put_contents($root . '/composer.json', json_encode([
+            'name' => 'acme/extension',
+            'type' => 'typo3-cms-extension',
+            'require' => ['typo3/cms-core' => '^13.4 || ^14.3'],
+        ], JSON_THROW_ON_ERROR));
+        Instance::discoverFrom($root);
+
+        self::assertSame([13, 14], Versions::targets(), 'the declaration decides where there is one');
+        self::assertSame(14, Versions::target(), 'what the repository runs is still a single version');
+        self::assertSame([14], Versions::targets('14'), 'a caller who names a version is asking about it');
+
+        $statements = implode("\n", array_column(
+            ArchitectureHints::byId('extension-files', Versions::targets())['hints'],
+            'text',
+        ));
+        self::assertStringContainsString(
+            'what makes a directory an extension outside Composer',
+            $statements,
+            'the rule that still holds on 13.4 is dropped when the answer is filtered to the installed major',
+        );
+        self::assertStringContainsString(
+            'deprecated fallback',
+            $statements,
+            'and the rule that arrived in 14 is in the same answer',
+        );
+    }
+
+    #[Test]
+    public function theAnswerSaysWhichMajorsItWasComposedFor(): void
+    {
+        $root = $this->composerProject('vendor', '14.3.5');
+        file_put_contents($root . '/composer.json', json_encode([
+            'name' => 'acme/extension',
+            'require' => ['typo3/cms-core' => '^13.4 || ^14.3'],
+        ], JSON_THROW_ON_ERROR));
+        Instance::discoverFrom($root);
+
+        $result = Tools::call('typo3_architecture_lookup', ['id' => 'extension-files']);
+
+        self::assertSame([13, 14], $result->data['targetVersions']);
+        self::assertSame(14, $result->data['targetVersion']);
+        self::assertStringContainsString('TYPO3 v13 and v14 at once', $result->text);
+        self::assertStringContainsString('^13.4 || ^14.3', $result->text);
+    }
+
+    #[Test]
+    public function aConstraintIsReadByAskingItAboutEachCoveredMajor(): void
+    {
+        self::assertSame([13, 14], Versions::declared('^13.4 || ^14.3'));
+        self::assertSame([13], Versions::declared('^13.4'));
+        self::assertSame([13], Versions::declared('~13.4'));
+        self::assertSame([12, 13, 14], Versions::declared('>=12.4 <15'));
+        self::assertSame([12, 13, 14], Versions::declared('>=12.4,<15.0'));
+        self::assertSame(Versions::majors(), Versions::declared('*'));
+
+        // Unreadable is not "everything": the caller falls back to the single
+        // installed version, which is what this has always answered.
+        self::assertSame([], Versions::declared('dev-main'));
+        self::assertSame([], Versions::declared(null));
+        self::assertSame([], Versions::declared('   '));
+    }
+
+    #[Test]
+    public function oneDeclaredMajorAnswersExactlyAsBefore(): void
+    {
+        $root = $this->composerProject('vendor', '14.3.5');
+        file_put_contents($root . '/composer.json', json_encode([
+            'name' => 'acme/extension',
+            'require' => ['typo3/cms-core' => '^14.3'],
+        ], JSON_THROW_ON_ERROR));
+        Instance::discoverFrom($root);
+
+        self::assertSame([14], Versions::targets());
+        self::assertStringContainsString(
+            'Answered for TYPO3 v14',
+            Tools::call('typo3_architecture_lookup', ['id' => 'extension-files'])->text,
+        );
+    }
 }

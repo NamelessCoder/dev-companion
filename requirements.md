@@ -141,6 +141,21 @@ them, this section wins and the other one is what needs rewriting.
   *From:* forward tests of the testing, conformance, documentation, and backend
   module skills against the Printworks sitepackage (2026-07-30).
   *Held by:* `SkillTest`
+- **R-DIS-16** A repository that declares `typo3/cms-core` for more than one
+  covered major is answered for all of them at once: `typo3_task_guide` and
+  `typo3_architecture_lookup` keep a statement that holds on any of them, name
+  the majors and the declaration in the answer, and report them as
+  `targetVersions`. A version the caller states still narrows to that one, and a
+  constraint that cannot be read falls back to the installed version. The
+  catalogs keep withholding per single version, because markup that does not
+  exist fails in a browser either way.
+  *From:* `REVIEW-02`. The extension declares `^13.4 || ^14.3`; the lookup was
+  filtered to the installed 14, so `ext_emconf.php is what makes a directory an
+  extension outside Composer` — bound `until: 13` — never reached the session,
+  and the file it is about was reported as accumulated drift (2026-07-31).
+  *Held by:* `VersionsTest::anExtensionThatServesTwoMajorsIsAnsweredForBoth`,
+  `VersionsTest::theAnswerSaysWhichMajorsItWasComposedFor`,
+  `VersionsTest::aConstraintIsReadByAskingItAboutEachCoveredMajor`
 - **R-DIS-15** The DDEV client entry names this server's entrypoint at the
   `config.bin-dir` the project declares, and a project that never required the
   server keeps the absolute host entrypoint instead — the container sees the

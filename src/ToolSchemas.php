@@ -181,7 +181,8 @@ final class ToolSchemas
             'task' => self::string(),
             'area' => self::nullableString('Affected subsystem or path, if one was given.'),
             'changeType' => self::string(),
-            'targetVersion' => ['type' => ['integer', 'null'], 'description' => 'The TYPO3 major the answer was composed for — stated by the caller, or read from the installation. Null means nothing was filtered by version.'],
+            'targetVersion' => ['type' => ['integer', 'null'], 'description' => 'The TYPO3 major this repository runs — stated by the caller, or read from the installation. Null means nothing was filtered by version. Where the repository serves several majors, targetVersions is what the answer holds for.'],
+            'targetVersions' => self::listOf(['type' => 'integer'], 'Every TYPO3 major the answer holds for. One entry is the ordinary case. Several mean this repository declares typo3/cms-core for more than one of them, so a statement was kept when it holds on any — and where two statements about the same subject differ, the difference is the constraint the code lives under rather than drift. Empty when nothing was filtered by version.'),
             'domains' => self::listOf(self::string()),
             'outsideCore' => ['type' => 'boolean', 'description' => 'True when the task reads as work on a project or third-party extension. The answer then holds core conventions that may transfer, not a checklist for the task.'],
             'intents' => self::listOf(self::object([
@@ -240,7 +241,8 @@ final class ToolSchemas
         return self::object([
             'task' => self::nullableString(),
             'paths' => self::listOf(self::string()),
-            'targetVersion' => ['type' => ['integer', 'null'], 'description' => 'The TYPO3 major the answer was composed for — stated by the caller, or read from the installation. Null means nothing was filtered and every statement carries its own range.'],
+            'targetVersion' => ['type' => ['integer', 'null'], 'description' => 'The TYPO3 major this repository runs — stated by the caller, or read from the installation. Null means nothing was filtered and every statement carries its own range. Where the repository serves several majors, targetVersions is what the answer holds for.'],
+            'targetVersions' => self::listOf(['type' => 'integer'], 'Every TYPO3 major the answer holds for. One entry is the ordinary case. Several mean this repository declares typo3/cms-core for more than one of them, so a statement was kept when it holds on any — and where two statements about the same subject differ, the difference is the constraint the code lives under rather than drift. Empty when nothing was filtered by version.'),
             'domains' => self::listOf(self::string(), 'Hints outside these domains are not returned.'),
             'withheldCategories' => self::listOf(self::string(), 'Categories that matched the domains but were left out because the task names the frontend. "Backend CSS" and "Backend TypeScript" describe the TYPO3 backend interface and are wrong advice for what a website renders; see docs.typo3.org for frontend theming.'),
             'outsideCore' => ['type' => 'boolean', 'description' => 'True when the paths or the task read as a project or third-party extension. The hints still hold; their checks are then empty, because runTests.sh is part of the core repository.'],

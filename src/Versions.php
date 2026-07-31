@@ -61,6 +61,129 @@ final class Versions
         return $major ?? Instance::typo3Major();
     }
 
+    /**
+     * The majors an answer has to hold on at once.
+     *
+     * One installation runs one version, and for a site project that is the
+     * whole question. An extension is the other case: it declares
+     * `"typo3/cms-core": "^13.4 || ^14.3"` and one codebase serves both, so a
+     * statement bound to either major is one the author needs — and the
+     * difference between them is not noise, it is the constraint the code lives
+     * under. Filtering such a repository to the major that happens to be
+     * installed answers as if the other one did not exist, and what comes back
+     * then reads as drift: the file kept for the older major, the interface not
+     * yet replaced, the suppressed deprecation.
+     *
+     * What the caller states still wins and stays a single major — somebody who
+     * says "14" is asking about 14. Only where nothing was stated does the
+     * declaration decide, and where there is no declaration this is the
+     * installed version, exactly as before.
+     *
+     * @return array<int, int>
+     */
+    public static function targets(?string $stated = null): array
+    {
+        $major = self::major($stated);
+        if ($major !== null) {
+            return [$major];
+        }
+
+        $declared = self::declared(Project::coreConstraint());
+        if (count($declared) > 1) {
+            return $declared;
+        }
+
+        $installed = Instance::typo3Major();
+
+        return $installed === null ? [] : [$installed];
+    }
+
+    /**
+     * The covered majors a Composer constraint admits.
+     *
+     * Read by asking the constraint about each covered major rather than by
+     * parsing it into a range: the question here is only ever "does this
+     * repository serve v13", and the answer is the same for every spelling that
+     * admits any 13.x. A constraint this cannot read yields nothing, and the
+     * caller falls back to the installed version — a wrong range would be worse
+     * than the single version this has always used.
+     *
+     * @return array<int, int>
+     */
+    public static function declared(?string $constraint): array
+    {
+        $constraint = trim((string) $constraint);
+        if ($constraint === '') {
+            return [];
+        }
+
+        $majors = [];
+        foreach (self::majors() as $major) {
+            foreach (preg_split('/\s*\|\|?\s*/', $constraint) ?: [] as $alternative) {
+                if (self::admits(trim($alternative), $major)) {
+                    $majors[] = $major;
+
+                    break;
+                }
+            }
+        }
+
+        return $majors;
+    }
+
+    /**
+     * Whether one alternative of a constraint admits any release of a major.
+     *
+     * Every comparator in it has to, because within one alternative they are
+     * combined with and — `>=13.4 <15` is one alternative, not two.
+     */
+    private static function admits(string $alternative, int $major): bool
+    {
+        if ($alternative === '') {
+            return false;
+        }
+        if ($alternative === '*') {
+            return true;
+        }
+
+        $comparators = preg_split('/[\s,]+/', $alternative) ?: [];
+        foreach ($comparators as $comparator) {
+            if (!self::comparatorAdmits(trim($comparator), $major)) {
+                return false;
+            }
+        }
+
+        return $comparators !== [];
+    }
+
+    /** Whether one comparator admits any release of a major. */
+    private static function comparatorAdmits(string $comparator, int $major): bool
+    {
+        if ($comparator === '') {
+            return true;
+        }
+        if (preg_match('/^(\^|~|>=|<=|>|<|=|v)?\s*v?(\d+)(?:\.(\d+|\*|x))?/i', $comparator, $matches) !== 1) {
+            return false;
+        }
+
+        $operator = strtolower($matches[1]);
+        $stated = (int) $matches[2];
+        $minor = $matches[3] ?? null;
+
+        return match ($operator) {
+            // Both pin the major: a caret above 1.0, and a tilde because the
+            // digit it lets grow is never the first one. TYPO3 has no 0.x.
+            '^', '~' => $major === $stated,
+            '>=' => $major >= $stated,
+            '>' => $major >= $stated,
+            // An exclusive upper bound on x.0 excludes that major, and on any
+            // later minor it still admits it — <14.3 is served by 14.0.
+            '<' => $minor === null || $minor === '0' ? $major < $stated : $major <= $stated,
+            '<=' => $major <= $stated,
+            default => $major === $stated,
+        };
+    }
+
     /** The major in a version string, or null when there is none to read. */
     public static function major(?string $version): ?int
     {

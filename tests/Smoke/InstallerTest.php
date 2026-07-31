@@ -261,6 +261,54 @@ final class InstallerTest extends TestCase
     }
 
     #[Test]
+    public function updateRewritesTheEntryAProjectHasOutgrown(): void
+    {
+        $directory = $this->directory();
+        try {
+            $stderr = '';
+            self::assertSame(0, $this->execute($directory, ['install'], $stderr), $stderr);
+
+            // The project requires the server and gains DDEV after the fact,
+            // which is what the entry written above no longer says.
+            self::assertTrue(mkdir($directory . '/.ddev'));
+            file_put_contents($directory . '/.ddev/config.yaml', "name: fixture\n");
+            $this->installEntrypoint($directory, 'vendor/bin');
+
+            self::assertSame(0, $this->execute($directory, ['update'], $stderr), $stderr);
+            $configuration = json_decode(
+                (string) file_get_contents($directory . '/.mcp.json'),
+                true,
+                flags: JSON_THROW_ON_ERROR,
+            );
+            self::assertSame([
+                'type' => 'stdio',
+                'command' => 'ddev',
+                'args' => ['exec', 'php', 'vendor/bin/typo3-cms-mcp'],
+            ], $configuration['mcpServers']['typo3-cms-mcp']);
+        } finally {
+            $this->removeDirectory($directory);
+        }
+    }
+
+    #[Test]
+    public function updateRefusesToReplaceAnotherCommand(): void
+    {
+        $directory = $this->directory();
+        try {
+            $stderr = '';
+            self::assertSame(0, $this->execute($directory, ['install'], $stderr), $stderr);
+            $original = '{"mcpServers":{"typo3-cms-mcp":{"command":"somewhere-else"}}}';
+            file_put_contents($directory . '/.mcp.json', $original);
+
+            self::assertSame(1, $this->execute($directory, ['update'], $stderr));
+            self::assertStringContainsString('refusing to replace', $stderr);
+            self::assertSame($original, file_get_contents($directory . '/.mcp.json'));
+        } finally {
+            $this->removeDirectory($directory);
+        }
+    }
+
+    #[Test]
     public function codexInstallRefusesAConflictingServerEntry(): void
     {
         $directory = $this->directory();
@@ -274,6 +322,36 @@ final class InstallerTest extends TestCase
             self::assertStringContainsString('refusing to replace', $stderr);
             self::assertSame($original, file_get_contents($directory . '/.codex/config.toml'));
             self::assertDirectoryDoesNotExist($directory . '/.agents');
+        } finally {
+            $this->removeDirectory($directory);
+        }
+    }
+
+    #[Test]
+    public function codexUpdateRewritesTheSectionAndKeepsTheRestOfTheFile(): void
+    {
+        $directory = $this->directory();
+        self::assertTrue(mkdir($directory . '/.codex', 0777, true));
+        $unrelated = "model = \"gpt-5\"\n\n";
+        $stale = "[mcp_servers.typo3-cms-mcp]\ncommand = \"php\"\nargs = [\"/elsewhere/bin/typo3-cms-mcp\"]\n\n";
+        $below = "[features]\nweb_search = true\n";
+        file_put_contents($directory . '/.codex/config.toml', $unrelated . $stale . $below);
+        file_put_contents(
+            $directory . '/typo3-cms-mcp.json',
+            json_encode(['version' => 1, 'agents' => ['codex'], 'skills' => []], JSON_THROW_ON_ERROR),
+        );
+
+        try {
+            $stderr = '';
+            self::assertSame(0, $this->execute($directory, ['update'], $stderr), $stderr);
+            $configuration = (string) file_get_contents($directory . '/.codex/config.toml');
+            self::assertSame(
+                $unrelated
+                . "[mcp_servers.typo3-cms-mcp]\ncommand = \"php\"\nargs = [\"" . Paths::root()
+                . "/bin/typo3-cms-mcp\"]\n\n"
+                . $below,
+                $configuration,
+            );
         } finally {
             $this->removeDirectory($directory);
         }

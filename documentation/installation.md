@@ -36,6 +36,13 @@ records every client it set up in `typo3-cms-mcp.json`, and without an agent
 `update` refreshes all of them. A project is usually worked on by more than one,
 and which ones is knowledge only the project has.
 
+Both commands write the client entry, because what belongs in it is a property
+of the project rather than of the run: a project that required this package
+after it was first installed, or that gained a DDEV configuration since, needs
+a different entry than the one that is there, and `update` is what moves it.
+An entry that starts something other than this server is somebody else's and is
+refused instead — the two commands then say so and change nothing.
+
 Naming no client at all is a setup of its own, recorded as `generic`: `install`
 then writes the `.mcp.json` entry and publishes the skills to `.agents/skills`,
 the two locations a client finds without being configured for it. It is

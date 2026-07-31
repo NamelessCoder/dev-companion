@@ -29,3 +29,4 @@ when it is added.
 | [`R-DIS-18`](dis-18-a-console-command-never-inherits-the-clients-stdin.md) | A console command never inherits the client's stdin | held |
 | [`R-DIS-19`](dis-19-a-registry-with-no-command-is-answered-by-the-installation-itself.md) | A registry with no command is answered by the installation itself | held |
 | [`R-DIS-20`](dis-20-the-project-records-which-clients-are-installed-in-it.md) | The project records which clients are installed in it | held |
+| [`R-DIS-21`](dis-21-the-client-entry-is-rewritten-when-the-project-outgrows-it.md) | The client entry is rewritten when the project outgrows it | held |

@@ -67,8 +67,12 @@ if ($command !== null) {
         . "                              in .mcp.json and the skills in\n"
         . "                              .agents/skills, which every client that\n"
         . "                              reads those two finds on its own.\n"
-        . "  update [--agent=<client>]   Republish the skills. Without --agent,\n"
-        . "                              for every client installed here.\n"
+        . "  update [--agent=<client>]   Republish the skills and rewrite the\n"
+        . "                              client entry, which a project that has\n"
+        . "                              since required this server or gained a\n"
+        . "                              DDEV configuration has outgrown.\n"
+        . "                              Without --agent, for every client\n"
+        . "                              installed here.\n"
         . "  help                        This text.\n\n"
         . 'Clients: ' . implode(', ', Installer::agents()) . "\n";
 

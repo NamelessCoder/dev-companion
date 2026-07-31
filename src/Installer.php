@@ -103,21 +103,11 @@ final class Installer
 
     public function install(?string $agent): string
     {
-        $name = $agent ?? self::GENERIC;
-        $definition = $this->definition($name);
-        $state = $this->readState();
-
-        $messages = [];
-        if (isset($definition['mcp'])) {
-            $messages[] = $this->installAgentConfiguration($name, $definition['mcp']);
-        }
-        $messages[] = $this->publishSkills($definition['skills'], $state['skills']);
-
-        return implode("\n", $this->record($state, [$name], $messages));
+        return $this->setUp([$agent ?? self::GENERIC]);
     }
 
     /**
-     * Republish the skills of the clients installed here.
+     * Bring the clients installed here up to date.
      *
      * Without an agent that is every client `typo3-cms-mcp.json` records, which
      * is the case that matters: a project is usually worked on by more than one
@@ -130,20 +120,41 @@ final class Installer
      */
     public function update(?string $agent): string
     {
-        $state = $this->readState();
-        $update = $agent !== null ? [$agent] : $state['agents'];
+        $update = $agent !== null ? [$agent] : $this->readState()['agents'];
         if ($update === []) {
             throw new \RuntimeException(
                 'nothing is installed here; run install, or install --agent=<client> for a client of its own',
             );
         }
 
+        return $this->setUp($update);
+    }
+
+    /**
+     * What both commands do, for the clients they were given.
+     *
+     * They are the same work: the entry each client reads, the skills at the
+     * path it reads them from, and the record of both. `install` names one
+     * client, `update` the ones already recorded — and the entry is written on
+     * either, because what belongs in it is a property of the project rather
+     * than of the run. A project that required this server after it was first
+     * installed, or that gained a DDEV configuration since, needs a different
+     * entry than the one that is there; an update that only checked it left the
+     * project with a message and no command that would fix it, because
+     * `install` refuses an entry it did not just write.
+     *
+     * @param list<string> $names
+     */
+    private function setUp(array $names): string
+    {
+        $state = $this->readState();
+
         $messages = [];
         $published = [];
-        foreach ($update as $name) {
+        foreach ($names as $name) {
             $definition = $this->definition($name);
             if (isset($definition['mcp'])) {
-                $this->assertAgentConfiguration($definition['mcp']);
+                $messages[] = $this->installAgentConfiguration($name, $definition['mcp']);
             }
             // Clients that share a skills directory — .agents/skills is four of
             // them — are one publication, not four identical ones.
@@ -154,7 +165,7 @@ final class Installer
             $messages[] = $this->publishSkills($definition['skills'], $state['skills']);
         }
 
-        return implode("\n", $this->record($state, $update, $messages));
+        return implode("\n", $this->record($state, $names, $messages));
     }
 
     /**
@@ -246,51 +257,59 @@ final class Installer
             $target = & $target[$segment];
         }
 
-        $server = $this->jsonServer($shape);
         $existing = $target[self::SERVER] ?? null;
-        if ($existing !== null && $existing !== $server) {
+        if ($existing !== null && !$this->namesThisServer($this->commandWords($existing))) {
             throw new \RuntimeException(
                 $relativePath . ' already has a different typo3-cms-mcp server; refusing to replace it',
             );
         }
-        $target[self::SERVER] = $server;
-        $this->writeJson($path, $configuration);
+        $target[self::SERVER] = $this->jsonServer($shape);
 
-        return 'Configured typo3-cms-mcp in ' . $path . '.';
+        return $this->message($this->writeJson($path, $configuration), $path);
     }
 
     /**
-     * @param array{format: string, path: string, key: string, shape?: string} $mcp
+     * Whether the entry that is already there is this server's.
+     *
+     * That is the line between an entry this installer may rewrite and one it
+     * must leave alone, and it is drawn at the server being started rather than
+     * at the exact command: which command starts this server is a property of
+     * the project, and it changes when the project requires the package or
+     * gains a DDEV configuration. An entry that names something else is
+     * somebody's own and is refused, whatever key it sits under.
+     *
+     * @param list<string> $words
      */
-    private function assertAgentConfiguration(array $mcp): void
+    private function namesThisServer(array $words): bool
     {
-        $path = $this->project . '/' . $mcp['path'];
-        if ($mcp['format'] === 'toml') {
-            $configuration = is_file($path) ? (string) file_get_contents($path) : '';
-            $section = $this->tomlSection($configuration, $mcp['key']);
-            if ($section === null) {
-                throw new \RuntimeException($mcp['path'] . ' has no typo3-cms-mcp entry; run install first');
+        foreach ($words as $word) {
+            if (basename($word) === self::SERVER) {
+                return true;
             }
-            $this->assertMatchingTomlSection($section);
-
-            return;
         }
 
-        $configuration = [];
-        if (is_file($path)) {
-            try {
-                $decoded = json_decode((string) file_get_contents($path), true, flags: JSON_THROW_ON_ERROR);
-            } catch (\JsonException $exception) {
-                throw new \RuntimeException($mcp['path'] . ' is not valid JSON: ' . $exception->getMessage());
+        return false;
+    }
+
+    /**
+     * The command an entry starts, as words: the command and its arguments,
+     * whichever of the two shapes the client writes them in.
+     *
+     * @return list<string>
+     */
+    private function commandWords(mixed $entry): array
+    {
+        $words = [];
+        foreach (['command', 'args'] as $field) {
+            $value = is_array($entry) ? ($entry[$field] ?? null) : null;
+            foreach (is_array($value) ? $value : [$value] as $word) {
+                if (is_string($word)) {
+                    $words[] = $word;
+                }
             }
-            $configuration = $decoded;
         }
-        foreach (explode('.', $mcp['key']) as $segment) {
-            $configuration = is_array($configuration) ? ($configuration[$segment] ?? null) : null;
-        }
-        if (!is_array($configuration) || ($configuration[self::SERVER] ?? null) !== $this->jsonServer($mcp['shape'] ?? null)) {
-            throw new \RuntimeException($mcp['path'] . ' has a different or missing typo3-cms-mcp entry');
-        }
+
+        return $words;
     }
 
     /**
@@ -346,17 +365,34 @@ final class Installer
         $configuration = is_file($path) ? (string) file_get_contents($path) : '';
         $section = $this->tomlSection($configuration, $key);
         if ($section !== null) {
-            $this->assertMatchingTomlSection($section);
-
-            return 'Reused typo3-cms-mcp in ' . $path . '.';
+            preg_match_all('/"([^"]*)"/', $section, $quoted);
+            if (!$this->namesThisServer($quoted[1])) {
+                throw new \RuntimeException(
+                    $relativePath . ' already has a different typo3-cms-mcp server; refusing to replace it',
+                );
+            }
+            // The blank lines below the section separate it from whatever
+            // follows and belong to the file, not to the section, so they are
+            // put back as they were found.
+            $trailing = substr($section, strlen(rtrim($section, "\n")));
+            $configuration = str_replace(
+                $section,
+                rtrim($this->expectedTomlSection($key), "\n") . ($trailing === '' ? "\n" : $trailing),
+                $configuration,
+            );
+        } else {
+            $separator = $configuration === '' || str_ends_with($configuration, "\n\n")
+                ? ''
+                : (str_ends_with($configuration, "\n") ? "\n" : "\n\n");
+            $configuration .= $separator . $this->expectedTomlSection($key);
         }
 
-        $separator = $configuration === '' || str_ends_with($configuration, "\n\n")
-            ? ''
-            : (str_ends_with($configuration, "\n") ? "\n" : "\n\n");
-        $this->write($path, $configuration . $separator . $this->expectedTomlSection($key));
+        return $this->message($this->write($path, $configuration), $path);
+    }
 
-        return 'Configured typo3-cms-mcp in ' . $path . '.';
+    private function message(bool $written, string $path): string
+    {
+        return ($written ? 'Configured' : 'Reused') . ' typo3-cms-mcp in ' . $path . '.';
     }
 
     private function expectedTomlSection(string $key): string
@@ -383,26 +419,6 @@ final class Installer
         }
 
         return $matches[0];
-    }
-
-    private function assertMatchingTomlSection(string $section): void
-    {
-        $server = $this->jsonServer();
-        $command = preg_quote(
-            json_encode($server['command'], JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR),
-            '/',
-        );
-        $arguments = preg_quote(
-            json_encode($server['args'], JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR),
-            '/',
-        );
-        $commandMatches = preg_match('/^command\s*=\s*' . $command . '\s*$/m', $section) === 1;
-        $argumentMatches = preg_match('/^args\s*=\s*' . $arguments . '\s*$/m', $section) === 1;
-        if (!$commandMatches || !$argumentMatches) {
-            throw new \RuntimeException(
-                '.codex/config.toml already has a different typo3-cms-mcp server; refusing to replace it',
-            );
-        }
     }
 
     /** @param list<string> $previousSkills */
@@ -454,12 +470,9 @@ final class Installer
 
         $kept = $this->withoutGeneratedBlock($lines);
         $rewritten = ($kept === [] ? '' : implode("\n", $kept) . "\n\n") . implode("\n", $block) . "\n";
-        if ($rewritten === $contents) {
-            return 'Reused generated skill ignores in ' . $path . '.';
-        }
-        $this->write($path, $rewritten);
 
-        return 'Wrote generated skill ignores in ' . $path . '.';
+        return ($this->write($path, $rewritten) ? 'Wrote' : 'Reused')
+            . ' generated skill ignores in ' . $path . '.';
     }
 
     /**
@@ -519,9 +532,9 @@ final class Installer
     }
 
     /** @param array<string, mixed> $configuration */
-    private function writeJson(string $path, array $configuration): void
+    private function writeJson(string $path, array $configuration): bool
     {
-        $this->write($path, json_encode(
+        return $this->write($path, json_encode(
             $configuration,
             JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR,
         ) . "\n");
@@ -618,14 +631,20 @@ final class Installer
         }
     }
 
-    private function write(string $path, string $contents): void
+    /** Whether the file changed; a file that already says this is left alone. */
+    private function write(string $path, string $contents): bool
     {
         $directory = dirname($path);
         if (!is_dir($directory) && !mkdir($directory, 0777, true) && !is_dir($directory)) {
             throw new \RuntimeException('could not create ' . $directory);
         }
+        if (is_file($path) && file_get_contents($path) === $contents) {
+            return false;
+        }
         if (file_put_contents($path, $contents) === false) {
             throw new \RuntimeException('could not write ' . $path);
         }
+
+        return true;
     }
 }

@@ -104,8 +104,9 @@ read-only apart from the explicit feedback tool. Setup writes only when
 requested: `bin/typo3-cms-mcp install` adds this server to `.mcp.json` and the
 task skills to `.agents/skills`; `install --agent=codex` writes both where Codex
 reads them, and `update` replaces the complete task-skill directories this
-package owns, for every client installed here. Existing unrelated settings and
-skills are preserved, and a different server entry is never replaced.
+package owns and rewrites the client entry the project has outgrown, for every
+client installed here. Existing unrelated settings and skills are preserved, and
+an entry that starts a different server is never replaced.
 
 ## Quickstart
 

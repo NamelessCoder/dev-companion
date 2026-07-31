@@ -389,7 +389,7 @@ final class Tools
         return [
             [
                 'name' => 'typo3_feedback_record',
-                'description' => 'Leave a note about a gap, wrong answer, or missing capability of this knowledge server. The note is stored as markdown in this project so it can be implemented later. Use it whenever an answer was incomplete or a lookup found nothing that should have been there.',
+                'description' => 'Leave a note about a gap, wrong answer, or missing capability of this knowledge server. The note is stored as markdown in this server\'s own checkout — not in the project you are working in, so do not look for the file there — and is read back with typo3_feedback_list. Use it whenever an answer was incomplete or a lookup found nothing that should have been there.',
                 // The one tool that writes: a new note file per call, never
                 // touching an existing one.
                 'annotations' => [
@@ -402,12 +402,13 @@ final class Tools
                     'type' => 'object',
                     'properties' => [
                         'observation' => ['type' => 'string', 'minLength' => 1, 'description' => 'What was missing, wrong, or unhelpful. Be specific enough to act on later.'],
+                        'model' => ['type' => 'string', 'minLength' => 1, 'description' => 'The model recording this note, as it identifies itself, for example claude-opus-5 or gpt-5.3-codex. A note about what a session did or did not do is evidence about one model\'s behaviour, and unattributed it cannot be told apart from another model\'s. Send "unknown" rather than guessing; an invented identifier is worse than none.'],
                         'category' => ['type' => 'string', 'enum' => Feedback::CATEGORIES, 'default' => 'idea', 'description' => 'missing-knowledge: the knowledge base lacks the answer. wrong-answer: the answer was incorrect. tool-gap: no tool covers the need. bug: the server misbehaved. idea: anything else.'],
                         'tool' => ['type' => ['string', 'array'], 'items' => ['type' => 'string'], 'description' => 'The tool the observation is about, for example typo3_component_lookup. Several tools may be named, as a list or separated by commas.'],
                         'query' => ['type' => 'string', 'description' => 'The query or arguments that produced the unsatisfying result.'],
                         'suggestion' => ['type' => 'string', 'description' => 'What the server should have answered or should be able to do.'],
                     ],
-                    'required' => ['observation'],
+                    'required' => ['observation', 'model'],
                 ],
             ],
             [
@@ -771,14 +772,22 @@ final class Tools
     private static function feedbackRecord(array $args): ToolResult
     {
         $file = Feedback::record($args);
+        // The absolute path, because the relative one is relative to somewhere
+        // the caller has never been. A note recorded from a site package was
+        // reported back as feedback/<name>.md, looked for under that project,
+        // not found, and written off as a failed write — the file was there the
+        // whole time, one checkout over.
+        $path = Paths::root() . '/' . $file;
 
         return ToolResult::create(
             sprintf(
-                "Thanks — noted in %s.\n\nIt will be picked up when the knowledge base is next improved; "
+                "Thanks — noted in %s.\n\nThat is this server's own checkout, not the project you are working in: "
+                . "nothing was written there, so the file will not be found under it.\n\n"
+                . 'It will be picked up when the knowledge base is next improved; '
                 . 'nothing about the current answer changes.',
-                $file,
+                $path,
             ),
-            ['file' => $file],
+            ['file' => $file, 'path' => $path],
         );
     }
 
@@ -810,12 +819,17 @@ final class Tools
         $lines = array_map(static function (array $note): string {
             $date = substr($note['date'], 0, 10);
             $about = $note['tool'] === '' ? '' : ' — ' . $note['tool'];
+            // Named even when it is "unknown": a note nobody can attribute is a
+            // different thing from one whose model simply is not shown, and the
+            // list is where the difference is acted on.
+            $by = $note['model'] === '' ? '' : ' · ' . $note['model'];
 
             $entry = sprintf(
-                "- %s%s%s\n  %s\n  %s",
+                "- %s%s%s%s\n  %s\n  %s",
                 $note['category'] === '' ? '' : '[' . $note['category'] . '] ',
                 $date,
                 $about,
+                $by,
                 $note['title'],
                 $note['file'],
             );

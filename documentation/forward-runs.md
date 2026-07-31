@@ -80,7 +80,9 @@ repository, and file each answer where the recurring work already walks:
 - `typo3_feedback_record` for what was missing, wrong, or unhelpful — with the
   review id in the observation, so the note can be traced back to the task that
   exposed it. Give it the run's own prompt as its query, so the note can be
-  re-run against a later server the way every other note is.
+  re-run against a later server the way every other note is, and the model the
+  run ran as, because what a run teaches about behaviour belongs to that model
+  and not to the next one.
 - A new contract case, when the session exposes a repeatable task or failure
   shape worth holding directly. That is the more valuable outcome of the two.
 

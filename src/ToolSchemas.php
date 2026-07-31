@@ -661,8 +661,9 @@ final class ToolSchemas
     private static function feedbackRecord(): array
     {
         return self::object([
-            'file' => self::string('Path of the recorded note, relative to the project root.'),
-        ], ['file']);
+            'file' => self::string('Path of the recorded note, relative to this server\'s own checkout.'),
+            'path' => self::string('The same note as an absolute path. It is in the server\'s checkout, not in the project the note was recorded from.'),
+        ], ['file', 'path']);
     }
 
     /** @return array<string, mixed> */
@@ -675,6 +676,7 @@ final class ToolSchemas
                 'date' => self::string(),
                 'category' => self::string('Empty for a closed note: the file it stood in is gone, and with it the front matter.'),
                 'status' => self::string(),
+                'model' => self::string('The model that left the note. "unknown" where it named none or predates the field, empty for a closed note.'),
                 'tool' => self::string('The tools the note is about, comma-separated. Empty when it names none, and for a closed note.'),
                 'tools' => self::listOf(self::string(), 'The same names as a list, to filter or group by without parsing.'),
                 'title' => self::string(),
@@ -687,7 +689,7 @@ final class ToolSchemas
                         'subject' => self::string('The commit subject: what came of the note.'),
                     ],
                 ],
-            ], ['file', 'date', 'category', 'status', 'tool', 'tools', 'title', 'closedBy'])),
+            ], ['file', 'date', 'category', 'status', 'model', 'tool', 'tools', 'title', 'closedBy'])),
         ], ['count', 'notes']);
     }
 

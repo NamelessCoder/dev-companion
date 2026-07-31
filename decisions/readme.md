@@ -97,6 +97,7 @@ the repository has moved furthest away from since. Going back to one and adding
 | 2026-07-31 | [`D-FBK-1`](feedback/fbk-1-the-backlog-is-read-out-rather-than-enforced.md) | The backlog is read out rather than enforced | feedback | standing |
 | 2026-07-31 | [`D-FBK-2`](feedback/fbk-2-the-order-of-the-work-is-declared-not-inferred.md) | The order of the work is declared, not inferred | feedback | standing |
 | 2026-07-31 | [`D-FBK-3`](feedback/fbk-3-a-session-is-handed-one-todo-not-the-file.md) | A session is handed one todo, not the file | feedback | standing |
+| 2026-07-31 | [`D-FBK-4`](feedback/fbk-4-the-model-is-asked-because-nothing-else-can-say-it.md) | The model is asked, because nothing else here can say it | feedback | standing |
 | 2026-07-31 | [`D-VER-4`](versions/ver-4-a-supported-range-is-a-property-of-the-package.md) | A supported range is a property of the package, not of the checkout | versions | standing |
 | 2026-07-30 | [`D-ANS-2`](answers/ans-2-three-numbers-decide-what-a-lookup-answers.md) | Three numbers now decide what a lookup answers, and they were measured, not reasoned | answers | standing |
 | 2026-07-30 | [`D-ANS-3`](answers/ans-3-retrieval-stays-lexical-and-runtime-inspection-stays-narrow.md) | Retrieval stays lexical and runtime inspection stays narrow | answers | standing |

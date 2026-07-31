@@ -26,6 +26,10 @@ final class Feedback
 
     private const MAX_FIELD_LENGTH = 4000;
     private const MAX_SLUG_LENGTH = 48;
+    private const MAX_MODEL_LENGTH = 80;
+
+    /** What a note says about the model where none was named. */
+    public const UNATTRIBUTED = 'unknown';
 
     /** Separates the commits in the log the closed notes are read from. */
     private const COMMIT_MARKER = "\x00";
@@ -62,6 +66,7 @@ final class Feedback
         $tools = self::toolNames($args['tool'] ?? null);
         $query = self::text($args['query'] ?? '');
         $suggestion = self::text($args['suggestion'] ?? '');
+        $model = self::model($args['model'] ?? null);
 
         $directory = Paths::feedback();
         if (!is_dir($directory) && !mkdir($directory, 0775, true) && !is_dir($directory)) {
@@ -69,7 +74,7 @@ final class Feedback
         }
 
         $file = self::uniquePath($directory, $observation);
-        $document = self::render($observation, $category, $tools, $query, $suggestion, self::origin());
+        $document = self::render($observation, $category, $tools, $query, $suggestion, $model, self::origin());
 
         if (file_put_contents($file, $document) === false) {
             throw new \RuntimeException(sprintf('Cannot write the feedback note: %s', $file));
@@ -81,7 +86,7 @@ final class Feedback
     /**
      * Reads recorded notes, newest first.
      *
-     * @return array<int, array{file: string, date: string, category: string, status: string, tool: string, tools: array<int, string>, title: string, closedBy: ?array{commit: string, date: string, subject: string}}>
+     * @return array<int, array{file: string, date: string, category: string, status: string, model: string, tool: string, tools: array<int, string>, title: string, closedBy: ?array{commit: string, date: string, subject: string}}>
      */
     public static function notes(
         ?string $status = 'open',
@@ -149,7 +154,7 @@ final class Feedback
      * the checkout has no history, there is no closed half and the list says
      * so by being empty.
      *
-     * @return array<int, array{file: string, date: string, category: string, status: string, tool: string, tools: array<int, string>, title: string, closedBy: array{commit: string, date: string, subject: string}}>
+     * @return array<int, array{file: string, date: string, category: string, status: string, model: string, tool: string, tools: array<int, string>, title: string, closedBy: array{commit: string, date: string, subject: string}}>
      */
     private static function closed(int $limit): array
     {
@@ -194,6 +199,7 @@ final class Feedback
                     // commit that closed it.
                     'category' => '',
                     'status' => 'closed',
+                    'model' => '',
                     'tool' => '',
                     'tools' => [],
                     'title' => self::titleFromFileName($path),
@@ -256,7 +262,7 @@ final class Feedback
     }
 
     /**
-     * @return array{file: string, date: string, category: string, status: string, tool: string, tools: array<int, string>, title: string, closedBy: null}|null
+     * @return array{file: string, date: string, category: string, status: string, model: string, tool: string, tools: array<int, string>, title: string, closedBy: null}|null
      */
     private static function parse(string $file): ?array
     {
@@ -287,6 +293,9 @@ final class Feedback
             'date' => $meta['date'] ?? '',
             'category' => $meta['category'] ?? 'idea',
             'status' => $meta['status'] ?? 'open',
+            // A note written before the field existed carries no model, which
+            // is the same thing the field says when it was not answered.
+            'model' => $meta['model'] ?? self::UNATTRIBUTED,
             // Both: the string is what a note has always carried, the list is
             // what a caller can filter or group by without parsing it back.
             'tool' => implode(', ', $tools),
@@ -328,12 +337,18 @@ final class Feedback
         array $tools,
         string $query,
         string $suggestion,
+        string $model,
         string $origin,
     ): string {
         $frontMatter = [
             'date: ' . date('c'),
             'category: ' . $category,
             'status: open',
+            // Always written, "unknown" included: a note that carries no model
+            // at all is indistinguishable from one recorded before the field
+            // existed, and the whole point of the field is that an unattributed
+            // note says so.
+            'model: ' . $model,
         ];
         if ($tools !== []) {
             $frontMatter[] = 'tool: ' . implode(', ', $tools);
@@ -413,6 +428,30 @@ final class Feedback
     private static function category(mixed $value): string
     {
         return is_string($value) && in_array($value, self::CATEGORIES, true) ? $value : 'idea';
+    }
+
+    /**
+     * The model that left the note, as it named itself.
+     *
+     * Half the notes this server receives are about what a session did rather
+     * than about what an answer said — a skill whose steps were read and not
+     * run, a tool nothing reached for. That is behaviour, and behaviour belongs
+     * to one model: without the name, two models' habits arrive as one
+     * undifferentiated report and neither can be worked off.
+     *
+     * The schema asks for it and the write never fails on it. A note is worth
+     * more than its attribution, and a missing name is recorded as
+     * "unknown" — which is also what a model that does not know its own
+     * identifier is asked to send, because an invented one is worse than none.
+     */
+    private static function model(mixed $value): string
+    {
+        $model = is_string($value) ? trim((string) preg_replace('/\s+/', ' ', $value)) : '';
+        if ($model === '') {
+            return self::UNATTRIBUTED;
+        }
+
+        return strlen($model) > self::MAX_MODEL_LENGTH ? substr($model, 0, self::MAX_MODEL_LENGTH) : $model;
     }
 
     /**

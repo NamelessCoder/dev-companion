@@ -9,6 +9,7 @@ use PHPUnit\Framework\TestCase;
 use Typo3CmsMcp\Feedback;
 use Typo3CmsMcp\Instance;
 use Typo3CmsMcp\Paths;
+use Typo3CmsMcp\Tools;
 
 /**
  * Feedback is the one part of the server that writes, so these tests write too.
@@ -97,6 +98,60 @@ final class FeedbackTest extends TestCase
             'directory:',
             (string) file_get_contents(Paths::root() . '/' . $file)
         );
+    }
+
+    #[Test]
+    public function aNoteSaysWhichModelLeftIt(): void
+    {
+        // Half the notes are about what a session did rather than about what an
+        // answer said, and that is one model's behaviour. Unattributed, two
+        // models' habits arrive as one report.
+        $file = Feedback::record([
+            'observation' => self::MARKER . ' the skill was read and its lookups were not run',
+            'model' => 'claude-opus-5',
+        ]);
+
+        self::assertStringContainsString(
+            'model: claude-opus-5',
+            (string) file_get_contents(Paths::root() . '/' . $file)
+        );
+        self::assertSame('claude-opus-5', self::noteFor($file)['model']);
+    }
+
+    #[Test]
+    public function aNoteWithoutAModelSaysSoRatherThanCarryingNone(): void
+    {
+        // The write never fails on the attribution — the note is worth more
+        // than the name — but an unattributed one says it is unattributed,
+        // which a missing front-matter line cannot.
+        $file = Feedback::record(['observation' => self::MARKER . ' recorded by nobody in particular']);
+
+        self::assertStringContainsString(
+            'model: unknown',
+            (string) file_get_contents(Paths::root() . '/' . $file)
+        );
+        self::assertSame(Feedback::UNATTRIBUTED, self::noteFor($file)['model']);
+    }
+
+    #[Test]
+    public function theRecordedNoteIsReportedWhereItActuallyIs(): void
+    {
+        // A relative path is relative to somewhere the caller has never been:
+        // one recorded from a site package was reported as feedback/<name>.md,
+        // looked for under that project, not found, and reported back as a
+        // failed write.
+        $result = Tools::call('typo3_feedback_record', [
+            'observation' => self::MARKER . ' recorded through the tool',
+            'model' => 'claude-opus-5',
+        ]);
+
+        $path = $result->data['path'] ?? '';
+        self::assertIsString($path);
+        self::assertStringStartsWith(Paths::root() . '/feedback/', $path);
+        self::assertFileExists($path);
+        self::assertStringContainsString($path, $result->text);
+        // And it says whose checkout that is, because the caller cannot tell.
+        self::assertStringContainsString('not the project you are working in', $result->text);
     }
 
     #[Test]
@@ -228,7 +283,7 @@ final class FeedbackTest extends TestCase
     }
 
     /**
-     * @return array{file: string, date: string, category: string, status: string, tool: string, tools: array<int, string>, title: string}
+     * @return array{file: string, date: string, category: string, status: string, model: string, tool: string, tools: array<int, string>, title: string}
      */
     private static function noteFor(string $file): array
     {

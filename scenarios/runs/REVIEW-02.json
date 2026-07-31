@@ -47,5 +47,5 @@
             "evidence": ""
         }
     ],
-    "notes": ""
+    "notes": "Setup, written before the session because the run outlives the todo item that says it. E-EXT is played by /home/benji/projects/bootstrap_package: a standalone extension repository, TYPO3 14.3.0 below .build/vendor, DDEV project bootstrap-package, ^13.4 || ^14.3 and complete static quality infrastructure.\n\nThis server is not a Composer dependency of that checkout. The tools therefore run live out of this repository — `php /home/benji/projects/typo3-cms-mcp/bin/typo3-cms-mcp`, the absolute entrypoint the installer falls back to when nothing sits at the project's bin directory — so `server` above is exact for them. The skills are a copy, published into .claude/skills by `install --agent=claude` run from the project root, and nothing reports it when that copy is older than the server. Republish immediately before the session and the two agree.\n\nWhat the setup left in the working tree, so a finding about it can be told from a defect of the checkout: an untracked .mcp.json, a .gitignore carrying the generated ignore block, and .claude/ plus typo3-cms-mcp.json ignored by it. A staged composer.json change and the .mcp.json predate this work and belong to another session."
 }

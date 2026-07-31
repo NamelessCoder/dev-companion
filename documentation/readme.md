@@ -11,6 +11,7 @@ carries it. Both happened here before this directory existed.
 
 | Page | What it carries |
 | --- | --- |
+| [the-record.md](the-record.md) | How work moves between `feedback/`, `requirements/`, `decisions/` and `todo.md`, and what `bin/cli next` calls due |
 | [installation.md](installation.md) | Every client and layout the installer supports, and the configuration each one gets |
 | [working-on-the-server.md](working-on-the-server.md) | The commands this repository is kept in order by, the core checkouts, the test suite |
 | [forward-runs.md](forward-runs.md) | Running a forward review, judging it, and what to do when one stops without an error |

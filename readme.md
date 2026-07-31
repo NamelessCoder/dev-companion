@@ -41,12 +41,14 @@ instructions it sends at initialize and in `typo3_server_scope`. Supporting a
 second query language would mean translating the knowledge base, not the
 query — a lexical matcher has nothing else to match on.
 
-**It is a conventions catalog, not a patch assistant.** It cannot see your
-branch, your changed files, or which tests cover them — that stays the agent's
-job in the checkout. What it does is answer, for a concrete task or path, which
-conventions apply and which check to run. `typo3_server_scope` states this
-boundary in full, and `typo3_task_guide` names what has to be established in the
-checkout.
+**It writes no patch; it is what one is written from.** Which files changed,
+which branch you are on and which tests cover them stay in the checkout and are
+read there. Everything the writing needs is here: which conventions govern a
+concrete path, which markup, icon identifier and XLF resource have to be
+literally right, which deprecation lands in between, which check the change has
+to survive, and what the commit message says. `typo3_server_scope` states that
+division of labour in full, and `typo3_task_guide` names what has to be
+established in the checkout.
 
 **The conventions are the core's own**, and several of them — the changelog, the
 Gerrit workflow, the `runTests.sh` suites — have no counterpart in a project or

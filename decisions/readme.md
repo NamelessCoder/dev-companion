@@ -89,6 +89,7 @@ the repository has moved furthest away from since. Going back to one and adding
 | --- | --- | --- | --- | --- |
 | 2026-08-01 | [`D-SKL-1`](task-skills/skl-1-the-order-a-task-starts-in-is-one-file.md) | The order a task starts in is one file, and the reading comes last in it | task-skills | tested |
 | 2026-07-31 | [`D-AUD-3`](audience/aud-3-the-instructions-carry-the-entry-point.md) | The instructions carry the entry point, because the tool descriptions never arrive | audience | standing |
+| 2026-07-31 | [`D-DIS-5`](discovery/dis-5-a-registry-with-no-command-is-read-by-booting-the-installation.md) | A registry with no console command is read by booting the installation | discovery | standing |
 | 2026-07-31 | [`D-EVI-1`](evidence/evi-1-forward-evidence-comes-from-a-review.md) | Forward evidence comes from a review, not from a prompt that knows the answer | evidence | standing |
 | 2026-07-31 | [`D-EVI-2`](evidence/evi-2-a-skill-crossing-is-read-rather-than-run.md) | A skill crossing is read rather than run | evidence | standing |
 | 2026-07-31 | [`D-EVI-3`](evidence/evi-3-a-review-runs-the-checks-that-cannot-change-the-code.md) | A review runs the checks that cannot change the code | evidence | standing |

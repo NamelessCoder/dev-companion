@@ -4,3 +4,9 @@ parameters:
         - bin
         - src
         - tests
+    # src/Runtime/probe.php is not this server's code path: it is delivered to
+    # the discovered installation and runs there, against TYPO3 classes this
+    # repository deliberately does not depend on. Analysing it here would mean
+    # requiring the core to analyse a file that never executes in this process.
+    excludePaths:
+        - src/Runtime/probe.php

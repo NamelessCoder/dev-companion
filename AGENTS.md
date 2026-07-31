@@ -12,6 +12,8 @@ src/Mcp/           # SDK handlers: tool dispatch and typo3://core resources
 src/Catalog/       # the component catalog and the translation domain derivation
 src/Documentation.php  # reads the public index and pages of versioned TYPO3 manuals
 src/Instance.php   # finds the TYPO3 installation the agent is working in
+src/Typo3Runtime.php   # boots that installation in a subprocess and asks its container
+src/Runtime/probe.php  # what runs over there; never included here
 src/Installer.php  # writes guarded generic or agent-specific client setup
 src/Project.php    # the repository around it; src/Extension.php one extension in it
 src/Profile.php    # which half of the server a client is offered (TYPO3_MCP_PROFILE)
@@ -259,10 +261,17 @@ version says so; see the audience requirements in `requirements/audience/`.
 - Everything the tools answer from lives below `knowledge/`, with one exception:
   facts owned by an installation are read from that installation, because no
   bundled answer could be right for it. Runtime registries use `Typo3Cli` where
-  TYPO3 exposes a command; package-owned registries and component contracts read
-  the files those packages ship without executing them. Add to `knowledge/` by
-  default; reach for the installation only when the answer genuinely depends on
-  which packages and TYPO3 version are active.
+  TYPO3 exposes a command and `Typo3Runtime` where it does not — that boots the
+  installation in a subprocess and asks its container, which is the only source
+  that knows what a package registers dynamically. Component contracts and the
+  fallbacks read the files those packages ship without executing them. An answer
+  that came from the files where the container was meant to answer says so and
+  says what it leaves out: a **failsafe** container is core-only and looks
+  complete, so it is never handed on. Add to `knowledge/` by default; reach for
+  the installation only when the answer genuinely depends on which packages and
+  TYPO3 version are active. The order those three are asked in, how the probe is
+  delivered, and what a fallback owes the caller:
+  [documentation/asking-the-installation.md](documentation/asking-the-installation.md).
 - Checkout discovery is enabled per entrypoint and never derived from `getcwd()`
   on its own. Only `bin/typo3-cms-mcp` calls `Instance::discoverFrom()`: a
   request-serving endpoint has no such relationship to its callers, and its

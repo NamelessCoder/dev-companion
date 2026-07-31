@@ -214,6 +214,86 @@ final class Typo3Cli
     }
 
     /**
+     * Runs PHP inside the installation and returns what it printed.
+     *
+     * The console answers what a command exists for. Everything else an
+     * installation knows — its icon registry, its TCA — has no command, and
+     * reading it means booting TYPO3 and asking the container. That happens
+     * here, in a subprocess, for the same reason every console call does: the
+     * installation's autoloader, its PHP version and its extensions stay on the
+     * other side of a process boundary.
+     *
+     * The code is delivered base64-encoded inside an `eval`, and that is not
+     * decoration. `ddev exec` joins its arguments and hands the line to bash,
+     * so a payload travels through one shell whose quoting nobody controls
+     * from here; an encoded one carries no character that shell could act on.
+     *
+     * @return array{ok: bool, exitCode: int, output: string, error: string}
+     */
+    public static function php(string $code): array
+    {
+        $invocation = self::resolve();
+        if ($invocation === null) {
+            return ['ok' => false, 'exitCode' => -1, 'output' => '', 'error' => self::reason()];
+        }
+
+        $interpreter = self::interpreter($invocation);
+        if ($interpreter === null) {
+            return [
+                'ok' => false,
+                'exitCode' => -1,
+                'output' => '',
+                'error' => sprintf(
+                    '%s names "%s", and no interpreter can be derived from it — only what a console command '
+                        . 'answers is available here',
+                    self::CONSOLE_VARIABLE,
+                    implode(' ', $invocation['command'])
+                ),
+            ];
+        }
+
+        $command = array_merge($interpreter, ['-r', sprintf('eval(base64_decode("%s"));', base64_encode($code))]);
+
+        return self::execute($command, Instance::root() ?? getcwd() ?: '.');
+    }
+
+    /**
+     * The same way in, pointed at PHP itself rather than at the console.
+     *
+     * A stated console is a transport plus a binary — `ddev exec .build/bin/typo3`,
+     * `docker compose exec web bin/typo3` — and the transport is what this
+     * server could never have worked out on its own. So the transport is kept
+     * and the binary is exchanged, which is the opposite of answering from
+     * somewhere the caller did not name: it is the same machine, the same
+     * container, one program along.
+     *
+     * @param array{command: array<int, string>, via: string, php: string} $invocation
+     * @return array<int, string>|null
+     */
+    private static function interpreter(array $invocation): ?array
+    {
+        if ($invocation['via'] === self::VIA_PHP) {
+            return [$invocation['command'][0]];
+        }
+        if ($invocation['via'] === self::VIA_DDEV) {
+            return ['ddev', 'exec', '--', 'php'];
+        }
+
+        $command = $invocation['command'];
+        // Already an interpreter in front: the console argument simply goes.
+        if (str_starts_with(basename($command[0]), 'php')) {
+            return [$command[0]];
+        }
+        $last = array_key_last($command);
+        if ($last === 0 || !str_contains(basename((string) $command[$last]), 'typo3')) {
+            return null;
+        }
+        $command[$last] = 'php';
+
+        return $command;
+    }
+
+    /**
      * Runs a command that speaks JSON and returns what it decoded.
      *
      * Some commands print a SymfonyStyle title before the payload and some
@@ -486,6 +566,23 @@ final class Typo3Cli
         $binDir = rtrim($binDir, '/');
 
         return $binDir === '' || str_starts_with($binDir, '/') ? null : $binDir;
+    }
+
+    /**
+     * The installation's autoloader, relative to its root.
+     *
+     * Relative because the two sides of DDEV do not share absolute paths: the
+     * subprocess starts in the root, and inside the container that same root is
+     * /var/www/html. A vendor directory declared as an absolute path is left at
+     * the default for the same reason the console is.
+     */
+    public static function autoloader(string $root): string
+    {
+        $config = self::manifest($root)['config'] ?? [];
+        $vendorDir = is_array($config) ? ($config['vendor-dir'] ?? null) : null;
+        $vendorDir = is_string($vendorDir) ? rtrim(trim($vendorDir), '/') : '';
+
+        return ($vendorDir === '' || str_starts_with($vendorDir, '/') ? 'vendor' : $vendorDir) . '/autoload.php';
     }
 
     /**

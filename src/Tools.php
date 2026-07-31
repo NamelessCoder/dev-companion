@@ -287,7 +287,7 @@ final class Tools
             ],
             [
                 'name' => 'typo3_icon_lookup',
-                'description' => 'Validate or find an icon identifier in the TYPO3 backend icon registry of the installation you are working in. The registry is assembled from the T3Icons set, the Configuration/Icons.php of every installed package, and the flag images, so a project extension\'s icons are in the answer. Identifiers spell shapes rather than intents, so concept words are mapped: "warning" finds actions-exclamation-triangle. Backend only: the identifiers are resolved by IconFactory and rendered by <core:icon>, and a frontend template can use neither.',
+                'description' => 'Validate or find an icon identifier in the TYPO3 backend icon registry of the installation you are working in. The registry is read from the running installation, so what a package registers in a loop or from ext_localconf.php is in the answer as well as what its Configuration/Icons.php declares; where the installation cannot be booted — no console, or a checkout with no configuration yet — the T3Icons set, the package registration files and the flag images are read instead, answeredBy says \'packages\', and the answer states what that leaves out. Identifiers spell shapes rather than intents, so concept words are mapped: "warning" finds actions-exclamation-triangle. Backend only: the identifiers are resolved by IconFactory and rendered by <core:icon>, and a frontend template can use neither.',
                 'inputSchema' => [
                     'type' => 'object',
                     'properties' => [
@@ -2844,6 +2844,14 @@ final class Tools
         $query = trim((string) ($args['query'] ?? ''));
         $limit = (int) ($args['limit'] ?? 40);
         $scope = self::ICON_SCOPE;
+        // Where the registry could not be read from the booted installation,
+        // the scope sentence says so. Every answered path below carries that
+        // sentence, and a line of its own is one a caller reading the matches
+        // would skip.
+        $limitation = InstalledIcons::limitation();
+        if ($limitation !== '') {
+            $scope .= ' This list is ' . $limitation . '.';
+        }
 
         if (!Instance::isAvailable()) {
             return self::consoleUnavailable(
@@ -2868,7 +2876,7 @@ final class Tools
                 'categories' => InstalledIcons::categories(),
                 'concepts' => array_keys($concepts),
                 'scope' => $scope,
-                'answeredBy' => 'installation',
+                'answeredBy' => InstalledIcons::answeredBy(),
             ]);
         }
 
@@ -2904,7 +2912,7 @@ final class Tools
                     'exactMatch' => false,
                     'icons' => [],
                     'scope' => $scope,
-                    'answeredBy' => 'installation',
+                    'answeredBy' => InstalledIcons::answeredBy(),
                 ],
             );
         }
@@ -2955,7 +2963,7 @@ final class Tools
             'exactMatch' => $exactMatch,
             'icons' => $shown,
             'scope' => $scope,
-            'answeredBy' => 'installation',
+            'answeredBy' => InstalledIcons::answeredBy(),
         ]);
     }
 

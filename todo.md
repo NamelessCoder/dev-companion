@@ -86,20 +86,27 @@ that version, every requirement fails at once and not one of them says so.
 
 ---
 
-## Say which registration file could not be read statically
+## Take the extension scope through the booted installation too
 
-**Serves:** R-ANS-12, R-PRJ-5
+**Serves:** R-DIS-19, R-PRJ-5, R-ANS-12
 
-`PhpArray::keys()` now returns nothing for a file that builds its list at
-runtime, which is why `georgringer/news` no longer reports `provider` and
-`source` as icons — and also why it now reports no icons at all for an extension
-that registers 26. An empty section is omitted from the `typo3_extension_scope`
-answer, so "there is no `Configuration/Icons.php`" and "there is one and nothing
-in it can be read" arrive as the same silence, and R-ANS-12 asks for the
-difference. Carry the files that exist and yielded nothing out of
-`Extension::describe()` as a field of their own, declare it in `ToolSchemas` on
-every path including the miss, and render one line naming them — the extension
-declares icons this server cannot enumerate without running the file.
+`Typo3Runtime` exists and the icon registry goes through it; `typo3_extension_scope`
+still answers from the files alone. Take the topics the probe already returns —
+`tables` and `contentElements` — into `Extension::describe()` the way the icons
+went into `InstalledIcons`: the container decides what there is, the files keep
+saying where each one comes from, and an entry is attributed to its extension by
+the `EXT:<key>/` the registry carries. A table an extension adds through a PHP
+call and a CType whose value came out of a variable are exactly what the reviews
+of 2026-07-31 got wrong, and both are in `$GLOBALS['TCA']` after the boot.
+
+Where the boot did not happen the parsed list stays, and this is where the half
+that is still open sits: an empty section is omitted from the answer, so "there
+is no `Configuration/Icons.php`" and "there is one and nothing in it can be read
+statically" arrive as the same silence — which R-ANS-12 asks to tell apart.
+Carry the files that exist and yielded nothing as a field of their own, declare
+it in `ToolSchemas` on every path including the miss, and name them in one line.
+The prose that says "declaration files are parsed, never executed" in
+`readme.md` and in the tool's own description moves with all of it.
 
 ## Put the deprecation sweep and the escaping sink into the ordered work
 

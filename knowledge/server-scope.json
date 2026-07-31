@@ -117,7 +117,7 @@
     },
     {
       "topic": "What the installation you are working in supplies: backend component contracts, labels, icons, backend modules, Fluid namespaces, effective configuration",
-      "depth": "Answered by that installation rather than from a snapshot, across the packages it has active — project extensions included. Component presence, classes and custom properties come from the installed backend CSS and JavaScript, with installed styleguide markup where available. Label reuse is restricted to the XLF resource used at the consuming code; an instance-wide match from another resource is discovery, not a reuse candidate. Its console does the answering wherever a command exists; package files answer where there is no command or no reachable console. Every answer identifies its source, so a fallback stays visible.",
+      "depth": "Answered by that installation rather than from a snapshot, across the packages it has active — project extensions included. Component presence, classes and custom properties come from the installed backend CSS and JavaScript, with installed styleguide markup where available. Label reuse is restricted to the XLF resource used at the consuming code; an instance-wide match from another resource is discovery, not a reuse candidate. Its console does the answering wherever a command exists, and where none does — the icon registry — TYPO3 is booted in a subprocess and its container asked; package files answer where neither can be reached, or where the installation has no configuration yet and boots into a core-only failsafe container. Every answer identifies its source, so a fallback stays visible.",
       "tools": [
         "typo3_component_lookup",
         "typo3_label_lookup",

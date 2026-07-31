@@ -27,3 +27,4 @@ when it is added.
 | [`R-DIS-16`](dis-16-a-repository-that-serves-two-majors-is-answered-for-both.md) | A repository that serves two majors is answered for both | held |
 | [`R-DIS-17`](dis-17-an-extension-below-tests-is-the-test-setups.md) | An extension below Tests/ is the test setup's | held |
 | [`R-DIS-18`](dis-18-a-console-command-never-inherits-the-clients-stdin.md) | A console command never inherits the client's stdin | held |
+| [`R-DIS-19`](dis-19-a-registry-with-no-command-is-answered-by-the-installation-itself.md) | A registry with no command is answered by the installation itself | held |

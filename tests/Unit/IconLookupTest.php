@@ -12,6 +12,8 @@ use Typo3CmsMcp\Instance;
 use Typo3CmsMcp\Scope;
 use Typo3CmsMcp\Tests\Support\TemporaryInstallation;
 use Typo3CmsMcp\Tools;
+use Typo3CmsMcp\Typo3Cli;
+use Typo3CmsMcp\Typo3Runtime;
 
 /**
  * Where the identifiers this tool answers with may be used.
@@ -29,6 +31,8 @@ final class IconLookupTest extends TestCase
         putenv(Instance::ROOT_VARIABLE);
         Instance::discoverFrom(null);
         InstalledIcons::forget();
+        Typo3Cli::forget();
+        Typo3Runtime::forget();
     }
 
     #[Test]
@@ -82,6 +86,26 @@ final class IconLookupTest extends TestCase
         $exact = Tools::call('typo3_icon_lookup', ['query' => 'actions-open']);
         self::assertTrue($exact->data['exactMatch']);
         self::assertSame(1, $exact->data['matchCount']);
+    }
+
+    #[Test]
+    public function aRegistryReadFromTheFilesSaysThatInTheAnswerItself(): void
+    {
+        // The registry the installation assembles is the one that knows what a
+        // package builds in a loop. This project has no console to boot it
+        // with, so the files are read — and an answer that does not say so is
+        // read as the whole registry by a review that then reports icons as
+        // unregistered because it could not see them.
+        Instance::discoverFrom($this->installationWithItsOwnIcon());
+
+        $result = Tools::call('typo3_icon_lookup', ['query' => 'acme-product']);
+
+        self::assertSame('packages', $result->data['answeredBy']);
+        self::assertStringContainsString('read from the package files', $result->text);
+        self::assertStringContainsString('has no TYPO3 console', $result->text, 'the reason travels with it');
+        self::assertStringContainsString('builds in a loop', $result->text);
+        // The answer itself still stands: what was read is right, not complete.
+        self::assertTrue($result->data['exactMatch']);
     }
 
     /** A Composer project whose own extension registers an icon. */

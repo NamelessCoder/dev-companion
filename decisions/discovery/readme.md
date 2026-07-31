@@ -9,6 +9,7 @@ one is added.
 
 | Decided | Id | What was decided | State |
 | --- | --- | --- | --- |
+| 2026-07-31 | [`D-DIS-5`](dis-5-a-registry-with-no-command-is-read-by-booting-the-installation.md) | A registry with no console command is read by booting the installation | standing |
 | 2026-07-29 | [`D-DIS-1`](dis-1-the-root-package-counts-as-an-installed-package.md) | The root package counts as an installed package | standing |
 | 2026-07-29 | [`D-DIS-2`](dis-2-discovery-honours-the-declared-vendor-dir-and-bin-dir.md) | Discovery honours the declared vendor-dir and bin-dir | standing |
 | 2026-07-29 | [`D-DIS-3`](dis-3-a-label-query-is-words-and-the-console-is-asked-with-a-regex.md) | A label query is words, and the console is asked with a regex | standing |

@@ -7,14 +7,20 @@ namespace Typo3CmsMcp;
 /**
  * The icon identifiers registered in the discovered installation.
  *
- * Unlike labels or backend modules there is no console command that exposes
- * the icon registry, so this reads the three places TYPO3 assembles it from:
- * the T3Icons set shipped with the core, the Configuration/Icons.php of every
- * installed package, and the flag images the registry adds lazily.
+ * Unlike labels or backend modules there is no console command that exposes the
+ * icon registry, so it is asked for twice over. `Typo3Runtime` boots the
+ * installation in a subprocess and reads the registry itself, which is the only
+ * source that knows what a package registers dynamically. Where that cannot be
+ * done — no console, or a system without configuration, which is the ordinary
+ * state of an extension repository — the three places TYPO3 assembles the
+ * registry from are read instead: the T3Icons set shipped with the core, the
+ * Configuration/Icons.php of every installed package, and the flag images.
  *
- * The registration files are parsed, never included. They are ordinary PHP that
- * would run in this process, and nothing about answering "is this identifier
- * registered" justifies executing a project's code.
+ * Nothing is ever included in this process. The registration files are parsed
+ * here; where they are executed, it is TYPO3 executing them in a process of its
+ * own, with its own autoloader and its own PHP.
+ *
+ * The two answers are not worth the same, and `limitation()` is what says so.
  */
 final class InstalledIcons
 {
@@ -66,9 +72,81 @@ final class InstalledIcons
             ];
         }
 
+        $icons = self::confirmed($icons);
         ksort($icons);
 
         return self::$icons = array_values($icons);
+    }
+
+    /**
+     * The registry as the booted installation has it, where it could be asked.
+     *
+     * Reading the files gets the registration shapes a parser can follow. What
+     * it cannot follow is a list built in a loop, an identifier assembled from
+     * a variable, a `registerIcon()` call in ext_localconf.php, and the entries
+     * TYPO3 derives from TCA — measured against a site with news installed, 25
+     * of 1314 identifiers exist only after the boot, and none of the 1289 read
+     * from files was wrong. So the runtime decides which identifiers there are,
+     * and the files keep saying where each one comes from.
+     *
+     * @param array<string, array{identifier: string, category: string, aliasOf: ?string, source: string}> $parsed
+     * @return array<string, array{identifier: string, category: string, aliasOf: ?string, source: string}>
+     */
+    private static function confirmed(array $parsed): array
+    {
+        $registered = Typo3Runtime::topic('icons');
+        if (!is_array($registered) || $registered === []) {
+            return $parsed;
+        }
+
+        $icons = [];
+        foreach ($registered as $identifier => $source) {
+            $identifier = strtolower((string) $identifier);
+            $icons[$identifier] = $parsed[$identifier] ?? [
+                'identifier' => $identifier,
+                'category' => self::category($identifier),
+                'aliasOf' => null,
+                // The file the registry resolves it to, which is the only
+                // attribution a runtime registration carries.
+                'source' => is_string($source) && $source !== '' ? $source : 'runtime',
+            ];
+        }
+
+        return $icons;
+    }
+
+    /**
+     * Where the answer comes from, in the vocabulary every tool reports it in:
+     * `installation` for the booted registry, `packages` for the files.
+     *
+     * Two answers of different worth must not read alike. A file-read registry
+     * is complete for everything declared and silent about everything else, and
+     * a caller comparing it against a directory of SVGs would report icons as
+     * unregistered that are registered in a loop.
+     */
+    public static function answeredBy(): string
+    {
+        $registered = Typo3Runtime::topic('icons');
+
+        return is_array($registered) && $registered !== [] ? 'installation' : 'packages';
+    }
+
+    /**
+     * What a file-read registry leaves out, with why it was read that way.
+     * Empty where the installation itself answered.
+     */
+    public static function limitation(): string
+    {
+        if (self::answeredBy() === 'installation') {
+            return '';
+        }
+
+        $reason = Typo3Runtime::reason();
+
+        return 'read from the package files rather than from the booted installation'
+            . ($reason === '' ? '' : ' — ' . $reason)
+            . '. Identifiers a package builds in a loop or registers from ext_localconf.php, and the ones '
+            . 'TYPO3 derives from TCA, are not in it';
     }
 
     /** Drops the memoized registry; for tests that move between installations. */

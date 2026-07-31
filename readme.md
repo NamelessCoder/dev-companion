@@ -75,8 +75,11 @@ extension has had its say — all of those are properties of an installation, no
 of TYPO3. So the server finds the installation you are working in and asks *it*,
 through its own console wherever a command exists: `language:domain:search`,
 `debug:backend:modules`, `fluid:namespaces`, `configuration:show`. The icon
-registry has no command, so it is read from the packages instead — parsed, never
-included. Discovery starts at the working directory
+registry has no command, so the installation is booted in a subprocess of its own
+and its container is asked directly; where that cannot be done — no console, or
+a checkout that has no configuration yet and comes up core-only — the packages
+are read instead, and the answer says which of the two it is and what the
+second one leaves out. Discovery starts at the working directory
 the MCP client launched the server in, and only `bin/typo3-cms-mcp` enables it:
 a request-serving endpoint has no such relationship to its callers, and its
 document root may itself sit inside an installation. Where the project runs

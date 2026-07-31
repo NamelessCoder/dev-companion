@@ -86,22 +86,6 @@ that version, every requirement fails at once and not one of them says so.
 
 ---
 
-## Add the `typo3-extension-upgrade` skill
-
-**Serves:** EXT-01, feedback/2026-07-30-173821-extension-upgrades-need-a-task-owned-workflow.md
-
-The run the note waited for exists — `scenarios/runs/REVIEW-02.json`, in
-`/home/benji/projects/news` — and it moved the note: the shared-versus-version-
-specific decisions are not the gap, the order is. So add a thin skill that owns
-the ordered work and nothing else: the deprecation sweep that is step 5 of
-`skills/base.md` since 2026-07-31 first, widened here by the extension scanner
-and the deprecation annotations, then Composer and PHP constraint resolution,
-the implementation boundary, and a Composer-resolved test matrix as proof. It
-starts from `skills/base.md` like every other skill and states only what it
-adds, so project and extension scope — and the sweep — are not restated in it. Keep concrete version facts out of it, publish it through
-`Installer`, add its forward acceptance result, and add the requirement and
-tests that hold only the behavior the run proves.
-
 ## Run the release note's query in `E-EXT`
 
 **Serves:** feedback/2026-07-30-174423-extension-releases-need-a-preparation-and-publication-workflow.md

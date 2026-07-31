@@ -44,6 +44,12 @@ final class SkillTest extends TestCase
             'typo3_label_lookup',
             'typo3_translation_domain_lookup',
         ],
+        'typo3-extension-upgrade' => [
+            'typo3_changelog_lookup',
+            'typo3_system_extension_lookup',
+            'typo3_architecture_lookup',
+            'typo3_documentation_lookup',
+        ],
     ];
 
     #[Test]
@@ -360,16 +366,19 @@ final class SkillTest extends TestCase
     /**
      * Judgment is what a checklist is for, and it is also the thing a skill
      * grows a body around: the four that carry it keep it beside them rather
-     * than in the instruction every session pays for. Building a backend module
-     * is not one of them — it is construction, and what it needs is the
-     * registries, which are tools rather than a list.
+     * than in the instruction every session pays for. Two are not among them.
+     * Building a backend module is construction, and what it needs is the
+     * registries, which are tools rather than a list. An upgrade is construction
+     * too, and its work list is produced by the sweep rather than read off a
+     * rubric — what it would otherwise judge, whether the package is sound in
+     * the first place, it hands to the skill whose checklist already covers it.
      */
     #[Test]
     public function judgmentHeavySkillsKeepTheirChecklistBesideThem(): void
     {
         $judging = array_diff(
             array_keys(self::ROUTING_SKILLS),
-            ['typo3-backend-module-development'],
+            ['typo3-backend-module-development', 'typo3-extension-upgrade'],
         );
 
         foreach ($judging as $name) {
@@ -488,6 +497,90 @@ final class SkillTest extends TestCase
             1,
             substr_count($skill, 'runTests.sh'),
             'the core build script is named more than once in an extension skill',
+        );
+    }
+
+    #[Test]
+    public function anUpgradeIsOrderedWorkAndOwnsOnlyTheCrossing(): void
+    {
+        // The REVIEW-02 run in an extension declaring two majors against an
+        // installation a major behind moved the note that asked for this skill:
+        // the shared-versus-version-specific decisions were not the gap, because
+        // the review made them — it argued the older major's registration shapes
+        // as required rather than as debt, and refused the same excuse for a
+        // deprecated ViewHelper shape that works on both. What it never did was
+        // work in an order: the sweep ran where a finding walked into it, and
+        // the Extension Scanner was not reached at all in a checkout that has
+        // one.
+        $skill = (string) file_get_contents(
+            Paths::root() . '/skills/typo3-extension-upgrade/SKILL.md',
+        );
+
+        $order = [
+            '[references/base.md](references/base.md)',
+            '## Widen the sweep into a work list',
+            '## Resolve the range, rather than assert it',
+            '## The boundary of what may change',
+            '## Prove it on every version it claims',
+        ];
+        $position = -1;
+        foreach ($order as $step) {
+            $next = strpos($skill, $step);
+            self::assertNotFalse($next, $step . ' is not part of the upgrade workflow');
+            self::assertGreaterThan($position, $next, $step . ' is stated out of order');
+            $position = $next;
+        }
+
+        // It starts from the base's sweep and states only what it adds, so the
+        // two scope calls that order already fixes appear nowhere here.
+        self::assertStringContainsString('starts from the result of that sweep rather than restating it', $skill);
+        self::assertStringNotContainsString('typo3_project_scope', $skill);
+        self::assertStringNotContainsString('typo3_extension_scope', $skill);
+
+        // What it adds to the sweep is the two sources a changelog query cannot
+        // reach. The scanner because the run never touched it, and the
+        // annotations because the deprecation that decided that package's next
+        // major sat on the installed class rather than in an entry any of the
+        // four queries matched.
+        self::assertStringContainsString('`type: breaking`', $skill);
+        self::assertStringContainsString('**The Extension Scanner**', $skill);
+        self::assertStringContainsString('`FullyScanned` / `PartiallyScanned`', $skill);
+        self::assertMatchesRegularExpression('/A clean scan for a\s+partially scanned entry is not a result/', $skill);
+        self::assertStringContainsString('**The deprecation annotations on what this package actually calls**', $skill);
+
+        // And the boundary both of those inherit: they answer from the core that
+        // is installed, so the target's own changes are documentation until the
+        // installation is on it.
+        self::assertMatchesRegularExpression(
+            '/they do not know what the target major\s+changed until the installation is on it/',
+            $skill,
+        );
+        self::assertStringContainsString('never from memory', $skill);
+
+        // The decision the review already made correctly, which is why it is
+        // stated here as the boundary of the work rather than as a judgement to
+        // arrive at.
+        self::assertStringContainsString('lowest declared major decides every shape', $skill);
+        self::assertStringContainsString('not debt to clean up', $skill);
+
+        // A range is resolved by the solver, and a matrix cell that nobody ran
+        // or that will not resolve is a result rather than a gap in the report.
+        self::assertMatchesRegularExpression('/Let the dependency solver answer, and quote what it printed/', $skill);
+        self::assertStringContainsString('as a result — it is the finding', $skill);
+        self::assertStringContainsString('named as unrun', $skill);
+
+        // What it does not own, and the skill that hands it the sweep whole.
+        self::assertStringContainsString('This skill owns crossing a package', $skill);
+        foreach ([
+            'typo3-extension-conformance',
+            'typo3-extension-testing',
+            'typo3-extension-documentation',
+        ] as $owner) {
+            self::assertStringContainsString($owner, $skill, $owner . ' is not named where the upgrade stops');
+        }
+        self::assertMatchesRegularExpression(
+            '/What the sweep\s+returned goes to `typo3-extension-upgrade` whole/',
+            (string) file_get_contents(Paths::root() . '/skills/typo3-extension-conformance/SKILL.md'),
         );
     }
 

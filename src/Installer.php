@@ -13,6 +13,7 @@ final class Installer
         'typo3-extension-conformance',
         'typo3-extension-documentation',
         'typo3-extension-testing',
+        'typo3-extension-upgrade',
     ];
     private const BASE = 'references/base.md';
     private const STATE = 'typo3-cms-mcp.json';

@@ -1,10 +1,13 @@
 # EXT-01 — Making the extension run on the next major
 
-**Environment:** `E-EXT` · **Contract:** `open` — `R-AUD-1` and `R-SCO-2`
-held; what an extension author gets is still the core's conventions, filtered
+**Environment:** `E-EXT` · **Contract:** `held` — the multi-major upgrade
+workflow exists since 2026-07-31 and owns the order this case asks for
 **Held by:** `ScopeTest::noCoreScriptIsHandedToARepositoryThatDoesNotHaveIt`,
-`PackageSourcesTest::theChangelogOfTheInstalledCoreIsSearchable`; the
-multi-major upgrade workflow itself does not exist yet and is not guarded
+`PackageSourcesTest::theChangelogOfTheInstalledCoreIsSearchable`,
+`SkillTest::anUpgradeIsOrderedWorkAndOwnsOnlyTheCrossing`,
+`SkillTest::theDeprecationSweepRunsFromTheExtensionsSurfaceAndIsReportedWhenItFindsNothing`;
+that a session works in that order is `not guarded`, and by `D-EVI-2`'s
+reasoning no forward run will hold it — the wording is the proxy
 
 > Our extension supports TYPO3 12 and 13. The next major is out and I want to add
 > support for it without dropping 13. Go through the extension, find what breaks,

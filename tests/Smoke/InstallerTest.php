@@ -93,6 +93,7 @@ final class InstallerTest extends TestCase
                     'typo3-extension-conformance',
                     'typo3-extension-documentation',
                     'typo3-extension-testing',
+                    'typo3-extension-upgrade',
                 ],
             ], json_decode((string) file_get_contents($state), true, flags: JSON_THROW_ON_ERROR));
             $gitignore = (string) file_get_contents($directory . '/.gitignore');
@@ -104,6 +105,7 @@ final class InstallerTest extends TestCase
                 'typo3-extension-conformance',
                 'typo3-extension-documentation',
                 'typo3-extension-testing',
+                'typo3-extension-upgrade',
             ] as $publishedSkill) {
                 self::assertStringContainsString(
                     '/.agents/skills/' . $publishedSkill . "/\n",
@@ -116,6 +118,7 @@ final class InstallerTest extends TestCase
                 'typo3-extension-conformance',
                 'typo3-extension-documentation',
                 'typo3-extension-testing',
+                'typo3-extension-upgrade',
             ] as $publishedSkill) {
                 self::assertFileEquals(
                     Paths::root() . '/skills/' . $publishedSkill . '/SKILL.md',
@@ -138,6 +141,7 @@ final class InstallerTest extends TestCase
                 'typo3-extension-conformance',
                 'typo3-extension-documentation',
                 'typo3-extension-testing',
+                'typo3-extension-upgrade',
             ] as $publishedSkill) {
                 self::assertFileEquals(
                     Paths::root() . '/skills/base.md',
@@ -414,6 +418,7 @@ final class InstallerTest extends TestCase
             'typo3-extension-conformance',
             'typo3-extension-documentation',
             'typo3-extension-testing',
+            'typo3-extension-upgrade',
         ] as $skill) {
             $skillDirectory = $directory . '/.agents/skills/' . $skill;
             @unlink($skillDirectory . '/SKILL.md');

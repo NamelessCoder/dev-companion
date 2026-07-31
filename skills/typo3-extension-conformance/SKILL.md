@@ -104,8 +104,11 @@ thorough is to examine less.
 
 This skill owns assessment and prioritization, and it owns saying who takes each
 finding onward. Name the workflow the follow-up belongs to — the testing,
-documentation, backend-module or content-element skill — in the result itself,
-whether or not fixes were requested: a reader deciding what to do next needs
-that as much as a session that was told to do it. When fixes are requested, hand
-over to that skill for the changes in its area and keep conformance responsible
-for re-checking the resulting finding.
+documentation, backend-module, content-element or upgrade skill — in the result
+itself, whether or not fixes were requested: a reader deciding what to do next
+needs that as much as a session that was told to do it. When fixes are
+requested, hand over to that skill for the changes in its area and keep
+conformance responsible for re-checking the resulting finding. What the sweep
+returned goes to `typo3-extension-upgrade` whole: it owns crossing the package
+to another supported range, and a review that hands over one deprecation at a
+time has decided the order that workflow exists to establish.

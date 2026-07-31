@@ -15,3 +15,4 @@ when it is added.
 | [`R-SKL-4`](skl-4-an-assessment-establishes-its-base-before-opening-the-checkout.md) | An assessment establishes its base before opening the checkout | held |
 | [`R-SKL-5`](skl-5-the-order-a-task-starts-in-is-written-once.md) | The order a task starts in is written once | held |
 | [`R-SKL-6`](skl-6-how-a-skill-is-written-is-written-down-once.md) | How a skill is written is written down once | held |
+| [`R-SKL-7`](skl-7-an-upgrade-establishes-what-breaks-before-it-chooses-a-range.md) | An upgrade establishes what breaks before it chooses a range | held |

@@ -21,7 +21,14 @@ installation, never a verdict on it. What comes back is read against the
 checkout in both directions: a file that has settled into the opposite of a
 rule is a finding rather than a local style. A surface never asked about is
 reported as unassessed, because a defect nobody looked for and a defect that is
-not there are indistinguishable in a report that does not separate them.
+not there are indistinguishable in a report that does not separate them — which
+is why the deprecation sweep is reported when it comes back empty as well, with
+the majors it covered.
+
+A finding about escaping is held to the same distinction one surface further in:
+it is a claim about the sink, so it is not established until the tag, attribute,
+header or API that emits the value is named, and an escaping opt-out on the way
+there is part of the path rather than the end of it.
 
 **From:** the second `REVIEW-01` run (2026-07-31), which followed two of the
 conformance skill's seven evidence steps, read the site package's three XLF
@@ -40,9 +47,18 @@ same extension checkout on 2026-07-31, at 12:21 and at 13:32, neither of which
 produced a finding about static analysis in a repository with no analyser, no
 analysis step and no baseline — the second having run both declared checks and
 reported their ceiling instead, because the quality surface asked what the
-repository declares rather than what a complete check layer covers.
+repository declares rather than what a complete check layer covers. Extended
+again by the `REVIEW-02` run in an extension a major behind the world
+(2026-07-31), whose one finding with an active security consequence was an
+escaping opt-out in a template: every citation under it correct, and the output
+escaped anyway, because the six call sites sit in a ViewHelper that emits
+nothing and the core wraps the resolved title in `htmlspecialchars()` two
+classes further on. The run opened neither of them, and did open the core
+ViewHelper that confirmed what it already believed.
 
 **Held by:** `SkillTest::theBaseIsEstablishedBeforeTheCheckoutIsOpened`,
 `SkillTest::anAssessmentAsksBeforeItJudgesAndSaysWhatItDidNotAsk`,
+`SkillTest::anEscapingFindingIsNotEstablishedUntilItsSinkIs`,
+`SkillTest::theDeprecationSweepRunsFromTheExtensionsSurfaceAndIsReportedWhenItFindsNothing`,
 `SkillTest::theCheckLayerIsMeasuredAgainstACompleteOneRatherThanWhatIsDeclared`,
 `REVIEW-01`, `REVIEW-02`

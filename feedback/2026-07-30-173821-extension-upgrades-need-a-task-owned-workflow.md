@@ -32,10 +32,12 @@ superglobal access at all, across 24 `$GLOBALS['TSFE']` sites in 11 files, with
 `@deprecated since TYPO3 v13, will vanish during v14 development` sitting in the
 installed core. It found `renderStatic()` only because a ViewHelper finding
 walked it there. The extension scanner was never reached at all, on a checkout
-that has one available. That failure is written up on the review side in
-[2026-07-31-142347-an-extension-review-never-sweeps-the-installed-cores-deprecations.md](2026-07-31-142347-an-extension-review-never-sweeps-the-installed-cores-deprecations.md);
-this note keeps the upgrade side, where the same missing step decides whether
-"go through the extension and find what breaks" has an answer or a guess.
+that has one available. That failure was filed on the review side and answered
+there: the sweep is step 5 of `skills/base.md` since 2026-07-31, which is the
+step this skill starts from rather than restates
+([`R-SKL-5`](../requirements/task-skills/skl-5-the-order-a-task-starts-in-is-written-once.md)).
+This note keeps the upgrade side, where the same step decides whether "go through
+the extension and find what breaks" has an answer or a guess.
 
 The environment half is closed: `E-EXT` is played by a checkout with a major in
 front of it, named in `todo.md`, and `scenarios/runs/REVIEW-02.json` is the run.

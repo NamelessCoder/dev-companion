@@ -86,21 +86,6 @@ that version, every requirement fails at once and not one of them says so.
 
 ---
 
-## Put the deprecation sweep and the escaping sink into the ordered work
-
-**Serves:** REVIEW-02, feedback/2026-07-31-142347-an-extension-review-never-sweeps-the-installed-cores-deprecations.md, feedback/2026-07-31-142347-an-escaping-finding-is-written-without-following-the-value-to-its-sink.md
-
-This is why `REVIEW-02` stands at `partial` again, and it comes before the skill
-below because the skill's first step is the sweep. Two steps are missing from
-the evidence order, both of them the second half of a rule that is already
-written: a deprecation sweep driven by what `typo3_extension_scope` reports
-rather than by whatever a finding stumbles into, with the `FullyScanned` /
-`PartiallyScanned` tag carried into the answer — and the rule that a finding
-about escaping is a claim about a **sink**, so it is not established until the
-value has been followed to the thing that emits it. Decide for each whether it
-belongs in `skills/base.md` or in the conformance checklist, and hold the sweep
-with the assertion that a review which finds nothing says the sweep ran.
-
 ## Add the `typo3-extension-upgrade` skill
 
 **Serves:** EXT-01, feedback/2026-07-30-173821-extension-upgrades-need-a-task-owned-workflow.md
@@ -108,11 +93,12 @@ with the assertion that a review which finds nothing says the sweep ran.
 The run the note waited for exists — `scenarios/runs/REVIEW-02.json`, in
 `/home/benji/projects/news` — and it moved the note: the shared-versus-version-
 specific decisions are not the gap, the order is. So add a thin skill that owns
-the ordered work and nothing else: the evidence step above first, then Composer
-and PHP constraint resolution, the implementation boundary, and a Composer-
-resolved test matrix as proof. It starts from `skills/base.md` like every other
-skill and states only what it adds, so project and extension scope are not
-restated in it. Keep concrete version facts out of it, publish it through
+the ordered work and nothing else: the deprecation sweep that is step 5 of
+`skills/base.md` since 2026-07-31 first, widened here by the extension scanner
+and the deprecation annotations, then Composer and PHP constraint resolution,
+the implementation boundary, and a Composer-resolved test matrix as proof. It
+starts from `skills/base.md` like every other skill and states only what it
+adds, so project and extension scope — and the sweep — are not restated in it. Keep concrete version facts out of it, publish it through
 `Installer`, add its forward acceptance result, and add the requirement and
 tests that hold only the behavior the run proves.
 

@@ -20,6 +20,17 @@ project's own are known is a guess that sounds like advice.
 4. **`typo3_architecture_lookup`** for each subsystem in scope, with its concrete
    paths. One query per subsystem; a single broad query is not subsystem
    evidence.
+5. **`typo3_changelog_lookup` with `type: deprecation`**, at each major the
+   package declares, over the symbols and registration shapes step 2 reported
+   for the area in scope. The query set is derived from the extension's own
+   surface, which is why it can be written before a file is opened; a sweep left
+   to the reading reaches only what a finding stumbled into, and the deprecation
+   that decides whether the package survives the next major is not usually the
+   one a finding walks past. Verify each identifier that comes back in the
+   checkout — a deprecation nothing here calls is not a finding — and carry the
+   `FullyScanned` / `PartiallyScanned` tag into the answer, because it says
+   whether the Extension Scanner can find the remaining call sites or whether
+   that reading is yours.
 
 **Then** read the checkout. Not before: listing the files first makes everything
 after the listing look optional, and the conventions arrive as a footnote to a

@@ -59,3 +59,17 @@ the checkout sat relative to everything else.
   as established when they were derived. It is the first addition since the file
   was written, and the budget it spends is real: the next one is measured
   against a base a fifth longer than the one this decision called short.
+- **Since then:** the base grew a second time, on 2026-07-31, by a fifth
+  step — the deprecation sweep of the installed core over what the extension was
+  reported to ship. The `REVIEW-02` run that earned it is the one this decision's
+  **Wrong if** asks about, and the answer is the other one: the base was not
+  outrun, it was silent, and the run swept nothing because nothing told it to.
+  The step is in the base rather than in the conformance checklist because the
+  upgrade skill that is queued behind it starts with the same sweep, and a second
+  hand-written copy of an order is what this file exists to prevent. It pays for
+  itself twice over by deleting the weaker copy the conformance skill already
+  carried — the sweep "when an upgrade or a deprecated API is in scope", which is
+  the escape hatch that run took. The sink half of the same run went the other
+  way and stayed out of the base: an escaping finding is a claim about a sink, a
+  finding gate for one surface, and it sits in the checklist beside the gate it
+  qualifies, where only the skills that judge pay for it.

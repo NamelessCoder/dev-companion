@@ -38,7 +38,6 @@ final class SkillTest extends TestCase
         'typo3-extension-conformance' => [
             'typo3_architecture_lookup',
             'typo3_documentation_lookup',
-            'typo3_changelog_lookup',
         ],
         'typo3-extension-documentation' => [
             'typo3_documentation_lookup',
@@ -125,6 +124,83 @@ final class SkillTest extends TestCase
         // One hop, like every other reference: the base is read, not followed
         // onward.
         self::assertStringNotContainsString('(references/', $base);
+    }
+
+    #[Test]
+    public function theDeprecationSweepRunsFromTheExtensionsSurfaceAndIsReportedWhenItFindsNothing(): void
+    {
+        // REVIEW-02 against an extension declaring two majors on an
+        // installation a major behind: 24 $GLOBALS['TSFE'] call sites across 11
+        // files, the deprecation on the installed controller, and the frontend
+        // surface reported as carrying no superglobal access at all. The run
+        // called changelog_lookup four times and never once with
+        // type: deprecation — the one deprecated API it named, it reached
+        // because a ViewHelper finding walked it there. So the sweep is a step
+        // of the order and its query set comes from what the extension ships,
+        // not from what the reading happens to pass.
+        $base = (string) file_get_contents(Paths::root() . '/skills/base.md');
+
+        $sweep = strpos($base, 'typo3_changelog_lookup');
+        self::assertNotFalse($sweep, 'the base never sweeps the deprecations of the installed core');
+        self::assertGreaterThan((int) strpos($base, 'typo3_architecture_lookup'), $sweep);
+        self::assertLessThan(
+            (int) strpos($base, '**Then** read the checkout'),
+            $sweep,
+            'the sweep is left until after the checkout has been read',
+        );
+        self::assertStringContainsString('`type: deprecation`', $base);
+        self::assertMatchesRegularExpression(
+            '/query set is derived from the extension\'s own\s+surface/',
+            $base,
+        );
+        // And what the caller does with the answer: an identifier the checkout
+        // does not use is not a finding, and the tag decides who has to read
+        // the remaining call sites.
+        self::assertStringContainsString('Verify each identifier that comes back in the', $base);
+        self::assertStringContainsString('`FullyScanned` / `PartiallyScanned`', $base);
+
+        // Written once. The conformance skill carried the weaker copy — the
+        // sweep "when an upgrade or a deprecated API is in scope" — which is
+        // the escape hatch that run took: nothing had put a deprecated API in
+        // scope, so nothing swept.
+        $skill = (string) file_get_contents(
+            Paths::root() . '/skills/typo3-extension-conformance/SKILL.md',
+        );
+        self::assertStringNotContainsString('typo3_changelog_lookup', $skill);
+
+        // A sweep that is visible only when it produces a finding is
+        // indistinguishable from one that never ran, which is what made that
+        // run's clean frontend surface writable.
+        self::assertStringContainsString('the sweep ran and came back empty', $skill);
+    }
+
+    #[Test]
+    public function anEscapingFindingIsNotEstablishedUntilItsSinkIs(): void
+    {
+        // The same REVIEW-02 run reported an editor-supplied field rendered
+        // unescaped as its one finding with an active security consequence.
+        // Every citation under it was correct and the output is escaped anyway:
+        // the six call sites sit in a ViewHelper that emits nothing, and the
+        // core wraps the resolved title in htmlspecialchars() two classes
+        // further on — neither of which the run opened, while it did open the
+        // core ViewHelper that confirmed what it already believed.
+        $checklist = (string) file_get_contents(
+            Paths::root() . '/skills/typo3-extension-conformance/references/checklist.md',
+        );
+
+        self::assertMatchesRegularExpression(
+            '/escaping finding is a claim about a \*\*sink\*\* rather than about a call\s+site/',
+            $checklist,
+        );
+        self::assertStringContainsString('the tag, attribute, header or', $checklist);
+        // The half that decides this case: the opt-out the finding condemned is
+        // on the path to the sink rather than the end of it, and it is there
+        // because the sink escapes.
+        self::assertMatchesRegularExpression(
+            '/opt-out is part of the path to\s+that sink and never the end of it/',
+            $checklist,
+        );
+        self::assertStringContainsString('or report the finding as', $checklist);
     }
 
     #[Test]

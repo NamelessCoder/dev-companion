@@ -99,3 +99,14 @@ State missing evidence instead of inflating severity.
 A finding needs a concrete location, observed evidence, applicable rule or
 documentation, consequence, remediation, and relevant project check. Otherwise
 record it as a question or unverified category, not a violation.
+
+An escaping finding is a claim about a **sink** rather than about a call site,
+so it is not established until the sink is named: the tag, attribute, header or
+API the value is emitted through. An escaping opt-out is part of the path to
+that sink and never the end of it — a ViewHelper that hands its rendered
+children to another component emits nothing, and where the sink escapes on its
+own, the opt-out is what keeps the value from being encoded twice. Follow the
+value into the installed package that emits it, or report the finding as
+unverified. A security verdict is the expensive kind to get wrong: it has to be
+disproved before it can be dismissed, which costs the maintainer exactly the
+reading the review skipped.

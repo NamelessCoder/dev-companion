@@ -1,6 +1,6 @@
 ---
 date: 2026-07-31T14:23:47+02:00
-category: tool-gap
+category: idea
 status: open
 tool: typo3_task_guide, typo3_architecture_lookup
 ---
@@ -26,15 +26,11 @@ there. The workaround the finding condemned is the reason the result is correct.
 
 The rule the answer applied — *Fluid escapes output by default; do not work
 around it in the template* — is right, and applying it to a template line is the
-obvious move. What is missing is the second half: an escaping finding is a claim
-about a **sink**, not about a call site, so it is not established until the value
-has been followed to the thing that emits it. Here that was two classes in the
-installed core, neither of which the run opened, while it did open the core
-ViewHelper that told it what it already believed.
-
-This is a shape rather than an incident. A security verdict is the expensive
-kind to get wrong: it has to be disproved before it can be dismissed, and
-disproving it costs the maintainer the reading the review skipped.
+obvious move. What was missing is the second half, and that half is written
+since: an escaping finding is a claim about a **sink**, so it is not established
+until the value has been followed to the thing that emits it. It stands in the
+conformance checklist beside the finding gate it qualifies, held by
+`SkillTest::anEscapingFindingIsNotEstablishedUntilItsSinkIs`.
 
 ## Query
 
@@ -44,12 +40,12 @@ change files.
 
 ## Suggestion
 
-Say in the ordered work that a finding about escaping is not established until
-the sink is named — the tag, attribute, header or API the value reaches — and
-that a ViewHelper standing between the value and the output is part of the path
-rather than the end of it. The escaping architecture hint is the place it
-belongs, next to the rule it qualifies. It deserves a contract case of its own
-as well: an extension whose escaping opt-out is correct because its sink escapes
-is a small, checkable repository, and "does the review follow the value or stop
-at the opt-out" is exactly the kind of question a targeted case answers better
-than a forward run.
+What is left is the case that would measure it. An extension whose escaping
+opt-out is correct because its sink escapes is a small, checkable repository,
+and "does the review follow the value or stop at the opt-out" is exactly the
+kind of question a targeted contract case answers better than a forward run —
+a forward review reaches this shape only when a checkout happens to contain it,
+which is how the run above found it once and by accident. The case needs a
+repository built for it: no `E-EXT` checkout on this machine is known to carry a
+correct opt-out, so naming the environment is part of the work rather than a
+detail of writing the file.

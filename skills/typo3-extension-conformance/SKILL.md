@@ -47,9 +47,6 @@ one that already exists:
 - `typo3_documentation_lookup` with several short English queries and the
   target version where an official API or configuration detail decides the
   finding.
-- `typo3_changelog_lookup` for the installed core when an upgrade or a
-  deprecated API is in scope, and verify each identifier it names in the
-  checkout.
 
 The first two answer different questions and neither stands in for the other. A
 runtime lookup reports what is registered, what a path resolves to, what a value
@@ -73,6 +70,12 @@ that is present and was never asked about is **unassessed**, and unassessed is
 not clean: say so in the result. A defect nobody looked for and a defect that is
 not there read identically in a report that does not separate them. Distinguish
 a verified violation from a recommendation and from missing evidence.
+
+The deprecation sweep the base fixes is reported the same way, and a review that
+found nothing says the sweep ran and came back empty, with the majors it
+covered. A sweep that is only visible when it produces a finding cannot be told
+apart from one that never ran, and the surface it covers is the one whose silence
+reads as a clean bill for the next major.
 
 ## Report and improve
 

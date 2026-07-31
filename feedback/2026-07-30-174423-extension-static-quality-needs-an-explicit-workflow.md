@@ -9,18 +9,28 @@ tool: typo3_project_scope, typo3_extension_scope, typo3_task_guide, typo3_archit
 
 ## Observation
 
-PHPStan and CGL are release gates for an extension, not optional checks to
-mention after its behavioral tests pass. The testing skill can retain an
-existing architecture or static check, but it has no implementation guide for
-discovering, establishing, repairing and proving PHPStan and code-style
-infrastructure in a TYPO3 extension or sitepackage.
+Two recorded `REVIEW-02` runs now bound this, one against complete static
+quality infrastructure and one against half of it.
 
-Without that workflow an agent is likely to copy a core-only `runTests.sh`
-command, guess dependency constraints, grow a PHPStan baseline to hide new
-errors, run a formatter across unrelated code, or add CI configuration before a
-stable project-owned local command has passed. The answer also needs to
-distinguish analysis failures, coding-style violations, configuration defects
-and unsupported dependency combinations.
+Against bootstrap_package, where PHPStan and its baselines exist, the review
+read them rather than replacing them: the baseline is judged a work list for the
+release that drops 13.4, the existing suppressions are argued to be correct
+while 13.4 is supported, and what comes out are verification gaps inside the
+infrastructure that is there.
+
+Against `bk2k/syntax`, which has php-cs-fixer and phplint but no PHPStan, no
+baseline, no analysis step and no `Tests/` at all, the review never named static
+analysis. Its leading finding is that a 2×4 CI matrix runs two
+version-independent steps and proves nothing beyond "the files parse" — correct,
+and it remediates with a PHPUnit harness alone. A missing static quality
+workflow surfaces as a missing *test* workflow, and lands in
+`typo3-extension-testing`, whose only sentence on the subject sends it back:
+static checks are added "only when the project already uses them".
+
+So the gap is not that an agent copies a core-only `runTests.sh`, grows a
+baseline to hide errors, or formats unrelated files — neither run did any of
+that. It is that nothing establishes the infrastructure in the first place, and
+the skill that would own it declines by its own rule.
 
 ## Query
 
@@ -39,7 +49,7 @@ make CI invoke the commands that passed locally. New errors must be fixed rather
 than added to a baseline, and automatic formatting must stay scoped to intended
 first-party files.
 
-Create a forward scenario for a reusable extension with incomplete static
-quality infrastructure. Split this into a separate skill only if the scenario
-shows that the testing skill does not activate or becomes responsible for two
-unrelated workflows.
+The runs settle the question this note left open: it stays one skill. Neither
+made `typo3-extension-testing` responsible for two unrelated workflows, and
+neither reached it by activation — both routed to it from
+`typo3-extension-conformance`, which is the entry point a review actually uses.

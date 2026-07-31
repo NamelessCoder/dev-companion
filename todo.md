@@ -86,34 +86,22 @@ that version, every requirement fails at once and not one of them says so.
 
 ---
 
-## Run `REVIEW-02` where static-quality infrastructure is missing
-
-**Serves:** R-SKL-2, feedback/2026-07-30-174423-extension-static-quality-needs-an-explicit-workflow.md
-
-`/home/benji/projects/syntax` is the checkout that plays it — php-cs-fixer and
-phplint, no PHPStan, no tests, dependencies installed, TYPO3 14.3.0, DDEV. Name
-it as `E-EXT` under *Which checkout plays which environment*, install the skills
-there the same way, run `REVIEW-02`'s prompt, record the run, and reduce the
-note to what the two runs together demonstrate. The half that is done is in
-`scenarios/runs/REVIEW-02.json`: against a complete setup the review reads it
-rather than replacing it, and what it produces instead are verification gaps in
-the infrastructure that exists. What a missing one produces is not evidenced,
-and this is the run that would.
-
 ## Add the static-quality branch to `typo3-extension-testing`
 
 **Serves:** R-SKL-2, feedback/2026-07-30-174423-extension-static-quality-needs-an-explicit-workflow.md
 
-With both runs recorded, add an on-demand static-quality reference to
-`typo3-extension-testing`: inspect the existing packages, configuration,
-baselines, scripts and CI before changing any of them; resolve development
-dependencies from the extension's declared TYPO3 and PHP range; establish one
-project-owned command per check and keep check and fix modes apart; let CI call
-the commands that passed locally. New errors are fixed rather than added to a
-baseline, and automatic formatting stays inside intended first-party files.
-Split it into a skill of its own only if the runs show that
-`typo3-extension-testing` does not activate or ends up owning two unrelated
-workflows.
+Both runs are recorded and they agree on where the hole is: a review routes
+static quality to `typo3-extension-testing`, and the one sentence that skill has
+on the subject sends it back — static checks are added "only when the project
+already uses them". Add the on-demand reference that answers instead: inspect
+the existing packages, configuration, baselines, scripts and CI before changing
+any of them; resolve development dependencies from the extension's declared
+TYPO3 and PHP range; establish one project-owned command per check and keep
+check and fix modes apart; let CI call the commands that passed locally. New
+errors are fixed rather than added to a baseline, and automatic formatting stays
+inside intended first-party files. It stays inside that skill: neither run shows
+it owning two unrelated workflows, and both reached it by routing rather than by
+activating it.
 
 ## Find an extension checkout with a major in front of it, and run `REVIEW-02` there
 
@@ -229,20 +217,28 @@ those skills nor grade its own implementation as behavioral evidence.
   dependency there: refresh the skills with `ddev exec php
   vendor/bin/typo3-cms-mcp update --agent=claude`. It carries a `.gitignore`
   modification belonging to another session; leave it.
-- **`E-EXT`** — `/home/benji/projects/bootstrap_package`, TYPO3 14.3.0 below
-  `.build/vendor`, DDEV project `bootstrap-package` on PHP 8.5. The server is
-  **not** a dependency there, so it is reached from this checkout: `php
+- **`E-EXT`** — two checkouts play it, and which one a run needs is a property
+  of the run. In both the server is **not** a Composer dependency, so it is
+  reached from this checkout: `php
   /home/benji/projects/typo3-cms-mcp/bin/typo3-cms-mcp install --agent=claude`
   from the project root publishes the skills and writes the host-php `.mcp.json`.
   Repeat it after any skill change — the published skills are a copy and nothing
   reports it when they are older than the server. The generated ignore block in
-  its `.gitignore` and the untracked `.mcp.json` are from that install and stay.
-  `REVIEW-02` ran here twice on 2026-07-31, `partial` at 02:55 and `covered` at
-  08:15 after the corrections that run earned.
+  each `.gitignore` and the untracked `.mcp.json` are from that install and stay.
+  - `/home/benji/projects/syntax` — `bk2k/syntax` 5.0.0, TYPO3 14.3.0 below
+    `.build/vendor`, DDEV project `syntax` on PHP 8.2, declared `^13.4 ||
+    ^14.3`. **Static quality infrastructure is incomplete**: php-cs-fixer and
+    phplint in CI, no PHPStan, no `Tests/` at all. `REVIEW-02` ran here
+    `covered` on 2026-07-31.
+  - `/home/benji/projects/bootstrap_package` — TYPO3 14.3.0 below
+    `.build/vendor`, DDEV project `bootstrap-package` on PHP 8.5. **Complete**
+    infrastructure, which is what it plays. `REVIEW-02` ran here twice on
+    2026-07-31, `partial` at 02:55 and `covered` at 08:15 after the corrections
+    that run earned.
 
-`E-EXT` is a kind, and two todos above need it played by other checkouts — one
-with a TYPO3 major in front of it, one without complete static quality
-infrastructure. Whichever plays it for the next run is named here first.
+`E-EXT` is a kind, and one todo above still needs it played by a checkout
+neither of these is: one with a TYPO3 major in front of it. Whichever plays it
+is named here first.
 
 ## Not queued, and deliberately so
 

@@ -15,6 +15,7 @@ carries it. Both happened here before this directory existed.
 | [installation.md](installation.md) | Every client and layout the installer supports, and the configuration each one gets |
 | [working-on-the-server.md](working-on-the-server.md) | The commands this repository is kept in order by, the core checkouts, the test suite |
 | [forward-runs.md](forward-runs.md) | Running a forward review, judging it, and what to do when one stops without an error |
+| [writing-a-skill.md](writing-a-skill.md) | What a new task skill has to show before it exists, the rules it is written under, and what holds each one |
 | [knowledge-versions.md](knowledge-versions.md) | Writing a statement that holds for some TYPO3 versions and not others |
 | [asking-the-installation.md](asking-the-installation.md) | The order an installation's own answers are looked up in, and what a fallback owes the caller |
 

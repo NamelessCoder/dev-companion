@@ -228,6 +228,12 @@ a skill matters twice over, because it is installed into somebody else's
 project, where a stale name is not corrected by the next release of this server. Those catch a
 name going stale, not a sentence going false. Prose is on you.
 
+That property is also why a skill is written under rules of its own — what it is
+named and routed by, what it may state, what it leaves to the tool that owns it,
+and what has to be shown before a domain becomes one at all:
+[documentation/writing-a-skill.md](documentation/writing-a-skill.md), where every
+rule names the test that holds it.
+
 Before committing, reread the paragraphs your change touches rather than
 searching for a keyword. The sentence that goes wrong is usually the general one
 written before the exception existed, and it will not contain the word you would

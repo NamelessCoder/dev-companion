@@ -223,11 +223,67 @@ final class SkillTest extends TestCase
         }
     }
 
+    #[Test]
+    public function theAuthoringContractIsWrittenDownAndNamesWhatHoldsIt(): void
+    {
+        // How a skill is written was the half nothing held: the order a task
+        // runs in is one file since 2026-07-31, while the rules that hold for a
+        // skill because it *is* one lived in these assertions and in five
+        // skills restating them in their own words. The page is the written
+        // form; this holds the two to each other in both directions, so a rule
+        // stated there with nothing behind it and an assertion added here that
+        // nobody wrote down each fail. A skill is published into somebody
+        // else's project, so the rules it is written under are the half no
+        // forward run can measure — a run grades the answer, never the file.
+        $page = (string) file_get_contents(Paths::root() . '/documentation/writing-a-skill.md');
+
+        self::assertNotSame(
+            0,
+            preg_match_all('/`SkillTest::(\w+)`/', $page, $matches),
+            'the authoring contract names no test that holds it',
+        );
+        $named = array_unique($matches[1]);
+
+        foreach ($named as $test) {
+            self::assertTrue(
+                method_exists(self::class, $test),
+                'the authoring contract names ' . $test . ', which does not exist',
+            );
+        }
+
+        $source = file(__FILE__) ?: [];
+        $itself = __FUNCTION__;
+        foreach ((new \ReflectionClass(self::class))->getMethods() as $method) {
+            if ($method->getName() === $itself || $method->getFileName() !== __FILE__) {
+                continue;
+            }
+            $body = implode('', array_slice(
+                $source,
+                $method->getStartLine() - 1,
+                $method->getEndLine() - $method->getStartLine() + 1,
+            ));
+            // The assertions that run over the directory rather than over one
+            // named skill are exactly the ones a skill written later is held to
+            // without ever seeing them, which is why they are the ones the page
+            // has to carry.
+            if (!str_contains($body, 'self::skills()') && !str_contains($body, 'self::ROUTING_SKILLS')) {
+                continue;
+            }
+            self::assertContains(
+                $method->getName(),
+                $named,
+                $method->getName() . ' holds every skill and is written down nowhere',
+            );
+        }
+    }
+
     /**
      * What holds for a skill because it is one, rather than because of what it
-     * is about. These four run over the directory, so a skill added later is
-     * held to them without anybody adding it to a list here — which is the
-     * point: the list is what a new skill is written without ever seeing.
+     * is about. These run over the directory, so a skill added later is held to
+     * them without anybody adding it to a list here — which is the point: the
+     * list is what a new skill is written without ever seeing. They are the
+     * ones [documentation/writing-a-skill.md](../../documentation/writing-a-skill.md)
+     * states, and the test above holds that page and this set to each other.
      */
     #[Test]
     public function everySkillIsPublishedUnderTheNameItCallsItself(): void

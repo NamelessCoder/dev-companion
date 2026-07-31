@@ -630,7 +630,8 @@ final class SkillTest extends TestCase
     {
         $cases = Scenarios::contracts();
 
-        foreach (['SKILL-01', 'SKILL-02', 'SKILL-03', 'SKILL-04', 'SKILL-05', 'SKILL-06', 'SKILL-07', 'SKILL-08'] as $id) {
+        $ids = ['SKILL-01', 'SKILL-02', 'SKILL-03', 'SKILL-04', 'SKILL-05', 'SKILL-06', 'SKILL-07', 'SKILL-08', 'SKILL-09'];
+        foreach ($ids as $id) {
             self::assertArrayHasKey($id, $cases);
             self::assertStringStartsWith('scenarios/contracts/task-skills/', $cases[$id]['file']);
             self::assertNotSame([], $cases[$id]['outcomes'], $id . ' says nothing about what has to come out of it');

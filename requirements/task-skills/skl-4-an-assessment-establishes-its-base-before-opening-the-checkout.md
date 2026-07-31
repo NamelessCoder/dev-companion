@@ -61,4 +61,6 @@ ViewHelper that confirmed what it already believed.
 `SkillTest::anEscapingFindingIsNotEstablishedUntilItsSinkIs`,
 `SkillTest::theDeprecationSweepRunsFromTheExtensionsSurfaceAndIsReportedWhenItFindsNothing`,
 `SkillTest::theCheckLayerIsMeasuredAgainstACompleteOneRatherThanWhatIsDeclared`,
-`REVIEW-01`, `REVIEW-02`
+`REVIEW-01`, `REVIEW-02`, `SKILL-09` — the last of which is what measures the
+escaping half, because the test beside it reads a sentence rather than a
+review.

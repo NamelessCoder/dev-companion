@@ -86,6 +86,23 @@ that version, every requirement fails at once and not one of them says so.
 
 ---
 
+## Give the conformance checklist a surface a missing check can land on
+
+**Serves:** REVIEW-02, R-SKL-4
+
+Two recorded runs in `/home/benji/projects/syntax` — 2026-07-31 at 12:21 and at
+13:32 — produced no finding about static analysis in a repository that has no
+PHPStan, no analysis step and no baseline, and the second one had run both
+declared checks and reported their ceiling instead. The checklist's quality
+surface reads *tests, declared validation commands, documentation,
+deprecations*, so what the repository does not declare is not a surface and its
+absence cannot be a finding — the same shape `R-SKL-4` names for a file tree.
+Name the surface as the check layer rather than as the declared commands, hand
+it what `skills/typo3-extension-testing/references/static-quality.md` already
+says a complete one covers, and keep the routing b0eded4 established. The run in
+the same checkout is what would show it, and it is one file ahead of everything
+below.
+
 ## Find an extension checkout with a major in front of it, and run `REVIEW-02` there
 
 **Serves:** EXT-01, feedback/2026-07-30-173821-extension-upgrades-need-a-task-owned-workflow.md

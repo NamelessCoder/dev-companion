@@ -106,36 +106,37 @@ behavioral evidence.
   Repeat it after any skill change — the published skills are a copy and nothing
   reports it when they are older than the server. The generated ignore block in
   its `.gitignore` and the untracked `.mcp.json` are from that install and stay.
-  `REVIEW-02` ran here on 2026-07-31 and reached `covered`.
+  `REVIEW-02` ran here twice on 2026-07-31, `partial` at 02:55 and `covered` at
+  08:15 after the corrections that run earned.
 
-`E-EXT` is a kind, and the two items below need it played by other checkouts —
-one with a TYPO3 major in front of it, one without complete static quality
+`E-EXT` is a kind, and two of the items below need it played by other checkouts
+— one with a TYPO3 major in front of it, one without complete static quality
 infrastructure. Whichever plays it for the next run is named here first.
 
-## Run `REVIEW-02` again, against what its corrections changed
+## Make a caller-stated major say what it left out
 
-`REVIEW-02` stands at `partial`. The maintainer of `E-EXT` read the answer and
-corrected nine things, and five of the six priorities turned out to report a
-design decision as a verified defect. Four changes came out of that on
-2026-07-31, and none of them has been in front of a session yet:
+It is first because it is the smallest, because the run that just finished is
+what found it, and because it costs a session nothing to carry: the item below
+it needs a checkout named as `E-EXT` before its own step can start.
 
-- `R-DIS-16` — a repository declaring `^13.4 || ^14.3` is answered for both
-  majors, and the answer names them. Three of the nine corrections were
-  statements bound to the older major that the filter had removed.
-- `R-DIS-17` — a package below `Tests/` is a `fixture`, not the project's own.
-- `R-KNW-37` — the repository that is only the extension has its own layout
-  hint, and the project one now says which repository it is about.
-- `R-SKL-5` — the base carries the other direction of its own rule: a mechanism
-  that costs something is not a defect for costing it.
+This serves `R-DIS-16`, which shipped on 2026-07-31 and is held by three unit
+tests — and which the `covered` run of `REVIEW-02` that afternoon never touched.
+The session stated `targetVersion: "14.3"` itself, in `typo3_task_guide` and in
+three of its four `typo3_architecture_lookup` calls, and a stated version still
+wins and still narrows to one major. So the answer was filtered to 14 exactly as
+it had been in the run that failed, and what carried 13.4 through anyway was
+`extension-repository-layout`, which is bound to no version at all. The widened
+default is real, tested and, so far, unreached.
 
-The next step is one run: republish the skills in `E-EXT`, paste what
-`bin/scenarios show REVIEW-02` prints into a fresh client session there, and
-record it. Recording overwrites `scenarios/runs/REVIEW-02.json`; the run of
-2026-07-31 stays in commit 283f2c2, and the new run's notes name it. What would
-show the four changes worked is the same six priorities coming back with their
-purpose established — or three of them not being findings at all. What would
-show they did not is a session that reads the range sentence and files the
-older major's code as drift anyway.
+The next step is small and it is where the narrowing happens: when a caller
+states one major and the repository declares more, the answer says so — the
+majors the repository covers, which one this answer was composed for, and that
+statements bound to the others were left out. Today it reports `targetVersion`
+and `targetVersions` identically in both cases, so nothing distinguishes «14 is
+all there is» from «14 is what you asked for». `Versions` already computes both
+sides; the change is in what `Tools` puts in the answer and one test beside the
+three that exist. Then a session that names its own version still learns the
+range exists, which is the only path by which `R-DIS-16` reaches a forward run.
 
 ## Add the static-quality branch to `typo3-extension-testing`
 
@@ -146,16 +147,19 @@ it is the only one of the four whose next step can be taken today. The upgrade
 item lost its environment when `E-EXT` turned out to have no major in front of
 it, and this one gained half its evidence from the same run.
 
-That half, as far as it goes: with a complete PHPStan and code-style setup in
-front of it, the review did not propose installing tooling that is already
-there. What it did instead was worse for this item's purposes — it read the
-suppression configuration and called the baseline a quality gate configured to
-stay quiet, when those entries are the price of supporting two majors. So the
-only finding of the six that survives its maintainer is the CI matrix gating
-unit and functional tests on PHP 8.5 while the declared floor is 8.2. It also
-never ran one of the ten commands the project declares, so even that rests on
-reading rather than on a failing check. The re-run above is what would replace
-this paragraph with evidence.
+That half, as the second run of 2026-07-31 leaves it: with a complete PHPStan
+and code-style setup in front of it, the review does not propose installing
+tooling that is already there, and it no longer misreads the baseline — it says
+in as many words that keeping those entries is correct while 13.4 is supported,
+and asks only that the repository record what they are a work list for. What it
+produces instead is three verification gaps in the infrastructure that exists:
+unit and functional tests gated on PHP 8.5 while the declared floor is 8.2, no
+`--prefer-lowest` leg so the low end of `^13.4 || ^14.3` is never installed, and
+`failOnDeprecation` absent from both phpunit configurations, which is what would
+otherwise surface a newly deprecated API on the next core minor. All three rest
+on reading: the run again executed none of the ten commands the project
+declares. That an existing setup is read rather than replaced is now evidenced;
+what a missing one produces is not.
 
 The other half needs a checkout where that infrastructure is missing, and
 `/home/benji/projects/syntax` is one — php-cs-fixer and phplint, no PHPStan, no

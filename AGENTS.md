@@ -138,6 +138,11 @@ composer stan   # phpstan only
 - `FeedbackTest` writes real notes below `feedback/` and removes them again.
   A leftover file carries `phpunit-feedback-fixture` in its text.
 
+`bin/cli` is what everything else in this repository is kept in order by, and
+`bin/cli checkouts update` is what creates the core checkouts a knowledge change
+is verified against:
+[documentation/working-on-the-server.md](documentation/working-on-the-server.md).
+
 ## Feedback workflow
 
 Agents using this server record improvement notes through `typo3_feedback_record`.

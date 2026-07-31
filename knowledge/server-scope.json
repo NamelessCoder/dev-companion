@@ -131,7 +131,7 @@
     },
     {
       "topic": "The project around the installation: its extensions, its sites and their sets, its own commands, and what one of those extensions registers",
-      "depth": "Read from the repository's files — composer.json, package.json, config/sites — so it answers on a fresh clone, before anything is installed or migrated. It describes what is there, and does not judge it. Per extension: the tables its TCA defines and extends, the content elements it adds to tt_content and the Fluid template each renders through, its backend modules and routes, its icons, its site sets, its service tags, its middlewares, its Fluid roots and namespaces, and the shape of its Classes/ directory — declared in files, so what ext_localconf.php does with a PHP call is not in it.",
+      "depth": "Read from the repository's files — composer.json, package.json, config/sites — so it answers on a fresh clone, before anything is installed or migrated. It describes what is there, and does not judge it. Per extension: the tables its TCA defines and extends, the content elements it adds to tt_content and the Fluid template each renders through, its backend modules and routes, its icons, its site sets, its service tags, its middlewares, its Fluid roots and namespaces, and the shape of its Classes/ directory. Its tables, content elements and icons come from the booted installation where there is one; the rest is declared in files, and where the installation could not be booted the answer says what a file-read list leaves out.",
       "tools": [
         "typo3_project_scope",
         "typo3_extension_scope"

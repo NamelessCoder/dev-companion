@@ -8,21 +8,24 @@ use PHPUnit\Framework\Attributes\After;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Typo3CmsMcp\Instance;
+use Typo3CmsMcp\Tests\Support\FakeInstallation;
 use Typo3CmsMcp\Typo3Cli;
 use Typo3CmsMcp\Typo3Runtime;
 
 /**
  * Asking the installation itself, and what happens on the three ways that fail.
  *
- * The probe cannot be run against a real TYPO3 here — this repository has none
- * and never will. What is held instead is everything around the boot, which is
- * where the answers went wrong before: the code really is delivered to an
- * interpreter and really does answer JSON, the autoloader path is the one this
- * installation declares, and every state that is not a full container arrives
- * as a reason rather than as an empty result.
+ * There is no real TYPO3 here — this repository has none and never will — so the
+ * installations below carry an autoloader shaped like one. The probe is not
+ * simulated for that: it is delivered to a real interpreter, boots what the
+ * autoloader gives it, and answers as data, which is how the payload, the
+ * declared autoloader path, the three states and the attribution evidence all
+ * end up held by the same mechanism they run through.
  */
 final class Typo3RuntimeTest extends TestCase
 {
+    use FakeInstallation;
+
     private string $root = '';
 
     #[After]
@@ -86,6 +89,61 @@ final class Typo3RuntimeTest extends TestCase
 
         self::assertSame(Typo3Runtime::STATE_UNREACHABLE, $answer['state']);
         self::assertStringContainsString('no interpreter can be derived', $answer['reason']);
+    }
+
+    #[Test]
+    public function aBootedContainerAnswersWithTheTopicsAndTheirAttribution(): void
+    {
+        // A TYPO3 shaped like the real one, so the real probe boots it: the
+        // registry answers with EXT: sources and the TCA with LLL:EXT: titles,
+        // which is what an entry is attributed by on the way back.
+        $root = $this->installationWithAConsole();
+        $this->fakeTypo3(
+            $root,
+            ['ext-acme-teaser' => 'EXT:acme/Resources/Public/Icons/teaser.svg', 'actions-add' => 'EXT:core/Resources/Public/Icons/T3Icons/actions/add.svg'],
+            ['tx_acme_event' => 'LLL:EXT:acme/Resources/Private/Language/locallang_db.xlf:tx_acme_event'],
+            ['acme_teaser' => ['LLL:EXT:acme/Resources/Private/Language/locallang_be.xlf:teaser', 'ext-acme-teaser']],
+        );
+        $this->discover($root);
+
+        $answer = Typo3Runtime::ask();
+
+        self::assertSame(Typo3Runtime::STATE_FULL, $answer['state']);
+        self::assertSame('', $answer['reason']);
+        self::assertSame(
+            ['ext-acme-teaser' => 'EXT:acme/Resources/Public/Icons/teaser.svg', 'actions-add' => 'EXT:core/Resources/Public/Icons/T3Icons/actions/add.svg'],
+            $answer['topics']['icons'],
+        );
+        self::assertArrayHasKey('tx_acme_event', $answer['topics']['tables']);
+        self::assertArrayHasKey('acme_teaser', $answer['topics']['contentElements']);
+    }
+
+    #[Test]
+    public function aFailsafeContainerIsAReasonRatherThanAResult(): void
+    {
+        // It answers — with core packages and nothing else, which is the state
+        // every extension repository is in and the one that looks complete.
+        $root = $this->installationWithAConsole();
+        $this->fakeTypo3($root, failsafe: true);
+        $this->discover($root);
+
+        $answer = Typo3Runtime::ask();
+
+        self::assertSame(Typo3Runtime::STATE_FAILSAFE, $answer['state']);
+        self::assertStringContainsString('no essential configuration', $answer['reason']);
+        self::assertNull(Typo3Runtime::topic('icons'), 'a subset that looks whole is never handed on');
+        self::assertSame($answer['reason'], Typo3Runtime::reason());
+    }
+
+    #[Test]
+    public function anExtensionIsNamedByTheReferenceAnEntryCarries(): void
+    {
+        self::assertSame('news', Typo3Runtime::extensionIn('EXT:news/Resources/Public/Icons/list.svg'));
+        self::assertSame('news', Typo3Runtime::extensionIn('LLL:EXT:news/Resources/Private/Language/locallang.xlf:plugin'));
+        self::assertSame('my_sitepackage', Typo3Runtime::extensionIn('EXT:my_sitepackage/Configuration/Icons.php'));
+        // Nothing names an extension: it belongs to the installation.
+        self::assertNull(Typo3Runtime::extensionIn('content-news'));
+        self::assertNull(Typo3Runtime::extensionIn('impexp.db:tx_impexp_presets'));
     }
 
     #[Test]

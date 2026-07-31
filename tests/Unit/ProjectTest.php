@@ -9,8 +9,11 @@ use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Typo3CmsMcp\Instance;
 use Typo3CmsMcp\Project;
+use Typo3CmsMcp\Tests\Support\FakeInstallation;
 use Typo3CmsMcp\Tests\Support\TemporaryInstallation;
 use Typo3CmsMcp\Tools;
+use Typo3CmsMcp\Typo3Cli;
+use Typo3CmsMcp\Typo3Runtime;
 
 /**
  * What the repository around the installation consists of.
@@ -20,12 +23,15 @@ use Typo3CmsMcp\Tools;
  */
 final class ProjectTest extends TestCase
 {
+    use FakeInstallation;
     use TemporaryInstallation;
 
     #[After]
     public function forgetTheInstance(): void
     {
         Instance::discoverFrom(null);
+        Typo3Cli::forget();
+        Typo3Runtime::forget();
     }
 
     #[Test]
@@ -528,6 +534,54 @@ final class ProjectTest extends TestCase
             'a list only running the loop would give is not determinable, and an empty answer reads as that',
         );
         self::assertSame(['acme_events'], $result->data['backendModules']);
+    }
+
+    #[Test]
+    public function whatTheInstallationHasBeatsWhatTheFilesCouldBeReadFor(): void
+    {
+        // The same extension the parser answered for, with the installation
+        // booted: the icons its loop builds, the table it adds from PHP and the
+        // content element whose value came out of a variable are all in TCA and
+        // in the registry, and each carries the EXT: reference that says whose
+        // they are. The file half of the answer is unchanged.
+        $root = $this->composerProject();
+        $extension = $root . '/packages/my_sitepackage';
+        $this->declare($extension . '/Configuration/TCA/tx_acme_event.php', "<?php\nreturn ['ctrl' => []];\n");
+        $this->declare(
+            $extension . '/Configuration/Icons.php',
+            "<?php\n\$list = [];\nforeach (['acme-teaser'] as \$i) {\n \$list[\$i] = ['provider' => 'x'];\n}\nreturn \$list;\n"
+        );
+        mkdir($root . '/bin');
+        file_put_contents($root . '/bin/typo3', "#!/usr/bin/env php\n<?php\n");
+        $this->fakeTypo3(
+            $root,
+            [
+                'acme-teaser' => 'EXT:my_sitepackage/Resources/Public/Icons/teaser.svg',
+                'ext-other-thing' => 'EXT:other/Resources/Public/Icons/thing.svg',
+                'actions-add' => 'EXT:core/Resources/Public/Icons/T3Icons/actions/add.svg',
+            ],
+            [
+                'tx_acme_event' => 'LLL:EXT:my_sitepackage/Resources/Private/Language/locallang_db.xlf:event',
+                'tx_other_thing' => 'LLL:EXT:other/Resources/Private/Language/locallang_db.xlf:thing',
+            ],
+            [
+                'acme_teaser' => ['LLL:EXT:my_sitepackage/Resources/Private/Language/locallang.xlf:teaser', 'acme-teaser'],
+                'other_thing' => ['LLL:EXT:other/Resources/Private/Language/locallang.xlf:thing', 'ext-other-thing'],
+            ],
+        );
+        Instance::discoverFrom($root);
+
+        $result = Tools::call('typo3_extension_scope', ['extension' => 'my_sitepackage']);
+
+        self::assertSame('installation', $result->data['answeredBy']);
+        self::assertSame(['acme-teaser'], $result->data['icons'], 'the loop-built list the parser cannot follow');
+        self::assertSame(['tx_acme_event'], $result->data['tcaTables']);
+        self::assertSame(
+            ['acme_teaser'],
+            array_column($result->data['contentElements'], 'identifier'),
+            'attributed by the reference the item carries, so another extension\'s is not this one\'s',
+        );
+        self::assertStringContainsString('what the booted installation has', $result->text);
     }
 
     #[Test]

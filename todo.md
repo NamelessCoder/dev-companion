@@ -86,27 +86,20 @@ that version, every requirement fails at once and not one of them says so.
 
 ---
 
-## Take the extension scope through the booted installation too
+## Say which registration file could not be read statically
 
-**Serves:** R-DIS-19, R-PRJ-5, R-ANS-12
+**Serves:** R-ANS-12, R-PRJ-5
 
-`Typo3Runtime` exists and the icon registry goes through it; `typo3_extension_scope`
-still answers from the files alone. Take the topics the probe already returns —
-`tables` and `contentElements` — into `Extension::describe()` the way the icons
-went into `InstalledIcons`: the container decides what there is, the files keep
-saying where each one comes from, and an entry is attributed to its extension by
-the `EXT:<key>/` the registry carries. A table an extension adds through a PHP
-call and a CType whose value came out of a variable are exactly what the reviews
-of 2026-07-31 got wrong, and both are in `$GLOBALS['TCA']` after the boot.
-
-Where the boot did not happen the parsed list stays, and this is where the half
-that is still open sits: an empty section is omitted from the answer, so "there
+Only where the installation could not be booted, which is now the whole of the
+gap: an extension repository with no `settings.php` gets the parsed lists, and
+`PhpArray::keys()` returns nothing for a file that builds its list at runtime.
+An empty section is omitted from the `typo3_extension_scope` answer, so "there
 is no `Configuration/Icons.php`" and "there is one and nothing in it can be read
-statically" arrive as the same silence — which R-ANS-12 asks to tell apart.
-Carry the files that exist and yielded nothing as a field of their own, declare
+statically" arrive as the same silence — which R-ANS-12 asks to tell apart. The
+degradation sentence already names the reason the boot did not happen; what it
+does not name is which files were the casualties. Carry the ones that exist and
+yielded nothing out of `Extension::describe()` as a field of their own, declare
 it in `ToolSchemas` on every path including the miss, and name them in one line.
-The prose that says "declaration files are parsed, never executed" in
-`readme.md` and in the tool's own description moves with all of it.
 
 ## Put the deprecation sweep and the escaping sink into the ordered work
 

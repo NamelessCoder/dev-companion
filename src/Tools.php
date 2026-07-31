@@ -319,7 +319,7 @@ final class Tools
             ],
             [
                 'name' => 'typo3_extension_scope',
-                'description' => 'Describe what one installed extension registers: the tables its TCA defines and the ones it extends, the content elements it adds to tt_content and the Fluid template each renders through, its backend modules and routes, its icons, its site sets, the service tags it hangs into the container, its middlewares, its Fluid roots and namespaces, and the shape of its Classes/ directory — and what it ships beside all of that: its manual, its README, the test layers it has, and its XLF files with the source language each one declares. Those four are answered even when they are not there, because the absence of a manual or a translation is what a file listing cannot show. Read from that extension\'s own files — declaration files are parsed, never executed — so it answers on a fresh clone and for a third-party extension as well as for the project\'s own. typo3_project_scope names the extensions this can be called for.',
+                'description' => 'Describe what one installed extension registers: the tables its TCA defines and the ones it extends, the content elements it adds to tt_content and the Fluid template each renders through, its backend modules and routes, its icons, its site sets, the service tags it hangs into the container, its middlewares, its Fluid roots and namespaces, and the shape of its Classes/ directory — and what it ships beside all of that: its manual, its README, the test layers it has, and its XLF files with the source language each one declares. Those four are answered even when they are not there, because the absence of a manual or a translation is what a file listing cannot show. The tables, content elements and icons are read from the booted installation where there is one and attributed to this extension by the EXT: reference each entry carries, so a list built in a loop or a table added by a PHP call is in the answer; everything else is read from that extension\'s own files, parsed and never executed, so it answers on a fresh clone and for a third-party extension as well as for the project\'s own. answeredBy says which of the two answered, and where it says packages the answer names what that leaves out. typo3_project_scope names the extensions this can be called for.',
                 'inputSchema' => [
                     'type' => 'object',
                     'properties' => [
@@ -2429,13 +2429,20 @@ final class Tools
         }
 
         $lines[] = '';
-        // The boundary of this answer, stated rather than implied: what is
-        // declared in a file is here, what an extension does at runtime is not.
-        $lines[] = 'Read from the files, so this is what the extension declares — not what it does at runtime. '
-            . 'Registrations made in ext_localconf.php with a PHP call, and anything a hook or an event listener '
-            . 'changes, are not in this list; the files that could hold them are named above.';
+        // The boundary of this answer, stated rather than implied — and it is
+        // not the same boundary in both cases, which is why it is not one
+        // sentence with a clause bolted on.
+        $lines[] = Extension::answeredBy() === 'installation'
+            ? 'The tables, content elements and icons are what the booted installation has, attributed to this '
+                . 'extension by the EXT: reference each entry carries; everything else is read from its files. '
+                . 'What a hook or an event listener changes at request time is in neither.'
+            : 'Read from the files, so this is what the extension declares — not what it does at runtime. '
+                . 'Registrations made in ext_localconf.php with a PHP call, a table or an icon list built in a '
+                . 'loop, and anything a hook or an event listener changes, are not in this list; the files that '
+                . 'could hold them are named above. The installation itself was not asked: '
+                . Typo3Runtime::reason() . '.';
 
-        return ToolResult::create(implode("\n", $lines), $extension + ['answeredBy' => 'packages']);
+        return ToolResult::create(implode("\n", $lines), $extension + ['answeredBy' => Extension::answeredBy()]);
     }
 
     /** The keys there are, so a miss is a question a caller can ask again. */

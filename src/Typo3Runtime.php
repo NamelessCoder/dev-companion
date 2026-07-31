@@ -91,6 +91,24 @@ final class Typo3Runtime
         self::$answer = null;
     }
 
+    /**
+     * The extension key a runtime entry names, or null where it names none.
+     *
+     * TCA and the icon registry are the installation's, not any package's, and
+     * an answer about one extension cannot be assembled from a list belonging
+     * to all of them. What every entry does carry is a reference into the
+     * package that owns it — `LLL:EXT:news/…locallang.xlf:plugin.list` on a
+     * label or a ctrl title, `EXT:news/Resources/Public/Icons/list.svg` on an
+     * icon — and that reference is evidence rather than a naming convention.
+     * Where there is none, the entry belongs to the installation.
+     */
+    public static function extensionIn(string $reference): ?string
+    {
+        return preg_match('#(?:^|:)EXT:([a-z0-9_]+)/#i', $reference, $match) === 1
+            ? strtolower($match[1])
+            : null;
+    }
+
     /** @return array{state: string, reason: string, topics: array<string, mixed>} */
     private static function read(): array
     {

@@ -74,8 +74,21 @@ try {
     // TCA as it is after every extension has had its say, which is where the
     // tables an extension adds through a PHP call and the content elements
     // registered from a variable exist at all.
+    //
+    // What TCA does not carry is which extension an entry belongs to, and an
+    // answer about one extension cannot use a list belonging to all of them.
+    // So each entry travels with what names an extension in it: a label or a
+    // ctrl title is `LLL:EXT:<key>/…`, and an item's icon resolves through the
+    // registry to `EXT:<key>/…`. Both are read here, attributed on the other
+    // side, and where neither names anything the entry is the installation's
+    // rather than a package's.
     $tca = is_array($GLOBALS['TCA'] ?? null) ? $GLOBALS['TCA'] : [];
-    $answer['topics']['tables'] = array_keys($tca);
+    $tables = [];
+    foreach ($tca as $table => $configuration) {
+        $title = $configuration['ctrl']['title'] ?? '';
+        $tables[(string) $table] = is_string($title) ? $title : '';
+    }
+    $answer['topics']['tables'] = $tables;
 
     $contentElements = [];
     foreach ($tca['tt_content']['columns']['CType']['config']['items'] ?? [] as $item) {
@@ -85,9 +98,15 @@ try {
         // Keyed since v12, positional before it, and both shapes are in the
         // wild because an extension is written for the line it supports.
         $value = $item['value'] ?? ($item[1] ?? null);
-        if (is_string($value) && $value !== '' && $value !== '--div--') {
-            $contentElements[] = $value;
+        if (!is_string($value) || $value === '' || $value === '--div--') {
+            continue;
         }
+        $label = $item['label'] ?? ($item[0] ?? '');
+        $icon = $item['icon'] ?? ($item[2] ?? '');
+        $contentElements[$value] = [
+            'label' => is_string($label) ? $label : '',
+            'icon' => is_string($icon) ? $icon : '',
+        ];
     }
     $answer['topics']['contentElements'] = $contentElements;
 } catch (Throwable $failure) {

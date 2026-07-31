@@ -172,10 +172,14 @@ name already says what shape the answer has.
   its TCA defines and the ones it extends, the content elements it adds and the
   template each renders through, its backend modules and routes, its icons, its
   site sets, its service tags, its middlewares, its Fluid roots and
-  namespaces, the shape of its `Classes/`. Declaration files are parsed, never
-  executed, so it answers for a third-party extension as well as for the
-  project's own; the table an override file extends is read from what the file
-  does, because those files are numbered rather than named after their table.
+  namespaces, the shape of its `Classes/`. Its tables, content elements and
+  icons come from the booted installation where there is one, attributed to the
+  extension by the `EXT:` reference each entry carries, because a list built in
+  a loop is in no file; the rest is read from its files, which is why it answers
+  for a third-party extension as well as for the project's own and on a checkout
+  that was never set up. The table an override file extends is read from what
+  the file does, because those files are numbered rather than named after their
+  table.
 - `typo3_rule_lookup`: searches local TYPO3 core rules and script notes, ranked
   by the query terms that separate one section from the rest rather than by
   overlap, and naming the architecture hints that match the same question — the

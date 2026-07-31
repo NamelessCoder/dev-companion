@@ -12,6 +12,6 @@ when it is added.
 | [`R-PRJ-2`](prj-2-one-unreadable-site-costs-that-site-and-no-other.md) | One unreadable site costs that site and no other | held |
 | [`R-PRJ-3`](prj-3-the-installed-changelog-answers-what-a-version-changed.md) | The installed changelog answers what a version changed | held |
 | [`R-PRJ-4`](prj-4-an-upgrade-is-answered-as-an-order-of-operations.md) | An upgrade is answered as an order of operations | held |
-| [`R-PRJ-5`](prj-5-what-an-extension-registers-is-read-from-its-own-files.md) | What an extension registers is read from its own files | held |
+| [`R-PRJ-5`](prj-5-what-an-extension-registers-is-answered-from-the-installation-and-its-files.md) | What an extension registers is answered from the installation and its files | held |
 | [`R-PRJ-6`](prj-6-what-an-extension-does-not-ship-is-answered-too.md) | What an extension does not ship is answered too | held |
 | [`R-PRJ-7`](prj-7-a-declared-command-says-whether-running-it-changes-anything.md) | A declared command says whether running it changes anything | held |

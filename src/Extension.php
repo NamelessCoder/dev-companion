@@ -13,12 +13,19 @@ use Symfony\Component\Yaml\Yaml;
  * question is almost never about that — it is about what is inside one of them:
  * which tables its TCA defines and which it extends, which backend modules and
  * icons it brings, which site sets it ships, what it hangs into the container.
- * All of that is declarative and sits in files with fixed names, so it is
+ * Most of that is declarative and sits in files with fixed names, so it is
  * readable without a console and without a database, the same way the sites are.
+ * What is not declarative is asked of the installation instead: `Typo3Runtime`
+ * boots it in a subprocess and reads the registries, because a table added by a
+ * PHP call, a content element whose identifier came out of a variable and an
+ * icon list built in a `foreach` exist in no file a reader could follow. Those
+ * three are attributed back to this extension by the `EXT:<key>/` reference the
+ * entry itself carries; where the boot did not happen, the files answer and the
+ * answer says so.
  *
- * Nothing here is included or executed. The declaration files are tokenised for
- * their keys (see PhpArray) and the YAML is parsed; the extension's own code
- * never enters this process.
+ * Nothing is included or executed here. The declaration files are tokenised for
+ * their keys (see PhpArray) and the YAML is parsed; where the extension's own
+ * code runs, it runs in TYPO3's process, not in this one.
  */
 final class Extension
 {
@@ -93,15 +100,15 @@ final class Extension
             // defines. A file below Overrides/ is not: extensions number them
             // to fix their load order, so which table it extends is read from
             // what the file does — see overrides().
-            'tcaTables' => self::baseNames($path . '/Configuration/TCA/*.php'),
+            'tcaTables' => self::tcaTables($key, $path),
             'tcaOverrides' => $overrides['tables'],
-            'contentElements' => self::contentElements($overrides['contentElements'], $path),
+            'contentElements' => self::contentElements(self::cTypes($key, $overrides['contentElements']), $path),
             'backendModules' => PhpArray::keys($path . '/Configuration/Backend/Modules.php'),
             'backendRoutes' => array_merge(
                 PhpArray::keys($path . '/Configuration/Backend/Routes.php'),
                 PhpArray::keys($path . '/Configuration/Backend/AjaxRoutes.php'),
             ),
-            'icons' => PhpArray::keys($path . '/Configuration/Icons.php'),
+            'icons' => self::icons($key, $path),
             'siteSets' => self::siteSets($path),
             // The outer keys are the request scopes; the identifiers a caller
             // orders its own middleware against are one level below them.
@@ -797,6 +804,127 @@ final class Extension
             self::ROOT_FILES,
             static fn(string $file): bool => is_file($path . '/' . $file),
         ));
+    }
+
+    /**
+     * The tables this extension defines, as the installation has them.
+     *
+     * A file below Configuration/TCA/ is named after the table it defines, so
+     * the files answer on their own. What they cannot show is a table an
+     * extension adds through a PHP call, and what they cannot check is whether
+     * a file that looks like a definition produced one — so where the
+     * installation booted, a table is in the answer when TCA has it and either
+     * this extension's file declares it or its ctrl title names this extension.
+     *
+     * @return array<int, string>
+     */
+    private static function tcaTables(string $key, string $path): array
+    {
+        $declared = self::baseNames($path . '/Configuration/TCA/*.php');
+        $runtime = Typo3Runtime::topic('tables');
+        if (!is_array($runtime) || $runtime === []) {
+            return $declared;
+        }
+
+        $tables = [];
+        foreach ($runtime as $table => $title) {
+            if (Typo3Runtime::extensionIn((string) $title) === $key) {
+                $tables[] = (string) $table;
+            }
+        }
+        foreach ($declared as $table) {
+            if (isset($runtime[$table])) {
+                $tables[] = $table;
+            }
+        }
+
+        return self::sorted($tables);
+    }
+
+    /**
+     * The content elements this extension adds, as the installation has them.
+     *
+     * Attribution is the whole difficulty: `tt_content.CType` is one list for
+     * every extension at once. An item names its owner twice over — its label
+     * is `LLL:EXT:<key>/…` and its icon resolves to a file below `EXT:<key>/` —
+     * and where neither names this extension the item is somebody else's.
+     *
+     * @param array<int, string> $parsed the identifiers read from this extension's own files
+     * @return array<int, string>
+     */
+    private static function cTypes(string $key, array $parsed): array
+    {
+        $runtime = Typo3Runtime::topic('contentElements');
+        if (!is_array($runtime) || $runtime === []) {
+            return $parsed;
+        }
+
+        $icons = Typo3Runtime::topic('icons');
+        $identifiers = [];
+        foreach ($runtime as $identifier => $item) {
+            $label = is_array($item) ? (string) ($item['label'] ?? '') : '';
+            $icon = is_array($item) ? (string) ($item['icon'] ?? '') : '';
+            $source = is_array($icons) ? (string) ($icons[$icon] ?? '') : '';
+            if (Typo3Runtime::extensionIn($label) === $key || Typo3Runtime::extensionIn($source) === $key) {
+                $identifiers[] = (string) $identifier;
+            }
+        }
+        // One this extension's files register and the installation does not have
+        // was registered under a condition that did not apply here, and saying
+        // it is registered would send a caller to a template nothing renders.
+        foreach ($parsed as $identifier) {
+            if (isset($runtime[$identifier])) {
+                $identifiers[] = $identifier;
+            }
+        }
+
+        return self::sorted($identifiers);
+    }
+
+    /**
+     * The icons this extension registers, as the installation has them.
+     *
+     * @return array<int, string>
+     */
+    private static function icons(string $key, string $path): array
+    {
+        $registered = Typo3Runtime::topic('icons');
+        if (!is_array($registered) || $registered === []) {
+            return PhpArray::keys($path . '/Configuration/Icons.php');
+        }
+
+        $icons = [];
+        foreach ($registered as $identifier => $source) {
+            if (Typo3Runtime::extensionIn((string) $source) === $key) {
+                $icons[] = (string) $identifier;
+            }
+        }
+
+        return self::sorted($icons);
+    }
+
+    /**
+     * Where this answer comes from, in the vocabulary every tool reports it in.
+     *
+     * `installation` once the container answered for the registries that have
+     * no file behind them; `packages` for the reading that has to leave those
+     * out. `Typo3Runtime::reason()` says why, and the answer carries it.
+     */
+    public static function answeredBy(): string
+    {
+        return is_array(Typo3Runtime::topic('icons')) ? 'installation' : 'packages';
+    }
+
+    /**
+     * @param array<int, string> $values
+     * @return array<int, string>
+     */
+    private static function sorted(array $values): array
+    {
+        $values = array_values(array_unique($values));
+        sort($values);
+
+        return $values;
     }
 
     /**

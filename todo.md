@@ -86,29 +86,50 @@ that version, every requirement fails at once and not one of them says so.
 
 ---
 
-## Find an extension checkout with a major in front of it, and run `REVIEW-02` there
+## Fix the two tools the `news` run caught being wrong
 
-**Serves:** EXT-01, feedback/2026-07-30-173821-extension-upgrades-need-a-task-owned-workflow.md
+**Serves:** feedback/2026-07-31-142347-a-leading-environment-assignment-hides-what-a-command-does.md, feedback/2026-07-31-142347-icons-php-built-in-a-loop-reports-provider-and-source-as-icons.md
 
-The upgrade workflow has no environment: every extension checkout on this
-machine is current, and what it needs is one still declaring `^12.4` or `^13.4`
-alone — cloned for the purpose if none turns up. Name it under *Which checkout
-plays which environment*, run `REVIEW-02`'s prompt there as a recorded run, and
-reduce the note to what that run demonstrates. Read `bin/cli scenarios contract
-EXT-01` first for the routing that has to survive.
+Both are small, both have a shape a test can hold, and they jump the queue
+because every forward run below reads these two answers before it does anything
+else. `Project::runsLine()` strips `@php`, `@composer` and `@putenv` from the
+front of a declaration but not a plain `NAME=value`, so `PHP_CS_FIXER_IGNORE_ENV=1
+php ./.Build/bin/php-cs-fixer fix --dry-run …` classifies as `unknown` and is
+indistinguishable from the same line without `--dry-run` — an agent told not to
+change files cannot tell the reporter from the rewriter. `PhpArray::keys()`
+counts brackets across the whole file, so a second array literal at the same
+depth contributes its keys too, and an `Icons.php` built in a `foreach` reports
+`provider` and `source` as icon identifiers. Fix both, with a fixture for each.
+
+## Put the deprecation sweep and the escaping sink into the ordered work
+
+**Serves:** REVIEW-02, feedback/2026-07-31-142347-an-extension-review-never-sweeps-the-installed-cores-deprecations.md, feedback/2026-07-31-142347-an-escaping-finding-is-written-without-following-the-value-to-its-sink.md
+
+This is why `REVIEW-02` stands at `partial` again, and it comes before the skill
+below because the skill's first step is the sweep. Two steps are missing from
+the evidence order, both of them the second half of a rule that is already
+written: a deprecation sweep driven by what `typo3_extension_scope` reports
+rather than by whatever a finding stumbles into, with the `FullyScanned` /
+`PartiallyScanned` tag carried into the answer — and the rule that a finding
+about escaping is a claim about a **sink**, so it is not established until the
+value has been followed to the thing that emits it. Decide for each whether it
+belongs in `skills/base.md` or in the conformance checklist, and hold the sweep
+with the assertion that a review which finds nothing says the sweep ran.
 
 ## Add the `typo3-extension-upgrade` skill
 
 **Serves:** EXT-01, feedback/2026-07-30-173821-extension-upgrades-need-a-task-owned-workflow.md
 
-Once that run exists, add a thin skill that orders installed changelog and
-scanner/deprecation evidence, official versioned documentation, shared-versus-
-version-specific implementation decisions, and a Composer-resolved test matrix.
-It starts from `skills/base.md` like every other skill and states only what it
-adds, so project and extension scope are not restated in it. Keep concrete
-version facts out of it, publish it through `Installer`, add its forward
-acceptance result, and add the requirement and tests that hold only the
-behavior the run proves.
+The run the note waited for exists — `scenarios/runs/REVIEW-02.json`, in
+`/home/benji/projects/news` — and it moved the note: the shared-versus-version-
+specific decisions are not the gap, the order is. So add a thin skill that owns
+the ordered work and nothing else: the evidence step above first, then Composer
+and PHP constraint resolution, the implementation boundary, and a Composer-
+resolved test matrix as proof. It starts from `skills/base.md` like every other
+skill and states only what it adds, so project and extension scope are not
+restated in it. Keep concrete version facts out of it, publish it through
+`Installer`, add its forward acceptance result, and add the requirement and
+tests that hold only the behavior the run proves.
 
 ## Run the release note's query in `E-EXT`
 
@@ -220,10 +241,21 @@ those skills nor grade its own implementation as behavioral evidence.
     infrastructure, which is what it plays. `REVIEW-02` ran here twice on
     2026-07-31, `partial` at 02:55 and `covered` at 08:15 after the corrections
     that run earned.
-
-`E-EXT` is a kind, and one todo above still needs it played by a checkout
-neither of these is: one with a TYPO3 major in front of it. Whichever plays it
-is named here first.
+  - `/home/benji/projects/news` — `georgringer/news` 13.0.2 at `3fe278a2`,
+    TYPO3 **13.4.33** below `.Build/vendor` (capital B), host PHP 8.3, no DDEV.
+    **A major behind the world**, which is what it plays: it declares
+    `^12.4.37 || ^13.4.15` on PHP `>= 8.1 < 8.5` while 14 is out, so the
+    declared range does real work in a run instead of being quoted. It owns
+    `Build/Scripts/runTests.sh`, two per-major workflows, 30 test classes and a
+    `Documentation/` tree, and at 132 classes it is the only checkout here large
+    enough that a review has to choose what to open. Cloned `--single-branch`
+    **on purpose**: `origin/main` carries the finished v14 migration, and the
+    checkout that plays this environment for `EXT-01` must not hand that answer
+    over with one `git log` — fetching another branch into it ends its
+    usefulness for that scenario. `REVIEW-02` ran here on 2026-07-31, `partial`
+    at 14:23; a first attempt at 14:02 on the `12-13` branch was discarded
+    rather than judged, because that branch is 185 commits behind `13.x` and 0
+    ahead, and the run spent its top finding saying so.
 
 ## Not queued, and deliberately so
 

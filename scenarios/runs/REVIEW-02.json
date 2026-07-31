@@ -1,7 +1,7 @@
 {
     "scenario": "REVIEW-02",
     "date": "2026-07-31",
-    "server": "4b938ca",
+    "server": "b5555cb",
     "client": "claude-code",
     "environment": "E-EXT",
     "criteria": "dbedb33852e2",
@@ -16,134 +16,172 @@
         {
             "tool": "typo3_extension_scope",
             "arguments": {
-                "extension": "syntax"
+                "extension": "news"
             }
         },
         {
             "tool": "typo3_task_guide",
             "arguments": {
-                "task": "Audit a TYPO3 extension that ships one content element with PrismJS assets, a CKEditor integration, a site set and an event listener",
-                "area": "syntax",
+                "task": "Audit a widely used third-party TYPO3 extension for maintainability and supportability risks across package metadata, registration, TCA, TypoScript, Fluid, security and tests",
+                "area": "news",
                 "changeType": "cleanup"
             }
         },
         {
             "tool": "typo3_architecture_lookup",
             "arguments": {
-                "task": "Composer extension package identity, ext_emconf metadata, autoloading and supported TYPO3 version range",
+                "task": "Extension package metadata, composer.json and ext_emconf.php agreement, autoloading and supported TYPO3 version range for a third-party extension",
                 "paths": [
                     "composer.json",
-                    "ext_emconf.php",
-                    "ext_localconf.php",
-                    "ext_tables.php"
-                ]
+                    "ext_emconf.php"
+                ],
+                "targetVersion": "13.4"
             }
         },
         {
             "tool": "typo3_architecture_lookup",
             "arguments": {
-                "task": "Fluid template escaping, raw output of user-supplied code, and secure rendering in frontend content element templates",
+                "id": "project-extension-tests",
+                "targetVersion": "13.4"
+            }
+        },
+        {
+            "tool": "typo3_architecture_lookup",
+            "arguments": {
+                "task": "Dependency injection, Services.yaml, event listeners, hooks and console commands registration in an extension",
                 "paths": [
-                    "Resources/Private/Templates/Syntax.html"
-                ]
+                    "Configuration/Services.yaml",
+                    "Classes/Hooks",
+                    "Classes/Command",
+                    "ext_localconf.php"
+                ],
+                "targetVersion": "13.4"
             }
         },
         {
             "tool": "typo3_architecture_lookup",
             "arguments": {
-                "task": "CKEditor RTE integration and frontend JavaScript and CSS assets shipped by an extension",
+                "task": "Site sets, TypoScript constants and setup, TSconfig for a frontend extension",
                 "paths": [
-                    "Configuration/RTE",
-                    "Resources/Public/JavaScript",
-                    "Resources/Public/Css"
-                ]
-            }
-        },
-        {
-            "tool": "typo3_changelog_lookup",
-            "arguments": {
-                "query": "ext_emconf",
-                "version": "14"
-            }
-        },
-        {
-            "tool": "typo3_changelog_lookup",
-            "arguments": {
-                "query": "addTcaSelectItem"
-            }
-        },
-        {
-            "tool": "typo3_changelog_lookup",
-            "arguments": {
-                "query": "content element registration",
-                "version": "14"
-            }
-        },
-        {
-            "tool": "typo3_changelog_lookup",
-            "arguments": {
-                "query": "extension metadata composer",
-                "type": "deprecation"
-            }
-        },
-        {
-            "tool": "typo3_configuration_lookup",
-            "arguments": {
-                "path": "SYS/formEngine/formDataGroup/tcaDatabaseRecord"
-            }
-        },
-        {
-            "tool": "typo3_icon_lookup",
-            "arguments": {
-                "query": "content-element-syntax"
+                    "Configuration/Sets/News/setup.typoscript",
+                    "Configuration/page.tsconfig"
+                ],
+                "targetVersion": "13.4"
             }
         },
         {
             "tool": "typo3_architecture_lookup",
             "arguments": {
-                "id": "language-files"
+                "task": "Fluid templates, ViewHelpers, output escaping and safe rendering in a frontend extension",
+                "paths": [
+                    "Resources/Private/Templates",
+                    "Resources/Private/Partials",
+                    "Classes/ViewHelpers"
+                ],
+                "targetVersion": "13.4"
+            }
+        },
+        {
+            "tool": "typo3_architecture_lookup",
+            "arguments": {
+                "task": "Language files, XLF labels and translations shipped by an extension",
+                "paths": [
+                    "Resources/Private/Language/locallang.xlf",
+                    "Resources/Private/Language/locallang_db.xlf"
+                ],
+                "targetVersion": "13.4"
+            }
+        },
+        {
+            "tool": "typo3_architecture_lookup",
+            "arguments": {
+                "task": "Extbase domain model, repositories, TCA and upgrade wizards for extension tables",
+                "paths": [
+                    "Configuration/TCA/tx_news_domain_model_news.php",
+                    "Classes/Domain/Repository",
+                    "Classes/Updates",
+                    "ext_tables.sql"
+                ],
+                "targetVersion": "13.4"
+            }
+        },
+        {
+            "tool": "typo3_architecture_lookup",
+            "arguments": {
+                "task": "Backend module registration, controller, access permissions and request handling",
+                "paths": [
+                    "Configuration/Backend/Modules.php",
+                    "Classes/Controller/AdministrationController.php"
+                ],
+                "targetVersion": "13.4"
+            }
+        },
+        {
+            "tool": "typo3_changelog_lookup",
+            "arguments": {
+                "query": "AsEventListener attribute"
+            }
+        },
+        {
+            "tool": "typo3_changelog_lookup",
+            "arguments": {
+                "query": "event listener registration attribute",
+                "type": "feature"
+            }
+        },
+        {
+            "tool": "typo3_changelog_lookup",
+            "arguments": {
+                "query": "renderStatic ViewHelper"
+            }
+        },
+        {
+            "tool": "typo3_changelog_lookup",
+            "arguments": {
+                "query": "database schema TCA",
+                "version": "13"
             }
         }
     ],
     "outcomes": [
         {
             "met": true,
-            "evidence": "`typo3_project_scope` and `typo3_extension_scope` are the first two server calls of the session, ahead of the task guide, and what they returned is what the answer argues from. The declared range is the measure throughout: the context line reads \"the package declares `^13.4 || ^14.3` on PHP `>=8.2`\" against an installation of 14.3.0, and finding 5 kills a `getMajorVersion() >= 13` branch as unconditionally true given that range. The repository-owned commands are not merely named this time — `composer test:php:lint` and `composer cgl:ci` were executed and their output is in the context line (\"OK, 122 files\", \"no violations\"), and finding 1 traces `composer test` through `@test:php:lint` to the same linter. Two facts are operative rather than stated in their own right: the extension key appears only as `EXT:syntax/...`, `tt_content.syntax` and the `syntax/base` set, and the standalone-versus-installation distinction only as the core read out of `.build/vendor/typo3/cms-core` while every consequence is argued for \"every site depending on `syntax/base`\" rather than for this one."
+            "evidence": "`typo3_project_scope` and `typo3_extension_scope` are the first two server calls, ahead of the task guide, and what they returned is the measure the answer argues from. The header states the identity outright — `georgringer/news` at `13.0.2-1-g3fe278a2`, \"declared for TYPO3 `^12.4.37 || ^13.4.15` on PHP 8.1–8.4, assessed against the installed 13.4.33\" — and the key appears as `EXT:news` and in every path. The declared range is operative rather than recited, and it cuts both ways: finding 7 refuses the keep-it-for-12.4 excuse for `renderStatic()` by establishing that the instance `render()` shape works on 12.4 too, while the *Correct trade-offs* section argues the opposite direction for the `event.listener` and `console.command` YAML tags and for `(new Typo3Version())->getMajorVersion() < 13` in `ext_localconf.php`, both of which the declared range requires because `#[AsEventListener]` and `#[AsCommand]` are v13-only. Repository-owned commands are executed rather than named: `composer cs` → \"0 of 186 files\" and `.Build/bin/phpunit -c Build/phpunit/UnitTests.xml` → \"OK (253 tests, 304 assertions)\" in 0.146 s, both of which I re-ran while judging and both of which reproduce to the number. `composer validate` was run and flagged as \"not a declared command; run as evidence\", and the functional suite is named as needing database credentials and \"not run — available evidence, not exercised\". Standalone-versus-installation is operative rather than stated: the scope returned `kind: composer-project`, `sites: []` and one extension with `origin: project`, and every consequence is argued for the consumer's installation — \"every Extbase plugin of every extension in the installation\" (finding 3), \"for a TER/non-Composer install\" (finding 9) — rather than for this checkout."
         },
         {
             "met": true,
-            "evidence": "Every finding carries a path and most a line, and nine claims were re-checked against the checkout while judging. All nine hold: `.github/workflows/ci.yml` is a 2×4 matrix whose only steps are `composer test:php:lint` and `composer cgl:ci`; there is no `Tests/` directory; `partialRootPaths.1` and `layoutRootPaths.1` point at two directories that do not exist; `Configuration/Sets/Base/` holds `config.yaml`, `settings.definitions.yaml` and `setup.typoscript` and no `labels.xlf`; `typo3/cms-t3editor` is absent from `.build/vendor/typo3/`; the `E_USER_DEPRECATED` for an `ext_emconf.php` is at `PackageManager.php:936-943` and `isComposerOnlyCapable()` at 954 requires both `providesPackages` and a version; `RteConfigEnhancer` appends `codeBlock` and overwrites `$configuration['codeBlock']` with twenty languages under no condition at all; `CodeEditorFormatDataProvider` lists eight formats including `sql` and carries the `@todo`; and `CHANGELOG.md` 1.1.0 records the conditional loader added in 82d1545, which 85c8d3f deleted and cc85356 replaced with the set. What is new against the three earlier runs is the third kind of evidence: two findings rest on a command that was run rather than on the file that declares it. Two imprecisions, neither of which moves a finding: the assets are called unconditional where two of the seven includes are gated on `{$plugin.tx_syntax.settings.plugins.linenumbers}` by `if.isTrue`, and `ci.yml` has a second job — a node build with a `git status` clean check — that \"the only steps are\" passes over. Only surfaces the extension has are opened, and `typo3_extension_scope` reporting `tests: []` and `manual: null` is what two findings are built on."
+            "evidence": "Every finding carries a path and most a line, and eighteen claims were re-checked against the checkout and the installed core while judging. Fourteen hold exactly, line numbers included: `Build/Scripts/runTests.sh:330` sets `PHPSTAN_CONFIG_FILE=\"phpstan.neon\"` and is the only `phpstan` string in the script, there is no `phpstan.neon`, and `require-dev` carries `phpstan/phpdoc-parser ^1.33.0` and not `phpstan/phpstan`; the per-directory table is right in every row (Controller 5/0, Updates 7/0, Routing 6/0, Seo 4/0, Domain/Service 3/0, DataProcessing 2/0, Command 1/0, Xclass 1/0), there are 6 functional test classes and no `executeFrontendSubRequest` or `InternalRequest` anywhere in `Tests/`, and `Classes/` holds 132 files; the XCLASS is registered at `ext_localconf.php:215` and `ExtensionServiceXclassed.php:26` does read `$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions']`; `ClassLoader.php:41` is `spl_autoload_register([...], true, true)` and `:59-61` calls `reBuild()` from inside the autoloader; `Configuration/Services.yaml:18` excludes `../Classes/Domain/Model/*`; `Modules.php` registers six actions against an `AdministrationController` whose only action is `indexAction()` at `:35`; `Resources/Public/JavaScript/Import.js` is a RequireJS `define(['jquery', 'TYPO3/CMS/Backend/Notification'], …)` with no `ImportController` in `Classes/Controller/`, and `Import/Index.html:74` sets `moduleUrl` from an inline `<script>`; exactly 10 ViewHelpers carry `renderStatic`/`CompileWithRenderStatic`, and the ten names are the ten files; `ext_emconf.php:14` declares `'12.4.37-13.9.99'` against `composer.json:29`'s `^12.4.37 || ^13.4.15`; `ImageSizeViewHelper.php:48` branches on `< 11000000` and `SearchFormViewHelper.php:136` announces removal in v12; `.gitattributes` export-ignores four files that no longer exist. The run's own observation about this server is correct and was checked: `typo3_extension_scope` reports `provider` and `source` among the icons, artifacts of the `foreach` in `Configuration/Icons.php` whose body is `['provider' => SvgIconProvider::class, 'source' => …]`, and the 24 real identifiers around them are right. Three claims are imprecise without moving their finding: finding 6's \"appear nowhere else in the repository — not in a controller, not in a template, not in a label file\" is wrong for two of the five, `newsPidListing` and `donate` having `module.*` trans-units at `locallang_be.xlf:446` and `:449` — which is more debris from the same removal rather than a contradiction; finding 10 puts `RecordLinks` among the sets carrying both `settings.definitions.yaml` and a `constants.typoscript` when it carries no `constants.typoscript` at all, so the inconsistency it argues is three-shaped rather than two; and finding 8's \"`typo3_project_scope` sees only `cs` and `csfix`\" understates the tool, which returned six commands including `doc-init`, `doc-make`, `doc-watch` and `post-autoload-dump` — none of them a check, which is the point the finding was making. Only surfaces the extension has are opened, and the two findings built on the scope's `contentElements: []` and `middlewares: []` are the ones it does not raise."
         },
         {
             "met": true,
-            "evidence": "All six areas appear and each is anchored. Compatibility: the `ext_emconf.php` deprecation on every manifest read, and two dead version branches. Behavioral correctness: Prism CSS and JavaScript on every page of every site taking the set, an RTE listener rewriting every preset in the installation, and four hand-maintained language lists that have already drifted. Test evidence: finding 1, that a matrix whose two axes produce identical work proves nothing about 13-versus-14. Documentation: no manual, a two-line README, a set with no `labels.xlf`. Release: the TER-versus-Composer metadata constraint in finding 4 and the `publish.yml` PHP 7.4 pin argued as a latent risk. Static quality is the one that changed shape: this is the first recorded run in which the checks were executed rather than read out of CI, and finding 1 makes their passing its argument — \"both of which I ran and both of which pass, which is exactly the problem\". What is still not named, for the second run in this checkout, is what the repository does not have: there is no PHPStan, no analysis step, no baseline, and the answer's ceiling for the existing net is \"the PHP parses plus the formatting is right\" without the missing analyser becoming a finding. b0eded4 gave the receiving skill that branch; the conformance checklist's quality surface still reads \"tests, declared validation commands, documentation, deprecations\", which asks what is declared and not what a complete check surface covers."
+            "evidence": "All six areas appear and each is anchored in the checkout. Compatibility: the `ext_emconf.php` range that admits 13.0.0–13.4.14 where Composer forbids it, and `renderStatic()` against Deprecation-104789 (13.3), whose `PartiallyScanned` tag the answer uses for its consequence — \"the Extension Scanner will not find all of the call sites for you\". Behavioral correctness: five registered module actions that are routable and throw, an installation-global XCLASS of `ExtensionService` that is single-slot and order-dependent, and a prepended autoloader that rebuilds a generated-code cache from inside a live request. Test evidence: the directory table, and the reading that 304 assertions across 253 tests in 0.146 s \"is a getter/setter suite\" — an argument about what the green build proves rather than about its colour. Documentation: the `ProxyClassGenerator` page that teaches the extension mechanism with `'typo3' => '7.6.13-8.7.99'`. Static quality: finding 1 and the per-entry check-layer table in finding 8, which is the first recorded run to answer that table row by row — syntax ✅, static analysis ❌, coding standards ✅, manifests ❌, shipped configuration ❌, frontend assets ❌ — and to notice that `.Build/bin/yaml-lint` is installed and never invoked. Release: finding 9's TER half, \"for a TER/non-Composer install — the case `ext_emconf.php` exists for — it is the *only* constraint that governs\". Nothing is asked of a surface the repository does not have: `contentElements: []` and `middlewares: []` in the scope are never turned into gaps, translations are recorded as correctly absent because `crowdin.yml` owns them, and `Documentation/` is checked for being export-ignored and found correctly not ignored. Where a convention is named without the evidence to apply it, it is dropped rather than stretched: `ext_tables.sql` against the v13 delta-only rule is \"noted, not raised, since I did not verify each column against the schema analyzer's TCA-derived output\"."
         },
         {
             "met": true,
-            "evidence": "The order is argued rather than labelled. Finding 1 leads because the absent suite is what leaves the rest unobserved — \"a core minor that changes any of those surfaces first surfaces as a user report\" — and the closing line reorders the fixes against their dependencies rather than against their severities: #4 before #1 because a functional suite with `failOnDeprecation` fails on the manifest before its first assertion, #1 before #2 and #3 because the suite is what makes those safe to change. Uncertainty sits inside the finding it belongs to: the data provider's array access is sound because `typo3_configuration_lookup` shows `TcaSelectItems` running transitively before it, \"though that ordering is inherited, not declared\"; the Fluid layout \"renders correctly, but on an undeclared dependency\"; finding 6 is \"defensible while 13 is supported — but nothing in the repository says that is why\"; and one checked subject is reported as deliberately not a finding, the `publish.yml` PHP 7.4 pin, because `typo3/tailor` still declares `^7.2 || ^8.0`. The sentence the three earlier runs were all missing is now the first line of the answer: \"No files were changed; I ran only the two commands `typo3_project_scope` marks as **check**.\""
+            "evidence": "The order is argued rather than labelled. The closing paragraph ranks \"1 → 2 → 5\" on a dependency, not a severity — \"static analysis and functional coverage are what make every later change safe\" — and lifts findings 3 and 4 out of the ranking entirely as \"architectural decisions that need a maintainer's call before anyone touches them\", which is the honest answer for a documented feature whose cost is the finding. Missing runtime evidence is stated wherever it applies: the functional suite is named as needing database credentials and \"not run — available evidence, not exercised\"; the 449-line TCA, the overrides and the FlexForms are marked **unassessed** with their consequence attached (\"finding 2 means no test speaks for them either\"); finding 3 records that the purpose of the XCLASS \"could not be established, which is itself the problem for a maintainer deciding whether it is still needed\". Against all of that, one claim runs the other way and it is the one that matters most: the *Correct trade-offs* section asserts \"no superglobal access exists in `Classes/`\", where the checkout has 24 `$GLOBALS['TSFE']` call sites across 11 files — `NewsBaseController`, `NewsController`, `AddNewsToMenuProcessor`, `CategoryRepository`, `NewsRepository`, `NewsXmlSitemapDataProvider`, `Cache`, and four ViewHelpers — and the installed `TypoScriptFrontendController` carries `@deprecated since TYPO3 v13, will vanish during v14 development` in its class docblock. So the deprecation with the largest consequence for an extension that will have to cross the next major is absent from a priority order that has \"no static analysis\" at the top, and the surface it lives on is reported as verified clean rather than as unassessed. A false clean costs more than a gap, because the coverage table it sits beside is what a maintainer reads to decide what still needs looking at. The criteria as written do not ask for the sweep that would have caught it; that gap is filed rather than excused, in `feedback/2026-07-31-142347-an-extension-review-never-sweeps-the-installed-cores-deprecations.md`."
         },
         {
             "met": true,
-            "evidence": "Finding 1 goes to **typo3-extension-testing** with its first step bounded to functional coverage of the TCA type and the data provider, finding 2 to **typo3-content-element-development**, finding 8 to **typo3-extension-documentation**, and the answer ends by offering an order and starting none of it. Nothing was implemented: 31 tool calls — 12 Bash, 3 Read, 2 ToolSearch, 1 Skill, 13 server calls — and not one Write, Edit or NotebookEdit, with `git status` in the checkout afterwards showing only the ` M .gitignore` and `?? .mcp.json` the install left. The two commands it did run are the two the scope marks as checks. The routing is thinner than the previous run's, which carried a workflow on every finding: four of the eight carry one here, and findings 3, 5, 6 and 7 — all of them content-element and registration work — are left without a named owner."
+            "evidence": "Follow-up is bounded and named per finding: findings 1, 2 and the coverage half of 4 go to **typo3-extension-testing** with the first step spelled out for each (\"PHPStan with a generated baseline, wire a `phpstan` suite and a CI step per major\"; \"functional frontend-request coverage per plugin, and CSV-fixture coverage for each wizard's `updateNecessary()`/`executeUpdate()` pair\"), finding 6 to **typo3-backend-module-development**, finding 10's manual half to **typo3-extension-documentation**, and findings 3 and 4 are handed back for a maintainer's decision instead of being routed anywhere — which is the correct answer for a trade-off nobody has priced yet. Nothing was implemented: 72 tool calls — 39 Bash, 15 Read, 2 ToolSearch, 1 Skill, 15 server calls — and not one Write, Edit or NotebookEdit, with `git status` in the checkout afterwards showing only the ` M .gitignore` and `?? .mcp.json` the install left. The review does not become an upgrade or a test-writing session: every remediation is a sentence, the closing paragraph offers an order and starts none of it, and the three commands it ran are the two the repository declares plus one it names as evidence rather than as a check."
         }
     ],
     "failures": [
         {
             "avoided": true,
-            "evidence": "The coverage table closes surfaces the extension does not have rather than asking for them. Persistence is clean with a reason — `syntax_language varchar(60)` is \"a genuine delta TCA cannot derive\", no DataHandler use, no upgrade wizard needed, `l10n_mode => exclude` right for a language selector. Security is clean by inspection rather than by checklist: Fluid escaping by default, no `f:format.raw`, a fixed-item select, the `defined('TYPO3')` guards, the TER token read from secrets behind a repository-name gate. `.html` rather than `.fluid.html` is named as \"the accepted predecessor form on 14, not a defect\". No backend module, route or middleware is asked of an extension that registers none."
+            "evidence": "The coverage table closes surfaces the extension does not have rather than asking for them. `contentElements` came back empty from the scope and no content element work is asked for; `middlewares: []` and `backendRoutes: []` are never turned into gaps, while the one backend module the extension does register is assessed and produces finding 6. Translations are recorded as correct-by-design because `crowdin.yml` owns them, not as six half-finished language files. The lock file is checked for being correctly absent and `Documentation/` for being correctly not export-ignored — both the right way round for a distributed extension rather than for a project. Where a rule exists but the evidence to apply it does not, the rule is dropped: the v13 delta-only convention for `ext_tables.sql` is named and explicitly not raised for want of a schema-analyzer comparison."
         },
         {
             "avoided": true,
-            "evidence": "Compatibility is measured against the declaration and never against the installed 14.3.0. Finding 5 uses the declared `^13.4 || ^14.3` to prove a runtime branch dead rather than reading the installed major as the truth, and kills the `isLoaded('t3editor')` branch by establishing that the package exists on neither supported major. Finding 6 argues *for* the older major — shipping settings twice \"is defensible while 13 is supported\" — and finding 1's whole case is that the matrix which exists to prove the declared range never exercises it. Where the installed core is read it is read for a mechanism: `PackageManager::getComposerManifest()` and `isComposerOnlyCapable()`, and `ExtensionManagementUtility::addRecordType()` as the v13+ convention."
+            "evidence": "Compatibility is measured against the declaration and never against the installed 13.4.33. Finding 9 is declaration-against-declaration throughout, and its consequence is argued for the install path where `ext_emconf.php` is the only authority rather than for the Composer one where it is cosmetic — the answer says so in as many words. Finding 7 refuses to let the older major excuse the deprecated shape, establishing that instance `render()` works on 12.4; the *Correct trade-offs* section argues the reverse for `event.listener`/`console.command` YAML registration and the `getMajorVersion() < 13` branch, both required by the declared range, and marks them as things not to \"clean up\" by mistake. Where the installed core is read it is read for a mechanism, not for a version: `HtmlentitiesDecodeViewHelper`'s `$escapeChildren = false` at `:39` and `$escapeOutput = false` at `:46`, and the `#[UpgradeWizard]` attribute the seven wizards carry."
         },
         {
             "avoided": true,
-            "evidence": "Nothing from the core contribution process appears: no `runTests.sh`, no `Build/Scripts`, no Gerrit. Every command named or executed is this repository's own — `composer test:php:lint`, `composer cgl:ci`, `composer test`, and `composer show typo3/tailor` to settle the pin — and the CI finding is precisely that this project's own matrix does not exercise this project's own declared range. Where a convention comes from outside it is the core's or the extension's own history: `addRecordType()` from the installed `ExtensionManagementUtility`, the conditional loader from this repository's own CHANGELOG and git log."
+            "evidence": "Nothing from the core contribution process appears: no Gerrit, no Forge, no `Releases:` line. `Build/Scripts/runTests.sh` is named — correctly, because this repository owns one, which is the case `R-SCO-2` guards the other way round — and it is read rather than assumed: finding 1 rests on the `PHPSTAN_CONFIG_FILE` variable at `:330` having no `phpstan` case to go with it, and finding 8's suite list (`cgl, clean, composer, composerInstall*, docsGenerate, coveralls, functional, lint, rector, fractor, unit, update`) is the script's own dispatcher, which I confirmed line by line. No other extension's CI is imported: the check-layer holes are stated as entries of the receiving skill's checklist and every remediation is phrased in this repository's terms — a `phpstan` suite beside the existing ones, a step per major in the two workflows it already has. The CI observations are likewise its own: Rector and Fractor run only in `core12.yml` (`:37`, `:45`), so v13-specific code is checked by neither, and both major workflows pin `actions/checkout@v3`."
         },
         {
-            "avoided": true,
-            "evidence": "No file was changed and no tool that could change one was called; the two commands that ran are the two the scope marks as handing the code back as it was, and the answer says so before its first finding. Recommendations stay recommendations: the Tailor pin \"works today\", finding 5's `addTcaSelectItem` is \"convention drift\" rather than a break with `addRecordType` verified as present and not deprecated, finding 6 is \"defensible\", finding 7's tag-versus-attribute registration is named as convention. The verdict that leans furthest past its evidence is finding 2's \"Every page of every site depending on `syntax/base` ships them\": the chain through `setup.typoscript` is complete and re-checked, but the behaviour was reasoned about rather than rendered, and two of the seven includes are in fact gated on a setting."
+            "avoided": false,
+            "evidence": "No file was changed and no tool that could change one was called, so that half holds. The other half does not. Finding 5, \"Editor-supplied titles are rendered unescaped in the shipped detail templates\", is reported as a verified security defect and singled out in the closing order as \"the only one with an active security consequence\", with the verdict that \"a backend user whose only permission is editing news can put markup or script into the page every visitor loads — an escalation from 'may edit news' to script execution in the site's origin, in the default templates, on the default detail view\". Every path, line and mechanism underneath it is right, and I checked all of them: `News/Detail.html:24,29` and both Bootstrap variants at `:22,27` do wrap `{newsItem.title}` and `{newsItem.alternativeTitle}` in `<f:format.htmlentitiesDecode>`, the core ViewHelper does set `$escapeChildren = false` and `$escapeOutput = false`, and `title` is a plain `'type' => 'input'` at `Configuration/TCA/tx_news_domain_model_news.php:150-155` with no RTE. What was never traced is the sink. All six occurrences — the only six in the whole template tree — sit inside `<n:titleTag>`, and that ViewHelper emits nothing: `TitleTagViewHelper::renderStatic()` passes the rendered children to `NewsTitleProvider::setTitle()`, `TypoScriptFrontendController:554` hands the resolved title to `PageRenderer::setTitle()`, and `PageRenderer:1240` and `:1355` wrap it in `<title>|</title>` through `htmlspecialchars()`. Nothing reaches the page body, and the decode is there precisely to stop the title being double-encoded on its way into `<title>` — the workaround the finding condemns is the reason the output is correct. This is the shape the review method already warns about and the one this scenario was `partial` for on its first run: every path, count and line right, and the verdict on top of them wrong. It is the expensive direction of wrong, because a security finding has to be disproved before it can be dismissed, and disproving this one took reading two core classes the review never opened."
         }
     ],
-    "notes": "The fourth recorded REVIEW-02 run, the second in /home/benji/projects/syntax, and the first against a server that tells a review to run the checks it cannot break anything with. Session b5df3449-084c-4ae6-a2d2-90dd3b47381c, 2026-07-31 13:32-13:37 CEST, five minutes, one prompt and no steering. The run it replaces is in commit 3390f34, judged `covered` against the same criteria digest at 12:21 the same day.\n\nSetup. /home/benji/projects/syntax at dc94545, `bk2k/syntax` 5.0.0, TYPO3 14.3.0 below `.build/vendor`, declared range `^13.4 || ^14.3`, DDEV up. The server is not a Composer dependency there, so the skills were republished from this checkout with `install --agent=claude` immediately before the run and `references/base.md` verified byte-identical to `skills/base.md`. 428 tests green.\n\nWhat this run was for. It re-ran the query of the open note — no extension review has reached the console half of this server — against the server as it is now, and the note is answered by it. Three earlier runs called no installation-backed tool at all, with DDEV up and reachable each time. This one called two: `typo3_configuration_lookup` on `SYS/formEngine/formDataGroup/tcaDatabaseRecord`, answered by the installation's own console through DDEV with the real form data group, and `typo3_icon_lookup` on `content-element-syntax`, an exact match resolved from `EXT:syntax/Configuration/Icons.php`. Neither is decorative: the first settles that `TcaSelectItems` runs transitively before the extension's data provider, which is what makes `['syntax_language'][0]` correct, and the second closes the Icons row of the coverage table. So a review of a reusable extension does reach the installation, and the console half is no longer exercised only in E-SITE. What it did not ask is `typo3_label_lookup` on the Labels surface it assessed from the XLF file directly, and `typo3_documentation_lookup` was not called at all.\n\nThe other thing it settles is D-EVI-3, whose **Wrong if** was that reviews which now run the checks would report the same findings they used to read out of CI files. They did not: the two checks passing is what finding 1 is built on — a green net that is green whether or not the extension works — and the answer opens by saying which of the three kinds of evidence it stands on. That sentence was missing from all three earlier runs.\n\nWhat is still missing is on the other side of the same subject. For the second run in this checkout the absence of static analysis is not a finding: no PHPStan, no analysis step, no baseline, and the review reports the ceiling of what exists rather than the layer that is not there. b0eded4 fixed the skill that would receive the work; what is left is the conformance checklist's quality surface, which names \"declared validation commands\" and so can only assess what the repository already declares.\n\nJudging notes for whoever reads this next. Nine of the answer's claims were re-checked against the checkout and the installed core and all nine hold. Two imprecisions are recorded above and neither moves a finding. One thing about the server rather than the run: `typo3_project_scope` reports three of the five syntax commands as checks — `cgl:ci`, `test:php:lint`, and `test`, which resolves to `@test:php:lint` — where the message of 2bfd837 says two."
+    "notes": "The fifth recorded `REVIEW-02` run, the first in an extension checkout with a TYPO3 major in front of it, and the first in `/home/benji/projects/news`. Session `2c0b2628-6a39-4f1d-8fa7-5fdc4a0a52a2`, 2026-07-31 14:14–14:23 CEST, nine minutes, one prompt and no steering. The run it replaces is in commit b5555cb, judged `covered` against the same criteria digest in `/home/benji/projects/syntax` at 13:32 the same day.\n\nSetup. `/home/benji/projects/news` at `3fe278a2`, `georgringer/news` 13.0.2, cloned `--single-branch` on `13.x` — the maintained 12/13 line, tip 2026-05-26 — with TYPO3 13.4.33 below `.Build/vendor` and no DDEV. Single-branch on purpose: `origin/main` carries the finished v14 migration, and a checkout that plays the environment for `EXT-01` must not hand the answer over with one `git log`. The server is not a Composer dependency there, so the skills were published from this checkout with `install --agent=claude` immediately before the run and `references/base.md` verified byte-identical to `skills/base.md`. 430 tests green at b5555cb.\n\nA first attempt was discarded rather than judged. It ran at 14:02–14:11 in the same directory on branch `12-13` (session `86014a73-da79-4b90-a924-78acebcd2f3f`, transcript still readable), and its own top finding is why: `12-13` is 185 commits behind `origin/13.x`, 0 ahead of it, and had no commit since 2024-09-13, so the priority order it produced was led by a property of the environment rather than of the extension. It was right, and it cost the run its first slot. What that attempt establishes is kept here because the second run did not reproduce it: with `typo3_changelog_lookup {\"query\": \"TypoScriptFrontendController\", \"type\": \"deprecation\", \"version\": \"13\", \"limit\": 15}` it found Deprecation-105230 tagged `FullyScanned`, matched it against all 24 `$GLOBALS['TSFE']` call sites, and ranked it High as \"the single largest blocker to a v14 release\".\n\nWhat this run was for. `E-EXT` was played by two current checkouts, `syntax` and `bootstrap_package`, both declaring `^13.4 || ^14.3`, so no recorded run had ever seen an extension whose declared range ends below the installed major elsewhere in the world. This one does, and the declared range does real work in it: three findings turn on what 12.4 still requires, and the *Correct trade-offs* section exists only because a dual-major package has shapes that would be defects in a single-major one.\n\nWhat it settles, and what it does not. The static-quality gap the two `syntax` runs never named is named here, row by row, which is the first evidence that the conformance checklist's quality surface asks what a complete check layer covers rather than what the repository declares. Against that stand two things the criteria do not ask for and neither catches. The first is `avoided 4` above: a false-positive security finding whose every citation is correct. The second is the mirror image — a surface asserted clean without being checked, \"no superglobal access exists in `Classes/`\", on the 24 call sites of the deprecation that decides whether this extension survives v14. The discarded attempt found it in one tool call. The difference between the two runs is not the tool and not the repository; it is that nothing in the ordered work says *sweep the installed core's deprecations against this extension's own call sites*, so it happens when a finding leads there — `renderStatic` did — and not otherwise.\n\nThree notes came out of this run, all filed rather than left in this field: the deprecation sweep above; `typo3_extension_scope` reporting `provider` and `source` as icon identifiers, which the run caught and worked around; and `typo3_project_scope` classifying all six of this repository's commands as `runs: unknown`, including a `--dry-run` php-cs-fixer, because a leading inline environment assignment is read as the tool name. The last one is the sharp one: `cs` and `csfix` are indistinguishable to a task told not to change files.\n\nJudging notes for whoever reads this next. Eighteen claims were re-checked against the checkout and the installed core; fourteen hold exactly, three are imprecise without moving their finding, and one — finding 5's verdict — does not survive. `composer cs` and the unit suite were re-run while judging and both reproduce the numbers the answer quotes. The verdict is `partial`, and it is `partial` for the same reason this scenario was `partial` the first time it ran."
 }

@@ -28,6 +28,19 @@ final class Project
     public const ORIGIN_THIRD_PARTY = 'third-party';
 
     /**
+     * Shipped by the repository's test setup, not by the repository.
+     *
+     * An extension repository routinely installs a package of its own from
+     * below Tests/ — a fixture the functional suite loads, a demo package a
+     * scenario needs. Composer lists it like any other path repository, and
+     * calling it the project's own says "this is what is being worked on"
+     * about something that exists to be loaded and thrown away. Reported as
+     * its own thing rather than dropped: a fixture the answer omits is one
+     * nobody can account for when it shows up in an installed package list.
+     */
+    public const ORIGIN_FIXTURE = 'fixture';
+
+    /**
      * @return array{
      *     root: string,
      *     kind: string,
@@ -115,13 +128,30 @@ final class Project
             $extensions[] = [
                 'key' => $key,
                 'path' => self::relative($root, $path),
-                'origin' => str_contains(str_replace('\\', '/', $path), '/vendor/')
-                    ? self::ORIGIN_THIRD_PARTY
-                    : self::ORIGIN_PROJECT,
+                'origin' => self::origin($path),
             ];
         }
 
         return $extensions;
+    }
+
+    /**
+     * Where an extension in this installation comes from, read off its path.
+     *
+     * Below the vendor directory it was installed as a dependency. Below a
+     * Tests/ directory it belongs to the test setup, whatever Composer's
+     * install path says — a package repository under Tests/Packages/ resolves
+     * to a real directory in the repository, and nothing else distinguishes it
+     * from the extension being developed.
+     */
+    public static function origin(string $path): string
+    {
+        $path = str_replace('\\', '/', $path);
+        if (str_contains($path, '/vendor/')) {
+            return self::ORIGIN_THIRD_PARTY;
+        }
+
+        return preg_match('#(^|/)[Tt]ests?/#', $path) === 1 ? self::ORIGIN_FIXTURE : self::ORIGIN_PROJECT;
     }
 
     /**

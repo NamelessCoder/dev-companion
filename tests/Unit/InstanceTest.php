@@ -8,6 +8,7 @@ use PHPUnit\Framework\Attributes\After;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Typo3CmsMcp\Instance;
+use Typo3CmsMcp\Project;
 use Typo3CmsMcp\Tests\Support\TemporaryInstallation;
 
 /**
@@ -114,6 +115,49 @@ final class InstanceTest extends TestCase
         // Without this the one package the agent is editing is the only one
         // missing from the answers about its own installation.
         self::assertSame(realpath($root), Instance::packages()['bootstrap_package'] ?? null);
+    }
+
+    #[Test]
+    public function aPackageBelowTestsIsTheTestSetupsRatherThanTheOneBeingWorkedOn(): void
+    {
+        $root = $this->composerProject('.build/vendor');
+        file_put_contents($root . '/composer.json', json_encode([
+            'name' => 'acme/bootstrap-package',
+            'type' => 'typo3-cms-extension',
+            'config' => ['vendor-dir' => '.build/vendor'],
+            'repositories' => ['tests' => ['type' => 'path', 'url' => 'Tests/Packages/*']],
+        ], JSON_THROW_ON_ERROR));
+        mkdir($root . '/Tests/Packages/demo_package', 0o777, true);
+        file_put_contents($root . '/Tests/Packages/demo_package/composer.json', json_encode([
+            'name' => 'acme/demo-package',
+            'type' => 'typo3-cms-extension',
+            'extra' => ['typo3/cms' => ['extension-key' => 'demo_package']],
+        ], JSON_THROW_ON_ERROR));
+        $installed = json_decode(
+            (string) file_get_contents($root . '/.build/vendor/composer/installed.json'),
+            true,
+            flags: JSON_THROW_ON_ERROR,
+        );
+        $installed['packages'][] = [
+            'name' => 'acme/demo-package',
+            'type' => 'typo3-cms-extension',
+            'install-path' => '../../../Tests/Packages/demo_package',
+            'extra' => ['typo3/cms' => ['extension-key' => 'demo_package']],
+        ];
+        file_put_contents(
+            $root . '/.build/vendor/composer/installed.json',
+            json_encode($installed, JSON_THROW_ON_ERROR),
+        );
+        Instance::discoverFrom($root);
+
+        $origins = array_column(Project::describe()['extensions'], 'origin', 'key');
+
+        // Calling the fixture the project's own says "this is what is being
+        // worked on" about a package that exists to be loaded by a suite, and
+        // a review then audits it as if it were shipped.
+        self::assertSame(Project::ORIGIN_FIXTURE, $origins['demo_package'] ?? null);
+        self::assertSame(Project::ORIGIN_PROJECT, $origins['bootstrap_package'] ?? null);
+        self::assertSame(Project::ORIGIN_THIRD_PARTY, Project::origin('/app/.build/vendor/b13/container'));
     }
 
     #[Test]

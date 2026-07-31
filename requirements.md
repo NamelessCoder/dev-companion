@@ -141,6 +141,14 @@ them, this section wins and the other one is what needs rewriting.
   *From:* forward tests of the testing, conformance, documentation, and backend
   module skills against the Printworks sitepackage (2026-07-30).
   *Held by:* `SkillTest`
+- **R-DIS-17** An extension below a `Tests/` directory is reported as `fixture`
+  rather than as the project's own, in the project scope and in the extension
+  scope alike. It stays in the answer: a package an installation loads and the
+  answer omits is one nobody can account for.
+  *From:* `REVIEW-02`. `demo_package` below `Tests/Packages/` came back with
+  origin `project`, which the schema defines as "inside the repository, so what
+  it is working on" (2026-07-31).
+  *Held by:* `InstanceTest::aPackageBelowTestsIsTheTestSetupsRatherThanTheOneBeingWorkedOn`
 - **R-DIS-16** A repository that declares `typo3/cms-core` for more than one
   covered major is answered for all of them at once: `typo3_task_guide` and
   `typo3_architecture_lookup` keep a statement that holds on any of them, name

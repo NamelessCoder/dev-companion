@@ -218,8 +218,9 @@ final class Extension
     }
 
     /**
-     * Whether this is TYPO3's own, the project's, or a dependency it pulled in
-     * — the same three the project scope draws, so the two answers agree.
+     * Whether this is TYPO3's own, the project's, a dependency it pulled in, or
+     * a package its test setup ships — the same four the project scope draws,
+     * so the two answers agree.
      */
     private static function origin(string $key, string $path): string
     {
@@ -227,9 +228,7 @@ final class Extension
             return 'system';
         }
 
-        return str_contains(str_replace('\\', '/', $path), '/vendor/')
-            ? Project::ORIGIN_THIRD_PARTY
-            : Project::ORIGIN_PROJECT;
+        return Project::origin($path);
     }
 
     /**

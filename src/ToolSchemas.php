@@ -543,7 +543,7 @@ final class ToolSchemas
             'extensions' => self::listOf(self::object([
                 'key' => self::string(),
                 'path' => self::string('Relative to the project root.'),
-                'origin' => ['type' => 'string', 'enum' => ['project', 'third-party'], 'description' => 'project: inside the repository, so what it is working on. third-party: installed as a dependency.'],
+                'origin' => ['type' => 'string', 'enum' => ['project', 'third-party', 'fixture'], 'description' => 'project: inside the repository, so what it is working on. third-party: installed as a dependency. fixture: shipped by the repository\'s test setup, below a Tests/ directory, so it exists to be loaded by a suite rather than developed.'],
             ], ['key', 'path', 'origin']), 'Extensions that are not TYPO3 system extensions.'),
             'sites' => self::listOf(self::object([
                 'identifier' => self::string(),
@@ -572,7 +572,7 @@ final class ToolSchemas
         return self::object([
             'key' => self::string('The extension key that was asked for.'),
             'path' => self::nullableString('Absolute path of the extension. Null when the installation does not have it.'),
-            'origin' => ['type' => ['string', 'null'], 'enum' => ['system', 'project', 'third-party', null], 'description' => 'system: TYPO3\'s own. project: inside the repository. third-party: installed as a dependency.'],
+            'origin' => ['type' => ['string', 'null'], 'enum' => ['system', 'project', 'third-party', 'fixture', null], 'description' => 'system: TYPO3\'s own. project: inside the repository. third-party: installed as a dependency. fixture: below a Tests/ directory, so it belongs to the test setup.'],
             'composerName' => self::nullableString('The Composer package name it declares.'),
             'description' => self::nullableString('What its composer.json says it is.'),
             'requires' => self::listOf(self::object([

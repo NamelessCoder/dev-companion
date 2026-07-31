@@ -22,9 +22,7 @@ use Typo3CmsMcp\Tools;
  */
 final class ToolHandler implements ToolHandlerInterface
 {
-    public function __construct(private readonly string $name)
-    {
-    }
+    public function __construct(private readonly string $name) {}
 
     /**
      * @param array<string, mixed> $arguments

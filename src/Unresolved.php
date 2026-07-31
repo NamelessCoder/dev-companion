@@ -86,7 +86,7 @@ final class Unresolved
 
         // Decisions::all() is newest first, and reversing it would leave the
         // ids of one day in the order that listing wants them read.
-        usort($standing, static fn (array $a, array $b): int => [$a['date'], $a['id']] <=> [$b['date'], $b['id']]);
+        usort($standing, static fn(array $a, array $b): int => [$a['date'], $a['id']] <=> [$b['date'], $b['id']]);
 
         return $standing;
     }

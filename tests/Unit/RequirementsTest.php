@@ -69,7 +69,7 @@ final class RequirementsTest extends TestCase
     public function everyRequirementNamesWhatHoldsIt(): void
     {
         $methods = $this->testMethods();
-        $classes = array_unique(array_map(static fn (string $m): string => explode('::', $m)[0], $methods));
+        $classes = array_unique(array_map(static fn(string $m): string => explode('::', $m)[0], $methods));
 
         foreach (Requirements::all() as $id => $requirement) {
             if ($requirement['status'] === 'open') {

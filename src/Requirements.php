@@ -53,7 +53,7 @@ final class Requirements
             $requirements[$requirement['id']] = $requirement;
         }
 
-        uksort($requirements, static fn (string $a, string $b): int => strnatcmp($a, $b));
+        uksort($requirements, static fn(string $a, string $b): int => strnatcmp($a, $b));
 
         return $requirements;
     }
@@ -65,7 +65,7 @@ final class Requirements
      */
     public static function group(string $group): array
     {
-        return array_filter(self::all(), static fn (array $r): bool => $r['group'] === $group);
+        return array_filter(self::all(), static fn(array $r): bool => $r['group'] === $group);
     }
 
     /**

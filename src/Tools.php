@@ -2702,11 +2702,11 @@ final class Tools
                         count($split['holds']) + count($split['withheld']),
                     )
                     : sprintf(
-                    'For TYPO3 v%d, %d of %d components were verified; entries that were not are withheld.',
-                    $target,
-                    count($split['holds']),
-                    count($split['holds']) + count($split['withheld']),
-                )),
+                        'For TYPO3 v%d, %d of %d components were verified; entries that were not are withheld.',
+                        $target,
+                        count($split['holds']),
+                        count($split['holds']) + count($split['withheld']),
+                    )),
             $installed
                 ? 'The bundled catalog remains the curated search index and markup fallback; it does not override installed classes.'
                 : 'Each component entry owns this validity range. It does not inherit the version of the source checkout below.',
@@ -3382,9 +3382,13 @@ final class Tools
             ]);
         }
 
-        $lines = [sprintf('%d label(s) in %s match "%s"%s:', $total,
-            $resource !== '' ? $resource : ($instance['root'] ?? '?'), $query,
-            $total > count($shown) ? sprintf(' — showing the first %d', count($shown)) : '')];
+        $lines = [sprintf(
+            '%d label(s) in %s match "%s"%s:',
+            $total,
+            $resource !== '' ? $resource : ($instance['root'] ?? '?'),
+            $query,
+            $total > count($shown) ? sprintf(' — showing the first %d', count($shown)) : ''
+        )];
         foreach ($shown as $label) {
             $lines[] = '- ' . $label['ref'];
             $lines[] = '  "' . $label['source'] . '"';

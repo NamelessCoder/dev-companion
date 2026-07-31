@@ -67,7 +67,7 @@ final class Backlog implements Subject
         // todo names has had it, and the standing decisions have had it as soon
         // as a todo takes on sorting them. Everything else would make a backlog
         // that is legitimately long the only thing a session is ever offered.
-        $unjudged = array_filter($requirements, static fn (array $r): bool => !$r['queued']);
+        $unjudged = array_filter($requirements, static fn(array $r): bool => !$r['queued']);
         $sorting = in_array('decisions/', Todo::serves(), true);
 
         $standing = Unresolved::decisions();

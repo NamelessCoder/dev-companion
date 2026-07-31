@@ -20,8 +20,7 @@ final class ToolResult
     private function __construct(
         public readonly string $text,
         public readonly array $data,
-    ) {
-    }
+    ) {}
 
     /** @param array<string, mixed> $data */
     public static function create(string $text, array $data): self

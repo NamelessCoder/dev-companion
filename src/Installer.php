@@ -74,8 +74,7 @@ final class Installer
     public function __construct(
         private readonly string $project,
         private readonly string $entrypoint,
-    ) {
-    }
+    ) {}
 
     public function install(?string $agent): string
     {
@@ -145,13 +144,13 @@ final class Installer
             $configuration = $decoded;
         }
 
-        $target =& $configuration;
+        $target = & $configuration;
         foreach (explode('.', $key) as $segment) {
             $target[$segment] ??= [];
             if (!is_array($target[$segment])) {
                 throw new \RuntimeException($key . ' in ' . $relativePath . ' must be an object');
             }
-            $target =& $target[$segment];
+            $target = & $target[$segment];
         }
 
         $server = $this->jsonServer($shape);
@@ -407,7 +406,7 @@ final class Installer
         }
         $skills = array_values(array_filter(
             $state['skills'],
-            static fn (mixed $skill): bool => is_string($skill) && $skill !== '',
+            static fn(mixed $skill): bool => is_string($skill) && $skill !== '',
         ));
 
         return ['version' => 1, 'skills' => $skills];

@@ -113,7 +113,7 @@ final class Hint implements Subject
         // and deliberately not a list kept beside the matcher: a query written to
         // test a matcher is written by someone who knows what it should return.
         $prompts = array_map(
-            static fn (array $scenario): string => $scenario['prompt'],
+            static fn(array $scenario): string => $scenario['prompt'],
             [...Scenarios::load(), ...Scenarios::contracts()],
         );
         $reached = [];
@@ -141,7 +141,7 @@ final class Hint implements Subject
 
         $never = array_values(array_filter(
             array_column($hints, 'id'),
-            static fn (string $id): bool => !isset($reached[$id]),
+            static fn(string $id): bool => !isset($reached[$id]),
         ));
         printf("\nHints no scenario prompt reaches (%d of %d)\n", count($never), count($hints));
         print $never === [] ? "  none\n" : '  ' . implode("\n  ", $never) . "\n";
@@ -151,7 +151,7 @@ final class Hint implements Subject
         // "ordinary" was measured at. A corpus whose mean has walked away from that
         // is a corpus this constant no longer describes.
         $lengths = array_map(
-            static fn (array $hint): int => str_word_count(implode(' ', array_column($hint['hints'], 'text'))),
+            static fn(array $hint): int => str_word_count(implode(' ', array_column($hint['hints'], 'text'))),
             $hints,
         );
         sort($lengths);
@@ -160,7 +160,7 @@ final class Hint implements Subject
             (int) round(array_sum($lengths) / max(1, count($lengths))),
             $lengths[intdiv(count($lengths), 2)] ?? 0,
             max($lengths),
-            count(array_filter($lengths, static fn (int $n): bool => $n > 200)),
+            count(array_filter($lengths, static fn(int $n): bool => $n > 200)),
             count($lengths),
         );
 

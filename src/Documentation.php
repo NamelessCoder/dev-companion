@@ -50,9 +50,7 @@ final class Documentation
     private const UNDILUTED_WORDS = 12;
 
     /** @param \Closure(string): ?string|null $fetch */
-    public function __construct(private readonly ?\Closure $fetch = null)
-    {
-    }
+    public function __construct(private readonly ?\Closure $fetch = null) {}
 
     /**
      * @param list<string> $queries

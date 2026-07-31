@@ -78,7 +78,7 @@ final class Decisions
             $decisions[$decision['id']] = $decision;
         }
 
-        uasort($decisions, static fn (array $a, array $b): int => [$b['date'], $a['id']] <=> [$a['date'], $b['id']]);
+        uasort($decisions, static fn(array $a, array $b): int => [$b['date'], $a['id']] <=> [$a['date'], $b['id']]);
 
         return $decisions;
     }
@@ -94,7 +94,7 @@ final class Decisions
             return self::all();
         }
 
-        return array_filter(self::all(), static fn (array $d): bool => $d['group'] === $group);
+        return array_filter(self::all(), static fn(array $d): bool => $d['group'] === $group);
     }
 
     /**

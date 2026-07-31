@@ -4,10 +4,6 @@ declare(strict_types=1);
 
 namespace Typo3CmsMcp\Cli;
 
-use FilesystemIterator;
-use RecursiveDirectoryIterator;
-use RecursiveIteratorIterator;
-use SplFileInfo;
 use Typo3CmsMcp\Requirements;
 
 /**
@@ -129,7 +125,7 @@ final class Requirement implements Subject
             foreach ($requirement['tests'] as $test) {
                 $exists = str_contains($test, '::')
                     ? in_array($test, $tests, true)
-                    : in_array($test, array_map(static fn (string $m): string => explode('::', $m)[0], $tests), true);
+                    : in_array($test, array_map(static fn(string $m): string => explode('::', $m)[0], $tests), true);
                 if (!$exists) {
                     $problems[] = $id . ' names ' . $test . ', which no test declares';
                 }
@@ -207,11 +203,11 @@ final class Requirement implements Subject
     {
         $references = [];
         $root = dirname(__DIR__, 2);
-        $files = new RecursiveIteratorIterator(
-            new RecursiveDirectoryIterator($root . '/scenarios', FilesystemIterator::SKIP_DOTS),
+        $files = new \RecursiveIteratorIterator(
+            new \RecursiveDirectoryIterator($root . '/scenarios', \FilesystemIterator::SKIP_DOTS),
         );
         foreach ($files as $file) {
-            if (!$file instanceof SplFileInfo || $file->getExtension() !== 'md') {
+            if (!$file instanceof \SplFileInfo || $file->getExtension() !== 'md') {
                 continue;
             }
             preg_match_all('/`(R-[A-Z]{3}-\d+[a-z]?)`/', (string) file_get_contents($file->getPathname()), $matches);

@@ -69,22 +69,22 @@ final class Components
             }
 
             return [
-            'name' => (string) $entry['name'],
-            'title' => (string) $entry['title'],
-            'summary' => (string) ($entry['summary'] ?? ''),
-            'rootClass' => (string) ($entry['rootClass'] ?? ''),
-            'variants' => array_map('strval', $entry['variants'] ?? []),
-            'modifiers' => array_map('strval', $entry['modifiers'] ?? []),
-            'subComponents' => array_map('strval', $entry['subComponents'] ?? []),
-            'customProperties' => array_map('strval', $entry['customProperties'] ?? []),
-            'markup' => (string) ($entry['markup'] ?? ''),
-            'examples' => array_map('strval', $entry['examples'] ?? []),
-            'sassPath' => $sassPaths[0] ?? null,
-            'sassPaths' => $sassPaths,
-            'demoPath' => isset($entry['demoPath']) ? (string) $entry['demoPath'] : null,
-            'keywords' => array_map('strval', $entry['keywords'] ?? []),
-            'since' => isset($entry['since']) ? (int) $entry['since'] : null,
-            'until' => isset($entry['until']) ? (int) $entry['until'] : null,
+                'name' => (string) $entry['name'],
+                'title' => (string) $entry['title'],
+                'summary' => (string) ($entry['summary'] ?? ''),
+                'rootClass' => (string) ($entry['rootClass'] ?? ''),
+                'variants' => array_map('strval', $entry['variants'] ?? []),
+                'modifiers' => array_map('strval', $entry['modifiers'] ?? []),
+                'subComponents' => array_map('strval', $entry['subComponents'] ?? []),
+                'customProperties' => array_map('strval', $entry['customProperties'] ?? []),
+                'markup' => (string) ($entry['markup'] ?? ''),
+                'examples' => array_map('strval', $entry['examples'] ?? []),
+                'sassPath' => $sassPaths[0] ?? null,
+                'sassPaths' => $sassPaths,
+                'demoPath' => isset($entry['demoPath']) ? (string) $entry['demoPath'] : null,
+                'keywords' => array_map('strval', $entry['keywords'] ?? []),
+                'since' => isset($entry['since']) ? (int) $entry['since'] : null,
+                'until' => isset($entry['until']) ? (int) $entry['until'] : null,
             ];
         }, $decoded);
     }
@@ -168,8 +168,8 @@ final class Components
         // something nobody catalogued came back with three components that each
         // shared one word with it, and a miss would have been the true answer.
         $asked = count($terms);
-        $scored = array_values(array_filter($scored, static fn(array $entry): bool =>
-            in_array('name', $entry['component']['matchedIn'], true)
+        $scored = array_values(array_filter($scored, static fn(array $entry): bool
+            => in_array('name', $entry['component']['matchedIn'], true)
             || $entry['matched'] / $asked >= self::MIN_COVERAGE));
 
         // A component that covers every query term beats one that matched a

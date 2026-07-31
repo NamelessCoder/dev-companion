@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Typo3CmsMcp\Cli;
 
-use InvalidArgumentException;
 use Typo3CmsMcp\Cli;
 use Typo3CmsMcp\Scenarios;
 
@@ -142,7 +141,7 @@ final class Scenario implements Subject
 
         try {
             $run = Scenarios::skeleton($id, self::server(), $client, date('Y-m-d'));
-        } catch (InvalidArgumentException $exception) {
+        } catch (\InvalidArgumentException $exception) {
             fwrite(STDERR, $exception->getMessage() . "\n");
 
             return 2;

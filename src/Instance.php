@@ -44,7 +44,7 @@ final class Instance
     private static ?string $startingDirectory = null;
 
     /** @var array{root: string, kind: string, startedFrom: string, via: string}|null|false false = not resolved yet */
-    private static array|null|false $resolved = false;
+    private static array|false|null $resolved = false;
 
     private static string $misconfiguration = '';
 

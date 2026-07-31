@@ -41,7 +41,7 @@ final class Typo3Cli
     private const TIMEOUT_SECONDS = 90;
 
     /** @var array{command: array<int, string>, via: string, php: string}|null|false */
-    private static array|null|false $resolved = false;
+    private static array|false|null $resolved = false;
 
     private static string $reason = '';
 

@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace Typo3CmsMcp\Catalog;
 
-use RecursiveDirectoryIterator;
-use RecursiveIteratorIterator;
-use SplFileInfo;
 use Typo3CmsMcp\Instance;
 
 /**
@@ -195,11 +192,11 @@ final class InstalledComponents
             if (!is_dir($directory)) {
                 continue;
             }
-            $entries = new RecursiveIteratorIterator(
-                new RecursiveDirectoryIterator($directory, RecursiveDirectoryIterator::SKIP_DOTS),
+            $entries = new \RecursiveIteratorIterator(
+                new \RecursiveDirectoryIterator($directory, \RecursiveDirectoryIterator::SKIP_DOTS),
             );
             foreach ($entries as $entry) {
-                if (!$entry instanceof SplFileInfo || !$entry->isFile() || $entry->getExtension() !== 'js') {
+                if (!$entry instanceof \SplFileInfo || !$entry->isFile() || $entry->getExtension() !== 'js') {
                     continue;
                 }
                 $relative = substr($entry->getPathname(), strlen($package) + 1);

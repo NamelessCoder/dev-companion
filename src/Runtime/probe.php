@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * What the running installation says about itself.
  *
@@ -24,7 +26,6 @@
  * buffer is discarded first, because an extension that echoes during boot would
  * otherwise sit in front of the payload.
  */
-
 $answer = ['state' => 'unreachable', 'reason' => '', 'topics' => []];
 
 try {

@@ -6,8 +6,6 @@ namespace Typo3CmsMcp\Tests\Smoke;
 
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use RecursiveDirectoryIterator;
-use RecursiveIteratorIterator;
 use Typo3CmsMcp\Paths;
 
 final class InstallerAgentSupportTest extends TestCase
@@ -81,9 +79,9 @@ final class InstallerAgentSupportTest extends TestCase
 
     private function removeDirectory(string $directory): void
     {
-        $files = new RecursiveIteratorIterator(
-            new RecursiveDirectoryIterator($directory, RecursiveDirectoryIterator::SKIP_DOTS),
-            RecursiveIteratorIterator::CHILD_FIRST,
+        $files = new \RecursiveIteratorIterator(
+            new \RecursiveDirectoryIterator($directory, \RecursiveDirectoryIterator::SKIP_DOTS),
+            \RecursiveIteratorIterator::CHILD_FIRST,
         );
         foreach ($files as $file) {
             if ($file->isDir()) {

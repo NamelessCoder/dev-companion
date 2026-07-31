@@ -19,8 +19,8 @@ declare(strict_types=1);
  */
 
 use Mcp\Server\Transport\StdioTransport;
-use Typo3CmsMcp\Instance;
 use Typo3CmsMcp\Installer;
+use Typo3CmsMcp\Instance;
 use Typo3CmsMcp\ServerFactory;
 
 require dirname(__DIR__) . '/src/bootstrap.php';

@@ -100,7 +100,7 @@ final class Todo
     {
         return array_values(array_filter(
             self::sections(),
-            static fn (array $s): bool => $s['kind'] === 'todo' && $s['every'] !== '',
+            static fn(array $s): bool => $s['kind'] === 'todo' && $s['every'] !== '',
         ));
     }
 
@@ -114,7 +114,7 @@ final class Todo
     {
         return array_values(array_filter(
             self::sections(),
-            static fn (array $s): bool => $s['kind'] === 'todo' && $s['every'] === '',
+            static fn(array $s): bool => $s['kind'] === 'todo' && $s['every'] === '',
         ));
     }
 
@@ -126,7 +126,7 @@ final class Todo
      */
     public static function references(): array
     {
-        return array_values(array_filter(self::sections(), static fn (array $s): bool => $s['kind'] === 'reference'));
+        return array_values(array_filter(self::sections(), static fn(array $s): bool => $s['kind'] === 'reference'));
     }
 
     /**

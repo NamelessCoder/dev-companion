@@ -43,7 +43,7 @@ final class TodoTest extends TestCase
         $run = array_merge(...array_column(Todo::recurring(), 'run'));
 
         foreach (Todo::READINGS as $reading) {
-            self::assertSame([$reading], array_values(array_filter($run, static fn (string $r): bool => $r === $reading)));
+            self::assertSame([$reading], array_values(array_filter($run, static fn(string $r): bool => $r === $reading)));
         }
     }
 

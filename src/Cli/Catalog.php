@@ -4,10 +4,6 @@ declare(strict_types=1);
 
 namespace Typo3CmsMcp\Cli;
 
-use FilesystemIterator;
-use RecursiveDirectoryIterator;
-use RecursiveIteratorIterator;
-use SplFileInfo;
 use Typo3CmsMcp\Cli;
 use Typo3CmsMcp\Versions;
 
@@ -251,9 +247,9 @@ final class Catalog implements Subject
     private static function readSources(string $directory, string $extension): string
     {
         $sources = '';
-        $entries = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($directory, FilesystemIterator::SKIP_DOTS));
+        $entries = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($directory, \FilesystemIterator::SKIP_DOTS));
         foreach ($entries as $entry) {
-            if ($entry instanceof SplFileInfo && $entry->getExtension() === $extension) {
+            if ($entry instanceof \SplFileInfo && $entry->getExtension() === $extension) {
                 $sources .= (string) file_get_contents($entry->getPathname());
             }
         }

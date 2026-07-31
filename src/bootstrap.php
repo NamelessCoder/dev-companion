@@ -11,7 +11,6 @@ declare(strict_types=1);
  * three levels up. Composer's bin proxy tells us the exact path via
  * $_composer_autoload_path, so that is preferred when present.
  */
-
 (static function (): void {
     $candidates = [];
 
@@ -32,7 +31,7 @@ declare(strict_types=1);
         }
     }
 
-    fwrite(STDERR, "typo3-cms-mcp: Composer autoloader not found."
+    fwrite(STDERR, 'typo3-cms-mcp: Composer autoloader not found.'
         . " Run 'composer install' in the package root.\n");
     exit(1);
 })();

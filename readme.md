@@ -262,7 +262,7 @@ supports:
 
 ```bash
 bin/cli          # every subject, and every command it carries
-bin/cli next     # what to do next, for whoever is starting a session
+bin/cli next     # the one todo that is due now, and nothing else
 bin/cli check    # requirements, decisions, scenarios and todo.md against their formats
 ```
 

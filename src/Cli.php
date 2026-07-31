@@ -8,6 +8,7 @@ use Typo3CmsMcp\Cli\Backlog;
 use Typo3CmsMcp\Cli\Catalog;
 use Typo3CmsMcp\Cli\Checkout;
 use Typo3CmsMcp\Cli\Decision;
+use Typo3CmsMcp\Cli\Feedback as FeedbackSubject;
 use Typo3CmsMcp\Cli\Hint;
 use Typo3CmsMcp\Cli\Requirement;
 use Typo3CmsMcp\Cli\Scenario;
@@ -36,6 +37,7 @@ final class Cli
         'decisions' => Decision::class,
         'scenarios' => Scenario::class,
         'todo' => TodoSubject::class,
+        'feedback' => FeedbackSubject::class,
         'backlog' => Backlog::class,
         'hints' => Hint::class,
         'catalog' => Catalog::class,
@@ -87,6 +89,25 @@ final class Cli
     }
 
     /**
+     * Whether `bin/cli …` names something this command can do, for todo.md,
+     * whose `Run:` lines are commands nobody runs until the day they are due.
+     */
+    public static function knows(string $command): bool
+    {
+        $words = explode(' ', $command);
+        if (array_shift($words) !== 'bin/cli') {
+            return true;
+        }
+
+        $subject = array_shift($words) ?? '';
+        if ($subject === 'check' || $subject === 'next') {
+            return $words === [];
+        }
+
+        return isset(self::SUBJECTS[$subject]) && isset(self::SUBJECTS[$subject]::commands()[$words[0] ?? '']);
+    }
+
+    /**
      * The one command that was called wrong, printed as the help writes it.
      *
      * @param class-string<Subject> $class
@@ -127,75 +148,108 @@ final class Cli
     }
 
     /**
-     * What to do next, for whoever is starting a session.
+     * The one thing to do now, for whoever is starting a session.
      *
-     * Everything this prints was already written down, and it was written down
-     * in four places: the notes that arrived from outside, the two directories
-     * that say what is unfinished, and the file that says in which order. A
-     * session had to read all four and know how they relate before it could
-     * begin, and the instruction to do so was itself prose in a fifth. What was
-     * missing was never the information — it was one place to ask.
+     * It prints a single todo and nothing else. Everything it could print
+     * instead was already written down somewhere — the notes that arrived from
+     * outside, the two directories that say what is unfinished, the file that
+     * says in which order — and a session that is handed all of it reads for
+     * ten minutes before it does anything. Context is not free: an agent given
+     * the queue reads it as a plan and works in the wrong order, and one given
+     * five paragraphs of why a todo is where it is starts by summarising them.
+     * `bin/cli todo list` is where the overview lives, for whoever wants it.
      *
-     * So the standing sections are read out in the order todo.md has them, and
-     * the two that are readings this checkout can perform are performed rather
-     * than named. The next item is printed whole, because the paragraph under
-     * the heading *is* the next concrete step and summarising it here would be
-     * the second copy that goes stale. What follows it is named, not printed:
-     * the queue after the first entry is context, and a session that reads it
-     * as a plan will do the wrong thing in the wrong order.
+     * The one printed is the first that is actually due, which is two
+     * questions. Has the clock come round — cheap, and answered by the cadence.
+     * And is there anything to do — expensive, and answered by running the
+     * todo's own `Run:` command: a command this repository owns exits nonzero
+     * when it found work, so the notes stop being the next thing the moment the
+     * last one is closed, without anybody editing todo.md to say so. A command
+     * it does not own is named rather than run; `next` starts no process that
+     * needs the network, and the cadence is what keeps it from being asked
+     * twice in an afternoon.
      */
     private static function next(): int
     {
-        print "── standing, before anything is picked up\n";
-        foreach (Todo::standing() as $section) {
-            printf("\n%s\n", $section['title']);
-            print self::indent(self::capture(static fn (): mixed => match ($section['runs']) {
-                'notes' => self::openNotes(),
-                'backlog' => (Backlog::commands()['list'][2])([]),
-                default => print implode("\n", $section['commands']) . "\n",
-            }));
+        foreach (Todo::recurring() as $todo) {
+            if (!Todo::due($todo['every'], $todo['checked'])) {
+                continue;
+            }
+            [$output, $working] = self::perform($todo['run']);
+            if ($working) {
+                return self::present($todo, $output);
+            }
         }
 
         $items = Todo::items();
         if ($items === []) {
-            print "\n── next\n\nNothing is queued. What is waiting is above, and taking it on is an item here.\n";
+            print "Nothing is due and nothing is queued. What is waiting is in `bin/cli backlog list`,\n"
+                . "and taking one on is a todo in todo.md.\n";
 
             return 0;
         }
 
-        $next = array_shift($items);
-        printf("\n── next\n\n%s\n%s\n%s\n", $next['title'], self::indent('serves ' . implode(', ', $next['serves'])), $next['body']);
+        return self::present($items[0], self::perform($items[0]['run'])[0], count($items) - 1);
+    }
 
-        if ($items !== []) {
-            print "\n── and after it, in this order\n\n";
-            foreach ($items as $item) {
-                printf("%s\n", $item['title']);
-            }
+    /**
+     * One todo, as much of it as there is, and what it leaves behind.
+     *
+     * @param array{title: string, every: string, serves: array<int, string>, body: string, ...} $todo
+     */
+    private static function present(array $todo, string $output, ?int $after = null): int
+    {
+        $meta = ['serves ' . implode(', ', $todo['serves'])];
+        $meta[] = $todo['every'] === '' ? 'queued' : 'every ' . $todo['every'];
+        if ($after !== null && $after > 0) {
+            $meta[] = $after . ' more after it — `bin/cli todo list`';
         }
+
+        printf("%s\n%s\n", $todo['title'], implode(' · ', $meta));
+        if (trim($output) !== '') {
+            printf("\n%s", self::indent($output));
+        }
+        printf("\n%s\n", $todo['body']);
+        print "\n" . match (true) {
+            $todo['every'] === '' => "Done means todo.md says so: deleted, or trimmed to the part that is left.\n",
+            $todo['every'] === 'session' => "It stands, so nothing is deleted. What it settles belongs where that is kept.\n",
+            default => "It stands, so nothing is deleted — write today's date into `**Checked:**`.\n",
+        };
 
         return 0;
     }
 
     /**
-     * The notes that arrived from outside this repository and are still open.
+     * A todo's own commands, run where this repository owns them.
      *
-     * Listed rather than read out: what a note says is not what it is worth
-     * today, and the instruction above every one of them is to run its own
-     * query against the server as it is now.
+     * Whether there is work is the command's answer rather than a guess: the
+     * listings a recurring todo starts from exit nonzero when they found
+     * something. Anything else is printed for the session to run, and counts as
+     * work because nothing here can tell whether it is.
+     *
+     * @param array<int, string> $run
+     *
+     * @return array{0: string, 1: bool}
      */
-    private static function openNotes(): void
+    private static function perform(array $run): array
     {
-        $notes = Feedback::notes('open', null, 100);
-        if ($notes === []) {
-            print "No open notes.\n";
+        $output = '';
+        $working = $run === [];
+        foreach ($run as $command) {
+            if (!str_starts_with($command, 'bin/cli ')) {
+                $output .= $command . "\n";
+                $working = true;
+                continue;
+            }
 
-            return;
+            $status = 0;
+            $output .= self::capture(static function () use ($command, &$status): void {
+                $status = self::run(array_slice(explode(' ', $command), 1));
+            });
+            $working = $working || $status !== 0;
         }
 
-        printf("%d open. Run each one's own query against the server as it is now.\n", count($notes));
-        foreach ($notes as $note) {
-            printf("%s\n", $note['file']);
-        }
+        return [$output, $working];
     }
 
     /** What a callable printed, so a reading written for stdout can be placed. */
@@ -226,7 +280,7 @@ final class Cli
             'check',
             implode(', ', self::CHECKED),
             'next',
-            'what to do next: the open notes, the backlog, and the item at the front of the queue',
+            'the one todo that is due now, and nothing else',
         );
     }
 

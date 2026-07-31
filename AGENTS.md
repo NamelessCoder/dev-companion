@@ -27,8 +27,8 @@ skills/            # canonical task skills installed into supported agent client
 skills/base.md     # the order every task starts in, copied into each published skill as references/base.md
 requirements/      # what must hold, and what holds it there: one requirement per file, grouped by what it is about; open ones are the backlog
 decisions/         # what a change assumed, and what would show it to be wrong: one decision per file, grouped by what it is about
-todo.md            # the order of the work and where the last session stopped; `bin/cli next` reads it out
-src/Todo.php       # todo.md as data: which section is standing, which is the queue, what each item serves
+todo.md            # the order of the work and where the last session stopped; `bin/cli next` prints one of them
+src/Todo.php       # todo.md as data: what recurs and how often, what is queued, what each todo serves
 tests/             # unit, tool contract, and stdio smoke tests
 vendor/            # Composer dependencies (mcp/sdk); gitignored
 ```
@@ -43,34 +43,42 @@ from the installation being read.
 
     bin/cli next
 
-That is the whole of it. It reads out the standing items of [todo.md](todo.md),
-performs the two readings they ask for — the notes that arrived in `feedback/`
-while work was happening, and what `bin/cli backlog list` says was written down
-inside and then waited — and prints the item at the front of the queue whole,
-because the paragraph under its heading is the next concrete step. What follows
-that item is named rather than printed: the queue after the first entry is
-context, and reading it as a plan is how work happens in the wrong order.
+That is the whole of it, and it prints **one todo** — the first that is due,
+whole, with its own command already run. Not the queue, not the backlog, not the
+five paragraphs of why that one is in front. Context is not free: a session
+handed all of it reads for ten minutes and then starts by summarising what it
+read. `bin/cli todo list` is the overview, for whoever wants it.
 
-Each of the four is still a file somebody can read on its own, and the command
-is the one place to ask rather than a fifth thing to keep current. What it can
-never do is run a note's own query against the server as it is now — a note is
-evidence about a version of this server that may no longer exist, and that
-reading is the session's.
+Due is two questions. Has the clock come round, which the todo's `**Every:**`
+answers — `session`, or a number of days, so five sessions in an afternoon do
+not ask the same question five times. And is there anything to do, which the
+todo's `**Run:**` command answers by exiting nonzero when it found work: the
+notes stop being the next thing the moment the last one is judged, without
+anybody editing [todo.md](todo.md) to say so. What is owed a note or a backlog
+entry is that judgement — a todo that takes it on, or the sentence saying why it
+stays as it is — not the work itself, which is what the queue is for.
 
-Keeping it current is part of the work, not a step after it:
+What `next` can never do is run a note's own query against the server as it is
+now. A note is evidence about a version of this server that may no longer exist,
+and that reading is the session's.
 
-- The commit that finishes an item **deletes that item**, the way the commit that
-  works a note off deletes the note. What the item established is in
-  `requirements/` by then, and the commit is the record that it happened.
-- An item that turns out to be half done is trimmed to the part that is left,
-  with the next concrete step rewritten. An item nobody can start from is worse
-  than no item.
+Keeping the file current is part of the work, not a step after it:
+
+- The commit that finishes a todo **deletes that todo**, the way the commit that
+  works a note off deletes the note. What it established is in `requirements/`
+  by then, and the commit is the record that it happened.
+- A todo that turns out to be half done is trimmed to the part that is left,
+  with the next concrete step rewritten. One nobody can start from is worse than
+  no todo.
+- One paragraph, one step. Two steps are two todos, in the order they are in —
+  a paragraph is printed whole, and a session that has to read three of them to
+  find where to start is reading instead of working.
 - A change of order is written down **before** the work starts, so the reason
   exists in the file rather than in a session that has ended.
-- New work found along the way is added as an item that names what it serves. If
+- New work found along the way is added as a todo that names what it serves. If
   it serves nothing yet, it is an idea and belongs in the note that had it.
 
-A session that ends with the list matching what is actually true has handed over
+A session that ends with the file matching what is actually true has handed over
 correctly, whatever else it did.
 
 ## Less is more

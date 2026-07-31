@@ -64,11 +64,12 @@ generic on purpose — it names no scenario, no skill and no tool, so the same t
 works after a review, an implementation, or a question the server could not
 answer at all.
 
-The one field it spends words on is the model. Asked who it is, a session
-introspects, finds nothing it trusts, and takes the fallback the tool offers —
-an afternoon of notes all filed as `unknown`, which is the one value that cannot
-separate one model's behaviour from the next. So the prompt sends it to where
-the identifier is written down instead of asking it to remember.
+What it asks for is the report, never the shape of the note. What each field
+wants — one note per subject, the task named in the first line, where to read
+the model identifier rather than remember it — belongs to
+`typo3_feedback_record` and is written in its parameters, which is the only
+documentation a client actually reads. A prompt that restates it is a second
+copy that ages, and it would only reach the sessions somebody handed it to.
 
 ```text
 The work is done. What follows is a debrief about the TYPO3 knowledge server you
@@ -95,22 +96,9 @@ transcript, not from how it felt:
 - What you had to establish elsewhere — from the checkout, from your own
   knowledge, from the web — that this server should have answered.
 
-Record one note per subject rather than one long one, and on every call:
-
-- model: read it where it is written down — what your client reports for the
-  current session, its configuration, the model you were started with — rather
-  than from what you remember about yourself. Ask me if it is not there.
-  "unknown" only after you have looked, and never a guess.
-- tool: the tool or skill the note is about.
-- query: the arguments or the task text that produced it, so somebody can re-run
-  it against a later version of the server.
-- category: missing-knowledge, wrong-answer, tool-gap, bug, or idea.
-- suggestion: what should have happened instead.
-
-Open the observation with one line naming the task you were given, so the note
-can be traced back to what exposed it. Write in English. The note is stored in
-the server's own checkout, not in the project you worked in, so do not look for
-the file there.
+File what you find with that tool. What each of its parameters wants, it says
+itself — read them there and fill in every one you can, including the model you
+are running as.
 
 Then tell me which notes you filed and what each one says.
 ```

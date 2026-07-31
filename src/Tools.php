@@ -389,7 +389,7 @@ final class Tools
         return [
             [
                 'name' => 'typo3_feedback_record',
-                'description' => 'Leave a note about a gap, wrong answer, or missing capability of this knowledge server. The note is stored as markdown in this server\'s own checkout — not in the project you are working in, so do not look for the file there — and is read back with typo3_feedback_list. Use it whenever an answer was incomplete or a lookup found nothing that should have been there.',
+                'description' => 'Leave a note about a gap, wrong answer, or missing capability of this knowledge server — and about what it did well, because what worked is what must not be broken later. The note is stored as markdown in this server\'s own checkout — not in the project you are working in, so do not look for the file there — and is read back with typo3_feedback_list. Use it whenever an answer was incomplete or a lookup found nothing that should have been there. One note per subject: a note carrying three complaints is worked off three times over or not at all.',
                 // The one tool that writes: a new note file per call, never
                 // touching an existing one.
                 'annotations' => [
@@ -401,12 +401,12 @@ final class Tools
                 'inputSchema' => [
                     'type' => 'object',
                     'properties' => [
-                        'observation' => ['type' => 'string', 'minLength' => 1, 'description' => 'What was missing, wrong, or unhelpful. Be specific enough to act on later.'],
+                        'observation' => ['type' => 'string', 'minLength' => 1, 'description' => 'What was missing, wrong, or unhelpful. Be specific enough to act on later, and open with one line naming the task you were given, so the note can be traced back to what exposed it. Written in English, like everything else here.'],
                         'model' => ['type' => 'string', 'minLength' => 1, 'description' => 'The model recording this note, as it identifies itself, for example claude-opus-5 or gpt-5.3-codex. Read it where it is written down — what your client reports for the current session, or the person running you — rather than from what you remember about yourself. A note about what a session did or did not do is evidence about one model\'s behaviour, and one filed as "unknown" cannot be told apart from another model\'s. That fallback is for a session that looked and could not find out; an invented identifier is still worse than none.'],
                         'category' => ['type' => 'string', 'enum' => Feedback::CATEGORIES, 'default' => 'idea', 'description' => 'missing-knowledge: the knowledge base lacks the answer. wrong-answer: the answer was incorrect. tool-gap: no tool covers the need. bug: the server misbehaved. idea: anything else.'],
-                        'tool' => ['type' => ['string', 'array'], 'items' => ['type' => 'string'], 'description' => 'The tool the observation is about, for example typo3_component_lookup. Several tools may be named, as a list or separated by commas.'],
-                        'query' => ['type' => 'string', 'description' => 'The query or arguments that produced the unsatisfying result.'],
-                        'suggestion' => ['type' => 'string', 'description' => 'What the server should have answered or should be able to do.'],
+                        'tool' => ['type' => ['string', 'array'], 'items' => ['type' => 'string'], 'description' => 'The tool the observation is about, for example typo3_component_lookup, or the skill it activated, for example typo3-extension-conformance. Several may be named, as a list or separated by commas.'],
+                        'query' => ['type' => 'string', 'description' => 'The arguments that produced the unsatisfying result, or the task text where a whole session is what produced it. This is what lets somebody re-run the note against a later version of the server instead of reading it.'],
+                        'suggestion' => ['type' => 'string', 'description' => 'What the server should have answered or should be able to do instead.'],
                     ],
                     'required' => ['observation', 'model'],
                 ],

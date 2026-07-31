@@ -1,5 +1,21 @@
 # Where every task starts
 
+## Nothing starts until the server answers
+
+A skill is a file the installer left behind: it loads and reads the same whether
+the tools behind it are connected or not, and neither side notices. So the first
+call below is also the check.
+
+- No `typo3_` tool in this session, or a first call that errors: stop, say this
+  workflow needs the server and it is not there, and name what came back.
+- Do not fall back to general TYPO3 knowledge or start reading the checkout.
+  That answer carries this workflow's order and confidence and none of its
+  evidence, and nothing in it says which of the two it is.
+- Continue only when asked to after saying so, and repeat it in the answer and
+  in every finding a lookup would have carried.
+
+## The order
+
 This is the order, and it is an order rather than a list because each step
 decides what the next one is worth. A convention fetched after the code has been
 read confirms a view instead of testing it. A command recommended before the

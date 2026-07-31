@@ -133,6 +133,40 @@ final class SkillTest extends TestCase
     }
 
     #[Test]
+    public function theBaseStopsTheTaskWhenTheServerIsNotConnected(): void
+    {
+        // Sessions have run these skills more than once with the server not
+        // connected at all, and produced the shape that is worst of the three
+        // available: a review in the skill's own order and voice, built out of
+        // general TYPO3 knowledge, with nothing in it saying so. The skill is a
+        // published file, so it loads whether the tools do or not — which makes
+        // the connection a precondition of the task rather than a step in it,
+        // and puts it above the order in the one file every skill starts from.
+        $base = (string) file_get_contents(Paths::root() . '/skills/base.md');
+
+        $precondition = strpos($base, '## Nothing starts until the server answers');
+        self::assertNotFalse($precondition, 'the base lets a task start without the server');
+        self::assertLessThan(
+            (int) strpos($base, 'typo3_project_scope'),
+            $precondition,
+            'the base reaches for its first call before it establishes there is one',
+        );
+        // The two shapes a missing server has, and neither reports itself: the
+        // tools are absent from the session, or the first call comes back an
+        // error.
+        self::assertMatchesRegularExpression(
+            '/No `typo3_` tool in this session, or a first call that errors: stop/',
+            $base,
+        );
+        // And the fallback that produced the sessions above.
+        self::assertMatchesRegularExpression(
+            '/Do not fall back to general TYPO3 knowledge or start reading the checkout/',
+            $base,
+        );
+        self::assertStringContainsString('Continue only when asked to after saying so', $base);
+    }
+
+    #[Test]
     public function theDeprecationSweepRunsFromTheExtensionsSurfaceAndIsReportedWhenItFindsNothing(): void
     {
         // REVIEW-02 against an extension declaring two majors on an

@@ -75,7 +75,32 @@ final class InstallerRecordTest extends TestCase
     }
 
     #[Test]
-    public function updateWithoutAnAgentSaysSoWhereNoClientIsRecorded(): void
+    public function aGenericSetupIsUpdatedByConfirmingItsEntry(): void
+    {
+        $directory = $this->directory();
+
+        try {
+            $stdout = '';
+            $stderr = '';
+            self::assertSame(0, $this->execute($directory, ['install'], $stdout, $stderr), $stderr);
+            $installed = (string) file_get_contents($directory . '/.mcp.json');
+
+            self::assertSame(0, $this->execute($directory, ['update'], $stdout, $stderr), $stderr);
+            self::assertStringContainsString('Confirmed typo3-cms-mcp', $stdout);
+            self::assertStringContainsString('install --agent=', $stdout);
+            // Naming no client is a setup, not a half-finished one: it writes
+            // the entry every client reads and owns no skills, so an update
+            // has nothing to publish and nothing to record.
+            self::assertSame($installed, file_get_contents($directory . '/.mcp.json'));
+            self::assertFileDoesNotExist($directory . '/typo3-cms-mcp.json');
+            self::assertFileDoesNotExist($directory . '/.gitignore');
+        } finally {
+            $this->removeDirectory($directory);
+        }
+    }
+
+    #[Test]
+    public function updateSaysSoWhereNothingIsInstalledAtAll(): void
     {
         $directory = $this->directory();
 
@@ -83,7 +108,7 @@ final class InstallerRecordTest extends TestCase
             $stdout = '';
             $stderr = '';
             self::assertSame(1, $this->execute($directory, ['update'], $stdout, $stderr));
-            self::assertStringContainsString('no client is recorded', $stderr);
+            self::assertStringContainsString('nothing is installed here', $stderr);
             self::assertStringContainsString('install --agent=', $stderr);
             self::assertFileDoesNotExist($directory . '/typo3-cms-mcp.json');
         } finally {

@@ -36,6 +36,11 @@ records every client it set up in `typo3-cms-mcp.json`, and without an agent
 `update` refreshes all of them. A project is usually worked on by more than one,
 and which ones is knowledge only the project has.
 
+Naming no client at all stays a setup of its own: `install` then writes the
+`.mcp.json` entry every client reads and publishes no skills, because a skill
+has to land somewhere and only a named client says where. A later `update`
+confirms that entry and reports that there is nothing else there.
+
 Install and update write `typo3-cms-mcp.json` and the package-owned skill
 directories into the project's `.gitignore`, between `# BEGIN typo3-cms-mcp` and
 `# END typo3-cms-mcp`. Everything between those markers belongs to this package

@@ -11,9 +11,12 @@ without `--agent` refreshes all of them.**
 A project is usually worked on by more than one client, and which ones is
 knowledge only the project has. Naming them one at a time meant remembering a
 list nobody keeps, so a second client silently kept the skills of the version it
-was installed with. Clients that share a skills directory are published once,
-and an update in a project that recorded nothing says so rather than doing
-nothing.
+was installed with. Clients that share a skills directory are published once.
+
+Naming no client stays a setup of its own — the entry every client reads, and no
+skills, because only a named client says where a skill lands. An update there
+confirms that entry and records nothing; where there is no entry either, it says
+nothing is installed rather than reporting work it did not do.
 
 The `.gitignore` entries follow from that record and are written whole between
 `# BEGIN typo3-cms-mcp` and `# END typo3-cms-mcp`: a client that is gone or a

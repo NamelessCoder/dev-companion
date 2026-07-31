@@ -19,6 +19,12 @@ final class Installer
     private const STATE = 'typo3-cms-mcp.json';
     private const IGNORE_BEGIN = '# BEGIN typo3-cms-mcp (generated)';
     private const IGNORE_END = '# END typo3-cms-mcp';
+    /**
+     * The setup that names no client: the entry every client reads, and no
+     * skills, because a skill has to be published somewhere and only a named
+     * client says where.
+     */
+    private const GENERIC = ['format' => 'json', 'path' => '.mcp.json', 'key' => 'mcpServers'];
     /** @var array<string, array{skills: string, mcp?: array{format: string, path: string, key: string, shape?: string}}> */
     private const AGENTS = [
         'amp' => [
@@ -92,7 +98,7 @@ final class Installer
     public function install(?string $agent): string
     {
         if ($agent === null) {
-            return $this->installJsonConfiguration('.mcp.json', 'mcpServers');
+            return $this->installJsonConfiguration(self::GENERIC['path'], self::GENERIC['key']);
         }
         $definition = $this->agent($agent);
         $state = $this->readState();
@@ -114,15 +120,18 @@ final class Installer
      * client, and naming them one at a time meant remembering which of them the
      * project had — a list nobody keeps, so the second client silently kept the
      * skills of the version it was installed with.
+     *
+     * A project that records no client can still be set up: `install` with no
+     * agent writes the entry every client reads and publishes no skills. There
+     * is nothing to republish there, so the update holds that entry to this
+     * entrypoint and says that is all there was.
      */
     public function update(?string $agent): string
     {
         $state = $this->readState();
         $update = $agent !== null ? [$agent] : $state['agents'];
         if ($update === []) {
-            throw new \RuntimeException(
-                'no client is recorded in ' . self::STATE . '; run install --agent=<client> first',
-            );
+            return $this->updateGeneric();
         }
 
         $messages = [];
@@ -142,6 +151,28 @@ final class Installer
         }
 
         return implode("\n", $this->record($state, $update, $messages));
+    }
+
+    /**
+     * The update of a project that named no client, which is the whole of what
+     * it can be: the entry is confirmed, and nothing is written.
+     *
+     * Where there is no entry either, nothing is installed at all, and saying
+     * which install would fix that is the only useful thing left to say.
+     */
+    private function updateGeneric(): string
+    {
+        $path = $this->project . '/' . self::GENERIC['path'];
+        if (!is_file($path)) {
+            throw new \RuntimeException(
+                'nothing is installed here; run install, or install --agent=<client> for its skills as well',
+            );
+        }
+        $this->assertAgentConfiguration(self::GENERIC);
+
+        return 'Confirmed typo3-cms-mcp in ' . $path . '.'
+            . "\nNo client is recorded here, so there are no skills to publish;"
+            . ' install --agent=<client> adds them.';
     }
 
     /**

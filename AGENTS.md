@@ -27,7 +27,7 @@ scenarios/contracts/ # targeted cases per audience, task skill and cross-cutting
 scenarios/runs/    # one recorded forward run per review: where it ran, against which server, which skills and tools it reached for, and the judgment per criterion
 skills/            # canonical task skills installed into supported agent clients
 skills/base.md     # the order every task starts in, copied into each published skill as references/base.md
-requirements.md    # what must hold, and what holds it there; open ones are the backlog
+requirements/      # what must hold, and what holds it there: one requirement per file, grouped by what it is about; open ones are the backlog
 decisions.md       # what a change assumed, and what would show it to be wrong
 todo.md            # the order of the work and where the last session stopped
 tests/             # unit, tool contract, and stdio smoke tests
@@ -52,7 +52,7 @@ Keeping it current is part of the work, not a step after it:
 
 - The commit that finishes an item **deletes that item**, the way the commit that
   works a note off deletes the note. What the item established is in
-  `requirements.md` by then, and the commit is the record that it happened.
+  `requirements/` by then, and the commit is the record that it happened.
 - An item that turns out to be half done is trimmed to the part that is left,
   with the next concrete step rewritten. An item nobody can start from is worse
   than no item.
@@ -179,11 +179,11 @@ Deleting the note removes the question, and the commit message records the
 answer. Three files sit around that, and each holds a different kind of thing —
 keeping them apart is what keeps any of them readable:
 
-- `requirements.md` — what must be true from now on. A note is a question; the
+- `requirements/` — what must be true from now on. A note is a question; the
   requirement it established has to keep holding while everything around it
   changes, so it is written down with what holds it to that: a test, or
   `not guarded`. A requirement that has been accepted but not yet implemented is
-  in the same list, marked **open** — that is the backlog. Add the entry in the
+  in the same group, marked **open** — that is the backlog. Add the entry in the
   commit that works the note off, and name the test in the same commit that
   writes it. An entry is deleted only when the requirement is withdrawn.
 - `decisions.md` — what the change rests on. When it rests on an assumption that
@@ -198,7 +198,7 @@ keeping them apart is what keeps any of them readable:
   of them says what to do next. A session can end anywhere, and the next one
   starts by reading this. An item names what it serves and what the next
   concrete step is, and is deleted when done rather than ticked — what it
-  established is in `requirements.md` by then. Its first item is standing and is
+  established is in `requirements/` by then. Its first item is standing and is
   never deleted: read `feedback/` again, and run each note's own query against
   the server as it is now. Notes arrive while work is happening, and the ones
   that were open yesterday are often half answered by what shipped since.
@@ -253,7 +253,7 @@ and site developers — and the same person is often two of them in one checkout
 because extensions are developed inside site installations. All three are served
 deliberately, so knowledge that holds only for core contribution is written as
 core-only rather than as the rule, and knowledge that holds only from one TYPO3
-version says so; see the audience requirements in `requirements.md`.
+version says so; see the audience requirements in `requirements/audience/`.
 
 - **Everything below `knowledge/` is written in English**, and so is every query
   that reaches it. That is a property of the matcher rather than a preference:

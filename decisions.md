@@ -310,7 +310,7 @@ boundary:
 - `Scope::OUTSIDE_CORE_NOTICE` said the server "only knows the core's own
   conventions". Every tool opens with it, so the framing was reinforced in the
   answers themselves.
-- `requirements.md` says the opposite in R-AUD-1 and R-AUD-2 and flags the
+- `requirements/` says the opposite in R-AUD-1 and R-AUD-2 and flags the
   conflict — but R-AUD-2 is **open**, and nothing decided which side wins.
 
 - **Decided:** all three prose sources now say what is actually true, and the

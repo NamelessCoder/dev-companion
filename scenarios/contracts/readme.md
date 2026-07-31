@@ -31,7 +31,7 @@ both halves, so a test renamed or deleted takes the case's claim down with it
 rather than leaving it standing.
 
 `held` and `not guarded` can appear together — the case names the tests that
-hold most of it and the part nothing covers, the way `requirements.md` does. A
+hold most of it and the part nothing covers, the way a requirement does. A
 case with nothing behind it at all is a case whose state is fiction.
 
 ## Where a case lives

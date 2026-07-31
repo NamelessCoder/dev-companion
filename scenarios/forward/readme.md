@@ -65,7 +65,7 @@ produces nothing more. A run that did not produces one of two things:
 
 From there the usual route applies: the note is worked off in a commit that
 deletes it, and what has to keep holding afterwards goes into
-[requirements.md](../../requirements.md). See [AGENTS.md](../../AGENTS.md).
+[requirements/](../../requirements/readme.md). See [AGENTS.md](../../AGENTS.md).
 
 For a `gap` review, do not re-file the part that is already written down —
 its **Status today** line names the requirement. File what the task needed

@@ -2,7 +2,7 @@
 
 This file exists so a session can end anywhere. It holds the **order of the
 work** and where the last one stopped — not what must be true (that is
-[requirements.md](requirements.md)), not the questions real sessions asked (that
+[requirements/](requirements/readme.md)), not the questions real sessions asked (that
 is `feedback/`), not the map of what the audiences need (that is `scenarios/`).
 Those three outlive the work; this one is consumed by it.
 
@@ -15,7 +15,7 @@ Rules that keep it from becoming a fourth backlog:
   who has read nothing else can start. "Continue with the bindings" is not that;
   "bind the statements in `php.json` against `.checkouts/12.4` and `13.4`" is.
 - A finished item is deleted, not ticked. What it established is already in
-  `requirements.md`, and the commit is the record that it happened.
+  `requirements/`, and the commit is the record that it happened.
 - The order is the order. When something jumps the queue, it moves up here
   first, so the reason is written down before the work starts.
 

@@ -306,6 +306,12 @@ final class Project
                 : self::RUNS_UNDECLARED;
         }
 
+        // A leading `NAME=value` is the environment a command is given, not the
+        // command: `PHP_CS_FIXER_IGNORE_ENV=1 php-cs-fixer fix --dry-run` is the
+        // fixer reporting, and reading the assignment as the tool loses every
+        // flag behind it — so the reporter and the rewriter come back the same.
+        $line = (string) preg_replace('/^(?:[A-Za-z_][A-Za-z0-9_]*=(?:"[^"]*"|\'[^\']*\'|\S*)\s+)+/', '', $line);
+
         $tokens = array_values(array_filter(preg_split('/\s+/', $line) ?: []));
         if ($tokens === []) {
             return self::RUNS_UNDECLARED;

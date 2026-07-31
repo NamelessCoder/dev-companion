@@ -86,20 +86,18 @@ that version, every requirement fails at once and not one of them says so.
 
 ---
 
-## Fix the two tools the `news` run caught being wrong
+## Read one array literal rather than every one at a depth
 
-**Serves:** feedback/2026-07-31-142347-a-leading-environment-assignment-hides-what-a-command-does.md, feedback/2026-07-31-142347-icons-php-built-in-a-loop-reports-provider-and-source-as-icons.md
+**Serves:** feedback/2026-07-31-142347-icons-php-built-in-a-loop-reports-provider-and-source-as-icons.md
 
-Both are small, both have a shape a test can hold, and they jump the queue
-because every forward run below reads these two answers before it does anything
-else. `Project::runsLine()` strips `@php`, `@composer` and `@putenv` from the
-front of a declaration but not a plain `NAME=value`, so `PHP_CS_FIXER_IGNORE_ENV=1
-php ./.Build/bin/php-cs-fixer fix --dry-run …` classifies as `unknown` and is
-indistinguishable from the same line without `--dry-run` — an agent told not to
-change files cannot tell the reporter from the rewriter. `PhpArray::keys()`
-counts brackets across the whole file, so a second array literal at the same
-depth contributes its keys too, and an `Icons.php` built in a `foreach` reports
-`provider` and `source` as icon identifiers. Fix both, with a fixture for each.
+The other half of the same jump: `PhpArray::keys()` counts brackets across the
+whole file, so a second array literal at the same depth contributes its keys
+too, and an `Icons.php` built in a `foreach` reports `provider` and `source` as
+icon identifiers. Read the literal the file returns and stop at its closing
+bracket, and where the file returns something a reader cannot resolve — the
+variable the loop filled — return nothing, because an empty list reads as "not
+determinable" and `provider` reads as an icon. A fixture with a loop-built
+`Icons.php` holds it.
 
 ## Put the deprecation sweep and the escaping sink into the ordered work
 

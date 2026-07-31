@@ -189,6 +189,42 @@ final class ProjectTest extends TestCase
     }
 
     #[Test]
+    public function anEnvironmentAssignmentInFrontOfACommandIsNotTheCommand(): void
+    {
+        // The `news` run of 2026-07-31 was offered six commands and told
+        // `unknown` about all six. `PHP_CS_FIXER_IGNORE_ENV=1` is the documented
+        // way to run the fixer on a PHP it does not claim support for yet, so
+        // the shape is common in exactly the repositories that span two majors —
+        // and read as the tool, it makes `cs` and `csfix` the same answer.
+        $root = $this->composerProject();
+        $this->manifest($root, ['scripts' => [
+            'cs' => ['PHP_CS_FIXER_IGNORE_ENV=1 php ./.Build/bin/php-cs-fixer fix --dry-run -v --config ./Build/php-cs-fixer.php ./'],
+            'csfix' => ['PHP_CS_FIXER_IGNORE_ENV=1 php ./.Build/bin/php-cs-fixer fix -v --config ./Build/php-cs-fixer.php ./'],
+            // Behind a composer prefix, and with a value that has a space in it.
+            'stan' => ['@php XDEBUG_MODE=off vendor/bin/phpstan analyse'],
+            'lint' => ['PHPLINT_ARGS="-c Build/phplint.yml" vendor/bin/phplint'],
+        ]]);
+        Instance::discoverFrom($root);
+
+        self::assertSame(
+            [
+                'composer cs' => Project::RUNS_AS_CHECK,
+                'composer csfix' => Project::RUNS_AS_CHANGE,
+                'composer stan' => Project::RUNS_AS_CHECK,
+                'composer lint' => Project::RUNS_AS_CHECK,
+            ],
+            array_column(Project::describe()['commands'], 'runs', 'command'),
+            'the reporter and the rewriter must not classify the same',
+        );
+        // The assignment is out of the tool name, not out of the declaration:
+        // it is part of what running the command means.
+        self::assertStringContainsString(
+            'composer cs (composer.json) — check: PHP_CS_FIXER_IGNORE_ENV=1 php',
+            Tools::call('typo3_project_scope', [])->text,
+        );
+    }
+
+    #[Test]
     public function aPatchedDependencyIsPartOfWhatThisProjectIs(): void
     {
         // A patched package does not behave as its version says, and the next

@@ -22,4 +22,6 @@ that the next sentence added has to displace one.
 characters to 2048, dropping the English-query sentence, the version binding and
 `typo3_server_scope` from every session it ran.
 
-**Held by:** `ScopeTest::theInstructionsFitWhatAClientKeeps`
+**Held by:** `ScopeTest::theInstructionsFitWhatAClientKeeps` for every profile,
+and `StdioServerTest::theServerAnnouncesItselfWithItsBoundary` on the string a
+client is handed over the wire

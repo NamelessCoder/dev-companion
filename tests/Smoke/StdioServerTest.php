@@ -7,6 +7,7 @@ namespace Typo3CmsMcp\Tests\Smoke;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Typo3CmsMcp\Paths;
+use Typo3CmsMcp\Scope;
 
 /**
  * Drives the real entrypoint the way a client does: a subprocess speaking
@@ -47,6 +48,13 @@ final class StdioServerTest extends TestCase
         self::assertSame('typo3-cms-mcp', $result['result']['serverInfo']['name']);
         self::assertSame(self::PROTOCOL_VERSION, $result['result']['protocolVersion']);
         self::assertStringContainsString('checkout', $result['result']['instructions']);
+        // Held here as well as in ScopeTest, because this is the string a
+        // client is actually handed: what the SDK puts on the wire is what a
+        // client truncates, and it truncates without telling either side.
+        self::assertLessThanOrEqual(
+            Scope::INSTRUCTIONS_BUDGET,
+            mb_strlen($result['result']['instructions']),
+        );
     }
 
     #[Test]

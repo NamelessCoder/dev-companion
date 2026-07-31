@@ -26,6 +26,7 @@ scenarios/forward/ # open forward reviews: a repository review and nothing more;
 scenarios/contracts/ # targeted cases per audience, task skill and cross-cutting situation: one named task shape each
 scenarios/runs/    # one recorded forward run per review: where it ran, against which server, which skills and tools it reached for, and the judgment per criterion
 skills/            # canonical task skills installed into supported agent clients
+skills/base.md     # the order every task starts in, copied into each published skill as references/base.md
 requirements.md    # what must hold, and what holds it there; open ones are the backlog
 decisions.md       # what a change assumed, and what would show it to be wrong
 todo.md            # the order of the work and where the last session stopped

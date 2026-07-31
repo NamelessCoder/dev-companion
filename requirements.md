@@ -282,6 +282,20 @@ them, this section wins and the other one is what needs rewriting.
   extension does not have.
   *Held by:*
   `ProjectTest::anIdentifierThatTookADetourThroughAVariableIsStillRead`
+- **R-SKL-5** The order a task starts in is written once and carried into every
+  published skill: the installation and its commands, the extension and what it
+  ships, the workflow, the conventions of each subsystem in scope — and only
+  then the checkout. A skill states what it adds to that order, never a second
+  copy of the order itself. The base also separates the two kinds of lookup, so
+  a runtime answer is not taken for a verdict, and says a returned rule is read
+  against the code that already exists as well as the code about to be written.
+  *From:* three `REVIEW-01` runs (2026-07-31) and the divergence they exposed —
+  the conformance skill was repaired while the content-element, documentation
+  and testing skills still ordered reading the checkout ahead of the conventions
+  lookup, which is the arrangement those runs measured.
+  *Held by:* `SkillTest::theBaseFixesTheOrderEveryTaskStartsIn`,
+  `SkillTest::everySkillStartsFromTheBaseBeforeItsOwnEvidence`,
+  `InstallerTest::codexInstallAndUpdatePreserveConfigurationAndTrackTheirSkillsCentrally`
 - **R-SKL-4** An assessment establishes its base — scope, the owning tools, and
   the list of surfaces it will cover — before it opens the checkout, and derives
   that list from the audit surfaces rather than from the file tree: a surface

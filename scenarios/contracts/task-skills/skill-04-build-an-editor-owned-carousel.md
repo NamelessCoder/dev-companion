@@ -2,7 +2,7 @@
 
 **Environment:** `E-SITE`, in the project's site package · **Contract:** `held`
 **Held by:**
-`SkillTest::extensionSkillsRouteThroughTheirPrimaryEvidenceSourcesInOrder`,
+`SkillTest::everySkillRoutesThroughTheOwnersOfItsOwnFactsInOrder`,
 `HintsTest::aRepeatableContentElementIsRoutedThroughWhatItOwns`,
 `SkillTest::judgmentHeavySkillsKeepTheirChecklistBesideThem`
 

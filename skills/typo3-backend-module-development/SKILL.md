@@ -11,28 +11,26 @@ labels, API signatures, or version facts here.
 
 ## Gather the evidence
 
-1. Call `typo3_project_scope` to identify the project, TYPO3 version, own
-   extensions, and commands. If the target extension is known, call
-   `typo3_extension_scope` with its key.
-2. Call `typo3_server_scope` to establish the active profile and available
-   knowledge depth.
-3. Decide whether this is a core patch, extension, or site task from the task and
-   affected paths. If signals disagree, state the uncertainty; do not attach
-   core-only checks to project work.
-4. Call `typo3_backend_module_lookup` before choosing the module identifier,
-   parent, position, route, or registration shape.
-5. Call `typo3_icon_lookup` for every proposed module or action icon. Do not
-   invent an identifier.
-6. Call `typo3_label_lookup` with words from recurring backend wording before
-   adding a label. Use `typo3_translation_domain_lookup` for the extension's own
-   XLF path.
-7. Call `typo3_component_lookup` with the target TYPO3 version before writing
-   buttons, status markers, cards, tables, or other backend markup.
-8. Call `typo3_documentation_lookup` with several short English queries and the
-   target TYPO3 version for module registration, controller, routing, security,
-   and other official API details.
-9. Call `typo3_architecture_lookup` with the concrete paths and task for
-   conventions that connect these pieces.
+Work through [references/base.md](references/base.md) first — it fixes the order
+every task here starts in and why that order is not interchangeable.
+
+Then, for this workflow:
+
+- `typo3_server_scope` for the active profile and the knowledge depth available.
+- Decide whether this is a core patch, extension, or site task from the task and
+  the affected paths. If the signals disagree, state the uncertainty; do not
+  attach core-only checks to project work.
+- `typo3_backend_module_lookup` before choosing the module identifier, parent,
+  position, route, or registration shape.
+- `typo3_icon_lookup` for every proposed module or action icon. Do not invent an
+  identifier.
+- `typo3_label_lookup` with words from recurring backend wording before adding a
+  label, and `typo3_translation_domain_lookup` for the extension's own XLF path.
+- `typo3_component_lookup` with the target TYPO3 version before writing buttons,
+  status markers, cards, tables, or other backend markup.
+- `typo3_documentation_lookup` with several short English queries and the target
+  TYPO3 version for module registration, controller, routing, security, and
+  other official API details.
 
 If an installation-backed lookup is unavailable, report that gap and its
 diagnosis. Do not turn it into an empty registry or replace it with memory. If

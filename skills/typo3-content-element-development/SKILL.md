@@ -12,19 +12,18 @@ versioned TYPO3 facts from the MCP tools.
 
 ## Establish evidence
 
-1. Call `typo3_project_scope` and `typo3_extension_scope`.
-2. Inspect nearby content elements, TCA files, TypoScript imports, templates,
-   assets, labels, schema and tests in the checkout.
-3. Call `typo3_task_guide`.
-4. Call subsystem-specific `typo3_architecture_lookup` queries with concrete
-   paths.
-5. Call `typo3_documentation_lookup` for version-specific TCA, DataHandler,
-   Fluid or AssetCollector APIs.
-6. Search labels and icons through `typo3_label_lookup` and
-   `typo3_icon_lookup` before adding or choosing them.
+Work through [references/base.md](references/base.md) first — it fixes the order
+every task here starts in and why that order is not interchangeable.
 
-The MCP does not read the working tree. Treat its answers as versioned
-conventions and verify every concrete path and project pattern locally.
+Then, for this workflow:
+
+- `typo3_documentation_lookup` for version-specific TCA, DataHandler, Fluid or
+  AssetCollector APIs.
+- `typo3_label_lookup` and `typo3_icon_lookup` before adding a label or choosing
+  an icon identifier.
+- Read the nearby content elements, TCA files, TypoScript imports, templates,
+  assets, schema and tests — the project's file organization is the thing a new
+  element has to fit, and only the checkout has it.
 
 ## Choose the content model first
 

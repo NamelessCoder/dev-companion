@@ -1,0 +1,57 @@
+# Where every task starts
+
+This is the order, and it is an order rather than a list because each step
+decides what the next one is worth. A convention fetched after the code has been
+read confirms a view instead of testing it. A command recommended before the
+project's own are known is a guess that sounds like advice.
+
+1. **`typo3_project_scope`** — the installation, its TYPO3 and PHP version, the
+   extensions that are the project's own, its sites, and the commands this
+   repository actually declares. Every later answer is filtered by that version,
+   and a check the repository does not declare is a wrong answer however
+   sensible it sounds.
+2. **`typo3_extension_scope`** for each extension in scope — what it registers,
+   and what it ships beside that: its manual, its README, its test layers, its
+   XLF files with the source language each one declares. What it does *not* ship
+   is answered too, and that is the half no file listing can give you.
+3. **`typo3_task_guide`** with a short English task, the affected area, the
+   target version and the change type — the workflow this task belongs to and
+   the checks that come with it.
+4. **`typo3_architecture_lookup`** for each subsystem in scope, with its concrete
+   paths. One query per subsystem; a single broad query is not subsystem
+   evidence.
+
+**Then** read the checkout. Not before: listing the files first makes everything
+after the listing look optional, and the conventions arrive as a footnote to a
+verdict that has already formed.
+
+## Two kinds of lookup, and neither stands in for the other
+
+`typo3_backend_module_lookup`, `typo3_icon_lookup`, `typo3_label_lookup`,
+`typo3_fluid_namespace_list` and `typo3_configuration_lookup` report what is
+registered, what a path resolves to, what a value really is at runtime. They
+establish the facts of this installation and they are never a verdict on it.
+`typo3_architecture_lookup` and `typo3_documentation_lookup` say whether those
+facts are right. A subsystem confirmed by its own runtime lookup can still break
+every rule that governs it, so it is not established until both were asked.
+
+## A rule is read in both directions
+
+It says what new code should do, and it says what this checkout is already doing
+wrong. A file that has settled into the opposite of a rule is a finding, not a
+local style to preserve: consistency with a project's own habit establishes
+nothing about whether the habit is right.
+
+## What this server does not know
+
+It does not read your working tree. Which files changed, which branch you are
+on, and whether a path or an identifier still exists there are yours to
+establish — then pass the concrete paths back, because that is what turns a
+general convention into an answer about this code.
+
+## Query it in English
+
+The knowledge is written in English and matched lexically, so a query in another
+language reaches the loanwords the two happen to share and nothing else.
+Translate the subject before calling and the answer back afterwards, whatever
+language you are speaking with the user.

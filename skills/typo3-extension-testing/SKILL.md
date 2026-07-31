@@ -13,23 +13,24 @@ checkout owns.
 
 ## Establish the test surface
 
-1. Call `typo3_project_scope` before recommending a command. Record the TYPO3
-   version, PHP constraint, own extensions, and declared Composer/npm scripts.
-2. If an extension is in scope, call `typo3_extension_scope` with its key.
-3. Inspect the target code, existing tests and fixtures, test configuration,
-   dependency manifests, declared commands, CI, and development environment in
-   the checkout. The MCP server does not read the working tree.
-4. Verify that the harness for every relevant layer can discover and run its
-   tests. Treat missing or broken infrastructure as a prerequisite of the
-   requested testing work, not as a separate kind of task or a reason to force
-   the behavior into another layer.
-5. Call `typo3_task_guide` with a short English description, affected area,
-   target version, and change type to establish task-shaped checks.
-6. Call `typo3_architecture_lookup` with the concrete paths and an English task
-   description that names the layer and whether its harness is missing.
-7. Call `typo3_documentation_lookup` with several short English queries and the
-   target TYPO3 version when dependency setup, bootstrapping, fixtures, browser
-   configuration, or an API needs confirmation.
+Work through [references/base.md](references/base.md) first — it fixes the order
+every task here starts in and why that order is not interchangeable. Two of its
+answers decide this workflow before any test is written: the commands
+`typo3_project_scope` reports are the only ones that exist in this repository,
+and the layers `typo3_extension_scope` reports below `Tests/` are what the
+extension has today — an empty list is the answer that there is no harness yet.
+
+Then, for this workflow:
+
+- `typo3_documentation_lookup` with several short English queries and the target
+  TYPO3 version when dependency setup, bootstrapping, fixtures, browser
+  configuration, or an API needs confirmation.
+- Verify that the harness for every relevant layer can discover and run its
+  tests. Treat missing or broken infrastructure as a prerequisite of the
+  requested work, not as a separate kind of task and not as a reason to force
+  the behavior into another layer.
+- Read the target code, existing tests and fixtures, test configuration,
+  dependency manifests, CI, and the development environment.
 
 If a lookup is unavailable, state the gap separately from a lookup that found
 no match. Do not replace current project evidence with remembered TYPO3 setup.

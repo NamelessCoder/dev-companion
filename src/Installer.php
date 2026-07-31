@@ -14,6 +14,7 @@ final class Installer
         'typo3-extension-documentation',
         'typo3-extension-testing',
     ];
+    private const BASE = 'references/base.md';
     private const STATE = 'typo3-cms-mcp.json';
     /** @var array<string, array{skills: string, mcp?: array{format: string, path: string, key: string, shape?: string}}> */
     private const AGENTS = [
@@ -340,6 +341,14 @@ final class Installer
         $target = $this->project . '/' . $skillsPath . '/' . $skill;
         $this->removeDirectory($target);
         $this->copyDirectory($source, $target);
+        // The order every skill starts in, written once and carried into each
+        // of them. A copy rather than a shared file, because a published skill
+        // lands in somebody else's project on its own: a reference pointing out
+        // of its own directory would resolve here and nowhere it is used.
+        $this->write(
+            $target . '/' . self::BASE,
+            (string) file_get_contents(Paths::root() . '/skills/' . basename(self::BASE)),
+        );
 
         return 'Published ' . $skill . ' in ' . $target . '.';
     }

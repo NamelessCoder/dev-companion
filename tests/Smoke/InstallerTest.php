@@ -128,6 +128,22 @@ final class InstallerTest extends TestCase
                     $directory . '/.agents/skills/typo3-extension-testing/references/' . $reference . '.md',
                 );
             }
+            // The base is one file here and a copy in every published skill:
+            // each of them lands in somebody else's project alone, so a skill
+            // pointing out of its own directory would resolve in this
+            // repository and nowhere it is actually read.
+            foreach ([
+                'typo3-backend-module-development',
+                'typo3-content-element-development',
+                'typo3-extension-conformance',
+                'typo3-extension-documentation',
+                'typo3-extension-testing',
+            ] as $publishedSkill) {
+                self::assertFileEquals(
+                    Paths::root() . '/skills/base.md',
+                    $directory . '/.agents/skills/' . $publishedSkill . '/references/base.md',
+                );
+            }
 
             $before = [
                 'configuration' => file_get_contents($directory . '/.codex/config.toml'),

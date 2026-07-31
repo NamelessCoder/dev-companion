@@ -4,7 +4,8 @@
 **Contract:** `open` — `R-SKL-3`
 **Held by:**
 `SkillTest::backendModuleDocumentationIsAnExplicitSkillTransition`,
-`SkillTest::theBackendModuleSkillRoutesThroughTheOwnersOfItsFactsInOrder`;
+`SkillTest::theBaseFixesTheOrderEveryTaskStartsIn`,
+`SkillTest::everySkillRoutesThroughTheOwnersOfItsOwnFactsInOrder`;
 that a session actually hands over at that point is not guarded (`R-SKL-3`
 open)
 

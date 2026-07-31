@@ -11,50 +11,14 @@ use Typo3CmsMcp\Scenarios;
 
 final class SkillTest extends TestCase
 {
+    /**
+     * What each skill adds to the base, in the order it adds it. The four calls
+     * the base already fixes are deliberately not repeated here: a skill that
+     * restates them is a skill that can drift from them, and five hand-written
+     * copies of one order is what the base replaced.
+     */
     private const ROUTING_SKILLS = [
-        'typo3-content-element-development' => [
-            'typo3_project_scope',
-            'typo3_extension_scope',
-            'typo3_task_guide',
-            'typo3_architecture_lookup',
-            'typo3_documentation_lookup',
-            'typo3_label_lookup',
-            'typo3_icon_lookup',
-        ],
-        'typo3-extension-testing' => [
-            'typo3_project_scope',
-            'typo3_extension_scope',
-            'typo3_task_guide',
-            'typo3_architecture_lookup',
-            'typo3_documentation_lookup',
-        ],
-        'typo3-extension-conformance' => [
-            'typo3_project_scope',
-            'typo3_extension_scope',
-            'typo3_task_guide',
-            'typo3_architecture_lookup',
-            'typo3_documentation_lookup',
-            'typo3_changelog_lookup',
-        ],
-        'typo3-extension-documentation' => [
-            'typo3_project_scope',
-            'typo3_extension_scope',
-            'typo3_architecture_lookup',
-            'typo3_documentation_lookup',
-            'typo3_label_lookup',
-            'typo3_translation_domain_lookup',
-        ],
-    ];
-
-    #[Test]
-    public function theBackendModuleSkillRoutesThroughTheOwnersOfItsFactsInOrder(): void
-    {
-        $skill = (string) file_get_contents(
-            Paths::root() . '/skills/typo3-backend-module-development/SKILL.md',
-        );
-        $tools = [
-            'typo3_project_scope',
-            'typo3_extension_scope',
+        'typo3-backend-module-development' => [
             'typo3_server_scope',
             'typo3_backend_module_lookup',
             'typo3_icon_lookup',
@@ -62,15 +26,80 @@ final class SkillTest extends TestCase
             'typo3_translation_domain_lookup',
             'typo3_component_lookup',
             'typo3_documentation_lookup',
+        ],
+        'typo3-content-element-development' => [
+            'typo3_documentation_lookup',
+            'typo3_label_lookup',
+            'typo3_icon_lookup',
+        ],
+        'typo3-extension-testing' => [
+            'typo3_documentation_lookup',
+        ],
+        'typo3-extension-conformance' => [
             'typo3_architecture_lookup',
-        ];
+            'typo3_documentation_lookup',
+            'typo3_changelog_lookup',
+        ],
+        'typo3-extension-documentation' => [
+            'typo3_documentation_lookup',
+            'typo3_label_lookup',
+            'typo3_translation_domain_lookup',
+        ],
+    ];
+
+    #[Test]
+    public function theBaseFixesTheOrderEveryTaskStartsIn(): void
+    {
+        // Three REVIEW-01 runs measured what an order that is merely stated is
+        // worth. The third read its skill's checklist in the first twenty
+        // seconds, then listed the file tree and spent five minutes reading it
+        // before calling task_guide or a single conventions lookup. Whatever a
+        // skill leaves after the reading is what the reading swallows, so the
+        // four owning calls come first and the checkout comes after all of them.
+        $base = (string) file_get_contents(Paths::root() . '/skills/base.md');
 
         $position = -1;
-        foreach ($tools as $tool) {
-            $next = strpos($skill, $tool);
-            self::assertNotFalse($next, $tool . ' is not routed from the backend module skill');
-            self::assertGreaterThan($position, $next, $tool . ' is routed in the wrong order');
+        foreach (['typo3_project_scope', 'typo3_extension_scope', 'typo3_task_guide', 'typo3_architecture_lookup'] as $tool) {
+            $next = strpos($base, $tool);
+            self::assertNotFalse($next, $tool . ' is not part of the base');
+            self::assertGreaterThan($position, $next, $tool . ' is stated out of order in the base');
             $position = $next;
+        }
+        self::assertGreaterThan(
+            $position,
+            strpos($base, '**Then** read the checkout'),
+            'the base sends the session into the checkout before its own calls',
+        );
+
+        // The near miss, not the omission: a runtime lookup answers what is
+        // registered, never whether it is right.
+        self::assertMatchesRegularExpression(
+            '/confirmed by its own runtime lookup can still break\s+every rule that governs it/',
+            $base,
+        );
+        self::assertMatchesRegularExpression(
+            '/settled into the opposite of a rule is a finding, not a\s+local style/',
+            $base,
+        );
+        // One hop, like every other reference: the base is read, not followed
+        // onward.
+        self::assertStringNotContainsString('(references/', $base);
+    }
+
+    #[Test]
+    public function everySkillStartsFromTheBaseBeforeItsOwnEvidence(): void
+    {
+        foreach (self::skills() as $name => $skill) {
+            $base = strpos($skill, '[references/base.md](references/base.md)');
+            self::assertNotFalse($base, $name . ' does not route through the base');
+
+            $first = self::ROUTING_SKILLS[$name][0] ?? null;
+            self::assertNotNull($first, $name . ' has no routing of its own recorded');
+            self::assertLessThan(
+                strpos($skill, $first),
+                $base,
+                $name . ' reaches for its own tools before the base is established',
+            );
         }
     }
 
@@ -138,7 +167,7 @@ final class SkillTest extends TestCase
     }
 
     #[Test]
-    public function extensionSkillsRouteThroughTheirPrimaryEvidenceSourcesInOrder(): void
+    public function everySkillRoutesThroughTheOwnersOfItsOwnFactsInOrder(): void
     {
         foreach (self::ROUTING_SKILLS as $name => $tools) {
             $skill = (string) file_get_contents(Paths::root() . '/skills/' . $name . '/SKILL.md');
@@ -155,12 +184,19 @@ final class SkillTest extends TestCase
     /**
      * Judgment is what a checklist is for, and it is also the thing a skill
      * grows a body around: the four that carry it keep it beside them rather
-     * than in the instruction every session pays for.
+     * than in the instruction every session pays for. Building a backend module
+     * is not one of them — it is construction, and what it needs is the
+     * registries, which are tools rather than a list.
      */
     #[Test]
     public function judgmentHeavySkillsKeepTheirChecklistBesideThem(): void
     {
-        foreach (array_keys(self::ROUTING_SKILLS) as $name) {
+        $judging = array_diff(
+            array_keys(self::ROUTING_SKILLS),
+            ['typo3-backend-module-development'],
+        );
+
+        foreach ($judging as $name) {
             self::assertFileExists(Paths::root() . '/skills/' . $name . '/references/checklist.md');
         }
     }
@@ -259,9 +295,7 @@ final class SkillTest extends TestCase
         );
 
         $base = [
-            'typo3_project_scope',
-            'typo3_extension_scope',
-            'typo3_task_guide',
+            'references/base.md',
             'references/checklist.md',
             'Write the surface list down before opening a single file',
         ];

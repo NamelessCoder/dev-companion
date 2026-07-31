@@ -11,19 +11,23 @@ reference material into it.
 
 ## Gather authoritative evidence
 
-1. Call `typo3_project_scope` for the TYPO3 version, own extensions, sites, site
-   sets, and available documentation or validation commands.
-2. Call `typo3_extension_scope` for the extension being documented.
-3. Read its public configuration, registration files, templates, examples,
-   existing Documentation/, README, and tests. Treat code as the source for what
-   this package implements.
-4. Call `typo3_architecture_lookup` with the concrete paths and documentation
-   topic to establish the subsystem conventions.
-5. Call `typo3_documentation_lookup` with several short English queries and the
-   target version for every external TYPO3 API or workflow claim. Prefer links
-   returned by that tool over hand-built documentation URLs.
-6. For XLF work, call `typo3_label_lookup` before adding or rewording a label and
-   `typo3_translation_domain_lookup` for the extension's own XLF path.
+Work through [references/base.md](references/base.md) first — it fixes the order
+every task here starts in and why that order is not interchangeable. Its second
+step is the one this workflow leans on hardest: `typo3_extension_scope` reports
+whether a manual and a README exist at all, and which XLF files there are with
+the source language each declares.
+
+Then, for this workflow:
+
+- `typo3_documentation_lookup` with several short English queries and the target
+  version for every external TYPO3 API or workflow claim. Prefer the links it
+  returns over hand-built documentation URLs.
+- `typo3_label_lookup` before adding or rewording a label, and
+  `typo3_translation_domain_lookup` for the extension's own XLF path.
+- Read its public configuration, registration files, templates, examples,
+  existing manual and tests. Code is the source for what this package
+  implements; documentation that outruns it is the defect this workflow exists
+  to avoid.
 
 For backend documentation, verify modules through
 `typo3_backend_module_lookup`, icons through `typo3_icon_lookup`, and undeclared

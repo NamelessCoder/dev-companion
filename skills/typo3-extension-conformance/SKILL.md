@@ -11,14 +11,13 @@ method; do not embed versioned TYPO3 facts.
 
 ## Establish scope and evidence
 
-1. Call `typo3_project_scope` to identify the project type, TYPO3 and PHP
-   constraints, own extensions, sites, site sets, and declared commands.
-2. Call `typo3_extension_scope` for every extension in scope.
-3. Call `typo3_task_guide` with a short English task, affected area, target
-   version, and change type to establish task-shaped checks.
-4. Read [references/checklist.md](references/checklist.md) for the audit
+1. Work through [references/base.md](references/base.md) — it fixes the order
+   every task here starts in, and an assessment is where that order matters
+   most: a rule fetched after the reading confirms a verdict instead of testing
+   it.
+2. Read [references/checklist.md](references/checklist.md) for the audit
    surfaces, the finding gate, and the severity rubric.
-5. Write the surface list down before opening a single file, from the
+3. Write the surface list down before opening a single file, from the
    checklist's surfaces narrowed to the ones this kind of checkout can have. It
    is the work list, and the coverage the report closes on is this same list
    with every entry answered.

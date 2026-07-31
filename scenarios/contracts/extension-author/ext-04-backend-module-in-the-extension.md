@@ -3,7 +3,8 @@
 **Environment:** `E-SITE` with the extension under `packages/`, owning records
 of its own · **Contract:** `open`
 **Held by:**
-`SkillTest::theBackendModuleSkillRoutesThroughTheOwnersOfItsFactsInOrder`,
+`SkillTest::theBaseFixesTheOrderEveryTaskStartsIn`,
+`SkillTest::everySkillRoutesThroughTheOwnersOfItsOwnFactsInOrder`,
 `SkillTest::backendModuleDocumentationIsAnExplicitSkillTransition`,
 `CatalogTest::anInstalledContractDoesNotAnswerForAnotherTargetMajor`
 

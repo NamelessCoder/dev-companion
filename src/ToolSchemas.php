@@ -601,10 +601,20 @@ final class ToolSchemas
                 'files' => self::integer('PHP files below it.'),
             ], ['kind', 'files'])),
             'files' => self::listOf(self::string(), 'Registration files it ships, from ext_localconf.php to Initialisation/data.t3d.'),
+            'artifacts' => self::object([
+                'manual' => self::nullableString('Its manual entry point, "Documentation/" where the directory exists without one, null where the extension ships no manual at all.'),
+                'readme' => self::nullableString('The README it ships, null where there is none.'),
+                'tests' => self::listOf(self::string(), 'The layers below Tests/, for example Unit and Functional. Empty where the extension ships no tests.'),
+                'languageFiles' => self::listOf(self::object([
+                    'path' => self::string('Relative to the extension.'),
+                    'sourceLanguage' => self::nullableString('The source-language its own <file> element declares, null where it declares none. This is what the file says, not what it should say.'),
+                    'translations' => self::listOf(self::string(), 'Locales of the prefixed files beside it, such as de for de.messages.xlf.'),
+                ], ['path', 'sourceLanguage', 'translations'])),
+            ], ['manual', 'readme', 'tests', 'languageFiles'], 'What it ships beside its registrations. Every key is present even when the artifact is not, because the absence of a manual, a test or a translation is the answer a file listing cannot give.'),
             'installed' => self::listOf(self::string(), 'On a miss: the extension keys this installation does have.'),
             'answeredBy' => self::answeredBy(),
             'unavailable' => self::unavailable(),
-        ], ['key', 'path', 'origin', 'tcaTables', 'tcaOverrides', 'contentElements', 'backendModules', 'icons', 'siteSets', 'serviceTags', 'files', 'answeredBy']);
+        ], ['key', 'path', 'origin', 'tcaTables', 'tcaOverrides', 'contentElements', 'backendModules', 'icons', 'siteSets', 'serviceTags', 'files', 'artifacts', 'answeredBy']);
     }
 
     /** @return array<string, mixed> */

@@ -319,7 +319,7 @@ final class Tools
             ],
             [
                 'name' => 'typo3_extension_scope',
-                'description' => 'Describe what one installed extension registers: the tables its TCA defines and the ones it extends, the content elements it adds to tt_content and the Fluid template each renders through, its backend modules and routes, its icons, its site sets, the service tags it hangs into the container, its middlewares, its Fluid roots and namespaces, and the shape of its Classes/ directory. Read from that extension\'s own files — declaration files are parsed, never executed — so it answers on a fresh clone and for a third-party extension as well as for the project\'s own. typo3_project_scope names the extensions this can be called for.',
+                'description' => 'Describe what one installed extension registers: the tables its TCA defines and the ones it extends, the content elements it adds to tt_content and the Fluid template each renders through, its backend modules and routes, its icons, its site sets, the service tags it hangs into the container, its middlewares, its Fluid roots and namespaces, and the shape of its Classes/ directory — and what it ships beside all of that: its manual, its README, the test layers it has, and its XLF files with the source language each one declares. Those four are answered even when they are not there, because the absence of a manual or a translation is what a file listing cannot show. Read from that extension\'s own files — declaration files are parsed, never executed — so it answers on a fresh clone and for a third-party extension as well as for the project\'s own. typo3_project_scope names the extensions this can be called for.',
                 'inputSchema' => [
                     'type' => 'object',
                     'properties' => [
@@ -2303,6 +2303,31 @@ final class Tools
             ));
         }
 
+        // Always rendered, present or not. Everything above is found by reading
+        // further; these are the ones a caller finds by being told, because a
+        // manual nobody wrote leaves no file to notice.
+        $artifacts = $extension['artifacts'];
+        $lines[] = '';
+        $lines[] = 'Ships: ' . implode(', ', [
+            'manual ' . ($artifacts['manual'] ?? 'none'),
+            'readme ' . ($artifacts['readme'] ?? 'none'),
+            'tests ' . ($artifacts['tests'] === [] ? 'none' : implode('+', $artifacts['tests'])),
+        ]);
+        if ($artifacts['languageFiles'] !== []) {
+            foreach ($artifacts['languageFiles'] as $file) {
+                $lines[] = sprintf(
+                    '- %s — source-language %s, %s',
+                    $file['path'],
+                    $file['sourceLanguage'] ?? 'not declared',
+                    $file['translations'] === []
+                        ? 'no translations beside it'
+                        : 'translated into ' . implode(', ', $file['translations']),
+                );
+            }
+            $lines[] = 'The source language is what each file declares, not what it should declare — '
+                . 'typo3_architecture_lookup owns that rule.';
+        }
+
         $lines[] = '';
         // The boundary of this answer, stated rather than implied: what is
         // declared in a file is here, what an extension does at runtime is not.
@@ -2362,6 +2387,7 @@ final class Tools
         'typoScript' => [],
         'classes' => [],
         'files' => [],
+        'artifacts' => ['manual' => null, 'readme' => null, 'tests' => [], 'languageFiles' => []],
         'answeredBy' => 'nothing',
     ];
 

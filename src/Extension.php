@@ -58,7 +58,13 @@ final class Extension
      *     fluidNamespaces: array<int, string>,
      *     typoScript: array<int, string>,
      *     classes: array<int, array{kind: string, files: int}>,
-     *     files: array<int, string>
+     *     files: array<int, string>,
+     *     artifacts: array{
+     *         manual: ?string,
+     *         readme: ?string,
+     *         tests: array<int, string>,
+     *         languageFiles: array<int, array{path: string, sourceLanguage: ?string, translations: array<int, string>}>
+     *     }
      * }|null
      */
     public static function describe(string $key): ?array
@@ -106,7 +112,109 @@ final class Extension
             'typoScript' => self::baseNames($path . '/Configuration/TypoScript/*.typoscript', ''),
             'classes' => self::classes($path),
             'files' => self::files($path),
+            'artifacts' => self::artifacts($path),
         ];
+    }
+
+    /**
+     * What the extension ships beside its registrations — and what it does not.
+     *
+     * Everything above this answers what the extension registers, which a
+     * caller can only ever find more of by reading further. These four are the
+     * ones whose *absence* is the answer, and absence has no file to stumble
+     * over: a review that lists the tree cannot see a manual nobody wrote. Each
+     * key is therefore always present, null or empty where the artifact is not
+     * there, so a caller can tell "looked for and missing" from "not looked
+     * for".
+     *
+     * The source language is a fact about the file and is reported as one. What
+     * it ought to be is a convention and stays in the knowledge base.
+     *
+     * @return array{manual: ?string, readme: ?string, tests: array<int, string>, languageFiles: array<int, array{path: string, sourceLanguage: ?string, translations: array<int, string>}>}
+     */
+    private static function artifacts(string $path): array
+    {
+        $manual = null;
+        foreach (['Documentation/Index.rst', 'Documentation/index.rst'] as $entry) {
+            if (is_file($path . '/' . $entry)) {
+                $manual = $entry;
+                break;
+            }
+        }
+        if ($manual === null && is_dir($path . '/Documentation')) {
+            // A manual whose entry point is missing is not the same as no
+            // manual, and the difference is the finding.
+            $manual = 'Documentation/';
+        }
+
+        $readme = null;
+        foreach (['README.rst', 'README.md', 'readme.md', 'README.txt'] as $entry) {
+            if (is_file($path . '/' . $entry)) {
+                $readme = $entry;
+                break;
+            }
+        }
+
+        $tests = [];
+        foreach (glob($path . '/Tests/*', GLOB_ONLYDIR) ?: [] as $directory) {
+            $tests[] = basename($directory);
+        }
+        sort($tests);
+
+        return [
+            'manual' => $manual,
+            'readme' => $readme,
+            'tests' => $tests,
+            'languageFiles' => self::languageFiles($path),
+        ];
+    }
+
+    /**
+     * The XLF files it ships, each with the language its own header declares.
+     *
+     * A locale-prefixed file is the translation of the one beside it — de.foo.xlf
+     * belongs to foo.xlf — so it is listed there rather than as a file of its
+     * own, which is also the shape that makes a missing translation visible.
+     *
+     * @return array<int, array{path: string, sourceLanguage: ?string, translations: array<int, string>}>
+     */
+    private static function languageFiles(string $path): array
+    {
+        $sources = [];
+        $translations = [];
+        foreach (glob($path . '/Resources/Private/Language/{*.xlf,*/*.xlf}', GLOB_BRACE) ?: [] as $file) {
+            $relative = substr($file, strlen($path) + 1);
+            $name = basename($file);
+            if (preg_match('/^([a-z]{2}(?:_[A-Z]{2})?)\.(.+\.xlf)$/', $name, $matches) === 1) {
+                $translations[dirname($relative) . '/' . $matches[2]][] = $matches[1];
+                continue;
+            }
+            $sources[$relative] = self::sourceLanguage($file);
+        }
+
+        $files = [];
+        foreach ($sources as $relative => $language) {
+            $locales = $translations[$relative] ?? [];
+            sort($locales);
+            $files[] = ['path' => $relative, 'sourceLanguage' => $language, 'translations' => $locales];
+        }
+
+        return $files;
+    }
+
+    /** The source-language of an XLF, from its <file> element and nothing else. */
+    private static function sourceLanguage(string $file): ?string
+    {
+        $handle = @fopen($file, 'rb');
+        if ($handle === false) {
+            return null;
+        }
+        $head = (string) fread($handle, 4096);
+        fclose($handle);
+
+        return preg_match('/<file\b[^>]*\bsource-language="([^"]*)"/', $head, $matches) === 1
+            ? $matches[1]
+            : null;
     }
 
     /**

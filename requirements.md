@@ -259,6 +259,17 @@ them, this section wins and the other one is what needs rewriting.
   the project README and never activated the documentation skill (2026-07-30).
   *Held by:*
   `SkillTest::backendModuleDocumentationIsAnExplicitSkillTransition`, `SKILL-07`
+- **R-KNW-35** An extension answer says what the extension ships beside its
+  registrations — its manual, its README, the test layers it has, and its XLF
+  files with the source language each declares — and says it when the artifact
+  is not there. Everything else about an extension is found by reading further;
+  these are the ones with no file to find, so they are answered rather than left
+  to be discovered. The source language is reported as the fact the file states;
+  which one it ought to be stays a convention in the knowledge base.
+  *From:* three `REVIEW-01` runs (2026-07-31), none of which reported that the
+  site package ships no manual, and none of which reported the German
+  `source-language` of its three XLF files while reading them.
+  *Held by:* `ProjectTest::whatAnExtensionDoesNotShipIsAnswerdRatherThanLeftOut`
 - **R-KNW-34** An installation answer that cannot read something says so instead
   of returning a shorter list. Reading a declaration file follows a value the
   file assigns to a variable once; a value assembled at runtime, taken from a

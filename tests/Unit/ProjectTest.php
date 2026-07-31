@@ -362,6 +362,51 @@ final class ProjectTest extends TestCase
     }
 
     #[Test]
+    public function whatAnExtensionDoesNotShipIsAnswerdRatherThanLeftOut(): void
+    {
+        // Three forward reviews of the same site package missed that it has no
+        // manual, because there is no file to trip over: `find` cannot list a
+        // document nobody wrote. The same three read its XLF headers and none
+        // reported the German source language. Both are facts about the files,
+        // both are cheap, and neither is discoverable by reading further — so
+        // they are told rather than left to be found.
+        $root = $this->composerProject();
+        $extension = $root . '/packages/my_sitepackage';
+        $this->declare($extension . '/Tests/Unit/SomeTest.php', "<?php\n");
+        $this->declare(
+            $extension . '/Resources/Private/Language/locallang.xlf',
+            '<?xml version="1.0"?><xliff version="1.0"><file source-language="de" datatype="plaintext"></file></xliff>',
+        );
+        $this->declare(
+            $extension . '/Resources/Private/Language/de.locallang.xlf',
+            '<?xml version="1.0"?><xliff version="1.0"><file source-language="en" target-language="de"></file></xliff>',
+        );
+        Instance::discoverFrom($root);
+
+        $result = Tools::call('typo3_extension_scope', ['extension' => 'my_sitepackage']);
+
+        self::assertSame(
+            [
+                'manual' => null,
+                'readme' => null,
+                'tests' => ['Unit'],
+                'languageFiles' => [[
+                    'path' => 'Resources/Private/Language/locallang.xlf',
+                    'sourceLanguage' => 'de',
+                    // The prefixed file is this one's translation, not a file of
+                    // its own — which is what makes a missing one visible.
+                    'translations' => ['de'],
+                ]],
+            ],
+            $result->data['artifacts'],
+        );
+        self::assertStringContainsString('Ships: manual none, readme none, tests Unit', $result->text);
+        self::assertStringContainsString('source-language de, translated into de', $result->text);
+        // The fact is here; whether it is allowed to be German is not.
+        self::assertStringContainsString('not what it should declare', $result->text);
+    }
+
+    #[Test]
     public function anExtensionTheInstallationDoesNotHaveIsAMissWithTheKeysItDoes(): void
     {
         $root = $this->composerProject();

@@ -258,6 +258,78 @@ final class SkillTest extends TestCase
     }
 
     #[Test]
+    public function extensionTestingEstablishesStaticQualityAndKeepsCheckingApartFromFixing(): void
+    {
+        // Two recorded REVIEW-02 runs bound this from both sides. Against an
+        // extension whose PHPStan and baseline exist, the review read them and
+        // found gaps inside them; against one with a fixer, a lint step and no
+        // analyser at all, static analysis was never named — the missing
+        // workflow surfaced as a missing test workflow and landed here, where
+        // the one sentence on the subject sent it back.
+        $directory = Paths::root() . '/skills/typo3-extension-testing';
+        $skill = (string) file_get_contents($directory . '/SKILL.md');
+        $guidance = (string) file_get_contents($directory . '/references/static-quality.md');
+
+        self::assertStringNotContainsString('only when the project already uses them', $skill);
+        self::assertMatchesRegularExpression(
+            '/establishes them whether or not the\s+project already runs them/',
+            $skill,
+        );
+        self::assertStringContainsString(
+            '[references/static-quality.md](references/static-quality.md)',
+            $skill,
+        );
+
+        // What the branch is worth is decided by four answers, and each of them
+        // is a way the work goes wrong when it is left unsaid: a fixer wired
+        // into the check, a new error parked in the baseline, formatting that
+        // walks into vendored files, and a core suite translated by analogy.
+        // And the run that never named static analysis needs the expectation to
+        // measure the checkout against, or "what is missing" has no answer: the
+        // leading finding there was a 2×4 matrix of version-independent steps,
+        // which is the same evidence read from the other end.
+        self::assertStringContainsString('This is the expectation the checkout is measured against', $guidance);
+        self::assertStringContainsString('every cell runs only', $guidance);
+
+        // The expectation names its tools, or "establish static analysis" is
+        // advice the reader still has to source. They sit in the reference
+        // rather than in the skill: a name every session carries is a name that
+        // cannot be re-asked, and this list is read once per task that needs it.
+        foreach (['phpstan/phpstan', 'php-cs-fixer', 'typo3/coding-standards', 'phplint', 'typoscript-lint', 'composer validate', 'eslint', 'stylelint'] as $tool) {
+            self::assertStringContainsString($tool, $guidance, $tool . ' is not named where a project without a check starts');
+        }
+        // A package name in a published skill is the one thing no release of
+        // this server corrects, and the analyser extension for TYPO3 is where
+        // that bites: the core runs phpstan on itself without one, because
+        // makeInstance() carries the @template annotation that used to be the
+        // extension's job — checked on 12.4, 13.4, 14.3 and main.
+        self::assertStringNotContainsString('saschaegerer', $guidance);
+        self::assertStringContainsString('still maintained before adding', $guidance);
+        // And the sentence that keeps the list from becoming the requirement:
+        // it is the default where nothing covers the check, and it loses to
+        // whatever the project already runs for the same one.
+        self::assertMatchesRegularExpression(
+            '/default per check where the checkout covers it with\s+nothing, never as a replacement for what it already runs/',
+            $guidance,
+        );
+
+        self::assertStringContainsString('Keep checking and fixing apart', $guidance);
+        self::assertStringContainsString('never receives an error the change in hand introduced', $guidance);
+        self::assertStringContainsString('first-party paths the project intends it', $guidance);
+
+        // The core's own build script is named once, in the skill, where the
+        // harness step it belongs to is. Repeating it in an extension-facing
+        // reference gives a tool that exists only in the core mono repository
+        // the weight of a thing an extension might have.
+        self::assertStringNotContainsString('runTests.sh', $guidance);
+        self::assertSame(
+            1,
+            substr_count($skill, 'runTests.sh'),
+            'the core build script is named more than once in an extension skill',
+        );
+    }
+
+    #[Test]
     public function coreTestGuidanceIsGuardedByTheServerProfile(): void
     {
         $skill = (string) file_get_contents(
@@ -382,7 +454,7 @@ final class SkillTest extends TestCase
     {
         $cases = Scenarios::contracts();
 
-        foreach (['SKILL-01', 'SKILL-02', 'SKILL-03', 'SKILL-04', 'SKILL-05', 'SKILL-06', 'SKILL-07'] as $id) {
+        foreach (['SKILL-01', 'SKILL-02', 'SKILL-03', 'SKILL-04', 'SKILL-05', 'SKILL-06', 'SKILL-07', 'SKILL-08'] as $id) {
             self::assertArrayHasKey($id, $cases);
             self::assertStringStartsWith('scenarios/contracts/task-skills/', $cases[$id]['file']);
             self::assertNotSame([], $cases[$id]['outcomes'], $id . ' says nothing about what has to come out of it');

@@ -1,11 +1,12 @@
 ---
 name: typo3-extension-testing
-description: Set up, add, extend, repair, review, or run tests for a TYPO3 project or extension, including missing test infrastructure, PHPUnit unit and functional tests, fixtures, architecture checks, Playwright browser and accessibility tests, and local or CI commands. Use when a project has no working test harness yet, when existing coverage must grow, or whenever work touches Tests/, PHPUnit configuration, TYPO3 testing-framework, Playwright, test coverage, or failing tests.
+description: Set up, add, extend, repair, review, or run tests and static quality checks for a TYPO3 project or extension, including missing test infrastructure, PHPUnit unit and functional tests, fixtures, Playwright browser and accessibility tests, static analysis, coding standards, baselines, and local or CI commands. Use when a project has no working test harness yet, when static analysis or a code style check has to be established or repaired, when existing coverage must grow, or whenever work touches Tests/, PHPUnit configuration, TYPO3 testing-framework, Playwright, PHPStan, php-cs-fixer, test coverage, or a failing check.
 ---
 
 # TYPO3 Extension Testing
 
-Establish or grow the smallest useful test surface at the correct layer. Make
+Establish or grow the smallest useful test and static-quality surface at the
+correct layer. Make
 the first green run part of setup, and run only commands supported by the
 checkout. Keep this skill as routing and workflow; never retain version-specific
 APIs, paths, dependency constraints, or commands that the installation or
@@ -44,6 +45,8 @@ After selecting a layer, read only its implementation guide:
 - [references/phpunit.md](references/phpunit.md) for unit or functional tests.
 - [references/playwright.md](references/playwright.md) for browser,
   accessibility, or visual tests.
+- [references/static-quality.md](references/static-quality.md) for static
+  analysis, coding standards, and the commands that run them.
 
 - Prefer a unit test for isolated logic without TYPO3 state or persistence.
 - Use a functional test when TYPO3 bootstrapping, configuration, database
@@ -51,8 +54,10 @@ After selecting a layer, read only its implementation guide:
   components is part of the behavior.
 - Use a browser test for rendered user journeys, backend interaction, JavaScript,
   or accessibility behavior that cannot be established below the UI.
-- Add architecture or static checks only when the project already uses them or
-  the task explicitly includes establishing that infrastructure.
+- Use static analysis and coding standards for the defects and the style no test
+  observes. A task that asks for them establishes them whether or not the
+  project already runs them; a task that does not ask extends what is there and
+  reports what is missing rather than introducing a check nobody requested.
 - Keep unit and functional infrastructure with the extension whose PHP it
   exercises. Keep browser infrastructure with the runnable project, because it
   needs a served site rather than an extension package alone.
@@ -84,7 +89,11 @@ for a review-only request, report the defect without changing it.
 6. For browser tests, require a runnable site and establish project-owned runner
    configuration, scripts, artifacts, and one real target. Choose host, container,
    or dedicated browser image from the project rather than imposing one topology.
-7. Make CI call the same commands that passed locally. Add a version matrix only
+7. For static analysis and coding standards, establish one project-owned command
+   per check and keep the command that reports apart from the one that writes.
+   Fix a new finding rather than recording it in a baseline, and keep automatic
+   formatting inside the first-party paths the project intends it to touch.
+8. Make CI call the same commands that passed locally. Add a version matrix only
    for combinations the package declares and the dependency solver accepts.
 
 ## Add or extend tests
@@ -112,9 +121,12 @@ for a review-only request, report the defect without changing it.
 3. Run the declared CI-equivalent commands after the local commands pass.
 4. For browser work, execute at least one real spec and confirm its expected
    artifact or report is produced.
-5. Report the exact commands run, results, files added or changed, and checks not
+5. For a static check, run it again after its fix command and inspect the
+   working tree for files the fixer touched outside the intended scope.
+6. Report the exact commands run, results, files added or changed, and checks not
    run with the reason.
 
-This skill owns testing infrastructure, test changes, and test execution. For a
+This skill owns testing and static-quality infrastructure, the changes they
+require, and the execution of both. For a
 broad conformance audit, documentation rewrite, or backend-module implementation,
 hand that work to the corresponding skill and retain only the testing part.

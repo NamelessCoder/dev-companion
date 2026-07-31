@@ -46,7 +46,7 @@ the index.
 | [extension-author/](extension-author/readme.md) | `EXT-01` … `EXT-07` |
 | [site-developer/](site-developer/readme.md) | `SITE-01` … `SITE-07` |
 | [cross-cutting/](cross-cutting/readme.md) | `META-01` … `META-05` |
-| [task-skills/](task-skills/readme.md) | `SKILL-01` … `SKILL-07` |
+| [task-skills/](task-skills/readme.md) | `SKILL-01` … `SKILL-08` |
 
 ## Coverage
 

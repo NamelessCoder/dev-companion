@@ -122,7 +122,7 @@ final class InstallerTest extends TestCase
                     $directory . '/.agents/skills/' . $publishedSkill . '/SKILL.md',
                 );
             }
-            foreach (['checklist', 'phpunit', 'playwright'] as $reference) {
+            foreach (['checklist', 'phpunit', 'playwright', 'static-quality'] as $reference) {
                 self::assertFileEquals(
                     Paths::root() . '/skills/typo3-extension-testing/references/' . $reference . '.md',
                     $directory . '/.agents/skills/typo3-extension-testing/references/' . $reference . '.md',

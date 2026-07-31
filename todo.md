@@ -86,23 +86,6 @@ that version, every requirement fails at once and not one of them says so.
 
 ---
 
-## Add the static-quality branch to `typo3-extension-testing`
-
-**Serves:** R-SKL-2, feedback/2026-07-30-174423-extension-static-quality-needs-an-explicit-workflow.md
-
-Both runs are recorded and they agree on where the hole is: a review routes
-static quality to `typo3-extension-testing`, and the one sentence that skill has
-on the subject sends it back — static checks are added "only when the project
-already uses them". Add the on-demand reference that answers instead: inspect
-the existing packages, configuration, baselines, scripts and CI before changing
-any of them; resolve development dependencies from the extension's declared
-TYPO3 and PHP range; establish one project-owned command per check and keep
-check and fix modes apart; let CI call the commands that passed locally. New
-errors are fixed rather than added to a baseline, and automatic formatting stays
-inside intended first-party files. It stays inside that skill: neither run shows
-it owning two unrelated workflows, and both reached it by routing rather than by
-activating it.
-
 ## Say in `skills/base.md` what a finding rests on
 
 **Serves:** feedback/2026-07-31-124500-a-review-reads-the-checks-it-never-runs.md

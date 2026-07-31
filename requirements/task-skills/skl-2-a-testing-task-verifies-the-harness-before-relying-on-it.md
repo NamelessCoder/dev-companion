@@ -15,8 +15,17 @@ extension; browser harnesses stay with the runnable project. Every newly
 established layer has a meaningful local proof before CI calls the same
 command, and review-only work reports setup defects without changing them.
 
-**From:** `EXT-05`, `SITE-06`, `SKILL-05`, `SKILL-06`; and a request for one
-testing skill that can add or extend PHPUnit and Playwright coverage while
-checking and repairing its setup (2026-07-30).
+Static analysis and coding standards are a layer of this workflow and are
+established when the task asks for them, whether or not the project already
+runs one. What is missing is read off what a complete check surface covers,
+each check gets one project-owned command, the command that reports stays apart
+from the one that writes, a new finding is fixed rather than recorded in a
+baseline, and automatic formatting stays inside the first-party files.
+
+**From:** `EXT-05`, `SITE-06`, `SKILL-05`, `SKILL-06`, `SKILL-08`; a request for
+one testing skill that can add or extend PHPUnit and Playwright coverage while
+checking and repairing its setup (2026-07-30); and two recorded `REVIEW-02` runs
+in which a missing static-quality workflow surfaced as a missing test workflow
+and was declined here (2026-07-30).
 
 **Held by:** `SkillTest`, `InstallerTest`

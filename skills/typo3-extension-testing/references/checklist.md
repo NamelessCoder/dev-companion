@@ -21,8 +21,9 @@ and checkout.
   DataHandler, fixtures, or interaction between TYPO3 components.
 - Browser: rendered journeys, backend interaction, JavaScript, or accessibility
   behavior that cannot be established below the UI.
-- Architecture/static: structural rules already enforced by the project, or
-  infrastructure the task explicitly asks to establish.
+- Static quality: defects and style no test observes — static analysis, coding
+  standards, structural rules. Established when the task asks for them,
+  extended rather than invented when it does not.
 
 ## Respect the functional frontend boundary
 
@@ -48,6 +49,9 @@ reported defect. Record why a higher layer is necessary.
 - Keep extension-owned unit and functional tests in the extension. Keep
   browser-owned configuration in the project that serves the tested site.
 - Establish a stable local command before CI, then make CI call that command.
+- Keep a check command apart from the command that writes, and keep automatic
+  formatting inside the first-party paths the project intends it to touch.
+- Fix a new static-analysis finding; a baseline records what was already there.
 - Keep credentials and machine-specific URLs out of tracked configuration.
 - Prove every newly established layer with a meaningful test or real browser
   spec. When no unit-testable behavior exists, report an empty discovered suite

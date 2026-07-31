@@ -25,15 +25,20 @@ final class Unresolved
     /**
      * Every requirement nothing answers for, in id order.
      *
-     * `queued` is the whole coupling to the pipeline: todo.md naming the id is
-     * what turns an entry into work, and an entry no item names is one nobody
-     * has decided about either way.
+     * `queued` is the whole coupling to the pipeline: an item in todo.md naming
+     * the id is what turns an entry into work, and an entry no item names is one
+     * nobody has decided about either way.
+     *
+     * Read from what the items say they serve rather than from the file as a
+     * whole. A search over the text answers yes for an id named in the section
+     * that lists what is deliberately *not* queued — which is a decision that
+     * was taken, and the opposite of the one this flag reports.
      *
      * @return array<int, array{id: string, state: string, title: string, queued: bool}>
      */
     public static function requirements(): array
     {
-        $todo = (string) file_get_contents(Paths::root() . '/todo.md');
+        $queued = Todo::serves();
 
         $waiting = [];
         foreach (Requirements::all() as $requirement) {
@@ -45,7 +50,7 @@ final class Unresolved
                 'id' => $requirement['id'],
                 'state' => Requirements::state($requirement),
                 'title' => $requirement['title'],
-                'queued' => str_contains($todo, $requirement['id']),
+                'queued' => in_array($requirement['id'], $queued, true),
             ];
         }
 

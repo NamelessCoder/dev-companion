@@ -223,9 +223,10 @@ decision nothing has come back about are not defects — so no check may fail on
 them, which is exactly why nothing read them for as long as they existed.
 `bin/cli backlog list` is that reading; `bin/cli next` opens with it and
 `bin/cli check` closes with it. It names every requirement nothing answers for,
-says whether an item in `todo.md` names it, and gives the oldest standing
-decision as the one the repository has moved furthest away from. Standing on
-that list is not the
+says whether an item in `todo.md` names it — read from what the items declare
+they serve, so the section listing what is deliberately *not* queued does not
+count as having taken one on — and gives the oldest standing decision as the one
+the repository has moved furthest away from. Standing on that list is not the
 problem. Standing on it with nothing in `todo.md` naming it is a decision nobody
 has taken, and taking it — an item, or the sentence in `decisions/` that says
 why not — is what a session owes it.

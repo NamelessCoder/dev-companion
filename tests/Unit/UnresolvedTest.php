@@ -7,8 +7,8 @@ namespace Typo3CmsMcp\Tests\Unit;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Typo3CmsMcp\Decisions;
-use Typo3CmsMcp\Paths;
 use Typo3CmsMcp\Requirements;
+use Typo3CmsMcp\Todo;
 use Typo3CmsMcp\Unresolved;
 
 final class UnresolvedTest extends TestCase
@@ -37,19 +37,21 @@ final class UnresolvedTest extends TestCase
     }
 
     /**
-     * todo.md naming the id is the whole coupling between what must be true and
-     * the order the work happens in. An entry nobody has queued is the case the
-     * reading exists for, so getting that flag backwards would hide exactly the
-     * entries it is meant to surface.
+     * An item in todo.md naming the id is the whole coupling between what must
+     * be true and the order the work happens in. An entry nobody has queued is
+     * the case the reading exists for, so getting that flag backwards would
+     * hide exactly the entries it is meant to surface.
+     *
+     * It is what an *item* names, not what the file contains. todo.md also
+     * lists what is deliberately not queued, and an id named there has been
+     * decided about in the opposite direction.
      */
     #[Test]
     public function anEntryIsQueuedWhenAnItemNamesIt(): void
     {
-        $todo = (string) file_get_contents(Paths::root() . '/todo.md');
-
         foreach (Unresolved::requirements() as $requirement) {
             self::assertSame(
-                str_contains($todo, $requirement['id']),
+                in_array($requirement['id'], Todo::serves(), true),
                 $requirement['queued'],
                 $requirement['id'] . ' is reported as ' . ($requirement['queued'] ? 'queued' : 'unqueued'),
             );

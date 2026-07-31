@@ -36,8 +36,7 @@ final class InstallerTest extends TestCase
                 'args' => [Paths::root() . '/bin/typo3-cms-mcp'],
             ], $configuration['mcpServers']['typo3-cms-mcp']);
         } finally {
-            @unlink($directory . '/.mcp.json');
-            @rmdir($directory);
+            $this->removeDirectory($directory);
         }
     }
 
@@ -55,8 +54,7 @@ final class InstallerTest extends TestCase
             self::assertStringContainsString('refusing to replace', $stderr);
             self::assertSame($original, file_get_contents($directory . '/.mcp.json'));
         } finally {
-            @unlink($directory . '/.mcp.json');
-            @rmdir($directory);
+            $this->removeDirectory($directory);
         }
     }
 
@@ -163,7 +161,7 @@ final class InstallerTest extends TestCase
             self::assertSame($before['state'], file_get_contents($state));
             self::assertSame($before['gitignore'], file_get_contents($directory . '/.gitignore'));
         } finally {
-            $this->removeCodexFixture($directory);
+            $this->removeDirectory($directory);
         }
     }
 
@@ -202,11 +200,7 @@ final class InstallerTest extends TestCase
                 $directory . '/.agents/skills/typo3-backend-module-development/SKILL.md',
             );
         } finally {
-            @unlink($directory . '/.mcp.json');
-            @unlink($directory . '/.ddev/config.yaml');
-            @rmdir($directory . '/.ddev');
-            $this->removeEntrypoint($directory, 'vendor/bin');
-            $this->removeCodexFixture($directory);
+            $this->removeDirectory($directory);
         }
     }
 
@@ -236,12 +230,7 @@ final class InstallerTest extends TestCase
                 'args' => ['exec', 'php', '.build/bin/typo3-cms-mcp'],
             ], $configuration['mcpServers']['typo3-cms-mcp']);
         } finally {
-            @unlink($directory . '/.mcp.json');
-            @unlink($directory . '/composer.json');
-            @unlink($directory . '/.ddev/config.yaml');
-            @rmdir($directory . '/.ddev');
-            $this->removeEntrypoint($directory, '.build/bin');
-            @rmdir($directory);
+            $this->removeDirectory($directory);
         }
     }
 
@@ -267,10 +256,7 @@ final class InstallerTest extends TestCase
                 'args' => [Paths::root() . '/bin/typo3-cms-mcp'],
             ], $configuration['mcpServers']['typo3-cms-mcp']);
         } finally {
-            @unlink($directory . '/.mcp.json');
-            @unlink($directory . '/.ddev/config.yaml');
-            @rmdir($directory . '/.ddev');
-            @rmdir($directory);
+            $this->removeDirectory($directory);
         }
     }
 
@@ -289,7 +275,7 @@ final class InstallerTest extends TestCase
             self::assertSame($original, file_get_contents($directory . '/.codex/config.toml'));
             self::assertDirectoryDoesNotExist($directory . '/.agents');
         } finally {
-            $this->removeCodexFixture($directory);
+            $this->removeDirectory($directory);
         }
     }
 
@@ -310,7 +296,7 @@ final class InstallerTest extends TestCase
             );
             self::assertStringNotContainsString('User change.', (string) file_get_contents($skill));
         } finally {
-            $this->removeCodexFixture($directory);
+            $this->removeDirectory($directory);
         }
     }
 
@@ -330,7 +316,7 @@ final class InstallerTest extends TestCase
             self::assertFileDoesNotExist($obsolete);
             self::assertDirectoryDoesNotExist(dirname($obsolete));
         } finally {
-            $this->removeCodexFixture($directory);
+            $this->removeDirectory($directory);
         }
     }
 
@@ -358,7 +344,7 @@ final class InstallerTest extends TestCase
             self::assertSame(0, $this->execute($directory, ['update', '--agent=codex'], $stderr), $stderr);
             self::assertDirectoryDoesNotExist($stale);
         } finally {
-            $this->removeCodexFixture($directory);
+            $this->removeDirectory($directory);
         }
     }
 
@@ -401,40 +387,19 @@ final class InstallerTest extends TestCase
         file_put_contents($directory . '/' . $binDirectory . '/typo3-cms-mcp', "#!/usr/bin/env php\n");
     }
 
-    private function removeEntrypoint(string $directory, string $binDirectory): void
+    private function removeDirectory(string $directory): void
     {
-        @unlink($directory . '/' . $binDirectory . '/typo3-cms-mcp');
-        for ($path = $binDirectory; $path !== '.'; $path = dirname($path)) {
-            @rmdir($directory . '/' . $path);
-        }
-    }
-
-    private function removeCodexFixture(string $directory): void
-    {
-        @unlink($directory . '/.agents/skills/obsolete-typo3-skill/SKILL.md');
-        @rmdir($directory . '/.agents/skills/obsolete-typo3-skill');
-        foreach ([
-            'typo3-backend-module-development',
-            'typo3-content-element-development',
-            'typo3-extension-conformance',
-            'typo3-extension-documentation',
-            'typo3-extension-testing',
-            'typo3-extension-upgrade',
-        ] as $skill) {
-            $skillDirectory = $directory . '/.agents/skills/' . $skill;
-            @unlink($skillDirectory . '/SKILL.md');
-            foreach (glob($skillDirectory . '/references/*') ?: [] as $reference) {
-                @unlink($reference);
+        $files = new \RecursiveIteratorIterator(
+            new \RecursiveDirectoryIterator($directory, \RecursiveDirectoryIterator::SKIP_DOTS),
+            \RecursiveIteratorIterator::CHILD_FIRST,
+        );
+        foreach ($files as $file) {
+            if ($file->isDir()) {
+                rmdir($file->getPathname());
+            } else {
+                unlink($file->getPathname());
             }
-            @rmdir($skillDirectory . '/references');
-            @rmdir($skillDirectory);
         }
-        @rmdir($directory . '/.agents/skills');
-        @rmdir($directory . '/.agents');
-        @unlink($directory . '/typo3-cms-mcp.json');
-        @unlink($directory . '/.gitignore');
-        @unlink($directory . '/.codex/config.toml');
-        @rmdir($directory . '/.codex');
-        @rmdir($directory);
+        rmdir($directory);
     }
 }

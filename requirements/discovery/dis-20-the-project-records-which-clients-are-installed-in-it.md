@@ -13,10 +13,12 @@ knowledge only the project has. Naming them one at a time meant remembering a
 list nobody keeps, so a second client silently kept the skills of the version it
 was installed with. Clients that share a skills directory are published once.
 
-Naming no client stays a setup of its own — the entry every client reads, and no
-skills, because only a named client says where a skill lands. An update there
-confirms that entry and records nothing; where there is no entry either, it says
-nothing is installed rather than reporting work it did not do.
+Naming no client is a setup of its own, recorded as `generic`: the `.mcp.json`
+entry and the skills at `.agents/skills`, the two locations a client finds
+without being configured for it. It is recorded and refreshed like any named
+client and needs no case of its own; `--agent=` does not take it, because it is
+nobody's name. An update in a project where nothing is installed says so rather
+than reporting work it did not do.
 
 The `.gitignore` entries follow from that record and are written whole between
 `# BEGIN typo3-cms-mcp` and `# END typo3-cms-mcp`: a client that is gone or a

@@ -75,7 +75,7 @@ final class InstallerRecordTest extends TestCase
     }
 
     #[Test]
-    public function aGenericSetupIsUpdatedByConfirmingItsEntry(): void
+    public function namingNoClientInstallsTheSkillsEveryClientFindsOnItsOwn(): void
     {
         $directory = $this->directory();
 
@@ -83,17 +83,37 @@ final class InstallerRecordTest extends TestCase
             $stdout = '';
             $stderr = '';
             self::assertSame(0, $this->execute($directory, ['install'], $stdout, $stderr), $stderr);
-            $installed = (string) file_get_contents($directory . '/.mcp.json');
 
+            $skill = $directory . '/.agents/skills/' . self::SKILL . '/SKILL.md';
+            self::assertFileEquals(Paths::root() . '/skills/' . self::SKILL . '/SKILL.md', $skill);
+            self::assertFileExists($directory . '/.mcp.json');
+            // It is recorded like any other client, so it is refreshed like
+            // one — the setup that names nobody needs no case of its own.
+            self::assertSame(['generic'], $this->state($directory)['agents']);
+            self::assertStringContainsString(
+                '/.agents/skills/' . self::SKILL . "/\n",
+                (string) file_get_contents($directory . '/.gitignore'),
+            );
+
+            file_put_contents($skill, "User change.\n");
             self::assertSame(0, $this->execute($directory, ['update'], $stdout, $stderr), $stderr);
-            self::assertStringContainsString('Confirmed typo3-cms-mcp', $stdout);
-            self::assertStringContainsString('install --agent=', $stdout);
-            // Naming no client is a setup, not a half-finished one: it writes
-            // the entry every client reads and owns no skills, so an update
-            // has nothing to publish and nothing to record.
-            self::assertSame($installed, file_get_contents($directory . '/.mcp.json'));
-            self::assertFileDoesNotExist($directory . '/typo3-cms-mcp.json');
-            self::assertFileDoesNotExist($directory . '/.gitignore');
+            self::assertFileEquals(Paths::root() . '/skills/' . self::SKILL . '/SKILL.md', $skill);
+        } finally {
+            $this->removeDirectory($directory);
+        }
+    }
+
+    #[Test]
+    public function generalIsNotAClientOptionOfItsOwn(): void
+    {
+        $directory = $this->directory();
+
+        try {
+            $stdout = '';
+            $stderr = '';
+            self::assertSame(1, $this->execute($directory, ['install', '--agent=whatever'], $stdout, $stderr));
+            self::assertStringContainsString('unsupported agent "whatever"', $stderr);
+            self::assertStringNotContainsString('generic', $stderr);
         } finally {
             $this->removeDirectory($directory);
         }

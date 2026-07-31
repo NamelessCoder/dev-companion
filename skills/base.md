@@ -42,6 +42,17 @@ wrong. A file that has settled into the opposite of a rule is a finding, not a
 local style to preserve: consistency with a project's own habit establishes
 nothing about whether the habit is right.
 
+## What the code is for is evidence, and the repository states it
+
+A mechanism that costs something is not a defect for costing it. Before
+reporting one, find what it is there for — the manual, the README, the
+changelog, the setting it is driven by, the versions the package declares it
+supports — and say so. Where a purpose is documented, what you have is a
+trade-off to name with its cost and its alternative, not a defect; where you
+cannot find one, the finding says that it could not be established rather than
+that none exists. This is the other direction of the rule above, and skipping it
+turns a review into a list of everything the author did on purpose.
+
 ## What this server does not know
 
 It does not read your working tree. Which files changed, which branch you are

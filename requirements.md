@@ -321,11 +321,20 @@ them, this section wins and the other one is what needs rewriting.
   then the checkout. A skill states what it adds to that order, never a second
   copy of the order itself. The base also separates the two kinds of lookup, so
   a runtime answer is not taken for a verdict, and says a returned rule is read
-  against the code that already exists as well as the code about to be written.
+  against the code that already exists as well as the code about to be written —
+  in both directions: a mechanism that costs something is not a defect for
+  costing it, so what it is there for is established from the repository's own
+  statements first, and a documented purpose makes it a trade-off to name with
+  its cost rather than a finding. Where no purpose can be established, the
+  finding says that instead of concluding there is none.
   *From:* three `REVIEW-01` runs (2026-07-31) and the divergence they exposed —
   the conformance skill was repaired while the content-element, documentation
   and testing skills still ordered reading the checkout ahead of the conventions
   lookup, which is the arrangement those runs measured.
+  Extended after `REVIEW-02` (2026-07-31) reported five of six priorities
+  against mechanisms the package ships deliberately — a compile step a setting
+  drives, a vendored copy that makes a non-Composer install work, a font
+  download that keeps the file on the site's own host.
   *Held by:* `SkillTest::theBaseFixesTheOrderEveryTaskStartsIn`,
   `SkillTest::everySkillStartsFromTheBaseBeforeItsOwnEvidence`,
   `InstallerTest::codexInstallAndUpdatePreserveConfigurationAndTrackTheirSkillsCentrally`

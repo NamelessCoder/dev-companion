@@ -81,6 +81,20 @@ final class SkillTest extends TestCase
             '/settled into the opposite of a rule is a finding, not a\s+local style/',
             $base,
         );
+
+        // And the direction that sentence invites if it stands alone. REVIEW-02
+        // reported five of six priorities against mechanisms the package ships
+        // on purpose — the compile step a setting drives, the vendored copy that
+        // makes a non-Composer install work, the download that keeps a font on
+        // the site's own host.
+        self::assertMatchesRegularExpression(
+            '/A mechanism that costs something is not a defect for costing it/',
+            $base,
+        );
+        self::assertMatchesRegularExpression(
+            '/trade-off to name with its cost/',
+            $base,
+        );
         // One hop, like every other reference: the base is read, not followed
         // onward.
         self::assertStringNotContainsString('(references/', $base);

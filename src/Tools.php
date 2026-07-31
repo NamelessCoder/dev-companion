@@ -1089,7 +1089,11 @@ final class Tools
             'Change type: ' . $changeType,
             'Domains: ' . implode(', ', $domains),
         ]);
-        if (count($targets) > 1) {
+        // Silent on the ordinary task, where one version is the whole question
+        // and saying so is noise. It speaks for the repository that serves
+        // several majors — whether the answer holds for all of them, or was
+        // narrowed to one because the caller stated it.
+        if (count($targets) > 1 || self::severalDeclaredMajors() !== []) {
             $lines[] = self::versionScopeLine($targets);
         }
         if ($confirmed !== []) {
@@ -1616,11 +1620,33 @@ final class Tools
             return 'No target TYPO3 version was stated and none was found to read, so every statement comes back '
                 . 'with the versions it holds for. Pass targetVersion to have the ones that do not apply left out.';
         }
-        if (count($targets) === 1) {
-            return sprintf('Answered for TYPO3 v%d: statements that do not hold there are left out.', $targets[0]);
-        }
 
         $constraint = Project::coreConstraint();
+        $declared = self::severalDeclaredMajors();
+
+        // The narrowing is invisible from inside the answer, and that is how a
+        // widened default gets switched off by a caller being careful: a
+        // session reads the installed version out of typo3_project_scope,
+        // states it because it looks like the accurate thing to do, and gets
+        // back exactly the answer this filtering was changed to stop giving.
+        // So the one case where the two disagree says so.
+        if (count($targets) === 1) {
+            if ($declared === []) {
+                return sprintf('Answered for TYPO3 v%d: statements that do not hold there are left out.', $targets[0]);
+            }
+
+            return sprintf(
+                'Answered for TYPO3 v%d alone, because targetVersion stated it. This repository declares '
+                . 'typo3/cms-core as %s, so one codebase serves %s here, and every statement that holds only on '
+                . '%s is missing from this answer — on a repository like this one those are not somebody else\'s '
+                . 'rules, they are the constraint this code lives under. Leave targetVersion out to be answered '
+                . 'for all of them at once.',
+                $targets[0],
+                $constraint === null ? 'a range' : '"' . $constraint . '"',
+                self::majorList($declared),
+                self::majorList(array_values(array_diff($declared, $targets))),
+            );
+        }
 
         return sprintf(
             'Answered for TYPO3 %s at once, because this repository declares typo3/cms-core as %s and one codebase '
@@ -1630,6 +1656,22 @@ final class Tools
             self::majorList($targets),
             $constraint === null ? 'a range' : '"' . $constraint . '"',
         );
+    }
+
+    /**
+     * The majors this repository declares, where it declares more than one.
+     *
+     * Empty is the ordinary case and covers both shapes that behave alike: a
+     * repository built for a single major, and one whose constraint nothing
+     * here can read. Neither has an answer that could have been wider.
+     *
+     * @return array<int, int>
+     */
+    private static function severalDeclaredMajors(): array
+    {
+        $declared = Versions::declared(Project::coreConstraint());
+
+        return count($declared) > 1 ? $declared : [];
     }
 
     /** @param array<int, int> $majors */

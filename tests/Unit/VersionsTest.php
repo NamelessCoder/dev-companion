@@ -231,6 +231,54 @@ final class VersionsTest extends TestCase
     }
 
     #[Test]
+    public function aStatedMajorSaysWhichOtherOneItLeftOut(): void
+    {
+        // How the widening is switched off in practice: a session reads 14.3.0
+        // out of typo3_project_scope and states it, because restating what the
+        // repository runs looks like the accurate thing to do. Narrowing is
+        // then correct — it was asked for — but invisible, and what comes back
+        // is the answer this filtering was changed to stop giving. So the
+        // answer names the major it was composed for, the ones the repository
+        // declares beside it, and that their statements are missing.
+        $root = $this->composerProject('vendor', '14.3.5');
+        file_put_contents($root . '/composer.json', json_encode([
+            'name' => 'acme/extension',
+            'require' => ['typo3/cms-core' => '^13.4 || ^14.3'],
+        ], JSON_THROW_ON_ERROR));
+        Instance::discoverFrom($root);
+
+        $narrowed = Tools::call('typo3_architecture_lookup', ['id' => 'extension-files', 'targetVersion' => '14.3']);
+
+        self::assertSame([14], $narrowed->data['targetVersions'], 'what the caller stated still wins');
+        self::assertStringContainsString('Answered for TYPO3 v14 alone', $narrowed->text);
+        self::assertStringContainsString('^13.4 || ^14.3', $narrowed->text);
+        self::assertStringContainsString('only on v13 is missing from this answer', $narrowed->text);
+        self::assertStringContainsString('Leave targetVersion out', $narrowed->text);
+
+        // The task guide is where the review stated its version first, and it
+        // said nothing at all about it.
+        $guide = Tools::call('typo3_task_guide', ['task' => 'Review this extension', 'targetVersion' => '14.3']);
+        self::assertStringContainsString('Answered for TYPO3 v14 alone', $guide->text);
+
+        // A repository that declares one major has no wider answer to point
+        // at, and the sentence stays the one it always was.
+        file_put_contents($root . '/composer.json', json_encode([
+            'name' => 'acme/extension',
+            'require' => ['typo3/cms-core' => '^14.3'],
+        ], JSON_THROW_ON_ERROR));
+        Instance::discoverFrom($root);
+
+        $single = Tools::call('typo3_architecture_lookup', ['id' => 'extension-files', 'targetVersion' => '14.3']);
+        self::assertStringContainsString('Answered for TYPO3 v14: statements that do not hold', $single->text);
+        self::assertStringNotContainsString('Answered for TYPO3 v14 alone', $single->text);
+        self::assertStringNotContainsString(
+            'Answered for TYPO3',
+            Tools::call('typo3_task_guide', ['task' => 'Review this extension', 'targetVersion' => '14.3'])->text,
+            'and the ordinary task guide says nothing about versions at all',
+        );
+    }
+
+    #[Test]
     public function aConstraintIsReadByAskingItAboutEachCoveredMajor(): void
     {
         self::assertSame([13, 14], Versions::declared('^13.4 || ^14.3'));

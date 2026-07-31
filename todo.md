@@ -41,6 +41,29 @@ else here was written by someone who already knew what they meant.
 
 ---
 
+## And then reads the backlog
+
+Standing as well, and never deleted. `feedback/` is what arrives from outside;
+this is what was written down inside and then waited.
+
+    bin/cli backlog list
+
+Three states mean unfinished, and none of them can make a check fail: a
+requirement marked **open**, one held by `not guarded`, and a decision still
+`standing`, whose **Wrong if** nobody has been back to. All three are
+legitimate — which is why nothing read them for as long as they existed, and why
+a requirement could sit there unbuilt from the day the directory was created
+without a single session being told.
+
+The listing says, per requirement, whether an item below names its id. An entry
+nothing names is not a task somebody deferred; it is one nobody has looked at.
+What is owed is therefore the judgement, not the work: either an item below that
+names it, or the sentence in `decisions/` that says why it stays as it is. A
+requirement no test can hold is a legitimate answer. A requirement nobody has
+judged is not.
+
+---
+
 ## Standing check: has `mcp/sdk` released a newer version?
 
 This item is never done and is never deleted either, and unlike everything else
@@ -206,6 +229,44 @@ in its own words. The step is to give them one written form the way the evidence
 order has one, and to read the assertions from that instead of from five copies.
 It sits last because it pays off when the next skill is written, and the three
 items above are what would write one.
+
+## Judge the two audience requirements nobody has judged
+
+This serves `R-AUD-1` and `R-AUD-2`. It sits here rather than further up for the
+reason that produced it: both have been waiting since `requirements/` was
+created on 2026-07-29, no item ever named either of them, and what was urgent
+about them was being invisible — not being late. The four items above serve open
+notes and keep their order.
+
+`R-AUD-2` is open and has a case already. `bin/cli scenarios contract META-03`
+asks for two paths of different audience in one session and names the unmet half
+outright: that the two stay apart is not guarded. The step is to read `Scope`
+against that case and settle which of two things is true — the per-path decision
+already exists and only the "the audience is uncertain" answer is missing, or
+nothing combines the signals at all. The first is a wording change with a test
+behind it; the second is a feature, and `D-SCO-6` already names the flag it
+would rename (`outsideCore` → what it actually decides).
+
+`R-AUD-1` is `not guarded` and may deserve to stay that way — a principle is not
+a behaviour, and no test holds one. What it should not stay is untried:
+`ScopeTest::whatTheScopeExcludesIsNotWhatTheServerAnswers` was written for
+exactly this contradiction, and if it holds the operative half, the entry names
+it instead of saying that nothing does. If it does not, the entry says in one
+clause why nothing can, and that is the end of it.
+
+## Sort the standing decisions by what could check them
+
+This serves `decisions/` itself. Twenty-nine of thirty-one entries are standing:
+each one wrote down what would show it wrong, and nobody has been back to any of
+them. Most are standing because they are still true, so reading all twenty-nine
+for their own sake is not the task and would not finish.
+
+The step is one pass that splits them three ways by their **Wrong if** alone:
+one this repository can answer on its own (a checkout, a command, a test), one
+that needs a forward run in an environment named above, and one that waits on
+something outside this repository entirely. Only the first group is work, and it
+becomes items. The pass is cheap — the field is the last one in every file — and
+it is what turns a count into a queue. Nothing is checked while sorting.
 
 ## Not queued, and deliberately so
 

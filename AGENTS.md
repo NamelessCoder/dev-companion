@@ -41,10 +41,12 @@ from the installation being read.
 ## Where a session starts, and what it owes the next one
 
 Read [todo.md](todo.md) first. It says what is being worked on, in which order,
-and where the last session stopped — and its first item is standing: read
-`feedback/` again and run each note's own query against the server as it is now.
-Notes arrive while work is happening, and a note that was open yesterday is
-often half answered by what shipped since.
+and where the last session stopped — and it opens with two standing items. Read
+`feedback/` again and run each note's own query against the server as it is now:
+notes arrive while work is happening, and one that was open yesterday is often
+half answered by what shipped since. Then run `bin/cli backlog list` for what
+was written down inside and waited — the requirements nothing answers for, and
+the decisions nobody has been back to.
 
 Keeping it current is part of the work, not a step after it:
 
@@ -197,10 +199,11 @@ keeping them apart is what keeps any of them readable:
   of them says what to do next. A session can end anywhere, and the next one
   starts by reading this. An item names what it serves and what the next
   concrete step is, and is deleted when done rather than ticked — what it
-  established is in `requirements/` by then. Its first item is standing and is
-  never deleted: read `feedback/` again, and run each note's own query against
-  the server as it is now. Notes arrive while work is happening, and the ones
-  that were open yesterday are often half answered by what shipped since.
+  established is in `requirements/` by then. Its first two items are standing and
+  are never deleted: read `feedback/` again and run each note's own query against
+  the server as it is now — notes arrive while work is happening, and the ones
+  that were open yesterday are often half answered by what shipped since — and
+  then read the backlog the other two files have been keeping.
 
 Three of those states mean unfinished: a requirement marked **open**, one held
 by `not guarded`, and a decision still `standing`, whose **Wrong if** nobody has

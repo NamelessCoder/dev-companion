@@ -34,6 +34,7 @@ final class Decisions
         'GUI' => 'guides',
         'EVI' => 'evidence',
         'SKL' => 'task-skills',
+        'FBK' => 'feedback',
     ];
 
     /**

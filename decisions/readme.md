@@ -29,6 +29,7 @@ decides its path and two entries cannot quietly share a number.
 | [guides/](guides/readme.md) | What a returned draft is worth |
 | [evidence/](evidence/readme.md) | How this server is measured |
 | [task-skills/](task-skills/readme.md) | What an installed workflow owes the task |
+| [feedback/](feedback/readme.md) | What the backlog has to stay usable for |
 
 Each group's `readme.md` says what that group is about, and the listing at the
 foot of it is generated from the files below it by `bin/cli decisions index`, as is
@@ -89,6 +90,7 @@ the repository has moved furthest away from since. Going back to one and adding
 | 2026-08-01 | [`D-SKL-1`](task-skills/skl-1-the-order-a-task-starts-in-is-one-file.md) | The order a task starts in is one file, and the reading comes last in it | task-skills | tested |
 | 2026-07-31 | [`D-AUD-3`](audience/aud-3-the-instructions-carry-the-entry-point.md) | The instructions carry the entry point, because the tool descriptions never arrive | audience | standing |
 | 2026-07-31 | [`D-EVI-1`](evidence/evi-1-forward-evidence-comes-from-a-review.md) | Forward evidence comes from a review, not from a prompt that knows the answer | evidence | standing |
+| 2026-07-31 | [`D-FBK-1`](feedback/fbk-1-the-backlog-is-read-out-rather-than-enforced.md) | The backlog is read out rather than enforced | feedback | standing |
 | 2026-07-31 | [`D-VER-4`](versions/ver-4-a-supported-range-is-a-property-of-the-package.md) | A supported range is a property of the package, not of the checkout | versions | standing |
 | 2026-07-30 | [`D-ANS-2`](answers/ans-2-three-numbers-decide-what-a-lookup-answers.md) | Three numbers now decide what a lookup answers, and they were measured, not reasoned | answers | standing |
 | 2026-07-30 | [`D-ANS-3`](answers/ans-3-retrieval-stays-lexical-and-runtime-inspection-stays-narrow.md) | Retrieval stays lexical and runtime inspection stays narrow | answers | standing |

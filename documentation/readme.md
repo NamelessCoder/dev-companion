@@ -14,6 +14,7 @@ carries it. Both happened here before this directory existed.
 | [installation.md](installation.md) | Every client and layout the installer supports, and the configuration each one gets |
 | [working-on-the-server.md](working-on-the-server.md) | The commands this repository is kept in order by, the core checkouts, the test suite |
 | [forward-runs.md](forward-runs.md) | Running a forward review, judging it, and what to do when one stops without an error |
+| [knowledge-versions.md](knowledge-versions.md) | Writing a statement that holds for some TYPO3 versions and not others |
 
 What does **not** belong here: what must hold — that is
 [requirements/](../requirements/readme.md); what a change assumed —

@@ -112,6 +112,31 @@ behavioral evidence.
 one with a TYPO3 major in front of it, one without complete static quality
 infrastructure. Whichever plays it for the next run is named here first.
 
+## Run `REVIEW-02` again, against what its corrections changed
+
+`REVIEW-02` stands at `partial`. The maintainer of `E-EXT` read the answer and
+corrected nine things, and five of the six priorities turned out to report a
+design decision as a verified defect. Four changes came out of that on
+2026-07-31, and none of them has been in front of a session yet:
+
+- `R-DIS-16` — a repository declaring `^13.4 || ^14.3` is answered for both
+  majors, and the answer names them. Three of the nine corrections were
+  statements bound to the older major that the filter had removed.
+- `R-DIS-17` — a package below `Tests/` is a `fixture`, not the project's own.
+- `R-KNW-37` — the repository that is only the extension has its own layout
+  hint, and the project one now says which repository it is about.
+- `R-SKL-5` — the base carries the other direction of its own rule: a mechanism
+  that costs something is not a defect for costing it.
+
+The next step is one run: republish the skills in `E-EXT`, paste what
+`bin/scenarios show REVIEW-02` prints into a fresh client session there, and
+record it. Recording overwrites `scenarios/runs/REVIEW-02.json`; the run of
+2026-07-31 stays in commit 283f2c2, and the new run's notes name it. What would
+show the four changes worked is the same six priorities coming back with their
+purpose established — or three of them not being findings at all. What would
+show they did not is a session that reads the range sentence and files the
+older major's code as drift anyway.
+
 ## Add the static-quality branch to `typo3-extension-testing`
 
 This serves
@@ -121,14 +146,16 @@ it is the only one of the four whose next step can be taken today. The upgrade
 item lost its environment when `E-EXT` turned out to have no major in front of
 it, and this one gained half its evidence from the same run.
 
-That half: with a complete PHPStan and code-style setup in front of it, the
-review did not restate the tooling as work. It read the configuration and found
-two defects in it — both baselines included unconditionally under
-`reportUnmatchedIgnoredErrors: false`, so 73 suppressed v15 deprecations cannot
-go stale loudly and a new call to the same API is swallowed; and a CI matrix
-that gates unit and functional tests on PHP 8.5 while the declared floor is
-8.2. What it never did is run one of the ten commands the project declares, so
-the findings rest on reading rather than on a failing check.
+That half, as far as it goes: with a complete PHPStan and code-style setup in
+front of it, the review did not propose installing tooling that is already
+there. What it did instead was worse for this item's purposes — it read the
+suppression configuration and called the baseline a quality gate configured to
+stay quiet, when those entries are the price of supporting two majors. So the
+only finding of the six that survives its maintainer is the CI matrix gating
+unit and functional tests on PHP 8.5 while the declared floor is 8.2. It also
+never ran one of the ten commands the project declares, so even that rests on
+reading rather than on a failing check. The re-run above is what would replace
+this paragraph with evidence.
 
 The other half needs a checkout where that infrastructure is missing, and
 `/home/benji/projects/syntax` is one — php-cs-fixer and phplint, no PHPStan, no

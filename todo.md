@@ -86,15 +86,6 @@ that version, every requirement fails at once and not one of them says so.
 
 ---
 
-## Run the release note's query in `E-EXT`
-
-**Serves:** feedback/2026-07-30-174423-extension-releases-need-a-preparation-and-publication-workflow.md
-
-Verbatim, as a recorded run, before anything is written. This is the largest of
-the extension workflows and it composes the conformance, testing and
-documentation ones that the todos above still change, which is why it is behind
-them.
-
 ## Add the `typo3-extension-release` skill
 
 **Serves:** feedback/2026-07-30-174423-extension-releases-need-a-preparation-and-publication-workflow.md

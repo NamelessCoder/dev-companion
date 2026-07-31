@@ -48,3 +48,35 @@ steps not taken. Treat tag creation, pushing and registry publication as a
 separate explicitly authorized phase with confirmed repository, version and
 credentials. Add a forward scenario that fails on an artifact containing
 development files or secrets even when the checkout itself is green.
+
+## The query, re-run 2026-07-31
+
+Verbatim in `E-EXT` — `/home/benji/projects/bootstrap_package`, seven commits
+past its `16.0.0` tag — against server `8983a3c`, client `claude-code` 2.1.220,
+session `d8a3529d`, with the six skills of that revision published into the
+checkout first.
+
+**No skill activated and no tool was called.** Forty-one `Bash` calls, three
+`TodoWrite`, one `ToolSearch` — and that one selected `TodoWrite`. It is not a
+wiring accident: the server connected over stdio in 92 ms, and all six skill
+names and every tool name stood in the session's context. This client defers
+tool schemas, so reaching a tool costs one `ToolSearch` that the session never
+spent, while the skills were offered unabridged and went unused. The release was
+carried out of `git`, `composer`, `npm` and `ddev` instead: tag distance,
+`.gitattributes`, both workflows and the changelog read; the frontend build run;
+lint, CGL, PHPStan, unit and functional tests run through DDEV; `typo3/tailor`
+installed and both artifacts built.
+
+The run was stopped there, before its answer, once no skill would activate. What
+it had established by then is what the paragraph above asks a scenario for, and
+it holds in that checkout:
+
+- `git archive HEAD` honours `/.vscode export-ignore` and ships 1558 files.
+- `tailor create-artefact 16.0.0`, the path `publish.yml` takes from the full
+  tree `actions/checkout` produces, ships 1559. The two extra are
+  `.vscode/launch.json` and `.vscode/settings.json`, both tracked. Tailor
+  filters by its own `conf/ExcludeFromPackaging.php` and never reads
+  `.gitattributes`.
+
+So a green checkout hands the two registries different file sets, and nothing in
+the repository says so.

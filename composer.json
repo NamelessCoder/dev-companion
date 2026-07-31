@@ -22,6 +22,7 @@
         "sort-packages": true
     },
     "require-dev": {
+        "friendsofphp/php-cs-fixer": "^3.95",
         "phpstan/phpstan": "^2.1",
         "phpunit/phpunit": "^11.5"
     },
@@ -35,18 +36,23 @@
             "find bin -type f -print0 | xargs -0 -n1 php -l > /dev/null",
             "find src tests -name '*.php' -print0 | xargs -0 -n1 php -l > /dev/null"
         ],
+        "cgl": "php-cs-fixer fix --diff",
+        "cgl:ci": "php-cs-fixer fix --diff --dry-run",
         "stan": "phpstan analyse",
         "test": "phpunit",
         "ci": [
             "@lint",
+            "@cgl:ci",
             "@stan",
             "@test"
         ]
     },
     "scripts-descriptions": {
         "lint": "Check every PHP file for syntax errors.",
+        "cgl": "Bring every PHP file to the coding guidelines.",
+        "cgl:ci": "Report what cgl would change, and change nothing.",
         "stan": "Run the static analysis.",
         "test": "Run the test suite.",
-        "ci": "Everything CI runs: lint, static analysis, tests."
+        "ci": "Everything CI runs: lint, coding guidelines, static analysis, tests."
     }
 }

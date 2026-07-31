@@ -3,4 +3,5 @@ vendor/
 .env
 .DS_Store
 .phpunit.cache/
+.php-cs-fixer.cache
 /.checkouts/

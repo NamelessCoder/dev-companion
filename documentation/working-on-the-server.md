@@ -38,12 +38,20 @@ not where the answers come from.
 ## Tests
 
 ```bash
-composer ci      # lint, static analysis, tests — what CI runs
+composer ci      # lint, coding guidelines, static analysis, tests — what CI runs
 composer test    # phpunit only
 composer stan    # phpstan only
+composer cgl     # bring every PHP file to the guidelines; cgl:ci only reports
 ```
 
-`composer ci` lints, runs the static analysis, and runs the test suite: the
-search and ranking logic, every tool against its declared schemas and
-annotations, and the stdio entrypoint driven as a real subprocess. CI runs the
-same command on every supported PHP version.
+`composer ci` lints, checks the coding guidelines, runs the static analysis, and
+runs the test suite: the search and ranking logic, every tool against its
+declared schemas and annotations, and the stdio entrypoint driven as a real
+subprocess. CI runs the same command on every supported PHP version.
+
+The guidelines are php-cs-fixer's, configured in `.php-cs-fixer.dist.php` and
+nowhere else: PER-CS 3.0 plus the handful of rules this repository writes by —
+strict types declared, imports sorted with global classes left unimported,
+single quotes, trailing commas in multiline arrays. `cgl` rewrites the files and
+`cgl:ci` reports what it would rewrite, which is the half `ci` runs because a
+check may not change the code it is judging.

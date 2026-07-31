@@ -125,11 +125,17 @@ than renaming them.
 ## Checks
 
 ```bash
-composer ci     # lint, static analysis, tests — what CI runs
+composer ci     # lint, coding guidelines, static analysis, tests — what CI runs
 composer test   # phpunit only
 composer stan   # phpstan only
+composer cgl    # rewrite to the guidelines; cgl:ci reports and rewrites nothing
 ```
 
+- The guidelines are php-cs-fixer's own, and `.php-cs-fixer.dist.php` is where
+  they are declared: PER-CS 3.0 and the few rules on top of it this repository
+  writes by. A rule is added there when the code already follows it and the
+  fixer is what keeps it followed — not to introduce a style nobody has written
+  in yet, which is a reformatting of the whole tree wearing a rule's clothes.
 - `tests/Unit/` covers the searching, ranking, and rendering logic;
   `tests/Contract/` holds every tool to its declared schemas and annotations, on
   a hit and on a miss, and to the naming schema; `tests/Smoke/` drives

@@ -15,11 +15,20 @@ namespace Typo3CmsMcp;
  * code into this process, which is the one thing this server never does — so the
  * file is tokenised and the keys at the wanted nesting level are taken from the
  * token stream.
+ *
+ * The keys of *that* literal and of no other. A file is free to hold more than
+ * one array, and the extra ones sit at the same bracket depth as the returned
+ * one — an `Icons.php` that builds its list in a `foreach` writes
+ * `['provider' => …, 'source' => …]` once, and reading every literal at a depth
+ * reports `provider` as an icon. Where the file returns something a reader
+ * cannot resolve — a variable the loop filled — nothing is returned, because an
+ * empty list reads as "not determinable" and a wrong identifier reads as a
+ * registration.
  */
 final class PhpArray
 {
     /**
-     * The array keys at $level of the array literal in $file.
+     * The array keys at $level of the array literal $file returns.
      *
      * Level 1 is the outermost array — the icon identifiers, the module
      * identifiers — and level 2 the entries below each of them, which is where
@@ -33,16 +42,25 @@ final class PhpArray
             return [];
         }
 
+        $tokens = @token_get_all((string) file_get_contents($file));
+        $start = self::returnedLiteral($tokens);
+        if ($start === null) {
+            return [];
+        }
+
         $keys = [];
         $depth = 0;
-        $tokens = @token_get_all((string) file_get_contents($file));
-        foreach ($tokens as $index => $token) {
+        for ($index = $start; isset($tokens[$index]); ++$index) {
+            $token = $tokens[$index];
             if ($token === '[') {
                 ++$depth;
                 continue;
             }
             if ($token === ']') {
-                --$depth;
+                // The literal is closed; whatever follows it is another array.
+                if (--$depth === 0) {
+                    break;
+                }
                 continue;
             }
             if ($depth !== $level || !is_array($token) || $token[0] !== T_CONSTANT_ENCAPSED_STRING) {
@@ -57,21 +75,71 @@ final class PhpArray
     }
 
     /**
+     * The index of the `[` the file returns, or null when it returns anything
+     * else.
+     *
+     * The return that counts is the one at the top level of the file: a return
+     * inside a closure or a function belongs to that closure, and the literal
+     * next to it is not what the file is worth.
+     *
+     * @param array<int, array{0: int, 1: string, 2: int}|string> $tokens
+     */
+    private static function returnedLiteral(array $tokens): ?int
+    {
+        $braces = 0;
+        foreach ($tokens as $index => $token) {
+            // The two interpolation tokens open a brace a plain `}` closes, so
+            // counting them keeps the depth balanced across "{$a['b']}".
+            if ($token === '{' || (is_array($token) && in_array($token[0], [T_CURLY_OPEN, T_DOLLAR_OPEN_CURLY_BRACES], true))) {
+                ++$braces;
+                continue;
+            }
+            if ($token === '}') {
+                --$braces;
+                continue;
+            }
+            if ($braces !== 0 || !is_array($token) || $token[0] !== T_RETURN) {
+                continue;
+            }
+
+            $next = self::meaningful($tokens, $index);
+
+            return ($next !== null && $tokens[$next] === '[') ? $next : null;
+        }
+
+        return null;
+    }
+
+    /**
      * Whether the string at $index is a key: the next meaningful token is "=>".
      *
      * @param array<int, array{0: int, 1: string, 2: int}|string> $tokens
      */
     private static function isKey(array $tokens, int $index): bool
     {
+        $next = self::meaningful($tokens, $index);
+        $following = $next === null ? null : $tokens[$next];
+
+        return is_array($following) && $following[0] === T_DOUBLE_ARROW;
+    }
+
+    /**
+     * The index of the first token after $index that is neither whitespace nor
+     * a comment.
+     *
+     * @param array<int, array{0: int, 1: string, 2: int}|string> $tokens
+     */
+    private static function meaningful(array $tokens, int $index): ?int
+    {
         for ($next = $index + 1; isset($tokens[$next]); ++$next) {
-            $following = $tokens[$next];
-            if (is_array($following) && in_array($following[0], [T_WHITESPACE, T_COMMENT, T_DOC_COMMENT], true)) {
+            $token = $tokens[$next];
+            if (is_array($token) && in_array($token[0], [T_WHITESPACE, T_COMMENT, T_DOC_COMMENT], true)) {
                 continue;
             }
 
-            return is_array($following) && $following[0] === T_DOUBLE_ARROW;
+            return $next;
         }
 
-        return false;
+        return null;
     }
 }

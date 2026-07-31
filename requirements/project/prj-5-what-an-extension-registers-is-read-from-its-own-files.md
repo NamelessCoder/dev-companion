@@ -20,16 +20,23 @@ and defaults to `tt_content` — rather than the pointer at `tt_content` that
 says where they are registered. Each carries the template it renders through,
 read from its own TypoScript and left unknown where that says nothing, because
 a template name derived from the identifier sends the caller to a file that is
-not there. What is declared is answered; what an extension does at runtime is
-named as not covered rather than guessed. The project's Composer patches are
-part of what the project is.
+not there. A file that returns an array is read for *that* array and for no
+other literal in it, and where its list is only knowable by running the file —
+built in a `foreach`, assembled into a variable — nothing is returned rather
+than the keys of the literal lying beside it. What is declared is answered; what
+an extension does at runtime is named as not covered rather than guessed. The
+project's Composer patches are part of what the project is.
 
 **From:** an evaluation for a site with a sitepackage and its own extension,
-where the scope named the extension and nothing inside it (2026-07-29); and a
+where the scope named the extension and nothing inside it (2026-07-29); a
 session whose CType, registered with `addRecordType()` in a file of its own,
-came back as no content element at all (2026-07-30).
+came back as no content element at all (2026-07-30); and a `REVIEW-02` run
+against `georgringer/news` (2026-07-31) that was told the extension registers
+the icons `provider` and `source` — the keys of the literal its `foreach` builds
+each icon from.
 
 **Held by:** `ProjectTest::whatAnExtensionRegistersIsReadFromItsOwnFiles`,
+`ProjectTest::aRegistrationFileBuiltInALoopIsNotDeterminableRatherThanWrong`,
 `ProjectTest::theContentElementsAnExtensionAddsAreNamedRatherThanPointedAt`,
 `ProjectTest::aContentElementRegisteredWithAddRecordTypeIsFoundAsWell`,
 `ProjectTest::anExtensionTheInstallationDoesNotHaveIsAMissWithTheKeysItDoes`,

@@ -479,6 +479,58 @@ final class ProjectTest extends TestCase
     }
 
     #[Test]
+    public function aRegistrationFileBuiltInALoopIsNotDeterminableRatherThanWrong(): void
+    {
+        // The `news` run of 2026-07-31 was told the extension registers 26
+        // icons, two of which are `provider` and `source`: its Icons.php builds
+        // the list in a foreach, and the literal describing a single icon sits
+        // at the same bracket depth as the returned one. Two plausible names are
+        // worse than none — a review comparing them against
+        // Resources/Public/Icons reports two missing files nobody is missing.
+        $root = $this->composerProject();
+        $extension = $root . '/packages/my_sitepackage';
+        $this->declare(
+            $extension . '/Configuration/Icons.php',
+            <<<'PHP'
+                <?php
+                $iconList = [];
+                foreach ([
+                    'acme-event' => 'event.svg',
+                    'acme-venue' => 'venue.svg',
+                ] as $identifier => $path) {
+                    $iconList[$identifier] = [
+                        'provider' => SvgIconProvider::class,
+                        'source' => 'EXT:my_sitepackage/Resources/Public/Icons/' . $path,
+                    ];
+                }
+                return $iconList;
+                PHP
+        );
+        // The other half of the same rule: a literal beside the returned one is
+        // a different array, and its keys are not module identifiers.
+        $this->declare(
+            $extension . '/Configuration/Backend/Modules.php',
+            <<<'PHP'
+                <?php
+                $shared = ['parent' => 'web', 'access' => 'user'];
+                return [
+                    'acme_events' => $shared,
+                ];
+                PHP
+        );
+        Instance::discoverFrom($root);
+
+        $result = Tools::call('typo3_extension_scope', ['extension' => 'my_sitepackage']);
+
+        self::assertSame(
+            [],
+            $result->data['icons'],
+            'a list only running the loop would give is not determinable, and an empty answer reads as that',
+        );
+        self::assertSame(['acme_events'], $result->data['backendModules']);
+    }
+
+    #[Test]
     public function whatAnExtensionDoesNotShipIsAnswerdRatherThanLeftOut(): void
     {
         // Three forward reviews of the same site package missed that it has no

@@ -84,10 +84,10 @@ The deprecation windows are twelve months, so the outer edge is around July 2027
 Before then the only thing that has to happen is a version bump behind a release
 somebody else writes.
 
-## Name an `E-EXT`, then run REVIEW-02 in it
+## Run `REVIEW-02` in `E-EXT`
 
-This is first because everything below it waits on the same missing thing, and
-because what it would test has only ever been seen in one checkout.
+This is first because everything below it waits on this one run, and because
+what it would test has only ever been seen in one checkout.
 
 `REVIEW-01` reached `covered` on 2026-08-01 after four recorded runs, and what
 got it there is in `decisions.md`: the initialize instructions name an entry
@@ -99,36 +99,54 @@ the checkout is an extension repository rather than a project — and whether th
 three skills whose order was corrected without ever being run forward behave
 like the one that was.
 
-The blocker is the environment, not the work: **no `E-EXT` is named anywhere.**
-`scenarios/readme.md` describes it as a standalone extension repository with its
-dependencies installed, TYPO3 among them; which checkout on this machine plays
-that role has never been decided. Decide it, write it here the way `E-SITE` is
-written below, install its dependencies, then
-`bin/scenarios record REVIEW-02 claude-code`, paste what `bin/scenarios show
-REVIEW-02` prints into a fresh client session in that directory and nothing
-else, and fill in the judgments from the client transcript.
+The environment is named and prepared, and the empty run is written
+(`scenarios/runs/REVIEW-02.json`, server `82ee892`). What is left is the run
+itself: paste what `bin/scenarios show REVIEW-02` prints into a fresh client
+session in `E-EXT` and nothing else, then fill in the judgments, the skills that
+activated and the tools the session called from the client transcript. A session
+in this repository may neither activate those skills nor grade its own
+implementation as behavioral evidence.
 
-Prefer a repository that has a TYPO3 major to go up, because that makes the same
-run serve the upgrade item below. If none is available, run it in one that does
-not and record the upgrade item as still unblocked.
+`E-EXT` is a kind of checkout, and the two items below need it played by
+different ones; whichever plays it for the next run is named here first. Today
+it is `/home/benji/projects/bootstrap_package`, TYPO3 14.3.0 below
+`.build/vendor`, DDEV project `bootstrap-package`. The server is **not** a
+dependency there, so it is reached from this checkout — install and refresh the
+skills by running `php /home/benji/projects/typo3-cms-mcp/bin/typo3-cms-mcp
+install --agent=claude` from the project root, which is also what writes the
+host-php `.mcp.json`. Done once on 2026-07-31; repeat it after any skill change.
+The checkout carries a staged `composer.json` change and an untracked
+`.mcp.json` from another session, and now the generated ignore block in
+`.gitignore` — all three stay.
+
+Two things it is not, which the items below depend on:
+
+- It has **no TYPO3 major to go up** — `^13.4 || ^14.3`, and 14 is current. The
+  upgrade item stays without its environment.
+- Its **static quality infrastructure is complete**: PHPStan with a baseline,
+  php-cs-fixer, phplint, and a CI matrix that calls the project's own commands.
+  So the run measures whether the review stays quiet about a setup that is
+  already there, not what it does with one that is missing.
 
 `E-SITE` is `/home/benji/projects/site-new`; its site package is below
 `extensions/printworks_sitepackage`, TYPO3 14.3.5 under DDEV. It carries an
 existing modification to the project's `.gitignore` that belongs to another
-session and must be preserved. A forward run is a fresh MCP client session with
-the installed skills — refresh them first with
-`ddev exec php vendor/bin/typo3-cms-mcp update --agent=claude` — and a session in
-this repository may neither activate those skills nor grade its own
-implementation as behavioral evidence.
+session and must be preserved. There the server is a dependency, so the skills
+are refreshed with `ddev exec php vendor/bin/typo3-cms-mcp update
+--agent=claude`.
 
 ## Complete the extension author's multi-major upgrade workflow
 
 This serves
 `feedback/2026-07-30-173821-extension-upgrades-need-a-task-owned-workflow.md`
-and `EXT-01`, and it waits on the item above for its environment. Run `REVIEW-02`
-in an extension repository that has a major to go up, reduce the note to what the
-run demonstrates, and read `bin/scenarios contract EXT-01` for the routing that
-has to survive. Then add a thin `typo3-extension-upgrade` skill that orders
+and `EXT-01`, and it still has no environment: `E-EXT` supports `^13.4 ||
+^14.3`, so there is no major in front of it, and no other extension checkout on
+this machine is behind either. What it needs is one that is — an extension still
+declaring `^12.4` or `^13.4` alone, cloned for the purpose if none turns up.
+Name it here before starting, run `REVIEW-02`'s prompt there as a second
+recorded run, reduce the note to what that run demonstrates, and read
+`bin/scenarios contract EXT-01` for the routing that has to survive. Then add a
+thin `typo3-extension-upgrade` skill that orders
 installed changelog and scanner/deprecation evidence, official versioned
 documentation, shared-versus-version-specific implementation decisions, and a
 Composer-resolved test matrix — it starts from `skills/base.md` like every other
@@ -142,11 +160,14 @@ that hold only the behavior the run proves.
 This serves
 `feedback/2026-07-30-174423-extension-static-quality-needs-an-explicit-workflow.md`
 and `R-SKL-2`. It sits behind the two items above because the note asks for a
-run it cannot have yet. `REVIEW-02` is the run: static quality is one of the
-concerns its criteria admit, so an extension whose PHPStan and code-style
-infrastructure is incomplete is the environment to run it in — and whether the
-review raises that on its own is part of the result. Reduce the note to what it
-demonstrates. Then add an on-demand static-quality reference to
+run it cannot have yet. Static quality is one of the concerns `REVIEW-02`'s
+criteria admit, so the run in `E-EXT` answers one half of it: whether a complete
+PHPStan and code-style setup is left alone rather than restated as work. The
+other half needs a checkout where that infrastructure is missing, and
+`/home/benji/projects/syntax` is one — php-cs-fixer and phplint, no PHPStan, no
+tests, dependencies installed, TYPO3 14.3.0, DDEV. Run `REVIEW-02`'s prompt
+there once `E-EXT` has its run, and reduce the note to what the two together
+demonstrate. Then add an on-demand static-quality reference to
 `typo3-extension-testing`: inspect the existing packages, configuration,
 baselines, scripts and CI before changing any of them; resolve development
 dependencies from the extension's declared TYPO3 and PHP range; establish one

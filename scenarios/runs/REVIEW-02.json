@@ -1,0 +1,51 @@
+{
+    "scenario": "REVIEW-02",
+    "date": "2026-07-31",
+    "server": "82ee892",
+    "client": "claude-code",
+    "environment": "E-EXT",
+    "criteria": "dbedb33852e2",
+    "skills": [],
+    "toolTrace": [],
+    "outcomes": [
+        {
+            "met": null,
+            "evidence": ""
+        },
+        {
+            "met": null,
+            "evidence": ""
+        },
+        {
+            "met": null,
+            "evidence": ""
+        },
+        {
+            "met": null,
+            "evidence": ""
+        },
+        {
+            "met": null,
+            "evidence": ""
+        }
+    ],
+    "failures": [
+        {
+            "avoided": null,
+            "evidence": ""
+        },
+        {
+            "avoided": null,
+            "evidence": ""
+        },
+        {
+            "avoided": null,
+            "evidence": ""
+        },
+        {
+            "avoided": null,
+            "evidence": ""
+        }
+    ],
+    "notes": ""
+}

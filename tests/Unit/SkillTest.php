@@ -175,7 +175,7 @@ final class SkillTest extends TestCase
     }
 
     #[Test]
-    public function anEscapingFindingIsNotEstablishedUntilItsSinkIs(): void
+    public function aSecurityFindingIsNotEstablishedUntilItsSinkIs(): void
     {
         // The same REVIEW-02 run reported an editor-supplied field rendered
         // unescaped as its one finding with an active security consequence.
@@ -189,18 +189,21 @@ final class SkillTest extends TestCase
         );
 
         self::assertMatchesRegularExpression(
-            '/escaping finding is a claim about a \*\*sink\*\* rather than about a call\s+site/',
+            '/finding about a user-controlled value is a claim about a \*\*sink\*\*\s+rather than\s+about a call site/',
             $checklist,
         );
-        self::assertStringContainsString('the tag, attribute, header or', $checklist);
-        // The half that decides this case: the opt-out the finding condemned is
+        // Escaping is one sink and a query is another, so the gate is written
+        // once for both: the run that earned it condemned a template line, and
+        // a value concatenated into a statement needs the same reading.
+        self::assertStringContainsString('escaping and injection are the same claim about', $checklist);
+        // The half that decides that case: the opt-out the finding condemned is
         // on the path to the sink rather than the end of it, and it is there
         // because the sink escapes.
-        self::assertMatchesRegularExpression(
-            '/opt-out is part of the path to\s+that sink and never the end of it/',
-            $checklist,
-        );
-        self::assertStringContainsString('or report the finding as', $checklist);
+        self::assertMatchesRegularExpression('/is on the path rather than\s+at the end of it/', $checklist);
+        self::assertStringContainsString('report the finding as unverified', $checklist);
+        // The sinks themselves are a tool's to answer, so the checklist asks
+        // rather than carrying a list that goes stale in a published copy.
+        self::assertStringContainsString('`typo3_architecture_lookup` for the sinks', $checklist);
     }
 
     #[Test]

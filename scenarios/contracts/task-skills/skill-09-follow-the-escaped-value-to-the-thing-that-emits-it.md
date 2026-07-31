@@ -3,12 +3,14 @@
 **Environment:** `E-EXT`, in an extension whose detail template decodes HTML
 entities around an editor-supplied title inside a ViewHelper of its own ·
 **Contract:** `held` — `R-SKL-4`
-**Held by:** `SkillTest::anEscapingFindingIsNotEstablishedUntilItsSinkIs`,
-`SkillTest::judgmentHeavySkillsKeepTheirChecklistBesideThem`; that a review
-actually follows the value instead of stopping at the opt-out is **not
-guarded** — the test reads back the sentence the checklist writes, and a
-sentence is the kind of hold a reorganization satisfies while the behavior
-goes. This case is what measures the rest.
+**Held by:** `SkillTest::aSecurityFindingIsNotEstablishedUntilItsSinkIs`,
+`HintsTest::bothSidesOfAnInjectionQuestionReachTheSinkMethod`,
+`SkillTest::judgmentHeavySkillsKeepTheirChecklistBesideThem`; the first reads
+back the sentence the checklist writes and the second that both an escaping and
+an injection question reach the method behind it, but that a review actually
+follows the value instead of stopping at the opt-out is **not guarded** — a
+sentence and a lookup are the kind of hold a reorganization satisfies while the
+behavior goes. This case is what measures the rest.
 
 > Before we hand this extension over to a new maintainer, check whether any
 > editor-supplied value reaches the frontend unescaped. Report what you find

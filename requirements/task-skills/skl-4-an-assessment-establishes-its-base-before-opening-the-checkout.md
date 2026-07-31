@@ -25,10 +25,13 @@ not there are indistinguishable in a report that does not separate them — whic
 is why the deprecation sweep is reported when it comes back empty as well, with
 the majors it covered.
 
-A finding about escaping is held to the same distinction one surface further in:
-it is a claim about the sink, so it is not established until the tag, attribute,
-header or API that emits the value is named, and an escaping opt-out on the way
-there is part of the path rather than the end of it.
+A finding about a user-controlled value is held to the same distinction one
+surface further in: it is a claim about the sink, so it is not established until
+the tag, attribute, header, statement or process the value ends up in is named
+and read, and an opt-out or a quoting helper on the way there is part of the
+path rather than the end of it. Escaping and injection are that same claim about
+different sinks, so the gate is written once for both and the sinks themselves
+are the architecture hints' to answer.
 
 **From:** the second `REVIEW-01` run (2026-07-31), which followed two of the
 conformance skill's seven evidence steps, read the site package's three XLF
@@ -58,7 +61,8 @@ ViewHelper that confirmed what it already believed.
 
 **Held by:** `SkillTest::theBaseIsEstablishedBeforeTheCheckoutIsOpened`,
 `SkillTest::anAssessmentAsksBeforeItJudgesAndSaysWhatItDidNotAsk`,
-`SkillTest::anEscapingFindingIsNotEstablishedUntilItsSinkIs`,
+`SkillTest::aSecurityFindingIsNotEstablishedUntilItsSinkIs`,
+`HintsTest::bothSidesOfAnInjectionQuestionReachTheSinkMethod`,
 `SkillTest::theDeprecationSweepRunsFromTheExtensionsSurfaceAndIsReportedWhenItFindsNothing`,
 `SkillTest::theCheckLayerIsMeasuredAgainstACompleteOneRatherThanWhatIsDeclared`,
 `REVIEW-01`, `REVIEW-02`, `SKILL-09` — the last of which is what measures the

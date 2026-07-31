@@ -176,6 +176,37 @@ final class HintsTest extends TestCase
         self::assertContains('language-files', array_column($result['matchedHints'], 'id'));
     }
 
+    /**
+     * The two sinks arrive as different words — one caller asks about output
+     * escaping, the other about a query — and what they need is the same
+     * reading. A hint reachable only through the phrasing it was written for
+     * would leave the second caller with the conventions of its surface and no
+     * method.
+     */
+    #[Test]
+    #[DataProvider('securityQueries')]
+    public function bothSidesOfAnInjectionQuestionReachTheSinkMethod(string $task): void
+    {
+        $result = Tools::call('typo3_architecture_lookup', [
+            'task' => $task,
+            'targetVersion' => '14',
+        ]);
+
+        self::assertStringContainsString('claim about its sink', $result->text);
+        self::assertStringContainsString('does this hop emit the value, or hand it to something else', $result->text);
+        self::assertStringContainsString('createNamedParameter()', $result->text);
+        self::assertStringContainsString('returns nothing at all', $result->text);
+    }
+
+    /** @return array<string, array{0: string}> */
+    public static function securityQueries(): array
+    {
+        return [
+            'escaping' => ['review an extension for unescaped user input and raw output in templates'],
+            'sql' => ['review an extension for sql injection in its repository query building'],
+        ];
+    }
+
     #[Test]
     public function aNewLabelNamesTheSourceLanguageAndWhereItsTranslationGoes(): void
     {

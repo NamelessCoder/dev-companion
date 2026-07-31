@@ -14,7 +14,9 @@ extension audit. Absence of an optional subsystem is not a defect.
 - Rendering: site sets, TypoScript, TSconfig, Fluid roots and namespaces,
   templates, translations, and public assets.
 - Security: authorization boundaries, state-changing requests, output-context
-  escaping, raw rendering, user-controlled attributes/URLs, and secret exposure.
+  escaping, raw rendering, query construction, user-controlled attributes, URLs
+  and paths, and secret exposure. Every one of them is a value and a sink, and
+  the finding gate below is how one is established.
 - Quality: tests, the check layer, documentation, deprecations, and upgrade
   readiness.
 
@@ -100,13 +102,18 @@ A finding needs a concrete location, observed evidence, applicable rule or
 documentation, consequence, remediation, and relevant project check. Otherwise
 record it as a question or unverified category, not a violation.
 
-An escaping finding is a claim about a **sink** rather than about a call site,
-so it is not established until the sink is named: the tag, attribute, header or
-API the value is emitted through. An escaping opt-out is part of the path to
-that sink and never the end of it — a ViewHelper that hands its rendered
-children to another component emits nothing, and where the sink escapes on its
-own, the opt-out is what keeps the value from being encoded twice. Follow the
-value into the installed package that emits it, or report the finding as
-unverified. A security verdict is the expensive kind to get wrong: it has to be
-disproved before it can be dismissed, which costs the maintainer exactly the
-reading the review skipped.
+A finding about a user-controlled value is a claim about a **sink** rather than
+about a call site, and escaping and injection are the same claim about
+different sinks: the tag or attribute the value is printed into, the statement
+it is executed in, the header, path or process it ends up in. It is not
+established until that sink is named and the code at it is read. Everything
+before it is the path, and an escaping opt-out, a quoting helper or a ViewHelper
+that hands its rendered children to another component is on the path rather than
+at the end of it — where the sink protects the value on its own, that opt-out is
+what keeps it from being encoded or quoted twice. Ask
+`typo3_architecture_lookup` for the sinks of the surface in hand, follow the
+value into the installed package that emits or executes it, and where the path
+can be rendered or run, let the repository's own test settle it. Otherwise
+report the finding as unverified and say which class went unread. A security
+verdict is the expensive kind to get wrong: it has to be disproved before it can
+be dismissed, which costs the maintainer exactly the reading the review skipped.

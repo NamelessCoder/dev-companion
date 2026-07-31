@@ -15,3 +15,4 @@ earns one.
 | --- | --- | --- | --- |
 | 2026-07-31 | [`D-FBK-1`](fbk-1-the-backlog-is-read-out-rather-than-enforced.md) | The backlog is read out rather than enforced | standing |
 | 2026-07-31 | [`D-FBK-2`](fbk-2-the-order-of-the-work-is-declared-not-inferred.md) | The order of the work is declared, not inferred | standing |
+| 2026-07-31 | [`D-FBK-3`](fbk-3-a-session-is-handed-one-todo-not-the-file.md) | A session is handed one todo, not the file | standing |

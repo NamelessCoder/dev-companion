@@ -49,3 +49,9 @@ whether to declare it or derive it.
   a heading thins out while the `Serves:` line grows, which is the same file
   becoming a fourth backlog by another route: what a session cannot start from
   is a list of ids.
+
+**Since then** the one line became a head of several, and the three kinds became
+two: a todo that recurs carries `**Every:**` and a todo that does not is the
+queue. What this entry settled is unchanged and is why that was cheap — the kind
+was declared rather than derived, so making it a field was an edit rather than a
+rewrite. See [`D-FBK-3`](fbk-3-a-session-is-handed-one-todo-not-the-file.md).

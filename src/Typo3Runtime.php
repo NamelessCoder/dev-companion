@@ -25,10 +25,12 @@ namespace Typo3CmsMcp;
  * - **unreachable** — no console could be resolved, no interpreter derived, or
  *   the boot failed. Also a reason, never silence.
  *
- * The reading is done once per session and only a **full** one is remembered.
- * A caller that reads "the DDEV project is stopped" and starts it must be able
- * to ask again in the same session — the same rule `Typo3Cli::resolve()` and
- * `Instance::describe()` follow.
+ * The reading is done once and then kept, because it costs a boot and one
+ * reading answers every topic. A reading that is not full is kept only for as
+ * long as the console it was taken through stays the same: a caller that reads
+ * "the DDEV project is stopped" and starts it is resolved through DDEV
+ * afterwards, and asks again — which is the rule `Typo3Cli::resolve()` and
+ * `Instance::describe()` follow, applied to the thing that changes here.
  */
 final class Typo3Runtime
 {
@@ -44,6 +46,9 @@ final class Typo3Runtime
     /** @var array{state: string, reason: string, topics: array<string, mixed>}|null */
     private static ?array $answer = null;
 
+    /** The console this reading was taken through; null while there is none. */
+    private static ?string $through = null;
+
     /**
      * What the running installation reports, or why it did not.
      *
@@ -51,16 +56,22 @@ final class Typo3Runtime
      */
     public static function ask(): array
     {
-        if (self::$answer !== null) {
+        $through = Typo3Cli::resolve()['via'] ?? '';
+        // A full reading is the installation and is kept. One that is not gets
+        // kept too — an answer costs a boot, and four topics are read out of
+        // one answer — but only for as long as the way in stays the same: the
+        // caller that reads "the DDEV project is stopped", starts it, and asks
+        // again is resolved through DDEV rather than through this machine's PHP,
+        // and that is the reading worth taking twice. What this does not catch
+        // is a system configured mid-session, which keeps its failsafe reading
+        // until the server is restarted.
+        if (self::$answer !== null && (self::$answer['state'] === self::STATE_FULL || self::$through === $through)) {
             return self::$answer;
         }
 
-        $answer = self::read();
-        if ($answer['state'] === self::STATE_FULL) {
-            self::$answer = $answer;
-        }
+        self::$through = $through;
 
-        return $answer;
+        return self::$answer = self::read();
     }
 
     /**
@@ -89,6 +100,7 @@ final class Typo3Runtime
     public static function forget(): void
     {
         self::$answer = null;
+        self::$through = null;
     }
 
     /**

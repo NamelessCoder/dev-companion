@@ -10,6 +10,10 @@ of surfaces it will cover — before it opens the checkout, and derives that
 list from the audit surfaces rather than from the file tree: a surface with no
 files is invisible to a listing, and its absence is usually the finding.**
 
+A surface stated as what the repository declares is the file tree in another
+form and fails the same way, so a surface that is a layer of checks names what
+a complete one covers and is answered entry by entry.
+
 It asks the owner of a surface's conventions before forming a view of it, not
 afterwards to confirm one, and does not mistake a runtime lookup for that
 question — what is registered and what a path resolves to are facts about the
@@ -31,7 +35,14 @@ the file tree and spent five minutes reading it before calling
 translation domain with `typo3_translation_domain_lookup` and filed
 translations under "assessed and clean" with the German `source-language`
 header on screen, while the extension's absent `Documentation/` appeared
-neither as a finding nor as unassessed.
+neither as a finding nor as unassessed. Extended by two `REVIEW-02` runs in the
+same extension checkout on 2026-07-31, at 12:21 and at 13:32, neither of which
+produced a finding about static analysis in a repository with no analyser, no
+analysis step and no baseline — the second having run both declared checks and
+reported their ceiling instead, because the quality surface asked what the
+repository declares rather than what a complete check layer covers.
 
 **Held by:** `SkillTest::theBaseIsEstablishedBeforeTheCheckoutIsOpened`,
-`SkillTest::anAssessmentAsksBeforeItJudgesAndSaysWhatItDidNotAsk`, `REVIEW-01`
+`SkillTest::anAssessmentAsksBeforeItJudgesAndSaysWhatItDidNotAsk`,
+`SkillTest::theCheckLayerIsMeasuredAgainstACompleteOneRatherThanWhatIsDeclared`,
+`REVIEW-01`, `REVIEW-02`

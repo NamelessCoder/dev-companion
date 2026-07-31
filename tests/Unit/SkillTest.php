@@ -488,6 +488,68 @@ final class SkillTest extends TestCase
     }
 
     #[Test]
+    public function theCheckLayerIsMeasuredAgainstACompleteOneRatherThanWhatIsDeclared(): void
+    {
+        // The file-tree trap again, one surface further in. Two REVIEW-02 runs
+        // in a checkout with no analyser, no analysis step and no baseline
+        // produced no finding about static analysis, and the second of them had
+        // run both declared checks and reported their ceiling: the surface read
+        // "declared validation commands", so what the repository does not
+        // declare was not a surface and its absence could not be a finding.
+        $checklist = (string) file_get_contents(
+            Paths::root() . '/skills/typo3-extension-conformance/references/checklist.md',
+        );
+
+        self::assertStringNotContainsString('declared validation commands', $checklist);
+        self::assertStringContainsString('## The check layer', $checklist);
+        self::assertMatchesRegularExpression(
+            '/commands a repository declares are where this surface is read, never what\s+it is/',
+            $checklist,
+        );
+
+        // The expectation is the same one the skill that establishes a missing
+        // check measures against, named by what each check establishes rather
+        // than by the tool behind it.
+        foreach ([
+            'Syntax',
+            'Static analysis',
+            'Coding standards',
+            'Manifests and dependencies',
+            'Shipped configuration and data',
+            'Shipped frontend assets',
+        ] as $check) {
+            self::assertStringContainsString(
+                '- **' . $check . '**',
+                $checklist,
+                $check . ' is not part of what a complete check layer covers',
+            );
+        }
+
+        // What decides whether a check applies is what the package ships, not
+        // what it declares a command for — otherwise the surface is back where
+        // it was, and the missing one reads as an optional subsystem the
+        // opening line already excuses.
+        self::assertMatchesRegularExpression(
+            '/no command covers is a gap in the layer rather than an optional subsystem, and\s+that absence is the finding/',
+            $checklist,
+        );
+        self::assertStringContainsString('the ceiling of what', $checklist);
+
+        // The routing b0eded4 established stays: the review names the gap and
+        // hands it on. The tool per check is not repeated here — it is one
+        // package name in two published skills otherwise, and the review does
+        // not need it to see that a check is missing.
+        self::assertStringContainsString('`typo3-extension-testing`', $checklist);
+        foreach (['phpstan', 'php-cs-fixer', 'eslint', 'stylelint'] as $tool) {
+            self::assertStringNotContainsString(
+                $tool,
+                $checklist,
+                $tool . ' is named where the checklist only has to see the check is missing',
+            );
+        }
+    }
+
+    #[Test]
     public function contractCasesExerciseTaskSkillBehavior(): void
     {
         $cases = Scenarios::contracts();

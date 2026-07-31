@@ -18,6 +18,23 @@ final class StdioServerTest extends TestCase
     /** The newest revision the bundled SDK speaks. */
     private const PROTOCOL_VERSION = '2025-11-25';
 
+    private ?string $temporaryRoot = null;
+
+    protected function tearDown(): void
+    {
+        if ($this->temporaryRoot !== null && is_dir($this->temporaryRoot)) {
+            $files = new \RecursiveIteratorIterator(
+                new \RecursiveDirectoryIterator($this->temporaryRoot, \FilesystemIterator::SKIP_DOTS),
+                \RecursiveIteratorIterator::CHILD_FIRST
+            );
+            foreach ($files as $file) {
+                $file->isDir() ? rmdir($file->getPathname()) : unlink($file->getPathname());
+            }
+            rmdir($this->temporaryRoot);
+        }
+        $this->temporaryRoot = null;
+    }
+
     #[Test]
     public function theServerAnnouncesItselfWithItsBoundary(): void
     {
@@ -134,6 +151,83 @@ final class StdioServerTest extends TestCase
         $response = $this->session([$this->request(2, 'resources/read', ['uri' => 'typo3://core/nope'])])[2];
 
         self::assertArrayHasKey('error', $response);
+    }
+
+    /**
+     * A client writes its next request while the server is still working on the
+     * last one. Where that work is a console command, the command inherits the
+     * server's stdin unless it is given one of its own — and `ddev exec` reads
+     * stdin to the end, so the queued request is eaten and the session hangs on
+     * an answer that can never come. Both runs of `REVIEW-02` in an extension
+     * checkout died here, 24 minutes apart, with no error on either side.
+     */
+    #[Test]
+    public function aRequestBehindOneThatRunsTheConsoleIsStillAnswered(): void
+    {
+        $root = $this->installationWithADrainingConsole();
+        $process = proc_open(
+            [PHP_BINARY, Paths::root() . '/bin/typo3-cms-mcp'],
+            [0 => ['pipe', 'r'], 1 => ['pipe', 'w'], 2 => ['pipe', 'w']],
+            $pipes,
+            $root,
+            getenv() + ['TYPO3_MCP_CONSOLE' => PHP_BINARY . ' ' . $root . '/console.php']
+        );
+        self::assertIsResource($process);
+
+        fwrite($pipes[0], implode("\n", [
+            $this->request(1, 'initialize', [
+                'protocolVersion' => self::PROTOCOL_VERSION,
+                'capabilities' => new \stdClass(),
+                'clientInfo' => ['name' => 'phpunit', 'version' => '1'],
+            ]),
+            (string) json_encode(['jsonrpc' => '2.0', 'method' => 'notifications/initialized']),
+            $this->request(2, 'tools/call', ['name' => 'typo3_fluid_namespace_list', 'arguments' => new \stdClass()]),
+        ]) . "\n");
+        // Late enough that the console command is running, which is the only
+        // moment this can go wrong: written earlier the line sits in the
+        // server's own read buffer, where no child can reach it.
+        usleep(200_000);
+        fwrite($pipes[0], $this->request(3, 'tools/call', ['name' => 'typo3_server_scope', 'arguments' => new \stdClass()]) . "\n");
+        fclose($pipes[0]);
+
+        $stdout = (string) stream_get_contents($pipes[1]);
+        fclose($pipes[1]);
+        fclose($pipes[2]);
+        proc_close($process);
+
+        $answered = [];
+        foreach (explode("\n", trim($stdout)) as $line) {
+            $decoded = json_decode(trim($line), true);
+            if (is_array($decoded) && isset($decoded['id'])) {
+                $answered[] = $decoded['id'];
+            }
+        }
+
+        self::assertContains(2, $answered, 'the console command itself went unanswered');
+        self::assertContains(3, $answered, 'the console command swallowed the request queued behind it');
+    }
+
+    /**
+     * An installation whose console takes a moment and then reads its stdin to
+     * the end, the way `ddev exec` does.
+     */
+    private function installationWithADrainingConsole(): string
+    {
+        $root = sys_get_temp_dir() . '/typo3-cms-mcp-stdio-' . bin2hex(random_bytes(6));
+        $this->temporaryRoot = $root;
+        mkdir($root . '/typo3/sysext/core', 0o777, true);
+        file_put_contents($root . '/composer.json', (string) json_encode([
+            'name' => 'typo3/cms',
+            'type' => 'typo3-cms-core',
+        ], JSON_THROW_ON_ERROR));
+        file_put_contents($root . '/typo3/sysext/core/composer.json', (string) json_encode([
+            'name' => 'typo3/cms-core',
+            'type' => 'typo3-cms-framework',
+            'extra' => ['typo3/cms' => ['extension-key' => 'core']],
+        ], JSON_THROW_ON_ERROR));
+        file_put_contents($root . '/console.php', "<?php\nusleep(400000);\nstream_get_contents(STDIN);\necho '[]';\n");
+
+        return $root;
     }
 
     /**

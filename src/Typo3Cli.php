@@ -575,12 +575,19 @@ final class Typo3Cli
      */
     private static function execute(array $command, string $workingDirectory): array
     {
-        $descriptors = [1 => ['pipe', 'w'], 2 => ['pipe', 'w']];
+        // The child gets an stdin of its own, closed immediately so it reads
+        // EOF. Left out of the descriptors it would inherit this process's
+        // stdin, which on the stdio server is the client's JSON-RPC stream: a
+        // request written while the console command runs is then read by the
+        // console command, and the client waits forever for an answer to a
+        // request the server never saw.
+        $descriptors = [0 => ['pipe', 'r'], 1 => ['pipe', 'w'], 2 => ['pipe', 'w']];
         $process = @proc_open($command, $descriptors, $pipes, $workingDirectory, null);
         if (!is_resource($process)) {
             return ['ok' => false, 'exitCode' => -1, 'output' => '', 'error' => 'could not start ' . $command[0]];
         }
 
+        fclose($pipes[0]);
         stream_set_blocking($pipes[1], false);
         stream_set_blocking($pipes[2], false);
 

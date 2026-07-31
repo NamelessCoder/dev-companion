@@ -220,12 +220,16 @@ final class Feedback
             return null;
         }
 
-        $descriptors = [1 => ['pipe', 'w'], 2 => ['pipe', 'w']];
+        // stdin is closed for the child rather than inherited, for the reason
+        // Typo3Cli::execute() states: this runs while the server is answering a
+        // client, and the client's next request is sitting in that stdin.
+        $descriptors = [0 => ['pipe', 'r'], 1 => ['pipe', 'w'], 2 => ['pipe', 'w']];
         $process = @proc_open(array_merge(['git'], $command), $descriptors, $pipes, $workingDirectory, null);
         if (!is_resource($process)) {
             return null;
         }
 
+        fclose($pipes[0]);
         $output = (string) stream_get_contents($pipes[1]);
         fclose($pipes[1]);
         fclose($pipes[2]);

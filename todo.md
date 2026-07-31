@@ -109,34 +109,9 @@ behavioral evidence.
   `REVIEW-02` ran here twice on 2026-07-31, `partial` at 02:55 and `covered` at
   08:15 after the corrections that run earned.
 
-`E-EXT` is a kind, and two of the items below need it played by other checkouts
-— one with a TYPO3 major in front of it, one without complete static quality
+`E-EXT` is a kind, and the two items below need it played by other checkouts —
+one with a TYPO3 major in front of it, one without complete static quality
 infrastructure. Whichever plays it for the next run is named here first.
-
-## Make a caller-stated major say what it left out
-
-It is first because it is the smallest, because the run that just finished is
-what found it, and because it costs a session nothing to carry: the item below
-it needs a checkout named as `E-EXT` before its own step can start.
-
-This serves `R-DIS-16`, which shipped on 2026-07-31 and is held by three unit
-tests — and which the `covered` run of `REVIEW-02` that afternoon never touched.
-The session stated `targetVersion: "14.3"` itself, in `typo3_task_guide` and in
-three of its four `typo3_architecture_lookup` calls, and a stated version still
-wins and still narrows to one major. So the answer was filtered to 14 exactly as
-it had been in the run that failed, and what carried 13.4 through anyway was
-`extension-repository-layout`, which is bound to no version at all. The widened
-default is real, tested and, so far, unreached.
-
-The next step is small and it is where the narrowing happens: when a caller
-states one major and the repository declares more, the answer says so — the
-majors the repository covers, which one this answer was composed for, and that
-statements bound to the others were left out. Today it reports `targetVersion`
-and `targetVersions` identically in both cases, so nothing distinguishes «14 is
-all there is» from «14 is what you asked for». `Versions` already computes both
-sides; the change is in what `Tools` puts in the answer and one test beside the
-three that exist. Then a session that names its own version still learns the
-range exists, which is the only path by which `R-DIS-16` reaches a forward run.
 
 ## Add the static-quality branch to `typo3-extension-testing`
 

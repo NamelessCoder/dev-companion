@@ -93,18 +93,21 @@ that version, every requirement fails at once and not one of them says so.
 
 ---
 
-## Settle `R-AUD-2` against `META-03`
+## Decide the audience per path, and let the answer say it cannot
 
 **Serves:** R-AUD-2
 
-`bin/cli scenarios contract META-03` asks for two paths of different audience in
-one session and names the unmet half outright: that the two stay apart is not
-guarded. Read `Scope` against that case and settle which of two things is true —
-the per-path decision already exists and only the "the audience is uncertain"
-answer is missing, or nothing combines the signals at all. The first is a
-wording change with a test behind it; the second is a feature, and `D-SCO-6`
-already names the flag it would rename (`outsideCore` → what it actually
-decides).
+`Scope::isOutsideCore()` folds every path into one string and returns one
+boolean, so the two paths of `META-03` get one verdict and the extension one is
+silently handed the core's — `D-SCO-7` has the measurement and rules the cheap
+answers out. Make the path the unit: return the audience of each path instead of
+a boolean for the call, with a third value for the case `R-AUD-2` names, and
+rename `outsideCore` to what it then decides — the rename `D-SCO-6` predicted.
+`typo3_architecture_lookup` and `typo3_test_run_guide` are the two tools that can
+receive two paths at once and the two whose payloads then have to split;
+`typo3_task_guide` takes one `area` string and needs a way to be asked about
+several before it can be part of this. Finish with the test `META-03` names as
+missing: two paths of different audience in one call stay apart.
 
 ## Try `R-AUD-1` against the test written for it
 

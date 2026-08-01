@@ -359,7 +359,6 @@ grep for.
 
 ## Commits
 
-- Work directly on `main`; no feature branches.
 - Split changes into small, single-purpose commits and commit as soon as each
   part is verified.
 - Only commit the files you changed yourself in this session. The working tree

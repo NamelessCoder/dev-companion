@@ -500,6 +500,58 @@ they are; `audiences` is the addition. It sits at the end of the queue because
 the todo it comes out of named it as out of its own scope, which makes it new
 work rather than the half that was left.
 
+## Decide how much of the corpus is judged at a time
+
+**Serves:** decisions/, documentation/
+
+`bin/cli feedback next` hands over five and `D-FBK-5` set that number.
+[documentation/feedback/judging.md](documentation/feedback/judging.md) was
+drafted for one per run, in a loop that ends when nothing is unjudged. The draft
+is right that `D-FBK-5` named this outcome as its own **Wrong if**: it was taken
+against 56 open feedback and 38 queued items, and later the same day there were
+69 and 33. The queue moved by five, the pile by thirteen. One day is a direction
+rather than a proof, and the reversal follows the decision's own reasoning
+rather than overruling it.
+
+Three things the draft proposed and this repository does not have. `bin/cli
+feedback next` hands over **one**, the oldest with no answer, and exits nonzero
+while any remain. A **journal** carries one line per feedback — date, ladder
+step, evidence, outcome. And a **skip** lasts for one pass, is written down
+nowhere, and is kept apart from a state.
+
+The journal is what a portion of one costs: no run ever sees two feedback, so
+the two cases a single one cannot state — one that corrects three earlier ones,
+the same gap reported by several sessions — are visible only in a list of
+answers.
+
+The step is the question, not the build: whether the portion goes to one, and
+whether the journal is worth a file of its own or the commit is enough. Ask
+before writing code — the answer decides whether `D-FBK-5` is corrected in
+place, and `R-FBK-7` holds the current shape.
+
+## Split todo.md into one file per todo
+
+**Serves:** documentation/
+
+The judging draft argued this and it was left open there. `todo.md` is the last
+shared log in a repository that solved the same problem three times: `feedback/`,
+`requirements/` and `decisions/` are one file per thing. It is 30 kB holding 33
+queued items, so finishing a todo means loading all of it to delete a paragraph,
+at the end of a run when there is least room for exactly that. It also makes two
+things impossible — several runs adding a todo each without writing the same
+file, and a state a directory could carry as a field.
+
+The draft's shape was `todos/`, one file per todo, with the order in a small
+file of its own rather than in the positions of paragraphs, and two states
+beside the queue — `waiting` for blocked on an answer only the maintainer can
+give, carrying the question, and `review` for built and waiting to be accepted.
+Today a blocked todo goes to the end of the queue, where it looks like the
+lowest priority in the repository while it is actually waiting for a person.
+
+This is a rewrite of `Todo`, `bin/cli next`, `bin/cli todo` and `TodoTest`, so
+it is asked before it is started and it sits behind the question above, which
+may change what a todo has to carry.
+
 ## Which checkout plays which environment
 
 **Not an item.**

@@ -29,11 +29,12 @@ queries, seven reached nothing, two of them the `dependency-injection-services`
 hint that names the symptom outright.
 
 **Held by:**
-`HintsTest::aHintIsReachedByTheSymptomItDescribesAndNotOnlyByItsKeywords`
-(eight queries that reached nothing before),
-`HintsTest::aQueryTheCorpusHasNoAnswerForStillMisses`,
-`HintsTest::theCuratedVocabularyStillDecidesWhereItWasWritten` — and those
-eight queries are a tripwire rather than a measurement, so `bin/cli hints coverage`
-is what says how much of the corpus is reachable at all: which hints their own
-title does not reach, which no scenario prompt reaches, and which prompts reach
-nothing.
+`HintsTest::theSweepTheMatcherWasMeasuredOnStillAnswersTheSameWay` — the
+measurement itself, both halves of it: the queries that reached nothing before
+and the two the corpus has no answer for, which is what says the matcher did
+not simply start answering everything. `HintsTest::theCuratedVocabularyStillDecidesWhereItWasWritten`
+holds the ranking the sweep only holds the membership of.
+
+A sweep is still a sample, so `bin/cli hints coverage` is what says how much of
+the corpus is reachable at all: which hints their own title does not reach,
+which no scenario prompt reaches, and which prompts reach nothing.

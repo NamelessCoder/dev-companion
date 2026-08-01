@@ -103,7 +103,7 @@ the repository has moved furthest away from since. Going back to one and adding
 | 2026-07-31 | [`D-FBK-3`](feedback/fbk-3-a-session-is-handed-one-todo-not-the-file.md) | A session is handed one todo, not the file | feedback | corrected |
 | 2026-07-31 | [`D-FBK-4`](feedback/fbk-4-the-model-is-asked-because-nothing-else-can-say-it.md) | The model is asked, because nothing else here can say it | feedback | standing |
 | 2026-07-31 | [`D-VER-4`](versions/ver-4-a-supported-range-is-a-property-of-the-package.md) | A supported range is a property of the package, not of the checkout | versions | standing |
-| 2026-07-30 | [`D-ANS-2`](answers/ans-2-three-numbers-decide-what-a-lookup-answers.md) | Three numbers now decide what a lookup answers, and they were measured, not reasoned | answers | standing |
+| 2026-07-30 | [`D-ANS-2`](answers/ans-2-three-numbers-decide-what-a-lookup-answers.md) | Three numbers now decide what a lookup answers, and they were measured, not reasoned | answers | tested |
 | 2026-07-30 | [`D-ANS-3`](answers/ans-3-retrieval-stays-lexical-and-runtime-inspection-stays-narrow.md) | Retrieval stays lexical and runtime inspection stays narrow | answers | standing |
 | 2026-07-30 | [`D-CAT-3`](catalog/cat-3-the-component-index-is-curated-its-contract-comes-from-the-installation.md) | The component index is curated; its contract comes from the installation | catalog | standing |
 | 2026-07-30 | [`D-KNW-3`](knowledge/knw-3-provenance-is-not-the-third-spelling-of-binding.md) | `provenance` is not the third spelling of `binding`, and stays | knowledge | standing |

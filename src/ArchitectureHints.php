@@ -73,14 +73,36 @@ final class ArchitectureHints
     /**
      * Hint length that still counts for what its terms say.
      *
-     * The mean hint body, so the ordinary hint is undamped and the outliers are
-     * what this corrects — and they are why it is needed: hint bodies are
-     * uncapped and differ by more than twenty times, from thirty words to over
-     * a thousand. Without it the longest hint in the corpus answered "file
-     * upload storage configuration" at full confidence, because a text that
-     * long contains every one of those words somewhere.
+     * It was the mean hint body, so the ordinary hint is undamped and the
+     * outliers are what this corrects — and they are why it is needed: hint
+     * bodies are uncapped and differ by more than twenty times, from thirty
+     * words to over a thousand. Without it the longest hint in the corpus
+     * answered "file upload storage configuration" at full confidence, because
+     * a text that long contains every one of those words somewhere.
+     *
+     * The corpus has since grown past it and the number stayed, because the
+     * sweep it came off says it should: re-measured at a mean of 266, recall is
+     * whole anywhere from 120 to 320 and the hints returned for it climb the
+     * whole way, so the low end of the range is the precise one. It is a floor
+     * the ordinary hint sits above now rather than the mean it was picked as,
+     * and MAX_MEAN_BODY_WORDS is what says how far that may go.
      */
-    private const UNDILUTED_WORDS = 200;
+    public const UNDILUTED_WORDS = 200;
+
+    /**
+     * How long the mean hint body may get before UNDILUTED_WORDS stops holding.
+     *
+     * Not a property of the corpus but of the two together, and measured the
+     * same way: above a mean of 320 words, «how do I write a good sonnet» is
+     * answered — by `installation-upgrade`, which is long enough to contain it.
+     * That is the failure the dilution weight exists to prevent, so the ceiling
+     * sits below it with the margin the last growth spurt took.
+     *
+     * Nothing reads it at answer time. `bin/cli hints coverage` reports against
+     * it and `HintsTest` fails on it, and when it does the fix is to re-run the
+     * sweep and pick the constant again — not to raise this number.
+     */
+    public const MAX_MEAN_BODY_WORDS = 300;
 
     /**
      * @param int|array<int, int>|null $target
@@ -114,6 +136,25 @@ final class ArchitectureHints
         }
 
         return self::forVersion($hints, $target);
+    }
+
+    /**
+     * What every hint's body weighs, in words, by id.
+     *
+     * The length the dilution weight is read against, and the same length it is
+     * applied to at answer time: the whole body is one field, so the number a
+     * report prints and the number the matcher damps by are the same number.
+     *
+     * @return array<string, int>
+     */
+    public static function bodyWords(): array
+    {
+        $words = [];
+        foreach (self::load() as $hint) {
+            $words[$hint['id']] = str_word_count(implode(' ', array_column($hint['hints'], 'text')));
+        }
+
+        return $words;
     }
 
     /**

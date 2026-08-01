@@ -146,25 +146,34 @@ final class Hint implements Subject
         printf("\nHints no scenario prompt reaches (%d of %d)\n", count($never), count($hints));
         print $never === [] ? "  none\n" : '  ' . implode("\n  ", $never) . "\n";
 
-        // The tripwire D-ANS-2 asks for. The matcher discounts a term found in
-        // a body longer than the corpus's ordinary one, and 200 words is what
-        // "ordinary" was measured at. A corpus whose mean has walked away from that
-        // is a corpus this constant no longer describes.
-        $lengths = array_map(
-            static fn(array $hint): int => str_word_count(implode(' ', array_column($hint['hints'], 'text'))),
-            $hints,
-        );
+        // The tripwire D-ANS-2 asks for. The matcher discounts a term found in a
+        // body longer than the corpus's ordinary one, and the reference is what
+        // "ordinary" was measured at. The mean has since grown past it, which is
+        // not itself the failure — the reference is a floor now rather than the
+        // mean. The headroom is the number to read: at MAX_MEAN_BODY_WORDS the
+        // corpus is close to the length at which a query it has no answer for
+        // gets one anyway, and the constant has to be measured again.
+        $lengths = array_values(ArchitectureHints::bodyWords());
         sort($lengths);
+        $mean = (int) round(array_sum($lengths) / max(1, count($lengths)));
+        $reference = ArchitectureHints::UNDILUTED_WORDS;
         printf(
-            "\nHint body length vs. the matcher's 200-word dilution reference\n  mean %d, median %d, longest %d, over the reference: %d of %d\n",
-            (int) round(array_sum($lengths) / max(1, count($lengths))),
+            "\nHint body length vs. the matcher's %d-word dilution reference\n"
+            . "  mean %d, median %d, longest %d, over the reference: %d of %d\n"
+            . "  %d words of headroom before the reference has to be measured again (ceiling %d)\n",
+            $reference,
+            $mean,
             $lengths[intdiv(count($lengths), 2)] ?? 0,
             max($lengths),
-            count(array_filter($lengths, static fn(int $n): bool => $n > 200)),
+            count(array_filter($lengths, static fn(int $n): bool => $n > $reference)),
             count($lengths),
+            ArchitectureHints::MAX_MEAN_BODY_WORDS - $mean,
+            ArchitectureHints::MAX_MEAN_BODY_WORDS,
         );
 
-        return $unreachable === [] && $silent === [] && $never === [] ? 0 : 1;
+        return $unreachable === [] && $silent === [] && $never === [] && $mean <= ArchitectureHints::MAX_MEAN_BODY_WORDS
+            ? 0
+            : 1;
     }
 
     /** @return array<int, string> */

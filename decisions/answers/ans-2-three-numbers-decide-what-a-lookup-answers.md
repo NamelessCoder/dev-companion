@@ -1,7 +1,7 @@
 ---
 id: D-ANS-2
 date: 2026-07-30
-status: standing
+status: tested
 ---
 
 # D-ANS-2 — Three numbers now decide what a lookup answers, and they were measured, not reasoned
@@ -56,3 +56,28 @@ out of.
   queries also surfaced two genuine bugs on the way, both language-independent
   and both fixed under `R-ANS-8b`: a three-letter term matched as a prefix, and
   `appliesTo` matched by plain substring.
+- **Tested on `2026-08-01`:** the first symptom happened and the decision holds
+  anyway. `bin/cli hints coverage` reads a mean hint body of 266 words against
+  the 200 the reference was picked as — 212 on the day, taken to a round number
+  — so the corpus has grown a quarter, the dissolution of the architecture
+  prose accounting for 20 words of it and the seven hints written since for 34.
+  The second symptom did not happen: the fourteen recoverable queries of the
+  sweep of eighteen all still answer as they were recorded to.
+
+  What the re-measurement settles is that the number should not follow the mean
+  it was named after. Swept again over those fourteen, recall is whole from a
+  reference of 120 words up to 320, and the hints returned climb the whole way
+  — 21 at 120, 26 at 200, 30 at the mean of 266 — so the low end of the range
+  is the precise one, and 200 is a floor the ordinary hint now sits above rather
+  than the average it was measured as. At 340 «how do I write a good sonnet» is
+  answered by `installation-upgrade`, which is long enough by then to contain
+  it: the exact failure the weight exists to prevent, and the far wall.
+
+  So the corpus has roughly a fifth of mean growth left, and both walls are
+  watched now instead of one. `ArchitectureHints::MAX_MEAN_BODY_WORDS` is a
+  ceiling of 300 that `HintsTest` and `bin/cli hints coverage` fail on, which
+  catches the corpus growing; the sweep is a data provider in `HintsTest` rather
+  than eight hand-picked queries, which catches the reference being raised to
+  chase it. Four of the eighteen were never written down anywhere and are lost —
+  which is the reason the remaining fourteen are in the test now rather than in
+  a commit message.

@@ -320,42 +320,110 @@ final class HintsTest extends TestCase
     }
 
     /**
-     * The symptom a caller arrives with is not the vocabulary a hint was
-     * indexed under, and for a long time only the vocabulary was searched: a
-     * hint's own two hundred words were invisible to the matcher, so the
-     * subject was reachable through the handful of keywords whoever wrote it
-     * happened to think of. Every query here reached nothing at all before the
-     * hint text was scored, and each one is answered by a hint that says the
-     * thing in so many words.
+     * The sweep the three constants in `D-ANS-2` were picked off, as far as it
+     * was written down.
      *
-     * @return array<int, array{0: string, 1: string}>
+     * It was eighteen queries with a known right answer, run against every
+     * candidate value until one held all of them; only what the commit and the
+     * decision quote survives, which is fourteen. Four are lost, and that they
+     * are is the reason the rest is here rather than in a session's scrollback:
+     * a constant measured against a set nobody kept can only be re-measured
+     * against a set somebody reconstructs.
+     *
+     * Twelve of the fourteen are in this provider. The other two are recorded
+     * misses and are asserted where their reason is written down —
+     * «my button looks wrong» in whatACallerCanSeeReachesTheHintAboutIt, and
+     * «wie lege ich ein neues Content-Element an» nowhere, because `R-AUD-6`
+     * settled that this server is queried in English.
+     *
+     * A null answer is the corpus having none, and it carries the same weight
+     * as a hit: answering everything is worth what answering nothing is, and
+     * the negative controls are what the dilution weight exists for.
+     *
+     * @return array<string, array{0: string, 1: ?string}>
      */
-    public static function symptoms(): array
+    public static function theSweep(): array
     {
         return [
             // The two that named the case: the hint says "the failure is a
             // service-not-found at request time" and names
             // PageTitleProviderManager, and neither phrasing reached it.
-            ['my extension service is not found at runtime', 'dependency-injection-services'],
-            ['page title provider does not work', 'dependency-injection-services'],
-            ['file upload storage configuration', 'file-abstraction-layer'],
-            ['validate a form field in the backend', 'tca-formengine'],
-            ['where do I put my backend layouts', 'sitepackage-layout'],
-            ['caching does not invalidate', 'caching'],
-            ['menu does not show all pages', 'frontend-page-rendering'],
-            ['the frontend shows the wrong language label', 'language-files'],
+            'a service the container did not build' => [
+                'my extension service is not found at runtime',
+                'dependency-injection-services',
+            ],
+            'the symptom that service produces' => [
+                'page title provider does not work',
+                'dependency-injection-services',
+            ],
+            'a word nobody indexed' => ['file upload storage configuration', 'file-abstraction-layer'],
+            'a backend form' => ['validate a form field in the backend', 'tca-formengine'],
+            'where something goes' => ['where do I put my backend layouts', 'sitepackage-layout'],
+            'a stale answer' => ['caching does not invalidate', 'caching'],
+            'a menu that is wrong' => ['menu does not show all pages', 'frontend-page-rendering'],
+            'a label in the wrong language' => [
+                'the frontend shows the wrong language label',
+                'language-files',
+            ],
+            'what the caller can see' => ['dark mode colors in my backend module', 'css-light-dark-mode'],
+            'the curated vocabulary' => ['event listener', 'events-extension-points'],
+            'a question about something else' => ['how do I write a good sonnet', null],
+            'a question about somewhere else' => ['what is the weather in Düsseldorf', null],
         ];
     }
 
+    /**
+     * The symptom a caller arrives with is not the vocabulary a hint was
+     * indexed under, and for a long time only the vocabulary was searched: a
+     * hint's own two hundred words were invisible to the matcher, so the
+     * subject was reachable through the handful of keywords whoever wrote it
+     * happened to think of. Most of these reached nothing at all before the
+     * hint text was scored, and each is answered by a hint that says the thing
+     * in so many words.
+     */
     #[Test]
-    #[DataProvider('symptoms')]
-    public function aHintIsReachedByTheSymptomItDescribesAndNotOnlyByItsKeywords(
+    #[DataProvider('theSweep')]
+    public function theSweepTheMatcherWasMeasuredOnStillAnswersTheSameWay(
         string $query,
-        string $expected,
+        ?string $expected,
     ): void {
         $result = ArchitectureHints::find([], $query, 6);
+        $ids = array_column($result['matchedHints'], 'id');
 
-        self::assertContains($expected, array_column($result['matchedHints'], 'id'), $query);
+        if ($expected === null) {
+            self::assertSame([], $ids, $query);
+            self::assertNotSame([], $result['availableHints'], 'a miss says what there would have been to find');
+
+            return;
+        }
+
+        self::assertContains($expected, $ids, $query);
+    }
+
+    /**
+     * What the sweep cannot say on its own: the corpus may outgrow the length
+     * its matcher was measured against, and no single query fails when it does.
+     *
+     * Re-measured on 2026-08-01 at a mean of 266 words, up from 212 when the
+     * reference was picked: recall over the sweep is whole from 120 words to
+     * 320, and above 320 «how do I write a good sonnet» is answered by
+     * `installation-upgrade`, which by then is long enough to contain it. So
+     * the reference stays where it is — the returned hints climb the whole way
+     * up that range, and the low end is the precise one — and what is watched
+     * is the corpus walking towards the far end of it.
+     */
+    #[Test]
+    public function theCorpusHasNotOutgrownTheLengthItsMatcherWasMeasuredAgainst(): void
+    {
+        $lengths = array_values(ArchitectureHints::bodyWords());
+        $mean = (int) round(array_sum($lengths) / count($lengths));
+
+        self::assertLessThanOrEqual(
+            ArchitectureHints::MAX_MEAN_BODY_WORDS,
+            $mean,
+            'the mean hint body is ' . $mean . ' words: re-run the sweep and pick UNDILUTED_WORDS again, '
+            . 'rather than raising the ceiling',
+        );
     }
 
     #[Test]
@@ -380,12 +448,22 @@ final class HintsTest extends TestCase
     {
         // A caller names the symptom in the words of what is in front of them —
         // a colour, a dark mode, a shadow — not in the vocabulary of the
-        // subsystem that produces it. A component by name is the other case and
-        // is deliberately not here: "button" is typo3_component_lookup's, and
-        // it answers it with the markup.
-        $result = ArchitectureHints::find([], 'dark mode colors in my backend module', 6);
+        // subsystem that produces it. The dark-mode half is a sweep query and
+        // is asserted there; this is the other half, which the sweep records as
+        // a miss and which is not one to fix here. "my button looks wrong" is
+        // the thirteenth of the eighteen, it carries no CSS signal at all, so
+        // the domain falls back to PHP and no CSS hint is ever a candidate —
+        // and a component by name is typo3_component_lookup's question anyway,
+        // answered with the markup rather than with a convention.
+        $seen = ArchitectureHints::find([], 'dark mode colors in my backend module', 6);
+        self::assertContains('css-light-dark-mode', array_column($seen['matchedHints'], 'id'));
 
-        self::assertContains('css-light-dark-mode', array_column($result['matchedHints'], 'id'));
+        $named = ArchitectureHints::find([], 'my button looks wrong', 6);
+        self::assertNotContains(
+            ArchitectureHints::CATEGORY_CSS,
+            array_column($named['matchedHints'], 'category'),
+            'a component by its name is the component lookup\'s to answer',
+        );
     }
 
     #[Test]
@@ -433,22 +511,6 @@ final class HintsTest extends TestCase
 
         // And the tolerance itself is intact from four characters up.
         self::assertContains('events-extension-points', $reached('hooks'));
-    }
-
-    #[Test]
-    public function aQueryTheCorpusHasNoAnswerForStillMisses(): void
-    {
-        // The other half of scoring the hint text: everything now matches
-        // something a little, and a lookup that answers everything is worth
-        // what one that answers nothing is. A term nothing in the corpus
-        // carries is what has to hold the line, because it is the term that
-        // says the query is about something else.
-        foreach (['how do I write a good sonnet', 'what is the weather in Düsseldorf'] as $query) {
-            $result = ArchitectureHints::find([], $query, 6);
-
-            self::assertSame([], $result['matchedHints'], $query);
-            self::assertNotSame([], $result['availableHints'], 'a miss says what there would have been to find');
-        }
     }
 
     #[Test]

@@ -93,19 +93,6 @@ that version, every requirement fails at once and not one of them says so.
 
 ---
 
-## Try `D-ANS-2` against `bin/cli hints coverage`
-
-**Serves:** decisions/
-
-The entry says both symptoms "show up in `bin/cli hints coverage` once that
-exists; until then the eight queries in `HintsTest` are the only tripwire" — and
-it exists, so the sentence is already stale. Run it, read the body lengths
-against the sweep of sixteen the three constants came off, and settle whether
-the average has moved since 2026-07-30. What would hold it afterwards is the
-sweep itself as a data provider in `HintsTest` rather than eight hand-picked
-queries, plus a ceiling on the average body length that fails when the
-architecture prose dissolves into the corpus and dilutes it.
-
 ## Read `D-VER-3` off the Fluid constraint in every checkout
 
 **Serves:** decisions/

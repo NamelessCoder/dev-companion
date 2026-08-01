@@ -9,8 +9,10 @@ those skills nor grade its own implementation as behavioral evidence.
 - **`E-SITE`** — `/home/benji/projects/site-new`, site package below
   `extensions/printworks_sitepackage`, TYPO3 14.3.5 under DDEV. The server is a
   dependency there: refresh the skills with `ddev exec php
-  vendor/bin/typo3-cms-mcp update --agent=claude`. It carries a `.gitignore`
-  modification belonging to another session; leave it.
+  vendor/bin/typo3-cms-mcp update --agent=claude`. Its tree is clean as of
+  2026-08-02, at `e7f3f05` — the `.gitignore` modification noted here before was
+  committed in `1523751`. `/var/` is gitignored there, so a run that boots the
+  installation still leaves `git status` empty.
 - **`E-EXT`** — two checkouts play it, and which one a run needs is a property
   of the run. In both the server is **not** a Composer dependency, so it is
   reached from this checkout: `php

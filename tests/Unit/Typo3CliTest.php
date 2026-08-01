@@ -79,6 +79,44 @@ final class Typo3CliTest extends TestCase
     }
 
     #[Test]
+    public function anAbsoluteBinDirectoryBelowTheRootIsTheSameDirectory(): void
+    {
+        // Composer accepts an absolute bin-dir and installs the binaries there
+        // (2.9.5, checked against a project declaring one). Spelled absolutely
+        // it names the very directory the relative spelling names, so dropping
+        // it lost a console that was there — the failure the declared bin-dir
+        // was read for in the first place, under a second spelling.
+        $root = $this->installation();
+        $root = (string) realpath($root);
+        file_put_contents($root . '/composer.json', json_encode([
+            'name' => 'typo3/cms',
+            'type' => 'typo3-cms-core',
+            'config' => ['bin-dir' => $root . '/.build/bin', 'vendor-dir' => $root . '/.build/vendor'],
+        ], JSON_THROW_ON_ERROR));
+        mkdir($root . '/.build/bin', 0o777, true);
+        file_put_contents($root . '/.build/bin/typo3', "#!/usr/bin/env php\n<?php\n");
+        $this->discover($root);
+
+        self::assertSame('.build/bin', Typo3Cli::binDirectory($root));
+        self::assertSame('.build/vendor/autoload.php', Typo3Cli::autoloader($root));
+        self::assertStringNotContainsString('has no TYPO3 console', Typo3Cli::reason());
+    }
+
+    #[Test]
+    public function aBinDirectoryOutsideTheRootIsNamedRatherThanPassedOver(): void
+    {
+        // It has no form the invocation can use — the console is run relative
+        // to the root, and in a container the host path is not there. What the
+        // caller gets instead is the declaration it wrote and the setting that
+        // replaces it.
+        $this->discover($this->installation(['config' => ['bin-dir' => '/opt/typo3/bin']]));
+
+        $reason = Typo3Cli::reason();
+        self::assertStringContainsString('/opt/typo3/bin', $reason);
+        self::assertStringContainsString(Typo3Cli::CONSOLE_VARIABLE, $reason);
+    }
+
+    #[Test]
     public function aMissingConsoleNamesEveryPathThatWasProbed(): void
     {
         $this->discover($this->installation(['config' => ['bin-dir' => '.build/bin']]));

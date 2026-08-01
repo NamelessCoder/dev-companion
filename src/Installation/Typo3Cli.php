@@ -94,9 +94,10 @@ final class Typo3Cli
             // that sits somewhere else is the likely case here, and a reason
             // that lists where this looked is one the caller can act on.
             self::$reason = sprintf(
-                '%s has no TYPO3 console — none of %s exists',
+                '%s has no TYPO3 console — none of %s exists%s',
                 $root,
-                implode(', ', self::consoleCandidates($root))
+                implode(', ', self::consoleCandidates($root)),
+                self::unreachableBinDirectory($root)
             );
 
             return null;
@@ -537,15 +538,52 @@ final class Typo3Cli
      * The bin directory the installation declares, relative to its root.
      *
      * Composer expands `$vendor-dir` inside bin-dir, so that spelling is
-     * expanded here too. An absolute declaration is left to the defaults: the
-     * console is invoked relative to the root — inside a DDEV container the
-     * host path would not exist anyway.
+     * expanded here too. It also accepts an absolute bin-dir and puts the
+     * binaries there — verified with Composer 2.9.5 against a project
+     * declaring one — so an absolute declaration below the root is expressed
+     * relative to it rather than dropped: it is the same directory the
+     * relative spelling names, and the console is reached the same way. One
+     * outside the root has no relative form, and the invocation has to have
+     * one — inside a DDEV container the host path would not exist anyway.
      *
      * `Installer` asks the same question about a different binary: where this
      * server's own entrypoint sits once a project has required it. One rule,
      * because a project that moved its bin directory moved both.
      */
     public static function binDirectory(string $root): ?string
+    {
+        $binDir = self::declaredBinDirectory($root);
+
+        return $binDir === null || !str_starts_with($binDir, '/')
+            ? $binDir
+            : self::belowRoot($root, $binDir);
+    }
+
+    /**
+     * What to add to "no console was found" when the installation declares a
+     * bin directory outside its root. Without it the caller reads a list of
+     * two default paths while its own composer.json names a third, and nothing
+     * says the declaration was read at all.
+     */
+    private static function unreachableBinDirectory(string $root): string
+    {
+        $declared = self::declaredBinDirectory($root);
+        if ($declared === null || !str_starts_with($declared, '/') || self::binDirectory($root) !== null) {
+            return '';
+        }
+
+        return sprintf(
+            '. The declared bin-dir %s is outside the installation, so a console there cannot be invoked from it — set %s to the command that reaches it',
+            $declared,
+            self::CONSOLE_VARIABLE
+        );
+    }
+
+    /**
+     * The bin directory as the manifest spells it, absolute declaration and
+     * all, so a console that cannot be reached can still be named.
+     */
+    private static function declaredBinDirectory(string $root): ?string
     {
         $config = self::manifest($root)['config'] ?? [];
         if (!is_array($config)) {
@@ -565,7 +603,7 @@ final class Typo3Cli
         );
         $binDir = rtrim($binDir, '/');
 
-        return $binDir === '' || str_starts_with($binDir, '/') ? null : $binDir;
+        return $binDir === '' ? null : $binDir;
     }
 
     /**
@@ -573,16 +611,33 @@ final class Typo3Cli
      *
      * Relative because the two sides of DDEV do not share absolute paths: the
      * subprocess starts in the root, and inside the container that same root is
-     * /var/www/html. A vendor directory declared as an absolute path is left at
-     * the default for the same reason the console is.
+     * /var/www/html. An absolute vendor directory is treated like an absolute
+     * bin directory: expressed relative to the root where it is below it, and
+     * left at the default where no relative form exists.
      */
     public static function autoloader(string $root): string
     {
         $config = self::manifest($root)['config'] ?? [];
         $vendorDir = is_array($config) ? ($config['vendor-dir'] ?? null) : null;
         $vendorDir = is_string($vendorDir) ? rtrim(trim($vendorDir), '/') : '';
+        if (str_starts_with($vendorDir, '/')) {
+            $vendorDir = (string) self::belowRoot($root, $vendorDir);
+        }
 
-        return ($vendorDir === '' || str_starts_with($vendorDir, '/') ? 'vendor' : $vendorDir) . '/autoload.php';
+        return ($vendorDir === '' ? 'vendor' : $vendorDir) . '/autoload.php';
+    }
+
+    /**
+     * An absolute path as the root sees it, or null when it is not below the
+     * root at all. Both sides are resolved, because a declaration is written by
+     * hand while the root has been through realpath().
+     */
+    private static function belowRoot(string $root, string $path): ?string
+    {
+        $root = realpath($root) ?: rtrim($root, '/');
+        $absolute = realpath($path) ?: rtrim($path, '/');
+
+        return str_starts_with($absolute, $root . '/') ? substr($absolute, strlen($root) + 1) : null;
     }
 
     /**

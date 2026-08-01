@@ -12,6 +12,7 @@ use Typo3CmsMcp\Installation\Typo3Cli;
 use Typo3CmsMcp\Knowledge\ArchitectureHints;
 use Typo3CmsMcp\Knowledge\Documents;
 use Typo3CmsMcp\Knowledge\Scope;
+use Typo3CmsMcp\Paths;
 use Typo3CmsMcp\Server\Profile;
 use Typo3CmsMcp\Tests\Support\TemporaryInstallation;
 use Typo3CmsMcp\Tool\Registry;
@@ -308,6 +309,182 @@ final class ScopeTest extends TestCase
             'gap in the knowledge base',
             Registry::call('typo3_server_scope', [])->text
         );
+    }
+
+    /**
+     * How the claim reads when it names who it turns away: something is put
+     * beyond this server, and what it names is one of the audiences below.
+     *
+     * @var array<int, string>
+     */
+    private const BEYOND_THIS_SERVER = [
+        'out of scope', 'out of this server', 'outside the scope', 'outside this server',
+        'not in scope', 'is not covered', 'are not covered', 'not covered here',
+        'not covered by', 'does not cover', 'do not cover',
+    ];
+
+    /**
+     * The two audiences it keeps arriving at the expense of, in the words they
+     * are written in. R-AUD-1 names three and the core contributor is the one
+     * nobody ever excludes, so the third is not here.
+     *
+     * @var array<int, string>
+     */
+    private const THE_OTHER_AUDIENCES = [
+        'extension', 'project', 'site package', 'sitepackage', 'site developer', 'installation',
+    ];
+
+    /**
+     * How it reads when it names nobody: the server is confined to the core and
+     * who that leaves out is left to the reader. Two of the three sentences
+     * D-SCO-6 found were written this way, which is why the audience words
+     * alone would not have caught them.
+     *
+     * @var array<int, string>
+     */
+    private const CONFINED_TO_THE_CORE = [
+        'scoped to', 'limited to', 'restricted to', 'confined to', 'only knows',
+        'only covers', 'only answers', 'only about', 'nothing but', 'exclusively', 'solely',
+    ];
+
+    /**
+     * The claim in the wording it was actually found in, so the matcher below
+     * is tested against something rather than only against prose that is
+     * already correct.
+     *
+     * @var array<int, string>
+     */
+    private const THE_CLAIM_AS_IT_WAS_FOUND = [
+        'The knowledge base is scoped to contributing to the core.',
+        'Configuring an installation with TypoScript is out of this server\'s scope.',
+        'This server only knows the core\'s own conventions.',
+    ];
+
+    /**
+     * The same assertion as above, in the surfaces the not-covered list is not.
+     *
+     * That list is where the claim was written down last, not where it lived:
+     * the same sentence stood in a knowledge document and in the notice every
+     * tool opens with, and each was corrected on its own after somebody read
+     * it. D-SCO-6 named the three no test reads — a tool description, the
+     * readme, a hint — and this is that test, so the next occurrence costs a
+     * failing suite rather than a session's confidence.
+     *
+     * What is matched is wording, which is as weak as wording always is. The
+     * three sentences the decision recorded are run through the matcher first,
+     * so one that has stopped recognising the claim fails here rather than
+     * passing everywhere.
+     */
+    #[Test]
+    public function noSurfaceSaysTheCoreIsTheOnlyWorkThisServerAnswersFor(): void
+    {
+        foreach (self::THE_CLAIM_AS_IT_WAS_FOUND as $sentence) {
+            self::assertNotSame(
+                [],
+                self::claimsTheCoreAlone($sentence),
+                'the claim is no longer recognised in the wording it was found in: ' . $sentence,
+            );
+        }
+
+        foreach (self::surfacesThatDescribeTheServer() as $surface => $text) {
+            self::assertSame(
+                [],
+                self::claimsTheCoreAlone($text),
+                $surface . ' puts the extension author or the site developer outside what this server answers',
+            );
+        }
+    }
+
+    /**
+     * The sentences of one surface that say the core is all of it.
+     *
+     * Sentence by sentence rather than over the whole text, because every
+     * surface here names the core and names an extension, and only a sentence
+     * that does both in the one construction is the claim.
+     *
+     * @return array<int, string>
+     */
+    private static function claimsTheCoreAlone(string $text): array
+    {
+        $claims = [];
+        foreach (preg_split('/(?<=[.!?;:])\s+|\n/', $text) ?: [] as $sentence) {
+            $lowered = mb_strtolower($sentence);
+            $turnsAwayAnAudience = self::names($lowered, self::BEYOND_THIS_SERVER)
+                && self::names($lowered, self::THE_OTHER_AUDIENCES);
+            $confinesTheServer = self::names($lowered, self::CONFINED_TO_THE_CORE)
+                && str_contains($lowered, 'core');
+
+            if ($turnsAwayAnAudience || $confinesTheServer) {
+                $claims[] = trim($sentence);
+            }
+        }
+
+        return $claims;
+    }
+
+    /** @param array<int, string> $markers */
+    private static function names(string $sentence, array $markers): bool
+    {
+        foreach ($markers as $marker) {
+            if (str_contains($sentence, $marker)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Everywhere this server states its own boundary in prose.
+     *
+     * The explanations under the not-covered list are left out and their topics
+     * are not: a `why` is where a subject that really is outside gets its
+     * reason, and the sentence that says so has to be allowed to say it. The
+     * topic line is the claim itself, and it is the one field the test above
+     * already reads.
+     *
+     * The knowledge documents are left out for the same reason — they are the
+     * core's own contribution material, where "this holds for the core
+     * repository" is true rather than the claim.
+     *
+     * @return array<string, string>
+     */
+    private static function surfacesThatDescribeTheServer(): array
+    {
+        $scope = Scope::read();
+        $surfaces = ['the purpose in server-scope.json' => $scope['purpose']];
+
+        foreach ($scope['covers'] as $entry) {
+            $surfaces['the covered topic "' . $entry['topic'] . '"'] = $entry['topic'] . ' ' . $entry['depth'];
+        }
+        foreach ($scope['doesNotCover'] as $entry) {
+            $surfaces['the not-covered topic "' . $entry['topic'] . '"'] = $entry['topic'];
+        }
+        foreach ($scope['routing'] as $entry) {
+            $surfaces['the routing entry "' . $entry['when'] . '"'] = $entry['when'] . ' ' . $entry['call'];
+        }
+
+        // Both profiles, because the prefix that says which half a client is
+        // being offered is the sentence closest to the claim of all of them.
+        // The variable is forgotten again by forgetTheInstance().
+        foreach ([Profile::ALL, Profile::PROJECT] as $profile) {
+            putenv(Profile::VARIABLE . '=' . $profile);
+            $surfaces['the instructions of the "' . $profile . '" profile'] = Scope::instructions();
+        }
+        putenv(Profile::VARIABLE);
+
+        foreach (Registry::definitions() as $definition) {
+            $surfaces['the description of ' . $definition['name']] = $definition['description'];
+        }
+
+        $surfaces['readme.md'] = (string) file_get_contents(Paths::root() . '/readme.md');
+
+        foreach (ArchitectureHints::load() as $hint) {
+            $surfaces['the ' . $hint['id'] . ' hint'] = $hint['title'] . ' '
+                . implode(' ', array_column($hint['hints'], 'text'));
+        }
+
+        return $surfaces;
     }
 
     #[Test]

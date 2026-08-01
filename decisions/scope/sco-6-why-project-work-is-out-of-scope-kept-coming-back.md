@@ -38,3 +38,25 @@ boundary:
   a tool description, the readme, a hint. Then the flag has to be renamed to
   what it decides (`coreRepositoryOnly`, or the audience of R-AUD-2), rather
   than the sentences being corrected one at a time.
+- **Since then** the three places **Wrong if** names are read too, by
+  `ScopeTest::noSurfaceSaysTheCoreIsTheOnlyWorkThisServerAnswersFor`. Its corpus
+  is every tool description, `readme.md`, every architecture hint, and the
+  scope's own purpose, routing and instructions. It matches the claim in both
+  the wordings it was found in. One names who it turns away — "out of this
+  server's scope" beside an extension, a project, an installation. The other
+  names nobody and confines the server instead, which is what "scoped to
+  contributing to the core" and "only knows the core's own conventions" were.
+  All three surfaces were already clean on 2026-08-01, so the guard holds a
+  boundary rather than reporting a breach.
+
+  What it matches is wording, and that is the weakest thing there is to match.
+  So the three sentences recorded above are run through the matcher first, and
+  one that has stopped recognising them fails with them rather than passing
+  everywhere.
+
+  What stays out of reach is narrower than **Wrong if** was. A wording neither
+  form catches is still unguarded. So are the two surfaces left out on purpose —
+  the knowledge documents and the skills, where "this holds for the core
+  repository" is the true sentence and a guard could only make it harder to
+  write. The flag rename is what an occurrence in either asks for, and it is
+  unchanged as the next step.

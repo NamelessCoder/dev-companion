@@ -38,7 +38,8 @@ Each file opens with its title, then a head of labelled lines:
 - `**Run:** <command>` — where the step starts. `bin/cli next` runs the ones
   this repository owns and names the rest.
 - `**Waiting on:** <the question>` — what a todo in `waiting/` is blocked on,
-  in the words it was asked in. Nothing else will ask it again.
+  in the words it was asked in, wrapped onto indented lines where it is longer
+  than one. `bin/cli todo waiting` is what asks it again.
 
 Then one paragraph, and one only: the **next concrete step**, in enough detail
 that someone who has read nothing else can start. "Continue with the bindings"

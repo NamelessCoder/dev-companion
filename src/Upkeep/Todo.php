@@ -273,6 +273,40 @@ final class Todo
     }
 
     /**
+     * The labelled lines of a head, as label and value.
+     *
+     * An indented line belongs to the field above it, the way it does under a
+     * bold label in `requirements/`: a question asked in somebody's own words
+     * does not fit in what is left of one line, and wrapping it is what every
+     * other file here does.
+     *
+     * @param array<int, string> $strays what no label was found on, appended to
+     *
+     * @return array<int, array{0: string, 1: string}>
+     */
+    private static function fields(string $head, array &$strays): array
+    {
+        $fields = [];
+        foreach (preg_split('/\R/', trim($head)) ?: [] as $line) {
+            if (trim($line) === '') {
+                continue;
+            }
+            if (preg_match('/^\s/', $line) === 1 && $fields !== []) {
+                $fields[count($fields) - 1][1] .= ' ' . trim($line);
+                continue;
+            }
+            if (preg_match('/^\*\*([A-Z][a-z]+(?: [a-z]+)?):\*\*\s*(.*)$/', trim($line), $matches) !== 1) {
+                $strays[] = trim($line);
+                continue;
+            }
+
+            $fields[] = [$matches[1], trim($matches[2])];
+        }
+
+        return $fields;
+    }
+
+    /**
      * One file: what it is called, what it declares, and the step itself.
      *
      * @return Section
@@ -297,23 +331,14 @@ final class Todo
         $serves = [];
         $run = [];
         $strays = [];
-        foreach (preg_split('/\R/', trim((string) $head)) ?: [] as $line) {
-            $line = trim($line);
-            if ($line === '') {
-                continue;
-            }
-            if (preg_match('/^\*\*([A-Z][a-z]+(?: [a-z]+)?):\*\*\s*(.*)$/', $line, $matches) !== 1) {
-                $strays[] = $line;
-                continue;
-            }
-
-            match ($matches[1]) {
-                'Serves' => $serves = array_values(array_filter(array_map(trim(...), explode(',', $matches[2])))),
-                'Every' => $every = trim($matches[2]),
-                'Checked' => $checked = trim($matches[2]),
-                'Waiting on' => $waitingOn = trim($matches[2]),
-                'Run' => $run[] = trim($matches[2]),
-                default => $strays[] = $line,
+        foreach (self::fields((string) $head, $strays) as [$label, $value]) {
+            match ($label) {
+                'Serves' => $serves = array_values(array_filter(array_map(trim(...), explode(',', $value)))),
+                'Every' => $every = $value,
+                'Checked' => $checked = $value,
+                'Waiting on' => $waitingOn = $value,
+                'Run' => $run[] = $value,
+                default => $strays[] = '**' . $label . ':** ' . $value,
             };
         }
 

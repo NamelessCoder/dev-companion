@@ -92,6 +92,31 @@ final class ToolNamingTest extends TestCase
         self::assertSame([], $unknown, 'named in the knowledge base or in a skill, but not registered');
     }
 
+    /**
+     * The other direction, and the one nothing watched: a tool that exists and
+     * is described nowhere outward.
+     *
+     * `readme.md` is one of the four things that describe this server to
+     * somebody else, and its tool list reads as the list — it ends without an
+     * "and more" and the orientation bullet above it promises that a shorter
+     * list than this one has a reason a client can read. Five tools had been
+     * added since anybody checked.
+     */
+    #[Test]
+    public function everyToolIsDescribedInTheReadme(): void
+    {
+        $readme = (string) file_get_contents(dirname(__DIR__, 2) . '/readme.md');
+
+        $undescribed = [];
+        foreach (array_column(Registry::definitions(), 'name') as $name) {
+            if (!str_contains($readme, '`' . $name . '`')) {
+                $undescribed[] = $name;
+            }
+        }
+
+        self::assertSame([], $undescribed, 'registered and named nowhere in readme.md');
+    }
+
     /** @param array<string, mixed> $arguments */
     #[DataProvider('toolCalls')]
     #[Test]

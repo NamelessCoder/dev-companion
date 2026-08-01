@@ -237,6 +237,11 @@ name already says what shape the answer has.
   versions have it. Every hint here is a summary of something that exists in
   full and passing, and where a hint is thin, reading the example is the better
   answer.
+- `typo3_catalog_scope`: says where the component contracts came from — the
+  active installation or the bundled snapshot — which core revision that
+  snapshot was taken from, what it covers, and how to re-check it. Read it to
+  judge whether a lookup miss is authoritative: even with installed sources the
+  component names stay a curated index rather than every backend class.
 - `typo3_icon_lookup`: validates and discovers icon identifiers (the registered
   T3Icons names), grouped by category, so unknown identifiers are caught before
   runtime. Every answer says which half of TYPO3 they belong to: the registry is
@@ -251,6 +256,26 @@ name already says what shape the answer has.
   word reaches on its own. Where the console cannot be reached — an installed
   TYPO3 whose database has no schema yet — the same packages' XLF files are read
   instead, and `answeredBy` says which of the two answered.
+- `typo3_translation_domain_lookup`: computes the translation domain an XLF file
+  resolves to, from its path. Nothing registers a domain — it follows from the
+  path by the rules the core itself applies — so this answers for a file in any
+  extension and for one a patch is about to add, which is exactly when it cannot
+  be looked up. On an installation older than translation domains it answers
+  with the full `LLL:EXT:` reference instead, because the domain form renders
+  nothing there and fails at runtime rather than at build time.
+- `typo3_backend_module_lookup`: lists the backend modules the installation has
+  registered, with the extension that declares each one, its place in the module
+  tree, its labels and its route. Answered by the installation, so a project
+  extension's modules are in it.
+- `typo3_fluid_namespace_list`: lists the Fluid ViewHelper namespaces that are
+  globally available, so a template knows which prefixes it may use without
+  declaring them. Every other namespace is declared per template. Where the
+  console cannot be reached, the installed packages' `Namespaces.php` answer and
+  `answeredBy` says so.
+- `typo3_configuration_lookup`: reads an effective `TYPO3_CONF_VARS` value — the
+  value as it is at runtime after every extension has had its say, not the
+  shipped default. For configuration whose assembled shape is the question, such
+  as `SYS/formEngine/formDataGroup` or `SYS/caching/cacheConfigurations`.
 - `typo3_commit_message_guide`: drafts and checks TYPO3 commit messages — from
   parts, or by passing an existing `message` to check and correct one in a
   piece. The emitted draft is ready to commit: the body is wrapped at 72
@@ -264,8 +289,10 @@ name already says what shape the answer has.
   [Improvement feedback](#improvement-feedback)).
 - `typo3_feedback_list`: lists those feedback, newest first, so they can be worked
   off, filtered by status, category or the tool they are about. `status="closed"`
-  reads the ones already worked off out of the commits that deleted them, each
-  with the subject that says what came of it (standalone checkout only).
+  reads the ones already worked off out of `feedback/archive/`, where the commit
+  that archived one is what says what came of it — the feedback itself is kept,
+  not deleted, so the category, the tools and the model are still there to filter
+  on (standalone checkout only).
 
 ## Resources
 

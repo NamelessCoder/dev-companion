@@ -79,10 +79,14 @@ Two things are different, and both are consequences of `main` being elsewhere:
 
 - **Commit on the branch, never on `main`.** That includes the todo file itself.
   A finished claim is a deletion in the branch, and the merge is what carries it.
-- **Do not regenerate an index.** `bin/cli requirements:index` and
-  `bin/cli decisions:index` rewrite listings from every file in a group, and a
-  worktree can only see its own new entry. Two sessions doing it produce two
-  listings that each drop the other's. The session that merges runs them once.
+- **Leave the group listings alone** — the block at the foot of a
+  `requirements/<group>/readme.md` or `decisions/<group>/readme.md`. It is
+  generated from every file in the group, and a worktree can only see its own
+  new entry. That means the command, `bin/cli requirements:index` or
+  `bin/cli decisions:index`, and it means the line: two sessions editing one
+  listing by hand conflict where two sessions leaving it alone do not. The
+  session that merges runs both commands once, and `requirements:check` says so
+  if it forgets.
 
 ## A question that arrives mid-work
 

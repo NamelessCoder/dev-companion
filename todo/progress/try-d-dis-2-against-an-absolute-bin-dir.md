@@ -1,6 +1,8 @@
 # Try `D-DIS-2` against an absolute `bin-dir`
 
 **Serves:** decisions/
+**Branch:** todo/try-d-dis-2-against-an-absolute-bin-dir
+**Claimed:** 2026-08-01
 
 The entry names two shapes it accepts and ignores: an absolute `bin-dir`, which
 Composer allows, and a console invoked from somewhere other than the root — a

@@ -1,6 +1,8 @@
 # Try `D-DIS-1` against a root that is also in vendor
 
 **Serves:** decisions/
+**Branch:** todo/try-d-dis-1-against-a-root-that-is-also-in-vendor
+**Claimed:** 2026-08-01
 
 Two shapes are named and neither has been seen here: a monorepo whose root
 declares a TYPO3 package type without being the thing worked on, and a setup

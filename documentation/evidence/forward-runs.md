@@ -22,7 +22,22 @@ carried out.
    being measured.
 4. Let the review reach its own stopping point. Do not steer it toward a known
    subsystem or finding.
-5. Grade against **What has to come out of it** and **How it fails**, and write
+5. Run `git status` in the environment afterwards, and record what it says. The
+   review itself may not write — that is
+   [`D-EVI-3`](../../decisions/evidence/evi-3-a-review-runs-the-checks-that-cannot-change-the-code.md)
+   — so a modified tree is one of two things, and both are worth the ten
+   seconds. Either the session overstepped, which is a criterion, or a lookup
+   did. The second is what
+   [`D-DIS-5`](../../decisions/discovery/dis-5-a-registry-with-no-command-is-read-by-booting-the-installation.md)
+   is watched for: the registry lookups answer by booting the installation in a
+   subprocess, and a boot that writes outside the cache is the symptom that
+   decision named and cannot hold itself. Start from a clean tree so the reading
+   means something, and note what was already modified where it is not. The
+   transcript carries the other half of the same **Wrong if**: a lookup that
+   answers `answeredBy: packages` against an installation that was up and
+   configured is a boot that did not finish, and a 90-second gap in front of it
+   is the timeout.
+6. Grade against **What has to come out of it** and **How it fails**, and write
    the judgment and its evidence into the recorded run, together with the skills
    that activated and the tools the session actually called. A call is the name
    **and** the arguments it was made with, copied from the transcript, `{}`

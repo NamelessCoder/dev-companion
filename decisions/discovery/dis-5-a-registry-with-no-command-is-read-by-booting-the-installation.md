@@ -1,7 +1,7 @@
 ---
 id: D-DIS-5
 date: 2026-07-31
-status: standing
+status: tested
 ---
 
 # D-DIS-5 — A registry with no console command is read by booting the installation
@@ -52,3 +52,28 @@ The registry is not reconstructed from the files the packages ship.
   `ddev exec` joining its arguments into a bash line; a transport that quotes
   differently would fail as an exit code, and the answer would degrade silently
   to the files with a reason nobody can act on.
+- **Tested on 2026-08-02:** the first **Wrong if**, against `E-SITE` — the
+  TYPO3 14.3.5 DDEV project at `/home/benji/projects/site-new`, clean at
+  `e7f3f05`, with the containers started first so the boot and the start could
+  be told apart. The lookups were made through this server over stdio from that
+  directory, the way a client makes them. It resolved
+  `ddev exec -- vendor/bin/typo3` on PHP 8.4 and booted `full`: 1292 icon
+  identifiers, 26 TCA tables, 30 content elements. `git status --porcelain
+  -uall` was empty before and after. Warm, the boot cost 1.2 seconds and wrote
+  nothing at all; with `var/cache` deleted first it cost 3.65 seconds and wrote
+  seven files, every one of them below `var/cache/` — `code/core`, `code/di`
+  and `data/assets`. Neither symptom appeared: nothing outside the cache was
+  touched, and the slower boot spent a twenty-fifth of the 90-second timeout.
+
+  What the run does not settle travels with it. One environment with one project
+  extension says the boot is safe here, not that no `ext_localconf.php` writes;
+  the second **Wrong if** is untouched, since `ddev exec` is the transport it
+  already names. And `git status` is a narrower instrument than it looks: `/var/`
+  is gitignored in that project, so a write below it leaves the tree clean, and
+  it took a sweep by modification time to place the seven writes in the cache.
+  That is the right way round for a **Wrong if** about writes outside the cache
+  — but a clean tree is evidence about the checkout, not about the boot. What
+  watches this from now on is step 5 of a forward run rather than a test here,
+  in [forward-runs.md](../../documentation/evidence/forward-runs.md): this
+  repository has no installation to boot, and a test that mocked one would be
+  measuring the mock.

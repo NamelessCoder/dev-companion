@@ -133,21 +133,12 @@ final class InstanceTest extends TestCase
             'type' => 'typo3-cms-extension',
             'extra' => ['typo3/cms' => ['extension-key' => 'demo_package']],
         ], JSON_THROW_ON_ERROR));
-        $installed = json_decode(
-            (string) file_get_contents($root . '/.build/vendor/composer/installed.json'),
-            true,
-            flags: JSON_THROW_ON_ERROR,
-        );
-        $installed['packages'][] = [
+        $this->alsoInstalled($root . '/.build/vendor', [
             'name' => 'acme/demo-package',
             'type' => 'typo3-cms-extension',
             'install-path' => '../../../Tests/Packages/demo_package',
             'extra' => ['typo3/cms' => ['extension-key' => 'demo_package']],
-        ];
-        file_put_contents(
-            $root . '/.build/vendor/composer/installed.json',
-            json_encode($installed, JSON_THROW_ON_ERROR),
-        );
+        ]);
         Instance::discoverFrom($root);
 
         $origins = array_column(Project::describe()['extensions'], 'origin', 'key');
@@ -158,6 +149,57 @@ final class InstanceTest extends TestCase
         self::assertSame(Project::ORIGIN_FIXTURE, $origins['demo_package'] ?? null);
         self::assertSame(Project::ORIGIN_PROJECT, $origins['bootstrap_package'] ?? null);
         self::assertSame(Project::ORIGIN_THIRD_PARTY, Project::origin('/app/.build/vendor/b13/container'));
+    }
+
+    #[Test]
+    public function aRootThatIsAlsoInstalledIntoTheVendorDirectoryIsOnePackageAtTheRoot(): void
+    {
+        // The extension checkout that requires itself through a path
+        // repository: Composer symlinks the root into the vendor directory and
+        // lists it there, so the same extension arrives twice. Both entries
+        // resolve to one realpath under one key, which is what makes them
+        // collapse — the vendor path would report the extension being edited as
+        // a dependency of the repository it is.
+        $root = $this->composerProject();
+        file_put_contents($root . '/composer.json', json_encode([
+            'name' => 'acme/bootstrap-package',
+            'type' => 'typo3-cms-extension',
+            'repositories' => ['self' => ['type' => 'path', 'url' => '.']],
+        ], JSON_THROW_ON_ERROR));
+        mkdir($root . '/vendor/acme', 0o777, true);
+        symlink($root, $root . '/vendor/acme/bootstrap-package');
+        $this->alsoInstalled($root . '/vendor', [
+            'name' => 'acme/bootstrap-package',
+            'type' => 'typo3-cms-extension',
+            'install-path' => '../acme/bootstrap-package',
+        ]);
+        Instance::discoverFrom($root);
+
+        self::assertSame(['bootstrap_package', 'core', 'my_sitepackage'], array_keys(Instance::packages()));
+        self::assertSame(realpath($root), Instance::packages()['bootstrap_package']);
+
+        $origins = array_column(Project::describe()['extensions'], 'origin', 'key');
+        self::assertSame(Project::ORIGIN_PROJECT, $origins['bootstrap_package'] ?? null);
+    }
+
+    #[Test]
+    public function aMonorepoRootIsCountedBesideThePackagesItHoldsRatherThanInsteadOfThem(): void
+    {
+        // A repository that holds extensions rather than being one, and still
+        // declares a TYPO3 package type at its root. Nothing in the metadata
+        // says the root is a container, so it is counted like any other root —
+        // but under its own key, and the extension actually being edited keeps
+        // the directory Composer installed it in.
+        $root = $this->composerProject();
+        file_put_contents($root . '/composer.json', json_encode([
+            'name' => 'acme/typo3-extensions',
+            'type' => 'typo3-cms-extension',
+            'repositories' => ['packages' => ['type' => 'path', 'url' => 'packages/*']],
+        ], JSON_THROW_ON_ERROR));
+        Instance::discoverFrom($root);
+
+        self::assertSame(['core', 'my_sitepackage', 'typo3_extensions'], array_keys(Instance::packages()));
+        self::assertSame(realpath($root) . '/packages/my_sitepackage', Instance::packages()['my_sitepackage']);
     }
 
     #[Test]
@@ -240,6 +282,19 @@ final class InstanceTest extends TestCase
         Instance::discoverFrom($startedFrom);
 
         self::assertSame(realpath($startedFrom), Instance::describe()['startedFrom']);
+    }
+
+    /**
+     * Adds one more package to what a vendor directory reports as installed.
+     *
+     * @param array<string, mixed> $package as Composer writes it into installed.json
+     */
+    private function alsoInstalled(string $vendor, array $package): void
+    {
+        $file = $vendor . '/composer/installed.json';
+        $installed = json_decode((string) file_get_contents($file), true, flags: JSON_THROW_ON_ERROR);
+        $installed['packages'][] = $package;
+        file_put_contents($file, json_encode($installed, JSON_THROW_ON_ERROR));
     }
 
     private function installPackagesInto(string $root): void

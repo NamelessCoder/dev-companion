@@ -155,6 +155,13 @@ them are machines.
 - Length is a symptom. A paragraph that will not come out short is usually two
   points, or one that is not yet understood.
 
+`bin/cli prose check` counts what that costs: the sentences over 30 words, worst
+file first. It fails on one of them — the bold sentence a requirement or a
+decision opens with, because a reader who stops after it is supposed to know
+what was settled. The rest is a report, since a long sentence can be the right
+one and a rewrite driven by a counter produces two short sentences saying what
+one said.
+
 ## Tool names
 
 Every tool is named `typo3_<subject>_<verb>`. The prefix never varies, the

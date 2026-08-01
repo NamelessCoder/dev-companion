@@ -9,5 +9,7 @@ See [the decisions readme](../readme.md) for how an entry is written and when it
 earns one.
 
 - [`D-DOC-1`][D-DOC-1] — A table is written so it reads unrendered · 2026-08-01 · standing
+- [`D-DOC-2`][D-DOC-2] — The prose rule is measured, and only the lead fails on it · 2026-08-01 · standing
 
 [D-DOC-1]: doc-1-a-table-is-written-so-it-reads-unrendered.md
+[D-DOC-2]: doc-2-the-prose-rule-is-measured-and-only-the-lead-fails.md

@@ -36,6 +36,7 @@ final class UpkeepTest extends TestCase
             'decisions check' => [['decisions', 'check']],
             'decisions list' => [['decisions', 'list']],
             'scenarios check' => [['scenarios', 'check']],
+            'prose check' => [['prose', 'check']],
             'catalog check' => [['catalog', 'check']],
             'hints coverage' => [['hints', 'coverage']],
             'backlog list' => [['backlog', 'list']],

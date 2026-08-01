@@ -10,6 +10,7 @@ use Typo3CmsMcp\Upkeep\Cli\Checkout;
 use Typo3CmsMcp\Upkeep\Cli\Decision;
 use Typo3CmsMcp\Upkeep\Cli\Feedback as FeedbackSubject;
 use Typo3CmsMcp\Upkeep\Cli\Hint;
+use Typo3CmsMcp\Upkeep\Cli\Prose;
 use Typo3CmsMcp\Upkeep\Cli\Requirement;
 use Typo3CmsMcp\Upkeep\Cli\Scenario;
 use Typo3CmsMcp\Upkeep\Cli\Subject;
@@ -37,6 +38,7 @@ final class Cli
         'decisions' => Decision::class,
         'scenarios' => Scenario::class,
         'todo' => TodoSubject::class,
+        'prose' => Prose::class,
         'feedback' => FeedbackSubject::class,
         'backlog' => Backlog::class,
         'hints' => Hint::class,
@@ -49,7 +51,7 @@ final class Cli
      * this checkout. `catalog` reads .checkouts/ and `hints coverage` reports
      * gaps rather than failures, so both are asked for by name.
      */
-    private const CHECKED = ['requirements', 'decisions', 'scenarios', 'todo'];
+    private const CHECKED = ['requirements', 'decisions', 'scenarios', 'todo', 'prose'];
 
     /** @param array<int, string> $arguments */
     public static function run(array $arguments): int

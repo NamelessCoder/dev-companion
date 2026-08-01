@@ -108,7 +108,7 @@ the repository has moved furthest away from since. Going back to one and adding
 | 2026-07-30 | [`D-CAT-3`](catalog/cat-3-the-component-index-is-curated-its-contract-comes-from-the-installation.md) | The component index is curated; its contract comes from the installation | catalog | standing |
 | 2026-07-30 | [`D-KNW-3`](knowledge/knw-3-provenance-is-not-the-third-spelling-of-binding.md) | `provenance` is not the third spelling of `binding`, and stays | knowledge | standing |
 | 2026-07-30 | [`D-KNW-4`](knowledge/knw-4-package-knowledge-needs-a-producer-before-it-needs-discovery.md) | Package knowledge needs a producer before it needs discovery | knowledge | standing |
-| 2026-07-30 | [`D-VER-3`](versions/ver-3-the-fluid-engine-gets-no-version-axis-of-its-own.md) | The Fluid engine gets no version axis of its own, because the core pins it | versions | standing |
+| 2026-07-30 | [`D-VER-3`](versions/ver-3-the-fluid-engine-gets-no-version-axis-of-its-own.md) | The Fluid engine gets no version axis of its own, because the core pins it | versions | tested |
 | 2026-07-29 | [`D-ANS-1`](answers/ans-1-the-unanswered-result-keeps-its-shape-and-gains-a-reason.md) | The unanswered result keeps its shape and gains a reason | answers | standing |
 | 2026-07-29 | [`D-AUD-1`](audience/aud-1-three-audiences-and-the-positioning-that-has-not-caught-up.md) | Three audiences, and the positioning that has not caught up | audience | standing |
 | 2026-07-29 | [`D-AUD-2`](audience/aud-2-two-profiles-because-a-third-would-have-been-the-same-set.md) | Two profiles, because a third one would have been the same set | audience | standing |

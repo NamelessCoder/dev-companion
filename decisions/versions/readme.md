@@ -11,6 +11,6 @@ one is added.
 | Decided | Id | What was decided | State |
 | --- | --- | --- | --- |
 | 2026-07-31 | [`D-VER-4`](ver-4-a-supported-range-is-a-property-of-the-package.md) | A supported range is a property of the package, not of the checkout | standing |
-| 2026-07-30 | [`D-VER-3`](ver-3-the-fluid-engine-gets-no-version-axis-of-its-own.md) | The Fluid engine gets no version axis of its own, because the core pins it | standing |
+| 2026-07-30 | [`D-VER-3`](ver-3-the-fluid-engine-gets-no-version-axis-of-its-own.md) | The Fluid engine gets no version axis of its own, because the core pins it | tested |
 | 2026-07-29 | [`D-VER-1`](ver-1-a-version-range-is-data-on-the-statement-not-a-sentence-in-it.md) | A version range is data on the statement, not a sentence in it | standing |
 | 2026-07-29 | [`D-VER-2`](ver-2-the-prose-is-not-bound-it-says-which-half-it-is.md) | The prose is not bound; it says which half it is | standing |

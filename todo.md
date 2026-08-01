@@ -93,18 +93,6 @@ that version, every requirement fails at once and not one of them says so.
 
 ---
 
-## Read `D-VER-3` off the Fluid constraint in every checkout
-
-**Serves:** decisions/
-
-The engine gets no version axis because the core pins it to one major per
-branch, so the whole decision rests on a constraint that is readable in
-`.checkouts/`: `typo3fluid/fluid` in each core `composer.json`. Read it on every
-covered version and check that no branch spans two engine majors. What would
-hold it is that reading in `bin/cli catalog check`, which already re-reads the
-checkouts: a branch whose constraint spans two majors fails it, because that is
-the day a `since:` on a Fluid statement stops meaning anything.
-
 ## Teach `bin/cli catalog check` the testing-framework tags
 
 **Serves:** decisions/

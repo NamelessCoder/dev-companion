@@ -16,18 +16,22 @@ use Typo3CmsMcp\Versions;
  * Two things can be wrong with an entry, and each has its own command: the
  * paths it names are gone from a checkout, or its `since`/`until` no longer say
  * which versions it holds on.
+ *
+ * `check` also reads the one thing outside `knowledge/catalog/` that a core
+ * update can invalidate silently and that the checkouts answer: which Fluid
+ * engine each branch pins itself to.
  */
 final class Catalog implements Subject
 {
     public static function about(): string
     {
-        return 'what a core update invalidated in knowledge/catalog/';
+        return 'what a core update invalidated in knowledge/';
     }
 
     public static function commands(): array
     {
         return [
-            'check' => ['', 'the versions each entry holds on, the shipped system extensions, and the worked examples, against .checkouts/', self::check(...)],
+            'check' => ['', 'the versions each entry holds on, the shipped system extensions, the worked examples, and the Fluid engine each branch pins, against .checkouts/', self::check(...)],
             'paths' => ['<checkout>', 'the paths one entry names, against one core checkout of your own', self::paths(...)],
         ];
     }
@@ -47,7 +51,69 @@ final class Catalog implements Subject
             self::verifyBindings($root . '/.checkouts', self::read('components')),
             self::verifySystemExtensions($root . '/.checkouts', self::read('system-extensions')),
             self::verifyReferences($root . '/.checkouts', self::read('references')),
+            self::verifyFluidEngine($root . '/.checkouts'),
         );
+    }
+
+    /**
+     * Which Fluid engine each covered branch pins itself to.
+     *
+     * D-VER-3 gave Fluid no version axis of its own: the core pins the engine in
+     * its own composer.json, so `since` / `until` on the TYPO3 major already says
+     * which engine a Fluid statement was verified against. That holds only while
+     * a branch admits exactly one engine major — the day one loosens its
+     * constraint to span two, a `since:` on a Fluid statement stops naming an
+     * engine, and nothing about the statement changes to say so.
+     *
+     * The reading is printed whether or not it fails, because a Fluid statement
+     * is written against the engine a branch pins and this is where that number
+     * is looked up.
+     */
+    private static function verifyFluidEngine(string $checkouts): int
+    {
+        echo "Fluid engine\n";
+        $problems = 0;
+        foreach (Versions::covered() as $version) {
+            $manifest = $checkouts . '/' . $version['branch'] . '/composer.json';
+            if (!is_file($manifest)) {
+                fwrite(STDERR, sprintf("No checkout for TYPO3 v%d below %s — run bin/cli checkouts update.\n", $version['major'], $checkouts));
+
+                return 2;
+            }
+
+            $constraint = json_decode((string) file_get_contents($manifest), true)['require']['typo3fluid/fluid'] ?? null;
+            if (!is_string($constraint)) {
+                printf("  %-5s requires no typo3fluid/fluid\n", $version['branch']);
+                ++$problems;
+                continue;
+            }
+
+            // Asked over a window rather than parsed into a range, which is what
+            // makes an open constraint visible: `^5.3.1` answers for one major
+            // and `>=4` for every one in the window, and the second is the case
+            // this exists to catch. The window is wide enough that a Fluid major
+            // reaching its edge would be news in itself.
+            $majors = array_values(array_filter(
+                range(1, 20),
+                static fn(int $major): bool => Versions::admits($constraint, $major),
+            ));
+
+            printf("  %-5s %-10s %s\n", $version['branch'], $constraint, $majors === [] ? 'unreadable' : 'Fluid v' . implode(', v', $majors));
+            if (count($majors) !== 1) {
+                ++$problems;
+            }
+        }
+        print "\n";
+
+        if ($problems === 0) {
+            echo "Every branch pins one Fluid engine major, so the TYPO3 major still carries it.\n";
+
+            return 0;
+        }
+
+        printf("%d branch(es) no longer pin one Fluid engine major — D-VER-3 says the engine needs a field of its own.\n", $problems);
+
+        return 1;
     }
 
     /**

@@ -101,34 +101,44 @@ final class Versions
     /**
      * The covered majors a Composer constraint admits.
      *
-     * Read by asking the constraint about each covered major rather than by
-     * parsing it into a range: the question here is only ever "does this
-     * repository serve v13", and the answer is the same for every spelling that
-     * admits any 13.x. A constraint this cannot read yields nothing, and the
-     * caller falls back to the installed version — a wrong range would be worse
-     * than the single version this has always used.
+     * A constraint this cannot read yields nothing, and the caller falls back to
+     * the installed version — a wrong range would be worse than the single
+     * version this has always used.
      *
      * @return array<int, int>
      */
     public static function declared(?string $constraint): array
     {
+        return array_values(array_filter(
+            self::majors(),
+            static fn(int $major): bool => self::admits($constraint, $major),
+        ));
+    }
+
+    /**
+     * Whether a Composer constraint admits any release of a major.
+     *
+     * Read by asking the constraint about one major rather than by parsing it
+     * into a range: the question is only ever "does this serve v13", and the
+     * answer is the same for every spelling that admits any 13.x. Which majors
+     * are worth asking about is the caller's — the covered ones for
+     * `typo3/cms-core`, the ones a Fluid engine could be spelled for in
+     * `bin/cli catalog check`.
+     */
+    public static function admits(?string $constraint, int $major): bool
+    {
         $constraint = trim((string) $constraint);
         if ($constraint === '') {
-            return [];
+            return false;
         }
 
-        $majors = [];
-        foreach (self::majors() as $major) {
-            foreach (preg_split('/\s*\|\|?\s*/', $constraint) ?: [] as $alternative) {
-                if (self::admits(trim($alternative), $major)) {
-                    $majors[] = $major;
-
-                    break;
-                }
+        foreach (preg_split('/\s*\|\|?\s*/', $constraint) ?: [] as $alternative) {
+            if (self::alternativeAdmits(trim($alternative), $major)) {
+                return true;
             }
         }
 
-        return $majors;
+        return false;
     }
 
     /**
@@ -137,7 +147,7 @@ final class Versions
      * Every comparator in it has to, because within one alternative they are
      * combined with and — `>=13.4 <15` is one alternative, not two.
      */
-    private static function admits(string $alternative, int $major): bool
+    private static function alternativeAdmits(string $alternative, int $major): bool
     {
         if ($alternative === '') {
             return false;

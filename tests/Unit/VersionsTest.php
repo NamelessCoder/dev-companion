@@ -296,6 +296,31 @@ final class VersionsTest extends TestCase
     }
 
     #[Test]
+    public function aPinToOneMajorIsTellableFromAConstraintThatSpansTwo(): void
+    {
+        // What `bin/cli catalog check` asks of the Fluid constraint in each core
+        // checkout, and the reason D-VER-3 needs no engine axis: the pin is what
+        // makes the TYPO3 major carry the engine, so a constraint that stops
+        // pinning has to be tellable from one that never did. Asked over engine
+        // majors rather than covered TYPO3 ones, which is the point of asking per
+        // major instead of parsing a range.
+        $spans = static fn(string $constraint): array => array_values(array_filter(
+            range(1, 20),
+            static fn(int $major): bool => Versions::admits($constraint, $major),
+        ));
+
+        self::assertSame([2], $spans('^2.15.0'));
+        self::assertSame([4], $spans('^4.6.1'));
+        self::assertSame([5], $spans('~5.3.1'));
+        self::assertSame([4, 5], $spans('^4.6.1 || ^5.0'));
+        self::assertSame([4, 5], $spans('>=4.6.1 <6'));
+
+        // Unreadable is not a pin either: a constraint nothing here can read is a
+        // constraint nobody can say the engine major from.
+        self::assertSame([], $spans('dev-main'));
+    }
+
+    #[Test]
     public function oneDeclaredMajorAnswersExactlyAsBefore(): void
     {
         $root = $this->composerProject('vendor', '14.3.5');

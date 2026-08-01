@@ -285,11 +285,11 @@ Useful upstream sources:
 What an agent hands back at the end of a task is recorded through
 `typo3_feedback_record`, and every feedback becomes its own markdown file under
 `feedback/`; `typo3_feedback_list` reads them back, newest first. A feedback is
-closed by deleting it in the commit that implements the improvement, so
-`feedback/` only ever holds open items — and that commit is where
-the closed half is read back from: `typo3_feedback_list` with `status="closed"`
-answers what became of a feedback, so a gap that was already closed is not reported a
-second time and one that needed a code change does not vanish.
+closed by the commit that implements the improvement, which moves it to
+`feedback/archive/`, so `feedback/` only ever holds open items.
+`typo3_feedback_list` with `status="closed"` reads the archive with the commit
+subject that closed each one, so a gap that was already answered is not reported
+a second time and one that needed a code change does not vanish.
 
 Each feedback carries the working directory the session that left it ran in, as
 `directory:` in its front matter, so a gap can be checked against the project it

@@ -22,9 +22,14 @@ final class FeedbackTest extends TestCase
 
     protected function setUp(): void
     {
-        if (!Channel::isAvailable()) {
-            self::markTestSkipped('Feedback is only available in a standalone checkout.');
-        }
+        // Asserted rather than skipped over. The suite runs from this
+        // repository and nowhere else, so this is a standalone checkout by
+        // construction — and a skip would turn the one case where that stopped
+        // being true into silence instead of into the failure it is.
+        self::assertTrue(
+            Channel::isAvailable(),
+            'the feedback channel is unavailable in the checkout the suite runs from',
+        );
     }
 
     protected function tearDown(): void
@@ -266,9 +271,10 @@ final class FeedbackTest extends TestCase
             Channel::all('closed', null, 20),
             static fn(array $feedback): bool => !str_contains($feedback['title'], self::MARKER),
         );
-        if ($closed === []) {
-            self::markTestSkipped('No feedback has been worked off in this checkout yet.');
-        }
+        // feedback/archive/ is committed, so having worked one off is a
+        // property of this repository rather than of the machine it runs on.
+        // Skipping here would have hidden an archive that stopped being read.
+        self::assertNotSame([], $closed, 'nothing in feedback/archive/ reads back as closed');
 
         foreach ($closed as $feedback) {
             self::assertSame('closed', $feedback['status']);

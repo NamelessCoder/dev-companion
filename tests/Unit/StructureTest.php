@@ -49,6 +49,55 @@ final class StructureTest extends TestCase
     }
 
     /**
+     * A skipped test is how a test stops holding anything without stopping the
+     * suite, and the summary that reports it is the one nobody reads twice.
+     *
+     * Every precondition this suite has is a property of this repository — it
+     * is a standalone checkout, its feedback archive is committed, its
+     * knowledge base is on disk — so each is an assertion instead, and a
+     * precondition that stopped being true is a failure with a sentence rather
+     * than a test that quietly went away. The two skips this replaced had both
+     * been true since the day they were written.
+     *
+     * A genuinely environment-dependent case would need a way past this. It
+     * would also need this paragraph rewritten, which is the point.
+     */
+    #[Test]
+    public function noTestSkipsItselfInsteadOfHolding(): void
+    {
+        $skipping = [];
+        foreach (self::testFiles() as $file) {
+            $contents = (string) file_get_contents($file);
+            foreach (['markTestSkipped', 'markTestIncomplete'] as $escape) {
+                if (str_contains($contents, $escape . '(')) {
+                    $skipping[] = basename($file) . ' calls ' . $escape . '()';
+                }
+            }
+        }
+
+        self::assertSame([], $skipping);
+    }
+
+    /** @return array<int, string> */
+    private static function testFiles(): array
+    {
+        $files = new \RecursiveIteratorIterator(
+            new \RecursiveDirectoryIterator(dirname(__DIR__), \FilesystemIterator::SKIP_DOTS)
+        );
+
+        $tests = [];
+        foreach ($files as $file) {
+            if ($file instanceof \SplFileInfo && str_ends_with($file->getFilename(), 'Test.php')) {
+                $tests[] = $file->getPathname();
+            }
+        }
+
+        sort($tests);
+
+        return $tests;
+    }
+
+    /**
      * Every class of this package, which is every PHP file below src/ except
      * the ones that are deliberately not classes: the bootstrap, and the probe
      * that runs inside somebody else's installation.

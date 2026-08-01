@@ -406,10 +406,12 @@ version says so; see the audience requirements in `requirements/audience/`.
   TYPO3 version are active. The order those three are asked in, how the probe is
   delivered, and what a fallback owes the caller:
   [documentation/knowledge/asking-the-installation.md](documentation/knowledge/asking-the-installation.md).
-- Checkout discovery is enabled per entrypoint and never derived from `getcwd()`
-  on its own. Only `bin/typo3-cms-mcp` calls `Instance::discoverFrom()`: a
-  request-serving endpoint has no such relationship to its callers, and its
-  document root may itself sit inside an installation.
+- The installation is never derived from `getcwd()` on its own. `Instance` walks
+  up from a directory it was handed, keeps it private and null until then, and
+  `Server\Entrypoint` is the only thing that hands one in — a request-serving
+  endpoint has no such relationship to its callers, and its document root may
+  itself sit inside an installation. Naming the root with `TYPO3_MCP_ROOT` is a
+  decision rather than a derivation and holds everywhere.
 - Never load an installation into this process. `Typo3Cli` shells out, so its
   autoloader, its dependencies, and its PHP version stay on the other side of a
   process boundary and a failure is an exit code rather than a dead session.

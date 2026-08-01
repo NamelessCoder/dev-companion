@@ -104,8 +104,8 @@ checked by hand against a set-up installation:
 ```bash
 php -r '
     require "vendor/autoload.php";
-    Typo3CmsMcp\Instance::discoverFrom("/path/to/a/site");
-    $answer = Typo3CmsMcp\Typo3Runtime::ask();
+    Typo3CmsMcp\Installation\Instance::discoverFrom("/path/to/a/site");
+    $answer = Typo3CmsMcp\Installation\Typo3Runtime::ask();
     printf("%s %s\n", $answer["state"], $answer["reason"]);
     print_r(array_map("count", $answer["topics"]));
 '

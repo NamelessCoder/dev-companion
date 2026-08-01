@@ -11,6 +11,7 @@ The requirements of the same name are in
 [the decisions readme](../readme.md) for how an entry is written and when it
 earns one.
 
+- [`D-FBK-10`][D-FBK-10] — `main` carries the state and the branch carries the work · 2026-08-01 · standing
 - [`D-FBK-5`][D-FBK-5] — The queue is worked before the pile is sighted · 2026-08-01 · standing
 - [`D-FBK-6`][D-FBK-6] — A name is cut where the feedback starts to differ · 2026-08-01 · standing
 - [`D-FBK-7`][D-FBK-7] — How a todo is worked travels with the todo · 2026-08-01 · standing
@@ -21,6 +22,7 @@ earns one.
 - [`D-FBK-3`][D-FBK-3] — A session is handed one todo, not the file · 2026-07-31 · corrected
 - [`D-FBK-4`][D-FBK-4] — The model is asked, because nothing else here can say it · 2026-07-31 · standing
 
+[D-FBK-10]: fbk-10-main-carries-the-state-and-the-branch-carries-the-work.md
 [D-FBK-5]: fbk-5-the-queue-is-worked-before-the-pile-is-sighted.md
 [D-FBK-6]: fbk-6-a-name-is-cut-where-the-feedback-starts-to-differ.md
 [D-FBK-7]: fbk-7-how-a-todo-is-worked-travels-with-the-todo.md

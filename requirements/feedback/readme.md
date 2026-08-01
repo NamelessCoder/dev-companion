@@ -16,6 +16,7 @@ when it is added.
 - [`R-FBK-7`][R-FBK-7] — The work already judged comes before judging more · held
 - [`R-FBK-8`][R-FBK-8] — A feedback's name says what only that feedback says · held
 - [`R-FBK-9`][R-FBK-9] — A todo is worked from what was read · held
+- [`R-FBK-10`][R-FBK-10] — Work somebody has in hand is offered to nobody else · held
 
 [R-FBK-1]: fbk-1-a-feedback-is-about-as-many-tools-as-it-is-about.md
 [R-FBK-2]: fbk-2-a-feedback-that-was-worked-off-stays-answerable-for.md
@@ -26,3 +27,4 @@ when it is added.
 [R-FBK-7]: fbk-7-the-work-already-judged-comes-before-judging-more.md
 [R-FBK-8]: fbk-8-a-feedbacks-name-says-what-only-that-feedback-says.md
 [R-FBK-9]: fbk-9-a-todo-is-worked-from-what-was-read.md
+[R-FBK-10]: fbk-10-work-somebody-has-in-hand-is-offered-to-nobody-else.md

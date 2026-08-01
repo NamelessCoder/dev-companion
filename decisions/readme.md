@@ -92,6 +92,7 @@ the repository has moved furthest away from since. Going back to one and adding
 - [`D-DIS-6`][D-DIS-6] — The protocol offers nothing to replace the working directory · 2026-08-01 · standing
 - [`D-DOC-1`][D-DOC-1] — A table is written so it reads unrendered · 2026-08-01 · standing
 - [`D-DOC-2`][D-DOC-2] — The prose rule is measured, and only the lead fails on it · 2026-08-01 · standing
+- [`D-FBK-10`][D-FBK-10] — `main` carries the state and the branch carries the work · 2026-08-01 · standing
 - [`D-FBK-5`][D-FBK-5] — The queue is worked before the pile is sighted · 2026-08-01 · standing
 - [`D-FBK-6`][D-FBK-6] — A name is cut where the feedback starts to differ · 2026-08-01 · standing
 - [`D-FBK-7`][D-FBK-7] — How a todo is worked travels with the todo · 2026-08-01 · standing
@@ -144,6 +145,7 @@ the repository has moved furthest away from since. Going back to one and adding
 [D-DIS-6]: discovery/dis-6-the-protocol-offers-nothing-to-replace-the-working-directory.md
 [D-DOC-1]: documentation/doc-1-a-table-is-written-so-it-reads-unrendered.md
 [D-DOC-2]: documentation/doc-2-the-prose-rule-is-measured-and-only-the-lead-fails.md
+[D-FBK-10]: feedback/fbk-10-main-carries-the-state-and-the-branch-carries-the-work.md
 [D-FBK-5]: feedback/fbk-5-the-queue-is-worked-before-the-pile-is-sighted.md
 [D-FBK-6]: feedback/fbk-6-a-name-is-cut-where-the-feedback-starts-to-differ.md
 [D-FBK-7]: feedback/fbk-7-how-a-todo-is-worked-travels-with-the-todo.md

@@ -191,14 +191,25 @@ its own — `bin/cli todo:list` prints the date for exactly that reading.
 
 ## Bringing the branches home
 
-**One at a time, and `composer ci` after each.**
+**One at a time, rebased onto `main` and fast-forwarded — no merge commits.**
 
-    git merge --no-ff todo/<name>
-    composer ci
+    git -C .worktrees/<name> rebase main
+    (cd .worktrees/<name> && composer ci)
+    git merge --ff-only todo/<name>
 
-Not because merging is dangerous, but because a suite that fails after three
-merges says nothing about which one broke it. The claims themselves never
-conflict — each session touched one file in `todo/` and it was its own.
+`main` moves while the sessions run, so a branch cut hours ago is behind it and
+cannot be fast-forwarded as it stands. The rebase is what makes the merge a
+fast-forward, and `--ff-only` is what says so: where it refuses, something is
+not what this procedure assumes, and that is worth stopping for. What comes out
+is one sequence of commits on `main` rather than a merge commit per claim saying
+nothing but that a claim existed.
+
+**`composer ci` runs in the worktree, after the rebase.** That is the first
+moment the session's work stands on what `main` has become, and it is the only
+run that says anything: one from before the rebase checked a tree that no longer
+exists. One at a time for the same reason — a suite that fails after three
+branches says nothing about which one broke it. The claims themselves never
+conflict, each session having touched one file in `todo/` and its own.
 
 Where one branch fixes something the others are also failing on, that one goes
 first. Otherwise every merge behind it is checked against a suite that was

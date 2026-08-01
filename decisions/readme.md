@@ -124,7 +124,7 @@ the repository has moved furthest away from since. Going back to one and adding
 - [`D-CAT-1`][D-CAT-1] — A catalog entry is bound whole, and the binding is derived · 2026-07-29 · standing
 - [`D-CAT-2`][D-CAT-2] — The index of worked examples is curated, and existence is all that is checked · 2026-07-29 · corrected
 - [`D-DIS-1`][D-DIS-1] — The root package counts as an installed package · 2026-07-29 · tested
-- [`D-DIS-2`][D-DIS-2] — Discovery honours the declared vendor-dir and bin-dir · 2026-07-29 · tested
+- [`D-DIS-2`][D-DIS-2] — Discovery honours the declared vendor-dir and bin-dir · 2026-07-29 · corrected
 - [`D-DIS-3`][D-DIS-3] — A label query is words, and the console is asked with a regex · 2026-07-29 · standing
 - [`D-DIS-4`][D-DIS-4] — The version comes from the core package, not from the console · 2026-07-29 · standing
 - [`D-GUI-1`][D-GUI-1] — A missing release target becomes a placeholder, not `main` · 2026-07-29 · standing

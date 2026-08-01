@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Typo3CmsMcp\Cli;
 
+use Typo3CmsMcp\Cli;
 use Typo3CmsMcp\Feedback as Notes;
 use Typo3CmsMcp\Todo;
 
@@ -30,6 +31,7 @@ final class Feedback implements Subject
     {
         return [
             'list' => ['', 'every open note, newest first', self::list(...)],
+            'archive' => ['<note>...', 'move the notes a change worked off into feedback/archive/', self::archive(...)],
         ];
     }
 
@@ -60,5 +62,33 @@ final class Feedback implements Subject
         }
 
         return $unjudged === 0 ? 0 : 1;
+    }
+
+    /**
+     * Closing a note, which is moving it.
+     *
+     * In the same commit as the improvement it asked for, so that commit is
+     * both what answers the note and what says so. Several notes closed by one
+     * change are named in one call, because they are one commit.
+     *
+     * @param array<int, string> $arguments
+     */
+    private static function archive(array $arguments): int
+    {
+        if ($arguments === []) {
+            return Cli::usage(self::class, 'archive');
+        }
+
+        foreach ($arguments as $note) {
+            try {
+                printf("%s\n", Notes::archive($note));
+            } catch (\InvalidArgumentException|\RuntimeException $exception) {
+                fwrite(STDERR, $exception->getMessage() . "\n");
+
+                return 1;
+            }
+        }
+
+        return 0;
     }
 }

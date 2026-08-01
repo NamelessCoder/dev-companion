@@ -179,7 +179,9 @@ final class Todo
         }
 
         if (str_starts_with($what, 'feedback/')) {
-            return is_file(Paths::root() . '/' . $what)
+            // A note in the archive was answered, whether the todo names it
+            // where it was or where it now is.
+            return is_file(Paths::root() . '/' . $what) && !str_starts_with($what, 'feedback/archive/')
                 ? null
                 : 'and that note is closed — the todo is done, or trims to the part that is left';
         }

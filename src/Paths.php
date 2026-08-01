@@ -38,4 +38,14 @@ final class Paths
     {
         return self::root() . '/feedback';
     }
+
+    /**
+     * The notes that were worked off. They stay readable rather than being
+     * deleted: what a session reported about this server is evidence about it,
+     * and the answer to it is the half nobody else can reconstruct.
+     */
+    public static function feedbackArchive(): string
+    {
+        return self::feedback() . '/archive';
+    }
 }

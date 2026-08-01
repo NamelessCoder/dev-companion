@@ -413,11 +413,11 @@ final class Tools
             ],
             [
                 'name' => 'typo3_feedback_list',
-                'description' => 'List improvement notes recorded via typo3_feedback_record, newest first, so they can be worked off. Filter by status, by category, or by the tool a note is about. A note is closed by deleting its file, so status="closed" answers "what became of what I reported" from the commit that removed it.',
+                'description' => 'List improvement notes recorded via typo3_feedback_record, newest first, so they can be worked off. Filter by status, by category, or by the tool a note is about. A note that was worked off is kept, not deleted, so status="closed" answers "what became of what I reported" — the note as it was recorded, plus the commit that closed it.',
                 'inputSchema' => [
                     'type' => 'object',
                     'properties' => [
-                        'status' => ['type' => 'string', 'enum' => ['open', 'closed', 'all'], 'default' => 'open', 'description' => 'open: the notes still in the backlog. closed: the ones already worked off, read from the commits that deleted them, each with the commit subject saying what came of it. all: both. A closed note carries no category and no tools, so those filters answer from the open half alone.'],
+                        'status' => ['type' => 'string', 'enum' => ['open', 'closed', 'all'], 'default' => 'open', 'description' => 'open: the notes still in the backlog. closed: the ones already worked off, each with the commit subject saying what came of it. all: both. The category and tool filters apply to either.'],
                         'category' => ['type' => 'string', 'enum' => Feedback::CATEGORIES, 'description' => 'Restrict the list to one category.'],
                         'tool' => ['type' => 'string', 'description' => 'Restrict the list to the notes about one tool, for example typo3_label_lookup. A note naming several tools is matched by each of them.'],
                         'limit' => ['type' => 'integer', 'minimum' => 1, 'maximum' => 100, 'default' => 20, 'description' => 'Maximum number of notes to return.'],

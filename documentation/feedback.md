@@ -33,7 +33,7 @@ and that reading is the session's.
 Part of the work, not a step after it:
 
 - The commit that finishes a todo **deletes that todo**, the way the commit that
-  works a note off deletes the note. What it established is in `requirements/`
+  works a note off archives the note. What it established is in `requirements/`
   by then, and the commit is the record that it happened.
 - A todo that turns out to be half done is trimmed to the part that is left,
   with the next concrete step rewritten. One nobody can start from is worse than
@@ -110,23 +110,52 @@ notes are, and `typo3_feedback_list` is where they are read back.
 ## Working a note off
 
 A note is worked off in a commit that both implements the improvement **and
-deletes the note file**. The commit is the record that the gap was closed, so
-the `feedback/` directory only ever holds open items — a note that is still
-there has not been addressed yet. That record is also read back:
-`typo3_feedback_list` with `status="closed"` lists the deleted notes with the
+archives the note**:
+
+    bin/cli feedback archive feedback/2026-07-31-…-the-lookup-found-nothing.md
+
+That moves it to `feedback/archive/` and stamps it `closed`, so `feedback/` only
+ever holds open items — a note that is still there has not been addressed yet.
+The commit that moved it is the record of what came of it, and it is read back:
+`typo3_feedback_list` with `status="closed"` lists the archived notes with the
 commit subject that closed each one, which is what the agent that reported it
 can see. Write the subject so it answers "what came of my note".
 
 - One note per commit where possible. When one change closes several notes,
-  delete all of them in that commit and mention them in the commit body.
-- Never mark a note as done by editing its `status:` front matter; delete it.
-- Do not delete a note that was only partially addressed. Instead, trim the note
+  archive all of them in that commit — one call, since they are one commit — and
+  mention them in the commit body.
+- Never mark a note as done by editing its `status:` front matter. Where the
+  note stands is what says whether it was answered; the front matter is stamped
+  by the move, not instead of it.
+- Do not archive a note that was only partially addressed. Instead, trim the note
   down to the part that is still open and explain the remaining gap.
+
+## Why the archive is kept
+
+A note is deleted nowhere. What it holds is a session's report about this
+server — which skill activated, which calls the task actually needed, what it
+had to establish from the checkout or from its own knowledge instead — and that
+is evidence about this server that nothing else in the repository has. The
+requirement it established says what must be true from now on; it does not say
+what a session in somebody else's agent ran into on a Tuesday, and that is the
+half worth reading when the next one runs into it too.
+
+Keeping it is also what makes the closed half of `typo3_feedback_list` usable:
+a note read from a commit was a filename and a subject, with the category, the
+tools and the model gone with the file, so a query about one tool could only be
+answered from the open half. Both halves are now the same files read the same
+way.
+
+The notes worked off before the archive existed were restored into it from the
+commits that deleted them, and those carry the commit that closed them in their
+own front matter — `closed:`, `commit:` and `subject:`. They were all moved in
+one commit, and that move says nothing about any of them; every note archived
+since is answered by the commit that archived it.
 
 ## The three files around it
 
-Deleting the note removes the question, and the commit message records the
-answer. What outlives both is split three ways:
+Archiving the note takes the question out of the backlog, and the commit message
+records the answer. What outlives both is split three ways:
 
 - `requirements/` — what must be true from now on. A note is a question; the
   requirement it established has to keep holding while everything around it

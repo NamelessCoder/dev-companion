@@ -21,6 +21,7 @@ src/Typo3Cli.php   # runs that installation's console, via DDEV where there is o
 src/bootstrap.php  # locates the Composer autoloader
 knowledge/         # the knowledge base (markdown + JSON), the data source
 feedback/          # improvement notes left by agents (standalone checkout only)
+feedback/archive/  # the ones that were worked off; kept, because a session's report is evidence
 scenarios/         # user prompts and what has to come out of them, one case per file
 scenarios/forward/ # open forward reviews: a repository review and nothing more; the only kind that is run and recorded
 scenarios/contracts/ # targeted cases per audience, task skill and cross-cutting situation: one named task shape each
@@ -185,10 +186,17 @@ review marked `gap` names the requirement that is still open; a run of it
 produces the note that says what the task needed beyond it.
 
 A note is worked off in a commit that both implements the improvement **and
-deletes the note file**. The commit is the record that the gap was closed, so
-the `feedback/` directory only ever holds open items. Never mark a note as done
-by editing its `status:` front matter, and never delete one that was only
-partially addressed — trim it to the part that is still open instead.
+archives the note**: `bin/cli feedback archive <note>` moves it to
+`feedback/archive/`, so `feedback/` only ever holds open items and the commit
+that moved it is the record of what came of it. Where a note stands is what says
+whether it was answered, so never mark one as done by editing its `status:`
+front matter, and never archive one that was only partially addressed — trim it
+to the part that is still open instead.
+
+The archive is not a graveyard. A note is a session's report about this server —
+which skill it reached for, what it had to establish elsewhere, what an answer
+cost it — and that is evidence nothing else here holds; `typo3_feedback_list`
+reads it back with the note intact rather than as a filename in a commit.
 
 What outlives the note is split three ways, and keeping them apart is what keeps
 any of them readable: `requirements/` for what must be true from now on and what

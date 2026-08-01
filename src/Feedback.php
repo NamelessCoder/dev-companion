@@ -17,6 +17,12 @@ use Composer\InstalledVersions;
  *
  * One note per file: concurrent agents never touch the same file, so no
  * read-modify-write races and no merge conflicts on a shared log.
+ *
+ * A note that was worked off moves to feedback/archive/ rather than being
+ * deleted. What a session reported about this server — which skill it reached
+ * for, what it had to establish elsewhere, what the answer cost it — is
+ * evidence about this server that nothing else in the repository holds, and it
+ * stays worth reading long after the gap it named was closed.
  */
 final class Feedback
 {
@@ -31,7 +37,7 @@ final class Feedback
     /** What a note says about the model where none was named. */
     public const UNATTRIBUTED = 'unknown';
 
-    /** Separates the commits in the log the closed notes are read from. */
+    /** Separates the commits in the log a note's own answer is read from. */
     private const COMMIT_MARKER = "\x00";
 
     /**
@@ -84,7 +90,58 @@ final class Feedback
     }
 
     /**
+     * Moves a note that was worked off into the archive, and returns the path
+     * it now has, relative to the project root.
+     *
+     * Where a note stands is what says whether it was answered, so this is the
+     * whole of closing one: the open directory holds the questions, the archive
+     * holds the ones that have an answer. The note itself is not rewritten
+     * beyond saying so — it is a session's report about this server, and the
+     * report is what makes the answer readable later.
+     */
+    public static function archive(string $note): string
+    {
+        self::assertAvailable();
+
+        $name = basename(trim($note));
+        $source = Paths::feedback() . '/' . $name;
+        if ($name === '' || !str_ends_with($name, '.md') || !is_file($source)) {
+            throw new \InvalidArgumentException(sprintf('There is no open note named %s.', $name));
+        }
+
+        $directory = Paths::feedbackArchive();
+        if (!is_dir($directory) && !mkdir($directory, 0775, true) && !is_dir($directory)) {
+            throw new \RuntimeException(sprintf('Cannot create the archive directory: %s', $directory));
+        }
+
+        $target = $directory . '/' . $name;
+        if (file_exists($target)) {
+            throw new \RuntimeException(sprintf('%s is already archived.', $name));
+        }
+
+        $contents = (string) preg_replace(
+            '/^status: .*$/m',
+            "status: closed\nclosed: " . date('Y-m-d'),
+            (string) file_get_contents($source),
+            1,
+        );
+        if (file_put_contents($target, $contents) === false) {
+            throw new \RuntimeException(sprintf('Cannot write the archived note: %s', $target));
+        }
+        if (!unlink($source)) {
+            throw new \RuntimeException(sprintf('Cannot remove the note it was archived from: %s', $source));
+        }
+
+        return 'feedback/archive/' . $name;
+    }
+
+    /**
      * Reads recorded notes, newest first.
+     *
+     * Both halves are the same files read the same way, so a query that asks
+     * for a category or a tool is answered over all of them. That is what the
+     * archive buys: a closed note used to be a filename in a commit, with the
+     * front matter that says what it was about long gone.
      *
      * @return array<int, array{file: string, date: string, category: string, status: string, model: string, tool: string, tools: array<int, string>, title: string, closedBy: ?array{commit: string, date: string, subject: string}}>
      */
@@ -96,44 +153,34 @@ final class Feedback
     ): array {
         self::assertAvailable();
 
-        $files = glob(Paths::feedback() . '/*.md') ?: [];
-        rsort($files); // filenames start with the timestamp, so this is newest first
+        $files = $status === 'closed' ? [] : (glob(Paths::feedback() . '/*.md') ?: []);
+        if ($status !== 'open') {
+            $files = [...$files, ...(glob(Paths::feedbackArchive() . '/*.md') ?: [])];
+        }
+        // The filename starts with the timestamp the note was recorded at, so
+        // this is newest first across both halves — which directory a note is
+        // in says whether it was answered, not when it arrived.
+        usort($files, static fn(string $left, string $right): int => strcmp(basename($right), basename($left)));
 
         $wanted = $tool === null ? null : (self::toolNames($tool)[0] ?? null);
+        $answers = self::answers();
 
         $notes = [];
-        if ($status !== 'closed') {
-            foreach ($files as $file) {
-                $note = self::parse($file);
-                if ($note === null) {
-                    continue;
-                }
-                if ($status !== null && $status !== 'all' && $note['status'] !== $status) {
-                    continue;
-                }
-                if ($category !== null && $note['category'] !== $category) {
-                    continue;
-                }
-                if ($wanted !== null && !in_array($wanted, $note['tools'], true)) {
-                    continue;
-                }
-
-                $notes[] = $note;
-                if (count($notes) >= $limit) {
-                    break;
-                }
+        foreach ($files as $file) {
+            $note = self::parse($file, $answers);
+            if ($note === null) {
+                continue;
             }
-        }
+            if ($category !== null && $note['category'] !== $category) {
+                continue;
+            }
+            if ($wanted !== null && !in_array($wanted, $note['tools'], true)) {
+                continue;
+            }
 
-        // A closed note has no front matter left to filter on, so a query that
-        // asks for a category or a tool is answered from the open half alone
-        // rather than with entries that match neither.
-        if (($status === 'closed' || $status === 'all') && $category === null && $wanted === null) {
-            foreach (self::closed($limit) as $note) {
-                if (count($notes) >= $limit) {
-                    break;
-                }
-                $notes[] = $note;
+            $notes[] = $note;
+            if (count($notes) >= $limit) {
+                break;
             }
         }
 
@@ -141,41 +188,39 @@ final class Feedback
     }
 
     /**
-     * The notes that were worked off, read from the commits that deleted them.
+     * What became of each archived note, read from the commit that archived it.
      *
-     * A note is closed by deleting the file, and the commit that does it is the
-     * record of what came of it. That record is complete and it is also
-     * invisible to the agent that wrote the note: from where it stands the file
-     * it recorded simply stopped existing, which reads as "lost", and the same
-     * gap gets reported again. So the history is read back — the commit, its
-     * date, and its subject, which is the sentence that says what happened.
+     * One commit implements the improvement and moves the note, so that
+     * commit's subject is the sentence that answers it — and the answer is the
+     * half the agent that reported the gap cannot see for itself. Reading it
+     * back from the history rather than writing it into the note is what keeps
+     * it from being a second copy of what git already has, and a note archived
+     * but not yet committed simply has no answer yet.
      *
-     * Nothing is written and nothing is checked out. Where git is not there or
-     * the checkout has no history, there is no closed half and the list says
-     * so by being empty.
+     * The notes worked off before this archive existed carry their own commit
+     * in the front matter, which wins: they were all moved here in one commit,
+     * and that move says nothing about any of them.
      *
-     * @return array<int, array{file: string, date: string, category: string, status: string, model: string, tool: string, tools: array<int, string>, title: string, closedBy: array{commit: string, date: string, subject: string}}>
+     * @return array<string, array{commit: string, date: string, subject: string}>
      */
-    private static function closed(int $limit): array
+    private static function answers(): array
     {
-        $root = dirname(Paths::feedback());
         $log = self::git([
             'log',
-            '--diff-filter=D',
+            '--diff-filter=A',
             '--name-only',
             '--date=short',
             // %x00 and %x1f are git's own escapes: the argument carries them as
             // text, and git writes the separators the output is split on.
             '--format=%x00%h%x1f%ad%x1f%s',
-            '--max-count=' . max($limit * 4, 40),
             '--',
-            'feedback',
-        ], $root);
+            'feedback/archive',
+        ], Paths::root());
         if ($log === null) {
             return [];
         }
 
-        $notes = [];
+        $answers = [];
         foreach (explode(self::COMMIT_MARKER, $log) as $block) {
             $lines = preg_split('/\R/', trim($block)) ?: [];
             $header = array_shift($lines);
@@ -186,32 +231,13 @@ final class Feedback
 
             foreach ($lines as $path) {
                 $path = trim($path);
-                if (!str_starts_with($path, 'feedback/') || !str_ends_with($path, '.md')) {
-                    continue;
-                }
-                $notes[] = [
-                    'file' => $path,
-                    // The filename carries the timestamp the note was recorded
-                    // at, which is the half a closed note still has.
-                    'date' => substr(basename($path), 0, 10),
-                    // The file is gone, and with it the front matter. What a
-                    // closed note still has is its name, its date and the
-                    // commit that closed it.
-                    'category' => '',
-                    'status' => 'closed',
-                    'model' => '',
-                    'tool' => '',
-                    'tools' => [],
-                    'title' => self::titleFromFileName($path),
-                    'closedBy' => ['commit' => $commit, 'date' => $date, 'subject' => $subject],
-                ];
-                if (count($notes) >= $limit) {
-                    return $notes;
+                if (str_starts_with($path, 'feedback/archive/') && str_ends_with($path, '.md')) {
+                    $answers[$path] ??= ['commit' => $commit, 'date' => $date, 'subject' => $subject];
                 }
             }
         }
 
-        return $notes;
+        return $answers;
     }
 
     /**
@@ -243,14 +269,6 @@ final class Feedback
         return proc_close($process) === 0 ? $output : null;
     }
 
-    /** The slug a note filename carries, read back as words. */
-    private static function titleFromFileName(string $path): string
-    {
-        $slug = (string) preg_replace('/^\d{4}-\d{2}-\d{2}-\d{6}-?/', '', basename($path, '.md'));
-
-        return $slug === '' ? basename($path) : str_replace('-', ' ', $slug);
-    }
-
     private static function assertAvailable(): void
     {
         if (!self::isAvailable()) {
@@ -262,9 +280,10 @@ final class Feedback
     }
 
     /**
-     * @return array{file: string, date: string, category: string, status: string, model: string, tool: string, tools: array<int, string>, title: string, closedBy: null}|null
+     * @param array<string, array{commit: string, date: string, subject: string}> $answers
+     * @return array{file: string, date: string, category: string, status: string, model: string, tool: string, tools: array<int, string>, title: string, closedBy: ?array{commit: string, date: string, subject: string}}|null
      */
-    private static function parse(string $file): ?array
+    private static function parse(string $file, array $answers): ?array
     {
         $contents = file_get_contents($file);
         if ($contents === false) {
@@ -287,12 +306,17 @@ final class Feedback
         }
 
         $tools = self::toolNames($meta['tool'] ?? '');
+        $relative = substr($file, strlen(Paths::root()) + 1);
+        $archived = str_starts_with($relative, 'feedback/archive/');
 
         return [
-            'file' => 'feedback/' . basename($file),
+            'file' => $relative,
             'date' => $meta['date'] ?? '',
             'category' => $meta['category'] ?? 'idea',
-            'status' => $meta['status'] ?? 'open',
+            // The directory says it, not the front matter: a note that was
+            // answered is one that was moved, and a status somebody edited in
+            // place is the one thing that could disagree with where it is.
+            'status' => $archived ? 'closed' : 'open',
             // A note written before the field existed carries no model, which
             // is the same thing the field says when it was not answered.
             'model' => $meta['model'] ?? self::UNATTRIBUTED,
@@ -303,7 +327,30 @@ final class Feedback
             'title' => $title,
             // An open note has nothing closing it yet, and the field is present
             // either way so a caller never has to ask which half it is holding.
-            'closedBy' => null,
+            'closedBy' => $archived ? self::answer($meta, $answers[$relative] ?? null) : null,
+        ];
+    }
+
+    /**
+     * What the note itself says became of it, and otherwise what the history
+     * says. Only the notes restored from before the archive existed carry it
+     * themselves — see answers().
+     *
+     * @param array<string, string> $meta
+     * @param array{commit: string, date: string, subject: string}|null $fromHistory
+     * @return array{commit: string, date: string, subject: string}|null
+     */
+    private static function answer(array $meta, ?array $fromHistory): ?array
+    {
+        $subject = trim($meta['subject'] ?? '', '"');
+        if ($subject === '') {
+            return $fromHistory;
+        }
+
+        return [
+            'commit' => $meta['commit'] ?? '',
+            'date' => $meta['closed'] ?? '',
+            'subject' => $subject,
         ];
     }
 

@@ -30,7 +30,11 @@ final class FeedbackTest extends TestCase
     protected function tearDown(): void
     {
         Instance::discoverFrom(null);
-        foreach (glob(Paths::feedback() . '/*.md') ?: [] as $file) {
+        $written = [
+            ...(glob(Paths::feedback() . '/*.md') ?: []),
+            ...(glob(Paths::feedbackArchive() . '/*.md') ?: []),
+        ];
+        foreach ($written as $file) {
             if (str_contains((string) file_get_contents($file), self::MARKER)) {
                 unlink($file);
             }
@@ -191,21 +195,57 @@ final class FeedbackTest extends TestCase
     }
 
     #[Test]
+    public function aNoteThatWasWorkedOffKeepsEverythingItSaid(): void
+    {
+        // Closing a note used to mean deleting it, which left the agent that
+        // wrote it seeing the file simply stop existing — and left the closed
+        // half of the list as bare filenames, with the front matter that says
+        // what the note was about gone with the file.
+        $file = Feedback::record([
+            'observation' => self::MARKER . ' the archive keeps what the note said',
+            'category' => 'tool-gap',
+            'tool' => 'typo3_component_lookup',
+        ]);
+
+        $archived = Feedback::archive($file);
+        self::assertSame('feedback/archive/' . basename($file), $archived);
+        self::assertFileDoesNotExist(Paths::root() . '/' . $file);
+        self::assertStringContainsString(
+            'status: closed',
+            (string) file_get_contents(Paths::root() . '/' . $archived),
+        );
+
+        self::assertNotContains($file, array_column(Feedback::notes('open', null, 200), 'file'));
+        $note = self::noteFor($archived);
+        self::assertSame('closed', $note['status']);
+        self::assertSame('tool-gap', $note['category']);
+        self::assertSame(['typo3_component_lookup'], $note['tools']);
+
+        // And the filters reach it, which is the half the deleted note lost.
+        self::assertContains(
+            $archived,
+            array_column(Feedback::notes('closed', 'tool-gap', 200, 'typo3_component_lookup'), 'file'),
+        );
+    }
+
+    #[Test]
     public function aNoteThatWasWorkedOffIsStillAnswerableFor(): void
     {
-        // A note is closed by deleting it, and the agent that wrote it sees the
-        // file it recorded simply stop existing — which reads as lost, and the
-        // same gap gets reported a second time. The commit that deleted it is
-        // the record of what came of it, so that is what the closed half is
-        // read back from.
-        $closed = Feedback::notes('closed', null, 10);
+        // What came of a note is the commit that archived it, which is the one
+        // thing the agent that reported the gap cannot see for itself: without
+        // it the same gap is reported again, and a request that shipped in the
+        // meantime is dropped silently.
+        $closed = array_filter(
+            Feedback::notes('closed', null, 20),
+            static fn(array $note): bool => !str_contains($note['title'], self::MARKER),
+        );
         if ($closed === []) {
             self::markTestSkipped('No note has been worked off in this checkout yet.');
         }
 
         foreach ($closed as $note) {
             self::assertSame('closed', $note['status']);
-            self::assertStringStartsWith('feedback/', $note['file']);
+            self::assertStringStartsWith('feedback/archive/', $note['file']);
             self::assertNotNull($note['closedBy']);
             self::assertNotSame('', $note['closedBy']['commit']);
             // The subject is the sentence that says what happened to it.
@@ -214,12 +254,21 @@ final class FeedbackTest extends TestCase
 
         // An open note is in the same list and says it is open.
         $file = Feedback::record(['observation' => self::MARKER . ' open beside the closed ones']);
-        $all = Feedback::notes('all', null, 100);
+        $all = Feedback::notes('all', null, 200);
         self::assertContains($file, array_column($all, 'file'));
         self::assertContains('closed', array_column($all, 'status'));
-        foreach ($all as $note) {
-            self::assertSame($note['status'] === 'closed', $note['closedBy'] !== null);
-        }
+    }
+
+    #[Test]
+    public function onlyAnOpenNoteCanBeArchived(): void
+    {
+        $file = Feedback::record(['observation' => self::MARKER . ' archived once']);
+        Feedback::archive($file);
+
+        // The same note twice is the mistake this catches: the second call
+        // would otherwise overwrite the answer the first one recorded.
+        $this->expectException(\InvalidArgumentException::class);
+        Feedback::archive($file);
     }
 
     #[Test]

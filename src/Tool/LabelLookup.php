@@ -105,15 +105,15 @@ final class LabelLookup extends ReadOnlyTool
         // goes looking for a console that is not broken.
         //
         // The exit code cannot draw that line on its own, and reading it alone
-        // put every other exit-0-without-payload on the "none" side. The one
-        // that happens is not a core command taking a strange path — all four
-        // this server calls exit non-zero on everything but an empty result —
-        // it is the payload sharing stdout with whatever else writes there: an
-        // Xdebug line, a PHP deprecation naming `{closure}`, anything carrying
-        // a brace or a bracket ahead of the JSON is enough to defeat the
-        // decoder, and the installation then holds the very labels the caller
-        // was told it has none of. So the warning is what says "none", and
-        // everything else without a payload is nothing established.
+        // put every other exit-0-without-payload on the "none" side. Nobody has
+        // established what else lands there — the two obvious carriers do not:
+        // Xdebug's connection warning goes to stderr, and a PHP deprecation is
+        // swallowed by TYPO3's own error handler before it can print. What is
+        // measured is the tool's side of it: four different stdouts, one of
+        // them carrying an intact payload the decoder missed, all answered "no
+        // label carries these words". An exit code of 0 certifies nothing about
+        // the stream, so the warning is what says "none", and everything else
+        // without a payload is nothing established.
         $establishedNone = $answer['exitCode'] === 0
             && str_contains($answer['output'], self::NOTHING_MATCHED);
 

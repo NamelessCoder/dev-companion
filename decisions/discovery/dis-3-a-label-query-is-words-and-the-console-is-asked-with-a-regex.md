@@ -32,22 +32,36 @@ query had to be recomposed into something the console can answer at once.
   than an empty result; the answer would then be a confident "none" where
   nothing was established. The exit code is the only signal being read.
 
-- **Corrected on 2026-08-01:** the assumption held for the command and failed
-  for the stream it writes to. `TranslationDomainSearchCommand` in
-  `.checkouts/14.3` and `.checkouts/main`, and the other three commands this
-  server calls, answer every outcome but the empty result with
-  `Command::FAILURE`, so no core command takes a strange exit-0 path. But
-  `--json` shares stdout with the `$io->title()` the same command prints ahead
-  of it, and `Typo3Cli::decode()` starts at the first `{` or `[`: whatever else
-  reaches that stream before the payload defeats the decoder while the exit
-  code stays 0. Put to `typo3_label_lookup` through a fixture console, an
-  Xdebug `[Step Debug]` line, a deprecation naming `{closure}`, the real
-  `[WARNING] No language resource files found.` and an empty stdout all came
-  back as one answer — `answeredBy: installation`, `matchCount: 0`, "No label
-  in … carries all of" — and in the first two the installation held the label
-  that was asked for.
-- **Since then:** the exit code is not the signal. `Typo3Cli::json()` hands back
-  what was printed, only the warning above is read as "none", and every other
+- **Corrected on 2026-08-01:** not because the "Wrong if" was caught happening.
+  It was not. What was measured is the half that does not depend on catching
+  it: put to `typo3_label_lookup` through a fixture console, four different
+  stdouts — the real `[WARNING] No language resource files found.`, an empty
+  one, and two carrying a bracket ahead of an intact payload — came back as one
+  answer, `answeredBy: installation`, `matchCount: 0`, "No label in … carries
+  all of". In the two with a payload the installation held the very label that
+  was asked for. The tool had one shape for four inputs and no way to tell them
+  apart, which is enough to correct without knowing who produces the input.
+- **Corrected on 2026-08-01:** and the mechanism first written here was wrong,
+  so it is written out. `--json` does share stdout with the `$io->title()` the
+  same command prints ahead of it, and `Typo3Cli::decode()` does start at the
+  first `{` or `[`. But neither carrier named for getting something onto that
+  stream survived checking. Xdebug's "Could not connect to debugging client"
+  goes through `xdebug_log_ex` → `xdebug_php_log` → `php_log_err()`, which on
+  CLI with `error_log` unset writes to **stderr** — measured — and
+  `Typo3Cli::execute()` reads stderr on its own pipe. A PHP deprecation reaches
+  stdout only with `display_errors=On` (measured; off in this machine's CLI
+  ini), and inside a booted command not even then:
+  `Bootstrap::initializeErrorHandling()` registers `ErrorHandler`, whose
+  `handleError()` returns `ERROR_HANDLED = true` on every path that does not
+  throw, so PHP prints nothing. `CommandApplication::run()` additionally
+  discards what `ext_localconf.php` buffered. **No producer of stdout noise
+  ahead of the payload is established.** What would settle it is whether
+  `ddev exec` folds the container's stderr into its own stdout — DDEV is how
+  this server reaches most consoles, and no project on this machine was running
+  to ask.
+- **Since then:** the exit code is not the signal, on the narrower ground that
+  it never certified anything. `Typo3Cli::json()` hands back what was printed,
+  only the warning above is read as "none", and every other
   exit-0-without-payload settles nothing and takes the route an unreachable
   console takes: the packages' XLF files, and `answeredBy: nothing` where they
   hold none either. Reading the warning rather than the exit code fails in the

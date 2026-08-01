@@ -111,15 +111,16 @@ final class LabelSearchTest extends TestCase
     #[Test]
     public function aConsoleThatExitsWellAndSaysNothingUsableEstablishesNothing(): void
     {
-        // The payload shares stdout with everything else that writes there, and
-        // the decoder starts at the first brace or bracket. An Xdebug line, a
-        // deprecation naming {closure}, an extension echoing on boot: any of
-        // them lands ahead of the JSON and the exit code stays 0. Read as
-        // "none", that is the one wrong answer nothing distinguishes from a
-        // right one — the labels are in the installation, and the caller was
-        // told it has none.
+        // The payload shares stdout with the title the same command prints
+        // ahead of it, and the decoder starts at the first brace or bracket.
+        // What else can land on that stream is not established — the two
+        // obvious candidates were checked and neither reaches it. That is the
+        // point rather than a gap in it: exit 0 says nothing about the stream,
+        // so the tool may not read it as an installation that answered. Here
+        // the payload is intact and the decoder misses it, and read as "none"
+        // that is the one wrong answer nothing distinguishes from a right one.
         $this->consoleThatPrints(
-            "Xdebug: [Step Debug] Could not connect to debugging client. Tried: localhost:9003.\n"
+            "[note] something reached this stream ahead of the payload\n"
             . "\nLabels in active extensions\n===========================\n\n"
             . (string) json_encode(['items' => [[
                 'resource' => 'EXT:core/Resources/Private/Language/locallang.xlf',

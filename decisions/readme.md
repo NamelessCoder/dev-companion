@@ -103,7 +103,7 @@ the repository has moved furthest away from since. Going back to one and adding
 - [`D-SKL-1`][D-SKL-1] — The order a task starts in is one file, and the reading comes last in it · 2026-08-01 · tested
 - [`D-ANS-4`][D-ANS-4] — The instruction budget is 2048 characters, on one client's evidence · 2026-07-31 · standing
 - [`D-AUD-3`][D-AUD-3] — The instructions carry the entry point, because the tool descriptions never arrive · 2026-07-31 · standing
-- [`D-DIS-5`][D-DIS-5] — A registry with no console command is read by booting the installation · 2026-07-31 · standing
+- [`D-DIS-5`][D-DIS-5] — A registry with no console command is read by booting the installation · 2026-07-31 · tested
 - [`D-EVI-1`][D-EVI-1] — Forward evidence comes from a review, not from a prompt that knows the answer · 2026-07-31 · standing
 - [`D-EVI-2`][D-EVI-2] — A skill crossing is read rather than run · 2026-07-31 · standing
 - [`D-EVI-3`][D-EVI-3] — A review runs the checks that cannot change the code · 2026-07-31 · standing
@@ -111,7 +111,7 @@ the repository has moved furthest away from since. Going back to one and adding
 - [`D-FBK-2`][D-FBK-2] — The order of the work is declared, not inferred · 2026-07-31 · standing
 - [`D-FBK-3`][D-FBK-3] — A session is handed one todo, not the file · 2026-07-31 · corrected
 - [`D-FBK-4`][D-FBK-4] — The model is asked, because nothing else here can say it · 2026-07-31 · standing
-- [`D-VER-4`][D-VER-4] — A supported range is a property of the package, not of the checkout · 2026-07-31 · standing
+- [`D-VER-4`][D-VER-4] — A supported range is a property of the package, not of the checkout · 2026-07-31 · tested
 - [`D-ANS-2`][D-ANS-2] — Three numbers now decide what a lookup answers, and they were measured, not reasoned · 2026-07-30 · tested
 - [`D-ANS-3`][D-ANS-3] — Retrieval stays lexical and runtime inspection stays narrow · 2026-07-30 · standing
 - [`D-CAT-3`][D-CAT-3] — The component index is curated; its contract comes from the installation · 2026-07-30 · standing

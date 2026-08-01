@@ -1,6 +1,8 @@
 # Try `D-KNW-1` with a backend-only task that mentions a content element
 
 **Serves:** decisions/
+**Branch:** todo/try-d-knw-1-with-a-backend-only-task-that-mentions-a
+**Claimed:** 2026-08-01
 
 Sitepackage work is answered from the General category, and the named failure is
 a backend-only task coming back with the sitepackage layout because it mentioned

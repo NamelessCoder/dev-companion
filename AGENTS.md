@@ -266,66 +266,41 @@ is verified against:
 
 ## Feedback workflow
 
-Agents using this server record improvement feedback through `typo3_feedback_record`.
-Each feedback is one markdown file below `feedback/`. A session in an agent whose
-transcript this repository cannot read files its own: it is handed the debrief
-prompt in [documentation/feedback/readme.md](documentation/feedback/readme.md) after its work
-is finished, never before, so the debrief cannot steer the session it reports on.
+Agents using this server record improvement feedback through
+`typo3_feedback_record`, one markdown file per feedback below `feedback/`.
+`scenarios/` holds the sessions those came out of, so they can be run again:
+open forward reviews in `scenarios/forward/`, targeted contract cases in
+`scenarios/contracts/`. A prompt names a kind of project, never one
+installation on somebody's machine — that lives in `todo.md`, where it can go
+stale without taking a case with it.
 
-Where a feedback comes from is usually a real session. `scenarios/` is where those
-sessions are written down so they can be run again: one prompt per file, in the
-words a user would use, with the environment it has to be run in and what has to
-come out of it. It holds two kinds, and mixing them is what the split of
-2026-07-31 undid. An **open forward review** in `scenarios/forward/` asks for a
-review of the repository and names no subsystem, skill, tool or expected
-finding — what the agent chooses to inspect is the evidence, and only these are
-run and recorded. A **targeted contract case** in `scenarios/contracts/` names
-one task shape so its routing stays held; it proves that a known task still gets
-its workflow, never that an agent discovered the subject.
+- A feedback is worked off in a commit that both implements the improvement
+  **and** archives it with `bin/cli feedback archive <feedback>`, so `feedback/`
+  only ever holds open items and the commit that moved it is the record of what
+  came of it.
+- Never mark one done by editing its `status:` front matter, and never archive
+  one that was only partially addressed — trim it to the part that is left.
+- Nothing is deleted from the archive. A feedback is a session's report about
+  this server, which is evidence nothing else here holds.
+- What outlives it is split three ways: `requirements/` for what must be true
+  from now on and what holds it there, `decisions/` for what a change rested on
+  and what would show it wrong, `todo.md` for the order of the work. Add the
+  requirement in the commit that works the feedback off; name its test in the
+  commit that writes that test.
+- Three states mean unfinished — a requirement marked **open**, one held by
+  `not guarded`, a decision still `standing` whose **Wrong if** nobody has been
+  back to. All three are legitimate, so no check may fail on them.
+  `bin/cli backlog list` is what reads them out instead, and what a session owes
+  anything on it is a judgement: an item in `todo.md`, or the sentence in
+  `decisions/` that says why not.
 
-A recorded run is a source of feedback in its own right, and the good ones are a
-source too. Whatever a run taught that is not specific to the repository it ran
-against becomes a feedback here rather than a paragraph in the run's own evidence:
-that field is read once, by whoever judged that run, while `feedback/` is what
-every later session walks. Running a review, judging it, and reading one that
-stopped without an error: [documentation/evidence/forward-runs.md](documentation/evidence/forward-runs.md).
-
-A prompt names a kind of project, never one installation on somebody's machine —
-that lives in `todo.md`, where it can go stale without taking a case with it.
-Cases the server cannot answer yet belong here too: the suite is the map of what
-the three audiences need, not a regression net around what already works. A
-review marked `gap` names the requirement that is still open; a run of it
-produces the feedback that says what the task needed beyond it.
-
-A feedback is worked off in a commit that both implements the improvement **and
-archives the feedback**: `bin/cli feedback archive <feedback>` moves it to
-`feedback/archive/`, so `feedback/` only ever holds open items and the commit
-that moved it is the record of what came of it. Where a feedback stands is what says
-whether it was answered, so never mark one as done by editing its `status:`
-front matter, and never archive one that was only partially addressed — trim it
-to the part that is still open instead.
-
-The archive is not a graveyard. A feedback is a session's report about this server —
-which skill it reached for, what it had to establish elsewhere, what an answer
-cost it — and that is evidence nothing else here holds; `typo3_feedback_list`
-reads it back with the feedback intact rather than as a filename in a commit.
-
-What outlives the feedback is split three ways, and keeping them apart is what keeps
-any of them readable: `requirements/` for what must be true from now on and what
-holds it there, `decisions/` for what a change rested on and what would show it
-wrong, `todo.md` for the order of the work. Add the requirement in the commit
-that works the feedback off; name its test in the commit that writes that test.
-
-Three states mean unfinished — a requirement marked **open**, one held by
-`not guarded`, a decision still `standing` whose **Wrong if** nobody has been
-back to. All three are legitimate, so no check may fail on them, which is why
-nothing read them for as long as they existed. `bin/cli backlog list` is that
-reading, and what a session owes anything on it is a judgement: an item in
-`todo.md`, or the sentence in `decisions/` that says why not.
-
-The full account — the feedback lifecycle, what each of the three files holds, and
-what `bin/cli backlog list` reports — is in
-[documentation/feedback/readme.md](documentation/feedback/readme.md).
+How each of those is carried out — the debrief that gets a feedback out of a
+session this repository cannot read, judging one, what each of the three files
+holds, and what `bin/cli backlog list` reports:
+[documentation/feedback/readme.md](documentation/feedback/readme.md). Running a
+forward review, judging it, and reading one that stopped without an error:
+[documentation/evidence/forward-runs.md](documentation/evidence/forward-runs.md).
+What each kind of scenario is for: [scenarios/readme.md](scenarios/readme.md).
 
 ## What describes this server to someone else
 

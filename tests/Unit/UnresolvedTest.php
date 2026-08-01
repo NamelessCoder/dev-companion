@@ -45,17 +45,20 @@ final class UnresolvedTest extends TestCase
      * It is what an *item* names, not what the file contains. todo.md also
      * lists what is deliberately not queued, and an id named there has been
      * decided about in the opposite direction.
+     *
+     * Read as two lists rather than entry by entry, because the reading is
+     * empty on any day every requirement is held, and a loop over nothing is a
+     * test that reports as passing while holding no such thing.
      */
     #[Test]
     public function anEntryIsQueuedWhenAnItemNamesIt(): void
     {
-        foreach (Unresolved::requirements() as $requirement) {
-            self::assertSame(
-                in_array($requirement['id'], Todo::serves(), true),
-                $requirement['queued'],
-                $requirement['id'] . ' is reported as ' . ($requirement['queued'] ? 'queued' : 'unqueued'),
-            );
-        }
+        $reading = Unresolved::requirements();
+
+        $flagged = array_column(array_filter($reading, static fn(array $r): bool => $r['queued']), 'id');
+        $named = array_values(array_intersect(array_column($reading, 'id'), Todo::serves()));
+
+        self::assertSame($named, $flagged);
     }
 
     /**

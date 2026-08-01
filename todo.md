@@ -93,17 +93,6 @@ that version, every requirement fails at once and not one of them says so.
 
 ---
 
-## Try `R-AUD-1` against the test written for it
-
-**Serves:** R-AUD-1
-
-It is `not guarded` and may deserve to stay that way — a principle is not a
-behaviour, and no test holds one. What it should not stay is untried:
-`ScopeTest::whatTheScopeExcludesIsNotWhatTheServerAnswers` was written for
-exactly this contradiction, and if it holds the operative half, the entry names
-it instead of saying that nothing does. If it does not, the entry says in one
-clause why nothing can, and that is the end of it.
-
 ## Try `D-ANS-2` against `bin/cli hints coverage`
 
 **Serves:** decisions/

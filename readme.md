@@ -9,105 +9,55 @@ core's own contribution process — rules, the Gerrit workflow, script and
 components: context that is otherwise spread across project knowledge, core
 conventions, and the official documentation.
 
-Almost everything it answers comes from the bundled `knowledge/` files. Broad
-API, reference and tutorial questions can instead be searched in the official
-live TYPO3 documentation, with the requested documentation release and
-canonical source kept on every result. Component names and summaries are a
-curated bundled index, but when an installation is available its backend CSS,
-JavaScript, and styleguide templates supply the component contract; the bundled
-markup is the fallback. The bundled answers are bound to
-versions: the knowledge base covers several TYPO3 lines, and a statement that
-does not hold on all of them carries the ones it does hold on. Pass a
-`targetVersion`, or let the installation being read decide.
-
-**Those files are trained by being used.** An agent gets a real task in a real
-checkout and works under one rule: whatever it would otherwise search for — a
-convention, a class name, the markup a component expects — it asks this server
-first. Where the server answers, that answer is what the task is done from.
-Where it does not, the agent solves the task on its own, the way it would have
-without the server at all — and that is the half worth something, because the
-agent now holds an answer the knowledge base did not have. So the session ends
-by handing it back: every avoidable mistake it ran into, and every
-recommendation it would give the next agent on the same task. A gap found that
-way arrives with its answer attached, which is what separates it from one
-guessed at from the outside; see [Improvement feedback](#improvement-feedback)
-for how such a feedback is written and closed.
+**It answers from three sources.** Almost everything comes from the bundled
+`knowledge/` files, which are bound to versions: a statement that does not hold
+on every covered TYPO3 line carries the ones it does. Broad API, reference and
+tutorial questions are searched in the official live TYPO3 documentation
+instead, with the requested release and canonical source on every result. And
+some questions have no bundled answer that could be right — which labels exist,
+which icons are registered, what a configuration value is after every extension
+has had its say. Those are properties of an installation, so the server finds
+the one you are working in and asks *it*, through its own console or by booting
+it in a subprocess of its own. Where that cannot be done, the packages are read
+instead and the answer says so and what it leaves out.
 
 **It is queried in English**, whatever language the user is speaking. The
 knowledge is written in English and the matching is lexical, so a query in
-another language reaches only the words the two happen to share — the technical
-loanwords — and otherwise comes back empty. The agent translates the subject
-before calling and the answer back afterwards; the server states this in the
-instructions it sends at initialize and in `typo3_server_scope`. Supporting a
-second query language would mean translating the knowledge base, not the
-query — a lexical matcher has nothing else to match on.
+another language reaches only the technical loanwords the two share. The agent
+translates the subject before calling and the answer back afterwards; the server
+states this in the instructions it sends at initialize and in
+`typo3_server_scope`.
 
 **It writes no patch; it is what one is written from.** Which files changed,
 which branch you are on and which tests cover them stay in the checkout and are
-read there. Everything the writing needs is here: which conventions govern a
-concrete path, which markup, icon identifier and XLF resource have to be
-literally right, which deprecation lands in between, which check the change has
-to survive, and what the commit message says. `typo3_server_scope` states that
-division of labour in full, and `typo3_task_guide` names what has to be
-established in the checkout.
+read there. What the writing needs is here: which conventions govern a concrete
+path, which markup, icon identifier and XLF resource have to be literally right,
+which deprecation lands in between, which check the change has to survive, and
+what the commit message says.
 
-**The conventions are the core's own**, and several of them — the changelog, the
-Gerrit workflow, the `runTests.sh` suites — have no counterpart in a project or
-an extension. So the answers say which repository they are for, and they work it
-out from structure rather than from wording: an area the installation knows as
-somebody's extension, a path in extension layout, and last the installation
-itself, because a Composer project is not a core checkout. What transfers is
-still answered; what only the core has is left out with the reason.
+**The conventions are the core's own**, and several of them have no counterpart
+in a project or an extension — the changelog, the Gerrit workflow, the
+`runTests.sh` suites. So the answers say which repository they are for, worked
+out from structure rather than from wording. What transfers is still answered;
+what only the core has is left out with the reason, and in a Composer project
+the tools that carry it are not offered at all.
 
-**And where they cannot be followed at all, they are not offered.** Marking an
-answer as core-only tells a site developer what it is worth; it does not keep
-the tool that gives it out of the list, and the tool list is the first thing a
-client pays for. So the list itself varies: started in a Composer project, the
-server leaves out the core contribution surface — the review rules, the Gerrit
-workflow, the `runTests.sh` suites — and keeps everything that transfers plus
-everything the installation answers. `TYPO3_MCP_PROFILE` decides it outright,
-`all` or `project`, and `typo3_server_scope` — which every profile has — names
-the active one and what it left out. A caller that wants to remove only selected
-tools sets `TYPO3_MCP_EXCLUDE_TOOLS` to their comma-separated names; this is
-applied after the profile, and the scope answer names those omissions too.
-
-**One exception, and it is deliberate.** Some questions have no bundled answer
-that could be right. Which labels exist, which icons are registered, which
-backend modules there are, what a configuration value actually is after every
-extension has had its say — all of those are properties of an installation, not
-of TYPO3. So the server finds the installation you are working in and asks *it*,
-through its own console wherever a command exists: `language:domain:search`,
-`debug:backend:modules`, `fluid:namespaces`, `configuration:show`. The icon
-registry has no command, so the installation is booted in a subprocess of its own
-and its container is asked directly; where that cannot be done — no console, or
-a checkout that has no configuration yet and comes up core-only — the packages
-are read instead, and the answer says which of the two it is and what the
-second one leaves out. Discovery starts at the working directory
-the MCP client launched the server in, and only `bin/typo3-cms-mcp` enables it:
-a request-serving endpoint has no such relationship to its callers, and its
-document root may itself sit inside an installation. Where the project runs
-under DDEV the console is invoked there, because the project declares the PHP
-version it needs and the host machine may not have it. A stopped project is
-reported, never started — and where an interpreter on this machine reaches its
-console anyway, the answer says what that leaves out: everything that boots
-TYPO3 against a database that is not running. Where the layout is one discovery
-cannot walk to, two
-environment variables end the guessing: `TYPO3_MCP_ROOT` names the installation
-and `TYPO3_MCP_CONSOLE` the command that reaches its console, for example
-`ddev exec .build/bin/typo3`. `typo3_server_scope` names the installation it is
-reading, how it got there, and whether the console is reachable.
+**Those files are trained by being used.** An agent gets a real task in a real
+checkout and works under one rule: whatever it would otherwise search for, it
+asks this server first. Where the server answers, that answer is what the task
+is done from. Where it does not, the agent solves the task on its own — and that
+is the half worth something, because the agent now holds an answer the knowledge
+base did not have. So the session ends by handing it back, and a gap found that
+way arrives with its answer attached. See
+[Improvement feedback](#improvement-feedback).
 
 It is built on the official [`mcp/sdk`](https://packagist.org/packages/mcp/sdk)
 and speaks **stdio** (`bin/typo3-cms-mcp`): the MCP client launches it as a
 subprocess, so there is no server to host, no network exposure, and no auth to
 configure — the process boundary is the trust boundary. Request serving is
-read-only apart from the explicit feedback tool. Setup writes only when
-requested: `bin/typo3-cms-mcp install` adds this server to `.mcp.json` and the
-task skills to `.agents/skills`; `install --agent=codex` writes both where Codex
-reads them, and `update` replaces the complete task-skill directories this
-package owns and rewrites the client entry the project has outgrown, for every
-client installed here. Existing unrelated settings and skills are preserved, and
-an entry that starts a different server is never replaced.
+read-only apart from the explicit feedback tool, and setup writes only when
+asked. Nothing on your machine is started as a side effect of a lookup: a
+stopped DDEV project is reported with the command that would fix it.
 
 ## Quickstart
 

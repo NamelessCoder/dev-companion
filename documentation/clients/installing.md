@@ -178,6 +178,25 @@ configuration uses the absolute entrypoint:
 The knowledge base ships inside the package, so nothing else needs to be
 deployed or configured.
 
+## Which half of the server a client is offered
+
+Some of what this server knows is the core's own contribution process — the
+review rules, the Gerrit workflow, the `runTests.sh` suites — and none of it
+transfers to a project. Marking those answers as core-only tells a site
+developer what they are worth; it does not keep the tools that give them out of
+the list, and the tool list is the first thing a client pays for.
+
+So the list itself varies. Started in a Composer project, the server leaves the
+core contribution surface out and keeps everything that transfers plus
+everything the installation answers.
+
+- `TYPO3_MCP_PROFILE` decides it outright: `all` or `project`.
+- `TYPO3_MCP_EXCLUDE_TOOLS` removes selected tools by their comma-separated
+  names, applied after the profile.
+
+`typo3_server_scope` has every profile, and names the active one and what it
+left out.
+
 ## What comes with it
 
 Clients that expose MCP prompts also list `commit_message`. It turns a summary

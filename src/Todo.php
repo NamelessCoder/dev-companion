@@ -46,6 +46,18 @@ final class Todo
     public const CADENCE = 'session, or a number of days';
 
     /**
+     * How a todo is worked, handed over with every todo that is handed over.
+     *
+     * A todo prints as an instruction, and the shortest way to act on one is to
+     * start editing. What that skips is the half nothing here can see: that the
+     * step was read against what the repository does today, and that a question
+     * it turns on was settled from a source rather than remembered. Both are
+     * invisible afterwards — the diff is identical — so the pointer travels
+     * with the todo instead of waiting on the page for whoever thinks to look.
+     */
+    public const PROCEDURE = 'documentation/working-a-todo.md';
+
+    /**
      * The readings `bin/cli next` exists to perform. Exactly one recurring todo
      * has to name each: none and the command silently stops doing half its job,
      * two and it does it twice.

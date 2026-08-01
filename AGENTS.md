@@ -59,6 +59,37 @@ is what puts entries *into* the queue, so a queue that still has entries is a
 queue of work already judged, and the sighting hands over five notes at a time
 rather than the directory.
 
+The todo it prints is a claim, not an instruction: one session's belief about
+where to start, written before the work it describes and by somebody who has
+left. So it is read against what the repository does today — what its `Serves:`
+line names, and the code and the test as they are now — and where that reading
+says the step is done, impossible or two steps, the file is corrected before the
+work rather than after it.
+
+A question the step turns on is **settled**, never recalled. The core checkouts
+are the source for what TYPO3 does, the official documentation and this server's
+own lookups after them, and a tool this repository does not own is read in its
+own documentation. What cannot be established here is a result and is recorded
+as one — the todo trimmed to what is still open, the requirement `not guarded`,
+the decision saying what evidence would settle it. What none of those can absorb
+is a guess written with the confidence of a reading, because nothing afterwards
+can tell the two apart.
+
+What has no source here is **asked**, before the change rather than in the
+commit that presents it. Which of two shapes is wanted, whether a step is worth
+its cost, what an ambiguous paragraph meant — the repository answers none of
+them and the person who queued the todo answers all three in a sentence. Ask
+with the reading done: the options, what each costs, and a recommendation —
+putting the todo back among them, because they may have no answer either and a
+todo that waits is not a worse outcome than one done on a guess. One put back
+carries the open question in its own paragraph and goes to the **end of the
+queue**: `next` hands over the first item and knows nothing about blocked ones,
+so a todo left where it was blocks every session behind it. What comes back goes
+into `todo.md` or `decisions/` — the answer, or the question and what the
+reading already established — because an answer that lives only in the
+conversation ends with it, and so does a deferral nobody wrote down:
+[documentation/working-a-todo.md](documentation/working-a-todo.md).
+
 Keeping [todo.md](todo.md) current is part of the work, not a step after it. The
 commit that finishes a todo **deletes** it; one that turns out to be half done is
 trimmed to the part that is left; a change of order is written down before the

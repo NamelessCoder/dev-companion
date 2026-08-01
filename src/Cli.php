@@ -217,7 +217,16 @@ final class Cli
     }
 
     /**
-     * One todo, as much of it as there is, and what it leaves behind.
+     * One todo, as much of it as there is, how it is worked, and what it
+     * leaves behind.
+     *
+     * The closing block is the only thing here that is not the todo, and it is
+     * the two halves a session gets no second chance at: what happens before
+     * the first change — the reading, the research, and the question that has
+     * to be asked rather than guessed — and what has to be true of the file
+     * after the last one. Both are on one page; which of the three handovers
+     * applies is this command's answer, because the page cannot know whether
+     * the todo it is being read for is queued, standing or dated.
      *
      * @param array{title: string, every: string, serves: array<int, string>, body: string, ...} $todo
      */
@@ -234,11 +243,17 @@ final class Cli
             printf("\n%s", self::indent($output));
         }
         printf("\n%s\n", $todo['body']);
-        print "\n" . match (true) {
-            $todo['every'] === '' => "Done means todo.md says so: deleted, or trimmed to the part that is left.\n",
-            $todo['every'] === 'session' => "It stands, so nothing is deleted. What it settles belongs where that is kept.\n",
-            default => "It stands, so nothing is deleted — write today's date into `**Checked:**`.\n",
-        };
+        printf(
+            "\nRead what it serves and what the code does now before changing either; settle what\n"
+            . "the step turns on rather than recalling it, and ask where nothing here can answer:\n"
+            . "%s.\n%s",
+            Todo::PROCEDURE,
+            match (true) {
+                $todo['every'] === '' => "Done means todo.md says so: deleted, or trimmed to the part that is left.\n",
+                $todo['every'] === 'session' => "It stands, so nothing is deleted. What it settles belongs where that is kept.\n",
+                default => "It stands, so nothing is deleted — write today's date into `**Checked:**`.\n",
+            },
+        );
 
         return 0;
     }

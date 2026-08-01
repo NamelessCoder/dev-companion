@@ -17,3 +17,4 @@ when it is added.
 | [`R-FBK-6`](fbk-6-a-recorded-note-is-reported-where-it-actually-is.md) | A recorded note is reported where it actually is | held |
 | [`R-FBK-7`](fbk-7-the-work-already-judged-comes-before-judging-more.md) | The work already judged comes before judging more | held |
 | [`R-FBK-8`](fbk-8-a-notes-name-says-what-only-that-note-says.md) | A note's name says what only that note says | held |
+| [`R-FBK-9`](fbk-9-a-todo-is-worked-from-what-was-read.md) | A todo is worked from what was read | held |

@@ -6,6 +6,7 @@ namespace Typo3CmsMcp\Tests\Unit;
 
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
+use Typo3CmsMcp\Paths;
 use Typo3CmsMcp\Todo;
 
 final class TodoTest extends TestCase
@@ -139,5 +140,33 @@ final class TodoTest extends TestCase
         }
 
         self::assertSame($served, array_unique($served));
+    }
+
+    /**
+     * A todo prints as an imperative paragraph, and the two things that decide
+     * whether the change is right happen before its first sentence: reading
+     * what it serves against what the code does now, and settling a question
+     * from a source instead of from recall. Neither leaves a trace — the diff
+     * of a todo worked from the checkouts is the diff of one worked from
+     * memory — so what can be held is that the procedure exists and that the
+     * command hands it over with the work rather than leaving it to be looked
+     * up. `R-FBK-9` says why; `D-FBK-7` says what it bets on.
+     */
+    #[Test]
+    public function everyTodoIsHandedWithThePageThatSaysHowOneIsWorked(): void
+    {
+        $page = Paths::root() . '/' . Todo::PROCEDURE;
+
+        self::assertFileExists($page, Todo::PROCEDURE . ' is handed over with every todo and does not exist');
+        self::assertStringContainsString(
+            '[' . basename(Todo::PROCEDURE) . '](' . basename(Todo::PROCEDURE) . ')',
+            (string) file_get_contents(Paths::root() . '/documentation/readme.md'),
+            Todo::PROCEDURE . ' is not listed with the other procedures',
+        );
+        self::assertStringContainsString(
+            'Todo::PROCEDURE',
+            (string) file_get_contents(Paths::root() . '/src/Cli.php'),
+            '`bin/cli next` hands over no todo with ' . Todo::PROCEDURE,
+        );
     }
 }

@@ -53,6 +53,15 @@ What `next` can never do is run a note's own query against the server as it is
 now. A note is evidence about a version of this server that may no longer exist,
 and that reading is the session's.
 
+## What happens to the todo it printed
+
+Everything on this page is about the order of the work. What is read before the
+todo at the front of it is changed, why the step is judged rather than executed,
+where a question the work turns on is settled instead of recalled, and what is
+asked because nothing here can answer it, is one page of its own:
+[working-a-todo.md](working-a-todo.md), which `bin/cli next` names with every
+todo it hands over.
+
 ## Keeping todo.md current
 
 Part of the work, not a step after it:

@@ -1,8 +1,6 @@
 # Try `D-DIS-2` against a console invoked from outside the root
 
 **Serves:** decisions/
-**Branch:** todo/try-d-dis-2-against-an-absolute-bin-dir
-**Claimed:** 2026-08-01
 **Waiting on:** the DDEV half needs a project whose container working directory
     is not the project root, and there is none here. Which one do you want built?
     (a) One of the environments reconfigured for it — `syntax` is the smaller

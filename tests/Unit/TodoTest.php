@@ -302,7 +302,7 @@ final class TodoTest extends TestCase
     #[Test]
     public function aWorktreeStandingOnAClaimIsHandedThatClaim(): void
     {
-        [, $branch] = Checkouts::git(['git', '-C', Paths::root(), 'rev-parse', '--abbrev-ref', 'HEAD']);
+        [, $branch] = Checkouts::run(['git', '-C', Paths::root(), 'rev-parse', '--abbrev-ref', 'HEAD']);
         $branch = trim($branch);
         $before = Todo::claimed();
 
@@ -349,7 +349,7 @@ final class TodoTest extends TestCase
         $path = sys_get_temp_dir() . '/' . $name;
         $branch = 'tmp/' . $name;
 
-        [$exitCode, $said] = Checkouts::git(['git', '-C', Paths::root(), 'worktree', 'add', $path, '-b', $branch]);
+        [$exitCode, $said] = Checkouts::run(['git', '-C', Paths::root(), 'worktree', 'add', $path, '-b', $branch]);
         self::assertSame(0, $exitCode, 'the worktree this case is about could not be made: ' . $said);
 
         try {
@@ -360,8 +360,8 @@ final class TodoTest extends TestCase
                 'the checkout every worktree is cut from is read as one of them',
             );
         } finally {
-            Checkouts::git(['git', '-C', Paths::root(), 'worktree', 'remove', '--force', $path]);
-            Checkouts::git(['git', '-C', Paths::root(), 'branch', '-D', $branch]);
+            Checkouts::run(['git', '-C', Paths::root(), 'worktree', 'remove', '--force', $path]);
+            Checkouts::run(['git', '-C', Paths::root(), 'branch', '-D', $branch]);
         }
     }
 
@@ -372,7 +372,7 @@ final class TodoTest extends TestCase
      */
     private function checkout(): string
     {
-        [, $listed] = Checkouts::git(['git', '-C', Paths::root(), 'worktree', 'list', '--porcelain']);
+        [, $listed] = Checkouts::run(['git', '-C', Paths::root(), 'worktree', 'list', '--porcelain']);
         $first = strtok($listed, "\n");
 
         return substr((string) $first, strlen('worktree '));

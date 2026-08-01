@@ -139,7 +139,7 @@ final class CheckoutUpdate
 
         // A bare clone keeps the branches as its own refs and configures no refspec, so
         // a later fetch would update nothing. This is what makes the mirror updatable.
-        Checkouts::git(['git', '-C', $path, 'config', 'remote.origin.fetch', '+refs/heads/*:refs/heads/*']);
+        Checkouts::run(['git', '-C', $path, 'config', 'remote.origin.fetch', '+refs/heads/*:refs/heads/*']);
 
         $output->writeln(sprintf('Fetching %s', basename($path)));
         $command = ['git', '-C', $path, 'fetch', '--quiet', '--force', '--prune', 'origin'];
@@ -172,7 +172,7 @@ final class CheckoutUpdate
      */
     private static function git(OutputInterface $output, array $command): int
     {
-        [$exitCode, $said] = Checkouts::git($command);
+        [$exitCode, $said] = Checkouts::run($command);
         if (trim($said) !== '') {
             $output->writeln('    ' . str_replace("\n", "\n    ", rtrim($said)));
         }

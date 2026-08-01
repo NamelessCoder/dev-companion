@@ -77,7 +77,7 @@ final class ScenarioRecord
     /** The server the run happened against, as precisely as this checkout can say. */
     private static function server(): string
     {
-        [$exitCode, $output] = Checkouts::git(['git', 'rev-parse', '--short', 'HEAD'], Paths::root());
+        [$exitCode, $output] = Checkouts::run(['git', 'rev-parse', '--short', 'HEAD'], Paths::root());
         $commit = trim($output);
 
         return $exitCode === 0 && $commit !== '' ? $commit : 'unknown';

@@ -60,7 +60,7 @@ final class CatalogPaths
         $output->writeln('');
 
         if ($problems === 0) {
-            [$exitCode, $said] = Checkouts::git(['git', '-C', $coreRoot, 'rev-parse', 'HEAD']);
+            [$exitCode, $said] = Checkouts::run(['git', '-C', $coreRoot, 'rev-parse', 'HEAD']);
             $revision = $exitCode === 0 ? trim($said) : '';
             $output->writeln(sprintf('No drift against %s%s', $coreRoot, $revision === '' ? '' : ' @ ' . substr($revision, 0, 12)));
 

@@ -363,7 +363,7 @@ final class Todo
      */
     public static function standing(?string $root = null): string
     {
-        [$exitCode, $branch] = Checkouts::git(['git', '-C', $root ?? Paths::root(), 'rev-parse', '--abbrev-ref', 'HEAD']);
+        [$exitCode, $branch] = Checkouts::run(['git', '-C', $root ?? Paths::root(), 'rev-parse', '--abbrev-ref', 'HEAD']);
 
         return $exitCode === 0 ? trim($branch) : '';
     }
@@ -387,8 +387,8 @@ final class Todo
     public static function linked(?string $root = null): bool
     {
         $root ??= Paths::root();
-        [$own, $ownDir] = Checkouts::git(['git', '-C', $root, 'rev-parse', '--absolute-git-dir']);
-        [$shared, $sharedDir] = Checkouts::git(['git', '-C', $root, 'rev-parse', '--path-format=absolute', '--git-common-dir']);
+        [$own, $ownDir] = Checkouts::run(['git', '-C', $root, 'rev-parse', '--absolute-git-dir']);
+        [$shared, $sharedDir] = Checkouts::run(['git', '-C', $root, 'rev-parse', '--path-format=absolute', '--git-common-dir']);
         if ($own !== 0 || $shared !== 0) {
             return false;
         }

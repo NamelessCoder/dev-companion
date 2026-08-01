@@ -27,19 +27,24 @@ final class Checkouts
     /** The head of a checkout, as one line, or nothing where there is none. */
     public static function revision(string $path): string
     {
-        [$exitCode, $output] = self::git(['git', '-C', $path, 'log', '-1', '--format=%h %ci %s']);
+        [$exitCode, $output] = self::run(['git', '-C', $path, 'log', '-1', '--format=%h %ci %s']);
 
         return $exitCode === 0 ? trim($output) : '';
     }
 
     /**
-     * One git command, with both its streams as one string.
+     * One command, with both its streams as one string.
+     *
+     * Almost every caller runs git, which is what it was named for. The one
+     * that does not is the claim setting up a worktree: `composer install`
+     * belongs to the same step and starting it any other way would be a second
+     * way to start a process, kept apart by nothing but the name.
      *
      * @param array<int, string> $command
      *
      * @return array{0: int, 1: string}
      */
-    public static function git(array $command, ?string $cwd = null): array
+    public static function run(array $command, ?string $cwd = null): array
     {
         $process = proc_open($command, [1 => ['pipe', 'w'], 2 => ['pipe', 'w']], $pipes, $cwd);
         if (!is_resource($process)) {

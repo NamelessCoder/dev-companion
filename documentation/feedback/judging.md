@@ -76,12 +76,12 @@ lookup — a missing verb.
 single feedback carries it: a session that invented the right order itself, and
 so the next one may not; a session that went in an order that cost it the task;
 and the same sequence arrived at independently by two sessions. That last one
-is evidence [writing-a-skill.md](../writing-a-skill.md) explicitly says nothing
+is evidence [writing-a-skill.md](../clients/writing-a-skill.md) explicitly says nothing
 can read off a file — *that a domain earned a skill at all* — and feedback is
 where it comes from. Two core patch reviews in the open corpus ran the same
 sequence and both praised it, and a third feedback proposes the skill outright.
 
-The bar in [writing-a-skill.md](../writing-a-skill.md) still has to be cleared;
+The bar in [writing-a-skill.md](../clients/writing-a-skill.md) still has to be cleared;
 the feedback is what shows it has been reached, not a shortcut past it.
 
 Both are queued rather than closed on the spot: a tool and a skill are

@@ -278,7 +278,7 @@ final class SkillTest extends TestCase
         // nobody wrote down each fail. A skill is published into somebody
         // else's project, so the rules it is written under are the half no
         // forward run can measure — a run grades the answer, never the file.
-        $page = (string) file_get_contents(Paths::root() . '/documentation/writing-a-skill.md');
+        $page = (string) file_get_contents(Paths::root() . '/documentation/clients/writing-a-skill.md');
 
         self::assertNotSame(
             0,
@@ -325,7 +325,7 @@ final class SkillTest extends TestCase
      * is about. These run over the directory, so a skill added later is held to
      * them without anybody adding it to a list here — which is the point: the
      * list is what a new skill is written without ever seeing. They are the
-     * ones [documentation/writing-a-skill.md](../../documentation/writing-a-skill.md)
+     * ones [documentation/clients/writing-a-skill.md](../../documentation/clients/writing-a-skill.md)
      * states, and the test above holds that page and this set to each other.
      */
     #[Test]

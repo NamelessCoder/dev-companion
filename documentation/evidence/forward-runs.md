@@ -1,7 +1,7 @@
 # Forward runs
 
 What a forward review is, and the five of them, are in
-[scenarios/forward/readme.md](../scenarios/forward/readme.md). This is how one is
+[scenarios/forward/readme.md](../../scenarios/forward/readme.md). This is how one is
 carried out.
 
 ## Running one
@@ -11,7 +11,7 @@ carried out.
    need not be a person typing: a client driven non-interactively is the same
    evidence, as long as it is given the prompt and nothing else, and a session
    id it was started with is what makes its transcript findable afterwards.
-   [todo.md](../todo.md) says which checkout plays which environment on this
+   [todo.md](../../todo.md) says which checkout plays which environment on this
    machine, and how the client is reached there.
 2. `bin/cli scenarios record <id> <client>` writes the empty run, and
    `bin/cli scenarios show <id>` prints the prompt and the numbered criteria.
@@ -58,7 +58,7 @@ things.
 
 ## What a run produces
 
-The run itself, as one file below [scenarios/runs/](../scenarios/runs/): the
+The run itself, as one file below [scenarios/runs/](../../scenarios/runs/): the
 environment, the server it ran against, the skills the session activated, the
 tools it reached for and what it asked them, and one judgment with evidence per
 criterion. The verdict
@@ -90,7 +90,7 @@ Both of those are written by whoever judged the run, from the transcript. When
 the run happened in an agent whose transcript is not readable here, the session
 is the only thing that can report it, and it is asked for its own debrief after
 the work is finished — the generic prompt for that is in [the feedback
-pages](feedback/readme.md). What comes back is weaker evidence than a
+pages](../feedback/readme.md). What comes back is weaker evidence than a
 transcript and the run says so: it is what the session claims about itself, and
 the answer it gave is still judged the usual way.
 
@@ -98,7 +98,7 @@ A defect the same session fixes is the exception: that is a requirement and the
 commit that closed it, not a feedback that would be archived on creation.
 Otherwise the usual route applies — the feedback is worked off in a commit that
 archives it, and what has to keep holding afterwards goes into
-[requirements/](../requirements/readme.md).
+[requirements/](../../requirements/readme.md).
 
 For a `gap` review, do not re-file the part that is already written down — its
 **Status today** line names the requirement. File what the task needed beyond it.
@@ -116,4 +116,4 @@ the tool that never came back, which is the whole diagnosis — two `REVIEW-02`
 attempts died 24 minutes apart on the first pair of tool calls a client
 dispatched concurrently, and the cause was this server handing its own stdin to
 a console command
-([`R-DIS-18`](../requirements/discovery/dis-18-a-console-command-never-inherits-the-clients-stdin.md)).
+([`R-DIS-18`](../../requirements/discovery/dis-18-a-console-command-never-inherits-the-clients-stdin.md)).

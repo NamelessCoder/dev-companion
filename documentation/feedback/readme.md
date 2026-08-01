@@ -60,7 +60,7 @@ Everything on this page is about the order of the work. What is read before the
 todo at the front of it is changed, why the step is judged rather than executed,
 where a question the work turns on is settled instead of recalled, and what is
 asked because nothing here can answer it, is one page of its own:
-[working-a-todo.md](../working-a-todo.md), which `bin/cli next` names with every
+[working-a-todo.md](working-a-todo.md), which `bin/cli next` names with every
 todo it hands over.
 
 ## Keeping todo.md current

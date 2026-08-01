@@ -2,7 +2,7 @@
 
 Requirements: **PHP 8.2+** and Composer. The package works both ways — as a
 standalone checkout and as a Composer dependency of another project. The
-[readme](../readme.md) has the short version; this page has the cases it leaves
+[readme](../../readme.md) has the short version; this page has the cases it leaves
 out.
 
 ## Standalone

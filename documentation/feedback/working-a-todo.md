@@ -3,7 +3,7 @@
 `bin/cli next` hands over one todo, and what happens between reading it and the
 commit is the work. This page is that part alone. What is due, what recurs, and
 what a finished todo leaves behind is in
-[feedback/readme.md](feedback/readme.md); nothing here repeats it.
+[feedback/readme.md](readme.md); nothing here repeats it.
 
 The todo is not the instruction it looks like. Its paragraph is one session's
 belief about where to start, written before the work it describes was done, by
@@ -77,7 +77,7 @@ Where the answer is:
   that may no longer exist, and reading one instead of running it is how a
   fixed problem gets fixed twice.
 - **about the practice a skill describes** — that research is already written
-  down, in [writing-a-skill.md](writing-a-skill.md), and it is the same shape.
+  down, in [writing-a-skill.md](../clients/writing-a-skill.md), and it is the same shape.
 
 Answering from recall is the failure this is written against; leaving a question
 open is not. Where it cannot be settled here — it needs an installation, a run
@@ -147,7 +147,7 @@ what would close it; an answer that came from the person who queued the todo
 says so, because it is the one part no file behind the commit can be re-read
 for.
 
-The same commit leaves [todo.md](../todo.md) true, which is three cases and
+The same commit leaves [todo.md](../../todo.md) true, which is three cases and
 `bin/cli next` prints the one that applies:
 
 - A **queued** todo that is finished is **deleted**. What it established is in
@@ -174,6 +174,6 @@ message, and the sentence that turns out false is the confident one in both. A
 choice made silently is shaped exactly like one that had nothing to choose.
 What can be done is done: the page exists, `bin/cli next` names it with every
 todo it hands over, and
-[`R-FBK-9`](../requirements/feedback/fbk-9-a-todo-is-worked-from-what-was-read.md)
+[`R-FBK-9`](../../requirements/feedback/fbk-9-a-todo-is-worked-from-what-was-read.md)
 carries it with the reason. Whether the reading happened is the session's, and
 the session is the only one who will ever know.

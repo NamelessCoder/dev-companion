@@ -1,6 +1,6 @@
 # Which versions an answer holds for
 
-The rule is in [AGENTS.md](../AGENTS.md): a statement that does not hold on every
+The rule is in [AGENTS.md](../../AGENTS.md): a statement that does not hold on every
 covered TYPO3 says so as data. This is how it is written, and what follows from
 it.
 

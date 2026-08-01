@@ -158,8 +158,11 @@ final class TodoTest extends TestCase
         $page = Paths::root() . '/' . Todo::PROCEDURE;
 
         self::assertFileExists($page, Todo::PROCEDURE . ' is handed over with every todo and does not exist');
+        // The map links it the way a reader standing in documentation/ would,
+        // which is the path from there rather than the bare filename: the
+        // procedures are grouped by subject and the page sits in one of them.
         self::assertStringContainsString(
-            '[' . basename(Todo::PROCEDURE) . '](' . basename(Todo::PROCEDURE) . ')',
+            '(' . substr(Todo::PROCEDURE, strlen('documentation/')) . ')',
             (string) file_get_contents(Paths::root() . '/documentation/readme.md'),
             Todo::PROCEDURE . ' is not listed with the other procedures',
         );

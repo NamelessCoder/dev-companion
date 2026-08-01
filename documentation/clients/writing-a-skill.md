@@ -1,7 +1,7 @@
 # Writing a task skill
 
-What the published skills are is in [AGENTS.md](../AGENTS.md), and the order
-every one of them starts in is [skills/base.md](../skills/base.md), which is one
+What the published skills are is in [AGENTS.md](../../AGENTS.md), and the order
+every one of them starts in is [skills/base.md](../../skills/base.md), which is one
 file rather than a paragraph each. This page is the other half: how a skill is
 **written**, and what holds each rule to that.
 
@@ -17,8 +17,8 @@ A domain earns one when a scenario or a recorded session shows that the tools
 and skills that exist **fail to carry the task** — not when the subject is large
 enough to look like it deserves one. Release, static analysis, performance and
 security have each looked like a skill at some point; what settles it is a case
-in [scenarios/](../scenarios/readme.md) or a run in
-[scenarios/runs/](../scenarios/runs/) where the existing workflow was reached for
+in [scenarios/](../../scenarios/readme.md) or a run in
+[scenarios/runs/](../../scenarios/runs/) where the existing workflow was reached for
 and came up short.
 
 What such a run shows is almost always smaller than the domain: an order nobody
@@ -99,7 +99,7 @@ matter and the name every other skill calls it by are one string. The
 `description` is the only part of a skill read before it is chosen, so it is
 written in the words a user brings — the request, the symptom, the files being
 touched — and never in this server's tool names.
-[`D-AUD-3`](../decisions/audience/aud-3-the-instructions-carry-the-entry-point.md)
+[`D-AUD-3`](../../decisions/audience/aud-3-the-instructions-carry-the-entry-point.md)
 is what a wrong one costs: a review prompt whose every criterion the conformance
 skill's body would have met did not activate it, and all thirty-five calls of
 that session went through Bash.
@@ -135,7 +135,7 @@ needs registries, and registries are tools.
 where its work runs into another skill's, the crossing is explicit: name the
 verified stopping point, stop before editing the other owner's files, activate
 that owner, carry across only the scope and verified behaviour it needs
-([`R-SKL-3`](../requirements/task-skills/skl-3-crossing-into-another-skills-work-is-an-explicit-transition.md)).
+([`R-SKL-3`](../../requirements/task-skills/skl-3-crossing-into-another-skills-work-is-an-explicit-transition.md)).
 
 ## Publishing it
 
@@ -149,7 +149,7 @@ here and nowhere it is actually read.
 Then run the installer in the checkout that plays the environment the skill is
 for, before any run that is meant to measure it. The published skills are a copy
 and nothing reports that they are older than the server;
-[todo.md](../todo.md) says which checkout plays which environment on this
+[todo.md](../../todo.md) says which checkout plays which environment on this
 machine and how the installer is reached there.
 
 ## What none of this holds
@@ -165,10 +165,10 @@ because the author who skips them is usually the one who has not read this page.
 And that a session **does** what a skill says. Every rule in the table is read
 off the file, which makes it a proxy: the wording is present and a
 reorganisation can leave it present while the behaviour goes.
-[`D-EVI-2`](../decisions/evidence/evi-2-a-skill-crossing-is-read-rather-than-run.md)
+[`D-EVI-2`](../../decisions/evidence/evi-2-a-skill-crossing-is-read-rather-than-run.md)
 accepts that proxy for the skill crossing and says why no forward run will
 replace it. Everywhere else, what measures the behaviour is a case in
-[scenarios/contracts/](../scenarios/contracts/readme.md) or an open review in
-[scenarios/forward/](../scenarios/forward/readme.md) — and a forward run grades
+[scenarios/contracts/](../../scenarios/contracts/readme.md) or an open review in
+[scenarios/forward/](../../scenarios/forward/readme.md) — and a forward run grades
 the answer a session produced, never the file it came out of, which is why the
 authoring contract is the half of a skill that has to be written down instead.

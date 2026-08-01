@@ -5,8 +5,8 @@ the caller is standing in, and no bundled snapshot could be right about them.
 This page is the order those answers are looked up in, what each step can and
 cannot see, and what an answer has to say when it came from the wrong one.
 
-The rules stay in [AGENTS.md](../AGENTS.md); what a change assumed is in
-[decisions/discovery/](../decisions/discovery/readme.md). This is the procedure.
+The rules stay in [AGENTS.md](../../AGENTS.md); what a change assumed is in
+[decisions/discovery/](../../decisions/discovery/readme.md). This is the procedure.
 
 ## The order
 
@@ -28,7 +28,7 @@ brings its own interpreter and fails as an exit code.
 
 ## How the probe gets there
 
-[`src/Runtime/probe.php`](../src/Runtime/probe.php) is read as text, never
+[`src/Runtime/probe.php`](../../src/Runtime/probe.php) is read as text, never
 included. `Typo3Runtime` strips its opening tag, writes the installation's
 declared autoloader path into it, and hands it to `Typo3Cli::php()`, which
 delivers it as:

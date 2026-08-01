@@ -33,7 +33,7 @@ requirements/      # what must hold, and what holds it there: one requirement pe
 decisions/         # what a change assumed, and what would show it to be wrong: one decision per file, grouped by what it is about
 todo.md            # the order of the work and where the last session stopped; `bin/cli next` prints one of them
 src/Todo.php       # todo.md as data: what recurs and how often, what is queued, what each todo serves
-documentation/     # how a procedure is carried out, one page each; the rules stay here, the steps live there
+documentation/     # how a procedure is carried out, grouped by subject; the rules stay here, the steps live there
 tests/             # unit, tool contract, and stdio smoke tests
 vendor/            # Composer dependencies (mcp/sdk); gitignored
 ```
@@ -89,7 +89,7 @@ so a todo left where it was blocks every session behind it. What comes back goes
 into `todo.md` or `decisions/` — the answer, or the question and what the
 reading already established — because an answer that lives only in the
 conversation ends with it, and so does a deferral nobody wrote down:
-[documentation/working-a-todo.md](documentation/working-a-todo.md).
+[documentation/feedback/working-a-todo.md](documentation/feedback/working-a-todo.md).
 
 Keeping [todo.md](todo.md) current is part of the work, not a step after it. The
 commit that finishes a todo **deletes** it; one that turns out to be half done is
@@ -247,7 +247,7 @@ source too. Whatever a run taught that is not specific to the repository it ran
 against becomes a feedback here rather than a paragraph in the run's own evidence:
 that field is read once, by whoever judged that run, while `feedback/` is what
 every later session walks. Running a review, judging it, and reading one that
-stopped without an error: [documentation/forward-runs.md](documentation/forward-runs.md).
+stopped without an error: [documentation/evidence/forward-runs.md](documentation/evidence/forward-runs.md).
 
 A prompt names a kind of project, never one installation on somebody's machine —
 that lives in `todo.md`, where it can go stale without taking a case with it.
@@ -313,7 +313,7 @@ name going stale, not a sentence going false. Prose is on you.
 That property is also why a skill is written under rules of its own — what it is
 named and routed by, what it may state, what it leaves to the tool that owns it,
 and what has to be shown before a domain becomes one at all:
-[documentation/writing-a-skill.md](documentation/writing-a-skill.md), where every
+[documentation/clients/writing-a-skill.md](documentation/clients/writing-a-skill.md), where every
 rule names the test that holds it.
 
 Before committing, reread the paragraphs your change touches rather than
@@ -365,7 +365,7 @@ version says so; see the audience requirements in `requirements/audience/`.
   the installation only when the answer genuinely depends on which packages and
   TYPO3 version are active. The order those three are asked in, how the probe is
   delivered, and what a fallback owes the caller:
-  [documentation/asking-the-installation.md](documentation/asking-the-installation.md).
+  [documentation/knowledge/asking-the-installation.md](documentation/knowledge/asking-the-installation.md).
 - Checkout discovery is enabled per entrypoint and never derived from `getcwd()`
   on its own. Only `bin/typo3-cms-mcp` calls `Instance::discoverFrom()`: a
   request-serving endpoint has no such relationship to its callers, and its
@@ -403,4 +403,4 @@ a `main` answer changes code that then fails at runtime, and the failure is
 silent. What follows from it — where the binding sits, what belongs in `hints`
 rather than `checks`, `binding: "core"`, and why the catalogs withhold an entry
 instead of qualifying it — is in
-[documentation/knowledge-versions.md](documentation/knowledge-versions.md).
+[documentation/knowledge/versions.md](documentation/knowledge/versions.md).

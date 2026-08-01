@@ -55,7 +55,7 @@ final class Todo
      * invisible afterwards — the diff is identical — so the pointer travels
      * with the todo instead of waiting on the page for whoever thinks to look.
      */
-    public const PROCEDURE = 'documentation/working-a-todo.md';
+    public const PROCEDURE = 'documentation/feedback/working-a-todo.md';
 
     /**
      * The readings `bin/cli next` exists to perform. Exactly one recurring todo

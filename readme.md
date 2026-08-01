@@ -134,7 +134,7 @@ the package, so nothing else needs to be deployed or configured.
 Codex, Claude, Cursor, Copilot, Zed and eight more clients, DDEV projects where
 the server has to start inside the container, the generated `.mcp.json` shapes,
 and the two environment variables that end a failed discovery:
-[documentation/installation.md](documentation/installation.md). Changing this
+[documentation/clients/installing.md](documentation/clients/installing.md). Changing this
 repository rather than using it:
 [documentation/working-on-the-server.md](documentation/working-on-the-server.md).
 

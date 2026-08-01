@@ -26,7 +26,7 @@ recall.
   2026-08-01) after a skill was written from recall, which is the same failure
   one directory over. What `next` printed was the todo, the run output and one
   line about deleting it afterwards.
-- **Decided:** one page, [documentation/working-a-todo.md](../../documentation/working-a-todo.md),
+- **Decided:** one page, [documentation/feedback/working-a-todo.md](../../documentation/feedback/working-a-todo.md),
   covering what is read first, that the step is judged rather than executed,
   that a question the work turns on is settled from a source or recorded as
   open, that what has no source here is asked before the change, and what the

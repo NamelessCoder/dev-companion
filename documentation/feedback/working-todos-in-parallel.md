@@ -66,6 +66,50 @@ about the output looks wrong.
 it is gitignored, and a session working a todo only ever reads it. Only
 `bin/cli checkouts:update` writes there, and that is not a claim's work.
 
+## Starting the sessions
+
+One session per worktree, and what it has to be told is short, because the rest
+it reads here itself. Both sessions of the first run did.
+
+```text
+You work in a git worktree and only there:
+
+    <absolute path to the worktree>
+
+Every command and every file operation happens in that directory. The main
+checkout is worked by another session at the same time — change nothing in it.
+Start bash calls by changing into your worktree, or use absolute paths below it.
+Check with `git rev-parse --show-toplevel` where you are; it has to be your
+worktree.
+
+Start the way every session in this repository starts:
+
+    bin/cli todo:next
+
+That hands you one todo — your claim, not the front of the queue. Work it by
+documentation/feedback/working-a-todo.md, which the command names itself. What
+parallel work adds is in documentation/feedback/working-todos-in-parallel.md.
+The three rules everything hangs on:
+
+- Commit on your branch `<branch>`, never on main — the todo file included.
+- Leave the group listings at the foot of a requirements/ or decisions/ group
+  readme alone, by hand and by command.
+- Merge nothing and do not remove your worktree.
+
+If you hit a question this repository cannot answer and that would change what
+you build: do not ask and do not wait. Write it into a `**Waiting on:**` line on
+your claim, commit what you have, and end.
+
+`composer ci` before every commit. Report at the end what you read, what you
+changed, whether it is green, and what state your claim is in.
+```
+
+The absolute path is the load-bearing part. Where each session is its own
+process in its own directory, it is redundant. Where they are agents spawned
+from one session, they share a file system and nothing else keeps them in the
+worktree — and a session that works the main checkout by mistake produces a diff
+that looks exactly right.
+
 ## What the session does with it
 
     bin/cli todo:next
@@ -130,6 +174,10 @@ its own — `bin/cli todo:list` prints the date for exactly that reading.
 Not because merging is dangerous, but because a suite that fails after three
 merges says nothing about which one broke it. The claims themselves never
 conflict — each session touched one file in `todo/` and it was its own.
+
+Where one branch fixes something the others are also failing on, that one goes
+first. Otherwise every merge behind it is checked against a suite that was
+already red, which is the one thing this order exists to avoid.
 
 Then, once, on `main`:
 

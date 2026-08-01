@@ -60,6 +60,42 @@ final class CliTest extends TestCase
     }
 
     /**
+     * A session that says it is one of several is never handed the queue.
+     *
+     * Everything else `todo:next` does is right here and wrong by one step: the
+     * front of the queue is a real todo, correctly read, and somebody else is
+     * already writing it. The two cases the run of 2026-08-01 produced are a
+     * worktree cut before the claim was on `main` and a session started in the
+     * main checkout at all, and neither is visible from inside the session —
+     * which is why the answer is the command's rather than the prompt's.
+     *
+     * It is written to hold wherever the suite runs, because it runs in the
+     * worktrees too: standing on a claim the answer is that claim, standing on
+     * none it is a refusal, and the queue is neither.
+     */
+    #[Test]
+    public function whatIsAskedForOneOfSeveralSessionsIsNeverTheQueue(): void
+    {
+        self::assertNotSame([], Todo::items(), 'nothing is queued, so nothing could be handed over by mistake');
+
+        $buffer = new BufferedOutput();
+        $exit = Cli::application()->doRun(new StringInput('todo:next --worktree'), $buffer);
+        $printed = $buffer->fetch();
+
+        $claim = Todo::claimed();
+        if ($claim === null) {
+            self::assertSame(1, $exit, 'a session standing on no claim was served rather than stopped');
+            self::assertStringNotContainsString(Todo::items()[0]['title'], $printed, 'the queue was handed over anyway');
+
+            return;
+        }
+
+        self::assertSame(0, $exit);
+        self::assertStringContainsString($claim['title'], $printed, 'the claim under the session is not what it was handed');
+        self::assertStringContainsString($claim['branch'], $printed, 'nothing says which branch the work is committed on');
+    }
+
+    /**
      * What `knows()` answers is whether the console can run a todo's `Run:`
      * line, and a todo that names a command nobody registered is a step no
      * session can take. The console is asked rather than a list kept beside it,

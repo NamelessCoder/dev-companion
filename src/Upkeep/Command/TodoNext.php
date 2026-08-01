@@ -6,6 +6,7 @@ namespace Typo3CmsMcp\Upkeep\Command;
 
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Attribute\AsCommand;
+use Symfony\Component\Console\Attribute\Option;
 use Symfony\Component\Console\Input\StringInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -57,8 +58,12 @@ use Typo3CmsMcp\Upkeep\Todo;
 )]
 final class TodoNext
 {
-    public function __invoke(OutputInterface $output, Application $application): int
-    {
+    public function __invoke(
+        OutputInterface $output,
+        Application $application,
+        #[Option('this session is one of several and works the claim its worktree stands on')]
+        bool $worktree = false,
+    ): int {
         // A worktree standing on a claim has one todo and it is not the front
         // of the queue. Asked there, this command would hand over work
         // somebody else is already doing, and nothing about the answer would
@@ -74,8 +79,15 @@ final class TodoNext
         // work that belongs to somebody else, and the check above cannot tell
         // the two apart: a worktree on the wrong branch and the main checkout
         // on `main` are both on no claim.
-        if (Todo::linked()) {
-            return self::astray($output);
+        //
+        // The flag is the same refusal for the case git cannot see: a session
+        // started as one of several that is standing in the main checkout. That
+        // one is not a worktree at all, so every check below it passes and the
+        // queue it is then handed is real work belonging to somebody else. The
+        // prompt says the session is one of several, because the prompt is the
+        // only thing that knows.
+        if ($worktree || Todo::linked()) {
+            return self::astray($output, $worktree);
         }
 
         foreach (Todo::appointments() as $todo) {
@@ -137,9 +149,32 @@ final class TodoNext
      * be right in every way a session can check — a real todo, correctly read,
      * commit rights on a branch of its own — and wrong in the only way that
      * matters, which is that somebody else is already writing it.
+     *
+     * A third cause reaches the same refusal from the other direction, and only
+     * because the session said so: `--worktree` in a checkout that is not one.
+     * There the setup did not go wrong halfway, it never happened — no worktree
+     * was cut, or the session was started in the wrong directory — and the
+     * queue standing ready in front of it is the trap, not the fix.
      */
-    private static function astray(OutputInterface $output): int
+    private static function astray(OutputInterface $output, bool $declared): int
     {
+        if ($declared && !Todo::linked()) {
+            Cli::errors($output)->writeln(sprintf(
+                "This session was started as one of several, and it is not standing in a worktree:\n"
+                . "this is the checkout the worktrees are cut from, which is where somebody else is\n"
+                . "working right now.\n"
+                . "\n"
+                . "Either no worktree was made for this claim, or the session was started in the\n"
+                . "wrong directory. Both are set up from outside the session, so this is where it\n"
+                . "ends — say so rather than working here.\n"
+                . "\n"
+                . 'How the worktrees are made and the sessions started: %s.',
+                Todo::PARALLEL,
+            ));
+
+            return 1;
+        }
+
         $branch = Todo::standing();
         Cli::errors($output)->writeln(sprintf(
             "This is a worktree, so it was made for a claim, and it is standing on none:\n"
@@ -170,7 +205,7 @@ final class TodoNext
      * applies is this command's answer, because the page cannot know whether
      * the todo it is being read for is queued, standing or dated.
      *
-     * @param array{title: string, kind: string, claimed: string, every: string, serves: array<int, string>, body: string, ...} $todo
+     * @param array{title: string, kind: string, claimed: string, every: string, branch: string, serves: array<int, string>, body: string, ...} $todo
      */
     private static function present(OutputInterface $output, array $todo, string $reading, ?int $after = null): int
     {
@@ -218,9 +253,20 @@ final class TodoNext
             Todo::PROCEDURE,
         ));
         $output->writeln(match (true) {
+            // The three rules a session working one of several claims cannot
+            // read anywhere in time. They are printed with the claim rather
+            // than put in the prompt because two of them name the branch, and
+            // the branch is the one thing the prompt is not allowed to carry:
+            // what is filled in per session is what gets filled in wrong.
             $todo['kind'] === 'progress' => sprintf(
-                "Done means the file says so, on this branch: deleted, or left here with the\n"
+                "Commit it on the branch it was claimed for, never on `main` — this file included:\n"
+                . "    %s\n"
+                . "Leave the listing at the foot of a `requirements/` or `decisions/` group readme\n"
+                . "alone, by hand and by command; whoever merges generates it once, across every\n"
+                . "branch at once. Merge nothing yourself, and do not remove this worktree.\n"
+                . "Done means the file says so, on this branch: deleted, or left here with the\n"
                 . 'question in `**Waiting on:**` and the work behind it. %s is the rest.',
+                $todo['branch'],
                 Todo::PARALLEL,
             ),
             $todo['every'] === '' => 'Done means the file says so: deleted, or trimmed to the part that is left.',

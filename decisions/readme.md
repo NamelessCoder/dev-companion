@@ -108,7 +108,7 @@ the repository has moved furthest away from since. Going back to one and adding
 - [`D-EVI-2`][D-EVI-2] — A skill crossing is read rather than run · 2026-07-31 · standing
 - [`D-EVI-3`][D-EVI-3] — A review runs the checks that cannot change the code · 2026-07-31 · standing
 - [`D-FBK-1`][D-FBK-1] — The backlog is read out rather than enforced · 2026-07-31 · standing
-- [`D-FBK-2`][D-FBK-2] — The order of the work is declared, not inferred · 2026-07-31 · standing
+- [`D-FBK-2`][D-FBK-2] — The order of the work is declared, not inferred · 2026-07-31 · tested
 - [`D-FBK-3`][D-FBK-3] — A session is handed one todo, not the file · 2026-07-31 · corrected
 - [`D-FBK-4`][D-FBK-4] — The model is asked, because nothing else here can say it · 2026-07-31 · standing
 - [`D-VER-4`][D-VER-4] — A supported range is a property of the package, not of the checkout · 2026-07-31 · tested

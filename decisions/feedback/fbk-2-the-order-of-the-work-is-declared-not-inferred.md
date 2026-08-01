@@ -1,7 +1,7 @@
 ---
 id: D-FBK-2
 date: 2026-07-31
-status: standing
+status: tested
 ---
 
 # D-FBK-2 — The order of the work is declared, not inferred
@@ -49,6 +49,19 @@ whether to declare it or derive it.
   a heading thins out while the `Serves:` line grows, which is the same file
   becoming a fourth backlog by another route: what a session cannot start from
   is a list of ids.
+
+- **Tested on 2026-08-02:** neither **Wrong if** has happened, measured against
+  a queue that had grown from six items to twenty-six. Every queued todo carries
+  the line, so nothing has had to be added after the fact — and `bin/cli
+  todo:check` reports a bad one rather than repairing it, which it did that day
+  for a `Serves:` naming a file where a directory was meant. The second was the
+  one worth measuring: the shortest body in the queue is 79 words, the median
+  95, and not one is under 40. The correlation the entry feared runs the other
+  way — the only two todos naming two ids have the longest bodies of all, 142
+  and 188 words, because a step answering for two things needs more saying, not
+  less. What holds the mechanical half was already there rather than being
+  added: `TodoTest::everyTodoAnswersForSomethingThatCanStillBeRead` asserts a
+  body on every todo, and over all four states rather than the queue alone.
 
 **Since then** the one line became a head of several, and the three kinds became
 two: a todo that recurs carries `**Every:**` and a todo that does not is the

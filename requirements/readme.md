@@ -38,6 +38,7 @@ quietly share a number.
 | [guides/](guides/readme.md)               | What a returned draft is worth                      |
 | [feedback/](feedback/readme.md)           | What the backlog has to stay usable for             |
 | [knowledge/](knowledge/readme.md)         | What the knowledge base has to cover                |
+| [code/](code/readme.md)                   | What must hold of the source itself                 |
 
 Each group's `readme.md` says what that group is about, and the listing at the
 foot of it is generated from the files below it by `bin/cli requirements index` —

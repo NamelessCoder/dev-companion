@@ -233,10 +233,17 @@ composer cgl    # rewrite to the guidelines; cgl:ci reports and rewrites nothing
 - One file, one class. A second class in a file is not autoloadable under
   PSR-4, so it works until somebody uses it from anywhere else and then fails
   as a missing class — held by `StructureTest::everyFileDeclaresOneClass`.
+- Every entrypoint is driven by a test that goes through it. `tests/Unit/`
+  reaches a class at a time, which is where a command can be held to its rules
+  and still be unreachable: what it reads is resolved from where its own file
+  sits, and moving that file is not something any of those tests goes past.
+  Both binaries have such a test, and a third would need one — held by
+  `StdioServerTest`, `EntrypointTest` and `UpkeepTest`.
 - `tests/Unit/` covers the searching, ranking, and rendering logic;
   `tests/Contract/` holds every tool to its declared schemas and annotations, on
-  a hit and on a miss, and to the naming schema; `tests/Smoke/` drives
-  `bin/typo3-cms-mcp` as a subprocess over JSON-RPC.
+  a hit and on a miss, and to the naming schema; `tests/Smoke/` drives both
+  entrypoints as subprocesses — `bin/typo3-cms-mcp` over JSON-RPC, `bin/cli`
+  by its reading commands.
 - A behaviour worth a rule in `knowledge/` is worth a test: ranking that must
   prefer one match over another, an answer that must say "no match" instead of
   guessing, a catalog field that must stay usable.

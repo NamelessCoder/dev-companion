@@ -35,6 +35,7 @@ final class Requirements
         'GUI' => 'guides',
         'FBK' => 'feedback',
         'KNW' => 'knowledge',
+        'COD' => 'code',
     ];
 
     public static function directory(): string

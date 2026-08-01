@@ -301,8 +301,14 @@ final class Typo3Cli
      * answer with a bare scalar, so the payload is looked for rather than
      * assumed to start at the first byte or at a brace.
      *
+     * What was printed is handed back whether or not it decoded, because the
+     * exit code cannot tell a caller which of two things happened when no
+     * payload arrived. A console that exits 0 without one may have said "there
+     * is nothing" in its own words, or may have said nothing at all — and only
+     * the caller knows what its command prints in the first case.
+     *
      * @param array<int, string> $arguments
-     * @return array{ok: bool, data: mixed, error: string, exitCode: int}
+     * @return array{ok: bool, data: mixed, error: string, exitCode: int, output: string}
      */
     public static function json(array $arguments): array
     {
@@ -317,10 +323,17 @@ final class Typo3Cli
                 'data' => null,
                 'error' => $error !== '' ? $error : 'the console answered with something other than JSON',
                 'exitCode' => $result['exitCode'],
+                'output' => $result['output'],
             ];
         }
 
-        return ['ok' => $result['ok'], 'data' => $decoded, 'error' => $result['error'], 'exitCode' => $result['exitCode']];
+        return [
+            'ok' => $result['ok'],
+            'data' => $decoded,
+            'error' => $result['error'],
+            'exitCode' => $result['exitCode'],
+            'output' => $result['output'],
+        ];
     }
 
     /** Returns the decoded payload, or null when the output carries none. */

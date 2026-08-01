@@ -22,6 +22,19 @@ use Typo3CmsMcp\Search\LabelSearch;
  */
 final class LabelLookup extends ReadOnlyTool
 {
+    /**
+     * What `language:domain:search` prints instead of a payload when nothing
+     * matched — the one exit-0-without-JSON that is an answer.
+     *
+     * Read in `.checkouts/14.3` and `.checkouts/main`, where
+     * `TranslationDomainSearchCommand` warns with this text and returns
+     * SUCCESS; the command does not exist before 14.0, and there the console
+     * exits non-zero. Matching the text rather than the exit code fails in the
+     * safe direction: if the wording moves, an empty result reads as nothing
+     * established, which costs a fallback rather than an answer that is wrong.
+     */
+    private const NOTHING_MATCHED = 'No language resource files found';
+
     public static function name(): string
     {
         return 'typo3_label_lookup';
@@ -90,16 +103,30 @@ final class LabelLookup extends ReadOnlyTool
         // installation that answered "none", not one that could not be asked —
         // and the difference decides whether the caller refines the query or
         // goes looking for a console that is not broken.
+        //
+        // The exit code cannot draw that line on its own, and reading it alone
+        // put every other exit-0-without-payload on the "none" side. The one
+        // that happens is not a core command taking a strange path — all four
+        // this server calls exit non-zero on everything but an empty result —
+        // it is the payload sharing stdout with whatever else writes there: an
+        // Xdebug line, a PHP deprecation naming `{closure}`, anything carrying
+        // a brace or a bracket ahead of the JSON is enough to defeat the
+        // decoder, and the installation then holds the very labels the caller
+        // was told it has none of. So the warning is what says "none", and
+        // everything else without a payload is nothing established.
+        $establishedNone = $answer['exitCode'] === 0
+            && str_contains($answer['output'], self::NOTHING_MATCHED);
+
         $answeredBy = 'installation';
         $candidates = [];
-        if (!is_array($answer['data']) && $answer['exitCode'] !== 0) {
+        if (!is_array($answer['data']) && !$establishedNone) {
             // The labels are in the packages' files whether or not the console
             // boots, and it needs a migrated database to boot. A weaker answer
             // beats none, as long as it says which one it is.
             $candidates = Labels::all($extension);
             if ($candidates === []) {
                 return Unanswered::because(
-                    $answer['error'],
+                    self::whyNothingWasEstablished($answer),
                     [
                         'query' => $query,
                         'resource' => $resource === '' ? null : $resource,
@@ -143,10 +170,11 @@ final class LabelLookup extends ReadOnlyTool
         $instance = Instance::describe();
 
         $fromFiles = $answeredBy === 'packages' ? sprintf(
-            "\n\nRead from the XLF files of the installed packages: the console could not be asked (%s). "
+            "\n\nRead from the XLF files of the installed packages: %s (%s). "
             . 'What that leaves out is the assembled runtime state — a label an installation replaces through '
             . 'LANG/resourceOverrides is shown here as its package ships it.',
-            $answer['error'],
+            $answer['exitCode'] !== 0 ? 'the console could not be asked' : 'the console settled nothing',
+            self::whyNothingWasEstablished($answer),
         ) : '';
         $reuseBoundary = $resource === ''
             ? "\n\nA match is reusable only when its resource is the one already used at the consuming code. "
@@ -204,5 +232,24 @@ final class LabelLookup extends ReadOnlyTool
             'terms' => $termCounts,
             'answeredBy' => $answeredBy,
         ]);
+    }
+
+    /**
+     * Why the console settled neither the labels nor their absence.
+     *
+     * Two failures arrive here and they send the caller to different places.
+     * One is a console that could not be run, and its own message is the
+     * reason. The other ran, exited 0 and printed something that is neither
+     * the payload nor the warning it prints when nothing matched — there is no
+     * message to pass on, and "could not be asked" would send the caller after
+     * a console that is working.
+     *
+     * @param array{error: string, exitCode: int, output: string, ok: bool, data: mixed} $answer
+     */
+    private static function whyNothingWasEstablished(array $answer): string
+    {
+        return $answer['exitCode'] !== 0 ? $answer['error'] : 'the console exited successfully with neither a '
+            . 'JSON payload nor the warning it prints when nothing matched, so nothing it printed says whether '
+            . 'these labels exist';
     }
 }

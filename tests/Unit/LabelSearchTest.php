@@ -109,6 +109,51 @@ final class LabelSearchTest extends TestCase
     }
 
     #[Test]
+    public function aConsoleThatExitsWellAndSaysNothingUsableEstablishesNothing(): void
+    {
+        // The payload shares stdout with everything else that writes there, and
+        // the decoder starts at the first brace or bracket. An Xdebug line, a
+        // deprecation naming {closure}, an extension echoing on boot: any of
+        // them lands ahead of the JSON and the exit code stays 0. Read as
+        // "none", that is the one wrong answer nothing distinguishes from a
+        // right one — the labels are in the installation, and the caller was
+        // told it has none.
+        $this->consoleThatPrints(
+            "Xdebug: [Step Debug] Could not connect to debugging client. Tried: localhost:9003.\n"
+            . "\nLabels in active extensions\n===========================\n\n"
+            . (string) json_encode(['items' => [[
+                'resource' => 'EXT:core/Resources/Private/Language/locallang.xlf',
+                'labels' => [['domain' => 'core.messages', 'reference' => 'labels.save_document', 'label' => 'Save document']],
+            ]]], JSON_THROW_ON_ERROR)
+        );
+        $this->labelFile('Resources/Private/Language/locallang.xlf', ['labels.save_document' => 'Save document']);
+
+        $result = Registry::call('typo3_label_lookup', ['query' => 'save document']);
+
+        self::assertSame('packages', $result->data['answeredBy'], 'the console settled nothing, so the files answered');
+        self::assertSame(1, $result->data['matchCount']);
+        self::assertStringContainsString('the console settled nothing', $result->text);
+    }
+
+    #[Test]
+    public function aConsoleThatExitsWellAndSaysNothingAtAllIsUnansweredRatherThanEmpty(): void
+    {
+        // Same failure with nothing behind it to fall back on: what must not
+        // happen is a matchCount of 0 under answeredBy "installation", because
+        // that is the shape of an installation that really has no such label.
+        $this->consoleThatPrints('');
+
+        $result = Registry::call('typo3_label_lookup', ['query' => 'save document']);
+
+        self::assertSame('nothing', $result->data['answeredBy']);
+        self::assertStringContainsString('unanswered rather than empty', $result->text);
+        self::assertStringContainsString(
+            'exited successfully with neither a JSON payload nor the warning',
+            $result->data['unavailable']['reason']
+        );
+    }
+
+    #[Test]
     public function aConsoleThatCannotRunIsStillUnanswered(): void
     {
         $this->consoleThatFails('the database is not reachable');

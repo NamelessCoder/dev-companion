@@ -164,6 +164,13 @@ gone; carrying both shapes at once is the expensive half of every feature.
 - Shorter is not the same as denser. Fewer concepts, fewer branches, fewer
   moving parts — not fewer lines wrung out of the same logic.
 
+What this does not license is a smaller API. Where a framework offers several
+ways in, take the one its own documentation and tests treat as the main path,
+even where that means more files. A cheaper-looking variant that needs an extra
+nudge to behave is not the smaller change: the nudge is the added concept, and
+it is presented as a trade-off exactly where none was on offer. Say which way in
+is the main one and which is being proposed; do not decide it for brevity.
+
 ## Prose
 
 Short and precise, everywhere: `knowledge/`, the tool descriptions, this file,

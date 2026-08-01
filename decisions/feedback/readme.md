@@ -14,6 +14,7 @@ earns one.
 | Decided | Id | What was decided | State |
 | --- | --- | --- | --- |
 | 2026-08-01 | [`D-FBK-5`](fbk-5-the-queue-is-worked-before-the-pile-is-sighted.md) | The queue is worked before the pile is sighted | standing |
+| 2026-08-01 | [`D-FBK-6`](fbk-6-a-name-is-cut-where-the-notes-start-to-differ.md) | A name is cut where the notes start to differ | standing |
 | 2026-07-31 | [`D-FBK-1`](fbk-1-the-backlog-is-read-out-rather-than-enforced.md) | The backlog is read out rather than enforced | standing |
 | 2026-07-31 | [`D-FBK-2`](fbk-2-the-order-of-the-work-is-declared-not-inferred.md) | The order of the work is declared, not inferred | standing |
 | 2026-07-31 | [`D-FBK-3`](fbk-3-a-session-is-handed-one-todo-not-the-file.md) | A session is handed one todo, not the file | corrected |

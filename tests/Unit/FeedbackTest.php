@@ -179,6 +179,33 @@ final class FeedbackTest extends TestCase
         Feedback::record(['observation' => '   ']);
     }
 
+    /**
+     * A session files one note per subject and files them in one breath, so
+     * they open on the same sentence — the one that says which session this
+     * is — and that sentence is longer than a filename has room for. Eight
+     * notes of 2026-08-01 were named
+     * `debrief-of-the-typo3-14-testimonials-session` to the character, differing
+     * by their timestamp alone, and they were about eight different things.
+     *
+     * The first of a series keeps the opening, because nothing yet says it is
+     * one. Every note after it is named after what it alone says.
+     */
+    #[Test]
+    public function notesThatOpenAlikeAreNamedAfterWhatTellsThemApart(): void
+    {
+        $opening = self::MARKER . ' debrief of the session, missed item: ';
+
+        $first = Feedback::record(['observation' => $opening . 'nothing said which pid the records go to']);
+        $second = Feedback::record(['observation' => $opening . 'the fixture harness was written by hand']);
+        $third = Feedback::record(['observation' => $opening . 'clearing the cache meant deleting files']);
+
+        self::assertStringContainsString('debrief-of-the-session', $first);
+        self::assertStringContainsString('the-fixture-harness-was-written', $second);
+        self::assertStringContainsString('clearing-the-cache-meant-deleting', $third);
+        self::assertStringNotContainsString('debrief-of-the-session', $second, 'the name says what both notes say');
+        self::assertStringNotContainsString('debrief-of-the-session', $third, 'the name says what both notes say');
+    }
+
     #[Test]
     public function recordedNotesAreListedNewestFirst(): void
     {

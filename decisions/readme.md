@@ -88,6 +88,7 @@ the repository has moved furthest away from since. Going back to one and adding
 | Decided | Id | What was decided | About | State |
 | --- | --- | --- | --- | --- |
 | 2026-08-01 | [`D-FBK-5`](feedback/fbk-5-the-queue-is-worked-before-the-pile-is-sighted.md) | The queue is worked before the pile is sighted | feedback | standing |
+| 2026-08-01 | [`D-FBK-6`](feedback/fbk-6-a-name-is-cut-where-the-notes-start-to-differ.md) | A name is cut where the notes start to differ | feedback | standing |
 | 2026-08-01 | [`D-SKL-1`](task-skills/skl-1-the-order-a-task-starts-in-is-one-file.md) | The order a task starts in is one file, and the reading comes last in it | task-skills | tested |
 | 2026-07-31 | [`D-ANS-4`](answers/ans-4-the-instruction-budget-is-2048-characters-on-one-clients-evidence.md) | The instruction budget is 2048 characters, on one client's evidence | answers | standing |
 | 2026-07-31 | [`D-AUD-3`](audience/aud-3-the-instructions-carry-the-entry-point.md) | The instructions carry the entry point, because the tool descriptions never arrive | audience | standing |

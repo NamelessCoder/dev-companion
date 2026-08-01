@@ -421,10 +421,31 @@ final class Feedback
     /**
      * Builds the filename from a timestamp plus a slug of the observation. The
      * agent never supplies the name, so it cannot escape the directory.
+     *
+     * The slug begins at the first word that tells this note apart from one
+     * already named after the same opening. A session files one note per
+     * subject and files them in one breath, so eight of them open on the
+     * sentence that says which session this is — "Debrief of the … session,
+     * missed item: …" — and those are exactly the 48 characters a name has room
+     * for. Eight files then differ by their timestamp alone, which is the one
+     * thing about a note nobody is looking for. What goes in the name has to be
+     * what only this note says.
      */
     private static function uniquePath(string $directory, string $observation): string
     {
-        $slug = self::slug($observation);
+        $words = self::words($observation);
+        $slug = self::slug($words);
+
+        // Only the notes whose name this one would take have to be read, and
+        // their own first line is where the shared opening can be measured.
+        $shared = 0;
+        foreach (glob($directory . '/*-' . $slug . '.md') ?: [] as $taken) {
+            $shared = max($shared, self::opening($words, self::words(self::heading($taken))));
+        }
+        if ($shared > 0 && $shared < count($words)) {
+            $slug = self::slug(array_slice($words, $shared));
+        }
+
         $base = date('Y-m-d-His') . ($slug === '' ? '' : '-' . $slug);
 
         $file = $directory . '/' . $base . '.md';
@@ -437,12 +458,43 @@ final class Feedback
         return $file;
     }
 
-    private static function slug(string $text): string
+    /**
+     * How many words two observations open with in common, which is where the
+     * one being written starts saying something of its own.
+     *
+     * @param array<int, string> $left
+     * @param array<int, string> $right
+     */
+    private static function opening(array $left, array $right): int
     {
-        $slug = strtolower($text);
-        $slug = (string) preg_replace('/[^a-z0-9]+/', '-', $slug);
-        $slug = trim($slug, '-');
+        $shared = 0;
+        while (isset($left[$shared], $right[$shared]) && $left[$shared] === $right[$shared]) {
+            ++$shared;
+        }
 
+        return $shared;
+    }
+
+    /** A note's own first line, as it was written into the file. */
+    private static function heading(string $file): string
+    {
+        $contents = (string) file_get_contents($file);
+
+        return preg_match('/^# (.+)$/m', $contents, $heading) === 1 ? trim($heading[1]) : '';
+    }
+
+    /** @return array<int, string> */
+    private static function words(string $text): array
+    {
+        $slug = trim((string) preg_replace('/[^a-z0-9]+/', '-', strtolower($text)), '-');
+
+        return $slug === '' ? [] : explode('-', $slug);
+    }
+
+    /** @param array<int, string> $words */
+    private static function slug(array $words): string
+    {
+        $slug = implode('-', $words);
         if (strlen($slug) <= self::MAX_SLUG_LENGTH) {
             return $slug;
         }

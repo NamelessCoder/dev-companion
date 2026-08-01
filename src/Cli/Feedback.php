@@ -85,7 +85,7 @@ final class Feedback implements Subject
         $chunk = array_slice($unjudged, 0, self::CHUNK);
         printf("%d unjudged. These %d, oldest first:\n", count($unjudged), count($chunk));
         foreach ($chunk as $note) {
-            printf("%s\n    %s · %s · %s\n", $note['file'], $note['category'], $note['model'], self::first($note['title']));
+            printf("%s\n    %s · %s · %s\n", $note['file'], $note['category'], $note['model'], $note['title']);
         }
         if (count($unjudged) > count($chunk)) {
             printf("%d wait behind them — `bin/cli feedback list`.\n", count($unjudged) - count($chunk));
@@ -129,12 +129,6 @@ final class Feedback implements Subject
             static fn(array $note): array => $note + ['judged' => in_array($note['file'], $queued, true)],
             array_reverse(Notes::notes('open', null, self::ALL)),
         );
-    }
-
-    /** A note's own first line, cut where a terminal would wrap it anyway. */
-    private static function first(string $title): string
-    {
-        return mb_strlen($title) > 72 ? mb_substr($title, 0, 71) . '…' : $title;
     }
 
     /**

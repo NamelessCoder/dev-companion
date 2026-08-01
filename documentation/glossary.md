@@ -27,6 +27,9 @@
   tool verbs.
 - **requirement** — what must be true from now on, and what holds it there: one
   file in `requirements/`.
+- **result** — what a tool hands back: the text and the same answer as data.
+  `src/Result/` holds what several tools build one from — the shared schemas,
+  the renderers, the unanswered case.
 - **run** — one recorded execution of a forward review, in `scenarios/runs/`.
 - **scenario** — one prompt and what has to come out of it, in `scenarios/`.
 - **skill** — one canonical task workflow under `skills/`, installed into
@@ -34,7 +37,9 @@
 - **standalone checkout** — this repository as the Composer root package, where
   feedback can be written.
 - **todo** — one entry in the order of the work.
-- **tool** — one `typo3_<subject>_<verb>` this server offers its callers.
+- **tool** — one `typo3_<subject>_<verb>` this server offers its callers: one
+  class in `src/Tool/`, listed in `Typo3CmsMcp\Tools`. No "server" segment in
+  the name — this package is the server throughout.
 - **tool verb** — one of `lookup`, `guide`, `list`, `scope`, `record`: what
   tells a caller the shape of the answer.
 - **verdict** — how a recorded run came out: `covered`, `partial`, `gap`.

@@ -7,6 +7,10 @@ bin/typo3-cms-mcp  # stdio entrypoint (the client launches it as a subprocess)
 bin/cli            # everything this repository is kept in order by; run it with nothing for the list
 src/Cli.php        # what `bin/cli` supports, and src/Cli/ one class per subject
 src/               # PHP classes (knowledge loading, tools, SDK wiring)
+src/Tools.php      # every tool this server has, and the only place one is switched on
+src/Tool/          # one class per tool: its description, its schemas, its answer
+src/Tool/Tool.php  # the interface each one implements; ReadOnlyTool carries the annotations
+src/Result/        # what several tools build their answer from: the shared schemas, the renderers, the unanswered case
 src/ServerFactory.php  # builds the mcp/sdk server from the tool definitions
 src/Mcp/           # SDK handlers: tool dispatch and typo3://core resources
 src/Catalog/       # the component catalog and the translation domain derivation
@@ -185,11 +189,20 @@ so that list stays the only place the vocabulary is defined.
 Leave `core` out of a name: this server is about the TYPO3 core throughout, so
 the segment separates nothing.
 
+A tool is one class in `src/Tool/`, implementing `Typo3CmsMcp\Tool\Tool`: what
+it is called, what it takes, what shape it answers in, and the answer itself
+stand in one file, so a description cannot go stale against the answer it
+describes without the two being edited apart. `Typo3CmsMcp\Tools` is the list of
+them, and the only place a tool is switched on. Nothing else belongs below
+`src/Tool/` — what more than one tool builds its answer from is
+`Typo3CmsMcp\Result\`.
+
 Every tool returns a `ToolResult`: the text plus the same answer as data. The
-data half is a contract — clients may validate it against the output schema the
-tool declares in `Typo3CmsMcp\ToolSchemas`, so a field a schema requires has to
-be present on every path through the tool, misses included. Add fields rather
-than renaming them.
+data half is a contract — clients may validate it against the `outputSchema()`
+the tool declares, so a field a schema requires has to be present on every path
+through the tool, misses included. Add fields rather than renaming them. A
+record shape more than one tool answers with belongs in
+`Typo3CmsMcp\Result\Schema`, so a client reads one model rather than two.
 
 ## Checks
 

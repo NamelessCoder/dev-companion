@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Tool;
+namespace Typo3CmsMcp\Result;
 
 use Typo3CmsMcp\Project;
 use Typo3CmsMcp\Versions;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Tool;
+namespace Typo3CmsMcp\Result;
 
 use Typo3CmsMcp\Catalog\Meta as CatalogMeta;
 use Typo3CmsMcp\Instance;
@@ -16,7 +16,7 @@ use Typo3CmsMcp\Versions;
  * so the provenance, the version range per entry and what a target version
  * withheld are written once for both.
  */
-final class ComponentAnswer
+final class Provenance
 {
     /** Appended when a catalog lookup finds nothing at all. */
     public const MISS_NOTE = 'Call typo3_catalog_scope for what this snapshot covers.';

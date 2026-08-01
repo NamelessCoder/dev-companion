@@ -15,7 +15,7 @@ attachments back showed why, and the three channels behaved differently enough
 that one fix would have been the wrong fix.
 
 - **Evidence:** the eighteen tools arrived as a `deferred_tools_delta` — names
-  only, no schemas and no descriptions, so every `description` in `src/Tools.php`
+  only, no schemas and no descriptions, so every tool `description` in `src/Tool/`
   was outside the session's context and `ToolSearch` would have had to be called
   first to see one. The `instructions` did arrive, in full, from the first turn —
   and they opened with a profile caveat, then "not a patch assistant", then "it

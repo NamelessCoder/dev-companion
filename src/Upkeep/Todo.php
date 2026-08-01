@@ -75,6 +75,17 @@ final class Todo
     public const PROCEDURE = 'documentation/feedback/working-a-todo.md';
 
     /**
+     * How several todos are worked at once, handed over with every claim.
+     *
+     * `bin/cli todo:claim` moves files and names branches, which is the half of
+     * the arrangement this repository owns. The other half — the worktree the
+     * branch is checked out in, what a session does with a question it cannot
+     * settle, and who merges — is not something a command can carry out, and a
+     * claim taken without it is a lock nobody knows how to release.
+     */
+    public const PARALLEL = 'documentation/feedback/working-todos-in-parallel.md';
+
+    /**
      * The readings `bin/cli todo:next` exists to perform. Exactly one recurring
      * todo has to name each: none and the command silently stops doing half its
      * job, two and it does it twice.
@@ -104,6 +115,96 @@ final class Todo
     public static function directory(): string
     {
         return Paths::root() . '/todo';
+    }
+
+    /**
+     * The branch a todo is worked on, derived rather than chosen.
+     *
+     * Two sessions that name their own branches produce two names for one piece
+     * of work, and the claim in `progress/` is then the only thing that says
+     * which is which — while the whole point of the field is that somebody who
+     * finds a stale claim can go and look at the work. Deriving it means the
+     * branch can be found from the todo and the todo from the branch.
+     *
+     * @param Section $todo
+     */
+    public static function branch(array $todo): string
+    {
+        return 'todo/' . preg_replace('/^\d+-/', '', basename($todo['path'], '.md'));
+    }
+
+    /**
+     * Taking a queued todo on: out of the queue, into `progress/`, carrying the
+     * branch the work will be on and the day it was taken.
+     *
+     * The number goes with the move. It is the place in the queue and nothing
+     * else, and a todo in hand has no place in an order nothing is coming for
+     * it from — the same reason one in `waiting/` drops its number. What puts
+     * it back gives it a new one at the end.
+     *
+     * @param Section $todo
+     *
+     * @return string the path it has from now on
+     */
+    public static function claim(array $todo, ?string $today = null): string
+    {
+        $to = 'todo/progress/' . preg_replace('/^\d+-/', '', basename($todo['path']));
+        $head = $todo['head'] . "\n**Branch:** " . self::branch($todo)
+            . "\n**Claimed:** " . ($today ?? date('Y-m-d'));
+
+        return self::move($todo, $to, $head);
+    }
+
+    /**
+     * Putting one back: out of `progress/`, onto the end of the queue.
+     *
+     * The end rather than where it was, because that is what this repository
+     * already does with a todo somebody could not finish — it is the one place
+     * that is both honest about the priority and its own timer, coming round
+     * again as the queue drains. What it was claimed for is dropped with it: a
+     * branch nobody is on and a date nobody is counting from are worse than no
+     * fields at all, because the next reader cannot tell them from a live claim.
+     *
+     * @param Section $todo
+     *
+     * @return string the path it has from now on
+     */
+    public static function release(array $todo): string
+    {
+        $positions = array_map(intval(...), array_column(self::items(), 'position'));
+        $next = sprintf('%03d', ($positions === [] ? 0 : max($positions)) + 10);
+        $head = implode("\n", array_filter(
+            preg_split('/\R/', $todo['head']) ?: [],
+            static fn(string $line): bool => !str_starts_with($line, '**Branch:**') && !str_starts_with($line, '**Claimed:**'),
+        ));
+
+        return self::move($todo, 'todo/' . $next . '-' . basename($todo['path']), $head);
+    }
+
+    /**
+     * One todo, rewritten where it now belongs and removed from where it was.
+     *
+     * Written from what was read rather than patched in place: the head is the
+     * one part a move changes, and rebuilding the file from its title, its head
+     * and its step is what keeps the result readable by the same parse that
+     * produced it.
+     *
+     * @param Section $todo
+     */
+    private static function move(array $todo, string $to, string $head): string
+    {
+        $directory = dirname(Paths::root() . '/' . $to);
+        if (!is_dir($directory) && !mkdir($directory) && !is_dir($directory)) {
+            throw new \RuntimeException($directory . ' is not there and cannot be made');
+        }
+
+        file_put_contents(
+            Paths::root() . '/' . $to,
+            '# ' . $todo['title'] . "\n\n" . trim($head) . "\n\n" . $todo['body'] . "\n",
+        );
+        unlink(Paths::root() . '/' . $todo['path']);
+
+        return $to;
     }
 
     /**

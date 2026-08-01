@@ -5,3 +5,4 @@ vendor/
 .phpunit.cache/
 .php-cs-fixer.cache
 /.checkouts/
+/.worktrees/

@@ -30,8 +30,10 @@ use Typo3CmsMcp\Upkeep\Command\ScenarioContract;
 use Typo3CmsMcp\Upkeep\Command\ScenarioRecord;
 use Typo3CmsMcp\Upkeep\Command\ScenarioShow;
 use Typo3CmsMcp\Upkeep\Command\TodoCheck;
+use Typo3CmsMcp\Upkeep\Command\TodoClaim;
 use Typo3CmsMcp\Upkeep\Command\TodoList;
 use Typo3CmsMcp\Upkeep\Command\TodoNext;
+use Typo3CmsMcp\Upkeep\Command\TodoRelease;
 use Typo3CmsMcp\Upkeep\Command\TodoWaiting;
 
 /**
@@ -92,6 +94,8 @@ final class Cli
         $application->addCommand(new TodoNext());
         $application->addCommand(new TodoList());
         $application->addCommand(new TodoWaiting());
+        $application->addCommand(new TodoClaim());
+        $application->addCommand(new TodoRelease());
         $application->addCommand(new TodoCheck());
         $application->addCommand(new ProseCheck());
         $application->addCommand(new FeedbackNext());

@@ -20,12 +20,38 @@ final class TodoTest extends TestCase
 
     protected function tearDown(): void
     {
-        foreach (glob(Todo::directory() . '/progress/*.md') ?: [] as $file) {
+        $written = [
+            ...(glob(Todo::directory() . '/*.md') ?: []),
+            ...(glob(Todo::directory() . '/progress/*.md') ?: []),
+        ];
+        foreach ($written as $file) {
             if (str_contains((string) file_get_contents($file), self::MARKER)) {
                 unlink($file);
             }
         }
         @rmdir(Todo::directory() . '/progress');
+    }
+
+    /**
+     * One queued todo of this test's own, at the end of the queue where it
+     * cannot displace anything, and recognizable enough for tearDown to find it
+     * wherever the move under test has left it.
+     *
+     * @return array{title: string, kind: string, position: string, path: string, every: string, checked: string, waitingOn: string, branch: string, claimed: string, serves: array<int, string>, run: array<int, string>, head: string, strays: array<int, string>, body: string}
+     */
+    private function queue(): array
+    {
+        $items = Todo::items();
+        $last = (int) $items[count($items) - 1]['position'];
+        file_put_contents(
+            sprintf('%s/%03d-%s.md', Todo::directory(), $last + 10, self::MARKER),
+            '# ' . self::MARKER . "\n\n**Serves:** todo/\n\nThe step this fixture stands for.\n",
+        );
+
+        return array_values(array_filter(
+            Todo::items(),
+            static fn(array $todo): bool => str_contains($todo['path'], self::MARKER),
+        ))[0];
     }
 
     /**
@@ -156,7 +182,7 @@ final class TodoTest extends TestCase
         @mkdir(Todo::directory() . '/progress');
         file_put_contents(
             Todo::directory() . '/progress/' . self::MARKER . '.md',
-            "# " . self::MARKER . "\n\n**Serves:** todo/\n**Branch:** todo/" . self::MARKER
+            '# ' . self::MARKER . "\n\n**Serves:** todo/\n**Branch:** todo/" . self::MARKER
                 . "\n**Claimed:** 2026-08-01\n\nThe step this claim was taken for.\n",
         );
 
@@ -168,6 +194,44 @@ final class TodoTest extends TestCase
         self::assertSame('2026-08-01', $inHand[0]['claimed']);
         self::assertSame($queued, Todo::items(), 'a todo in hand is still in the queue somebody else reads');
         self::assertContains('todo/', Todo::serves(), 'a todo in hand answers for nothing it took on');
+    }
+
+    /**
+     * Taking one on and putting it back are one move in two directions, and the
+     * second is what keeps the first usable: a session ends where it ends, and
+     * a state that can only be entered fills up with claims nobody is working
+     * and nobody else is offered.
+     *
+     * What the round trip has to leave intact is the todo — a claim rewrites
+     * the head and nothing else, because the step is the part somebody else has
+     * to be able to start from. What it must not leave is the claim itself: a
+     * branch nobody is on reads exactly like a branch somebody is on.
+     */
+    #[Test]
+    public function aClaimIsOneMoveThatGoesBothWays(): void
+    {
+        $queued = $this->queue();
+
+        $claimed = Todo::claim($queued, '2026-08-01');
+
+        self::assertSame('todo/progress/' . self::MARKER . '.md', $claimed);
+        $inHand = Todo::progress()[0];
+        self::assertSame('todo/' . self::MARKER, $inHand['branch']);
+        self::assertSame('2026-08-01', $inHand['claimed']);
+        self::assertSame('', $inHand['position'], 'a todo in hand keeps a place in an order nothing is coming for it from');
+        self::assertSame($queued['title'], $inHand['title']);
+        self::assertSame($queued['body'], $inHand['body'], 'the step is what somebody else has to start from');
+        self::assertSame($queued['serves'], $inHand['serves']);
+
+        $released = Todo::release($inHand);
+
+        self::assertMatchesRegularExpression('#^todo/\d+-' . self::MARKER . '\.md$#', $released);
+        $back = array_values(array_filter(Todo::items(), static fn(array $t): bool => str_contains($t['path'], self::MARKER)))[0];
+        self::assertSame([], Todo::progress());
+        self::assertSame('', $back['branch'], 'a released todo keeps a branch nobody is on');
+        self::assertSame('', $back['claimed']);
+        self::assertSame($queued['body'], $back['body']);
+        self::assertSame($back, Todo::items()[count(Todo::items()) - 1], 'a released todo is not at the end of the queue');
     }
 
     /**

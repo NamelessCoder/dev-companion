@@ -9,7 +9,7 @@ when it is added.
 
 | Id | What must hold | State |
 | --- | --- | --- |
-| [`R-FBK-1`](fbk-1-a-note-is-about-as-many-tools-as-it-is-about.md) | A feedback is about as many tools as it is about | held |
+| [`R-FBK-1`](fbk-1-a-feedback-is-about-as-many-tools-as-it-is-about.md) | A feedback is about as many tools as it is about | held |
 | [`R-FBK-2`](fbk-2-a-feedback-that-was-worked-off-stays-answerable-for.md) | A feedback that was worked off stays answerable for | held |
 | [`R-FBK-3`](fbk-3-a-forward-run-is-a-record-not-a-remembered-status.md) | A forward run is a record, not a remembered status | held |
 | [`R-FBK-4`](fbk-4-only-an-open-prompt-produces-forward-evidence.md) | Only an open prompt produces forward evidence | held |

@@ -17,8 +17,11 @@ caller is holding.
 How it is worked out is not fixed here: today the entrypoint hands in the
 working directory and `Instance` walks up from it, which is what
 [`R-DIS-1`](dis-1-discovery-belongs-to-the-stdio-entrypoint-alone.md) restricts
-to that one caller. Should the protocol offer something better than a working
-directory, the mechanism may change; this may not.
+to that one caller, and `TYPO3_MCP_ROOT` is how it is stated outright instead.
+Nothing in the protocol replaces either — `roots` was the candidate and is
+deprecated, which
+[`D-DIS-6`](../../decisions/discovery/dis-6-the-protocol-offers-nothing-to-replace-the-working-directory.md)
+records. Should one arrive, the mechanism may change; this may not.
 
 **From:** the line that finds it could be deleted from the entrypoint with all
 495 tests staying green, because every test that covers discovery hands

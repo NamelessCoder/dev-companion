@@ -88,6 +88,7 @@ the repository has moved furthest away from since. Going back to one and adding
 ## Every decision, newest first
 
 - [`D-COD-1`][D-COD-1] — One file declares one class · 2026-08-01 · standing
+- [`D-DIS-6`][D-DIS-6] — The protocol offers nothing to replace the working directory · 2026-08-01 · standing
 - [`D-DOC-1`][D-DOC-1] — A table is written so it reads unrendered · 2026-08-01 · standing
 - [`D-FBK-5`][D-FBK-5] — The queue is worked before the pile is sighted · 2026-08-01 · standing
 - [`D-FBK-6`][D-FBK-6] — A name is cut where the feedback starts to differ · 2026-08-01 · standing
@@ -135,6 +136,7 @@ the repository has moved furthest away from since. Going back to one and adding
 - [`D-VER-2`][D-VER-2] — The prose is not bound; it says which half it is · 2026-07-29 · standing
 
 [D-COD-1]: code/cod-1-one-file-declares-one-class.md
+[D-DIS-6]: discovery/dis-6-the-protocol-offers-nothing-to-replace-the-working-directory.md
 [D-DOC-1]: documentation/doc-1-a-table-is-written-so-it-reads-unrendered.md
 [D-FBK-5]: feedback/fbk-5-the-queue-is-worked-before-the-pile-is-sighted.md
 [D-FBK-6]: feedback/fbk-6-a-name-is-cut-where-the-feedback-starts-to-differ.md

@@ -6,9 +6,10 @@ status: standing
 
 # D-GUI-2 — The commit workflow is asked for, not inferred
 
-**The commit workflow is an argument that defaults to `core`, because a commit
-message carries no paths and its subject text describes the change rather than
-the repository it lands in.**
+**The commit workflow is an argument that defaults to `core`.**
+
+A commit message carries no paths, and its subject text describes the change
+rather than the repository it lands in.
 
 `typo3_commit_message_guide` now takes `workflow: "core" | "project"`. Every
 other tool that draws this line derives it — `Scope::isOutsideCore` reads the

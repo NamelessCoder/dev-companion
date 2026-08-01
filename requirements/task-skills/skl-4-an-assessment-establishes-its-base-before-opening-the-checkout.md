@@ -5,10 +5,12 @@ status: held
 
 # R-SKL-4 — An assessment establishes its base before opening the checkout
 
-**An assessment establishes its base — scope, the owning tools, and the list
-of surfaces it will cover — before it opens the checkout, and derives that
-list from the audit surfaces rather than from the file tree: a surface with no
-files is invisible to a listing, and its absence is usually the finding.**
+**An assessment establishes its base — scope, the owning tools, and the list of
+surfaces it will cover — before it opens the checkout.**
+
+That list comes from the audit surfaces rather than from the file tree: a
+surface with no files is invisible to a listing, and its absence is usually the
+finding.
 
 A surface stated as what the repository declares is the file tree in another
 form and fails the same way, so a surface that is a layer of checks names what

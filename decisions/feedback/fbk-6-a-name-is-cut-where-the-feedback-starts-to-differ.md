@@ -6,9 +6,10 @@ status: standing
 
 # D-FBK-6 — A name is cut where the feedback starts to differ
 
-**A feedback whose slug another feedback already carries is named from the
-first word at which the two observations differ, rather than from a counter or
-a longer cut of the same opening.**
+**A feedback whose slug another feedback already carries is named from the first
+word at which the two observations differ.**
+
+Not from a counter, and not from a longer cut of the same opening.
 
 The name has always been the first 48 characters of the observation. That is
 the right end of the text — an agent writes what happened first — and it fails

@@ -6,9 +6,11 @@ status: held
 # R-SKL-5 — The order a task starts in is written once
 
 **The order a task starts in is written once and carried into every published
-skill: the installation and its commands, the extension and what it ships, the
+skill.**
+
+It is the installation and its commands, the extension and what it ships, the
 workflow, the conventions of each subsystem in scope, the deprecations of the
-installed core over what that extension ships — and only then the checkout.**
+installed core over what that extension ships — and only then the checkout.
 
 A skill states what it adds to that order, never a second copy of the order
 itself. The base also separates the two kinds of lookup, so a runtime answer is

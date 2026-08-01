@@ -5,11 +5,11 @@ status: held
 
 # R-SCO-4 — The backend CSS conventions are named as the backend's
 
-**The backend CSS conventions are answered as what they are — the backend
-interface's — and do not match a frontend theme, nor a PHP file whose name
-merely contains "scss".**
+**The backend CSS conventions are answered as what they are: the backend
+interface's.**
 
-They are named `Backend CSS` and `Backend TypeScript` in every answer, and
+They do not match a frontend theme, nor a PHP file whose name merely contains
+"scss". They are named `Backend CSS` and `Backend TypeScript` in every answer, and
 where a task names the frontend they are withheld with the reason rather than
 applied.
 

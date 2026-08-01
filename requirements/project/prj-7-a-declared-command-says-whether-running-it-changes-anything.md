@@ -6,9 +6,10 @@ status: held
 # R-PRJ-7 — A declared command says whether running it changes anything
 
 **Every command the project answer lists carries the body it was declared with
-and what running that body does to the sources: a check that hands the code back
-as it was, a change that rewrites something, or unknown where the body does not
-say.**
+and what running that body does to the sources.**
+
+That is a check, which hands the code back as it was; a change, which rewrites
+something; or unknown, where the body does not say.
 
 It is read off the declaration and never by running it, `@name` references are
 followed to the script they name, and a script that reaches one unreadable line

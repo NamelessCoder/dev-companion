@@ -6,9 +6,10 @@ status: held
 # R-DIS-19 — A registry with no command is answered by the installation itself
 
 **Where TYPO3 exposes no console command for a registry, the installation is
-booted in a subprocess and its container is asked; the files the packages ship
-are the fallback, and the answer says which of the two answered and what the
-fallback leaves out.**
+booted in a subprocess and its container is asked.**
+
+The files the packages ship are the fallback, and the answer says which of the
+two answered and what the fallback leaves out.
 
 Nothing is booted in this process. A container that came up without essential
 configuration is core-only and looks complete, so it is never handed on as a

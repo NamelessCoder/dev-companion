@@ -6,9 +6,11 @@ status: standing
 
 # D-CAT-1 — A catalog entry is bound whole, and the binding is derived
 
-**`since`/`until` sits on the whole catalog entry rather than on its fields, is
-derived by `bin/cli catalog check` rather than judged, and an entry that does not
-hold on the stated version is withheld rather than qualified.**
+**`since`/`until` sits on the whole catalog entry rather than on its fields, and
+is derived by `bin/cli catalog check` rather than judged.**
+
+An entry that does not hold on the stated version is withheld rather than
+qualified.
 
 The architecture hints bind one statement at a time. A component entry has no
 statements: it is markup, a class list and a custom-property contract that were

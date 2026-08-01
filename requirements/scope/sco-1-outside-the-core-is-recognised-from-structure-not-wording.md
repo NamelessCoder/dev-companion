@@ -5,9 +5,11 @@ status: held
 
 # R-SCO-1 — Outside the core is recognised from structure, not wording
 
-**Work outside the core is recognised from structural evidence — the kind of
-installation, the shape of the paths, an area the installation knows as
-somebody's extension — rather than from wording.**
+**Work outside the core is recognised from structural evidence rather than from
+wording.**
+
+That evidence is the kind of installation, the shape of the paths, and an area
+the installation knows as somebody's extension.
 
 Evidence of core work wins over the weaker signals, in this order: a
 `typo3/sysext/` path or the contribution workflow named outright, then an

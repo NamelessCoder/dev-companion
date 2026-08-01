@@ -5,12 +5,13 @@ status: held
 
 # R-PRJ-5 — What an extension registers is answered from the installation and its files
 
-**What an extension registers is answered per extension — the tables its TCA
-defines and the ones it extends, the content elements it adds, its backend
-modules and routes, its icons, its site sets, its service tags, its
-middlewares, its Fluid roots and namespaces — from the booted installation for
-the registries that have no file behind them, and from its own files for the
-rest.**
+**What an extension registers is answered per extension: from the booted
+installation for the registries that have no file behind them, and from its own
+files for the rest.**
+
+What is answered is the tables its TCA defines and the ones it extends, the
+content elements it adds, its backend modules and routes, its icons, its site
+sets, its service tags, its middlewares, and its Fluid roots and namespaces.
 
 The three the installation owns are its tables, its content elements and its
 icons: TCA and the icon registry are assembled at runtime and belong to no

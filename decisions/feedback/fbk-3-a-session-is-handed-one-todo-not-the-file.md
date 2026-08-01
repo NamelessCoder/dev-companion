@@ -6,9 +6,10 @@ status: corrected
 
 # D-FBK-3 — A session is handed one todo, not the file
 
-**`bin/cli next` prints the first todo that is due and nothing else; the
-overview it used to print is `bin/cli todo list`, and being due is answered by a
-cadence and by the todo's own command exiting nonzero.**
+**`bin/cli next` prints the first todo that is due and nothing else.**
+
+The overview it used to print is `bin/cli todo list`, and being due is answered
+by a cadence and by the todo's own command exiting nonzero.
 
 The command was built to spare a session the reading of four files, and it
 replaced them with one reading of its own that was nearly as long. What it costs

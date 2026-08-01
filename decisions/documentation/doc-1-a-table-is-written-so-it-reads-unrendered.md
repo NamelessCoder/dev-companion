@@ -7,8 +7,10 @@ status: standing
 # D-DOC-1 — A table is written so it reads unrendered
 
 **A markdown table holds only cells that fit on one line, and its columns are
-aligned — the compact `| --- |` form is not used, and neither is anything that
-would make a cell span lines.**
+aligned.**
+
+The compact `| --- |` form is not used, and neither is anything that would make
+a cell span lines.
 
 Both forms render identically, so the compact one looks like the cheaper
 choice. It is cheaper only for whoever writes it once, and the file is read many

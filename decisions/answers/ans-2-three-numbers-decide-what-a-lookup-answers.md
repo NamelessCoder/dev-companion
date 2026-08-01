@@ -7,8 +7,7 @@ status: tested
 # D-ANS-2 — Three numbers now decide what a lookup answers, and they were measured, not reasoned
 
 **An unknown term, a diluted long field and a per-corpus reference length decide
-what a lookup answers, and each of the three constants came off a sweep over
-sixteen queries with a known right answer.**
+what a lookup answers.**
 
 Scoring the hint text as well as its keywords is the change; keeping it from
 answering everything is the part that took the work. Three constants came out of

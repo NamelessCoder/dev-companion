@@ -5,11 +5,13 @@ status: held
 
 # R-FBK-9 — A todo is worked from what was read
 
-**How a todo is worked — what is read before the first change, that the step is
+**How a todo is worked is written down in one place, and every todo that is
+handed over names it.**
+
+What that page carries is what is read before the first change, that the step is
 judged rather than executed, that a question the work turns on is settled from a
 source rather than recalled, and that what has no source here is asked before
-the change instead of decided quietly — is written down in one place, and every
-todo that is handed over names it.**
+the change instead of decided quietly.
 
 A todo prints as an instruction, and acting on one takes no reading at all. What
 that skips is the half that decides whether the change is right: the todo's

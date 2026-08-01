@@ -7,9 +7,10 @@ status: standing
 # D-SCO-8 — The path decides, and the answer may say it cannot
 
 **`Scope::isOutsideCore()` is gone. `Scope::audienceOf()` answers `core`,
-`outside-core` or `uncertain` for one path, the two tools that take a `paths`
-array answer per path, and a call that placed nothing says so instead of
-handing over the core's process by default.**
+`outside-core` or `uncertain` for one path.**
+
+The two tools that take a `paths` array answer per path, and a call that placed
+nothing says so instead of handing over the core's process by default.
 
 What [`D-SCO-7`](sco-7-the-signals-are-combined-per-call-and-a-call-is-not-a-path.md)
 measured, built. The two things it named as missing are the two things here: the

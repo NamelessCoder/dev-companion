@@ -7,8 +7,9 @@ status: standing
 # D-KNW-4 — Package knowledge needs a producer before it needs discovery
 
 **A package contribution is reported with the package and version Composer
-states and an authority of its own, and no discovery path is added until a real
-producer has established a shape.**
+states and an authority of its own.**
+
+No discovery path is added until a real producer has established a shape.
 
 An installed extension can eventually contribute task guidance for its own API
 and workflow, but loading an arbitrary markdown path from every package would

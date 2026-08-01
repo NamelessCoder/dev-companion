@@ -5,9 +5,10 @@ status: held
 
 # R-FBK-6 — A recorded feedback is reported where it actually is
 
-**The path a recorded feedback is reported back with is absolute, and the
-answer says the feedback was written into this server's own checkout rather
-than into the project the session is working in.**
+**The path a recorded feedback is reported back with is absolute.**
+
+The answer says the feedback was written into this server's own checkout rather
+than into the project the session is working in.
 
 The caller stands somewhere else. A path relative to a root it has never seen
 resolves, in the only directory it can check, to nothing — and a write that

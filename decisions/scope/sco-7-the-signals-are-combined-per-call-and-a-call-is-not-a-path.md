@@ -6,11 +6,11 @@ status: standing
 
 # D-SCO-7 — The signals are combined per call, and a call is not a path
 
-**`Scope::isOutsideCore()` combines the signals `R-SCO-1` orders, but it
-combines them over the whole call: every path handed to it is folded into one
-string and one boolean comes back. `META-03` is therefore a feature and not a
-wording change — nothing decides per path, and nothing can say the audience is
-uncertain.**
+**`Scope::isOutsideCore()` combines the signals `R-SCO-1` orders over the whole
+call: every path is folded into one string and one boolean comes back. `META-03`
+is therefore a feature and not a wording change.**
+
+Nothing decides per path, and nothing can say the audience is uncertain.
 
 `META-03` hands the server two paths of different audience in one session and
 asks what applies to each. Read against `Scope`, the question was which half of

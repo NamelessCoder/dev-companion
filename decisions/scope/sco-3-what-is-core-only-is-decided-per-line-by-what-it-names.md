@@ -6,8 +6,7 @@ status: standing
 
 # D-SCO-3 — What is core-only is decided per line, by what it names
 
-**Whether a line is core-only is a mechanical check over the rendered text —
-does it name something that exists in the core repository and nowhere else —
+**Whether a line is core-only is a mechanical check over the rendered text
 rather than a flag on each entry.**
 
 `typo3_task_guide` now drops core-only material outside the core. What counts

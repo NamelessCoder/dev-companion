@@ -6,9 +6,11 @@ status: held
 # R-SKL-3 — Crossing into another skill's work is an explicit transition
 
 **A task skill crossing into work another skill owns performs an explicit
-transition: it names the verified stopping point, stops before editing the new
-owner's files, activates that owner, and carries forward only the scope and
-verified behavior the next workflow needs.**
+transition.**
+
+It names the verified stopping point, stops before editing the new owner's
+files, activates that owner, and carries forward only the scope and verified
+behavior the next workflow needs.
 
 Backend-module documentation is owned by the extension that contains the
 functionality, not by the project around it.

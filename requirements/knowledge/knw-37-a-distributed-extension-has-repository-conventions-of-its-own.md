@@ -6,10 +6,12 @@ status: held
 # R-KNW-37 — A distributed extension has repository conventions of its own
 
 **A repository that is only the extension has conventions of its own, written
-down as such: one unit rather than two, the declared constraint rather than the
+down as such.**
+
+They are one unit rather than two, the declared constraint rather than the
 installed version as the statement of support, no committed lock file,
 dependencies shipped where the extension also installs outside Composer, and
-the browser suite belonging to the package.**
+the browser suite belonging to the package.
 
 The project repository layout names what it is about, so the two are not read
 for each other.

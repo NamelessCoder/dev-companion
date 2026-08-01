@@ -7,8 +7,9 @@ status: standing
 # D-CAT-3 — The component index is curated; its contract comes from the installation
 
 **Where the caller targets the active installation and its backend CSS is
-present, the installed files decide the component contract, and the curated
-index stays the searchable subset and the complete fallback.**
+present, the installed files decide the component contract.**
+
+The curated index stays the searchable subset and the complete fallback.
 
 The component catalog was deliberately pinned to one core revision and guarded
 by `bin/cli catalog check`. In the first `EXT-04` run that safeguard was not enough:

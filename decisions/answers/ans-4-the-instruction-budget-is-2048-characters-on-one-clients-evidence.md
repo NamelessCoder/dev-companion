@@ -7,8 +7,10 @@ status: standing
 # D-ANS-4 — The instruction budget is 2048 characters, on one client's evidence
 
 **2048 characters is treated as the limit every client keeps, although exactly
-one client has been measured, and the instructions were cut to fit it rather
-than the limit being made configurable.**
+one client has been measured.**
+
+The instructions were cut to fit it rather than the limit being made
+configurable.
 
 Both release runs of 2026-07-31 logged `Server instructions truncated from 3662
 to 2048 chars`. Nothing in the protocol states a limit, and no other client has

@@ -6,8 +6,10 @@ status: held
 # R-SCO-8 — What the scope excludes is not what the server answers
 
 **The declared scope says what the server does, and the not-covered list is
-exhaustive: a subject that is not on it is in scope, so a thin answer to it is
-a gap rather than a boundary.**
+exhaustive.**
+
+A subject that is not on it is in scope, so a thin answer to it is a gap rather
+than a boundary.
 
 The two ask for opposite reactions from a caller — leave for the
 documentation, or say what was missing — and nothing else in an answer

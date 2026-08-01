@@ -7,8 +7,10 @@ status: standing
 # D-FBK-7 — How a todo is worked travels with the todo
 
 **The reading and the research a todo is owed are written down as a procedure
-page, and `bin/cli next` prints the pointer to it with every todo it hands over
-rather than leaving it to be looked up.**
+page.**
+
+`bin/cli next` prints the pointer to it with every todo it hands over rather
+than leaving it to be looked up.
 
 Everything about the order of the work was written down and nothing about doing
 one piece of it was. A session that gets one todo, printed as an imperative

@@ -5,9 +5,11 @@ status: held
 
 # R-PRJ-4 — An upgrade is answered as an order of operations
 
-**Upgrading an installation is answered as an order of operations, not as a
-list of commands: the code, then the schema, then the wizards, then the caches,
-with what is irreversible named before the first step that is.**
+**Upgrading an installation is answered as an order of operations rather than as
+a list of commands.**
+
+The code, then the schema, then the wizards, then the caches, with what is
+irreversible named before the first step that is.
 
 The knowledge carries it and the guide composes it with what the project scope
 and the changelog lookup already know.

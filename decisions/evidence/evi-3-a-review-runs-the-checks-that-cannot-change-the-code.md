@@ -7,8 +7,10 @@ status: standing
 # D-EVI-3 — A review runs the checks that cannot change the code
 
 **A task told not to change files runs the project's own commands that are
-declared to hand the code back as it was, and no others; the property is
-reported by `typo3_project_scope` per command, read off the declared body.**
+declared to hand the code back as it was, and no others.**
+
+The property is reported by `typo3_project_scope` per command, read off the
+declared body.
 
 Three recorded `REVIEW-02` runs read "do not change files" as "run nothing" and
 quoted the commands as subjects of findings instead.

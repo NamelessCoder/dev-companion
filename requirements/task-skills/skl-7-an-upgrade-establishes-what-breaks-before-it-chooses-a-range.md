@@ -5,11 +5,13 @@ status: held
 
 # R-SKL-7 — An upgrade establishes what breaks before it chooses a range
 
-**Crossing a package from one supported TYPO3 range to another is ordered work:
-what breaks is established from the sweep before a range is chosen, the range is
+**Crossing a package from one supported TYPO3 range to another is ordered
+work.**
+
+What breaks is established from the sweep before a range is chosen, the range is
 resolved by the dependency solver rather than asserted, the lowest declared
 major decides every shape that is written, and every declared combination is
-proven or named as unproven.**
+proven or named as unproven.
 
 The sweep the base fixes is where it starts, so it is not restated here — what
 this workflow adds are the two sources a changelog query cannot reach. The

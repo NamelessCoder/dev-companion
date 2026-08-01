@@ -5,9 +5,10 @@ status: held
 
 # R-DIS-8 — A failed discovery names where it looked
 
-**When discovery fails, the answer names where it looked, in text and in data,
-so a layout that cannot be read is distinguishable from a server started in the
-wrong directory.**
+**When discovery fails, the answer names where it looked, in text and in data.**
+
+A layout that cannot be read is then distinguishable from a server started in
+the wrong directory.
 
 **From:** the same session; "no installation found" was indistinguishable from
 "started in the wrong directory".

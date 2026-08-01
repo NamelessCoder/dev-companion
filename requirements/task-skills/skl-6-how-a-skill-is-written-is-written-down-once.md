@@ -5,11 +5,13 @@ status: held
 
 # R-SKL-6 — How a skill is written is written down once
 
-**The rules a skill is written under — the name it is filed and routed by, that
-it starts from the base and states only what it adds, that it keeps no second
-copy of what a tool owns, that its references are one hop away and loaded on
-demand, that it says what it owns and where it stops — are stated in one place,
-and every rule there names the test that holds it.**
+**The rules a skill is written under are stated in one place, and every rule
+there names the test that holds it.**
+
+They are the name it is filed and routed by, that it starts from the base and
+states only what it adds, that it keeps no second copy of what a tool owns, that
+its references are one hop away and loaded on demand, and that it says what it
+owns and where it stops.
 
 The rules that run over the skills directory are the ones a skill written later
 is held to without its author ever seeing them, so they are also the ones that

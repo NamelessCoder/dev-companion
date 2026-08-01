@@ -7,8 +7,9 @@ status: standing
 # D-EVI-2 — A skill crossing is read rather than run
 
 **That a session actually hands over from one task skill to another is held by
-the skill text and by the contract case read by hand; no forward run will be
-scheduled to produce it.**
+the skill text and by the contract case read by hand.**
+
+No forward run will be scheduled to produce it.
 
 Every other half of `R-SKL-3` has evidence. This one asked for a run that cannot
 exist, and the feedback asking for it stayed open for that reason alone.

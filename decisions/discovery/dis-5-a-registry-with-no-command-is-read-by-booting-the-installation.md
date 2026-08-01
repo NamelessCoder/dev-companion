@@ -7,8 +7,9 @@ status: standing
 # D-DIS-5 — A registry with no console command is read by booting the installation
 
 **Where TYPO3 exposes no command for a registry, the installation is booted in a
-subprocess and its container is asked, rather than the registry being
-reconstructed from the files the packages ship.**
+subprocess and its container is asked.**
+
+The registry is not reconstructed from the files the packages ship.
 
 - **Evidence:** measured against two set-up sites on 2026-07-31. On one with
   `georgringer/news` installed the booted registry holds 1314 icon identifiers

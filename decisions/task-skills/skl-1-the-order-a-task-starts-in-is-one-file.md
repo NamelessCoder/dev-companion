@@ -6,9 +6,11 @@ status: tested
 
 # D-SKL-1 — The order a task starts in is one file, and the reading comes last in it
 
-**`skills/base.md` holds the order every task starts in — project scope,
-extension scope, task guide, conventions, and only then the checkout — and is
-copied into each published skill rather than shared with it.**
+**`skills/base.md` holds the order every task starts in, and is copied into each
+published skill rather than shared with it.**
+
+The order is project scope, extension scope, task guide, conventions, and only
+then the checkout.
 
 Four recorded `REVIEW-01` runs of the same prompt in the same checkout took it
 from a review this server took no part in to `covered`. The thing that decided

@@ -7,8 +7,9 @@ status: standing
 # D-FBK-5 — The queue is worked before the pile is sighted
 
 **`bin/cli next` asks what has a clock, then the queue, and only with the queue
-empty what recurs every session — and that sighting hands over five feedback at
-a time rather than the directory.**
+empty what recurs every session.**
+
+That sighting hands over five feedback at a time rather than the directory.
 
 What recurs every session is sighting: reading `feedback/` and the backlog and
 deciding what of it becomes work. It was asked first, on the reasoning that a

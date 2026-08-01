@@ -5,9 +5,10 @@ status: held
 
 # R-KNW-23 — No prose document dates a statement in its sentence
 
-**The prose documents are held to the same rule as the hints: a statement dated
-in its sentence cannot be filtered, and in markdown there is no field to move
-the date into.**
+**The prose documents are held to the same rule as the hints.**
+
+A statement dated in its sentence cannot be filtered, and in markdown there is
+no field to move the date into.
 
 So the subject moves to the hint corpus rather than the sentence being reworded
 — a version-bound statement is evidence that it was filed in the wrong

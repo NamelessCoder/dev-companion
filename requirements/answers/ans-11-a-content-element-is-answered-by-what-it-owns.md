@@ -6,10 +6,12 @@ status: held
 # R-ANS-11 — A content element is answered by what it owns
 
 **A content-element task is answered with what the element owns before it is
-answered with how it is registered: fields on `tt_content`, a child table of
-its own, a reference to existing records, or a container of arbitrary content
-— and which one it is follows from the editor workflow, not from what is
-technically possible for a list.**
+answered with how it is registered.**
+
+What it owns is fields on `tt_content`, a child table of its own, a reference to
+existing records, or a container of arbitrary content, and which one it is
+follows from the editor workflow rather than from what a list can technically
+do.
 
 The shapes that decide it — a carousel, a slider, an accordion, slides —
 reach that answer without the task having to call itself a content element.

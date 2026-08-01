@@ -10,7 +10,7 @@ use Typo3CmsMcp\Knowledge\Catalog\Meta as CatalogMeta;
 use Typo3CmsMcp\Knowledge\Versions;
 use Typo3CmsMcp\Result\Provenance;
 use Typo3CmsMcp\Result\Schema;
-use Typo3CmsMcp\ToolResult;
+use Typo3CmsMcp\Result\ToolResult;
 
 /**
  * What the component catalog is worth: where the contracts come from, which

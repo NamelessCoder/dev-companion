@@ -2,11 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp;
+namespace Typo3CmsMcp\Feedback;
 
 use Composer\InstalledVersions;
 use Typo3CmsMcp\Installation\Instance;
 use Typo3CmsMcp\Installation\Typo3Cli;
+use Typo3CmsMcp\Paths;
 
 /**
  * Stores improvement feedback left by agents using this server, so gaps in the
@@ -26,7 +27,7 @@ use Typo3CmsMcp\Installation\Typo3Cli;
  * evidence about this server that nothing else in the repository holds, and it
  * stays worth reading long after the gap it named was closed.
  */
-final class Feedback
+final class Channel
 {
     public const PACKAGE_NAME = 'typo3/cms-mcp';
 

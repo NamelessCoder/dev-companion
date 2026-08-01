@@ -16,7 +16,7 @@ use Typo3CmsMcp\Knowledge\Catalog\SystemExtensions;
 use Typo3CmsMcp\Knowledge\Catalog\TranslationDomain;
 use Typo3CmsMcp\Knowledge\Versions;
 use Typo3CmsMcp\Tests\Support\TemporaryInstallation;
-use Typo3CmsMcp\Tools;
+use Typo3CmsMcp\Tool\Registry;
 
 final class CatalogTest extends TestCase
 {
@@ -35,13 +35,13 @@ final class CatalogTest extends TestCase
         // v15 custom-property contract were handed to a v13 backend as fact.
         Instance::discoverFrom($this->composerProject('vendor', '13.4.33'));
 
-        $result = Tools::call('typo3_catalog_scope', []);
+        $result = Registry::call('typo3_catalog_scope', []);
         self::assertSame('13.4.33', $result->data['catalog']['installedVersion']);
         self::assertStringContainsString('13.4.33', (string) $result->data['catalog']['skew']);
         self::assertStringContainsString('13.4.33', $result->text);
 
         // A component answer carries the pin, so it carries the gap too.
-        self::assertStringContainsString('13.4.33', Tools::call('typo3_component_lookup', ['query' => 'badge'])->text);
+        self::assertStringContainsString('13.4.33', Registry::call('typo3_component_lookup', ['query' => 'badge'])->text);
     }
 
     #[Test]
@@ -52,7 +52,7 @@ final class CatalogTest extends TestCase
         // the one answer that is withheld rather than qualified.
         Instance::discoverFrom($this->composerProject('vendor', '13.4.33'));
 
-        $result = Tools::call('typo3_translation_domain_lookup', [
+        $result = Registry::call('typo3_translation_domain_lookup', [
             'path' => 'EXT:my_ext/Resources/Private/Language/locallang_db.xlf',
         ]);
 
@@ -66,7 +66,7 @@ final class CatalogTest extends TestCase
     {
         Instance::discoverFrom($this->composerProject('vendor', '14.3.0'));
 
-        $result = Tools::call('typo3_translation_domain_lookup', [
+        $result = Registry::call('typo3_translation_domain_lookup', [
             'path' => 'EXT:my_ext/Resources/Private/Language/locallang_db.xlf',
         ]);
 
@@ -79,7 +79,7 @@ final class CatalogTest extends TestCase
     {
         Instance::discoverFrom($this->composerProject('vendor', Meta::read()['source']['version'] . '.0'));
 
-        $result = Tools::call('typo3_catalog_scope', []);
+        $result = Registry::call('typo3_catalog_scope', []);
         self::assertNull($result->data['catalog']['skew']);
     }
 
@@ -107,7 +107,7 @@ final class CatalogTest extends TestCase
         );
         Instance::discoverFrom($root);
 
-        $result = Tools::call('typo3_component_lookup', ['query' => 'badge-installed']);
+        $result = Registry::call('typo3_component_lookup', ['query' => 'badge-installed']);
         $badge = $result->data['components'][0];
 
         self::assertSame('installation', $result->data['componentSource']);
@@ -126,18 +126,18 @@ final class CatalogTest extends TestCase
         self::assertStringContainsString('Other installed classes: badge-installed', $result->text);
         self::assertStringContainsString('installed TYPO3 14.3.5 packages', $result->text);
 
-        $fallback = Tools::call('typo3_component_lookup', ['query' => 'dropzone']);
+        $fallback = Registry::call('typo3_component_lookup', ['query' => 'dropzone']);
         self::assertSame('installation', $fallback->data['componentSource']);
         self::assertSame('14.3.5', $fallback->data['components'][0]['contractVersion']);
         self::assertSame('catalog', $fallback->data['components'][0]['markupSource']);
         self::assertSame(Meta::read()['source']['version'], $fallback->data['components'][0]['describesVersion']);
         self::assertStringContainsString('bundled TYPO3 15.0 fallback', $fallback->text);
 
-        $scope = Tools::call('typo3_catalog_scope', []);
+        $scope = Registry::call('typo3_catalog_scope', []);
         self::assertSame('installation', $scope->data['componentSource']);
         self::assertStringContainsString('Installed component contract', $scope->text);
 
-        $broad = Tools::call('typo3_component_lookup', [
+        $broad = Registry::call('typo3_component_lookup', [
             'query' => 'backend component markup for the installed TYPO3 version',
         ]);
         self::assertGreaterThan(0, $broad->data['matchCount']);
@@ -153,7 +153,7 @@ final class CatalogTest extends TestCase
         file_put_contents($backendCss . '/backend.css', '.badge {} .badge-installed {}');
         Instance::discoverFrom($root);
 
-        $result = Tools::call('typo3_component_lookup', [
+        $result = Registry::call('typo3_component_lookup', [
             'query' => 'badge',
             'targetVersion' => '13.4',
         ]);
@@ -233,13 +233,13 @@ final class CatalogTest extends TestCase
     #[Test]
     public function aStatedVersionSaysWhatItDidToTheAnswerBesideTheSnapshotItWasReadFrom(): void
     {
-        $result = Tools::call('typo3_component_lookup', ['query' => 'badge', 'targetVersion' => '14.3']);
+        $result = Registry::call('typo3_component_lookup', ['query' => 'badge', 'targetVersion' => '14.3']);
 
         self::assertStringContainsString('Answered for TYPO3 v14', $result->text);
         self::assertStringContainsString('not which versions an entry holds on', $result->text);
         self::assertStringNotContainsString(
             'Answered for TYPO3',
-            Tools::call('typo3_component_lookup', ['query' => 'badge'])->text,
+            Registry::call('typo3_component_lookup', ['query' => 'badge'])->text,
             'nobody stated a version, so nothing is claimed about one',
         );
     }
@@ -250,7 +250,7 @@ final class CatalogTest extends TestCase
         // The skew sentence named the difference without acting on it. Markup
         // taken from one revision either holds on the stated version or it does
         // not, and the answer for "does not" is to decline it.
-        $result = Tools::call('typo3_component_lookup', ['query' => 'status indicator', 'targetVersion' => '13.4']);
+        $result = Registry::call('typo3_component_lookup', ['query' => 'status indicator', 'targetVersion' => '13.4']);
 
         self::assertNotContains(
             'status-indicator',
@@ -270,7 +270,7 @@ final class CatalogTest extends TestCase
     #[Test]
     public function aComponentVerifiedOnTheTargetIsAnsweredWithTheRangeItHoldsFor(): void
     {
-        $result = Tools::call('typo3_component_lookup', ['query' => 'status indicator', 'targetVersion' => '14.3']);
+        $result = Registry::call('typo3_component_lookup', ['query' => 'status indicator', 'targetVersion' => '14.3']);
 
         $described = $result->data['components'][0];
         self::assertSame('status-indicator', $described['name']);
@@ -285,7 +285,7 @@ final class CatalogTest extends TestCase
     {
         // Nobody said which version this is for, so nothing is withheld and the
         // caller is told the range instead — the same rule the hints follow.
-        $result = Tools::call('typo3_component_lookup', ['query' => 'status indicator']);
+        $result = Registry::call('typo3_component_lookup', ['query' => 'status indicator']);
 
         self::assertNull($result->data['targetVersion']);
         self::assertSame('status-indicator', $result->data['components'][0]['name']);
@@ -295,7 +295,7 @@ final class CatalogTest extends TestCase
     #[Test]
     public function theCatalogSaysHowMuchOfItWasVerifiedOnAStatedVersion(): void
     {
-        $result = Tools::call('typo3_catalog_scope', ['targetVersion' => '14']);
+        $result = Registry::call('typo3_catalog_scope', ['targetVersion' => '14']);
 
         self::assertSame(14, $result->data['targetVersion']);
         self::assertSame(count(Components::load()), $result->data['verifiedCount']);
@@ -303,7 +303,7 @@ final class CatalogTest extends TestCase
 
         // The custom-property contract the catalog describes arrived after
         // 12.4, so most of it is not verified there and the scope says so.
-        $onTwelve = Tools::call('typo3_catalog_scope', ['targetVersion' => '12.4']);
+        $onTwelve = Registry::call('typo3_catalog_scope', ['targetVersion' => '12.4']);
         self::assertLessThan(count(Components::load()), $onTwelve->data['verifiedCount']);
         self::assertStringContainsString('Withheld for TYPO3 v12', $onTwelve->text);
     }
@@ -311,7 +311,7 @@ final class CatalogTest extends TestCase
     #[Test]
     public function theCatalogScopeSeparatesEntryValidityFromItsSourceCheckout(): void
     {
-        $result = Tools::call('typo3_catalog_scope', ['targetVersion' => '14.3']);
+        $result = Registry::call('typo3_catalog_scope', ['targetVersion' => '14.3']);
 
         self::assertStringContainsString('For TYPO3 v14', $result->text);
         self::assertStringContainsString('Each component entry owns this validity range', $result->text);
@@ -356,12 +356,12 @@ final class CatalogTest extends TestCase
         // It was answered from memory in both directions in one session: a
         // community package cited as evidence of what the core does, and a
         // system extension nobody knew was there.
-        $camino = Tools::call('typo3_system_extension_lookup', ['query' => 'typo3/theme-camino']);
+        $camino = Registry::call('typo3_system_extension_lookup', ['query' => 'typo3/theme-camino']);
         self::assertSame(1, $camino->data['matchCount']);
         self::assertSame('theme_camino', $camino->data['extensions'][0]['key']);
         self::assertNotSame('', $camino->data['extensions'][0]['shippedOn'], 'it is not shipped on every covered line');
 
-        $contentBlocks = Tools::call('typo3_system_extension_lookup', ['query' => 'typo3/cms-content-blocks']);
+        $contentBlocks = Registry::call('typo3_system_extension_lookup', ['query' => 'typo3/cms-content-blocks']);
         self::assertSame(0, $contentBlocks->data['matchCount']);
         self::assertStringContainsString('third-party', $contentBlocks->text, 'a miss is about the core, not about the package');
     }
@@ -369,10 +369,10 @@ final class CatalogTest extends TestCase
     #[Test]
     public function aTargetVersionDecidesWhichExtensionsAreShipped(): void
     {
-        $onThirteen = Tools::call('typo3_system_extension_lookup', ['query' => 'theme_camino', 'targetVersion' => '13.4']);
+        $onThirteen = Registry::call('typo3_system_extension_lookup', ['query' => 'theme_camino', 'targetVersion' => '13.4']);
         self::assertSame(0, $onThirteen->data['matchCount'], 'the theme is not part of that line');
 
-        $everything = Tools::call('typo3_system_extension_lookup', []);
+        $everything = Registry::call('typo3_system_extension_lookup', []);
         self::assertGreaterThan($onThirteen->data['matchCount'], $everything->data['matchCount']);
         foreach ($everything->data['extensions'] as $extension) {
             self::assertStringStartsWith('typo3/', $extension['package'], $extension['key'] . ' has no package to require it by');
@@ -400,7 +400,7 @@ final class CatalogTest extends TestCase
         // core repository, and all three times it was reached by accident. A
         // hint per subject fixes the subject it was written for; the index is
         // for the next one.
-        $everything = Tools::call('typo3_reference_list', []);
+        $everything = Registry::call('typo3_reference_list', []);
         self::assertGreaterThan(0, $everything->data['matchCount']);
 
         $paths = array_column($everything->data['references'], 'path');
@@ -409,7 +409,7 @@ final class CatalogTest extends TestCase
 
         // And the version decides, because a path that is not on that branch
         // costs a read and answers nothing.
-        $onThirteen = Tools::call('typo3_reference_list', ['targetVersion' => '13.4']);
+        $onThirteen = Registry::call('typo3_reference_list', ['targetVersion' => '13.4']);
         self::assertNotContains('typo3/sysext/theme_camino', array_column($onThirteen->data['references'], 'path'));
     }
 
@@ -419,7 +419,7 @@ final class CatalogTest extends TestCase
         // The layout hint and the theme it was written from were two answers
         // that never met: the hint was read, the extension was found later by
         // being told about it.
-        $result = Tools::call('typo3_architecture_lookup', [
+        $result = Registry::call('typo3_architecture_lookup', [
             'task' => 'directory structure of a sitepackage extension',
             'targetVersion' => '14',
         ]);
@@ -491,13 +491,13 @@ final class CatalogTest extends TestCase
         // The point of computing rather than looking up: a file in any
         // extension, and one a patch is about to add, both get an answer —
         // which is exactly when it cannot be looked up anywhere.
-        $result = Tools::call('typo3_translation_domain_lookup', [
+        $result = Registry::call('typo3_translation_domain_lookup', [
             'path' => 'packages/my_extension/Resources/Private/Language/NotYetWritten.xlf',
         ])->data;
 
         self::assertSame(null, $result['domain'], 'a project path is not an EXT: reference');
 
-        $result = Tools::call('typo3_translation_domain_lookup', [
+        $result = Registry::call('typo3_translation_domain_lookup', [
             'path' => 'EXT:my_extension/Resources/Private/Language/NotYetWritten.xlf',
         ])->data;
 
@@ -507,7 +507,7 @@ final class CatalogTest extends TestCase
     #[Test]
     public function aPathThatNamesNoExtensionDerivesNoDomain(): void
     {
-        $result = Tools::call('typo3_translation_domain_lookup', ['path' => 'somewhere/else.xlf'])->data;
+        $result = Registry::call('typo3_translation_domain_lookup', ['path' => 'somewhere/else.xlf'])->data;
 
         self::assertNull($result['domain']);
     }

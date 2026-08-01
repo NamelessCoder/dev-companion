@@ -11,9 +11,9 @@ use Typo3CmsMcp\Installation\Instance;
 use Typo3CmsMcp\Installation\Typo3Cli;
 use Typo3CmsMcp\Knowledge\ArchitectureHints;
 use Typo3CmsMcp\Knowledge\Scope;
-use Typo3CmsMcp\Profile;
+use Typo3CmsMcp\Server\Profile;
 use Typo3CmsMcp\Tests\Support\TemporaryInstallation;
-use Typo3CmsMcp\Tools;
+use Typo3CmsMcp\Tool\Registry;
 
 final class ScopeTest extends TestCase
 {
@@ -33,10 +33,10 @@ final class ScopeTest extends TestCase
         // key and matches no phrase. The installation knows what it is.
         Instance::discoverFrom($this->composerProject());
 
-        $extension = Tools::call('typo3_task_guide', ['task' => 'Add a content element', 'area' => 'my_sitepackage']);
+        $extension = Registry::call('typo3_task_guide', ['task' => 'Add a content element', 'area' => 'my_sitepackage']);
         self::assertTrue($extension->data['outsideCore']);
 
-        $systemExtension = Tools::call('typo3_task_guide', ['task' => 'Add a content element', 'area' => 'core']);
+        $systemExtension = Registry::call('typo3_task_guide', ['task' => 'Add a content element', 'area' => 'core']);
         self::assertFalse($systemExtension->data['outsideCore']);
     }
 
@@ -69,7 +69,7 @@ final class ScopeTest extends TestCase
         self::assertSame(Scope::AUDIENCE_UNCERTAIN, Scope::audienceOf('', 'Improve the query performance'));
         self::assertStringContainsString(
             'Nothing here says which repository',
-            Tools::call('typo3_task_guide', ['task' => 'Improve the query performance'])->text,
+            Registry::call('typo3_task_guide', ['task' => 'Improve the query performance'])->text,
         );
     }
 
@@ -163,7 +163,7 @@ final class ScopeTest extends TestCase
         // surface the initialize instructions, so the orientation tool says it
         // too.
         self::assertStringContainsString('in English', Scope::instructions());
-        self::assertStringContainsString('in English', Tools::call('typo3_server_scope', [])->text);
+        self::assertStringContainsString('in English', Registry::call('typo3_server_scope', [])->text);
     }
 
     #[Test]
@@ -208,7 +208,7 @@ final class ScopeTest extends TestCase
 
         // The suites are the core's own, so the core path keeps them and the
         // extension path is named as the one they are not for.
-        $suites = Tools::call('typo3_test_run_guide', [
+        $suites = Registry::call('typo3_test_run_guide', [
             'query' => 'which tests do I run for this change',
             'paths' => [$extension, $core],
         ]);
@@ -219,7 +219,7 @@ final class ScopeTest extends TestCase
 
         // The conventions transfer to both, the commands to one: a hint
         // returned for the extension path carries no core check.
-        $hints = Tools::call('typo3_architecture_lookup', [
+        $hints = Registry::call('typo3_architecture_lookup', [
             'task' => 'fix the query that reads the events',
             'paths' => [$extension, $core],
         ]);
@@ -234,7 +234,7 @@ final class ScopeTest extends TestCase
     #[Test]
     public function aTaskOutsideTheCoreIsToldSoBeforeTheChecklist(): void
     {
-        $result = Tools::call('typo3_task_guide', [
+        $result = Registry::call('typo3_task_guide', [
             'task' => 'Create a new TYPO3 site set in a project extension with config.yaml and TypoScript',
         ]);
 
@@ -250,7 +250,7 @@ final class ScopeTest extends TestCase
         // the entire core contribution workflow into an answer about a
         // third-party extension. Nothing here says which side this is, so the
         // intent is offered under its condition rather than stated.
-        $result = Tools::call('typo3_task_guide', [
+        $result = Registry::call('typo3_task_guide', [
             'task' => 'Maintain and extend the third-party TYPO3 extension bk2k/bootstrap-package for '
                 . 'TYPO3 13.4 and 14.3: review TCA, TypoScript, Fluid templates, data processors and '
                 . 'upgrade wizards for compatibility and choose tests',
@@ -264,7 +264,7 @@ final class ScopeTest extends TestCase
     #[Test]
     public function aCorePathStillMakesTheSameWordAPatchSubmission(): void
     {
-        $result = Tools::call('typo3_task_guide', [
+        $result = Registry::call('typo3_task_guide', [
             'task' => 'Push the fix for review',
             'area' => 'typo3/sysext/core/Classes/Utility/GeneralUtility.php',
         ]);
@@ -278,7 +278,7 @@ final class ScopeTest extends TestCase
     {
         // There is no Gerrit to submit to, so this is not a weaker match — it
         // is not one.
-        $result = Tools::call('typo3_task_guide', [
+        $result = Registry::call('typo3_task_guide', [
             'task' => 'Push the fix for review',
             'area' => 'packages/my_sitepackage/Classes/Controller/EventController.php',
         ]);
@@ -305,7 +305,7 @@ final class ScopeTest extends TestCase
         // And the list says what it is worth read from the other side.
         self::assertStringContainsString(
             'gap in the knowledge base',
-            Tools::call('typo3_server_scope', [])->text
+            Registry::call('typo3_server_scope', [])->text
         );
     }
 
@@ -316,7 +316,7 @@ final class ScopeTest extends TestCase
         // name, and the tool that writes one was never in its next lookups. A
         // caller reads the routing table once, at the start, and commits hours
         // later out of this list.
-        $core = Tools::call('typo3_task_guide', [
+        $core = Registry::call('typo3_task_guide', [
             'task' => 'Fix the DataHandler regression',
             'area' => 'typo3/sysext/core/Classes/DataHandling/DataHandler.php',
         ]);
@@ -328,7 +328,7 @@ final class ScopeTest extends TestCase
 
         // And with the workflow that repository needs, because the default is
         // the core's and demands a Forge issue nobody there has.
-        $project = Tools::call('typo3_task_guide', [
+        $project = Registry::call('typo3_task_guide', [
             'task' => 'Add a search to the product plugin',
             'area' => 'packages/my_sitepackage/Classes/Controller/ProductController.php',
         ]);
@@ -343,7 +343,7 @@ final class ScopeTest extends TestCase
         // was never called: the pointer was in the routing table and in the
         // hint, both read once, and the moment of need was hours later. The
         // brief is what a caller comes back to, so it carries them.
-        $labels = Tools::call('typo3_task_guide', [
+        $labels = Registry::call('typo3_task_guide', [
             'task' => 'Write the XLF language files for the sitepackage backend labels',
             'targetVersion' => '14',
         ]);
@@ -362,7 +362,7 @@ final class ScopeTest extends TestCase
         // Saying "this is outside the core" and then listing four runTests.sh
         // suites, a changelog file below typo3/sysext/ and the core branch
         // policy is not a partly right answer: the flag says the brief knew.
-        $result = Tools::call('typo3_task_guide', [
+        $result = Registry::call('typo3_task_guide', [
             'task' => 'Add a data processor and an upgrade wizard to my site package',
             'area' => 'packages/my_sitepackage/Classes/DataProcessing/CsvProcessor.php',
             'changeType' => 'feature',
@@ -392,7 +392,7 @@ final class ScopeTest extends TestCase
         // invocation, and that script is part of the core repository. Handed to
         // a site package, every command in the answer is unrunnable — and it
         // looks copy-pasteable, which is worse than declining.
-        $result = Tools::call('typo3_test_run_guide', [
+        $result = Registry::call('typo3_test_run_guide', [
             'query' => 'how do I test my sitepackage',
             'paths' => ['packages/my_sitepackage/Classes/Command/SeedCommand.php'],
         ]);
@@ -411,7 +411,7 @@ final class ScopeTest extends TestCase
         // Which of the two corpora holds a subject is this server's business:
         // site sets are an architecture hint, the Gerrit workflow is prose, and
         // the question is phrased the same way either way.
-        $result = Tools::call('typo3_rule_lookup', ['query' => 'site set settings definitions']);
+        $result = Registry::call('typo3_rule_lookup', ['query' => 'site set settings definitions']);
 
         self::assertContains('site-sets', array_column($result->data['alsoInHints'], 'id'));
         self::assertStringContainsString('typo3_architecture_lookup', $result->text);
@@ -420,7 +420,7 @@ final class ScopeTest extends TestCase
     #[Test]
     public function noCoreScriptIsHandedToARepositoryThatDoesNotHaveIt(): void
     {
-        $result = Tools::call('typo3_script_lookup', [
+        $result = Registry::call('typo3_script_lookup', [
             'task' => 'run the unit tests of my site package extension',
         ]);
 
@@ -434,12 +434,12 @@ final class ScopeTest extends TestCase
     {
         // Nothing in this query says either way, so the commands are offered
         // under their condition rather than stated as the answer.
-        $unstated = Tools::call('typo3_script_lookup', ['task' => 'php-cs-fixer and phpstan']);
+        $unstated = Registry::call('typo3_script_lookup', ['task' => 'php-cs-fixer and phpstan']);
         self::assertFalse($unstated->data['outsideCore']);
         self::assertNotSame([], $unstated->data['matches']);
         self::assertStringContainsString('run in a TYPO3 core checkout', $unstated->text);
 
-        $stated = Tools::call('typo3_script_lookup', ['task' => 'unit tests for a typo3/sysext/core patch']);
+        $stated = Registry::call('typo3_script_lookup', ['task' => 'unit tests for a typo3/sysext/core patch']);
         self::assertStringNotContainsString('run in a TYPO3 core checkout', $stated->text);
     }
 
@@ -447,7 +447,7 @@ final class ScopeTest extends TestCase
     public function anArchitectureHintKeepsItsAdviceOutsideTheCoreAndLosesItsCoreChecks(): void
     {
         // The conventions transfer — the commands do not.
-        $result = Tools::call('typo3_architecture_lookup', [
+        $result = Registry::call('typo3_architecture_lookup', [
             'task' => 'add a console command to my site package',
             'paths' => ['packages/my_sitepackage/Classes/Command/SeedCommand.php'],
         ]);
@@ -467,7 +467,7 @@ final class ScopeTest extends TestCase
         Typo3Cli::forget();
 
         try {
-            $installation = Tools::call('typo3_server_scope', [])->data['installation'];
+            $installation = Registry::call('typo3_server_scope', [])->data['installation'];
         } finally {
             Instance::discoverFrom(null);
             Typo3Cli::forget();
@@ -489,7 +489,7 @@ final class ScopeTest extends TestCase
         Instance::discoverFrom(null);
         Typo3Cli::forget();
 
-        $result = Tools::call('typo3_label_lookup', ['query' => 'save']);
+        $result = Registry::call('typo3_label_lookup', ['query' => 'save']);
 
         self::assertSame('nothing', $result->data['answeredBy']);
         self::assertNotSame('', $result->data['unavailable']['reason']);
@@ -502,7 +502,7 @@ final class ScopeTest extends TestCase
         Instance::discoverFrom(null);
         Typo3Cli::forget();
 
-        $result = Tools::call('typo3_configuration_lookup', ['path' => 'SYS/fluid']);
+        $result = Registry::call('typo3_configuration_lookup', ['path' => 'SYS/fluid']);
 
         // found: false says the installation has no value there, which is a
         // statement about an installation nothing asked.
@@ -568,7 +568,7 @@ final class ScopeTest extends TestCase
         // The feedback tools only exist in a standalone checkout, but the scope
         // may name them either way.
         return array_merge(
-            array_column(Tools::definitions(), 'name'),
+            array_column(Registry::definitions(), 'name'),
             ['typo3_feedback_record', 'typo3_feedback_list'],
         );
     }

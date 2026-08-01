@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp;
+namespace Typo3CmsMcp\Server;
 
+use Typo3CmsMcp\Feedback\Channel;
 use Typo3CmsMcp\Installation\Instance;
 
 /**
@@ -23,7 +24,7 @@ use Typo3CmsMcp\Installation\Instance;
  * stays: the conventions hold wherever TYPO3 is written, and the installation is
  * exactly what a project has.
  *
- * The mechanism is not new — Feedback::isAvailable() has always hidden two tools
+ * The mechanism is not new — Channel::isAvailable() has always hidden two tools
  * outside a standalone checkout — only the reason is.
  */
 final class Profile

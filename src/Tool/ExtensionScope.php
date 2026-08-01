@@ -8,8 +8,8 @@ use Typo3CmsMcp\Installation\Extension;
 use Typo3CmsMcp\Installation\Instance;
 use Typo3CmsMcp\Installation\Typo3Runtime;
 use Typo3CmsMcp\Result\Schema;
+use Typo3CmsMcp\Result\ToolResult;
 use Typo3CmsMcp\Result\Unanswered;
-use Typo3CmsMcp\ToolResult;
 
 /**
  * What one extension registers, from its own files.

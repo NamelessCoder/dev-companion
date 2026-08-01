@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp;
+namespace Typo3CmsMcp\Knowledge;
 
 /**
  * Drafts a TYPO3 core commit message and checks it against the contribution

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Typo3CmsMcp\Tool;
 
-use Typo3CmsMcp\Feedback;
+use Typo3CmsMcp\Feedback\Channel;
 use Typo3CmsMcp\Knowledge\ArchitectureHints;
 use Typo3CmsMcp\Knowledge\Domains;
 use Typo3CmsMcp\Knowledge\Scope;
@@ -14,8 +14,8 @@ use Typo3CmsMcp\Knowledge\Versions;
 use Typo3CmsMcp\Result\Hints;
 use Typo3CmsMcp\Result\Prose;
 use Typo3CmsMcp\Result\Schema;
+use Typo3CmsMcp\Result\ToolResult;
 use Typo3CmsMcp\Result\VersionScope;
-use Typo3CmsMcp\ToolResult;
 
 /**
  * A task checklist, enriched with the architecture hints and core checks that
@@ -504,7 +504,7 @@ final class TaskGuide extends ReadOnlyTool
         // read the routing table at the start of a session is committing hours
         // later, from this list.
         $candidates[] = 'typo3_commit_message_guide, before committing';
-        if (Feedback::isAvailable()) {
+        if (Channel::isAvailable()) {
             $candidates[] = 'typo3_feedback_record, when one of these answers was wrong or incomplete';
         }
 

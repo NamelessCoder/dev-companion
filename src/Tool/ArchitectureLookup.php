@@ -9,8 +9,8 @@ use Typo3CmsMcp\Knowledge\Scope;
 use Typo3CmsMcp\Knowledge\Versions;
 use Typo3CmsMcp\Result\Hints;
 use Typo3CmsMcp\Result\Schema;
+use Typo3CmsMcp\Result\ToolResult;
 use Typo3CmsMcp\Result\VersionScope;
-use Typo3CmsMcp\ToolResult;
 
 /**
  * Architecture hints for TYPO3 core paths or task topics, grouped by section.

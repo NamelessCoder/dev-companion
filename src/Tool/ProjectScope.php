@@ -6,8 +6,8 @@ namespace Typo3CmsMcp\Tool;
 
 use Typo3CmsMcp\Installation\Project;
 use Typo3CmsMcp\Result\Schema;
+use Typo3CmsMcp\Result\ToolResult;
 use Typo3CmsMcp\Result\Unanswered;
-use Typo3CmsMcp\ToolResult;
 
 /**
  * What the repository around the installation consists of.

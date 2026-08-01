@@ -8,7 +8,7 @@ use Mcp\Capability\Discovery\SchemaValidator;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Typo3CmsMcp\Tools;
+use Typo3CmsMcp\Tool\Registry;
 
 /**
  * What every tool promises its callers: a declared input and output schema,
@@ -20,7 +20,7 @@ final class ToolContractTest extends TestCase
     #[Test]
     public function everyToolDeclaresSchemasAndAnnotations(): void
     {
-        foreach (Tools::definitions() as $definition) {
+        foreach (Registry::definitions() as $definition) {
             $name = $definition['name'];
 
             self::assertNotSame('', $definition['description'], $name . ' has no description');
@@ -44,7 +44,7 @@ final class ToolContractTest extends TestCase
     #[Test]
     public function onlyTheFeedbackToolWrites(): void
     {
-        foreach (Tools::definitions() as $definition) {
+        foreach (Registry::definitions() as $definition) {
             self::assertSame(
                 $definition['name'] !== 'typo3_feedback_record',
                 $definition['annotations']['readOnlyHint'],
@@ -59,7 +59,7 @@ final class ToolContractTest extends TestCase
     #[Test]
     public function aToolCallAnswersWithTextAndMatchingData(string $name, array $arguments): void
     {
-        $result = Tools::call($name, $arguments);
+        $result = Registry::call($name, $arguments);
 
         self::assertNotSame('', trim($result->text), $name . ' answered with empty text');
         self::assertNotSame([], $result->data, $name . ' answered without data');
@@ -75,14 +75,14 @@ final class ToolContractTest extends TestCase
     public function anUnknownToolIsRejected(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        Tools::call('typo3_does_not_exist', []);
+        Registry::call('typo3_does_not_exist', []);
     }
 
     #[Test]
     public function theCommitMessageToolNeedsEitherAMessageOrASummary(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        Tools::call('typo3_commit_message_guide', ['issue' => '1']);
+        Registry::call('typo3_commit_message_guide', ['issue' => '1']);
     }
 
     /**
@@ -155,7 +155,7 @@ final class ToolContractTest extends TestCase
     /** @return array<string, mixed> */
     private function outputSchema(string $name): array
     {
-        foreach (Tools::definitions() as $definition) {
+        foreach (Registry::definitions() as $definition) {
             if ($definition['name'] === $name) {
                 self::assertNotNull($definition['outputSchema']);
 

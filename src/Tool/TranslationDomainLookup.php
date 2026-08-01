@@ -7,7 +7,7 @@ namespace Typo3CmsMcp\Tool;
 use Typo3CmsMcp\Installation\Instance;
 use Typo3CmsMcp\Knowledge\Catalog\TranslationDomain;
 use Typo3CmsMcp\Result\Schema;
-use Typo3CmsMcp\ToolResult;
+use Typo3CmsMcp\Result\ToolResult;
 
 /**
  * The translation domain an XLF file resolves to, computed from its path.

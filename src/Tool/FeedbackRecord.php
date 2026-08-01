@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Typo3CmsMcp\Tool;
 
-use Typo3CmsMcp\Feedback;
+use Typo3CmsMcp\Feedback\Channel;
 use Typo3CmsMcp\Paths;
 use Typo3CmsMcp\Result\Schema;
-use Typo3CmsMcp\ToolResult;
+use Typo3CmsMcp\Result\ToolResult;
 
 /**
  * This server's only write: one markdown feedback per call, in its own
@@ -42,7 +42,7 @@ final class FeedbackRecord implements Tool
             'properties' => [
                 'observation' => ['type' => 'string', 'minLength' => 1, 'description' => 'What was missing, wrong, or unhelpful. Be specific enough to act on later, and open with one line naming the task you were given, so the feedback can be traced back to what exposed it. Written in English, like everything else here.'],
                 'model' => ['type' => 'string', 'minLength' => 1, 'description' => 'The model recording this feedback, as it identifies itself, for example claude-opus-5 or gpt-5.3-codex. Read it where it is written down — what your client reports for the current session, or the person running you — rather than from what you remember about yourself. A feedback about what a session did or did not do is evidence about one model\'s behaviour, and one filed as "unknown" cannot be told apart from another model\'s. That fallback is for a session that looked and could not find out; an invented identifier is still worse than none.'],
-                'category' => ['type' => 'string', 'enum' => Feedback::CATEGORIES, 'default' => 'idea', 'description' => 'missing-knowledge: the knowledge base lacks the answer. wrong-answer: the answer was incorrect. tool-gap: no tool covers the need. bug: the server misbehaved. idea: anything else.'],
+                'category' => ['type' => 'string', 'enum' => Channel::CATEGORIES, 'default' => 'idea', 'description' => 'missing-knowledge: the knowledge base lacks the answer. wrong-answer: the answer was incorrect. tool-gap: no tool covers the need. bug: the server misbehaved. idea: anything else.'],
                 'tool' => ['type' => ['string', 'array'], 'items' => ['type' => 'string'], 'description' => 'The tool the observation is about, for example typo3_component_lookup, or the skill it activated, for example typo3-extension-conformance. Several may be named, as a list or separated by commas.'],
                 'query' => ['type' => 'string', 'description' => 'The arguments that produced the unsatisfying result, or the task text where a whole session is what produced it. This is what lets somebody re-run the feedback against a later version of the server instead of reading it.'],
                 'suggestion' => ['type' => 'string', 'description' => 'What the server should have answered or should be able to do instead.'],
@@ -61,7 +61,7 @@ final class FeedbackRecord implements Tool
 
     public static function answer(array $args): ToolResult
     {
-        $file = Feedback::record($args);
+        $file = Channel::record($args);
         // The absolute path, because the relative one is relative to somewhere
         // the caller has never been. A feedback recorded from a site package was
         // reported back as feedback/<name>.md, looked for under that project,

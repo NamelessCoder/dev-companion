@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Typo3CmsMcp\Tool;
 
-use Typo3CmsMcp\Feedback;
+use Typo3CmsMcp\Feedback\Channel;
 use Typo3CmsMcp\Result\Schema;
-use Typo3CmsMcp\ToolResult;
+use Typo3CmsMcp\Result\ToolResult;
 
 /**
  * The improvement feedback recorded so far, so it can be worked off — and read
@@ -30,7 +30,7 @@ final class FeedbackList extends ReadOnlyTool
             'type' => 'object',
             'properties' => [
                 'status' => ['type' => 'string', 'enum' => ['open', 'closed', 'all'], 'default' => 'open', 'description' => 'open: the feedback still in the backlog. closed: the ones already worked off, each with the commit subject saying what came of it. all: both. The category and tool filters apply to either.'],
-                'category' => ['type' => 'string', 'enum' => Feedback::CATEGORIES, 'description' => 'Restrict the list to one category.'],
+                'category' => ['type' => 'string', 'enum' => Channel::CATEGORIES, 'description' => 'Restrict the list to one category.'],
                 'tool' => ['type' => 'string', 'description' => 'Restrict the list to the feedback about one tool, for example typo3_label_lookup. A feedback naming several tools is matched by each of them.'],
                 'limit' => ['type' => 'integer', 'minimum' => 1, 'maximum' => 100, 'default' => 20, 'description' => 'Maximum number of feedback to return.'],
             ],
@@ -70,7 +70,7 @@ final class FeedbackList extends ReadOnlyTool
         $limit = is_int($args['limit'] ?? null) ? $args['limit'] : 20;
         $tool = is_string($args['tool'] ?? null) && trim($args['tool']) !== '' ? trim($args['tool']) : null;
 
-        $feedback = Feedback::all($status, $category, $limit, $tool);
+        $feedback = Channel::all($status, $category, $limit, $tool);
 
         if ($feedback === []) {
             return ToolResult::create(

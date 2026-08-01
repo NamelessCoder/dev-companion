@@ -12,7 +12,7 @@ use Typo3CmsMcp\Knowledge\ArchitectureHints;
 use Typo3CmsMcp\Knowledge\TaskIntents;
 use Typo3CmsMcp\Knowledge\Versions;
 use Typo3CmsMcp\Tests\Support\TemporaryInstallation;
-use Typo3CmsMcp\Tools;
+use Typo3CmsMcp\Tool\Registry;
 
 /**
  * Which TYPO3 an answer is for, and what that leaves out.
@@ -101,7 +101,7 @@ final class VersionsTest extends TestCase
     #[Test]
     public function withoutATargetTheStatementComesBackWithItsRange(): void
     {
-        $result = Tools::call('typo3_architecture_lookup', ['id' => 'language-files']);
+        $result = Registry::call('typo3_architecture_lookup', ['id' => 'language-files']);
 
         self::assertNull($result->data['targetVersion']);
         $bound = array_values(array_filter(
@@ -122,7 +122,7 @@ final class VersionsTest extends TestCase
         // a second binding mechanism for prose, the answer says which of the
         // two the caller is holding and where the bound form is.
         foreach (['typo3_rule_lookup' => 'event listener', 'typo3_script_lookup' => 'unit tests'] as $tool => $query) {
-            $text = Tools::call($tool, ['query' => $query, 'task' => $query])->text;
+            $text = Registry::call($tool, ['query' => $query, 'task' => $query])->text;
             self::assertStringContainsString('not filtered by version', $text, $tool);
             self::assertStringContainsString('typo3_architecture_lookup with targetVersion', $text, $tool);
         }
@@ -222,7 +222,7 @@ final class VersionsTest extends TestCase
         ], JSON_THROW_ON_ERROR));
         Instance::discoverFrom($root);
 
-        $result = Tools::call('typo3_architecture_lookup', ['id' => 'extension-files']);
+        $result = Registry::call('typo3_architecture_lookup', ['id' => 'extension-files']);
 
         self::assertSame([13, 14], $result->data['targetVersions']);
         self::assertSame(14, $result->data['targetVersion']);
@@ -247,7 +247,7 @@ final class VersionsTest extends TestCase
         ], JSON_THROW_ON_ERROR));
         Instance::discoverFrom($root);
 
-        $narrowed = Tools::call('typo3_architecture_lookup', ['id' => 'extension-files', 'targetVersion' => '14.3']);
+        $narrowed = Registry::call('typo3_architecture_lookup', ['id' => 'extension-files', 'targetVersion' => '14.3']);
 
         self::assertSame([14], $narrowed->data['targetVersions'], 'what the caller stated still wins');
         self::assertStringContainsString('Answered for TYPO3 v14 alone', $narrowed->text);
@@ -257,7 +257,7 @@ final class VersionsTest extends TestCase
 
         // The task guide is where the review stated its version first, and it
         // said nothing at all about it.
-        $guide = Tools::call('typo3_task_guide', ['task' => 'Review this extension', 'targetVersion' => '14.3']);
+        $guide = Registry::call('typo3_task_guide', ['task' => 'Review this extension', 'targetVersion' => '14.3']);
         self::assertStringContainsString('Answered for TYPO3 v14 alone', $guide->text);
 
         // A repository that declares one major has no wider answer to point
@@ -268,12 +268,12 @@ final class VersionsTest extends TestCase
         ], JSON_THROW_ON_ERROR));
         Instance::discoverFrom($root);
 
-        $single = Tools::call('typo3_architecture_lookup', ['id' => 'extension-files', 'targetVersion' => '14.3']);
+        $single = Registry::call('typo3_architecture_lookup', ['id' => 'extension-files', 'targetVersion' => '14.3']);
         self::assertStringContainsString('Answered for TYPO3 v14: statements that do not hold', $single->text);
         self::assertStringNotContainsString('Answered for TYPO3 v14 alone', $single->text);
         self::assertStringNotContainsString(
             'Answered for TYPO3',
-            Tools::call('typo3_task_guide', ['task' => 'Review this extension', 'targetVersion' => '14.3'])->text,
+            Registry::call('typo3_task_guide', ['task' => 'Review this extension', 'targetVersion' => '14.3'])->text,
             'and the ordinary task guide says nothing about versions at all',
         );
     }
@@ -333,7 +333,7 @@ final class VersionsTest extends TestCase
         self::assertSame([14], Versions::targets());
         self::assertStringContainsString(
             'Answered for TYPO3 v14',
-            Tools::call('typo3_architecture_lookup', ['id' => 'extension-files'])->text,
+            Registry::call('typo3_architecture_lookup', ['id' => 'extension-files'])->text,
         );
     }
 }

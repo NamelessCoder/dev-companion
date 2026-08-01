@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Typo3CmsMcp\Upkeep\Cli;
 
-use Typo3CmsMcp\Feedback as Channel;
+use Typo3CmsMcp\Feedback\Channel;
 use Typo3CmsMcp\Upkeep\Cli;
 use Typo3CmsMcp\Upkeep\Todo;
 

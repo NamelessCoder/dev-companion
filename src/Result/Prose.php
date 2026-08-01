@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Typo3CmsMcp\Result;
 
 use Typo3CmsMcp\Knowledge\Documents;
-use Typo3CmsMcp\ToolResult;
 
 /**
  * Matched sections of the markdown knowledge documents, as an answer.

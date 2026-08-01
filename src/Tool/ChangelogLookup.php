@@ -6,9 +6,9 @@ namespace Typo3CmsMcp\Tool;
 
 use Typo3CmsMcp\Installation\Changelog;
 use Typo3CmsMcp\Result\Schema;
+use Typo3CmsMcp\Result\ToolResult;
 use Typo3CmsMcp\Result\Unanswered;
 use Typo3CmsMcp\Search\LabelSearch;
-use Typo3CmsMcp\ToolResult;
 
 /**
  * What a TYPO3 version changed, from the changelog that installation ships.

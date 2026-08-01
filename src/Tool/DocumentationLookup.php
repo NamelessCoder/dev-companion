@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Typo3CmsMcp\Tool;
 
-use Typo3CmsMcp\Documentation;
 use Typo3CmsMcp\Knowledge\Versions;
+use Typo3CmsMcp\Manuals\Documentation;
 use Typo3CmsMcp\Result\Schema;
-use Typo3CmsMcp\ToolResult;
+use Typo3CmsMcp\Result\ToolResult;
 
 /**
  * The official, versioned TYPO3 manuals at docs.typo3.org — the one tool that

@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Typo3CmsMcp\Knowledge;
 
-use Typo3CmsMcp\Feedback;
+use Typo3CmsMcp\Feedback\Channel;
 use Typo3CmsMcp\Installation\Instance;
 use Typo3CmsMcp\Paths;
-use Typo3CmsMcp\Profile;
+use Typo3CmsMcp\Server\Profile;
 
 /**
  * The server's own description of what it knows and which tool answers what.
@@ -399,7 +399,7 @@ final class Scope
                 $instructions,
             );
         }
-        if (Feedback::isAvailable()) {
+        if (Channel::isAvailable()) {
             $instructions .= ' Every tool here is read-only except typo3_feedback_record, '
                 . 'which creates a new markdown feedback under feedback/ and writes nothing else.';
         }

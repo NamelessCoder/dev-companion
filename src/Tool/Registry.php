@@ -2,32 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp;
+namespace Typo3CmsMcp\Tool;
 
-use Typo3CmsMcp\Tool\ArchitectureLookup;
-use Typo3CmsMcp\Tool\BackendModuleLookup;
-use Typo3CmsMcp\Tool\CatalogScope;
-use Typo3CmsMcp\Tool\ChangelogLookup;
-use Typo3CmsMcp\Tool\CommitMessageGuide;
-use Typo3CmsMcp\Tool\ComponentLookup;
-use Typo3CmsMcp\Tool\ConfigurationLookup;
-use Typo3CmsMcp\Tool\DocumentationLookup;
-use Typo3CmsMcp\Tool\ExtensionScope;
-use Typo3CmsMcp\Tool\FeedbackList;
-use Typo3CmsMcp\Tool\FeedbackRecord;
-use Typo3CmsMcp\Tool\FluidNamespaceList;
-use Typo3CmsMcp\Tool\IconLookup;
-use Typo3CmsMcp\Tool\LabelLookup;
-use Typo3CmsMcp\Tool\ProjectScope;
-use Typo3CmsMcp\Tool\ReferenceList;
-use Typo3CmsMcp\Tool\RuleLookup;
-use Typo3CmsMcp\Tool\ScriptLookup;
-use Typo3CmsMcp\Tool\ServerScope;
-use Typo3CmsMcp\Tool\SystemExtensionLookup;
-use Typo3CmsMcp\Tool\TaskGuide;
-use Typo3CmsMcp\Tool\TestRunGuide;
-use Typo3CmsMcp\Tool\Tool;
-use Typo3CmsMcp\Tool\TranslationDomainLookup;
+use Typo3CmsMcp\Feedback\Channel;
+use Typo3CmsMcp\Result\ToolResult;
+use Typo3CmsMcp\Server\Profile;
 
 /**
  * Every tool this server has, and the only place one is switched on.
@@ -39,7 +18,7 @@ use Typo3CmsMcp\Tool\TranslationDomainLookup;
  * contribution surface where it cannot be followed, and the feedback channel,
  * which exists only in a standalone checkout.
  */
-final class Tools
+final class Registry
 {
     /**
      * In the order a client sees them: orientation first, then the guides and
@@ -47,7 +26,7 @@ final class Tools
      *
      * @var array<int, class-string<Tool>>
      */
-    private const REGISTRY = [
+    private const TOOLS = [
         ServerScope::class,
         RuleLookup::class,
         ScriptLookup::class,
@@ -72,7 +51,7 @@ final class Tools
     ];
 
     /**
-     * Offered from a standalone checkout alone — see Feedback.
+     * Offered from a standalone checkout alone — see the feedback channel.
      *
      * @var array<int, class-string<Tool>>
      */
@@ -121,13 +100,13 @@ final class Tools
     private static function offered(): array
     {
         $offered = array_values(array_filter(
-            self::REGISTRY,
+            self::TOOLS,
             // The core contribution surface is left out where it cannot be
             // followed — see Profile.
             static fn(string $tool): bool => Profile::offers($tool::name()),
         ));
 
-        if (Feedback::isAvailable()) {
+        if (Channel::isAvailable()) {
             array_push($offered, ...self::FEEDBACK);
         }
 

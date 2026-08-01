@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Typo3CmsMcp\Tool;
 
-use Typo3CmsMcp\ToolResult;
+use Typo3CmsMcp\Result\ToolResult;
 
 /**
  * One tool: what a client is told about it, and what it answers.
@@ -22,7 +22,7 @@ use Typo3CmsMcp\ToolResult;
  * the protocol rather than by the side offering it, and both sides speak of the
  * same one.
  *
- * Typo3CmsMcp\Tools is the list of them, and the only place a tool is switched
+ * Typo3CmsMcp\Tool\Registry is the list of them, and the only place a tool is switched
  * on.
  */
 interface Tool

@@ -6,8 +6,8 @@ namespace Typo3CmsMcp\Tool;
 
 use Typo3CmsMcp\Installation\Typo3Cli;
 use Typo3CmsMcp\Result\Schema;
+use Typo3CmsMcp\Result\ToolResult;
 use Typo3CmsMcp\Result\Unanswered;
-use Typo3CmsMcp\ToolResult;
 
 /**
  * An effective TYPO3_CONF_VARS value: what it is at runtime after every

@@ -7,7 +7,7 @@ namespace Typo3CmsMcp\Tool;
 use Typo3CmsMcp\Knowledge\Catalog\References;
 use Typo3CmsMcp\Knowledge\Versions;
 use Typo3CmsMcp\Result\Schema;
-use Typo3CmsMcp\ToolResult;
+use Typo3CmsMcp\Result\ToolResult;
 
 /**
  * The worked examples the core ships, so "read X" can be the answer.

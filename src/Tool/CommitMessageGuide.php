@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Typo3CmsMcp\Tool;
 
-use Typo3CmsMcp\CommitMessage;
+use Typo3CmsMcp\Knowledge\CommitMessage;
 use Typo3CmsMcp\Result\Schema;
-use Typo3CmsMcp\ToolResult;
+use Typo3CmsMcp\Result\ToolResult;
 
 /**
  * A TYPO3 commit message, drafted from parts or checked and corrected.

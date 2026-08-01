@@ -7,8 +7,8 @@ namespace Typo3CmsMcp\Tool;
 use Typo3CmsMcp\Installation\Icons;
 use Typo3CmsMcp\Installation\Instance;
 use Typo3CmsMcp\Result\Schema;
+use Typo3CmsMcp\Result\ToolResult;
 use Typo3CmsMcp\Result\Unanswered;
-use Typo3CmsMcp\ToolResult;
 
 /**
  * Icon identifiers registered in the installation.

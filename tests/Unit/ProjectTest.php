@@ -13,7 +13,7 @@ use Typo3CmsMcp\Installation\Typo3Cli;
 use Typo3CmsMcp\Installation\Typo3Runtime;
 use Typo3CmsMcp\Tests\Support\FakeInstallation;
 use Typo3CmsMcp\Tests\Support\TemporaryInstallation;
-use Typo3CmsMcp\Tools;
+use Typo3CmsMcp\Tool\Registry;
 
 /**
  * What the repository around the installation consists of.
@@ -96,7 +96,7 @@ final class ProjectTest extends TestCase
 
         self::assertNull(Project::describe());
 
-        $result = Tools::call('typo3_project_scope', []);
+        $result = Registry::call('typo3_project_scope', []);
         self::assertSame('nothing', $result->data['answeredBy']);
     }
 
@@ -107,7 +107,7 @@ final class ProjectTest extends TestCase
         $this->manifest($root, ['scripts' => ['ci' => 'phpunit']]);
         Instance::discoverFrom($root);
 
-        $text = Tools::call('typo3_project_scope', [])->text;
+        $text = Registry::call('typo3_project_scope', [])->text;
 
         self::assertStringContainsString('composer ci', $text);
         self::assertStringContainsString('runTests.sh suites do not', $text);
@@ -158,7 +158,7 @@ final class ProjectTest extends TestCase
             'npm run build' => Project::RUNS_AS_CHANGE,
         ], $runs);
 
-        $text = Tools::call('typo3_project_scope', [])->text;
+        $text = Registry::call('typo3_project_scope', [])->text;
         self::assertStringContainsString('composer cgl:ci (composer.json) — check: php-cs-fixer --diff -v --dry-run fix', $text);
         self::assertStringContainsString('A task told not to change files can run the checks and nothing else', $text);
     }
@@ -226,7 +226,7 @@ final class ProjectTest extends TestCase
         // it is part of what running the command means.
         self::assertStringContainsString(
             'composer cs (composer.json) — check: PHP_CS_FIXER_IGNORE_ENV=1 php',
-            Tools::call('typo3_project_scope', [])->text,
+            Registry::call('typo3_project_scope', [])->text,
         );
     }
 
@@ -246,7 +246,7 @@ final class ProjectTest extends TestCase
             [['package' => 'typo3/cms-core', 'description' => 'Keep the old redirect behaviour', 'file' => 'patches/core-redirects.patch']],
             Project::describe()['patches'],
         );
-        self::assertStringContainsString('Patched dependencies', Tools::call('typo3_project_scope', [])->text);
+        self::assertStringContainsString('Patched dependencies', Registry::call('typo3_project_scope', [])->text);
     }
 
     #[Test]
@@ -286,7 +286,7 @@ final class ProjectTest extends TestCase
         $this->declare($extension . '/ext_localconf.php', "<?php\n");
         Instance::discoverFrom($root);
 
-        $result = Tools::call('typo3_extension_scope', ['extension' => 'my_sitepackage']);
+        $result = Registry::call('typo3_extension_scope', ['extension' => 'my_sitepackage']);
 
         self::assertSame(['tx_acme_event'], $result->data['tcaTables']);
         self::assertSame(
@@ -358,7 +358,7 @@ final class ProjectTest extends TestCase
         );
         Instance::discoverFrom($root);
 
-        $result = Tools::call('typo3_extension_scope', ['extension' => 'my_sitepackage']);
+        $result = Registry::call('typo3_extension_scope', ['extension' => 'my_sitepackage']);
 
         self::assertSame(
             [
@@ -421,7 +421,7 @@ final class ProjectTest extends TestCase
         );
         Instance::discoverFrom($root);
 
-        $result = Tools::call('typo3_extension_scope', ['extension' => 'my_sitepackage']);
+        $result = Registry::call('typo3_extension_scope', ['extension' => 'my_sitepackage']);
 
         self::assertSame(
             [['identifier' => 'acme_hero_carousel', 'templateName' => 'HeroCarousel', 'source' => 'Configuration/Sets/AcmeSite/setup.typoscript']],
@@ -475,7 +475,7 @@ final class ProjectTest extends TestCase
         );
         Instance::discoverFrom($root);
 
-        $result = Tools::call('typo3_extension_scope', ['extension' => 'my_sitepackage']);
+        $result = Registry::call('typo3_extension_scope', ['extension' => 'my_sitepackage']);
 
         self::assertSame(
             ['acme_hero_carousel'],
@@ -526,7 +526,7 @@ final class ProjectTest extends TestCase
         );
         Instance::discoverFrom($root);
 
-        $result = Tools::call('typo3_extension_scope', ['extension' => 'my_sitepackage']);
+        $result = Registry::call('typo3_extension_scope', ['extension' => 'my_sitepackage']);
 
         self::assertSame(
             [],
@@ -576,7 +576,7 @@ final class ProjectTest extends TestCase
         );
         Instance::discoverFrom($root);
 
-        $result = Tools::call('typo3_extension_scope', ['extension' => 'my_sitepackage']);
+        $result = Registry::call('typo3_extension_scope', ['extension' => 'my_sitepackage']);
 
         self::assertSame('installation', $result->data['answeredBy']);
         self::assertSame(['acme-teaser'], $result->data['icons'], 'the loop-built list the parser cannot follow');
@@ -611,7 +611,7 @@ final class ProjectTest extends TestCase
         );
         Instance::discoverFrom($root);
 
-        $result = Tools::call('typo3_extension_scope', ['extension' => 'my_sitepackage']);
+        $result = Registry::call('typo3_extension_scope', ['extension' => 'my_sitepackage']);
 
         self::assertSame(
             [
@@ -640,7 +640,7 @@ final class ProjectTest extends TestCase
         $root = $this->composerProject();
         Instance::discoverFrom($root);
 
-        $result = Tools::call('typo3_extension_scope', ['extension' => 'news']);
+        $result = Registry::call('typo3_extension_scope', ['extension' => 'news']);
 
         self::assertNull($result->data['path']);
         self::assertContains('my_sitepackage', $result->data['installed']);

@@ -7,7 +7,7 @@ namespace Typo3CmsMcp\Tests\Contract;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Typo3CmsMcp\Tools;
+use Typo3CmsMcp\Tool\Registry;
 
 /**
  * The naming schema every tool follows: typo3_<subject>_<verb>, with the verb
@@ -35,7 +35,7 @@ final class ToolNamingTest extends TestCase
     #[Test]
     public function everyToolIsNamedSubjectThenVerb(): void
     {
-        foreach (Tools::definitions() as $definition) {
+        foreach (Registry::definitions() as $definition) {
             $name = $definition['name'];
 
             self::assertMatchesRegularExpression(
@@ -77,7 +77,7 @@ final class ToolNamingTest extends TestCase
     #[Test]
     public function everyToolNameWrittenInTheKnowledgeBaseIsRegistered(): void
     {
-        $known = array_column(Tools::definitions(), 'name');
+        $known = array_column(Registry::definitions(), 'name');
 
         $unknown = [];
         foreach ([...$this->knowledgeFiles(), ...$this->skillFiles()] as $file) {
@@ -97,8 +97,8 @@ final class ToolNamingTest extends TestCase
     #[Test]
     public function everyToolNameAnAnswerNamesIsRegistered(string $tool, array $arguments): void
     {
-        $known = array_column(Tools::definitions(), 'name');
-        $result = Tools::call($tool, $arguments);
+        $known = array_column(Registry::definitions(), 'name');
+        $result = Registry::call($tool, $arguments);
         $answer = $result->text . ' ' . json_encode($result->data, JSON_THROW_ON_ERROR);
 
         preg_match_all('/typo3_[a-z_]+/', $answer, $matches);
@@ -147,7 +147,7 @@ final class ToolNamingTest extends TestCase
     public function toolsSharingAnOutputSchemaShareTheirVerb(): void
     {
         $verbsPerSchema = [];
-        foreach (Tools::definitions() as $definition) {
+        foreach (Registry::definitions() as $definition) {
             $schema = json_encode($definition['outputSchema'], JSON_THROW_ON_ERROR);
             $segments = explode('_', $definition['name']);
             $verbsPerSchema[$schema][(string) array_pop($segments)][] = $definition['name'];

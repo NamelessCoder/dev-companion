@@ -2,9 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp;
+namespace Typo3CmsMcp\Manuals;
 
 use Typo3CmsMcp\Search\TermSearch;
+use Typo3CmsMcp\Server\Factory;
 
 /**
  * Searches and reads the official, versioned TYPO3 manuals.
@@ -403,7 +404,7 @@ final class Documentation
             CURLOPT_MAXREDIRS => 3,
             CURLOPT_CONNECTTIMEOUT => 3,
             CURLOPT_TIMEOUT => 8,
-            CURLOPT_USERAGENT => 'typo3-cms-mcp/' . ServerFactory::SERVER_VERSION,
+            CURLOPT_USERAGENT => 'typo3-cms-mcp/' . Factory::SERVER_VERSION,
         ]);
         $body = curl_exec($handle);
         $status = curl_getinfo($handle, CURLINFO_RESPONSE_CODE);

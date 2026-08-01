@@ -13,7 +13,7 @@ use Typo3CmsMcp\Installation\Typo3Cli;
 use Typo3CmsMcp\Installation\Typo3Runtime;
 use Typo3CmsMcp\Knowledge\Scope;
 use Typo3CmsMcp\Tests\Support\TemporaryInstallation;
-use Typo3CmsMcp\Tools;
+use Typo3CmsMcp\Tool\Registry;
 
 /**
  * Where the identifiers this tool answers with may be used.
@@ -42,7 +42,7 @@ final class IconLookupTest extends TestCase
 
         // A hit, a miss, and the browsing answer with no query at all.
         foreach (['acme-product', 'quantumflux', ''] as $query) {
-            $result = Tools::call('typo3_icon_lookup', ['query' => $query]);
+            $result = Registry::call('typo3_icon_lookup', ['query' => $query]);
 
             self::assertStringContainsString('backend icon registry', $result->text, 'query: ' . $query);
             self::assertStringContainsString('backend icon registry', (string) ($result->data['scope'] ?? ''));
@@ -68,13 +68,13 @@ final class IconLookupTest extends TestCase
     {
         Instance::discoverFrom($this->installationWithItsOwnIcon());
 
-        $categoryOnly = Tools::call('typo3_icon_lookup', [
+        $categoryOnly = Registry::call('typo3_icon_lookup', [
             'query' => 'actions-definitely-does-not-exist',
         ]);
         self::assertSame(0, $categoryOnly->data['matchCount']);
         self::assertSame(0, $categoryOnly->data['suggestionCount']);
 
-        $missing = Tools::call('typo3_icon_lookup', [
+        $missing = Registry::call('typo3_icon_lookup', [
             'query' => 'actions-open-definitely-does-not-exist',
         ]);
 
@@ -83,7 +83,7 @@ final class IconLookupTest extends TestCase
         self::assertGreaterThan(0, $missing->data['suggestionCount']);
         self::assertStringContainsString('suggestions, not the answer', $missing->text);
 
-        $exact = Tools::call('typo3_icon_lookup', ['query' => 'actions-open']);
+        $exact = Registry::call('typo3_icon_lookup', ['query' => 'actions-open']);
         self::assertTrue($exact->data['exactMatch']);
         self::assertSame(1, $exact->data['matchCount']);
     }
@@ -98,7 +98,7 @@ final class IconLookupTest extends TestCase
         // unregistered because it could not see them.
         Instance::discoverFrom($this->installationWithItsOwnIcon());
 
-        $result = Tools::call('typo3_icon_lookup', ['query' => 'acme-product']);
+        $result = Registry::call('typo3_icon_lookup', ['query' => 'acme-product']);
 
         self::assertSame('packages', $result->data['answeredBy']);
         self::assertStringContainsString('read from the package files', $result->text);

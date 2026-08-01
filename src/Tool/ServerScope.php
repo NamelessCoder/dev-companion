@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Typo3CmsMcp\Tool;
 
-use Typo3CmsMcp\Feedback;
+use Typo3CmsMcp\Feedback\Channel;
 use Typo3CmsMcp\Installation\Instance;
 use Typo3CmsMcp\Installation\Typo3Cli;
 use Typo3CmsMcp\Knowledge\Scope;
 use Typo3CmsMcp\Knowledge\Versions;
-use Typo3CmsMcp\Profile;
 use Typo3CmsMcp\Result\Schema;
-use Typo3CmsMcp\ToolResult;
+use Typo3CmsMcp\Result\ToolResult;
+use Typo3CmsMcp\Server\Profile;
 
 /**
  * What this server covers, what it deliberately does not, and which tool to
@@ -144,7 +144,7 @@ final class ServerScope extends ReadOnlyTool
         // opposite reactions: leave, or say what was missing.
         $lines[] = 'Deliberately not covered — and this list is the boundary: a subject that is not on it is in '
             . 'scope, so a thin answer to it is a gap in the knowledge base rather than a limit of it.'
-            . (Feedback::isAvailable() ? ' Record one with typo3_feedback_record instead of going elsewhere.' : '');
+            . (Channel::isAvailable() ? ' Record one with typo3_feedback_record instead of going elsewhere.' : '');
         foreach ($scope['doesNotCover'] as $entry) {
             $lines[] = '## ' . $entry['topic'];
             $lines[] = $entry['why'];
@@ -233,7 +233,7 @@ final class ServerScope extends ReadOnlyTool
         $lines[] = 'Every lookup and guide is read-only. typo3_documentation_lookup reads the official, versioned '
             . 'manuals at docs.typo3.org; apart from that and the installation named above, nothing is fetched, '
             . 'executed, or looked up online.';
-        if (Feedback::isAvailable()) {
+        if (Channel::isAvailable()) {
             // Naming the one write next to the read-only claim, not after it:
             // a blanket "everything is read-only" followed by a tool that
             // creates a file contradicts both the annotations and the behaviour.

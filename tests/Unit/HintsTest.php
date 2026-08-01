@@ -11,7 +11,7 @@ use Typo3CmsMcp\Knowledge\ArchitectureHints;
 use Typo3CmsMcp\Knowledge\Domains;
 use Typo3CmsMcp\Knowledge\TaskIntents;
 use Typo3CmsMcp\Knowledge\TestSuiteHints;
-use Typo3CmsMcp\Tools;
+use Typo3CmsMcp\Tool\Registry;
 
 final class HintsTest extends TestCase
 {
@@ -187,7 +187,7 @@ final class HintsTest extends TestCase
     #[DataProvider('securityQueries')]
     public function bothSidesOfAnInjectionQuestionReachTheSinkMethod(string $task): void
     {
-        $result = Tools::call('typo3_architecture_lookup', [
+        $result = Registry::call('typo3_architecture_lookup', [
             'task' => $task,
             'targetVersion' => '14',
         ]);
@@ -210,7 +210,7 @@ final class HintsTest extends TestCase
     #[Test]
     public function aNewLabelNamesTheSourceLanguageAndWhereItsTranslationGoes(): void
     {
-        $result = Tools::call('typo3_architecture_lookup', [
+        $result = Registry::call('typo3_architecture_lookup', [
             'task' => 'backend module registration controller and language files in a project sitepackage extension',
             'targetVersion' => '14',
         ]);
@@ -223,7 +223,7 @@ final class HintsTest extends TestCase
     #[Test]
     public function labelReuseStaysAtTheUsageContext(): void
     {
-        $result = Tools::call('typo3_architecture_lookup', [
+        $result = Registry::call('typo3_architecture_lookup', [
             'id' => 'language-files',
             'targetVersion' => '14',
         ]);
@@ -242,7 +242,7 @@ final class HintsTest extends TestCase
 
         self::assertContains('site-label-language', array_column($result['matchedHints'], 'id'));
 
-        $guide = Tools::call('typo3_task_guide', ['task' => $query]);
+        $guide = Registry::call('typo3_task_guide', ['task' => $query]);
         self::assertContains('site-label-language', array_column($guide->data['architectureHints'], 'id'));
         self::assertStringContainsString('typo3Language: de', $guide->text);
         self::assertStringContainsString('language:update de', $guide->text);
@@ -252,7 +252,7 @@ final class HintsTest extends TestCase
     #[Test]
     public function aSettingIsPlacedByTheReachOfItsValue(): void
     {
-        $result = Tools::call('typo3_architecture_lookup', [
+        $result = Registry::call('typo3_architecture_lookup', [
             'task' => 'where a backend module stores a configurable storage pid in a sitepackage',
             'targetVersion' => '14',
         ]);
@@ -267,7 +267,7 @@ final class HintsTest extends TestCase
     public function aBackendModuleNamesItsShortcutApiAndPostRedirect(): void
     {
         $query = 'doc header buttons and the redirect after a POST in a backend module';
-        $onThirteen = Tools::call('typo3_architecture_lookup', [
+        $onThirteen = Registry::call('typo3_architecture_lookup', [
             'task' => $query,
             'targetVersion' => '13',
         ])->text;
@@ -275,7 +275,7 @@ final class HintsTest extends TestCase
         self::assertStringNotContainsString('setShortcutContext(', $onThirteen);
         self::assertStringContainsString('RedirectResponse with HTTP 303 status', $onThirteen);
 
-        $onFourteen = Tools::call('typo3_architecture_lookup', [
+        $onFourteen = Registry::call('typo3_architecture_lookup', [
             'task' => $query,
             'targetVersion' => '14',
         ])->text;
@@ -717,7 +717,7 @@ final class HintsTest extends TestCase
         );
         self::assertSame('frontend-records', $result['matchedHints'][0]['id']);
 
-        $guide = Tools::call('typo3_task_guide', [
+        $guide = Registry::call('typo3_task_guide', [
             'task' => $query,
             'targetVersion' => '14',
         ]);
@@ -884,7 +884,7 @@ final class HintsTest extends TestCase
         // nothing in a project — which does not make it useless there, so it is
         // marked rather than dropped. Inside the core the marker would be on
         // every line and say nothing.
-        $project = Tools::call('typo3_architecture_lookup', [
+        $project = Registry::call('typo3_architecture_lookup', [
             'id' => 'css-class-naming',
             'paths' => ['packages/my_sitepackage/Classes/Controller/ProductController.php'],
         ]);
@@ -893,7 +893,7 @@ final class HintsTest extends TestCase
         self::assertStringContainsString('Binding for a patch to the TYPO3 core', $project->text);
         self::assertStringContainsString('conventions you may adopt', $project->text);
 
-        $core = Tools::call('typo3_architecture_lookup', [
+        $core = Registry::call('typo3_architecture_lookup', [
             'id' => 'css-class-naming',
             'paths' => ['Build/Sources/Sass/component/_card.scss'],
         ]);
@@ -908,7 +908,7 @@ final class HintsTest extends TestCase
         // does not. Splitting the hint to say so would duplicate the six
         // statements around it, so the statement carries it — the same place
         // since/until sits.
-        $result = Tools::call('typo3_architecture_lookup', [
+        $result = Registry::call('typo3_architecture_lookup', [
             'id' => 'fluid-viewhelpers',
             'paths' => ['packages/my_sitepackage/Classes/ViewHelpers/GreetingViewHelper.php'],
         ]);
@@ -1060,7 +1060,7 @@ final class HintsTest extends TestCase
     {
         $task = 'Add a backend module to the project site package for reviewing imported product records, '
             . 'with a refresh action, status badges, icons and translated labels';
-        $guide = Tools::call('typo3_task_guide', ['task' => $task]);
+        $guide = Registry::call('typo3_task_guide', ['task' => $task]);
         $hintIds = array_column($guide->data['architectureHints'], 'id');
         $tools = array_column($guide->data['nextTools'], 'tool');
 
@@ -1166,7 +1166,7 @@ final class HintsTest extends TestCase
     public function theSuiteListItselfIsFilteredByTheBranchItIsAskedFor(): void
     {
         $suites = static fn(?string $version): array => array_column(
-            Tools::call('typo3_test_run_guide', ['query' => 'xliff labels', 'targetVersion' => $version])->data['suites'],
+            Registry::call('typo3_test_run_guide', ['query' => 'xliff labels', 'targetVersion' => $version])->data['suites'],
             'suite',
         );
 
@@ -1196,7 +1196,7 @@ final class HintsTest extends TestCase
     #[Test]
     public function aPathNamedInTheQueryNarrowsTheSuitesAsAnExplicitPathWould(): void
     {
-        $suites = array_column(Tools::call('typo3_test_run_guide', [
+        $suites = array_column(Registry::call('typo3_test_run_guide', [
             'query' => 'Only a Sass change in Build/Sources/Sass/component/_card.scss; recommend the narrow '
                 . 'iteration check and the review-ready checks, without unrelated PHP or TypeScript suites',
         ])->data['suites'], 'suite');
@@ -1274,7 +1274,7 @@ final class HintsTest extends TestCase
         // which corpus they came from. The XLIFF lifecycle used to be a prose
         // section this intent queried by name; it is a bound statement in
         // language-files now, and the guide reaches it by matching instead.
-        $guide = Tools::call('typo3_task_guide', ['task' => 'Add one label to locallang_layout.xlf']);
+        $guide = Registry::call('typo3_task_guide', ['task' => 'Add one label to locallang_layout.xlf']);
 
         self::assertContains('language-files', array_column($guide->data['architectureHints'], 'id'));
         self::assertStringContainsString('x-unused-since', $guide->text);
@@ -1286,7 +1286,7 @@ final class HintsTest extends TestCase
         // The FormEngine hint names the functional suite; before it was merged
         // in, the brief listed the XLIFF checks of a weakly matched intent and
         // dropped the one suite the change could actually fail on.
-        $checks = Tools::call('typo3_task_guide', [
+        $checks = Registry::call('typo3_task_guide', [
             'task' => 'Fix that TSconfig field label overrides are not respected per record type in FormEngine select fields',
             'area' => 'backend/FormEngine',
             'changeType' => 'bugfix',
@@ -1312,7 +1312,7 @@ final class HintsTest extends TestCase
         // The question a site maintainer asks first — "what do I do, in which
         // order" — used to be answered with how to author a deprecation, which
         // is the same subject seen from the core's side and useless here.
-        $result = Tools::call('typo3_task_guide', ['task' => 'upgrade this composer site project to TYPO3 v14']);
+        $result = Registry::call('typo3_task_guide', ['task' => 'upgrade this composer site project to TYPO3 v14']);
 
         self::assertContains('installation-upgrade', array_column($result->data['intents'], 'id'));
 
@@ -1342,7 +1342,7 @@ final class HintsTest extends TestCase
         // asked who creates, orders, translates and hides a slide. The decision
         // has to be in the answer before the registration is, and the task that
         // asks for it does not have to say "content element" to get there.
-        $result = Tools::call('typo3_task_guide', [
+        $result = Registry::call('typo3_task_guide', [
             'task' => 'Add a hero carousel content element whose slides editors can create, order, translate and hide inside the element',
             'area' => 'packages/printworks_sitepackage/',
         ]);
@@ -1361,7 +1361,7 @@ final class HintsTest extends TestCase
         // The wording a first question actually arrives with reaches it too,
         // and stays a conditional match, because nothing in it says the work is
         // a content element.
-        $vague = Tools::call('typo3_task_guide', ['task' => 'Add a Hero Carousel that rotates different elements']);
+        $vague = Registry::call('typo3_task_guide', ['task' => 'Add a Hero Carousel that rotates different elements']);
         self::assertContains(
             'content-elements',
             array_column($vague->data['architectureHints'], 'id'),

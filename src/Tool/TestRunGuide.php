@@ -9,7 +9,7 @@ use Typo3CmsMcp\Knowledge\Scope;
 use Typo3CmsMcp\Knowledge\TestSuiteHints;
 use Typo3CmsMcp\Knowledge\Versions;
 use Typo3CmsMcp\Result\Schema;
-use Typo3CmsMcp\ToolResult;
+use Typo3CmsMcp\Result\ToolResult;
 
 /**
  * Which Build/Scripts/runTests.sh suites a change actually needs.

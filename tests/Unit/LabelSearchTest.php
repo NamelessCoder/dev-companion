@@ -11,7 +11,7 @@ use Typo3CmsMcp\Installation\Instance;
 use Typo3CmsMcp\Installation\Typo3Cli;
 use Typo3CmsMcp\Search\LabelSearch;
 use Typo3CmsMcp\Tests\Support\TemporaryInstallation;
-use Typo3CmsMcp\Tools;
+use Typo3CmsMcp\Tool\Registry;
 
 /**
  * What a label query means, and what an empty answer to one means.
@@ -100,7 +100,7 @@ final class LabelSearchTest extends TestCase
         // the caller to typo3_server_scope instead of to a narrower query.
         $this->consoleThatPrints("Labels in active extensions\n===\n\n [WARNING] No language resource files found.\n");
 
-        $result = Tools::call('typo3_label_lookup', ['query' => 'save document']);
+        $result = Registry::call('typo3_label_lookup', ['query' => 'save document']);
 
         self::assertSame('installation', $result->data['answeredBy']);
         self::assertSame(0, $result->data['matchCount']);
@@ -113,7 +113,7 @@ final class LabelSearchTest extends TestCase
     {
         $this->consoleThatFails('the database is not reachable');
 
-        $result = Tools::call('typo3_label_lookup', ['query' => 'save document']);
+        $result = Registry::call('typo3_label_lookup', ['query' => 'save document']);
 
         self::assertSame('nothing', $result->data['answeredBy']);
         self::assertStringContainsString('could not be asked', $result->text);
@@ -130,7 +130,7 @@ final class LabelSearchTest extends TestCase
             ],
         ]]], JSON_THROW_ON_ERROR));
 
-        $result = Tools::call('typo3_label_lookup', ['query' => 'save document']);
+        $result = Registry::call('typo3_label_lookup', ['query' => 'save document']);
 
         self::assertSame(0, $result->data['matchCount']);
         self::assertSame(
@@ -159,7 +159,7 @@ final class LabelSearchTest extends TestCase
         ]], JSON_THROW_ON_ERROR));
 
         $resource = 'EXT:sitepackage/Resources/Private/Language/Backend/Import.xlf';
-        $result = Tools::call('typo3_label_lookup', [
+        $result = Registry::call('typo3_label_lookup', [
             'query' => 'new',
             'resource' => $resource,
         ]);
@@ -182,7 +182,7 @@ final class LabelSearchTest extends TestCase
             . "Table 'db.tx_scheduler_task' doesn't exist");
         $this->labelFile('Resources/Private/Language/locallang.xlf', ['labels.save' => 'Save document']);
 
-        $result = Tools::call('typo3_label_lookup', ['query' => 'save document']);
+        $result = Registry::call('typo3_label_lookup', ['query' => 'save document']);
 
         self::assertSame('packages', $result->data['answeredBy']);
         self::assertSame('core.messages:labels.save', $result->data['labels'][0]['ref']);
@@ -197,7 +197,7 @@ final class LabelSearchTest extends TestCase
 
         // Nothing to fall back on here — this package ships no labels — so the
         // answer is unanswered, and says what to do about it.
-        $result = Tools::call('typo3_label_lookup', ['query' => 'save']);
+        $result = Registry::call('typo3_label_lookup', ['query' => 'save']);
 
         self::assertSame('nothing', $result->data['answeredBy']);
         self::assertStringContainsString('no TYPO3 schema yet', $result->text);

@@ -9,9 +9,9 @@ use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Typo3CmsMcp\Installation\Instance;
 use Typo3CmsMcp\Knowledge\Scope;
-use Typo3CmsMcp\Profile;
+use Typo3CmsMcp\Server\Profile;
 use Typo3CmsMcp\Tests\Support\TemporaryInstallation;
-use Typo3CmsMcp\Tools;
+use Typo3CmsMcp\Tool\Registry;
 
 final class ProfileTest extends TestCase
 {
@@ -85,7 +85,7 @@ final class ProfileTest extends TestCase
         self::assertSame(Profile::VIA_INSTALLATION, Profile::via());
         self::assertStringContainsString('site-developer', Profile::misconfiguration());
 
-        $result = Tools::call('typo3_server_scope', []);
+        $result = Registry::call('typo3_server_scope', []);
         self::assertStringContainsString('site-developer', $result->text);
         self::assertStringContainsString('site-developer', (string) $result->data['profile']['misconfiguration']);
     }
@@ -95,7 +95,7 @@ final class ProfileTest extends TestCase
     {
         Instance::discoverFrom($this->composerProject());
 
-        $result = Tools::call('typo3_server_scope', []);
+        $result = Registry::call('typo3_server_scope', []);
 
         self::assertSame(Profile::PROJECT, $result->data['profile']['active']);
         self::assertSame(Profile::VIA_INSTALLATION, $result->data['profile']['via']);
@@ -115,7 +115,7 @@ final class ProfileTest extends TestCase
         self::assertNotContains('typo3_label_lookup', $offered);
         self::assertContains('typo3_architecture_lookup', $offered);
 
-        $scope = Tools::call('typo3_server_scope', []);
+        $scope = Registry::call('typo3_server_scope', []);
         self::assertSame(['typo3_icon_lookup', 'typo3_label_lookup'], $scope->data['profile']['omits']);
         self::assertStringContainsString('typo3_icon_lookup', $scope->text);
         self::assertStringContainsString('typo3_label_lookup', $scope->text);
@@ -154,6 +154,6 @@ final class ProfileTest extends TestCase
     /** @return array<int, string> */
     private function toolNames(): array
     {
-        return array_column(Tools::definitions(), 'name');
+        return array_column(Registry::definitions(), 'name');
     }
 }

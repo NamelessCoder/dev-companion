@@ -5,24 +5,28 @@
 ```
 bin/typo3-cms-mcp  # stdio entrypoint (the client launches it as a subprocess)
 bin/cli            # everything this repository is kept in order by; run it with nothing for the list
-src/               # the server, grouped by where an answer comes from
-src/Tools.php      # every tool this server has, and the only place one is switched on
+src/               # grouped by what a class is: only Paths and the bootstrap sit loose
+src/Server/        # starting this server and setting a project up for it
+src/Server/Entrypoint.php  # what `bin/typo3-cms-mcp` runs: the commands, the usage, the transport
+src/Server/Factory.php     # builds the mcp/sdk server from the tool definitions
+src/Server/Installer.php   # writes guarded generic or agent-specific client setup
+src/Server/Profile.php     # which half of the server a client is offered (TYPO3_MCP_PROFILE)
 src/Tool/          # one class per tool: its description, its schemas, its answer
 src/Tool/Tool.php  # the interface each one implements; ReadOnlyTool carries the annotations
-src/Result/        # what several tools build their answer from: the shared schemas, the renderers, the unanswered case
-src/Knowledge/     # what is answered from the bundled knowledge base: the documents, the hints, the intents, the versions, the scope
+src/Tool/Registry.php  # every tool this server has, and the only place one is switched on
+src/Result/        # what a tool hands back, and what several of them build one from
+src/Knowledge/     # what this package knows about TYPO3: read from knowledge/, or computed where a rule has to be applied rather than looked up
 src/Knowledge/Catalog/  # the component catalog and the translation domain derivation
 src/Installation/  # what only the installation being read can answer: its icons, labels, namespaces, changelog, project and extensions
 src/Installation/Instance.php  # finds the TYPO3 installation the agent is working in
 src/Installation/Typo3Cli.php  # runs that installation's console, via DDEV where there is one
 src/Installation/Typo3Runtime.php  # boots it in a subprocess and asks its container
 src/Installation/probe.php  # what runs over there; never included here
+src/Manuals/       # the third source: the public index and pages of the versioned TYPO3 manuals
 src/Search/        # the lexical matching every prose and label lookup goes through
+src/Feedback/      # the feedback channel: what `typo3_feedback_record` writes and `bin/cli feedback` reads
 src/Sdk/           # the adapters onto mcp/sdk: tool dispatch and typo3://core resources
-src/ServerFactory.php  # builds the mcp/sdk server from the tool definitions
-src/Documentation.php  # reads the public index and pages of versioned TYPO3 manuals
-src/Installer.php  # writes guarded generic or agent-specific client setup
-src/Profile.php    # which half of the server a client is offered (TYPO3_MCP_PROFILE)
+src/Paths.php      # where this checkout keeps things; the one class both halves share
 src/bootstrap.php  # locates the Composer autoloader
 src/Upkeep/        # what `bin/cli` runs on this repository, and nothing the server answers with
 src/Upkeep/Cli.php # what `bin/cli` supports, and src/Upkeep/Cli/ one class per subject
@@ -45,14 +49,18 @@ tests/             # unit, tool contract, and stdio smoke tests
 vendor/            # Composer dependencies (mcp/sdk); gitignored
 ```
 
-The grouping below `src/` is the one distinction the rest of this file keeps
-drawing: `Knowledge/` answers from what this package ships, `Installation/`
-answers from the TYPO3 the caller is standing in, and a class that reads neither
-sits beside them. `Tool/` is what a client can call, `Result/` is what more than
-one of them builds an answer from, and `Upkeep/` is not part of the server at
-all. `Typo3CmsMcp\Knowledge\Documents` reads and searches the markdown
-documents; live manual results come from `docs.typo3.org` and from nowhere in
-this tree.
+Every class below `src/` sits in the group it belongs to, and a new one that
+fits none of them is a group nobody has named yet rather than a file at the
+root. The three an answer can come from are `Knowledge/`, what this package
+ships; `Installation/`, the TYPO3 the caller is standing in; and `Manuals/`,
+which is `docs.typo3.org` and reaches outside this process. `Tool/` is what a
+client can call, `Result/` is what it hands back, `Server/` is how it is started
+at all, and `Upkeep/` is not part of the server. Only `Paths` sits loose,
+because it is the one thing the server and the upkeep both stand on.
+
+Both binaries are the same shape: locate the autoloader, hand the arguments to
+the class that owns them — `Server\Entrypoint` and `Upkeep\Cli`. What a command
+does is declared beside the code that does it, never in `bin/`.
 
 ## Where a session starts, and what it owes the next one
 

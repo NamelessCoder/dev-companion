@@ -8,9 +8,9 @@ use Typo3CmsMcp\Installation\Instance;
 use Typo3CmsMcp\Installation\Labels;
 use Typo3CmsMcp\Installation\Typo3Cli;
 use Typo3CmsMcp\Result\Schema;
+use Typo3CmsMcp\Result\ToolResult;
 use Typo3CmsMcp\Result\Unanswered;
 use Typo3CmsMcp\Search\LabelSearch;
-use Typo3CmsMcp\ToolResult;
 
 /**
  * Labels registered in the installation, answered by the installation.

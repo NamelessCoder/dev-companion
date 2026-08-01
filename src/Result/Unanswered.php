@@ -6,7 +6,6 @@ namespace Typo3CmsMcp\Result;
 
 use Typo3CmsMcp\Installation\Instance;
 use Typo3CmsMcp\Installation\Typo3Cli;
-use Typo3CmsMcp\ToolResult;
 
 /**
  * The answer for a question only the installation could have answered, when it

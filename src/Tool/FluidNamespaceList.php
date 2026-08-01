@@ -7,8 +7,8 @@ namespace Typo3CmsMcp\Tool;
 use Typo3CmsMcp\Installation\FluidNamespaces;
 use Typo3CmsMcp\Installation\Typo3Cli;
 use Typo3CmsMcp\Result\Schema;
+use Typo3CmsMcp\Result\ToolResult;
 use Typo3CmsMcp\Result\Unanswered;
-use Typo3CmsMcp\ToolResult;
 
 /**
  * The globally registered Fluid namespaces of the installation.

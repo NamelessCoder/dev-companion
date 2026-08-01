@@ -6,7 +6,7 @@ namespace Typo3CmsMcp\Tests\Unit;
 
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Typo3CmsMcp\CommitMessage;
+use Typo3CmsMcp\Knowledge\CommitMessage;
 
 final class CommitMessageTest extends TestCase
 {

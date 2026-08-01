@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
 use Typo3CmsMcp\Installation\Instance;
 use Typo3CmsMcp\Installation\Typo3Cli;
 use Typo3CmsMcp\Tests\Support\TemporaryInstallation;
-use Typo3CmsMcp\Tools;
+use Typo3CmsMcp\Tool\Registry;
 
 /**
  * Whether the installation's console can be invoked, and — when it cannot —
@@ -178,7 +178,7 @@ final class Typo3CliTest extends TestCase
         self::assertSame('', Typo3Cli::reason(), 'it can be run, so nothing says it cannot');
         self::assertStringContainsString('database', Typo3Cli::caveat());
 
-        $scope = Tools::call('typo3_server_scope', []);
+        $scope = Registry::call('typo3_server_scope', []);
         self::assertNotNull($scope->data['installation']['console']['caveat']);
         self::assertStringContainsString('Reachable is not the same as ready', $scope->text);
     }
@@ -198,7 +198,7 @@ final class Typo3CliTest extends TestCase
         self::assertSame(Typo3Cli::VIA_PHP, Typo3Cli::resolve()['via']);
         self::assertSame('', Typo3Cli::caveat());
 
-        $scope = Tools::call('typo3_server_scope', []);
+        $scope = Registry::call('typo3_server_scope', []);
         self::assertNull($scope->data['installation']['console']['caveat']);
         self::assertStringNotContainsString('Reachable is not the same as ready', $scope->text);
     }

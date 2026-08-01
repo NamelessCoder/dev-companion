@@ -8,7 +8,7 @@ use Typo3CmsMcp\Knowledge\ArchitectureHints;
 use Typo3CmsMcp\Knowledge\Documents;
 use Typo3CmsMcp\Result\Prose;
 use Typo3CmsMcp\Result\Schema;
-use Typo3CmsMcp\ToolResult;
+use Typo3CmsMcp\Result\ToolResult;
 
 /**
  * The local TYPO3 core contribution rules and script notes, by topic.

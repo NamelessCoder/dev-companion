@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp;
+namespace Typo3CmsMcp\Server;
 
 use Mcp\Schema\ResourceDefinition;
 use Mcp\Schema\Tool;
@@ -12,13 +12,14 @@ use Typo3CmsMcp\Knowledge\Documents;
 use Typo3CmsMcp\Knowledge\Scope;
 use Typo3CmsMcp\Sdk\ResourceHandler;
 use Typo3CmsMcp\Sdk\ToolHandler;
+use Typo3CmsMcp\Tool\Registry;
 
 /**
  * Builds the MCP server on the official mcp/sdk, wiring the existing knowledge
- * base (Tools, Knowledge) to SDK tool and resource handlers. Transport-agnostic,
+ * base to the SDK tool and resource handlers. Transport-agnostic,
  * so the stdio entrypoint is only one possible consumer of this definition.
  */
-final class ServerFactory
+final class Factory
 {
     public const SERVER_NAME = 'typo3-cms-mcp';
     public const SERVER_VERSION = '0.3.0';
@@ -29,7 +30,7 @@ final class ServerFactory
             ->setServerInfo(self::SERVER_NAME, self::SERVER_VERSION)
             ->setInstructions(Scope::instructions());
 
-        foreach (Tools::definitions() as $definition) {
+        foreach (Registry::definitions() as $definition) {
             $tool = new Tool(
                 $definition['name'],
                 null,
@@ -62,7 +63,7 @@ final class ServerFactory
                     $arguments['issue'] = $issue;
                 }
 
-                return ['user' => Tools::call('typo3_commit_message_guide', $arguments)->text];
+                return ['user' => Registry::call('typo3_commit_message_guide', $arguments)->text];
             },
             name: 'commit_message',
             title: 'Draft a TYPO3 commit message',

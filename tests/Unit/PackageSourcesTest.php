@@ -11,7 +11,7 @@ use Typo3CmsMcp\Installation\FluidNamespaces;
 use Typo3CmsMcp\Installation\Instance;
 use Typo3CmsMcp\Installation\Typo3Cli;
 use Typo3CmsMcp\Tests\Support\TemporaryInstallation;
-use Typo3CmsMcp\Tools;
+use Typo3CmsMcp\Tool\Registry;
 
 /**
  * What the installed packages can answer when the console cannot.
@@ -54,7 +54,7 @@ final class PackageSourcesTest extends TestCase
         Instance::discoverFrom($root);
         Typo3Cli::forget();
 
-        $result = Tools::call('typo3_fluid_namespace_list', []);
+        $result = Registry::call('typo3_fluid_namespace_list', []);
 
         self::assertSame('packages', $result->data['answeredBy']);
         self::assertSame('core', $result->data['namespaces'][0]['prefix']);
@@ -79,7 +79,7 @@ final class PackageSourcesTest extends TestCase
         $this->changelogEntry($root, '13.4', 'Breaking-101392-GetIdentifierRemoved', 'Breaking: #101392 - getIdentifier() removed', ['PHP-API', 'FullyScanned']);
         Instance::discoverFrom($root);
 
-        $result = Tools::call('typo3_changelog_lookup', ['query' => 'viewhelper']);
+        $result = Registry::call('typo3_changelog_lookup', ['query' => 'viewhelper']);
 
         self::assertSame(1, $result->data['matchCount']);
         $entry = $result->data['entries'][0];
@@ -100,11 +100,11 @@ final class PackageSourcesTest extends TestCase
         $this->changelogEntry($root, '13.4', 'Feature-3-SomethingOlder', 'Feature: #3 - Something older', []);
         Instance::discoverFrom($root);
 
-        $byType = Tools::call('typo3_changelog_lookup', ['type' => 'feature']);
+        $byType = Registry::call('typo3_changelog_lookup', ['type' => 'feature']);
         self::assertSame(['2', '3'], array_column($byType->data['entries'], 'issue'));
 
         // A prefix, so "14" reaches 14.0 through 14.3.x.
-        $byVersion = Tools::call('typo3_changelog_lookup', ['version' => '14']);
+        $byVersion = Registry::call('typo3_changelog_lookup', ['version' => '14']);
         self::assertSame(['1', '2'], array_column($byVersion->data['entries'], 'issue'));
     }
 
@@ -113,7 +113,7 @@ final class PackageSourcesTest extends TestCase
     {
         Instance::discoverFrom($this->composerProject());
 
-        $result = Tools::call('typo3_changelog_lookup', ['query' => 'anything']);
+        $result = Registry::call('typo3_changelog_lookup', ['query' => 'anything']);
 
         self::assertSame('nothing', $result->data['answeredBy']);
     }

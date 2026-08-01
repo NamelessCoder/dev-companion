@@ -1101,6 +1101,54 @@ final class HintsTest extends TestCase
         self::assertContains('typo3_label_lookup', $tools);
     }
 
+    /**
+     * `D-KNW-1`'s **Wrong if**, run against the server on 2026-08-02. Two of
+     * five backend-only task texts that name a content element came back with
+     * the sitepackage layout — «Add a TCA field to the content element in the
+     * backend» and «The backend preview of the content element is broken in the
+     * page module».
+     *
+     * The exclusion that answers it existed already and was reached only by the
+     * words "backend module". Nothing about it was about modules: the two large
+     * hints displace what the task named whenever the task is backend-only,
+     * because a sitepackage layout is written in the words of the backend it is
+     * administered from and wins on its body rather than on its vocabulary.
+     */
+    #[Test]
+    public function aBackendOnlyTaskNamingAContentElementIsNotAnsweredWithTheSitepackageLayout(): void
+    {
+        foreach ([
+            'Add a TCA field to the content element in the backend',
+            'The backend preview of the content element is broken in the page module',
+            'Fix the icon shown for our accordion content element in the backend new content element wizard',
+            // SITE-08's prompt.
+            'The accordion content element we already have needs one more field in the backend form, and the '
+                . 'wrong icon shows for it in the new content element wizard. Nothing about the rendering changes.',
+        ] as $task) {
+            $guide = Registry::call('typo3_task_guide', ['task' => $task]);
+            $hintIds = array_column($guide->data['architectureHints'], 'id');
+
+            self::assertNotContains('sitepackage-layout', $hintIds, $task);
+            self::assertContains('content-elements', $hintIds, $task);
+        }
+    }
+
+    /**
+     * The other side of it, and why the gate reads the frontend markers rather
+     * than negating namesTheFrontend(): there the backend markers win, so a task
+     * naming both halves would count as backend-only and lose the layout hint
+     * that is half of its answer. This is `SITE-05`'s prompt.
+     */
+    #[Test]
+    public function aContentElementBuiltInASitepackageKeepsItsLayout(): void
+    {
+        $result = ArchitectureHints::find([], 'Editors need a "team members" content element: a list of people '
+            . 'picked from a folder, rendered as cards. Build it in our site package — the element, its backend '
+            . 'form, and its frontend output.', 6);
+
+        self::assertContains('sitepackage-layout', array_column($result['matchedHints'], 'id'));
+    }
+
     #[Test]
     public function hintsAreGroupedWithGeneralFirst(): void
     {

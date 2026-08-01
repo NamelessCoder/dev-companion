@@ -293,6 +293,36 @@ final class Domains
     }
 
     /**
+     * Whether the task names the backend and nothing on the website beside it.
+     *
+     * The counterpart of namesTheFrontend(), and deliberately not its negation:
+     * there the backend markers win, because "frontend" also appears in a
+     * sentence about the boundary. A task that names both halves is asking for
+     * both, so here a frontend marker is what rules the case out — "build it in
+     * our site package, the element, its backend form and its frontend output"
+     * is not backend-only, and the sitepackage layout is half of its answer.
+     *
+     * @param array<int, string> $paths
+     */
+    public static function namesOnlyTheBackend(array $paths, string $text = ''): bool
+    {
+        $haystack = mb_strtolower(implode(' ', $paths) . ' ' . $text);
+        foreach (self::FRONTEND_MARKERS as $marker) {
+            if (Text::containsWord($haystack, $marker)) {
+                return false;
+            }
+        }
+
+        foreach (self::BACKEND_MARKERS as $marker) {
+            if (Text::containsWord($haystack, $marker)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * Architecture hint categories that belong to the given domains. General
      * hints always apply.
      *

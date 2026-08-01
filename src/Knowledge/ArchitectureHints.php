@@ -292,6 +292,7 @@ final class ArchitectureHints
         $task = trim($task);
         $haystack = mb_strtolower(implode("\n", array_merge($paths, [$task])));
         $backendModule = Domains::namesBackendModule($paths, $task);
+        $backendOnly = $backendModule || Domains::namesOnlyTheBackend($paths, $task);
 
         $domains = Domains::detect($paths, $task);
         $categories = Domains::hintCategories($domains);
@@ -313,11 +314,14 @@ final class ArchitectureHints
             self::load($target),
             static fn(array $hint): bool => in_array($hint['category'], $categories, true),
         ));
-        if ($backendModule) {
-            // "sitepackage" is ownership context and "records" are what this
-            // module reviews. Neither asks for the package's frontend layout or
-            // for rendering records on a page. Those two large hints otherwise
-            // displace the module registration the task explicitly named.
+        if ($backendOnly) {
+            // "sitepackage" is ownership context and "records" are what a
+            // backend task works on. Neither asks for the package's frontend
+            // layout or for rendering records on a page. Those two large hints
+            // otherwise displace what the task explicitly named — and they win
+            // on their bodies rather than on their vocabulary, because a
+            // sitepackage layout is written in the words of the backend it is
+            // administered from.
             $excluded = [];
             if (!self::asksForFrontendRendering($haystack)) {
                 $excluded[] = 'frontend-records';

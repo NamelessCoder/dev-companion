@@ -32,6 +32,7 @@ final class Todo implements Subject
     {
         return [
             'list' => ['', 'every todo by title: what recurs, the queue in order, and what waits', self::list(...)],
+            'waiting' => ['', 'what is blocked, and the question each one is blocked on', self::waiting(...)],
             'check' => ['', 'hold every file to the head and the place that say what it is', self::check(...)],
         ];
     }
@@ -69,6 +70,29 @@ final class Todo implements Subject
         }
 
         return 0;
+    }
+
+    /**
+     * The questions nothing else will ask again.
+     *
+     * A waiting todo is offered to no session, which is the point and also the
+     * risk: `waiting/` is one unread directory away from being where todos go
+     * to be forgotten. This is the way back. It prints whole rather than by
+     * title — the question is the thing to be answered, and a session that has
+     * to open the file to see it is one that will not — and it exits nonzero
+     * while anything waits, which is what makes the todo that runs it due.
+     */
+    private static function waiting(): int
+    {
+        $waiting = Todos::waiting();
+        foreach ($waiting as $todo) {
+            printf("%s\n  waiting on %s\n  %s\n\n", $todo['title'], $todo['waitingOn'], $todo['path']);
+        }
+        if ($waiting === []) {
+            print "Nothing is waiting on an answer.\n";
+        }
+
+        return $waiting === [] ? 0 : 1;
     }
 
     /**

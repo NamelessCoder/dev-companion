@@ -25,6 +25,12 @@ looking like the least important thing in the repository.
   reading. A todo there has no number, because it has no place in an order, and
   carries `**Waiting on:**` — the question in the words it was asked in, held by
   `bin/cli todo check`. The answer is what numbers it back into the queue.
+- **Decided:** that the way back is a recurring todo rather than a habit. Every
+  seven days `bin/cli todo waiting` prints what is blocked with its question and
+  exits nonzero, which is what makes that todo due and puts the questions in
+  front of a session before the queue. Without it the state is a directory
+  nobody has a reason to open, and the end of the queue — for all it says wrong
+  — at least came round again.
 - **Decided:** that `bin/cli next` names how many are waiting and nothing more,
   as one field of the line that already says how many are behind this todo. A
   blocked todo is addressed to whoever can answer it, and a state nothing ever
@@ -38,6 +44,6 @@ looking like the least important thing in the repository.
 - **Wrong if:** `waiting/` grows past two or three, which would mean it has
   become where todos go to be forgotten rather than where questions are kept. Or
   a todo sits there with its question answered in the conversation and nobody
-  moved it back — the state then costs what the end of the queue used to cost,
-  without the timer. Or the count in `next` turns out to be read as work and
-  starts being asked about; then it belongs only in `todo list`.
+  moved it back, which would mean the seven-day todo is being run and not acted
+  on. Or the count in `next` turns out to be read as work and starts being asked
+  about; then it belongs only in `todo list`.

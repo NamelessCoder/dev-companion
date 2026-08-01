@@ -20,6 +20,8 @@ One todo is one file, and where it sits says what it is:
 - **`waiting/`** — what no session can start, because it is blocked on an
   answer nothing here can produce. It says what it waits on, `bin/cli next`
   offers it to nobody, and the answer is what numbers it back into the queue.
+  A recurring todo asks every seven days what is in here, so a question waits
+  rather than disappears.
 - **`reference/`** — none of the three: what a session would otherwise
   rediscover and mistake for work.
 

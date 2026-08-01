@@ -123,8 +123,10 @@ Where nothing can be done until somebody answers, it moves to `todo/waiting/`
 instead and carries the question in a `**Waiting on:**` line. That is the
 difference the state exists for: at the end of the queue such a todo reads as
 the lowest priority in the repository while it is actually waiting on a person,
-and every session that reaches it re-derives the same question. Nothing offers
-it again — the answer is what numbers it back into the queue.
+and every session that reaches it re-derives the same question. No session is
+offered it, and the way back is a todo of its own — every seven days,
+`bin/cli todo waiting` prints what is blocked and the questions get asked again.
+The answer is what numbers one back into the queue.
 
 Either way it keeps its file, and the session's job is to leave it startable
 cold: the open question written into its paragraph in the words it was asked in,

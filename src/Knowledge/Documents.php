@@ -52,7 +52,7 @@ final class Documents
     /** @return array<int, array{id: string, title: string, path: string}> */
     public static function documents(): array
     {
-        $dir = Paths::knowledge();
+        $dir = Paths::documents();
         $documents = [];
 
         foreach (glob($dir . '/*.md') ?: [] as $path) {

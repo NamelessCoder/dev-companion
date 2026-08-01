@@ -32,6 +32,7 @@ src/Upkeep/        # what `bin/cli` runs on this repository, and nothing the ser
 src/Upkeep/Cli.php # what `bin/cli` supports, and src/Upkeep/Cli/ one class per subject
 src/Upkeep/TestingFramework.php  # which typo3/testing-framework release each covered major is read against
 knowledge/         # the knowledge base (markdown + JSON), the data source
+knowledge/documents/  # the prose corpus: searched by typo3_rule_lookup, served as typo3://core resources, and published by being in here
 feedback/          # feedback left by agents about this server (standalone checkout only)
 feedback/archive/  # the ones that were worked off; kept, because a session's report is evidence
 scenarios/         # user prompts and what has to come out of them, one case per file

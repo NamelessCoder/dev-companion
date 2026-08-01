@@ -25,6 +25,20 @@ final class Paths
         return self::knowledge() . '/' . implode('/', $segments);
     }
 
+    /**
+     * The prose corpus: the markdown documents searched by typo3_rule_lookup
+     * and served as typo3://core resources.
+     *
+     * They have a directory of their own because being one is what publishes
+     * them. Every file here becomes a resource named after it, so a readme laid
+     * beside the knowledge base used to become `typo3://core/readme` without
+     * anybody deciding that.
+     */
+    public static function documents(): string
+    {
+        return self::knowledge() . '/documents';
+    }
+
     public static function catalogFile(string ...$segments): string
     {
         return self::knowledge() . '/catalog/' . implode('/', $segments);

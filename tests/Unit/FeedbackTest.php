@@ -20,18 +20,6 @@ final class FeedbackTest extends TestCase
 {
     private const MARKER = 'phpunit-feedback-fixture';
 
-    protected function setUp(): void
-    {
-        // Asserted rather than skipped over. The suite runs from this
-        // repository and nowhere else, so this is a standalone checkout by
-        // construction — and a skip would turn the one case where that stopped
-        // being true into silence instead of into the failure it is.
-        self::assertTrue(
-            Channel::isAvailable(),
-            'the feedback channel is unavailable in the checkout the suite runs from',
-        );
-    }
-
     protected function tearDown(): void
     {
         Instance::discoverFrom(null);
@@ -44,6 +32,23 @@ final class FeedbackTest extends TestCase
                 unlink($file);
             }
         }
+    }
+
+    /**
+     * The channel writes below this checkout, so it exists only where this
+     * checkout is the root package — which is where the suite runs, and the
+     * condition every test below is written under.
+     *
+     * It is one test rather than a guard in setUp: a precondition repeated
+     * before every method holds nothing by itself and says nothing in a report,
+     * while a failure here names the one thing that broke. This used to be a
+     * skip, which meant the whole class went quiet instead.
+     */
+    #[Test]
+    public function theChannelIsAvailableInTheCheckoutTheSuiteRunsFrom(): void
+    {
+        self::assertTrue(Channel::isAvailable());
+        self::assertDirectoryExists(Paths::feedback());
     }
 
     #[Test]

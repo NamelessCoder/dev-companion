@@ -104,26 +104,23 @@ and that reading is the session's.
 
 How `next` decides what is due, and how the work moves between `feedback/`,
 `requirements/`, `decisions/` and `todo.md`:
-[documentation/feedback.md](documentation/feedback.md).
+[documentation/feedback/readme.md](documentation/feedback/readme.md).
 
 ## What things are called
 
-One thing, one word, and the list is
-[documentation/glossary.md](documentation/glossary.md). It is read before
-naming anything and before writing a paragraph about something that already has
-a name — the same thing under three names is three things to whoever reads it
-next, and a synonym introduced in prose is copied into a schema a week later.
+One thing, one word. Where two compete, the one that wins is the one somebody
+outside this checkout can see — a tool name, a directory name, a CLI subject —
+because those are known by clients installed months ago and by paths people
+wrote down, while prose can be rewritten this afternoon. A synonym introduced in
+a paragraph is copied into a schema a week later.
 
-Where two words compete, the one that wins is the one somebody outside this
-checkout can see: a tool name, a directory name, a CLI subject. Those are known
-by clients installed months ago and by paths people wrote down; prose can be
-rewritten this afternoon.
-
-Two of them are worth naming here because they are the ones that go wrong.
-**record** is a verb — the tool verb feedback arrives by — and never a noun,
-because in TYPO3 a record is a row in the database and this server explains that
-meaning to its callers. And **verdict** belongs to `scenarios/`, where it is how
-a run came out; what becomes of a feedback is its **answer**.
+What arrives through `typo3_feedback_record` is **a feedback**, countable, and
+[documentation/feedback/glossary.md](documentation/feedback/glossary.md) is where that and the
+words around it are defined. Two of them go wrong reliably: **record** is the
+verb it arrives by and never a noun, because in TYPO3 a record is a row in the
+database and this server explains that meaning to its callers; and **verdict**
+belongs to `scenarios/`, where it is how a run came out, while what becomes of a
+feedback is its **answer**.
 
 ## Less is more
 
@@ -215,7 +212,7 @@ is verified against:
 Agents using this server record improvement notes through `typo3_feedback_record`.
 Each note is one markdown file below `feedback/`. A session in an agent whose
 transcript this repository cannot read files its own: it is handed the debrief
-prompt in [documentation/feedback.md](documentation/feedback.md) after its work
+prompt in [documentation/feedback/readme.md](documentation/feedback/readme.md) after its work
 is finished, never before, so the debrief cannot steer the session it reports on.
 
 Where a note comes from is usually a real session. `scenarios/` is where those
@@ -271,7 +268,7 @@ reading, and what a session owes anything on it is a judgement: an item in
 
 The full account — the note lifecycle, what each of the three files holds, and
 what `bin/cli backlog list` reports — is in
-[documentation/feedback.md](documentation/feedback.md).
+[documentation/feedback/readme.md](documentation/feedback/readme.md).
 
 ## What describes this server to someone else
 

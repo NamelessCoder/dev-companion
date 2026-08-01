@@ -1,7 +1,7 @@
 # What is written down, and where
 
 Four files hold four different kinds of thing, and keeping them apart is what
-keeps any of them readable. [AGENTS.md](../AGENTS.md) has the rules; this is what
+keeps any of them readable. [AGENTS.md](../../AGENTS.md) has the rules; this is what
 each one is for and how the work moves between them.
 
 ## Where a session starts
@@ -19,7 +19,7 @@ answers — `session`, or a number of days, so five sessions in an afternoon do
 not ask the same question five times. And is there anything to do, which the
 todo's `**Run:**` command answers by exiting nonzero when it found work: the
 notes stop being the next thing the moment the last one is judged, without
-anybody editing [todo.md](../todo.md) to say so. What is owed a note or a
+anybody editing [todo.md](../../todo.md) to say so. What is owed a note or a
 backlog entry is that judgement — a todo that takes it on, or the sentence
 saying why it stays as it is — not the work itself, which is what the queue is
 for.
@@ -59,7 +59,7 @@ Everything on this page is about the order of the work. What is read before the
 todo at the front of it is changed, why the step is judged rather than executed,
 where a question the work turns on is settled instead of recalled, and what is
 asked because nothing here can answer it, is one page of its own:
-[working-a-todo.md](working-a-todo.md), which `bin/cli next` names with every
+[working-a-todo.md](../working-a-todo.md), which `bin/cli next` names with every
 todo it hands over.
 
 ## Keeping todo.md current

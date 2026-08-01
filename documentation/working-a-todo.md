@@ -2,7 +2,7 @@
 
 `bin/cli next` hands over one todo, and what happens between reading it and the
 commit is the work. This page is that part alone. What is due, what recurs, and
-what a finished todo leaves behind is in [feedback.md](feedback.md); nothing
+what a finished todo leaves behind is in [feedback/readme.md](feedback/readme.md); nothing
 here repeats it.
 
 The todo is not the instruction it looks like. Its paragraph is one session's

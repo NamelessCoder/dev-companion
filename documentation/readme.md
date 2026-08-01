@@ -11,9 +11,7 @@ carries it. Both happened here before this directory existed.
 
 | Page | What it carries |
 | --- | --- |
-| [glossary.md](glossary.md) | One thing, one word: what everything here is called, which word wins where two compete, and how a new one is added |
-| [feedback.md](feedback.md) | How work moves between `feedback/`, `requirements/`, `decisions/` and `todo.md`, what `bin/cli next` calls due, and the debrief that gets feedback out of a session this repository cannot read |
-| [judging-a-note.md](judging-a-note.md) | **Draft.** What is asked of one open note, in which order and on what evidence, which verdicts may be reached without asking, and why the judging runs one note at a time |
+| [feedback/](feedback/readme.md) | Everything about feedback, over several pages: [readme.md](feedback/readme.md) for how work moves between `feedback/`, `requirements/`, `decisions/` and `todo.md` and the debrief that gets feedback out of a session this repository cannot read; [judging.md](feedback/judging.md) for what is asked of one open feedback and on what evidence; [glossary.md](feedback/glossary.md) for the words |
 | [working-a-todo.md](working-a-todo.md) | What is read before the todo `bin/cli next` handed over is changed, where a question the step turns on is settled rather than recalled, what is asked instead, and what the file says afterwards |
 | [installation.md](installation.md) | Every client and layout the installer supports, and the configuration each one gets |
 | [working-on-the-server.md](working-on-the-server.md) | The commands this repository is kept in order by, the core checkouts, the test suite |

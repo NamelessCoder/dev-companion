@@ -37,9 +37,9 @@
 - **standalone checkout** — this repository as the Composer root package, where
   feedback can be written.
 - **todo** — one entry in the order of the work.
-- **tool** — one `typo3_<subject>_<verb>` this server offers its callers: one
-  class in `src/Tool/`, listed in `Typo3CmsMcp\Tools`. No "server" segment in
-  the name — this package is the server throughout.
+- **tool** — one `typo3_<subject>_<verb>` this server offers its callers: the
+  MCP primitive of that name, one class in `src/Tool/`, listed in
+  `Typo3CmsMcp\Tools`.
 - **tool verb** — one of `lookup`, `guide`, `list`, `scope`, `record`: what
   tells a caller the shape of the answer.
 - **verdict** — how a recorded run came out: `covered`, `partial`, `gap`.

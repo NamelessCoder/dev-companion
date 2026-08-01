@@ -15,9 +15,12 @@ use Typo3CmsMcp\ToolResult;
  * describing the answer is then a change to one file rather than a drift
  * between three.
  *
- * The name carries no "server" segment for the same reason a tool name carries
- * no "core" one: this package is the server throughout, so the segment would
- * separate nothing.
+ * What these are is the MCP primitive the protocol calls a tool — the SDK
+ * declares it as Mcp\Schema\Tool, beside Prompt and Resource. So the word here
+ * is the protocol's, and the qualifier that says which kind of tool is meant is
+ * already the root namespace. Nothing is a "server tool": a tool is defined by
+ * the protocol rather than by the side offering it, and both sides speak of the
+ * same one.
  *
  * Typo3CmsMcp\Tools is the list of them, and the only place a tool is switched
  * on.

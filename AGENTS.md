@@ -12,7 +12,7 @@ src/Tool/          # one class per tool: its description, its schemas, its answe
 src/Tool/Tool.php  # the interface each one implements; ReadOnlyTool carries the annotations
 src/Result/        # what several tools build their answer from: the shared schemas, the renderers, the unanswered case
 src/ServerFactory.php  # builds the mcp/sdk server from the tool definitions
-src/Mcp/           # SDK handlers: tool dispatch and typo3://core resources
+src/Sdk/           # the adapters onto mcp/sdk: tool dispatch and typo3://core resources
 src/Catalog/       # the component catalog and the translation domain derivation
 src/Documentation.php  # reads the public index and pages of versioned TYPO3 manuals
 src/Instance.php   # finds the TYPO3 installation the agent is working in
@@ -195,7 +195,13 @@ stand in one file, so a description cannot go stale against the answer it
 describes without the two being edited apart. `Typo3CmsMcp\Tools` is the list of
 them, and the only place a tool is switched on. Nothing else belongs below
 `src/Tool/` — what more than one tool builds its answer from is
-`Typo3CmsMcp\Result\`.
+`Typo3CmsMcp\Result\`, and the adapters onto `mcp/sdk` are `Typo3CmsMcp\Sdk\`.
+
+The word is the protocol's: an MCP tool is what the SDK declares as
+`Mcp\Schema\Tool`, beside `Prompt` and `Resource`, so the qualifier saying which
+kind of tool is meant is already the root namespace. Nothing here is a "server
+tool" — a tool is defined by the protocol rather than by the side offering it,
+and both sides speak of the same one.
 
 Every tool returns a `ToolResult`: the text plus the same answer as data. The
 data half is a contract — clients may validate it against the `outputSchema()`

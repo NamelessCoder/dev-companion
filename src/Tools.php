@@ -389,8 +389,8 @@ final class Tools
         return [
             [
                 'name' => 'typo3_feedback_record',
-                'description' => 'Leave a note about a gap, wrong answer, or missing capability of this knowledge server — and about what it did well, because what worked is what must not be broken later. The note is stored as markdown in this server\'s own checkout — not in the project you are working in, so do not look for the file there — and is read back with typo3_feedback_list. Use it whenever an answer was incomplete or a lookup found nothing that should have been there. One note per subject: a note carrying three complaints is worked off three times over or not at all.',
-                // The one tool that writes: a new note file per call, never
+                'description' => 'Leave feedback about a gap, wrong answer, or missing capability of this knowledge server — and about what it did well, because what worked is what must not be broken later. The feedback is stored as markdown in this server\'s own checkout — not in the project you are working in, so do not look for the file there — and is read back with typo3_feedback_list. Use it whenever an answer was incomplete or a lookup found nothing that should have been there. One feedback per subject: a feedback carrying three complaints is worked off three times over or not at all.',
+                // The one tool that writes: a new feedback file per call, never
                 // touching an existing one.
                 'annotations' => [
                     'readOnlyHint' => false,
@@ -401,11 +401,11 @@ final class Tools
                 'inputSchema' => [
                     'type' => 'object',
                     'properties' => [
-                        'observation' => ['type' => 'string', 'minLength' => 1, 'description' => 'What was missing, wrong, or unhelpful. Be specific enough to act on later, and open with one line naming the task you were given, so the note can be traced back to what exposed it. Written in English, like everything else here.'],
-                        'model' => ['type' => 'string', 'minLength' => 1, 'description' => 'The model recording this note, as it identifies itself, for example claude-opus-5 or gpt-5.3-codex. Read it where it is written down — what your client reports for the current session, or the person running you — rather than from what you remember about yourself. A note about what a session did or did not do is evidence about one model\'s behaviour, and one filed as "unknown" cannot be told apart from another model\'s. That fallback is for a session that looked and could not find out; an invented identifier is still worse than none.'],
+                        'observation' => ['type' => 'string', 'minLength' => 1, 'description' => 'What was missing, wrong, or unhelpful. Be specific enough to act on later, and open with one line naming the task you were given, so the feedback can be traced back to what exposed it. Written in English, like everything else here.'],
+                        'model' => ['type' => 'string', 'minLength' => 1, 'description' => 'The model recording this feedback, as it identifies itself, for example claude-opus-5 or gpt-5.3-codex. Read it where it is written down — what your client reports for the current session, or the person running you — rather than from what you remember about yourself. A feedback about what a session did or did not do is evidence about one model\'s behaviour, and one filed as "unknown" cannot be told apart from another model\'s. That fallback is for a session that looked and could not find out; an invented identifier is still worse than none.'],
                         'category' => ['type' => 'string', 'enum' => Feedback::CATEGORIES, 'default' => 'idea', 'description' => 'missing-knowledge: the knowledge base lacks the answer. wrong-answer: the answer was incorrect. tool-gap: no tool covers the need. bug: the server misbehaved. idea: anything else.'],
                         'tool' => ['type' => ['string', 'array'], 'items' => ['type' => 'string'], 'description' => 'The tool the observation is about, for example typo3_component_lookup, or the skill it activated, for example typo3-extension-conformance. Several may be named, as a list or separated by commas.'],
-                        'query' => ['type' => 'string', 'description' => 'The arguments that produced the unsatisfying result, or the task text where a whole session is what produced it. This is what lets somebody re-run the note against a later version of the server instead of reading it.'],
+                        'query' => ['type' => 'string', 'description' => 'The arguments that produced the unsatisfying result, or the task text where a whole session is what produced it. This is what lets somebody re-run the feedback against a later version of the server instead of reading it.'],
                         'suggestion' => ['type' => 'string', 'description' => 'What the server should have answered or should be able to do instead.'],
                     ],
                     'required' => ['observation', 'model'],
@@ -413,14 +413,14 @@ final class Tools
             ],
             [
                 'name' => 'typo3_feedback_list',
-                'description' => 'List improvement notes recorded via typo3_feedback_record, newest first, so they can be worked off. Filter by status, by category, or by the tool a note is about. A note that was worked off is kept, not deleted, so status="closed" answers "what became of what I reported" — the note as it was recorded, plus the commit that closed it.',
+                'description' => 'List improvement feedback recorded via typo3_feedback_record, newest first, so they can be worked off. Filter by status, by category, or by the tool a feedback is about. A feedback that was worked off is kept, not deleted, so status="closed" answers "what became of what I reported" — the feedback as it was recorded, plus the commit that closed it.',
                 'inputSchema' => [
                     'type' => 'object',
                     'properties' => [
-                        'status' => ['type' => 'string', 'enum' => ['open', 'closed', 'all'], 'default' => 'open', 'description' => 'open: the notes still in the backlog. closed: the ones already worked off, each with the commit subject saying what came of it. all: both. The category and tool filters apply to either.'],
+                        'status' => ['type' => 'string', 'enum' => ['open', 'closed', 'all'], 'default' => 'open', 'description' => 'open: the feedback still in the backlog. closed: the ones already worked off, each with the commit subject saying what came of it. all: both. The category and tool filters apply to either.'],
                         'category' => ['type' => 'string', 'enum' => Feedback::CATEGORIES, 'description' => 'Restrict the list to one category.'],
-                        'tool' => ['type' => 'string', 'description' => 'Restrict the list to the notes about one tool, for example typo3_label_lookup. A note naming several tools is matched by each of them.'],
-                        'limit' => ['type' => 'integer', 'minimum' => 1, 'maximum' => 100, 'default' => 20, 'description' => 'Maximum number of notes to return.'],
+                        'tool' => ['type' => 'string', 'description' => 'Restrict the list to the feedback about one tool, for example typo3_label_lookup. A feedback naming several tools is matched by each of them.'],
+                        'limit' => ['type' => 'integer', 'minimum' => 1, 'maximum' => 100, 'default' => 20, 'description' => 'Maximum number of feedback to return.'],
                     ],
                 ],
             ],
@@ -670,8 +670,8 @@ final class Tools
             // a blanket "everything is read-only" followed by a tool that
             // creates a file contradicts both the annotations and the behaviour.
             $lines[] = 'The one exception is typo3_feedback_record, this server\'s only write: '
-                . 'it creates a new markdown note under feedback/ and touches nothing else. '
-                . 'Missing something that belongs here? Leave a note with it.';
+                . 'it creates a new markdown feedback under feedback/ and touches nothing else. '
+                . 'Missing something that belongs here? Leave feedback about it.';
         }
 
         return ToolResult::create(implode("\n", $lines), $scope + [
@@ -773,7 +773,7 @@ final class Tools
     {
         $file = Feedback::record($args);
         // The absolute path, because the relative one is relative to somewhere
-        // the caller has never been. A note recorded from a site package was
+        // the caller has never been. A feedback recorded from a site package was
         // reported back as feedback/<name>.md, looked for under that project,
         // not found, and written off as a failed write — the file was there the
         // whole time, one checkout over.
@@ -799,16 +799,16 @@ final class Tools
         $limit = is_int($args['limit'] ?? null) ? $args['limit'] : 20;
         $tool = is_string($args['tool'] ?? null) && trim($args['tool']) !== '' ? trim($args['tool']) : null;
 
-        $notes = Feedback::notes($status, $category, $limit, $tool);
+        $feedback = Feedback::all($status, $category, $limit, $tool);
 
-        if ($notes === []) {
+        if ($feedback === []) {
             return ToolResult::create(
                 sprintf(
                     '%s%s',
                     match ($status) {
-                        'open' => 'No open improvement notes',
-                        'closed' => 'No improvement note has been worked off yet',
-                        default => 'No improvement notes recorded yet',
+                        'open' => 'No open improvement feedback',
+                        'closed' => 'No improvement feedback has been worked off yet',
+                        default => 'No improvement feedback recorded yet',
                     },
                     $tool === null ? '.' : ' about ' . $tool . '.'
                 ),
@@ -816,38 +816,38 @@ final class Tools
             );
         }
 
-        $lines = array_map(static function (array $note): string {
-            $date = substr($note['date'], 0, 10);
-            $about = $note['tool'] === '' ? '' : ' — ' . $note['tool'];
-            // Named even when it is "unknown": a note nobody can attribute is a
+        $lines = array_map(static function (array $feedback): string {
+            $date = substr($feedback['date'], 0, 10);
+            $about = $feedback['tool'] === '' ? '' : ' — ' . $feedback['tool'];
+            // Named even when it is "unknown": a feedback nobody can attribute is a
             // different thing from one whose model simply is not shown, and the
             // list is where the difference is acted on.
-            $by = $note['model'] === '' ? '' : ' · ' . $note['model'];
+            $by = $feedback['model'] === '' ? '' : ' · ' . $feedback['model'];
 
             $entry = sprintf(
                 "- %s%s%s%s\n  %s\n  %s",
-                $note['category'] === '' ? '' : '[' . $note['category'] . '] ',
+                $feedback['category'] === '' ? '' : '[' . $feedback['category'] . '] ',
                 $date,
                 $about,
                 $by,
-                $note['title'],
-                $note['file'],
+                $feedback['title'],
+                $feedback['file'],
             );
-            if ($note['closedBy'] !== null) {
+            if ($feedback['closedBy'] !== null) {
                 $entry .= sprintf(
                     "\n  closed %s in %s: %s",
-                    $note['closedBy']['date'],
-                    $note['closedBy']['commit'],
-                    $note['closedBy']['subject'],
+                    $feedback['closedBy']['date'],
+                    $feedback['closedBy']['commit'],
+                    $feedback['closedBy']['subject'],
                 );
             }
 
             return $entry;
-        }, $notes);
+        }, $feedback);
 
         return ToolResult::create(
-            sprintf("%d improvement note(s):\n\n%s", count($notes), implode("\n", $lines)),
-            ['count' => count($notes), 'notes' => $notes],
+            sprintf("%d improvement feedback(s):\n\n%s", count($feedback), implode("\n", $lines)),
+            ['count' => count($feedback), 'notes' => $feedback],
         );
     }
 
@@ -894,7 +894,7 @@ final class Tools
     {
         $task = (string) ($args['task'] ?? '');
 
-        // Every command in these notes runs in a core checkout. Handing them to
+        // Every command in these feedback runs in a core checkout. Handing them to
         // a repository that has none is the same mistake typo3_test_run_guide
         // used to make, and the same answer applies. This tool is asked about a
         // task rather than about paths, so the call has one audience.
@@ -1031,7 +1031,7 @@ final class Tools
             "No knowledge section matched \"%s\".\n\nThis knowledge base covers:\n%s\n\n"
             . 'For backend UI components use typo3_component_lookup, and call typo3_server_scope for what '
             . 'this server covers at all. '
-            . 'If the topic should be covered here, leave a note with typo3_feedback_record.',
+            . 'If the topic should be covered here, leave a feedback with typo3_feedback_record.',
             $query,
             $documents
         );

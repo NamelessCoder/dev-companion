@@ -151,7 +151,7 @@ final class Cli
      * The one thing to do now, for whoever is starting a session.
      *
      * It prints a single todo and nothing else. Everything it could print
-     * instead was already written down somewhere — the notes that arrived from
+     * instead was already written down somewhere — the feedback that arrived from
      * outside, the two directories that say what is unfinished, the file that
      * says in which order — and a session that is handed all of it reads for
      * ten minutes before it does anything. Context is not free: an agent given
@@ -162,7 +162,7 @@ final class Cli
      * Whether a todo is due is two questions. Has the clock come round — cheap,
      * and answered by the cadence. And is there anything to do — expensive, and
      * answered by running the todo's own `Run:` command: a command this
-     * repository owns exits nonzero when it found work, so the notes stop being
+     * repository owns exits nonzero when it found work, so the feedback stop being
      * the next thing the moment the last one is judged, without anybody editing
      * todo.md to say so. A command it does not own is named rather than run;
      * `next` starts no process that needs the network, and the cadence is what
@@ -170,7 +170,7 @@ final class Cli
      *
      * Three groups, in this order, because for a while the first of them ate
      * the other two. A sighting that recurs every session is due for as long as
-     * anything is unjudged, and the notes arrive faster than a session closes
+     * anything is unjudged, and the feedback arrive faster than a session closes
      * them — so every session started by sighting, the queue was never reached,
      * and items sat in it for as long as feedback/ was not empty. What it means
      * to take something on is that it is now ahead of the deciding whether to:
@@ -182,7 +182,7 @@ final class Cli
      *   already judged to be worth doing, which is exactly what a sighting
      *   produces — so leaving it standing to sight more is deciding twice and
      *   doing nothing.
-     * - Then, with the queue empty, what recurs every session: the notes and
+     * - Then, with the queue empty, what recurs every session: the feedback and
      *   the backlog, whose whole output is new entries for the queue that just
      *   ran dry.
      */

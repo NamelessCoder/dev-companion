@@ -12,7 +12,7 @@ use Typo3CmsMcp\Requirements;
 final class DecisionsTest extends TestCase
 {
     /**
-     * An id is the name a commit, a note and a later decision refer to this one
+     * An id is the name a commit, a feedback and a later decision refer to this one
      * by. It decides the group directory and the file name, so two entries
      * cannot quietly share one — which is what the single document this
      * replaces had no way of noticing.

@@ -12,7 +12,7 @@ use Typo3CmsMcp\Requirements;
 final class RequirementsTest extends TestCase
 {
     /**
-     * An id is the name a commit, a note and a scenario refer to a requirement
+     * An id is the name a commit, a feedback and a scenario refer to a requirement
      * by. It decides the group directory and the file name, so two entries
      * cannot quietly share one — which five of them did, unnoticed, for as long
      * as the whole list was a single document.

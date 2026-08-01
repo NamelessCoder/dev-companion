@@ -5,15 +5,15 @@ declare(strict_types=1);
 namespace Typo3CmsMcp\Cli;
 
 use Typo3CmsMcp\Cli;
-use Typo3CmsMcp\Feedback as Notes;
+use Typo3CmsMcp\Feedback as Channel;
 use Typo3CmsMcp\Todo;
 
 /**
- * The notes that arrived from outside this repository and are still open.
+ * The feedback that arrived from outside this repository and are still open.
  *
- * Listed rather than read out: what a note says is not what it is worth today,
- * and the todo that names this command says what is owed — run each note's own
- * query against the server as it is now. A note is evidence about a version of
+ * Listed rather than read out: what a feedback says is not what it is worth today,
+ * and the todo that names this command says what is owed — run each feedback's own
+ * query against the server as it is now. A feedback is evidence about a version of
  * this server that may no longer exist.
  *
  * Handed over a few at a time rather than all of it. The directory holds what
@@ -28,7 +28,7 @@ use Typo3CmsMcp\Todo;
 final class Feedback implements Subject
 {
     /**
-     * How many notes one session is handed. The number is small for two
+     * How many feedback one session is handed. The number is small for two
      * reasons, and neither is the size of the directory: five queries can be
      * re-run in a session that also has work of its own, and five judgements
      * can be read by whoever disagrees with one before the commit is made. A
@@ -38,35 +38,35 @@ final class Feedback implements Subject
      */
     private const CHUNK = 5;
 
-    /** Every note there is: the size of the directory is what this is about. */
+    /** Every feedback there is: the size of the directory is what this is about. */
     private const ALL = PHP_INT_MAX;
 
     public static function about(): string
     {
-        return 'the notes sessions elsewhere left behind';
+        return 'the feedback sessions elsewhere left behind';
     }
 
     public static function commands(): array
     {
         return [
-            'next' => ['', 'the ' . self::CHUNK . ' oldest notes no todo has judged', self::next(...)],
-            'list' => ['', 'every open note, newest first', self::list(...)],
-            'archive' => ['<note>...', 'move the notes a change worked off into feedback/archive/', self::archive(...)],
+            'next' => ['', 'the ' . self::CHUNK . ' oldest feedback no todo has judged', self::next(...)],
+            'list' => ['', 'every open feedback, newest first', self::list(...)],
+            'archive' => ['<feedback>...', 'move the feedback a change worked off into feedback/archive/', self::archive(...)],
         ];
     }
 
     /**
-     * One session's worth of notes, oldest first, and what waits behind them.
+     * One session's worth of feedback, oldest first, and what waits behind them.
      *
      * Nonzero says there is something to do, which is how `bin/cli next` knows
      * the todo that starts here is still the next thing. Not a failure, and not
-     * the count of open notes either: what is owed a note is the judgement, and
-     * a note some todo already names has had it. Three notes being worked off
-     * in order are not three reasons to stop and read them again — a note
+     * the count of open feedback either: what is owed a feedback is the judgement, and
+     * a feedback some todo already names has had it. Three feedback being worked off
+     * in order are not three reasons to stop and read them again — a feedback
      * nobody has looked at is.
      *
      * Oldest first because the queue is a queue. Newest first is what a reader
-     * wants and what `list` gives; a note that has waited a fortnight while
+     * wants and what `list` gives; a feedback that has waited a fortnight while
      * fresher ones kept arriving in front of it is what oldest-first is for.
      *
      * Each is printed with its category, the model that left it and its own
@@ -75,17 +75,17 @@ final class Feedback implements Subject
      */
     private static function next(): int
     {
-        $unjudged = array_values(array_filter(self::open(), static fn(array $note): bool => !$note['judged']));
+        $unjudged = array_values(array_filter(self::open(), static fn(array $feedback): bool => !$feedback['judged']));
         if ($unjudged === []) {
-            print "Every open note has had its judgement.\n";
+            print "Every open feedback has had its judgement.\n";
 
             return 0;
         }
 
         $chunk = array_slice($unjudged, 0, self::CHUNK);
         printf("%d unjudged. These %d, oldest first:\n", count($unjudged), count($chunk));
-        foreach ($chunk as $note) {
-            printf("%s\n    %s · %s · %s\n", $note['file'], $note['category'], $note['model'], $note['title']);
+        foreach ($chunk as $feedback) {
+            printf("%s\n    %s · %s · %s\n", $feedback['file'], $feedback['category'], $feedback['model'], $feedback['title']);
         }
         if (count($unjudged) > count($chunk)) {
             printf("%d wait behind them — `bin/cli feedback list`.\n", count($unjudged) - count($chunk));
@@ -99,24 +99,24 @@ final class Feedback implements Subject
      */
     private static function list(): int
     {
-        $notes = self::open();
-        if ($notes === []) {
-            print "No open notes.\n";
+        $open = self::open();
+        if ($open === []) {
+            print "No open feedback.\n";
 
             return 0;
         }
 
-        printf("%d open, newest first.\n", count($notes));
-        foreach (array_reverse($notes) as $note) {
-            printf("%s%s\n", $note['file'], $note['judged'] ? '' : ' — no todo names it');
+        printf("%d open, newest first.\n", count($open));
+        foreach (array_reverse($open) as $feedback) {
+            printf("%s%s\n", $feedback['file'], $feedback['judged'] ? '' : ' — no todo names it');
         }
 
         return 0;
     }
 
     /**
-     * Every open note, oldest first, with whether a todo already names it —
-     * which is the whole difference between a note that is waiting and one that
+     * Every open feedback, oldest first, with whether a todo already names it —
+     * which is the whole difference between a feedback that is waiting and one that
      * somebody has taken on.
      *
      * @return array<int, array{file: string, category: string, model: string, title: string, judged: bool, ...}>
@@ -126,16 +126,16 @@ final class Feedback implements Subject
         $queued = Todo::serves();
 
         return array_map(
-            static fn(array $note): array => $note + ['judged' => in_array($note['file'], $queued, true)],
-            array_reverse(Notes::notes('open', null, self::ALL)),
+            static fn(array $feedback): array => $feedback + ['judged' => in_array($feedback['file'], $queued, true)],
+            array_reverse(Channel::all('open', null, self::ALL)),
         );
     }
 
     /**
-     * Closing a note, which is moving it.
+     * Closing a feedback, which is moving it.
      *
      * In the same commit as the improvement it asked for, so that commit is
-     * both what answers the note and what says so. Several notes closed by one
+     * both what answers the feedback and what says so. Several feedback closed by one
      * change are named in one call, because they are one commit.
      *
      * @param array<int, string> $arguments
@@ -146,9 +146,9 @@ final class Feedback implements Subject
             return Cli::usage(self::class, 'archive');
         }
 
-        foreach ($arguments as $note) {
+        foreach ($arguments as $feedback) {
             try {
-                printf("%s\n", Notes::archive($note));
+                printf("%s\n", Channel::archive($feedback));
             } catch (\InvalidArgumentException|\RuntimeException $exception) {
                 fwrite(STDERR, $exception->getMessage() . "\n");
 

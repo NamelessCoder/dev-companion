@@ -14,7 +14,7 @@ final class CliTest extends TestCase
     /**
      * The queue is worked before what recurs every session, and this is the
      * test because the failure was silent for as long as it existed. A sighting
-     * is due while anything is unjudged, notes arrive from every session
+     * is due while anything is unjudged, feedback arrive from every session
      * everywhere, and one session judges a handful — so with the sightings
      * asked first, every session opened on the same one and no queued item was
      * ever reached. Nothing was broken, nothing failed, and the queue simply

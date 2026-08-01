@@ -75,7 +75,7 @@ final class TodoTest extends TestCase
     /**
      * A todo that serves nothing is an idea, and one without a next concrete
      * step is worse than no todo at all: a session that reads it cannot start.
-     * What it names has to be readable too — a note is deleted by the commit
+     * What it names has to be readable too — a feedback is deleted by the commit
      * that closes it, and a todo still naming one is either finished or has a
      * part left that nobody has trimmed it down to.
      */

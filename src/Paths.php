@@ -31,7 +31,7 @@ final class Paths
     }
 
     /**
-     * Improvement notes recorded by agents. Only written to in a standalone
+     * Improvement feedback recorded by agents. Only written to in a standalone
      * checkout; see Feedback.
      */
     public static function feedback(): string
@@ -40,7 +40,7 @@ final class Paths
     }
 
     /**
-     * The notes that were worked off. They stay readable rather than being
+     * The feedback that were worked off. They stay readable rather than being
      * deleted: what a session reported about this server is evidence about it,
      * and the answer to it is the half nobody else can reconstruct.
      */

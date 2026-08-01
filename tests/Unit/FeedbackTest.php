@@ -13,7 +13,7 @@ use Typo3CmsMcp\Tools;
 
 /**
  * Feedback is the one part of the server that writes, so these tests write too.
- * Every note recorded here is removed again in tearDown; the marker in the
+ * Every feedback recorded here is removed again in tearDown; the marker in the
  * observation makes a leftover recognizable.
  */
 final class FeedbackTest extends TestCase
@@ -78,7 +78,7 @@ final class FeedbackTest extends TestCase
     public function aNoteSaysWhichDirectoryItWasWrittenFrom(): void
     {
         // What the stdio entrypoint does at startup: the session's own working
-        // directory, which is what makes the note checkable later.
+        // directory, which is what makes the feedback checkable later.
         Instance::discoverFrom('/home/somebody/projects/a-site');
 
         $file = Feedback::record(['observation' => self::MARKER . ' asked in a project']);
@@ -107,7 +107,7 @@ final class FeedbackTest extends TestCase
     #[Test]
     public function aNoteSaysWhichModelLeftIt(): void
     {
-        // Half the notes are about what a session did rather than about what an
+        // Half the feedback are about what a session did rather than about what an
         // answer said, and that is one model's behaviour. Unattributed, two
         // models' habits arrive as one report.
         $file = Feedback::record([
@@ -125,7 +125,7 @@ final class FeedbackTest extends TestCase
     #[Test]
     public function aNoteWithoutAModelSaysSoRatherThanCarryingNone(): void
     {
-        // The write never fails on the attribution — the note is worth more
+        // The write never fails on the attribution — the feedback is worth more
         // than the name — but an unattributed one says it is unattributed,
         // which a missing front-matter line cannot.
         $file = Feedback::record(['observation' => self::MARKER . ' recorded by nobody in particular']);
@@ -180,15 +180,15 @@ final class FeedbackTest extends TestCase
     }
 
     /**
-     * A session files one note per subject and files them in one breath, so
+     * A session files one feedback per subject and files them in one breath, so
      * they open on the same sentence — the one that says which session this
      * is — and that sentence is longer than a filename has room for. Eight
-     * notes of 2026-08-01 were named
+     * feedback of 2026-08-01 were named
      * `debrief-of-the-typo3-14-testimonials-session` to the character, differing
      * by their timestamp alone, and they were about eight different things.
      *
      * The first of a series keeps the opening, because nothing yet says it is
-     * one. Every note after it is named after what it alone says.
+     * one. Every feedback after it is named after what it alone says.
      */
     #[Test]
     public function notesThatOpenAlikeAreNamedAfterWhatTellsThemApart(): void
@@ -202,34 +202,34 @@ final class FeedbackTest extends TestCase
         self::assertStringContainsString('debrief-of-the-session', $first);
         self::assertStringContainsString('the-fixture-harness-was-written', $second);
         self::assertStringContainsString('clearing-the-cache-meant-deleting', $third);
-        self::assertStringNotContainsString('debrief-of-the-session', $second, 'the name says what both notes say');
-        self::assertStringNotContainsString('debrief-of-the-session', $third, 'the name says what both notes say');
+        self::assertStringNotContainsString('debrief-of-the-session', $second, 'the name says what both feedback say');
+        self::assertStringNotContainsString('debrief-of-the-session', $third, 'the name says what both feedback say');
     }
 
     #[Test]
     public function recordedNotesAreListedNewestFirst(): void
     {
-        $file = Feedback::record(['observation' => self::MARKER . ' a listed note']);
+        $file = Feedback::record(['observation' => self::MARKER . ' a listed feedback']);
 
-        $notes = Feedback::notes('open', null, 100);
-        $files = array_column($notes, 'file');
+        $found = Feedback::all('open', null, 100);
+        $files = array_column($found, 'file');
 
         self::assertContains($file, $files);
-        foreach ($notes as $note) {
-            self::assertSame('open', $note['status']);
-            self::assertNotSame('', $note['title']);
+        foreach ($found as $feedback) {
+            self::assertSame('open', $feedback['status']);
+            self::assertNotSame('', $feedback['title']);
         }
     }
 
     #[Test]
     public function aNoteThatWasWorkedOffKeepsEverythingItSaid(): void
     {
-        // Closing a note used to mean deleting it, which left the agent that
+        // Closing a feedback used to mean deleting it, which left the agent that
         // wrote it seeing the file simply stop existing — and left the closed
         // half of the list as bare filenames, with the front matter that says
-        // what the note was about gone with the file.
+        // what the feedback was about gone with the file.
         $file = Feedback::record([
-            'observation' => self::MARKER . ' the archive keeps what the note said',
+            'observation' => self::MARKER . ' the archive keeps what the feedback said',
             'category' => 'tool-gap',
             'tool' => 'typo3_component_lookup',
         ]);
@@ -242,46 +242,46 @@ final class FeedbackTest extends TestCase
             (string) file_get_contents(Paths::root() . '/' . $archived),
         );
 
-        self::assertNotContains($file, array_column(Feedback::notes('open', null, 200), 'file'));
-        $note = self::noteFor($archived);
-        self::assertSame('closed', $note['status']);
-        self::assertSame('tool-gap', $note['category']);
-        self::assertSame(['typo3_component_lookup'], $note['tools']);
+        self::assertNotContains($file, array_column(Feedback::all('open', null, 200), 'file'));
+        $feedback = self::noteFor($archived);
+        self::assertSame('closed', $feedback['status']);
+        self::assertSame('tool-gap', $feedback['category']);
+        self::assertSame(['typo3_component_lookup'], $feedback['tools']);
 
-        // And the filters reach it, which is the half the deleted note lost.
+        // And the filters reach it, which is the half the deleted feedback lost.
         self::assertContains(
             $archived,
-            array_column(Feedback::notes('closed', 'tool-gap', 200, 'typo3_component_lookup'), 'file'),
+            array_column(Feedback::all('closed', 'tool-gap', 200, 'typo3_component_lookup'), 'file'),
         );
     }
 
     #[Test]
     public function aNoteThatWasWorkedOffIsStillAnswerableFor(): void
     {
-        // What came of a note is the commit that archived it, which is the one
+        // What came of a feedback is the commit that archived it, which is the one
         // thing the agent that reported the gap cannot see for itself: without
         // it the same gap is reported again, and a request that shipped in the
         // meantime is dropped silently.
         $closed = array_filter(
-            Feedback::notes('closed', null, 20),
-            static fn(array $note): bool => !str_contains($note['title'], self::MARKER),
+            Feedback::all('closed', null, 20),
+            static fn(array $feedback): bool => !str_contains($feedback['title'], self::MARKER),
         );
         if ($closed === []) {
-            self::markTestSkipped('No note has been worked off in this checkout yet.');
+            self::markTestSkipped('No feedback has been worked off in this checkout yet.');
         }
 
-        foreach ($closed as $note) {
-            self::assertSame('closed', $note['status']);
-            self::assertStringStartsWith('feedback/archive/', $note['file']);
-            self::assertNotNull($note['closedBy']);
-            self::assertNotSame('', $note['closedBy']['commit']);
+        foreach ($closed as $feedback) {
+            self::assertSame('closed', $feedback['status']);
+            self::assertStringStartsWith('feedback/archive/', $feedback['file']);
+            self::assertNotNull($feedback['closedBy']);
+            self::assertNotSame('', $feedback['closedBy']['commit']);
             // The subject is the sentence that says what happened to it.
-            self::assertNotSame('', $note['closedBy']['subject']);
+            self::assertNotSame('', $feedback['closedBy']['subject']);
         }
 
-        // An open note is in the same list and says it is open.
+        // An open feedback is in the same list and says it is open.
         $file = Feedback::record(['observation' => self::MARKER . ' open beside the closed ones']);
-        $all = Feedback::notes('all', null, 200);
+        $all = Feedback::all('all', null, 200);
         self::assertContains($file, array_column($all, 'file'));
         self::assertContains('closed', array_column($all, 'status'));
     }
@@ -292,7 +292,7 @@ final class FeedbackTest extends TestCase
         $file = Feedback::record(['observation' => self::MARKER . ' archived once']);
         Feedback::archive($file);
 
-        // The same note twice is the mistake this catches: the second call
+        // The same feedback twice is the mistake this catches: the second call
         // would otherwise overwrite the answer the first one recorded.
         $this->expectException(\InvalidArgumentException::class);
         Feedback::archive($file);
@@ -301,10 +301,10 @@ final class FeedbackTest extends TestCase
     #[Test]
     public function theListCanBeRestrictedToACategory(): void
     {
-        Feedback::record(['observation' => self::MARKER . ' a bug note', 'category' => 'bug']);
+        Feedback::record(['observation' => self::MARKER . ' a bug feedback', 'category' => 'bug']);
 
-        foreach (Feedback::notes('all', 'bug', 100) as $note) {
-            self::assertSame('bug', $note['category']);
+        foreach (Feedback::all('all', 'bug', 100) as $feedback) {
+            self::assertSame('bug', $feedback['category']);
         }
     }
 
@@ -324,8 +324,8 @@ final class FeedbackTest extends TestCase
             (string) file_get_contents(Paths::root() . '/' . $file)
         );
 
-        $note = self::noteFor($file);
-        self::assertSame(['typo3_label_lookup', 'typo3_icon_lookup'], $note['tools']);
+        $feedback = self::noteFor($file);
+        self::assertSame(['typo3_label_lookup', 'typo3_icon_lookup'], $feedback['tools']);
     }
 
     #[Test]
@@ -347,15 +347,15 @@ final class FeedbackTest extends TestCase
             'tool' => 'typo3_label_lookup typo3_icon_lookup',
         ]);
 
-        // The obvious thing to want from a backlog: every note about one tool,
+        // The obvious thing to want from a backlog: every feedback about one tool,
         // including the ones that name it alongside others.
-        $files = array_column(Feedback::notes('all', null, 100, 'typo3_icon_lookup'), 'file');
+        $files = array_column(Feedback::all('all', null, 100, 'typo3_icon_lookup'), 'file');
         self::assertContains($file, $files);
 
-        foreach (Feedback::notes('all', null, 100, 'typo3_icon_lookup') as $note) {
-            self::assertContains('typo3_icon_lookup', $note['tools']);
+        foreach (Feedback::all('all', null, 100, 'typo3_icon_lookup') as $feedback) {
+            self::assertContains('typo3_icon_lookup', $feedback['tools']);
         }
-        self::assertNotContains($file, array_column(Feedback::notes('all', null, 100, 'typo3_rule_lookup'), 'file'));
+        self::assertNotContains($file, array_column(Feedback::all('all', null, 100, 'typo3_rule_lookup'), 'file'));
     }
 
     /**
@@ -363,9 +363,9 @@ final class FeedbackTest extends TestCase
      */
     private static function noteFor(string $file): array
     {
-        foreach (Feedback::notes('all', null, 200) as $note) {
-            if ($note['file'] === $file) {
-                return $note;
+        foreach (Feedback::all('all', null, 200) as $feedback) {
+            if ($feedback['file'] === $file) {
+                return $feedback;
             }
         }
 

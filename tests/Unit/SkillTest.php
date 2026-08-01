@@ -541,7 +541,7 @@ final class SkillTest extends TestCase
     public function anUpgradeIsOrderedWorkAndOwnsOnlyTheCrossing(): void
     {
         // The REVIEW-02 run in an extension declaring two majors against an
-        // installation a major behind moved the note that asked for this skill:
+        // installation a major behind moved the feedback that asked for this skill:
         // the shared-versus-version-specific decisions were not the gap, because
         // the review made them — it argued the older major's registration shapes
         // as required rather than as debt, and refused the same excuse for a

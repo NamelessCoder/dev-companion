@@ -355,7 +355,7 @@ final class Scope
         }
         if (Feedback::isAvailable()) {
             $instructions .= ' Every tool here is read-only except typo3_feedback_record, '
-                . 'which creates a new markdown note under feedback/ and writes nothing else.';
+                . 'which creates a new markdown feedback under feedback/ and writes nothing else.';
         }
 
         return $instructions;

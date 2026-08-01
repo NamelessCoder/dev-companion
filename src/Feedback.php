@@ -7,7 +7,7 @@ namespace Typo3CmsMcp;
 use Composer\InstalledVersions;
 
 /**
- * Stores improvement notes left by agents using this server, so gaps in the
+ * Stores improvement feedback left by agents using this server, so gaps in the
  * knowledge base can be worked off later.
  *
  * Writing is deliberately limited to a standalone checkout. Installed as a
@@ -15,10 +15,10 @@ use Composer\InstalledVersions;
  * the next composer install — so the feedback tools are not offered at all in
  * that mode and the server stays strictly read-only.
  *
- * One note per file: concurrent agents never touch the same file, so no
+ * One feedback per file: concurrent agents never touch the same file, so no
  * read-modify-write races and no merge conflicts on a shared log.
  *
- * A note that was worked off moves to feedback/archive/ rather than being
+ * A feedback that was worked off moves to feedback/archive/ rather than being
  * deleted. What a session reported about this server — which skill it reached
  * for, what it had to establish elsewhere, what the answer cost it — is
  * evidence about this server that nothing else in the repository holds, and it
@@ -34,10 +34,10 @@ final class Feedback
     private const MAX_SLUG_LENGTH = 48;
     private const MAX_MODEL_LENGTH = 80;
 
-    /** What a note says about the model where none was named. */
+    /** What a feedback says about the model where none was named. */
     public const UNATTRIBUTED = 'unknown';
 
-    /** Separates the commits in the log a note's own answer is read from. */
+    /** Separates the commits in the log a feedback's own answer is read from. */
     private const COMMIT_MARKER = "\x00";
 
     /**
@@ -54,7 +54,7 @@ final class Feedback
     }
 
     /**
-     * Records one note and returns the path it was written to, relative to the
+     * Records one feedback and returns the path it was written to, relative to the
      * project root.
      *
      * @param array<string, mixed> $args
@@ -83,30 +83,30 @@ final class Feedback
         $document = self::render($observation, $category, $tools, $query, $suggestion, $model, self::origin());
 
         if (file_put_contents($file, $document) === false) {
-            throw new \RuntimeException(sprintf('Cannot write the feedback note: %s', $file));
+            throw new \RuntimeException(sprintf('Cannot write the feedback feedback: %s', $file));
         }
 
         return 'feedback/' . basename($file);
     }
 
     /**
-     * Moves a note that was worked off into the archive, and returns the path
+     * Moves a feedback that was worked off into the archive, and returns the path
      * it now has, relative to the project root.
      *
-     * Where a note stands is what says whether it was answered, so this is the
+     * Where a feedback stands is what says whether it was answered, so this is the
      * whole of closing one: the open directory holds the questions, the archive
-     * holds the ones that have an answer. The note itself is not rewritten
+     * holds the ones that have an answer. The feedback itself is not rewritten
      * beyond saying so — it is a session's report about this server, and the
      * report is what makes the answer readable later.
      */
-    public static function archive(string $note): string
+    public static function archive(string $feedback): string
     {
         self::assertAvailable();
 
-        $name = basename(trim($note));
+        $name = basename(trim($feedback));
         $source = Paths::feedback() . '/' . $name;
         if ($name === '' || !str_ends_with($name, '.md') || !is_file($source)) {
-            throw new \InvalidArgumentException(sprintf('There is no open note named %s.', $name));
+            throw new \InvalidArgumentException(sprintf('There is no open feedback named %s.', $name));
         }
 
         $directory = Paths::feedbackArchive();
@@ -126,26 +126,26 @@ final class Feedback
             1,
         );
         if (file_put_contents($target, $contents) === false) {
-            throw new \RuntimeException(sprintf('Cannot write the archived note: %s', $target));
+            throw new \RuntimeException(sprintf('Cannot write the archived feedback: %s', $target));
         }
         if (!unlink($source)) {
-            throw new \RuntimeException(sprintf('Cannot remove the note it was archived from: %s', $source));
+            throw new \RuntimeException(sprintf('Cannot remove the feedback it was archived from: %s', $source));
         }
 
         return 'feedback/archive/' . $name;
     }
 
     /**
-     * Reads recorded notes, newest first.
+     * Reads recorded feedback, newest first.
      *
      * Both halves are the same files read the same way, so a query that asks
      * for a category or a tool is answered over all of them. That is what the
-     * archive buys: a closed note used to be a filename in a commit, with the
+     * archive buys: a closed feedback used to be a filename in a commit, with the
      * front matter that says what it was about long gone.
      *
      * @return array<int, array{file: string, date: string, category: string, status: string, model: string, tool: string, tools: array<int, string>, title: string, closedBy: ?array{commit: string, date: string, subject: string}}>
      */
-    public static function notes(
+    public static function all(
         ?string $status = 'open',
         ?string $category = null,
         int $limit = 20,
@@ -157,47 +157,47 @@ final class Feedback
         if ($status !== 'open') {
             $files = [...$files, ...(glob(Paths::feedbackArchive() . '/*.md') ?: [])];
         }
-        // The filename starts with the timestamp the note was recorded at, so
-        // this is newest first across both halves — which directory a note is
+        // The filename starts with the timestamp the feedback was recorded at, so
+        // this is newest first across both halves — which directory a feedback is
         // in says whether it was answered, not when it arrived.
         usort($files, static fn(string $left, string $right): int => strcmp(basename($right), basename($left)));
 
         $wanted = $tool === null ? null : (self::toolNames($tool)[0] ?? null);
         $answers = self::answers();
 
-        $notes = [];
+        $found = [];
         foreach ($files as $file) {
-            $note = self::parse($file, $answers);
-            if ($note === null) {
+            $feedback = self::parse($file, $answers);
+            if ($feedback === null) {
                 continue;
             }
-            if ($category !== null && $note['category'] !== $category) {
+            if ($category !== null && $feedback['category'] !== $category) {
                 continue;
             }
-            if ($wanted !== null && !in_array($wanted, $note['tools'], true)) {
+            if ($wanted !== null && !in_array($wanted, $feedback['tools'], true)) {
                 continue;
             }
 
-            $notes[] = $note;
-            if (count($notes) >= $limit) {
+            $found[] = $feedback;
+            if (count($found) >= $limit) {
                 break;
             }
         }
 
-        return $notes;
+        return $found;
     }
 
     /**
-     * What became of each archived note, read from the commit that archived it.
+     * What became of each archived feedback, read from the commit that archived it.
      *
-     * One commit implements the improvement and moves the note, so that
+     * One commit implements the improvement and moves the feedback, so that
      * commit's subject is the sentence that answers it — and the answer is the
      * half the agent that reported the gap cannot see for itself. Reading it
-     * back from the history rather than writing it into the note is what keeps
-     * it from being a second copy of what git already has, and a note archived
+     * back from the history rather than writing it into the feedback is what keeps
+     * it from being a second copy of what git already has, and a feedback archived
      * but not yet committed simply has no answer yet.
      *
-     * The notes worked off before this archive existed carry their own commit
+     * The feedback worked off before this archive existed carry their own commit
      * in the front matter, which wins: they were all moved here in one commit,
      * and that move says nothing about any of them.
      *
@@ -299,7 +299,7 @@ final class Feedback
             }
         }
 
-        // The first heading is the note's title.
+        // The first heading is the feedback's title.
         $title = '';
         if (preg_match('/^# (.+)$/m', $contents, $heading) === 1) {
             $title = trim($heading[1]);
@@ -313,27 +313,27 @@ final class Feedback
             'file' => $relative,
             'date' => $meta['date'] ?? '',
             'category' => $meta['category'] ?? 'idea',
-            // The directory says it, not the front matter: a note that was
+            // The directory says it, not the front matter: a feedback that was
             // answered is one that was moved, and a status somebody edited in
             // place is the one thing that could disagree with where it is.
             'status' => $archived ? 'closed' : 'open',
-            // A note written before the field existed carries no model, which
+            // A feedback written before the field existed carries no model, which
             // is the same thing the field says when it was not answered.
             'model' => $meta['model'] ?? self::UNATTRIBUTED,
-            // Both: the string is what a note has always carried, the list is
+            // Both: the string is what a feedback has always carried, the list is
             // what a caller can filter or group by without parsing it back.
             'tool' => implode(', ', $tools),
             'tools' => $tools,
             'title' => $title,
-            // An open note has nothing closing it yet, and the field is present
+            // An open feedback has nothing closing it yet, and the field is present
             // either way so a caller never has to ask which half it is holding.
             'closedBy' => $archived ? self::answer($meta, $answers[$relative] ?? null) : null,
         ];
     }
 
     /**
-     * What the note itself says became of it, and otherwise what the history
-     * says. Only the notes restored from before the archive existed carry it
+     * What the feedback itself says became of it, and otherwise what the history
+     * says. Only the feedback restored from before the archive existed carry it
      * themselves — see answers().
      *
      * @param array<string, string> $meta
@@ -355,16 +355,16 @@ final class Feedback
     }
 
     /**
-     * Where the note was written from: the working directory of the session
+     * Where the feedback was written from: the working directory of the session
      * that left it.
      *
-     * A note is read long after the session that produced it has ended, and
+     * A feedback is read long after the session that produced it has ended, and
      * "the icon lookup returned nothing" means something different depending on
      * which project it was asked in. The directory is the one thing that says
-     * which — it is how the note gets checked against the installation it came
+     * which — it is how the feedback gets checked against the installation it came
      * from instead of against whatever is at hand.
      *
-     * Only ever the directory an entrypoint handed to Instance, so a note left
+     * Only ever the directory an entrypoint handed to Instance, so a feedback left
      * through an endpoint that has no caller directory simply carries none
      * rather than that endpoint's own.
      */
@@ -391,10 +391,10 @@ final class Feedback
             'date: ' . date('c'),
             'category: ' . $category,
             'status: open',
-            // Always written, "unknown" included: a note that carries no model
+            // Always written, "unknown" included: a feedback that carries no model
             // at all is indistinguishable from one recorded before the field
             // existed, and the whole point of the field is that an unattributed
-            // note says so.
+            // feedback says so.
             'model: ' . $model,
         ];
         if ($tools !== []) {
@@ -422,21 +422,21 @@ final class Feedback
      * Builds the filename from a timestamp plus a slug of the observation. The
      * agent never supplies the name, so it cannot escape the directory.
      *
-     * The slug begins at the first word that tells this note apart from one
-     * already named after the same opening. A session files one note per
+     * The slug begins at the first word that tells this feedback apart from one
+     * already named after the same opening. A session files one feedback per
      * subject and files them in one breath, so eight of them open on the
      * sentence that says which session this is — "Debrief of the … session,
      * missed item: …" — and those are exactly the 48 characters a name has room
      * for. Eight files then differ by their timestamp alone, which is the one
-     * thing about a note nobody is looking for. What goes in the name has to be
-     * what only this note says.
+     * thing about a feedback nobody is looking for. What goes in the name has to be
+     * what only this feedback says.
      */
     private static function uniquePath(string $directory, string $observation): string
     {
         $words = self::words($observation);
         $slug = self::slug($words);
 
-        // Only the notes whose name this one would take have to be read, and
+        // Only the feedback whose name this one would take have to be read, and
         // their own first line is where the shared opening can be measured.
         $shared = 0;
         foreach (glob($directory . '/*-' . $slug . '.md') ?: [] as $taken) {
@@ -475,7 +475,7 @@ final class Feedback
         return $shared;
     }
 
-    /** A note's own first line, as it was written into the file. */
+    /** A feedback's own first line, as it was written into the file. */
     private static function heading(string $file): string
     {
         $contents = (string) file_get_contents($file);
@@ -530,15 +530,15 @@ final class Feedback
     }
 
     /**
-     * The model that left the note, as it named itself.
+     * The model that left the feedback, as it named itself.
      *
-     * Half the notes this server receives are about what a session did rather
+     * Half the feedback this server receives are about what a session did rather
      * than about what an answer said — a skill whose steps were read and not
      * run, a tool nothing reached for. That is behaviour, and behaviour belongs
      * to one model: without the name, two models' habits arrive as one
      * undifferentiated report and neither can be worked off.
      *
-     * The schema asks for it and the write never fails on it. A note is worth
+     * The schema asks for it and the write never fails on it. A feedback is worth
      * more than its attribution, and a missing name is recorded as
      * "unknown" — which is also what a model that does not know its own
      * identifier is asked to send, because an invented one is worse than none.
@@ -554,13 +554,13 @@ final class Feedback
     }
 
     /**
-     * The tools a note is about.
+     * The tools a feedback is about.
      *
      * An observation is regularly about several tools at once — the four that
      * go quiet together when the console cannot be reached, say. Stripping
      * everything but [a-z0-9_] from one string ran their names together into
      * one unsearchable word, which is what a backlog is least able to afford:
-     * the obvious thing to want from the list is every note about one tool.
+     * the obvious thing to want from the list is every feedback about one tool.
      *
      * A list is accepted as a list, and a string is split on what separates
      * names in one — a comma or a space — rather than having the separator

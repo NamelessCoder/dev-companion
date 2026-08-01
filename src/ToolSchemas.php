@@ -136,7 +136,7 @@ final class ToolSchemas
 
     /**
      * The knowledge lookup shape plus the boundary, because every command in
-     * the script notes is a command in the core repository.
+     * the script note is a command in the core repository.
      *
      * @return array<string, mixed>
      */
@@ -701,8 +701,8 @@ final class ToolSchemas
     private static function feedbackRecord(): array
     {
         return self::object([
-            'file' => self::string('Path of the recorded note, relative to this server\'s own checkout.'),
-            'path' => self::string('The same note as an absolute path. It is in the server\'s checkout, not in the project the note was recorded from.'),
+            'file' => self::string('Path of the recorded feedback, relative to this server\'s own checkout.'),
+            'path' => self::string('The same feedback as an absolute path. It is in the server\'s checkout, not in the project the feedback was recorded from.'),
         ], ['file', 'path']);
     }
 
@@ -715,18 +715,18 @@ final class ToolSchemas
                 'file' => self::string(),
                 'date' => self::string(),
                 'category' => self::string(),
-                'status' => self::string('open while the note is in the backlog, closed once it was worked off and moved to the archive.'),
-                'model' => self::string('The model that left the note. "unknown" where it named none or predates the field.'),
-                'tool' => self::string('The tools the note is about, comma-separated. Empty when it names none.'),
+                'status' => self::string('open while the feedback is in the backlog, closed once it was worked off and moved to the archive.'),
+                'model' => self::string('The model that left the feedback. "unknown" where it named none or predates the field.'),
+                'tool' => self::string('The tools the feedback is about, comma-separated. Empty when it names none.'),
                 'tools' => self::listOf(self::string(), 'The same names as a list, to filter or group by without parsing.'),
                 'title' => self::string(),
                 'closedBy' => [
                     'type' => ['object', 'null'],
-                    'description' => 'The commit that worked the note off. Null while the note is open.',
+                    'description' => 'The commit that worked the feedback off. Null while the feedback is open.',
                     'properties' => [
                         'commit' => self::string(),
                         'date' => self::string(),
-                        'subject' => self::string('The commit subject: what came of the note.'),
+                        'subject' => self::string('The commit subject: what came of the feedback.'),
                     ],
                 ],
             ], ['file', 'date', 'category', 'status', 'model', 'tool', 'tools', 'title', 'closedBy'])),

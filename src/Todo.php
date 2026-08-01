@@ -30,7 +30,7 @@ namespace Typo3CmsMcp;
  * this repository owns rather than naming them.
  *
  * A cadence is `session` or a number of days, and the days are why the pair
- * exists: five sessions in an afternoon owe the notes five readings and the
+ * exists: five sessions in an afternoon owe the feedback five readings and the
  * release check none. What is measured in days carries `**Checked:** <date>`,
  * the session that ran it writes the date, and a todo that is not due is not
  * printed. Forgetting the date costs one repeat rather than a stale answer.
@@ -129,13 +129,13 @@ final class Todo
     }
 
     /**
-     * What recurs every session: sighting what arrived from outside — the notes
+     * What recurs every session: sighting what arrived from outside — the feedback
      * and the backlog — and deciding what of it becomes work.
      *
      * Asked last, once the queue is empty, because that decision is what puts
      * entries into the queue. While the queue still has any, sighting more is
      * deciding twice and doing nothing, and it is the group that would win
-     * every session forever if it were asked first: notes arrive from every
+     * every session forever if it were asked first: feedback arrive from every
      * session everywhere, and one session judges a handful.
      *
      * @return array<int, array{title: string, kind: string, every: string, checked: string, serves: array<int, string>, run: array<int, string>, head: string, strays: array<int, string>, body: string}>
@@ -172,7 +172,7 @@ final class Todo
 
     /**
      * Everything the queue answers for, which is what turns an entry in
-     * requirements/ or a note in feedback/ into work somebody has taken on.
+     * requirements/ or a feedback in feedback/ into work somebody has taken on.
      *
      * Read from the queue alone rather than from the file as a whole: the
      * section that lists what is deliberately *not* queued names ids too, and a
@@ -198,7 +198,7 @@ final class Todo
      * Why what a todo names cannot be read, or null where it can.
      *
      * Four things are legitimate to serve, and each is checked against the place
-     * that owns it rather than against a list kept here. A note is the one worth
+     * that owns it rather than against a list kept here. A feedback is the one worth
      * catching: it is the reason the todo is in the queue, and the commit that
      * closes it deletes the file — so a todo still naming one is either
      * finished or has a part left that nobody has trimmed it down to.
@@ -220,14 +220,14 @@ final class Todo
         }
 
         if (str_starts_with($what, 'feedback/')) {
-            // A note in the archive was answered, whether the todo names it
+            // A feedback in the archive was answered, whether the todo names it
             // where it was or where it now is.
             return is_file(Paths::root() . '/' . $what) && !str_starts_with($what, 'feedback/archive/')
                 ? null
-                : 'and that note is closed — the todo is done, or trims to the part that is left';
+                : 'and that feedback is closed — the todo is done, or trims to the part that is left';
         }
 
-        return 'which is none of a requirement, a scenario, a note, or a directory of this repository';
+        return 'which is none of a requirement, a scenario, a feedback, or a directory of this repository';
     }
 
     /**

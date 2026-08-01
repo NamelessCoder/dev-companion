@@ -14,8 +14,8 @@ use Typo3CmsMcp\Todo as TodoFile;
  * The file is prose and stays prose — the next concrete step is a paragraph
  * somebody wrote for somebody else to start from, and nothing here shortens it.
  * What is checked is the head of labelled lines each section opens with, and
- * that what a todo claims to serve exists. A todo naming a note that was closed
- * two commits ago is the failure worth catching: the note is the reason it is
+ * that what a todo claims to serve exists. A todo naming a feedback that was closed
+ * two commits ago is the failure worth catching: the feedback is the reason it is
  * in the queue, and when it goes the todo is either done or needs trimming to
  * the part that is left.
  */

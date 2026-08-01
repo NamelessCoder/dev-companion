@@ -5,19 +5,19 @@ declare(strict_types=1);
 namespace Typo3CmsMcp\Upkeep\Cli;
 
 use Typo3CmsMcp\Upkeep\Cli;
-use Typo3CmsMcp\Upkeep\Todo as TodoFile;
+use Typo3CmsMcp\Upkeep\Todo as Todos;
 
 /**
- * Holds todo.md to the shape `bin/cli next` reads it in, and lists what is in
- * it for whoever wants the overview `next` deliberately does not give.
+ * Holds todo/ to the shape `bin/cli next` reads it in, and lists what is in it
+ * for whoever wants the overview `next` deliberately does not give.
  *
- * The file is prose and stays prose — the next concrete step is a paragraph
+ * A todo is prose and stays prose — the next concrete step is a paragraph
  * somebody wrote for somebody else to start from, and nothing here shortens it.
- * What is checked is the head of labelled lines each section opens with, and
- * that what a todo claims to serve exists. A todo naming a feedback that was closed
- * two commits ago is the failure worth catching: the feedback is the reason it is
- * in the queue, and when it goes the todo is either done or needs trimming to
- * the part that is left.
+ * What is checked is the head of labelled lines each file opens with, where the
+ * file sits, and that what a todo claims to serve exists. A todo naming a
+ * feedback that was closed two commits ago is the failure worth catching: the
+ * feedback is the reason it is in the queue, and when it goes the todo is either
+ * done or needs trimming to the part that is left.
  */
 final class Todo implements Subject
 {
@@ -30,7 +30,7 @@ final class Todo implements Subject
     {
         return [
             'list' => ['', 'every todo by title: what recurs, then the queue in order', self::list(...)],
-            'check' => ['', 'hold every section to the head that says what it is', self::check(...)],
+            'check' => ['', 'hold every file to the head and the place that say what it is', self::check(...)],
         ];
     }
 
@@ -41,16 +41,16 @@ final class Todo implements Subject
      */
     private static function list(): int
     {
-        foreach (TodoFile::recurring() as $todo) {
+        foreach (Todos::recurring() as $todo) {
             printf(
                 "%-12s %s%s\n",
                 $todo['every'],
                 $todo['title'],
-                TodoFile::due($todo['every'], $todo['checked']) ? '' : ' — not due, last ' . $todo['checked'],
+                Todos::due($todo['every'], $todo['checked']) ? '' : ' — not due, last ' . $todo['checked'],
             );
         }
 
-        $items = TodoFile::items();
+        $items = Todos::items();
         foreach ($items as $position => $item) {
             printf("%-12s %s\n", $position === 0 ? 'next' : (string) ($position + 1), $item['title']);
         }
@@ -58,7 +58,7 @@ final class Todo implements Subject
             print "The queue is empty.\n";
         }
 
-        foreach (TodoFile::references() as $reference) {
+        foreach (Todos::references() as $reference) {
             printf("%-12s %s\n", 'read only', $reference['title']);
         }
 
@@ -66,61 +66,82 @@ final class Todo implements Subject
     }
 
     /**
-     * Every section says what it is, and every todo says what it answers for.
+     * Every file says what it is by where it sits, and every todo says what it
+     * answers for.
      */
     public static function check(): int
     {
         $problems = [];
         $reading = [];
+        $positions = [];
 
-        foreach (TodoFile::sections() as $section) {
-            $where = '"' . $section['title'] . '"';
+        foreach (Todos::all() as $todo) {
+            $where = $todo['path'];
 
-            foreach ($section['strays'] as $stray) {
+            if ($todo['title'] === '') {
+                $problems[] = $where . ' opens with no heading, so nothing says what it is about';
+            }
+            foreach ($todo['strays'] as $stray) {
                 $problems[] = $where . ' opens with ' . $stray . ', which is no field of a todo';
             }
 
-            if ($section['kind'] === '') {
-                $problems[] = $where . ' opens with ' . ($section['head'] === '' ? 'no head at all' : 'no `Serves:`')
-                    . ', so nothing says whether it is work';
+            if ($todo['kind'] === 'reference') {
+                if ($todo['serves'] !== []) {
+                    $problems[] = $where . ' is kept for reading and serves ' . implode(', ', $todo['serves']);
+                }
                 continue;
             }
 
-            if ($section['kind'] === 'reference') {
-                continue;
+            if ($todo['serves'] === []) {
+                $problems[] = $where . ' opens with no `Serves:`, so it is an idea rather than a todo';
             }
-
-            if ($section['body'] === '') {
+            if ($todo['body'] === '') {
                 $problems[] = $where . ' does not say what the next concrete step is';
             }
-            foreach ($section['serves'] as $what) {
-                $unreadable = TodoFile::unreadable($what);
+            foreach ($todo['serves'] as $what) {
+                $unreadable = Todos::unreadable($what);
                 if ($unreadable !== null) {
                     $problems[] = $where . ' serves ' . $what . ', ' . $unreadable;
                 }
             }
-            foreach ($section['run'] as $command) {
+            foreach ($todo['run'] as $command) {
                 if (!Cli::knows($command)) {
                     $problems[] = $where . ' runs `' . $command . '`, which this command cannot do';
                 }
-                $reading[$command][] = $section['title'];
+                $reading[$command][] = $todo['title'];
             }
 
-            if ($section['every'] === '') {
+            if ($todo['kind'] === 'queue') {
+                // The number is the place in the queue, and two files claiming
+                // one leave the order to whatever the file system answers.
+                if ($todo['position'] === '') {
+                    $problems[] = $where . ' is queued and unnumbered, so nothing says where in the order it is';
+                } elseif (isset($positions[$todo['position']])) {
+                    $problems[] = $where . ' is number ' . $todo['position'] . ', and so is ' . $positions[$todo['position']];
+                }
+                $positions[$todo['position']] = $where;
+
+                if ($todo['every'] !== '') {
+                    $problems[] = $where . ' is queued and recurs every ' . $todo['every']
+                        . ' — what comes round belongs in todo/recurring/';
+                }
                 continue;
             }
-            if ($section['every'] !== 'session' && preg_match('/^\d+ days?$/', $section['every']) !== 1) {
-                $problems[] = $where . ' recurs every ' . $section['every'] . ', and a cadence is ' . TodoFile::CADENCE;
-            } elseif ($section['every'] !== 'session' && strtotime($section['checked']) === false) {
+
+            if ($todo['every'] === '') {
+                $problems[] = $where . ' comes round and does not say how often';
+            } elseif ($todo['every'] !== 'session' && preg_match('/^\d+ days?$/', $todo['every']) !== 1) {
+                $problems[] = $where . ' recurs every ' . $todo['every'] . ', and a cadence is ' . Todos::CADENCE;
+            } elseif ($todo['every'] !== 'session' && strtotime($todo['checked']) === false) {
                 $problems[] = $where . ' recurs on a clock and was last checked '
-                    . ($section['checked'] === '' ? 'never — `**Checked:**` is what dates it' : $section['checked']);
+                    . ($todo['checked'] === '' ? 'never — `**Checked:**` is what dates it' : $todo['checked']);
             }
         }
 
         // The readings `bin/cli next` performs are the reason it can tell a
         // session there is nothing left to read: none and it silently stops
         // doing half its job, two and it does it twice.
-        foreach (TodoFile::READINGS as $command) {
+        foreach (Todos::READINGS as $command) {
             $named = $reading[$command] ?? [];
             if ($named === []) {
                 $problems[] = 'no todo runs `' . $command . '`';
@@ -133,10 +154,10 @@ final class Todo implements Subject
             fwrite(STDERR, $problem . "\n");
         }
         printf(
-            "%d sections, %d recurring, %d queued, %d problems\n",
-            count(TodoFile::sections()),
-            count(TodoFile::recurring()),
-            count(TodoFile::items()),
+            "%d files, %d recurring, %d queued, %d problems\n",
+            count(Todos::all()),
+            count(Todos::recurring()),
+            count(Todos::items()),
             count($problems),
         );
 

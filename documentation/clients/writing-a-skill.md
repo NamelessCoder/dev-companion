@@ -149,7 +149,7 @@ here and nowhere it is actually read.
 Then run the installer in the checkout that plays the environment the skill is
 for, before any run that is meant to measure it. The published skills are a copy
 and nothing reports that they are older than the server;
-[todo.md](../../todo.md) says which checkout plays which environment on this
+[todo/reference/](../../todo/reference/) says which checkout plays which environment on this
 machine and how the installer is reached there.
 
 ## What none of this holds

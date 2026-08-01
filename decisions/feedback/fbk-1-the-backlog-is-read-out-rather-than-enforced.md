@@ -7,7 +7,7 @@ status: standing
 # D-FBK-1 — The backlog is read out rather than enforced
 
 **What `requirements/` and `decisions/` say is unfinished is reported and never
-fails a check; the coupling to `todo.md` is a line of output, not a rule.**
+fails a check; the coupling to the queue is a line of output, not a rule.**
 
 Both directories carry a state that means unfinished, and until today nothing
 read either of them. The question was whether making them visible is enough, or
@@ -20,7 +20,7 @@ whether the check has to fail until an entry is queued.
     `todo.md` had ever named it. Nothing had gone wrong; nobody had looked.
   - 31 decisions, of which 29 are `standing`. Every one of them wrote down a
     **Wrong if**, and one entry has ever been back-checked.
-  - `todo.md` is fed by `feedback/` and the forward reviews and by nothing else,
+  - the queue is fed by `feedback/` and the forward reviews and by nothing else,
     so neither directory had a path into the order of the work at all.
 - **Decided:** `bin/cli backlog list` reads both out, `bin/cli check` closes
   with the same block, and the exit code is untouched. Three stricter shapes
@@ -37,7 +37,7 @@ whether the check has to fail until an entry is queued.
 - **Assumed:** that the 29 standing decisions are mostly standing because they
   are still true, so a count and the oldest is a fair summary. If a third of
   them turn out to have been overtaken, the summary was hiding a queue.
-- **Wrong if:** the same id is still reported with `no todo.md item names it`
+- **Wrong if:** the same id is still reported with `no todo names it`
   after three sessions that ran the check, or the standing count only ever
   grows and no session sorts them. Then visibility was not the missing part,
   the coupling has to become a rule, and the shape to reach for is the one

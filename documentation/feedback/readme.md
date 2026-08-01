@@ -17,7 +17,7 @@ answers — `session`, or a number of days, so five sessions in an afternoon do
 not ask the same question five times. And is there anything to do, which the
 todo's `**Run:**` command answers by exiting nonzero when it found work: the
 feedback stop being the next thing the moment the last one is judged, without
-anybody editing [todo.md](../../todo.md) to say so. What is owed a feedback or a
+anybody editing a todo to say so. What is owed a feedback or a
 backlog entry is that judgement — a todo that takes it on, or the sentence
 saying why it stays as it is — not the work itself, which is what the queue is
 for.
@@ -61,16 +61,16 @@ asked because nothing here can answer it, is one page of its own:
 [working-a-todo.md](working-a-todo.md), which `bin/cli next` names with every
 todo it hands over.
 
-## Keeping todo.md current
+## Keeping the queue current
 
 - A change of order is written down **before** the work starts, so the reason
   exists in the file rather than in a session that has ended.
 - New work found along the way is added as a todo that names what it serves. If
   it serves nothing yet, it is an idea and belongs in the feedback that had it.
 
-What the commit that finishes, trims or puts back a todo leaves in the file is
-the last section of [working-a-todo.md](working-a-todo.md); how a section is
-written is the head of [todo.md](../../todo.md) itself.
+What the commit that finishes, trims or puts back a todo leaves behind is the
+last section of [working-a-todo.md](working-a-todo.md); how a todo is written is
+[todo/readme.md](../../todo/readme.md) itself.
 
 ## Asking a session to file its own feedback
 
@@ -186,14 +186,14 @@ records the answer. What outlives both is split three ways:
   When an assumption is later disproved, correct the entry in place rather than
   deleting it — the wrong assumption is the useful part, because it names where
   the next one is likely to sit.
-- `todo.md` — the order of the work, and where the last session stopped. The
+- `todo/` — the order of the work, and where the last session stopped. The
   other files say what must be true, what was asked and what was assumed; none
   of them says what to do next. A session can end anywhere, and the next one
-  starts by reading this. An item names what it serves and what the next
-  concrete step is, and is deleted when done rather than ticked. Every section
-  opens with one line saying which of three things it is — that line is what
-  `bin/cli next` reads and what `bin/cli todo check` holds, and the file's own
-  header names the vocabulary.
+  starts by reading this. One todo is one file: it names what it serves and
+  what the next concrete step is, and is deleted when done rather than ticked.
+  Where it sits says whether it is the queue, what recurs, or what is kept for
+  reading, and a queued one is numbered by its place in the order — that is
+  what `bin/cli next` reads and what `bin/cli todo check` holds.
 
 ## What nothing fails on
 
@@ -204,11 +204,11 @@ existed.
 
 `bin/cli backlog list` is that reading; `bin/cli next` opens with it and
 `bin/cli check` closes with it. It names every requirement nothing answers for,
-says whether an item in `todo.md` names it — read from what the items declare
-they serve, so the section listing what is deliberately *not* queued does not
-count as having taken one on — and gives the oldest standing decision as the one
-the repository has moved furthest away from.
+says whether a queued todo names it — read from what the queue declares it
+serves, so the page listing what is deliberately *not* queued does not count as
+having taken one on — and gives the oldest standing decision as the one the
+repository has moved furthest away from.
 
-Standing on that list is not the problem. Standing on it with nothing in
-`todo.md` naming it is a decision nobody has taken, and taking it — an item, or
-the sentence in `decisions/` that says why not — is what a session owes it.
+Standing on that list is not the problem. Standing on it with no todo naming it
+is a decision nobody has taken, and taking it — a todo, or the sentence in
+`decisions/` that says why not — is what a session owes it.

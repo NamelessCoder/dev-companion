@@ -91,7 +91,7 @@ final class Cli
     }
 
     /**
-     * Whether `bin/cli …` names something this command can do, for todo.md,
+     * Whether `bin/cli …` names something this command can do, for the todos,
      * whose `Run:` lines are commands nobody runs until the day they are due.
      */
     public static function knows(string $command): bool
@@ -166,7 +166,8 @@ final class Cli
      * answered by running the todo's own `Run:` command: a command this
      * repository owns exits nonzero when it found work, so the feedback stop being
      * the next thing the moment the last one is judged, without anybody editing
-     * todo.md to say so. A command it does not own is named rather than run;
+     * anybody editing a todo to say so. A command it does not own is named
+     * rather than run;
      * `next` starts no process that needs the network, and the cadence is what
      * keeps it from being asked twice in an afternoon.
      *
@@ -213,7 +214,7 @@ final class Cli
         }
 
         print "Nothing is due and nothing is queued. What is waiting is in `bin/cli backlog list`,\n"
-            . "and taking one on is a todo in todo.md.\n";
+            . "and taking one on is a todo in todo/.\n";
 
         return 0;
     }
@@ -251,7 +252,7 @@ final class Cli
             . "%s.\n%s",
             Todo::PROCEDURE,
             match (true) {
-                $todo['every'] === '' => "Done means todo.md says so: deleted, or trimmed to the part that is left.\n",
+                $todo['every'] === '' => "Done means the file says so: deleted, or trimmed to the part that is left.\n",
                 $todo['every'] === 'session' => "It stands, so nothing is deleted. What it settles belongs where that is kept.\n",
                 default => "It stands, so nothing is deleted — write today's date into `**Checked:**`.\n",
             },

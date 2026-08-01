@@ -41,10 +41,10 @@ recall.
 - **Decided:** that putting the todo back is offered with the question rather
   than kept as a fallback, and that a todo put back goes to the end of the
   queue. The person asked can be out of answers too, and a session that has only
-  "decide it" on the table will decide it — so the todo keeps its section, gains
+  "decide it" on the table will decide it — so the todo keeps its file, gains
   the question in the words it was asked in and what the reading already
   established, and moves last. Last rather than down, because `next` hands over
-  the first queued item and has no notion of blocked: one left in place is
+  the first queued todo and has no notion of blocked: one left in place is
   handed to every session after this one, which is the queue not moving at all.
   Nothing new holds either half — it is the existing rule that a change of order
   is written down before the work, applied to a todo that never started.

@@ -43,8 +43,8 @@ skills/            # canonical task skills installed into supported agent client
 skills/base.md     # the order every task starts in, copied into each published skill as references/base.md
 requirements/      # what must hold, and what holds it there: one requirement per file, grouped by what it is about; open ones are the backlog
 decisions/         # what a change assumed, and what would show it to be wrong: one decision per file, grouped by what it is about
-todo.md            # the order of the work and where the last session stopped; `bin/cli next` prints one of them
-src/Upkeep/Todo.php  # todo.md as data: what recurs and how often, what is queued, what each todo serves
+todo/              # the order of the work and where the last session stopped: one todo per file, the queue numbered; `bin/cli next` prints one of them
+src/Upkeep/Todo.php  # todo/ as data: what recurs and how often, what is queued, what each todo serves
 documentation/     # how a procedure is carried out, grouped by subject; the rules stay here, the steps live there
 tests/             # unit, tool contract, and stdio smoke tests
 vendor/            # Composer dependencies (mcp/sdk); gitignored
@@ -87,18 +87,18 @@ What has no source here is **asked**, before the change rather than in the
 commit that presents it. Ask with the reading done — the options, what each
 costs, a recommendation — and put the todo back among them, because a todo that
 waits is not a worse outcome than one done on a guess. What comes back goes into
-`todo.md` or `decisions/`, because an answer that lives only in the conversation
+`todo/` or `decisions/`, because an answer that lives only in the conversation
 ends with it.
 
-Keeping [todo.md](todo.md) current is part of the work, not a step after it. A
-session that ends with the file matching what is actually true has handed over
-correctly, whatever else it did.
+Keeping [todo/](todo/readme.md) current is part of the work, not a step after
+it. A session that ends with the queue matching what is actually true has handed
+over correctly, whatever else it did.
 
 What is read before the first change, how a question is settled, what is asked
 and what the file says afterwards:
 [documentation/feedback/working-a-todo.md](documentation/feedback/working-a-todo.md).
 How `next` decides what is due, and how the work moves between `feedback/`,
-`requirements/`, `decisions/` and `todo.md`:
+`requirements/`, `decisions/` and `todo/`:
 [documentation/feedback/readme.md](documentation/feedback/readme.md).
 
 ## What things are called
@@ -254,7 +254,7 @@ Agents using this server record improvement feedback through
 `scenarios/` holds the sessions those came out of, so they can be run again:
 open forward reviews in `scenarios/forward/`, targeted contract cases in
 `scenarios/contracts/`. A prompt names a kind of project, never one
-installation on somebody's machine — that lives in `todo.md`, where it can go
+installation on somebody's machine — that lives in `todo/reference/`, where it can go
 stale without taking a case with it.
 
 - A feedback is worked off in a commit that both implements the improvement
@@ -267,7 +267,7 @@ stale without taking a case with it.
   this server, which is evidence nothing else here holds.
 - What outlives it is split three ways: `requirements/` for what must be true
   from now on and what holds it there, `decisions/` for what a change rested on
-  and what would show it wrong, `todo.md` for the order of the work.
+  and what would show it wrong, `todo/` for the order of the work.
 - Three states mean unfinished — a requirement marked **open**, one held by
   `not guarded`, a decision still `standing` whose **Wrong if** nobody has been
   back to. All three are legitimate, so no check may fail on them, and

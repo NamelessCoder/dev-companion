@@ -112,20 +112,21 @@ and say why. "What do you want here?" hands the reading back.
 waited for. The person asked may not have the answer either, and that is not a
 smaller outcome than doing the work.
 
-A todo that is put back goes to the **end of the queue**. `bin/cli next` hands
-over the first queued item and has no notion of a todo being blocked, so one
-left where it was is handed to every session behind it until somebody moves it.
-Going last is also its own timer: it comes round again as the queue drains.
+A todo that is put back goes to the **end of the queue**, which is renaming its
+file to the number after the last one. `bin/cli next` hands over the first
+queued todo and has no notion of one being blocked, so a todo left where it was
+is handed to every session behind it until somebody moves it. Going last is also
+its own timer: it comes round again as the queue drains.
 
-It keeps its section, and the session's job is to leave it startable cold: the
+It keeps its file, and the session's job is to leave it startable cold: the
 open question written into its paragraph in the words it was asked in, and what
 the reading already established. A question asked once and answered nowhere
 costs one session; one re-derived every time the todo surfaces costs every
 session.
 
-What comes back is written into the file it belongs in — `todo.md` when it
-changes the order, the step or what the todo is waiting on, `decisions/` when it
-is the kind of answer somebody will want the reason for later — because an
+What comes back is written into the file it belongs in — the todo when it
+changes the order, the step or what it is waiting on, `decisions/` when it is
+the kind of answer somebody will want the reason for later — because an
 answer that lives only in the conversation is gone when the session ends, and so
 is a deferral nobody wrote down.
 
@@ -139,16 +140,16 @@ what would close it; an answer that came from the person who queued the todo
 says so, because it is the one part no file behind the commit can be re-read
 for.
 
-The same commit leaves [todo.md](../../todo.md) true, which is three cases and
-`bin/cli next` prints the one that applies:
+The same commit leaves [todo/](../../todo/readme.md) true, which is three cases
+and `bin/cli next` prints the one that applies:
 
 - A **queued** todo that is finished is **deleted**. What it established is in
   `requirements/` by then and the commit is the record that it happened.
 - One that turns out half done is **trimmed** to the part that is left, with the
   next concrete step rewritten. A todo nobody can start from is worse than none,
   and "half done" includes the half that is waiting on an answer. One put back
-  unstarted is the same case, with one addition: it keeps its section, gains the
-  open question, and moves to the end of the queue, because `next` would
+  unstarted is the same case, with one addition: it keeps its file, gains the
+  open question, and is renumbered to the end of the queue, because `next` would
   otherwise hand it to every session until somebody did.
 - A **recurring** one is never deleted: what it settles goes where that is kept,
   and one measured in days gets today's date in its `**Checked:**` line — that

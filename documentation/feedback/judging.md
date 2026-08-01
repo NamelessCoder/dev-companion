@@ -5,7 +5,7 @@
 > relationship between feedback: this page was written for one feedback per run
 > with a journal, while `bin/cli feedback next` hands over five and nothing
 > records an answer but the commit. The todo that says so is in
-> [todo.md](../../todo.md).
+> [todo/](../../todo/readme.md).
 
 A feedback is a session's report about this server, left by an agent working
 somewhere else. What it is *not* is a work item: it names what went wrong from
@@ -225,7 +225,7 @@ A todo that serves a feedback does not restate it. It carries what the feedback
 does not: the answer — which step of the ladder, on what evidence — and the next
 concrete step. One or two sentences, not a paragraph.
 
-Otherwise the same account sits in `feedback/`, in `todo.md` and, once a
+Otherwise the same account sits in `feedback/`, in `todo/` and, once a
 requirement is written, a third time in `requirements/` — three places to
 maintain, and any one of them can be brought up to date and leave the other two
 saying something else. `bin/cli next` prints the feedback a todo serves along

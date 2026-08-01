@@ -11,7 +11,7 @@ carried out.
    need not be a person typing: a client driven non-interactively is the same
    evidence, as long as it is given the prompt and nothing else, and a session
    id it was started with is what makes its transcript findable afterwards.
-   [todo.md](../../todo.md) says which checkout plays which environment on this
+   [todo/reference/](../../todo/reference/) says which checkout plays which environment on this
    machine, and how the client is reached there.
 2. `bin/cli scenarios record <id> <client>` writes the empty run, and
    `bin/cli scenarios show <id>` prints the prompt and the numbered criteria.

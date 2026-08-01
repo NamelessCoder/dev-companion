@@ -51,7 +51,7 @@ that directory, then paste the prompt.
 
 An environment is a kind of working directory, never one particular
 installation. Which checkout on this machine plays `E-SITE` today belongs in
-[todo.md](../todo.md), where it can go stale without taking a case with it — a
+[todo/reference/](../todo/reference/), where it can go stale without taking a case with it — a
 prompt that names somebody's project is a prompt only that person can run.
 
 ## Running one

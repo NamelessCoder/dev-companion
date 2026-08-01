@@ -6,8 +6,8 @@ status: standing
 
 # D-FBK-2 — The order of the work is declared, not inferred
 
-**Every section of `todo.md` says in one line which of three things it is, and
-`bin/cli next` reads that rather than guessing at the prose around it.**
+**Every todo declares what it serves and how it recurs, and `bin/cli next`
+reads that rather than guessing at the prose around it.**
 
 The file always held the order of the work, and only a person could see it.
 Three kinds of section sit in it and they are indistinguishable from outside:
@@ -52,6 +52,8 @@ whether to declare it or derive it.
 
 **Since then** the one line became a head of several, and the three kinds became
 two: a todo that recurs carries `**Every:**` and a todo that does not is the
-queue. What this entry settled is unchanged and is why that was cheap — the kind
-was declared rather than derived, so making it a field was an edit rather than a
-rewrite. See [`D-FBK-3`](fbk-3-a-session-is-handed-one-todo-not-the-file.md).
+queue. The file then became a directory, where the kind is what the todo sits in
+and the head carries the rest. What this entry settled survived both, which is
+the point of declaring it: each was an edit rather than a rewrite. See
+[`D-FBK-3`](fbk-3-a-session-is-handed-one-todo-not-the-file.md) and
+[`D-FBK-8`](fbk-8-one-todo-is-one-file-and-the-queue-is-in-the-names.md).

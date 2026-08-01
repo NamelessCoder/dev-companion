@@ -21,14 +21,14 @@ in order by.
 ## [feedback/](feedback/readme.md) — how this repository works on itself
 
 - [readme.md](feedback/readme.md) — how the work moves between `feedback/`,
-  `requirements/`, `decisions/` and `todo.md`, and the debrief that gets
+  `requirements/`, `decisions/` and `todo/`, and the debrief that gets
   feedback out of a session this repository cannot read.
 - [judging.md](feedback/judging.md) — what is asked of one open feedback, in
   which order and on what evidence, and which answers may be given without
   asking first.
 - [working-a-todo.md](feedback/working-a-todo.md) — what is read before the todo
   `bin/cli next` handed over is changed, where a question the step turns on is
-  settled rather than recalled, and what the file says afterwards.
+  settled rather than recalled, and what the queue says afterwards.
 
 ## [knowledge/](knowledge/versions.md) — what the server answers, and from where
 
@@ -54,6 +54,6 @@ in order by.
 What does **not** belong here: what must hold — that is
 [requirements/](../requirements/readme.md); what a change assumed —
 [decisions/](../decisions/readme.md); the order of the work —
-[todo.md](../todo.md), which is also where this machine's checkouts are named;
+[todo/](../todo/readme.md), which is also where this machine's checkouts are named;
 and the conventions every session works under, which stay in
 [AGENTS.md](../AGENTS.md) because they are read before anything else is.

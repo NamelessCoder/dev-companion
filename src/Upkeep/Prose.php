@@ -46,11 +46,11 @@ final class Prose
     public static function documents(): array
     {
         $files = array_filter(
-            ['AGENTS.md', 'readme.md', 'todo.md'],
+            ['AGENTS.md', 'readme.md'],
             static fn(string $file): bool => is_file(Paths::root() . '/' . $file),
         );
 
-        foreach (['decisions', 'requirements', 'documentation', 'scenarios', 'skills', 'knowledge/documents'] as $directory) {
+        foreach (['decisions', 'requirements', 'todo', 'documentation', 'scenarios', 'skills', 'knowledge/documents'] as $directory) {
             $root = Paths::root() . '/' . $directory;
             if (!is_dir($root)) {
                 continue;

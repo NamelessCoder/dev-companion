@@ -49,7 +49,7 @@ below, and `composer test` runs the same check through `RequirementsTest`.
 That check cannot fail on an entry being **open** or `not guarded` — both are
 legitimate, and the second is the only honest answer for a requirement no test
 can hold. `bin/cli backlog list` reads them out instead, together with whether
-an item in [todo.md](../todo.md) names the id. Nothing here reaches the order of
+a todo in [todo/](../todo/readme.md) names the id. Nothing here reaches the order of
 the work on its own; that listing is the whole of the coupling.
 
 An id is never reused: a withdrawn requirement takes its number with it, so a

@@ -11,7 +11,7 @@ namespace Typo3CmsMcp\Upkeep;
  * was ever read for it. A requirement is `open` when nobody has built it and
  * `not guarded` when nothing holds it; a decision is `standing` when nobody
  * has been back to its "Wrong if". None of the three is an error, which is
- * exactly why none of them surfaced: todo.md is fed by feedback/ and the
+ * exactly why none of them surfaced: the queue is fed by feedback/ and the
  * forward reviews, so an entry could sit in either directory indefinitely
  * without anything saying so — and one of them sat there from the day the
  * directory was created.
@@ -25,14 +25,14 @@ final class Unresolved
     /**
      * Every requirement nothing answers for, in id order.
      *
-     * `queued` is the whole coupling to the pipeline: an item in todo.md naming
+     * `queued` is the whole coupling to the pipeline: a queued todo naming
      * the id is what turns an entry into work, and an entry no item names is one
      * nobody has decided about either way.
      *
-     * Read from what the items say they serve rather than from the file as a
-     * whole. A search over the text answers yes for an id named in the section
-     * that lists what is deliberately *not* queued — which is a decision that
-     * was taken, and the opposite of the one this flag reports.
+     * Read from what the queue says it serves rather than from `todo/` as a
+     * whole. A search over the directory answers yes for an id named in the
+     * page that lists what is deliberately *not* queued — which is a decision
+     * that was taken, and the opposite of the one this flag reports.
      *
      * @return array<int, array{id: string, state: string, title: string, queued: bool}>
      */

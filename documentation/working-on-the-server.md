@@ -13,7 +13,7 @@ supports:
 ```bash
 bin/cli          # every subject, and every command it carries
 bin/cli next     # the one todo that is due now, and nothing else
-bin/cli check    # requirements, decisions, scenarios and todo.md against their formats
+bin/cli check    # requirements, decisions, scenarios and the todos against their formats
 ```
 
 `bin/typo3-cms-mcp` is the server itself and carries none of this.

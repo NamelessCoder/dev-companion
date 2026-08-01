@@ -37,14 +37,14 @@ final class UnresolvedTest extends TestCase
     }
 
     /**
-     * An item in todo.md naming the id is the whole coupling between what must
+     * A queued todo naming the id is the whole coupling between what must
      * be true and the order the work happens in. An entry nobody has queued is
      * the case the reading exists for, so getting that flag backwards would
      * hide exactly the entries it is meant to surface.
      *
-     * It is what an *item* names, not what the file contains. todo.md also
-     * lists what is deliberately not queued, and an id named there has been
-     * decided about in the opposite direction.
+     * It is what the *queue* names, not what `todo/` contains. The directory
+     * also keeps the page listing what is deliberately not queued, and an id
+     * named there has been decided about in the opposite direction.
      *
      * Read as two lists rather than entry by entry, because the reading is
      * empty on any day every requirement is held, and a loop over nothing is a

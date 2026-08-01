@@ -7,29 +7,35 @@ namespace Typo3CmsMcp\Upkeep;
 use Typo3CmsMcp\Paths;
 
 /**
- * Reads todo.md as the order of the work rather than as prose.
+ * Reads todo/, where one todo is one file and the order is in the names.
  *
- * The file always held that order, and only a person could see it. Sections sit
- * in it that look identical from the outside: the ones that come round every
- * session, the ones that are the queue, and the ones that are neither — the
- * environment table, the things deliberately not queued. A session that had
- * read nothing else could not tell which heading was the next piece of work.
+ * It was one document, the way requirements/ and decisions/ each were before
+ * they became directories, and it failed in the same way twice over. Finishing
+ * a todo meant loading 30 kB to delete a paragraph, at the end of a run where
+ * there is least room for exactly that. And every session that added, moved or
+ * dropped work wrote the same file, so two of them could not do it at once.
  *
- * So each section opens with a head of labelled lines, in the same bold-label
- * shape requirements/ and decisions/ use for the fields they are read by:
+ * Where a file sits is what it is, and the head it opens with says the rest:
  *
- *     ## Add the static-quality branch to `typo3-extension-testing`
+ *     todo/030-give-d-cat-1-a-digest-to-notice-markup-by.md
  *
- *     **Serves:** R-SKL-2, feedback/2026-07-30-174423-….md
- *     **Every:** session
- *     **Run:** bin/cli backlog list
+ *     # Give `D-CAT-1` a digest to notice markup by
+ *
+ *     **Serves:** decisions/
+ *     **Run:** bin/cli catalog check
  *
  *     One paragraph: the next concrete step.
  *
- * `Serves:` is what makes it work rather than an idea. `Every:` is what makes
- * it recurring — without that line it is the queue, and the queue is an order.
- * `Run:` is the command the step starts from, and `bin/cli next` runs the ones
- * this repository owns rather than naming them.
+ * The number is the todo's place in the queue and nothing else — a move is a
+ * rename, a finish is a deletion, and a new todo is a new file no other session
+ * is writing. They run in tens so something can be put between two of them.
+ * `recurring/` is what comes round and is never deleted, `reference/` is
+ * neither and is there so a session does not rediscover it and mistake it for
+ * work.
+ *
+ * `Serves:` is what makes a todo work rather than an idea. `Every:` is the
+ * cadence of a recurring one, and `Run:` is the command the step starts from,
+ * which `bin/cli next` runs where this repository owns it.
  *
  * A cadence is `session` or a number of days, and the days are why the pair
  * exists: five sessions in an afternoon owe the feedback five readings and the
@@ -40,7 +46,9 @@ use Typo3CmsMcp\Paths;
  * The paragraph under the head is one step, because it is printed whole and a
  * session that has to read three of them to find where to start is reading
  * instead of working. Two steps are two todos, and the order between them is
- * the order they are in.
+ * the order their numbers are in.
+ *
+ * @phpstan-type Section array{title: string, kind: string, position: string, path: string, every: string, checked: string, serves: array<int, string>, run: array<int, string>, head: string, strays: array<int, string>, body: string}
  */
 final class Todo
 {
@@ -86,36 +94,41 @@ final class Todo
         return $next === false || $now === false || $next <= $now;
     }
 
-    public static function file(): string
+    public static function directory(): string
     {
-        return Paths::root() . '/todo.md';
+        return Paths::root() . '/todo';
     }
 
     /**
-     * Every section, in the order the file has them, which is the order of the
-     * work.
+     * Every todo there is: the queue in its order, then what recurs, then what
+     * is neither.
      *
-     * @return array<int, array{title: string, kind: string, every: string, checked: string, serves: array<int, string>, run: array<int, string>, head: string, strays: array<int, string>, body: string}>
+     * @return array<int, Section>
      */
-    public static function sections(): array
+    public static function all(): array
     {
-        $parts = preg_split('/^## /m', (string) file_get_contents(self::file())) ?: [];
-
-        return array_map(self::parse(...), array_slice($parts, 1));
+        return array_merge(self::items(), self::recurring(), self::references());
     }
 
     /**
-     * What comes round every session, in the order the file has it, and is
-     * never deleted.
+     * The queue: what is to be worked on once, in the order it is to be worked
+     * on, which is the order of the numbers it is named by.
      *
-     * @return array<int, array{title: string, kind: string, every: string, checked: string, serves: array<int, string>, run: array<int, string>, head: string, strays: array<int, string>, body: string}>
+     * @return array<int, Section>
+     */
+    public static function items(): array
+    {
+        return self::read('', 'queue');
+    }
+
+    /**
+     * What comes round and is never deleted.
+     *
+     * @return array<int, Section>
      */
     public static function recurring(): array
     {
-        return array_values(array_filter(
-            self::sections(),
-            static fn(array $s): bool => $s['kind'] === 'todo' && $s['every'] !== '',
-        ));
+        return self::read('recurring', 'recurring');
     }
 
     /**
@@ -123,7 +136,7 @@ final class Todo
      * not, and which is therefore asked before the queue. Missing it is missing
      * the day, not losing a place in an order.
      *
-     * @return array<int, array{title: string, kind: string, every: string, checked: string, serves: array<int, string>, run: array<int, string>, head: string, strays: array<int, string>, body: string}>
+     * @return array<int, Section>
      */
     public static function appointments(): array
     {
@@ -140,7 +153,7 @@ final class Todo
      * every session forever if it were asked first: feedback arrive from every
      * session everywhere, and one session judges a handful.
      *
-     * @return array<int, array{title: string, kind: string, every: string, checked: string, serves: array<int, string>, run: array<int, string>, head: string, strays: array<int, string>, body: string}>
+     * @return array<int, Section>
      */
     public static function sightings(): array
     {
@@ -148,39 +161,24 @@ final class Todo
     }
 
     /**
-     * The queue: what is to be worked on once, in the order it is to be worked
-     * on.
-     *
-     * @return array<int, array{title: string, kind: string, every: string, checked: string, serves: array<int, string>, run: array<int, string>, head: string, strays: array<int, string>, body: string}>
-     */
-    public static function items(): array
-    {
-        return array_values(array_filter(
-            self::sections(),
-            static fn(array $s): bool => $s['kind'] === 'todo' && $s['every'] === '',
-        ));
-    }
-
-    /**
      * What a session would otherwise rediscover and mistake for work: the
      * environment table, the answers that are standing rather than pending.
      *
-     * @return array<int, array{title: string, kind: string, every: string, checked: string, serves: array<int, string>, run: array<int, string>, head: string, strays: array<int, string>, body: string}>
+     * @return array<int, Section>
      */
     public static function references(): array
     {
-        return array_values(array_filter(self::sections(), static fn(array $s): bool => $s['kind'] === 'reference'));
+        return self::read('reference', 'reference');
     }
 
     /**
      * Everything the queue answers for, which is what turns an entry in
      * requirements/ or a feedback in feedback/ into work somebody has taken on.
      *
-     * Read from the queue alone rather than from the file as a whole: the
-     * section that lists what is deliberately *not* queued names ids too, and a
-     * search over the text counts those as taken on. A recurring todo is not a
-     * taking-on either — it is owed every session, which is the opposite of
-     * somebody having it in hand.
+     * Read from the queue alone. What is kept in `reference/` names ids too,
+     * and one of those sections is the list of what is deliberately *not*
+     * queued — the opposite of somebody having it in hand. A recurring todo is
+     * not a taking-on either: it is owed every session.
      *
      * @return array<int, string>
      */
@@ -233,18 +231,46 @@ final class Todo
     }
 
     /**
-     * @return array{title: string, kind: string, every: string, checked: string, serves: array<int, string>, run: array<int, string>, head: string, strays: array<int, string>, body: string}
+     * One directory of todos, in the order its file names have them, which for
+     * the queue is the order of the work.
+     *
+     * The readme is the only file here that is not a todo, and it is what the
+     * directory says about itself rather than something to do.
+     *
+     * @return array<int, Section>
      */
-    private static function parse(string $part): array
+    private static function read(string $group, string $kind): array
     {
-        [$title, $rest] = array_pad(preg_split('/\R/', $part, 2) ?: [], 2, '');
-        [$head, $body] = array_pad(preg_split('/\R\R/', ltrim((string) $rest), 2) ?: [], 2, '');
+        $todos = [];
+        foreach (glob(self::directory() . '/' . ($group === '' ? '' : $group . '/') . '*.md') ?: [] as $path) {
+            if (basename($path) !== 'readme.md') {
+                $todos[] = self::parse($path, $kind);
+            }
+        }
+        usort($todos, static fn(array $a, array $b): int => strcmp($a['path'], $b['path']));
 
-        // The horizontal rules between the sections belong to the section above
-        // them the way a page break belongs to the page.
-        $body = trim((string) preg_replace('/\R-{3,}\s*$/', '', (string) $body));
+        return $todos;
+    }
 
-        $kind = '';
+    /**
+     * One file: what it is called, what it declares, and the step itself.
+     *
+     * @return Section
+     */
+    private static function parse(string $path, string $kind): array
+    {
+        $contents = (string) file_get_contents($path);
+
+        preg_match('/^# (.*)$/m', $contents, $heading);
+        $rest = ltrim(array_pad(preg_split('/\R\R/', $contents, 2) ?: [], 2, '')[1]);
+
+        // A head is a head where it opens with one of its own labels. What is
+        // kept in reference/ has none, and reading its first paragraph as a
+        // broken one would report every line of it as a field nobody knows.
+        [$head, $body] = preg_match('/^\*\*[A-Z]/', $rest) === 1
+            ? array_pad(preg_split('/\R\R/', $rest, 2) ?: [], 2, '')
+            : ['', $rest];
+
         $every = '';
         $checked = '';
         $serves = [];
@@ -252,8 +278,7 @@ final class Todo
         $strays = [];
         foreach (preg_split('/\R/', trim((string) $head)) ?: [] as $line) {
             $line = trim($line);
-            if ($line === '**Not an item.**') {
-                $kind = 'reference';
+            if ($line === '') {
                 continue;
             }
             if (preg_match('/^\*\*([A-Z][a-z]+):\*\*\s*(.*)$/', $line, $matches) !== 1) {
@@ -270,20 +295,20 @@ final class Todo
             };
         }
 
-        if ($kind === '' && $serves !== []) {
-            $kind = 'todo';
-        }
+        preg_match('/^(\d+)-/', basename($path), $position);
 
         return [
-            'title' => trim((string) $title),
+            'title' => trim($heading[1] ?? ''),
             'kind' => $kind,
+            'position' => $position[1] ?? '',
+            'path' => 'todo/' . ($kind === 'queue' ? '' : basename(dirname($path)) . '/') . basename($path),
             'every' => $every,
             'checked' => $checked,
             'serves' => $serves,
             'run' => $run,
             'head' => trim((string) $head),
             'strays' => $strays,
-            'body' => $body,
+            'body' => trim((string) $body),
         ];
     }
 }

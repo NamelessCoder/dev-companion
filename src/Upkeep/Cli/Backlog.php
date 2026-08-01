@@ -37,7 +37,7 @@ final class Backlog implements Subject
      * What is waiting, and whether the pipeline knows about it.
      *
      * A requirement is named with the state it is in and with the one thing
-     * that turns it into work: an item in todo.md. The decisions are counted
+     * that turns it into work: a todo in the queue. The decisions are counted
      * rather than listed — most of them are standing because they are still
      * true, and a report that prints all of them every time is one nobody
      * reads twice. The oldest is named because it is the one the repository
@@ -56,7 +56,7 @@ final class Backlog implements Subject
                 $requirement['id'],
                 $requirement['state'],
                 $requirement['title'],
-                $requirement['queued'] ? '' : ' — no todo.md item names it',
+                $requirement['queued'] ? '' : ' — no todo names it',
             );
         }
         if ($requirements === []) {

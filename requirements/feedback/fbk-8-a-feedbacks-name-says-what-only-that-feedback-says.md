@@ -16,7 +16,7 @@ thing about a feedback nobody looks for — while being about seventeen differen
 things.
 
 The name is what a listing shows, what a `**Serves:**` line in
-[todo.md](../../todo.md) names, and what a commit that closes one says it
+[todo/](../../todo/readme.md) names, and what a commit that closes one says it
 closed. It has to identify the feedback in all three, and the first feedback of
 a series is the only one that cannot: nothing yet says it is a series.
 

@@ -156,14 +156,25 @@ final class Todo
     }
 
     /**
-     * Putting one back: out of `progress/`, onto the end of the queue.
+     * Putting one back: out of `progress/`, to whichever of the two states the
+     * claim itself says it is in.
      *
-     * The end rather than where it was, because that is what this repository
-     * already does with a todo somebody could not finish — it is the one place
-     * that is both honest about the priority and its own timer, coming round
-     * again as the queue drains. What it was claimed for is dropped with it: a
-     * branch nobody is on and a date nobody is counting from are worse than no
-     * fields at all, because the next reader cannot tell them from a live claim.
+     * A claim carrying a question goes to `waiting/`, because that is what it
+     * is: blocked on an answer nothing here can produce. The rest go to the end
+     * of the queue, which is what this repository already does with a todo
+     * somebody could not finish — honest about the priority, and its own timer,
+     * coming round again as the queue drains.
+     *
+     * Reading it off the file rather than asking is what keeps the two apart
+     * without a second command. The question was written by the session that
+     * hit it, and a todo whose remaining step is "wait for somebody to answer"
+     * parked at the end of the queue reads as the lowest priority in the
+     * repository while it is actually waiting on a person.
+     *
+     * What it was claimed for is dropped either way. A branch nobody is on and
+     * a date nobody is counting from are worse than no fields at all, because
+     * the next reader cannot tell them from a live claim — and after the work
+     * is merged, the branch they name is one somebody is about to delete.
      *
      * @param Section $todo
      *
@@ -171,12 +182,17 @@ final class Todo
      */
     public static function release(array $todo): string
     {
-        $positions = array_map(intval(...), array_column(self::items(), 'position'));
-        $next = sprintf('%03d', ($positions === [] ? 0 : max($positions)) + 10);
         $head = implode("\n", array_filter(
             preg_split('/\R/', $todo['head']) ?: [],
             static fn(string $line): bool => !str_starts_with($line, '**Branch:**') && !str_starts_with($line, '**Claimed:**'),
         ));
+
+        if ($todo['waitingOn'] !== '') {
+            return self::move($todo, 'todo/waiting/' . basename($todo['path']), $head);
+        }
+
+        $positions = array_map(intval(...), array_column(self::items(), 'position'));
+        $next = sprintf('%03d', ($positions === [] ? 0 : max($positions)) + 10);
 
         return self::move($todo, 'todo/' . $next . '-' . basename($todo['path']), $head);
     }

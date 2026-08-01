@@ -27,6 +27,7 @@ final class TodoTest extends TestCase
         $written = [
             ...(glob(Todo::directory() . '/*.md') ?: []),
             ...(glob(Todo::directory() . '/progress/*.md') ?: []),
+            ...(glob(Todo::directory() . '/waiting/*.md') ?: []),
         ];
         foreach ($written as $file) {
             if (str_contains((string) file_get_contents($file), self::MARKER)) {
@@ -250,6 +251,37 @@ final class TodoTest extends TestCase
         self::assertSame('', $back['claimed']);
         self::assertSame($queued['body'], $back['body']);
         self::assertSame($back, Todo::items()[count(Todo::items()) - 1], 'a released todo is not at the end of the queue');
+    }
+
+    /**
+     * The other way out of `progress/`, and the one the first parallel run
+     * produced: the work came home and a question was left over.
+     *
+     * `progress/` is for as long as a branch is live. Once the branch is merged
+     * and deleted, a claim still sitting there names a branch nobody can look
+     * at — and the todo itself is blocked on a person, which is the state
+     * `waiting/` already existed for. Which of the two it is, is written in the
+     * claim by the session that hit the question, so nothing has to be asked.
+     */
+    #[Test]
+    public function aClaimThatCarriesAQuestionIsReleasedIntoWaiting(): void
+    {
+        @mkdir(Todo::directory() . '/progress');
+        file_put_contents(
+            Todo::directory() . '/progress/' . self::MARKER . '.md',
+            '# ' . self::MARKER . "\n\n**Serves:** todo/\n**Branch:** todo/" . self::MARKER
+                . "\n**Claimed:** 2026-08-01\n**Waiting on:** which of the two shapes is wanted.\n\nThe half that is done.\n",
+        );
+        $inHand = $this->fixture(Todo::progress())[0];
+
+        $released = Todo::release($inHand);
+
+        self::assertSame('todo/waiting/' . self::MARKER . '.md', $released);
+        $waiting = $this->fixture(Todo::waiting())[0];
+        self::assertSame('which of the two shapes is wanted.', $waiting['waitingOn'], 'the question is what the state carries');
+        self::assertSame('', $waiting['branch'], 'a waiting todo names a branch somebody is about to delete');
+        self::assertSame('', $waiting['claimed']);
+        self::assertSame([], $this->fixture(Todo::items()), 'a todo blocked on a person is queued behind work nobody is blocked on');
     }
 
     /**

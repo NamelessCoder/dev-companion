@@ -14,22 +14,22 @@ use Typo3CmsMcp\Upkeep\Todo;
  * Putting a claim back, which is the half that keeps `progress/` from filling up.
  *
  * A session ends where it ends, and the ones that end without finishing are the
- * common case rather than the exception: the branch was abandoned, the step
- * turned out to be somebody else's, the worktree is gone. Each of those leaves a
- * todo nobody is working and nobody else is offered, and a state that can only
- * be entered is one that gets worked around within a week.
+ * common case rather than the exception: the branch was merged and a question is
+ * left over, the step turned out to be somebody else's, the worktree is gone.
+ * Each of those leaves a todo nobody is working and nobody else is offered, and
+ * a state that can only be entered is one that gets worked around within a week.
  *
- * It goes to the end of the queue, which is where this repository already puts a
- * todo somebody could not finish: honest about the priority, and its own timer,
- * coming round again as the queue drains.
+ * Where it goes is read off the claim. One carrying a `**Waiting on:**` waits,
+ * because that is what it is; the rest go to the end of the queue. `progress/`
+ * is for as long as a branch is live, and a claim whose work has come home is in
+ * one of the two states this repository already had.
  *
- * A todo left in `progress/` with a `**Waiting on:**` is a different answer and
- * not this one. That one has work behind it on a branch and a question in front
- * of it; releasing it would throw away the half that is done.
+ * The branch is not touched. Where the work is not merged, it is still the only
+ * place the half that is done exists.
  */
 #[AsCommand(
     name: 'todo:release',
-    description: 'put a claim nobody is working back onto the end of the queue',
+    description: 'put a claim nobody is working back into the queue, or into waiting where it carries a question',
 )]
 final class TodoRelease
 {
@@ -56,10 +56,10 @@ final class TodoRelease
 
             $claim = $inHand[$name];
             $output->writeln(Todo::release($claim));
-            if ($claim['waitingOn'] !== '') {
-                $output->writeln('    It was waiting on ' . $claim['waitingOn']);
-            }
-            $output->writeln('    The work is on ' . $claim['branch'] . ', which nothing here deletes.');
+            $output->writeln($claim['waitingOn'] === ''
+                ? '    Nobody was working it, so it is queued behind everything else.'
+                : '    It waits on ' . $claim['waitingOn']);
+            $output->writeln('    ' . $claim['branch'] . ' is what it was worked on, and nothing here deletes it.');
         }
 
         return 0;

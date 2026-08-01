@@ -43,8 +43,9 @@ are two sessions editing one file, and taking one of them is cheaper than
 merging both.
 
 `bin/cli todo:release <name>` is the way back out, for a claim nobody is
-working — an abandoned branch, a session that never started. It goes to the end
-of the queue and the branch is left alone.
+working — a branch that came home with a question left over, one that was
+abandoned, a session that never started. Where it goes is read off the claim,
+and the branch is left alone either way.
 
 ## The worktree
 
@@ -94,14 +95,22 @@ on the claim in `progress/`, in the words it would have been asked in, together
 with what the reading already established. Then the session commits what it has
 and ends. The branch keeps the half that is done.
 
-**Only the claim comes back to `main`, not the work:**
+What happens next depends on whether the work behind the question stands on its
+own. Most of the time it does — the session settled one half of its todo and the
+question is about the other — and then the branch merges like any other and the
+trimmed claim comes with it. Where it does not, only the claim comes back:
 
     git checkout <branch> -- todo/progress/<name>.md
 
-That is what keeps `main` free of half-finished changes while still saying, in
-one place, what is open and where the work behind it is. The answer is what
-decides between the two ways on: a session picks the branch back up, or
-`bin/cli todo:release` puts the todo back and the branch is abandoned.
+That keeps `main` free of a half-finished change while still saying, in one
+place, what is open and where the work behind it is.
+
+**A claim whose branch is gone does not stay in `progress/`.** That state is for
+as long as a branch is live. Once the work is merged and the branch deleted,
+`**Branch:**` names something nobody can look at, and the todo is blocked on a
+person — which is what `waiting/` is. `bin/cli todo:release` reads that off the
+claim: one carrying a `**Waiting on:**` goes to `waiting/`, one carrying none
+goes to the end of the queue. Neither touches the branch.
 
 A claim in `progress/` with no `**Waiting on:**` and an old `**Claimed:**` is
 the other thing to look for. Nobody is working it, and nothing will notice on

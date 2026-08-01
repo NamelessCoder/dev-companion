@@ -4,5 +4,6 @@ vendor/
 .DS_Store
 .phpunit.cache/
 .php-cs-fixer.cache
+.phpstan.cache/
 /.checkouts
 /.worktrees

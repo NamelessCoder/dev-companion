@@ -1,5 +1,11 @@
 parameters:
     level: 6
+    # The result cache stores absolute paths, and without this it goes to
+    # /tmp/phpstan, which every checkout on the machine shares. One entry naming
+    # a directory that has since been deleted — a removed worktree — then fails
+    # the analysis of every other checkout, with an internal error naming a path
+    # the caller has never heard of.
+    tmpDir: .phpstan.cache
     paths:
         - bin
         - src

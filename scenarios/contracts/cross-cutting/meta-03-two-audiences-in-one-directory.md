@@ -1,11 +1,11 @@
 # META-03 — Two audiences in one directory
 
 **Environment:** `E-SITE` with the extension under `packages/` ·
-**Contract:** `open` — `R-SCO-1` held, `R-AUD-2` open
-**Held by:** `ScopeTest::aPathInsideAnExtensionIsRecognisedByItsShape`,
-`ScopeTest::anAreaTheInstallationKnowsAsSomebodysExtensionIsOutsideTheCore`;
-that two paths of different audience in one session stay apart is not guarded
-(`R-AUD-2` open)
+**Contract:** `held` — `R-SCO-1` and `R-AUD-2` held
+**Held by:** `ScopeTest::twoPathsOfDifferentAudienceInOneCallStayApart`,
+`ScopeTest::aPathInsideAnExtensionIsRecognisedByItsShape`,
+`ScopeTest::anAreaTheInstallationKnowsAsSomebodysExtensionIsOutsideTheCore`,
+`ScopeTest::whereNothingPlacesTheWorkTheAnswerSaysSoRatherThanAssumingTheCore`
 
 > I am touching `packages/acme_events/Classes/Domain/Repository/EventRepository.php`
 > and `typo3/sysext/core/Classes/Database/Query/QueryBuilder.php` in the same
@@ -30,3 +30,7 @@ that two paths of different audience in one session stay apart is not guarded
 - One verdict for the whole session, applied to both paths.
 - The distinction only appearing after the user spells out "this is not core"
   (`R-SCO-1`).
+
+`typo3_task_guide` is still asked about one `area` at a time, so this prompt
+reaches it as one question and gets one answer. The two tools that take a
+`paths` array answer per path.

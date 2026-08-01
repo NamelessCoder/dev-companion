@@ -11,6 +11,7 @@ one is added.
 | Decided | Id | What was decided | State |
 | --- | --- | --- | --- |
 | 2026-08-01 | [`D-SCO-7`](sco-7-the-signals-are-combined-per-call-and-a-call-is-not-a-path.md) | The signals are combined per call, and a call is not a path | standing |
+| 2026-08-01 | [`D-SCO-8`](sco-8-the-path-decides-and-the-answer-may-say-it-cannot.md) | The path decides, and the answer may say it cannot | standing |
 | 2026-07-29 | [`D-SCO-1`](sco-1-outside-the-core-the-core-test-guide-declines-rather-than-adapts.md) | Outside the core the core test guide declines rather than adapts | corrected |
 | 2026-07-29 | [`D-SCO-2`](sco-2-a-core-only-intent-asks-for-evidence-not-for-silence.md) | A core-only intent asks for evidence, not for silence | standing |
 | 2026-07-29 | [`D-SCO-3`](sco-3-what-is-core-only-is-decided-per-line-by-what-it-names.md) | What is core-only is decided per line, by what it names | standing |

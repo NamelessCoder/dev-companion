@@ -9,7 +9,10 @@ status: held
 
 Core-only commands, checklist items and checkout discovery are dropped;
 conventions that transfer stay and are marked as such. The line is drawn per
-entry, not per section, because a checklist mixes both.
+entry, not per section, because a checklist mixes both — and in a call whose
+paths have different audiences it is drawn per path as well: the suites and the
+checks come back for the paths that can run them, and the ones that cannot are
+named beside them.
 
 **From:** an answer that reported `outsideCore: true` and then returned four
 `runTests.sh` suites for a repository that has no `Build/Scripts/`
@@ -17,4 +20,5 @@ entry, not per section, because a checklist mixes both.
 
 **Held by:** `ScopeTest::aBriefOutsideTheCoreKeepsNothingThatOnlyTheCoreHas`,
 `ScopeTest::noRunTestsCommandIsHandedToARepositoryThatHasNoRunTests`,
-`ScopeTest::anArchitectureHintKeepsItsAdviceOutsideTheCoreAndLosesItsCoreChecks`
+`ScopeTest::anArchitectureHintKeepsItsAdviceOutsideTheCoreAndLosesItsCoreChecks`,
+`ScopeTest::twoPathsOfDifferentAudienceInOneCallStayApart`

@@ -68,7 +68,63 @@ final class Scope
     ];
 
     /**
-     * Whether the task is about something other than the TYPO3 core.
+     * The other half of that sentence, and only the half that holds. From the
+     * core root everything not below typo3/sysext/<key>/ is below Build/, but
+     * Build/ is not the core's alone — an extension that compiles anything
+     * ships one too. What no other repository has is what the core keeps in it:
+     * Build/Scripts/, which is runTests.sh and its neighbours, and
+     * Build/Sources/, the backend's Sass and TypeScript sources.
+     *
+     * @var array<int, string>
+     */
+    private const CORE_LAYOUT = ['build/scripts/', 'build/sources/'];
+
+    /**
+     * Who an answer about one path is for: the core contributor, or the
+     * extension author and site developer the core's own process has no
+     * counterpart for.
+     *
+     * The third value is the one a boolean had no room for. Where the signals
+     * disagree and nothing left resolves them, saying so is the answer
+     * R-AUD-2 asks for — picking a side silently is what a `false` did.
+     */
+    public const AUDIENCE_CORE = 'core';
+    public const AUDIENCE_OUTSIDE = 'outside-core';
+    public const AUDIENCE_UNCERTAIN = 'uncertain';
+
+    /**
+     * What every tool says once a call names paths of both audiences.
+     *
+     * The paths are named, because the whole point of splitting is that the
+     * caller can tell which half of the answer is about which of its files.
+     *
+     * @param array<int, string> $paths
+     */
+    public static function outsideCoreAmong(array $paths): string
+    {
+        return sprintf(
+            'Of the paths given, %s %s outside the TYPO3 core — a project or third-party extension. What follows '
+            . 'is split accordingly: what only the core repository has is left out of the half that is about %s.',
+            implode(' and ', $paths),
+            count($paths) === 1 ? 'is' : 'are',
+            count($paths) === 1 ? 'it' : 'them',
+        );
+    }
+
+    /**
+     * What every tool says when nothing in the call places the work at all.
+     *
+     * Not a hedge: the answer below is still the core's own, because there is
+     * no second body of it to hand over. What is new is that the caller is told
+     * which question was never answered, and how to answer it.
+     */
+    public const UNCERTAIN_AUDIENCE_NOTICE = 'Nothing here says which repository this work is in — no path with a '
+        . 'shape of its own, no area this server could place, and no installation to read. What follows is the '
+        . 'core\'s own, so name a path or the repository if it is not, because several of these steps exist '
+        . 'nowhere else.';
+
+    /**
+     * The audience of one path: who the answer about it is for.
      *
      * The conventions here are the core's own, and several of them — the
      * changelog, the Gerrit workflow, the runTests.sh suites — do not exist
@@ -77,25 +133,44 @@ final class Scope
      *
      * The evidence is structural where structure exists, because wording is
      * the weakest of the signals: "bootstrap_package" says everything about
-     * which repository this is and matches none of the phrases below.
+     * which repository this is and matches none of the phrases below. The
+     * order the signals are read in is R-SCO-1's, and what comes first is what
+     * the path says about itself — a call is not a path, and two of them in one
+     * session are two questions.
      *
-     * @param array<int, string> $paths
+     * @param string $path one path, or '' where the call named none and only
+     *                     what was said about it can decide
      */
-    public static function isOutsideCore(array $paths, string $text = '', string $area = ''): bool
+    public static function audienceOf(string $path, string $text = '', string $area = ''): string
     {
-        $haystack = mb_strtolower(implode(' ', $paths) . ' ' . $text);
+        $lowered = ltrim(mb_strtolower(str_replace('\\', '/', $path)), './');
+        $prose = mb_strtolower($text);
 
-        // A sysext path is the only marker strong enough to end the question
-        // outright. The prose ones are not, and cannot be: "not TYPO3 core, a
-        // composer package under vendor bk2k" names the core in order to rule
-        // it out, and reads to a substring search exactly like claiming it.
-        if (str_contains($haystack, 'typo3/sysext/')) {
-            return false;
+        // What this path says about itself. Nothing said about the call as a
+        // whole moves it, which is what keeps two paths of one call apart:
+        // folded into one string, the second path is answered for by the first.
+        if ($lowered !== '') {
+            if (str_contains($lowered, 'typo3/sysext/')) {
+                return self::AUDIENCE_CORE;
+            }
+            foreach (self::OUTSIDE_CORE as $marker) {
+                if (str_contains($lowered, $marker)) {
+                    return self::AUDIENCE_OUTSIDE;
+                }
+            }
         }
 
+        // The same markers where the caller only wrote them down. A sysext path
+        // is the only one strong enough to end the question outright. The prose
+        // ones are not, and cannot be: "not TYPO3 core, a composer package under
+        // vendor bk2k" names the core in order to rule it out, and reads to a
+        // substring search exactly like claiming it.
+        if (str_contains($prose, 'typo3/sysext/')) {
+            return self::AUDIENCE_CORE;
+        }
         foreach (self::OUTSIDE_CORE as $marker) {
-            if (str_contains($haystack, $marker)) {
-                return true;
+            if (str_contains($prose, $marker)) {
+                return self::AUDIENCE_OUTSIDE;
             }
         }
 
@@ -106,14 +181,20 @@ final class Scope
         // "backend forms" are areas too.
         $systemExtension = $area === '' ? null : Instance::isSystemExtension($area);
         if ($systemExtension === false) {
-            return true;
+            return self::AUDIENCE_OUTSIDE;
         }
 
-        foreach ($paths as $path) {
-            $lowered = ltrim(mb_strtolower(str_replace('\\', '/', $path)), './');
+        // The shape of the path, where it carries no marker: which directories
+        // a file sits in says which repository it was laid out for.
+        if ($lowered !== '') {
             foreach (self::EXTENSION_LAYOUT as $prefix) {
                 if (str_starts_with($lowered, $prefix)) {
-                    return true;
+                    return self::AUDIENCE_OUTSIDE;
+                }
+            }
+            foreach (self::CORE_LAYOUT as $prefix) {
+                if (str_starts_with($lowered, $prefix) && self::couldBeTheCore()) {
+                    return self::AUDIENCE_CORE;
                 }
             }
         }
@@ -123,13 +204,55 @@ final class Scope
         // signal there is — which installation the session happens to sit in —
         // and neither beats a marker above, because those describe the work
         // while these only accompany it.
-        if ($systemExtension === true || self::isCoreWork($paths, $text)) {
-            return false;
+        if ($systemExtension === true || self::isCoreWork([$path], $text)) {
+            return self::AUDIENCE_CORE;
         }
 
-        // That signal. A Composer project is not a core checkout, and work done
-        // in one is not core work unless something above said it was.
-        return (Instance::describe()['kind'] ?? '') === Instance::KIND_COMPOSER_PROJECT;
+        // That signal, and where there is no installation either, nothing in
+        // the call has placed the work at all. That is not the core by default:
+        // it is the case R-AUD-2 names, and the answer says so.
+        return match (Instance::describe()['kind'] ?? '') {
+            Instance::KIND_COMPOSER_PROJECT => self::AUDIENCE_OUTSIDE,
+            Instance::KIND_CORE_CHECKOUT => self::AUDIENCE_CORE,
+            default => self::AUDIENCE_UNCERTAIN,
+        };
+    }
+
+    /**
+     * Whether the repository this session sits in can be the core at all.
+     *
+     * Build/Scripts/ and Build/Sources/ are the core's own from the core root,
+     * and from an extension's root they are that extension's build setup. What
+     * decides is the manifest rather than the directory name: the core declares
+     * "type": "typo3-cms-core" in the composer.json at its root, which is what
+     * `Instance` reads a checkout's kind from, and a repository declaring
+     * anything else has already said it is not the core.
+     *
+     * Where there is no installation to read, the shape is left standing —
+     * a `Build/Sources/` path is then the only evidence there is.
+     */
+    private static function couldBeTheCore(): bool
+    {
+        $kind = Instance::describe()['kind'] ?? '';
+
+        return $kind === '' || $kind === Instance::KIND_CORE_CHECKOUT;
+    }
+
+    /**
+     * The audience of every path a call named, in the order it named them.
+     *
+     * @param array<int, string> $paths
+     * @return array<int, array{path: string, audience: string}>
+     */
+    public static function audiences(array $paths, string $text = '', string $area = ''): array
+    {
+        return array_values(array_map(
+            static fn(string $path): array => [
+                'path' => $path,
+                'audience' => self::audienceOf($path, $text, $area),
+            ],
+            $paths,
+        ));
     }
 
     /**
@@ -168,11 +291,11 @@ final class Scope
     /**
      * Whether anything in the task actually says this is core work.
      *
-     * `isOutsideCore()` returning false means no marker was found, which is the
-     * state most tasks are in — "review the TCA of an extension" says nothing
-     * either way. Where an answer would state the core's own process as
-     * applying, that silence is not enough, so this asks for the evidence
-     * rather than for the absence of the opposite.
+     * An audience of `core` can be the last signal speaking — the checkout the
+     * session sits in — and most tasks say nothing either way: "review the TCA
+     * of an extension" is one of them. Where an answer would state the core's
+     * own process as applying, that is not enough, so this asks for the
+     * evidence rather than for the absence of the opposite.
      *
      * @param array<int, string> $paths
      */

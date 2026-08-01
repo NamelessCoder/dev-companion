@@ -45,8 +45,8 @@ final class ScopeTest extends TestCase
     {
         Instance::discoverFrom($this->composerProject());
 
-        self::assertTrue(Scope::isOutsideCore([], 'Add a content element with a backend preview'));
-        self::assertFalse(Scope::isOutsideCore(['typo3/sysext/core/Classes/Utility/GeneralUtility.php'], ''));
+        self::assertSame(Scope::AUDIENCE_OUTSIDE, Scope::audienceOf('', 'Add a content element with a backend preview'));
+        self::assertSame(Scope::AUDIENCE_CORE, Scope::audienceOf('typo3/sysext/core/Classes/Utility/GeneralUtility.php'));
     }
 
     #[Test]
@@ -54,7 +54,23 @@ final class ScopeTest extends TestCase
     {
         Instance::discoverFrom($this->coreCheckout());
 
-        self::assertFalse(Scope::isOutsideCore([], 'Add a content element with a backend preview'));
+        self::assertSame(Scope::AUDIENCE_CORE, Scope::audienceOf('', 'Add a content element with a backend preview'));
+    }
+
+    #[Test]
+    public function whereNothingPlacesTheWorkTheAnswerSaysSoRatherThanAssumingTheCore(): void
+    {
+        // The third value. Without an installation, without a path with a shape
+        // of its own and without a word either way, the old boolean answered
+        // "not outside the core" — which every caller read as the core, and
+        // half of them were in their own repository.
+        Instance::discoverFrom(null);
+
+        self::assertSame(Scope::AUDIENCE_UNCERTAIN, Scope::audienceOf('', 'Improve the query performance'));
+        self::assertStringContainsString(
+            'Nothing here says which repository',
+            Tools::call('typo3_task_guide', ['task' => 'Improve the query performance'])->text,
+        );
     }
 
     #[Test]
@@ -64,8 +80,8 @@ final class ScopeTest extends TestCase
         // substring search exactly like claiming to be the core. What decides
         // is the marker that describes the work, not the one that accompanies
         // it — so the order of the signals is the whole answer here.
-        self::assertTrue(Scope::isOutsideCore(
-            [],
+        self::assertSame(Scope::AUDIENCE_OUTSIDE, Scope::audienceOf(
+            '',
             'Raise the compatibility of the third-party extension bootstrap_package '
             . '(not TYPO3 core, a composer package under vendor bk2k) to TYPO3 v14'
         ));
@@ -75,11 +91,25 @@ final class ScopeTest extends TestCase
     public function aPathInsideAnExtensionIsRecognisedByItsShape(): void
     {
         // No core file is named that way from the core root: everything there
-        // is below typo3/sysext/<key>/ or Build/.
-        self::assertTrue(Scope::isOutsideCore(['Classes/DataProcessing/CardGroupProcessor.php'], ''));
-        self::assertTrue(Scope::isOutsideCore(['Configuration/TCA/Overrides/200_content_element.php'], ''));
-        self::assertFalse(Scope::isOutsideCore(['typo3/sysext/core/Classes/Utility/GeneralUtility.php'], ''));
-        self::assertFalse(Scope::isOutsideCore(['Build/Sources/Sass/component/_card.scss'], ''));
+        // is below typo3/sysext/<key>/, and what is not is below Build/Scripts/
+        // or Build/Sources/ — a bare Build/ is any repository that compiles
+        // something, so it decides nothing.
+        self::assertSame(Scope::AUDIENCE_OUTSIDE, Scope::audienceOf('Classes/DataProcessing/CardGroupProcessor.php'));
+        self::assertSame(Scope::AUDIENCE_OUTSIDE, Scope::audienceOf('Configuration/TCA/Overrides/200_content_element.php'));
+        self::assertSame(Scope::AUDIENCE_CORE, Scope::audienceOf('typo3/sysext/core/Classes/Utility/GeneralUtility.php'));
+        self::assertSame(Scope::AUDIENCE_CORE, Scope::audienceOf('Build/Sources/Sass/component/_card.scss'));
+    }
+
+    #[Test]
+    public function whatTheCoreKeepsInBuildIsOnlyTheCoresWhereTheRepositoryCouldBeTheCore(): void
+    {
+        // Build/Sources/ is the backend's Sass and TypeScript from the core
+        // root — and from a site package's root it is that package's build
+        // setup. What says which is the manifest at the root, which is what a
+        // checkout's kind is read from.
+        Instance::discoverFrom($this->composerProject());
+
+        self::assertSame(Scope::AUDIENCE_OUTSIDE, Scope::audienceOf('Build/Sources/Sass/theme.scss'));
     }
 
     #[Test]
@@ -147,17 +177,58 @@ final class ScopeTest extends TestCase
     #[Test]
     public function workOnAProjectExtensionIsRecognizedAsOutsideTheCore(): void
     {
-        self::assertTrue(Scope::isOutsideCore([], 'Create a new site set in a project extension'));
-        self::assertTrue(Scope::isOutsideCore(['packages/my_sitepackage/Configuration/Sets/Main/config.yaml']));
+        self::assertSame(Scope::AUDIENCE_OUTSIDE, Scope::audienceOf('', 'Create a new site set in a project extension'));
+        self::assertSame(Scope::AUDIENCE_OUTSIDE, Scope::audienceOf('packages/my_sitepackage/Configuration/Sets/Main/config.yaml'));
 
-        self::assertFalse(Scope::isOutsideCore([], 'Add a reusable site set to TYPO3 core'));
-        self::assertFalse(Scope::isOutsideCore(['typo3/sysext/frontend/Configuration/Sets/Fluid/config.yaml']));
+        self::assertSame(Scope::AUDIENCE_CORE, Scope::audienceOf('', 'Add a reusable site set to TYPO3 core'));
+        self::assertSame(Scope::AUDIENCE_CORE, Scope::audienceOf('typo3/sysext/frontend/Configuration/Sets/Fluid/config.yaml'));
         // A core path wins: a task naming both is core work that mentions the
         // other side, not the other way round.
-        self::assertFalse(Scope::isOutsideCore(
-            ['typo3/sysext/core/Classes/Foo.php'],
+        self::assertSame(Scope::AUDIENCE_CORE, Scope::audienceOf(
+            'typo3/sysext/core/Classes/Foo.php',
             'so that a project extension can override it'
         ));
+    }
+
+    #[Test]
+    public function twoPathsOfDifferentAudienceInOneCallStayApart(): void
+    {
+        // META-03: an extension file and a core file in one session, because
+        // the bug may be in either. Folded into one string the second path was
+        // answered for by the first, and which one won was the order they
+        // arrived in.
+        $extension = 'packages/acme_events/Classes/Domain/Repository/EventRepository.php';
+        $core = 'typo3/sysext/core/Classes/Database/Query/QueryBuilder.php';
+
+        foreach ([[$extension, $core], [$core, $extension]] as $paths) {
+            $decided = array_column(Scope::audiences($paths), 'audience', 'path');
+            self::assertSame(Scope::AUDIENCE_OUTSIDE, $decided[$extension], 'the core path answered for the other');
+            self::assertSame(Scope::AUDIENCE_CORE, $decided[$core], 'the extension path answered for the other');
+        }
+
+        // The suites are the core's own, so the core path keeps them and the
+        // extension path is named as the one they are not for.
+        $suites = Tools::call('typo3_test_run_guide', [
+            'query' => 'which tests do I run for this change',
+            'paths' => [$extension, $core],
+        ]);
+        self::assertFalse($suites->data['outsideCore']);
+        self::assertNotSame([], $suites->data['suites']);
+        self::assertStringContainsString($extension, $suites->text);
+        self::assertStringNotContainsString($core, implode("\n", array_column($suites->data['suites'], 'command')));
+
+        // The conventions transfer to both, the commands to one: a hint
+        // returned for the extension path carries no core check.
+        $hints = Tools::call('typo3_architecture_lookup', [
+            'task' => 'fix the query that reads the events',
+            'paths' => [$extension, $core],
+        ]);
+        self::assertFalse($hints->data['outsideCore']);
+        $decided = array_column($hints->data['audiences'], 'audience', 'path');
+        self::assertSame(Scope::AUDIENCE_OUTSIDE, $decided[$extension]);
+        self::assertSame(Scope::AUDIENCE_CORE, $decided[$core]);
+        self::assertStringContainsString('# For ' . $extension, $hints->text);
+        self::assertStringContainsString('# For ' . $core, $hints->text);
     }
 
     #[Test]

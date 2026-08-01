@@ -1,0 +1,62 @@
+---
+id: D-SCO-8
+date: 2026-08-01
+status: standing
+---
+
+# D-SCO-8 — The path decides, and the answer may say it cannot
+
+**`Scope::isOutsideCore()` is gone. `Scope::audienceOf()` answers `core`,
+`outside-core` or `uncertain` for one path, the two tools that take a `paths`
+array answer per path, and a call that placed nothing says so instead of
+handing over the core's process by default.**
+
+What [`D-SCO-7`](sco-7-the-signals-are-combined-per-call-and-a-call-is-not-a-path.md)
+measured, built. The two things it named as missing are the two things here: the
+unit of decision, and a third value.
+
+- **Evidence:** `Build/` is not evidence of the core. The core keeps
+  `Build/Scripts/` and `Build/Sources/` there, and every checkout under
+  `.checkouts/` has both — but an extension that compiles anything ships a
+  `Build/` too, so the shape counts only where the manifest at the root has not
+  already said this is not the core. That manifest is what `Instance` reads a
+  checkout's kind from, so nothing new reads the disk for it.
+- **Decided:** the path is read before the call. A path carrying
+  `typo3/sysext/` or an outside-core marker is answered from that alone —
+  everything said about the call is consulted only for a path that carries
+  nothing of its own. That is the whole of what keeps `META-03` apart, and it is
+  a strict refinement of `R-SCO-1`'s order rather than a change to it: the ranks
+  are the same, and only the haystack shrank from "every path plus the prose" to
+  "this path".
+- **Decided:** `uncertain` is what the last rung returns when there is no
+  installation to read. It is not a hedge over ambiguous prose — prose
+  disagreement is resolved by the order, and has to stay resolved, because
+  "not TYPO3 core, a composer package under vendor bk2k" names both sides in one
+  sentence. It is the case where nothing spoke at all, which used to come back
+  as `false` and read to every caller as the core.
+- **Decided:** `typo3_task_guide` keeps one verdict, because it is asked about
+  one `area` and cannot be given two. Naming this a limitation of the tool
+  rather than of the decision is deliberate: the audience is per path either
+  way, and what is missing is a parameter, not a rule.
+- **Decided:** the payload keeps `outsideCore`. `AGENTS.md` has the schemas add
+  fields rather than rename them, and a client validating against the declared
+  output schema would break on a removal. It now means "the whole call is
+  outside", which is what it always was for the calls that had one audience, and
+  `audiences` carries the per-path answer beside it. The rename `D-SCO-6`
+  predicted happened where `D-SCO-6` located the pull — in the code, where every
+  session that touched the flag re-derived a scope sentence from its name.
+- **Assumed:** a path with no shape of its own is rare in a call that has one
+  with a shape. Where it is not, an ordinary two-path call splits into a core
+  block and an undecided one, and the answer is longer for no gain — `composer.json`
+  beside a sysext path is the shape of that.
+- **Wrong if:** the split answer is read as two answers to two questions. A
+  mixed call now returns hints matched separately per audience, and a caller
+  that reads only the first block gets half of its own question back. If that
+  shows up, the split belongs one level higher — two calls made by the agent,
+  with the server saying so — rather than in one answer with headings.
+- **Wrong if:** `uncertain` turns out to be the common answer rather than the
+  rare one. Every call from a client started outside an installation lands
+  there, and a notice that appears on most answers is a notice nobody reads.
+  Then the last rung is wrong, not the value: what places the work would have to
+  be asked for at initialize time, once per session, instead of guessed per
+  call.

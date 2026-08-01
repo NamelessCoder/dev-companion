@@ -17,6 +17,13 @@ workflow named in prose, and last which installation the session sits in. A
 that names the core in order to rule it out reads to a substring search exactly
 like claiming it.
 
+What a path carries is read before anything said about the call, which is what
+keeps two paths of one call apart ([`R-AUD-2`](../audience/aud-2-the-audience-is-a-property-of-the-task.md)).
+A path shape is evidence only where it can be: `Build/Scripts/` and
+`Build/Sources/` are the core's own, a bare `Build/` is any repository that
+compiles something, and neither is core evidence where the manifest at the root
+already says this checkout is not the core.
+
 **From:** `outsideCore` flipping only after the caller spelled out "not TYPO3
 core" in prose (2026-07-29).
 

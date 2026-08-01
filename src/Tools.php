@@ -150,7 +150,7 @@ final class Tools
                     'type' => 'object',
                     'properties' => [
                         'query' => ['type' => 'string', 'description' => 'Test or script topic, for example functional, phpstan, TypeScript, composer, or CGL.'],
-                        'paths' => ['type' => 'array', 'items' => ['type' => 'string'], 'default' => [], 'description' => 'The changed TYPO3 core file paths, relative to the core checkout. Given, only suites touching their domains are returned.'],
+                        'paths' => ['type' => 'array', 'items' => ['type' => 'string'], 'default' => [], 'description' => 'The changed file paths, as they are in the repository they belong to. Given, only suites touching their domains are returned. Each path is placed on its own: one outside the core narrows nothing and is named in the answer, because runTests.sh is not in its repository.'],
                         'targetVersion' => ['type' => 'string', 'description' => 'The TYPO3 version the commands have to run on, for example "13.4" or "14". Suites that branch\'s runTests.sh does not have are left out. Defaults to the version of the installation this server was started in; where there is none, every suite is listed.'],
                     ],
                 ],
@@ -161,7 +161,7 @@ final class Tools
                 'inputSchema' => [
                     'type' => 'object',
                     'properties' => [
-                        'paths' => ['type' => 'array', 'items' => ['type' => 'string'], 'default' => [], 'description' => 'TYPO3 core file paths related to the task, relative to the core checkout.'],
+                        'paths' => ['type' => 'array', 'items' => ['type' => 'string'], 'default' => [], 'description' => 'File paths related to the task, as they are in the repository they belong to. Each is placed on its own, so a core path and an extension path in one call are matched separately — the hints for the extension path come back without the core checks.'],
                         'task' => ['type' => 'string', 'description' => 'Short task description or architecture topic, in English. Matching is lexical against English text, so another language reaches only the loanwords.'],
                         'id' => ['type' => 'string', 'description' => 'Ask for one hint by its id, for example language-files, instead of matching. Every answer that returns no hint lists the ids there are, so a subject that exists can be requested by name rather than guessed at.'],
                         'targetVersion' => ['type' => 'string', 'description' => 'The TYPO3 version the answer has to hold for, for example "13.4" or "14". State one only to narrow to it: statements that do not hold there are then left out, including those the repository needs for another major it declares. Left out, the answer holds for every major this repository declares typo3/cms-core for, which is what one codebase serving two of them needs; where there is no declaration to read, for the version of the installation this server was started in, and where there is no installation either, nothing is filtered and every statement carries the versions it holds for.'],
@@ -896,13 +896,15 @@ final class Tools
 
         // Every command in these notes runs in a core checkout. Handing them to
         // a repository that has none is the same mistake typo3_test_run_guide
-        // used to make, and the same answer applies.
-        if (Scope::isOutsideCore([], $task)) {
+        // used to make, and the same answer applies. This tool is asked about a
+        // task rather than about paths, so the call has one audience.
+        $audience = Scope::audienceOf('', $task);
+        if ($audience === Scope::AUDIENCE_OUTSIDE) {
             return ToolResult::create(
                 Scope::OUTSIDE_CORE_NOTICE . ' The scripts these notes describe are the core checkout\'s own, so '
                 . 'none is returned. What to run here is declared in this repository: its composer.json scripts, '
                 . 'its package.json, its CI configuration.',
-                ['query' => $task, 'matchCount' => 0, 'matches' => [], 'outsideCore' => true],
+                ['query' => $task, 'matchCount' => 0, 'matches' => [], 'outsideCore' => true, 'audience' => $audience],
             );
         }
 
@@ -922,6 +924,7 @@ final class Tools
                 'matchCount' => count($results),
                 'matches' => self::matchRecords($results),
                 'outsideCore' => false,
+                'audience' => $audience,
             ]);
         }
 
@@ -951,6 +954,7 @@ final class Tools
             'matches' => [],
             'elsewhere' => $titles,
             'outsideCore' => false,
+            'audience' => $audience,
         ]);
     }
 
@@ -1066,8 +1070,11 @@ final class Tools
         // Several of the conventions below — the changelog, the Gerrit
         // workflow, the runTests.sh suites — do not exist outside the core, so
         // handing them over as a checklist for a project extension is worse
-        // than saying the question is outside what this server knows.
-        $outsideCore = Scope::isOutsideCore($paths, $subject, $area);
+        // than saying the question is outside what this server knows. One area
+        // is one question: this tool cannot be asked about two at once, which
+        // is why it decides once where the path tools decide per path.
+        $audience = Scope::audienceOf($area, $subject, $area);
+        $outsideCore = $audience === Scope::AUDIENCE_OUTSIDE;
 
         $intents = TaskIntents::scoped(
             TaskIntents::detect($subject . ' ' . $changeType),
@@ -1094,6 +1101,15 @@ final class Tools
             $lines[] = Scope::OUTSIDE_CORE_NOTICE . ' Take what follows as conventions that may transfer, not as '
                 . 'a checklist for this task. '
                 . 'typo3_server_scope states the boundary.';
+            $lines[] = '';
+        }
+        // The checklist below is the one payload of this server that states a
+        // process as the process, so where nothing placed the work it says so
+        // before stating it — the changelog and the Gerrit route are steps a
+        // caller in their own repository cannot take at all.
+        if ($audience === Scope::AUDIENCE_UNCERTAIN) {
+            $lines[] = Scope::UNCERTAIN_AUDIENCE_NOTICE . ' Name the area or the path, and this brief is composed '
+                . 'for the repository it is in.';
             $lines[] = '';
         }
 
@@ -1302,6 +1318,7 @@ final class Tools
             'targetVersions' => $targets,
             'domains' => $domains,
             'outsideCore' => $outsideCore,
+            'audience' => $audience,
             'intents' => array_map(static fn(array $intent): array => [
                 'id' => (string) $intent['id'],
                 'title' => (string) $intent['title'],
@@ -1519,14 +1536,25 @@ final class Tools
         /** @var array<int, string> $paths */
         $paths = array_map('strval', $args['paths'] ?? []);
         $paths = array_values(array_unique(array_merge($paths, Domains::pathsIn((string) $query))));
-        $domains = Domains::fromPaths($paths);
         $target = Versions::target(isset($args['targetVersion']) ? (string) $args['targetVersion'] : null);
 
         // Every suite this guide knows is a Build/Scripts/runTests.sh
         // invocation, and that script is part of the core repository. Handing
         // it to a site package is worse than declining: the commands look
-        // copy-pasteable and none of them exists there.
-        if (Scope::isOutsideCore($paths, (string) $query)) {
+        // copy-pasteable and none of them exists there. Which paths those are
+        // is decided one by one — the other half of a call is not evidence
+        // about this path.
+        $audiences = Scope::audiences($paths, (string) $query);
+        $outside = self::pathsOf($audiences, Scope::AUDIENCE_OUTSIDE);
+        $runnable = self::pathsOf($audiences, Scope::AUDIENCE_CORE, Scope::AUDIENCE_UNCERTAIN);
+        $domains = Domains::fromPaths($runnable);
+
+        // Nothing here can run a suite: every path given is outside the core,
+        // or none was and what the query says is.
+        $nothingRunnable = $paths === []
+            ? Scope::audienceOf('', (string) $query) === Scope::AUDIENCE_OUTSIDE
+            : $runnable === [];
+        if ($nothingRunnable) {
             return ToolResult::create(
                 Scope::OUTSIDE_CORE_NOTICE . ' Build/Scripts/runTests.sh is part of the core repository, so the '
                 . 'suites this guide knows cannot be run from here and are left out rather than handed over. '
@@ -1536,6 +1564,7 @@ final class Tools
                 [
                     'query' => $query,
                     'paths' => $paths,
+                    'audiences' => $audiences,
                     'domains' => $domains,
                     'outsideCore' => true,
                     'suites' => [],
@@ -1547,6 +1576,22 @@ final class Tools
         $hints = TestSuiteHints::find($query, $domains, $target);
 
         $blocks = [];
+        // The other half of the same answer: the suites below are for the paths
+        // that can run them, and the paths that cannot are named rather than
+        // left to read the answer as theirs.
+        if ($outside !== []) {
+            $blocks[] = Scope::outsideCoreAmong($outside) . ' Build/Scripts/runTests.sh is not there, so no suite '
+                . 'below is about ' . (count($outside) === 1 ? 'that path' : 'those paths') . '. What such a '
+                . 'repository needs instead is typo3_architecture_lookup with id=project-extension-tests and '
+                . 'id=browser-tests.';
+        }
+        // A call that named no path is answered from the core root, and every
+        // command below says so itself. A path that was named and could not be
+        // placed is the case worth a sentence: the caller believes it said
+        // which repository this is.
+        if (self::pathsOf($audiences, Scope::AUDIENCE_UNCERTAIN) !== []) {
+            $blocks[] = Scope::UNCERTAIN_AUDIENCE_NOTICE;
+        }
         if ($domains !== []) {
             $blocks[] = sprintf(
                 'Narrowed to the %s domain(s) the given paths touch. Suites outside them cannot fail on this change; '
@@ -1578,6 +1623,7 @@ final class Tools
         return ToolResult::create(implode("\n\n", $blocks), [
             'query' => $query,
             'paths' => $paths,
+            'audiences' => $audiences,
             'domains' => $domains,
             'outsideCore' => false,
             'suites' => self::suiteRecords($hints),
@@ -1708,22 +1754,41 @@ final class Tools
         $target = Versions::target($stated);
         $targets = Versions::targets($stated);
 
-        $result = ArchitectureHints::find($paths, $task ?? '', $limit, $id, $targets);
-
         // The hints transfer — a DataHandler or Fluid convention is the same
         // one outside the core — but the checks attached to them are all
         // runTests.sh invocations, and that script lives in the core
-        // repository. So the hints stay and the commands go.
-        $outsideCore = Scope::isOutsideCore($paths, $task ?? '');
-        if ($outsideCore) {
-            $result['matchedHints'] = ArchitectureHints::withoutChecks($result['matchedHints']);
+        // repository. So the hints stay and the commands go. Paths of different
+        // audience are asked separately: matched together, an extension path
+        // gets the core path's hints and its checks with them.
+        $audiences = Scope::audiences($paths, $task ?? '');
+        $groups = self::audienceGroups($paths, $audiences, $task ?? '');
+        $outside = self::pathsOf($audiences, Scope::AUDIENCE_OUTSIDE);
+        $outsideCore = count($groups) === 1 && $groups[0]['audience'] === Scope::AUDIENCE_OUTSIDE;
+
+        $found = [];
+        foreach ($groups as $group) {
+            $matched = ArchitectureHints::find($group['paths'], $task ?? '', $limit, $id, $targets);
+            if ($group['audience'] === Scope::AUDIENCE_OUTSIDE) {
+                $matched['matchedHints'] = ArchitectureHints::withoutChecks($matched['matchedHints']);
+            }
+            $found[] = ['audience' => $group['audience'], 'paths' => $group['paths'], 'result' => $matched];
         }
+        $result = self::mergedHintResults($found);
 
         $lines = [];
         if ($outsideCore) {
             $lines[] = Scope::OUTSIDE_CORE_NOTICE . ' The hints below are conventions that may transfer; the '
                 . 'checks that normally come with them are left out, because Build/Scripts/runTests.sh is part '
                 . 'of the core repository and does not exist here. typo3_server_scope states the boundary.';
+            $lines[] = '';
+        } elseif ($outside !== []) {
+            $lines[] = Scope::outsideCoreAmong($outside)
+                . ' The conventions matched there transfer; the checks that normally come with them are left out, '
+                . 'because Build/Scripts/runTests.sh is part of the core repository.';
+            $lines[] = '';
+        }
+        if (self::pathsOf($audiences, Scope::AUDIENCE_UNCERTAIN) !== []) {
+            $lines[] = Scope::UNCERTAIN_AUDIENCE_NOTICE;
             $lines[] = '';
         }
         if ($result['withheldCategories'] !== []) {
@@ -1743,7 +1808,11 @@ final class Tools
             $lines[] = 'Task: ' . $task;
         }
         if ($paths !== []) {
-            $lines[] = "Paths:\n" . implode("\n", array_map(static fn(string $p): string => '- ' . $p, $paths));
+            $lines[] = "Paths:\n" . implode("\n", array_map(
+                static fn(array $entry): string => '- ' . $entry['path']
+                    . ($entry['audience'] === Scope::AUDIENCE_CORE ? '' : ' (' . $entry['audience'] . ')'),
+                $audiences,
+            ));
         }
         $lines[] = self::versionScopeLine($targets);
         if ($result['domains'] !== []) {
@@ -1757,32 +1826,26 @@ final class Tools
         $lines[] = 'Architecture hints:';
 
         if ($result['matchedHints'] !== []) {
+            // One block per audience, and the heading only where there is more
+            // than one of them: the caller asked about two repositories, and
+            // which half of the answer is about which path is the answer.
             $sectionTexts = [];
-            $examples = self::examplesByHint($target);
-            foreach (ArchitectureHints::groupByCategory($result['matchedHints']) as $section) {
-                $hintTexts = [];
-                foreach ($section['hints'] as $hint) {
-                    $block = ['## ' . $hint['title']];
-                    $notice = self::bindingNotice($hint, $outsideCore);
-                    if ($notice !== null) {
-                        $block[] = $notice;
-                    }
-                    $block[] = 'Hints:';
-                    foreach ($hint['hints'] as $entry) {
-                        $block[] = '- ' . self::statementLine($entry, $outsideCore);
-                    }
-                    if (isset($examples[$hint['id']])) {
-                        $block[] = $examples[$hint['id']];
-                    }
-                    if ($hint['checks'] !== []) {
-                        $block[] = 'Relevant checks:';
-                        foreach ($hint['checks'] as $check) {
-                            $block[] = '- ' . $check;
-                        }
-                    }
-                    $hintTexts[] = implode("\n", $block);
+            foreach ($found as $group) {
+                if ($group['result']['matchedHints'] === []) {
+                    continue;
                 }
-                $sectionTexts[] = '### ' . $section['category'] . "\n\n" . implode("\n\n", $hintTexts);
+                if (count($found) > 1) {
+                    $sectionTexts[] = sprintf(
+                        '# For %s%s',
+                        implode(' and ', $group['paths']),
+                        $group['audience'] === Scope::AUDIENCE_CORE ? '' : ' — ' . $group['audience'],
+                    );
+                }
+                $sectionTexts[] = self::hintSections(
+                    $group['result']['matchedHints'],
+                    $group['audience'] === Scope::AUDIENCE_OUTSIDE,
+                    $target,
+                );
             }
             $lines[] = implode("\n\n", $sectionTexts);
         } elseif ($result['withheldCategories'] !== []) {
@@ -1811,6 +1874,7 @@ final class Tools
         return ToolResult::create(implode("\n", $lines), [
             'task' => $task === '' ? null : $task,
             'paths' => array_values($paths),
+            'audiences' => $audiences,
             'targetVersion' => $target,
             'targetVersions' => $targets,
             'domains' => $result['domains'],
@@ -1819,6 +1883,120 @@ final class Tools
             'hints' => self::hintRecords($result['matchedHints']),
             'availableHints' => $result['availableHints'],
         ]);
+    }
+
+    /**
+     * The paths of a call that share one audience.
+     *
+     * @param array<int, array{path: string, audience: string}> $audiences
+     * @return array<int, string>
+     */
+    private static function pathsOf(array $audiences, string ...$of): array
+    {
+        return array_values(array_map(
+            static fn(array $entry): string => $entry['path'],
+            array_filter($audiences, static fn(array $entry): bool => in_array($entry['audience'], $of, true)),
+        ));
+    }
+
+    /**
+     * A call's paths as the questions they actually are: one group per
+     * audience, core work first, then what nothing placed, then what is outside
+     * the core. A call that named no path is one group all the same — what was
+     * said about it is then the whole of the evidence.
+     *
+     * @param array<int, string> $paths
+     * @param array<int, array{path: string, audience: string}> $audiences
+     * @return array<int, array{audience: string, paths: array<int, string>}>
+     */
+    private static function audienceGroups(array $paths, array $audiences, string $text): array
+    {
+        if ($paths === []) {
+            return [['audience' => Scope::audienceOf('', $text), 'paths' => []]];
+        }
+
+        $groups = [];
+        foreach ([Scope::AUDIENCE_CORE, Scope::AUDIENCE_UNCERTAIN, Scope::AUDIENCE_OUTSIDE] as $audience) {
+            $of = self::pathsOf($audiences, $audience);
+            if ($of !== []) {
+                $groups[] = ['audience' => $audience, 'paths' => $of];
+            }
+        }
+
+        return $groups;
+    }
+
+    /**
+     * What the groups of one call found, as the one answer the payload is.
+     *
+     * The hints keep the checks of the group they were matched for, so a hint
+     * that matched on both sides carries them once, for the paths that can run
+     * them — which is why the answer names those paths beside them.
+     *
+     * @param array<int, array{audience: string, paths: array<int, string>, result: array<string, mixed>}> $found
+     * @return array{matchedHints: array<int, array<string, mixed>>, availableHints: array<int, array<string, mixed>>, domains: array<int, string>, withheldCategories: array<int, string>}
+     */
+    private static function mergedHintResults(array $found): array
+    {
+        $matched = [];
+        $available = [];
+        $domains = [];
+        $withheld = [];
+        foreach ($found as $group) {
+            foreach ($group['result']['matchedHints'] as $hint) {
+                $matched[$hint['id']] ??= $hint;
+            }
+            foreach ($group['result']['availableHints'] as $entry) {
+                $available[$entry['id']] ??= $entry;
+            }
+            $domains = array_merge($domains, $group['result']['domains']);
+            $withheld = array_merge($withheld, $group['result']['withheldCategories']);
+        }
+
+        return [
+            'matchedHints' => array_values($matched),
+            'availableHints' => array_values($available),
+            'domains' => array_values(array_unique($domains)),
+            'withheldCategories' => array_values(array_unique($withheld)),
+        ];
+    }
+
+    /**
+     * The matched hints as text: one section per category, one block per hint.
+     *
+     * @param array<int, array<string, mixed>> $hints
+     */
+    private static function hintSections(array $hints, bool $outsideCore, ?int $target): string
+    {
+        $examples = self::examplesByHint($target);
+        $sectionTexts = [];
+        foreach (ArchitectureHints::groupByCategory($hints) as $section) {
+            $hintTexts = [];
+            foreach ($section['hints'] as $hint) {
+                $block = ['## ' . $hint['title']];
+                $notice = self::bindingNotice($hint, $outsideCore);
+                if ($notice !== null) {
+                    $block[] = $notice;
+                }
+                $block[] = 'Hints:';
+                foreach ($hint['hints'] as $entry) {
+                    $block[] = '- ' . self::statementLine($entry, $outsideCore);
+                }
+                if (isset($examples[$hint['id']])) {
+                    $block[] = $examples[$hint['id']];
+                }
+                if ($hint['checks'] !== []) {
+                    $block[] = 'Relevant checks:';
+                    foreach ($hint['checks'] as $check) {
+                        $block[] = '- ' . $check;
+                    }
+                }
+                $hintTexts[] = implode("\n", $block);
+            }
+            $sectionTexts[] = '### ' . $section['category'] . "\n\n" . implode("\n\n", $hintTexts);
+        }
+
+        return implode("\n\n", $sectionTexts);
     }
 
     /** @param array<string, mixed> $args */

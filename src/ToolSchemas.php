@@ -148,9 +148,46 @@ final class ToolSchemas
             'description' => 'True when the query reads as a project or third-party extension. No script is then '
                 . 'returned: these are the core checkout\'s own, and that repository declares its commands itself.',
         ];
+        $schema['properties']['audience'] = self::audience();
         $schema['required'][] = 'outsideCore';
 
         return $schema;
+    }
+
+    /**
+     * Who an answer is for, as the three values that decide it.
+     *
+     * The third is not a hedge but the case the other two cannot state: signals
+     * that disagree with nothing left to resolve them. An answer that picked a
+     * side there would be right half the time and say so never.
+     *
+     * @return array<string, mixed>
+     */
+    private static function audience(string $description = ''): array
+    {
+        return [
+            'type' => 'string',
+            'enum' => [Scope::AUDIENCE_CORE, Scope::AUDIENCE_OUTSIDE, Scope::AUDIENCE_UNCERTAIN],
+            'description' => $description === ''
+                ? 'Who this answer is for: work on the TYPO3 core itself, work outside it — a project or '
+                    . 'third-party extension, where the core\'s own process has no counterpart — or undecided, '
+                    . 'which means nothing in the call placed it and what came back is the core\'s own.'
+                : $description,
+        ];
+    }
+
+    /**
+     * The same decision per path, because a call is not a path: two files of
+     * different audience in one call are two questions.
+     *
+     * @return array<string, mixed>
+     */
+    private static function audiences(string $description): array
+    {
+        return self::listOf(self::object([
+            'path' => self::string(),
+            'audience' => self::audience(),
+        ], ['path', 'audience']), $description);
     }
 
     /** @return array<string, mixed> */
@@ -185,6 +222,7 @@ final class ToolSchemas
             'targetVersions' => self::listOf(['type' => 'integer'], 'Every TYPO3 major the answer holds for. One entry is the ordinary case. Several mean this repository declares typo3/cms-core for more than one of them, so a statement was kept when it holds on any — and where two statements about the same subject differ, the difference is the constraint the code lives under rather than drift. Empty when nothing was filtered by version.'),
             'domains' => self::listOf(self::string()),
             'outsideCore' => ['type' => 'boolean', 'description' => 'True when the task reads as work on a project or third-party extension. The answer then holds core conventions that may transfer, not a checklist for the task.'],
+            'audience' => self::audience(),
             'intents' => self::listOf(self::object([
                 'id' => self::string(),
                 'title' => self::string(),
@@ -218,8 +256,9 @@ final class ToolSchemas
         return self::object([
             'query' => self::nullableString(),
             'paths' => self::listOf(self::string(), 'The paths the answer was narrowed by, given ones and ones named in the query.'),
+            'audiences' => self::audiences('Which of those paths a suite can be run for at all. The ones outside the core are named in the answer and narrow nothing: runTests.sh is not in their repository.'),
             'domains' => self::listOf(self::string(), 'Domains those paths touch. Empty means nothing was narrowed.'),
-            'outsideCore' => ['type' => 'boolean', 'description' => 'True when the paths read as a project or third-party extension. No suite is then returned: runTests.sh is part of the core repository and cannot be run there.'],
+            'outsideCore' => ['type' => 'boolean', 'description' => 'True when every path of the call is outside the core. No suite is then returned: runTests.sh is part of the core repository and cannot be run there. Where only some are, this is false and audiences says which.'],
             'suites' => self::listOf(self::testSuiteRecord()),
             'invocation' => self::object([
                 'notes' => self::listOf(self::string()),
@@ -241,11 +280,12 @@ final class ToolSchemas
         return self::object([
             'task' => self::nullableString(),
             'paths' => self::listOf(self::string()),
+            'audiences' => self::audiences('Who the answer about each path is for. Paths of different audience are matched separately, so a hint that came back for one of them is about that path — and a hint for a path outside the core carries no checks.'),
             'targetVersion' => ['type' => ['integer', 'null'], 'description' => 'The TYPO3 major this repository runs — stated by the caller, or read from the installation. Null means nothing was filtered and every statement carries its own range. Where the repository serves several majors, targetVersions is what the answer holds for.'],
             'targetVersions' => self::listOf(['type' => 'integer'], 'Every TYPO3 major the answer holds for. One entry is the ordinary case. Several mean this repository declares typo3/cms-core for more than one of them, so a statement was kept when it holds on any — and where two statements about the same subject differ, the difference is the constraint the code lives under rather than drift. Empty when nothing was filtered by version.'),
             'domains' => self::listOf(self::string(), 'Hints outside these domains are not returned.'),
             'withheldCategories' => self::listOf(self::string(), 'Categories that matched the domains but were left out because the task names the frontend. "Backend CSS" and "Backend TypeScript" describe the TYPO3 backend interface and are wrong advice for what a website renders; see docs.typo3.org for frontend theming.'),
-            'outsideCore' => ['type' => 'boolean', 'description' => 'True when the paths or the task read as a project or third-party extension. The hints still hold; their checks are then empty, because runTests.sh is part of the core repository.'],
+            'outsideCore' => ['type' => 'boolean', 'description' => 'True when the whole call is outside the core. The hints still hold; their checks are then empty, because runTests.sh is part of the core repository. Where only some paths are, this is false and audiences says which — those hints are the ones without checks.'],
             'hints' => self::listOf(self::architectureHintRecord()),
             'availableHints' => self::listOf(self::object([
                 'id' => self::string('Ask for this hint outright by passing it as id.'),

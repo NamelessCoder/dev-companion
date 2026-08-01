@@ -93,22 +93,6 @@ that version, every requirement fails at once and not one of them says so.
 
 ---
 
-## Decide the audience per path, and let the answer say it cannot
-
-**Serves:** R-AUD-2
-
-`Scope::isOutsideCore()` folds every path into one string and returns one
-boolean, so the two paths of `META-03` get one verdict and the extension one is
-silently handed the core's — `D-SCO-7` has the measurement and rules the cheap
-answers out. Make the path the unit: return the audience of each path instead of
-a boolean for the call, with a third value for the case `R-AUD-2` names, and
-rename `outsideCore` to what it then decides — the rename `D-SCO-6` predicted.
-`typo3_architecture_lookup` and `typo3_test_run_guide` are the two tools that can
-receive two paths at once and the two whose payloads then have to split;
-`typo3_task_guide` takes one `area` string and needs a way to be asked about
-several before it can be part of this. Finish with the test `META-03` names as
-missing: two paths of different audience in one call stay apart.
-
 ## Try `R-AUD-1` against the test written for it
 
 **Serves:** R-AUD-1
@@ -548,6 +532,21 @@ it arrives is written: add its scenario first, record package and version in
 every answer, then implement the narrowest discovery path that package can
 actually publish — and a second producer is what justifies extracting a shared
 format.
+
+## Let `typo3_task_guide` be asked about more than one area
+
+**Serves:** R-AUD-2
+
+The audience is decided per path now (`D-SCO-8`), and this tool is the one that
+cannot use it: `area` is a single string, so the `META-03` prompt reaches it as
+one question and gets one answer. Give it the paths of the work — a `paths`
+array beside `area`, decided by the same `Scope::audiences()` the two path tools
+call — and split what the brief states per audience: the checklist, the checks
+and the checkout discovery are already filtered entry by entry, so what is new
+is which paths each filtered list is for. `outsideCore` and `audience` stay as
+they are; `audiences` is the addition. It sits at the end of the queue because
+the todo it comes out of named it as out of its own scope, which makes it new
+work rather than the half that was left.
 
 ## Which checkout plays which environment
 

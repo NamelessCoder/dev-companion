@@ -44,6 +44,9 @@ final class SkillTest extends TestCase
             'typo3_label_lookup',
             'typo3_translation_domain_lookup',
         ],
+        'typo3-extension-release' => [
+            'typo3_documentation_lookup',
+        ],
         'typo3-extension-upgrade' => [
             'typo3_changelog_lookup',
             'typo3_system_extension_lookup',
@@ -811,12 +814,73 @@ final class SkillTest extends TestCase
         }
     }
 
+    /**
+     * The release skill exists because a green checkout is not the thing that
+     * ships, and the run that earned it measured the gap: in one extension the
+     * version-control export shipped 1558 files honouring the export-ignore
+     * attributes committed beside them, while the registry tool's own archive
+     * shipped 1559 — the two extra were tracked editor configuration, because
+     * that tool filters by a list of its own and never reads those attributes.
+     * One commit, two registries, two file sets, and nothing in the repository
+     * saying so. Verifying one archive, or verifying either against the working
+     * tree, cannot see it: the comparison has to be between the archives.
+     */
+    #[Test]
+    public function aReleaseVerifiesTheArtifactAgainstEachRegistrysOwnExclusions(): void
+    {
+        $directory = Paths::root() . '/skills/typo3-extension-release';
+        $skill = (string) file_get_contents($directory . '/SKILL.md');
+        $checklist = (string) file_get_contents($directory . '/references/checklist.md');
+
+        // The target is settled before an archive exists, or the verification
+        // runs against the wrong rules and every later step inherits that.
+        $target = strpos($skill, '## Establish scope, target and evidence');
+        $artifact = strpos($skill, '## The artifact is not the checkout');
+        $verify = strpos($skill, '## Verify the candidate');
+        $report = strpos($skill, '## Report, and stop before publishing');
+        self::assertNotFalse($target);
+        self::assertNotFalse($artifact);
+        self::assertLessThan($artifact, $target);
+        self::assertLessThan($verify, $artifact);
+        self::assertLessThan($report, $verify);
+
+        // The comparison, which is the only reading that finds this class of
+        // defect. Against the working tree the two mechanisms agree by
+        // construction.
+        self::assertStringContainsString('compare the file lists against each other, not', $skill);
+        self::assertStringContainsString('Compare the lists against **each other**', $checklist);
+        self::assertMatchesRegularExpression(
+            '/does not\s+read (those|the export)\s*attributes/',
+            $skill . $checklist,
+        );
+
+        // Publication is the boundary: it changes state this workflow cannot
+        // undo, and an unclear target is the one place where continuing on an
+        // assumption publishes the assumption.
+        self::assertStringContainsString('explicit request', $skill);
+        self::assertStringContainsString('publication steps deliberately not', $skill);
+        self::assertMatchesRegularExpression(
+            '/An unclear target is a question, never a guess/',
+            $skill,
+        );
+
+        // The registry rules themselves are asked for, never carried: they
+        // change on their own schedule and a published file cannot.
+        self::assertStringContainsString('how to check, never what the rule', $skill);
+        // And the packaging tools stay out of the instruction every session
+        // pays for — one package name in a published file is the fact no
+        // release of this server corrects.
+        foreach (['tailor', 'git archive', '.gitattributes'] as $name) {
+            self::assertStringNotContainsString($name, $skill, $name . ' is named where the skill only has to see there are two mechanisms');
+        }
+    }
+
     #[Test]
     public function contractCasesExerciseTaskSkillBehavior(): void
     {
         $cases = Scenarios::contracts();
 
-        $ids = ['SKILL-01', 'SKILL-02', 'SKILL-03', 'SKILL-04', 'SKILL-05', 'SKILL-06', 'SKILL-07', 'SKILL-08', 'SKILL-09'];
+        $ids = ['SKILL-01', 'SKILL-02', 'SKILL-03', 'SKILL-04', 'SKILL-05', 'SKILL-06', 'SKILL-07', 'SKILL-08', 'SKILL-09', 'SKILL-10'];
         foreach ($ids as $id) {
             self::assertArrayHasKey($id, $cases);
             self::assertStringStartsWith('scenarios/contracts/task-skills/', $cases[$id]['file']);

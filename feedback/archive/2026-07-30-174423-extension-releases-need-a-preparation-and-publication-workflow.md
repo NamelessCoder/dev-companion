@@ -1,7 +1,8 @@
 ---
 date: 2026-07-30T17:44:23+02:00
 category: tool-gap
-status: open
+status: closed
+closed: 2026-08-01
 tool: typo3_project_scope, typo3_extension_scope, typo3_task_guide, typo3_architecture_lookup, typo3_documentation_lookup
 ---
 

@@ -93,22 +93,6 @@ that version, every requirement fails at once and not one of them says so.
 
 ---
 
-## Add the `typo3-extension-release` skill
-
-**Serves:** feedback/2026-07-30-174423-extension-releases-need-a-preparation-and-publication-workflow.md
-
-It starts from `skills/base.md` like every other skill, selects the intended
-registries and version, and ends preparation with the artifact path, its
-checksum, what the archive includes and excludes, the verification results, the
-open blockers and the publication steps deliberately not taken. Registry
-requirements come from current official documentation rather than from the
-skill, and the artifact is built through the repository's own release command
-where one exists. Tagging, pushing and registry publication stay a separate
-phase that needs an explicit request and a confirmed repository, version and
-credentials. What has to fail is an artifact carrying development files or
-secrets while the checkout itself is green; if that shape survives the work, it
-earns a contract case of its own.
-
 ## Settle `R-AUD-2` against `META-03`
 
 **Serves:** R-AUD-2

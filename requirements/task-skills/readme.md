@@ -17,3 +17,4 @@ when it is added.
 | [`R-SKL-6`](skl-6-how-a-skill-is-written-is-written-down-once.md) | How a skill is written is written down once | held |
 | [`R-SKL-7`](skl-7-an-upgrade-establishes-what-breaks-before-it-chooses-a-range.md) | An upgrade establishes what breaks before it chooses a range | held |
 | [`R-SKL-8`](skl-8-a-task-skill-does-not-run-without-the-server-it-came-from.md) | A task skill does not run without the server it came from | held |
+| [`R-SKL-9`](skl-9-a-release-is-verified-on-the-archive-each-registry-receives.md) | A release is verified on the archive each registry receives | held |

@@ -93,19 +93,6 @@ that version, every requirement fails at once and not one of them says so.
 
 ---
 
-## Teach `bin/cli catalog check` the testing-framework tags
-
-**Serves:** decisions/
-
-`D-KNW-2` names its own fix: the hints about `typo3/testing-framework` are
-verified against tags, the check re-reads only the core checkouts, and a release
-that changes one of them inside a major would go unnoticed. Add the tag-to-major
-pairing to that check so the package is read where the core checkouts are, and
-the decision is guarded by the command it already names rather than by a reader.
-The honest alternative it mentions — binding to the package version instead of
-the TYPO3 one — is a hint-format change and a separate todo if this one proves
-too thin.
-
 ## Widen the `D-SCO-6` guard to the surfaces it does not read
 
 **Serves:** decisions/

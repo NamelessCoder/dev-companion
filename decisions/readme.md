@@ -122,7 +122,7 @@ the repository has moved furthest away from since. Going back to one and adding
 | 2026-07-29 | [`D-GUI-1`](guides/gui-1-a-missing-release-target-becomes-a-placeholder-not-main.md) | A missing release target becomes a placeholder, not `main` | guides | standing |
 | 2026-07-29 | [`D-GUI-2`](guides/gui-2-the-commit-workflow-is-asked-for-not-inferred.md) | The commit workflow is asked for, not inferred | guides | standing |
 | 2026-07-29 | [`D-KNW-1`](knowledge/knw-1-sitepackage-work-is-answered-from-the-general-category.md) | Sitepackage work is answered from the General category | knowledge | standing |
-| 2026-07-29 | [`D-KNW-2`](knowledge/knw-2-a-hint-about-typo3-testing-framework-is-verified-against-tags.md) | A hint about typo3/testing-framework is verified against tags, not against the checkouts | knowledge | standing |
+| 2026-07-29 | [`D-KNW-2`](knowledge/knw-2-a-hint-about-typo3-testing-framework-is-verified-against-tags.md) | A hint about typo3/testing-framework is verified against tags, not against the checkouts | knowledge | corrected |
 | 2026-07-29 | [`D-SCO-1`](scope/sco-1-outside-the-core-the-core-test-guide-declines-rather-than-adapts.md) | Outside the core the core test guide declines rather than adapts | scope | corrected |
 | 2026-07-29 | [`D-SCO-2`](scope/sco-2-a-core-only-intent-asks-for-evidence-not-for-silence.md) | A core-only intent asks for evidence, not for silence | scope | standing |
 | 2026-07-29 | [`D-SCO-3`](scope/sco-3-what-is-core-only-is-decided-per-line-by-what-it-names.md) | What is core-only is decided per line, by what it names | scope | standing |

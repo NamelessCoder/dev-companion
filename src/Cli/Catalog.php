@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Typo3CmsMcp\Cli;
 
 use Typo3CmsMcp\Cli;
+use Typo3CmsMcp\TestingFramework;
 use Typo3CmsMcp\Versions;
 
 /**
@@ -17,12 +18,50 @@ use Typo3CmsMcp\Versions;
  * paths it names are gone from a checkout, or its `since`/`until` no longer say
  * which versions it holds on.
  *
- * `check` also reads the one thing outside `knowledge/catalog/` that a core
- * update can invalidate silently and that the checkouts answer: which Fluid
- * engine each branch pins itself to.
+ * `check` also reads the two things outside `knowledge/catalog/` that a release
+ * can invalidate silently and that the checkouts answer: which Fluid engine
+ * each branch pins itself to, and whether the testing-framework release each
+ * branch pins still says what the hints about it state.
  */
 final class Catalog implements Subject
 {
+    /**
+     * What the hints about typo3/testing-framework rest on, per file of the
+     * package, so that a release changing one of them fails here rather than
+     * ageing quietly into a wrong answer (D-KNW-2).
+     *
+     * Existence carries the statement that the four boilerplate files are there
+     * to be copied; each needle carries one sentence of `project-extension-tests`
+     * in `knowledge/architecture-hints/php.json`, named beside it. What no needle
+     * covers is not guarded — this is the load-bearing half, not the hint.
+     *
+     * @var array<string, array<int, string>>
+     */
+    private const TESTING_FRAMEWORK_EVIDENCE = [
+        // "the files say in their own header that extensions should copy them"
+        'Resources/Core/Build/UnitTests.xml' => ['copy it to an own place'],
+        'Resources/Core/Build/FunctionalTests.xml' => ['copy it to an own place'],
+        'Resources/Core/Build/UnitTestsBootstrap.php' => [],
+        'Resources/Core/Build/FunctionalTestsBootstrap.php' => [],
+        'Classes/Core/Testbase.php' => [
+            // "a functional run needs database credentials in the environment",
+            // and the message that does not name the variables it is missing
+            'typo3DatabaseDriver',
+            'typo3DatabaseHost',
+            'typo3DatabaseName',
+            'typo3DatabaseUsername',
+            'typo3DatabasePassword',
+            'Database credentials for tests are neither set through environment',
+            // "$testExtensionsToLoad takes paths relative to the document root"
+            'ORIGINAL_ROOT . $extensionPath',
+            'Test extension path ',
+        ],
+        // "thrown by the testing framework's own package collection"
+        'Classes/Core/PackageCollection.php' => ['depends on package '],
+        // "it writes a sys_template row with the clear flag set"
+        'Classes/Core/Functional/FunctionalTestCase.php' => ["'clear' => 3"],
+    ];
+
     public static function about(): string
     {
         return 'what a core update invalidated in knowledge/';
@@ -31,7 +70,7 @@ final class Catalog implements Subject
     public static function commands(): array
     {
         return [
-            'check' => ['', 'the versions each entry holds on, the shipped system extensions, the worked examples, and the Fluid engine each branch pins, against .checkouts/', self::check(...)],
+            'check' => ['', 'the versions each entry holds on, the shipped system extensions, the worked examples, the Fluid engine each branch pins, and the testing-framework release it pins, against .checkouts/', self::check(...)],
             'paths' => ['<checkout>', 'the paths one entry names, against one core checkout of your own', self::paths(...)],
         ];
     }
@@ -52,7 +91,109 @@ final class Catalog implements Subject
             self::verifySystemExtensions($root . '/.checkouts', self::read('system-extensions')),
             self::verifyReferences($root . '/.checkouts', self::read('references')),
             self::verifyFluidEngine($root . '/.checkouts'),
+            self::verifyTestingFramework($root . '/.checkouts'),
         );
+    }
+
+    /**
+     * Whether the testing-framework release each branch pins still says what the
+     * hints about it say.
+     *
+     * D-KNW-2 verified those statements against tags, because the package has a
+     * release cycle of its own and no checkout here contains it — and named its
+     * own gap in doing so: a release that changes one of them inside a line would
+     * be noticed by nobody, since this command re-read the core and nothing else.
+     *
+     * Nothing about the pairing is recorded: the core pins the line per branch in
+     * its own require-dev, the newest tag on that line is what the worktree holds,
+     * and both are re-derived here. So a release that changes nothing relevant
+     * passes silently, and one that moves a load-bearing sentence fails — which is
+     * the difference between a guard and a reminder to go and look.
+     */
+    private static function verifyTestingFramework(string $checkouts): int
+    {
+        echo "typo3/testing-framework\n";
+        $mirror = TestingFramework::mirror($checkouts);
+        if (!is_dir($mirror)) {
+            fwrite(STDERR, sprintf("No %s clone below %s — run bin/cli checkouts update.\n", TestingFramework::PACKAGE, $checkouts));
+
+            return 2;
+        }
+
+        $problems = 0;
+        $read = [];
+        foreach (TestingFramework::pairing($checkouts) as $pair) {
+            printf(
+                "  %-5s %-9s %s\n",
+                $pair['branch'],
+                $pair['constraint'] === '' ? 'no pin' : $pair['constraint'],
+                $pair['ref'] ?? 'names no single release line',
+            );
+            if ($pair['ref'] === null) {
+                ++$problems;
+                continue;
+            }
+            if (isset($read[$pair['ref']])) {
+                continue;
+            }
+
+            $read[$pair['ref']] = true;
+            $problems += self::readTestingFramework($mirror, $pair);
+        }
+        printf("  %d release line(s) against %s\n\n", count($read), implode(', ', array_column(Versions::covered(), 'branch')));
+
+        if ($problems === 0) {
+            echo "Every statement about the harness still reads as D-KNW-2 read it.\n";
+
+            return 0;
+        }
+
+        printf("%d statement(s) about the harness no longer read as D-KNW-2 read them.\n", $problems);
+
+        return 1;
+    }
+
+    /**
+     * One release line, read where it is checked out.
+     *
+     * A worktree behind the line's newest tag is reported rather than read: the
+     * release that moved it is precisely what this is looking for, and reading
+     * the older one would answer for a version nobody installs any more.
+     *
+     * @param array{major: int, branch: string, constraint: string, line: ?string, ref: ?string, path: string} $pair
+     */
+    private static function readTestingFramework(string $mirror, array $pair): int
+    {
+        $ref = (string) $pair['ref'];
+        $checkedOut = TestingFramework::revision($pair['path'], 'HEAD');
+        if ($checkedOut === '') {
+            printf("    %s is not checked out — run bin/cli checkouts update\n", $ref);
+
+            return 1;
+        }
+        if ($checkedOut !== TestingFramework::revision($mirror, $ref)) {
+            printf("    %s is checked out at %s — run bin/cli checkouts update\n", $ref, substr($checkedOut, 0, 12));
+
+            return 1;
+        }
+
+        $problems = 0;
+        foreach (self::TESTING_FRAMEWORK_EVIDENCE as $file => $needles) {
+            $source = is_file($pair['path'] . '/' . $file) ? (string) file_get_contents($pair['path'] . '/' . $file) : null;
+            if ($source === null) {
+                printf("    %s: %s is gone\n", $ref, $file);
+                ++$problems;
+                continue;
+            }
+            foreach ($needles as $needle) {
+                if (!str_contains($source, $needle)) {
+                    printf("    %s: %s no longer says %s\n", $ref, $file, $needle);
+                    ++$problems;
+                }
+            }
+        }
+
+        return $problems;
     }
 
     /**

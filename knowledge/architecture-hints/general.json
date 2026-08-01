@@ -553,8 +553,12 @@
     "hints": [
       "Playwright is where a browser is involved, and the core is the worked example: Build/playwright.config.ts declares the projects and their dependencies, Build/tests/playwright/ holds the suite.",
       {
-        "text": "Its layout is what transfers: e2e/ one directory per module, fixtures/ for the page objects a spec composes itself from, helper/ for the login setup every other project depends on.",
+        "text": "Its layout is what transfers: e2e/ for the specs, fixtures/ for the page objects a spec composes itself from, helper/ for the login setup every other project depends on.",
         "since": 13
+      },
+      {
+        "text": "Below e2e/ it is one directory per module, and the accessibility scan is a module among them rather than a suite beside them.",
+        "since": 14
       },
       {
         "text": "Codeception acceptance tests still sit next to it under typo3/sysext/core/Tests/Acceptance/. New specs are written in Playwright; the two suites are not merged, they replace each other module by module.",

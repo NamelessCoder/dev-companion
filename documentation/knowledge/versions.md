@@ -67,3 +67,8 @@ runtime, and the failure is silent. The rules below follow from it.
   The binding is derived, not judged: `bin/cli catalog:check` re-reads every
   covered checkout and reports each entry whose recorded range no longer
   matches, so a core update invalidates it loudly.
+- **A directory is not evidence that what it demonstrates is inside it.** Where
+  a worked example promises a shape rather than a path, the entry names the two
+  or three files that carry that shape in `files`, and the range is derived from
+  those as well — a rewrite that keeps the directory and moves what is in it is
+  otherwise exactly what a range on existence cannot see (`D-CAT-2`).

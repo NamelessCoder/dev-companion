@@ -472,8 +472,14 @@ final class CatalogCheck
      *
      * An index of paths is the kind of thing a core release invalidates silently: a
      * directory that moved leaves an answer pointing at nothing, and the caller
-     * reads the miss as "I looked in the wrong place". Existence is the whole test
-     * here — what is inside is prose that a human wrote and a human has to reread.
+     * reads the miss as "I looked in the wrong place". Existence of the directory
+     * was the whole test until it caught nothing on the entry D-CAT-2 named itself:
+     * `Build/tests/playwright/e2e` is there on 13.4 while the layout the entry
+     * promises — one directory per module, the accessibility scan among them —
+     * arrived in 14.3. So an entry whose sentence promises a shape names the files
+     * that carry it in `files`, and a version has the example when it has all of
+     * them. What no file covers is still prose a human wrote and a human has to
+     * reread.
      *
      * @param array<int, array<string, mixed>> $references
      */
@@ -485,6 +491,7 @@ final class CatalogCheck
         foreach ($references as $entry) {
             $path = (string) $entry['path'];
             $majors = [];
+            $inside = [];
             foreach ($covered as $version) {
                 $branch = $checkouts . '/' . $version['branch'];
                 if (!is_dir($branch)) {
@@ -492,17 +499,29 @@ final class CatalogCheck
 
                     return 2;
                 }
-                if (file_exists($branch . '/' . $path)) {
+                $missing = self::missingFrom($branch, $entry);
+                if ($missing === null) {
                     $majors[] = $version['major'];
+                    continue;
+                }
+                if ($missing !== $path) {
+                    // The failure the range alone cannot name: the directory is
+                    // where it was, and what the entry says is inside it is not.
+                    $inside[] = sprintf('    v%d has %s and not %s', $version['major'], $path, $missing);
                 }
             }
 
             if ($majors === []) {
                 $output->writeln(sprintf('  %s: on no covered version', $path));
+                self::writeAll($output, $inside);
                 ++$problems;
                 continue;
             }
-            $problems += self::reportRange($output, $path, $entry, $majors, array_column($covered, 'major'));
+            $drift = self::reportRange($output, $path, $entry, $majors, array_column($covered, 'major'));
+            if ($drift > 0) {
+                self::writeAll($output, $inside);
+            }
+            $problems += $drift;
         }
         $output->writeln(sprintf('  %d references against %s', count($references), implode(', ', array_column($covered, 'branch'))));
         $output->writeln('');
@@ -516,6 +535,38 @@ final class CatalogCheck
         $output->writeln(sprintf('%d reference(s) out of date.', $problems));
 
         return 1;
+    }
+
+    /**
+     * The first thing a worked example names that this checkout does not have, or
+     * null where it has all of them.
+     *
+     * The path comes first, so an entry that names no files reads exactly as it did
+     * before. `files` is what the entry adds when its sentence promises a shape: the
+     * two or three files that carry it, named absolutely from the checkout root
+     * because half of what a suite is made of sits beside the directory rather than
+     * inside it.
+     *
+     * @param array<string, mixed> $entry
+     */
+    private static function missingFrom(string $branch, array $entry): ?string
+    {
+        $named = array_merge([(string) $entry['path']], array_map(strval(...), (array) ($entry['files'] ?? [])));
+        foreach ($named as $path) {
+            if (!file_exists($branch . '/' . $path)) {
+                return $path;
+            }
+        }
+
+        return null;
+    }
+
+    /** @param array<int, string> $lines */
+    private static function writeAll(OutputInterface $output, array $lines): void
+    {
+        foreach ($lines as $line) {
+            $output->writeln($line);
+        }
     }
 
     /**

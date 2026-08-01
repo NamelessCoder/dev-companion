@@ -42,7 +42,13 @@
     "reference": "A browser suite that runs: specs one directory per module here, the page objects they compose themselves from in ../fixtures/, the login setup every project depends on in ../helper/, and the accessibility scan among them. Build/playwright.config.ts is where the projects and their dependencies are declared.",
     "caveat": null,
     "hint": "browser-tests",
-    "since": 13
+    "files": [
+      "Build/tests/playwright/e2e/accessibility/modules.spec.ts",
+      "Build/tests/playwright/fixtures/backend-page.ts",
+      "Build/tests/playwright/helper/login.setup.ts",
+      "Build/playwright.config.ts"
+    ],
+    "since": 14
   },
   {
     "id": "static-analysis",

@@ -10,9 +10,10 @@ status: standing
 left out are named per tool rather than derived from the `provenance` of what
 they answer.**
 
-The note that asked for this described one packaging: the installation-backed
-tools and the transferable domains, without the core contribution surface. The
-item written from it named three profiles — `core`, `project`, `all`.
+The feedback that asked for this described one packaging: the
+installation-backed tools and the transferable domains, without the core
+contribution surface. The item written from it named three profiles — `core`,
+`project`, `all`.
 
 - **Decided:** two, `all` and `project`. A `core` profile would have had to
   leave the installation-backed tools out to differ from `all`, and it must not:

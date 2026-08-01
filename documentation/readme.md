@@ -2,7 +2,7 @@
 
 One page per procedure that is long enough to get wrong from memory. The
 directories keep saying what a thing **is** — a requirement, a decision, a
-forward review, a note — and each links here for how it is carried out.
+forward review, a feedback — and each links here for how it is carried out.
 
 The split is deliberate. A readme that also holds the workflow is read by
 someone looking for one paragraph and finding six; a workflow with no home ends

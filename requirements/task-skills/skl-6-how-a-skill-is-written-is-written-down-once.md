@@ -28,10 +28,10 @@ asked for by name, before it is published. A skill written from recall is shaped
 exactly like one written from the documentation, which is why the page has to
 carry the step instead of a check.
 
-**From:** the note of 2026-07-30, trimmed on 2026-08-01 to its authoring half
-once `bin/cli scenarios` and `scenarios/runs/` had answered the runner half. The
-stable rules were visible by then and spread across seven assertions in
-`SkillTest` and five skills restating them in their own words, which is the
+**From:** the feedback of 2026-07-30, trimmed on 2026-08-01 to its authoring
+half once `bin/cli scenarios` and `scenarios/runs/` had answered the runner
+half. The stable rules were visible by then and spread across seven assertions
+in `SkillTest` and five skills restating them in their own words, which is the
 arrangement that made them unreadable to the next author — and the next author
 was the `typo3-extension-upgrade` skill, queued directly behind this.
 

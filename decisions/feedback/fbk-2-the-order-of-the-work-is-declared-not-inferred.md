@@ -41,7 +41,7 @@ whether to declare it or derive it.
 - **Assumed:** that the line stays current because it is also what makes an item
   readable. It is written when the item is, it names what the commit that
   finishes the item will delete, and `bin/cli todo check` fails when it names a
-  note that is already gone. A marker nobody would otherwise need would have
+  feedback that is already gone. A marker nobody would otherwise need would have
   been the kind that rots.
 - **Wrong if:** sections start arriving without the line and `bin/cli check`
   becomes the thing that adds it after the fact — then it is bureaucracy, and

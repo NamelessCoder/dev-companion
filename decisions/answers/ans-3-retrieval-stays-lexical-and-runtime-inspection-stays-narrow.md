@@ -26,7 +26,7 @@ and inspection gaps could be measured instead of anticipated.
   `DocumentationTest`. Semantic retrieval may nominate candidates in future,
   but version, audience, binding and source still decide what can be returned.
 - **Decided:** no generic SQL, log or database-schema tool is added. No feedback
-  note or new scenario needed one after live documentation and the existing
+  feedback or new scenario needed one after live documentation and the existing
   installation diagnostics were available. A runtime tool starts with the
   session that could not finish without it, not with parity against another
   server.

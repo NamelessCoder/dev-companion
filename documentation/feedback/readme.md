@@ -28,16 +28,17 @@ for.
 
 For a while it did not, and the effect is worth writing down. A todo that
 recurs every session is due for as long as anything is unjudged, `next` asked
-the recurring ones first, and feedback arrive from every session everywhere while
-one session closes a handful. So every session opened on the same sighting, the
-queue behind it was never reached, and entries sat in it untouched for as long
-as `feedback/` was not empty — which is always.
+the recurring ones first, and feedback arrives from every session everywhere
+while one session closes a handful. So every session opened on the same
+sighting, the queue behind it was never reached, and entries sat in it
+untouched for as long as `feedback/` was not empty — which is always.
 
 The order is now: what has a clock, then the queue, then the sightings once the
-queue is empty. It follows from what a judgement is. Judging a feedback is deciding
-whether it becomes work; the queue is the work that decision produced. Leaving
-it standing in order to judge more feedback is deciding twice and doing nothing,
-and the pile it decides over grows faster than any session can read it.
+queue is empty. It follows from what a judgement is. Judging a feedback is
+deciding whether it becomes work; the queue is the work that decision produced.
+Leaving it standing in order to judge more feedback is deciding twice and doing
+nothing, and the pile it decides over grows faster than any session can read
+it.
 
 The second half of the same problem is the size of the reading.
 `bin/cli feedback next` hands over **five** feedback, oldest first, with each
@@ -49,9 +50,9 @@ closes whatever is easiest and leaves nobody able to say whether that was
 right. `bin/cli feedback list` is still the whole of it, for whoever wants the
 overview.
 
-What `next` can never do is run a feedback's own query against the server as it is
-now. A feedback is evidence about a version of this server that may no longer exist,
-and that reading is the session's.
+What `next` can never do is run a feedback's own query against the server as it
+is now. A feedback is evidence about a version of this server that may no
+longer exist, and that reading is the session's.
 
 ## What happens to the todo it printed
 
@@ -98,9 +99,9 @@ generic on purpose — it names no scenario, no skill and no tool, so the same t
 works after a review, an implementation, or a question the server could not
 answer at all.
 
-What it asks for is the report, never the shape of the feedback. What each field
-wants — one feedback per subject, the task named in the first line, where to read
-the model identifier rather than remember it — belongs to
+What it asks for is the report, never the shape of the feedback. What each
+field wants — one feedback per subject, the task named in the first line, where
+to read the model identifier rather than remember it — belongs to
 `typo3_feedback_record` and is written in its parameters, which is the only
 documentation a client actually reads. A prompt that restates it is a second
 copy that ages, and it would only reach the sessions somebody handed it to.

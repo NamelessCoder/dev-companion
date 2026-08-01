@@ -28,7 +28,7 @@ Those are two different tests, and one file shape hid it.
   never forward evidence. One case is one file, and an environment is a kind of
   working directory rather than someone's checkout.
 - **Wrong if:** two consecutive review runs produce findings too diffuse to tie
-  back to a requirement or a note — then the broad prompt measures the model's
+  back to a requirement or a feedback — then the broad prompt measures the model's
   taste rather than this server. Or the contract cases quietly stop being read
   because nothing schedules them, and the routing they hold rots while the three
   reviews stay green.

@@ -13,8 +13,8 @@ either way it is demoted to a conditional match rather than dropped or stated.**
 enough: the reported task — "Maintain and extend the third-party TYPO3
 extension bk2k/bootstrap-package … review TCA …" — does not trip a single
 outside-core marker, because "third-party TYPO3 extension" is not the phrase
-the list carries. Gating on the flag alone would have left the note's own case
-answered exactly as before.
+the list carries. Gating on the flag alone would have left the feedback's own
+case answered exactly as before.
 
 - **Decided:** a core-only intent needs positive evidence — a `typo3/sysext/`
   path, or Gerrit, Forge, "TYPO3 core" named outright. Outside the core it is

@@ -9,8 +9,8 @@ status: held
 project-shaped answer instead of stopping at its binding.**
 
 Extension documentation uses its own manual, semantic version and release
-notes; extension assets use their own build and publishing decision rather than
-the core's source trees.
+feedback; extension assets use their own build and publishing decision rather
+than the core's source trees.
 
 **From:** the binding pass finding two subjects whose core obligation had no
 project counterpart (2026-07-29).

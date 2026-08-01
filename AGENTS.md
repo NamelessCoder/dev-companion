@@ -21,7 +21,7 @@ src/Typo3Cli.php   # runs that installation's console, via DDEV where there is o
 src/TestingFramework.php  # which typo3/testing-framework release each covered major is read against
 src/bootstrap.php  # locates the Composer autoloader
 knowledge/         # the knowledge base (markdown + JSON), the data source
-feedback/          # improvement notes left by agents (standalone checkout only)
+feedback/          # feedback left by agents about this server (standalone checkout only)
 feedback/archive/  # the ones that were worked off; kept, because a session's report is evidence
 scenarios/         # user prompts and what has to come out of them, one case per file
 scenarios/forward/ # open forward reviews: a repository review and nothing more; the only kind that is run and recorded
@@ -55,9 +55,9 @@ overview, for whoever wants it.
 
 What is due comes in three groups: a todo measured in days, when its day has
 come; then the queue, in the order the queue has; then, only once the queue is
-empty, what recurs every session — sighting the notes and the backlog. Sighting
+empty, what recurs every session — sighting the feedback and the backlog. Sighting
 is what puts entries *into* the queue, so a queue that still has entries is a
-queue of work already judged, and the sighting hands over five notes at a time
+queue of work already judged, and the sighting hands over five at a time
 rather than the directory.
 
 The todo it prints is a claim, not an instruction: one session's belief about
@@ -98,8 +98,8 @@ work starts; and new work found along the way is added as a todo that names what
 it serves. A session that ends with the file matching what is actually true has
 handed over correctly, whatever else it did.
 
-What `next` can never do is run a note's own query against the server as it is
-now. A note is evidence about a version of this server that may no longer exist,
+What `next` can never do is run a feedback's own query against the server as it is
+now. A feedback is evidence about a version of this server that may no longer exist,
 and that reading is the session's.
 
 How `next` decides what is due, and how the work moves between `feedback/`,
@@ -143,9 +143,22 @@ gone; carrying both shapes at once is the expensive half of every feature.
 - Shorter is not the same as denser. Fewer concepts, fewer branches, fewer
   moving parts — not fewer lines wrung out of the same logic.
 
-This holds for prose as well. `knowledge/`, `readme.md`, and the tool
-descriptions are read by someone paying per token for every sentence that says
-nothing.
+## Prose
+
+Short and precise, everywhere: `knowledge/`, the tool descriptions, this file,
+`documentation/`, a commit message. Every reader pays per token, and half of
+them are machines.
+
+- One point per sentence. A sentence that restates the previous one in other
+  words is deleted, not shortened.
+- The rule first, the reason after it, and only where the reason is not
+  obvious. A justification nobody would dispute is filler.
+- One example, where an example is needed at all. The second one rarely adds a
+  case and always adds a paragraph.
+- Say what is, not what it is not. A list of what something is not belongs
+  where the confusion actually happened.
+- Length is a symptom. A paragraph that will not come out short is usually two
+  points, or one that is not yet understood.
 
 ## Tool names
 
@@ -199,7 +212,7 @@ composer cgl    # rewrite to the guidelines; cgl:ci reports and rewrites nothing
 - A behaviour worth a rule in `knowledge/` is worth a test: ranking that must
   prefer one match over another, an answer that must say "no match" instead of
   guessing, a catalog field that must stay usable.
-- `FeedbackTest` writes real notes below `feedback/` and removes them again.
+- `FeedbackTest` writes real feedback below `feedback/` and removes them again.
   A leftover file carries `phpunit-feedback-fixture` in its text.
 
 `bin/cli` is what everything else in this repository is kept in order by, and
@@ -209,13 +222,13 @@ is verified against:
 
 ## Feedback workflow
 
-Agents using this server record improvement notes through `typo3_feedback_record`.
-Each note is one markdown file below `feedback/`. A session in an agent whose
+Agents using this server record improvement feedback through `typo3_feedback_record`.
+Each feedback is one markdown file below `feedback/`. A session in an agent whose
 transcript this repository cannot read files its own: it is handed the debrief
 prompt in [documentation/feedback/readme.md](documentation/feedback/readme.md) after its work
 is finished, never before, so the debrief cannot steer the session it reports on.
 
-Where a note comes from is usually a real session. `scenarios/` is where those
+Where a feedback comes from is usually a real session. `scenarios/` is where those
 sessions are written down so they can be run again: one prompt per file, in the
 words a user would use, with the environment it has to be run in and what has to
 come out of it. It holds two kinds, and mixing them is what the split of
@@ -226,9 +239,9 @@ run and recorded. A **targeted contract case** in `scenarios/contracts/` names
 one task shape so its routing stays held; it proves that a known task still gets
 its workflow, never that an agent discovered the subject.
 
-A recorded run is a source of notes in its own right, and the good ones are a
+A recorded run is a source of feedback in its own right, and the good ones are a
 source too. Whatever a run taught that is not specific to the repository it ran
-against becomes a note here rather than a paragraph in the run's own evidence:
+against becomes a feedback here rather than a paragraph in the run's own evidence:
 that field is read once, by whoever judged that run, while `feedback/` is what
 every later session walks. Running a review, judging it, and reading one that
 stopped without an error: [documentation/forward-runs.md](documentation/forward-runs.md).
@@ -238,26 +251,26 @@ that lives in `todo.md`, where it can go stale without taking a case with it.
 Cases the server cannot answer yet belong here too: the suite is the map of what
 the three audiences need, not a regression net around what already works. A
 review marked `gap` names the requirement that is still open; a run of it
-produces the note that says what the task needed beyond it.
+produces the feedback that says what the task needed beyond it.
 
-A note is worked off in a commit that both implements the improvement **and
-archives the note**: `bin/cli feedback archive <note>` moves it to
+A feedback is worked off in a commit that both implements the improvement **and
+archives the feedback**: `bin/cli feedback archive <feedback>` moves it to
 `feedback/archive/`, so `feedback/` only ever holds open items and the commit
-that moved it is the record of what came of it. Where a note stands is what says
+that moved it is the record of what came of it. Where a feedback stands is what says
 whether it was answered, so never mark one as done by editing its `status:`
 front matter, and never archive one that was only partially addressed — trim it
 to the part that is still open instead.
 
-The archive is not a graveyard. A note is a session's report about this server —
+The archive is not a graveyard. A feedback is a session's report about this server —
 which skill it reached for, what it had to establish elsewhere, what an answer
 cost it — and that is evidence nothing else here holds; `typo3_feedback_list`
-reads it back with the note intact rather than as a filename in a commit.
+reads it back with the feedback intact rather than as a filename in a commit.
 
-What outlives the note is split three ways, and keeping them apart is what keeps
+What outlives the feedback is split three ways, and keeping them apart is what keeps
 any of them readable: `requirements/` for what must be true from now on and what
 holds it there, `decisions/` for what a change rested on and what would show it
 wrong, `todo.md` for the order of the work. Add the requirement in the commit
-that works the note off; name its test in the commit that writes that test.
+that works the feedback off; name its test in the commit that writes that test.
 
 Three states mean unfinished — a requirement marked **open**, one held by
 `not guarded`, a decision still `standing` whose **Wrong if** nobody has been
@@ -266,7 +279,7 @@ nothing read them for as long as they existed. `bin/cli backlog list` is that
 reading, and what a session owes anything on it is a judgement: an item in
 `todo.md`, or the sentence in `decisions/` that says why not.
 
-The full account — the note lifecycle, what each of the three files holds, and
+The full account — the feedback lifecycle, what each of the three files holds, and
 what `bin/cli backlog list` reports — is in
 [documentation/feedback/readme.md](documentation/feedback/readme.md).
 

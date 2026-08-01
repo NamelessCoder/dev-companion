@@ -2,8 +2,8 @@
 
 `bin/cli next` hands over one todo, and what happens between reading it and the
 commit is the work. This page is that part alone. What is due, what recurs, and
-what a finished todo leaves behind is in [feedback/readme.md](feedback/readme.md); nothing
-here repeats it.
+what a finished todo leaves behind is in
+[feedback/readme.md](feedback/readme.md); nothing here repeats it.
 
 The todo is not the instruction it looks like. Its paragraph is one session's
 belief about where to start, written before the work it describes was done, by
@@ -17,7 +17,7 @@ after the change is written.
 ## What is read before the first change
 
 - **What it serves.** The `Serves:` line names a requirement, a decision, a
-  note, a directory, and that is where the todo's reason lives — the paragraph
+  feedback, a directory, and that is where the todo's reason lives — the paragraph
   is only its next step. Read them whole. A todo serving a decision is usually
   that entry's **Wrong if** compressed into a sentence, and the entry itself
   says what evidence would settle it; a todo serving a requirement says what
@@ -27,7 +27,7 @@ after the change is written.
   that covers it today — because the honest form of most steps here is "the
   assertion this needs is next to one that already exists", and that assertion
   decides the shape of the change.
-- **What was already established.** The archived note, the recorded run, the
+- **What was already established.** The archived feedback, the recorded run, the
   decision that touched the same ground. A question this repository answered
   three weeks ago is answered in a file, and re-deciding it is how two entries
   end up saying different things about one subject.
@@ -68,12 +68,12 @@ Where the answer is:
   `typo3_architecture_lookup` — which are also the fastest way to find that a
   question is already answered and needs no statement at all.
 - **about a tool this repository does not own** — Composer, DDEV, the SDK, a CI
-  runner, a registry: its own documentation and its own release notes. What a
+  runner, a registry: its own documentation and its own release feedback. What a
   tool does by default is precisely the fact that moves after somebody wrote it
   down here, and the version in `composer.lock` is what says which behaviour is
   the one in play.
 - **about this server** — the query is re-run against the server as it is now.
-  A note, a recorded run and a quoted answer are all evidence about a version
+  A feedback, a recorded run and a quoted answer are all evidence about a version
   that may no longer exist, and reading one instead of running it is how a
   fixed problem gets fixed twice.
 - **about the practice a skill describes** — that research is already written
@@ -169,11 +169,11 @@ one taken.
 ## What none of this holds
 
 Nothing on this page can be checked. A todo worked from the checkouts and the
-manuals is shaped exactly like one worked from memory — same diff, same message,
-and the sentence that turns out false is the confident one in both. A choice
-made silently is shaped exactly like one that had nothing to choose. What can be
-done is done: the page exists, `bin/cli next` names it with every todo it hands
-over, and
+manuals is shaped exactly like one worked from memory — same diff, same
+message, and the sentence that turns out false is the confident one in both. A
+choice made silently is shaped exactly like one that had nothing to choose.
+What can be done is done: the page exists, `bin/cli next` names it with every
+todo it hands over, and
 [`R-FBK-9`](../requirements/feedback/fbk-9-a-todo-is-worked-from-what-was-read.md)
 carries it with the reason. Whether the reading happened is the session's, and
 the session is the only one who will ever know.

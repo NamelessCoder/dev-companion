@@ -9,10 +9,10 @@ status: standing
 **The unavailable case keeps the result shape every other answer has and carries
 its reason in an `unavailable` object, with `found` null rather than false.**
 
-Two notes asked for the unavailable case to stop looking like an empty one. One
-proposed dropping `matchCount`, `icons`, `found` altogether and returning an
-error-shaped object instead, or renaming `answeredBy: "nothing"` to something
-that cannot be read as "no source had it".
+Two feedback asked for the unavailable case to stop looking like an empty one.
+One proposed dropping `matchCount`, `icons`, `found` altogether and returning
+an error-shaped object instead, or renaming `answeredBy: "nothing"` to
+something that cannot be read as "no source had it".
 
 - **Decided:** the shape stays, an `unavailable` object carries the reason, and
   `found` is null rather than false when nothing was consulted. A field a schema

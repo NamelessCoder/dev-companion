@@ -11,7 +11,7 @@ the skill text and by the contract case read by hand; no forward run will be
 scheduled to produce it.**
 
 Every other half of `R-SKL-3` has evidence. This one asked for a run that cannot
-exist, and the note asking for it stayed open for that reason alone.
+exist, and the feedback asking for it stayed open for that reason alone.
 
 - **Evidence:** the fourth `REVIEW-01` run shows a session routing its findings
   to the `typo3-extension-documentation`, `typo3-content-element-development`

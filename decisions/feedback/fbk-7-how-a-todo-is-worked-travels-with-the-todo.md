@@ -64,7 +64,7 @@ recall.
   the open question instead, which is the same three places research that ran
   out already uses.
 - **Wrong if:** a commit lands that states a version-bound fact, a default of a
-  tool this repository does not own, or the current state of a note, with no
+  tool this repository does not own, or the current state of a feedback, with no
   reading behind it — the page is then present and inert, and what is left is
   putting the question into the todo itself rather than into a page it points
   at. Or the closing lines start being echoed back by sessions as a plan

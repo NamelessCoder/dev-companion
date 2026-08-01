@@ -29,14 +29,14 @@ behind the paragraph explaining why the order is what it is.
 - **Decided:** one todo, whole, with its `Run:` command already executed. Due is
   the cadence — `session`, or a number of days with a `Checked:` date, so five
   sessions in an afternoon do not ask five times whether the SDK has released —
-  and then the command's exit code, which is what lets the notes stop being the
+  and then the command's exit code, which is what lets the feedback stop being the
   next thing the moment the last one is judged without anybody editing the file.
   With that, a todo that recurs is a todo with a cadence rather than a kind of
-  section, so `**Standing:** notes | backlog | by hand` became fields any todo
+  section, so `**Standing:** feedback | backlog | by hand` became fields any todo
   can carry and the three special cases in the dispatcher went with it. One
   paragraph is one step, and the six items that carried more became ten.
 - **Assumed:** that the judgement, not the work, is the right threshold for
-  "there is something here". A note some todo already names is being worked off
+  "there is something here". A feedback some todo already names is being worked off
   in the order the queue has it, and stopping to re-read it is how the queue
   never gets reached. Nothing has run long enough to show that the ones already
   named stay named.
@@ -54,13 +54,13 @@ behind the paragraph explaining why the order is what it is.
   design, and no check can tell one step from three.
 - **Corrected on 2026-08-01:** the second **Wrong if** happened, in the form the
   first **Assumed** described. A recurring todo blocked the queue — not for a
-  session or two but for every session there was, and the notes it sighted were
+  session or two but for every session there was, and the feedback it sighted were
   what nobody could finish: 56 open, 55 of them named by no todo, against a
   queue of 38 items that `next` never reached. The threshold was right and the
-  order was wrong. Judging a note is what puts an item *into* the queue, so
+  order was wrong. Judging a feedback is what puts an item *into* the queue, so
   asking the sighting first means deciding twice and doing nothing, and the
   directory it decides over grows from every session everywhere while one
   session judges a handful. `next` now asks in three groups — what has a clock,
   then the queue, then the sightings once the queue is empty — and the sighting
-  hands over five notes rather than the directory, because five judgements are
+  hands over five rather than the directory, because five judgements are
   the number somebody can disagree with before the commit is made.

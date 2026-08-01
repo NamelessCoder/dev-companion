@@ -5,7 +5,7 @@ A local MCP server (plain PHP) that gives MCP-enabled clients a curated TYPO3
 contributor, the extension author, and the site developer. It holds the
 conventions each subsystem is built on and how its mechanisms are used, the
 core's own contribution process — rules, the Gerrit workflow, script and
-`runTests.sh` notes, commit message conventions — and a catalog of backend UI
+`runTests.sh` feedback, commit message conventions — and a catalog of backend UI
 components: context that is otherwise spread across project knowledge, core
 conventions, and the official documentation.
 
@@ -23,14 +23,15 @@ does not hold on all of them carries the ones it does hold on. Pass a
 **Those files are trained by being used.** An agent gets a real task in a real
 checkout and works under one rule: whatever it would otherwise search for — a
 convention, a class name, the markup a component expects — it asks this server
-first. Where the server answers, that answer is what the task is done from. Where
-it does not, the agent solves the task on its own, the way it would have without
-the server at all — and that is the half worth something, because the agent now
-holds an answer the knowledge base did not have. So the session ends by handing it
-back: every avoidable mistake it ran into, and every recommendation it would give
-the next agent on the same task. A gap found that way arrives with its answer
-attached, which is what separates it from one guessed at from the outside; see
-[Improvement notes](#improvement-notes) for how such a note is written and closed.
+first. Where the server answers, that answer is what the task is done from.
+Where it does not, the agent solves the task on its own, the way it would have
+without the server at all — and that is the half worth something, because the
+agent now holds an answer the knowledge base did not have. So the session ends
+by handing it back: every avoidable mistake it ran into, and every
+recommendation it would give the next agent on the same task. A gap found that
+way arrives with its answer attached, which is what separates it from one
+guessed at from the outside; see [Improvement feedback](#improvement-feedback)
+for how such a feedback is written and closed.
 
 **It is queried in English**, whatever language the user is speaking. The
 knowledge is written in English and the matching is lexical, so a query in
@@ -163,7 +164,7 @@ name already says what shape the answer has.
   whether a question can be answered here at all.
 - `typo3_changelog_lookup`: searches the TYPO3 changelog the installed core
   ships — one entry per breaking change, deprecation, feature and important
-  note, by words, type and version. Answers what a release changed rather than
+  feedback, by words, type and version. Answers what a release changed rather than
   how to write such an entry, and names the versions that installation covers so
   a gap is visible. Nothing is bundled: it grows with a Composer update.
 - `typo3_project_scope`: describes the project around the discovered
@@ -185,11 +186,11 @@ name already says what shape the answer has.
   that was never set up. The table an override file extends is read from what
   the file does, because those files are numbered rather than named after their
   table.
-- `typo3_rule_lookup`: searches local TYPO3 core rules and script notes, ranked
+- `typo3_rule_lookup`: searches local TYPO3 core rules and script feedback, ranked
   by the query terms that separate one section from the rest rather than by
   overlap, and naming the architecture hints that match the same question — the
   caller does not have to know which of the two corpora holds a subject.
-- `typo3_script_lookup`: finds matching notes for TYPO3 core commands. They run
+- `typo3_script_lookup`: finds matching feedback for TYPO3 core commands. They run
   in a core checkout, and the answer says so — outside one it returns the
   boundary instead of commands that are not there.
 - `typo3_task_guide`: builds a task checklist enriched with matching
@@ -259,9 +260,9 @@ name already says what shape the answer has.
   and drops the trailers, for the repositories that use the one without having
   the other.
 - `typo3_feedback_record`: records what was missing, wrong, or unhelpful about an
-  answer as a note under `feedback/` (standalone checkout only, see
-  [Improvement notes](#improvement-notes)).
-- `typo3_feedback_list`: lists those notes, newest first, so they can be worked
+  answer as a feedback under `feedback/` (standalone checkout only, see
+  [Improvement feedback](#improvement-feedback)).
+- `typo3_feedback_list`: lists those feedback, newest first, so they can be worked
   off, filtered by status, category or the tool they are about. `status="closed"`
   reads the ones already worked off out of the commits that deleted them, each
   with the subject that says what came of it (standalone checkout only).
@@ -302,37 +303,37 @@ Useful upstream sources:
 - TYPO3 Core Commit Message Rules:
   https://docs.typo3.org/m/typo3/guide-contributionworkflow/main/en-us/Appendix/CommitMessage.html
 
-## Improvement notes
+## Improvement feedback
 
 What an agent hands back at the end of a task is recorded through
-`typo3_feedback_record`, and every note becomes its own markdown file under
-`feedback/`; `typo3_feedback_list` reads them back, newest first. A note is
+`typo3_feedback_record`, and every feedback becomes its own markdown file under
+`feedback/`; `typo3_feedback_list` reads them back, newest first. A feedback is
 closed by deleting it in the commit that implements the improvement, so
 `feedback/` only ever holds open items — and that commit is where
 the closed half is read back from: `typo3_feedback_list` with `status="closed"`
-answers what became of a note, so a gap that was already closed is not reported a
+answers what became of a feedback, so a gap that was already closed is not reported a
 second time and one that needed a code change does not vanish.
 
-Each note carries the working directory the session that left it ran in, as
+Each feedback carries the working directory the session that left it ran in, as
 `directory:` in its front matter, so a gap can be checked against the project it
 was found in rather than against whatever is at hand. It is the same directory
-the stdio entrypoint hands to instance discovery; a note left over an endpoint
-that has none carries none. That directory is also why the note is reported back
+the stdio entrypoint hands to instance discovery; a feedback left over an endpoint
+that has none carries none. That directory is also why the feedback is reported back
 as an absolute path: it is written into this server's checkout and not into the
 project the session is in, and a relative path sent to a caller standing
 somewhere else reads as a write that failed.
 
-A note also carries `model:` — the model that left it, as it named itself. Much
+A feedback also carries `model:` — the model that left it, as it named itself. Much
 of what arrives is about what a session did rather than about what an answer
 said, and that is one model's behaviour: unattributed, two models' habits are one
 undifferentiated report and neither can be worked off. The write never fails on
 it, and a model that does not know its own identifier is asked to send `unknown`
-rather than an invented one, so a note nobody can attribute says so.
+rather than an invented one, so a feedback nobody can attribute says so.
 
 Both tools exist **only in a standalone checkout**. Installed as a Composer
 dependency the package lives in `vendor/`, where anything written would be lost
 on the next `composer install`; there the server stays strictly read-only and
 neither tool appears in `tools/list`.
 
-Working on this repository — layout, conventions, and how notes are worked off —
+Working on this repository — layout, conventions, and how feedback is worked off —
 is documented in [AGENTS.md](AGENTS.md).

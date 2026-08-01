@@ -2,9 +2,9 @@
 
 This file exists so a session can end anywhere. It holds the **order of the
 work** and where the last one stopped — not what must be true (that is
-[requirements/](requirements/readme.md)), not the questions real sessions asked (that
-is `feedback/`), not the map of what the audiences need (that is `scenarios/`).
-Those three outlive the work; this one is consumed by it.
+[requirements/](requirements/readme.md)), not the questions real sessions asked
+(that is `feedback/`), not the map of what the audiences need (that is
+`scenarios/`). Those three outlive the work; this one is consumed by it.
 
 Nobody reads it to start. `bin/cli next` prints the one todo that is due and
 nothing else, `bin/cli todo list` is the overview, and this is where both of
@@ -12,7 +12,7 @@ them read from. Every section opens with a head of labelled lines:
 
 | Line | What it says |
 | --- | --- |
-| `**Serves:** <ids>` | what this answers for — a requirement, a note, a scenario, a directory. Without it, it is an idea rather than a todo, and ideas go in the note that had them. |
+| `**Serves:** <ids>` | what this answers for — a requirement, a feedback, a scenario, a directory. Without it, it is an idea rather than a todo, and ideas go in the feedback that had them. |
 | `**Every:** session` or `**Every:** 7 days` | it recurs and is never deleted. Without it, the section is the queue, and the queue is an order. A cadence in days is an appointment and comes before the queue; `session` is a sighting and comes after it, when the queue is empty. |
 | `**Checked:** <date>` | when a todo measured in days last ran. The session that runs it writes the date. |
 | `**Run:** <command>` | where the step starts. `bin/cli next` runs the ones this repository owns and names the rest. |
@@ -30,28 +30,28 @@ working.
 - One that turns out to be half done is trimmed to the part that is left.
 - The order is the order. When something jumps the queue, it moves up here
   first, so the reason is written down before the work starts.
-- The queue comes before the sightings. Judging a note or a backlog entry is
+- The queue comes before the sightings. Judging a feedback or a backlog entry is
   what puts something *into* the queue, so a queue that still has entries is a
   queue of things already judged — sighting more of them instead is deciding
   twice and doing nothing. The sightings run when it is empty.
 
 ---
 
-## Run the next five open notes' queries against the server as it is now
+## Run the next five open feedback' queries against the server as it is now
 
 **Serves:** feedback/
 **Every:** session
 **Run:** bin/cli feedback next
 
-Take the five notes the listing hands over and no more: run the query that
-produced each against the server as it is now, then give it one of three
-answers — close it, trim it to the half that is still open, or add the todo
-below that takes it on, and if that changes the order, move the queue before
-starting. A note is evidence about a version of this server that may no longer
-exist, which is why it is re-run rather than read. Say which of the three each
-note got and what the re-run showed, so somebody who disagrees with one can say
-so: five judgements can be read, and the fifty behind them are what the chunk
-exists for. This comes round only when the queue is empty, because a note that
+Take the five the listing hands over and no more: run the query that produced
+each against the server as it is now, then give it one of three answers — close
+it, trim it to the half that is still open, or add the todo below that takes it
+on, and if that changes the order, move the queue before starting. A feedback
+is evidence about a version of this server that may no longer exist, which is
+why it is re-run rather than read. Say which of the three each feedback got and
+what the re-run showed, so somebody who disagrees with one can say so: five
+judgements can be read, and the fifty behind them are what the chunk exists
+for. This comes round only when the queue is empty, because a feedback that
 became a todo has already been judged and doing it is what is owed next.
 
 ---
@@ -330,7 +330,7 @@ hold this; the run is the evidence, and this todo is the one that produces it.
 
 Forward evidence comes from a review rather than a prompt that knows the answer,
 and it is wrong if two consecutive runs produce findings too diffuse to tie back
-to a requirement or a note — then the prompt measures the model's taste. The
+to a requirement or a feedback — then the prompt measures the model's taste. The
 runs in `scenarios/runs/` are the material and the reading is a pass over them,
 not a new run. The second half is sharper and testable here: the contract cases
 rot if nothing schedules them, and whether anything does is a question about
@@ -354,11 +354,11 @@ get.
 
 The unavailable case keeps the result shape and carries its reason in an
 `unavailable` object, and it is wrong if clients ignore that object and read a
-miss as a registry answer. Only a session can show that, so this is a reading of
-recorded runs and open notes for a miss that was reported as a fact. What would
-hold it afterwards is not a test but the next lever the entry already names —
-`isError: true`, bluntest, and it turns the answer into an error, which is why
-it was not taken first.
+miss as a registry answer. Only a session can show that, so this is a reading
+of recorded runs and open feedback for a miss that was reported as a fact. What
+would hold it afterwards is not a test but the next lever the entry already
+names — `isError: true`, bluntest, and it turns the answer into an error, which
+is why it was not taken first.
 
 ## Read recorded sessions for the `D-ANS-3` miss
 
@@ -368,7 +368,7 @@ Retrieval stays lexical and runtime inspection stays narrow, and two things
 would show that wrong: real queries repeatedly missing a present section after
 short English alternatives, and a diagnosis that cannot be completed from
 project files, effective configuration and the caller's own checkout. Both are
-properties of sessions, so read the runs and the open notes for either. The
+properties of sessions, so read the runs and the open feedback for either. The
 entry says what the evidence is worth: record that session, because it supplies
 both the tool boundary and the safe result shape.
 
@@ -569,7 +569,7 @@ Things a session may otherwise rediscover and mistake for work:
   has nothing to read. It needs a patch in progress before it can run at all.
 - **The catalog roadmap** — an API signature lookup, a changelog scaffold, a test
   scaffold, and the structured-output envelope that needs a spike of
-  `vendor/mcp/sdk` first. None of it is blocked; none of it serves an open note
+  `vendor/mcp/sdk` first. None of it is blocked; none of it serves an open feedback
   or a forward review either, which is why it is below everything that does.
 - **`phpstan/phpstan` 2.2.6 → 2.2.7 and `phpunit` 11.5 → 12.5.** Ordinary
   maintenance, not an item.

@@ -1,9 +1,9 @@
 # What this server has to do
 
-A feedback note is a question, and it leaves the backlog once it is answered.
-The requirement the note established is not a question and does not go away
+A feedback is a question, and it leaves the backlog once it is answered.
+The requirement the feedback established is not a question and does not go away
 with it: it has to keep holding while everything around it changes. This
-directory is where it survives the note.
+directory is where it survives the feedback.
 
 Every entry states one thing that must be true, names where the demand came
 from, and says what holds it to that — a test where there is one, `not guarded`
@@ -12,12 +12,12 @@ accepted and not yet met; that is the backlog, and it is deliberately the same
 list, because a requirement nobody has implemented yet and one that could
 silently regress are the same kind of thing.
 
-Rules for keeping it usable: an entry is added when a note is worked off, not
-when it arrives — a note nobody has judged yet is a note, not a requirement. An
-entry is never deleted because it was implemented; it is deleted only when the
-requirement itself is withdrawn, and then the reason goes in
-[decisions/](../decisions/readme.md). Assumptions and evidence live there too;
-these files hold only what must be true.
+Rules for keeping it usable: an entry is added when a feedback is worked off,
+not when it arrives — a feedback nobody has judged yet is a feedback, not a
+requirement. An entry is never deleted because it was implemented; it is
+deleted only when the requirement itself is withdrawn, and then the reason goes
+in [decisions/](../decisions/readme.md). Assumptions and evidence live there
+too; these files hold only what must be true.
 
 ## Where an entry lives
 
@@ -52,7 +52,7 @@ an item in [todo.md](../todo.md) names the id. Nothing here reaches the order of
 the work on its own; that listing is the whole of the coupling.
 
 An id is never reused: a withdrawn requirement takes its number with it, so a
-number that appears in an old commit, note or scenario still means the one
+number that appears in an old commit, feedback or scenario still means the one
 thing it always meant.
 
 ## What an entry looks like
@@ -80,7 +80,7 @@ reporting no installation until the client was restarted (2026-07-29).
 
 - The **bold first sentence** is the requirement. Everything under it is why it
   is one, and a reader who stops after the bold line has read the whole demand.
-- **From** is the session, review or note the demand came out of, with its date.
+- **From** is the session, review or feedback the demand came out of, with its date.
   It is evidence, not decoration: it is what tells the next person whether the
   requirement still describes a real failure.
 - **Held by** names the tests that hold it, or says in as many words that

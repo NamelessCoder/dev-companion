@@ -51,7 +51,7 @@ things.
 - **One change, one run.** Editing the criteria resets the recorded run to
   `unrun` by design — the digest check catches a judgment answering criteria
   that have since been rewritten — so the superseded run survives only in its
-  commit. Name that commit in the new run's notes.
+  commit. Name that commit in the new run's feedback.
 - **Reset the environment between runs.** Restoring the working tree is not
   enough if the session wrote to the database; the next run finds what the last
   one left and behaves differently.
@@ -78,9 +78,9 @@ So after judging, ask what the run taught that is **not** specific to the one
 repository, and file each answer where the recurring work already walks:
 
 - `typo3_feedback_record` for what was missing, wrong, or unhelpful — with the
-  review id in the observation, so the note can be traced back to the task that
-  exposed it. Give it the run's own prompt as its query, so the note can be
-  re-run against a later server the way every other note is, and the model the
+  review id in the observation, so the feedback can be traced back to the task that
+  exposed it. Give it the run's own prompt as its query, so the feedback can be
+  re-run against a later server the way every other feedback is, and the model the
   run ran as, because what a run teaches about behaviour belongs to that model
   and not to the next one.
 - A new contract case, when the session exposes a repeatable task or failure
@@ -89,15 +89,15 @@ repository, and file each answer where the recurring work already walks:
 Both of those are written by whoever judged the run, from the transcript. When
 the run happened in an agent whose transcript is not readable here, the session
 is the only thing that can report it, and it is asked for its own debrief after
-the work is finished — the generic prompt for that is in
-[the feedback pages](feedback/readme.md). What comes back is weaker evidence than a
+the work is finished — the generic prompt for that is in [the feedback
+pages](feedback/readme.md). What comes back is weaker evidence than a
 transcript and the run says so: it is what the session claims about itself, and
 the answer it gave is still judged the usual way.
 
 A defect the same session fixes is the exception: that is a requirement and the
-commit that closed it, not a note that would be archived on creation. Otherwise
-the usual route applies — the note is worked off in a commit that archives it,
-and what has to keep holding afterwards goes into
+commit that closed it, not a feedback that would be archived on creation.
+Otherwise the usual route applies — the feedback is worked off in a commit that
+archives it, and what has to keep holding afterwards goes into
 [requirements/](../requirements/readme.md).
 
 For a `gap` review, do not re-file the part that is already written down — its

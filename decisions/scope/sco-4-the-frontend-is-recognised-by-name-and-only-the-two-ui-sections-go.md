@@ -26,7 +26,7 @@ are shaped exactly like core paths, and the second one is one.
   over four confident instructions to rewrite a working theme.
 - **Assumed:** naming the categories `Backend CSS` and `Backend TypeScript` is
   worth the churn in every rendered answer. A category label is read on every
-  hit, a boundary note only when it fires.
+  hit, a boundary feedback only when it fires.
 - **Wrong if:** a core contributor working on the frontend rendering of
   `fluid_styled_content` loses the CSS hints they wanted. `styleguide` and
   `backend` are the escape, and they are named in the notice.

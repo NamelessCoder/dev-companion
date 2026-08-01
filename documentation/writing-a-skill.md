@@ -67,9 +67,9 @@ So the draft is shown before it is published: `SKILL.md` and every reference,
 whole, not summarised. And feedback is **asked for by name** — does this match
 how the task is really done, which step is missing, which one is wrong, what
 does it claim that is not true here. "Does this look good?" gets agreement, not
-review. What comes back is worked in before the skill reaches `Installer::SKILLS`,
-because the copy in somebody else's project is not corrected by the next release
-of this server.
+review. What comes back is worked in before the skill reaches
+`Installer::SKILLS`, because the copy in somebody else's project is not
+corrected by the next release of this server.
 
 ## The rules, and what holds each one
 

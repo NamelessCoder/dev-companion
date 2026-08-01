@@ -9,7 +9,7 @@ status: standing
 **The packages and the console are found through the `vendor-dir` and `bin-dir`
 the root `composer.json` declares, rather than through their default paths.**
 
-Closes the notes about `.build/bin/typo3` being unreachable and about the
+Closes the feedback about `.build/bin/typo3` being unreachable and about the
 extension checkout not being recognised as an installation at all.
 
 - **Evidence:** `bootstrap_package` on this machine — 21 packages found,

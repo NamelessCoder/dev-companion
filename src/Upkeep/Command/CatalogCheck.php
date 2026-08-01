@@ -6,6 +6,7 @@ namespace Typo3CmsMcp\Upkeep\Command;
 
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Output\OutputInterface;
+use Typo3CmsMcp\Knowledge\Catalog\DemoMarkup;
 use Typo3CmsMcp\Knowledge\Versions;
 use Typo3CmsMcp\Upkeep\Catalogs;
 use Typo3CmsMcp\Upkeep\Checkouts;
@@ -25,7 +26,7 @@ use Typo3CmsMcp\Upkeep\TestingFramework;
  */
 #[AsCommand(
     name: 'catalog:check',
-    description: 'the versions each entry holds on, the shipped system extensions, the worked examples, the Fluid engine each branch pins, and the testing-framework release it pins, against .checkouts/',
+    description: 'the versions each entry holds on, the markup it was read off, the shipped system extensions, the worked examples, the Fluid engine each branch pins, and the testing-framework release it pins, against .checkouts/',
 )]
 final class CatalogCheck
 {
@@ -79,6 +80,7 @@ final class CatalogCheck
 
         return max(
             self::verifyBindings($output, $checkouts, Catalogs::read('components')),
+            self::verifyMarkup($output, $checkouts, Catalogs::read('components')),
             self::verifySystemExtensions($output, $checkouts, Catalogs::read('system-extensions')),
             self::verifyReferences($output, $checkouts, Catalogs::read('references')),
             self::verifyFluidEngine($output, $checkouts),
@@ -394,6 +396,115 @@ final class CatalogCheck
         }
 
         return $sources;
+    }
+
+    /**
+     * Re-reads the markup each entry was read off, and reports every checkout
+     * that no longer carries what the entry recorded.
+     *
+     * The binding above is derived from names, so a demo rewritten around the
+     * same classes reads as unchanged and the snapshot ages quietly into a wrong
+     * answer — D-CAT-1 named that as what would show it wrong. A digest per
+     * entry per checkout is what notices it: the entry records what each covered
+     * version's demo said when somebody last read it, and a rewrite fails here.
+     *
+     * Nothing is written. A failure is a demo somebody has to reread, and the
+     * new digest is only true once the entry says what that demo now shows.
+     *
+     * @param array<int, array<string, mixed>> $components
+     */
+    private static function verifyMarkup(OutputInterface $output, string $checkouts, array $components): int
+    {
+        $output->writeln('Component markup');
+        $covered = Versions::covered();
+        $problems = 0;
+        $withoutDemo = 0;
+        $unnamed = 0;
+        foreach ($components as $component) {
+            $demo = (string) ($component['demoPath'] ?? '');
+            if ($demo === '') {
+                ++$withoutDemo;
+                continue;
+            }
+
+            $read = [];
+            $names = false;
+            foreach ($covered as $version) {
+                $file = $checkouts . '/' . $version['branch'] . '/' . $demo;
+                if (!is_dir($checkouts . '/' . $version['branch'])) {
+                    Cli::errors($output)->writeln(sprintf('No checkout for TYPO3 v%d below %s — run bin/cli checkouts:update.', $version['major'], $checkouts));
+
+                    return 2;
+                }
+                if (!is_file($file)) {
+                    continue;
+                }
+                $markup = self::demoMarkup((string) file_get_contents($file), (string) $component['rootClass']);
+                $read[$version['major']] = substr(hash('sha256', $markup), 0, 12);
+                $names = $names || DemoMarkup::carries($markup, (string) $component['rootClass']);
+            }
+            if ($read !== [] && !$names) {
+                ++$unnamed;
+            }
+
+            $recorded = [];
+            foreach ((array) ($component['markupDigests'] ?? []) as $major => $digest) {
+                $recorded[(int) $major] = (string) $digest;
+            }
+            foreach (array_keys($read + $recorded) as $major) {
+                $was = $recorded[$major] ?? null;
+                $now = $read[$major] ?? null;
+                if ($was === $now) {
+                    continue;
+                }
+                $output->writeln(sprintf(
+                    '  %s: v%d records %s, and %s',
+                    $component['name'],
+                    $major,
+                    $was ?? 'no markup',
+                    $now === null ? $demo . ' is not there' : 'the demo reads ' . $now,
+                ));
+                ++$problems;
+            }
+        }
+        $output->writeln(sprintf(
+            '  %d demos against %s',
+            count($components) - $withoutDemo,
+            implode(', ', array_column($covered, 'branch')),
+        ));
+        $output->writeln(sprintf(
+            '  %d of them name the component nowhere and %d entries name no demo, so their markup is held by nothing',
+            $unnamed,
+            $withoutDemo,
+        ));
+        $output->writeln('');
+
+        if ($problems === 0) {
+            $output->writeln('Every demo still reads as its entry recorded it.');
+
+            return 0;
+        }
+
+        $output->writeln(sprintf('%d demo(s) no longer read as the entry records — reread them and record what they show.', $problems));
+
+        return 1;
+    }
+
+    /**
+     * What one checkout's demo says about one component.
+     *
+     * The examples carrying the component are the markup an installation would
+     * hand a caller, so they are what the digest covers. Where a demo wraps none
+     * in `sg:example`, the file itself is the demo: `Panels.fluid.html` and
+     * `RecordSearchBox.fluid.html` are pages about one component rather than
+     * galleries, so an edit anywhere in them is an edit to what the entry
+     * describes.
+     */
+    private static function demoMarkup(string $template, string $rootClass): string
+    {
+        $examples = DemoMarkup::examples($template, $rootClass);
+
+        return $examples === [] ? $template : implode("\n", $examples);
     }
 
     /**

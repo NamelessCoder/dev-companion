@@ -39,6 +39,10 @@
     ],
     "sassPath": "Build/Sources/Sass/component/_alert.scss",
     "demoPath": "typo3/sysext/styleguide/Resources/Private/Templates/Backend/Components/FlashMessages.fluid.html",
+    "markupDigests": {
+      "14": "0950c0b6d576",
+      "15": "0950c0b6d576"
+    },
     "keywords": [
       "alert",
       "flash message",
@@ -76,6 +80,10 @@
     ],
     "sassPath": "Build/Sources/Sass/component/_avatar.scss",
     "demoPath": "typo3/sysext/styleguide/Resources/Private/Templates/Backend/Components/Avatar.fluid.html",
+    "markupDigests": {
+      "14": "56d3d2db85f7",
+      "15": "56d3d2db85f7"
+    },
     "keywords": [
       "avatar",
       "user image",
@@ -130,6 +138,10 @@
     ],
     "sassPath": "Build/Sources/Sass/component/_badges.scss",
     "demoPath": "typo3/sysext/styleguide/Resources/Private/Templates/Backend/Components/Badges.fluid.html",
+    "markupDigests": {
+      "14": "4138e8239d28",
+      "15": "4138e8239d28"
+    },
     "keywords": [
       "badge",
       "label",
@@ -170,6 +182,10 @@
     "examples": [],
     "sassPath": "Build/Sources/Sass/component/_breadcrumb.scss",
     "demoPath": "typo3/sysext/styleguide/Resources/Private/Templates/Backend/Components/Breadcrumbs.fluid.html",
+    "markupDigests": {
+      "14": "fab35fd8ef72",
+      "15": "fab35fd8ef72"
+    },
     "keywords": [
       "breadcrumb",
       "navigation",
@@ -228,6 +244,10 @@
     ],
     "sassPath": "Build/Sources/Sass/component/_buttons.scss",
     "demoPath": "typo3/sysext/styleguide/Resources/Private/Templates/Backend/Components/Buttons.fluid.html",
+    "markupDigests": {
+      "14": "75dcbc4dc37f",
+      "15": "75dcbc4dc37f"
+    },
     "keywords": [
       "button",
       "btn",
@@ -261,6 +281,10 @@
     ],
     "sassPath": "Build/Sources/Sass/component/_button-group.scss",
     "demoPath": "typo3/sysext/styleguide/Resources/Private/Templates/Backend/Components/Buttons.fluid.html",
+    "markupDigests": {
+      "14": "7a491ddcc180",
+      "15": "7a491ddcc180"
+    },
     "keywords": [
       "button group",
       "btn-group",
@@ -309,6 +333,10 @@
     "examples": [],
     "sassPath": "Build/Sources/Sass/component/_callout.scss",
     "demoPath": "typo3/sysext/styleguide/Resources/Private/Templates/Backend/Components/Infobox.fluid.html",
+    "markupDigests": {
+      "14": "4928ad423340",
+      "15": "4928ad423340"
+    },
     "keywords": [
       "callout",
       "infobox",
@@ -364,6 +392,10 @@
     ],
     "sassPath": "Build/Sources/Sass/component/_card.scss",
     "demoPath": "typo3/sysext/styleguide/Resources/Private/Templates/Backend/Components/Cards.fluid.html",
+    "markupDigests": {
+      "14": "aa43657c6b73",
+      "15": "aa43657c6b73"
+    },
     "keywords": [
       "card",
       "container",
@@ -414,6 +446,10 @@
     "examples": [],
     "sassPath": "Build/Sources/Sass/component/_dropdown.scss",
     "demoPath": "typo3/sysext/styleguide/Resources/Private/Templates/Backend/Components/Dropdown.fluid.html",
+    "markupDigests": {
+      "14": "eb6291f18f51",
+      "15": "eb6291f18f51"
+    },
     "keywords": [
       "dropdown",
       "menu",
@@ -512,6 +548,10 @@
     ],
     "sassPath": "Build/Sources/Sass/component/forms/_form-check.scss",
     "demoPath": "typo3/sysext/styleguide/Resources/Private/Templates/Backend/Components/Checkboxes.fluid.html",
+    "markupDigests": {
+      "14": "27f5acfb5d82",
+      "15": "27f5acfb5d82"
+    },
     "keywords": [
       "checkbox",
       "radio",
@@ -542,6 +582,10 @@
     ],
     "sassPath": "Build/Sources/Sass/component/_callout.scss",
     "demoPath": "typo3/sysext/styleguide/Resources/Private/Templates/Backend/Components/Infobox.fluid.html",
+    "markupDigests": {
+      "14": "4928ad423340",
+      "15": "4928ad423340"
+    },
     "keywords": [
       "infobox",
       "info box",
@@ -585,6 +629,10 @@
     ],
     "sassPath": "Build/Sources/Sass/component/forms/_form-control.scss",
     "demoPath": "typo3/sysext/styleguide/Resources/Private/Templates/Backend/Components/Input.fluid.html",
+    "markupDigests": {
+      "14": "ca8a4d56d4b8",
+      "15": "ca8a4d56d4b8"
+    },
     "keywords": [
       "input",
       "form control",
@@ -634,6 +682,10 @@
     ],
     "sassPath": "Build/Sources/Sass/component/_list-group.scss",
     "demoPath": "typo3/sysext/styleguide/Resources/Private/Templates/Backend/Components/ListGroups.fluid.html",
+    "markupDigests": {
+      "14": "4d2cf3ddc444",
+      "15": "4d2cf3ddc444"
+    },
     "keywords": [
       "list group",
       "list-group",
@@ -686,6 +738,10 @@
     ],
     "sassPath": "Build/Sources/Sass/component/_modal.scss",
     "demoPath": "typo3/sysext/styleguide/Resources/Private/Templates/Backend/Components/Modal.fluid.html",
+    "markupDigests": {
+      "14": "b848b3cca842",
+      "15": "b848b3cca842"
+    },
     "keywords": [
       "modal",
       "dialog",
@@ -730,6 +786,10 @@
     ],
     "sassPath": "Build/Sources/Sass/component/_nav.scss",
     "demoPath": "typo3/sysext/styleguide/Resources/Private/Templates/Backend/Components/Navs.fluid.html",
+    "markupDigests": {
+      "14": "c93a049d6e00",
+      "15": "c93a049d6e00"
+    },
     "keywords": [
       "nav",
       "tabs",
@@ -832,6 +892,10 @@
     "examples": [],
     "sassPath": "Build/Sources/Sass/component/_pagination.scss",
     "demoPath": "typo3/sysext/styleguide/Resources/Private/Templates/Backend/Components/Pagination.fluid.html",
+    "markupDigests": {
+      "14": "b09fe90327fb",
+      "15": "b09fe90327fb"
+    },
     "keywords": [
       "pagination",
       "pager",
@@ -893,6 +957,10 @@
     "examples": [],
     "sassPath": "Build/Sources/Sass/component/_panel.scss",
     "demoPath": "typo3/sysext/styleguide/Resources/Private/Templates/Backend/Components/Panels.fluid.html",
+    "markupDigests": {
+      "14": "e3b63079d343",
+      "15": "e3b63079d343"
+    },
     "keywords": [
       "panel",
       "collapsible",
@@ -954,6 +1022,10 @@
     ],
     "sassPath": null,
     "demoPath": "typo3/sysext/styleguide/Resources/Private/Templates/Backend/Components/ProgressIndicators.fluid.html",
+    "markupDigests": {
+      "14": "6806e650ed91",
+      "15": "6806e650ed91"
+    },
     "keywords": [
       "progress",
       "progress bar",
@@ -980,6 +1052,10 @@
     "examples": [],
     "sassPath": "Build/Sources/Sass/component/_recordsearchbox.scss",
     "demoPath": "typo3/sysext/backend/Resources/Private/Templates/RecordSearchBox.fluid.html",
+    "markupDigests": {
+      "14": "fc03e29b6016",
+      "15": "fc03e29b6016"
+    },
     "keywords": [
       "recordsearchbox",
       "search",
@@ -1034,6 +1110,10 @@
       "Build/Sources/Sass/component/_status-indicator.scss"
     ],
     "demoPath": "typo3/sysext/styleguide/Resources/Private/Templates/Backend/Components/StatusIndicators.fluid.html",
+    "markupDigests": {
+      "14": "207f8cd6bef8",
+      "15": "207f8cd6bef8"
+    },
     "keywords": [
       "status indicator",
       "status-indicator",
@@ -1083,6 +1163,10 @@
     "examples": [],
     "sassPath": "Build/Sources/Sass/component/_table.scss",
     "demoPath": "typo3/sysext/styleguide/Resources/Private/Templates/Backend/Components/Tables.fluid.html",
+    "markupDigests": {
+      "14": "986dca615100",
+      "15": "986dca615100"
+    },
     "keywords": [
       "table",
       "grid",
@@ -1128,6 +1212,10 @@
     "examples": [],
     "sassPath": "Build/Sources/Sass/component/_tree.scss",
     "demoPath": "typo3/sysext/styleguide/Resources/Private/Templates/Backend/Components/Trees.fluid.html",
+    "markupDigests": {
+      "14": "36b019b2ce89",
+      "15": "36b019b2ce89"
+    },
     "keywords": [
       "tree",
       "page tree",

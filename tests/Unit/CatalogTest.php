@@ -10,6 +10,7 @@ use PHPUnit\Framework\TestCase;
 use Typo3CmsMcp\Installation\Instance;
 use Typo3CmsMcp\Knowledge\ArchitectureHints;
 use Typo3CmsMcp\Knowledge\Catalog\Components;
+use Typo3CmsMcp\Knowledge\Catalog\DemoMarkup;
 use Typo3CmsMcp\Knowledge\Catalog\Meta;
 use Typo3CmsMcp\Knowledge\Catalog\References;
 use Typo3CmsMcp\Knowledge\Catalog\SystemExtensions;
@@ -17,6 +18,7 @@ use Typo3CmsMcp\Knowledge\Catalog\TranslationDomain;
 use Typo3CmsMcp\Knowledge\Versions;
 use Typo3CmsMcp\Tests\Support\TemporaryInstallation;
 use Typo3CmsMcp\Tool\Registry;
+use Typo3CmsMcp\Upkeep\Catalogs;
 
 final class CatalogTest extends TestCase
 {
@@ -348,6 +350,46 @@ final class CatalogTest extends TestCase
                 }
             }
         }
+    }
+
+    #[Test]
+    public function everyEntryWithADemoRecordsWhatItRead(): void
+    {
+        // The binding is derived from names, so a demo rewritten around the same
+        // classes reads as unchanged — bin/cli catalog:check compares these
+        // digests against the checkouts, this holds them to versions.json and to
+        // the entries that have a demo to digest at all.
+        $majors = Versions::majors();
+        foreach (Catalogs::read('components') as $entry) {
+            $digests = $entry['markupDigests'] ?? [];
+            if (($entry['demoPath'] ?? '') === '') {
+                self::assertSame([], $digests, $entry['name'] . ' digests a demo it does not name');
+                continue;
+            }
+
+            self::assertNotSame([], $digests, $entry['name'] . ' names a demo and records nothing it read there');
+            foreach ($digests as $major => $digest) {
+                self::assertContains((int) $major, $majors, $entry['name'] . ' digests a version this knowledge base does not cover');
+                self::assertMatchesRegularExpression('/^[0-9a-f]{12}$/', (string) $digest, $entry['name'] . ' records something no digest produced');
+            }
+        }
+    }
+
+    #[Test]
+    public function aDemoIsDigestedByWhatItSaysAboutTheComponent(): void
+    {
+        // What the digest has to notice: the same class names, arranged
+        // differently. The names alone say nothing about the second template.
+        $one = '<sg:example><span class="badge badge-default">Badge</span></sg:example>';
+        $two = '<sg:example><div><span class="badge badge-default">Badge</span></div></sg:example>';
+
+        self::assertNotSame(DemoMarkup::examples($one, 'badge'), DemoMarkup::examples($two, 'badge'));
+
+        // And what it may not notice: a demo that renders the component through
+        // a ViewHelper names it nowhere, so nothing there holds its markup.
+        $viewHelper = '<sg:example><f:flashMessages queueIdentifier="styleguide.default" /></sg:example>';
+        self::assertFalse(DemoMarkup::carries(implode("\n", DemoMarkup::examples($viewHelper, 'alert')), 'alert'));
+        self::assertTrue(DemoMarkup::carries(implode("\n", DemoMarkup::examples($one, 'badge')), 'badge'));
     }
 
     #[Test]

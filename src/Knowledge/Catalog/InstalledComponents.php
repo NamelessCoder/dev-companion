@@ -80,7 +80,7 @@ final class InstalledComponents
             if ($demo !== null) {
                 [$file, $reference] = $demo;
                 $sources[] = $reference;
-                $examples = self::examples((string) file_get_contents($file), $rootClass);
+                $examples = DemoMarkup::examples((string) file_get_contents($file), $rootClass);
                 if ($examples !== []) {
                     $component['markup'] = array_shift($examples);
                     $component['examples'] = $examples;
@@ -239,51 +239,5 @@ final class InstalledComponents
         }
 
         return [$package . '/' . $matches[2], 'EXT:' . $matches[1] . '/' . $matches[2]];
-    }
-
-    /**
-     * The styleguide wraps each copyable example in sg:example. Keep only
-     * examples that actually contain this component, not the page chrome.
-     *
-     * @return array<int, string>
-     */
-    private static function examples(string $template, string $rootClass): array
-    {
-        preg_match_all('#<sg:example\b[^>]*>(.*?)</sg:example>#si', $template, $matches);
-        $all = [];
-        $matching = [];
-        foreach ($matches[1] as $example) {
-            $contains = str_starts_with($rootClass, 'typo3-')
-                ? str_contains($example, '<' . $rootClass)
-                : preg_match(
-                    '/class=["\'][^"\']*(?<![a-z0-9_-])'
-                        . preg_quote($rootClass, '/')
-                        . '(?![a-z0-9_-])[^"\']*["\']/i',
-                    $example,
-                ) === 1;
-            $lines = preg_split('/\R/', trim($example, "\r\n")) ?: [];
-            $indent = null;
-            foreach ($lines as $line) {
-                if (trim($line) === '') {
-                    continue;
-                }
-                preg_match('/^\s*/', $line, $leading);
-                $width = strlen($leading[0] ?? '');
-                $indent = $indent === null ? $width : min($indent, $width);
-            }
-            $clean = trim(implode("\n", array_map(
-                static fn(string $line): string => substr($line, $indent ?? 0),
-                $lines,
-            )));
-            if ($clean === '') {
-                continue;
-            }
-            $all[] = $clean;
-            if ($contains) {
-                $matching[] = $clean;
-            }
-        }
-
-        return array_slice(array_values(array_unique($matching === [] ? $all : $matching)), 0, 4);
     }
 }

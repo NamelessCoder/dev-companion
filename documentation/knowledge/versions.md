@@ -66,7 +66,10 @@ runtime, and the failure is silent. The rules below follow from it.
   qualifying it — a class that does not exist fails in a browser, silently.
   The binding is derived, not judged: `bin/cli catalog:check` re-reads every
   covered checkout and reports each entry whose recorded range no longer
-  matches, so a core update invalidates it loudly.
+  matches, so a core update invalidates it loudly. It is derived from names, so
+  a demo rewritten around the same classes reads as unchanged — the entry
+  records a digest of what each covered demo said, and the same command fails on
+  a rewrite no name would show (`D-CAT-1`).
 - **A directory is not evidence that what it demonstrates is inside it.** Where
   a worked example promises a shape rather than a path, the entry names the two
   or three files that carry that shape in `files`, and the range is derived from

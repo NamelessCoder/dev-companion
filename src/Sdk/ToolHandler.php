@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Mcp;
+namespace Typo3CmsMcp\Sdk;
 
 use Mcp\Schema\Content\TextContent;
 use Mcp\Schema\Result\CallToolResult;
@@ -11,14 +11,14 @@ use Mcp\Server\Handler\ToolHandlerInterface;
 use Typo3CmsMcp\Tools;
 
 /**
- * Bridges one registered MCP tool to the existing Typo3CmsMcp\Tools dispatcher.
+ * Bridges one registered tool to Typo3CmsMcp\Tools.
  *
- * The official SDK passes the raw (validated) argument bag to execute(); we hand
- * it straight to Tools::call(), so all tool behaviour and formatting stays in
- * Tools and the knowledge base. Both halves of the answer are returned: the text
- * as the tool's content, the same answer as `structuredContent` matching the
- * tool's declared output schema. A thrown exception is turned into an MCP tool
- * error by the SDK.
+ * The official SDK passes the raw (validated) argument bag to execute(); it is
+ * handed straight to Tools::call(), so every behaviour and every rendering
+ * stays in the tool that owns it and nothing about a tool is decided here. Both
+ * halves of the answer are returned: the text as the tool's content, the same
+ * answer as `structuredContent` matching the output schema that tool declares.
+ * A thrown exception is turned into an MCP tool error by the SDK.
  */
 final class ToolHandler implements ToolHandlerInterface
 {

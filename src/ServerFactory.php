@@ -8,8 +8,8 @@ use Mcp\Schema\ResourceDefinition;
 use Mcp\Schema\Tool;
 use Mcp\Schema\ToolAnnotations;
 use Mcp\Server;
-use Typo3CmsMcp\Mcp\ResourceHandler;
-use Typo3CmsMcp\Mcp\ToolHandler;
+use Typo3CmsMcp\Sdk\ResourceHandler;
+use Typo3CmsMcp\Sdk\ToolHandler;
 
 /**
  * Builds the MCP server on the official mcp/sdk, wiring the existing knowledge

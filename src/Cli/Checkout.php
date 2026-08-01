@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Typo3CmsMcp\Cli;
 
+use Typo3CmsMcp\TestingFramework;
 use Typo3CmsMcp\Versions;
 
 /**
@@ -14,6 +15,13 @@ use Typo3CmsMcp\Versions;
  * The versions come from knowledge/versions.json and from nowhere else. One
  * treeless clone carries the history; each covered branch is a worktree of it,
  * so four lines cost one object store.
+ *
+ * typo3/testing-framework is kept here too, because a statement about the
+ * harness a project extension tests in is verified against a tag of that
+ * package rather than against a core branch (D-KNW-2), and reading it anywhere
+ * else makes the evidence unreproducible for exactly the same reason. Which
+ * release line pairs with which major is the core's own require-dev pin, so
+ * nothing about it is recorded: see Typo3CmsMcp\TestingFramework.
  */
 final class Checkout implements Subject
 {
@@ -46,6 +54,16 @@ final class Checkout implements Subject
             );
         }
 
+        printf("\n%s, one release line per pin\n", TestingFramework::PACKAGE);
+        foreach (TestingFramework::pairing($checkouts) as $pair) {
+            printf(
+                "  %-6s %-9s %s\n",
+                $pair['branch'],
+                $pair['constraint'] === '' ? 'no pin' : $pair['constraint'],
+                is_dir($pair['path'] . '/Classes') ? self::revision($pair['path']) : 'missing — run bin/cli checkouts update',
+            );
+        }
+
         return 0;
     }
 
@@ -61,26 +79,9 @@ final class Checkout implements Subject
             return 2;
         }
 
-        if (!is_dir($mirror)) {
-            printf("Cloning %s (treeless; blobs are fetched as they are read)\n", self::REPOSITORY);
-            // --filter=blob:none keeps the history and the trees and leaves the file
-            // contents on the server until something asks for them. A full clone of the
-            // core is several gigabytes; this is a fraction of it, and the worktrees
-            // below still read like ordinary checkouts.
-            [$exitCode] = self::run(['git', 'clone', '--bare', '--filter=blob:none', self::REPOSITORY, $mirror]);
-            if ($exitCode !== 0) {
-                fwrite(STDERR, "Clone failed.\n");
-
-                return 1;
-            }
+        if (!self::mirror($mirror, self::REPOSITORY, false)) {
+            return 1;
         }
-
-        // A bare clone keeps the branches as its own refs and configures no refspec, so
-        // a later fetch would update nothing. This is what makes the mirror updatable.
-        self::run(['git', '-C', $mirror, 'config', 'remote.origin.fetch', '+refs/heads/*:refs/heads/*'], null, true);
-
-        echo "Fetching\n";
-        self::run(['git', '-C', $mirror, 'fetch', '--quiet', '--force', '--prune', 'origin']);
 
         $failed = 0;
         foreach (Versions::covered() as $version) {
@@ -88,20 +89,15 @@ final class Checkout implements Subject
             $path = $checkouts . '/' . $branch;
             printf("%s (TYPO3 v%d, %s)\n", $branch, $version['major'], $version['status']);
 
-            if (!is_dir($path)) {
-                [$exitCode] = self::run(['git', '-C', $mirror, 'worktree', 'add', '--quiet', '--detach', '--force', $path, $branch]);
-            } else {
-                // Detached on the branch tip: these are read, never committed to, so
-                // there is nothing to merge and nothing to lose.
-                [$exitCode] = self::run(['git', '-C', $path, 'checkout', '--quiet', '--force', '--detach', $branch]);
-            }
-            if ($exitCode !== 0) {
+            if (self::worktree($mirror, $path, $branch) !== 0) {
                 ++$failed;
                 continue;
             }
 
             printf("    %s\n", self::revision($path));
         }
+
+        $failed += self::updateTestingFramework($checkouts);
 
         if ($failed > 0) {
             printf("\n%d checkout(s) failed.\n", $failed);
@@ -112,6 +108,97 @@ final class Checkout implements Subject
         printf("\nReady. Verify a statement against .checkouts/<branch>, on both sides of its boundary.\n");
 
         return 0;
+    }
+
+    /**
+     * One worktree per testing-framework release line the covered majors pin,
+     * checked out at that line's newest tag.
+     *
+     * Two majors pinning the same line share one worktree — the core pins 9.x on
+     * both 13.4 and 14.3 — so what is created follows the pins rather than the
+     * version list.
+     */
+    private static function updateTestingFramework(string $checkouts): int
+    {
+        printf("\n%s (the harness a project extension tests in)\n", TestingFramework::PACKAGE);
+        $mirror = TestingFramework::mirror($checkouts);
+        if (!self::mirror($mirror, TestingFramework::REPOSITORY, true)) {
+            return 1;
+        }
+
+        $failed = 0;
+        $created = [];
+        foreach (TestingFramework::pairing($checkouts) as $pair) {
+            printf(
+                "  %-6s %-9s %s\n",
+                $pair['branch'],
+                $pair['constraint'] === '' ? 'no pin' : $pair['constraint'],
+                $pair['ref'] ?? 'names no single release line',
+            );
+            if ($pair['ref'] === null) {
+                ++$failed;
+                continue;
+            }
+            if (isset($created[$pair['ref']])) {
+                continue;
+            }
+
+            $created[$pair['ref']] = true;
+            if (self::worktree($mirror, $pair['path'], $pair['ref']) !== 0) {
+                ++$failed;
+            }
+        }
+
+        return $failed;
+    }
+
+    /** One treeless bare clone, created where it is missing and fetched to its refs. */
+    private static function mirror(string $path, string $repository, bool $tags): bool
+    {
+        if (!is_dir($path)) {
+            printf("Cloning %s (treeless; blobs are fetched as they are read)\n", $repository);
+            // --filter=blob:none keeps the history and the trees and leaves the file
+            // contents on the server until something asks for them. A full clone of the
+            // core is several gigabytes; this is a fraction of it, and the worktrees
+            // below still read like ordinary checkouts.
+            [$exitCode] = self::run(['git', 'clone', '--bare', '--filter=blob:none', $repository, $path]);
+            if ($exitCode !== 0) {
+                fwrite(STDERR, "Clone failed.\n");
+
+                return false;
+            }
+        }
+
+        // A bare clone keeps the branches as its own refs and configures no refspec, so
+        // a later fetch would update nothing. This is what makes the mirror updatable.
+        self::run(['git', '-C', $path, 'config', 'remote.origin.fetch', '+refs/heads/*:refs/heads/*'], null, true);
+
+        printf("Fetching %s\n", basename($path));
+        $command = ['git', '-C', $path, 'fetch', '--quiet', '--force', '--prune', 'origin'];
+        if ($tags) {
+            // The release lines are read at their tags, so a line that gained one
+            // since the last update is only there if the tags come along.
+            $command[] = '--tags';
+        }
+        [$exitCode] = self::run($command);
+
+        return $exitCode === 0;
+    }
+
+    /** One worktree of a mirror, detached on a ref. */
+    private static function worktree(string $mirror, string $path, string $ref): int
+    {
+        if (!is_dir($path)) {
+            [$exitCode] = self::run(['git', '-C', $mirror, 'worktree', 'add', '--quiet', '--detach', '--force', $path, $ref]);
+
+            return $exitCode;
+        }
+
+        // Detached on the ref: these are read, never committed to, so there is
+        // nothing to merge and nothing to lose.
+        [$exitCode] = self::run(['git', '-C', $path, 'checkout', '--quiet', '--force', '--detach', $ref]);
+
+        return $exitCode;
     }
 
     private static function directory(): string

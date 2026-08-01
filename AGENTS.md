@@ -18,6 +18,7 @@ src/Installer.php  # writes guarded generic or agent-specific client setup
 src/Project.php    # the repository around it; src/Extension.php one extension in it
 src/Profile.php    # which half of the server a client is offered (TYPO3_MCP_PROFILE)
 src/Typo3Cli.php   # runs that installation's console, via DDEV where there is one
+src/TestingFramework.php  # which typo3/testing-framework release each covered major is read against
 src/bootstrap.php  # locates the Composer autoloader
 knowledge/         # the knowledge base (markdown + JSON), the data source
 feedback/          # improvement notes left by agents (standalone checkout only)
@@ -349,7 +350,11 @@ version says so; see the audience requirements in `requirements/audience/`.
   checkouts are this repository's own — one worktree per covered version,
   created and updated by `bin/cli checkouts update`, gitignored and re-fetchable
   at any time. Verifying against whatever checkout happens to be on the machine
-  makes the evidence unreproducible for the next person.
+  makes the evidence unreproducible for the next person. A statement whose
+  subject is `typo3/testing-framework` is verified there too, in
+  `.checkouts/testing-framework/<line>` — the same command keeps one worktree per
+  release line the covered branches pin, because that package releases on a cycle
+  of its own and the core repository does not contain it.
 
 ### Which versions an answer holds for
 

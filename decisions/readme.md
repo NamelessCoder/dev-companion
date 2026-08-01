@@ -115,7 +115,7 @@ the repository has moved furthest away from since. Going back to one and adding
 - [`D-ANS-2`][D-ANS-2] — Three numbers now decide what a lookup answers, and they were measured, not reasoned · 2026-07-30 · tested
 - [`D-ANS-3`][D-ANS-3] — Retrieval stays lexical and runtime inspection stays narrow · 2026-07-30 · standing
 - [`D-CAT-3`][D-CAT-3] — The component index is curated; its contract comes from the installation · 2026-07-30 · standing
-- [`D-KNW-3`][D-KNW-3] — `provenance` is not the third spelling of `binding`, and stays · 2026-07-30 · standing
+- [`D-KNW-3`][D-KNW-3] — `provenance` is not the third spelling of `binding`, and stays · 2026-07-30 · tested
 - [`D-KNW-4`][D-KNW-4] — Package knowledge needs a producer before it needs discovery · 2026-07-30 · standing
 - [`D-VER-3`][D-VER-3] — The Fluid engine gets no version axis of its own, because the core pins it · 2026-07-30 · tested
 - [`D-ANS-1`][D-ANS-1] — The unanswered result keeps its shape and gains a reason · 2026-07-29 · standing

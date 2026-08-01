@@ -1,9 +1,9 @@
 # What this server has to do
 
-A feedback note is a question, and it is deleted once it is answered. The
-requirement the note established is not a question and does not go away with it:
-it has to keep holding while everything around it changes. This directory is
-where it survives the note.
+A feedback note is a question, and it leaves the backlog once it is answered.
+The requirement the note established is not a question and does not go away
+with it: it has to keep holding while everything around it changes. This
+directory is where it survives the note.
 
 Every entry states one thing that must be true, names where the demand came
 from, and says what holds it to that — a test where there is one, `not guarded`

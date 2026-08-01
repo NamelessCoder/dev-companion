@@ -1,6 +1,6 @@
 # What was decided, and on what evidence
 
-A feedback note is deleted by the commit that closes it, and the commit message
+A feedback note is archived by the commit that closes it, and the commit message
 says what changed and why. What a commit message cannot carry is the part that
 may not survive: the assumption the change rests on, the evidence that was
 available at the time, and what would show the decision to have been wrong.

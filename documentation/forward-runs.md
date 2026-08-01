@@ -95,8 +95,8 @@ transcript and the run says so: it is what the session claims about itself, and
 the answer it gave is still judged the usual way.
 
 A defect the same session fixes is the exception: that is a requirement and the
-commit that closed it, not a note that would be deleted on creation. Otherwise
-the usual route applies — the note is worked off in a commit that deletes it,
+commit that closed it, not a note that would be archived on creation. Otherwise
+the usual route applies — the note is worked off in a commit that archives it,
 and what has to keep holding afterwards goes into
 [requirements/](../requirements/readme.md).
 

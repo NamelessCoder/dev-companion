@@ -1,5 +1,33 @@
 [
   {
+    "id": "extension-static-analysis",
+    "title": "Setting Up PHPStan for an Extension",
+    "appliesTo": [
+      "phpstan",
+      "phpstan.neon",
+      "static analysis",
+      "analyse",
+      "baseline",
+      "phpstan-baseline",
+      "tmpDir",
+      "result cache",
+      "set up static analysis",
+      "level"
+    ],
+    "hints": [
+      "The configuration belongs to the package, in Build/phpstan/ beside the phpunit configurations the test setup already put there. typo3/testing-framework is the setup worth reading: it is a TYPO3 package with no core mono repository around it, which is the situation an extension is in. Its paths are the package's own Classes and Tests directories, and it includes the phpstan-phpunit extension so test code is understood as tests rather than as ordinary classes.",
+      "Set tmpDir to a path inside the repository. PHPStan otherwise writes its result cache to /tmp/phpstan, every checkout on the machine shares that one directory, and the cache stores absolute paths — so a checkout that has been deleted since fails the analysis of every other one, with an internal error naming a path the caller has never seen. The core and typo3/testing-framework both set it, and both explain it in the same words: a local cache dir instead of /tmp. CI is the exception the core makes in a second configuration file that overrides it back to /tmp, because that container is discarded after the run and caching it buys nothing.",
+      "TYPO3 defines constants at runtime that the analysis never gets to see, so they are declared in a file named under bootstrapFiles — LF and CR, and ORIGINAL_ROOT where the test setup uses it. Without it every use of them is reported as an undefined constant, which is a wall of findings about code that is correct.",
+      "ext_emconf.php is excluded rather than fixed. It assigns into $_EXTKEY, which the file including it sets, so the analysis reports the variable as undefined; typo3/testing-framework excludes the ext_emconf.php of its fixture extensions for exactly that reason.",
+      "A baseline is what makes the first run usable. Generating one records every finding that is already there into phpstan-baseline.neon, which the configuration includes first, so the run reports what a change added rather than what the package accumulated before anyone looked. It is a work list, not a suppression: an entry that disappears is removed from the file by regenerating it.",
+      "The core and typo3/testing-framework both analyse at level 5. Levels are cumulative, so raising one on a package that has never been analysed produces the whole difference at once — which is what the baseline is for."
+    ],
+    "checks": [
+      "vendor/bin/phpstan analyse -c Build/phpstan/phpstan.neon --no-progress --no-interaction",
+      "vendor/bin/phpstan analyse -c Build/phpstan/phpstan.neon --generate-baseline=Build/phpstan/phpstan-baseline.neon"
+    ]
+  },
+  {
     "id": "system-extension-boundaries",
     "title": "System Extension Boundaries",
     "appliesTo": [

@@ -52,6 +52,30 @@ final class HintsTest extends TestCase
         );
     }
 
+    /**
+     * Setting the analysis up is the extension author's question, and the core
+     * is no answer to it: its configuration sits in a mono repository, half of
+     * what it declares is its own rule set, and the paths are relative to a
+     * tree an extension does not have. So the hint has to be reachable from the
+     * words somebody setting it up would use, and a core testing task must not
+     * reach it — that caller has runTests.sh and a configuration already there.
+     */
+    #[Test]
+    public function settingUpTheAnalysisReachesTheExtensionHintAndACoreTaskDoesNot(): void
+    {
+        $setup = ArchitectureHints::find([], 'how do I set up phpstan for my extension', 6);
+
+        self::assertContains('extension-static-analysis', array_column($setup['matchedHints'], 'id'));
+
+        $core = ArchitectureHints::find(
+            ['typo3/sysext/core/Classes/'],
+            'write a functional test for a core patch',
+            6,
+        );
+
+        self::assertNotContains('extension-static-analysis', array_column($core['matchedHints'], 'id'));
+    }
+
     #[Test]
     public function aSassPathReachesTheCssHints(): void
     {

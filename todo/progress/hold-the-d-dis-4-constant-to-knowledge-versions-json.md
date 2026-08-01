@@ -1,6 +1,8 @@
 # Hold the `D-DIS-4` constant to `knowledge/versions.json`
 
 **Serves:** decisions/
+**Branch:** todo/hold-the-d-dis-4-constant-to-knowledge-versions-json
+**Claimed:** 2026-08-01
 
 The version comes from the core package, and the entry names one number in one
 place — the constant in `Tools` — that a backport of the domain API into a 13.x

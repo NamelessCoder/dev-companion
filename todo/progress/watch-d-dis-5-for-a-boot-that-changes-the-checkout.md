@@ -1,6 +1,8 @@
 # Watch `D-DIS-5` for a boot that changes the checkout
 
 **Serves:** decisions/
+**Branch:** todo/watch-d-dis-5-for-a-boot-that-changes-the-checkout
+**Claimed:** 2026-08-01
 
 Reading a registry by booting the installation buys the only complete answer and
 risks a side effect a lookup must not have: an `ext_localconf.php` that writes

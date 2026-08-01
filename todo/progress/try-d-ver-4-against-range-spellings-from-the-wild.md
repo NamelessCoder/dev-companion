@@ -1,6 +1,8 @@
 # Try `D-VER-4` against range spellings from the wild
 
 **Serves:** decisions/
+**Branch:** todo/try-d-ver-4-against-range-spellings-from-the-wild
+**Claimed:** 2026-08-01
 
 A supported range is read off the package's own declaration, and the entry names
 the failure as a spelling that answers false for a major it does serve — which

@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp;
+namespace Typo3CmsMcp\Upkeep;
 
-use Typo3CmsMcp\Cli\Backlog;
-use Typo3CmsMcp\Cli\Catalog;
-use Typo3CmsMcp\Cli\Checkout;
-use Typo3CmsMcp\Cli\Decision;
-use Typo3CmsMcp\Cli\Feedback as FeedbackSubject;
-use Typo3CmsMcp\Cli\Hint;
-use Typo3CmsMcp\Cli\Requirement;
-use Typo3CmsMcp\Cli\Scenario;
-use Typo3CmsMcp\Cli\Subject;
-use Typo3CmsMcp\Cli\Todo as TodoSubject;
+use Typo3CmsMcp\Upkeep\Cli\Backlog;
+use Typo3CmsMcp\Upkeep\Cli\Catalog;
+use Typo3CmsMcp\Upkeep\Cli\Checkout;
+use Typo3CmsMcp\Upkeep\Cli\Decision;
+use Typo3CmsMcp\Upkeep\Cli\Feedback as FeedbackSubject;
+use Typo3CmsMcp\Upkeep\Cli\Hint;
+use Typo3CmsMcp\Upkeep\Cli\Requirement;
+use Typo3CmsMcp\Upkeep\Cli\Scenario;
+use Typo3CmsMcp\Upkeep\Cli\Subject;
+use Typo3CmsMcp\Upkeep\Cli\Todo as TodoSubject;
 
 /**
  * Everything this repository is kept in order by, as one command.

@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Cli;
+namespace Typo3CmsMcp\Upkeep\Cli;
 
-use Typo3CmsMcp\Cli;
-use Typo3CmsMcp\Todo as TodoFile;
+use Typo3CmsMcp\Upkeep\Cli;
+use Typo3CmsMcp\Upkeep\Todo as TodoFile;
 
 /**
  * Holds todo.md to the shape `bin/cli next` reads it in, and lists what is in

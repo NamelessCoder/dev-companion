@@ -6,8 +6,8 @@ namespace Typo3CmsMcp\Tests\Unit;
 
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Typo3CmsMcp\Decisions;
-use Typo3CmsMcp\Requirements;
+use Typo3CmsMcp\Upkeep\Decisions;
+use Typo3CmsMcp\Upkeep\Requirements;
 
 final class DecisionsTest extends TestCase
 {

@@ -2,7 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp;
+namespace Typo3CmsMcp\Upkeep;
+
+use Typo3CmsMcp\Paths;
 
 /**
  * Reads todo.md as the order of the work rather than as prose.

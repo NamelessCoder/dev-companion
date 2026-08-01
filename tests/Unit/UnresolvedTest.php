@@ -6,10 +6,10 @@ namespace Typo3CmsMcp\Tests\Unit;
 
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Typo3CmsMcp\Decisions;
-use Typo3CmsMcp\Requirements;
-use Typo3CmsMcp\Todo;
-use Typo3CmsMcp\Unresolved;
+use Typo3CmsMcp\Upkeep\Decisions;
+use Typo3CmsMcp\Upkeep\Requirements;
+use Typo3CmsMcp\Upkeep\Todo;
+use Typo3CmsMcp\Upkeep\Unresolved;
 
 final class UnresolvedTest extends TestCase
 {

@@ -7,7 +7,7 @@ namespace Typo3CmsMcp\Tests\Unit;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Typo3CmsMcp\Paths;
-use Typo3CmsMcp\Todo;
+use Typo3CmsMcp\Upkeep\Todo;
 
 final class TodoTest extends TestCase
 {
@@ -168,7 +168,7 @@ final class TodoTest extends TestCase
         );
         self::assertStringContainsString(
             'Todo::PROCEDURE',
-            (string) file_get_contents(Paths::root() . '/src/Cli.php'),
+            (string) file_get_contents(Paths::root() . '/src/Upkeep/Cli.php'),
             '`bin/cli next` hands over no todo with ' . Todo::PROCEDURE,
         );
     }

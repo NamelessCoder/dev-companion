@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Cli;
+namespace Typo3CmsMcp\Upkeep\Cli;
 
-use Typo3CmsMcp\Cli;
 use Typo3CmsMcp\Feedback as Channel;
-use Typo3CmsMcp\Todo;
+use Typo3CmsMcp\Upkeep\Cli;
+use Typo3CmsMcp\Upkeep\Todo;
 
 /**
  * The feedback that arrived from outside this repository and are still open.

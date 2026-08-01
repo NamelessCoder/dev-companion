@@ -6,7 +6,7 @@ namespace Typo3CmsMcp\Tests\Unit;
 
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Typo3CmsMcp\TestingFramework;
+use Typo3CmsMcp\Upkeep\TestingFramework;
 
 /**
  * Which harness a statement about testing a project extension was read in.

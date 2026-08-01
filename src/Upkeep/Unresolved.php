@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp;
+namespace Typo3CmsMcp\Upkeep;
 
 /**
  * What is written down and nothing has answered for yet.

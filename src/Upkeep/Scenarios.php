@@ -2,7 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp;
+namespace Typo3CmsMcp\Upkeep;
+
+use Typo3CmsMcp\Paths;
 
 /**
  * Reads scenarios/ back as data, and holds a recorded forward run to the

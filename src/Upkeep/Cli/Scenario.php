@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Cli;
+namespace Typo3CmsMcp\Upkeep\Cli;
 
-use Typo3CmsMcp\Cli;
-use Typo3CmsMcp\Scenarios;
+use Typo3CmsMcp\Upkeep\Cli;
+use Typo3CmsMcp\Upkeep\Scenarios;
 
 /**
  * Runs a scenario from scenarios/ in the only sense a script can: it hands over

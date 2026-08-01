@@ -6,8 +6,8 @@ namespace Typo3CmsMcp\Tests\Unit;
 
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Typo3CmsMcp\Cli;
-use Typo3CmsMcp\Todo;
+use Typo3CmsMcp\Upkeep\Cli;
+use Typo3CmsMcp\Upkeep\Todo;
 
 final class CliTest extends TestCase
 {

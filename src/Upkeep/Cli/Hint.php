@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Cli;
+namespace Typo3CmsMcp\Upkeep\Cli;
 
 use Typo3CmsMcp\ArchitectureHints;
-use Typo3CmsMcp\Cli;
 use Typo3CmsMcp\Domains;
-use Typo3CmsMcp\Scenarios;
+use Typo3CmsMcp\Upkeep\Cli;
+use Typo3CmsMcp\Upkeep\Scenarios;
 
 /**
  * Reads the architecture hint corpus back through its own matcher and reports

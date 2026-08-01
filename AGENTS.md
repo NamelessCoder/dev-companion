@@ -5,8 +5,9 @@
 ```
 bin/typo3-cms-mcp  # stdio entrypoint (the client launches it as a subprocess)
 bin/cli            # everything this repository is kept in order by; run it with nothing for the list
-src/Cli.php        # what `bin/cli` supports, and src/Cli/ one class per subject
 src/               # PHP classes (knowledge loading, tools, SDK wiring)
+src/Upkeep/        # what `bin/cli` runs on this repository, and nothing the server answers with
+src/Upkeep/Cli.php # what `bin/cli` supports, and src/Upkeep/Cli/ one class per subject
 src/Tools.php      # every tool this server has, and the only place one is switched on
 src/Tool/          # one class per tool: its description, its schemas, its answer
 src/Tool/Tool.php  # the interface each one implements; ReadOnlyTool carries the annotations
@@ -22,7 +23,7 @@ src/Installer.php  # writes guarded generic or agent-specific client setup
 src/Project.php    # the repository around it; src/Extension.php one extension in it
 src/Profile.php    # which half of the server a client is offered (TYPO3_MCP_PROFILE)
 src/Typo3Cli.php   # runs that installation's console, via DDEV where there is one
-src/TestingFramework.php  # which typo3/testing-framework release each covered major is read against
+src/Upkeep/TestingFramework.php  # which typo3/testing-framework release each covered major is read against
 src/bootstrap.php  # locates the Composer autoloader
 knowledge/         # the knowledge base (markdown + JSON), the data source
 feedback/          # feedback left by agents about this server (standalone checkout only)
@@ -36,7 +37,7 @@ skills/base.md     # the order every task starts in, copied into each published 
 requirements/      # what must hold, and what holds it there: one requirement per file, grouped by what it is about; open ones are the backlog
 decisions/         # what a change assumed, and what would show it to be wrong: one decision per file, grouped by what it is about
 todo.md            # the order of the work and where the last session stopped; `bin/cli next` prints one of them
-src/Todo.php       # todo.md as data: what recurs and how often, what is queued, what each todo serves
+src/Upkeep/Todo.php  # todo.md as data: what recurs and how often, what is queued, what each todo serves
 documentation/     # how a procedure is carried out, grouped by subject; the rules stay here, the steps live there
 tests/             # unit, tool contract, and stdio smoke tests
 vendor/            # Composer dependencies (mcp/sdk); gitignored

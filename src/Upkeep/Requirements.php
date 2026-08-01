@@ -2,7 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp;
+namespace Typo3CmsMcp\Upkeep;
+
+use Typo3CmsMcp\Paths;
 
 /**
  * Reads requirements/, where every requirement is one file.

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Cli;
+namespace Typo3CmsMcp\Upkeep\Cli;
 
-use Typo3CmsMcp\TestingFramework;
+use Typo3CmsMcp\Upkeep\TestingFramework;
 use Typo3CmsMcp\Versions;
 
 /**

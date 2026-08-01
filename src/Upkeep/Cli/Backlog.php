@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Cli;
+namespace Typo3CmsMcp\Upkeep\Cli;
 
-use Typo3CmsMcp\Decisions;
-use Typo3CmsMcp\Todo;
-use Typo3CmsMcp\Unresolved;
+use Typo3CmsMcp\Upkeep\Decisions;
+use Typo3CmsMcp\Upkeep\Todo;
+use Typo3CmsMcp\Upkeep\Unresolved;
 
 /**
  * Reads what requirements/ and decisions/ say is unfinished.

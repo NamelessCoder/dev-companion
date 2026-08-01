@@ -7,7 +7,7 @@ namespace Typo3CmsMcp\Tests\Unit;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Typo3CmsMcp\Paths;
-use Typo3CmsMcp\Scenarios;
+use Typo3CmsMcp\Upkeep\Scenarios;
 
 final class ScenariosTest extends TestCase
 {

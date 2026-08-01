@@ -15,12 +15,13 @@ use Typo3CmsMcp\Upkeep\Scenarios;
  *
  * Three numbers nobody otherwise knows: hints that their own title does not
  * reach, hints no scenario prompt reaches, and scenario prompts that reach
- * nothing. Plus the body lengths against the matcher's dilution reference,
- * which is the one constant the corpus can grow out of.
+ * nothing. Then two the corpus can grow into rather than out of — what the
+ * always-selected category supplies, and the body lengths against the matcher's
+ * dilution reference. Only the last one fails.
  */
 #[AsCommand(
     name: 'hints:coverage',
-    description: 'the hints no title and no scenario prompt reaches, and the body lengths',
+    description: 'the hints no title and no scenario prompt reaches, what General supplies, and the body lengths',
 )]
 final class HintCoverage
 {
@@ -89,6 +90,47 @@ final class HintCoverage
         $output->writeln('');
         $output->writeln(sprintf('Hints no scenario prompt reaches (%d of %d)', count($never), count($hints)));
         $output->writeln($never === [] ? '  none' : '  ' . implode("\n  ", $never));
+
+        // What D-KNW-1's second half asks for. General is the one category no
+        // query has to earn, so a hint filed there is reachable from every task
+        // there is — and the entries that go in are the ones that cross the
+        // domains, which is also what makes them long. The share is the number
+        // that says how far that has gone; the failure state it walks towards
+        // is every answer being made of it, so nothing fails on it here and the
+        // decision is where the reading belongs.
+        $answers = 0;
+        $fromGeneral = 0;
+        $onlyGeneral = 0;
+        $matched = 0;
+        foreach ($prompts as $prompt) {
+            // The limit typo3_task_guide composes a brief with, rather than the
+            // wider one the reachability counts above need.
+            $categories = array_column(ArchitectureHints::find([], $prompt, 4)['matchedHints'], 'category');
+            if ($categories === []) {
+                continue;
+            }
+            $answers++;
+            $matched += count($categories);
+            $fromGeneral += count(array_filter($categories, static fn(string $c): bool => $c === 'General'));
+            $onlyGeneral += array_unique($categories) === ['General'] ? 1 : 0;
+        }
+        $general = count(array_filter(
+            $hints,
+            static fn(array $hint): bool => $hint['category'] === 'General',
+        ));
+        $output->writeln('');
+        $output->writeln(sprintf(
+            "What the always-selected category supplies, over the scenario prompts\n"
+            . "  General holds %d of %d hints and supplies %d of %d matched (%.0f%%)\n"
+            . '  %d of %d answers are made of General alone (every answer is what D-KNW-1 called wrong)',
+            $general,
+            count($hints),
+            $fromGeneral,
+            $matched,
+            $matched > 0 ? 100 * $fromGeneral / $matched : 0.0,
+            $onlyGeneral,
+            $answers,
+        ));
 
         // The tripwire D-ANS-2 asks for. The matcher discounts a term found in a
         // body longer than the corpus's ordinary one, and the reference is what

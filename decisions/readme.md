@@ -126,7 +126,7 @@ the repository has moved furthest away from since. Going back to one and adding
 - [`D-DIS-1`][D-DIS-1] — The root package counts as an installed package · 2026-07-29 · tested
 - [`D-DIS-2`][D-DIS-2] — Discovery honours the declared vendor-dir and bin-dir · 2026-07-29 · corrected
 - [`D-DIS-3`][D-DIS-3] — A label query is words, and the console is asked with a regex · 2026-07-29 · corrected
-- [`D-DIS-4`][D-DIS-4] — The version comes from the core package, not from the console · 2026-07-29 · standing
+- [`D-DIS-4`][D-DIS-4] — The version comes from the core package, not from the console · 2026-07-29 · tested
 - [`D-GUI-1`][D-GUI-1] — A missing release target becomes a placeholder, not `main` · 2026-07-29 · standing
 - [`D-GUI-2`][D-GUI-2] — The commit workflow is asked for, not inferred · 2026-07-29 · standing
 - [`D-KNW-1`][D-KNW-1] — Sitepackage work is answered from the General category · 2026-07-29 · standing

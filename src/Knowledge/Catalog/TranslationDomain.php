@@ -73,23 +73,6 @@ final class TranslationDomain
         return null;
     }
 
-    /**
-     * Files that map to the same domain are resolved by precedence: a file
-     * without the "locallang" prefix wins over "locallang_*", which wins over a
-     * plain "locallang.xlf".
-     */
-    public static function precedence(string $reference): int
-    {
-        $fileName = self::stripLocale(basename($reference));
-        $withoutExtension = self::withoutExtension($fileName);
-
-        if (!str_contains($withoutExtension, 'locallang')) {
-            return 3;
-        }
-
-        return str_starts_with($withoutExtension, 'locallang_') ? 2 : 1;
-    }
-
     private static function resource(string $path): string
     {
         $fileName = self::stripLocale(basename($path));

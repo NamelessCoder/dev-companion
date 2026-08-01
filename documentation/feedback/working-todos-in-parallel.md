@@ -29,15 +29,20 @@ what makes this possible at all. Each session touches its own file and no other.
 
     bin/cli todo:claim 3
 
-Three todos come out of the queue into `todo/progress/`, each with the branch it
-will be worked on and today's date. From then on `bin/cli todo:next` offers
-them to nobody: the fourth session is handed the item behind them.
+**That command is the whole setup, and what it prints is the rest of it.** Three
+todos come out of the queue into `todo/progress/`, each with the branch it will
+be worked on and today's date; from then on `bin/cli todo:next` offers them to
+nobody, and the fourth session is handed the item behind them. Underneath, the
+commands that make the three worktrees and the message the three sessions are
+started with — so the arrangement is run off one output rather than assembled
+from this page while three terminals wait.
 
-Commit that before anything else. A claim that is not on `main` is a claim
+Commit the claims before anything else. A claim that is not on `main` is a claim
 nobody can read, the next `todo:claim` hands out the same todos again, and the
 worktree — cut from `main` after it — carries no file saying what it was made
-for. `bin/cli todo:next` refuses there rather than reading the queue, which is
-how the last of those is found in the first minute instead of the third hour.
+for. `bin/cli todo:next --worktree` refuses there rather than reading the queue,
+which is how the last of those is found in the first minute instead of the third
+hour.
 
 What it prints besides the branches is an overlap: two claims answering for one
 entry. Nothing here knows which files a step will touch, so it is a warning to
@@ -52,9 +57,9 @@ and the branch is left alone either way.
 
 ## The worktree
 
-    git worktree add .worktrees/<name> -b todo/<name>
-    cd .worktrees/<name> && composer install
-    ln -s ../../.checkouts .checkouts
+One per claim, and `todo:claim` prints the two lines each of them takes. What
+they are is a worktree on the claim's branch, its own `composer install`, and
+`.checkouts/` symlinked in.
 
 **Run `composer install` in the worktree. Never symlink `vendor/`.**
 
@@ -71,73 +76,48 @@ it is gitignored, and a session working a todo only ever reads it. Only
 
 ## Starting the sessions
 
-One session per worktree, and what it has to be told is short, because the rest
-it reads here itself. Both sessions of the first run did. How the session is
-launched at all — which build, from where, with what switched on — is
-[driving-a-session.md](../driving-a-session.md), and it is the same launch a
-forward run uses.
+One session per worktree, started in that worktree, and all three get the same
+message — the one `todo:claim` printed. It is not on this page, because a copy
+here and a copy in the command are two things to keep in step and one of them
+would be sent. How the session is launched at all — which build, from where,
+with what switched on — is [driving-a-session.md](../driving-a-session.md), and
+it is the same launch a forward run uses.
 
-```text
-You work in a git worktree and only there:
+**Nothing in that message is filled in**, and that is the whole of what it took
+to fix. It was a template with the worktree path and the branch left as blanks,
+and the run that broke sent it as it stood: the session read
+`<absolute path to the worktree>` as a line it was being given rather than one
+somebody had forgotten, and no check it could make would have told it otherwise.
+A message with a blank in it is a message somebody fills in, so there is none —
+every session is started with the same characters, and there is nothing to get
+wrong.
 
-    <absolute path to the worktree>
+What the message therefore cannot name is which todo is whose, and that half was
+never the prompt's to answer. A path a session is handed is one it has no reason
+to doubt: a worktree on a branch the claim never named — or one cut from a `main`
+that did not carry the claim yet — passes every check the session can make and
+then reads the queue, where it finds real work belonging to somebody else. So it
+is read out of the checkout instead:
 
-Every command and every file operation happens in that directory. The main
-checkout is worked by another session at the same time — change nothing in it.
-Start bash calls by changing into your worktree, or use absolute paths below it.
-Check with `git rev-parse --show-toplevel` where you are; it has to be your
-worktree.
+    bin/cli todo:next --worktree
 
-Start the way every session in this repository starts:
-
-    bin/cli todo:next
-
-That hands you one todo — your claim, not the front of the queue. In a worktree
-it hands over nothing else: where it names a todo, that todo is yours, and where
-the setup is wrong it says so instead of reading the queue. Work it by
-documentation/feedback/working-a-todo.md, which the command names itself. What
-parallel work adds is in documentation/feedback/working-todos-in-parallel.md.
-The three rules everything hangs on:
-
-- Commit on your branch `<branch>`, never on main — the todo file included.
-- Leave the group listings at the foot of a requirements/ or decisions/ group
-  readme alone, by hand and by command.
-- Merge nothing and do not remove your worktree.
-
-If you hit a question this repository cannot answer and that would change what
-you build: do not ask and do not wait. Write it into a `**Waiting on:**` line on
-your claim, commit what you have, and end.
-
-`composer ci` before every commit. Report at the end what you read, what you
-changed, whether it is green, and what state your claim is in.
-```
-
-The absolute path is the load-bearing part. Where each session is its own
-process in its own directory, it is redundant. Where they are agents spawned
-from one session, they share a file system and nothing else keeps them in the
-worktree — and a session that works the main checkout by mistake produces a diff
-that looks exactly right.
-
-What the prompt cannot make the session check is which todo is its own. Every
-line above is answered against what the session was told, and a path it was
-handed is one it has no reason to doubt: a worktree on a branch the claim never
-named — or one cut from a `main` that did not carry the claim yet — passes each
-of them and then reads the queue, where it finds real work that belongs to
-somebody else. That half is answered where it can be, by the repository rather
-than the prompt. `bin/cli todo:next` asks git whether it is standing in a
-worktree, and a worktree standing on no claim is refused instead of served.
+The same command every session in this repository starts with, and the flag is
+the sentence the prompt used to carry: *this session is one of several*. Standing
+on a claim, it hands over that claim and names the branch it is committed on.
+Standing on none — the wrong branch, a claim that was not on `main` yet, or a
+session started in the main checkout at all — it says which of those it is and
+stops. Where it refuses, that is the end of the session and not a cue to find
+something else to do.
 
 ## What the session does with it
 
-    bin/cli todo:next
-
-The same command as always, and in a worktree standing on a claim it hands over
-that claim — standing on none, it says so and stops. Nothing else about the
-session is special: it reads what the todo serves,
-settles what the step turns on, and leaves the file true — all of
+Nothing about it is special. It reads what the todo serves, settles what the
+step turns on, and leaves the file true — all of
 [working-a-todo.md](working-a-todo.md), which the command names as usual.
 
-Two things are different, and both are consequences of `main` being elsewhere:
+Two things are different, and both are consequences of `main` being elsewhere.
+The claim is handed over with both of them attached; this is why they are
+there:
 
 - **Commit on the branch, never on `main`.** That includes the todo file itself.
   A finished claim is a deletion in the branch, and the merge is what carries it.

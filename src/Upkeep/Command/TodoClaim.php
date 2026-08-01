@@ -61,13 +61,13 @@ final class TodoClaim
         }
 
         $taken = array_slice($items, 0, $count);
+        $branches = [];
         foreach ($taken as $todo) {
-            $branch = Todo::branch($todo);
+            $branches[] = $branch = Todo::branch($todo);
             $output->writeln($todo['title']);
             $output->writeln(sprintf('    %s · %s', Todo::claim($todo), $branch));
-            $output->writeln(sprintf('    git worktree add .worktrees/%s -b %s', basename($branch), $branch));
-            $output->writeln('');
         }
+        $output->writeln('');
 
         foreach (self::overlapping($taken) as $what => $titles) {
             $output->writeln(sprintf(
@@ -75,15 +75,70 @@ final class TodoClaim
                 $what,
                 implode(' and ', $titles),
             ));
+            $output->writeln('');
         }
 
-        $output->writeln(sprintf(
-            "Each claim is worked in its own worktree and put back or finished there; how the\n"
-            . 'branches come home, and what a question that arrives mid-work leaves behind: %s.',
-            Todo::PARALLEL,
-        ));
+        self::setup($output, $branches);
 
         return 0;
+    }
+
+    /**
+     * The rest of the arrangement, as the commands that make it and the message
+     * that starts it.
+     *
+     * Printing it is not decoration. What this repository owns is the move out
+     * of the queue, and everything after it — the commit, the worktrees, the
+     * sessions — used to live on a page somebody had to remember to open,
+     * where the order was the load-bearing part and the least visible one. A
+     * claim that is not on `main` when the worktree is cut from it produces a
+     * worktree standing on nothing, hours later and for reasons no session can
+     * see from inside.
+     *
+     * The message is printed whole and with no blank in it, because that is the
+     * one thing a caller cannot get wrong by hand. The run this exists because
+     * of sent the template as it stood, `<absolute path to the worktree>` and
+     * all, and the session on the other end could not tell that from what it
+     * was supposed to say.
+     *
+     * @param array<int, string> $branches
+     */
+    private static function setup(OutputInterface $output, array $branches): void
+    {
+        $output->writeln(sprintf(
+            "Commit these to `main` before anything else. A worktree cut from a `main` that does\n"
+            . "not carry its claim stands on nothing, and `bin/cli todo:next --worktree` refuses\n"
+            . "there rather than reading the queue — which is how that is found in the first\n"
+            . 'minute instead of the third hour. Then one worktree each:',
+        ));
+        $output->writeln('');
+        foreach ($branches as $branch) {
+            $name = basename($branch);
+            $output->writeln(sprintf('    git worktree add .worktrees/%s -b %s', $name, $branch));
+            $output->writeln(sprintf('    (cd .worktrees/%s && composer install && ln -s ../../.checkouts .checkouts)', $name));
+        }
+        $output->writeln('');
+        $output->writeln(sprintf(
+            "`composer install` in the worktree, never a symlinked `vendor/`: the autoload map\n"
+            . "resolves `src/` from where the autoloader sits, so a shared one points every path\n"
+            . "in this repository back at this checkout and the session then keeps its todos here.\n"
+            . "\n"
+            . "Start one session per worktree, with its own directory as the working directory.\n"
+            . "This is the whole message, the same for every one of them, and nothing in it is\n"
+            . 'filled in — which todo is whose is read out of the worktree, not out of the text:',
+        ));
+        $output->writeln('');
+        $output->writeln(self::indent(Todo::BRIEFING));
+        $output->writeln('');
+        $output->writeln(sprintf(
+            'How the branches come home, and what a question that arrives mid-work leaves behind: %s.',
+            Todo::PARALLEL,
+        ));
+    }
+
+    private static function indent(string $block): string
+    {
+        return (string) preg_replace('/^(?!$)/m', '    ', rtrim($block));
     }
 
     /**

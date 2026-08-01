@@ -60,6 +60,32 @@ final class CliTest extends TestCase
     }
 
     /**
+     * The message every session of a parallel run is started with, held to the
+     * one property that makes it sendable: there is nothing in it to fill in.
+     *
+     * It is a test rather than a note because of how the failure looked. The
+     * message went out with `<absolute path to the worktree>` still in it, and
+     * the session on the other end had no way to tell an unfilled blank from
+     * something it was being told — the placeholder is not made safer here, it
+     * is absent. What the message therefore cannot name is the todo, the branch
+     * or the directory, and all three are read out of the checkout instead.
+     */
+    #[Test]
+    public function theMessageASessionIsStartedWithHasNothingToFillIn(): void
+    {
+        self::assertDoesNotMatchRegularExpression(
+            '/<[a-z][^>]*>/',
+            Todo::BRIEFING,
+            'the message carries a placeholder, and a caller who leaves it standing sends it',
+        );
+        self::assertStringContainsString(
+            'bin/cli todo:next --worktree',
+            Todo::BRIEFING,
+            'the message names no way for the session to find out which todo is its own',
+        );
+    }
+
+    /**
      * A session that says it is one of several is never handed the queue.
      *
      * Everything else `todo:next` does is right here and wrong by one step: the

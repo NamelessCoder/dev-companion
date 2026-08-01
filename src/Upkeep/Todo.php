@@ -86,6 +86,45 @@ final class Todo
     public const PARALLEL = 'documentation/feedback/working-todos-in-parallel.md';
 
     /**
+     * What one of several sessions is started with, and the whole of it.
+     *
+     * It carries no worktree path, no branch and no todo, which is the point:
+     * a message with a blank in it is a message somebody fills in, and the one
+     * run that went wrong here went wrong that way — the template was sent as
+     * it stands, placeholders and all, and the session had no way to tell that
+     * from an instruction. Nothing in this one is per-session, so every session
+     * gets the same characters and there is nothing to get wrong.
+     *
+     * What it therefore cannot say is which todo is being worked, and that is
+     * the half the repository answers rather than the prompt:
+     * `bin/cli todo:next --worktree` reads it off the branch the session is
+     * standing on, and refuses where that is not a worktree carrying a claim.
+     * A path handed to a session is one it has no reason to doubt; a claim read
+     * out of the checkout it is standing in cannot be the wrong one.
+     */
+    public const BRIEFING = <<<'TEXT'
+        You work in the git worktree you were started in, and only there. Check with
+        `git rev-parse --show-toplevel` that you are standing in one: the main checkout
+        is worked by somebody else at the same time, and nothing in it is yours to
+        change. Use paths below your own directory, or change into it first.
+
+        Your work is not in this message. Fetch it:
+
+            bin/cli todo:next --worktree
+
+        That names the one todo that is yours, the branch you commit it on, and what
+        that branch may not carry. Asked anywhere else it refuses, and a refusal ends
+        the session: report it rather than looking for something to do.
+
+        If you hit a question this repository cannot answer and that would change what
+        you build, do not ask and do not wait. Write it into a `**Waiting on:**` line
+        on your claim, commit what you have, and end.
+
+        `composer ci` before every commit. Report at the end what you read, what you
+        changed, whether it is green, and what state your claim is in.
+        TEXT;
+
+    /**
      * The readings `bin/cli todo:next` exists to perform. Exactly one recurring
      * todo has to name each: none and the command silently stops doing half its
      * job, two and it does it twice.

@@ -27,6 +27,50 @@ two skills both believe they own. The skill is written around that and around
 nothing else. "Less is more" is not a preference here — it is an instruction
 every session in another project loads before it does anything.
 
+## Before it is written
+
+A skill is written against the current state of the practice, never from recall.
+What that costs is one session's reading; what recall costs is a file that
+states, permanently and in somebody else's project, a practice that was current
+when its author last happened to see it. Before the first line:
+
+- Ask this server what it already answers about the domain, with the tools the
+  skill will route to. `typo3_documentation_lookup` for the official
+  documentation at the versions in play, `typo3_architecture_lookup` for the
+  conventions, `typo3_changelog_lookup` for what moved. An author who has not
+  called a tool is routing to an answer shape they are guessing at, and a
+  surface the server already covers does not need a paragraph in a skill.
+- Read the current official documentation of the domain itself, and where the
+  task runs through tools this server does not own — a packaging tool, a
+  registry, a CI runner, a test harness — read theirs. Which tools exist, and
+  what each one does by default, is exactly the fact that moves after the file
+  is published.
+- Read what the failing run actually did, call by call, rather than what its
+  report concluded. The gap the skill is written around is in the calls.
+
+None of that research goes into the skill; the rule below still holds. It
+decides what the skill **asks**: which surfaces exist at all, which of them a
+tool already owns, and where the practice moves fast enough that only an
+instruction to check survives being written down. Written from recall, a skill
+invents surfaces that do not exist and misses the one that decides the case.
+
+## The draft is read by somebody before it is published
+
+A skill is not finished when its tests pass. Those hold its shape — the name,
+the base, the references, that it keeps no second copy of what a tool owns —
+and no assertion here can say whether the workflow it describes is the one a
+maintainer actually runs, whether its order matches how the work really goes,
+or whether the step that decides the outcome is in it at all. The person who
+asked for the skill can say all three, and is the only one who can.
+
+So the draft is shown before it is published: `SKILL.md` and every reference,
+whole, not summarised. And feedback is **asked for by name** — does this match
+how the task is really done, which step is missing, which one is wrong, what
+does it claim that is not true here. "Does this look good?" gets agreement, not
+review. What comes back is worked in before the skill reaches `Installer::SKILLS`,
+because the copy in somebody else's project is not corrected by the next release
+of this server.
+
 ## The rules, and what holds each one
 
 | Rule | Held by |
@@ -106,9 +150,17 @@ machine and how the installer is reached there.
 
 ## What none of this holds
 
-That a session **does** what a skill says. Every rule above is read off the file,
-which makes it a proxy: the wording is present and a reorganisation can leave it
-present while the behaviour goes.
+Three of the steps above are the author's and nothing reads them off a file:
+that a domain earned a skill at all, that the practice was researched before it
+was written, and that the draft was shown and asked about. Each leaves the same
+trace as its absence — a skill written from recall is shaped exactly like one
+written from the documentation, and it is wrong in places no assertion knows to
+look. They are written down because that is all that can be done for them, and
+because the author who skips them is usually the one who has not read this page.
+
+And that a session **does** what a skill says. Every rule in the table is read
+off the file, which makes it a proxy: the wording is present and a
+reorganisation can leave it present while the behaviour goes.
 [`D-EVI-2`](../decisions/evidence/evi-2-a-skill-crossing-is-read-rather-than-run.md)
 accepts that proxy for the skill crossing and says why no forward run will
 replace it. Everywhere else, what measures the behaviour is a case in

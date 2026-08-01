@@ -17,10 +17,16 @@ have to be readable before it is written. The written form and that set of
 assertions are held to each other in both directions: a rule stated with nothing
 behind it, and a directory-wide assertion nobody wrote down, are both failures.
 
-A domain earns a skill only where a scenario or a recorded run shows the tools
-and skills that exist fail to carry the task. That is the one rule here no test
-can hold, and it is stated with the rest because it is the one that decides
-whether any of the others apply.
+Three of them no test can hold, and they are stated with the rest because they
+decide whether any of the others apply and what the file ends up saying: that a
+domain earns a skill only where a scenario or a recorded run shows the tools and
+skills that exist fail to carry the task; that the practice is researched — the
+server's own answers, the official documentation, the tools the task runs
+through — before a line is written rather than recalled while writing it; and
+that the draft is shown whole to the person who asked for it, with feedback
+asked for by name, before it is published. A skill written from recall is shaped
+exactly like one written from the documentation, which is why the page has to
+carry the step instead of a check.
 
 **From:** the note of 2026-07-30, trimmed on 2026-08-01 to its authoring half
 once `bin/cli scenarios` and `scenarios/runs/` had answered the runner half. The

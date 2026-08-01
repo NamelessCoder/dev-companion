@@ -58,6 +58,15 @@ final class TodoNext
 {
     public function __invoke(OutputInterface $output, Application $application): int
     {
+        // A worktree standing on a claim has one todo and it is not the front
+        // of the queue. Asked there, this command would hand over work
+        // somebody else is already doing, and nothing about the answer would
+        // look wrong — which is why the branch is read before anything else.
+        $claim = Todo::claimed();
+        if ($claim !== null) {
+            return self::present($output, $claim, self::perform($application, $claim['run'])[0]);
+        }
+
         foreach (Todo::appointments() as $todo) {
             if (!Todo::due($todo['every'], $todo['checked'])) {
                 continue;
@@ -113,20 +122,26 @@ final class TodoNext
      * applies is this command's answer, because the page cannot know whether
      * the todo it is being read for is queued, standing or dated.
      *
-     * @param array{title: string, every: string, serves: array<int, string>, body: string, ...} $todo
+     * @param array{title: string, kind: string, claimed: string, every: string, serves: array<int, string>, body: string, ...} $todo
      */
     private static function present(OutputInterface $output, array $todo, string $reading, ?int $after = null): int
     {
         $meta = ['serves ' . implode(', ', $todo['serves'])];
-        $meta[] = $todo['every'] === '' ? 'queued' : 'every ' . $todo['every'];
+        $meta[] = match (true) {
+            $todo['kind'] === 'progress' => 'in hand since ' . $todo['claimed'],
+            $todo['every'] === '' => 'queued',
+            default => 'every ' . $todo['every'],
+        };
         if ($after !== null && $after > 0) {
             $meta[] = $after . ' more after it — `bin/cli todo:list`';
         }
         // What somebody else has in hand is named because this command cannot
         // otherwise be told apart from the one it was before: it hands over the
         // first queued todo, and a session that does not know it is one of
-        // several reads that as "nothing else is happening".
-        $inHand = count(Todo::progress());
+        // several reads that as "nothing else is happening". Its own claim is
+        // not one of them — a session counting itself among the others would
+        // read one claim as two sessions at work.
+        $inHand = count(Todo::progress()) - ($todo['kind'] === 'progress' ? 1 : 0);
         if ($inHand > 0) {
             $meta[] = $inHand . ' in hand elsewhere — `bin/cli todo:list`';
         }
@@ -155,6 +170,11 @@ final class TodoNext
             Todo::PROCEDURE,
         ));
         $output->writeln(match (true) {
+            $todo['kind'] === 'progress' => sprintf(
+                "Done means the file says so, on this branch: deleted, or left here with the\n"
+                . 'question in `**Waiting on:**` and the work behind it. %s is the rest.',
+                Todo::PARALLEL,
+            ),
             $todo['every'] === '' => 'Done means the file says so: deleted, or trimmed to the part that is left.',
             $todo['every'] === 'session' => 'It stands, so nothing is deleted. What it settles belongs where that is kept.',
             default => "It stands, so nothing is deleted — write today's date into `**Checked:**`.",

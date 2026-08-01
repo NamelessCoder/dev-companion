@@ -7,6 +7,7 @@ namespace Typo3CmsMcp\Tests\Unit;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Typo3CmsMcp\Paths;
+use Typo3CmsMcp\Upkeep\Checkouts;
 use Typo3CmsMcp\Upkeep\Todo;
 
 final class TodoTest extends TestCase
@@ -232,6 +233,36 @@ final class TodoTest extends TestCase
         self::assertSame('', $back['claimed']);
         self::assertSame($queued['body'], $back['body']);
         self::assertSame($back, Todo::items()[count(Todo::items()) - 1], 'a released todo is not at the end of the queue');
+    }
+
+    /**
+     * `bin/cli todo:next` is where a session starts, and that has to keep being
+     * true where several sessions start at once. A worktree standing on a claim
+     * is handed that claim; a checkout standing on no claim is handed the
+     * queue, which is every session this repository had before there were two.
+     *
+     * The failure this holds off is a quiet one. A session handed the front of
+     * the queue instead of its own claim reads a real todo, starts real work,
+     * and is the second person doing it.
+     */
+    #[Test]
+    public function aWorktreeStandingOnAClaimIsHandedThatClaim(): void
+    {
+        [, $branch] = Checkouts::git(['git', '-C', Paths::root(), 'rev-parse', '--abbrev-ref', 'HEAD']);
+        $onNoClaim = Todo::claimed();
+
+        @mkdir(Todo::directory() . '/progress');
+        file_put_contents(
+            Todo::directory() . '/progress/' . self::MARKER . '.md',
+            '# ' . self::MARKER . "\n\n**Serves:** todo/\n**Branch:** " . trim($branch)
+                . "\n**Claimed:** 2026-08-01\n\nThe step this claim was taken for.\n",
+        );
+        $onTheClaim = Todo::claimed();
+
+        self::assertNull($onNoClaim, 'a checkout on no claim is handed one');
+        self::assertNotNull($onTheClaim, 'a checkout standing on a claim is handed the queue');
+        self::assertSame(self::MARKER, $onTheClaim['title']);
+        self::assertSame('progress', $onTheClaim['kind']);
     }
 
     /**

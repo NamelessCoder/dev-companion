@@ -264,6 +264,38 @@ final class Todo
     }
 
     /**
+     * The claim this checkout is standing on, or null where it is on none.
+     *
+     * `bin/cli todo:next` is where a session starts, and that sentence has to
+     * keep being true in a worktree. A session working one of several claims
+     * would otherwise be the one session here that starts differently — told
+     * its file name by whoever set it up, and handed the front of the queue by
+     * the command everything else points it at. Getting that wrong is silent:
+     * it reads a todo, it is a real todo, and it is somebody else's.
+     *
+     * The branch is what answers, because the branch is what the claim named.
+     * A checkout on `main` is on no claim and gets the queue, which is every
+     * session this repository had before there were two.
+     *
+     * @return Section|null
+     */
+    public static function claimed(): ?array
+    {
+        [$exitCode, $branch] = Checkouts::git(['git', '-C', Paths::root(), 'rev-parse', '--abbrev-ref', 'HEAD']);
+        if ($exitCode !== 0) {
+            return null;
+        }
+
+        foreach (self::progress() as $todo) {
+            if ($todo['branch'] === trim($branch)) {
+                return $todo;
+            }
+        }
+
+        return null;
+    }
+
+    /**
      * What is blocked on an answer nothing here can produce, and is therefore
      * offered to no session.
      *

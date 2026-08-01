@@ -6,6 +6,7 @@ namespace Typo3CmsMcp\Tool;
 
 use Typo3CmsMcp\Knowledge\ArchitectureHints;
 use Typo3CmsMcp\Knowledge\Documents;
+use Typo3CmsMcp\Knowledge\Scope;
 use Typo3CmsMcp\Result\Prose;
 use Typo3CmsMcp\Result\Schema;
 use Typo3CmsMcp\Result\ToolResult;
@@ -36,45 +37,155 @@ final class RuleLookup extends ReadOnlyTool
         ];
     }
 
+    /**
+     * The knowledge lookup shape plus the boundary, because most of this corpus
+     * is the core repository's own.
+     */
     public static function outputSchema(): array
     {
-        return Schema::knowledgeLookup();
+        $schema = Schema::knowledgeLookup();
+        $schema['properties']['outsideCore'] = [
+            'type' => 'boolean',
+            'description' => 'True when the query reads as a project or third-party extension. The sections that '
+                . 'are the core repository\'s own are then withheld and named in withheldDocuments; what transfers '
+                . 'still comes back.',
+        ];
+        $schema['properties']['audience'] = Schema::audience();
+        $schema['properties']['withheldDocuments'] = Schema::listOf(Schema::object([
+            'id' => Schema::string(),
+            'title' => Schema::string(),
+        ], ['id', 'title']), 'Documents that matched and were left out because they answer for the core repository '
+            . 'alone. Empty inside the core. Each is still readable in full as its typo3://core resource, which is '
+            . 'the way to get one deliberately rather than by accident.');
+        $schema['required'][] = 'outsideCore';
+
+        return $schema;
     }
 
     public static function answer(array $args): ToolResult
     {
         $query = (string) ($args['query'] ?? '');
-        $results = Documents::search($query);
+
+        // This tool is asked about a topic rather than about paths, so the call
+        // has one audience — the same reading typo3_script_lookup makes.
+        $audience = Scope::audienceOf('', $query);
+        $outsideCore = $audience === Scope::AUDIENCE_OUTSIDE;
+
+        $found = Documents::search($query);
+        // Withheld per document rather than per call: this corpus is the
+        // contribution process and the commit conventions at once, and only the
+        // first half stops at the core repository. Dropping the tool whole —
+        // which is what the project profile does — takes the second half with
+        // it, and a caller writing a commit message in their own project needs
+        // exactly that.
+        $results = $outsideCore
+            ? array_values(array_filter($found, static fn(array $r): bool => !Documents::isCoreOnly($r['id'])))
+            : $found;
+        $withheld = self::withheldDocuments($found, $results);
 
         // The prose and the architecture hints are two corpora, and which one
         // holds a subject is this server's business, not the caller's: site
         // sets are a hint, the Gerrit workflow is prose, and the question is
-        // phrased the same way either way.
+        // phrased the same way either way. The hints transfer, so they are
+        // returned on both sides of the boundary.
         $hints = ArchitectureHints::find([], $query, 3)['matchedHints'];
 
-        if ($results === [] && $hints === []) {
-            return Prose::noMatch($query);
+        if ($results === [] && $hints === [] && $withheld === []) {
+            return self::noMatch($query, $audience, $outsideCore);
         }
 
-        $text = $results === []
-            ? sprintf('No section of the knowledge documents matched "%s".', $query)
+        $lines = [];
+        if ($withheld !== []) {
+            $lines[] = Scope::OUTSIDE_CORE_NOTICE;
+            $lines[] = '';
+            $lines[] = 'Withheld for that reason: ' . implode(', ', array_map(
+                static fn(array $document): string => $document['title'],
+                $withheld,
+            )) . '. Each is readable in full as typo3://core/<id> where the work really is a core patch.';
+            $lines[] = '';
+        }
+        $lines[] = $results === []
+            ? sprintf('No section that holds outside the core matched "%s".', $query)
             : Prose::sections($results);
         if ($hints !== []) {
-            $text .= "\n\nThe architecture hints also cover this — call typo3_architecture_lookup with the id:\n"
+            $lines[] = "\nThe architecture hints also cover this — call typo3_architecture_lookup with the id:\n"
                 . implode("\n", array_map(
                     static fn(array $hint): string => '- ' . $hint['id'] . ' — ' . $hint['title'],
                     $hints,
                 ));
         }
 
-        return ToolResult::create($text, [
+        return ToolResult::create(implode("\n", $lines), [
             'query' => $query,
             'matchCount' => count($results),
             'matches' => Prose::records($results),
+            'outsideCore' => $outsideCore,
+            'audience' => $audience,
+            'withheldDocuments' => $withheld,
             'alsoInHints' => array_map(
                 static fn(array $hint): array => ['id' => $hint['id'], 'title' => $hint['title']],
                 $hints,
             ),
         ]);
+    }
+
+    /**
+     * What the knowledge base does cover, for a query that reached none of it.
+     *
+     * It carries the same fields a hit does, boundary included: a client that
+     * validates the answer must not have to branch on which of the two it got,
+     * and a miss is where it is most likely to look.
+     */
+    private static function noMatch(string $query, string $audience, bool $outsideCore): ToolResult
+    {
+        $documents = implode("\n", array_map(
+            static fn(array $document): string => '- ' . $document['title'] . ': ' . implode(', ', $document['topics']),
+            Documents::topics()
+        ));
+
+        $text = sprintf(
+            "No knowledge section matched \"%s\".\n\nThis knowledge base covers:\n%s\n\n"
+            . 'For backend UI components use typo3_component_lookup, and call typo3_server_scope for what '
+            . 'this server covers at all. '
+            . 'If the topic should be covered here, leave a feedback with typo3_feedback_record.',
+            $query,
+            $documents
+        );
+
+        return ToolResult::create($text, [
+            'query' => $query,
+            'matchCount' => 0,
+            'matches' => [],
+            'outsideCore' => $outsideCore,
+            'audience' => $audience,
+            'withheldDocuments' => [],
+            'alsoInHints' => [],
+            'documents' => Documents::topics(),
+        ]);
+    }
+
+    /**
+     * The documents a match was dropped from, once each.
+     *
+     * Named rather than silently missing: an answer that is thinner than the
+     * corpus and does not say so reads as "nobody wrote this down", which is
+     * the one thing it does not mean.
+     *
+     * @param array<int, array<string, mixed>> $found
+     * @param array<int, array<string, mixed>> $kept
+     * @return array<int, array{id: string, title: string}>
+     */
+    private static function withheldDocuments(array $found, array $kept): array
+    {
+        $keptIds = array_column($kept, 'id');
+
+        $withheld = [];
+        foreach ($found as $result) {
+            if (!in_array($result['id'], $keptIds, true)) {
+                $withheld[$result['id']] = ['id' => $result['id'], 'title' => $result['title']];
+            }
+        }
+
+        return array_values($withheld);
     }
 }

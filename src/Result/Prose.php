@@ -77,32 +77,6 @@ final class Prose
         ], $results);
     }
 
-    /** What the knowledge base does cover, for a query that reached none of it. */
-    public static function noMatch(string $query): ToolResult
-    {
-        $documents = implode("\n", array_map(
-            static fn(array $document): string => '- ' . $document['title'] . ': ' . implode(', ', $document['topics']),
-            Documents::topics()
-        ));
-
-        $text = sprintf(
-            "No knowledge section matched \"%s\".\n\nThis knowledge base covers:\n%s\n\n"
-            . 'For backend UI components use typo3_component_lookup, and call typo3_server_scope for what '
-            . 'this server covers at all. '
-            . 'If the topic should be covered here, leave a feedback with typo3_feedback_record.',
-            $query,
-            $documents
-        );
-
-        return ToolResult::create($text, [
-            'query' => $query,
-            'matchCount' => 0,
-            'matches' => [],
-            'alsoInHints' => [],
-            'documents' => Documents::topics(),
-        ]);
-    }
-
     /** The topics one document covers, for an answer that has to say what it searched. */
     public static function topics(string $documentId): string
     {

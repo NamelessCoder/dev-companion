@@ -10,6 +10,7 @@ use PHPUnit\Framework\TestCase;
 use Typo3CmsMcp\Installation\Instance;
 use Typo3CmsMcp\Installation\Typo3Cli;
 use Typo3CmsMcp\Knowledge\ArchitectureHints;
+use Typo3CmsMcp\Knowledge\Documents;
 use Typo3CmsMcp\Knowledge\Scope;
 use Typo3CmsMcp\Server\Profile;
 use Typo3CmsMcp\Tests\Support\TemporaryInstallation;
@@ -415,6 +416,88 @@ final class ScopeTest extends TestCase
 
         self::assertContains('site-sets', array_column($result->data['alsoInHints'], 'id'));
         self::assertStringContainsString('typo3_architecture_lookup', $result->text);
+    }
+
+    /**
+     * The prose corpus is the contribution process and the commit conventions
+     * at once, and only the first half stops at the core repository. Dropping
+     * the whole tool — which is what the project profile does — takes the
+     * second half with it, and a caller writing a commit message in their own
+     * repository needs exactly that.
+     */
+    #[Test]
+    public function aRuleAnswerKeepsWhatTransfersAndWithholdsWhatDoesNot(): void
+    {
+        $result = Registry::call('typo3_rule_lookup', ['query' => 'commit message sitepackage']);
+
+        self::assertTrue($result->data['outsideCore']);
+        self::assertSame(
+            ['typo3-commit-messages'],
+            array_values(array_unique(array_column($result->data['matches'], 'documentId'))),
+            'a section that holds anywhere was withheld, or one that does not was handed over',
+        );
+        self::assertNotSame([], $result->data['withheldDocuments'], 'the core-only documents matched and went unmentioned');
+        foreach ($result->data['withheldDocuments'] as $document) {
+            self::assertTrue(
+                Documents::isCoreOnly($document['id']),
+                $document['id'] . ' was withheld and is not the core repository\'s own',
+            );
+        }
+    }
+
+    /**
+     * A thinner answer that does not say what it left out reads as "nobody
+     * wrote this down", which is the one thing it does not mean.
+     */
+    #[Test]
+    public function whatARuleAnswerWithheldIsNamedRatherThanMissing(): void
+    {
+        $outside = Registry::call('typo3_rule_lookup', ['query' => 'review readiness for my site package']);
+
+        self::assertContains('typo3-core-rules', array_column($outside->data['withheldDocuments'], 'id'));
+        self::assertStringStartsWith('This reads as work outside the TYPO3 core', $outside->text);
+        // The resource stays reachable: withholding is about what an answer
+        // volunteers, not about what a caller may deliberately read.
+        self::assertStringContainsString('typo3://core/', $outside->text);
+    }
+
+    #[Test]
+    public function insideTheCoreARuleAnswerWithholdsNothing(): void
+    {
+        $inside = Registry::call('typo3_rule_lookup', ['query' => 'review readiness for a typo3/sysext/core patch']);
+
+        self::assertFalse($inside->data['outsideCore']);
+        self::assertSame([], $inside->data['withheldDocuments']);
+        self::assertContains('typo3-core-rules', array_column($inside->data['matches'], 'documentId'));
+    }
+
+    /**
+     * Which of the two a document is comes from the scope rather than from a
+     * second list, so a document the scope does not announce has no binding to
+     * read — and is served as a resource and searched by the rule lookup all
+     * the same. `typo3-contribution-sources` was exactly that.
+     */
+    #[Test]
+    public function everyKnowledgeDocumentIsAnnouncedByTheScope(): void
+    {
+        $named = [];
+        foreach (Scope::read()['covers'] as $entry) {
+            if (preg_match_all('#typo3://core/([a-z0-9-]+)#', $entry['source'], $matches) === 0) {
+                continue;
+            }
+            foreach ($matches[1] as $id) {
+                $named[$id] = $entry['provenance'];
+            }
+        }
+
+        foreach (Documents::documents() as $document) {
+            self::assertArrayHasKey(
+                $document['id'],
+                $named,
+                $document['id'] . ' is served and searched, and no covered topic names it',
+            );
+            self::assertContains($named[$document['id']], ['core-only', 'transferable']);
+        }
     }
 
     #[Test]

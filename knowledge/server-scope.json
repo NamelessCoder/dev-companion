@@ -42,6 +42,15 @@
             "provenance": "core-only"
         },
         {
+            "topic": "Where the upstream contribution documentation is",
+            "depth": "The official contribution workflow guide is not bundled: this names its entry points, so a question past what the local documents answer is sent to the source rather than guessed at. The local policy that sits beside it is this repository's own.",
+            "tools": [
+                "typo3_rule_lookup"
+            ],
+            "source": "typo3://core/typo3-contribution-sources",
+            "provenance": "core-only"
+        },
+        {
             "topic": "Core architecture conventions: DI, events and hooks, TCA and FormEngine, FormEngine data providers, DataHandler, routing, Fluid templates and ViewHelpers, frontend page rendering with PAGEVIEW, how a sitepackage is laid out, records in the frontend and the routing for them, registering a content element, Extbase plugins, TypoScript site sets and TSconfig, language files, upgrade wizards, frontend DataProcessors, upgrading an installation, testing strategy, assembling a test suite for a project extension, browser and accessibility tests with Playwright",
             "depth": "Conventions per subsystem, matched by path or topic, from both angles: what a change to the subsystem has to satisfy, and how the mechanism is used. It describes how the core is built, never what your checkout contains.",
             "tools": [

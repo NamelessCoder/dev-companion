@@ -26,7 +26,7 @@ final class TodoTest extends TestCase
         foreach ($todos as $todo) {
             self::assertNotSame('', $todo['title'], $todo['path'] . ' opens with no heading');
             self::assertSame([], $todo['strays'], $todo['path'] . ' opens with lines that are no field');
-            self::assertContains($todo['kind'], ['queue', 'recurring', 'reference'], $todo['path']);
+            self::assertContains($todo['kind'], ['queue', 'recurring', 'waiting', 'reference'], $todo['path']);
         }
     }
 
@@ -85,7 +85,7 @@ final class TodoTest extends TestCase
     #[Test]
     public function everyTodoAnswersForSomethingThatCanStillBeRead(): void
     {
-        $todos = array_merge(Todo::recurring(), Todo::items());
+        $todos = array_merge(Todo::recurring(), Todo::items(), Todo::waiting());
 
         self::assertNotSame([], Todo::items(), 'nothing is queued, which is a state this can be in but not silently');
         foreach ($todos as $todo) {
@@ -96,6 +96,29 @@ final class TodoTest extends TestCase
                     Todo::unreadable($what),
                     $todo['path'] . ' serves ' . $what . ', ' . Todo::unreadable($what),
                 );
+            }
+        }
+    }
+
+    /**
+     * A todo that waits is out of the queue and says what it waits on, which is
+     * the whole of what the state adds: `bin/cli next` offers it to nobody, so
+     * the question it is blocked on is asked by no session again. What it took
+     * on still counts as taken on — a waiting todo that stopped answering for
+     * its requirement would put that requirement back on the backlog for the
+     * next session to queue a second time.
+     */
+    #[Test]
+    public function whatWaitsCarriesTheQuestionItWaitsOn(): void
+    {
+        $served = Todo::serves();
+
+        foreach (Todo::waiting() as $todo) {
+            self::assertNotSame('', $todo['waitingOn'], $todo['path'] . ' waits and does not say on what');
+            self::assertSame('', $todo['position'], $todo['path'] . ' waits and has a place in the queue');
+            self::assertSame('', $todo['every'], $todo['path'] . ' waits and recurs');
+            foreach ($todo['serves'] as $what) {
+                self::assertContains($what, $served, $todo['path'] . ' waits and answers for nothing');
             }
         }
     }

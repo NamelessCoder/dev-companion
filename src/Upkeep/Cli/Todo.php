@@ -17,7 +17,9 @@ use Typo3CmsMcp\Upkeep\Todo as Todos;
  * file sits, and that what a todo claims to serve exists. A todo naming a
  * feedback that was closed two commits ago is the failure worth catching: the
  * feedback is the reason it is in the queue, and when it goes the todo is either
- * done or needs trimming to the part that is left.
+ * done or needs trimming to the part that is left. A todo in `waiting/` is held
+ * to the one thing it exists to carry — the question it is blocked on, in the
+ * words it was asked in — because no session is offered it to ask again.
  */
 final class Todo implements Subject
 {
@@ -29,7 +31,7 @@ final class Todo implements Subject
     public static function commands(): array
     {
         return [
-            'list' => ['', 'every todo by title: what recurs, then the queue in order', self::list(...)],
+            'list' => ['', 'every todo by title: what recurs, the queue in order, and what waits', self::list(...)],
             'check' => ['', 'hold every file to the head and the place that say what it is', self::check(...)],
         ];
     }
@@ -56,6 +58,10 @@ final class Todo implements Subject
         }
         if ($items === []) {
             print "The queue is empty.\n";
+        }
+
+        foreach (Todos::waiting() as $todo) {
+            printf("%-12s %s — %s\n", 'waiting', $todo['title'], $todo['waitingOn']);
         }
 
         foreach (Todos::references() as $reference) {
@@ -111,6 +117,18 @@ final class Todo implements Subject
                 $reading[$command][] = $todo['title'];
             }
 
+            if ($todo['kind'] === 'waiting') {
+                // The question is the whole of what a waiting todo adds: it is
+                // offered to no session, so nothing else will ask it again.
+                if ($todo['waitingOn'] === '') {
+                    $problems[] = $where . ' waits and does not say on what — `**Waiting on:**` is the question';
+                }
+                continue;
+            }
+            if ($todo['waitingOn'] !== '') {
+                $problems[] = $where . ' says what it waits on and is not in todo/waiting/';
+            }
+
             if ($todo['kind'] === 'queue') {
                 // The number is the place in the queue, and two files claiming
                 // one leave the order to whatever the file system answers.
@@ -154,10 +172,11 @@ final class Todo implements Subject
             fwrite(STDERR, $problem . "\n");
         }
         printf(
-            "%d files, %d recurring, %d queued, %d problems\n",
+            "%d files, %d recurring, %d queued, %d waiting, %d problems\n",
             count(Todos::all()),
             count(Todos::recurring()),
             count(Todos::items()),
+            count(Todos::waiting()),
             count($problems),
         );
 

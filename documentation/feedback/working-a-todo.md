@@ -112,17 +112,25 @@ and say why. "What do you want here?" hands the reading back.
 waited for. The person asked may not have the answer either, and that is not a
 smaller outcome than doing the work.
 
-A todo that is put back goes to the **end of the queue**, which is renaming its
-file to the number after the last one. `bin/cli next` hands over the first
-queued todo and has no notion of one being blocked, so a todo left where it was
-is handed to every session behind it until somebody moves it. Going last is also
-its own timer: it comes round again as the queue drains.
+Where the todo can still be worked once the question is out of the way, it goes
+to the **end of the queue** — renaming its file to the number after the last
+one. `bin/cli next` hands over the first queued todo and has no notion of one
+being blocked, so a todo left where it was is handed to every session behind it
+until somebody moves it. Going last is also its own timer: it comes round again
+as the queue drains.
 
-It keeps its file, and the session's job is to leave it startable cold: the
-open question written into its paragraph in the words it was asked in, and what
-the reading already established. A question asked once and answered nowhere
-costs one session; one re-derived every time the todo surfaces costs every
-session.
+Where nothing can be done until somebody answers, it moves to `todo/waiting/`
+instead and carries the question in a `**Waiting on:**` line. That is the
+difference the state exists for: at the end of the queue such a todo reads as
+the lowest priority in the repository while it is actually waiting on a person,
+and every session that reaches it re-derives the same question. Nothing offers
+it again — the answer is what numbers it back into the queue.
+
+Either way it keeps its file, and the session's job is to leave it startable
+cold: the open question written into its paragraph in the words it was asked in,
+and what the reading already established. A question asked once and answered
+nowhere costs one session; one re-derived every time the todo surfaces costs
+every session.
 
 What comes back is written into the file it belongs in — the todo when it
 changes the order, the step or what it is waiting on, `decisions/` when it is
@@ -140,7 +148,7 @@ what would close it; an answer that came from the person who queued the todo
 says so, because it is the one part no file behind the commit can be re-read
 for.
 
-The same commit leaves [todo/](../../todo/readme.md) true, which is three cases
+The same commit leaves [todo/](../../todo/readme.md) true, which is four cases
 and `bin/cli next` prints the one that applies:
 
 - A **queued** todo that is finished is **deleted**. What it established is in
@@ -151,6 +159,9 @@ and `bin/cli next` prints the one that applies:
   unstarted is the same case, with one addition: it keeps its file, gains the
   open question, and is renumbered to the end of the queue, because `next` would
   otherwise hand it to every session until somebody did.
+- One that cannot be started at all until somebody answers **moves to
+  `waiting/`**, with the question in its head. It is offered to no session, so
+  the question has to be readable there by whoever can answer it.
 - A **recurring** one is never deleted: what it settles goes where that is kept,
   and one measured in days gets today's date in its `**Checked:**` line — that
   date is the whole of what keeps five sessions in an afternoon from asking the

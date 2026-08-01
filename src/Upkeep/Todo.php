@@ -29,9 +29,11 @@ use Typo3CmsMcp\Paths;
  * The number is the todo's place in the queue and nothing else — a move is a
  * rename, a finish is a deletion, and a new todo is a new file no other session
  * is writing. They run in tens so something can be put between two of them.
- * `recurring/` is what comes round and is never deleted, `reference/` is
- * neither and is there so a session does not rediscover it and mistake it for
- * work.
+ * `recurring/` is what comes round and is never deleted. `waiting/` is what no
+ * session can start, because it is blocked on an answer this repository cannot
+ * produce, and it carries that answer's question in a `**Waiting on:**` line.
+ * `reference/` is none of the three and is there so a session does not
+ * rediscover it and mistake it for work.
  *
  * `Serves:` is what makes a todo work rather than an idea. `Every:` is the
  * cadence of a recurring one, and `Run:` is the command the step starts from,
@@ -48,7 +50,7 @@ use Typo3CmsMcp\Paths;
  * instead of working. Two steps are two todos, and the order between them is
  * the order their numbers are in.
  *
- * @phpstan-type Section array{title: string, kind: string, position: string, path: string, every: string, checked: string, serves: array<int, string>, run: array<int, string>, head: string, strays: array<int, string>, body: string}
+ * @phpstan-type Section array{title: string, kind: string, position: string, path: string, every: string, checked: string, waitingOn: string, serves: array<int, string>, run: array<int, string>, head: string, strays: array<int, string>, body: string}
  */
 final class Todo
 {
@@ -101,13 +103,13 @@ final class Todo
 
     /**
      * Every todo there is: the queue in its order, then what recurs, then what
-     * is neither.
+     * waits, then what is none of the three.
      *
      * @return array<int, Section>
      */
     public static function all(): array
     {
-        return array_merge(self::items(), self::recurring(), self::references());
+        return array_merge(self::items(), self::recurring(), self::waiting(), self::references());
     }
 
     /**
@@ -129,6 +131,23 @@ final class Todo
     public static function recurring(): array
     {
         return self::read('recurring', 'recurring');
+    }
+
+    /**
+     * What is blocked on an answer nothing here can produce, and is therefore
+     * offered to no session.
+     *
+     * A todo that cannot be started used to go to the end of the queue, where
+     * `next` would hand it to every session after the ones ahead of it were
+     * done, and where it read as the lowest priority in the repository while it
+     * was actually waiting on somebody. Here it says what it waits on, and the
+     * answer is what moves it back into the queue.
+     *
+     * @return array<int, Section>
+     */
+    public static function waiting(): array
+    {
+        return self::read('waiting', 'waiting');
     }
 
     /**
@@ -175,17 +194,18 @@ final class Todo
      * Everything the queue answers for, which is what turns an entry in
      * requirements/ or a feedback in feedback/ into work somebody has taken on.
      *
-     * Read from the queue alone. What is kept in `reference/` names ids too,
-     * and one of those sections is the list of what is deliberately *not*
-     * queued — the opposite of somebody having it in hand. A recurring todo is
-     * not a taking-on either: it is owed every session.
+     * Read from the queue and from what waits, which are the two states of
+     * work somebody has taken on. What is kept in `reference/` names ids too,
+     * and one of those pages is the list of what is deliberately *not* queued —
+     * the opposite of somebody having it in hand. A recurring todo is not a
+     * taking-on either: it is owed every session.
      *
      * @return array<int, string>
      */
     public static function serves(): array
     {
         $served = [];
-        foreach (self::items() as $item) {
+        foreach (array_merge(self::items(), self::waiting()) as $item) {
             foreach ($item['serves'] as $what) {
                 $served[$what] = true;
             }
@@ -273,6 +293,7 @@ final class Todo
 
         $every = '';
         $checked = '';
+        $waitingOn = '';
         $serves = [];
         $run = [];
         $strays = [];
@@ -281,7 +302,7 @@ final class Todo
             if ($line === '') {
                 continue;
             }
-            if (preg_match('/^\*\*([A-Z][a-z]+):\*\*\s*(.*)$/', $line, $matches) !== 1) {
+            if (preg_match('/^\*\*([A-Z][a-z]+(?: [a-z]+)?):\*\*\s*(.*)$/', $line, $matches) !== 1) {
                 $strays[] = $line;
                 continue;
             }
@@ -290,6 +311,7 @@ final class Todo
                 'Serves' => $serves = array_values(array_filter(array_map(trim(...), explode(',', $matches[2])))),
                 'Every' => $every = trim($matches[2]),
                 'Checked' => $checked = trim($matches[2]),
+                'Waiting on' => $waitingOn = trim($matches[2]),
                 'Run' => $run[] = trim($matches[2]),
                 default => $strays[] = $line,
             };
@@ -304,6 +326,7 @@ final class Todo
             'path' => 'todo/' . ($kind === 'queue' ? '' : basename(dirname($path)) . '/') . basename($path),
             'every' => $every,
             'checked' => $checked,
+            'waitingOn' => $waitingOn,
             'serves' => $serves,
             'run' => $run,
             'head' => trim((string) $head),

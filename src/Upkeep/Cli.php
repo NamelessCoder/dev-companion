@@ -215,6 +215,12 @@ final class Cli
 
         print "Nothing is due and nothing is queued. What is waiting is in `bin/cli backlog list`,\n"
             . "and taking one on is a todo in todo/.\n";
+        if (Todo::waiting() !== []) {
+            printf(
+                "%d todos are blocked on an answer nothing here can give — `bin/cli todo list`.\n",
+                count(Todo::waiting()),
+            );
+        }
 
         return 0;
     }
@@ -239,6 +245,14 @@ final class Cli
         $meta[] = $todo['every'] === '' ? 'queued' : 'every ' . $todo['every'];
         if ($after !== null && $after > 0) {
             $meta[] = $after . ' more after it — `bin/cli todo list`';
+        }
+        // What waits is named by a count and nothing else. A blocked todo is
+        // addressed to whoever can answer it, and if no output ever mentions
+        // one it is a file nobody opens again; the paragraph still belongs to
+        // the one todo this command exists to hand over.
+        $waiting = count(Todo::waiting());
+        if ($waiting > 0) {
+            $meta[] = $waiting . ' waiting on an answer';
         }
 
         printf("%s\n%s\n", $todo['title'], implode(' · ', $meta));

@@ -191,9 +191,10 @@ records the answer. What outlives both is split three ways:
   of them says what to do next. A session can end anywhere, and the next one
   starts by reading this. One todo is one file: it names what it serves and
   what the next concrete step is, and is deleted when done rather than ticked.
-  Where it sits says whether it is the queue, what recurs, or what is kept for
-  reading, and a queued one is numbered by its place in the order — that is
-  what `bin/cli next` reads and what `bin/cli todo check` holds.
+  Where it sits says whether it is the queue, what recurs, what waits on an
+  answer nothing here can give, or what is kept for reading, and a queued one is
+  numbered by its place in the order — that is what `bin/cli next` reads and
+  what `bin/cli todo check` holds.
 
 ## What nothing fails on
 

@@ -95,6 +95,7 @@ the repository has moved furthest away from since. Going back to one and adding
 - [`D-FBK-6`][D-FBK-6] — A name is cut where the feedback starts to differ · 2026-08-01 · standing
 - [`D-FBK-7`][D-FBK-7] — How a todo is worked travels with the todo · 2026-08-01 · standing
 - [`D-FBK-8`][D-FBK-8] — One todo is one file, and the queue is in the names · 2026-08-01 · standing
+- [`D-FBK-9`][D-FBK-9] — A todo nobody can start waits where it says why · 2026-08-01 · standing
 - [`D-SCO-7`][D-SCO-7] — The signals are combined per call, and a call is not a path · 2026-08-01 · standing
 - [`D-SCO-8`][D-SCO-8] — The path decides, and the answer may say it cannot · 2026-08-01 · standing
 - [`D-SKL-1`][D-SKL-1] — The order a task starts in is one file, and the reading comes last in it · 2026-08-01 · tested
@@ -145,6 +146,7 @@ the repository has moved furthest away from since. Going back to one and adding
 [D-FBK-6]: feedback/fbk-6-a-name-is-cut-where-the-feedback-starts-to-differ.md
 [D-FBK-7]: feedback/fbk-7-how-a-todo-is-worked-travels-with-the-todo.md
 [D-FBK-8]: feedback/fbk-8-one-todo-is-one-file-and-the-queue-is-in-the-names.md
+[D-FBK-9]: feedback/fbk-9-a-todo-nobody-can-start-waits-where-it-says-why.md
 [D-SCO-7]: scope/sco-7-the-signals-are-combined-per-call-and-a-call-is-not-a-path.md
 [D-SCO-8]: scope/sco-8-the-path-decides-and-the-answer-may-say-it-cannot.md
 [D-SKL-1]: task-skills/skl-1-the-order-a-task-starts-in-is-one-file.md

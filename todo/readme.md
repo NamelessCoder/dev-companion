@@ -17,8 +17,11 @@ One todo is one file, and where it sits says what it is:
   file, so two sessions can both add work without writing the same file. The
   numbers run in tens, which is what leaves room to put one between two others.
 - **`recurring/`** — what comes round and is never deleted.
-- **`reference/`** — neither: what a session would otherwise rediscover and
-  mistake for work.
+- **`waiting/`** — what no session can start, because it is blocked on an
+  answer nothing here can produce. It says what it waits on, `bin/cli next`
+  offers it to nobody, and the answer is what numbers it back into the queue.
+- **`reference/`** — none of the three: what a session would otherwise
+  rediscover and mistake for work.
 
 Each file opens with its title, then a head of labelled lines:
 
@@ -32,6 +35,8 @@ Each file opens with its title, then a head of labelled lines:
   that runs it writes the date.
 - `**Run:** <command>` — where the step starts. `bin/cli next` runs the ones
   this repository owns and names the rest.
+- `**Waiting on:** <the question>` — what a todo in `waiting/` is blocked on,
+  in the words it was asked in. Nothing else will ask it again.
 
 Then one paragraph, and one only: the **next concrete step**, in enough detail
 that someone who has read nothing else can start. "Continue with the bindings"

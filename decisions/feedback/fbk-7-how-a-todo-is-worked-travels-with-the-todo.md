@@ -75,3 +75,8 @@ recall.
   transcript. Or the queue stops being answerable this way at all, because the
   research a todo needs turns out to need an installation more often than not —
   then the page is naming sources that are not there.
+
+**Since then** the second **Decided** has been narrowed: a todo that no answer
+here can unblock leaves the queue instead of going last, and says what it waits
+on. Going last stays what a merely unasked question earns. See
+[`D-FBK-9`](fbk-9-a-todo-nobody-can-start-waits-where-it-says-why.md).

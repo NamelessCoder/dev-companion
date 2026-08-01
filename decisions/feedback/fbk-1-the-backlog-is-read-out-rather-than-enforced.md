@@ -1,7 +1,7 @@
 ---
 id: D-FBK-1
 date: 2026-07-31
-status: standing
+status: tested
 ---
 
 # D-FBK-1 — The backlog is read out rather than enforced
@@ -43,3 +43,15 @@ whether the check has to fail until an entry is queued.
   the coupling has to become a rule, and the shape to reach for is the one
   rejected here: `bin/cli requirements:check` fails while an `open` entry is
   unqueued.
+- **Tested on 2026-08-02:** neither half of the **Wrong if**. No id is reported
+  with `no todo names it` at all — `bin/cli backlog:list` says every requirement
+  is met and guarded — so the first half currently has no subject to repeat,
+  which is a weaker result than it looks: it says the requirement side is clean,
+  not that a session acts on the line when it is not. The second half is the one
+  with movement. The standing count fell from 42 to 38 of 52 in one day, across
+  four back-checks run in parallel sessions, so it does not only ever grow and
+  the sorting is happening. Those four also speak to the second **Assumed**: all
+  four came back `tested` rather than `corrected`, so the entries were standing
+  because they were still true, and the summary was not hiding a queue. Four is
+  a day rather than a trend, and the oldest standing entry is still older than
+  this reading.

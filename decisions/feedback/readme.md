@@ -17,7 +17,7 @@ earns one.
 - [`D-FBK-7`][D-FBK-7] — How a todo is worked travels with the todo · 2026-08-01 · standing
 - [`D-FBK-8`][D-FBK-8] — One todo is one file, and the queue is in the names · 2026-08-01 · standing
 - [`D-FBK-9`][D-FBK-9] — A todo nobody can start waits where it says why · 2026-08-01 · standing
-- [`D-FBK-1`][D-FBK-1] — The backlog is read out rather than enforced · 2026-07-31 · standing
+- [`D-FBK-1`][D-FBK-1] — The backlog is read out rather than enforced · 2026-07-31 · tested
 - [`D-FBK-2`][D-FBK-2] — The order of the work is declared, not inferred · 2026-07-31 · tested
 - [`D-FBK-3`][D-FBK-3] — A session is handed one todo, not the file · 2026-07-31 · corrected
 - [`D-FBK-4`][D-FBK-4] — The model is asked, because nothing else here can say it · 2026-07-31 · standing

@@ -28,8 +28,16 @@ final class TranslationDomainLookup extends ReadOnlyTool
      * 14 ships the mapper. A domain written into a label below this renders
      * nothing — the failure is silent and at runtime, which is why this is the
      * one version fact the code carries rather than the knowledge base.
+     *
+     * Public because it is one number in one place (D-DIS-4) and two things
+     * outside this class hold it to what it claims: `VersionsTest` ties it to
+     * the majors `knowledge/versions.json` declares, so the code cannot go on
+     * withholding below a version nothing covers; `bin/cli catalog:check` reads
+     * the checkouts for the class that resolves domains, because the release
+     * that would make this number wrong is a backport into a 13.x patch, and no
+     * test here can see one.
      */
-    private const SINCE = 14;
+    public const SINCE = 14;
 
     public static function name(): string
     {

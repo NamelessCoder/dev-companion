@@ -34,23 +34,6 @@ final class FeedbackTest extends TestCase
         }
     }
 
-    /**
-     * The channel writes below this checkout, so it exists only where this
-     * checkout is the root package — which is where the suite runs, and the
-     * condition every test below is written under.
-     *
-     * It is one test rather than a guard in setUp: a precondition repeated
-     * before every method holds nothing by itself and says nothing in a report,
-     * while a failure here names the one thing that broke. This used to be a
-     * skip, which meant the whole class went quiet instead.
-     */
-    #[Test]
-    public function theChannelIsAvailableInTheCheckoutTheSuiteRunsFrom(): void
-    {
-        self::assertTrue(Channel::isAvailable());
-        self::assertDirectoryExists(Paths::feedback());
-    }
-
     #[Test]
     public function aNoteBecomesOneMarkdownFileWithFrontMatter(): void
     {
@@ -272,29 +255,61 @@ final class FeedbackTest extends TestCase
         // thing the agent that reported the gap cannot see for itself: without
         // it the same gap is reported again, and a request that shipped in the
         // meantime is dropped silently.
-        $closed = array_filter(
-            Channel::all('closed', null, 20),
-            static fn(array $feedback): bool => !str_contains($feedback['title'], self::MARKER),
-        );
-        // feedback/archive/ is committed, so having worked one off is a
-        // property of this repository rather than of the machine it runs on.
-        // Skipping here would have hidden an archive that stopped being read.
-        self::assertNotSame([], $closed, 'nothing in feedback/archive/ reads back as closed');
+        // Built rather than found. Reading whatever this repository happens to
+        // have archived asserts the working tree, not the code: with 138 files
+        // in there it can never fail, and in a fresh clone of a checkout that
+        // had archived nothing it would have had nothing to say either.
+        $archived = $this->archived('Answer label lookups with the translation domain');
 
-        foreach ($closed as $feedback) {
-            self::assertSame('closed', $feedback['status']);
-            self::assertStringStartsWith('feedback/archive/', $feedback['file']);
-            self::assertNotNull($feedback['closedBy']);
-            self::assertNotSame('', $feedback['closedBy']['commit']);
-            // The subject is the sentence that says what happened to it.
-            self::assertNotSame('', $feedback['closedBy']['subject']);
-        }
+        $closed = Channel::all('closed', null, 200);
+        $mine = array_values(array_filter(
+            $closed,
+            static fn(array $feedback): bool => $feedback['file'] === $archived,
+        ));
+
+        self::assertCount(1, $mine, 'the archived feedback did not read back as closed');
+        self::assertSame('closed', $mine[0]['status']);
+        self::assertStringStartsWith('feedback/archive/', $mine[0]['file']);
+        self::assertNotNull($mine[0]['closedBy']);
+        self::assertSame('abc1234', $mine[0]['closedBy']['commit']);
+        // The subject is the sentence that says what happened to it.
+        self::assertSame('Answer label lookups with the translation domain', $mine[0]['closedBy']['subject']);
 
         // An open feedback is in the same list and says it is open.
         $file = Channel::record(['observation' => self::MARKER . ' open beside the closed ones']);
         $all = Channel::all('all', null, 200);
         self::assertContains($file, array_column($all, 'file'));
         self::assertContains('closed', array_column($all, 'status'));
+    }
+
+    /**
+     * One archived feedback, as `bin/cli feedback archive` leaves it: below
+     * feedback/archive/, with the commit that closed it written into its front
+     * matter. Removed again by tearDown, like every other fixture here.
+     */
+    private function archived(string $subject): string
+    {
+        $name = '2026-07-28-120000-' . self::MARKER . '.md';
+        $path = Paths::feedbackArchive() . '/' . $name;
+
+        file_put_contents($path, implode("\n", [
+            '---',
+            'date: 2026-07-28T12:00:00+00:00',
+            'category: wrong-answer',
+            'status: closed',
+            'closed: 2026-07-28',
+            'commit: abc1234',
+            'subject: "' . $subject . '"',
+            'tool: typo3_label_lookup',
+            '---',
+            '',
+            '# ' . self::MARKER . ' one that was worked off',
+            '',
+            'The observation this was recorded with.',
+            '',
+        ]));
+
+        return 'feedback/archive/' . $name;
     }
 
     #[Test]

@@ -1,7 +1,7 @@
 ---
 id: D-DIS-1
 date: 2026-07-29
-status: standing
+status: tested
 ---
 
 # D-DIS-1 — The root package counts as an installed package
@@ -20,3 +20,22 @@ packages, and a root package on its own is not an installation.**
   the thing being worked on, or a setup that installs the root into the vendor
   directory as well — the two entries then resolve to the same realpath under
   one key, which is intended, but has not been seen in the wild here.
+- **Tested on `2026-08-01`:** both shapes were built as fixtures, which is as far
+  as resolution can be taken without an installation. The second collapses as
+  the entry said. A root required through a path repository is symlinked back
+  into the vendor directory, both entries derive `bootstrap_package` from the
+  same package name, and both resolve to one realpath — so it is a single
+  package at the root, and it stays the project's own. Reading the vendor path
+  instead would have made the extension being edited a dependency of the
+  repository it is.
+
+  The first displaces nothing. A monorepo root declaring `typo3-cms-extension`
+  is counted under its own key beside the packages below it, and each of those
+  keeps the directory Composer installed it in. What the fixture cannot settle
+  is what that extra entry costs: the root is then listed as an extension that
+  is only a directory, and whether an answer goes wrong on it needs a monorepo
+  somebody works in rather than one built here. No guess at which roots are
+  containers was written, because nothing in the metadata carries it.
+  `InstanceTest::aRootThatIsAlsoInstalledIntoTheVendorDirectoryIsOnePackageAtTheRoot`
+  and
+  `InstanceTest::aMonorepoRootIsCountedBesideThePackagesItHoldsRatherThanInsteadOfThem`.

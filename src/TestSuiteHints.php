@@ -126,6 +126,28 @@ final class TestSuiteHints
     }
 
     /**
+     * Matched suites as data, with the range each one exists on.
+     *
+     * @param array<int, array{suite: string, command: string, description: string, whenToUse: string, domains: array<int, string>, targeted: ?string, since: ?int, until: ?int}> $hints
+     * @return array<int, array<string, mixed>>
+     */
+    public static function records(array $hints): array
+    {
+        return array_map(static fn(array $hint): array => [
+            'suite' => $hint['suite'],
+            'command' => $hint['command'],
+            'targeted' => $hint['targeted'],
+            'description' => $hint['description'],
+            'whenToUse' => $hint['whenToUse'],
+            'domains' => $hint['domains'],
+            // Rendered the same way a statement's range is: beside the entry
+            // rather than inside it, so an unfiltered listing still says which
+            // branches actually have the suite.
+            'versions' => Versions::label($hint['since'], $hint['until']),
+        ], array_values($hints));
+    }
+
+    /**
      * Ranks suites against a query. When $domains is given, only suites touching
      * one of those domains are considered — so a PHP-only task never gets a
      * Sass build recommended.

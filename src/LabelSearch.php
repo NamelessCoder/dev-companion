@@ -41,6 +41,17 @@ final class LabelSearch
     }
 
     /**
+     * The terms as an answer names them back, so a miss says what was searched
+     * for rather than repeating the query as one string.
+     *
+     * @param array<int, string> $terms
+     */
+    public static function quoted(array $terms): string
+    {
+        return implode(', ', array_map(static fn(string $term): string => '"' . $term . '"', $terms));
+    }
+
+    /**
      * The console option that returns every label carrying at least one term.
      *
      * Without terms this is the empty search the console reads as "everything",

@@ -256,6 +256,47 @@ final class Scope
     }
 
     /**
+     * The paths of a call that share one audience.
+     *
+     * @param array<int, array{path: string, audience: string}> $audiences
+     * @return array<int, string>
+     */
+    public static function pathsOf(array $audiences, string ...$of): array
+    {
+        return array_values(array_map(
+            static fn(array $entry): string => $entry['path'],
+            array_filter($audiences, static fn(array $entry): bool => in_array($entry['audience'], $of, true)),
+        ));
+    }
+
+    /**
+     * A call's paths as the questions they actually are: one group per
+     * audience, core work first, then what nothing placed, then what is outside
+     * the core. A call that named no path is one group all the same — what was
+     * said about it is then the whole of the evidence.
+     *
+     * @param array<int, string> $paths
+     * @param array<int, array{path: string, audience: string}> $audiences
+     * @return array<int, array{audience: string, paths: array<int, string>}>
+     */
+    public static function groups(array $paths, array $audiences, string $text): array
+    {
+        if ($paths === []) {
+            return [['audience' => self::audienceOf('', $text), 'paths' => []]];
+        }
+
+        $groups = [];
+        foreach ([self::AUDIENCE_CORE, self::AUDIENCE_UNCERTAIN, self::AUDIENCE_OUTSIDE] as $audience) {
+            $of = self::pathsOf($audiences, $audience);
+            if ($of !== []) {
+                $groups[] = ['audience' => $audience, 'paths' => $of];
+            }
+        }
+
+        return $groups;
+    }
+
+    /**
      * Things that exist in the core repository and nowhere else. A line of
      * advice naming one of them cannot be followed outside it.
      *

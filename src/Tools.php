@@ -10,6 +10,11 @@ use Typo3CmsMcp\Catalog\Meta as CatalogMeta;
 use Typo3CmsMcp\Catalog\References;
 use Typo3CmsMcp\Catalog\SystemExtensions;
 use Typo3CmsMcp\Catalog\TranslationDomain;
+use Typo3CmsMcp\Tool\ComponentAnswer;
+use Typo3CmsMcp\Tool\Hints;
+use Typo3CmsMcp\Tool\Prose;
+use Typo3CmsMcp\Tool\Unanswered;
+use Typo3CmsMcp\Tool\VersionScope;
 
 /**
  * Defines the knowledge tools and builds their answers.
@@ -45,9 +50,6 @@ final class Tools
         'documentation' => ['Run ./Build/Scripts/runTests.sh -s checkRst to validate ReST syntax.'],
         'unknown' => [],
     ];
-
-    /** Appended when a catalog lookup finds nothing at all. */
-    private const CATALOG_MISS_NOTE = 'Call typo3_catalog_scope for what this snapshot covers.';
 
     /**
      * The tool that answers a matched subject from the installation instead of
@@ -864,12 +866,12 @@ final class Tools
         $hints = ArchitectureHints::find([], $query, 3)['matchedHints'];
 
         if ($results === [] && $hints === []) {
-            return self::noKnowledgeMatch($query);
+            return Prose::noMatch($query);
         }
 
         $text = $results === []
             ? sprintf('No section of the knowledge documents matched "%s".', $query)
-            : self::renderSections($results);
+            : Prose::sections($results);
         if ($hints !== []) {
             $text .= "\n\nThe architecture hints also cover this — call typo3_architecture_lookup with the id:\n"
                 . implode("\n", array_map(
@@ -881,7 +883,7 @@ final class Tools
         return ToolResult::create($text, [
             'query' => $query,
             'matchCount' => count($results),
-            'matches' => self::matchRecords($results),
+            'matches' => Prose::records($results),
             'alsoInHints' => array_map(
                 static fn(array $hint): array => ['id' => $hint['id'], 'title' => $hint['title']],
                 $hints,
@@ -911,7 +913,7 @@ final class Tools
         $results = Knowledge::search($task, ['typo3-core-scripts']);
 
         if ($results !== []) {
-            $text = self::renderSections($results);
+            $text = Prose::sections($results);
             // Where nothing said which repository this is, the commands are
             // offered under their condition rather than stated as the answer.
             if (!Scope::isCoreWork([], $task)) {
@@ -922,7 +924,7 @@ final class Tools
             return ToolResult::create($text, [
                 'query' => $task,
                 'matchCount' => count($results),
-                'matches' => self::matchRecords($results),
+                'matches' => Prose::records($results),
                 'outsideCore' => false,
                 'audience' => $audience,
             ]);
@@ -933,7 +935,7 @@ final class Tools
         $message = sprintf(
             'No section of the TYPO3 core script notes matched "%s". They cover: %s.',
             $task,
-            self::topicList('typo3-core-scripts')
+            Prose::topics('typo3-core-scripts')
         );
 
         $elsewhere = Knowledge::search($task);
@@ -956,104 +958,6 @@ final class Tools
             'outsideCore' => false,
             'audience' => $audience,
         ]);
-    }
-
-    /**
-     * What the prose cannot say of itself.
-     *
-     * The architecture hints carry since/until per statement and are filtered
-     * or labelled by version. The markdown documents are the long form of the
-     * same subjects and carry nothing, so a section describing a shape that
-     * arrived in v13 reads on v12 exactly as it reads on main. Rather than
-     * building a second binding mechanism for prose, every prose answer says
-     * which of the two the caller is holding.
-     */
-    private const PROSE_NOT_VERSION_BOUND = 'These sections are prose and are not filtered by version. '
-        . 'Where a subsystem changed inside the covered range, the statement that changed carries the range in the '
-        . 'architecture hints — call typo3_architecture_lookup with targetVersion for the form that holds on yours.';
-
-    /**
-     * Renders matched knowledge sections as coherent excerpts: the section
-     * keeps its own heading and original formatting, so code blocks and nested
-     * lists survive.
-     *
-     * @param array<int, array{id: string, title: string, heading: string, body: string, score: int, coverage: float, truncated: bool}> $results
-     */
-    private static function renderSections(array $results): string
-    {
-        return self::PROSE_NOT_VERSION_BOUND . "\n\n" . implode("\n\n", array_map(static function (array $result): string {
-            $heading = $result['heading'] === '' ? $result['title'] : $result['heading'];
-            $source = sprintf(
-                'Source: %s (typo3://core/%s) — matches %d%% of the query terms',
-                $result['title'],
-                $result['id'],
-                (int) round($result['coverage'] * 100),
-            );
-
-            $body = $result['body'];
-            if ($result['truncated']) {
-                $body .= "\n\n(section truncated — read typo3://core/" . $result['id'] . ' for the rest)';
-            }
-
-            return '## ' . $heading . "\n" . $source . "\n\n" . $body;
-        }, $results));
-    }
-
-    /**
-     * The same matched sections as data: the document they come from, how much
-     * of the query they cover, and the resource holding the full text.
-     *
-     * @param array<int, array{id: string, title: string, heading: string, body: string, score: int, coverage: float, truncated: bool}> $results
-     * @return array<int, array<string, mixed>>
-     */
-    private static function matchRecords(array $results): array
-    {
-        return array_map(static fn(array $result): array => [
-            'documentId' => $result['id'],
-            'title' => $result['title'],
-            'uri' => 'typo3://core/' . $result['id'],
-            'heading' => $result['heading'] === '' ? $result['title'] : $result['heading'],
-            'body' => $result['body'],
-            'coverage' => round($result['coverage'], 3),
-            'score' => $result['score'],
-            'truncated' => $result['truncated'],
-        ], $results);
-    }
-
-    private static function noKnowledgeMatch(string $query): ToolResult
-    {
-        $documents = implode("\n", array_map(
-            static fn(array $document): string => '- ' . $document['title'] . ': ' . implode(', ', $document['topics']),
-            Knowledge::topics()
-        ));
-
-        $text = sprintf(
-            "No knowledge section matched \"%s\".\n\nThis knowledge base covers:\n%s\n\n"
-            . 'For backend UI components use typo3_component_lookup, and call typo3_server_scope for what '
-            . 'this server covers at all. '
-            . 'If the topic should be covered here, leave a feedback with typo3_feedback_record.',
-            $query,
-            $documents
-        );
-
-        return ToolResult::create($text, [
-            'query' => $query,
-            'matchCount' => 0,
-            'matches' => [],
-            'alsoInHints' => [],
-            'documents' => Knowledge::topics(),
-        ]);
-    }
-
-    private static function topicList(string $documentId): string
-    {
-        foreach (Knowledge::topics() as $document) {
-            if ($document['id'] === $documentId) {
-                return implode(', ', $document['topics']);
-            }
-        }
-
-        return '';
     }
 
     /** @param array<string, mixed> $args */
@@ -1123,8 +1027,8 @@ final class Tools
         // and saying so is noise. It speaks for the repository that serves
         // several majors — whether the answer holds for all of them, or was
         // narrowed to one because the caller stated it.
-        if (count($targets) > 1 || self::severalDeclaredMajors() !== []) {
-            $lines[] = self::versionScopeLine($targets);
+        if (count($targets) > 1 || VersionScope::severalDeclared() !== []) {
+            $lines[] = VersionScope::line($targets);
         }
         if ($confirmed !== []) {
             $lines[] = 'Recognized as: ' . implode(', ', array_map(
@@ -1140,17 +1044,17 @@ final class Tools
         $lines[] = '';
         $lines[] = 'Architecture hints:';
         if ($architecture['matchedHints'] !== []) {
-            $examples = self::examplesByHint($target);
+            $examples = Hints::examples($target);
             foreach (ArchitectureHints::groupByCategory($architecture['matchedHints']) as $section) {
                 $lines[] = '### ' . $section['category'];
                 foreach ($section['hints'] as $hint) {
                     $lines[] = '## ' . $hint['title'];
-                    $notice = self::bindingNotice($hint, $outsideCore);
+                    $notice = Hints::bindingNotice($hint, $outsideCore);
                     if ($notice !== null) {
                         $lines[] = $notice;
                     }
                     foreach ($hint['hints'] as $entry) {
-                        $lines[] = '- ' . self::statementLine($entry, $outsideCore);
+                        $lines[] = '- ' . Hints::statement($entry, $outsideCore);
                     }
                     if (isset($examples[$hint['id']])) {
                         $lines[] = $examples[$hint['id']];
@@ -1176,7 +1080,7 @@ final class Tools
             $lines[] = '';
             $lines[] = 'Rules that apply to this task:';
             $lines[] = '';
-            $lines[] = self::renderSections($rules);
+            $lines[] = Prose::sections($rules);
         }
 
         // The checks of a matched architecture hint belong in the list as much
@@ -1325,11 +1229,11 @@ final class Tools
                 'confidence' => (string) $intent['confidence'],
                 'condition' => (string) $intent['condition'],
             ], $intents),
-            'architectureHints' => self::hintRecords($architecture['matchedHints']),
-            'rules' => self::matchRecords($rules),
+            'architectureHints' => Hints::records($architecture['matchedHints']),
+            'rules' => Prose::records($rules),
             'checks' => $checks,
             'conditionalChecks' => $conditionalChecks,
-            'testSuites' => self::suiteRecords($testHints),
+            'testSuites' => TestSuiteHints::records($testHints),
             'checklist' => $checklist,
             'checkoutDiscovery' => $checkoutDiscovery,
             'nextTools' => $nextTools,
@@ -1459,75 +1363,6 @@ final class Tools
         return array_values($suggestions);
     }
 
-    /**
-     * Matched architecture hints as data, without the internal match patterns.
-     *
-     * @param array<int, array<string, mixed>> $hints
-     * @return array<int, array<string, mixed>>
-     */
-    private static function hintRecords(array $hints): array
-    {
-        return array_map(static fn(array $hint): array => [
-            'id' => (string) $hint['id'],
-            'title' => (string) $hint['title'],
-            'category' => (string) $hint['category'],
-            'binding' => $hint['binding'] ?? null,
-            'hints' => array_map(static fn(array $statement): array => [
-                'text' => $statement['text'],
-                'since' => $statement['since'],
-                'until' => $statement['until'],
-                'versions' => Versions::label($statement['since'], $statement['until']),
-                'binding' => $statement['binding'] ?? null,
-            ], $hint['hints']),
-            'checks' => array_map('strval', $hint['checks']),
-        ], array_values($hints));
-    }
-
-    /**
-     * One statement as a line, with the versions it holds for where that is not
-     * all of them.
-     *
-     * The range is rendered beside the sentence rather than inside it: the
-     * sentence is the same sentence on every version it holds for, and a reader
-     * filtering by version must not have to parse prose to do it. What it is
-     * binding for is rendered the same way, and only where it is not this
-     * caller's obligation — inside the core everything listed applies, so the
-     * marker would be on every line and say nothing.
-     *
-     * @param array{text: string, since: ?int, until: ?int, binding: ?string} $statement
-     */
-    private static function statementLine(array $statement, bool $outsideCore = false): string
-    {
-        $labels = array_filter([
-            Versions::label($statement['since'], $statement['until']),
-            $outsideCore && ($statement['binding'] ?? null) === ArchitectureHints::BINDING_CORE
-                ? 'binding for a core patch, a convention here'
-                : '',
-        ]);
-
-        return $labels === [] ? $statement['text'] : $statement['text'] . ' [' . implode('; ', $labels) . ']';
-    }
-
-    /**
-     * @param array<int, array{suite: string, command: string, description: string, whenToUse: string, domains: array<int, string>, targeted: ?string, since: ?int, until: ?int}> $hints
-     * @return array<int, array<string, mixed>>
-     */
-    private static function suiteRecords(array $hints): array
-    {
-        return array_map(static fn(array $hint): array => [
-            'suite' => $hint['suite'],
-            'command' => $hint['command'],
-            'targeted' => $hint['targeted'],
-            'description' => $hint['description'],
-            'whenToUse' => $hint['whenToUse'],
-            'domains' => $hint['domains'],
-            // Rendered the same way a statement's range is: beside the entry
-            // rather than inside it, so an unfiltered listing still says which
-            // branches actually have the suite.
-            'versions' => Versions::label($hint['since'], $hint['until']),
-        ], array_values($hints));
-    }
-
     /** @param array<string, mixed> $args */
     private static function testRunGuide(array $args): ToolResult
     {
@@ -1545,8 +1380,8 @@ final class Tools
         // is decided one by one — the other half of a call is not evidence
         // about this path.
         $audiences = Scope::audiences($paths, (string) $query);
-        $outside = self::pathsOf($audiences, Scope::AUDIENCE_OUTSIDE);
-        $runnable = self::pathsOf($audiences, Scope::AUDIENCE_CORE, Scope::AUDIENCE_UNCERTAIN);
+        $outside = Scope::pathsOf($audiences, Scope::AUDIENCE_OUTSIDE);
+        $runnable = Scope::pathsOf($audiences, Scope::AUDIENCE_CORE, Scope::AUDIENCE_UNCERTAIN);
         $domains = Domains::fromPaths($runnable);
 
         // Nothing here can run a suite: every path given is outside the core,
@@ -1589,7 +1424,7 @@ final class Tools
         // command below says so itself. A path that was named and could not be
         // placed is the case worth a sentence: the caller believes it said
         // which repository this is.
-        if (self::pathsOf($audiences, Scope::AUDIENCE_UNCERTAIN) !== []) {
+        if (Scope::pathsOf($audiences, Scope::AUDIENCE_UNCERTAIN) !== []) {
             $blocks[] = Scope::UNCERTAIN_AUDIENCE_NOTICE;
         }
         if ($domains !== []) {
@@ -1626,7 +1461,7 @@ final class Tools
             'audiences' => $audiences,
             'domains' => $domains,
             'outsideCore' => false,
-            'suites' => self::suiteRecords($hints),
+            'suites' => TestSuiteHints::records($hints),
             'invocation' => TestSuiteHints::invocation(),
         ]);
     }
@@ -1661,88 +1496,6 @@ final class Tools
         return implode("\n", $lines);
     }
 
-    /**
-     * Which TYPO3 versions the statements below were selected for, and why.
-     *
-     * The interesting case is the one this said nothing about for a long time:
-     * a repository declaring `^13.4 || ^14.3` gets both majors, and a caller
-     * that does not know this reads a statement labelled for one of them as the
-     * current shape and the other as drift. It is the difference between the
-     * two that the code is built around — the file kept for the older major,
-     * the interface not replaced yet — so the sentence names it as a constraint
-     * rather than leaving it to be discovered.
-     *
-     * @param array<int, int> $targets
-     */
-    private static function versionScopeLine(array $targets): string
-    {
-        if ($targets === []) {
-            return 'No target TYPO3 version was stated and none was found to read, so every statement comes back '
-                . 'with the versions it holds for. Pass targetVersion to have the ones that do not apply left out.';
-        }
-
-        $constraint = Project::coreConstraint();
-        $declared = self::severalDeclaredMajors();
-
-        // The narrowing is invisible from inside the answer, and that is how a
-        // widened default gets switched off by a caller being careful: a
-        // session reads the installed version out of typo3_project_scope,
-        // states it because it looks like the accurate thing to do, and gets
-        // back exactly the answer this filtering was changed to stop giving.
-        // So the one case where the two disagree says so.
-        if (count($targets) === 1) {
-            if ($declared === []) {
-                return sprintf('Answered for TYPO3 v%d: statements that do not hold there are left out.', $targets[0]);
-            }
-
-            return sprintf(
-                'Answered for TYPO3 v%d alone, because targetVersion stated it. This repository declares '
-                . 'typo3/cms-core as %s, so one codebase serves %s here, and every statement that holds only on '
-                . '%s is missing from this answer — on a repository like this one those are not somebody else\'s '
-                . 'rules, they are the constraint this code lives under. Leave targetVersion out to be answered '
-                . 'for all of them at once.',
-                $targets[0],
-                $constraint === null ? 'a range' : '"' . $constraint . '"',
-                self::majorList($declared),
-                self::majorList(array_values(array_diff($declared, $targets))),
-            );
-        }
-
-        return sprintf(
-            'Answered for TYPO3 %s at once, because this repository declares typo3/cms-core as %s and one codebase '
-            . 'serves all of them. A statement is kept when it holds on any of them, and the range beside it says '
-            . 'which — where two statements about the same subject differ, that difference is the constraint this '
-            . 'code lives under rather than something to clean up. Pass targetVersion to answer for one of them.',
-            self::majorList($targets),
-            $constraint === null ? 'a range' : '"' . $constraint . '"',
-        );
-    }
-
-    /**
-     * The majors this repository declares, where it declares more than one.
-     *
-     * Empty is the ordinary case and covers both shapes that behave alike: a
-     * repository built for a single major, and one whose constraint nothing
-     * here can read. Neither has an answer that could have been wider.
-     *
-     * @return array<int, int>
-     */
-    private static function severalDeclaredMajors(): array
-    {
-        $declared = Versions::declared(Project::coreConstraint());
-
-        return count($declared) > 1 ? $declared : [];
-    }
-
-    /** @param array<int, int> $majors */
-    private static function majorList(array $majors): string
-    {
-        $labels = array_map(static fn(int $major): string => 'v' . $major, $majors);
-        $last = array_pop($labels);
-
-        return $labels === [] ? $last : implode(', ', $labels) . ' and ' . $last;
-    }
-
     /** @param array<string, mixed> $args */
     private static function architectureLookup(array $args): ToolResult
     {
@@ -1761,8 +1514,8 @@ final class Tools
         // audience are asked separately: matched together, an extension path
         // gets the core path's hints and its checks with them.
         $audiences = Scope::audiences($paths, $task ?? '');
-        $groups = self::audienceGroups($paths, $audiences, $task ?? '');
-        $outside = self::pathsOf($audiences, Scope::AUDIENCE_OUTSIDE);
+        $groups = Scope::groups($paths, $audiences, $task ?? '');
+        $outside = Scope::pathsOf($audiences, Scope::AUDIENCE_OUTSIDE);
         $outsideCore = count($groups) === 1 && $groups[0]['audience'] === Scope::AUDIENCE_OUTSIDE;
 
         $found = [];
@@ -1773,7 +1526,7 @@ final class Tools
             }
             $found[] = ['audience' => $group['audience'], 'paths' => $group['paths'], 'result' => $matched];
         }
-        $result = self::mergedHintResults($found);
+        $result = Hints::merged($found);
 
         $lines = [];
         if ($outsideCore) {
@@ -1787,7 +1540,7 @@ final class Tools
                 . 'because Build/Scripts/runTests.sh is part of the core repository.';
             $lines[] = '';
         }
-        if (self::pathsOf($audiences, Scope::AUDIENCE_UNCERTAIN) !== []) {
+        if (Scope::pathsOf($audiences, Scope::AUDIENCE_UNCERTAIN) !== []) {
             $lines[] = Scope::UNCERTAIN_AUDIENCE_NOTICE;
             $lines[] = '';
         }
@@ -1814,7 +1567,7 @@ final class Tools
                 $audiences,
             ));
         }
-        $lines[] = self::versionScopeLine($targets);
+        $lines[] = VersionScope::line($targets);
         if ($result['domains'] !== []) {
             $lines[] = 'Domains: ' . implode(', ', $result['domains'])
                 . ' (hints outside these domains are not shown'
@@ -1841,7 +1594,7 @@ final class Tools
                         $group['audience'] === Scope::AUDIENCE_CORE ? '' : ' — ' . $group['audience'],
                     );
                 }
-                $sectionTexts[] = self::hintSections(
+                $sectionTexts[] = Hints::sections(
                     $group['result']['matchedHints'],
                     $group['audience'] === Scope::AUDIENCE_OUTSIDE,
                     $target,
@@ -1880,123 +1633,9 @@ final class Tools
             'domains' => $result['domains'],
             'withheldCategories' => $result['withheldCategories'],
             'outsideCore' => $outsideCore,
-            'hints' => self::hintRecords($result['matchedHints']),
+            'hints' => Hints::records($result['matchedHints']),
             'availableHints' => $result['availableHints'],
         ]);
-    }
-
-    /**
-     * The paths of a call that share one audience.
-     *
-     * @param array<int, array{path: string, audience: string}> $audiences
-     * @return array<int, string>
-     */
-    private static function pathsOf(array $audiences, string ...$of): array
-    {
-        return array_values(array_map(
-            static fn(array $entry): string => $entry['path'],
-            array_filter($audiences, static fn(array $entry): bool => in_array($entry['audience'], $of, true)),
-        ));
-    }
-
-    /**
-     * A call's paths as the questions they actually are: one group per
-     * audience, core work first, then what nothing placed, then what is outside
-     * the core. A call that named no path is one group all the same — what was
-     * said about it is then the whole of the evidence.
-     *
-     * @param array<int, string> $paths
-     * @param array<int, array{path: string, audience: string}> $audiences
-     * @return array<int, array{audience: string, paths: array<int, string>}>
-     */
-    private static function audienceGroups(array $paths, array $audiences, string $text): array
-    {
-        if ($paths === []) {
-            return [['audience' => Scope::audienceOf('', $text), 'paths' => []]];
-        }
-
-        $groups = [];
-        foreach ([Scope::AUDIENCE_CORE, Scope::AUDIENCE_UNCERTAIN, Scope::AUDIENCE_OUTSIDE] as $audience) {
-            $of = self::pathsOf($audiences, $audience);
-            if ($of !== []) {
-                $groups[] = ['audience' => $audience, 'paths' => $of];
-            }
-        }
-
-        return $groups;
-    }
-
-    /**
-     * What the groups of one call found, as the one answer the payload is.
-     *
-     * The hints keep the checks of the group they were matched for, so a hint
-     * that matched on both sides carries them once, for the paths that can run
-     * them — which is why the answer names those paths beside them.
-     *
-     * @param array<int, array{audience: string, paths: array<int, string>, result: array<string, mixed>}> $found
-     * @return array{matchedHints: array<int, array<string, mixed>>, availableHints: array<int, array<string, mixed>>, domains: array<int, string>, withheldCategories: array<int, string>}
-     */
-    private static function mergedHintResults(array $found): array
-    {
-        $matched = [];
-        $available = [];
-        $domains = [];
-        $withheld = [];
-        foreach ($found as $group) {
-            foreach ($group['result']['matchedHints'] as $hint) {
-                $matched[$hint['id']] ??= $hint;
-            }
-            foreach ($group['result']['availableHints'] as $entry) {
-                $available[$entry['id']] ??= $entry;
-            }
-            $domains = array_merge($domains, $group['result']['domains']);
-            $withheld = array_merge($withheld, $group['result']['withheldCategories']);
-        }
-
-        return [
-            'matchedHints' => array_values($matched),
-            'availableHints' => array_values($available),
-            'domains' => array_values(array_unique($domains)),
-            'withheldCategories' => array_values(array_unique($withheld)),
-        ];
-    }
-
-    /**
-     * The matched hints as text: one section per category, one block per hint.
-     *
-     * @param array<int, array<string, mixed>> $hints
-     */
-    private static function hintSections(array $hints, bool $outsideCore, ?int $target): string
-    {
-        $examples = self::examplesByHint($target);
-        $sectionTexts = [];
-        foreach (ArchitectureHints::groupByCategory($hints) as $section) {
-            $hintTexts = [];
-            foreach ($section['hints'] as $hint) {
-                $block = ['## ' . $hint['title']];
-                $notice = self::bindingNotice($hint, $outsideCore);
-                if ($notice !== null) {
-                    $block[] = $notice;
-                }
-                $block[] = 'Hints:';
-                foreach ($hint['hints'] as $entry) {
-                    $block[] = '- ' . self::statementLine($entry, $outsideCore);
-                }
-                if (isset($examples[$hint['id']])) {
-                    $block[] = $examples[$hint['id']];
-                }
-                if ($hint['checks'] !== []) {
-                    $block[] = 'Relevant checks:';
-                    foreach ($hint['checks'] as $check) {
-                        $block[] = '- ' . $check;
-                    }
-                }
-                $hintTexts[] = implode("\n", $block);
-            }
-            $sectionTexts[] = '### ' . $section['category'] . "\n\n" . implode("\n\n", $hintTexts);
-        }
-
-        return implode("\n\n", $sectionTexts);
     }
 
     /** @param array<string, mixed> $args */
@@ -2008,8 +1647,8 @@ final class Tools
         $split = Components::splitByTarget(Components::find($query, $target), $target);
         $components = $split['holds'];
         $withheld = $split['withheld'];
-        $withheldNote = self::withheldComponents($withheld, $target);
-        $sourceNote = self::componentSourceNote($installed);
+        $withheldNote = ComponentAnswer::withheldNote($withheld, $target);
+        $sourceNote = ComponentAnswer::sourceNote($installed);
 
         if ($components === []) {
             return ToolResult::create(
@@ -2019,7 +1658,7 @@ final class Tools
                     (string) $query,
                     $installed
                         ? 'The installed packages were checked, but the searchable component index remains curated; inspect the installed backend CSS for an uncatalogued class.'
-                        : self::CATALOG_MISS_NOTE,
+                        : ComponentAnswer::MISS_NOTE,
                     $withheldNote === '' ? '' : $withheldNote . "\n",
                     $sourceNote,
                 ),
@@ -2028,9 +1667,9 @@ final class Tools
                     'targetVersion' => $target,
                     'matchCount' => 0,
                     'components' => [],
-                    'withheld' => self::withheldRecords($withheld),
+                    'withheld' => ComponentAnswer::withheldRecords($withheld),
                     'componentSource' => $installed ? 'installation' : 'catalog',
-                    'catalog' => self::catalogRecord($installed),
+                    'catalog' => ComponentAnswer::catalogRecord($installed),
                 ],
             );
         }
@@ -2060,10 +1699,10 @@ final class Tools
                         'sassPath' => $c['sassPath'],
                         'sassPaths' => $c['sassPaths'],
                         'demoPath' => $c['demoPath'],
-                    ] + self::componentSourceRecord($c) + self::verifiedRecord($c), $components),
-                    'withheld' => self::withheldRecords($withheld),
+                    ] + ComponentAnswer::sourceRecord($c) + ComponentAnswer::verifiedRecord($c), $components),
+                    'withheld' => ComponentAnswer::withheldRecords($withheld),
                     'componentSource' => $installed ? 'installation' : 'catalog',
-                    'catalog' => self::catalogRecord($installed),
+                    'catalog' => ComponentAnswer::catalogRecord($installed),
                 ],
             );
         }
@@ -2192,135 +1831,12 @@ final class Tools
                 'sassPaths' => $c['sassPaths'],
                 'demoPath' => $c['demoPath'],
                 'matchedIn' => $c['matchedIn'] ?? [],
-            ] + self::componentSourceRecord($c) + self::verifiedRecord($c), $described),
-            'withheld' => self::withheldRecords($withheld),
+            ] + ComponentAnswer::sourceRecord($c) + ComponentAnswer::verifiedRecord($c), $described),
+            'withheld' => ComponentAnswer::withheldRecords($withheld),
             'checklist' => $checklist,
             'componentSource' => $installed ? 'installation' : 'catalog',
-            'catalog' => self::catalogRecord($installed),
+            'catalog' => ComponentAnswer::catalogRecord($installed),
         ]);
-    }
-
-    private static function componentSourceNote(bool $installed): string
-    {
-        if (!$installed) {
-            return self::catalogProvenance();
-        }
-
-        return sprintf(
-            'Component contract: installed TYPO3 %s packages. Names, summaries, keywords, and fallback markup '
-                . 'come from the curated catalog; classes and custom properties come from '
-                . 'EXT:backend/Resources/Public/Css/backend.css, and an installed styleguide example replaces '
-                . 'the fallback markup where available.',
-            Instance::typo3Version(),
-        );
-    }
-
-    /**
-     * The evidence version travels inside the component, not only in the block
-     * after it: clients often render one record without its surrounding answer.
-     *
-     * @param array<string, mixed> $component
-     * @return array{
-     *     classes: array<int, string>, sourceFiles: array<int, string>,
-     *     markupSource: string, contractVersion: string, describesVersion: string
-     * }
-     */
-    private static function componentSourceRecord(array $component): array
-    {
-        $snapshot = CatalogMeta::read()['source']['version'];
-        $markupSource = $component['markupSource'] ?? 'catalog';
-        $contractVersion = $component['contractVersion'] ?? $snapshot;
-
-        return [
-            'classes' => $component['classes'] ?? [],
-            'sourceFiles' => $component['sourceFiles'] ?? [],
-            'markupSource' => $markupSource,
-            'contractVersion' => $contractVersion,
-            'describesVersion' => $markupSource === 'installation' ? $contractVersion : $snapshot,
-        ];
-    }
-
-    /**
-     * The majors a catalog entry was verified on, as data beside the label.
-     *
-     * @param array<string, mixed> $component
-     * @return array{since: ?int, until: ?int, verifiedOn: string}
-     */
-    private static function verifiedRecord(array $component): array
-    {
-        return [
-            'since' => $component['since'],
-            'until' => $component['until'],
-            'verifiedOn' => Versions::label($component['since'], $component['until']),
-        ];
-    }
-
-    /**
-     * @param array<int, array<string, mixed>> $withheld
-     * @return array<int, array<string, mixed>>
-     */
-    private static function withheldRecords(array $withheld): array
-    {
-        return array_map(static fn(array $c): array => [
-            'name' => $c['name'],
-            'title' => $c['title'],
-            'sassPaths' => $c['sassPaths'],
-            'demoPath' => $c['demoPath'],
-        ] + self::verifiedRecord($c), $withheld);
-    }
-
-    /**
-     * What the stated version cost the answer, and what to check instead.
-     *
-     * Dropping the entry silently would be the one thing worse than handing it
-     * over: the caller then reads "this component does not exist" into an
-     * answer that means "the catalog has it and was never verified where you
-     * are". So it is named, with the branch and the sources to verify against.
-     *
-     * @param array<int, array<string, mixed>> $withheld
-     */
-    private static function withheldComponents(array $withheld, ?int $target): string
-    {
-        if ($withheld === [] || $target === null) {
-            return '';
-        }
-
-        if (($withheld[0]['_installed'] ?? false) === true) {
-            $lines = [sprintf(
-                'Not found in the installed TYPO3 v%d backend component contract:',
-                $target,
-            )];
-            foreach ($withheld as $component) {
-                $lines[] = sprintf('- %s (%s)', $component['name'], $component['title']);
-            }
-            $lines[] = 'Their root class or custom element was absent from the installed backend CSS and JavaScript.';
-
-            return implode("\n", $lines);
-        }
-
-        $branch = Versions::branch($target);
-        $lines = [sprintf(
-            'Withheld for TYPO3 v%d — in this catalog, and never verified there, so the classes and custom '
-            . 'properties they describe may not exist on that version:',
-            $target,
-        )];
-        foreach ($withheld as $component) {
-            $lines[] = sprintf(
-                '- %s (%s) — verified on %s; verify against %s',
-                $component['name'],
-                $component['title'],
-                Versions::label($component['since'], $component['until']),
-                $component['sassPaths'] === []
-                    ? ($component['demoPath'] ?? 'the core checkout')
-                    : implode(', ', $component['sassPaths']),
-            );
-        }
-        $lines[] = sprintf(
-            'Check those paths against %s before using any of them — a path that is not there is the answer too.',
-            $branch === null ? 'a core checkout of that version' : 'the core repository\'s ' . $branch . ' branch',
-        );
-
-        return implode("\n", $lines);
     }
 
     /**
@@ -2340,7 +1856,7 @@ final class Tools
         $limit = (int) ($args['limit'] ?? 20);
 
         if (Changelog::directory() === null) {
-            return self::consoleUnavailable(
+            return Unanswered::because(
                 'no TYPO3 installation was found whose core package ships the changelog',
                 ['query' => $query, 'matchCount' => 0, 'entries' => [], 'versions' => []],
             );
@@ -2369,7 +1885,7 @@ final class Tools
         if ($entries === []) {
             $lines = [sprintf(
                 'No changelog entry in this installation %s.',
-                $terms === [] ? 'matched those filters' : 'carries all of ' . self::quotedTerms($terms),
+                $terms === [] ? 'matched those filters' : 'carries all of ' . LabelSearch::quoted($terms),
             )];
             $reached = array_values(array_filter(
                 LabelSearch::perTermCounts(Changelog::entries($type, $version), $terms),
@@ -2400,7 +1916,7 @@ final class Tools
             '%d changelog entr%s%s%s:',
             count($matching),
             count($matching) === 1 ? 'y' : 'ies',
-            $query === '' ? '' : sprintf(' carrying %s', self::quotedTerms($terms)),
+            $query === '' ? '' : sprintf(' carrying %s', LabelSearch::quoted($terms)),
             count($matching) > count($entries) ? sprintf(' — showing the first %d', count($entries)) : '',
         )];
         foreach ($entries as $entry) {
@@ -2433,7 +1949,7 @@ final class Tools
     {
         $project = Project::describe();
         if ($project === null) {
-            return self::consoleUnavailable(
+            return Unanswered::because(
                 'no TYPO3 installation was found to describe',
                 ['root' => null, 'extensions' => [], 'sites' => [], 'commands' => [], 'patches' => []],
             );
@@ -2651,7 +2167,7 @@ final class Tools
     {
         $installed = array_keys(Instance::packages());
         if ($installed === []) {
-            return self::consoleUnavailable(
+            return Unanswered::because(
                 'no TYPO3 installation was found, so there are no extensions to describe',
                 self::EXTENSION_MISS_FIELDS + ['key' => $key],
             );
@@ -2774,49 +2290,6 @@ final class Tools
     }
 
     /**
-     * What a whole hint is binding for, where that is not this caller.
-     *
-     * The backend's design system is the case this exists for: every rule in it
-     * is a condition of a core patch and none of it is a condition of anything
-     * in a project — which does not make it useless there, because a project
-     * building a backend module wants exactly those rules. So the answer keeps
-     * them and says which of the two it is handing over.
-     *
-     * @param array<string, mixed> $hint
-     */
-    private static function bindingNotice(array $hint, bool $outsideCore): ?string
-    {
-        if (!$outsideCore || ($hint['binding'] ?? null) !== ArchitectureHints::BINDING_CORE) {
-            return null;
-        }
-
-        return 'Binding for a patch to the TYPO3 core. Here they are conventions you may adopt — worth having '
-            . 'where this repository builds the same thing, and no condition of anything in it.';
-    }
-
-    /**
-     * The core's own worked example per hint id, as one line for the answer.
-     *
-     * A hint is a summary of something that exists in full and passing; naming
-     * it beside the summary is what makes "read it" available at the moment the
-     * summary turns out to be thin, rather than in a document read once.
-     *
-     * @return array<string, string>
-     */
-    private static function examplesByHint(?int $target): array
-    {
-        $lines = [];
-        foreach (References::on($target) as $entry) {
-            if ($entry['hint'] !== null) {
-                $lines[$entry['hint']] = 'Worked example: ' . $entry['path']
-                    . ' — typo3_reference_list for what it demonstrates and where an installation has it.';
-            }
-        }
-
-        return $lines;
-    }
-
-    /**
      * The worked examples the core ships, so "read X" can be the answer.
      *
      * @param array<string, mixed> $args
@@ -2930,7 +2403,7 @@ final class Tools
                 . 'branch — a 13.4 backport, for example — verify against the checkout before concluding that a '
                 . 'component or class does not exist.';
 
-        $withheldNote = self::withheldComponents($split['withheld'], $target);
+        $withheldNote = ComponentAnswer::withheldNote($split['withheld'], $target);
         if ($withheldNote !== '') {
             $lines[] = '';
             $lines[] = $withheldNote;
@@ -2942,85 +2415,15 @@ final class Tools
         }
 
         return ToolResult::create(implode("\n", $lines), [
-            'catalog' => self::catalogRecord($installed),
+            'catalog' => ComponentAnswer::catalogRecord($installed),
             'verifyCommand' => $meta['verifyCommand'],
             'scope' => $meta['scope'],
             'counts' => $meta['counts'],
             'targetVersion' => $target,
             'verifiedCount' => count($split['holds']),
             'componentSource' => $installed ? 'installation' : 'catalog',
-            'withheld' => self::withheldRecords($split['withheld']),
+            'withheld' => ComponentAnswer::withheldRecords($split['withheld']),
         ]);
-    }
-
-    private static function catalogProvenance(): string
-    {
-        return CatalogMeta::line();
-    }
-
-    /**
-     * The provenance every catalog answer carries, so a client can tell a miss
-     * on an old snapshot from a miss on the branch it works on.
-     *
-     * @return array<string, string>
-     */
-    private static function catalogRecord(bool $componentsDerived = false): array
-    {
-        $meta = CatalogMeta::read();
-
-        return [
-            'repository' => $meta['source']['repository'],
-            'branch' => $meta['source']['branch'],
-            'version' => $meta['source']['version'],
-            'commit' => $meta['source']['commit'],
-            'verifiedAt' => $meta['verifiedAt'],
-            // Both numbers were known and never contrasted. They travel
-            // together now, in every answer that carries the pin at all.
-            'installedVersion' => Instance::typo3Version(),
-            'skew' => $componentsDerived || CatalogMeta::skew() === '' ? null : CatalogMeta::skew(),
-        ];
-    }
-
-    /**
-     * The answer for a question only the installation could have answered, when
-     * it could not be asked.
-     *
-     * Kept in one place because the distinction it draws is the same every
-     * time: an empty result and an unanswerable question look identical, and
-     * only one of them means the thing does not exist.
-     *
-     * @param array<string, mixed> $data
-     */
-    private static function consoleUnavailable(string $error, array $data): ToolResult
-    {
-        $diagnosis = Typo3Cli::diagnose($error);
-        if ($diagnosis === '' && Typo3Cli::caveat() !== '') {
-            $diagnosis = 'What is known about this console: ' . Typo3Cli::caveat() . '.';
-        }
-
-        return ToolResult::create(
-            sprintf(
-                "The installation could not be asked, so this is unanswered rather than empty: %s.\n%s"
-                . 'typo3_server_scope reports the installation and its console.',
-                $error,
-                $diagnosis === '' ? '' : $diagnosis . "\n",
-            ),
-            $data + [
-                'answeredBy' => 'nothing',
-                // The reason travels with the answer, not only in the text
-                // beside it: a client that renders structuredContent alone
-                // would otherwise see an empty result and nothing else, which
-                // is exactly what a registry that really is empty looks like.
-                'unavailable' => [
-                    'reason' => $error,
-                    'diagnosis' => $diagnosis,
-                    'settings' => [
-                        'root' => Instance::ROOT_VARIABLE,
-                        'console' => Typo3Cli::CONSOLE_VARIABLE,
-                    ],
-                ],
-            ],
-        );
     }
 
     /**
@@ -3063,7 +2466,7 @@ final class Tools
         }
 
         if (!Instance::isAvailable()) {
-            return self::consoleUnavailable(
+            return Unanswered::because(
                 'no TYPO3 installation was found from the directory this server was started in',
                 ['query' => $query, 'matchCount' => 0, 'suggestionCount' => 0, 'exactMatch' => false, 'icons' => []],
             );
@@ -3267,7 +2670,7 @@ final class Tools
             // files cannot say is what the container did with them.
             $declared = InstalledFluidNamespaces::all();
             if ($declared === []) {
-                return self::consoleUnavailable($answer['error'], ['namespaces' => [], 'matchCount' => 0]);
+                return Unanswered::because($answer['error'], ['namespaces' => [], 'matchCount' => 0]);
             }
             $answeredBy = 'packages';
         }
@@ -3329,7 +2732,7 @@ final class Tools
             // found stays null rather than false: false is a statement about
             // the installation — "it has no value at that path" — and nothing
             // was consulted to make it.
-            return self::consoleUnavailable($answer['error'], ['path' => $path, 'found' => null, 'value' => null]);
+            return Unanswered::because($answer['error'], ['path' => $path, 'found' => null, 'value' => null]);
         }
 
         return ToolResult::create(
@@ -3358,7 +2761,7 @@ final class Tools
 
         $result = Typo3Cli::run(['debug:backend:modules', '--csv-export']);
         if (!$result['ok']) {
-            return self::consoleUnavailable(
+            return Unanswered::because(
                 $result['error'] !== '' ? $result['error'] : trim($result['output']),
                 ['query' => $query, 'matchCount' => 0, 'modules' => []],
             );
@@ -3492,7 +2895,7 @@ final class Tools
             // beats none, as long as it says which one it is.
             $candidates = InstalledLabels::all($extension);
             if ($candidates === []) {
-                return self::consoleUnavailable(
+                return Unanswered::because(
                     $answer['error'],
                     [
                         'query' => $query,
@@ -3552,7 +2955,7 @@ final class Tools
             $lines = [sprintf(
                 'No label in %s %s. This is an answer about your installation rather than about TYPO3 in general.',
                 $resource !== '' ? $resource : ($instance['root'] ?? 'the installation'),
-                count($terms) > 1 ? 'carries all of ' . self::quotedTerms($terms) : sprintf('matches "%s"', $query)
+                count($terms) > 1 ? 'carries all of ' . LabelSearch::quoted($terms) : sprintf('matches "%s"', $query)
             )];
 
             $reached = array_values(array_filter($termCounts, static fn(array $t): bool => $t['matchCount'] > 0));
@@ -3598,14 +3001,6 @@ final class Tools
             'terms' => $termCounts,
             'answeredBy' => $answeredBy,
         ]);
-    }
-
-    /**
-     * @param array<int, string> $terms
-     */
-    private static function quotedTerms(array $terms): string
-    {
-        return implode(', ', array_map(static fn(string $term): string => '"' . $term . '"', $terms));
     }
 
     /**

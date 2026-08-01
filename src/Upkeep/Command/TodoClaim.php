@@ -46,6 +46,17 @@ use Typo3CmsMcp\Upkeep\Todo;
 )]
 final class TodoClaim
 {
+    /**
+     * Where this machine says how a session is started on it.
+     *
+     * Ignored by git, because it is a property of the machine rather than of
+     * the repository — the same reason `.checkouts/` is. What it holds is one
+     * command line, run once per worktree: that worktree is its working
+     * directory, the message arrives on standard input, and `TODO_SESSION_ID`
+     * is in its environment.
+     */
+    public const LAUNCH = '.session-command';
+
     public function __invoke(
         OutputInterface $output,
         #[Argument('how many sessions are going to work at once')]
@@ -113,9 +124,10 @@ final class TodoClaim
             return 1;
         }
         $standing = self::worktrees($output, $root, $claims);
-        if ($standing !== []) {
+        $byHand = self::start($output, $root, $standing);
+        if ($byHand !== []) {
             $output->writeln('');
-            $output->writeln(self::handover($root, $standing));
+            $output->writeln(self::handover($root, $byHand));
         }
 
         return count($standing) === count($claims) ? 0 : 1;
@@ -254,6 +266,114 @@ final class TodoClaim
     }
 
     /**
+     * The sessions themselves, where this machine has said how one is started.
+     *
+     * The fourth step, and it is here for the reason the other three are: a
+     * claim, the commit carrying it and a worktree apiece already happen in one
+     * move, and the launch is what was left over for somebody to carry out by
+     * reading. It broke the way the left-over step always breaks — the run of
+     * 2026-08-02 started every session in the directory that was already open,
+     * and the claims sat untouched while three worktrees stood there.
+     *
+     * What the client is called is not this repository's business, and
+     * `documentation/driving-a-session.md` says so: clients differ in what the
+     * flags are named, not in what has to be true. So the command line is the
+     * machine's, in an ignored file, and the three things a person gets wrong
+     * are this command's — the working directory, the message, and a session id
+     * per session. Where the file is absent nothing is started and the handover
+     * prints as it always did, so a checkout that never configures one loses
+     * nothing.
+     *
+     * Started detached rather than waited on. `Checkouts::run` captures and
+     * waits, which is right for the git it was named for and wrong for three
+     * agent sessions: waiting serialises them and holds the terminal for as
+     * long as the work takes. Each gets a log instead, named here, because a
+     * launch that fails does it in the client rather than in the shell.
+     *
+     * @param array<int, string> $standing
+     *
+     * @return array<int, string> the worktrees nothing was started for
+     */
+    private static function start(OutputInterface $output, string $root, array $standing): array
+    {
+        $file = $root . '/' . self::LAUNCH;
+        $command = is_file($file) ? trim((string) file_get_contents($file)) : '';
+        if ($standing === [] || $command === '') {
+            return $standing;
+        }
+
+        $logs = $root . '/.worktrees/.sessions';
+        if (!is_dir($logs) && !mkdir($logs, 0o777, true)) {
+            Cli::errors($output)->writeln($logs . ' could not be made, so no session has anywhere to report.');
+
+            return $standing;
+        }
+
+        $output->writeln('');
+        $byHand = [];
+        foreach ($standing as $directory) {
+            $name = basename($directory);
+            $message = $logs . '/' . $name . '.message';
+            $log = $logs . '/' . $name . '.log';
+            if (file_put_contents($message, Todo::BRIEFING . "\n") === false) {
+                Cli::errors($output)->writeln($name . ' has no message to be sent, so it was not started.');
+                $byHand[] = $directory;
+                continue;
+            }
+
+            $started = proc_open(
+                ['sh', '-c', sprintf('%s < %s > %s 2>&1 &', $command, escapeshellarg($message), escapeshellarg($log))],
+                [],
+                $pipes,
+                $root . '/' . $directory,
+                array_merge(getenv(), ['TODO_SESSION_ID' => self::identifier()]),
+            );
+            if (!is_resource($started) || proc_close($started) !== 0) {
+                Cli::errors($output)->writeln($name . ' was not started, and this is the command that did not run: ' . $command);
+                $byHand[] = $directory;
+                continue;
+            }
+
+            $output->writeln(sprintf('    %s is working, and reports into %s', $name, $log));
+        }
+
+        if ($byHand === []) {
+            $output->writeln('');
+            $output->writeln(sprintf(
+                "Started from %s, one session per worktree, each in its own directory and each\n"
+                . 'sent the same message. How the branches come home: %s.',
+                self::LAUNCH,
+                Todo::PARALLEL,
+            ));
+        }
+
+        return $byHand;
+    }
+
+    /**
+     * A session id per session, so a transcript can be found afterwards.
+     *
+     * The flag it is passed by belongs to the client, so it is handed over as
+     * `TODO_SESSION_ID` in the environment and the launch command names it. One
+     * per session and never one per claim: three sessions sharing an id are
+     * three transcripts nobody can tell apart.
+     */
+    private static function identifier(): string
+    {
+        $bytes = random_bytes(16);
+        $bytes[6] = chr(ord($bytes[6]) & 0x0F | 0x40);
+        $bytes[8] = chr(ord($bytes[8]) & 0x3F | 0x80);
+
+        return vsprintf('%s-%s-%s-%s-%s', array_map('bin2hex', [
+            substr($bytes, 0, 4),
+            substr($bytes, 4, 2),
+            substr($bytes, 6, 2),
+            substr($bytes, 8, 2),
+            substr($bytes, 10, 6),
+        ]));
+    }
+
+    /**
      * What is left for the caller: where each session is started, and what
      * every one of them is sent.
      *
@@ -288,6 +408,12 @@ final class TodoClaim
             . 'whose is read out of the worktree it stands in.';
         $lines[] = '';
         $lines[] = self::indent(Todo::BRIEFING);
+        $lines[] = '';
+        $lines[] = sprintf(
+            "Put the command line that starts a session on this machine into %s and this step\n"
+            . 'stops being yours: the next claim runs it per worktree.',
+            self::LAUNCH,
+        );
         $lines[] = '';
         $lines[] = sprintf(
             "What a session started from a command line has to be given: %s.\n"

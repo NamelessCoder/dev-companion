@@ -24,6 +24,14 @@ be true of the launch.
   thinking hard, and *When a run stops without an error* in
   [evidence/forward-runs.md](evidence/forward-runs.md) is read off that stream.
 
+**Where the sessions work a claim each, that launch is declared once rather than
+typed each time.** `.session-command` at the root of the checkout holds the
+command line this machine starts a session with, and `bin/cli todo:claim` runs
+it per worktree: the worktree is the working directory, the message arrives on
+standard input, and `TODO_SESSION_ID` is in the environment. The three things
+above that a command can supply are supplied, and the flags they are passed by
+stay the client's — which is why the file is the machine's and gitignored.
+
 Approving the tool calls without asking is the point of a session nobody is
 watching. Switching the permission layer off altogether is not the way to reach
 it: a client may refuse the launch outright, and a session that never started is

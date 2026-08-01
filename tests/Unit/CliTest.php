@@ -113,6 +113,11 @@ final class CliTest extends TestCase
             (string) preg_replace('/^ {4}/m', '', $handover),
             'the message the sessions are sent is not in what the caller is handed',
         );
+        self::assertStringContainsString(
+            TodoClaim::LAUNCH,
+            $handover,
+            'nothing says the step can stop being the caller\'s, so it stays the caller\'s forever',
+        );
     }
 
     /**

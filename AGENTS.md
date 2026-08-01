@@ -93,6 +93,15 @@ waits is not a worse outcome than one done on a guess. What comes back goes into
 `todo/` or `decisions/`, because an answer that lives only in the conversation
 ends with it.
 
+Nor in whatever the agent can remember on its own. A client that offers a
+private memory across sessions is not a place this repository keeps anything:
+what was established goes into `todo/`, `requirements/`, `decisions/` or
+`documentation/`, where the next session reads it and a wrong line can be
+corrected. A note only one agent can see is read by nobody else, drifts as the
+checkout moves under it, and is believed anyway because it arrives sounding
+settled — the failure this server exists to answer, turned on the repository
+itself.
+
 Keeping [todo/](todo/readme.md) current is part of the work, not a step after
 it. A session that ends with the queue matching what is actually true has handed
 over correctly, whatever else it did.

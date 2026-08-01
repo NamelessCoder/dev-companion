@@ -324,6 +324,61 @@ final class TodoTest extends TestCase
     }
 
     /**
+     * A worktree standing on no claim is the setup that went wrong, and the
+     * only thing that can say so is that it is a worktree at all.
+     *
+     * `claimed()` answers null for it and null for the main checkout on `main`,
+     * and one of those is every session this repository had before there were
+     * two. So `bin/cli todo:next` refuses in the first case and hands over the
+     * queue in the second, and this is the question it tells them apart by.
+     *
+     * It creates a real worktree because the plumbing under the answer is the
+     * part that can be wrong: `--path-format=absolute` is not in every git, and
+     * where it is missing both calls fail, the answer is false, and the refusal
+     * quietly never happens again. Comparing the two directories by hand here
+     * would test this test.
+     *
+     * The name carries the process id so that suites running in several
+     * worktrees at once — which is the whole arrangement this holds up — do not
+     * collide on one branch.
+     */
+    #[Test]
+    public function aWorktreeIsToldApartFromTheCheckoutItWasCutFrom(): void
+    {
+        $name = self::MARKER . '-' . getmypid();
+        $path = sys_get_temp_dir() . '/' . $name;
+        $branch = 'tmp/' . $name;
+
+        [$exitCode, $said] = Checkouts::git(['git', '-C', Paths::root(), 'worktree', 'add', $path, '-b', $branch]);
+        self::assertSame(0, $exitCode, 'the worktree this case is about could not be made: ' . $said);
+
+        try {
+            self::assertTrue(Todo::linked($path), 'a worktree is read as the checkout it was cut from');
+            self::assertSame($branch, Todo::standing($path));
+            self::assertFalse(
+                Todo::linked($this->checkout()),
+                'the checkout every worktree is cut from is read as one of them',
+            );
+        } finally {
+            Checkouts::git(['git', '-C', Paths::root(), 'worktree', 'remove', '--force', $path]);
+            Checkouts::git(['git', '-C', Paths::root(), 'branch', '-D', $branch]);
+        }
+    }
+
+    /**
+     * The checkout the worktrees hang off, asked for the one way that does not
+     * go through what the case above is holding: `git worktree list` names it
+     * first, whichever of them is asking.
+     */
+    private function checkout(): string
+    {
+        [, $listed] = Checkouts::git(['git', '-C', Paths::root(), 'worktree', 'list', '--porcelain']);
+        $first = strtok($listed, "\n");
+
+        return substr((string) $first, strlen('worktree '));
+    }
+
+    /**
      * The order is in the names, which is what lets a session finish a todo by
      * deleting one file and move one by renaming it. Two files claiming one
      * number leave the order to whatever the file system answers with.

@@ -9,6 +9,7 @@ use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\StringInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Console\Output\OutputInterface;
+use Typo3CmsMcp\Upkeep\Cli;
 use Typo3CmsMcp\Upkeep\Todo;
 
 /**
@@ -67,6 +68,16 @@ final class TodoNext
             return self::present($output, $claim, self::perform($application, $claim['run'])[0]);
         }
 
+        // A worktree exists because somebody took a todo on, so one standing on
+        // no claim is a setup that went wrong rather than a session with
+        // nothing to do. Everything below this line would answer it with real
+        // work that belongs to somebody else, and the check above cannot tell
+        // the two apart: a worktree on the wrong branch and the main checkout
+        // on `main` are both on no claim.
+        if (Todo::linked()) {
+            return self::astray($output);
+        }
+
         foreach (Todo::appointments() as $todo) {
             if (!Todo::due($todo['every'], $todo['checked'])) {
                 continue;
@@ -108,6 +119,43 @@ final class TodoNext
         }
 
         return 0;
+    }
+
+    /**
+     * A worktree that is on no claim, told what is wrong instead of handed
+     * work.
+     *
+     * Both causes leave the same trace, which is why they are named together:
+     * the branch is not the one the claim was taken for, or the claim was not
+     * on `main` when the worktree was cut from it and this checkout therefore
+     * has no file that could match. Neither is visible from inside the session,
+     * and the second one is the ordering the page warns about, seen from the
+     * far end.
+     *
+     * It refuses rather than falling through to the queue, and that is the
+     * whole point of the case. Handing over the front of the queue here would
+     * be right in every way a session can check — a real todo, correctly read,
+     * commit rights on a branch of its own — and wrong in the only way that
+     * matters, which is that somebody else is already writing it.
+     */
+    private static function astray(OutputInterface $output): int
+    {
+        $branch = Todo::standing();
+        Cli::errors($output)->writeln(sprintf(
+            "This is a worktree, so it was made for a claim, and it is standing on none:\n"
+            . "nothing in `todo/progress/` names %s.\n"
+            . "\n"
+            . "Either it is not the branch the claim was taken for — `bin/cli todo:list` prints\n"
+            . "each claim with its own — or the claim had not been committed to `main` when this\n"
+            . "worktree was cut from it, and no file here can say otherwise.\n"
+            . "\n"
+            . "The queue is not the answer either way. What is at the front of it is work the\n"
+            . 'session that took it on is already doing: %s.',
+            $branch === '' ? 'the branch it is on' : '`' . $branch . '`',
+            Todo::PARALLEL,
+        ));
+
+        return 1;
     }
 
     /**

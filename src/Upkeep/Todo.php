@@ -297,18 +297,64 @@ final class Todo
      */
     public static function claimed(): ?array
     {
-        [$exitCode, $branch] = Checkouts::git(['git', '-C', Paths::root(), 'rev-parse', '--abbrev-ref', 'HEAD']);
-        if ($exitCode !== 0) {
+        $branch = self::standing();
+        if ($branch === '') {
             return null;
         }
 
         foreach (self::progress() as $todo) {
-            if ($todo['branch'] === trim($branch)) {
+            if ($todo['branch'] === $branch) {
                 return $todo;
             }
         }
 
         return null;
+    }
+
+    /**
+     * The branch this checkout is standing on, or the empty string where git
+     * cannot say.
+     *
+     * A detached head answers with `HEAD`, which is no branch and matches no
+     * claim — the same as not knowing, and it needs no case of its own.
+     *
+     * The root is a parameter so that a test can ask about a checkout other
+     * than the one it is running in. Nothing else passes it: a session asks
+     * about where it stands, and where it stands is where this file is.
+     */
+    public static function standing(?string $root = null): string
+    {
+        [$exitCode, $branch] = Checkouts::git(['git', '-C', $root ?? Paths::root(), 'rev-parse', '--abbrev-ref', 'HEAD']);
+
+        return $exitCode === 0 ? trim($branch) : '';
+    }
+
+    /**
+     * Whether this checkout is a worktree of another one rather than the
+     * checkout itself.
+     *
+     * It is the one question that tells a session set up for a claim apart
+     * from one that was always going to read the queue, and it cannot be asked
+     * of the branch: a worktree on the wrong branch and the main checkout on
+     * `main` both stand on no claim, and only one of them is a mistake.
+     *
+     * git answers it with two directories. A linked worktree keeps its own
+     * under the checkout they share, so `--git-dir` is that one and
+     * `--git-common-dir` the shared one; in the checkout itself they are the
+     * same directory. Both are asked for as absolute paths, because git answers
+     * the shared one relatively often enough that comparing what it prints
+     * would call every main checkout a worktree.
+     */
+    public static function linked(?string $root = null): bool
+    {
+        $root ??= Paths::root();
+        [$own, $ownDir] = Checkouts::git(['git', '-C', $root, 'rev-parse', '--absolute-git-dir']);
+        [$shared, $sharedDir] = Checkouts::git(['git', '-C', $root, 'rev-parse', '--path-format=absolute', '--git-common-dir']);
+        if ($own !== 0 || $shared !== 0) {
+            return false;
+        }
+
+        return rtrim(trim($ownDir), '/') !== rtrim(trim($sharedDir), '/');
     }
 
     /**

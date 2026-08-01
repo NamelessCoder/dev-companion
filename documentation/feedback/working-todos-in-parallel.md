@@ -34,7 +34,10 @@ will be worked on and today's date. From then on `bin/cli todo:next` offers
 them to nobody: the fourth session is handed the item behind them.
 
 Commit that before anything else. A claim that is not on `main` is a claim
-nobody can read, and the next `todo:claim` hands out the same todos again.
+nobody can read, the next `todo:claim` hands out the same todos again, and the
+worktree — cut from `main` after it — carries no file saying what it was made
+for. `bin/cli todo:next` refuses there rather than reading the queue, which is
+how the last of those is found in the first minute instead of the third hour.
 
 What it prints besides the branches is an overlap: two claims answering for one
 entry. Nothing here knows which files a step will touch, so it is a warning to
@@ -86,7 +89,9 @@ Start the way every session in this repository starts:
 
     bin/cli todo:next
 
-That hands you one todo — your claim, not the front of the queue. Work it by
+That hands you one todo — your claim, not the front of the queue. In a worktree
+it hands over nothing else: where it names a todo, that todo is yours, and where
+the setup is wrong it says so instead of reading the queue. Work it by
 documentation/feedback/working-a-todo.md, which the command names itself. What
 parallel work adds is in documentation/feedback/working-todos-in-parallel.md.
 The three rules everything hangs on:
@@ -110,12 +115,22 @@ from one session, they share a file system and nothing else keeps them in the
 worktree — and a session that works the main checkout by mistake produces a diff
 that looks exactly right.
 
+What the prompt cannot make the session check is which todo is its own. Every
+line above is answered against what the session was told, and a path it was
+handed is one it has no reason to doubt: a worktree on a branch the claim never
+named — or one cut from a `main` that did not carry the claim yet — passes each
+of them and then reads the queue, where it finds real work that belongs to
+somebody else. That half is answered where it can be, by the repository rather
+than the prompt. `bin/cli todo:next` asks git whether it is standing in a
+worktree, and a worktree standing on no claim is refused instead of served.
+
 ## What the session does with it
 
     bin/cli todo:next
 
 The same command as always, and in a worktree standing on a claim it hands over
-that claim. Nothing about the session is special: it reads what the todo serves,
+that claim — standing on none, it says so and stops. Nothing else about the
+session is special: it reads what the todo serves,
 settles what the step turns on, and leaves the file true — all of
 [working-a-todo.md](working-a-todo.md), which the command names as usual.
 

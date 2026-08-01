@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Typo3CmsMcp\Tests\Unit;
 
 use PHPUnit\Framework\Attributes\After;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Typo3CmsMcp\Installation\Instance;
@@ -318,6 +319,56 @@ final class VersionsTest extends TestCase
         // Unreadable is not a pin either: a constraint nothing here can read is a
         // constraint nobody can say the engine major from.
         self::assertSame([], $spans('dev-main'));
+    }
+
+    /**
+     * The range spellings three extension checkouts actually declare a TYPO3
+     * major with, and the majors each one serves.
+     *
+     * `D-VER-4` reads a supported range off the package's own declaration, and
+     * it is wrong if a spelling in the wild answers false for a major it does
+     * serve — a failure that surfaces as a statement missing from an answer
+     * rather than as an error, so nothing but a table like this one would catch
+     * it. Read on 2026-08-02 out of the three checkouts that play `E-EXT`,
+     * their root manifests and every `typo3/cms-*` requirement in the vendor
+     * trees they installed: `bk2k/syntax`, `bk2k/bootstrap-package` and
+     * `georgringer/news`. Every expectation below is composer/semver's own
+     * answer for that spelling, not a reading of it.
+     *
+     * Asked over majors rather than over the covered ones, because which majors
+     * a spelling serves is a property of the spelling: a version this knowledge
+     * base stops covering must not quietly rewrite the table.
+     *
+     * @return iterable<string, array{string, array<int, int>}>
+     */
+    public static function rangeSpellingsFromTheWild(): iterable
+    {
+        yield 'a caret per major, in both current checkouts' => ['^13.4 || ^14.3', [13, 14]];
+        yield 'a caret per major, pinned to the patch that fixed something' => ['^12.4.37 || ^13.4.15', [12, 13]];
+        yield 'a release that also takes the next major from its branch' => ['^13.4 || ^14.0 || 14.*.*@dev', [13, 14]];
+        yield 'four majors, as a compatibility extension declares them' => ['^11.5 || ^12.4 || ^13.4 || ^14.0', [11, 12, 13, 14]];
+        yield 'branch wildcards alone, as typo3/testing-framework writes them' => ['13.*.*@dev || 14.*.*@dev', [13, 14]];
+        yield 'the same, one major behind' => ['12.*.*@dev || 13.*.*@dev', [12, 13]];
+        yield 'an exact version, as the core packages require each other' => ['14.3.0', [14]];
+        yield 'an exact version on the older line' => ['13.4.33', [13]];
+        // Not read off a typo3/cms-core requirement but off the php one beside
+        // it, in georgringer/news: `>= 8.1 < 8.5`. Composer takes the space and
+        // this did not, so the same author spelling a core range that way would
+        // have been answered for the installed major alone.
+        yield 'an operator with a space after it, the way that manifest writes php' => ['>= 12.4.37 < 14', [12, 13]];
+    }
+
+    /** @param array<int, int> $majors */
+    #[Test]
+    #[DataProvider('rangeSpellingsFromTheWild')]
+    public function aSpellingFromTheWildAnswersForEveryMajorItServes(string $constraint, array $majors): void
+    {
+        $answered = array_values(array_filter(
+            range(10, 16),
+            static fn(int $major): bool => Versions::admits($constraint, $major),
+        ));
+
+        self::assertSame($majors, $answered, $constraint);
     }
 
     #[Test]

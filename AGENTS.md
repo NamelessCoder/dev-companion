@@ -68,59 +68,35 @@ does is declared beside the code that does it, never in `bin/`.
     bin/cli next
 
 That is the whole of it, and it prints **one todo** — the first that is due,
-whole, with its own command already run. Not the queue, not the backlog, not the
-five paragraphs of why that one is in front. `bin/cli todo list` is the
-overview, for whoever wants it.
-
-What is due comes in three groups: a todo measured in days, when its day has
-come; then the queue, in the order the queue has; then, only once the queue is
-empty, what recurs every session — sighting the feedback and the backlog. Sighting
-is what puts entries *into* the queue, so a queue that still has entries is a
-queue of work already judged, and the sighting hands over five at a time
-rather than the directory.
+whole, with its own command already run. `bin/cli todo list` is the overview,
+for whoever wants it.
 
 The todo it prints is a claim, not an instruction: one session's belief about
 where to start, written before the work it describes and by somebody who has
-left. So it is read against what the repository does today — what its `Serves:`
-line names, and the code and the test as they are now — and where that reading
-says the step is done, impossible or two steps, the file is corrected before the
-work rather than after it.
+left. So it is read against what the repository does today, and where that
+reading says the step is done, impossible or two steps, the file is corrected
+before the work rather than after it.
 
-A question the step turns on is **settled**, never recalled. The core checkouts
-are the source for what TYPO3 does, the official documentation and this server's
-own lookups after them, and a tool this repository does not own is read in its
-own documentation. What cannot be established here is a result and is recorded
-as one — the todo trimmed to what is still open, the requirement `not guarded`,
-the decision saying what evidence would settle it. What none of those can absorb
-is a guess written with the confidence of a reading, because nothing afterwards
-can tell the two apart.
+A question the step turns on is **settled**, never recalled. What cannot be
+established here is a result and is recorded as one — the todo trimmed to what
+is still open, the requirement `not guarded`, the decision saying what evidence
+would settle it. What none of those can absorb is a guess written with the
+confidence of a reading, because nothing afterwards can tell the two apart.
 
 What has no source here is **asked**, before the change rather than in the
-commit that presents it. Which of two shapes is wanted, whether a step is worth
-its cost, what an ambiguous paragraph meant — the repository answers none of
-them and the person who queued the todo answers all three in a sentence. Ask
-with the reading done: the options, what each costs, and a recommendation —
-putting the todo back among them, because they may have no answer either and a
-todo that waits is not a worse outcome than one done on a guess. One put back
-carries the open question in its own paragraph and goes to the **end of the
-queue**: `next` hands over the first item and knows nothing about blocked ones,
-so a todo left where it was blocks every session behind it. What comes back goes
-into `todo.md` or `decisions/` — the answer, or the question and what the
-reading already established — because an answer that lives only in the
-conversation ends with it, and so does a deferral nobody wrote down:
+commit that presents it. Ask with the reading done — the options, what each
+costs, a recommendation — and put the todo back among them, because a todo that
+waits is not a worse outcome than one done on a guess. What comes back goes into
+`todo.md` or `decisions/`, because an answer that lives only in the conversation
+ends with it.
+
+Keeping [todo.md](todo.md) current is part of the work, not a step after it. A
+session that ends with the file matching what is actually true has handed over
+correctly, whatever else it did.
+
+What is read before the first change, how a question is settled, what is asked
+and what the file says afterwards:
 [documentation/feedback/working-a-todo.md](documentation/feedback/working-a-todo.md).
-
-Keeping [todo.md](todo.md) current is part of the work, not a step after it. The
-commit that finishes a todo **deletes** it; one that turns out to be half done is
-trimmed to the part that is left; a change of order is written down before the
-work starts; and new work found along the way is added as a todo that names what
-it serves. A session that ends with the file matching what is actually true has
-handed over correctly, whatever else it did.
-
-What `next` can never do is run a feedback's own query against the server as it is
-now. A feedback is evidence about a version of this server that may no longer exist,
-and that reading is the session's.
-
 How `next` decides what is due, and how the work moves between `feedback/`,
 `requirements/`, `decisions/` and `todo.md`:
 [documentation/feedback/readme.md](documentation/feedback/readme.md).
@@ -284,15 +260,11 @@ stale without taking a case with it.
   this server, which is evidence nothing else here holds.
 - What outlives it is split three ways: `requirements/` for what must be true
   from now on and what holds it there, `decisions/` for what a change rested on
-  and what would show it wrong, `todo.md` for the order of the work. Add the
-  requirement in the commit that works the feedback off; name its test in the
-  commit that writes that test.
+  and what would show it wrong, `todo.md` for the order of the work.
 - Three states mean unfinished — a requirement marked **open**, one held by
   `not guarded`, a decision still `standing` whose **Wrong if** nobody has been
-  back to. All three are legitimate, so no check may fail on them.
-  `bin/cli backlog list` is what reads them out instead, and what a session owes
-  anything on it is a judgement: an item in `todo.md`, or the sentence in
-  `decisions/` that says why not.
+  back to. All three are legitimate, so no check may fail on them, and
+  `bin/cli backlog list` reads them out instead.
 
 How each of those is carried out — the debrief that gets a feedback out of a
 session this repository cannot read, judging one, what each of the three files

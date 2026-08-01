@@ -31,15 +31,10 @@ is not that; "bind the statements in `php.json` against `.checkouts/12.4` and
 session that reads three of them to find where to start is reading instead of
 working.
 
-- A finished todo is deleted, not ticked. What it established is already in
-  `requirements/`, and the commit is the record that it happened.
-- One that turns out to be half done is trimmed to the part that is left.
-- The order is the order. When something jumps the queue, it moves up here
-  first, so the reason is written down before the work starts.
-- The queue comes before the sightings. Judging a feedback or a backlog entry
-  is what puts something *into* the queue, so a queue that still has entries is
-  a queue of things already judged — sighting more of them instead is deciding
-  twice and doing nothing. The sightings run when it is empty.
+That is the form. What is due and in which order:
+[documentation/feedback/readme.md](documentation/feedback/readme.md). What a
+finished, a half done or a put back todo leaves here:
+[documentation/feedback/working-a-todo.md](documentation/feedback/working-a-todo.md).
 
 ---
 

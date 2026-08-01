@@ -84,9 +84,7 @@ open is not. Where it cannot be settled here — it needs an installation, a run
 in another environment, a version nothing has checked out — that is a result and
 it is recorded as one: the todo is trimmed to the part that is still open, the
 requirement says `not guarded`, the decision says what the evidence would have
-to be. All three are legitimate states this repository already carries. A guess
-written with the confidence of a reading is the one outcome none of them can
-absorb, because nothing afterwards can tell it apart from the reading.
+to be. All three are legitimate states this repository already carries.
 
 ## What has no source here is asked
 
@@ -104,32 +102,26 @@ session that picks one reading silently has not saved anybody the question: it
 has moved it to after the work, where the answer costs a rewrite instead of a
 sentence. The same holds for a step that turns out to be two, an option the todo
 did not consider, and a conflict between what the todo says and what the code
-shows — all three are decisions somebody else already has an opinion about.
+shows.
 
 What is asked is the decision, not the work. Say what was read and what it
 showed, name the two or three options with what each one costs, recommend one
-and say why. "What do you want here?" hands the reading back; a session that has
-done the reading and cannot get past a choice is the only thing worth
-interrupting for.
+and say why. "What do you want here?" hands the reading back.
 
 **Putting the todo back is one of the answers**, and it is offered rather than
-waited for. The person asked may not have the answer either — it needs somebody
-who is not there, a decision that has not been taken, an installation nobody has
-today — and that is not a smaller outcome than doing the work.
+waited for. The person asked may not have the answer either, and that is not a
+smaller outcome than doing the work.
 
-A todo that is put back goes to the **end of the queue**, not one place down and
-not wherever it seems to belong. `bin/cli next` hands over the first queued item
-and has no notion of a todo being blocked, so one left where it was is handed to
-the next session, and to the one after that, until somebody moves it — it does
-not sit out of the way, it holds up everything behind it. Going last is also its
-own timer: it comes round again as the queue drains, without anybody having to
-choose when to ask a second time.
+A todo that is put back goes to the **end of the queue**. `bin/cli next` hands
+over the first queued item and has no notion of a todo being blocked, so one
+left where it was is handed to every session behind it until somebody moves it.
+Going last is also its own timer: it comes round again as the queue drains.
 
 It keeps its section, and the session's job is to leave it startable cold: the
 open question written into its paragraph in the words it was asked in, and what
-the reading already established, so the next session begins where this one
-stopped. A question asked once and answered nowhere costs one session; one
-re-derived from scratch every time the todo surfaces costs every session.
+the reading already established. A question asked once and answered nowhere
+costs one session; one re-derived every time the todo surfaces costs every
+session.
 
 What comes back is written into the file it belongs in — `todo.md` when it
 changes the order, the step or what the todo is waiting on, `decisions/` when it

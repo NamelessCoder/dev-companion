@@ -8,11 +8,9 @@ each one is for and how the work moves between them.
 
     bin/cli next
 
-That is the whole of it, and it prints **one todo** — the first that is due,
-whole, with its own command already run. Not the queue, not the backlog, not the
-five paragraphs of why that one is in front. Context is not free: a session
+One todo, not the queue and not the backlog. Context is not free: a session
 handed all of it reads for ten minutes and then starts by summarising what it
-read. `bin/cli todo list` is the overview, for whoever wants it.
+read.
 
 Due is two questions. Has the clock come round, which the todo's `**Every:**`
 answers — `session`, or a number of days, so five sessions in an afternoon do
@@ -65,24 +63,14 @@ todo it hands over.
 
 ## Keeping todo.md current
 
-Part of the work, not a step after it:
-
-- The commit that finishes a todo **deletes that todo**, the way the commit that
-  works a feedback off archives the feedback. What it established is in `requirements/`
-  by then, and the commit is the record that it happened.
-- A todo that turns out to be half done is trimmed to the part that is left,
-  with the next concrete step rewritten. One nobody can start from is worse than
-  no todo.
-- One paragraph, one step. Two steps are two todos, in the order they are in —
-  a paragraph is printed whole, and a session that has to read three of them to
-  find where to start is reading instead of working.
 - A change of order is written down **before** the work starts, so the reason
   exists in the file rather than in a session that has ended.
 - New work found along the way is added as a todo that names what it serves. If
   it serves nothing yet, it is an idea and belongs in the feedback that had it.
 
-A session that ends with the file matching what is actually true has handed over
-correctly, whatever else it did.
+What the commit that finishes, trims or puts back a todo leaves in the file is
+the last section of [working-a-todo.md](working-a-todo.md); how a section is
+written is the head of [todo.md](../../todo.md) itself.
 
 ## Asking a session to file its own feedback
 
@@ -144,26 +132,17 @@ recorded; the feedback is, and `typo3_feedback_list` is where it is read back.
 
 ## Working a feedback off
 
-A feedback is worked off in a commit that both implements the improvement **and
-archives the feedback**:
-
     bin/cli feedback archive feedback/2026-07-31-…-the-lookup-found-nothing.md
 
-That moves it to `feedback/archive/` and stamps it `closed`, so `feedback/` only
-ever holds open items — a feedback that is still there has not been addressed yet.
-The commit that moved it is the record of what came of it, and it is read back:
-`typo3_feedback_list` with `status="closed"` lists the archived feedback with the
-commit subject that closed each one, which is what the agent that reported it
-can see. Write the subject so it answers "what came of my feedback".
+That moves it to `feedback/archive/` and stamps it `closed`. The commit that
+moved it is read back: `typo3_feedback_list` with `status="closed"` lists the
+archived feedback with the commit subject that closed each one, which is what
+the agent that reported it can see. Write the subject so it answers "what came
+of my feedback".
 
-- One feedback per commit where possible. When one change closes several feedback,
-  archive all of them in that commit — one call, since they are one commit — and
-  mention them in the commit body.
-- Never mark a feedback as done by editing its `status:` front matter. Where the
-  feedback stands is what says whether it was answered; the front matter is stamped
-  by the move, not instead of it.
-- Do not archive a feedback that was only partially addressed. Instead, trim the feedback
-  down to the part that is still open and explain the remaining gap.
+One feedback per commit where possible. When one change closes several, archive
+all of them in that commit — one call, since they are one commit — and mention
+them in the commit body.
 
 ## Why the archive is kept
 
@@ -218,11 +197,10 @@ records the answer. What outlives both is split three ways:
 
 ## What nothing fails on
 
-Three states mean unfinished: a requirement marked **open**, one held by
-`not guarded`, and a decision still `standing` whose **Wrong if** nobody has been
-back to. All three are legitimate — a principle no test can hold and a decision
-nothing has come back about are not defects — so no check may fail on them,
-which is exactly why nothing read them for as long as they existed.
+The three states that mean unfinished are legitimate — a principle no test can
+hold and a decision nothing has come back about are not defects — so no check
+may fail on them, which is exactly why nothing read them for as long as they
+existed.
 
 `bin/cli backlog list` is that reading; `bin/cli next` opens with it and
 `bin/cli check` closes with it. It names every requirement nothing answers for,

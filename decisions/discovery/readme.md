@@ -10,7 +10,7 @@ one is added.
 - [`D-DIS-6`][D-DIS-6] — The protocol offers nothing to replace the working directory · 2026-08-01 · standing
 - [`D-DIS-5`][D-DIS-5] — A registry with no console command is read by booting the installation · 2026-07-31 · standing
 - [`D-DIS-1`][D-DIS-1] — The root package counts as an installed package · 2026-07-29 · standing
-- [`D-DIS-2`][D-DIS-2] — Discovery honours the declared vendor-dir and bin-dir · 2026-07-29 · standing
+- [`D-DIS-2`][D-DIS-2] — Discovery honours the declared vendor-dir and bin-dir · 2026-07-29 · tested
 - [`D-DIS-3`][D-DIS-3] — A label query is words, and the console is asked with a regex · 2026-07-29 · standing
 - [`D-DIS-4`][D-DIS-4] — The version comes from the core package, not from the console · 2026-07-29 · standing
 

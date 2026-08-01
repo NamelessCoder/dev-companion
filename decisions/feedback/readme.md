@@ -12,7 +12,7 @@ The requirements of the same name are in
 earns one.
 
 - [`D-FBK-10`][D-FBK-10] — `main` carries the state and the branch carries the work · 2026-08-01 · standing
-- [`D-FBK-5`][D-FBK-5] — The queue is worked before the pile is sighted · 2026-08-01 · standing
+- [`D-FBK-5`][D-FBK-5] — The queue is worked before the pile is sighted · 2026-08-01 · corrected
 - [`D-FBK-6`][D-FBK-6] — A name is cut where the feedback starts to differ · 2026-08-01 · standing
 - [`D-FBK-7`][D-FBK-7] — How a todo is worked travels with the todo · 2026-08-01 · standing
 - [`D-FBK-8`][D-FBK-8] — One todo is one file, and the queue is in the names · 2026-08-01 · standing

@@ -1,7 +1,7 @@
 ---
 id: D-FBK-5
 date: 2026-08-01
-status: standing
+status: corrected
 ---
 
 # D-FBK-5 — The queue is worked before the pile is sighted
@@ -48,3 +48,19 @@ outside it.
   cadence in days like every other appointment. Or the five come round but the
   judgements are not read by anybody, in which case the portion was cut for a
   reader who does not exist and the number can be whatever a session can carry.
+- **Corrected on 2026-08-02:** the portion is one, not five. The order this
+  entry is mostly about — appointments, then the queue, then the sightings — is
+  untouched and is what the evidence above bought; what was wrong is the number
+  beside it. Five was cut for a reader: somebody who did not make the
+  judgements should be able to read them together and disagree before the
+  commit. That reader was being asked to find them in a commit, which is the one
+  place a judgement is not searchable, and the second **Wrong if** named exactly
+  this outcome. What replaces the portion is where the judgement is written
+  rather than how many are made at once: the decision it was judged against is
+  updated, and where the judgement establishes something no entry says yet, a
+  new one is created. So the reading survives the run instead of being a window
+  onto five files, and `bin/cli feedback:next` hands over the oldest unjudged
+  one and exits nonzero while any remain. What this gives up is the run that
+  sees two feedback at once — one correcting three earlier ones, or the same gap
+  reported by several sessions — and `decisions/` is where that has to become
+  visible now.

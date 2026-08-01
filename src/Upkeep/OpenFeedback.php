@@ -18,17 +18,6 @@ use Typo3CmsMcp\Feedback\Channel;
  */
 final class OpenFeedback
 {
-    /**
-     * How many feedback one session is handed. The number is small for two
-     * reasons, and neither is the size of the directory: five queries can be
-     * re-run in a session that also has work of its own, and five judgements
-     * can be read by whoever disagrees with one before the commit is made. A
-     * listing of fifty-six is neither — it is a session that reads for ten
-     * minutes, closes what is easiest, and leaves nobody able to say whether
-     * the choice was right.
-     */
-    public const CHUNK = 5;
-
     /** Every feedback there is: the size of the directory is what this is about. */
     private const ALL = PHP_INT_MAX;
 

@@ -1,12 +1,5 @@
 # Judging a feedback
 
-> **Draft.** The ladder and the six answers below are what a judgement does
-> today. What is still open is how much is judged at a time and what carries the
-> relationship between feedback: this page was written for one feedback per run
-> with a journal, while `bin/cli feedback:next` hands over five and nothing
-> records an answer but the commit. The todo that says so is in
-> [todo/](../../todo/readme.md).
-
 A feedback is a session's report about this server, left by an agent working
 somewhere else. What it is *not* is a work item: it names what went wrong from
 where that session stood, and what to do about it is a judgement nobody has
@@ -218,6 +211,25 @@ Step 5. The feedback is recorded against the decision it bears on, and the
 question goes up. What comes back is either a decision that stands with the cost
 now written into it, or one that is revised — and both are answers the feedback
 earned.
+
+## One at a time, and where the answer is written
+
+`bin/cli feedback:next` hands over the oldest feedback no todo has judged, one
+of them, and exits nonzero while any remain. So a run is one judgement, and the
+loop ends when nothing is unjudged rather than after a fixed number.
+
+What that costs is the run that saw several at once: a feedback correcting three
+earlier ones, or the same gap reported by four sessions, is a relationship no
+single judgement can state. `decisions/` is what carries it. A judgement made
+against an entry is written into that entry, and where it establishes something
+no entry says yet, a new one is created — so what a run decided is readable
+where decisions already are, rather than in the commit that made it, which is
+the one place nobody can search. There is no journal beside the archive: a
+second list of the same judgements is a second thing to keep true.
+
+A **skip** is the exception and stays out of both. It lasts one pass, is written
+down nowhere, and is not a state a feedback can be left in — a feedback that
+deserves a state gets one of the six answers.
 
 ## What a todo may not repeat
 

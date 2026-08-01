@@ -16,14 +16,17 @@ use Typo3CmsMcp\Upkeep\OpenFeedback;
  * feedback's own query against the server as it is now. A feedback is evidence
  * about a version of this server that may no longer exist.
  *
- * Handed over a few at a time rather than all of it. The directory holds what
- * every session everywhere reported, and it grows on its own; the reading a
- * session owes it does not grow with it, or it stops being a reading and
- * becomes a backlog nobody starts.
+ * One at a time rather than all of it, and rather than a handful. The directory
+ * holds what every session everywhere reported and it grows on its own; the
+ * reading a session owes it does not grow with it, or it stops being a reading
+ * and becomes a backlog nobody starts. What a portion of several bought was
+ * that the judgements could be read together by somebody who did not make them,
+ * and that is now what `decisions/` carries — the entry a judgement was made
+ * against is updated, or a new one is written where nothing says it yet.
  */
 #[AsCommand(
     name: 'feedback:next',
-    description: 'the ' . OpenFeedback::CHUNK . ' oldest feedback no todo has judged',
+    description: 'the oldest feedback no todo has judged',
 )]
 final class FeedbackNext
 {
@@ -40,9 +43,9 @@ final class FeedbackNext
      * fortnight while fresher ones kept arriving in front of it is what
      * oldest-first is for.
      *
-     * Each is printed with its category, the model that left it and its own
-     * first line, because the judgement is what is being reviewed, and a
-     * filename alone cannot be disagreed with.
+     * It is printed with its category, the model that left it and its own first
+     * line, because the judgement is what is being reviewed, and a filename
+     * alone cannot be disagreed with.
      */
     public function __invoke(OutputInterface $output): int
     {
@@ -53,13 +56,11 @@ final class FeedbackNext
             return 0;
         }
 
-        $chunk = array_slice($unjudged, 0, OpenFeedback::CHUNK);
-        $output->writeln(sprintf('%d unjudged. These %d, oldest first:', count($unjudged), count($chunk)));
-        foreach ($chunk as $feedback) {
-            $output->writeln(sprintf("%s\n    %s · %s · %s", $feedback['file'], $feedback['category'], $feedback['model'], $feedback['title']));
-        }
-        if (count($unjudged) > count($chunk)) {
-            $output->writeln(sprintf('%d wait behind them — `bin/cli feedback:list`.', count($unjudged) - count($chunk)));
+        $feedback = $unjudged[0];
+        $output->writeln(sprintf('%d unjudged. The oldest:', count($unjudged)));
+        $output->writeln(sprintf("%s\n    %s · %s · %s", $feedback['file'], $feedback['category'], $feedback['model'], $feedback['title']));
+        if (count($unjudged) > 1) {
+            $output->writeln(sprintf('%d wait behind it — `bin/cli feedback:list`.', count($unjudged) - 1));
         }
 
         return 1;

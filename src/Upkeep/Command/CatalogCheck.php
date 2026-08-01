@@ -8,6 +8,7 @@ use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Output\OutputInterface;
 use Typo3CmsMcp\Knowledge\Catalog\DemoMarkup;
 use Typo3CmsMcp\Knowledge\Versions;
+use Typo3CmsMcp\Tool\TranslationDomainLookup;
 use Typo3CmsMcp\Upkeep\Catalogs;
 use Typo3CmsMcp\Upkeep\Checkouts;
 use Typo3CmsMcp\Upkeep\Cli;
@@ -19,14 +20,15 @@ use Typo3CmsMcp\Upkeep\TestingFramework;
  * the curated search index and fallback, while an active installation supplies
  * the primary component contract at lookup time.
  *
- * It also reads the two things outside `knowledge/catalog/` that a release can
+ * It also reads the three things outside `knowledge/catalog/` that a release can
  * invalidate silently and that the checkouts answer: which Fluid engine each
- * branch pins itself to, and whether the testing-framework release each branch
- * pins still says what the hints about it state.
+ * branch pins itself to, whether the testing-framework release each branch pins
+ * still says what the hints about it state, and the major translation domains
+ * arrived in, which is the one version fact the code carries.
  */
 #[AsCommand(
     name: 'catalog:check',
-    description: 'the versions each entry holds on, the markup it was read off, the shipped system extensions, the worked examples, the Fluid engine each branch pins, and the testing-framework release it pins, against .checkouts/',
+    description: 'the versions each entry holds on, the markup it was read off, the shipped system extensions, the worked examples, the Fluid engine each branch pins, the testing-framework release it pins, and the major translation domains arrived in, against .checkouts/',
 )]
 final class CatalogCheck
 {
@@ -85,7 +87,69 @@ final class CatalogCheck
             self::verifyReferences($output, $checkouts, Catalogs::read('references')),
             self::verifyFluidEngine($output, $checkouts),
             self::verifyTestingFramework($output, $checkouts),
+            self::verifyTranslationDomains($output, $checkouts),
         );
+    }
+
+    /**
+     * Whether the major the translation domain answer is withheld below is still
+     * the major the checkouts say the API arrived in.
+     *
+     * This is D-DIS-4's first "Wrong if" and the reason the number is one number
+     * in one place: the domain API backported into a 13.x patch makes the
+     * constant in `Tools` wrong. What makes it wrong is a release rather than an
+     * edit here, so no test in this repository can see it — `knowledge/` holds
+     * the covered versions but not this fact, and `VersionsTest` can only tie
+     * the constant to that list. The checkouts hold the fact, so it is read
+     * where the other release-driven facts are.
+     *
+     * The class carrying the rules has been both TranslationDomainMapper and
+     * TranslationDomainResolver, so the branch is asked for either rather than
+     * for the name one branch happens to use. The reading is printed whether or
+     * not it fails, because this is where that number is looked up.
+     */
+    private static function verifyTranslationDomains(OutputInterface $output, string $checkouts): int
+    {
+        $output->writeln('Translation domains');
+        $resolves = [];
+        foreach (Versions::covered() as $version) {
+            $directory = $checkouts . '/' . $version['branch'] . '/typo3/sysext/core/Classes/Localization';
+            if (!is_dir($directory)) {
+                Cli::errors($output)->writeln(sprintf('No checkout for TYPO3 v%d below %s — run bin/cli checkouts:update.', $version['major'], $checkouts));
+
+                return 2;
+            }
+
+            $classes = array_map('basename', glob($directory . '/TranslationDomain*.php') ?: []);
+            $resolves[$version['major']] = $classes !== [];
+            $output->writeln(sprintf(
+                '  %-5s %s',
+                $version['branch'],
+                $classes === [] ? 'no TranslationDomain* class' : implode(', ', $classes),
+            ));
+        }
+
+        $found = self::derivedSince($resolves);
+        $output->writeln(sprintf(
+            '  withheld below v%d, resolved %s',
+            TranslationDomainLookup::SINCE,
+            $found === null ? 'on every covered version' : 'from v' . $found,
+        ));
+        $output->writeln('');
+
+        if ($found === TranslationDomainLookup::SINCE) {
+            $output->writeln('Translation domains still arrive where TranslationDomainLookup withholds them.');
+
+            return 0;
+        }
+
+        $output->writeln(sprintf(
+            'TranslationDomainLookup::SINCE says v%d and the checkouts say %s — D-DIS-4 named this the release that makes it wrong.',
+            TranslationDomainLookup::SINCE,
+            $found === null ? 'every covered version resolves them' : 'v' . $found,
+        ));
+
+        return 1;
     }
 
     /**

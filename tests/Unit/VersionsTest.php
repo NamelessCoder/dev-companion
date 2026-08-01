@@ -13,6 +13,7 @@ use Typo3CmsMcp\Knowledge\TaskIntents;
 use Typo3CmsMcp\Knowledge\Versions;
 use Typo3CmsMcp\Tests\Support\TemporaryInstallation;
 use Typo3CmsMcp\Tool\Registry;
+use Typo3CmsMcp\Tool\TranslationDomainLookup;
 
 /**
  * Which TYPO3 an answer is for, and what that leaves out.
@@ -44,6 +45,66 @@ final class VersionsTest extends TestCase
         foreach ($covered as $version) {
             self::assertNotSame('', $version['branch'], 'a covered version names the branch it is verified against');
         }
+    }
+
+    #[Test]
+    public function theOneVersionFactTheCodeCarriesIsOneOfTheDeclaredVersions(): void
+    {
+        // D-DIS-4 puts the version translation domains arrived in into the code
+        // rather than the knowledge base, because the answer below it is
+        // withheld rather than qualified — and it is one number in one place so
+        // that a backport has one thing to make wrong. That number and
+        // knowledge/versions.json are declared apart and can drift apart: a
+        // covers list that stops carrying a major below SINCE leaves the
+        // withholding branch answering for versions this base no longer covers,
+        // and every behavioural test still passes because each names its own
+        // version string. So the number is read against the declared list here,
+        // and the two versions the behaviour is pinned at are derived from that
+        // list rather than written down a second time.
+        $majors = Versions::majors();
+
+        self::assertContains(
+            TranslationDomainLookup::SINCE,
+            $majors,
+            'the version domains are withheld below is not one knowledge/versions.json declares',
+        );
+
+        $below = array_values(array_filter($majors, static fn(int $major): bool => $major < TranslationDomainLookup::SINCE));
+        self::assertNotSame(
+            [],
+            $below,
+            'no covered major is below it, so the answer it withholds is one nothing can ask for',
+        );
+
+        // And what the number means, at the two covered majors it divides.
+        $ask = function (int $major): array {
+            Instance::discoverFrom($this->composerProject('vendor', $this->versionOn($major)));
+
+            return Registry::call('typo3_translation_domain_lookup', [
+                'path' => 'EXT:my_ext/Resources/Private/Language/locallang_db.xlf',
+            ])->data;
+        };
+
+        $newest = $ask((int) max($below));
+        self::assertNull($newest['domain'], 'the newest covered major below SINCE still has domains withheld');
+        self::assertSame('my_ext.db', $newest['domainOnNewerVersions']);
+
+        self::assertSame(
+            'my_ext.db',
+            $ask(TranslationDomainLookup::SINCE)['domain'],
+            'and the major SINCE names is answered with the domain',
+        );
+    }
+
+    /**
+     * A version string on a covered major, from the branch that major is
+     * verified against — so `main` becomes a number rather than a branch name.
+     */
+    private function versionOn(int $major): string
+    {
+        $branch = (string) Versions::branch($major);
+
+        return preg_match('/^\d+\.\d+$/', $branch) === 1 ? $branch . '.0' : $major . '.0.0';
     }
 
     #[Test]

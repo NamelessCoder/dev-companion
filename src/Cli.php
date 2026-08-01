@@ -159,19 +159,36 @@ final class Cli
      * five paragraphs of why a todo is where it is starts by summarising them.
      * `bin/cli todo list` is where the overview lives, for whoever wants it.
      *
-     * The one printed is the first that is actually due, which is two
-     * questions. Has the clock come round — cheap, and answered by the cadence.
-     * And is there anything to do — expensive, and answered by running the
-     * todo's own `Run:` command: a command this repository owns exits nonzero
-     * when it found work, so the notes stop being the next thing the moment the
-     * last one is closed, without anybody editing todo.md to say so. A command
-     * it does not own is named rather than run; `next` starts no process that
-     * needs the network, and the cadence is what keeps it from being asked
-     * twice in an afternoon.
+     * Whether a todo is due is two questions. Has the clock come round — cheap,
+     * and answered by the cadence. And is there anything to do — expensive, and
+     * answered by running the todo's own `Run:` command: a command this
+     * repository owns exits nonzero when it found work, so the notes stop being
+     * the next thing the moment the last one is judged, without anybody editing
+     * todo.md to say so. A command it does not own is named rather than run;
+     * `next` starts no process that needs the network, and the cadence is what
+     * keeps it from being asked twice in an afternoon.
+     *
+     * Three groups, in this order, because for a while the first of them ate
+     * the other two. A sighting that recurs every session is due for as long as
+     * anything is unjudged, and the notes arrive faster than a session closes
+     * them — so every session started by sighting, the queue was never reached,
+     * and items sat in it for as long as feedback/ was not empty. What it means
+     * to take something on is that it is now ahead of the deciding whether to:
+     *
+     * - What has a clock has an appointment. A cadence in days is a date that
+     *   comes round, and missing it is missing the day, not losing a place in
+     *   an order.
+     * - Then the queue, in the order the queue has. It is work somebody has
+     *   already judged to be worth doing, which is exactly what a sighting
+     *   produces — so leaving it standing to sight more is deciding twice and
+     *   doing nothing.
+     * - Then, with the queue empty, what recurs every session: the notes and
+     *   the backlog, whose whole output is new entries for the queue that just
+     *   ran dry.
      */
     private static function next(): int
     {
-        foreach (Todo::recurring() as $todo) {
+        foreach (Todo::appointments() as $todo) {
             if (!Todo::due($todo['every'], $todo['checked'])) {
                 continue;
             }
@@ -182,14 +199,21 @@ final class Cli
         }
 
         $items = Todo::items();
-        if ($items === []) {
-            print "Nothing is due and nothing is queued. What is waiting is in `bin/cli backlog list`,\n"
-                . "and taking one on is a todo in todo.md.\n";
-
-            return 0;
+        if ($items !== []) {
+            return self::present($items[0], self::perform($items[0]['run'])[0], count($items) - 1);
         }
 
-        return self::present($items[0], self::perform($items[0]['run'])[0], count($items) - 1);
+        foreach (Todo::sightings() as $todo) {
+            [$output, $working] = self::perform($todo['run']);
+            if ($working) {
+                return self::present($todo, $output);
+            }
+        }
+
+        print "Nothing is due and nothing is queued. What is waiting is in `bin/cli backlog list`,\n"
+            . "and taking one on is a todo in todo.md.\n";
+
+        return 0;
     }
 
     /**

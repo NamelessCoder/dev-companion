@@ -24,6 +24,31 @@ backlog entry is that judgement — a todo that takes it on, or the sentence
 saying why it stays as it is — not the work itself, which is what the queue is
 for.
 
+## Why the queue comes first
+
+For a while it did not, and the effect is worth writing down. A todo that
+recurs every session is due for as long as anything is unjudged, `next` asked
+the recurring ones first, and notes arrive from every session everywhere while
+one session closes a handful. So every session opened on the same sighting, the
+queue behind it was never reached, and entries sat in it untouched for as long
+as `feedback/` was not empty — which is always.
+
+The order is now: what has a clock, then the queue, then the sightings once the
+queue is empty. It follows from what a judgement is. Judging a note is deciding
+whether it becomes work; the queue is the work that decision produced. Leaving
+it standing in order to judge more notes is deciding twice and doing nothing,
+and the pile it decides over grows faster than any session can read it.
+
+The second half of the same problem is the size of the reading.
+`bin/cli feedback next` hands over **five** notes, oldest first, with each
+one's category, the model that left it and its own first line — not the
+directory. Five queries can be re-run in a session that also has work of its
+own, and five judgements can be read by somebody who disagrees with one before
+the commit is made. Fifty-six can be neither: a session handed all of them
+closes whatever is easiest and leaves nobody able to say whether that was
+right. `bin/cli feedback list` is still the whole of it, for whoever wants the
+overview.
+
 What `next` can never do is run a note's own query against the server as it is
 now. A note is evidence about a version of this server that may no longer exist,
 and that reading is the session's.

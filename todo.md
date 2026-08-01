@@ -13,7 +13,7 @@ them read from. Every section opens with a head of labelled lines:
 | Line | What it says |
 | --- | --- |
 | `**Serves:** <ids>` | what this answers for — a requirement, a note, a scenario, a directory. Without it, it is an idea rather than a todo, and ideas go in the note that had them. |
-| `**Every:** session` or `**Every:** 7 days` | it recurs and is never deleted. Without it, the section is the queue, and the queue is an order. |
+| `**Every:** session` or `**Every:** 7 days` | it recurs and is never deleted. Without it, the section is the queue, and the queue is an order. A cadence in days is an appointment and comes before the queue; `session` is a sighting and comes after it, when the queue is empty. |
 | `**Checked:** <date>` | when a todo measured in days last ran. The session that runs it writes the date. |
 | `**Run:** <command>` | where the step starts. `bin/cli next` runs the ones this repository owns and names the rest. |
 | `**Not an item.**` | neither — something a session would otherwise rediscover and mistake for work. |
@@ -30,22 +30,29 @@ working.
 - One that turns out to be half done is trimmed to the part that is left.
 - The order is the order. When something jumps the queue, it moves up here
   first, so the reason is written down before the work starts.
+- The queue comes before the sightings. Judging a note or a backlog entry is
+  what puts something *into* the queue, so a queue that still has entries is a
+  queue of things already judged — sighting more of them instead is deciding
+  twice and doing nothing. The sightings run when it is empty.
 
 ---
 
-## Run every open note's query against the server as it is now
+## Run the next five open notes' queries against the server as it is now
 
 **Serves:** feedback/
 **Every:** session
-**Run:** bin/cli feedback list
+**Run:** bin/cli feedback next
 
-Take the notes nothing names yet, one at a time: run the query that produced it
-against the server as it is now, then close it, trim it to the half that is
-still open, or add the todo below that takes it on — and if it changes the
-order, move the queue before starting. A note is evidence about a version of
-this server that may no longer exist, which is why it is re-run rather than
-read. The ones a todo already names have had that judgement and are listed for
-context only.
+Take the five notes the listing hands over and no more: run the query that
+produced each against the server as it is now, then give it one of three
+answers — close it, trim it to the half that is still open, or add the todo
+below that takes it on, and if that changes the order, move the queue before
+starting. A note is evidence about a version of this server that may no longer
+exist, which is why it is re-run rather than read. Say which of the three each
+note got and what the re-run showed, so somebody who disagrees with one can say
+so: five judgements can be read, and the fifty behind them are what the chunk
+exists for. This comes round only when the queue is empty, because a note that
+became a todo has already been judged and doing it is what is owed next.
 
 ---
 

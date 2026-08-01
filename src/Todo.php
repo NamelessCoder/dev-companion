@@ -50,7 +50,7 @@ final class Todo
      * has to name each: none and the command silently stops doing half its job,
      * two and it does it twice.
      */
-    public const READINGS = ['bin/cli feedback list', 'bin/cli backlog list'];
+    public const READINGS = ['bin/cli feedback next', 'bin/cli backlog list'];
 
     /**
      * Whether the clock has come round for a recurring todo. Nothing here
@@ -102,6 +102,35 @@ final class Todo
             self::sections(),
             static fn(array $s): bool => $s['kind'] === 'todo' && $s['every'] !== '',
         ));
+    }
+
+    /**
+     * What recurs on a clock: an appointment, whose day either has come or has
+     * not, and which is therefore asked before the queue. Missing it is missing
+     * the day, not losing a place in an order.
+     *
+     * @return array<int, array{title: string, kind: string, every: string, checked: string, serves: array<int, string>, run: array<int, string>, head: string, strays: array<int, string>, body: string}>
+     */
+    public static function appointments(): array
+    {
+        return array_values(array_filter(self::recurring(), static fn(array $s): bool => $s['every'] !== 'session'));
+    }
+
+    /**
+     * What recurs every session: sighting what arrived from outside — the notes
+     * and the backlog — and deciding what of it becomes work.
+     *
+     * Asked last, once the queue is empty, because that decision is what puts
+     * entries into the queue. While the queue still has any, sighting more is
+     * deciding twice and doing nothing, and it is the group that would win
+     * every session forever if it were asked first: notes arrive from every
+     * session everywhere, and one session judges a handful.
+     *
+     * @return array<int, array{title: string, kind: string, every: string, checked: string, serves: array<int, string>, run: array<int, string>, head: string, strays: array<int, string>, body: string}>
+     */
+    public static function sightings(): array
+    {
+        return array_values(array_filter(self::recurring(), static fn(array $s): bool => $s['every'] === 'session'));
     }
 
     /**

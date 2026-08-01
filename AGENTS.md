@@ -52,6 +52,13 @@ whole, with its own command already run. Not the queue, not the backlog, not the
 five paragraphs of why that one is in front. `bin/cli todo list` is the
 overview, for whoever wants it.
 
+What is due comes in three groups: a todo measured in days, when its day has
+come; then the queue, in the order the queue has; then, only once the queue is
+empty, what recurs every session — sighting the notes and the backlog. Sighting
+is what puts entries *into* the queue, so a queue that still has entries is a
+queue of work already judged, and the sighting hands over five notes at a time
+rather than the directory.
+
 Keeping [todo.md](todo.md) current is part of the work, not a step after it. The
 commit that finishes a todo **deletes** it; one that turns out to be half done is
 trimmed to the part that is left; a change of order is written down before the

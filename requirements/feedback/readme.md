@@ -15,3 +15,4 @@ when it is added.
 | [`R-FBK-4`](fbk-4-only-an-open-prompt-produces-forward-evidence.md) | Only an open prompt produces forward evidence | held |
 | [`R-FBK-5`](fbk-5-a-note-is-attributed-to-the-model-that-left-it.md) | A note is attributed to the model that left it | held |
 | [`R-FBK-6`](fbk-6-a-recorded-note-is-reported-where-it-actually-is.md) | A recorded note is reported where it actually is | held |
+| [`R-FBK-7`](fbk-7-the-work-already-judged-comes-before-judging-more.md) | The work already judged comes before judging more | held |

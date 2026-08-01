@@ -1,7 +1,7 @@
 ---
 id: D-FBK-3
 date: 2026-07-31
-status: standing
+status: corrected
 ---
 
 # D-FBK-3 — A session is handed one todo, not the file
@@ -52,3 +52,15 @@ behind the paragraph explaining why the order is what it is.
   state nobody can finish. Or the todos grow back into packages, because
   splitting them is a habit and nothing checks it: the paragraph is prose by
   design, and no check can tell one step from three.
+- **Corrected on 2026-08-01:** the second **Wrong if** happened, in the form the
+  first **Assumed** described. A recurring todo blocked the queue — not for a
+  session or two but for every session there was, and the notes it sighted were
+  what nobody could finish: 56 open, 55 of them named by no todo, against a
+  queue of 38 items that `next` never reached. The threshold was right and the
+  order was wrong. Judging a note is what puts an item *into* the queue, so
+  asking the sighting first means deciding twice and doing nothing, and the
+  directory it decides over grows from every session everywhere while one
+  session judges a handful. `next` now asks in three groups — what has a clock,
+  then the queue, then the sightings once the queue is empty — and the sighting
+  hands over five notes rather than the directory, because five judgements are
+  the number somebody can disagree with before the commit is made.

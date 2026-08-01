@@ -160,6 +160,13 @@ final class Versions
             return true;
         }
 
+        // Composer takes a space between an operator and its version, and a
+        // package in the wild writes it that way — `georgringer/news` requires
+        // php `>= 8.1 < 8.5`. Splitting on whitespace first would read that as
+        // four comparators, none of them a version, and the constraint would
+        // answer for no major at all.
+        $alternative = (string) preg_replace('/(>=|<=|>|<|=|\^|~)\s+/', '$1', $alternative);
+
         $comparators = preg_split('/[\s,]+/', $alternative) ?: [];
         foreach ($comparators as $comparator) {
             if (!self::comparatorAdmits(trim($comparator), $major)) {

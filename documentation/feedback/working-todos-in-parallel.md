@@ -29,20 +29,25 @@ what makes this possible at all. Each session touches its own file and no other.
 
     bin/cli todo:claim 3
 
-**That command is the whole setup, and what it prints is the rest of it.** Three
-todos come out of the queue into `todo/progress/`, each with the branch it will
-be worked on and today's date; from then on `bin/cli todo:next` offers them to
-nobody, and the fourth session is handed the item behind them. Underneath, the
-commands that make the three worktrees and the message the three sessions are
-started with — so the arrangement is run off one output rather than assembled
-from this page while three terminals wait.
+**That command is the whole setup.** Three todos come out of the queue into
+`todo/progress/`, each with the branch it will be worked on and today's date;
+from then on `bin/cli todo:next` offers them to nobody, and the fourth session
+is handed the item behind them. Then the commit that carries the claims, a
+worktree apiece with its own `composer install`, and the message the three
+sessions are started with. What is left to do is start them.
 
-Commit the claims before anything else. A claim that is not on `main` is a claim
-nobody can read, the next `todo:claim` hands out the same todos again, and the
-worktree — cut from `main` after it — carries no file saying what it was made
-for. `bin/cli todo:next --worktree` refuses there rather than reading the queue,
-which is how the last of those is found in the first minute instead of the third
-hour.
+It carries that out rather than printing it because of the order, not the
+typing. A claim has to be on `main` before the worktree is cut from it, or the
+worktree carries no file saying what it was made for — and that failure surfaces
+in the session, hours later, as a refusal nobody can place. Three steps that
+have to happen in one order are one step.
+
+Where a todo has been worked before, the branch it derives to and the worktree
+named after it are both still there. Neither is refused and neither is reused:
+the claim is given the first free name — `todo/<name>-2`, `.worktrees/<name>-2`
+— and records it, because a worktree that quietly attaches to an old branch is
+the one failure here that looks like success. `**Branch:**` on the claim is what
+says which is which, which is what it was always for.
 
 What it prints besides the branches is an overlap: two claims answering for one
 entry. Nothing here knows which files a step will touch, so it is a warning to
@@ -57,9 +62,10 @@ and the branch is left alone either way.
 
 ## The worktree
 
-One per claim, and `todo:claim` prints the two lines each of them takes. What
-they are is a worktree on the claim's branch, its own `composer install`, and
-`.checkouts/` symlinked in.
+One per claim, made by `todo:claim`: a worktree on the claim's branch, its own
+`composer install`, and `.checkouts/` symlinked in. What it does by hand is here
+because it is what the command is doing, and because a worktree made some other
+way has to do the same.
 
 **Run `composer install` in the worktree. Never symlink `vendor/`.**
 

@@ -58,3 +58,13 @@ its own file in `todo/` and no other, so the claims never conflict.
   being taken two at a time on work that turns out to share a file, in which case
   the overlap warning is reading the wrong signal: it counts entries a todo
   serves, and most of this queue serves a directory.
+
+**Since then** the boundary the fourth **Decided** drew has moved, and only that
+one. `bin/cli todo:claim` now commits the claims onto `main`, cuts a worktree per
+claim, installs in each and prints the message the sessions are started with —
+it carries the arrangement out instead of naming it. What held for as long as
+the rest was done by somebody reading a page stopped holding when it was done by
+a session: three steps that must happen in one order are one step, and the run
+that got the order wrong paid for it hours later, in a worktree, as a refusal
+nobody there could place. The page is still where the merge and the mid-work
+question live, because neither is a step this command could take.

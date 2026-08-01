@@ -86,6 +86,13 @@ final class Todo
     public const PARALLEL = 'documentation/feedback/working-todos-in-parallel.md';
 
     /**
+     * What a session started from a command line has to be given, handed over
+     * with the message that starts one. It is the same launch a forward run
+     * uses, which is why it is not on the page about claims.
+     */
+    public const LAUNCH = 'documentation/driving-a-session.md';
+
+    /**
      * What one of several sessions is started with, and the whole of it.
      *
      * It carries no worktree path, no branch and no todo, which is the point:
@@ -165,6 +172,13 @@ final class Todo
      * finds a stale claim can go and look at the work. Deriving it means the
      * branch can be found from the todo and the todo from the branch.
      *
+     * It is the name the work wants, not necessarily the one it gets. A todo
+     * claimed, released and claimed again derives the same branch as the run
+     * that left one standing, and two pieces of work under one name are worse
+     * than a name that has to be looked up — so the claim is given a free one
+     * and carries it in `**Branch:**`, which is where every reader was already
+     * looking.
+     *
      * @param Section $todo
      */
     public static function branch(array $todo): string
@@ -181,14 +195,16 @@ final class Todo
      * it from — the same reason one in `waiting/` drops its number. What puts
      * it back gives it a new one at the end.
      *
-     * @param Section $todo
+     * @param Section     $todo
+     * @param string|null $branch the free name the work was given, where the
+     *                            derived one was taken by an earlier claim
      *
      * @return string the path it has from now on
      */
-    public static function claim(array $todo, ?string $today = null): string
+    public static function claim(array $todo, ?string $today = null, ?string $branch = null): string
     {
         $to = 'todo/progress/' . preg_replace('/^\d+-/', '', basename($todo['path']));
-        $head = $todo['head'] . "\n**Branch:** " . self::branch($todo)
+        $head = $todo['head'] . "\n**Branch:** " . ($branch ?? self::branch($todo))
             . "\n**Claimed:** " . ($today ?? date('Y-m-d'));
 
         return self::move($todo, $to, $head);

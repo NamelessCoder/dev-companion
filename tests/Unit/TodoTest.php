@@ -216,6 +216,33 @@ final class TodoTest extends TestCase
     }
 
     /**
+     * The branch a claim carries is the one it was given, not the one its name
+     * derives to.
+     *
+     * They are the same claim after claim until a todo is worked twice: one
+     * released and taken on again derives the branch the first session left
+     * standing, and `git worktree add -b` there fails on a name that is already
+     * a piece of half-finished work. So the second claim is given a free name
+     * and the file records it — which is what `claimed()` matches on, so a
+     * session in that worktree is handed its own todo and not nothing.
+     */
+    #[Test]
+    public function aClaimCarriesTheBranchItWasGivenRatherThanTheOneItDerivesTo(): void
+    {
+        $queued = $this->queue();
+
+        Todo::claim($queued, '2026-08-01', Todo::branch($queued) . '-2');
+
+        $inHand = $this->fixture(Todo::progress())[0];
+        self::assertSame('todo/' . self::MARKER . '-2', $inHand['branch']);
+        self::assertNotSame(
+            Todo::branch($queued),
+            $inHand['branch'],
+            'the claim records the derived branch, so a second one would be cut on the first one\'s work',
+        );
+    }
+
+    /**
      * Taking one on and putting it back are one move in two directions, and the
      * second is what keeps the first usable: a session ends where it ends, and
      * a state that can only be entered fills up with claims nobody is working

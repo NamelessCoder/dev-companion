@@ -8,6 +8,8 @@ use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Typo3CmsMcp\Knowledge\ArchitectureHints;
 use Typo3CmsMcp\Knowledge\Documents;
+use Typo3CmsMcp\Knowledge\Scope;
+use Typo3CmsMcp\Knowledge\TaskIntents;
 
 final class KnowledgeTest extends TestCase
 {
@@ -153,5 +155,56 @@ final class KnowledgeTest extends TestCase
         foreach (Documents::topics() as $document) {
             self::assertNotSame([], $document['topics'], $document['id'] . ' reports no topics');
         }
+    }
+
+    /**
+     * `binding` says who an answer obliges, `provenance` says what a covered
+     * topic is worth outside the core, and D-KNW-3 keeps them two fields on one
+     * condition: no value reads naturally on both. What holds them apart is
+     * `installation`, which is not an obligation at all — it says the answer is
+     * read from the installation rather than from a snapshot. A fourth value
+     * that does read on both would mean they were one axis after all, and the
+     * merge is the entry that was right.
+     *
+     * VersionsTest holds `binding` to its one value and ScopeTest holds
+     * `provenance` to its three, each for its own reason. Neither can see the
+     * pair, which is the thing the decision actually turns on, so it is
+     * asserted once here: a session widening either vocabulary fails on this
+     * test and is handed the question — does the new value read on both axes?
+     *
+     * The comparison is on the spelling. `core` and `core-only` are the overlap
+     * D-KNW-3 already looked at and kept, so a normalised form would have
+     * failed on the day it was written; what is exact is that no value is
+     * spelled into both vocabularies, and the pinned sets above are what catch
+     * a fourth arriving under any spelling.
+     */
+    #[Test]
+    public function whoAnAnswerObligesAndWhatItIsWorthStayTwoVocabularies(): void
+    {
+        $binding = [];
+        foreach (ArchitectureHints::load() as $hint) {
+            foreach (array_merge([$hint], $hint['hints']) as $entry) {
+                $binding[] = $entry['binding'] ?? null;
+            }
+        }
+        foreach (TaskIntents::load() as $intent) {
+            $binding[] = $intent['binding'];
+        }
+        $binding = array_values(array_unique(array_filter($binding, static fn(?string $value): bool => $value !== null)));
+        $provenance = array_values(array_unique(array_column(Scope::read()['covers'], 'provenance')));
+        sort($binding);
+        sort($provenance);
+
+        self::assertSame([ArchitectureHints::BINDING_CORE], $binding, 'D-KNW-3: `binding` has grown a value');
+        self::assertSame(
+            ['core-only', 'installation', 'transferable'],
+            $provenance,
+            'D-KNW-3: `provenance` has grown a value',
+        );
+        self::assertSame(
+            [],
+            array_values(array_intersect($binding, $provenance)),
+            'D-KNW-3: a value is spelled on both axes, so they are one axis and the merge is the entry',
+        );
     }
 }

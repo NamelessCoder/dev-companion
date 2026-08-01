@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Typo3CmsMcp\Tool;
 
 use Typo3CmsMcp\Knowledge\Versions;
-use Typo3CmsMcp\Manuals\Documentation;
+use Typo3CmsMcp\Manual\Documentation;
 use Typo3CmsMcp\Result\Schema;
 use Typo3CmsMcp\Result\ToolResult;
 

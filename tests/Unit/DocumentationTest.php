@@ -6,7 +6,7 @@ namespace Typo3CmsMcp\Tests\Unit;
 
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Typo3CmsMcp\Manuals\Documentation;
+use Typo3CmsMcp\Manual\Documentation;
 
 final class DocumentationTest extends TestCase
 {

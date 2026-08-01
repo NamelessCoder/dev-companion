@@ -22,7 +22,7 @@ src/Installation/Instance.php  # finds the TYPO3 installation the agent is worki
 src/Installation/Typo3Cli.php  # runs that installation's console, via DDEV where there is one
 src/Installation/Typo3Runtime.php  # boots it in a subprocess and asks its container
 src/Installation/probe.php  # what runs over there; never included here
-src/Manuals/       # the third source: the public index and pages of the versioned TYPO3 manuals
+src/Manual/        # the third source: the public index and pages of the versioned TYPO3 manuals
 src/Search/        # the lexical matching every prose and label lookup goes through
 src/Feedback/      # the feedback channel: what `typo3_feedback_record` writes and `bin/cli feedback` reads
 src/Sdk/           # the adapters onto mcp/sdk: tool dispatch and typo3://core resources
@@ -54,7 +54,7 @@ vendor/            # Composer dependencies (mcp/sdk); gitignored
 Every class below `src/` sits in the group it belongs to, and a new one that
 fits none of them is a group nobody has named yet rather than a file at the
 root. The three an answer can come from are `Knowledge/`, what this package
-ships; `Installation/`, the TYPO3 the caller is standing in; and `Manuals/`,
+ships; `Installation/`, the TYPO3 the caller is standing in; and `Manual/`,
 which is `docs.typo3.org` and reaches outside this process. `Tool/` is what a
 client can call, `Result/` is what it hands back, `Server/` is how it is started
 at all, and `Upkeep/` is not part of the server. Only `Paths` sits loose,
@@ -110,6 +110,13 @@ outside this checkout can see — a tool name, a directory name, a CLI subject �
 because those are known by clients installed months ago and by paths people
 wrote down, while prose can be rewritten this afternoon. A synonym introduced in
 a paragraph is copied into a schema a week later.
+
+A directory below `src/` is named in the **singular**, for what one of the
+things in it is: `Tool/` holds one tool per class, `Command/` one command,
+`Manual/` one manual. The plural names the directory after its contents, which
+is what the file system already says, and it splits every name in two — a class
+lands in `Commands/` and is referred to as a command all the way down. The
+directories outside `src/` keep the names their callers know them by.
 
 What arrives through `typo3_feedback_record` is **a feedback**, countable, and
 [documentation/glossary.md](documentation/glossary.md) is where that and the

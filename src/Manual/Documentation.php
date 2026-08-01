@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Manuals;
+namespace Typo3CmsMcp\Manual;
 
 use Typo3CmsMcp\Search\TermSearch;
 use Typo3CmsMcp\Server\Factory;

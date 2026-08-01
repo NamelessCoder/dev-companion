@@ -29,15 +29,20 @@ use Typo3CmsMcp\Paths;
  * The number is the todo's place in the queue and nothing else — a move is a
  * rename, a finish is a deletion, and a new todo is a new file no other session
  * is writing. They run in tens so something can be put between two of them.
- * `recurring/` is what comes round and is never deleted. `waiting/` is what no
- * session can start, because it is blocked on an answer this repository cannot
- * produce, and it carries that answer's question in a `**Waiting on:**` line.
- * `reference/` is none of the three and is there so a session does not
- * rediscover it and mistake it for work.
+ * `recurring/` is what comes round and is never deleted. `progress/` is what a
+ * session has in hand: it is offered to nobody else, and it says on which
+ * branch the work is and since when. `waiting/` is what no session can start,
+ * because it is blocked on an answer this repository cannot produce, and it
+ * carries that answer's question in a `**Waiting on:**` line. `reference/` is
+ * none of the four and is there so a session does not rediscover it and mistake
+ * it for work.
  *
  * `Serves:` is what makes a todo work rather than an idea. `Every:` is the
  * cadence of a recurring one, and `Run:` is the command the step starts from,
- * which `bin/cli todo:next` runs where this repository owns it.
+ * which `bin/cli todo:next` runs where this repository owns it. `Branch:` and
+ * `Claimed:` belong to a todo in hand: the first is where the work is, the
+ * second is what tells a claim somebody is working from one nobody came back
+ * to.
  *
  * A cadence is `session` or a number of days, and the days are why the pair
  * exists: five sessions in an afternoon owe the feedback five readings and the
@@ -50,7 +55,7 @@ use Typo3CmsMcp\Paths;
  * instead of working. Two steps are two todos, and the order between them is
  * the order their numbers are in.
  *
- * @phpstan-type Section array{title: string, kind: string, position: string, path: string, every: string, checked: string, waitingOn: string, serves: array<int, string>, run: array<int, string>, head: string, strays: array<int, string>, body: string}
+ * @phpstan-type Section array{title: string, kind: string, position: string, path: string, every: string, checked: string, waitingOn: string, branch: string, claimed: string, serves: array<int, string>, run: array<int, string>, head: string, strays: array<int, string>, body: string}
  */
 final class Todo
 {
@@ -103,13 +108,13 @@ final class Todo
 
     /**
      * Every todo there is: the queue in its order, then what recurs, then what
-     * waits, then what is none of the three.
+     * a session has in hand, then what waits, then what is none of the four.
      *
      * @return array<int, Section>
      */
     public static function all(): array
     {
-        return array_merge(self::items(), self::recurring(), self::waiting(), self::references());
+        return array_merge(self::items(), self::recurring(), self::progress(), self::waiting(), self::references());
     }
 
     /**
@@ -131,6 +136,30 @@ final class Todo
     public static function recurring(): array
     {
         return self::read('recurring', 'recurring');
+    }
+
+    /**
+     * What a session has in hand, and is therefore offered to no other.
+     *
+     * The queue is an order, not an assignment, and `bin/cli todo:next` reads
+     * the same first item for everybody who asks. That is right while one
+     * session works at a time and wrong the moment two do: both are handed the
+     * same todo, and the second finds out by writing a change somebody else has
+     * already written. So taking one on is a move, the way finishing one is a
+     * deletion — the claim is a file in a directory rather than a field nobody
+     * can see from outside the checkout it was set in.
+     *
+     * It carries the two things a claim nobody came back to cannot be told from
+     * a live one without: `**Branch:**`, where the work is, because a claim
+     * whose half-finished diff cannot be found is worth less than no claim; and
+     * `**Claimed:**`, the date, because a state that locks everybody else out
+     * has to be readable as stale.
+     *
+     * @return array<int, Section>
+     */
+    public static function progress(): array
+    {
+        return self::read('progress', 'progress');
     }
 
     /**
@@ -194,18 +223,18 @@ final class Todo
      * Everything the queue answers for, which is what turns an entry in
      * requirements/ or a feedback in feedback/ into work somebody has taken on.
      *
-     * Read from the queue and from what waits, which are the two states of
-     * work somebody has taken on. What is kept in `reference/` names ids too,
-     * and one of those pages is the list of what is deliberately *not* queued —
-     * the opposite of somebody having it in hand. A recurring todo is not a
-     * taking-on either: it is owed every session.
+     * Read from the queue, from what a session has in hand and from what waits,
+     * which are the three states of work somebody has taken on. What is kept in
+     * `reference/` names ids too, and one of those pages is the list of what is
+     * deliberately *not* queued — the opposite of somebody having it in hand. A
+     * recurring todo is not a taking-on either: it is owed every session.
      *
      * @return array<int, string>
      */
     public static function serves(): array
     {
         $served = [];
-        foreach (array_merge(self::items(), self::waiting()) as $item) {
+        foreach (array_merge(self::items(), self::progress(), self::waiting()) as $item) {
             foreach ($item['serves'] as $what) {
                 $served[$what] = true;
             }
@@ -328,6 +357,8 @@ final class Todo
         $every = '';
         $checked = '';
         $waitingOn = '';
+        $branch = '';
+        $claimed = '';
         $serves = [];
         $run = [];
         $strays = [];
@@ -337,6 +368,8 @@ final class Todo
                 'Every' => $every = $value,
                 'Checked' => $checked = $value,
                 'Waiting on' => $waitingOn = $value,
+                'Branch' => $branch = $value,
+                'Claimed' => $claimed = $value,
                 'Run' => $run[] = $value,
                 default => $strays[] = '**' . $label . ':** ' . $value,
             };
@@ -352,6 +385,8 @@ final class Todo
             'every' => $every,
             'checked' => $checked,
             'waitingOn' => $waitingOn,
+            'branch' => $branch,
+            'claimed' => $claimed,
             'serves' => $serves,
             'run' => $run,
             'head' => trim((string) $head),

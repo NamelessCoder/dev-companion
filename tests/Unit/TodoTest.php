@@ -12,6 +12,23 @@ use Typo3CmsMcp\Upkeep\Todo;
 final class TodoTest extends TestCase
 {
     /**
+     * A claim is a file like every other todo, so the one test that can hold
+     * what the state does has to write one. The marker makes a leftover
+     * recognizable, and tearDown removes it.
+     */
+    private const MARKER = 'phpunit-progress-fixture';
+
+    protected function tearDown(): void
+    {
+        foreach (glob(Todo::directory() . '/progress/*.md') ?: [] as $file) {
+            if (str_contains((string) file_get_contents($file), self::MARKER)) {
+                unlink($file);
+            }
+        }
+        @rmdir(Todo::directory() . '/progress');
+    }
+
+    /**
      * A todo is read by a session that has read nothing else, and the files
      * look identical from the outside. Where one sits is what keeps "not
      * queued, and deliberately so" from reading as the next piece of work, and
@@ -26,7 +43,7 @@ final class TodoTest extends TestCase
         foreach ($todos as $todo) {
             self::assertNotSame('', $todo['title'], $todo['path'] . ' opens with no heading');
             self::assertSame([], $todo['strays'], $todo['path'] . ' opens with lines that are no field');
-            self::assertContains($todo['kind'], ['queue', 'recurring', 'waiting', 'reference'], $todo['path']);
+            self::assertContains($todo['kind'], ['queue', 'recurring', 'progress', 'waiting', 'reference'], $todo['path']);
         }
     }
 
@@ -85,7 +102,7 @@ final class TodoTest extends TestCase
     #[Test]
     public function everyTodoAnswersForSomethingThatCanStillBeRead(): void
     {
-        $todos = array_merge(Todo::recurring(), Todo::items(), Todo::waiting());
+        $todos = array_merge(Todo::recurring(), Todo::items(), Todo::progress(), Todo::waiting());
 
         self::assertNotSame([], Todo::items(), 'nothing is queued, which is a state this can be in but not silently');
         foreach ($todos as $todo) {
@@ -121,6 +138,36 @@ final class TodoTest extends TestCase
                 self::assertContains($what, $served, $todo['path'] . ' waits and answers for nothing');
             }
         }
+    }
+
+    /**
+     * The queue is an order, not an assignment: `bin/cli todo:next` reads the
+     * same first item for everybody who asks, which is right while one session
+     * works at a time and wrong the moment two do. What is in hand is out of
+     * the queue, so the second session is handed the item behind it rather than
+     * the same one — and it still answers for what it took on, because a
+     * requirement that fell back onto the backlog while somebody was working on
+     * it is one a second session queues all over again.
+     */
+    #[Test]
+    public function whatIsInHandIsOfferedToNobodyElse(): void
+    {
+        $queued = Todo::items();
+        @mkdir(Todo::directory() . '/progress');
+        file_put_contents(
+            Todo::directory() . '/progress/' . self::MARKER . '.md',
+            "# " . self::MARKER . "\n\n**Serves:** todo/\n**Branch:** todo/" . self::MARKER
+                . "\n**Claimed:** 2026-08-01\n\nThe step this claim was taken for.\n",
+        );
+
+        $inHand = Todo::progress();
+
+        self::assertCount(1, $inHand);
+        self::assertSame('progress', $inHand[0]['kind']);
+        self::assertSame('todo/' . self::MARKER, $inHand[0]['branch']);
+        self::assertSame('2026-08-01', $inHand[0]['claimed']);
+        self::assertSame($queued, Todo::items(), 'a todo in hand is still in the queue somebody else reads');
+        self::assertContains('todo/', Todo::serves(), 'a todo in hand answers for nothing it took on');
     }
 
     /**

@@ -20,7 +20,9 @@ use Typo3CmsMcp\Upkeep\Todo;
  * feedback is the reason it is in the queue, and when it goes the todo is either
  * done or needs trimming to the part that is left. A todo in `waiting/` is held
  * to the one thing it exists to carry — the question it is blocked on, in the
- * words it was asked in — because no session is offered it to ask again.
+ * words it was asked in — because no session is offered it to ask again, and
+ * one in `progress/` to the branch and the date, because a claim nobody can
+ * date is one nobody dares take back.
  */
 #[AsCommand(
     name: 'todo:check',
@@ -72,6 +74,26 @@ final class TodoCheck
                     $problems[] = $where . ' runs `' . $command . '`, which this command cannot do';
                 }
                 $reading[$command][] = $todo['title'];
+            }
+
+            if ($todo['kind'] === 'progress') {
+                // A claim locks everybody else out of one todo, so it owes the
+                // two things that tell it from one nobody came back to: where
+                // the work is, and when it was taken on.
+                if ($todo['branch'] === '') {
+                    $problems[] = $where . ' is in hand and does not say where — `**Branch:**` is where the work is';
+                }
+                if (strtotime($todo['claimed']) === false) {
+                    $problems[] = $where . ' is in hand since '
+                        . ($todo['claimed'] === '' ? 'never — `**Claimed:**` is what dates a claim' : $todo['claimed']);
+                }
+                if ($todo['position'] !== '') {
+                    $problems[] = $where . ' is in hand and keeps a place in the queue, where nothing is coming for it';
+                }
+                continue;
+            }
+            if ($todo['branch'] !== '' || $todo['claimed'] !== '') {
+                $problems[] = $where . ' carries a claim and is not in todo/progress/';
             }
 
             if ($todo['kind'] === 'waiting') {
@@ -130,10 +152,11 @@ final class TodoCheck
             $errors->writeln($problem);
         }
         $output->writeln(sprintf(
-            '%d files, %d recurring, %d queued, %d waiting, %d problems',
+            '%d files, %d recurring, %d queued, %d in hand, %d waiting, %d problems',
             count(Todo::all()),
             count(Todo::recurring()),
             count(Todo::items()),
+            count(Todo::progress()),
             count(Todo::waiting()),
             count($problems),
         ));

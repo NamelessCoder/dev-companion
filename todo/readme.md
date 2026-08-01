@@ -17,12 +17,19 @@ One todo is one file, and where it sits says what it is:
   file, so two sessions can both add work without writing the same file. The
   numbers run in tens, which is what leaves room to put one between two others.
 - **`recurring/`** — what comes round and is never deleted.
+- **`progress/`** — what a session has in hand. The queue is an order, not an
+  assignment, so `bin/cli todo:next` hands the same first item to everybody who
+  asks; where two sessions work at once, taking one on is a move out of the
+  queue, and it is offered to nobody else from then on. It says on which branch
+  the work is and since when, because a claim nobody came back to has to be
+  readable as one. Finishing it is still a deletion, and the answer to a
+  question it carries is what puts it back.
 - **`waiting/`** — what no session can start, because it is blocked on an
   answer nothing here can produce. It says what it waits on, `bin/cli todo:next`
   offers it to nobody, and the answer is what numbers it back into the queue.
   A recurring todo asks every seven days what is in here, so a question waits
   rather than disappears.
-- **`reference/`** — none of the three: what a session would otherwise
+- **`reference/`** — none of the four: what a session would otherwise
   rediscover and mistake for work.
 
 Each file opens with its title, then a head of labelled lines:
@@ -37,9 +44,15 @@ Each file opens with its title, then a head of labelled lines:
   that runs it writes the date.
 - `**Run:** <command>` — where the step starts. `bin/cli todo:next` runs the ones
   this repository owns and names the rest.
-- `**Waiting on:** <the question>` — what a todo in `waiting/` is blocked on,
-  in the words it was asked in, wrapped onto indented lines where it is longer
-  than one. `bin/cli todo:waiting` is what asks it again.
+- `**Waiting on:** <the question>` — what a todo is blocked on, in the words it
+  was asked in, wrapped onto indented lines where it is longer than one.
+  `bin/cli todo:waiting` is what asks it again. In `waiting/` it is the whole of
+  the file; in `progress/` it is a question that arrived mid-work, and the
+  branch is what still holds the half that is done.
+- `**Branch:** <branch>` — where the work on a todo in `progress/` is. A claim
+  whose half-finished diff cannot be found is worth less than no claim.
+- `**Claimed:** <date>` — when it was taken on. A state that locks everybody
+  else out of one todo has to be readable as stale.
 
 Then one paragraph, and one only: the **next concrete step**, in enough detail
 that someone who has read nothing else can start. "Continue with the bindings"

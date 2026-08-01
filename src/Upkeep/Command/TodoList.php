@@ -17,7 +17,7 @@ use Typo3CmsMcp\Upkeep\Todo;
  */
 #[AsCommand(
     name: 'todo:list',
-    description: 'every todo by title: what recurs, the queue in order, and what waits',
+    description: 'every todo by title: what recurs, the queue in order, what is in hand, and what waits',
 )]
 final class TodoList
 {
@@ -38,6 +38,21 @@ final class TodoList
         }
         if ($items === []) {
             $output->writeln('The queue is empty.');
+        }
+
+        // A claim is the one line here that goes stale on its own: the session
+        // holding it may have ended without coming back, and nothing notices.
+        // So it is printed with the date it was taken on, and whoever reads an
+        // old one decides whether the branch is still being worked.
+        foreach (Todo::progress() as $todo) {
+            $output->writeln(sprintf(
+                '%-12s %s — %s since %s%s',
+                'in hand',
+                $todo['title'],
+                $todo['branch'],
+                $todo['claimed'],
+                $todo['waitingOn'] === '' ? '' : ', waiting on ' . $todo['waitingOn'],
+            ));
         }
 
         foreach (Todo::waiting() as $todo) {

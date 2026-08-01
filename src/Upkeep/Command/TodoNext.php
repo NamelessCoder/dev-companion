@@ -82,6 +82,15 @@ final class TodoNext
 
         $output->writeln("Nothing is due and nothing is queued. What is waiting is in `bin/cli backlog:list`,\n"
             . 'and taking one on is a todo in todo/.');
+        // An empty queue with todos in hand is not an empty repository, and the
+        // difference matters here more than anywhere: this is the one branch
+        // that invites a session to go find work of its own.
+        if (Todo::progress() !== []) {
+            $output->writeln(sprintf(
+                '%d todos are in hand elsewhere and are nobody else\'s to start — `bin/cli todo:list`.',
+                count(Todo::progress()),
+            ));
+        }
         if (Todo::waiting() !== []) {
             $output->writeln(sprintf(
                 '%d todos are blocked on an answer nothing here can give — `bin/cli todo:list`.',
@@ -112,6 +121,14 @@ final class TodoNext
         $meta[] = $todo['every'] === '' ? 'queued' : 'every ' . $todo['every'];
         if ($after !== null && $after > 0) {
             $meta[] = $after . ' more after it — `bin/cli todo:list`';
+        }
+        // What somebody else has in hand is named because this command cannot
+        // otherwise be told apart from the one it was before: it hands over the
+        // first queued todo, and a session that does not know it is one of
+        // several reads that as "nothing else is happening".
+        $inHand = count(Todo::progress());
+        if ($inHand > 0) {
+            $meta[] = $inHand . ' in hand elsewhere — `bin/cli todo:list`';
         }
         // What waits is named by a count and nothing else. A blocked todo is
         // addressed to whoever can answer it, and if no output ever mentions

@@ -9,6 +9,7 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Input\StringInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Typo3CmsMcp\Upkeep\Cli;
+use Typo3CmsMcp\Upkeep\Command\TodoClaim;
 use Typo3CmsMcp\Upkeep\Todo;
 
 final class CliTest extends TestCase
@@ -82,6 +83,35 @@ final class CliTest extends TestCase
             'bin/cli todo:next --worktree',
             Todo::BRIEFING,
             'the message names no way for the session to find out which todo is its own',
+        );
+    }
+
+    /**
+     * The other half of that output, held to the same property.
+     *
+     * Taking the blanks out of the message left one above it: *with that
+     * worktree as its working directory* is a property a person satisfies, and
+     * the run of 2026-08-02 satisfied it with the directory that was already
+     * open — the checkout the worktrees are cut from. Every session it started
+     * was refused, correctly, hours of setup later. So each worktree is a line
+     * to run, absolute, and the message says where it starts, because a caller
+     * with nothing to compose composes nothing wrong.
+     */
+    #[Test]
+    public function whereTheSessionsAreStartedIsPrintedRatherThanDescribed(): void
+    {
+        $handover = TodoClaim::handover('/checkout', ['.worktrees/first', '.worktrees/second']);
+
+        self::assertStringContainsString('cd /checkout/.worktrees/first', $handover);
+        self::assertStringContainsString(
+            'cd /checkout/.worktrees/second',
+            $handover,
+            'a session is left to work out its own directory, which is the blank this replaced',
+        );
+        self::assertStringContainsString(
+            Todo::BRIEFING,
+            (string) preg_replace('/^ {4}/m', '', $handover),
+            'the message the sessions are sent is not in what the caller is handed',
         );
     }
 

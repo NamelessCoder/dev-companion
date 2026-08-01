@@ -89,6 +89,15 @@ would be sent. How the session is launched at all — which build, from where,
 with what switched on — is [driving-a-session.md](../driving-a-session.md), and
 it is the same launch a forward run uses.
 
+**Both halves of that output are printed filled in**, and the `cd` lines are
+half of it. Which directory a session is started in was a sentence once — *with
+that worktree as its working directory* — and a property somebody satisfies is a
+blank wearing prose. The run that broke satisfied it with the directory that was
+already open, which is the checkout the worktrees are cut from, and every
+session it started was refused hours of setup later. So the command prints one
+line per worktree, absolute, and says over the message that the rest of the
+output is not part of it.
+
 **Nothing in that message is filled in**, and that is the whole of what it took
 to fix. It was a template with the worktree path and the branch left as blanks,
 and the run that broke sent it as it stood: the session read

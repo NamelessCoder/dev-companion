@@ -113,9 +113,12 @@ final class TodoClaim
             return 1;
         }
         $standing = self::worktrees($output, $root, $claims);
-        self::briefing($output, $standing);
+        if ($standing !== []) {
+            $output->writeln('');
+            $output->writeln(self::handover($root, $standing));
+        }
 
-        return $standing === count($claims) ? 0 : 1;
+        return count($standing) === count($claims) ? 0 : 1;
     }
 
     /**
@@ -216,11 +219,11 @@ final class TodoClaim
      *
      * @param array<int, array{title: string, branch: string, directory: string, ...}> $claims
      *
-     * @return int how many are ready to be worked
+     * @return array<int, string> the directory of each one ready to be worked
      */
-    private static function worktrees(OutputInterface $output, string $root, array $claims): int
+    private static function worktrees(OutputInterface $output, string $root, array $claims): array
     {
-        $standing = 0;
+        $standing = [];
         foreach ($claims as $claim) {
             $path = $root . '/' . $claim['directory'];
             [$cut, $said] = Checkouts::run(['git', '-C', $root, 'worktree', 'add', '--quiet', $claim['directory'], '-b', $claim['branch']]);
@@ -244,41 +247,56 @@ final class TodoClaim
             }
 
             $output->writeln('    ' . $claim['directory']);
-            ++$standing;
+            $standing[] = $claim['directory'];
         }
 
         return $standing;
     }
 
     /**
-     * The message the sessions are started with, printed whole and with no
-     * blank in it — the one thing a caller cannot get wrong by hand.
+     * What is left for the caller: where each session is started, and what
+     * every one of them is sent.
      *
-     * The run this exists because of sent the template as it stood,
-     * `<absolute path to the worktree>` and all, and the session on the other
-     * end could not tell that from what it was supposed to say.
+     * Both halves are printed filled in, and the second is why. The message was
+     * a template once, `<absolute path to the worktree>` and all, and the run
+     * that broke sent it as it stood — so the blanks came out of it and the
+     * session reads its todo off the worktree instead. The half above it kept
+     * one: *with that worktree as its working directory* is a property somebody
+     * satisfies, which is a blank wearing prose, and the run of 2026-08-02
+     * satisfied it with the directory that was already open — the checkout the
+     * worktrees are cut from. So the directories are lines to run, one per
+     * session, and the sentence over the message says the rest of this output
+     * is not part of it. A caller with nothing to compose composes nothing
+     * wrong.
+     *
+     * `todo:next --worktree` catches what still gets through, which is what it
+     * caught that day. It costs a session to find out, so it is the net rather
+     * than the answer.
+     *
+     * @param array<int, string> $standing the worktree directories below the checkout
      */
-    private static function briefing(OutputInterface $output, int $standing): void
+    public static function handover(string $root, array $standing): string
     {
-        if ($standing === 0) {
-            return;
+        $lines = ['One session per worktree, and each is started in the directory that is its own:', ''];
+        foreach ($standing as $directory) {
+            $lines[] = '    cd ' . $root . '/' . $directory;
         }
 
-        $output->writeln('');
-        $output->writeln(sprintf(
-            "Start one session per worktree, with that worktree as its working directory. This\n"
-            . "is the whole message, the same for every one of them, and nothing in it is filled\n"
-            . 'in — which todo is whose is read out of the worktree rather than out of the text:',
-        ));
-        $output->writeln('');
-        $output->writeln(self::indent(Todo::BRIEFING));
-        $output->writeln('');
-        $output->writeln(sprintf(
+        $lines[] = '';
+        $lines[] = "Send each of them the message below and nothing else off this output. It is the\n"
+            . "same for every session, and there is nothing in it to fill in: which todo is\n"
+            . 'whose is read out of the worktree it stands in.';
+        $lines[] = '';
+        $lines[] = self::indent(Todo::BRIEFING);
+        $lines[] = '';
+        $lines[] = sprintf(
             "What a session started from a command line has to be given: %s.\n"
             . 'How the branches come home afterwards: %s.',
             Todo::LAUNCH,
             Todo::PARALLEL,
-        ));
+        );
+
+        return implode("\n", $lines);
     }
 
     /**

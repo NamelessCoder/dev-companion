@@ -2,9 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Upkeep\Cli;
+namespace Typo3CmsMcp\Upkeep\Command;
 
-use Typo3CmsMcp\Upkeep\Prose as Measure;
+use Symfony\Component\Console\Attribute\AsCommand;
+use Symfony\Component\Console\Output\OutputInterface;
+use Typo3CmsMcp\Upkeep\Prose;
 
 /**
  * What the prose rule in AGENTS.md costs when nothing reads it.
@@ -15,25 +17,17 @@ use Typo3CmsMcp\Upkeep\Prose as Measure;
  *
  * This counts. It fails on one thing only — the bold sentence a requirement or
  * a decision opens with, because that one has a job the rest of the file does
- * not — and reports the rest, in the shape `hints coverage` already uses for a
+ * not — and reports the rest, in the shape `hints:coverage` already uses for a
  * corpus measured against a number: how many, where, and the worst one by name.
  */
-final class Prose implements Subject
+#[AsCommand(
+    name: 'prose:check',
+    description: 'the sentences over ' . Prose::MEASURE . ' words, and the leads that may not be',
+)]
+final class ProseCheck
 {
     /** How many files the report names before it stops naming them. */
     private const NAMED = 10;
-
-    public static function about(): string
-    {
-        return 'the prose this repository writes about itself, against its own measure';
-    }
-
-    public static function commands(): array
-    {
-        return [
-            'check' => ['', 'the sentences over ' . Measure::MEASURE . ' words, and the leads that may not be', self::check(...)],
-        ];
-    }
 
     /**
      * The measure over the whole corpus, worst file first.
@@ -44,36 +38,38 @@ final class Prose implements Subject
      * has twenty of them, which is a file nobody has reread since it was
      * written.
      */
-    private static function check(): int
+    public function __invoke(OutputInterface $output): int
     {
-        $measured = array_map(Measure::measure(...), Measure::documents());
+        $measured = array_map(Prose::measure(...), Prose::documents());
         usort($measured, static fn(array $a, array $b): int => count($b['over']) <=> count($a['over']));
 
         $sentences = array_sum(array_column($measured, 'sentences'));
         $over = array_sum(array_map(static fn(array $file): int => count($file['over']), $measured));
 
-        printf(
-            "%d of %d sentences run past %d words, in %d files.\n",
+        $output->writeln(sprintf(
+            '%d of %d sentences run past %d words, in %d files.',
             $over,
             $sentences,
-            Measure::MEASURE,
+            Prose::MEASURE,
             count(array_filter($measured, static fn(array $file): bool => $file['over'] !== [])),
-        );
+        ));
 
         foreach (array_slice(array_filter($measured, static fn(array $file): bool => $file['over'] !== []), 0, self::NAMED) as $file) {
-            printf("  %3d  %s (longest %d)\n", count($file['over']), $file['file'], $file['over'][0]['words']);
+            $output->writeln(sprintf('  %3d  %s (longest %d)', count($file['over']), $file['file'], $file['over'][0]['words']));
         }
 
-        $leads = Measure::leadsOverTheMeasure();
+        $leads = Prose::leadsOverTheMeasure();
         if ($leads === []) {
-            printf("\nEvery requirement and decision opens within the measure.\n");
+            $output->writeln('');
+            $output->writeln('Every requirement and decision opens within the measure.');
 
             return 0;
         }
 
-        printf("\n%d open with a sentence a reader cannot stop after:\n", count($leads));
+        $output->writeln('');
+        $output->writeln(sprintf('%d open with a sentence a reader cannot stop after:', count($leads)));
         foreach ($leads as $lead) {
-            printf("  %-10s %3d words  %s…\n", $lead['id'], $lead['words'], substr($lead['text'], 0, 60));
+            $output->writeln(sprintf('  %-10s %3d words  %s…', $lead['id'], $lead['words'], substr($lead['text'], 0, 60)));
         }
 
         return 1;

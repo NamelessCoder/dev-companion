@@ -31,7 +31,7 @@ final class TodoTest extends TestCase
     }
 
     /**
-     * `bin/cli next` performs the readings a session owes rather than naming
+     * `bin/cli todo:next` performs the readings a session owes rather than naming
      * them, so exactly one todo has to run each. None and the command silently
      * stops doing half its job; two and it does it twice.
      */
@@ -102,7 +102,7 @@ final class TodoTest extends TestCase
 
     /**
      * A todo that waits is out of the queue and says what it waits on, which is
-     * the whole of what the state adds: `bin/cli next` offers it to nobody, so
+     * the whole of what the state adds: `bin/cli todo:next` offers it to nobody, so
      * the question it is blocked on is asked by no session again. What it took
      * on still counts as taken on — a waiting todo that stopped answering for
      * its requirement would put that requirement back on the backlog for the
@@ -147,7 +147,7 @@ final class TodoTest extends TestCase
      * What the queue answers for is read from the queue alone. The page listing
      * what is deliberately *not* queued names ids too, and counting those makes
      * an entry nobody has taken on look taken on — which is the one thing
-     * `bin/cli backlog list` exists to say out loud. Nor does a recurring todo
+     * `bin/cli backlog:list` exists to say out loud. Nor does a recurring todo
      * take anything on: it watches a directory, and the same directory being
      * named by a queued todo is the difference between noticing that decisions
      * are standing and sorting them.
@@ -195,8 +195,8 @@ final class TodoTest extends TestCase
         );
         self::assertStringContainsString(
             'Todo::PROCEDURE',
-            (string) file_get_contents(Paths::root() . '/src/Upkeep/Cli.php'),
-            '`bin/cli next` hands over no todo with ' . Todo::PROCEDURE,
+            (string) file_get_contents(Paths::root() . '/src/Upkeep/Command/TodoNext.php'),
+            '`bin/cli todo:next` hands over no todo with ' . Todo::PROCEDURE,
         );
     }
 }

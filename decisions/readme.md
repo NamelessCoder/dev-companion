@@ -34,8 +34,8 @@ decides its path and two entries cannot quietly share a number.
 | [code/](code/readme.md)                   | How the source is laid out                              |
 
 Each group's `readme.md` says what that group is about, and the listing at the
-foot of it is generated from the files below it by `bin/cli decisions index`, as is
-the listing at the foot of this file. `bin/cli decisions check` holds the files to
+foot of it is generated from the files below it by `bin/cli decisions:index`, as is
+the listing at the foot of this file. `bin/cli decisions:check` holds the files to
 the shape described below, and `composer test` runs the same check through
 `DecisionsTest`.
 
@@ -80,7 +80,7 @@ timeless fact, while the server had the other number all along.
 
 Most decisions are standing and stay that way, which is what makes the state
 easy to stop seeing: a **Wrong if** written and never read is a promise, and
-nothing here says when to keep it. `bin/cli backlog list` counts them and names
+nothing here says when to keep it. `bin/cli backlog:list` counts them and names
 the oldest — not because age disproves anything, but because that is the entry
 the repository has moved furthest away from since. Going back to one and adding
 **Tested on** or **Corrected on** is a legitimate task with no feature behind it.
@@ -88,6 +88,7 @@ the repository has moved furthest away from since. Going back to one and adding
 ## Every decision, newest first
 
 - [`D-COD-1`][D-COD-1] — One file declares one class · 2026-08-01 · standing
+- [`D-COD-2`][D-COD-2] — The upkeep CLI is a Symfony Console application · 2026-08-01 · standing
 - [`D-DIS-6`][D-DIS-6] — The protocol offers nothing to replace the working directory · 2026-08-01 · standing
 - [`D-DOC-1`][D-DOC-1] — A table is written so it reads unrendered · 2026-08-01 · standing
 - [`D-DOC-2`][D-DOC-2] — The prose rule is measured, and only the lead fails on it · 2026-08-01 · standing
@@ -139,6 +140,7 @@ the repository has moved furthest away from since. Going back to one and adding
 - [`D-VER-2`][D-VER-2] — The prose is not bound; it says which half it is · 2026-07-29 · standing
 
 [D-COD-1]: code/cod-1-one-file-declares-one-class.md
+[D-COD-2]: code/cod-2-the-upkeep-cli-is-a-symfony-console-application.md
 [D-DIS-6]: discovery/dis-6-the-protocol-offers-nothing-to-replace-the-working-directory.md
 [D-DOC-1]: documentation/doc-1-a-table-is-written-so-it-reads-unrendered.md
 [D-DOC-2]: documentation/doc-2-the-prose-rule-is-measured-and-only-the-lead-fails.md

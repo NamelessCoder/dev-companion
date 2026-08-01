@@ -4,7 +4,7 @@
 **Waiting on:** whether the portion goes from five feedback to one, and whether
     the journal is worth a file of its own or the commit is enough.
 
-`bin/cli feedback next` hands over five and `D-FBK-5` set that number.
+`bin/cli feedback:next` hands over five and `D-FBK-5` set that number.
 [documentation/feedback/judging.md](../../documentation/feedback/judging.md) was
 drafted for one per run, in a loop that ends when nothing is unjudged. The draft
 is right that `D-FBK-5` named this outcome as its own **Wrong if**: it was taken

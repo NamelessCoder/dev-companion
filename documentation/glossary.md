@@ -6,7 +6,7 @@
   answer.
 - **catalog** — the component catalog in `knowledge/catalog/`.
 - **checkout** — one TYPO3 core worktree below `.checkouts/`, this repository's
-  own, created by `bin/cli checkouts update`.
+  own, created by `bin/cli checkouts:update`.
 - **contract case** — a targeted scenario in `scenarios/contracts/`, naming one
   task shape.
 - **decision** — what a change rested on, and what would show it wrong: one
@@ -18,7 +18,7 @@
 - **forward review** — an open scenario in `scenarios/forward/` that names no
   subsystem, skill or expected finding.
 - **hint** — one statement in `knowledge/architecture-hints/`, reached by
-  `bin/cli hints probe`.
+  `bin/cli hints:probe`.
 - **installation** — the TYPO3 a calling agent is working in, whose own facts
   are read from it rather than bundled.
 - **judge** — to work out what should become of one open feedback, on evidence.

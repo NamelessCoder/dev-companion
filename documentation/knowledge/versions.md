@@ -64,6 +64,6 @@ runtime, and the failure is silent. The rules below follow from it.
   entry is markup taken from one revision, so `since`/`until` there is the whole
   entry rather than one sentence, and `targetVersion` withholds it instead of
   qualifying it — a class that does not exist fails in a browser, silently.
-  The binding is derived, not judged: `bin/cli catalog check` re-reads every
+  The binding is derived, not judged: `bin/cli catalog:check` re-reads every
   covered checkout and reports each entry whose recorded range no longer
   matches, so a core update invalidates it loudly.

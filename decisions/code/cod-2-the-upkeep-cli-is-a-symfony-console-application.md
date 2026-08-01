@@ -1,0 +1,41 @@
+---
+id: D-COD-2
+date: 2026-08-01
+status: standing
+---
+
+# D-COD-2 — The upkeep CLI is a Symfony Console application
+
+**`bin/cli` is a `symfony/console` application, one invokable class per command
+below `src/Upkeep/Command/`, and a command is named `<subject>:<verb>`.**
+
+What it replaces is a dispatcher of its own: a `Subject` interface whose
+`commands()` declared a usage string, a description and a callable, a `help()`
+that rendered them, and a `usage()` each command reached for by hand when an
+argument was missing. It worked. What it could not do is bind an argument — a
+command read `$arguments[0] ?? ''` and decided for itself what a caller who
+passed nothing should be told.
+
+- **Evidence:** written on 2026-08-01, converting all 24 commands at once. The
+  console was already in the tree as a dev dependency of php-cs-fixer, so the
+  cost was a `require-dev` entry rather than a new dependency. Every reading
+  command's output was captured before the change and compared after it: the
+  only differences are the command names and what a missing argument reports.
+- **Decided:** `symfony/console` in `require-dev`, because `bin/cli` is the
+  upkeep of this checkout and Composer exports it as no `bin` — what it needs is
+  not what an installation of this package needs. Commands are invokable classes
+  carrying `#[AsCommand]`, with their arguments on the parameters of `__invoke`
+  under `#[Argument]`, which is the only arrangement where what a command takes
+  is declared where it is used. `Upkeep\Cli` registers every one of them and is
+  the only place a command is switched on.
+- **Assumed:** that the console's own `list` and `help` say enough for the
+  subjects to need no one-line description of their own. The `about()` line each
+  subject carried is gone, and what a subject is is now the sum of what its
+  commands say they do.
+- **Wrong if:** the console stops reading `#[Argument]` off a command's
+  parameters at the moment it does now — it reads them once, before anything
+  merges the application definition in, and a command it stops asking keeps
+  every argument in its signature while refusing the caller who passes one.
+  `UpkeepCommandTest::everyArgumentOfACommandIsOneTheConsoleBinds` is what
+  notices; the fallback is `addArgument()` on each command's definition, which
+  is the older API and does not depend on that moment.

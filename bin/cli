@@ -7,8 +7,8 @@ declare(strict_types=1);
  * The upkeep of this repository, in one command that says what it supports.
  *
  * Run it with nothing to see every subject and every command it carries. What
- * each of them does is declared beside the code that does it, in src/Cli/, and
- * the help is generated from those declarations.
+ * each of them does is declared beside the code that does it, in
+ * src/Upkeep/Cli/, and the help is generated from those declarations.
  *
  * The server itself is bin/typo3-cms-mcp, and stays out of this.
  */
@@ -17,4 +17,4 @@ require dirname(__DIR__) . '/vendor/autoload.php';
 
 use Typo3CmsMcp\Upkeep\Cli;
 
-exit(Cli::run(array_slice($argv, 1)));
+exit(Cli::application()->run());

@@ -13,8 +13,8 @@ carried out.
    id it was started with is what makes its transcript findable afterwards.
    [todo/reference/](../../todo/reference/) says which checkout plays which environment on this
    machine, and how the client is reached there.
-2. `bin/cli scenarios record <id> <client>` writes the empty run, and
-   `bin/cli scenarios show <id>` prints the prompt and the numbered criteria.
+2. `bin/cli scenarios:record <id> <client>` writes the empty run, and
+   `bin/cli scenarios:show <id>` prints the prompt and the numbered criteria.
 3. Paste the prompt verbatim. Add nothing: no tool names, no hints that a TYPO3
    knowledge server is attached, no correction when the agent goes the wrong
    way. What the agent does with an under-specified request is part of what is
@@ -28,7 +28,7 @@ carried out.
    where the tool takes none: the name says a lookup happened, and what it was
    asked is most of what the judgment turns on — one query per surface or one
    broad one, which version a lookup was given, whether a returned id was
-   followed. `bin/cli scenarios check` — and `composer test` — then hold that
+   followed. `bin/cli scenarios:check` — and `composer test` — then hold that
    run to its review.
 
 ## Judging one

@@ -2,14 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Upkeep\Cli;
+namespace Typo3CmsMcp\Upkeep\Command;
 
+use Symfony\Component\Console\Attribute\AsCommand;
+use Symfony\Component\Console\Output\OutputInterface;
 use Typo3CmsMcp\Upkeep\Cli;
-use Typo3CmsMcp\Upkeep\Todo as Todos;
+use Typo3CmsMcp\Upkeep\Todo;
 
 /**
- * Holds todo/ to the shape `bin/cli next` reads it in, and lists what is in it
- * for whoever wants the overview `next` deliberately does not give.
+ * Holds todo/ to the shape `bin/cli todo:next` reads it in.
  *
  * A todo is prose and stays prose — the next concrete step is a paragraph
  * somebody wrote for somebody else to start from, and nothing here shortens it.
@@ -21,91 +22,23 @@ use Typo3CmsMcp\Upkeep\Todo as Todos;
  * to the one thing it exists to carry — the question it is blocked on, in the
  * words it was asked in — because no session is offered it to ask again.
  */
-final class Todo implements Subject
+#[AsCommand(
+    name: 'todo:check',
+    description: 'hold every file to the head and the place that say what it is',
+)]
+final class TodoCheck
 {
-    public static function about(): string
-    {
-        return 'the order of the work, and where the last session stopped';
-    }
-
-    public static function commands(): array
-    {
-        return [
-            'list' => ['', 'every todo by title: what recurs, the queue in order, and what waits', self::list(...)],
-            'waiting' => ['', 'what is blocked, and the question each one is blocked on', self::waiting(...)],
-            'check' => ['', 'hold every file to the head and the place that say what it is', self::check(...)],
-        ];
-    }
-
-    /**
-     * Titles only, because that is what an overview is. What a todo asks for is
-     * a paragraph, and five paragraphs are what `bin/cli next` exists to spare
-     * a session that only has to start one of them.
-     */
-    private static function list(): int
-    {
-        foreach (Todos::recurring() as $todo) {
-            printf(
-                "%-12s %s%s\n",
-                $todo['every'],
-                $todo['title'],
-                Todos::due($todo['every'], $todo['checked']) ? '' : ' — not due, last ' . $todo['checked'],
-            );
-        }
-
-        $items = Todos::items();
-        foreach ($items as $position => $item) {
-            printf("%-12s %s\n", $position === 0 ? 'next' : (string) ($position + 1), $item['title']);
-        }
-        if ($items === []) {
-            print "The queue is empty.\n";
-        }
-
-        foreach (Todos::waiting() as $todo) {
-            printf("%-12s %s — %s\n", 'waiting', $todo['title'], $todo['waitingOn']);
-        }
-
-        foreach (Todos::references() as $reference) {
-            printf("%-12s %s\n", 'read only', $reference['title']);
-        }
-
-        return 0;
-    }
-
-    /**
-     * The questions nothing else will ask again.
-     *
-     * A waiting todo is offered to no session, which is the point and also the
-     * risk: `waiting/` is one unread directory away from being where todos go
-     * to be forgotten. This is the way back. It prints whole rather than by
-     * title — the question is the thing to be answered, and a session that has
-     * to open the file to see it is one that will not — and it exits nonzero
-     * while anything waits, which is what makes the todo that runs it due.
-     */
-    private static function waiting(): int
-    {
-        $waiting = Todos::waiting();
-        foreach ($waiting as $todo) {
-            printf("%s\n  waiting on %s\n  %s\n\n", $todo['title'], $todo['waitingOn'], $todo['path']);
-        }
-        if ($waiting === []) {
-            print "Nothing is waiting on an answer.\n";
-        }
-
-        return $waiting === [] ? 0 : 1;
-    }
-
     /**
      * Every file says what it is by where it sits, and every todo says what it
      * answers for.
      */
-    public static function check(): int
+    public function __invoke(OutputInterface $output): int
     {
         $problems = [];
         $reading = [];
         $positions = [];
 
-        foreach (Todos::all() as $todo) {
+        foreach (Todo::all() as $todo) {
             $where = $todo['path'];
 
             if ($todo['title'] === '') {
@@ -129,7 +62,7 @@ final class Todo implements Subject
                 $problems[] = $where . ' does not say what the next concrete step is';
             }
             foreach ($todo['serves'] as $what) {
-                $unreadable = Todos::unreadable($what);
+                $unreadable = Todo::unreadable($what);
                 if ($unreadable !== null) {
                     $problems[] = $where . ' serves ' . $what . ', ' . $unreadable;
                 }
@@ -173,17 +106,17 @@ final class Todo implements Subject
             if ($todo['every'] === '') {
                 $problems[] = $where . ' comes round and does not say how often';
             } elseif ($todo['every'] !== 'session' && preg_match('/^\d+ days?$/', $todo['every']) !== 1) {
-                $problems[] = $where . ' recurs every ' . $todo['every'] . ', and a cadence is ' . Todos::CADENCE;
+                $problems[] = $where . ' recurs every ' . $todo['every'] . ', and a cadence is ' . Todo::CADENCE;
             } elseif ($todo['every'] !== 'session' && strtotime($todo['checked']) === false) {
                 $problems[] = $where . ' recurs on a clock and was last checked '
                     . ($todo['checked'] === '' ? 'never — `**Checked:**` is what dates it' : $todo['checked']);
             }
         }
 
-        // The readings `bin/cli next` performs are the reason it can tell a
+        // The readings `bin/cli todo:next` performs are the reason it can tell a
         // session there is nothing left to read: none and it silently stops
         // doing half its job, two and it does it twice.
-        foreach (Todos::READINGS as $command) {
+        foreach (Todo::READINGS as $command) {
             $named = $reading[$command] ?? [];
             if ($named === []) {
                 $problems[] = 'no todo runs `' . $command . '`';
@@ -192,17 +125,18 @@ final class Todo implements Subject
             }
         }
 
+        $errors = Cli::errors($output);
         foreach ($problems as $problem) {
-            fwrite(STDERR, $problem . "\n");
+            $errors->writeln($problem);
         }
-        printf(
-            "%d files, %d recurring, %d queued, %d waiting, %d problems\n",
-            count(Todos::all()),
-            count(Todos::recurring()),
-            count(Todos::items()),
-            count(Todos::waiting()),
+        $output->writeln(sprintf(
+            '%d files, %d recurring, %d queued, %d waiting, %d problems',
+            count(Todo::all()),
+            count(Todo::recurring()),
+            count(Todo::items()),
+            count(Todo::waiting()),
             count($problems),
-        );
+        ));
 
         return $problems === [] ? 0 : 1;
     }

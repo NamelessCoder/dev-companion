@@ -18,7 +18,7 @@ use Typo3CmsMcp\Paths;
  *
  * So it is a catalog rather than a lookup against the installation: read off one
  * checkout per covered version, with the range each key holds on, and
- * re-derivable by bin/cli catalog check when a core release adds or drops one.
+ * re-derivable by bin/cli catalog:check when a core release adds or drops one.
  */
 final class SystemExtensions
 {

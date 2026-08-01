@@ -41,14 +41,14 @@ quietly share a number.
 | [code/](code/readme.md)                   | What must hold of the source itself                 |
 
 Each group's `readme.md` says what that group is about, and the listing at the
-foot of it is generated from the files below it by `bin/cli requirements index` —
+foot of it is generated from the files below it by `bin/cli requirements:index` —
 a listing kept by hand is a second copy of the directory that only says what
-was true once. `bin/cli requirements check` holds the files to the shape described
+was true once. `bin/cli requirements:check` holds the files to the shape described
 below, and `composer test` runs the same check through `RequirementsTest`.
 
 That check cannot fail on an entry being **open** or `not guarded` — both are
 legitimate, and the second is the only honest answer for a requirement no test
-can hold. `bin/cli backlog list` reads them out instead, together with whether
+can hold. `bin/cli backlog:list` reads them out instead, together with whether
 a todo in [todo/](../todo/readme.md) names the id. Nothing here reaches the order of
 the work on its own; that listing is the whole of the coupling.
 

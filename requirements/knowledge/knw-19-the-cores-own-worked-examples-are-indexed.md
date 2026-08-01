@@ -21,4 +21,4 @@ core — the theme extension, the browser suite, the Extbase fixture extension
 **Held by:** `CatalogTest::theCoresOwnWorkedExamplesAreIndexed`,
 `CatalogTest::aWorkedExampleIsNamedBesideTheHintItIsAnExampleOf`,
 `CatalogTest::everyIndexedExampleSaysWhatItIsAnExampleOfAndWhereItIs`, and
-`bin/cli catalog paths` for the paths
+`bin/cli catalog:paths` for the paths

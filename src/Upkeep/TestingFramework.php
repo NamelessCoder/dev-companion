@@ -19,8 +19,8 @@ use Typo3CmsMcp\Knowledge\Versions;
  * resolves to the newest release that admits the core in play.
  *
  * The line is what is paired, not the tag. A worktree per line, checked out at
- * that line's newest tag, is what `bin/cli checkouts update` leaves behind and
- * what `bin/cli catalog check` reads — so a release inside a line is picked up
+ * that line's newest tag, is what `bin/cli checkouts:update` leaves behind and
+ * what `bin/cli catalog:check` reads — so a release inside a line is picked up
  * by an update rather than by an entry somebody has to maintain.
  */
 final class TestingFramework
@@ -79,7 +79,7 @@ final class TestingFramework
      * branch name where the pin is a development one.
      *
      * Asked over a window rather than parsed into a range, the way the Fluid
-     * engine is asked in `bin/cli catalog check`: the question is only ever
+     * engine is asked in `bin/cli catalog:check`: the question is only ever
      * "does this pin line 9", and a pin that answers for two lines is the case
      * this exists to catch.
      */

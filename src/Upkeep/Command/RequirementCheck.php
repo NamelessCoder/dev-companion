@@ -2,83 +2,30 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Upkeep\Cli;
+namespace Typo3CmsMcp\Upkeep\Command;
 
+use Symfony\Component\Console\Attribute\AsCommand;
+use Symfony\Component\Console\Output\OutputInterface;
 use Typo3CmsMcp\Paths;
+use Typo3CmsMcp\Upkeep\Cli;
 use Typo3CmsMcp\Upkeep\Requirements;
 
 /**
- * Reads requirements/, where one requirement is one file.
+ * Everything the format of requirements/ promises a reader, checked against the
+ * files.
  *
- * What this replaces is a document nobody could index. Entries arrived at the
- * top of whichever section they belonged to, the ids ran in no order, and five
- * of them had been handed out twice before anybody read far enough to notice.
- * An id now decides the directory and the file name, so that is a comparison
- * rather than a search.
+ * An id that agrees with its file name, its heading and its group, a statement
+ * to open with, a status, and tests that exist behind what claims to be held.
+ * `composer test` runs the same check through RequirementsTest; this is the
+ * readable half.
  */
-final class Requirement implements Subject
+#[AsCommand(
+    name: 'requirements:check',
+    description: 'hold the files to the shape the readme describes',
+)]
+final class RequirementCheck
 {
-    /**
-     * Where the generated listing begins, so everything above it survives a
-     * regeneration. Both shapes are matched: the table these listings were
-     * until D-DOC-1, and the list they are now.
-     */
-    private const LISTING_STARTS = '/(?:\| Id\s|- \[`R-)[^\n]*(?:\n.*)?$/s';
-
-    public static function about(): string
-    {
-        return 'what must hold, and what holds it there';
-    }
-
-    public static function commands(): array
-    {
-        return [
-            'list' => ['[group]', 'every requirement with the state it is in, or one group of them', self::list(...)],
-            'check' => ['', 'hold the files to the shape the readme describes', self::check(...)],
-            'index' => ['', 'rewrite the listing at the foot of each group readme from the files', self::index(...)],
-        ];
-    }
-
-    /**
-     * What must hold, and what state it is in.
-     *
-     * @param array<int, string> $arguments
-     */
-    private static function list(array $arguments): int
-    {
-        $group = $arguments[0] ?? '';
-        if ($group !== '' && !in_array($group, Requirements::GROUPS, true)) {
-            fwrite(STDERR, 'No such group: ' . $group . "\nGroups: " . implode(', ', Requirements::GROUPS) . "\n");
-
-            return 2;
-        }
-
-        foreach (Requirements::all() as $requirement) {
-            if ($group !== '' && $requirement['group'] !== $group) {
-                continue;
-            }
-
-            printf(
-                "%-10s %-13s %-14s %s\n",
-                $requirement['id'],
-                $requirement['group'],
-                Requirements::state($requirement),
-                $requirement['title'],
-            );
-        }
-
-        return 0;
-    }
-
-    /**
-     * Everything the format promises a reader, checked against the files.
-     *
-     * An id that agrees with its file name, its heading and its group, a
-     * statement to open with, a status, and tests that exist behind what claims
-     * to be held. `composer test` runs the same check through RequirementsTest;
-     * this is the readable half.
-     */
-    public static function check(): int
+    public function __invoke(OutputInterface $output): int
     {
         $problems = [];
         $tests = self::testMethods();
@@ -147,7 +94,7 @@ final class Requirement implements Subject
                 continue;
             }
             if (!str_ends_with((string) file_get_contents($readme), Requirements::listing($group))) {
-                $problems[] = $group . '/readme.md is not the listing of its files — run bin/cli requirements index';
+                $problems[] = $group . '/readme.md is not the listing of its files — run bin/cli requirements:index';
             }
         }
 
@@ -157,26 +104,13 @@ final class Requirement implements Subject
             }
         }
 
+        $errors = Cli::errors($output);
         foreach ($problems as $problem) {
-            fwrite(STDERR, $problem . "\n");
+            $errors->writeln($problem);
         }
-        printf("%d requirements, %d problems\n", count($seen), count($problems));
+        $output->writeln(sprintf('%d requirements, %d problems', count($seen), count($problems)));
 
         return $problems === [] ? 0 : 1;
-    }
-
-    /** Writes the listing of each group back into its readme. */
-    private static function index(): int
-    {
-        foreach (Requirements::GROUPS as $group) {
-            $readme = Requirements::directory() . '/' . $group . '/readme.md';
-            $contents = (string) file_get_contents($readme);
-            $head = (string) preg_replace(self::LISTING_STARTS, '', $contents);
-            file_put_contents($readme, $head . Requirements::listing($group));
-            echo $group, "/readme.md\n";
-        }
-
-        return 0;
     }
 
     /**

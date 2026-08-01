@@ -27,7 +27,7 @@ in order by.
   which order and on what evidence, and which answers may be given without
   asking first.
 - [working-a-todo.md](feedback/working-a-todo.md) — what is read before the todo
-  `bin/cli next` handed over is changed, where a question the step turns on is
+  `bin/cli todo:next` handed over is changed, where a question the step turns on is
   settled rather than recalled, and what the queue says afterwards.
 
 ## [knowledge/](knowledge/versions.md) — what the server answers, and from where

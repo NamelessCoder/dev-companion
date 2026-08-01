@@ -9,7 +9,7 @@ status: standing
 **The reading and the research a todo is owed are written down as a procedure
 page.**
 
-`bin/cli next` prints the pointer to it with every todo it hands over rather
+`bin/cli todo:next` prints the pointer to it with every todo it hands over rather
 than leaving it to be looked up.
 
 Everything about the order of the work was written down and nothing about doing
@@ -32,7 +32,7 @@ recall.
   covering what is read first, that the step is judged rather than executed,
   that a question the work turns on is settled from a source or recorded as
   open, that what has no source here is asked before the change, and what the
-  file has to say afterwards — plus one closing block on `bin/cli next` naming
+  file has to say afterwards — plus one closing block on `bin/cli todo:next` naming
   it. `Todo::PROCEDURE` holds the path so the pointer and the page cannot drift
   apart, and `R-FBK-9` carries the demand. The handover half stayed in the
   command rather than moving to the page with everything else: which of the

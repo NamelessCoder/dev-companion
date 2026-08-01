@@ -22,7 +22,7 @@ whether the check has to fail until an entry is queued.
     **Wrong if**, and one entry has ever been back-checked.
   - the queue is fed by `feedback/` and the forward reviews and by nothing else,
     so neither directory had a path into the order of the work at all.
-- **Decided:** `bin/cli backlog list` reads both out, `bin/cli check` closes
+- **Decided:** `bin/cli backlog:list` reads both out, `bin/cli repository:check` closes
   with the same block, and the exit code is untouched. Three stricter shapes
   were rejected with it: failing the check while an `open` requirement has no
   item, requiring `not guarded` to carry a reason, and giving `standing` an
@@ -41,5 +41,5 @@ whether the check has to fail until an entry is queued.
   after three sessions that ran the check, or the standing count only ever
   grows and no session sorts them. Then visibility was not the missing part,
   the coupling has to become a rule, and the shape to reach for is the one
-  rejected here: `bin/cli requirements check` fails while an `open` entry is
+  rejected here: `bin/cli requirements:check` fails while an `open` entry is
   unqueued.

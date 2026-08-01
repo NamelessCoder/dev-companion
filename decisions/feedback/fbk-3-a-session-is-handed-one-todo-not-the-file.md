@@ -6,9 +6,9 @@ status: corrected
 
 # D-FBK-3 — A session is handed one todo, not the file
 
-**`bin/cli next` prints the first todo that is due and nothing else.**
+**`bin/cli todo:next` prints the first todo that is due and nothing else.**
 
-The overview it used to print is `bin/cli todo list`, and being due is answered
+The overview it used to print is `bin/cli todo:list`, and being due is answered
 by a cadence and by the todo's own command exiting nonzero.
 
 The command was built to spare a session the reading of four files, and it
@@ -44,7 +44,7 @@ behind the paragraph explaining why the order is what it is.
 - **Assumed:** that a session which never sees the queue does not need it to
   work in the right order — the order is the file's, and it is the file that
   decides which todo is printed. What this gives up is the reader who would have
-  noticed that the order is wrong, and `bin/cli todo list` is where that reader
+  noticed that the order is wrong, and `bin/cli todo:list` is where that reader
   has to go on purpose now.
 - **Wrong if:** sessions start asking for context `next` withheld, or open by
   running `todo list` anyway — then one todo is less than the minimum and the

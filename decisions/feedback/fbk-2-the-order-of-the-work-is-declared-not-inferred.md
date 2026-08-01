@@ -6,7 +6,7 @@ status: standing
 
 # D-FBK-2 — The order of the work is declared, not inferred
 
-**Every todo declares what it serves and how it recurs, and `bin/cli next`
+**Every todo declares what it serves and how it recurs, and `bin/cli todo:next`
 reads that rather than guessing at the prose around it.**
 
 The file always held the order of the work, and only a person could see it.
@@ -40,10 +40,10 @@ whether to declare it or derive it.
   the reading would have.
 - **Assumed:** that the line stays current because it is also what makes an item
   readable. It is written when the item is, it names what the commit that
-  finishes the item will delete, and `bin/cli todo check` fails when it names a
+  finishes the item will delete, and `bin/cli todo:check` fails when it names a
   feedback that is already gone. A marker nobody would otherwise need would have
   been the kind that rots.
-- **Wrong if:** sections start arriving without the line and `bin/cli check`
+- **Wrong if:** sections start arriving without the line and `bin/cli repository:check`
   becomes the thing that adds it after the fact — then it is bureaucracy, and
   the kind has to be derived from the text after all. Or if the paragraph under
   a heading thins out while the `Serves:` line grows, which is the same file

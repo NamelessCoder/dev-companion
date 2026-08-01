@@ -2,7 +2,7 @@
 
 **Serves:** feedback/
 **Every:** session
-**Run:** bin/cli feedback next
+**Run:** bin/cli feedback:next
 
 Take the five the listing hands over and no more: run the query that produced
 each against the server as it is now, then give it one of three answers — close

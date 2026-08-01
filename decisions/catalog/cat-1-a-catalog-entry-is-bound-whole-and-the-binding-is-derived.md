@@ -7,7 +7,7 @@ status: standing
 # D-CAT-1 — A catalog entry is bound whole, and the binding is derived
 
 **`since`/`until` sits on the whole catalog entry rather than on its fields, and
-is derived by `bin/cli catalog check` rather than judged.**
+is derived by `bin/cli catalog:check` rather than judged.**
 
 An entry that does not hold on the stated version is withheld rather than
 qualified.
@@ -27,7 +27,7 @@ read off one revision together, and a caller pastes them together.
 - **Decided:** an entry that does not hold on the stated version is withheld,
   not qualified. A qualified class name still ends up in a stylesheet, and a
   custom property that does not exist fails in a browser without an error.
-- **Decided:** the binding is derived by `bin/cli catalog check`, not judged. An
+- **Decided:** the binding is derived by `bin/cli catalog:check`, not judged. An
   entry holds on a version when every Sass file it names exists there and every
   class and custom property it names that the newest covered version writes in
   its Sass is written there too — plus, for a custom element, its tag name in

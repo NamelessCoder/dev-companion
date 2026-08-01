@@ -93,7 +93,7 @@ final class RequirementsTest extends TestCase
 
     /**
      * The listing under a group readme is generated from the files below it, so
-     * a requirement added without `bin/cli requirements index` is missing from the
+     * a requirement added without `bin/cli requirements:index` is missing from the
      * one place a reader looks first.
      */
     #[Test]
@@ -106,7 +106,7 @@ final class RequirementsTest extends TestCase
             self::assertStringEndsWith(
                 Requirements::listing($group),
                 (string) file_get_contents($readme),
-                $group . '/readme.md is not the listing of its files — run bin/cli requirements index',
+                $group . '/readme.md is not the listing of its files — run bin/cli requirements:index',
             );
         }
     }

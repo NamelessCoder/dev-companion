@@ -11,9 +11,10 @@ catalogs, and the core checkouts below. Run it with nothing and it says what it
 supports:
 
 ```bash
-bin/cli          # every subject, and every command it carries
-bin/cli next     # the one todo that is due now, and nothing else
-bin/cli check    # requirements, decisions, scenarios and the todos against their formats
+bin/cli                   # every command it carries, grouped by subject
+bin/cli todo:next         # the one todo that is due now, and nothing else
+bin/cli repository:check  # requirements, decisions, scenarios and the todos against their formats
+bin/cli help <command>    # what one command takes, and what each argument is
 ```
 
 `bin/typo3-cms-mcp` is the server itself and carries none of this.
@@ -26,8 +27,8 @@ declares the lines that are covered, and one command turns them into checkouts
 this repository owns:
 
 ```bash
-bin/cli checkouts update   # create what is missing, update what is there
-bin/cli checkouts status   # what exists, at which revision
+bin/cli checkouts:update   # create what is missing, update what is there
+bin/cli checkouts:status   # what exists, at which revision
 ```
 
 They land below `.checkouts/`, which is gitignored — one treeless clone plus a
@@ -42,7 +43,7 @@ not recorded anywhere: each covered branch pins it in its own `require-dev`, and
 one worktree per pinned line is checked out at that line's newest tag. So a
 statement about the harness is verified in `.checkouts/testing-framework/<line>`
 the way a statement about the core is verified in `.checkouts/<branch>`, and
-`bin/cli catalog check` re-reads both.
+`bin/cli catalog:check` re-reads both.
 
 ## Tests
 

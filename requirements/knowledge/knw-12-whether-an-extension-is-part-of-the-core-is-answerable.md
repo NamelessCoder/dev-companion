@@ -19,5 +19,5 @@ system extension nobody knew existed until the user named it (2026-07-29).
 
 **Held by:** `CatalogTest::whetherAnExtensionIsPartOfTheCoreIsAnswerable`,
 `CatalogTest::aTargetVersionDecidesWhichExtensionsAreShipped`,
-`CatalogTest::everyShippedRangeNamesACoveredVersion`, and `bin/cli catalog check`,
+`CatalogTest::everyShippedRangeNamesACoveredVersion`, and `bin/cli catalog:check`,
 which re-derives the list from the checkouts

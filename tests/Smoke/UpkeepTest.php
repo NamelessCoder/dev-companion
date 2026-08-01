@@ -21,28 +21,42 @@ use Typo3CmsMcp\Paths;
 final class UpkeepTest extends TestCase
 {
     /**
-     * Every command that only reports. The ones that write — index, record,
-     * archive, checkouts update — are left out on purpose: a test suite that
-     * rewrites the repository it is run in is worse than the gap.
+     * Every command that only reports. The ones that write — the two indexes,
+     * `scenarios:record`, `feedback:archive`, `checkouts:update` — are left out
+     * on purpose: a test suite that rewrites the repository it is run in is
+     * worse than the gap.
+     *
+     * The ones that take an argument are here with one, because that is the
+     * half a class-at-a-time test cannot see: the console reads what a command
+     * takes off the parameters of its own `__invoke`, and a command whose
+     * arguments stopped being read refuses the caller who passes one.
      *
      * @return array<string, array{0: array<int, string>}>
      */
     public static function readingCommands(): array
     {
         return [
-            'the help, which is what an empty invocation prints' => [[]],
-            'requirements check' => [['requirements', 'check']],
-            'requirements list' => [['requirements', 'list']],
-            'decisions check' => [['decisions', 'check']],
-            'decisions list' => [['decisions', 'list']],
-            'scenarios check' => [['scenarios', 'check']],
-            'prose check' => [['prose', 'check']],
-            'catalog check' => [['catalog', 'check']],
-            'hints coverage' => [['hints', 'coverage']],
-            'backlog list' => [['backlog', 'list']],
-            'todo list' => [['todo', 'list']],
-            'feedback list' => [['feedback', 'list']],
-            'next' => [['next']],
+            'the command list, which is what an empty invocation prints' => [[]],
+            'requirements:check' => [['requirements:check']],
+            'requirements:list' => [['requirements:list']],
+            'requirements:list, for one group' => [['requirements:list', 'knowledge']],
+            'decisions:check' => [['decisions:check']],
+            'decisions:list' => [['decisions:list']],
+            'scenarios:check' => [['scenarios:check']],
+            'scenarios:show, which takes the review to hand over' => [['scenarios:show', 'REVIEW-01']],
+            'prose:check' => [['prose:check']],
+            'catalog:check' => [['catalog:check']],
+            'hints:coverage' => [['hints:coverage']],
+            'hints:probe, which takes the query to read the corpus back through' => [['hints:probe', 'extbase controller']],
+            'backlog:list' => [['backlog:list']],
+            'todo:list' => [['todo:list']],
+            'todo:waiting' => [['todo:waiting']],
+            'todo:check' => [['todo:check']],
+            'feedback:list' => [['feedback:list']],
+            'feedback:next' => [['feedback:next']],
+            'checkouts:status' => [['checkouts:status']],
+            'todo:next' => [['todo:next']],
+            'repository:check' => [['repository:check']],
         ];
     }
 

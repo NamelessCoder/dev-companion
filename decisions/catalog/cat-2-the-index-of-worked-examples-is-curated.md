@@ -11,7 +11,7 @@ checkout; the sentence about what it is a reference for is not.**
 
 An index of directories inside the core is the kind of answer that rots
 silently: a moved path leaves a caller reading a miss as "I looked in the wrong
-place". `bin/cli catalog check` therefore re-derives each entry's range from
+place". `bin/cli catalog:check` therefore re-derives each entry's range from
 whether the path is there in every covered checkout, the way the component and
 system-extension catalogs are derived.
 

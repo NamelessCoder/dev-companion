@@ -20,7 +20,7 @@ the gate rather than in the filing, and it does not widen what is answered:
 task is about the website. A component asked for by name is
 `typo3_component_lookup`'s and stays there.
 
-**From:** the first `bin/cli hints coverage` reading (2026-07-30) — eight of the
+**From:** the first `bin/cli hints:coverage` reading (2026-07-30) — eight of the
 nineteen Backend CSS hints not reached by their own title, and all nineteen
 unreached by every scenario prompt.
 

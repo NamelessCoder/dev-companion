@@ -6,7 +6,7 @@ status: standing
 
 # D-FBK-5 — The queue is worked before the pile is sighted
 
-**`bin/cli next` asks what has a clock, then the queue, and only with the queue
+**`bin/cli todo:next` asks what has a clock, then the queue, and only with the queue
 empty what recurs every session.**
 
 That sighting hands over five feedback at a time rather than the directory.
@@ -18,7 +18,7 @@ small, and `feedback/` is the one directory in this repository that fills from
 outside it.
 
 - **Evidence:** 56 open feedback on the day it was changed, 55 named by no todo,
-  against 38 items in the queue. `bin/cli feedback list` exited nonzero on the
+  against 38 items in the queue. `bin/cli feedback:list` exited nonzero on the
   first of those 55, so the sighting was due in every session, printed 57 lines
   of filenames before its own paragraph, and no queued item had been reached by
   `next` since the queue was written. Two of the three recurring todos are
@@ -31,7 +31,7 @@ outside it.
   the queue is empty and their whole output — new entries — is what is needed.
   The portion is five, so that the judgements can be read and disagreed with by
   somebody who is not the session that made them; the listing names each feedback's
-  category, model and first line for the same reason. `bin/cli feedback list`
+  category, model and first line for the same reason. `bin/cli feedback:list`
   stays the whole of it, and reads rather than works.
 - **Assumed:** that the queue empties. It is the mirror image of what this
   corrects, and nothing has run long enough to show it: a queue that never runs

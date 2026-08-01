@@ -6,7 +6,7 @@ each one is for and how the work moves between them.
 
 ## Where a session starts
 
-    bin/cli next
+    bin/cli todo:next
 
 One todo, not the queue and not the backlog. Context is not free: a session
 handed all of it reads for ten minutes and then starts by summarising what it
@@ -39,13 +39,13 @@ nothing, and the pile it decides over grows faster than any session can read
 it.
 
 The second half of the same problem is the size of the reading.
-`bin/cli feedback next` hands over **five** feedback, oldest first, with each
+`bin/cli feedback:next` hands over **five** feedback, oldest first, with each
 one's category, the model that left it and its own first line — not the
 directory. Five queries can be re-run in a session that also has work of its
 own, and five judgements can be read by somebody who disagrees with one before
 the commit is made. Fifty-six can be neither: a session handed all of them
 closes whatever is easiest and leaves nobody able to say whether that was
-right. `bin/cli feedback list` is still the whole of it, for whoever wants the
+right. `bin/cli feedback:list` is still the whole of it, for whoever wants the
 overview.
 
 What `next` can never do is run a feedback's own query against the server as it
@@ -58,7 +58,7 @@ Everything on this page is about the order of the work. What is read before the
 todo at the front of it is changed, why the step is judged rather than executed,
 where a question the work turns on is settled instead of recalled, and what is
 asked because nothing here can answer it, is one page of its own:
-[working-a-todo.md](working-a-todo.md), which `bin/cli next` names with every
+[working-a-todo.md](working-a-todo.md), which `bin/cli todo:next` names with every
 todo it hands over.
 
 ## Keeping the queue current
@@ -132,7 +132,7 @@ recorded; the feedback is, and `typo3_feedback_list` is where it is read back.
 
 ## Working a feedback off
 
-    bin/cli feedback archive feedback/2026-07-31-…-the-lookup-found-nothing.md
+    bin/cli feedback:archive feedback/2026-07-31-…-the-lookup-found-nothing.md
 
 That moves it to `feedback/archive/` and stamps it `closed`. The commit that
 moved it is read back: `typo3_feedback_list` with `status="closed"` lists the
@@ -193,8 +193,8 @@ records the answer. What outlives both is split three ways:
   what the next concrete step is, and is deleted when done rather than ticked.
   Where it sits says whether it is the queue, what recurs, what waits on an
   answer nothing here can give, or what is kept for reading, and a queued one is
-  numbered by its place in the order — that is what `bin/cli next` reads and
-  what `bin/cli todo check` holds.
+  numbered by its place in the order — that is what `bin/cli todo:next` reads and
+  what `bin/cli todo:check` holds.
 
 ## What nothing fails on
 
@@ -203,8 +203,8 @@ hold and a decision nothing has come back about are not defects — so no check
 may fail on them, which is exactly why nothing read them for as long as they
 existed.
 
-`bin/cli backlog list` is that reading; `bin/cli next` opens with it and
-`bin/cli check` closes with it. It names every requirement nothing answers for,
+`bin/cli backlog:list` is that reading; `bin/cli todo:next` opens with it and
+`bin/cli repository:check` closes with it. It names every requirement nothing answers for,
 says whether a queued todo names it — read from what the queue declares it
 serves, so the page listing what is deliberately *not* queued does not count as
 having taken one on — and gives the oldest standing decision as the one the

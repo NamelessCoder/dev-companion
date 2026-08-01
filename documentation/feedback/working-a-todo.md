@@ -1,6 +1,6 @@
 # Working a todo
 
-`bin/cli next` hands over one todo, and what happens between reading it and the
+`bin/cli todo:next` hands over one todo, and what happens between reading it and the
 commit is the work. This page is that part alone. What is due, what recurs, and
 what a finished todo leaves behind is in
 [feedback/readme.md](readme.md); nothing here repeats it.
@@ -62,7 +62,7 @@ Where the answer is:
 
 - **about TYPO3 itself** — the core checkouts under `.checkouts/` come first,
   because they are the code the statement is about and both sides of a version
-  boundary are readable in them; `bin/cli checkouts update` is what makes them
+  boundary are readable in them; `bin/cli checkouts:update` is what makes them
   current. Then the official documentation at the versions in play, and this
   server's own answers — `typo3_documentation_lookup`, `typo3_changelog_lookup`,
   `typo3_architecture_lookup` — which are also the fastest way to find that a
@@ -114,7 +114,7 @@ smaller outcome than doing the work.
 
 Where the todo can still be worked once the question is out of the way, it goes
 to the **end of the queue** — renaming its file to the number after the last
-one. `bin/cli next` hands over the first queued todo and has no notion of one
+one. `bin/cli todo:next` hands over the first queued todo and has no notion of one
 being blocked, so a todo left where it was is handed to every session behind it
 until somebody moves it. Going last is also its own timer: it comes round again
 as the queue drains.
@@ -125,7 +125,7 @@ difference the state exists for: at the end of the queue such a todo reads as
 the lowest priority in the repository while it is actually waiting on a person,
 and every session that reaches it re-derives the same question. No session is
 offered it, and the way back is a todo of its own — every seven days,
-`bin/cli todo waiting` prints what is blocked and the questions get asked again.
+`bin/cli todo:waiting` prints what is blocked and the questions get asked again.
 The answer is what numbers one back into the queue.
 
 Either way it keeps its file, and the session's job is to leave it startable
@@ -151,7 +151,7 @@ says so, because it is the one part no file behind the commit can be re-read
 for.
 
 The same commit leaves [todo/](../../todo/readme.md) true, which is four cases
-and `bin/cli next` prints the one that applies:
+and `bin/cli todo:next` prints the one that applies:
 
 - A **queued** todo that is finished is **deleted**. What it established is in
   `requirements/` by then and the commit is the record that it happened.
@@ -178,7 +178,7 @@ Nothing on this page can be checked. A todo worked from the checkouts and the
 manuals is shaped exactly like one worked from memory — same diff, same
 message, and the sentence that turns out false is the confident one in both. A
 choice made silently is shaped exactly like one that had nothing to choose.
-What can be done is done: the page exists, `bin/cli next` names it with every
+What can be done is done: the page exists, `bin/cli todo:next` names it with every
 todo it hands over, and
 [`R-FBK-9`](../../requirements/feedback/fbk-9-a-todo-is-worked-from-what-was-read.md)
 carries it with the reason. Whether the reading happened is the session's, and

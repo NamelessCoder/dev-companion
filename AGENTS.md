@@ -29,7 +29,8 @@ src/Sdk/           # the adapters onto mcp/sdk: tool dispatch and typo3://core r
 src/Paths.php      # where this checkout keeps things; the one class both halves share
 src/bootstrap.php  # locates the Composer autoloader
 src/Upkeep/        # what `bin/cli` runs on this repository, and nothing the server answers with
-src/Upkeep/Cli.php # what `bin/cli` supports, and src/Upkeep/Cli/ one class per subject
+src/Upkeep/Cli.php # the console application, and the only place a command is switched on
+src/Upkeep/Command/  # one class per command, named `<subject>:<verb>` by its own #[AsCommand]
 src/Upkeep/TestingFramework.php  # which typo3/testing-framework release each covered major is read against
 knowledge/         # the knowledge base (markdown + JSON), the data source
 knowledge/documents/  # the prose corpus: searched by typo3_rule_lookup, served as typo3://core resources, and published by being in here
@@ -43,7 +44,7 @@ skills/            # canonical task skills installed into supported agent client
 skills/base.md     # the order every task starts in, copied into each published skill as references/base.md
 requirements/      # what must hold, and what holds it there: one requirement per file, grouped by what it is about; open ones are the backlog
 decisions/         # what a change assumed, and what would show it to be wrong: one decision per file, grouped by what it is about
-todo/              # the order of the work and where the last session stopped: one todo per file, the queue numbered; `bin/cli next` prints one of them
+todo/              # the order of the work and where the last session stopped: one todo per file, the queue numbered; `bin/cli todo:next` prints one of them
 src/Upkeep/Todo.php  # todo/ as data: what recurs and how often, what is queued, what each todo serves
 documentation/     # how a procedure is carried out, grouped by subject; the rules stay here, the steps live there
 tests/             # unit, tool contract, and stdio smoke tests
@@ -60,15 +61,16 @@ at all, and `Upkeep/` is not part of the server. Only `Paths` sits loose,
 because it is the one thing the server and the upkeep both stand on.
 
 Both binaries are the same shape: locate the autoloader, hand the arguments to
-the class that owns them — `Server\Entrypoint` and `Upkeep\Cli`. What a command
-does is declared beside the code that does it, never in `bin/`.
+the class that owns them — `Server\Entrypoint`, and `Upkeep\Cli` by way of the
+console application it builds. What a command does, what it is called and what
+it takes are declared beside the code that does it, never in `bin/`.
 
 ## Where a session starts, and what it owes the next one
 
-    bin/cli next
+    bin/cli todo:next
 
 That is the whole of it, and it prints **one todo** — the first that is due,
-whole, with its own command already run. `bin/cli todo list` is the overview,
+whole, with its own command already run. `bin/cli todo:list` is the overview,
 for whoever wants it.
 
 The todo it prints is a claim, not an instruction: one session's belief about
@@ -155,7 +157,7 @@ them are machines.
 - Length is a symptom. A paragraph that will not come out short is usually two
   points, or one that is not yet understood.
 
-`bin/cli prose check` counts what that costs: the sentences over 30 words, worst
+`bin/cli prose:check` counts what that costs: the sentences over 30 words, worst
 file first. It fails on one of them — the bold sentence a requirement or a
 decision opens with, because a reader who stops after it is supposed to know
 what was settled. The rest is a report, since a long sentence can be the right
@@ -236,6 +238,14 @@ composer cgl    # rewrite to the guidelines; cgl:ci reports and rewrites nothing
   a hit and on a miss, and to the naming schema; `tests/Smoke/` drives both
   entrypoints as subprocesses — `bin/typo3-cms-mcp` over JSON-RPC, `bin/cli`
   by its reading commands.
+- `src/Upkeep/Command/` and the console are held to each other by
+  `UpkeepCommandTest`: every class in the directory is registered, the
+  application carries no command that is not one of them, each is named
+  `<subject>:<verb>` and describes itself, and what a command declares on the
+  parameters of its `__invoke` is what the console binds. That last one is the
+  quiet failure — the console reads those parameters at one moment only, and a
+  command it stops asking keeps every argument in its signature while refusing
+  the caller who passes one.
 - A behaviour worth a rule in `knowledge/` is worth a test: ranking that must
   prefer one match over another, an answer that must say "no match" instead of
   guessing, a catalog field that must stay usable.
@@ -243,7 +253,7 @@ composer cgl    # rewrite to the guidelines; cgl:ci reports and rewrites nothing
   A leftover file carries `phpunit-feedback-fixture` in its text.
 
 `bin/cli` is what everything else in this repository is kept in order by, and
-`bin/cli checkouts update` is what creates the core checkouts a knowledge change
+`bin/cli checkouts:update` is what creates the core checkouts a knowledge change
 is verified against:
 [documentation/working-on-the-server.md](documentation/working-on-the-server.md).
 
@@ -258,7 +268,7 @@ installation on somebody's machine — that lives in `todo/reference/`, where it
 stale without taking a case with it.
 
 - A feedback is worked off in a commit that both implements the improvement
-  **and** archives it with `bin/cli feedback archive <feedback>`, so `feedback/`
+  **and** archives it with `bin/cli feedback:archive <feedback>`, so `feedback/`
   only ever holds open items and the commit that moved it is the record of what
   came of it.
 - Never mark one done by editing its `status:` front matter, and never archive
@@ -271,11 +281,11 @@ stale without taking a case with it.
 - Three states mean unfinished — a requirement marked **open**, one held by
   `not guarded`, a decision still `standing` whose **Wrong if** nobody has been
   back to. All three are legitimate, so no check may fail on them, and
-  `bin/cli backlog list` reads them out instead.
+  `bin/cli backlog:list` reads them out instead.
 
 How each of those is carried out — the debrief that gets a feedback out of a
 session this repository cannot read, judging one, what each of the three files
-holds, and what `bin/cli backlog list` reports:
+holds, and what `bin/cli backlog:list` reports:
 [documentation/feedback/readme.md](documentation/feedback/readme.md). Running a
 forward review, judging it, and reading one that stopped without an error:
 [documentation/evidence/forward-runs.md](documentation/evidence/forward-runs.md).
@@ -377,7 +387,7 @@ version says so; see the audience requirements in `requirements/audience/`.
 - Verify facts against the core checkouts below `.checkouts/` before writing
   them into `knowledge/`, and bind what does not hold on all of them. The
   checkouts are this repository's own — one worktree per covered version,
-  created and updated by `bin/cli checkouts update`, gitignored and re-fetchable
+  created and updated by `bin/cli checkouts:update`, gitignored and re-fetchable
   at any time. Verifying against whatever checkout happens to be on the machine
   makes the evidence unreproducible for the next person. A statement whose
   subject is `typo3/testing-framework` is verified there too, in

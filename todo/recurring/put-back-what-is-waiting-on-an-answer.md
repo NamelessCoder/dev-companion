@@ -3,7 +3,7 @@
 **Serves:** todo/
 **Every:** 7 days
 **Checked:** 2026-08-01
-**Run:** bin/cli todo waiting
+**Run:** bin/cli todo:waiting
 
 Take each question the listing prints and ask it — of the person who maintains
 this repository, where that is who can answer it, and of the world where the

@@ -24,18 +24,18 @@ looking like the least important thing in the repository.
 - **Decided:** a fourth place beside the queue, what recurs and what is kept for
   reading. A todo there has no number, because it has no place in an order, and
   carries `**Waiting on:**` — the question in the words it was asked in, held by
-  `bin/cli todo check`. The answer is what numbers it back into the queue.
+  `bin/cli todo:check`. The answer is what numbers it back into the queue.
 - **Decided:** that the way back is a recurring todo rather than a habit. Every
-  seven days `bin/cli todo waiting` prints what is blocked with its question and
+  seven days `bin/cli todo:waiting` prints what is blocked with its question and
   exits nonzero, which is what makes that todo due and puts the questions in
   front of a session before the queue. Without it the state is a directory
   nobody has a reason to open, and the end of the queue — for all it says wrong
   — at least came round again.
-- **Decided:** that `bin/cli next` names how many are waiting and nothing more,
+- **Decided:** that `bin/cli todo:next` names how many are waiting and nothing more,
   as one field of the line that already says how many are behind this todo. A
   blocked todo is addressed to whoever can answer it, and a state nothing ever
   mentions is a file nobody opens again. The paragraph stays the one todo's
-  (`D-FBK-3`); `bin/cli todo list` is where the questions are readable.
+  (`D-FBK-3`); `bin/cli todo:list` is where the questions are readable.
 - **Assumed:** that the two cases can be told apart when the commit is written —
   a question that is merely unasked goes last, one that cannot be answered here
   waits. Nothing checks it, and the cheap mistake is the wrong one: a todo

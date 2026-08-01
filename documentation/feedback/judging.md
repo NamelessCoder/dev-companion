@@ -3,7 +3,7 @@
 > **Draft.** The ladder and the six answers below are what a judgement does
 > today. What is still open is how much is judged at a time and what carries the
 > relationship between feedback: this page was written for one feedback per run
-> with a journal, while `bin/cli feedback next` hands over five and nothing
+> with a journal, while `bin/cli feedback:next` hands over five and nothing
 > records an answer but the commit. The todo that says so is in
 > [todo/](../../todo/readme.md).
 
@@ -46,7 +46,7 @@ to three that already exist.
 Two halves, told apart by what is missing rather than by what the feedback asks
 for.
 
-**1a — the knowledge is missing.** `bin/cli hints probe "<the feedback's own
+**1a — the knowledge is missing.** `bin/cli hints:probe "<the feedback's own
 query>"` reaches nothing, and a search of `knowledge/` and `skills/` confirms
 it. Becomes the work of establishing what actually holds — against
 `.checkouts/`, and the manual after it — and writing that. Never the feedback's
@@ -97,7 +97,7 @@ matter.
 in the `instructions` sent at initialize, and reachable only through a tool
 nobody called.
 
-`bin/cli hints coverage` is this step read across the whole corpus: on
+`bin/cli hints:coverage` is this step read across the whole corpus: on
 2026-08-01 it reported 46 of 64 hints that no scenario prompt reaches at all.
 
 **Becomes:** placement — the rule moves to where the task actually passes.
@@ -138,7 +138,7 @@ settling a question, and the cheap end answers most feedback:
 
 |     | Source                       | Cost                           | Answers                                            |
 | --- | ---------------------------- | ------------------------------ | -------------------------------------------------- |
-| 0   | `bin/cli hints probe`        | milliseconds                   | is the answer here at all                          |
+| 0   | `bin/cli hints:probe`        | milliseconds                   | is the answer here at all                          |
 | 1   | `knowledge/`, `skills/`      | cheap                          | where exactly, and in the right skill              |
 | 2   | `.checkouts/`                | local                          | whether what the feedback claims about TYPO3 holds |
 | 3   | `typo3_documentation_lookup` | network                        | what the official manual says                      |
@@ -228,7 +228,7 @@ concrete step. One or two sentences, not a paragraph.
 Otherwise the same account sits in `feedback/`, in `todo/` and, once a
 requirement is written, a third time in `requirements/` — three places to
 maintain, and any one of them can be brought up to date and leave the other two
-saying something else. `bin/cli next` prints the feedback a todo serves along
+saying something else. `bin/cli todo:next` prints the feedback a todo serves along
 with it, which is what lets the todo carry only its own half: the feedback is
 what happened once, the requirement is what must hold from now on, the todo is
 what to do next.

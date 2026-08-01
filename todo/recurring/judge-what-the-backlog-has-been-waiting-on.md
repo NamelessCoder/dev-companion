@@ -2,7 +2,7 @@
 
 **Serves:** requirements/, decisions/
 **Every:** session
-**Run:** bin/cli backlog list
+**Run:** bin/cli backlog:list
 
 Give every entry the listing marks as unnamed one of two answers: a todo below
 that takes it on, or the sentence in `decisions/` that says why it stays as it

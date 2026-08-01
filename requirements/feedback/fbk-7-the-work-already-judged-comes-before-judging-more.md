@@ -5,7 +5,7 @@ status: held
 
 # R-FBK-7 — The work already judged comes before judging more
 
-**`bin/cli next` reaches the queue before anything that recurs every session,
+**`bin/cli todo:next` reaches the queue before anything that recurs every session,
 and hands over at most five when it does reach the sighting.**
 
 Sighting the feedback and the backlog is what turns them into queued items, so a

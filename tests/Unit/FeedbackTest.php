@@ -283,7 +283,7 @@ final class FeedbackTest extends TestCase
     }
 
     /**
-     * One archived feedback, as `bin/cli feedback archive` leaves it: below
+     * One archived feedback, as `bin/cli feedback:archive` leaves it: below
      * feedback/archive/, with the commit that closed it written into its front
      * matter. Removed again by tearDown, like every other fixture here.
      */

@@ -25,7 +25,7 @@ with its own release cycle that `.checkouts/` does not contain.
   hardcoded `clear` flag and the document-root-relative extension paths — are
   identical in all four.
 - **Wrong if:** a testing-framework release changes one of them inside a major.
-  Nothing here would notice: `bin/cli catalog check` re-reads the core checkouts,
+  Nothing here would notice: `bin/cli catalog:check` re-reads the core checkouts,
   and this package is not one of them. The cheap fix is to teach that script the
   tag-to-major pairing; the honest alternative is to bind the statements to the
   package version instead of the TYPO3 one, which the hint format has no field
@@ -42,8 +42,8 @@ with its own release cycle that `.checkouts/` does not contain.
   answered for a major nobody here covers, and the three refs the corrected
   pairing names — 8.3.3, 9.6.1 and `main` — were all read at the time.
 - **Since then** the gap in **Wrong if** is closed by the command it names.
-  `bin/cli checkouts update` keeps the package beside the core checkouts, one
-  worktree per pinned line at that line's newest tag, and `bin/cli catalog check`
+  `bin/cli checkouts:update` keeps the package beside the core checkouts, one
+  worktree per pinned line at that line's newest tag, and `bin/cli catalog:check`
   re-derives the pairing from the pins and reads the load-bearing half of the
   statements there: the four boilerplate files and the "copy it" line in their
   header, the five `typo3Database*` variables and the credentials message, the

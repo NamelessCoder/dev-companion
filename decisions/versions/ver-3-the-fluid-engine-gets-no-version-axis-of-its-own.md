@@ -36,7 +36,7 @@ before because no Fluid statement had been version-bound.
 - **Tested on 2026-08-01:** the four constraints are still what this recorded —
   12.4 `^2.15.0`, 13.4 `^4.6.1`, 14.3 and main `^5.3.1` — and each pins one
   engine major, so the TYPO3 major still carries the engine. The first half of
-  **Wrong if** is no longer a promise: `bin/cli catalog check` reads
+  **Wrong if** is no longer a promise: `bin/cli catalog:check` reads
   `typo3fluid/fluid` out of every covered checkout's `composer.json` and fails
   on a branch that admits two majors or none. The second half is not held by
   anything, and cannot be from here — a Fluid minor changing behaviour inside

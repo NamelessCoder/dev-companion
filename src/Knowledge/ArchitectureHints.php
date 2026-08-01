@@ -102,7 +102,7 @@ final class ArchitectureHints
      * That is the failure the dilution weight exists to prevent, so the ceiling
      * sits below it with the margin the last growth spurt took.
      *
-     * Nothing reads it at answer time. `bin/cli hints coverage` reports against
+     * Nothing reads it at answer time. `bin/cli hints:coverage` reports against
      * it and `HintsTest` fails on it, and when it does the fix is to re-run the
      * sweep and pick the constant again — not to raise this number.
      */

@@ -22,7 +22,7 @@ use Typo3CmsMcp\Paths;
  *     # Give `D-CAT-1` a digest to notice markup by
  *
  *     **Serves:** decisions/
- *     **Run:** bin/cli catalog check
+ *     **Run:** bin/cli catalog:check
  *
  *     One paragraph: the next concrete step.
  *
@@ -37,7 +37,7 @@ use Typo3CmsMcp\Paths;
  *
  * `Serves:` is what makes a todo work rather than an idea. `Every:` is the
  * cadence of a recurring one, and `Run:` is the command the step starts from,
- * which `bin/cli next` runs where this repository owns it.
+ * which `bin/cli todo:next` runs where this repository owns it.
  *
  * A cadence is `session` or a number of days, and the days are why the pair
  * exists: five sessions in an afternoon owe the feedback five readings and the
@@ -70,11 +70,11 @@ final class Todo
     public const PROCEDURE = 'documentation/feedback/working-a-todo.md';
 
     /**
-     * The readings `bin/cli next` exists to perform. Exactly one recurring todo
-     * has to name each: none and the command silently stops doing half its job,
-     * two and it does it twice.
+     * The readings `bin/cli todo:next` exists to perform. Exactly one recurring
+     * todo has to name each: none and the command silently stops doing half its
+     * job, two and it does it twice.
      */
-    public const READINGS = ['bin/cli feedback next', 'bin/cli backlog list', 'bin/cli todo waiting'];
+    public const READINGS = ['bin/cli feedback:next', 'bin/cli backlog:list', 'bin/cli todo:waiting'];
 
     /**
      * Whether the clock has come round for a recurring todo. Nothing here

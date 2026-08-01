@@ -42,7 +42,7 @@ out of.
 - **Wrong if:** hints get longer on average — the dissolution of the
   architecture prose into this corpus is queued and moves in that direction —
   or a query that should hit goes missing while its hint is plainly about it.
-  Both show up in `bin/cli hints coverage` once that exists; until then the eight
+  Both show up in `bin/cli hints:coverage` once that exists; until then the eight
   queries in `HintsTest` are the only tripwire, and they are a sample.
 - **Since then:** the stopword list is English, so German filler words behave
   like unknown technical terms and sink the whole query. «wie lege ich ein neues
@@ -56,7 +56,7 @@ out of.
   and both fixed under `R-ANS-8b`: a three-letter term matched as a prefix, and
   `appliesTo` matched by plain substring.
 - **Tested on `2026-08-01`:** the first symptom happened and the decision holds
-  anyway. `bin/cli hints coverage` reads a mean hint body of 266 words against
+  anyway. `bin/cli hints:coverage` reads a mean hint body of 266 words against
   the 200 the reference was picked as — 212 on the day, taken to a round number
   — so the corpus has grown a quarter, the dissolution of the architecture
   prose accounting for 20 words of it and the seven hints written since for 34.
@@ -74,7 +74,7 @@ out of.
 
   So the corpus has roughly a fifth of mean growth left, and both walls are
   watched now instead of one. `ArchitectureHints::MAX_MEAN_BODY_WORDS` is a
-  ceiling of 300 that `HintsTest` and `bin/cli hints coverage` fail on, which
+  ceiling of 300 that `HintsTest` and `bin/cli hints:coverage` fail on, which
   catches the corpus growing; the sweep is a data provider in `HintsTest` rather
   than eight hand-picked queries, which catches the reference being raised to
   chase it. Four of the eighteen were never written down anywhere and are lost —

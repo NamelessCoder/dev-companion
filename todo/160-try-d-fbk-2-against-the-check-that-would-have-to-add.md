@@ -4,7 +4,7 @@
 
 The order of the work is declared rather than inferred, and the entry names two
 ways that turns into bureaucracy: sections arriving without the head line, and
-the paragraph thinning out while the `Serves:` line grows. `bin/cli todo check`
+the paragraph thinning out while the `Serves:` line grows. `bin/cli todo:check`
 already reports the first. Read this file for the second — this queue has just
 grown by thirty-five sections and is the sharpest test the decision has had.
 What would hold it is a `TodoTest` assertion that every queued section has a

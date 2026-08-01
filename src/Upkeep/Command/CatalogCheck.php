@@ -2,29 +2,32 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Upkeep\Cli;
+namespace Typo3CmsMcp\Upkeep\Command;
 
+use Symfony\Component\Console\Attribute\AsCommand;
+use Symfony\Component\Console\Output\OutputInterface;
 use Typo3CmsMcp\Knowledge\Versions;
-use Typo3CmsMcp\Paths;
+use Typo3CmsMcp\Upkeep\Catalogs;
+use Typo3CmsMcp\Upkeep\Checkouts;
 use Typo3CmsMcp\Upkeep\Cli;
 use Typo3CmsMcp\Upkeep\TestingFramework;
 
 /**
- * Verifies the bundled catalogs below knowledge/catalog/ against TYPO3 core
+ * Verifies the bundled catalogs below knowledge/catalog/ against the TYPO3 core
  * checkouts and reports drift. It never writes: the component catalog stays
  * the curated search index and fallback, while an active installation supplies
  * the primary component contract at lookup time.
  *
- * Two things can be wrong with an entry, and each has its own command: the
- * paths it names are gone from a checkout, or its `since`/`until` no longer say
- * which versions it holds on.
- *
- * `check` also reads the two things outside `knowledge/catalog/` that a release
- * can invalidate silently and that the checkouts answer: which Fluid engine
- * each branch pins itself to, and whether the testing-framework release each
- * branch pins still says what the hints about it state.
+ * It also reads the two things outside `knowledge/catalog/` that a release can
+ * invalidate silently and that the checkouts answer: which Fluid engine each
+ * branch pins itself to, and whether the testing-framework release each branch
+ * pins still says what the hints about it state.
  */
-final class Catalog implements Subject
+#[AsCommand(
+    name: 'catalog:check',
+    description: 'the versions each entry holds on, the shipped system extensions, the worked examples, the Fluid engine each branch pins, and the testing-framework release it pins, against .checkouts/',
+)]
+final class CatalogCheck
 {
     /**
      * What the hints about typo3/testing-framework rest on, per file of the
@@ -63,36 +66,23 @@ final class Catalog implements Subject
         'Classes/Core/Functional/FunctionalTestCase.php' => ["'clear' => 3"],
     ];
 
-    public static function about(): string
-    {
-        return 'what a core update invalidated in knowledge/';
-    }
-
-    public static function commands(): array
-    {
-        return [
-            'check' => ['', 'the versions each entry holds on, the shipped system extensions, the worked examples, the Fluid engine each branch pins, and the testing-framework release it pins, against .checkouts/', self::check(...)],
-            'paths' => ['<checkout>', 'the paths one entry names, against one core checkout of your own', self::paths(...)],
-        ];
-    }
-
     /**
      * Whether every binding still says what this repository's own sources say.
      *
-     * Every covered version is read from .checkouts/ (`bin/cli checkouts`), so
-     * the binding is re-derived from those rather than from whatever checkout
+     * Every covered version is read from .checkouts/ (`bin/cli checkouts:update`),
+     * so the binding is re-derived from those rather than from whatever checkout
      * happens to be on the machine.
      */
-    public static function check(): int
+    public function __invoke(OutputInterface $output): int
     {
-        $root = Paths::root();
+        $checkouts = Checkouts::directory();
 
         return max(
-            self::verifyBindings($root . '/.checkouts', self::read('components')),
-            self::verifySystemExtensions($root . '/.checkouts', self::read('system-extensions')),
-            self::verifyReferences($root . '/.checkouts', self::read('references')),
-            self::verifyFluidEngine($root . '/.checkouts'),
-            self::verifyTestingFramework($root . '/.checkouts'),
+            self::verifyBindings($output, $checkouts, Catalogs::read('components')),
+            self::verifySystemExtensions($output, $checkouts, Catalogs::read('system-extensions')),
+            self::verifyReferences($output, $checkouts, Catalogs::read('references')),
+            self::verifyFluidEngine($output, $checkouts),
+            self::verifyTestingFramework($output, $checkouts),
         );
     }
 
@@ -111,12 +101,12 @@ final class Catalog implements Subject
      * passes silently, and one that moves a load-bearing sentence fails — which is
      * the difference between a guard and a reminder to go and look.
      */
-    private static function verifyTestingFramework(string $checkouts): int
+    private static function verifyTestingFramework(OutputInterface $output, string $checkouts): int
     {
-        echo "typo3/testing-framework\n";
+        $output->writeln('typo3/testing-framework');
         $mirror = TestingFramework::mirror($checkouts);
         if (!is_dir($mirror)) {
-            fwrite(STDERR, sprintf("No %s clone below %s — run bin/cli checkouts update.\n", TestingFramework::PACKAGE, $checkouts));
+            Cli::errors($output)->writeln(sprintf('No %s clone below %s — run bin/cli checkouts:update.', TestingFramework::PACKAGE, $checkouts));
 
             return 2;
         }
@@ -124,12 +114,12 @@ final class Catalog implements Subject
         $problems = 0;
         $read = [];
         foreach (TestingFramework::pairing($checkouts) as $pair) {
-            printf(
-                "  %-5s %-9s %s\n",
+            $output->writeln(sprintf(
+                '  %-5s %-9s %s',
                 $pair['branch'],
                 $pair['constraint'] === '' ? 'no pin' : $pair['constraint'],
                 $pair['ref'] ?? 'names no single release line',
-            );
+            ));
             if ($pair['ref'] === null) {
                 ++$problems;
                 continue;
@@ -139,17 +129,18 @@ final class Catalog implements Subject
             }
 
             $read[$pair['ref']] = true;
-            $problems += self::readTestingFramework($mirror, $pair);
+            $problems += self::readTestingFramework($output, $mirror, $pair);
         }
-        printf("  %d release line(s) against %s\n\n", count($read), implode(', ', array_column(Versions::covered(), 'branch')));
+        $output->writeln(sprintf('  %d release line(s) against %s', count($read), implode(', ', array_column(Versions::covered(), 'branch'))));
+        $output->writeln('');
 
         if ($problems === 0) {
-            echo "Every statement about the harness still reads as D-KNW-2 read it.\n";
+            $output->writeln('Every statement about the harness still reads as D-KNW-2 read it.');
 
             return 0;
         }
 
-        printf("%d statement(s) about the harness no longer read as D-KNW-2 read them.\n", $problems);
+        $output->writeln(sprintf('%d statement(s) about the harness no longer read as D-KNW-2 read them.', $problems));
 
         return 1;
     }
@@ -163,17 +154,17 @@ final class Catalog implements Subject
      *
      * @param array{major: int, branch: string, constraint: string, line: ?string, ref: ?string, path: string} $pair
      */
-    private static function readTestingFramework(string $mirror, array $pair): int
+    private static function readTestingFramework(OutputInterface $output, string $mirror, array $pair): int
     {
         $ref = (string) $pair['ref'];
         $checkedOut = TestingFramework::revision($pair['path'], 'HEAD');
         if ($checkedOut === '') {
-            printf("    %s is not checked out — run bin/cli checkouts update\n", $ref);
+            $output->writeln(sprintf('    %s is not checked out — run bin/cli checkouts:update', $ref));
 
             return 1;
         }
         if ($checkedOut !== TestingFramework::revision($mirror, $ref)) {
-            printf("    %s is checked out at %s — run bin/cli checkouts update\n", $ref, substr($checkedOut, 0, 12));
+            $output->writeln(sprintf('    %s is checked out at %s — run bin/cli checkouts:update', $ref, substr($checkedOut, 0, 12)));
 
             return 1;
         }
@@ -182,13 +173,13 @@ final class Catalog implements Subject
         foreach (self::TESTING_FRAMEWORK_EVIDENCE as $file => $needles) {
             $source = is_file($pair['path'] . '/' . $file) ? (string) file_get_contents($pair['path'] . '/' . $file) : null;
             if ($source === null) {
-                printf("    %s: %s is gone\n", $ref, $file);
+                $output->writeln(sprintf('    %s: %s is gone', $ref, $file));
                 ++$problems;
                 continue;
             }
             foreach ($needles as $needle) {
                 if (!str_contains($source, $needle)) {
-                    printf("    %s: %s no longer says %s\n", $ref, $file, $needle);
+                    $output->writeln(sprintf('    %s: %s no longer says %s', $ref, $file, $needle));
                     ++$problems;
                 }
             }
@@ -211,21 +202,21 @@ final class Catalog implements Subject
      * is written against the engine a branch pins and this is where that number
      * is looked up.
      */
-    private static function verifyFluidEngine(string $checkouts): int
+    private static function verifyFluidEngine(OutputInterface $output, string $checkouts): int
     {
-        echo "Fluid engine\n";
+        $output->writeln('Fluid engine');
         $problems = 0;
         foreach (Versions::covered() as $version) {
             $manifest = $checkouts . '/' . $version['branch'] . '/composer.json';
             if (!is_file($manifest)) {
-                fwrite(STDERR, sprintf("No checkout for TYPO3 v%d below %s — run bin/cli checkouts update.\n", $version['major'], $checkouts));
+                Cli::errors($output)->writeln(sprintf('No checkout for TYPO3 v%d below %s — run bin/cli checkouts:update.', $version['major'], $checkouts));
 
                 return 2;
             }
 
             $constraint = json_decode((string) file_get_contents($manifest), true)['require']['typo3fluid/fluid'] ?? null;
             if (!is_string($constraint)) {
-                printf("  %-5s requires no typo3fluid/fluid\n", $version['branch']);
+                $output->writeln(sprintf('  %-5s requires no typo3fluid/fluid', $version['branch']));
                 ++$problems;
                 continue;
             }
@@ -240,83 +231,22 @@ final class Catalog implements Subject
                 static fn(int $major): bool => Versions::admits($constraint, $major),
             ));
 
-            printf("  %-5s %-10s %s\n", $version['branch'], $constraint, $majors === [] ? 'unreadable' : 'Fluid v' . implode(', v', $majors));
+            $output->writeln(sprintf('  %-5s %-10s %s', $version['branch'], $constraint, $majors === [] ? 'unreadable' : 'Fluid v' . implode(', v', $majors)));
             if (count($majors) !== 1) {
                 ++$problems;
             }
         }
-        print "\n";
+        $output->writeln('');
 
         if ($problems === 0) {
-            echo "Every branch pins one Fluid engine major, so the TYPO3 major still carries it.\n";
+            $output->writeln('Every branch pins one Fluid engine major, so the TYPO3 major still carries it.');
 
             return 0;
         }
 
-        printf("%d branch(es) no longer pin one Fluid engine major — D-VER-3 says the engine needs a field of its own.\n", $problems);
+        $output->writeln(sprintf('%d branch(es) no longer pin one Fluid engine major — D-VER-3 says the engine needs a field of its own.', $problems));
 
         return 1;
-    }
-
-    /**
-     * Whether every path an entry names still exists in one checkout.
-     *
-     * @param array<int, string> $arguments
-     */
-    private static function paths(array $arguments): int
-    {
-        $coreRoot = rtrim($arguments[0] ?? '', '/');
-        if ($coreRoot === '') {
-            return Cli::usage(self::class, 'paths');
-        }
-        if (!is_dir($coreRoot . '/typo3/sysext/core')) {
-            fwrite(STDERR, sprintf("Not a TYPO3 core checkout: %s\n", $coreRoot));
-
-            return Cli::usage(self::class, 'paths');
-        }
-
-        $components = self::read('components');
-        echo "Components\n";
-        $problems = 0;
-        foreach ($components as $component) {
-            $paths = $component['sassPaths'] ?? [];
-            if (isset($component['sassPath'])) {
-                $paths[] = $component['sassPath'];
-            }
-            if (isset($component['demoPath'])) {
-                $paths[] = $component['demoPath'];
-            }
-            foreach (array_unique($paths) as $path) {
-                if (is_string($path) && $path !== '' && !file_exists($coreRoot . '/' . $path)) {
-                    echo '  path gone: ' . $component['name'] . ' → ' . $path . "\n";
-                    ++$problems;
-                }
-            }
-        }
-        printf("  %d components\n\n", count($components));
-
-        if ($problems === 0) {
-            $revision = trim((string) shell_exec(sprintf('git -C %s rev-parse HEAD 2>/dev/null', escapeshellarg($coreRoot))));
-            printf("No drift against %s%s\n", $coreRoot, $revision === '' ? '' : ' @ ' . substr($revision, 0, 12));
-
-            return 0;
-        }
-
-        printf("%d problem(s) found.\n", $problems);
-
-        return 1;
-    }
-
-    /**
-     * One bundled catalog, as it is on disk.
-     *
-     * @return array<int, array<string, mixed>>
-     */
-    private static function read(string $name): array
-    {
-        $path = Paths::root() . '/knowledge/catalog/' . $name . '.json';
-
-        return json_decode((string) file_get_contents($path), true);
     }
 
     /**
@@ -330,14 +260,14 @@ final class Catalog implements Subject
      *
      * @param array<int, array<string, mixed>> $components
      */
-    private static function verifyBindings(string $checkouts, array $components): int
+    private static function verifyBindings(OutputInterface $output, string $checkouts, array $components): int
     {
         $covered = Versions::covered();
         $sources = [];
         foreach ($covered as $version) {
             $directory = $checkouts . '/' . $version['branch'] . '/Build/Sources';
             if (!is_dir($directory)) {
-                fwrite(STDERR, sprintf("No checkout for TYPO3 v%d below %s — run bin/cli checkouts update.\n", $version['major'], $checkouts));
+                Cli::errors($output)->writeln(sprintf('No checkout for TYPO3 v%d below %s — run bin/cli checkouts:update.', $version['major'], $checkouts));
 
                 return 2;
             }
@@ -351,7 +281,7 @@ final class Catalog implements Subject
         }
 
         $newest = end($covered)['major'];
-        echo "Component bindings\n";
+        $output->writeln('Component bindings');
         $problems = 0;
         foreach ($components as $component) {
             $holds = [];
@@ -362,24 +292,25 @@ final class Catalog implements Subject
             $found = self::derivedSince($holds);
             $recorded = isset($component['since']) ? (int) $component['since'] : null;
             if ($found !== $recorded) {
-                printf(
-                    "  %s: records %s, holds %s\n",
+                $output->writeln(sprintf(
+                    '  %s: records %s, holds %s',
                     $component['name'],
                     $recorded === null ? 'no binding' : 'since v' . $recorded,
                     $found === null ? 'on every covered version' : 'from v' . $found,
-                );
+                ));
                 ++$problems;
             }
         }
-        printf("  %d components against %s\n\n", count($components), implode(', ', array_column($covered, 'branch')));
+        $output->writeln(sprintf('  %d components against %s', count($components), implode(', ', array_column($covered, 'branch'))));
+        $output->writeln('');
 
         if ($problems === 0) {
-            echo "Every binding still says what the checkouts say.\n";
+            $output->writeln('Every binding still says what the checkouts say.');
 
             return 0;
         }
 
-        printf("%d binding(s) out of date.\n", $problems);
+        $output->writeln(sprintf('%d binding(s) out of date.', $problems));
 
         return 1;
     }
@@ -476,15 +407,15 @@ final class Catalog implements Subject
      *
      * @param array<int, array<string, mixed>> $recorded
      */
-    private static function verifySystemExtensions(string $checkouts, array $recorded): int
+    private static function verifySystemExtensions(OutputInterface $output, string $checkouts, array $recorded): int
     {
-        echo "System extensions\n";
+        $output->writeln('System extensions');
         $covered = Versions::covered();
         $shipped = [];
         foreach ($covered as $version) {
             $directory = $checkouts . '/' . $version['branch'] . '/typo3/sysext';
             if (!is_dir($directory)) {
-                fwrite(STDERR, sprintf("No checkout for TYPO3 v%d below %s — run bin/cli checkouts update.\n", $version['major'], $checkouts));
+                Cli::errors($output)->writeln(sprintf('No checkout for TYPO3 v%d below %s — run bin/cli checkouts:update.', $version['major'], $checkouts));
 
                 return 2;
             }
@@ -503,33 +434,34 @@ final class Catalog implements Subject
             $majors = array_keys($packages);
             $entry = $byKey[$key] ?? null;
             if ($entry === null) {
-                printf("  %s: shipped on v%s, not in the catalog\n", $key, implode(', v', $majors));
+                $output->writeln(sprintf('  %s: shipped on v%s, not in the catalog', $key, implode(', v', $majors)));
                 ++$problems;
                 continue;
             }
-            $problems += self::reportRange($key, $entry, $majors, array_column($covered, 'major'));
+            $problems += self::reportRange($output, $key, $entry, $majors, array_column($covered, 'major'));
 
             $package = end($packages);
             if (($entry['package'] ?? '') !== $package) {
-                printf("  %s: records package %s, ships as %s\n", $key, (string) ($entry['package'] ?? ''), $package);
+                $output->writeln(sprintf('  %s: records package %s, ships as %s', $key, (string) ($entry['package'] ?? ''), $package));
                 ++$problems;
             }
         }
         foreach ($byKey as $key => $entry) {
             if (!isset($shipped[$key])) {
-                printf("  %s: in the catalog, shipped by no covered version\n", $key);
+                $output->writeln(sprintf('  %s: in the catalog, shipped by no covered version', $key));
                 ++$problems;
             }
         }
-        printf("  %d system extensions against %s\n\n", count($shipped), implode(', ', array_column($covered, 'branch')));
+        $output->writeln(sprintf('  %d system extensions against %s', count($shipped), implode(', ', array_column($covered, 'branch'))));
+        $output->writeln('');
 
         if ($problems === 0) {
-            echo "Every system extension is recorded as the checkouts ship it.\n";
+            $output->writeln('Every system extension is recorded as the checkouts ship it.');
 
             return 0;
         }
 
-        printf("%d system extension(s) out of date.\n", $problems);
+        $output->writeln(sprintf('%d system extension(s) out of date.', $problems));
 
         return 1;
     }
@@ -545,9 +477,9 @@ final class Catalog implements Subject
      *
      * @param array<int, array<string, mixed>> $references
      */
-    private static function verifyReferences(string $checkouts, array $references): int
+    private static function verifyReferences(OutputInterface $output, string $checkouts, array $references): int
     {
-        echo "Core references\n";
+        $output->writeln('Core references');
         $covered = Versions::covered();
         $problems = 0;
         foreach ($references as $entry) {
@@ -556,7 +488,7 @@ final class Catalog implements Subject
             foreach ($covered as $version) {
                 $branch = $checkouts . '/' . $version['branch'];
                 if (!is_dir($branch)) {
-                    fwrite(STDERR, sprintf("No checkout for TYPO3 v%d below %s — run bin/cli checkouts update.\n", $version['major'], $checkouts));
+                    Cli::errors($output)->writeln(sprintf('No checkout for TYPO3 v%d below %s — run bin/cli checkouts:update.', $version['major'], $checkouts));
 
                     return 2;
                 }
@@ -566,21 +498,22 @@ final class Catalog implements Subject
             }
 
             if ($majors === []) {
-                printf("  %s: on no covered version\n", $path);
+                $output->writeln(sprintf('  %s: on no covered version', $path));
                 ++$problems;
                 continue;
             }
-            $problems += self::reportRange($path, $entry, $majors, array_column($covered, 'major'));
+            $problems += self::reportRange($output, $path, $entry, $majors, array_column($covered, 'major'));
         }
-        printf("  %d references against %s\n\n", count($references), implode(', ', array_column($covered, 'branch')));
+        $output->writeln(sprintf('  %d references against %s', count($references), implode(', ', array_column($covered, 'branch'))));
+        $output->writeln('');
 
         if ($problems === 0) {
-            echo "Every worked example is where it is recorded.\n";
+            $output->writeln('Every worked example is where it is recorded.');
 
             return 0;
         }
 
-        printf("%d reference(s) out of date.\n", $problems);
+        $output->writeln(sprintf('%d reference(s) out of date.', $problems));
 
         return 1;
     }
@@ -594,10 +527,10 @@ final class Catalog implements Subject
      * @param array<int, int> $majors
      * @param array<int, int> $covered
      */
-    private static function reportRange(string $key, array $entry, array $majors, array $covered): int
+    private static function reportRange(OutputInterface $output, string $key, array $entry, array $majors, array $covered): int
     {
         if ($majors !== range((int) $majors[0], (int) end($majors))) {
-            printf("  %s: shipped on v%s, which no range can express\n", $key, implode(', v', $majors));
+            $output->writeln(sprintf('  %s: shipped on v%s, which no range can express', $key, implode(', v', $majors)));
 
             return 1;
         }
@@ -610,12 +543,12 @@ final class Catalog implements Subject
             return 0;
         }
 
-        printf(
-            "  %s: records %s, ships %s\n",
+        $output->writeln(sprintf(
+            '  %s: records %s, ships %s',
             $key,
             self::rangeLabel($recordedSince, $recordedUntil),
             self::rangeLabel($since, $until),
-        );
+        ));
 
         return 1;
     }

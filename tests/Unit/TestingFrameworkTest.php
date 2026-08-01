@@ -14,7 +14,7 @@ use Typo3CmsMcp\Upkeep\TestingFramework;
  * The package releases on its own cycle, so D-KNW-2 verifies those statements
  * against a tag rather than against a core branch. Which tag is not recorded
  * anywhere: the core pins the release line per branch in its own require-dev,
- * and `bin/cli catalog check` reads the newest tag on that line. This holds the
+ * and `bin/cli catalog:check` reads the newest tag on that line. This holds the
  * one step of that derivation which needs no repository to try — everything
  * else is a git call, and the command is where it is exercised.
  */

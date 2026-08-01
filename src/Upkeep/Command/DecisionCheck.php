@@ -2,82 +2,30 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Upkeep\Cli;
+namespace Typo3CmsMcp\Upkeep\Command;
 
-use Typo3CmsMcp\Paths;
+use Symfony\Component\Console\Attribute\AsCommand;
+use Symfony\Component\Console\Output\OutputInterface;
+use Typo3CmsMcp\Upkeep\Cli;
 use Typo3CmsMcp\Upkeep\Decisions;
 use Typo3CmsMcp\Upkeep\Requirements;
 
 /**
- * Reads decisions/, where one decision is one file.
+ * Everything the format of decisions/ promises a reader, checked against the
+ * files.
  *
- * What this replaces is one document of thirty entries that called itself
- * newest-first and was not: two had arrived at its foot, and the labels a
- * reader navigates by had drifted into thirteen spellings of four things.
- * An id now decides the directory and the file name, and the order is
- * generated from the dates rather than maintained by where a paragraph
- * was pasted.
+ * An id that agrees with its file name, its heading and its group, a date, a
+ * status, a sentence to open with, fields from the fixed set in the order they
+ * belong in, and something under **Wrong if**. `composer test` runs the same
+ * check through DecisionsTest; this is the readable half.
  */
-final class Decision implements Subject
+#[AsCommand(
+    name: 'decisions:check',
+    description: 'hold the files to the shape the readme describes',
+)]
+final class DecisionCheck
 {
-    /**
-     * Where the generated listing begins, so everything above it survives a
-     * regeneration. Both shapes are matched: the table these listings were
-     * until D-DOC-1, and the list they are now.
-     */
-    private const LISTING_STARTS = '/(?:\| Decided\s|- \[`D-)[^\n]*(?:\n.*)?$/s';
-
-    public static function about(): string
-    {
-        return 'what was decided, and on what evidence';
-    }
-
-    public static function commands(): array
-    {
-        return [
-            'list' => ['[group]', 'every decision newest first, or one group of them', self::list(...)],
-            'check' => ['', 'hold the files to the shape the readme describes', self::check(...)],
-            'index' => ['', 'rewrite the listing at the foot of the readme and of each group readme', self::index(...)],
-        ];
-    }
-
-    /**
-     * What was decided, newest first.
-     *
-     * @param array<int, string> $arguments
-     */
-    private static function list(array $arguments): int
-    {
-        $group = $arguments[0] ?? '';
-        if ($group !== '' && !in_array($group, Decisions::GROUPS, true)) {
-            fwrite(STDERR, 'No such group: ' . $group . "\nGroups: " . implode(', ', Decisions::GROUPS) . "\n");
-
-            return 2;
-        }
-
-        foreach (Decisions::group($group) as $decision) {
-            printf(
-                "%s  %-10s %-12s %-10s %s\n",
-                $decision['date'],
-                $decision['id'],
-                $decision['group'],
-                $decision['status'],
-                $decision['title'],
-            );
-        }
-
-        return 0;
-    }
-
-    /**
-     * Everything the format promises a reader, checked against the files.
-     *
-     * An id that agrees with its file name, its heading and its group, a date, a
-     * status, a sentence to open with, fields from the fixed set in the order
-     * they belong in, and something under **Wrong if**. `composer test` runs the
-     * same check through DecisionsTest; this is the readable half.
-     */
-    public static function check(): int
+    public function __invoke(OutputInterface $output): int
     {
         $problems = [];
         $seen = [];
@@ -157,7 +105,7 @@ final class Decision implements Subject
             }
             if (!str_ends_with((string) file_get_contents($readme), Decisions::listing($group))) {
                 $problems[] = ($group === '' ? 'readme.md' : $group . '/readme.md')
-                    . ' is not the listing of its files — run bin/cli decisions index';
+                    . ' is not the listing of its files — run bin/cli decisions:index';
             }
         }
 
@@ -171,25 +119,12 @@ final class Decision implements Subject
             }
         }
 
+        $errors = Cli::errors($output);
         foreach ($problems as $problem) {
-            fwrite(STDERR, $problem . "\n");
+            $errors->writeln($problem);
         }
-        printf("%d decisions, %d problems\n", count($seen), count($problems));
+        $output->writeln(sprintf('%d decisions, %d problems', count($seen), count($problems)));
 
         return $problems === [] ? 0 : 1;
-    }
-
-    /** Writes the listing of every group, and of all of them, back into the readmes. */
-    private static function index(): int
-    {
-        foreach (['', ...array_values(Decisions::GROUPS)] as $group) {
-            $readme = Decisions::directory() . '/' . ($group === '' ? '' : $group . '/') . 'readme.md';
-            $contents = (string) file_get_contents($readme);
-            $head = (string) preg_replace(self::LISTING_STARTS, '', $contents);
-            file_put_contents($readme, $head . Decisions::listing($group));
-            echo substr($readme, strlen(Paths::root()) + 1), "\n";
-        }
-
-        return 0;
     }
 }

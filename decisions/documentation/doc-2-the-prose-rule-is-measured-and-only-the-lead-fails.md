@@ -9,10 +9,10 @@ status: standing
 **Thirty words is where a sentence in this repository is reported as two, and
 the only place it fails is the bold opening of a requirement or a decision.**
 
-Everything else `bin/cli prose check` prints is a count.
+Everything else `bin/cli prose:check` prints is a count.
 
 Every other rule in AGENTS.md is held by something: the names by
-`ToolNamingTest`, the file shapes by `bin/cli requirements check`, the scope by
+`ToolNamingTest`, the file shapes by `bin/cli requirements:check`, the scope by
 `ScopeTest`. "One point per sentence" was held by whoever happened to reread the
 paragraph, and prose is the one thing this repository produces that nothing
 downstream can tell apart from prose that was thought through.
@@ -36,7 +36,7 @@ downstream can tell apart from prose that was thought through.
   the wrong author.
 - **Assumed:** that the counts move down. The report is a number nobody is
   obliged to act on, which is the same shape as the three states
-  `bin/cli backlog list` names, and those sat unread until something printed
+  `bin/cli backlog:list` names, and those sat unread until something printed
   them.
 - **Wrong if:** the corpus total sits where it is for a month while the files
   are edited — then reporting is not enough and the measure needs a place in

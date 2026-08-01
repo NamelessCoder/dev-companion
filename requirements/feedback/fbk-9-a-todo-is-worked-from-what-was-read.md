@@ -28,7 +28,7 @@ that presents it — a choice made silently is not a question saved, it is a
 question moved to where the answer costs a rewrite. Putting the todo back is one
 of the answers offered, because the person asked may have none either, and a
 todo that carries its open question into the next session is worth more than one
-closed on a guess. It goes to the end of the queue when it does: `bin/cli next`
+closed on a guess. It goes to the end of the queue when it does: `bin/cli todo:next`
 hands over the first queued item and has no notion of blocked, so one left in
 place is handed to every session behind it.
 
@@ -37,7 +37,7 @@ shaped exactly like one worked from memory, and what this repository produces is
 acted on unchecked: a statement in `knowledge/`, a skill in somebody else's
 project, a requirement the next author is held to. So the demand is that the
 procedure exists and travels with the todo rather than waiting to be looked up —
-`bin/cli next` prints the pointer with every todo it hands over.
+`bin/cli todo:next` prints the pointer with every todo it hands over.
 
 **From:** 2026-08-01. The order of the work was fully described — what is due,
 in which order, what a finished todo leaves behind — and how one is actually
@@ -45,5 +45,5 @@ worked was described nowhere, which left the reading and the research to
 whatever the session brought with it.
 
 **Held by:** `TodoTest::everyTodoIsHandedWithThePageThatSaysHowOneIsWorked`,
-which holds `Todo::PROCEDURE`, the page it names and the line `bin/cli next`
+which holds `Todo::PROCEDURE`, the page it names and the line `bin/cli todo:next`
 prints to each other; that a session read it is not guarded and cannot be.

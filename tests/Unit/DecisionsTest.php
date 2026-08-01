@@ -135,7 +135,7 @@ final class DecisionsTest extends TestCase
 
     /**
      * The listing under each readme is generated from the files below it, so a
-     * decision added without `bin/cli decisions index` is missing from the one
+     * decision added without `bin/cli decisions:index` is missing from the one
      * place a reader looks first — and the root listing is the only place every
      * decision stands in one order.
      */
@@ -150,7 +150,7 @@ final class DecisionsTest extends TestCase
                 Decisions::listing($group),
                 (string) file_get_contents($readme),
                 ($group === '' ? 'readme.md' : $group . '/readme.md')
-                    . ' is not the listing of its files — run bin/cli decisions index',
+                    . ' is not the listing of its files — run bin/cli decisions:index',
             );
         }
     }

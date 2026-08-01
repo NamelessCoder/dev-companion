@@ -338,7 +338,7 @@ final class CatalogTest extends TestCase
     public function everyRecordedBindingNamesACoveredVersion(): void
     {
         // A binding outside the covered range withholds an entry from every
-        // caller or from none, and both are silent — bin/cli catalog check is what
+        // caller or from none, and both are silent — bin/cli catalog:check is what
         // holds the numbers to the checkouts, this holds them to versions.json.
         $majors = Versions::majors();
         foreach (Components::load() as $component) {

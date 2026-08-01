@@ -37,12 +37,12 @@ end of a run, finishing a todo meant loading 30 kB to delete a paragraph.
 - **Decided:** against generating a listing into `todo/readme.md`. It would be
   correct and it would be written by every commit that finishes a todo, which is
   the shared file coming back through the door the split just closed.
-  `bin/cli todo list` is the overview, and the directory listing is the order.
+  `bin/cli todo:list` is the overview, and the directory listing is the order.
 - **Assumed:** that renaming is what moving a todo costs, and that it is
   cheaper than editing a shared file. A move is one `git mv`; the tens are what
   keep an insertion from being a renumbering. Nothing has yet reordered this
   queue under the new shape.
-- **Assumed:** that a session still reaches for `bin/cli next` rather than the
+- **Assumed:** that a session still reaches for `bin/cli todo:next` rather than the
   directory, which is now sorted, titled and readable without a command. That
   bet is `D-FBK-3`'s, and this makes the cheap wrong path cheaper.
 - **Wrong if:** a commit renames more than a handful of files to move one todo,

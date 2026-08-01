@@ -1,7 +1,7 @@
 ---
 id: D-KNW-1
 date: 2026-07-29
-status: standing
+status: corrected
 ---
 
 # D-KNW-1 — Sitepackage work is answered from the General category
@@ -32,3 +32,31 @@ needed.
   until it is what every answer is made of. The fix in that case is a category
   for the audience rather than for the domain, which is a larger change than
   this one earns today.
+
+- **Corrected on 2026-08-02:** both halves fired. Five backend-only task texts
+  naming a content element went through `typo3_task_guide`, and two came back
+  with `sitepackage-layout`: «Add a TCA field to the content element in the
+  backend» and «The backend preview of the content element is broken in the page
+  module». `bin/cli hints:probe` says how it got there — `text only(150)`, not
+  one `appliesTo` pattern matched. The hint runs to 670 words against a corpus
+  mean of 268, and it describes the package from the backend that administers
+  it, so a backend query reads well against its body. On the size, General holds
+  18 of 65 hints and supplied 35 of 54 matched over the scenario prompts, with
+  16 of 29 answers made of it alone. `bin/cli hints:coverage` prints that from
+  here on, and fails on none of it, because the number to watch is the growth.
+- **Corrected on 2026-08-02:** the fix named above is not the one that answered
+  it. An audience category would have left the hit standing. The second
+  **Decided** bullet made "content element" a keyword of Fluid and TypoScript,
+  so both are candidate categories for such a task however the corpus is filed,
+  and moving `sitepackage-layout` out of General only moves it into one of them.
+  What answered it was the exclusion already in `ArchitectureHints::find()`,
+  reached until now by the words "backend module" alone — though nothing about
+  it was ever about modules. It reads `Domains::namesOnlyTheBackend()` now:
+  backend markers present, no frontend marker beside them. That is not
+  `namesTheFrontend()` negated, where the backend markers win, because a task
+  naming both halves is asking for both — `SITE-05` is one, and it keeps the
+  layout. `SITE-08` holds the shape that failed.
+- **Since then** one half stands uncorrected: such a brief still reports its
+  domains as Fluid and TypoScript, so the exclusion is what keeps that work out
+  of the answer rather than the scoping. `SITE-08` says so and nothing guards
+  it.

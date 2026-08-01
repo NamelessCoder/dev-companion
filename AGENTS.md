@@ -115,7 +115,7 @@ wrote down, while prose can be rewritten this afternoon. A synonym introduced in
 a paragraph is copied into a schema a week later.
 
 What arrives through `typo3_feedback_record` is **a feedback**, countable, and
-[documentation/feedback/glossary.md](documentation/feedback/glossary.md) is where that and the
+[documentation/glossary.md](documentation/glossary.md) is where that and the
 words around it are defined. Two of them go wrong reliably: **record** is the
 verb it arrives by and never a noun, because in TYPO3 a record is a row in the
 database and this server explains that meaning to its callers; and **verdict**

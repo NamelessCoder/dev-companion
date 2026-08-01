@@ -11,7 +11,8 @@ carries it. Both happened here before this directory existed.
 
 | Page | What it carries |
 | --- | --- |
-| [feedback/](feedback/readme.md) | Everything about feedback, over several pages: [readme.md](feedback/readme.md) for how work moves between `feedback/`, `requirements/`, `decisions/` and `todo.md` and the debrief that gets feedback out of a session this repository cannot read; [judging.md](feedback/judging.md) for what is asked of one open feedback and on what evidence; [glossary.md](feedback/glossary.md) for the words |
+| [glossary.md](glossary.md) | What everything here is called, one line each |
+| [feedback/](feedback/readme.md) | Everything about feedback, over several pages: [readme.md](feedback/readme.md) for how work moves between `feedback/`, `requirements/`, `decisions/` and `todo.md` and the debrief that gets feedback out of a session this repository cannot read; [judging.md](feedback/judging.md) for what is asked of one open feedback and on what evidence |
 | [working-a-todo.md](working-a-todo.md) | What is read before the todo `bin/cli next` handed over is changed, where a question the step turns on is settled rather than recalled, what is asked instead, and what the file says afterwards |
 | [installation.md](installation.md) | Every client and layout the installer supports, and the configuration each one gets |
 | [working-on-the-server.md](working-on-the-server.md) | The commands this repository is kept in order by, the core checkouts, the test suite |

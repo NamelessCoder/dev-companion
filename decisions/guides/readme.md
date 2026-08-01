@@ -7,7 +7,8 @@ caller for rather than guessing.
 See [the decisions readme](../readme.md) for how an entry is written and when
 one is added.
 
-| Decided | Id | What was decided | State |
-| --- | --- | --- | --- |
-| 2026-07-29 | [`D-GUI-1`](gui-1-a-missing-release-target-becomes-a-placeholder-not-main.md) | A missing release target becomes a placeholder, not `main` | standing |
-| 2026-07-29 | [`D-GUI-2`](gui-2-the-commit-workflow-is-asked-for-not-inferred.md) | The commit workflow is asked for, not inferred | standing |
+- [`D-GUI-1`][D-GUI-1] — A missing release target becomes a placeholder, not `main` · 2026-07-29 · standing
+- [`D-GUI-2`][D-GUI-2] — The commit workflow is asked for, not inferred · 2026-07-29 · standing
+
+[D-GUI-1]: gui-1-a-missing-release-target-becomes-a-placeholder-not-main.md
+[D-GUI-2]: gui-2-the-commit-workflow-is-asked-for-not-inferred.md

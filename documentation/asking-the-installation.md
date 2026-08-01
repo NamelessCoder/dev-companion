@@ -59,11 +59,11 @@ otherwise sit in front of the payload.
 
 ## The three states
 
-| State | What it means | What is done with it |
-| --- | --- | --- |
-| `full` | The container came up with every extension in it | It is the answer, and it is remembered for the session |
-| `failsafe` | TYPO3 booted without essential configuration: core packages only | Never handed on. The files answer, and the reason travels with them |
-| `unreachable` | No console, no interpreter, or the boot failed | Same — the files answer, with the reason |
+| State         | What it means                                                    | What is done with it                                                |
+| ------------- | ---------------------------------------------------------------- | ------------------------------------------------------------------- |
+| `full`        | The container came up with every extension in it                 | It is the answer, and it is remembered for the session              |
+| `failsafe`    | TYPO3 booted without essential configuration: core packages only | Never handed on. The files answer, and the reason travels with them |
+| `unreachable` | No console, no interpreter, or the boot failed                   | Same — the files answer, with the reason                            |
 
 **Failsafe is the state worth knowing.** `Bootstrap::init()` turns it on when
 `checkIfEssentialConfigurationExists()` fails, which is the ordinary condition of

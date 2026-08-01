@@ -205,6 +205,9 @@ composer cgl    # rewrite to the guidelines; cgl:ci reports and rewrites nothing
   writes by. A rule is added there when the code already follows it and the
   fixer is what keeps it followed — not to introduce a style nobody has written
   in yet, which is a reformatting of the whole tree wearing a rule's clothes.
+- One file, one class. A second class in a file is not autoloadable under
+  PSR-4, so it works until somebody uses it from anywhere else and then fails
+  as a missing class — held by `StructureTest::everyFileDeclaresOneClass`.
 - `tests/Unit/` covers the searching, ranking, and rendering logic;
   `tests/Contract/` holds every tool to its declared schemas and annotations, on
   a hit and on a miss, and to the naming schema; `tests/Smoke/` drives

@@ -7,6 +7,6 @@ bundled conventions rather than replacing them.
 See [the requirements readme](../readme.md) for how an entry is written and
 when it is added.
 
-| Id | What must hold | State |
-| --- | --- | --- |
-| [`R-DOC-1`](doc-1-the-live-manuals-answer-for-the-version-they-were-asked-for.md) | The live manuals answer for the version they were asked for | held |
+- [`R-DOC-1`][R-DOC-1] — The live manuals answer for the version they were asked for · held
+
+[R-DOC-1]: doc-1-the-live-manuals-answer-for-the-version-they-were-asked-for.md

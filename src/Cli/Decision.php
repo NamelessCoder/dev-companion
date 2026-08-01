@@ -19,6 +19,13 @@ use Typo3CmsMcp\Requirements;
  */
 final class Decision implements Subject
 {
+    /**
+     * Where the generated listing begins, so everything above it survives a
+     * regeneration. Both shapes are matched: the table these listings were
+     * until D-DOC-1, and the list they are now.
+     */
+    private const LISTING_STARTS = '/(?:\| Decided\s|- \[`D-)[^\n]*(?:\n.*)?$/s';
+
     public static function about(): string
     {
         return 'what was decided, and on what evidence';
@@ -177,7 +184,7 @@ final class Decision implements Subject
         foreach (['', ...array_values(Decisions::GROUPS)] as $group) {
             $readme = Decisions::directory() . '/' . ($group === '' ? '' : $group . '/') . 'readme.md';
             $contents = (string) file_get_contents($readme);
-            $head = (string) preg_replace('/\| Decided \| Id \|.*$/s', '', $contents);
+            $head = (string) preg_replace(self::LISTING_STARTS, '', $contents);
             file_put_contents($readme, $head . Decisions::listing($group));
             echo substr($readme, strlen(dirname(__DIR__, 2)) + 1), "\n";
         }

@@ -17,6 +17,13 @@ use Typo3CmsMcp\Requirements;
  */
 final class Requirement implements Subject
 {
+    /**
+     * Where the generated listing begins, so everything above it survives a
+     * regeneration. Both shapes are matched: the table these listings were
+     * until D-DOC-1, and the list they are now.
+     */
+    private const LISTING_STARTS = '/(?:\| Id\s|- \[`R-)[^\n]*(?:\n.*)?$/s';
+
     public static function about(): string
     {
         return 'what must hold, and what holds it there';
@@ -163,7 +170,7 @@ final class Requirement implements Subject
         foreach (Requirements::GROUPS as $group) {
             $readme = Requirements::directory() . '/' . $group . '/readme.md';
             $contents = (string) file_get_contents($readme);
-            $head = (string) preg_replace('/\| Id \| What must hold \| State \|.*$/s', '', $contents);
+            $head = (string) preg_replace(self::LISTING_STARTS, '', $contents);
             file_put_contents($readme, $head . Requirements::listing($group));
             echo $group, "/readme.md\n";
         }

@@ -73,15 +73,19 @@ corrected by the next release of this server.
 
 ## The rules, and what holds each one
 
-| Rule | Held by |
-| --- | --- |
-| It is filed under the name it calls itself, with a description a client can route on | `SkillTest::everySkillIsPublishedUnderTheNameItCallsItself` |
-| It starts from the base before it reaches for anything of its own | `SkillTest::everySkillStartsFromTheBaseBeforeItsOwnEvidence` |
-| It keeps no second copy of what a tool owns | `SkillTest::noSkillKeepsASecondCopyOfWhatAToolOwns` |
-| It routes through the owners of its own facts, in the order it needs them | `SkillTest::everySkillRoutesThroughTheOwnersOfItsOwnFactsInOrder` |
-| Every reference is one hop away and loaded on demand | `SkillTest::everyReferenceIsOneHopAwayAndLoadedOnDemand` |
-| A skill that judges keeps its checklist beside it | `SkillTest::judgmentHeavySkillsKeepTheirChecklistBesideThem` |
-| It says what it owns | `SkillTest::everySkillStatesWhatItOwns` |
+- It is filed under the name it calls itself, with a description a client can
+  route on — `SkillTest::everySkillIsPublishedUnderTheNameItCallsItself`
+- It starts from the base before it reaches for anything of its own —
+  `SkillTest::everySkillStartsFromTheBaseBeforeItsOwnEvidence`
+- It keeps no second copy of what a tool owns —
+  `SkillTest::noSkillKeepsASecondCopyOfWhatAToolOwns`
+- It routes through the owners of its own facts, in the order it needs them —
+  `SkillTest::everySkillRoutesThroughTheOwnersOfItsOwnFactsInOrder`
+- Every reference is one hop away and loaded on demand —
+  `SkillTest::everyReferenceIsOneHopAwayAndLoadedOnDemand`
+- A skill that judges keeps its checklist beside it —
+  `SkillTest::judgmentHeavySkillsKeepTheirChecklistBesideThem`
+- It says what it owns — `SkillTest::everySkillStatesWhatItOwns`
 
 Those seven run over the skills directory rather than over a list, so a skill
 added later is held to them without anybody registering it anywhere — which is

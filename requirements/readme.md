@@ -26,18 +26,18 @@ group is not a filing preference: it is what the requirement is about, and the
 prefix carries it, so a file's id decides its path and two entries cannot
 quietly share a number.
 
-| Group | What it is about |
-| --- | --- |
-| [audience/](audience/readme.md) | Who the answer has to be right for |
-| [discovery/](discovery/readme.md) | Which installation is read, and how |
-| [answers/](answers/readme.md) | What a caller may conclude from one |
-| [documentation/](documentation/readme.md) | What the live manuals answer |
-| [task-skills/](task-skills/readme.md) | What an installed workflow owes the task |
-| [project/](project/readme.md) | The repository the caller is standing in |
-| [scope/](scope/readme.md) | Core conventions where they apply, and nowhere else |
-| [guides/](guides/readme.md) | What a returned draft is worth |
-| [feedback/](feedback/readme.md) | What the backlog has to stay usable for |
-| [knowledge/](knowledge/readme.md) | What the knowledge base has to cover |
+| Group                                     | What it is about                                    |
+| ----------------------------------------- | --------------------------------------------------- |
+| [audience/](audience/readme.md)           | Who the answer has to be right for                  |
+| [discovery/](discovery/readme.md)         | Which installation is read, and how                 |
+| [answers/](answers/readme.md)             | What a caller may conclude from one                 |
+| [documentation/](documentation/readme.md) | What the live manuals answer                        |
+| [task-skills/](task-skills/readme.md)     | What an installed workflow owes the task            |
+| [project/](project/readme.md)             | The repository the caller is standing in            |
+| [scope/](scope/readme.md)                 | Core conventions where they apply, and nowhere else |
+| [guides/](guides/readme.md)               | What a returned draft is worth                      |
+| [feedback/](feedback/readme.md)           | What the backlog has to stay usable for             |
+| [knowledge/](knowledge/readme.md)         | What the knowledge base has to cover                |
 
 Each group's `readme.md` says what that group is about, and the listing at the
 foot of it is generated from the files below it by `bin/cli requirements index` —

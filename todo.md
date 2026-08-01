@@ -10,13 +10,19 @@ Nobody reads it to start. `bin/cli next` prints the one todo that is due and
 nothing else, `bin/cli todo list` is the overview, and this is where both of
 them read from. Every section opens with a head of labelled lines:
 
-| Line | What it says |
-| --- | --- |
-| `**Serves:** <ids>` | what this answers for — a requirement, a feedback, a scenario, a directory. Without it, it is an idea rather than a todo, and ideas go in the feedback that had them. |
-| `**Every:** session` or `**Every:** 7 days` | it recurs and is never deleted. Without it, the section is the queue, and the queue is an order. A cadence in days is an appointment and comes before the queue; `session` is a sighting and comes after it, when the queue is empty. |
-| `**Checked:** <date>` | when a todo measured in days last ran. The session that runs it writes the date. |
-| `**Run:** <command>` | where the step starts. `bin/cli next` runs the ones this repository owns and names the rest. |
-| `**Not an item.**` | neither — something a session would otherwise rediscover and mistake for work. |
+- `**Serves:** <ids>` — what this answers for: a requirement, a feedback, a
+  scenario, a directory. Without it, it is an idea rather than a todo, and
+  ideas go in the feedback that had them.
+- `**Every:** session` or `**Every:** 7 days` — it recurs and is never deleted.
+  Without it, the section is the queue, and the queue is an order. A cadence in
+  days is an appointment and comes before the queue; `session` is a sighting
+  and comes after it, when the queue is empty.
+- `**Checked:** <date>` — when a todo measured in days last ran. The session
+  that runs it writes the date.
+- `**Run:** <command>` — where the step starts. `bin/cli next` runs the ones
+  this repository owns and names the rest.
+- `**Not an item.**` — neither: something a session would otherwise rediscover
+  and mistake for work.
 
 Then one paragraph, and one only: the **next concrete step**, in enough detail
 that someone who has read nothing else can start. "Continue with the bindings"
@@ -30,14 +36,14 @@ working.
 - One that turns out to be half done is trimmed to the part that is left.
 - The order is the order. When something jumps the queue, it moves up here
   first, so the reason is written down before the work starts.
-- The queue comes before the sightings. Judging a feedback or a backlog entry is
-  what puts something *into* the queue, so a queue that still has entries is a
-  queue of things already judged — sighting more of them instead is deciding
+- The queue comes before the sightings. Judging a feedback or a backlog entry
+  is what puts something *into* the queue, so a queue that still has entries is
+  a queue of things already judged — sighting more of them instead is deciding
   twice and doing nothing. The sightings run when it is empty.
 
 ---
 
-## Run the next five open feedback' queries against the server as it is now
+## Run the next five open feedback's queries against the server as it is now
 
 **Serves:** feedback/
 **Every:** session
@@ -518,10 +524,11 @@ those skills nor grade its own implementation as behavioral evidence.
   of the run. In both the server is **not** a Composer dependency, so it is
   reached from this checkout: `php
   /home/benji/projects/typo3-cms-mcp/bin/typo3-cms-mcp install --agent=claude`
-  from the project root publishes the skills and writes the host-php `.mcp.json`.
-  Repeat it after any skill change — the published skills are a copy and nothing
-  reports it when they are older than the server. The generated ignore block in
-  each `.gitignore` and the untracked `.mcp.json` are from that install and stay.
+  from the project root publishes the skills and writes the host-php
+  `.mcp.json`. Repeat it after any skill change — the published skills are a
+  copy and nothing reports it when they are older than the server. The
+  generated ignore block in each `.gitignore` and the untracked `.mcp.json` are
+  from that install and stay.
   - `/home/benji/projects/syntax` — `bk2k/syntax` 5.0.0, TYPO3 14.3.0 below
     `.build/vendor`, DDEV project `syntax` on PHP 8.2, declared `^13.4 ||
     ^14.3`. **Static quality infrastructure is incomplete**: php-cs-fixer and
@@ -536,27 +543,27 @@ those skills nor grade its own implementation as behavioral evidence.
     that run earned.
   - `/home/benji/projects/news` — `georgringer/news` 13.0.2 at `3fe278a2`,
     TYPO3 **13.4.33** below `.Build/vendor` (capital B), host PHP 8.3, no DDEV.
-    **A major behind the world**, which is what it plays: it declares
-    `^12.4.37 || ^13.4.15` on PHP `>= 8.1 < 8.5` while 14 is out, so the
-    declared range does real work in a run instead of being quoted. It owns
+    **A major behind the world**, which is what it plays: it declares `^12.4.37
+    || ^13.4.15` on PHP `>= 8.1 < 8.5` while 14 is out, so the declared range
+    does real work in a run instead of being quoted. It owns
     `Build/Scripts/runTests.sh`, two per-major workflows, 30 test classes and a
-    `Documentation/` tree, and at 132 classes it is the only checkout here large
-    enough that a review has to choose what to open. Cloned `--single-branch`
-    **on purpose**: `origin/main` carries the finished v14 migration, and the
-    checkout that plays this environment for `EXT-01` must not hand that answer
-    over with one `git log` — fetching another branch into it ends its
-    usefulness for that scenario. It is also the one checkout here that carries
-    a **correct escaping opt-out**: six `<f:format.htmlentitiesDecode>` around
-    `{newsItem.title}` and `{newsItem.alternativeTitle}` in `Detail.html` and
-    its two `Styles/` copies, all inside `<n:titleTag>`, whose
-    `TitleTagViewHelper` returns nothing and hands the rendered children to
-    `NewsTitleProvider`; the installed 13.4.33 core puts the resolved title
-    through `htmlspecialchars()` into `<title>|</title>` in `PageRenderer`.
-    That shape is what `SKILL-09` needs, so it is the checkout that case is
-    read in. `REVIEW-02` ran here on 2026-07-31, `partial`
-    at 14:23; a first attempt at 14:02 on the `12-13` branch was discarded
-    rather than judged, because that branch is 185 commits behind `13.x` and 0
-    ahead, and the run spent its top finding saying so.
+    `Documentation/` tree, and at 132 classes it is the only checkout here
+    large enough that a review has to choose what to open. Cloned
+    `--single-branch` **on purpose**: `origin/main` carries the finished v14
+    migration, and the checkout that plays this environment for `EXT-01` must
+    not hand that answer over with one `git log` — fetching another branch into
+    it ends its usefulness for that scenario. It is also the one checkout here
+    that carries a **correct escaping opt-out**: six
+    `<f:format.htmlentitiesDecode>` around `{newsItem.title}` and
+    `{newsItem.alternativeTitle}` in `Detail.html` and its two `Styles/`
+    copies, all inside `<n:titleTag>`, whose `TitleTagViewHelper` returns
+    nothing and hands the rendered children to `NewsTitleProvider`; the
+    installed 13.4.33 core puts the resolved title through `htmlspecialchars()`
+    into `<title>|</title>` in `PageRenderer`. That shape is what `SKILL-09`
+    needs, so it is the checkout that case is read in. `REVIEW-02` ran here on
+    2026-07-31, `partial` at 14:23; a first attempt at 14:02 on the `12-13`
+    branch was discarded rather than judged, because that branch is 185 commits
+    behind `13.x` and 0 ahead, and the run spent its top finding saying so.
 
 ## Not queued, and deliberately so
 
@@ -565,11 +572,13 @@ those skills nor grade its own implementation as behavioral evidence.
 Things a session may otherwise rediscover and mistake for work:
 
 - **`REVIEW-03`** needs a core checkout with actual uncommitted changes.
-  `/home/benji/projects/typo3-cms` is on `main` with a clean tree, so the review
-  has nothing to read. It needs a patch in progress before it can run at all.
-- **The catalog roadmap** — an API signature lookup, a changelog scaffold, a test
-  scaffold, and the structured-output envelope that needs a spike of
-  `vendor/mcp/sdk` first. None of it is blocked; none of it serves an open feedback
-  or a forward review either, which is why it is below everything that does.
+  `/home/benji/projects/typo3-cms` is on `main` with a clean tree, so the
+  review has nothing to read. It needs a patch in progress before it can run at
+  all.
+- **The catalog roadmap** — an API signature lookup, a changelog scaffold, a
+  test scaffold, and the structured-output envelope that needs a spike of
+  `vendor/mcp/sdk` first. None of it is blocked; none of it serves an open
+  feedback or a forward review either, which is why it is below everything that
+  does.
 - **`phpstan/phpstan` 2.2.6 → 2.2.7 and `phpunit` 11.5 → 12.5.** Ordinary
   maintenance, not an item.

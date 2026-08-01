@@ -75,19 +75,21 @@ final class Requirements
      */
     public static function listing(string $group): string
     {
-        $table = "| Id | What must hold | State |\n| --- | --- | --- |\n";
+        $entries = [];
         foreach (self::group($group) as $requirement) {
             $state = self::state($requirement);
-            $table .= sprintf(
-                "| [`%s`](%s) | %s | %s |\n",
-                $requirement['id'],
-                $requirement['file'],
-                $requirement['title'],
-                $state === 'open' ? '**open**' : $state,
-            );
+            $entries[] = [
+                'ref' => $requirement['id'],
+                'path' => $requirement['file'],
+                'says' => sprintf(
+                    '%s · %s',
+                    $requirement['title'],
+                    $state === 'open' ? '**open**' : $state,
+                ),
+            ];
         }
 
-        return $table;
+        return Listing::render($entries);
     }
 
     /**

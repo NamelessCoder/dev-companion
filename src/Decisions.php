@@ -35,6 +35,8 @@ final class Decisions
         'EVI' => 'evidence',
         'SKL' => 'task-skills',
         'FBK' => 'feedback',
+        'DOC' => 'documentation',
+        'COD' => 'code',
     ];
 
     /**
@@ -106,33 +108,22 @@ final class Decisions
     public static function listing(string $group): string
     {
         $root = $group === '';
-        $table = $root
-            ? "| Decided | Id | What was decided | About | State |\n| --- | --- | --- | --- | --- |\n"
-            : "| Decided | Id | What was decided | State |\n| --- | --- | --- | --- |\n";
 
+        $entries = [];
         foreach (self::group($group) as $decision) {
-            $path = ($root ? $decision['group'] . '/' : '') . $decision['file'];
-            $table .= $root
-                ? sprintf(
-                    "| %s | [`%s`](%s) | %s | %s | %s |\n",
-                    $decision['date'],
-                    $decision['id'],
-                    $path,
+            $entries[] = [
+                'ref' => $decision['id'],
+                'path' => ($root ? $decision['group'] . '/' : '') . $decision['file'],
+                'says' => sprintf(
+                    '%s · %s · %s',
                     $decision['title'],
-                    $decision['group'],
-                    $decision['status'],
-                )
-                : sprintf(
-                    "| %s | [`%s`](%s) | %s | %s |\n",
                     $decision['date'],
-                    $decision['id'],
-                    $path,
-                    $decision['title'],
                     $decision['status'],
-                );
+                ),
+            ];
         }
 
-        return $table;
+        return Listing::render($entries);
     }
 
     /**

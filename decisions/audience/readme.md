@@ -8,8 +8,10 @@ client is told to start.
 See [the decisions readme](../readme.md) for how an entry is written and when
 one is added.
 
-| Decided | Id | What was decided | State |
-| --- | --- | --- | --- |
-| 2026-07-31 | [`D-AUD-3`](aud-3-the-instructions-carry-the-entry-point.md) | The instructions carry the entry point, because the tool descriptions never arrive | standing |
-| 2026-07-29 | [`D-AUD-1`](aud-1-three-audiences-and-the-positioning-that-has-not-caught-up.md) | Three audiences, and the positioning that has not caught up | standing |
-| 2026-07-29 | [`D-AUD-2`](aud-2-two-profiles-because-a-third-would-have-been-the-same-set.md) | Two profiles, because a third one would have been the same set | standing |
+- [`D-AUD-3`][D-AUD-3] — The instructions carry the entry point, because the tool descriptions never arrive · 2026-07-31 · standing
+- [`D-AUD-1`][D-AUD-1] — Three audiences, and the positioning that has not caught up · 2026-07-29 · standing
+- [`D-AUD-2`][D-AUD-2] — Two profiles, because a third one would have been the same set · 2026-07-29 · standing
+
+[D-AUD-3]: aud-3-the-instructions-carry-the-entry-point.md
+[D-AUD-1]: aud-1-three-audiences-and-the-positioning-that-has-not-caught-up.md
+[D-AUD-2]: aud-2-two-profiles-because-a-third-would-have-been-the-same-set.md

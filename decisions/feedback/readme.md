@@ -11,12 +11,18 @@ The requirements of the same name are in
 [the decisions readme](../readme.md) for how an entry is written and when it
 earns one.
 
-| Decided | Id | What was decided | State |
-| --- | --- | --- | --- |
-| 2026-08-01 | [`D-FBK-5`](fbk-5-the-queue-is-worked-before-the-pile-is-sighted.md) | The queue is worked before the pile is sighted | standing |
-| 2026-08-01 | [`D-FBK-6`](fbk-6-a-name-is-cut-where-the-feedback-starts-to-differ.md) | A name is cut where the feedback starts to differ | standing |
-| 2026-08-01 | [`D-FBK-7`](fbk-7-how-a-todo-is-worked-travels-with-the-todo.md) | How a todo is worked travels with the todo | standing |
-| 2026-07-31 | [`D-FBK-1`](fbk-1-the-backlog-is-read-out-rather-than-enforced.md) | The backlog is read out rather than enforced | standing |
-| 2026-07-31 | [`D-FBK-2`](fbk-2-the-order-of-the-work-is-declared-not-inferred.md) | The order of the work is declared, not inferred | standing |
-| 2026-07-31 | [`D-FBK-3`](fbk-3-a-session-is-handed-one-todo-not-the-file.md) | A session is handed one todo, not the file | corrected |
-| 2026-07-31 | [`D-FBK-4`](fbk-4-the-model-is-asked-because-nothing-else-can-say-it.md) | The model is asked, because nothing else here can say it | standing |
+- [`D-FBK-5`][D-FBK-5] — The queue is worked before the pile is sighted · 2026-08-01 · standing
+- [`D-FBK-6`][D-FBK-6] — A name is cut where the feedback starts to differ · 2026-08-01 · standing
+- [`D-FBK-7`][D-FBK-7] — How a todo is worked travels with the todo · 2026-08-01 · standing
+- [`D-FBK-1`][D-FBK-1] — The backlog is read out rather than enforced · 2026-07-31 · standing
+- [`D-FBK-2`][D-FBK-2] — The order of the work is declared, not inferred · 2026-07-31 · standing
+- [`D-FBK-3`][D-FBK-3] — A session is handed one todo, not the file · 2026-07-31 · corrected
+- [`D-FBK-4`][D-FBK-4] — The model is asked, because nothing else here can say it · 2026-07-31 · standing
+
+[D-FBK-5]: fbk-5-the-queue-is-worked-before-the-pile-is-sighted.md
+[D-FBK-6]: fbk-6-a-name-is-cut-where-the-feedback-starts-to-differ.md
+[D-FBK-7]: fbk-7-how-a-todo-is-worked-travels-with-the-todo.md
+[D-FBK-1]: fbk-1-the-backlog-is-read-out-rather-than-enforced.md
+[D-FBK-2]: fbk-2-the-order-of-the-work-is-declared-not-inferred.md
+[D-FBK-3]: fbk-3-a-session-is-handed-one-todo-not-the-file.md
+[D-FBK-4]: fbk-4-the-model-is-asked-because-nothing-else-can-say-it.md

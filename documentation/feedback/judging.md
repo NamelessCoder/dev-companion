@@ -145,13 +145,13 @@ maintains this repository. Never a change made quietly.
 Sources are asked in the order [AGENTS.md](../../AGENTS.md) already sets for
 settling a question, and the cheap end answers most feedback:
 
-| | Source | Cost | Answers |
-| --- | --- | --- | --- |
-| 0 | `bin/cli hints probe` | milliseconds | is the answer here at all |
-| 1 | `knowledge/`, `skills/` | cheap | where exactly, and in the right skill |
-| 2 | `.checkouts/` | local | whether what the feedback claims about TYPO3 holds |
-| 3 | `typo3_documentation_lookup` | network | what the official manual says |
-| 4 | the open web | most expensive, least reliable | only where 0–3 give nothing |
+|     | Source                       | Cost                           | Answers                                            |
+| --- | ---------------------------- | ------------------------------ | -------------------------------------------------- |
+| 0   | `bin/cli hints probe`        | milliseconds                   | is the answer here at all                          |
+| 1   | `knowledge/`, `skills/`      | cheap                          | where exactly, and in the right skill              |
+| 2   | `.checkouts/`                | local                          | whether what the feedback claims about TYPO3 holds |
+| 3   | `typo3_documentation_lookup` | network                        | what the official manual says                      |
+| 4   | the open web                 | most expensive, least reliable | only where 0–3 give nothing                        |
 
 Steps 2 to 4 are owed to any feedback that makes a claim about TYPO3 itself — a
 changelog number, a deprecation, a version boundary. Those cannot be settled
@@ -431,11 +431,11 @@ positions of paragraphs.
 
 **States**, which are what makes the queue readable:
 
-| State | Meaning |
-| --- | --- |
-| *(none)* | the queue, in the order it has |
+| State     | Meaning                                                                 |
+| --------- | ----------------------------------------------------------------------- |
+| *(none)*  | the queue, in the order it has                                          |
 | `waiting` | blocked on an answer only the maintainer can give; carries the question |
-| `review` | built and committed, waiting to be accepted |
+| `review`  | built and committed, waiting to be accepted                             |
 
 Today a blocked todo goes to the end of the queue, where it looks like the
 lowest priority in the repository while it is actually waiting for a person.

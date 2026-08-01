@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp;
+namespace Typo3CmsMcp\Installation;
 
 /**
  * The globally registered Fluid namespaces, read from the packages that declare
@@ -17,7 +17,7 @@ namespace Typo3CmsMcp;
  * The files are parsed, never included — the same rule as for the icon registry.
  * They are ordinary PHP that would run in this process.
  */
-final class InstalledFluidNamespaces
+final class FluidNamespaces
 {
     /**
      * Prefix to the PHP namespaces behind it, merged across packages.

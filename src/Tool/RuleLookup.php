@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Typo3CmsMcp\Tool;
 
-use Typo3CmsMcp\ArchitectureHints;
-use Typo3CmsMcp\Knowledge;
+use Typo3CmsMcp\Knowledge\ArchitectureHints;
+use Typo3CmsMcp\Knowledge\Documents;
 use Typo3CmsMcp\Result\Prose;
 use Typo3CmsMcp\Result\Schema;
 use Typo3CmsMcp\ToolResult;
@@ -44,7 +44,7 @@ final class RuleLookup extends ReadOnlyTool
     public static function answer(array $args): ToolResult
     {
         $query = (string) ($args['query'] ?? '');
-        $results = Knowledge::search($query);
+        $results = Documents::search($query);
 
         // The prose and the architecture hints are two corpora, and which one
         // holds a subject is this server's business, not the caller's: site

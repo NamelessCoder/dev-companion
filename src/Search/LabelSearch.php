@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp;
+namespace Typo3CmsMcp\Search;
 
 /**
  * Turns a label query into something the installation's console can answer.

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp;
+namespace Typo3CmsMcp\Installation;
 
 /**
  * The TYPO3 installation the calling agent is working in, if there is one.

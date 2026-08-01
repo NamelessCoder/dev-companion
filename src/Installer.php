@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Typo3CmsMcp;
 
+use Typo3CmsMcp\Installation\Typo3Cli;
+
 final class Installer
 {
     private const SERVER = 'typo3-cms-mcp';

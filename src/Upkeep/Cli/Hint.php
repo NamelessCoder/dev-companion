@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Typo3CmsMcp\Upkeep\Cli;
 
-use Typo3CmsMcp\ArchitectureHints;
-use Typo3CmsMcp\Domains;
+use Typo3CmsMcp\Knowledge\ArchitectureHints;
+use Typo3CmsMcp\Knowledge\Domains;
 use Typo3CmsMcp\Upkeep\Cli;
 use Typo3CmsMcp\Upkeep\Scenarios;
 

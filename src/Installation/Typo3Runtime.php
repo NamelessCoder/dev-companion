@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp;
+namespace Typo3CmsMcp\Installation;
 
 /**
  * What the installation itself says, once it has booted.
@@ -156,7 +156,7 @@ final class Typo3Runtime
      */
     private static function payload(string $root): string
     {
-        $probe = (string) file_get_contents(__DIR__ . '/Runtime/probe.php');
+        $probe = (string) file_get_contents(__DIR__ . '/probe.php');
         $probe = (string) preg_replace('/^<\?php\s/', '', $probe, 1);
 
         return str_replace(

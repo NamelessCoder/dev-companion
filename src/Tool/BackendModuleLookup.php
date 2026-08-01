@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Typo3CmsMcp\Tool;
 
+use Typo3CmsMcp\Installation\Typo3Cli;
 use Typo3CmsMcp\Result\Schema;
 use Typo3CmsMcp\Result\Unanswered;
 use Typo3CmsMcp\ToolResult;
-use Typo3CmsMcp\Typo3Cli;
 
 /**
  * The backend modules the installation has registered.

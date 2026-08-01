@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Typo3CmsMcp\Tool;
 
-use Typo3CmsMcp\InstalledLabels;
-use Typo3CmsMcp\Instance;
-use Typo3CmsMcp\LabelSearch;
+use Typo3CmsMcp\Installation\Instance;
+use Typo3CmsMcp\Installation\Labels;
+use Typo3CmsMcp\Installation\Typo3Cli;
 use Typo3CmsMcp\Result\Schema;
 use Typo3CmsMcp\Result\Unanswered;
+use Typo3CmsMcp\Search\LabelSearch;
 use Typo3CmsMcp\ToolResult;
-use Typo3CmsMcp\Typo3Cli;
 
 /**
  * Labels registered in the installation, answered by the installation.
@@ -96,7 +96,7 @@ final class LabelLookup extends ReadOnlyTool
             // The labels are in the packages' files whether or not the console
             // boots, and it needs a migrated database to boot. A weaker answer
             // beats none, as long as it says which one it is.
-            $candidates = InstalledLabels::all($extension);
+            $candidates = Labels::all($extension);
             if ($candidates === []) {
                 return Unanswered::because(
                     $answer['error'],

@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Typo3CmsMcp\Tool;
 
-use Typo3CmsMcp\Extension;
-use Typo3CmsMcp\Instance;
+use Typo3CmsMcp\Installation\Extension;
+use Typo3CmsMcp\Installation\Instance;
+use Typo3CmsMcp\Installation\Typo3Runtime;
 use Typo3CmsMcp\Result\Schema;
 use Typo3CmsMcp\Result\Unanswered;
 use Typo3CmsMcp\ToolResult;
-use Typo3CmsMcp\Typo3Runtime;
 
 /**
  * What one extension registers, from its own files.

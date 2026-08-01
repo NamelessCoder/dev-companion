@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Typo3CmsMcp\Result;
 
-use Typo3CmsMcp\Knowledge;
+use Typo3CmsMcp\Knowledge\Documents;
 use Typo3CmsMcp\ToolResult;
 
 /**
@@ -83,7 +83,7 @@ final class Prose
     {
         $documents = implode("\n", array_map(
             static fn(array $document): string => '- ' . $document['title'] . ': ' . implode(', ', $document['topics']),
-            Knowledge::topics()
+            Documents::topics()
         ));
 
         $text = sprintf(
@@ -100,14 +100,14 @@ final class Prose
             'matchCount' => 0,
             'matches' => [],
             'alsoInHints' => [],
-            'documents' => Knowledge::topics(),
+            'documents' => Documents::topics(),
         ]);
     }
 
     /** The topics one document covers, for an answer that has to say what it searched. */
     public static function topics(string $documentId): string
     {
-        foreach (Knowledge::topics() as $document) {
+        foreach (Documents::topics() as $document) {
             if ($document['id'] === $documentId) {
                 return implode(', ', $document['topics']);
             }

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Catalog;
+namespace Typo3CmsMcp\Knowledge\Catalog;
 
-use Typo3CmsMcp\Instance;
+use Typo3CmsMcp\Installation\Instance;
 use Typo3CmsMcp\Paths;
 
 /**

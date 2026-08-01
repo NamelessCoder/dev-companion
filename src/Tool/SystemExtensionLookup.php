@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Typo3CmsMcp\Tool;
 
-use Typo3CmsMcp\Catalog\SystemExtensions;
+use Typo3CmsMcp\Knowledge\Catalog\SystemExtensions;
+use Typo3CmsMcp\Knowledge\Versions;
 use Typo3CmsMcp\Result\Schema;
 use Typo3CmsMcp\ToolResult;
-use Typo3CmsMcp\Versions;
 
 /**
  * Whether an extension is part of the core, and since when.

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Typo3CmsMcp\Tool;
 
-use Typo3CmsMcp\InstalledIcons;
-use Typo3CmsMcp\Instance;
+use Typo3CmsMcp\Installation\Icons;
+use Typo3CmsMcp\Installation\Instance;
 use Typo3CmsMcp\Result\Schema;
 use Typo3CmsMcp\Result\Unanswered;
 use Typo3CmsMcp\ToolResult;
@@ -89,7 +89,7 @@ final class IconLookup extends ReadOnlyTool
         // the scope sentence says so. Every answered path below carries that
         // sentence, and a line of its own is one a caller reading the matches
         // would skip.
-        $limitation = InstalledIcons::limitation();
+        $limitation = Icons::limitation();
         if ($limitation !== '') {
             $scope .= ' This list is ' . $limitation . '.';
         }
@@ -101,10 +101,10 @@ final class IconLookup extends ReadOnlyTool
             );
         }
 
-        $concepts = InstalledIcons::concepts();
+        $concepts = Icons::concepts();
         if ($query === '') {
             $lines = [$scope, ''];
-            $lines[] = 'Icon categories in this installation: ' . implode(', ', InstalledIcons::categories()) . '.';
+            $lines[] = 'Icon categories in this installation: ' . implode(', ', Icons::categories()) . '.';
             $lines[] = '';
             $lines[] = 'Concept words that map to a shape: ' . implode(', ', array_keys($concepts)) . '.';
 
@@ -114,15 +114,15 @@ final class IconLookup extends ReadOnlyTool
                 'suggestionCount' => 0,
                 'exactMatch' => false,
                 'icons' => [],
-                'categories' => InstalledIcons::categories(),
+                'categories' => Icons::categories(),
                 'concepts' => array_keys($concepts),
                 'scope' => $scope,
-                'answeredBy' => InstalledIcons::answeredBy(),
+                'answeredBy' => Icons::answeredBy(),
             ]);
         }
 
-        $isIdentifier = InstalledIcons::looksLikeIdentifier($query);
-        $exactMatch = $isIdentifier && InstalledIcons::has($query);
+        $isIdentifier = Icons::looksLikeIdentifier($query);
+        $exactMatch = $isIdentifier && Icons::has($query);
         $matches = self::rank($query, $concepts);
 
         $total = count($matches);
@@ -153,7 +153,7 @@ final class IconLookup extends ReadOnlyTool
                     'exactMatch' => false,
                     'icons' => [],
                     'scope' => $scope,
-                    'answeredBy' => InstalledIcons::answeredBy(),
+                    'answeredBy' => Icons::answeredBy(),
                 ],
             );
         }
@@ -186,7 +186,7 @@ final class IconLookup extends ReadOnlyTool
             if ($icon['aliasOf'] !== null) {
                 $lines[] = '  alias of ' . $icon['aliasOf'];
             }
-            if ($icon['source'] !== InstalledIcons::SOURCE_T3ICONS) {
+            if ($icon['source'] !== Icons::SOURCE_T3ICONS) {
                 $lines[] = '  registered in ' . $icon['source'];
             }
             $lines[] = '  matched: ' . implode(', ', $icon['why']);
@@ -204,7 +204,7 @@ final class IconLookup extends ReadOnlyTool
             'exactMatch' => $exactMatch,
             'icons' => $shown,
             'scope' => $scope,
-            'answeredBy' => InstalledIcons::answeredBy(),
+            'answeredBy' => Icons::answeredBy(),
         ]);
     }
 
@@ -228,7 +228,7 @@ final class IconLookup extends ReadOnlyTool
             return [];
         }
         $normalized = implode('-', $terms);
-        if (InstalledIcons::looksLikeIdentifier($query)) {
+        if (Icons::looksLikeIdentifier($query)) {
             // actions-, content-, status- and the other leading categories say
             // where/how an icon is used. They are not a distinguishing shape
             // and therefore contribute nothing to related suggestions.
@@ -243,7 +243,7 @@ final class IconLookup extends ReadOnlyTool
         }
 
         $scored = [];
-        foreach (InstalledIcons::all() as $icon) {
+        foreach (Icons::all() as $icon) {
             $segments = explode('-', $icon['identifier']);
             $matched = [];
             $score = 0;

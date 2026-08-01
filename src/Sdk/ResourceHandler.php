@@ -6,8 +6,8 @@ namespace Typo3CmsMcp\Sdk;
 
 use Mcp\Server\ClientGateway;
 use Mcp\Server\Handler\ResourceHandlerInterface;
-use Typo3CmsMcp\Knowledge;
-use Typo3CmsMcp\Scope;
+use Typo3CmsMcp\Knowledge\Documents;
+use Typo3CmsMcp\Knowledge\Scope;
 
 /**
  * Serves the typo3://core resources from the knowledge base.
@@ -31,7 +31,7 @@ final class ResourceHandler implements ResourceHandlerInterface
         if (str_starts_with($uri, self::DOCUMENT_PREFIX)) {
             $id = substr($uri, strlen(self::DOCUMENT_PREFIX));
 
-            return Knowledge::read($id);
+            return Documents::read($id);
         }
 
         throw new \RuntimeException(sprintf('Unknown resource: %s', $uri));
@@ -52,7 +52,7 @@ final class ResourceHandler implements ResourceHandlerInterface
                 'id' => $document['id'],
                 'title' => $document['title'],
                 'uri' => self::DOCUMENT_PREFIX . $document['id'],
-            ], Knowledge::documents()),
+            ], Documents::documents()),
         ];
 
         return (string) json_encode($index, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);

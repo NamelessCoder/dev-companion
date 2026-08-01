@@ -28,7 +28,7 @@ brings its own interpreter and fails as an exit code.
 
 ## How the probe gets there
 
-[`src/Runtime/probe.php`](../../src/Runtime/probe.php) is read as text, never
+[`src/Installation/probe.php`](../../src/Installation/probe.php) is read as text, never
 included. `Typo3Runtime` strips its opening tag, writes the installation's
 declared autoloader path into it, and hands it to `Typo3Cli::php()`, which
 delivers it as:

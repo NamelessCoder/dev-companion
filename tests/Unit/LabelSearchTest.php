@@ -7,11 +7,11 @@ namespace Typo3CmsMcp\Tests\Unit;
 use PHPUnit\Framework\Attributes\After;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Typo3CmsMcp\Instance;
-use Typo3CmsMcp\LabelSearch;
+use Typo3CmsMcp\Installation\Instance;
+use Typo3CmsMcp\Installation\Typo3Cli;
+use Typo3CmsMcp\Search\LabelSearch;
 use Typo3CmsMcp\Tests\Support\TemporaryInstallation;
 use Typo3CmsMcp\Tools;
-use Typo3CmsMcp\Typo3Cli;
 
 /**
  * What a label query means, and what an empty answer to one means.

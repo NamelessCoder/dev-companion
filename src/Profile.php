@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Typo3CmsMcp;
 
+use Typo3CmsMcp\Installation\Instance;
+
 /**
  * Which half of this server a client is offered.
  *

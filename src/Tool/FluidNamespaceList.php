@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Typo3CmsMcp\Tool;
 
-use Typo3CmsMcp\InstalledFluidNamespaces;
+use Typo3CmsMcp\Installation\FluidNamespaces;
+use Typo3CmsMcp\Installation\Typo3Cli;
 use Typo3CmsMcp\Result\Schema;
 use Typo3CmsMcp\Result\Unanswered;
 use Typo3CmsMcp\ToolResult;
-use Typo3CmsMcp\Typo3Cli;
 
 /**
  * The globally registered Fluid namespaces of the installation.
@@ -52,7 +52,7 @@ final class FluidNamespaceList extends ReadOnlyTool
             // The declarations are files in the same packages, so a console
             // that cannot boot does not have to end the question. What the
             // files cannot say is what the container did with them.
-            $declared = InstalledFluidNamespaces::all();
+            $declared = FluidNamespaces::all();
             if ($declared === []) {
                 return Unanswered::because($answer['error'], ['namespaces' => [], 'matchCount' => 0]);
             }

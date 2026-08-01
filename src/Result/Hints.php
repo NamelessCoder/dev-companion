@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Typo3CmsMcp\Result;
 
-use Typo3CmsMcp\ArchitectureHints;
-use Typo3CmsMcp\Catalog\References;
-use Typo3CmsMcp\Versions;
+use Typo3CmsMcp\Knowledge\ArchitectureHints;
+use Typo3CmsMcp\Knowledge\Catalog\References;
+use Typo3CmsMcp\Knowledge\Versions;
 
 /**
  * Matched architecture hints, as an answer.

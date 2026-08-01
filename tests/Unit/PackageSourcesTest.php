@@ -7,11 +7,11 @@ namespace Typo3CmsMcp\Tests\Unit;
 use PHPUnit\Framework\Attributes\After;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Typo3CmsMcp\InstalledFluidNamespaces;
-use Typo3CmsMcp\Instance;
+use Typo3CmsMcp\Installation\FluidNamespaces;
+use Typo3CmsMcp\Installation\Instance;
+use Typo3CmsMcp\Installation\Typo3Cli;
 use Typo3CmsMcp\Tests\Support\TemporaryInstallation;
 use Typo3CmsMcp\Tools;
-use Typo3CmsMcp\Typo3Cli;
 
 /**
  * What the installed packages can answer when the console cannot.
@@ -42,7 +42,7 @@ final class PackageSourcesTest extends TestCase
 
         self::assertSame(
             ['core' => ['TYPO3\CMS\Core\ViewHelpers'], 'f' => ['TYPO3\CMS\Backend\ViewHelpers']],
-            InstalledFluidNamespaces::all()
+            FluidNamespaces::all()
         );
     }
 
@@ -66,7 +66,7 @@ final class PackageSourcesTest extends TestCase
     {
         Instance::discoverFrom($this->coreCheckout());
 
-        self::assertSame([], InstalledFluidNamespaces::all());
+        self::assertSame([], FluidNamespaces::all());
     }
 
     #[Test]

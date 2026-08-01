@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Typo3CmsMcp\Tool;
 
-use Typo3CmsMcp\Domains;
+use Typo3CmsMcp\Knowledge\Domains;
+use Typo3CmsMcp\Knowledge\Scope;
+use Typo3CmsMcp\Knowledge\TestSuiteHints;
+use Typo3CmsMcp\Knowledge\Versions;
 use Typo3CmsMcp\Result\Schema;
-use Typo3CmsMcp\Scope;
-use Typo3CmsMcp\TestSuiteHints;
 use Typo3CmsMcp\ToolResult;
-use Typo3CmsMcp\Versions;
 
 /**
  * Which Build/Scripts/runTests.sh suites a change actually needs.

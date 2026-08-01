@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Typo3CmsMcp\Tool;
 
-use Typo3CmsMcp\Catalog\Components;
-use Typo3CmsMcp\Catalog\InstalledComponents;
-use Typo3CmsMcp\Catalog\Meta as CatalogMeta;
+use Typo3CmsMcp\Knowledge\Catalog\Components;
+use Typo3CmsMcp\Knowledge\Catalog\InstalledComponents;
+use Typo3CmsMcp\Knowledge\Catalog\Meta as CatalogMeta;
+use Typo3CmsMcp\Knowledge\Versions;
 use Typo3CmsMcp\Result\Provenance;
 use Typo3CmsMcp\Result\Schema;
 use Typo3CmsMcp\ToolResult;
-use Typo3CmsMcp\Versions;
 
 /**
  * What the component catalog is worth: where the contracts come from, which

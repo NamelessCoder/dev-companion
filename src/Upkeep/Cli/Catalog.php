@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace Typo3CmsMcp\Upkeep\Cli;
 
+use Typo3CmsMcp\Knowledge\Versions;
+use Typo3CmsMcp\Paths;
 use Typo3CmsMcp\Upkeep\Cli;
 use Typo3CmsMcp\Upkeep\TestingFramework;
-use Typo3CmsMcp\Versions;
 
 /**
  * Verifies the bundled catalogs below knowledge/catalog/ against TYPO3 core
@@ -84,7 +85,7 @@ final class Catalog implements Subject
      */
     public static function check(): int
     {
-        $root = dirname(__DIR__, 2);
+        $root = Paths::root();
 
         return max(
             self::verifyBindings($root . '/.checkouts', self::read('components')),
@@ -313,7 +314,7 @@ final class Catalog implements Subject
      */
     private static function read(string $name): array
     {
-        $path = dirname(__DIR__, 2) . '/knowledge/catalog/' . $name . '.json';
+        $path = Paths::root() . '/knowledge/catalog/' . $name . '.json';
 
         return json_decode((string) file_get_contents($path), true);
     }

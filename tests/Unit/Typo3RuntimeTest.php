@@ -7,10 +7,10 @@ namespace Typo3CmsMcp\Tests\Unit;
 use PHPUnit\Framework\Attributes\After;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Typo3CmsMcp\Instance;
+use Typo3CmsMcp\Installation\Instance;
+use Typo3CmsMcp\Installation\Typo3Cli;
+use Typo3CmsMcp\Installation\Typo3Runtime;
 use Typo3CmsMcp\Tests\Support\FakeInstallation;
-use Typo3CmsMcp\Typo3Cli;
-use Typo3CmsMcp\Typo3Runtime;
 
 /**
  * Asking the installation itself, and what happens on the three ways that fail.

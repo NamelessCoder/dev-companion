@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Catalog;
+namespace Typo3CmsMcp\Knowledge\Catalog;
 
+use Typo3CmsMcp\Knowledge\Versions;
 use Typo3CmsMcp\Paths;
-use Typo3CmsMcp\Versions;
 
 /**
  * Where the TYPO3 core keeps its own worked examples.

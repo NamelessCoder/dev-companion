@@ -2,7 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp;
+namespace Typo3CmsMcp\Knowledge;
+
+use Typo3CmsMcp\Paths;
+use Typo3CmsMcp\Search\Text;
 
 /**
  * Recognises what kind of core work a task description asks for.
@@ -162,7 +165,7 @@ final class TaskIntents
             if ($intent['rulesQuery'] === '') {
                 continue;
             }
-            foreach (Knowledge::search($intent['rulesQuery'], self::RULE_DOCUMENTS, $limitPerIntent) as $section) {
+            foreach (Documents::search($intent['rulesQuery'], self::RULE_DOCUMENTS, $limitPerIntent) as $section) {
                 $key = $section['id'] . '#' . $section['heading'];
                 if (isset($seen[$key])) {
                     continue;

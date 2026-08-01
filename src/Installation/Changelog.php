@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp;
+namespace Typo3CmsMcp\Installation;
 
 /**
  * The changelog entries of the installation this server was started in.

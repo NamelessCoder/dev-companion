@@ -6,8 +6,8 @@ namespace Typo3CmsMcp\Tests\Smoke;
 
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
+use Typo3CmsMcp\Knowledge\Scope;
 use Typo3CmsMcp\Paths;
-use Typo3CmsMcp\Scope;
 
 /**
  * Drives the real entrypoint the way a client does: a subprocess speaking

@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace Typo3CmsMcp\Tool;
 
-use Typo3CmsMcp\ArchitectureHints;
-use Typo3CmsMcp\Domains;
 use Typo3CmsMcp\Feedback;
+use Typo3CmsMcp\Knowledge\ArchitectureHints;
+use Typo3CmsMcp\Knowledge\Domains;
+use Typo3CmsMcp\Knowledge\Scope;
+use Typo3CmsMcp\Knowledge\TaskIntents;
+use Typo3CmsMcp\Knowledge\TestSuiteHints;
+use Typo3CmsMcp\Knowledge\Versions;
 use Typo3CmsMcp\Result\Hints;
 use Typo3CmsMcp\Result\Prose;
 use Typo3CmsMcp\Result\Schema;
 use Typo3CmsMcp\Result\VersionScope;
-use Typo3CmsMcp\Scope;
-use Typo3CmsMcp\TaskIntents;
-use Typo3CmsMcp\TestSuiteHints;
 use Typo3CmsMcp\ToolResult;
-use Typo3CmsMcp\Versions;
 
 /**
  * A task checklist, enriched with the architecture hints and core checks that

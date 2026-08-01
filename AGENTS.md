@@ -5,26 +5,28 @@
 ```
 bin/typo3-cms-mcp  # stdio entrypoint (the client launches it as a subprocess)
 bin/cli            # everything this repository is kept in order by; run it with nothing for the list
-src/               # PHP classes (knowledge loading, tools, SDK wiring)
-src/Upkeep/        # what `bin/cli` runs on this repository, and nothing the server answers with
-src/Upkeep/Cli.php # what `bin/cli` supports, and src/Upkeep/Cli/ one class per subject
+src/               # the server, grouped by where an answer comes from
 src/Tools.php      # every tool this server has, and the only place one is switched on
 src/Tool/          # one class per tool: its description, its schemas, its answer
 src/Tool/Tool.php  # the interface each one implements; ReadOnlyTool carries the annotations
 src/Result/        # what several tools build their answer from: the shared schemas, the renderers, the unanswered case
-src/ServerFactory.php  # builds the mcp/sdk server from the tool definitions
+src/Knowledge/     # what is answered from the bundled knowledge base: the documents, the hints, the intents, the versions, the scope
+src/Knowledge/Catalog/  # the component catalog and the translation domain derivation
+src/Installation/  # what only the installation being read can answer: its icons, labels, namespaces, changelog, project and extensions
+src/Installation/Instance.php  # finds the TYPO3 installation the agent is working in
+src/Installation/Typo3Cli.php  # runs that installation's console, via DDEV where there is one
+src/Installation/Typo3Runtime.php  # boots it in a subprocess and asks its container
+src/Installation/probe.php  # what runs over there; never included here
+src/Search/        # the lexical matching every prose and label lookup goes through
 src/Sdk/           # the adapters onto mcp/sdk: tool dispatch and typo3://core resources
-src/Catalog/       # the component catalog and the translation domain derivation
+src/ServerFactory.php  # builds the mcp/sdk server from the tool definitions
 src/Documentation.php  # reads the public index and pages of versioned TYPO3 manuals
-src/Instance.php   # finds the TYPO3 installation the agent is working in
-src/Typo3Runtime.php   # boots that installation in a subprocess and asks its container
-src/Runtime/probe.php  # what runs over there; never included here
 src/Installer.php  # writes guarded generic or agent-specific client setup
-src/Project.php    # the repository around it; src/Extension.php one extension in it
 src/Profile.php    # which half of the server a client is offered (TYPO3_MCP_PROFILE)
-src/Typo3Cli.php   # runs that installation's console, via DDEV where there is one
-src/Upkeep/TestingFramework.php  # which typo3/testing-framework release each covered major is read against
 src/bootstrap.php  # locates the Composer autoloader
+src/Upkeep/        # what `bin/cli` runs on this repository, and nothing the server answers with
+src/Upkeep/Cli.php # what `bin/cli` supports, and src/Upkeep/Cli/ one class per subject
+src/Upkeep/TestingFramework.php  # which typo3/testing-framework release each covered major is read against
 knowledge/         # the knowledge base (markdown + JSON), the data source
 feedback/          # feedback left by agents about this server (standalone checkout only)
 feedback/archive/  # the ones that were worked off; kept, because a session's report is evidence
@@ -43,11 +45,14 @@ tests/             # unit, tool contract, and stdio smoke tests
 vendor/            # Composer dependencies (mcp/sdk); gitignored
 ```
 
-`Typo3CmsMcp\Tools` declares every tool and builds its answer;
-`Typo3CmsMcp\Knowledge` reads and searches the markdown documents. Tool names,
-schemas, and response formatting live in `src/`; bundled answers come from
-`knowledge/`, live manual results from `docs.typo3.org`, and installation facts
-from the installation being read.
+The grouping below `src/` is the one distinction the rest of this file keeps
+drawing: `Knowledge/` answers from what this package ships, `Installation/`
+answers from the TYPO3 the caller is standing in, and a class that reads neither
+sits beside them. `Tool/` is what a client can call, `Result/` is what more than
+one of them builds an answer from, and `Upkeep/` is not part of the server at
+all. `Typo3CmsMcp\Knowledge\Documents` reads and searches the markdown
+documents; live manual results come from `docs.typo3.org` and from nowhere in
+this tree.
 
 ## Where a session starts, and what it owes the next one
 

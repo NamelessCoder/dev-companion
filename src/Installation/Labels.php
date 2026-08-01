@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp;
+namespace Typo3CmsMcp\Installation;
 
-use Typo3CmsMcp\Catalog\TranslationDomain;
+use Typo3CmsMcp\Knowledge\Catalog\TranslationDomain;
 
 /**
  * The labels shipped by the packages of the discovered installation, read from
@@ -20,7 +20,7 @@ use Typo3CmsMcp\Catalog\TranslationDomain;
  * Only the source files are read, never a locale variant: `de.locallang.xlf`
  * is a translation of a file that is itself the label.
  */
-final class InstalledLabels
+final class Labels
 {
     /** Where a package keeps label files, relative to its root. */
     private const LANGUAGE_DIRECTORY = 'Resources/Private/Language';

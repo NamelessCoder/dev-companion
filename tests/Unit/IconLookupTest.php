@@ -7,13 +7,13 @@ namespace Typo3CmsMcp\Tests\Unit;
 use PHPUnit\Framework\Attributes\After;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Typo3CmsMcp\InstalledIcons;
-use Typo3CmsMcp\Instance;
-use Typo3CmsMcp\Scope;
+use Typo3CmsMcp\Installation\Icons;
+use Typo3CmsMcp\Installation\Instance;
+use Typo3CmsMcp\Installation\Typo3Cli;
+use Typo3CmsMcp\Installation\Typo3Runtime;
+use Typo3CmsMcp\Knowledge\Scope;
 use Typo3CmsMcp\Tests\Support\TemporaryInstallation;
 use Typo3CmsMcp\Tools;
-use Typo3CmsMcp\Typo3Cli;
-use Typo3CmsMcp\Typo3Runtime;
 
 /**
  * Where the identifiers this tool answers with may be used.
@@ -30,7 +30,7 @@ final class IconLookupTest extends TestCase
     {
         putenv(Instance::ROOT_VARIABLE);
         Instance::discoverFrom(null);
-        InstalledIcons::forget();
+        Icons::forget();
         Typo3Cli::forget();
         Typo3Runtime::forget();
     }
@@ -122,7 +122,7 @@ final class IconLookupTest extends TestCase
             . "    'actions-close' => ['provider' => 'x', 'source' => 'y'],\n"
             . "];\n"
         );
-        InstalledIcons::forget();
+        Icons::forget();
 
         return $root;
     }

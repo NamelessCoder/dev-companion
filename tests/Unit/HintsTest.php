@@ -7,10 +7,10 @@ namespace Typo3CmsMcp\Tests\Unit;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Typo3CmsMcp\ArchitectureHints;
-use Typo3CmsMcp\Domains;
-use Typo3CmsMcp\TaskIntents;
-use Typo3CmsMcp\TestSuiteHints;
+use Typo3CmsMcp\Knowledge\ArchitectureHints;
+use Typo3CmsMcp\Knowledge\Domains;
+use Typo3CmsMcp\Knowledge\TaskIntents;
+use Typo3CmsMcp\Knowledge\TestSuiteHints;
 use Typo3CmsMcp\Tools;
 
 final class HintsTest extends TestCase

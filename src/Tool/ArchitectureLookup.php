@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Typo3CmsMcp\Tool;
 
-use Typo3CmsMcp\ArchitectureHints;
+use Typo3CmsMcp\Knowledge\ArchitectureHints;
+use Typo3CmsMcp\Knowledge\Scope;
+use Typo3CmsMcp\Knowledge\Versions;
 use Typo3CmsMcp\Result\Hints;
 use Typo3CmsMcp\Result\Schema;
 use Typo3CmsMcp\Result\VersionScope;
-use Typo3CmsMcp\Scope;
 use Typo3CmsMcp\ToolResult;
-use Typo3CmsMcp\Versions;
 
 /**
  * Architecture hints for TYPO3 core paths or task topics, grouped by section.

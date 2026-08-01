@@ -7,8 +7,8 @@ namespace Typo3CmsMcp\Tests\Unit;
 use PHPUnit\Framework\Attributes\After;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Typo3CmsMcp\Instance;
-use Typo3CmsMcp\Project;
+use Typo3CmsMcp\Installation\Instance;
+use Typo3CmsMcp\Installation\Project;
 use Typo3CmsMcp\Tests\Support\TemporaryInstallation;
 
 /**

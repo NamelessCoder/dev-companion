@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp;
+namespace Typo3CmsMcp\Installation;
 
 /**
  * Runs the TYPO3 console of the discovered installation and hands back what it

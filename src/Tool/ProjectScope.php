@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Typo3CmsMcp\Tool;
 
-use Typo3CmsMcp\Project;
+use Typo3CmsMcp\Installation\Project;
 use Typo3CmsMcp\Result\Schema;
 use Typo3CmsMcp\Result\Unanswered;
 use Typo3CmsMcp\ToolResult;

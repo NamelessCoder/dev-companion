@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace Typo3CmsMcp\Tool;
 
 use Typo3CmsMcp\Feedback;
-use Typo3CmsMcp\Instance;
+use Typo3CmsMcp\Installation\Instance;
+use Typo3CmsMcp\Installation\Typo3Cli;
+use Typo3CmsMcp\Knowledge\Scope;
+use Typo3CmsMcp\Knowledge\Versions;
 use Typo3CmsMcp\Profile;
 use Typo3CmsMcp\Result\Schema;
-use Typo3CmsMcp\Scope;
 use Typo3CmsMcp\ToolResult;
-use Typo3CmsMcp\Typo3Cli;
-use Typo3CmsMcp\Versions;
 
 /**
  * What this server covers, what it deliberately does not, and which tool to

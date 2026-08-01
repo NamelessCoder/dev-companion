@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Typo3CmsMcp\Result;
 
-use Typo3CmsMcp\Catalog\Meta as CatalogMeta;
-use Typo3CmsMcp\Instance;
-use Typo3CmsMcp\Versions;
+use Typo3CmsMcp\Installation\Instance;
+use Typo3CmsMcp\Knowledge\Catalog\Meta as CatalogMeta;
+use Typo3CmsMcp\Knowledge\Versions;
 
 /**
  * What a component answer says about where it came from.

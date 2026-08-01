@@ -2,7 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp;
+namespace Typo3CmsMcp\Installation;
+
+use Typo3CmsMcp\Paths;
 
 /**
  * The icon identifiers registered in the discovered installation.
@@ -22,7 +24,7 @@ namespace Typo3CmsMcp;
  *
  * The two answers are not worth the same, and `limitation()` is what says so.
  */
-final class InstalledIcons
+final class Icons
 {
     public const SOURCE_T3ICONS = 't3icons';
     public const SOURCE_FLAGS = 'flags';

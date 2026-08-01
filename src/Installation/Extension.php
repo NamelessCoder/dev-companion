@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp;
+namespace Typo3CmsMcp\Installation;
 
 use Symfony\Component\Yaml\Yaml;
 
@@ -116,7 +116,7 @@ final class Extension
             'middlewares' => PhpArray::keys($path . '/Configuration/RequestMiddlewares.php', 2),
             'serviceTags' => self::serviceTags($path),
             'fluidRoots' => self::fluidRoots($path),
-            'fluidNamespaces' => array_keys(InstalledFluidNamespaces::declaredBy($path)),
+            'fluidNamespaces' => array_keys(FluidNamespaces::declaredBy($path)),
             'typoScript' => self::baseNames($path . '/Configuration/TypoScript/*.typoscript', ''),
             'classes' => self::classes($path),
             'files' => self::files($path),

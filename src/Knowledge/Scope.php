@@ -2,7 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp;
+namespace Typo3CmsMcp\Knowledge;
+
+use Typo3CmsMcp\Feedback;
+use Typo3CmsMcp\Installation\Instance;
+use Typo3CmsMcp\Paths;
+use Typo3CmsMcp\Profile;
 
 /**
  * The server's own description of what it knows and which tool answers what.

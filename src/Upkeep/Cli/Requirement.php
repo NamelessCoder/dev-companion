@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Typo3CmsMcp\Upkeep\Cli;
 
+use Typo3CmsMcp\Paths;
 use Typo3CmsMcp\Upkeep\Requirements;
 
 /**
@@ -188,7 +189,7 @@ final class Requirement implements Subject
     {
         $methods = [];
         foreach (['Unit', 'Contract', 'Smoke'] as $suite) {
-            foreach (glob(dirname(__DIR__, 2) . '/tests/' . $suite . '/*Test.php') ?: [] as $path) {
+            foreach (glob(Paths::root() . '/tests/' . $suite . '/*Test.php') ?: [] as $path) {
                 preg_match_all('/public function (\w+)\(/', (string) file_get_contents($path), $matches);
                 foreach ($matches[1] as $method) {
                     $methods[] = basename($path, '.php') . '::' . $method;
@@ -209,7 +210,7 @@ final class Requirement implements Subject
     private static function scenarioReferences(): array
     {
         $references = [];
-        $root = dirname(__DIR__, 2);
+        $root = Paths::root();
         $files = new \RecursiveIteratorIterator(
             new \RecursiveDirectoryIterator($root . '/scenarios', \FilesystemIterator::SKIP_DOTS),
         );

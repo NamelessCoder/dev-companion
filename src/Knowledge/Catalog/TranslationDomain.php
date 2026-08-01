@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp\Catalog;
+namespace Typo3CmsMcp\Knowledge\Catalog;
 
 /**
  * Derives the translation domain of an XLF label file from its EXT: path.

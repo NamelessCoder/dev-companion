@@ -2,7 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp;
+namespace Typo3CmsMcp\Knowledge;
+
+use Typo3CmsMcp\Search\Text;
 
 /**
  * Derives the technical domains a task touches from its paths and description.

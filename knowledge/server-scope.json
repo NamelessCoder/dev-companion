@@ -103,7 +103,7 @@
             "tools": [
                 "typo3_translation_domain_lookup"
             ],
-            "source": "src/Catalog/TranslationDomain.php, knowledge/architecture-hints/general.json",
+            "source": "src/Knowledge/Catalog/TranslationDomain.php, knowledge/architecture-hints/general.json",
             "provenance": "transferable"
         },
         {

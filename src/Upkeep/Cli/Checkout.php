@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace Typo3CmsMcp\Upkeep\Cli;
 
+use Typo3CmsMcp\Knowledge\Versions;
+use Typo3CmsMcp\Paths;
 use Typo3CmsMcp\Upkeep\TestingFramework;
-use Typo3CmsMcp\Versions;
 
 /**
  * Keeps one TYPO3 core checkout per covered version below .checkouts/, so that
@@ -203,7 +204,7 @@ final class Checkout implements Subject
 
     private static function directory(): string
     {
-        return dirname(__DIR__, 2) . '/.checkouts';
+        return Paths::root() . '/.checkouts';
     }
 
     private static function revision(string $path): string

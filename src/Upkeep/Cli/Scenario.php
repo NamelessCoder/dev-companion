@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Typo3CmsMcp\Upkeep\Cli;
 
+use Typo3CmsMcp\Paths;
 use Typo3CmsMcp\Upkeep\Cli;
 use Typo3CmsMcp\Upkeep\Scenarios;
 
@@ -214,7 +215,7 @@ final class Scenario implements Subject
     private static function server(): string
     {
         $descriptors = [1 => ['pipe', 'w'], 2 => ['pipe', 'w']];
-        $process = @proc_open(['git', 'rev-parse', '--short', 'HEAD'], $descriptors, $pipes, dirname(__DIR__, 2), null);
+        $process = @proc_open(['git', 'rev-parse', '--short', 'HEAD'], $descriptors, $pipes, Paths::root(), null);
         if (!is_resource($process)) {
             return 'unknown';
         }

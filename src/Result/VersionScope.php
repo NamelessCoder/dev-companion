@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Typo3CmsMcp\Result;
 
-use Typo3CmsMcp\Project;
-use Typo3CmsMcp\Versions;
+use Typo3CmsMcp\Installation\Project;
+use Typo3CmsMcp\Knowledge\Versions;
 
 /**
  * Which TYPO3 versions an answer was selected for, and why.

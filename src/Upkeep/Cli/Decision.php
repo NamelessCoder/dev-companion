@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Typo3CmsMcp\Upkeep\Cli;
 
+use Typo3CmsMcp\Paths;
 use Typo3CmsMcp\Upkeep\Decisions;
 use Typo3CmsMcp\Upkeep\Requirements;
 
@@ -186,7 +187,7 @@ final class Decision implements Subject
             $contents = (string) file_get_contents($readme);
             $head = (string) preg_replace(self::LISTING_STARTS, '', $contents);
             file_put_contents($readme, $head . Decisions::listing($group));
-            echo substr($readme, strlen(dirname(__DIR__, 2)) + 1), "\n";
+            echo substr($readme, strlen(Paths::root()) + 1), "\n";
         }
 
         return 0;

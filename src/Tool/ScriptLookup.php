@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Typo3CmsMcp\Tool;
 
-use Typo3CmsMcp\Knowledge;
+use Typo3CmsMcp\Knowledge\Documents;
+use Typo3CmsMcp\Knowledge\Scope;
 use Typo3CmsMcp\Result\Prose;
 use Typo3CmsMcp\Result\Schema;
-use Typo3CmsMcp\Scope;
 use Typo3CmsMcp\ToolResult;
 
 /**
@@ -72,7 +72,7 @@ final class ScriptLookup extends ReadOnlyTool
             );
         }
 
-        $results = Knowledge::search($task, ['typo3-core-scripts']);
+        $results = Documents::search($task, ['typo3-core-scripts']);
 
         if ($results !== []) {
             $text = Prose::sections($results);
@@ -100,7 +100,7 @@ final class ScriptLookup extends ReadOnlyTool
             Prose::topics('typo3-core-scripts')
         );
 
-        $elsewhere = Knowledge::search($task);
+        $elsewhere = Documents::search($task);
         $titles = array_values(array_unique(array_map(
             static fn(array $result): string => $result['title'],
             $elsewhere

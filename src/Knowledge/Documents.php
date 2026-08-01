@@ -2,7 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Typo3CmsMcp;
+namespace Typo3CmsMcp\Knowledge;
+
+use Typo3CmsMcp\Paths;
+use Typo3CmsMcp\Search\TermSearch;
 
 /**
  * Reads and searches the bundled markdown knowledge documents.
@@ -13,7 +16,7 @@ namespace Typo3CmsMcp;
  * when it covers enough of the query, so a lookup that found nothing relevant
  * says so instead of returning the nearest unrelated prose.
  */
-final class Knowledge
+final class Documents
 {
     /**
      * Share of the query's meaningful terms a section has to contain. Below it,

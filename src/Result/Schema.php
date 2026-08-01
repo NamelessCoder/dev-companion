@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Typo3CmsMcp\Result;
 
-use Typo3CmsMcp\Scope;
+use Typo3CmsMcp\Knowledge\Scope;
 
 /**
  * The record shapes several tools answer with, and the builders they are

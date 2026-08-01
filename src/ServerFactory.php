@@ -8,6 +8,8 @@ use Mcp\Schema\ResourceDefinition;
 use Mcp\Schema\Tool;
 use Mcp\Schema\ToolAnnotations;
 use Mcp\Server;
+use Typo3CmsMcp\Knowledge\Documents;
+use Typo3CmsMcp\Knowledge\Scope;
 use Typo3CmsMcp\Sdk\ResourceHandler;
 use Typo3CmsMcp\Sdk\ToolHandler;
 
@@ -79,7 +81,7 @@ final class ServerFactory
             $resourceHandler,
         );
 
-        foreach (Knowledge::documents() as $document) {
+        foreach (Documents::documents() as $document) {
             $builder->add(
                 new ResourceDefinition(
                     uri: 'typo3://core/' . $document['id'],

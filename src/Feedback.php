@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Typo3CmsMcp;
 
 use Composer\InstalledVersions;
+use Typo3CmsMcp\Installation\Instance;
+use Typo3CmsMcp\Installation\Typo3Cli;
 
 /**
  * Stores improvement feedback left by agents using this server, so gaps in the

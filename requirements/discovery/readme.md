@@ -28,6 +28,7 @@ when it is added.
 - [`R-DIS-19`][R-DIS-19] — A registry with no command is answered by the installation itself · held
 - [`R-DIS-20`][R-DIS-20] — The project records which clients are installed in it · held
 - [`R-DIS-21`][R-DIS-21] — The client entry is rewritten when the project outgrows it · held
+- [`R-DIS-22`][R-DIS-22] — A call can tell where it came from · held
 
 [R-DIS-1]: dis-1-discovery-belongs-to-the-stdio-entrypoint-alone.md
 [R-DIS-2]: dis-2-the-packages-are-read-from-the-declared-vendor-directory.md
@@ -50,3 +51,4 @@ when it is added.
 [R-DIS-19]: dis-19-a-registry-with-no-command-is-answered-by-the-installation-itself.md
 [R-DIS-20]: dis-20-the-project-records-which-clients-are-installed-in-it.md
 [R-DIS-21]: dis-21-the-client-entry-is-rewritten-when-the-project-outgrows-it.md
+[R-DIS-22]: dis-22-a-call-can-tell-where-it-came-from.md

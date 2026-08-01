@@ -6,6 +6,7 @@ namespace Typo3CmsMcp\Tests\Smoke;
 
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
+use Typo3CmsMcp\Installation\Instance;
 use Typo3CmsMcp\Knowledge\Scope;
 use Typo3CmsMcp\Paths;
 
@@ -216,6 +217,80 @@ final class StdioServerTest extends TestCase
     }
 
     /**
+     * The one thing a client never tells this server and it has to work out for
+     * itself: which installation the session is in.
+     *
+     * Thirteen of the twenty tools answer differently once one is found, and
+     * three of them are not even offered — so a server that reads nothing
+     * answers about TYPO3 in general where it was asked about a checkout, and
+     * says so nowhere. The mechanism is covered a class at a time by every test
+     * that hands `Instance` a directory itself. What only this can cover is that
+     * something hands one in at all: the line doing it is in the entrypoint, and
+     * with it deleted the rest of the suite stays green.
+     */
+    #[Test]
+    public function theServerWorksOutWhichInstallationItWasStartedIn(): void
+    {
+        $root = $this->installation();
+
+        $scope = $this->session([$this->request(2, 'tools/call', [
+            'name' => 'typo3_server_scope',
+            'arguments' => new \stdClass(),
+        ])], $root)[2]['result']['structuredContent']['installation'];
+
+        self::assertTrue($scope['found'], 'the server was started in an installation and did not find it');
+        self::assertSame($root, $scope['root']);
+        self::assertSame(Instance::KIND_COMPOSER_PROJECT, $scope['kind']);
+        self::assertSame(Instance::VIA_DISCOVERY, $scope['via']);
+    }
+
+    /**
+     * A client starts the server in the directory the session is in, and that is
+     * rarely the project root — it is wherever the file being worked on lives.
+     * Finding the installation from there is the walk-up, and it is the half
+     * that makes the answer right in practice rather than in a fixture.
+     */
+    #[Test]
+    public function itWalksUpToTheInstallationFromInsideIt(): void
+    {
+        $root = $this->installation();
+        $inside = $root . '/packages/my_sitepackage/Classes/Controller';
+        mkdir($inside, 0o777, true);
+
+        $scope = $this->session([$this->request(2, 'tools/call', [
+            'name' => 'typo3_server_scope',
+            'arguments' => new \stdClass(),
+        ])], $inside)[2]['result']['structuredContent']['installation'];
+
+        self::assertTrue($scope['found'], 'started four directories in, the walk-up gave up');
+        self::assertSame($root, $scope['root']);
+        self::assertSame($inside, $scope['startedFrom']);
+    }
+
+    /** A Composer project with TYPO3 in it, which is what most callers stand in. */
+    private function installation(): string
+    {
+        $root = sys_get_temp_dir() . '/typo3-cms-mcp-discovery-' . bin2hex(random_bytes(6));
+        $this->temporaryRoot = $root;
+        mkdir($root . '/vendor/composer', 0o777, true);
+        mkdir($root . '/vendor/typo3/cms-core', 0o777, true);
+        file_put_contents($root . '/composer.json', (string) json_encode([
+            'name' => 'acme/site',
+            'require' => ['typo3/cms-core' => '^13.4'],
+        ], JSON_THROW_ON_ERROR));
+        file_put_contents($root . '/vendor/composer/installed.json', (string) json_encode([
+            'packages' => [[
+                'name' => 'typo3/cms-core',
+                'version' => '13.4.33',
+                'type' => 'typo3-cms-framework',
+                'install-path' => '../typo3/cms-core',
+            ]],
+        ], JSON_THROW_ON_ERROR));
+
+        return $root;
+    }
+
+    /**
      * An installation whose console takes a moment and then reads its stdin to
      * the end, the way `ddev exec` does.
      */
@@ -242,7 +317,7 @@ final class StdioServerTest extends TestCase
      * @param array<int, string> $requests
      * @return array<int, array<string, mixed>> responses by request id
      */
-    private function session(array $requests): array
+    private function session(array $requests, ?string $cwd = null): array
     {
         return $this->call(array_merge([
             $this->request(1, 'initialize', [
@@ -251,19 +326,23 @@ final class StdioServerTest extends TestCase
                 'clientInfo' => ['name' => 'phpunit', 'version' => '1'],
             ]),
             (string) json_encode(['jsonrpc' => '2.0', 'method' => 'notifications/initialized']),
-        ], $requests));
+        ], $requests), $cwd);
     }
 
     /**
      * @param array<int, string> $lines
      * @return array<int, array<string, mixed>>
      */
-    private function call(array $lines): array
+    private function call(array $lines, ?string $cwd = null): array
     {
+        // The working directory is the whole of what a client tells this server
+        // about where it is, so a test about discovery is a test about this
+        // argument.
         $process = proc_open(
             [PHP_BINARY, Paths::root() . '/bin/typo3-cms-mcp'],
             [0 => ['pipe', 'r'], 1 => ['pipe', 'w'], 2 => ['pipe', 'w']],
-            $pipes
+            $pipes,
+            $cwd,
         );
         self::assertIsResource($process);
 

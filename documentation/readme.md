@@ -29,6 +29,9 @@ in order by.
 - [working-a-todo.md](feedback/working-a-todo.md) — what is read before the todo
   `bin/cli todo:next` handed over is changed, where a question the step turns on is
   settled rather than recalled, and what the queue says afterwards.
+- [working-todos-in-parallel.md](feedback/working-todos-in-parallel.md) — how
+  several sessions get different todos, where each of them writes, and how what
+  they wrote comes back.
 
 ## [knowledge/](knowledge/versions.md) — what the server answers, and from where
 

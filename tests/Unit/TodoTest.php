@@ -341,4 +341,30 @@ final class TodoTest extends TestCase
             '`bin/cli todo:next` hands over no todo with ' . Todo::PROCEDURE,
         );
     }
+
+    /**
+     * The same for the page a claim is handed over with. `bin/cli todo:claim`
+     * moves files and names branches, which is the half this repository owns;
+     * the worktree, what a question that arrives mid-work leaves behind and who
+     * merges are not things a command can carry out. A claim taken without them
+     * is a lock nobody knows how to release.
+     */
+    #[Test]
+    public function everyClaimIsHandedWithThePageThatSaysHowSeveralAreWorked(): void
+    {
+        self::assertFileExists(
+            Paths::root() . '/' . Todo::PARALLEL,
+            Todo::PARALLEL . ' is handed over with every claim and does not exist',
+        );
+        self::assertStringContainsString(
+            '(' . substr(Todo::PARALLEL, strlen('documentation/')) . ')',
+            (string) file_get_contents(Paths::root() . '/documentation/readme.md'),
+            Todo::PARALLEL . ' is not listed with the other procedures',
+        );
+        self::assertStringContainsString(
+            'Todo::PARALLEL',
+            (string) file_get_contents(Paths::root() . '/src/Upkeep/Command/TodoClaim.php'),
+            '`bin/cli todo:claim` hands over no claim with ' . Todo::PARALLEL,
+        );
+    }
 }

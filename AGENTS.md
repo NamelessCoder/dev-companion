@@ -45,6 +45,7 @@ skills/base.md     # the order every task starts in, copied into each published 
 requirements/      # what must hold, and what holds it there: one requirement per file, grouped by what it is about; open ones are the backlog
 decisions/         # what a change assumed, and what would show it to be wrong: one decision per file, grouped by what it is about
 todo/              # the order of the work and where the last session stopped: one todo per file, the queue numbered; `bin/cli todo:next` prints one of them
+todo/progress/     # what a session has in hand: out of the queue, offered to nobody else, naming the branch the work is on
 src/Upkeep/Todo.php  # todo/ as data: what recurs and how often, what is queued, what each todo serves
 documentation/     # how a procedure is carried out, grouped by subject; the rules stay here, the steps live there
 tests/             # unit, tool contract, and stdio smoke tests
@@ -102,6 +103,13 @@ and what the file says afterwards:
 How `next` decides what is due, and how the work moves between `feedback/`,
 `requirements/`, `decisions/` and `todo/`:
 [documentation/feedback/readme.md](documentation/feedback/readme.md).
+
+Several sessions at once is `bin/cli todo:claim <n>`, one worktree and one
+branch each. `main` carries who has what in hand, the branch carries the
+half-finished work, and `todo:next` in a worktree hands over that worktree's
+claim rather than the front of the queue. What that costs and what still
+collides:
+[documentation/feedback/working-todos-in-parallel.md](documentation/feedback/working-todos-in-parallel.md).
 
 ## What things are called
 

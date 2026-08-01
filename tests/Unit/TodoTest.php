@@ -10,6 +10,9 @@ use Typo3CmsMcp\Paths;
 use Typo3CmsMcp\Upkeep\Checkouts;
 use Typo3CmsMcp\Upkeep\Todo;
 
+/**
+ * @phpstan-import-type Section from Todo
+ */
 final class TodoTest extends TestCase
 {
     /**
@@ -38,7 +41,7 @@ final class TodoTest extends TestCase
      * cannot displace anything, and recognizable enough for tearDown to find it
      * wherever the move under test has left it.
      *
-     * @return array{title: string, kind: string, position: string, path: string, every: string, checked: string, waitingOn: string, branch: string, claimed: string, serves: array<int, string>, run: array<int, string>, head: string, strays: array<int, string>, body: string}
+     * @return Section
      */
     private function queue(): array
     {
@@ -49,10 +52,24 @@ final class TodoTest extends TestCase
             '# ' . self::MARKER . "\n\n**Serves:** todo/\n\nThe step this fixture stands for.\n",
         );
 
+        return $this->fixture(Todo::items())[0];
+    }
+
+    /**
+     * This test's own todos among the repository's. Sessions working several
+     * todos at once leave real claims in `progress/` while the suite runs, so
+     * what a case wrote is only readable by picking it back out.
+     *
+     * @param array<int, Section> $todos
+     *
+     * @return array<int, Section>
+     */
+    private function fixture(array $todos): array
+    {
         return array_values(array_filter(
-            Todo::items(),
+            $todos,
             static fn(array $todo): bool => str_contains($todo['path'], self::MARKER),
-        ))[0];
+        ));
     }
 
     /**
@@ -187,7 +204,7 @@ final class TodoTest extends TestCase
                 . "\n**Claimed:** 2026-08-01\n\nThe step this claim was taken for.\n",
         );
 
-        $inHand = Todo::progress();
+        $inHand = $this->fixture(Todo::progress());
 
         self::assertCount(1, $inHand);
         self::assertSame('progress', $inHand[0]['kind']);
@@ -216,7 +233,7 @@ final class TodoTest extends TestCase
         $claimed = Todo::claim($queued, '2026-08-01');
 
         self::assertSame('todo/progress/' . self::MARKER . '.md', $claimed);
-        $inHand = Todo::progress()[0];
+        $inHand = $this->fixture(Todo::progress())[0];
         self::assertSame('todo/' . self::MARKER, $inHand['branch']);
         self::assertSame('2026-08-01', $inHand['claimed']);
         self::assertSame('', $inHand['position'], 'a todo in hand keeps a place in an order nothing is coming for it from');
@@ -227,8 +244,8 @@ final class TodoTest extends TestCase
         $released = Todo::release($inHand);
 
         self::assertMatchesRegularExpression('#^todo/\d+-' . self::MARKER . '\.md$#', $released);
-        $back = array_values(array_filter(Todo::items(), static fn(array $t): bool => str_contains($t['path'], self::MARKER)))[0];
-        self::assertSame([], Todo::progress());
+        $back = $this->fixture(Todo::items())[0];
+        self::assertSame([], $this->fixture(Todo::progress()));
         self::assertSame('', $back['branch'], 'a released todo keeps a branch nobody is on');
         self::assertSame('', $back['claimed']);
         self::assertSame($queued['body'], $back['body']);
@@ -244,24 +261,33 @@ final class TodoTest extends TestCase
      * The failure this holds off is a quiet one. A session handed the front of
      * the queue instead of its own claim reads a real todo, starts real work,
      * and is the second person doing it.
+     *
+     * The branch is what the case asserts on rather than the fixture's name,
+     * because the suite runs in the worktrees too: there the checkout already
+     * stands on a claim of its own, and "nothing is in hand" is only true on
+     * `main`.
      */
     #[Test]
     public function aWorktreeStandingOnAClaimIsHandedThatClaim(): void
     {
         [, $branch] = Checkouts::git(['git', '-C', Paths::root(), 'rev-parse', '--abbrev-ref', 'HEAD']);
-        $onNoClaim = Todo::claimed();
+        $branch = trim($branch);
+        $before = Todo::claimed();
 
         @mkdir(Todo::directory() . '/progress');
         file_put_contents(
             Todo::directory() . '/progress/' . self::MARKER . '.md',
-            '# ' . self::MARKER . "\n\n**Serves:** todo/\n**Branch:** " . trim($branch)
+            '# ' . self::MARKER . "\n\n**Serves:** todo/\n**Branch:** " . $branch
                 . "\n**Claimed:** 2026-08-01\n\nThe step this claim was taken for.\n",
         );
         $onTheClaim = Todo::claimed();
 
-        self::assertNull($onNoClaim, 'a checkout on no claim is handed one');
+        self::assertTrue(
+            $before === null || $before['branch'] === $branch,
+            'a checkout is handed a claim somebody else is working'
+        );
         self::assertNotNull($onTheClaim, 'a checkout standing on a claim is handed the queue');
-        self::assertSame(self::MARKER, $onTheClaim['title']);
+        self::assertSame($branch, $onTheClaim['branch']);
         self::assertSame('progress', $onTheClaim['kind']);
     }
 

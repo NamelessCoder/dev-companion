@@ -72,7 +72,10 @@ it is gitignored, and a session working a todo only ever reads it. Only
 ## Starting the sessions
 
 One session per worktree, and what it has to be told is short, because the rest
-it reads here itself. Both sessions of the first run did.
+it reads here itself. Both sessions of the first run did. How the session is
+launched at all — which build, from where, with what switched on — is
+[driving-a-session.md](../driving-a-session.md), and it is the same launch a
+forward run uses.
 
 ```text
 You work in a git worktree and only there:

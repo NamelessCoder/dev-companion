@@ -10,13 +10,16 @@ up in an agent's private memory, where nobody else can read it and no checkout
 carries it. Both happened here before this directory existed.
 
 Pages are grouped by the subject they belong to, because a subject outgrows one
-page and then has nowhere to put the second. Three sit at the top because they
-belong to no subject: this map, the words, and the commands everything is kept
-in order by.
+page and then has nowhere to put the second. Four sit at the top because they
+belong to no subject: this map, the words, the commands everything is kept in
+order by, and the launch two of the subjects below share.
 
 - [glossary.md](glossary.md) — what everything here is called, one line each.
 - [working-on-the-server.md](working-on-the-server.md) — the commands this
   repository is kept in order by, the core checkouts, the test suite.
+- [driving-a-session.md](driving-a-session.md) — what has to be true of an agent
+  session started from a command line, whether it is carrying a forward run or
+  working a todo in a worktree.
 
 ## [feedback/](feedback/readme.md) — how this repository works on itself
 

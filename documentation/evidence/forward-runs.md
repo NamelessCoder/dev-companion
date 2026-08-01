@@ -9,8 +9,9 @@ carried out.
 1. Start the MCP client in the environment the review names — a fresh session,
    with the skills published there as they are in this checkout right now. It
    need not be a person typing: a client driven non-interactively is the same
-   evidence, as long as it is given the prompt and nothing else, and a session
-   id it was started with is what makes its transcript findable afterwards.
+   evidence, as long as it is given the prompt and nothing else. What such a
+   launch has to get right — the session id the grading later needs among it —
+   is [driving-a-session.md](../driving-a-session.md).
    [todo/reference/](../../todo/reference/) says which checkout plays which environment on this
    machine, and how the client is reached there.
 2. `bin/cli scenarios:record <id> <client>` writes the empty run, and

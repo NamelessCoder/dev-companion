@@ -393,6 +393,76 @@ final class CatalogTest extends TestCase
     }
 
     #[Test]
+    public function aCuratedSelectorDecidesWhichExampleIsTheComponent(): void
+    {
+        // The failure D-CAT-3 named as what would show it wrong: a demo page
+        // that opens with scaffolding. Both examples below carry `card`, so the
+        // root class cannot tell them apart — the first is a settings form
+        // built out of a card, the second is the card. Handing over the first
+        // is handing over the page, and no more permissive extractor fixes
+        // that, because there is nothing about it to be permissive towards.
+        $template = <<<'HTML'
+            <sg:example>
+                <form>
+                    <div class="card card-size-large">
+                        <div class="card-header"><h4>Headline</h4></div>
+                        <div class="card-body"><input type="checkbox" class="form-check-input"></div>
+                    </div>
+                </form>
+            </sg:example>
+            <sg:example>
+                <div class="card card-size-medium">
+                    <div class="card-header"><h3 class="card-title">Headline</h3></div>
+                    <div class="card-body"><p class="card-text">Card body text.</p></div>
+                </div>
+            </sg:example>
+            HTML;
+
+        $unselected = DemoMarkup::examples($template, 'card');
+        self::assertStringContainsString('<form>', $unselected[0], 'the first match is the scaffolding');
+
+        $selected = DemoMarkup::examples($template, 'card', 'card-title');
+        self::assertStringContainsString('card-title', $selected[0]);
+        self::assertStringNotContainsString('<form>', implode("\n", $selected), 'the selected example, not the first one');
+
+        // Narrowing only. A selector nothing carries derives nothing, so the
+        // caller keeps the curated markup and labels it a fallback rather than
+        // silently falling back to the scaffolding the selector was written
+        // against.
+        self::assertSame([], DemoMarkup::examples($template, 'card', 'card-image-badge'));
+    }
+
+    #[Test]
+    public function theCardEntrySelectsPastItsDemosOpeningForm(): void
+    {
+        // Read on 2026-08-02 out of .checkouts/14.3 and .checkouts/main:
+        // Cards.fluid.html has three examples carrying `card`, and the first is
+        // the `<form>` of switches. The entry's own markup spells card-title,
+        // which is the sub-component that example does not have.
+        $card = array_values(array_filter(Catalogs::read('components'), static fn(array $c): bool => $c['name'] === 'card'))[0];
+
+        self::assertSame('card-title', $card['demoSelector'] ?? null);
+        self::assertStringContainsString($card['demoSelector'], $card['markup'], 'the selector names something the entry itself shows');
+    }
+
+    #[Test]
+    public function onlyAnEntryWithADemoSelectsWithinIt(): void
+    {
+        // A selector without a demo selects nothing and reads as a rule that is
+        // being applied; a selector no example could carry withholds the
+        // derived markup on every version at once, and that is the failure this
+        // field's fallback makes quiet.
+        foreach (Catalogs::read('components') as $entry) {
+            $selector = $entry['demoSelector'] ?? null;
+            if ($selector === null) {
+                continue;
+            }
+            self::assertNotSame('', (string) ($entry['demoPath'] ?? ''), $entry['name'] . ' selects within a demo it does not name');
+            self::assertMatchesRegularExpression('/^[a-z][a-z0-9-]*$/', (string) $selector, $entry['name'] . ' selects by something no class or custom element is named');
+        }
+    }
+
+    #[Test]
     public function whetherAnExtensionIsPartOfTheCoreIsAnswerable(): void
     {
         // It was answered from memory in both directions in one session: a

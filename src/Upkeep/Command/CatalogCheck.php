@@ -503,7 +503,12 @@ final class CatalogCheck
                 if (!is_file($file)) {
                     continue;
                 }
-                $markup = self::demoMarkup((string) file_get_contents($file), (string) $component['rootClass']);
+                $selector = (string) ($component['demoSelector'] ?? '');
+                $markup = self::demoMarkup(
+                    (string) file_get_contents($file),
+                    (string) $component['rootClass'],
+                    $selector === '' ? null : $selector,
+                );
                 $read[$version['major']] = substr(hash('sha256', $markup), 0, 12);
                 $names = $names || DemoMarkup::carries($markup, (string) $component['rootClass']);
             }
@@ -563,10 +568,15 @@ final class CatalogCheck
      * `RecordSearchBox.fluid.html` are pages about one component rather than
      * galleries, so an edit anywhere in them is an edit to what the entry
      * describes.
+     *
+     * An entry's `demoSelector` narrows that the same way it narrows the
+     * answer, because the two have to be the same reading: a digest over
+     * examples nobody is handed would go on passing while the one example that
+     * is handed over was rewritten underneath it.
      */
-    private static function demoMarkup(string $template, string $rootClass): string
+    private static function demoMarkup(string $template, string $rootClass, ?string $selector): string
     {
-        $examples = DemoMarkup::examples($template, $rootClass);
+        $examples = DemoMarkup::examples($template, $rootClass, $selector);
 
         return $examples === [] ? $template : implode("\n", $examples);
     }

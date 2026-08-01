@@ -392,9 +392,10 @@
     ],
     "sassPath": "Build/Sources/Sass/component/_card.scss",
     "demoPath": "typo3/sysext/styleguide/Resources/Private/Templates/Backend/Components/Cards.fluid.html",
+    "demoSelector": "card-title",
     "markupDigests": {
-      "14": "aa43657c6b73",
-      "15": "aa43657c6b73"
+      "14": "a0243d079471",
+      "15": "a0243d079471"
     },
     "keywords": [
       "card",

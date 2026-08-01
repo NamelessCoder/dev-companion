@@ -47,6 +47,7 @@ final class Components
      *     subComponents: array<int, string>, customProperties: array<int, string>,
      *     markup: string, examples: array<int, string>,
      *     sassPath: ?string, sassPaths: array<int, string>, demoPath: ?string,
+     *     demoSelector: ?string,
      *     keywords: array<int, string>, since: ?int, until: ?int
      * }>
      */
@@ -82,6 +83,7 @@ final class Components
                 'sassPath' => $sassPaths[0] ?? null,
                 'sassPaths' => $sassPaths,
                 'demoPath' => isset($entry['demoPath']) ? (string) $entry['demoPath'] : null,
+                'demoSelector' => isset($entry['demoSelector']) ? (string) $entry['demoSelector'] : null,
                 'keywords' => array_map('strval', $entry['keywords'] ?? []),
                 'since' => isset($entry['since']) ? (int) $entry['since'] : null,
                 'until' => isset($entry['until']) ? (int) $entry['until'] : null,

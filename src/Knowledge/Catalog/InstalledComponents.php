@@ -13,7 +13,10 @@ use Typo3CmsMcp\Installation\Instance;
  * keywords, and the mapping from one component to its styleguide demo. The
  * installed backend CSS decides whether that component and its recorded class
  * and custom-property names actually exist. Where the styleguide package is
- * installed, its first matching example replaces the snapshot markup too.
+ * installed, its first matching example replaces the snapshot markup too —
+ * matching being the index's judgment rather than the root class alone, since
+ * a demo page's opening example is as often its scaffolding as its component
+ * (D-CAT-3, `demoSelector`).
  */
 final class InstalledComponents
 {
@@ -80,7 +83,11 @@ final class InstalledComponents
             if ($demo !== null) {
                 [$file, $reference] = $demo;
                 $sources[] = $reference;
-                $examples = DemoMarkup::examples((string) file_get_contents($file), $rootClass);
+                $examples = DemoMarkup::examples(
+                    (string) file_get_contents($file),
+                    $rootClass,
+                    isset($component['demoSelector']) ? (string) $component['demoSelector'] : null,
+                );
                 if ($examples !== []) {
                     $component['markup'] = array_shift($examples);
                     $component['examples'] = $examples;

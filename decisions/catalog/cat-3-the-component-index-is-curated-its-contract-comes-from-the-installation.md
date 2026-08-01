@@ -45,3 +45,35 @@ markup and classes it had already been given.
   first matching example is page scaffolding rather than component markup. The
   former needs another installed source; the latter needs an explicit selector
   in the curated index rather than a more permissive extractor.
+- **Since then:** the second half happened, and the extractor was the wrong
+  place to look for it. Run over all 25 entries against `.checkouts/14.3` and
+  `.checkouts/main` on 2026-08-02, five demos hand back scaffolding as the
+  component's installed markup, and none of them does so by being sloppy about
+  the root class: `Cards.fluid.html` opens with a card wrapped in a `<form>` of
+  switches, `Input.fluid.html` and `Buttons.fluid.html` with the styleguide's
+  own `example-container` grid, `StatusIndicators.fluid.html` with an
+  `indicators-grid` looping `<f:for each="{states}">` over a variable only its
+  controller sets, `Dropdown.fluid.html` with an inline-styled flex row. Every
+  one of them carries the root class, correctly — the page is built out of the
+  component. So there is nothing for an extractor to be stricter about, which
+  is what the selector was predicted on and is now the reason it is the fix.
+  `demoSelector` on an entry is that say, checked with the same `carries()` the
+  root class is: `card` selects `card-title`, the sub-component its own curated
+  markup spells and the settings form does not, and takes the canonical card on
+  both checkouts. It narrows and never widens — a selector no example carries
+  derives nothing, so the answer keeps the bundled markup and labels it a
+  fallback rather than reverting to the scaffolding it was written against.
+  `catalog:check` digests the selected examples for the same reason, and proved
+  it by failing on `card` alone the moment the selection changed.
+- **Since then:** the four other scaffolding demos are read and left uncurated,
+  because the selector cannot honestly fix them: `Input.fluid.html` and
+  `Buttons.fluid.html` name the component nowhere except inside that grid, and
+  `StatusIndicators.fluid.html` wraps every one of its nine examples in demo
+  layout. There is no better example to select, so selecting one would only
+  move which scaffolding is handed over. What they need is a way to say the
+  demo shows the component nowhere copyable and keep the curated markup — the
+  fallback this decision already **Assumed** for a template with no example at
+  all, reached by a judgment rather than by the count being zero. That is a
+  second field and it is not this one, so the queue carries it rather than
+  `demoSelector` being stretched to mean two things. The first half of **Wrong
+  if** — state that exists only at runtime — is untried either way.

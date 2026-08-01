@@ -22,9 +22,24 @@ final class DemoMarkup
      * answers with all of them; one that wraps nothing in `sg:example` answers
      * with none.
      *
+     * `$selector` is the curated index's say over which of them the component
+     * is actually shown in, and it exists because the root class does not
+     * decide that on its own. `Cards.fluid.html` opens with a card wrapped in a
+     * `<form>` and filled with switches — a page demonstrating a settings form,
+     * carrying `card` like every other example — and taking the first match
+     * handed that over as the installed usage contract. A selector of
+     * `card-title` names the sub-component the component's own examples spell
+     * and the settings form does not (D-CAT-3).
+     *
+     * Selecting is narrowing, never widening: where no example carries the
+     * selector, none is returned rather than the first match standing in. The
+     * caller then keeps the curated markup and says it is a fallback, which is
+     * the honest answer when the demo no longer shows what the index says it
+     * does — and `bin/cli catalog:check` reports the digest that moved.
+     *
      * @return array<int, string>
      */
-    public static function examples(string $template, string $rootClass): array
+    public static function examples(string $template, string $rootClass, ?string $selector = null): array
     {
         preg_match_all('#<sg:example\b[^>]*>(.*?)</sg:example>#si', $template, $matches);
         $all = [];
@@ -40,7 +55,15 @@ final class DemoMarkup
             }
         }
 
-        return array_slice(array_values(array_unique($matching === [] ? $all : $matching)), 0, 4);
+        $chosen = array_values(array_unique($matching === [] ? $all : $matching));
+        if ($selector !== null && $selector !== '') {
+            $chosen = array_values(array_filter(
+                $chosen,
+                static fn(string $example): bool => self::carries($example, $selector),
+            ));
+        }
+
+        return array_slice($chosen, 0, 4);
     }
 
     /**

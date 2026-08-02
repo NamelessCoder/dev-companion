@@ -173,6 +173,25 @@ unestablished rather than filled in:
   trust prompt for the directory is what admits them. Whether a running session
   reads the file again is not documented; `codex mcp list` reports what it has.
   ([MCP](https://learn.chatgpt.com/docs/extend/mcp))
+- **Zed** (`.zed/settings.json`) — a trusted worktree. The MCP page describes
+  `context_servers` only in the file opened with `zed: open settings file`, but
+  the project file is where the rest of the documentation puts it: "every
+  worktree opened may contain a `.zed/settings.json` file with extra
+  configuration options that may require installing and spawning language
+  servers or MCP servers", and Zed's own advisory for the vulnerability the
+  trust model answers says "the Zed IDE loads Model Context Protocol (MCP)
+  configurations from the `settings.json` file located within a project's
+  `.zed` subdirectory". So the written entry is read — behind a gate the other
+  clients do not have. Restricted Mode, which every worktree starts in,
+  prevents "project settings (`.zed/settings.json`) from being parsed and
+  applied" and "MCP servers from being installed and spawned"; the title bar
+  carries an exclamation mark until the directory is trusted there or with
+  `workspace::ToggleWorktreeSecurity`. Whether a window that was already open
+  reads a new file is not documented (read 2026-08-02, when the current release
+  was v1.13.1; the trust model arrived in v0.218.2-pre).
+  ([MCP](https://zed.dev/docs/ai/mcp),
+  [trusted worktrees](https://zed.dev/docs/worktree-trust),
+  [GHSA-cv6g-cmxc-vw8j](https://github.com/zed-industries/zed/security/advisories/GHSA-cv6g-cmxc-vw8j))
 - **Kiro** (`.kiro/settings/mcp.json`) — nothing. "Changes to MCP configuration
   apply automatically when you save the file" and "servers will reconnect". A
   tool `autoApprove` does not name is still asked about on the call.
@@ -195,11 +214,6 @@ unestablished rather than filled in:
   server off, which the written entry does not; whether a session that was
   already open reads the file again is not documented.
   ([MCP servers](https://opencode.ai/docs/mcp-servers/))
-- **Zed** (`.zed/settings.json`) — unestablished, and further than the others:
-  the documentation puts `context_servers` in the settings file opened with
-  `zed: open settings file` and says nothing about a project `.zed/settings.json`,
-  so whether the written entry is read at all is unconfirmed.
-  ([MCP](https://zed.dev/docs/ai/mcp))
 - **Grok** (`.grok/config.toml`) — unestablished. A project `.grok/config.toml`
   does contribute `[mcp_servers]`, walking up to the git root; whether a running
   session reads it again, and whether anything gates it, is not documented.

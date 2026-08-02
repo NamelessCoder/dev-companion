@@ -145,9 +145,11 @@ final class Installer
         'opencode' => 'opencode.json switches a server off with enabled: false, which this entry '
             . 'does not. Its documentation does not say whether a session that was already open '
             . 'reads the file again.',
-        'zed' => 'Zed documents context_servers in the file it opens with zed: open settings file '
-            . 'and says nothing about a project .zed/settings.json, so whether this entry is read '
-            . 'at all is unestablished — check the agent panel for the server.',
+        'zed' => 'Zed reads MCP servers from a project .zed/settings.json, but every worktree '
+            . 'starts in Restricted Mode, where those settings are not applied and no server is '
+            . 'started: trust this directory at the exclamation mark in the title bar, or with '
+            . 'workspace::ToggleWorktreeSecurity. Whether a window that was already open reads '
+            . 'the file again is not documented.',
         'grok' => 'Grok reads mcp_servers from a project .grok/config.toml, walking up to the git '
             . 'root. Its documentation does not say whether a running session reads the file '
             . 'again; grok mcp doctor reports what it has.',

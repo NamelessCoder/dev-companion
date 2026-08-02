@@ -11,12 +11,14 @@ one is added.
 - [`D-KNW-006`][D-KNW-006] — A word for a thing administered from the backend adds no domain to a backend-only task · 2026-08-02
 - [`D-KNW-007`][D-KNW-007] — A hint says whose it is in both directions · 2026-08-02
 - [`D-KNW-008`][D-KNW-008] — Tooling is a row the answer crosses, not a dimension the corpus stores · 2026-08-02
+- [`D-KNW-009`][D-KNW-009] — A domain keyword is a phrasing, not a word · 2026-08-02
 - [`D-KNW-004`][D-KNW-004] — Package knowledge needs a producer before it needs discovery · 2026-07-30
 
 [D-KNW-005]: knw-005-one-scope-replaced-the-four-vocabularies.md
 [D-KNW-006]: knw-006-a-word-for-a-thing-administered-from-the-backend.md
 [D-KNW-007]: knw-007-a-hint-says-whose-it-is-in-both-directions.md
 [D-KNW-008]: knw-008-tooling-is-a-row-that-is-crossed-in-the-answer.md
+[D-KNW-009]: knw-009-a-domain-keyword-is-a-phrasing-not-a-word.md
 [D-KNW-004]: knw-004-package-knowledge-needs-a-producer-before-it-needs-discovery.md
 
 ### Revoked, and kept as the record

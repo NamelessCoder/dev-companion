@@ -192,6 +192,7 @@
     "title": "Testing a Project Extension",
     "scope": "extension",
     "appliesTo": [
+      "test coverage",
       "set up tests",
       "write tests",
       "test setup",

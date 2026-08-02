@@ -45,7 +45,15 @@ final class Domains
         self::PHP => [
             'php', 'class', 'service', 'datahandler', 'tca', 'formengine',
             'middleware', 'repository', 'controller', 'event listener', 'hook',
-            'dependency injection', 'unit test', 'functional test', 'phpstan',
+            'dependency injection', 'phpstan',
+            // Testing is PHP work here, and the bare word is not how it is
+            // said: `test` alone moved two of the 105 scenario prompts and hint
+            // titles into PHP and made one of them worse, because the term
+            // weights are taken over the candidates and a wider set reweighs
+            // everything in it. These are the phrasings of somebody who has no
+            // suite yet, which is the case the domain was missing (D-KNW-009).
+            'unit test', 'functional test', 'test coverage', 'test suite',
+            'automated test', 'set up tests', 'write tests',
             'backend module', 'module registration', 'backend route',
         ],
         self::TYPESCRIPT => [

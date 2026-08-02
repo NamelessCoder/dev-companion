@@ -1098,6 +1098,26 @@ final class HintsTest extends TestCase
         self::assertContains('extension-static-analysis', $reaches('set up phpstan for our extension'));
         self::assertContains('browser-tests', $reaches('browser tests for the site package'));
 
+        // Without a path, where the domain rather than the ranking used to
+        // decide: "site package" is a Fluid and TypoScript keyword and nothing
+        // in the sentence was a PHP one, so php.json was filtered out before
+        // anything was scored (D-KNW-009).
+        self::assertSame(
+            'project-extension-tests',
+            array_column(
+                ArchitectureHints::find([], 'Set up tests for our site package extension', 5)['matchedHints'],
+                'id',
+            )[0] ?? '',
+        );
+        self::assertSame(
+            'project-extension-tests',
+            array_column(
+                ArchitectureHints::find([], "Review our site package's test coverage", 5)['matchedHints'],
+                'id',
+            )[0] ?? '',
+            'SKILL-01 asks in the words the vocabulary was missing',
+        );
+
         // And the core side, which is what the fourth phrasing would have cost.
         $core = array_column(
             ArchitectureHints::find(

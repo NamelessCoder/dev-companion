@@ -33,13 +33,15 @@ CI=true ./Build/Scripts/runTests.sh -s functional -- typo3/sysext/impexp/Tests/F
 Frequently needed options:
 
 - `-d sqlite|mariadb|mysql|postgres` selects the database for `-s functional`
-  and the installer e2e suites. sqlite is the default and the fastest.
+  and for whichever installer suite the branch carries. sqlite is the default
+  and the fastest.
 - `-a mysqli|pdo_mysql` selects the driver for mysql and mariadb.
 - `-i <version>` pins a database version, for example `-d mariadb -i 11.4`.
 - `-p <php minor>` selects the PHP version of the container.
-- `-n` turns `cgl`, `cglGit`, `cglHeader`, `cglHeaderGit`, and `normalizeXliff`
+- `-n` turns the `cgl` suites, and any other suite the branch lists under it,
   into a dry run that only reports.
-- `-c <chunk>/<total>` splits functional or e2e runs.
+- `-c <chunk>/<total>` splits `-s functional`, and the browser suite where the
+  branch has one, into chunks.
 - `-x` (with optional `-y <port>`) enables xdebug towards a listening IDE.
 - `-b docker|podman` selects the container runtime; podman is the default.
 
@@ -100,21 +102,18 @@ Required for every changelog entry below
 
 ### Check and Normalize XLIFF
 
-```bash
-CI=true ./Build/Scripts/runTests.sh -s checkIntegrityXliff
-CI=true ./Build/Scripts/runTests.sh -s normalizeXliff
-```
-
-Run both after editing language files, so the diff carries no formatting noise.
+Editing language files calls for a check that the XLIFF is valid and a run that
+normalizes its formatting, so the diff carries no noise. Which suites those are
+is a property of the branch, and some branches have neither: ask
+`typo3_test_run_guide` with the `targetVersion` for the commands that exist on
+yours.
 
 ### Run TypeScript/Frontend Checks
 
-```bash
-CI=true ./Build/Scripts/runTests.sh -s build
-```
-
-Useful for backend UI, JavaScript, TypeScript, Sass, contrib, and frontend asset
-changes.
+The frontend build covers backend UI, JavaScript, TypeScript, Sass, contrib and
+generated assets. Whether it is one suite or split in two changed inside the
+covered range, so ask `typo3_test_run_guide` with the `targetVersion` rather
+than copying a command from here.
 
 ### Run SCSS Linting
 
@@ -156,7 +155,7 @@ build-css`, `run lint`, and `run watch:build`.
 
 - Prefer running a targeted test while iterating.
 - Run broader checks before marking a task as ready for review.
-- For Sass changes, run `lintScss` for stylelint and `build` or `npm -- run
-  build-css` for generated CSS.
+- For Sass changes, run `lintScss` for stylelint and `npm -- run build-css` for
+  generated CSS.
 - Keep command output snippets short in summaries; include the command and
   pass/fail result.

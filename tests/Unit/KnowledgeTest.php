@@ -11,6 +11,8 @@ use Typo3CmsMcp\Knowledge\Coverage;
 use Typo3CmsMcp\Knowledge\Documents;
 use Typo3CmsMcp\Knowledge\Scope;
 use Typo3CmsMcp\Knowledge\TaskIntents;
+use Typo3CmsMcp\Knowledge\TestSuiteHints;
+use Typo3CmsMcp\Knowledge\Versions;
 
 final class KnowledgeTest extends TestCase
 {
@@ -68,6 +70,32 @@ final class KnowledgeTest extends TestCase
                 (string) file_get_contents($document['path']),
                 $document['id'] . ' dates a statement in its prose, where nothing can bind it',
             );
+        }
+    }
+
+    #[Test]
+    public function noProseDocumentNamesACheckOnlySomeBranchesHave(): void
+    {
+        // The other half of the rule above, for the statement that dates itself
+        // without a digit in it. `-s checkIntegrityXliff` reads as timeless and
+        // arrives in 14; a 12.4 contributor asking typo3_script_lookup about
+        // language files was handed it, plus `-s normalizeXliff` and `-s build`,
+        // none of which that branch has. The suite is where the range already
+        // lives, so a prose document may only name one that every covered major
+        // carries — anything narrower belongs in test-suite-hints.json, where
+        // typo3_test_run_guide filters it by targetVersion.
+        $everywhere = array_intersect(...array_map(TestSuiteHints::availableOn(...), Versions::majors()));
+
+        foreach (Documents::documents() as $document) {
+            preg_match_all('/-s\s+([A-Za-z0-9_-]+)/', (string) file_get_contents($document['path']), $matches);
+            foreach (array_unique($matches[1]) as $suite) {
+                self::assertContains(
+                    $suite,
+                    $everywhere,
+                    $document['id'] . ' hands over -s ' . $suite . '; prose may only name a suite that '
+                        . 'test-suite-hints.json declares on every covered major',
+                );
+            }
         }
     }
 

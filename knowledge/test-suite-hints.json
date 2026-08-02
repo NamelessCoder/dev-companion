@@ -14,7 +14,7 @@
       },
       {
         "option": "-d sqlite|mariadb|mysql|postgres",
-        "description": "Database for `-s functional` and the installer e2e suites. sqlite is the default and the fastest; use mariadb or postgres to reproduce DBMS-specific behaviour."
+        "description": "Database for `-s functional` and for whichever installer suite the branch carries. sqlite is the default and the fastest; use mariadb or postgres to reproduce DBMS-specific behaviour."
       },
       {
         "option": "-a mysqli|pdo_mysql",
@@ -30,15 +30,15 @@
       },
       {
         "option": "-n",
-        "description": "Dry run for `cgl`, `cglGit`, `cglHeader`, `cglHeaderGit`, and `normalizeXliff`: report issues without modifying files."
+        "description": "Dry run for the `cgl` suites, and for any other suite the branch lists under it: report issues without modifying files. `-h` says which ones those are."
       },
       {
         "option": "-c <chunk>/<total>",
-        "description": "Split functional or e2e tests into chunks and run one of them."
+        "description": "Split `-s functional`, and the browser suite where the branch has one, into chunks and run one of them."
       },
       {
         "option": "-x [-y <port>]",
-        "description": "Enable xdebug towards a listening IDE (default port 9003) for unit, functional, and installer e2e runs."
+        "description": "Enable xdebug towards a listening IDE (default port 9003) for `-s unit`, `-s functional`, and the installer suite where the branch has one."
       },
       {
         "option": "-b docker|podman",
@@ -239,7 +239,28 @@
         "css"
       ],
       "description": "Frontend build for TypeScript, Sass, Contrib, and assets.",
-      "whenToUse": "Use when backend UI assets, TypeScript, Sass, or generated assets change."
+      "whenToUse": "Use when backend UI assets, TypeScript, Sass, or generated assets change.",
+      "since": 13
+    },
+    {
+      "suite": "buildCss",
+      "command": "CI=true ./Build/Scripts/runTests.sh -s buildCss",
+      "domains": [
+        "css"
+      ],
+      "description": "Sass to CSS builder, the branch's half of the frontend build that covers stylesheets.",
+      "whenToUse": "Use when Sass or CSS sources change. The branches that carry it split the frontend build in two; run buildJavascript for the other half.",
+      "until": 12
+    },
+    {
+      "suite": "buildJavascript",
+      "command": "CI=true ./Build/Scripts/runTests.sh -s buildJavascript",
+      "domains": [
+        "typescript"
+      ],
+      "description": "TypeScript to JavaScript builder, the branch's half of the frontend build that covers backend modules.",
+      "whenToUse": "Use when TypeScript sources change. The branches that carry it split the frontend build in two; run buildCss for the other half.",
+      "until": 12
     },
     {
       "suite": "lintScss",
@@ -275,7 +296,7 @@
         "typescript"
       ],
       "description": "JavaScript unit tests for the built backend modules.",
-      "whenToUse": "Use for TypeScript modules with real logic or state transitions. Run `-s build` first so the tests see the current output."
+      "whenToUse": "Use for TypeScript modules with real logic or state transitions. Run the branch's frontend build first so the tests see the current output."
     },
     {
       "suite": "e2e",

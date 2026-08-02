@@ -282,8 +282,20 @@ final class Documents
 
         $cut = substr($body, 0, self::MAX_SECTION_LENGTH);
         $lastBreak = strrpos($cut, "\n");
+        $cut = $lastBreak === false ? $cut : substr($cut, 0, $lastBreak);
 
-        return [rtrim($lastBreak === false ? $cut : substr($cut, 0, $lastBreak)), true];
+        // A cut that lands between the two fences of a code block hands over an
+        // opening ``` with nothing closing it, and every line the caller reads
+        // after that is inside a code block that never ends. Which byte the
+        // budget falls on is a property of the text above it, so this held only
+        // as long as nobody edited the document. The half-open fence goes with
+        // the cut.
+        if (substr_count($cut, '```') % 2 !== 0) {
+            $fence = strrpos($cut, '```');
+            $cut = $fence === false ? $cut : substr($cut, 0, $fence);
+        }
+
+        return [rtrim($cut), true];
     }
 
     private static function readTitle(string $content): ?string

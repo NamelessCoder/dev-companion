@@ -1277,7 +1277,11 @@ final class HintsTest extends TestCase
                 . 'iteration check and the review-ready checks, without unrelated PHP or TypeScript suites',
         ])->data['suites'], 'suite');
 
-        self::assertSame(['build', 'build-css', 'lintScss'], $suites);
+        // Nothing said which version this is for, so the frontend build is
+        // listed under both names it has across the covered range, each with
+        // its own range beside it. What the case is about is the narrowing: a
+        // Sass path, and no PHP or TypeScript suite in the answer.
+        self::assertSame(['build', 'build-css', 'buildCss', 'lintScss'], $suites);
     }
 
     #[Test]

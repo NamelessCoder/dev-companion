@@ -21,6 +21,7 @@
     ],
     "checks": [
       "CI=true ./Build/Scripts/runTests.sh -s build",
+      "CI=true ./Build/Scripts/runTests.sh -s buildCss",
       "CI=true ./Build/Scripts/runTests.sh -s lintScss",
       "CI=true ./Build/Scripts/runTests.sh -s npm -- run build-css"
     ]
@@ -50,6 +51,7 @@
     ],
     "checks": [
       "CI=true ./Build/Scripts/runTests.sh -s build",
+      "CI=true ./Build/Scripts/runTests.sh -s buildCss",
       "CI=true ./Build/Scripts/runTests.sh -s lintScss"
     ]
   },
@@ -89,6 +91,7 @@
     ],
     "checks": [
       "CI=true ./Build/Scripts/runTests.sh -s build",
+      "CI=true ./Build/Scripts/runTests.sh -s buildCss",
       "CI=true ./Build/Scripts/runTests.sh -s lintScss"
     ]
   },
@@ -113,6 +116,7 @@
     ],
     "checks": [
       "CI=true ./Build/Scripts/runTests.sh -s build",
+      "CI=true ./Build/Scripts/runTests.sh -s buildCss",
       "CI=true ./Build/Scripts/runTests.sh -s lintScss"
     ]
   },
@@ -145,6 +149,7 @@
     ],
     "checks": [
       "CI=true ./Build/Scripts/runTests.sh -s build",
+      "CI=true ./Build/Scripts/runTests.sh -s buildCss",
       "CI=true ./Build/Scripts/runTests.sh -s lintScss"
     ]
   },
@@ -167,6 +172,7 @@
     ],
     "checks": [
       "CI=true ./Build/Scripts/runTests.sh -s build",
+      "CI=true ./Build/Scripts/runTests.sh -s buildCss",
       "CI=true ./Build/Scripts/runTests.sh -s lintScss",
       "CI=true ./Build/Scripts/runTests.sh -s functional"
     ]
@@ -208,7 +214,8 @@
     ],
     "checks": [
       "CI=true ./Build/Scripts/runTests.sh -s lintScss",
-      "CI=true ./Build/Scripts/runTests.sh -s build"
+      "CI=true ./Build/Scripts/runTests.sh -s build",
+      "CI=true ./Build/Scripts/runTests.sh -s buildCss"
     ]
   },
   {
@@ -234,6 +241,7 @@
     ],
     "checks": [
       "CI=true ./Build/Scripts/runTests.sh -s build",
+      "CI=true ./Build/Scripts/runTests.sh -s buildCss",
       "CI=true ./Build/Scripts/runTests.sh -s lintScss",
       "CI=true ./Build/Scripts/runTests.sh -s lintTypescript",
       "CI=true ./Build/Scripts/runTests.sh -s unitJavascript"
@@ -263,6 +271,7 @@
     ],
     "checks": [
       "CI=true ./Build/Scripts/runTests.sh -s build",
+      "CI=true ./Build/Scripts/runTests.sh -s buildCss",
       "CI=true ./Build/Scripts/runTests.sh -s lintScss",
       "CI=true ./Build/Scripts/runTests.sh -s unitJavascript"
     ]
@@ -320,6 +329,7 @@
     ],
     "checks": [
       "CI=true ./Build/Scripts/runTests.sh -s build",
+      "CI=true ./Build/Scripts/runTests.sh -s buildCss",
       "CI=true ./Build/Scripts/runTests.sh -s lintScss"
     ]
   },
@@ -354,6 +364,7 @@
     ],
     "checks": [
       "CI=true ./Build/Scripts/runTests.sh -s build",
+      "CI=true ./Build/Scripts/runTests.sh -s buildCss",
       "CI=true ./Build/Scripts/runTests.sh -s lintScss"
     ]
   },
@@ -386,6 +397,7 @@
     ],
     "checks": [
       "CI=true ./Build/Scripts/runTests.sh -s build",
+      "CI=true ./Build/Scripts/runTests.sh -s buildCss",
       "CI=true ./Build/Scripts/runTests.sh -s lintScss"
     ]
   },
@@ -415,6 +427,7 @@
     ],
     "checks": [
       "CI=true ./Build/Scripts/runTests.sh -s build",
+      "CI=true ./Build/Scripts/runTests.sh -s buildCss",
       "CI=true ./Build/Scripts/runTests.sh -s lintScss"
     ]
   },
@@ -442,6 +455,7 @@
     ],
     "checks": [
       "CI=true ./Build/Scripts/runTests.sh -s build",
+      "CI=true ./Build/Scripts/runTests.sh -s buildCss",
       "CI=true ./Build/Scripts/runTests.sh -s lintScss"
     ]
   },
@@ -473,6 +487,7 @@
     ],
     "checks": [
       "CI=true ./Build/Scripts/runTests.sh -s build",
+      "CI=true ./Build/Scripts/runTests.sh -s buildCss",
       "CI=true ./Build/Scripts/runTests.sh -s lintScss"
     ]
   },
@@ -501,6 +516,7 @@
     ],
     "checks": [
       "CI=true ./Build/Scripts/runTests.sh -s build",
+      "CI=true ./Build/Scripts/runTests.sh -s buildCss",
       "CI=true ./Build/Scripts/runTests.sh -s lintScss"
     ]
   },
@@ -525,6 +541,7 @@
     ],
     "checks": [
       "CI=true ./Build/Scripts/runTests.sh -s build",
+      "CI=true ./Build/Scripts/runTests.sh -s buildCss",
       "CI=true ./Build/Scripts/runTests.sh -s lintScss"
     ]
   },
@@ -571,6 +588,7 @@
     ],
     "checks": [
       "CI=true ./Build/Scripts/runTests.sh -s build",
+      "CI=true ./Build/Scripts/runTests.sh -s buildCss",
       "CI=true ./Build/Scripts/runTests.sh -s lintScss"
     ]
   },
@@ -598,6 +616,7 @@
     ],
     "checks": [
       "CI=true ./Build/Scripts/runTests.sh -s build",
+      "CI=true ./Build/Scripts/runTests.sh -s buildCss",
       "CI=true ./Build/Scripts/runTests.sh -s lintScss"
     ]
   }

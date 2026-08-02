@@ -6,6 +6,7 @@ namespace Typo3CmsMcp\Tool;
 
 use Typo3CmsMcp\Installation\Instance;
 use Typo3CmsMcp\Knowledge\Catalog\TranslationDomain;
+use Typo3CmsMcp\Knowledge\Versions;
 use Typo3CmsMcp\Result\Schema;
 use Typo3CmsMcp\Result\ToolResult;
 
@@ -46,7 +47,7 @@ final class TranslationDomainLookup extends ReadOnlyTool
 
     public static function description(): string
     {
-        return 'Compute the translation domain an XLF file resolves to, from its path. The domain is the canonical way to reference a label (backend.alt_doc:key) in TCA, LanguageService::sL() and f:translate, and it is registered nowhere — it follows from the path by the rules the core itself applies, which live in TranslationDomainMapper on one branch and TranslationDomainResolver on the next. Because it is computed, it also answers for a file outside the core and for one a patch is about to add. Where the installation being read is older than translation domains, it answers with the full LLL:EXT: reference instead: the domain form renders nothing there and fails at runtime rather than at build time.';
+        return 'Compute the translation domain an XLF file resolves to, from its path. The domain is the canonical way to reference a label (backend.alt_doc:key) in TCA, LanguageService::sL() and f:translate, and it is registered nowhere — it follows from the path by the rules the core itself applies, which live in TranslationDomainMapper on one branch and TranslationDomainResolver on the next. Because it is computed, it also answers for a file outside the core and for one a patch is about to add. Where the version it is composed for is older than translation domains, it answers with the full LLL:EXT: reference instead: the domain form renders nothing there and fails at runtime rather than at build time. That version is the one stated as targetVersion, and the installation this server was started in where none is — state it when the work is on a branch other than what is installed.';
     }
 
     public static function inputSchema(): array
@@ -55,6 +56,7 @@ final class TranslationDomainLookup extends ReadOnlyTool
             'type' => 'object',
             'properties' => [
                 'path' => ['type' => 'string', 'minLength' => 1, 'description' => 'The XLF file path, either as an EXT: reference ("EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf") or relative to a core checkout ("typo3/sysext/backend/Resources/Private/Language/locallang_alt_doc.xlf").'],
+                'targetVersion' => ['type' => 'string', 'description' => 'The TYPO3 version the label is being written for, for example "13.4" or "14". It decides one thing here and it decides it entirely: below the version that resolves domains the domain form renders nothing, so the answer is the LLL:EXT: reference instead. Defaults to the installation this server was started in, which is the wrong answer for a backport branch or a second checkout — state it there.'],
             ],
             'required' => ['path'],
         ];
@@ -64,7 +66,8 @@ final class TranslationDomainLookup extends ReadOnlyTool
     {
         return Schema::object([
             'path' => Schema::string('The XLF path the domain was computed from.'),
-            'domain' => Schema::nullableString('The translation domain it resolves to. Null when the path names no extension, and also when the installation being read is too old to resolve domains at all — there the full LLL:EXT: reference is the answer.'),
+            'targetVersion' => ['type' => ['integer', 'null'], 'description' => 'The TYPO3 major the answer was composed for — stated by the caller, or read from the installation. Null means neither said, and the domain comes back unqualified: it is the form from ' . self::SINCE . ' onwards, and nothing placed this call on a version.'],
+            'domain' => Schema::nullableString('The translation domain it resolves to. Null when the path names no extension, and also when the version this was composed for is too old to resolve domains at all — there the full LLL:EXT: reference is the answer.'),
             'domainOnNewerVersions' => Schema::nullableString('Set only in that second case: what the domain would be on a version that has them. It is not usable on this installation.'),
         ], ['path', 'domain']);
     }
@@ -72,6 +75,12 @@ final class TranslationDomainLookup extends ReadOnlyTool
     public static function answer(array $args): ToolResult
     {
         $path = trim((string) ($args['path'] ?? ''));
+        $stated = isset($args['targetVersion']) ? trim((string) $args['targetVersion']) : '';
+        // One major, never the several a repository may declare: the whole
+        // answer is one string that either works on a version or renders
+        // nothing there, and "it depends which of your two majors" is not an
+        // answer a label can be written from (D-DIS-004).
+        $target = Versions::target($stated === '' ? null : $stated);
         $domain = TranslationDomain::fromPath($path);
 
         if ($domain === null) {
@@ -82,37 +91,38 @@ final class TranslationDomainLookup extends ReadOnlyTool
                     . 'or a checkout path ("typo3/sysext/backend/Resources/Private/Language/locallang_alt_doc.xlf").',
                     $path
                 ),
-                ['path' => $path, 'domain' => null],
+                ['path' => $path, 'targetVersion' => $target, 'domain' => null],
             );
         }
 
-        // The domain form is younger than the versions this is asked from. On
-        // an installation that has no resolver for it, the domain string is
+        // The domain form is younger than the versions this is asked from. On a
+        // version that has no resolver for it, the domain string is
         // syntactically fine and resolves to nothing at runtime: every label it
         // is written into silently renders empty. That is the one answer here
         // that has to be withheld rather than qualified.
-        $major = Instance::typo3Major();
-        if ($major !== null && $major < self::SINCE) {
+        if ($target !== null && $target < self::SINCE) {
             $reference = str_starts_with($path, 'EXT:') ? $path : 'EXT:<key>/' . ltrim($path, '/');
 
             return ToolResult::create(
                 implode("\n", [
                     sprintf(
-                        'The installation here is TYPO3 %s, which has no translation domains: the API that resolves '
-                        . 'them arrived after it. Reference the file itself instead:',
-                        Instance::typo3Version(),
+                        '%s has no translation domains: the API that resolves them arrived after it. Reference the '
+                        . 'file itself instead:',
+                        $stated === ''
+                            ? 'The installation here is TYPO3 ' . Instance::typo3Version() . ', which'
+                            : 'TYPO3 ' . $target . ', which you asked about,',
                     ),
                     '',
                     '  LLL:' . $reference . ':<trans-unit id>',
                     '',
                     sprintf(
                         'For the record, the domain this path would resolve to on a version that has them is "%s". '
-                        . 'Writing it into a label on this installation renders nothing, and fails at runtime rather '
-                        . 'than at build time.',
+                        . 'Writing it into a label there renders nothing, and fails at runtime rather than at build '
+                        . 'time.',
                         $domain,
                     ),
                 ]),
-                ['path' => $path, 'domain' => null, 'domainOnNewerVersions' => $domain],
+                ['path' => $path, 'targetVersion' => $target, 'domain' => null, 'domainOnNewerVersions' => $domain],
             );
         }
 
@@ -124,10 +134,42 @@ final class TranslationDomainLookup extends ReadOnlyTool
                 '',
                 'Reference a label in it as "' . $domain . ':<trans-unit id>" — in TCA, in LanguageService::sL(), '
                     . 'and in f:translate as separate domain and key attributes.',
+                self::composedFor($stated, $target),
                 'Which trans-units the file actually holds is a property of your checkout: read the file, and remember '
                     . 'that an installation can override it through LANG/resourceOverrides.',
             ]),
-            ['path' => $path, 'domain' => $domain, 'domainOnNewerVersions' => null],
+            ['path' => $path, 'targetVersion' => $target, 'domain' => $domain, 'domainOnNewerVersions' => null],
+        );
+    }
+
+    /**
+     * Which version the domain is being handed over for.
+     *
+     * The withheld answer has always named the version it was withheld for; the
+     * one that hands a domain over said nothing, so a caller on a backport
+     * branch could not see that it had been answered for the installation
+     * instead. Where nothing placed the call at all, that is what it says —
+     * this form is the newer one, and a caller who is on an older branch has to
+     * be the one to know it.
+     */
+    private static function composedFor(string $stated, ?int $target): string
+    {
+        if ($stated !== '') {
+            return sprintf('Composed for TYPO3 %d, which resolves domains.', $target);
+        }
+        if ($target !== null) {
+            return sprintf(
+                'Composed for the installation here, TYPO3 %s. State targetVersion where the label is being written '
+                . 'for another branch.',
+                Instance::typo3Version(),
+            );
+        }
+
+        return sprintf(
+            'Nothing here says which TYPO3 this is for: no installation was found and no targetVersion was stated. '
+            . 'Domains resolve from %d onwards — on anything older this path is referenced as LLL:EXT:, and stating '
+            . 'targetVersion is what gets that answer.',
+            self::SINCE,
         );
     }
 }

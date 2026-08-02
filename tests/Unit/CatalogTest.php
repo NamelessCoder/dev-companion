@@ -76,6 +76,34 @@ final class CatalogTest extends TestCase
         self::assertNull($result->data['domainOnNewerVersions']);
     }
 
+    /**
+     * `D-DIS-004`'s second **Wrong if**: a caller working on a version other
+     * than the installation the server found. The answer here is one string
+     * that either works on a version or silently renders nothing, so which
+     * version it is composed for has to be the caller's to state — a backport
+     * branch read from a 14 installation gets the domain form and every label
+     * written with it renders empty.
+     */
+    #[Test]
+    public function theStatedVersionDecidesTheDomainRatherThanTheInstallation(): void
+    {
+        $path = 'EXT:my_ext/Resources/Private/Language/locallang_db.xlf';
+
+        Instance::discoverFrom($this->composerProject('vendor', '13.4.33'));
+        $onFourteen = Registry::call('typo3_translation_domain_lookup', ['path' => $path, 'targetVersion' => '14']);
+
+        self::assertSame(14, $onFourteen->data['targetVersion']);
+        self::assertSame('my_ext.db', $onFourteen->data['domain']);
+
+        Instance::discoverFrom($this->composerProject('vendor', '14.3.0'));
+        $onThirteen = Registry::call('typo3_translation_domain_lookup', ['path' => $path, 'targetVersion' => '13.4']);
+
+        self::assertSame(13, $onThirteen->data['targetVersion']);
+        self::assertNull($onThirteen->data['domain']);
+        self::assertSame('my_ext.db', $onThirteen->data['domainOnNewerVersions']);
+        self::assertStringContainsString('TYPO3 13, which you asked about', $onThirteen->text);
+    }
+
     #[Test]
     public function nothingIsSaidAboutASkewThatIsNotThere(): void
     {

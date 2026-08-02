@@ -68,3 +68,12 @@ it. `TranslationDomainLookup` asks `Instance::typo3Major()` directly and takes
 `DocumentationLookup` all take a `targetVersion` through `Versions::target()`.
 The feature that would close it is queued as
 `todo/360-let-the-translation-domain-answer-be-asked-for-a`.
+
+Closed on 2026-08-02. `typo3_translation_domain_lookup` takes a `targetVersion`
+and resolves it through `Versions::target()` like the four tools above, reports
+the major it was composed for, and says so in the answer that hands a domain
+over as well as in the one that withholds it — where nothing states a version
+and no installation was found, it names the version domains arrive in rather
+than answering as if that were settled. It stays one major: an extension
+declaring two has no single domain answer, and `Versions::targets()` would make
+this a different decision than the one taken here.

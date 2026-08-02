@@ -790,10 +790,12 @@ LanguageService::sL() and f:translate, and it is registered nowhere — it
 follows from the path by the rules the core itself applies, which live in
 TranslationDomainMapper on one branch and TranslationDomainResolver on the
 next. Because it is computed, it also answers for a file outside the core and
-for one a patch is about to add. Where the installation being read is older
+for one a patch is about to add. Where the version it is composed for is older
 than translation domains, it answers with the full LLL:EXT: reference instead:
 the domain form renders nothing there and fails at runtime rather than at build
-time.
+time. That version is the one stated as targetVersion, and the installation
+this server was started in where none is — state it when the work is on a
+branch other than what is installed.
 
 `readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: false`
 
@@ -803,14 +805,24 @@ time.
   reference ("EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf") or
   relative to a core checkout
   ("typo3/sysext/backend/Resources/Private/Language/locallang_alt_doc.xlf").
+- `targetVersion` *(string)* — The TYPO3 version the label is being written
+  for, for example "13.4" or "14". It decides one thing here and it decides it
+  entirely: below the version that resolves domains the domain form renders
+  nothing, so the answer is the LLL:EXT: reference instead. Defaults to the
+  installation this server was started in, which is the wrong answer for a
+  backport branch or a second checkout — state it there.
 
 **Answers with**
 
 - `path` *(string, required)* — The XLF path the domain was computed from.
+- `targetVersion` *(integer or null)* — The TYPO3 major the answer was
+  composed for — stated by the caller, or read from the installation. Null
+  means neither said, and the domain comes back unqualified: it is the form
+  from 14 onwards, and nothing placed this call on a version.
 - `domain` *(string or null, required)* — The translation domain it
-  resolves to. Null when the path names no extension, and also when the
-  installation being read is too old to resolve domains at all — there the
-  full LLL:EXT: reference is the answer.
+  resolves to. Null when the path names no extension, and also when the version
+  this was composed for is too old to resolve domains at all — there the full
+  LLL:EXT: reference is the answer.
 - `domainOnNewerVersions` *(string or null)* — Set only in that second
   case: what the domain would be on a version that has them. It is not usable
   on this installation.

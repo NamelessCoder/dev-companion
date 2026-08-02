@@ -135,3 +135,44 @@ Archiving is the same open question as before, and it is not answered twice.
 `003103` waits on the answer `002951` waits on, with one thing added in its
 favour: two of its five halves have landed, so `closed` would not stand over an
 untouched subject here.
+
+## Since then
+
+`2026-08-01-003634` is a third summary of the same session, judged on 2026-08-02
+by the mapping, and the first **Wrong if** did not fire again. Its shape is new
+here. It is not a roundup of subjects but a self-rating: five scored sections,
+whose headings are the workflow of `skills/typo3-extension-testing/SKILL.md`.
+The mapping still holds, because the sections are the same subjects under the
+skill's words.
+
+| Half of the self-rating                                                                                                | Where it is                                                                          |
+| ---------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
+| §1 `references/base.md` unread, neither scope call made, remembered `composer test:*` in place of the declared commands  | `003356`, judged in [`D-SKL-001`](../task-skills/skl-001-the-order-a-task-starts-in-is-one-file.md) |
+| §2, §3, §5 rendered frontend and backend preview established by curl, the project's own `Tests/E2E` harness untouched, no spec run | `003533`, judged in [`D-KNW-017`](../knowledge/knw-017-a-verification-question-reaches-the-subject-cell-and-never-the-layer-cell.md), with a card in `todo/open/` |
+| §4 tests written against core ViewHelpers to find out what they do                                                       | `003933`, which reports the same substitution of experiment for reading                |
+| §4 `fwrite` and `extract` debug left in the regression test, and a throwaway `LinkDebugTest`                             | `003938`, whose **Suggestion** asks for the safe way to introspect an installed class  |
+| the premise that the skill was never activated                                                                           | withdrawn by `003736`; `D-KNW-017` records the withdrawal and reads the trigger out    |
+
+Its own query reaches less than its halves do, which is the pattern
+[`D-ANS-021`](../answers/ans-021-a-longer-manual-query-re-aims-rather-than-narrows.md)
+names and `002951` already showed on a probe. Re-run in this checkout on
+2026-08-02, `bin/cli hints:probe` matches nothing for the feedback's own `Query`
+line, nothing for either clause of its **Suggestion** in the words it wrote them
+— "surface the testing skill whenever test layers are touched", the base to
+checklist order — and nothing for "which commands does this project declare for
+running its tests". The one phrasing that reaches is "route rendered-output
+verification to a browser test", at `browser-tests appliesTo(12) + text(98)`,
+and it reaches because it names the layer. That is `D-KNW-017` measured a second
+time from a different sentence, not a second gap.
+
+What this summary adds beyond the mapping is where the boundary runs, which is
+what [`D-FBK-018`](fbk-018-a-strength-is-evidence-about-a-boundary-not-about-a-decision.md)
+says a strength carries. Its two strengths are that the functional PHPUnit layer
+was the right one for the rendering defect and that the regression test it left
+behind passes; its costs are all on the other side of that same line, where
+rendered output had to be seen. So the crossing `D-KNW-017` queues has to reach
+the caller who wants to know whether a page came out right, without taking the
+below-the-UI defect with it.
+
+No todo is derived. Every step this feedback would name is a step on a sibling's
+card, and archiving is the question `002951` and `003103` already carry.

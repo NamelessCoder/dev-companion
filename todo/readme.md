@@ -15,10 +15,11 @@ directories are the stages one runs through, and moving between them is the
 whole of what happens to a todo; the other two sit beside the stages rather
 than among them.
 
-- **`open/`** — the queue, and the number in the name is the place in it. A todo
-  that moves is renamed, one that is finished is deleted, and a new one is a new
-  file, so two sessions can both add work without writing the same file. The
-  numbers run in tens, which is what leaves room to put one between two others.
+- **`open/`** — the queue, read by the priority in each head and, where two say
+  the same, by the date in each name. Nothing here is a position, so moving a
+  todo is editing one line rather than renaming a run of files, and two sessions
+  adding work at once cannot pick the same place. One that is finished is
+  deleted, and a new one is a new file.
 - **`progress/`** — what a session has in hand. The queue is an order, not an
   assignment, so `bin/cli todo:next` hands the same first item to everybody who
   asks; where two sessions work at once, taking one on is a move out of the
@@ -28,7 +29,7 @@ than among them.
   question it carries is what puts it back.
 - **`waiting/`** — what no session can start, because it is blocked on an
   answer nothing here can produce. It says what it waits on, `bin/cli todo:next`
-  offers it to nobody, and the answer is what numbers it back into the queue.
+  offers it to nobody, and the answer is what moves it back into the queue.
   A recurring todo asks every seven days what is in here, so a question waits
   rather than disappears.
 
@@ -43,11 +44,19 @@ report has no git to read the deletion out of.
 - **`reference/`** — not work at all: what a session would otherwise rediscover
   and mistake for some.
 
+A todo in a stage is named by the day and time it arrived — the shape a feedback
+is named in, so one habit covers both — and that is what a listing sorts by.
+
 Each file opens with its title, then a head of labelled lines:
 
 - `**Serves:** <ids>` — what this answers for: a requirement, a feedback, a
   scenario, a directory. Without it, it is an idea rather than a todo, and
   ideas go in the feedback that had them.
+- `**Priority:** high`, `normal` or `low` — where it stands among the rest, and
+  the whole list. Leaving it off is the fourth thing it can say: nobody has
+  judged this yet, which sorts it below `low`. That is a state, not a blank to
+  fill in — a todo written for a feedback carries no priority until somebody
+  decides what the feedback is worth.
 - `**Every:** session` or `**Every:** 7 days` — the cadence of a recurring todo.
   A cadence in days is an appointment and comes before the queue; `session` is
   a sighting and comes after it, when the queue is empty.

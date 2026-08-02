@@ -62,3 +62,19 @@ end of a run, finishing a todo meant loading 30 kB to delete a paragraph.
   `D-FBK-003`'s **Wrong if** reached by a route this decision opened. Both are
   readable in the history: the first in `git log --stat`, the second in what a
   session says it read.
+
+## Since then
+
+The first half stands and the second is gone. One todo is still one file, which
+is what this entry was written to settle and what made every shape after it an
+edit rather than a rewrite. The queue is no longer in the names: the number was
+a rank, and a rank is something only one session at a time can hand out, so two
+sessions queueing work on two branches both read the same last number and both
+took it. A priority in the head and the arrival date in the name say what the
+number said, and neither has to be unique —
+[`D-FBK-015`](fbk-015-a-priority-is-a-class-and-the-stamp-is-the-rest.md).
+
+The **Wrong if** above was never met and that is the point of recording this
+here rather than revoking the entry. Nothing ever reordered the queue, so the
+tens were never proved too tight; what failed was the assumption underneath
+them, that the order is a rank at all.

@@ -15,6 +15,7 @@ earns one.
 - [`D-FBK-012`][D-FBK-012] — The queue comes first, and the sighting hands over one · 2026-08-02
 - [`D-FBK-013`][D-FBK-013] — An empty queue is a state, not a failure · 2026-08-02
 - [`D-FBK-014`][D-FBK-014] — Every stage is a directory, and closing is none · 2026-08-02
+- [`D-FBK-015`][D-FBK-015] — A priority is a class, and the stamp is the rest · 2026-08-02
 - [`D-FBK-006`][D-FBK-006] — A name is cut where the feedback starts to differ · 2026-08-01
 - [`D-FBK-007`][D-FBK-007] — How a todo is worked travels with the todo · 2026-08-01
 - [`D-FBK-008`][D-FBK-008] — One todo is one file, and the queue is in the names · 2026-08-01
@@ -28,6 +29,7 @@ earns one.
 [D-FBK-012]: fbk-012-the-queue-comes-first-and-the-sighting-hands-over-one.md
 [D-FBK-013]: fbk-013-an-empty-queue-is-a-state-not-a-failure.md
 [D-FBK-014]: fbk-014-every-stage-is-a-directory-and-closing-is-none.md
+[D-FBK-015]: fbk-015-a-priority-is-a-class-and-the-stamp-is-the-rest.md
 [D-FBK-006]: fbk-006-a-name-is-cut-where-the-feedback-starts-to-differ.md
 [D-FBK-007]: fbk-007-how-a-todo-is-worked-travels-with-the-todo.md
 [D-FBK-008]: fbk-008-one-todo-is-one-file-and-the-queue-is-in-the-names.md

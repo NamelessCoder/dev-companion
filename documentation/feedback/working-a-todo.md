@@ -112,21 +112,23 @@ and say why. "What do you want here?" hands the reading back.
 waited for. The person asked may not have the answer either, and that is not a
 smaller outcome than doing the work.
 
-Where the todo can still be worked once the question is out of the way, it goes
-to the **end of the queue** — renaming its file to the number after the last
-one. `bin/cli todo:next` hands over the first queued todo and has no notion of one
-being blocked, so a todo left where it was is handed to every session behind it
-until somebody moves it. Going last is also its own timer: it comes round again
-as the queue drains.
+Where the todo can still be worked once the question is out of the way, it stays
+in the queue and **the priority is what says when** — lowered where the session
+judges that something else should go first, left alone where it should not.
+`bin/cli todo:next` hands over the first queued todo and has no notion of one
+being blocked, so a todo whose priority nobody touched is handed to the next
+session too. That is correct where it really is the next thing, and where it is
+not, the fix is a word somebody wrote and can be disagreed with rather than a
+place a command moved it to.
 
 Where nothing can be done until somebody answers, it moves to `todo/waiting/`
 instead and carries the question in a `**Waiting on:**` line. That is the
-difference the state exists for: at the end of the queue such a todo reads as
-the lowest priority in the repository while it is actually waiting on a person,
-and every session that reaches it re-derives the same question. No session is
+difference the state exists for: parked among the workable ones such a todo
+reads as ordinary work while it is actually waiting on a person, and every
+session that reaches it re-derives the same question. No session is
 offered it, and the way back is a todo of its own — every seven days,
 `bin/cli todo:waiting` prints what is blocked and the questions get asked again.
-The answer is what numbers one back into the queue.
+The answer is what moves one back into the queue.
 
 Either way it keeps its file, and the session's job is to leave it startable
 cold: the open question written into its paragraph in the words it was asked in,
@@ -159,8 +161,8 @@ and `bin/cli todo:next` prints the one that applies:
   next concrete step rewritten. A todo nobody can start from is worse than none,
   and "half done" includes the half that is waiting on an answer. One put back
   unstarted is the same case, with one addition: it keeps its file, gains the
-  open question, and is renumbered to the end of the queue, because `next` would
-  otherwise hand it to every session until somebody did.
+  open question, and carries whichever priority the session now believes it has,
+  because `next` would otherwise hand it to the following one unchanged.
 - One that cannot be started at all until somebody answers **moves to
   `waiting/`**, with the question in its head. It is offered to no session, so
   the question has to be readable there by whoever can answer it.

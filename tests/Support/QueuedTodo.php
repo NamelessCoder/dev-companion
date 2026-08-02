@@ -55,39 +55,45 @@ trait QueuedTodo
     /**
      * One queued todo, behind whatever the queue already has.
      *
-     * The number is the last one plus ten, and an empty queue has no last one:
-     * it starts the numbering rather than reading a position off nothing, which
-     * is what produced two `Undefined array key -1` warnings the day the queue
-     * first ran dry.
+     * It carries no priority, which is what puts it last however long the queue
+     * is: an unjudged todo sorts below all three words, and a case about the
+     * front of the queue is therefore reading something this fixture cannot
+     * have displaced.
+     *
+     * A case that is about the order says which priority and which stamp it
+     * needs; one that is not says neither and gets an unjudged todo of today.
      *
      * @return Section
      */
-    private function queueATodo(): array
+    private function queueATodo(?string $priority = null, ?string $stamp = null): array
     {
-        $items = Todo::items();
-        $last = $items === [] ? 0 : (int) $items[count($items) - 1]['position'];
+        $name = sprintf('%s-%s.md', $stamp ?? date('Y-m-d-His'), self::MARKER);
         file_put_contents(
-            sprintf('%s/open/%03d-%s.md', Todo::directory(), $last + 10, self::MARKER),
-            '# ' . self::MARKER . "\n\n**Serves:** todo/\n\nThe step this fixture stands for.\n",
+            Todo::directory() . '/open/' . $name,
+            '# ' . self::MARKER . "\n\n**Serves:** todo/"
+            . ($priority === null ? '' : "\n**Priority:** " . $priority)
+            . "\n\nThe step this fixture stands for.\n",
         );
 
-        return $this->ownTodos(Todo::items())[0];
+        return $this->ownTodos(Todo::items(), $name)[0];
     }
 
     /**
-     * This test's own todos among the repository's. Sessions working several
-     * todos at once leave real claims in `progress/` while the suite runs, so
-     * what a case wrote is only readable by picking it back out.
+     * This test's own todos among the repository's, in the order they were
+     * handed over. Sessions working several todos at once leave real claims in
+     * `progress/` while the suite runs, so what a case wrote is only readable
+     * by picking it back out.
      *
      * @param array<int, Section> $todos
+     * @param string|null         $named one file of them, where the case wrote more than one
      *
      * @return array<int, Section>
      */
-    private function ownTodos(array $todos): array
+    private function ownTodos(array $todos, ?string $named = null): array
     {
         return array_values(array_filter(
             $todos,
-            static fn(array $todo): bool => str_contains($todo['path'], self::MARKER),
+            static fn(array $todo): bool => str_contains($todo['path'], $named ?? self::MARKER),
         ));
     }
 }

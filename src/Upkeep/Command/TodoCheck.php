@@ -38,7 +38,6 @@ final class TodoCheck
     {
         $problems = [];
         $reading = [];
-        $positions = [];
 
         foreach (Todo::all() as $todo) {
             $where = $todo['path'];
@@ -62,6 +61,20 @@ final class TodoCheck
             }
             if ($todo['body'] === '') {
                 $problems[] = $where . ' does not say what the next concrete step is';
+            }
+            // Absence is a reading and a wrong word is a typo, so only the
+            // second is a problem: a todo carrying no priority is one nobody
+            // has judged, which is a state the order already has a place for.
+            if ($todo['priority'] !== '' && !in_array($todo['priority'], Todo::PRIORITIES, true)) {
+                $problems[] = $where . ' is ' . $todo['priority'] . ', and a priority is '
+                    . implode(', ', Todo::PRIORITIES);
+            }
+            // The stamp is the second half of the order, so a todo in a stage
+            // that has none sorts wherever the file system puts it — which is
+            // the one failure here nothing else would report.
+            if (in_array($todo['kind'], ['queue', 'progress', 'waiting'], true)
+                && preg_match(Todo::STAMP, basename($where)) !== 1) {
+                $problems[] = $where . ' is named by no date, so nothing says how long it has been waiting';
             }
             foreach ($todo['serves'] as $what) {
                 $unreadable = Todo::unreadable($what);
@@ -87,9 +100,6 @@ final class TodoCheck
                     $problems[] = $where . ' is in hand since '
                         . ($todo['claimed'] === '' ? 'never — `**Claimed:**` is what dates a claim' : $todo['claimed']);
                 }
-                if ($todo['position'] !== '') {
-                    $problems[] = $where . ' is in hand and keeps a place in the queue, where nothing is coming for it';
-                }
                 continue;
             }
             if ($todo['branch'] !== '' || $todo['claimed'] !== '') {
@@ -109,15 +119,6 @@ final class TodoCheck
             }
 
             if ($todo['kind'] === 'queue') {
-                // The number is the place in the queue, and two files claiming
-                // one leave the order to whatever the file system answers.
-                if ($todo['position'] === '') {
-                    $problems[] = $where . ' is queued and unnumbered, so nothing says where in the order it is';
-                } elseif (isset($positions[$todo['position']])) {
-                    $problems[] = $where . ' is number ' . $todo['position'] . ', and so is ' . $positions[$todo['position']];
-                }
-                $positions[$todo['position']] = $where;
-
                 if ($todo['every'] !== '') {
                     $problems[] = $where . ' is queued and recurs every ' . $todo['every']
                         . ' — what comes round belongs in todo/recurring/';

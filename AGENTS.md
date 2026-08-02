@@ -47,7 +47,7 @@ skills/base.md     # the order every task starts in, copied into each published 
 requirements/      # what must hold, and what holds it there: one requirement per file, grouped by what it is about; open ones are the backlog
 decisions/         # what a change assumed, and what would show it to be wrong: one decision per file, grouped by what it is about
 todo/              # the order of the work and where the last session stopped: one todo per file, and where a file sits is the stage it is in; `bin/cli todo:next` prints one of them
-todo/open/         # the queue, numbered by the place in it
+todo/open/         # the queue, read by the priority in each head and then by the date in each name
 todo/progress/     # what a session has in hand: out of the queue, offered to nobody else, naming the branch the work is on
 todo/waiting/      # what nothing here can start, carrying the question it is blocked on; closing is a deletion and no fourth directory
 src/Upkeep/Todo.php  # todo/ as data: what recurs and how often, what is queued, what each todo serves

@@ -195,9 +195,9 @@ records the answer. What outlives both is split three ways:
   starts by reading this. One todo is one file: it names what it serves and
   what the next concrete step is, and is deleted when done rather than ticked.
   Where it sits says whether it is the queue, what recurs, what waits on an
-  answer nothing here can give, or what is kept for reading, and a queued one is
-  numbered by its place in the order — that is what `bin/cli todo:next` reads and
-  what `bin/cli todo:check` holds.
+  answer nothing here can give, or what is kept for reading, and a queued one
+  carries the priority that decides how soon — that is what `bin/cli todo:next`
+  reads and what `bin/cli todo:check` holds.
 
 ## What nothing fails on
 

@@ -1,6 +1,7 @@
 # Dissolve what is deliberately not queued into single todos
 
 **Serves:** todo/
+**Priority:** high
 
 Take `todo/reference/not-queued-and-deliberately-so.md` apart, now that a
 priority can say what only that page could say before. It is the last file here

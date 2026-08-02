@@ -18,19 +18,21 @@ use Typo3CmsMcp\Paths;
  *
  * Where a file sits is what it is, and the head it opens with says the rest:
  *
- *     todo/open/030-give-d-cat-001-a-digest-to-notice-markup-by.md
+ *     todo/open/2026-07-29-114302-give-d-cat-001-a-digest-to-notice-markup-by.md
  *
  *     # Give `D-CAT-001` a digest to notice markup by
  *
  *     **Serves:** decisions/
+ *     **Priority:** normal
  *     **Run:** bin/cli catalog:check
  *
  *     One paragraph: the next concrete step.
  *
  * Three of the directories are the stages a todo runs through, and a move
- * between them is the whole of what happens to one. `open/` is the queue, where
- * the number is the place in the order and nothing else; they run in tens so
- * something can be put between two of them. `progress/` is what a session has
+ * between them is the whole of what happens to one. `open/` is the queue, whose
+ * order is the priority in the head and, below that, the stamp in the name.
+ * Neither is a place, so nothing is renamed to put one todo before another.
+ * `progress/` is what a session has
  * in hand: it is offered to nobody else, and it says on which branch the work
  * is and since when. `waiting/` is what no session can start, because it is
  * blocked on an answer this repository cannot produce, and it carries that
@@ -42,7 +44,9 @@ use Typo3CmsMcp\Paths;
  * `reference/` is not work at all and is there so a session does not rediscover
  * it and mistake it for some.
  *
- * `Serves:` is what makes a todo work rather than an idea. `Every:` is the
+ * `Serves:` is what makes a todo work rather than an idea, and `Priority:` is
+ * where it stands among the rest — one of three words, or absent on one nobody
+ * has judged yet. `Every:` is the
  * cadence of a recurring one, and `Run:` is the command the step starts from,
  * which `bin/cli todo:next` runs where this repository owns it. `Branch:` and
  * `Claimed:` belong to a todo in hand: the first is where the work is, the
@@ -57,15 +61,39 @@ use Typo3CmsMcp\Paths;
  *
  * The paragraph under the head is one step, because it is printed whole and a
  * session that has to read three of them to find where to start is reading
- * instead of working. Two steps are two todos, and the order between them is
- * the order their numbers are in.
+ * instead of working. Two steps are two todos, and what says which comes first
+ * is the priority on each, not the order they were written in.
  *
- * @phpstan-type Section array{title: string, kind: string, position: string, path: string, every: string, checked: string, waitingOn: string, branch: string, claimed: string, serves: array<int, string>, run: array<int, string>, head: string, strays: array<int, string>, body: string}
+ * @phpstan-type Section array{title: string, kind: string, priority: string, path: string, every: string, checked: string, waitingOn: string, branch: string, claimed: string, serves: array<int, string>, run: array<int, string>, head: string, strays: array<int, string>, body: string}
  */
 final class Todo
 {
     /** What a cadence can say, for the check that has to name it. */
     public const CADENCE = 'session, or a number of days';
+
+    /**
+     * What a priority can say, highest first, and the whole of it.
+     *
+     * A closed list rather than a number, which is the difference between this
+     * and the queue positions it replaced: two sessions queueing work at once
+     * both read the same last number and both took it, while two todos that are
+     * `normal` are simply both normal. Nothing has to be renamed to put one
+     * between two others, because there is no between.
+     *
+     * Absence is the fourth thing it can say and the reason the list is short.
+     * A todo with no `**Priority:**` is one nobody has judged yet — it sorts
+     * below `low`, where a sighting used to leave what had only just arrived.
+     */
+    public const PRIORITIES = ['high', 'normal', 'low'];
+
+    /**
+     * What a todo in a stage is named by: the day and time it arrived.
+     *
+     * The same shape a feedback is named in, so one habit covers the store, and
+     * it is what a listing sorts by — within a priority the older one comes
+     * first, and that is the whole of the order below the three words.
+     */
+    public const STAMP = '/^\d{4}-\d{2}-\d{2}-\d{6}-/';
 
     /**
      * How a todo is worked, handed over with every todo that is handed over.
@@ -188,17 +216,19 @@ final class Todo
      */
     public static function branch(array $todo): string
     {
-        return 'todo/' . preg_replace('/^\d+-/', '', basename($todo['path'], '.md'));
+        return 'todo/' . preg_replace(self::STAMP, '', basename($todo['path'], '.md'));
     }
 
     /**
      * Taking a queued todo on: out of the queue, into `progress/`, carrying the
      * branch the work will be on and the day it was taken.
      *
-     * The number goes with the move. It is the place in the queue and nothing
-     * else, and a todo in hand has no place in an order nothing is coming for
-     * it from — the same reason one in `waiting/` drops its number. What puts
-     * it back gives it a new one at the end.
+     * It keeps its name through every stage, which is what the stamp bought
+     * over the number it replaced. A number was a place in one order and had to
+     * be dropped where that order did not reach; the stamp is when the work
+     * arrived, and that is as true in hand as it is in the queue. So a claim
+     * and a release are moves and nothing else, and `**Claimed:**` is what says
+     * how long this one has been held.
      *
      * @param Section     $todo
      * @param string|null $branch the free name the work was given, where the
@@ -208,7 +238,7 @@ final class Todo
      */
     public static function claim(array $todo, ?string $today = null, ?string $branch = null): string
     {
-        $to = 'todo/progress/' . preg_replace('/^\d+-/', '', basename($todo['path']));
+        $to = 'todo/progress/' . basename($todo['path']);
         $head = $todo['head'] . "\n**Branch:** " . ($branch ?? self::branch($todo))
             . "\n**Claimed:** " . ($today ?? date('Y-m-d'));
 
@@ -220,16 +250,22 @@ final class Todo
      * claim itself says it is in.
      *
      * A claim carrying a question goes to `waiting/`, because that is what it
-     * is: blocked on an answer nothing here can produce. The rest go to the end
-     * of the queue, which is what this repository already does with a todo
-     * somebody could not finish — honest about the priority, and its own timer,
-     * coming round again as the queue drains.
+     * is: blocked on an answer nothing here can produce. The rest go back to
+     * `open/` exactly as they came, keeping their name and their priority.
      *
      * Reading it off the file rather than asking is what keeps the two apart
      * without a second command. The question was written by the session that
      * hit it, and a todo whose remaining step is "wait for somebody to answer"
-     * parked at the end of the queue reads as the lowest priority in the
-     * repository while it is actually waiting on a person.
+     * parked among the workable ones reads as ordinary work while it is
+     * actually waiting on a person.
+     *
+     * What it no longer does is re-rank. A released todo used to be renumbered
+     * to the end of the queue, because the queue was one order and there was no
+     * other way to say "later"; the two things that meant are now said
+     * separately and by somebody rather than by a command. Where it cannot be
+     * worked at all, `waiting/` is the answer. Where it can and should not be
+     * next, the answer is a lower `**Priority:**`, which is a line somebody
+     * writes and can be disagreed with.
      *
      * What it was claimed for is dropped either way. A branch nobody is on and
      * a date nobody is counting from are worse than no fields at all, because
@@ -247,14 +283,11 @@ final class Todo
             static fn(string $line): bool => !str_starts_with($line, '**Branch:**') && !str_starts_with($line, '**Claimed:**'),
         ));
 
-        if ($todo['waitingOn'] !== '') {
-            return self::move($todo, 'todo/waiting/' . basename($todo['path']), $head);
-        }
-
-        $positions = array_map(intval(...), array_column(self::items(), 'position'));
-        $next = sprintf('%03d', ($positions === [] ? 0 : max($positions)) + 10);
-
-        return self::move($todo, 'todo/open/' . $next . '-' . basename($todo['path']), $head);
+        return self::move(
+            $todo,
+            'todo/' . ($todo['waitingOn'] !== '' ? 'waiting/' : 'open/') . basename($todo['path']),
+            $head,
+        );
     }
 
     /**
@@ -296,13 +329,33 @@ final class Todo
 
     /**
      * The queue: what is to be worked on once, in the order it is to be worked
-     * on, which is the order of the numbers it is named by.
+     * on — by priority, and within one by age.
+     *
+     * Both halves are read off the file rather than kept anywhere: the word in
+     * the head, and the stamp in the name that `read()` has already sorted by.
+     * PHP's sort holds equal elements in the order they came in, which is what
+     * makes the second half free.
      *
      * @return array<int, Section>
      */
     public static function items(): array
     {
-        return self::read('open', 'queue');
+        $items = self::read('open', 'queue');
+        usort($items, static fn(array $left, array $right): int => self::rank($left) <=> self::rank($right));
+
+        return $items;
+    }
+
+    /**
+     * Where a todo's priority puts it, and where having none puts it: last.
+     *
+     * @param Section $todo
+     */
+    private static function rank(array $todo): int
+    {
+        $at = array_search($todo['priority'], self::PRIORITIES, true);
+
+        return $at === false ? count(self::PRIORITIES) : $at;
     }
 
     /**
@@ -616,12 +669,14 @@ final class Todo
         $waitingOn = '';
         $branch = '';
         $claimed = '';
+        $priority = '';
         $serves = [];
         $run = [];
         $strays = [];
         foreach (self::fields((string) $head, $strays) as [$label, $value]) {
             match ($label) {
                 'Serves' => $serves = array_values(array_filter(array_map(trim(...), explode(',', $value)))),
+                'Priority' => $priority = $value,
                 'Every' => $every = $value,
                 'Checked' => $checked = $value,
                 'Waiting on' => $waitingOn = $value,
@@ -632,12 +687,10 @@ final class Todo
             };
         }
 
-        preg_match('/^(\d+)-/', basename($path), $position);
-
         return [
             'title' => trim($heading[1] ?? ''),
             'kind' => $kind,
-            'position' => $position[1] ?? '',
+            'priority' => $priority,
             'path' => 'todo/' . basename(dirname($path)) . '/' . basename($path),
             'every' => $every,
             'checked' => $checked,

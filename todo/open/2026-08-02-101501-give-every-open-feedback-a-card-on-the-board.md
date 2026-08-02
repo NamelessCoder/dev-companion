@@ -1,6 +1,7 @@
 # Give every open feedback a card on the board
 
 **Serves:** feedback/
+**Priority:** normal
 
 Write one todo per open feedback, with `**Serves:**` naming it and nothing of
 its text copied — the card points and the feedback is read where it lies, so

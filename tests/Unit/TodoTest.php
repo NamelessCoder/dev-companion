@@ -124,7 +124,6 @@ final class TodoTest extends TestCase
 
         foreach (Todo::waiting() as $todo) {
             self::assertNotSame('', $todo['waitingOn'], $todo['path'] . ' waits and does not say on what');
-            self::assertSame('', $todo['position'], $todo['path'] . ' waits and has a place in the queue');
             self::assertSame('', $todo['every'], $todo['path'] . ' waits and recurs');
             foreach ($todo['serves'] as $what) {
                 self::assertContains($what, $served, $todo['path'] . ' waits and answers for nothing');
@@ -199,6 +198,11 @@ final class TodoTest extends TestCase
      * the head and nothing else, because the step is the part somebody else has
      * to be able to start from. What it must not leave is the claim itself: a
      * branch nobody is on reads exactly like a branch somebody is on.
+     *
+     * The name survives both moves, which is what the stamp bought over the
+     * number: a released todo comes back where it was, at the priority somebody
+     * gave it, rather than at the end of a queue it never asked to leave.
+     * Putting it further down is a judgement now, and judgements are written.
      */
     #[Test]
     public function aClaimIsOneMoveThatGoesBothWays(): void
@@ -207,24 +211,23 @@ final class TodoTest extends TestCase
 
         $claimed = Todo::claim($queued, '2026-08-01');
 
-        self::assertSame('todo/progress/' . self::MARKER . '.md', $claimed);
+        self::assertSame('todo/progress/' . basename($queued['path']), $claimed);
         $inHand = $this->ownTodos(Todo::progress())[0];
         self::assertSame('todo/' . self::MARKER, $inHand['branch']);
         self::assertSame('2026-08-01', $inHand['claimed']);
-        self::assertSame('', $inHand['position'], 'a todo in hand keeps a place in an order nothing is coming for it from');
         self::assertSame($queued['title'], $inHand['title']);
         self::assertSame($queued['body'], $inHand['body'], 'the step is what somebody else has to start from');
         self::assertSame($queued['serves'], $inHand['serves']);
 
         $released = Todo::release($inHand);
 
-        self::assertMatchesRegularExpression('#^todo/open/\d+-' . self::MARKER . '\.md$#', $released);
+        self::assertSame($queued['path'], $released, 'a released todo comes back somewhere else');
         $back = $this->ownTodos(Todo::items())[0];
         self::assertSame([], $this->ownTodos(Todo::progress()));
         self::assertSame('', $back['branch'], 'a released todo keeps a branch nobody is on');
         self::assertSame('', $back['claimed']);
         self::assertSame($queued['body'], $back['body']);
-        self::assertSame($back, Todo::items()[count(Todo::items()) - 1], 'a released todo is not at the end of the queue');
+        self::assertSame($queued['priority'], $back['priority'], 'a release re-ranks what nobody asked it to');
     }
 
     /**
@@ -353,23 +356,30 @@ final class TodoTest extends TestCase
     }
 
     /**
-     * The order is in the names, which is what lets a session finish a todo by
-     * deleting one file and move one by renaming it. Two files claiming one
-     * number leave the order to whatever the file system answers with.
+     * The priority decides, and the age decides the rest. Written as the one
+     * case where the two disagree: the older todo is the lower one, so a queue
+     * read by age alone would hand it over first, and a queue read by priority
+     * alone could not tell the two `low` ones apart.
+     *
+     * A todo carrying no priority is last of all. That is not a defect to be
+     * filled in with a default — it is what an unjudged one looks like, and
+     * where the order has to leave it until somebody decides.
      */
     #[Test]
-    public function theQueueIsTheOrderItsNumbersHaveIt(): void
+    public function theQueueIsReadByPriorityAndThenByAge(): void
     {
-        $numbers = [];
-        foreach (Todo::items() as $item) {
-            self::assertMatchesRegularExpression('/^\d+$/', $item['position'], $item['path'] . ' is queued and unnumbered');
-            $numbers[] = (int) $item['position'];
-        }
+        $unjudged = $this->queueATodo(null, '2026-06-01-090000');
+        $older = $this->queueATodo('low', '2026-07-01-090000');
+        $newer = $this->queueATodo('low', '2026-07-02-090000');
+        $urgent = $this->queueATodo('high', '2026-07-03-090000');
 
-        self::assertSame($numbers, array_unique($numbers), 'two todos claim the same place in the queue');
-        $sorted = $numbers;
-        sort($sorted);
-        self::assertSame($sorted, $numbers, 'the queue is read in an order its numbers do not have');
+        $queued = array_column($this->ownTodos(Todo::items()), 'path');
+
+        self::assertSame(
+            [$urgent['path'], $older['path'], $newer['path'], $unjudged['path']],
+            $queued,
+            'the queue is read in an order its priorities and stamps do not have',
+        );
     }
 
     /**

@@ -222,13 +222,16 @@ Then, once, on `main`:
     bin/cli requirements:index && bin/cli decisions:index
     bin/cli repository:check
 
-Both halves are things a per-branch run cannot see. The listing at the foot of a
+That is something a per-branch run cannot see. The listing at the foot of a
 group readme is generated from every file in that group, so entries merged from
 two branches leave it short by one — `bin/cli requirements:check` says so and
 names the command, and the index commands above are that command run before it
-has to. And two sessions that each queued new work will have picked the same
-number for it, because both read the same last number; `bin/cli todo:check`
-reports the collision, and renumbering one of them is the fix.
+has to.
+
+What used to stand here as well was the queue: two sessions that each queued new
+work both read the same last number and both took it. There is no number now, so
+there is nothing to collide — two todos are both `normal` and the older one is
+older, whichever branch each arrived on.
 
 Delete the worktree and the branch when the merge is in. A branch named for a
 todo that no longer exists is a claim nobody can release.

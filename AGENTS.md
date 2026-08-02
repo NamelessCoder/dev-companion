@@ -252,6 +252,17 @@ composer stan   # phpstan only
 composer cgl    # rewrite to the guidelines; cgl:ci reports and rewrites nothing
 ```
 
+```bash
+bin/cli knowledge:format          # the JSON below knowledge/, in the one form
+bin/cli knowledge:format <path>   # only that part of it
+```
+
+- The JSON below `knowledge/` is written by that command and by nothing else:
+  PHP's pretty print at the indentation `.editorconfig` states, slashes and
+  unicode as they were typed, key order untouched. `JsonTest` fails on a file
+  that is not in the form, so a hand-reindented one is caught where a reviewer
+  reading the statement would not look. `.editorconfig` is where an indentation
+  is said at all — `StructureTest` holds the PHP one to php-cs-fixer's.
 - The guidelines are php-cs-fixer's own, and `.php-cs-fixer.dist.php` is where
   they are declared: PER-CS 3.0 and the few rules on top of it this repository
   writes by. A rule is added there when the code already follows it and the

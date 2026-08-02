@@ -140,6 +140,21 @@ final class JsonTest extends TestCase
     }
 
     /**
+     * The corpus, held to the form. A file edited by hand and left at whatever
+     * indentation the editor used is a diff that shows every line as changed,
+     * and the statement somebody meant to edit is somewhere in it — which is
+     * the failure this is here to prevent, and it is invisible in review.
+     */
+    #[Test]
+    #[DataProvider('knowledgeFiles')]
+    public function everyFileIsWrittenInTheForm(string $file): void
+    {
+        $contents = (string) file_get_contents(Paths::root() . '/' . $file);
+
+        self::assertSame($contents, Json::format($contents), $file . ' is not in the form; bin/cli knowledge:format writes it');
+    }
+
+    /**
      * A formatter that is not idempotent rewrites a file on every run, and every
      * commit then carries a diff nobody made.
      */

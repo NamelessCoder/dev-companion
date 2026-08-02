@@ -1,7 +1,7 @@
 ---
 id: D-EVI-1
 date: 2026-07-31
-status: standing
+status: tested
 ---
 
 # D-EVI-1 — Forward evidence comes from a review, not from a prompt that knows the answer
@@ -32,3 +32,28 @@ Those are two different tests, and one file shape hid it.
   taste rather than this server. Or the contract cases quietly stop being read
   because nothing schedules them, and the routing they hold rots while the three
   reviews stay green.
+- **Tested on 2026-08-02:** the findings tie back, read as a pass over the two
+  files in `scenarios/runs/` and over the run each of them replaced.
+  `REVIEW-01` run 3 declared translations clean with `source-language="de"` on
+  screen; run 4 reports it as `M-6` with the rule quoted from
+  `knowledge/architecture-hints/general.json`, and the absent `README` and
+  `Documentation/` that three runs walked past is `R-PRJ-6`. `REVIEW-02` run 4
+  answered the open feedback that no extension review reaches the console and
+  settled `D-EVI-3`; run 5 produced four feedbacks, all archived the same day in
+  `419b622`, `5e76417`, `25100e7` and `cc15e3a`. Thirteen requirements and five
+  decisions name one of the two reviews as what they were written from. A
+  minority ties back to nothing, and it is the same shape in both: `REVIEW-01`'s
+  deployment cluster `H-1` to `M-4`, `REVIEW-02`'s findings 3 and 4 — correct,
+  anchored to lines, and this server's in no part. So the measure is per run
+  rather than per finding. Each of these four runs produced at least one finding
+  a stated rule made it find, and at least one this repository could file.
+- **Tested on 2026-08-02:** the contract cases are scheduled, by the strongest
+  thing available. All 36 name live tests in their **Held by** line, `composer
+  ci` runs those tests on every commit, and
+  `ScenariosTest::everyContractCaseNamesWhatHoldsIt` fails when a named test is
+  renamed away. What nothing schedules is the reading by hand that seven of them
+  fall back on where **Held by** says `not guarded` — `CORE-04`, `CORE-06`,
+  `EXT-01`, `SITE-01`, `SITE-08`, `SKILL-07` and `SKILL-09`. Two of those carry
+  weight already: `D-EVI-2` rests on `SKILL-07` read by hand, and `SKILL-09`
+  says in as many words that it is what measures the rest. That residue is the
+  todo behind this reading, not a correction to this entry.

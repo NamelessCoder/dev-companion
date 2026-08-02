@@ -1,7 +1,8 @@
 ---
 date: 2026-07-31T19:44:59+00:00
 category: idea
-status: open
+status: closed
+closed: 2026-08-02
 model: opencode/mimo-v2.5-free
 directory: /home/benji/projects/site-new
 ---

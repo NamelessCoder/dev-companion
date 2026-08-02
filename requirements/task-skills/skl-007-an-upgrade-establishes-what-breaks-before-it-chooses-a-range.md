@@ -19,7 +19,8 @@ this workflow adds are the two sources a changelog query cannot reach. The
 Extension Scanner, whose silence is worth what the `FullyScanned` /
 `PartiallyScanned` tag says it is worth and nothing more, and the deprecation
 annotations on the symbols this package actually calls, because an annotation
-sits on the class while an entry has to be matched by a query. Both answer from
+sits on the class while an entry is reached only through the tags the sweep
+named. Both answer from
 the core that is **installed**, which is the boundary the order rests on: what
 the target major changed is official documentation until the installation is on
 it, never recall, and the sweep is run again once it is.

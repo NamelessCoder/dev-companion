@@ -37,16 +37,33 @@ project's own are known is a guess that sounds like advice.
    paths. One query per subsystem; a single broad query is not subsystem
    evidence.
 5. **`typo3_changelog_lookup` with `type: deprecation`**, at each major the
-   package declares, over the symbols and registration shapes step 2 reported
-   for the area in scope. The query set is derived from the extension's own
-   surface, which is why it can be written before a file is opened; a sweep left
-   to the reading reaches only what a finding stumbled into, and the deprecation
-   that decides whether the package survives the next major is not usually the
-   one a finding walks past. Verify each identifier that comes back in the
-   checkout — a deprecation nothing here calls is not a finding — and carry the
+   package declares, bounded by `tag` and with the query omitted. Those three
+   are the changelog's own axes, and the extension's vocabulary is not among
+   them: an entry carries a query only when its title carries every word of it
+   at once, and the core titled those entries about its own code. Words taken
+   from what step 2 reported are therefore matched against titles they were
+   never written in, and the sweep comes back empty however right the query
+   looks.
+
+   Step 2 picks the tags instead. `ext:core`, `ext:frontend`, `ext:form` and the
+   rest name the system extension a change is **in** — one call for each one the
+   package requires, renders through or registers into, which is more than its
+   manifest lists — and `TCA`, `TypoScript`, `Fluid`, `YAML`, `Backend`,
+   `Frontend` name the surface, one for each kind of file it ships. An extension
+   key of your own is not among them and matches nothing. Every call also
+   returns every tag that version and type carry, so the second call onwards is
+   read off the first rather than guessed at.
+
+   Step 2 is what the answers are checked against, which is the other half the
+   words were doing. Verify each identifier that comes back in the checkout — a
+   deprecation nothing here calls is not a finding — and carry the
    `FullyScanned` / `PartiallyScanned` tag into the answer, because it says
    whether the Extension Scanner can find the remaining call sites or whether
-   that reading is yours.
+   that reading is yours. Bounded this way the sweep is still writable before a
+   file is opened, which is why it is a step of the order: one left to the
+   reading reaches only what a finding stumbled into, and the deprecation that
+   decides whether the package survives the next major is not usually the one a
+   finding walks past.
 
    A changelog records change events, so a pattern nothing has touched for ten
    majors has no entry at all. An empty sweep is therefore not an answer about

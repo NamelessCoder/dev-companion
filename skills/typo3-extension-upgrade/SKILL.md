@@ -29,8 +29,8 @@ The base sweeps one source. An upgrade needs three, because each reaches call
 sites the others cannot:
 
 - **The changelog**, as the base sweeps it, and `typo3_changelog_lookup` again
-  with `type: breaking` at each major the package declares. A review asks what
-  will stop working; an upgrade also asks what already has.
+  with `type: breaking` — same tags, same majors, still no query. A review asks
+  what will stop working; an upgrade also asks what already has.
 - **The Extension Scanner**, in the installation's own Upgrade module — it needs
   a reachable backend and an administrator, and it reads the extension's
   installed files. It finds the call sites of what its matchers cover, and the
@@ -39,10 +39,11 @@ sites the others cannot:
   partially scanned entry is not a result; those call sites are yours to find.
 - **The deprecation annotations on what this package actually calls**, in the
   installed core and in the packages it depends on. A changelog entry is per
-  release and is reached by a query; an annotation sits on the class, method or
-  property itself, so a symbol whose entry no query happened to match is reached
-  only this way — and a class deprecated as a whole takes every call site of it
-  with it.
+  release and is reached by the tags of the system extension it sits in; an
+  annotation sits on the class, method or property itself, so a symbol whose
+  entry falls outside the tags the sweep named — or carries no `ext:` tag at
+  all — is reached only this way, and a class deprecated as a whole takes every
+  call site of it with it.
 
 Both the changelog and the scanner answer from the **core that is installed**,
 which is the boundary this whole order rests on: they say what this package owes

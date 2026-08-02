@@ -181,8 +181,17 @@ final class SkillTest extends TestCase
         // called changelog_lookup four times and never once with
         // type: deprecation — the one deprecated API it named, it reached
         // because a ViewHelper finding walked it there. So the sweep is a step
-        // of the order and its query set comes from what the extension ships,
-        // not from what the reading happens to pass.
+        // of the order, and what the extension ships is what bounds it rather
+        // than what the reading happens to pass.
+        //
+        // What it bounds it *with* is the changelog's own axes and not the
+        // extension's words — D-SKL-003. Two models swept one sitepackage on
+        // 2026-07-31 with the query set this step used to prescribe and both
+        // got nothing; re-run on 2026-08-02, type: deprecation with version 14
+        // and no query returns all 75, and tag: ext:form returns the 6 that
+        // carry #109412, which the words missed at 39th place — past the
+        // default limit of 20, and the tag is what makes the sweep small enough
+        // to be read at all.
         $base = (string) file_get_contents(Paths::root() . '/skills/base.md');
 
         $sweep = strpos($base, 'typo3_changelog_lookup');
@@ -195,9 +204,16 @@ final class SkillTest extends TestCase
         );
         self::assertStringContainsString('`type: deprecation`', $base);
         self::assertMatchesRegularExpression(
-            '/query set is derived from the extension\'s own\s+surface/',
+            '/bounded by `tag` and with the query\s+omitted/',
             $base,
         );
+        // The extension's surface picks the tags and nothing else, which is the
+        // half of "from the extension's surface" that survives.
+        self::assertStringContainsString('Step 2 picks the tags instead', $base);
+        self::assertStringContainsString('name the system extension a change is **in**', $base);
+        self::assertMatchesRegularExpression('/An extension\s+key of your own is not among them/', $base);
+        // And the wording that cost the two sweeps is gone rather than softened.
+        self::assertStringNotContainsString('query set', $base);
         // And what the caller does with the answer: an identifier the checkout
         // does not use is not a finding, and the tag decides who has to read
         // the remaining call sites.
@@ -228,9 +244,10 @@ final class SkillTest extends TestCase
         // the answer — while typo3_documentation_lookup at targetVersion 14
         // with the query "backend layout" returns the two pages that settle one
         // of them, first and second, in one call. So the sweep's own step says
-        // what its silence is worth, rather than a sixth step: the sweep can
-        // state its query set before a file is opened because step 2 derives
-        // it, and this question has no query set until the reading raises it.
+        // what its silence is worth, rather than a sixth step: the sweep is
+        // writable before a file is opened because step 2 supplies its tags,
+        // and this question has nothing to bound it until the reading raises
+        // it.
         $base = (string) file_get_contents(Paths::root() . '/skills/base.md');
 
         $sweep = (int) strpos($base, 'typo3_changelog_lookup');

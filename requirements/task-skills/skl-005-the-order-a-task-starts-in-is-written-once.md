@@ -1,7 +1,7 @@
 ---
 id: R-SKL-005
 status: held
-restsOn: [D-EVI-003]
+restsOn: [D-EVI-003, D-SKL-003]
 ---
 
 # R-SKL-005 — The order a task starts in is written once
@@ -24,11 +24,14 @@ finding. Where no purpose can be established, the finding says that instead of
 concluding there is none.
 
 The deprecation sweep is part of that order rather than a step a finding
-triggers: its query set comes from what the extension was reported to ship, so
-it exists before a file is opened, each identifier it returns is verified in the
-checkout, and the `FullyScanned` / `PartiallyScanned` tag reaches the answer
-because it says whether the Extension Scanner finds the remaining call sites or
-the reader does.
+triggers, and it is bounded by the changelog's own axes: the type, each major
+the package declares, and the index tag, with no query at all. What the
+extension was reported to ship picks the tags rather than the words — the
+system extensions it requires, renders through or registers into, and the
+surfaces its files are — which is why the sweep still exists before a file is
+opened. Each identifier it returns is verified in the checkout, and the
+`FullyScanned` / `PartiallyScanned` tag reaches the answer because it says
+whether the Extension Scanner finds the remaining call sites or the reader does.
 
 That step also says what an empty result is worth, because a changelog records
 change events and a pattern nothing changed has no entry: "does this still work
@@ -70,7 +73,11 @@ bootstrap_package conformance review (2026-07-31), which ended two findings in
 "I had to read installed vendor core": both asked the changelog whether a
 pattern still worked in 14 and read its silence as the answer, while
 `typo3_documentation_lookup` at that version answered one of them in a single
-call — `D-ANS-010`, re-run 2026-08-02.
+call — `D-ANS-010`, re-run 2026-08-02. The sweep's own bound was replaced last,
+by two models sweeping one sitepackage on the same day with word queries the
+step told them to derive and getting nothing back from either
+(`feedback/2026-07-31-194459`, `feedback/2026-07-31-194819`); `D-SKL-003`
+carries the re-run and what the two bounds return.
 
 ## Held by
 

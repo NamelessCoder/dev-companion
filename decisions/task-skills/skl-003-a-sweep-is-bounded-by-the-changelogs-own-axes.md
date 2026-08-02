@@ -94,3 +94,41 @@ nothing and the silence reads as a clean bill for the next major.
 - The wording lands and the same "the sweep returned nothing" ending recurs.
   Then the query shape was not what cost it, and the base is not where this is
   answered.
+
+## Since then
+
+The wording landed on 2026-08-02, in `skills/base.md` step 5, `R-SKL-005`,
+`R-SKL-007`, `skills/typo3-extension-upgrade/SKILL.md` and the assertion that
+held the old sentence. The step now names three axes and no query: the type,
+each major the package declares, and a tag per call.
+
+Which tags a sitepackage names was the half the entry left open, and it was
+settled against the changelog in `.checkouts/14.3`, read with
+`Changelog::read()`'s own parser. The tags are dense enough to bound a sweep
+with: of the 75 deprecations of 14 every one carries at least one tag and one
+carries no `ext:` tag, and 12 and 13 are the same shape — 128 and 63
+deprecations, one without an `ext:` tag each. So a sweep composed of tags leaves
+one entry per major outside itself, and that is the gap the annotations source
+in `typo3-extension-upgrade` covers rather than a reason to widen.
+
+`ext:` alone is a weak bound for a sitepackage, which is why the step names the
+surface tags beside it. `printworks_sitepackage`, the package both feedback swept,
+requires core, fluid_styled_content, form, frontend, impexp and seo; of those,
+`ext:core` carries 30 of the 75 on its own and three of the six carry none, so
+the six calls it declares reach 34. What that package actually is reaches
+further and narrower: `TCA` 12, `Fluid` 5, `TypoScript` 3, `YAML` 3, `TSConfig`
+and `FlexForm` 1 each. It also renders through Fluid and configures the backend
+without requiring `typo3/cms-fluid` or `typo3/cms-backend`, whose 14
+deprecations are 5 and 19 — which is why the step says *requires, renders
+through or registers into* rather than reading the manifest.
+
+The tag is also what keeps the sweep readable, and that is stronger than the
+entry assumed. `limit` caps at 50 and defaults to 20, so the unbounded
+enumeration of one major cannot return all 75 in a call at all, and #109412 —
+the entry the word queries missed — sorts 39th. Omitting the query without the
+tag would have missed it a second way.
+
+Nothing was said about which tags exist, deliberately. One call carrying any tag
+returns every tag that version and type carry, so the vocabulary is read off the
+first answer; the step says that instead of listing a vocabulary this repository
+would then have to keep in step with the core.

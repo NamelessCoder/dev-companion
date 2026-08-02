@@ -135,10 +135,12 @@ name already says what shape the answer has.
   dependencies it patches are in it too, because a patched package does not
   behave as its version says.
 - `typo3_extension_scope`: what one of those extensions registers — the tables
-  its TCA defines and the ones it extends, the content elements it adds and the
-  template each renders through, its backend modules and routes, its icons, its
-  site sets, its service tags, its middlewares, its Fluid roots and
-  namespaces, the shape of its `Classes/`. Its tables, content elements and
+  its TCA defines and the ones it extends, the content elements it adds with the
+  template each renders through and the FlexForm each binds, its backend modules
+  and routes, its icons, its site sets and the files core reads each one for,
+  the form configurations it registers and the definitions they store, its
+  service tags, its middlewares, its Fluid roots and namespaces, the shape of
+  its `Classes/`. Its tables, content elements and
   icons come from the booted installation where there is one, attributed to the
   extension by the `EXT:` reference each entry carries, because a list built in
   a loop is in no file; the rest is read from its files, which is why it answers

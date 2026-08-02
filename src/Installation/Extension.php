@@ -36,6 +36,21 @@ final class Extension
         'Form', 'Hooks', 'Middleware', 'Service', 'Updates', 'Upgrades', 'ViewHelpers',
     ];
 
+    /**
+     * The files core reads from a site set directory by exact name.
+     *
+     * `config.yaml` is not among them: it is what makes the directory a set,
+     * so it is always there and saying so tells a reader nothing. The rest are
+     * optional and each one is a registration — `YamlSetDefinitionProvider`
+     * reads the first four, and the last four are the defaults
+     * `typoscript`, `pagets` and `labels` fall back to when the set declares
+     * none of its own.
+     */
+    private const SET_FILES = [
+        'settings.definitions.yaml', 'settings.yaml', 'route-enhancers.yaml', 'labels.xlf',
+        'page.tsconfig', 'constants.typoscript', 'setup.typoscript', 'include_static_file.txt',
+    ];
+
     /** Files an extension is recognised by, each one a registration point. */
     private const ROOT_FILES = [
         'ext_localconf.php', 'ext_tables.php', 'ext_tables.sql', 'ext_emconf.php',
@@ -55,11 +70,14 @@ final class Extension
      *     requires: array<int, array{package: string, constraint: string}>,
      *     tcaTables: array<int, string>,
      *     tcaOverrides: array<int, string>,
-     *     contentElements: array<int, array{identifier: string, kind: string, templateName: ?string, source: ?string, pluginSettings: ?string}>,
+     *     contentElements: array<int, array{identifier: string, kind: string, templateName: ?string, source: ?string, pluginSettings: ?string, flexForm: ?string}>,
+     *     unlistedFlexForms: array<int, array{identifier: string, flexForm: string}>,
      *     backendModules: array<int, string>,
      *     backendRoutes: array<int, string>,
      *     icons: array<int, string>,
-     *     siteSets: array<int, array{name: string, path: string}>,
+     *     siteSets: array<int, array{name: string, path: string, files: array<int, string>}>,
+     *     formConfigurations: array<int, array{path: string, name: ?string, registeredBy: string, storagePaths: array<int, string>, formDefinitions: array<int, string>}>,
+     *     unlistedFlexForms: array<int, array{identifier: string, flexForm: string}>,
      *     middlewares: array<int, string>,
      *     serviceTags: array<int, string>,
      *     fluidRoots: array<int, string>,
@@ -92,6 +110,13 @@ final class Extension
 
         $overrides = self::overrides($path);
         $files = self::files($path);
+        $typoScript = self::typoScriptValues($path);
+        $elements = self::contentElements(
+            self::cTypes($key, $overrides['contentElements']),
+            $typoScript,
+            $overrides['plugins'],
+            $overrides['flexForms'],
+        );
 
         return [
             'key' => $key,
@@ -106,11 +131,8 @@ final class Extension
             // what the file does — see overrides().
             'tcaTables' => self::tcaTables($key, $path),
             'tcaOverrides' => $overrides['tables'],
-            'contentElements' => self::contentElements(
-                self::cTypes($key, $overrides['contentElements']),
-                $path,
-                $overrides['plugins'],
-            ),
+            'contentElements' => $elements,
+            'unlistedFlexForms' => self::unlistedFlexForms($overrides['flexForms'], $elements),
             'backendModules' => PhpArray::keys($path . '/Configuration/Backend/Modules.php'),
             'backendRoutes' => array_merge(
                 PhpArray::keys($path . '/Configuration/Backend/Routes.php'),
@@ -118,6 +140,7 @@ final class Extension
             ),
             'icons' => self::icons($key, $path),
             'siteSets' => self::siteSets($path),
+            'formConfigurations' => self::formConfigurations($key, $path, $typoScript),
             // The outer keys are the request scopes; the identifiers a caller
             // orders its own middleware against are one level below them.
             'middlewares' => PhpArray::keys($path . '/Configuration/RequestMiddlewares.php', 2),
@@ -279,20 +302,22 @@ final class Extension
      * $GLOBALS['TCA']['<table>'] or the first argument of one of the
      * ExtensionManagementUtility calls above, and both survive tokenising.
      *
-     * @return array{tables: array<int, string>, contentElements: array<int, string>, plugins: array<int, string>}
+     * @return array{tables: array<int, string>, contentElements: array<int, string>, plugins: array<int, string>, flexForms: array<string, string>}
      */
     private static function overrides(string $path): array
     {
         $directory = $path . '/Configuration/TCA/Overrides';
         if (!is_dir($directory)) {
-            return ['tables' => [], 'contentElements' => [], 'plugins' => []];
+            return ['tables' => [], 'contentElements' => [], 'plugins' => [], 'flexForms' => []];
         }
 
         $tables = [];
         $elements = [];
         $plugins = [];
+        $flexForms = [];
         foreach (Finder::create()->files()->in($directory)->depth(0)->name('*.php')->sortByName() as $file) {
             $found = self::declarationsIn((string) file_get_contents($file->getPathname()));
+            $flexForms += $found['flexForms'];
             if ($found['tables'] === []) {
                 // Nothing recognisable: the conventional file name is the best
                 // that is left, and only where it looks like a table at all.
@@ -317,18 +342,20 @@ final class Extension
         sort($identifiers);
         $signatures = array_keys($plugins);
         sort($signatures);
+        ksort($flexForms);
 
-        return ['tables' => $names, 'contentElements' => $identifiers, 'plugins' => $signatures];
+        return ['tables' => $names, 'contentElements' => $identifiers, 'plugins' => $signatures, 'flexForms' => $flexForms];
     }
 
     /**
-     * @return array{tables: array<int, string>, contentElements: array<int, string>, plugins: array<int, string>}
+     * @return array{tables: array<int, string>, contentElements: array<int, string>, plugins: array<int, string>, flexForms: array<string, string>}
      */
     private static function declarationsIn(string $code): array
     {
         $tables = [];
         $elements = [];
         $plugins = [];
+        $flexForms = [];
         $tokens = @token_get_all($code);
         $variables = self::stringVariables($tokens);
         $count = count($tokens);
@@ -339,9 +366,53 @@ final class Extension
             }
 
             if ($token[0] === T_VARIABLE && $token[1] === '$GLOBALS') {
-                $keys = self::followingStrings($tokens, $index, 2);
+                // Nine, because the longest subscript this reads is the one the
+                // v14 deprecation of addPiFlexFormValue() points at, and the
+                // value it assigns is the ninth literal before the semicolon.
+                $keys = self::followingStrings($tokens, $index, 9);
                 if (($keys[0] ?? '') === 'TCA' && isset($keys[1])) {
                     $tables[] = $keys[1];
+                }
+                $subscript = array_slice($keys, 0, 8);
+                if (
+                    count($subscript) === 8
+                    && array_slice($subscript, 0, 3) === ['TCA', 'tt_content', 'types']
+                    && array_slice($subscript, 4) === ['columnsOverrides', 'pi_flexform', 'config', 'ds']
+                    && ($structure = self::dataStructure($keys[8] ?? null)) !== null
+                ) {
+                    $flexForms[$subscript[3]] = $structure;
+                }
+                continue;
+            }
+
+            if ($token[0] === T_STRING && $token[1] === 'addPiFlexFormValue') {
+                // The way in until v14.3, where it is deprecated. Its first
+                // argument was the plugin key and is now unused; the content
+                // type it binds to is the third, and the second is the data
+                // structure itself.
+                $arguments = self::arguments($tokens, $index);
+                $identifier = self::firstLiteral($arguments[2] ?? [], $variables);
+                $structure = self::dataStructure(self::firstLiteral($arguments[1] ?? [], $variables));
+                if ($identifier !== null && $structure !== null) {
+                    $flexForms[$identifier] = $structure;
+                }
+                continue;
+            }
+
+            if ($token[0] === T_STRING && in_array($token[1], ['addPlugin', 'registerPlugin'], true)) {
+                // Both take the data structure as an argument since v14.2, and
+                // it is where core binds its own from then on. Which argument
+                // it is differs, and so does where the identifier comes from:
+                // addPlugin() carries the select item, registerPlugin() composes
+                // the signature out of its first two.
+                $arguments = self::arguments($tokens, $index);
+                $isPlugin = $token[1] === 'addPlugin';
+                $identifier = $isPlugin
+                    ? self::selectItemValue($arguments[0] ?? [], $variables)
+                    : self::pluginSignature($arguments, $variables);
+                $structure = self::dataStructure(self::firstLiteral($arguments[$isPlugin ? 1 : 6] ?? [], $variables));
+                if ($identifier !== null && $structure !== null) {
+                    $flexForms[$identifier] = $structure;
                 }
                 continue;
             }
@@ -416,7 +487,51 @@ final class Extension
             )),
             'contentElements' => array_values(array_unique($elements)),
             'plugins' => array_values(array_unique($plugins)),
+            'flexForms' => $flexForms,
         ];
+    }
+
+    /**
+     * A FlexForm data structure argument, as it is worth reporting.
+     *
+     * Every method that takes one documents the same two forms: a reference to
+     * a file, or the XML itself. The reference is the answer — it names a file
+     * a reviewer opens — and the XML is a document rather than a fact about the
+     * registration, so it is reported as being there and not quoted.
+     */
+    private static function dataStructure(?string $value): ?string
+    {
+        if ($value === null) {
+            return null;
+        }
+        if (str_starts_with($value, 'FILE:')) {
+            return $value;
+        }
+
+        return str_starts_with(ltrim($value), '<') ? 'inline' : null;
+    }
+
+    /**
+     * The plugin signature registerPlugin() composes, from the two arguments it
+     * composes it out of.
+     *
+     * `strtolower($extensionName) . '_' . strtolower($pluginName)`, on every
+     * covered major, after the extension name has had its underscores taken
+     * out — which is why `printworks_sitepackage` becomes
+     * `printworkssitepackage_catalogue` rather than keeping its underscore.
+     *
+     * @param array<int, array<int, array{0: int, 1: string, 2: int}|string>> $arguments
+     * @param array<string, string> $variables
+     */
+    private static function pluginSignature(array $arguments, array $variables = []): ?string
+    {
+        $extension = self::firstLiteral($arguments[0] ?? [], $variables);
+        $plugin = self::firstLiteral($arguments[1] ?? [], $variables);
+        if ($extension === null || $plugin === null) {
+            return null;
+        }
+
+        return strtolower(str_replace('_', '', $extension)) . '_' . strtolower($plugin);
     }
 
     /**
@@ -428,8 +543,9 @@ final class Extension
      * TCA override, used further down, is a plain literal that took a detour,
      * and refusing it drops a whole content element from the answer.
      *
-     * Only that shape is resolved — one assignment, one string literal, the
-     * whole statement. A variable assigned twice, or assigned anything else, is
+     * Two shapes are resolved — one assignment of a string literal, and one of
+     * a registerPlugin() call, which returns a signature it composes out of its
+     * own arguments. A variable assigned twice, or assigned anything else, is
      * dropped rather than resolved to its first value: what it holds at the call
      * depends on the order the file runs in, and that is the thing this parser
      * deliberately does not know.
@@ -455,20 +571,46 @@ final class Extension
             }
 
             $value = self::nextSignificant($tokens, $assignment);
-            $end = $value === null ? null : self::nextSignificant($tokens, $value);
-            $literal = $value !== null && is_array($tokens[$value]) && $tokens[$value][0] === T_CONSTANT_ENCAPSED_STRING
-                && $end !== null && $tokens[$end] === ';';
-            if (!$literal || isset($values[$name])) {
+            $assigned = $value === null ? null : self::assignedValue($tokens, $value);
+            if ($assigned === null || isset($values[$name])) {
                 $ambiguous[$name] = true;
                 continue;
             }
 
-            /** @var array{0: int, 1: string, 2: int} $token */
-            $token = $tokens[(int) $value];
-            $values[$name] = trim($token[1], "'\"");
+            $values[$name] = $assigned;
         }
 
         return array_diff_key($values, $ambiguous);
+    }
+
+    /**
+     * What an assignment puts into a variable, where reading can say what it is.
+     *
+     * The second shape is the one core writes itself: `$contentTypeName =
+     * ExtensionUtility::registerPlugin('Felogin', 'Login', …)`, used further
+     * down as the content type a FlexForm binds to. The signature is composed
+     * from arguments that stand in the file, so it is as readable as a literal
+     * — and refusing it drops the binding of every plugin registered the way
+     * core registers its own.
+     *
+     * @param array<int, array{0: int, 1: string, 2: int}|string> $tokens
+     */
+    private static function assignedValue(array $tokens, int $value): ?string
+    {
+        $token = $tokens[$value];
+        $end = self::nextSignificant($tokens, $value);
+        if (is_array($token) && $token[0] === T_CONSTANT_ENCAPSED_STRING && $end !== null && $tokens[$end] === ';') {
+            return trim($token[1], "'\"");
+        }
+
+        for ($next = $value; isset($tokens[$next]) && $tokens[$next] !== ';'; ++$next) {
+            $current = $tokens[$next];
+            if (is_array($current) && $current[0] === T_STRING && $current[1] === 'registerPlugin') {
+                return self::pluginSignature(self::arguments($tokens, $next));
+            }
+        }
+
+        return null;
     }
 
     /**
@@ -645,13 +787,19 @@ final class Extension
     }
 
     /**
-     * The content elements it adds, each with the template it renders through.
+     * The content elements it adds, each with the template it renders through
+     * and the FlexForm it binds.
      *
-     * Which one that is is the next question after which ones there are, and
-     * the answer is in this extension's own TypoScript — `templateName` under
-     * the identifier. Where it says nothing the template stays unknown rather
-     * than being derived from the identifier: the convention is a convention,
-     * and a guessed file name sends the caller to a file that is not there.
+     * Which template that is is the next question after which ones there are,
+     * and the answer is in this extension's own TypoScript — `templateName`
+     * under the identifier. Where it says nothing the template stays unknown
+     * rather than being derived from the identifier: the convention is a
+     * convention, and a guessed file name sends the caller to a file that is
+     * not there.
+     *
+     * The FlexForm is on the entry rather than in a list of its own, because an
+     * element with one and an element without are different things to review
+     * and the identifier is what both readings are about.
      *
      * For an Extbase plugin there is nothing to be unknown about, and reporting
      * one as an element without a `templateName` cost an audit two findings
@@ -662,18 +810,14 @@ final class Extension
      * configured.
      *
      * @param array<int, string> $identifiers
+     * @param array<string, array{value: string, file: string}> $typoScript
      * @param array<int, string> $plugins the signatures of the Extbase plugins among them
-     * @return array<int, array{identifier: string, kind: string, templateName: ?string, source: ?string, pluginSettings: ?string}>
+     * @param array<string, string> $flexForms
+     * @return array<int, array{identifier: string, kind: string, templateName: ?string, source: ?string, pluginSettings: ?string, flexForm: ?string}>
      */
-    private static function contentElements(array $identifiers, string $path, array $plugins): array
+    private static function contentElements(array $identifiers, array $typoScript, array $plugins, array $flexForms): array
     {
-        if ($identifiers === []) {
-            return [];
-        }
-
-        $typoScript = self::typoScriptValues($path);
-
-        return array_map(static function (string $identifier) use ($typoScript, $plugins): array {
+        return array_map(static function (string $identifier) use ($typoScript, $plugins, $flexForms): array {
             $set = $typoScript['tt_content.' . $identifier . '.templateName'] ?? null;
             $isPlugin = in_array($identifier, $plugins, true);
 
@@ -683,6 +827,7 @@ final class Extension
                 'templateName' => $set['value'] ?? null,
                 'source' => $set['file'] ?? null,
                 'pluginSettings' => $isPlugin ? self::pluginSettings($typoScript, $identifier) : null,
+                'flexForm' => $flexForms[$identifier] ?? null,
             ];
         }, $identifiers);
     }
@@ -708,6 +853,33 @@ final class Extension
         }
 
         return null;
+    }
+
+    /**
+     * The FlexForm bindings that found no content element to sit on.
+     *
+     * Reading an override file for a binding and reading it for an identifier
+     * are two different parsers, and the second one does not recognise every
+     * call the first does. Where they disagree the binding is reported here
+     * rather than dropped: a FlexForm this answer read and then said nothing
+     * about is the same silence as one it never opened — `R-ANS-012`.
+     *
+     * @param array<string, string> $flexForms
+     * @param array<int, array{identifier: string, templateName: ?string, source: ?string, flexForm: ?string}> $elements
+     * @return array<int, array{identifier: string, flexForm: string}>
+     */
+    private static function unlistedFlexForms(array $flexForms, array $elements): array
+    {
+        $listed = array_column($elements, 'identifier');
+
+        $unlisted = [];
+        foreach ($flexForms as $identifier => $structure) {
+            if (!in_array($identifier, $listed, true)) {
+                $unlisted[] = ['identifier' => $identifier, 'flexForm' => $structure];
+            }
+        }
+
+        return $unlisted;
     }
 
     /**
@@ -793,7 +965,16 @@ final class Extension
         return $files;
     }
 
-    /** @return array<int, array{name: string, path: string}> */
+    /**
+     * The site sets it ships, each with the files core reads it for.
+     *
+     * A set is a directory of files with fixed names, and which of them are
+     * there is what the set carries: settings and their definitions, route
+     * enhancers, labels, page TSconfig and TypoScript. Naming the directory
+     * says where to look, which is the answer a caller already had.
+     *
+     * @return array<int, array{name: string, path: string, files: array<int, string>}>
+     */
     private static function siteSets(string $path): array
     {
         $directory = $path . '/Configuration/Sets';
@@ -807,10 +988,122 @@ final class Extension
             $sets[] = [
                 'name' => (string) (self::yaml($file->getPathname())['name'] ?? $set),
                 'path' => 'Configuration/Sets/' . $set . '/',
+                'files' => array_values(array_filter(
+                    self::SET_FILES,
+                    static fn(string $name): bool => is_file(dirname($file->getPathname()) . '/' . $name),
+                )),
             ];
         }
 
         return $sets;
+    }
+
+    /**
+     * The form configurations it registers, and the form definitions each one
+     * stores.
+     *
+     * Two ways in, and an extension supporting two majors ships both. Since
+     * v14.2 a directory below `Configuration/Form/` carrying a `config.yaml` is
+     * a form set and is collected without being registered anywhere — the same
+     * convention site sets already work by, and `FormYamlCollectorConfigurator`
+     * is what walks it. Before that, and still read in v14.3, a YAML file is
+     * registered by TypoScript under `plugin.tx_form.settings.yamlConfigurations`
+     * or the `module.` one beside it, which is this extension's own TypoScript
+     * and is already parsed.
+     *
+     * Either file declares where the form definitions live, in
+     * `persistenceManager.allowedExtensionPaths`. The ones inside this extension
+     * are read; a storage in a file mount is a record rather than a file and is
+     * in no answer that reads files.
+     *
+     * @param array<string, array{value: string, file: string}> $typoScript
+     * @return array<int, array{path: string, name: ?string, registeredBy: string, storagePaths: array<int, string>, formDefinitions: array<int, string>}>
+     */
+    private static function formConfigurations(string $key, string $path, array $typoScript): array
+    {
+        $configurations = [];
+        $directory = $path . '/Configuration/Form';
+        if (is_dir($directory)) {
+            foreach (Finder::create()->files()->in($directory)->depth(1)->name('config.yaml')->sortByName() as $file) {
+                $configuration = self::yaml($file->getPathname());
+                $name = $configuration['name'] ?? null;
+                $configurations[substr($file->getPathname(), strlen($path) + 1)] = [
+                    'name' => is_string($name) && $name !== '' ? $name : null,
+                    'registeredBy' => 'set',
+                    'storage' => $configuration,
+                ];
+            }
+        }
+
+        foreach ($typoScript as $setting => $entry) {
+            if (preg_match('/^(?:plugin|module)\.tx_form\.settings\.yamlConfigurations\./', $setting) !== 1) {
+                continue;
+            }
+            $relative = self::inThisExtension($key, $entry['value']);
+            if ($relative === null || isset($configurations[$relative])) {
+                continue;
+            }
+            $configurations[$relative] = [
+                'name' => null,
+                'registeredBy' => 'typoscript',
+                'storage' => self::yaml($path . '/' . $relative),
+            ];
+        }
+
+        ksort($configurations);
+
+        $answer = [];
+        foreach ($configurations as $relative => $configuration) {
+            $storagePaths = $configuration['storage']['persistenceManager']['allowedExtensionPaths'] ?? [];
+            $storagePaths = array_values(array_map(strval(...), is_array($storagePaths) ? $storagePaths : []));
+            $answer[] = [
+                'path' => $relative,
+                'name' => $configuration['name'],
+                'registeredBy' => $configuration['registeredBy'],
+                'storagePaths' => $storagePaths,
+                'formDefinitions' => self::formDefinitions($key, $path, $storagePaths),
+            ];
+        }
+
+        return $answer;
+    }
+
+    /**
+     * The form definitions below the storage paths that are this extension's.
+     *
+     * @param array<int, string> $storagePaths
+     * @return array<int, string>
+     */
+    private static function formDefinitions(string $key, string $path, array $storagePaths): array
+    {
+        $directories = [];
+        foreach ($storagePaths as $storage) {
+            $relative = self::inThisExtension($key, rtrim($storage, '/') . '/');
+            if ($relative !== null && is_dir($path . '/' . $relative)) {
+                $directories[] = $path . '/' . $relative;
+            }
+        }
+        if ($directories === []) {
+            return [];
+        }
+
+        $definitions = [];
+        foreach (Finder::create()->files()->in($directories)->name('*.form.yaml')->sortByName() as $file) {
+            $definitions[] = substr($file->getPathname(), strlen($path) + 1);
+        }
+
+        return $definitions;
+    }
+
+    /**
+     * What an `EXT:` reference points at inside this extension, relative to it,
+     * or null where it points somewhere else.
+     */
+    private static function inThisExtension(string $key, string $reference): ?string
+    {
+        $prefix = 'EXT:' . $key . '/';
+
+        return str_starts_with($reference, $prefix) ? substr($reference, strlen($prefix)) : null;
     }
 
     /**

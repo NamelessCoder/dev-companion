@@ -1484,23 +1484,25 @@ The answer carries exactly one of these sets of fields: `root`, `extensions`,
 ## `typo3_extension_scope`
 
 Describe what one installed extension registers: the tables its TCA defines and
-the ones it extends, the content elements it adds to tt_content and the Fluid
-template each renders through, its backend modules and routes, its icons, its
-site sets, the service tags it hangs into the container, its middlewares, its
-Fluid roots and namespaces, and the shape of its Classes/ directory — and
-what it ships beside all of that: its manual, its README, the test layers it
-has, and its XLF files with the source language each one declares. Those four
-are answered even when they are not there, because the absence of a manual or a
-translation is what a file listing cannot show. A content element that is an
-Extbase plugin is said to be one and points at plugin.tx_<identifier>, because
-it renders through the dispatcher and has no templateName to be missing. The
-tables, content elements and icons are read from the booted installation where
-there is one and attributed to this extension by the EXT: reference each entry
-carries, so a list built in a loop or a table added by a PHP call is in the
-answer; everything else is read from that extension's own files, parsed and
-never executed, so it answers on a fresh clone and for a third-party extension
-as well as for the project's own. answeredBy says which of the two answered,
-and where it says packages the answer names what that leaves out. Where a
+the ones it extends, the content elements it adds to tt_content with the Fluid
+template each renders through and the FlexForm each binds, its backend modules
+and routes, its icons, its site sets and the files each set carries, the form
+configurations it registers and the form definitions they store, the service
+tags it hangs into the container, its middlewares, its Fluid roots and
+namespaces, and the shape of its Classes/ directory — and what it ships
+beside all of that: its manual, its README, the test layers it has, and its XLF
+files with the source language each one declares. Those four are answered even
+when they are not there, because the absence of a manual or a translation is
+what a file listing cannot show. A content element that is an Extbase plugin is
+said to be one and points at plugin.tx_<identifier>, because it renders through
+the dispatcher and has no templateName to be missing. The tables, content
+elements and icons are read from the booted installation where there is one and
+attributed to this extension by the EXT: reference each entry carries, so a
+list built in a loop or a table added by a PHP call is in the answer;
+everything else is read from that extension's own files, parsed and never
+executed, so it answers on a fresh clone and for a third-party extension as
+well as for the project's own. answeredBy says which of the two answered, and
+where it says packages the answer names what that leaves out. Where a
 registration file it ships is one a core deprecation turns on —
 ext_tables.php, or ext_emconf.php beside a composer.json declaring neither
 providesPackages nor a version — the answer says which entry and what it
@@ -1539,7 +1541,7 @@ extensions this can be called for.
 - `tcaOverrides` *(array of string)* — Tables it extends below
   Configuration/TCA/Overrides/.
 - `contentElements` *(array of object)* — The content elements it adds to
-  tt_content, and where each renders.
+  tt_content, where each renders, and what it configures through.
   - `identifier` *(string, required)* — The CType value, read from an
     addTcaSelectItem(), addRecordType() or registerPlugin() call in one of
     those override files. An identifier assembled at runtime or taken from a
@@ -1560,6 +1562,18 @@ extensions this can be called for.
     TypoScript file of this extension that configures plugin.tx_<identifier>,
     which is where its templateRootPaths and settings are. Null where its
     TypoScript configures nothing there, and on anything that is not a plugin.
+  - `flexForm` *(string or null, required)* — The FlexForm data structure
+    it binds, as the call declares it — a FILE:EXT: reference, or "inline"
+    where the XML stands in the override file itself. Null where it binds none,
+    which is a different element to review than one that does.
+- `unlistedFlexForms` *(array of object)* — FlexForm bindings read from the
+  override files whose content type none of the contentElements entries above
+  carries. Usually empty. An entry here is a registration this answer read and
+  could not attribute: the identifier is real and the binding is real, and
+  whatever else registers that element was not established.
+  - `identifier` *(string, required)* — The content type the binding
+    names.
+  - `flexForm` *(string, required)* — The data structure, as above.
 - `backendModules` *(array of string)* — Module identifiers from
   Configuration/Backend/Modules.php.
 - `backendRoutes` *(array of string)* — Route names from
@@ -1570,6 +1584,37 @@ extensions this can be called for.
   - `name` *(string, required)* — The composer-style set name a site
     depends on.
   - `path` *(string, required)* — Relative to the extension.
+  - `files` *(array of string, required)* — Which of the files core reads
+    a set directory for are in it: settings.definitions.yaml, settings.yaml,
+    route-enhancers.yaml, labels.xlf, page.tsconfig, constants.typoscript,
+    setup.typoscript and include_static_file.txt. config.yaml is not among
+    them, being what makes the directory a set. route-enhancers.yaml is read
+    from v14.1; on v13 a set carrying one is loaded and that file ignored. The
+    last four are the defaults a set gets where its config.yaml declares no
+    typoscript, pagets or labels path of its own — one that declares them
+    reads from there instead, and this list does not say so.
+- `formConfigurations` *(array of object)* — The form configurations it
+  registers, both ways in. Empty where it registers none — an extension that
+  ships a .form.yaml and registers no storage for it has a form nothing loads,
+  which is what this list is read for.
+  - `path` *(string, required)* — The YAML file, relative to the
+    extension.
+  - `name` *(string or null, required)* — The set name its config.yaml
+    declares, which is what disabledSets matches against. Null for a
+    TypoScript-registered file, which has none.
+  - `registeredBy` *(string, required)* — One of `set`, `typoscript`.
+    set: the directory convention Configuration/Form/<SetName>/config.yaml,
+    collected from every active extension since v14.2 without being registered
+    anywhere. typoscript: plugin.tx_form.settings.yamlConfigurations or the
+    module. one beside it, which is the way before it, deprecated in v14.2 and
+    removed in v15.0.
+  - `storagePaths` *(array of string, required)* — What it declares under
+    persistenceManager.allowedExtensionPaths — where the form definitions it
+    stores live. A storage configured as a file mount instead is a record and
+    is in no answer read from files.
+  - `formDefinitions` *(array of string, required)* — The .form.yaml
+    files below those of the storage paths that are inside this extension,
+    relative to it.
 - `middlewares` *(array of string)* — Middleware identifiers from
   Configuration/RequestMiddlewares.php, across the request scopes.
 - `serviceTags` *(array of string)* — Tags its Services.yaml carries, such
@@ -1658,9 +1703,10 @@ extensions this can be called for.
       the console command.
 
 The answer carries exactly one of these sets of fields: `key`, `path`,
-`origin`, `tcaTables`, `tcaOverrides`, `contentElements`, `backendModules`,
-`icons`, `siteSets`, `serviceTags`, `files`, `deprecatedFiles`,
-`notReadStatically`, `artifacts`, `answeredBy` — or `key`, `unsupported`.
+`origin`, `tcaTables`, `tcaOverrides`, `contentElements`, `unlistedFlexForms`,
+`backendModules`, `icons`, `siteSets`, `formConfigurations`, `serviceTags`,
+`files`, `deprecatedFiles`, `notReadStatically`, `artifacts`, `answeredBy` —
+or `key`, `unsupported`.
 
 ## `typo3_catalog_scope`
 

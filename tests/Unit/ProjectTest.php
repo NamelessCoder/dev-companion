@@ -359,7 +359,10 @@ final class ProjectTest extends TestCase
         self::assertSame(['acme_events'], $result->data['backendModules']);
         self::assertSame(['acme/tracking'], $result->data['middlewares']);
         self::assertSame(['data.processor'], $result->data['serviceTags']);
-        self::assertSame([['name' => 'acme/events-set', 'path' => 'Configuration/Sets/AcmeEvents/']], $result->data['siteSets']);
+        self::assertSame(
+            [['name' => 'acme/events-set', 'path' => 'Configuration/Sets/AcmeEvents/', 'files' => []]],
+            $result->data['siteSets'],
+        );
         self::assertSame(['Resources/Private/Partials/'], $result->data['fluidRoots']);
         self::assertSame([['kind' => 'DataProcessing', 'files' => 1]], $result->data['classes']);
         self::assertContains('ext_localconf.php', $result->data['files']);
@@ -444,8 +447,8 @@ final class ProjectTest extends TestCase
 
         self::assertSame(
             [
-                ['identifier' => 'acme_slider', 'kind' => 'element', 'templateName' => null, 'source' => null, 'pluginSettings' => null],
-                ['identifier' => 'acme_teaser', 'kind' => 'element', 'templateName' => 'Teaser', 'source' => 'Configuration/Sets/AcmeSite/setup.typoscript', 'pluginSettings' => null],
+                ['identifier' => 'acme_slider', 'kind' => 'element', 'templateName' => null, 'source' => null, 'pluginSettings' => null, 'flexForm' => null],
+                ['identifier' => 'acme_teaser', 'kind' => 'element', 'templateName' => 'Teaser', 'source' => 'Configuration/Sets/AcmeSite/setup.typoscript', 'pluginSettings' => null, 'flexForm' => null],
             ],
             $result->data['contentElements'],
             'both item shapes are read, and a value that is no literal is left out rather than guessed',
@@ -506,7 +509,14 @@ final class ProjectTest extends TestCase
         $result = Registry::call('typo3_extension_scope', ['extension' => 'my_sitepackage']);
 
         self::assertSame(
-            [['identifier' => 'acme_hero_carousel', 'kind' => 'element', 'templateName' => 'HeroCarousel', 'source' => 'Configuration/Sets/AcmeSite/setup.typoscript', 'pluginSettings' => null]],
+            [[
+                'identifier' => 'acme_hero_carousel',
+                'kind' => 'element',
+                'templateName' => 'HeroCarousel',
+                'source' => 'Configuration/Sets/AcmeSite/setup.typoscript',
+                'pluginSettings' => null,
+                'flexForm' => null,
+            ]],
             $result->data['contentElements'],
         );
         self::assertSame(
@@ -629,6 +639,204 @@ final class ProjectTest extends TestCase
             array_column($result->data['contentElements'], 'identifier'),
             'a single-assignment string variable resolves, and a reassigned one is still declined',
         );
+    }
+
+    #[Test]
+    public function theFlexFormAContentElementBindsIsOnItsEntry(): void
+    {
+        // A conformance audit of a real sitepackage described its two elements
+        // least of all four, and those two were the ones whose FlexForm nothing
+        // opened: the file that says what the element is configured by was in
+        // no answer. All three bindings core writes are here, because an
+        // extension supporting two majors ships more than one of them — the
+        // third argument of addPiFlexFormValue() until v14.3, where it is
+        // deprecated, and the data structure argument of addPlugin() and
+        // registerPlugin() from v14.2.
+        $root = $this->composerProject();
+        $extension = $root . '/packages/my_sitepackage';
+        $this->declare(
+            $extension . '/Configuration/TCA/Overrides/tt_content.php',
+            <<<'PHP'
+                <?php
+                ExtensionManagementUtility::addRecordType(
+                    ['label' => 'Catalogue', 'value' => 'acme_catalogue'],
+                    '--div--;General,header',
+                );
+                ExtensionManagementUtility::addPiFlexFormValue(
+                    '*',
+                    'FILE:EXT:my_sitepackage/Configuration/FlexForms/Catalogue.xml',
+                    'acme_catalogue',
+                );
+                ExtensionManagementUtility::addRecordType(
+                    ['label' => 'Teaser', 'value' => 'acme_teaser'],
+                    '--div--;General,header',
+                );
+                PHP
+        );
+        Instance::discoverFrom($root);
+
+        $result = Registry::call('typo3_extension_scope', ['extension' => 'my_sitepackage']);
+
+        self::assertSame(
+            ['FILE:EXT:my_sitepackage/Configuration/FlexForms/Catalogue.xml', null],
+            array_column($result->data['contentElements'], 'flexForm'),
+            'the binding sits on the element it names, and an element without one binds none',
+        );
+        self::assertSame([], $result->data['unlistedFlexForms']);
+        self::assertStringContainsString(
+            'acme_catalogue — no templateName in this extension\'s TypoScript; another extension or the site may '
+            . 'set it, FlexForm FILE:EXT:my_sitepackage/Configuration/FlexForms/Catalogue.xml',
+            $result->text,
+        );
+    }
+
+    #[Test]
+    public function aFlexFormBoundThroughACallThisDoesNotReadIsStillReported(): void
+    {
+        // registerPlugin() returns the signature it composed out of its first
+        // two arguments, and core binds its own FlexForms against exactly that
+        // variable — so the identifier stands in the file even where the call
+        // that put the element in the list does not. The element itself is
+        // registered by a call this answer does not read, and the binding is
+        // reported rather than dropped: a FlexForm read and then not mentioned
+        // is the same silence as one that was never opened.
+        $root = $this->composerProject();
+        $extension = $root . '/packages/my_sitepackage';
+        $this->declare(
+            $extension . '/Configuration/TCA/Overrides/tt_content.php',
+            <<<'PHP'
+                <?php
+                $contentTypeName = \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
+                    'my_sitepackage',
+                    'Catalogue',
+                    'LLL:EXT:my_sitepackage/Resources/Private/Language/locallang.xlf:catalogue',
+                );
+                ExtensionManagementUtility::addPiFlexFormValue(
+                    '*',
+                    'FILE:EXT:my_sitepackage/Configuration/FlexForms/Catalogue.xml',
+                    $contentTypeName,
+                );
+                PHP
+        );
+        Instance::discoverFrom($root);
+
+        $result = Registry::call('typo3_extension_scope', ['extension' => 'my_sitepackage']);
+
+        self::assertSame([], $result->data['contentElements']);
+        self::assertSame(
+            [[
+                'identifier' => 'mysitepackage_catalogue',
+                'flexForm' => 'FILE:EXT:my_sitepackage/Configuration/FlexForms/Catalogue.xml',
+            ]],
+            $result->data['unlistedFlexForms'],
+            'the signature loses the extension key\'s underscores, which is what registerPlugin() composes',
+        );
+        self::assertStringContainsString('FlexForms bound to a content type none of the above names', $result->text);
+    }
+
+    #[Test]
+    public function aSiteSetIsAnsweredByTheFilesCoreReadsItFor(): void
+    {
+        // "Site sets: acme/site (Configuration/Sets/Acme/)" names the directory
+        // and says nothing about what is in it, so a route enhancer shipped in
+        // a set was in no answer this server gives. Core reads the directory
+        // for a fixed list of names, and which of them are there is what the
+        // set carries.
+        $root = $this->composerProject();
+        $extension = $root . '/packages/my_sitepackage';
+        $this->declare($extension . '/Configuration/Sets/Acme/config.yaml', "name: acme/site\n");
+        $this->declare($extension . '/Configuration/Sets/Acme/route-enhancers.yaml', "routeEnhancers: {}\n");
+        $this->declare($extension . '/Configuration/Sets/Acme/settings.definitions.yaml', "settings: {}\n");
+        $this->declare($extension . '/Configuration/Sets/Acme/setup.typoscript', "page = PAGE\n");
+        // A name core does not read there is not a registration, whatever it
+        // looks like beside the ones that are.
+        $this->declare($extension . '/Configuration/Sets/Acme/tsconfig.yaml', "x: 1\n");
+        Instance::discoverFrom($root);
+
+        $result = Registry::call('typo3_extension_scope', ['extension' => 'my_sitepackage']);
+
+        self::assertSame(
+            [[
+                'name' => 'acme/site',
+                'path' => 'Configuration/Sets/Acme/',
+                'files' => ['settings.definitions.yaml', 'route-enhancers.yaml', 'setup.typoscript'],
+            ]],
+            $result->data['siteSets'],
+        );
+        self::assertStringContainsString(
+            'beside config.yaml: settings.definitions.yaml, route-enhancers.yaml, setup.typoscript',
+            $result->text,
+        );
+        // The one file in the list that is not read on every covered major.
+        self::assertStringContainsString('route-enhancers.yaml is read from v14.1', $result->text);
+    }
+
+    #[Test]
+    public function aFormSetIsAnsweredWithTheDefinitionsItStores(): void
+    {
+        // Since v14.2 a directory below Configuration/Form/ carrying a
+        // config.yaml is collected from every active extension and registered
+        // nowhere, so nothing in the file tree says the form definitions beside
+        // it are loaded at all. The way before it registers a YAML file through
+        // this extension's own TypoScript, which is read from the same place
+        // the content element templates are.
+        $root = $this->composerProject();
+        $extension = $root . '/packages/my_sitepackage';
+        $this->declare(
+            $extension . '/Configuration/Form/Acme/config.yaml',
+            <<<'YAML'
+                name: acme/forms
+                priority: 200
+                persistenceManager:
+                  allowedExtensionPaths:
+                    10: 'EXT:my_sitepackage/Resources/Private/Forms/'
+                YAML
+        );
+        $this->declare($extension . '/Resources/Private/Forms/ProductRequest.form.yaml', "identifier: product\n");
+        $this->declare(
+            $extension . '/Configuration/Yaml/FormSetup.yaml',
+            "persistenceManager:\n  allowedExtensionPaths:\n    20: 'EXT:my_sitepackage/Resources/Private/Legacy/'\n",
+        );
+        $this->declare(
+            $extension . '/Configuration/TypoScript/setup.typoscript',
+            <<<'TYPOSCRIPT'
+                plugin.tx_form.settings.yamlConfigurations {
+                    1732785702 = EXT:my_sitepackage/Configuration/Yaml/FormSetup.yaml
+                }
+                module.tx_form.settings.yamlConfigurations {
+                    1732785702 = EXT:my_sitepackage/Configuration/Yaml/FormSetup.yaml
+                }
+                TYPOSCRIPT
+        );
+        Instance::discoverFrom($root);
+
+        $result = Registry::call('typo3_extension_scope', ['extension' => 'my_sitepackage']);
+
+        self::assertSame(
+            [
+                [
+                    'path' => 'Configuration/Form/Acme/config.yaml',
+                    'name' => 'acme/forms',
+                    'registeredBy' => 'set',
+                    'storagePaths' => ['EXT:my_sitepackage/Resources/Private/Forms/'],
+                    'formDefinitions' => ['Resources/Private/Forms/ProductRequest.form.yaml'],
+                ],
+                [
+                    'path' => 'Configuration/Yaml/FormSetup.yaml',
+                    'name' => null,
+                    'registeredBy' => 'typoscript',
+                    'storagePaths' => ['EXT:my_sitepackage/Resources/Private/Legacy/'],
+                    // The storage is declared and the directory is not there:
+                    // a form nothing stores is the finding, not a shorter list.
+                    'formDefinitions' => [],
+                ],
+            ],
+            $result->data['formConfigurations'],
+            'both ways in, and the file the plugin and the module registration name is one entry',
+        );
+        self::assertStringContainsString('form set acme/forms', $result->text);
+        self::assertStringContainsString('registered by TypoScript, the way deprecated in v14.2', $result->text);
+        self::assertStringContainsString('Resources/Private/Forms/ProductRequest.form.yaml', $result->text);
     }
 
     #[Test]

@@ -37,10 +37,12 @@ final class ExtensionScope extends ReadOnlyTool
         'tcaTables' => [],
         'tcaOverrides' => [],
         'contentElements' => [],
+        'unlistedFlexForms' => [],
         'backendModules' => [],
         'backendRoutes' => [],
         'icons' => [],
         'siteSets' => [],
+        'formConfigurations' => [],
         'middlewares' => [],
         'serviceTags' => [],
         'fluidRoots' => [],
@@ -60,7 +62,7 @@ final class ExtensionScope extends ReadOnlyTool
 
     public static function description(): string
     {
-        return 'Describe what one installed extension registers: the tables its TCA defines and the ones it extends, the content elements it adds to tt_content and the Fluid template each renders through, its backend modules and routes, its icons, its site sets, the service tags it hangs into the container, its middlewares, its Fluid roots and namespaces, and the shape of its Classes/ directory — and what it ships beside all of that: its manual, its README, the test layers it has, and its XLF files with the source language each one declares. Those four are answered even when they are not there, because the absence of a manual or a translation is what a file listing cannot show. A content element that is an Extbase plugin is said to be one and points at plugin.tx_<identifier>, because it renders through the dispatcher and has no templateName to be missing. The tables, content elements and icons are read from the booted installation where there is one and attributed to this extension by the EXT: reference each entry carries, so a list built in a loop or a table added by a PHP call is in the answer; everything else is read from that extension\'s own files, parsed and never executed, so it answers on a fresh clone and for a third-party extension as well as for the project\'s own. answeredBy says which of the two answered, and where it says packages the answer names what that leaves out. Where a registration file it ships is one a core deprecation turns on — ext_tables.php, or ext_emconf.php beside a composer.json declaring neither providesPackages nor a version — the answer says which entry and what it costs, because that predicate is the file rather than anything the extension calls and no changelog search over its code reaches it. That is those two files and nothing else, so it is not an upgrade check. typo3_project_scope names the extensions this can be called for.';
+        return 'Describe what one installed extension registers: the tables its TCA defines and the ones it extends, the content elements it adds to tt_content with the Fluid template each renders through and the FlexForm each binds, its backend modules and routes, its icons, its site sets and the files each set carries, the form configurations it registers and the form definitions they store, the service tags it hangs into the container, its middlewares, its Fluid roots and namespaces, and the shape of its Classes/ directory — and what it ships beside all of that: its manual, its README, the test layers it has, and its XLF files with the source language each one declares. Those four are answered even when they are not there, because the absence of a manual or a translation is what a file listing cannot show. A content element that is an Extbase plugin is said to be one and points at plugin.tx_<identifier>, because it renders through the dispatcher and has no templateName to be missing. The tables, content elements and icons are read from the booted installation where there is one and attributed to this extension by the EXT: reference each entry carries, so a list built in a loop or a table added by a PHP call is in the answer; everything else is read from that extension\'s own files, parsed and never executed, so it answers on a fresh clone and for a third-party extension as well as for the project\'s own. answeredBy says which of the two answered, and where it says packages the answer names what that leaves out. Where a registration file it ships is one a core deprecation turns on — ext_tables.php, or ext_emconf.php beside a composer.json declaring neither providesPackages nor a version — the answer says which entry and what it costs, because that predicate is the file rather than anything the extension calls and no changelog search over its code reaches it. That is those two files and nothing else, so it is not an upgrade check. typo3_project_scope names the extensions this can be called for.';
     }
 
     public static function inputSchema(): array
@@ -94,14 +96,27 @@ final class ExtensionScope extends ReadOnlyTool
                 'templateName' => Schema::nullableString('The Fluid template it renders through, from tt_content.<identifier>.templateName in this extension\'s TypoScript. Null where its TypoScript does not set one — another extension or the site configuration may. On a plugin, one set here replaces the Generic wrapper configurePlugin() generates instead of naming the plugin\'s template, and null is the normal case.'),
                 'source' => Schema::nullableString('The TypoScript file that set it, relative to the extension.'),
                 'pluginSettings' => Schema::nullableString('On a plugin: the TypoScript file of this extension that configures plugin.tx_<identifier>, which is where its templateRootPaths and settings are. Null where its TypoScript configures nothing there, and on anything that is not a plugin.'),
-            ], ['identifier', 'kind', 'templateName', 'source', 'pluginSettings']), 'The content elements it adds to tt_content, and where each renders.'),
+                'flexForm' => Schema::nullableString('The FlexForm data structure it binds, as the call declares it — a FILE:EXT: reference, or "inline" where the XML stands in the override file itself. Null where it binds none, which is a different element to review than one that does.'),
+            ], ['identifier', 'kind', 'templateName', 'source', 'pluginSettings', 'flexForm']), 'The content elements it adds to tt_content, where each renders, and what it configures through.'),
+            'unlistedFlexForms' => Schema::listOf(Schema::object([
+                'identifier' => Schema::string('The content type the binding names.'),
+                'flexForm' => Schema::string('The data structure, as above.'),
+            ], ['identifier', 'flexForm']), 'FlexForm bindings read from the override files whose content type none of the contentElements entries above carries. Usually empty. An entry here is a registration this answer read and could not attribute: the identifier is real and the binding is real, and whatever else registers that element was not established.'),
             'backendModules' => Schema::listOf(Schema::string(), 'Module identifiers from Configuration/Backend/Modules.php.'),
             'backendRoutes' => Schema::listOf(Schema::string(), 'Route names from Configuration/Backend/Routes.php and AjaxRoutes.php.'),
             'icons' => Schema::listOf(Schema::string(), 'Identifiers from Configuration/Icons.php. typo3_icon_lookup searches every package at once.'),
             'siteSets' => Schema::listOf(Schema::object([
                 'name' => Schema::string('The composer-style set name a site depends on.'),
                 'path' => Schema::string('Relative to the extension.'),
-            ], ['name', 'path'])),
+                'files' => Schema::listOf(Schema::string(), 'Which of the files core reads a set directory for are in it: settings.definitions.yaml, settings.yaml, route-enhancers.yaml, labels.xlf, page.tsconfig, constants.typoscript, setup.typoscript and include_static_file.txt. config.yaml is not among them, being what makes the directory a set. route-enhancers.yaml is read from v14.1; on v13 a set carrying one is loaded and that file ignored. The last four are the defaults a set gets where its config.yaml declares no typoscript, pagets or labels path of its own — one that declares them reads from there instead, and this list does not say so.'),
+            ], ['name', 'path', 'files'])),
+            'formConfigurations' => Schema::listOf(Schema::object([
+                'path' => Schema::string('The YAML file, relative to the extension.'),
+                'name' => Schema::nullableString('The set name its config.yaml declares, which is what disabledSets matches against. Null for a TypoScript-registered file, which has none.'),
+                'registeredBy' => ['type' => 'string', 'enum' => ['set', 'typoscript'], 'description' => 'set: the directory convention Configuration/Form/<SetName>/config.yaml, collected from every active extension since v14.2 without being registered anywhere. typoscript: plugin.tx_form.settings.yamlConfigurations or the module. one beside it, which is the way before it, deprecated in v14.2 and removed in v15.0.'],
+                'storagePaths' => Schema::listOf(Schema::string(), 'What it declares under persistenceManager.allowedExtensionPaths — where the form definitions it stores live. A storage configured as a file mount instead is a record and is in no answer read from files.'),
+                'formDefinitions' => Schema::listOf(Schema::string(), 'The .form.yaml files below those of the storage paths that are inside this extension, relative to it.'),
+            ], ['path', 'name', 'registeredBy', 'storagePaths', 'formDefinitions']), 'The form configurations it registers, both ways in. Empty where it registers none — an extension that ships a .form.yaml and registers no storage for it has a form nothing loads, which is what this list is read for.'),
             'middlewares' => Schema::listOf(Schema::string(), 'Middleware identifiers from Configuration/RequestMiddlewares.php, across the request scopes.'),
             'serviceTags' => Schema::listOf(Schema::string(), 'Tags its Services.yaml carries, such as data.processor, event.listener or console.command.'),
             'fluidRoots' => Schema::listOf(Schema::string(), 'Which of Resources/Private/Templates, Partials and Layouts exist.'),
@@ -131,7 +146,7 @@ final class ExtensionScope extends ReadOnlyTool
             ], ['manual', 'readme', 'tests', 'languageFiles'], 'What it ships beside its registrations. Every key is present even when the artifact is not, because the absence of a manual, a test or a translation is the answer a file listing cannot give.'),
             'installed' => Schema::listOf(Schema::string(), 'On a miss: the extension keys this installation does have.'),
             'answeredBy' => Schema::answeredBy(),
-        ], ['key', 'path', 'origin', 'tcaTables', 'tcaOverrides', 'contentElements', 'backendModules', 'icons', 'siteSets', 'serviceTags', 'files', 'deprecatedFiles', 'notReadStatically', 'artifacts', 'answeredBy'], ['key']);
+        ], ['key', 'path', 'origin', 'tcaTables', 'tcaOverrides', 'contentElements', 'unlistedFlexForms', 'backendModules', 'icons', 'siteSets', 'formConfigurations', 'serviceTags', 'files', 'deprecatedFiles', 'notReadStatically', 'artifacts', 'answeredBy'], ['key']);
     }
 
     public static function answer(array $args): ToolResult
@@ -197,13 +212,16 @@ final class ExtensionScope extends ReadOnlyTool
             $lines[] = '';
             $lines[] = 'Content elements it adds:';
             foreach ($extension['contentElements'] as $element) {
-                $lines[] = '- ' . $element['identifier'] . ' — ' . self::renders($element);
+                $lines[] = '- ' . $element['identifier'] . ' — ' . self::renders($element)
+                    . ($element['flexForm'] === null ? '' : ', FlexForm ' . $element['flexForm']);
             }
             $lines[] = 'The identifiers come from the addRecordType(), addTcaSelectItem() and registerPlugin() calls '
                 . 'below Configuration/TCA/Overrides/ and the templates from tt_content.<identifier>.templateName in '
                 . 'its TypoScript. A value the file assigns to a variable once is followed there; one a call puts '
                 . 'together at runtime, takes from a constant, or reads from a variable that file assigns more than '
-                . 'once, is in neither.';
+                . 'once, is in neither. An element named without a FlexForm binds none: the binding is read from the '
+                . 'same files, from addPiFlexFormValue(), from the data structure argument addPlugin() and '
+                . 'registerPlugin() take since v14.2, and from a columnsOverrides assignment on pi_flexform.';
             if (in_array('plugin', array_column($extension['contentElements'], 'kind'), true)) {
                 $lines[] = 'A plugin renders through the Extbase dispatcher: configurePlugin() generates '
                     . 'tt_content.<identifier> on lib.contentElement with templateName = Generic and an EXTBASEPLUGIN '
@@ -214,12 +232,51 @@ final class ExtensionScope extends ReadOnlyTool
             }
         }
 
+        if ($extension['unlistedFlexForms'] !== []) {
+            $lines[] = '';
+            $lines[] = 'FlexForms bound to a content type none of the above names:';
+            foreach ($extension['unlistedFlexForms'] as $binding) {
+                $lines[] = '- ' . $binding['identifier'] . ' — ' . $binding['flexForm'];
+            }
+            $lines[] = 'Each identifier is registered by a call this answer does not read, so the element is real '
+                . 'and what else it registers was not established. It is not a stray file.';
+        }
+
         if ($extension['siteSets'] !== []) {
             $lines[] = '';
             $lines[] = 'Site sets:';
             foreach ($extension['siteSets'] as $set) {
-                $lines[] = '- ' . $set['name'] . ' (' . $set['path'] . ')';
+                $lines[] = '- ' . $set['name'] . ' (' . $set['path'] . ') — '
+                    . ($set['files'] === [] ? 'config.yaml alone' : 'beside config.yaml: ' . implode(', ', $set['files']));
             }
+            $lines[] = 'Those are the file names core reads a set directory for, and a name it does not read is not '
+                . 'listed. route-enhancers.yaml is read from v14.1, so a set carrying one on v13 has it ignored. '
+                . 'A config.yaml that declares a typoscript, pagets or labels path of its own reads from there '
+                . 'instead of from the last of these, which this list does not say.';
+        }
+
+        if ($extension['formConfigurations'] !== []) {
+            $lines[] = '';
+            $lines[] = 'Form configurations:';
+            foreach ($extension['formConfigurations'] as $configuration) {
+                $lines[] = sprintf(
+                    '- %s (%s)%s%s',
+                    $configuration['path'],
+                    $configuration['registeredBy'] === 'set'
+                        ? 'form set ' . ($configuration['name'] ?? 'without a name')
+                        : 'registered by TypoScript, the way deprecated in v14.2',
+                    $configuration['storagePaths'] === []
+                        ? ' — declares no storage path'
+                        : ' — stores in ' . implode(', ', $configuration['storagePaths']),
+                    $configuration['formDefinitions'] === []
+                        ? ''
+                        : ': ' . implode(', ', $configuration['formDefinitions']),
+                );
+            }
+            $lines[] = 'A form set is the directory below Configuration/Form/ that carries a config.yaml, collected '
+                . 'from every active extension since v14.2 and registered nowhere. Definitions are the .form.yaml '
+                . 'files below the storage paths that are inside this extension; a storage configured as a file '
+                . 'mount holds records instead and is in no answer read from files.';
         }
 
         if ($extension['classes'] !== []) {

@@ -125,3 +125,19 @@ precondition answers what to do when the tools are absent and says nothing about
 that. So whoever judges the duplicate is judging a different question: not
 whether to stop, but whether stopping is still right when the server is one
 process away.
+
+## Since then
+
+The **Wrong if** got an answer from outside the recorded runs. A session on
+`opencode/ling-3.0-flash-free` left a feedback on 2026-07-31 at 18:36, in a
+checkout this repository has never seen. It names "the base to scope to lookup
+to reading order" as what "prevented premature conclusions" — the property this
+decision claims, from a run nobody here wrote the prompt for. It is weaker
+evidence than a `REVIEW-02`. The checkout, the prompt and the finding list are
+unreadable from here, and what came back is a session's account of its own work
+rather than a transcript. It is also the first evidence about the
+order from a model this repository has never measured, and it says the same
+thing the four runs said. The base was not outrun and it has not grown since.
+The four skills whose order was corrected without a forward run are still
+unproven. Judged in [`D-SKL-002`](skl-002-a-focused-audit-narrows-what-is-assessed.md),
+which is what the other half of the same feedback asked for.

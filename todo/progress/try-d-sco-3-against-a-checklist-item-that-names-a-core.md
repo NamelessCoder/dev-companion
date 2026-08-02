@@ -1,6 +1,8 @@
 # Try `D-SCO-3` against a checklist item that names a core path on purpose
 
 **Serves:** decisions/
+**Branch:** todo/try-d-sco-3-against-a-checklist-item-that-names-a-core
+**Claimed:** 2026-08-02
 
 Core-only is decided per line by what the line names, and the entry names the
 line that would break it: advice about reading the core as a reference rather

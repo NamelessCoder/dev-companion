@@ -1,11 +1,17 @@
 # What `typo3_project_scope` answered
 
-Recorded on 2026-08-02 by `bin/cli tools:record`. Answered against
-core-checkout, TYPO3 14.3.6-dev, the 14.3 core checkout below .checkouts/,
-whose console could not be reached: <installation> has no TYPO3 console —
-none of bin/typo3, vendor/bin/typo3 exists. Nothing checks this page;
-[tools.md](../tools.md) is where the current shape of an answer is, and
-[readme.md](readme.md) is what the recording as a whole is of.
+Recorded on 2026-08-02 by `bin/cli tools:record`. Of two working directories,
+because what this server answers depends on which one a client is standing in,
+and neither fills the whole surface. Answered against core-checkout, TYPO3
+14.3.6-dev, the 14.3 core checkout below .checkouts/, whose console could not
+be reached: <installation> has no TYPO3 console — none of bin/typo3,
+vendor/bin/typo3 exists. Answered against composer-project, TYPO3 14.3.5, the
+E-SITE this repository makes below .environments/, whose console answers. The
+tools that declare `answeredBy` carry an answer from each, under a heading
+naming which; every other answer is from the first alone, because nothing in it
+would differ. Nothing checks this page; [tools.md](../tools.md) is where the
+current shape of an answer is, and [readme.md](readme.md) is what the recording
+as a whole is of.
 
 ## project
 
@@ -14,6 +20,8 @@ Called with:
 ```json
 {}
 ```
+
+### From the 14.3 core checkout below .checkouts/, whose console could not be reached
 
 Text:
 
@@ -68,6 +76,51 @@ Data:
             "runs": "unknown"
         }
     ],
+    "patches": [],
+    "answeredBy": "packages"
+}
+```
+
+### From the E-SITE this repository makes below .environments/, whose console answers
+
+Text:
+
+```
+<installation> — composer-project, TYPO3 14.3.5, PHP unconstrained
+
+Extensions: none beyond TYPO3's own.
+
+Sites, with the sets each one depends on:
+- main at https://typo3-mcp-e-site.ddev.site/, root page 1, sets: typo3/fluid-styled-content, typo3/fluid-styled-content-css
+
+This repository declares no commands of its own in composer.json or package.json. What to run is then whatever its CI configuration does.
+```
+
+Data:
+
+```json
+{
+    "root": "<installation>",
+    "kind": "composer-project",
+    "typo3Version": "14.3.5",
+    "phpConstraint": null,
+    "coreConstraint": "^14.3",
+    "extensions": [],
+    "sites": [
+        {
+            "identifier": "main",
+            "base": "https://typo3-mcp-e-site.ddev.site/",
+            "rootPageId": 1,
+            "sets": [
+                "typo3/fluid-styled-content",
+                "typo3/fluid-styled-content-css"
+            ],
+            "languages": [
+                "English"
+            ]
+        }
+    ],
+    "commands": [],
     "patches": [],
     "answeredBy": "packages"
 }

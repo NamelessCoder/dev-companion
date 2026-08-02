@@ -13,6 +13,7 @@ use Typo3CmsMcp\Knowledge\Versions;
 use Typo3CmsMcp\Paths;
 use Typo3CmsMcp\Upkeep\Checkouts;
 use Typo3CmsMcp\Upkeep\Cli;
+use Typo3CmsMcp\Upkeep\Environments;
 use Typo3CmsMcp\Upkeep\ToolAnswers;
 
 /**
@@ -31,6 +32,17 @@ use Typo3CmsMcp\Upkeep\ToolAnswers;
  * it. It has no reachable console, which is itself worth recording: those tools
  * answer from the packages or say they could not be asked, and both shapes are
  * ones a client meets.
+ *
+ * What it cannot show is the third: what a booted TYPO3 answers, which is the
+ * ordinary case and was on no page at all. So the installation-backed tools are
+ * recorded a second time, against the `E-SITE` below `.environments/` — the
+ * other installation this repository recreates, by `bin/cli environment:create`
+ * (`D-EVI-004`). Recording everything against that one instead was measured and
+ * is a trade rather than a gain: `D-DOC-006` has what each side of it costs.
+ *
+ * Nothing here takes a path to somebody's own site for the second root. A
+ * recording pointed at one is repeatable by the machine that holds it and by
+ * nobody else, which is the reason the first root defaults to a checkout.
  */
 #[AsCommand(
     name: 'tools:record',
@@ -63,7 +75,8 @@ final class ToolRecord
 
         $output->writeln(sprintf('Answering from %s (TYPO3 %s)', $found, Instance::typo3Version() ?? 'unknown'));
 
-        $pages = ToolAnswers::rendered($today ?? date('Y-m-d'));
+        $installation = $this->consoleAnswering($output, $found);
+        $pages = ToolAnswers::rendered($today ?? date('Y-m-d'), $found, $installation);
         if (!is_dir(ToolAnswers::directory())) {
             mkdir(ToolAnswers::directory(), 0777, true);
         }
@@ -87,6 +100,46 @@ final class ToolRecord
         ));
 
         return 0;
+    }
+
+    /**
+     * The made `E-SITE`, where it is there and its console answers, and null
+     * with a reason where it is not.
+     *
+     * A silent absence is the failure this guards against: the pages would come
+     * back with one answer per call and nothing on them would say the second
+     * recording had been skipped, so a reader would take the console-answering
+     * shape as still missing rather than as not recorded today. The console is
+     * asked rather than assumed, because a stopped DDEV project is a directory
+     * that is there and answers nothing — and a second recording of the same
+     * `unsupported` object is lines that say what the first already said.
+     */
+    private function consoleAnswering(OutputInterface $output, string $primary): ?string
+    {
+        $path = Environments::path('E-SITE');
+        $steps = 'bin/cli environment:create E-SITE makes it, and this command then records against both.';
+
+        if (!is_dir($path)) {
+            $output->writeln('No E-SITE below .environments/, so nothing records what a booted TYPO3 answers.');
+            $output->writeln('    ' . $steps);
+
+            return null;
+        }
+        if (realpath($path) === realpath($primary)) {
+            return null;
+        }
+
+        Instance::discoverFrom($path);
+        Typo3Cli::forget();
+        if (!Typo3Cli::isAvailable()) {
+            $output->writeln(sprintf("The E-SITE is there and its console is not: %s\n    %s", Typo3Cli::reason(), $steps));
+
+            return null;
+        }
+
+        $output->writeln(sprintf('Answering the installation-backed tools a second time from %s', $path));
+
+        return $path;
     }
 
     /**

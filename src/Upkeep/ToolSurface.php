@@ -93,19 +93,27 @@ final class ToolSurface
      * silence for them made a deliberate absence read as a link somebody
      * forgot, in the one place a reader would have believed the head.
      *
+     * What it was answered against is not said here, only that it was. This
+     * page is derived and `tools:check` fails on it going stale; the recording
+     * is deliberately checked by nothing (`D-DOC-006`), so a sentence here
+     * naming its installation would be a claim about an unchecked file that a
+     * check then holds — and it was wrong the day the recording gained a second
+     * root, where it still said "against a checkout". The page's own head says
+     * what it is of, which is where `D-DOC-007` put it.
+     *
      * @return list<string>
      */
     private static function recorded(string $name): array
     {
         if (is_file(ToolAnswers::file($name))) {
             return [
-                sprintf('**Answered**, once, against a checkout: [tool-answers/%s.md](tool-answers/%s.md).', $name, $name),
+                sprintf('**Answered**, once: [tool-answers/%s.md](tool-answers/%s.md).', $name, $name),
                 '',
             ];
         }
 
         return [
-            self::wrap('**Not answered** against a checkout, and deliberately: '
+            self::wrap('**Not answered**, and deliberately: '
                 . (ToolCalls::undriven()[$name]
                     ?? 'no reason for that is written down, which is the defect rather than the absence — '
                     . 'see `Upkeep\ToolCalls`.')),

@@ -234,6 +234,43 @@ final class Typo3CliTest extends TestCase
         );
     }
 
+    /**
+     * `ddev exec` joins its arguments into a line and hands that to bash inside
+     * the container, so an argument carrying a character bash acts on never
+     * reaches the console. `typo3_label_lookup` builds one — the search is a
+     * regex, and `--regex=/(save)/i` is a subshell to bash — so against every
+     * DDEV installation it came back exit 2 and fell through to reading the
+     * package files, reporting `answeredBy: "packages"` as though the console
+     * were unreachable. Found by the first recording made against a booted
+     * TYPO3 rather than by anything here, which is what `D-EVI-004` said an
+     * installation of this repository's own would be for.
+     *
+     * The stand-in is the joining and the shell, because that is where the
+     * argument was lost: it rewrites the container's mount to the project and
+     * runs the line the way DDEV runs it. What the console then prints is the
+     * argv it was actually given.
+     */
+    #[Test]
+    public function anArgumentTheContainersShellWouldActOnReachesTheConsoleWhole(): void
+    {
+        $root = $this->installation();
+        mkdir($root . '/vendor/bin', 0o777, true);
+        file_put_contents($root . '/vendor/bin/typo3', "#!/bin/sh\nfor a in \"\$@\"; do echo \"\$a\"; done\n");
+        chmod($root . '/vendor/bin/typo3', 0o755);
+        mkdir($root . '/.ddev');
+        file_put_contents($root . '/.ddev/config.yaml', "name: fixture\ntype: typo3\n");
+        $this->ddevJoiningLikeTheRealOne($root);
+        $this->discover($root);
+
+        $result = Typo3Cli::run(['language:domain:search', '--regex=/(save)/i']);
+
+        self::assertTrue($result['ok'], $result['error']);
+        self::assertSame(
+            ['language:domain:search', '--regex=/(save)/i', '--no-interaction', '--no-ansi'],
+            preg_split('/\R/', trim($result['output'])),
+        );
+    }
+
     #[Test]
     public function aStoppedProjectReachedThroughHostPhpIsReportedAsTheHalfAnswerItIs(): void
     {
@@ -319,9 +356,31 @@ final class Typo3CliTest extends TestCase
      */
     private function ddevAnswering(string $description): void
     {
+        $this->ddev("cat <<'JSON'\n" . $description . "\nJSON\n");
+    }
+
+    /**
+     * A `ddev` that describes a running project and, on `exec`, does the thing
+     * the real one does with the arguments: joins them into a line and gives
+     * that to bash. The container's mount is rewritten to the project, because
+     * on this side of it /var/www/html is not where the console is.
+     */
+    private function ddevJoiningLikeTheRealOne(string $root): void
+    {
+        $this->ddev(
+            "if [ \"\$1\" = describe ]; then echo '{\"raw\": {\"status\": \"running\", \"php_version\": \"8.3\"}}'; exit 0; fi\n"
+            . "shift 2\n"
+            . "line=\$(printf '%s ' \"\$@\" | sed 's#/var/www/html#" . $root . "#g')\n"
+            . "exec bash -c \"set -eu && ( \$line )\"\n"
+        );
+    }
+
+    /** A stand-in on the PATH, so what this server would invoke is readable with no container up. */
+    private function ddev(string $script): void
+    {
         $directory = $this->removeAfterwards(sys_get_temp_dir() . '/typo3-cms-mcp-bin-' . bin2hex(random_bytes(6)));
         mkdir($directory, 0o777, true);
-        file_put_contents($directory . '/ddev', "#!/bin/sh\ncat <<'JSON'\n" . $description . "\nJSON\n");
+        file_put_contents($directory . '/ddev', "#!/bin/sh\n" . $script);
         chmod($directory . '/ddev', 0o755);
 
         $this->path = (string) getenv('PATH');

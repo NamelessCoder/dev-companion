@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace Typo3CmsMcp\Upkeep;
 
 use Symfony\Component\Finder\Finder;
+use Typo3CmsMcp\Installation\Icons;
 use Typo3CmsMcp\Installation\Instance;
 use Typo3CmsMcp\Installation\Typo3Cli;
+use Typo3CmsMcp\Installation\Typo3Runtime;
 use Typo3CmsMcp\Paths;
 use Typo3CmsMcp\Tool\Registry;
 
@@ -27,6 +29,17 @@ use Typo3CmsMcp\Tool\Registry;
  * hand, and on one page of all of them everything else was in the way. Whole,
  * because what a recording is for is seeing a filled answer, and a block with
  * `… 14 more` where the entries were is a count of one instead.
+ *
+ * Of two working directories, because no single one fills the surface. A core
+ * checkout answers the core half and has no console, so the tools that reach an
+ * installation come back `unsupported` or read the packages; a site
+ * installation answers those from its booted TYPO3 and has no `runTests.sh`,
+ * `Build/Sources` or `EXT:styleguide` for the other half to read. Recording
+ * against one of them alone is a trade rather than an improvement, and
+ * `D-DOC-006` has what each side costs. So the second recording is added where
+ * it is the answer and nowhere else: a tool that declares `answeredBy` is
+ * declaring that its answer has two provenances, and those are exactly the
+ * pages that carry both.
  */
 final class ToolAnswers
 {
@@ -64,24 +77,95 @@ final class ToolAnswers
     /**
      * The whole recording, keyed by the file each page is written to.
      *
-     * The caller has already pointed `Instance` at whatever is being recorded
-     * against, because that is what decides half of these answers.
+     * Every call is answered from `$primary`, and the calls of the
+     * installation-backed tools are answered a second time from
+     * `$installation`. Both are pointed at here rather than by the caller: the
+     * substitutions that keep a machine's layout out of the pages read the
+     * installation root as it stands, so an answer has to be rendered while the
+     * root it came from is the one that is pointed at.
      *
      * @return array<string, string>
      */
-    public static function rendered(string $today): array
+    public static function rendered(string $today, string $primary, ?string $installation = null): array
     {
-        $calls = [];
-        foreach (ToolCalls::all() as $label => [$name, $arguments]) {
-            $calls[$name][$label] = self::call($label, $name, $arguments);
+        $recordings = [self::recordAgainst($primary)];
+        if ($installation !== null) {
+            $recordings[] = self::recordAgainst($installation, self::installationBacked());
         }
+        self::pointAt($primary);
 
-        $pages = [self::index() => self::indexPage($today, array_map(array_keys(...), $calls))];
-        foreach ($calls as $name => $answers) {
-            $pages[self::file($name)] = self::page($today, $name, $answers);
+        $pages = [self::index() => self::indexPage($today, $recordings)];
+        foreach (array_keys($recordings[0]['answers']) as $name) {
+            $pages[self::file($name)] = self::page($today, $name, $recordings);
         }
 
         return $pages;
+    }
+
+    /**
+     * Every call answered from one root, with the sentence saying which.
+     *
+     * `$only` narrows it to the tools whose answers that root is being recorded
+     * for; empty means all of them.
+     *
+     * @param list<string> $only
+     * @return array{against: string, shortly: string, answers: array<string, array<string, array{0: string, 1: string}>>}
+     */
+    private static function recordAgainst(string $root, array $only = []): array
+    {
+        self::pointAt($root);
+
+        $answers = [];
+        foreach (ToolCalls::all() as $label => [$name, $arguments]) {
+            if ($only !== [] && !in_array($name, $only, true)) {
+                continue;
+            }
+            $answers[$name][$label] = self::answer($name, $arguments);
+        }
+
+        return ['against' => self::against(), 'shortly' => self::shortly(), 'answers' => $answers];
+    }
+
+    /**
+     * Moves every reading of an installation to this one.
+     *
+     * Discovery is the only one of these a caller normally sets, because in a
+     * session there is one installation and it is found once. A recording moves
+     * between two in one process, and each of the three below memoizes what it
+     * read from the last one: the console invocation, the booted runtime's
+     * answer, the icon registry. Forgetting the discovery alone leaves the
+     * second recording showing the first installation's registries under the
+     * second one's head.
+     */
+    private static function pointAt(string $root): void
+    {
+        Instance::discoverFrom($root);
+        Typo3Cli::forget();
+        Typo3Runtime::forget();
+        Icons::forget();
+    }
+
+    /**
+     * The tools whose answer depends on the installation, as they say so
+     * themselves: `answeredBy` is the field a tool declares when its answer has
+     * two provenances — the booted installation, or the packages read as files
+     * because the console could not be asked. That is precisely the property
+     * that makes a second recording worth its lines, so it is read off the
+     * registry rather than written down again here. A list would be the thing
+     * that still names a tool after the field left it.
+     *
+     * @return list<string>
+     */
+    private static function installationBacked(): array
+    {
+        $names = [];
+        foreach (Registry::definitions() as $definition) {
+            if (isset($definition['outputSchema']['properties']['answeredBy'])) {
+                $names[] = $definition['name'];
+            }
+        }
+
+        return $names;
     }
 
     /** What a recording left behind, so a page for a tool that is gone can go with it. */
@@ -91,9 +175,9 @@ final class ToolAnswers
     }
 
     /**
-     * @param array<string, list<string>> $labels
+     * @param list<array{against: string, shortly: string, answers: array<string, array<string, array{0: string, 1: string}>>}> $recordings
      */
-    private static function indexPage(string $today, array $labels): string
+    private static function indexPage(string $today, array $recordings): string
     {
         $lines = [
             '# What the tools answered',
@@ -106,14 +190,15 @@ final class ToolAnswers
                 $today,
             )),
             '',
-            self::wrap(self::against() . ' Half of these answers belong to it rather than to this server — which '
-                . 'labels and icons exist, what the project consists of — and the other half would read the same '
-                . 'anywhere.'),
+            ...self::wrapped(self::of($recordings) . ' Half of these answers belong to the installation rather '
+                . 'than to this server — which labels and icons exist, what the project consists of — and the '
+                . 'other half would read the same anywhere.'),
             '',
             self::wrap(
                 'Absolute paths are written as `<repository>`, `<installation>` and `<home>`, because where a '
-                . 'machine keeps its checkouts is not what these answers are showing. Nothing else is rewritten: '
-                . 'each block is what a client received.',
+                . 'machine keeps its checkouts is not what these answers are showing. `<installation>` is whichever '
+                . 'of the two an answer says it came from. Nothing else is rewritten: each block is what a client '
+                . 'received.',
             ),
             '',
         ];
@@ -121,8 +206,14 @@ final class ToolAnswers
         // One line per tool, unwrapped: a break inside a tool name or a call
         // label costs a reader more than a long line does, and this is the list
         // somebody scans for the one page they came for.
-        foreach ($labels as $name => $calls) {
-            $lines[] = sprintf('- [`%s`](%s.md) — %s', $name, $name, implode(', ', $calls));
+        foreach ($recordings[0]['answers'] as $name => $calls) {
+            $lines[] = sprintf(
+                '- [`%s`](%s.md) — %s%s',
+                $name,
+                $name,
+                implode(', ', array_keys($calls)),
+                count($recordings) > 1 && isset($recordings[1]['answers'][$name]) ? ' · from both' : '',
+            );
         }
 
         array_push($lines, ...self::absent());
@@ -163,29 +254,92 @@ final class ToolAnswers
     }
 
     /**
+     * What the recording is of, in as many sentences as it has roots.
+     *
+     * One root reads as it always did. Two say so first, because a reader who
+     * meets a second answer further down has to have been told there is one —
+     * and because "recorded against a checkout" was the sentence that made the
+     * installation half of this surface look like it had no filled answer.
+     *
+     * @param list<array{against: string, shortly: string, answers: array<string, array<string, array{0: string, 1: string}>>}> $recordings
+     */
+    private static function of(array $recordings): string
+    {
+        if (count($recordings) === 1) {
+            return $recordings[0]['against'];
+        }
+
+        return 'Of two working directories, because what this server answers depends on which one a client is '
+            . 'standing in, and neither fills the whole surface. '
+            . implode(' ', array_column($recordings, 'against'))
+            . ' The tools that declare `answeredBy` carry an answer from each, under a heading naming which; '
+            . 'every other answer is from the first alone, because nothing in it would differ.';
+    }
+
+    /**
      * One tool: what the recording is of, then every call of it.
      *
      * The head is on each page rather than left to the index, because a
      * recording that does not say which day and which installation it is of is
      * an assertion about nothing — and this is the page somebody arrives on.
      *
-     * @param array<string, string> $answers
+     * A call is the unit whether it was answered once or twice, so the second
+     * answer goes under the same heading as the first rather than into a second
+     * pass over the page. The arguments are the same both times and are written
+     * once: what a reader came to compare is the two answers, and a call whose
+     * two halves sit 600 lines apart is not a comparison.
+     *
+     * @param list<array{against: string, shortly: string, answers: array<string, array<string, array{0: string, 1: string}>>}> $recordings
      */
-    private static function page(string $today, string $name, array $answers): string
+    private static function page(string $today, string $name, array $recordings): string
     {
-        return implode("\n", [
+        $of = array_values(array_filter($recordings, static fn(array $r): bool => isset($r['answers'][$name])));
+
+        $lines = [
             '# What `' . $name . '` answered',
             '',
-            self::wrap(sprintf(
+            ...self::wrapped(sprintf(
                 'Recorded on %s by `bin/cli tools:record`. %s Nothing checks this page; [tools.md](../tools.md) is '
                 . 'where the current shape of an answer is, and [readme.md](readme.md) is what the recording as a '
                 . 'whole is of.',
                 $today,
-                self::against(),
+                self::of($of),
             )),
             '',
-            ...array_values($answers),
-        ]);
+        ];
+
+        foreach (ToolCalls::all() as $label => [$tool, $arguments]) {
+            if ($tool !== $name) {
+                continue;
+            }
+            $lines[] = '## ' . $label;
+            $lines[] = '';
+            $lines[] = 'Called with:';
+            $lines[] = '';
+            $lines = [...$lines, ...self::fenced('json', self::json($arguments === [] ? new \stdClass() : $arguments))];
+            $lines[] = '';
+
+            foreach ($of as $recording) {
+                // The heading only where there is something to tell apart. On a
+                // page with one answer per call it would name the obvious once
+                // per call and push the answer itself further down.
+                if (count($of) > 1) {
+                    $lines[] = '### From ' . $recording['shortly'];
+                    $lines[] = '';
+                }
+                [$text, $data] = $recording['answers'][$name][$label];
+                $lines[] = 'Text:';
+                $lines[] = '';
+                $lines = [...$lines, ...self::fenced('', $text)];
+                $lines[] = '';
+                $lines[] = 'Data:';
+                $lines[] = '';
+                $lines = [...$lines, ...self::fenced('json', $data)];
+                $lines[] = '';
+            }
+        }
+
+        return implode("\n", $lines);
     }
 
     /** The installation these answers came out of, in one sentence. */
@@ -211,12 +365,32 @@ final class ToolAnswers
     }
 
     /**
+     * The same, short enough to head one answer among several.
+     *
+     * The full sentence carries the kind, the version and the console's reason,
+     * which is what a page's head is for. Repeated over every call it would be
+     * longer than several of the answers under it, so what is left here is the
+     * one thing a reader is telling apart: which of the two roots, and whether
+     * its console answered.
+     */
+    private static function shortly(): string
+    {
+        $root = Instance::describe()['root'] ?? null;
+
+        return $root === null
+            ? 'no installation'
+            : self::describeRoot((string) $root)
+                . ', whose console ' . (Typo3Cli::isAvailable() ? 'answers' : 'could not be reached');
+    }
+
+    /**
      * A recorded root, named by what it is rather than by where it sits.
      *
-     * The core checkouts are this repository's own and `bin/cli
-     * checkouts:update` recreates them, so naming the branch says how to record
-     * the same thing again. Anything else is somebody's machine, and the path
-     * to it is not evidence anybody else can use.
+     * The core checkouts and the made environments are both this repository's
+     * own — `bin/cli checkouts:update` recreates one and `bin/cli
+     * environment:create` the other — so naming which says how to record the
+     * same thing again. Anything else is somebody's machine, and the path to it
+     * is not evidence anybody else can use.
      *
      * Both sides are resolved first: a worktree reaches the checkouts through a
      * symlink, so the recording made in one would otherwise call this
@@ -224,35 +398,39 @@ final class ToolAnswers
      */
     private static function describeRoot(string $root): string
     {
-        $checkouts = (string) realpath(Checkouts::directory());
         $root = (string) (realpath($root) ?: $root);
 
-        return $checkouts !== '' && str_starts_with($root, $checkouts)
-            ? 'the ' . trim(substr($root, strlen($checkouts)), '/') . ' core checkout below .checkouts/'
-            : 'an installation outside this repository';
+        $checkouts = (string) realpath(Checkouts::directory());
+        if ($checkouts !== '' && str_starts_with($root, $checkouts)) {
+            return 'the ' . trim(substr($root, strlen($checkouts)), '/') . ' core checkout below .checkouts/';
+        }
+
+        $environments = (string) realpath(Environments::directory());
+        if ($environments !== '' && str_starts_with($root, $environments)) {
+            return 'the ' . strtoupper(basename($root)) . ' this repository makes below .environments/';
+        }
+
+        return 'an installation outside this repository';
     }
 
-    /** @param array<string, mixed> $arguments */
-    private static function call(string $label, string $name, array $arguments): string
+    /**
+     * One call, as its two halves, with this root's paths already written out.
+     *
+     * The substitution happens here rather than at rendering time because it
+     * reads the installation root as it stands, and by the time a page is
+     * composed the roots have both been pointed at.
+     *
+     * @param array<string, mixed> $arguments
+     * @return array{0: string, 1: string}
+     */
+    private static function answer(string $name, array $arguments): array
     {
         $result = Registry::call($name, $arguments);
 
-        return implode("\n", [
-            '## ' . $label,
-            '',
-            'Called with:',
-            '',
-            ...self::fenced('json', self::json($arguments === [] ? new \stdClass() : $arguments)),
-            '',
-            'Text:',
-            '',
-            ...self::fenced('', self::withoutAbsolutePaths(rtrim($result->text))),
-            '',
-            'Data:',
-            '',
-            ...self::fenced('json', self::withoutAbsolutePaths(self::json($result->data))),
-            '',
-        ]);
+        return [
+            self::withoutAbsolutePaths(rtrim($result->text)),
+            self::withoutAbsolutePaths(self::json($result->data)),
+        ];
     }
 
     /**
@@ -311,5 +489,16 @@ final class ToolAnswers
     private static function wrap(string $text, string $continuation = ''): string
     {
         return wordwrap($text, self::WIDTH - strlen($continuation), "\n" . $continuation);
+    }
+
+    /**
+     * The same, as the lines it becomes, so a caller assembling a page by lines
+     * does not put a wrapped paragraph back together to split it again.
+     *
+     * @return list<string>
+     */
+    private static function wrapped(string $text, string ...$rest): array
+    {
+        return explode("\n", self::wrap($rest === [] ? $text : sprintf($text, ...$rest)));
     }
 }

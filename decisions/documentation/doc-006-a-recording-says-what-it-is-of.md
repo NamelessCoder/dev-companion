@@ -67,6 +67,7 @@ written and stale a week later.
 - `ToolAnswersTest::everyRecordedAnswerIsJson`
 - `ToolAnswersTest::theRecordingCarriesNobodysDirectoryLayout`
 - `ToolAnswersTest::everyToolTheTableDrivesHasARecordedAnswer`
+- `ToolAnswersTest::everyAnswerOnAPageOfTwoRecordingsSaysWhichItCameFrom`
 
 ## Since then
 
@@ -79,3 +80,69 @@ call table drives both the recording and `ToolContractTest`. The reader this
 entry was written for turned out to be the evidence against its shape: they went
 looking for what a tool answers, found one file of everything, and reported it
 missing.
+
+"Three shapes a client meets, in one run" was the count of what one run reaches,
+read as the count of what there is. There is a fourth — `answeredBy:
+"installation"`, what a booted TYPO3 answers, which `tools.md` documents beside
+`packages` — and no run against a checkout can show it, because a checkout has
+no console. It was on no page here for as long as there was one root.
+
+Recording against a console-answering installation **instead** was built and
+measured on 2026-08-02, against the `E-SITE` that `D-EVI-004` made creatable,
+and it is a trade rather than a gain. Three pages gain what nothing else here
+shows: `typo3_schema_lookup` 82 → 740 lines, `typo3_backend_module_lookup` 44 →
+646, both from an `unsupported` object to the answer itself. Five lose as much
+in the other direction, because a site installation carries no `runTests.sh`, no
+`Build/Sources` and no `EXT:styleguide` to read:
+`typo3_test_run_guide` 1,072 → 147, `typo3_script_lookup` 229 → 61, and
+`typo3_component_lookup`'s markup falls back from the installed styleguide to
+the catalog on every entry. Neither working directory fills the surface, and
+picking one is picking which half of the audience sees a filled answer.
+
+So, decided on the second root:
+
+- **Two working directories, not one.** The newest released core checkout below
+  `.checkouts/` stays the primary and every page carries its answers. The
+  `E-SITE` below `.environments/` answers a second time. Both are recreatable
+  here by one command each, which is the property that made the checkout the
+  default in the first place; a path to somebody's own site is not, and
+  `tools:record` still takes none for the second root.
+- **The second answer goes on the pages of the tools that declare
+  `answeredBy`, and nowhere else.** That field is a tool saying its answer has
+  two provenances, which is exactly the property in question, so the set is read
+  off the registry rather than written down a second time. Nine tools have it.
+- Rejected: a second answer on every page. Thirteen of the twenty-three pages
+  answer identically from both, and `typo3_component_lookup` and
+  `typo3_task_guide` would pass 2,300 lines to say it twice — the failure
+  `D-DOC-007`'s first **Wrong if** already names at 1,339. As restricted, the
+  longest page is still `typo3_component_lookup` at 1,341 lines, and the longest
+  that gained a second answer is `typo3_changelog_lookup` at 1,235. The
+  directory goes 8,844 → 12,459 lines.
+- Rejected: showing the `unsupported` shape once in `tools.md` instead of on the
+  pages. It was the cheapest option while the loss looked like that one shape,
+  and the measurements above are what it does not cover — `typo3_test_run_guide`
+  does not lose a shape, it loses the suites.
+- The second answer sits under the same `## <call>` heading as the first, with
+  the arguments written once and a `### From …` naming each root. What a reader
+  came to compare is two answers to one call, and two passes over the page put
+  them 600 lines apart.
+- `tools.md` stops saying a recording is "against a checkout". It is derived and
+  `tools:check` holds it; the recording is deliberately held by nothing, so a
+  checked page may not make claims about it. The page's own head says what it is
+  of, which is where this entry put it.
+- `tools:record` says when it skipped the second recording — no `E-SITE`, or one
+  whose console does not answer. Pages with one answer per call look the same
+  either way, and a reader would otherwise read "not recorded" as "still not
+  possible".
+
+The second root paid for itself on the first run. `typo3_label_lookup` came back
+`answeredBy: "packages"` from an installation whose console demonstrably
+answered, and the reason was this server's: `ddev exec` joins its arguments into
+a line and gives it to bash, so `--regex=/(save)/i` — the argument that tool
+builds for `language:domain:search` — was a subshell to bash and exit 2 to
+everyone else. That tool had never once answered from a booted installation in a
+DDEV project, and it reported the failure as a console it could not reach.
+`Typo3Cli::run` now quotes for the DDEV transport, and the recorded answer is
+`installation`. `D-EVI-004` said the console half of this server was exercised by
+no test and had only ever been corrected by real runs in somebody's project;
+this is the first one it caught at home.

@@ -58,3 +58,19 @@ container.
 ## Covered by
 
 - `Typo3CliTest::theDdevConsoleIsNamedByAPathTheWorkingDirectoryCannotMove`
+
+## Since then
+
+The path was one half of what `ddev exec` does to an invocation. The other is
+that it joins its arguments back into a line and gives that to bash inside the
+container, so an argument carrying a character bash acts on never reaches the
+console either. `typo3_label_lookup` builds one — `--regex=/(save)/i` for
+`language:domain:search`, where the parentheses are a subshell — and it came
+back exit 2 in every DDEV project, silently, as a fallback to reading the
+package files. `Typo3Cli::run` now quotes for this transport and only for this
+transport: the direct one has no shell between, and what `TYPO3_MCP_CONSOLE`
+names may or may not. Measured against DDEV v1.25.1 on 2026-08-02, by the first
+recording made against an installation of this repository's own — `D-DOC-006`
+has that run.
+
+- `Typo3CliTest::anArgumentTheContainersShellWouldActOnReachesTheConsoleWhole`

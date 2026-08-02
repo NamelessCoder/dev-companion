@@ -32,7 +32,7 @@ lookups is the right one.
 
 `readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: false`
 
-**Answered**, once, against a checkout: [tool-answers/typo3_server_scope.md](tool-answers/typo3_server_scope.md).
+**Answered**, once: [tool-answers/typo3_server_scope.md](tool-answers/typo3_server_scope.md).
 
 **Takes** nothing.
 
@@ -115,7 +115,7 @@ Search the local TYPO3 core contribution rules and script notes by topic.
 
 `readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: false`
 
-**Answered**, once, against a checkout: [tool-answers/typo3_rule_lookup.md](tool-answers/typo3_rule_lookup.md).
+**Answered**, once: [tool-answers/typo3_rule_lookup.md](tool-answers/typo3_rule_lookup.md).
 
 **Takes**
 
@@ -175,7 +175,7 @@ the boundary instead of with commands that do not exist there.
 
 `readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: false`
 
-**Answered**, once, against a checkout: [tool-answers/typo3_script_lookup.md](tool-answers/typo3_script_lookup.md).
+**Answered**, once: [tool-answers/typo3_script_lookup.md](tool-answers/typo3_script_lookup.md).
 
 **Takes**
 
@@ -235,7 +235,7 @@ call are not answered with one verdict.
 
 `readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: false`
 
-**Answered**, once, against a checkout: [tool-answers/typo3_task_guide.md](tool-answers/typo3_task_guide.md).
+**Answered**, once: [tool-answers/typo3_task_guide.md](tool-answers/typo3_task_guide.md).
 
 **Takes**
 
@@ -391,7 +391,7 @@ suite at all rather than commands that cannot run there.
 
 `readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: false`
 
-**Answered**, once, against a checkout: [tool-answers/typo3_test_run_guide.md](tool-answers/typo3_test_run_guide.md).
+**Answered**, once: [tool-answers/typo3_test_run_guide.md](tool-answers/typo3_test_run_guide.md).
 
 **Takes**
 
@@ -457,7 +457,7 @@ the frontend.
 
 `readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: false`
 
-**Answered**, once, against a checkout: [tool-answers/typo3_architecture_lookup.md](tool-answers/typo3_architecture_lookup.md).
+**Answered**, once: [tool-answers/typo3_architecture_lookup.md](tool-answers/typo3_architecture_lookup.md).
 
 **Takes**
 
@@ -569,7 +569,7 @@ docs.typo3.org, unlike the bundled convention lookups.
 
 `readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: true`
 
-**Answered**, once, against a checkout: [tool-answers/typo3_documentation_lookup.md](tool-answers/typo3_documentation_lookup.md).
+**Answered**, once: [tool-answers/typo3_documentation_lookup.md](tool-answers/typo3_documentation_lookup.md).
 
 **Takes**
 
@@ -625,7 +625,7 @@ properties, and every source used.
 
 `readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: false`
 
-**Answered**, once, against a checkout: [tool-answers/typo3_component_lookup.md](tool-answers/typo3_component_lookup.md).
+**Answered**, once: [tool-answers/typo3_component_lookup.md](tool-answers/typo3_component_lookup.md).
 
 **Takes**
 
@@ -734,7 +734,7 @@ versions, never that it does not exist.
 
 `readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: false`
 
-**Answered**, once, against a checkout: [tool-answers/typo3_system_extension_lookup.md](tool-answers/typo3_system_extension_lookup.md).
+**Answered**, once: [tool-answers/typo3_system_extension_lookup.md](tool-answers/typo3_system_extension_lookup.md).
 
 **Takes**
 
@@ -784,7 +784,7 @@ installation that has it holds the same files below vendor/.
 
 `readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: false`
 
-**Answered**, once, against a checkout: [tool-answers/typo3_reference_list.md](tool-answers/typo3_reference_list.md).
+**Answered**, once: [tool-answers/typo3_reference_list.md](tool-answers/typo3_reference_list.md).
 
 **Takes**
 
@@ -843,7 +843,7 @@ branch other than what is installed.
 
 `readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: false`
 
-**Answered**, once, against a checkout: [tool-answers/typo3_translation_domain_lookup.md](tool-answers/typo3_translation_domain_lookup.md).
+**Answered**, once: [tool-answers/typo3_translation_domain_lookup.md](tool-answers/typo3_translation_domain_lookup.md).
 
 **Takes**
 
@@ -886,7 +886,7 @@ are read instead, and answeredBy says which of the two answered.
 
 `readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: false`
 
-**Answered**, once, against a checkout: [tool-answers/typo3_label_lookup.md](tool-answers/typo3_label_lookup.md).
+**Answered**, once: [tool-answers/typo3_label_lookup.md](tool-answers/typo3_label_lookup.md).
 
 **Takes**
 
@@ -964,7 +964,7 @@ packages declare, which answeredBy reports as "packages".
 
 `readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: false`
 
-**Answered**, once, against a checkout: [tool-answers/typo3_fluid_namespace_list.md](tool-answers/typo3_fluid_namespace_list.md).
+**Answered**, once: [tool-answers/typo3_fluid_namespace_list.md](tool-answers/typo3_fluid_namespace_list.md).
 
 **Takes** nothing.
 
@@ -1019,7 +1019,7 @@ SYS/fluid.
 
 `readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: false`
 
-**Answered**, once, against a checkout: [tool-answers/typo3_configuration_lookup.md](tool-answers/typo3_configuration_lookup.md).
+**Answered**, once: [tool-answers/typo3_configuration_lookup.md](tool-answers/typo3_configuration_lookup.md).
 
 **Takes**
 
@@ -1080,7 +1080,7 @@ never what the database currently has.
 
 `readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: false`
 
-**Answered**, once, against a checkout: [tool-answers/typo3_schema_lookup.md](tool-answers/typo3_schema_lookup.md).
+**Answered**, once: [tool-answers/typo3_schema_lookup.md](tool-answers/typo3_schema_lookup.md).
 
 **Takes**
 
@@ -1151,7 +1151,7 @@ extension's modules are in it.
 
 `readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: false`
 
-**Answered**, once, against a checkout: [tool-answers/typo3_backend_module_lookup.md](tool-answers/typo3_backend_module_lookup.md).
+**Answered**, once: [tool-answers/typo3_backend_module_lookup.md](tool-answers/typo3_backend_module_lookup.md).
 
 **Takes**
 
@@ -1220,7 +1220,7 @@ frontend template can use neither.
 
 `readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: false`
 
-**Answered**, once, against a checkout: [tool-answers/typo3_icon_lookup.md](tool-answers/typo3_icon_lookup.md).
+**Answered**, once: [tool-answers/typo3_icon_lookup.md](tool-answers/typo3_icon_lookup.md).
 
 **Takes**
 
@@ -1305,7 +1305,7 @@ version.
 
 `readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: false`
 
-**Answered**, once, against a checkout: [tool-answers/typo3_changelog_lookup.md](tool-answers/typo3_changelog_lookup.md).
+**Answered**, once: [tool-answers/typo3_changelog_lookup.md](tool-answers/typo3_changelog_lookup.md).
 
 **Takes**
 
@@ -1397,7 +1397,7 @@ a task told not to change files can run.
 
 `readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: false`
 
-**Answered**, once, against a checkout: [tool-answers/typo3_project_scope.md](tool-answers/typo3_project_scope.md).
+**Answered**, once: [tool-answers/typo3_project_scope.md](tool-answers/typo3_project_scope.md).
 
 **Takes** nothing.
 
@@ -1500,7 +1500,7 @@ typo3_project_scope names the extensions this can be called for.
 
 `readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: false`
 
-**Answered**, once, against a checkout: [tool-answers/typo3_extension_scope.md](tool-answers/typo3_extension_scope.md).
+**Answered**, once: [tool-answers/typo3_extension_scope.md](tool-answers/typo3_extension_scope.md).
 
 **Takes**
 
@@ -1635,7 +1635,7 @@ remain a curated index rather than every backend class.
 
 `readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: false`
 
-**Answered**, once, against a checkout: [tool-answers/typo3_catalog_scope.md](tool-answers/typo3_catalog_scope.md).
+**Answered**, once: [tool-answers/typo3_catalog_scope.md](tool-answers/typo3_catalog_scope.md).
 
 **Takes**
 
@@ -1700,7 +1700,7 @@ apply but the Forge issue, the Releases: trailer and the changelog do not.
 
 `readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: false`
 
-**Answered**, once, against a checkout: [tool-answers/typo3_commit_message_guide.md](tool-answers/typo3_commit_message_guide.md).
+**Answered**, once: [tool-answers/typo3_commit_message_guide.md](tool-answers/typo3_commit_message_guide.md).
 
 **Takes**
 

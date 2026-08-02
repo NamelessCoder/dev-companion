@@ -224,9 +224,44 @@ final class Typo3Cli
 
         // Non-interactive and unstyled, so the output is the data and not a
         // terminal painting of it.
-        $command = array_merge($invocation['command'], $arguments, ['--no-interaction', '--no-ansi']);
+        $arguments = array_merge($arguments, ['--no-interaction', '--no-ansi']);
 
-        return self::execute($command, Instance::root() ?? getcwd() ?: '.');
+        return self::execute(
+            array_merge($invocation['command'], self::pastTheShell($invocation['via'], $arguments)),
+            Instance::root() ?? getcwd() ?: '.',
+        );
+    }
+
+    /**
+     * Arguments that survive the one shell on the way to the console.
+     *
+     * `proc_open` is given an array and runs no shell, so nothing here would
+     * need quoting — except that `ddev exec` joins its arguments back into a
+     * line and hands that to bash inside the container. An argument carrying a
+     * character bash acts on is then bash's rather than the console's, and the
+     * command dies before TYPO3 is reached. Measured against DDEV v1.25.1 on
+     * 2026-08-02: `--regex=/(save)/i` — the argument `typo3_label_lookup`
+     * builds for `language:domain:search` — comes back exit 2 with "syntax
+     * error near unexpected token `('", every time, in every DDEV project. So
+     * that tool never once answered from a booted installation there; it fell
+     * back to the package files and said `answeredBy: "packages"`, which reads
+     * as a console that could not be reached rather than as a quoting fault.
+     *
+     * Only the DDEV transport is quoted. The direct one reaches the console
+     * through `proc_open` with no shell between, where a quoted argument would
+     * arrive with its quotes. A stated one is left alone for a reason rather
+     * than an oversight: what `TYPO3_MCP_CONSOLE` names may put a shell in the
+     * way or may not — `docker compose exec` does not, another wrapper might —
+     * and this cannot tell. Quoting it would break every stated command that
+     * needs no quoting, to fix the ones that do; the caller who names a
+     * transport is the one who can quote for it.
+     *
+     * @param array<int, string> $arguments
+     * @return array<int, string>
+     */
+    private static function pastTheShell(string $via, array $arguments): array
+    {
+        return $via === self::VIA_DDEV ? array_map(escapeshellarg(...), $arguments) : $arguments;
     }
 
     /**

@@ -54,6 +54,11 @@ final class ToolAnswersTest extends TestCase
      * `## ` line and loses the `Data:` under it. Counting blocks does not say
      * it — the leaked pair reopens and the total comes out right — which is how
      * the one page this replaced carried four of them unnoticed.
+     *
+     * A call is answered once or, on the installation-backed tools, once per
+     * working directory it was recorded against. So the arguments are counted
+     * per call and the two halves of an answer per answer, and the second
+     * recording arriving on a page cannot be what makes this pass or fail.
      */
     #[Test]
     public function noAnswerEndsTheBlockItWasWrittenInto(): void
@@ -66,15 +71,47 @@ final class ToolAnswersTest extends TestCase
             $contents = $page->getContents();
             $outside = self::outsideBlocks($contents);
             $calls = preg_match_all('/^## /m', $outside);
+            $answers = preg_match_all('/^Data:$/m', $outside);
 
-            self::assertSame($calls * 3, count(self::blocks($contents)), $page->getFilename() . ': blocks');
-            foreach (['Called with:', 'Text:', 'Data:'] as $heading) {
-                self::assertSame(
-                    $calls,
-                    preg_match_all('/^' . preg_quote($heading, '/') . '$/m', $outside),
-                    $page->getFilename() . ': ' . $calls . ' calls, and this many "' . $heading . '" left outside a block',
-                );
+            self::assertGreaterThanOrEqual($calls, $answers, $page->getFilename() . ': answers per call');
+            self::assertSame($calls + $answers * 2, count(self::blocks($contents)), $page->getFilename() . ': blocks');
+            self::assertSame(
+                $calls,
+                preg_match_all('/^Called with:$/m', $outside),
+                $page->getFilename() . ': ' . $calls . ' calls, and this many "Called with:" left outside a block',
+            );
+            self::assertSame(
+                $answers,
+                preg_match_all('/^Text:$/m', $outside),
+                $page->getFilename() . ': ' . $answers . ' answers, and this many "Text:" left outside a block',
+            );
+        }
+    }
+
+    /**
+     * A page carrying two answers per call has to say which is which, or it is
+     * two recordings a reader cannot tell apart — and the one they are told
+     * apart by is the whole reason for the second one being there.
+     */
+    #[Test]
+    public function everyAnswerOnAPageOfTwoRecordingsSaysWhichItCameFrom(): void
+    {
+        foreach (ToolAnswers::written() as $page) {
+            if ($page->getPathname() === ToolAnswers::index()) {
+                continue;
             }
+
+            $outside = self::outsideBlocks($page->getContents());
+            $answers = preg_match_all('/^Data:$/m', $outside);
+            if ($answers === preg_match_all('/^## /m', $outside)) {
+                continue;
+            }
+
+            self::assertSame(
+                $answers,
+                preg_match_all('/^### From /m', $outside),
+                $page->getFilename() . ': answers, and this many saying which recording they are of',
+            );
         }
     }
 

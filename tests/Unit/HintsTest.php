@@ -1843,6 +1843,59 @@ final class HintsTest extends TestCase
         );
     }
 
+    /**
+     * The corpus registered the preview template and stopped there, so a
+     * session arrived at a template with one variable in it and no statement
+     * about what that variable is. Both halves are read off the checkouts:
+     * FluidBasedContentPreviewRenderer assigns the row's columns and record on
+     * 13.4 and record alone on 14.3, and what a field off it resolves to is
+     * decided by the TCA type of that field — which is why the types that come
+     * back as records are named rather than a single rule for "a relation".
+     */
+    #[Test]
+    public function aPreviewTemplateSaysWhatItIsHandedAndWhatAFieldResolvesTo(): void
+    {
+        $onThirteen = implode("\n", array_column(
+            ArchitectureHints::byId('content-elements', 13)['hints'],
+            'text',
+        ));
+        self::assertStringContainsString('{pi_flexform_transformed}', $onThirteen);
+        self::assertStringNotContainsString('no longer variables of their own', $onThirteen);
+
+        $onFourteen = implode("\n", array_column(
+            ArchitectureHints::byId('content-elements', 14)['hints'],
+            'text',
+        ));
+        self::assertStringContainsString('handed one variable, record', $onFourteen);
+        self::assertStringNotContainsString('{pi_flexform_transformed}', $onFourteen);
+
+        // The mechanism the reporting session could not find, and the field it
+        // renders an empty spot over: what the record type's schema does not
+        // declare is not on the record, and the path resolves to null.
+        self::assertStringContainsString('PSR-11 container', $onFourteen);
+        self::assertStringContainsString('has() and get()', $onFourteen);
+        self::assertStringContainsString('{record.systemProperties.disabled}', $onFourteen);
+
+        // What a relation comes back as, and what reads like one and is not.
+        self::assertStringContainsString('lazy collection f:for iterates', $onFourteen);
+        self::assertStringContainsString(
+            'type=select with a relation, group, inline, category and file',
+            $onFourteen,
+        );
+        self::assertStringContainsString('renderType is selectSingle', $onFourteen);
+
+        // The subject is reachable from the question it was missing for. The
+        // reporting session's own spelling, «content-element», reaches it as
+        // little as before — that is D-ANS-022 and not this statement's to fix.
+        $reached = ArchitectureHints::find(
+            [],
+            'Record API field access in a backend content element preview Fluid template: '
+            . 'what a relational select field resolves to',
+            6,
+        );
+        self::assertSame('content-elements', array_column($reached['matchedHints'], 'id')[0] ?? '');
+    }
+
     #[Test]
     public function withoutAnySignalTheDomainIsPhp(): void
     {

@@ -416,7 +416,35 @@
         "since": 14
       },
       "ExtensionManagementUtility::addTcaSelectItemGroup() adds a group to the CType selector, positioned with before:<group> or after:<group>, so several elements of one extension arrive together instead of scattered through the list.",
-      "The backend preview of an element is a Fluid template registered in page TSconfig as mod.web_layout.tt_content.preview.<CType>, and the rendering definition is TypoScript: tt_content.<CType> on top of lib.contentElement. How the template name follows from the CType is in the sitepackage layout hint."
+      "The backend preview of an element is a Fluid template registered in page TSconfig as mod.web_layout.tt_content.preview.<CType>, and the rendering definition is TypoScript: tt_content.<CType> on top of lib.contentElement. How the template name follows from the CType is in the sitepackage layout hint.",
+      {
+        "text": "That preview template is handed one variable, record. The columns of the row are no longer variables of their own, so a template that reads {header} renders an empty spot and logs nothing.",
+        "since": 14
+      },
+      {
+        "text": "Beside record, the preview template is handed every column of the row as a variable of its own — {header}, {bodytext} — and a plugin's FlexForm as {pi_flexform_transformed}. Reading the same values off record is what keeps the template working on the next major.",
+        "until": 13
+      },
+      {
+        "text": "{record.header} resolves through the record's container methods: the record is a PSR-11 container, and Fluid asks has() and get() for a path segment before it tries any getter. So every field is {record.<column>}, and {record.uid} and {record.pid} are there as well.",
+        "since": 13
+      },
+      {
+        "text": "Only the fields the record type's schema declares are on the record. The enable fields, the timestamps, the sorting and the language and workspace columns are not: they become system properties, reached as {record.systemProperties.disabled} or {record.systemProperties.createdAt}. A path that hits neither raises nothing and resolves to null, so a field that is not there is an empty preview.",
+        "since": 13
+      },
+      {
+        "text": "A relational field comes back as records rather than as the uid list in the column, and that covers type=select with a relation, group, inline, category and file. A field that relates to many is a lazy collection f:for iterates and f:if counts, each item a record read the same way — {item.title}; one that relates to one is the record itself, or null where the relation is broken. A file field yields the file references f:image takes. Nothing is queried until the template touches the field.",
+        "since": 13
+      },
+      {
+        "text": "type=select without a relation is a static list and stays values: an array of the selected values, or the single value where the renderType is selectSingle.",
+        "since": 13
+      },
+      {
+        "text": "The core's own worked previews are theme_camino's Resources/Private/Templates/ContentPreviews/, where one template iterates an inline relation with f:for and another renders a file field through f:image.",
+        "since": 14
+      }
     ],
     "checks": []
   },

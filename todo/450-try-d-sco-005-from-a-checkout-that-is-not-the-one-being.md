@@ -1,8 +1,6 @@
 # Try `D-SCO-005` from a checkout that is not the one being worked on
 
 **Serves:** decisions/
-**Branch:** todo/try-d-sco-005-from-a-checkout-that-is-not-the-one-being
-**Claimed:** 2026-08-02
 
 The `TYPO3_MCP_ROOT` half is done: the variable named the installation to read
 and moved the boundary with it, and `Instance::startedIn()` now separates the

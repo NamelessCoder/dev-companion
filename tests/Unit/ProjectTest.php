@@ -624,6 +624,35 @@ final class ProjectTest extends TestCase
     }
 
     #[Test]
+    public function theFilesThatRegisterByRunningAreSaidToBeUnread(): void
+    {
+        // notReadStatically names a declaration file the parser could not
+        // follow, and `bootstrap_package` has none — so a session read its
+        // empty list as nothing more to read, while ext_localconf.php was
+        // registering a global Fluid namespace it was never told about.
+        $root = $this->composerProject();
+        $extension = $root . '/packages/my_sitepackage';
+        $this->declare(
+            $extension . '/ext_localconf.php',
+            <<<'PHP'
+                <?php
+                $GLOBALS['TYPO3_CONF_VARS']['SYS']['fluid']['namespaces']['acme'][] = 'Acme\\ViewHelpers';
+                PHP
+        );
+        Instance::discoverFrom($root);
+
+        $result = Registry::call('typo3_extension_scope', ['extension' => 'my_sitepackage']);
+
+        self::assertSame([], $result->data['fluidNamespaces']);
+        // The file is not a casualty of the degradation: no reading of it ever
+        // produced a section, so it is said where the answer states its
+        // boundary rather than beside the files that came back empty.
+        self::assertSame([], $result->data['notReadStatically']);
+        self::assertStringContainsString('ext_localconf.php is named above and read by nothing here', $result->text);
+        self::assertStringContainsString('a global Fluid namespace it sets is in none of the lists above', $result->text);
+    }
+
+    #[Test]
     public function whatTheInstallationHasBeatsWhatTheFilesCouldBeReadFor(): void
     {
         // The same extension the parser answered for, with the installation

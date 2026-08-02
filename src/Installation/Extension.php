@@ -831,6 +831,12 @@ final class Extension
      * difference is the whole of what the caller is missing. These are named
      * instead, and the booted installation is what would answer for them.
      *
+     * `ext_localconf.php` and `ext_tables.php` stay out. Neither is a list a
+     * reading could yield, so naming them here would report a permanent
+     * property of this answer as a degradation the installation could lift,
+     * and an empty list would still be read as everything having been read.
+     * What they cost is said in the answer instead — `D-ANS-003`.
+     *
      * @return array<int, string>
      */
     private static function notReadStatically(string $path): array

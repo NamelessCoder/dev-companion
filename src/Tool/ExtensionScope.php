@@ -109,7 +109,7 @@ final class ExtensionScope extends ReadOnlyTool
                 'files' => Schema::integer('PHP files anywhere below it, its own subdirectories included.'),
             ], ['kind', 'files'])),
             'files' => Schema::listOf(Schema::string(), 'Registration files it ships, from ext_localconf.php to Initialisation/data.t3d.'),
-            'notReadStatically' => Schema::listOf(Schema::string(), 'Registration files that are there but whose entries do not stand in their own text: each assembles its list while it runs, so what it registers is missing from the lists above rather than absent. The booted installation is what answers for them; an empty list here means every file that exists was read.'),
+            'notReadStatically' => Schema::listOf(Schema::string(), 'Declaration files that are there but whose entries do not stand in their own text: each assembles its list while it runs, so what it registers is missing from the lists above rather than absent. The booted installation is what answers for them. An empty list says each declaration file that exists stood in its own text, not that everything the extension ships was read: ext_localconf.php and ext_tables.php register by running and are read by nothing here.'),
             'artifacts' => Schema::object([
                 'manual' => Schema::nullableString('Its manual entry point, "Documentation/" where the directory exists without one, null where the extension ships no manual at all.'),
                 'readme' => Schema::nullableString('The README it ships, null where there is none.'),
@@ -247,10 +247,21 @@ final class ExtensionScope extends ReadOnlyTool
                 . 'extension by the EXT: reference each entry carries; everything else is read from its files. '
                 . 'What a hook or an event listener changes at request time is in neither.'
             : 'Read from the files, so this is what the extension declares — not what it does at runtime. '
-                . 'Registrations made in ext_localconf.php with a PHP call, a table or an icon list built in a '
-                . 'loop, and anything a hook or an event listener changes, are not in this list; the files that '
-                . 'could hold them are named above. The installation itself was not asked: '
-                . Typo3Runtime::reason() . '.';
+                . 'A table or an icon list built in a loop, and anything a hook or an event listener changes, '
+                . 'are not in this list; the files that could hold them are named above. The installation itself '
+                . 'was not asked: ' . Typo3Runtime::reason() . '.';
+
+        // The two a caller reads as registrations and this answer never opens.
+        // notReadStatically is about a declaration file that defeated the
+        // parser, so its empty list is not the "nothing more to read" a session
+        // took it for — D-ANS-003.
+        $byRunning = array_values(array_intersect(['ext_localconf.php', 'ext_tables.php'], $extension['files']));
+        if ($byRunning !== []) {
+            $lines[] = implode(' and ', $byRunning) . (count($byRunning) === 1 ? ' is' : ' are')
+                . ' named above and read by nothing here. Each registers by running, so a hook, an RTE preset '
+                . 'or a global Fluid namespace it sets is in none of the lists above. The booted installation '
+                . 'answers the tables, content elements and icons it adds, and none of the rest.';
+        }
 
         if ($extension['notReadStatically'] !== []) {
             // Which files the degradation cost, beside the reason it names: an

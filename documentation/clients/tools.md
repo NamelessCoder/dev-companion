@@ -1563,11 +1563,13 @@ typo3_project_scope names the extensions this can be called for.
     subdirectories included.
 - `files` *(array of string)* — Registration files it ships, from
   ext_localconf.php to Initialisation/data.t3d.
-- `notReadStatically` *(array of string)* — Registration files that are
+- `notReadStatically` *(array of string)* — Declaration files that are
   there but whose entries do not stand in their own text: each assembles its
   list while it runs, so what it registers is missing from the lists above
-  rather than absent. The booted installation is what answers for them; an
-  empty list here means every file that exists was read.
+  rather than absent. The booted installation is what answers for them. An
+  empty list says each declaration file that exists stood in its own text, not
+  that everything the extension ships was read: ext_localconf.php and
+  ext_tables.php register by running and are read by nothing here.
 - `artifacts` *(object)* — What it ships beside its registrations. Every
   key is present even when the artifact is not, because the absence of a
   manual, a test or a translation is the answer a file listing cannot give.

@@ -118,3 +118,29 @@ which is step 1a of the ladder rather than a tool boundary. Re-running
 the session there was nothing more to read: `notReadStatically` is `[]` because
 `ext_localconf.php` is not among the five files it is drawn from. Both are
 queued as todos of their own and the feedback stays open behind them.
+
+## Since then
+
+The second of those two is settled, and `notReadStatically` keeps its five
+files. It is a contingent field — `Configuration/Backend/Modules.php` returning
+a literal is read and not listed — and it promises that the booted installation
+answers for what is in it. `ext_localconf.php` fits neither half: it is never
+read in either mode, so it would be listed for every extension that ships one,
+and booting answers only the tables, content elements and icons it adds. Listing
+it would have moved the false signal rather than removed it, from an empty list
+to a named file a reader would then try to boot away.
+
+What over-claimed is what was narrowed. The schema said *an empty list here
+means every file that exists was read*, and the rendered caveat excluded
+registrations made in `ext_localconf.php` *with a PHP call* — where the
+`bootstrap_package` entries are plain assignments into `$GLOBALS`. Both now say
+that `ext_localconf.php` and `ext_tables.php` are named among the registration
+files and read by nothing here, that a hook, an RTE preset or a global Fluid
+namespace one sets is in no list, and that the installation answers only the
+tables, content elements and icons. Checked against
+`/home/benji/projects/bootstrap_package` on 2026-08-02, where `bk2k` is
+registered in `ext_localconf.php` and `fluidNamespaces` is `[]`, because that
+extension ships no `Configuration/Fluid/Namespaces.php`. `R-ANS-012` is what it
+stands under and `ProjectTest::theFilesThatRegisterByRunningAreSaidToBeUnread`
+holds it. The feedback stays open behind the first todo, the missing hint for
+`contentRenderingTemplates`.

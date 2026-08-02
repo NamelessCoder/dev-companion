@@ -35,3 +35,8 @@ transferable convention and somebody else's package advice.
   scenario first, record the package and version in every answer, then implement
   the narrowest discovery path its package can actually publish. A second
   producer is what justifies extracting a shared format and override rules.
+- **Since then:** the maintainer settled on 2026-08-02 that no third-party
+  package contributes data here for now. From here the missing discovery path is
+  a scope choice rather than a wait, so **Wrong if** narrows: a producer being
+  ready is no longer enough on its own. The todo that carried the question is
+  gone with it, and this entry is where the question is kept.

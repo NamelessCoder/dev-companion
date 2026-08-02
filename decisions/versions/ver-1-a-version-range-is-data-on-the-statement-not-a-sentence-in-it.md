@@ -1,7 +1,7 @@
 ---
 id: D-VER-1
 date: 2026-07-29
-status: standing
+status: tested
 ---
 
 # D-VER-1 — A version range is data on the statement, not a sentence in it
@@ -31,3 +31,19 @@ everything that is not.
   because an answer the caller has to filter is an answer they will not filter.
 - **Wrong if:** a statement is true on 12.4 and 14 but not on 13 — the range
   cannot say that, and it would have to become two statements.
+
+- **Tested on 2026-08-02:** the **Wrong if** has not happened. All 110 bound
+  statements were read against the four checkouts — 105 hints across 31 topics
+  and 5 test suites — and every truth set is contiguous. Each predecessor and
+  successor pair partitions the covered majors, leaving none of them out. The
+  derived half says the same mechanically: `bin/cli catalog:check` recomputes
+  each catalog range from the checkouts and names any entry it cannot express,
+  and it reports none across 25 components, 38 system extensions and 7
+  references. Nothing does that for the judged half and nothing can, because a
+  hole is visible only to a reader holding the sentence against both sides —
+  which is what this line stands in for. What the read did find is the failure a
+  range does express: `extension-files` bound the `ext_emconf.php` fallback
+  `since: 14` with no upper bound, while the statement beside it says the
+  fallback is gone `since: 15`. That one gained its `until` in a commit of its
+  own, which is the difference — a missing bound is corrected, a hole would have
+  needed a second statement.

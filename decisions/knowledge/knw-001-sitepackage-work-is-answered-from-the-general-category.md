@@ -17,12 +17,6 @@ YAML route enhancer, a Fluid template — and the task text that asks for it
 names none of them, so a domain-scoped hint is unreachable exactly when it is
 needed.
 
-
-- **Since then** one half stands uncorrected: such a brief still reports its
-  domains as Fluid and TypoScript, so the exclusion is what keeps that work out
-  of the answer rather than the scoping. `SITE-08` says so and nothing guards
-  it.
-
 ## Decided
 
 - `sitepackage-layout` and `frontend-records` go into `general.json`, whose
@@ -75,3 +69,12 @@ frontend marker beside them. That is not `namesTheFrontend()` negated, where
 the backend markers win, because a task naming both halves is asking for both —
 `SITE-05` is one, and it keeps the layout. `SITE-08` holds the shape that
 failed.
+
+## Since then
+
+The second **Decided** bullet stood uncorrected while the first was answered:
+such a brief still opened with `Domains: fluid, typoscript`, so the hint
+exclusion was what kept that work out of the answer rather than the scoping.
+`D-KNW-006` closes it on 2026-08-02, and by the gate this entry's second
+revocation wrote rather than by deleting the keyword — which was measured and
+costs `SKILL-04` both domains and a rendering question its one Fluid hint.

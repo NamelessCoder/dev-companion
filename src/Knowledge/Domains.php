@@ -92,6 +92,22 @@ final class Domains
     ];
 
     /**
+     * Words for a thing that renders the website and is administered from the
+     * backend.
+     *
+     * One of these says which thing the task is about, not which half of TYPO3
+     * it is in: an editor's content element is a Fluid template and a TCA
+     * definition at once, and a sitepackage owns both. So a task that names
+     * only the backend does not become Fluid and TypoScript work by carrying
+     * one, while a task that names the website half keeps both — which is the
+     * difference between `SITE-08` and `SITE-05`, and why the keyword stays in
+     * the lists above rather than being deleted from them (`D-KNW-006`).
+     *
+     * @var array<int, string>
+     */
+    private const ADMINISTERED_FROM_THE_BACKEND = ['sitepackage', 'site package', 'content element'];
+
+    /**
      * Words that place a task in the website output rather than in the backend.
      *
      * @var array<int, string>
@@ -135,7 +151,7 @@ final class Domains
     public static function detect(array $paths, string $text = ''): array
     {
         $detected = [];
-        $backendModule = self::namesBackendModule($paths, $text);
+        $backendOnly = self::namesBackendModule($paths, $text) || self::namesOnlyTheBackend($paths, $text);
 
         foreach ($paths as $path) {
             $extension = strtolower(pathinfo($path, PATHINFO_EXTENSION));
@@ -154,15 +170,14 @@ final class Domains
         $description = mb_strtolower($text);
         foreach (self::KEYWORDS as $domain => $keywords) {
             foreach ($keywords as $keyword) {
-                // "sitepackage" says who owns the extension, not that every
-                // task in it renders the website. A backend module in that
-                // package must not acquire the whole Fluid/TypoScript frontend
-                // merely from its owner; explicit frontend terms below still
-                // add their respective domains.
+                // A task that named only the backend named one of these for the
+                // thing it is about, so the website half it belongs to is not
+                // what was asked for. Explicit frontend terms below still add
+                // their respective domains.
                 if (
-                    $backendModule
+                    $backendOnly
                     && in_array($domain, [self::FLUID, self::TYPOSCRIPT], true)
-                    && in_array($keyword, ['sitepackage', 'site package'], true)
+                    && in_array($keyword, self::ADMINISTERED_FROM_THE_BACKEND, true)
                 ) {
                     continue;
                 }

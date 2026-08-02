@@ -1,9 +1,9 @@
 # SITE-08 — A backend change to an existing content element
 
-**Environment:** `E-SITE` · **Contract:** `held` — the hints; that the brief
-stops calling such a task Fluid and TypoScript work is `not guarded`
+**Environment:** `E-SITE` · **Contract:** `held`
 **Held by:**
 `HintsTest::aBackendOnlyTaskNamingAContentElementIsNotAnsweredWithTheSitepackageLayout`,
+`HintsTest::aBackendOnlyTaskNamingAContentElementIsNotCalledFluidAndTypoScriptWork`,
 `HintsTest::aContentElementBuiltInASitepackageKeepsItsLayout`,
 `HintsTest::aBackendModuleInASitepackageDoesNotBecomeFrontendWork`
 
@@ -34,6 +34,8 @@ stops calling such a task Fluid and TypoScript work is `not guarded`
 - The brief opens with where `Resources/Private/Templates/Content/` goes for a
   task that changes one field.
 - An icon identifier is invented instead of read from the registry.
-- A Fluid or TypoScript convention is stated as applying. The brief still names
-  both domains for this task — "content element" is a keyword of each — so the
-  hint exclusion is what keeps them out of the answer, not the scoping.
+- A Fluid or TypoScript convention is stated as applying, or the brief opens by
+  naming both domains. "Content element" is a keyword of each and stays one,
+  because a task that names neither half of TYPO3 is the case it was added for;
+  what it no longer does is add them where the task names only the backend
+  (`D-KNW-006`).

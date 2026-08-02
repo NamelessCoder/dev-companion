@@ -1138,6 +1138,48 @@ final class HintsTest extends TestCase
     }
 
     /**
+     * The half of `SITE-08` the exclusion above does not reach: the brief still
+     * called such a task Fluid and TypoScript work, because "content element"
+     * is a keyword of both. It stays one — take it out and «Add a hero carousel
+     * content element whose slides editors can create, order, translate and
+     * hide» loses both domains too, and a rendering question stops reaching
+     * `frontend-page-rendering`. What it stops doing is adding them where the
+     * task names only the backend (`D-KNW-006`).
+     */
+    #[Test]
+    public function aBackendOnlyTaskNamingAContentElementIsNotCalledFluidAndTypoScriptWork(): void
+    {
+        foreach ([
+            'Add a TCA field to the content element in the backend',
+            'The backend preview of the content element is broken in the page module',
+            // SITE-08's prompt.
+            'The accordion content element we already have needs one more field in the backend form, and the '
+                . 'wrong icon shows for it in the new content element wizard. Nothing about the rendering changes.',
+        ] as $task) {
+            $domains = Registry::call('typo3_task_guide', ['task' => $task])->data['domains'];
+
+            self::assertContains(Domains::PHP, $domains, $task);
+            self::assertNotContains(Domains::FLUID, $domains, $task);
+            self::assertNotContains(Domains::TYPOSCRIPT, $domains, $task);
+        }
+
+        foreach ([
+            // SITE-05's prompt, which names both halves.
+            'Editors need a "team members" content element: a list of people picked from a folder, rendered as '
+                . 'cards. Build it in our site package — the element, its backend form, and its frontend output.',
+            // SKILL-04's, which names neither and is the reason the keyword stays.
+            'Add a hero carousel content element whose slides editors can create, order, translate and hide '
+                . 'directly inside the element. Keep its implementation maintainable and test the behavior that '
+                . 'matters.',
+        ] as $task) {
+            $domains = Registry::call('typo3_task_guide', ['task' => $task])->data['domains'];
+
+            self::assertContains(Domains::FLUID, $domains, $task);
+            self::assertContains(Domains::TYPOSCRIPT, $domains, $task);
+        }
+    }
+
+    /**
      * The other side of it, and why the gate reads the frontend markers rather
      * than negating namesTheFrontend(): there the backend markers win, so a task
      * naming both halves would count as backend-only and lose the layout hint

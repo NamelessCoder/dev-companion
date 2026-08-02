@@ -78,6 +78,14 @@ feedback is archived on that reading: the enumeration it wanted has existed all
 along by omitting the query, the two entries it named are reachable by name
 since the identifier rule above, and the third is a filter this adds.
 
+The reading above — that the reach line is the next step the miss could not
+print — holds only where a term reaches nothing. Both queries of
+`feedback/2026-07-31-194819` are the other case: every term reaches something,
+the intersection is still empty, and the numbers name no call. There the
+smallest reach is the term to keep, and two words had to go before either query
+matched anything.
+`D-ANS-016` is that judgement, and it is queued rather than made here.
+
 Both bounds are still unreachable from the order a review runs under.
 `feedback/2026-07-31-194459` and `feedback/2026-07-31-194819` are two models
 sweeping the same sitepackage on the same day with words, because

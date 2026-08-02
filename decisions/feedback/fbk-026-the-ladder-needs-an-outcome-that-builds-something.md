@@ -4,7 +4,7 @@ date: 2026-08-03
 status: open
 ---
 
-# D-FBK-026 — The ladder had no outcome that builds something
+# D-FBK-026 — The ladder needs an outcome that builds something
 
 **A judgement that a capability is missing decides that it is built, and *taken
 on* is the answer it gets.**

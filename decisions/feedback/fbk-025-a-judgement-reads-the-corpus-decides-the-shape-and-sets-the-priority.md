@@ -4,7 +4,7 @@ date: 2026-08-03
 status: open
 ---
 
-# D-FBK-025 — A gap thirty sessions reported is not judged like one report
+# D-FBK-025 — A judgement reads the corpus, decides the shape, and sets the priority
 
 **The corpus is read before the card, a judgement that lands on step 1b decides
 that the tool or skill is built, and it sets the priority.**

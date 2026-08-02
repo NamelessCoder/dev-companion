@@ -48,6 +48,14 @@ timeless fact, while the server had the other number all along.
 - `SomeTest::theMethodThatWouldCatchIt`
 ```
 
+- The **title** says what will be done, in the affirmative. Not the deficiency
+  it corrects and not a negation: "The ladder needs an outcome that builds
+  something", not "the ladder had no outcome that builds" and not "the ladder is
+  not a filter". What was wrong is evidence and belongs in the paragraph under
+  the bold sentence; a listing of 138 entries is read for what each one settled,
+  and a title in the past tense or in the negative makes the reader reconstruct
+  that. It is [AGENTS.md](../../AGENTS.md)'s "say what is, not what it is not",
+  applied where it is read most and followed least.
 - The **bold first sentence** is the decision. A reader who stops after it knows
   what was settled; everything under it is what settled it.
 - The sections are a fixed set, in that order: **Evidence**, **Decided**,

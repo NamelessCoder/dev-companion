@@ -2,8 +2,6 @@
 
 **Serves:** decisions/
 **Priority:** normal
-**Branch:** todo/decide-what-stops-two-sessions-claiming-one-id
-**Claimed:** 2026-08-02
 **Waiting on:** which of the three, given that both stated costs moved when they
     were measured? Reserving at claim time was priced here as gaps the checks
     object to, and nothing objects to a gap — but it spends the three-digit

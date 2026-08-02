@@ -1,7 +1,7 @@
 ---
 id: D-KNW-018
 date: 2026-08-02
-status: open
+status: confirmed
 ---
 
 # D-KNW-018 — What a datamap does to a relation field is a gap this server owns
@@ -80,3 +80,25 @@ field, which is where this one reached for SQL.
 - The mechanism differs across 12.4, 13.4 and 14.3. The statement then needs a
   version range per branch, and the hint gains three statements where the todo
   planned one.
+
+## Confirmed on 2026-08-02
+
+Both **Wrong if** were read and neither held, so the statement landed as one and
+without a range — `R-KNW-043`.
+
+The relation kind does not split it. `checkValue_inline_processDBdata()` has
+three branches, and two of them end in `RelationHandler::countItems()`: the
+`foreign_field` one directly, the `MM` one through
+`checkValue_group_select_processDBdata()`, which stores the same counter for a
+select or group field with an `MM` table. Only a relation with neither keeps the
+comma list, so the statement is "the parent column holds a count wherever the
+relation is stored elsewhere" rather than four cases.
+
+The majors do not split it either. `checkValue_inline_processDBdata()` is
+identical on 13.4 and 14.3 and differs on 12.4 by one omitted default argument
+to `writeForeignField()`; `countItems()` differs only in a parameter type
+declaration. `writeForeignField()` reads the sorting field off `$GLOBALS['TCA']`
+on 12.4 and off `TcaSchemaFactory` on 14.3, which is the same field by a
+different route. `checkValue_inline()` is gone on 14.3, but that is the
+deprecated wrapper around `checkValueForInline()` and no part of what a datamap
+does.

@@ -13,6 +13,7 @@ use Typo3CmsMcp\Knowledge\Domains;
 use Typo3CmsMcp\Knowledge\Scope;
 use Typo3CmsMcp\Knowledge\TaskIntents;
 use Typo3CmsMcp\Knowledge\TestSuiteHints;
+use Typo3CmsMcp\Knowledge\Versions;
 use Typo3CmsMcp\Paths;
 use Typo3CmsMcp\Tool\Registry;
 
@@ -1005,6 +1006,49 @@ final class HintsTest extends TestCase
         self::assertStringContainsString('Bootstrap::init', $text);
         self::assertStringContainsString('initializeBackendUser', $text);
         self::assertStringContainsString('--table', $text);
+    }
+
+    /**
+     * The datamap statement said how a scalar field is written and stopped, so
+     * a session seeding an element with inline children had nothing at the
+     * first relation it reached: it wrote the child's pointer column by hand
+     * and read the parent's int column as one that rejects a comma list. That
+     * column is a counter DataHandler maintains, and the same holds on every
+     * covered major, so the statement carries no range.
+     */
+    #[Test]
+    public function aRelationInADatamapSaysWhatTheParentColumnEndsUpHolding(): void
+    {
+        $statements = static fn(?int $major): string => implode("\n", array_column(
+            ArchitectureHints::byId('datahandler-persistence', $major)['hints'] ?? [],
+            'text',
+        ));
+        $text = $statements(null);
+
+        self::assertStringContainsString('comma-separated list of the related uids', $text);
+        self::assertStringContainsString('foreign_field', $text, 'what moves the relation onto the child');
+        self::assertStringContainsString('foreign_table_field', $text);
+        self::assertStringContainsString('foreign_match_fields', $text);
+        self::assertStringContainsString(
+            'holds the number of children rather than the list',
+            $text,
+            'the counter that reads as a column rejecting a comma list',
+        );
+
+        foreach (Versions::majors() as $major) {
+            self::assertStringContainsString(
+                'holds the number of children rather than the list',
+                $statements($major),
+                'the mechanism is the same on every covered major',
+            );
+        }
+
+        $reached = ArchitectureHints::find(
+            [],
+            'IRRE inline child records written through DataHandler datamap parent field',
+            6,
+        );
+        self::assertSame('datahandler-persistence', array_column($reached['matchedHints'], 'id')[0] ?? '');
     }
 
     #[Test]

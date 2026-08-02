@@ -7,7 +7,7 @@ tool: typo3_server_scope, typo3_test_run_guide, typo3_commit_message_guide
 directory: /home/benji/projects/typo3-cms
 ---
 
-# Same session: what worked and must not be broken later. typo3_server_scope's explicit boundary â€...
+# Same session: what worked and must not be broken later. typo3_server_scope's explicit boundary â€” ...
 
 ## Observation
 

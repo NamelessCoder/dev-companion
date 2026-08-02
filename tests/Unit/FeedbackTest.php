@@ -55,6 +55,27 @@ final class FeedbackTest extends TestCase
         self::assertStringContainsString('## Suggestion', $contents);
     }
 
+    /**
+     * A feedback is prose an agent wrote, so the heading cut out of its first
+     * line has to be cut by characters. `substr()` counts bytes: an em dash
+     * landing across the boundary was written as its first byte or two, the
+     * file stopped being valid UTF-8, and `grep` then treated it as binary and
+     * matched nothing in it — which is how the one in the store was found,
+     * three weeks after it was recorded.
+     */
+    #[Test]
+    public function aHeadingIsCutBetweenCharactersRatherThanBytes(): void
+    {
+        // The dash sits where a 97-byte cut goes through the middle of it.
+        $observation = self::MARKER . ' ' . str_repeat('a', 94 - strlen(self::MARKER)) . '— and the rest of the line';
+
+        $contents = (string) file_get_contents(Paths::root() . '/' . Channel::record(['observation' => $observation]));
+
+        preg_match('/^# (.*)$/m', $contents, $heading);
+        self::assertSame($heading[1], mb_convert_encoding($heading[1], 'UTF-8', 'UTF-8'), 'the heading was cut through a character');
+        self::assertStringEndsWith('...', $heading[1]);
+    }
+
     #[Test]
     public function theAgentNeverControlsWhereTheNoteIsWritten(): void
     {

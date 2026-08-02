@@ -512,11 +512,21 @@ final class Channel
         return $lastDash === false ? $slug : substr($slug, 0, $lastDash);
     }
 
+    /**
+     * The first line, cut to a length by characters rather than by bytes.
+     *
+     * `substr()` counts bytes, and a feedback is prose an agent wrote — one
+     * arriving with a dash or a quotation mark past the ninety-seventh byte was
+     * cut through the middle of it, and what the heading then carried was half
+     * a character. It is not only ugly: the file stops being valid UTF-8, so
+     * `grep` treats it as binary and silently matches nothing in it, which is
+     * how this was found.
+     */
     private static function title(string $observation): string
     {
         $firstLine = trim((string) strtok($observation, "\n"));
 
-        return strlen($firstLine) > 100 ? substr($firstLine, 0, 97) . '...' : $firstLine;
+        return mb_strlen($firstLine) > 100 ? mb_substr($firstLine, 0, 97) . '...' : $firstLine;
     }
 
     private static function text(mixed $value): string
@@ -527,7 +537,7 @@ final class Channel
 
         $text = trim($value);
 
-        return strlen($text) > self::MAX_FIELD_LENGTH ? substr($text, 0, self::MAX_FIELD_LENGTH) : $text;
+        return mb_strlen($text) > self::MAX_FIELD_LENGTH ? mb_substr($text, 0, self::MAX_FIELD_LENGTH) : $text;
     }
 
     private static function category(mixed $value): string
@@ -556,7 +566,7 @@ final class Channel
             return self::UNATTRIBUTED;
         }
 
-        return strlen($model) > self::MAX_MODEL_LENGTH ? substr($model, 0, self::MAX_MODEL_LENGTH) : $model;
+        return mb_strlen($model) > self::MAX_MODEL_LENGTH ? mb_substr($model, 0, self::MAX_MODEL_LENGTH) : $model;
     }
 
     /**

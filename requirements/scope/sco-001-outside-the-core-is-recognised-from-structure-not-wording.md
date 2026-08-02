@@ -26,10 +26,13 @@ installation is it the sole evidence there is, and then it answers.
 
 What a path carries is read before anything said about the call, which is what
 keeps two paths of one call apart ([`R-AUD-002`](../audience/aud-002-the-audience-is-a-property-of-the-task.md)).
-A path shape is evidence only where it can be: `Build/Scripts/` and
-`Build/Sources/` are the core's own, a bare `Build/` is any repository that
-compiles something, and neither is core evidence where the manifest at the root
-already says this checkout is not the core.
+A path shape is evidence only where it can be, and that holds in both
+directions: `Build/Scripts/` and `Build/Sources/` are the core's own, a bare
+`Build/` is any repository that compiles something, and neither is core
+evidence where the manifest at the root already says this checkout is not the
+core. `Classes/`, `Configuration/` and `Resources/` are the mirror — the shape
+of a package, and no evidence of one inside a core checkout, where they are
+what a path relative to a system extension directory looks like.
 
 ## From
 
@@ -43,5 +46,6 @@ prose (2026-07-29).
 - `ScopeTest::inASiteInstallationTheWorkIsOutsideTheCoreUnlessSomethingSaysOtherwise`
 - `ScopeTest::inACoreCheckoutNothingIsPushedOutsideByTheInstallationAlone`
 - `ScopeTest::aPathInsideAnExtensionIsRecognisedByItsShape`
+- `ScopeTest::aPackageShapedPathInACoreCheckoutIsCoreWork`
 - `ScopeTest::namingAnInstallationToReadDoesNotMoveWhereTheWorkIs`
 - `ScopeTest::whereNothingElsePlacesTheSessionTheNamedInstallationIsTheEvidence`

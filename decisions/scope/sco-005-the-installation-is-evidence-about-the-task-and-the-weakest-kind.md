@@ -74,3 +74,22 @@ is pinned; its back half, paths passed relative to the system extension
 directory the contributor is standing in, is untried — a `Classes/` path is
 read as extension work by its shape before the checkout is consulted at all,
 and whether that is the wrong order here is a separate question.
+
+## Since then
+
+The back half is settled, and the answer is that the shape stops being evidence
+there. `Classes/`, `Configuration/` and `Resources/` are what a package is laid
+out as, and from the core root nothing is named that way — this entry's own
+second **Assumed** says so — so inside a core checkout such a path is one a
+contributor typed from the system extension directory they were standing in.
+The gate is the mirror of the one `Build/Sources/` already has: the core layout
+counts only where the session could be standing in the core, the package layout
+only where it is not standing in it, and where there is no installation at all
+both stand, being the only evidence in the call.
+
+It changes no order. `R-SCO-001` still reads the path before anything said about
+the call, and every marker above the shape — `typo3/sysext/`, `packages/`,
+`vendor/`, an area the installation knows — decides before it as before. What
+changed is that one signal is weighed by the checkout it is being read in,
+which is what the neighbouring rung already did.
+

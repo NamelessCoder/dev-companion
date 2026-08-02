@@ -245,7 +245,7 @@ enum Scope: string
         // a file sits in says which repository it was laid out for.
         if ($lowered !== '') {
             foreach (self::EXTENSION_LAYOUT as $prefix) {
-                if (str_starts_with($lowered, $prefix)) {
+                if (str_starts_with($lowered, $prefix) && !self::isTheCoreCheckout()) {
                     return self::Extension;
                 }
             }
@@ -298,6 +298,25 @@ enum Scope: string
         $kind = Instance::startedIn();
 
         return $kind === null || $kind === Instance::KIND_CORE_CHECKOUT;
+    }
+
+    /**
+     * Whether the session is standing in the core monorepo.
+     *
+     * The mirror of the gate above, for the other layout: `Classes/`,
+     * `Configuration/` and `Resources/` are what a package is laid out as, and
+     * from the core root nothing is named that way — `typo3/sysext/<key>/` or
+     * `Build/` comes first. So inside a core checkout such a path is one a
+     * contributor typed from the system extension directory they were standing
+     * in, and reading it as somebody's extension is the back half of
+     * `D-SCO-005`'s first **Wrong if**.
+     *
+     * Where the session sits in no installation the shape stands, for the same
+     * reason it does there: it is then the only evidence in the call.
+     */
+    private static function isTheCoreCheckout(): bool
+    {
+        return Instance::startedIn() === Instance::KIND_CORE_CHECKOUT;
     }
 
     /**

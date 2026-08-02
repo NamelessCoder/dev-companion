@@ -139,6 +139,37 @@ final class ScopeTest extends TestCase
         self::assertSame(Scope::Core, Scope::of('Build/Sources/Sass/component/_card.scss'));
     }
 
+    /**
+     * The back half of `D-SCO-005`'s first **Wrong if**: a contributor standing
+     * in `typo3/sysext/backend/` names the file the way their shell does. The
+     * package layout is what such a path looks like, and it was read as
+     * somebody's extension before the checkout was consulted at all.
+     */
+    #[Test]
+    public function aPackageShapedPathInACoreCheckoutIsCoreWork(): void
+    {
+        Instance::discoverFrom($this->coreCheckout());
+
+        self::assertSame(Scope::Core, Scope::of('Classes/Controller/EditDocumentController.php'));
+        self::assertSame(Scope::Core, Scope::of('Resources/Private/Templates/Page/Tree.html'));
+        self::assertSame(Scope::Core, Scope::of('Configuration/TCA/tt_content.php'));
+
+        // What still ends the question the other way, from the same checkout: a
+        // path that names the container an extension lives in.
+        self::assertSame(Scope::Extension, Scope::of('packages/my_sitepackage/Classes/Controller/Foo.php'));
+
+        // And the same paths in a site installation, where the shape is what it
+        // says it is.
+        Instance::discoverFrom($this->composerProject());
+        self::assertSame(Scope::Extension, Scope::of('Classes/Controller/EditDocumentController.php'));
+
+        // With no installation to place the session, the shape is the only
+        // evidence in the call and still answers — the rule couldBeTheCore()
+        // already follows for Build/Sources/.
+        Instance::discoverFrom(sys_get_temp_dir());
+        self::assertSame(Scope::Extension, Scope::of('Classes/Controller/EditDocumentController.php'));
+    }
+
     #[Test]
     public function whereNothingElsePlacesTheSessionTheNamedInstallationIsTheEvidence(): void
     {

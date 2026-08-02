@@ -80,6 +80,11 @@ final class Domains
             'layout shift', 'layout stability', 'text-overflow', 'ellipsis',
         ],
         self::FLUID => [
+            // The namespace prefix every Fluid tag carries. A caller reporting
+            // what a template did says `f:if`, `f:else`, `f:render` and never
+            // the word Fluid — and the domain then fell back to PHP, so no hint
+            // in this category was ever a candidate (`D-KNW-024`).
+            'f:',
             'fluid', 'viewhelper', 'view helper', 'partial', 'pageview',
             'page template', 'frontend template', 'content area', 'page layout',
             'sitepackage', 'site package', 'content element',

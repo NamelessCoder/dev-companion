@@ -134,6 +134,29 @@ final class HintsTest extends TestCase
     }
 
     #[Test]
+    public function aQueryWrittenInFluidTagSyntaxReachesTheFluidHints(): void
+    {
+        // Somebody reporting what a template did writes the tag and not the
+        // word: the query below is the one a session arrived with, and it named
+        // no path, no file extension and never "Fluid". The domain fell back to
+        // PHP and the whole category was gone before anything was scored, so
+        // the statement about the branch could not be found by the phrasing it
+        // was written for — `D-KNW-024`.
+        $reached = ArchitectureHints::find(
+            [],
+            'f:if with f:else but no explicit f:then swallows the inline then-branch / f:link.typolink output',
+            6,
+        );
+
+        self::assertContains('fluid-templates', array_column($reached['matchedHints'], 'id'));
+
+        // The prefix is a token rather than a word, so it cannot land inside
+        // one. A question about PHP stays PHP.
+        $php = ArchitectureHints::find([], 'inject a service into my DataHandler hook class', 6);
+        self::assertNotContains('Fluid', array_column($php['matchedHints'], 'category'));
+    }
+
+    #[Test]
     public function aTypoScriptPathReachesTheTypoScriptHintsAndNotTheCssOnes(): void
     {
         // .typoscript and .tsconfig used to fall into the generic frontend

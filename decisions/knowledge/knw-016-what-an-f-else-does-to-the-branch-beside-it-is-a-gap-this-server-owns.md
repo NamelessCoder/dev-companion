@@ -127,6 +127,6 @@ carries no path, no extension and no such word, so `Domains::detect()` returned
 the PHP fallback and the whole Fluid category was gone before anything was
 scored. Writing the statement did not change that — the probe still matched
 nothing with the sentence in the corpus.
-[`D-KNW-020`](knw-020-the-fluid-namespace-prefix-is-what-a-template-question-is-written-in.md)
+[`D-KNW-024`](knw-024-the-fluid-namespace-prefix-is-what-a-template-question-is-written-in.md)
 is the second lever this entry said there was no need for, and with it the
 feedback's own words reach the entry they were written onto.

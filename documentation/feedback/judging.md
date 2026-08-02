@@ -7,6 +7,15 @@ made yet. This page is that judgement — what is asked of a feedback, in which
 order, on what evidence, and which of the answers may be given without asking
 first.
 
+**What the channel is for is deciding what to build.** It exists because the
+sessions using this server are the only ones who find out what it does not
+answer, and the corpus is the only place that knowledge lands. So a judgement
+that ends in nothing being built has to earn that as much as one that ends in a
+new tool: the default is not caution, it is a decision. Where the evidence is
+here — a run, a transcript, several sessions saying the same thing — the
+judgement decides, and what waits is only what nobody in this repository can
+establish.
+
 [readme.md](readme.md) says where a feedback lives and what happens to it once
 it is worked off. This is the step between the two.
 
@@ -60,10 +69,16 @@ is the case it was established on.
 ## The ladder
 
 The question is asked in five steps, cheapest first. Each step has evidence
-that can be checked in this repository, and the first one that answers stops
-the descent. A feedback that is not walked down the ladder is guessed at — and
-the guess is always step one, which is why gaps get a fourth entry written next
-to three that already exist.
+that can be checked in this repository, and the first one that answers stops the
+descent. A feedback that is not walked down the ladder is guessed at, and the
+guess is step one either way: written as a fourth entry beside three that
+already say it, or waved off as something the wording will fix.
+
+The ladder orders the *diagnosis*, not the appetite. Step 1 is the most
+expensive answer and regularly the right one; the cheap rungs exist so that a
+rule which was already written and never arrived is not rebuilt, not so that the
+answer stays small. `bin/cli feedback:list` tells the two apart in one call: a
+rule nobody reached is one report, and a shape nobody has is thirty.
 
 ### 1. Gap — the answer is not here
 
@@ -104,9 +119,12 @@ independently by two sessions. That last one is the evidence
 file — *that a domain earned a skill at all*. Its bar still has to be cleared;
 the feedback shows it has been reached, not that it can be skipped.
 
-Both are queued rather than closed on the spot: a tool and a skill are
-contracts, and a skill is installed into somebody else's project, where a
-mistake is not corrected by the next release.
+Both are *taken on* rather than closed on the spot: the judgement decides that
+the tool or the skill is built and where its boundary runs, and the building
+waits for the reading because a tool and a skill are contracts — a skill lands
+in somebody else's project, where a mistake is not corrected by the next release
+of this server. What may not wait is the decision. A 1b left as a question is a
+domain nobody owns, filed again by the next session that hits it.
 
 **The category is not the answer.** `tool-gap`, `missing-knowledge`,
 `wrong-answer` are how the reporting session saw it from where it stood, with no
@@ -204,7 +222,28 @@ todo is research, and the writing comes after it.
 
 ## The answers
 
-Six, and only four of them may be reached without asking.
+Seven, and only five of them may be reached without asking.
+
+### Taken on — *autonomous*
+
+The feedback names something this server should be able to do and does not, and
+the evidence that it should is here. That is a decision, and the judgement makes
+it: `decisions/` records **that** it is built, what its boundary is and what
+would show the boundary wrong, and the card carries the first concrete step at a
+priority the judgement sets. The feedback stays open until the commit that ships
+it archives it.
+
+What justifies it is the corpus, not the ask. One session's suggestion is a
+suggestion — its author was guessing about this repository as much as a
+judgement guesses about TYPO3. Two sessions arriving at the same shape from
+different tasks is the thing itself, and `bin/cli feedback:list` is where that
+is read. `D-SKL-005` was decided this way and the ask it answers, the proposal
+in `feedback/2026-08-01-115220`, was the weakest evidence in it.
+
+What still waits is what nobody here can establish: what the tool answers about
+TYPO3, what the skill says, which of two shapes the practice actually has. That
+is the todo's first step, and it is research rather than a question for the
+maintainer.
 
 ### Closed on the spot — *autonomous*
 
@@ -229,8 +268,10 @@ disagreed with.
 
 ### Queued — *autonomous*
 
-The change is real and too large for the spot: it touches code, a schema, a
-contract, or it needs a decision. A requirement records what must hold, a todo
+Something that already exists has to change, and it is too large for the spot:
+it touches code, a schema, a contract, or it needs a decision. Where the change
+is a capability this server does not have yet, the answer above it is the one —
+this rung is repair, that one is building. A requirement records what must hold, a todo
 records the next concrete step, and the feedback stays open until the commit
 that implements it archives it.
 
@@ -252,6 +293,13 @@ rest stays open.
 Nothing on the ladder produced a lever worth pulling, or the cost is out of
 proportion to what it buys. That is a legitimate outcome and not one this
 process may reach on its own.
+
+It is also the outcome that has to argue hardest, because it is the one that
+looks like diligence from every angle. So it says what building it would have
+cost and what the corpus behind it weighs — how many sessions, from how many
+task shapes — and it says both in the file rather than in the commit. A
+*proposed* that could have been written without reading `bin/cli feedback:list`
+is a skip wearing an answer's clothes.
 
 A feedback is discarded by nobody here. What is written instead is the proposal:
 which step of the ladder it reached, what evidence was found, what the change
@@ -284,7 +332,7 @@ second list of the same judgements is a second thing to keep true.
 
 A **skip** is the exception and stays out of both. It lasts one pass, is written
 down nowhere, and is not a state a feedback can be left in — a feedback that
-deserves a state gets one of the six answers.
+deserves a state gets one of the seven answers.
 
 ## The three states a feedback is in, and what holds each
 

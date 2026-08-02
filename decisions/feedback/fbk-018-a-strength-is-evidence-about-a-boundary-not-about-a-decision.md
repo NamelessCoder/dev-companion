@@ -82,6 +82,18 @@ other side: what is the strength evidence of?
 - Strengths accumulate unread, because closing one leaves nothing anybody can
   point at afterwards. This entry and its commit are the whole record; if
   neither is cited again, the run was a cost with no return.
+- The line a strength's praise implies turns out not to be worth saying —
+  `typo3_extension_scope` naming a missing translation on every extension that
+  ships none costs more than it buys. Reading what the praise implies would then
+  be right about the asymmetry and wrong about it mattering, and `R-PRJ-006` is
+  what would need the sentence instead.
+- A strength is found whose praise implies a property the answer does not have,
+  and checking its quotations reaches that property anyway. The step added
+  below — read what the praise implies, not only what it quotes — would then be
+  one this entry did not need.
+- The text is not where an absence has to be said, because the clients that
+  matter render the data. `R-ANS-002` assumes the opposite client, and no
+  recorded run here shows which of the two a session is.
 
 ## Since then
 
@@ -258,3 +270,77 @@ and naming its answer from here is the copy-down judging.md warns about. The
 third **Wrong if** is the one this run bears on: a guard is the first thing a
 closed strength has left behind that something other than a commit message can
 point at.
+
+## Confirmed on 2026-08-02
+
+`feedback/2026-07-31-194825` is the strength this entry and
+[`D-ANS-014`](../answers/ans-014-the-extension-answer-enumerates-registrations-not-files.md)
+both cite without judging. Read as boundary-evidence it says what that entry
+already says, from the side it calls the strength half, and closing it there
+would have been correct by this one as it stood. It carries a lever instead, and
+it is neither of the two shapes above. Not what the session did instead, which
+it never names; not a recitation of a file this repository owns. It is the
+praise itself, read against the thing praised.
+
+The **Since then** above says a quotation is checked before the boundary is.
+Four of them are here, re-run on 2026-08-02 through `bin/typo3-cms-mcp` from
+`/home/benji/projects/site-new`, the directory it was written in:
+
+- *no manual, no README, which test layers exist and which do not* reproduces.
+  `typo3_extension_scope` with `printworks_sitepackage` answers `Ships: manual
+  none, readme none, tests Functional+Unit`.
+- *read the XLF source languages* reproduces: three files below
+  `Resources/Private/Language/`, each at `source-language de, no translations
+  beside it`.
+- *the answeredBy attribution* reproduces. That answer says `installation`;
+  `typo3_project_scope`, which reads files and asks nothing, says `packages`.
+- *the commands the repository actually declares, with what each does to the
+  sources* reproduces by half. The six commands are there, and every one of them
+  answers `runs: unknown`. All six are test suites, and
+  [`R-PRJ-007`](../../requirements/project/prj-007-a-declared-command-says-whether-running-it-changes-anything.md)
+  says a manifest does not cover what the project's own code writes. The
+  classification the strength credits classified nothing here.
+
+That fourth one is the mechanism the section above saw twice and left unnamed.
+What is recited is the answer's own explanatory prose rather than the answer.
+`typo3_project_scope` spends a paragraph on what a check is and what a change
+is, ahead of the six `unknown`s, and the report hands that paragraph back as a
+result it received. Its conclusion — that the repository declares no check
+scripts — is right, and it is read off the list rather than off the
+classification. So a recitation is evidence about the file where the file is a
+rule, and evidence about nothing where the file is an answer explaining itself.
+
+The lever is in the first two, and it is what the praise implies rather than
+what it quotes. An absence answered rather than left to be found holds for three
+of the four artifacts and not for the fourth. `ExtensionScope` renders `manual`,
+`readme` and `tests` present or absent in one `Ships:` line, and renders the
+language files only where the list is not empty. Run against `rte_ckeditor` in
+`.checkouts/14.3`, which ships none, the data carries `languageFiles: []`. The
+text runs from `Ships: manual Documentation/Index.rst, readme README.rst, tests
+Functional+Unit` straight into the boundary paragraph. No sentence in it says
+the extension ships no translations.
+
+[`R-PRJ-006`](../../requirements/project/prj-006-what-an-extension-does-not-ship-is-answered-too.md)
+names the XLF files among the four whose absence is answered. `ToolResult` says
+the text is the primary answer and the data is what a client composes with.
+[`R-ANS-002`](../../requirements/answers/ans-002-the-reason-is-in-the-data-not-only-in-the-text.md)
+states the same rule in the other direction, for a client that renders the data
+and drops the text. `ProjectTest::whatAnExtensionDoesNotShipIsAnswerdRatherThanLeftOut`
+asserts the present case in both halves of the answer and the absent case in the
+data alone, which is why nothing failed.
+
+Step 4, wording. Not step 1a, because `Extension::artifacts()` already returns
+the key; not 1b, because no verb and no order is missing; not step 2, because
+nothing has to move — the same builder renders the three artifacts beside it.
+It changes `src/`, so it is queued rather than closed on the spot. The feedback
+is trimmed to that half and stays open behind the todo *Say the missing
+translation the way the missing manual is said*. The other three are held
+requirements that reproduce, and keeping something is not work.
+
+Two things are assumed rather than established. First, that the text is where
+the absence has to be said. `R-ANS-002` was written for a client that drops it,
+the client assumed here is the opposite one, and what `ToolResult` says about
+which half is primary is the whole of the evidence. Second, that `rte_ckeditor`
+is not a special case. It is the one extension in `.checkouts/14.3/typo3/sysext/`
+with no `.xlf` file at all, so the shape was found in the only place this
+machine offers it. Both are written into the **Wrong if** above.

@@ -87,6 +87,7 @@ the repository has moved furthest away from since. Going back to one and adding
 
 ## Every decision, newest first
 
+- [`D-COD-3`][D-COD-3] — A directory is read through symfony/finder · 2026-08-02 · standing
 - [`D-COD-1`][D-COD-1] — One file declares one class · 2026-08-01 · standing
 - [`D-COD-2`][D-COD-2] — The upkeep CLI is a Symfony Console application · 2026-08-01 · standing
 - [`D-DIS-6`][D-DIS-6] — The protocol offers nothing to replace the working directory · 2026-08-01 · standing
@@ -140,6 +141,7 @@ the repository has moved furthest away from since. Going back to one and adding
 - [`D-VER-1`][D-VER-1] — A version range is data on the statement, not a sentence in it · 2026-07-29 · standing
 - [`D-VER-2`][D-VER-2] — The prose is not bound; it says which half it is · 2026-07-29 · standing
 
+[D-COD-3]: code/cod-3-a-directory-is-read-through-symfony-finder.md
 [D-COD-1]: code/cod-1-one-file-declares-one-class.md
 [D-COD-2]: code/cod-2-the-upkeep-cli-is-a-symfony-console-application.md
 [D-DIS-6]: discovery/dis-6-the-protocol-offers-nothing-to-replace-the-working-directory.md

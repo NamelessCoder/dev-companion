@@ -258,6 +258,12 @@ composer cgl    # rewrite to the guidelines; cgl:ci reports and rewrites nothing
 - One file, one class. A second class in a file is not autoloadable under
   PSR-4, so it works until somebody uses it from anywhere else and then fails
   as a missing class — held by `StructureTest::everyFileDeclaresOneClass`.
+- A directory is read with `symfony/finder`, whatever the depth. `glob()`,
+  `scandir()` and `RecursiveDirectoryIterator` were two idioms for one
+  question, and the deep one cost a dozen lines each time — held by
+  `StructureTest::everyDirectoryIsReadThroughTheFinder` and stated in `D-COD-3`.
+  A directory that may be absent is guarded with `is_dir()`, because Finder
+  throws where `glob()` returned nothing.
 - Every entrypoint is driven by a test that goes through it. `tests/Unit/`
   reaches a class at a time, which is where a command can be held to its rules
   and still be unreachable: what it reads is resolved from where its own file

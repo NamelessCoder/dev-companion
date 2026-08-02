@@ -79,6 +79,33 @@ final class StructureTest extends TestCase
         self::assertSame([], $skipping);
     }
 
+    /**
+     * One question, one way of asking it. A directory listing was `glob()` in
+     * the flat case and a `RecursiveDirectoryIterator` in the deep one, and the
+     * second shape ran to a dozen lines that said what one Finder call says.
+     * Both are `symfony/finder` now (D-COD-3), and a returning `glob()` is the
+     * split coming back rather than a style slip.
+     */
+    #[Test]
+    public function everyDirectoryIsReadThroughTheFinder(): void
+    {
+        $found = [];
+        $files = Finder::create()->files()->in([dirname(__DIR__, 2) . '/src', dirname(__DIR__, 2) . '/bin', dirname(__DIR__)])
+            ->notName('StructureTest.php')->sortByName();
+        foreach ($files as $file) {
+            preg_match_all(
+                '/\b(glob|scandir|opendir|readdir)\s*\(|\bRecursive(?:Directory|Iterator)Iterator\b|\bFilesystemIterator\b/',
+                (string) file_get_contents($file->getPathname()),
+                $matches,
+            );
+            foreach ($matches[0] as $call) {
+                $found[] = $file->getFilename() . ' uses ' . rtrim($call, ' (');
+            }
+        }
+
+        self::assertSame([], $found);
+    }
+
     /** @return array<int, string> */
     private static function testFiles(): array
     {

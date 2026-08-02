@@ -50,3 +50,32 @@ passed nothing should be told.
   `UpkeepCommandTest::everyArgumentOfACommandIsOneTheConsoleBinds` is what
   notices; the fallback is `addArgument()` on each command's definition, which
   is the older API and does not depend on that moment.
+
+## Since then
+
+A feedback asked for a `feedback:record` command here, so that an agent could
+report without "needing to invoke the PHP class directly" —
+`feedback/2026-07-31-183652-the-typo3-cms-mcp-server-provides-a.md`, judged on
+2026-08-02. What it runs into is the half-sentence under **Decided**. Composer
+exports `bin/cli` as no `bin`, so a project that requires this package has no
+such command to call at all. The session that asked was auditing a site package
+in another directory. What reaches it there is `typo3_feedback_record`, and a
+`tools/list` against this checkout on 2026-08-02 still offers it, twenty-third
+of twenty-four. Both it and any command would be gated on the same
+`Channel::isAvailable()` — a standalone checkout — so the command would answer
+only where the tool already answers.
+
+What that session actually hit is one file over in the same batch: none of this
+server's tools were callable in its client at all, which
+`feedback/2026-07-31-185900-during-an-audit-of-the-printworks-3d-site.md` says
+and which is still open. Its two feedback from 18:36 carry no `directory:`
+line, and the stdio entrypoint always supplies one, since it hands `getcwd()`
+to `Instance::discoverFrom()`. So they were written by reaching into this
+checkout rather than by calling the server the project was configured for. A
+session that reaches that far can start `bin/typo3-cms-mcp` instead, which is
+what this one did twenty minutes later — and then every tool answers rather
+than one. A second way in is as undiscoverable as the first was, so it is not
+the lever that report names.
+
+Whether the command is added anyway is not settled here. The todo that judged
+the feedback carries the question.

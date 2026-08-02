@@ -1,7 +1,7 @@
 ---
 id: D-AUD-2
 date: 2026-07-29
-status: standing
+status: corrected
 ---
 
 # D-AUD-2 — Two profiles, because a third one would have been the same set
@@ -41,3 +41,35 @@ contribution surface. The item written from it named three profiles — `core`,
   installation and then has to set `TYPO3_MCP_PROFILE=all` to get the rules back
   — or a deployment has no installation to read at all, which is where a profile
   that leaves out the installation-backed half would earn its name.
+- **Corrected on 2026-08-02:** the rules do arrive, and the **Assumed** about
+  what being wrong costs does not hold. The server was driven over stdio from
+  `/home/benji/projects/site-new` — `E-SITE`, TYPO3 14.3.5 — with the handshake
+  and the calls a client makes there. It derives `project` and offers 20 tools;
+  `typo3_rule_lookup`, `typo3_script_lookup` and `typo3_test_run_guide` are
+  absent. A core-shaped task was answered as core work all the same.
+  `typo3_task_guide`, asked about a `QueryBuilder` bugfix pushed to Gerrit,
+  recognised it as `Patch submission`. It returned the Gerrit workflow prose,
+  four `runTests.sh` checks and the core checklist. Every route the **Assumed**
+  named held: `typo3_commit_message_guide` answered `workflow="core"` with the
+  `Resolves:` and `Releases:` trailers, all five `typo3://core` documents read
+  including `typo3-core-rules` and `typo3-core-scripts`, and
+  `typo3_architecture_lookup` named no omitted tool. What costs more than one
+  environment variable is the answer itself. It routes to
+  `typo3_test_run_guide`, which this client cannot call — twice on the
+  patch-shaped task and six times on a test-shaped one, out of
+  `knowledge/architecture-hints/php.json`, two entries in
+  `knowledge/server-scope.json` and `TaskGuide.php:502`. `Scope::offered()`
+  filters those routes, and `TaskGuide` does not. It reads `Scope::read()` and
+  filters by the audience of the task instead, which is exactly the collision
+  this entry named: the task is core work and the directory is not. `R-SCO-7`
+  says nothing the server hands out points at a tool it does not offer, so this
+  is that requirement failing, and it is now `open` with a todo against it.
+  Nobody has met it in the wild. Ten recorded sessions in `E-SITE` called
+  `typo3_task_guide` eight times, and not one of the eight was core-shaped, so
+  the derivation was right every time it ran. The way back is one variable as
+  promised — `TYPO3_MCP_PROFILE=all` there offers 23 tools and drops the profile
+  sentence from the instructions — and the profile caveat reached all ten
+  sessions, so a client that reads the instructions can find it. What no
+  protocol-level run can show is what an agent does with a route it cannot
+  follow; that needs a session in `E-SITE` given core work. The second half of
+  the **Wrong if**, a deployment with no installation, is untouched by this run.

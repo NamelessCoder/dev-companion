@@ -1,6 +1,6 @@
 ---
 id: R-SCO-7
-status: held
+status: open
 ---
 
 # R-SCO-7 — A client is offered only the half it can use
@@ -21,3 +21,12 @@ worth without keeping the tool that gives it out of the list (2026-07-29).
 **Held by:** `ProfileTest` in full — the derivation, the override, the
 misconfiguration, and that the scope both the tool answer and the resource
 index are built from routes to no omitted tool
+
+**Open on:** the sentence about what the server hands out, which holds for the
+scope and not for `typo3_task_guide`. Under the `project` profile a core-shaped
+task is still answered as core work, and that answer routes to
+`typo3_test_run_guide` — twice on a patch, six times on a test task. `TaskGuide`
+reads `Scope::read()` and filters by the audience of the task, where
+`Scope::offered()` filters by the profile as well. Read in `E-SITE` on
+2026-08-02 and recorded under
+[`D-AUD-2`](../../decisions/audience/aud-2-two-profiles-because-a-third-would-have-been-the-same-set.md).

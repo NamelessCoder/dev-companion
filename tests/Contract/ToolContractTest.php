@@ -38,8 +38,11 @@ final class ToolContractTest extends TestCase
                 array_keys($definition['annotations']),
                 $name . ' is missing annotations'
             );
+            // The tools that reach a host outside this package. Every other
+            // answer is bundled or read from the installation, and a caller
+            // reads that difference off this flag before it calls.
             self::assertSame(
-                $name === 'typo3_documentation_lookup',
+                in_array($name, ['typo3_documentation_lookup', 'typo3_gerrit_lookup'], true),
                 $definition['annotations']['openWorldHint'],
                 $name . ' has the wrong open-world annotation',
             );
@@ -89,7 +92,7 @@ final class ToolContractTest extends TestCase
         }
 
         self::assertSame(
-            ['typo3_documentation_lookup'],
+            ['typo3_documentation_lookup', 'typo3_gerrit_lookup'],
             $declaring,
             'the input-side alternatives this holds are not the ones that exist',
         );

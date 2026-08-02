@@ -183,6 +183,15 @@ name already says what shape the answer has.
   `targetVersion` to read its headings, prose and code examples as text. It
   never falls through to another release, and an unreachable service is
   distinct from a search that answered with no match.
+- `typo3_gerrit_lookup`: answers whether a core patch already exists, from the
+  anonymous review API at `review.typo3.org`. `issue` searches every change
+  whose commit message names a Forge issue — the question every core task asks
+  before it starts — and `change` reads one by its number. It answers with the
+  change number, subject, status, target branch and review URL, and it says
+  when the review server did not answer rather than reporting nothing found. A
+  change pushed as private is invisible to an anonymous read, which the empty
+  answer says. Reading only: voting, uploading and amending stay with the
+  caller's git and the web UI.
 - `typo3_component_lookup`: looks up backend UI components by name or topic and
   returns markup, classes, the custom-property contract, and every source used.
   When `targetVersion` is the active installation, the installed backend CSS

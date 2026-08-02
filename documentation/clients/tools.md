@@ -627,6 +627,60 @@ The call carries exactly one of these sets of arguments: `queries` — or
     time, and the same call may answer the next.
   - `reason` *(string, required)*
 
+## `typo3_gerrit_lookup`
+
+Find out whether a TYPO3 core patch already exists, from the review server at
+review.typo3.org. Pass issue with a Forge issue number to search the commit
+messages of every change for it — the question "has somebody already fixed
+this" — or change with a change number to read one. Answers with the change
+number, subject, status, target branch and review URL. A call carries issue or
+change, never both. This reaches the network, and it reads: reviewing, voting
+and uploading stay yours.
+
+`readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: true`
+
+**Answered**, once: [tool-answers/typo3_gerrit_lookup.md](tool-answers/typo3_gerrit_lookup.md).
+
+**Takes**
+
+- `issue` *(string)* — Forge issue number, with or without the leading #,
+  for example "105403". Searches every change whose commit message names it,
+  which is where Resolves: and Related: put it. A call carries issue or change,
+  never both.
+- `change` *(string)* — Gerrit change number, the digits a review URL ends
+  with, for example "89011". A call carries issue or change, never both.
+- `limit` *(integer)*
+
+The call carries exactly one of these sets of arguments: `issue` — or
+`change`.
+
+**Answers with**
+
+- `status` *(string, required)* — One of `answered`, `empty`,
+  `unavailable`.
+- `source` *(string, required)* — The review server the answer came from.
+- `query` *(string, required)* — The Gerrit query this was answered with,
+  so the same question can be asked again by hand.
+- `changes` *(array of object, required)* — The changes that matched,
+  newest activity first.
+  - `number` *(integer)* — Change number, the digits its review URL ends
+    with.
+  - `subject` *(string)* — The commit subject.
+  - `status` *(string)* — NEW while it is open, MERGED once it landed,
+    ABANDONED when it was given up.
+  - `branch` *(string)* — The branch the change targets.
+  - `project` *(string)* — The Gerrit project it was pushed to.
+  - `updated` *(string)* — When the change last moved.
+  - `url` *(string)* — Where a person reads the review.
+- `unavailable` *(object or null, required)* — Why nothing was answered,
+  where status says unavailable. Null otherwise.
+  - `cause` *(string, required)* — One of `source-not-answering`,
+    `source-not-parseable`. source-not-answering: review.typo3.org did not
+    answer this time, and the same call may answer the next.
+    source-not-parseable: something answered and it was not the review API,
+    which is what a proxy or a captive portal looks like from here.
+  - `reason` *(string, required)*
+
 ## `typo3_component_lookup`
 
 Look up TYPO3 backend UI components by name or topic. Where the target is the

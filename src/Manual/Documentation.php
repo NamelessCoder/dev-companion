@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Typo3CmsMcp\Manual;
 
+use Typo3CmsMcp\Http\Fetch;
 use Typo3CmsMcp\Search\TermSearch;
-use Typo3CmsMcp\Server\Factory;
 
 /**
  * Searches and reads the official, versioned TYPO3 manuals.
@@ -75,7 +75,13 @@ final class Documentation
     private const UNDILUTED_WORDS = 3;
 
     /** @param \Closure(string): ?string|null $fetch */
-    public function __construct(private readonly ?\Closure $fetch = null) {}
+    private readonly Fetch $reader;
+
+    /** @param (\Closure(string): ?string)|null $fetch */
+    public function __construct(?\Closure $fetch = null)
+    {
+        $this->reader = new Fetch($fetch);
+    }
 
     /**
      * @param list<string> $queries
@@ -460,27 +466,7 @@ final class Documentation
 
     private function get(string $url): ?string
     {
-        if ($this->fetch !== null) {
-            return ($this->fetch)($url);
-        }
-
-        $handle = curl_init($url);
-        if ($handle === false) {
-            return null;
-        }
-        curl_setopt_array($handle, [
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_MAXREDIRS => 3,
-            CURLOPT_CONNECTTIMEOUT => 3,
-            CURLOPT_TIMEOUT => 8,
-            CURLOPT_USERAGENT => 'typo3-cms-mcp/' . Factory::SERVER_VERSION,
-        ]);
-        $body = curl_exec($handle);
-        $status = curl_getinfo($handle, CURLINFO_RESPONSE_CODE);
-        curl_close($handle);
-
-        return is_string($body) && $status >= 200 && $status < 300 ? $body : null;
+        return $this->reader->get($url);
     }
 
     /**

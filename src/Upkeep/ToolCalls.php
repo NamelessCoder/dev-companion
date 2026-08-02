@@ -103,6 +103,13 @@ final class ToolCalls
             // The second call is the first one's answer handed back: that is
             // the two-step the tool documents, and a URL invented here would
             // illustrate a flow no caller has.
+            'gerrit: has this issue a patch already' => ['typo3_gerrit_lookup', [
+                'issue' => '110348',
+                'limit' => 3,
+            ]],
+            'gerrit: one change by number' => ['typo3_gerrit_lookup', [
+                'change' => '89011',
+            ]],
             'documentation: search' => ['typo3_documentation_lookup', [
                 'queries' => ['page title event', 'page title provider'],
                 'targetVersion' => '14.3',

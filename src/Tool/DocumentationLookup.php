@@ -10,8 +10,8 @@ use Typo3CmsMcp\Result\Schema;
 use Typo3CmsMcp\Result\ToolResult;
 
 /**
- * The official, versioned TYPO3 manuals at docs.typo3.org — the one tool that
- * reaches outside this package.
+ * The official, versioned TYPO3 manuals at docs.typo3.org — one of the two
+ * tools that reach a host outside this package, beside `typo3_gerrit_lookup`.
  */
 final class DocumentationLookup extends ReadOnlyTool
 {

@@ -22,6 +22,15 @@
       "scope": "core"
     },
     {
+      "topic": "Whether a patch for an issue already exists on the review server",
+      "depth": "The anonymous Gerrit REST API, read live: change number, subject, status, target branch and review URL. A change pushed as private is not visible to it.",
+      "tools": [
+        "typo3_gerrit_lookup"
+      ],
+      "source": "https://review.typo3.org (network)",
+      "scope": "core"
+    },
+    {
       "topic": "Commit messages",
       "depth": "Rules plus a working draft and check, including 72-character body wrapping. The subject and body conventions are also served without the core workflow, for a commit in a repository that has no Forge issue and no release branches: workflow=\"project\". The same guide is exposed as the user-invoked prompt commit_message.",
       "tools": [
@@ -186,9 +195,9 @@
       "instead": "Call typo3_catalog_scope to see which source answered, then inspect the installed backend CSS or the target checkout when the class is outside the curated index."
     },
     {
-      "topic": "Gerrit server state: review status, patch sets, votes, CI results",
-      "why": "The server talks to nothing over the network.",
-      "instead": "Use the Gerrit web UI or git. The local side of the workflow — pushing, amending, backporting — is covered by typo3://core/typo3-gerrit-workflow."
+      "topic": "Gerrit review state beyond what an anonymous read answers: votes, CI results, patch-set diffs, and anything a private change carries",
+      "why": "The review API is read without a credential, so what a reviewer sees and what a private change contains are outside it. Nothing here writes to Gerrit at all.",
+      "instead": "typo3_gerrit_lookup answers whether a change exists, what it is called, which branch it targets and whether it is still open. Votes, patch sets and CI belong in the web UI; pushing and amending are git, and typo3://core/typo3-gerrit-workflow carries those."
     },
     {
       "topic": "What someone else's extension does: the API, the options and the documentation of a package the core does not ship",

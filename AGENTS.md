@@ -25,6 +25,8 @@ src/Installation/Typo3Cli.php  # runs that installation's console, via DDEV wher
 src/Installation/Typo3Runtime.php  # boots it in a subprocess and asks its container
 src/Installation/probe.php  # what runs over there; never included here
 src/Manual/        # the third source: the public index and pages of the versioned TYPO3 manuals
+src/Contribution/  # the fourth source: the services the core's own process runs through, read over their APIs
+src/Http/Fetch.php # the one way this server reads a host outside itself: the timeouts, the redirect limit and the agent, once
 src/Search/        # the lexical matching every prose and label lookup goes through
 src/Feedback/      # the feedback channel: what `typo3_feedback_record` writes and `bin/cli feedback` reads
 src/Sdk/           # the adapters onto mcp/sdk: tool dispatch and typo3://core resources
@@ -60,9 +62,11 @@ vendor/            # Composer dependencies (mcp/sdk); gitignored
 
 Every class below `src/` sits in the group it belongs to, and a new one that
 fits none of them is a group nobody has named yet rather than a file at the
-root. The three an answer can come from are `Knowledge/`, what this package
-ships; `Installation/`, the TYPO3 the caller is standing in; and `Manual/`,
-which is `docs.typo3.org` and reaches outside this process. `Tool/` is what a
+root. The four an answer can come from are `Knowledge/`, what this package ships;
+`Installation/`, the TYPO3 the caller is standing in; `Manual/`, which is
+`docs.typo3.org`; and `Contribution/`, the services the core's own process runs
+through. The last two reach outside this process, which is what their tools'
+`openWorldHint` says and what a caller reads before it calls. `Tool/` is what a
 client can call, `Result/` is what it hands back, `Server/` is how it is started
 at all, and `Upkeep/` is not part of the server. Only `Paths` sits loose,
 because it is the one thing the server and the upkeep both stand on.

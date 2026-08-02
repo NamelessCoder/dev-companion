@@ -9,7 +9,7 @@ one is added.
 
 - [`D-ANS-4`][D-ANS-4] — The instruction budget is 2048 characters, on one client's evidence · 2026-07-31 · standing
 - [`D-ANS-2`][D-ANS-2] — Three numbers now decide what a lookup answers, and they were measured, not reasoned · 2026-07-30 · tested
-- [`D-ANS-3`][D-ANS-3] — Retrieval stays lexical and runtime inspection stays narrow · 2026-07-30 · standing
+- [`D-ANS-3`][D-ANS-3] — Retrieval stays lexical and runtime inspection stays narrow · 2026-07-30 · tested
 - [`D-ANS-1`][D-ANS-1] — The unanswered result keeps its shape and gains a reason · 2026-07-29 · standing
 
 [D-ANS-4]: ans-4-the-instruction-budget-is-2048-characters-on-one-clients-evidence.md

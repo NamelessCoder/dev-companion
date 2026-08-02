@@ -15,7 +15,7 @@ when it is added.
 - [`R-SCO-4`][R-SCO-4] — The backend CSS conventions are named as the backend's · held
 - [`R-SCO-5`][R-SCO-5] — Every tool applies the same outside-the-core check · held
 - [`R-SCO-6`][R-SCO-6] — Every topic says what it is worth outside the core · held
-- [`R-SCO-7`][R-SCO-7] — A client is offered only the half it can use · held
+- [`R-SCO-7`][R-SCO-7] — A client is offered only the half it can use · **open**
 - [`R-SCO-8`][R-SCO-8] — What the scope excludes is not what the server answers · held
 - [`R-SCO-9`][R-SCO-9] — Individual tools can be excluded after the profile · held
 

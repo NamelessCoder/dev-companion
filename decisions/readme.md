@@ -114,14 +114,14 @@ the repository has moved furthest away from since. Going back to one and adding
 - [`D-FBK-4`][D-FBK-4] — The model is asked, because nothing else here can say it · 2026-07-31 · standing
 - [`D-VER-4`][D-VER-4] — A supported range is a property of the package, not of the checkout · 2026-07-31 · tested
 - [`D-ANS-2`][D-ANS-2] — Three numbers now decide what a lookup answers, and they were measured, not reasoned · 2026-07-30 · tested
-- [`D-ANS-3`][D-ANS-3] — Retrieval stays lexical and runtime inspection stays narrow · 2026-07-30 · standing
+- [`D-ANS-3`][D-ANS-3] — Retrieval stays lexical and runtime inspection stays narrow · 2026-07-30 · tested
 - [`D-CAT-3`][D-CAT-3] — The component index is curated; its contract comes from the installation · 2026-07-30 · standing
 - [`D-KNW-3`][D-KNW-3] — `provenance` is not the third spelling of `binding`, and stays · 2026-07-30 · tested
 - [`D-KNW-4`][D-KNW-4] — Package knowledge needs a producer before it needs discovery · 2026-07-30 · standing
 - [`D-VER-3`][D-VER-3] — The Fluid engine gets no version axis of its own, because the core pins it · 2026-07-30 · tested
 - [`D-ANS-1`][D-ANS-1] — The unanswered result keeps its shape and gains a reason · 2026-07-29 · standing
-- [`D-AUD-1`][D-AUD-1] — Three audiences, and the positioning that has not caught up · 2026-07-29 · standing
-- [`D-AUD-2`][D-AUD-2] — Two profiles, because a third one would have been the same set · 2026-07-29 · standing
+- [`D-AUD-1`][D-AUD-1] — Three audiences, and the positioning that has not caught up · 2026-07-29 · tested
+- [`D-AUD-2`][D-AUD-2] — Two profiles, because a third one would have been the same set · 2026-07-29 · corrected
 - [`D-CAT-1`][D-CAT-1] — A catalog entry is bound whole, and the binding is derived · 2026-07-29 · standing
 - [`D-CAT-2`][D-CAT-2] — The index of worked examples is curated, and existence is all that is checked · 2026-07-29 · corrected
 - [`D-DIS-1`][D-DIS-1] — The root package counts as an installed package · 2026-07-29 · tested

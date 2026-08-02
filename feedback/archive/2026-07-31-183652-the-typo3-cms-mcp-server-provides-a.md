@@ -1,7 +1,8 @@
 ---
 date: 2026-07-31T18:36:52+00:00
 category: idea
-status: open
+status: closed
+closed: 2026-08-02
 model: opencode/ling-3.0-flash-free
 tool: typo3cmsmcp
 ---

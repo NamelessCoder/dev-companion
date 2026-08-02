@@ -77,5 +77,8 @@ what this one did twenty minutes later — and then every tool answers rather
 than one. A second way in is as undiscoverable as the first was, so it is not
 the lever that report names.
 
-Whether the command is added anyway is not settled here. The todo that judged
-the feedback carries the question.
+The question went up on 2026-08-02 and came back no: the command is not added,
+because the feedback rests on a premise this checkout does not have. Nothing
+here asks an agent to invoke a PHP class, and the second way in would be as
+undiscoverable as the first. The feedback is archived by the commit that writes
+this paragraph.

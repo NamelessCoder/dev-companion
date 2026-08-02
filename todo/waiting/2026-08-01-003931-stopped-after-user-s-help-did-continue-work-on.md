@@ -2,8 +2,6 @@
 
 **Serves:** feedback/2026-08-01-003931-stopped-after-user-s-help-did-continue-work-on.md
 **Priority:** low
-**Branch:** todo/stopped-after-user-s-help-did-continue-work-on
-**Claimed:** 2026-08-02
 **Waiting on:** should this server say anything about when a session stops and
     hands control back to its user, or is that categorically the client
     harness's and the project's own conventions? It has never taken that shape:

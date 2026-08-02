@@ -9,7 +9,7 @@ one is added.
 
 - [`D-KNW-3`][D-KNW-3] — `provenance` is not the third spelling of `binding`, and stays · 2026-07-30 · tested
 - [`D-KNW-4`][D-KNW-4] — Package knowledge needs a producer before it needs discovery · 2026-07-30 · standing
-- [`D-KNW-1`][D-KNW-1] — Sitepackage work is answered from the General category · 2026-07-29 · standing
+- [`D-KNW-1`][D-KNW-1] — Sitepackage work is answered from the General category · 2026-07-29 · corrected
 - [`D-KNW-2`][D-KNW-2] — A hint about typo3/testing-framework is verified against tags, not against the checkouts · 2026-07-29 · corrected
 
 [D-KNW-3]: knw-3-provenance-is-not-the-third-spelling-of-binding.md

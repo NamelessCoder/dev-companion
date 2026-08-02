@@ -130,7 +130,7 @@ the repository has moved furthest away from since. Going back to one and adding
 - [`D-DIS-4`][D-DIS-4] — The version comes from the core package, not from the console · 2026-07-29 · tested
 - [`D-GUI-1`][D-GUI-1] — A missing release target becomes a placeholder, not `main` · 2026-07-29 · standing
 - [`D-GUI-2`][D-GUI-2] — The commit workflow is asked for, not inferred · 2026-07-29 · standing
-- [`D-KNW-1`][D-KNW-1] — Sitepackage work is answered from the General category · 2026-07-29 · standing
+- [`D-KNW-1`][D-KNW-1] — Sitepackage work is answered from the General category · 2026-07-29 · corrected
 - [`D-KNW-2`][D-KNW-2] — A hint about typo3/testing-framework is verified against tags, not against the checkouts · 2026-07-29 · corrected
 - [`D-SCO-1`][D-SCO-1] — Outside the core the core test guide declines rather than adapts · 2026-07-29 · corrected
 - [`D-SCO-2`][D-SCO-2] — A core-only intent asks for evidence, not for silence · 2026-07-29 · standing

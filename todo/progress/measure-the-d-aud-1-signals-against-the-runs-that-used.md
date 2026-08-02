@@ -1,6 +1,8 @@
 # Measure the `D-AUD-1` signals against the runs that used them
 
 **Serves:** decisions/
+**Branch:** todo/measure-the-d-aud-1-signals-against-the-runs-that-used
+**Claimed:** 2026-08-02
 
 Three audiences are combined from several signals, and the combining is
 unnecessary complexity if one signal identifies the audience reliably on its own

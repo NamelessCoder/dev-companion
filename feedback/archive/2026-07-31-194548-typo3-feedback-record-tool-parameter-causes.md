@@ -1,7 +1,8 @@
 ---
 date: 2026-07-31T19:45:48+00:00
 category: bug
-status: open
+status: closed
+closed: 2026-08-02
 model: opencode/mimo-v2.5-free
 directory: /home/benji/projects/site-new
 ---

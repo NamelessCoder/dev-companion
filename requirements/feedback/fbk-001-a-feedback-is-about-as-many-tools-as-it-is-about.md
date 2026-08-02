@@ -11,6 +11,11 @@ The names survive recording as names, are listed as a list, and the backlog can
 be filtered by one of them — the obvious question to ask a backlog is what is
 open about one tool.
 
+How they arrive is one string, separated by commas: the declared argument is a
+plain `string` since `D-ANS-017`, and a list on the wire is refused. That is
+about what a client can compose, not about what a feedback may say, and this
+holds either way.
+
 ## From
 
 Four tool names recorded as one unsearchable word, because everything that was
@@ -19,5 +24,6 @@ not `[a-z0-9_]` was stripped from the field (2026-07-29).
 ## Held by
 
 - `FeedbackTest::severalToolsStaySeveralToolsRatherThanOneWord`
-- `FeedbackTest::aListOfToolsIsAcceptedAsOne`
+- `FeedbackTest::theRecorderStillTakesAListTheSchemaNoLongerDeclares`
 - `FeedbackTest::theListCanBeRestrictedToOneTool`
+- `StdioServerTest::severalToolNamesTravelInOneStringAndAListIsRefusedWithTheTypeItWanted`

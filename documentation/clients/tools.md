@@ -1895,9 +1895,9 @@ when the recording does.
   `tool-gap`, `bug`, `idea`. missing-knowledge: the knowledge base lacks the
   answer. wrong-answer: the answer was incorrect. tool-gap: no tool covers the
   need. bug: the server misbehaved. idea: anything else.
-- `tool` *(string or array)* — The tool the observation is about, for
-  example typo3_component_lookup, or the skill it activated, for example
-  typo3-extension-conformance. Several may be named, as a list or separated by
+- `tool` *(string)* — The tool the observation is about, for example
+  typo3_component_lookup, or the skill it activated, for example
+  typo3-extension-conformance. Several are named in one string, separated by
   commas.
 - `query` *(string)* — The arguments that produced the unsatisfying result,
   or the task text where a whole session is what produced it. This is what lets

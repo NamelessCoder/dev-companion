@@ -554,8 +554,20 @@ final class FeedbackTest extends TestCase
         self::assertSame(['typo3_label_lookup', 'typo3_icon_lookup'], $feedback['tools']);
     }
 
+    /**
+     * The recorder still takes a list, and the schema no longer offers one.
+     *
+     * `tool` was declared `["string", "array"]` until `D-ANS-017`, and this case
+     * is what covered the second branch. It is below the wire — a client sending
+     * an array is now refused by the validator before `record()` is reached, and
+     * `StdioServerTest::severalToolNamesTravelInOneStringAndAListIsRefusedWithTheTypeItWanted`
+     * is where that is held. What is left here is the tolerance itself, for a
+     * caller standing in this package: a list that reached the recorder would
+     * otherwise be dropped without a word, which is the one failure the feedback
+     * behind that decision reported.
+     */
     #[Test]
-    public function aListOfToolsIsAcceptedAsOne(): void
+    public function theRecorderStillTakesAListTheSchemaNoLongerDeclares(): void
     {
         $file = Channel::record([
             'observation' => self::MARKER . ' recorded with a list',

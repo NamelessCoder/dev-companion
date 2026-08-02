@@ -6,6 +6,7 @@ namespace Typo3CmsMcp\Tests\Smoke;
 
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Finder\Finder;
 use Typo3CmsMcp\Installation\Instance;
 use Typo3CmsMcp\Knowledge\Coverage;
 use Typo3CmsMcp\Paths;
@@ -21,6 +22,15 @@ final class StdioServerTest extends TestCase
     /** The newest revision the bundled SDK speaks. */
     private const PROTOCOL_VERSION = '2025-11-25';
 
+    /**
+     * What a feedback recorded from here says about itself, so the file it
+     * became can be found again. The server writes into its own checkout
+     * whatever directory the subprocess was started in, which is the whole
+     * point of `Paths::root()` — so a case that records leaves a real file in
+     * `feedback/`, and this is what tearDown removes it by.
+     */
+    private const MARKER = 'phpunit-stdio-fixture';
+
     private ?string $temporaryRoot = null;
 
     protected function tearDown(): void
@@ -29,6 +39,12 @@ final class StdioServerTest extends TestCase
             Directory::remove($this->temporaryRoot);
         }
         $this->temporaryRoot = null;
+
+        if (is_dir(Paths::feedback())) {
+            foreach (Finder::create()->files()->in(Paths::feedback())->depth(0)->name('*.md')->contains(self::MARKER) as $file) {
+                unlink($file->getPathname());
+            }
+        }
     }
 
     #[Test]
@@ -175,6 +191,50 @@ final class StdioServerTest extends TestCase
 
         self::assertSame(-32602, $response['error']['code']);
         self::assertStringContainsString('query', $response['error']['message']);
+    }
+
+    /**
+     * The one argument that ever declared two types, over the wire that decides
+     * whether a client can compose the call at all.
+     *
+     * `tool` was `["string", "array"]` — the only union in any input schema
+     * here — and `opencode/mimo-v2.5-free`, the one model that has recorded
+     * feedback and never once sent the argument, reported it as a call it could
+     * not produce. It is a plain string now, the several travel separated by
+     * commas, and the list a client sends instead is refused with the type it
+     * should have used. `D-ANS-017` says what would show the union was not what
+     * stopped that client.
+     *
+     * Both halves belong over the wire, because neither is visible below it:
+     * `FeedbackTest` calls `Channel::record` directly, the recorder still takes
+     * a list, and an array starting to be refused would have left every test
+     * there green.
+     */
+    #[Test]
+    public function severalToolNamesTravelInOneStringAndAListIsRefusedWithTheTypeItWanted(): void
+    {
+        $answers = $this->session([
+            $this->request(2, 'tools/call', ['name' => 'typo3_feedback_record', 'arguments' => [
+                'observation' => self::MARKER . ' both lookups went quiet',
+                'model' => 'phpunit',
+                'tool' => 'typo3_label_lookup, typo3_icon_lookup',
+            ]]),
+            $this->request(3, 'tools/call', ['name' => 'typo3_feedback_record', 'arguments' => [
+                'observation' => self::MARKER . ' recorded with a list',
+                'model' => 'phpunit',
+                'tool' => ['typo3_label_lookup', 'typo3_icon_lookup'],
+            ]]),
+        ]);
+
+        $recorded = (string) file_get_contents(
+            Paths::root() . '/' . $answers[2]['result']['structuredContent']['file']
+        );
+        self::assertStringContainsString('tool: typo3_label_lookup, typo3_icon_lookup', $recorded);
+
+        self::assertSame(-32602, $answers[3]['error']['code'], 'the schema still declares more than one type');
+        self::assertStringContainsString('/tool', $answers[3]['error']['message']);
+        self::assertStringContainsString('string', $answers[3]['error']['message']);
+        self::assertStringContainsString('array', $answers[3]['error']['message']);
     }
 
     /**

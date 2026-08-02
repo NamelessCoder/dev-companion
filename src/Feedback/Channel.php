@@ -616,9 +616,12 @@ final class Channel
      * one unsearchable word, which is what a backlog is least able to afford:
      * the obvious thing to want from the list is every feedback about one tool.
      *
-     * A list is accepted as a list, and a string is split on what separates
-     * names in one — a comma or a space — rather than having the separator
-     * deleted.
+     * A string is split on what separates names in one — a comma or a space —
+     * rather than having the separator deleted, and that is the form the schema
+     * declares. A list is still taken as a list for a caller standing in this
+     * package, but no longer for one on the wire: `D-ANS-017` traded the
+     * declared union away, and an array reaching `record()` from outside is
+     * refused by the validator before this is called.
      *
      * @return array<int, string>
      */

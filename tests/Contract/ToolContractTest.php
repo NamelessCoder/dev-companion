@@ -95,6 +95,37 @@ final class ToolContractTest extends TestCase
         );
     }
 
+    /**
+     * No argument declares more than one type.
+     *
+     * An input schema is a grammar a client generates against, and the surface's
+     * only union — `typo3_feedback_record` `/tool`, `["string", "array"]` — was
+     * the only argument a client has ever failed to compose a call for at all.
+     * It is a plain string since `D-ANS-017`, and this is what says the shape
+     * did not come back somewhere else: a union declared in a second tool is
+     * also the third **Wrong if** of that entry, so a session that means to try
+     * one deletes this case and says so.
+     *
+     * Output schemas are not held here. Every union in them is `[X, "null"]`,
+     * which is a nullable field rather than an alternative between two shapes a
+     * caller has to produce.
+     */
+    #[Test]
+    public function noArgumentDeclaresMoreThanOneType(): void
+    {
+        $unions = [];
+        foreach (Registry::definitions() as $definition) {
+            foreach ($definition['inputSchema']['properties'] ?? [] as $argument => $schema) {
+                if (is_array($schema['type'] ?? null)) {
+                    $unions[] = $definition['name'] . ' /' . $argument
+                        . ' => [' . implode(', ', $schema['type']) . ']';
+                }
+            }
+        }
+
+        self::assertSame([], $unions, 'an argument a client has to produce declares two types');
+    }
+
     #[Test]
     public function onlyTheFeedbackToolWrites(): void
     {

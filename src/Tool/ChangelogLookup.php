@@ -37,6 +37,7 @@ final class ChangelogLookup extends ReadOnlyTool
                 'query' => ['type' => 'string', 'description' => 'Words the entry has to carry, matched against its title. Omit to list a version or a type as a whole.'],
                 'type' => ['type' => 'string', 'enum' => ['breaking', 'deprecation', 'feature', 'important'], 'description' => 'Restrict to one kind of change. Breaking and deprecation are what affects existing code.'],
                 'version' => ['type' => 'string', 'description' => 'Restrict to a version, by prefix: "14" covers 14.0 through 14.3.x, "13.4" covers 13.4 and 13.4.x.'],
+                'tag' => ['type' => 'string', 'description' => 'Restrict to entries carrying this index tag: "ext:form" for the system extension a change is in, "FullyScanned" or "NotScanned" for what the Extension Scanner has a matcher for, "PHP-API", "TCA", "Backend", "Frontend" for the surface. This is what a sweep is bounded by where words are not: every entry of a version and type is read for its tags. The tags name the system extension the change is in — the changelog says nothing about which third-party extension a change affects, so an extension key of your own matches none of them.'],
                 'limit' => ['type' => 'integer', 'minimum' => 1, 'maximum' => 50, 'default' => 20, 'description' => 'Maximum number of entries.'],
             ],
         ];
@@ -46,7 +47,8 @@ final class ChangelogLookup extends ReadOnlyTool
     {
         return Schema::installationAnswer([
             'query' => Schema::string(),
-            'matchCount' => Schema::integer('Entries carrying every word of the query, before the limit.'),
+            'matchCount' => Schema::integer('Entries carrying every word of the query and the tag, before the limit.'),
+            'tags' => Schema::listOf(Schema::string(), 'Every index tag the entries of this version and type carry, with the ones already filtered by among them. Returned where a tag was asked for, so a tag that matched nothing can be replaced by one that exists.'),
             'entries' => Schema::listOf(Schema::object([
                 'type' => ['type' => 'string', 'enum' => ['Breaking', 'Deprecation', 'Feature', 'Important']],
                 'version' => Schema::string('The version directory it was released in.'),
@@ -65,6 +67,7 @@ final class ChangelogLookup extends ReadOnlyTool
         $query = trim((string) ($args['query'] ?? ''));
         $type = trim((string) ($args['type'] ?? ''));
         $version = trim((string) ($args['version'] ?? ''));
+        $tag = trim((string) ($args['tag'] ?? ''));
         $limit = (int) ($args['limit'] ?? 20);
 
         if (Changelog::directory() === null) {
@@ -76,6 +79,30 @@ final class ChangelogLookup extends ReadOnlyTool
 
         $terms = LabelSearch::terms($query);
         $matching = LabelSearch::carryingEvery(Changelog::entries($type, $version), $terms);
+
+        // The tags are inside the file, so narrowing by one costs a read of
+        // every entry that survived the type and the version — 23 ms for the
+        // deprecations of one major, six hundred for the whole changelog. That
+        // is the sweep this exists for, and it is why the filter is a field of
+        // its own rather than more words in the query.
+        $tags = [];
+        if ($tag !== '') {
+            $carrying = [];
+            foreach ($matching as $entry) {
+                $carried = Changelog::read($entry)['tags'];
+                foreach ($carried as $carriedTag) {
+                    $tags[$carriedTag] = true;
+                }
+                foreach ($carried as $carriedTag) {
+                    if (strcasecmp($carriedTag, $tag) === 0) {
+                        $carrying[] = $entry;
+                        break;
+                    }
+                }
+            }
+            $matching = $carrying;
+        }
+        ksort($tags);
         usort($matching, static fn(array $a, array $b): int => version_compare($b['version'], $a['version'])
             ?: strcmp($a['key'], $b['key']));
 
@@ -96,9 +123,15 @@ final class ChangelogLookup extends ReadOnlyTool
         $versions = Changelog::versions();
         if ($entries === []) {
             $lines = [sprintf(
-                'No changelog entry in this installation %s.',
+                'No changelog entry in this installation %s%s.',
                 $terms === [] ? 'matched those filters' : 'carries all of ' . LabelSearch::quoted($terms),
+                $tag === '' ? '' : sprintf(' and the tag "%s"', $tag),
             )];
+            if ($tag !== '') {
+                $lines[] = $tags === []
+                    ? 'Nothing narrowed by that version and type carries any tag at all.'
+                    : 'The tags those entries carry: ' . implode(', ', array_keys($tags)) . '.';
+            }
             $reached = array_values(array_filter(
                 LabelSearch::perTermCounts(Changelog::entries($type, $version), $terms),
                 static fn(array $term): bool => $term['matchCount'] > 0,
@@ -118,6 +151,7 @@ final class ChangelogLookup extends ReadOnlyTool
             return ToolResult::create(implode("\n", $lines), [
                 'query' => $query,
                 'matchCount' => 0,
+                'tags' => array_keys($tags),
                 'entries' => [],
                 'versions' => $versions,
                 'answeredBy' => 'packages',
@@ -131,6 +165,15 @@ final class ChangelogLookup extends ReadOnlyTool
             $query === '' ? '' : sprintf(' carrying %s', LabelSearch::quoted($terms)),
             count($matching) > count($entries) ? sprintf(' — showing the first %d', count($entries)) : '',
         )];
+        if ($tag !== '') {
+            $lines[0] = sprintf(
+                '%d of the %d entries narrowed by version and type are tagged "%s"%s:',
+                count($matching),
+                count(Changelog::entries($type, $version)),
+                $tag,
+                count($matching) > count($entries) ? sprintf(' — showing the first %d', count($entries)) : '',
+            );
+        }
         foreach ($entries as $entry) {
             $lines[] = sprintf('- %s %s: %s (#%s)', $entry['version'], $entry['type'], $entry['title'], $entry['issue']);
             $lines[] = '  ' . $entry['file'] . ($entry['tags'] === [] ? '' : ' — ' . implode(', ', $entry['tags']));
@@ -143,6 +186,7 @@ final class ChangelogLookup extends ReadOnlyTool
         return ToolResult::create(implode("\n", $lines), [
             'query' => $query,
             'matchCount' => count($matching),
+            'tags' => array_keys($tags),
             'entries' => $entries,
             'versions' => $versions,
             'answeredBy' => 'packages',

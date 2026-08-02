@@ -121,7 +121,10 @@ name already says what shape the answer has.
   ships — one entry per breaking change, deprecation, feature and important
   feedback, by words, type and version. Answers what a release changed rather than
   how to write such an entry, and names the versions that installation covers so
-  a gap is visible. Nothing is bundled: it grows with a Composer update.
+  a gap is visible. A sweep that cannot be phrased is bounded by `tag` instead —
+  `FullyScanned` for what the Extension Scanner has a matcher for, `ext:form`
+  for the system extension a change is in — and a tag nothing carries comes back
+  with the ones that exist. Nothing is bundled: it grows with a Composer update.
 - `typo3_project_scope`: describes the project around the discovered
   installation — its TYPO3 and PHP constraints, the extensions that are its own,
   the sites it configures with the site sets they depend on, and the commands it

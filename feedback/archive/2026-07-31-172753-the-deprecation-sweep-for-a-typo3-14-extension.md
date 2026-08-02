@@ -1,7 +1,8 @@
 ---
 date: 2026-07-31T17:27:53+00:00
 category: tool-gap
-status: open
+status: closed
+closed: 2026-08-02
 tool: typo3_changelog_lookup
 directory: /home/benji/projects/bootstrap_package
 ---

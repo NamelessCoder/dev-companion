@@ -100,6 +100,7 @@ final class ToolCalls
             'schema: one table' => ['typo3_schema_lookup', ['table' => 'tt_content']],
             'schema: every table' => ['typo3_schema_lookup', []],
             'changelog: hit' => ['typo3_changelog_lookup', ['query' => 'ext_tables.php']],
+            'changelog: swept by tag' => ['typo3_changelog_lookup', ['type' => 'deprecation', 'tag' => 'FullyScanned']],
             'changelog: miss' => ['typo3_changelog_lookup', ['query' => 'quantumflux']],
             'project' => ['typo3_project_scope', []],
             'extension' => ['typo3_extension_scope', ['extension' => 'backend']],

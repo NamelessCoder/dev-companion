@@ -1278,13 +1278,25 @@ version.
   what affects existing code.
 - `version` *(string)* — Restrict to a version, by prefix: "14" covers 14.0
   through 14.3.x, "13.4" covers 13.4 and 13.4.x.
+- `tag` *(string)* — Restrict to entries carrying this index tag:
+  "ext:form" for the system extension a change is in, "FullyScanned" or
+  "NotScanned" for what the Extension Scanner has a matcher for, "PHP-API",
+  "TCA", "Backend", "Frontend" for the surface. This is what a sweep is bounded
+  by where words are not: every entry of a version and type is read for its
+  tags. The tags name the system extension the change is in — the changelog
+  says nothing about which third-party extension a change affects, so an
+  extension key of your own matches none of them.
 - `limit` *(integer)* — Maximum number of entries.
 
 **Answers with**
 
 - `query` *(string, required)*
-- `matchCount` *(integer)* — Entries carrying every word of the query,
-  before the limit.
+- `matchCount` *(integer)* — Entries carrying every word of the query and
+  the tag, before the limit.
+- `tags` *(array of string)* — Every index tag the entries of this version
+  and type carry, with the ones already filtered by among them. Returned where
+  a tag was asked for, so a tag that matched nothing can be replaced by one
+  that exists.
 - `entries` *(array of object)*
   - `type` *(string, required)* — One of `Breaking`, `Deprecation`,
     `Feature`, `Important`.

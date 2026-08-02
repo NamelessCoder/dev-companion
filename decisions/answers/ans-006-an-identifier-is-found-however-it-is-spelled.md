@@ -57,3 +57,23 @@ thing reached neither the file name nor the words derived from it.
 ## Covered by
 
 - `PackageSourcesTest::anIdentifierReachesTheEntryTitledInWords`
+
+## Since then
+
+The other half of what those two feedback asked for is a sweep, and it is a
+filter rather than a phrasing: `typo3_changelog_lookup` takes a `tag` now.
+`FullyScanned` says which deprecations the Extension Scanner has a matcher for,
+`ext:form` which system extension a change is in, and 34 of the 75 deprecations
+of TYPO3 14 carry the first — a number no wording reaches, because the tags are
+inside the files rather than in the names the search reads. That is why it is a
+field: the filter reads the entries the version and the type narrowed to, 23 ms
+for one major's deprecations against 600 for the whole changelog.
+
+What the corpus does not have is what
+`feedback/2026-07-31-172753-…` asked for outright: an extension key of the
+caller's own. The tags name the system extension a change is **in**, never the
+package it affects, so `bootstrap_package` matches none of them and cannot —
+and a miss says which tags exist rather than leaving that to be guessed. The
+feedback is archived on that reading: the enumeration it wanted has existed all
+along by omitting the query, the two entries it named are reachable by name
+since the identifier rule above, and the third is a filter this adds.

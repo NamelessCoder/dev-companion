@@ -1391,7 +1391,7 @@ Hints:
 - Do not hand-edit generated public CSS as the only change.
 - Not every asset comes out of the Sass build. The CKEditor CSS is built through Build/rollup/ckeditor.js, so a change there is not picked up by a CSS build and looks like nothing happened.
 - Verify generated assets are in sync when public assets are committed.
-… 69 more lines
+… 70 more lines
 ```
 
 Data:
@@ -1414,7 +1414,7 @@ Data:
             "id": "extension-asset-build",
             "title": "Building Assets in a Project Extension",
             "category": "General",
-            "scope": null,
+            "scope": "extension",
             "hints": [
                 {
                     "text": "An extension owns its asset source, build tool and generated output; installing it into TYPO3 does not attach its Sass or TypeScript to the core's Build/Sources pipelines. Put only browser-consumable output below Resources/Public/ and keep the source where the extension's own package scripts name it.",
@@ -2549,6 +2549,7 @@ Data:
 {
     "query": "ext_tables.php",
     "matchCount": 1,
+    "tags": [],
     "entries": [
         {
             "type": "Deprecation",
@@ -2562,6 +2563,82 @@ Data:
             ],
             "file": "EXT:core/Documentation/Changelog/14.3/Deprecation-109438-ExtTablesPhpInExtensions.rst"
         }
+    ],
+    "versions": [
+        "14.3",
+        "14.3.x",
+        "… 52 more"
+    ],
+    "answeredBy": "packages"
+}
+```
+
+## `typo3_changelog_lookup` — changelog: swept by tag
+
+```json
+{
+    "type": "deprecation",
+    "tag": "FullyScanned"
+}
+```
+
+Text:
+
+```
+384 of the 964 entries narrowed by version and type are tagged "FullyScanned" — showing the first 20:
+- 14.3 Deprecation: Lowlevel DatabaseIntegrityCheck class (#107931)
+  EXT:core/Documentation/Changelog/14.3/Deprecation-107931-LowlevelDatabaseIntegrityCheck.rst — PHP-API, FullyScanned, ext:lowlevel
+- 14.3 Deprecation: BackendUtility item list label methods (#109519)
+  EXT:core/Documentation/Changelog/14.3/Deprecation-109519-BackendUtilityItemListLabelMethods.rst — PHP-API, FullyScanned, ext:backend
+- 14.3 Deprecation: GeneralUtility::isOnCurrentHost() without PSR-7 request (#109523)
+  EXT:core/Documentation/Changelog/14.3/Deprecation-109523-GeneralUtilityIsOnCurrentHostWithoutRequest.rst — PHP-API, FullyScanned, ext:core
+- 14.3 Deprecation: GeneralUtility::sanitizeLocalUrl() needs PSR-7 request (#109544)
+  EXT:core/Documentation/Changelog/14.3/Deprecation-109544-GeneralUtilitySanitizeLocalUrlWithoutRequest.rst — PHP-API, FullyScanned, ext:core
+- 14.3 Deprecation: GeneralUtility::locationHeaderUrl() without PSR-7 request (#109548)
+  EXT:core/Documentation/Changelog/14.3/Deprecation-109548-GeneralUtilityLocationHeaderUrlWithoutRequest.rst — PHP-API, FullyScanned, ext:core
+- 14.3 Deprecation: GeneralUtility::getIndpEnv() (#109551)
+  EXT:core/Documentation/Changelog/14.3/Deprecation-109551-GeneralUtilityGetIndpEnv.rst — PHP-API, FullyScanned, ext:core
+- 14.2 Deprecation: BackendUserAuthentication::recordEditAccessInternals() and $errorMsg (#108568)
+… 29 more lines
+```
+
+Data:
+
+```json
+{
+    "query": "",
+    "matchCount": 384,
+    "tags": [
+        "Backend",
+        "CLI",
+        "… 53 more"
+    ],
+    "entries": [
+        {
+            "type": "Deprecation",
+            "version": "14.3",
+            "issue": "107931",
+            "title": "Lowlevel DatabaseIntegrityCheck class",
+            "tags": [
+                "PHP-API",
+                "FullyScanned",
+                "… 1 more"
+            ],
+            "file": "EXT:core/Documentation/Changelog/14.3/Deprecation-107931-LowlevelDatabaseIntegrityCheck.rst"
+        },
+        {
+            "type": "Deprecation",
+            "version": "14.3",
+            "issue": "109519",
+            "title": "BackendUtility item list label methods",
+            "tags": [
+                "PHP-API",
+                "FullyScanned",
+                "… 1 more"
+            ],
+            "file": "EXT:core/Documentation/Changelog/14.3/Deprecation-109519-BackendUtilityItemListLabelMethods.rst"
+        },
+        "… 18 more"
     ],
     "versions": [
         "14.3",
@@ -2593,6 +2670,7 @@ Data:
 {
     "query": "quantumflux",
     "matchCount": 0,
+    "tags": [],
     "entries": [],
     "versions": [
         "14.3",

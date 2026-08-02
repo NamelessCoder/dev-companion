@@ -119,6 +119,41 @@ final class PackageSourcesTest extends TestCase
         self::assertSame([], $reaches('ext_tables.php scheduler'));
     }
 
+    /**
+     * The sweep the deprecation feedback of 2026-07-31 asked for: a version's
+     * deprecations are 75 entries and the words a reviewer guesses reach a
+     * handful, so what bounds it is the tag rather than the query. The tags are
+     * inside the files, so the filter reads what the version and type narrowed
+     * to — 23 ms for one major's deprecations, measured.
+     */
+    #[Test]
+    public function aSweepIsNarrowedByTheTagAnEntryCarries(): void
+    {
+        $root = $this->composerProject();
+        $this->changelogEntry($root, '14.0', 'Deprecation-1-Scanned', 'Deprecation: #1 - Scanned', ['PHP-API', 'FullyScanned', 'ext:core']);
+        $this->changelogEntry($root, '14.0', 'Deprecation-2-Unscanned', 'Deprecation: #2 - Unscanned', ['TCA', 'NotScanned', 'ext:form']);
+        Instance::discoverFrom($root);
+
+        $scanned = Registry::call('typo3_changelog_lookup', ['type' => 'deprecation', 'tag' => 'FullyScanned']);
+        self::assertSame(['1'], array_column($scanned->data['entries'], 'issue'));
+
+        // Case is the caller's business, not the corpus's.
+        self::assertSame(1, Registry::call('typo3_changelog_lookup', ['tag' => 'ext:FORM'])->data['matchCount']);
+
+        // A tag nothing carries is a miss that says which ones exist, because
+        // the tag was never going to be guessed from the outside — and an
+        // extension key of the caller's own is exactly that case: the corpus
+        // names the system extension a change is in, never the package it
+        // affects.
+        $miss = Registry::call('typo3_changelog_lookup', ['tag' => 'bootstrap_package']);
+        self::assertSame(0, $miss->data['matchCount']);
+        self::assertSame(['NotScanned', 'PHP-API', 'TCA', 'ext:core', 'ext:form', 'FullyScanned'], array_values(array_intersect(
+            ['NotScanned', 'PHP-API', 'TCA', 'ext:core', 'ext:form', 'FullyScanned'],
+            $miss->data['tags'],
+        )));
+        self::assertStringContainsString('The tags those entries carry', $miss->text);
+    }
+
     #[Test]
     public function theChangelogIsNarrowedByTypeAndVersion(): void
     {

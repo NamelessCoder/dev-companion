@@ -1,7 +1,7 @@
 # Point the core answer at the tool that runs the suites it does not declare
 
-**Serves:** feedback/2026-08-01-114807-session-debrief-precise-transcript-and-tool.md
-**Priority:** low
+**Serves:** feedback/2026-08-01-114807-session-debrief-precise-transcript-and-tool.md, feedback/2026-08-02-144350-which-required-running-unit-functional-cgl-and.md
+**Priority:** normal
 
 Step 2 of the ladder, on the evidence in
 [`D-ANS-031`](../../decisions/answers/ans-031-the-core-answer-names-the-tool-that-runs-the-suites.md):
@@ -20,3 +20,13 @@ already asserts on "testing suites do not". Decide in the same commit whether
 widens from a brief to any answer that names a step, or whether a requirement of
 its own carries the project answer — `ScopeTest::theBriefPointsAtTheGuideForTheStepItEndsWith`
 holds the first for briefs alone today.
+
+A second session reports the same gap from the other end and raises the
+priority: in a core checkout the `commands` array came back with four
+`composer gerrit:setup` hook installers, all `runs: unknown`, and without
+`Build/Scripts/runTests.sh`, which is the only way to run anything there — it
+was called about thirty times that session, with its invocation shape taken from
+the project's own `CLAUDE.md`. It also names what a file-read answer would buy
+beyond the clause: the `-s` cases read out of the script would make the suite
+list follow the branch, where the acceptance suites no longer exist on `main`.
+

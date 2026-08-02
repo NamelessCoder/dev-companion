@@ -239,3 +239,36 @@ was in, and `knowledge/task-intents.json` has no entry for an audit.
 Nothing was changed here. Whether a self-reported call log is the event this
 **Wrong if** describes, and what moves if it is, is the question its card
 carries in `todo/waiting/`.
+
+## Confirmed on 2026-08-02
+
+**Stopping is still right when the server is one process away, and the base does
+not learn the way round.** That is the question the **Evidence** above hands to
+whoever judges the duplicate — not whether to stop, but whether stopping holds
+when the binary can be driven by hand. It was judged against
+`feedback/2026-07-31-185900-during-an-audit-of-the-printworks-3d-site.md` on
+2026-08-02. The base is unchanged by it, which is the point:
+the growth this decision's **Wrong if** watches did not happen, and the answer
+cost it nothing.
+
+Three things settled it. The base cannot carry the route even if it wanted to —
+`Installer::BASE` copies one `skills/base.md` into every published skill
+byte-for-byte, while the path to the binary is a property of the machine that
+the installer writes into `.mcp.json`. So the fallback the base could teach is
+"go and find a binary", which is precisely what that session did, and it found
+it after the audit rather than before. Then what the hand-driven route produced
+is on record: the same session, at the same minute, filed the feedback behind
+[`D-FBK-019`](../feedback/fbk-019-a-recorded-feedback-is-stored-as-it-was-written-secrets-included.md)
+and pasted the live encryption key of the site it had just audited into this
+repository. A session acting as its own client sits outside every affordance the
+client layer provides, and that is the shape of what it costs. Last, stopping
+reaches somebody who can act: the entry was correct all along, so the fix was a
+person approving a server or restarting a session, and only the message the
+precondition prints was ever going to get it asked for.
+
+What that leaves is not a skill question at all, and it is judged in
+[`D-DIS-009`](../discovery/dis-009-installed-is-one-step-short-of-callable-and-the-install-is-what-says-so.md):
+the install writes the entry, reports nine successes, and never says that a
+callable tool is one step further on. The precondition is what a session does
+when the tools are absent. Keeping them from being absent is the install's, and
+that half stays open.

@@ -7,11 +7,25 @@ tool: typo3extensionconformance, typo3_project_scope, typo3_architecture_lookup,
 directory: /home/benji/projects/site-new
 ---
 
-# During an audit of the Printworks 3D site package, the typo3-extension-conformance skill was acti...
+# An install writes the client entry and never says a callable tool is one step further on
 
 ## Observation
 
-During an audit of the Printworks 3D site package, the typo3-extension-conformance skill was activated. Its base.md instructs the agent to call typo3_project_scope, typo3_architecture_lookup, typo3_configuration_lookup, typo3_documentation_lookup, and typo3_changelog_lookup before reading any code. None of these tools were available as callable functions in the agent environment. The audit was completed entirely by reading the checkout and from the model own knowledge, with no runtime or documentation verification. Only after completing the audit did I discover the tools are available by invoking the typo3-cms-mcp binary directly via the MCP stdio protocol, which I was not initially aware of.
+Partially addressed: the skill no longer runs against nothing. `skills/base.md`
+gained the precondition on 2026-07-31 at 19:07 UTC, eight minutes after this was
+filed — no `typo3_` tool in the session means stop and say so, never answer from
+what the model knows instead — and the installer publishes it into every skill
+as `references/base.md`. Nothing was missing on the server's side either: it
+serves 24 tools over stdio, all five named above among them.
+
+What remains is the step before that. The `.mcp.json` in this project is correct
+and was written by this installer, and two sessions there still had no tool they
+could call — this one on 2026-07-31 and the 2026-07-29 evaluation, which reached
+the server through a hand-written stdio wrapper for the same reason. Writing the
+entry is not registering the server: a client that scopes project servers behind
+an approval has not been asked yet, and a session already open when the file was
+written is running against what it started with. `install` reports nine
+successes and says nothing about either.
 
 ## Query
 
@@ -19,4 +33,6 @@ Activated the typo3-extension-conformance skill. It instructed: 1) typo3_project
 
 ## Suggestion
 
-Make the typo3-cms-mcp server tools discoverable and callable in the agent environment without requiring the agent to discover the binary manually. The .mcp.json file is present but the tools were not exposed in the function list.
+Have `install` and `update` say, per client, what that client still needs before
+a tool in the entry they just wrote can be called — in their own output, not
+only in the installation manual.

@@ -35,3 +35,11 @@ case answered exactly as before.
 - A core contributor's task text names neither a sysext path nor Gerrit and
   they now get the submission rules as conditional rather than as fact. That is
   the cost of not guessing, and the condition line is what keeps it cheap.
+
+## Covered by
+
+- `ScopeTest::aCoreTaskThatNamesNeitherAPathNorGerritKeepsTheSubmissionRules`
+- `ScopeTest::theBriefNamesWhatWouldTurnTheConditionIntoFact`
+- `ScopeTest::maintainingAnExtensionIsNotSubmittingAPatchToTheCore`
+- `ScopeTest::aCorePathStillMakesTheSameWordAPatchSubmission`
+- `ScopeTest::inASitePackageThePatchSubmissionIntentIsNotOfferedAtAll`

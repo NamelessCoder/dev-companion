@@ -42,7 +42,7 @@ the index.
 
 | Group | Cases |
 | --- | --- |
-| [core-contributor/](core-contributor/readme.md) | `CORE-01` … `CORE-06` |
+| [core-contributor/](core-contributor/readme.md) | `CORE-01` … `CORE-07` |
 | [extension-author/](extension-author/readme.md) | `EXT-01` … `EXT-07` |
 | [site-developer/](site-developer/readme.md) | `SITE-01` … `SITE-08` |
 | [cross-cutting/](cross-cutting/readme.md) | `META-01` … `META-05` |
@@ -60,7 +60,7 @@ that hold it; an empty cell is a hole in the contract suite.
 | New project from scratch | — | `EXT-02` | `SITE-01` |
 | Upgrade to a new TYPO3 version | `CORE-04` | `EXT-01` | `SITE-02` |
 | Testing | `CORE-05` | `EXT-05` | `SITE-06` |
-| Review, commit, submission | `CORE-03` | `EXT-03` | — |
+| Review, commit, submission | `CORE-03`, `CORE-07` | `EXT-03` | — |
 | Labels, icons, i18n | `CORE-02` | `EXT-06` | `EXT-06` |
 | Official API documentation | — | `EXT-07` | `SITE-07` |
 | Frontend / theming | — | — | `SITE-04` |

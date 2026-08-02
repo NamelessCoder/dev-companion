@@ -1,6 +1,7 @@
 ---
 id: R-SCO-003
 status: held
+restsOn: [D-SCO-002]
 ---
 
 # R-SCO-003 — A core-only intent needs evidence of core work
@@ -24,3 +25,5 @@ Third-party extension maintenance recognised as a Gerrit patch submission
 - `ScopeTest::maintainingAnExtensionIsNotSubmittingAPatchToTheCore`
 - `ScopeTest::aCorePathStillMakesTheSameWordAPatchSubmission`
 - `ScopeTest::inASitePackageThePatchSubmissionIntentIsNotOfferedAtAll`
+- `ScopeTest::aCoreTaskThatNamesNeitherAPathNorGerritKeepsTheSubmissionRules`
+- `ScopeTest::theBriefNamesWhatWouldTurnTheConditionIntoFact`

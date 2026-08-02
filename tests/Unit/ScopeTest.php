@@ -490,6 +490,69 @@ final class ScopeTest extends TestCase
         self::assertStringNotContainsString('Change-Id', implode("\n", $result->data['checklist']));
     }
 
+    /**
+     * `D-SCO-002`'s own cost, in the sharpest form it has: the session sits in
+     * a core checkout, the brief is composed for the core, and the submission
+     * intent is still offered rather than stated. That is `D-SCO-005`'s
+     * ordering — the installation is the weakest evidence there is, and the
+     * text says nothing about where this patch goes.
+     *
+     * What keeps it cheap is that nothing is withheld. Both Gerrit steps
+     * arrive whole, each carrying a condition the contributor answers without
+     * looking anything up, so the cost is a prefix rather than a lookup.
+     */
+    #[Test]
+    public function aCoreTaskThatNamesNeitherAPathNorGerritKeepsTheSubmissionRules(): void
+    {
+        Instance::discoverFrom($this->coreCheckout());
+
+        $result = Registry::call('typo3_task_guide', [
+            'task' => 'Fix the page tree losing drag and drop when a mount point is set, then push the fix for review',
+            'changeType' => 'bugfix',
+        ]);
+
+        $confidence = array_column($result->data['intents'], 'confidence', 'id');
+        self::assertSame(Scope::Core, Scope::from($result->data['scope']));
+        self::assertSame('weak', $confidence['submission'] ?? null);
+
+        // The core's own checklist is still stated as fact around it.
+        self::assertContains('Confirm the target TYPO3 core branch and issue context.', $result->data['checklist']);
+
+        // The two steps that turn on where the patch goes are prefixed, not
+        // dropped: the rule is readable without asking a second time.
+        $conditional = array_values(array_filter(
+            $result->data['checklist'],
+            static fn(string $entry): bool => str_starts_with($entry, 'If the patch goes to the TYPO3 core itself:'),
+        ));
+        self::assertCount(2, $conditional);
+        self::assertStringContainsString('refs/for/', implode("\n", $conditional));
+        self::assertStringContainsString('Change-Id', implode("\n", $conditional));
+    }
+
+    /**
+     * The other half of what keeps it cheap: the condition is not something
+     * the reader has to live with. Where nothing placed the work at all the
+     * brief names the question it could not answer, and naming a path is what
+     * turns the same words into a stated submission — which
+     * `aCorePathStillMakesTheSameWordAPatchSubmission` holds from the far side.
+     */
+    #[Test]
+    public function theBriefNamesWhatWouldTurnTheConditionIntoFact(): void
+    {
+        Instance::discoverFrom(null);
+
+        $result = Registry::call('typo3_task_guide', [
+            'task' => 'Fix the page tree losing drag and drop when a mount point is set, then push the fix for review',
+        ]);
+
+        self::assertSame(Scope::Uncertain, Scope::from($result->data['scope']));
+        self::assertStringStartsWith(Scope::UNCERTAIN_NOTICE, $result->text);
+        self::assertStringContainsString(
+            'Possibly also: Patch submission, if the patch goes to the TYPO3 core itself',
+            $result->text,
+        );
+    }
+
     #[Test]
     public function whatTheScopeExcludesIsNotWhatTheServerAnswers(): void
     {

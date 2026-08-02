@@ -16,6 +16,7 @@ when it is added.
 - [`R-SKL-007`][R-SKL-007] — An upgrade establishes what breaks before it chooses a range · held
 - [`R-SKL-008`][R-SKL-008] — A task skill does not run without the server it came from · held
 - [`R-SKL-009`][R-SKL-009] — A release is verified on the archive each registry receives · held
+- [`R-SKL-010`][R-SKL-010] — A skill's description names every side of what it owns · held
 
 [R-SKL-001]: skl-001-a-backend-module-task-activates-its-own-guidance.md
 [R-SKL-002]: skl-002-a-testing-task-verifies-the-harness-before-relying-on-it.md
@@ -26,3 +27,4 @@ when it is added.
 [R-SKL-007]: skl-007-an-upgrade-establishes-what-breaks-before-it-chooses-a-range.md
 [R-SKL-008]: skl-008-a-task-skill-does-not-run-without-the-server-it-came-from.md
 [R-SKL-009]: skl-009-a-release-is-verified-on-the-archive-each-registry-receives.md
+[R-SKL-010]: skl-010-a-skills-description-names-every-side-of-what-it-owns.md

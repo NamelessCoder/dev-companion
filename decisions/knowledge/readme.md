@@ -16,7 +16,8 @@ one is added.
 - [`D-KNW-011`][D-KNW-011] — A rule that names a defect names its correction · 2026-08-02
 - [`D-KNW-012`][D-KNW-012] — `extension.neon` is PHPStan's filename, and the hint keeps the one include it means · 2026-08-02
 - [`D-KNW-013`][D-KNW-013] — The sixth phrasing was this repository's own sentence, and it was reworded rather than indexed · 2026-08-02
-- [`D-KNW-014`][D-KNW-014] — The record variable a v14 preview template is handed is a gap this server owns · 2026-08-02
+- [`D-KNW-014`][D-KNW-014] — The record variable a v14 preview template is handed is a gap this server owns · 2026-08-02 · confirmed
+- [`D-KNW-015`][D-KNW-015] — A Fluid preview template replaces the content half, and nothing here says so · 2026-08-02
 - [`D-KNW-004`][D-KNW-004] — Package knowledge needs a producer before it needs discovery · 2026-07-30
 
 [D-KNW-005]: knw-005-one-scope-replaced-the-four-vocabularies.md
@@ -29,6 +30,7 @@ one is added.
 [D-KNW-012]: knw-012-an-extension-neon-is-phpstans-filename-and-not-a-typo3-one.md
 [D-KNW-013]: knw-013-the-sixth-phrasing-was-this-repositorys-own-sentence.md
 [D-KNW-014]: knw-014-the-record-variable-a-v14-preview-template-is-handed-is-a-gap-this-server-owns.md
+[D-KNW-015]: knw-015-a-fluid-preview-template-replaces-the-content-half-and-nothing-here-says-so.md
 [D-KNW-004]: knw-004-package-knowledge-needs-a-producer-before-it-needs-discovery.md
 
 ### Revoked, and kept as the record

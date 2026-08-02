@@ -74,6 +74,7 @@ and not a defect.
 - [`D-ANS-020`][D-ANS-020] — A deprecation is answered by the version that removes it · 2026-08-02
 - [`D-ANS-021`][D-ANS-021] — A longer manual query re-aims rather than narrows, and the answer never says so · 2026-08-02
 - [`D-ANS-022`][D-ANS-022] — A hyphenated compound reaches neither the phrase nor the word · 2026-08-02
+- [`D-ANS-023`][D-ANS-023] — No ViewHelper is documented in any manual this lookup indexes · 2026-08-02
 - [`D-AUD-004`][D-AUD-004] — The tool list is not where the audience is said · 2026-08-02
 - [`D-COD-003`][D-COD-003] — A directory is read through symfony/finder · 2026-08-02
 - [`D-DIS-007`][D-DIS-007] — The DDEV console is named by the mount, not by the variable · 2026-08-02 · confirmed
@@ -97,6 +98,7 @@ and not a defect.
 - [`D-FBK-018`][D-FBK-018] — A strength is evidence about a boundary, not about a decision · 2026-08-02 · confirmed
 - [`D-FBK-019`][D-FBK-019] — A recorded feedback is stored as it was written, secrets included · 2026-08-02
 - [`D-FBK-020`][D-FBK-020] — A session is charged per call, so the calls are what is budgeted · 2026-08-02
+- [`D-FBK-021`][D-FBK-021] — A summary feedback is judged against its series, not on its own · 2026-08-02
 - [`D-KNW-005`][D-KNW-005] — One `Scope` replaced the four vocabularies · 2026-08-02
 - [`D-KNW-006`][D-KNW-006] — A word for a thing administered from the backend adds no domain to a backend-only task · 2026-08-02
 - [`D-KNW-007`][D-KNW-007] — A hint says whose it is in both directions · 2026-08-02
@@ -106,7 +108,8 @@ and not a defect.
 - [`D-KNW-011`][D-KNW-011] — A rule that names a defect names its correction · 2026-08-02
 - [`D-KNW-012`][D-KNW-012] — `extension.neon` is PHPStan's filename, and the hint keeps the one include it means · 2026-08-02
 - [`D-KNW-013`][D-KNW-013] — The sixth phrasing was this repository's own sentence, and it was reworded rather than indexed · 2026-08-02
-- [`D-KNW-014`][D-KNW-014] — The record variable a v14 preview template is handed is a gap this server owns · 2026-08-02
+- [`D-KNW-014`][D-KNW-014] — The record variable a v14 preview template is handed is a gap this server owns · 2026-08-02 · confirmed
+- [`D-KNW-015`][D-KNW-015] — A Fluid preview template replaces the content half, and nothing here says so · 2026-08-02
 - [`D-SCO-009`][D-SCO-009] — The brief is one brief, and names the paths a step is not for · 2026-08-02
 - [`D-SKL-002`][D-SKL-002] — A focused audit narrows what is assessed, not the list it closes on · 2026-08-02
 - [`D-SKL-003`][D-SKL-003] — A sweep is bounded by the changelog's own axes, not by the extension's vocabulary · 2026-08-02
@@ -168,6 +171,7 @@ and not a defect.
 [D-ANS-020]: answers/ans-020-a-deprecation-is-answered-by-the-version-that-removes-it.md
 [D-ANS-021]: answers/ans-021-a-longer-manual-query-re-aims-rather-than-narrows.md
 [D-ANS-022]: answers/ans-022-a-hyphenated-compound-reaches-neither-the-phrase-nor-the-word.md
+[D-ANS-023]: answers/ans-023-no-viewhelper-is-documented-in-any-manual-this-lookup-indexes.md
 [D-AUD-004]: audience/aud-004-the-tool-list-is-not-where-the-audience-is-said.md
 [D-COD-003]: code/cod-003-a-directory-is-read-through-symfony-finder.md
 [D-DIS-007]: discovery/dis-007-the-ddev-console-is-named-by-the-mount-not-by-the-variable.md
@@ -191,6 +195,7 @@ and not a defect.
 [D-FBK-018]: feedback/fbk-018-a-strength-is-evidence-about-a-boundary-not-about-a-decision.md
 [D-FBK-019]: feedback/fbk-019-a-recorded-feedback-is-stored-as-it-was-written-secrets-included.md
 [D-FBK-020]: feedback/fbk-020-a-session-is-charged-per-call-so-the-calls-are-what-is-budgeted.md
+[D-FBK-021]: feedback/fbk-021-a-summary-feedback-is-judged-against-its-series-not-on-its-own.md
 [D-KNW-005]: knowledge/knw-005-one-scope-replaced-the-four-vocabularies.md
 [D-KNW-006]: knowledge/knw-006-a-word-for-a-thing-administered-from-the-backend.md
 [D-KNW-007]: knowledge/knw-007-a-hint-says-whose-it-is-in-both-directions.md
@@ -201,6 +206,7 @@ and not a defect.
 [D-KNW-012]: knowledge/knw-012-an-extension-neon-is-phpstans-filename-and-not-a-typo3-one.md
 [D-KNW-013]: knowledge/knw-013-the-sixth-phrasing-was-this-repositorys-own-sentence.md
 [D-KNW-014]: knowledge/knw-014-the-record-variable-a-v14-preview-template-is-handed-is-a-gap-this-server-owns.md
+[D-KNW-015]: knowledge/knw-015-a-fluid-preview-template-replaces-the-content-half-and-nothing-here-says-so.md
 [D-SCO-009]: scope/sco-009-the-brief-is-one-brief-and-names-the-paths-a-step.md
 [D-SKL-002]: task-skills/skl-002-a-focused-audit-narrows-what-is-assessed.md
 [D-SKL-003]: task-skills/skl-003-a-sweep-is-bounded-by-the-changelogs-own-axes.md

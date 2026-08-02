@@ -25,6 +25,7 @@ one is added.
 - [`D-ANS-020`][D-ANS-020] — A deprecation is answered by the version that removes it · 2026-08-02
 - [`D-ANS-021`][D-ANS-021] — A longer manual query re-aims rather than narrows, and the answer never says so · 2026-08-02
 - [`D-ANS-022`][D-ANS-022] — A hyphenated compound reaches neither the phrase nor the word · 2026-08-02
+- [`D-ANS-023`][D-ANS-023] — No ViewHelper is documented in any manual this lookup indexes · 2026-08-02
 - [`D-ANS-004`][D-ANS-004] — The instruction budget is 2048 characters, on one client's evidence · 2026-07-31
 - [`D-ANS-002`][D-ANS-002] — Three numbers now decide what a lookup answers, and they were measured, not reasoned · 2026-07-30 · confirmed
 - [`D-ANS-003`][D-ANS-003] — Retrieval stays lexical and runtime inspection stays narrow · 2026-07-30 · confirmed
@@ -47,6 +48,7 @@ one is added.
 [D-ANS-020]: ans-020-a-deprecation-is-answered-by-the-version-that-removes-it.md
 [D-ANS-021]: ans-021-a-longer-manual-query-re-aims-rather-than-narrows.md
 [D-ANS-022]: ans-022-a-hyphenated-compound-reaches-neither-the-phrase-nor-the-word.md
+[D-ANS-023]: ans-023-no-viewhelper-is-documented-in-any-manual-this-lookup-indexes.md
 [D-ANS-004]: ans-004-the-instruction-budget-is-2048-characters-on-one-clients-evidence.md
 [D-ANS-002]: ans-002-three-numbers-decide-what-a-lookup-answers.md
 [D-ANS-003]: ans-003-retrieval-stays-lexical-and-runtime-inspection-stays-narrow.md

@@ -105,6 +105,52 @@ final class DocumentationTest extends TestCase
         self::assertSame('typo3/reference-tca', $answer['results'][0]['document']);
     }
 
+    /**
+     * The manuals of the core are published under `/m/` and this one is not,
+     * so a search that built every base the same way reached three books, none
+     * of which documents a ViewHelper, and the question was answered from
+     * whichever of them carried the word (`D-ANS-023`). A base that is wrong is
+     * silent — the index does not answer and the book is simply absent — so
+     * what is held is that its pages are reached and reached at their own base.
+     */
+    #[Test]
+    public function aViewHelperQuestionReachesTheManualPublishedOutsideTheCoreCollection(): void
+    {
+        $answer = (new Documentation($this->manuals()))->lookup(
+            ['f:if f:then f:else condition ViewHelper'],
+            '14.3',
+            4,
+        );
+
+        $reference = array_values(array_filter(
+            $answer['results'],
+            static fn(array $result): bool => $result['document'] === 'typo3/view-helper-reference',
+        ));
+        self::assertNotSame([], $reference);
+        self::assertSame('Fluid ViewHelper Reference', $reference[0]['documentTitle']);
+        self::assertStringStartsWith(
+            'https://docs.typo3.org/other/typo3/view-helper-reference/14.3/en-us/',
+            $reference[0]['url'],
+        );
+    }
+
+    /** And the URL it hands back is one it takes back, on the same version. */
+    #[Test]
+    public function aPageOfThatManualIsReadBackAtItsOwnBase(): void
+    {
+        $url = 'https://docs.typo3.org/other/typo3/view-helper-reference/14.3/en-us/Global/If.html';
+        $documentation = new Documentation(static fn(string $requested): ?string => $requested === $url
+            ? '<html><article role="main"><h1>If ViewHelper &lt;f:if&gt;</h1>'
+                . '<p>This ViewHelper implements an if/else condition.</p></article></html>'
+            : null);
+
+        $answer = $documentation->page($url, '14.3');
+
+        self::assertSame('answered', $answer['status']);
+        self::assertSame('typo3/view-helper-reference', $answer['results'][0]['document']);
+        self::assertSame('Fluid ViewHelper Reference', $answer['results'][0]['documentTitle']);
+    }
+
     #[Test]
     public function anApiIdentifierReachesThePageThatIsNotNamedAfterIt(): void
     {
@@ -205,6 +251,14 @@ final class DocumentationTest extends TestCase
             'typo3/reference-tca' => [
                 'ColumnsConfig/Type/Inline/Index.html' => 'IRRE / inline',
                 'ColumnsConfig/CommonProperties/FieldInformation/TcaDescription.html' => 'tcaDescription',
+            ],
+            // Titled as that book titles them: the tag name, lower case and
+            // bare, rather than the "… ViewHelper <f:…>" heading of the page.
+            'typo3/view-helper-reference' => [
+                'Global/If.html' => 'if',
+                'Global/Then.html' => 'then',
+                'Global/Else.html' => 'else',
+                'Global/Translate.html' => 'translate',
             ],
         ];
 

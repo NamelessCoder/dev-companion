@@ -20,16 +20,28 @@ final class Documentation
 {
     private const HOST = 'https://docs.typo3.org';
 
-    /** @var array<string, string> */
+    /**
+     * The manuals searched, each with the collection it is published in.
+     * docs.typo3.org serves the manuals of the core under `/m/` and the ones
+     * maintained beside it under `/other/`, so the collection is part of what
+     * says where a manual is and not a constant of the host.
+     *
+     * @var array<string, array{title: string, collection: string}>
+     */
     private const DOCUMENTS = [
-        'typo3/reference-coreapi' => 'TYPO3 Explained',
-        'typo3/reference-typoscript' => 'TypoScript Explained',
+        'typo3/reference-coreapi' => ['title' => 'TYPO3 Explained', 'collection' => 'm'],
+        'typo3/reference-typoscript' => ['title' => 'TypoScript Explained', 'collection' => 'm'],
         // The TCA reference is its own manual, and TYPO3 Explained does not
         // repeat it: a question about `inline`, `foreign_field` or a column
         // type was searched in two manuals that describe everything around TCA
         // and never TCA itself, and came back with whatever else carried the
         // word.
-        'typo3/reference-tca' => 'TCA Reference',
+        'typo3/reference-tca' => ['title' => 'TCA Reference', 'collection' => 'm'],
+        // And the same for a ViewHelper. No manual above documents one, so
+        // `f:if` was answered with whatever prose carries the word — the page
+        // that says what it does is `Global/If.html` of this reference
+        // (`D-ANS-023`).
+        'typo3/view-helper-reference' => ['title' => 'Fluid ViewHelper Reference', 'collection' => 'other'],
     ];
 
     /**
@@ -83,8 +95,8 @@ final class Documentation
         $pages = [];
         $reachable = 0;
 
-        foreach (self::DOCUMENTS as $document => $documentTitle) {
-            $base = sprintf('%s/m/%s/%s/en-us/', self::HOST, $document, rawurlencode($targetVersion));
+        foreach (self::DOCUMENTS as $document => $manual) {
+            $base = self::base($document, $targetVersion);
             $html = $this->get($base);
             if ($html === null) {
                 continue;
@@ -98,11 +110,11 @@ final class Documentation
                     'title' => $link['title'],
                     'url' => $link['url'],
                     'document' => $document,
-                    'documentTitle' => $documentTitle,
+                    'documentTitle' => $manual['title'],
                     'searchable' => [
                         'title' => self::split($link['title']),
                         'path' => self::split($link['path']),
-                        'manual' => $documentTitle,
+                        'manual' => $manual['title'],
                     ],
                 ];
             }
@@ -200,10 +212,10 @@ final class Documentation
     public function page(string $url, string $targetVersion): array
     {
         $owner = null;
-        foreach (self::DOCUMENTS as $document => $documentTitle) {
-            $base = sprintf('%s/m/%s/%s/en-us/', self::HOST, $document, rawurlencode($targetVersion));
+        foreach (self::DOCUMENTS as $document => $manual) {
+            $base = self::base($document, $targetVersion);
             if (str_starts_with($url, $base) && str_ends_with(explode('#', $url, 2)[0], '.html')) {
-                $owner = ['document' => $document, 'title' => $documentTitle];
+                $owner = ['document' => $document, 'title' => $manual['title']];
                 break;
             }
         }
@@ -238,6 +250,18 @@ final class Documentation
             'content' => $content,
             'matched' => [],
         ]], null);
+    }
+
+    /** Where one manual is published, at one version. */
+    private static function base(string $document, string $targetVersion): string
+    {
+        return sprintf(
+            '%s/%s/%s/%s/en-us/',
+            self::HOST,
+            self::DOCUMENTS[$document]['collection'],
+            $document,
+            rawurlencode($targetVersion),
+        );
     }
 
     /**

@@ -68,6 +68,7 @@ and not a defect.
 - [`D-KNW-005`][D-KNW-005] — One `Scope` replaced the four vocabularies · 2026-08-02
 - [`D-KNW-006`][D-KNW-006] — A word for a thing administered from the backend adds no domain to a backend-only task · 2026-08-02
 - [`D-KNW-007`][D-KNW-007] — A hint says whose it is in both directions · 2026-08-02
+- [`D-KNW-008`][D-KNW-008] — Tooling is a row the answer crosses, not a dimension the corpus stores · 2026-08-02
 - [`D-SCO-009`][D-SCO-009] — The brief is one brief, and names the paths a step is not for · 2026-08-02
 - [`D-COD-001`][D-COD-001] — One file declares one class · 2026-08-01
 - [`D-COD-002`][D-COD-002] — The upkeep CLI is a Symfony Console application · 2026-08-01
@@ -121,6 +122,7 @@ and not a defect.
 [D-KNW-005]: knowledge/knw-005-one-scope-replaced-the-four-vocabularies.md
 [D-KNW-006]: knowledge/knw-006-a-word-for-a-thing-administered-from-the-backend.md
 [D-KNW-007]: knowledge/knw-007-a-hint-says-whose-it-is-in-both-directions.md
+[D-KNW-008]: knowledge/knw-008-tooling-is-a-row-that-is-crossed-in-the-answer.md
 [D-SCO-009]: scope/sco-009-the-brief-is-one-brief-and-names-the-paths-a-step.md
 [D-COD-001]: code/cod-001-one-file-declares-one-class.md
 [D-COD-002]: code/cod-002-the-upkeep-cli-is-a-symfony-console-application.md

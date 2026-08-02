@@ -10,10 +10,27 @@ Two of them are no longer a machine's business at all. `bin/cli
 environment:create` makes `E-SITE` and `E-NONE` below `.environments/`, so a
 case that needs an installation to answer from needs nothing off this page —
 `bin/cli environment:status` says what this checkout has. What stays here is
-what a scaffold cannot produce: the site package `REVIEW-01` reviews, and the
-three extension checkouts whose real infrastructure is what they play
-(`D-EVI-004`).
+what a scaffold cannot produce: the site package `REVIEW-01` reviews, the three
+extension checkouts whose real infrastructure is what they play (`D-EVI-004`),
+and the core checkout somebody works in, which is where a patch to review comes
+from.
 
+- **`E-CORE`** — `/home/benji/projects/typo3-cms`, the core repository itself:
+  `main` at TYPO3 15.0.0-dev, PHP `^8.5` declared and 8.5 in DDEV, no extensions
+  and no sites. The server is not a dependency there, so it is installed from
+  this checkout the way `E-EXT` is — done on 2026-08-03, when the published
+  copies were a day behind the skills here. **It is worked in**, which is what it
+  plays: `origin/main..main` carried an unpushed core patch and
+  `.claude/worktrees/` a branch with more when `REVIEW-03` was unblocked on
+  2026-08-03, so that review finds a diff without one being made for it. `git
+  status` there is never empty — the generated `.gitignore` block is uncommitted,
+  `.claude/` and `opencode.json` are untracked — and a run notes that before it
+  starts rather than reading it afterwards as a session that wrote. The DDEV
+  project was paused on 2026-08-02, so a runtime lookup answers unsupported until
+  it is started. A GPT-5 mini session reviewed the GD/SVG placeholder patch here
+  on 2026-08-01 (`feedback/2026-08-01-114526`): it was given a subsystem task
+  rather than the scenario prompt, so it is precedent for the environment and not
+  a run.
 - **`E-SITE`** — `/home/benji/projects/site-new`, site package below
   `extensions/printworks_sitepackage`, TYPO3 14.3.5 under DDEV. The server is a
   dependency there: refresh the skills with `ddev exec php

@@ -4,12 +4,32 @@
 **Priority:** low
 **Branch:** todo/task-typo3-extension-conformance-audit-of
 **Claimed:** 2026-08-02
+**Waiting on:** what is step 3 of `skills/base.md` for, once a task skill is
+    already loaded? Two answers are open and they run opposite ways. Either the
+    base says what `typo3_task_guide` is worth to a caller that arrived through
+    a skill, which changes a contract installed in somebody else's project. Or
+    `typo3_task_guide` names the workflow that step 3 says it returns, which is
+    `src/`. Judging.md puts a **Wrong if** on the fifth rung and out of reach of
+    an autonomous answer, so neither is made from here.
 
-Judge this feedback rather than fix what it reports: re-run the query that
-produced it against the server as it is now, then close it, trim it to the half
-that is still open, or write the todo that takes it on. Write the judgement into
-`decisions/` — the entry it was made against, or a new one where nothing says it
-yet — because the commit that closes a feedback is the one place nobody can
-search afterwards. `documentation/feedback/judging.md` is the ladder and the one
-question it opens with, and what this feedback actually says is in the file it
-serves rather than here.
+The judgement is written and the feedback stays open behind that question. It is
+step 5: the strength lands in the `D-SKL-001` **Wrong if** rather than reporting
+no gap, which is also the first `D-FBK-018` **Wrong if** firing. Both entries
+carry the paragraph.
+
+What the reading established, so the answer does not need it again. The strength
+recites the order without `typo3_task_guide`, and the same session's tool log at
+`feedback/2026-07-31-193005` shows thirteen round trips with no such call. That
+log also has the checkout read at positions 5 and 6, ahead of the first
+conventions lookup at 7. The copy it read is not the reason: the installed
+`references/base.md` in `site-new` carries step 3, and step 3 is older than the
+sweep that same strength recites. Re-run on 2026-08-02 from `site-new` through
+`bin/typo3-cms-mcp`, `typo3_task_guide` answers that task in 1,937 words, points
+back at steps 4 and 5, and names no workflow — `src/Tool/TaskGuide.php` has no
+skill in it. `feedback/2026-07-31-194826` is the same call from another model in
+the same project, reporting that it restated the skill's own checklist.
+
+Once answered, the feedback is archived by the commit that implements whichever
+side was chosen. `feedback/2026-07-31-194826` is the other half of the same
+property and is unjudged: whoever judges it should read the `D-SKL-001`
+paragraph first rather than derive it a second time.

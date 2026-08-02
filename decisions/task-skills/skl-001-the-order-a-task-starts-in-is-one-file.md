@@ -141,3 +141,51 @@ thing the four runs said. The base was not outrun and it has not grown since.
 The four skills whose order was corrected without a forward run are still
 unproven. Judged in [`D-SKL-002`](skl-002-a-focused-audit-narrows-what-is-assessed.md),
 which is what the other half of the same feedback asked for.
+
+## Since then
+
+The **Wrong if** got its other answer, from the same project and one day later.
+A strength this time, and it lands in both halves: the base was outrun, and one
+of its steps was read past.
+
+`feedback/2026-07-31-192945` names the conformance skill's workflow as
+"project_scope → extension_scope → architecture_lookup → changelog_lookup →
+read checkout → report", and says there is nothing to drop. That is the order
+of this file minus step 3. The same session's tool log, filed twenty seconds
+later as `feedback/2026-07-31-193005`, lists thirteen numbered round trips with
+no `typo3_task_guide` among them. It also puts a `glob` of the extension and
+fifteen file reads at positions 5 and 6, ahead of the first
+`typo3_architecture_lookup` at 7. So a session whose own account is that the
+order fit perfectly followed neither the step nor the placement.
+
+The copy does not explain it. `references/base.md` under both `.claude/skills`
+and `.agents/skills` in that project carries step 3 and the sweep. It differs
+from this file only by the empty-sweep paragraph of 2026-08-02. The two are
+dated: step 3 landed at 02:15 CEST on 2026-07-31 and the sweep at 16:24. A base
+recited with the sweep in it is a base that carried step 3.
+
+What the step is worth was re-run on 2026-08-02, from `site-new` through
+`bin/typo3-cms-mcp`. `typo3_task_guide` with the audit task, area `extension`,
+version 14 and change type `unknown` answers in 1,937 words. Under "Next
+lookups" it names `typo3_architecture_lookup` and `typo3_changelog_lookup`,
+which are steps 4 and 5 the caller has just read. Its checklist is six items
+about the target branch, the issue context and keeping a patch focused. And it
+names no workflow: `src/Tool/TaskGuide.php` has no skill in it, while step 3
+here says the call returns "the workflow this task belongs to".
+
+`feedback/2026-07-31-194826` is that same call from another model in the same
+project. It reports that the guide restated the skill's own checklist and the
+lookups the skill had already named, and that it would not call it again after
+that skill. So the two feedback are one property from both sides: one session
+skipped step 3 and reported no loss, another ran it and reported no gain. Both
+were inside a task skill, which is the only place this file is read at all.
+
+The arithmetic this entry keeps: 496 words when it was written, 960 after the
+sweep, 1099 in the copy that session read, 1188 today.
+
+The question is what step 3 is for once a task skill is loaded, and it is not
+one to settle quietly. Two answers are open and they run opposite ways. Either
+this file says what the call is worth to a caller that already has its
+workflow, which is a change to a contract installed in somebody else's project.
+Or `typo3_task_guide` names the workflow it says it names, which is `src/`. The
+feedback stays open behind that answer.

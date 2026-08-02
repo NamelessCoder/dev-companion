@@ -82,3 +82,23 @@ other side: what is the strength evidence of?
 - Strengths accumulate unread, because closing one leaves nothing anybody can
   point at afterwards. This entry and its commit are the whole record; if
   neither is cited again, the run was a cost with no return.
+
+## Since then
+
+The first **Wrong if** fired on the next strength judged, `feedback/2026-07-31-192945`.
+Read as boundary-evidence only it says the conformance skill's order is a good
+one, which nothing here doubted. What it actually carries is a lever, and the
+lever is the praise itself.
+
+The strength recites the order it followed, and the recitation is this server's
+order with one step gone. That can be checked against a file, which is what the
+self-report this entry refused to assess could not offer. A recitation is an
+artifact; an account of a run is not. So the rule established here holds with
+one addition. Where a strength quotes something this repository owns, the
+quotation is evidence about the file rather than about the session, and it is
+read before the boundary is.
+
+The judgement is on [`D-SKL-001`](../task-skills/skl-001-the-order-a-task-starts-in-is-one-file.md),
+whose **Wrong if** is where the omission lands. The rest of this entry stands.
+The run that judged it established nothing about TYPO3 and named the gap rather
+than the fix, and it left the feedback open behind an answer it may not give.

@@ -17,7 +17,8 @@ use Typo3CmsMcp\Installation\Instance;
  * installed, its first matching example replaces the snapshot markup too —
  * matching being the index's judgment rather than the root class alone, since
  * a demo page's opening example is as often its scaffolding as its component
- * (D-CAT-003, `demoSelector`).
+ * (D-CAT-003, `demoSelector`). Where no example shows it copyably at all, the
+ * entry says so with `demoDerives` and the curated markup stays.
  */
 final class InstalledComponents
 {
@@ -80,7 +81,14 @@ final class InstalledComponents
             }
 
             $component['markupSource'] = 'catalog';
-            $demo = self::installedPath((string) ($component['demoPath'] ?? ''), $packages);
+            // An entry that says its demo shows the component nowhere copyable
+            // is not read at all: the file is a page built out of the component
+            // rather than a gallery of it, so there is no example to select and
+            // taking one would only move which scaffolding is handed over. The
+            // curated markup stays, labelled as the fallback it is.
+            $demo = ($component['demoDerives'] ?? true) === false
+                ? null
+                : self::installedPath((string) ($component['demoPath'] ?? ''), $packages);
             if ($demo !== null) {
                 [$file, $reference] = $demo;
                 $sources[] = $reference;

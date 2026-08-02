@@ -47,7 +47,7 @@ final class Components
      *     subComponents: array<int, string>, customProperties: array<int, string>,
      *     markup: string, examples: array<int, string>,
      *     sassPath: ?string, sassPaths: array<int, string>, demoPath: ?string,
-     *     demoSelector: ?string,
+     *     demoSelector: ?string, demoDerives: bool,
      *     keywords: array<int, string>, since: ?int, until: ?int
      * }>
      */
@@ -84,6 +84,11 @@ final class Components
                 'sassPaths' => $sassPaths,
                 'demoPath' => isset($entry['demoPath']) ? (string) $entry['demoPath'] : null,
                 'demoSelector' => isset($entry['demoSelector']) ? (string) $entry['demoSelector'] : null,
+                // The entry's say that its demo shows the component nowhere
+                // copyable, so nothing in it may replace the curated markup.
+                // Absent means it does, which is every entry but the four that
+                // say otherwise (D-CAT-003).
+                'demoDerives' => ($entry['demoDerives'] ?? true) !== false,
                 'keywords' => array_map('strval', $entry['keywords'] ?? []),
                 'since' => isset($entry['since']) ? (int) $entry['since'] : null,
                 'until' => isset($entry['until']) ? (int) $entry['until'] : null,

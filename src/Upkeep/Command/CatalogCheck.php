@@ -485,11 +485,16 @@ final class CatalogCheck
         $problems = 0;
         $withoutDemo = 0;
         $unnamed = 0;
+        $suppressed = 0;
         foreach ($components as $component) {
             $demo = (string) ($component['demoPath'] ?? '');
             if ($demo === '') {
                 ++$withoutDemo;
                 continue;
+            }
+
+            if (($component['demoDerives'] ?? true) === false) {
+                ++$suppressed;
             }
 
             $read = [];
@@ -505,11 +510,14 @@ final class CatalogCheck
                     continue;
                 }
                 $selector = (string) ($component['demoSelector'] ?? '');
-                $markup = self::demoMarkup(
-                    (string) file_get_contents($file),
-                    (string) $component['rootClass'],
-                    $selector === '' ? null : $selector,
-                );
+                $template = (string) file_get_contents($file);
+                // An entry that derives nothing is held to the whole file, for
+                // the reason a demo with no example at all is: nothing is
+                // handed over, so what a rewrite could change is whether the
+                // judgment behind the entry still stands.
+                $markup = ($component['demoDerives'] ?? true) === false
+                    ? $template
+                    : self::demoMarkup($template, (string) $component['rootClass'], $selector === '' ? null : $selector);
                 $read[$version['major']] = substr(hash('sha256', $markup), 0, 12);
                 $names = $names || DemoMarkup::carries($markup, (string) $component['rootClass']);
             }
@@ -546,6 +554,10 @@ final class CatalogCheck
             '  %d of them name the component nowhere and %d entries name no demo, so their markup is held by nothing',
             $unnamed,
             $withoutDemo,
+        ));
+        $output->writeln(sprintf(
+            '  %d show it nowhere copyable and say so, so the whole file is what moves under them',
+            $suppressed,
         ));
         $output->writeln('');
 

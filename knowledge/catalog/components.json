@@ -281,9 +281,10 @@
     ],
     "sassPath": "Build/Sources/Sass/component/_button-group.scss",
     "demoPath": "typo3/sysext/styleguide/Resources/Private/Templates/Backend/Components/Buttons.fluid.html",
+    "demoDerives": false,
     "markupDigests": {
-      "14": "7a491ddcc180",
-      "15": "7a491ddcc180"
+      "14": "03204ba7a30b",
+      "15": "03204ba7a30b"
     },
     "keywords": [
       "button group",
@@ -447,9 +448,10 @@
     "examples": [],
     "sassPath": "Build/Sources/Sass/component/_dropdown.scss",
     "demoPath": "typo3/sysext/styleguide/Resources/Private/Templates/Backend/Components/Dropdown.fluid.html",
+    "demoDerives": false,
     "markupDigests": {
-      "14": "eb6291f18f51",
-      "15": "eb6291f18f51"
+      "14": "60c7277a7bc0",
+      "15": "60c7277a7bc0"
     },
     "keywords": [
       "dropdown",
@@ -630,9 +632,10 @@
     ],
     "sassPath": "Build/Sources/Sass/component/forms/_form-control.scss",
     "demoPath": "typo3/sysext/styleguide/Resources/Private/Templates/Backend/Components/Input.fluid.html",
+    "demoDerives": false,
     "markupDigests": {
-      "14": "ca8a4d56d4b8",
-      "15": "ca8a4d56d4b8"
+      "14": "c32b71d0639d",
+      "15": "c32b71d0639d"
     },
     "keywords": [
       "input",
@@ -1111,9 +1114,10 @@
       "Build/Sources/Sass/component/_status-indicator.scss"
     ],
     "demoPath": "typo3/sysext/styleguide/Resources/Private/Templates/Backend/Components/StatusIndicators.fluid.html",
+    "demoDerives": false,
     "markupDigests": {
-      "14": "207f8cd6bef8",
-      "15": "207f8cd6bef8"
+      "14": "2890d1270082",
+      "15": "2890d1270082"
     },
     "keywords": [
       "status indicator",

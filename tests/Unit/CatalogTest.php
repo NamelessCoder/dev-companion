@@ -473,6 +473,77 @@ final class CatalogTest extends TestCase
         self::assertStringContainsString($card['demoSelector'], $card['markup'], 'the selector names something the entry itself shows');
     }
 
+    /**
+     * The other four demos D-CAT-003 read on 2026-08-02. They build the page
+     * out of the component, so every example carries the root class and none of
+     * them is the component — there is nothing better to select, and selecting
+     * would only move which scaffolding is handed over. The entry says so, and
+     * the demo is then not read at all rather than read and filtered.
+     */
+    #[Test]
+    public function anEntryWhoseDemoShowsNothingCopyableKeepsItsCuratedMarkup(): void
+    {
+        $root = $this->coreCheckout('14.3.5');
+        $backendCss = $root . '/typo3/sysext/backend/Resources/Public/Css';
+        mkdir($backendCss, 0o777, true);
+        file_put_contents($backendCss . '/backend.css', '.form-control {} .form-label {}');
+
+        $styleguide = $root . '/typo3/sysext/styleguide';
+        mkdir($styleguide . '/Resources/Private/Templates/Backend/Components', 0o777, true);
+        file_put_contents($styleguide . '/composer.json', json_encode([
+            'name' => 'typo3/cms-styleguide',
+            'type' => 'typo3-cms-framework',
+            'extra' => ['typo3/cms' => ['extension-key' => 'styleguide']],
+        ], JSON_THROW_ON_ERROR));
+        file_put_contents(
+            $styleguide . '/Resources/Private/Templates/Backend/Components/Input.fluid.html',
+            '<sg:example><div class="example-container"><div class="example-item">'
+                . '<input type="text" class="form-control"></div></div></sg:example>',
+        );
+        Instance::discoverFrom($root);
+
+        $result = Registry::call('typo3_component_lookup', ['query' => 'form-control']);
+        $input = array_values(array_filter(
+            $result->data['components'],
+            static fn(array $entry): bool => $entry['name'] === 'input',
+        ))[0];
+
+        self::assertSame('installation', $result->data['componentSource'], 'the contract is still the installed one');
+        self::assertSame('catalog', $input['markupSource']);
+        self::assertStringNotContainsString('example-container', $input['markup']);
+        self::assertStringContainsString('form-group', $input['markup'], 'the curated markup, unchanged');
+        self::assertNotContains(
+            'EXT:styleguide/Resources/Private/Templates/Backend/Components/Input.fluid.html',
+            $input['sourceFiles'],
+            'a file nothing was read from is not a source',
+        );
+    }
+
+    /**
+     * The two curated fields are alternatives: one picks the example the
+     * component is shown in, the other says there is none. An entry carrying
+     * both says which was meant to nobody.
+     */
+    #[Test]
+    public function anEntryThatDerivesNothingNamesADemoAndSelectsNothingInIt(): void
+    {
+        $suppressed = [];
+        foreach (Catalogs::read('components') as $entry) {
+            if (($entry['demoDerives'] ?? true) !== false) {
+                continue;
+            }
+            $suppressed[] = $entry['name'];
+            self::assertNotSame('', (string) ($entry['demoPath'] ?? ''), $entry['name'] . ' derives nothing from a demo it does not name');
+            self::assertArrayNotHasKey('demoSelector', $entry, $entry['name'] . ' both selects an example and says there is none');
+        }
+
+        self::assertSame(
+            ['button-group', 'dropdown', 'input', 'status-indicator'],
+            $suppressed,
+            'the entries read as showing the component nowhere copyable, on 14.3 and main',
+        );
+    }
+
     #[Test]
     public function onlyAnEntryWithADemoSelectsWithinIt(): void
     {

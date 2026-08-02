@@ -93,3 +93,26 @@ a judgment rather than by the count being zero. That is a second field and it
 is not this one, so the queue carries it rather than `demoSelector` being
 stretched to mean two things. The first half of **Wrong if** — state that
 exists only at runtime — is untried either way.
+
+The field is `demoDerives`, and the four are curated. It is a second field
+rather than a `demoSelector` of `false`: one value that both picks an example
+and says there is none is two rules read off one place, and the entry stops
+saying which was meant. The permissive extractor is dismissed for the reason
+above — every one of these examples carries the root class correctly, so there
+is nothing to be strict about — and so is deriving nothing wherever a known
+scaffolding class appears, which is the same extractor wearing a blocklist and
+would decide by a pattern what the index decides by reading. An entry that
+derives nothing is not read at all rather than read and filtered, so the demo is
+not among its `sourceFiles`.
+
+`dropdown` was checked separately, and it is a suppression rather than a
+trimming question: its three examples on 14.3 and main are the popover dropdown
+inside an inline-styled flex row, a legacy `data-bs-toggle` variant, and a
+submenu in the same row — and the curated markup is already the first of them
+without the wrapper, so there is nothing a trimming rule would win. `button` is
+not one of the four and never was: `Buttons.fluid.html` opens with a bare
+`<button class="btn btn-default">Button title</button>`, which is the entry's
+own markup. The four are `button-group` — the `btn-group` half of that file —
+`dropdown`, `input` and `status-indicator`, confirmed by reading all 25 entries
+against both checkouts again. `catalog:check` digests the whole file for them,
+because what a rewrite can change there is whether the judgment still stands.

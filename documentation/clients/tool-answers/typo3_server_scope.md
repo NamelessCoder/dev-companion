@@ -142,7 +142,8 @@ Which tool to call when:
 - Working on a backend module and needing its registration → typo3_backend_module_lookup
 - Unsure which Fluid namespace prefixes a template may use undeclared → typo3_fluid_namespace_list
 - About to recommend a command, or asking what this project consists of → typo3_project_scope
-- Starting work on a TYPO3 major you have not built on recently — before asking what a version changed or whether an API is still there → typo3_changelog_lookup
+- Starting work on a TYPO3 major you have not built on recently — before asking what a version changed → typo3_changelog_lookup
+- Asking whether a pattern still works in a version — what nothing changed has no changelog entry, so the changelog's silence is not an answer → typo3_documentation_lookup with targetVersion and short English queries for the reference that documents the pattern, then with page to read it
 - Upgrading or maintaining an installation, and needing the order of operations → typo3_task_guide, then typo3_project_scope and typo3_changelog_lookup for what this one is and what the target version changed
 - Working in one extension and needing what it registers → typo3_extension_scope with its key
 - About to claim that an extension is (or is not) part of the core, or to require one → typo3_system_extension_lookup
@@ -462,8 +463,12 @@ Data:
             "call": "typo3_project_scope"
         },
         {
-            "when": "Starting work on a TYPO3 major you have not built on recently — before asking what a version changed or whether an API is still there",
+            "when": "Starting work on a TYPO3 major you have not built on recently — before asking what a version changed",
             "call": "typo3_changelog_lookup"
+        },
+        {
+            "when": "Asking whether a pattern still works in a version — what nothing changed has no changelog entry, so the changelog's silence is not an answer",
+            "call": "typo3_documentation_lookup with targetVersion and short English queries for the reference that documents the pattern, then with page to read it"
         },
         {
             "when": "Upgrading or maintaining an installation, and needing the order of operations",

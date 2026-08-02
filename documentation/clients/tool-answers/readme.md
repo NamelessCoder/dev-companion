@@ -22,7 +22,7 @@ showing. Nothing else is rewritten: each block is what a client received.
 - [`typo3_task_guide`](typo3_task_guide.md) — brief: with area, brief: task only, brief: paths of two kinds
 - [`typo3_test_run_guide`](typo3_test_run_guide.md) — runTests: all, runTests: hit, runTests: miss, runTests: narrowed by paths
 - [`typo3_architecture_lookup`](typo3_architecture_lookup.md) — architecture: path, architecture: topic, architecture: miss
-- [`typo3_documentation_lookup`](typo3_documentation_lookup.md) — documentation: unsupported version
+- [`typo3_documentation_lookup`](typo3_documentation_lookup.md) — documentation: search, documentation: page, documentation: unsupported version
 - [`typo3_component_lookup`](typo3_component_lookup.md) — components: list, components: hit, components: miss
 - [`typo3_system_extension_lookup`](typo3_system_extension_lookup.md) — system extensions: hit, system extensions: miss, system extensions: everything
 - [`typo3_reference_list`](typo3_reference_list.md) — references

@@ -36,6 +36,7 @@ Fluid roots: Resources/Private/Templates/, Resources/Private/Partials/, Resource
 Registration files: ext_localconf.php, ext_tables.sql, Configuration/page.tsconfig, Configuration/user.tsconfig, Configuration/RequestMiddlewares.php, Configuration/Services.yaml, Configuration/JavaScriptModules.php
 
 Classes: Command (8), Controller (90), Domain (5), Event (1), EventListener (4), Form (201), Hooks (2), Middleware (12), Service (2), Upgrades (3), ViewHelpers (15)
+Each count is every PHP file below that directory, its own subdirectories included.
 
 Requires: ext-intl *, ext-libxml *, psr/event-dispatcher ^1.0, typo3/cms-core 14.3.*@dev
 

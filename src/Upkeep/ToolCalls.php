@@ -22,6 +22,12 @@ namespace Typo3CmsMcp\Upkeep;
  * answers with prose somebody else wrote, so a truncated title in a feedback
  * — `typo3_t…` is in one of them — reads to the name check as a tool that does
  * not exist.
+ *
+ * Two calls reach outside this repository, and no other tool can. They are here
+ * rather than behind a skip list because a host that does not answer is
+ * `source-not-answering`, which is an answer the schema declares: the contract
+ * test goes red on the tool being wrong and not on the network being down.
+ * `D-DOC-008` is the measurement and what would take them back out.
  */
 final class ToolCalls
 {
@@ -68,6 +74,18 @@ final class ToolCalls
             'architecture: path' => ['typo3_architecture_lookup', ['paths' => ['typo3/sysext/core/Classes/DataHandling/DataHandler.php']]],
             'architecture: topic' => ['typo3_architecture_lookup', ['task' => 'sass build']],
             'architecture: miss' => ['typo3_architecture_lookup', ['task' => 'quantumflux']],
+            // The second call is the first one's answer handed back: that is
+            // the two-step the tool documents, and a URL invented here would
+            // illustrate a flow no caller has.
+            'documentation: search' => ['typo3_documentation_lookup', [
+                'queries' => ['page title event', 'page title provider'],
+                'targetVersion' => '14.3',
+                'limit' => 3,
+            ]],
+            'documentation: page' => ['typo3_documentation_lookup', [
+                'page' => 'https://docs.typo3.org/m/typo3/reference-coreapi/14.3/en-us/ApiOverview/Seo/PageTitleApi.html',
+                'targetVersion' => '14.3',
+            ]],
             'documentation: unsupported version' => ['typo3_documentation_lookup', [
                 'queries' => ['page title event'],
                 'targetVersion' => '999',

@@ -221,6 +221,11 @@ final class ToolContractTest extends TestCase
      * an installation, so every installation-backed entry here exercises the
      * unanswered path.
      *
+     * Two of the calls reach docs.typo3.org, which is the one tool that reaches
+     * anywhere. What is asserted below does not turn on the host: unreached, it
+     * answers `source-not-answering`, and that validates like any other answer —
+     * `D-DOC-008`, held by `DocumentationTest`.
+     *
      * @return array<string, array{0: string, 1: array<string, mixed>}>
      */
     public static function toolCalls(): array

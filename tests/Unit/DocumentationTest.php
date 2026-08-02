@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Typo3CmsMcp\Tests\Unit;
 
+use Mcp\Capability\Discovery\SchemaValidator;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Typo3CmsMcp\Manual\Documentation;
+use Typo3CmsMcp\Tool\DocumentationLookup;
 use Typo3CmsMcp\Tool\Registry;
 
 final class DocumentationTest extends TestCase
@@ -196,6 +198,42 @@ final class DocumentationTest extends TestCase
         // Which of the two unavailable cases it is, because the remedies are
         // opposite: this one is answered by asking again (D-ANS-007).
         self::assertSame('source-not-answering', $answer['unavailable']['cause']);
+    }
+
+    /**
+     * What the shared call table rests on. Two of its entries ask
+     * docs.typo3.org for real so the recording has a filled answer to show, and
+     * `ToolContractTest` drives the same entries — so a host that is down has
+     * to come back as an answer rather than as a red build (`D-DOC-008`).
+     *
+     * The data half is what is held here, on both modes. The text half is the
+     * one branch every unavailable answer shares, and the entry that asks for
+     * TYPO3 999 already drives it without reaching anything.
+     */
+    #[Test]
+    public function aSourceThatDidNotAnswerIsStillAnAnswerToTheSchema(): void
+    {
+        $documentation = new Documentation(static fn(string $url): ?string => null);
+        $schema = DocumentationLookup::outputSchema();
+
+        $answers = [
+            'search' => $documentation->lookup(['assets'], '14.3'),
+            'page' => $documentation->page(
+                'https://docs.typo3.org/m/typo3/reference-coreapi/14.3/en-us/ApiOverview/Assets/Index.html',
+                '14.3',
+            ),
+        ];
+
+        foreach ($answers as $mode => $answer) {
+            self::assertNotNull($answer['unavailable'], $mode . ' gave no reason');
+            self::assertSame('source-not-answering', $answer['unavailable']['cause'], $mode);
+
+            $errors = (new SchemaValidator())->validateAgainstJsonSchema(
+                json_decode((string) json_encode($answer, JSON_THROW_ON_ERROR), true),
+                $schema,
+            );
+            self::assertSame([], $errors, $mode . ' broke the output schema: ' . json_encode($errors));
+        }
     }
 
     /**

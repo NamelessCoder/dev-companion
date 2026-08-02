@@ -90,6 +90,8 @@ final class InstallerTest extends TestCase
                 'skills' => [
                     'typo3-backend-module-development',
                     'typo3-content-element-development',
+                    'typo3-core-patch-development',
+                    'typo3-core-patch-review',
                     'typo3-extension-conformance',
                     'typo3-extension-documentation',
                     'typo3-extension-release',
@@ -103,6 +105,8 @@ final class InstallerTest extends TestCase
             foreach ([
                 'typo3-backend-module-development',
                 'typo3-content-element-development',
+                'typo3-core-patch-development',
+                'typo3-core-patch-review',
                 'typo3-extension-conformance',
                 'typo3-extension-documentation',
                 'typo3-extension-release',
@@ -117,6 +121,8 @@ final class InstallerTest extends TestCase
             self::assertStringNotContainsString('/.codex/config.toml', $gitignore);
             foreach ([
                 'typo3-content-element-development',
+                'typo3-core-patch-development',
+                'typo3-core-patch-review',
                 'typo3-extension-conformance',
                 'typo3-extension-documentation',
                 'typo3-extension-release',
@@ -141,6 +147,8 @@ final class InstallerTest extends TestCase
             foreach ([
                 'typo3-backend-module-development',
                 'typo3-content-element-development',
+                'typo3-core-patch-development',
+                'typo3-core-patch-review',
                 'typo3-extension-conformance',
                 'typo3-extension-documentation',
                 'typo3-extension-release',

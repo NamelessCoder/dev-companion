@@ -238,6 +238,14 @@
       "call": "typo3_project_scope, then typo3_task_guide for the workflow and typo3_extension_scope for each extension in scope"
     },
     {
+      "when": "Reviewing a TYPO3 core patch — the current changes in a core checkout, a commit, or a change fetched from Gerrit — rather than a project or an extension",
+      "call": "typo3_rule_lookup per obligation the diff raises, typo3_changelog_lookup for the precedent, typo3_test_run_guide with the changed paths, then typo3_commit_message_guide"
+    },
+    {
+      "when": "Writing a core patch: taking a Forge issue on, fixing a core bug, deprecating or removing core API, or amending a patch after review",
+      "call": "typo3_task_guide with area core, then typo3_architecture_lookup with the paths you are changing, typo3_test_run_guide for the suites that can fail, and typo3_rule_lookup for the Gerrit workflow"
+    },
+    {
       "when": "Starting a core task and looking for the applicable conventions and checks",
       "call": "typo3_task_guide"
     },

@@ -1,7 +1,8 @@
 ---
 date: 2026-08-02T22:28:17+00:00
 category: tool-gap
-status: open
+status: closed
+closed: 2026-08-02
 model: claude-opus-5
 directory: /home/benji/projects/typo3-cms
 ---

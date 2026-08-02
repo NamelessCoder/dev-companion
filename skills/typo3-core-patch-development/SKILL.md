@@ -28,11 +28,17 @@ goes stale in somebody else's checkout with nothing to report it.
    the report. Half of what a stale issue describes is usually gone, and the
    half that remains is the patch.
 
-The reproduction is written as a test wherever the subsystem has a layer that
-can hold it. `typo3_test_run_guide` with the paths you are about to change says
-which layer that is — a test in the wrong layer asserts the wrong thing and
-passes for the wrong reason. Prove it fails before the fix and passes after it,
-in that order, or the test is evidence about nothing.
+Whether that reproduction can be a test is a property of what you are changing,
+and `typo3_test_run_guide` with the paths you are about to touch is what says
+so: it names the suites that can fail on them, and a change to backend markup, a
+build step or shipped JavaScript may have none that can hold the bug.
+
+Where there is a layer, write the test first and prove it fails before the fix
+and passes after it, in that order. A test written afterwards asserts what the
+code now does, which is true of any code. Where there is none, reproduce by hand
+and write down the steps and what you saw, because that is what a reviewer
+repeats — an unreproducible claim is what sends a patch back regardless of
+whether it is right.
 
 ## Make the change
 
@@ -43,6 +49,11 @@ afterwards confirms what you already wrote.
 Keep the patch one change. What else you noticed is another issue and another
 patch; a diff that fixes two things is a diff a reviewer has to accept or reject
 as one.
+
+Find out whether the area is moving before you build on it, and fetch and rebase
+onto the branch you target before you finalise. A patch written against code
+that changed underneath it is not a patch that needs adjusting — the method it
+called can be gone, and with it the reason the change looked right.
 
 ## Verify with the project's own commands
 
@@ -82,6 +93,13 @@ git configuration rather than in what the repository is called.
 
 Pushing is a step of its own and is taken when it is asked for. Everything above
 is local and reversible; the push is neither.
+
+**Ask whether the change goes up visible to everyone or unlisted, every time.**
+The two are different refspecs and the difference is not a preference: one
+publishes the change to whoever watches the project and notifies reviewers, and
+neither the publication nor the notification is quietly undone. `typo3_rule_lookup`
+for the Gerrit workflow has both forms. Which one this change wants is the
+user's decision and never a default read off what the session did last.
 
 ## Amending after review
 

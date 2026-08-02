@@ -71,3 +71,30 @@ and was judged `covered`, and the two findings three runs had missed came from
 those calls. A repository review therefore needs more of this server than the
 version, the registries and the component contract. The run stands in commit
 `021eac8`, the two runs after it having overwritten the file.
+
+## Since then
+
+The same three channels failed again on a task that builds rather than reviews.
+A session in `site-new` wrote a custom backend preview for a TYPO3 14 content
+element and called nothing — no tool, no skill, the work done by reading vendor
+code (`feedback/2026-08-01-002926-debrief-of-a-typo3-14-backend-content-element.md`).
+It ran on 2026-08-01, a day after `b85036b` put `typo3_project_scope` at the
+head of the `instructions`, so the entry point this entry added was in the text
+and did not fire. That is not the **Wrong if**: it was a different client and a
+much smaller model — `opencode` with `deepseek-v4-flash-free` — and neither has
+been measured here.
+
+What the sighting adds is a cause this entry did not name. The skill
+descriptions arrived in full, as they did for `REVIEW-01`, and
+`typo3-content-element-development` opens "Build or refactor TYPO3 **frontend**
+content elements" with `previews` ninth of the eleven things it then lists. The
+task was a backend preview of a content element, which that skill covers in as
+many words — "Add a useful backend preview for a custom CType" — and which
+`knowledge/task-intents.json` has matched on `backend preview` since `51e5e5a`
+on 2026-07-30. So the description names one side of a domain the skill owns both
+sides of, and the other side reads as somebody else's work. That is narrower
+than "leads with the open request", and it is checkable against every skill
+here: `typo3-backend-module-development` promises "TYPO3 backend UI work" and
+means a module, so this task matched a word in each description and belonged
+wholly to the first. The rewrite is queued rather than made, because a
+description is installed into somebody else's project.

@@ -22,6 +22,10 @@ The shape was never the thing worth keeping.
   nothing else does: `unsupported` with a `cause`, the `reason`, the diagnosis,
   where discovery looked and what was set wrong. Beside it stands only the
   caller's own arguments coming back, which claim nothing about anything.
+- The output schema declares the two as `oneOf`, so a hit keeps every field it
+  ever required and an answer carrying both shapes is invalid. The
+  specification makes conformance a server MUST and validation a client SHOULD,
+  so the schema is the promise and it says which of the two arrived.
 - `cause` is `no-installation`, `misconfigured` or `installation-not-answering`.
   Prose already carried the difference and only prose did; `META-02` requires
   "nothing found" and "found but not running" to be distinguishable, and a
@@ -48,14 +52,15 @@ The shape was never the thing worth keeping.
   handed it something to misread; this one hands it nothing, which is the bet.
 - A client swallows an answer it cannot act on and surfaces only errors, so the
   user is told nothing where an error would have reached them.
-- A client validates `structuredContent` strictly and rejects an answer whose
-  fields left the required list. That list is now the caller's own arguments and
-  no more, because the SDK's `SchemaValidator` has no `oneOf` and the two shapes
-  cannot be related in the schema itself — so what a hit guarantees is held by
-  `ToolContractTest` here rather than by the document a client reads.
+- A client validates `structuredContent` and cannot read `oneOf`. The two shapes
+  are declared as alternatives, which is what keeps a hit's full promise in the
+  document rather than only in a test here; a validator that ignores the keyword
+  reads the relaxed outer required list instead and gets a weaker promise than
+  the server keeps.
 
 ## Covered by
 
 - `ToolContractTest::aQuestionThatCannotBeAnsweredHereStatesThatAndNothingElse`
 - `ToolContractTest::onlyOneClassBuildsTheUnsupportedAnswer`
+- `ToolContractTest::anInstallationBackedSchemaOffersTheResultOrTheUnsupportedAnswer`
 - `StdioServerTest::aQuestionThatCannotBeAnsweredHereIsStillAnAnswer`

@@ -58,13 +58,12 @@ final class IconLookup extends ReadOnlyTool
 
     public static function outputSchema(): array
     {
-        return Schema::object([
+        return Schema::installationAnswer([
             'query' => Schema::string(),
             'matchCount' => Schema::integer('For a complete identifier, 1 only when that exact identifier is registered and otherwise 0. For a concept search, the number of matching icons.'),
             'suggestionCount' => Schema::integer('Related identifiers returned beside an identifier validation. The actions-/content- usage prefix alone never makes an icon a suggestion.'),
             'exactMatch' => ['type' => 'boolean', 'description' => 'Whether the query was a registered identifier. False for a query shaped like one that is not registered — the listed icons are then suggestions, not the answer.'],
             'answeredBy' => Schema::answeredBy(),
-            'unsupported' => Schema::unsupported(),
             'icons' => Schema::listOf(Schema::object([
                 'identifier' => Schema::string(),
                 'category' => Schema::string(),
@@ -77,7 +76,7 @@ final class IconLookup extends ReadOnlyTool
             'categories' => Schema::listOf(Schema::string(), 'Returned when no query was given.'),
             'concepts' => Schema::listOf(Schema::string(), 'Concept words that map to a shape. Returned when no query was given.'),
             'scope' => Schema::string('Where these identifiers may be used: the backend registry, not frontend rendering. Carried by every answered lookup.'),
-        ], ['query']);
+        ], ['query', 'matchCount', 'suggestionCount', 'exactMatch', 'answeredBy', 'icons'], ['query']);
     }
 
     public static function answer(array $args): ToolResult

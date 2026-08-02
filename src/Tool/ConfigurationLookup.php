@@ -38,13 +38,12 @@ final class ConfigurationLookup extends ReadOnlyTool
 
     public static function outputSchema(): array
     {
-        return Schema::object([
+        return Schema::installationAnswer([
             'path' => Schema::string('The TYPO3_CONF_VARS path that was read.'),
             'found' => ['type' => 'boolean', 'description' => 'Whether the installation has a value at that path. Present only where one was asked: false is a statement about an installation, and where there was none to ask, unsupported stands in place of this answer.'],
             'value' => ['description' => 'The effective runtime value, of whatever shape the configuration has.'],
             'answeredBy' => Schema::answeredBy(),
-            'unsupported' => Schema::unsupported(),
-        ], ['path']);
+        ], ['path', 'found', 'answeredBy'], ['path']);
     }
 
     public static function answer(array $args): ToolResult

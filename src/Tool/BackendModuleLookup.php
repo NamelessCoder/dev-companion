@@ -39,11 +39,10 @@ final class BackendModuleLookup extends ReadOnlyTool
 
     public static function outputSchema(): array
     {
-        return Schema::object([
+        return Schema::installationAnswer([
             'query' => Schema::string(),
             'matchCount' => Schema::integer(),
             'answeredBy' => Schema::answeredBy(),
-            'unsupported' => Schema::unsupported(),
             'modules' => Schema::listOf(Schema::object([
                 'identifier' => Schema::string(),
                 'parents' => Schema::listOf(Schema::string(), 'The modules it sits under, outermost first.'),
@@ -52,7 +51,7 @@ final class BackendModuleLookup extends ReadOnlyTool
                 'path' => Schema::string('The backend route it answers on.'),
                 'position' => Schema::string('Its declared before/after position, if any.'),
             ], ['identifier', 'parents', 'extension', 'path'])),
-        ], ['query']);
+        ], ['query', 'matchCount', 'answeredBy', 'modules'], ['query']);
     }
 
     public static function answer(array $args): ToolResult

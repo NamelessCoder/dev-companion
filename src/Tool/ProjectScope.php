@@ -35,7 +35,7 @@ final class ProjectScope extends ReadOnlyTool
 
     public static function outputSchema(): array
     {
-        return Schema::object([
+        return Schema::installationAnswer([
             'root' => Schema::nullableString('Absolute path of the project. Null when there is no installation to describe.'),
             'kind' => Schema::string('core-checkout or composer-project.'),
             'typo3Version' => Schema::nullableString('The TYPO3 version installed here, read from the core package.'),
@@ -65,8 +65,7 @@ final class ProjectScope extends ReadOnlyTool
                 'file' => Schema::string('The patch file, relative to the project root.'),
             ], ['package', 'description', 'file']), 'Patches from extra.patches. A patched package does not behave as its version says.'),
             'answeredBy' => Schema::answeredBy(),
-            'unsupported' => Schema::unsupported(),
-        ], []);
+        ], ['root', 'extensions', 'sites', 'commands', 'patches', 'answeredBy'], []);
     }
 
     public static function answer(array $args): ToolResult

@@ -19,13 +19,37 @@ use Typo3CmsMcp\Knowledge\Scope;
 final class Schema
 {
     /**
+     * The output schema of a tool that answers from the installation: either
+     * the result it promises, or the unsupported answer in place of it.
+     *
+     * The two are alternatives and the schema says so, so a client validating
+     * structuredContent — which the specification tells it to — still gets the
+     * full promise on a hit, and gets it as a promise rather than as a field
+     * that might be there. oneOf also makes the two exclusive: an answer
+     * carrying both is invalid, which is the shape this whole entry is against.
+     *
+     * @param array<string, mixed> $properties
+     * @param array<int, string>   $answered what a result always carries
+     * @param array<int, string>   $echo     what both carry: the caller's own
+     *                                       arguments, which claim nothing
+     * @return array<string, mixed>
+     */
+    public static function installationAnswer(array $properties, array $answered, array $echo = []): array
+    {
+        $properties['unsupported'] = self::unsupported();
+
+        return self::object($properties, $echo) + ['oneOf' => [
+            self::object([], $answered),
+            self::object([], [...$echo, 'unsupported']),
+        ]];
+    }
+
+    /**
      * The question could not be answered here, and this is the whole answer.
      *
      * Present instead of the result, never beside it: a tool that cannot ask
      * states this and states nothing else, so there is no count to read as a
-     * count and no flag to read as a fact. Which is why the fields it replaces
-     * leave the required list — presence is the discriminator, and a client
-     * reads this first or reads a result it can trust.
+     * count and no flag to read as a fact.
      *
      * @return array<string, mixed>
      */

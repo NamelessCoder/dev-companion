@@ -18,7 +18,9 @@ looked, and what was set and could not be used.
 
 `Result\Unsupported` is the only place that shape is built, so no path reaches
 it without a reason to hand over. `answeredBy` says which of the two sources
-answered and has no case for neither, because that is this key instead.
+answered and has no case for neither, because that is this key instead. The
+output schema declares the result and the unsupported answer as `oneOf`, so a
+hit promises every field it always did and an answer carrying both is invalid.
 
 ## From
 
@@ -35,5 +37,6 @@ installation that had just listed 27 packages.
 
 - `ToolContractTest::aQuestionThatCannotBeAnsweredHereStatesThatAndNothingElse`
 - `ToolContractTest::onlyOneClassBuildsTheUnsupportedAnswer`
+- `ToolContractTest::anInstallationBackedSchemaOffersTheResultOrTheUnsupportedAnswer`
 - `StdioServerTest::aQuestionThatCannotBeAnsweredHereIsStillAnAnswer`
 - `ScopeTest::anUnconsultedConfigurationPathIsNotReportedAsAbsent`

@@ -44,7 +44,7 @@ final class ChangelogLookup extends ReadOnlyTool
 
     public static function outputSchema(): array
     {
-        return Schema::object([
+        return Schema::installationAnswer([
             'query' => Schema::string(),
             'matchCount' => Schema::integer('Entries carrying every word of the query, before the limit.'),
             'entries' => Schema::listOf(Schema::object([
@@ -57,8 +57,7 @@ final class ChangelogLookup extends ReadOnlyTool
             ], ['type', 'version', 'issue', 'title', 'tags', 'file'])),
             'versions' => Schema::listOf(Schema::string(), 'The versions this installation ships changelog entries for, newest first. Anything outside them is not in this answer.'),
             'answeredBy' => Schema::answeredBy(),
-            'unsupported' => Schema::unsupported(),
-        ], ['query']);
+        ], ['query', 'matchCount', 'entries', 'versions', 'answeredBy'], ['query']);
     }
 
     public static function answer(array $args): ToolResult

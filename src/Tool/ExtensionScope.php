@@ -75,7 +75,7 @@ final class ExtensionScope extends ReadOnlyTool
 
     public static function outputSchema(): array
     {
-        return Schema::object([
+        return Schema::installationAnswer([
             'key' => Schema::string('The extension key that was asked for.'),
             'path' => Schema::nullableString('Absolute path of the extension. Null when the installation does not have it.'),
             'origin' => ['type' => ['string', 'null'], 'enum' => ['system', 'project', 'third-party', 'fixture', null], 'description' => 'system: TYPO3\'s own. project: inside the repository. third-party: installed as a dependency. fixture: below a Tests/ directory, so it belongs to the test setup.'],
@@ -122,8 +122,7 @@ final class ExtensionScope extends ReadOnlyTool
             ], ['manual', 'readme', 'tests', 'languageFiles'], 'What it ships beside its registrations. Every key is present even when the artifact is not, because the absence of a manual, a test or a translation is the answer a file listing cannot give.'),
             'installed' => Schema::listOf(Schema::string(), 'On a miss: the extension keys this installation does have.'),
             'answeredBy' => Schema::answeredBy(),
-            'unsupported' => Schema::unsupported(),
-        ], ['key']);
+        ], ['key', 'path', 'origin', 'tcaTables', 'tcaOverrides', 'contentElements', 'backendModules', 'icons', 'siteSets', 'serviceTags', 'files', 'notReadStatically', 'artifacts', 'answeredBy'], ['key']);
     }
 
     public static function answer(array $args): ToolResult

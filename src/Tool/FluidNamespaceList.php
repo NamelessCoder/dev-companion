@@ -32,15 +32,14 @@ final class FluidNamespaceList extends ReadOnlyTool
 
     public static function outputSchema(): array
     {
-        return Schema::object([
+        return Schema::installationAnswer([
             'matchCount' => Schema::integer(),
             'answeredBy' => Schema::answeredBy(),
-            'unsupported' => Schema::unsupported(),
             'namespaces' => Schema::listOf(Schema::object([
                 'prefix' => Schema::string('The prefix usable in a template without declaring it, for example "core".'),
                 'phpNamespaces' => Schema::listOf(Schema::string(), 'The PHP namespaces it resolves ViewHelpers from.'),
             ], ['prefix', 'phpNamespaces'])),
-        ], []);
+        ], ['matchCount', 'answeredBy', 'namespaces'], []);
     }
 
     public static function answer(array $args): ToolResult

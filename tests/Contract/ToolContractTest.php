@@ -140,7 +140,38 @@ final class ToolContractTest extends TestCase
                 $name . ' states something about an installation nothing asked, or drops a field it still requires'
             );
             self::assertArrayNotHasKey('answeredBy', $data, $name . ' names a source where none answered');
-            self::assertArrayNotHasKey('answeredBy', $schema['properties']['unsupported'], 'the two are alternatives');
+        }
+    }
+
+    /**
+     * The schema says the two are alternatives rather than leaving a client to
+     * infer it. That is what keeps the full promise on a hit — the spec tells a
+     * client to validate structuredContent, and a required list relaxed to suit
+     * the other branch would have quietly withdrawn the promise instead.
+     */
+    #[Test]
+    public function anInstallationBackedSchemaOffersTheResultOrTheUnsupportedAnswer(): void
+    {
+        foreach (self::installationBackedSchemas() as $name => $schema) {
+            $branches = $schema['oneOf'];
+            self::assertCount(2, $branches, $name . ' does not offer exactly the two');
+
+            [$answered, $unsupported] = $branches;
+            self::assertContains('answeredBy', $answered['required'], $name . ' does not promise its source on a hit');
+            self::assertNotContains('unsupported', $answered['required'], $name . ' asks for both at once');
+            // The echo is in both branches on purpose; what separates them is
+            // that one adds the result and the other adds the reason there is
+            // none.
+            self::assertSame(
+                [...$schema['required'], 'unsupported'],
+                $unsupported['required'],
+                $name . ' asks the unsupported branch for more than the reason and the echo'
+            );
+            self::assertNotSame(
+                [],
+                array_diff($answered['required'], $schema['required']),
+                $name . ' promises nothing beyond the echo on a hit'
+            );
         }
     }
 
@@ -250,7 +281,7 @@ final class ToolContractTest extends TestCase
      * declare answeredBy, keyed by name with the schema that says what they
      * promise.
      *
-     * @return array<string, array{properties: array<string, mixed>, required: array<int, string>}>
+     * @return array<string, array{properties: array<string, mixed>, required: array<int, string>, oneOf: array<int, array{required: array<int, string>}>}>
      */
     private static function installationBackedSchemas(): array
     {
@@ -261,6 +292,7 @@ final class ToolContractTest extends TestCase
                 $schemas[$definition['name']] = [
                     'properties' => $properties,
                     'required' => $definition['outputSchema']['required'] ?? [],
+                    'oneOf' => $definition['outputSchema']['oneOf'] ?? [],
                 ];
             }
         }

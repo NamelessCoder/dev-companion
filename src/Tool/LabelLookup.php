@@ -61,11 +61,10 @@ final class LabelLookup extends ReadOnlyTool
 
     public static function outputSchema(): array
     {
-        return Schema::object([
+        return Schema::installationAnswer([
             'query' => Schema::string(),
             'matchCount' => Schema::integer(),
             'answeredBy' => Schema::answeredBy(),
-            'unsupported' => Schema::unsupported(),
             'terms' => Schema::listOf(Schema::object([
                 'term' => Schema::string('One word of the query; a label has to carry every one of them.'),
                 'matchCount' => Schema::integer('How many labels this word alone reaches — where to narrow when the query as a whole reaches none.'),
@@ -77,7 +76,7 @@ final class LabelLookup extends ReadOnlyTool
                 'source' => Schema::string('The label text in the searched locale.'),
                 'resource' => Schema::string('The XLF file it lives in.'),
             ], ['ref', 'domain', 'key', 'source'])),
-        ], ['query']);
+        ], ['query', 'resource', 'matchCount', 'answeredBy', 'terms', 'labels'], ['query']);
     }
 
     public static function answer(array $args): ToolResult

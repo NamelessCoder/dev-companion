@@ -45,6 +45,32 @@ statement about the harness is verified in `.checkouts/testing-framework/<line>`
 the way a statement about the core is verified in `.checkouts/<branch>`, and
 `bin/cli catalog:check` re-reads both.
 
+## Scenario environments
+
+A case is only meaningful in the working directory it names, and two of the five
+`scenarios/readme.md` defines are made by this checkout rather than found on the
+machine:
+
+```bash
+bin/cli environment:status        # which one this checkout has, and which is only declared
+bin/cli environment:create E-SITE # a DDEV project with TYPO3 installed in it
+bin/cli environment:create E-NONE # a directory with no installation above it
+```
+
+They land below `.environments/`, which is gitignored. `E-SITE` is six `ddev`
+commands: a TYPO3 project, its containers, TYPO3's own base distribution at the
+covered stable version, the system extensions this server's console path asks
+for, and the setup that writes the database, the admin user and a site
+configuration. Minutes on a cold Composer cache, seconds on a warm one, and
+running it again finishes one that stopped halfway.
+
+What it is for is a directory in which `ddev exec vendor/bin/typo3 …` answers —
+the half of this server that no test reaches, and where both `D-DIS-007` and
+`R-DIS-018` were found by a real run instead. What it is not for is a recorded
+forward review: a scaffold's defects are this repository's own, so a review
+still runs in a real project. The other three environments say where they come
+from when you ask for them, and the reasoning is `D-EVI-004`.
+
 ## Tests
 
 ```bash

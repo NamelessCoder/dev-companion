@@ -15,6 +15,8 @@ use Typo3CmsMcp\Upkeep\Command\CheckoutUpdate;
 use Typo3CmsMcp\Upkeep\Command\DecisionCheck;
 use Typo3CmsMcp\Upkeep\Command\DecisionIndex;
 use Typo3CmsMcp\Upkeep\Command\DecisionList;
+use Typo3CmsMcp\Upkeep\Command\EnvironmentCreate;
+use Typo3CmsMcp\Upkeep\Command\EnvironmentStatus;
 use Typo3CmsMcp\Upkeep\Command\FeedbackArchive;
 use Typo3CmsMcp\Upkeep\Command\FeedbackList;
 use Typo3CmsMcp\Upkeep\Command\HintCoverage;
@@ -116,6 +118,8 @@ final class Cli
         $application->addCommand(new KnowledgeFormat());
         $application->addCommand(new CheckoutUpdate());
         $application->addCommand(new CheckoutStatus());
+        $application->addCommand(new EnvironmentCreate());
+        $application->addCommand(new EnvironmentStatus());
         $application->addCommand(new RepositoryCheck());
 
         return self::$application = $application;

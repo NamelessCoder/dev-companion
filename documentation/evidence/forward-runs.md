@@ -13,7 +13,10 @@ carried out.
    launch has to get right — the session id the grading later needs among it —
    is [driving-a-session.md](../driving-a-session.md).
    [todo/reference/](../../todo/reference/) says which checkout plays which environment on this
-   machine, and how the client is reached there.
+   machine, and how the client is reached there. A recorded review runs in one
+   of those and not in the `E-SITE` this repository makes for itself: what a
+   review would find in a scaffold is what this repository put there
+   ([`D-EVI-004`](../../decisions/evidence/evi-004-the-environment-is-made-here-and-the-repository-under-review-is-not.md)).
 2. `bin/cli scenarios:record <id> <client>` writes the empty run, and
    `bin/cli scenarios:show <id>` prints the prompt and the numbered criteria.
 3. Paste the prompt verbatim. Add nothing: no tool names, no hints that a TYPO3

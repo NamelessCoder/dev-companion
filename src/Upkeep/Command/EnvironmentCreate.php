@@ -1,0 +1,176 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Typo3CmsMcp\Upkeep\Command;
+
+use Symfony\Component\Console\Attribute\Argument;
+use Symfony\Component\Console\Attribute\AsCommand;
+use Symfony\Component\Console\Output\OutputInterface;
+use Typo3CmsMcp\Upkeep\Cli;
+use Typo3CmsMcp\Upkeep\Environments;
+
+/**
+ * Makes the working directory a scenario names, where this repository makes it.
+ *
+ * `E-SITE` is the one that costs something and the one that was missing. It is
+ * a DDEV project with a TYPO3 installation in it, built from TYPO3's own base
+ * distribution at the covered stable version, set up against the database DDEV
+ * brings, with a site configuration and a root page — which is to say a
+ * directory in which `ddev exec vendor/bin/typo3 …` answers. That is the half
+ * of this server no test reaches: `D-DIS-007` and `R-DIS-018` were both found
+ * by a real run, in somebody's project, because there was no installation here
+ * to find them in.
+ *
+ * What it is not is a repository to review. The site package, the extension
+ * with real infrastructure, the extension a major behind — those are what a
+ * forward review is about, and a scaffold of one would be this repository
+ * writing the defects it then measures itself on finding (`D-EVI-001`). So this
+ * makes the installation and stops there, and the ids it declines say where the
+ * rest come from.
+ *
+ * Every step is a command a person could have typed, printed before it runs and
+ * quoted in full when it fails. A build that takes minutes and dies on step
+ * four has to say which four.
+ */
+#[AsCommand(
+    name: 'environment:create',
+    description: 'make the working directory a scenario is run in, where this repository makes it',
+)]
+final class EnvironmentCreate
+{
+    public function __invoke(
+        OutputInterface $output,
+        #[Argument('which environment, as `scenarios/readme.md` names it')]
+        string $environment = 'E-SITE',
+    ): int {
+        $id = strtoupper(trim($environment));
+        $sources = Environments::sources();
+        if (!isset($sources[$id])) {
+            Cli::errors($output)->writeln(sprintf(
+                "%s is no environment this repository knows. `scenarios/readme.md` names these:\n    %s",
+                $environment,
+                implode(', ', Environments::ids()),
+            ));
+
+            return 1;
+        }
+
+        if ($sources[$id] !== Environments::MADE) {
+            $output->writeln($id . ' is not made here.');
+            $output->writeln('');
+            $output->writeln(Environments::reason($id));
+
+            return 1;
+        }
+
+        return $id === 'E-NONE' ? $this->nothing($output) : $this->site($output);
+    }
+
+    /**
+     * `E-NONE` is a directory with no installation above it, which this
+     * checkout is, so making one is a `mkdir` and a note saying so.
+     *
+     * It is here rather than left to the caller for the reason the rest is: an
+     * environment somebody makes by hand is one that differs per person. The
+     * note is what stops it from being an empty directory somebody deletes for
+     * tidiness.
+     */
+    private function nothing(OutputInterface $output): int
+    {
+        $path = Environments::path('E-NONE');
+        if (!is_dir($path) && !mkdir($path, 0o777, true) && !is_dir($path)) {
+            Cli::errors($output)->writeln('Cannot create ' . $path);
+
+            return 2;
+        }
+
+        $written = file_put_contents($path . '/readme.md', <<<'TEXT'
+            # E-NONE
+
+            A directory with no TYPO3 installation anywhere above it, which is what
+            `scenarios/readme.md` says this environment is. Nothing is in it on purpose:
+            what a case run here measures is what this server answers when discovery
+            finds nothing, so a file that made it look like a project would take the
+            case away.
+
+            Made by `bin/cli environment:create E-NONE`, and ignored by git.
+
+            TEXT);
+        if ($written === false) {
+            Cli::errors($output)->writeln('Cannot write the note in ' . $path);
+
+            return 2;
+        }
+
+        $output->writeln('E-NONE is ' . $path);
+
+        return 0;
+    }
+
+    /** The DDEV project with a TYPO3 installation in it. */
+    private function site(OutputInterface $output): int
+    {
+        $path = Environments::path('E-SITE');
+        $project = Environments::PROJECT;
+        if (is_file($path . '/config/system/settings.php')) {
+            $output->writeln(sprintf('E-SITE is already at %s, as DDEV project %s.', $path, $project));
+            $output->writeln(sprintf('    ddev delete --omit-snapshot -y %s && rm -rf %s', $project, $path));
+            $output->writeln('is what takes it away, and this command then makes it again.');
+
+            return 0;
+        }
+
+        if (!Environments::ddev()) {
+            Cli::errors($output)->writeln(
+                "There is no `ddev` on this machine, and an E-SITE is a DDEV project.\n"
+                . 'https://ddev.com/get-started/ is where it comes from.',
+            );
+
+            return 2;
+        }
+
+        // The directory is per checkout and the project name is per machine, so
+        // two checkouts asking for an E-SITE ask for one name. Taking it over
+        // would stop the other one's environment without saying so.
+        $registered = Environments::projects()[$project] ?? null;
+        if ($registered !== null && rtrim($registered['approot'], '/') !== rtrim($path, '/')) {
+            Cli::errors($output)->writeln(sprintf(
+                "DDEV already knows %s, and it is the one in %s.\nThat checkout's environment would be taken over by making this one.",
+                $project,
+                $registered['approot'],
+            ));
+
+            return 1;
+        }
+
+        if (!is_dir($path) && !mkdir($path, 0o777, true) && !is_dir($path)) {
+            Cli::errors($output)->writeln('Cannot create ' . $path);
+
+            return 2;
+        }
+
+        foreach (Environments::build($project) as $what => $command) {
+            $output->writeln($what);
+            $output->writeln('    ' . implode(' ', $command));
+            [$exitCode, $said] = Environments::run($command, $path);
+            if ($exitCode !== 0) {
+                Cli::errors($output)->writeln(rtrim($said));
+                Cli::errors($output)->writeln('');
+                Cli::errors($output)->writeln(sprintf(
+                    'Stopped at "%s". What is there stays, and this command carries on from it.',
+                    $what,
+                ));
+
+                return 1;
+            }
+        }
+
+        $output->writeln('');
+        $output->writeln(sprintf('E-SITE is %s, as DDEV project %s.', $path, $project));
+        $output->writeln(sprintf('    https://%s.ddev.site/typo3 — admin / %s', $project, Environments::ADMIN_PASSWORD));
+        $output->writeln('Start an MCP client in that directory to run a case in it.');
+
+        return 0;
+    }
+}

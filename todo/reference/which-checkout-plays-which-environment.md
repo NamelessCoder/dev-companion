@@ -6,6 +6,14 @@ stale without taking a case with it. A forward run is a fresh MCP client session
 with the installed skills, and a session in this repository may neither activate
 those skills nor grade its own implementation as behavioral evidence.
 
+Two of them are no longer a machine's business at all. `bin/cli
+environment:create` makes `E-SITE` and `E-NONE` below `.environments/`, so a
+case that needs an installation to answer from needs nothing off this page —
+`bin/cli environment:status` says what this checkout has. What stays here is
+what a scaffold cannot produce: the site package `REVIEW-01` reviews, and the
+three extension checkouts whose real infrastructure is what they play
+(`D-EVI-004`).
+
 - **`E-SITE`** — `/home/benji/projects/site-new`, site package below
   `extensions/printworks_sitepackage`, TYPO3 14.3.5 under DDEV. The server is a
   dependency there: refresh the skills with `ddev exec php

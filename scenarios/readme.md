@@ -50,9 +50,32 @@ that directory, then paste the prompt.
 | `E-STOPPED` | `E-SITE` with the DDEV project stopped. |
 
 An environment is a kind of working directory, never one particular
-installation. Which checkout on this machine plays `E-SITE` today belongs in
+installation. Which checkout on this machine plays one of them belongs in
 [todo/reference/](../todo/reference/), where it can go stale without taking a case with it — a
 prompt that names somebody's project is a prompt only that person can run.
+
+Two of the five this repository makes for itself, below `.environments/`:
+
+```bash
+bin/cli environment:status        # which one this checkout has, and which is only declared
+bin/cli environment:create E-SITE # a DDEV project with TYPO3 installed in it
+```
+
+`E-SITE` is the one a run needs and the one that costs something — containers, a
+database, a docker daemon a CI job may not have — and it is made here because
+everything a case needs from it is a property this repository can state.
+`E-EXT` is not: what a case needs from an extension repository is real
+infrastructure at a real revision, which no scaffold produces. `E-CORE` is
+`bin/cli checkouts:update`, and `E-STOPPED` is `E-SITE` with its project
+stopped. Asking `environment:create` for one of those answers with where it
+comes from instead. The reasoning is
+[`D-EVI-004`](../decisions/evidence/evi-004-the-environment-is-made-here-and-the-repository-under-review-is-not.md).
+
+A made `E-SITE` is the environment, never the subject of a review. Its
+installation is TYPO3's own base distribution, so what a forward review would
+find in it is what this repository put there — which is the thing
+[`D-EVI-001`](../decisions/evidence/evi-001-forward-evidence-comes-from-a-review.md)
+exists to prevent. A recorded forward review still runs in a real project.
 
 ## Running one
 

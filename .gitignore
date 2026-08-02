@@ -6,5 +6,6 @@ vendor/
 .php-cs-fixer.cache
 .phpstan.cache/
 /.checkouts
+/.environments
 /.worktrees
 /.session-command

@@ -308,6 +308,10 @@ bin/cli knowledge:format <path>   # only that part of it
 `bin/cli checkouts:update` is what creates the core checkouts a knowledge change
 is verified against:
 [documentation/working-on-the-server.md](documentation/working-on-the-server.md).
+`bin/cli environment:create E-SITE` makes the other kind — a DDEV project with
+TYPO3 installed in it, below `.environments/` and gitignored the same way, for
+the half of this server that needs an installation to answer from. It is the
+environment and never the subject of a recorded review (`D-EVI-004`).
 
 ## Feedback workflow
 

@@ -83,6 +83,35 @@ has been back to the **Wrong if** yet.
 names one decision, only a revoked entry may carry it, and the generated
 listing shows it, so nobody has to open a dead entry to find the live one.
 
+## A statement that has stopped being true is revoked
+
+Revoking is not only for an entry that turned out wrong. An entry whose
+**statement** no longer describes this server is revoked as well, and a new one
+is written for what holds instead — because the reader of a listing has the
+headline and the status and nothing else, and `confirmed` beside a sentence that
+is no longer the case reads as a claim about today.
+
+[`D-ANS-023`](../../decisions/answers/ans-023-no-viewhelper-is-documented-in-any-manual-this-lookup-indexes.md)
+is the worked example. It said that no manual this lookup indexes documents a
+ViewHelper. That was true, the change it asked for was made the same day, its
+three **Wrong if** were measured and none of them held — and from that moment
+its headline described a lookup that no longer existed. It carries its
+**Confirmed on** for the reading and a **Revoked on** below it for the
+supersession, `revokedBy` points at
+[`D-ANS-026`](../../decisions/answers/ans-026-the-viewhelper-reference-is-indexed-and-a-manual-carries-the-collection-it-is-published-in.md),
+and the successor is what a reader builds on.
+
+The successor is a new entry rather than a rewrite of the old one, and it is
+worth being precise about why: its **Wrong if** is a different list. What can go
+wrong now is a book that moves, and what could go wrong before was a book that
+is missing. Rewriting the old entry would throw away the finding while keeping
+its number, and nothing afterwards could tell the two apart.
+
+`confirmed` stays what it is for: an entry whose statement survives the reading.
+A decision about the shape of an answer, or about which source a question is
+put to, is as true after somebody goes back to it as before, and that is the
+ordinary case.
+
 ## What rests on a decision
 
 A requirement says which decisions it stands on, in its own front matter —

@@ -1,7 +1,7 @@
 ---
 id: R-DOC-003
 status: held
-restsOn: [D-ANS-023]
+restsOn: [D-ANS-026]
 ---
 
 # R-DOC-003 — A ViewHelper question is answered from the manual that documents ViewHelpers

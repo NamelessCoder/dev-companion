@@ -25,9 +25,9 @@ one is added.
 - [`D-ANS-020`][D-ANS-020] — A deprecation is answered by the version that removes it · 2026-08-02
 - [`D-ANS-021`][D-ANS-021] — A longer manual query re-aims rather than narrows, and the answer never says so · 2026-08-02
 - [`D-ANS-022`][D-ANS-022] — A hyphenated compound reaches neither the phrase nor the word · 2026-08-02
-- [`D-ANS-023`][D-ANS-023] — No ViewHelper is documented in any manual this lookup indexes · 2026-08-02 · confirmed
 - [`D-ANS-024`][D-ANS-024] — A rule reaches only the task that already names its subject · 2026-08-02
 - [`D-ANS-025`][D-ANS-025] — A query a hint carries whole is not diluted out of it · 2026-08-02
+- [`D-ANS-026`][D-ANS-026] — The ViewHelper reference is indexed, and a manual carries the collection it is published in · 2026-08-02
 - [`D-ANS-004`][D-ANS-004] — The instruction budget is 2048 characters, on one client's evidence · 2026-07-31
 - [`D-ANS-002`][D-ANS-002] — Three numbers now decide what a lookup answers, and they were measured, not reasoned · 2026-07-30 · confirmed
 - [`D-ANS-003`][D-ANS-003] — Retrieval stays lexical and runtime inspection stays narrow · 2026-07-30 · confirmed
@@ -50,15 +50,17 @@ one is added.
 [D-ANS-020]: ans-020-a-deprecation-is-answered-by-the-version-that-removes-it.md
 [D-ANS-021]: ans-021-a-longer-manual-query-re-aims-rather-than-narrows.md
 [D-ANS-022]: ans-022-a-hyphenated-compound-reaches-neither-the-phrase-nor-the-word.md
-[D-ANS-023]: ans-023-no-viewhelper-is-documented-in-any-manual-this-lookup-indexes.md
 [D-ANS-024]: ans-024-a-rule-reaches-only-the-task-that-already-names-its-subject.md
 [D-ANS-025]: ans-025-a-query-a-hint-carries-whole-is-not-diluted-out-of-it.md
+[D-ANS-026]: ans-026-the-viewhelper-reference-is-indexed-and-a-manual-carries-the-collection-it-is-published-in.md
 [D-ANS-004]: ans-004-the-instruction-budget-is-2048-characters-on-one-clients-evidence.md
 [D-ANS-002]: ans-002-three-numbers-decide-what-a-lookup-answers.md
 [D-ANS-003]: ans-003-retrieval-stays-lexical-and-runtime-inspection-stays-narrow.md
 
 ### Revoked, and kept as the record
 
+- [`D-ANS-023`][D-ANS-023] — No ViewHelper is documented in any manual this lookup indexes · 2026-08-02 → D-ANS-026
 - [`D-ANS-001`][D-ANS-001] — The unanswered result keeps its shape and gains a reason · 2026-07-29 → D-ANS-005
 
+[D-ANS-023]: ans-023-no-viewhelper-is-documented-in-any-manual-this-lookup-indexes.md
 [D-ANS-001]: ans-001-the-unanswered-result-keeps-its-shape-and-gains-a-reason.md

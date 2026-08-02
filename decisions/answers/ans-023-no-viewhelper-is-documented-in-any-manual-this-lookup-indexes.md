@@ -1,7 +1,8 @@
 ---
 id: D-ANS-023
 date: 2026-08-02
-status: confirmed
+status: revoked
+revokedBy: D-ANS-026
 ---
 
 # D-ANS-023 — No ViewHelper is documented in any manual this lookup indexes
@@ -101,9 +102,7 @@ TCA reference is, and the lookup does not carry it.
 
 The book is indexed. `DOCUMENTS` now carries the collection each manual is
 published in, `/m/` for the three of the core and `/other/` for this one, and
-one method builds every base from it. What that has to keep doing is
-[`R-DOC-003`](../../requirements/documentation/doc-003-a-viewhelper-question-is-answered-from-the-manual-that-documents-viewhelpers.md),
-which the two tests above hold.
+one method builds every base from it.
 
 None of the three **Wrong if** held. The root at
 `/other/typo3/view-helper-reference/14.3/en-us/` is a table of contents:
@@ -135,3 +134,21 @@ Found while measuring and not acted on: every manual root links
 `singlehtml/Index.html`, the whole book as one page, and `isDocumentPage()` lets
 it into the index as an ordinary candidate. For this book that page is 2.9 MB.
 It has been a candidate in the three manuals under `/m/` all along.
+
+## Revoked on 2026-08-02
+
+By the change this entry asked for. The sentence at the head — three books, none
+documenting a ViewHelper — is what the lookup did until that afternoon and is
+not what it does now, and an entry a reader may still build on has to be one
+whose statement is true when they read it. The evidence and the confirmation
+above stay: the gap was real, the three **Wrong if** were measured and none
+held, and that reading is the reason the change looks the way it does.
+
+What holds from here is
+[`D-ANS-026`](ans-026-the-viewhelper-reference-is-indexed-and-a-manual-carries-the-collection-it-is-published-in.md)
+— four manuals, each carrying the collection it is published in — and what must
+keep holding is
+[`R-DOC-003`](../../requirements/documentation/doc-003-a-viewhelper-question-is-answered-from-the-manual-that-documents-viewhelpers.md).
+The successor's **Wrong if** is written against what can go wrong now, which is
+a book that moves rather than a book that is missing; this one's could no longer
+fire and so could no longer be gone back to.

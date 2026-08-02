@@ -74,9 +74,9 @@ and not a defect.
 - [`D-ANS-020`][D-ANS-020] — A deprecation is answered by the version that removes it · 2026-08-02
 - [`D-ANS-021`][D-ANS-021] — A longer manual query re-aims rather than narrows, and the answer never says so · 2026-08-02
 - [`D-ANS-022`][D-ANS-022] — A hyphenated compound reaches neither the phrase nor the word · 2026-08-02
-- [`D-ANS-023`][D-ANS-023] — No ViewHelper is documented in any manual this lookup indexes · 2026-08-02 · confirmed
 - [`D-ANS-024`][D-ANS-024] — A rule reaches only the task that already names its subject · 2026-08-02
 - [`D-ANS-025`][D-ANS-025] — A query a hint carries whole is not diluted out of it · 2026-08-02
+- [`D-ANS-026`][D-ANS-026] — The ViewHelper reference is indexed, and a manual carries the collection it is published in · 2026-08-02
 - [`D-AUD-004`][D-AUD-004] — The tool list is not where the audience is said · 2026-08-02
 - [`D-COD-003`][D-COD-003] — A directory is read through symfony/finder · 2026-08-02
 - [`D-DIS-007`][D-DIS-007] — The DDEV console is named by the mount, not by the variable · 2026-08-02 · confirmed
@@ -178,9 +178,9 @@ and not a defect.
 [D-ANS-020]: answers/ans-020-a-deprecation-is-answered-by-the-version-that-removes-it.md
 [D-ANS-021]: answers/ans-021-a-longer-manual-query-re-aims-rather-than-narrows.md
 [D-ANS-022]: answers/ans-022-a-hyphenated-compound-reaches-neither-the-phrase-nor-the-word.md
-[D-ANS-023]: answers/ans-023-no-viewhelper-is-documented-in-any-manual-this-lookup-indexes.md
 [D-ANS-024]: answers/ans-024-a-rule-reaches-only-the-task-that-already-names-its-subject.md
 [D-ANS-025]: answers/ans-025-a-query-a-hint-carries-whole-is-not-diluted-out-of-it.md
+[D-ANS-026]: answers/ans-026-the-viewhelper-reference-is-indexed-and-a-manual-carries-the-collection-it-is-published-in.md
 [D-AUD-004]: audience/aud-004-the-tool-list-is-not-where-the-audience-is-said.md
 [D-COD-003]: code/cod-003-a-directory-is-read-through-symfony-finder.md
 [D-DIS-007]: discovery/dis-007-the-ddev-console-is-named-by-the-mount-not-by-the-variable.md
@@ -266,6 +266,7 @@ and not a defect.
 
 ### Revoked, and kept as the record
 
+- [`D-ANS-023`][D-ANS-023] — No ViewHelper is documented in any manual this lookup indexes · 2026-08-02 → D-ANS-026
 - [`D-FBK-005`][D-FBK-005] — The queue is worked before the pile is sighted · 2026-08-01 → D-FBK-012
 - [`D-SCO-008`][D-SCO-008] — The path decides, and the answer may say it cannot · 2026-08-01 → D-KNW-005
 - [`D-FBK-003`][D-FBK-003] — A session is handed one todo, not the file · 2026-07-31 → D-FBK-002
@@ -280,6 +281,7 @@ and not a defect.
 - [`D-SCO-001`][D-SCO-001] — Outside the core the core test guide declines rather than adapts · 2026-07-29
 - [`D-SCO-004`][D-SCO-004] — The frontend is recognised by name, and only the two UI sections go · 2026-07-29
 
+[D-ANS-023]: answers/ans-023-no-viewhelper-is-documented-in-any-manual-this-lookup-indexes.md
 [D-FBK-005]: feedback/fbk-005-the-queue-is-worked-before-the-pile-is-sighted.md
 [D-SCO-008]: scope/sco-008-the-path-decides-and-the-answer-may-say-it-cannot.md
 [D-FBK-003]: feedback/fbk-003-a-session-is-handed-one-todo-not-the-file.md

@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-01-003003-repeatedly-did-not-understand-the-functional.md
 **Priority:** normal
+**Branch:** todo/say-what-a-functional-test-database-holds-before-the-test-primes-it
+**Claimed:** 2026-08-02
 
 Step 1a of the ladder, on the evidence in
 [`D-KNW-019`](../../decisions/knowledge/knw-019-a-functional-test-sees-only-what-it-primed-and-nothing-here-says-so.md):

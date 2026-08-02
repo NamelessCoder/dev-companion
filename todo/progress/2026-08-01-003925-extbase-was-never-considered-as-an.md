@@ -1,7 +1,9 @@
-# Correction to the debrief of the TYPO3 14 testimonials session. Three earlier notes (2026-08-01-0...
+# Debrief of the TYPO3 14 testimonials session, missed item: Extbase was never considered as an imp...
 
-**Serves:** feedback/2026-08-01-003736-correction-to-the-debrief-of-the-typo3-14.md
+**Serves:** feedback/2026-08-01-003925-extbase-was-never-considered-as-an.md
 **Priority:** low
+**Branch:** todo/extbase-was-never-considered-as-an
+**Claimed:** 2026-08-02
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

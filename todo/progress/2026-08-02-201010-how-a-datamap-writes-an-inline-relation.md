@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-01-003216-lacked-datahandler-knowledge-and-worked-around.md
 **Priority:** normal
+**Branch:** todo/how-a-datamap-writes-an-inline-relation
+**Claimed:** 2026-08-02
 
 Step 1a of the ladder, on the evidence in
 [`D-KNW-018`](../../decisions/knowledge/knw-018-what-a-datamap-does-to-a-relation-field-is-a-gap-this-server-owns.md):

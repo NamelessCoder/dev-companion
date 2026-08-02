@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-01-003000-underlying-failure-was-a-systemic-lack-of-fluid.md
 **Priority:** normal
+**Branch:** todo/a-query-word-under-three-characters-reaches-nothing
+**Claimed:** 2026-08-02
 
 What `D-ANS-023` measured after indexing the ViewHelper reference and did not
 act on. The book is in and `Global/If.html` is in it, and no query

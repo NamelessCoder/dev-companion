@@ -1,7 +1,9 @@
-# Debrief of the TYPO3 14 testimonials session, missed item: functional-test database sprawl and lo...
+# Correction to the debrief of the TYPO3 14 testimonials session. Three earlier notes (2026-08-01-0...
 
-**Serves:** feedback/2026-08-01-003929-functional-test-database-sprawl-and-loss-of.md
+**Serves:** feedback/2026-08-01-003736-correction-to-the-debrief-of-the-typo3-14.md
 **Priority:** low
+**Branch:** todo/correction-to-the-debrief-of-the-typo3-14
+**Claimed:** 2026-08-02
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

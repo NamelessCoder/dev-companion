@@ -2,6 +2,8 @@
 
 **Serves:** decisions/
 **Priority:** normal
+**Branch:** todo/revoke-the-two-confirmed-entries-whose-gap-is-closed
+**Claimed:** 2026-08-02
 
 The rule written into
 [`writing-a-decision.md`](../../documentation/feedback/writing-a-decision.md) on

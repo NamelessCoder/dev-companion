@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-01-003448-specific-fluid-f-if-f-then-f-else-failure-a.md
 **Priority:** normal
+**Branch:** todo/say-what-an-f-else-does-to-the-branch-beside-it
+**Claimed:** 2026-08-02
 
 Step 1a of the ladder, on the evidence in
 [`D-KNW-016`](../../decisions/knowledge/knw-016-what-an-f-else-does-to-the-branch-beside-it-is-a-gap-this-server-owns.md):

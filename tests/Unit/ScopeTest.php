@@ -720,6 +720,70 @@ final class ScopeTest extends TestCase
         self::assertStringNotContainsString('CI=true', $result->text);
     }
 
+    /**
+     * D-SCO-4's named loss, run: the contributor is inside the core, on a
+     * sysext path, and the two backend UI sections go anyway. That is the
+     * decision working rather than failing — the corpus behind those two is the
+     * backend interface's Sass and its --typo3-* tokens, which fluid_styled_content
+     * does not render — so what the case actually tests is that the audience
+     * does not enter into it. `Scope::isOutsideCore` was the rejected lever, and
+     * a core path is where a reinstated one would show.
+     */
+    #[Test]
+    public function aCoreContributorOnFrontendRenderingLosesTheTwoBackendUiSections(): void
+    {
+        $result = Registry::call('typo3_architecture_lookup', [
+            'task' => 'Core contribution to the frontend rendering of fluid_styled_content: the CSS and the '
+                . 'TypeScript conventions for its stylesheet and its JavaScript module',
+            'paths' => ['typo3/sysext/fluid_styled_content/Resources/Public/Css/ContentElements.css'],
+        ]);
+
+        self::assertSame(
+            [ArchitectureHints::CATEGORY_TYPESCRIPT, ArchitectureHints::CATEGORY_CSS],
+            $result->data['withheldCategories'],
+        );
+        foreach ($result->data['hints'] as $hint) {
+            self::assertNotContains(
+                $hint['category'],
+                [ArchitectureHints::CATEGORY_CSS, ArchitectureHints::CATEGORY_TYPESCRIPT],
+                $hint['id'] . ' reached a backend UI section on a frontend task',
+            );
+        }
+    }
+
+    /**
+     * The other half, and the one that decides whether the notice is an escape
+     * or an apology. Withholding is only defensible while the caller it was
+     * wrong for can undo it, so the words that undo it are asserted in the
+     * notice and then used: a notice naming an escape nobody can act on reads
+     * to the caller exactly like a refusal.
+     */
+    #[Test]
+    public function theNoticeNamesTheWordsThatBringTheBackendUiSectionsBack(): void
+    {
+        $task = 'Core contribution to the frontend rendering of fluid_styled_content: the CSS and the TypeScript '
+            . 'conventions for its stylesheet and its JavaScript module';
+        // The clause, not the words: "backend" is in the sentence saying what
+        // was withheld and why, so a bare substring passes on the apology.
+        $withheld = Registry::call('typo3_architecture_lookup', ['task' => $task]);
+        self::assertStringContainsString('Name the backend in the task', $withheld->text);
+        self::assertStringContainsString('or the styleguide', $withheld->text);
+
+        foreach ([
+            'backend' => $task . ', and the backend module that configures it',
+            'styleguide' => $task . ', and the styleguide demo for the component',
+        ] as $escape => $escaped) {
+            $result = Registry::call('typo3_architecture_lookup', ['task' => $escaped]);
+
+            self::assertSame([], $result->data['withheldCategories'], $escape . ' withheld a section anyway');
+            self::assertContains(
+                ArchitectureHints::CATEGORY_CSS,
+                array_column($result->data['hints'], 'category'),
+                $escape . ' brought nothing back',
+            );
+        }
+    }
+
     #[Test]
     public function theInstallationDiagnosticIsDataRatherThanProse(): void
     {

@@ -19,4 +19,6 @@ applied.
 **Held by:**
 `HintsTest::aFrontendThemeIsNotAnsweredWithTheBackendsOwnCssConventions`,
 `HintsTest::stylingABackendModuleStillReachesTheBackendCssHints`,
-`HintsTest::aPhpClassNameThatCarriesTheWordScssIsStillPhp`
+`HintsTest::aPhpClassNameThatCarriesTheWordScssIsStillPhp`,
+`ScopeTest::aCoreContributorOnFrontendRenderingLosesTheTwoBackendUiSections`,
+`ScopeTest::theNoticeNamesTheWordsThatBringTheBackendUiSectionsBack`

@@ -113,7 +113,8 @@ final class ArchitectureLookup extends ReadOnlyTool
                 'This task names the frontend, so %s is withheld: it describes the TYPO3 backend interface — its '
                 . 'Sass sources, its --typo3-* properties, its color schemes — and would be inverted advice for '
                 . 'what a website renders. Frontend theming: https://docs.typo3.org. Name the backend in the task '
-                . 'if you are styling a backend module.',
+                . 'if you are styling a backend module, or the styleguide if the work is a backend component and '
+                . 'its demo.',
                 implode(' and ', $result['withheldCategories']),
             );
             $lines[] = '';

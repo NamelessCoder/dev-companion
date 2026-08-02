@@ -69,6 +69,7 @@ and not a defect.
 - [`D-DOC-006`][D-DOC-006] — A recording says what it is of, and nothing fails on its age · 2026-08-02
 - [`D-DOC-007`][D-DOC-007] — One page per tool, and the answer on it whole · 2026-08-02
 - [`D-FBK-011`][D-FBK-011] — The suite holds what one branch can be right about · 2026-08-02
+- [`D-FBK-012`][D-FBK-012] — The queue comes first, and the sighting hands over one · 2026-08-02
 - [`D-KNW-005`][D-KNW-005] — One `Scope` replaced the four vocabularies · 2026-08-02
 - [`D-KNW-006`][D-KNW-006] — A word for a thing administered from the backend adds no domain to a backend-only task · 2026-08-02
 - [`D-KNW-007`][D-KNW-007] — A hint says whose it is in both directions · 2026-08-02
@@ -128,6 +129,7 @@ and not a defect.
 [D-DOC-006]: documentation/doc-006-a-recording-says-what-it-is-of.md
 [D-DOC-007]: documentation/doc-007-one-page-per-tool-and-the-answer-whole.md
 [D-FBK-011]: feedback/fbk-011-the-suite-holds-what-one-branch-can-be-right-about.md
+[D-FBK-012]: feedback/fbk-012-the-queue-comes-first-and-the-sighting-hands-over-one.md
 [D-KNW-005]: knowledge/knw-005-one-scope-replaced-the-four-vocabularies.md
 [D-KNW-006]: knowledge/knw-006-a-word-for-a-thing-administered-from-the-backend.md
 [D-KNW-007]: knowledge/knw-007-a-hint-says-whose-it-is-in-both-directions.md
@@ -176,7 +178,7 @@ and not a defect.
 
 ### Revoked, and kept as the record
 
-- [`D-FBK-005`][D-FBK-005] — The queue is worked before the pile is sighted · 2026-08-01
+- [`D-FBK-005`][D-FBK-005] — The queue is worked before the pile is sighted · 2026-08-01 → D-FBK-012
 - [`D-SCO-008`][D-SCO-008] — The path decides, and the answer may say it cannot · 2026-08-01 → D-KNW-005
 - [`D-FBK-003`][D-FBK-003] — A session is handed one todo, not the file · 2026-07-31 → D-FBK-002
 - [`D-KNW-003`][D-KNW-003] — `provenance` is not the third spelling of `binding`, and stays · 2026-07-30 → D-KNW-005

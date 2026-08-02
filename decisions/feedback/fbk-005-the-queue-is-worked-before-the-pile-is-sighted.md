@@ -2,6 +2,7 @@
 id: D-FBK-005
 date: 2026-08-01
 status: revoked
+revokedBy: D-FBK-012
 ---
 
 # D-FBK-005 — The queue is worked before the pile is sighted

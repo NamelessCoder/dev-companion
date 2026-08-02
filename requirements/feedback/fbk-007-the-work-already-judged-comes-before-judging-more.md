@@ -1,7 +1,7 @@
 ---
 id: R-FBK-007
 status: held
-restsOn: [D-FBK-005]
+restsOn: [D-FBK-012]
 ---
 
 # R-FBK-007 — The work already judged comes before judging more
@@ -27,7 +27,10 @@ says it yet, so the record outlives the run that made it.
 56 open feedback against 38 queued items on 2026-08-01, of which the queue had
 been reached in no session since it was written; the sighting printed 57 lines
 before its own instruction. See
-[D-FBK-005](../../decisions/feedback/fbk-005-the-queue-is-worked-before-the-pile-is-sighted.md).
+[D-FBK-012](../../decisions/feedback/fbk-012-the-queue-comes-first-and-the-sighting-hands-over-one.md),
+which carries both halves of this and names
+[D-FBK-005](../../decisions/feedback/fbk-005-the-queue-is-worked-before-the-pile-is-sighted.md)
+as the entry the measurement was recorded in.
 
 ## Held by
 

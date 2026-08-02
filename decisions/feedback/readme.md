@@ -12,6 +12,7 @@ The requirements of the same name are in
 earns one.
 
 - [`D-FBK-011`][D-FBK-011] — The suite holds what one branch can be right about · 2026-08-02
+- [`D-FBK-012`][D-FBK-012] — The queue comes first, and the sighting hands over one · 2026-08-02
 - [`D-FBK-006`][D-FBK-006] — A name is cut where the feedback starts to differ · 2026-08-01
 - [`D-FBK-007`][D-FBK-007] — How a todo is worked travels with the todo · 2026-08-01
 - [`D-FBK-008`][D-FBK-008] — One todo is one file, and the queue is in the names · 2026-08-01
@@ -22,6 +23,7 @@ earns one.
 - [`D-FBK-004`][D-FBK-004] — The model is asked, because nothing else here can say it · 2026-07-31
 
 [D-FBK-011]: fbk-011-the-suite-holds-what-one-branch-can-be-right-about.md
+[D-FBK-012]: fbk-012-the-queue-comes-first-and-the-sighting-hands-over-one.md
 [D-FBK-006]: fbk-006-a-name-is-cut-where-the-feedback-starts-to-differ.md
 [D-FBK-007]: fbk-007-how-a-todo-is-worked-travels-with-the-todo.md
 [D-FBK-008]: fbk-008-one-todo-is-one-file-and-the-queue-is-in-the-names.md
@@ -33,7 +35,7 @@ earns one.
 
 ### Revoked, and kept as the record
 
-- [`D-FBK-005`][D-FBK-005] — The queue is worked before the pile is sighted · 2026-08-01
+- [`D-FBK-005`][D-FBK-005] — The queue is worked before the pile is sighted · 2026-08-01 → D-FBK-012
 - [`D-FBK-003`][D-FBK-003] — A session is handed one todo, not the file · 2026-07-31 → D-FBK-002
 
 [D-FBK-005]: fbk-005-the-queue-is-worked-before-the-pile-is-sighted.md

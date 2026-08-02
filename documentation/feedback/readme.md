@@ -39,13 +39,16 @@ nothing, and the pile it decides over grows faster than any session can read
 it.
 
 The second half of the same problem is the size of the reading.
-`bin/cli feedback:next` hands over **five** feedback, oldest first, with each
-one's category, the model that left it and its own first line — not the
-directory. Five queries can be re-run in a session that also has work of its
-own, and five judgements can be read by somebody who disagrees with one before
-the commit is made. Fifty-six can be neither: a session handed all of them
-closes whatever is easiest and leaves nobody able to say whether that was
-right. `bin/cli feedback:list` is still the whole of it, for whoever wants the
+`bin/cli feedback:next` hands over **one** feedback, the oldest no todo has
+judged, with its category, the model that left it and its own first line — not
+the directory and not a handful either. One query can be re-run in a session
+that also has work of its own; fifty-six cannot, and a session handed all of
+them closes whatever is easiest. It was five until 2026-08-02, cut for a reader
+who could then only find the judgements in the commit that made them. What
+carries that instead is `decisions/`, which is where a judgement is written now
+— see [judging.md](judging.md) and
+[`D-FBK-012`](../../decisions/feedback/fbk-012-the-queue-comes-first-and-the-sighting-hands-over-one.md).
+`bin/cli feedback:list` is still the whole of it, for whoever wants the
 overview.
 
 What `next` can never do is run a feedback's own query against the server as it

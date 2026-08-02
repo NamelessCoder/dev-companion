@@ -225,3 +225,8 @@ Where discovery needs help, two environment variables end the guessing:
 reaches its console, for example `ddev exec .build/bin/typo3`.
 `typo3_server_scope` then names the installation it is reading, how it got
 there, and whether the console is reachable.
+
+`TYPO3_MCP_ROOT` names what is read and not where the work is. Point it at a
+site installation from a core checkout and the icons and labels come from the
+site while the answers stay the core's; only where nothing can be walked up to
+does it decide that too.

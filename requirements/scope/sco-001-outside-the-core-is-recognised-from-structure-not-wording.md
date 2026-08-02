@@ -19,6 +19,11 @@ workflow named in prose, and last which installation the session sits in. A
 that names the core in order to rule it out reads to a substring search exactly
 like claiming it.
 
+That last signal is the installation the session is **standing in**, not the one
+`TYPO3_MCP_ROOT` names. The variable says which registry the icons and labels
+are read from and moves nothing else; only where the walk-up reaches no
+installation is it the sole evidence there is, and then it answers.
+
 What a path carries is read before anything said about the call, which is what
 keeps two paths of one call apart ([`R-AUD-002`](../audience/aud-002-the-audience-is-a-property-of-the-task.md)).
 A path shape is evidence only where it can be: `Build/Scripts/` and
@@ -38,3 +43,5 @@ prose (2026-07-29).
 - `ScopeTest::inASiteInstallationTheWorkIsOutsideTheCoreUnlessSomethingSaysOtherwise`
 - `ScopeTest::inACoreCheckoutNothingIsPushedOutsideByTheInstallationAlone`
 - `ScopeTest::aPathInsideAnExtensionIsRecognisedByItsShape`
+- `ScopeTest::namingAnInstallationToReadDoesNotMoveWhereTheWorkIs`
+- `ScopeTest::whereNothingElsePlacesTheSessionTheNamedInstallationIsTheEvidence`

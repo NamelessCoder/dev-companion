@@ -53,6 +53,8 @@ final class Instance
     /** @var array<int, string> The directories the last search walked. */
     private static array $searched = [];
 
+    private static ?string $startedIn = null;
+
     /**
      * Hands the working directory the server was started in to the discovery.
      * Called by the stdio entrypoint and by nothing else.
@@ -61,6 +63,7 @@ final class Instance
     {
         self::$startingDirectory = $directory === null || $directory === '' ? null : $directory;
         self::$resolved = false;
+        self::$startedIn = null;
     }
 
     /**
@@ -77,6 +80,41 @@ final class Instance
     public static function startedFrom(): ?string
     {
         return self::$startingDirectory;
+    }
+
+    /**
+     * The kind of installation the session is standing in, or null where it is
+     * standing in none. Not always the installation being read.
+     *
+     * `TYPO3_MCP_ROOT` names the one to read — its labels, its icons, its
+     * packages — and a core contributor sets it at a site installation for
+     * exactly that. Which repository the work is in is a different question,
+     * and the checkout the server was started in is its weakest signal.
+     * Reading both off one value let the variable move that boundary too,
+     * which is not what it was introduced to do (`D-SCO-005`).
+     *
+     * Where the walk-up reaches no installation, the named one is the only
+     * evidence there is and it answers: a client that starts this server away
+     * from the session's own directory has nothing else to say where the work
+     * is (`D-DIS-006`).
+     */
+    public static function startedIn(): ?string
+    {
+        if (self::$startedIn !== null) {
+            return self::$startedIn;
+        }
+
+        $instance = self::describe();
+        if (($instance['via'] ?? '') !== self::VIA_ENVIRONMENT) {
+            return self::$startedIn = $instance['kind'] ?? null;
+        }
+
+        $walked = [];
+        $located = self::$startingDirectory === null
+            ? null
+            : self::locate(self::$startingDirectory, $walked);
+
+        return self::$startedIn = $located['kind'] ?? $instance['kind'];
     }
 
     /** Whether an installation was found to read from. */
@@ -123,7 +161,7 @@ final class Instance
 
         $located = self::$startingDirectory === null
             ? null
-            : self::locate(self::$startingDirectory);
+            : self::locate(self::$startingDirectory, self::$searched);
 
         return $located === null ? null : self::$resolved = $located;
     }
@@ -288,9 +326,15 @@ final class Instance
      * every TYPO3 package in composer/installed.json below the vendor directory
      * it declares — the same source TYPO3's own PackageArtifactBuilder reads.
      *
+     * The walk is reported through $walked rather than into the diagnostic
+     * itself, because startedIn() walks for a question of its own and the
+     * directories the caller is shown have to stay the ones searched for the
+     * installation being read.
+     *
+     * @param array<int, string> $walked the directories it looked in, in order
      * @return array{root: string, kind: string, startedFrom: string, via: string}|null
      */
-    private static function locate(string $startingDirectory): ?array
+    private static function locate(string $startingDirectory, array &$walked): ?array
     {
         $directory = realpath($startingDirectory);
         if ($directory === false) {
@@ -299,7 +343,7 @@ final class Instance
         $startedFrom = $directory;
 
         for ($depth = 0; $depth < self::MAX_DEPTH; ++$depth) {
-            self::$searched[] = $directory;
+            $walked[] = $directory;
             if ((self::readJson($directory . '/composer.json')['type'] ?? '') === 'typo3-cms-core') {
                 return [
                     'root' => $directory,

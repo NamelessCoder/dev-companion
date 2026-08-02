@@ -255,8 +255,7 @@ final class Typo3CliTest extends TestCase
     /** @param array<string, mixed> $manifest */
     private function installation(array $manifest = []): string
     {
-        $root = sys_get_temp_dir() . '/typo3-cms-mcp-cli-' . bin2hex(random_bytes(6));
-        $this->temporaryRoot = $root;
+        $root = $this->removeAfterwards(sys_get_temp_dir() . '/typo3-cms-mcp-cli-' . bin2hex(random_bytes(6)));
         mkdir($root . '/typo3/sysext/core', 0o777, true);
         file_put_contents($root . '/composer.json', json_encode(
             $manifest + ['name' => 'typo3/cms', 'type' => 'typo3-cms-core'],

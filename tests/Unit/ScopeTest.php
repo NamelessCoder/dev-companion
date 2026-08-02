@@ -27,6 +27,7 @@ final class ScopeTest extends TestCase
     #[After]
     public function forgetTheInstance(): void
     {
+        putenv(Instance::ROOT_VARIABLE);
         Instance::discoverFrom(null);
         putenv(ExcludedTools::VARIABLE);
     }
@@ -115,6 +116,41 @@ final class ScopeTest extends TestCase
         Instance::discoverFrom($this->composerProject());
 
         self::assertTrue(Scope::of('Build/Sources/Sass/theme.scss')->isOutsideTheCore());
+    }
+
+    #[Test]
+    public function namingAnInstallationToReadDoesNotMoveWhereTheWorkIs(): void
+    {
+        // What TYPO3_MCP_ROOT is for: a core contributor points it at a site
+        // installation because that is where the registered icons and the
+        // shipped labels are. Reading the last signal off the same value made
+        // it move the boundary as well, and every unmarked question about the
+        // core checkout they were standing in came back as project work.
+        $site = $this->composerProject();
+        putenv(Instance::ROOT_VARIABLE . '=' . $site);
+        Instance::discoverFrom($this->coreCheckout());
+
+        // What it may move: the installation being read.
+        self::assertSame(realpath($site), Instance::root());
+        self::assertContains('my_sitepackage', array_keys(Instance::packages()));
+
+        // What it may not: which repository the work is in.
+        self::assertSame(Scope::Core, Scope::of('', 'Add a content element with a backend preview'));
+        self::assertSame(Scope::Core, Scope::of('Build/Sources/Sass/component/_card.scss'));
+    }
+
+    #[Test]
+    public function whereNothingElsePlacesTheSessionTheNamedInstallationIsTheEvidence(): void
+    {
+        // The other half of the same sentence. A client that starts this server
+        // away from the session's own directory breaks the walk-up, and
+        // D-DIS-006 says the variable is what such a setup states instead — so
+        // where the walk reaches no installation it is the only evidence there
+        // is, and it answers.
+        putenv(Instance::ROOT_VARIABLE . '=' . $this->coreCheckout());
+        Instance::discoverFrom(sys_get_temp_dir());
+
+        self::assertSame(Scope::Core, Scope::of('', 'Add a content element with a backend preview'));
     }
 
     #[Test]

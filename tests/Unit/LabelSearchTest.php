@@ -24,6 +24,9 @@ final class LabelSearchTest extends TestCase
 {
     use TemporaryInstallation;
 
+    /** The checkout the current test's console and label files sit in. */
+    private string $installationRoot = '';
+
     #[After]
     public function forgetTheInstance(): void
     {
@@ -253,7 +256,7 @@ final class LabelSearchTest extends TestCase
     /** @param array<string, string> $units */
     private function labelFile(string $path, array $units): void
     {
-        $file = $this->temporaryRoot . '/typo3/sysext/core/' . $path;
+        $file = $this->installationRoot . '/typo3/sysext/core/' . $path;
         mkdir(dirname($file), 0o777, true);
 
         $body = '';
@@ -279,8 +282,8 @@ final class LabelSearchTest extends TestCase
 
     private function console(string $script): void
     {
-        $root = sys_get_temp_dir() . '/typo3-cms-mcp-labels-' . bin2hex(random_bytes(6));
-        $this->temporaryRoot = $root;
+        $root = $this->removeAfterwards(sys_get_temp_dir() . '/typo3-cms-mcp-labels-' . bin2hex(random_bytes(6)));
+        $this->installationRoot = $root;
         mkdir($root . '/typo3/sysext/core', 0o777, true);
         file_put_contents($root . '/composer.json', json_encode(
             ['name' => 'typo3/cms', 'type' => 'typo3-cms-core'],

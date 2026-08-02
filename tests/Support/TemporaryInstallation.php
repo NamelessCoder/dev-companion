@@ -15,17 +15,30 @@ use PHPUnit\Framework\Attributes\After;
  */
 trait TemporaryInstallation
 {
-    private string $temporaryRoot = '';
+    /** @var array<int, string> Every root this test built, so all of them go. */
+    private array $temporaryRoots = [];
 
     #[After]
     public function removeTemporaryInstallation(): void
     {
-        if ($this->temporaryRoot === '') {
-            return;
+        // A test needs two of them as soon as it is about one installation
+        // being read while the session sits in another, and remembering only
+        // the last left the other in the temporary directory for good.
+        foreach ($this->temporaryRoots as $root) {
+            Directory::remove($root);
         }
+        $this->temporaryRoots = [];
+    }
 
-        Directory::remove($this->temporaryRoot);
-        $this->temporaryRoot = '';
+    /**
+     * Hands a root a test laid out itself to the same cleanup, and gives it
+     * back. The two layouts below are not every shape a test needs.
+     */
+    private function removeAfterwards(string $root): string
+    {
+        $this->temporaryRoots[] = $root;
+
+        return $root;
     }
 
     /** A core monorepo checkout holding the core and backend system extensions. */
@@ -102,9 +115,10 @@ trait TemporaryInstallation
 
     private function temporaryDirectory(): string
     {
-        $this->temporaryRoot = sys_get_temp_dir() . '/typo3-cms-mcp-instance-' . bin2hex(random_bytes(6));
-        mkdir($this->temporaryRoot, 0o777, true);
+        $root = sys_get_temp_dir() . '/typo3-cms-mcp-instance-' . bin2hex(random_bytes(6));
+        mkdir($root, 0o777, true);
+        $this->temporaryRoots[] = $root;
 
-        return $this->temporaryRoot;
+        return $root;
     }
 }

@@ -268,7 +268,7 @@ enum Scope: string
         // That signal, and where there is no installation either, nothing in
         // the call has placed the work at all. That is not the core by default:
         // it is the case R-AUD-002 names, and the answer says so.
-        return match (Instance::describe()['kind'] ?? '') {
+        return match (Instance::startedIn()) {
             // The project rather than an extension inside it: nothing named a
             // package, and the repository the session sits in is the site.
             Instance::KIND_COMPOSER_PROJECT => self::Project,
@@ -287,14 +287,17 @@ enum Scope: string
      * `Instance` reads a checkout's kind from, and a repository declaring
      * anything else has already said it is not the core.
      *
-     * Where there is no installation to read, the shape is left standing —
+     * The repository the session sits in, rather than the installation named
+     * for reading — the two are the same until `TYPO3_MCP_ROOT` says otherwise.
+     *
+     * Where the session sits in no installation, the shape is left standing —
      * a `Build/Sources/` path is then the only evidence there is.
      */
     private static function couldBeTheCore(): bool
     {
-        $kind = Instance::describe()['kind'] ?? '';
+        $kind = Instance::startedIn();
 
-        return $kind === '' || $kind === Instance::KIND_CORE_CHECKOUT;
+        return $kind === null || $kind === Instance::KIND_CORE_CHECKOUT;
     }
 
     /**

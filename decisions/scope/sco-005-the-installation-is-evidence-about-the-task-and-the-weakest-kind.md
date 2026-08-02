@@ -40,3 +40,37 @@ now consulted, and the installation this server was started in is one of them.
 - `TYPO3_MCP_ROOT` points at a site installation for the label and icon lookups
   while the questions are about the core. The variable now moves the boundary
   too, which it was not introduced to do.
+
+## Covered by
+
+- `ScopeTest::namingAnInstallationToReadDoesNotMoveWhereTheWorkIs`
+- `ScopeTest::whereNothingElsePlacesTheSessionTheNamedInstallationIsTheEvidence`
+- `ScopeTest::inASiteInstallationTheWorkIsOutsideTheCoreUnlessSomethingSaysOtherwise`
+
+## Since then
+
+The second **Wrong if** was read on 2026-08-02 and it was happening. With
+`TYPO3_MCP_ROOT` set to a site installation and the server started inside
+`.checkouts/14.3`, `Scope::of('', 'Add a content element with a backend
+preview')` came back `project`, and so did `Build/Sources/Sass/theme.scss` — a
+path shape that exists nowhere but the core root. One value was answering two
+questions: which installation to read, and which repository the work is in.
+
+They are separated now. `Instance::startedIn()` is the second of them and walks
+up from the directory the server was started in; the variable keeps the first
+and moves nothing else. Where the walk-up reaches no installation the named one
+is the only evidence there is, so it still answers — which is the case
+`D-DIS-006` leaves it for, a client that starts this server away from the
+session's own directory.
+
+What that costs is one escape that worked by accident. A contributor in the
+first **Wrong if** — client run from a site installation, core checked out
+elsewhere — could name the core checkout in the variable and have the scope
+follow. Now only the reading follows, and the way out is the one this entry
+already states: say `typo3/sysext/` once.
+
+The first **Wrong if** was not settled. Its front half behaves as written and
+is pinned; its back half, paths passed relative to the system extension
+directory the contributor is standing in, is untried — a `Classes/` path is
+read as extension work by its shape before the checkout is consulted at all,
+and whether that is the wrong order here is a separate question.

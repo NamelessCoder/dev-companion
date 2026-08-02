@@ -120,7 +120,9 @@ had available, not about the repository you just worked in. Change no files.
 
 That server records feedback about itself with typo3_feedback_record, and the
 people who maintain it read them. Report the session you just had from your own
-transcript, not from how it felt:
+transcript, not from how it felt. Where that transcript begins at a summary of
+earlier turns, say so and answer for the part you can see: what is missing from
+your window is not the same as what did not happen.
 
 - Which of its skills you activated, whether the skill fitted the task, and what
   in it you would keep or drop. Name the skill. If none activated, say so — that
@@ -149,6 +151,11 @@ Then tell me which feedback you filed and what each one says.
 Paste it verbatim and add nothing — no tool names, no hint about what the last
 session reported. The summary the agent gives afterwards is not what was
 recorded; the feedback is, and `typo3_feedback_list` is where it is read back.
+
+The one qualification it carries is
+[`R-FBK-012`](../../requirements/feedback/fbk-012-a-debrief-reports-the-window-the-session-could-see.md).
+The prompt is where the transcript is asked for, so it is where a session whose
+transcript begins at a summary is asked to say so.
 
 ## Working a feedback off
 

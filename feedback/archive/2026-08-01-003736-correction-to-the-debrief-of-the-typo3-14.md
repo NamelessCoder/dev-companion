@@ -1,7 +1,8 @@
 ---
 date: 2026-08-01T00:37:36+00:00
 category: wrong-answer
-status: open
+status: closed
+closed: 2026-08-02
 model: opencode/deepseek-v4-flash-free
 tool: typo3extensiontesting
 directory: /home/benji/projects/site-new

@@ -118,3 +118,14 @@ stops before, deliberately. `R-SKL-010` is the demand, and
 What none of it settles is whether the wording was what that model was missing:
 the words are what can be changed from here, and only a second run in the same
 client says whether they were the obstacle.
+
+The sighting's own author has since withdrawn half of it. A fourth feedback of
+that session, `feedback/2026-08-01-003736`, says its conversation begins at an
+anchored summary and that the user reports having seen a skill activate, so "no
+tool, no skill" is what one window showed rather than what the session did. The
+finding above does not rest on it: the description that named one side of a
+domain was read off the files here, and `R-SKL-010` is held by a test. What is
+withdrawn is the sentence about what that session called, and with it the
+reading that the entry point was in the text and did not fire — the entry point
+may have fired and gone unrecorded. `D-FBK-023` is the judgement of the
+correction and says what it moves in the two siblings beside this one.

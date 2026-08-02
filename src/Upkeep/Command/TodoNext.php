@@ -205,11 +205,20 @@ final class TodoNext
      * applies is this command's answer, because the page cannot know whether
      * the todo it is being read for is queued, standing or dated.
      *
-     * @param array{title: string, kind: string, claimed: string, every: string, branch: string, serves: array<int, string>, body: string, ...} $todo
+     * It opens by naming the file the todo is, which is the one fact a session
+     * cannot read anywhere and needs before it can finish: the todo is deleted
+     * or trimmed on the way out, and its name carries a stamp nobody retypes.
+     * Left unsaid, it is looked for — the 82 sessions of 2026-08-02 spent 207
+     * directory listings on `todo/`, against a command that had just read the
+     * file. Every call costs the whole context again (`D-FBK-020`), and a line
+     * the command already holds is the cheapest of the three ways to end up
+     * with it.
+     *
+     * @param array{title: string, kind: string, claimed: string, every: string, branch: string, path: string, serves: array<int, string>, body: string, ...} $todo
      */
     private static function present(OutputInterface $output, array $todo, string $reading, ?int $after = null): int
     {
-        $meta = ['serves ' . implode(', ', $todo['serves'])];
+        $meta = [$todo['path'], 'serves ' . implode(', ', $todo['serves'])];
         $meta[] = match (true) {
             $todo['kind'] === 'progress' => 'in hand since ' . $todo['claimed'],
             $todo['every'] === '' => 'queued',

@@ -51,6 +51,46 @@ final class CliTest extends TestCase
     }
 
     /**
+     * The one directory listing a session should never have to make.
+     *
+     * A todo is finished by deleting or trimming the file it is, and that file
+     * is named by a stamp nobody retypes. Handed the todo without its path, a
+     * session goes and looks: the 82 sessions of 2026-08-02 spent 207 listings
+     * of `todo/` on a file the command had just read. So the path is printed
+     * whichever of the three kinds of todo comes up — `D-FBK-020`.
+     */
+    #[Test]
+    public function theTodoItHandsOverNamesTheFileItIs(): void
+    {
+        $this->queueATodo();
+
+        $buffer = new BufferedOutput();
+        Cli::application()->doRun(new StringInput('todo:next'), $buffer);
+        $printed = explode("\n", trim($buffer->fetch()));
+
+        // The title is the first line and the meta the second, which is what
+        // makes this readable at all: a todo named anywhere else in the output
+        // is one a reading mentioned, not the one being handed over.
+        foreach (array_merge(Todo::progress(), Todo::appointments(), Todo::items(), Todo::sightings()) as $todo) {
+            if ($todo['title'] !== $printed[0]) {
+                continue;
+            }
+
+            self::assertStringStartsWith(
+                $todo['path'],
+                $printed[1] ?? '',
+                'the todo was handed over without the file it is, which is then looked for',
+            );
+
+            return;
+        }
+
+        // A worktree standing on no claim is refused, and a refusal hands over
+        // no todo to name a path for.
+        self::assertTrue(Todo::linked(), 'nothing was handed over at all, and this checkout is not a worktree');
+    }
+
+    /**
      * Every recurring todo is one of the two, and the cadence is what says
      * which: a clock makes it an appointment, `session` makes it a sighting.
      * `bin/cli todo:next` asks the one group before the queue and the other after

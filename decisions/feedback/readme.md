@@ -18,7 +18,7 @@ earns one.
 - [`D-FBK-015`][D-FBK-015] — A priority is a class, and the stamp is the rest · 2026-08-02
 - [`D-FBK-016`][D-FBK-016] — A feedback waits on the board rather than behind it · 2026-08-02
 - [`D-FBK-017`][D-FBK-017] — A judgement turns a feedback into work, and the work closes it · 2026-08-02
-- [`D-FBK-018`][D-FBK-018] — A strength is evidence about a boundary, not about a decision · 2026-08-02
+- [`D-FBK-018`][D-FBK-018] — A strength is evidence about a boundary, not about a decision · 2026-08-02 · confirmed
 - [`D-FBK-019`][D-FBK-019] — A recorded feedback is stored as it was written, secrets included · 2026-08-02
 - [`D-FBK-006`][D-FBK-006] — A name is cut where the feedback starts to differ · 2026-08-01
 - [`D-FBK-007`][D-FBK-007] — How a todo is worked travels with the todo · 2026-08-01

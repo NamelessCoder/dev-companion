@@ -29,6 +29,7 @@ when it is added.
 - [`R-DIS-020`][R-DIS-020] — The project records which clients are installed in it · held
 - [`R-DIS-021`][R-DIS-021] — The client entry is rewritten when the project outgrows it · held
 - [`R-DIS-022`][R-DIS-022] — A call can tell where it came from · held
+- [`R-DIS-023`][R-DIS-023] — An install says what is left before a tool can be called · **open**
 
 [R-DIS-001]: dis-001-discovery-belongs-to-the-stdio-entrypoint-alone.md
 [R-DIS-002]: dis-002-the-packages-are-read-from-the-declared-vendor-directory.md
@@ -52,3 +53,4 @@ when it is added.
 [R-DIS-020]: dis-020-the-project-records-which-clients-are-installed-in-it.md
 [R-DIS-021]: dis-021-the-client-entry-is-rewritten-when-the-project-outgrows-it.md
 [R-DIS-022]: dis-022-a-call-can-tell-where-it-came-from.md
+[R-DIS-023]: dis-023-an-install-says-what-is-left-before-a-tool-can-be-called.md

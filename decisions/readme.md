@@ -62,10 +62,13 @@ and not a defect.
 - [`D-ANS-008`][D-ANS-008] — A number a reader cannot reproduce is read as wrong · 2026-08-02
 - [`D-ANS-009`][D-ANS-009] — A shipped file is a deprecation predicate no sweep reaches · 2026-08-02
 - [`D-ANS-010`][D-ANS-010] — "Does it still work" is a question for the manual, not the changelog · 2026-08-02
+- [`D-ANS-011`][D-ANS-011] — A scope answer states what a manifest declares, and the comparison is the audit's · 2026-08-02
+- [`D-ANS-012`][D-ANS-012] — An input schema's `oneOf` is a rule no caller is told · 2026-08-02
 - [`D-AUD-004`][D-AUD-004] — The tool list is not where the audience is said · 2026-08-02
 - [`D-COD-003`][D-COD-003] — A directory is read through symfony/finder · 2026-08-02
-- [`D-DIS-007`][D-DIS-007] — The DDEV console is named by the mount, not by the variable · 2026-08-02
+- [`D-DIS-007`][D-DIS-007] — The DDEV console is named by the mount, not by the variable · 2026-08-02 · confirmed
 - [`D-DIS-008`][D-DIS-008] — The columns TYPO3 derives are reachable where the database server is · 2026-08-02 · confirmed
+- [`D-DIS-009`][D-DIS-009] — Installed is one step short of callable, and the install is what says so · 2026-08-02
 - [`D-DOC-003`][D-DOC-003] — A decision says what came back, and a requirement says what it rests on · 2026-08-02
 - [`D-DOC-004`][D-DOC-004] — A requirement is written in the same sections as a decision · 2026-08-02
 - [`D-DOC-005`][D-DOC-005] — A number is three digits so a group lists in order · 2026-08-02
@@ -73,6 +76,7 @@ and not a defect.
 - [`D-DOC-007`][D-DOC-007] — One page per tool, and the answer on it whole · 2026-08-02
 - [`D-DOC-008`][D-DOC-008] — The calls that reach outside stay in the shared table · 2026-08-02
 - [`D-EVI-004`][D-EVI-004] — The environment is made here, and the repository under review is not · 2026-08-02
+- [`D-EVI-005`][D-EVI-005] — A registration nothing can reach is cleared, and the database goes with it · 2026-08-02
 - [`D-FBK-011`][D-FBK-011] — The suite holds what one branch can be right about · 2026-08-02
 - [`D-FBK-012`][D-FBK-012] — The queue comes first, and the sighting hands over one · 2026-08-02
 - [`D-FBK-013`][D-FBK-013] — An empty queue is a state, not a failure · 2026-08-02
@@ -80,13 +84,14 @@ and not a defect.
 - [`D-FBK-015`][D-FBK-015] — A priority is a class, and the stamp is the rest · 2026-08-02
 - [`D-FBK-016`][D-FBK-016] — A feedback waits on the board rather than behind it · 2026-08-02
 - [`D-FBK-017`][D-FBK-017] — A judgement turns a feedback into work, and the work closes it · 2026-08-02
-- [`D-FBK-018`][D-FBK-018] — A strength is evidence about a boundary, not about a decision · 2026-08-02
+- [`D-FBK-018`][D-FBK-018] — A strength is evidence about a boundary, not about a decision · 2026-08-02 · confirmed
 - [`D-FBK-019`][D-FBK-019] — A recorded feedback is stored as it was written, secrets included · 2026-08-02
 - [`D-KNW-005`][D-KNW-005] — One `Scope` replaced the four vocabularies · 2026-08-02
 - [`D-KNW-006`][D-KNW-006] — A word for a thing administered from the backend adds no domain to a backend-only task · 2026-08-02
 - [`D-KNW-007`][D-KNW-007] — A hint says whose it is in both directions · 2026-08-02
 - [`D-KNW-008`][D-KNW-008] — Tooling is a row the answer crosses, not a dimension the corpus stores · 2026-08-02
 - [`D-KNW-009`][D-KNW-009] — A domain keyword is a phrasing, not a word · 2026-08-02
+- [`D-KNW-010`][D-KNW-010] — What the core reads from the environment is a gap this server owns · 2026-08-02
 - [`D-SCO-009`][D-SCO-009] — The brief is one brief, and names the paths a step is not for · 2026-08-02
 - [`D-SKL-002`][D-SKL-002] — A focused audit narrows what is assessed, not the list it closes on · 2026-08-02
 - [`D-COD-001`][D-COD-001] — One file declares one class · 2026-08-01
@@ -135,10 +140,13 @@ and not a defect.
 [D-ANS-008]: answers/ans-008-a-number-a-reader-cannot-reproduce-is-read-as-wrong.md
 [D-ANS-009]: answers/ans-009-a-shipped-file-is-a-deprecation-predicate-no-sweep-reaches.md
 [D-ANS-010]: answers/ans-010-does-it-still-work-is-a-question-for-the-manual.md
+[D-ANS-011]: answers/ans-011-a-scope-answer-states-what-a-manifest-declares.md
+[D-ANS-012]: answers/ans-012-an-input-oneof-is-a-rule-no-caller-is-told.md
 [D-AUD-004]: audience/aud-004-the-tool-list-is-not-where-the-audience-is-said.md
 [D-COD-003]: code/cod-003-a-directory-is-read-through-symfony-finder.md
 [D-DIS-007]: discovery/dis-007-the-ddev-console-is-named-by-the-mount-not-by-the-variable.md
 [D-DIS-008]: discovery/dis-008-the-columns-typo3-derives-are-reachable-where-the-database-is.md
+[D-DIS-009]: discovery/dis-009-installed-is-one-step-short-of-callable-and-the-install-is-what-says-so.md
 [D-DOC-003]: documentation/doc-003-a-decision-says-what-came-back-and-what-rests-on-it.md
 [D-DOC-004]: documentation/doc-004-a-requirement-is-written-in-the-same-sections-as-a-decision.md
 [D-DOC-005]: documentation/doc-005-a-number-is-three-digits-so-a-group-lists-in-order.md
@@ -146,6 +154,7 @@ and not a defect.
 [D-DOC-007]: documentation/doc-007-one-page-per-tool-and-the-answer-whole.md
 [D-DOC-008]: documentation/doc-008-the-calls-that-reach-outside-stay-in-the-shared-table.md
 [D-EVI-004]: evidence/evi-004-the-environment-is-made-here-and-the-repository-under-review-is-not.md
+[D-EVI-005]: evidence/evi-005-a-registration-nothing-can-reach-is-cleared-and-the-database-goes-with-it.md
 [D-FBK-011]: feedback/fbk-011-the-suite-holds-what-one-branch-can-be-right-about.md
 [D-FBK-012]: feedback/fbk-012-the-queue-comes-first-and-the-sighting-hands-over-one.md
 [D-FBK-013]: feedback/fbk-013-an-empty-queue-is-a-state-not-a-failure.md
@@ -160,6 +169,7 @@ and not a defect.
 [D-KNW-007]: knowledge/knw-007-a-hint-says-whose-it-is-in-both-directions.md
 [D-KNW-008]: knowledge/knw-008-tooling-is-a-row-that-is-crossed-in-the-answer.md
 [D-KNW-009]: knowledge/knw-009-a-domain-keyword-is-a-phrasing-not-a-word.md
+[D-KNW-010]: knowledge/knw-010-what-the-core-reads-from-the-environment-is-a-gap-this-server-owns.md
 [D-SCO-009]: scope/sco-009-the-brief-is-one-brief-and-names-the-paths-a-step.md
 [D-SKL-002]: task-skills/skl-002-a-focused-audit-narrows-what-is-assessed.md
 [D-COD-001]: code/cod-001-one-file-declares-one-class.md

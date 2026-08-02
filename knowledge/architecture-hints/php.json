@@ -339,12 +339,16 @@
         "since": 14
       },
       {
-        "text": "ext_emconf.php is the deprecated fallback for exactly that metadata. It is read only where composer.json declares neither the version nor providesPackages, and reading it triggers an E_USER_DEPRECATED during cache warm-up — which a functional test suite running with failOnDeprecation is usually the first thing to surface. Declare the two fields and the file stops being evaluated; a project extension can then delete it, one published to the TER keeps it for Tailor and the TER themselves.",
+        "text": "ext_emconf.php is the deprecated fallback for exactly that metadata, and what decides whether it is read is composer.json declaring both fields rather than either: providesPackages present — as an empty object where the extension ships no Composer packages of its own — and a version in extra.typo3/cms.version or in the top-level version field. Declaring one of the two and not the other still reads the file and still raises an E_USER_DEPRECATED during cache warm-up, which a functional test suite running with failOnDeprecation is usually the first thing to surface; a fixture extension therefore needs a version of its own, and any value does, since nothing evaluates it under test. A Composer installation is unaffected either way — building the package artifact skips the fallback before it is reached.",
         "since": 14,
         "until": 14
       },
       {
-        "text": "There is no fallback left: a composer.json without the version and providesPackages declarations is an invalid package manifest, and the installation says so instead of reading ext_emconf.php.",
+        "text": "Declaring both fields stops TYPO3 evaluating ext_emconf.php, which is not the same as being free to delete it: Tailor and the TER read that file, so an extension published there keeps it and keeps its contents in step with composer.json. One that goes nowhere near the TER can drop it.",
+        "since": 14
+      },
+      {
+        "text": "There is no fallback left: an extension whose composer.json does not declare both the version and providesPackages has an invalid package manifest, and the installation throws InvalidPackageManifestException naming the two fields instead of reading ext_emconf.php. System extensions are exempt, a framework package deriving its version from Typo3Version.",
         "since": 15
       },
       {

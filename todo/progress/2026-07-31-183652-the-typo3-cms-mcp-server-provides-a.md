@@ -1,7 +1,9 @@
-# Positive experience worth keeping: the typo3-extension-conformance skill workflow together with t...
+# The typo3-cms-mcp server provides a comprehensive knowledge base for TYPO3 development. The tools...
 
-**Serves:** feedback/2026-07-31-174529-positive-experience-worth-keeping-the-typo3.md
+**Serves:** feedback/2026-07-31-183652-the-typo3-cms-mcp-server-provides-a.md
 **Priority:** low
+**Branch:** todo/the-typo3-cms-mcp-server-provides-a
+**Claimed:** 2026-08-02
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

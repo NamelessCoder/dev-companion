@@ -1,7 +1,9 @@
-# The typo3-cms-mcp server provides a comprehensive knowledge base for TYPO3 development. The tools...
+# The typo3-extension-conformance skill provided an excellent structured workflow for the audit. Th...
 
-**Serves:** feedback/2026-07-31-183652-the-typo3-cms-mcp-server-provides-a.md
+**Serves:** feedback/2026-07-31-183648-the-typo3-extension-conformance-skill-provided.md
 **Priority:** low
+**Branch:** todo/the-typo3-extension-conformance-skill-provided
+**Claimed:** 2026-08-02
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-07-31-172754-typo3-extension-scope-for-bootstrap-package.md
 **Priority:** normal
+**Branch:** todo/say-what-a-class-count-counted
+**Claimed:** 2026-08-02
 
 Settle whether `Extension::classes()` should count the whole subtree or only
 what sits directly in a `Classes/` subdirectory, then make the answer say which.

@@ -2,6 +2,8 @@
 
 **Serves:** scenarios/
 **Priority:** normal
+**Branch:** todo/make-the-environments-a-run-validates-in-creatable-here
+**Claimed:** 2026-08-02
 
 Settle whether this repository creates the environments it validates in or only
 declares how one is recreated, then create the first one the answer allows: a

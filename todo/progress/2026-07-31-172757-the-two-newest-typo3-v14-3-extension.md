@@ -1,7 +1,9 @@
-# The typo3-extension-conformance skill provided an excellent structured workflow for the audit. Th...
+# The two newest TYPO3 v14.3 extension deprecations (ext_tables.php present -> #109438; ext_emconf....
 
-**Serves:** feedback/2026-07-31-183648-the-typo3-extension-conformance-skill-provided.md
+**Serves:** feedback/2026-07-31-172757-the-two-newest-typo3-v14-3-extension.md
 **Priority:** low
+**Branch:** todo/the-two-newest-typo3-v14-3-extension
+**Claimed:** 2026-08-02
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

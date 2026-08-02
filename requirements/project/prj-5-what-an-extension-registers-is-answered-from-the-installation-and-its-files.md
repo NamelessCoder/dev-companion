@@ -40,18 +40,22 @@ the booted installation is what raises it. What is declared is answered; what
 an extension does at runtime is named as not covered rather than guessed. The
 project's Composer patches are part of what the project is.
 
-**From:** an evaluation for a site with a sitepackage and its own extension,
-where the scope named the extension and nothing inside it (2026-07-29); a
-session whose CType, registered with `addRecordType()` in a file of its own,
-came back as no content element at all (2026-07-30); and a `REVIEW-02` run
-against `georgringer/news` (2026-07-31) that was told the extension registers
-the icons `provider` and `source` — the keys of the literal its `foreach` builds
-each icon from.
+## From
 
-**Held by:** `ProjectTest::whatAnExtensionRegistersIsReadFromItsOwnFiles`,
-`ProjectTest::whatTheInstallationHasBeatsWhatTheFilesCouldBeReadFor`,
-`ProjectTest::aRegistrationFileBuiltInALoopIsNotDeterminableRatherThanWrong`,
-`ProjectTest::theContentElementsAnExtensionAddsAreNamedRatherThanPointedAt`,
-`ProjectTest::aContentElementRegisteredWithAddRecordTypeIsFoundAsWell`,
-`ProjectTest::anExtensionTheInstallationDoesNotHaveIsAMissWithTheKeysItDoes`,
-`ProjectTest::aPatchedDependencyIsPartOfWhatThisProjectIs`
+An evaluation for a site with a sitepackage and its own extension, where the
+scope named the extension and nothing inside it (2026-07-29); a session whose
+CType, registered with `addRecordType()` in a file of its own, came back as no
+content element at all (2026-07-30); and a `REVIEW-02` run against
+`georgringer/news` (2026-07-31) that was told the extension registers the icons
+`provider` and `source` — the keys of the literal its `foreach` builds each
+icon from.
+
+## Held by
+
+- `ProjectTest::whatAnExtensionRegistersIsReadFromItsOwnFiles`
+- `ProjectTest::whatTheInstallationHasBeatsWhatTheFilesCouldBeReadFor`
+- `ProjectTest::aRegistrationFileBuiltInALoopIsNotDeterminableRatherThanWrong`
+- `ProjectTest::theContentElementsAnExtensionAddsAreNamedRatherThanPointedAt`
+- `ProjectTest::aContentElementRegisteredWithAddRecordTypeIsFoundAsWell`
+- `ProjectTest::anExtensionTheInstallationDoesNotHaveIsAMissWithTheKeysItDoes`
+- `ProjectTest::aPatchedDependencyIsPartOfWhatThisProjectIs`

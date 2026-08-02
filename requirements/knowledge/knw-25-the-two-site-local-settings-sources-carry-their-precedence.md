@@ -11,8 +11,11 @@ status: held
 of `config.yaml` rather than merging with it, and the backend editor persists to
 the former.
 
-**From:** adding one setting in the backend silently dropping every value a
-sitepackage seed carried inline (2026-07-30).
+## From
 
-**Held by:**
-`HintsTest::siteLocalSettingsSourcesAreAnsweredWithTheirPrecedence`
+Adding one setting in the backend silently dropping every value a sitepackage
+seed carried inline (2026-07-30).
+
+## Held by
+
+- `HintsTest::siteLocalSettingsSourcesAreAnsweredWithTheirPrecedence`

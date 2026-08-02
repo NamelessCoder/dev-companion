@@ -17,11 +17,15 @@ needs. This is [R-AUD-1](aud-1-three-audiences-not-one.md) made specific — a
 core rule handed over as the rule is a wrong answer, and handing it over as
 nothing is a second one.
 
-**From:** a project ViewHelper task answered with "needs a changelog entry
-under typo3/sysext/core/Documentation/Changelog/", a project test task answered
-with the mono repository's test paths, and nineteen backend CSS hints delivered
-to project work behind the same blanket notice as everything else (2026-07-29).
+## From
 
-**Held by:** `HintsTest::whatOnlyBindsACorePatchSaysSoOutsideTheCore`,
-`HintsTest::oneCoreObligationInATransferableHintIsMarkedOnItsOwn`,
-`VersionsTest::whoIsObligedIsWrittenAsDataToo`
+A project ViewHelper task answered with "needs a changelog entry under
+typo3/sysext/core/Documentation/Changelog/", a project test task answered with
+the mono repository's test paths, and nineteen backend CSS hints delivered to
+project work behind the same blanket notice as everything else (2026-07-29).
+
+## Held by
+
+- `HintsTest::whatOnlyBindsACorePatchSaysSoOutsideTheCore`
+- `HintsTest::oneCoreObligationInATransferableHintIsMarkedOnItsOwn`
+- `VersionsTest::whoIsObligedIsWrittenAsDataToo`

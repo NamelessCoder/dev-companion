@@ -21,7 +21,11 @@ holds that half: the `instructions` sent at initialize,
 parameters of the tools that match against prose. This binds what may enter
 `knowledge/` too — a statement in another language is one nothing can find.
 
-**From:** a German-phrased task reaching four of twelve hints by loanword
-accident, six clean misses, and one confidently wrong answer (2026-07-30).
+## From
 
-**Held by:** `ScopeTest::theQueryLanguageIsStatedWhereTheCallingAgentReadsIt`
+A German-phrased task reaching four of twelve hints by loanword accident, six
+clean misses, and one confidently wrong answer (2026-07-30).
+
+## Held by
+
+- `ScopeTest::theQueryLanguageIsStatedWhereTheCallingAgentReadsIt`

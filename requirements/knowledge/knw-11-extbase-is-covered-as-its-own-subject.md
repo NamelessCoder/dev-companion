@@ -15,8 +15,12 @@ out-of-range page, and the routes a paginated plugin needs.
 Each of them answers with a wrong page or an error page rather than with a
 stack trace anyone could search for.
 
-**From:** a catalog with fifty hint ids and not one about Extbase, and the five
-failure modes met afterwards while building the plugin it had nothing to say
-about (2026-07-29).
+## From
 
-**Held by:** `HintsTest::anExtbasePluginHasAHintOfItsOwn`
+A catalog with fifty hint ids and not one about Extbase, and the five failure
+modes met afterwards while building the plugin it had nothing to say about
+(2026-07-29).
+
+## Held by
+
+- `HintsTest::anExtbasePluginHasAHintOfItsOwn`

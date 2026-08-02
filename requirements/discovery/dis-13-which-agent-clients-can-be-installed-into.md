@@ -11,4 +11,6 @@ Copilot, Factory Droid, Kiro, OpenCode, Antigravity, Zed, Pi and Grok.**
 Each writes the client's native MCP and skill paths; Antigravity and Pi receive
 skills only.
 
-**Held by:** `InstallerAgentSupportTest`
+## Held by
+
+- `InstallerAgentSupportTest`

@@ -12,7 +12,11 @@ Extension documentation uses its own manual, semantic version and release
 feedback; extension assets use their own build and publishing decision rather
 than the core's source trees.
 
-**From:** the binding pass finding two subjects whose core obligation had no
-project counterpart (2026-07-29).
+## From
 
-**Held by:** `HintsTest::coreOnlyDocumentationAndBuildHintsHaveProjectTwins`
+The binding pass finding two subjects whose core obligation had no project
+counterpart (2026-07-29).
+
+## Held by
+
+- `HintsTest::coreOnlyDocumentationAndBuildHintsHaveProjectTwins`

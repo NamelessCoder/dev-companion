@@ -21,11 +21,14 @@ the answer when it fails is the finding itself, not a fallback. Continuing is
 allowed only after the session has said the server is missing and been asked to
 go on anyway, and then the answer carries that sentence.
 
-**From:** sessions that ran the installed skills against an unconnected server
-and returned a full answer regardless, repeatedly and without either side
-noticing (2026-07-31).
+## From
 
-**Held by:** `SkillTest::theBaseStopsTheTaskWhenTheServerIsNotConnected`, which
-holds the precondition in `skills/base.md` and therefore in every published
-copy; that a session actually stops is not guarded, and will not be — see
-`D-EVI-2`.
+Sessions that ran the installed skills against an unconnected server and
+returned a full answer regardless, repeatedly and without either side noticing
+(2026-07-31).
+
+## Held by
+
+- `SkillTest::theBaseStopsTheTaskWhenTheServerIsNotConnected`, which holds the
+  precondition in `skills/base.md` and therefore in every published copy; that
+  a session actually stops is not guarded, and will not be — see `D-EVI-2`.

@@ -14,10 +14,9 @@ in `general.json`; and the scripts themselves as
 The reading behind this is `D-AUD-4`: `typo3_test_run_guide` was never a
 core-only tool, it was the core column of the testing row, and the profile
 deleted the tool because there was no way to say "this row answers differently
-here". `laravel/boost` never needed the axis because its tooling ships as
-Composer packages, so `.ai/pest/`, `.ai/phpunit/` and `.ai/pint/` fall out of
-the package axis for free; `runTests.sh` is a script in one repository and does
-not.
+here". Where a harness ships as a Composer package, the tooling row falls out of
+the package axis for free and no separate one is needed; `runTests.sh` is a
+script in one repository and falls out of nothing.
 
 The step is to settle whether tooling is stored as a dimension crossing the
 audience one, or stays what it is now — reachable by keyword through

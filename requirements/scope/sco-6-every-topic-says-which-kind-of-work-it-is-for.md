@@ -13,13 +13,17 @@ The boundary runs through the middle of this server rather than around it, and
 a caller that has to work that out per tool ends up trusting all of it or none
 of it.
 
-**From:** a site developer for whom five installation-backed tools answered
-correctly while the curated half handed over runTests.sh commands, with nothing
-in the scope separating the two (2026-07-29).
-
 Where an answer is read from is a different question and `source` already
 answers it, so `installation` stopped being a value of this field on 2026-08-02
 ([`D-KNW-5`](../../decisions/knowledge/knw-5-one-scope-replaced-the-four-vocabularies.md)).
 
-**Held by:** `ScopeTest::everyCoveredTopicSaysWhatItIsWorthOutsideTheCore`,
-`KnowledgeTest::everyScopeInTheCorpusIsOneTheEnumDeclares`
+## From
+
+A site developer for whom five installation-backed tools answered correctly
+while the curated half handed over runTests.sh commands, with nothing in the
+scope separating the two (2026-07-29).
+
+## Held by
+
+- `ScopeTest::everyCoveredTopicSaysWhatItIsWorthOutsideTheCore`
+- `KnowledgeTest::everyScopeInTheCorpusIsOneTheEnumDeclares`

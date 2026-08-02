@@ -42,13 +42,13 @@ final class Unresolved
 
         $waiting = [];
         foreach (Requirements::all() as $requirement) {
-            if (Requirements::state($requirement) === 'held') {
+            if (Requirements::state($requirement)->isGuarded()) {
                 continue;
             }
 
             $waiting[] = [
                 'id' => $requirement['id'],
-                'state' => Requirements::state($requirement),
+                'state' => Requirements::state($requirement)->value,
                 'title' => $requirement['title'],
                 'queued' => in_array($requirement['id'], $queued, true),
             ];

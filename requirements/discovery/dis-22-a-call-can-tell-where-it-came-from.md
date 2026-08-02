@@ -24,10 +24,14 @@ deprecated, which
 [`D-DIS-6`](../../decisions/discovery/dis-6-the-protocol-offers-nothing-to-replace-the-working-directory.md)
 records. Should one arrive, the mechanism may change; this may not.
 
-**From:** the line that finds it could be deleted from the entrypoint with all
-495 tests staying green, because every test that covers discovery hands
-`Instance` a directory itself and so covers what happens after somebody does.
-Nothing covered that somebody does (2026-08-01).
+## From
 
-**Held by:** `StdioServerTest::theServerWorksOutWhichInstallationItWasStartedIn`,
-`StdioServerTest::itWalksUpToTheInstallationFromInsideIt`
+The line that finds it could be deleted from the entrypoint with all 495 tests
+staying green, because every test that covers discovery hands `Instance` a
+directory itself and so covers what happens after somebody does. Nothing
+covered that somebody does (2026-08-01).
+
+## Held by
+
+- `StdioServerTest::theServerWorksOutWhichInstallationItWasStartedIn`
+- `StdioServerTest::itWalksUpToTheInstallationFromInsideIt`

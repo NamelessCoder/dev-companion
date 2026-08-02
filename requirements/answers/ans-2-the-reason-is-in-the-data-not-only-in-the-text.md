@@ -11,9 +11,12 @@ diagnostic as data too.**
 
 Nothing a caller needs in order to act lives in the text alone.
 
-**From:** a client that renders `structuredContent` and drops the text block;
-the agent twice concluded an extension registered no icons and no labels
-(2026-07-29).
+## From
 
-**Held by:** `ScopeTest::anUnanswerableLookupCarriesItsReasonInTheData`,
-`ScopeTest::theInstallationDiagnosticIsDataRatherThanProse`
+A client that renders `structuredContent` and drops the text block; the agent
+twice concluded an extension registered no icons and no labels (2026-07-29).
+
+## Held by
+
+- `ScopeTest::anUnanswerableLookupCarriesItsReasonInTheData`
+- `ScopeTest::theInstallationDiagnosticIsDataRatherThanProse`

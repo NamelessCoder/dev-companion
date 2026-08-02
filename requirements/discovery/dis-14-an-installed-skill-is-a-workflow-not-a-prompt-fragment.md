@@ -20,7 +20,11 @@ than restates, and references that are one hop away and loaded on demand — is
 checked over the directory, so a skill written later is held to it without
 being added to a list first.
 
-**From:** forward tests of the testing, conformance, documentation, and backend
-module skills against the Printworks sitepackage (2026-07-30).
+## From
 
-**Held by:** `SkillTest`
+Forward tests of the testing, conformance, documentation, and backend module
+skills against the Printworks sitepackage (2026-07-30).
+
+## Held by
+
+- `SkillTest`

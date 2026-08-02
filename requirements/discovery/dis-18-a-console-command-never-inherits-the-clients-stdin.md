@@ -13,7 +13,11 @@ request the client wrote while the command was running. Nothing reports it: the
 server never saw the request, the client is waiting for an answer to it, and the
 session stops without an error on either side.
 
-**From:** two runs of `REVIEW-02` that both stalled on the first pair of tool
-calls the client dispatched concurrently (2026-07-31).
+## From
 
-**Held by:** `StdioServerTest::aRequestBehindOneThatRunsTheConsoleIsStillAnswered`
+Two runs of `REVIEW-02` that both stalled on the first pair of tool calls the
+client dispatched concurrently (2026-07-31).
+
+## Held by
+
+- `StdioServerTest::aRequestBehindOneThatRunsTheConsoleIsStillAnswered`

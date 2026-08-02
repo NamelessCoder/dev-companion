@@ -8,5 +8,6 @@ status: held
 **A repository whose dependencies were never installed is not reported as an
 installation.**
 
-**Held by:**
-`InstanceTest::aRepositoryWithNoInstallationAroundItIsNotReportedAsOne`
+## Held by
+
+- `InstanceTest::aRepositoryWithNoInstallationAroundItIsNotReportedAsOne`

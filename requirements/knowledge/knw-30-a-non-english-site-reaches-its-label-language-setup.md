@@ -12,8 +12,12 @@ the configuration key of the target branch before it is updated, and literal
 component fallbacks such as the EXT:form submit button are distinguished from
 translatable labels.
 
-**From:** a German-only site silently rendering core validation messages and
-the form submit button in English (2026-07-30).
+## From
 
-**Held by:** `HintsTest::aGermanSiteTaskReachesItsLabelLanguageSetup`,
-`HintsTest::languagePackActivationUsesTheConfigurationOfTheTargetBranch`
+A German-only site silently rendering core validation messages and the form
+submit button in English (2026-07-30).
+
+## Held by
+
+- `HintsTest::aGermanSiteTaskReachesItsLabelLanguageSetup`
+- `HintsTest::languagePackActivationUsesTheConfigurationOfTheTargetBranch`

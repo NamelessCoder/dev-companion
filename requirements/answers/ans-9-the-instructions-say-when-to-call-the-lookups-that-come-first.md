@@ -11,7 +11,11 @@ only before a runtime-only mistake is made.**
 Components before backend markup, icons before choosing an identifier, and
 labels before adding or rewording one.
 
-**From:** a comparison with a server that tells the agent what to call before
-its first question instead of relying on tool descriptions (2026-07-30).
+## From
 
-**Held by:** `ScopeTest::theScopeInstructionsOrientTheClientBeforeItsFirstCall`
+A comparison with a server that tells the agent what to call before its first
+question instead of relying on tool descriptions (2026-07-30).
+
+## Held by
+
+- `ScopeTest::theScopeInstructionsOrientTheClientBeforeItsFirstCall`

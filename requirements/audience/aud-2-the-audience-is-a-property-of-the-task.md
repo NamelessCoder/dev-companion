@@ -19,10 +19,15 @@ path, and the tools that take a `paths` array answer per path. `uncertain` is
 the case above — nothing in the call placed the work, and an answer that picks
 the core there is right half the time and says so never.
 
-**From:** two paths of different audience in one session, where the first one
-decided for both ([`D-SCO-7`](../../decisions/scope/sco-7-the-signals-are-combined-per-call-and-a-call-is-not-a-path.md),
+## From
+
+Two paths of different audience in one session, where the first one decided for
+both
+([`D-SCO-7`](../../decisions/scope/sco-7-the-signals-are-combined-per-call-and-a-call-is-not-a-path.md),
 2026-08-01).
 
-**Held by:** `ScopeTest::twoPathsOfDifferentAudienceInOneCallStayApart`,
-`ScopeTest::whereNothingPlacesTheWorkTheAnswerSaysSoRatherThanAssumingTheCore`,
-`ScopeTest::whatTheCoreKeepsInBuildIsOnlyTheCoresWhereTheRepositoryCouldBeTheCore`
+## Held by
+
+- `ScopeTest::twoPathsOfDifferentAudienceInOneCallStayApart`
+- `ScopeTest::whereNothingPlacesTheWorkTheAnswerSaysSoRatherThanAssumingTheCore`
+- `ScopeTest::whatTheCoreKeepsInBuildIsOnlyTheCoresWhereTheRepositoryCouldBeTheCore`

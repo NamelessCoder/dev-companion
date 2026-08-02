@@ -12,7 +12,8 @@ the Gerrit `Change-Id` are core rules and belong to core work only. A site or
 extension repository has its own workflow, and the guide must be usable there
 without producing trailers that mean nothing in it.
 
-**Held by:**
-`CommitMessageTest::outsideTheCoreNoTrailerIsAddedAndNoneIsDemanded`,
-`CommitMessageTest::outsideTheCoreTheSubjectAndBodyRulesStillHold`,
-`CommitMessageTest::theSecurityKeywordIsTheRepositoryOwnOutsideTheCore`
+## Held by
+
+- `CommitMessageTest::outsideTheCoreNoTrailerIsAddedAndNoneIsDemanded`
+- `CommitMessageTest::outsideTheCoreTheSubjectAndBodyRulesStillHold`
+- `CommitMessageTest::theSecurityKeywordIsTheRepositoryOwnOutsideTheCore`

@@ -13,9 +13,12 @@ commands it declares.
 
 No console, no database, so it answers on a fresh clone.
 
-**From:** three sessions asking for a project mode, and a guide that
-recommended `runTests.sh` to repositories that declare `composer t3g:cgl`
-(2026-07-29).
+## From
 
-**Held by:** `ProjectTest::theProjectIsDescribedFromItsFilesAlone`,
-`ProjectTest::withoutAnInstallationThereIsNoProjectToDescribe`
+Three sessions asking for a project mode, and a guide that recommended
+`runTests.sh` to repositories that declare `composer t3g:cgl` (2026-07-29).
+
+## Held by
+
+- `ProjectTest::theProjectIsDescribedFromItsFilesAlone`
+- `ProjectTest::withoutAnInstallationThereIsNoProjectToDescribe`

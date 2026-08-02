@@ -13,9 +13,12 @@ that failed — this is
 direction, and a zero-hit answer dressed as a breakage sends the caller to fix
 an installation instead of narrowing a query.
 
-**From:** the same feedback; the console's zero-match warning was read as an
-unreachable installation (2026-07-29).
+## From
 
-**Held by:**
-`LabelSearchTest::aConsoleThatFoundNothingIsAnAnswerRatherThanAFailure`,
-`LabelSearchTest::aConsoleThatCannotRunIsStillUnanswered`
+The same feedback; the console's zero-match warning was read as an unreachable
+installation (2026-07-29).
+
+## Held by
+
+- `LabelSearchTest::aConsoleThatFoundNothingIsAnAnswerRatherThanAFailure`
+- `LabelSearchTest::aConsoleThatCannotRunIsStillUnanswered`

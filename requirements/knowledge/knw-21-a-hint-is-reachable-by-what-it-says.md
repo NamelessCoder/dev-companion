@@ -23,18 +23,22 @@ is answered by the index
 [`R-ANS-6`](../answers/ans-6-a-miss-says-what-there-would-have-been-to-find.md)
 requires.
 
-**From:** a measurement of the matcher on 2026-07-30 — 57 hints and 11,501
-words of hint body reachable through 9.3 keywords each; of eighteen realistic
-queries, seven reached nothing, two of them the `dependency-injection-services`
-hint that names the symptom outright.
+## From
 
-**Held by:**
-`HintsTest::theSweepTheMatcherWasMeasuredOnStillAnswersTheSameWay` — the
-measurement itself, both halves of it: the queries that reached nothing before
-and the two the corpus has no answer for, which is what says the matcher did
-not simply start answering everything. `HintsTest::theCuratedVocabularyStillDecidesWhereItWasWritten`
-holds the ranking the sweep only holds the membership of.
+A measurement of the matcher on 2026-07-30 — 57 hints and 11,501 words of hint
+body reachable through 9.3 keywords each; of eighteen realistic queries, seven
+reached nothing, two of them the `dependency-injection-services` hint that
+names the symptom outright.
 
-A sweep is still a sample, so `bin/cli hints:coverage` is what says how much of
-the corpus is reachable at all: which hints their own title does not reach,
-which no scenario prompt reaches, and which prompts reach nothing.
+## Held by
+
+- `HintsTest::theSweepTheMatcherWasMeasuredOnStillAnswersTheSameWay` — the
+- Measurement itself, both halves of it: the queries that reached nothing
+  before and the two the corpus has no answer for, which is what says the
+  matcher did not simply start answering everything.
+- `HintsTest::theCuratedVocabularyStillDecidesWhereItWasWritten` holds the
+- Ranking the sweep only holds the membership of.
+
+- A sweep is still a sample, so `bin/cli hints:coverage` is what says how much
+  of the corpus is reachable at all: which hints their own title does not
+  reach, which no scenario prompt reaches, and which prompts reach nothing.

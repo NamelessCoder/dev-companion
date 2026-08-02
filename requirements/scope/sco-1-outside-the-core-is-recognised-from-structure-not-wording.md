@@ -26,12 +26,15 @@ A path shape is evidence only where it can be: `Build/Scripts/` and
 compiles something, and neither is core evidence where the manifest at the root
 already says this checkout is not the core.
 
-**From:** `outsideCore` flipping only after the caller spelled out "not TYPO3
-core" in prose (2026-07-29).
+## From
 
-**Held by:**
-`ScopeTest::namingTheCoreInOrderToRuleItOutIsNotEvidenceOfCoreWork`,
-`ScopeTest::anAreaTheInstallationKnowsAsSomebodysExtensionIsOutsideTheCore`,
-`ScopeTest::inASiteInstallationTheWorkIsOutsideTheCoreUnlessSomethingSaysOtherwise`,
-`ScopeTest::inACoreCheckoutNothingIsPushedOutsideByTheInstallationAlone`,
-`ScopeTest::aPathInsideAnExtensionIsRecognisedByItsShape`
+`outsideCore` flipping only after the caller spelled out "not TYPO3 core" in
+prose (2026-07-29).
+
+## Held by
+
+- `ScopeTest::namingTheCoreInOrderToRuleItOutIsNotEvidenceOfCoreWork`
+- `ScopeTest::anAreaTheInstallationKnowsAsSomebodysExtensionIsOutsideTheCore`
+- `ScopeTest::inASiteInstallationTheWorkIsOutsideTheCoreUnlessSomethingSaysOtherwise`
+- `ScopeTest::inACoreCheckoutNothingIsPushedOutsideByTheInstallationAlone`
+- `ScopeTest::aPathInsideAnExtensionIsRecognisedByItsShape`

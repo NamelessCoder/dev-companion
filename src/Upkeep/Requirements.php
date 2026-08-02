@@ -39,6 +39,27 @@ final class Requirements
         'COD' => 'code',
     ];
 
+    /**
+     * The sections an entry is written in, in the order they have to appear.
+     * Where the demand came from is evidence and comes first; what holds it
+     * there is the claim the suite keeps, and closes the entry.
+     *
+     * @var array<int, string>
+     */
+    public const FIELDS = ['From', 'Held by'];
+
+    /**
+     * The sections a file carries, in the order it carries them.
+     *
+     * @return array<int, string>
+     */
+    public static function fields(string $contents): array
+    {
+        preg_match_all('/^## (.+)$/m', $contents, $matches);
+
+        return $matches[1];
+    }
+
     public static function directory(): string
     {
         return Paths::root() . '/requirements';
@@ -88,7 +109,7 @@ final class Requirements
                 'says' => sprintf(
                     '%s · %s',
                     $requirement['title'],
-                    $state === 'open' ? '**open**' : $state,
+                    $state === RequirementState::Open ? '**open**' : $state->value,
                 ),
             ];
         }
@@ -107,13 +128,13 @@ final class Requirements
      *
      * @param array{status: string, heldBy: string, tests: array<int, string>} $requirement
      */
-    public static function state(array $requirement): string
+    public static function state(array $requirement): RequirementState
     {
-        if ($requirement['status'] === 'open') {
-            return 'open';
+        if (RequirementState::tryFrom($requirement['status']) === RequirementState::Open) {
+            return RequirementState::Open;
         }
 
-        return $requirement['tests'] === [] ? 'not guarded' : 'held';
+        return $requirement['tests'] === [] ? RequirementState::NotGuarded : RequirementState::Held;
     }
 
     /**
@@ -206,16 +227,19 @@ final class Requirements
     }
 
     /** The paragraph under a bold label, wrapped lines folded back together. */
+    /**
+     * A section's body, to the next heading or the end of the file.
+     *
+     * They were bold labels on a paragraph until 2026-08-02. `Held by` names
+     * more than one test on 60 of the 123 entries and nine on one of them, and
+     * a comma-separated sentence is not what that is — see `D-DOC-4`.
+     */
     private static function field(string $contents, string $label): string
     {
-        $start = strpos($contents, '**' . $label . ':**');
-        if ($start === false) {
+        if (preg_match('/^## ' . preg_quote($label, '/') . '$\R(.*?)(?=^## |\z)/ms', $contents, $matches) !== 1) {
             return '';
         }
 
-        $marker = '**' . $label . ':**';
-        $paragraph = (string) preg_split('/\R\R/', substr($contents, $start + strlen($marker)), 2)[0];
-
-        return trim((string) preg_replace('/\s+/', ' ', $paragraph));
+        return trim((string) preg_replace('/\s+/', ' ', $matches[1]));
     }
 }

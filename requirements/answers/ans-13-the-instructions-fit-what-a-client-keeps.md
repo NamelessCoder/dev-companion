@@ -18,10 +18,14 @@ as "the entire mitigation" and was the first thing cut. Length is therefore a
 property of the instructions rather than of the client, and it is held here so
 that the next sentence added has to displace one.
 
-**From:** two release runs in `E-EXT` (2026-07-31) whose client cut 3662
-characters to 2048, dropping the English-query sentence, the version binding and
+## From
+
+Two release runs in `E-EXT` (2026-07-31) whose client cut 3662 characters to
+2048, dropping the English-query sentence, the version binding and
 `typo3_server_scope` from every session it ran.
 
-**Held by:** `ScopeTest::theInstructionsFitWhatAClientKeeps` for every profile,
-and `StdioServerTest::theServerAnnouncesItselfWithItsBoundary` on the string a
-client is handed over the wire
+## Held by
+
+- `ScopeTest::theInstructionsFitWhatAClientKeeps` for every profile, and
+- `StdioServerTest::theServerAnnouncesItselfWithItsBoundary` on the string a
+- Client is handed over the wire

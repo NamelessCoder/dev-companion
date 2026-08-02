@@ -14,9 +14,13 @@ contribution workflow named outright — because the words that match them
 they are dropped; where nothing says either way they are offered under their
 condition, never stated.
 
-**From:** third-party extension maintenance recognised as a Gerrit patch
-submission (2026-07-29).
+## From
 
-**Held by:** `ScopeTest::maintainingAnExtensionIsNotSubmittingAPatchToTheCore`,
-`ScopeTest::aCorePathStillMakesTheSameWordAPatchSubmission`,
-`ScopeTest::inASitePackageThePatchSubmissionIntentIsNotOfferedAtAll`
+Third-party extension maintenance recognised as a Gerrit patch submission
+(2026-07-29).
+
+## Held by
+
+- `ScopeTest::maintainingAnExtensionIsNotSubmittingAPatchToTheCore`
+- `ScopeTest::aCorePathStillMakesTheSameWordAPatchSubmission`
+- `ScopeTest::inASitePackageThePatchSubmissionIntentIsNotOfferedAtAll`

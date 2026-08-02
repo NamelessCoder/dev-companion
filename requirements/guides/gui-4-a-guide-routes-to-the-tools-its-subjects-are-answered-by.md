@@ -14,8 +14,12 @@ tool that answers it from the installation, the brief's next lookups carry it,
 and the changelog is carried whatever the subject is — what separates the
 version being built on from the one in memory is in there.
 
-**From:** forty invented label keys with `typo3_label_lookup` never called, in
-a session where `typo3_changelog_lookup` turned out to be the tool that carried
-the work while the routing table named it last (2026-07-29).
+## From
 
-**Held by:** `ScopeTest::theBriefRoutesToTheToolsItsOwnSubjectsAreAnsweredBy`
+Forty invented label keys with `typo3_label_lookup` never called, in a session
+where `typo3_changelog_lookup` turned out to be the tool that carried the work
+while the routing table named it last (2026-07-29).
+
+## Held by
+
+- `ScopeTest::theBriefRoutesToTheToolsItsOwnSubjectsAreAnsweredBy`

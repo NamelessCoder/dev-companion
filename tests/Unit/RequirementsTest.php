@@ -9,6 +9,7 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\Finder\Finder;
 use Typo3CmsMcp\Paths;
 use Typo3CmsMcp\Upkeep\Requirements;
+use Typo3CmsMcp\Upkeep\RequirementState;
 
 final class RequirementsTest extends TestCase
 {
@@ -56,7 +57,7 @@ final class RequirementsTest extends TestCase
         foreach (Requirements::all() as $id => $requirement) {
             self::assertNotSame('', $requirement['title'], $id . ' has no title');
             self::assertNotSame('', $requirement['statement'], $id . ' states nothing');
-            self::assertContains($requirement['status'], ['held', 'open'], $id . ' has no usable status');
+            self::assertContains($requirement['status'], RequirementState::writtenValues(), $id . ' has no usable status');
         }
     }
 
@@ -66,6 +67,34 @@ final class RequirementsTest extends TestCase
      * renamed away is a claim nobody answers for, and it reads exactly like one
      * that is held.
      */
+    /**
+     * The sections are what a reader navigates an entry by, and the order
+     * carries meaning: where the demand came from is evidence, and what holds
+     * it there is the claim the suite keeps.
+     */
+    #[Test]
+    public function everyRequirementIsWrittenInTheSectionsTheFormatHas(): void
+    {
+        foreach (Requirements::files() as $path) {
+            $requirement = Requirements::read($path);
+            $rank = -1;
+            foreach (Requirements::fields((string) file_get_contents($path)) as $field) {
+                self::assertContains(
+                    $field,
+                    Requirements::FIELDS,
+                    $requirement['id'] . ' carries a section nothing reads: ' . $field,
+                );
+                $position = (int) array_search($field, Requirements::FIELDS, true);
+                self::assertGreaterThan(
+                    $rank,
+                    $position,
+                    $requirement['id'] . ' has ' . $field . ' below a section that belongs under it',
+                );
+                $rank = $position;
+            }
+        }
+    }
+
     #[Test]
     public function everyRequirementNamesWhatHoldsIt(): void
     {
@@ -73,7 +102,7 @@ final class RequirementsTest extends TestCase
         $classes = array_unique(array_map(static fn(string $m): string => explode('::', $m)[0], $methods));
 
         foreach (Requirements::all() as $id => $requirement) {
-            if ($requirement['status'] === 'open') {
+            if (RequirementState::tryFrom($requirement['status']) === RequirementState::Open) {
                 continue;
             }
 

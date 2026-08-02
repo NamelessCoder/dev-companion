@@ -16,9 +16,13 @@ places with the reason each one exists, not as a skeleton to copy: projects
 differ in whether they have Node, DDEV or one site or twenty, and only the
 reasons transfer.
 
-**From:** a session that had to invent the location of the phpunit
-configurations, the browser suite and its config, the scripts a project
-exposes, and what is ignored — with a working answer for the extension
-(`sitepackage-layout`) and none for what sits around it (2026-07-29).
+## From
 
-**Held by:** `HintsTest::whereSomethingGoesInTheRepositoryIsAnsweredToo`
+A session that had to invent the location of the phpunit configurations, the
+browser suite and its config, the scripts a project exposes, and what is
+ignored — with a working answer for the extension (`sitepackage-layout`) and
+none for what sits around it (2026-07-29).
+
+## Held by
+
+- `HintsTest::whereSomethingGoesInTheRepositoryIsAnsweredToo`

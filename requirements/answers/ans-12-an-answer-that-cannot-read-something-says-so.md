@@ -15,12 +15,14 @@ cannot follow. Where a whole file yields nothing — its list exists only once i
 has run — the file itself is named, because a section left out for being empty
 reads the same as a file that was never there.
 
-**From:** the third `REVIEW-01` run (2026-07-31), where `typo3_extension_scope`
-reported three content elements of four. The fourth wrote `$contentType =
-'…'` above its `addRecordType()` call, and an earlier run had already read
-the omission as a template with no registration — a defect the extension does
-not have.
+## From
 
-**Held by:**
-`ProjectTest::anIdentifierThatTookADetourThroughAVariableIsStillRead`,
-`ProjectTest::aRegistrationFileBuiltInALoopIsNotDeterminableRatherThanWrong`
+The third `REVIEW-01` run (2026-07-31), where `typo3_extension_scope` reported
+three content elements of four. The fourth wrote `$contentType = '…'` above its
+`addRecordType()` call, and an earlier run had already read the omission as a
+template with no registration — a defect the extension does not have.
+
+## Held by
+
+- `ProjectTest::anIdentifierThatTookADetourThroughAVariableIsStillRead`
+- `ProjectTest::aRegistrationFileBuiltInALoopIsNotDeterminableRatherThanWrong`

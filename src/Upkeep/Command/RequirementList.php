@@ -43,7 +43,7 @@ final class RequirementList
                 '%-10s %-13s %-14s %s',
                 $requirement['id'],
                 $requirement['group'],
-                Requirements::state($requirement),
+                Requirements::state($requirement)->value,
                 $requirement['title'],
             ));
         }

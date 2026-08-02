@@ -11,7 +11,11 @@ extensions and its internal vocabulary.**
 `appliesTo` is what the matcher scores, so a subject nobody can phrase their
 way to is a subject the server does not have.
 
-**From:** `language-files` matching `.xlf` and `trans-unit` but neither "xlf"
-nor "label" nor "language file" (2026-07-29).
+## From
 
-**Held by:** `HintsTest::aQueryAboutLanguageFilesReachesTheLanguageFilesHint`
+`language-files` matching `.xlf` and `trans-unit` but neither "xlf" nor "label"
+nor "language file" (2026-07-29).
+
+## Held by
+
+- `HintsTest::aQueryAboutLanguageFilesReachesTheLanguageFilesHint`

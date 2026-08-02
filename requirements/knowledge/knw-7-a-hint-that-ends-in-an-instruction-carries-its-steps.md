@@ -10,8 +10,12 @@ status: held
 Naming the way in and stopping where the work starts leaves the caller with the
 traps the sentence just sent them into.
 
-**From:** "seed with DataHandler, then export" — with no way to get a
-DataHandler, three steps of a hand-written boot each of which fails on its own,
-and an export that silently omits every table nobody named (2026-07-29).
+## From
 
-**Held by:** `HintsTest::theSeedingAdviceCarriesTheStepsItAsksFor`
+"seed with DataHandler, then export" — with no way to get a DataHandler, three
+steps of a hand-written boot each of which fails on its own, and an export that
+silently omits every table nobody named (2026-07-29).
+
+## Held by
+
+- `HintsTest::theSeedingAdviceCarriesTheStepsItAsksFor`

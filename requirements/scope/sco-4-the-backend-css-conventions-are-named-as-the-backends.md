@@ -13,12 +13,14 @@ They do not match a frontend theme, nor a PHP file whose name merely contains
 where a task names the frontend they are withheld with the reason rather than
 applied.
 
-**From:** four confidently inverted hints for a Bootstrap 5 frontend theme
-(2026-07-29).
+## From
 
-**Held by:**
-`HintsTest::aFrontendThemeIsNotAnsweredWithTheBackendsOwnCssConventions`,
-`HintsTest::stylingABackendModuleStillReachesTheBackendCssHints`,
-`HintsTest::aPhpClassNameThatCarriesTheWordScssIsStillPhp`,
-`ScopeTest::aCoreContributorOnFrontendRenderingLosesTheTwoBackendUiSections`,
-`ScopeTest::theNoticeNamesTheWordsThatBringTheBackendUiSectionsBack`
+Four confidently inverted hints for a Bootstrap 5 frontend theme (2026-07-29).
+
+## Held by
+
+- `HintsTest::aFrontendThemeIsNotAnsweredWithTheBackendsOwnCssConventions`
+- `HintsTest::stylingABackendModuleStillReachesTheBackendCssHints`
+- `HintsTest::aPhpClassNameThatCarriesTheWordScssIsStillPhp`
+- `ScopeTest::aCoreContributorOnFrontendRenderingLosesTheTwoBackendUiSections`
+- `ScopeTest::theNoticeNamesTheWordsThatBringTheBackendUiSectionsBack`

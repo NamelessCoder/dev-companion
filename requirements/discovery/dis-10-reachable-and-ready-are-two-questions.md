@@ -15,10 +15,13 @@ inside that project's DDEV web container is ready through its direct PHP and
 must not be diagnosed as a host with an unreachable DDEV project merely because
 the container has no nested `ddev` binary.
 
-**From:** `typo3_server_scope` reporting the console as reachable via host PHP
-8.3 with the DDEV project stopped, so five installation-backed tools were
-presented as usable while four of them could not answer (2026-07-29).
+## From
 
-**Held by:**
-`Typo3CliTest::aStoppedProjectReachedThroughHostPhpIsReportedAsTheHalfAnswerItIs`,
-`Typo3CliTest::aConsoleAlreadyInsideDdevIsReadyThroughItsDirectPhp`
+`typo3_server_scope` reporting the console as reachable via host PHP 8.3 with
+the DDEV project stopped, so five installation-backed tools were presented as
+usable while four of them could not answer (2026-07-29).
+
+## Held by
+
+- `Typo3CliTest::aStoppedProjectReachedThroughHostPhpIsReportedAsTheHalfAnswerItIs`
+- `Typo3CliTest::aConsoleAlreadyInsideDdevIsReadyThroughItsDirectPhp`

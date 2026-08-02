@@ -30,20 +30,24 @@ here as the boundary of what may change, not as a judgement to arrive at. What
 the work list does not justify is not this workflow's to change, and each of
 those has a named owner.
 
-**From:** the `REVIEW-02` run of 2026-07-31 in an extension declaring two majors
-against an installation a major behind, which established both halves at once.
-The multi-major decisions were made, and made well — the older major's YAML
-registration argued as required because the attribute form is unavailable there,
-and the same excuse refused for a deprecated ViewHelper shape whose replacement
-works on both. What was absent was the order: the deprecation with the largest
-consequence for that package's next major sat on 24 call sites in 11 files and
-the surface was reported as clean, the one deprecated API named was reached
-because a finding walked into it, and the Extension Scanner was never called in
-a checkout that has one.
+## From
 
-**Held by:** `SkillTest::anUpgradeIsOrderedWorkAndOwnsOnlyTheCrossing`,
-`SkillTest::everySkillStartsFromTheBaseBeforeItsOwnEvidence`,
-`SkillTest::everySkillRoutesThroughTheOwnersOfItsOwnFactsInOrder`, `EXT-01`.
-That a session works in this order is not guarded and will not be by a forward
-run — `D-EVI-1` admits only an open review as forward evidence, and a review
-stops at findings by design.
+The `REVIEW-02` run of 2026-07-31 in an extension declaring two majors against
+an installation a major behind, which established both halves at once. The
+multi-major decisions were made, and made well — the older major's YAML
+registration argued as required because the attribute form is unavailable
+there, and the same excuse refused for a deprecated ViewHelper shape whose
+replacement works on both. What was absent was the order: the deprecation with
+the largest consequence for that package's next major sat on 24 call sites in
+11 files and the surface was reported as clean, the one deprecated API named
+was reached because a finding walked into it, and the Extension Scanner was
+never called in a checkout that has one.
+
+## Held by
+
+- `SkillTest::anUpgradeIsOrderedWorkAndOwnsOnlyTheCrossing`
+- `SkillTest::everySkillStartsFromTheBaseBeforeItsOwnEvidence`
+- `SkillTest::everySkillRoutesThroughTheOwnersOfItsOwnFactsInOrder`, `EXT-01`.
+- That a session works in this order is not guarded and will not be by a
+  forward run — `D-EVI-1` admits only an open review as forward evidence, and a
+  review stops at findings by design.

@@ -16,8 +16,12 @@ do.
 The shapes that decide it — a carousel, a slider, an accordion, slides —
 reach that answer without the task having to call itself a content element.
 
-**From:** a hero carousel designed out of generic record references and
-validated as technically possible, with the ownership decision never forced
-(2026-07-30); scenario `SKILL-04`.
+## From
 
-**Held by:** `HintsTest::aRepeatableContentElementIsRoutedThroughWhatItOwns`
+A hero carousel designed out of generic record references and validated as
+technically possible, with the ownership decision never forced (2026-07-30);
+scenario `SKILL-04`.
+
+## Held by
+
+- `HintsTest::aRepeatableContentElementIsRoutedThroughWhatItOwns`

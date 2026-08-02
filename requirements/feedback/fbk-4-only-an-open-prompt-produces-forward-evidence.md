@@ -19,11 +19,15 @@ belongs in `todo/reference/`. A contract state is settled by no run, so every ca
 names the tests that hold it, or that something is not guarded, and a test it
 names has to exist.
 
-**From:** a suite whose prompts prescribed the feature, subsystem and often the
+## From
+
+A suite whose prompts prescribed the feature, subsystem and often the
 implementation shape they were meant to discover, and whose site prompts named
 one person's project (2026-07-31).
 
-**Held by:** `ScenariosTest::everyCaseHasAFileOfItsOwn`,
-`ScenariosTest::aTargetedContractCaseIsNotSomethingARunCanAnswer`,
-`ScenariosTest::everyContractCaseNamesWhatHoldsIt`; that a prompt stays free of
-a named installation is not guarded.
+## Held by
+
+- `ScenariosTest::everyCaseHasAFileOfItsOwn`
+- `ScenariosTest::aTargetedContractCaseIsNotSomethingARunCanAnswer`
+- `ScenariosTest::everyContractCaseNamesWhatHoldsIt`; that a prompt stays free
+- Of a named installation is not guarded.

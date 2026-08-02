@@ -11,9 +11,12 @@ out, with the shape that replaces it.**
 Absence reads as "not relevant", which is the one thing a deprecated file is
 not.
 
-**From:** `extension-files` listing every current registration file and not
-mentioning `ext_emconf.php`, whose deprecation turned a first functional test
-run red (2026-07-29).
+## From
 
-**Held by:**
-`HintsTest::theFileAnExtensionNoLongerNeedsIsCoveredWhereItsFilesAre`
+`extension-files` listing every current registration file and not mentioning
+`ext_emconf.php`, whose deprecation turned a first functional test run red
+(2026-07-29).
+
+## Held by
+
+- `HintsTest::theFileAnExtensionNoLongerNeedsIsCoveredWhereItsFilesAre`

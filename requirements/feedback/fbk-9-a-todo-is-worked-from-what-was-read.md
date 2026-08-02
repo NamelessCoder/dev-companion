@@ -39,11 +39,15 @@ project, a requirement the next author is held to. So the demand is that the
 procedure exists and travels with the todo rather than waiting to be looked up —
 `bin/cli todo:next` prints the pointer with every todo it hands over.
 
-**From:** 2026-08-01. The order of the work was fully described — what is due,
-in which order, what a finished todo leaves behind — and how one is actually
-worked was described nowhere, which left the reading and the research to
-whatever the session brought with it.
+## From
 
-**Held by:** `TodoTest::everyTodoIsHandedWithThePageThatSaysHowOneIsWorked`,
-which holds `Todo::PROCEDURE`, the page it names and the line `bin/cli todo:next`
-prints to each other; that a session read it is not guarded and cannot be.
+2026-08-01. The order of the work was fully described — what is due, in which
+order, what a finished todo leaves behind — and how one is actually worked was
+described nowhere, which left the reading and the research to whatever the
+session brought with it.
+
+## Held by
+
+- `TodoTest::everyTodoIsHandedWithThePageThatSaysHowOneIsWorked`, which holds
+  `Todo::PROCEDURE`, the page it names and the line `bin/cli todo:next` prints
+  to each other; that a session read it is not guarded and cannot be.

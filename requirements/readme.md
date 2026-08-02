@@ -43,8 +43,7 @@ quietly share a number.
 Each group's `readme.md` says what that group is about, and the listing at the
 foot of it is generated from the files below it by `bin/cli requirements:index` —
 a listing kept by hand is a second copy of the directory that only says what
-was true once. `bin/cli requirements:check` holds the files to the shape described
-below, and `composer test` runs the same check through `RequirementsTest`.
+was true once.
 
 That check cannot fail on an entry being **open** or `not guarded` — both are
 legitimate, and the second is the only honest answer for a requirement no test
@@ -56,52 +55,8 @@ An id is never reused: a withdrawn requirement takes its number with it, so a
 number that appears in an old commit, feedback or scenario still means the one
 thing it always meant.
 
-A requirement may name the decisions it stands on in its front matter:
-
-```markdown
----
-id: R-FBK-7
-status: held
-restsOn: [D-FBK-5]
----
-```
-
-`bin/cli requirements:check` fails on an id no decision has. Whether a decision
-it rests on was later revoked is a reading rather than a failure, and
-`bin/cli backlog:list` is where it is read out — a revoked decision leaves the
-requirement's test green and the reasoning under it gone, which nothing else
-here would say.
-
-## What an entry looks like
-
-```markdown
----
-id: R-DIS-9
-status: held
----
-
-# R-DIS-9 — A negative is never remembered
-
-**Nothing that says "there is no installation" is remembered.**
-
-A successful resolution is memoized for the process; a failure is retried on
-every call, because the caller who reads that answer is the one likely to
-install, migrate or start something and ask again in the same session.
-
-**From:** a session lost to a cached negative — the agent ran `composer
-install`, started DDEV, verified `bin/typo3` answered, and every tool kept
-reporting no installation until the client was restarted (2026-07-29).
-
-**Held by:** `InstanceTest::anInstallationThatAppearsDuringTheSessionIsFound`
-```
-
-- The **bold first sentence** is the requirement. Everything under it is why it
-  is one, and a reader who stops after the bold line has read the whole demand.
-- **From** is the session, review or feedback the demand came out of, with its date.
-  It is evidence, not decoration: it is what tells the next person whether the
-  requirement still describes a real failure.
-- **Held by** names the tests that hold it, or says in as many words that
-  something is not guarded. A test named there has to exist — a requirement
-  claiming a test that was renamed away is a claim nobody answers for.
-- `status` is `held` or `open`. `open` means accepted and not met yet, and it is
-  the only mark a backlog needs.
+How one is written — the sections, what **Held by** owes a reader, what it may
+declare it rests on, and what `open`, `not guarded` and `held` mean:
+[documentation/feedback/writing-a-requirement.md](../documentation/feedback/writing-a-requirement.md).
+`bin/cli requirements:check` holds every file to that shape, and `composer test`
+runs the same check through `RequirementsTest`.

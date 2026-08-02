@@ -21,16 +21,21 @@ cannot be read falls back to the installed version. The catalogs keep
 withholding per single version, because markup that does not exist fails in a
 browser either way.
 
-**From:** `REVIEW-02`. The extension declares `^13.4 || ^14.3`; the lookup was
-filtered to the installed 14, so `ext_emconf.php is what makes a directory an
-extension outside Composer` — bound `until: 13` — never reached the
-session, and the file it is about was reported as accumulated drift
-(2026-07-31). The run of that afternoon then never reached the widened answer:
-the session read `14.3.0` out of `typo3_project_scope` and stated it, which the
-input description invited by promising the installed version as the default,
-and the narrowing said nothing about itself (2026-07-31).
+## From
 
-**Held by:** `VersionsTest::anExtensionThatServesTwoMajorsIsAnsweredForBoth`,
-`VersionsTest::theAnswerSaysWhichMajorsItWasComposedFor`,
-`VersionsTest::aStatedMajorSaysWhichOtherOneItLeftOut`,
-`VersionsTest::aConstraintIsReadByAskingItAboutEachCoveredMajor`
+`REVIEW-02`. The extension declares `^13.4 || ^14.3`; the lookup was filtered
+to the installed 14, so
+`ext_emconf.php is what makes a directory an extension outside Composer` —
+bound `until: 13` — never reached the session, and the file it is about was
+reported as accumulated drift (2026-07-31). The run of that afternoon then
+never reached the widened answer: the session read `14.3.0` out of
+`typo3_project_scope` and stated it, which the input description invited by
+promising the installed version as the default, and the narrowing said nothing
+about itself (2026-07-31).
+
+## Held by
+
+- `VersionsTest::anExtensionThatServesTwoMajorsIsAnsweredForBoth`
+- `VersionsTest::theAnswerSaysWhichMajorsItWasComposedFor`
+- `VersionsTest::aStatedMajorSaysWhichOtherOneItLeftOut`
+- `VersionsTest::aConstraintIsReadByAskingItAboutEachCoveredMajor`

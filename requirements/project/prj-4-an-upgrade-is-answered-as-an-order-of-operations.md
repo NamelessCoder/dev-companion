@@ -14,8 +14,11 @@ irreversible named before the first step that is.
 The knowledge carries it and the guide composes it with what the project scope
 and the changelog lookup already know.
 
-**From:** "what do I do, in which order, and what breaks" answered with how to
-author a deprecation (2026-07-29).
+## From
 
-**Held by:**
-`HintsTest::upgradingAnInstallationIsAnsweredAsAnOrderOfOperations`
+"what do I do, in which order, and what breaks" answered with how to author a
+deprecation (2026-07-29).
+
+## Held by
+
+- `HintsTest::upgradingAnInstallationIsAnsweredAsAnOrderOfOperations`

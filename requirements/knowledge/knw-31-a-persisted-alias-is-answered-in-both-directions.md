@@ -13,8 +13,11 @@ It also states the consequences that make the design useful: site-unique
 values, rejection of unmatched paths before rendering, and no cHash for the
 mapped argument.
 
-**From:** an implementation passing and validating the display value as a query
-argument because the mapper's direction was left implicit (2026-07-30).
+## From
 
-**Held by:**
-`HintsTest::persistedAliasesStateBothDirectionsAndTheirValidationBoundary`
+An implementation passing and validating the display value as a query argument
+because the mapper's direction was left implicit (2026-07-30).
+
+## Held by
+
+- `HintsTest::persistedAliasesStateBothDirectionsAndTheirValidationBoundary`

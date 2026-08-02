@@ -22,10 +22,14 @@ session that made them is no longer what the portion carries: a judgement is
 written into the decision it was made against, or into a new one where nothing
 says it yet, so the record outlives the run that made it.
 
-**From:** 56 open feedback against 38 queued items on 2026-08-01, of which the
-queue had been reached in no session since it was written; the sighting printed
-57 lines before its own instruction. See
+## From
+
+56 open feedback against 38 queued items on 2026-08-01, of which the queue had
+been reached in no session since it was written; the sighting printed 57 lines
+before its own instruction. See
 [D-FBK-5](../../decisions/feedback/fbk-5-the-queue-is-worked-before-the-pile-is-sighted.md).
 
-**Held by:** `CliTest::theSightingsWaitForAnEmptyQueue`,
-`CliTest::whatRecursIsEitherAnAppointmentOrASighting`
+## Held by
+
+- `CliTest::theSightingsWaitForAnEmptyQueue`
+- `CliTest::whatRecursIsEitherAnAppointmentOrASighting`

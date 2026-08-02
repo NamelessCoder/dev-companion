@@ -11,8 +11,11 @@ Registering a content type, and registering a class the container resolves by
 name, both fail at request time and neither is a convention of a subsystem or a
 piece of backend markup — the two places an answer was looked for.
 
-**From:** a content element registered with a call signature from the previous
-major, and a page title provider that was not public and therefore not found
-(2026-07-29).
+## From
 
-**Held by:** `HintsTest::registeringSomethingSoTheCoreFindsItIsCovered`
+A content element registered with a call signature from the previous major, and
+a page title provider that was not public and therefore not found (2026-07-29).
+
+## Held by
+
+- `HintsTest::registeringSomethingSoTheCoreFindsItIsCovered`

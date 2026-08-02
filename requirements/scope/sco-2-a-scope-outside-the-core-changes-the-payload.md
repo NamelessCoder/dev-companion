@@ -14,11 +14,15 @@ paths have different scopes it is drawn per path as well: the suites and the
 checks come back for the paths that can run them, and the ones that cannot are
 named beside them.
 
-**From:** an answer that reported `outsideCore: true` and then returned four
+## From
+
+An answer that reported `outsideCore: true` and then returned four
 `runTests.sh` suites for a repository that has no `Build/Scripts/`
 (2026-07-29).
 
-**Held by:** `ScopeTest::aBriefOutsideTheCoreKeepsNothingThatOnlyTheCoreHas`,
-`ScopeTest::noRunTestsCommandIsHandedToARepositoryThatHasNoRunTests`,
-`ScopeTest::anArchitectureHintKeepsItsAdviceOutsideTheCoreAndLosesItsCoreChecks`,
-`ScopeTest::twoPathsOfDifferentAudienceInOneCallStayApart`
+## Held by
+
+- `ScopeTest::aBriefOutsideTheCoreKeepsNothingThatOnlyTheCoreHas`
+- `ScopeTest::noRunTestsCommandIsHandedToARepositoryThatHasNoRunTests`
+- `ScopeTest::anArchitectureHintKeepsItsAdviceOutsideTheCoreAndLosesItsCoreChecks`
+- `ScopeTest::twoPathsOfDifferentAudienceInOneCallStayApart`

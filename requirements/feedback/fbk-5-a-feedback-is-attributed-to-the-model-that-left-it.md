@@ -23,13 +23,16 @@ can trust is worse than a missing one. So the field is always written,
 `unknown` included, which is also what a feedback recorded before the field
 existed reads as.
 
-**From:** the feedback of 2026-07-31 17:21 reporting that the conformance
-skill's instructions were loaded and its lookups were not run — recorded from a
-site package whose published skill was byte-identical to this repository's,
-base and checklist included, so the gap it named was not in the text the
-session had. The one thing that would have made it actionable, which model read
-those steps and walked past them, was the one thing the feedback could not
-carry.
+## From
 
-**Held by:** `FeedbackTest::aNoteSaysWhichModelLeftIt`,
-`FeedbackTest::aNoteWithoutAModelSaysSoRatherThanCarryingNone`
+The feedback of 2026-07-31 17:21 reporting that the conformance skill's
+instructions were loaded and its lookups were not run — recorded from a site
+package whose published skill was byte-identical to this repository's, base and
+checklist included, so the gap it named was not in the text the session had.
+The one thing that would have made it actionable, which model read those steps
+and walked past them, was the one thing the feedback could not carry.
+
+## Held by
+
+- `FeedbackTest::aNoteSaysWhichModelLeftIt`
+- `FeedbackTest::aNoteWithoutAModelSaysSoRatherThanCarryingNone`

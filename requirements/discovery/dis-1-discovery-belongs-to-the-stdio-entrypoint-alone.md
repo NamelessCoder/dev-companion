@@ -20,5 +20,6 @@ derivation, so it holds for every entrypoint and is not what this restricts.
 The one call is in `Server\Entrypoint`, which `bin/typo3-cms-mcp` runs and
 nothing else does.
 
-**Held by:**
-`InstanceTest::withoutAnEntrypointHandingInADirectoryThereIsNoInstance`
+## Held by
+
+- `InstanceTest::withoutAnEntrypointHandingInADirectoryThereIsNoInstance`

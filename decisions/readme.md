@@ -53,6 +53,7 @@ and not a defect.
 - [`D-AUD-4`][D-AUD-4] — The tool list is not where the audience is said · 2026-08-02
 - [`D-COD-3`][D-COD-3] — A directory is read through symfony/finder · 2026-08-02
 - [`D-DOC-3`][D-DOC-3] — A decision says what came back, and a requirement says what it rests on · 2026-08-02
+- [`D-DOC-4`][D-DOC-4] — A requirement is written in the same sections as a decision · 2026-08-02
 - [`D-KNW-5`][D-KNW-5] — One `Scope` replaced the four vocabularies · 2026-08-02
 - [`D-COD-1`][D-COD-1] — One file declares one class · 2026-08-01
 - [`D-COD-2`][D-COD-2] — The upkeep CLI is a Symfony Console application · 2026-08-01
@@ -98,6 +99,7 @@ and not a defect.
 [D-AUD-4]: audience/aud-4-the-tool-list-is-not-where-the-audience-is-said.md
 [D-COD-3]: code/cod-3-a-directory-is-read-through-symfony-finder.md
 [D-DOC-3]: documentation/doc-3-a-decision-says-what-came-back-and-what-rests-on-it.md
+[D-DOC-4]: documentation/doc-4-a-requirement-is-written-in-the-same-sections-as-a-decision.md
 [D-KNW-5]: knowledge/knw-5-one-scope-replaced-the-four-vocabularies.md
 [D-COD-1]: code/cod-1-one-file-declares-one-class.md
 [D-COD-2]: code/cod-2-the-upkeep-cli-is-a-symfony-console-application.md

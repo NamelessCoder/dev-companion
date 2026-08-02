@@ -12,9 +12,12 @@ A mechanism that runs once leaves its author reading their own output back and
 calling that a check, so the hint names the place the artifact can actually be
 exercised and what re-triggers it.
 
-**From:** `Initialisation/data.xml` regenerated three times in one session and
-never imported once, on an installation that had already run it — with the
-registry namespace in the hint but not the key that unlocks it (2026-07-29).
+## From
 
-**Held by:**
-`HintsTest::shippedContentIsAnsweredPastThePointWhereTheFileExists`
+`Initialisation/data.xml` regenerated three times in one session and never
+imported once, on an installation that had already run it — with the registry
+namespace in the hint but not the key that unlocks it (2026-07-29).
+
+## Held by
+
+- `HintsTest::shippedContentIsAnsweredPastThePointWhereTheFileExists`

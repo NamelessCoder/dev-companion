@@ -12,7 +12,11 @@ argument on a cacheable page does.**
 A task phrased in those terms reaches the routing answer before the unrelated
 cache-framework hint.
 
-**From:** a route-enhancer answer that described the mapper but could not say
-whether the resulting URL still carried a cache hash (2026-07-30).
+## From
 
-**Held by:** `HintsTest::routedArgumentsAreAnsweredWithTheirCacheHashBoundary`
+A route-enhancer answer that described the mapper but could not say whether the
+resulting URL still carried a cache hash (2026-07-30).
+
+## Held by
+
+- `HintsTest::routedArgumentsAreAnsweredWithTheirCacheHashBoundary`

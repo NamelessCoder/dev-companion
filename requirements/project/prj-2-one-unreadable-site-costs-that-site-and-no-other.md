@@ -9,5 +9,6 @@ status: held
 
 A repository mid-edit is a state it is genuinely in.
 
-**Held by:**
-`ProjectTest::aSiteConfigurationThatCannotBeParsedCostsThatSiteAndNoOther`
+## Held by
+
+- `ProjectTest::aSiteConfigurationThatCannotBeParsedCostsThatSiteAndNoOther`

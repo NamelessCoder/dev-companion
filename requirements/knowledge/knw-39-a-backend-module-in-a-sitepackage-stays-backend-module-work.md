@@ -13,8 +13,12 @@ initial-content or frontend-record-rendering guides. Those guides apply only
 when the task asks for that layout, content shipping or frontend rendering, not
 when the words merely name the owner and the data a backend module reviews.
 
-**From:** a backend review module with actions, badges, icons and translated
-labels whose 17 KB guide was dominated by frontend records and the complete
-sitepackage layout while omitting PHP/module registration (2026-07-30).
+## From
 
-**Held by:** `HintsTest::aBackendModuleInASitepackageDoesNotBecomeFrontendWork`
+A backend review module with actions, badges, icons and translated labels whose
+17 KB guide was dominated by frontend records and the complete sitepackage
+layout while omitting PHP/module registration (2026-07-30).
+
+## Held by
+
+- `HintsTest::aBackendModuleInASitepackageDoesNotBecomeFrontendWork`

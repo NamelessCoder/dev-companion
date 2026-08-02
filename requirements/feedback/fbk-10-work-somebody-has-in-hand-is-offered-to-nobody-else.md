@@ -33,11 +33,15 @@ differently, and the failure that invites is silent: handed the front of the
 queue instead of its own claim, it reads a real todo, starts real work, and is
 the second person doing it.
 
-**From:** 2026-08-01. Two sessions working at once had no way to get different
-work, and the whole of `todo/` was built around one session at a time.
+## From
 
-**Held by:** `TodoTest::whatIsInHandIsOfferedToNobodyElse` for the queue a claim
-leaves, `TodoTest::aWorktreeStandingOnAClaimIsHandedThatClaim` for what
-`bin/cli todo:next` answers in a worktree, and
-`TodoTest::aClaimIsOneMoveThatGoesBothWays` for the way back out. That the branch
-and the date are there at all is `bin/cli todo:check`.
+2026-08-01. Two sessions working at once had no way to get different work, and
+the whole of `todo/` was built around one session at a time.
+
+## Held by
+
+- `TodoTest::whatIsInHandIsOfferedToNobodyElse` for the queue a claim leaves
+- `TodoTest::aWorktreeStandingOnAClaimIsHandedThatClaim` for what
+- `bin/cli todo:next` answers in a worktree, and
+- `TodoTest::aClaimIsOneMoveThatGoesBothWays` for the way back out. That the
+- Branch and the date are there at all is `bin/cli todo:check`.

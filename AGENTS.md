@@ -337,7 +337,9 @@ How each of those is carried out — the debrief that gets a feedback out of a
 session this repository cannot read, judging one, what each of the three files
 holds, and what `bin/cli backlog:list` reports:
 [documentation/feedback/readme.md](documentation/feedback/readme.md). The
-sections a decision is written in, what a later session adds to the foot of one,
+sections a requirement is written in and what its three states mean:
+[documentation/feedback/writing-a-requirement.md](documentation/feedback/writing-a-requirement.md).
+The sections a decision is written in, what a later session adds to the foot of one,
 and what `open`, `confirmed` and `revoked` promise a reader:
 [documentation/feedback/writing-a-decision.md](documentation/feedback/writing-a-decision.md).
 Running a forward review, judging it, and reading one that stopped without an

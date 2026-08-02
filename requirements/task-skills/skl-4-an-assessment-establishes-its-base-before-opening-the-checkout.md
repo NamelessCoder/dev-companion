@@ -35,10 +35,11 @@ path rather than the end of it. Escaping and injection are that same claim about
 different sinks, so the gate is written once for both and the sinks themselves
 are the architecture hints' to answer.
 
-**From:** the second `REVIEW-01` run (2026-07-31), which followed two of the
-conformance skill's seven evidence steps, read the site package's three XLF
-files without asking what governs them, and so missed the German
-`source-language` that
+## From
+
+The second `REVIEW-01` run (2026-07-31), which followed two of the conformance
+skill's seven evidence steps, read the site package's three XLF files without
+asking what governs them, and so missed the German `source-language` that
 [`R-KNW-33`](../knowledge/knw-33-a-new-label-names-its-source-language.md)
 already covers and a run on 2026-07-30 had already found in the same checkout.
 Sharpened by the third run the same day, which read the checklist, then listed
@@ -61,12 +62,14 @@ nothing and the core wraps the resolved title in `htmlspecialchars()` two
 classes further on. The run opened neither of them, and did open the core
 ViewHelper that confirmed what it already believed.
 
-**Held by:** `SkillTest::theBaseIsEstablishedBeforeTheCheckoutIsOpened`,
-`SkillTest::anAssessmentAsksBeforeItJudgesAndSaysWhatItDidNotAsk`,
-`SkillTest::aSecurityFindingIsNotEstablishedUntilItsSinkIs`,
-`HintsTest::bothSidesOfAnInjectionQuestionReachTheSinkMethod`,
-`SkillTest::theDeprecationSweepRunsFromTheExtensionsSurfaceAndIsReportedWhenItFindsNothing`,
-`SkillTest::theCheckLayerIsMeasuredAgainstACompleteOneRatherThanWhatIsDeclared`,
-`REVIEW-01`, `REVIEW-02`, `SKILL-09` — the last of which is what measures the
-escaping half, because the test beside it reads a sentence rather than a
-review.
+## Held by
+
+- `SkillTest::theBaseIsEstablishedBeforeTheCheckoutIsOpened`
+- `SkillTest::anAssessmentAsksBeforeItJudgesAndSaysWhatItDidNotAsk`
+- `SkillTest::aSecurityFindingIsNotEstablishedUntilItsSinkIs`
+- `HintsTest::bothSidesOfAnInjectionQuestionReachTheSinkMethod`
+- `SkillTest::theDeprecationSweepRunsFromTheExtensionsSurfaceAndIsReportedWhenItFindsNothing`
+- `SkillTest::theCheckLayerIsMeasuredAgainstACompleteOneRatherThanWhatIsDeclared`,
+- `REVIEW-01`, `REVIEW-02`, `SKILL-09` — the last of which is what measures the
+  escaping half, because the test beside it reads a sentence rather than a
+  review.

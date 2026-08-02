@@ -15,7 +15,11 @@ tracked. DDEV is identified as local-only: a shared project file guards its
 local overrides and reads deployment secrets from the environment rather than
 committing them.
 
-**From:** DDEV replacing deployment overrides and re-ignoring the replaced file
-in the same project-configuration change (2026-07-30).
+## From
 
-**Held by:** `HintsTest::projectSystemConfigurationStatesItsOwnershipBoundary`
+DDEV replacing deployment overrides and re-ignoring the replaced file in the
+same project-configuration change (2026-07-30).
+
+## Held by
+
+- `HintsTest::projectSystemConfigurationStatesItsOwnershipBoundary`

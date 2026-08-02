@@ -19,17 +19,21 @@ What is withheld is named, with what to verify it against, so silence never
 reads as "does not exist". The markdown documents carry no range and are not
 filtered; a prose answer says so and names where the bound form is.
 
-**From:** v15 markup handed to a 13.4 caller, and a translation domain handed
-to an installation that resolves none (2026-07-29).
+## From
 
-**Held by:** `VersionsTest` in full — the range model, the precedence, the
-filtering, that no statement dates itself in prose, and that a prose answer
-says it is not the bound half —
-`CatalogTest::aComponentNotVerifiedOnTheTargetIsDeclinedRatherThanHandedOver`,
-`CatalogTest::aComponentVerifiedOnTheTargetIsAnsweredWithTheRangeItHoldsFor`,
-`CatalogTest::withoutATargetTheWholeCatalogAnswersAndEachEntryCarriesItsRange`,
-`CatalogTest::theCatalogSaysHowMuchOfItWasVerifiedOnAStatedVersion`,
-`CatalogTest::everyRecordedBindingNamesACoveredVersion`,
-`CatalogTest::theCatalogSaysHowItRelatesToTheInstallationBeingRead`,
-`CatalogTest::anInstallationWithoutTranslationDomainsIsGivenTheFileReference`,
-`InstanceTest::theTypo3VersionIsReadFromTheCorePackageRatherThanAskedOfTheConsole`
+V15 markup handed to a 13.4 caller, and a translation domain handed to an
+installation that resolves none (2026-07-29).
+
+## Held by
+
+- `VersionsTest` in full — the range model, the precedence, the filtering, that
+- No statement dates itself in prose, and that a prose answer says it is not
+  the bound half
+- `CatalogTest::aComponentNotVerifiedOnTheTargetIsDeclinedRatherThanHandedOver`
+- `CatalogTest::aComponentVerifiedOnTheTargetIsAnsweredWithTheRangeItHoldsFor`
+- `CatalogTest::withoutATargetTheWholeCatalogAnswersAndEachEntryCarriesItsRange`
+- `CatalogTest::theCatalogSaysHowMuchOfItWasVerifiedOnAStatedVersion`
+- `CatalogTest::everyRecordedBindingNamesACoveredVersion`
+- `CatalogTest::theCatalogSaysHowItRelatesToTheInstallationBeingRead`
+- `CatalogTest::anInstallationWithoutTranslationDomainsIsGivenTheFileReference`
+- `InstanceTest::theTypo3VersionIsReadFromTheCorePackageRatherThanAskedOfTheConsole`

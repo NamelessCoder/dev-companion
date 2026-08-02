@@ -12,8 +12,11 @@ This is [R-KNW-3](knw-3-a-hint-says-how-a-subsystem-is-used.md) for the prose,
 and it is a pointer rather than site documentation, so it stays inside the
 stated scope.
 
-**From:** `typo3_rule_lookup` answering "deprecation" with how to write one, to
-a caller asking what a version had deprecated (2026-07-29).
+## From
 
-**Held by:**
-`KnowledgeTest::anAnswerAboutAuthoringPointsAtTheReadingSideOfTheSameThing`
+`typo3_rule_lookup` answering "deprecation" with how to write one, to a caller
+asking what a version had deprecated (2026-07-29).
+
+## Held by
+
+- `KnowledgeTest::anAnswerAboutAuthoringPointsAtTheReadingSideOfTheSameThing`

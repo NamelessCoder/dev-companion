@@ -10,7 +10,11 @@ status: held
 A layout that cannot be read is then distinguishable from a server started in
 the wrong directory.
 
-**From:** the same session; "no installation found" was indistinguishable from
-"started in the wrong directory".
+## From
 
-**Held by:** `ScopeTest::theInstallationDiagnosticIsDataRatherThanProse`
+The same session; "no installation found" was indistinguishable from "started
+in the wrong directory".
+
+## Held by
+
+- `ScopeTest::theInstallationDiagnosticIsDataRatherThanProse`

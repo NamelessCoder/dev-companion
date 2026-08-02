@@ -12,8 +12,12 @@ An identical string elsewhere in the installation is not a cross-module
 vocabulary, and a new unit id names its concrete use within the local resource
 rather than using a context-free word such as `new`.
 
-**From:** a label search whose installation-wide matches looked reusable even
-though they belonged to unrelated modules and packages (2026-07-30).
+## From
 
-**Held by:** `HintsTest::labelReuseStaysAtTheUsageContext`,
-`LabelSearchTest::aResourceRestrictsReuseToTheUsageContext`
+A label search whose installation-wide matches looked reusable even though they
+belonged to unrelated modules and packages (2026-07-30).
+
+## Held by
+
+- `HintsTest::labelReuseStaysAtTheUsageContext`
+- `LabelSearchTest::aResourceRestrictsReuseToTheUsageContext`

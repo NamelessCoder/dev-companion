@@ -12,6 +12,11 @@ component markup and live documentation before code is written.**
 The guidance owns order and routing only: facts stay in the tools, so no second
 copy of versioned knowledge is generated or permanently loaded.
 
-**From:** `SITE-07`.
+## From
 
-**Held by:** `SkillTest`, `InstallerTest`
+`SITE-07`.
+
+## Held by
+
+- `SkillTest`
+- `InstallerTest`

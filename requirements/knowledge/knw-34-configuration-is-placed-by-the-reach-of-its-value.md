@@ -11,8 +11,12 @@ scheduler task's parameters are stored with that task.**
 
 The site-settings form is bound to the versions that have it.
 
-**From:** a per-site storage pid put into a new `ext_conf_template.txt` after
-the same sitepackage's set settings had already been read (2026-07-30).
+## From
 
-**Held by:** `HintsTest::aSettingIsPlacedByTheReachOfItsValue`,
-`HintsTest::siteScopedConfigurationIsOfferedOnlyWhereSiteSettingsExist`
+A per-site storage pid put into a new `ext_conf_template.txt` after the same
+sitepackage's set settings had already been read (2026-07-30).
+
+## Held by
+
+- `HintsTest::aSettingIsPlacedByTheReachOfItsValue`
+- `HintsTest::siteScopedConfigurationIsOfferedOnlyWhereSiteSettingsExist`

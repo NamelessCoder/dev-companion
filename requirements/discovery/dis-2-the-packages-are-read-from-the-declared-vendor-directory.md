@@ -8,8 +8,11 @@ status: held
 **The packages of a Composer installation are read from the vendor directory it
 declares, not from the default.**
 
-**From:** the extension checkout with `config.vendor-dir=.build/vendor` that
-was reported as "no installation found" (2026-07-29).
+## From
 
-**Held by:**
-`InstanceTest::aProjectThatMovedItsVendorDirectoryIsFoundThereRatherThanMissed`
+The extension checkout with `config.vendor-dir=.build/vendor` that was reported
+as "no installation found" (2026-07-29).
+
+## Held by
+
+- `InstanceTest::aProjectThatMovedItsVendorDirectoryIsFoundThereRatherThanMissed`

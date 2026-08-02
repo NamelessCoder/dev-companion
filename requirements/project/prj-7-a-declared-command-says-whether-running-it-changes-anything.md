@@ -28,18 +28,21 @@ Without it, "run the ones that change nothing" is an instruction nobody can
 follow. A name does not carry the property and never will: `cgl` and `cgl:ci`
 are the same tool one `--dry-run` apart.
 
-**From:** a `REVIEW-02` run against `georgringer/news` (2026-07-31), whose six
-declared commands all came back `unknown` because each of them starts with
+## From
+
+A `REVIEW-02` run against `georgringer/news` (2026-07-31), whose six declared
+commands all came back `unknown` because each of them starts with
 `PHP_CS_FIXER_IGNORE_ENV=1` — so the `--dry-run` line and the fixing line were
 the same answer, and the run picked the safe one by its own reading rather than
 from anything this server told it; and three recorded `REVIEW-02` runs in two
-repositories (2026-07-31) that
-were told not to change files and ran none of the fifteen commands they were
-offered — among them `composer cgl:ci` and `composer test:php:lint`, which
-change nothing and would have settled two of the findings the syntax run
-derived from CI configuration instead.
+repositories (2026-07-31) that were told not to change files and ran none of
+the fifteen commands they were offered — among them `composer cgl:ci` and
+`composer test:php:lint`, which change nothing and would have settled two of
+the findings the syntax run derived from CI configuration instead.
 
-**Held by:** `ProjectTest::aDeclaredCommandSaysWhetherRunningItChangesTheSources`,
-`ProjectTest::aCommandThatDeclaresNothingReadableIsNotCalledSafe`,
-`ProjectTest::anEnvironmentAssignmentInFrontOfACommandIsNotTheCommand`,
-`ProjectTest::aCommandThatWritesIsNeverReportedAsACheck`
+## Held by
+
+- `ProjectTest::aDeclaredCommandSaysWhetherRunningItChangesTheSources`
+- `ProjectTest::aCommandThatDeclaresNothingReadableIsNotCalledSafe`
+- `ProjectTest::anEnvironmentAssignmentInFrontOfACommandIsNotTheCommand`
+- `ProjectTest::aCommandThatWritesIsNeverReportedAsACheck`

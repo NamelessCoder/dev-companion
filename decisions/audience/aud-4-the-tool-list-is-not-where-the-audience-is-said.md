@@ -35,13 +35,6 @@ the right one at all.
   gained nothing on any of them. The one shape it got wrong is the one that
   broke: a core patch answered as core work, routed to `typo3_test_run_guide`
   twice, and the client could not call it.
-- `laravel/boost`, read on 2026-08-02, filters nothing at the tool layer — nine
-  tools, every project. Its variation is composition:
-  `GuidelineComposer::getPackageGuidelines()` loads `<package>/core` plus
-  `<package>/<major>` for the packages a project actually has, and
-  `getConditionalGuidelines()` picks *between* alternatives — herd XOR sail —
-  rather than removing one. Subtraction exists there only as
-  `boost.guidelines.exclude`, which the user declares.
 
 ## Decided
 

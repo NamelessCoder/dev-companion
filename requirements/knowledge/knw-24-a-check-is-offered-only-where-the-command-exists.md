@@ -16,10 +16,14 @@ same way and carries its range where it has one. A command the caller's
 checkout does not have is not a weaker answer than none — it sends them to
 debug their own checkout for something this server invented for another branch.
 
-**From:** seven checks naming a suite absent from at least one covered branch,
-found while unifying the obligation vocabulary — a 13.4 core contributor
-asking about labels was handed `runTests.sh -s checkIntegrityXliff`, which
-arrives in 14 (2026-07-30).
+## From
 
-**Held by:** `HintsTest::aCheckIsNotOfferedOnABranchWhoseScriptHasNoSuchSuite`,
-`HintsTest::theSuiteListItselfIsFilteredByTheBranchItIsAskedFor`
+Seven checks naming a suite absent from at least one covered branch, found
+while unifying the obligation vocabulary — a 13.4 core contributor asking about
+labels was handed `runTests.sh -s checkIntegrityXliff`, which arrives in 14
+(2026-07-30).
+
+## Held by
+
+- `HintsTest::aCheckIsNotOfferedOnABranchWhoseScriptHasNoSuchSuite`
+- `HintsTest::theSuiteListItselfIsFilteredByTheBranchItIsAskedFor`

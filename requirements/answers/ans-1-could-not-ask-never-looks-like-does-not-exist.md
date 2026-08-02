@@ -10,4 +10,6 @@ means "does not exist".**
 
 Every installation-backed tool carries `answeredBy`.
 
-**Held by:** `ToolContractTest`
+## Held by
+
+- `ToolContractTest`

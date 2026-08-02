@@ -16,10 +16,14 @@ command that would fix it, because `install` refuses an entry it did not just
 write. The line is drawn at the server being started, so an entry belonging to
 somebody else is still never replaced.
 
-**From:** `update` in `E-SITE` reporting `.mcp.json has a different or missing
-typo3-cms-mcp entry` after the project required the server, with `install`
-refusing the same entry (2026-07-31).
+## From
 
-**Held by:** `InstallerTest::updateRewritesTheEntryAProjectHasOutgrown`,
-`InstallerTest::updateRefusesToReplaceAnotherCommand`,
-`InstallerTest::codexUpdateRewritesTheSectionAndKeepsTheRestOfTheFile`
+`update` in `E-SITE` reporting
+`.mcp.json has a different or missing typo3-cms-mcp entry` after the project
+required the server, with `install` refusing the same entry (2026-07-31).
+
+## Held by
+
+- `InstallerTest::updateRewritesTheEntryAProjectHasOutgrown`
+- `InstallerTest::updateRefusesToReplaceAnotherCommand`
+- `InstallerTest::codexUpdateRewritesTheSectionAndKeepsTheRestOfTheFile`

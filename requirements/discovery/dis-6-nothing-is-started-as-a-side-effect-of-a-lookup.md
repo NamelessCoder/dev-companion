@@ -8,5 +8,6 @@ status: held
 **Nothing on the caller's machine is started as a side effect of a lookup; a
 stopped DDEV project is reported with the command that would fix it.**
 
-**Held by:**
-`Typo3CliTest::aDdevProjectThatIsNotRunningIsReportedRatherThanStarted`
+## Held by
+
+- `Typo3CliTest::aDdevProjectThatIsNotRunningIsReportedRatherThanStarted`

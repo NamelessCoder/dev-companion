@@ -11,6 +11,7 @@ use Typo3CmsMcp\Paths;
 use Typo3CmsMcp\Upkeep\Cli;
 use Typo3CmsMcp\Upkeep\Decisions;
 use Typo3CmsMcp\Upkeep\Requirements;
+use Typo3CmsMcp\Upkeep\RequirementState;
 
 /**
  * Everything the format of requirements/ promises a reader, checked against the
@@ -64,7 +65,7 @@ final class RequirementCheck
                 $problems[] = $id . ' belongs in ' . $group . '/ and sits in ' . $requirement['group'] . '/';
             }
 
-            if (!in_array($requirement['status'], ['held', 'open'], true)) {
+            if (!in_array($requirement['status'], RequirementState::writtenValues(), true)) {
                 $problems[] = $id . ' has the status ' . ($requirement['status'] === '' ? '(none)' : $requirement['status']);
             }
             foreach ($requirement['restsOn'] as $decision) {
@@ -79,7 +80,7 @@ final class RequirementCheck
                 $problems[] = $id . ' does not open with the sentence that has to hold';
             }
 
-            if ($requirement['status'] === 'open') {
+            if (RequirementState::tryFrom($requirement['status']) === RequirementState::Open) {
                 continue;
             }
             if ($requirement['heldBy'] === '') {

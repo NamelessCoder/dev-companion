@@ -20,8 +20,12 @@ The name is what a listing shows, what a `**Serves:**` line in
 closed. It has to identify the feedback in all three, and the first feedback of
 a series is the only one that cannot: nothing yet says it is a series.
 
-**From:** 25 of 56 open feedback on 2026-08-01 carrying one of three names, 17
-of them `debrief-of-the-typo3-14-testimonials-session`; the feedback recorded
-before that day were renamed to the same rule.
+## From
 
-**Held by:** `FeedbackTest::notesThatOpenAlikeAreNamedAfterWhatTellsThemApart`
+25 of 56 open feedback on 2026-08-01 carrying one of three names, 17 of them
+`debrief-of-the-typo3-14-testimonials-session`; the feedback recorded before
+that day were renamed to the same rule.
+
+## Held by
+
+- `FeedbackTest::notesThatOpenAlikeAreNamedAfterWhatTellsThemApart`

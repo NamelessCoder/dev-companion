@@ -24,7 +24,7 @@ final class UnresolvedTest extends TestCase
     {
         $expected = [];
         foreach (Requirements::all() as $requirement) {
-            if (Requirements::state($requirement) !== 'held') {
+            if (!Requirements::state($requirement)->isGuarded()) {
                 $expected[$requirement['id']] = Requirements::state($requirement);
             }
         }

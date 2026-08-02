@@ -16,6 +16,10 @@ to `.gitignore`; merged MCP and agent configuration remains versionable. In a
 DDEV project the generated client entry runs the Composer binary through DDEV,
 while the skills are published into the host-mounted project.
 
-**From:** `META-05`.
+## From
 
-**Held by:** `InstallerTest`
+`META-05`.
+
+## Held by
+
+- `InstallerTest`

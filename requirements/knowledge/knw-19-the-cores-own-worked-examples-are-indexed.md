@@ -14,11 +14,15 @@ it was written for, and the next one repeats it. The index is reachable on its
 own, carries the versions each example exists on, and is named beside the hint
 it is an example of.
 
-**From:** three answers in one session that were an existing directory in the
-core — the theme extension, the browser suite, the Extbase fixture extension
-— each reached by accident or by being told (2026-07-29).
+## From
 
-**Held by:** `CatalogTest::theCoresOwnWorkedExamplesAreIndexed`,
-`CatalogTest::aWorkedExampleIsNamedBesideTheHintItIsAnExampleOf`,
-`CatalogTest::everyIndexedExampleSaysWhatItIsAnExampleOfAndWhereItIs`, and
-`bin/cli catalog:paths` for the paths
+Three answers in one session that were an existing directory in the core — the
+theme extension, the browser suite, the Extbase fixture extension — each
+reached by accident or by being told (2026-07-29).
+
+## Held by
+
+- `CatalogTest::theCoresOwnWorkedExamplesAreIndexed`
+- `CatalogTest::aWorkedExampleIsNamedBesideTheHintItIsAnExampleOf`
+- `CatalogTest::everyIndexedExampleSaysWhatItIsAnExampleOfAndWhereItIs`, and
+- `bin/cli catalog:paths` for the paths

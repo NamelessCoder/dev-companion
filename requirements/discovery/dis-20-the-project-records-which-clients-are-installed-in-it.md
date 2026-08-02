@@ -25,7 +25,11 @@ The `.gitignore` entries follow from that record and are written whole between
 skill that was renamed leaves no line behind, and nothing outside the markers is
 touched.
 
-**From:** an update that had to be repeated per client, in a project set up for
-two of them (2026-07-31).
+## From
 
-**Held by:** `InstallerRecordTest`
+An update that had to be repeated per client, in a project set up for two of
+them (2026-07-31).
+
+## Held by
+
+- `InstallerRecordTest`

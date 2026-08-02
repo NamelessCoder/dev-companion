@@ -29,6 +29,9 @@ order by, and the launch two of the subjects below share.
 - [judging.md](feedback/judging.md) — what is asked of one open feedback, in
   which order and on what evidence, and which answers may be given without
   asking first.
+- [writing-a-requirement.md](feedback/writing-a-requirement.md) — the sections
+  an entry is written in, what **Held by** owes a reader, and what `open`,
+  `not guarded` and `held` mean.
 - [writing-a-decision.md](feedback/writing-a-decision.md) — the sections an
   entry is written in, what a later session adds to the foot of one, and what
   `open`, `confirmed` and `revoked` promise a reader.

@@ -18,8 +18,12 @@ decides the answer. A pattern carrying punctuation — a path fragment, `.xlf`,
 `lll:` — keeps plain containment, being specific enough not to land by
 accident.
 
-**From:** `fal`, the File Abstraction Layer, prefix-matching seven hints
-through "fallback" and "false"; and the same pattern reaching that hint from a
-query about a label, as a plain substring of a longer word (2026-07-30).
+## From
 
-**Held by:** `HintsTest::aShortTermIsNotMatchedAsThePrefixOfALongerWord`
+`fal`, the File Abstraction Layer, prefix-matching seven hints through
+"fallback" and "false"; and the same pattern reaching that hint from a query
+about a label, as a plain substring of a longer word (2026-07-30).
+
+## Held by
+
+- `HintsTest::aShortTermIsNotMatchedAsThePrefixOfALongerWord`

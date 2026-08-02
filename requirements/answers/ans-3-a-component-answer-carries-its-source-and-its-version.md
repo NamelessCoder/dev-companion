@@ -15,14 +15,17 @@ search index and markup fallback. For another target or without usable package
 evidence, every fallback entry says which majors it was verified on and one
 that was not verified there is withheld.
 
-**From:** 15.0 markup handed to a caller supporting 13.4 and 14.3 (2026-07-29);
-and an answer for 14.3 whose loudest version number was the 15.0 snapshot
+## From
+
+15.0 markup handed to a caller supporting 13.4 and 14.3 (2026-07-29); and an
+answer for 14.3 whose loudest version number was the 15.0 snapshot
 (2026-07-30).
 
-**Held by:**
-`CatalogTest::theCatalogSaysHowItRelatesToTheInstallationBeingRead`,
-`CatalogTest::aStatedVersionSaysWhatItDidToTheAnswerBesideTheSnapshotItWasReadFrom`,
-`CatalogTest::theCatalogScopeSeparatesEntryValidityFromItsSourceCheckout`,
-`CatalogTest::theInstalledComponentContractWinsOverTheBundledSnapshot`,
-`CatalogTest::anInstalledContractDoesNotAnswerForAnotherTargetMajor`, and the
-`describesVersion` field the component schema requires (`ToolContractTest`).
+## Held by
+
+- `CatalogTest::theCatalogSaysHowItRelatesToTheInstallationBeingRead`
+- `CatalogTest::aStatedVersionSaysWhatItDidToTheAnswerBesideTheSnapshotItWasReadFrom`
+- `CatalogTest::theCatalogScopeSeparatesEntryValidityFromItsSourceCheckout`
+- `CatalogTest::theInstalledComponentContractWinsOverTheBundledSnapshot`
+- `CatalogTest::anInstalledContractDoesNotAnswerForAnotherTargetMajor`, and the
+- `describesVersion` field the component schema requires (`ToolContractTest`).

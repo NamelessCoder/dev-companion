@@ -13,11 +13,15 @@ is asked — so it is a catalog derived from one checkout per covered version,
 and a miss says the name is not a system extension there rather than that it
 does not exist.
 
-**From:** a community package cited to the user as evidence of what the core
-does, corrected with "content blocks die extension ist kein core code", and a
-system extension nobody knew existed until the user named it (2026-07-29).
+## From
 
-**Held by:** `CatalogTest::whetherAnExtensionIsPartOfTheCoreIsAnswerable`,
-`CatalogTest::aTargetVersionDecidesWhichExtensionsAreShipped`,
-`CatalogTest::everyShippedRangeNamesACoveredVersion`, and `bin/cli catalog:check`,
-which re-derives the list from the checkouts
+A community package cited to the user as evidence of what the core does,
+corrected with "content blocks die extension ist kein core code", and a system
+extension nobody knew existed until the user named it (2026-07-29).
+
+## Held by
+
+- `CatalogTest::whetherAnExtensionIsPartOfTheCoreIsAnswerable`
+- `CatalogTest::aTargetVersionDecidesWhichExtensionsAreShipped`
+- `CatalogTest::everyShippedRangeNamesACoveredVersion`, and
+- `bin/cli catalog:check`, which re-derives the list from the checkouts

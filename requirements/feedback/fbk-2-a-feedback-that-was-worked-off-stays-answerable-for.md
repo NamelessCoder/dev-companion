@@ -19,10 +19,14 @@ Keeping the file is also what makes the closed half filterable at all: a
 feedback read out of a commit was a filename, and the category, the tools and
 the model it carried went with the file.
 
-**From:** seventeen feedback recorded over two sessions, of which the store
-showed three, and a re-report of a request that had shipped in the meantime
-(2026-07-29). Reading the commit back was that answer; what it could not give
-back was everything the feedback itself said (2026-08-01).
+## From
 
-**Held by:** `FeedbackTest::aNoteThatWasWorkedOffIsStillAnswerableFor`,
-`FeedbackTest::aNoteThatWasWorkedOffKeepsEverythingItSaid`
+Seventeen feedback recorded over two sessions, of which the store showed three,
+and a re-report of a request that had shipped in the meantime (2026-07-29).
+Reading the commit back was that answer; what it could not give back was
+everything the feedback itself said (2026-08-01).
+
+## Held by
+
+- `FeedbackTest::aNoteThatWasWorkedOffIsStillAnswerableFor`
+- `FeedbackTest::aNoteThatWasWorkedOffKeepsEverythingItSaid`

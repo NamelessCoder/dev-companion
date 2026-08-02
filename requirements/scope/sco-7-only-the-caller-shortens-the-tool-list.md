@@ -17,14 +17,18 @@ nothing the server hands out points at it, and `typo3_server_scope` — which no
 caller can exclude — names what went and which variable took it: a shorter list
 a client cannot explain is a broken server as far as it can tell.
 
-**From:** the `project` profile withholding `typo3_test_run_guide` while a
-core-shaped task asked from a site installation was still answered as core work
-and routed to it, twice on a patch and six times on a test task (`E-SITE`,
-2026-08-02). Weighed and removed under
+## From
+
+The `project` profile withholding `typo3_test_run_guide` while a core-shaped
+task asked from a site installation was still answered as core work and routed
+to it, twice on a patch and six times on a test task (`E-SITE`, 2026-08-02).
+Weighed and removed under
 [`D-AUD-4`](../../decisions/audience/aud-4-the-tool-list-is-not-where-the-audience-is-said.md).
 
-**Held by:** `ExcludedToolsTest` in full — that no kind of repository shortens
-the list, that a core-shaped task from a project is answered and the tool it
-routes to is offered, that the scope both the tool answer and the resource index
-are built from routes to nothing excluded, and that the tool explaining a short
-list cannot itself be excluded
+## Held by
+
+- `ExcludedToolsTest` in full — that no kind of repository shortens the list,
+  that a core-shaped task from a project is answered and the tool it routes to
+  is offered, that the scope both the tool answer and the resource index are
+  built from routes to nothing excluded, and that the tool explaining a short
+  list cannot itself be excluded

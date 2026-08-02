@@ -17,14 +17,17 @@ an exit code of 0 is not an answer. Where nothing can answer, the failure is
 diagnosed rather than passed through: a query against a missing table means the
 database has no schema, not that the installation is broken.
 
-**From:** an installed TYPO3 13.4.33 before the dump was imported, where the
-labels sat in the files and both console-backed lookups returned a raw SQL
-stack trace (2026-07-29).
+## From
 
-**Held by:**
-`PackageSourcesTest::withoutAConsoleTheDeclarationsAreTheAnswerAndSaySoAsOne`,
-`LabelSearchTest::aConsoleThatCannotBootIsAnsweredFromTheFilesItWouldHaveRead`,
-`LabelSearchTest::aConsoleThatExitsWellAndSaysNothingUsableEstablishesNothing`,
-`LabelSearchTest::aConsoleThatExitsWellAndSaysNothingAtAllIsUnansweredRatherThanEmpty`,
-`LabelSearchTest::aDatabaseWithoutASchemaIsNamedRatherThanLeftAsAStackTrace`,
-`Typo3CliTest::aFailureIsDiagnosedOnlyWhereTheMessageDoesNotSayEnough`
+An installed TYPO3 13.4.33 before the dump was imported, where the labels sat
+in the files and both console-backed lookups returned a raw SQL stack trace
+(2026-07-29).
+
+## Held by
+
+- `PackageSourcesTest::withoutAConsoleTheDeclarationsAreTheAnswerAndSaySoAsOne`
+- `LabelSearchTest::aConsoleThatCannotBootIsAnsweredFromTheFilesItWouldHaveRead`
+- `LabelSearchTest::aConsoleThatExitsWellAndSaysNothingUsableEstablishesNothing`
+- `LabelSearchTest::aConsoleThatExitsWellAndSaysNothingAtAllIsUnansweredRatherThanEmpty`
+- `LabelSearchTest::aDatabaseWithoutASchemaIsNamedRatherThanLeftAsAStackTrace`
+- `Typo3CliTest::aFailureIsDiagnosedOnlyWhereTheMessageDoesNotSayEnough`

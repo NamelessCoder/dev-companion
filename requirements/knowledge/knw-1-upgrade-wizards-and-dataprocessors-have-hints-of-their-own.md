@@ -8,7 +8,11 @@ status: held
 **Upgrade wizards and frontend DataProcessors have architecture hints,
 reachable from the path alone.**
 
-**From:** an extension maintenance task that got generic TCA and Fluid hints
-and nothing for `Classes/Updates/` or `Classes/DataProcessing/` (2026-07-29).
+## From
 
-**Held by:** `HintsTest::aPathAloneReachesTheHintForTheSubsystemItIsIn`
+An extension maintenance task that got generic TCA and Fluid hints and nothing
+for `Classes/Updates/` or `Classes/DataProcessing/` (2026-07-29).
+
+## Held by
+
+- `HintsTest::aPathAloneReachesTheHintForTheSubsystemItIsIn`

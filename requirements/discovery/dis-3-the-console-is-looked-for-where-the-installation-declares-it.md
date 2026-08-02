@@ -14,10 +14,13 @@ relative to the root. One outside the root has no relative form, so it is named
 in the reason together with `TYPO3_MCP_CONSOLE` rather than passed over in
 silence.
 
-**From:** `.build/bin/typo3` existing, working, and never being probed
-(2026-07-29); the same directory declared absolutely being dropped again
-(2026-08-01).
+## From
 
-**Held by:** `Typo3CliTest::aConsoleInTheDeclaredBinDirectoryIsFound`,
-`Typo3CliTest::anAbsoluteBinDirectoryBelowTheRootIsTheSameDirectory`,
-`Typo3CliTest::aBinDirectoryOutsideTheRootIsNamedRatherThanPassedOver`
+`.build/bin/typo3` existing, working, and never being probed (2026-07-29); the
+same directory declared absolutely being dropped again (2026-08-01).
+
+## Held by
+
+- `Typo3CliTest::aConsoleInTheDeclaredBinDirectoryIsFound`
+- `Typo3CliTest::anAbsoluteBinDirectoryBelowTheRootIsTheSameDirectory`
+- `Typo3CliTest::aBinDirectoryOutsideTheRootIsNamedRatherThanPassedOver`

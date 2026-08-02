@@ -16,11 +16,13 @@ behavior the next workflow needs.
 Backend-module documentation is owned by the extension that contains the
 functionality, not by the project around it.
 
-**From:** `EXT-04`, where the backend-module skill remained active while
-editing the project README and never activated the documentation skill
-(2026-07-30).
+## From
 
-**Held by:**
-`SkillTest::backendModuleDocumentationIsAnExplicitSkillTransition`, `SKILL-07`;
-that a session actually performs the transition is not guarded, and will not be
-— see `D-EVI-2`.
+`EXT-04`, where the backend-module skill remained active while editing the
+project README and never activated the documentation skill (2026-07-30).
+
+## Held by
+
+- `SkillTest::backendModuleDocumentationIsAnExplicitSkillTransition`,
+  `SKILL-07`; that a session actually performs the transition is not guarded,
+  and will not be — see `D-EVI-2`.

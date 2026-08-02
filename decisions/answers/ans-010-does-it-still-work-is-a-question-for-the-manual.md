@@ -115,6 +115,18 @@ events and nothing that answers it — so the assumption holds for one shape and
 not the other, and the wording says a miss in the manual is a finding rather
 than a licence to reconstruct the contract from the installed core.
 
+The boundary this entry draws was reported from the other side, and the first
+**Wrong if** is not what fired. `feedback/2026-08-01-003933` reports a session
+that guessed at a ViewHelper contract instead of reading the installed source,
+and its `003356` sibling reports the same session reading vendor source before
+the lookups. Neither followed the routing first, so neither is the case that
+**Wrong if** asks about. What the pair shows is that the wording above decides
+this only for a reviewing session: "the finding says the question could not be
+settled" is not a sentence a session building a template can write.
+[`D-SKL-004`](../task-skills/skl-004-what-a-task-does-when-the-lookups-run-out-is-written-for-a-review.md)
+carries that half, and holds the sentence it queues to the distinction this
+entry rests on — one installation's implementation is not what TYPO3 supports.
+
 The third **Wrong if** fired the day the skill half landed, and the answer is
 not the one it names. `feedback/2026-07-31-194459` disputes the changelog's
 silence the other way — an entry that exists and was not reached — and

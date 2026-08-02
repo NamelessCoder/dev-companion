@@ -83,7 +83,8 @@
     "checklist": [
       "Reference labels by their translation domain (package.resource:key), not by the EXT: file path. typo3_translation_domain_lookup computes the domain of any XLF path.",
       "Never delete a trans-unit: mark it x-unused-since=\"<next version>\" and remove it in a later major.",
-      "Write the source unit in English. A translation maintained in the package belongs in the locale-prefixed XLF beside that source file."
+      "Write the source unit in English. A translation maintained in the package belongs in the locale-prefixed XLF beside that source file.",
+      "Correct a source file that is not English in place: same path, same unit ids, English wording, and the wording it replaced moved into the locale-prefixed file beside it as <target> under source-language=\"en\" target-language=\"<locale>\". Adding an en.-prefixed file is not the correction — the unprefixed file is the default locale every other locale falls back to."
     ],
     "checks": [
       "CI=true ./Build/Scripts/runTests.sh -s checkIntegrityXliff",

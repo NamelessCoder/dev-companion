@@ -1,7 +1,8 @@
 ---
 date: 2026-07-31T19:36:19+00:00
 category: wrong-answer
-status: open
+status: closed
+closed: 2026-08-02
 model: nemotron-3-ultra-free
 tool: typo3_extension_scope, typo3_architecture_lookup
 directory: /home/benji/projects/site-new

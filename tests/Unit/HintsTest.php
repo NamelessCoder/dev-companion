@@ -6,6 +6,7 @@ namespace Typo3CmsMcp\Tests\Unit;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\TestWith;
 use PHPUnit\Framework\TestCase;
 use Typo3CmsMcp\Knowledge\ArchitectureHints;
 use Typo3CmsMcp\Knowledge\Domains;
@@ -232,17 +233,34 @@ final class HintsTest extends TestCase
         ];
     }
 
+    /**
+     * The steady state alone left a caller holding a German source file with
+     * two remedies that both read as consistent with it, and it picked the one
+     * that changes nothing — D-KNW-011. So the correction is named too, and it
+     * is an authoring procedure rather than a v14 mechanism: the unit shape is
+     * the same on 12.4, 13.4 and 14.3, and so is the fallback that makes an
+     * en.-prefixed file useless, so no answer this server gives may omit it.
+     */
     #[Test]
-    public function aNewLabelNamesTheSourceLanguageAndWhereItsTranslationGoes(): void
+    #[TestWith(['12'])]
+    #[TestWith(['13'])]
+    #[TestWith(['14'])]
+    public function aNewLabelNamesTheSourceLanguageAndWhereItsTranslationGoes(string $targetVersion): void
     {
         $result = Registry::call('typo3_architecture_lookup', [
             'task' => 'backend module registration controller and language files in a project sitepackage extension',
-            'targetVersion' => '14',
+            'targetVersion' => $targetVersion,
         ]);
 
         self::assertStringContainsString('new labels in English in the source XLF', $result->text);
         self::assertStringContainsString('de.locallang.xlf', $result->text);
         self::assertStringContainsString('a defect to report', $result->text);
+
+        self::assertStringContainsString('keeps its path and it keeps its unit ids', $result->text);
+        self::assertStringContainsString('source-language="en" target-language="de"', $result->text);
+        self::assertStringContainsString('as <source> and the wording it replaced as <target>', $result->text);
+        self::assertStringContainsString('en.-prefixed file is never the correction', $result->text);
+        self::assertStringContainsString('default is the fallback of every other locale', $result->text);
     }
 
     #[Test]

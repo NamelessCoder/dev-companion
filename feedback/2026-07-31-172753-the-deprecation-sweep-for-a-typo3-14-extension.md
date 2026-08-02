@@ -10,7 +10,18 @@ directory: /home/benji/projects/bootstrap_package
 
 ## Observation
 
-The deprecation sweep for a TYPO3 14 extension (bootstrap_package) found the two most impactful v14.3 deprecations — ext_tables.php in extensions (#109438) and ext_emconf.php / composer.json version+providesPackages (#108345) — only because the functional test suite ran and printed them. The typo3_changelog_lookup sweep over the same area did not find them: queries derived from the extension surface ("PageRenderer", "content element", "TCA", "asset view helper") never carry those changelog titles, and there is no way to enumerate every deprecation/breaking entry a version contains without guessing title words.
+Trimmed on 2026-08-02 to the part that is left. Two of the three things this
+reported are answered: `ext_tables.php` (#109438) and `ext_emconf.php` (#108345)
+reach their entries now — an identifier is compared without its separators, so
+the caller's spelling of the thing finds the entry the file names in words — and
+a version or a type can already be listed whole by omitting the query, which the
+tool says on the `query` property and the sweep did not use.
+
+What is left is the third: a sweep bounded by the words the reviewer guessed.
+Deriving queries from the extension surface ("PageRenderer", "content element",
+"TCA") never carries a changelog title, and enumerating a version whole hands
+back 75 deprecations for TYPO3 14 with nothing saying which of them touch this
+extension.
 
 ## Query
 
@@ -18,4 +29,8 @@ version=14, type=deprecation, several keyword sweeps over the bootstrap_package 
 
 ## Suggestion
 
-Offer a way to list all deprecation (or breaking) entries of a version/type wholesale — a version+type listing that returns every entry's title and file, not only title-word matches — so a sweep is not bounded by the words the reviewer guessed. Alternatively accept a Composer extension key and return the changelog entries whose Extension Scanner matcher or affected-extension metadata covers that key.
+Accept a Composer package or extension key and return the entries whose index
+tags name it — the entries carry `ext:core`, `ext:fluid` and the Extension
+Scanner state (`FullyScanned`, `NotScanned`) already, and `Changelog::read()`
+parses both. That is the filter a deprecation sweep for one extension needs, and
+it is a property of the entry rather than of the words in it.

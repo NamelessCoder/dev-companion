@@ -91,6 +91,34 @@ final class PackageSourcesTest extends TestCase
         self::assertSame(['14.0', '13.4'], $result->data['versions'], 'newest first');
     }
 
+    /**
+     * The shape two sessions reported from two checkouts, and the one a caller
+     * actually types: the thing has a name with separators in it, and the
+     * changelog file spells that name apart. Every one of these has an entry in
+     * `.checkouts/14.3` and reached none of them.
+     */
+    #[Test]
+    public function anIdentifierReachesTheEntryTitledInWords(): void
+    {
+        $root = $this->composerProject();
+        $this->changelogEntry($root, '14.3', 'Deprecation-109438-ExtTablesPhpInExtensions', 'Deprecation: #109438 - ext_tables.php in extensions', []);
+        $this->changelogEntry($root, '14.0', 'Deprecation-98453-SchedulerTaskRegistrationViaSCOPTIONS', 'Deprecation: #98453 - Scheduler task registration via SC_OPTIONS', []);
+        $this->changelogEntry($root, '14.0', 'Breaking-107784-RemoveBackendLayoutDataProviderRegistration', 'Breaking: #107784 - Remove backend layout data provider registration', []);
+        Instance::discoverFrom($root);
+
+        $reaches = static function (string $query): array {
+            return array_column(Registry::call('typo3_changelog_lookup', ['query' => $query])->data['entries'], 'issue');
+        };
+
+        self::assertSame(['109438'], $reaches('ext_tables.php'));
+        self::assertSame(['98453'], $reaches('SC_OPTIONS'));
+        self::assertSame(['107784'], $reaches('backend_layout'));
+        // The words themselves still reach it, and every term still has to be
+        // carried: nothing that matched before matches less.
+        self::assertSame(['109438'], $reaches('ext tables extensions'));
+        self::assertSame([], $reaches('ext_tables.php scheduler'));
+    }
+
     #[Test]
     public function theChangelogIsNarrowedByTypeAndVersion(): void
     {

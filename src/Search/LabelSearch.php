@@ -94,13 +94,46 @@ final class LabelSearch
         return array_values(array_filter($labels, static function (array $label) use ($terms): bool {
             $haystack = mb_strtolower(($label['key'] ?? '') . ' ' . ($label['source'] ?? ''));
             foreach ($terms as $term) {
-                if (!str_contains($haystack, $term)) {
+                if (!self::carries($haystack, $term)) {
                     return false;
                 }
             }
 
             return true;
         }));
+    }
+
+    /**
+     * Whether one haystack carries one term.
+     *
+     * Plain containment, and one addition for the term that spells an
+     * identifier: `ext_tables.php`, `SC_OPTIONS`, `mod.web_layout`. Those are
+     * written with their separators where they are used and taken apart where
+     * they are titled — the changelog file name is `ExtTablesPhpInExtensions`
+     * and its words are "ext tables php in extensions", so the caller's own
+     * spelling of the thing reached neither. Compared without the separators,
+     * the two are the same string.
+     *
+     * Only a term carrying one is compared that way, so nothing a query without
+     * separators reaches changes, and nothing this ever matched stops matching.
+     */
+    private static function carries(string $haystack, string $term): bool
+    {
+        if (str_contains($haystack, $term)) {
+            return true;
+        }
+
+        $identifier = self::withoutSeparators($term);
+
+        return $identifier !== $term
+            && $identifier !== ''
+            && str_contains(self::withoutSeparators($haystack), $identifier);
+    }
+
+    /** The same string as one word: what separates an identifier is how it is written, not what it is. */
+    private static function withoutSeparators(string $text): string
+    {
+        return (string) preg_replace('/[\s_.\-]+/u', '', $text);
     }
 
     /**

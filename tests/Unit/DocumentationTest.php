@@ -106,6 +106,22 @@ final class DocumentationTest extends TestCase
     }
 
     /**
+     * A page titled after its subject and a page whose title is a long event
+     * class name carry the word equally well, and the class name carries five
+     * other words besides. While no title in the corpus was long enough to be
+     * diluted the two were worth the same, and the tie went to whichever manual
+     * was indexed first (`D-ANS-029`).
+     */
+    #[Test]
+    public function aPageTitledAfterItsSubjectOutranksALongerTitleThatAlsoCarriesTheWord(): void
+    {
+        $answer = (new Documentation($this->manuals()))->lookup(['inline'], '14.3', 2);
+
+        self::assertSame('IRRE / inline', $answer['results'][0]['title']);
+        self::assertSame('ModifyInlineElementControlsEvent', $answer['results'][1]['title']);
+    }
+
+    /**
      * The manuals of the core are published under `/m/` and this one is not,
      * so a search that built every base the same way reached three books, none
      * of which documents a ViewHelper, and the question was answered from

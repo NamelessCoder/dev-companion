@@ -58,11 +58,21 @@ final class Documentation
     private const FIELD_WEIGHTS = ['title' => 4, 'path' => 2, 'manual' => 2];
 
     /**
-     * A title and a path are a handful of words each, so nothing here is long
-     * enough to be diluted — except a deep path, which is exactly the candidate
-     * that collects accidental terms.
+     * The ordinary field of this corpus, which is what a longer one is measured
+     * against. Over the 1419 pages the four manuals index at 14.3 a title is
+     * 2.66 words on the mean and 2 on the median, and a manual is 2 or 3; a
+     * path is 7.16, so a path is diluted against a title by design.
+     *
+     * It was 12, which is the longest title in the whole corpus — so no title
+     * was ever diluted and the field length did nothing. A page titled after
+     * its subject and a page whose title is a long event class name were worth
+     * the same for the one word they share, and the class name wins every tie
+     * it is in because it carries more words to be found by. Not below 3
+     * either: `Fluid ViewHelper Reference` is three words and the other three
+     * books are two, so a smaller reference weighs the books by the length of
+     * their names.
      */
-    private const UNDILUTED_WORDS = 12;
+    private const UNDILUTED_WORDS = 3;
 
     /** @param \Closure(string): ?string|null $fetch */
     public function __construct(private readonly ?\Closure $fetch = null) {}

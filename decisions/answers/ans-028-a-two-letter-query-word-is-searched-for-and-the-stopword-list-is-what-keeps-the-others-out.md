@@ -114,3 +114,16 @@ every word that short. Moving it means the list has to do its own.
 - `TermSearchTest::aTwoLetterWordThatSaysNothingAboutTheSubjectIsStillDropped`
 - `TermSearchTest::aShortTermIsCarriedAsAWholeWordAndNotAsAPrefix`
 - `DocumentationTest::aViewHelperNamedAfterAKeywordIsReachedByItsOwnName`
+
+## Since then
+
+The half this entry left to the todo is settled, and it is
+[`D-ANS-032`](ans-032-the-dilution-reference-of-the-manual-ranking-is-the-length-of-an-ordinary-title.md):
+`Documentation::UNDILUTED_WORDS` is 3, picked against the 41 scenario prompts
+and the seven queries this repository already asserts an answer for rather than
+against `f:if`. Both numbers this entry recorded from that measurement held —
+the page titled after the tag is fourth for both queries at a reference of 3,
+and all 41 prompts change. What it does not reach is the last of the tie: three
+of the ten pages are titled `if`, no length reference separates identical
+titles, and the page is fourth rather than first. The remaining lever is the
+`f:` prefix. `f:or` and `f:then` stay in the todo, unchanged.

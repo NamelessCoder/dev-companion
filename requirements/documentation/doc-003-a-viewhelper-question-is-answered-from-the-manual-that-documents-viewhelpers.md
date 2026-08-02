@@ -1,7 +1,7 @@
 ---
 id: R-DOC-003
 status: held
-restsOn: [D-ANS-026]
+restsOn: [D-ANS-026, D-ANS-032]
 ---
 
 # R-DOC-003 — A ViewHelper question is answered from the manual that documents ViewHelpers
@@ -22,11 +22,17 @@ call takes back.
 
 What this does not promise is where in the answer that page comes. A name too
 short to be searched for is no longer the obstacle — `TermSearch::terms()`
-admits a two-letter word, so `f:if` reaches `Global/If.html`. What is left is a
-tie: the page titled "if" scores exactly what the ten other pages whose titles
-carry the word score, and it is eighth of them by the order the index was
-built. `f:or` and `f:then` are a second case of the same shape, unreachable by
-name because `or` and `then` are stopwords. Both carry a todo of their own.
+admits a two-letter word, so `f:if` reaches `Global/If.html` — and neither is
+the ranking constant: `D-ANS-032` weighs a title by its length and the page is
+fourth of the ten rather than eighth. What is left is what neither reaches.
+Three of those ten are titled `if` — the two TypoScript function pages and this
+one — and a fourth is `security.ifAuthenticated`, which is three words and so
+undiluted as well. All four score the same, no field weight separates them
+because all four matched in the title, and the order among them is the order the
+index was built in. What does separate them is the book, which the query names
+by its `f:` prefix and nothing in `Documentation` reads. `f:or` and
+`f:then` do not get that far: `or` and `then` are stopwords, so those queries
+have no term left at all. Both carry a todo of their own.
 
 ## From
 

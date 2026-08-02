@@ -234,6 +234,44 @@ final class Environments
         return $projects;
     }
 
+    /**
+     * Whether a registration points at a checkout that is no longer there.
+     *
+     * The project name is global to this machine and the directory is per
+     * checkout, so a worktree that made an environment and was then removed
+     * leaves the name held by an approot DDEV itself reports as `project
+     * directory missing`. Nothing can reach what it names: the code, the
+     * settings file and the DDEV config went with the directory, and what is
+     * left is a name and a database volume. An `rm -rf .environments` in this
+     * checkout leaves the same thing behind, which is why the question is
+     * whether the approot is there rather than whose it was.
+     *
+     * @param array{name: string, status: string, approot: string, url: string} $project
+     */
+    public static function abandoned(array $project): bool
+    {
+        return !is_dir($project['approot']);
+    }
+
+    /**
+     * What clears a registration nothing can reach, and the database with it.
+     *
+     * `ddev stop --unlist` is the smaller command and the wrong one. Stop is
+     * documented as non-destructive and leaves the database, which is a volume
+     * named after the project rather than after the directory — so the name is
+     * freed, the next build registers it again, attaches to the same volume,
+     * and the setup step meets the tables the last installation left. `delete`
+     * takes both, and takes them where the directory is already gone: measured
+     * on 2026-08-02 against a registration whose approot had been removed, on
+     * DDEV 1.25.1.
+     *
+     * @return array<int, string>
+     */
+    public static function discard(string $project): array
+    {
+        return ['ddev', 'delete', '--omit-snapshot', '-y', $project];
+    }
+
     /** Whether the tool a made environment is built with is on this machine. */
     public static function ddev(): bool
     {
@@ -284,6 +322,14 @@ final class Environments
      * TYPO3 is minutes and a hundred packages, and a step that has to start
      * over is a step nobody repeats.
      *
+     * The setup step is where that stops holding, and `--force` is not the
+     * exception it reads as. It forces the settings file and nothing else —
+     * `prepareSystemSettings()` is its only use in 14.3 — while the database
+     * is guarded by a validator that refuses any table at all, on the
+     * non-interactive path as much as the asked one. A build that meets a
+     * populated database is finished by `discard()` and never by running
+     * again.
+     *
      * @return array<string, array<int, string>>
      */
     public static function build(string $project): array
@@ -313,9 +359,10 @@ final class Environments
         $steps['The installation itself: database, admin user, site configuration'] = [
             'ddev', 'exec', 'vendor/bin/typo3', 'setup',
             '--no-interaction',
-            // Re-running a finished setup is what makes a half-built
-            // environment finishable; without this it stops on the settings
-            // file it wrote the first time.
+            // The settings file and nothing else. This is what lets a
+            // half-built environment be finished rather than stopping on the
+            // file the first attempt wrote, and it does not reach the database
+            // an earlier installation populated.
             '--force',
             // DDEV's own database service, at the names it gives it.
             '--driver=mysqli', '--host=db', '--port=3306',

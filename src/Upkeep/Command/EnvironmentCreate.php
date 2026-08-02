@@ -132,9 +132,31 @@ final class EnvironmentCreate
 
         // The directory is per checkout and the project name is per machine, so
         // two checkouts asking for an E-SITE ask for one name. Taking it over
-        // would stop the other one's environment without saying so.
+        // would stop the other one's environment without saying so — but only
+        // while there is a checkout to take it from. A worktree that made an
+        // environment and was then removed leaves the name held on behalf of a
+        // directory nobody can visit, and refusing in its name is a dead end.
         $registered = Environments::projects()[$project] ?? null;
-        if ($registered !== null && rtrim($registered['approot'], '/') !== rtrim($path, '/')) {
+        if ($registered !== null && Environments::abandoned($registered)) {
+            $output->writeln(sprintf(
+                'DDEV still holds %s for %s, which is not there any more.',
+                $project,
+                $registered['approot'] === '' ? 'a directory it no longer names' : $registered['approot'],
+            ));
+            $discard = Environments::discard($project);
+            $output->writeln('    ' . implode(' ', $discard));
+
+            [$exitCode, $said] = Environments::run($discard);
+            if ($exitCode !== 0) {
+                Cli::errors($output)->writeln(rtrim($said));
+                Cli::errors($output)->writeln('');
+                Cli::errors($output)->writeln('That registration stands in the way and this could not clear it.');
+
+                return 2;
+            }
+
+            $output->writeln('');
+        } elseif ($registered !== null && rtrim($registered['approot'], '/') !== rtrim($path, '/')) {
             Cli::errors($output)->writeln(sprintf(
                 "DDEV already knows %s, and it is the one in %s.\nThat checkout's environment would be taken over by making this one.",
                 $project,
@@ -161,6 +183,14 @@ final class EnvironmentCreate
                     'Stopped at "%s". What is there stays, and this command carries on from it.',
                     $what,
                 ));
+                // The one failure that never finishes by carrying on. `--force`
+                // covers the settings file, and no option of the setup gets
+                // past tables an earlier installation left in the database.
+                Cli::errors($output)->writeln(
+                    'A database an earlier installation populated is the exception: its tables',
+                );
+                Cli::errors($output)->writeln('are refused by the setup whatever is passed, and clearing them is');
+                Cli::errors($output)->writeln('    ' . implode(' ', Environments::discard($project)));
 
                 return 1;
             }

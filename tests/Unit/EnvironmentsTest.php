@@ -164,6 +164,52 @@ final class EnvironmentsTest extends TestCase
     }
 
     /**
+     * The project name is global to the machine and the directory is per
+     * checkout, so a worktree that made an environment and was then removed
+     * leaves the name held for an approot that is gone. Measured on
+     * 2026-08-02: `typo3-mcp-e-site` registered at a `.worktrees/` path DDEV
+     * itself reported as `project directory missing`, and `environment:create`
+     * refusing in the name of a checkout nobody could visit.
+     */
+    #[Test]
+    public function aRegistrationWhoseCheckoutIsGoneHoldsNothingBack(): void
+    {
+        self::assertTrue(Environments::abandoned([
+            'name' => Environments::PROJECT,
+            'status' => 'project directory missing',
+            'approot' => Paths::root() . '/.worktrees/a-checkout-that-was-removed/.environments/e-site',
+            'url' => '',
+        ]), 'an approot that is gone is read as a checkout still holding the name');
+
+        self::assertFalse(Environments::abandoned([
+            'name' => Environments::PROJECT,
+            'status' => 'running',
+            'approot' => Paths::root(),
+            'url' => '',
+        ]), 'a checkout that is there would have its environment taken over');
+    }
+
+    /**
+     * `ddev stop --unlist` frees the name and is the wrong command. Stop is
+     * documented as non-destructive, and the database is a volume named after
+     * the project rather than after the directory — so the next build under
+     * the same name attaches to it and the setup step meets the tables the
+     * last installation left. `--force` does not reach that: it forces the
+     * settings file alone. `delete` takes the volume with the name.
+     */
+    #[Test]
+    public function clearingARegistrationTakesTheDatabaseThatWouldOutliveIt(): void
+    {
+        $discard = Environments::discard(Environments::PROJECT);
+
+        self::assertSame('ddev', $discard[0] ?? '', 'the registration is cleared outside the project');
+        self::assertSame('delete', $discard[1] ?? '', 'stop leaves the database the next build fails on');
+        self::assertNotContains('--unlist', $discard, 'unlisting frees the name and keeps the database');
+        self::assertContains('--omit-snapshot', $discard);
+        self::assertContains(Environments::PROJECT, $discard);
+    }
+
+    /**
      * A made environment is a TYPO3 installation and its database dump, and it
      * belongs in a commit as little as `.checkouts/` does. This is the one
      * failure here that is unrecoverable rather than annoying.

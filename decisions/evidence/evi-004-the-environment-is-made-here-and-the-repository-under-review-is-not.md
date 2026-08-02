@@ -114,3 +114,24 @@ named in `todo/reference/`.
 - `EnvironmentsTest::theSiteIsCreatedForTheAddressDdevGivesTheProject`
 - `EnvironmentsTest::everyStepOfTheBuildRunsInTheProjectRatherThanOnTheMachine`
 - `EnvironmentsTest::whatIsMadeHereIsNeverCommitted`
+
+## Since then
+
+The second **Wrong if** arrived on 2026-08-02, on the second checkout to run the
+build, and by a route it did not anticipate. Nothing about DDEV or the
+distribution had changed: the build stopped reproducing because the *first* run
+had happened. A worktree that made an environment and was then removed leaves
+the project name registered against an approot DDEV reports as `project
+directory missing`, and the guard here refused in the name of a checkout nobody
+could visit. Behind it sat the database, a volume named after the project rather
+than the directory, which is what a second build under the same name met at the
+setup step as `The selected database contains already 42 tables.` — past
+`--force`, which reaches the settings file alone.
+
+Both are the same leftover and [`D-EVI-005`](evi-005-a-registration-nothing-can-reach-is-cleared-and-the-database-goes-with-it.md)
+clears them together. What that says about this entry is narrower than the
+**Wrong if** reads: an environment made on demand and gitignored is not thereby
+free, because the part of it that is global to the machine outlives the checkout
+that asked for it. The decision to make it here stands, and the measured build
+was re-run whole under the fix — 32 seconds, frontend 200, the console
+answering.

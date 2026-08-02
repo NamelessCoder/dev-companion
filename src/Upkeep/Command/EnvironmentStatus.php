@@ -61,11 +61,22 @@ final class EnvironmentStatus
             return is_dir($path) ? $path : 'missing — run bin/cli environment:create E-NONE';
         }
 
+        $project = $projects[Environments::PROJECT] ?? null;
         if (!is_file($path . '/config/system/settings.php')) {
+            // Where another live checkout holds the name, `create` refuses, so
+            // naming it is the answer rather than the command that would. One
+            // held for a checkout that is gone is not reported here: `create`
+            // clears that itself, which makes the command the true answer.
+            if (
+                $project !== null
+                && !Environments::abandoned($project)
+                && rtrim($project['approot'], '/') !== rtrim($path, '/')
+            ) {
+                return sprintf('missing here — %s is the one in %s', Environments::PROJECT, $project['approot']);
+            }
+
             return 'missing — run bin/cli environment:create E-SITE';
         }
-
-        $project = $projects[Environments::PROJECT] ?? null;
 
         return sprintf(
             '%s — DDEV project %s is %s',

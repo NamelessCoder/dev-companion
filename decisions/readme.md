@@ -66,6 +66,7 @@ and not a defect.
 - [`D-DOC-003`][D-DOC-003] — A decision says what came back, and a requirement says what it rests on · 2026-08-02
 - [`D-DOC-004`][D-DOC-004] — A requirement is written in the same sections as a decision · 2026-08-02
 - [`D-DOC-005`][D-DOC-005] — A number is three digits so a group lists in order · 2026-08-02
+- [`D-DOC-006`][D-DOC-006] — A recording says what it is of, and nothing fails on its age · 2026-08-02
 - [`D-FBK-011`][D-FBK-011] — The suite holds what one branch can be right about · 2026-08-02
 - [`D-KNW-005`][D-KNW-005] — One `Scope` replaced the four vocabularies · 2026-08-02
 - [`D-KNW-006`][D-KNW-006] — A word for a thing administered from the backend adds no domain to a backend-only task · 2026-08-02
@@ -122,6 +123,7 @@ and not a defect.
 [D-DOC-003]: documentation/doc-003-a-decision-says-what-came-back-and-what-rests-on-it.md
 [D-DOC-004]: documentation/doc-004-a-requirement-is-written-in-the-same-sections-as-a-decision.md
 [D-DOC-005]: documentation/doc-005-a-number-is-three-digits-so-a-group-lists-in-order.md
+[D-DOC-006]: documentation/doc-006-a-recording-says-what-it-is-of.md
 [D-FBK-011]: feedback/fbk-011-the-suite-holds-what-one-branch-can-be-right-about.md
 [D-KNW-005]: knowledge/knw-005-one-scope-replaced-the-four-vocabularies.md
 [D-KNW-006]: knowledge/knw-006-a-word-for-a-thing-administered-from-the-backend.md

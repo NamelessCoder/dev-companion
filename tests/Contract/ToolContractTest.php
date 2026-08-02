@@ -13,6 +13,7 @@ use Typo3CmsMcp\Installation\Instance;
 use Typo3CmsMcp\Installation\Typo3Cli;
 use Typo3CmsMcp\Result\Unsupported;
 use Typo3CmsMcp\Tool\Registry;
+use Typo3CmsMcp\Upkeep\ToolCalls;
 
 /**
  * What every tool promises its callers: a declared input and output schema,
@@ -213,67 +214,17 @@ final class ToolContractTest extends TestCase
      * Every tool, on a hit and on a miss: the shape has to hold for both, since
      * a miss is where a client is most likely to look at the data.
      *
+     * The table is `Upkeep\ToolCalls`, because `bin/cli tools:record` drives
+     * the same calls to write down what a filled answer looks like, and a
+     * second table would drift from this one. In a test run nothing discovers
+     * an installation, so every installation-backed entry here exercises the
+     * unanswered path.
+     *
      * @return array<string, array{0: string, 1: array<string, mixed>}>
      */
     public static function toolCalls(): array
     {
-        return [
-            'scope' => ['typo3_server_scope', []],
-            'rules: hit' => ['typo3_rule_lookup', ['query' => 'deprecation']],
-            'rules: miss' => ['typo3_rule_lookup', ['query' => 'quantum entanglement pineapple']],
-            'scripts: hit' => ['typo3_script_lookup', ['task' => 'functional tests']],
-            'scripts: miss' => ['typo3_script_lookup', ['task' => 'quantum entanglement pineapple']],
-            'brief: with area' => ['typo3_task_guide', [
-                'task' => 'Deprecate a public method',
-                'area' => 'typo3/sysext/core/Classes/Utility/GeneralUtility.php',
-                'changeType' => 'cleanup',
-            ]],
-            'brief: task only' => ['typo3_task_guide', ['task' => 'Add a badge to the list module']],
-            'runTests: all' => ['typo3_test_run_guide', []],
-            'runTests: hit' => ['typo3_test_run_guide', ['query' => 'phpstan']],
-            'runTests: miss' => ['typo3_test_run_guide', ['query' => 'quantumflux']],
-            'runTests: narrowed by paths' => ['typo3_test_run_guide', [
-                'query' => 'what do I have to run',
-                'paths' => ['Build/Sources/Sass/component/_card.scss'],
-            ]],
-            'architecture: path' => ['typo3_architecture_lookup', ['paths' => ['typo3/sysext/core/Classes/DataHandling/DataHandler.php']]],
-            'architecture: topic' => ['typo3_architecture_lookup', ['task' => 'sass build']],
-            'architecture: miss' => ['typo3_architecture_lookup', ['task' => 'quantumflux']],
-            'documentation: unsupported version' => ['typo3_documentation_lookup', [
-                'queries' => ['page title event'],
-                'targetVersion' => '999',
-            ]],
-            'components: list' => ['typo3_component_lookup', []],
-            'components: hit' => ['typo3_component_lookup', ['query' => 'badge']],
-            'components: miss' => ['typo3_component_lookup', ['query' => 'quantumflux']],
-            'system extensions: hit' => ['typo3_system_extension_lookup', ['query' => 'impexp']],
-            'system extensions: miss' => ['typo3_system_extension_lookup', ['query' => 'typo3/cms-content-blocks']],
-            'system extensions: everything' => ['typo3_system_extension_lookup', []],
-            'domain: EXT reference' => ['typo3_translation_domain_lookup', [
-                'path' => 'EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf',
-            ]],
-            'domain: checkout path' => ['typo3_translation_domain_lookup', [
-                'path' => 'typo3/sysext/core/Resources/Private/Language/locallang.xlf',
-            ]],
-            'domain: miss' => ['typo3_translation_domain_lookup', ['path' => 'somewhere/else.xlf']],
-            // No installation is discovered in a test run, so this exercises
-            // the path where the answer is unanswered rather than empty.
-            'labels: no installation' => ['typo3_label_lookup', ['query' => 'save']],
-            'icons: no installation' => ['typo3_icon_lookup', ['query' => 'actions-open']],
-            'icons: no installation, no query' => ['typo3_icon_lookup', []],
-            'modules: no installation' => ['typo3_backend_module_lookup', []],
-            'namespaces: no installation' => ['typo3_fluid_namespace_list', []],
-            'configuration: no installation' => ['typo3_configuration_lookup', ['path' => 'SYS/fluid']],
-            'catalog scope' => ['typo3_catalog_scope', []],
-            'commit: from parts' => ['typo3_commit_message_guide', [
-                'changeType' => 'BUGFIX',
-                'summary' => 'Show hidden records in the import preview',
-                'issue' => '106123',
-            ]],
-            'commit: from a message' => ['typo3_commit_message_guide', [
-                'message' => "[TASK] Do a thing\n\nBody.\n\nResolves: #1\nReleases: main",
-            ]],
-        ];
+        return ToolCalls::all();
     }
 
     /**

@@ -2,9 +2,10 @@
 
 One page per procedure that is long enough to get wrong from memory. The
 directories keep saying what a thing **is** — a requirement, a decision, a
-forward review, a feedback — and each links here for how it is carried out. One
-page is no procedure and is written by nobody: `clients/tools.md` is the tool
-surface, rendered from the classes that declare it.
+forward review, a feedback — and each links here for how it is carried out. Two
+pages are no procedure and are written by nobody: `clients/tools.md` is the tool
+surface rendered from the classes that declare it, and
+`clients/tool-answers.md` is what those tools answered once.
 
 The split is deliberate. A readme that also holds the workflow is read by
 someone looking for one paragraph and finding six; a workflow with no home ends
@@ -58,6 +59,9 @@ order by, and the launch two of the subjects below share.
   supports, and the configuration each one gets.
 - [tools.md](clients/tools.md) — every tool, what it takes and the fields it
   answers with, written from the registry by `bin/cli tools:index`.
+- [tool-answers.md](clients/tool-answers.md) — what each of them answered on one
+  day against one checkout, recorded by `bin/cli tools:record`. Evidence rather
+  than a derivation, so nothing checks it.
 - [writing-a-skill.md](clients/writing-a-skill.md) — what a new task skill has
   to show before it exists, the rules it is written under, and what holds each
   one.

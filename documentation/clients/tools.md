@@ -6,9 +6,11 @@ from the classes that answer the calls, and `bin/cli tools:check` fails where it
 has gone stale. A surface written out a second time by hand stops describing the
 answer at the first change nobody carried across.
 
-What a filled answer looks like is not here: that needs an installation to call,
-and no test run discovers one. The [readme](../../readme.md) says what each tool
-is for in prose; this page says what goes in and what comes back.
+What a filled answer looks like is not here, because it is not derivable: it
+needs an installation to call. [tool-answers.md](tool-answers.md) is that half,
+recorded once by `bin/cli tools:record` and checked by nothing. The
+[readme](../../readme.md) says what each tool is for in prose; this page says
+what goes in and what shape comes back.
 
 A client may be offered fewer than these. `TYPO3_MCP_EXCLUDE_TOOLS` names the
 tools a caller does not want offered, the two feedback tools exist only in a

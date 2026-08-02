@@ -22,9 +22,9 @@ final class UpkeepTest extends TestCase
 {
     /**
      * Every command that only reports. The ones that write — the three
-     * indexes, `scenarios:record`, `feedback:archive`, `checkouts:update` — are
-     * left out on purpose: a test suite that rewrites the repository it is run
-     * in is worse than the gap.
+     * indexes, `tools:record`, `scenarios:record`, `feedback:archive`,
+     * `checkouts:update` — are left out on purpose: a test suite that rewrites
+     * the repository it is run in is worse than the gap.
      *
      * The ones that take an argument are here with one, because that is the
      * half a class-at-a-time test cannot see: the console reads what a command

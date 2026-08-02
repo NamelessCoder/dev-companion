@@ -77,3 +77,14 @@ and the priority does what the group boundary did.
 
 - `TodoTest::everyOpenFeedbackIsOnTheBoard`
 - `TodoTest::everyTodoAnswersForSomethingThatCanStillBeRead`
+
+## Since then
+
+The third assumption failed the same day it was written. Commit `8ef3bba`
+brought 20 feedback in and wrote no card for any of them, and the board said so
+only when the next session ran `bin/cli todo:check`. Nothing else about the
+entry moved: the cards were written by the sync as designed, and the count had
+not drowned anything. What was missing was the caller.
+[`D-FBK-022`](fbk-022-a-feedback-brings-its-card-in-the-commit-that-brings-it-in.md)
+is that caller — a pre-commit hook that runs the sync where the commit touches
+`feedback/` — so the assumption is now held rather than made.

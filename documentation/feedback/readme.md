@@ -60,6 +60,14 @@ that instead is `decisions/`, which is where a judgement is written now — see
 `bin/cli feedback:list` is still the whole of it, for whoever wants the
 overview.
 
+What runs the sync is `.githooks/pre-commit`, on any commit that touches
+`feedback/`: it writes the missing cards and stages them, so the feedback and
+its card arrive together. `composer install` is what points git at that
+directory, and the hook repairs rather than refuses — a commit made where it is
+not enabled is caught by `bin/cli todo:check` and by CI, which is where the
+20 cards of 2026-08-02 were found —
+[`D-FBK-022`](../../decisions/feedback/fbk-022-a-feedback-brings-its-card-in-the-commit-that-brings-it-in.md).
+
 What `next` can never do is run a feedback's own query against the server as it
 is now. A feedback is evidence about a version of this server that may no
 longer exist, and that reading is the session's.

@@ -52,6 +52,7 @@ todo/progress/     # what a session has in hand: out of the queue, offered to no
 todo/waiting/      # what nothing here can start, carrying the question it is blocked on; closing is a deletion and no fourth directory
 src/Upkeep/Todo.php  # todo/ as data: what recurs and how often, what is queued, what each todo serves
 documentation/     # how a procedure is carried out, grouped by subject; the rules stay here, the steps live there
+.githooks/         # the hooks this checkout commits through; `composer install` points git at them
 tests/             # unit, tool contract, and stdio smoke tests
 vendor/            # Composer dependencies (mcp/sdk); gitignored
 ```
@@ -345,6 +346,10 @@ open forward reviews in `scenarios/forward/`, targeted contract cases in
 installation on somebody's machine — that lives in `todo/reference/`, where it can go
 stale without taking a case with it.
 
+- A feedback arriving brings its card with it: `.githooks/pre-commit` runs
+  `bin/cli todo:sync` where the commit touches `feedback/`, and stages what it
+  wrote. It repairs and never refuses, so a commit made without it — another
+  checkout, `--no-verify` — is caught by `bin/cli todo:check` and by CI instead.
 - A feedback is worked off in a commit that both implements the improvement
   **and** archives it with `bin/cli feedback:archive <feedback>`, so `feedback/`
   only ever holds open items and the commit that moved it is the record of what

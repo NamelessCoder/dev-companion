@@ -1,0 +1,23 @@
+#!/bin/sh
+#
+# A feedback that arrives brings its card with it.
+#
+# `bin/cli todo:sync` writes what is missing and is idempotent, so this repairs
+# rather than refuses: it runs only where the commit touches feedback/, which is
+# the only way the pair can come apart, and it stages what it wrote. What it
+# cannot do — vendor/ absent, the command failing — is not a reason to stop a
+# commit, because the same relation is held by
+# TodoTest::everyOpenFeedbackIsOnTheBoard and CI runs it either way.
+
+set -e
+
+root=$(git rev-parse --show-toplevel)
+
+git diff --cached --name-only --diff-filter=ACMR | grep -q '^feedback/' || exit 0
+
+written=$("$root/bin/cli" todo:sync | grep '^todo/open/') || exit 0
+
+echo "$written" | while IFS= read -r card; do
+    git -C "$root" add -- "$card"
+    echo "pre-commit: $card"
+done

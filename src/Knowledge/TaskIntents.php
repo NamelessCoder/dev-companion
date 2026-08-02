@@ -26,7 +26,7 @@ final class TaskIntents
     ];
 
     /**
-     * @return array<int, array{id: string, title: string, binding: ?string, match: array<int, string>, matchWeak: array<int, string>, condition: string, rulesQuery: string, checklist: array<int, string>, checks: array<int, string>, tools: array<int, string>}>
+     * @return array<int, array{id: string, title: string, scope: ?Scope, match: array<int, string>, matchWeak: array<int, string>, condition: string, rulesQuery: string, checklist: array<int, string>, checks: array<int, string>, tools: array<int, string>}>
      */
     public static function load(): array
     {
@@ -42,7 +42,7 @@ final class TaskIntents
             // than a kind of work. Patch submission is one: outside the core
             // there is no Gerrit to submit to, so the intent is not a weaker
             // match there — it is not one at all.
-            'binding' => isset($entry['binding']) ? (string) $entry['binding'] : null,
+            'scope' => isset($entry['scope']) ? Scope::from((string) $entry['scope']) : null,
             'match' => array_map('strval', $entry['match'] ?? []),
             'matchWeak' => array_map('strval', $entry['matchWeak'] ?? []),
             'condition' => (string) ($entry['condition'] ?? ''),
@@ -133,15 +133,15 @@ final class TaskIntents
      * @param array<int, array<string, mixed>> $intents
      * @return array<int, array<string, mixed>>
      */
-    public static function scoped(array $intents, bool $outsideCore, bool $coreWork): array
+    public static function scoped(array $intents, Scope $scope, bool $coreWork): array
     {
         $scoped = [];
         foreach ($intents as $intent) {
-            if ($intent['binding'] !== ArchitectureHints::BINDING_CORE || $coreWork) {
+            if ($intent['scope'] !== Scope::Core || $coreWork) {
                 $scoped[] = $intent;
                 continue;
             }
-            if ($outsideCore) {
+            if ($scope->isOutsideTheCore()) {
                 continue;
             }
             $intent['confidence'] = 'weak';

@@ -6,6 +6,7 @@ namespace Typo3CmsMcp\Result;
 
 use Typo3CmsMcp\Knowledge\ArchitectureHints;
 use Typo3CmsMcp\Knowledge\Catalog\References;
+use Typo3CmsMcp\Knowledge\Scope;
 use Typo3CmsMcp\Knowledge\Versions;
 
 /**
@@ -13,7 +14,7 @@ use Typo3CmsMcp\Knowledge\Versions;
  *
  * The architecture lookup returns them as the answer and the task guide carries
  * them inside a larger one, so the range beside a statement, the notice above a
- * core-binding hint and the worked example under it are written once.
+ * core-scoped hint and the worked example under it are written once.
  */
 final class Hints
 {
@@ -29,13 +30,13 @@ final class Hints
             'id' => (string) $hint['id'],
             'title' => (string) $hint['title'],
             'category' => (string) $hint['category'],
-            'binding' => $hint['binding'] ?? null,
+            'scope' => ($hint['scope'] ?? null)?->value,
             'hints' => array_map(static fn(array $statement): array => [
                 'text' => $statement['text'],
                 'since' => $statement['since'],
                 'until' => $statement['until'],
                 'versions' => Versions::label($statement['since'], $statement['until']),
-                'binding' => $statement['binding'] ?? null,
+                'scope' => ($statement['scope'] ?? null)?->value,
             ], $hint['hints']),
             'checks' => array_map('strval', $hint['checks']),
         ], array_values($hints));
@@ -52,13 +53,13 @@ final class Hints
      * caller's obligation — inside the core everything listed applies, so the
      * marker would be on every line and say nothing.
      *
-     * @param array{text: string, since: ?int, until: ?int, binding: ?string} $statement
+     * @param array{text: string, since: ?int, until: ?int, scope: ?Scope} $statement
      */
     public static function statement(array $statement, bool $outsideCore = false): string
     {
         $labels = array_filter([
             Versions::label($statement['since'], $statement['until']),
-            $outsideCore && ($statement['binding'] ?? null) === ArchitectureHints::BINDING_CORE
+            $outsideCore && ($statement['scope'] ?? null) === Scope::Core
                 ? 'binding for a core patch, a convention here'
                 : '',
         ]);
@@ -67,7 +68,7 @@ final class Hints
     }
 
     /**
-     * What a whole hint is binding for, where that is not this caller.
+     * What a whole hint obliges, where that is not this caller.
      *
      * The backend's design system is the case this exists for: every rule in it
      * is a condition of a core patch and none of it is a condition of anything
@@ -77,9 +78,9 @@ final class Hints
      *
      * @param array<string, mixed> $hint
      */
-    public static function bindingNotice(array $hint, bool $outsideCore): ?string
+    public static function scopeNotice(array $hint, bool $outsideCore): ?string
     {
-        if (!$outsideCore || ($hint['binding'] ?? null) !== ArchitectureHints::BINDING_CORE) {
+        if (!$outsideCore || ($hint['scope'] ?? null) !== Scope::Core) {
             return null;
         }
 
@@ -122,7 +123,7 @@ final class Hints
             $hintTexts = [];
             foreach ($section['hints'] as $hint) {
                 $block = ['## ' . $hint['title']];
-                $notice = self::bindingNotice($hint, $outsideCore);
+                $notice = self::scopeNotice($hint, $outsideCore);
                 if ($notice !== null) {
                     $block[] = $notice;
                 }
@@ -154,7 +155,7 @@ final class Hints
      * that matched on both sides carries them once, for the paths that can run
      * them — which is why the answer names those paths beside them.
      *
-     * @param array<int, array{audience: string, paths: array<int, string>, result: array<string, mixed>}> $found
+     * @param array<int, array{scope: Scope, paths: array<int, string>, result: array<string, mixed>}> $found
      * @return array{matchedHints: array<int, array<string, mixed>>, availableHints: array<int, array<string, mixed>>, domains: array<int, string>, withheldCategories: array<int, string>}
      */
     public static function merged(array $found): array

@@ -6,8 +6,8 @@ namespace Typo3CmsMcp\Sdk;
 
 use Mcp\Server\ClientGateway;
 use Mcp\Server\Handler\ResourceHandlerInterface;
+use Typo3CmsMcp\Knowledge\Coverage;
 use Typo3CmsMcp\Knowledge\Documents;
-use Typo3CmsMcp\Knowledge\Scope;
 
 /**
  * Serves the typo3://core resources from the knowledge base.
@@ -42,7 +42,7 @@ final class ResourceHandler implements ResourceHandlerInterface
         // The profile's scope, not the stored one: the index is read by the
         // same client that gets the tool list, and a topic it cannot reach is
         // no more useful here than in typo3_server_scope.
-        $scope = Scope::offered();
+        $scope = Coverage::offered();
 
         $index = [
             'purpose' => $scope['purpose'],

@@ -4,8 +4,8 @@ A local MCP server (plain PHP) that gives MCP-enabled clients a curated TYPO3
 **knowledge base**, for the three audiences that work with TYPO3: the core
 contributor, the extension author, and the site developer. It holds the
 conventions each subsystem is built on and how its mechanisms are used, the
-core's own contribution process — rules, the Gerrit workflow, script and
-`runTests.sh` feedback, commit message conventions — and a catalog of backend UI
+core's own contribution process — rules, the Gerrit workflow, script and core
+testing suite feedback, commit message conventions — and a catalog of backend UI
 components: context that is otherwise spread across project knowledge, core
 conventions, and the official documentation.
 
@@ -36,11 +36,12 @@ which deprecation lands in between, which check the change has to survive, and
 what the commit message says.
 
 **The conventions are the core's own**, and several of them have no counterpart
-in a project or an extension — the changelog, the Gerrit workflow, the
-`runTests.sh` suites. So the answers say which repository they are for, worked
+in a project or an extension — the changelog, the Gerrit workflow, the core
+testing suites. So the answers say which repository they are for, worked
 out from structure rather than from wording. What transfers is still answered;
-what only the core has is left out with the reason, and in a Composer project
-the tools that carry it are not offered at all.
+what only the core has is left out with the reason. The tools are not: every
+client is offered all of them, because whether a task is core work is a property
+of the task and the tool list cannot vary per task.
 
 **Those files are trained by being used.** An agent gets a real task in a real
 checkout and works under one rule: whatever it would otherwise search for, it
@@ -105,13 +106,13 @@ name already says what shape the answer has.
 
 - `typo3_server_scope`: orientation — what this server covers and at which
   depth, what it deliberately does not, and which tool to call when. Every
-  covered topic says what its answers are worth outside the core: `core-only`
-  for the contribution process and the scripts of that repository,
-  `transferable` for a convention that holds wherever TYPO3 is written,
-  `installation` for what is read from the installation itself. It also names
-  the active profile and the tools it leaves out, so a shorter list than this
-  one has a reason a client can read. The place to start when it is unclear
-  whether a question can be answered here at all.
+  covered topic says which kind of work its answers are for: `core` for the
+  contribution process and the scripts of that repository, `any` for a
+  convention that holds wherever TYPO3 is written. Its `source` says where the
+  answer is read from, which is the installation itself for four of them. It
+  also names any tool the caller excluded, so a shorter list than this one has a
+  reason a client can read. The place to start when it is unclear whether a
+  question can be answered here at all.
 - `typo3_changelog_lookup`: searches the TYPO3 changelog the installed core
   ships — one entry per breaking change, deprecation, feature and important
   feedback, by words, type and version. Answers what a release changed rather than

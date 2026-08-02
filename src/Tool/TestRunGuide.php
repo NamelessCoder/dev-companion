@@ -43,9 +43,8 @@ final class TestRunGuide extends ReadOnlyTool
         return Schema::object([
             'query' => Schema::nullableString(),
             'paths' => Schema::listOf(Schema::string(), 'The paths the answer was narrowed by, given ones and ones named in the query.'),
-            'audiences' => Schema::audiences('Which of those paths a suite can be run for at all. The ones outside the core are named in the answer and narrow nothing: runTests.sh is not in their repository.'),
+            'scopes' => Schema::scopes('Which kind of work each path is. Only core paths can run a suite: runTests.sh is not in a project or an extension repository, so the others are named in the answer and narrow nothing.'),
             'domains' => Schema::listOf(Schema::string(), 'Domains those paths touch. Empty means nothing was narrowed.'),
-            'outsideCore' => ['type' => 'boolean', 'description' => 'True when every path of the call is outside the core. No suite is then returned: runTests.sh is part of the core repository and cannot be run there. Where only some are, this is false and audiences says which.'],
             'suites' => Schema::listOf(Schema::testSuiteRecord()),
             'invocation' => Schema::object([
                 'notes' => Schema::listOf(Schema::string()),
@@ -58,7 +57,7 @@ final class TestRunGuide extends ReadOnlyTool
                     'command' => Schema::string(),
                 ], ['purpose', 'command'])),
             ], ['notes', 'options', 'examples']),
-        ], ['outsideCore', 'suites', 'invocation']);
+        ], ['scopes', 'suites', 'invocation']);
     }
 
     public static function answer(array $args): ToolResult
@@ -76,15 +75,15 @@ final class TestRunGuide extends ReadOnlyTool
         // copy-pasteable and none of them exists there. Which paths those are
         // is decided one by one — the other half of a call is not evidence
         // about this path.
-        $audiences = Scope::audiences($paths, (string) $query);
-        $outside = Scope::pathsOf($audiences, Scope::AUDIENCE_OUTSIDE);
-        $runnable = Scope::pathsOf($audiences, Scope::AUDIENCE_CORE, Scope::AUDIENCE_UNCERTAIN);
+        $scopes = Scope::ofEach($paths, (string) $query);
+        $outside = Scope::pathsOf($scopes, Scope::Project, Scope::Extension);
+        $runnable = Scope::pathsOf($scopes, Scope::Core, Scope::Uncertain);
         $domains = Domains::fromPaths($runnable);
 
         // Nothing here can run a suite: every path given is outside the core,
         // or none was and what the query says is.
         $nothingRunnable = $paths === []
-            ? Scope::audienceOf('', (string) $query) === Scope::AUDIENCE_OUTSIDE
+            ? Scope::of('', (string) $query)->isOutsideTheCore()
             : $runnable === [];
         if ($nothingRunnable) {
             return ToolResult::create(
@@ -96,9 +95,8 @@ final class TestRunGuide extends ReadOnlyTool
                 [
                     'query' => $query,
                     'paths' => $paths,
-                    'audiences' => $audiences,
+                    'scopes' => $scopes,
                     'domains' => $domains,
-                    'outsideCore' => true,
                     'suites' => [],
                     'invocation' => ['notes' => [], 'options' => [], 'examples' => []],
                 ],
@@ -121,8 +119,8 @@ final class TestRunGuide extends ReadOnlyTool
         // command below says so itself. A path that was named and could not be
         // placed is the case worth a sentence: the caller believes it said
         // which repository this is.
-        if (Scope::pathsOf($audiences, Scope::AUDIENCE_UNCERTAIN) !== []) {
-            $blocks[] = Scope::UNCERTAIN_AUDIENCE_NOTICE;
+        if (Scope::pathsOf($scopes, Scope::Uncertain) !== []) {
+            $blocks[] = Scope::UNCERTAIN_NOTICE;
         }
         if ($domains !== []) {
             $blocks[] = sprintf(
@@ -155,9 +153,8 @@ final class TestRunGuide extends ReadOnlyTool
         return ToolResult::create(implode("\n\n", $blocks), [
             'query' => $query,
             'paths' => $paths,
-            'audiences' => $audiences,
+            'scopes' => $scopes,
             'domains' => $domains,
-            'outsideCore' => false,
             'suites' => TestSuiteHints::records($hints),
             'invocation' => TestSuiteHints::invocation(),
         ]);

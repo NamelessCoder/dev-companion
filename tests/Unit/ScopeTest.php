@@ -11,10 +11,11 @@ use PHPUnit\Framework\TestCase;
 use Typo3CmsMcp\Installation\Instance;
 use Typo3CmsMcp\Installation\Typo3Cli;
 use Typo3CmsMcp\Knowledge\ArchitectureHints;
+use Typo3CmsMcp\Knowledge\Coverage;
 use Typo3CmsMcp\Knowledge\Documents;
 use Typo3CmsMcp\Knowledge\Scope;
 use Typo3CmsMcp\Paths;
-use Typo3CmsMcp\Server\Profile;
+use Typo3CmsMcp\Server\ExcludedTools;
 use Typo3CmsMcp\Tests\Support\TemporaryInstallation;
 use Typo3CmsMcp\Tool\Registry;
 
@@ -26,7 +27,7 @@ final class ScopeTest extends TestCase
     public function forgetTheInstance(): void
     {
         Instance::discoverFrom(null);
-        putenv(Profile::VARIABLE);
+        putenv(ExcludedTools::VARIABLE);
     }
 
     #[Test]
@@ -37,10 +38,10 @@ final class ScopeTest extends TestCase
         Instance::discoverFrom($this->composerProject());
 
         $extension = Registry::call('typo3_task_guide', ['task' => 'Add a content element', 'area' => 'my_sitepackage']);
-        self::assertTrue($extension->data['outsideCore']);
+        self::assertTrue(Scope::from($extension->data['scope'])->isOutsideTheCore());
 
         $systemExtension = Registry::call('typo3_task_guide', ['task' => 'Add a content element', 'area' => 'core']);
-        self::assertFalse($systemExtension->data['outsideCore']);
+        self::assertFalse(Scope::from($systemExtension->data['scope'])->isOutsideTheCore());
     }
 
     #[Test]
@@ -48,8 +49,8 @@ final class ScopeTest extends TestCase
     {
         Instance::discoverFrom($this->composerProject());
 
-        self::assertSame(Scope::AUDIENCE_OUTSIDE, Scope::audienceOf('', 'Add a content element with a backend preview'));
-        self::assertSame(Scope::AUDIENCE_CORE, Scope::audienceOf('typo3/sysext/core/Classes/Utility/GeneralUtility.php'));
+        self::assertTrue(Scope::of('', 'Add a content element with a backend preview')->isOutsideTheCore());
+        self::assertSame(Scope::Core, Scope::of('typo3/sysext/core/Classes/Utility/GeneralUtility.php'));
     }
 
     #[Test]
@@ -57,7 +58,7 @@ final class ScopeTest extends TestCase
     {
         Instance::discoverFrom($this->coreCheckout());
 
-        self::assertSame(Scope::AUDIENCE_CORE, Scope::audienceOf('', 'Add a content element with a backend preview'));
+        self::assertSame(Scope::Core, Scope::of('', 'Add a content element with a backend preview'));
     }
 
     #[Test]
@@ -69,7 +70,7 @@ final class ScopeTest extends TestCase
         // half of them were in their own repository.
         Instance::discoverFrom(null);
 
-        self::assertSame(Scope::AUDIENCE_UNCERTAIN, Scope::audienceOf('', 'Improve the query performance'));
+        self::assertSame(Scope::Uncertain, Scope::of('', 'Improve the query performance'));
         self::assertStringContainsString(
             'Nothing here says which repository',
             Registry::call('typo3_task_guide', ['task' => 'Improve the query performance'])->text,
@@ -83,7 +84,7 @@ final class ScopeTest extends TestCase
         // substring search exactly like claiming to be the core. What decides
         // is the marker that describes the work, not the one that accompanies
         // it — so the order of the signals is the whole answer here.
-        self::assertSame(Scope::AUDIENCE_OUTSIDE, Scope::audienceOf(
+        self::assertSame(Scope::Extension, Scope::of(
             '',
             'Raise the compatibility of the third-party extension bootstrap_package '
             . '(not TYPO3 core, a composer package under vendor bk2k) to TYPO3 v14'
@@ -97,10 +98,10 @@ final class ScopeTest extends TestCase
         // is below typo3/sysext/<key>/, and what is not is below Build/Scripts/
         // or Build/Sources/ — a bare Build/ is any repository that compiles
         // something, so it decides nothing.
-        self::assertSame(Scope::AUDIENCE_OUTSIDE, Scope::audienceOf('Classes/DataProcessing/CardGroupProcessor.php'));
-        self::assertSame(Scope::AUDIENCE_OUTSIDE, Scope::audienceOf('Configuration/TCA/Overrides/200_content_element.php'));
-        self::assertSame(Scope::AUDIENCE_CORE, Scope::audienceOf('typo3/sysext/core/Classes/Utility/GeneralUtility.php'));
-        self::assertSame(Scope::AUDIENCE_CORE, Scope::audienceOf('Build/Sources/Sass/component/_card.scss'));
+        self::assertSame(Scope::Extension, Scope::of('Classes/DataProcessing/CardGroupProcessor.php'));
+        self::assertSame(Scope::Extension, Scope::of('Configuration/TCA/Overrides/200_content_element.php'));
+        self::assertSame(Scope::Core, Scope::of('typo3/sysext/core/Classes/Utility/GeneralUtility.php'));
+        self::assertSame(Scope::Core, Scope::of('Build/Sources/Sass/component/_card.scss'));
     }
 
     #[Test]
@@ -112,13 +113,13 @@ final class ScopeTest extends TestCase
         // checkout's kind is read from.
         Instance::discoverFrom($this->composerProject());
 
-        self::assertSame(Scope::AUDIENCE_OUTSIDE, Scope::audienceOf('Build/Sources/Sass/theme.scss'));
+        self::assertTrue(Scope::of('Build/Sources/Sass/theme.scss')->isOutsideTheCore());
     }
 
     #[Test]
     public function theScopeNamesWhatIsCoveredAndWhatIsNot(): void
     {
-        $scope = Scope::read();
+        $scope = Coverage::read();
 
         self::assertNotSame('', $scope['purpose']);
         self::assertNotSame([], $scope['covers']);
@@ -130,7 +131,7 @@ final class ScopeTest extends TestCase
     #[Test]
     public function theInstructionsStateTheCheckoutBoundary(): void
     {
-        $instructions = Scope::instructions();
+        $instructions = Coverage::instructions();
 
         self::assertNotSame('', $instructions);
         self::assertStringContainsString('checkout', $instructions);
@@ -142,17 +143,16 @@ final class ScopeTest extends TestCase
         // The sentence below this one is why the length is held at all: both
         // release runs of 2026-07-31 were handed instructions cut from 3662 to
         // 2048 characters, and the half that fell off ended with "in English".
-        // Every profile is measured, because the one that prefixes what it is
-        // not being offered is the longest.
-        foreach ([Profile::ALL, Profile::PROJECT] as $profile) {
-            putenv(Profile::VARIABLE . '=' . $profile);
+        // The prefix naming what was excluded is measured too, because it grows
+        // with the list and a caller may exclude most of the server.
+        self::assertLessThanOrEqual(Coverage::INSTRUCTIONS_BUDGET, mb_strlen(Coverage::instructions()));
 
-            self::assertLessThanOrEqual(
-                Scope::INSTRUCTIONS_BUDGET,
-                mb_strlen(Scope::instructions()),
-                sprintf('instructions of the "%s" profile', $profile),
-            );
-        }
+        putenv(ExcludedTools::VARIABLE . '=' . implode(',', array_column(Registry::definitions(), 'name')));
+        self::assertLessThanOrEqual(
+            Coverage::INSTRUCTIONS_BUDGET,
+            mb_strlen(Coverage::instructions()),
+            'instructions where the caller excluded everything it could',
+        );
     }
 
     #[Test]
@@ -165,29 +165,29 @@ final class ScopeTest extends TestCase
         // load-bearing rather than decorative — and a client is free not to
         // surface the initialize instructions, so the orientation tool says it
         // too.
-        self::assertStringContainsString('in English', Scope::instructions());
+        self::assertStringContainsString('in English', Coverage::instructions());
         self::assertStringContainsString('in English', Registry::call('typo3_server_scope', [])->text);
     }
 
     #[Test]
     public function theScopeInstructionsOrientTheClientBeforeItsFirstCall(): void
     {
-        self::assertStringContainsString('Before writing backend markup', Scope::instructions());
-        self::assertStringContainsString('Before choosing or emitting a backend icon', Scope::instructions());
-        self::assertStringContainsString('Before adding or rewording a label', Scope::instructions());
+        self::assertStringContainsString('Before writing backend markup', Coverage::instructions());
+        self::assertStringContainsString('Before choosing or emitting a backend icon', Coverage::instructions());
+        self::assertStringContainsString('Before adding or rewording a label', Coverage::instructions());
     }
 
     #[Test]
     public function workOnAProjectExtensionIsRecognizedAsOutsideTheCore(): void
     {
-        self::assertSame(Scope::AUDIENCE_OUTSIDE, Scope::audienceOf('', 'Create a new site set in a project extension'));
-        self::assertSame(Scope::AUDIENCE_OUTSIDE, Scope::audienceOf('packages/my_sitepackage/Configuration/Sets/Main/config.yaml'));
+        self::assertSame(Scope::Extension, Scope::of('', 'Create a new site set in a project extension'));
+        self::assertSame(Scope::Extension, Scope::of('packages/my_sitepackage/Configuration/Sets/Main/config.yaml'));
 
-        self::assertSame(Scope::AUDIENCE_CORE, Scope::audienceOf('', 'Add a reusable site set to TYPO3 core'));
-        self::assertSame(Scope::AUDIENCE_CORE, Scope::audienceOf('typo3/sysext/frontend/Configuration/Sets/Fluid/config.yaml'));
+        self::assertSame(Scope::Core, Scope::of('', 'Add a reusable site set to TYPO3 core'));
+        self::assertSame(Scope::Core, Scope::of('typo3/sysext/frontend/Configuration/Sets/Fluid/config.yaml'));
         // A core path wins: a task naming both is core work that mentions the
         // other side, not the other way round.
-        self::assertSame(Scope::AUDIENCE_CORE, Scope::audienceOf(
+        self::assertSame(Scope::Core, Scope::of(
             'typo3/sysext/core/Classes/Foo.php',
             'so that a project extension can override it'
         ));
@@ -204,9 +204,9 @@ final class ScopeTest extends TestCase
         $core = 'typo3/sysext/core/Classes/Database/Query/QueryBuilder.php';
 
         foreach ([[$extension, $core], [$core, $extension]] as $paths) {
-            $decided = array_column(Scope::audiences($paths), 'audience', 'path');
-            self::assertSame(Scope::AUDIENCE_OUTSIDE, $decided[$extension], 'the core path answered for the other');
-            self::assertSame(Scope::AUDIENCE_CORE, $decided[$core], 'the extension path answered for the other');
+            $decided = array_column(Scope::ofEach($paths), 'scope', 'path');
+            self::assertSame(Scope::Extension, $decided[$extension], 'the core path answered for the other');
+            self::assertSame(Scope::Core, $decided[$core], 'the extension path answered for the other');
         }
 
         // The suites are the core's own, so the core path keeps them and the
@@ -215,7 +215,6 @@ final class ScopeTest extends TestCase
             'query' => 'which tests do I run for this change',
             'paths' => [$extension, $core],
         ]);
-        self::assertFalse($suites->data['outsideCore']);
         self::assertNotSame([], $suites->data['suites']);
         self::assertStringContainsString($extension, $suites->text);
         self::assertStringNotContainsString($core, implode("\n", array_column($suites->data['suites'], 'command')));
@@ -226,10 +225,9 @@ final class ScopeTest extends TestCase
             'task' => 'fix the query that reads the events',
             'paths' => [$extension, $core],
         ]);
-        self::assertFalse($hints->data['outsideCore']);
-        $decided = array_column($hints->data['audiences'], 'audience', 'path');
-        self::assertSame(Scope::AUDIENCE_OUTSIDE, $decided[$extension]);
-        self::assertSame(Scope::AUDIENCE_CORE, $decided[$core]);
+        $decided = array_column($hints->data['scopes'], 'scope', 'path');
+        self::assertSame(Scope::Extension, $decided[$extension]);
+        self::assertSame(Scope::Core, $decided[$core]);
         self::assertStringContainsString('# For ' . $extension, $hints->text);
         self::assertStringContainsString('# For ' . $core, $hints->text);
     }
@@ -242,11 +240,11 @@ final class ScopeTest extends TestCase
      * marker or it does not. There is no third answer to be had from it, which
      * is the first of the two things the table below measures.
      */
-    private static function theSysextSignalAlone(string $path): string
+    private static function theSysextSignalAlone(string $path): Scope
     {
         return str_contains(mb_strtolower(str_replace('\\', '/', $path)), 'typo3/sysext/')
-            ? Scope::AUDIENCE_CORE
-            : Scope::AUDIENCE_OUTSIDE;
+            ? Scope::Core
+            : Scope::Extension;
     }
 
     /**
@@ -365,8 +363,8 @@ final class ScopeTest extends TestCase
     ): void {
         Instance::discoverFrom($this->composerProject());
 
-        self::assertSame(Scope::AUDIENCE_OUTSIDE, Scope::audienceOf($path, $text, $area));
-        self::assertSame(Scope::AUDIENCE_OUTSIDE, self::theSysextSignalAlone($path));
+        self::assertTrue(Scope::of($path, $text, $area)->isOutsideTheCore());
+        self::assertSame(Scope::Extension, self::theSysextSignalAlone($path));
     }
 
     /**
@@ -426,9 +424,9 @@ final class ScopeTest extends TestCase
     ): void {
         Instance::discoverFrom($this->coreCheckout());
 
-        self::assertSame(Scope::AUDIENCE_CORE, Scope::audienceOf($path, $text, $area));
+        self::assertSame(Scope::Core, Scope::of($path, $text, $area));
         self::assertSame(
-            Scope::AUDIENCE_OUTSIDE,
+            Scope::Extension,
             self::theSysextSignalAlone($path),
             'the single signal has caught up with the combination here, and D-AUD-1 is worth re-measuring',
         );
@@ -441,7 +439,7 @@ final class ScopeTest extends TestCase
             'task' => 'Create a new TYPO3 site set in a project extension with config.yaml and TypoScript',
         ]);
 
-        self::assertTrue($result->data['outsideCore']);
+        self::assertTrue(Scope::from($result->data['scope'])->isOutsideTheCore());
         self::assertStringStartsWith('This reads as work outside the TYPO3 core', $result->text);
     }
 
@@ -486,7 +484,7 @@ final class ScopeTest extends TestCase
             'area' => 'packages/my_sitepackage/Classes/Controller/EventController.php',
         ]);
 
-        self::assertTrue($result->data['outsideCore']);
+        self::assertTrue(Scope::from($result->data['scope'])->isOutsideTheCore());
         self::assertNotContains('submission', array_column($result->data['intents'], 'id'));
         self::assertStringNotContainsString('Change-Id', implode("\n", $result->data['checklist']));
     }
@@ -498,7 +496,7 @@ final class ScopeTest extends TestCase
         // upgrading an installation, while both had hints of their own. A
         // caller cannot tell a boundary from a gap by the size of an answer,
         // and the two ask for opposite reactions.
-        $excluded = mb_strtolower(implode("\n", array_column(Scope::read()['doesNotCover'], 'topic')));
+        $excluded = mb_strtolower(implode("\n", array_column(Coverage::read()['doesNotCover'], 'topic')));
 
         self::assertNotNull(ArchitectureHints::byId('sitepackage-layout'));
         self::assertStringNotContainsString('extension development', $excluded);
@@ -652,7 +650,7 @@ final class ScopeTest extends TestCase
      */
     private static function surfacesThatDescribeTheServer(): array
     {
-        $scope = Scope::read();
+        $scope = Coverage::read();
         $surfaces = ['the purpose in server-scope.json' => $scope['purpose']];
 
         foreach ($scope['covers'] as $entry) {
@@ -665,14 +663,13 @@ final class ScopeTest extends TestCase
             $surfaces['the routing entry "' . $entry['when'] . '"'] = $entry['when'] . ' ' . $entry['call'];
         }
 
-        // Both profiles, because the prefix that says which half a client is
-        // being offered is the sentence closest to the claim of all of them.
-        // The variable is forgotten again by forgetTheInstance().
-        foreach ([Profile::ALL, Profile::PROJECT] as $profile) {
-            putenv(Profile::VARIABLE . '=' . $profile);
-            $surfaces['the instructions of the "' . $profile . '" profile'] = Scope::instructions();
-        }
-        putenv(Profile::VARIABLE);
+        // With and without an exclusion, because the prefix naming what was
+        // left out is the sentence closest to the claim of all of them. The
+        // variable is forgotten again by forgetTheInstance().
+        $surfaces['the instructions'] = Coverage::instructions();
+        putenv(ExcludedTools::VARIABLE . '=typo3_rule_lookup,typo3_script_lookup,typo3_test_run_guide');
+        $surfaces['the instructions where the core surface was excluded'] = Coverage::instructions();
+        putenv(ExcludedTools::VARIABLE);
 
         foreach (Registry::definitions() as $definition) {
             $surfaces['the description of ' . $definition['name']] = $definition['description'];
@@ -711,7 +708,7 @@ final class ScopeTest extends TestCase
             'task' => 'Add a search to the product plugin',
             'area' => 'packages/my_sitepackage/Classes/Controller/ProductController.php',
         ]);
-        self::assertTrue($project->data['outsideCore']);
+        self::assertTrue(Scope::from($project->data['scope'])->isOutsideTheCore());
         self::assertStringContainsString('workflow="project"', implode("\n", $project->data['checklist']));
     }
 
@@ -747,7 +744,7 @@ final class ScopeTest extends TestCase
             'changeType' => 'feature',
         ]);
 
-        self::assertTrue($result->data['outsideCore']);
+        self::assertTrue(Scope::from($result->data['scope'])->isOutsideTheCore());
         self::assertSame([], $result->data['checks']);
         self::assertSame([], $result->data['testSuites']);
         self::assertSame([], $result->data['conditionalChecks']);
@@ -776,7 +773,10 @@ final class ScopeTest extends TestCase
             'paths' => ['packages/my_sitepackage/Classes/Command/SeedCommand.php'],
         ]);
 
-        self::assertTrue($result->data['outsideCore']);
+        self::assertSame(
+            [Scope::Extension],
+            array_values(array_unique(array_column($result->data['scopes'], 'scope'))),
+        );
         self::assertSame([], $result->data['suites']);
         // The script is named in the sentence that explains why nothing is
         // returned; what must not appear is a command shaped to be run.
@@ -808,7 +808,7 @@ final class ScopeTest extends TestCase
     {
         $result = Registry::call('typo3_rule_lookup', ['query' => 'commit message sitepackage']);
 
-        self::assertTrue($result->data['outsideCore']);
+        self::assertTrue(Scope::from($result->data['scope'])->isOutsideTheCore());
         self::assertSame(
             ['typo3-commit-messages'],
             array_values(array_unique(array_column($result->data['matches'], 'documentId'))),
@@ -844,14 +844,14 @@ final class ScopeTest extends TestCase
     {
         $inside = Registry::call('typo3_rule_lookup', ['query' => 'review readiness for a typo3/sysext/core patch']);
 
-        self::assertFalse($inside->data['outsideCore']);
+        self::assertFalse(Scope::from($inside->data['scope'])->isOutsideTheCore());
         self::assertSame([], $inside->data['withheldDocuments']);
         self::assertContains('typo3-core-rules', array_column($inside->data['matches'], 'documentId'));
     }
 
     /**
      * Which of the two a document is comes from the scope rather than from a
-     * second list, so a document the scope does not announce has no binding to
+     * second list, so a document the coverage does not announce has no scope to
      * read — and is served as a resource and searched by the rule lookup all
      * the same. `typo3-contribution-sources` was exactly that.
      */
@@ -859,12 +859,12 @@ final class ScopeTest extends TestCase
     public function everyKnowledgeDocumentIsAnnouncedByTheScope(): void
     {
         $named = [];
-        foreach (Scope::read()['covers'] as $entry) {
+        foreach (Coverage::read()['covers'] as $entry) {
             if (preg_match_all('#typo3://core/([a-z0-9-]+)#', $entry['source'], $matches) === 0) {
                 continue;
             }
             foreach ($matches[1] as $id) {
-                $named[$id] = $entry['provenance'];
+                $named[$id] = $entry['scope'];
             }
         }
 
@@ -874,7 +874,7 @@ final class ScopeTest extends TestCase
                 $named,
                 $document['id'] . ' is served and searched, and no covered topic names it',
             );
-            self::assertContains($named[$document['id']], ['core-only', 'transferable']);
+            self::assertContains($named[$document['id']], [Scope::Core, Scope::Any]);
         }
     }
 
@@ -885,7 +885,7 @@ final class ScopeTest extends TestCase
             'task' => 'run the unit tests of my site package extension',
         ]);
 
-        self::assertTrue($result->data['outsideCore']);
+        self::assertTrue(Scope::from($result->data['scope'])->isOutsideTheCore());
         self::assertSame([], $result->data['matches']);
         self::assertStringNotContainsString('CI=true', $result->text);
     }
@@ -896,7 +896,7 @@ final class ScopeTest extends TestCase
         // Nothing in this query says either way, so the commands are offered
         // under their condition rather than stated as the answer.
         $unstated = Registry::call('typo3_script_lookup', ['task' => 'php-cs-fixer and phpstan']);
-        self::assertFalse($unstated->data['outsideCore']);
+        self::assertFalse(Scope::from($unstated->data['scope'])->isOutsideTheCore());
         self::assertNotSame([], $unstated->data['matches']);
         self::assertStringContainsString('run in a TYPO3 core checkout', $unstated->text);
 
@@ -913,7 +913,10 @@ final class ScopeTest extends TestCase
             'paths' => ['packages/my_sitepackage/Classes/Command/SeedCommand.php'],
         ]);
 
-        self::assertTrue($result->data['outsideCore']);
+        self::assertSame(
+            [Scope::Extension],
+            array_values(array_unique(array_column($result->data['scopes'], 'scope'))),
+        );
         self::assertNotSame([], $result->data['hints']);
         foreach ($result->data['hints'] as $hint) {
             self::assertSame([], $hint['checks'], $hint['id'] . ' handed over a core check');
@@ -1042,12 +1045,8 @@ final class ScopeTest extends TestCase
         // half is a property of TYPO3 installations, the conventions transfer,
         // and only the contribution process is core-only. A caller that has to
         // work that out per tool trusts either all of it or none of it.
-        foreach (Scope::read()['covers'] as $entry) {
-            self::assertContains(
-                $entry['provenance'],
-                ['core-only', 'transferable', 'installation'],
-                $entry['topic'],
-            );
+        foreach (Coverage::read()['covers'] as $entry) {
+            self::assertContains($entry['scope'], Scope::ofKnowledge(), $entry['topic']);
         }
     }
 
@@ -1055,7 +1054,7 @@ final class ScopeTest extends TestCase
     public function everyToolNamedInTheScopeExists(): void
     {
         $known = $this->toolNames();
-        $scope = Scope::read();
+        $scope = Coverage::read();
 
         $mentioned = [];
         foreach ($scope['covers'] as $entry) {
@@ -1075,7 +1074,7 @@ final class ScopeTest extends TestCase
     public function everyToolIsReachableThroughTheScope(): void
     {
         $mentioned = [];
-        foreach (Scope::read()['covers'] as $entry) {
+        foreach (Coverage::read()['covers'] as $entry) {
             $mentioned = array_merge($mentioned, $entry['tools']);
         }
 

@@ -46,19 +46,18 @@ final class ArchitectureLookup extends ReadOnlyTool
         return Schema::object([
             'task' => Schema::nullableString(),
             'paths' => Schema::listOf(Schema::string()),
-            'audiences' => Schema::audiences('Who the answer about each path is for. Paths of different audience are matched separately, so a hint that came back for one of them is about that path — and a hint for a path outside the core carries no checks.'),
+            'scopes' => Schema::scopes('Which kind of work each path is. Paths of different scope are matched separately, so a hint that came back for one of them is about that path — and a hint for a path outside the core carries no checks.'),
             'targetVersion' => ['type' => ['integer', 'null'], 'description' => 'The TYPO3 major this repository runs — stated by the caller, or read from the installation. Null means nothing was filtered and every statement carries its own range. Where the repository serves several majors, targetVersions is what the answer holds for.'],
             'targetVersions' => Schema::listOf(['type' => 'integer'], 'Every TYPO3 major the answer holds for. One entry is the ordinary case. Several mean this repository declares typo3/cms-core for more than one of them, so a statement was kept when it holds on any — and where two statements about the same subject differ, the difference is the constraint the code lives under rather than drift. Empty when nothing was filtered by version.'),
             'domains' => Schema::listOf(Schema::string(), 'Hints outside these domains are not returned.'),
             'withheldCategories' => Schema::listOf(Schema::string(), 'Categories that matched the domains but were left out because the task names the frontend. "Backend CSS" and "Backend TypeScript" describe the TYPO3 backend interface and are wrong advice for what a website renders; see docs.typo3.org for frontend theming.'),
-            'outsideCore' => ['type' => 'boolean', 'description' => 'True when the whole call is outside the core. The hints still hold; their checks are then empty, because runTests.sh is part of the core repository. Where only some paths are, this is false and audiences says which — those hints are the ones without checks.'],
             'hints' => Schema::listOf(Schema::architectureHintRecord()),
             'availableHints' => Schema::listOf(Schema::object([
                 'id' => Schema::string('Ask for this hint outright by passing it as id.'),
                 'title' => Schema::string(),
                 'category' => Schema::string(),
             ], ['id', 'title', 'category']), 'The hints that exist in the searched domains, returned when none matched. Empty on a hit.'),
-        ], ['paths', 'domains', 'withheldCategories', 'outsideCore', 'hints', 'availableHints']);
+        ], ['paths', 'domains', 'withheldCategories', 'scopes', 'hints', 'availableHints']);
     }
 
     public static function answer(array $args): ToolResult
@@ -75,20 +74,20 @@ final class ArchitectureLookup extends ReadOnlyTool
         // one outside the core — but the checks attached to them are all
         // runTests.sh invocations, and that script lives in the core
         // repository. So the hints stay and the commands go. Paths of different
-        // audience are asked separately: matched together, an extension path
+        // scope are asked separately: matched together, an extension path
         // gets the core path's hints and its checks with them.
-        $audiences = Scope::audiences($paths, $task ?? '');
-        $groups = Scope::groups($paths, $audiences, $task ?? '');
-        $outside = Scope::pathsOf($audiences, Scope::AUDIENCE_OUTSIDE);
-        $outsideCore = count($groups) === 1 && $groups[0]['audience'] === Scope::AUDIENCE_OUTSIDE;
+        $scopes = Scope::ofEach($paths, $task ?? '');
+        $groups = Scope::groups($paths, $scopes, $task ?? '');
+        $outside = Scope::pathsOf($scopes, Scope::Project, Scope::Extension);
+        $outsideCore = count($groups) === 1 && $groups[0]['scope']->isOutsideTheCore();
 
         $found = [];
         foreach ($groups as $group) {
             $matched = ArchitectureHints::find($group['paths'], $task ?? '', $limit, $id, $targets);
-            if ($group['audience'] === Scope::AUDIENCE_OUTSIDE) {
+            if ($group['scope']->isOutsideTheCore()) {
                 $matched['matchedHints'] = ArchitectureHints::withoutChecks($matched['matchedHints']);
             }
-            $found[] = ['audience' => $group['audience'], 'paths' => $group['paths'], 'result' => $matched];
+            $found[] = ['scope' => $group['scope'], 'paths' => $group['paths'], 'result' => $matched];
         }
         $result = Hints::merged($found);
 
@@ -104,8 +103,8 @@ final class ArchitectureLookup extends ReadOnlyTool
                 . 'because Build/Scripts/runTests.sh is part of the core repository.';
             $lines[] = '';
         }
-        if (Scope::pathsOf($audiences, Scope::AUDIENCE_UNCERTAIN) !== []) {
-            $lines[] = Scope::UNCERTAIN_AUDIENCE_NOTICE;
+        if (Scope::pathsOf($scopes, Scope::Uncertain) !== []) {
+            $lines[] = Scope::UNCERTAIN_NOTICE;
             $lines[] = '';
         }
         if ($result['withheldCategories'] !== []) {
@@ -128,8 +127,8 @@ final class ArchitectureLookup extends ReadOnlyTool
         if ($paths !== []) {
             $lines[] = "Paths:\n" . implode("\n", array_map(
                 static fn(array $entry): string => '- ' . $entry['path']
-                    . ($entry['audience'] === Scope::AUDIENCE_CORE ? '' : ' (' . $entry['audience'] . ')'),
-                $audiences,
+                    . ($entry['scope'] === Scope::Core ? '' : ' (' . $entry['scope']->value . ')'),
+                $scopes,
             ));
         }
         $lines[] = VersionScope::line($targets);
@@ -144,7 +143,7 @@ final class ArchitectureLookup extends ReadOnlyTool
         $lines[] = 'Architecture hints:';
 
         if ($result['matchedHints'] !== []) {
-            // One block per audience, and the heading only where there is more
+            // One block per scope, and the heading only where there is more
             // than one of them: the caller asked about two repositories, and
             // which half of the answer is about which path is the answer.
             $sectionTexts = [];
@@ -156,12 +155,12 @@ final class ArchitectureLookup extends ReadOnlyTool
                     $sectionTexts[] = sprintf(
                         '# For %s%s',
                         implode(' and ', $group['paths']),
-                        $group['audience'] === Scope::AUDIENCE_CORE ? '' : ' — ' . $group['audience'],
+                        $group['scope'] === Scope::Core ? '' : ' — ' . $group['scope']->value,
                     );
                 }
                 $sectionTexts[] = Hints::sections(
                     $group['result']['matchedHints'],
-                    $group['audience'] === Scope::AUDIENCE_OUTSIDE,
+                    $group['scope']->isOutsideTheCore(),
                     $target,
                 );
             }
@@ -192,12 +191,11 @@ final class ArchitectureLookup extends ReadOnlyTool
         return ToolResult::create(implode("\n", $lines), [
             'task' => $task === '' ? null : $task,
             'paths' => array_values($paths),
-            'audiences' => $audiences,
+            'scopes' => $scopes,
             'targetVersion' => $target,
             'targetVersions' => $targets,
             'domains' => $result['domains'],
             'withheldCategories' => $result['withheldCategories'],
-            'outsideCore' => $outsideCore,
             'hints' => Hints::records($result['matchedHints']),
             'availableHints' => $result['availableHints'],
         ]);

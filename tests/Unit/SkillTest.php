@@ -626,15 +626,18 @@ final class SkillTest extends TestCase
     }
 
     #[Test]
-    public function coreTestGuidanceIsGuardedByTheServerProfile(): void
+    public function coreTestGuidanceIsGuardedByTheWorkAndNotByTheToolList(): void
     {
         $skill = (string) file_get_contents(
             Paths::root() . '/skills/typo3-backend-module-development/SKILL.md',
         );
 
-        self::assertStringContainsString('all/core contribution profile', $skill);
-        self::assertStringContainsString('It is unavailable in the', $skill);
-        self::assertStringContainsString('project profile', $skill);
+        // The tool is offered everywhere, so being able to call it says nothing
+        // about being able to follow the answer: runTests.sh exists in the core
+        // repository alone, and that is what the skill has to gate on.
+        self::assertStringContainsString('only for an actual core patch', $skill);
+        self::assertStringContainsString('Never present it as a project', $skill);
+        self::assertStringNotContainsString('profile', $skill);
         self::assertLessThan(
             strpos($skill, 'typo3_test_run_guide'),
             strpos($skill, 'typo3_server_scope'),

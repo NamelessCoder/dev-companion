@@ -13,7 +13,7 @@ site. Signals are combined, and where they disagree the answer says the
 audience is uncertain instead of picking one silently.
 
 The unit of that decision is the path, because a call is not one piece of work:
-`Scope::audienceOf()` answers `core`, `outside-core` or `uncertain` for one
+`Scope::of()` answers `core`, `project`, `extension` or `uncertain` for one
 path, and the tools that take a `paths` array answer per path. `uncertain` is
 the case above — nothing in the call placed the work, and an answer that picks
 the core there is right half the time and says so never.

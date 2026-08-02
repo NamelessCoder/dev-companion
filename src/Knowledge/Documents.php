@@ -48,7 +48,6 @@ final class Documents
     private const MAX_SECTION_LENGTH = 2400;
 
     /** What server-scope.json calls a topic whose answers are the core's own. */
-    private const CORE_ONLY = 'core-only';
 
     /** @return array<int, array{id: string, title: string, path: string}> */
     public static function documents(): array
@@ -73,19 +72,19 @@ final class Documents
      * `knowledge/server-scope.json` already says what every topic's answers are
      * worth outside the core, and every covered topic names the file behind it.
      * A second list here would be the same statement in a place that can
-     * disagree with the first, so the binding is read off the scope: a document
+     * disagree with the first, so the scope is read off the coverage: a document
      * is core-only when the topic naming it is, and `ScopeTest` holds every
      * document to being named by one.
      */
     public static function isCoreOnly(string $id): bool
     {
-        foreach (Scope::read()['covers'] as $entry) {
+        foreach (Coverage::read()['covers'] as $entry) {
             if (str_contains($entry['source'], 'typo3://core/' . $id)) {
-                return $entry['provenance'] === self::CORE_ONLY;
+                return $entry['scope'] === Scope::Core;
             }
         }
 
-        // A document the scope does not announce. Held against by ScopeTest, so
+        // A document the coverage does not announce. Held against by ScopeTest, so
         // this is what an unnoticed one gets in the meantime: withheld outside
         // the core, because the corpus is the contribution material by default
         // and handing it over is the mistake worth avoiding.

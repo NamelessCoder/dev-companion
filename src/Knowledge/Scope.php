@@ -4,42 +4,77 @@ declare(strict_types=1);
 
 namespace Typo3CmsMcp\Knowledge;
 
-use Typo3CmsMcp\Feedback\Channel;
 use Typo3CmsMcp\Installation\Instance;
-use Typo3CmsMcp\Paths;
-use Typo3CmsMcp\Server\Profile;
 
 /**
- * The server's own description of what it knows and which tool answers what.
+ * Which of the three kinds of work a path, or a statement about one, belongs to.
  *
- * Without it an agent has to discover the shape of the server by calling tools
- * until one answers, and four prose lookups over one corpus look
- * interchangeable from the outside. The data lives in
- * knowledge/server-scope.json, next to the knowledge it describes, so a new
- * document or catalog is announced where it is added.
+ * One vocabulary for the whole server. It used to be four that nobody could
+ * line up: `binding` on the hints, `provenance` on the covered topics,
+ * `audience` on the answers, and an `outsideCore` boolean beside it — the first
+ * three overlapping on `core` and disagreeing everywhere else, the fourth
+ * saying only what the work is not.
+ *
+ * `Any` and `Uncertain` are the two that belong to one side each. A statement
+ * can hold wherever TYPO3 is written; a path cannot, because a path is one
+ * piece of work. A path can be one nothing placed, which R-AUD-2 asks to be
+ * said rather than decided silently; a statement nobody could place is a
+ * statement nobody should have written.
  */
-final class Scope
+enum Scope: string
 {
+    /** The TYPO3 core repository: its contribution process, scripts and sysext code. */
+    case Core = 'core';
+
+    /** The site repository around an installation, outside any package in it. */
+    case Project = 'project';
+
+    /** A package: a sitepackage, a project's own extension, or a third-party one. */
+    case Extension = 'extension';
+
+    /** Holds wherever TYPO3 is written. Statements only. */
+    case Any = 'any';
+
+    /** Nothing in the call placed the work. Paths only. */
+    case Uncertain = 'uncertain';
+
     /**
-     * Paths and phrases that place a task outside core contribution.
+     * Paths and phrases that place a task in an extension.
      *
      * typo3conf/ext and vendor are where an installation's extensions live,
-     * packages and extensions are where a project keeps its own.
+     * packages and extensions are where a project keeps its own. Every phrase
+     * here names an extension: a sitepackage is one, and so is the package a
+     * project wrote for itself.
      *
      * @var array<int, string>
      */
-    private const OUTSIDE_CORE = [
+    private const EXTENSION_WORK = [
         'packages/', 'typo3conf/ext/', 'vendor/', 'extensions/',
         'project extension', 'site package', 'sitepackage', 'custom extension',
         'third-party extension', 'own extension',
     ];
 
     /**
+     * Paths that belong to the site repository itself rather than to any
+     * package inside it.
+     *
+     * What a project has and an extension does not: the site configuration, the
+     * document root, the writable directories, the container setup. A path here
+     * is project work even where the session has no installation to read.
+     *
+     * @var array<int, string>
+     */
+    private const PROJECT_WORK = [
+        'config/sites/', 'config/system/', 'config/services.yaml',
+        'public/', 'var/', '.ddev/',
+    ];
+
+    /**
      * Paths and phrases that place a task inside core contribution.
      *
      * Positive evidence, and deliberately narrow: it decides whether the core's
-     * own contribution process may be stated as applying, and the absence of
-     * outside-core markers is not evidence of anything.
+     * own contribution process may be stated as applying, and the absence of an
+     * extension or project marker is not evidence of anything.
      *
      * @var array<int, string>
      */
@@ -47,18 +82,6 @@ final class Scope
         'typo3/sysext/', 'gerrit', 'change-id', 'review.typo3.org', 'forge.typo3.org',
         'typo3 core', 'core patch', 'core contribution',
     ];
-
-    /**
-     * What every tool says first once it has recognised work outside the core.
-     *
-     * One sentence in one place, because three tools now say it and a caller
-     * that learns to recognise it in one answer has to find it unchanged in the
-     * next. Each tool appends what follows from it for its own payload.
-     */
-    public const OUTSIDE_CORE_NOTICE = 'This reads as work outside the TYPO3 core — a project or third-party '
-        . 'extension. That is covered here, as far as the core\'s own conventions reach into it; what belongs to '
-        . 'the core repository alone (the changelog, the Gerrit workflow, the runTests.sh suites) has no '
-        . 'counterpart there and is left out of the answer rather than handed over.';
 
     /**
      * Directories an extension is laid out in. A path that begins with one of
@@ -69,7 +92,7 @@ final class Scope
      */
     private const EXTENSION_LAYOUT = [
         'classes/', 'configuration/', 'resources/',
-        'ext_localconf.php', 'ext_tables.php', 'ext_emconf.php',
+        'ext_localconf.php', 'ext_tables.php', 'ext_tables.sql', 'ext_emconf.php',
     ];
 
     /**
@@ -85,36 +108,28 @@ final class Scope
     private const CORE_LAYOUT = ['build/scripts/', 'build/sources/'];
 
     /**
-     * Who an answer about one path is for: the core contributor, or the
-     * extension author and site developer the core's own process has no
-     * counterpart for.
+     * Things that exist in the core repository and nowhere else. A line of
+     * advice naming one of them cannot be followed outside it.
      *
-     * The third value is the one a boolean had no room for. Where the signals
-     * disagree and nothing left resolves them, saying so is the answer
-     * R-AUD-2 asks for — picking a side silently is what a `false` did.
+     * @var array<int, string>
      */
-    public const AUDIENCE_CORE = 'core';
-    public const AUDIENCE_OUTSIDE = 'outside-core';
-    public const AUDIENCE_UNCERTAIN = 'uncertain';
+    private const CORE_ONLY_ARTIFACTS = [
+        'typo3/sysext/', 'build/scripts/', 'runtests.sh', 'gerrit', 'change-id',
+        'refs/for/', 'forge.typo3.org', 'core checkout', 'core branch', 'core root',
+        'core team',
+    ];
 
     /**
-     * What every tool says once a call names paths of both audiences.
+     * What every tool says first once it has recognised work outside the core.
      *
-     * The paths are named, because the whole point of splitting is that the
-     * caller can tell which half of the answer is about which of its files.
-     *
-     * @param array<int, string> $paths
+     * One sentence in one place, because three tools now say it and a caller
+     * that learns to recognise it in one answer has to find it unchanged in the
+     * next. Each tool appends what follows from it for its own payload.
      */
-    public static function outsideCoreAmong(array $paths): string
-    {
-        return sprintf(
-            'Of the paths given, %s %s outside the TYPO3 core — a project or third-party extension. What follows '
-            . 'is split accordingly: what only the core repository has is left out of the half that is about %s.',
-            implode(' and ', $paths),
-            count($paths) === 1 ? 'is' : 'are',
-            count($paths) === 1 ? 'it' : 'them',
-        );
-    }
+    public const OUTSIDE_CORE_NOTICE = 'This reads as work outside the TYPO3 core — a project or third-party '
+        . 'extension. That is covered here, as far as the core\'s own conventions reach into it; what belongs to '
+        . 'the core repository alone (the changelog, the Gerrit workflow, the runTests.sh suites) has no '
+        . 'counterpart there and is left out of the answer rather than handed over.';
 
     /**
      * What every tool says when nothing in the call places the work at all.
@@ -123,13 +138,41 @@ final class Scope
      * no second body of it to hand over. What is new is that the caller is told
      * which question was never answered, and how to answer it.
      */
-    public const UNCERTAIN_AUDIENCE_NOTICE = 'Nothing here says which repository this work is in — no path with a '
+    public const UNCERTAIN_NOTICE = 'Nothing here says which repository this work is in — no path with a '
         . 'shape of its own, no area this server could place, and no installation to read. What follows is the '
         . 'core\'s own, so name a path or the repository if it is not, because several of these steps exist '
         . 'nowhere else.';
 
     /**
-     * The audience of one path: who the answer about it is for.
+     * The scopes a path can be classified as, in the order a call's paths are
+     * grouped: core work first, then what nothing placed, then the project and
+     * the extensions in it.
+     *
+     * @return array<int, self>
+     */
+    public static function ofPaths(): array
+    {
+        return [self::Core, self::Uncertain, self::Project, self::Extension];
+    }
+
+    /**
+     * The scopes a statement in the knowledge base can declare itself for.
+     *
+     * @return array<int, self>
+     */
+    public static function ofKnowledge(): array
+    {
+        return [self::Core, self::Project, self::Extension, self::Any];
+    }
+
+    /** Whether this is one of the two the core's own process does not reach. */
+    public function isOutsideTheCore(): bool
+    {
+        return $this === self::Project || $this === self::Extension;
+    }
+
+    /**
+     * The scope of one path: which kind of work an answer about it is for.
      *
      * The conventions here are the core's own, and several of them — the
      * changelog, the Gerrit workflow, the runTests.sh suites — do not exist
@@ -146,7 +189,7 @@ final class Scope
      * @param string $path one path, or '' where the call named none and only
      *                     what was said about it can decide
      */
-    public static function audienceOf(string $path, string $text = '', string $area = ''): string
+    public static function of(string $path, string $text = '', string $area = ''): self
     {
         $lowered = ltrim(mb_strtolower(str_replace('\\', '/', $path)), './');
         $prose = mb_strtolower($text);
@@ -156,11 +199,20 @@ final class Scope
         // folded into one string, the second path is answered for by the first.
         if ($lowered !== '') {
             if (str_contains($lowered, 'typo3/sysext/')) {
-                return self::AUDIENCE_CORE;
+                return self::Core;
             }
-            foreach (self::OUTSIDE_CORE as $marker) {
+            foreach (self::EXTENSION_WORK as $marker) {
                 if (str_contains($lowered, $marker)) {
-                    return self::AUDIENCE_OUTSIDE;
+                    return self::Extension;
+                }
+            }
+            // After the extension containers, not before: a sitepackage below
+            // packages/ has a Configuration/ of its own, and the site
+            // configuration this looks for is the one the project keeps outside
+            // any package.
+            foreach (self::PROJECT_WORK as $marker) {
+                if (str_starts_with($lowered, $marker)) {
+                    return self::Project;
                 }
             }
         }
@@ -171,11 +223,11 @@ final class Scope
         // vendor bk2k" names the core in order to rule it out, and reads to a
         // substring search exactly like claiming it.
         if (str_contains($prose, 'typo3/sysext/')) {
-            return self::AUDIENCE_CORE;
+            return self::Core;
         }
-        foreach (self::OUTSIDE_CORE as $marker) {
+        foreach (self::EXTENSION_WORK as $marker) {
             if (str_contains($prose, $marker)) {
-                return self::AUDIENCE_OUTSIDE;
+                return self::Extension;
             }
         }
 
@@ -186,7 +238,7 @@ final class Scope
         // "backend forms" are areas too.
         $systemExtension = $area === '' ? null : Instance::isSystemExtension($area);
         if ($systemExtension === false) {
-            return self::AUDIENCE_OUTSIDE;
+            return self::Extension;
         }
 
         // The shape of the path, where it carries no marker: which directories
@@ -194,12 +246,12 @@ final class Scope
         if ($lowered !== '') {
             foreach (self::EXTENSION_LAYOUT as $prefix) {
                 if (str_starts_with($lowered, $prefix)) {
-                    return self::AUDIENCE_OUTSIDE;
+                    return self::Extension;
                 }
             }
             foreach (self::CORE_LAYOUT as $prefix) {
                 if (str_starts_with($lowered, $prefix) && self::couldBeTheCore()) {
-                    return self::AUDIENCE_CORE;
+                    return self::Core;
                 }
             }
         }
@@ -210,16 +262,18 @@ final class Scope
         // and neither beats a marker above, because those describe the work
         // while these only accompany it.
         if ($systemExtension === true || self::isCoreWork([$path], $text)) {
-            return self::AUDIENCE_CORE;
+            return self::Core;
         }
 
         // That signal, and where there is no installation either, nothing in
         // the call has placed the work at all. That is not the core by default:
         // it is the case R-AUD-2 names, and the answer says so.
         return match (Instance::describe()['kind'] ?? '') {
-            Instance::KIND_COMPOSER_PROJECT => self::AUDIENCE_OUTSIDE,
-            Instance::KIND_CORE_CHECKOUT => self::AUDIENCE_CORE,
-            default => self::AUDIENCE_UNCERTAIN,
+            // The project rather than an extension inside it: nothing named a
+            // package, and the repository the session sits in is the site.
+            Instance::KIND_COMPOSER_PROJECT => self::Project,
+            Instance::KIND_CORE_CHECKOUT => self::Core,
+            default => self::Uncertain,
         };
     }
 
@@ -244,57 +298,54 @@ final class Scope
     }
 
     /**
-     * The audience of every path a call named, in the order it named them.
+     * The scope of every path a call named, in the order it named them.
      *
      * @param array<int, string> $paths
-     * @return array<int, array{path: string, audience: string}>
+     * @return array<int, array{path: string, scope: self}>
      */
-    public static function audiences(array $paths, string $text = '', string $area = ''): array
+    public static function ofEach(array $paths, string $text = '', string $area = ''): array
     {
         return array_values(array_map(
-            static fn(string $path): array => [
-                'path' => $path,
-                'audience' => self::audienceOf($path, $text, $area),
-            ],
+            static fn(string $path): array => ['path' => $path, 'scope' => self::of($path, $text, $area)],
             $paths,
         ));
     }
 
     /**
-     * The paths of a call that share one audience.
+     * The paths of a call that share one scope.
      *
-     * @param array<int, array{path: string, audience: string}> $audiences
+     * @param array<int, array{path: string, scope: self}> $scopes
      * @return array<int, string>
      */
-    public static function pathsOf(array $audiences, string ...$of): array
+    public static function pathsOf(array $scopes, self ...$of): array
     {
         return array_values(array_map(
             static fn(array $entry): string => $entry['path'],
-            array_filter($audiences, static fn(array $entry): bool => in_array($entry['audience'], $of, true)),
+            array_filter($scopes, static fn(array $entry): bool => in_array($entry['scope'], $of, true)),
         ));
     }
 
     /**
-     * A call's paths as the questions they actually are: one group per
-     * audience, core work first, then what nothing placed, then what is outside
-     * the core. A call that named no path is one group all the same — what was
-     * said about it is then the whole of the evidence.
+     * A call's paths as the questions they actually are: one group per scope,
+     * core work first, then what nothing placed, then the project and the
+     * extensions in it. A call that named no path is one group all the same —
+     * what was said about it is then the whole of the evidence.
      *
      * @param array<int, string> $paths
-     * @param array<int, array{path: string, audience: string}> $audiences
-     * @return array<int, array{audience: string, paths: array<int, string>}>
+     * @param array<int, array{path: string, scope: self}> $scopes
+     * @return array<int, array{scope: self, paths: array<int, string>}>
      */
-    public static function groups(array $paths, array $audiences, string $text): array
+    public static function groups(array $paths, array $scopes, string $text): array
     {
         if ($paths === []) {
-            return [['audience' => self::audienceOf('', $text), 'paths' => []]];
+            return [['scope' => self::of('', $text), 'paths' => []]];
         }
 
         $groups = [];
-        foreach ([self::AUDIENCE_CORE, self::AUDIENCE_UNCERTAIN, self::AUDIENCE_OUTSIDE] as $audience) {
-            $of = self::pathsOf($audiences, $audience);
+        foreach (self::ofPaths() as $scope) {
+            $of = self::pathsOf($scopes, $scope);
             if ($of !== []) {
-                $groups[] = ['audience' => $audience, 'paths' => $of];
+                $groups[] = ['scope' => $scope, 'paths' => $of];
             }
         }
 
@@ -302,16 +353,23 @@ final class Scope
     }
 
     /**
-     * Things that exist in the core repository and nowhere else. A line of
-     * advice naming one of them cannot be followed outside it.
+     * What every tool says once a call names paths of more than one scope.
      *
-     * @var array<int, string>
+     * The paths are named, because the whole point of splitting is that the
+     * caller can tell which half of the answer is about which of its files.
+     *
+     * @param array<int, string> $paths
      */
-    private const CORE_ONLY_ARTIFACTS = [
-        'typo3/sysext/', 'build/scripts/', 'runtests.sh', 'gerrit', 'change-id',
-        'refs/for/', 'forge.typo3.org', 'core checkout', 'core branch', 'core root',
-        'core team',
-    ];
+    public static function outsideCoreAmong(array $paths): string
+    {
+        return sprintf(
+            'Of the paths given, %s %s outside the TYPO3 core — a project or third-party extension. What follows '
+            . 'is split accordingly: what only the core repository has is left out of the half that is about %s.',
+            implode(' and ', $paths),
+            count($paths) === 1 ? 'is' : 'are',
+            count($paths) === 1 ? 'it' : 'them',
+        );
+    }
 
     /**
      * Whether a single step, check or checklist item is core-only.
@@ -337,7 +395,7 @@ final class Scope
     /**
      * Whether anything in the task actually says this is core work.
      *
-     * An audience of `core` can be the last signal speaking — the checkout the
+     * A scope of `core` can be the last signal speaking — the checkout the
      * session sits in — and most tasks say nothing either way: "review the TCA
      * of an extension" is one of them. Where an answer would state the core's
      * own process as applying, that is not enough, so this asks for the
@@ -355,156 +413,5 @@ final class Scope
         }
 
         return false;
-    }
-
-    /**
-     * How much of the statement below a client can be relied on to keep.
-     *
-     * Measured rather than agreed: the client the recorded runs use truncates
-     * at 2048 characters and says so only in its own debug output, so a server
-     * that writes more loses the end of what it wrote to nobody's error. The
-     * budget covers everything assembled — the profile prefix and the write
-     * sentence included — because the client counts what it receives.
-     */
-    public const INSTRUCTIONS_BUDGET = 2048;
-
-    /**
-     * The statement handed to clients at initialize time, so the boundary is
-     * known before the first tool call rather than after a fruitless one.
-     *
-     * The write sentence is appended rather than stored, because whether this
-     * server can write at all depends on the checkout it runs from — and a
-     * client that is told "read-only" must not then be offered a tool that
-     * creates a file.
-     *
-     * Everything assembled here has to fit what a client keeps: a sentence past
-     * the limit is a sentence nobody reads, and neither side says so. R-ANS-13
-     * holds the whole of it, prefix and suffix included, to that budget.
-     */
-    public static function instructions(): string
-    {
-        $instructions = self::read()['instructions'];
-        if (Profile::omitted() !== []) {
-            // In front of it, not behind: what a client is not being offered
-            // belongs before the routing it is offered, and a client told where
-            // to start and only then that half the server is missing has been
-            // told and then corrected.
-            $instructions = sprintf(
-                'You are offered the "%s" profile: the core contribution surface is not in your tool list, '
-                . 'because a project or extension repository has none of it; %s=%s offers it anyway. '
-                . 'Otherwise: %s',
-                Profile::active(),
-                Profile::VARIABLE,
-                Profile::ALL,
-                $instructions,
-            );
-        }
-        if (Channel::isAvailable()) {
-            $instructions .= ' Every tool here is read-only except typo3_feedback_record, '
-                . 'which creates a new markdown feedback under feedback/ and writes nothing else.';
-        }
-
-        return $instructions;
-    }
-
-    /**
-     * The scope as the active profile presents it.
-     *
-     * The stored file describes the whole server. A client that is offered half
-     * of it must not be handed the other half as its map: a topic whose answers
-     * are core-only is gone with the tools that answered it, and no entry
-     * anywhere points at a tool this client cannot call.
-     *
-     * @return array{
-     *     purpose: string,
-     *     instructions: string,
-     *     covers: array<int, array{topic: string, depth: string, tools: array<int, string>, source: string, provenance: string}>,
-     *     doesNotCover: array<int, array{topic: string, why: string, instead: string}>,
-     *     checkoutDiscovery: array<int, array{establish: string, how: string}>,
-     *     routing: array<int, array{when: string, call: string}>
-     * }
-     */
-    public static function offered(): array
-    {
-        $scope = self::read();
-        if (Profile::omitted() === []) {
-            return $scope;
-        }
-
-        $covers = [];
-        foreach ($scope['covers'] as $entry) {
-            if ($entry['provenance'] === 'core-only') {
-                continue;
-            }
-            $entry['tools'] = array_values(array_filter($entry['tools'], Profile::offers(...)));
-            if ($entry['tools'] !== []) {
-                $covers[] = $entry;
-            }
-        }
-        $scope['covers'] = $covers;
-
-        $offered = static fn(array $entry): bool => !self::namesOmittedTool(implode(' ', $entry));
-        $scope['doesNotCover'] = array_values(array_filter($scope['doesNotCover'], $offered));
-        $scope['checkoutDiscovery'] = array_values(array_filter($scope['checkoutDiscovery'], $offered));
-        $scope['routing'] = array_values(array_filter($scope['routing'], $offered));
-
-        return $scope;
-    }
-
-    /** Whether a rendered entry sends the caller to a tool it is not offered. */
-    private static function namesOmittedTool(string $text): bool
-    {
-        foreach (Profile::omitted() as $tool) {
-            if (str_contains($text, $tool)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * @return array{
-     *     purpose: string,
-     *     instructions: string,
-     *     covers: array<int, array{topic: string, depth: string, tools: array<int, string>, source: string, provenance: string}>,
-     *     doesNotCover: array<int, array{topic: string, why: string, instead: string}>,
-     *     checkoutDiscovery: array<int, array{establish: string, how: string}>,
-     *     routing: array<int, array{when: string, call: string}>
-     * }
-     */
-    public static function read(): array
-    {
-        $decoded = json_decode((string) file_get_contents(Paths::knowledgeFile('server-scope.json')), true);
-        if (!is_array($decoded) || !isset($decoded['covers'], $decoded['routing'])) {
-            throw new \RuntimeException('Invalid server-scope.json');
-        }
-
-        return [
-            'purpose' => (string) ($decoded['purpose'] ?? ''),
-            'instructions' => (string) ($decoded['instructions'] ?? ''),
-            'covers' => array_map(static fn(array $entry): array => [
-                'topic' => (string) $entry['topic'],
-                'depth' => (string) ($entry['depth'] ?? ''),
-                'tools' => array_map('strval', $entry['tools'] ?? []),
-                'source' => (string) ($entry['source'] ?? ''),
-                // What the answer is worth outside the core: the boundary runs
-                // through the middle of this server, not around it.
-                'provenance' => (string) ($entry['provenance'] ?? ''),
-            ], $decoded['covers']),
-            'doesNotCover' => array_map(static fn(array $entry): array => [
-                'topic' => (string) $entry['topic'],
-                'why' => (string) ($entry['why'] ?? ''),
-                'instead' => (string) ($entry['instead'] ?? ''),
-            ], $decoded['doesNotCover'] ?? []),
-            'checkoutDiscovery' => array_map(static fn(array $entry): array => [
-                'establish' => (string) $entry['establish'],
-                'how' => (string) ($entry['how'] ?? ''),
-            ], $decoded['checkoutDiscovery'] ?? []),
-            'routing' => array_map(static fn(array $entry): array => [
-                'when' => (string) $entry['when'],
-                'call' => (string) $entry['call'],
-            ], $decoded['routing']),
-        ];
     }
 }

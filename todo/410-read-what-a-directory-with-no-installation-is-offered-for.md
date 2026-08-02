@@ -3,12 +3,11 @@
 **Serves:** decisions/
 
 The first half of the `D-AUD-2` **Wrong if** was answered on 2026-08-02 and the
-entry carries it; the second was left, and this is it — a deployment with no
-installation to read at all, which is where a third profile that leaves out the
-installation-backed tools would earn its name. `Profile::active()` returns `all`
-there on purpose, its comment saying an installation may still appear when the
-agent runs `composer install`, so such a deployment is offered all 23 tools
-including the ones that can only answer from an installation. The step is to
+entry carries it; the second was left, and the part of it that survives is this
+— what a deployment with no installation to read at all is actually offered.
+The profile it was written against is gone (`D-AUD-4`), so the question is no
+longer which set such a deployment gets: it gets all 23 tools, the ones that can
+only answer from an installation included. The step is to
 read what that actually looks like: drive `bin/typo3-cms-mcp` over stdio from a
 directory with no TYPO3 anywhere above it, take the `instructions`, the tool
 list and `typo3_server_scope`, then call `typo3_icon_lookup` and

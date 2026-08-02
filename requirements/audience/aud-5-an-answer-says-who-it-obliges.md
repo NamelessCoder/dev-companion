@@ -9,7 +9,7 @@ status: held
 
 The same sentence can be a condition of a core patch and a convention worth
 adopting in a project, and the difference is not visible in the sentence — so
-it is data (`binding: "core"`), on the hint where the whole subject is the
+it is data (`scope: "core"`), on the hint where the whole subject is the
 core's own and on the statement where one sentence in a transferable hint is.
 What only binds a core patch is marked outside the core rather than dropped:
 the backend's design system is exactly what a project building a backend module

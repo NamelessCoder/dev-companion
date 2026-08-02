@@ -3,14 +3,14 @@ id: R-SCO-2
 status: held
 ---
 
-# R-SCO-2 — outsideCore changes the payload, entry by entry
+# R-SCO-2 — A scope outside the core changes the payload, entry by entry
 
-**`outsideCore` changes the payload.**
+**A scope of `project` or `extension` changes the payload.**
 
 Core-only commands, checklist items and checkout discovery are dropped;
 conventions that transfer stay and are marked as such. The line is drawn per
 entry, not per section, because a checklist mixes both — and in a call whose
-paths have different audiences it is drawn per path as well: the suites and the
+paths have different scopes it is drawn per path as well: the suites and the
 checks come back for the paths that can run them, and the ones that cannot are
 named beside them.
 

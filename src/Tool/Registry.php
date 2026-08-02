@@ -6,17 +6,17 @@ namespace Typo3CmsMcp\Tool;
 
 use Typo3CmsMcp\Feedback\Channel;
 use Typo3CmsMcp\Result\ToolResult;
-use Typo3CmsMcp\Server\Profile;
+use Typo3CmsMcp\Server\ExcludedTools;
 
 /**
  * Every tool this server has, and the only place one is switched on.
  *
  * What a tool is called, takes, returns and answers lives in the class that
  * answers it; this is the list, in the order a client is offered them. Two
- * things narrow that list, and both are properties of the checkout the server
- * was started in rather than of any tool: the profile, which withholds the core
- * contribution surface where it cannot be followed, and the feedback channel,
- * which exists only in a standalone checkout.
+ * things narrow that list: what the caller excluded, and the feedback channel,
+ * which exists only in a standalone checkout. Nothing else does — which
+ * repository the server was started in shapes what an answer says, never
+ * whether the tool that says it is there.
  */
 final class Registry
 {
@@ -101,9 +101,7 @@ final class Registry
     {
         $offered = array_values(array_filter(
             self::TOOLS,
-            // The core contribution surface is left out where it cannot be
-            // followed — see Profile.
-            static fn(string $tool): bool => Profile::offers($tool::name()),
+            static fn(string $tool): bool => ExcludedTools::offers($tool::name()),
         ));
 
         if (Channel::isAvailable()) {

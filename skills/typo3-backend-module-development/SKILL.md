@@ -16,7 +16,8 @@ every task here starts in and why that order is not interchangeable.
 
 Then, for this workflow:
 
-- `typo3_server_scope` for the active profile and the knowledge depth available.
+- `typo3_server_scope` for the knowledge depth available and any tool the caller
+  excluded.
 - Decide whether this is a core patch, extension, or site task from the task and
   the affected paths. If the signals disagree, state the uncertainty; do not
   attach core-only checks to project work.
@@ -46,10 +47,11 @@ live documentation is unavailable, keep the failure distinct from no match.
 - Keep project paths and commands in the project. Use core-only checks,
   changelogs, Gerrit rules, and `Build/Scripts/runTests.sh` only for an actual
   core patch.
-- Run the repository's own relevant checks. Only for an actual core patch and
-  when `typo3_server_scope` reports the all/core contribution profile, use
-  `typo3_test_run_guide` with the changed paths. It is unavailable in the
-  project profile; never present it as a project command.
+- Run the repository's own relevant checks. Use `typo3_test_run_guide` with the
+  changed paths only for an actual core patch: it answers `Build/Scripts/runTests.sh`,
+  which exists in the core repository alone. Never present it as a project
+  command, whatever the task turns out to be — what decides is the work, not
+  whether the tool is in the list.
 - Re-run the lookups when the target version, extension, or implementation
   choice changes; do not treat an earlier result as universal.
 

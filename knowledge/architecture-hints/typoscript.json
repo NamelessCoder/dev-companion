@@ -1,92 +1,92 @@
 [
-  {
-    "id": "site-sets",
-    "title": "Site Sets",
-    "appliesTo": [
-      "Configuration/Sets/",
-      "site set",
-      "settings.definitions.yaml",
-      "settings.yaml",
-      "config/sites/",
-      "setup.typoscript",
-      "constants.typoscript",
-      "BackendLayouts",
-      "backend layout",
-      "page.tsconfig"
-    ],
-    "hints": [
-      {
-        "text": "A site set is how a system extension ships TypoScript. It is a directory Configuration/Sets/<SetName>/ whose config.yaml carries a composer-style name (\"typo3/fluid-styled-content\"), an optional label, and an optional dependencies list naming other sets by that same name.",
-        "since": 13
-      },
-      {
-        "text": "Next to config.yaml the set may hold setup.typoscript, settings.definitions.yaml, settings.yaml, labels.xlf, page.tsconfig and route-enhancers.yaml. Only config.yaml is required.",
-        "since": 13
-      },
-      {
-        "text": "settings.definitions.yaml is where a set declares its settings: a categories map and a settings map, each entry with default, type and category. It is the replacement for TypoScript constants — reaching for constants.typoscript in new code is the mistake to avoid here.",
-        "since": 13
-      },
-      {
-        "text": "A settings value is addressed by its dotted path, and both spellings of it resolve: the set's own settings.yaml writes a nested tree, and the site's config.yaml or a test fixture may hand the same thing over as flat dotted keys — 'my_ext.products.requestPage' => 4 — because SiteSettings flattens a tree into those keys itself and reads either. So the nested form in the set is a convention rather than a requirement.",
-        "since": 13
-      },
-      {
-        "text": "A site's config/sites/<identifier>/settings.yaml and the settings key inline in its config.yaml are alternatives, not layers: when settings.yaml exists, TYPO3 uses it wholesale and does not merge the inline values into it. Set defaults sit below whichever site-local source wins. The backend settings editor persists to settings.yaml, so keep a site's own values in one place or the first backend save can silently leave inline values behind.",
-        "since": 13
-      },
-      {
-        "text": "The set's labels.xlf resolves to the translation domain <ext>.sets.<setname>; typo3_translation_domain_lookup computes it from the path.",
-        "since": 14
-      },
-      {
-        "text": "The set's labels.xlf is picked up from the set's own directory and there is no domain to address it by: a label of the set is referenced with its full LLL:EXT: path.",
-        "until": 13
-      },
-      {
-        "text": "A page layout the set ships in page.tsconfig declares its columns under mod.web_layout.BackendLayouts, and every column needs an explicit `identifier`: that identifier is what the frontend template addresses as {content.<identifier>}. Leaving it out is accepted on the branches that still fall back to a generated one, and the template can then no longer reach its own content — the page renders empty and nothing is logged.",
-        "since": 14
-      },
-      "ExtensionManagementUtility::addTypoScriptSetup() and addStaticFile() are the predecessor and are still called from a few sysexts, addTypoScriptSetup with an includeInSiteSets flag that folds the content into the set mechanism. Both mechanisms coexist; new code ships a set.",
-      "TypoScript files use the .typoscript extension.",
-      "This is how an extension ships TypoScript, and a project's own sitepackage is an extension like any other — the mechanism does not change because the repository is not the core's. Configuring one installation is where it stops being a convention and becomes that site's decision, and this server does not make it.",
-      {
-        "text": "Site set resolution is covered by functional tests under typo3/sysext/core/Tests/Functional/Site/Set/; the labels have their own check, checkIntegritySetLabels.",
-        "since": 13,
-        "binding": "core"
-      }
-    ],
-    "checks": [
-      "CI=true ./Build/Scripts/runTests.sh -s lintYaml",
-      "CI=true ./Build/Scripts/runTests.sh -s checkIntegritySetLabels",
-      "CI=true ./Build/Scripts/runTests.sh -s functional"
-    ]
-  },
-  {
-    "id": "tsconfig",
-    "title": "Page and User TSconfig",
-    "appliesTo": [
-      "Configuration/page.tsconfig",
-      "Configuration/user.tsconfig",
-      ".tsconfig",
-      "tsconfig",
-      "page tsconfig",
-      "user tsconfig"
-    ],
-    "hints": [
-      "TSconfig here means TYPO3 page and user TSconfig, not the tsconfig.json of the TypeScript build. The two are unrelated and neither is a place to configure the other.",
-      "A system extension ships page TSconfig defaults in Configuration/page.tsconfig, auto-loaded from that path — there is nothing to register in ext_localconf.php.",
-      {
-        "text": "Configuration/user.tsconfig is auto-loaded the same way.",
-        "since": 13
-      },
-      "An option is read from the merged page TSconfig. In FormEngine that merge is done by the PageTsConfigMerged data provider, so a provider that reads the option has to depend on it.",
-      "A new TSconfig option is user-facing configuration: it needs a Feature changelog entry and documentation, not just the default.",
-      "Behaviour that depends on TSconfig is covered by functional tests; the parser itself lives in typo3/sysext/core/Classes/TypoScript/."
-    ],
-    "checks": [
-      "CI=true ./Build/Scripts/runTests.sh -s functional",
-      "CI=true ./Build/Scripts/runTests.sh -s checkRst"
-    ]
-  }
+    {
+        "id": "site-sets",
+        "title": "Site Sets",
+        "appliesTo": [
+            "Configuration/Sets/",
+            "site set",
+            "settings.definitions.yaml",
+            "settings.yaml",
+            "config/sites/",
+            "setup.typoscript",
+            "constants.typoscript",
+            "BackendLayouts",
+            "backend layout",
+            "page.tsconfig"
+        ],
+        "hints": [
+            {
+                "text": "A site set is how a system extension ships TypoScript. It is a directory Configuration/Sets/<SetName>/ whose config.yaml carries a composer-style name (\"typo3/fluid-styled-content\"), an optional label, and an optional dependencies list naming other sets by that same name.",
+                "since": 13
+            },
+            {
+                "text": "Next to config.yaml the set may hold setup.typoscript, settings.definitions.yaml, settings.yaml, labels.xlf, page.tsconfig and route-enhancers.yaml. Only config.yaml is required.",
+                "since": 13
+            },
+            {
+                "text": "settings.definitions.yaml is where a set declares its settings: a categories map and a settings map, each entry with default, type and category. It is the replacement for TypoScript constants — reaching for constants.typoscript in new code is the mistake to avoid here.",
+                "since": 13
+            },
+            {
+                "text": "A settings value is addressed by its dotted path, and both spellings of it resolve: the set's own settings.yaml writes a nested tree, and the site's config.yaml or a test fixture may hand the same thing over as flat dotted keys — 'my_ext.products.requestPage' => 4 — because SiteSettings flattens a tree into those keys itself and reads either. So the nested form in the set is a convention rather than a requirement.",
+                "since": 13
+            },
+            {
+                "text": "A site's config/sites/<identifier>/settings.yaml and the settings key inline in its config.yaml are alternatives, not layers: when settings.yaml exists, TYPO3 uses it wholesale and does not merge the inline values into it. Set defaults sit below whichever site-local source wins. The backend settings editor persists to settings.yaml, so keep a site's own values in one place or the first backend save can silently leave inline values behind.",
+                "since": 13
+            },
+            {
+                "text": "The set's labels.xlf resolves to the translation domain <ext>.sets.<setname>; typo3_translation_domain_lookup computes it from the path.",
+                "since": 14
+            },
+            {
+                "text": "The set's labels.xlf is picked up from the set's own directory and there is no domain to address it by: a label of the set is referenced with its full LLL:EXT: path.",
+                "until": 13
+            },
+            {
+                "text": "A page layout the set ships in page.tsconfig declares its columns under mod.web_layout.BackendLayouts, and every column needs an explicit `identifier`: that identifier is what the frontend template addresses as {content.<identifier>}. Leaving it out is accepted on the branches that still fall back to a generated one, and the template can then no longer reach its own content — the page renders empty and nothing is logged.",
+                "since": 14
+            },
+            "ExtensionManagementUtility::addTypoScriptSetup() and addStaticFile() are the predecessor and are still called from a few sysexts, addTypoScriptSetup with an includeInSiteSets flag that folds the content into the set mechanism. Both mechanisms coexist; new code ships a set.",
+            "TypoScript files use the .typoscript extension.",
+            "This is how an extension ships TypoScript, and a project's own sitepackage is an extension like any other — the mechanism does not change because the repository is not the core's. Configuring one installation is where it stops being a convention and becomes that site's decision, and this server does not make it.",
+            {
+                "text": "Site set resolution is covered by functional tests under typo3/sysext/core/Tests/Functional/Site/Set/; the labels have their own check, checkIntegritySetLabels.",
+                "since": 13,
+                "scope": "core"
+            }
+        ],
+        "checks": [
+            "CI=true ./Build/Scripts/runTests.sh -s lintYaml",
+            "CI=true ./Build/Scripts/runTests.sh -s checkIntegritySetLabels",
+            "CI=true ./Build/Scripts/runTests.sh -s functional"
+        ]
+    },
+    {
+        "id": "tsconfig",
+        "title": "Page and User TSconfig",
+        "appliesTo": [
+            "Configuration/page.tsconfig",
+            "Configuration/user.tsconfig",
+            ".tsconfig",
+            "tsconfig",
+            "page tsconfig",
+            "user tsconfig"
+        ],
+        "hints": [
+            "TSconfig here means TYPO3 page and user TSconfig, not the tsconfig.json of the TypeScript build. The two are unrelated and neither is a place to configure the other.",
+            "A system extension ships page TSconfig defaults in Configuration/page.tsconfig, auto-loaded from that path — there is nothing to register in ext_localconf.php.",
+            {
+                "text": "Configuration/user.tsconfig is auto-loaded the same way.",
+                "since": 13
+            },
+            "An option is read from the merged page TSconfig. In FormEngine that merge is done by the PageTsConfigMerged data provider, so a provider that reads the option has to depend on it.",
+            "A new TSconfig option is user-facing configuration: it needs a Feature changelog entry and documentation, not just the default.",
+            "Behaviour that depends on TSconfig is covered by functional tests; the parser itself lives in typo3/sysext/core/Classes/TypoScript/."
+        ],
+        "checks": [
+            "CI=true ./Build/Scripts/runTests.sh -s functional",
+            "CI=true ./Build/Scripts/runTests.sh -s checkRst"
+        ]
+    }
 ]

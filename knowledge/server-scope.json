@@ -10,7 +10,7 @@
                 "typo3_task_guide"
             ],
             "source": "typo3://core/typo3-core-rules",
-            "provenance": "core-only"
+            "scope": "core"
         },
         {
             "topic": "Gerrit workflow: setup, pushing, amending, backports",
@@ -19,7 +19,7 @@
                 "typo3_rule_lookup"
             ],
             "source": "typo3://core/typo3-gerrit-workflow",
-            "provenance": "core-only"
+            "scope": "core"
         },
         {
             "topic": "Commit messages",
@@ -29,17 +29,17 @@
                 "typo3_rule_lookup"
             ],
             "source": "typo3://core/typo3-commit-messages",
-            "provenance": "transferable"
+            "scope": "any"
         },
         {
-            "topic": "runTests.sh suites, options, and targeted invocation",
+            "topic": "Core testing suites: runTests.sh options and targeted invocation",
             "depth": "Every suite this knowledge base knows, with the command, the targeted form, and when to use it. The script is part of the core repository, so paths that read as a project or third-party extension get the boundary stated instead of a command.",
             "tools": [
                 "typo3_test_run_guide",
                 "typo3_script_lookup"
             ],
             "source": "knowledge/test-suite-hints.json, typo3://core/typo3-core-scripts",
-            "provenance": "core-only"
+            "scope": "core"
         },
         {
             "topic": "Where the upstream contribution documentation is",
@@ -48,7 +48,7 @@
                 "typo3_rule_lookup"
             ],
             "source": "typo3://core/typo3-contribution-sources",
-            "provenance": "core-only"
+            "scope": "core"
         },
         {
             "topic": "Core architecture conventions: DI, events and hooks, TCA and FormEngine, FormEngine data providers, DataHandler, routing, Fluid templates and ViewHelpers, frontend page rendering with PAGEVIEW, how a sitepackage is laid out, records in the frontend and the routing for them, registering a content element, Extbase plugins, TypoScript site sets and TSconfig, language files, upgrade wizards, frontend DataProcessors, upgrading an installation, testing strategy, assembling a test suite for a project extension, setting up static analysis for an extension, browser and accessibility tests with Playwright",
@@ -58,7 +58,7 @@
                 "typo3_task_guide"
             ],
             "source": "knowledge/architecture-hints/",
-            "provenance": "transferable"
+            "scope": "any"
         },
         {
             "topic": "Official TYPO3 API, reference and tutorial documentation",
@@ -67,7 +67,7 @@
                 "typo3_documentation_lookup"
             ],
             "source": "https://docs.typo3.org",
-            "provenance": "transferable"
+            "scope": "any"
         },
         {
             "topic": "Backend CSS architecture, design tokens, class naming",
@@ -77,7 +77,7 @@
                 "typo3_rule_lookup"
             ],
             "source": "knowledge/architecture-hints/css.json",
-            "provenance": "transferable"
+            "scope": "any"
         },
         {
             "topic": "Backend UI components: markup, variants, custom properties",
@@ -85,8 +85,8 @@
             "tools": [
                 "typo3_component_lookup"
             ],
-            "source": "installed EXT:backend and EXT:styleguide files; knowledge/catalog/components.json as index and fallback",
-            "provenance": "installation"
+            "source": "installed EXT:backend and EXT:styleguide files; knowledge/catalog/components.json as index and fallback — read from the installation being worked in, not from a bundled snapshot.",
+            "scope": "any"
         },
         {
             "topic": "Which extensions the TYPO3 core ships, and on which versions",
@@ -95,7 +95,7 @@
                 "typo3_system_extension_lookup"
             ],
             "source": "knowledge/catalog/system-extensions.json",
-            "provenance": "transferable"
+            "scope": "any"
         },
         {
             "topic": "Where the core keeps its own worked examples",
@@ -104,7 +104,7 @@
                 "typo3_reference_list"
             ],
             "source": "knowledge/catalog/references.json",
-            "provenance": "transferable"
+            "scope": "any"
         },
         {
             "topic": "Translation domains: how the domain of an XLF file is derived",
@@ -113,7 +113,7 @@
                 "typo3_translation_domain_lookup"
             ],
             "source": "src/Knowledge/Catalog/TranslationDomain.php, knowledge/architecture-hints/general.json",
-            "provenance": "transferable"
+            "scope": "any"
         },
         {
             "topic": "How current the catalogs are",
@@ -122,7 +122,7 @@
                 "typo3_catalog_scope"
             ],
             "source": "knowledge/catalog/meta.json",
-            "provenance": "transferable"
+            "scope": "any"
         },
         {
             "topic": "What the installation you are working in supplies: backend component contracts, labels, icons, backend modules, Fluid namespaces, effective configuration",
@@ -135,8 +135,8 @@
                 "typo3_fluid_namespace_list",
                 "typo3_configuration_lookup"
             ],
-            "source": "the discovered TYPO3 installation",
-            "provenance": "installation"
+            "source": "the discovered TYPO3 installation — read from the installation being worked in, not from a bundled snapshot.",
+            "scope": "any"
         },
         {
             "topic": "The project around the installation: its extensions, its sites and their sets, its own commands, and what one of those extensions registers",
@@ -145,8 +145,8 @@
                 "typo3_project_scope",
                 "typo3_extension_scope"
             ],
-            "source": "the discovered project",
-            "provenance": "installation"
+            "source": "the discovered project — read from the installation being worked in, not from a bundled snapshot.",
+            "scope": "any"
         },
         {
             "topic": "What a TYPO3 version broke, deprecated, added or noted",
@@ -154,8 +154,8 @@
             "tools": [
                 "typo3_changelog_lookup"
             ],
-            "source": "the discovered installation",
-            "provenance": "installation"
+            "source": "the discovered installation — read from the installation being worked in, not from a bundled snapshot.",
+            "scope": "any"
         }
     ],
     "doesNotCover": [

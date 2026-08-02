@@ -7,7 +7,7 @@ namespace Typo3CmsMcp\Tests\Smoke;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Typo3CmsMcp\Installation\Instance;
-use Typo3CmsMcp\Knowledge\Scope;
+use Typo3CmsMcp\Knowledge\Coverage;
 use Typo3CmsMcp\Paths;
 use Typo3CmsMcp\Tests\Support\Directory;
 
@@ -47,7 +47,7 @@ final class StdioServerTest extends TestCase
         // client is actually handed: what the SDK puts on the wire is what a
         // client truncates, and it truncates without telling either side.
         self::assertLessThanOrEqual(
-            Scope::INSTRUCTIONS_BUDGET,
+            Coverage::INSTRUCTIONS_BUDGET,
             mb_strlen($result['result']['instructions']),
         );
     }

@@ -1,7 +1,7 @@
 ---
 id: D-SCO-8
 date: 2026-08-01
-status: standing
+status: corrected
 ---
 
 # D-SCO-8 — The path decides, and the answer may say it cannot
@@ -61,3 +61,10 @@ unit of decision, and a third value.
   Then the last rung is wrong, not the value: what places the work would have to
   be asked for at initialize time, once per session, instead of guessed per
   call.
+- **Corrected on 2026-08-02:** the **Decided** that the payload keeps
+  `outsideCore` did not hold. The field is removed from all five output schemas:
+  it is `scope !== core`, and every tool carrying it already carried the scope
+  beside it. `Scope::audienceOf()` is `Scope::of()` and answers a case of the
+  `Knowledge\Scope` enum rather than a string, with `outside-core` split into
+  `project` and `extension` — the three audiences `R-AUD-1` names. See
+  [`D-KNW-5`](../knowledge/knw-5-one-scope-replaced-the-four-vocabularies.md).

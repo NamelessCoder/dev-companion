@@ -206,7 +206,7 @@ final class Project
      * recommending in it.
      *
      * Composer scripts and npm scripts are where a project writes down what it
-     * runs; the core's own runTests.sh suites are not there, which is the whole
+     * runs; the core's own testing suites are not there, which is the whole
      * point of asking.
      *
      * @param array<string, mixed> $manifest

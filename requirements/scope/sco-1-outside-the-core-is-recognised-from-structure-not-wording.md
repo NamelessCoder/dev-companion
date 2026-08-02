@@ -13,7 +13,7 @@ the installation knows as somebody's extension.
 
 Evidence of core work wins over the weaker signals, in this order: a
 `typo3/sysext/` path or the contribution workflow named outright, then an
-outside-core marker, then the area, then the path shape, then the contribution
+an extension or project marker, then the area, then the path shape, then the contribution
 workflow named in prose, and last which installation the session sits in. A
 `typo3/sysext/` path is the only marker that ends the question outright: prose
 that names the core in order to rule it out reads to a substring search exactly

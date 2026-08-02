@@ -8,8 +8,8 @@ use Mcp\Schema\ResourceDefinition;
 use Mcp\Schema\Tool;
 use Mcp\Schema\ToolAnnotations;
 use Mcp\Server;
+use Typo3CmsMcp\Knowledge\Coverage;
 use Typo3CmsMcp\Knowledge\Documents;
-use Typo3CmsMcp\Knowledge\Scope;
 use Typo3CmsMcp\Sdk\ResourceHandler;
 use Typo3CmsMcp\Sdk\ToolHandler;
 use Typo3CmsMcp\Tool\Registry;
@@ -28,7 +28,7 @@ final class Factory
     {
         $builder = Server::builder()
             ->setServerInfo(self::SERVER_NAME, self::SERVER_VERSION)
-            ->setInstructions(Scope::instructions());
+            ->setInstructions(Coverage::instructions());
 
         foreach (Registry::definitions() as $definition) {
             $tool = new Tool(

@@ -44,20 +44,14 @@ final class RuleLookup extends ReadOnlyTool
     public static function outputSchema(): array
     {
         $schema = Schema::knowledgeLookup();
-        $schema['properties']['outsideCore'] = [
-            'type' => 'boolean',
-            'description' => 'True when the query reads as a project or third-party extension. The sections that '
-                . 'are the core repository\'s own are then withheld and named in withheldDocuments; what transfers '
-                . 'still comes back.',
-        ];
-        $schema['properties']['audience'] = Schema::audience();
+        $schema['properties']['scope'] = Schema::scope();
         $schema['properties']['withheldDocuments'] = Schema::listOf(Schema::object([
             'id' => Schema::string(),
             'title' => Schema::string(),
         ], ['id', 'title']), 'Documents that matched and were left out because they answer for the core repository '
             . 'alone. Empty inside the core. Each is still readable in full as its typo3://core resource, which is '
             . 'the way to get one deliberately rather than by accident.');
-        $schema['required'][] = 'outsideCore';
+        $schema['required'][] = 'scope';
 
         return $schema;
     }
@@ -67,9 +61,9 @@ final class RuleLookup extends ReadOnlyTool
         $query = (string) ($args['query'] ?? '');
 
         // This tool is asked about a topic rather than about paths, so the call
-        // has one audience — the same reading typo3_script_lookup makes.
-        $audience = Scope::audienceOf('', $query);
-        $outsideCore = $audience === Scope::AUDIENCE_OUTSIDE;
+        // has one scope — the same reading typo3_script_lookup makes.
+        $scope = Scope::of('', $query);
+        $outsideCore = $scope->isOutsideTheCore();
 
         $found = Documents::search($query);
         // Withheld per document rather than per call: this corpus is the
@@ -91,7 +85,7 @@ final class RuleLookup extends ReadOnlyTool
         $hints = ArchitectureHints::find([], $query, 3)['matchedHints'];
 
         if ($results === [] && $hints === [] && $withheld === []) {
-            return self::noMatch($query, $audience, $outsideCore);
+            return self::noMatch($query, $scope, $outsideCore);
         }
 
         $lines = [];
@@ -119,8 +113,7 @@ final class RuleLookup extends ReadOnlyTool
             'query' => $query,
             'matchCount' => count($results),
             'matches' => Prose::records($results),
-            'outsideCore' => $outsideCore,
-            'audience' => $audience,
+            'scope' => $scope->value,
             'withheldDocuments' => $withheld,
             'alsoInHints' => array_map(
                 static fn(array $hint): array => ['id' => $hint['id'], 'title' => $hint['title']],
@@ -136,7 +129,7 @@ final class RuleLookup extends ReadOnlyTool
      * validates the answer must not have to branch on which of the two it got,
      * and a miss is where it is most likely to look.
      */
-    private static function noMatch(string $query, string $audience, bool $outsideCore): ToolResult
+    private static function noMatch(string $query, Scope $scope, bool $outsideCore): ToolResult
     {
         $documents = implode("\n", array_map(
             static fn(array $document): string => '- ' . $document['title'] . ': ' . implode(', ', $document['topics']),
@@ -156,8 +149,7 @@ final class RuleLookup extends ReadOnlyTool
             'query' => $query,
             'matchCount' => 0,
             'matches' => [],
-            'outsideCore' => $outsideCore,
-            'audience' => $audience,
+            'scope' => $scope->value,
             'withheldDocuments' => [],
             'alsoInHints' => [],
             'documents' => Documents::topics(),

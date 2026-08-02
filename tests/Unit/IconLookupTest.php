@@ -11,7 +11,7 @@ use Typo3CmsMcp\Installation\Icons;
 use Typo3CmsMcp\Installation\Instance;
 use Typo3CmsMcp\Installation\Typo3Cli;
 use Typo3CmsMcp\Installation\Typo3Runtime;
-use Typo3CmsMcp\Knowledge\Scope;
+use Typo3CmsMcp\Knowledge\Coverage;
 use Typo3CmsMcp\Tests\Support\TemporaryInstallation;
 use Typo3CmsMcp\Tool\Registry;
 
@@ -55,7 +55,7 @@ final class IconLookupTest extends TestCase
         // "About to reference an icon identifier" read as if it held for any
         // icon in any context, which is where the wrong use came from.
         $entries = array_values(array_filter(
-            Scope::read()['routing'],
+            Coverage::read()['routing'],
             static fn(array $entry): bool => $entry['call'] === 'typo3_icon_lookup'
         ));
 

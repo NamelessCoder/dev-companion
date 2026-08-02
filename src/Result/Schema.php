@@ -58,39 +58,40 @@ final class Schema
     }
 
     /**
-     * Who an answer is for, as the three values that decide it.
+     * Which kind of work an answer is for.
      *
-     * The third is not a hedge but the case the other two cannot state: signals
-     * that disagree with nothing left to resolve them. An answer that picked a
-     * side there would be right half the time and say so never.
+     * `uncertain` is not a hedge but the case the other three cannot state:
+     * signals that disagree with nothing left to resolve them. An answer that
+     * picked a side there would be right half the time and say so never.
      *
      * @return array<string, mixed>
      */
-    public static function audience(string $description = ''): array
+    public static function scope(string $description = ''): array
     {
         return [
             'type' => 'string',
-            'enum' => [Scope::AUDIENCE_CORE, Scope::AUDIENCE_OUTSIDE, Scope::AUDIENCE_UNCERTAIN],
+            'enum' => array_map(static fn(Scope $scope): string => $scope->value, Scope::ofPaths()),
             'description' => $description === ''
-                ? 'Who this answer is for: work on the TYPO3 core itself, work outside it — a project or '
-                    . 'third-party extension, where the core\'s own process has no counterpart — or undecided, '
-                    . 'which means nothing in the call placed it and what came back is the core\'s own.'
+                ? 'Which kind of work this answer is for: core, a patch to the TYPO3 core itself; project, the '
+                    . 'site repository around an installation; extension, a package in it, whether a sitepackage '
+                    . 'or a third-party one; or uncertain, which means nothing in the call placed the work and '
+                    . 'what came back is the core\'s own.'
                 : $description,
         ];
     }
 
     /**
      * The same decision per path, because a call is not a path: two files of
-     * different audience in one call are two questions.
+     * different scope in one call are two questions.
      *
      * @return array<string, mixed>
      */
-    public static function audiences(string $description): array
+    public static function scopes(string $description): array
     {
         return self::listOf(self::object([
             'path' => self::string(),
-            'audience' => self::audience(),
-        ], ['path', 'audience']), $description);
+            'scope' => self::scope(),
+        ], ['path', 'scope']), $description);
     }
 
     /** @return array<string, mixed> */
@@ -134,16 +135,16 @@ final class Schema
      *
      * @return array<string, mixed>
      */
-    public static function binding(string $subject): array
+    public static function obliges(string $subject): array
     {
         return [
             'type' => ['string', 'null'],
             'enum' => ['core', null],
             'description' => sprintf(
-                'Who %s obliges. "core" means it is a condition of a patch to the TYPO3 core and a convention '
-                . 'anywhere else — the backend\'s own design system, the changelog artifact, the paths of the mono '
-                . 'repository. Null, the ordinary case, means it holds wherever TYPO3 is written: an API that '
-                . 'throws throws in a sitepackage too.',
+                'Which kind of work %s obliges. "core" means it is a condition of a patch to the TYPO3 core and a '
+                . 'convention anywhere else — the backend\'s own design system, the changelog artifact, the paths '
+                . 'of the mono repository. Null, the ordinary case, means it holds wherever TYPO3 is written: an '
+                . 'API that throws throws in a sitepackage too.',
                 $subject,
             ),
         ];
@@ -156,16 +157,16 @@ final class Schema
             'id' => self::string(),
             'title' => self::string(),
             'category' => self::string('PHP, TypeScript, JavaScript, CSS, or General.'),
-            'binding' => self::binding('the whole hint'),
+            'scope' => self::obliges('the whole hint'),
             'hints' => self::listOf(self::object([
                 'text' => self::string('The statement itself. It reads the same on every version it holds for; the range is beside it, never inside it.'),
                 'since' => ['type' => ['integer', 'null'], 'description' => 'First TYPO3 major this holds on. Null means as far back as this knowledge base reaches.'],
                 'until' => ['type' => ['integer', 'null'], 'description' => 'Last TYPO3 major this holds on. Null means it still holds.'],
                 'versions' => self::string('The same range as a sentence, empty when the statement is bound to nothing.'),
-                'binding' => self::binding('this statement'),
-            ], ['text', 'since', 'until', 'versions', 'binding'])),
+                'scope' => self::obliges('this statement'),
+            ], ['text', 'since', 'until', 'versions', 'scope'])),
             'checks' => self::listOf(self::string(), 'Commands relevant to this hint.'),
-        ], ['id', 'title', 'category', 'binding', 'hints', 'checks']);
+        ], ['id', 'title', 'category', 'scope', 'hints', 'checks']);
     }
 
     /** @return array<string, mixed> */

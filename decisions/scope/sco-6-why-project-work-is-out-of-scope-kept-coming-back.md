@@ -60,3 +60,8 @@ boundary:
   repository" is the true sentence and a guard could only make it harder to
   write. The flag rename is what an occurrence in either asks for, and it is
   unchanged as the next step.
+- **Since then:** the **Assumed** was right and the pull was the name. On
+  2026-08-02 `outsideCore` was removed rather than renamed: one enum,
+  `Knowledge\Scope`, says which kind of work an answer is for, and there is no
+  longer a field whose only content is what the work is not
+  ([`D-KNW-5`](../knowledge/knw-5-one-scope-replaced-the-four-vocabularies.md)).

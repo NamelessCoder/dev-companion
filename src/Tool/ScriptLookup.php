@@ -43,13 +43,8 @@ final class ScriptLookup extends ReadOnlyTool
     public static function outputSchema(): array
     {
         $schema = Schema::knowledgeLookup();
-        $schema['properties']['outsideCore'] = [
-            'type' => 'boolean',
-            'description' => 'True when the query reads as a project or third-party extension. No script is then '
-                . 'returned: these are the core checkout\'s own, and that repository declares its commands itself.',
-        ];
-        $schema['properties']['audience'] = Schema::audience();
-        $schema['required'][] = 'outsideCore';
+        $schema['properties']['scope'] = Schema::scope();
+        $schema['required'][] = 'scope';
 
         return $schema;
     }
@@ -61,14 +56,14 @@ final class ScriptLookup extends ReadOnlyTool
         // Every command in these feedback runs in a core checkout. Handing them to
         // a repository that has none is the same mistake typo3_test_run_guide
         // used to make, and the same answer applies. This tool is asked about a
-        // task rather than about paths, so the call has one audience.
-        $audience = Scope::audienceOf('', $task);
-        if ($audience === Scope::AUDIENCE_OUTSIDE) {
+        // task rather than about paths, so the call has one scope.
+        $scope = Scope::of('', $task);
+        if ($scope->isOutsideTheCore()) {
             return ToolResult::create(
                 Scope::OUTSIDE_CORE_NOTICE . ' The scripts these notes describe are the core checkout\'s own, so '
                 . 'none is returned. What to run here is declared in this repository: its composer.json scripts, '
                 . 'its package.json, its CI configuration.',
-                ['query' => $task, 'matchCount' => 0, 'matches' => [], 'outsideCore' => true, 'audience' => $audience],
+                ['query' => $task, 'matchCount' => 0, 'matches' => [], 'scope' => $scope->value],
             );
         }
 
@@ -87,8 +82,7 @@ final class ScriptLookup extends ReadOnlyTool
                 'query' => $task,
                 'matchCount' => count($results),
                 'matches' => Prose::records($results),
-                'outsideCore' => false,
-                'audience' => $audience,
+                'scope' => $scope->value,
             ]);
         }
 
@@ -117,8 +111,7 @@ final class ScriptLookup extends ReadOnlyTool
             'matchCount' => 0,
             'matches' => [],
             'elsewhere' => $titles,
-            'outsideCore' => false,
-            'audience' => $audience,
+            'scope' => $scope->value,
         ]);
     }
 }

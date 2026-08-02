@@ -7,11 +7,11 @@ namespace Typo3CmsMcp\Tool;
 use Typo3CmsMcp\Feedback\Channel;
 use Typo3CmsMcp\Installation\Instance;
 use Typo3CmsMcp\Installation\Typo3Cli;
-use Typo3CmsMcp\Knowledge\Scope;
+use Typo3CmsMcp\Knowledge\Coverage;
 use Typo3CmsMcp\Knowledge\Versions;
 use Typo3CmsMcp\Result\Schema;
 use Typo3CmsMcp\Result\ToolResult;
-use Typo3CmsMcp\Server\Profile;
+use Typo3CmsMcp\Server\ExcludedTools;
 
 /**
  * What this server covers, what it deliberately does not, and which tool to
@@ -44,8 +44,8 @@ final class ServerScope extends ReadOnlyTool
                 'depth' => Schema::string('How deeply the topic is covered.'),
                 'tools' => Schema::listOf(Schema::string()),
                 'source' => Schema::string('Knowledge file or typo3:// resource behind the topic.'),
-                'provenance' => ['type' => 'string', 'enum' => ['core-only', 'transferable', 'installation'], 'description' => 'What the answers are worth outside the core. core-only: the contribution process and the scripts of that repository. transferable: a convention that holds wherever TYPO3 is written. installation: answered by the installation being read rather than from a snapshot.'],
-            ], ['topic', 'depth', 'tools', 'source', 'provenance'])),
+                'scope' => ['type' => 'string', 'enum' => ['core', 'project', 'extension', 'any'], 'description' => 'Which kind of work the answers are for. core: the contribution process and the scripts of that repository. any: a convention that holds wherever TYPO3 is written.'],
+            ], ['topic', 'depth', 'tools', 'source', 'scope'])),
             'doesNotCover' => Schema::listOf(Schema::object([
                 'topic' => Schema::string(),
                 'why' => Schema::string(),
@@ -64,13 +64,10 @@ final class ServerScope extends ReadOnlyTool
                 'branch' => Schema::string('The branch that line is verified against.'),
                 'status' => Schema::string('lts, stable, or development.'),
             ], ['major', 'branch', 'status']), 'The TYPO3 versions the knowledge is bound to. A statement outside a range is left out when a target version is known.'),
-            'profile' => Schema::object([
-                'active' => ['type' => 'string', 'enum' => ['all', 'project'], 'description' => 'Which half of the server this client is offered. all: every tool. project: the same server without the core contribution surface, because a project or extension repository cannot follow it.'],
-                'via' => ['type' => 'string', 'enum' => ['environment', 'installation'], 'description' => 'Whether the profile was named by the environment variable or followed from the kind of installation that was found.'],
-                'omits' => Schema::listOf(Schema::string(), 'The tools this profile leaves out of the tool list. Empty in the all profile.'),
-                'variable' => Schema::string('Environment variable that names the profile outright.'),
-                'misconfiguration' => Schema::nullableString('Set when the variable named a profile that does not exist. The derived one is used instead.'),
-            ], ['active', 'via', 'omits', 'variable']),
+            'excludedTools' => Schema::object([
+                'names' => Schema::listOf(Schema::string(), 'The tools the caller asked not to be offered, and the only reason the list is ever shorter than the documented one. Empty unless the variable is set.'),
+                'variable' => Schema::string('Environment variable that names them.'),
+            ], ['names', 'variable']),
             'installation' => Schema::object([
                 'found' => ['type' => 'boolean', 'description' => 'Whether there is an installation to read at all.'],
                 'root' => Schema::nullableString('Absolute path of the installation.'),
@@ -93,32 +90,36 @@ final class ServerScope extends ReadOnlyTool
                     'console' => Schema::string('Environment variable that names the console command.'),
                 ], ['root', 'console']),
             ], ['found', 'searched', 'packageCount', 'console']),
-        ], ['purpose', 'covers', 'doesNotCover', 'routing', 'versions', 'profile', 'installation']);
+        ], ['purpose', 'covers', 'doesNotCover', 'routing', 'versions', 'excludedTools', 'installation']);
     }
 
     public static function answer(array $args): ToolResult
     {
-        $scope = Scope::offered();
+        $coverage = Coverage::offered();
 
-        $lines = [
+        $lines = [];
+        if (ExcludedTools::all() !== []) {
             // Before the purpose rather than after it: the purpose describes
             // the whole server, and a client that reads what it holds first and
-            // that half of it is missing second has been told and then
-            // corrected.
-            self::profileLine(),
+            // that a tool is missing second has been told and then corrected.
+            $lines[] = self::exclusionLine();
+            $lines[] = '';
+        }
+
+        array_push(
+            $lines,
+            $coverage['purpose'],
             '',
-            $scope['purpose'],
-            '',
-            'Covered, and how deeply. Each topic says what its answers are worth outside the core: '
-            . 'core-only is the contribution process and the scripts that belong to that repository, '
-            . 'transferable is a convention that holds wherever TYPO3 is written, and installation is '
-            . 'answered by the installation this server was started in rather than from any snapshot.',
-        ];
-        foreach ($scope['covers'] as $entry) {
+            'Covered, and how deeply. Each topic says which kind of work its answers are for: core is the '
+            . 'contribution process and the scripts that belong to that repository, any is a convention that '
+            . 'holds wherever TYPO3 is written. Where the source names the installation, the answer is read '
+            . 'from the one this server was started in rather than from any snapshot.',
+        );
+        foreach ($coverage['covers'] as $entry) {
             $lines[] = '## ' . $entry['topic'];
             $lines[] = $entry['depth'];
             $lines[] = 'Tools: ' . implode(', ', $entry['tools']);
-            $lines[] = 'Source: ' . $entry['source'] . ' (' . $entry['provenance'] . ')';
+            $lines[] = 'Source: ' . $entry['source'] . ' (' . $entry['scope']->value . ')';
         }
 
         $lines[] = '';
@@ -145,7 +146,7 @@ final class ServerScope extends ReadOnlyTool
         $lines[] = 'Deliberately not covered — and this list is the boundary: a subject that is not on it is in '
             . 'scope, so a thin answer to it is a gap in the knowledge base rather than a limit of it.'
             . (Channel::isAvailable() ? ' Record one with typo3_feedback_record instead of going elsewhere.' : '');
-        foreach ($scope['doesNotCover'] as $entry) {
+        foreach ($coverage['doesNotCover'] as $entry) {
             $lines[] = '## ' . $entry['topic'];
             $lines[] = $entry['why'];
             $lines[] = 'Instead: ' . $entry['instead'];
@@ -153,7 +154,7 @@ final class ServerScope extends ReadOnlyTool
 
         $lines[] = '';
         $lines[] = 'Which tool to call when:';
-        foreach ($scope['routing'] as $entry) {
+        foreach ($coverage['routing'] as $entry) {
             $lines[] = '- ' . $entry['when'] . ' → ' . $entry['call'];
         }
 
@@ -242,53 +243,34 @@ final class ServerScope extends ReadOnlyTool
                 . 'Missing something that belongs here? Leave feedback about it.';
         }
 
-        return ToolResult::create(implode("\n", $lines), $scope + [
+        return ToolResult::create(implode("\n", $lines), $coverage + [
             'versions' => Versions::covered(),
-            'profile' => [
-                'active' => Profile::active(),
-                'via' => Profile::via(),
-                'omits' => Profile::omitted(),
-                'variable' => Profile::VARIABLE,
-                'misconfiguration' => Profile::misconfiguration() === '' ? null : Profile::misconfiguration(),
+            'excludedTools' => [
+                'names' => ExcludedTools::all(),
+                'variable' => ExcludedTools::VARIABLE,
             ],
             'installation' => self::installationReport(),
         ]);
     }
 
     /**
-     * Which half of the server this client is being offered, and why.
+     * Which tools the caller asked to have left out.
      *
      * A shorter tool list than the documentation describes is otherwise
      * indistinguishable from a broken server, and the caller has no way to
      * check: it sees the list it was given and nothing else.
      */
-    private static function profileLine(): string
+    private static function exclusionLine(): string
     {
-        $line = sprintf('Profile "%s", %s. ', Profile::active(), Profile::via() === Profile::VIA_ENVIRONMENT
-            ? 'named by ' . Profile::VARIABLE
-            : 'following from the installation this server was started in');
-
-        $line .= Profile::omitted() === []
-            ? sprintf(
-                'Every tool this server has is offered. In a project or extension repository, %s=%s offers the same '
-                . 'server without the core contribution surface.',
-                Profile::VARIABLE,
-                Profile::PROJECT,
-            )
-            : sprintf(
-                'The core contribution surface is not offered here — a project or extension repository has no '
-                . 'Build/Scripts/, no Gerrit remote and no Forge issue — so %s are missing from the tool list, and so '
-                . 'are the topics they answered. What transfers is still here. %s=%s offers them anyway.',
-                implode(', ', Profile::omitted()),
-                Profile::VARIABLE,
-                Profile::ALL,
-            );
-
-        if (Profile::misconfiguration() !== '') {
-            $line .= ' The configuration says otherwise and could not be followed: ' . Profile::misconfiguration() . '.';
-        }
-
-        return $line;
+        return sprintf(
+            '%s %s missing from the tool list, and so is every entry below that routed to one of them, because %s '
+            . 'asked for that. Unset it to be offered them again. Nothing else here is withheld: what an answer is '
+            . 'worth outside the core is stated per topic below, and every prose document is readable as a '
+            . 'typo3://core resource whatever the tool list holds.',
+            implode(', ', ExcludedTools::all()),
+            count(ExcludedTools::all()) === 1 ? 'is' : 'are',
+            ExcludedTools::VARIABLE,
+        );
     }
 
     /**

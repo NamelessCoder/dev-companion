@@ -16,6 +16,8 @@ src/Tool/Tool.php  # the interface each one implements; ReadOnlyTool carries the
 src/Tool/Registry.php  # every tool this server has, and the only place one is switched on
 src/Result/        # what a tool hands back, and what several of them build one from
 src/Knowledge/     # what this package knows about TYPO3: read from knowledge/, or computed where a rule has to be applied rather than looked up
+src/Knowledge/Scope.php  # the one vocabulary for which kind of work an answer is for, and how a path is placed in it
+src/Knowledge/Coverage.php  # knowledge/server-scope.json: what the server covers, what it does not, and the initialize instructions
 src/Knowledge/Catalog/  # the component catalog and the translation domain derivation
 src/Installation/  # what only the installation being read can answer: its icons, labels, namespaces, changelog, project and extensions
 src/Installation/Instance.php  # finds the TYPO3 installation the agent is working in
@@ -384,6 +386,14 @@ because extensions are developed inside site installations. All three are served
 deliberately, so knowledge that holds only for core contribution is written as
 core-only rather than as the rule, and knowledge that holds only from one TYPO3
 version says so; see the audience requirements in `requirements/audience/`.
+
+In the code and in every payload that is one word, `scope`: the `Knowledge\Scope`
+enum, whose cases are `core`, `project`, `extension`, `any` and `uncertain`. A
+statement in `knowledge/` declares one, a path is placed in one, and nothing
+else says the same thing under another name — `binding`, `provenance`,
+`audience` and an `outsideCore` boolean were four spellings of it until
+`D-KNW-5`. Audience stays the word for the idea, in `requirements/audience/`
+and in prose; `scope` is the word anything machine-readable uses.
 
 - **Everything below `knowledge/` is written in English**, and so is every query
   that reaches it. That is a property of the matcher rather than a preference:

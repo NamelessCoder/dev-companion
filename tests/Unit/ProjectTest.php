@@ -110,7 +110,7 @@ final class ProjectTest extends TestCase
         $text = Registry::call('typo3_project_scope', [])->text;
 
         self::assertStringContainsString('composer ci', $text);
-        self::assertStringContainsString('runTests.sh suites do not', $text);
+        self::assertStringContainsString('testing suites do not', $text);
     }
 
     #[Test]

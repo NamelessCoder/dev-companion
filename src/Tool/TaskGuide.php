@@ -6,6 +6,7 @@ namespace Typo3CmsMcp\Tool;
 
 use Typo3CmsMcp\Feedback\Channel;
 use Typo3CmsMcp\Knowledge\ArchitectureHints;
+use Typo3CmsMcp\Knowledge\Coverage;
 use Typo3CmsMcp\Knowledge\Domains;
 use Typo3CmsMcp\Knowledge\Scope;
 use Typo3CmsMcp\Knowledge\TaskIntents;
@@ -97,8 +98,7 @@ final class TaskGuide extends ReadOnlyTool
             'targetVersion' => ['type' => ['integer', 'null'], 'description' => 'The TYPO3 major this repository runs — stated by the caller, or read from the installation. Null means nothing was filtered by version. Where the repository serves several majors, targetVersions is what the answer holds for.'],
             'targetVersions' => Schema::listOf(['type' => 'integer'], 'Every TYPO3 major the answer holds for. One entry is the ordinary case. Several mean this repository declares typo3/cms-core for more than one of them, so a statement was kept when it holds on any — and where two statements about the same subject differ, the difference is the constraint the code lives under rather than drift. Empty when nothing was filtered by version.'),
             'domains' => Schema::listOf(Schema::string()),
-            'outsideCore' => ['type' => 'boolean', 'description' => 'True when the task reads as work on a project or third-party extension. The answer then holds core conventions that may transfer, not a checklist for the task.'],
-            'audience' => Schema::audience(),
+            'scope' => Schema::scope('Which kind of work the task reads as. Anything but core means the answer holds core conventions that may transfer, not a checklist for the task.'),
             'intents' => Schema::listOf(Schema::object([
                 'id' => Schema::string(),
                 'title' => Schema::string(),
@@ -142,12 +142,12 @@ final class TaskGuide extends ReadOnlyTool
         // than saying the question is outside what this server knows. One area
         // is one question: this tool cannot be asked about two at once, which
         // is why it decides once where the path tools decide per path.
-        $audience = Scope::audienceOf($area, $subject, $area);
-        $outsideCore = $audience === Scope::AUDIENCE_OUTSIDE;
+        $scope = Scope::of($area, $subject, $area);
+        $outsideCore = $scope->isOutsideTheCore();
 
         $intents = TaskIntents::scoped(
             TaskIntents::detect($subject . ' ' . $changeType),
-            $outsideCore,
+            $scope,
             Scope::isCoreWork($paths, $subject)
         );
         $confirmed = TaskIntents::confirmed($intents);
@@ -176,8 +176,8 @@ final class TaskGuide extends ReadOnlyTool
         // process as the process, so where nothing placed the work it says so
         // before stating it — the changelog and the Gerrit route are steps a
         // caller in their own repository cannot take at all.
-        if ($audience === Scope::AUDIENCE_UNCERTAIN) {
-            $lines[] = Scope::UNCERTAIN_AUDIENCE_NOTICE . ' Name the area or the path, and this brief is composed '
+        if ($scope === Scope::Uncertain) {
+            $lines[] = Scope::UNCERTAIN_NOTICE . ' Name the area or the path, and this brief is composed '
                 . 'for the repository it is in.';
             $lines[] = '';
         }
@@ -214,7 +214,7 @@ final class TaskGuide extends ReadOnlyTool
                 $lines[] = '### ' . $section['category'];
                 foreach ($section['hints'] as $hint) {
                     $lines[] = '## ' . $hint['title'];
-                    $notice = Hints::bindingNotice($hint, $outsideCore);
+                    $notice = Hints::scopeNotice($hint, $outsideCore);
                     if ($notice !== null) {
                         $lines[] = $notice;
                     }
@@ -256,7 +256,7 @@ final class TaskGuide extends ReadOnlyTool
         $conditionalChecks = self::conditionalChecks($conditional, $checks, $target);
 
         // Every check this server knows is a runTests.sh invocation against a
-        // script in the core repository. Reporting outsideCore and then listing
+        // script in the core repository. Reporting a scope outside the core and then listing
         // four of them was the whole complaint: the flag said the answer knew,
         // and the payload said it had not acted on it.
         if ($outsideCore) {
@@ -347,7 +347,7 @@ final class TaskGuide extends ReadOnlyTool
         // that depends on the working tree is the agent's job. Saying which
         // parts those are — and how to get them — is more useful than letting
         // the checklist read as if the brief had already looked.
-        $checkoutDiscovery = Scope::read()['checkoutDiscovery'];
+        $checkoutDiscovery = Coverage::read()['checkoutDiscovery'];
         if ($outsideCore) {
             $checkoutDiscovery = array_values(array_filter(
                 $checkoutDiscovery,
@@ -386,8 +386,7 @@ final class TaskGuide extends ReadOnlyTool
             'targetVersion' => $target,
             'targetVersions' => $targets,
             'domains' => $domains,
-            'outsideCore' => $outsideCore,
-            'audience' => $audience,
+            'scope' => $scope->value,
             'intents' => array_map(static fn(array $intent): array => [
                 'id' => (string) $intent['id'],
                 'title' => (string) $intent['title'],

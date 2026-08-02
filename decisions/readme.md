@@ -87,7 +87,9 @@ the repository has moved furthest away from since. Going back to one and adding
 
 ## Every decision, newest first
 
+- [`D-AUD-4`][D-AUD-4] — The tool list is not where the audience is said · 2026-08-02 · standing
 - [`D-COD-3`][D-COD-3] — A directory is read through symfony/finder · 2026-08-02 · standing
+- [`D-KNW-5`][D-KNW-5] — One `Scope` replaced the four vocabularies · 2026-08-02 · standing
 - [`D-COD-1`][D-COD-1] — One file declares one class · 2026-08-01 · standing
 - [`D-COD-2`][D-COD-2] — The upkeep CLI is a Symfony Console application · 2026-08-01 · standing
 - [`D-DIS-6`][D-DIS-6] — The protocol offers nothing to replace the working directory · 2026-08-01 · standing
@@ -100,7 +102,7 @@ the repository has moved furthest away from since. Going back to one and adding
 - [`D-FBK-8`][D-FBK-8] — One todo is one file, and the queue is in the names · 2026-08-01 · standing
 - [`D-FBK-9`][D-FBK-9] — A todo nobody can start waits where it says why · 2026-08-01 · standing
 - [`D-SCO-7`][D-SCO-7] — The signals are combined per call, and a call is not a path · 2026-08-01 · standing
-- [`D-SCO-8`][D-SCO-8] — The path decides, and the answer may say it cannot · 2026-08-01 · standing
+- [`D-SCO-8`][D-SCO-8] — The path decides, and the answer may say it cannot · 2026-08-01 · corrected
 - [`D-SKL-1`][D-SKL-1] — The order a task starts in is one file, and the reading comes last in it · 2026-08-01 · tested
 - [`D-ANS-4`][D-ANS-4] — The instruction budget is 2048 characters, on one client's evidence · 2026-07-31 · standing
 - [`D-AUD-3`][D-AUD-3] — The instructions carry the entry point, because the tool descriptions never arrive · 2026-07-31 · tested
@@ -116,7 +118,7 @@ the repository has moved furthest away from since. Going back to one and adding
 - [`D-ANS-2`][D-ANS-2] — Three numbers now decide what a lookup answers, and they were measured, not reasoned · 2026-07-30 · tested
 - [`D-ANS-3`][D-ANS-3] — Retrieval stays lexical and runtime inspection stays narrow · 2026-07-30 · tested
 - [`D-CAT-3`][D-CAT-3] — The component index is curated; its contract comes from the installation · 2026-07-30 · standing
-- [`D-KNW-3`][D-KNW-3] — `provenance` is not the third spelling of `binding`, and stays · 2026-07-30 · tested
+- [`D-KNW-3`][D-KNW-3] — `provenance` is not the third spelling of `binding`, and stays · 2026-07-30 · corrected
 - [`D-KNW-4`][D-KNW-4] — Package knowledge needs a producer before it needs discovery · 2026-07-30 · standing
 - [`D-VER-3`][D-VER-3] — The Fluid engine gets no version axis of its own, because the core pins it · 2026-07-30 · tested
 - [`D-ANS-1`][D-ANS-1] — The unanswered result keeps its shape and gains a reason · 2026-07-29 · standing
@@ -141,7 +143,9 @@ the repository has moved furthest away from since. Going back to one and adding
 - [`D-VER-1`][D-VER-1] — A version range is data on the statement, not a sentence in it · 2026-07-29 · tested
 - [`D-VER-2`][D-VER-2] — The prose is not bound; it says which half it is · 2026-07-29 · standing
 
+[D-AUD-4]: audience/aud-4-the-tool-list-is-not-where-the-audience-is-said.md
 [D-COD-3]: code/cod-3-a-directory-is-read-through-symfony-finder.md
+[D-KNW-5]: knowledge/knw-5-one-scope-replaced-the-four-vocabularies.md
 [D-COD-1]: code/cod-1-one-file-declares-one-class.md
 [D-COD-2]: code/cod-2-the-upkeep-cli-is-a-symfony-console-application.md
 [D-DIS-6]: discovery/dis-6-the-protocol-offers-nothing-to-replace-the-working-directory.md

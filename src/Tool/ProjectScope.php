@@ -113,7 +113,7 @@ final class ProjectScope extends ReadOnlyTool
         $lines[] = $project['commands'] === []
             ? 'This repository declares no commands of its own in composer.json or package.json. What to run is '
                 . 'then whatever its CI configuration does.'
-            : 'Commands this repository declares — these exist here, the core\'s runTests.sh suites do not. '
+            : 'Commands this repository declares — these exist here, the core\'s testing suites do not. '
                 . 'What each one does to the sources is read off its body, never by running it: a check reports '
                 . 'and leaves them as they are, a change rewrites something, and unknown is a body that does not '
                 . 'say — a test suite runs the project\'s own code, and no declaration covers that. A task told '

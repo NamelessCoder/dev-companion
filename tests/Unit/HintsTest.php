@@ -9,6 +9,7 @@ use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Typo3CmsMcp\Knowledge\ArchitectureHints;
 use Typo3CmsMcp\Knowledge\Domains;
+use Typo3CmsMcp\Knowledge\Scope;
 use Typo3CmsMcp\Knowledge\TaskIntents;
 use Typo3CmsMcp\Knowledge\TestSuiteHints;
 use Typo3CmsMcp\Tool\Registry;
@@ -912,8 +913,11 @@ final class HintsTest extends TestCase
             'id' => 'css-class-naming',
             'paths' => ['packages/my_sitepackage/Classes/Controller/ProductController.php'],
         ]);
-        self::assertTrue($project->data['outsideCore']);
-        self::assertSame(ArchitectureHints::BINDING_CORE, $project->data['hints'][0]['binding']);
+        self::assertSame(
+            [Scope::Extension],
+            array_values(array_unique(array_column($project->data['scopes'], 'scope'))),
+        );
+        self::assertSame(Scope::Core->value, $project->data['hints'][0]['scope']);
         self::assertStringContainsString('Binding for a patch to the TYPO3 core', $project->text);
         self::assertStringContainsString('conventions you may adopt', $project->text);
 
@@ -937,10 +941,10 @@ final class HintsTest extends TestCase
             'paths' => ['packages/my_sitepackage/Classes/ViewHelpers/GreetingViewHelper.php'],
         ]);
 
-        self::assertNull($result->data['hints'][0]['binding'], 'the hint as a whole transfers');
+        self::assertNull($result->data['hints'][0]['scope'], 'the hint as a whole transfers');
         $bound = array_values(array_filter(
             $result->data['hints'][0]['hints'],
-            static fn(array $statement): bool => $statement['binding'] !== null,
+            static fn(array $statement): bool => $statement['scope'] !== null,
         ));
         self::assertCount(1, $bound);
         self::assertStringContainsString('changelog entry', $bound[0]['text']);

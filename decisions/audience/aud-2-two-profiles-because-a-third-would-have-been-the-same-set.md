@@ -73,3 +73,10 @@ contribution surface. The item written from it named three profiles — `core`,
   protocol-level run can show is what an agent does with a route it cannot
   follow; that needs a session in `E-SITE` given core work. The second half of
   the **Wrong if**, a deployment with no installation, is untouched by this run.
+- **Since then:** the mechanism is gone rather than repaired. Profiles were
+  weighed against what they bought — 2,223 bytes of a 92,189-byte tool list —
+  and deleted on 2026-08-02, so no client is offered a shorter list unless it
+  asked for one. What replaces them is
+  [`D-AUD-4`](aud-4-the-tool-list-is-not-where-the-audience-is-said.md), and the
+  second half of the **Wrong if** cannot be met any more: there is no profile
+  left for a deployment without an installation to earn.

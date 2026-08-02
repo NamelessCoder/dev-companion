@@ -178,24 +178,25 @@ configuration uses the absolute entrypoint:
 The knowledge base ships inside the package, so nothing else needs to be
 deployed or configured.
 
-## Which half of the server a client is offered
+## Which tools a client is offered
 
-Some of what this server knows is the core's own contribution process — the
-review rules, the Gerrit workflow, the `runTests.sh` suites — and none of it
-transfers to a project. Marking those answers as core-only tells a site
-developer what they are worth; it does not keep the tools that give them out of
-the list, and the tool list is the first thing a client pays for.
+Every one of them, wherever the server was started. Some of what it knows is the
+core's own contribution process — the review rules, the Gerrit workflow, the
+core testing suites — and none of that transfers to a project. What it is worth
+is said in the answer, per topic and per path, because whether a task is core
+work is a property of the task and not of the directory it is asked from.
 
-So the list itself varies. Started in a Composer project, the server leaves the
-core contribution surface out and keeps everything that transfers plus
-everything the installation answers.
+The server used to leave those three tools out of a Composer project. That read
+the repository where the task was meant, and a core patch written from a site
+installation was answered as core work and then sent to a tool the client had
+not been given.
 
-- `TYPO3_MCP_PROFILE` decides it outright: `all` or `project`.
-- `TYPO3_MCP_EXCLUDE_TOOLS` removes selected tools by their comma-separated
-  names, applied after the profile.
+- `TYPO3_MCP_EXCLUDE_TOOLS` removes tools by their comma-separated names, and is
+  the only thing that shortens the list. `typo3_server_scope` is never one of
+  them: it is what explains a shorter list.
 
-`typo3_server_scope` has every profile, and names the active one and what it
-left out.
+`typo3_server_scope` names what was excluded, and nothing routes to a tool that
+is not there.
 
 ## What comes with it
 

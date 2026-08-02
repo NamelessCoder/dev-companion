@@ -1,7 +1,7 @@
 ---
 id: D-KNW-3
 date: 2026-07-30
-status: tested
+status: corrected
 ---
 
 # D-KNW-3 — `provenance` is not the third spelling of `binding`, and stays
@@ -26,7 +26,8 @@ are the same axis. The third is not, and reading its values is what showed it.
 - **Wrong if:** a fourth value arrives on either side that reads naturally in
   both — then they are the same axis after all and the merge is the entry that
   was right.
-- **Tested on 2026-08-02:** no fourth value has arrived on either side. Read out
+- **Corrected on 2026-08-02:** read out of the corpus that morning, no fourth
+  value had arrived on either side. Read out
   of the corpus as it stands, `binding` is one value — `core`, on 28 entries
   across the six `knowledge/architecture-hints/*.json` files and
   `knowledge/task-intents.json`, hint-level and statement-level alike — and
@@ -34,7 +35,7 @@ are the same axis. The third is not, and reading its values is what showed it.
   `knowledge/server-scope.json`: four `core-only`, four `installation`, eight
   `transferable`. The move this entry decided is done: the intents carry
   `binding` and no `coreOnly` boolean is left in either corpus.
-- **Since then:** the arrival of a fourth value was already caught, in two
+  The arrival of a fourth value was already caught, in two
   places that do not know about each other —
   `VersionsTest::whoIsObligedIsWrittenAsDataToo` holds `binding` to its one
   value across both corpora, `ScopeTest::everyCoveredTopicSaysWhatItIsWorthOutsideTheCore`
@@ -48,3 +49,18 @@ are the same axis. The third is not, and reading its values is what showed it.
   normalised comparison would have failed on the day it was written, and the
   pinned sets are what catch a fourth value arriving under a spelling the
   intersection would miss.
+- **Corrected on 2026-08-02:** the fourth value arrived, and it was the one this
+  entry asked for. Naming the three audiences of `R-AUD-1` outright — `project`
+  and `extension` in place of the single negation `outside-core` — reads on both
+  axes at once, so `binding` and `provenance` were one axis after all and the
+  merge this entry declined is the entry that was right. What held them apart
+  was `installation`, and it was never an obligation: it says where an answer is
+  read from, which `source` on the same topic already said. It is gone as a
+  value, the four topics that carried it are `any`, and all four vocabularies —
+  `binding`, `provenance`, `audience` and the `outsideCore` boolean — are the
+  `Knowledge\Scope` enum. See
+  [`D-KNW-5`](knw-5-one-scope-replaced-the-four-vocabularies.md).
+  `KnowledgeTest::whoAnAnswerObligesAndWhatItIsWorthStayTwoVocabularies` was the
+  assertion this entry left behind, and it is replaced by
+  `KnowledgeTest::everyScopeInTheCorpusIsOneTheEnumDeclares`, which holds the
+  one vocabulary to the cases the enum declares.

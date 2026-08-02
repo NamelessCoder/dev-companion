@@ -10,6 +10,7 @@ use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Typo3CmsMcp\Installation\Instance;
 use Typo3CmsMcp\Knowledge\ArchitectureHints;
+use Typo3CmsMcp\Knowledge\Scope;
 use Typo3CmsMcp\Knowledge\TaskIntents;
 use Typo3CmsMcp\Knowledge\Versions;
 use Typo3CmsMcp\Tests\Support\TemporaryInstallation;
@@ -215,10 +216,10 @@ final class VersionsTest extends TestCase
         // there is — a second one is a vocabulary change, not a data entry.
         foreach (ArchitectureHints::load() as $hint) {
             foreach (array_merge([$hint], $hint['hints']) as $entry) {
-                if (($entry['binding'] ?? null) !== null) {
+                if (($entry['scope'] ?? null) !== null) {
                     self::assertSame(
-                        ArchitectureHints::BINDING_CORE,
-                        $entry['binding'],
+                        Scope::Core,
+                        $entry['scope'],
                         $hint['id'] . ' binds to something this server has no vocabulary for',
                     );
                 }
@@ -230,10 +231,10 @@ final class VersionsTest extends TestCase
         // vocabulary — and a boolean cannot carry the value a third audience
         // would need. One name, one enforced value, both corpora.
         foreach (TaskIntents::load() as $intent) {
-            if ($intent['binding'] !== null) {
+            if ($intent['scope'] !== null) {
                 self::assertSame(
-                    ArchitectureHints::BINDING_CORE,
-                    $intent['binding'],
+                    Scope::Core,
+                    $intent['scope'],
                     $intent['id'] . ' binds to something this server has no vocabulary for',
                 );
             }

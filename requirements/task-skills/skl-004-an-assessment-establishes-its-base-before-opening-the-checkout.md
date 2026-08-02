@@ -1,6 +1,7 @@
 ---
 id: R-SKL-004
 status: held
+restsOn: [D-SKL-002]
 ---
 
 # R-SKL-004 — An assessment establishes its base before opening the checkout
@@ -26,6 +27,12 @@ reported as unassessed, because a defect nobody looked for and a defect that is
 not there are indistinguishable in a report that does not separate them — which
 is why the deprecation sweep is reported when it comes back empty as well, with
 the majors it covered.
+
+A request that names the surfaces it is about narrows what the assessment
+reads, never the list it closes on: the surfaces it left out stay on the list
+as not requested, which is a different state from the unassessed one above,
+because the review's own gap and the reader's narrowing are answered by
+different people.
 
 A finding about a user-controlled value is held to the same distinction one
 surface further in: it is a claim about the sink, so it is not established until
@@ -60,16 +67,21 @@ escaping opt-out in a template: every citation under it correct, and the output
 escaped anyway, because the six call sites sit in a ViewHelper that emits
 nothing and the core wraps the resolved title in `htmlspecialchars()` two
 classes further on. The run opened neither of them, and did open the core
-ViewHelper that confirmed what it already believed.
+ViewHelper that confirmed what it already believed. Extended a last time by the
+feedback of 2026-07-31 18:36, which asked for a mode that skips the surface list
+for a focused review — judged in
+[`D-SKL-002`](../../decisions/task-skills/skl-002-a-focused-audit-narrows-what-is-assessed.md),
+where the skipping is what was refused and the reading is what was cut.
 
 ## Held by
 
 - `SkillTest::theBaseIsEstablishedBeforeTheCheckoutIsOpened`
 - `SkillTest::anAssessmentAsksBeforeItJudgesAndSaysWhatItDidNotAsk`
+- `SkillTest::aFocusedRequestNarrowsTheReadingAndNeverTheSurfaceList`
 - `SkillTest::aSecurityFindingIsNotEstablishedUntilItsSinkIs`
 - `HintsTest::bothSidesOfAnInjectionQuestionReachTheSinkMethod`
 - `SkillTest::theDeprecationSweepRunsFromTheExtensionsSurfaceAndIsReportedWhenItFindsNothing`
 - `SkillTest::theCheckLayerIsMeasuredAgainstACompleteOneRatherThanWhatIsDeclared`,
-- `REVIEW-01`, `REVIEW-02`, `SKILL-09` — the last of which is what measures the
-  escaping half, because the test beside it reads a sentence rather than a
-  review.
+- `REVIEW-01`, `REVIEW-02`, `SKILL-09`, `SKILL-11` — the last two measure the
+  escaping half and the focused half, because the test beside each of them
+  reads a sentence rather than a review.

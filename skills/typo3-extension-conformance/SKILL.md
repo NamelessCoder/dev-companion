@@ -21,6 +21,12 @@ method; do not embed versioned TYPO3 facts.
    checklist's surfaces narrowed to the ones this kind of checkout can have. It
    is the work list, and the coverage the report closes on is this same list
    with every entry answered.
+4. Where the request names what it is about — security only, configuration
+   only, one subsystem — read the surfaces it names and mark the rest **not
+   requested** on that same list. The request narrows the reading, never the
+   list: an entry nobody asked about costs one line, and dropping it instead is
+   what leaves the reader unable to ask for the rest. A request that names no
+   surface is not a focused one, and every entry is read.
 
 A surface is in scope because the checklist names it, not because the file tree
 shows it. Listing the files first inverts that: `find` cannot show a manual that
@@ -96,12 +102,16 @@ improvements, make the smallest coherent changes, preserve local project
 conventions, and run the commands declared by `typo3_project_scope`, the ones
 that change files included.
 
-Close on coverage rather than on a summary: the surface list written in step 5,
-every entry marked assessed or unassessed, clean ones briefly. It is that list
-and not a recollection at the end — a summary assembled from memory reports what
-the session noticed it skipped, never what it never reached. Without the list a
-thorough report and a narrow one look alike, and the cheapest way to look
-thorough is to examine less.
+Close on coverage rather than on a summary: the surface list written in step 3,
+every entry marked assessed, unassessed or not requested, clean ones briefly. It
+is that list and not a recollection at the end — a summary assembled from memory
+reports what the session noticed it skipped, never what it never reached.
+Without the list a thorough report and a narrow one look alike, and the cheapest
+way to look thorough is to examine less.
+
+Unassessed and not requested both mean nothing was established there, and they
+are not the same thing: one is this review's gap, the other is what the request
+left out. Say which of the two per entry, and let neither read as clean.
 
 This skill owns assessment and prioritization, and it owns saying who takes each
 finding onward. Name the workflow the follow-up belongs to — the testing,

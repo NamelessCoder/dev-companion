@@ -1,7 +1,9 @@
 # Conformance audit checklist
 
 Read the relevant sections for a scoped review; read all sections for a full
-extension audit. Absence of an optional subsystem is not a defect.
+extension audit. Either way the surface list below is written whole, and a
+surface the request left out is reported as not requested rather than dropped.
+Absence of an optional subsystem is not a defect.
 
 ## Audit surfaces
 

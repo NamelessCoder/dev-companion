@@ -89,8 +89,49 @@ not a reason to reopen it.
 
 ## Covered by
 
-- Nothing yet. `SkillTest::theBaseIsEstablishedBeforeTheCheckoutIsOpened` and
+- `SkillTest::aFocusedRequestNarrowsTheReadingAndNeverTheSurfaceList`, which
+  reads back the narrowing where the list is built, the third state where the
+  report closes, and the clause in the reference that used to be outranked.
+- `SKILL-11`, which is what measures the behaviour. The test above is a
+  sentence; `SkillTest::theBaseIsEstablishedBeforeTheCheckoutIsOpened` and
   `SkillTest::anAssessmentAsksBeforeItJudgesAndSaysWhatItDidNotAsk` hold the
-  list being written and answered; neither can see whether a focused request was
-  narrowed to the reading or to the list, which is what the queued todo has to
-  give something to measure.
+  list being written and answered, and none of the three can see whether a
+  session given a focused prompt narrowed the reading or the list.
+
+## Since then
+
+The wording landed on 2026-08-02, and what settled the assumption first is the
+two runs the decision had not read for it. They answer the smaller question —
+whether an entry closed without reading stays distinguishable — and they answer
+it in the report rather than in a rule. `REVIEW-01`'s answer carried five
+categories where one would have done: High/Medium/Low, "Recommendations (no
+verified violation)", "Assessed and clean", "Not applicable" for the subsystems
+the extension does not register, and "Unassessed — not the same as clean", with
+a reason per entry on the last. It then invented a sixth nobody had asked it
+for — the consent checkbox reported as "a legal call, not a TYPO3 conformance
+defect" — which is a surface placed outside the review rather than filed as a
+finding. A report that already keeps four kinds of "no finding here" apart
+keeps a fifth apart too, and the fifth is the cheaper one to write: not
+requested says who narrowed it.
+
+The other half of the assumption — that an entry can be closed at a cost of one
+line, without the reading — is `REVIEW-02`. Its coverage table closes
+`contentElements: []`, `middlewares: []` and `backendRoutes: []` off the scope
+call without opening the checkout for any of them, and files translations as
+correctly absent because `crowdin.yml` owns them. So listing without reading is
+already what the runs do; the two halves come apart, and the assumption stands
+on evidence rather than on nothing.
+
+What neither run measures is the narrowing this decision is about. Both were
+given an open prompt, so every entry they closed cheaply was closed because the
+surface is **absent**, never because the request left it out — and an absent
+surface costs no reading to begin with. Whether a session told "security only"
+writes the whole list is unmeasured, which is why `SKILL-11` exists and carries
+`open` rather than `held`. The **Wrong if** above is unchanged and still needs a
+run with a focused prompt in it.
+
+One thing the wording decides that the entry did not. The state is called **not
+requested** rather than "out of scope": `REVIEW-01` already used "Not
+applicable" for a surface the checkout does not have and "outside what this
+server answers" for a question that is not TYPO3's, and a third phrase near
+those two has to say which of them it is not.

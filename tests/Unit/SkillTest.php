@@ -794,7 +794,7 @@ final class SkillTest extends TestCase
         // is indistinguishable from a clean result — read off the written list
         // rather than off what the session remembers having skipped.
         self::assertStringContainsString('**unassessed**, and unassessed is', $skill);
-        self::assertStringContainsString('every entry marked assessed or unassessed', $skill);
+        self::assertStringContainsString('every entry marked assessed, unassessed or not requested', $skill);
         self::assertStringContainsString('not a recollection at the end', $skill);
 
         // "Do not change files" had been read as "run nothing": the audit
@@ -806,6 +806,57 @@ final class SkillTest extends TestCase
         self::assertMatchesRegularExpression(
             '/marks as checks hand the code back as it was, and an audit\s+told not to change files runs them/',
             $skill,
+        );
+    }
+
+    #[Test]
+    public function aFocusedRequestNarrowsTheReadingAndNeverTheSurfaceList(): void
+    {
+        // The permission to scope a review existed one clause deep in the
+        // checklist while the two steps that build and close the work list
+        // never mentioned it, so a security-only review was told to write the
+        // whole list and answer every entry on it anyway. The narrowing is
+        // stated where the list is built now, and it reaches the reading only.
+        $skill = (string) file_get_contents(
+            Paths::root() . '/skills/typo3-extension-conformance/SKILL.md',
+        );
+
+        $list = strpos($skill, 'Write the surface list down before opening a single file');
+        $narrow = strpos($skill, 'The request narrows the reading, never the');
+        self::assertNotFalse($narrow, 'the conformance skill does not say what a focused request narrows');
+        self::assertGreaterThan((int) $list, $narrow, 'the request narrows the list before the list exists');
+        self::assertLessThan(
+            strpos($skill, 'Read the checkout for what none of those can know'),
+            $narrow,
+            'the narrowing is stated after the checkout is open, where the reading it saves is already done',
+        );
+
+        // What the list is narrowed by stays the kind of checkout, and the
+        // entries the request left out stay on it under a state of their own.
+        self::assertStringContainsString('narrowed to the ones this kind of checkout can have', $skill);
+        self::assertStringContainsString('mark the rest **not', $skill);
+        self::assertMatchesRegularExpression(
+            '/A request that names no\s+surface is not a focused one/',
+            $skill,
+        );
+
+        // The report is where the two states are told apart, and the number is
+        // read off the step that writes the list: it said step 5 for two days
+        // after the block was renumbered to three.
+        self::assertStringContainsString('the surface list written in step 3', $skill);
+        self::assertMatchesRegularExpression(
+            '/Unassessed and not requested both mean nothing was established there, and they\s+are not the same thing/',
+            $skill,
+        );
+        self::assertStringContainsString('let neither read as clean', $skill);
+
+        // And the clause that was outranked now points at the same list, so a
+        // session reading the reference alone does not narrow it there.
+        self::assertStringContainsString(
+            'the surface list below is written whole',
+            (string) file_get_contents(
+                Paths::root() . '/skills/typo3-extension-conformance/references/checklist.md',
+            ),
         );
     }
 

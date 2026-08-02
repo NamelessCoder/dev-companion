@@ -55,7 +55,7 @@ final class Extension
      *     requires: array<int, array{package: string, constraint: string}>,
      *     tcaTables: array<int, string>,
      *     tcaOverrides: array<int, string>,
-     *     contentElements: array<int, array{identifier: string, templateName: ?string, source: ?string}>,
+     *     contentElements: array<int, array{identifier: string, kind: string, templateName: ?string, source: ?string, pluginSettings: ?string}>,
      *     backendModules: array<int, string>,
      *     backendRoutes: array<int, string>,
      *     icons: array<int, string>,
@@ -106,7 +106,11 @@ final class Extension
             // what the file does — see overrides().
             'tcaTables' => self::tcaTables($key, $path),
             'tcaOverrides' => $overrides['tables'],
-            'contentElements' => self::contentElements(self::cTypes($key, $overrides['contentElements']), $path),
+            'contentElements' => self::contentElements(
+                self::cTypes($key, $overrides['contentElements']),
+                $path,
+                $overrides['plugins'],
+            ),
             'backendModules' => PhpArray::keys($path . '/Configuration/Backend/Modules.php'),
             'backendRoutes' => array_merge(
                 PhpArray::keys($path . '/Configuration/Backend/Routes.php'),
@@ -275,17 +279,18 @@ final class Extension
      * $GLOBALS['TCA']['<table>'] or the first argument of one of the
      * ExtensionManagementUtility calls above, and both survive tokenising.
      *
-     * @return array{tables: array<int, string>, contentElements: array<int, string>}
+     * @return array{tables: array<int, string>, contentElements: array<int, string>, plugins: array<int, string>}
      */
     private static function overrides(string $path): array
     {
         $directory = $path . '/Configuration/TCA/Overrides';
         if (!is_dir($directory)) {
-            return ['tables' => [], 'contentElements' => []];
+            return ['tables' => [], 'contentElements' => [], 'plugins' => []];
         }
 
         $tables = [];
         $elements = [];
+        $plugins = [];
         foreach (Finder::create()->files()->in($directory)->depth(0)->name('*.php')->sortByName() as $file) {
             $found = self::declarationsIn((string) file_get_contents($file->getPathname()));
             if ($found['tables'] === []) {
@@ -300,21 +305,30 @@ final class Extension
             foreach ($found['contentElements'] as $element) {
                 $elements[$element] = true;
             }
+            foreach ($found['plugins'] as $plugin) {
+                $elements[$plugin] = true;
+                $plugins[$plugin] = true;
+            }
         }
 
         $names = array_keys($tables);
         sort($names);
         $identifiers = array_keys($elements);
         sort($identifiers);
+        $signatures = array_keys($plugins);
+        sort($signatures);
 
-        return ['tables' => $names, 'contentElements' => $identifiers];
+        return ['tables' => $names, 'contentElements' => $identifiers, 'plugins' => $signatures];
     }
 
-    /** @return array{tables: array<int, string>, contentElements: array<int, string>} */
+    /**
+     * @return array{tables: array<int, string>, contentElements: array<int, string>, plugins: array<int, string>}
+     */
     private static function declarationsIn(string $code): array
     {
         $tables = [];
         $elements = [];
+        $plugins = [];
         $tokens = @token_get_all($code);
         $variables = self::stringVariables($tokens);
         $count = count($tokens);
@@ -328,6 +342,22 @@ final class Extension
                 $keys = self::followingStrings($tokens, $index, 2);
                 if (($keys[0] ?? '') === 'TCA' && isset($keys[1])) {
                     $tables[] = $keys[1];
+                }
+                continue;
+            }
+
+            if ($token[0] === T_STRING && $token[1] === 'registerPlugin') {
+                // An Extbase plugin is a content element registered by a call of
+                // its own, and this is the only place it can stand: addPlugin()
+                // below it needs the extension key an override file carries and
+                // throws anywhere else. The identifier is neither argument but
+                // the signature both derive — the extension name without its
+                // underscores, the plugin name, lowercased and joined.
+                $arguments = self::arguments($tokens, $index);
+                $extensionName = self::firstLiteral($arguments[0] ?? [], $variables);
+                $pluginName = self::firstLiteral($arguments[1] ?? [], $variables);
+                if ($extensionName !== null && $pluginName !== null) {
+                    $plugins[] = strtolower(str_replace('_', '', $extensionName)) . '_' . strtolower($pluginName);
                 }
                 continue;
             }
@@ -385,6 +415,7 @@ final class Extension
                 static fn(string $table): bool => preg_match('/^[a-z][a-z0-9_]*$/', $table) === 1,
             )),
             'contentElements' => array_values(array_unique($elements)),
+            'plugins' => array_values(array_unique($plugins)),
         ];
     }
 
@@ -622,10 +653,19 @@ final class Extension
      * than being derived from the identifier: the convention is a convention,
      * and a guessed file name sends the caller to a file that is not there.
      *
+     * For an Extbase plugin there is nothing to be unknown about, and reporting
+     * one as an element without a `templateName` cost an audit two findings
+     * about files nothing was going to write (`D-ANS-015`). Its rendering
+     * definition is generated by `configurePlugin()` in `ext_localconf.php`,
+     * `templateName = Generic` included, so the kind is said instead and the
+     * answer points at `plugin.tx_<identifier>` — where its own templates are
+     * configured.
+     *
      * @param array<int, string> $identifiers
-     * @return array<int, array{identifier: string, templateName: ?string, source: ?string}>
+     * @param array<int, string> $plugins the signatures of the Extbase plugins among them
+     * @return array<int, array{identifier: string, kind: string, templateName: ?string, source: ?string, pluginSettings: ?string}>
      */
-    private static function contentElements(array $identifiers, string $path): array
+    private static function contentElements(array $identifiers, string $path, array $plugins): array
     {
         if ($identifiers === []) {
             return [];
@@ -633,15 +673,41 @@ final class Extension
 
         $typoScript = self::typoScriptValues($path);
 
-        return array_map(static function (string $identifier) use ($typoScript): array {
+        return array_map(static function (string $identifier) use ($typoScript, $plugins): array {
             $set = $typoScript['tt_content.' . $identifier . '.templateName'] ?? null;
+            $isPlugin = in_array($identifier, $plugins, true);
 
             return [
                 'identifier' => $identifier,
+                'kind' => $isPlugin ? 'plugin' : 'element',
                 'templateName' => $set['value'] ?? null,
                 'source' => $set['file'] ?? null,
+                'pluginSettings' => $isPlugin ? self::pluginSettings($typoScript, $identifier) : null,
             ];
         }, $identifiers);
+    }
+
+    /**
+     * The file where this extension's TypoScript configures a plugin.
+     *
+     * `plugin.tx_<signature>` is the path Extbase reads a plugin's own
+     * configuration from, the signature being the same string as the CType, so
+     * the question needs no second source. Any line below it counts — the
+     * `view.templateRootPaths` a template is looked for in is one of several
+     * ways to arrive there, and a reference to a `lib.` object is the shortest.
+     *
+     * @param array<string, array{value: string, file: string}> $typoScript
+     */
+    private static function pluginSettings(array $typoScript, string $identifier): ?string
+    {
+        $path = 'plugin.tx_' . $identifier;
+        foreach ($typoScript as $key => $set) {
+            if ($key === $path || str_starts_with($key, $path . '.')) {
+                return $set['file'];
+            }
+        }
+
+        return null;
     }
 
     /**
@@ -649,7 +715,8 @@ final class Extension
      *
      * Not a TypoScript parser: it tracks the nesting so that a value can be
      * addressed however it was written — `tt_content.x.templateName = T`, a
-     * `tt_content.x { }` block, or a `tt_content { x { } }` one. Conditions are
+     * `tt_content.x { }` block, or a `tt_content { x { } }` one. A reference is
+     * held as the path it copies from rather than followed. Conditions are
      * ignored rather than evaluated, so a value set only inside one reads as
      * though it were set outright; the file it came from travels with it, which
      * is where a caller checks that.
@@ -679,16 +746,20 @@ final class Extension
                     $stack[] = $matches[1];
                     continue;
                 }
-                if (preg_match('/^([\w.\-]+)\s*=\s*(.*)$/', $line, $matches) !== 1) {
+                // The reference operators along with the assignment, because
+                // `plugin.tx_x < lib.y` is how a plugin usually arrives at its
+                // configuration and a path that only ever stands on the left of
+                // one is nowhere in a store of assignments alone.
+                if (preg_match('/^([\w.\-]+)\s*(=<|<|=)\s*(.*)$/', $line, $matches) !== 1) {
                     continue;
                 }
-                if ($matches[2] === '(') {
+                if ($matches[3] === '(') {
                     $inMultiline = true;
                     continue;
                 }
                 $key = ($stack === [] ? '' : implode('.', $stack) . '.') . $matches[1];
                 $values[$key] = [
-                    'value' => trim($matches[2]),
+                    'value' => ($matches[2] === '<' ? '< ' : '') . trim($matches[3]),
                     'file' => substr($file, strlen($path) + 1),
                 ];
             }

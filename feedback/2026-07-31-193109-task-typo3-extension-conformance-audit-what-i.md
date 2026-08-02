@@ -20,15 +20,15 @@ returned; the PHP number is `D-ANS-011` and its runtime half is
 `feedback/2026-07-31-193611`; and `settings.definitions.yaml` carries English
 labels, unchanged since the day before the report. `D-ANS-015` has the readings.
 
-What is left is two registrations the answer gets wrong.
-`printworkssitepackage_catalogue` and `printworkssitepackage_teaser` are
-`registerPlugin()` calls, and `typo3_extension_scope` lists both under "Content
-elements it adds" as "no templateName in this extension's TypoScript" — an
-Extbase plugin renders through the dispatcher, so finding #3 chased two files
-nothing was going to write. And `Configuration/Form/Printworks/config.yaml` is
-reached by nothing: `Extension::ROOT_FILES` is a fixed list of paths, while a
-form set is discovered by its directory since v14.2 (#109412), the way site sets
-already are.
+Trimmed again on 2026-08-02 to the one registration that is left. The two
+`registerPlugin()` identifiers are answered: `typo3_extension_scope` says which
+of its content elements is an Extbase plugin and points at
+`plugin.tx_<identifier>` where an element carries a `templateName`, so the
+absence that produced finding #3 is gone. `D-ANS-018` has the readings.
+
+What is left is that `Configuration/Form/Printworks/config.yaml` is reached by
+nothing: `Extension::ROOT_FILES` is a fixed list of paths, while a form set is
+discovered by its directory since v14.2 (#109412), the way site sets already are.
 
 ## Query
 

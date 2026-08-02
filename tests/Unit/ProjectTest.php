@@ -444,8 +444,8 @@ final class ProjectTest extends TestCase
 
         self::assertSame(
             [
-                ['identifier' => 'acme_slider', 'templateName' => null, 'source' => null],
-                ['identifier' => 'acme_teaser', 'templateName' => 'Teaser', 'source' => 'Configuration/Sets/AcmeSite/setup.typoscript'],
+                ['identifier' => 'acme_slider', 'kind' => 'element', 'templateName' => null, 'source' => null, 'pluginSettings' => null],
+                ['identifier' => 'acme_teaser', 'kind' => 'element', 'templateName' => 'Teaser', 'source' => 'Configuration/Sets/AcmeSite/setup.typoscript', 'pluginSettings' => null],
             ],
             $result->data['contentElements'],
             'both item shapes are read, and a value that is no literal is left out rather than guessed',
@@ -506,7 +506,7 @@ final class ProjectTest extends TestCase
         $result = Registry::call('typo3_extension_scope', ['extension' => 'my_sitepackage']);
 
         self::assertSame(
-            [['identifier' => 'acme_hero_carousel', 'templateName' => 'HeroCarousel', 'source' => 'Configuration/Sets/AcmeSite/setup.typoscript']],
+            [['identifier' => 'acme_hero_carousel', 'kind' => 'element', 'templateName' => 'HeroCarousel', 'source' => 'Configuration/Sets/AcmeSite/setup.typoscript', 'pluginSettings' => null]],
             $result->data['contentElements'],
         );
         self::assertSame(
@@ -514,6 +514,71 @@ final class ProjectTest extends TestCase
             $result->data['tcaOverrides'],
             'the table comes from the call, so the per-element file name is never mistaken for one',
         );
+    }
+
+    #[Test]
+    public function anExtbasePluginIsToldApartFromAnElementWhoseTemplateIsMissing(): void
+    {
+        // An audit of a real sitepackage on 2026-07-31 was told both of its
+        // plugins had "no templateName in this extension's TypoScript" and wrote
+        // a finding about two TypoScript files nobody was going to write:
+        // configurePlugin() generates the rendering definition, and the plugin's
+        // own templates are configured under plugin.tx_<signature> — D-ANS-015.
+        $root = $this->composerProject();
+        $extension = $root . '/packages/my_sitepackage';
+        $this->declare(
+            $extension . '/Configuration/TCA/Overrides/tt_content.php',
+            <<<'PHP'
+                <?php
+                ExtensionUtility::registerPlugin(
+                    'MySitepackage',
+                    'Catalogue',
+                    'LLL:EXT:my_sitepackage/Resources/Private/Language/locallang.xlf:catalogue',
+                    'acme-catalogue',
+                );
+                ExtensionManagementUtility::addTcaSelectItem('tt_content', 'CType', [
+                    'label' => 'LLL:EXT:my_sitepackage/Resources/Private/Language/locallang.xlf:teaser',
+                    'value' => 'acme_teaser',
+                ]);
+                PHP
+        );
+        // The plugin arrives at its configuration by reference, which is a line
+        // no store of assignments alone would hold.
+        $this->declare(
+            $extension . '/Configuration/TypoScript/setup.typoscript',
+            "plugin.tx_mysitepackage_catalogue < lib.acmePlugin\n",
+        );
+        Instance::discoverFrom($root);
+
+        $result = Registry::call('typo3_extension_scope', ['extension' => 'my_sitepackage']);
+
+        self::assertSame(
+            [
+                [
+                    'identifier' => 'acme_teaser',
+                    'kind' => 'element',
+                    'templateName' => null,
+                    'source' => null,
+                    'pluginSettings' => null,
+                ],
+                [
+                    'identifier' => 'mysitepackage_catalogue',
+                    'kind' => 'plugin',
+                    'templateName' => null,
+                    'source' => null,
+                    'pluginSettings' => 'Configuration/TypoScript/setup.typoscript',
+                ],
+            ],
+            $result->data['contentElements'],
+            'the signature both plugin calls derive is the identifier, and the kind is what the two answers differ by',
+        );
+        self::assertStringContainsString(
+            'mysitepackage_catalogue — Extbase plugin, renders through the dispatcher; configured under '
+                . 'plugin.tx_mysitepackage_catalogue in Configuration/TypoScript/setup.typoscript',
+            $result->text,
+        );
+        self::assertStringContainsString('acme_teaser — no templateName in this extension\'s TypoScript', $result->text);
+        self::assertStringContainsString('no templateName here is no missing template', $result->text);
     }
 
     #[Test]
@@ -698,6 +763,43 @@ final class ProjectTest extends TestCase
             'attributed by the reference the item carries, so another extension\'s is not this one\'s',
         );
         self::assertStringContainsString('what the booted installation has', $result->text);
+    }
+
+    #[Test]
+    public function aPluginTheInstallationReportsIsStillToldApart(): void
+    {
+        // Where the answer comes from the booted installation, the CType list is
+        // one list for every extension and says nothing about what kind of
+        // registration put an entry in it. The call that says so is in the
+        // override file either way, which is the only place core allows it.
+        $root = $this->composerProject();
+        $extension = $root . '/packages/my_sitepackage';
+        $this->declare(
+            $extension . '/Configuration/TCA/Overrides/tt_content.php',
+            "<?php\nExtensionUtility::registerPlugin('MySitepackage', 'Catalogue', 'Catalogue', 'acme-catalogue');\n",
+        );
+        mkdir($root . '/bin');
+        file_put_contents($root . '/bin/typo3', "#!/usr/bin/env php\n<?php\n");
+        $this->fakeTypo3(
+            $root,
+            ['acme-catalogue' => 'EXT:my_sitepackage/Resources/Public/Icons/catalogue.svg'],
+            [],
+            ['mysitepackage_catalogue' => ['Catalogue', 'acme-catalogue']],
+        );
+        Instance::discoverFrom($root);
+
+        $result = Registry::call('typo3_extension_scope', ['extension' => 'my_sitepackage']);
+
+        self::assertSame('installation', $result->data['answeredBy']);
+        self::assertSame(
+            [['identifier' => 'mysitepackage_catalogue', 'kind' => 'plugin', 'templateName' => null, 'source' => null, 'pluginSettings' => null]],
+            $result->data['contentElements'],
+        );
+        self::assertStringContainsString('renders through the dispatcher', $result->text);
+        self::assertStringContainsString(
+            'this extension\'s TypoScript sets nothing under plugin.tx_mysitepackage_catalogue',
+            $result->text,
+        );
     }
 
     #[Test]

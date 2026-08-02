@@ -30,3 +30,4 @@ template with no registration — a defect the extension does not have.
 - `ProjectTest::anIdentifierThatTookADetourThroughAVariableIsStillRead`
 - `ProjectTest::aRegistrationFileBuiltInALoopIsNotDeterminableRatherThanWrong`
 - `ProjectTest::theFilesThatRegisterByRunningAreSaidToBeUnread`
+- `ProjectTest::anExtbasePluginIsToldApartFromAnElementWhoseTemplateIsMissing`

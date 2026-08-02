@@ -105,3 +105,21 @@ checkout. Six of the eight are on the implementation side. Two are registrations
   close, and names the answer shape it wanted. The six closed here would then be
   a boundary taken from one session's own sentence rather than from what these
   tools can say.
+
+## Since then
+
+The first queued item is done, and reading it against `.checkouts/14.3` and
+`.checkouts/13.4` fired the first **Wrong if** on its predicate while leaving its
+conclusion standing. A site can set `tt_content.<plugin>.templateName` and have
+it take effect: `configurePlugin()` puts the plugin's CType on
+`lib.contentElement` with `templateName = Generic`, so the value is the wrapper's
+template and overriding it is meaningful. The absence in this extension's
+TypoScript is still no gap, because core has already set what the extension does
+not — which is why the item was a defect and not the wording point this entry
+allowed for. What was built on that reading is
+[`D-ANS-018`](ans-018-a-plugin-is-a-kind-of-content-element-not-one-whose-template-is-missing.md).
+
+The second **Assumed** was not needed. The kind is read from the
+`registerPlugin()` call in the override file rather than inferred from what the
+CType list does not carry, so how the two identifiers reached that list no longer
+decides whether they are told apart. The queued form-set item is untouched.

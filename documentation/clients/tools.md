@@ -1491,14 +1491,16 @@ Fluid roots and namespaces, and the shape of its Classes/ directory — and
 what it ships beside all of that: its manual, its README, the test layers it
 has, and its XLF files with the source language each one declares. Those four
 are answered even when they are not there, because the absence of a manual or a
-translation is what a file listing cannot show. The tables, content elements
-and icons are read from the booted installation where there is one and
-attributed to this extension by the EXT: reference each entry carries, so a
-list built in a loop or a table added by a PHP call is in the answer;
-everything else is read from that extension's own files, parsed and never
-executed, so it answers on a fresh clone and for a third-party extension as
-well as for the project's own. answeredBy says which of the two answered, and
-where it says packages the answer names what that leaves out. Where a
+translation is what a file listing cannot show. A content element that is an
+Extbase plugin is said to be one and points at plugin.tx_<identifier>, because
+it renders through the dispatcher and has no templateName to be missing. The
+tables, content elements and icons are read from the booted installation where
+there is one and attributed to this extension by the EXT: reference each entry
+carries, so a list built in a loop or a table added by a PHP call is in the
+answer; everything else is read from that extension's own files, parsed and
+never executed, so it answers on a fresh clone and for a third-party extension
+as well as for the project's own. answeredBy says which of the two answered,
+and where it says packages the answer names what that leaves out. Where a
 registration file it ships is one a core deprecation turns on —
 ext_tables.php, or ext_emconf.php beside a composer.json declaring neither
 providesPackages nor a version — the answer says which entry and what it
@@ -1539,14 +1541,25 @@ extensions this can be called for.
 - `contentElements` *(array of object)* — The content elements it adds to
   tt_content, and where each renders.
   - `identifier` *(string, required)* — The CType value, read from an
-    addTcaSelectItem() call in one of those override files. An identifier
-    assembled at runtime or taken from a constant is not among them.
+    addTcaSelectItem(), addRecordType() or registerPlugin() call in one of
+    those override files. An identifier assembled at runtime or taken from a
+    constant is not among them.
+  - `kind` *(string, required)* — One of `element`, `plugin`. plugin: an
+    Extbase plugin, registered by ExtensionUtility::registerPlugin(), which
+    renders through the dispatcher rather than through a templateName of its
+    own. element: everything else.
   - `templateName` *(string or null, required)* — The Fluid template it
     renders through, from tt_content.<identifier>.templateName in this
     extension's TypoScript. Null where its TypoScript does not set one —
-    another extension or the site configuration may.
+    another extension or the site configuration may. On a plugin, one set here
+    replaces the Generic wrapper configurePlugin() generates instead of naming
+    the plugin's template, and null is the normal case.
   - `source` *(string or null, required)* — The TypoScript file that set
     it, relative to the extension.
+  - `pluginSettings` *(string or null, required)* — On a plugin: the
+    TypoScript file of this extension that configures plugin.tx_<identifier>,
+    which is where its templateRootPaths and settings are. Null where its
+    TypoScript configures nothing there, and on anything that is not a plugin.
 - `backendModules` *(array of string)* — Module identifiers from
   Configuration/Backend/Modules.php.
 - `backendRoutes` *(array of string)* — Route names from

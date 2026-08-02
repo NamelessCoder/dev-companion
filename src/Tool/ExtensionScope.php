@@ -60,7 +60,7 @@ final class ExtensionScope extends ReadOnlyTool
 
     public static function description(): string
     {
-        return 'Describe what one installed extension registers: the tables its TCA defines and the ones it extends, the content elements it adds to tt_content and the Fluid template each renders through, its backend modules and routes, its icons, its site sets, the service tags it hangs into the container, its middlewares, its Fluid roots and namespaces, and the shape of its Classes/ directory — and what it ships beside all of that: its manual, its README, the test layers it has, and its XLF files with the source language each one declares. Those four are answered even when they are not there, because the absence of a manual or a translation is what a file listing cannot show. The tables, content elements and icons are read from the booted installation where there is one and attributed to this extension by the EXT: reference each entry carries, so a list built in a loop or a table added by a PHP call is in the answer; everything else is read from that extension\'s own files, parsed and never executed, so it answers on a fresh clone and for a third-party extension as well as for the project\'s own. answeredBy says which of the two answered, and where it says packages the answer names what that leaves out. Where a registration file it ships is one a core deprecation turns on — ext_tables.php, or ext_emconf.php beside a composer.json declaring neither providesPackages nor a version — the answer says which entry and what it costs, because that predicate is the file rather than anything the extension calls and no changelog search over its code reaches it. That is those two files and nothing else, so it is not an upgrade check. typo3_project_scope names the extensions this can be called for.';
+        return 'Describe what one installed extension registers: the tables its TCA defines and the ones it extends, the content elements it adds to tt_content and the Fluid template each renders through, its backend modules and routes, its icons, its site sets, the service tags it hangs into the container, its middlewares, its Fluid roots and namespaces, and the shape of its Classes/ directory — and what it ships beside all of that: its manual, its README, the test layers it has, and its XLF files with the source language each one declares. Those four are answered even when they are not there, because the absence of a manual or a translation is what a file listing cannot show. A content element that is an Extbase plugin is said to be one and points at plugin.tx_<identifier>, because it renders through the dispatcher and has no templateName to be missing. The tables, content elements and icons are read from the booted installation where there is one and attributed to this extension by the EXT: reference each entry carries, so a list built in a loop or a table added by a PHP call is in the answer; everything else is read from that extension\'s own files, parsed and never executed, so it answers on a fresh clone and for a third-party extension as well as for the project\'s own. answeredBy says which of the two answered, and where it says packages the answer names what that leaves out. Where a registration file it ships is one a core deprecation turns on — ext_tables.php, or ext_emconf.php beside a composer.json declaring neither providesPackages nor a version — the answer says which entry and what it costs, because that predicate is the file rather than anything the extension calls and no changelog search over its code reaches it. That is those two files and nothing else, so it is not an upgrade check. typo3_project_scope names the extensions this can be called for.';
     }
 
     public static function inputSchema(): array
@@ -89,10 +89,12 @@ final class ExtensionScope extends ReadOnlyTool
             'tcaTables' => Schema::listOf(Schema::string(), 'Tables its Configuration/TCA/ defines, by file name.'),
             'tcaOverrides' => Schema::listOf(Schema::string(), 'Tables it extends below Configuration/TCA/Overrides/.'),
             'contentElements' => Schema::listOf(Schema::object([
-                'identifier' => Schema::string('The CType value, read from an addTcaSelectItem() call in one of those override files. An identifier assembled at runtime or taken from a constant is not among them.'),
-                'templateName' => Schema::nullableString('The Fluid template it renders through, from tt_content.<identifier>.templateName in this extension\'s TypoScript. Null where its TypoScript does not set one — another extension or the site configuration may.'),
+                'identifier' => Schema::string('The CType value, read from an addTcaSelectItem(), addRecordType() or registerPlugin() call in one of those override files. An identifier assembled at runtime or taken from a constant is not among them.'),
+                'kind' => ['type' => 'string', 'enum' => ['element', 'plugin'], 'description' => 'plugin: an Extbase plugin, registered by ExtensionUtility::registerPlugin(), which renders through the dispatcher rather than through a templateName of its own. element: everything else.'],
+                'templateName' => Schema::nullableString('The Fluid template it renders through, from tt_content.<identifier>.templateName in this extension\'s TypoScript. Null where its TypoScript does not set one — another extension or the site configuration may. On a plugin, one set here replaces the Generic wrapper configurePlugin() generates instead of naming the plugin\'s template, and null is the normal case.'),
                 'source' => Schema::nullableString('The TypoScript file that set it, relative to the extension.'),
-            ], ['identifier', 'templateName', 'source']), 'The content elements it adds to tt_content, and where each renders.'),
+                'pluginSettings' => Schema::nullableString('On a plugin: the TypoScript file of this extension that configures plugin.tx_<identifier>, which is where its templateRootPaths and settings are. Null where its TypoScript configures nothing there, and on anything that is not a plugin.'),
+            ], ['identifier', 'kind', 'templateName', 'source', 'pluginSettings']), 'The content elements it adds to tt_content, and where each renders.'),
             'backendModules' => Schema::listOf(Schema::string(), 'Module identifiers from Configuration/Backend/Modules.php.'),
             'backendRoutes' => Schema::listOf(Schema::string(), 'Route names from Configuration/Backend/Routes.php and AjaxRoutes.php.'),
             'icons' => Schema::listOf(Schema::string(), 'Identifiers from Configuration/Icons.php. typo3_icon_lookup searches every package at once.'),
@@ -195,24 +197,21 @@ final class ExtensionScope extends ReadOnlyTool
             $lines[] = '';
             $lines[] = 'Content elements it adds:';
             foreach ($extension['contentElements'] as $element) {
-                $lines[] = $element['templateName'] === null
-                    ? sprintf(
-                        '- %s — no templateName in this extension\'s TypoScript; another extension or the site '
-                        . 'may set it',
-                        $element['identifier'],
-                    )
-                    : sprintf(
-                        '- %s — renders through %s (%s)',
-                        $element['identifier'],
-                        $element['templateName'],
-                        $element['source'],
-                    );
+                $lines[] = '- ' . $element['identifier'] . ' — ' . self::renders($element);
             }
-            $lines[] = 'The identifiers come from the addRecordType() and addTcaSelectItem() calls below '
-                . 'Configuration/TCA/Overrides/ and the templates from tt_content.<identifier>.templateName in its '
-                . 'TypoScript. A value the file assigns to a variable once is followed there; one a call puts '
+            $lines[] = 'The identifiers come from the addRecordType(), addTcaSelectItem() and registerPlugin() calls '
+                . 'below Configuration/TCA/Overrides/ and the templates from tt_content.<identifier>.templateName in '
+                . 'its TypoScript. A value the file assigns to a variable once is followed there; one a call puts '
                 . 'together at runtime, takes from a constant, or reads from a variable that file assigns more than '
                 . 'once, is in neither.';
+            if (in_array('plugin', array_column($extension['contentElements'], 'kind'), true)) {
+                $lines[] = 'A plugin renders through the Extbase dispatcher: configurePlugin() generates '
+                    . 'tt_content.<identifier> on lib.contentElement with templateName = Generic and an EXTBASEPLUGIN '
+                    . 'below it, so no templateName here is no missing template. Its own templates come from '
+                    . 'plugin.tx_<identifier>.view, and one set under tt_content replaces that Generic wrapper '
+                    . 'instead. Before 14.0 configurePlugin() could register a plugin under list_type rather than as '
+                    . 'its own CType, and that call is in ext_localconf.php, which nothing here reads.';
+            }
         }
 
         if ($extension['siteSets'] !== []) {
@@ -303,6 +302,37 @@ final class ExtensionScope extends ReadOnlyTool
         }
 
         return ToolResult::create(implode("\n", $lines), $extension + ['answeredBy' => Extension::answeredBy()]);
+    }
+
+    /**
+     * What one content element of the list renders through.
+     *
+     * A plugin and an element are two answers to that, and the plugin one used
+     * to be given as the element one with the template missing — which sent an
+     * audit looking for a TypoScript file nobody was ever going to write
+     * (`D-ANS-015`). What replaces the absence is where its configuration is,
+     * because that is the file the caller was after.
+     *
+     * @param array{identifier: string, kind: string, templateName: ?string, source: ?string, pluginSettings: ?string} $element
+     */
+    private static function renders(array $element): string
+    {
+        if ($element['kind'] === 'plugin') {
+            $settings = 'plugin.tx_' . $element['identifier'];
+
+            return 'Extbase plugin, renders through the dispatcher; '
+                . match (true) {
+                    $element['templateName'] !== null => 'wrapped in ' . $element['templateName']
+                        . ' (' . $element['source'] . ') instead of Generic',
+                    $element['pluginSettings'] !== null => 'configured under ' . $settings
+                        . ' in ' . $element['pluginSettings'],
+                    default => 'this extension\'s TypoScript sets nothing under ' . $settings,
+                };
+        }
+
+        return $element['templateName'] === null
+            ? 'no templateName in this extension\'s TypoScript; another extension or the site may set it'
+            : 'renders through ' . $element['templateName'] . ' (' . $element['source'] . ')';
     }
 
     /** The keys there are, so a miss is a question a caller can ask again. */

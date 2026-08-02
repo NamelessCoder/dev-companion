@@ -154,6 +154,66 @@ final class PackageSourcesTest extends TestCase
         self::assertStringContainsString('The tags those entries carry', $miss->text);
     }
 
+    /**
+     * The miss the feedback of 2026-07-31 arrived through: five words, each of
+     * them reaching entries on its own, and nothing carrying all five. What
+     * ends it is a query the caller can ask rather than five numbers, because
+     * two words had to go before anything matched — `D-ANS-016`.
+     */
+    #[Test]
+    public function aMissNamesTheLargestPartOfTheQueryThatWouldHaveHit(): void
+    {
+        $root = $this->composerProject();
+        $this->changelogEntry($root, '14.2', 'Deprecation-109412-FormYamlConfigurationRegistration', 'Deprecation: #109412 - TypoScript-based form YAML registration', []);
+        $this->changelogEntry($root, '14.2', 'Feature-109412-FormYamlAutoDiscovery', 'Feature: #109412 - Auto-discovery of form YAML configurations', []);
+        Instance::discoverFrom($root);
+
+        $result = Registry::call('typo3_changelog_lookup', ['query' => 'form set yaml registration deprecated']);
+
+        self::assertSame(0, $result->data['matchCount']);
+        self::assertStringContainsString('No entry carries more than 3 of the 5 words', $result->text);
+        self::assertStringContainsString('"form yaml registration" reaches 1 entry', $result->text);
+        // On the subset, which can be asked for, rather than on the per-word
+        // counts, which cannot: the smallest reach is the word to keep.
+        self::assertSame(1, substr_count($result->text, 'ask again with the one that narrows best'));
+    }
+
+    #[Test]
+    public function whereNoTwoWordsMeetInOneEntryThePerWordReachIsWhatToAskWith(): void
+    {
+        $root = $this->composerProject();
+        $this->changelogEntry($root, '14.0', 'Feature-1-SomethingAboutForms', 'Feature: #1 - Forms', []);
+        $this->changelogEntry($root, '14.0', 'Breaking-2-YamlLoader', 'Breaking: #2 - Yaml', []);
+        Instance::discoverFrom($root);
+
+        $result = Registry::call('typo3_changelog_lookup', ['query' => 'forms yaml']);
+
+        self::assertStringContainsString('On its own, "forms" reaches 1 entr(ies)', $result->text);
+        self::assertStringContainsString('entr(ies) — ask again with the one that narrows best.', $result->text);
+        self::assertStringNotContainsString('No entry carries more than', $result->text);
+    }
+
+    #[Test]
+    public function aTagIsNotPromisedEntriesTheSameCallWouldNotReturn(): void
+    {
+        // The peel reads file names and a tag is inside the file, so a subset
+        // counted without the tag would name entries this call does not return.
+        $root = $this->composerProject();
+        $this->changelogEntry($root, '14.0', 'Deprecation-1-FormYamlRegistration', 'Deprecation: #1 - Form YAML registration', ['ext:form']);
+        Instance::discoverFrom($root);
+
+        $query = ['query' => 'form yaml registration deprecated'];
+
+        self::assertStringContainsString(
+            '"form yaml registration" reaches 1 entry',
+            Registry::call('typo3_changelog_lookup', $query)->text,
+        );
+        self::assertStringNotContainsString(
+            'No entry carries more than',
+            Registry::call('typo3_changelog_lookup', $query + ['tag' => 'ext:core'])->text,
+        );
+    }
+
     #[Test]
     public function theChangelogIsNarrowedByTypeAndVersion(): void
     {

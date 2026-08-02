@@ -95,6 +95,62 @@ final class LabelSearchTest extends TestCase
         );
     }
 
+    /**
+     * What the per-term counts cannot say: which words have to go. Two of these
+     * five had to, and the smallest reach — `yaml`, carried by both entries the
+     * query was after — is the one to keep rather than the one to drop.
+     */
+    #[Test]
+    public function anEmptyResultNamesTheLargestPartOfTheQueryThatDoesReach(): void
+    {
+        $entries = [
+            ['key' => 'Deprecation-109412-FormYamlConfigurationRegistration', 'source' => 'Form Yaml Configuration Registration'],
+            ['key' => 'Feature-84203-UnifyFormSetupYAMLLoading', 'source' => 'Unify Form Setup YAML Loading'],
+            ['key' => 'Breaking-101392-GetIdentifierRemoved', 'source' => 'Get Identifier Removed'],
+        ];
+
+        // Both of them, because the one a tie-break picks first here is the
+        // YAML loading feature rather than the deprecation being looked for.
+        self::assertSame(
+            [
+                ['terms' => ['form', 'yaml', 'registration'], 'matchCount' => 1],
+                ['terms' => ['form', 'set', 'yaml'], 'matchCount' => 1],
+            ],
+            LabelSearch::largestReachingSubsets($entries, LabelSearch::terms('form set yaml registration deprecated'))
+        );
+    }
+
+    #[Test]
+    public function theSubsetThatNarrowsBestComesFirst(): void
+    {
+        $entries = [
+            ['key' => 'Feature-1-BackendModuleModules', 'source' => 'Backend Module Modules'],
+            ['key' => 'Feature-2-BackendModuleModulesAgain', 'source' => 'Backend Module Modules Again'],
+            ['key' => 'Feature-3-BackendModuleRegistration', 'source' => 'Backend Module Registration'],
+        ];
+
+        self::assertSame(
+            [
+                ['terms' => ['backend', 'module', 'registration'], 'matchCount' => 1],
+                ['terms' => ['backend', 'module', 'modules'], 'matchCount' => 2],
+            ],
+            LabelSearch::largestReachingSubsets($entries, LabelSearch::terms('backend module registration modules'))
+        );
+    }
+
+    #[Test]
+    public function whereNoTwoWordsMeetInOneEntryThereIsNoSubsetToOffer(): void
+    {
+        // A single word is what the per-term counts already say, so this adds
+        // nothing and says so rather than repeating them.
+        $entries = [
+            ['key' => 'Feature-1-Alpha', 'source' => 'Alpha'],
+            ['key' => 'Feature-2-Beta', 'source' => 'Beta'],
+        ];
+
+        self::assertSame([], LabelSearch::largestReachingSubsets($entries, LabelSearch::terms('alpha beta')));
+    }
+
     #[Test]
     public function aConsoleThatFoundNothingIsAnAnswerRatherThanAFailure(): void
     {

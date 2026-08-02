@@ -23,3 +23,6 @@ nothing else, with no way to see that a Language Files hint existed
 - `HintsTest::aMissNamesWhatThereWouldHaveBeenToFind`
 - `HintsTest::aHintCanBeAskedForByItsIdInsteadOfGuessedAt`
 - `HintsTest::anIdThatDoesNotExistIsAnsweredWithTheOnesThatDo`
+- `LabelSearchTest::anEmptyResultNamesTheLargestPartOfTheQueryThatDoesReach`
+- `PackageSourcesTest::aMissNamesTheLargestPartOfTheQueryThatWouldHaveHit`
+- `PackageSourcesTest::whereNoTwoWordsMeetInOneEntryThePerWordReachIsWhatToAskWith`

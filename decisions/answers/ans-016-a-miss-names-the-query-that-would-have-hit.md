@@ -82,3 +82,43 @@ the numbers and stops there.
 - The peel is measured against a fuller changelog and costs more than the `tag`
   filter it was priced against. Then it is a second call the caller makes rather
   than something a miss can afford.
+
+## Covered by
+
+- `LabelSearchTest::anEmptyResultNamesTheLargestPartOfTheQueryThatDoesReach`
+- `LabelSearchTest::theSubsetThatNarrowsBestComesFirst`
+- `PackageSourcesTest::aMissNamesTheLargestPartOfTheQueryThatWouldHaveHit`
+
+## Since then
+
+Built on 2026-08-02 as `LabelSearch::largestReachingSubsets()`, and not as the
+peel this was priced as. A subset reaches an entry exactly when that entry
+carries every word of it, so the largest subsets that reach anything are the
+largest sets of words a single entry carries — one pass rather than 15 filter
+passes, and no depth to bound. 4 ms over the 3766 entries `.checkouts/14.3` now
+ships, against the 28 ms enumerating subsets costs and the 23 ms of the `tag`
+filter. The **Assumed** that two words is far enough to peel is therefore moot
+rather than confirmed: the pass has no depth, and one of the twelve queries it
+was run over recovered only at two of five words.
+
+Every largest subset is named rather than the best of them, which the evidence
+above had already decided and the implementation made visible. On
+`form set yaml registration deprecated` there are two, they reach one entry
+each, and the narrower-first tie-break puts `form set yaml` first — that returns
+`10.2 Feature: Unify form setup YAML loading (#84203)`, not the deprecation. Both
+named, the caller reads `form yaml registration` beside it and gets #109412 in
+one call. Re-queried against the same checkout: all four offered subsets return
+what the miss said they would.
+
+In `LabelSearch` rather than in `ChangelogLookup`, because it takes the items
+and the terms `carryingEvery()` and `perTermCounts()` take and answers with the
+same matcher, identifier spellings included. `typo3_label_lookup` does not call
+it; what decided the placement is which layer owns matching, not a second
+caller.
+
+Not offered where a `tag` was asked for. The peel reads file names and a tag is
+inside the file, so a subset counted without the tag would name entries the same
+call does not return. The sibling's sentence still ends the miss there, on the
+per-term counts — which is also where it lands when no two words of a query meet
+in one entry, because those counts are then the whole list of what can be asked
+for.

@@ -34,7 +34,7 @@ final class ChangelogLookup extends ReadOnlyTool
         return [
             'type' => 'object',
             'properties' => [
-                'query' => ['type' => 'string', 'description' => 'Words the entry has to carry, matched against its title. Omit to list a version or a type as a whole.'],
+                'query' => ['type' => 'string', 'description' => 'Words the entry has to carry, matched against its title. When no entry carries all of them, the answer names the largest part of the query that does reach entries, which is what to ask again with. Omit to list a version or a type as a whole.'],
                 'type' => ['type' => 'string', 'enum' => ['breaking', 'deprecation', 'feature', 'important'], 'description' => 'Restrict to one kind of change. Breaking and deprecation are what affects existing code.'],
                 'version' => ['type' => 'string', 'description' => 'Restrict to a version, by prefix: "14" covers 14.0 through 14.3.x, "13.4" covers 13.4 and 13.4.x.'],
                 'tag' => ['type' => 'string', 'description' => 'Restrict to entries carrying this index tag: "ext:form" for the system extension a change is in, "FullyScanned" or "NotScanned" for what the Extension Scanner has a matcher for, "PHP-API", "TCA", "Backend", "Frontend" for the surface. This is what a sweep is bounded by where words are not: every entry of a version and type is read for its tags. The tags name the system extension the change is in — the changelog says nothing about which third-party extension a change affects, so an extension key of your own matches none of them.'],
@@ -78,7 +78,8 @@ final class ChangelogLookup extends ReadOnlyTool
         }
 
         $terms = LabelSearch::terms($query);
-        $matching = LabelSearch::carryingEvery(Changelog::entries($type, $version), $terms);
+        $narrowed = Changelog::entries($type, $version);
+        $matching = LabelSearch::carryingEvery($narrowed, $terms);
 
         // The tags are inside the file, so narrowing by one costs a read of
         // every entry that survived the type and the version — 23 ms for the
@@ -132,15 +133,36 @@ final class ChangelogLookup extends ReadOnlyTool
                     ? 'Nothing narrowed by that version and type carries any tag at all.'
                     : 'The tags those entries carry: ' . implode(', ', array_keys($tags)) . '.';
             }
+            // What the caller can act on is a query rather than five numbers:
+            // the words that do reach something together. Offered where no tag
+            // was asked for, because the peel reads file names while a tag is
+            // inside the file — a subset counted without the tag would promise
+            // entries the same call does not return.
+            $subsets = $tag === '' ? LabelSearch::largestReachingSubsets($narrowed, $terms) : [];
             $reached = array_values(array_filter(
-                LabelSearch::perTermCounts(Changelog::entries($type, $version), $terms),
+                LabelSearch::perTermCounts($narrowed, $terms),
                 static fn(array $term): bool => $term['matchCount'] > 0,
             ));
             if (count($terms) > 1 && $reached !== []) {
                 $lines[] = 'On its own, ' . implode(', ', array_map(
                     static fn(array $term): string => sprintf('"%s" reaches %d entr(ies)', $term['term'], $term['matchCount']),
                     $reached,
-                )) . '.';
+                )) . ($subsets === [] ? ' — ask again with the one that narrows best.' : '.');
+            }
+            if ($subsets !== []) {
+                $shown = array_slice($subsets, 0, 4);
+                $lines[] = sprintf(
+                    'No entry carries more than %d of the %d words: %s%s — ask again with the one that narrows best.',
+                    count($subsets[0]['terms']),
+                    count($terms),
+                    implode(', ', array_map(static fn(array $subset): string => sprintf(
+                        '"%s" reaches %d entr%s',
+                        implode(' ', $subset['terms']),
+                        $subset['matchCount'],
+                        $subset['matchCount'] === 1 ? 'y' : 'ies',
+                    ), $shown)),
+                    count($subsets) > count($shown) ? sprintf(', and %d more', count($subsets) - count($shown)) : '',
+                );
             }
             $lines[] = sprintf(
                 'The changelog here covers %s. A version this installation does not ship is not in it — read that '
@@ -169,7 +191,7 @@ final class ChangelogLookup extends ReadOnlyTool
             $lines[0] = sprintf(
                 '%d of the %d entries narrowed by version and type are tagged "%s"%s:',
                 count($matching),
-                count(Changelog::entries($type, $version)),
+                count($narrowed),
                 $tag,
                 count($matching) > count($entries) ? sprintf(' — showing the first %d', count($entries)) : '',
             );

@@ -1313,7 +1313,9 @@ version.
 **Takes**
 
 - `query` *(string)* — Words the entry has to carry, matched against its
-  title. Omit to list a version or a type as a whole.
+  title. When no entry carries all of them, the answer names the largest part
+  of the query that does reach entries, which is what to ask again with. Omit
+  to list a version or a type as a whole.
 - `type` *(string)* — One of `breaking`, `deprecation`, `feature`,
   `important`. Restrict to one kind of change. Breaking and deprecation are
   what affects existing code.

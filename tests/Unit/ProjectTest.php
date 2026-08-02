@@ -1155,10 +1155,27 @@ final class ProjectTest extends TestCase
             ],
             $result->data['artifacts'],
         );
-        self::assertStringContainsString('Ships: manual none, readme none, tests Unit', $result->text);
+        self::assertStringContainsString('Ships: manual none, readme none, tests Unit, language files 1', $result->text);
         self::assertStringContainsString('source-language de, translated into de', $result->text);
         // The fact is here; whether it is allowed to be German is not.
         self::assertStringContainsString('not what it should declare', $result->text);
+
+        // The absence, in the text as well as in the data. It was in the data
+        // alone until D-FBK-018: the three above are rendered present or absent
+        // and the language files were rendered only where there were some, so
+        // the one artifact the reporting session was praising was the one an
+        // extension shipping none said nothing about. The fixture's system
+        // extension is the package that ships none of the four.
+        $bare = Registry::call('typo3_extension_scope', ['extension' => 'core']);
+
+        self::assertSame(
+            ['manual' => null, 'readme' => null, 'tests' => [], 'languageFiles' => []],
+            $bare->data['artifacts'],
+        );
+        self::assertStringContainsString(
+            'Ships: manual none, readme none, tests none, language files none',
+            $bare->text,
+        );
     }
 
     #[Test]

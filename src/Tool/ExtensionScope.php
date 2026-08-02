@@ -301,13 +301,17 @@ final class ExtensionScope extends ReadOnlyTool
 
         // Always rendered, present or not. Everything above is found by reading
         // further; these are the ones a caller finds by being told, because a
-        // manual nobody wrote leaves no file to notice.
+        // manual nobody wrote leaves no file to notice. All four of them: the
+        // language files were the list below alone until D-FBK-018, so an
+        // extension shipping no XLF said nothing about them here. A term in
+        // this line is what makes saying it on every answer cost a word.
         $artifacts = $extension['artifacts'];
         $lines[] = '';
         $lines[] = 'Ships: ' . implode(', ', [
             'manual ' . ($artifacts['manual'] ?? 'none'),
             'readme ' . ($artifacts['readme'] ?? 'none'),
             'tests ' . ($artifacts['tests'] === [] ? 'none' : implode('+', $artifacts['tests'])),
+            'language files ' . ($artifacts['languageFiles'] === [] ? 'none' : count($artifacts['languageFiles'])),
         ]);
         if ($artifacts['languageFiles'] !== []) {
             foreach ($artifacts['languageFiles'] as $file) {

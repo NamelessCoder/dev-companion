@@ -344,3 +344,24 @@ which half is primary is the whole of the evidence. Second, that `rte_ckeditor`
 is not a special case. It is the one extension in `.checkouts/14.3/typo3/sysext/`
 with no `.xlf` file at all, so the shape was found in the only place this
 machine offers it. Both are written into the **Wrong if** above.
+
+## Confirmed on 2026-08-02
+
+The fourth **Wrong if** is what the todo above turned on, and it did not fire.
+The reading it proposes is a line only where a caller could mistake the absence
+for a gap. That needs a predicate — whether this extension is one that would
+ordinarily carry labels — and nothing in the files answers it. Everything else
+in this answer is a fact read from a file, and `R-PRJ-006` names the four
+artifacts without conditioning any of them: the `Ships:` line already says
+`manual none` on extensions where no manual is normal.
+
+So the cost is what the **Wrong if** was actually about, and it is a term rather
+than a sentence. `Ships:` renders the fourth the way it renders the other three
+— `language files none`, or their number where there are some, with the per-file
+list unchanged below it. Saying it on every answer costs a word.
+`ProjectTest::whatAnExtensionDoesNotShipIsAnswerdRatherThanLeftOut` asserts both
+halves of both cases now, which is what `R-PRJ-006` required all along and the
+test covered in the data alone.
+
+The last **Wrong if** is untouched by this. Which half of the answer a client
+renders is still unrecorded, and this change writes the absence into both.

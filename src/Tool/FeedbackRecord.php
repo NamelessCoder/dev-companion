@@ -56,12 +56,17 @@ final class FeedbackRecord implements Tool
         return Schema::object([
             'file' => Schema::string('Path of the recorded feedback, relative to this server\'s own checkout.'),
             'path' => Schema::string('The same feedback as an absolute path. It is in the server\'s checkout, not in the project the feedback was recorded from.'),
-        ], ['file', 'path']);
+            'redacted' => Schema::listOf(
+                Schema::string(),
+                'What was removed before the feedback was written, one entry per value, naming the field it stood in and the shape it had. Empty where nothing was removed, which is the ordinary case. Each removal stands in the file as a [redacted: ...] marker, so the report says of itself that it was altered.',
+            ),
+        ], ['file', 'path', 'redacted']);
     }
 
     public static function answer(array $args): ToolResult
     {
-        $file = Channel::record($args);
+        $redacted = [];
+        $file = Channel::record($args, $redacted);
         // The absolute path, because the relative one is relative to somewhere
         // the caller has never been. A feedback recorded from a site package was
         // reported back as feedback/<name>.md, looked for under that project,
@@ -76,8 +81,35 @@ final class FeedbackRecord implements Tool
                 . 'It will be picked up when the knowledge base is next improved; '
                 . 'nothing about the current answer changes.',
                 $path,
-            ),
-            ['file' => $file, 'path' => $path],
+            ) . self::redactionNotice($redacted),
+            ['file' => $file, 'path' => $path, 'redacted' => $redacted],
+        );
+    }
+
+    /**
+     * What was taken out of the feedback, said back to whoever wrote it.
+     *
+     * A report that was altered says so, or it stops being a report — the same
+     * reason the marker in the file is visible rather than a silent
+     * substitution. It is also the only moment the value can still be discussed:
+     * the session is standing in the installation the value came from and knows
+     * what it was, and a reader of the archive three weeks later does not.
+     *
+     * @param array<int, string> $redacted
+     */
+    private static function redactionNotice(array $redacted): string
+    {
+        if ($redacted === []) {
+            return '';
+        }
+
+        return "\n\n" . sprintf(
+            '%s taken out before it was written — %s. Each stands in the file as a `[redacted: ...]` marker, '
+            . 'so a reader can see that something was removed and come and ask. This checkout is committed and '
+            . 'pushed, and a value the installation keeps secret would leave it that way: what a finding needs is '
+            . 'the path and the shape of the value, never the value. Everything else was stored as you wrote it.',
+            count($redacted) === 1 ? 'One value was' : sprintf('%d values were', count($redacted)),
+            implode('; ', $redacted),
         );
     }
 }

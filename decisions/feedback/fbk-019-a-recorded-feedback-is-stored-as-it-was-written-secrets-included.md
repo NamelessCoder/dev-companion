@@ -19,8 +19,9 @@ live encryption key of the site it had just audited into this repository.
   `feedback/2026-07-31-185900-after-the-audit-i-invoked-typo3-cms-mcp.md`
   reports a success: `typo3_configuration_lookup` with path `SYS/encryptionKey`
   returned the effective runtime value, which turned an inferred audit finding
-  into an established one. Its observation and its query both quote the
-  96-character key verbatim.
+  into an established one. Its observation quotes the 96-character key
+  verbatim — once, and this entry said twice until 2026-08-02, which
+  **Since then** reads back.
 - The behaviour it praises still stands. Re-run on 2026-08-02 against the server
   as it is now, over stdio with `TYPO3_MCP_ROOT=/home/benji/projects/site-new`:
   `SYS/encryptionKey` came back `found: true`, `answeredBy: installation`, a
@@ -86,7 +87,7 @@ live encryption key of the site it had just audited into this repository.
 - A second recorded feedback carries a value out of an installation. Then saying
   it is not enough, and the channel has to refuse or redact rather than ask.
 - A session works around the wording by moving the value into `query`, which is
-  the second place this one put it.
+  the other field it would read as the place its evidence goes.
 - Feedback gets vaguer after the change — observations that name no value, no
   path and no version — because the guard was read as "paste nothing". Then it
   cost more than the leak it prevents.
@@ -97,22 +98,67 @@ live encryption key of the site it had just audited into this repository.
 
 ## Since then
 
+### The wording, 2026-08-02
+
 The wording is in. `observation` and `query` in `FeedbackRecord::inputSchema()`
 now say what a finding needs — the path a value was read at, the shape of what
 came back, where it came from — and that the value is not part of it where the
 installation keeps it secret, naming a key, a password, a token and the
 credentials in a connection string. Both fields, because `query` is described as
 the arguments that produced the result, and the second bullet of **Wrong if**
-above expects a value to move there. `R-FBK-011` is `not guarded` on that: the
-telling exists, and nothing reads either field or the corpus.
+above expects a value to move there. On the wording alone `R-FBK-011` was
+`not guarded`: the telling exists, and nothing reads either field or the corpus.
+What moved it to `held` is the guard below, which landed the same day.
 
-Reading the file for it corrected one thing in the **Evidence** above. The key
-appears once, in the observation. The query names the argument and
-`config/system/settings.php:118` without the value — in the archived file, and
-in `77d242b`, which first recorded it. So "its observation and its query both
-quote the 96-character key verbatim" is wrong, and what stands in its place is
-that one field carried the key and the other was the field it would have gone
-in next. Nothing else in the entry turns on it: the leak, the single occurrence
-and the tool inviting it are all as recorded, and the **Wrong if** about a
-session moving the value into `query` is what the second half of the wording is
-written against.
+### The guard, 2026-08-02
+
+**The guard was written on 2026-08-02, before the first "Wrong if" fired**, in
+the commit that carries this paragraph: `src/Feedback/Redaction.php` takes a
+value that looks like a credential out of `observation`, `query` and
+`suggestion` before any of them is written, leaves `[redacted: …]` naming the
+shape where it stood, and `typo3_feedback_record` says in its answer what it
+took and from which field.
+
+Not waiting is the whole of what changed, and the reason is in **Assumed**
+above. What this entry doubted is that a sentence in a field description reaches
+a session at call time, with `D-AUD-003` recording the opposite one channel
+over. The session that pasted the key was in the middle of proving that the tool
+returns the live runtime value, so a field description asking it not to would
+have stood against what it was doing at that moment. The trade is not symmetric
+either: waiting for the second occurrence means waiting for a second live
+credential in a repository that is pushed, against a feedback that reads a
+little vaguer. Both are still worth having — the wording is queued as its own
+step, and what the guard cannot see is exactly what the wording is left to
+carry, which
+[`R-FBK-011`](../../requirements/feedback/fbk-011-a-recorded-feedback-carries-no-secret-out-of-the-installation.md)
+now names on both sides.
+
+**What the *rest* of this entry decided still stands, and one line of it was
+wrong.** The recorded file was not rewritten, and this guard does not reach it:
+it reads what a session hands the channel, not what is already committed. But
+the key was pasted **once**, in the observation — read back in `77d242b`, the
+commit that recorded the feedback, and unchanged in the archive since. The
+evidence bullet above said twice, once in the observation and once in the query,
+and `R-FBK-011` and the todo that carried this step both repeated it. Nothing
+about the work turns on it — the value is taken out of every field a feedback is
+written from, and the reason for reading `query` is that a session would put it
+there, not that this one did — but the sentence was checked and it was false,
+which is the half of it worth writing down.
+
+**What the corpus said about the thresholds.** Every rule was run over all 207
+recorded feedback before it was written down, because the cost of this guard is
+a rule that redacts what feedback is made of. A hexadecimal run of 64 characters
+takes the key and leaves every git revision, which is 7 to 40. The same
+threshold in base64 leaves `ImportSiteConfigurationsOnPackageInitialization`,
+`RemovedPublicMethodsRelatedToImageGeneration` and six more changelog and class
+names, which a threshold of 40 takes. `password` and `token` are all over the
+corpus as prose, so a name only counts where a value is assigned to it: a colon
+alone matched `install:password:set`, a console command quoted in a feedback
+about setting an installation up. Over the whole corpus the four rules together
+take out one value, the key this was written for, and
+`FeedbackTest::theRulesTakeNothingOutOfTheCorpusButTheKeyTheyWereWrittenFor` is
+that measurement kept as a check.
+
+Both halves were worked at once, in two sessions that could not see each other,
+and both read the archived file and found the same false sentence — which is
+why the correction is recorded once above and stands over both accounts.

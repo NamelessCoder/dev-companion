@@ -8,6 +8,7 @@ use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Finder\Finder;
 use Typo3CmsMcp\Feedback\Channel;
+use Typo3CmsMcp\Feedback\Redaction;
 use Typo3CmsMcp\Installation\Instance;
 use Typo3CmsMcp\Paths;
 use Typo3CmsMcp\Tool\Registry;
@@ -191,6 +192,184 @@ final class FeedbackTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         Channel::record(['observation' => '   ']);
+    }
+
+    /**
+     * The feedback of 2026-07-31 praised typo3_configuration_lookup for
+     * returning the effective runtime value, and proved it by pasting the live
+     * encryption key of the audited site into a repository that is committed and
+     * pushed. The path and the shape were the finding; the 96 characters
+     * established nothing further and left the installation that owns them.
+     */
+    #[Test]
+    public function aValueThatLooksLikeACredentialNeverReachesTheFile(): void
+    {
+        $key = str_repeat('9f2b7c4d', 12);
+        $redacted = [];
+
+        $file = Channel::record([
+            'observation' => self::MARKER . ' called typo3_configuration_lookup with path SYS/encryptionKey. '
+                . 'The key ' . $key . ' is the active value, hardcoded in config/system/settings.php.',
+        ], $redacted);
+
+        $contents = (string) file_get_contents(Paths::root() . '/' . $file);
+        self::assertStringNotContainsString($key, $contents);
+        self::assertStringContainsString('[redacted: a 96-character hexadecimal value]', $contents);
+        self::assertSame(['observation: a 96-character hexadecimal value'], $redacted);
+        // What the finding was actually made of stays, or the guard costs more
+        // than the leak it prevents.
+        self::assertStringContainsString('SYS/encryptionKey', $contents);
+        self::assertStringContainsString('config/system/settings.php', $contents);
+        // The filename is built from the observation too, and it is the copy
+        // that would have survived every grep of the file itself.
+        self::assertStringNotContainsString($key, $file);
+    }
+
+    #[Test]
+    public function everyFieldAFeedbackIsWrittenFromIsRead(): void
+    {
+        // The same value in the second field is how a session works around a
+        // guard on the first without meaning to: the query is where it says
+        // what it called, and the suggestion is where it says what to do about
+        // it. All three are prose, and all three land in one file.
+        $key = str_repeat('9f2b7c4d', 12);
+        $redacted = [];
+
+        $file = Channel::record([
+            'observation' => self::MARKER . ' the key ' . $key . ' came back from the installation',
+            'query' => 'path=SYS/encryptionKey returned ' . $key,
+            'suggestion' => 'say that ' . $key . ' is hardcoded rather than generated',
+        ], $redacted);
+
+        self::assertStringNotContainsString($key, (string) file_get_contents(Paths::root() . '/' . $file));
+        self::assertSame([
+            'observation: a 96-character hexadecimal value',
+            'query: a 96-character hexadecimal value',
+            'suggestion: a 96-character hexadecimal value',
+        ], $redacted);
+    }
+
+    #[Test]
+    public function whatASessionQuotesAboutTheCoreIsLeftAlone(): void
+    {
+        // A rule that redacts a revision or a class name costs more than the
+        // leak it prevents: these are what feedback about core patches is made
+        // of, and 64 characters is where the threshold clears the longest of
+        // them.
+        $quoted = 'reviewed 4c8b38b2dd07856c3e2666fbdfd77beead87ffe0 against '
+            . 'typo3/sysext/core/Classes/Localization/TranslationDomainMapper, see '
+            . 'Feature-109444-AddDefaultValueSupportForCountrySelectFormElement, and the '
+            . 'recovery is `install:password:set` rather than guessing — the install tool '
+            . 'password: it never prints the value it used';
+
+        $redaction = Redaction::of($quoted);
+
+        self::assertSame($quoted, $redaction->text);
+        self::assertSame([], $redaction->removed);
+    }
+
+    #[Test]
+    public function aValueGoesAndTheNameThatSaysWhatItWasStays(): void
+    {
+        // The half a length rule cannot see. A password is short, and the only
+        // thing that says it is one is the name written next to it.
+        $redaction = Redaction::of(
+            '$GLOBALS[\'TYPO3_CONF_VARS\'][\'BE\'][\'installToolPassword\'] = \'$argon2i$v=19$m=65536$b0RTZ1p6\';',
+        );
+
+        self::assertStringNotContainsString('argon2i', $redaction->text);
+        self::assertStringContainsString('installToolPassword', $redaction->text);
+        self::assertStringContainsString('[redacted: the value of `installToolPassword`]', $redaction->text);
+        self::assertSame(['the value of `installToolPassword`'], $redaction->removed);
+    }
+
+    #[Test]
+    public function aPasswordInADatabaseUrlGoesWithoutTheHostGoingWithIt(): void
+    {
+        $redaction = Redaction::of('the DSN is mysqli://typo3:s3cr3tpw@db:3306/typo3');
+
+        self::assertSame(
+            'the DSN is mysqli://typo3:[redacted: the password in a URL]@db:3306/typo3',
+            $redaction->text,
+        );
+        self::assertSame(['the password in a URL'], $redaction->removed);
+    }
+
+    #[Test]
+    public function aLongBase64ValueIsTakenOutAndAWordIsNot(): void
+    {
+        $token = 'TXlTdXBlclNlY3JldFRva2VuVmFsdWVXaXRoUGFkZGluZzEyMzQ1Njc4OTBBQkNERUZHSElKS0xNTk9Q';
+
+        self::assertSame(
+            ['a 80-character base64 value'],
+            Redaction::of('the header carried ' . $token . ' verbatim')->removed,
+        );
+        // Same alphabet, same length, one long camel-cased word: what the
+        // corpus is full of and what a shorter threshold took out with it.
+        self::assertSame([], Redaction::of(str_repeat('AnotherLongIdentifierName', 3))->removed);
+    }
+
+    #[Test]
+    public function theToolSaysWhatItTookOutOfWhatItWasHanded(): void
+    {
+        // Marked rather than silent, and said rather than only marked. The
+        // archive keeps a session's report because the report is the evidence,
+        // so an altered one has to say so — and the session that wrote it is
+        // the only reader who still knows what stood there.
+        $result = Registry::call('typo3_feedback_record', [
+            'observation' => self::MARKER . ' the key ' . str_repeat('9f2b7c4d', 12) . ' is the active one',
+            'model' => 'claude-opus-5',
+        ]);
+
+        self::assertSame(['observation: a 96-character hexadecimal value'], $result->data['redacted']);
+        self::assertStringContainsString('One value was taken out', $result->text);
+        self::assertStringContainsString('a 96-character hexadecimal value', $result->text);
+        self::assertStringContainsString('[redacted: ...]', $result->text);
+
+        // And an ordinary feedback says nothing about redaction at all.
+        $ordinary = Registry::call('typo3_feedback_record', [
+            'observation' => self::MARKER . ' the icon lookup found nothing for content-accordion',
+            'model' => 'claude-opus-5',
+        ]);
+        self::assertSame([], $ordinary->data['redacted']);
+        self::assertStringNotContainsString('redacted', $ordinary->text);
+    }
+
+    /**
+     * The corpus is what the thresholds were settled against, so it is what
+     * says whether they still hold: 207 recorded feedback, one value among them
+     * that had to go, and every git revision, class path and changelog
+     * identifier beside it left standing.
+     *
+     * A second file appearing here means one of two things, and both are worth
+     * stopping for: a rule got greedier, or a feedback carrying a live value
+     * was written by a hand rather than through the channel that guards it.
+     */
+    #[Test]
+    public function theRulesTakeNothingOutOfTheCorpusButTheKeyTheyWereWrittenFor(): void
+    {
+        $directories = array_values(array_filter([Paths::feedback(), Paths::feedbackArchive()], is_dir(...)));
+        self::assertNotEmpty($directories);
+
+        $hits = [];
+        $read = 0;
+        foreach (Finder::create()->files()->in($directories)->depth(0)->name('*.md') as $file) {
+            $contents = (string) file_get_contents($file->getPathname());
+            if (str_contains($contents, self::MARKER)) {
+                continue;
+            }
+
+            ++$read;
+            $removed = Redaction::of($contents)->removed;
+            if ($removed !== []) {
+                $hits[$file->getFilename()] = $removed;
+            }
+        }
+
+        self::assertGreaterThan(100, $read, 'the corpus this was measured against was not read');
+        self::assertSame([
+            '2026-07-31-185900-after-the-audit-i-invoked-typo3-cms-mcp.md' => ['a 96-character hexadecimal value'],
+        ], $hits);
     }
 
     /**

@@ -1807,6 +1807,11 @@ from it would file a real feedback into the backlog every time
 - `path` *(string, required)* — The same feedback as an absolute path. It
   is in the server's checkout, not in the project the feedback was recorded
   from.
+- `redacted` *(array of string, required)* — What was removed before the
+  feedback was written, one entry per value, naming the field it stood in and
+  the shape it had. Empty where nothing was removed, which is the ordinary
+  case. Each removal stands in the file as a [redacted: ...] marker, so the
+  report says of itself that it was altered.
 
 ## `typo3_feedback_list`
 

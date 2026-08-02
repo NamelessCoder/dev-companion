@@ -6,8 +6,8 @@ restsOn: [D-FBK-019]
 
 # R-FBK-011 — A recorded feedback carries no secret out of the installation
 
-**A session recording feedback is told that a value the installation keeps
-secret does not belong in it.**
+**A value that looks like a credential does not reach the file, and where one
+was taken out the file says so and the answer says so.**
 
 This server's only write moves text from the project a session is standing in
 into a checkout of its own, and that checkout is committed and pushed. A key, a
@@ -18,6 +18,11 @@ What the report needs is the path and the shape of the answer, never the value:
 "the key at `SYS/encryptionKey` is the active one, hardcoded in
 `config/system/settings.php`" is the whole finding, and the 96 characters after
 it establish nothing further.
+
+Marked, never silently. The archive keeps a session's report because the report
+is the evidence, so a reader has to be able to see that something was taken out
+and go and ask — and the session that wrote it, standing in the installation the
+value came from, is the one reader who still knows what stood there.
 
 ## From
 
@@ -33,9 +38,31 @@ place the value could go rather than one it went.
 
 ## Held by
 
-The `observation` and `query` descriptions in `src/Tool/FeedbackRecord.php` say
-what a finding needs — the path, the shape, where the value came from — and that
-a value the installation keeps secret is not part of it. Telling the session is
-the whole of what carries this, and whether it is heard is not guarded: nothing
-reads what a session writes into either field, and no check reads the corpus for
-what a value out of an installation looks like.
+`Channel::record()` reads every field a feedback is written from before any of
+them is written, and `Redaction` is what counts as a credential: a hexadecimal
+or base64 run of 64 characters or more, a value assigned to a name that says
+what it is, and the password in a URL that carries one. Each threshold was
+settled against the 207 recorded feedback rather than reasoned about, because a
+rule that redacts a revision or a class name costs more than the leak it
+prevents.
+
+- `FeedbackTest::aValueThatLooksLikeACredentialNeverReachesTheFile`
+- `FeedbackTest::everyFieldAFeedbackIsWrittenFromIsRead`
+- `FeedbackTest::whatASessionQuotesAboutTheCoreIsLeftAlone`
+- `FeedbackTest::aValueGoesAndTheNameThatSaysWhatItWasStays`
+- `FeedbackTest::aPasswordInADatabaseUrlGoesWithoutTheHostGoingWithIt`
+- `FeedbackTest::aLongBase64ValueIsTakenOutAndAWordIsNot`
+- `FeedbackTest::theToolSaysWhatItTookOutOfWhatItWasHanded`
+- `FeedbackTest::theRulesTakeNothingOutOfTheCorpusButTheKeyTheyWereWrittenFor`
+
+Behind the guard, the `observation` and `query` descriptions in
+`src/Tool/FeedbackRecord.php` say what a finding needs — the path, the shape,
+where the value came from — and that a value the installation keeps secret is
+not part of it. That is what asks the session not to paste one in the first
+place, and it is what the residue below rests on.
+
+Not guarded, and left to the wording of the fields to carry: a base64 value
+containing `/`, which the corpus showed is indistinguishable from a class path;
+base64url and the JWTs made of it, whose `-` and `_` run into every changelog
+identifier; and a short secret standing on its own, with no name beside it and
+no shape to know it by. What holds those is a session that does not paste them.

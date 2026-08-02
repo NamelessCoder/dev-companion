@@ -22,6 +22,11 @@ use Typo3CmsMcp\Paths;
  * One feedback per file: concurrent agents never touch the same file, so no
  * read-modify-write races and no merge conflicts on a shared log.
  *
+ * What a session pasted and should not have — a key, a password, a token read
+ * out of the installation it was standing in — is taken out on the way in and
+ * replaced by a marker, because the file this writes is committed and pushed.
+ * Redaction says what counts as one and why each threshold is where it is.
+ *
  * A feedback that was worked off moves to feedback/archive/ rather than being
  * deleted. What a session reported about this server — which skill it reached
  * for, what it had to establish elsewhere, what the answer cost it — is
@@ -61,12 +66,19 @@ final class Channel
      * Records one feedback and returns the path it was written to, relative to the
      * project root.
      *
+     * What a session pasted and should not have is taken out on the way in, and
+     * `$redacted` is what was taken: the caller is told, because a report that
+     * was altered says so or it is not a report. See Redaction for what counts
+     * and why the thresholds are where they are.
+     *
      * @param array<string, mixed> $args
+     * @param array<int, string>   $redacted what was removed, by field and shape
      */
-    public static function record(array $args): string
+    public static function record(array $args, array &$redacted = []): string
     {
         self::assertAvailable();
 
+        $redacted = [];
         $observation = self::text($args['observation'] ?? '');
         if ($observation === '') {
             throw new \InvalidArgumentException('An observation is required.');
@@ -74,8 +86,13 @@ final class Channel
 
         $category = self::category($args['category'] ?? null);
         $tools = self::toolNames($args['tool'] ?? null);
-        $query = self::text($args['query'] ?? '');
-        $suggestion = self::text($args['suggestion'] ?? '');
+        $observation = self::withoutSecrets('observation', $observation, $redacted);
+        $query = self::withoutSecrets('query', self::text($args['query'] ?? ''), $redacted);
+        // The third field for the same reason as the other two, though neither
+        // the leak this was written for nor the todo that carried it named it:
+        // it is prose a session writes and it is written into the same file, so
+        // leaving it out would be a hole with nothing behind it.
+        $suggestion = self::withoutSecrets('suggestion', self::text($args['suggestion'] ?? ''), $redacted);
         $model = self::model($args['model'] ?? null);
 
         $directory = Paths::feedback();
@@ -273,6 +290,27 @@ final class Channel
         fclose($pipes[2]);
 
         return proc_close($process) === 0 ? $output : null;
+    }
+
+    /**
+     * One field with what looked like a credential taken out of it, and a line
+     * on the list for each thing taken.
+     *
+     * The field is named in what comes back because the answer has to be able
+     * to say where the value was: a session that pasted a key into its
+     * observation and its query has two things to look at, and one sentence
+     * naming neither sends it to read the whole file.
+     *
+     * @param array<int, string> $redacted
+     */
+    private static function withoutSecrets(string $field, string $text, array &$redacted): string
+    {
+        $redaction = Redaction::of($text);
+        foreach ($redaction->removed as $what) {
+            $redacted[] = $field . ': ' . $what;
+        }
+
+        return $redaction->text;
     }
 
     private static function assertAvailable(): void

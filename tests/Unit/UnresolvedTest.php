@@ -7,6 +7,7 @@ namespace Typo3CmsMcp\Tests\Unit;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Typo3CmsMcp\Upkeep\Decisions;
+use Typo3CmsMcp\Upkeep\DecisionStatus;
 use Typo3CmsMcp\Upkeep\Requirements;
 use Typo3CmsMcp\Upkeep\Todo;
 use Typo3CmsMcp\Upkeep\Unresolved;
@@ -62,26 +63,26 @@ final class UnresolvedTest extends TestCase
     }
 
     /**
-     * The oldest standing decision is the one the repository has moved furthest
+     * The oldest open decision is the one the repository has moved furthest
      * away from, so it is the candidate the report names. Decisions::all() is
      * newest first for the listings, and this is the one caller that wants the
      * other end.
      */
     #[Test]
-    public function theStandingDecisionsAreReadOldestFirst(): void
+    public function theOpenDecisionsAreReadOldestFirst(): void
     {
-        $standing = Unresolved::decisions();
+        $open = Unresolved::decisions();
 
-        self::assertNotSame([], $standing, 'no decision is standing, which the report would have to say instead');
+        self::assertNotSame([], $open, 'no decision is open, which the report would have to say instead');
 
-        $dates = array_column($standing, 'date');
+        $dates = array_column($open, 'date');
         $sorted = $dates;
         sort($sorted);
         self::assertSame($sorted, $dates);
 
-        foreach ($standing as $decision) {
+        foreach ($open as $decision) {
             self::assertSame(
-                'standing',
+                DecisionStatus::Open->value,
                 Decisions::all()[$decision['id']]['status'],
                 $decision['id'] . ' has been back-checked and is still reported as waiting',
             );

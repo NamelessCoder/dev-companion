@@ -45,24 +45,46 @@ final class Decisions
     /**
      * What an entry may be labelled with, in the order the labels have to
      * appear. The evidence that was available comes before what was decided on
-     * it, the assumptions it rests on come after, and what would show it to be
-     * wrong closes the entry — everything below that line arrived later than
-     * the entry did.
+     * it, the assumptions it rests on come after, what would show it to be wrong
+     * follows them, and what would catch that happening closes the entry —
+     * everything below that line arrived later than the entry did.
+     *
+     * `Covered by` is optional, because most entries here are about process and
+     * nothing runs over them. Where a test would catch the **Wrong if**, naming
+     * it is what turns the promise into something the suite keeps: a renamed
+     * test then fails a check instead of quietly orphaning the claim.
      *
      * @var array<int, string>
      */
-    public const FIELDS = ['Evidence', 'Decided', 'Assumed', 'Wrong if'];
+    public const FIELDS = ['Evidence', 'Decided', 'Assumed', 'Wrong if', 'Covered by'];
 
     /**
-     * The labels a later session adds. `Tested on` and `Corrected on` carry the
-     * date they were added on, and the status says which of them is there.
+     * The labels a later session adds. The dated ones belong to
+     * `DecisionStatus`, which is what says whether a reader may still build on
+     * the entry; `Since then` carries what followed without a date of its own
+     * and says nothing about that.
      *
-     * @var array<int, string>
+     * @return array<int, string>
      */
-    public const LATER_FIELDS = ['Tested on', 'Corrected on', 'Since then'];
+    public static function laterFields(): array
+    {
+        return [...DecisionStatus::lines(), 'Since then'];
+    }
 
-    /** @var array<int, string> */
-    public const STATUSES = ['standing', 'tested', 'corrected'];
+    /**
+     * The dated lines an entry may carry, most recent last. The status names
+     * the last of them.
+     *
+     * @param array<int, string> $fields
+     * @return array<int, string>
+     */
+    public static function datedLines(array $fields): array
+    {
+        return array_values(array_filter(
+            $fields,
+            static fn(string $field): bool => in_array($field, DecisionStatus::lines(), true),
+        ));
+    }
 
     public static function directory(): string
     {
@@ -73,7 +95,7 @@ final class Decisions
      * Every decision, keyed by id and newest first — which is the order the
      * file this replaces claimed to be in.
      *
-     * @return array<string, array{id: string, group: string, file: string, heading: string, title: string, date: string, status: string, statement: string, fields: array<int, string>}>
+     * @return array<string, array{id: string, group: string, file: string, heading: string, title: string, date: string, status: string, revokedBy: string, statement: string, fields: array<int, string>}>
      */
     public static function all(): array
     {
@@ -91,7 +113,7 @@ final class Decisions
     /**
      * The decisions of one group, or every one of them where no group is named.
      *
-     * @return array<string, array{id: string, group: string, file: string, heading: string, title: string, date: string, status: string, statement: string, fields: array<int, string>}>
+     * @return array<string, array{id: string, group: string, file: string, heading: string, title: string, date: string, status: string, revokedBy: string, statement: string, fields: array<int, string>}>
      */
     public static function group(string $group): array
     {
@@ -110,23 +132,33 @@ final class Decisions
      */
     public static function listing(string $group): string
     {
-        $root = $group === '';
-
-        $entries = [];
+        // Two lists rather than one, because the first question a reader has of
+        // a listing this long is which of it is still true. A revoked entry is
+        // kept and read — the wrong assumption is the useful part — but it is
+        // not something to build on, and mixed into one list it looked exactly
+        // like something to build on.
+        $sections = ['' => [], 'Revoked, and kept as the record' => []];
         foreach (self::group($group) as $decision) {
-            $entries[] = [
+            $status = DecisionStatus::tryFrom($decision['status']);
+            $entry = [
                 'ref' => $decision['id'],
-                'path' => ($root ? $decision['group'] . '/' : '') . $decision['file'],
-                'says' => sprintf(
-                    '%s · %s · %s',
-                    $decision['title'],
-                    $decision['date'],
-                    $decision['status'],
-                ),
+                'path' => ($group === '' ? $decision['group'] . '/' : '') . $decision['file'],
+                'says' => sprintf('%s · %s', $decision['title'], $decision['date'])
+                    . ($status === DecisionStatus::Confirmed ? ' · confirmed' : '')
+                    . ($decision['revokedBy'] === '' ? '' : ' → ' . $decision['revokedBy']),
             ];
+            $sections[$status?->stillHolds() === false ? 'Revoked, and kept as the record' : ''][] = $entry;
         }
 
-        return Listing::render($entries);
+        $listing = '';
+        foreach ($sections as $heading => $entries) {
+            if ($entries === []) {
+                continue;
+            }
+            $listing .= ($heading === '' ? '' : '### ' . $heading . "\n\n") . Listing::render($entries) . "\n";
+        }
+
+        return rtrim($listing, "\n") . "\n";
     }
 
     /**
@@ -156,7 +188,7 @@ final class Decisions
      * One file. Read on its own rather than through all(), which is keyed by
      * id and would hide the second file claiming one.
      *
-     * @return array{id: string, group: string, file: string, heading: string, title: string, date: string, status: string, statement: string, fields: array<int, string>}
+     * @return array{id: string, group: string, file: string, heading: string, title: string, date: string, status: string, revokedBy: string, statement: string, fields: array<int, string>}
      */
     public static function read(string $path): array
     {
@@ -180,24 +212,34 @@ final class Decisions
             'title' => $heading[2] ?? '',
             'date' => self::frontMatterValue($frontMatter, 'date'),
             'status' => self::frontMatterValue($frontMatter, 'status'),
+            // What replaced it, where a revoked entry has a successor. A reader
+            // who reaches a dead entry needs somewhere to go next, and prose
+            // said it on four of them and nowhere a listing could see.
+            'revokedBy' => self::frontMatterValue($frontMatter, 'revokedBy'),
             'statement' => trim(str_replace('**', '', $statement)),
             'fields' => self::fields($contents),
         ];
     }
 
     /**
-     * The labels an entry carries, in the order it carries them, with the date
-     * of a later addition folded away — `Tested on 2026-07-31` is the field
-     * `Tested on`, and the date belongs to the entry rather than to the shape.
+     * The sections an entry carries, in the order it carries them, with the
+     * date of a later addition folded away — `Revoked on 2026-07-31` is the
+     * section `Revoked on`, and the date belongs to the entry rather than to
+     * the shape.
+     *
+     * They were bullets carrying a bold label until 2026-08-02, and the label
+     * repeated: half the entries make more than one decision and a fifth of
+     * them rest on more than one assumption, so `- **Decided:**` was written
+     * seven times in the worst case. A section says it once. See `D-DOC-3`.
      *
      * @return array<int, string>
      */
     public static function fields(string $contents): array
     {
-        preg_match_all('/^- \*\*([^*]+?):\*\*/m', $contents, $matches);
+        preg_match_all('/^## (.+)$/m', $contents, $matches);
 
         return array_map(static function (string $label): string {
-            foreach (self::LATER_FIELDS as $later) {
+            foreach (self::laterFields() as $later) {
                 if (str_starts_with($label, $later . ' ')) {
                     return $later;
                 }
@@ -219,18 +261,10 @@ final class Decisions
         return $rank === false ? count(self::FIELDS) : $rank;
     }
 
-    /**
-     * What a status promises the reader is a line further down: `tested` says a
-     * later run confirmed the decision, `corrected` that one did not. The field
-     * that carries it has to be there, or the status is a claim about nothing.
-     */
+    /** The dated line the named status promises, or '' where it names none. */
     public static function fieldFor(string $status): string
     {
-        return match ($status) {
-            'tested' => 'Tested on',
-            'corrected' => 'Corrected on',
-            default => '',
-        };
+        return DecisionStatus::tryFrom($status)?->line() ?? '';
     }
 
     private static function frontMatterValue(string $frontMatter, string $key): string

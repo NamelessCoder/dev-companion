@@ -8,6 +8,7 @@ use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Output\OutputInterface;
 use Typo3CmsMcp\Upkeep\Cli;
 use Typo3CmsMcp\Upkeep\Decisions;
+use Typo3CmsMcp\Upkeep\DecisionStatus;
 use Typo3CmsMcp\Upkeep\Requirements;
 
 /**
@@ -29,7 +30,8 @@ final class DecisionCheck
     {
         $problems = [];
         $seen = [];
-        $known = [...Decisions::FIELDS, ...Decisions::LATER_FIELDS];
+        $successors = [];
+        $known = [...Decisions::FIELDS, ...Decisions::laterFields()];
 
         foreach (Decisions::files() as $path) {
             $file = substr($path, strlen(Decisions::directory()) + 1);
@@ -64,7 +66,7 @@ final class DecisionCheck
             if (preg_match('/^\d{4}-\d{2}-\d{2}$/', $decision['date']) !== 1) {
                 $problems[] = $id . ' was decided on ' . ($decision['date'] === '' ? '(no date)' : $decision['date']);
             }
-            if (!in_array($decision['status'], Decisions::STATUSES, true)) {
+            if (DecisionStatus::tryFrom($decision['status']) === null) {
                 $problems[] = $id . ' has the status ' . ($decision['status'] === '' ? '(none)' : $decision['status']);
             }
             if ($decision['title'] === '' || $decision['statement'] === '') {
@@ -86,14 +88,31 @@ final class DecisionCheck
                 $problems[] = $id . ' does not say what would show it to be wrong';
             }
 
-            $later = Decisions::fieldFor($decision['status']);
-            if ($later !== '' && !in_array($later, $decision['fields'], true)) {
-                $problems[] = $id . ' is ' . $decision['status'] . ' and carries no ' . $later . ' line';
-            }
-            foreach (Decisions::LATER_FIELDS as $field) {
-                if ($field !== 'Since then' && in_array($field, $decision['fields'], true) && $later !== $field) {
-                    $problems[] = $id . ' carries a ' . $field . ' line and does not say so in its status';
+            // The status names the last dated line, not the only one: an entry
+            // may be confirmed by one run and revoked by the next, and both
+            // belong in the file. What a reader relies on is the latest.
+            if ($decision['revokedBy'] !== '') {
+                if (DecisionStatus::tryFrom($decision['status']) !== DecisionStatus::Revoked) {
+                    $problems[] = $id . ' names what revoked it and is not revoked';
                 }
+                // Resolved after the loop: an entry is regularly revoked by one
+                // written later, so the successor is not read yet.
+                $successors[$id] = $decision['revokedBy'];
+            }
+
+            $dated = Decisions::datedLines($decision['fields']);
+            $latest = $dated === [] ? '' : $dated[count($dated) - 1];
+            $later = Decisions::fieldFor($decision['status']);
+            if ($later !== $latest) {
+                $problems[] = $latest === ''
+                    ? $id . ' is ' . $decision['status'] . ' and carries no ' . $later . ' line'
+                    : $id . ' is ' . $decision['status'] . ' and its last dated line is ' . $latest;
+            }
+        }
+
+        foreach ($successors as $id => $successor) {
+            if (!isset($seen[$successor])) {
+                $problems[] = $id . ' is revoked by ' . $successor . ', which no decision has';
             }
         }
 

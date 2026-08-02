@@ -9,6 +9,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Finder\Finder;
 use Typo3CmsMcp\Paths;
 use Typo3CmsMcp\Upkeep\Cli;
+use Typo3CmsMcp\Upkeep\Decisions;
 use Typo3CmsMcp\Upkeep\Requirements;
 
 /**
@@ -29,6 +30,7 @@ final class RequirementCheck
     public function __invoke(OutputInterface $output): int
     {
         $problems = [];
+        $decisions = Decisions::all();
         $tests = self::testMethods();
         $seen = [];
 
@@ -64,6 +66,14 @@ final class RequirementCheck
 
             if (!in_array($requirement['status'], ['held', 'open'], true)) {
                 $problems[] = $id . ' has the status ' . ($requirement['status'] === '' ? '(none)' : $requirement['status']);
+            }
+            foreach ($requirement['restsOn'] as $decision) {
+                // Whether the decision still holds is a reading rather than a
+                // failure, and bin/cli backlog:list is where that is read out.
+                // What fails here is a pointer at nothing.
+                if (!isset($decisions[$decision])) {
+                    $problems[] = $id . ' rests on ' . $decision . ', which no decision has';
+                }
             }
             if ($requirement['title'] === '' || $requirement['statement'] === '') {
                 $problems[] = $id . ' does not open with the sentence that has to hold';

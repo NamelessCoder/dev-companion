@@ -7,6 +7,6 @@ order it works.
 See [the decisions readme](../readme.md) for how an entry is written and when
 one is added.
 
-- [`D-SKL-1`][D-SKL-1] — The order a task starts in is one file, and the reading comes last in it · 2026-08-01 · tested
+- [`D-SKL-1`][D-SKL-1] — The order a task starts in is one file, and the reading comes last in it · 2026-08-01 · confirmed
 
 [D-SKL-1]: skl-1-the-order-a-task-starts-in-is-one-file.md

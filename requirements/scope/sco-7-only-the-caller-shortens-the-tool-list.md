@@ -1,6 +1,7 @@
 ---
 id: R-SCO-7
 status: held
+restsOn: [D-AUD-4]
 ---
 
 # R-SCO-7 — Only the caller shortens the tool list

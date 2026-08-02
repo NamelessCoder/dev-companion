@@ -207,7 +207,7 @@ existed.
 `bin/cli repository:check` closes with it. It names every requirement nothing answers for,
 says whether a queued todo names it — read from what the queue declares it
 serves, so the page listing what is deliberately *not* queued does not count as
-having taken one on — and gives the oldest standing decision as the one the
+having taken one on — and gives the oldest open decision as the one the
 repository has moved furthest away from.
 
 Standing on that list is not the problem. Standing on it with no todo naming it

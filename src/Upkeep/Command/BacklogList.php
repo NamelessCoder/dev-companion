@@ -59,11 +59,23 @@ final class BacklogList
         }
 
         // What is owed here is the judgement, not the work: a requirement some
-        // todo names has had it, and the standing decisions have had it as soon
+        // todo names has had it, and the open decisions have had it as soon
         // as a todo takes on sorting them. Everything else would make a backlog
         // that is legitimately long the only thing a session is ever offered.
         $unjudged = array_filter($requirements, static fn(array $r): bool => !$r['queued']);
         $sorting = in_array('decisions/', Todo::serves(), true);
+
+        // Before the count of what nobody has been back to, because this one is
+        // not a backlog item: the reasoning under a held requirement is gone and
+        // its test is still green, so nothing else in this report would say so.
+        foreach (Unresolved::requirementsOnRevokedDecisions() as $resting) {
+            $output->writeln(sprintf(
+                '%s rests on %s, which is revoked%s.',
+                $resting['id'],
+                $resting['decision'],
+                $resting['revokedBy'] === '' ? '' : ' — see ' . $resting['revokedBy'],
+            ));
+        }
 
         $standing = Unresolved::decisions();
         $total = count(Decisions::all());
@@ -74,7 +86,7 @@ final class BacklogList
         }
 
         $output->writeln(sprintf(
-            "%d of %d decisions are standing: nobody has been back to their \"Wrong if\".\n"
+            "%d of %d decisions are open: nobody has been back to their \"Wrong if\".\n"
             . 'The oldest is %s (%s). bin/cli decisions:list has them all.',
             count($standing),
             $total,

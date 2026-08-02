@@ -56,6 +56,22 @@ An id is never reused: a withdrawn requirement takes its number with it, so a
 number that appears in an old commit, feedback or scenario still means the one
 thing it always meant.
 
+A requirement may name the decisions it stands on in its front matter:
+
+```markdown
+---
+id: R-FBK-7
+status: held
+restsOn: [D-FBK-5]
+---
+```
+
+`bin/cli requirements:check` fails on an id no decision has. Whether a decision
+it rests on was later revoked is a reading rather than a failure, and
+`bin/cli backlog:list` is where it is read out — a revoked decision leaves the
+requirement's test green and the reasoning under it gone, which nothing else
+here would say.
+
 ## What an entry looks like
 
 ```markdown

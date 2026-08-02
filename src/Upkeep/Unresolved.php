@@ -9,7 +9,7 @@ namespace Typo3CmsMcp\Upkeep;
  *
  * Both directories carry a state that means unfinished, and neither of them
  * was ever read for it. A requirement is `open` when nobody has built it and
- * `not guarded` when nothing holds it; a decision is `standing` when nobody
+ * `not guarded` when nothing holds it; a decision is `open` when nobody
  * has been back to its "Wrong if". None of the three is an error, which is
  * exactly why none of them surfaced: the queue is fed by feedback/ and the
  * forward reviews, so an entry could sit in either directory indefinitely
@@ -58,9 +58,47 @@ final class Unresolved
     }
 
     /**
+     * Requirements standing on a decision that has since been revoked.
+     *
+     * The quiet one. A decision is revoked because a later reading disproved
+     * it, and the requirement written on top of it keeps its `held` status and
+     * its passing test the whole time — the test holds the requirement, and
+     * nothing holds the reasoning under it. Neither directory can see the other,
+     * so this is the one crossing that has to be read out.
+     *
+     * @return array<int, array{id: string, title: string, decision: string, revokedBy: string}>
+     */
+    public static function requirementsOnRevokedDecisions(): array
+    {
+        $decisions = Decisions::all();
+
+        $resting = [];
+        foreach (Requirements::all() as $requirement) {
+            foreach ($requirement['restsOn'] as $id) {
+                if (DecisionStatus::tryFrom($decisions[$id]['status'] ?? '') !== DecisionStatus::Revoked) {
+                    continue;
+                }
+                $resting[] = [
+                    'id' => $requirement['id'],
+                    'title' => $requirement['title'],
+                    'decision' => $id,
+                    'revokedBy' => $decisions[$id]['revokedBy'],
+                ];
+            }
+        }
+
+        usort(
+            $resting,
+            static fn(array $a, array $b): int => [$a['id'], $a['decision']] <=> [$b['id'], $b['decision']],
+        );
+
+        return $resting;
+    }
+
+    /**
      * The decisions nobody has been back to, oldest first.
      *
-     * A standing decision is not a defect the way an open requirement is —
+     * An open decision is not a defect the way an open requirement is —
      * most of them are simply still true, and some name a "Wrong if" only a
      * forward run or an outside event could answer. What makes the oldest
      * worth naming is that the repository around it has moved furthest since,
@@ -71,13 +109,13 @@ final class Unresolved
      */
     public static function decisions(): array
     {
-        $standing = [];
+        $open = [];
         foreach (Decisions::all() as $decision) {
-            if ($decision['status'] !== 'standing') {
+            if (DecisionStatus::tryFrom($decision['status']) !== DecisionStatus::Open) {
                 continue;
             }
 
-            $standing[] = [
+            $open[] = [
                 'id' => $decision['id'],
                 'date' => $decision['date'],
                 'title' => $decision['title'],
@@ -86,8 +124,8 @@ final class Unresolved
 
         // Decisions::all() is newest first, and reversing it would leave the
         // ids of one day in the order that listing wants them read.
-        usort($standing, static fn(array $a, array $b): int => [$a['date'], $a['id']] <=> [$b['date'], $b['id']]);
+        usort($open, static fn(array $a, array $b): int => [$a['date'], $a['id']] <=> [$b['date'], $b['id']]);
 
-        return $standing;
+        return $open;
     }
 }

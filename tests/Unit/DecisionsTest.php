@@ -6,7 +6,10 @@ namespace Typo3CmsMcp\Tests\Unit;
 
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Finder\Finder;
+use Typo3CmsMcp\Paths;
 use Typo3CmsMcp\Upkeep\Decisions;
+use Typo3CmsMcp\Upkeep\DecisionStatus;
 use Typo3CmsMcp\Upkeep\Requirements;
 
 final class DecisionsTest extends TestCase
@@ -57,7 +60,7 @@ final class DecisionsTest extends TestCase
                 $decision['date'],
                 $id . ' does not say when it was decided',
             );
-            self::assertContains($decision['status'], Decisions::STATUSES, $id . ' has no usable status');
+            self::assertNotNull(DecisionStatus::tryFrom($decision['status']), $id . ' has no usable status');
         }
     }
 
@@ -70,7 +73,7 @@ final class DecisionsTest extends TestCase
     #[Test]
     public function everyDecisionIsWrittenInTheFieldsTheFormatHas(): void
     {
-        $known = [...Decisions::FIELDS, ...Decisions::LATER_FIELDS];
+        $known = [...Decisions::FIELDS, ...Decisions::laterFields()];
 
         foreach (Decisions::all() as $id => $decision) {
             $rank = -1;
@@ -103,34 +106,67 @@ final class DecisionsTest extends TestCase
     }
 
     /**
-     * `tested` and `corrected` are claims about a later run, and the line that
-     * carries it has to be in the file. Both directions: a status without its
-     * line says nothing, and a line without its status is invisible in every
-     * listing a reader looks at first.
+     * `confirmed` and `revoked` are claims about a later reading, and the line
+     * that carries it has to be in the file. The status names the **last** of
+     * them rather than the only one: an entry may be confirmed by one run and
+     * revoked by the next, and what a reader relies on is the latest.
      */
     #[Test]
-    public function aStatusAndTheLineBehindItAgree(): void
+    public function aStatusNamesTheLastDatedLineInTheFile(): void
     {
         foreach (Decisions::all() as $id => $decision) {
-            $later = Decisions::fieldFor($decision['status']);
-            if ($later !== '') {
-                self::assertContains(
-                    $later,
-                    $decision['fields'],
-                    $id . ' is ' . $decision['status'] . ' and carries no ' . $later . ' line',
-                );
-            }
+            $dated = Decisions::datedLines($decision['fields']);
+            $latest = $dated === [] ? '' : $dated[count($dated) - 1];
 
-            foreach (['Tested on', 'Corrected on'] as $field) {
-                if (in_array($field, $decision['fields'], true)) {
-                    self::assertSame(
-                        $field,
-                        $later,
-                        $id . ' carries a ' . $field . ' line and does not say so in its status',
-                    );
+            self::assertSame(
+                Decisions::fieldFor($decision['status']),
+                $latest,
+                $id . ' is ' . $decision['status'] . ' and its last dated line is '
+                    . ($latest === '' ? 'none' : $latest),
+            );
+        }
+    }
+
+    /**
+     * A test named in a decision is a claim that something would catch the
+     * **Wrong if** happening, and a renamed test turns it into a claim nobody
+     * answers for — which reads exactly like one that still holds. This covers
+     * the `Covered by` field and every test named in passing, because the prose
+     * makes the same claim and goes stale the same way.
+     */
+    #[Test]
+    public function everyTestADecisionNamesExists(): void
+    {
+        $methods = $this->testMethods();
+
+        foreach (Decisions::all() as $id => $decision) {
+            preg_match_all(
+                '/\b([A-Z]\w*Test::\w+)/',
+                (string) file_get_contents(Decisions::directory() . '/' . $decision['group'] . '/' . $decision['file']),
+                $matches,
+            );
+            foreach (array_unique($matches[1]) as $named) {
+                self::assertContains($named, $methods, $id . ' names ' . $named . ', which no test declares');
+            }
+        }
+    }
+
+    /**
+     * @return array<int, string>
+     */
+    private function testMethods(): array
+    {
+        $methods = [];
+        foreach (['Unit', 'Contract', 'Smoke'] as $suite) {
+            foreach (Finder::create()->files()->in(Paths::root() . '/tests/' . $suite)->depth(0)->name('*Test.php')->sortByName() as $file) {
+                preg_match_all('/public function (\w+)\(/', (string) file_get_contents($file->getPathname()), $matches);
+                foreach ($matches[1] as $method) {
+                    $methods[] = $file->getBasename('.php') . '::' . $method;
                 }
             }
         }
+
+        return $methods;
     }
 
     /**

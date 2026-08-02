@@ -1,6 +1,7 @@
 ---
 id: R-AUD-2
 status: held
+restsOn: [D-SCO-7]
 ---
 
 # R-AUD-2 — The audience is a property of the task

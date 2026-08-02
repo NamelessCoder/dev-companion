@@ -1,7 +1,7 @@
 ---
 id: D-SCO-2
 date: 2026-07-29
-status: standing
+status: open
 ---
 
 # D-SCO-2 — A core-only intent asks for evidence, not for silence
@@ -16,17 +16,22 @@ outside-core marker, because "third-party TYPO3 extension" is not the phrase
 the list carries. Gating on the flag alone would have left the feedback's own
 case answered exactly as before.
 
-- **Decided:** a core-only intent needs positive evidence — a `typo3/sysext/`
-  path, or Gerrit, Forge, "TYPO3 core" named outright. Outside the core it is
-  dropped, and where nothing says either way it is demoted to the conditional
-  match the catalog already models, so the answer offers it rather than states
-  it.
-- **Assumed:** `coreOnly` is a property of the intent, not of the task, and
-  patch submission is currently the only one. Deprecation, breaking change and
-  changelog were considered and left alone: their subject is real work outside
-  the core too, and it is their `checks` that are core-only, which R-SCO-2
-  handles.
-- **Wrong if:** a core contributor's task text names neither a sysext path nor
-  Gerrit and they now get the submission rules as conditional rather than as
-  fact. That is the cost of not guessing, and the condition line is what keeps
-  it cheap.
+## Decided
+
+- A core-only intent needs positive evidence — a `typo3/sysext/` path, or
+  Gerrit, Forge, "TYPO3 core" named outright. Outside the core it is dropped,
+  and where nothing says either way it is demoted to the conditional match the
+  catalog already models, so the answer offers it rather than states it.
+
+## Assumed
+
+- `coreOnly` is a property of the intent, not of the task, and patch submission
+  is currently the only one. Deprecation, breaking change and changelog were
+  considered and left alone: their subject is real work outside the core too,
+  and it is their `checks` that are core-only, which R-SCO-2 handles.
+
+## Wrong if
+
+- A core contributor's task text names neither a sysext path nor Gerrit and
+  they now get the submission rules as conditional rather than as fact. That is
+  the cost of not guessing, and the condition line is what keeps it cheap.

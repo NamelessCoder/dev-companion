@@ -1,6 +1,7 @@
 ---
 id: R-DIS-22
 status: held
+restsOn: [D-DIS-6]
 ---
 
 # R-DIS-22 — A call can tell where it came from

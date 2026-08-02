@@ -329,15 +329,19 @@ stale without taking a case with it.
   from now on and what holds it there, `decisions/` for what a change rested on
   and what would show it wrong, `todo/` for the order of the work.
 - Three states mean unfinished — a requirement marked **open**, one held by
-  `not guarded`, a decision still `standing` whose **Wrong if** nobody has been
+  `not guarded`, a decision still `open` whose **Wrong if** nobody has been
   back to. All three are legitimate, so no check may fail on them, and
   `bin/cli backlog:list` reads them out instead.
 
 How each of those is carried out — the debrief that gets a feedback out of a
 session this repository cannot read, judging one, what each of the three files
 holds, and what `bin/cli backlog:list` reports:
-[documentation/feedback/readme.md](documentation/feedback/readme.md). Running a
-forward review, judging it, and reading one that stopped without an error:
+[documentation/feedback/readme.md](documentation/feedback/readme.md). The
+sections a decision is written in, what a later session adds to the foot of one,
+and what `open`, `confirmed` and `revoked` promise a reader:
+[documentation/feedback/writing-a-decision.md](documentation/feedback/writing-a-decision.md).
+Running a forward review, judging it, and reading one that stopped without an
+error:
 [documentation/evidence/forward-runs.md](documentation/evidence/forward-runs.md).
 What each kind of scenario is for: [scenarios/readme.md](scenarios/readme.md).
 

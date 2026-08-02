@@ -1,7 +1,7 @@
 ---
 id: D-EVI-3
 date: 2026-07-31
-status: standing
+status: open
 ---
 
 # D-EVI-3 — A review runs the checks that cannot change the code
@@ -15,38 +15,6 @@ declared body.
 Three recorded `REVIEW-02` runs read "do not change files" as "run nothing" and
 quoted the commands as subjects of findings instead.
 
-- **Evidence:** the three runs — bootstrap_package at 02:55 and 08:15, syntax at
-  12:21 — executed none of the ten and five commands they were offered. Of the
-  fifteen, `composer cgl:ci` (`php-cs-fixer --diff -v --dry-run fix`) and
-  `composer test:php:lint` (`phplint`) appear in both repositories and rewrite
-  nothing, and in the syntax run two findings about php-cs-fixer and phplint were
-  derived from CI configuration that either command would have settled in one
-  invocation. Against them: `composer cgl` is the same tool without the flag,
-  `composer set-version` and `composer changelog` write, and `composer test`
-  reaches a functional suite. The two groups are one flag and one subcommand
-  apart and no script name separates them.
-- **Decided:** the checks are run, and the answer says what they printed. The
-  objection that a failing command tells you less than the configuration that
-  would make it fail is about what a finding says, not about whether to gather
-  it, and survives as a limit: the finding still names the configuration, and the
-  run is what takes it from derived to established. The objection that a review
-  must not change files is answered by the property rather than by abstaining
-  from all of them. Rejected: running everything, which breaks the instruction
-  the user gave; running nothing, which is what was measured; and asking the user
-  per command, which is a question the answer could not have been formed against
-  before `typo3_project_scope` carried `runs`.
-- **Assumed:** that a body declaring a check is one. `php-cs-fixer --dry-run`,
-  `phpstan analyze`, `phplint` and `eslint` without `--fix` do not rewrite the
-  sources they are pointed at — but they are configurable, a fixer can be given a
-  rule set that writes elsewhere, and a caching checker leaves a file behind.
-  What is claimed is that the code comes back unchanged, not that the filesystem
-  does.
-- **Wrong if:** a run reports a checkout modified by a command marked `check` —
-  the classification would then be a promise the declaration cannot carry, and
-  what is left is naming the command and letting the user decide. Or the reverse:
-  reviews that now run the checks report the same findings they read out of CI
-  files, in which case the runs cost time and settled nothing, and the base's
-  three-way distinction was doing all the work by itself.
 
 **Since then** the first **Wrong if** was gone looking for instead of waited
 for, on 2026-08-02, and the classification did carry it: a declared line was
@@ -58,3 +26,47 @@ on a line is read now, and `ProjectTest::aCommandThatWritesIsNeverReportedAsAChe
 holds the writers to never getting that answer, which is what makes waiting for
 a run to report a modified checkout unnecessary. The decision stands: what was
 wrong was the reading, not that the declaration can be read.
+
+## Evidence
+
+- The three runs — bootstrap_package at 02:55 and 08:15, syntax at 12:21 —
+  executed none of the ten and five commands they were offered. Of the fifteen,
+  `composer cgl:ci` (`php-cs-fixer --diff -v --dry-run fix`) and
+  `composer test:php:lint` (`phplint`) appear in both repositories and rewrite
+  nothing, and in the syntax run two findings about php-cs-fixer and phplint
+  were derived from CI configuration that either command would have settled in
+  one invocation. Against them: `composer cgl` is the same tool without the
+  flag, `composer set-version` and `composer changelog` write, and
+  `composer test` reaches a functional suite. The two groups are one flag and
+  one subcommand apart and no script name separates them.
+
+## Decided
+
+- The checks are run, and the answer says what they printed. The objection that
+  a failing command tells you less than the configuration that would make it
+  fail is about what a finding says, not about whether to gather it, and
+  survives as a limit: the finding still names the configuration, and the run
+  is what takes it from derived to established. The objection that a review
+  must not change files is answered by the property rather than by abstaining
+  from all of them. Rejected: running everything, which breaks the instruction
+  the user gave; running nothing, which is what was measured; and asking the
+  user per command, which is a question the answer could not have been formed
+  against before `typo3_project_scope` carried `runs`.
+
+## Assumed
+
+- That a body declaring a check is one. `php-cs-fixer --dry-run`,
+  `phpstan analyze`, `phplint` and `eslint` without `--fix` do not rewrite the
+  sources they are pointed at — but they are configurable, a fixer can be given
+  a rule set that writes elsewhere, and a caching checker leaves a file behind.
+  What is claimed is that the code comes back unchanged, not that the
+  filesystem does.
+
+## Wrong if
+
+- A run reports a checkout modified by a command marked `check` — the
+  classification would then be a promise the declaration cannot carry, and what
+  is left is naming the command and letting the user decide. Or the reverse:
+  reviews that now run the checks report the same findings they read out of CI
+  files, in which case the runs cost time and settled nothing, and the base's
+  three-way distinction was doing all the work by itself.

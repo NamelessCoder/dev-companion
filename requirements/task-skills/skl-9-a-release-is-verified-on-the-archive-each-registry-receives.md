@@ -1,6 +1,7 @@
 ---
 id: R-SKL-9
 status: held
+restsOn: [D-EVI-2]
 ---
 
 # R-SKL-9 — A release is verified on the archive each registry receives

@@ -1,6 +1,7 @@
 ---
 id: R-SCO-9
 status: held
+restsOn: [D-AUD-4]
 ---
 
 # R-SCO-9 — Individual tools can be excluded

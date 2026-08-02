@@ -1,6 +1,7 @@
 ---
 id: R-SCO-6
 status: held
+restsOn: [D-KNW-5]
 ---
 
 # R-SCO-6 — Every topic says which kind of work it is for

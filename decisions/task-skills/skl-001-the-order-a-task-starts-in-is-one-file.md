@@ -189,3 +189,53 @@ this file says what the call is worth to a caller that already has its
 workflow, which is a change to a contract installed in somebody else's project.
 Or `typo3_task_guide` names the workflow it says it names, which is `src/`. The
 feedback stays open behind that answer.
+
+## Confirmed on 2026-08-02
+
+The same run was read a second time, from the call log rather than from the
+strength beside it, in a session that could not see the one above. What the
+strength says it did is one artifact and what the log says it did is another,
+and the log is the stronger of the two: it is numbered, and it was filed while
+the account above was still being written.
+
+`feedback/2026-07-31-193005` is a session's own log of its tool calls, filed in
+`site-new` on `nemotron-3-ultra-free`, and what it records is the base outrun at
+the one step the base exists for. The first two steps of the order ran in place:
+`typo3_project_scope`, then `typo3_extension_scope` on the site package. Step 3
+never ran at all. Then a glob listed 46 files of the extension and fifteen
+`read()` calls went through the ones it picked — and only behind that reading
+came the two `typo3_architecture_lookup` calls, the deprecation sweep, the two
+runtime lookups and another two or three round trips of files. That is Run 3's
+shape exactly, from a session that had the base and read it in its second step.
+
+What happened is worse than the **Wrong if** predicted. It expects the order to
+survive only where a checklist reinforces it, and the checklist here was
+`typo3-extension-conformance`'s own — the one skill that carries the rule a
+second time in its own words, "Listing the files first inverts that". Both files
+said it and the reading still came first, so this is not a sentence that was
+missing from one of them.
+
+The evidence is a report rather than a transcript, and it is weaker than a
+`REVIEW-02` in the same two ways the entry above already names. The session
+numbered its own calls afterwards, and which `references/base.md` it read cannot
+be recovered: both installed copies in `site-new` were rewritten at 21:20 that
+evening, 110 minutes after it filed. That the copy carried the order is settled
+another way — the session's step 2 names `base.md`, the file was created by
+`66813e3` at 02:15 that morning, and it has carried "**Then** read the checkout.
+Not before" since that commit. There is no version of it that lacked the rule.
+
+The server's half of the run reproduces. From `site-new` on 2026-08-02 through
+`bin/typo3-cms-mcp`, `typo3_project_scope` answers 14.3.5 with the five declared
+commands, and `typo3_changelog_lookup` with `type=deprecation, version=14,
+limit=30` returns the first 30 of 75 entries — the 30 the session reported. Step
+3 is the one that would not have paid. `typo3_task_guide` called with an audit
+task, the area and the extension's path matches no intent — `intents: []` — and
+hands back the generic change checklist: keep the patch focused, add the
+narrowest useful test coverage, write the commit message. That is a brief for
+changing a package, given to a run the skill tells to change nothing. So the
+step this session skipped is also the step with no answer for the task shape it
+was in, and `knowledge/task-intents.json` has no entry for an audit.
+
+Nothing was changed here. Whether a self-reported call log is the event this
+**Wrong if** describes, and what moves if it is, is the question its card
+carries in `todo/waiting/`.

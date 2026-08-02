@@ -175,3 +175,28 @@ cards, and naming their answer from here is the copy-down that judging.md warns
 about. The entry's second **Wrong if** is still untested: those cards are
 unjudged, and where they land is what says whether a strength pairs with a cost
 at a boundary or only reads that way.
+
+## Confirmed on 2026-08-02
+
+The first **Wrong if** landed the day this entry was written.
+`feedback/2026-07-31-193005` reads as a strength — thirteen numbered steps of an
+extension audit, "the tool chain works well", one suggestion and nothing
+reported as broken. Read as boundary-evidence it says what its four siblings
+from the same debrief already say, and closing it there would have been correct
+by this entry. What it actually carries is the numbered order those calls came
+in, which no other feedback in the corpus does, and read against `skills/base.md`
+that order is the base outrun: step 3 skipped, and the checkout read before the
+conventions lookups rather than after them. The praise is what names it — the
+session graded the run as working and asked for the file reading to be blessed
+with a batch-read hint, which is the one thing both the base and the conformance
+skill refuse.
+
+So a strength is not closed on the strength of being one. The ladder is walked
+over what it reports it *did*, and only the part that reports how well it went
+is read as a boundary. Judged onto
+[`D-SKL-001`](../task-skills/skl-001-the-order-a-task-starts-in-is-one-file.md),
+whose **Wrong if** it satisfies, and the third **Wrong if** above is now the one
+still open: this entry has been cited by each of the three judgements above, one
+of which disagrees with half of it. All three were worked at once, in sessions
+that could not see each other, which is why they read as three arrivals at one
+entry rather than as one account continued.

@@ -1,6 +1,6 @@
 ---
 id: R-DOC-002
-status: open
+status: held
 restsOn: [D-ANS-021]
 ---
 
@@ -17,6 +17,10 @@ that words beyond the subject re-aim the search rather than refine it — or the
 match where the answer arrives, so that a query whose subject contributed least
 is visible as one.
 
+Answered by the second: every search result names the query words the index
+carried and the field each was found in, and the answer says once that page
+titles and section paths are all there is to match.
+
 ## From
 
 `feedback/2026-08-01-002928`, re-run on 2026-08-02. Three queries naming the
@@ -27,5 +31,6 @@ sign of.
 
 ## Held by
 
-Not guarded. `DocumentationTest` holds the ranking `R-DOC-001` describes and
-nothing reads what the answer says about it.
+- `DocumentationTest::aResultNamesTheWordsOfTheQueryItWasMatchedOn`
+- `DocumentationTest::aPageReadBackCarriesNoMatch`
+- `ToolContractTest::aToolCallAnswersWithTextAndMatchingData`

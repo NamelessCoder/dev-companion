@@ -123,6 +123,51 @@ final class DocumentationTest extends TestCase
         );
     }
 
+    /**
+     * The three queries of `D-ANS-021` came back `answered` with six results
+     * each, and nothing in them showed that the word naming the subject had
+     * reached none of the pages returned.
+     */
+    #[Test]
+    public function aResultNamesTheWordsOfTheQueryItWasMatchedOn(): void
+    {
+        $documentation = new Documentation(static function (string $url): ?string {
+            if (!str_contains($url, 'typo3/reference-coreapi')) {
+                return null;
+            }
+
+            return str_ends_with($url, '/en-us/')
+                ? '<html><body>'
+                    . '<a href="ExtensionArchitecture/HowTo/Localization/Fluid.html">Multi-language Fluid templates</a>'
+                    . '<a href="ApiOverview/Database/DatabaseRecords/RecordObjects.html">Record objects</a>'
+                    . '</body></html>'
+                : '<html><article role="main"><p>What this page says.</p></article></html>';
+        });
+
+        $answer = $documentation->lookup(['Record API Fluid template access record.header'], '14.3', 2);
+
+        $matched = [];
+        foreach ($answer['results'] as $result) {
+            $matched[$result['title']] = array_column($result['matched'], 'field', 'term');
+        }
+        // The page the session was after carries the subject and nothing else;
+        // the one that outranks it carries everything except the subject.
+        self::assertSame(['record' => 'title', 'api' => 'path'], $matched['Record objects']);
+        self::assertSame(['fluid' => 'title', 'templa' => 'title'], $matched['Multi-language Fluid templates']);
+    }
+
+    /** A page was not searched for, so it was matched on nothing. */
+    #[Test]
+    public function aPageReadBackCarriesNoMatch(): void
+    {
+        $url = 'https://docs.typo3.org/m/typo3/reference-coreapi/14.3/en-us/ApiOverview/Assets/Index.html';
+        $documentation = new Documentation(
+            static fn(string $requested): string => '<html><article role="main"><p>What this page says.</p></article></html>',
+        );
+
+        self::assertSame([], $documentation->page($url, '14.3')['results'][0]['matched']);
+    }
+
     #[Test]
     public function anAnsweredIndexWithNoMatchIsNotAnUnavailableService(): void
     {

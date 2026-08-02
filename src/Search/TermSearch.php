@@ -117,10 +117,16 @@ final class TermSearch
     }
 
     /**
-     * Returns [score, weight covered]. A term counts by what it says, by the
-     * weight of the field it was found in, and against how much other text it
-     * was found among; the strongest field wins, so a term in both the title
-     * and the body is not counted twice.
+     * Returns [score, weight covered, the field each term was found in]. A term
+     * counts by what it says, by the weight of the field it was found in, and
+     * against how much other text it was found among; the strongest field wins,
+     * so a term in both the title and the body is not counted twice.
+     *
+     * That strongest field is the third number's whole content, because a
+     * caller told what a result was matched on is being told which words of the
+     * query reached the document and where — the terms it does not carry are
+     * the ones absent from it. Working that out anywhere else means deciding
+     * the same tie a second time.
      *
      * The covered weight is the second number because it answers a different
      * question than the score: the score ranks, and the coverage says whether
@@ -136,15 +142,17 @@ final class TermSearch
      * @param int $undilutedWords Field length that still counts for what the
      *                            term says; see the callers for why a corpus
      *                            has the value it has.
-     * @return array{0: int, 1: float}
+     * @return array{0: int, 1: float, 2: array<string, string>}
      */
     public static function score(array $document, array $weights, array $fieldWeights, int $undilutedWords): array
     {
         $score = 0.0;
         $covered = 0.0;
+        $matched = [];
         foreach ($weights as $term => $weight) {
             $best = 0.0;
             $dilution = 1.0;
+            $strongest = null;
             foreach ($fieldWeights as $field => $fieldWeight) {
                 $text = $document[$field] ?? '';
                 if (!self::carries($text, (string) $term)) {
@@ -154,16 +162,18 @@ final class TermSearch
                 if ($fieldWeight / $diluted >= $best) {
                     $best = $fieldWeight / $diluted;
                     $dilution = $diluted;
+                    $strongest = $field;
                 }
             }
-            if ($best <= 0.0) {
+            if ($best <= 0.0 || $strongest === null) {
                 continue;
             }
             $covered += $weight / $dilution;
             $score += $weight * $best;
+            $matched[(string) $term] = $strongest;
         }
 
-        return [(int) round($score * 10), $covered];
+        return [(int) round($score * 10), $covered, $matched];
     }
 
     /**

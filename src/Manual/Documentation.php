@@ -71,7 +71,8 @@ final class Documentation
      *     documentVersion: string,
      *     section: string,
      *     excerpt: string,
-     *     content: string
+     *     content: string,
+     *     matched: list<array{term: string, field: string}>
      *   }>,
      *   unavailable: array{cause: string, reason: string}|null
      * }
@@ -93,6 +94,7 @@ final class Documentation
             foreach ($this->links($html, $base) as $link) {
                 $pages[$document . '|' . $link['url']] = [
                     'score' => 0,
+                    'matched' => [],
                     'title' => $link['title'],
                     'url' => $link['url'],
                     'document' => $document,
@@ -120,8 +122,9 @@ final class Documentation
         foreach ($queries as $query) {
             $weights = TermSearch::weights(TermSearch::terms(self::split($query)), $searchable);
             $scores = [];
+            $matched = [];
             foreach ($pages as $key => $page) {
-                [$scores[$key]] = TermSearch::score(
+                [$scores[$key], , $matched[$key]] = TermSearch::score(
                     $page['searchable'],
                     $weights,
                     self::FIELD_WEIGHTS,
@@ -138,7 +141,15 @@ final class Documentation
             // question's pages twice over.
             $best = max([0, ...$scores]);
             foreach ($scores as $key => $score) {
-                $pages[$key]['score'] = max($pages[$key]['score'], $best === 0 ? 0 : (int) round($score / $best * 1000));
+                $relative = $best === 0 ? 0 : (int) round($score / $best * 1000);
+                if ($relative <= $pages[$key]['score']) {
+                    continue;
+                }
+                // The match reported is the one of the question the page is
+                // kept for, so it is the words of that query rather than of
+                // whichever one was passed last.
+                $pages[$key]['score'] = $relative;
+                $pages[$key]['matched'] = $matched[$key];
             }
         }
 
@@ -156,6 +167,7 @@ final class Documentation
                 'section' => $candidate['title'],
                 'excerpt' => $page === null ? '' : $this->excerpt($page),
                 'content' => '',
+                'matched' => self::matched($candidate['matched']),
             ];
         }
 
@@ -179,7 +191,8 @@ final class Documentation
      *     documentVersion: string,
      *     section: string,
      *     excerpt: string,
-     *     content: string
+     *     content: string,
+     *     matched: list<array{term: string, field: string}>
      *   }>,
      *   unavailable: array{cause: string, reason: string}|null
      * }
@@ -223,6 +236,7 @@ final class Documentation
             'section' => $title,
             'excerpt' => substr($content, 0, 700),
             'content' => $content,
+            'matched' => [],
         ]], null);
     }
 
@@ -290,6 +304,26 @@ final class Documentation
             ' ',
             $text,
         );
+    }
+
+    /**
+     * What a page was matched on, in the order the query's words were read: the
+     * stem each was reduced to, and the field of the table of contents that
+     * carried it. A word of the query that is not here reached the page
+     * nowhere, which is what tells an aimed answer from a confident one
+     * (`R-DOC-002`).
+     *
+     * @param array<string, string> $matched
+     * @return list<array{term: string, field: string}>
+     */
+    private static function matched(array $matched): array
+    {
+        $terms = [];
+        foreach ($matched as $term => $field) {
+            $terms[] = ['term' => $term, 'field' => $field];
+        }
+
+        return $terms;
     }
 
     private function excerpt(string $html): string
@@ -419,7 +453,7 @@ final class Documentation
      * @param 'answered'|'empty'|'unavailable' $status
      * @param list<string> $queries
      * @param 'search'|'page' $mode
-     * @param list<array{title: string, url: string, document: string, documentTitle: string, documentVersion: string, section: string, excerpt: string, content: string}> $results
+     * @param list<array{title: string, url: string, document: string, documentTitle: string, documentVersion: string, section: string, excerpt: string, content: string, matched: list<array{term: string, field: string}>}> $results
      * @param array{cause: string, reason: string}|null $unavailable
      * @return array{
      *   mode: 'search'|'page',
@@ -427,7 +461,7 @@ final class Documentation
      *   targetVersion: string,
      *   source: string,
      *   queries: list<string>,
-     *   results: list<array{title: string, url: string, document: string, documentTitle: string, documentVersion: string, section: string, excerpt: string, content: string}>,
+     *   results: list<array{title: string, url: string, document: string, documentTitle: string, documentVersion: string, section: string, excerpt: string, content: string, matched: list<array{term: string, field: string}>}>,
      *   unavailable: array{cause: string, reason: string}|null
      * }
      */

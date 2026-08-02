@@ -114,3 +114,32 @@ answer has.
 - The same three queries reach *Record objects* after somebody retitles the page
   upstream. Then this was a title that did not match its subject rather than a
   property of the search, and one page's wording carried the whole finding.
+
+## Since then
+
+Built on 2026-08-02 as the second candidate, and the first is not built beside
+it. What decided it is this entry's own **Assumed**: a description a client
+defers reaches nobody, while the answer is read by every caller that gets one.
+Its counter-evidence — that this session had fetched the schema — says the first
+candidate would have reached this one caller, not that it reaches the next.
+
+Every search result names what it was matched on: the query words the index
+carried, as the stems that were searched for, and the field each was found in.
+The answer says once, above the results, that page titles and section paths are
+all there is to match. The reproducer re-run against the live 14.3 manuals now
+opens with *Multi-language Fluid templates* — `Matched on: fluid (title),
+templa (title)` — so the two words naming the subject are visibly absent from
+the page that outranked it, which is the whole of what the session could not
+see. `RecordAccessGrantedEvent` reads `record (title), api (path), acces
+(title)`: it carries the subject and is still the wrong page, which is the case
+no wording could have prevented.
+
+Which field a term was found in is `TermSearch::score()`'s third return value
+rather than a second pass in `Documentation`. The strongest field is a tie the
+scoring already breaks, and deciding it twice is how the answer and the ranking
+come to disagree.
+
+The stems are reported as they were matched — `templa`, `acces` — rather than
+the words they came from. That is what the search did, and it is also the only
+place a caller can see that `record.header` arrived as `record`. Nothing
+measures whether a caller reads a stem as a typo.

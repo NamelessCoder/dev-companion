@@ -1,7 +1,8 @@
 ---
 date: 2026-08-01T00:29:28+00:00
 category: tool-gap
-status: open
+status: closed
+closed: 2026-08-02
 model: opencode/deepseek-v4-flash-free
 tool: typo3_documentation_lookup
 directory: /home/benji/projects/site-new

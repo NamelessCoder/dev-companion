@@ -79,7 +79,11 @@ final class DocumentationLookup extends ReadOnlyTool
                 'section' => Schema::string(),
                 'excerpt' => Schema::string('Short route into the source, empty only when the result page could not be read after its index matched.'),
                 'content' => Schema::string('The selected page as text in page mode; empty in search mode.'),
-            ], ['title', 'url', 'document', 'documentTitle', 'documentVersion', 'section', 'excerpt', 'content'])),
+                'matched' => Schema::listOf(Schema::object([
+                    'term' => Schema::string('The query word, reduced to the stem that was searched for.'),
+                    'field' => ['type' => 'string', 'enum' => ['title', 'path', 'manual'], 'description' => 'Where it was found: the page title, the section path it sits in, or the name of the manual.'],
+                ], ['term', 'field']), 'What this page was matched on. Every query word missing from it reached this page nowhere, so a result whose match is made of the words around the subject is an aimed answer rather than one about the subject; ask again with the subject alone. Empty in page mode.'),
+            ], ['title', 'url', 'document', 'documentTitle', 'documentVersion', 'section', 'excerpt', 'content', 'matched'])),
             'unavailable' => [
                 'type' => ['object', 'null'],
                 'description' => 'Why nothing was answered, where status says unavailable. Null otherwise.',
@@ -155,10 +159,19 @@ final class DocumentationLookup extends ReadOnlyTool
             $lines[] = '';
             $lines[] = $result['content'];
         } else {
+            // What was searched is a table of contents, so a result matched on
+            // everything except the word naming the subject is one of these six
+            // and not an answer. Said per result, because that is where the
+            // caller reads it (`R-DOC-002`).
+            $lines[] = 'Matched against page titles and section paths, never the text of a page.';
             foreach ($answer['results'] as $result) {
                 $lines[] = '';
                 $lines[] = '## ' . $result['title'];
                 $lines[] = sprintf('%s · %s · %s', $result['document'], $result['documentVersion'], $result['url']);
+                $lines[] = 'Matched on: ' . implode(', ', array_map(
+                    static fn(array $matched): string => $matched['term'] . ' (' . $matched['field'] . ')',
+                    $result['matched'],
+                ));
                 if ($result['excerpt'] !== '') {
                     $lines[] = $result['excerpt'];
                 }

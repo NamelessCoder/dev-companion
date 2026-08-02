@@ -608,6 +608,16 @@ The call carries exactly one of these sets of arguments: `queries` — or
     only when the result page could not be read after its index matched.
   - `content` *(string, required)* — The selected page as text in page
     mode; empty in search mode.
+  - `matched` *(array of object, required)* — What this page was matched
+    on. Every query word missing from it reached this page nowhere, so a result
+    whose match is made of the words around the subject is an aimed answer
+    rather than one about the subject; ask again with the subject alone. Empty
+    in page mode.
+    - `term` *(string, required)* — The query word, reduced to the stem
+      that was searched for.
+    - `field` *(string, required)* — One of `title`, `path`, `manual`.
+      Where it was found: the page title, the section path it sits in, or the
+      name of the manual.
 - `unavailable` *(object or null, required)* — Why nothing was answered,
   where status says unavailable. Null otherwise.
   - `cause` *(string, required)* — One of `version-not-covered`,

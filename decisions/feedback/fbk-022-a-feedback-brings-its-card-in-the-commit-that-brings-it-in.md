@@ -48,8 +48,11 @@ comes apart.
 
 - That `composer install` has run in every checkout somebody commits from. One
   that never installed the dev dependencies has no hook, and nothing says so.
-- That the hook is not bypassed. `git commit --no-verify` is one flag away, and
-  a worktree created before this commit keeps the config it was made with.
+- That the hook is not bypassed. `git commit --no-verify` is one flag away.
+- That a worktree has the directory. `core.hooksPath` sits in `.git/config`,
+  which every worktree shares, and it is relative — so one checked out before
+  this commit points at a `.githooks/` that is not there, and git runs nothing
+  and says nothing.
 - That `bin/cli todo:sync` keeps printing one written path per line. The hook
   reads that output to know what to stage, and no test holds the format.
 

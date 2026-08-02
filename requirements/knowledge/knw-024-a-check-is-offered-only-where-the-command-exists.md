@@ -33,3 +33,7 @@ labels was handed `runTests.sh -s checkIntegrityXliff`, which arrives in 14
 - `HintsTest::aCheckIsNotOfferedOnABranchWhoseScriptHasNoSuchSuite`
 - `HintsTest::theSuiteListItselfIsFilteredByTheBranchItIsAskedFor`
 - `KnowledgeTest::noProseDocumentNamesACheckOnlySomeBranchesHave`
+- `bin/cli catalog:check`, which reads the range each suite actually holds on
+  out of the `runTests.sh` of every covered branch. No test may reach
+  `.checkouts/`, and the numbers these three tests filter by are a claim about
+  that script.

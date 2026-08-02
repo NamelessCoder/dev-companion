@@ -8,6 +8,7 @@ use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Finder\Finder;
 use Typo3CmsMcp\Knowledge\Catalog\DemoMarkup;
+use Typo3CmsMcp\Knowledge\TestSuiteHints;
 use Typo3CmsMcp\Knowledge\Versions;
 use Typo3CmsMcp\Tool\TranslationDomainLookup;
 use Typo3CmsMcp\Upkeep\Catalogs;
@@ -21,18 +22,22 @@ use Typo3CmsMcp\Upkeep\TestingFramework;
  * the curated search index and fallback, while an active installation supplies
  * the primary component contract at lookup time.
  *
- * It also reads the three things outside `knowledge/catalog/` that a release can
+ * It also reads the four things outside `knowledge/catalog/` that a release can
  * invalidate silently and that the checkouts answer: which Fluid engine each
  * branch pins itself to, whether the testing-framework release each branch pins
- * still says what the hints about it state, and the major translation domains
- * arrived in, which is the one version fact the code carries.
+ * still says what the hints about it state, which suites `runTests.sh` actually
+ * offers on each branch, and the major translation domains arrived in, which is
+ * the one version fact the code carries.
  */
 #[AsCommand(
     name: 'catalog:check',
-    description: 'the versions each entry holds on, the markup it was read off, the shipped system extensions, the worked examples, the Fluid engine each branch pins, the testing-framework release it pins, and the major translation domains arrived in, against .checkouts/',
+    description: 'the versions each entry holds on, the markup it was read off, the shipped system extensions, the worked examples, the Fluid engine each branch pins, the testing-framework release it pins, the suites runTests.sh offers, and the major translation domains arrived in, against .checkouts/',
 )]
 final class CatalogCheck
 {
+    /** How many uncurated suites the report names before it stops naming them. */
+    private const NAMED_UNCURATED = 12;
+
     /**
      * What the hints about typo3/testing-framework rest on, per file of the
      * package, so that a release changing one of them fails here rather than
@@ -88,6 +93,7 @@ final class CatalogCheck
             self::verifyReferences($output, $checkouts, Catalogs::read('references')),
             self::verifyFluidEngine($output, $checkouts),
             self::verifyTestingFramework($output, $checkouts),
+            self::verifyTestSuites($output, $checkouts, TestSuiteHints::load()),
             self::verifyTranslationDomains($output, $checkouts),
         );
     }
@@ -592,6 +598,131 @@ final class CatalogCheck
         $examples = DemoMarkup::examples($template, $rootClass, $selector);
 
         return $examples === [] ? $template : implode("\n", $examples);
+    }
+
+    /**
+     * The range each suite hint declares, against the script that has to have it.
+     *
+     * `since`/`until` on an entry in `knowledge/test-suite-hints.json` is a
+     * claim about `Build/Scripts/runTests.sh`, and the whole of `R-KNW-024`
+     * rests on it: the checks a brief states, the suites a guide lists, and
+     * what the prose documents may name. Nothing re-read the script, so `build`
+     * sat unranged and was handed to 12.4 callers as a command its own tool
+     * description promised it would not be.
+     *
+     * The suite is taken from the command rather than from the `suite` field,
+     * because the command is what has to run: `build-css` is an npm script and
+     * its entry runs `-s npm -- run build-css`, so what the script needs to
+     * have is `npm`.
+     *
+     * @param array<int, array{suite: string, command: string, since: ?int, until: ?int}> $suites
+     */
+    private static function verifyTestSuites(OutputInterface $output, string $checkouts, array $suites): int
+    {
+        $output->writeln('Test suites');
+        $covered = Versions::covered();
+        $offered = [];
+        foreach ($covered as $version) {
+            $script = $checkouts . '/' . $version['branch'] . '/Build/Scripts/runTests.sh';
+            if (!is_file($script)) {
+                Cli::errors($output)->writeln(sprintf('No checkout for TYPO3 v%d below %s — run bin/cli checkouts:update.', $version['major'], $checkouts));
+
+                return 2;
+            }
+            $offered[$version['major']] = self::suitesIn((string) file_get_contents($script));
+        }
+
+        $majors = array_column($covered, 'major');
+        $problems = 0;
+        $named = [];
+        foreach ($suites as $entry) {
+            $suite = self::suiteOf($entry['command'], $entry['suite']);
+            $named[$suite] = true;
+            $on = array_values(array_filter(
+                $majors,
+                static fn(int $major): bool => in_array($suite, $offered[$major], true),
+            ));
+            if ($on === []) {
+                Cli::errors($output)->writeln(sprintf(
+                    '  %s runs -s %s, which no covered branch offers',
+                    $entry['suite'],
+                    $suite,
+                ));
+                ++$problems;
+                continue;
+            }
+
+            $read = [
+                min($on) === min($majors) ? null : min($on),
+                max($on) === max($majors) ? null : max($on),
+            ];
+            if ([$entry['since'], $entry['until']] !== $read) {
+                Cli::errors($output)->writeln(sprintf(
+                    '  %s declares %s and the script offers it on %s',
+                    $entry['suite'],
+                    Versions::label($entry['since'], $entry['until']) ?: 'every covered version',
+                    implode(', ', $on),
+                ));
+                ++$problems;
+            }
+        }
+
+        // Not a problem, and the reason it is printed: the hints are a curated
+        // subset with a description and a domain each, so a suite nobody wrote
+        // one for is a gap somebody may want to close rather than an error.
+        $uncurated = array_values(array_diff(
+            array_unique(array_merge(...array_values($offered))),
+            array_keys($named),
+        ));
+        sort($uncurated);
+        $output->writeln(sprintf(
+            '  %d suites against %s, %d of them curated',
+            count(array_unique(array_merge(...array_values($offered)))),
+            implode(', ', array_column($covered, 'branch')),
+            count($named),
+        ));
+        $output->writeln(sprintf(
+            '  no hint names: %s',
+            $uncurated === []
+                ? 'nothing'
+                : implode(', ', array_slice($uncurated, 0, self::NAMED_UNCURATED))
+                    . (count($uncurated) > self::NAMED_UNCURATED ? sprintf(' and %d more', count($uncurated) - self::NAMED_UNCURATED) : ''),
+        ));
+        $output->writeln('');
+
+        if ($problems === 0) {
+            $output->writeln('Every suite hint holds on the versions runTests.sh offers it.');
+
+            return 0;
+        }
+
+        $output->writeln(sprintf('%d suite hint(s) no longer read as the script does.', $problems));
+
+        return 1;
+    }
+
+    /**
+     * The suites one `runTests.sh` offers, read out of the `-s` block of its own
+     * usage text — the one place the list is written down, and in the same shape
+     * from 12.4 to main. Only that block: the databases below it are written the
+     * same way and are not suites.
+     *
+     * @return array<int, string>
+     */
+    private static function suitesIn(string $script): array
+    {
+        if (preg_match('/Specifies the test suite to run\n(.*?)\n {4}-\S/s', $script, $block) !== 1) {
+            return [];
+        }
+        preg_match_all('/^\s+- ([A-Za-z][A-Za-z0-9_-]*)(?: \(default\))?:/m', $block[1], $names);
+
+        return array_values(array_unique($names[1]));
+    }
+
+    /** What a hint's command asks the script for, falling back to what the entry calls itself. */
+    private static function suiteOf(string $command, string $suite): string
+    {
+        return preg_match('/-s ([A-Za-z][A-Za-z0-9_-]*)/', $command, $named) === 1 ? $named[1] : $suite;
     }
 
     /**

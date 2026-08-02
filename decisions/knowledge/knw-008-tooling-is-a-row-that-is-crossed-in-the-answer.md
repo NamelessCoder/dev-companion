@@ -23,6 +23,15 @@ was asked is whether it should become a dimension crossing the audience one.
   path declines the suites and routes to `typo3_architecture_lookup` with
   `id=project-extension-tests` and `id=browser-tests` — the two cells of the
   same row for the other column — and says why `runTests.sh` is not one of them.
+- The third cell was named on 2026-08-02, after this entry was written. Asked
+  "set up phpstan for our extension" on an extension path, `typo3_test_run_guide`
+  declined and routed to `project-extension-tests` and `browser-tests` alone —
+  neither of which says what goes into a phpstan configuration — although
+  `phpstan`, `cgl` and `lintPhp` are its own suites and static analysis is
+  therefore one of the things an extension arrives there asking for. Both of its
+  decline sentences now name `extension-static-analysis` beside the other two,
+  and `skills/typo3-extension-testing/references/static-quality.md` names the
+  same id where it stops at which packages to require.
 - The cells are reachable. Of five project testing queries put to
   `ArchitectureHints::find()` on an extension path, four reach the right ones:
   "how do I test my extension" and "add functional tests to the extension" reach
@@ -72,3 +81,4 @@ was asked is whether it should become a dimension crossing the audience one.
 - `HintsTest::theTestApiAProjectWritesItsTestsWithReachesTheProjectHint`
 - `HintsTest::aProjectExtensionIsToldHowToGetASuiteAtAll`
 - `ScopeTest::noCoreScriptIsHandedToARepositoryThatDoesNotHaveIt`
+- `ScopeTest::aStaticAnalysisQuestionFromOutsideTheCoreIsSentToItsOwnCell`

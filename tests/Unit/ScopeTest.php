@@ -1025,6 +1025,36 @@ final class ScopeTest extends TestCase
         self::assertStringStartsWith('This reads as work outside the TYPO3 core', $result->text);
     }
 
+    /**
+     * `D-KNW-008`: the tooling row is crossed by routing, so the tool that owns
+     * a cell names the ids of the others when the caller is not in its column.
+     * `phpstan` and `cgl` are suites of this guide, which makes static analysis
+     * one of the things an extension arrives here asking for — and until this
+     * sentence named it, the decline sent every one of them to the two testing
+     * cells, neither of which answers what goes into a phpstan.neon.
+     */
+    #[Test]
+    public function aStaticAnalysisQuestionFromOutsideTheCoreIsSentToItsOwnCell(): void
+    {
+        foreach ([
+            ['packages/my_sitepackage/Classes/Controller/EventController.php'],
+            ['packages/my_sitepackage/Classes/Controller/EventController.php', 'typo3/sysext/core/Classes/Core/Bootstrap.php'],
+        ] as $paths) {
+            $result = Registry::call('typo3_test_run_guide', [
+                'query' => 'set up phpstan for our extension',
+                'paths' => $paths,
+            ]);
+
+            self::assertStringContainsString('id=extension-static-analysis', $result->text);
+            self::assertStringContainsString('id=project-extension-tests', $result->text);
+            self::assertStringContainsString('id=browser-tests', $result->text);
+        }
+
+        // And the id it hands over is one the corpus has, which is the half a
+        // sentence in this file cannot state for itself.
+        self::assertNotNull(ArchitectureHints::byId('extension-static-analysis'));
+    }
+
     #[Test]
     public function aRuleQueryIsPointedAtTheHintCorpusItBelongsIn(): void
     {

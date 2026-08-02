@@ -48,7 +48,13 @@ ship is absent for a reason rather than missing.
   that a TYPO3-specific analyser extension is still maintained before adding
   one: several are not, and an abandoned extension on a current core produces
   false findings instead of types. `vimeo/psalm` is the alternative where a
-  project already runs it.
+  project already runs it. Which packages to require is the whole of what this
+  page decides about the analyser; what goes into its configuration is not: `typo3_architecture_lookup` with `id=extension-static-analysis`
+  answers where the file belongs, which include it carries, the constants an
+  extension's analysis never sees, the manifest excluded rather than fixed, the
+  result cache directory, the level, and what a baseline is for. It is read off
+  the packages that configure themselves this way, so ask it rather than
+  recalling a configuration from another project.
 - **Coding standards** — the TYPO3 coding guidelines as the project applies
   them. `friendsofphp/php-cs-fixer` driven by the `typo3/coding-standards` rule
   set, which also owns the file header the guidelines require.

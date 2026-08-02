@@ -7,6 +7,7 @@ namespace Typo3CmsMcp\Tests\Unit;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Finder\Finder;
+use Typo3CmsMcp\Knowledge\ArchitectureHints;
 use Typo3CmsMcp\Paths;
 use Typo3CmsMcp\Upkeep\Scenarios;
 
@@ -573,6 +574,22 @@ final class SkillTest extends TestCase
         self::assertMatchesRegularExpression(
             '/default per check where the checkout covers it with\s+nothing, never as a replacement for what it already runs/',
             $guidance,
+        );
+
+        // The list above stops at which packages to require. What goes inside
+        // the analyser's configuration is a cell of the corpus — `D-KNW-012`
+        // judged a session that wrote it from recall — and this page reaches it
+        // by name rather than restating it, because a skill is a file no
+        // release of this server corrects.
+        self::assertStringContainsString(
+            '`typo3_architecture_lookup` with `id=extension-static-analysis`',
+            $guidance,
+        );
+        self::assertStringNotContainsString('phpstan-baseline.neon', $guidance);
+        self::assertStringNotContainsString('tmpDir', $guidance);
+        self::assertNotNull(
+            ArchitectureHints::byId('extension-static-analysis'),
+            'the skill defers to an id the corpus does not have',
         );
 
         self::assertStringContainsString('Keep checking and fixing apart', $guidance);

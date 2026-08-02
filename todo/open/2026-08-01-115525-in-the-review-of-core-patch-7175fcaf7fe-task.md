@@ -1,6 +1,7 @@
 # In the review of core patch 7175fcaf7fe ("[TASK] Replace GD-based error thumbnails with static SV...
 
 **Serves:** feedback/2026-08-01-115525-in-the-review-of-core-patch-7175fcaf7fe-task.md
+**Priority:** low
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

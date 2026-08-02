@@ -1,6 +1,7 @@
 # The typo3-cms-mcp server provides a comprehensive knowledge base for TYPO3 development. The tools...
 
 **Serves:** feedback/2026-07-31-183652-the-typo3-cms-mcp-server-provides-a.md
+**Priority:** low
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

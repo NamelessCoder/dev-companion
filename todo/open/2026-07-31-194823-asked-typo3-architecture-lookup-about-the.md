@@ -1,6 +1,7 @@
 # Conformance review of a TYPO3 14 site package: asked typo3_architecture_lookup about the impexp s...
 
 **Serves:** feedback/2026-07-31-194823-asked-typo3-architecture-lookup-about-the.md
+**Priority:** low
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

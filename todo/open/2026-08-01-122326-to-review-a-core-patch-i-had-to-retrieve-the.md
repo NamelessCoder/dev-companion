@@ -1,6 +1,7 @@
 # Reviewed the core patch "[TASK] Deprecate AssetCollector media handling" (Forge #110348). To revi...
 
 **Serves:** feedback/2026-08-01-122326-to-review-a-core-patch-i-had-to-retrieve-the.md
+**Priority:** low
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

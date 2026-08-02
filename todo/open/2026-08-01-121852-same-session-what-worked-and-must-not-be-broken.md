@@ -1,6 +1,7 @@
 # Same session: what worked and must not be broken later. typo3_server_scope's explicit boundary â€...
 
 **Serves:** feedback/2026-08-01-121852-same-session-what-worked-and-must-not-be-broken.md
+**Priority:** low
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

@@ -1,6 +1,7 @@
 # Complete roundtrip log of the TYPO3 14 testimonials session, so the cost of each is traceable. Fr...
 
 **Serves:** feedback/2026-08-01-003103-complete-roundtrip-log-of-the-typo3-14.md
+**Priority:** low
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

@@ -8,7 +8,6 @@ use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Output\OutputInterface;
 use Typo3CmsMcp\Paths;
 use Typo3CmsMcp\Upkeep\OpenFeedback;
-use Typo3CmsMcp\Upkeep\Todo;
 
 /**
  * A card on the board for every open feedback that has none.
@@ -17,8 +16,8 @@ use Typo3CmsMcp\Upkeep\Todo;
  * board. What used to bridge the two was a sighting that ran only once the
  * queue was empty, which meant the pile was visible exactly when there was
  * nothing else to do; what bridges them now is a card per feedback, sitting in
- * the queue with everything else and sorting below it, because a feedback
- * nobody has judged carries no priority.
+ * the queue with everything else and carrying the lowest priority there is,
+ * because nobody has yet said it is worth more.
  *
  * The card points and does not copy. `**Serves:**` names the file, the heading
  * is the feedback's own so that a listing says which one it is, and the step is
@@ -37,6 +36,17 @@ use Typo3CmsMcp\Upkeep\Todo;
 )]
 final class TodoSync
 {
+    /**
+     * What a card is worth before anybody has said so.
+     *
+     * The lowest of the three rather than no priority at all: every todo in a
+     * stage carries one, so that a forgotten priority can be reported, and the
+     * word has to say the same thing absence used to — below everything
+     * somebody has decided about. Raising it is a judgement, which is the work
+     * the card asks for.
+     */
+    private const UNJUDGED = 'low';
+
     /**
      * The step every card carries, because judging one feedback is the same
      * work whichever it is. What differs is the heading and what it serves.
@@ -67,7 +77,13 @@ final class TodoSync
             $path = 'todo/open/' . basename($feedback['file']);
             file_put_contents(
                 Paths::root() . '/' . $path,
-                sprintf("# %s\n\n**Serves:** %s\n\n%s\n", $feedback['title'], $feedback['file'], self::STEP),
+                sprintf(
+                    "# %s\n\n**Serves:** %s\n**Priority:** %s\n\n%s\n",
+                    $feedback['title'],
+                    $feedback['file'],
+                    self::UNJUDGED,
+                    self::STEP,
+                ),
             );
             $output->writeln($path);
             ++$written;

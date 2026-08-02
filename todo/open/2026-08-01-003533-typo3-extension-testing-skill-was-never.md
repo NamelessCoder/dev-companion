@@ -1,6 +1,7 @@
 # Debrief of the TYPO3 14 testimonials session: the typo3-extension-testing skill was never activat...
 
 **Serves:** feedback/2026-08-01-003533-typo3-extension-testing-skill-was-never.md
+**Priority:** low
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

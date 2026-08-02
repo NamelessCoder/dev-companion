@@ -1,6 +1,7 @@
 # While reviewing patch 7175fcaf7fe I had to read GifBuilder.php and its history by hand to establi...
 
 **Serves:** feedback/2026-08-01-115713-while-reviewing-patch-7175fcaf7fe-i-had-to-read.md
+**Priority:** low
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

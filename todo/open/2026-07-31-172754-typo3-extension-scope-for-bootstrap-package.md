@@ -1,6 +1,7 @@
 # typo3_extension_scope for bootstrap_package reported "Classes: ... Updates (27)". The checkout ac...
 
 **Serves:** feedback/2026-07-31-172754-typo3-extension-scope-for-bootstrap-package.md
+**Priority:** low
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

@@ -36,8 +36,8 @@ queue is empty. It follows from what a judgement is. Judging a feedback is
 deciding whether it becomes work; the queue is the work that decision produced.
 
 Since 2026-08-02 the feedback are *in* the queue rather than behind it — one
-card each, written by `bin/cli todo:sync`, carrying no priority until somebody
-judges them and therefore sorting below everything somebody has. The order
+card each, written by `bin/cli todo:sync` at `low`, which is below everything
+somebody has judged to be worth more. The order
 above is unchanged and what enforces it has moved: the priority does it now,
 where a group boundary did it before. What is still behind the queue is the
 backlog sighting, and it is reached when the queue runs dry — which now means
@@ -48,9 +48,9 @@ it.
 
 The second half of the same problem is the size of the reading, and the board is
 what solves it now. `bin/cli todo:sync` writes one card per open feedback, and
-`bin/cli todo:next` hands over **one** of them, like any other todo — a card
-nobody has judged carries no priority, so the oldest unjudged feedback comes up
-once the decided work is done. One query can be re-run in a session that also
+`bin/cli todo:next` hands over **one** of them, like any other todo — a fresh
+card is `low`, so the oldest unjudged feedback comes up once the decided work is
+done. One query can be re-run in a session that also
 has work of its own; sixty-seven cannot, and a session handed all of them closes
 whatever is easiest. The portion was five until 2026-08-02, cut for a reader who
 could then only find the judgements in the commit that made them. What carries

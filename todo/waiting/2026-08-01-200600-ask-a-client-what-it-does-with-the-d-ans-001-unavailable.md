@@ -1,6 +1,7 @@
 # Ask a client what it does with the `D-ANS-001` unavailable shape
 
 **Serves:** decisions/
+**Priority:** normal
 **Waiting on:** may a directory be designated `E-NONE`, and may `E-SITE` be
     stopped to play `E-STOPPED`, so `META-02` can be run as a live session
     rather than read as a contract? Nothing on this machine plays either, and a

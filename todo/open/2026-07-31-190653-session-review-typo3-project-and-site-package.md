@@ -1,6 +1,7 @@
 # Session: Review TYPO3 project and site package for critical problems and risks
 
 **Serves:** feedback/2026-07-31-190653-session-review-typo3-project-and-site-package.md
+**Priority:** low
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

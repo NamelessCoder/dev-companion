@@ -1,6 +1,7 @@
 # Session debrief: I reviewed a patch replacing GD-based error thumbnails with a static SVG placeho...
 
 **Serves:** feedback/2026-08-01-114526-session-debrief-i-reviewed-a-patch-replacing-gd.md
+**Priority:** low
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

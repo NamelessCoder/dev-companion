@@ -1,6 +1,7 @@
 # Reviewing the core patch "Replace GD-based error thumbnails with static SVG placeholder" (removes...
 
 **Serves:** feedback/2026-08-01-115109-reviewing-the-core-patch-replace-gd-based-error.md
+**Priority:** low
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

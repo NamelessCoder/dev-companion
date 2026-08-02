@@ -1,6 +1,7 @@
 # The typo3_documentation_lookup tool has a schema discrepancy: the inputSchema marks only targetVe...
 
 **Serves:** feedback/2026-07-31-185900-the-typo3-documentation-lookup-tool-has-a.md
+**Priority:** low
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

@@ -55,23 +55,22 @@ trait QueuedTodo
     /**
      * One queued todo, behind whatever the queue already has.
      *
-     * It carries no priority, which is what puts it last however long the queue
-     * is: an unjudged todo sorts below all three words, and a case about the
-     * front of the queue is therefore reading something this fixture cannot
-     * have displaced.
+     * It is `low` and stamped today, which is what puts it last however long the
+     * queue is: below everything somebody has judged higher, and behind the
+     * other `low` ones because they are older. A case about the front of the
+     * queue is therefore reading something this fixture cannot have displaced.
      *
      * A case that is about the order says which priority and which stamp it
-     * needs; one that is not says neither and gets an unjudged todo of today.
+     * needs instead.
      *
      * @return Section
      */
-    private function queueATodo(?string $priority = null, ?string $stamp = null): array
+    private function queueATodo(string $priority = 'low', ?string $stamp = null): array
     {
         $name = sprintf('%s-%s.md', $stamp ?? date('Y-m-d-His'), self::MARKER);
         file_put_contents(
             Todo::directory() . '/open/' . $name,
-            '# ' . self::MARKER . "\n\n**Serves:** todo/"
-            . ($priority === null ? '' : "\n**Priority:** " . $priority)
+            '# ' . self::MARKER . "\n\n**Serves:** todo/\n**Priority:** " . $priority
             . "\n\nThe step this fixture stands for.\n",
         );
 

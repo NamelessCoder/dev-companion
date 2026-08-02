@@ -1,6 +1,7 @@
 # Run `REVIEW-03` once a core patch is in progress
 
 **Serves:** REVIEW-03
+**Priority:** normal
 **Waiting on:** may a patch be made in a core checkout so `REVIEW-03` can run —
     or is there another checkout that carries one? The case reviews the current
     changes in a core checkout, and `/home/benji/projects/typo3-cms` is on

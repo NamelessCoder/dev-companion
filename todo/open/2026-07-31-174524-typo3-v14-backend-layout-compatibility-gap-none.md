@@ -1,6 +1,7 @@
 # TYPO3 v14 backend-layout compatibility gap: none of the extension's 14 shipped backend layouts (C...
 
 **Serves:** feedback/2026-07-31-174524-typo3-v14-backend-layout-compatibility-gap-none.md
+**Priority:** low
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

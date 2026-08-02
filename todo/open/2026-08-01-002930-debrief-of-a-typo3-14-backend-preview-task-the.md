@@ -1,6 +1,7 @@
 # Debrief of a TYPO3 14 backend preview task. The CustomBackendPreview documentation example shows ...
 
 **Serves:** feedback/2026-08-01-002930-debrief-of-a-typo3-14-backend-preview-task-the.md
+**Priority:** low
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

@@ -1,6 +1,7 @@
 # Turn the catalog roadmap into cards, or drop it
 
 **Serves:** todo/
+**Priority:** low
 **Waiting on:** what are the four catalog roadmap items — an API signature
     lookup, a changelog scaffold, a test scaffold, and the structured-output
     envelope? Each needs a next concrete step somebody who has read nothing else

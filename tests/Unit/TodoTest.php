@@ -383,29 +383,46 @@ final class TodoTest extends TestCase
 
     /**
      * The priority decides, and the age decides the rest. Written as the one
-     * case where the two disagree: the older todo is the lower one, so a queue
-     * read by age alone would hand it over first, and a queue read by priority
+     * case where the two disagree: the newest todo is the highest one, so a
+     * queue read by age alone would hand it over last, and one read by priority
      * alone could not tell the two `low` ones apart.
-     *
-     * A todo carrying no priority is last of all. That is not a defect to be
-     * filled in with a default — it is what an unjudged one looks like, and
-     * where the order has to leave it until somebody decides.
      */
     #[Test]
     public function theQueueIsReadByPriorityAndThenByAge(): void
     {
-        $unjudged = $this->queueATodo(null, '2026-06-01-090000');
         $older = $this->queueATodo('low', '2026-07-01-090000');
         $newer = $this->queueATodo('low', '2026-07-02-090000');
-        $urgent = $this->queueATodo('high', '2026-07-03-090000');
+        $ordinary = $this->queueATodo('normal', '2026-07-03-090000');
+        $urgent = $this->queueATodo('high', '2026-07-04-090000');
 
         $queued = array_column($this->ownTodos(Todo::items()), 'path');
 
         self::assertSame(
-            [$urgent['path'], $older['path'], $newer['path'], $unjudged['path']],
+            [$urgent['path'], $ordinary['path'], $older['path'], $newer['path']],
             $queued,
             'the queue is read in an order its priorities and stamps do not have',
         );
+    }
+
+    /**
+     * Every todo in a stage says where it stands, and one that recurs does not:
+     * the clock is what orders an appointment, so a word beside it would answer
+     * the same question twice.
+     *
+     * The point of requiring it is that it can then be missed. While absence
+     * meant "nobody has judged this", a priority somebody forgot and one left
+     * off on purpose were the same file, and no check could name either.
+     */
+    #[Test]
+    public function everyTodoInAStageSaysWhereItStands(): void
+    {
+        foreach (array_merge(Todo::items(), Todo::progress(), Todo::waiting()) as $todo) {
+            self::assertContains($todo['priority'], Todo::PRIORITIES, $todo['path'] . ' says nothing about where it stands');
+        }
+
+        foreach (Todo::recurring() as $todo) {
+            self::assertSame('', $todo['priority'], $todo['path'] . ' recurs and is prioritised as well');
+        }
     }
 
     /**

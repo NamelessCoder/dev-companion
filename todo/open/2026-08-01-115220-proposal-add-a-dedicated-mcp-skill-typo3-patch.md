@@ -1,6 +1,7 @@
 # Proposal: Add a dedicated MCP skill `typo3-patch-review` to support automated patch reviews.
 
 **Serves:** feedback/2026-08-01-115220-proposal-add-a-dedicated-mcp-skill-typo3-patch.md
+**Priority:** low
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

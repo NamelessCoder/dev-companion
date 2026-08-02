@@ -1,6 +1,7 @@
 # Task: TYPO3 extension conformance audit. What the server saved me from:
 
 **Serves:** feedback/2026-07-31-193050-task-typo3-extension-conformance-audit-what-the.md
+**Priority:** low
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

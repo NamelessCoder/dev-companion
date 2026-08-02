@@ -1,6 +1,7 @@
 # Commit in a project repository and see whether `D-GUI-002` holds
 
 **Serves:** decisions/
+**Priority:** normal
 **Waiting on:** may a session be run in one of the `E-EXT` checkouts that
     changes code and commits it, so the first half of the `D-GUI-002`
     **Wrong if** can be watched rather than reasoned about? Nothing produces

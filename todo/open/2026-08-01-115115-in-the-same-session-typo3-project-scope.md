@@ -1,6 +1,7 @@
 # In the same session typo3_project_scope correctly identified the checkout as a TYPO3 core (15.0.0...
 
 **Serves:** feedback/2026-08-01-115115-in-the-same-session-typo3-project-scope.md
+**Priority:** low
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

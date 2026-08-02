@@ -53,10 +53,9 @@ Each file opens with its title, then a head of labelled lines:
   scenario, a directory. Without it, it is an idea rather than a todo, and
   ideas go in the feedback that had them.
 - `**Priority:** high`, `normal` or `low` — where it stands among the rest, and
-  the whole list. Leaving it off is the fourth thing it can say: nobody has
-  judged this yet, which sorts it below `low`. That is a state, not a blank to
-  fill in — a todo written for a feedback carries no priority until somebody
-  decides what the feedback is worth.
+  the whole list. Every todo in a stage carries one and a recurring todo carries
+  none, because a cadence is what orders an appointment. A todo written for a
+  feedback starts at `low`: raising it is the judgement the card asks for.
 - `**Every:** session` or `**Every:** 7 days` — the cadence of a recurring todo.
   A cadence in days is an appointment and comes before the queue; `session` is
   a sighting and comes after it, when the queue is empty.

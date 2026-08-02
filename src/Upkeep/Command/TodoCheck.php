@@ -69,19 +69,27 @@ final class TodoCheck
             if ($todo['body'] === '') {
                 $problems[] = $where . ' does not say what the next concrete step is';
             }
-            // Absence is a reading and a wrong word is a typo, so only the
-            // second is a problem: a todo carrying no priority is one nobody
-            // has judged, which is a state the order already has a place for.
             if ($todo['priority'] !== '' && !in_array($todo['priority'], Todo::PRIORITIES, true)) {
                 $problems[] = $where . ' is ' . $todo['priority'] . ', and a priority is '
                     . implode(', ', Todo::PRIORITIES);
             }
-            // The stamp is the second half of the order, so a todo in a stage
-            // that has none sorts wherever the file system puts it — which is
-            // the one failure here nothing else would report.
-            if (in_array($todo['kind'], ['queue', 'progress', 'waiting'], true)
-                && preg_match(Todo::STAMP, basename($where)) !== 1) {
-                $problems[] = $where . ' is named by no date, so nothing says how long it has been waiting';
+            // A todo in a stage carries a priority and one that recurs does not.
+            // The clock is what orders an appointment, and a word beside it
+            // would be a second answer to the same question — while a stage
+            // without one is a file that says nothing about where it stands,
+            // which is exactly what could not be reported while absence meant
+            // something.
+            if (in_array($todo['kind'], ['queue', 'progress', 'waiting'], true)) {
+                if ($todo['priority'] === '') {
+                    $problems[] = $where . ' carries no `**Priority:**`, so nothing says where it stands';
+                }
+                // The stamp is the second half of the order, so a todo in a
+                // stage that has none sorts wherever the file system puts it.
+                if (preg_match(Todo::STAMP, basename($where)) !== 1) {
+                    $problems[] = $where . ' is named by no date, so nothing says how long it has been waiting';
+                }
+            } elseif ($todo['priority'] !== '') {
+                $problems[] = $where . ' recurs and carries a priority, where the cadence is what orders it';
             }
             foreach ($todo['serves'] as $what) {
                 $unreadable = Todo::unreadable($what);

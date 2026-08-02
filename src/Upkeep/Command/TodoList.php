@@ -34,11 +34,11 @@ final class TodoList
 
         // The queue comes out in the order it is worked, so the column says
         // what put each one where it is rather than repeating the order as a
-        // count. An unjudged todo is one nobody has given a priority, which is
-        // why it is last and not why it is unimportant.
+        // count. A blank there is a todo carrying no priority, which
+        // `bin/cli todo:check` reports — the gap is the point.
         $items = Todo::items();
         foreach ($items as $item) {
-            $output->writeln(sprintf('%-12s %s', $item['priority'] === '' ? 'unjudged' : $item['priority'], $item['title']));
+            $output->writeln(sprintf('%-12s %s', $item['priority'], $item['title']));
         }
         if ($items === []) {
             $output->writeln('The queue is empty.');

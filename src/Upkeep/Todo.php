@@ -45,8 +45,8 @@ use Typo3CmsMcp\Paths;
  * it and mistake it for some.
  *
  * `Serves:` is what makes a todo work rather than an idea, and `Priority:` is
- * where it stands among the rest — one of three words, or absent on one nobody
- * has judged yet. `Every:` is the
+ * where it stands among the rest — one of three words, on every todo in a stage
+ * and on none that recurs, because a cadence is what orders those. `Every:` is the
  * cadence of a recurring one, and `Run:` is the command the step starts from,
  * which `bin/cli todo:next` runs where this repository owns it. `Branch:` and
  * `Claimed:` belong to a todo in hand: the first is where the work is, the
@@ -80,9 +80,12 @@ final class Todo
      * `normal` are simply both normal. Nothing has to be renamed to put one
      * between two others, because there is no between.
      *
-     * Absence is the fourth thing it can say and the reason the list is short.
-     * A todo with no `**Priority:**` is one nobody has judged yet — it sorts
-     * below `low`, where a sighting used to leave what had only just arrived.
+     * Every todo in a stage carries one, and that is what makes it checkable: a
+     * priority somebody forgot and one deliberately left off are the same file,
+     * and while absence meant something no check could tell them apart. What a
+     * card is for is readable without it — a judging card is the one that
+     * serves a `feedback/` file — so `low` says what absence used to, and
+     * `bin/cli todo:check` says when nothing does.
      */
     public const PRIORITIES = ['high', 'normal', 'low'];
 
@@ -347,7 +350,9 @@ final class Todo
     }
 
     /**
-     * Where a todo's priority puts it, and where having none puts it: last.
+     * Where a todo's priority puts it. One carrying none is a file
+     * `bin/cli todo:check` is already reporting, and it goes last rather than
+     * first, so a defect cannot promote itself.
      *
      * @param Section $todo
      */

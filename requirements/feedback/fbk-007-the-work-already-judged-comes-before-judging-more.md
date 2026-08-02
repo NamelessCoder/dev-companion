@@ -18,9 +18,9 @@ every session there will ever be.
 What used to carry this was an order between three groups: the queue before the
 sightings, and a sighting reached only once the queue was empty. It is carried
 now by the priority itself, because the feedback are on the board rather than
-behind it. A card written for a feedback has no priority until somebody decides
-what the feedback is worth, and having none sorts it below all three words —
-the same place the sighting left it, without a second mechanism to say so.
+behind it. A card written for a feedback is `low` until somebody decides the
+feedback is worth more, which is the same place the sighting left it, without a
+second mechanism to say so.
 
 The size of the reading is the same requirement from the other end. What is
 handed over has to stay the size of a session's work while the directory grows
@@ -45,4 +45,5 @@ as the entry the measurement was recorded in. The order became a priority on
 ## Held by
 
 - `TodoTest::theQueueIsReadByPriorityAndThenByAge`
+- `TodoTest::everyTodoInAStageSaysWhereItStands`
 - `TodoTest::everyOpenFeedbackIsOnTheBoard`

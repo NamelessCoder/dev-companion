@@ -1,6 +1,7 @@
 # I had to establish from my own knowledge whether TYPO3 core reads environment variables like TYPO...
 
 **Serves:** feedback/2026-07-31-185900-i-had-to-establish-from-my-own-knowledge.md
+**Priority:** low
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

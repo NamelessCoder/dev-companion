@@ -1,6 +1,7 @@
 # Debrief of the TYPO3 14 testimonials session. The user had to correct and steer the assistant rep...
 
 **Serves:** feedback/2026-08-01-002951-debrief-of-the-typo3-14-testimonials-session.md
+**Priority:** low
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

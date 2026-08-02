@@ -1,7 +1,8 @@
 ---
 date: 2026-08-01T00:27:45+00:00
 category: missing-knowledge
-status: open
+status: closed
+closed: 2026-08-02
 model: deepseek-v4-flash-free
 tool: typo3cmsmcp
 directory: /home/benji/projects/site-new

@@ -74,7 +74,9 @@ and not a defect.
 - [`D-ANS-020`][D-ANS-020] — A deprecation is answered by the version that removes it · 2026-08-02
 - [`D-ANS-021`][D-ANS-021] — A longer manual query re-aims rather than narrows, and the answer never says so · 2026-08-02
 - [`D-ANS-022`][D-ANS-022] — A hyphenated compound reaches neither the phrase nor the word · 2026-08-02
-- [`D-ANS-023`][D-ANS-023] — No ViewHelper is documented in any manual this lookup indexes · 2026-08-02
+- [`D-ANS-023`][D-ANS-023] — No ViewHelper is documented in any manual this lookup indexes · 2026-08-02 · confirmed
+- [`D-ANS-024`][D-ANS-024] — A rule reaches only the task that already names its subject · 2026-08-02
+- [`D-ANS-025`][D-ANS-025] — A query a hint carries whole is not diluted out of it · 2026-08-02
 - [`D-AUD-004`][D-AUD-004] — The tool list is not where the audience is said · 2026-08-02
 - [`D-COD-003`][D-COD-003] — A directory is read through symfony/finder · 2026-08-02
 - [`D-DIS-007`][D-DIS-007] — The DDEV console is named by the mount, not by the variable · 2026-08-02 · confirmed
@@ -110,7 +112,11 @@ and not a defect.
 - [`D-KNW-012`][D-KNW-012] — `extension.neon` is PHPStan's filename, and the hint keeps the one include it means · 2026-08-02
 - [`D-KNW-013`][D-KNW-013] — The sixth phrasing was this repository's own sentence, and it was reworded rather than indexed · 2026-08-02
 - [`D-KNW-014`][D-KNW-014] — The record variable a v14 preview template is handed is a gap this server owns · 2026-08-02 · confirmed
-- [`D-KNW-015`][D-KNW-015] — A Fluid preview template replaces the content half, and nothing here says so · 2026-08-02
+- [`D-KNW-015`][D-KNW-015] — A Fluid preview template replaces the content half, and nothing here says so · 2026-08-02 · confirmed
+- [`D-KNW-016`][D-KNW-016] — What an `f:else` does to the branch beside it is a gap this server owns · 2026-08-02
+- [`D-KNW-017`][D-KNW-017] — A verification question reaches the subject cell and never the layer cell · 2026-08-02
+- [`D-KNW-018`][D-KNW-018] — What a datamap does to a relation field is a gap this server owns · 2026-08-02
+- [`D-KNW-019`][D-KNW-019] — A functional test sees only what it primed, and nothing here says so · 2026-08-02
 - [`D-SCO-009`][D-SCO-009] — The brief is one brief, and names the paths a step is not for · 2026-08-02
 - [`D-SKL-002`][D-SKL-002] — A focused audit narrows what is assessed, not the list it closes on · 2026-08-02
 - [`D-SKL-003`][D-SKL-003] — A sweep is bounded by the changelog's own axes, not by the extension's vocabulary · 2026-08-02
@@ -173,6 +179,8 @@ and not a defect.
 [D-ANS-021]: answers/ans-021-a-longer-manual-query-re-aims-rather-than-narrows.md
 [D-ANS-022]: answers/ans-022-a-hyphenated-compound-reaches-neither-the-phrase-nor-the-word.md
 [D-ANS-023]: answers/ans-023-no-viewhelper-is-documented-in-any-manual-this-lookup-indexes.md
+[D-ANS-024]: answers/ans-024-a-rule-reaches-only-the-task-that-already-names-its-subject.md
+[D-ANS-025]: answers/ans-025-a-query-a-hint-carries-whole-is-not-diluted-out-of-it.md
 [D-AUD-004]: audience/aud-004-the-tool-list-is-not-where-the-audience-is-said.md
 [D-COD-003]: code/cod-003-a-directory-is-read-through-symfony-finder.md
 [D-DIS-007]: discovery/dis-007-the-ddev-console-is-named-by-the-mount-not-by-the-variable.md
@@ -209,6 +217,10 @@ and not a defect.
 [D-KNW-013]: knowledge/knw-013-the-sixth-phrasing-was-this-repositorys-own-sentence.md
 [D-KNW-014]: knowledge/knw-014-the-record-variable-a-v14-preview-template-is-handed-is-a-gap-this-server-owns.md
 [D-KNW-015]: knowledge/knw-015-a-fluid-preview-template-replaces-the-content-half-and-nothing-here-says-so.md
+[D-KNW-016]: knowledge/knw-016-what-an-f-else-does-to-the-branch-beside-it-is-a-gap-this-server-owns.md
+[D-KNW-017]: knowledge/knw-017-a-verification-question-reaches-the-subject-cell-and-never-the-layer-cell.md
+[D-KNW-018]: knowledge/knw-018-what-a-datamap-does-to-a-relation-field-is-a-gap-this-server-owns.md
+[D-KNW-019]: knowledge/knw-019-a-functional-test-sees-only-what-it-primed-and-nothing-here-says-so.md
 [D-SCO-009]: scope/sco-009-the-brief-is-one-brief-and-names-the-paths-a-step.md
 [D-SKL-002]: task-skills/skl-002-a-focused-audit-narrows-what-is-assessed.md
 [D-SKL-003]: task-skills/skl-003-a-sweep-is-bounded-by-the-changelogs-own-axes.md

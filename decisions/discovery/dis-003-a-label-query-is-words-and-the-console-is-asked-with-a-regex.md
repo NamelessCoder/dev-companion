@@ -81,3 +81,17 @@ and takes the route an unreachable console takes: the packages' XLF files, and
 than the exit code fails in the safe direction — were its wording to move, an
 empty result would read as nothing established, which costs a fallback rather
 than an answer that is wrong.
+
+The transport does not fold the two streams, and the reading is DDEV's own
+source rather than a run. `ddev exec` builds a `docker compose exec` and appends
+`-T` where stdin is not a terminal — `pkg/ddevapp/ddevapp.go`, unchanged in
+every release examined from v1.22.7 to v1.25.1 and in `main`, where the same
+condition decides the TTY the compose API is given. This server invokes it
+through `proc_open` with pipes, so stdin is never a terminal, no pseudo-TTY is
+allocated, and Docker keeps stdout and stderr demultiplexed; DDEV then writes
+them to its own two streams. A TTY would merge them, and that is the case a
+human at a terminal has, not this one. So no producer of stdout noise ahead of
+the payload is established from any side, and `decode()` keeps its two
+candidates. What a run would still add is the machine this one cannot read: the
+source says what DDEV does with the streams, not what a container that
+misbehaves puts on them.

@@ -1,7 +1,7 @@
 ---
 id: R-KNW-041
 status: held
-restsOn: [D-KNW-014]
+restsOn: [D-KNW-020]
 ---
 
 # R-KNW-041 — A preview template answer says what the template is handed

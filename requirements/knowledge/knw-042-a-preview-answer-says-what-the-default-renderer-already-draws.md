@@ -1,7 +1,7 @@
 ---
 id: R-KNW-042
 status: held
-restsOn: [D-KNW-015]
+restsOn: [D-KNW-021]
 ---
 
 # R-KNW-042 — A preview answer says what the default renderer already draws

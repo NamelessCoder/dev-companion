@@ -1,7 +1,8 @@
 ---
 id: D-KNW-014
 date: 2026-08-02
-status: confirmed
+status: revoked
+revokedBy: D-KNW-020
 ---
 
 # D-KNW-014 — The record variable a v14 preview template is handed is a gap this server owns
@@ -103,3 +104,21 @@ Both todos rewrite the one preview statement on the `content-elements` hint, so
 whichever lands second rewrites in place rather than adding beside. The two
 statements differ in what binds them: what `{record}` is changed in 14 and needs
 a `since`, while the header/content split reads the same on 13.4 and 14.3.
+
+## Revoked on 2026-08-02
+
+By the work this entry queued. The sentence at the head — what a v14 preview
+template reads off `{record}` is missing from this server — was true until the
+statements landed on `content-elements` the same day, and an entry a reader may
+still build on has to be one whose headline is true when they read it. The
+**Confirmed on** above is the reading and it stays: the gap was real, the first
+**Wrong if** did not hold and the second did, and that is why the statement names
+five field types rather than one rule for a relation.
+
+What holds from here is
+[`D-KNW-020`](knw-020-what-a-preview-template-is-handed-is-stated-on-both-majors.md)
+— the assignment stated per major, and a field resolving by its TCA type — and
+what must keep holding is `R-KNW-041`, which now rests on the successor. This
+entry's **Wrong if** were both about what the todo would find, so neither could
+be gone back to once it had found it; the successor's are written against a
+statement that is in and can go false.

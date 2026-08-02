@@ -1,7 +1,8 @@
 ---
 id: D-KNW-015
 date: 2026-08-02
-status: confirmed
+status: revoked
+revokedBy: D-KNW-021
 ---
 
 # D-KNW-015 — A Fluid preview template replaces the content half, and nothing here says so
@@ -147,3 +148,23 @@ symptom probes now reach it by, and no query in the sweep changed hint.
 
 What was not re-run is the manual: the third **Wrong if** was checked by the
 judging run on the same day, and the page is unchanged since.
+
+## Revoked on 2026-08-02
+
+By the work this entry queued. Its headline says nothing here says so, and the
+statement it asked for is on `content-elements` — the split, the four header
+parts by field, and the six footer fields. A reader of a listing has the
+headline and the status and nothing else, so `confirmed` beside "nothing here
+says so" reads as a claim about a gap that is closed.
+
+The **Confirmed on** above stays as the reading: both majors were re-read, the
+statement carries no `since` because nothing between them is visible to a
+template, and `backend preview` had to be added to the hint's `appliesTo` before
+the symptom reached it at all.
+
+What holds from here is
+[`D-KNW-021`](knw-021-a-fluid-preview-template-replaces-the-content-half-and-the-corpus-says-so.md),
+and what must keep holding is `R-KNW-042`, which now rests on the successor. One
+of this entry's three **Wrong if** survives into it — the core moving the header
+behind the event — and it is a different failure there: a statement in the corpus
+that has gone false, rather than a statement nobody had written yet.

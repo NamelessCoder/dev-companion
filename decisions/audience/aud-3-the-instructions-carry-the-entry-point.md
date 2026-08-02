@@ -1,7 +1,7 @@
 ---
 id: D-AUD-3
 date: 2026-07-31
-status: standing
+status: tested
 ---
 
 # D-AUD-3 — The instructions carry the entry point, because the tool descriptions never arrive
@@ -46,3 +46,17 @@ that one fix would have been the wrong fix.
   except the installed version, the icon and label registries and the component
   contract. That answer would be worth having; it is much smaller than the
   current surface implies.
+- **Tested on 2026-07-31:** the second `REVIEW-01` run did not reach for Bash
+  alone. It ran against `b85036b`, the commit that wrote this entry and applied
+  it. The skill activated as the session's first action, `typo3_project_scope`
+  was the second call, and `typo3_extension_scope` followed. Both channels this
+  entry changed carried, so the wording was part of the obstacle after all. What
+  the run did not do is follow the skill past step 2. Thirty-eight of its 45
+  calls were still Bash, and `typo3_task_guide`, `typo3_architecture_lookup` and
+  `typo3_documentation_lookup` were loaded through `ToolSearch` and never called.
+  That is the order rather than the entry point, and `D-SKL-1` owns it. The
+  second suspicion falls with the first: run 4 called eight tools fifteen times
+  and was judged `covered`, and the two findings three runs had missed came from
+  those calls. A repository review therefore needs more of this server than the
+  version, the registries and the component contract. The run stands in commit
+  `021eac8`, the two runs after it having overwritten the file.

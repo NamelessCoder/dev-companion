@@ -11,6 +11,8 @@ one is added.
 - [`D-ANS-006`][D-ANS-006] — An identifier is found however it is spelled · 2026-08-02
 - [`D-ANS-007`][D-ANS-007] — Two shapes for "not answered", one word for why · 2026-08-02
 - [`D-ANS-008`][D-ANS-008] — A number a reader cannot reproduce is read as wrong · 2026-08-02
+- [`D-ANS-009`][D-ANS-009] — A shipped file is a deprecation predicate no sweep reaches · 2026-08-02
+- [`D-ANS-010`][D-ANS-010] — "Does it still work" is a question for the manual, not the changelog · 2026-08-02
 - [`D-ANS-004`][D-ANS-004] — The instruction budget is 2048 characters, on one client's evidence · 2026-07-31
 - [`D-ANS-002`][D-ANS-002] — Three numbers now decide what a lookup answers, and they were measured, not reasoned · 2026-07-30 · confirmed
 - [`D-ANS-003`][D-ANS-003] — Retrieval stays lexical and runtime inspection stays narrow · 2026-07-30 · confirmed
@@ -19,6 +21,8 @@ one is added.
 [D-ANS-006]: ans-006-an-identifier-is-found-however-it-is-spelled.md
 [D-ANS-007]: ans-007-two-shapes-for-not-answered-and-one-word-for-why.md
 [D-ANS-008]: ans-008-a-number-a-reader-cannot-reproduce-is-read-as-wrong.md
+[D-ANS-009]: ans-009-a-shipped-file-is-a-deprecation-predicate-no-sweep-reaches.md
+[D-ANS-010]: ans-010-does-it-still-work-is-a-question-for-the-manual.md
 [D-ANS-004]: ans-004-the-instruction-budget-is-2048-characters-on-one-clients-evidence.md
 [D-ANS-002]: ans-002-three-numbers-decide-what-a-lookup-answers.md
 [D-ANS-003]: ans-003-retrieval-stays-lexical-and-runtime-inspection-stays-narrow.md

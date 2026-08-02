@@ -60,6 +60,8 @@ and not a defect.
 - [`D-ANS-006`][D-ANS-006] — An identifier is found however it is spelled · 2026-08-02
 - [`D-ANS-007`][D-ANS-007] — Two shapes for "not answered", one word for why · 2026-08-02
 - [`D-ANS-008`][D-ANS-008] — A number a reader cannot reproduce is read as wrong · 2026-08-02
+- [`D-ANS-009`][D-ANS-009] — A shipped file is a deprecation predicate no sweep reaches · 2026-08-02
+- [`D-ANS-010`][D-ANS-010] — "Does it still work" is a question for the manual, not the changelog · 2026-08-02
 - [`D-AUD-004`][D-AUD-004] — The tool list is not where the audience is said · 2026-08-02
 - [`D-COD-003`][D-COD-003] — A directory is read through symfony/finder · 2026-08-02
 - [`D-DIS-007`][D-DIS-007] — The DDEV console is named by the mount, not by the variable · 2026-08-02
@@ -69,6 +71,7 @@ and not a defect.
 - [`D-DOC-005`][D-DOC-005] — A number is three digits so a group lists in order · 2026-08-02
 - [`D-DOC-006`][D-DOC-006] — A recording says what it is of, and nothing fails on its age · 2026-08-02
 - [`D-DOC-007`][D-DOC-007] — One page per tool, and the answer on it whole · 2026-08-02
+- [`D-EVI-004`][D-EVI-004] — The environment is made here, and the repository under review is not · 2026-08-02
 - [`D-FBK-011`][D-FBK-011] — The suite holds what one branch can be right about · 2026-08-02
 - [`D-FBK-012`][D-FBK-012] — The queue comes first, and the sighting hands over one · 2026-08-02
 - [`D-FBK-013`][D-FBK-013] — An empty queue is a state, not a failure · 2026-08-02
@@ -76,12 +79,15 @@ and not a defect.
 - [`D-FBK-015`][D-FBK-015] — A priority is a class, and the stamp is the rest · 2026-08-02
 - [`D-FBK-016`][D-FBK-016] — A feedback waits on the board rather than behind it · 2026-08-02
 - [`D-FBK-017`][D-FBK-017] — A judgement turns a feedback into work, and the work closes it · 2026-08-02
+- [`D-FBK-018`][D-FBK-018] — A strength is evidence about a boundary, not about a decision · 2026-08-02
+- [`D-FBK-019`][D-FBK-019] — A recorded feedback is stored as it was written, secrets included · 2026-08-02
 - [`D-KNW-005`][D-KNW-005] — One `Scope` replaced the four vocabularies · 2026-08-02
 - [`D-KNW-006`][D-KNW-006] — A word for a thing administered from the backend adds no domain to a backend-only task · 2026-08-02
 - [`D-KNW-007`][D-KNW-007] — A hint says whose it is in both directions · 2026-08-02
 - [`D-KNW-008`][D-KNW-008] — Tooling is a row the answer crosses, not a dimension the corpus stores · 2026-08-02
 - [`D-KNW-009`][D-KNW-009] — A domain keyword is a phrasing, not a word · 2026-08-02
 - [`D-SCO-009`][D-SCO-009] — The brief is one brief, and names the paths a step is not for · 2026-08-02
+- [`D-SKL-002`][D-SKL-002] — A focused audit narrows what is assessed, not the list it closes on · 2026-08-02
 - [`D-COD-001`][D-COD-001] — One file declares one class · 2026-08-01
 - [`D-COD-002`][D-COD-002] — The upkeep CLI is a Symfony Console application · 2026-08-01
 - [`D-DIS-006`][D-DIS-006] — The protocol offers nothing to replace the working directory · 2026-08-01
@@ -126,6 +132,8 @@ and not a defect.
 [D-ANS-006]: answers/ans-006-an-identifier-is-found-however-it-is-spelled.md
 [D-ANS-007]: answers/ans-007-two-shapes-for-not-answered-and-one-word-for-why.md
 [D-ANS-008]: answers/ans-008-a-number-a-reader-cannot-reproduce-is-read-as-wrong.md
+[D-ANS-009]: answers/ans-009-a-shipped-file-is-a-deprecation-predicate-no-sweep-reaches.md
+[D-ANS-010]: answers/ans-010-does-it-still-work-is-a-question-for-the-manual.md
 [D-AUD-004]: audience/aud-004-the-tool-list-is-not-where-the-audience-is-said.md
 [D-COD-003]: code/cod-003-a-directory-is-read-through-symfony-finder.md
 [D-DIS-007]: discovery/dis-007-the-ddev-console-is-named-by-the-mount-not-by-the-variable.md
@@ -135,6 +143,7 @@ and not a defect.
 [D-DOC-005]: documentation/doc-005-a-number-is-three-digits-so-a-group-lists-in-order.md
 [D-DOC-006]: documentation/doc-006-a-recording-says-what-it-is-of.md
 [D-DOC-007]: documentation/doc-007-one-page-per-tool-and-the-answer-whole.md
+[D-EVI-004]: evidence/evi-004-the-environment-is-made-here-and-the-repository-under-review-is-not.md
 [D-FBK-011]: feedback/fbk-011-the-suite-holds-what-one-branch-can-be-right-about.md
 [D-FBK-012]: feedback/fbk-012-the-queue-comes-first-and-the-sighting-hands-over-one.md
 [D-FBK-013]: feedback/fbk-013-an-empty-queue-is-a-state-not-a-failure.md
@@ -142,12 +151,15 @@ and not a defect.
 [D-FBK-015]: feedback/fbk-015-a-priority-is-a-class-and-the-stamp-is-the-rest.md
 [D-FBK-016]: feedback/fbk-016-a-feedback-waits-on-the-board-rather-than-behind-it.md
 [D-FBK-017]: feedback/fbk-017-a-judgement-turns-a-feedback-into-work-and-the-work-closes-it.md
+[D-FBK-018]: feedback/fbk-018-a-strength-is-evidence-about-a-boundary-not-about-a-decision.md
+[D-FBK-019]: feedback/fbk-019-a-recorded-feedback-is-stored-as-it-was-written-secrets-included.md
 [D-KNW-005]: knowledge/knw-005-one-scope-replaced-the-four-vocabularies.md
 [D-KNW-006]: knowledge/knw-006-a-word-for-a-thing-administered-from-the-backend.md
 [D-KNW-007]: knowledge/knw-007-a-hint-says-whose-it-is-in-both-directions.md
 [D-KNW-008]: knowledge/knw-008-tooling-is-a-row-that-is-crossed-in-the-answer.md
 [D-KNW-009]: knowledge/knw-009-a-domain-keyword-is-a-phrasing-not-a-word.md
 [D-SCO-009]: scope/sco-009-the-brief-is-one-brief-and-names-the-paths-a-step.md
+[D-SKL-002]: task-skills/skl-002-a-focused-audit-narrows-what-is-assessed.md
 [D-COD-001]: code/cod-001-one-file-declares-one-class.md
 [D-COD-002]: code/cod-002-the-upkeep-cli-is-a-symfony-console-application.md
 [D-DIS-006]: discovery/dis-006-the-protocol-offers-nothing-to-replace-the-working-directory.md

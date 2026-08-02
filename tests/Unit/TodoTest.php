@@ -218,7 +218,7 @@ final class TodoTest extends TestCase
 
         $released = Todo::release($inHand);
 
-        self::assertMatchesRegularExpression('#^todo/\d+-' . self::MARKER . '\.md$#', $released);
+        self::assertMatchesRegularExpression('#^todo/open/\d+-' . self::MARKER . '\.md$#', $released);
         $back = $this->ownTodos(Todo::items())[0];
         self::assertSame([], $this->ownTodos(Todo::progress()));
         self::assertSame('', $back['branch'], 'a released todo keeps a branch nobody is on');

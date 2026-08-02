@@ -18,7 +18,7 @@ use Typo3CmsMcp\Paths;
  *
  * Where a file sits is what it is, and the head it opens with says the rest:
  *
- *     todo/030-give-d-cat-001-a-digest-to-notice-markup-by.md
+ *     todo/open/030-give-d-cat-001-a-digest-to-notice-markup-by.md
  *
  *     # Give `D-CAT-001` a digest to notice markup by
  *
@@ -27,16 +27,20 @@ use Typo3CmsMcp\Paths;
  *
  *     One paragraph: the next concrete step.
  *
- * The number is the todo's place in the queue and nothing else — a move is a
- * rename, a finish is a deletion, and a new todo is a new file no other session
- * is writing. They run in tens so something can be put between two of them.
- * `recurring/` is what comes round and is never deleted. `progress/` is what a
- * session has in hand: it is offered to nobody else, and it says on which
- * branch the work is and since when. `waiting/` is what no session can start,
- * because it is blocked on an answer this repository cannot produce, and it
- * carries that answer's question in a `**Waiting on:**` line. `reference/` is
- * none of the four and is there so a session does not rediscover it and mistake
- * it for work.
+ * Three of the directories are the stages a todo runs through, and a move
+ * between them is the whole of what happens to one. `open/` is the queue, where
+ * the number is the place in the order and nothing else; they run in tens so
+ * something can be put between two of them. `progress/` is what a session has
+ * in hand: it is offered to nobody else, and it says on which branch the work
+ * is and since when. `waiting/` is what no session can start, because it is
+ * blocked on an answer this repository cannot produce, and it carries that
+ * answer's question in a `**Waiting on:**` line. Closing is not a fourth place
+ * — a finished todo is deleted, and the commit that finishes it is the record.
+ *
+ * The other two are beside the stages rather than among them. `recurring/` is
+ * what comes round and is never deleted, so it has no closing to run towards.
+ * `reference/` is not work at all and is there so a session does not rediscover
+ * it and mistake it for some.
  *
  * `Serves:` is what makes a todo work rather than an idea. `Every:` is the
  * cadence of a recurring one, and `Run:` is the command the step starts from,
@@ -250,7 +254,7 @@ final class Todo
         $positions = array_map(intval(...), array_column(self::items(), 'position'));
         $next = sprintf('%03d', ($positions === [] ? 0 : max($positions)) + 10);
 
-        return self::move($todo, 'todo/' . $next . '-' . basename($todo['path']), $head);
+        return self::move($todo, 'todo/open/' . $next . '-' . basename($todo['path']), $head);
     }
 
     /**
@@ -298,7 +302,7 @@ final class Todo
      */
     public static function items(): array
     {
-        return self::read('', 'queue');
+        return self::read('open', 'queue');
     }
 
     /**
@@ -634,7 +638,7 @@ final class Todo
             'title' => trim($heading[1] ?? ''),
             'kind' => $kind,
             'position' => $position[1] ?? '',
-            'path' => 'todo/' . ($kind === 'queue' ? '' : basename(dirname($path)) . '/') . basename($path),
+            'path' => 'todo/' . basename(dirname($path)) . '/' . basename($path),
             'every' => $every,
             'checked' => $checked,
             'waitingOn' => $waitingOn,

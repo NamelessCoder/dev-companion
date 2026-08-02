@@ -10,13 +10,15 @@ Nobody reads it to start. `bin/cli todo:next` prints the one todo that is due an
 nothing else, `bin/cli todo:list` is the overview, and this is where both of
 them read from.
 
-One todo is one file, and where it sits says what it is:
+One todo is one file, and where it sits says what it is. Three of the
+directories are the stages one runs through, and moving between them is the
+whole of what happens to a todo; the other two sit beside the stages rather
+than among them.
 
-- **`NNN-<title>.md`** — the queue, and the number is the place in it. A todo
+- **`open/`** — the queue, and the number in the name is the place in it. A todo
   that moves is renamed, one that is finished is deleted, and a new one is a new
   file, so two sessions can both add work without writing the same file. The
   numbers run in tens, which is what leaves room to put one between two others.
-- **`recurring/`** — what comes round and is never deleted.
 - **`progress/`** — what a session has in hand. The queue is an order, not an
   assignment, so `bin/cli todo:next` hands the same first item to everybody who
   asks; where two sessions work at once, taking one on is a move out of the
@@ -29,8 +31,17 @@ One todo is one file, and where it sits says what it is:
   offers it to nobody, and the answer is what numbers it back into the queue.
   A recurring todo asks every seven days what is in here, so a question waits
   rather than disappears.
-- **`reference/`** — none of the four: what a session would otherwise
-  rediscover and mistake for work.
+
+There is no fourth stage for what is done. A finished todo is deleted, and the
+commit that finished it is the record — a directory of them would be a second
+thing to keep true. The one exception is not here at all: a worked-off feedback
+is kept in `feedback/archive/`, because the agent asking what became of its
+report has no git to read the deletion out of.
+
+- **`recurring/`** — what comes round and is never deleted, so it has no
+  closing to run towards.
+- **`reference/`** — not work at all: what a session would otherwise rediscover
+  and mistake for some.
 
 Each file opens with its title, then a head of labelled lines:
 

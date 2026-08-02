@@ -41,7 +41,7 @@ trait QueuedTodo
     public function removeQueuedTodos(): void
     {
         $directories = array_values(array_filter([
-            Todo::directory(),
+            Todo::directory() . '/open',
             Todo::directory() . '/progress',
             Todo::directory() . '/waiting',
         ], is_dir(...)));
@@ -67,7 +67,7 @@ trait QueuedTodo
         $items = Todo::items();
         $last = $items === [] ? 0 : (int) $items[count($items) - 1]['position'];
         file_put_contents(
-            sprintf('%s/%03d-%s.md', Todo::directory(), $last + 10, self::MARKER),
+            sprintf('%s/open/%03d-%s.md', Todo::directory(), $last + 10, self::MARKER),
             '# ' . self::MARKER . "\n\n**Serves:** todo/\n\nThe step this fixture stands for.\n",
         );
 

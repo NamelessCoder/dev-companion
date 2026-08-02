@@ -1,7 +1,8 @@
 ---
 date: 2026-07-31T19:06:53+00:00
 category: missing-knowledge
-status: open
+status: closed
+closed: 2026-08-02
 model: unknown
 tool: typo3extensionconformance, skill
 directory: /home/benji/projects/site-new

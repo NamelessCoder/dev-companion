@@ -300,3 +300,48 @@ is what must hold, and the todo behind it starts with research rather than the
 enum: what a review brief carries that a change brief does not. The feedback
 stays open until that lands, so this decision's question keeps the two cards it
 already had and loses the third.
+
+## Since then
+
+The question got its other side, from a session that had no skill at all.
+
+`feedback/2026-08-01-003356` is the process half of the testimonials series,
+filed in `site-new` on `opencode/deepseek-v4-flash-free`. It reports that nothing
+was looked up until the user demanded it, that no skill was activated, and that
+`typo3_task_guide` was never called. The knowledge halves of that session are the
+siblings [`D-FBK-021`](../feedback/fbk-021-a-summary-feedback-is-judged-against-its-series-not-on-its-own.md)
+lists, and this one reports only the order they were reached in. The half about
+the skill not activating already has a change against it: the description rewrite
+of 2026-08-02 in [`D-AUD-003`](../audience/aud-003-the-instructions-carry-the-entry-point.md),
+made for this same task shape. What is left is the route through the server, and
+it ends before the skill.
+
+The entry point was in the text that session was sent. `site-new` runs
+`bin/typo3-cms-mcp` out of the main checkout, and `18a371a` put the sentence into
+the `instructions` at 18:33 CEST on 2026-07-31, six hours before the session
+filed. That sentence says `typo3_task_guide` "gives the workflow the task belongs
+to, and hands the parts that have their own workflow to the skill that owns
+them".
+
+It hands over nothing. Re-run on 2026-08-02 from `site-new`: `typo3_task_guide`
+with `task="build a testimonials content element with a custom backend preview"`,
+area `sitepackage`, version 14 and change type `feature` matches the
+content-element and test intents. It answers with the two hints that session
+spent its evening guessing at. A v14 preview template is handed one `record`,
+and a sitepackage derives a content element's template from its CType. Its
+"Next lookups" then name seven tools. None of them is a skill, and
+`typo3_documentation_lookup` is not among them either.
+
+So the two answers this question holds open are not the same size, and that is
+what this feedback adds. Saying in `skills/base.md` what the call is worth to a
+caller that arrived through a skill does nothing for one that arrived without a
+skill. Only the other answer reaches this session: the tool naming the workflow
+is the one route from the channel that arrives to the skill that owns the task.
+On the ladder that is step 3 rather than step 1 — the skill exists, the payload
+is in the guide's own answer, and nothing joins them.
+
+What is unmeasured is whether that client passes `instructions` to the model at
+all, so the sentence may never have been read. That does not gate the finding: a
+caller that reads it and makes the call still reaches no skill. Nothing was
+changed here, and the feedback waits behind the same question on a card of its
+own.

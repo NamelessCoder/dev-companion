@@ -53,4 +53,41 @@ returns `answeredBy: "nothing"` with the `unavailable` object beside it, and
 it fails** is this line in other words. It is held as a contract by four unit
 tests, and those hold what the server emits rather than what a client reads off
 it. No checkout on this machine plays either environment. So the evidence needs
-a session in one of them, and the entry stays `standing` until there is one.
+a session in one of them, and the entry stays `open` until there is one.
+
+Reading the emitted answers rather than the corpus, later the same day, found
+that the shape this entry decided was not the shape being sent. Driven where
+there is no installation, `typo3_icon_lookup` answers `matchCount: 0`,
+`suggestionCount: 0`, `exactMatch: false` and `icons: []` — every field
+identical to the miss it emits against a reachable installation, with
+`answeredBy` the only thing telling the two apart. This entry made `found` null
+and said why; nothing carried that reasoning to the counts and the booleans, so
+`typo3_configuration_lookup` was the only tool of eight it ever reached.
+
+`typo3_extension_scope` failed the other way round, and the line above about it
+reporting a real miss is what missed it: the answer is a real miss and it is
+labelled `answeredBy: "nothing"`, against an installation that had just listed
+27 packages, with no `unavailable` object beside it — which the schema says is
+present exactly then. A correct negative wearing the unanswerable shape is the
+same defect read backwards.
+
+Both are closed, and `R-ANS-001` now states the rule for all of them: every
+count and every boolean an installation-backed tool declares is null where
+nothing was consulted, and `answeredBy: "nothing"` is written in
+`Result\Unanswered` and nowhere else. The `unavailable` object gained `searched`
+and `misconfiguration`, which `typo3_server_scope` alone carried — a caller just
+told that nothing could be asked is the one least able to guess that another
+tool holds the half of the reason naming the way out.
+
+None of it settles the **Wrong if**, which is about what a client does with a
+well-formed answer and still needs the session. It changes what that session
+measures: a client misreading the old payload would have answered a question
+about a shape that is no longer sent.
+
+It also puts a lever between doing nothing and `isError: true`. The `instructions`
+sent at initialize never mention `answeredBy`, so a client is told to call the
+installation-backed lookups and never told that a miss and an unanswerable
+answer are different things. Saying it there is cheaper than turning an answer
+into an error. It is not free: `R-ANS-013` holds the instructions to a budget a
+client keeps, so the sentence has to displace one, and which one is a trade
+nobody has made yet.

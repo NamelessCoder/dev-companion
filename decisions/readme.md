@@ -71,6 +71,7 @@ and not a defect.
 - [`D-DOC-005`][D-DOC-005] — A number is three digits so a group lists in order · 2026-08-02
 - [`D-DOC-006`][D-DOC-006] — A recording says what it is of, and nothing fails on its age · 2026-08-02
 - [`D-DOC-007`][D-DOC-007] — One page per tool, and the answer on it whole · 2026-08-02
+- [`D-DOC-008`][D-DOC-008] — The calls that reach outside stay in the shared table · 2026-08-02
 - [`D-EVI-004`][D-EVI-004] — The environment is made here, and the repository under review is not · 2026-08-02
 - [`D-FBK-011`][D-FBK-011] — The suite holds what one branch can be right about · 2026-08-02
 - [`D-FBK-012`][D-FBK-012] — The queue comes first, and the sighting hands over one · 2026-08-02
@@ -143,6 +144,7 @@ and not a defect.
 [D-DOC-005]: documentation/doc-005-a-number-is-three-digits-so-a-group-lists-in-order.md
 [D-DOC-006]: documentation/doc-006-a-recording-says-what-it-is-of.md
 [D-DOC-007]: documentation/doc-007-one-page-per-tool-and-the-answer-whole.md
+[D-DOC-008]: documentation/doc-008-the-calls-that-reach-outside-stay-in-the-shared-table.md
 [D-EVI-004]: evidence/evi-004-the-environment-is-made-here-and-the-repository-under-review-is-not.md
 [D-FBK-011]: feedback/fbk-011-the-suite-holds-what-one-branch-can-be-right-about.md
 [D-FBK-012]: feedback/fbk-012-the-queue-comes-first-and-the-sighting-hands-over-one.md

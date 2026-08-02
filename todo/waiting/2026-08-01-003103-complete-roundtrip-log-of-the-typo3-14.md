@@ -2,8 +2,6 @@
 
 **Serves:** feedback/2026-08-01-003103-complete-roundtrip-log-of-the-typo3-14.md
 **Priority:** low
-**Branch:** todo/complete-roundtrip-log-of-the-typo3-14
-**Claimed:** 2026-08-02
 **Waiting on:** the question `2026-08-01-002951` waits on, and the same answer
     settles both: may a summary feedback be archived once every half it names is
     carried by a named sibling, or does it stay open until the last of those

@@ -92,3 +92,36 @@ that run took. The sink half of the same run went the other way and stayed out
 of the base: an escaping finding is a claim about a sink, a finding gate for
 one surface, and it sits in the checklist beside the gate it qualifies, where
 only the skills that judge pay for it.
+
+## Since then
+
+The base grew a third time, on 2026-07-31, by the precondition that now stands
+above the order: no `typo3_` tool in the session means stop and say so, and
+never answer from what the model knows instead (`1960e50`, `R-SKL-008`). It is
+the growth this decision's **Wrong if** watches. The arithmetic is the worst so
+far: 496 words when the file was written, 960 after the sweep, 1099 now. It
+costs no call, because the first step of the order is the check, and it buys the
+one failure the order cannot see — an order followed perfectly against nothing.
+
+`feedback/2026-07-31-185553` is that failure from the other side, and judging it
+is what brought this entry the numbers above. A session in `site-new` activated
+`typo3-extension-conformance`, read `references/base.md`, and found none of the
+eleven tools it names callable. It audited the site package from its own
+knowledge anyway, and filed at 18:55:53 UTC — eleven minutes before `1960e50`
+landed. So it is archived as answered rather than turned into work, and what the
+re-run showed is this: the server starts and serves 24 tools over stdio, every
+one of the eleven among them, so nothing was ever missing here. The gap was the
+client's connection. That is why the feedback's own suggestion — expose the
+tools in the agent environment — is not a change this server makes at runtime.
+In `site-new` itself the installer has since written the precondition into all
+six published skills under both `.claude/skills` and `.agents/skills`, beside
+an `.mcp.json` that names this server.
+
+One half of that session is still open and lands elsewhere.
+`feedback/2026-07-31-185900-during-an-audit-of-the-printworks-3d-site.md` is the
+same report four minutes later, and it carries what this one does not: the
+session reached the tools afterwards by driving the stdio binary by hand. The
+precondition answers what to do when the tools are absent and says nothing about
+that. So whoever judges the duplicate is judging a different question: not
+whether to stop, but whether stopping is still right when the server is one
+process away.

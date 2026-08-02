@@ -1,7 +1,8 @@
 ---
 date: 2026-07-31T18:55:53+00:00
 category: tool-gap
-status: open
+status: closed
+closed: 2026-08-02
 model: unknown
 tool: typo3extensionconformance
 directory: /home/benji/projects/site-new

@@ -340,7 +340,8 @@
       },
       {
         "text": "ext_emconf.php is the deprecated fallback for exactly that metadata. It is read only where composer.json declares neither the version nor providesPackages, and reading it triggers an E_USER_DEPRECATED during cache warm-up — which a functional test suite running with failOnDeprecation is usually the first thing to surface. Declare the two fields and the file stops being evaluated; a project extension can then delete it, one published to the TER keeps it for Tailor and the TER themselves.",
-        "since": 14
+        "since": 14,
+        "until": 14
       },
       {
         "text": "There is no fallback left: a composer.json without the version and providesPackages declarations is an invalid package manifest, and the installation says so instead of reading ext_emconf.php.",

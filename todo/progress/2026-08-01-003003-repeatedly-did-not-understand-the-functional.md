@@ -1,7 +1,9 @@
-# Debrief of the TYPO3 14 testimonials session: the assistant violated the language-file rules by w...
+# Debrief of the TYPO3 14 testimonials session: the assistant repeatedly did not understand the fun...
 
-**Serves:** feedback/2026-08-01-003313-violated-the-language-file-rules-by-writing.md
+**Serves:** feedback/2026-08-01-003003-repeatedly-did-not-understand-the-functional.md
 **Priority:** low
+**Branch:** todo/repeatedly-did-not-understand-the-functional
+**Claimed:** 2026-08-02
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

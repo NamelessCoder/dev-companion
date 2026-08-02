@@ -2,6 +2,8 @@
 
 **Serves:** decisions/
 **Priority:** normal
+**Branch:** todo/a-hint-that-grows-past-544-words-stops-answering-a-one-term-query
+**Claimed:** 2026-08-02
 
 This is
 [`D-ANS-006`](../../decisions/answers/ans-006-an-identifier-is-found-however-it-is-spelled.md)

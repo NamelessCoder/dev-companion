@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-01-002930-debrief-of-a-typo3-14-backend-preview-task-the.md
 **Priority:** normal
+**Branch:** todo/what-the-default-preview-renderer-already-draws-around-a-fluid-preview
+**Claimed:** 2026-08-02
 
 Step 1a of the ladder, on the evidence in
 [`D-KNW-015`](../../decisions/knowledge/knw-015-a-fluid-preview-template-replaces-the-content-half-and-nothing-here-says-so.md):

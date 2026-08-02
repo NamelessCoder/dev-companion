@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-01-003356-did-not-consult-the-mcp-knowledge-server-or.md
 **Priority:** low
+**Branch:** todo/did-not-consult-the-mcp-knowledge-server-or
+**Claimed:** 2026-08-02
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

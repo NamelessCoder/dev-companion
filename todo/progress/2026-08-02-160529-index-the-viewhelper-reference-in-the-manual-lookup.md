@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-01-003000-underlying-failure-was-a-systemic-lack-of-fluid.md
 **Priority:** normal
+**Branch:** todo/index-the-viewhelper-reference-in-the-manual-lookup
+**Claimed:** 2026-08-02
 
 Step 1b of the ladder, on the evidence in
 [`D-ANS-023`](../../decisions/answers/ans-023-no-viewhelper-is-documented-in-any-manual-this-lookup-indexes.md):

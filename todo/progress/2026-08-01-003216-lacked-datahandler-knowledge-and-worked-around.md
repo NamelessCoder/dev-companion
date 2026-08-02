@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-01-003216-lacked-datahandler-knowledge-and-worked-around.md
 **Priority:** low
+**Branch:** todo/lacked-datahandler-knowledge-and-worked-around
+**Claimed:** 2026-08-02
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

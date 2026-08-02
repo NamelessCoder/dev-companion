@@ -1,7 +1,9 @@
-# Debrief of the TYPO3 14 testimonials session: the specific Fluid f:if/f:then/f:else failure. A te...
+# Debrief of the TYPO3 14 testimonials session: the assistant violated the language-file rules by w...
 
-**Serves:** feedback/2026-08-01-003448-specific-fluid-f-if-f-then-f-else-failure-a.md
+**Serves:** feedback/2026-08-01-003313-violated-the-language-file-rules-by-writing.md
 **Priority:** low
+**Branch:** todo/violated-the-language-file-rules-by-writing
+**Claimed:** 2026-08-02
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

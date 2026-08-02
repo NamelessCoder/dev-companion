@@ -66,3 +66,42 @@ others nor `… 14 more` where the entries were is what they came for.
 - `ToolAnswersTest::everyRecordedAnswerIsJson`
 - `ToolAnswersTest::theIndexReachesEveryPage`
 - `ToolAnswersTest::everyToolTheTableDrivesHasARecordedAnswer`
+- `ToolAnswersTest::everyToolTheTableLeavesOutSaysWhy`
+- `ToolSurfaceTest::everyToolEitherLinksToItsAnswerOrSaysWhyItHasNone`
+
+## Since then
+
+**"Every tool in `tools.md` links to its own" was never true**, and the head of
+that page said it in the sentence above the twenty-three that do. Two tools have
+no recording on purpose — `typo3_feedback_record` writes, and
+`typo3_feedback_list` answers with the backlog somebody else wrote — and
+`ToolSurface` rendered nothing at all for them. An absence and an omission
+therefore looked identical at the only place a reader could have noticed the
+difference, and the head told them which of the two to believe.
+
+It stays two tools rather than becoming twenty-five pages. Both are drivable
+against a fixture directory, which is what makes the option worth stating, and
+it is what the option costs that decides it: every page in this directory
+carries a head asserting the day, the checkout and the console it came from, and
+a fixture-driven call would carry that head over an answer that came out of a
+fixture instead. The value of the directory is that its heads are true, and two
+more pages is a poor trade for two that are not. The write is the second reason
+and it is independent of the first: `ToolContractTest` drives the same table, so
+recording that call files a real feedback into the backlog on every test run.
+
+What replaces the blanket claim:
+
+- Every tool either links to its recording **or states, in its own section, why
+  it has none**. The renderer has no third branch: a tool with neither a page nor
+  a written reason renders as saying so, which is a defect a reader can see.
+- The reasons are `ToolCalls::undriven()`, beside the table that leaves those
+  tools out, and `tools.md`, the recording's own map and the test all read that
+  one copy.
+- `ToolAnswersTest` holds the table against that list rather than against the two
+  names it used to carry. A third tool dropping out is made green by writing the
+  reason, which is the only work that was ever wanted here.
+
+The map under `tool-answers/readme.md` names them too, after the list, where the
+reader who scanned it for their tool has arrived. Nothing checks that half —
+`D-DOC-006` is why, and it holds: a check on a recorded page is one only a
+machine with `.checkouts/` can make green.

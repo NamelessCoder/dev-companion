@@ -125,7 +125,41 @@ final class ToolAnswers
             $lines[] = sprintf('- [`%s`](%s.md) — %s', $name, $name, implode(', ', $calls));
         }
 
+        array_push($lines, ...self::absent());
+
         return implode("\n", $lines) . "\n";
+    }
+
+    /**
+     * The offered tools this recording has no page for, and why.
+     *
+     * It comes after the list rather than before it, because that is where the
+     * reader who scanned the list for their tool and did not find it has
+     * arrived. A map that says which pages are here and nothing about the ones
+     * that are not leaves a deliberate absence looking like an omission — the
+     * same reading `tools.md` invited until it stated it per tool, and the words
+     * are `ToolCalls::undriven()`'s so that the two say the same thing.
+     *
+     * @return list<string>
+     */
+    private static function absent(): array
+    {
+        $offered = array_column(Registry::definitions(), 'name');
+        $undriven = array_intersect_key(ToolCalls::undriven(), array_flip($offered));
+        if ($undriven === []) {
+            return [];
+        }
+
+        $lines = [
+            '',
+            self::wrap('Not here, and stated again in [tools.md](../tools.md) at each of them:'),
+            '',
+        ];
+        foreach ($undriven as $name => $why) {
+            $lines[] = self::wrap(sprintf('- `%s` — %s', $name, $why), '  ');
+        }
+
+        return $lines;
     }
 
     /**

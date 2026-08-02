@@ -17,11 +17,9 @@ namespace Typo3CmsMcp\Upkeep;
  * on a test class, and because that is what this is: neither the server nor its
  * knowledge, but the apparatus this repository is kept in order by.
  *
- * Two tools are deliberately absent. `typo3_feedback_record` writes, and a
- * table driven by two callers has to be safe to drive; `typo3_feedback_list`
- * answers with prose somebody else wrote, so a truncated title in a feedback
- * — `typo3_t…` is in one of them — reads to the name check as a tool that does
- * not exist.
+ * Two tools are deliberately absent, and `undriven()` below is where they say
+ * so. The reason used to stand here in prose, which is the one place a reader
+ * of the documentation never gets to.
  *
  * Two calls reach outside this repository, and no other tool can. They are here
  * rather than behind a skip list because a host that does not answer is
@@ -31,6 +29,34 @@ namespace Typo3CmsMcp\Upkeep;
  */
 final class ToolCalls
 {
+    /**
+     * The offered tools this table leaves out, each with why, in the words a
+     * reader of the documentation is given them in.
+     *
+     * It is data rather than a paragraph in this file because two readers need
+     * it and neither of them opens this class. `ToolSurface` states the absence
+     * at the tool somebody is standing at in `documentation/clients/tools.md`,
+     * where a missing link otherwise renders as nothing at all, and
+     * `ToolAnswers` says the same on the map of the recording. `ToolAnswersTest`
+     * holds this list against the table, so the next tool to drop out has to
+     * arrive here with a reason before the suite goes green again — which is
+     * the whole of what the prose could not do.
+     *
+     * @return array<string, string>
+     */
+    public static function undriven(): array
+    {
+        return [
+            'typo3_feedback_record' => 'it is the one tool here that writes, and this table has two drivers '
+                . 'rather than one. A call recorded from it would file a real feedback into the backlog every '
+                . 'time `ToolContractTest` runs, not only when the recording does.',
+            'typo3_feedback_list' => 'it answers with the backlog somebody else wrote, which is different in '
+                . 'every checkout and carries the tool names that were current when each feedback was filed. '
+                . 'One recorded title ends in a tool name cut to length, which reads to `ToolNamingTest` as a '
+                . 'tool this server does not have.',
+        ];
+    }
+
     /**
      * The calls, keyed by what each one is an example of.
      *

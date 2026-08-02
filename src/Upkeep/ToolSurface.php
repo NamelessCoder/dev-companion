@@ -81,22 +81,34 @@ final class ToolSurface
     }
 
     /**
-     * The page holding what this tool answered, where one was recorded.
+     * The page holding what this tool answered, or why there is none.
      *
      * The fields below say what comes back; that page says what a filled one
      * looks like. It sat one link away in the head of this file, which is a
      * link nobody follows while reading the tool they came for.
      *
+     * A tool without a page used to render nothing here, while the head above
+     * promised one for every tool below. Two tools have no recording on
+     * purpose — `ToolCalls::undriven()` is which and why — and rendering
+     * silence for them made a deliberate absence read as a link somebody
+     * forgot, in the one place a reader would have believed the head.
+     *
      * @return list<string>
      */
     private static function recorded(string $name): array
     {
-        if (!is_file(ToolAnswers::file($name))) {
-            return [];
+        if (is_file(ToolAnswers::file($name))) {
+            return [
+                sprintf('**Answered**, once, against a checkout: [tool-answers/%s.md](tool-answers/%s.md).', $name, $name),
+                '',
+            ];
         }
 
         return [
-            sprintf('**Answered**, once, against a checkout: [tool-answers/%s.md](tool-answers/%s.md).', $name, $name),
+            self::wrap('**Not answered** against a checkout, and deliberately: '
+                . (ToolCalls::undriven()[$name]
+                    ?? 'no reason for that is written down, which is the defect rather than the absence — '
+                    . 'see `Upkeep\ToolCalls`.')),
             '',
         ];
     }

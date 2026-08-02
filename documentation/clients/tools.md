@@ -9,7 +9,8 @@ answer at the first change nobody carried across.
 What a filled answer looks like is not here, because it is not derivable: it
 needs an installation to call. [tool-answers/](tool-answers/readme.md) is that
 half — one page per tool, each answer whole, recorded once by `bin/cli
-tools:record` and checked by nothing. Every tool below links to its own. The
+tools:record` and checked by nothing. Every tool below either links to its own
+or says why it has none — two of them have none on purpose. The
 [readme](../../readme.md) says what each tool is for in prose; this page says
 what goes in and what shape comes back.
 
@@ -1753,6 +1754,11 @@ three times over or not at all.
 
 `readOnlyHint: false` · `destructiveHint: false` · `idempotentHint: false` · `openWorldHint: false`
 
+**Not answered** against a checkout, and deliberately: it is the one tool here
+that writes, and this table has two drivers rather than one. A call recorded
+from it would file a real feedback into the backlog every time
+`ToolContractTest` runs, not only when the recording does.
+
 **Takes**
 
 - `observation` *(string, required)* — What was missing, wrong, or
@@ -1811,6 +1817,12 @@ status="closed" answers "what became of what I reported" — the feedback as it
 was recorded, plus the commit that closed it.
 
 `readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: false`
+
+**Not answered** against a checkout, and deliberately: it answers with the
+backlog somebody else wrote, which is different in every checkout and carries
+the tool names that were current when each feedback was filed. One recorded
+title ends in a tool name cut to length, which reads to `ToolNamingTest` as a
+tool this server does not have.
 
 **Takes**
 

@@ -38,3 +38,15 @@ showing. Nothing else is rewritten: each block is what a client received.
 - [`typo3_extension_scope`](typo3_extension_scope.md) — extension
 - [`typo3_catalog_scope`](typo3_catalog_scope.md) — catalog scope
 - [`typo3_commit_message_guide`](typo3_commit_message_guide.md) — commit: from parts, commit: from a message
+
+Not here, and stated again in [tools.md](../tools.md) at each of them:
+
+- `typo3_feedback_record` — it is the one tool here that writes, and this
+  table has two drivers rather than one. A call recorded from it would file a
+  real feedback into the backlog every time `ToolContractTest` runs, not only
+  when the recording does.
+- `typo3_feedback_list` — it answers with the backlog somebody else wrote,
+  which is different in every checkout and carries the tool names that were
+  current when each feedback was filed. One recorded title ends in a tool name
+  cut to length, which reads to `ToolNamingTest` as a tool this server does not
+  have.

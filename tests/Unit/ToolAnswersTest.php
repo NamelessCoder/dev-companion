@@ -190,20 +190,28 @@ final class ToolAnswersTest extends TestCase
     }
 
     /**
-     * The two tools the table leaves out, and why, so a session that adds them
-     * has to read the reason first: one writes, and the other answers with
-     * prose somebody else wrote.
+     * Every tool the table leaves out says why it is out.
+     *
+     * This used to name the two in the assertion itself, which held the list
+     * and nothing else: a third tool dropping out failed here, and the cheapest
+     * way to make it pass again was to add its name. The list is
+     * `ToolCalls::undriven()` now, so making this green means writing the
+     * reason — and the reason is what `tools.md` and the recording's own map
+     * then state where a reader meets the absence.
      */
     #[Test]
-    public function theTableDrivesEveryToolItIsSafeToDrive(): void
+    public function everyToolTheTableLeavesOutSaysWhy(): void
     {
         $driven = array_unique(array_column(ToolCalls::all(), 0));
         $offered = array_column(Registry::definitions(), 'name');
 
         self::assertSame(
-            ['typo3_feedback_record', 'typo3_feedback_list'],
             array_values(array_diff($offered, $driven)),
+            array_keys(ToolCalls::undriven()),
             'a tool joined or left the table without its reason being written down',
         );
+        foreach (ToolCalls::undriven() as $name => $why) {
+            self::assertNotSame('', trim($why), $name . ' is left out of the table and says nothing about why');
+        }
     }
 }

@@ -62,7 +62,8 @@ order by, and the launch two of the subjects below share.
   answers with, written from the registry by `bin/cli tools:index`.
 - [tool-answers/](clients/tool-answers/readme.md) — what each of them answered
   on one day against one checkout, one page per tool, recorded by `bin/cli
-  tools:record`. Evidence rather than a derivation, so nothing checks it.
+  tools:record`. Evidence rather than a derivation, so nothing checks it. The
+  two tools that are not recorded say why on the map and again in `tools.md`.
 - [writing-a-skill.md](clients/writing-a-skill.md) — what a new task skill has
   to show before it exists, the rules it is written under, and what holds each
   one.

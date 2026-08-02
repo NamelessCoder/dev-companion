@@ -6,7 +6,9 @@ namespace Typo3CmsMcp\Tests\Unit;
 
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Finder\Finder;
 use Typo3CmsMcp\Paths;
+use Typo3CmsMcp\Tests\Support\Directory;
 use Typo3CmsMcp\Upkeep\Scenarios;
 
 final class ScenariosTest extends TestCase
@@ -15,13 +17,10 @@ final class ScenariosTest extends TestCase
 
     protected function tearDown(): void
     {
-        if ($this->runs === '' || !is_dir($this->runs)) {
+        if ($this->runs === '') {
             return;
         }
-        foreach (glob($this->runs . '/*.json') ?: [] as $file) {
-            unlink($file);
-        }
-        rmdir($this->runs);
+        Directory::remove($this->runs);
     }
 
     #[Test]
@@ -106,10 +105,10 @@ final class ScenariosTest extends TestCase
     {
         $methods = [];
         foreach (['Unit', 'Contract', 'Smoke'] as $suite) {
-            foreach (glob(Paths::root() . '/tests/' . $suite . '/*Test.php') ?: [] as $path) {
-                preg_match_all('/public function (\w+)\(/', (string) file_get_contents($path), $matches);
+            foreach (Finder::create()->files()->in(Paths::root() . '/tests/' . $suite)->depth(0)->name('*Test.php')->sortByName() as $file) {
+                preg_match_all('/public function (\w+)\(/', (string) file_get_contents($file->getPathname()), $matches);
                 foreach ($matches[1] as $method) {
-                    $methods[] = basename($path, '.php') . '::' . $method;
+                    $methods[] = $file->getBasename('.php') . '::' . $method;
                 }
             }
         }
@@ -329,14 +328,11 @@ final class ScenariosTest extends TestCase
     private function headings(string $directory): array
     {
         $ids = [];
-        foreach ([Paths::root() . $directory . '/*.md', Paths::root() . $directory . '/*/*.md'] as $pattern) {
-            foreach (glob($pattern) ?: [] as $path) {
-                if (basename($path) === 'readme.md') {
-                    continue;
-                }
-                preg_match_all('/^#{1,2} ([A-Z]+-\d+)\b/m', (string) file_get_contents($path), $matches);
-                $ids = array_merge($ids, $matches[1]);
-            }
+        $files = Finder::create()->files()->in(Paths::root() . $directory)->depth('< 2')
+            ->name('*.md')->notName('readme.md')->sortByName();
+        foreach ($files as $file) {
+            preg_match_all('/^#{1,2} ([A-Z]+-\d+)\b/m', (string) file_get_contents($file->getPathname()), $matches);
+            $ids = array_merge($ids, $matches[1]);
         }
         sort($ids);
 

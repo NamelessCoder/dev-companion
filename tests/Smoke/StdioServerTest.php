@@ -9,6 +9,7 @@ use PHPUnit\Framework\TestCase;
 use Typo3CmsMcp\Installation\Instance;
 use Typo3CmsMcp\Knowledge\Scope;
 use Typo3CmsMcp\Paths;
+use Typo3CmsMcp\Tests\Support\Directory;
 
 /**
  * Drives the real entrypoint the way a client does: a subprocess speaking
@@ -24,15 +25,8 @@ final class StdioServerTest extends TestCase
 
     protected function tearDown(): void
     {
-        if ($this->temporaryRoot !== null && is_dir($this->temporaryRoot)) {
-            $files = new \RecursiveIteratorIterator(
-                new \RecursiveDirectoryIterator($this->temporaryRoot, \FilesystemIterator::SKIP_DOTS),
-                \RecursiveIteratorIterator::CHILD_FIRST
-            );
-            foreach ($files as $file) {
-                $file->isDir() ? rmdir($file->getPathname()) : unlink($file->getPathname());
-            }
-            rmdir($this->temporaryRoot);
+        if ($this->temporaryRoot !== null) {
+            Directory::remove($this->temporaryRoot);
         }
         $this->temporaryRoot = null;
     }

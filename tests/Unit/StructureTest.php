@@ -6,6 +6,7 @@ namespace Typo3CmsMcp\Tests\Unit;
 
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Finder\Finder;
 
 /**
  * What holds the shape of the source tree itself, rather than what any one
@@ -81,18 +82,10 @@ final class StructureTest extends TestCase
     /** @return array<int, string> */
     private static function testFiles(): array
     {
-        $files = new \RecursiveIteratorIterator(
-            new \RecursiveDirectoryIterator(dirname(__DIR__), \FilesystemIterator::SKIP_DOTS)
-        );
-
         $tests = [];
-        foreach ($files as $file) {
-            if ($file instanceof \SplFileInfo && str_ends_with($file->getFilename(), 'Test.php')) {
-                $tests[] = $file->getPathname();
-            }
+        foreach (Finder::create()->files()->in(dirname(__DIR__))->name('*Test.php')->sortByName() as $file) {
+            $tests[] = $file->getPathname();
         }
-
-        sort($tests);
 
         return $tests;
     }
@@ -106,21 +99,12 @@ final class StructureTest extends TestCase
      */
     private static function sources(): array
     {
-        $root = dirname(__DIR__, 2) . '/src';
-        $files = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($root));
-
         $sources = [];
+        $files = Finder::create()->files()->in(dirname(__DIR__, 2) . '/src')->name('*.php')
+            ->notName('bootstrap.php')->notName('probe.php')->sortByName();
         foreach ($files as $file) {
-            if (!$file instanceof \SplFileInfo || $file->getExtension() !== 'php') {
-                continue;
-            }
-            if (in_array($file->getFilename(), ['bootstrap.php', 'probe.php'], true)) {
-                continue;
-            }
             $sources[] = $file->getPathname();
         }
-
-        sort($sources);
 
         return $sources;
     }

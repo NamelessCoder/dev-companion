@@ -7,6 +7,7 @@ namespace Typo3CmsMcp\Tests\Smoke;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Typo3CmsMcp\Paths;
+use Typo3CmsMcp\Tests\Support\Directory;
 
 final class InstallerAgentSupportTest extends TestCase
 {
@@ -53,7 +54,7 @@ final class InstallerAgentSupportTest extends TestCase
                     self::assertStringNotContainsString('/' . $paths['mcp'], $gitignore);
                 }
             } finally {
-                $this->removeDirectory($directory);
+                Directory::remove($directory);
             }
         }
     }
@@ -77,19 +78,4 @@ final class InstallerAgentSupportTest extends TestCase
         return proc_close($process);
     }
 
-    private function removeDirectory(string $directory): void
-    {
-        $files = new \RecursiveIteratorIterator(
-            new \RecursiveDirectoryIterator($directory, \RecursiveDirectoryIterator::SKIP_DOTS),
-            \RecursiveIteratorIterator::CHILD_FIRST,
-        );
-        foreach ($files as $file) {
-            if ($file->isDir()) {
-                rmdir($file->getPathname());
-            } else {
-                unlink($file->getPathname());
-            }
-        }
-        rmdir($directory);
-    }
 }

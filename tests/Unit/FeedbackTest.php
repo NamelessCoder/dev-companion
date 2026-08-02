@@ -6,6 +6,7 @@ namespace Typo3CmsMcp\Tests\Unit;
 
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Finder\Finder;
 use Typo3CmsMcp\Feedback\Channel;
 use Typo3CmsMcp\Installation\Instance;
 use Typo3CmsMcp\Paths;
@@ -23,14 +24,13 @@ final class FeedbackTest extends TestCase
     protected function tearDown(): void
     {
         Instance::discoverFrom(null);
-        $written = [
-            ...(glob(Paths::feedback() . '/*.md') ?: []),
-            ...(glob(Paths::feedbackArchive() . '/*.md') ?: []),
-        ];
-        foreach ($written as $file) {
-            if (str_contains((string) file_get_contents($file), self::MARKER)) {
-                unlink($file);
-            }
+        $directories = array_values(array_filter([Paths::feedback(), Paths::feedbackArchive()], is_dir(...)));
+        if ($directories === []) {
+            return;
+        }
+
+        foreach (Finder::create()->files()->in($directories)->depth(0)->name('*.md')->contains(self::MARKER) as $file) {
+            unlink($file->getPathname());
         }
     }
 

@@ -6,6 +6,7 @@ namespace Typo3CmsMcp\Tests\Unit;
 
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Finder\Finder;
 use Typo3CmsMcp\Paths;
 use Typo3CmsMcp\Upkeep\Checkouts;
 use Typo3CmsMcp\Upkeep\Todo;
@@ -24,15 +25,14 @@ final class TodoTest extends TestCase
 
     protected function tearDown(): void
     {
-        $written = [
-            ...(glob(Todo::directory() . '/*.md') ?: []),
-            ...(glob(Todo::directory() . '/progress/*.md') ?: []),
-            ...(glob(Todo::directory() . '/waiting/*.md') ?: []),
-        ];
-        foreach ($written as $file) {
-            if (str_contains((string) file_get_contents($file), self::MARKER)) {
-                unlink($file);
-            }
+        $directories = array_values(array_filter([
+            Todo::directory(),
+            Todo::directory() . '/progress',
+            Todo::directory() . '/waiting',
+        ], is_dir(...)));
+
+        foreach (Finder::create()->files()->in($directories)->depth(0)->name('*.md')->contains(self::MARKER) as $file) {
+            unlink($file->getPathname());
         }
         @rmdir(Todo::directory() . '/progress');
     }

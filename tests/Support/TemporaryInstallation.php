@@ -24,19 +24,7 @@ trait TemporaryInstallation
             return;
         }
 
-        $entries = new \RecursiveIteratorIterator(
-            new \RecursiveDirectoryIterator($this->temporaryRoot, \FilesystemIterator::SKIP_DOTS),
-            \RecursiveIteratorIterator::CHILD_FIRST
-        );
-        foreach ($entries as $entry) {
-            // A symlink to a directory answers isDir() and is still removed by
-            // unlink(). The iterator does not descend into one, so what it
-            // points at is left where it is.
-            $entry->isDir() && !$entry->isLink()
-                ? rmdir($entry->getPathname())
-                : unlink($entry->getPathname());
-        }
-        rmdir($this->temporaryRoot);
+        Directory::remove($this->temporaryRoot);
         $this->temporaryRoot = '';
     }
 

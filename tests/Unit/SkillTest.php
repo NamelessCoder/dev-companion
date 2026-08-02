@@ -6,6 +6,7 @@ namespace Typo3CmsMcp\Tests\Unit;
 
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Finder\Finder;
 use Typo3CmsMcp\Paths;
 use Typo3CmsMcp\Upkeep\Scenarios;
 
@@ -367,8 +368,11 @@ final class SkillTest extends TestCase
     {
         foreach (self::skills() as $name => $skill) {
             $directory = Paths::root() . '/skills/' . $name . '/references';
-            foreach (glob($directory . '/*.md') ?: [] as $reference) {
-                $file = basename($reference);
+            if (!is_dir($directory)) {
+                continue;
+            }
+            foreach (Finder::create()->files()->in($directory)->depth(0)->name('*.md')->sortByName() as $reference) {
+                $file = $reference->getFilename();
                 self::assertStringContainsString(
                     '[references/' . $file . '](references/' . $file . ')',
                     $skill,
@@ -378,7 +382,7 @@ final class SkillTest extends TestCase
                 // skill no longer decides the size of.
                 self::assertStringNotContainsString(
                     '(references/',
-                    (string) file_get_contents($reference),
+                    (string) file_get_contents($reference->getPathname()),
                     $name . '/references/' . $file . ' sends the reader on to another reference',
                 );
             }
@@ -902,8 +906,8 @@ final class SkillTest extends TestCase
     private static function skills(): array
     {
         $skills = [];
-        foreach (glob(Paths::root() . '/skills/*/SKILL.md') ?: [] as $path) {
-            $skills[basename(dirname($path))] = (string) file_get_contents($path);
+        foreach (Finder::create()->files()->in(Paths::root() . '/skills')->depth(1)->name('SKILL.md')->sortByName() as $path) {
+            $skills[$path->getRelativePath()] = (string) file_get_contents($path->getPathname());
         }
 
         self::assertNotSame([], $skills);

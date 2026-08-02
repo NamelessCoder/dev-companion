@@ -7,6 +7,7 @@ namespace Typo3CmsMcp\Tests\Smoke;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Typo3CmsMcp\Paths;
+use Typo3CmsMcp\Tests\Support\Directory;
 
 final class InstallerTest extends TestCase
 {
@@ -36,7 +37,7 @@ final class InstallerTest extends TestCase
                 'args' => [Paths::root() . '/bin/typo3-cms-mcp'],
             ], $configuration['mcpServers']['typo3-cms-mcp']);
         } finally {
-            $this->removeDirectory($directory);
+            Directory::remove($directory);
         }
     }
 
@@ -54,7 +55,7 @@ final class InstallerTest extends TestCase
             self::assertStringContainsString('refusing to replace', $stderr);
             self::assertSame($original, file_get_contents($directory . '/.mcp.json'));
         } finally {
-            $this->removeDirectory($directory);
+            Directory::remove($directory);
         }
     }
 
@@ -165,7 +166,7 @@ final class InstallerTest extends TestCase
             self::assertSame($before['state'], file_get_contents($state));
             self::assertSame($before['gitignore'], file_get_contents($directory . '/.gitignore'));
         } finally {
-            $this->removeDirectory($directory);
+            Directory::remove($directory);
         }
     }
 
@@ -204,7 +205,7 @@ final class InstallerTest extends TestCase
                 $directory . '/.agents/skills/typo3-backend-module-development/SKILL.md',
             );
         } finally {
-            $this->removeDirectory($directory);
+            Directory::remove($directory);
         }
     }
 
@@ -234,7 +235,7 @@ final class InstallerTest extends TestCase
                 'args' => ['exec', 'php', '.build/bin/typo3-cms-mcp'],
             ], $configuration['mcpServers']['typo3-cms-mcp']);
         } finally {
-            $this->removeDirectory($directory);
+            Directory::remove($directory);
         }
     }
 
@@ -260,7 +261,7 @@ final class InstallerTest extends TestCase
                 'args' => [Paths::root() . '/bin/typo3-cms-mcp'],
             ], $configuration['mcpServers']['typo3-cms-mcp']);
         } finally {
-            $this->removeDirectory($directory);
+            Directory::remove($directory);
         }
     }
 
@@ -290,7 +291,7 @@ final class InstallerTest extends TestCase
                 'args' => ['exec', 'php', 'vendor/bin/typo3-cms-mcp'],
             ], $configuration['mcpServers']['typo3-cms-mcp']);
         } finally {
-            $this->removeDirectory($directory);
+            Directory::remove($directory);
         }
     }
 
@@ -308,7 +309,7 @@ final class InstallerTest extends TestCase
             self::assertStringContainsString('refusing to replace', $stderr);
             self::assertSame($original, file_get_contents($directory . '/.mcp.json'));
         } finally {
-            $this->removeDirectory($directory);
+            Directory::remove($directory);
         }
     }
 
@@ -327,7 +328,7 @@ final class InstallerTest extends TestCase
             self::assertSame($original, file_get_contents($directory . '/.codex/config.toml'));
             self::assertDirectoryDoesNotExist($directory . '/.agents');
         } finally {
-            $this->removeDirectory($directory);
+            Directory::remove($directory);
         }
     }
 
@@ -357,7 +358,7 @@ final class InstallerTest extends TestCase
                 $configuration,
             );
         } finally {
-            $this->removeDirectory($directory);
+            Directory::remove($directory);
         }
     }
 
@@ -378,7 +379,7 @@ final class InstallerTest extends TestCase
             );
             self::assertStringNotContainsString('User change.', (string) file_get_contents($skill));
         } finally {
-            $this->removeDirectory($directory);
+            Directory::remove($directory);
         }
     }
 
@@ -398,7 +399,7 @@ final class InstallerTest extends TestCase
             self::assertFileDoesNotExist($obsolete);
             self::assertDirectoryDoesNotExist(dirname($obsolete));
         } finally {
-            $this->removeDirectory($directory);
+            Directory::remove($directory);
         }
     }
 
@@ -426,7 +427,7 @@ final class InstallerTest extends TestCase
             self::assertSame(0, $this->execute($directory, ['update', '--agent=codex'], $stderr), $stderr);
             self::assertDirectoryDoesNotExist($stale);
         } finally {
-            $this->removeDirectory($directory);
+            Directory::remove($directory);
         }
     }
 
@@ -469,19 +470,4 @@ final class InstallerTest extends TestCase
         file_put_contents($directory . '/' . $binDirectory . '/typo3-cms-mcp', "#!/usr/bin/env php\n");
     }
 
-    private function removeDirectory(string $directory): void
-    {
-        $files = new \RecursiveIteratorIterator(
-            new \RecursiveDirectoryIterator($directory, \RecursiveDirectoryIterator::SKIP_DOTS),
-            \RecursiveIteratorIterator::CHILD_FIRST,
-        );
-        foreach ($files as $file) {
-            if ($file->isDir()) {
-                rmdir($file->getPathname());
-            } else {
-                unlink($file->getPathname());
-            }
-        }
-        rmdir($directory);
-    }
 }

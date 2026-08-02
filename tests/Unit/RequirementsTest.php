@@ -6,6 +6,7 @@ namespace Typo3CmsMcp\Tests\Unit;
 
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Finder\Finder;
 use Typo3CmsMcp\Paths;
 use Typo3CmsMcp\Upkeep\Requirements;
 
@@ -119,15 +120,8 @@ final class RequirementsTest extends TestCase
     public function everyRequirementAScenarioNamesExists(): void
     {
         $requirements = Requirements::all();
-        $files = new \RecursiveIteratorIterator(
-            new \RecursiveDirectoryIterator(Paths::root() . '/scenarios', \FilesystemIterator::SKIP_DOTS),
-        );
 
-        foreach ($files as $file) {
-            if (!$file instanceof \SplFileInfo || $file->getExtension() !== 'md') {
-                continue;
-            }
-
+        foreach (Finder::create()->files()->in(Paths::root() . '/scenarios')->name('*.md')->sortByName() as $file) {
             preg_match_all('/`(R-[A-Z]{3}-\d+[a-z]?)`/', (string) file_get_contents($file->getPathname()), $matches);
             foreach ($matches[1] as $id) {
                 self::assertArrayHasKey(
@@ -150,10 +144,10 @@ final class RequirementsTest extends TestCase
     {
         $methods = [];
         foreach (['Unit', 'Contract', 'Smoke'] as $suite) {
-            foreach (glob(Paths::root() . '/tests/' . $suite . '/*Test.php') ?: [] as $path) {
-                preg_match_all('/public function (\w+)\(/', (string) file_get_contents($path), $matches);
+            foreach (Finder::create()->files()->in(Paths::root() . '/tests/' . $suite)->depth(0)->name('*Test.php')->sortByName() as $file) {
+                preg_match_all('/public function (\w+)\(/', (string) file_get_contents($file->getPathname()), $matches);
                 foreach ($matches[1] as $method) {
-                    $methods[] = basename($path, '.php') . '::' . $method;
+                    $methods[] = $file->getBasename('.php') . '::' . $method;
                 }
             }
         }

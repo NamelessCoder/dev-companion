@@ -10,6 +10,7 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Attribute\Argument;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Finder\Finder;
 use Typo3CmsMcp\Paths;
 use Typo3CmsMcp\Upkeep\Cli;
 
@@ -34,16 +35,16 @@ final class UpkeepCommandTest extends TestCase
     public static function commandClasses(): array
     {
         $cases = [];
-        foreach (glob(Paths::root() . '/src/Upkeep/Command/*.php') ?: [] as $path) {
+        foreach (Finder::create()->files()->in(Paths::root() . '/src/Upkeep/Command')->depth(0)->name('*.php')->sortByName() as $path) {
             /** @var class-string $class */
-            $class = 'Typo3CmsMcp\\Upkeep\\Command\\' . basename($path, '.php');
+            $class = 'Typo3CmsMcp\\Upkeep\\Command\\' . $path->getBasename('.php');
             $reflection = new \ReflectionClass($class);
             if ($reflection->isAbstract()) {
                 continue;
             }
 
             $attributes = $reflection->getAttributes(AsCommand::class);
-            $cases[basename($path, '.php')] = [
+            $cases[$path->getBasename('.php')] = [
                 $class,
                 $attributes === [] ? '' : (string) $attributes[0]->newInstance()->name,
             ];

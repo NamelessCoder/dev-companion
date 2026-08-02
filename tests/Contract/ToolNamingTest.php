@@ -7,6 +7,7 @@ namespace Typo3CmsMcp\Tests\Contract;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Finder\Finder;
 use Typo3CmsMcp\Tool\Registry;
 
 /**
@@ -144,13 +145,9 @@ final class ToolNamingTest extends TestCase
     private function knowledgeFiles(): array
     {
         $files = [];
-        $directory = new \RecursiveDirectoryIterator(dirname(__DIR__, 2) . '/knowledge');
-        foreach (new \RecursiveIteratorIterator($directory) as $file) {
-            if ($file->isFile()) {
-                $files[] = $file->getPathname();
-            }
+        foreach (Finder::create()->files()->in(dirname(__DIR__, 2) . '/knowledge')->sortByName() as $file) {
+            $files[] = $file->getPathname();
         }
-        sort($files);
 
         return $files;
     }
@@ -158,8 +155,15 @@ final class ToolNamingTest extends TestCase
     /** @return array<int, string> */
     private function skillFiles(): array
     {
-        $files = glob(dirname(__DIR__, 2) . '/skills/*/{SKILL.md,references/*.md}', GLOB_BRACE) ?: [];
-        sort($files);
+        // A skill is its SKILL.md and what that loads on demand, and nothing
+        // else the directory happens to carry.
+        $skills = Finder::create()->files()->in(dirname(__DIR__, 2) . '/skills')->depth(1)->name('SKILL.md');
+        $references = Finder::create()->files()->in(dirname(__DIR__, 2) . '/skills')->depth(2)->path('references/')->name('*.md');
+
+        $files = [];
+        foreach (Finder::create()->append($skills)->append($references)->sortByName() as $file) {
+            $files[] = $file->getPathname();
+        }
 
         return $files;
     }

@@ -7,6 +7,7 @@ namespace Typo3CmsMcp\Tests\Smoke;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Typo3CmsMcp\Paths;
+use Typo3CmsMcp\Tests\Support\Directory;
 
 /**
  * What a project records about the clients installed in it.
@@ -48,7 +49,7 @@ final class InstallerRecordTest extends TestCase
                 self::assertFileEquals(Paths::root() . '/skills/' . self::SKILL . '/SKILL.md', $skill);
             }
         } finally {
-            $this->removeDirectory($directory);
+            Directory::remove($directory);
         }
     }
 
@@ -70,7 +71,7 @@ final class InstallerRecordTest extends TestCase
                 $stdout,
             );
         } finally {
-            $this->removeDirectory($directory);
+            Directory::remove($directory);
         }
     }
 
@@ -99,7 +100,7 @@ final class InstallerRecordTest extends TestCase
             self::assertSame(0, $this->execute($directory, ['update'], $stdout, $stderr), $stderr);
             self::assertFileEquals(Paths::root() . '/skills/' . self::SKILL . '/SKILL.md', $skill);
         } finally {
-            $this->removeDirectory($directory);
+            Directory::remove($directory);
         }
     }
 
@@ -115,7 +116,7 @@ final class InstallerRecordTest extends TestCase
             self::assertStringContainsString('unsupported agent "whatever"', $stderr);
             self::assertStringNotContainsString('generic', $stderr);
         } finally {
-            $this->removeDirectory($directory);
+            Directory::remove($directory);
         }
     }
 
@@ -132,7 +133,7 @@ final class InstallerRecordTest extends TestCase
             self::assertStringContainsString('install --agent=', $stderr);
             self::assertFileDoesNotExist($directory . '/typo3-cms-mcp.json');
         } finally {
-            $this->removeDirectory($directory);
+            Directory::remove($directory);
         }
     }
 
@@ -168,7 +169,7 @@ final class InstallerRecordTest extends TestCase
             self::assertStringNotContainsString('obsolete-typo3-skill', $gitignore);
             self::assertStringNotContainsString('/.github/skills/', $gitignore);
         } finally {
-            $this->removeDirectory($directory);
+            Directory::remove($directory);
         }
     }
 
@@ -209,19 +210,4 @@ final class InstallerRecordTest extends TestCase
         return $directory;
     }
 
-    private function removeDirectory(string $directory): void
-    {
-        $files = new \RecursiveIteratorIterator(
-            new \RecursiveDirectoryIterator($directory, \RecursiveDirectoryIterator::SKIP_DOTS),
-            \RecursiveIteratorIterator::CHILD_FIRST,
-        );
-        foreach ($files as $file) {
-            if ($file->isDir()) {
-                rmdir($file->getPathname());
-            } else {
-                unlink($file->getPathname());
-            }
-        }
-        rmdir($directory);
-    }
 }

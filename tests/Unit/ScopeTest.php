@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Typo3CmsMcp\Tests\Unit;
 
 use PHPUnit\Framework\Attributes\After;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Typo3CmsMcp\Installation\Instance;
@@ -231,6 +232,206 @@ final class ScopeTest extends TestCase
         self::assertSame(Scope::AUDIENCE_CORE, $decided[$core]);
         self::assertStringContainsString('# For ' . $extension, $hints->text);
         self::assertStringContainsString('# For ' . $core, $hints->text);
+    }
+
+    /**
+     * `typo3/sysext/` in the touched paths, and nothing else — the one signal
+     * `D-AUD-1` names as the thing that would make the combining unnecessary.
+     *
+     * Two-valued, because that is the whole of the claim: a path carries the
+     * marker or it does not. There is no third answer to be had from it, which
+     * is the first of the two things the table below measures.
+     */
+    private static function theSysextSignalAlone(string $path): string
+    {
+        return str_contains(mb_strtolower(str_replace('\\', '/', $path)), 'typo3/sysext/')
+            ? Scope::AUDIENCE_CORE
+            : Scope::AUDIENCE_OUTSIDE;
+    }
+
+    /**
+     * Every audience decision the two recorded runs made, in the arguments they
+     * made it with.
+     *
+     * Read on 2026-08-02 out of `scenarios/runs/REVIEW-01.json` (`E-SITE`,
+     * server `66813e3`) and `REVIEW-02.json` (`E-EXT`, server `b5555cb`): each
+     * path handed to a tool that decides an audience, with the task text of the
+     * call it arrived in, because the text is a signal and a truncated one is a
+     * different question. `config/system/settings.php` appears in two calls of
+     * `REVIEW-01` and is listed under each.
+     *
+     * Both runs are reviews of somebody's own repository, so the expected
+     * answer is `outside-core` throughout. That is the finding rather than a
+     * simplification: no recorded run has ever been made in `E-CORE`.
+     *
+     * @return iterable<string, array{0: string, 1: string, 2: string}>
+     */
+    public static function everyAudienceTheRecordedRunsDecided(): iterable
+    {
+        $project = 'Project repository layout for a composer TYPO3 project: composer.json, Build/, Tests/E2E, '
+            . 'config/system, public/';
+        $content = 'Content element registration, TCA overrides for tt_content, inline child tables, TypoScript '
+            . 'per content element, Fluid templates and backend previews';
+        $security = 'Frontend security: escaping user input in Fluid, query building, DTO from GET arguments, '
+            . 'repository queries, secrets in configuration';
+        $labels = 'XLF language files, source language, translation domains, icon registration and event '
+            . 'listeners with Services.yaml';
+
+        yield 'REVIEW-01 the brief for the audit' => [
+            'printworks_sitepackage',
+            'Audit a TYPO3 site package and the surrounding composer project for conformance, security and '
+                . 'upgrade readiness',
+            'printworks_sitepackage',
+        ];
+        foreach ([
+            'composer.json', 'Build/phpunit/UnitTests.xml', 'Tests/E2E/catalogue.spec.ts',
+            'config/system/settings.php', 'public/index.php',
+        ] as $path) {
+            yield 'REVIEW-01 the project layout, ' . $path => [$path, $project, ''];
+        }
+        foreach ([
+            'extensions/printworks_sitepackage/Configuration/TCA/Overrides/tt_content_hero.php',
+            'extensions/printworks_sitepackage/Configuration/TCA/tx_printworks_hero_slide.php',
+            'extensions/printworks_sitepackage/Configuration/Sets/Printworks/TypoScript/ContentElement/Hero.typoscript',
+            'extensions/printworks_sitepackage/Resources/Private/Templates/Content/PrintworksHero.fluid.html',
+        ] as $path) {
+            yield 'REVIEW-01 the content element, ' . $path => [$path, $content, ''];
+        }
+        foreach ([
+            'extensions/printworks_sitepackage/Classes/Controller/ProductController.php',
+            'extensions/printworks_sitepackage/Classes/Domain/Repository/ProductRepository.php',
+            'extensions/printworks_sitepackage/Classes/Domain/Model/Dto/ProductDemand.php',
+            'config/system/settings.php',
+        ] as $path) {
+            yield 'REVIEW-01 the frontend security, ' . $path => [$path, $security, ''];
+        }
+        foreach ([
+            'extensions/printworks_sitepackage/Resources/Private/Language/messages.xlf',
+            'extensions/printworks_sitepackage/Configuration/Icons.php',
+            'extensions/printworks_sitepackage/Configuration/Services.yaml',
+            'extensions/printworks_sitepackage/Classes/EventListener/PrefillProductRequestForm.php',
+        ] as $path) {
+            yield 'REVIEW-01 the labels and listeners, ' . $path => [$path, $labels, ''];
+        }
+
+        yield 'REVIEW-02 the brief for the audit' => [
+            'news',
+            'Audit a widely used third-party TYPO3 extension for maintainability and supportability risks across '
+                . 'package metadata, registration, TCA, TypoScript, Fluid, security and tests',
+            'news',
+        ];
+        foreach ([
+            'Extension package metadata, composer.json and ext_emconf.php agreement, autoloading and supported '
+                . 'TYPO3 version range for a third-party extension' => ['composer.json', 'ext_emconf.php'],
+            'Dependency injection, Services.yaml, event listeners, hooks and console commands registration in an '
+                . 'extension' => ['Configuration/Services.yaml', 'Classes/Hooks', 'Classes/Command', 'ext_localconf.php'],
+            'Site sets, TypoScript constants and setup, TSconfig for a frontend extension'
+                => ['Configuration/Sets/News/setup.typoscript', 'Configuration/page.tsconfig'],
+            'Fluid templates, ViewHelpers, output escaping and safe rendering in a frontend extension'
+                => ['Resources/Private/Templates', 'Resources/Private/Partials', 'Classes/ViewHelpers'],
+            'Language files, XLF labels and translations shipped by an extension'
+                => ['Resources/Private/Language/locallang.xlf', 'Resources/Private/Language/locallang_db.xlf'],
+            'Extbase domain model, repositories, TCA and upgrade wizards for extension tables'
+                => ['Configuration/TCA/tx_news_domain_model_news.php', 'Classes/Domain/Repository', 'Classes/Updates', 'ext_tables.sql'],
+            'Backend module registration, controller, access permissions and request handling'
+                => ['Configuration/Backend/Modules.php', 'Classes/Controller/AdministrationController.php'],
+        ] as $text => $paths) {
+            foreach ($paths as $path) {
+                yield 'REVIEW-02 ' . $path => [$path, $text, ''];
+            }
+        }
+    }
+
+    /**
+     * The half of `D-AUD-1`'s **Wrong if** that holds: on everything that has
+     * actually been recorded, the single signal answers what the combination
+     * answers.
+     *
+     * It has to be said what that is worth. Both runs are reviews of somebody's
+     * own repository, so every one of these decisions is `outside-core` — and
+     * `outside-core` is what the sysext check returns for every path that does
+     * not carry the marker, which is all of them. The agreement is the corpus
+     * having one side rather than the two signals reading the same evidence:
+     * eight of these were carried by the installation and one by the task text,
+     * and the sysext check read neither. The other half of the measurement is
+     * the test below.
+     */
+    #[Test]
+    #[DataProvider('everyAudienceTheRecordedRunsDecided')]
+    public function theSysextSignalAloneAnsweredEveryDecisionTheRecordedRunsMade(
+        string $path,
+        string $text,
+        string $area,
+    ): void {
+        Instance::discoverFrom($this->composerProject());
+
+        self::assertSame(Scope::AUDIENCE_OUTSIDE, Scope::audienceOf($path, $text, $area));
+        self::assertSame(Scope::AUDIENCE_OUTSIDE, self::theSysextSignalAlone($path));
+    }
+
+    /**
+     * The same question asked of a core checkout, which is where the runs are
+     * silent.
+     *
+     * The first eleven are what `.checkouts/14.3` has at its root, read on
+     * 2026-08-02 — its nine entries other than `typo3/`, and the two below
+     * `Build/` that no other repository keeps there. That is everything a
+     * contributor touches which is not below `typo3/sysext/`. The three calls
+     * after them name no path at all, which is the commoner shape: `SITE-*` and
+     * `CORE-*` prompts are sentences, and a brief is asked for before there is
+     * a file to name.
+     *
+     * @return iterable<string, array{0: string, 1: string, 2: string}>
+     */
+    public static function everyAudienceACoreCheckoutDecides(): iterable
+    {
+        foreach ([
+            'Build/Scripts/runTests.sh', 'Build/Sources/Sass/backend.scss', 'Build/',
+            'CODE_OF_CONDUCT.md', 'CONTRIBUTING.md', 'INSTALL.md', 'LICENSE.txt', 'README.md', 'SECURITY.md',
+            'composer.json', 'composer.lock',
+        ] as $path) {
+            yield 'the checkout root, ' . $path => [$path, '', ''];
+        }
+
+        yield 'a fix that goes to review' => ['', 'Fix the DataHandler regression and push it for review', 'core'];
+        yield 'a new state on a list row' => ['', 'Add a new state to a backend list row', 'backend'];
+        yield 'a deprecation' => ['', 'Deprecate a public API method', ''];
+    }
+
+    /**
+     * The half that does not, and the reason the combining stays.
+     *
+     * Every row here is core work, and the sysext check calls every one of them
+     * outside the core — the marker is absent from all of them, and absence is
+     * the only thing that signal has to go on. What that costs is concrete:
+     * `Build/Scripts/runTests.sh` is the script every suite in
+     * `typo3_test_run_guide` invokes, and the contributor standing in the
+     * repository that has it would be told it is not theirs to run. The three
+     * path-less calls cost the same thing for the same reason, before there is
+     * a file to name at all.
+     *
+     * Two signals carry the rows: `Build/Scripts/` and `Build/Sources/` are the
+     * core's layout where the manifest allows it to be the core, and every
+     * other row is the installation — twice through an area it knows as a
+     * system extension, otherwise through the kind of checkout it is. So this
+     * is the test a simplification fails: collapse `audienceOf` to the marker
+     * and all fourteen of these turn.
+     */
+    #[Test]
+    #[DataProvider('everyAudienceACoreCheckoutDecides')]
+    public function theSysextSignalAloneAnsweredNothingACoreCheckoutDecides(
+        string $path,
+        string $text,
+        string $area,
+    ): void {
+        Instance::discoverFrom($this->coreCheckout());
+
+        self::assertSame(Scope::AUDIENCE_CORE, Scope::audienceOf($path, $text, $area));
+        self::assertSame(
+            Scope::AUDIENCE_OUTSIDE,
+            self::theSysextSignalAlone($path),
+            'the single signal has caught up with the combination here, and D-AUD-1 is worth re-measuring',
+        );
     }
 
     #[Test]

@@ -24,11 +24,11 @@ carried out.
    subsystem or finding.
 5. Run `git status` in the environment afterwards, and record what it says. The
    review itself may not write — that is
-   [`D-EVI-3`](../../decisions/evidence/evi-3-a-review-runs-the-checks-that-cannot-change-the-code.md)
+   [`D-EVI-003`](../../decisions/evidence/evi-003-a-review-runs-the-checks-that-cannot-change-the-code.md)
    — so a modified tree is one of two things, and both are worth the ten
    seconds. Either the session overstepped, which is a criterion, or a lookup
    did. The second is what
-   [`D-DIS-5`](../../decisions/discovery/dis-5-a-registry-with-no-command-is-read-by-booting-the-installation.md)
+   [`D-DIS-005`](../../decisions/discovery/dis-005-a-registry-with-no-command-is-read-by-booting-the-installation.md)
    is watched for: the registry lookups answer by booting the installation in a
    subprocess, and a boot that writes outside the cache is the symptom that
    decision named and cannot hold itself. Start from a clean tree so the reading
@@ -132,4 +132,4 @@ the tool that never came back, which is the whole diagnosis — two `REVIEW-02`
 attempts died 24 minutes apart on the first pair of tool calls a client
 dispatched concurrently, and the cause was this server handing its own stdin to
 a console command
-([`R-DIS-18`](../../requirements/discovery/dis-18-a-console-command-never-inherits-the-clients-stdin.md)).
+([`R-DIS-018`](../../requirements/discovery/dis-018-a-console-command-never-inherits-the-clients-stdin.md)).

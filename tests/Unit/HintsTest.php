@@ -345,7 +345,7 @@ final class HintsTest extends TestCase
     }
 
     /**
-     * The sweep the three constants in `D-ANS-2` were picked off, as far as it
+     * The sweep the three constants in `D-ANS-002` were picked off, as far as it
      * was written down.
      *
      * It was eighteen queries with a known right answer, run against every
@@ -358,7 +358,7 @@ final class HintsTest extends TestCase
      * Twelve of the fourteen are in this provider. The other two are recorded
      * misses and are asserted where their reason is written down —
      * «my button looks wrong» in whatACallerCanSeeReachesTheHintAboutIt, and
-     * «wie lege ich ein neues Content-Element an» nowhere, because `R-AUD-6`
+     * «wie lege ich ein neues Content-Element an» nowhere, because `R-AUD-006`
      * settled that this server is queried in English.
      *
      * A null answer is the corpus having none, and it carries the same weight
@@ -1106,7 +1106,7 @@ final class HintsTest extends TestCase
     }
 
     /**
-     * `D-KNW-1`'s **Wrong if**, run against the server on 2026-08-02. Two of
+     * `D-KNW-001`'s **Wrong if**, run against the server on 2026-08-02. Two of
      * five backend-only task texts that name a content element came back with
      * the sitepackage layout — «Add a TCA field to the content element in the
      * backend» and «The backend preview of the content element is broken in the

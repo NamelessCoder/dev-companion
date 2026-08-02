@@ -2,7 +2,7 @@
 
 **Environment:** `E-EXT`, in an extension whose detail template decodes HTML
 entities around an editor-supplied title inside a ViewHelper of its own ·
-**Contract:** `held` — `R-SKL-4`
+**Contract:** `held` — `R-SKL-004`
 **Held by:** `SkillTest::aSecurityFindingIsNotEstablishedUntilItsSinkIs`,
 `HintsTest::bothSidesOfAnInjectionQuestionReachTheSinkMethod`,
 `SkillTest::judgmentHeavySkillsKeepTheirChecklistBesideThem`; the first reads

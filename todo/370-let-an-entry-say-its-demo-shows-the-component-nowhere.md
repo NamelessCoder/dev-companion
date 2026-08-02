@@ -2,7 +2,7 @@
 
 **Serves:** decisions/
 
-D-CAT-3's second **Wrong if** was confirmed on 2026-08-02 and half of it fixed.
+D-CAT-003's second **Wrong if** was confirmed on 2026-08-02 and half of it fixed.
 Run over all 25 entries against `.checkouts/14.3` and `.checkouts/main`, five
 demos hand back page scaffolding as the component's installed markup. `card` is
 now curated with `demoSelector: card-title` and takes the canonical card instead
@@ -16,7 +16,7 @@ handed over does not render at all — and `Dropdown.fluid.html` has exactly one
 example carrying `dropdown`, inside an inline-styled flex row. Selecting within
 them only moves which scaffolding is handed over.
 
-What they need is the state D-CAT-3 already **Assumed** for a template with no
+What they need is the state D-CAT-003 already **Assumed** for a template with no
 `sg:example` at all — keep the bundled markup, label it a fallback, do not
 pretend it was derived — reached by the index's judgment rather than by the
 count being zero. That is a second curated field, not a second meaning for
@@ -27,7 +27,7 @@ value, and the entry stops saying which was meant.
 Settle first whether it is a field at all. `"demoSelector": false` and a
 `demoDerives: false` both exist as shapes, and so does deriving nothing whenever
 the selected example carries a known scaffolding class — which is the permissive
-extractor D-CAT-3 rules out, so it is named here to be dismissed on the record
+extractor D-CAT-003 rules out, so it is named here to be dismissed on the record
 rather than rediscovered. Then curate the four, and check `dropdown` separately:
 its single match is real dropdown markup inside a wrapper, which may be a
 trimming question rather than a suppression one.

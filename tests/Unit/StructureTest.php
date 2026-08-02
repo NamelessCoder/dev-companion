@@ -85,7 +85,7 @@ final class StructureTest extends TestCase
      * One question, one way of asking it. A directory listing was `glob()` in
      * the flat case and a `RecursiveDirectoryIterator` in the deep one, and the
      * second shape ran to a dozen lines that said what one Finder call says.
-     * Both are `symfony/finder` now (D-COD-3), and a returning `glob()` is the
+     * Both are `symfony/finder` now (D-COD-003), and a returning `glob()` is the
      * split coming back rather than a style slip.
      */
     #[Test]

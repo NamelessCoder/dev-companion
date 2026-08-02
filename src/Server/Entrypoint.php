@@ -18,7 +18,7 @@ use Typo3CmsMcp\Installation\Instance;
  * This is also the one place that hands a working directory to Instance. The
  * client starts this process inside the session it is working in, so the
  * working directory is the agent's own and an installation found from it is the
- * one being worked on. Nothing else may do this, which is what `R-DIS-1` holds:
+ * one being worked on. Nothing else may do this, which is what `R-DIS-001` holds:
  * a request-serving endpoint has no such relationship to its callers, and its
  * document root may itself sit inside a TYPO3 installation.
  */

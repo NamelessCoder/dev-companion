@@ -31,4 +31,4 @@
 
 - The core default quoted as the effective value.
 - An unreachable console producing an answer shaped like "nothing is configured"
-  (`R-ANS-1`, `R-ANS-2`).
+  (`R-ANS-001`, `R-ANS-002`).

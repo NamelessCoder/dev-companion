@@ -24,7 +24,7 @@ final class RequirementIndex
     /**
      * Where the generated listing begins, so everything above it survives a
      * regeneration. Both shapes are matched: the table these listings were
-     * until D-DOC-1, and the list they are now.
+     * until D-DOC-001, and the list they are now.
      */
     private const LISTING_STARTS = '/(?:\| Id\s|- \[`R-)[^\n]*(?:\n.*)?$/s';
 

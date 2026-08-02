@@ -230,7 +230,7 @@ final class Decisions
      * They were bullets carrying a bold label until 2026-08-02, and the label
      * repeated: half the entries make more than one decision and a fifth of
      * them rest on more than one assumption, so `- **Decided:**` was written
-     * seven times in the worst case. A section says it once. See `D-DOC-3`.
+     * seven times in the worst case. A section says it once. See `D-DOC-003`.
      *
      * @return array<int, string>
      */

@@ -18,9 +18,9 @@ use Typo3CmsMcp\Paths;
  *
  * Where a file sits is what it is, and the head it opens with says the rest:
  *
- *     todo/030-give-d-cat-1-a-digest-to-notice-markup-by.md
+ *     todo/030-give-d-cat-001-a-digest-to-notice-markup-by.md
  *
- *     # Give `D-CAT-1` a digest to notice markup by
+ *     # Give `D-CAT-001` a digest to notice markup by
  *
  *     **Serves:** decisions/
  *     **Run:** bin/cli catalog:check

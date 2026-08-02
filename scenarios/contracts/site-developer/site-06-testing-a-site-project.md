@@ -1,7 +1,7 @@
 # SITE-06 — Testing a site project
 
-**Environment:** `E-SITE` · **Contract:** `held` — `R-KNW-16`,
-`R-SKL-2`
+**Environment:** `E-SITE` · **Contract:** `held` — `R-KNW-016`,
+`R-SKL-002`
 **Held by:**
 `SkillTest::extensionTestingVerifiesItsHarnessBeforeAddingCoverage`,
 `HintsTest::theTestKindThatNeedsABrowserIsCovered`,

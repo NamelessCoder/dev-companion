@@ -45,6 +45,38 @@ final class DecisionsTest extends TestCase
     }
 
     /**
+     * The number is the only part of an id a listing sorts on, and three digits
+     * is what makes sorting it as text the same as sorting it as a number.
+     * `Decisions::all()` compares ids as text, so unpadded it put `D-FBK-10`
+     * between `D-FBK-1` and `D-FBK-2` in the generated readme as well.
+     */
+    #[Test]
+    public function everyNumberIsThreeDigitsWideSoAGroupListsInOrder(): void
+    {
+        $groups = [];
+
+        foreach (Decisions::all() as $id => $decision) {
+            self::assertMatchesRegularExpression(
+                '/^D-[A-Z]{3}-\d{3}[a-z]?$/',
+                $id,
+                $id . ' is numbered in something other than three digits',
+            );
+            $groups[$decision['group']][] = $decision['file'];
+        }
+
+        self::assertNotSame([], $groups);
+
+        foreach ($groups as $group => $files) {
+            $asText = $files;
+            sort($asText, SORT_STRING);
+            $asNumbers = $files;
+            usort($asNumbers, static fn(string $a, string $b): int => strnatcmp($a, $b));
+
+            self::assertSame($asNumbers, $asText, $group . '/ lists in another order than it is numbered');
+        }
+    }
+
+    /**
      * The bold first sentence is the decision, and a reader who stops there
      * knows what was settled. The date is what makes the entry findable a year
      * later, when the wording of the title is not what anybody remembers.

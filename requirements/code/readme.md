@@ -12,6 +12,6 @@ holds what a change to that shape rested on.
 See [the requirements readme](../readme.md) for how an entry is written and
 when it is added.
 
-- [`R-COD-1`][R-COD-1] — Every entrypoint is driven by a test that goes through it · held
+- [`R-COD-001`][R-COD-001] — Every entrypoint is driven by a test that goes through it · held
 
-[R-COD-1]: cod-1-every-entrypoint-is-driven-by-a-test-that-goes-through-it.md
+[R-COD-001]: cod-001-every-entrypoint-is-driven-by-a-test-that-goes-through-it.md

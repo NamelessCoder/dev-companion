@@ -11,7 +11,7 @@ namespace Typo3CmsMcp\Upkeep;
  * be scanned vertically — which holds only while every cell fits on one line. A
  * listing carries a title, and a title is a sentence, so the widest column was
  * always going to be one. Aligning the columns is what made it visible: the
- * decisions listing came to 237 characters a row. See D-DOC-1.
+ * decisions listing came to 237 characters a row. See D-DOC-001.
  *
  * The link is what made it worse, and a reference link is what fixes it. A
  * markdown link puts a file path in the middle of the line while the rendered
@@ -24,7 +24,7 @@ final class Listing
      * One entry per line: the id, linked, then what it says.
      *
      * The id leads because it is what everything else refers to — a commit
-     * message, a todo's `Serves:`, another entry. Scanning for `D-SCO-6` is
+     * message, a todo's `Serves:`, another entry. Scanning for `D-SCO-006` is
      * the reason to open one of these files.
      *
      * @param array<int, array{ref: string, path: string, says: string}> $entries

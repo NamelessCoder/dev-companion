@@ -1,7 +1,7 @@
 # META-04 — The client shows only the data
 
 **Environment:** `E-SITE`, with a client that renders `structuredContent` and
-drops the text block · **Contract:** `held` — `R-ANS-2`
+drops the text block · **Contract:** `held` — `R-ANS-002`
 **Held by:** `ScopeTest::theInstallationDiagnosticIsDataRatherThanProse`,
 `ScopeTest::anUnanswerableLookupCarriesItsReasonInTheData`,
 `LabelSearchTest::whatEachWordReachesOnItsOwnIsInTheAnswerRatherThanOnlyInTheText`
@@ -19,4 +19,4 @@ drops the text block · **Contract:** `held` — `R-ANS-2`
 **How it fails**
 
 - A conclusion that only holds because a sentence in the text block was read —
-  and therefore silently inverts in this client (`R-ANS-2`).
+  and therefore silently inverts in this client (`R-ANS-002`).

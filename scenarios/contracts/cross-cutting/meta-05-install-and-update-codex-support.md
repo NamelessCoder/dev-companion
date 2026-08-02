@@ -1,7 +1,7 @@
 # META-05 — Install and update Codex support
 
 **Environment:** `E-SITE`, with Codex project configuration containing unrelated
-settings · **Contract:** `held` — `R-DIS-12`
+settings · **Contract:** `held` — `R-DIS-012`
 **Held by:**
 `InstallerTest::codexInstallAndUpdatePreserveConfigurationAndTrackTheirSkillsCentrally`,
 `InstallerTest::codexInstallRefusesAConflictingServerEntry`,

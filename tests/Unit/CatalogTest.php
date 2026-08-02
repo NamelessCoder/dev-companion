@@ -395,7 +395,7 @@ final class CatalogTest extends TestCase
     #[Test]
     public function aCuratedSelectorDecidesWhichExampleIsTheComponent(): void
     {
-        // The failure D-CAT-3 named as what would show it wrong: a demo page
+        // The failure D-CAT-003 named as what would show it wrong: a demo page
         // that opens with scaffolding. Both examples below carry `card`, so the
         // root class cannot tell them apart — the first is a settings form
         // built out of a card, the second is the card. Handing over the first

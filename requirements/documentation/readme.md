@@ -7,6 +7,6 @@ bundled conventions rather than replacing them.
 See [the requirements readme](../readme.md) for how an entry is written and
 when it is added.
 
-- [`R-DOC-1`][R-DOC-1] — The live manuals answer for the version they were asked for · held
+- [`R-DOC-001`][R-DOC-001] — The live manuals answer for the version they were asked for · held
 
-[R-DOC-1]: doc-1-the-live-manuals-answer-for-the-version-they-were-asked-for.md
+[R-DOC-001]: doc-001-the-live-manuals-answer-for-the-version-they-were-asked-for.md

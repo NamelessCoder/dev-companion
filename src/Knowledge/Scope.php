@@ -17,7 +17,7 @@ use Typo3CmsMcp\Installation\Instance;
  *
  * `Any` and `Uncertain` are the two that belong to one side each. A statement
  * can hold wherever TYPO3 is written; a path cannot, because a path is one
- * piece of work. A path can be one nothing placed, which R-AUD-2 asks to be
+ * piece of work. A path can be one nothing placed, which R-AUD-002 asks to be
  * said rather than decided silently; a statement nobody could place is a
  * statement nobody should have written.
  */
@@ -182,7 +182,7 @@ enum Scope: string
      * The evidence is structural where structure exists, because wording is
      * the weakest of the signals: "bootstrap_package" says everything about
      * which repository this is and matches none of the phrases below. The
-     * order the signals are read in is R-SCO-1's, and what comes first is what
+     * order the signals are read in is R-SCO-001's, and what comes first is what
      * the path says about itself — a call is not a path, and two of them in one
      * session are two questions.
      *
@@ -267,7 +267,7 @@ enum Scope: string
 
         // That signal, and where there is no installation either, nothing in
         // the call has placed the work at all. That is not the core by default:
-        // it is the case R-AUD-2 names, and the answer says so.
+        // it is the case R-AUD-002 names, and the answer says so.
         return match (Instance::describe()['kind'] ?? '') {
             // The project rather than an extension inside it: nothing named a
             // package, and the repository the session sits in is the site.

@@ -11,28 +11,28 @@ The requirements of the same name are in
 [the decisions readme](../readme.md) for how an entry is written and when it
 earns one.
 
-- [`D-FBK-10`][D-FBK-10] — `main` carries the state and the branch carries the work · 2026-08-01
-- [`D-FBK-6`][D-FBK-6] — A name is cut where the feedback starts to differ · 2026-08-01
-- [`D-FBK-7`][D-FBK-7] — How a todo is worked travels with the todo · 2026-08-01
-- [`D-FBK-8`][D-FBK-8] — One todo is one file, and the queue is in the names · 2026-08-01
-- [`D-FBK-9`][D-FBK-9] — A todo nobody can start waits where it says why · 2026-08-01
-- [`D-FBK-1`][D-FBK-1] — The backlog is read out rather than enforced · 2026-07-31 · confirmed
-- [`D-FBK-2`][D-FBK-2] — The order of the work is declared, not inferred · 2026-07-31 · confirmed
-- [`D-FBK-4`][D-FBK-4] — The model is asked, because nothing else here can say it · 2026-07-31
+- [`D-FBK-006`][D-FBK-006] — A name is cut where the feedback starts to differ · 2026-08-01
+- [`D-FBK-007`][D-FBK-007] — How a todo is worked travels with the todo · 2026-08-01
+- [`D-FBK-008`][D-FBK-008] — One todo is one file, and the queue is in the names · 2026-08-01
+- [`D-FBK-009`][D-FBK-009] — A todo nobody can start waits where it says why · 2026-08-01
+- [`D-FBK-010`][D-FBK-010] — `main` carries the state and the branch carries the work · 2026-08-01
+- [`D-FBK-001`][D-FBK-001] — The backlog is read out rather than enforced · 2026-07-31 · confirmed
+- [`D-FBK-002`][D-FBK-002] — The order of the work is declared, not inferred · 2026-07-31 · confirmed
+- [`D-FBK-004`][D-FBK-004] — The model is asked, because nothing else here can say it · 2026-07-31
 
-[D-FBK-10]: fbk-10-main-carries-the-state-and-the-branch-carries-the-work.md
-[D-FBK-6]: fbk-6-a-name-is-cut-where-the-feedback-starts-to-differ.md
-[D-FBK-7]: fbk-7-how-a-todo-is-worked-travels-with-the-todo.md
-[D-FBK-8]: fbk-8-one-todo-is-one-file-and-the-queue-is-in-the-names.md
-[D-FBK-9]: fbk-9-a-todo-nobody-can-start-waits-where-it-says-why.md
-[D-FBK-1]: fbk-1-the-backlog-is-read-out-rather-than-enforced.md
-[D-FBK-2]: fbk-2-the-order-of-the-work-is-declared-not-inferred.md
-[D-FBK-4]: fbk-4-the-model-is-asked-because-nothing-else-can-say-it.md
+[D-FBK-006]: fbk-006-a-name-is-cut-where-the-feedback-starts-to-differ.md
+[D-FBK-007]: fbk-007-how-a-todo-is-worked-travels-with-the-todo.md
+[D-FBK-008]: fbk-008-one-todo-is-one-file-and-the-queue-is-in-the-names.md
+[D-FBK-009]: fbk-009-a-todo-nobody-can-start-waits-where-it-says-why.md
+[D-FBK-010]: fbk-010-main-carries-the-state-and-the-branch-carries-the-work.md
+[D-FBK-001]: fbk-001-the-backlog-is-read-out-rather-than-enforced.md
+[D-FBK-002]: fbk-002-the-order-of-the-work-is-declared-not-inferred.md
+[D-FBK-004]: fbk-004-the-model-is-asked-because-nothing-else-can-say-it.md
 
 ### Revoked, and kept as the record
 
-- [`D-FBK-5`][D-FBK-5] — The queue is worked before the pile is sighted · 2026-08-01
-- [`D-FBK-3`][D-FBK-3] — A session is handed one todo, not the file · 2026-07-31 → D-FBK-2
+- [`D-FBK-005`][D-FBK-005] — The queue is worked before the pile is sighted · 2026-08-01
+- [`D-FBK-003`][D-FBK-003] — A session is handed one todo, not the file · 2026-07-31 → D-FBK-002
 
-[D-FBK-5]: fbk-5-the-queue-is-worked-before-the-pile-is-sighted.md
-[D-FBK-3]: fbk-3-a-session-is-handed-one-todo-not-the-file.md
+[D-FBK-005]: fbk-005-the-queue-is-worked-before-the-pile-is-sighted.md
+[D-FBK-003]: fbk-003-a-session-is-handed-one-todo-not-the-file.md

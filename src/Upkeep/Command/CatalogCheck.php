@@ -36,7 +36,7 @@ final class CatalogCheck
     /**
      * What the hints about typo3/testing-framework rest on, per file of the
      * package, so that a release changing one of them fails here rather than
-     * ageing quietly into a wrong answer (D-KNW-2).
+     * ageing quietly into a wrong answer (D-KNW-002).
      *
      * Existence carries the statement that the four boilerplate files are there
      * to be copied; each needle carries one sentence of `project-extension-tests`
@@ -96,7 +96,7 @@ final class CatalogCheck
      * Whether the major the translation domain answer is withheld below is still
      * the major the checkouts say the API arrived in.
      *
-     * This is D-DIS-4's first "Wrong if" and the reason the number is one number
+     * This is D-DIS-004's first "Wrong if" and the reason the number is one number
      * in one place: the domain API backported into a 13.x patch makes the
      * constant in `Tools` wrong. What makes it wrong is a release rather than an
      * edit here, so no test in this repository can see it — `knowledge/` holds
@@ -148,7 +148,7 @@ final class CatalogCheck
         }
 
         $output->writeln(sprintf(
-            'TranslationDomainLookup::SINCE says v%d and the checkouts say %s — D-DIS-4 named this the release that makes it wrong.',
+            'TranslationDomainLookup::SINCE says v%d and the checkouts say %s — D-DIS-004 named this the release that makes it wrong.',
             TranslationDomainLookup::SINCE,
             $found === null ? 'every covered version resolves them' : 'v' . $found,
         ));
@@ -160,7 +160,7 @@ final class CatalogCheck
      * Whether the testing-framework release each branch pins still says what the
      * hints about it say.
      *
-     * D-KNW-2 verified those statements against tags, because the package has a
+     * D-KNW-002 verified those statements against tags, because the package has a
      * release cycle of its own and no checkout here contains it — and named its
      * own gap in doing so: a release that changes one of them inside a line would
      * be noticed by nobody, since this command re-read the core and nothing else.
@@ -205,12 +205,12 @@ final class CatalogCheck
         $output->writeln('');
 
         if ($problems === 0) {
-            $output->writeln('Every statement about the harness still reads as D-KNW-2 read it.');
+            $output->writeln('Every statement about the harness still reads as D-KNW-002 read it.');
 
             return 0;
         }
 
-        $output->writeln(sprintf('%d statement(s) about the harness no longer read as D-KNW-2 read them.', $problems));
+        $output->writeln(sprintf('%d statement(s) about the harness no longer read as D-KNW-002 read them.', $problems));
 
         return 1;
     }
@@ -261,7 +261,7 @@ final class CatalogCheck
     /**
      * Which Fluid engine each covered branch pins itself to.
      *
-     * D-VER-3 gave Fluid no version axis of its own: the core pins the engine in
+     * D-VER-003 gave Fluid no version axis of its own: the core pins the engine in
      * its own composer.json, so `since` / `until` on the TYPO3 major already says
      * which engine a Fluid statement was verified against. That holds only while
      * a branch admits exactly one engine major — the day one loosens its
@@ -314,7 +314,7 @@ final class CatalogCheck
             return 0;
         }
 
-        $output->writeln(sprintf('%d branch(es) no longer pin one Fluid engine major — D-VER-3 says the engine needs a field of its own.', $problems));
+        $output->writeln(sprintf('%d branch(es) no longer pin one Fluid engine major — D-VER-003 says the engine needs a field of its own.', $problems));
 
         return 1;
     }
@@ -469,7 +469,7 @@ final class CatalogCheck
      *
      * The binding above is derived from names, so a demo rewritten around the
      * same classes reads as unchanged and the snapshot ages quietly into a wrong
-     * answer — D-CAT-1 named that as what would show it wrong. A digest per
+     * answer — D-CAT-001 named that as what would show it wrong. A digest per
      * entry per checkout is what notices it: the entry records what each covered
      * version's demo said when somebody last read it, and a rewrite fails here.
      *
@@ -659,7 +659,7 @@ final class CatalogCheck
      * An index of paths is the kind of thing a core release invalidates silently: a
      * directory that moved leaves an answer pointing at nothing, and the caller
      * reads the miss as "I looked in the wrong place". Existence of the directory
-     * was the whole test until it caught nothing on the entry D-CAT-2 named itself:
+     * was the whole test until it caught nothing on the entry D-CAT-002 named itself:
      * `Build/tests/playwright/e2e` is there on 13.4 while the layout the entry
      * promises — one directory per module, the accessibility scan among them —
      * arrived in 14.3. So an entry whose sentence promises a shape names the files

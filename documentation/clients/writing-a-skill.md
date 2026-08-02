@@ -99,7 +99,7 @@ matter and the name every other skill calls it by are one string. The
 `description` is the only part of a skill read before it is chosen, so it is
 written in the words a user brings — the request, the symptom, the files being
 touched — and never in this server's tool names.
-[`D-AUD-3`](../../decisions/audience/aud-3-the-instructions-carry-the-entry-point.md)
+[`D-AUD-003`](../../decisions/audience/aud-003-the-instructions-carry-the-entry-point.md)
 is what a wrong one costs: a review prompt whose every criterion the conformance
 skill's body would have met did not activate it, and all thirty-five calls of
 that session went through Bash.
@@ -135,7 +135,7 @@ needs registries, and registries are tools.
 where its work runs into another skill's, the crossing is explicit: name the
 verified stopping point, stop before editing the other owner's files, activate
 that owner, carry across only the scope and verified behaviour it needs
-([`R-SKL-3`](../../requirements/task-skills/skl-3-crossing-into-another-skills-work-is-an-explicit-transition.md)).
+([`R-SKL-003`](../../requirements/task-skills/skl-003-crossing-into-another-skills-work-is-an-explicit-transition.md)).
 
 ## Publishing it
 
@@ -165,7 +165,7 @@ because the author who skips them is usually the one who has not read this page.
 And that a session **does** what a skill says. Every rule in the table is read
 off the file, which makes it a proxy: the wording is present and a
 reorganisation can leave it present while the behaviour goes.
-[`D-EVI-2`](../../decisions/evidence/evi-2-a-skill-crossing-is-read-rather-than-run.md)
+[`D-EVI-002`](../../decisions/evidence/evi-002-a-skill-crossing-is-read-rather-than-run.md)
 accepts that proxy for the skill crossing and says why no forward run will
 replace it. Everywhere else, what measures the behaviour is a case in
 [scenarios/contracts/](../../scenarios/contracts/readme.md) or an open review in

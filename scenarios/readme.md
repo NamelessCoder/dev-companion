@@ -33,7 +33,7 @@ prompts is a file where nobody can tell which criteria were judged.
 
 The same person is routinely two of them on the same day, which is why the
 audience is a property of the task rather than of the directory
-([`R-AUD-2`](../requirements/audience/aud-2-the-audience-is-a-property-of-the-task.md)).
+([`R-AUD-002`](../requirements/audience/aud-002-the-audience-is-a-property-of-the-task.md)).
 
 ## Environments
 

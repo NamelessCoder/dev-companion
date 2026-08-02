@@ -1,7 +1,7 @@
 # SITE-04 — The frontend theme
 
 **Environment:** `E-SITE` with a site package using Bootstrap ·
-**Contract:** `held` — `R-SCO-4`
+**Contract:** `held` — `R-SCO-004`
 **Held by:**
 `HintsTest::aFrontendThemeIsNotAnsweredWithTheBackendsOwnCssConventions`,
 `HintsTest::stylingABackendModuleStillReachesTheBackendCssHints`,
@@ -29,5 +29,5 @@
 - Backend token names, backend component class naming, and "the backend has
   moved off Bootstrap" handed over as instructions for a Bootstrap theme — four
   confidently inverted hints, which is the note this scenario exists for
-  (`R-SCO-4`).
+  (`R-SCO-004`).
 - A `.scss` path being enough to trigger core CSS conventions.

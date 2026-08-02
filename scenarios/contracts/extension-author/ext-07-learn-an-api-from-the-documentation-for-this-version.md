@@ -1,6 +1,6 @@
 # EXT-07 — Learn an API from the documentation for this version
 
-**Environment:** `E-EXT` on TYPO3 13.4 · **Contract:** `held` — `R-DOC-1`
+**Environment:** `E-EXT` on TYPO3 13.4 · **Contract:** `held` — `R-DOC-001`
 **Held by:**
 `DocumentationTest::itSearchesTheRequestedVersionAndKeepsProvenanceOnEveryResult`,
 `DocumentationTest::itRefusesAPageOutsideTheSelectedManualVersion`,

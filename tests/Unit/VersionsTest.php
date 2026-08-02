@@ -52,7 +52,7 @@ final class VersionsTest extends TestCase
     #[Test]
     public function theOneVersionFactTheCodeCarriesIsOneOfTheDeclaredVersions(): void
     {
-        // D-DIS-4 puts the version translation domains arrived in into the code
+        // D-DIS-004 puts the version translation domains arrived in into the code
         // rather than the knowledge base, because the answer below it is
         // withheld rather than qualified — and it is one number in one place so
         // that a backport has one thing to make wrong. That number and
@@ -362,7 +362,7 @@ final class VersionsTest extends TestCase
     public function aPinToOneMajorIsTellableFromAConstraintThatSpansTwo(): void
     {
         // What `bin/cli catalog:check` asks of the Fluid constraint in each core
-        // checkout, and the reason D-VER-3 needs no engine axis: the pin is what
+        // checkout, and the reason D-VER-003 needs no engine axis: the pin is what
         // makes the TYPO3 major carry the engine, so a constraint that stops
         // pinning has to be tellable from one that never did. Asked over engine
         // majors rather than covered TYPO3 ones, which is the point of asking per
@@ -387,7 +387,7 @@ final class VersionsTest extends TestCase
      * The range spellings three extension checkouts actually declare a TYPO3
      * major with, and the majors each one serves.
      *
-     * `D-VER-4` reads a supported range off the package's own declaration, and
+     * `D-VER-004` reads a supported range off the package's own declaration, and
      * it is wrong if a spelling in the wild answers false for a major it does
      * serve — a failure that surfaces as a statement missing from an answer
      * rather than as an error, so nothing but a table like this one would catch

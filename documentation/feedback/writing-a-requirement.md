@@ -14,11 +14,11 @@ only what must be true — the assumptions and the evidence behind the change ar
 
 ```markdown
 ---
-id: R-DIS-9
+id: R-DIS-009
 status: held
 ---
 
-# R-DIS-9 — A negative is never remembered
+# R-DIS-009 — A negative is never remembered
 
 **Nothing that says "there is no installation" is remembered.**
 
@@ -74,9 +74,9 @@ A requirement may name the decisions it stands on in its front matter:
 
 ```markdown
 ---
-id: R-FBK-7
+id: R-FBK-007
 status: held
-restsOn: [D-FBK-5]
+restsOn: [D-FBK-005]
 ---
 ```
 

@@ -1,7 +1,7 @@
 # EXT-02 — A new extension from nothing
 
 **Environment:** `E-SITE`, in a project where the new extension will live
-under `packages/` · **Contract:** `held` — `R-SCO-1`, `R-SCO-2`
+under `packages/` · **Contract:** `held` — `R-SCO-001`, `R-SCO-002`
 **Held by:** `ScopeTest::workOnAProjectExtensionIsRecognizedAsOutsideTheCore`,
 `CatalogTest::aDomainIsDerivedForAFileThatDoesNotExistYet`,
 `IconLookupTest::everyAnswerSaysTheIdentifiersAreTheBackendRegistrys`
@@ -32,6 +32,6 @@ under `packages/` · **Contract:** `held` — `R-SCO-1`, `R-SCO-2`
 **How it fails**
 
 - The task recognised as core work because it is about TCA and Fluid, and
-  answered with core paths (`R-SCO-1`).
+  answered with core paths (`R-SCO-001`).
 - The extension's own not-yet-installed state confusing the installation-backed
   lookups into reporting "nothing registered".

@@ -38,7 +38,7 @@ walked it there. The extension scanner was never reached at all, on a checkout
 that has one available. That failure was filed on the review side and answered
 there: the sweep is step 5 of `skills/base.md` since 2026-07-31, which is the
 step this skill starts from rather than restates
-([`R-SKL-5`](../requirements/task-skills/skl-5-the-order-a-task-starts-in-is-written-once.md)).
+([`R-SKL-005`](../../requirements/task-skills/skl-005-the-order-a-task-starts-in-is-written-once.md)).
 This note keeps the upgrade side, where the same step decides whether "go through
 the extension and find what breaks" has an answer or a guess.
 

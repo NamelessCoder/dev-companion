@@ -25,7 +25,7 @@ stops calling such a task Fluid and TypoScript work is `not guarded`
 - The element's registration and its backend form are what the answer is about.
 - The sitepackage layout is not returned. It is the longest hint in the corpus
   and is written in the words of the backend the package is administered from,
-  so it reads as an answer to any task naming a content element (`D-KNW-1`).
+  so it reads as an answer to any task naming a content element (`D-KNW-001`).
 - A task that does name the other half — building the element and its frontend
   output — still gets it, which is `SITE-05`.
 

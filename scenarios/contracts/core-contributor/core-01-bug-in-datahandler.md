@@ -37,5 +37,5 @@
 
 - A generic "run the tests" without a runnable command.
 - A commit message whose own check warns about a trailer the draft contains
-  (`R-GUI-1`).
+  (`R-GUI-001`).
 - Claims about which test covers the file, stated rather than looked up.

@@ -6,7 +6,7 @@ workflow exists since 2026-07-31 and owns the order this case asks for
 `PackageSourcesTest::theChangelogOfTheInstalledCoreIsSearchable`,
 `SkillTest::anUpgradeIsOrderedWorkAndOwnsOnlyTheCrossing`,
 `SkillTest::theDeprecationSweepRunsFromTheExtensionsSurfaceAndIsReportedWhenItFindsNothing`;
-that a session works in that order is `not guarded`, and by `D-EVI-2`'s
+that a session works in that order is `not guarded`, and by `D-EVI-002`'s
 reasoning no forward run will hold it — the wording is the proxy
 
 > Our extension supports TYPO3 12 and 13. The next major is out and I want to add
@@ -35,8 +35,8 @@ reasoning no forward run will hold it — the wording is the proxy
 **How it fails**
 
 - `Build/Scripts/runTests.sh` offered to a repository that has no `Build/`
-  (`R-SCO-2`).
+  (`R-SCO-002`).
 - A core patch checklist — Gerrit, Forge, `Releases:` — handed to an extension
-  release (`R-AUD-1`).
+  release (`R-AUD-001`).
 - A list of "what changed in the new major" invented from memory, presented as
   fact.

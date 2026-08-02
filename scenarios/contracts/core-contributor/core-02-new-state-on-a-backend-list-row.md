@@ -1,6 +1,6 @@
 # CORE-02 — A new state on a backend list row
 
-**Environment:** `E-CORE` · **Contract:** `held` — `R-ANS-3` held
+**Environment:** `E-CORE` · **Contract:** `held` — `R-ANS-003` held
 **Held by:**
 `CatalogTest::aStatedVersionSaysWhatItDidToTheAnswerBesideTheSnapshotItWasReadFrom`,
 `IconLookupTest::aMissingIdentifierHasNoMatchesEvenWhenRelatedIconsExist`,
@@ -37,4 +37,4 @@
 - A plausible but unregistered icon identifier.
 - A new label key for a wording that already exists three times.
 - Markup from a newer core presented without a word about which revision it is
-  from (`R-ANS-3`).
+  from (`R-ANS-003`).

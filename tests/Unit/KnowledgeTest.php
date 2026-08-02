@@ -160,7 +160,7 @@ final class KnowledgeTest extends TestCase
 
     /**
      * `binding`, `provenance` and `audience` were three fields asking one
-     * question, and D-KNW-3 kept the first two apart on one condition: no value
+     * question, and D-KNW-003 kept the first two apart on one condition: no value
      * reads naturally on both. `installation` is what held them apart, and it
      * was never an obligation — it says where an answer is read from, which is
      * what `source` already says.

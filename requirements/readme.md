@@ -26,6 +26,12 @@ group is not a filing preference: it is what the requirement is about, and the
 prefix carries it, so a file's id decides its path and two entries cannot
 quietly share a number.
 
+The number is three digits wide, in the file name and in the id alike, because
+that is what lists a group in the order it was written: unpadded, `dis-10` sorts
+between `dis-1` and `dis-2` in every directory listing and in anything that
+compares the ids as text. A decision is numbered the same way, so one habit
+covers both. `bin/cli requirements:check` fails on any other width.
+
 | Group                                     | What it is about                                    |
 | ----------------------------------------- | --------------------------------------------------- |
 | [audience/](audience/readme.md)           | Who the answer has to be right for                  |

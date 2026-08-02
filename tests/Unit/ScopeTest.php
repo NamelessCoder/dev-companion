@@ -234,7 +234,7 @@ final class ScopeTest extends TestCase
 
     /**
      * `typo3/sysext/` in the touched paths, and nothing else — the one signal
-     * `D-AUD-1` names as the thing that would make the combining unnecessary.
+     * `D-AUD-001` names as the thing that would make the combining unnecessary.
      *
      * Two-valued, because that is the whole of the claim: a path carries the
      * marker or it does not. There is no third answer to be had from it, which
@@ -341,7 +341,7 @@ final class ScopeTest extends TestCase
     }
 
     /**
-     * The half of `D-AUD-1`'s **Wrong if** that holds: on everything that has
+     * The half of `D-AUD-001`'s **Wrong if** that holds: on everything that has
      * actually been recorded, the single signal answers what the combination
      * answers.
      *
@@ -428,7 +428,7 @@ final class ScopeTest extends TestCase
         self::assertSame(
             Scope::Extension,
             self::theSysextSignalAlone($path),
-            'the single signal has caught up with the combination here, and D-AUD-1 is worth re-measuring',
+            'the single signal has caught up with the combination here, and D-AUD-001 is worth re-measuring',
         );
     }
 
@@ -524,7 +524,7 @@ final class ScopeTest extends TestCase
 
     /**
      * The two audiences it keeps arriving at the expense of, in the words they
-     * are written in. R-AUD-1 names three and the core contributor is the one
+     * are written in. R-AUD-001 names three and the core contributor is the one
      * nobody ever excludes, so the third is not here.
      *
      * @var array<int, string>
@@ -536,7 +536,7 @@ final class ScopeTest extends TestCase
     /**
      * How it reads when it names nobody: the server is confined to the core and
      * who that leaves out is left to the reader. Two of the three sentences
-     * D-SCO-6 found were written this way, which is why the audience words
+     * D-SCO-006 found were written this way, which is why the audience words
      * alone would not have caught them.
      *
      * @var array<int, string>
@@ -565,7 +565,7 @@ final class ScopeTest extends TestCase
      * That list is where the claim was written down last, not where it lived:
      * the same sentence stood in a knowledge document and in the notice every
      * tool opens with, and each was corrected on its own after somebody read
-     * it. D-SCO-6 named the three no test reads — a tool description, the
+     * it. D-SCO-006 named the three no test reads — a tool description, the
      * readme, a hint — and this is that test, so the next occurrence costs a
      * failing suite rather than a session's confidence.
      *
@@ -925,7 +925,7 @@ final class ScopeTest extends TestCase
     }
 
     /**
-     * D-SCO-4's named loss, run: the contributor is inside the core, on a
+     * D-SCO-004's named loss, run: the contributor is inside the core, on a
      * sysext path, and the two backend UI sections go anyway. That is the
      * decision working rather than failing — the corpus behind those two is the
      * backend interface's Sass and its --typo3-* tokens, which fluid_styled_content

@@ -53,7 +53,7 @@ final class ExcludedToolsTest extends TestCase
             'changeType' => 'bugfix',
         ]);
 
-        // The failure D-AUD-2 recorded from E-SITE: the answer is core work,
+        // The failure D-AUD-002 recorded from E-SITE: the answer is core work,
         // names the targeted runTests.sh invocation, and the client could not
         // call the tool it was sent to.
         self::assertStringContainsString('typo3_test_run_guide', $guide->text);

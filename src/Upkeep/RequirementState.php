@@ -15,7 +15,7 @@ namespace Typo3CmsMcp\Upkeep;
  *
  * None of the three is an error. `bin/cli backlog:list` reads them out and
  * fails on none of them, because whether an entry is worth working off is a
- * judgement — see `D-FBK-1`.
+ * judgement — see `D-FBK-001`.
  */
 enum RequirementState: string
 {

@@ -13,12 +13,12 @@ assumption, the evidence available at the time, and what would show it wrong.
 
 ```markdown
 ---
-id: D-DIS-4
+id: D-DIS-004
 date: 2026-07-29
 status: open
 ---
 
-# D-DIS-4 — The version comes from the core package, not from the console
+# D-DIS-004 — The version comes from the core package, not from the console
 
 **The installed version is read from the core package's `Typo3Version` class
 rather than asked of `bin/typo3 --version`.**
@@ -72,7 +72,7 @@ rather than bullets, because each is an account of one reading.
 
 `status` is one of `open`, `confirmed` and `revoked` — the `DecisionStatus`
 enum — and it names the **last** dated section rather than the only one. A
-decision has a history: `D-KNW-3` was confirmed by a run on the morning of
+decision has a history: `D-KNW-003` was confirmed by a run on the morning of
 2026-08-02 and revoked by the evidence that arrived the same day, and both are
 in the file. What a reader relies on is the latest.
 
@@ -86,7 +86,7 @@ listing shows it, so nobody has to open a dead entry to find the live one.
 ## What rests on a decision
 
 A requirement says which decisions it stands on, in its own front matter —
-`restsOn: [D-FBK-5]`. That is the one crossing neither directory can see on its
+`restsOn: [D-FBK-005]`. That is the one crossing neither directory can see on its
 own: a decision is revoked, the requirement written on top of it keeps its
 `held` status and its passing test, and the reasoning under it is gone.
 `bin/cli backlog:list` reads that out; nothing fails on it, because whether the

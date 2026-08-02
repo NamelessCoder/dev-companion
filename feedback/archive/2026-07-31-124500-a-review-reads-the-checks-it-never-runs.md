@@ -48,7 +48,7 @@ if it does, which of the returned commands qualify — the answer is a property 
 the command, not of the task, and nothing in `typo3_project_scope` says today
 which of the ten it returns write anything. The other half of this note is
 worked off: `skills/base.md` carries the distinction, held by
-`SkillTest::theBaseFixesTheOrderEveryTaskStartsIn` and `R-SKL-5`.
+`SkillTest::theBaseFixesTheOrderEveryTaskStartsIn` and `R-SKL-005`.
 
 Ungathered alongside it, and the same question one layer down: the console half
 of this server, which no extension review has reached for.

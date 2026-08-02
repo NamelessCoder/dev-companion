@@ -12,7 +12,7 @@ namespace Typo3CmsMcp\Server;
  * server without its core contribution surface, on the grounds that a
  * repository with no Build/Scripts/, no Gerrit remote and no Forge issue cannot
  * follow any of it. That reasoning holds for the repository and not for the
- * task, which is R-AUD-2, and the task is what an answer is shaped for — so a
+ * task, which is R-AUD-002, and the task is what an answer is shaped for — so a
  * core-shaped question asked from a site installation was answered as core work
  * and then routed to a tool that had been taken away.
  *

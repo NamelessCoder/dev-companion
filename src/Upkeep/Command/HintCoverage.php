@@ -91,7 +91,7 @@ final class HintCoverage
         $output->writeln(sprintf('Hints no scenario prompt reaches (%d of %d)', count($never), count($hints)));
         $output->writeln($never === [] ? '  none' : '  ' . implode("\n  ", $never));
 
-        // What D-KNW-1's second half asks for. General is the one category no
+        // What D-KNW-001's second half asks for. General is the one category no
         // query has to earn, so a hint filed there is reachable from every task
         // there is — and the entries that go in are the ones that cross the
         // domains, which is also what makes them long. The share is the number
@@ -122,7 +122,7 @@ final class HintCoverage
         $output->writeln(sprintf(
             "What the always-selected category supplies, over the scenario prompts\n"
             . "  General holds %d of %d hints and supplies %d of %d matched (%.0f%%)\n"
-            . '  %d of %d answers are made of General alone (every answer is what D-KNW-1 called wrong)',
+            . '  %d of %d answers are made of General alone (every answer is what D-KNW-001 called wrong)',
             $general,
             count($hints),
             $fromGeneral,
@@ -132,7 +132,7 @@ final class HintCoverage
             $answers,
         ));
 
-        // The tripwire D-ANS-2 asks for. The matcher discounts a term found in a
+        // The tripwire D-ANS-002 asks for. The matcher discounts a term found in a
         // body longer than the corpus's ordinary one, and the reference is what
         // "ordinary" was measured at. The mean has since grown past it, which is
         // not itself the failure — the reference is a floor now rather than the

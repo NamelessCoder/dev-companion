@@ -1,7 +1,7 @@
 # EXT-05 — Tests for the extension
 
-**Environment:** `E-EXT` · **Contract:** `held` — `R-KNW-15`,
-`R-SKL-2`
+**Environment:** `E-EXT` · **Contract:** `held` — `R-KNW-015`,
+`R-SKL-002`
 **Held by:**
 `SkillTest::extensionTestingVerifiesItsHarnessBeforeAddingCoverage`,
 `SkillTest::extensionTestingLoadsOnlyTheSelectedLayerGuide`,

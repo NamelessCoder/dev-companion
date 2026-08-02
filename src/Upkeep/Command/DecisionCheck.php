@@ -48,6 +48,9 @@ final class DecisionCheck
             if ($id !== $expected) {
                 $problems[] = $file . ' is named after ' . $expected . ' and says it is ' . $id;
             }
+            if (preg_match('/^\d{3}[a-z]?$/', $named[2] ?? '') !== 1) {
+                $problems[] = $file . ' is numbered ' . ($named[2] ?? '(nothing)') . ' and a number is three digits, which is what lists the files in order';
+            }
             if ($decision['heading'] !== $id) {
                 $problems[] = $id . ' has the heading of ' . $decision['heading'];
             }

@@ -38,7 +38,7 @@ not where the answers come from.
 
 The same command keeps `typo3/testing-framework` there, because the harness a
 project extension tests in releases on its own cycle and the core repository
-does not contain it (`D-KNW-2`). Which release line belongs to which major is
+does not contain it (`D-KNW-002`). Which release line belongs to which major is
 not recorded anywhere: each covered branch pins it in its own `require-dev`, and
 one worktree per pinned line is checked out at that line's newest tag. So a
 statement about the harness is verified in `.checkouts/testing-framework/<line>`

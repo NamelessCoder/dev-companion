@@ -18,7 +18,7 @@ instead of running them, and said nowhere in their answers that they had — is
 worked off: `skills/base.md` names the three things a finding can rest on and
 requires the finding to say which, and `typo3_project_scope` now reports per
 command whether running it hands the code back as it was, so the checks are run
-and the rest is not (`R-SKL-5`, `R-PRJ-7`, `D-EVI-3`).
+and the rest is not (`R-SKL-005`, `R-PRJ-007`, `D-EVI-003`).
 
 What is left is the evidence those same runs did not gather. DDEV was up and
 reachable in the extension checkout every time, and in three sessions no

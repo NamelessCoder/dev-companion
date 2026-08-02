@@ -1,7 +1,7 @@
 # META-03 — Two audiences in one directory
 
 **Environment:** `E-SITE` with the extension under `packages/` ·
-**Contract:** `held` — `R-SCO-1` and `R-AUD-2` held
+**Contract:** `held` — `R-SCO-001` and `R-AUD-002` held
 **Held by:** `ScopeTest::twoPathsOfDifferentAudienceInOneCallStayApart`,
 `ScopeTest::aPathInsideAnExtensionIsRecognisedByItsShape`,
 `ScopeTest::anAreaTheInstallationKnowsAsSomebodysExtensionIsOutsideTheCore`,
@@ -23,13 +23,13 @@
 - The core path gets the core conventions, the core checks and the submission
   route; the extension path gets the conventions that transfer and nothing else.
 - Where the audience genuinely cannot be decided, the answer says it is uncertain
-  rather than picking one silently (`R-AUD-2`).
+  rather than picking one silently (`R-AUD-002`).
 
 **How it fails**
 
 - One verdict for the whole session, applied to both paths.
 - The distinction only appearing after the user spells out "this is not core"
-  (`R-SCO-1`).
+  (`R-SCO-001`).
 
 `typo3_task_guide` is still asked about one `area` at a time, so this prompt
 reaches it as one question and gets one answer. The two tools that take a

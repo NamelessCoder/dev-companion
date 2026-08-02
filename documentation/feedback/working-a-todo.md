@@ -180,6 +180,6 @@ message, and the sentence that turns out false is the confident one in both. A
 choice made silently is shaped exactly like one that had nothing to choose.
 What can be done is done: the page exists, `bin/cli todo:next` names it with every
 todo it hands over, and
-[`R-FBK-9`](../../requirements/feedback/fbk-9-a-todo-is-worked-from-what-was-read.md)
+[`R-FBK-009`](../../requirements/feedback/fbk-009-a-todo-is-worked-from-what-was-read.md)
 carries it with the reason. Whether the reading happened is the session's, and
 the session is the only one who will ever know.

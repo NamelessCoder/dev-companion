@@ -1,6 +1,6 @@
 # Name the tooling axis: the testing answer is scattered over four shapes
 
-**Serves:** R-SCO-6, decisions/
+**Serves:** R-SCO-006, decisions/
 
 One row of the knowledge base — how a change is tested — is stored four ways:
 the core harness in `knowledge/test-suite-hints.json`, a file of its own that is
@@ -11,7 +11,7 @@ in `general.json`; and the scripts themselves as
 `knowledge/documents/typo3-core-scripts.md`. Three tools reach into that, and
 `extension-static-analysis` is the same shape again for PHPStan.
 
-The reading behind this is `D-AUD-4`: `typo3_test_run_guide` was never a
+The reading behind this is `D-AUD-004`: `typo3_test_run_guide` was never a
 core-only tool, it was the core column of the testing row, and the profile
 deleted the tool because there was no way to say "this row answers differently
 here". Where a harness ships as a Composer package, the tooling row falls out of

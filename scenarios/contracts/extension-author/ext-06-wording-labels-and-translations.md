@@ -32,6 +32,6 @@
 **How it fails**
 
 - A multi-word query coming back empty and being read as "no such label"
-  (`R-ANS-4`).
+  (`R-ANS-004`).
 - A console that could not be reached reported as an installation with no labels
-  (`R-ANS-1`, `R-ANS-5`).
+  (`R-ANS-001`, `R-ANS-005`).

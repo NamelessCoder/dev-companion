@@ -1,9 +1,9 @@
 # Reach the DDEV console by a path the working directory cannot move
 
-**Serves:** decisions/, R-DIS-3
+**Serves:** decisions/, R-DIS-003
 
 `Typo3Cli::consoleInDdev()` returns `['ddev', 'exec', '--', $binary]` with
-`$binary` relative to the installation root, and `D-DIS-2` recorded on
+`$binary` relative to the installation root, and `D-DIS-002` recorded on
 2026-08-01 that this is exit 127 in a project whose `working_dir.web` is not the
 project root. Both `/var/www/html/<binary>` and `$DDEV_APPROOT/<binary>` were
 measured to answer in either working directory, and the second guesses nothing —

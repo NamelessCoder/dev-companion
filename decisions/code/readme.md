@@ -6,10 +6,10 @@ allowed to live.
 
 See [the decisions readme](../readme.md) for how an entry is written and when it
 earns one.
-- [`D-COD-3`][D-COD-3] — A directory is read through symfony/finder · 2026-08-02
-- [`D-COD-1`][D-COD-1] — One file declares one class · 2026-08-01
-- [`D-COD-2`][D-COD-2] — The upkeep CLI is a Symfony Console application · 2026-08-01
+- [`D-COD-003`][D-COD-003] — A directory is read through symfony/finder · 2026-08-02
+- [`D-COD-001`][D-COD-001] — One file declares one class · 2026-08-01
+- [`D-COD-002`][D-COD-002] — The upkeep CLI is a Symfony Console application · 2026-08-01
 
-[D-COD-3]: cod-3-a-directory-is-read-through-symfony-finder.md
-[D-COD-1]: cod-1-one-file-declares-one-class.md
-[D-COD-2]: cod-2-the-upkeep-cli-is-a-symfony-console-application.md
+[D-COD-003]: cod-003-a-directory-is-read-through-symfony-finder.md
+[D-COD-001]: cod-001-one-file-declares-one-class.md
+[D-COD-002]: cod-002-the-upkeep-cli-is-a-symfony-console-application.md

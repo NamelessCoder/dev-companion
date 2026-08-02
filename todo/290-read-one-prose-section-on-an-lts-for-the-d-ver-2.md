@@ -1,4 +1,4 @@
-# Read one prose section on an LTS for the `D-VER-2` failure
+# Read one prose section on an LTS for the `D-VER-002` failure
 
 **Serves:** decisions/
 

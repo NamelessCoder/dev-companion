@@ -274,7 +274,7 @@ bin/cli knowledge:format <path>   # only that part of it
 - A directory is read with `symfony/finder`, whatever the depth. `glob()`,
   `scandir()` and `RecursiveDirectoryIterator` were two idioms for one
   question, and the deep one cost a dozen lines each time — held by
-  `StructureTest::everyDirectoryIsReadThroughTheFinder` and stated in `D-COD-3`.
+  `StructureTest::everyDirectoryIsReadThroughTheFinder` and stated in `D-COD-003`.
   A directory that may be absent is guarded with `is_dir()`, because Finder
   throws where `glob()` returned nothing.
 - Every entrypoint is driven by a test that goes through it. `tests/Unit/`
@@ -409,7 +409,7 @@ enum, whose cases are `core`, `project`, `extension`, `any` and `uncertain`. A
 statement in `knowledge/` declares one, a path is placed in one, and nothing
 else says the same thing under another name — `binding`, `provenance`,
 `audience` and an `outsideCore` boolean were four spellings of it until
-`D-KNW-5`. Audience stays the word for the idea, in `requirements/audience/`
+`D-KNW-005`. Audience stays the word for the idea, in `requirements/audience/`
 and in prose; `scope` is the word anything machine-readable uses.
 
 - **Everything below `knowledge/` is written in English**, and so is every query

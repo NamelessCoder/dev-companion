@@ -12,7 +12,7 @@ namespace Typo3CmsMcp\Knowledge\Catalog;
  * callers read it: the component answer, where an installed styleguide replaces
  * the snapshot markup, and `bin/cli catalog:check`, which digests what each
  * checkout carries so a rewrite that leaves every class name in place is noticed
- * (D-CAT-1).
+ * (D-CAT-001).
  */
 final class DemoMarkup
 {
@@ -29,7 +29,7 @@ final class DemoMarkup
      * carrying `card` like every other example — and taking the first match
      * handed that over as the installed usage contract. A selector of
      * `card-title` names the sub-component the component's own examples spell
-     * and the settings form does not (D-CAT-3).
+     * and the settings form does not (D-CAT-003).
      *
      * Selecting is narrowing, never widening: where no example carries the
      * selector, none is returned rather than the first match standing in. The

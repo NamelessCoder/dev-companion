@@ -17,6 +17,12 @@ One decision is one file, named after its id, in the group its id names. The
 group is what the decision is about, and the prefix carries it, so a file's id
 decides its path and two entries cannot quietly share a number.
 
+The number is three digits wide, in the file name and in the id alike, because
+that is what lists a group in the order it was written: unpadded, `dis-10` sorts
+between `dis-1` and `dis-2` in every directory listing and in anything that
+compares the ids as text. A requirement is numbered the same way, so one habit
+covers both. `bin/cli decisions:check` fails on any other width.
+
 | Group                                     | What it is about                                        |
 | ----------------------------------------- | ------------------------------------------------------- |
 | [audience/](audience/readme.md)           | Who the server answers for, and how it says so          |
@@ -50,122 +56,124 @@ What is not listed as revoked still holds. `confirmed` marks the ones somebody
 went back to and found standing; the rest are open, which is the ordinary case
 and not a defect.
 
-- [`D-AUD-4`][D-AUD-4] — The tool list is not where the audience is said · 2026-08-02
-- [`D-COD-3`][D-COD-3] — A directory is read through symfony/finder · 2026-08-02
-- [`D-DOC-3`][D-DOC-3] — A decision says what came back, and a requirement says what it rests on · 2026-08-02
-- [`D-DOC-4`][D-DOC-4] — A requirement is written in the same sections as a decision · 2026-08-02
-- [`D-KNW-5`][D-KNW-5] — One `Scope` replaced the four vocabularies · 2026-08-02
-- [`D-COD-1`][D-COD-1] — One file declares one class · 2026-08-01
-- [`D-COD-2`][D-COD-2] — The upkeep CLI is a Symfony Console application · 2026-08-01
-- [`D-DIS-6`][D-DIS-6] — The protocol offers nothing to replace the working directory · 2026-08-01
-- [`D-DOC-1`][D-DOC-1] — A table is written so it reads unrendered · 2026-08-01
-- [`D-DOC-2`][D-DOC-2] — The prose rule is measured, and only the lead fails on it · 2026-08-01
-- [`D-FBK-10`][D-FBK-10] — `main` carries the state and the branch carries the work · 2026-08-01
-- [`D-FBK-6`][D-FBK-6] — A name is cut where the feedback starts to differ · 2026-08-01
-- [`D-FBK-7`][D-FBK-7] — How a todo is worked travels with the todo · 2026-08-01
-- [`D-FBK-8`][D-FBK-8] — One todo is one file, and the queue is in the names · 2026-08-01
-- [`D-FBK-9`][D-FBK-9] — A todo nobody can start waits where it says why · 2026-08-01
-- [`D-SCO-7`][D-SCO-7] — The signals are combined per call, and a call is not a path · 2026-08-01
-- [`D-SKL-1`][D-SKL-1] — The order a task starts in is one file, and the reading comes last in it · 2026-08-01 · confirmed
-- [`D-ANS-4`][D-ANS-4] — The instruction budget is 2048 characters, on one client's evidence · 2026-07-31
-- [`D-AUD-3`][D-AUD-3] — The instructions carry the entry point, because the tool descriptions never arrive · 2026-07-31 · confirmed
-- [`D-DIS-5`][D-DIS-5] — A registry with no console command is read by booting the installation · 2026-07-31 · confirmed
-- [`D-EVI-1`][D-EVI-1] — Forward evidence comes from a review, not from a prompt that knows the answer · 2026-07-31 · confirmed
-- [`D-EVI-2`][D-EVI-2] — A skill crossing is read rather than run · 2026-07-31 · confirmed
-- [`D-EVI-3`][D-EVI-3] — A review runs the checks that cannot change the code · 2026-07-31
-- [`D-FBK-1`][D-FBK-1] — The backlog is read out rather than enforced · 2026-07-31 · confirmed
-- [`D-FBK-2`][D-FBK-2] — The order of the work is declared, not inferred · 2026-07-31 · confirmed
-- [`D-FBK-4`][D-FBK-4] — The model is asked, because nothing else here can say it · 2026-07-31
-- [`D-VER-4`][D-VER-4] — A supported range is a property of the package, not of the checkout · 2026-07-31 · confirmed
-- [`D-ANS-2`][D-ANS-2] — Three numbers now decide what a lookup answers, and they were measured, not reasoned · 2026-07-30 · confirmed
-- [`D-ANS-3`][D-ANS-3] — Retrieval stays lexical and runtime inspection stays narrow · 2026-07-30 · confirmed
-- [`D-CAT-3`][D-CAT-3] — The component index is curated; its contract comes from the installation · 2026-07-30
-- [`D-KNW-4`][D-KNW-4] — Package knowledge needs a producer before it needs discovery · 2026-07-30
-- [`D-VER-3`][D-VER-3] — The Fluid engine gets no version axis of its own, because the core pins it · 2026-07-30 · confirmed
-- [`D-ANS-1`][D-ANS-1] — The unanswered result keeps its shape and gains a reason · 2026-07-29
-- [`D-AUD-1`][D-AUD-1] — Three audiences, and the positioning that has not caught up · 2026-07-29 · confirmed
-- [`D-CAT-1`][D-CAT-1] — A catalog entry is bound whole, and the binding is derived · 2026-07-29
-- [`D-DIS-1`][D-DIS-1] — The root package counts as an installed package · 2026-07-29 · confirmed
-- [`D-DIS-4`][D-DIS-4] — The version comes from the core package, not from the console · 2026-07-29 · confirmed
-- [`D-GUI-1`][D-GUI-1] — A missing release target becomes a placeholder, not `main` · 2026-07-29
-- [`D-GUI-2`][D-GUI-2] — The commit workflow is asked for, not inferred · 2026-07-29
-- [`D-SCO-2`][D-SCO-2] — A core-only intent asks for evidence, not for silence · 2026-07-29
-- [`D-SCO-3`][D-SCO-3] — What is core-only is decided per line, by what it names · 2026-07-29 · confirmed
-- [`D-SCO-5`][D-SCO-5] — The installation is evidence about the task, and the weakest kind · 2026-07-29
-- [`D-SCO-6`][D-SCO-6] — Why "project work is out of scope" kept coming back · 2026-07-29
-- [`D-VER-1`][D-VER-1] — A version range is data on the statement, not a sentence in it · 2026-07-29 · confirmed
-- [`D-VER-2`][D-VER-2] — The prose is not bound; it says which half it is · 2026-07-29
+- [`D-AUD-004`][D-AUD-004] — The tool list is not where the audience is said · 2026-08-02
+- [`D-COD-003`][D-COD-003] — A directory is read through symfony/finder · 2026-08-02
+- [`D-DOC-003`][D-DOC-003] — A decision says what came back, and a requirement says what it rests on · 2026-08-02
+- [`D-DOC-004`][D-DOC-004] — A requirement is written in the same sections as a decision · 2026-08-02
+- [`D-DOC-005`][D-DOC-005] — A number is three digits so a group lists in order · 2026-08-02
+- [`D-KNW-005`][D-KNW-005] — One `Scope` replaced the four vocabularies · 2026-08-02
+- [`D-COD-001`][D-COD-001] — One file declares one class · 2026-08-01
+- [`D-COD-002`][D-COD-002] — The upkeep CLI is a Symfony Console application · 2026-08-01
+- [`D-DIS-006`][D-DIS-006] — The protocol offers nothing to replace the working directory · 2026-08-01
+- [`D-DOC-001`][D-DOC-001] — A table is written so it reads unrendered · 2026-08-01
+- [`D-DOC-002`][D-DOC-002] — The prose rule is measured, and only the lead fails on it · 2026-08-01
+- [`D-FBK-006`][D-FBK-006] — A name is cut where the feedback starts to differ · 2026-08-01
+- [`D-FBK-007`][D-FBK-007] — How a todo is worked travels with the todo · 2026-08-01
+- [`D-FBK-008`][D-FBK-008] — One todo is one file, and the queue is in the names · 2026-08-01
+- [`D-FBK-009`][D-FBK-009] — A todo nobody can start waits where it says why · 2026-08-01
+- [`D-FBK-010`][D-FBK-010] — `main` carries the state and the branch carries the work · 2026-08-01
+- [`D-SCO-007`][D-SCO-007] — The signals are combined per call, and a call is not a path · 2026-08-01
+- [`D-SKL-001`][D-SKL-001] — The order a task starts in is one file, and the reading comes last in it · 2026-08-01 · confirmed
+- [`D-ANS-004`][D-ANS-004] — The instruction budget is 2048 characters, on one client's evidence · 2026-07-31
+- [`D-AUD-003`][D-AUD-003] — The instructions carry the entry point, because the tool descriptions never arrive · 2026-07-31 · confirmed
+- [`D-DIS-005`][D-DIS-005] — A registry with no console command is read by booting the installation · 2026-07-31 · confirmed
+- [`D-EVI-001`][D-EVI-001] — Forward evidence comes from a review, not from a prompt that knows the answer · 2026-07-31 · confirmed
+- [`D-EVI-002`][D-EVI-002] — A skill crossing is read rather than run · 2026-07-31 · confirmed
+- [`D-EVI-003`][D-EVI-003] — A review runs the checks that cannot change the code · 2026-07-31
+- [`D-FBK-001`][D-FBK-001] — The backlog is read out rather than enforced · 2026-07-31 · confirmed
+- [`D-FBK-002`][D-FBK-002] — The order of the work is declared, not inferred · 2026-07-31 · confirmed
+- [`D-FBK-004`][D-FBK-004] — The model is asked, because nothing else here can say it · 2026-07-31
+- [`D-VER-004`][D-VER-004] — A supported range is a property of the package, not of the checkout · 2026-07-31 · confirmed
+- [`D-ANS-002`][D-ANS-002] — Three numbers now decide what a lookup answers, and they were measured, not reasoned · 2026-07-30 · confirmed
+- [`D-ANS-003`][D-ANS-003] — Retrieval stays lexical and runtime inspection stays narrow · 2026-07-30 · confirmed
+- [`D-CAT-003`][D-CAT-003] — The component index is curated; its contract comes from the installation · 2026-07-30
+- [`D-KNW-004`][D-KNW-004] — Package knowledge needs a producer before it needs discovery · 2026-07-30
+- [`D-VER-003`][D-VER-003] — The Fluid engine gets no version axis of its own, because the core pins it · 2026-07-30 · confirmed
+- [`D-ANS-001`][D-ANS-001] — The unanswered result keeps its shape and gains a reason · 2026-07-29
+- [`D-AUD-001`][D-AUD-001] — Three audiences, and the positioning that has not caught up · 2026-07-29 · confirmed
+- [`D-CAT-001`][D-CAT-001] — A catalog entry is bound whole, and the binding is derived · 2026-07-29
+- [`D-DIS-001`][D-DIS-001] — The root package counts as an installed package · 2026-07-29 · confirmed
+- [`D-DIS-004`][D-DIS-004] — The version comes from the core package, not from the console · 2026-07-29 · confirmed
+- [`D-GUI-001`][D-GUI-001] — A missing release target becomes a placeholder, not `main` · 2026-07-29
+- [`D-GUI-002`][D-GUI-002] — The commit workflow is asked for, not inferred · 2026-07-29
+- [`D-SCO-002`][D-SCO-002] — A core-only intent asks for evidence, not for silence · 2026-07-29
+- [`D-SCO-003`][D-SCO-003] — What is core-only is decided per line, by what it names · 2026-07-29 · confirmed
+- [`D-SCO-005`][D-SCO-005] — The installation is evidence about the task, and the weakest kind · 2026-07-29
+- [`D-SCO-006`][D-SCO-006] — Why "project work is out of scope" kept coming back · 2026-07-29
+- [`D-VER-001`][D-VER-001] — A version range is data on the statement, not a sentence in it · 2026-07-29 · confirmed
+- [`D-VER-002`][D-VER-002] — The prose is not bound; it says which half it is · 2026-07-29
 
-[D-AUD-4]: audience/aud-4-the-tool-list-is-not-where-the-audience-is-said.md
-[D-COD-3]: code/cod-3-a-directory-is-read-through-symfony-finder.md
-[D-DOC-3]: documentation/doc-3-a-decision-says-what-came-back-and-what-rests-on-it.md
-[D-DOC-4]: documentation/doc-4-a-requirement-is-written-in-the-same-sections-as-a-decision.md
-[D-KNW-5]: knowledge/knw-5-one-scope-replaced-the-four-vocabularies.md
-[D-COD-1]: code/cod-1-one-file-declares-one-class.md
-[D-COD-2]: code/cod-2-the-upkeep-cli-is-a-symfony-console-application.md
-[D-DIS-6]: discovery/dis-6-the-protocol-offers-nothing-to-replace-the-working-directory.md
-[D-DOC-1]: documentation/doc-1-a-table-is-written-so-it-reads-unrendered.md
-[D-DOC-2]: documentation/doc-2-the-prose-rule-is-measured-and-only-the-lead-fails.md
-[D-FBK-10]: feedback/fbk-10-main-carries-the-state-and-the-branch-carries-the-work.md
-[D-FBK-6]: feedback/fbk-6-a-name-is-cut-where-the-feedback-starts-to-differ.md
-[D-FBK-7]: feedback/fbk-7-how-a-todo-is-worked-travels-with-the-todo.md
-[D-FBK-8]: feedback/fbk-8-one-todo-is-one-file-and-the-queue-is-in-the-names.md
-[D-FBK-9]: feedback/fbk-9-a-todo-nobody-can-start-waits-where-it-says-why.md
-[D-SCO-7]: scope/sco-7-the-signals-are-combined-per-call-and-a-call-is-not-a-path.md
-[D-SKL-1]: task-skills/skl-1-the-order-a-task-starts-in-is-one-file.md
-[D-ANS-4]: answers/ans-4-the-instruction-budget-is-2048-characters-on-one-clients-evidence.md
-[D-AUD-3]: audience/aud-3-the-instructions-carry-the-entry-point.md
-[D-DIS-5]: discovery/dis-5-a-registry-with-no-command-is-read-by-booting-the-installation.md
-[D-EVI-1]: evidence/evi-1-forward-evidence-comes-from-a-review.md
-[D-EVI-2]: evidence/evi-2-a-skill-crossing-is-read-rather-than-run.md
-[D-EVI-3]: evidence/evi-3-a-review-runs-the-checks-that-cannot-change-the-code.md
-[D-FBK-1]: feedback/fbk-1-the-backlog-is-read-out-rather-than-enforced.md
-[D-FBK-2]: feedback/fbk-2-the-order-of-the-work-is-declared-not-inferred.md
-[D-FBK-4]: feedback/fbk-4-the-model-is-asked-because-nothing-else-can-say-it.md
-[D-VER-4]: versions/ver-4-a-supported-range-is-a-property-of-the-package.md
-[D-ANS-2]: answers/ans-2-three-numbers-decide-what-a-lookup-answers.md
-[D-ANS-3]: answers/ans-3-retrieval-stays-lexical-and-runtime-inspection-stays-narrow.md
-[D-CAT-3]: catalog/cat-3-the-component-index-is-curated-its-contract-comes-from-the-installation.md
-[D-KNW-4]: knowledge/knw-4-package-knowledge-needs-a-producer-before-it-needs-discovery.md
-[D-VER-3]: versions/ver-3-the-fluid-engine-gets-no-version-axis-of-its-own.md
-[D-ANS-1]: answers/ans-1-the-unanswered-result-keeps-its-shape-and-gains-a-reason.md
-[D-AUD-1]: audience/aud-1-three-audiences-and-the-positioning-that-has-not-caught-up.md
-[D-CAT-1]: catalog/cat-1-a-catalog-entry-is-bound-whole-and-the-binding-is-derived.md
-[D-DIS-1]: discovery/dis-1-the-root-package-counts-as-an-installed-package.md
-[D-DIS-4]: discovery/dis-4-the-version-comes-from-the-core-package-not-from-the-console.md
-[D-GUI-1]: guides/gui-1-a-missing-release-target-becomes-a-placeholder-not-main.md
-[D-GUI-2]: guides/gui-2-the-commit-workflow-is-asked-for-not-inferred.md
-[D-SCO-2]: scope/sco-2-a-core-only-intent-asks-for-evidence-not-for-silence.md
-[D-SCO-3]: scope/sco-3-what-is-core-only-is-decided-per-line-by-what-it-names.md
-[D-SCO-5]: scope/sco-5-the-installation-is-evidence-about-the-task-and-the-weakest-kind.md
-[D-SCO-6]: scope/sco-6-why-project-work-is-out-of-scope-kept-coming-back.md
-[D-VER-1]: versions/ver-1-a-version-range-is-data-on-the-statement-not-a-sentence-in-it.md
-[D-VER-2]: versions/ver-2-the-prose-is-not-bound-it-says-which-half-it-is.md
+[D-AUD-004]: audience/aud-004-the-tool-list-is-not-where-the-audience-is-said.md
+[D-COD-003]: code/cod-003-a-directory-is-read-through-symfony-finder.md
+[D-DOC-003]: documentation/doc-003-a-decision-says-what-came-back-and-what-rests-on-it.md
+[D-DOC-004]: documentation/doc-004-a-requirement-is-written-in-the-same-sections-as-a-decision.md
+[D-DOC-005]: documentation/doc-005-a-number-is-three-digits-so-a-group-lists-in-order.md
+[D-KNW-005]: knowledge/knw-005-one-scope-replaced-the-four-vocabularies.md
+[D-COD-001]: code/cod-001-one-file-declares-one-class.md
+[D-COD-002]: code/cod-002-the-upkeep-cli-is-a-symfony-console-application.md
+[D-DIS-006]: discovery/dis-006-the-protocol-offers-nothing-to-replace-the-working-directory.md
+[D-DOC-001]: documentation/doc-001-a-table-is-written-so-it-reads-unrendered.md
+[D-DOC-002]: documentation/doc-002-the-prose-rule-is-measured-and-only-the-lead-fails.md
+[D-FBK-006]: feedback/fbk-006-a-name-is-cut-where-the-feedback-starts-to-differ.md
+[D-FBK-007]: feedback/fbk-007-how-a-todo-is-worked-travels-with-the-todo.md
+[D-FBK-008]: feedback/fbk-008-one-todo-is-one-file-and-the-queue-is-in-the-names.md
+[D-FBK-009]: feedback/fbk-009-a-todo-nobody-can-start-waits-where-it-says-why.md
+[D-FBK-010]: feedback/fbk-010-main-carries-the-state-and-the-branch-carries-the-work.md
+[D-SCO-007]: scope/sco-007-the-signals-are-combined-per-call-and-a-call-is-not-a-path.md
+[D-SKL-001]: task-skills/skl-001-the-order-a-task-starts-in-is-one-file.md
+[D-ANS-004]: answers/ans-004-the-instruction-budget-is-2048-characters-on-one-clients-evidence.md
+[D-AUD-003]: audience/aud-003-the-instructions-carry-the-entry-point.md
+[D-DIS-005]: discovery/dis-005-a-registry-with-no-command-is-read-by-booting-the-installation.md
+[D-EVI-001]: evidence/evi-001-forward-evidence-comes-from-a-review.md
+[D-EVI-002]: evidence/evi-002-a-skill-crossing-is-read-rather-than-run.md
+[D-EVI-003]: evidence/evi-003-a-review-runs-the-checks-that-cannot-change-the-code.md
+[D-FBK-001]: feedback/fbk-001-the-backlog-is-read-out-rather-than-enforced.md
+[D-FBK-002]: feedback/fbk-002-the-order-of-the-work-is-declared-not-inferred.md
+[D-FBK-004]: feedback/fbk-004-the-model-is-asked-because-nothing-else-can-say-it.md
+[D-VER-004]: versions/ver-004-a-supported-range-is-a-property-of-the-package.md
+[D-ANS-002]: answers/ans-002-three-numbers-decide-what-a-lookup-answers.md
+[D-ANS-003]: answers/ans-003-retrieval-stays-lexical-and-runtime-inspection-stays-narrow.md
+[D-CAT-003]: catalog/cat-003-the-component-index-is-curated-its-contract-comes-from-the-installation.md
+[D-KNW-004]: knowledge/knw-004-package-knowledge-needs-a-producer-before-it-needs-discovery.md
+[D-VER-003]: versions/ver-003-the-fluid-engine-gets-no-version-axis-of-its-own.md
+[D-ANS-001]: answers/ans-001-the-unanswered-result-keeps-its-shape-and-gains-a-reason.md
+[D-AUD-001]: audience/aud-001-three-audiences-and-the-positioning-that-has-not-caught-up.md
+[D-CAT-001]: catalog/cat-001-a-catalog-entry-is-bound-whole-and-the-binding-is-derived.md
+[D-DIS-001]: discovery/dis-001-the-root-package-counts-as-an-installed-package.md
+[D-DIS-004]: discovery/dis-004-the-version-comes-from-the-core-package-not-from-the-console.md
+[D-GUI-001]: guides/gui-001-a-missing-release-target-becomes-a-placeholder-not-main.md
+[D-GUI-002]: guides/gui-002-the-commit-workflow-is-asked-for-not-inferred.md
+[D-SCO-002]: scope/sco-002-a-core-only-intent-asks-for-evidence-not-for-silence.md
+[D-SCO-003]: scope/sco-003-what-is-core-only-is-decided-per-line-by-what-it-names.md
+[D-SCO-005]: scope/sco-005-the-installation-is-evidence-about-the-task-and-the-weakest-kind.md
+[D-SCO-006]: scope/sco-006-why-project-work-is-out-of-scope-kept-coming-back.md
+[D-VER-001]: versions/ver-001-a-version-range-is-data-on-the-statement-not-a-sentence-in-it.md
+[D-VER-002]: versions/ver-002-the-prose-is-not-bound-it-says-which-half-it-is.md
 
 ### Revoked, and kept as the record
 
-- [`D-FBK-5`][D-FBK-5] — The queue is worked before the pile is sighted · 2026-08-01
-- [`D-SCO-8`][D-SCO-8] — The path decides, and the answer may say it cannot · 2026-08-01 → D-KNW-5
-- [`D-FBK-3`][D-FBK-3] — A session is handed one todo, not the file · 2026-07-31 → D-FBK-2
-- [`D-KNW-3`][D-KNW-3] — `provenance` is not the third spelling of `binding`, and stays · 2026-07-30 → D-KNW-5
-- [`D-AUD-2`][D-AUD-2] — Two profiles, because a third one would have been the same set · 2026-07-29 → D-AUD-4
-- [`D-CAT-2`][D-CAT-2] — The index of worked examples is curated, and existence is all that is checked · 2026-07-29
-- [`D-DIS-2`][D-DIS-2] — Discovery honours the declared vendor-dir and bin-dir · 2026-07-29
-- [`D-DIS-3`][D-DIS-3] — A label query is words, and the console is asked with a regex · 2026-07-29
-- [`D-KNW-1`][D-KNW-1] — Sitepackage work is answered from the General category · 2026-07-29
-- [`D-KNW-2`][D-KNW-2] — A hint about typo3/testing-framework is verified against tags, not against the checkouts · 2026-07-29
-- [`D-SCO-1`][D-SCO-1] — Outside the core the core test guide declines rather than adapts · 2026-07-29
-- [`D-SCO-4`][D-SCO-4] — The frontend is recognised by name, and only the two UI sections go · 2026-07-29
+- [`D-FBK-005`][D-FBK-005] — The queue is worked before the pile is sighted · 2026-08-01
+- [`D-SCO-008`][D-SCO-008] — The path decides, and the answer may say it cannot · 2026-08-01 → D-KNW-005
+- [`D-FBK-003`][D-FBK-003] — A session is handed one todo, not the file · 2026-07-31 → D-FBK-002
+- [`D-KNW-003`][D-KNW-003] — `provenance` is not the third spelling of `binding`, and stays · 2026-07-30 → D-KNW-005
+- [`D-AUD-002`][D-AUD-002] — Two profiles, because a third one would have been the same set · 2026-07-29 → D-AUD-004
+- [`D-CAT-002`][D-CAT-002] — The index of worked examples is curated, and existence is all that is checked · 2026-07-29
+- [`D-DIS-002`][D-DIS-002] — Discovery honours the declared vendor-dir and bin-dir · 2026-07-29
+- [`D-DIS-003`][D-DIS-003] — A label query is words, and the console is asked with a regex · 2026-07-29
+- [`D-KNW-001`][D-KNW-001] — Sitepackage work is answered from the General category · 2026-07-29
+- [`D-KNW-002`][D-KNW-002] — A hint about typo3/testing-framework is verified against tags, not against the checkouts · 2026-07-29
+- [`D-SCO-001`][D-SCO-001] — Outside the core the core test guide declines rather than adapts · 2026-07-29
+- [`D-SCO-004`][D-SCO-004] — The frontend is recognised by name, and only the two UI sections go · 2026-07-29
 
-[D-FBK-5]: feedback/fbk-5-the-queue-is-worked-before-the-pile-is-sighted.md
-[D-SCO-8]: scope/sco-8-the-path-decides-and-the-answer-may-say-it-cannot.md
-[D-FBK-3]: feedback/fbk-3-a-session-is-handed-one-todo-not-the-file.md
-[D-KNW-3]: knowledge/knw-3-provenance-is-not-the-third-spelling-of-binding.md
-[D-AUD-2]: audience/aud-2-two-profiles-because-a-third-would-have-been-the-same-set.md
-[D-CAT-2]: catalog/cat-2-the-index-of-worked-examples-is-curated.md
-[D-DIS-2]: discovery/dis-2-discovery-honours-the-declared-vendor-dir-and-bin-dir.md
-[D-DIS-3]: discovery/dis-3-a-label-query-is-words-and-the-console-is-asked-with-a-regex.md
-[D-KNW-1]: knowledge/knw-1-sitepackage-work-is-answered-from-the-general-category.md
-[D-KNW-2]: knowledge/knw-2-a-hint-about-typo3-testing-framework-is-verified-against-tags.md
-[D-SCO-1]: scope/sco-1-outside-the-core-the-core-test-guide-declines-rather-than-adapts.md
-[D-SCO-4]: scope/sco-4-the-frontend-is-recognised-by-name-and-only-the-two-ui-sections-go.md
+[D-FBK-005]: feedback/fbk-005-the-queue-is-worked-before-the-pile-is-sighted.md
+[D-SCO-008]: scope/sco-008-the-path-decides-and-the-answer-may-say-it-cannot.md
+[D-FBK-003]: feedback/fbk-003-a-session-is-handed-one-todo-not-the-file.md
+[D-KNW-003]: knowledge/knw-003-provenance-is-not-the-third-spelling-of-binding.md
+[D-AUD-002]: audience/aud-002-two-profiles-because-a-third-would-have-been-the-same-set.md
+[D-CAT-002]: catalog/cat-002-the-index-of-worked-examples-is-curated.md
+[D-DIS-002]: discovery/dis-002-discovery-honours-the-declared-vendor-dir-and-bin-dir.md
+[D-DIS-003]: discovery/dis-003-a-label-query-is-words-and-the-console-is-asked-with-a-regex.md
+[D-KNW-001]: knowledge/knw-001-sitepackage-work-is-answered-from-the-general-category.md
+[D-KNW-002]: knowledge/knw-002-a-hint-about-typo3-testing-framework-is-verified-against-tags.md
+[D-SCO-001]: scope/sco-001-outside-the-core-the-core-test-guide-declines-rather-than-adapts.md
+[D-SCO-004]: scope/sco-004-the-frontend-is-recognised-by-name-and-only-the-two-ui-sections-go.md

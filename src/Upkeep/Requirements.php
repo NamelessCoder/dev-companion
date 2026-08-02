@@ -205,7 +205,7 @@ final class Requirements
     }
 
     /**
-     * A front-matter list of ids, written as `restsOn: [D-FBK-5, D-SCO-7]`.
+     * A front-matter list of ids, written as `restsOn: [D-FBK-005, D-SCO-007]`.
      *
      * @return array<int, string>
      */
@@ -232,7 +232,7 @@ final class Requirements
      *
      * They were bold labels on a paragraph until 2026-08-02. `Held by` names
      * more than one test on 60 of the 123 entries and nine on one of them, and
-     * a comma-separated sentence is not what that is — see `D-DOC-4`.
+     * a comma-separated sentence is not what that is — see `D-DOC-004`.
      */
     private static function field(string $contents, string $label): string
     {

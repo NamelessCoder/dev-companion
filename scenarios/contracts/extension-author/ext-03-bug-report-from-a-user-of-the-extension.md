@@ -1,6 +1,6 @@
 # EXT-03 — A bug report from a user of the extension
 
-**Environment:** `E-EXT` · **Contract:** `held` — `R-AUD-3`, `R-GUI-2`
+**Environment:** `E-EXT` · **Contract:** `held` — `R-AUD-003`, `R-GUI-002`
 **Held by:**
 `CommitMessageTest::outsideTheCoreNoTrailerIsAddedAndNoneIsDemanded`,
 `CommitMessageTest::outsideTheCoreTheSubjectAndBodyRulesStillHold`,
@@ -26,7 +26,7 @@
 **How it fails**
 
 - A message with `Releases: main` in a repository that has no core releases
-  (`R-AUD-3`).
+  (`R-AUD-003`).
 - The commit rules only being available in their Gerrit-shaped form, so the
   agent either takes the trailers along or abandons the conventions entirely
-  (`R-GUI-2`).
+  (`R-GUI-002`).

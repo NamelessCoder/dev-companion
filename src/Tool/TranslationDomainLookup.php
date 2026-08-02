@@ -29,7 +29,7 @@ final class TranslationDomainLookup extends ReadOnlyTool
      * nothing — the failure is silent and at runtime, which is why this is the
      * one version fact the code carries rather than the knowledge base.
      *
-     * Public because it is one number in one place (D-DIS-4) and two things
+     * Public because it is one number in one place (D-DIS-004) and two things
      * outside this class hold it to what it claims: `VersionsTest` ties it to
      * the majors `knowledge/versions.json` declares, so the code cannot go on
      * withholding below a version nothing covers; `bin/cli catalog:check` reads

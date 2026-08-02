@@ -1,9 +1,9 @@
 # CORE-04 — Deprecating a public API
 
-**Environment:** `E-CORE` · **Contract:** `held` — `R-KNW-1` held
+**Environment:** `E-CORE` · **Contract:** `held` — `R-KNW-001` held
 **Held by:** `HintsTest::aDeprecationTaskIsRecognizedAsOne`,
 `CommitMessageTest::deprecationRulesAreEnforced`; what an upgrade wizard looks
-like is the thin part `R-KNW-1` names and is not guarded
+like is the thin part `R-KNW-001` names and is not guarded
 
 > `\TYPO3\CMS\Core\Utility\GeneralUtility::getUrl()` should go away in favour of
 > the request factory. Deprecate it properly for the next major, including
@@ -30,6 +30,6 @@ like is the thin part `R-KNW-1` names and is not guarded
 **How it fails**
 
 - Generic PHP hints for the wizard part, with nothing about upgrade wizards
-  themselves (`R-KNW-1` — record what the task needed beyond that entry).
+  themselves (`R-KNW-001` — record what the task needed beyond that entry).
 - A changelog file name or a version number quoted from the pinned revision as
   though it held on every branch.

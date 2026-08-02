@@ -17,7 +17,7 @@ use Typo3CmsMcp\Installation\Instance;
  * installed, its first matching example replaces the snapshot markup too —
  * matching being the index's judgment rather than the root class alone, since
  * a demo page's opening example is as often its scaffolding as its component
- * (D-CAT-3, `demoSelector`).
+ * (D-CAT-003, `demoSelector`).
  */
 final class InstalledComponents
 {

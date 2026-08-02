@@ -1,13 +1,13 @@
 # SKILL-07 — Build a backend module, then document the extension
 
 **Environment:** `E-SITE`, in the project's site package ·
-**Contract:** `open` — `R-SKL-3`
+**Contract:** `open` — `R-SKL-003`
 **Held by:**
 `SkillTest::backendModuleDocumentationIsAnExplicitSkillTransition`,
 `SkillTest::theBaseFixesTheOrderEveryTaskStartsIn`,
 `SkillTest::everySkillRoutesThroughTheOwnersOfItsOwnFactsInOrder`;
 that a session actually hands over at that point is not guarded, and this case
-read by hand is what stands in for it (`D-EVI-2`)
+read by hand is what stands in for it (`D-EVI-002`)
 
 > Add a backend module for reviewing imported records, including the module
 > shell, status list and refresh action. Once it works, document the public

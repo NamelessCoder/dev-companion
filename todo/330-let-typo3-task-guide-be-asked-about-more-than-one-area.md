@@ -1,8 +1,8 @@
 # Let `typo3_task_guide` be asked about more than one area
 
-**Serves:** R-AUD-2
+**Serves:** R-AUD-002
 
-The audience is decided per path now (`D-SCO-8`), and this tool is the one that
+The audience is decided per path now (`D-SCO-008`), and this tool is the one that
 cannot use it: `area` is a single string, so the `META-03` prompt reaches it as
 one question and gets one answer. Give it the paths of the work — a `paths`
 array beside `area`, decided by the same `Scope::audiences()` the two path tools

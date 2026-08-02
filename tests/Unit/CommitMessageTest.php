@@ -157,7 +157,7 @@ final class CommitMessageTest extends TestCase
 
         // What the real values look like: a Forge issue is digits, a release
         // target is main or a minor. A placeholder that fits either shape reads
-        // as a decision somebody made, which is what D-GUI-1 rejected "main" for.
+        // as a decision somebody made, which is what D-GUI-001 rejected "main" for.
         self::assertDoesNotMatchRegularExpression('/^#\d+$/', $resolves[1]);
         self::assertDoesNotMatchRegularExpression('/^(main|\d+\.\d+)$/', $releases[1]);
         self::assertSame(CommitMessage::ISSUE_PLACEHOLDER, $resolves[1]);

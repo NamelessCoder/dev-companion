@@ -1,7 +1,7 @@
 # META-02 — Nothing to ask
 
 **Environment:** `E-NONE`, then `E-STOPPED` · **Contract:** `held`
-— `R-DIS-6` … `R-DIS-9`, `R-ANS-1`, `R-ANS-5`
+— `R-DIS-006` … `R-DIS-009`, `R-ANS-001`, `R-ANS-005`
 **Held by:**
 `Typo3CliTest::aDdevProjectThatIsNotRunningIsReportedRatherThanStarted`,
 `Typo3CliTest::aMissingConsoleNamesEveryPathThatWasProbed`,
@@ -26,7 +26,7 @@ environment changes.
   nothing is started as a side effect.
 - The way out is named: the two environment variables that end the guessing.
 - After the user starts DDEV and asks again in the same session, the answer
-  changes — a negative is not remembered (`R-DIS-9`).
+  changes — a negative is not remembered (`R-DIS-009`).
 
 **How it fails**
 

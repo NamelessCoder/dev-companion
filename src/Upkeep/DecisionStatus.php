@@ -15,7 +15,7 @@ namespace Typo3CmsMcp\Upkeep;
  * `corrected` used to be the answer to both halves of that and to a third
  * thing besides. Read out of the twelve entries carrying it on 2026-08-02, it
  * meant "reversed and replaced" on three, "the Wrong if fired" on three, "one
- * named part of it is wrong and the rest holds" on three, and on `D-DIS-3` a
+ * named part of it is wrong and the rest holds" on three, and on `D-DIS-003` a
  * measurement where the Wrong if had explicitly not fired. A reader could not
  * tell from the status whether to rely on the entry, which is the only thing
  * the status is for.
@@ -53,7 +53,7 @@ enum DecisionStatus: string
     /**
      * The dated lines, in the order a file may carry them.
      *
-     * An entry may carry several, because a decision has a history: `D-KNW-3`
+     * An entry may carry several, because a decision has a history: `D-KNW-003`
      * was confirmed by a run on the morning of 2026-08-02 and revoked by the
      * evidence that arrived the same day. The status names the most recent one,
      * so what a reader relies on is the last line rather than the only one.

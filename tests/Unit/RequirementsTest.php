@@ -48,6 +48,38 @@ final class RequirementsTest extends TestCase
     }
 
     /**
+     * The number is the only part of an id a listing sorts on, and three digits
+     * is what makes sorting it as text the same as sorting it as a number.
+     * Unpadded, `dis-10` sat between `dis-1` and `dis-2` in every directory
+     * listing and in every generated index.
+     */
+    #[Test]
+    public function everyNumberIsThreeDigitsWideSoAGroupListsInOrder(): void
+    {
+        $groups = [];
+
+        foreach (Requirements::all() as $id => $requirement) {
+            self::assertMatchesRegularExpression(
+                '/^R-[A-Z]{3}-\d{3}[a-z]?$/',
+                $id,
+                $id . ' is numbered in something other than three digits',
+            );
+            $groups[$requirement['group']][] = $requirement['file'];
+        }
+
+        self::assertNotSame([], $groups);
+
+        foreach ($groups as $group => $files) {
+            $asText = $files;
+            sort($asText, SORT_STRING);
+            $asNumbers = $files;
+            usort($asNumbers, static fn(string $a, string $b): int => strnatcmp($a, $b));
+
+            self::assertSame($asNumbers, $asText, $group . '/ lists in another order than it is numbered');
+        }
+    }
+
+    /**
      * The bold first sentence is the requirement, and a reader who stops there
      * has read the whole demand. Everything else in the file explains it.
      */

@@ -1,4 +1,4 @@
-# Commit in a project repository and see whether `D-GUI-2` holds
+# Commit in a project repository and see whether `D-GUI-002` holds
 
 **Serves:** decisions/
 

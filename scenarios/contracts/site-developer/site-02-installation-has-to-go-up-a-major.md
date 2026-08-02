@@ -1,7 +1,7 @@
 # SITE-02 — The installation has to go up a major
 
 **Environment:** `E-SITE` on the previous major · **Contract:** `held` —
-`R-PRJ-4`: `typo3_task_guide` recognises the task and composes the order of
+`R-PRJ-004`: `typo3_task_guide` recognises the task and composes the order of
 operations with what `typo3_project_scope` and `typo3_changelog_lookup` know
 **Held by:**
 `HintsTest::upgradingAnInstallationIsAnsweredAsAnOrderOfOperations`,
@@ -34,4 +34,4 @@ operations with what `typo3_project_scope` and `typo3_changelog_lookup` know
 
 - An upgrade plan assembled from the model's own memory of TYPO3 majors,
   indistinguishable in tone from the parts that came from the knowledge base.
-- Version-specific claims with no branch named (`R-AUD-4`).
+- Version-specific claims with no branch named (`R-AUD-004`).

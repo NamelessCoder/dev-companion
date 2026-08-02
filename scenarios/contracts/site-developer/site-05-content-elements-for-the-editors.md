@@ -1,6 +1,6 @@
 # SITE-05 — Content elements for the editors
 
-**Environment:** `E-SITE` · **Contract:** `held` — `R-KNW-1`
+**Environment:** `E-SITE` · **Contract:** `held` — `R-KNW-001`
 **Held by:** `HintsTest::aRepeatableContentElementIsRoutedThroughWhatItOwns`,
 `ProjectTest::theContentElementsAnExtensionAddsAreNamedRatherThanPointedAt`,
 `IconLookupTest::aMissingIdentifierHasNoMatchesEvenWhenRelatedIconsExist`
@@ -23,7 +23,7 @@
 
 - Conventions come over without core checks or core paths attached.
 - Where the answer for data processors is thin, that is said rather than covered
-  with generic Fluid advice (`R-KNW-1`).
+  with generic Fluid advice (`R-KNW-001`).
 
 **How it fails**
 

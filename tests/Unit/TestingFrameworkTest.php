@@ -11,7 +11,7 @@ use Typo3CmsMcp\Upkeep\TestingFramework;
 /**
  * Which harness a statement about testing a project extension was read in.
  *
- * The package releases on its own cycle, so D-KNW-2 verifies those statements
+ * The package releases on its own cycle, so D-KNW-002 verifies those statements
  * against a tag rather than against a core branch. Which tag is not recorded
  * anywhere: the core pins the release line per branch in its own require-dev,
  * and `bin/cli catalog:check` reads the newest tag on that line. This holds the

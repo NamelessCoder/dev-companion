@@ -233,7 +233,7 @@ final class ProjectTest extends TestCase
     #[Test]
     public function aCommandThatWritesIsNeverReportedAsACheck(): void
     {
-        // `D-EVI-3` is wrong if a run reports a checkout modified by a command
+        // `D-EVI-003` is wrong if a run reports a checkout modified by a command
         // marked `check` — and by the time a run reports it, the checkout it
         // was told to leave alone is modified. So the writers are listed here
         // instead. Each of them rewrites what it is pointed at, and `check` is

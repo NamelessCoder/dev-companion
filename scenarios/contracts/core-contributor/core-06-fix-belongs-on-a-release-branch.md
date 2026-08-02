@@ -1,11 +1,11 @@
 # CORE-06 — The fix belongs on a release branch
 
 **Environment:** `E-CORE`, checked out on a release branch · **Contract:**
-`open` — `R-AUD-4`
+`open` — `R-AUD-004`
 **Held by:** `VersionsTest::aStatedVersionWinsOverTheInstallationBeingRead`,
 `CatalogTest::aComponentNotVerifiedOnTheTargetIsDeclinedRatherThanHandedOver`;
 that a release-branch patch changes trailer and refspec is not guarded
-(`R-AUD-4` open)
+(`R-AUD-004` open)
 
 > This bug only exists on 13.4, on main the code was rewritten and the problem is
 > gone. Prepare the patch for 13.4 and tell me what is different about pushing it
@@ -29,5 +29,5 @@ that a release-branch patch changes trailer and refspec is not guarded
 **How it fails**
 
 - Anything stated for "TYPO3" that is really only true on the revision the
-  catalogs were taken from, with no word about the branch (`R-AUD-4`).
+  catalogs were taken from, with no word about the branch (`R-AUD-004`).
 - The normal main-first rule applied to a bug that does not exist on main.

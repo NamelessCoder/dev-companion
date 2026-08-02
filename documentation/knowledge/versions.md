@@ -69,9 +69,9 @@ runtime, and the failure is silent. The rules below follow from it.
   matches, so a core update invalidates it loudly. It is derived from names, so
   a demo rewritten around the same classes reads as unchanged — the entry
   records a digest of what each covered demo said, and the same command fails on
-  a rewrite no name would show (`D-CAT-1`).
+  a rewrite no name would show (`D-CAT-001`).
 - **A directory is not evidence that what it demonstrates is inside it.** Where
   a worked example promises a shape rather than a path, the entry names the two
   or three files that carry that shape in `files`, and the range is derived from
   those as well — a rewrite that keeps the directory and moves what is in it is
-  otherwise exactly what a range on existence cannot see (`D-CAT-2`).
+  otherwise exactly what a range on existence cannot see (`D-CAT-002`).

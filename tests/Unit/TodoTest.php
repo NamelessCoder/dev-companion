@@ -459,7 +459,7 @@ final class TodoTest extends TestCase
      * of a todo worked from the checkouts is the diff of one worked from
      * memory — so what can be held is that the procedure exists and that the
      * command hands it over with the work rather than leaving it to be looked
-     * up. `R-FBK-9` says why; `D-FBK-7` says what it bets on.
+     * up. `R-FBK-009` says why; `D-FBK-007` says what it bets on.
      */
     #[Test]
     public function everyTodoIsHandedWithThePageThatSaysHowOneIsWorked(): void

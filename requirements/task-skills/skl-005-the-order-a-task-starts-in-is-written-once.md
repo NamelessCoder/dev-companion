@@ -30,6 +30,13 @@ checkout, and the `FullyScanned` / `PartiallyScanned` tag reaches the answer
 because it says whether the Extension Scanner finds the remaining call sites or
 the reader does.
 
+That step also says what an empty result is worth, because a changelog records
+change events and a pattern nothing changed has no entry: "does this still work
+in version N" goes to `typo3_documentation_lookup` at that version, there and
+whenever the reading raises it again, and where the manual has no page either
+the finding says the question could not be settled rather than reconstructing
+the contract from what the installed core implements.
+
 It also names the three things a finding can rest on — a file that was read at
 its path and line, a command that was run, or a mechanism traced into an
 installed package — and requires the finding to say which of them it is, because
@@ -58,12 +65,18 @@ major behind (2026-07-31), which called `typo3_changelog_lookup` four times and
 never once with `type: deprecation`, reported the frontend surface as carrying
 no superglobal access with 24 call sites in 11 files against a controller the
 installed core marks deprecated, and named the one deprecated API it found
-because a ViewHelper finding walked it there.
+because a ViewHelper finding walked it there. Extended a last time by the
+bootstrap_package conformance review (2026-07-31), which ended two findings in
+"I had to read installed vendor core": both asked the changelog whether a
+pattern still worked in 14 and read its silence as the answer, while
+`typo3_documentation_lookup` at that version answered one of them in a single
+call — `D-ANS-010`, re-run 2026-08-02.
 
 ## Held by
 
 - `SkillTest::theBaseFixesTheOrderEveryTaskStartsIn`
 - `SkillTest::theDeprecationSweepRunsFromTheExtensionsSurfaceAndIsReportedWhenItFindsNothing`
+- `SkillTest::theChangelogsSilenceIsNotAnAnswerAboutWhatStillWorks`
 - `SkillTest::everySkillStartsFromTheBaseBeforeItsOwnEvidence`
 - `SkillTest::anAssessmentAsksBeforeItJudgesAndSaysWhatItDidNotAsk`
 - `InstallerTest::codexInstallAndUpdatePreserveConfigurationAndTrackTheirSkillsCentrally`

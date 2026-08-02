@@ -219,6 +219,56 @@ final class SkillTest extends TestCase
     }
 
     #[Test]
+    public function theChangelogsSilenceIsNotAnAnswerAboutWhatStillWorks(): void
+    {
+        // Two findings of one bootstrap_package review ended in "I had to read
+        // installed vendor core". Both carried a "does this still work in 14"
+        // question, both asked the changelog, and an empty result was read as
+        // the answer — while typo3_documentation_lookup at targetVersion 14
+        // with the query "backend layout" returns the two pages that settle one
+        // of them, first and second, in one call. So the sweep's own step says
+        // what its silence is worth, rather than a sixth step: the sweep can
+        // state its query set before a file is opened because step 2 derives
+        // it, and this question has no query set until the reading raises it.
+        $base = (string) file_get_contents(Paths::root() . '/skills/base.md');
+
+        $sweep = (int) strpos($base, 'typo3_changelog_lookup');
+        $manual = strpos($base, 'typo3_documentation_lookup', $sweep);
+        self::assertNotFalse($manual, 'the base never sends a version-behaviour question to the manual');
+        self::assertLessThan(
+            (int) strpos($base, '**Then** read the checkout'),
+            $manual,
+            'the manual is offered only after the checkout has been read',
+        );
+        self::assertMatchesRegularExpression(
+            '/A changelog records change events, so a pattern nothing has touched for ten\s+majors has no entry at all/',
+            $base,
+        );
+        self::assertStringContainsString('"Does this still work in version N"', $base);
+
+        // And the half that keeps the routing honest. The same review's second
+        // instance — an ext_localconf.php content-rendering registration — is a
+        // key the manual has no page for, so a miss there is a result rather
+        // than a licence to reconstruct the contract from the installed core.
+        self::assertStringContainsString('the finding says', $base);
+        self::assertStringContainsString('Undocumented is not unsupported', $base);
+        self::assertMatchesRegularExpression(
+            '/installed core shows what one version implements rather than what it\s+supports/',
+            $base,
+        );
+
+        // Written once. The conformance skill's own entry carried the narrower
+        // condition the failing session read past — an official API or
+        // configuration detail decides the finding — which a session holding a
+        // behaviour question does not match itself against.
+        $skill = (string) file_get_contents(
+            Paths::root() . '/skills/typo3-extension-conformance/SKILL.md',
+        );
+        self::assertStringContainsString('does this still work here', $skill);
+        self::assertStringNotContainsString('A changelog records change events', $skill);
+    }
+
+    #[Test]
     public function aSecurityFindingIsNotEstablishedUntilItsSinkIs(): void
     {
         // The same REVIEW-02 run reported an editor-supplied field rendered

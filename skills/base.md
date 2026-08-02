@@ -48,6 +48,15 @@ project's own are known is a guess that sounds like advice.
    whether the Extension Scanner can find the remaining call sites or whether
    that reading is yours.
 
+   A changelog records change events, so a pattern nothing has touched for ten
+   majors has no entry at all. An empty sweep is therefore not an answer about
+   what still works. "Does this still work in version N" goes to
+   `typo3_documentation_lookup` at that version — here, and whenever the reading
+   raises it again. Where the manual has no page for it either, the finding says
+   the question could not be settled. Undocumented is not unsupported, and the
+   installed core shows what one version implements rather than what it
+   supports.
+
 **Then** read the checkout. Not before: listing the files first makes everything
 after the listing look optional, and the conventions arrive as a footnote to a
 verdict that has already formed.

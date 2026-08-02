@@ -46,7 +46,8 @@ one that already exists:
   prefixes, `typo3_configuration_lookup` for effective runtime configuration.
 - `typo3_documentation_lookup` with several short English queries and the
   target version where an official API or configuration detail decides the
-  finding.
+  finding, and for every "does this still work here" a surface raises — the
+  base says why the changelog cannot answer that one.
 
 The first two answer different questions and neither stands in for the other. A
 runtime lookup reports what is registered, what a path resolves to, what a value

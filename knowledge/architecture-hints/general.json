@@ -386,6 +386,7 @@
       "tt_content",
       "list_type",
       "mod.web_layout",
+      "backend preview",
       "plugin",
       "Configuration/TCA/Overrides/",
       "addPlugin",
@@ -419,6 +420,7 @@
       },
       "ExtensionManagementUtility::addTcaSelectItemGroup() adds a group to the CType selector, positioned with before:<group> or after:<group>, so several elements of one extension arrive together instead of scattered through the list.",
       "The backend preview of an element is a Fluid template registered in page TSconfig as mod.web_layout.tt_content.preview.<CType>, and the rendering definition is TypoScript: tt_content.<CType> on top of lib.contentElement. How the template name follows from the CType is in the sitepackage layout hint.",
+      "That template replaces the content half of the preview and nothing around it. GridColumnItem::getPreview() renders the header first and dispatches the event the Fluid renderer listens on after it, so the listener's output becomes the content alone. The header is already four parts: the notice where header_layout hides the header, the date field with its label, the record type's label field linked to the edit form — header on tt_content — and subheader. The footer below the content carries starttime, endtime, fe_group, space_before_class, space_after_class and the internal description. So a template that renders {record.header}, {record.subheader} or {record.date} shows them twice, and what it owes the editor is what those parts do not already say.",
       {
         "text": "That preview template is handed one variable, record. The columns of the row are no longer variables of their own, so a template that reads {header} renders an empty spot and logs nothing.",
         "since": 14

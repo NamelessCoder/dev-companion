@@ -1896,6 +1896,43 @@ final class HintsTest extends TestCase
         self::assertSame('content-elements', array_column($reached['matchedHints'], 'id')[0] ?? '');
     }
 
+    /**
+     * The reported miss is a template that repeats what is already on the page:
+     * GridColumnItem::getPreview() renders the header before dispatching the
+     * event FluidBasedContentPreviewRenderer listens on, and that listener sets
+     * the content alone. The header parts are asserted by field, because a
+     * session told only that "the header" exists repeats subheader or date
+     * instead. Both majors draw the same four, so the statement carries no
+     * version binding and has to reach a caller on either.
+     */
+    #[Test]
+    public function aPreviewAnswerSaysWhatTheDefaultRendererAlreadyDraws(): void
+    {
+        foreach ([13, 14] as $major) {
+            $texts = implode("\n", array_column(
+                ArchitectureHints::byId('content-elements', $major)['hints'],
+                'text',
+            ));
+
+            self::assertStringContainsString('replaces the content half', $texts);
+            self::assertStringContainsString('where header_layout hides the header', $texts);
+            self::assertStringContainsString('the date field with its label', $texts);
+            self::assertStringContainsString("record type's label field linked to the edit form", $texts);
+            self::assertStringContainsString('and subheader', $texts);
+            self::assertStringContainsString('space_before_class', $texts);
+        }
+
+        // The words the reporting session arrived with. The probe D-KNW-015
+        // recorded the gap on reached nothing at all, and «backend preview» was
+        // in none of the hint's own vocabulary until this statement landed.
+        $reached = ArchitectureHints::find(
+            [],
+            'backend preview element header already rendered by the default renderer',
+            6,
+        );
+        self::assertSame('content-elements', array_column($reached['matchedHints'], 'id')[0] ?? '');
+    }
+
     #[Test]
     public function withoutAnySignalTheDomainIsPhp(): void
     {

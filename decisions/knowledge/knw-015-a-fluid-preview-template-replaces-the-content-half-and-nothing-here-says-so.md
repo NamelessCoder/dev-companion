@@ -1,7 +1,7 @@
 ---
 id: D-KNW-015
 date: 2026-08-02
-status: open
+status: confirmed
 ---
 
 # D-KNW-015 — A Fluid preview template replaces the content half, and nothing here says so
@@ -107,3 +107,43 @@ is the first thing an editor sees.
   `typo3_documentation_lookup` on another page — the TSconfig reference or the
   page module chapter. It is then step 2 or 3 and the corpus wants a pointer
   rather than a statement of its own.
+
+## Confirmed on 2026-08-02
+
+The run that wrote the statement redid the reading on both checkouts, and the
+split holds as described. `GridColumnItem::getPreview()` calls
+`renderPageModulePreviewHeader()` before it dispatches
+`PageContentPreviewRenderingEvent` on 13.4 and on 14.3 alike, uses the
+listener's value as the content only, and hands both to
+`wrapPageModulePreview()`, which is unchanged between the two.
+`FluidBasedContentPreviewRenderer` calls `setPreviewContent()` and nothing else
+on both.
+
+The four header parts are the same four on both majors, built from different
+sources: 14.3 reads the label field off the schema's `Label` capability and
+passes date, label and subheader through `RecordFieldPreviewProcessor` —
+`prepareFieldWithLabel()` for the date, `prepareText()` plus `linkToEditForm()`
+for the other two — where 13.4 reads `ctrl.label` from `$GLOBALS['TCA']` and
+uses its own `renderText()` and `linkEditContent()`. Neither difference is
+visible to a template, so the statement carries no `since`.
+
+The narrowness the second **Wrong if** names did not materialise for the table
+in play: `tt_content` declares `label` as `header` on both majors. The statement
+says "the record type's label field" and gives `header` as the `tt_content`
+case, so a preview registered for another table is covered by the phrasing
+rather than contradicted by it.
+
+The footer is stated with the header, because it is drawn by the same renderer
+and the same template cannot reach it: `renderPageModulePreviewFooter()` is
+called from `getFooterInfo()`, outside the `element-preview` wrap, and carries
+the start and end time, the frontend user group, the two spacing fields and the
+internal description.
+
+The probe this entry recorded the gap on still reached nothing once the
+statement was in, because `content-elements` carried no preview vocabulary at
+all — the subject was indexed under the registration, `mod.web_layout` and the
+CType. `backend preview` was added to its `appliesTo`, which is what the two
+symptom probes now reach it by, and no query in the sweep changed hint.
+
+What was not re-run is the manual: the third **Wrong if** was checked by the
+judging run on the same day, and the page is unchanged since.

@@ -78,7 +78,7 @@ final class ServerScope extends ReadOnlyTool
                 'packageCount' => Schema::integer('TYPO3 packages found in it.'),
                 'misconfiguration' => Schema::nullableString('Set when a configured value could not be followed. Nothing falls back to a discovered installation.'),
                 'console' => Schema::object([
-                    'reachable' => ['type' => 'boolean', 'description' => 'False means every installation-backed tool answers with answeredBy: nothing.'],
+                    'reachable' => ['type' => 'boolean', 'description' => 'False means every installation-backed tool answers with unsupported in place of its result.'],
                     'via' => Schema::nullableString('ddev, php, or override.'),
                     'php' => Schema::nullableString('The PHP version it runs on, where that is known.'),
                     'command' => Schema::nullableString('The invocation, as it is run.'),

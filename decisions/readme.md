@@ -56,6 +56,7 @@ What is not listed as revoked still holds. `confirmed` marks the ones somebody
 went back to and found standing; the rest are open, which is the ordinary case
 and not a defect.
 
+- [`D-ANS-005`][D-ANS-005] — A question that is not supported here is answered in a shape of its own · 2026-08-02
 - [`D-AUD-004`][D-AUD-004] — The tool list is not where the audience is said · 2026-08-02
 - [`D-COD-003`][D-COD-003] — A directory is read through symfony/finder · 2026-08-02
 - [`D-DOC-003`][D-DOC-003] — A decision says what came back, and a requirement says what it rests on · 2026-08-02
@@ -89,7 +90,6 @@ and not a defect.
 - [`D-CAT-003`][D-CAT-003] — The component index is curated; its contract comes from the installation · 2026-07-30
 - [`D-KNW-004`][D-KNW-004] — Package knowledge needs a producer before it needs discovery · 2026-07-30
 - [`D-VER-003`][D-VER-003] — The Fluid engine gets no version axis of its own, because the core pins it · 2026-07-30 · confirmed
-- [`D-ANS-001`][D-ANS-001] — The unanswered result keeps its shape and gains a reason · 2026-07-29
 - [`D-AUD-001`][D-AUD-001] — Three audiences, and the positioning that has not caught up · 2026-07-29 · confirmed
 - [`D-CAT-001`][D-CAT-001] — A catalog entry is bound whole, and the binding is derived · 2026-07-29
 - [`D-DIS-001`][D-DIS-001] — The root package counts as an installed package · 2026-07-29 · confirmed
@@ -103,6 +103,7 @@ and not a defect.
 - [`D-VER-001`][D-VER-001] — A version range is data on the statement, not a sentence in it · 2026-07-29 · confirmed
 - [`D-VER-002`][D-VER-002] — The prose is not bound; it says which half it is · 2026-07-29 · confirmed
 
+[D-ANS-005]: answers/ans-005-an-unmet-precondition-is-answered-not-raised.md
 [D-AUD-004]: audience/aud-004-the-tool-list-is-not-where-the-audience-is-said.md
 [D-COD-003]: code/cod-003-a-directory-is-read-through-symfony-finder.md
 [D-DOC-003]: documentation/doc-003-a-decision-says-what-came-back-and-what-rests-on-it.md
@@ -136,7 +137,6 @@ and not a defect.
 [D-CAT-003]: catalog/cat-003-the-component-index-is-curated-its-contract-comes-from-the-installation.md
 [D-KNW-004]: knowledge/knw-004-package-knowledge-needs-a-producer-before-it-needs-discovery.md
 [D-VER-003]: versions/ver-003-the-fluid-engine-gets-no-version-axis-of-its-own.md
-[D-ANS-001]: answers/ans-001-the-unanswered-result-keeps-its-shape-and-gains-a-reason.md
 [D-AUD-001]: audience/aud-001-three-audiences-and-the-positioning-that-has-not-caught-up.md
 [D-CAT-001]: catalog/cat-001-a-catalog-entry-is-bound-whole-and-the-binding-is-derived.md
 [D-DIS-001]: discovery/dis-001-the-root-package-counts-as-an-installed-package.md
@@ -156,6 +156,7 @@ and not a defect.
 - [`D-SCO-008`][D-SCO-008] — The path decides, and the answer may say it cannot · 2026-08-01 → D-KNW-005
 - [`D-FBK-003`][D-FBK-003] — A session is handed one todo, not the file · 2026-07-31 → D-FBK-002
 - [`D-KNW-003`][D-KNW-003] — `provenance` is not the third spelling of `binding`, and stays · 2026-07-30 → D-KNW-005
+- [`D-ANS-001`][D-ANS-001] — The unanswered result keeps its shape and gains a reason · 2026-07-29 → D-ANS-005
 - [`D-AUD-002`][D-AUD-002] — Two profiles, because a third one would have been the same set · 2026-07-29 → D-AUD-004
 - [`D-CAT-002`][D-CAT-002] — The index of worked examples is curated, and existence is all that is checked · 2026-07-29
 - [`D-DIS-002`][D-DIS-002] — Discovery honours the declared vendor-dir and bin-dir · 2026-07-29
@@ -169,6 +170,7 @@ and not a defect.
 [D-SCO-008]: scope/sco-008-the-path-decides-and-the-answer-may-say-it-cannot.md
 [D-FBK-003]: feedback/fbk-003-a-session-is-handed-one-todo-not-the-file.md
 [D-KNW-003]: knowledge/knw-003-provenance-is-not-the-third-spelling-of-binding.md
+[D-ANS-001]: answers/ans-001-the-unanswered-result-keeps-its-shape-and-gains-a-reason.md
 [D-AUD-002]: audience/aud-002-two-profiles-because-a-third-would-have-been-the-same-set.md
 [D-CAT-002]: catalog/cat-002-the-index-of-worked-examples-is-curated.md
 [D-DIS-002]: discovery/dis-002-discovery-honours-the-declared-vendor-dir-and-bin-dir.md

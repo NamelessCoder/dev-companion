@@ -11,6 +11,7 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\Finder\Finder;
 use Typo3CmsMcp\Installation\Instance;
 use Typo3CmsMcp\Installation\Typo3Cli;
+use Typo3CmsMcp\Result\Unsupported;
 use Typo3CmsMcp\Tool\Registry;
 
 /**
@@ -90,82 +91,77 @@ final class ToolContractTest extends TestCase
         'typo3_changelog_lookup' => ['query' => 'deprecation'],
         'typo3_fluid_namespace_list' => [],
         'typo3_project_scope' => [],
-        'typo3_extension_scope' => ['key' => 'news'],
+        'typo3_extension_scope' => ['extension' => 'news'],
     ];
 
     /**
-     * A count of 0 and a false say the installation does not have it. Neither
-     * is said about an installation nothing asked, so every claim an
-     * installation-backed tool makes is declared nullable — R-ANS-001.
+     * Driven where there is nothing to ask, the answer is the unsupported one
+     * and nothing besides. No count to read as a count, no flag to read as a
+     * fact, and no empty list standing in for a result — R-ANS-001. The reason
+     * travels as data and names where discovery looked, which is R-ANS-002 and
+     * what META-02 asks for where discovery failed.
      */
     #[Test]
-    public function everyClaimAnInstallationBackedToolMakesCanBeWithheld(): void
+    public function aQuestionThatCannotBeAnsweredHereStatesThatAndNothingElse(): void
     {
-        foreach (self::installationBackedSchemas() as $name => $schema) {
-            foreach ($schema['properties'] as $field => $property) {
-                $type = (array) ($property['type'] ?? []);
-                if (array_intersect($type, ['integer', 'boolean']) === []) {
-                    continue;
-                }
-
-                self::assertContains(
-                    'null',
-                    $type,
-                    $name . ' declares ' . $field . ' as a bare ' . implode('|', $type)
-                        . '. It is a statement about the installation, so it has to be withholdable.'
-                );
-            }
-        }
-    }
-
-    /**
-     * Driven where there is nothing to ask, the answer says so and states
-     * nothing else. The reason travels as data, and it names where discovery
-     * looked — the two halves R-ANS-002 and META-02 ask for.
-     */
-    #[Test]
-    public function nothingIsClaimedAboutAnInstallationThatWasNeverAsked(): void
-    {
-        Instance::discoverFrom(null);
+        // From a real directory with nothing above it rather than from no
+        // directory at all: searched is what tells "nothing is here" from "the
+        // server was started somewhere else", and it is only filled where
+        // discovery actually walked.
+        Instance::discoverFrom(sys_get_temp_dir());
         Typo3Cli::forget();
 
         foreach (self::installationBackedSchemas() as $name => $schema) {
             self::assertArrayHasKey($name, self::UNANSWERABLE_CALLS, $name . ' answers from the installation and is not driven here');
 
-            $data = Registry::call($name, self::UNANSWERABLE_CALLS[$name])->data;
+            $arguments = self::UNANSWERABLE_CALLS[$name];
+            $data = Registry::call($name, $arguments)->data;
 
-            self::assertSame('nothing', $data['answeredBy'], $name . ' answered without an installation');
-            self::assertNotSame('', $data['unavailable']['reason'] ?? '', $name . ' gave no reason');
-            self::assertArrayHasKey('searched', $data['unavailable'], $name . ' does not say where it looked');
+            self::assertArrayHasKey('unsupported', $data, $name . ' answered without an installation to ask');
+            self::assertSame(
+                Unsupported::NO_INSTALLATION,
+                $data['unsupported']['cause'],
+                $name . ' named the wrong cause where there is no installation at all'
+            );
+            self::assertNotSame('', $data['unsupported']['reason'], $name . ' gave no reason');
+            self::assertNotSame([], $data['unsupported']['searched'], $name . ' does not say where it looked');
 
-            foreach ($schema['properties'] as $field => $property) {
-                if (array_intersect((array) ($property['type'] ?? []), ['integer', 'boolean']) === []) {
-                    continue;
-                }
-
-                self::assertArrayHasKey($field, $data, $name . ' dropped ' . $field);
-                self::assertNull($data[$field], $name . ' claims ' . $field . ' about an installation nothing asked');
-            }
+            // Everything the tool would have answered is absent, and what is
+            // left is the caller's own arguments coming back — which is exactly
+            // what the schema still requires, because the answer fields had to
+            // leave that list for this shape to be declarable at all.
+            $left = array_values(array_diff(array_keys($data), ['unsupported']));
+            sort($left);
+            $required = $schema['required'];
+            sort($required);
+            self::assertSame(
+                $required,
+                $left,
+                $name . ' states something about an installation nothing asked, or drops a field it still requires'
+            );
+            self::assertArrayNotHasKey('answeredBy', $data, $name . ' names a source where none answered');
+            self::assertArrayNotHasKey('answeredBy', $schema['properties']['unsupported'], 'the two are alternatives');
         }
     }
 
     /**
-     * answeredBy: "nothing" is written in one place, so it cannot be reached by
-     * a path that has no reason to hand over. typo3_extension_scope reported
-     * every miss that way, including one against an installation that had just
-     * listed its packages.
+     * The unsupported answer is built in one place, so no path can reach the
+     * shape without a reason to hand over. typo3_extension_scope reported every
+     * miss as unanswerable, including against an installation that had just
+     * listed its packages, because the constant it filled from carried the
+     * value.
      */
     #[Test]
-    public function onlyTheUnansweredResultReportsThatNothingAnswered(): void
+    public function onlyOneClassBuildsTheUnsupportedAnswer(): void
     {
         $sources = [];
         foreach (Finder::create()->files()->in(dirname(__DIR__, 2) . '/src')->name('*.php') as $file) {
-            if (str_contains((string) file_get_contents($file->getPathname()), "'answeredBy' => 'nothing'")) {
+            if (str_contains((string) file_get_contents($file->getPathname()), "'unsupported' => [")) {
                 $sources[] = $file->getRelativePathname();
             }
         }
 
-        self::assertSame(['Result/Unanswered.php'], $sources);
+        self::assertSame(['Result/Unsupported.php'], $sources);
     }
 
     #[Test]
@@ -254,15 +250,18 @@ final class ToolContractTest extends TestCase
      * declare answeredBy, keyed by name with the schema that says what they
      * promise.
      *
-     * @return array<string, array{properties: array<string, mixed>}>
+     * @return array<string, array{properties: array<string, mixed>, required: array<int, string>}>
      */
     private static function installationBackedSchemas(): array
     {
         $schemas = [];
         foreach (Registry::definitions() as $definition) {
             $properties = $definition['outputSchema']['properties'] ?? [];
-            if (isset($properties['answeredBy'])) {
-                $schemas[$definition['name']] = ['properties' => $properties];
+            if (isset($properties['unsupported'])) {
+                $schemas[$definition['name']] = [
+                    'properties' => $properties,
+                    'required' => $definition['outputSchema']['required'] ?? [],
+                ];
             }
         }
 

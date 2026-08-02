@@ -7,7 +7,7 @@ namespace Typo3CmsMcp\Tool;
 use Typo3CmsMcp\Installation\Typo3Cli;
 use Typo3CmsMcp\Result\Schema;
 use Typo3CmsMcp\Result\ToolResult;
-use Typo3CmsMcp\Result\Unanswered;
+use Typo3CmsMcp\Result\Unsupported;
 
 /**
  * An effective TYPO3_CONF_VARS value: what it is at runtime after every
@@ -40,11 +40,11 @@ final class ConfigurationLookup extends ReadOnlyTool
     {
         return Schema::object([
             'path' => Schema::string('The TYPO3_CONF_VARS path that was read.'),
-            'found' => ['type' => ['boolean', 'null'], 'description' => 'Whether the installation has a value at that path. Null when nothing was consulted — see unavailable; false is a statement about the installation and is never made without one.'],
+            'found' => ['type' => 'boolean', 'description' => 'Whether the installation has a value at that path. Present only where one was asked: false is a statement about an installation, and where there was none to ask, unsupported stands in place of this answer.'],
             'value' => ['description' => 'The effective runtime value, of whatever shape the configuration has.'],
             'answeredBy' => Schema::answeredBy(),
-            'unavailable' => Schema::unavailable(),
-        ], ['path', 'found', 'answeredBy']);
+            'unsupported' => Schema::unsupported(),
+        ], ['path']);
     }
 
     public static function answer(array $args): ToolResult
@@ -62,10 +62,10 @@ final class ConfigurationLookup extends ReadOnlyTool
             );
         }
         if (!$answer['ok']) {
-            // found stays null rather than false: false is a statement about
-            // the installation — "it has no value at that path" — and nothing
-            // was consulted to make it.
-            return Unanswered::because($answer['error'], ['path' => $path, 'found' => null, 'value' => null]);
+            // found is absent rather than false: false is a statement about the
+            // installation — "it has no value at that path" — and nothing was
+            // consulted to make it.
+            return Unsupported::because($answer['error'], ['path' => $path]);
         }
 
         return ToolResult::create(

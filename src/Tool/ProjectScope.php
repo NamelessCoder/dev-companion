@@ -7,7 +7,7 @@ namespace Typo3CmsMcp\Tool;
 use Typo3CmsMcp\Installation\Project;
 use Typo3CmsMcp\Result\Schema;
 use Typo3CmsMcp\Result\ToolResult;
-use Typo3CmsMcp\Result\Unanswered;
+use Typo3CmsMcp\Result\Unsupported;
 
 /**
  * What the repository around the installation consists of.
@@ -65,17 +65,16 @@ final class ProjectScope extends ReadOnlyTool
                 'file' => Schema::string('The patch file, relative to the project root.'),
             ], ['package', 'description', 'file']), 'Patches from extra.patches. A patched package does not behave as its version says.'),
             'answeredBy' => Schema::answeredBy(),
-            'unavailable' => Schema::unavailable(),
-        ], ['root', 'extensions', 'sites', 'commands', 'patches', 'answeredBy']);
+            'unsupported' => Schema::unsupported(),
+        ], []);
     }
 
     public static function answer(array $args): ToolResult
     {
         $project = Project::describe();
         if ($project === null) {
-            return Unanswered::because(
+            return Unsupported::because(
                 'no TYPO3 installation was found to describe',
-                ['root' => null, 'extensions' => [], 'sites' => [], 'commands' => [], 'patches' => []],
             );
         }
 

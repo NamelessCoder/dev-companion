@@ -9,13 +9,15 @@
     by accident, which is how the 2026-07-29 evidence arrived.
 
 Both readings this todo asked for are done and recorded on `D-ANS-001`: the
-corpus has never met the unavailable shape, and the shape the server was sending
-was not the one the entry decided — closed on 2026-08-02, with `R-ANS-001`
-stating the rule. What is left is the run. Once a directory plays `E-NONE`, run
-`META-02` there as a live session — its prompt asks for a "publish" icon and a
-"Publish page" label, and both reach installation-answered lookups — then record
-whether the answer says the installation could not be asked or reports that no
-such icon and no such label exist. The second is the **Wrong if** firing, and
-`isError: true` is the lever the entry already names for it. The payload a client
-now meets withholds every count and every boolean, so a misreading is a
-statement about the client rather than about a field that was lying to it.
+corpus has never met the shape, and the shape the server was sending was not the
+one that entry decided. It is revoked, and `D-ANS-005` is what a client meets
+now — an `unsupported` object in place of the result, and no `isError`. What is
+left is the run. Once a directory plays `E-NONE`, run `META-02` there as a live
+session — its prompt asks for a "publish" icon and a "Publish page" label, and
+both reach installation-answered lookups — then record whether the answer says
+the installation could not be asked or reports that no such icon and no such
+label exist. The second is the **Wrong if** firing. The lever left for it is the
+`instructions` sent at initialize, which never say that a miss and an
+unanswerable answer are two things. The payload carries no count and no flag at
+all now, so a misreading is a statement about the client rather than about a
+field that was lying to it.

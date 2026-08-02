@@ -8,7 +8,7 @@ use Typo3CmsMcp\Installation\Icons;
 use Typo3CmsMcp\Installation\Instance;
 use Typo3CmsMcp\Result\Schema;
 use Typo3CmsMcp\Result\ToolResult;
-use Typo3CmsMcp\Result\Unanswered;
+use Typo3CmsMcp\Result\Unsupported;
 
 /**
  * Icon identifiers registered in the installation.
@@ -60,11 +60,11 @@ final class IconLookup extends ReadOnlyTool
     {
         return Schema::object([
             'query' => Schema::string(),
-            'matchCount' => Schema::nullableInteger('For a complete identifier, 1 only when that exact identifier is registered and otherwise 0. For a concept search, the number of matching icons.'),
-            'suggestionCount' => Schema::nullableInteger('Related identifiers returned beside an identifier validation. The actions-/content- usage prefix alone never makes an icon a suggestion.'),
-            'exactMatch' => Schema::nullableBoolean('Whether the query was a registered identifier. False for a query shaped like one that is not registered — the listed icons are then suggestions, not the answer.'),
+            'matchCount' => Schema::integer('For a complete identifier, 1 only when that exact identifier is registered and otherwise 0. For a concept search, the number of matching icons.'),
+            'suggestionCount' => Schema::integer('Related identifiers returned beside an identifier validation. The actions-/content- usage prefix alone never makes an icon a suggestion.'),
+            'exactMatch' => ['type' => 'boolean', 'description' => 'Whether the query was a registered identifier. False for a query shaped like one that is not registered — the listed icons are then suggestions, not the answer.'],
             'answeredBy' => Schema::answeredBy(),
-            'unavailable' => Schema::unavailable(),
+            'unsupported' => Schema::unsupported(),
             'icons' => Schema::listOf(Schema::object([
                 'identifier' => Schema::string(),
                 'category' => Schema::string(),
@@ -77,7 +77,7 @@ final class IconLookup extends ReadOnlyTool
             'categories' => Schema::listOf(Schema::string(), 'Returned when no query was given.'),
             'concepts' => Schema::listOf(Schema::string(), 'Concept words that map to a shape. Returned when no query was given.'),
             'scope' => Schema::string('Where these identifiers may be used: the backend registry, not frontend rendering. Carried by every answered lookup.'),
-        ], ['query', 'matchCount', 'suggestionCount', 'exactMatch', 'answeredBy', 'icons']);
+        ], ['query']);
     }
 
     public static function answer(array $args): ToolResult
@@ -95,9 +95,9 @@ final class IconLookup extends ReadOnlyTool
         }
 
         if (!Instance::isAvailable()) {
-            return Unanswered::because(
+            return Unsupported::because(
                 'no TYPO3 installation was found from the directory this server was started in',
-                ['query' => $query, 'matchCount' => null, 'suggestionCount' => null, 'exactMatch' => null, 'icons' => []],
+                ['query' => $query],
             );
         }
 

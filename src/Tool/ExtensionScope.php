@@ -9,7 +9,7 @@ use Typo3CmsMcp\Installation\Instance;
 use Typo3CmsMcp\Installation\Typo3Runtime;
 use Typo3CmsMcp\Result\Schema;
 use Typo3CmsMcp\Result\ToolResult;
-use Typo3CmsMcp\Result\Unanswered;
+use Typo3CmsMcp\Result\Unsupported;
 
 /**
  * What one extension registers, from its own files.
@@ -122,8 +122,8 @@ final class ExtensionScope extends ReadOnlyTool
             ], ['manual', 'readme', 'tests', 'languageFiles'], 'What it ships beside its registrations. Every key is present even when the artifact is not, because the absence of a manual, a test or a translation is the answer a file listing cannot give.'),
             'installed' => Schema::listOf(Schema::string(), 'On a miss: the extension keys this installation does have.'),
             'answeredBy' => Schema::answeredBy(),
-            'unavailable' => Schema::unavailable(),
-        ], ['key', 'path', 'origin', 'tcaTables', 'tcaOverrides', 'contentElements', 'backendModules', 'icons', 'siteSets', 'serviceTags', 'files', 'notReadStatically', 'artifacts', 'answeredBy']);
+            'unsupported' => Schema::unsupported(),
+        ], ['key']);
     }
 
     public static function answer(array $args): ToolResult
@@ -266,9 +266,9 @@ final class ExtensionScope extends ReadOnlyTool
     {
         $installed = array_keys(Instance::packages());
         if ($installed === []) {
-            return Unanswered::because(
+            return Unsupported::because(
                 'no TYPO3 installation was found, so there are no extensions to describe',
-                self::MISS_FIELDS + ['key' => $key],
+                ['key' => $key],
             );
         }
 

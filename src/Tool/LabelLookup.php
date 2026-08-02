@@ -9,7 +9,7 @@ use Typo3CmsMcp\Installation\Labels;
 use Typo3CmsMcp\Installation\Typo3Cli;
 use Typo3CmsMcp\Result\Schema;
 use Typo3CmsMcp\Result\ToolResult;
-use Typo3CmsMcp\Result\Unanswered;
+use Typo3CmsMcp\Result\Unsupported;
 use Typo3CmsMcp\Search\LabelSearch;
 
 /**
@@ -63,9 +63,9 @@ final class LabelLookup extends ReadOnlyTool
     {
         return Schema::object([
             'query' => Schema::string(),
-            'matchCount' => Schema::nullableInteger(),
+            'matchCount' => Schema::integer(),
             'answeredBy' => Schema::answeredBy(),
-            'unavailable' => Schema::unavailable(),
+            'unsupported' => Schema::unsupported(),
             'terms' => Schema::listOf(Schema::object([
                 'term' => Schema::string('One word of the query; a label has to carry every one of them.'),
                 'matchCount' => Schema::integer('How many labels this word alone reaches — where to narrow when the query as a whole reaches none.'),
@@ -77,7 +77,7 @@ final class LabelLookup extends ReadOnlyTool
                 'source' => Schema::string('The label text in the searched locale.'),
                 'resource' => Schema::string('The XLF file it lives in.'),
             ], ['ref', 'domain', 'key', 'source'])),
-        ], ['query', 'resource', 'matchCount', 'answeredBy', 'terms', 'labels']);
+        ], ['query']);
     }
 
     public static function answer(array $args): ToolResult
@@ -125,15 +125,9 @@ final class LabelLookup extends ReadOnlyTool
             // beats none, as long as it says which one it is.
             $candidates = Labels::all($extension);
             if ($candidates === []) {
-                return Unanswered::because(
+                return Unsupported::because(
                     self::whyNothingWasEstablished($answer),
-                    [
-                        'query' => $query,
-                        'resource' => $resource === '' ? null : $resource,
-                        'matchCount' => null,
-                        'labels' => [],
-                        'terms' => [],
-                    ],
+                    ['query' => $query],
                 );
             }
             $answeredBy = 'packages';

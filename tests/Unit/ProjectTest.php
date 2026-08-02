@@ -97,7 +97,7 @@ final class ProjectTest extends TestCase
         self::assertNull(Project::describe());
 
         $result = Registry::call('typo3_project_scope', []);
-        self::assertSame('nothing', $result->data['answeredBy']);
+        self::assertSame(['unsupported'], array_keys($result->data));
     }
 
     #[Test]

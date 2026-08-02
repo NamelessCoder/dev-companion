@@ -19,37 +19,43 @@ use Typo3CmsMcp\Knowledge\Scope;
 final class Schema
 {
     /**
-     * The sentence every withheld claim carries, so the six tools that withhold
-     * one say it in the same words rather than six.
-     */
-    private const UNCONSULTED = 'Null when nothing was consulted — see unavailable, and never a statement about an installation nothing asked.';
-
-    /**
-     * Why an installation-backed answer is unanswered rather than empty.
+     * The question could not be answered here, and this is the whole answer.
      *
-     * Present exactly when answeredBy is "nothing". The text said this all
-     * along; a client that renders structuredContent and drops the text block
-     * saw an empty result and nothing else.
+     * Present instead of the result, never beside it: a tool that cannot ask
+     * states this and states nothing else, so there is no count to read as a
+     * count and no flag to read as a fact. Which is why the fields it replaces
+     * leave the required list — presence is the discriminator, and a client
+     * reads this first or reads a result it can trust.
      *
      * @return array<string, mixed>
      */
-    public static function unavailable(): array
+    public static function unsupported(): array
     {
         return self::object([
-            'reason' => self::string('What stopped the installation from being asked.'),
+            'cause' => [
+                'type' => 'string',
+                'enum' => ['no-installation', 'misconfigured', 'installation-not-answering'],
+                'description' => 'no-installation: nothing to ask from here, and searched says where it looked. '
+                    . 'misconfigured: an installation was named and could not be used, so nothing was searched for. '
+                    . 'installation-not-answering: one was found and its console did not answer — a stopped '
+                    . 'container or a database with no schema, which is a state that ends without reinstalling '
+                    . 'anything.',
+            ],
+            'reason' => self::string('What stopped it, in the words the attempt produced.'),
             'diagnosis' => self::string('What the reason means where the message alone does not say it — a console that starts and then fails on a missing table has a database without a schema, not a broken installation. Empty where nothing beyond the reason is known.'),
             'searched' => self::listOf(self::string(), 'Every directory the discovery walked, in order. "Nothing was found" and "the server was started somewhere else" wear one sentence, and only this tells them apart. Empty where discovery never ran.'),
-            'misconfiguration' => self::nullableString('What was set and could not be used, when the reason is a setting rather than the directory — a named root that is not a directory on this machine reads as "nothing was found here" and is not that. Null where nothing was set.'),
+            'misconfiguration' => self::nullableString('What was set and could not be used. Null where nothing was set.'),
             'settings' => self::object([
                 'root' => self::string('Environment variable that names the installation root.'),
                 'console' => self::string('Environment variable that names the console command.'),
             ], ['root', 'console']),
-        ], ['reason']);
+        ], ['cause', 'reason', 'searched', 'settings']);
     }
 
     /**
-     * Every answer that comes from the installation says so, because an empty
-     * result and an unanswerable question are not the same thing.
+     * Which of the two sources answered. An answer that came from neither is
+     * not one of its cases — that is unsupported, and it replaces the answer
+     * rather than labelling it.
      *
      * @return array<string, mixed>
      */
@@ -57,11 +63,10 @@ final class Schema
     {
         return [
             'type' => 'string',
-            'enum' => ['installation', 'packages', 'nothing'],
+            'enum' => ['installation', 'packages'],
             'description' => 'installation: its assembled runtime state answered. packages: read from the files '
                 . 'the installed packages ship, because the console could not be asked — overrides applied at '
-                . 'runtime are not reflected. nothing: the installation could not be asked at all, so an empty '
-                . 'result is unanswered rather than a miss.',
+                . 'runtime are not reflected.',
         ];
     }
 
@@ -287,33 +292,5 @@ final class Schema
     public static function integer(string $description = ''): array
     {
         return $description === '' ? ['type' => 'integer'] : ['type' => 'integer', 'description' => $description];
-    }
-
-    /**
-     * A count of what the installation has, null where nothing was consulted.
-     *
-     * Zero is a statement about the installation and is never made without one.
-     * A client reads the count as the answer, so a count of 0 beside
-     * answeredBy: "nothing" is the shape "could not ask" is not allowed to
-     * arrive in.
-     *
-     * @return array<string, mixed>
-     */
-    public static function nullableInteger(string $description = ''): array
-    {
-        return ['type' => ['integer', 'null'], 'description' => trim($description . ' ' . self::UNCONSULTED)];
-    }
-
-    /**
-     * A claim about the installation, null where nothing was consulted.
-     *
-     * False says the installation does not have it, which is the same statement
-     * a count of 0 makes and is withheld for the same reason.
-     *
-     * @return array<string, mixed>
-     */
-    public static function nullableBoolean(string $description = ''): array
-    {
-        return ['type' => ['boolean', 'null'], 'description' => trim($description . ' ' . self::UNCONSULTED)];
     }
 }

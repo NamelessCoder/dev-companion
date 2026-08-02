@@ -7,7 +7,7 @@ namespace Typo3CmsMcp\Tool;
 use Typo3CmsMcp\Installation\Changelog;
 use Typo3CmsMcp\Result\Schema;
 use Typo3CmsMcp\Result\ToolResult;
-use Typo3CmsMcp\Result\Unanswered;
+use Typo3CmsMcp\Result\Unsupported;
 use Typo3CmsMcp\Search\LabelSearch;
 
 /**
@@ -46,7 +46,7 @@ final class ChangelogLookup extends ReadOnlyTool
     {
         return Schema::object([
             'query' => Schema::string(),
-            'matchCount' => Schema::nullableInteger('Entries carrying every word of the query, before the limit.'),
+            'matchCount' => Schema::integer('Entries carrying every word of the query, before the limit.'),
             'entries' => Schema::listOf(Schema::object([
                 'type' => ['type' => 'string', 'enum' => ['Breaking', 'Deprecation', 'Feature', 'Important']],
                 'version' => Schema::string('The version directory it was released in.'),
@@ -57,8 +57,8 @@ final class ChangelogLookup extends ReadOnlyTool
             ], ['type', 'version', 'issue', 'title', 'tags', 'file'])),
             'versions' => Schema::listOf(Schema::string(), 'The versions this installation ships changelog entries for, newest first. Anything outside them is not in this answer.'),
             'answeredBy' => Schema::answeredBy(),
-            'unavailable' => Schema::unavailable(),
-        ], ['query', 'matchCount', 'entries', 'versions', 'answeredBy']);
+            'unsupported' => Schema::unsupported(),
+        ], ['query']);
     }
 
     public static function answer(array $args): ToolResult
@@ -69,9 +69,9 @@ final class ChangelogLookup extends ReadOnlyTool
         $limit = (int) ($args['limit'] ?? 20);
 
         if (Changelog::directory() === null) {
-            return Unanswered::because(
+            return Unsupported::because(
                 'no TYPO3 installation was found whose core package ships the changelog',
-                ['query' => $query, 'matchCount' => null, 'entries' => [], 'versions' => []],
+                ['query' => $query],
             );
         }
 

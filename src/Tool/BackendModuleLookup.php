@@ -7,7 +7,7 @@ namespace Typo3CmsMcp\Tool;
 use Typo3CmsMcp\Installation\Typo3Cli;
 use Typo3CmsMcp\Result\Schema;
 use Typo3CmsMcp\Result\ToolResult;
-use Typo3CmsMcp\Result\Unanswered;
+use Typo3CmsMcp\Result\Unsupported;
 
 /**
  * The backend modules the installation has registered.
@@ -41,9 +41,9 @@ final class BackendModuleLookup extends ReadOnlyTool
     {
         return Schema::object([
             'query' => Schema::string(),
-            'matchCount' => Schema::nullableInteger(),
+            'matchCount' => Schema::integer(),
             'answeredBy' => Schema::answeredBy(),
-            'unavailable' => Schema::unavailable(),
+            'unsupported' => Schema::unsupported(),
             'modules' => Schema::listOf(Schema::object([
                 'identifier' => Schema::string(),
                 'parents' => Schema::listOf(Schema::string(), 'The modules it sits under, outermost first.'),
@@ -52,7 +52,7 @@ final class BackendModuleLookup extends ReadOnlyTool
                 'path' => Schema::string('The backend route it answers on.'),
                 'position' => Schema::string('Its declared before/after position, if any.'),
             ], ['identifier', 'parents', 'extension', 'path'])),
-        ], ['query', 'matchCount', 'answeredBy', 'modules']);
+        ], ['query']);
     }
 
     public static function answer(array $args): ToolResult
@@ -61,9 +61,9 @@ final class BackendModuleLookup extends ReadOnlyTool
 
         $result = Typo3Cli::run(['debug:backend:modules', '--csv-export']);
         if (!$result['ok']) {
-            return Unanswered::because(
+            return Unsupported::because(
                 $result['error'] !== '' ? $result['error'] : trim($result['output']),
-                ['query' => $query, 'matchCount' => null, 'modules' => []],
+                ['query' => $query],
             );
         }
 

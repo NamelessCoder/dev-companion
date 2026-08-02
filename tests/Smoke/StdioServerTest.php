@@ -103,6 +103,46 @@ final class StdioServerTest extends TestCase
         self::assertNotSame([], $result['structuredContent']['components']);
     }
 
+    /**
+     * A question about an installation, asked where there is none, over the
+     * wire a client actually reads. Nothing failed, so nothing is an error —
+     * `D-ANS-005`. What comes back is the unsupported answer and the caller's
+     * own query, with no count, no flag and no empty list to read as a result.
+     */
+    #[Test]
+    public function aQuestionThatCannotBeAnsweredHereIsStillAnAnswer(): void
+    {
+        $this->temporaryRoot = sys_get_temp_dir() . '/typo3-cms-mcp-nothing-' . bin2hex(random_bytes(6));
+        mkdir($this->temporaryRoot, 0o777, true);
+
+        $result = $this->session([$this->request(2, 'tools/call', [
+            'name' => 'typo3_icon_lookup',
+            'arguments' => ['query' => 'publish'],
+        ])], $this->temporaryRoot)[2]['result'];
+
+        self::assertFalse($result['isError'], 'an unmet precondition is not a tool error');
+        self::assertSame(['query', 'unsupported'], self::sorted($result['structuredContent']));
+        self::assertSame('no-installation', $result['structuredContent']['unsupported']['cause']);
+        self::assertContains(
+            $this->temporaryRoot,
+            $result['structuredContent']['unsupported']['searched'],
+            'the answer does not name where it looked'
+        );
+        self::assertStringContainsString('not answerable here', $result['content'][0]['text']);
+    }
+
+    /**
+     * @param array<string, mixed> $data
+     * @return array<int, string>
+     */
+    private static function sorted(array $data): array
+    {
+        $keys = array_keys($data);
+        sort($keys);
+
+        return $keys;
+    }
+
     #[Test]
     public function theKnowledgeIndexIsServedWithTheScope(): void
     {

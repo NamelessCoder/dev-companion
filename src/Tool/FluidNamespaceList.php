@@ -8,7 +8,7 @@ use Typo3CmsMcp\Installation\FluidNamespaces;
 use Typo3CmsMcp\Installation\Typo3Cli;
 use Typo3CmsMcp\Result\Schema;
 use Typo3CmsMcp\Result\ToolResult;
-use Typo3CmsMcp\Result\Unanswered;
+use Typo3CmsMcp\Result\Unsupported;
 
 /**
  * The globally registered Fluid namespaces of the installation.
@@ -33,14 +33,14 @@ final class FluidNamespaceList extends ReadOnlyTool
     public static function outputSchema(): array
     {
         return Schema::object([
-            'matchCount' => Schema::nullableInteger(),
+            'matchCount' => Schema::integer(),
             'answeredBy' => Schema::answeredBy(),
-            'unavailable' => Schema::unavailable(),
+            'unsupported' => Schema::unsupported(),
             'namespaces' => Schema::listOf(Schema::object([
                 'prefix' => Schema::string('The prefix usable in a template without declaring it, for example "core".'),
                 'phpNamespaces' => Schema::listOf(Schema::string(), 'The PHP namespaces it resolves ViewHelpers from.'),
             ], ['prefix', 'phpNamespaces'])),
-        ], ['matchCount', 'answeredBy', 'namespaces']);
+        ], []);
     }
 
     public static function answer(array $args): ToolResult
@@ -54,7 +54,7 @@ final class FluidNamespaceList extends ReadOnlyTool
             // files cannot say is what the container did with them.
             $declared = FluidNamespaces::all();
             if ($declared === []) {
-                return Unanswered::because($answer['error'], ['namespaces' => [], 'matchCount' => null]);
+                return Unsupported::because($answer['error']);
             }
             $answeredBy = 'packages';
         }

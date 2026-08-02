@@ -149,11 +149,11 @@ final class LabelSearchTest extends TestCase
 
         $result = Registry::call('typo3_label_lookup', ['query' => 'save document']);
 
-        self::assertSame('nothing', $result->data['answeredBy']);
-        self::assertStringContainsString('unanswered rather than empty', $result->text);
+        self::assertArrayNotHasKey('answeredBy', $result->data);
+        self::assertStringContainsString('not answerable here', $result->text);
         self::assertStringContainsString(
             'exited successfully with neither a JSON payload nor the warning',
-            $result->data['unavailable']['reason']
+            $result->data['unsupported']['reason']
         );
     }
 
@@ -164,8 +164,8 @@ final class LabelSearchTest extends TestCase
 
         $result = Registry::call('typo3_label_lookup', ['query' => 'save document']);
 
-        self::assertSame('nothing', $result->data['answeredBy']);
-        self::assertStringContainsString('could not be asked', $result->text);
+        self::assertArrayNotHasKey('answeredBy', $result->data);
+        self::assertStringContainsString('not answerable here', $result->text);
     }
 
     #[Test]
@@ -248,9 +248,9 @@ final class LabelSearchTest extends TestCase
         // answer is unanswered, and says what to do about it.
         $result = Registry::call('typo3_label_lookup', ['query' => 'save']);
 
-        self::assertSame('nothing', $result->data['answeredBy']);
+        self::assertArrayNotHasKey('answeredBy', $result->data);
         self::assertStringContainsString('no TYPO3 schema yet', $result->text);
-        self::assertStringContainsString('no TYPO3 schema yet', $result->data['unavailable']['diagnosis']);
+        self::assertStringContainsString('no TYPO3 schema yet', $result->data['unsupported']['diagnosis']);
     }
 
     /** @param array<string, string> $units */

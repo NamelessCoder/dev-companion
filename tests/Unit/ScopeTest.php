@@ -1142,9 +1142,11 @@ final class ScopeTest extends TestCase
 
         $result = Registry::call('typo3_label_lookup', ['query' => 'save']);
 
-        self::assertSame('nothing', $result->data['answeredBy']);
-        self::assertNotSame('', $result->data['unavailable']['reason']);
-        self::assertSame([], $result->data['labels']);
+        self::assertArrayNotHasKey('answeredBy', $result->data);
+        self::assertNotSame('', $result->data['unsupported']['reason']);
+        // Not an empty list of labels: an empty list is what an installation
+        // that has none answers with, and none was asked.
+        self::assertArrayNotHasKey('labels', $result->data);
     }
 
     #[Test]
@@ -1157,8 +1159,8 @@ final class ScopeTest extends TestCase
 
         // found: false says the installation has no value there, which is a
         // statement about an installation nothing asked.
-        self::assertNull($result->data['found']);
-        self::assertSame('nothing', $result->data['answeredBy']);
+        self::assertArrayNotHasKey('found', $result->data);
+        self::assertSame('no-installation', $result->data['unsupported']['cause']);
     }
 
     #[Test]

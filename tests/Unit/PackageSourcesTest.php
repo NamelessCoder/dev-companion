@@ -115,7 +115,8 @@ final class PackageSourcesTest extends TestCase
 
         $result = Registry::call('typo3_changelog_lookup', ['query' => 'anything']);
 
-        self::assertSame('nothing', $result->data['answeredBy']);
+        self::assertArrayNotHasKey('answeredBy', $result->data);
+        self::assertArrayHasKey('unsupported', $result->data);
     }
 
     /** @param array<int, string> $tags */

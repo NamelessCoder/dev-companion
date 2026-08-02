@@ -1,6 +1,6 @@
 ---
 id: R-PRJ-008
-status: open
+status: held
 restsOn: [D-ANS-013]
 ---
 
@@ -11,8 +11,15 @@ answer states the PHP that environment runs and says that the commands it lists
 are run inside it.**
 
 Read from that environment's own files — a DDEV project states `php_version` in
-`.ddev/config.yaml` — so `R-PRJ-001` holds: no console, no database, nothing
-started to find out, and an answer on a fresh clone.
+`.ddev/config.yaml`, and in every `.ddev/config.*.yaml` beside it, the last of
+them holding — so `R-PRJ-001` holds: no console, no database, nothing started to
+find out, and an answer on a fresh clone.
+
+An environment this server cannot read a version from is still an environment.
+Where nothing in the files configures one and `TYPO3_MCP_CONSOLE` names a
+command that reaches the installation somewhere other than the caller's shell,
+the answer says that and says the version is unstated. Silence there would say
+"these run where you are", which is the claim the requirement exists against.
 
 Without it the answer offers one number where there are two. A review holds the
 declared constraint against the interpreter its own shell has, and in a
@@ -31,6 +38,15 @@ test:unit`, and names DDEV nowhere.
 
 ## Held by
 
-Not built yet, so nothing holds it. The assertion belongs beside the ones that
-hold `R-PRJ-001`, in `ProjectTest`, against a fixture that carries a
-`.ddev/config.yaml`.
+- `ProjectTest::theAnswerSaysWhatRunsTheProjectAndNotOnlyWhatItDeclares`
+- `ProjectTest::aVersionTheEnvironmentDoesNotStateIsNotAVersionItDoesNotHave`
+- `ProjectTest::anEnvironmentThatIsNotDdevIsSaidToBeUnreadRatherThanAbsent`
+
+What DDEV does with these files was measured rather than recalled, against
+v1.25.1 on 2026-08-02 and its documentation: `.ddev/config.yaml` is read first
+and every `.ddev/config.*.yaml` and `.ddev/config.*.yml` after it in filename
+order, so the last statement of `php_version` is the one the container runs —
+`config.override.yaml` takes no special last place. The version is major.minor
+from the list DDEV ships (5.6 through 8.5); `8.4.3` and `8` are refused by name.
+Quoting it is optional there, so an unquoted `8.0` arrives as a YAML float and
+must not be cast to a string, which would answer `8`.

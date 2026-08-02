@@ -13,9 +13,10 @@ use Symfony\Component\Yaml\Yaml;
  *
  * The knowledge base describes TYPO3; this describes the repository the caller
  * is standing in — which extensions are its own, which sites it configures,
- * which commands it declares. None of that could be bundled, and all of it is
- * what an answer has to be right about before it can recommend anything: a
- * check that does not exist here is worse than no check.
+ * which commands it declares, and which environment it declares them to run in.
+ * None of that could be bundled, and all of it is what an answer has to be
+ * right about before it can recommend anything: a check that does not exist
+ * here is worse than no check.
  *
  * Files only. No console, no database, nothing started — the same rule the rest
  * of this server follows, and the reason this works on a fresh clone.
@@ -57,6 +58,7 @@ final class Project
      *     typo3Version: ?string,
      *     phpConstraint: ?string,
      *     coreConstraint: ?string,
+     *     environment: array{via: string, php: ?string, source: string, entered: bool}|null,
      *     extensions: array<int, array{key: string, path: string, origin: string}>,
      *     sites: array<int, array{identifier: string, base: string, rootPageId: ?int, sets: array<int, string>, languages: array<int, string>}>,
      *     commands: array<int, array{command: string, source: string, declares: string, runs: string}>,
@@ -79,11 +81,140 @@ final class Project
             'typo3Version' => Instance::typo3Version(),
             'phpConstraint' => self::requirement($manifest, 'php'),
             'coreConstraint' => self::requirement($manifest, 'typo3/cms-core'),
+            'environment' => self::environment($root),
             'extensions' => self::extensions($root),
             'sites' => self::sites($root),
             'commands' => self::commands($root, $manifest),
             'patches' => self::patches($manifest),
         ];
+    }
+
+    /**
+     * The environment this repository configures to run itself in, where it
+     * configures one at all.
+     *
+     * A containerised project has two PHP versions — the one its manifest
+     * constrains and the one its container runs — and an answer that states
+     * only the first invites the review that reported "PHP version mismatch
+     * blocks all tests" over a host at 8.3.23 against a declared ^8.4, while
+     * the suite it meant had been running on 8.4 in the container all along
+     * (`feedback/2026-07-31-193611`). The commands below make that worse rather
+     * than better: they are the ones a task is sent to run, and a declared
+     * `composer test:unit` put on the caller's own shell is a different machine
+     * from the one the project is built for.
+     *
+     * Read from the environment's own files, so `R-PRJ-001` still holds and the
+     * answer arrives on a fresh clone. `ddev describe` would answer this too,
+     * and starting anything to find out is the whole of what `R-DIS-006`
+     * forbids — so a stopped project reads exactly like a running one here.
+     *
+     * @return array{via: string, php: ?string, source: string, entered: bool}|null
+     */
+    private static function environment(string $root): ?array
+    {
+        if (is_file($root . '/.ddev/config.yaml')) {
+            [$php, $source] = self::ddevPhp($root);
+
+            return [
+                'via' => Typo3Cli::VIA_DDEV,
+                'php' => $php,
+                'source' => $source,
+                // DDEV sets this inside the web container, and there the shell
+                // the caller has is the environment. Telling it to put `ddev`
+                // in front of a command would name a binary that is not there.
+                'entered' => filter_var(getenv('IS_DDEV_PROJECT'), FILTER_VALIDATE_BOOL),
+            ];
+        }
+
+        // Nothing in the files says DDEV, and one thing outside them may still
+        // say there is an environment: the console command the caller stated
+        // for `Typo3Cli`. A `docker compose exec web bin/typo3` is a machine
+        // this server cannot read a PHP version from — and reporting no
+        // environment there says "these run in your shell", which is the claim
+        // this whole field exists to stop being made by silence.
+        $stated = getenv(Typo3Cli::CONSOLE_VARIABLE);
+        $program = is_string($stated) ? (self::firstToken($stated) ?? '') : '';
+        if ($program !== '' && !str_starts_with(basename($program), 'php')) {
+            return [
+                'via' => Typo3Cli::VIA_OVERRIDE,
+                'php' => null,
+                'source' => Typo3Cli::CONSOLE_VARIABLE,
+                'entered' => false,
+            ];
+        }
+
+        // An interpreter on this machine is not another environment: a stated
+        // `php /some/where/typo3` reaches the console from the same shell every
+        // declared command would run in, and there is one PHP.
+        return null;
+    }
+
+    /** The program a stated command line starts with, quoted or not. */
+    private static function firstToken(string $commandLine): ?string
+    {
+        $tokens = preg_split('/\s+/', trim($commandLine)) ?: [];
+
+        return ($tokens[0] ?? '') === '' ? null : trim($tokens[0], '"\'');
+    }
+
+    /**
+     * The PHP a DDEV project runs, and the file it is stated in.
+     *
+     * `.ddev/config.yaml` is read first, then every `.ddev/config.*.yaml` and
+     * `.ddev/config.*.yml` beside it in filename order, and the last statement
+     * of the version is the one that holds. That is DDEV's own merge — measured
+     * against v1.25.1 on 2026-08-02, where a base `8.1` beside `config.aaa.yaml`
+     * saying `8.2` and `config.zzz.yaml` saying `8.0` came out of `ddev debug
+     * configyaml` as 8.0, and where `config.override.yaml` took no special last
+     * place but sorted with the rest. Reading the base file alone would report
+     * a version the container does not run in every project that keeps its
+     * local settings in the `config.local.yaml` DDEV gitignores for that.
+     *
+     * Null where nothing states one: DDEV then uses the default of the DDEV
+     * that is installed, which is not in these files and is not the same number
+     * from one release to the next.
+     *
+     * @return array{0: ?string, 1: string}
+     */
+    private static function ddevPhp(string $root): array
+    {
+        $files = ['.ddev/config.yaml'];
+        foreach (Finder::create()->files()->in($root . '/.ddev')->depth(0)
+            ->name('config.*.yaml')->name('config.*.yml')->sortByName() as $file) {
+            $files[] = '.ddev/' . $file->getFilename();
+        }
+
+        $php = null;
+        $source = '.ddev/config.yaml';
+        foreach ($files as $file) {
+            $version = self::phpVersion(self::yaml($root . '/' . $file)['php_version'] ?? null);
+            if ($version !== null) {
+                $php = $version;
+                $source = $file;
+            }
+        }
+
+        return [$php, $source];
+    }
+
+    /**
+     * A `php_version` as the file spells it.
+     *
+     * Quoting it is optional in DDEV and the difference reaches here: unquoted,
+     * `8.0` is a YAML float, and casting that to a string gives "8" — a PHP
+     * version that exists nowhere. Both digits are kept instead, which is the
+     * whole of the spelling: DDEV v1.25.1 takes major.minor from a list it
+     * ships (5.6 through 8.5) and refuses "8.4.3" and "8" by name, so there is
+     * no patch level and no bare major to carry.
+     */
+    private static function phpVersion(mixed $stated): ?string
+    {
+        return match (true) {
+            is_float($stated) => sprintf('%.1F', $stated),
+            is_int($stated) => (string) $stated,
+            is_string($stated) && trim($stated) !== '' => trim($stated),
+            default => null,
+        };
     }
 
     /**

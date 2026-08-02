@@ -1394,9 +1394,13 @@ commands it declares in composer.json and package.json, each with what running
 it does to the sources: a check that hands the code back as it was, a change
 that rewrites something, or unknown where the declared body does not say. Read
 from files only — no console, no database — so it answers on a fresh clone.
-Call it before recommending or running a check: the commands listed here are
-the ones that exist in this repository, and the ones marked check are the ones
-a task told not to change files can run.
+It also says which environment the repository configures to run itself in — a
+DDEV project states the PHP its container runs — because that is a different
+interpreter from the caller's shell and the commands below are run in it. Call
+it before recommending or running a check: the commands listed here are the
+ones that exist in this repository, the ones marked check are the ones a task
+told not to change files can run, and where an environment is named they are
+run inside it rather than directly.
 
 `readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: false`
 
@@ -1412,7 +1416,27 @@ a task told not to change files can run.
 - `typo3Version` *(string or null)* — The TYPO3 version installed here,
   read from the core package.
 - `phpConstraint` *(string or null)* — What composer.json requires of PHP.
+  What the project declares, not what runs it — see environment.
 - `coreConstraint` *(string or null)* — What it requires of typo3/cms-core.
+- `environment` *(object or null)* — The environment this repository
+  configures to run itself in, read from that environment's own files. Null
+  means nothing here configures one that this server reads —
+  .ddev/config.yaml and TYPO3_MCP_CONSOLE are what it reads — so the commands
+  below run wherever the caller runs them.
+  - `via` *(string, required)* — One of `ddev`, `override`. ddev: the
+    repository carries a .ddev/config.yaml. override: nothing in the files says
+    so, and TYPO3_MCP_CONSOLE names a command that reaches this installation
+    somewhere other than the caller's own shell.
+  - `php` *(string or null, required)* — The PHP that environment runs,
+    where its files state it. Null is not "none": a DDEV project that states no
+    php_version gets the default of the installed DDEV, and an environment
+    named by TYPO3_MCP_CONSOLE states its version nowhere this server can read.
+    typo3_server_scope reports the version the console actually answers on.
+  - `source` *(string, required)* — Where this was read: the .ddev config
+    file that states the version last, or TYPO3_MCP_CONSOLE.
+  - `entered` *(boolean, required)* — True when this server is already
+    running inside that environment, so its shell is that environment and a
+    declared command needs nothing in front of it.
 - `extensions` *(array of object)* — Extensions that are not TYPO3 system
   extensions.
   - `key` *(string, required)*
@@ -1431,7 +1455,9 @@ a task told not to change files can run.
   - `languages` *(array of string, required)*
 - `commands` *(array of object)* — What this repository declares. A check
   that is not here does not exist here.
-  - `command` *(string, required)* — Ready to run in this repository.
+  - `command` *(string, required)* — As this repository declares it.
+    Where environment is not null, it is run inside that environment rather
+    than in the caller's shell.
   - `source` *(string, required)* — composer.json or package.json.
   - `declares` *(string, required)* — The body the manifest declares for
     it, lines joined with &&.
@@ -1478,8 +1504,9 @@ a task told not to change files can run.
     - `console` *(string, required)* — Environment variable that names
       the console command.
 
-The answer carries exactly one of these sets of fields: `root`, `extensions`,
-`sites`, `commands`, `patches`, `answeredBy` — or `unsupported`.
+The answer carries exactly one of these sets of fields: `root`, `environment`,
+`extensions`, `sites`, `commands`, `patches`, `answeredBy` — or
+`unsupported`.
 
 ## `typo3_extension_scope`
 

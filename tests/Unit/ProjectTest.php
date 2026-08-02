@@ -29,6 +29,10 @@ final class ProjectTest extends TestCase
     #[After]
     public function forgetTheInstance(): void
     {
+        // The two the project answer reads to say what runs it. Left set, they
+        // would decide the environment of every test after this one.
+        putenv(Typo3Cli::CONSOLE_VARIABLE);
+        putenv('IS_DDEV_PROJECT');
         Instance::discoverFrom(null);
         Typo3Cli::forget();
         Typo3Runtime::forget();
@@ -70,6 +74,108 @@ final class ProjectTest extends TestCase
         self::assertSame(
             ['composer t3g:cgl', 'composer t3g:phpstan'],
             array_column($project['commands'], 'command'),
+        );
+    }
+
+    #[Test]
+    public function theAnswerSaysWhatRunsTheProjectAndNotOnlyWhatItDeclares(): void
+    {
+        // A conformance audit reported "PHP version mismatch blocks all tests"
+        // from a host at 8.3.23 against a declared ^8.4, while the suite it
+        // meant runs in a container at 8.4 and was never blocked
+        // (feedback/2026-07-31-193611). Two machines, one number in the answer.
+        $root = $this->composerProject('vendor', '14.3.5');
+        $this->manifest($root, [
+            'require' => ['php' => '^8.4'],
+            'scripts' => ['test:unit' => 'phpunit -c Build/phpunit/UnitTests.xml'],
+        ]);
+        $this->declare($root . '/.ddev/config.yaml', "name: site-new\ntype: typo3\nphp_version: \"8.1\"\n");
+        // DDEV merges config.yaml first and every config.*.yaml after it in
+        // filename order, so the last statement holds — measured against DDEV
+        // v1.25.1 on 2026-08-02. Reading the base file alone would report 8.1
+        // in every project that keeps its local settings where DDEV's own
+        // gitignore puts them. Unquoted, because quoting is optional there and
+        // (string) on the float YAML makes of 8.0 is "8".
+        $this->declare($root . '/.ddev/config.local.yaml', "php_version: 8.4\n");
+        Instance::discoverFrom($root);
+
+        $project = Project::describe();
+
+        self::assertSame('^8.4', $project['phpConstraint'], 'the declared constraint stays what it was');
+        self::assertSame([
+            'via' => Typo3Cli::VIA_DDEV,
+            'php' => '8.4',
+            'source' => '.ddev/config.local.yaml',
+            'entered' => false,
+        ], $project['environment']);
+
+        $text = Registry::call('typo3_project_scope', [])->text;
+        self::assertStringContainsString('PHP ^8.4 declared and 8.4 in DDEV', $text);
+        // The command list is what a task is sent to run, and nothing beside
+        // it said the shell it has is not where these run.
+        self::assertStringContainsString('not in the shell you have', $text);
+        self::assertStringContainsString('ddev composer', $text);
+    }
+
+    #[Test]
+    public function aVersionTheEnvironmentDoesNotStateIsNotAVersionItDoesNotHave(): void
+    {
+        // DDEV takes php_version as major.minor and falls back to the default
+        // of the DDEV that is installed — a number these files do not carry and
+        // one release changes from the next. Guessing it here would be the one
+        // failure this whole field exists against: a stated version that is not
+        // the one running.
+        $root = $this->composerProject();
+        $this->declare($root . '/.ddev/config.yaml', "name: site-new\ntype: typo3\n");
+        $this->manifest($root, ['scripts' => ['ci' => 'phpunit']]);
+        Instance::discoverFrom($root);
+
+        self::assertNull(Project::describe()['environment']['php']);
+        self::assertStringContainsString(
+            'states no php_version',
+            Registry::call('typo3_project_scope', [])->text,
+        );
+
+        // Unquoted it is a YAML float, and casting that to a string would
+        // answer "8" — a PHP version DDEV does not ship.
+        $other = $this->composerProject();
+        $this->declare($other . '/.ddev/config.yaml', "name: old\nphp_version: 8.0\n");
+        Instance::discoverFrom($other);
+
+        self::assertSame('8.0', Project::describe()['environment']['php']);
+    }
+
+    #[Test]
+    public function anEnvironmentThatIsNotDdevIsSaidToBeUnreadRatherThanAbsent(): void
+    {
+        // A stated console is how a layout this server could not work out gets
+        // named at all, and it is evidence that the installation is reached
+        // somewhere other than this shell. Answering null there would say
+        // "these run where you are", which is the claim that went wrong.
+        $root = $this->composerProject();
+        $this->manifest($root, ['scripts' => ['ci' => 'phpunit']]);
+        putenv(Typo3Cli::CONSOLE_VARIABLE . '=docker compose exec web bin/typo3');
+        Instance::discoverFrom($root);
+
+        self::assertSame([
+            'via' => Typo3Cli::VIA_OVERRIDE,
+            'php' => null,
+            'source' => Typo3Cli::CONSOLE_VARIABLE,
+            'entered' => false,
+        ], Project::describe()['environment']);
+        self::assertStringContainsString(
+            'nothing readable here says which PHP that is',
+            Registry::call('typo3_project_scope', [])->text,
+        );
+
+        // An interpreter on this machine is not another environment: it is the
+        // shell the declared commands already run in.
+        putenv(Typo3Cli::CONSOLE_VARIABLE . '=' . PHP_BINARY . ' /some/where/typo3');
+
+        self::assertNull(Project::describe()['environment']);
+        self::assertStringContainsString(
+            'Nothing in this repository configures an environment of its own',
+            Registry::call('typo3_project_scope', [])->text,
         );
     }
 

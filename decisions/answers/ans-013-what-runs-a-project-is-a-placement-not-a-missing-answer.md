@@ -71,8 +71,16 @@ for. This is the entry it said the card would produce.
 
 - That `php_version` in `.ddev/config.yaml` is what the web container runs. It
   matched `ddev describe` in this project on 2026-08-02, and no project was read
-  where the two disagree — an image override or a second `.ddev/config.*.yaml`
-  could produce one.
+  where the two disagree — an image override could produce one, since a
+  `webimage` of somebody's own carries whatever PHP it was built with and no
+  file here says which.
+
+  The second `.ddev/config.*.yaml` this named beside it is no longer assumed.
+  Working `R-PRJ-008` measured it against DDEV v1.25.1: those files do override
+  `php_version`, `.ddev/config.yaml` is merged first and the rest after it in
+  filename order, and the last statement holds — so the reading takes all of
+  them rather than the base file alone, and a project keeping its version in the
+  `config.local.yaml` DDEV gitignores is answered with the version it runs.
 - That the session ran the shell's interpreter rather than the container's. The
   feedback says so itself, and nothing else records that run.
 

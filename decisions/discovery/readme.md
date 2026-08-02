@@ -7,11 +7,13 @@ because it looks exactly like an installation that has nothing to say.
 See [the decisions readme](../readme.md) for how an entry is written and when
 one is added.
 
+- [`D-DIS-007`][D-DIS-007] — The DDEV console is named by the mount, not by the variable · 2026-08-02
 - [`D-DIS-006`][D-DIS-006] — The protocol offers nothing to replace the working directory · 2026-08-01
 - [`D-DIS-005`][D-DIS-005] — A registry with no console command is read by booting the installation · 2026-07-31 · confirmed
 - [`D-DIS-001`][D-DIS-001] — The root package counts as an installed package · 2026-07-29 · confirmed
 - [`D-DIS-004`][D-DIS-004] — The version comes from the core package, not from the console · 2026-07-29 · confirmed
 
+[D-DIS-007]: dis-007-the-ddev-console-is-named-by-the-mount-not-by-the-variable.md
 [D-DIS-006]: dis-006-the-protocol-offers-nothing-to-replace-the-working-directory.md
 [D-DIS-005]: dis-005-a-registry-with-no-command-is-read-by-booting-the-installation.md
 [D-DIS-001]: dis-001-the-root-package-counts-as-an-installed-package.md

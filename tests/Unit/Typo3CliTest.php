@@ -20,11 +20,17 @@ final class Typo3CliTest extends TestCase
 {
     use TemporaryInstallation;
 
+    private ?string $path = null;
+
     #[After]
     public function forgetTheInstance(): void
     {
         putenv(Typo3Cli::CONSOLE_VARIABLE);
         putenv('IS_DDEV_PROJECT');
+        if ($this->path !== null) {
+            putenv('PATH=' . $this->path);
+            $this->path = null;
+        }
         Instance::discoverFrom(null);
         Typo3Cli::forget();
     }
@@ -198,6 +204,36 @@ final class Typo3CliTest extends TestCase
         self::assertStringContainsString('ddev', Typo3Cli::reason());
     }
 
+    /**
+     * `D-DIS-002`: `ddev exec` runs in the container's configured working
+     * directory, so a console named relative to the project root is exit 127 in
+     * a project whose `working_dir.web` is the docroot. The container mounts the
+     * project at one place whatever that setting says, and that is the place
+     * the invocation names.
+     *
+     * The project is a stand-in on the PATH rather than a running one: no test
+     * run may depend on containers, and what is held here is the command that
+     * would be run, which is where the failure was.
+     */
+    #[Test]
+    public function theDdevConsoleIsNamedByAPathTheWorkingDirectoryCannotMove(): void
+    {
+        $root = $this->installation([
+            'config' => ['bin-dir' => '.build/bin', 'vendor-dir' => '.build/vendor'],
+        ]);
+        mkdir($root . '/.build/bin', 0o777, true);
+        file_put_contents($root . '/.build/bin/typo3', "#!/usr/bin/env php\n<?php\n");
+        mkdir($root . '/.ddev');
+        file_put_contents($root . '/.ddev/config.yaml', "name: fixture\ntype: typo3\n");
+        $this->ddevAnswering('{"raw": {"status": "running", "php_version": "8.3"}}');
+        $this->discover($root);
+
+        self::assertSame(
+            ['ddev', 'exec', '--', '/var/www/html/.build/bin/typo3'],
+            Typo3Cli::resolve()['command'],
+        );
+    }
+
     #[Test]
     public function aStoppedProjectReachedThroughHostPhpIsReportedAsTheHalfAnswerItIs(): void
     {
@@ -274,5 +310,21 @@ final class Typo3CliTest extends TestCase
     {
         Instance::discoverFrom($root);
         Typo3Cli::forget();
+    }
+
+    /**
+     * A `ddev` on the PATH that describes a running project, so what this
+     * server would invoke is readable without a container being up. It answers
+     * whatever it is asked, because the one call made here is `describe -j`.
+     */
+    private function ddevAnswering(string $description): void
+    {
+        $directory = $this->removeAfterwards(sys_get_temp_dir() . '/typo3-cms-mcp-bin-' . bin2hex(random_bytes(6)));
+        mkdir($directory, 0o777, true);
+        file_put_contents($directory . '/ddev', "#!/bin/sh\ncat <<'JSON'\n" . $description . "\nJSON\n");
+        chmod($directory . '/ddev', 0o755);
+
+        $this->path = (string) getenv('PATH');
+        putenv('PATH=' . $directory . PATH_SEPARATOR . $this->path);
     }
 }

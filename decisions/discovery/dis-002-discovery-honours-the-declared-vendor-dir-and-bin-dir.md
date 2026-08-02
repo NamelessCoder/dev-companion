@@ -68,4 +68,6 @@ the second is the one that guesses nothing: DDEV sets
 arguments to the container's bash, which expands it. What that still needs is
 the DDEV version the variable can be relied on from, because a form that
 silently resolves to `/.build/bin/typo3` on an older one is worse than the
-relative path it replaces. The queue carries it.
+relative path it replaces. It is v1.24.5, which makes the mount the form that
+guesses nothing and the variable the one with a version on it — made on
+2026-08-02, with the reading in `D-DIS-007`.

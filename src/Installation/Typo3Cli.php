@@ -40,6 +40,21 @@ final class Typo3Cli
     /** A TYPO3 bootstrap can hang on a broken configuration; an MCP session must not. */
     private const TIMEOUT_SECONDS = 90;
 
+    /**
+     * Where DDEV mounts the project inside its web container.
+     *
+     * The invocation has to be absolute. `ddev exec` runs in the container's
+     * configured working directory, which a project may point at its docroot,
+     * and a console named relative to the project root is then not there —
+     * `D-DIS-002` measured exit 127 for exactly that. `$DDEV_APPROOT` says the
+     * same thing without naming a directory, and it is not the safer form: DDEV
+     * sets that variable in the web container only from v1.24.5, and sets it to
+     * this literal string. Below that version it expands to nothing and the
+     * console is looked for at /bin/typo3, which fails where the relative path
+     * worked.
+     */
+    private const DDEV_APPROOT = '/var/www/html';
+
     /** @var array{command: array<int, string>, via: string, php: string}|null|false */
     private static array|false|null $resolved = false;
 
@@ -474,7 +489,7 @@ final class Typo3Cli
         }
 
         return [[
-            'command' => ['ddev', 'exec', '--', $binary],
+            'command' => ['ddev', 'exec', '--', self::DDEV_APPROOT . '/' . $binary],
             'via' => self::VIA_DDEV,
             'php' => $php,
         ], ''];

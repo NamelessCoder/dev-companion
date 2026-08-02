@@ -1,275 +1,275 @@
 [
-    {
-        "id": "deprecation",
-        "title": "Deprecation",
-        "match": [
-            "deprecat"
-        ],
-        "rulesQuery": "deprecation changelog",
-        "checklist": [
-            "Add a changelog file below typo3/sysext/core/Documentation/Changelog/<version>/ named Deprecation-<issue>-<Title>.rst.",
-            "Use [TASK] or [FEATURE] as the commit keyword. A deprecation must never use the [!!!] breaking prefix.",
-            "Keep the deprecated API working and let it trigger E_USER_DEPRECATED; removal happens in a later major.",
-            "Document the migration path in the changelog and consider an extension scanner matcher.",
-            "Migrate all core usages of the deprecated API in the same patch."
-        ],
-        "checks": [
-            "CI=true ./Build/Scripts/runTests.sh -s checkRst"
-        ],
-        "tools": [
-            "typo3_commit_message_guide with isDeprecation=true, to get the keyword and prefix rules checked"
-        ]
-    },
-    {
-        "id": "breaking",
-        "title": "Breaking change",
-        "match": [
-            "breaking",
-            "remove public",
-            "removed public",
-            "drop support"
-        ],
-        "rulesQuery": "breaking change changelog",
-        "checklist": [
-            "Add a changelog file below typo3/sysext/core/Documentation/Changelog/<version>/ named Breaking-<issue>-<Title>.rst.",
-            "Prefix the commit summary with [!!!] before the keyword.",
-            "Target main; confirm any older release target with the release managers.",
-            "Describe the migration path for extension authors and consider an extension scanner matcher."
-        ],
-        "checks": [
-            "CI=true ./Build/Scripts/runTests.sh -s checkRst",
-            "CI=true ./Build/Scripts/runTests.sh -s checkExtensionScannerRst"
-        ],
-        "tools": [
-            "typo3_commit_message_guide with isBreaking=true"
-        ]
-    },
-    {
-        "id": "changelog",
-        "title": "Changelog or ReST documentation",
-        "match": [
-            "changelog",
-            "rst",
-            "release note",
-            "documentation"
-        ],
-        "rulesQuery": "changelog rst documentation",
-        "checklist": [
-            "Changelog files live below typo3/sysext/core/Documentation/Changelog/<version>/ and use the Breaking-, Deprecation-, Feature-, Important- or Task- prefix with the Forge issue number.",
-            "Include the ..  include:: /Includes.rst.txt header and a reference label, as in the neighbouring files."
-        ],
-        "checks": [
-            "CI=true ./Build/Scripts/runTests.sh -s checkRst"
-        ],
-        "tools": []
-    },
-    {
-        "id": "labels",
-        "title": "User-facing labels",
-        "match": [
-            "xlf",
-            "xliff",
-            "trans-unit",
-            "locallang",
-            "translation",
-            "language file"
-        ],
-        "matchWeak": [
-            "label",
-            "wording"
-        ],
-        "condition": "only if the change adds, edits, or retires an XLF trans-unit",
-        "rulesQuery": "",
-        "checklist": [
-            "Reference labels by their translation domain (package.resource:key), not by the EXT: file path. typo3_translation_domain_lookup computes the domain of any XLF path.",
-            "Never delete a trans-unit: mark it x-unused-since=\"<next version>\" and remove it in a later major.",
-            "Write the source unit in English. A translation maintained in the package belongs in the locale-prefixed XLF beside that source file."
-        ],
-        "checks": [
-            "CI=true ./Build/Scripts/runTests.sh -s checkIntegrityXliff",
-            "CI=true ./Build/Scripts/runTests.sh -s normalizeXliff"
-        ],
-        "tools": [
-            "typo3_translation_domain_lookup, for the domain an XLF file resolves to"
-        ]
-    },
-    {
-        "id": "backend-ui",
-        "title": "Backend UI markup",
-        "match": [
-            "markup",
-            "css class",
-            "component",
-            "badge",
-            "card",
-            "button",
-            "modal"
-        ],
-        "matchWeak": [
-            "template",
-            "fluid",
-            "backend module"
-        ],
-        "condition": "only if the change adds or alters backend component markup or CSS classes",
-        "rulesQuery": "backend ui component",
-        "checklist": [
-            "Use the existing backend component classes and their documented markup instead of new ad-hoc classes.",
-            "Check the styleguide demo of the component for the canonical structure."
-        ],
-        "checks": [
-            "CI=true ./Build/Scripts/runTests.sh -s lintScss",
-            "CI=true ./Build/Scripts/runTests.sh -s build"
-        ],
-        "tools": [
-            "typo3_component_lookup, before writing backend markup or CSS classes"
-        ]
-    },
-    {
-        "id": "icons",
-        "title": "Icons",
-        "match": [
-            "icon"
-        ],
-        "rulesQuery": "icon",
-        "checklist": [
-            "Resolve the icon identifier in your own checkout before using it: IconRegistry is built from every installed package, so an identifier that exists in one instance may not exist in another, and an unknown one only fails at runtime."
-        ],
-        "checks": [],
-        "tools": []
-    },
-    {
-        "id": "tests",
-        "title": "Test coverage",
-        "match": [
-            "test",
-            "coverage",
-            "regression"
-        ],
-        "rulesQuery": "testing strategy",
-        "checklist": [
-            "Confirm the test fails without the change and passes with it.",
-            "Run the single test file or method while iterating instead of the whole suite."
-        ],
-        "checks": [],
-        "tools": [
-            "typo3_test_run_guide, for the targeted invocation form",
-            "typo3_architecture_lookup id=project-extension-tests, where the extension is not part of the core and the suite has to be assembled first"
-        ]
-    },
-    {
-        "id": "submission",
-        "title": "Patch submission",
-        "scope": "core",
-        "condition": "if the patch goes to the TYPO3 core itself",
-        "match": [
-            "gerrit",
-            "push",
-            "patch set",
-            "review",
-            "submit",
-            "backport"
-        ],
-        "rulesQuery": "gerrit push patch set",
-        "checklist": [
-            "One patch is one commit: improve it by amending, never by adding a second commit.",
-            "Push with git push origin HEAD:refs/for/<branch> and keep the Change-Id line untouched."
-        ],
-        "checks": [
-            "CI=true ./Build/Scripts/runTests.sh -s cglGit"
-        ],
-        "tools": [
-            "typo3_commit_message_guide, to check the message before pushing"
-        ]
-    },
-    {
-        "id": "installation-setup",
-        "title": "Setting an installation up",
-        "match": [
-            "typo3 setup",
-            "set up a new",
-            "set up an installation",
-            "install typo3",
-            "fresh installation",
-            "bootstrap the installation"
-        ],
-        "matchWeak": [
-            "setup",
-            "install"
-        ],
-        "condition": "only if the task is setting an installation up rather than working on the code in one",
-        "rulesQuery": "",
-        "checklist": [
-            "State the admin username and the password in your reply, with the URL of the backend they belong to. The setup command prints neither, so where it ran non-interactively the party that chose the value is the only one that has it — and a password nobody reports is a lockout of the installation that was just created.",
-            "Generate that password rather than inventing a quiet default, and keep it out of the shell history: --admin-user-password and TYPO3_SETUP_ADMIN_PASSWORD both end up in it, which is what the command's own help warns about. The interactive mode avoids it, and so does a leading space in bash and zsh.",
-            "The same value becomes the install tool password. The command creates the backend user and then sets BE/installToolPassword in config/system/settings.php to what it was handed, and there is no option of its own for it — so the two start out identical and diverge silently the first time somebody changes the backend password.",
-            "Neither is stored reversibly, so recovery is a reset and not a lookup: backend:resetpassword for the backend user, and for the install tool the BE/installToolPassword hash in config/system/settings.php — which install:password:set rewrites where the installation has that command.",
-            "Leave --create-site out where a sitepackage ships a root page and a site configuration. It creates both itself, and the sitepackage's own import then lands beside them: a second root page, and its site configuration skipped because the identifier already exists."
-        ],
-        "checks": [],
-        "tools": [
-            "typo3_project_scope, for what the installation around this repository already is",
-            "typo3_architecture_lookup with id=sitepackage-initial-content, for what a sitepackage seeds an empty installation with and why the order of the two setup commands decides it"
-        ]
-    },
-    {
-        "id": "installation-upgrade",
-        "title": "Upgrading or maintaining an installation",
-        "match": [
-            "upgrade",
-            "maintain",
-            "maintenance",
-            "composer update",
-            "new major"
-        ],
-        "matchWeak": [
-            "updates"
-        ],
-        "condition": "only if the task is about an installation rather than about the code in it",
-        "rulesQuery": "",
-        "checklist": [
-            "Establish where you are before changing anything: typo3_project_scope for the installed TYPO3 and PHP and for which extensions are the project's own, typo3_changelog_lookup with type=breaking for what the target version did to them.",
-            "Check every third-party extension for a release that supports the target major. One that has none decides the schedule, and Composer reports it as a conflict rather than as advice.",
-            "Dump the database and work on a copy. From the first schema change on, the upgrade cannot be reverted with git.",
-            "Raise the PHP version where the target requires it — in composer.json and in the environment that runs it — then require the new TYPO3 constraints together with every extension in one composer call.",
-            "Then, in this order: typo3 extension:setup for the schema and the static data, typo3 upgrade:list and typo3 upgrade:run for the wizards, typo3 cache:flush.",
-            "Run the Extension Scanner over the project's own extensions for the call sites the changelog named, and re-check the site configuration, the TypoScript and the TSconfig — then repeat the same commands in the same order on every other environment."
-        ],
-        "checks": [],
-        "tools": [
-            "typo3_project_scope, for what this installation is and which commands this repository declares",
-            "typo3_changelog_lookup with type=breaking or deprecation and the target version",
-            "typo3_architecture_lookup with id=installation-upgrade, for the order of operations and why it is that order"
-        ]
-    },
-    {
-        "id": "content-element",
-        "title": "Adding or changing a content element",
-        "match": [
-            "content element",
-            "CType",
-            "tt_content",
-            "backend preview"
-        ],
-        "matchWeak": [
-            "carousel",
-            "slider",
-            "accordion",
-            "slides",
-            "teaser"
-        ],
-        "condition": "only if the task adds or changes a content element rather than the page or the plugin around it",
-        "rulesQuery": "",
-        "checklist": [
-            "Describe the editor workflow before naming a single field: who creates each piece of this element, in which order, and what translating, hiding and deleting the element does to it. The data model is the answer to that, not a choice made afterwards.",
-            "Own repeatable content in a child table of its own with type=inline. Referencing existing records is right where reuse was asked for and nesting arbitrary tt_content where nesting was; neither is a way to store a list of slides, and both are technically possible, which is why an element that skipped the workflow question ends up with one of them.",
-            "Register this element in a file of its own under Configuration/TCA/Overrides/ and give it its own TypoScript file and template, so the generic files stay what is genuinely shared.",
-            "Load the CSS and JavaScript only this element needs through the Fluid AssetCollector in its template, rather than on every page of the site.",
-            "Cover the persistence of the child records and the order they render in with functional tests. A unit test of mocks asserts the mock, and browser behaviour that was not tested is reported as untested."
-        ],
-        "checks": [],
-        "tools": [
-            "typo3_architecture_lookup with id=content-elements, for what the element owns and how the record type is registered",
-            "typo3_extension_scope, for the content elements this extension already registers and the templates they render through"
-        ]
-    }
+  {
+    "id": "deprecation",
+    "title": "Deprecation",
+    "match": [
+      "deprecat"
+    ],
+    "rulesQuery": "deprecation changelog",
+    "checklist": [
+      "Add a changelog file below typo3/sysext/core/Documentation/Changelog/<version>/ named Deprecation-<issue>-<Title>.rst.",
+      "Use [TASK] or [FEATURE] as the commit keyword. A deprecation must never use the [!!!] breaking prefix.",
+      "Keep the deprecated API working and let it trigger E_USER_DEPRECATED; removal happens in a later major.",
+      "Document the migration path in the changelog and consider an extension scanner matcher.",
+      "Migrate all core usages of the deprecated API in the same patch."
+    ],
+    "checks": [
+      "CI=true ./Build/Scripts/runTests.sh -s checkRst"
+    ],
+    "tools": [
+      "typo3_commit_message_guide with isDeprecation=true, to get the keyword and prefix rules checked"
+    ]
+  },
+  {
+    "id": "breaking",
+    "title": "Breaking change",
+    "match": [
+      "breaking",
+      "remove public",
+      "removed public",
+      "drop support"
+    ],
+    "rulesQuery": "breaking change changelog",
+    "checklist": [
+      "Add a changelog file below typo3/sysext/core/Documentation/Changelog/<version>/ named Breaking-<issue>-<Title>.rst.",
+      "Prefix the commit summary with [!!!] before the keyword.",
+      "Target main; confirm any older release target with the release managers.",
+      "Describe the migration path for extension authors and consider an extension scanner matcher."
+    ],
+    "checks": [
+      "CI=true ./Build/Scripts/runTests.sh -s checkRst",
+      "CI=true ./Build/Scripts/runTests.sh -s checkExtensionScannerRst"
+    ],
+    "tools": [
+      "typo3_commit_message_guide with isBreaking=true"
+    ]
+  },
+  {
+    "id": "changelog",
+    "title": "Changelog or ReST documentation",
+    "match": [
+      "changelog",
+      "rst",
+      "release note",
+      "documentation"
+    ],
+    "rulesQuery": "changelog rst documentation",
+    "checklist": [
+      "Changelog files live below typo3/sysext/core/Documentation/Changelog/<version>/ and use the Breaking-, Deprecation-, Feature-, Important- or Task- prefix with the Forge issue number.",
+      "Include the ..  include:: /Includes.rst.txt header and a reference label, as in the neighbouring files."
+    ],
+    "checks": [
+      "CI=true ./Build/Scripts/runTests.sh -s checkRst"
+    ],
+    "tools": []
+  },
+  {
+    "id": "labels",
+    "title": "User-facing labels",
+    "match": [
+      "xlf",
+      "xliff",
+      "trans-unit",
+      "locallang",
+      "translation",
+      "language file"
+    ],
+    "matchWeak": [
+      "label",
+      "wording"
+    ],
+    "condition": "only if the change adds, edits, or retires an XLF trans-unit",
+    "rulesQuery": "",
+    "checklist": [
+      "Reference labels by their translation domain (package.resource:key), not by the EXT: file path. typo3_translation_domain_lookup computes the domain of any XLF path.",
+      "Never delete a trans-unit: mark it x-unused-since=\"<next version>\" and remove it in a later major.",
+      "Write the source unit in English. A translation maintained in the package belongs in the locale-prefixed XLF beside that source file."
+    ],
+    "checks": [
+      "CI=true ./Build/Scripts/runTests.sh -s checkIntegrityXliff",
+      "CI=true ./Build/Scripts/runTests.sh -s normalizeXliff"
+    ],
+    "tools": [
+      "typo3_translation_domain_lookup, for the domain an XLF file resolves to"
+    ]
+  },
+  {
+    "id": "backend-ui",
+    "title": "Backend UI markup",
+    "match": [
+      "markup",
+      "css class",
+      "component",
+      "badge",
+      "card",
+      "button",
+      "modal"
+    ],
+    "matchWeak": [
+      "template",
+      "fluid",
+      "backend module"
+    ],
+    "condition": "only if the change adds or alters backend component markup or CSS classes",
+    "rulesQuery": "backend ui component",
+    "checklist": [
+      "Use the existing backend component classes and their documented markup instead of new ad-hoc classes.",
+      "Check the styleguide demo of the component for the canonical structure."
+    ],
+    "checks": [
+      "CI=true ./Build/Scripts/runTests.sh -s lintScss",
+      "CI=true ./Build/Scripts/runTests.sh -s build"
+    ],
+    "tools": [
+      "typo3_component_lookup, before writing backend markup or CSS classes"
+    ]
+  },
+  {
+    "id": "icons",
+    "title": "Icons",
+    "match": [
+      "icon"
+    ],
+    "rulesQuery": "icon",
+    "checklist": [
+      "Resolve the icon identifier in your own checkout before using it: IconRegistry is built from every installed package, so an identifier that exists in one instance may not exist in another, and an unknown one only fails at runtime."
+    ],
+    "checks": [],
+    "tools": []
+  },
+  {
+    "id": "tests",
+    "title": "Test coverage",
+    "match": [
+      "test",
+      "coverage",
+      "regression"
+    ],
+    "rulesQuery": "testing strategy",
+    "checklist": [
+      "Confirm the test fails without the change and passes with it.",
+      "Run the single test file or method while iterating instead of the whole suite."
+    ],
+    "checks": [],
+    "tools": [
+      "typo3_test_run_guide, for the targeted invocation form",
+      "typo3_architecture_lookup id=project-extension-tests, where the extension is not part of the core and the suite has to be assembled first"
+    ]
+  },
+  {
+    "id": "submission",
+    "title": "Patch submission",
+    "scope": "core",
+    "condition": "if the patch goes to the TYPO3 core itself",
+    "match": [
+      "gerrit",
+      "push",
+      "patch set",
+      "review",
+      "submit",
+      "backport"
+    ],
+    "rulesQuery": "gerrit push patch set",
+    "checklist": [
+      "One patch is one commit: improve it by amending, never by adding a second commit.",
+      "Push with git push origin HEAD:refs/for/<branch> and keep the Change-Id line untouched."
+    ],
+    "checks": [
+      "CI=true ./Build/Scripts/runTests.sh -s cglGit"
+    ],
+    "tools": [
+      "typo3_commit_message_guide, to check the message before pushing"
+    ]
+  },
+  {
+    "id": "installation-setup",
+    "title": "Setting an installation up",
+    "match": [
+      "typo3 setup",
+      "set up a new",
+      "set up an installation",
+      "install typo3",
+      "fresh installation",
+      "bootstrap the installation"
+    ],
+    "matchWeak": [
+      "setup",
+      "install"
+    ],
+    "condition": "only if the task is setting an installation up rather than working on the code in one",
+    "rulesQuery": "",
+    "checklist": [
+      "State the admin username and the password in your reply, with the URL of the backend they belong to. The setup command prints neither, so where it ran non-interactively the party that chose the value is the only one that has it — and a password nobody reports is a lockout of the installation that was just created.",
+      "Generate that password rather than inventing a quiet default, and keep it out of the shell history: --admin-user-password and TYPO3_SETUP_ADMIN_PASSWORD both end up in it, which is what the command's own help warns about. The interactive mode avoids it, and so does a leading space in bash and zsh.",
+      "The same value becomes the install tool password. The command creates the backend user and then sets BE/installToolPassword in config/system/settings.php to what it was handed, and there is no option of its own for it — so the two start out identical and diverge silently the first time somebody changes the backend password.",
+      "Neither is stored reversibly, so recovery is a reset and not a lookup: backend:resetpassword for the backend user, and for the install tool the BE/installToolPassword hash in config/system/settings.php — which install:password:set rewrites where the installation has that command.",
+      "Leave --create-site out where a sitepackage ships a root page and a site configuration. It creates both itself, and the sitepackage's own import then lands beside them: a second root page, and its site configuration skipped because the identifier already exists."
+    ],
+    "checks": [],
+    "tools": [
+      "typo3_project_scope, for what the installation around this repository already is",
+      "typo3_architecture_lookup with id=sitepackage-initial-content, for what a sitepackage seeds an empty installation with and why the order of the two setup commands decides it"
+    ]
+  },
+  {
+    "id": "installation-upgrade",
+    "title": "Upgrading or maintaining an installation",
+    "match": [
+      "upgrade",
+      "maintain",
+      "maintenance",
+      "composer update",
+      "new major"
+    ],
+    "matchWeak": [
+      "updates"
+    ],
+    "condition": "only if the task is about an installation rather than about the code in it",
+    "rulesQuery": "",
+    "checklist": [
+      "Establish where you are before changing anything: typo3_project_scope for the installed TYPO3 and PHP and for which extensions are the project's own, typo3_changelog_lookup with type=breaking for what the target version did to them.",
+      "Check every third-party extension for a release that supports the target major. One that has none decides the schedule, and Composer reports it as a conflict rather than as advice.",
+      "Dump the database and work on a copy. From the first schema change on, the upgrade cannot be reverted with git.",
+      "Raise the PHP version where the target requires it — in composer.json and in the environment that runs it — then require the new TYPO3 constraints together with every extension in one composer call.",
+      "Then, in this order: typo3 extension:setup for the schema and the static data, typo3 upgrade:list and typo3 upgrade:run for the wizards, typo3 cache:flush.",
+      "Run the Extension Scanner over the project's own extensions for the call sites the changelog named, and re-check the site configuration, the TypoScript and the TSconfig — then repeat the same commands in the same order on every other environment."
+    ],
+    "checks": [],
+    "tools": [
+      "typo3_project_scope, for what this installation is and which commands this repository declares",
+      "typo3_changelog_lookup with type=breaking or deprecation and the target version",
+      "typo3_architecture_lookup with id=installation-upgrade, for the order of operations and why it is that order"
+    ]
+  },
+  {
+    "id": "content-element",
+    "title": "Adding or changing a content element",
+    "match": [
+      "content element",
+      "CType",
+      "tt_content",
+      "backend preview"
+    ],
+    "matchWeak": [
+      "carousel",
+      "slider",
+      "accordion",
+      "slides",
+      "teaser"
+    ],
+    "condition": "only if the task adds or changes a content element rather than the page or the plugin around it",
+    "rulesQuery": "",
+    "checklist": [
+      "Describe the editor workflow before naming a single field: who creates each piece of this element, in which order, and what translating, hiding and deleting the element does to it. The data model is the answer to that, not a choice made afterwards.",
+      "Own repeatable content in a child table of its own with type=inline. Referencing existing records is right where reuse was asked for and nesting arbitrary tt_content where nesting was; neither is a way to store a list of slides, and both are technically possible, which is why an element that skipped the workflow question ends up with one of them.",
+      "Register this element in a file of its own under Configuration/TCA/Overrides/ and give it its own TypoScript file and template, so the generic files stay what is genuinely shared.",
+      "Load the CSS and JavaScript only this element needs through the Fluid AssetCollector in its template, rather than on every page of the site.",
+      "Cover the persistence of the child records and the order they render in with functional tests. A unit test of mocks asserts the mock, and browser behaviour that was not tested is reported as untested."
+    ],
+    "checks": [],
+    "tools": [
+      "typo3_architecture_lookup with id=content-elements, for what the element owns and how the record type is registered",
+      "typo3_extension_scope, for the content elements this extension already registers and the templates they render through"
+    ]
+  }
 ]

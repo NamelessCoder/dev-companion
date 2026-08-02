@@ -1,47 +1,47 @@
 [
-    {
-        "id": "backend-typescript",
-        "title": "Backend TypeScript Modules",
-        "scope": "core",
-        "appliesTo": [
-            "Build/Sources/TypeScript/",
-            "Resources/Public/JavaScript/"
-        ],
-        "hints": [
-            "TypeScript source lives in Build/Sources/TypeScript/ and the JavaScript generated from it in the owning system extension's Resources/Public/JavaScript/. The generated file is committed, so a source change that is not built leaves the two disagreeing and the browser running the old one.",
-            "This is the core's asset pipeline. A project extension owns a separate build; see extension-asset-build.",
-            "Keep TypeScript source and generated JavaScript in sync.",
-            "Prefer existing TYPO3 backend imports, event patterns, and custom element conventions used nearby.",
-            "Frontend modules with state transitions should have focused JavaScript unit coverage."
-        ],
-        "checks": [
-            "CI=true ./Build/Scripts/runTests.sh -s build",
-            "CI=true ./Build/Scripts/runTests.sh -s lintTypescript",
-            "CI=true ./Build/Scripts/runTests.sh -s unitJavascript"
-        ]
-    },
-    {
-        "id": "backend-ui",
-        "title": "Backend UI and Web Components",
-        "scope": "core",
-        "appliesTo": [
-            "typo3/sysext/backend/",
-            "Build/Sources/TypeScript/backend/",
-            "Resources/Public/JavaScript/backend",
-            "web component",
-            "custom element",
-            "LitElement"
-        ],
-        "hints": [
-            "Keep custom elements focused on rendering and interaction orchestration.",
-            "Keep state transitions explicit and testable.",
-            "Check accessibility behavior for controls, dialogs, drag and drop, and status indicators.",
-            "For custom elements, keep CSS aligned with the host element API, stable attributes, slots, parts, and custom properties."
-        ],
-        "checks": [
-            "CI=true ./Build/Scripts/runTests.sh -s build",
-            "CI=true ./Build/Scripts/runTests.sh -s lintTypescript",
-            "CI=true ./Build/Scripts/runTests.sh -s unitJavascript"
-        ]
-    }
+  {
+    "id": "backend-typescript",
+    "title": "Backend TypeScript Modules",
+    "scope": "core",
+    "appliesTo": [
+      "Build/Sources/TypeScript/",
+      "Resources/Public/JavaScript/"
+    ],
+    "hints": [
+      "TypeScript source lives in Build/Sources/TypeScript/ and the JavaScript generated from it in the owning system extension's Resources/Public/JavaScript/. The generated file is committed, so a source change that is not built leaves the two disagreeing and the browser running the old one.",
+      "This is the core's asset pipeline. A project extension owns a separate build; see extension-asset-build.",
+      "Keep TypeScript source and generated JavaScript in sync.",
+      "Prefer existing TYPO3 backend imports, event patterns, and custom element conventions used nearby.",
+      "Frontend modules with state transitions should have focused JavaScript unit coverage."
+    ],
+    "checks": [
+      "CI=true ./Build/Scripts/runTests.sh -s build",
+      "CI=true ./Build/Scripts/runTests.sh -s lintTypescript",
+      "CI=true ./Build/Scripts/runTests.sh -s unitJavascript"
+    ]
+  },
+  {
+    "id": "backend-ui",
+    "title": "Backend UI and Web Components",
+    "scope": "core",
+    "appliesTo": [
+      "typo3/sysext/backend/",
+      "Build/Sources/TypeScript/backend/",
+      "Resources/Public/JavaScript/backend",
+      "web component",
+      "custom element",
+      "LitElement"
+    ],
+    "hints": [
+      "Keep custom elements focused on rendering and interaction orchestration.",
+      "Keep state transitions explicit and testable.",
+      "Check accessibility behavior for controls, dialogs, drag and drop, and status indicators.",
+      "For custom elements, keep CSS aligned with the host element API, stable attributes, slots, parts, and custom properties."
+    ],
+    "checks": [
+      "CI=true ./Build/Scripts/runTests.sh -s build",
+      "CI=true ./Build/Scripts/runTests.sh -s lintTypescript",
+      "CI=true ./Build/Scripts/runTests.sh -s unitJavascript"
+    ]
+  }
 ]

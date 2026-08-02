@@ -1,604 +1,604 @@
 [
-    {
-        "id": "css-source-build-boundaries",
-        "title": "CSS Source and Build Boundaries",
-        "scope": "core",
-        "appliesTo": [
-            "Build/Sources/Sass/",
-            "Resources/Public/Css/",
-            ".scss",
-            ".css",
-            "sass",
-            "css"
-        ],
-        "hints": [
-            "Treat Build/Sources/Sass/ as the source of truth when a Sass source exists.",
-            "This is the core's asset pipeline. A project extension owns a separate build; see extension-asset-build.",
-            "Do not hand-edit generated public CSS as the only change.",
-            "Not every asset comes out of the Sass build. The CKEditor CSS is built through Build/rollup/ckeditor.js, so a change there is not picked up by a CSS build and looks like nothing happened.",
-            "Verify generated assets are in sync when public assets are committed.",
-            "Use lintScss for TYPO3's stylelint setup and npm -- run build-css for a focused CSS build while iterating."
-        ],
-        "checks": [
-            "CI=true ./Build/Scripts/runTests.sh -s build",
-            "CI=true ./Build/Scripts/runTests.sh -s lintScss",
-            "CI=true ./Build/Scripts/runTests.sh -s npm -- run build-css"
-        ]
-    },
-    {
-        "id": "css-components",
-        "title": "CSS Component Structure",
-        "scope": "core",
-        "appliesTo": [
-            "Build/Sources/Sass/component/",
-            "Build/Sources/Sass/component/forms/",
-            "Build/Sources/Sass/component/scaffold/",
-            "Build/Sources/Sass/dashboard/",
-            "Build/Sources/Sass/element/"
-        ],
-        "hints": [
-            "The backend stylesheet is a set of bundles. Each top-level entry file under Build/Sources/Sass/ without a leading underscore — backend.scss, dashboard.scss, adminpanel.scss, form.scss, workspace.scss and a few more — compiles to one generated public CSS file. Everything else is a partial named _name.scss and reaches a bundle only through an @import.",
-            "A partial is compiled only once something imports it: there is no glob and no index file. That is the step a new partial is forgotten at — the file exists, the Sass build passes, and none of it is in the output. Wire a foundational, reusable component into _minimal.scss and an app-specific one into backend.scss or whichever bundle owns the feature.",
-            "The backend bundle has two layers. _minimal.scss is the base — the Bootstrap foundation plus TYPO3's own foundational partials, component/buttons, badges, panel, table, nav, modal and the scaffold/* layout. backend.scss is the application layer: it imports _minimal, then the backend-specific partials, the element/* custom-element styles and the typo3/* glue.",
-            "The folders under Build/Sources/Sass/ each own a concern: component/ holds one partial per component, component/forms/ the form controls, component/scaffold/ the topbar, toolbar, module menu and sidebar, element/ the custom elements named after their host element, dashboard/ and module/ the area styles, variables/ and mixins/ the tokens and helpers. libs/ and typo3/ are third-party and legacy glue — no new component styles go there.",
-            "Prefer focused component partials in the existing Sass structure.",
-            "Name a partial after the class root it owns, _badges.scss for .badge. One partial owns one component; a component spread across partials is one nobody can find.",
-            "Keep selectors close to the owning UI component.",
-            "Use forms, scaffold, dashboard, and element folders for their owning concerns instead of creating broad global styles.",
-            "Document a component's canonical markup in a // Markup: block at the top of its partial, and let the styleguide demo mirror that markup.",
-            "The Sass layer uses @import, not the Dart Sass @use/@forward module system. Follow the existing import style and ordering rather than introducing the newer one in one file."
-        ],
-        "checks": [
-            "CI=true ./Build/Scripts/runTests.sh -s build",
-            "CI=true ./Build/Scripts/runTests.sh -s lintScss"
-        ]
-    },
-    {
-        "id": "css-browser-target",
-        "title": "CSS Browser Target",
-        "scope": "core",
-        "appliesTo": [
-            "browser",
-            "evergreen",
-            "baseline",
-            "lts",
-            "support",
-            "compatibility",
-            "modern css",
-            "css feature",
-            "fallback",
-            "backport",
-            "backported",
-            "release year",
-            "target branch",
-            "native css",
-            "popover api",
-            "popover",
-            "javascript workaround"
-        ],
-        "hints": [
-            "TYPO3 backend CSS targets evergreen browsers as they exist on the day of the corresponding TYPO3 LTS release.",
-            "Modern CSS features are acceptable when they fit the active LTS evergreen browser target and the build pipeline accepts them.",
-            "CSS features may be adopted before the LTS release when they are expected to be part of the evergreen browser baseline at LTS release time.",
-            "Early adoption must be intentional, reviewable, and limited to features with a clear path into the LTS browser baseline.",
-            "When CSS changes are backported to older TYPO3 versions, the CSS must fully match the evergreen browser baseline of that target release year.",
-            "Do not backport CSS features that only match a newer release baseline unless the target branch already supports them.",
-            "Avoid compatibility workarounds for obsolete browsers outside the active LTS browser target.",
-            "Prefer native CSS capabilities over JavaScript workarounds when the feature is supported by the LTS target.",
-            "The Popover API is an example where native platform behavior should be preferred over custom JavaScript positioning or visibility logic when the target baseline supports it."
-        ],
-        "checks": [
-            "CI=true ./Build/Scripts/runTests.sh -s build",
-            "CI=true ./Build/Scripts/runTests.sh -s lintScss"
-        ]
-    },
-    {
-        "id": "css-minimal-reusable-components",
-        "title": "Minimal CSS and Reusable Components",
-        "scope": "core",
-        "appliesTo": [
-            "utility",
-            "utility class",
-            "reusable",
-            "component",
-            "one-off",
-            "custom css",
-            "new css"
-        ],
-        "hints": [
-            "Write as little new CSS as possible.",
-            "Prefer reusing, extending, or composing existing TYPO3 backend components before adding new CSS.",
-            "New CSS should express reusable component behavior, not one-off page-specific tweaks.",
-            "Utility classes should be used only in exceptional cases and must not replace a missing reusable component."
-        ],
-        "checks": [
-            "CI=true ./Build/Scripts/runTests.sh -s build",
-            "CI=true ./Build/Scripts/runTests.sh -s lintScss"
-        ]
-    },
-    {
-        "id": "css-class-naming",
-        "title": "CSS Class Naming",
-        "scope": "core",
-        "appliesTo": [
-            "class name",
-            "naming",
-            "bem",
-            "modifier",
-            "variant",
-            "variants",
-            "t3js",
-            "is-",
-            "has-",
-            "__",
-            "--"
-        ],
-        "hints": [
-            "Use existing component naming conventions from nearby Sass files.",
-            "TYPO3 backend component classes usually use a short component root plus hyphenated elements or variants, for example .panel-heading, .toolbar-item, or .module-docheader.",
-            "Variants should customize the base component through custom properties whenever possible.",
-            "Do not introduce a new naming system such as BEM-style block__element--modifier unless the surrounding component already uses it.",
-            "Variants and sizes append a suffix to the root — .btn-sm, .card-size-large, .table-fit — and should mainly set the custom properties the base component consumes rather than duplicating a full rule set per variant.",
-            "State classes are explicit and consistent: .active, .disabled, .selected, and the .is-* and .has-* forms.",
-            "Avoid a generic name that can collide globally. There is one stylesheet and no scoping, so a .header or a .content in a component partial is a name taken from everybody.",
-            "Use t3js-* classes only as JavaScript hooks and keep them separate from visual styling selectors."
-        ],
-        "checks": [
-            "CI=true ./Build/Scripts/runTests.sh -s build",
-            "CI=true ./Build/Scripts/runTests.sh -s lintScss"
-        ]
-    },
-    {
-        "id": "css-styleguide-demos",
-        "title": "Styleguide Demos for CSS Components",
-        "scope": "core",
-        "appliesTo": [
-            "styleguide",
-            "demo",
-            "Build/Sources/Sass/component/",
-            "typo3/sysext/styleguide/Resources/Private/Templates/Backend/Components/"
-        ],
-        "hints": [
-            "All CSS components must be represented with demos in the styleguide extension.",
-            "New CSS components need a matching styleguide demo.",
-            "Changed CSS components should update an existing styleguide demo or add one when no demo exists.",
-            "Backend component demos usually live below typo3/sysext/styleguide/Resources/Private/Templates/Backend/Components/.",
-            "A demo covers what a reviewer would otherwise have to build themselves: the variants, the states, the sizes, with and without an icon, empty and disabled and mid-interaction, in both color schemes, and in RTL where the layout is direction-sensitive. A demo of the default state only shows the case nobody was worried about."
-        ],
-        "checks": [
-            "CI=true ./Build/Scripts/runTests.sh -s build",
-            "CI=true ./Build/Scripts/runTests.sh -s lintScss",
-            "CI=true ./Build/Scripts/runTests.sh -s functional"
-        ]
-    },
-    {
-        "id": "css-tokens-specificity",
-        "title": "CSS Tokens and Specificity",
-        "scope": "core",
-        "appliesTo": [
-            "variable",
-            "token",
-            "custom property",
-            "css property",
-            "--typo3",
-            "specificity",
-            "!important",
-            "color",
-            "spacing",
-            "z-index",
-            "dark mode",
-            "property contract",
-            "host context"
-        ],
-        "hints": [
-            "Prefer existing --typo3-* custom properties for TYPO3 backend colors, spacing, borders, shadows, transitions, and state styles.",
-            {
-                "text": "Never hard-code a color. Every one comes from a semantic --typo3-* token or is derived from one with color-mix(...); a raw hex, rgb() or hsl() literal belongs only where the palette tokens themselves are defined. A literal cannot resolve per color scheme, so it is also how a component ends up working in one of the two.",
-                "since": 13
-            },
-            {
-                "text": "Do not reach for a Bootstrap variable. The --bs-* family is on its way out of the backend; the :root --typo3-* tokens, defined in component/root, are what replaces it.",
-                "since": 13
-            },
-            "Avoid a hard-coded spacing, z-index or breakpoint where a token exists, and avoid a one-off local token unless the value repeats or carries a meaning of its own.",
-            "Use component-local custom properties to map component concepts to global TYPO3 tokens. Define them at the component root with an intent-revealing name (--upload-queue-item-bg) and consume them in the children; prefer a fallback-free var(...) for a global token, and avoid chaining aliases through several levels.",
-            "Expose a small, named component property contract when variants, host context, or states need to tune the component.",
-            "Keep specificity low and predictable.",
-            "Avoid !important unless overriding external or unavoidable generated styles."
-        ],
-        "checks": [
-            "CI=true ./Build/Scripts/runTests.sh -s lintScss",
-            "CI=true ./Build/Scripts/runTests.sh -s build"
-        ]
-    },
-    {
-        "id": "css-web-components",
-        "title": "Web Components and Element Styles",
-        "scope": "core",
-        "appliesTo": [
-            "Build/Sources/Sass/element/",
-            "custom element",
-            "web component",
-            "host selector",
-            "::part",
-            "slot",
-            "shadow",
-            "LitElement",
-            "typo3-backend-"
-        ],
-        "hints": [
-            "Styles for TYPO3 custom elements should start at the custom element host selector.",
-            "Keep custom element Sass below Build/Sources/Sass/element/ when the style belongs to a web component.",
-            "Use CSS custom properties, ::part(...), slots, and explicit host attributes as stable styling boundaries.",
-            "Do not style arbitrary internal DOM depth when a host selector, part, slot, or custom property can express the contract."
-        ],
-        "checks": [
-            "CI=true ./Build/Scripts/runTests.sh -s build",
-            "CI=true ./Build/Scripts/runTests.sh -s lintScss",
-            "CI=true ./Build/Scripts/runTests.sh -s lintTypescript",
-            "CI=true ./Build/Scripts/runTests.sh -s unitJavascript"
-        ]
-    },
-    {
-        "id": "css-state-attributes",
-        "title": "State Attributes and Semantic Selectors",
-        "scope": "core",
-        "appliesTo": [
-            "aria-",
-            "aria-selected",
-            "aria-expanded",
-            "aria-current",
-            "disabled",
-            "data-",
-            "data-state",
-            "state attribute",
-            "semantic selector"
-        ],
-        "hints": [
-            "Prefer semantic attributes and explicit state APIs over ad hoc visual classes for component state: [disabled], [aria-selected=\"true\"], [aria-expanded], [aria-current], and the component's own data-* attributes.",
-            "Do not style by DOM depth or visual position where a class, a state class or an attribute expresses the intent. A selector that depends on being the third child breaks when a fourth is added, and nothing says why.",
-            "ARIA attributes must reflect real accessibility state and must not be introduced only as CSS hooks.",
-            "State selectors should map to component properties whenever possible.",
-            "Keep JavaScript, markup, CSS, and tests in sync when a state attribute changes."
-        ],
-        "checks": [
-            "CI=true ./Build/Scripts/runTests.sh -s build",
-            "CI=true ./Build/Scripts/runTests.sh -s lintScss",
-            "CI=true ./Build/Scripts/runTests.sh -s unitJavascript"
-        ]
-    },
-    {
-        "id": "css-color-surface-tokens",
-        "title": "Color and Surface Tokens",
-        "scope": "core",
-        "appliesTo": [
-            "surface",
-            "surfaces",
-            "surface-container",
-            "text color",
-            "foreground",
-            "background",
-            "layer",
-            "layering",
-            "palette",
-            "--token-color",
-            "token-color",
-            "--typo3-surface",
-            "--typo3-text-color",
-            "--typo3-state",
-            "--typo3-component"
-        ],
-        "hints": [
-            {
-                "text": "Do not use --token-color-* values directly in component CSS; they define the color space for semantic tokens.",
-                "since": 13
-            },
-            {
-                "text": "Use --typo3-text-color-* for text and icons, --typo3-surface-* for larger backgrounds, and --typo3-surface-container-* for nested component backgrounds.",
-                "since": 13
-            },
-            {
-                "text": "Surface tokens may be used directly, but they must follow the logical layering order: lowest, low, base, high, highest.",
-                "since": 13
-            },
-            {
-                "text": "Do not jump to a higher surface to win contrast — that is what a border, a shadow or a state token is for, and the jump costs the layering its meaning. Parent and child layers have to stay readable against each other in both schemes.",
-                "since": 13
-            },
-            {
-                "text": "Use matching *-text surface tokens when placing content on stateful surfaces.",
-                "since": 13
-            },
-            {
-                "text": "Use --typo3-state-* tokens for interactive or semantic states and derive subtle borders with color-mix(...) plus --typo3-border-mix.",
-                "since": 13
-            },
-            {
-                "text": "There is no semantic surface, text-color or state layer here. The backend's custom properties are component-scoped — --typo3-component-bg, --typo3-component-color, --typo3-component-border-color, the --typo3-input-* family — and below them sit the Bootstrap variables the backend still builds on.",
-                "until": 12
-            }
-        ],
-        "checks": [
-            "CI=true ./Build/Scripts/runTests.sh -s build",
-            "CI=true ./Build/Scripts/runTests.sh -s lintScss"
-        ]
-    },
-    {
-        "id": "css-shadow-layering",
-        "title": "Shadow Tokens and Layering",
-        "scope": "core",
-        "appliesTo": [
-            "shadow",
-            "box-shadow",
-            "elevation",
-            "flyout",
-            "dialog",
-            "popover",
-            "tooltip",
-            "window"
-        ],
-        "hints": [
-            {
-                "text": "Shadows must follow the same logical layering model as surfaces.",
-                "since": 13
-            },
-            "Prefer semantic shadow tokens over raw box-shadow values.",
-            {
-                "text": "Use stronger shadows only for higher layers such as flyouts, dialogs, popovers, tooltips, overlays, and windows.",
-                "since": 13
-            },
-            {
-                "text": "Keep surface elevation and shadow strength aligned. A component that is not elevated gets no shadow at all: a decorative one claims a layer the component does not occupy.",
-                "since": 13
-            }
-        ],
-        "checks": [
-            "CI=true ./Build/Scripts/runTests.sh -s build",
-            "CI=true ./Build/Scripts/runTests.sh -s lintScss"
-        ]
-    },
-    {
-        "id": "css-z-index-layering",
-        "title": "Z-Index and Overlay Layering",
-        "scope": "core",
-        "appliesTo": [
-            "z-index",
-            "--typo3-zindex",
-            "dropdown",
-            "modal",
-            "modal-backdrop",
-            "popover",
-            "tooltip",
-            "flyout",
-            "overlay",
-            "sticky",
-            "stacking context"
-        ],
-        "hints": [
-            {
-                "text": "Prefer existing z-index tokens such as --typo3-zindex-dropdown, --typo3-zindex-modal-backdrop, --typo3-zindex-modal, and --typo3-zindex-header.",
-                "since": 13
-            },
-            "Place overlays, flyouts, menus, sticky headers, dialogs, and popovers deliberately in the backend layering model.",
-            "Avoid raw z-index numbers when an existing token matches the intended layer.",
-            "Do not use extremely high z-index values to win stacking conflicts; fix the owning stacking context or use the correct layer token.",
-            "Keep z-index, shadow strength, and surface elevation aligned."
-        ],
-        "checks": [
-            "CI=true ./Build/Scripts/runTests.sh -s build",
-            "CI=true ./Build/Scripts/runTests.sh -s lintScss"
-        ]
-    },
-    {
-        "id": "css-motion-transitions",
-        "title": "Motion and Transitions",
-        "scope": "core",
-        "appliesTo": [
-            "transition",
-            "animation",
-            "motion",
-            "prefers-reduced-motion",
-            "reduced motion",
-            "--typo3-transition",
-            "fade",
-            "slide",
-            "transform"
-        ],
-        "hints": [
-            {
-                "text": "Prefer existing transition tokens such as --typo3-transition-color for interactive color, border, shadow, and opacity transitions.",
-                "since": 13
-            },
-            "New transitions or animations that move, resize, fade large regions, or affect focus/navigation must respect prefers-reduced-motion: reduce.",
-            "Avoid transition: all unless the surrounding component already uses it and the affected properties are intentionally constrained.",
-            "Keep motion functional and subtle so it clarifies state changes."
-        ],
-        "checks": [
-            "CI=true ./Build/Scripts/runTests.sh -s build",
-            "CI=true ./Build/Scripts/runTests.sh -s lintScss"
-        ]
-    },
-    {
-        "id": "css-container-queries",
-        "title": "Container Queries and Responsive Components",
-        "scope": "core",
-        "appliesTo": [
-            "container query",
-            "container-type",
-            "@container",
-            "baseline",
-            "responsive",
-            "breakpoint",
-            "sidebar",
-            "dialog",
-            "module column"
-        ],
-        "hints": [
-            "Prefer component-local responsiveness over viewport-only breakpoints when a component can appear in different backend containers.",
-            "Use container-type: inline-size and container queries for reusable components when layout depends on available container width.",
-            "Container queries are an example of a modern CSS feature that may be introduced before an LTS release when they are expected to be part of the LTS browser baseline.",
-            "Keep container query rules scoped to the owning component, and check it where the containers actually differ: a narrow module column, a sidebar, a dialog, and full-width content.",
-            "Do not add global breakpoints for a component-specific layout problem unless the behavior is truly tied to the viewport or scaffold."
-        ],
-        "checks": [
-            "CI=true ./Build/Scripts/runTests.sh -s build",
-            "CI=true ./Build/Scripts/runTests.sh -s lintScss"
-        ]
-    },
-    {
-        "id": "css-light-dark-mode",
-        "title": "Light and Dark Mode CSS",
-        "scope": "core",
-        "appliesTo": [
-            "light",
-            "dark",
-            "light-dark",
-            "color-scheme",
-            "theme",
-            "contrast",
-            "surface",
-            "text color"
-        ],
-        "hints": [
-            "CSS changes must work in both light and dark backend color schemes.",
-            {
-                "text": "Prefer semantic TYPO3 custom properties such as surfaces, text colors, component colors, input colors, and state colors.",
-                "since": 13
-            },
-            {
-                "text": "Use existing light-dark(...) patterns when a value genuinely needs distinct light and dark variants.",
-                "since": 13
-            },
-            "Check contrast for text, icons, borders, focus outlines, and state backgrounds in both schemes."
-        ],
-        "checks": [
-            "CI=true ./Build/Scripts/runTests.sh -s build",
-            "CI=true ./Build/Scripts/runTests.sh -s lintScss"
-        ]
-    },
-    {
-        "id": "css-rtl-logical-properties",
-        "title": "RTL and Logical CSS Properties",
-        "scope": "core",
-        "appliesTo": [
-            "rtl",
-            "logical",
-            "inline-start",
-            "inline-end",
-            "margin-left",
-            "margin-right",
-            "padding-left",
-            "padding-right",
-            "left",
-            "right",
-            "--typo3-position"
-        ],
-        "hints": [
-            "All backend components must be checked for RTL support.",
-            "Prefer logical properties such as margin-inline, padding-inline, inset-inline, and border-inline over physical left/right properties.",
-            "Use TYPO3 position custom properties such as --typo3-position-start, --typo3-position-end, and --typo3-position-modifier for direction-aware calculations.",
-            "Direction-aware transforms, icons, carets, flyouts, drag handles, resize handles, trees, lists, tables, toolbars, and form controls need explicit RTL review."
-        ],
-        "checks": [
-            "CI=true ./Build/Scripts/runTests.sh -s build",
-            "CI=true ./Build/Scripts/runTests.sh -s lintScss"
-        ]
-    },
-    {
-        "id": "css-bootstrap-transition",
-        "title": "Bootstrap Transition in Backend CSS",
-        "scope": "core",
-        "appliesTo": [
-            "bootstrap",
-            "btn-",
-            "modal",
-            "dropdown",
-            "card",
-            "alert",
-            "utility class"
-        ],
-        "hints": [
-            "TYPO3 still uses Bootstrap CSS in parts of the backend, but Bootstrap usage is being actively reduced.",
-            "Treat Bootstrap as existing infrastructure, not as the preferred target architecture for new TYPO3-specific UI.",
-            "Avoid introducing new high-specificity Bootstrap overrides; prefer TYPO3 component styles for TYPO3-specific behavior.",
-            "Many Bootstrap component imports are disabled on purpose and left in the source as commented-out @import lines, so the choice stays visible and is never read as an oversight. Do not enable one, and do not recreate what it would have brought — TYPO3 ships its own version of it."
-        ],
-        "checks": [
-            "CI=true ./Build/Scripts/runTests.sh -s build",
-            "CI=true ./Build/Scripts/runTests.sh -s lintScss"
-        ]
-    },
-    {
-        "id": "css-accessibility-states",
-        "title": "CSS Accessibility, Contrast, and States",
-        "scope": "core",
-        "appliesTo": [
-            "focus",
-            "focus-visible",
-            "keyboard",
-            "keyboard focus",
-            "tab",
-            "shift tab",
-            "focus order",
-            "focus trap",
-            "hover",
-            "contrast",
-            "wcag",
-            "active",
-            "disabled",
-            "loading",
-            "empty",
-            "error",
-            "selected",
-            "expanded",
-            "collapsed",
-            "drag",
-            "drop",
-            "modal",
-            "icon-only",
-            "accessible name",
-            "aria-hidden"
-        ],
-        "hints": [
-            "Color contrast must satisfy WCAG requirements in both light and dark color schemes.",
-            "Interactive elements must be reachable and operable by keyboard.",
-            "Keyboard focus must be visible with :focus-visible or an equivalent pattern. Never remove an outline without putting an equal or better indicator in its place, and take the focus, outline, state and border tokens that exist rather than inventing one.",
-            "Focus order must remain logical, and intentional focus traps need a safe escape path.",
-            "Hoverable interactive elements must have hover styles.",
-            "Check hover, focus, active, disabled, loading, empty, error, selected, expanded, and collapsed states when applicable.",
-            "Do not rely on color alone to communicate state.",
-            "Interactive icon-only controls need an accessible name, while decorative icons should be hidden from assistive technology."
-        ],
-        "checks": [
-            "CI=true ./Build/Scripts/runTests.sh -s build",
-            "CI=true ./Build/Scripts/runTests.sh -s lintScss"
-        ]
-    },
-    {
-        "id": "css-icon-text-layout-stability",
-        "title": "Icons, Text, and Layout Stability",
-        "scope": "core",
-        "appliesTo": [
-            "icon",
-            "badge",
-            "caret",
-            "label",
-            "ellipsis",
-            "text-overflow",
-            "layout shift",
-            "white-space",
-            "overflow",
-            "icon-only"
-        ],
-        "hints": [
-            "Components that combine icons, labels, badges, carets, and actions must keep layout stable across hover, focus, active, loading, and disabled states.",
-            "Use logical spacing for icon and text gaps, for example margin-inline-* or gap, so RTL layouts remain correct.",
-            "Define overflow behavior for long labels in compact backend UI.",
-            "Hover and focus styles must not cause avoidable layout shifts."
-        ],
-        "checks": [
-            "CI=true ./Build/Scripts/runTests.sh -s build",
-            "CI=true ./Build/Scripts/runTests.sh -s lintScss"
-        ]
-    }
+  {
+    "id": "css-source-build-boundaries",
+    "title": "CSS Source and Build Boundaries",
+    "scope": "core",
+    "appliesTo": [
+      "Build/Sources/Sass/",
+      "Resources/Public/Css/",
+      ".scss",
+      ".css",
+      "sass",
+      "css"
+    ],
+    "hints": [
+      "Treat Build/Sources/Sass/ as the source of truth when a Sass source exists.",
+      "This is the core's asset pipeline. A project extension owns a separate build; see extension-asset-build.",
+      "Do not hand-edit generated public CSS as the only change.",
+      "Not every asset comes out of the Sass build. The CKEditor CSS is built through Build/rollup/ckeditor.js, so a change there is not picked up by a CSS build and looks like nothing happened.",
+      "Verify generated assets are in sync when public assets are committed.",
+      "Use lintScss for TYPO3's stylelint setup and npm -- run build-css for a focused CSS build while iterating."
+    ],
+    "checks": [
+      "CI=true ./Build/Scripts/runTests.sh -s build",
+      "CI=true ./Build/Scripts/runTests.sh -s lintScss",
+      "CI=true ./Build/Scripts/runTests.sh -s npm -- run build-css"
+    ]
+  },
+  {
+    "id": "css-components",
+    "title": "CSS Component Structure",
+    "scope": "core",
+    "appliesTo": [
+      "Build/Sources/Sass/component/",
+      "Build/Sources/Sass/component/forms/",
+      "Build/Sources/Sass/component/scaffold/",
+      "Build/Sources/Sass/dashboard/",
+      "Build/Sources/Sass/element/"
+    ],
+    "hints": [
+      "The backend stylesheet is a set of bundles. Each top-level entry file under Build/Sources/Sass/ without a leading underscore — backend.scss, dashboard.scss, adminpanel.scss, form.scss, workspace.scss and a few more — compiles to one generated public CSS file. Everything else is a partial named _name.scss and reaches a bundle only through an @import.",
+      "A partial is compiled only once something imports it: there is no glob and no index file. That is the step a new partial is forgotten at — the file exists, the Sass build passes, and none of it is in the output. Wire a foundational, reusable component into _minimal.scss and an app-specific one into backend.scss or whichever bundle owns the feature.",
+      "The backend bundle has two layers. _minimal.scss is the base — the Bootstrap foundation plus TYPO3's own foundational partials, component/buttons, badges, panel, table, nav, modal and the scaffold/* layout. backend.scss is the application layer: it imports _minimal, then the backend-specific partials, the element/* custom-element styles and the typo3/* glue.",
+      "The folders under Build/Sources/Sass/ each own a concern: component/ holds one partial per component, component/forms/ the form controls, component/scaffold/ the topbar, toolbar, module menu and sidebar, element/ the custom elements named after their host element, dashboard/ and module/ the area styles, variables/ and mixins/ the tokens and helpers. libs/ and typo3/ are third-party and legacy glue — no new component styles go there.",
+      "Prefer focused component partials in the existing Sass structure.",
+      "Name a partial after the class root it owns, _badges.scss for .badge. One partial owns one component; a component spread across partials is one nobody can find.",
+      "Keep selectors close to the owning UI component.",
+      "Use forms, scaffold, dashboard, and element folders for their owning concerns instead of creating broad global styles.",
+      "Document a component's canonical markup in a // Markup: block at the top of its partial, and let the styleguide demo mirror that markup.",
+      "The Sass layer uses @import, not the Dart Sass @use/@forward module system. Follow the existing import style and ordering rather than introducing the newer one in one file."
+    ],
+    "checks": [
+      "CI=true ./Build/Scripts/runTests.sh -s build",
+      "CI=true ./Build/Scripts/runTests.sh -s lintScss"
+    ]
+  },
+  {
+    "id": "css-browser-target",
+    "title": "CSS Browser Target",
+    "scope": "core",
+    "appliesTo": [
+      "browser",
+      "evergreen",
+      "baseline",
+      "lts",
+      "support",
+      "compatibility",
+      "modern css",
+      "css feature",
+      "fallback",
+      "backport",
+      "backported",
+      "release year",
+      "target branch",
+      "native css",
+      "popover api",
+      "popover",
+      "javascript workaround"
+    ],
+    "hints": [
+      "TYPO3 backend CSS targets evergreen browsers as they exist on the day of the corresponding TYPO3 LTS release.",
+      "Modern CSS features are acceptable when they fit the active LTS evergreen browser target and the build pipeline accepts them.",
+      "CSS features may be adopted before the LTS release when they are expected to be part of the evergreen browser baseline at LTS release time.",
+      "Early adoption must be intentional, reviewable, and limited to features with a clear path into the LTS browser baseline.",
+      "When CSS changes are backported to older TYPO3 versions, the CSS must fully match the evergreen browser baseline of that target release year.",
+      "Do not backport CSS features that only match a newer release baseline unless the target branch already supports them.",
+      "Avoid compatibility workarounds for obsolete browsers outside the active LTS browser target.",
+      "Prefer native CSS capabilities over JavaScript workarounds when the feature is supported by the LTS target.",
+      "The Popover API is an example where native platform behavior should be preferred over custom JavaScript positioning or visibility logic when the target baseline supports it."
+    ],
+    "checks": [
+      "CI=true ./Build/Scripts/runTests.sh -s build",
+      "CI=true ./Build/Scripts/runTests.sh -s lintScss"
+    ]
+  },
+  {
+    "id": "css-minimal-reusable-components",
+    "title": "Minimal CSS and Reusable Components",
+    "scope": "core",
+    "appliesTo": [
+      "utility",
+      "utility class",
+      "reusable",
+      "component",
+      "one-off",
+      "custom css",
+      "new css"
+    ],
+    "hints": [
+      "Write as little new CSS as possible.",
+      "Prefer reusing, extending, or composing existing TYPO3 backend components before adding new CSS.",
+      "New CSS should express reusable component behavior, not one-off page-specific tweaks.",
+      "Utility classes should be used only in exceptional cases and must not replace a missing reusable component."
+    ],
+    "checks": [
+      "CI=true ./Build/Scripts/runTests.sh -s build",
+      "CI=true ./Build/Scripts/runTests.sh -s lintScss"
+    ]
+  },
+  {
+    "id": "css-class-naming",
+    "title": "CSS Class Naming",
+    "scope": "core",
+    "appliesTo": [
+      "class name",
+      "naming",
+      "bem",
+      "modifier",
+      "variant",
+      "variants",
+      "t3js",
+      "is-",
+      "has-",
+      "__",
+      "--"
+    ],
+    "hints": [
+      "Use existing component naming conventions from nearby Sass files.",
+      "TYPO3 backend component classes usually use a short component root plus hyphenated elements or variants, for example .panel-heading, .toolbar-item, or .module-docheader.",
+      "Variants should customize the base component through custom properties whenever possible.",
+      "Do not introduce a new naming system such as BEM-style block__element--modifier unless the surrounding component already uses it.",
+      "Variants and sizes append a suffix to the root — .btn-sm, .card-size-large, .table-fit — and should mainly set the custom properties the base component consumes rather than duplicating a full rule set per variant.",
+      "State classes are explicit and consistent: .active, .disabled, .selected, and the .is-* and .has-* forms.",
+      "Avoid a generic name that can collide globally. There is one stylesheet and no scoping, so a .header or a .content in a component partial is a name taken from everybody.",
+      "Use t3js-* classes only as JavaScript hooks and keep them separate from visual styling selectors."
+    ],
+    "checks": [
+      "CI=true ./Build/Scripts/runTests.sh -s build",
+      "CI=true ./Build/Scripts/runTests.sh -s lintScss"
+    ]
+  },
+  {
+    "id": "css-styleguide-demos",
+    "title": "Styleguide Demos for CSS Components",
+    "scope": "core",
+    "appliesTo": [
+      "styleguide",
+      "demo",
+      "Build/Sources/Sass/component/",
+      "typo3/sysext/styleguide/Resources/Private/Templates/Backend/Components/"
+    ],
+    "hints": [
+      "All CSS components must be represented with demos in the styleguide extension.",
+      "New CSS components need a matching styleguide demo.",
+      "Changed CSS components should update an existing styleguide demo or add one when no demo exists.",
+      "Backend component demos usually live below typo3/sysext/styleguide/Resources/Private/Templates/Backend/Components/.",
+      "A demo covers what a reviewer would otherwise have to build themselves: the variants, the states, the sizes, with and without an icon, empty and disabled and mid-interaction, in both color schemes, and in RTL where the layout is direction-sensitive. A demo of the default state only shows the case nobody was worried about."
+    ],
+    "checks": [
+      "CI=true ./Build/Scripts/runTests.sh -s build",
+      "CI=true ./Build/Scripts/runTests.sh -s lintScss",
+      "CI=true ./Build/Scripts/runTests.sh -s functional"
+    ]
+  },
+  {
+    "id": "css-tokens-specificity",
+    "title": "CSS Tokens and Specificity",
+    "scope": "core",
+    "appliesTo": [
+      "variable",
+      "token",
+      "custom property",
+      "css property",
+      "--typo3",
+      "specificity",
+      "!important",
+      "color",
+      "spacing",
+      "z-index",
+      "dark mode",
+      "property contract",
+      "host context"
+    ],
+    "hints": [
+      "Prefer existing --typo3-* custom properties for TYPO3 backend colors, spacing, borders, shadows, transitions, and state styles.",
+      {
+        "text": "Never hard-code a color. Every one comes from a semantic --typo3-* token or is derived from one with color-mix(...); a raw hex, rgb() or hsl() literal belongs only where the palette tokens themselves are defined. A literal cannot resolve per color scheme, so it is also how a component ends up working in one of the two.",
+        "since": 13
+      },
+      {
+        "text": "Do not reach for a Bootstrap variable. The --bs-* family is on its way out of the backend; the :root --typo3-* tokens, defined in component/root, are what replaces it.",
+        "since": 13
+      },
+      "Avoid a hard-coded spacing, z-index or breakpoint where a token exists, and avoid a one-off local token unless the value repeats or carries a meaning of its own.",
+      "Use component-local custom properties to map component concepts to global TYPO3 tokens. Define them at the component root with an intent-revealing name (--upload-queue-item-bg) and consume them in the children; prefer a fallback-free var(...) for a global token, and avoid chaining aliases through several levels.",
+      "Expose a small, named component property contract when variants, host context, or states need to tune the component.",
+      "Keep specificity low and predictable.",
+      "Avoid !important unless overriding external or unavoidable generated styles."
+    ],
+    "checks": [
+      "CI=true ./Build/Scripts/runTests.sh -s lintScss",
+      "CI=true ./Build/Scripts/runTests.sh -s build"
+    ]
+  },
+  {
+    "id": "css-web-components",
+    "title": "Web Components and Element Styles",
+    "scope": "core",
+    "appliesTo": [
+      "Build/Sources/Sass/element/",
+      "custom element",
+      "web component",
+      "host selector",
+      "::part",
+      "slot",
+      "shadow",
+      "LitElement",
+      "typo3-backend-"
+    ],
+    "hints": [
+      "Styles for TYPO3 custom elements should start at the custom element host selector.",
+      "Keep custom element Sass below Build/Sources/Sass/element/ when the style belongs to a web component.",
+      "Use CSS custom properties, ::part(...), slots, and explicit host attributes as stable styling boundaries.",
+      "Do not style arbitrary internal DOM depth when a host selector, part, slot, or custom property can express the contract."
+    ],
+    "checks": [
+      "CI=true ./Build/Scripts/runTests.sh -s build",
+      "CI=true ./Build/Scripts/runTests.sh -s lintScss",
+      "CI=true ./Build/Scripts/runTests.sh -s lintTypescript",
+      "CI=true ./Build/Scripts/runTests.sh -s unitJavascript"
+    ]
+  },
+  {
+    "id": "css-state-attributes",
+    "title": "State Attributes and Semantic Selectors",
+    "scope": "core",
+    "appliesTo": [
+      "aria-",
+      "aria-selected",
+      "aria-expanded",
+      "aria-current",
+      "disabled",
+      "data-",
+      "data-state",
+      "state attribute",
+      "semantic selector"
+    ],
+    "hints": [
+      "Prefer semantic attributes and explicit state APIs over ad hoc visual classes for component state: [disabled], [aria-selected=\"true\"], [aria-expanded], [aria-current], and the component's own data-* attributes.",
+      "Do not style by DOM depth or visual position where a class, a state class or an attribute expresses the intent. A selector that depends on being the third child breaks when a fourth is added, and nothing says why.",
+      "ARIA attributes must reflect real accessibility state and must not be introduced only as CSS hooks.",
+      "State selectors should map to component properties whenever possible.",
+      "Keep JavaScript, markup, CSS, and tests in sync when a state attribute changes."
+    ],
+    "checks": [
+      "CI=true ./Build/Scripts/runTests.sh -s build",
+      "CI=true ./Build/Scripts/runTests.sh -s lintScss",
+      "CI=true ./Build/Scripts/runTests.sh -s unitJavascript"
+    ]
+  },
+  {
+    "id": "css-color-surface-tokens",
+    "title": "Color and Surface Tokens",
+    "scope": "core",
+    "appliesTo": [
+      "surface",
+      "surfaces",
+      "surface-container",
+      "text color",
+      "foreground",
+      "background",
+      "layer",
+      "layering",
+      "palette",
+      "--token-color",
+      "token-color",
+      "--typo3-surface",
+      "--typo3-text-color",
+      "--typo3-state",
+      "--typo3-component"
+    ],
+    "hints": [
+      {
+        "text": "Do not use --token-color-* values directly in component CSS; they define the color space for semantic tokens.",
+        "since": 13
+      },
+      {
+        "text": "Use --typo3-text-color-* for text and icons, --typo3-surface-* for larger backgrounds, and --typo3-surface-container-* for nested component backgrounds.",
+        "since": 13
+      },
+      {
+        "text": "Surface tokens may be used directly, but they must follow the logical layering order: lowest, low, base, high, highest.",
+        "since": 13
+      },
+      {
+        "text": "Do not jump to a higher surface to win contrast — that is what a border, a shadow or a state token is for, and the jump costs the layering its meaning. Parent and child layers have to stay readable against each other in both schemes.",
+        "since": 13
+      },
+      {
+        "text": "Use matching *-text surface tokens when placing content on stateful surfaces.",
+        "since": 13
+      },
+      {
+        "text": "Use --typo3-state-* tokens for interactive or semantic states and derive subtle borders with color-mix(...) plus --typo3-border-mix.",
+        "since": 13
+      },
+      {
+        "text": "There is no semantic surface, text-color or state layer here. The backend's custom properties are component-scoped — --typo3-component-bg, --typo3-component-color, --typo3-component-border-color, the --typo3-input-* family — and below them sit the Bootstrap variables the backend still builds on.",
+        "until": 12
+      }
+    ],
+    "checks": [
+      "CI=true ./Build/Scripts/runTests.sh -s build",
+      "CI=true ./Build/Scripts/runTests.sh -s lintScss"
+    ]
+  },
+  {
+    "id": "css-shadow-layering",
+    "title": "Shadow Tokens and Layering",
+    "scope": "core",
+    "appliesTo": [
+      "shadow",
+      "box-shadow",
+      "elevation",
+      "flyout",
+      "dialog",
+      "popover",
+      "tooltip",
+      "window"
+    ],
+    "hints": [
+      {
+        "text": "Shadows must follow the same logical layering model as surfaces.",
+        "since": 13
+      },
+      "Prefer semantic shadow tokens over raw box-shadow values.",
+      {
+        "text": "Use stronger shadows only for higher layers such as flyouts, dialogs, popovers, tooltips, overlays, and windows.",
+        "since": 13
+      },
+      {
+        "text": "Keep surface elevation and shadow strength aligned. A component that is not elevated gets no shadow at all: a decorative one claims a layer the component does not occupy.",
+        "since": 13
+      }
+    ],
+    "checks": [
+      "CI=true ./Build/Scripts/runTests.sh -s build",
+      "CI=true ./Build/Scripts/runTests.sh -s lintScss"
+    ]
+  },
+  {
+    "id": "css-z-index-layering",
+    "title": "Z-Index and Overlay Layering",
+    "scope": "core",
+    "appliesTo": [
+      "z-index",
+      "--typo3-zindex",
+      "dropdown",
+      "modal",
+      "modal-backdrop",
+      "popover",
+      "tooltip",
+      "flyout",
+      "overlay",
+      "sticky",
+      "stacking context"
+    ],
+    "hints": [
+      {
+        "text": "Prefer existing z-index tokens such as --typo3-zindex-dropdown, --typo3-zindex-modal-backdrop, --typo3-zindex-modal, and --typo3-zindex-header.",
+        "since": 13
+      },
+      "Place overlays, flyouts, menus, sticky headers, dialogs, and popovers deliberately in the backend layering model.",
+      "Avoid raw z-index numbers when an existing token matches the intended layer.",
+      "Do not use extremely high z-index values to win stacking conflicts; fix the owning stacking context or use the correct layer token.",
+      "Keep z-index, shadow strength, and surface elevation aligned."
+    ],
+    "checks": [
+      "CI=true ./Build/Scripts/runTests.sh -s build",
+      "CI=true ./Build/Scripts/runTests.sh -s lintScss"
+    ]
+  },
+  {
+    "id": "css-motion-transitions",
+    "title": "Motion and Transitions",
+    "scope": "core",
+    "appliesTo": [
+      "transition",
+      "animation",
+      "motion",
+      "prefers-reduced-motion",
+      "reduced motion",
+      "--typo3-transition",
+      "fade",
+      "slide",
+      "transform"
+    ],
+    "hints": [
+      {
+        "text": "Prefer existing transition tokens such as --typo3-transition-color for interactive color, border, shadow, and opacity transitions.",
+        "since": 13
+      },
+      "New transitions or animations that move, resize, fade large regions, or affect focus/navigation must respect prefers-reduced-motion: reduce.",
+      "Avoid transition: all unless the surrounding component already uses it and the affected properties are intentionally constrained.",
+      "Keep motion functional and subtle so it clarifies state changes."
+    ],
+    "checks": [
+      "CI=true ./Build/Scripts/runTests.sh -s build",
+      "CI=true ./Build/Scripts/runTests.sh -s lintScss"
+    ]
+  },
+  {
+    "id": "css-container-queries",
+    "title": "Container Queries and Responsive Components",
+    "scope": "core",
+    "appliesTo": [
+      "container query",
+      "container-type",
+      "@container",
+      "baseline",
+      "responsive",
+      "breakpoint",
+      "sidebar",
+      "dialog",
+      "module column"
+    ],
+    "hints": [
+      "Prefer component-local responsiveness over viewport-only breakpoints when a component can appear in different backend containers.",
+      "Use container-type: inline-size and container queries for reusable components when layout depends on available container width.",
+      "Container queries are an example of a modern CSS feature that may be introduced before an LTS release when they are expected to be part of the LTS browser baseline.",
+      "Keep container query rules scoped to the owning component, and check it where the containers actually differ: a narrow module column, a sidebar, a dialog, and full-width content.",
+      "Do not add global breakpoints for a component-specific layout problem unless the behavior is truly tied to the viewport or scaffold."
+    ],
+    "checks": [
+      "CI=true ./Build/Scripts/runTests.sh -s build",
+      "CI=true ./Build/Scripts/runTests.sh -s lintScss"
+    ]
+  },
+  {
+    "id": "css-light-dark-mode",
+    "title": "Light and Dark Mode CSS",
+    "scope": "core",
+    "appliesTo": [
+      "light",
+      "dark",
+      "light-dark",
+      "color-scheme",
+      "theme",
+      "contrast",
+      "surface",
+      "text color"
+    ],
+    "hints": [
+      "CSS changes must work in both light and dark backend color schemes.",
+      {
+        "text": "Prefer semantic TYPO3 custom properties such as surfaces, text colors, component colors, input colors, and state colors.",
+        "since": 13
+      },
+      {
+        "text": "Use existing light-dark(...) patterns when a value genuinely needs distinct light and dark variants.",
+        "since": 13
+      },
+      "Check contrast for text, icons, borders, focus outlines, and state backgrounds in both schemes."
+    ],
+    "checks": [
+      "CI=true ./Build/Scripts/runTests.sh -s build",
+      "CI=true ./Build/Scripts/runTests.sh -s lintScss"
+    ]
+  },
+  {
+    "id": "css-rtl-logical-properties",
+    "title": "RTL and Logical CSS Properties",
+    "scope": "core",
+    "appliesTo": [
+      "rtl",
+      "logical",
+      "inline-start",
+      "inline-end",
+      "margin-left",
+      "margin-right",
+      "padding-left",
+      "padding-right",
+      "left",
+      "right",
+      "--typo3-position"
+    ],
+    "hints": [
+      "All backend components must be checked for RTL support.",
+      "Prefer logical properties such as margin-inline, padding-inline, inset-inline, and border-inline over physical left/right properties.",
+      "Use TYPO3 position custom properties such as --typo3-position-start, --typo3-position-end, and --typo3-position-modifier for direction-aware calculations.",
+      "Direction-aware transforms, icons, carets, flyouts, drag handles, resize handles, trees, lists, tables, toolbars, and form controls need explicit RTL review."
+    ],
+    "checks": [
+      "CI=true ./Build/Scripts/runTests.sh -s build",
+      "CI=true ./Build/Scripts/runTests.sh -s lintScss"
+    ]
+  },
+  {
+    "id": "css-bootstrap-transition",
+    "title": "Bootstrap Transition in Backend CSS",
+    "scope": "core",
+    "appliesTo": [
+      "bootstrap",
+      "btn-",
+      "modal",
+      "dropdown",
+      "card",
+      "alert",
+      "utility class"
+    ],
+    "hints": [
+      "TYPO3 still uses Bootstrap CSS in parts of the backend, but Bootstrap usage is being actively reduced.",
+      "Treat Bootstrap as existing infrastructure, not as the preferred target architecture for new TYPO3-specific UI.",
+      "Avoid introducing new high-specificity Bootstrap overrides; prefer TYPO3 component styles for TYPO3-specific behavior.",
+      "Many Bootstrap component imports are disabled on purpose and left in the source as commented-out @import lines, so the choice stays visible and is never read as an oversight. Do not enable one, and do not recreate what it would have brought — TYPO3 ships its own version of it."
+    ],
+    "checks": [
+      "CI=true ./Build/Scripts/runTests.sh -s build",
+      "CI=true ./Build/Scripts/runTests.sh -s lintScss"
+    ]
+  },
+  {
+    "id": "css-accessibility-states",
+    "title": "CSS Accessibility, Contrast, and States",
+    "scope": "core",
+    "appliesTo": [
+      "focus",
+      "focus-visible",
+      "keyboard",
+      "keyboard focus",
+      "tab",
+      "shift tab",
+      "focus order",
+      "focus trap",
+      "hover",
+      "contrast",
+      "wcag",
+      "active",
+      "disabled",
+      "loading",
+      "empty",
+      "error",
+      "selected",
+      "expanded",
+      "collapsed",
+      "drag",
+      "drop",
+      "modal",
+      "icon-only",
+      "accessible name",
+      "aria-hidden"
+    ],
+    "hints": [
+      "Color contrast must satisfy WCAG requirements in both light and dark color schemes.",
+      "Interactive elements must be reachable and operable by keyboard.",
+      "Keyboard focus must be visible with :focus-visible or an equivalent pattern. Never remove an outline without putting an equal or better indicator in its place, and take the focus, outline, state and border tokens that exist rather than inventing one.",
+      "Focus order must remain logical, and intentional focus traps need a safe escape path.",
+      "Hoverable interactive elements must have hover styles.",
+      "Check hover, focus, active, disabled, loading, empty, error, selected, expanded, and collapsed states when applicable.",
+      "Do not rely on color alone to communicate state.",
+      "Interactive icon-only controls need an accessible name, while decorative icons should be hidden from assistive technology."
+    ],
+    "checks": [
+      "CI=true ./Build/Scripts/runTests.sh -s build",
+      "CI=true ./Build/Scripts/runTests.sh -s lintScss"
+    ]
+  },
+  {
+    "id": "css-icon-text-layout-stability",
+    "title": "Icons, Text, and Layout Stability",
+    "scope": "core",
+    "appliesTo": [
+      "icon",
+      "badge",
+      "caret",
+      "label",
+      "ellipsis",
+      "text-overflow",
+      "layout shift",
+      "white-space",
+      "overflow",
+      "icon-only"
+    ],
+    "hints": [
+      "Components that combine icons, labels, badges, carets, and actions must keep layout stable across hover, focus, active, loading, and disabled states.",
+      "Use logical spacing for icon and text gaps, for example margin-inline-* or gap, so RTL layouts remain correct.",
+      "Define overflow behavior for long labels in compact backend UI.",
+      "Hover and focus styles must not cause avoidable layout shifts."
+    ],
+    "checks": [
+      "CI=true ./Build/Scripts/runTests.sh -s build",
+      "CI=true ./Build/Scripts/runTests.sh -s lintScss"
+    ]
+  }
 ]

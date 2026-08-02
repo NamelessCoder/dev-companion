@@ -1,691 +1,691 @@
 [
-    {
-        "id": "extension-static-analysis",
-        "title": "Setting Up PHPStan for an Extension",
-        "appliesTo": [
-            "phpstan",
-            "phpstan.neon",
-            "static analysis",
-            "analyse",
-            "baseline",
-            "phpstan-baseline",
-            "tmpDir",
-            "result cache",
-            "set up static analysis",
-            "level"
-        ],
-        "hints": [
-            "The configuration belongs to the package, in Build/phpstan/ beside the phpunit configurations the test setup already put there. typo3/testing-framework is the setup worth reading: it is a TYPO3 package with no core mono repository around it, which is the situation an extension is in. Its paths are the package's own Classes and Tests directories, and it includes the phpstan-phpunit extension so test code is understood as tests rather than as ordinary classes.",
-            "Set tmpDir to a path inside the repository. PHPStan otherwise writes its result cache to /tmp/phpstan, every checkout on the machine shares that one directory, and the cache stores absolute paths — so a checkout that has been deleted since fails the analysis of every other one, with an internal error naming a path the caller has never seen. The core and typo3/testing-framework both set it, and both explain it in the same words: a local cache dir instead of /tmp. CI is the exception the core makes in a second configuration file that overrides it back to /tmp, because that container is discarded after the run and caching it buys nothing.",
-            "TYPO3 defines constants at runtime that the analysis never gets to see, so they are declared in a file named under bootstrapFiles — LF and CR, and ORIGINAL_ROOT where the test setup uses it. Without it every use of them is reported as an undefined constant, which is a wall of findings about code that is correct.",
-            "ext_emconf.php is excluded rather than fixed. It assigns into $_EXTKEY, which the file including it sets, so the analysis reports the variable as undefined; typo3/testing-framework excludes the ext_emconf.php of its fixture extensions for exactly that reason.",
-            "A baseline is what makes the first run usable. Generating one records every finding that is already there into phpstan-baseline.neon, which the configuration includes first, so the run reports what a change added rather than what the package accumulated before anyone looked. It is a work list, not a suppression: an entry that disappears is removed from the file by regenerating it.",
-            "The core and typo3/testing-framework both analyse at level 5. Levels are cumulative, so raising one on a package that has never been analysed produces the whole difference at once — which is what the baseline is for."
-        ],
-        "checks": [
-            "vendor/bin/phpstan analyse -c Build/phpstan/phpstan.neon --no-progress --no-interaction",
-            "vendor/bin/phpstan analyse -c Build/phpstan/phpstan.neon --generate-baseline=Build/phpstan/phpstan-baseline.neon"
-        ]
-    },
-    {
-        "id": "system-extension-boundaries",
-        "title": "System Extension Boundaries",
-        "appliesTo": [
-            "typo3/sysext/",
-            "sysext",
-            "system extension"
-        ],
-        "hints": [
-            "Keep changes inside the owning system extension unless a cross-extension contract really changes.",
-            "Reuse public APIs from other system extensions instead of depending on internal implementation details.",
-            "Check nearby extension-local tests before adding shared behavior."
-        ],
-        "checks": [
-            "CI=true ./Build/Scripts/runTests.sh -s unit",
-            "CI=true ./Build/Scripts/runTests.sh -s functional"
-        ]
-    },
-    {
-        "id": "dependency-injection-services",
-        "title": "Dependency Injection and Services",
-        "appliesTo": [
-            "Configuration/Services.yaml",
-            "/Service/",
-            "/Services/",
-            "DependencyInjection",
-            "constructor injection",
-            "service wiring",
-            "autowiring",
-            "autoconfigure"
-        ],
-        "hints": [
-            "Autowiring and autoconfiguration are on for the core sysexts: their Configuration/Services.yaml sets autowire, autoconfigure and public: false under _defaults and registers the whole Classes/ tree as a resource. A new service in Classes/ therefore needs no Services.yaml entry at all.",
-            "Prefer constructor injection with a readonly promoted property. Services.yaml is for what autowiring cannot resolve: a scalar or non-autowirable argument, an alias, a service that has to be public, or a factory.",
-            "For a single non-autowirable argument, the #[Autowire] attribute on the constructor parameter keeps the wiring in the class instead of splitting it across a YAML file.",
-            "Avoid new GeneralUtility::makeInstance() calls for regular service dependencies unless lifecycle constraints require it.",
-            "Some extension points are resolved by class name through the container rather than through makeInstance(), and there a service that is not public simply is not found. Autoconfiguration covers the singletons, the middlewares, the request handlers and the icon providers; anything else that the core looks up that way — the page title providers are the one that bites, because PageTitleProviderManager reads the class name out of TypoScript and asks the container for it — needs its own Services.yaml entry with public: true. The failure is a service-not-found at request time, not a wiring error at build time."
-        ],
-        "checks": [
-            "CI=true ./Build/Scripts/runTests.sh -s functional",
-            "CI=true ./Build/Scripts/runTests.sh -s lintServicesYaml"
-        ]
-    },
-    {
-        "id": "events-extension-points",
-        "title": "Events and Extension Points",
-        "appliesTo": [
-            "/Event/",
-            "EventListener",
-            "EventDispatcher",
-            "Hooks",
-            "hook",
-            "event listener",
-            "extension point",
-            "psr-14",
-            "AsEventListener"
-        ],
-        "hints": [
-            {
-                "text": "A listener is registered with the #[AsEventListener] attribute from TYPO3\\CMS\\Core\\Attribute, on the class or on a single method. Its arguments are identifier, event, method, before and after; the attribute is repeatable, so one class can listen to several events. Autoconfiguration picks it up — do not add an event.listener tag to Services.yaml, no core listener is registered that way.",
-                "since": 13
-            },
-            {
-                "text": "Without the attribute, a listener is registered with an event.listener tag in Configuration/Services.yaml, carrying an identifier and the method; the event itself is taken from that method's parameter type. That is the only mechanism there, and every core listener uses it.",
-                "until": 12
-            },
-            "Event classes live in Classes/Event/ of the extension that dispatches them, are final, and are readonly where the payload is immutable. A listener that may change the outcome gets setters on the event instead of a return value.",
-            "Keep event payloads minimal and stable, and prefer a new event over a hook: a hook is only the right answer where the subsystem still has hook-based extension points.",
-            "The surviving hooks are a subsystem fact, not a second extension-point registry. Ask the subsystem hint with the intent — for example prefilling a form field — so it can name both the remaining hook and the narrower event; the form-framework hint records EXT:form's two remaining SC_OPTIONS calls.",
-            "A PSR-14 event is public API. A new one needs a changelog entry, careful naming, and regression coverage."
-        ],
-        "checks": [
-            "CI=true ./Build/Scripts/runTests.sh -s unit",
-            "CI=true ./Build/Scripts/runTests.sh -s functional"
-        ]
-    },
-    {
-        "id": "tca-formengine",
-        "title": "TCA, FormEngine, and Backend Forms",
-        "appliesTo": [
-            "Configuration/TCA/",
-            "FormEngine",
-            "/Form/",
-            "Tca",
-            "TCA",
-            "tca field",
-            "backend form",
-            "form element",
-            "field configuration",
-            "record editing"
-        ],
-        "hints": [
-            "TCA changes can affect persisted data, editor workflows, and generated backend forms.",
-            "Prefer established TCA option names and existing FormEngine behavior.",
-            "Add functional coverage for TCA processing, data providers, or backend form rendering behavior.",
-            "A new field or option is user-facing, so it needs its labels in the same change — the field label, and the item labels of a select. An unlabelled field renders its own key to the editor. typo3_label_lookup says which trans-units the installation already has."
-        ],
-        "checks": [
-            "CI=true ./Build/Scripts/runTests.sh -s functional",
-            "CI=true ./Build/Scripts/runTests.sh -s checkIntegrityXliff"
-        ]
-    },
-    {
-        "id": "formdata-providers",
-        "title": "FormEngine Data Providers",
-        "appliesTo": [
-            "Configuration/DefaultConfiguration.php",
-            "FormDataProvider",
-            "formDataGroup",
-            "tcaDatabaseRecord",
-            "tcaSelectTreeAjaxFieldData",
-            "tcaInputPlaceholderRecord",
-            "flexFormSegment",
-            "form data provider"
-        ],
-        "hints": [
-            "FormEngine assembles its data through providers registered per form data group in $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']. The core declares the defaults in typo3/sysext/core/Configuration/DefaultConfiguration.php, but extensions add to them, so which groups and providers your installation really has is what typo3_configuration_lookup with path SYS/formEngine/formDataGroup answers.",
-            "Each provider maps to an array with 'depends' and 'before', both listing other provider classes. That graph is what orders the run, not the order the entries are written in — so the fix for a provider that sees stale data is usually an added dependency, not a change inside the provider class.",
-            "A provider that reads merged page TSconfig has to depend on PageTsConfigMerged, or it runs before the TSconfig it reads has been merged.",
-            "DefaultConfiguration.php is the default of TYPO3_CONF_VARS: an edit there changes behaviour in every installation, so say what changed and why in the patch description.",
-            "Registering or reordering a provider is a runtime-configuration change. It is covered by a functional test that renders the form data, not by a unit test of the provider in isolation."
-        ],
-        "checks": [
-            "CI=true ./Build/Scripts/runTests.sh -s functional"
-        ]
-    },
-    {
-        "id": "core-tests",
-        "title": "Writing Core Tests",
-        "appliesTo": [
-            "/Tests/Unit/",
-            "/Tests/Functional/",
-            "FunctionalTestCase",
-            "UnitTestCase",
-            "importCSVDataSet",
-            "assertCSVDataSet",
-            "test fixture",
-            "dataset",
-            "csv"
-        ],
-        "hints": [
-            "A unit test extends TYPO3\\TestingFramework\\Core\\Unit\\UnitTestCase, a functional test TYPO3\\TestingFramework\\Core\\Functional\\FunctionalTestCase. Both are final and mark cases with the #[Test] attribute rather than a test method-name prefix.",
-            "A functional test declares its environment through properties: protected array $coreExtensionsToLoad, $testExtensionsToLoad and $configurationToUseInTestInstance. Load only what the test needs — every extension costs setup time per test class.",
-            "State is set up and asserted with CSV fixtures, not hand-written inserts: $this->importCSVDataSet(__DIR__ . '/Fixtures/pages.csv') in setUp(), $this->assertCSVDataSet(__DIR__ . '/Fixtures/Expected.csv') for the result. The files live in a Fixtures/ directory next to the test class. This is the expected form for persistence behaviour.",
-            "Take services from the container with $this->get(SomeService::class) rather than constructing them, so the test exercises the real wiring.",
-            "DataHandler scenarios extend AbstractDataHandlerActionTestCase instead of FunctionalTestCase; it carries the scenario setup those tests share.",
-            {
-                "text": "Tests mirror the class path: typo3/sysext/<ext>/Classes/Foo/Bar.php is tested by typo3/sysext/<ext>/Tests/{Unit,Functional}/Foo/BarTest.php.",
-                "scope": "core"
-            },
-            "Run the single test file or method while iterating; a full functional run costs minutes per round. typo3_test_run_guide has the targeted invocation.",
-            "Write the narrowest test that exercises the change, and let what the change touches decide the kind: isolated logic is a unit test, while service wiring, persistence, TCA, DataHandler, routing and anything reading configuration only behave like themselves in a functional test. A unit test of those asserts the mock."
-        ],
-        "checks": [
-            "CI=true ./Build/Scripts/runTests.sh -s unit -- --filter <methodName> <path/to/Test.php>",
-            "CI=true ./Build/Scripts/runTests.sh -s functional -d sqlite -- <path/to/Test.php>"
-        ]
-    },
-    {
-        "id": "project-extension-tests",
-        "title": "Testing a Project Extension",
-        "appliesTo": [
-            "automated tests",
-            "test suite",
-            "phpunit",
-            "unit test",
-            "functional test",
-            "testExtensionsToLoad",
-            "coreExtensionsToLoad",
-            "FunctionalTests.xml",
-            "UnitTests.xml",
-            "testing-framework",
-            "SiteBasedTestTrait",
-            "setUpFrontendRootPage",
-            "FunctionalTestCase",
-            "importCSVDataSet",
-            "csv fixture",
-            "executeFrontendSubRequest",
-            "InternalRequest",
-            "SiteWriter"
-        ],
-        "hints": [
-            "The conventions of a core test hold here — UnitTestCase, FunctionalTestCase, final classes, #[Test], CSV fixtures, $this->get() for services — but the harness they run in does not exist yet and is the whole first day.",
-            "typo3/testing-framework ships UnitTests.xml, FunctionalTests.xml and the two bootstraps under Resources/Core/Build/, and the files say in their own header that extensions should copy them rather than reference them: their testsuite directory points into the core mono repository. Copy all four to Build/ in the extension, point each testsuite at Tests/Unit/ and Tests/Functional/, and run them as vendor/bin/phpunit -c Build/UnitTests.xml. There is no runTests.sh outside the core.",
-            "A functional run needs database credentials in the environment: typo3DatabaseDriver, typo3DatabaseHost, typo3DatabaseName, typo3DatabaseUsername, typo3DatabasePassword. Without them it stops with \"Database credentials for tests are neither set through environment variables, and can not be found in an existing LocalConfiguration file\", which does not name the variables it is missing.",
-            "Every test class gets a database of its own — the configured name plus a hash of the class — so that account has to be allowed to create databases. Under DDEV that means root rather than the user the site itself runs as.",
-            "$testExtensionsToLoad takes paths relative to the document root, not to the project root: in a Composer installation with a public/ web directory, \"extensions/my_sitepackage\" is looked for below public/ and fails with \"Test extension path ... not found\". Name the extension key or the Composer package name instead — those are resolved against the installed packages, and that is the form a project wants.",
-            "Every TYPO3 extension the extension under test requires has to be loaded as well, in $coreExtensionsToLoad or $testExtensionsToLoad. A missing one fails at setup with 'Package \"x\" depends on package \"y\" which does not exist' — thrown by the testing framework's own package collection, not by the installation, so it is a test-only failure — and the list to mirror is the extension's own require entries. That makes every requirement a change to every test class: the moment the extension requires one more, each class whose list does not name it fails at setup, including the classes that have nothing to do with what was added.",
-            "SiteBasedTestTrait is not available. The core's Tests/ directories are export-ignored, so the typo3/cms-core Composer package ships none of them, and the trait every core frontend test builds on cannot be used outside the mono repository. Writing the site configuration in setUp() is what it does anyway.",
-            {
-                "text": "That is one call: $this->get(SiteWriter::class)->write($identifier, $configuration), with the same array the site's config.yaml holds — rootPageId, base, languages, and the sets the site depends on.",
-                "since": 13
-            },
-            {
-                "text": "That is one call: $this->get(SiteConfiguration::class)->write($identifier, $configuration), with the same array the site's config.yaml holds — rootPageId, base, languages.",
-                "until": 12
-            },
-            "That write is not a replace. Where the file already exists it becomes the base, the new array is diffed against it — modified keys applied, keys the array no longer names unset — and the base is read without import processing, so an imports: section is never seen as missing and survives every later write. Which matters here because the test instance is built once per test class and only the database is reset between tests: the configuration one test wrote is what the next one merges into. A class whose tests need different sites writes the whole configuration in setUp(), or removes the file before writing it again.",
-            "The file-backed caches live in that instance too — core, typoscript, assets and l10n are file backends, while pages and hash are in the database and do go with the truncation. So a site setting a test changed can still be answered out of the TypoScript the test before it cached, and CacheManager::flushCaches() after writing the configuration is what makes the class deterministic. Both of these fail only in a suite: the test passes when it is run alone with --filter, which is what makes \"it works on its own\" evidence of nothing.",
-            {
-                "text": "Site settings go into that same array under the settings key, and may be written as flat dotted keys — 'my_ext.products.requestPage' => 4 — as well as as a nested tree, because SiteSettings resolves both and flattens a tree into dotted keys itself. Worth knowing because a set's own settings.yaml uses the nested form, so the flat one looks like it should not work.",
-                "since": 13
-            },
-            {
-                "text": "setUpFrontendRootPage() and site sets exclude each other. It writes a sys_template row with the clear flag set, and a sys_template that clears resets the AST — dropping the set TypoScript that was included before it. The frontend then answers \"No page configured for type=0\" and nothing points at the sys_template as the cause. A test whose site takes its TypoScript from a set must not call it, and the settings a plugin needs belong in the pi_flexform of the fixture content element, which is where the site keeps them too.",
-                "since": 13
-            },
-            "A frontend response is asserted through $this->executeFrontendSubRequest(new InternalRequest($uri)), which runs the request in the test instance and returns a PSR-7 response. InternalRequest::withQueryParameters() takes scalar values. An Extbase plugin argument is nested two levels deep, so a request that carries one is built with http_build_query() into the URI instead.",
-            "A query string built by hand for a cache hash has two more conditions. CacheHashCalculator refuses one that carries relevant parameters without id=<pageId> — 'ID parameter needs to be passed for the cHash calculation!' — and it rawurldecode()s every name and value, which leaves a + as a literal plus where the request the browser sends would have arrived with a space. So encode with PHP_QUERY_RFC3986; otherwise a value containing a space hashes differently than it arrives and the page answers HTTP 404 for something the test never intended to exercise."
-        ],
-        "checks": []
-    },
-    {
-        "id": "backend-modules",
-        "title": "Backend Module and Route Registration",
-        "appliesTo": [
-            "Configuration/Backend/Modules.php",
-            "Configuration/Backend/Routes.php",
-            "Configuration/Backend/AjaxRoutes.php",
-            "backend module",
-            "module registration",
-            "doc header",
-            "button bar",
-            "shortcut button",
-            "setShortcutContext",
-            "POST redirect",
-            "redirect after POST"
-        ],
-        "hints": [
-            "A backend module is declared in the owning extension's Configuration/Backend/Modules.php, which returns an array keyed by module identifier. There is no registration call.",
-            "The keys of an entry are parent (the identifier of the module it sits under), access (\"user\", \"admin\", ...), path (the backend route it answers on), iconIdentifier, labels, aliases (former identifiers kept working), routes, and moduleData for the module's persisted per-user state.",
-            "routes maps a route name to a target of the form Controller::class . '::method'; the entry named _default is what the module opens with.",
-            {
-                "text": "labels is a translation domain, not a file path. typo3_translation_domain_lookup computes it for the XLF file the module's labels live in.",
-                "since": 14
-            },
-            {
-                "text": "labels is the LLL:EXT: reference of the XLF file the module's labels live in, not a domain.",
-                "until": 13
-            },
-            {
-                "text": "Configure a module shortcut with $moduleTemplate->getDocHeaderComponent()->setShortcutContext($routeIdentifier, $displayName, $arguments). The doc header creates and positions the ShortcutButton; do not add one to its button bar manually.",
-                "since": 14
-            },
-            {
-                "text": "Build a module shortcut through $moduleTemplate->getDocHeaderComponent()->getButtonBar()->makeShortcutButton(), set its route identifier, display name and arguments, then add it to that button bar.",
-                "until": 13
-            },
-            "After a module POST changes state, return a RedirectResponse with HTTP 303 status. The browser then follows with GET; HTTP 302 does not state that method change and can repeat the POST.",
-            "Configuration/Backend/Routes.php and AjaxRoutes.php declare backend routes outside a module, in the same declarative style.",
-            "These are declarative files with no schema check behind them: a wrong key does not fail at boot, it fails when a user opens the module. Take the shape from a neighbouring extension."
-        ],
-        "checks": [
-            "CI=true ./Build/Scripts/runTests.sh -s functional"
-        ]
-    },
-    {
-        "id": "console-commands",
-        "title": "Console Commands",
-        "appliesTo": [
-            "Classes/Command/",
-            "Classes/Console/",
-            "console command",
-            "symfony command",
-            "AsCommand",
-            "command line"
-        ],
-        "hints": [
-            {
-                "text": "A console command is a class under Classes/Command/ extending the Symfony Command, registered with the #[AsCommand] attribute on the class: #[AsCommand('site:sets:list', 'Shows the list of available site sets.')]. A third argument holds former names kept as aliases.",
-                "since": 13
-            },
-            {
-                "text": "Autoconfiguration picks the attribute up. A console.command tag in Services.yaml is only for a command that needs explicit wiring on top of it.",
-                "since": 13
-            },
-            {
-                "text": "Without the attribute, a command is registered with a console.command tag in Configuration/Services.yaml, carrying the command name, its description, whether it may be scheduled, and an alias entry per former name.",
-                "until": 12
-            },
-            "A command name, its arguments and its options are what integrators script against, so a new command belongs in a changelog entry.",
-            "A console request is not an HTTP one: PSR-7 and middleware conventions do not apply to it, whatever the class name suggests. Behaviour is covered by functional tests."
-        ],
-        "checks": [
-            "CI=true ./Build/Scripts/runTests.sh -s functional"
-        ]
-    },
-    {
-        "id": "extension-files",
-        "title": "Extension Registration Files",
-        "appliesTo": [
-            "ext_tables.sql",
-            "ext_localconf.php",
-            "ext_tables.php",
-            "ext_emconf.php",
-            "Configuration/JavaScriptModules.php",
-            "Configuration/Icons.php"
-        ],
-        "hints": [
-            {
-                "text": "ext_tables.sql carries only the delta the schema analyzer needs — the tables and columns TCA does not already describe. It is not a schema dump, and a column TCA defines does not belong in it.",
-                "since": 13
-            },
-            {
-                "text": "ext_tables.sql declares every table and every column of the extension. Nothing is derived from TCA here, so a column that is missing from the file is missing from the database.",
-                "until": 12
-            },
-            {
-                "text": "An extension is recognised by its composer.json, and the package metadata is read from there: the type has to be typo3-cms-extension (typo3-cms-framework for a system extension), the key is extra.typo3/cms.extension-key, the version is extra.typo3/cms.version or the top-level version field, and extra.typo3/cms.Package.providesPackages lists the Composer packages the extension itself ships — present as an empty object where it ships none.",
-                "since": 14
-            },
-            {
-                "text": "ext_emconf.php is the deprecated fallback for exactly that metadata, and what decides whether it is read is composer.json declaring both fields rather than either: providesPackages present — as an empty object where the extension ships no Composer packages of its own — and a version in extra.typo3/cms.version or in the top-level version field. Declaring one of the two and not the other still reads the file and still raises an E_USER_DEPRECATED during cache warm-up, which a functional test suite running with failOnDeprecation is usually the first thing to surface; a fixture extension therefore needs a version of its own, and any value does, since nothing evaluates it under test. A Composer installation is unaffected either way — building the package artifact skips the fallback before it is reached.",
-                "since": 14,
-                "until": 14
-            },
-            {
-                "text": "Declaring both fields stops TYPO3 evaluating ext_emconf.php, which is not the same as being free to delete it: Tailor and the TER read that file, so an extension published there keeps it and keeps its contents in step with composer.json. One that goes nowhere near the TER can drop it.",
-                "since": 14
-            },
-            {
-                "text": "There is no fallback left: an extension whose composer.json does not declare both the version and providesPackages has an invalid package manifest, and the installation throws InvalidPackageManifestException naming the two fields instead of reading ext_emconf.php. System extensions are exempt, a framework package deriving its version from Typo3Version.",
-                "since": 15
-            },
-            {
-                "text": "ext_emconf.php is what makes a directory an extension outside Composer — the scan looks for that file — and its $EM_CONF array carries the title, the version, the state and the constraints on other extensions. In a Composer installation composer.json is the authority and the file is TER metadata.",
-                "until": 13
-            },
-            {
-                "text": "The backend title of an extension comes out of the composer.json description, split on the first \" - \": what stands before it becomes the title, the rest the description. An extension whose description is one sentence is listed with that whole sentence as its title.",
-                "since": 14
-            },
-            "Configuration/JavaScriptModules.php declares the import map for an extension's backend JavaScript: a dependencies list of other extensions and an imports map from bare specifier to an EXT: path, with an optional exclude list.",
-            "Configuration/Icons.php returns an array keyed by icon identifier, each entry naming a provider (SvgIconProvider or BitmapIconProvider) and an EXT: source path.",
-            "Configuration/page.tsconfig is auto-loaded from that path and needs no registration call.",
-            {
-                "text": "Configuration/user.tsconfig is auto-loaded the same way.",
-                "since": 13
-            },
-            "ext_localconf.php is what is left for what has no declarative file. It runs on every request, so keep it to registration and out of anything that does work."
-        ],
-        "checks": [
-            "CI=true ./Build/Scripts/runTests.sh -s functional"
-        ]
-    },
-    {
-        "id": "tca-schema-api",
-        "title": "TCA Schema API",
-        "appliesTo": [
-            "Classes/Schema/",
-            "TcaSchema",
-            "TcaSchemaFactory",
-            "schema api",
-            "tca schema"
-        ],
-        "hints": [
-            {
-                "text": "typo3/sysext/core/Classes/Schema/ is the typed API over TCA. Ask TcaSchemaFactory for a TcaSchema and query it — fields, capabilities, relations, labels — instead of reading $GLOBALS['TCA'] directly.",
-                "since": 13
-            },
-            {
-                "text": "A patch that reads TCA is increasingly expected to go through the schema rather than through the array; new code that touches record structure should not add a fresh $GLOBALS['TCA'] access.",
-                "since": 13
-            },
-            {
-                "text": "The schema is cached per package set, so a change to how it is built is a functional-test change, not a unit-test one.",
-                "since": 13
-            }
-        ],
-        "checks": [
-            "CI=true ./Build/Scripts/runTests.sh -s functional"
-        ]
-    },
-    {
-        "id": "datahandler-persistence",
-        "title": "DataHandler and Persistence",
-        "appliesTo": [
-            "DataHandler",
-            "/Persistence/",
-            "/Database/",
-            "ext_tables.sql",
-            "hidden record",
-            "deleted record",
-            "enable field",
-            "enablecolumns",
-            "restriction",
-            "workspace",
-            "localization",
-            "persistence",
-            "database query",
-            "querybuilder",
-            "datamap",
-            "cmdmap",
-            "seed",
-            "seeding",
-            "create records",
-            "sorting",
-            "sortby"
-        ],
-        "hints": [
-            "DataHandler and persistence changes are high-impact and usually need functional tests.",
-            "Preserve workspace, localization, permissions, and hook or event behavior unless intentionally changed.",
-            "Test edge cases with deleted, hidden, localized, versioned, or workspace records when relevant.",
-            "Writing records goes through a datamap: $dataMap[<table>][<uid or \"NEW\" plus a unique suffix>][<field>], handed to start($dataMap, $cmdMap) and then process_datamap(). Moving, copying and deleting go through the command map instead. A new record's real uid comes back in substNEWwithIDs, keyed by the placeholder.",
-            "A new record is placed at the TOP of its page: the pid field is the positioning pid, and a page uid there means \"first record on that page\". A datamap written in reading order therefore comes out reversed — pages in a menu, content elements in a column.",
-            "To place records in order, use the negative form: a pid of -<uid> means \"directly after that record\". A \"NEW\" placeholder may be used there as well, as -NEW..., and resolves once the record it names has been created in the same run.",
-            "DataHandler acts as a backend user: pass one to start() or have one in $GLOBALS['BE_USER']. Permission checks, workspaces and the reference index all hang off it, which is what makes DataHandler the right way to seed and a direct INSERT the wrong one."
-        ],
-        "checks": [
-            "CI=true ./Build/Scripts/runTests.sh -s functional",
-            "CI=true ./Build/Scripts/runTests.sh -s phpstan"
-        ]
-    },
-    {
-        "id": "routing-request-handling",
-        "title": "Routing, Middleware, and Request Handling",
-        "appliesTo": [
-            "/Http/",
-            "/Middleware/",
-            "/Routing/",
-            "/Controller/",
-            "Configuration/RequestMiddlewares.php",
-            "middleware",
-            "psr-7",
-            "psr-15",
-            "http request",
-            "request handling",
-            "site configuration"
-        ],
-        "hints": [
-            "Prefer PSR-7 request and response objects for HTTP behavior.",
-            "Middleware is registered in Configuration/RequestMiddlewares.php per request scope, with before and after naming other middleware. Keep each one focused and its position deliberate.",
-            "Avoid global state when request-scoped data is available.",
-            "This applies to HTTP only. A console command is not a request handler, whatever its class name suggests."
-        ],
-        "checks": [
-            "CI=true ./Build/Scripts/runTests.sh -s functional",
-            "CI=true ./Build/Scripts/runTests.sh -s unit"
-        ]
-    },
-    {
-        "id": "caching",
-        "title": "Caches",
-        "appliesTo": [
-            "/Cache/",
-            "CacheManager",
-            "FrontendInterface",
-            "cache",
-            "caching"
-        ],
-        "hints": [
-            "Caches are declared in $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations'] in typo3/sysext/core/Configuration/DefaultConfiguration.php: one entry per cache with a frontend class, a backend class, options and groups. Adding a cache means adding an entry there.",
-            "Inject a cache as a service with #[Autowire(service: 'cache.<name>')] on the constructor parameter rather than asking CacheManager for it at call time.",
-            "The 'core' cache is reserved for core PHP code. Pick or add a cache with the right frontend for the payload — VariableFrontend for data, PhpFrontend for generated code — and put it in the group whose flush semantics it belongs to.",
-            "Anything cached has to survive being flushed at any time; a cache is never the only place a value exists.",
-            "Cache behaviour is a wiring concern and is covered by functional tests."
-        ],
-        "checks": [
-            "CI=true ./Build/Scripts/runTests.sh -s functional"
-        ]
-    },
-    {
-        "id": "file-abstraction-layer",
-        "title": "FAL: Storages, Files, and Drivers",
-        "appliesTo": [
-            "Classes/Resource/",
-            "ResourceStorage",
-            "ResourceFactory",
-            "StorageRepository",
-            "FileReference",
-            "file abstraction",
-            "fal",
-            "driver"
-        ],
-        "hints": [
-            "Files are addressed through the FAL objects — ResourceStorage, Folder, File, FileReference — not by a filesystem path. A storage may be remote, and an absolute path assumes it is not.",
-            "Storages come from StorageRepository; ResourceFactory turns a reference or an identifier into a File or Folder object.",
-            "A storage's backing system is a driver implementing DriverInterface. Behaviour that differs per storage belongs in the driver, not in the calling code.",
-            "File metadata is reached through the MetaDataAspect of a file rather than by querying sys_file_metadata.",
-            "FAL changes touch indexing, permissions and references at once, so they need functional coverage rather than a unit test of the calling code."
-        ],
-        "checks": [
-            "CI=true ./Build/Scripts/runTests.sh -s functional"
-        ]
-    },
-    {
-        "id": "authentication-permissions",
-        "title": "Authentication and Permissions",
-        "appliesTo": [
-            "Classes/Authentication/",
-            "BackendUserAuthentication",
-            "FrontendUserAuthentication",
-            "permission",
-            "access check",
-            "authentication",
-            "authorization"
-        ],
-        "hints": [
-            "BackendUserAuthentication is the authority on what a backend user may do: isAdmin(), check($type, $value) for table, field and module access, checkLanguageAccess() for a language. Ask it — never re-implement an equivalent check.",
-            "Page-level access is a permission bitmask on the record, applied through the query restrictions rather than by filtering afterwards.",
-            "An admin bypass is a deliberate decision, not a shortcut: state why in the patch when adding one.",
-            "Permission behaviour is security-sensitive. It needs a functional test that asserts both the allowed and the denied case, and a bug here is worth checking against the maintained release branches."
-        ],
-        "checks": [
-            "CI=true ./Build/Scripts/runTests.sh -s functional"
-        ]
-    },
-    {
-        "id": "upgrade-wizards",
-        "title": "Upgrade Wizards",
-        "appliesTo": [
-            "Classes/Upgrades/",
-            "Classes/Updates/",
-            "upgrade wizard",
-            "upgradewizard",
-            "upgrade:run",
-            "data migration",
-            "migrate records",
-            "install tool"
-        ],
-        "hints": [
-            {
-                "text": "An upgrade wizard implements UpgradeWizardInterface: getTitle(), getDescription(), updateNecessary(), executeUpdate() and getPrerequisites(). Which namespace ships it has moved between branches — read whether the installed core has it below Core/Classes/Upgrades/ or install/Classes/Updates/, and take the attribute and the marker interfaces from the same place.",
-                "since": 13
-            },
-            {
-                "text": "Registration is the #[UpgradeWizard('identifier')] attribute on the class, which tags it for the registry. Nothing about a wizard is registered in ext_localconf.php.",
-                "since": 13
-            },
-            "updateNecessary() answers about data, never about a version number: it decides whether the wizard is offered, it is asked again after a run, and a wizard whose data is already migrated returns false. Writing it as \"has this wizard run\" is what makes a migration unrepeatable and a half-finished one invisible.",
-            "A wizard is marked as done after one successful run. Implement RepeatableInterface where it is meant to be run again — a migration over records that keep being created is the case for it.",
-            "State what the wizard needs through getPrerequisites(): DatabaseUpdatedPrerequisite where it works on tables the schema migration creates, ReferenceIndexUpdatedPrerequisite where it relies on the reference index.",
-            "Implement ChattyInterface to report progress through setOutput(), and ConfirmableInterface where the change needs the user's consent before it runs. Both are what makes the wizard usable in `typo3 upgrade:run` as well as in the Install Tool.",
-            "executeUpdate() returns whether it succeeded, and runs without a request: it is invoked from the console and from the Install Tool, so nothing about it may depend on a frontend or backend context."
-        ],
-        "checks": [
-            "CI=true ./Build/Scripts/runTests.sh -s functional"
-        ]
-    },
-    {
-        "id": "frontend-dataprocessors",
-        "title": "Frontend DataProcessors",
-        "appliesTo": [
-            "Classes/DataProcessing/",
-            "dataprocessor",
-            "data processor",
-            "dataProcessing",
-            "FLUIDTEMPLATE",
-            "processedData"
-        ],
-        "hints": [
-            "A DataProcessor implements DataProcessorInterface::process($cObj, $contentObjectConfiguration, $processorConfiguration, $processedData) and returns the key/value store it was handed, with its own result added under the name the `as` option gives.",
-            "Register it as a service tagged data.processor with an identifier in Configuration/Services.yaml. TypoScript then names that identifier rather than a class, the way the core's own processors are referenced; a fully qualified class name still resolves, because the container is asked first and the class is instantiated only when it holds no such service.",
-            "Read the processor's own options from $processorConfiguration and through $cObj->stdWrapValue('option', $processorConfiguration, $default), so every option can be set with stdWrap. $contentObjectConfiguration is the whole content object and belongs to its caller.",
-            "Honour the `if` option before doing any work: `if (isset($processorConfiguration['if.']) && !$cObj->checkIf($processorConfiguration['if.'])) { return $processedData; }`. A processor that ignores it runs on every element the TypoScript applies to.",
-            "Return $processedData unchanged where there is nothing to add. A processor is one of a chain, and the next one is handed what this one returned."
-        ],
-        "checks": [
-            "CI=true ./Build/Scripts/runTests.sh -s functional"
-        ]
-    },
-    {
-        "id": "extbase",
-        "title": "Extbase Plugins",
-        "appliesTo": [
-            "extbase",
-            "plugin",
-            "Classes/Controller/",
-            "Classes/Domain/Model/",
-            "Classes/Domain/Repository/",
-            "repository",
-            "domain model",
-            "pagination",
-            "paginate",
-            "search form",
-            "flexform",
-            "FlexForm"
-        ],
-        "hints": [
-            "Extbase is what a frontend needs beyond reading records: pagination, a search with arguments, validation, forms. Rendering records read-only needs none of it — see the records hint — and mixing the two questions is where most of the wrong answers here come from.",
-            "A plugin is registered by two calls that do different things. ExtensionUtility::registerPlugin() belongs in Configuration/TCA/Overrides/tt_content.php and adds the item to the CType selector, optionally with a FlexForm; ExtensionUtility::configurePlugin() belongs in ext_localconf.php and declares which controller actions exist and which of them are not cacheable. Neither one replaces the other.",
-            "The plugin signature both calls derive — the extension name and the plugin name, lowercased and joined by an underscore — is four things at once: the value in the CType column, the TypoScript key below tt_content, the key the FlexForm is registered under, and the namespace the plugin's own arguments arrive in. Renaming a plugin renames all four, and existing content keeps the old value.",
-            {
-                "text": "configurePlugin() takes a plugin type as its last argument that has to be omitted or given as \"CType\": a plugin is a content type of its own and nothing else, and anything else throws.",
-                "since": 14
-            },
-            {
-                "text": "configurePlugin() still takes \"list_type\" as its last argument and warns about it. New code omits the argument or passes \"CType\", because that is the shape that survives the next major.",
-                "since": 13,
-                "until": 13
-            },
-            "A model maps onto the table its class name implies. Configuration/Extbase/Persistence/Classes.php is where a table named differently is mapped, together with the per-property column names and the record type of a single-table inheritance.",
-            "Which paginator to use follows from what is being paginated: QueryResultPaginator for an Extbase query result, QueryBuilderPaginator for a Doctrine query builder, ArrayPaginator for an array that is already in memory. The last one paginates in PHP, so choosing it for a query means every record is fetched in order to show one page. SlidingWindowPagination on top of any of them produces the page numbers.",
-            "A search form submitted by GET on a cacheable action answers with a page-not-found, and putting the action into the non-cacheable list does not fix it: the cache hash is validated by a middleware, long before Extbase knows which action was called. The plugin's arguments have to be excluded from the hash as well, in $GLOBALS['TYPO3_CONF_VARS']['FE']['cacheHash']['excludedParameters']. A name there carries an indicator: ^ matches the beginning of a parameter name, ~ any part of it, and no indicator at all is an exact match — the one entry that covers a whole plugin is the prefix form. The hidden fields a Fluid form adds need the same treatment.",
-            "An object argument maps nothing until its properties are allowed. A request that hands a controller an object other than a persisted entity fails with \"It is not allowed to map property\" until the matching initialize<Action>Action() calls allowProperties() on that argument's property mapping configuration. That is the secure default rather than a defect.",
-            "An object that is not persisted is dropped from a generated link without a word: the URI builder serialises an entity by its uid, and something built for the request has none — so the filter of a search is gone on page two while the link looks correct. Pass such state to a link as plain arguments.",
-            "A paginator clamps a page number outside its range, so a page beyond the last one answers with the first page rather than with a not-found. Compare the current page against the number of pages in the controller and answer with the not-found response yourself, or the same list is served under an unbounded number of URLs.",
-            "A paginated plugin needs a route for the list as well as one for the paginated form. A single route with the page number defaulted only omits the variable when a link is built, and the literal part of the segment stays behind — a link to the first page then points at a path that ends in the prefix of a number that is not there. Routes are tried in the order they are declared, so the paginated one goes before a route whose slug would otherwise swallow it.",
-            "Orderings are property names, not column names. Ordering by the order records have in the backend therefore needs a property for that field on the model, although it is not a domain concept."
-        ],
-        "checks": [
-            "CI=true ./Build/Scripts/runTests.sh -s functional"
-        ]
-    },
-    {
-        "id": "sitepackage-initial-content",
-        "title": "Shipping Initial Content with an Extension",
-        "appliesTo": [
-            "Initialisation/",
-            "initial content",
-            "distribution",
-            "impexp",
-            "data.t3d",
-            "data.xml",
-            "extension:setup",
-            "seed content",
-            "ship content",
-            "sitepackage",
-            "site package"
-        ],
-        "hints": [
-            "An extension ships content as Initialisation/data.t3d or Initialisation/data.xml. It is imported once, when the package is set up — typo3 extension:setup is what triggers it. Initialisation/Site/<identifier>/ ships the site configuration alongside it, and Initialisation/Files/ is copied into the fileadmin directory under the extension key.",
-            "typo3 setup and typo3 extension:setup are two commands, and the second one is where the content arrives: it fires the package initialization. The setup command runs it as its last step, so a first install does both — but an extension whose shipped content changed afterwards is set up with the second one on its own.",
-            {
-                "text": "An extension that ships one of those files is a distribution as far as the setup command is concerned: the presence of the file is the entire test. So when such a package is already active, setup skips its own site creation and says that --distribution and --create-site have no effect; the two options exclude each other in any case, and --distribution needs typo3/cms-impexp to be active before it is offered at all.",
-                "since": 14
-            },
-            {
-                "text": "The setup dispatches a package initialization event, and every import — the content, the site configurations, the static SQL — is a listener on it, so an extension can add its own.",
-                "since": 13
-            },
-            "The import runs exactly once and remembers that in the registry, namespace extensionDataImport. A second setup imports nothing, which is the point — and also why a changed data file does not reach an installation that already ran it. Deleting that one sys_registry row is what makes extension:setup import the file again.",
-            {
-                "text": "The key is <extension_key>:Initialisation/dataImported, and <extension_key>:Initialisation/data.t3d blocks the import just as well, because both are checked.",
-                "since": 14
-            },
-            {
-                "text": "The key is the extension's path below the public directory with Initialisation/dataImported appended — typo3conf/ext/<extension_key>/Initialisation/dataImported for an extension installed there — and the sibling ending in Initialisation/data.t3d blocks the import just as well, because both are checked.",
-                "until": 13
-            },
-            "So the file is write-only on the installation it was exported from: whoever maintains it cannot see the effect of their own change there, and reading the XML back is reasoning rather than verification. Import it where it can be imported — a functional test is the cheap form: get(Import::class), loadFile('EXT:<key>/Initialisation/data.xml'), importData(), then assert the records arrived. typo3/sysext/impexp/Tests/Functional/ImportTest.php is the worked example.",
-            "What survives the import is what the reference index sees. The export gathers relations with ReferenceIndex::getRelations(), so a uid is remapped where TCA declares the field as a relation, or where a soft reference parser finds it — a type=link field ships as a typolink soft reference with the record it points at, a type=group to pages as a database relation, inside a FlexForm as well. The same page uid in a plain input or number field is exported as the integer it is and imported as that integer, pointing at whatever the target installation has under it. Nothing warns, so the field type is what decides whether shipped content survives.",
-            "The import lives in EXT:impexp, so an extension that ships content has to require typo3/cms-impexp.",
-            {
-                "text": "Without it the requirement check only logs a warning: the setup succeeds and the installation comes up empty, which is far harder to notice than a failure.",
-                "since": 13
-            },
-            "The site configuration import remaps the root page id to the page that was actually imported, and nothing else. Every other reference in the shipped config.yaml — an error handler naming t3://page?uid=..., a redirect target — keeps the uid it was exported with, so it points at a stranger's record on the second installation. Ship a site configuration with no uid in it but the root page; where one is unavoidable, the configuration is good for a first install and nothing else, and the extension says so where someone will read it.",
-            "A site identifier that already exists is skipped with a warning, so a fresh installation and an existing one behave differently. Creating a site during setup and shipping one in Initialisation/Site/ are alternatives, not steps: the first one leaves a site behind that makes the second one be skipped.",
-            "Once content exists, the console's impexp export writes the artifact and impexp import reads it back — which is also the way in for the first build, where there is nothing to export yet and hand-writing T3D is not an option: seed with DataHandler, then export.",
-            "No console command hands you a DataHandler, so seeding is a throwaway script that boots TYPO3 itself. Bootstrap::init($classLoader), and nothing else: the second parameter is $failsafe, and the CLI binary passes it as true only because the command application finishes the boot afterwards. In failsafe mode the container is the reduced one, TCA is never built, and makeInstance() then constructs a core service itself with no arguments — so the failure reads as a constructor missing its arguments rather than as a service that is not registered.",
-            "Then the backend user, in that order: Bootstrap::initializeBackendUser(CommandLineUserAuthentication::class) creates it, Bootstrap::initializeBackendAuthentication() logs it in, and the second one alone has no $GLOBALS['BE_USER'] to check. Anything that reads a site attribute needs $GLOBALS['LANG'] as well, which the command application builds with LanguageServiceFactory::createFromUserPreferences($GLOBALS['BE_USER']).",
-            "In one datamap the pages are processed before every other table, so a record whose pid is the NEW id of a page created in the same call still lands on it. Between two other tables the order of the datamap decides, and a NEW id that has not been substituted yet leaves that record unwritten — a log entry, no exception. Where the target is not a page, create it in a first process_datamap() call, read substNEWwithIDs, and pass real ids in the second.",
-            "impexp:export takes one --table per table, and a custom table nobody named is missing from the export without a word: typo3 impexp:export --table=tt_content --table=tx_myext_product.",
-            "Images come along on their own — a sys_file_reference pulls its sys_file record in as a relation and the bytes follow — but by default they are base64 inside the export file, which for an artifact that is committed is the wrong shape. --save-files-outside-export-file writes them beside it instead, into a directory named after the file plus .files, each under its own sha1. The import picks that directory up whenever it sits next to the file, extension:setup included, and reuses a file the target storage already has under the same identifier and hash rather than duplicating it.",
-            "A file path handed to the console is resolved by GeneralUtility::getFileAbsFileName(): a relative path is relative to the public directory, not to the project root. EXT:<key>/Initialisation/data.xml is the form that works from anywhere."
-        ],
-        "checks": [
-            "CI=true ./Build/Scripts/runTests.sh -s functional"
-        ]
-    }
+  {
+    "id": "extension-static-analysis",
+    "title": "Setting Up PHPStan for an Extension",
+    "appliesTo": [
+      "phpstan",
+      "phpstan.neon",
+      "static analysis",
+      "analyse",
+      "baseline",
+      "phpstan-baseline",
+      "tmpDir",
+      "result cache",
+      "set up static analysis",
+      "level"
+    ],
+    "hints": [
+      "The configuration belongs to the package, in Build/phpstan/ beside the phpunit configurations the test setup already put there. typo3/testing-framework is the setup worth reading: it is a TYPO3 package with no core mono repository around it, which is the situation an extension is in. Its paths are the package's own Classes and Tests directories, and it includes the phpstan-phpunit extension so test code is understood as tests rather than as ordinary classes.",
+      "Set tmpDir to a path inside the repository. PHPStan otherwise writes its result cache to /tmp/phpstan, every checkout on the machine shares that one directory, and the cache stores absolute paths — so a checkout that has been deleted since fails the analysis of every other one, with an internal error naming a path the caller has never seen. The core and typo3/testing-framework both set it, and both explain it in the same words: a local cache dir instead of /tmp. CI is the exception the core makes in a second configuration file that overrides it back to /tmp, because that container is discarded after the run and caching it buys nothing.",
+      "TYPO3 defines constants at runtime that the analysis never gets to see, so they are declared in a file named under bootstrapFiles — LF and CR, and ORIGINAL_ROOT where the test setup uses it. Without it every use of them is reported as an undefined constant, which is a wall of findings about code that is correct.",
+      "ext_emconf.php is excluded rather than fixed. It assigns into $_EXTKEY, which the file including it sets, so the analysis reports the variable as undefined; typo3/testing-framework excludes the ext_emconf.php of its fixture extensions for exactly that reason.",
+      "A baseline is what makes the first run usable. Generating one records every finding that is already there into phpstan-baseline.neon, which the configuration includes first, so the run reports what a change added rather than what the package accumulated before anyone looked. It is a work list, not a suppression: an entry that disappears is removed from the file by regenerating it.",
+      "The core and typo3/testing-framework both analyse at level 5. Levels are cumulative, so raising one on a package that has never been analysed produces the whole difference at once — which is what the baseline is for."
+    ],
+    "checks": [
+      "vendor/bin/phpstan analyse -c Build/phpstan/phpstan.neon --no-progress --no-interaction",
+      "vendor/bin/phpstan analyse -c Build/phpstan/phpstan.neon --generate-baseline=Build/phpstan/phpstan-baseline.neon"
+    ]
+  },
+  {
+    "id": "system-extension-boundaries",
+    "title": "System Extension Boundaries",
+    "appliesTo": [
+      "typo3/sysext/",
+      "sysext",
+      "system extension"
+    ],
+    "hints": [
+      "Keep changes inside the owning system extension unless a cross-extension contract really changes.",
+      "Reuse public APIs from other system extensions instead of depending on internal implementation details.",
+      "Check nearby extension-local tests before adding shared behavior."
+    ],
+    "checks": [
+      "CI=true ./Build/Scripts/runTests.sh -s unit",
+      "CI=true ./Build/Scripts/runTests.sh -s functional"
+    ]
+  },
+  {
+    "id": "dependency-injection-services",
+    "title": "Dependency Injection and Services",
+    "appliesTo": [
+      "Configuration/Services.yaml",
+      "/Service/",
+      "/Services/",
+      "DependencyInjection",
+      "constructor injection",
+      "service wiring",
+      "autowiring",
+      "autoconfigure"
+    ],
+    "hints": [
+      "Autowiring and autoconfiguration are on for the core sysexts: their Configuration/Services.yaml sets autowire, autoconfigure and public: false under _defaults and registers the whole Classes/ tree as a resource. A new service in Classes/ therefore needs no Services.yaml entry at all.",
+      "Prefer constructor injection with a readonly promoted property. Services.yaml is for what autowiring cannot resolve: a scalar or non-autowirable argument, an alias, a service that has to be public, or a factory.",
+      "For a single non-autowirable argument, the #[Autowire] attribute on the constructor parameter keeps the wiring in the class instead of splitting it across a YAML file.",
+      "Avoid new GeneralUtility::makeInstance() calls for regular service dependencies unless lifecycle constraints require it.",
+      "Some extension points are resolved by class name through the container rather than through makeInstance(), and there a service that is not public simply is not found. Autoconfiguration covers the singletons, the middlewares, the request handlers and the icon providers; anything else that the core looks up that way — the page title providers are the one that bites, because PageTitleProviderManager reads the class name out of TypoScript and asks the container for it — needs its own Services.yaml entry with public: true. The failure is a service-not-found at request time, not a wiring error at build time."
+    ],
+    "checks": [
+      "CI=true ./Build/Scripts/runTests.sh -s functional",
+      "CI=true ./Build/Scripts/runTests.sh -s lintServicesYaml"
+    ]
+  },
+  {
+    "id": "events-extension-points",
+    "title": "Events and Extension Points",
+    "appliesTo": [
+      "/Event/",
+      "EventListener",
+      "EventDispatcher",
+      "Hooks",
+      "hook",
+      "event listener",
+      "extension point",
+      "psr-14",
+      "AsEventListener"
+    ],
+    "hints": [
+      {
+        "text": "A listener is registered with the #[AsEventListener] attribute from TYPO3\\CMS\\Core\\Attribute, on the class or on a single method. Its arguments are identifier, event, method, before and after; the attribute is repeatable, so one class can listen to several events. Autoconfiguration picks it up — do not add an event.listener tag to Services.yaml, no core listener is registered that way.",
+        "since": 13
+      },
+      {
+        "text": "Without the attribute, a listener is registered with an event.listener tag in Configuration/Services.yaml, carrying an identifier and the method; the event itself is taken from that method's parameter type. That is the only mechanism there, and every core listener uses it.",
+        "until": 12
+      },
+      "Event classes live in Classes/Event/ of the extension that dispatches them, are final, and are readonly where the payload is immutable. A listener that may change the outcome gets setters on the event instead of a return value.",
+      "Keep event payloads minimal and stable, and prefer a new event over a hook: a hook is only the right answer where the subsystem still has hook-based extension points.",
+      "The surviving hooks are a subsystem fact, not a second extension-point registry. Ask the subsystem hint with the intent — for example prefilling a form field — so it can name both the remaining hook and the narrower event; the form-framework hint records EXT:form's two remaining SC_OPTIONS calls.",
+      "A PSR-14 event is public API. A new one needs a changelog entry, careful naming, and regression coverage."
+    ],
+    "checks": [
+      "CI=true ./Build/Scripts/runTests.sh -s unit",
+      "CI=true ./Build/Scripts/runTests.sh -s functional"
+    ]
+  },
+  {
+    "id": "tca-formengine",
+    "title": "TCA, FormEngine, and Backend Forms",
+    "appliesTo": [
+      "Configuration/TCA/",
+      "FormEngine",
+      "/Form/",
+      "Tca",
+      "TCA",
+      "tca field",
+      "backend form",
+      "form element",
+      "field configuration",
+      "record editing"
+    ],
+    "hints": [
+      "TCA changes can affect persisted data, editor workflows, and generated backend forms.",
+      "Prefer established TCA option names and existing FormEngine behavior.",
+      "Add functional coverage for TCA processing, data providers, or backend form rendering behavior.",
+      "A new field or option is user-facing, so it needs its labels in the same change — the field label, and the item labels of a select. An unlabelled field renders its own key to the editor. typo3_label_lookup says which trans-units the installation already has."
+    ],
+    "checks": [
+      "CI=true ./Build/Scripts/runTests.sh -s functional",
+      "CI=true ./Build/Scripts/runTests.sh -s checkIntegrityXliff"
+    ]
+  },
+  {
+    "id": "formdata-providers",
+    "title": "FormEngine Data Providers",
+    "appliesTo": [
+      "Configuration/DefaultConfiguration.php",
+      "FormDataProvider",
+      "formDataGroup",
+      "tcaDatabaseRecord",
+      "tcaSelectTreeAjaxFieldData",
+      "tcaInputPlaceholderRecord",
+      "flexFormSegment",
+      "form data provider"
+    ],
+    "hints": [
+      "FormEngine assembles its data through providers registered per form data group in $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']. The core declares the defaults in typo3/sysext/core/Configuration/DefaultConfiguration.php, but extensions add to them, so which groups and providers your installation really has is what typo3_configuration_lookup with path SYS/formEngine/formDataGroup answers.",
+      "Each provider maps to an array with 'depends' and 'before', both listing other provider classes. That graph is what orders the run, not the order the entries are written in — so the fix for a provider that sees stale data is usually an added dependency, not a change inside the provider class.",
+      "A provider that reads merged page TSconfig has to depend on PageTsConfigMerged, or it runs before the TSconfig it reads has been merged.",
+      "DefaultConfiguration.php is the default of TYPO3_CONF_VARS: an edit there changes behaviour in every installation, so say what changed and why in the patch description.",
+      "Registering or reordering a provider is a runtime-configuration change. It is covered by a functional test that renders the form data, not by a unit test of the provider in isolation."
+    ],
+    "checks": [
+      "CI=true ./Build/Scripts/runTests.sh -s functional"
+    ]
+  },
+  {
+    "id": "core-tests",
+    "title": "Writing Core Tests",
+    "appliesTo": [
+      "/Tests/Unit/",
+      "/Tests/Functional/",
+      "FunctionalTestCase",
+      "UnitTestCase",
+      "importCSVDataSet",
+      "assertCSVDataSet",
+      "test fixture",
+      "dataset",
+      "csv"
+    ],
+    "hints": [
+      "A unit test extends TYPO3\\TestingFramework\\Core\\Unit\\UnitTestCase, a functional test TYPO3\\TestingFramework\\Core\\Functional\\FunctionalTestCase. Both are final and mark cases with the #[Test] attribute rather than a test method-name prefix.",
+      "A functional test declares its environment through properties: protected array $coreExtensionsToLoad, $testExtensionsToLoad and $configurationToUseInTestInstance. Load only what the test needs — every extension costs setup time per test class.",
+      "State is set up and asserted with CSV fixtures, not hand-written inserts: $this->importCSVDataSet(__DIR__ . '/Fixtures/pages.csv') in setUp(), $this->assertCSVDataSet(__DIR__ . '/Fixtures/Expected.csv') for the result. The files live in a Fixtures/ directory next to the test class. This is the expected form for persistence behaviour.",
+      "Take services from the container with $this->get(SomeService::class) rather than constructing them, so the test exercises the real wiring.",
+      "DataHandler scenarios extend AbstractDataHandlerActionTestCase instead of FunctionalTestCase; it carries the scenario setup those tests share.",
+      {
+        "text": "Tests mirror the class path: typo3/sysext/<ext>/Classes/Foo/Bar.php is tested by typo3/sysext/<ext>/Tests/{Unit,Functional}/Foo/BarTest.php.",
+        "scope": "core"
+      },
+      "Run the single test file or method while iterating; a full functional run costs minutes per round. typo3_test_run_guide has the targeted invocation.",
+      "Write the narrowest test that exercises the change, and let what the change touches decide the kind: isolated logic is a unit test, while service wiring, persistence, TCA, DataHandler, routing and anything reading configuration only behave like themselves in a functional test. A unit test of those asserts the mock."
+    ],
+    "checks": [
+      "CI=true ./Build/Scripts/runTests.sh -s unit -- --filter <methodName> <path/to/Test.php>",
+      "CI=true ./Build/Scripts/runTests.sh -s functional -d sqlite -- <path/to/Test.php>"
+    ]
+  },
+  {
+    "id": "project-extension-tests",
+    "title": "Testing a Project Extension",
+    "appliesTo": [
+      "automated tests",
+      "test suite",
+      "phpunit",
+      "unit test",
+      "functional test",
+      "testExtensionsToLoad",
+      "coreExtensionsToLoad",
+      "FunctionalTests.xml",
+      "UnitTests.xml",
+      "testing-framework",
+      "SiteBasedTestTrait",
+      "setUpFrontendRootPage",
+      "FunctionalTestCase",
+      "importCSVDataSet",
+      "csv fixture",
+      "executeFrontendSubRequest",
+      "InternalRequest",
+      "SiteWriter"
+    ],
+    "hints": [
+      "The conventions of a core test hold here — UnitTestCase, FunctionalTestCase, final classes, #[Test], CSV fixtures, $this->get() for services — but the harness they run in does not exist yet and is the whole first day.",
+      "typo3/testing-framework ships UnitTests.xml, FunctionalTests.xml and the two bootstraps under Resources/Core/Build/, and the files say in their own header that extensions should copy them rather than reference them: their testsuite directory points into the core mono repository. Copy all four to Build/ in the extension, point each testsuite at Tests/Unit/ and Tests/Functional/, and run them as vendor/bin/phpunit -c Build/UnitTests.xml. There is no runTests.sh outside the core.",
+      "A functional run needs database credentials in the environment: typo3DatabaseDriver, typo3DatabaseHost, typo3DatabaseName, typo3DatabaseUsername, typo3DatabasePassword. Without them it stops with \"Database credentials for tests are neither set through environment variables, and can not be found in an existing LocalConfiguration file\", which does not name the variables it is missing.",
+      "Every test class gets a database of its own — the configured name plus a hash of the class — so that account has to be allowed to create databases. Under DDEV that means root rather than the user the site itself runs as.",
+      "$testExtensionsToLoad takes paths relative to the document root, not to the project root: in a Composer installation with a public/ web directory, \"extensions/my_sitepackage\" is looked for below public/ and fails with \"Test extension path ... not found\". Name the extension key or the Composer package name instead — those are resolved against the installed packages, and that is the form a project wants.",
+      "Every TYPO3 extension the extension under test requires has to be loaded as well, in $coreExtensionsToLoad or $testExtensionsToLoad. A missing one fails at setup with 'Package \"x\" depends on package \"y\" which does not exist' — thrown by the testing framework's own package collection, not by the installation, so it is a test-only failure — and the list to mirror is the extension's own require entries. That makes every requirement a change to every test class: the moment the extension requires one more, each class whose list does not name it fails at setup, including the classes that have nothing to do with what was added.",
+      "SiteBasedTestTrait is not available. The core's Tests/ directories are export-ignored, so the typo3/cms-core Composer package ships none of them, and the trait every core frontend test builds on cannot be used outside the mono repository. Writing the site configuration in setUp() is what it does anyway.",
+      {
+        "text": "That is one call: $this->get(SiteWriter::class)->write($identifier, $configuration), with the same array the site's config.yaml holds — rootPageId, base, languages, and the sets the site depends on.",
+        "since": 13
+      },
+      {
+        "text": "That is one call: $this->get(SiteConfiguration::class)->write($identifier, $configuration), with the same array the site's config.yaml holds — rootPageId, base, languages.",
+        "until": 12
+      },
+      "That write is not a replace. Where the file already exists it becomes the base, the new array is diffed against it — modified keys applied, keys the array no longer names unset — and the base is read without import processing, so an imports: section is never seen as missing and survives every later write. Which matters here because the test instance is built once per test class and only the database is reset between tests: the configuration one test wrote is what the next one merges into. A class whose tests need different sites writes the whole configuration in setUp(), or removes the file before writing it again.",
+      "The file-backed caches live in that instance too — core, typoscript, assets and l10n are file backends, while pages and hash are in the database and do go with the truncation. So a site setting a test changed can still be answered out of the TypoScript the test before it cached, and CacheManager::flushCaches() after writing the configuration is what makes the class deterministic. Both of these fail only in a suite: the test passes when it is run alone with --filter, which is what makes \"it works on its own\" evidence of nothing.",
+      {
+        "text": "Site settings go into that same array under the settings key, and may be written as flat dotted keys — 'my_ext.products.requestPage' => 4 — as well as as a nested tree, because SiteSettings resolves both and flattens a tree into dotted keys itself. Worth knowing because a set's own settings.yaml uses the nested form, so the flat one looks like it should not work.",
+        "since": 13
+      },
+      {
+        "text": "setUpFrontendRootPage() and site sets exclude each other. It writes a sys_template row with the clear flag set, and a sys_template that clears resets the AST — dropping the set TypoScript that was included before it. The frontend then answers \"No page configured for type=0\" and nothing points at the sys_template as the cause. A test whose site takes its TypoScript from a set must not call it, and the settings a plugin needs belong in the pi_flexform of the fixture content element, which is where the site keeps them too.",
+        "since": 13
+      },
+      "A frontend response is asserted through $this->executeFrontendSubRequest(new InternalRequest($uri)), which runs the request in the test instance and returns a PSR-7 response. InternalRequest::withQueryParameters() takes scalar values. An Extbase plugin argument is nested two levels deep, so a request that carries one is built with http_build_query() into the URI instead.",
+      "A query string built by hand for a cache hash has two more conditions. CacheHashCalculator refuses one that carries relevant parameters without id=<pageId> — 'ID parameter needs to be passed for the cHash calculation!' — and it rawurldecode()s every name and value, which leaves a + as a literal plus where the request the browser sends would have arrived with a space. So encode with PHP_QUERY_RFC3986; otherwise a value containing a space hashes differently than it arrives and the page answers HTTP 404 for something the test never intended to exercise."
+    ],
+    "checks": []
+  },
+  {
+    "id": "backend-modules",
+    "title": "Backend Module and Route Registration",
+    "appliesTo": [
+      "Configuration/Backend/Modules.php",
+      "Configuration/Backend/Routes.php",
+      "Configuration/Backend/AjaxRoutes.php",
+      "backend module",
+      "module registration",
+      "doc header",
+      "button bar",
+      "shortcut button",
+      "setShortcutContext",
+      "POST redirect",
+      "redirect after POST"
+    ],
+    "hints": [
+      "A backend module is declared in the owning extension's Configuration/Backend/Modules.php, which returns an array keyed by module identifier. There is no registration call.",
+      "The keys of an entry are parent (the identifier of the module it sits under), access (\"user\", \"admin\", ...), path (the backend route it answers on), iconIdentifier, labels, aliases (former identifiers kept working), routes, and moduleData for the module's persisted per-user state.",
+      "routes maps a route name to a target of the form Controller::class . '::method'; the entry named _default is what the module opens with.",
+      {
+        "text": "labels is a translation domain, not a file path. typo3_translation_domain_lookup computes it for the XLF file the module's labels live in.",
+        "since": 14
+      },
+      {
+        "text": "labels is the LLL:EXT: reference of the XLF file the module's labels live in, not a domain.",
+        "until": 13
+      },
+      {
+        "text": "Configure a module shortcut with $moduleTemplate->getDocHeaderComponent()->setShortcutContext($routeIdentifier, $displayName, $arguments). The doc header creates and positions the ShortcutButton; do not add one to its button bar manually.",
+        "since": 14
+      },
+      {
+        "text": "Build a module shortcut through $moduleTemplate->getDocHeaderComponent()->getButtonBar()->makeShortcutButton(), set its route identifier, display name and arguments, then add it to that button bar.",
+        "until": 13
+      },
+      "After a module POST changes state, return a RedirectResponse with HTTP 303 status. The browser then follows with GET; HTTP 302 does not state that method change and can repeat the POST.",
+      "Configuration/Backend/Routes.php and AjaxRoutes.php declare backend routes outside a module, in the same declarative style.",
+      "These are declarative files with no schema check behind them: a wrong key does not fail at boot, it fails when a user opens the module. Take the shape from a neighbouring extension."
+    ],
+    "checks": [
+      "CI=true ./Build/Scripts/runTests.sh -s functional"
+    ]
+  },
+  {
+    "id": "console-commands",
+    "title": "Console Commands",
+    "appliesTo": [
+      "Classes/Command/",
+      "Classes/Console/",
+      "console command",
+      "symfony command",
+      "AsCommand",
+      "command line"
+    ],
+    "hints": [
+      {
+        "text": "A console command is a class under Classes/Command/ extending the Symfony Command, registered with the #[AsCommand] attribute on the class: #[AsCommand('site:sets:list', 'Shows the list of available site sets.')]. A third argument holds former names kept as aliases.",
+        "since": 13
+      },
+      {
+        "text": "Autoconfiguration picks the attribute up. A console.command tag in Services.yaml is only for a command that needs explicit wiring on top of it.",
+        "since": 13
+      },
+      {
+        "text": "Without the attribute, a command is registered with a console.command tag in Configuration/Services.yaml, carrying the command name, its description, whether it may be scheduled, and an alias entry per former name.",
+        "until": 12
+      },
+      "A command name, its arguments and its options are what integrators script against, so a new command belongs in a changelog entry.",
+      "A console request is not an HTTP one: PSR-7 and middleware conventions do not apply to it, whatever the class name suggests. Behaviour is covered by functional tests."
+    ],
+    "checks": [
+      "CI=true ./Build/Scripts/runTests.sh -s functional"
+    ]
+  },
+  {
+    "id": "extension-files",
+    "title": "Extension Registration Files",
+    "appliesTo": [
+      "ext_tables.sql",
+      "ext_localconf.php",
+      "ext_tables.php",
+      "ext_emconf.php",
+      "Configuration/JavaScriptModules.php",
+      "Configuration/Icons.php"
+    ],
+    "hints": [
+      {
+        "text": "ext_tables.sql carries only the delta the schema analyzer needs — the tables and columns TCA does not already describe. It is not a schema dump, and a column TCA defines does not belong in it.",
+        "since": 13
+      },
+      {
+        "text": "ext_tables.sql declares every table and every column of the extension. Nothing is derived from TCA here, so a column that is missing from the file is missing from the database.",
+        "until": 12
+      },
+      {
+        "text": "An extension is recognised by its composer.json, and the package metadata is read from there: the type has to be typo3-cms-extension (typo3-cms-framework for a system extension), the key is extra.typo3/cms.extension-key, the version is extra.typo3/cms.version or the top-level version field, and extra.typo3/cms.Package.providesPackages lists the Composer packages the extension itself ships — present as an empty object where it ships none.",
+        "since": 14
+      },
+      {
+        "text": "ext_emconf.php is the deprecated fallback for exactly that metadata, and what decides whether it is read is composer.json declaring both fields rather than either: providesPackages present — as an empty object where the extension ships no Composer packages of its own — and a version in extra.typo3/cms.version or in the top-level version field. Declaring one of the two and not the other still reads the file and still raises an E_USER_DEPRECATED during cache warm-up, which a functional test suite running with failOnDeprecation is usually the first thing to surface; a fixture extension therefore needs a version of its own, and any value does, since nothing evaluates it under test. A Composer installation is unaffected either way — building the package artifact skips the fallback before it is reached.",
+        "since": 14,
+        "until": 14
+      },
+      {
+        "text": "Declaring both fields stops TYPO3 evaluating ext_emconf.php, which is not the same as being free to delete it: Tailor and the TER read that file, so an extension published there keeps it and keeps its contents in step with composer.json. One that goes nowhere near the TER can drop it.",
+        "since": 14
+      },
+      {
+        "text": "There is no fallback left: an extension whose composer.json does not declare both the version and providesPackages has an invalid package manifest, and the installation throws InvalidPackageManifestException naming the two fields instead of reading ext_emconf.php. System extensions are exempt, a framework package deriving its version from Typo3Version.",
+        "since": 15
+      },
+      {
+        "text": "ext_emconf.php is what makes a directory an extension outside Composer — the scan looks for that file — and its $EM_CONF array carries the title, the version, the state and the constraints on other extensions. In a Composer installation composer.json is the authority and the file is TER metadata.",
+        "until": 13
+      },
+      {
+        "text": "The backend title of an extension comes out of the composer.json description, split on the first \" - \": what stands before it becomes the title, the rest the description. An extension whose description is one sentence is listed with that whole sentence as its title.",
+        "since": 14
+      },
+      "Configuration/JavaScriptModules.php declares the import map for an extension's backend JavaScript: a dependencies list of other extensions and an imports map from bare specifier to an EXT: path, with an optional exclude list.",
+      "Configuration/Icons.php returns an array keyed by icon identifier, each entry naming a provider (SvgIconProvider or BitmapIconProvider) and an EXT: source path.",
+      "Configuration/page.tsconfig is auto-loaded from that path and needs no registration call.",
+      {
+        "text": "Configuration/user.tsconfig is auto-loaded the same way.",
+        "since": 13
+      },
+      "ext_localconf.php is what is left for what has no declarative file. It runs on every request, so keep it to registration and out of anything that does work."
+    ],
+    "checks": [
+      "CI=true ./Build/Scripts/runTests.sh -s functional"
+    ]
+  },
+  {
+    "id": "tca-schema-api",
+    "title": "TCA Schema API",
+    "appliesTo": [
+      "Classes/Schema/",
+      "TcaSchema",
+      "TcaSchemaFactory",
+      "schema api",
+      "tca schema"
+    ],
+    "hints": [
+      {
+        "text": "typo3/sysext/core/Classes/Schema/ is the typed API over TCA. Ask TcaSchemaFactory for a TcaSchema and query it — fields, capabilities, relations, labels — instead of reading $GLOBALS['TCA'] directly.",
+        "since": 13
+      },
+      {
+        "text": "A patch that reads TCA is increasingly expected to go through the schema rather than through the array; new code that touches record structure should not add a fresh $GLOBALS['TCA'] access.",
+        "since": 13
+      },
+      {
+        "text": "The schema is cached per package set, so a change to how it is built is a functional-test change, not a unit-test one.",
+        "since": 13
+      }
+    ],
+    "checks": [
+      "CI=true ./Build/Scripts/runTests.sh -s functional"
+    ]
+  },
+  {
+    "id": "datahandler-persistence",
+    "title": "DataHandler and Persistence",
+    "appliesTo": [
+      "DataHandler",
+      "/Persistence/",
+      "/Database/",
+      "ext_tables.sql",
+      "hidden record",
+      "deleted record",
+      "enable field",
+      "enablecolumns",
+      "restriction",
+      "workspace",
+      "localization",
+      "persistence",
+      "database query",
+      "querybuilder",
+      "datamap",
+      "cmdmap",
+      "seed",
+      "seeding",
+      "create records",
+      "sorting",
+      "sortby"
+    ],
+    "hints": [
+      "DataHandler and persistence changes are high-impact and usually need functional tests.",
+      "Preserve workspace, localization, permissions, and hook or event behavior unless intentionally changed.",
+      "Test edge cases with deleted, hidden, localized, versioned, or workspace records when relevant.",
+      "Writing records goes through a datamap: $dataMap[<table>][<uid or \"NEW\" plus a unique suffix>][<field>], handed to start($dataMap, $cmdMap) and then process_datamap(). Moving, copying and deleting go through the command map instead. A new record's real uid comes back in substNEWwithIDs, keyed by the placeholder.",
+      "A new record is placed at the TOP of its page: the pid field is the positioning pid, and a page uid there means \"first record on that page\". A datamap written in reading order therefore comes out reversed — pages in a menu, content elements in a column.",
+      "To place records in order, use the negative form: a pid of -<uid> means \"directly after that record\". A \"NEW\" placeholder may be used there as well, as -NEW..., and resolves once the record it names has been created in the same run.",
+      "DataHandler acts as a backend user: pass one to start() or have one in $GLOBALS['BE_USER']. Permission checks, workspaces and the reference index all hang off it, which is what makes DataHandler the right way to seed and a direct INSERT the wrong one."
+    ],
+    "checks": [
+      "CI=true ./Build/Scripts/runTests.sh -s functional",
+      "CI=true ./Build/Scripts/runTests.sh -s phpstan"
+    ]
+  },
+  {
+    "id": "routing-request-handling",
+    "title": "Routing, Middleware, and Request Handling",
+    "appliesTo": [
+      "/Http/",
+      "/Middleware/",
+      "/Routing/",
+      "/Controller/",
+      "Configuration/RequestMiddlewares.php",
+      "middleware",
+      "psr-7",
+      "psr-15",
+      "http request",
+      "request handling",
+      "site configuration"
+    ],
+    "hints": [
+      "Prefer PSR-7 request and response objects for HTTP behavior.",
+      "Middleware is registered in Configuration/RequestMiddlewares.php per request scope, with before and after naming other middleware. Keep each one focused and its position deliberate.",
+      "Avoid global state when request-scoped data is available.",
+      "This applies to HTTP only. A console command is not a request handler, whatever its class name suggests."
+    ],
+    "checks": [
+      "CI=true ./Build/Scripts/runTests.sh -s functional",
+      "CI=true ./Build/Scripts/runTests.sh -s unit"
+    ]
+  },
+  {
+    "id": "caching",
+    "title": "Caches",
+    "appliesTo": [
+      "/Cache/",
+      "CacheManager",
+      "FrontendInterface",
+      "cache",
+      "caching"
+    ],
+    "hints": [
+      "Caches are declared in $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations'] in typo3/sysext/core/Configuration/DefaultConfiguration.php: one entry per cache with a frontend class, a backend class, options and groups. Adding a cache means adding an entry there.",
+      "Inject a cache as a service with #[Autowire(service: 'cache.<name>')] on the constructor parameter rather than asking CacheManager for it at call time.",
+      "The 'core' cache is reserved for core PHP code. Pick or add a cache with the right frontend for the payload — VariableFrontend for data, PhpFrontend for generated code — and put it in the group whose flush semantics it belongs to.",
+      "Anything cached has to survive being flushed at any time; a cache is never the only place a value exists.",
+      "Cache behaviour is a wiring concern and is covered by functional tests."
+    ],
+    "checks": [
+      "CI=true ./Build/Scripts/runTests.sh -s functional"
+    ]
+  },
+  {
+    "id": "file-abstraction-layer",
+    "title": "FAL: Storages, Files, and Drivers",
+    "appliesTo": [
+      "Classes/Resource/",
+      "ResourceStorage",
+      "ResourceFactory",
+      "StorageRepository",
+      "FileReference",
+      "file abstraction",
+      "fal",
+      "driver"
+    ],
+    "hints": [
+      "Files are addressed through the FAL objects — ResourceStorage, Folder, File, FileReference — not by a filesystem path. A storage may be remote, and an absolute path assumes it is not.",
+      "Storages come from StorageRepository; ResourceFactory turns a reference or an identifier into a File or Folder object.",
+      "A storage's backing system is a driver implementing DriverInterface. Behaviour that differs per storage belongs in the driver, not in the calling code.",
+      "File metadata is reached through the MetaDataAspect of a file rather than by querying sys_file_metadata.",
+      "FAL changes touch indexing, permissions and references at once, so they need functional coverage rather than a unit test of the calling code."
+    ],
+    "checks": [
+      "CI=true ./Build/Scripts/runTests.sh -s functional"
+    ]
+  },
+  {
+    "id": "authentication-permissions",
+    "title": "Authentication and Permissions",
+    "appliesTo": [
+      "Classes/Authentication/",
+      "BackendUserAuthentication",
+      "FrontendUserAuthentication",
+      "permission",
+      "access check",
+      "authentication",
+      "authorization"
+    ],
+    "hints": [
+      "BackendUserAuthentication is the authority on what a backend user may do: isAdmin(), check($type, $value) for table, field and module access, checkLanguageAccess() for a language. Ask it — never re-implement an equivalent check.",
+      "Page-level access is a permission bitmask on the record, applied through the query restrictions rather than by filtering afterwards.",
+      "An admin bypass is a deliberate decision, not a shortcut: state why in the patch when adding one.",
+      "Permission behaviour is security-sensitive. It needs a functional test that asserts both the allowed and the denied case, and a bug here is worth checking against the maintained release branches."
+    ],
+    "checks": [
+      "CI=true ./Build/Scripts/runTests.sh -s functional"
+    ]
+  },
+  {
+    "id": "upgrade-wizards",
+    "title": "Upgrade Wizards",
+    "appliesTo": [
+      "Classes/Upgrades/",
+      "Classes/Updates/",
+      "upgrade wizard",
+      "upgradewizard",
+      "upgrade:run",
+      "data migration",
+      "migrate records",
+      "install tool"
+    ],
+    "hints": [
+      {
+        "text": "An upgrade wizard implements UpgradeWizardInterface: getTitle(), getDescription(), updateNecessary(), executeUpdate() and getPrerequisites(). Which namespace ships it has moved between branches — read whether the installed core has it below Core/Classes/Upgrades/ or install/Classes/Updates/, and take the attribute and the marker interfaces from the same place.",
+        "since": 13
+      },
+      {
+        "text": "Registration is the #[UpgradeWizard('identifier')] attribute on the class, which tags it for the registry. Nothing about a wizard is registered in ext_localconf.php.",
+        "since": 13
+      },
+      "updateNecessary() answers about data, never about a version number: it decides whether the wizard is offered, it is asked again after a run, and a wizard whose data is already migrated returns false. Writing it as \"has this wizard run\" is what makes a migration unrepeatable and a half-finished one invisible.",
+      "A wizard is marked as done after one successful run. Implement RepeatableInterface where it is meant to be run again — a migration over records that keep being created is the case for it.",
+      "State what the wizard needs through getPrerequisites(): DatabaseUpdatedPrerequisite where it works on tables the schema migration creates, ReferenceIndexUpdatedPrerequisite where it relies on the reference index.",
+      "Implement ChattyInterface to report progress through setOutput(), and ConfirmableInterface where the change needs the user's consent before it runs. Both are what makes the wizard usable in `typo3 upgrade:run` as well as in the Install Tool.",
+      "executeUpdate() returns whether it succeeded, and runs without a request: it is invoked from the console and from the Install Tool, so nothing about it may depend on a frontend or backend context."
+    ],
+    "checks": [
+      "CI=true ./Build/Scripts/runTests.sh -s functional"
+    ]
+  },
+  {
+    "id": "frontend-dataprocessors",
+    "title": "Frontend DataProcessors",
+    "appliesTo": [
+      "Classes/DataProcessing/",
+      "dataprocessor",
+      "data processor",
+      "dataProcessing",
+      "FLUIDTEMPLATE",
+      "processedData"
+    ],
+    "hints": [
+      "A DataProcessor implements DataProcessorInterface::process($cObj, $contentObjectConfiguration, $processorConfiguration, $processedData) and returns the key/value store it was handed, with its own result added under the name the `as` option gives.",
+      "Register it as a service tagged data.processor with an identifier in Configuration/Services.yaml. TypoScript then names that identifier rather than a class, the way the core's own processors are referenced; a fully qualified class name still resolves, because the container is asked first and the class is instantiated only when it holds no such service.",
+      "Read the processor's own options from $processorConfiguration and through $cObj->stdWrapValue('option', $processorConfiguration, $default), so every option can be set with stdWrap. $contentObjectConfiguration is the whole content object and belongs to its caller.",
+      "Honour the `if` option before doing any work: `if (isset($processorConfiguration['if.']) && !$cObj->checkIf($processorConfiguration['if.'])) { return $processedData; }`. A processor that ignores it runs on every element the TypoScript applies to.",
+      "Return $processedData unchanged where there is nothing to add. A processor is one of a chain, and the next one is handed what this one returned."
+    ],
+    "checks": [
+      "CI=true ./Build/Scripts/runTests.sh -s functional"
+    ]
+  },
+  {
+    "id": "extbase",
+    "title": "Extbase Plugins",
+    "appliesTo": [
+      "extbase",
+      "plugin",
+      "Classes/Controller/",
+      "Classes/Domain/Model/",
+      "Classes/Domain/Repository/",
+      "repository",
+      "domain model",
+      "pagination",
+      "paginate",
+      "search form",
+      "flexform",
+      "FlexForm"
+    ],
+    "hints": [
+      "Extbase is what a frontend needs beyond reading records: pagination, a search with arguments, validation, forms. Rendering records read-only needs none of it — see the records hint — and mixing the two questions is where most of the wrong answers here come from.",
+      "A plugin is registered by two calls that do different things. ExtensionUtility::registerPlugin() belongs in Configuration/TCA/Overrides/tt_content.php and adds the item to the CType selector, optionally with a FlexForm; ExtensionUtility::configurePlugin() belongs in ext_localconf.php and declares which controller actions exist and which of them are not cacheable. Neither one replaces the other.",
+      "The plugin signature both calls derive — the extension name and the plugin name, lowercased and joined by an underscore — is four things at once: the value in the CType column, the TypoScript key below tt_content, the key the FlexForm is registered under, and the namespace the plugin's own arguments arrive in. Renaming a plugin renames all four, and existing content keeps the old value.",
+      {
+        "text": "configurePlugin() takes a plugin type as its last argument that has to be omitted or given as \"CType\": a plugin is a content type of its own and nothing else, and anything else throws.",
+        "since": 14
+      },
+      {
+        "text": "configurePlugin() still takes \"list_type\" as its last argument and warns about it. New code omits the argument or passes \"CType\", because that is the shape that survives the next major.",
+        "since": 13,
+        "until": 13
+      },
+      "A model maps onto the table its class name implies. Configuration/Extbase/Persistence/Classes.php is where a table named differently is mapped, together with the per-property column names and the record type of a single-table inheritance.",
+      "Which paginator to use follows from what is being paginated: QueryResultPaginator for an Extbase query result, QueryBuilderPaginator for a Doctrine query builder, ArrayPaginator for an array that is already in memory. The last one paginates in PHP, so choosing it for a query means every record is fetched in order to show one page. SlidingWindowPagination on top of any of them produces the page numbers.",
+      "A search form submitted by GET on a cacheable action answers with a page-not-found, and putting the action into the non-cacheable list does not fix it: the cache hash is validated by a middleware, long before Extbase knows which action was called. The plugin's arguments have to be excluded from the hash as well, in $GLOBALS['TYPO3_CONF_VARS']['FE']['cacheHash']['excludedParameters']. A name there carries an indicator: ^ matches the beginning of a parameter name, ~ any part of it, and no indicator at all is an exact match — the one entry that covers a whole plugin is the prefix form. The hidden fields a Fluid form adds need the same treatment.",
+      "An object argument maps nothing until its properties are allowed. A request that hands a controller an object other than a persisted entity fails with \"It is not allowed to map property\" until the matching initialize<Action>Action() calls allowProperties() on that argument's property mapping configuration. That is the secure default rather than a defect.",
+      "An object that is not persisted is dropped from a generated link without a word: the URI builder serialises an entity by its uid, and something built for the request has none — so the filter of a search is gone on page two while the link looks correct. Pass such state to a link as plain arguments.",
+      "A paginator clamps a page number outside its range, so a page beyond the last one answers with the first page rather than with a not-found. Compare the current page against the number of pages in the controller and answer with the not-found response yourself, or the same list is served under an unbounded number of URLs.",
+      "A paginated plugin needs a route for the list as well as one for the paginated form. A single route with the page number defaulted only omits the variable when a link is built, and the literal part of the segment stays behind — a link to the first page then points at a path that ends in the prefix of a number that is not there. Routes are tried in the order they are declared, so the paginated one goes before a route whose slug would otherwise swallow it.",
+      "Orderings are property names, not column names. Ordering by the order records have in the backend therefore needs a property for that field on the model, although it is not a domain concept."
+    ],
+    "checks": [
+      "CI=true ./Build/Scripts/runTests.sh -s functional"
+    ]
+  },
+  {
+    "id": "sitepackage-initial-content",
+    "title": "Shipping Initial Content with an Extension",
+    "appliesTo": [
+      "Initialisation/",
+      "initial content",
+      "distribution",
+      "impexp",
+      "data.t3d",
+      "data.xml",
+      "extension:setup",
+      "seed content",
+      "ship content",
+      "sitepackage",
+      "site package"
+    ],
+    "hints": [
+      "An extension ships content as Initialisation/data.t3d or Initialisation/data.xml. It is imported once, when the package is set up — typo3 extension:setup is what triggers it. Initialisation/Site/<identifier>/ ships the site configuration alongside it, and Initialisation/Files/ is copied into the fileadmin directory under the extension key.",
+      "typo3 setup and typo3 extension:setup are two commands, and the second one is where the content arrives: it fires the package initialization. The setup command runs it as its last step, so a first install does both — but an extension whose shipped content changed afterwards is set up with the second one on its own.",
+      {
+        "text": "An extension that ships one of those files is a distribution as far as the setup command is concerned: the presence of the file is the entire test. So when such a package is already active, setup skips its own site creation and says that --distribution and --create-site have no effect; the two options exclude each other in any case, and --distribution needs typo3/cms-impexp to be active before it is offered at all.",
+        "since": 14
+      },
+      {
+        "text": "The setup dispatches a package initialization event, and every import — the content, the site configurations, the static SQL — is a listener on it, so an extension can add its own.",
+        "since": 13
+      },
+      "The import runs exactly once and remembers that in the registry, namespace extensionDataImport. A second setup imports nothing, which is the point — and also why a changed data file does not reach an installation that already ran it. Deleting that one sys_registry row is what makes extension:setup import the file again.",
+      {
+        "text": "The key is <extension_key>:Initialisation/dataImported, and <extension_key>:Initialisation/data.t3d blocks the import just as well, because both are checked.",
+        "since": 14
+      },
+      {
+        "text": "The key is the extension's path below the public directory with Initialisation/dataImported appended — typo3conf/ext/<extension_key>/Initialisation/dataImported for an extension installed there — and the sibling ending in Initialisation/data.t3d blocks the import just as well, because both are checked.",
+        "until": 13
+      },
+      "So the file is write-only on the installation it was exported from: whoever maintains it cannot see the effect of their own change there, and reading the XML back is reasoning rather than verification. Import it where it can be imported — a functional test is the cheap form: get(Import::class), loadFile('EXT:<key>/Initialisation/data.xml'), importData(), then assert the records arrived. typo3/sysext/impexp/Tests/Functional/ImportTest.php is the worked example.",
+      "What survives the import is what the reference index sees. The export gathers relations with ReferenceIndex::getRelations(), so a uid is remapped where TCA declares the field as a relation, or where a soft reference parser finds it — a type=link field ships as a typolink soft reference with the record it points at, a type=group to pages as a database relation, inside a FlexForm as well. The same page uid in a plain input or number field is exported as the integer it is and imported as that integer, pointing at whatever the target installation has under it. Nothing warns, so the field type is what decides whether shipped content survives.",
+      "The import lives in EXT:impexp, so an extension that ships content has to require typo3/cms-impexp.",
+      {
+        "text": "Without it the requirement check only logs a warning: the setup succeeds and the installation comes up empty, which is far harder to notice than a failure.",
+        "since": 13
+      },
+      "The site configuration import remaps the root page id to the page that was actually imported, and nothing else. Every other reference in the shipped config.yaml — an error handler naming t3://page?uid=..., a redirect target — keeps the uid it was exported with, so it points at a stranger's record on the second installation. Ship a site configuration with no uid in it but the root page; where one is unavoidable, the configuration is good for a first install and nothing else, and the extension says so where someone will read it.",
+      "A site identifier that already exists is skipped with a warning, so a fresh installation and an existing one behave differently. Creating a site during setup and shipping one in Initialisation/Site/ are alternatives, not steps: the first one leaves a site behind that makes the second one be skipped.",
+      "Once content exists, the console's impexp export writes the artifact and impexp import reads it back — which is also the way in for the first build, where there is nothing to export yet and hand-writing T3D is not an option: seed with DataHandler, then export.",
+      "No console command hands you a DataHandler, so seeding is a throwaway script that boots TYPO3 itself. Bootstrap::init($classLoader), and nothing else: the second parameter is $failsafe, and the CLI binary passes it as true only because the command application finishes the boot afterwards. In failsafe mode the container is the reduced one, TCA is never built, and makeInstance() then constructs a core service itself with no arguments — so the failure reads as a constructor missing its arguments rather than as a service that is not registered.",
+      "Then the backend user, in that order: Bootstrap::initializeBackendUser(CommandLineUserAuthentication::class) creates it, Bootstrap::initializeBackendAuthentication() logs it in, and the second one alone has no $GLOBALS['BE_USER'] to check. Anything that reads a site attribute needs $GLOBALS['LANG'] as well, which the command application builds with LanguageServiceFactory::createFromUserPreferences($GLOBALS['BE_USER']).",
+      "In one datamap the pages are processed before every other table, so a record whose pid is the NEW id of a page created in the same call still lands on it. Between two other tables the order of the datamap decides, and a NEW id that has not been substituted yet leaves that record unwritten — a log entry, no exception. Where the target is not a page, create it in a first process_datamap() call, read substNEWwithIDs, and pass real ids in the second.",
+      "impexp:export takes one --table per table, and a custom table nobody named is missing from the export without a word: typo3 impexp:export --table=tt_content --table=tx_myext_product.",
+      "Images come along on their own — a sys_file_reference pulls its sys_file record in as a relation and the bytes follow — but by default they are base64 inside the export file, which for an artifact that is committed is the wrong shape. --save-files-outside-export-file writes them beside it instead, into a directory named after the file plus .files, each under its own sha1. The import picks that directory up whenever it sits next to the file, extension:setup included, and reuses a file the target storage already has under the same identifier and hash rather than duplicating it.",
+      "A file path handed to the console is resolved by GeneralUtility::getFileAbsFileName(): a relative path is relative to the public directory, not to the project root. EXT:<key>/Initialisation/data.xml is the form that works from anywhere."
+    ],
+    "checks": [
+      "CI=true ./Build/Scripts/runTests.sh -s functional"
+    ]
+  }
 ]

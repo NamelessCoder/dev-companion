@@ -80,7 +80,9 @@
     {
       "suite": "unit",
       "command": "CI=true ./Build/Scripts/runTests.sh -s unit",
-      "domains": ["php"],
+      "domains": [
+        "php"
+      ],
       "description": "PHP unit tests.",
       "whenToUse": "Use for isolated PHP behavior, utility classes, value objects, and narrow bug fixes.",
       "targeted": "CI=true ./Build/Scripts/runTests.sh -s unit -- --filter <methodName> <path/to/Test.php>"
@@ -88,7 +90,11 @@
     {
       "suite": "functional",
       "command": "CI=true ./Build/Scripts/runTests.sh -s functional",
-      "domains": ["php", "fluid", "typoscript"],
+      "domains": [
+        "php",
+        "fluid",
+        "typoscript"
+      ],
       "description": "PHP functional tests, sqlite by default.",
       "whenToUse": "Use for TYPO3 services, persistence, configuration, authentication, routing, and integration behavior.",
       "targeted": "CI=true ./Build/Scripts/runTests.sh -s functional -d sqlite -- <path/to/Test.php>"
@@ -96,7 +102,9 @@
     {
       "suite": "cgl",
       "command": "CI=true ./Build/Scripts/runTests.sh -s cgl",
-      "domains": ["php"],
+      "domains": [
+        "php"
+      ],
       "description": "Checks and fixes coding guideline issues for all core PHP files.",
       "whenToUse": "Use before review when PHP formatting or file headers may be affected. Add `-n` to only report.",
       "targeted": "CI=true ./Build/Scripts/runTests.sh -s cgl -n"
@@ -104,35 +112,45 @@
     {
       "suite": "cglGit",
       "command": "CI=true ./Build/Scripts/runTests.sh -s cglGit",
-      "domains": ["php"],
+      "domains": [
+        "php"
+      ],
       "description": "Checks and fixes coding guideline issues in the latest committed patch.",
       "whenToUse": "Use for a focused pre-review check after creating a commit. Much faster than a full cgl run."
     },
     {
       "suite": "lintPhp",
       "command": "CI=true ./Build/Scripts/runTests.sh -s lintPhp",
-      "domains": ["php"],
+      "domains": [
+        "php"
+      ],
       "description": "PHP syntax linting.",
       "whenToUse": "Use for broad PHP syntax confidence after touching many PHP files."
     },
     {
       "suite": "phpstan",
       "command": "CI=true ./Build/Scripts/runTests.sh -s phpstan",
-      "domains": ["php"],
+      "domains": [
+        "php"
+      ],
       "description": "Static analysis with phpstan.",
       "whenToUse": "Use for type-sensitive PHP changes and API contract changes."
     },
     {
       "suite": "lintServicesYaml",
       "command": "CI=true ./Build/Scripts/runTests.sh -s lintServicesYaml",
-      "domains": ["php"],
+      "domains": [
+        "php"
+      ],
       "description": "Lints Services.yaml files with tag parsing enabled.",
       "whenToUse": "Use after changing dependency injection wiring in a Configuration/Services.yaml."
     },
     {
       "suite": "lintYaml",
       "command": "CI=true ./Build/Scripts/runTests.sh -s lintYaml",
-      "domains": ["php"],
+      "domains": [
+        "php"
+      ],
       "description": "YAML linting for every YAML file below typo3/ except Services.yaml.",
       "whenToUse": "Use after changing any Configuration YAML: site set config.yaml and settings definitions, route enhancers, form setups, RTE presets. Services.yaml has its own suite, lintServicesYaml, because it needs tag parsing."
     },
@@ -140,14 +158,18 @@
       "suite": "checkIntegrityPhp",
       "since": 13,
       "command": "CI=true ./Build/Scripts/runTests.sh -s checkIntegrityPhp",
-      "domains": ["php"],
+      "domains": [
+        "php"
+      ],
       "description": "Checks core PHP files against the registered integrity rules.",
       "whenToUse": "Use before review after touching PHP files; it catches conventions that neither lintPhp nor cgl covers."
     },
     {
       "suite": "checkComposer",
       "command": "CI=true ./Build/Scripts/runTests.sh -s checkComposer",
-      "domains": ["php"],
+      "domains": [
+        "php"
+      ],
       "description": "Checks the composer.json files of the system extensions for version integrity.",
       "whenToUse": "Use after editing any composer.json, for example when adding a dependency between system extensions."
     },
@@ -155,14 +177,18 @@
       "suite": "checkIntegritySetLabels",
       "since": 13,
       "command": "CI=true ./Build/Scripts/runTests.sh -s checkIntegritySetLabels",
-      "domains": ["typoscript"],
+      "domains": [
+        "typoscript"
+      ],
       "description": "Checks the labels.xlf integrity of the site sets.",
       "whenToUse": "Use after adding or changing a Configuration/Sets/<Set>/labels.xlf. It is the purpose-built check for site set labels; checkIntegrityXliff does not replace it."
     },
     {
       "suite": "lintHtml",
       "command": "CI=true ./Build/Scripts/runTests.sh -s lintHtml",
-      "domains": ["fluid"],
+      "domains": [
+        "fluid"
+      ],
       "description": "Whitespace and EditorConfig linting of the templates below typo3/sysext/*/Resources/Private.",
       "whenToUse": "Use after changing a Fluid template, partial, or layout."
     },
@@ -170,7 +196,9 @@
       "suite": "checkIntegrityXliff",
       "since": 14,
       "command": "CI=true ./Build/Scripts/runTests.sh -s checkIntegrityXliff",
-      "domains": ["xliff"],
+      "domains": [
+        "xliff"
+      ],
       "description": "Checks all .xlf files for validity and deprecated usages.",
       "whenToUse": "Use after adding, changing, or retiring XLF labels."
     },
@@ -178,56 +206,74 @@
       "suite": "normalizeXliff",
       "since": 14,
       "command": "CI=true ./Build/Scripts/runTests.sh -s normalizeXliff",
-      "domains": ["xliff"],
+      "domains": [
+        "xliff"
+      ],
       "description": "Normalizes .xlf files (formatting, attribute order).",
       "whenToUse": "Use after editing XLF files, so the diff carries no formatting noise. Add `-n` to only report."
     },
     {
       "suite": "checkRst",
       "command": "CI=true ./Build/Scripts/runTests.sh -s checkRst",
-      "domains": ["docs"],
+      "domains": [
+        "docs"
+      ],
       "description": "Checks .rst files for integrity.",
       "whenToUse": "Use for every changelog entry and other ReST documentation change."
     },
     {
       "suite": "checkExtensionScannerRst",
       "command": "CI=true ./Build/Scripts/runTests.sh -s checkExtensionScannerRst",
-      "domains": ["docs", "php"],
+      "domains": [
+        "docs",
+        "php"
+      ],
       "description": "Verifies that all .rst files referenced by the extension scanner exist.",
       "whenToUse": "Use when a deprecation or breaking change adds extension scanner matchers."
     },
     {
       "suite": "build",
       "command": "CI=true ./Build/Scripts/runTests.sh -s build",
-      "domains": ["typescript", "css"],
+      "domains": [
+        "typescript",
+        "css"
+      ],
       "description": "Frontend build for TypeScript, Sass, Contrib, and assets.",
       "whenToUse": "Use when backend UI assets, TypeScript, Sass, or generated assets change."
     },
     {
       "suite": "lintScss",
       "command": "CI=true ./Build/Scripts/runTests.sh -s lintScss",
-      "domains": ["css"],
+      "domains": [
+        "css"
+      ],
       "description": "SCSS linting with TYPO3's stylelint setup.",
       "whenToUse": "Use when Sass or CSS sources change. Internally this runs grunt stylelint in the Build directory."
     },
     {
       "suite": "build-css",
       "command": "CI=true ./Build/Scripts/runTests.sh -s npm -- run build-css",
-      "domains": ["css"],
+      "domains": [
+        "css"
+      ],
       "description": "Focused CSS build from Build/package.json.",
       "whenToUse": "Use while iterating on Sass/CSS changes when a full frontend build is not needed. This maps to grunt css."
     },
     {
       "suite": "lintTypescript",
       "command": "CI=true ./Build/Scripts/runTests.sh -s lintTypescript",
-      "domains": ["typescript"],
+      "domains": [
+        "typescript"
+      ],
       "description": "TypeScript linting.",
       "whenToUse": "Use when TypeScript or JavaScript code changes."
     },
     {
       "suite": "unitJavascript",
       "command": "CI=true ./Build/Scripts/runTests.sh -s unitJavascript",
-      "domains": ["typescript"],
+      "domains": [
+        "typescript"
+      ],
       "description": "JavaScript unit tests for the built backend modules.",
       "whenToUse": "Use for TypeScript modules with real logic or state transitions. Run `-s build` first so the tests see the current output."
     },
@@ -235,21 +281,30 @@
       "suite": "e2e",
       "since": 13,
       "command": "CI=true ./Build/Scripts/runTests.sh -s e2e",
-      "domains": ["php", "typescript", "fluid"],
+      "domains": [
+        "php",
+        "typescript",
+        "fluid"
+      ],
       "description": "End-to-end tests driving a real backend with Playwright.",
       "whenToUse": "Use for editor or administrator workflows that only break in the assembled backend."
     },
     {
       "suite": "npm",
       "command": "CI=true ./Build/Scripts/runTests.sh -s npm -- <npm command>",
-      "domains": ["typescript", "css"],
+      "domains": [
+        "typescript",
+        "css"
+      ],
       "description": "Dispatcher for npm commands inside the TYPO3 core build environment.",
       "whenToUse": "Use for npm install, audit, build, watch, and package-script tasks."
     },
     {
       "suite": "composer",
       "command": "CI=true ./Build/Scripts/runTests.sh -s composer -- <composer command>",
-      "domains": ["php"],
+      "domains": [
+        "php"
+      ],
       "description": "Dispatcher for composer commands inside the TYPO3 core build environment.",
       "whenToUse": "Use for composer dumpautoload, require, info, and dependency tasks."
     }

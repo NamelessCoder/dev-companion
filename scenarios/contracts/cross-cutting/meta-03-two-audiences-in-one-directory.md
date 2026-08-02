@@ -3,6 +3,8 @@
 **Environment:** `E-SITE` with the extension under `packages/` ·
 **Contract:** `held` — `R-SCO-001` and `R-AUD-002` held
 **Held by:** `ScopeTest::twoPathsOfDifferentAudienceInOneCallStayApart`,
+`ScopeTest::aBriefForPathsOfDifferentAudienceSaysWhichStepsAreForWhich`,
+`ScopeTest::aBriefForExtensionPathsAloneKeepsNoCoreStep`,
 `ScopeTest::aPathInsideAnExtensionIsRecognisedByItsShape`,
 `ScopeTest::anAreaTheInstallationKnowsAsSomebodysExtensionIsOutsideTheCore`,
 `ScopeTest::whereNothingPlacesTheWorkTheAnswerSaysSoRatherThanAssumingTheCore`
@@ -31,6 +33,7 @@
 - The distinction only appearing after the user spells out "this is not core"
   (`R-SCO-001`).
 
-`typo3_task_guide` is still asked about one `area` at a time, so this prompt
-reaches it as one question and gets one answer. The two tools that take a
-`paths` array answer per path.
+All three tools take a `paths` array and answer per path. `typo3_task_guide`
+composes one brief from them rather than two: the hints are matched per group
+and named per path, and the checklist, the checks and the discovery steps stay
+one list that says which paths the core's own steps are not for (`D-SCO-009`).

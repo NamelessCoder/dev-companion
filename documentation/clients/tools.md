@@ -219,7 +219,9 @@ checkout, so it also names what you have to establish there yourself and routes
 to the lookups that fit the task. Work that reads as a project or third-party
 extension is answered with what transfers only — the core checks, checklist
 items and steps that name something only the core repository has are left out
-rather than handed over.
+rather than handed over. Pass the paths where the work touches more than one
+place: each is placed on its own, so a core path and an extension path in one
+call are not answered with one verdict.
 
 `readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: false`
 
@@ -228,6 +230,10 @@ rather than handed over.
 - `task` *(string, required)* — Short description of the TYPO3 core task,
   in English.
 - `area` *(string)* — Affected subsystem or extension, if known.
+- `paths` *(array of string)* — The files the task is about, as they are in
+  the repository they belong to. Pass them where the work touches more than one
+  place: each is placed on its own, so a core path and an extension path in one
+  call are not answered with one verdict. The area counts as one of them.
 - `targetVersion` *(string)* — The TYPO3 version this task is for, for
   example "13.4" or "14". State one only to narrow to it: conventions that do
   not hold there are then left out, including those the repository needs for
@@ -242,6 +248,20 @@ rather than handed over.
 
 - `task` *(string, required)*
 - `area` *(string or null)* — Affected subsystem or path, if one was given.
+- `paths` *(array of string)* — The paths this brief was composed for, the
+  area among them. Empty where the call named none.
+- `scopes` *(array of object)* — Which kind of work each path is. The hints
+  are matched per group, so one that came back for a path outside the core
+  carries no checks; where every path is outside, the core checks, the
+  core-only checklist items and the submission route are left out of the whole
+  brief.
+  - `path` *(string, required)*
+  - `scope` *(string, required)* — One of `core`, `uncertain`, `project`,
+    `extension`. Which kind of work this answer is for: core, a patch to the
+    TYPO3 core itself; project, the site repository around an installation;
+    extension, a package in it, whether a sitepackage or a third-party one; or
+    uncertain, which means nothing in the call placed the work and what came
+    back is the core's own.
 - `changeType` *(string, required)*
 - `targetVersion` *(integer or null)* — The TYPO3 major this repository
   runs — stated by the caller, or read from the installation. Null means
@@ -255,8 +275,10 @@ rather than handed over.
   drift. Empty when nothing was filtered by version.
 - `domains` *(array of string, required)*
 - `scope` *(string)* — One of `core`, `uncertain`, `project`, `extension`.
-  Which kind of work the task reads as. Anything but core means the answer
-  holds core conventions that may transfer, not a checklist for the task.
+  Which kind of work the call as a whole reads as. Anything but core means the
+  answer holds core conventions that may transfer, not a checklist for the
+  task. Where the paths disagree, scopes is the answer and this is what the
+  task text and the area alone say.
 - `intents` *(array of object)* — The kinds of core work recognized in the
   task text.
   - `id` *(string, required)*

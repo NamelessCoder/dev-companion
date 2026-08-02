@@ -72,7 +72,7 @@ final class TaskGuide extends ReadOnlyTool
 
     public static function description(): string
     {
-        return 'Build a task checklist enriched with matching architecture hints and relevant core checks. Built from bundled conventions only: it does not read your checkout, so it also names what you have to establish there yourself and routes to the lookups that fit the task. Work that reads as a project or third-party extension is answered with what transfers only — the core checks, checklist items and steps that name something only the core repository has are left out rather than handed over.';
+        return 'Build a task checklist enriched with matching architecture hints and relevant core checks. Built from bundled conventions only: it does not read your checkout, so it also names what you have to establish there yourself and routes to the lookups that fit the task. Work that reads as a project or third-party extension is answered with what transfers only — the core checks, checklist items and steps that name something only the core repository has are left out rather than handed over. Pass the paths where the work touches more than one place: each is placed on its own, so a core path and an extension path in one call are not answered with one verdict.';
     }
 
     public static function inputSchema(): array
@@ -82,6 +82,7 @@ final class TaskGuide extends ReadOnlyTool
             'properties' => [
                 'task' => ['type' => 'string', 'minLength' => 1, 'description' => 'Short description of the TYPO3 core task, in English.'],
                 'area' => ['type' => 'string', 'description' => 'Affected subsystem or extension, if known.'],
+                'paths' => ['type' => 'array', 'items' => ['type' => 'string'], 'default' => [], 'description' => 'The files the task is about, as they are in the repository they belong to. Pass them where the work touches more than one place: each is placed on its own, so a core path and an extension path in one call are not answered with one verdict. The area counts as one of them.'],
                 'targetVersion' => ['type' => 'string', 'description' => 'The TYPO3 version this task is for, for example "13.4" or "14". State one only to narrow to it: conventions that do not hold there are then left out, including those the repository needs for another major it declares. Left out, the answer holds for every major this repository declares typo3/cms-core for, which is what one codebase serving two of them needs; where there is no declaration to read, for the version of the installation this server was started in.'],
                 'changeType' => ['type' => 'string', 'enum' => ['bugfix', 'feature', 'cleanup', 'test', 'documentation', 'unknown'], 'default' => 'unknown'],
             ],
@@ -94,11 +95,13 @@ final class TaskGuide extends ReadOnlyTool
         return Schema::object([
             'task' => Schema::string(),
             'area' => Schema::nullableString('Affected subsystem or path, if one was given.'),
+            'paths' => Schema::listOf(Schema::string(), 'The paths this brief was composed for, the area among them. Empty where the call named none.'),
+            'scopes' => Schema::scopes('Which kind of work each path is. The hints are matched per group, so one that came back for a path outside the core carries no checks; where every path is outside, the core checks, the core-only checklist items and the submission route are left out of the whole brief.'),
             'changeType' => Schema::string(),
             'targetVersion' => ['type' => ['integer', 'null'], 'description' => 'The TYPO3 major this repository runs — stated by the caller, or read from the installation. Null means nothing was filtered by version. Where the repository serves several majors, targetVersions is what the answer holds for.'],
             'targetVersions' => Schema::listOf(['type' => 'integer'], 'Every TYPO3 major the answer holds for. One entry is the ordinary case. Several mean this repository declares typo3/cms-core for more than one of them, so a statement was kept when it holds on any — and where two statements about the same subject differ, the difference is the constraint the code lives under rather than drift. Empty when nothing was filtered by version.'),
             'domains' => Schema::listOf(Schema::string()),
-            'scope' => Schema::scope('Which kind of work the task reads as. Anything but core means the answer holds core conventions that may transfer, not a checklist for the task.'),
+            'scope' => Schema::scope('Which kind of work the call as a whole reads as. Anything but core means the answer holds core conventions that may transfer, not a checklist for the task. Where the paths disagree, scopes is the answer and this is what the task text and the area alone say.'),
             'intents' => Schema::listOf(Schema::object([
                 'id' => Schema::string(),
                 'title' => Schema::string(),
@@ -133,17 +136,35 @@ final class TaskGuide extends ReadOnlyTool
         $changeType = (string) ($args['changeType'] ?? 'unknown');
 
         $subject = trim($task . ' ' . $area);
-        $paths = $area === '' ? [] : [$area];
+        $paths = array_values(array_filter(array_map(
+            static fn(mixed $path): string => trim((string) $path),
+            $args['paths'] ?? [],
+        )));
+        if ($area !== '') {
+            $paths[] = $area;
+        }
         $domains = Domains::detect($paths, $task . ' ' . (self::CHANGE_TYPE_TERMS[$changeType] ?? ''));
 
         // Several of the conventions below — the changelog, the Gerrit
         // workflow, the runTests.sh suites — do not exist outside the core, so
         // handing them over as a checklist for a project extension is worse
-        // than saying the question is outside what this server knows. One area
-        // is one question: this tool cannot be asked about two at once, which
-        // is why it decides once where the path tools decide per path.
-        $scope = Scope::of($area, $subject, $area);
-        $outsideCore = $scope->isOutsideTheCore();
+        // than saying the question is outside what this server knows. The
+        // decision is per path, because a call is not one piece of work, and
+        // the brief states it once for what every path shares: the checklist,
+        // the checks and the discovery steps are filtered where nothing in the
+        // call is core work, and the notice names the paths they are not for
+        // where something is (D-SCO-009).
+        $scopes = Scope::ofEach($paths, $subject, $area);
+        $groups = Scope::groups($paths, $scopes, $subject);
+        $outside = Scope::pathsOf($scopes, Scope::Project, Scope::Extension);
+        // One group is the ordinary call, and its scope is the call's. Where
+        // the paths disagree there is no one answer, so the whole-call verdict
+        // falls back to what the task text and the area say on their own.
+        $scope = count($groups) === 1 ? $groups[0]['scope'] : Scope::of($area, $subject, $area);
+        $outsideCore = array_filter(
+            $groups,
+            static fn(array $group): bool => !$group['scope']->isOutsideTheCore(),
+        ) === [];
 
         $intents = TaskIntents::scoped(
             TaskIntents::detect($subject . ' ' . $changeType),
@@ -159,17 +180,30 @@ final class TaskGuide extends ReadOnlyTool
         $stated = isset($args['targetVersion']) ? (string) $args['targetVersion'] : null;
         $target = Versions::target($stated);
         $targets = Versions::targets($stated);
-        $architecture = ArchitectureHints::find($paths, $task, 4, null, $targets);
-        $testHints = array_slice(TestSuiteHints::find($subject, $domains, $target), 0, 4);
-        if ($outsideCore) {
-            $architecture['matchedHints'] = ArchitectureHints::withoutChecks($architecture['matchedHints']);
+        // Matched per group, because a hint matched for a core path and one
+        // matched for an extension path are answers to different questions —
+        // and the checks come off only the ones the extension path earned.
+        $found = [];
+        foreach ($groups as $group) {
+            $matched = ArchitectureHints::find($group['paths'], $task, 4, null, $targets);
+            if ($group['scope']->isOutsideTheCore()) {
+                $matched['matchedHints'] = ArchitectureHints::withoutChecks($matched['matchedHints']);
+            }
+            $found[] = ['scope' => $group['scope'], 'paths' => $group['paths'], 'result' => $matched];
         }
+        $architecture = Hints::merged($found);
+        $testHints = array_slice(TestSuiteHints::find($subject, $domains, $target), 0, 4);
 
         $lines = [];
         if ($outsideCore) {
             $lines[] = Scope::OUTSIDE_CORE_NOTICE . ' Take what follows as conventions that may transfer, not as '
                 . 'a checklist for this task. '
                 . 'typo3_server_scope states the boundary.';
+            $lines[] = '';
+        } elseif ($outside !== []) {
+            $lines[] = Scope::outsideCoreAmong($outside)
+                . ' The checks below, the changelog and the submission route belong to the core repository, so '
+                . 'they are steps for the paths that are in it and for none of the others.';
             $lines[] = '';
         }
         // The checklist below is the one payload of this server that states a
@@ -188,6 +222,17 @@ final class TaskGuide extends ReadOnlyTool
             'Change type: ' . $changeType,
             'Domains: ' . implode(', ', $domains),
         ]);
+        // Named with what each was placed as, because the point of passing more
+        // than one is that the caller can tell which half of the brief is about
+        // which of its files. Silent where the area is the only one, which is
+        // the line above.
+        if (count($paths) > 1) {
+            $lines[] = "Paths:\n" . implode("\n", array_map(
+                static fn(array $entry): string => '- ' . $entry['path']
+                    . ($entry['scope'] === Scope::Core ? '' : ' (' . $entry['scope']->value . ')'),
+                $scopes,
+            ));
+        }
         // Silent on the ordinary task, where one version is the whole question
         // and saying so is noise. It speaks for the repository that serves
         // several majors — whether the answer holds for all of them, or was
@@ -209,29 +254,28 @@ final class TaskGuide extends ReadOnlyTool
         $lines[] = '';
         $lines[] = 'Architecture hints:';
         if ($architecture['matchedHints'] !== []) {
-            $examples = Hints::examples($target);
-            foreach (ArchitectureHints::groupByCategory($architecture['matchedHints']) as $section) {
-                $lines[] = '### ' . $section['category'];
-                foreach ($section['hints'] as $hint) {
-                    $lines[] = '## ' . $hint['title'];
-                    $notice = Hints::scopeNotice($hint, $outsideCore);
-                    if ($notice !== null) {
-                        $lines[] = $notice;
-                    }
-                    foreach ($hint['hints'] as $entry) {
-                        $lines[] = '- ' . Hints::statement($entry, $outsideCore);
-                    }
-                    if (isset($examples[$hint['id']])) {
-                        $lines[] = $examples[$hint['id']];
-                    }
-                    if ($hint['checks'] !== []) {
-                        $lines[] = 'Checks:';
-                        foreach ($hint['checks'] as $check) {
-                            $lines[] = '- ' . $check;
-                        }
-                    }
+            // One block per group, and the heading only where there is more
+            // than one: the caller named two repositories, and which half of
+            // the brief is about which path is half of the answer.
+            $sectionTexts = [];
+            foreach ($found as $group) {
+                if ($group['result']['matchedHints'] === []) {
+                    continue;
                 }
+                if (count($found) > 1) {
+                    $sectionTexts[] = sprintf(
+                        '# For %s%s',
+                        implode(' and ', $group['paths']),
+                        $group['scope'] === Scope::Core ? '' : ' — ' . $group['scope']->value,
+                    );
+                }
+                $sectionTexts[] = Hints::sections(
+                    $group['result']['matchedHints'],
+                    $group['scope']->isOutsideTheCore(),
+                    $target,
+                );
             }
+            $lines[] = implode("\n\n", $sectionTexts);
         } else {
             $lines[] = '- No architecture hint matched this task text. That means no convention was recognized, '
                 . 'not that none applies: call typo3_architecture_lookup again with the concrete file paths once they are known.';
@@ -383,6 +427,11 @@ final class TaskGuide extends ReadOnlyTool
         return ToolResult::create(implode("\n", $lines), [
             'task' => $task,
             'area' => $area === '' ? null : $area,
+            'paths' => $paths,
+            'scopes' => array_map(static fn(array $entry): array => [
+                'path' => $entry['path'],
+                'scope' => $entry['scope']->value,
+            ], $scopes),
             'changeType' => $changeType,
             'targetVersion' => $target,
             'targetVersions' => $targets,

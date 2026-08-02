@@ -152,7 +152,9 @@ name already says what shape the answer has.
   architecture hints and relevant core checks. A task that reads as work on a
   project or third-party extension says so first and keeps only what transfers:
   no core checks, no checklist item and no follow-up naming something that only
-  the core repository has.
+  the core repository has. Where the work touches more than one place, the paths
+  are placed one by one, and a session that is in the core and in an extension
+  at once gets one brief that says which of the two each step is for.
 - `typo3_test_run_guide`: recommends `Build/Scripts/runTests.sh` commands
   by topic. Paths that read as a project or third-party extension get no suite:
   the script is part of the core repository. What such an extension needs

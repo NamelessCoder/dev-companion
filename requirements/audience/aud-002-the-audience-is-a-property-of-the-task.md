@@ -29,5 +29,6 @@ both
 ## Held by
 
 - `ScopeTest::twoPathsOfDifferentAudienceInOneCallStayApart`
+- `ScopeTest::aBriefForPathsOfDifferentAudienceSaysWhichStepsAreForWhich`
 - `ScopeTest::whereNothingPlacesTheWorkTheAnswerSaysSoRatherThanAssumingTheCore`
 - `ScopeTest::whatTheCoreKeepsInBuildIsOnlyTheCoresWhereTheRepositoryCouldBeTheCore`

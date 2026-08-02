@@ -270,6 +270,61 @@ final class ScopeTest extends TestCase
     }
 
     /**
+     * The third tool of `META-03`, and the one that could not answer it: the
+     * brief was composed for one `area`, so the prompt reached it as one
+     * question. It takes the paths now and places each of them, which is
+     * `D-SCO-009` — the checklist, the checks and the discovery steps stay one
+     * list, and the brief names the paths the core's own are not for.
+     */
+    #[Test]
+    public function aBriefForPathsOfDifferentAudienceSaysWhichStepsAreForWhich(): void
+    {
+        $extension = 'packages/acme_events/Classes/Domain/Repository/EventRepository.php';
+        $core = 'typo3/sysext/core/Classes/Database/Query/QueryBuilder.php';
+
+        $guide = Registry::call('typo3_task_guide', [
+            'task' => 'Fix the query that reads the events, in whichever of the two the bug turns out to be',
+            'paths' => [$extension, $core],
+            'changeType' => 'bugfix',
+        ]);
+
+        $decided = array_column($guide->data['scopes'], 'scope', 'path');
+        self::assertSame(Scope::Extension->value, $decided[$extension]);
+        self::assertSame(Scope::Core->value, $decided[$core]);
+
+        // The core path is in the call, so the core's own steps are still
+        // stated — named as being for it and not for the other.
+        self::assertStringContainsString($extension . ' is outside the TYPO3 core', $guide->text);
+        self::assertNotSame([], $guide->data['checks']);
+        self::assertStringContainsString('# For ' . $extension, $guide->text);
+        self::assertStringContainsString('# For ' . $core, $guide->text);
+    }
+
+    /**
+     * The same call with the core path taken out: nothing in it is the core's,
+     * so the brief drops the checks rather than naming who they are for.
+     */
+    #[Test]
+    public function aBriefForExtensionPathsAloneKeepsNoCoreStep(): void
+    {
+        $guide = Registry::call('typo3_task_guide', [
+            'task' => 'Fix the query that reads the events',
+            'paths' => [
+                'packages/acme_events/Classes/Domain/Repository/EventRepository.php',
+                'packages/acme_events/Classes/Controller/EventController.php',
+            ],
+            'changeType' => 'bugfix',
+        ]);
+
+        self::assertSame(Scope::Extension->value, $guide->data['scope']);
+        self::assertSame([], $guide->data['checks']);
+        self::assertSame([], $guide->data['testSuites']);
+        foreach ($guide->data['checklist'] as $entry) {
+            self::assertFalse(Scope::isCoreOnly($entry), $entry);
+        }
+    }
+
+    /**
      * `typo3/sysext/` in the touched paths, and nothing else — the one signal
      * `D-AUD-001` names as the thing that would make the combining unnecessary.
      *

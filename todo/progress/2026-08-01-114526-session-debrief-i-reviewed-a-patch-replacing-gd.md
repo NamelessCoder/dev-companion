@@ -1,7 +1,9 @@
-# During the same review I wanted to confirm no prior changelog covered the removal of GifBuilder::...
+# Session debrief: I reviewed a patch replacing GD-based error thumbnails with a static SVG placeho...
 
-**Serves:** feedback/2026-08-01-115112-during-the-same-review-i-wanted-to-confirm-no.md
+**Serves:** feedback/2026-08-01-114526-session-debrief-i-reviewed-a-patch-replacing-gd.md
 **Priority:** low
+**Branch:** todo/session-debrief-i-reviewed-a-patch-replacing-gd
+**Claimed:** 2026-08-02
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

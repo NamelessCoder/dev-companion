@@ -1,7 +1,9 @@
-# Debrief of the TYPO3 14 testimonials session, missed item: the assistant did not read the source ...
+# Debrief of the TYPO3 14 testimonials session, missed item: the assistant attempted to write a PHP...
 
-**Serves:** feedback/2026-08-01-003933-did-not-read-the-source-code-when-it-could-not.md
+**Serves:** feedback/2026-08-01-003938-attempted-to-write-a-php-reflection-script-into.md
 **Priority:** low
+**Branch:** todo/attempted-to-write-a-php-reflection-script-into
+**Claimed:** 2026-08-02
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

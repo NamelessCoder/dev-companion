@@ -1,7 +1,9 @@
-# Debrief of the TYPO3 14 testimonials session, missed item: 'stopped after user's help, did contin...
+# Reviewing the core patch "Replace GD-based error thumbnails with static SVG placeholder" (removes...
 
-**Serves:** feedback/2026-08-01-003931-stopped-after-user-s-help-did-continue-work-on.md
+**Serves:** feedback/2026-08-01-115109-reviewing-the-core-patch-replace-gd-based-error.md
 **Priority:** low
+**Branch:** todo/reviewing-the-core-patch-replace-gd-based-error
+**Claimed:** 2026-08-02
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

@@ -94,3 +94,29 @@ What replaces them is
 [`D-AUD-004`](aud-004-the-tool-list-is-not-where-the-audience-is-said.md), and the
 second half of the **Wrong if** cannot be met any more: there is no profile
 left for a deployment without an installation to earn.
+
+## Since then
+
+The second half is read, and what survives of it is what a deployment with no
+installation is offered. The profile it was written against is gone
+(`D-AUD-004`), so the question is no longer which set: `bin/typo3-cms-mcp` was
+driven over stdio on 2026-08-02 from a directory with no TYPO3 anywhere above
+it, and it offers all 23 tools, the six that can only answer from an
+installation included.
+
+Every layer says where it stands. The `installation` block of
+`typo3_server_scope` reports `found: false`, the seven directories the search
+walked, and a console that is `reachable: false` with the reason; its closing
+prose names what cannot be answered here and both environment variables as the
+way out. `typo3_project_scope`, `typo3_icon_lookup` and `typo3_label_lookup`
+each answer with the `unsupported` shape — `cause: no-installation`, the same
+searched list, and text that opens "This is not answerable here, which is not
+the same as an empty answer" and routes to `typo3_server_scope`. Nothing is
+withheld and nothing pretends.
+
+The one thing that does not know where it is, is the `instructions`: they open
+with "Start every task with typo3_project_scope", which here answers
+`unsupported`. That is left as it is. The string is the same for every session
+by `D-AUD-003`, the tool it names is what reports the state, and a client that
+follows it learns in one call what it has and how to name an installation — which
+is a shorter route than a sentence hedged for a case most sessions are not in.

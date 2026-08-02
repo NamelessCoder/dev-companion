@@ -4,12 +4,21 @@
 **Priority:** low
 **Branch:** todo/stopped-after-user-s-help-did-continue-work-on
 **Claimed:** 2026-08-02
+**Waiting on:** should this server say anything about when a session stops and
+    hands control back to its user, or is that categorically the client
+    harness's and the project's own conventions? It has never taken that shape:
+    where `skills/` names the user it names a subject that belongs to them —
+    "Dropping a major is the user's decision" — and never a moment at which to
+    stop. The two surfaces that reach a caller before it acts are the 2048
+    characters of `instructions` (D-ANS-004) and `skills/base.md`, so the rule
+    would be paid for by every caller in every project, against a boundary the
+    reporting session could not state. The recommendation is not to write one.
+    Answering "the harness's" archives the feedback, and this card with it.
 
-Judge this feedback rather than fix what it reports: re-run the query that
-produced it against the server as it is now, then close it, trim it to the half
-that is still open, or write the todo that takes it on. Write the judgement into
-`decisions/` — the entry it was made against, or a new one where nothing says it
-yet — because the commit that closes a feedback is the one place nobody can
-search afterwards. `documentation/feedback/judging.md` is the ladder and the one
-question it opens with, and what this feedback actually says is in the file it
-serves rather than here.
+Judged as [`D-FBK-024`](../../decisions/feedback/fbk-024-a-feedback-about-the-callers-conduct-toward-its-user-names-no-surface.md).
+Two halves, and one of them is a sibling's: "finish verification rather than
+shipping unverified work" reaches `content-elements` and never the layer cell,
+which is `feedback/2026-08-01-003533`, judged as
+[`D-KNW-017`](../../decisions/knowledge/knw-017-a-verification-question-reaches-the-subject-cell-and-never-the-layer-cell.md)
+— so no card is derived for it here. The conduct half reached no rung, and what
+it would cost is the question above.

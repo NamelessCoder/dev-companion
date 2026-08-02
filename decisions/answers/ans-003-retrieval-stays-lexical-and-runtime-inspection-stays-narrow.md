@@ -144,3 +144,16 @@ extension ships no `Configuration/Fluid/Namespaces.php`. `R-ANS-012` is what it
 stands under and `ProjectTest::theFilesThatRegisterByRunningAreSaidToBeUnread`
 holds it. The feedback stays open behind the first todo, the missing hint for
 `contentRenderingTemplates`.
+
+## Since then
+
+The live-documentation reading of `2026-08-01-002928` holds, and what it left
+open is now measured. *Record objects* ranks 28th, 13th and 11th of 1230 pages
+for those three queries against a `limit` of 6, so the section was present and
+reachable and no semantic index stood between the session and it. What decided
+each query was a word with nothing to do with the subject — `has` carried by 3
+pages, `get` by 5, `relati` by 1 — against `api` at 635 and `record` at 32. So
+the falsifier fails for a sharper reason than the queries being question-shaped:
+the ranking was right and the caller was told nothing about it. `D-ANS-021` is
+where that goes, and it is a judgement about wording rather than about
+retrieval.

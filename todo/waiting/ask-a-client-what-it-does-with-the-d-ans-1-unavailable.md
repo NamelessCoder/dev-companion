@@ -10,8 +10,6 @@
     show what a client does with it, and nothing on this machine plays that.
     The alternative is to leave the **Wrong if** unobserved until a client hits
     it by accident, which is how the 2026-07-29 evidence arrived.
-**Branch:** todo/ask-a-client-what-it-does-with-the-d-ans-1-unavailable
-**Claimed:** 2026-08-02
 
 What is left is the run, and the reading behind it is recorded on `D-ANS-1` in
 a **Since then** line. Once a directory plays `E-NONE`, run `META-02` there as

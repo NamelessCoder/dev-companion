@@ -101,7 +101,9 @@ TCA reference is, and the lookup does not carry it.
 
 The book is indexed. `DOCUMENTS` now carries the collection each manual is
 published in, `/m/` for the three of the core and `/other/` for this one, and
-one method builds every base from it.
+one method builds every base from it. What that has to keep doing is
+[`R-DOC-003`](../../requirements/documentation/doc-003-a-viewhelper-question-is-answered-from-the-manual-that-documents-viewhelpers.md),
+which the two tests above hold.
 
 None of the three **Wrong if** held. The root at
 `/other/typo3/view-helper-reference/14.3/en-us/` is a table of contents:

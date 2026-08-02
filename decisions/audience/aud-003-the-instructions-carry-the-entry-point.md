@@ -129,3 +129,18 @@ withdrawn is the sentence about what that session called, and with it the
 reading that the entry point was in the text and did not fire — the entry point
 may have fired and gone unrecorded. `D-FBK-023` is the judgement of the
 correction and says what it moves in the two siblings beside this one.
+
+What that withdrawal left open, `REVIEW-03` answers on 2026-08-03. The
+delivery is no longer inferred: the transcript's own attachments carry the
+`mcp_instructions_delta` in full, opening with `Start every task with
+typo3_project_scope`, and the `skill_listing` with all seven descriptions,
+against 23 calls that are 22 `Bash` and one `Read`. Same client as the four
+`REVIEW-01` runs, `claude-opus-5`, one prompt and no steering. So the entry
+point was in the session's context, in the first sentence of the block, and no
+tool was called for 256 seconds. This is not the **Wrong if** above, which was
+about the second `REVIEW-01` run and held: it is the boundary of what this entry
+claims. An entry point carries a task where a skill is there to receive it; in
+`E-CORE` there is none, and `typo3-extension-conformance` — the skill whose
+description is the same review shape — is bounded to project, sitepackage and
+extension and correctly stayed out. `D-SKL-005` carries that half and the run
+that showed it.

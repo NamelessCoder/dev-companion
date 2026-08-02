@@ -1,7 +1,9 @@
-# typo3_extension_scope returns a summary that does not list individual files. For a conformance au...
+# Task: TYPO3 extension conformance audit. My recommendation #19 suggested "Consider typo3/cms-comp...
 
-**Serves:** feedback/2026-07-31-194510-typo3-extension-scope-returns-a-summary-that.md
+**Serves:** feedback/2026-07-31-193642-19-suggested-consider-typo3-cms-compatibility.md
 **Priority:** low
+**Branch:** todo/19-suggested-consider-typo3-cms-compatibility
+**Claimed:** 2026-08-02
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

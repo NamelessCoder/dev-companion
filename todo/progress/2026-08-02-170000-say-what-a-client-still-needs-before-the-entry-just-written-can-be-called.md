@@ -2,6 +2,8 @@
 
 **Serves:** R-DIS-023, feedback/2026-07-31-185900-during-an-audit-of-the-printworks-3d-site.md
 **Priority:** normal
+**Branch:** todo/say-what-a-client-still-needs-before-the-entry-just-written-can-be-called
+**Claimed:** 2026-08-02
 
 Step 2 of the ladder, delivery: the server answers and the entry is correct, and
 two sessions in `site-new` still had no callable tool — `D-DIS-009` has the

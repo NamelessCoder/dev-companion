@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-07-31-185900-the-typo3-documentation-lookup-tool-has-a.md
 **Priority:** normal
+**Branch:** todo/say-the-queries-or-page-rule-where-the-caller-reads
+**Claimed:** 2026-08-02
 
 Step 4 of the ladder, wording: `typo3_documentation_lookup` takes `queries` or
 `page` and says so only in the root `oneOf`, which the tool reference does not

@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-07-31-185900-i-had-to-establish-from-my-own-knowledge.md
 **Priority:** normal
+**Branch:** todo/say-which-environment-variables-the-core-reads-itself
+**Claimed:** 2026-08-02
 
 Step 1a, and the corpus states the project half without the core half: nothing
 below `knowledge/` or `skills/` contains `%env(`, `getenv` or `TYPO3_CONTEXT`,

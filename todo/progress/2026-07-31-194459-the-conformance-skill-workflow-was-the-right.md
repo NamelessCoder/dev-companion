@@ -1,7 +1,9 @@
-# Task: TYPO3 extension conformance audit. What I had to establish elsewhere (from checkout, own kn...
+# The conformance skill workflow was the right order. Architecture hints were the most valuable par...
 
-**Serves:** feedback/2026-07-31-193109-task-typo3-extension-conformance-audit-what-i.md
+**Serves:** feedback/2026-07-31-194459-the-conformance-skill-workflow-was-the-right.md
 **Priority:** low
+**Branch:** todo/the-conformance-skill-workflow-was-the-right
+**Claimed:** 2026-08-02
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

@@ -11,6 +11,7 @@ The requirements of the same name are in
 [the decisions readme](../readme.md) for how an entry is written and when it
 earns one.
 
+- [`D-FBK-011`][D-FBK-011] — The suite holds what one branch can be right about · 2026-08-02
 - [`D-FBK-006`][D-FBK-006] — A name is cut where the feedback starts to differ · 2026-08-01
 - [`D-FBK-007`][D-FBK-007] — How a todo is worked travels with the todo · 2026-08-01
 - [`D-FBK-008`][D-FBK-008] — One todo is one file, and the queue is in the names · 2026-08-01
@@ -20,6 +21,7 @@ earns one.
 - [`D-FBK-002`][D-FBK-002] — The order of the work is declared, not inferred · 2026-07-31 · confirmed
 - [`D-FBK-004`][D-FBK-004] — The model is asked, because nothing else here can say it · 2026-07-31
 
+[D-FBK-011]: fbk-011-the-suite-holds-what-one-branch-can-be-right-about.md
 [D-FBK-006]: fbk-006-a-name-is-cut-where-the-feedback-starts-to-differ.md
 [D-FBK-007]: fbk-007-how-a-todo-is-worked-travels-with-the-todo.md
 [D-FBK-008]: fbk-008-one-todo-is-one-file-and-the-queue-is-in-the-names.md

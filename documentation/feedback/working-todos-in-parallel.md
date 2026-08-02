@@ -155,7 +155,9 @@ there:
   `bin/cli decisions:index`, and it means the line: two sessions editing one
   listing by hand conflict where two sessions leaving it alone do not. The
   session that merges runs both commands once, and `requirements:check` says so
-  if it forgets.
+  if it forgets. Nothing in `composer ci` says it, deliberately: a suite that
+  held the listing would fail every branch that adds an entry, on the one line
+  the branch is told not to touch — `D-FBK-011`.
 
 ## A question that arrives mid-work
 

@@ -18,7 +18,9 @@ use Typo3CmsMcp\Upkeep\Requirements;
  * An id that agrees with its file name, its heading and its group, a date, a
  * status, a sentence to open with, fields from the fixed set in the order they
  * belong in, and something under **Wrong if**. `composer test` runs the same
- * check through DecisionsTest; this is the readable half.
+ * check through DecisionsTest, the listing apart: that one is a property of the
+ * whole checkout rather than of one branch, so it is held here alone
+ * (D-FBK-011). This is also the readable half.
  */
 #[AsCommand(
     name: 'decisions:check',

@@ -65,6 +65,7 @@ and not a defect.
 - [`D-DOC-003`][D-DOC-003] — A decision says what came back, and a requirement says what it rests on · 2026-08-02
 - [`D-DOC-004`][D-DOC-004] — A requirement is written in the same sections as a decision · 2026-08-02
 - [`D-DOC-005`][D-DOC-005] — A number is three digits so a group lists in order · 2026-08-02
+- [`D-FBK-011`][D-FBK-011] — The suite holds what one branch can be right about · 2026-08-02
 - [`D-KNW-005`][D-KNW-005] — One `Scope` replaced the four vocabularies · 2026-08-02
 - [`D-KNW-006`][D-KNW-006] — A word for a thing administered from the backend adds no domain to a backend-only task · 2026-08-02
 - [`D-KNW-007`][D-KNW-007] — A hint says whose it is in both directions · 2026-08-02
@@ -103,7 +104,7 @@ and not a defect.
 - [`D-DIS-004`][D-DIS-004] — The version comes from the core package, not from the console · 2026-07-29 · confirmed
 - [`D-GUI-001`][D-GUI-001] — A missing release target becomes a placeholder, not `main` · 2026-07-29
 - [`D-GUI-002`][D-GUI-002] — The commit workflow is asked for, not inferred · 2026-07-29
-- [`D-SCO-002`][D-SCO-002] — A core-only intent asks for evidence, not for silence · 2026-07-29
+- [`D-SCO-002`][D-SCO-002] — A core-only intent asks for evidence, not for silence · 2026-07-29 · confirmed
 - [`D-SCO-003`][D-SCO-003] — What is core-only is decided per line, by what it names · 2026-07-29 · confirmed
 - [`D-SCO-005`][D-SCO-005] — The installation is evidence about the task, and the weakest kind · 2026-07-29
 - [`D-SCO-006`][D-SCO-006] — Why "project work is out of scope" kept coming back · 2026-07-29
@@ -119,6 +120,7 @@ and not a defect.
 [D-DOC-003]: documentation/doc-003-a-decision-says-what-came-back-and-what-rests-on-it.md
 [D-DOC-004]: documentation/doc-004-a-requirement-is-written-in-the-same-sections-as-a-decision.md
 [D-DOC-005]: documentation/doc-005-a-number-is-three-digits-so-a-group-lists-in-order.md
+[D-FBK-011]: feedback/fbk-011-the-suite-holds-what-one-branch-can-be-right-about.md
 [D-KNW-005]: knowledge/knw-005-one-scope-replaced-the-four-vocabularies.md
 [D-KNW-006]: knowledge/knw-006-a-word-for-a-thing-administered-from-the-backend.md
 [D-KNW-007]: knowledge/knw-007-a-hint-says-whose-it-is-in-both-directions.md

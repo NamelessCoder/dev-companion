@@ -87,4 +87,6 @@ requirement's test green and the reasoning under it gone, which nothing else
 would say.
 
 `bin/cli requirements:check` holds every file to the shape above, and
-`composer test` runs the same check through `RequirementsTest`.
+`composer test` runs the same check through `RequirementsTest`, except the
+listing: that one is generated from every file in a group, so it is held by the
+command alone — [`D-FBK-011`](../../decisions/feedback/fbk-011-the-suite-holds-what-one-branch-can-be-right-about.md).

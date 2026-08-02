@@ -11,6 +11,15 @@ use Typo3CmsMcp\Paths;
 use Typo3CmsMcp\Upkeep\Requirements;
 use Typo3CmsMcp\Upkeep\RequirementState;
 
+/**
+ * The shape of requirements/, as far as one branch can be right about it.
+ *
+ * The listing at the foot of a group readme is deliberately absent: it is
+ * generated from every file in the group, a branch adding one may not touch it,
+ * and holding it here made a session choose between its own work and a green
+ * suite (D-FBK-011). `bin/cli requirements:check` holds it, on the checkout
+ * where it can be true.
+ */
 final class RequirementsTest extends TestCase
 {
     /**
@@ -150,26 +159,6 @@ final class RequirementsTest extends TestCase
                     $id . ' names ' . $test . ', which no test declares',
                 );
             }
-        }
-    }
-
-    /**
-     * The listing under a group readme is generated from the files below it, so
-     * a requirement added without `bin/cli requirements:index` is missing from the
-     * one place a reader looks first.
-     */
-    #[Test]
-    public function everyGroupListsWhatIsInIt(): void
-    {
-        foreach (Requirements::GROUPS as $group) {
-            $readme = Requirements::directory() . '/' . $group . '/readme.md';
-
-            self::assertFileExists($readme);
-            self::assertStringEndsWith(
-                Requirements::listing($group),
-                (string) file_get_contents($readme),
-                $group . '/readme.md is not the listing of its files — run bin/cli requirements:index',
-            );
         }
     }
 

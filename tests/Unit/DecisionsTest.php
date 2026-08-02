@@ -12,6 +12,16 @@ use Typo3CmsMcp\Upkeep\Decisions;
 use Typo3CmsMcp\Upkeep\DecisionStatus;
 use Typo3CmsMcp\Upkeep\Requirements;
 
+/**
+ * The shape of decisions/, as far as one branch can be right about it.
+ *
+ * What every entry is on its own — its id, its group, its date, its status, its
+ * fields — is here, because a session working one todo can satisfy all of it.
+ * What only the whole checkout can be right about is not: the listing at the
+ * foot of a group readme is generated from every file in that group, and a
+ * branch that adds one may not touch it (D-FBK-011). `bin/cli decisions:check`
+ * holds that half, and the merge is what runs it.
+ */
 final class DecisionsTest extends TestCase
 {
     /**
@@ -199,28 +209,6 @@ final class DecisionsTest extends TestCase
         }
 
         return $methods;
-    }
-
-    /**
-     * The listing under each readme is generated from the files below it, so a
-     * decision added without `bin/cli decisions:index` is missing from the one
-     * place a reader looks first — and the root listing is the only place every
-     * decision stands in one order.
-     */
-    #[Test]
-    public function everyGroupListsWhatIsInIt(): void
-    {
-        foreach (['', ...array_values(Decisions::GROUPS)] as $group) {
-            $readme = Decisions::directory() . '/' . ($group === '' ? '' : $group . '/') . 'readme.md';
-
-            self::assertFileExists($readme);
-            self::assertStringEndsWith(
-                Decisions::listing($group),
-                (string) file_get_contents($readme),
-                ($group === '' ? 'readme.md' : $group . '/readme.md')
-                    . ' is not the listing of its files — run bin/cli decisions:index',
-            );
-        }
     }
 
     /**

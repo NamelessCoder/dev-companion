@@ -103,4 +103,7 @@ repository has moved furthest away from since. Going back to one and adding
 it.
 
 `bin/cli decisions:check` holds every file to the shape above, and
-`composer test` runs the same check through `DecisionsTest`.
+`composer test` runs the same check through `DecisionsTest`, except the
+listing: that one is generated from every file in a group, so it can only be
+true on a checkout that has all of them, and `DecisionsTest` would fail every
+branch that adds an entry — [`D-FBK-011`](../../decisions/feedback/fbk-011-the-suite-holds-what-one-branch-can-be-right-about.md).

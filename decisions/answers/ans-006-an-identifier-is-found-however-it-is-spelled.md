@@ -77,3 +77,13 @@ and a miss says which tags exist rather than leaving that to be guessed. The
 feedback is archived on that reading: the enumeration it wanted has existed all
 along by omitting the query, the two entries it named are reachable by name
 since the identifier rule above, and the third is a filter this adds.
+
+Both bounds are still unreachable from the order a review runs under.
+`feedback/2026-07-31-194459` and `feedback/2026-07-31-194819` are two models
+sweeping the same sitepackage on the same day with words, because
+`skills/base.md` step 5 tells them to derive the query set from what the
+extension ships. Re-run on 2026-08-02 from `site-new`, `type: deprecation` with
+`version: 14` and no query returns 75 entries and `tag: ext:form` narrows them
+to the 6 that carry `#109412`, which the words missed. So what this entry added
+is right and reaches nobody: the judgement is `D-SKL-003`, and the wording is
+queued there.

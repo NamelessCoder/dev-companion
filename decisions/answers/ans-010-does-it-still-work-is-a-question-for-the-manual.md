@@ -114,3 +114,13 @@ content-rendering registration, returns TypoScript rendering objects and PSR-14
 events and nothing that answers it — so the assumption holds for one shape and
 not the other, and the wording says a miss in the manual is a finding rather
 than a licence to reconstruct the contract from the installed core.
+
+The third **Wrong if** fired the day the skill half landed, and the answer is
+not the one it names. `feedback/2026-07-31-194459` disputes the changelog's
+silence the other way — an entry that exists and was not reached — and
+`feedback/2026-07-31-194819` carries the queries that missed it. Re-run on
+2026-08-02 from `site-new`, `#109412` is reached in one call by `type`,
+`version` and `tag`, so the matching is sound and the query shape
+`skills/base.md` prescribes is what is not. This entry stands with a boundary
+beside it: the manual answers a silence that is genuine, and a silence produced
+by asking wrongly is not one. `D-SKL-003` carries that half.

@@ -1,7 +1,9 @@
-# Conformance review of a TYPO3 14 site package: typo3_extension_scope answered absences as first-c...
+# Debrief of a TYPO3 14 backend content-element preview task (custom preview listing assigned relat...
 
-**Serves:** feedback/2026-07-31-194825-typo3-extension-scope-answered-absences-as.md
+**Serves:** feedback/2026-08-01-002926-debrief-of-a-typo3-14-backend-content-element.md
 **Priority:** low
+**Branch:** todo/debrief-of-a-typo3-14-backend-content-element
+**Claimed:** 2026-08-02
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

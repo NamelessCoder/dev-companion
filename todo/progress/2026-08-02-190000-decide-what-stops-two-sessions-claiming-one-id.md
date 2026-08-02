@@ -2,6 +2,8 @@
 
 **Serves:** decisions/
 **Priority:** normal
+**Branch:** todo/decide-what-stops-two-sessions-claiming-one-id
+**Claimed:** 2026-08-02
 
 Four runs of ten todos produced seven duplicate ids — one in the second run,
 three in the third, three in the fourth. Every session reads the same last

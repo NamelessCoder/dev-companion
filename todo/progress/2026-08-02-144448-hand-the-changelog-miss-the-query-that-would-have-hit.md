@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-07-31-194819-conformance-review-of-a-typo3-14-site-package.md
 **Priority:** normal
+**Branch:** todo/hand-the-changelog-miss-the-query-that-would-have-hit
+**Claimed:** 2026-08-02
 
 Ladder step 4, wording, on the evidence in
 [`D-ANS-016`](../../decisions/answers/ans-016-a-miss-names-the-query-that-would-have-hit.md):

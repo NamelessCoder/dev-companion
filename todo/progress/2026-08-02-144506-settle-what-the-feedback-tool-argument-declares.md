@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-07-31-194548-typo3-feedback-record-tool-parameter-causes.md
 **Priority:** normal
+**Branch:** todo/settle-what-the-feedback-tool-argument-declares
+**Claimed:** 2026-08-02
 
 Step 4 of the ladder, wording: `tool` is declared `['string', 'array']` at
 `src/Tool/FeedbackRecord.php:46` and is the only union-typed property in any

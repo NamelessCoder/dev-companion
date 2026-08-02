@@ -70,6 +70,7 @@ and not a defect.
 - [`D-DOC-007`][D-DOC-007] — One page per tool, and the answer on it whole · 2026-08-02
 - [`D-FBK-011`][D-FBK-011] — The suite holds what one branch can be right about · 2026-08-02
 - [`D-FBK-012`][D-FBK-012] — The queue comes first, and the sighting hands over one · 2026-08-02
+- [`D-FBK-013`][D-FBK-013] — An empty queue is a state, not a failure · 2026-08-02
 - [`D-KNW-005`][D-KNW-005] — One `Scope` replaced the four vocabularies · 2026-08-02
 - [`D-KNW-006`][D-KNW-006] — A word for a thing administered from the backend adds no domain to a backend-only task · 2026-08-02
 - [`D-KNW-007`][D-KNW-007] — A hint says whose it is in both directions · 2026-08-02
@@ -130,6 +131,7 @@ and not a defect.
 [D-DOC-007]: documentation/doc-007-one-page-per-tool-and-the-answer-whole.md
 [D-FBK-011]: feedback/fbk-011-the-suite-holds-what-one-branch-can-be-right-about.md
 [D-FBK-012]: feedback/fbk-012-the-queue-comes-first-and-the-sighting-hands-over-one.md
+[D-FBK-013]: feedback/fbk-013-an-empty-queue-is-a-state-not-a-failure.md
 [D-KNW-005]: knowledge/knw-005-one-scope-replaced-the-four-vocabularies.md
 [D-KNW-006]: knowledge/knw-006-a-word-for-a-thing-administered-from-the-backend.md
 [D-KNW-007]: knowledge/knw-007-a-hint-says-whose-it-is-in-both-directions.md

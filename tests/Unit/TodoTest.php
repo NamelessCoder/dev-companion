@@ -6,8 +6,8 @@ namespace Typo3CmsMcp\Tests\Unit;
 
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Finder\Finder;
 use Typo3CmsMcp\Paths;
+use Typo3CmsMcp\Tests\Support\QueuedTodo;
 use Typo3CmsMcp\Upkeep\Checkouts;
 use Typo3CmsMcp\Upkeep\Todo;
 
@@ -16,62 +16,7 @@ use Typo3CmsMcp\Upkeep\Todo;
  */
 final class TodoTest extends TestCase
 {
-    /**
-     * A claim is a file like every other todo, so the one test that can hold
-     * what the state does has to write one. The marker makes a leftover
-     * recognizable, and tearDown removes it.
-     */
-    private const MARKER = 'phpunit-progress-fixture';
-
-    protected function tearDown(): void
-    {
-        $directories = array_values(array_filter([
-            Todo::directory(),
-            Todo::directory() . '/progress',
-            Todo::directory() . '/waiting',
-        ], is_dir(...)));
-
-        foreach (Finder::create()->files()->in($directories)->depth(0)->name('*.md')->contains(self::MARKER) as $file) {
-            unlink($file->getPathname());
-        }
-        @rmdir(Todo::directory() . '/progress');
-    }
-
-    /**
-     * One queued todo of this test's own, at the end of the queue where it
-     * cannot displace anything, and recognizable enough for tearDown to find it
-     * wherever the move under test has left it.
-     *
-     * @return Section
-     */
-    private function queue(): array
-    {
-        $items = Todo::items();
-        $last = (int) $items[count($items) - 1]['position'];
-        file_put_contents(
-            sprintf('%s/%03d-%s.md', Todo::directory(), $last + 10, self::MARKER),
-            '# ' . self::MARKER . "\n\n**Serves:** todo/\n\nThe step this fixture stands for.\n",
-        );
-
-        return $this->fixture(Todo::items())[0];
-    }
-
-    /**
-     * This test's own todos among the repository's. Sessions working several
-     * todos at once leave real claims in `progress/` while the suite runs, so
-     * what a case wrote is only readable by picking it back out.
-     *
-     * @param array<int, Section> $todos
-     *
-     * @return array<int, Section>
-     */
-    private function fixture(array $todos): array
-    {
-        return array_values(array_filter(
-            $todos,
-            static fn(array $todo): bool => str_contains($todo['path'], self::MARKER),
-        ));
-    }
+    use QueuedTodo;
 
     /**
      * A todo is read by a session that has read nothing else, and the files
@@ -149,7 +94,9 @@ final class TodoTest extends TestCase
     {
         $todos = array_merge(Todo::recurring(), Todo::items(), Todo::progress(), Todo::waiting());
 
-        self::assertNotSame([], Todo::items(), 'nothing is queued, which is a state this can be in but not silently');
+        // Not the queue, which empties and is meant to: what is never empty is
+        // what recurs, because a recurring todo is never deleted.
+        self::assertNotSame([], $todos, 'no todo of any kind is readable, and one of them comes round every session');
         foreach ($todos as $todo) {
             self::assertNotSame([], $todo['serves'], $todo['path'] . ' serves nothing');
             self::assertNotSame('', $todo['body'], $todo['path'] . ' has no next concrete step');
@@ -205,7 +152,7 @@ final class TodoTest extends TestCase
                 . "\n**Claimed:** 2026-08-01\n\nThe step this claim was taken for.\n",
         );
 
-        $inHand = $this->fixture(Todo::progress());
+        $inHand = $this->ownTodos(Todo::progress());
 
         self::assertCount(1, $inHand);
         self::assertSame('progress', $inHand[0]['kind']);
@@ -229,11 +176,11 @@ final class TodoTest extends TestCase
     #[Test]
     public function aClaimCarriesTheBranchItWasGivenRatherThanTheOneItDerivesTo(): void
     {
-        $queued = $this->queue();
+        $queued = $this->queueATodo();
 
         Todo::claim($queued, '2026-08-01', Todo::branch($queued) . '-2');
 
-        $inHand = $this->fixture(Todo::progress())[0];
+        $inHand = $this->ownTodos(Todo::progress())[0];
         self::assertSame('todo/' . self::MARKER . '-2', $inHand['branch']);
         self::assertNotSame(
             Todo::branch($queued),
@@ -256,12 +203,12 @@ final class TodoTest extends TestCase
     #[Test]
     public function aClaimIsOneMoveThatGoesBothWays(): void
     {
-        $queued = $this->queue();
+        $queued = $this->queueATodo();
 
         $claimed = Todo::claim($queued, '2026-08-01');
 
         self::assertSame('todo/progress/' . self::MARKER . '.md', $claimed);
-        $inHand = $this->fixture(Todo::progress())[0];
+        $inHand = $this->ownTodos(Todo::progress())[0];
         self::assertSame('todo/' . self::MARKER, $inHand['branch']);
         self::assertSame('2026-08-01', $inHand['claimed']);
         self::assertSame('', $inHand['position'], 'a todo in hand keeps a place in an order nothing is coming for it from');
@@ -272,8 +219,8 @@ final class TodoTest extends TestCase
         $released = Todo::release($inHand);
 
         self::assertMatchesRegularExpression('#^todo/\d+-' . self::MARKER . '\.md$#', $released);
-        $back = $this->fixture(Todo::items())[0];
-        self::assertSame([], $this->fixture(Todo::progress()));
+        $back = $this->ownTodos(Todo::items())[0];
+        self::assertSame([], $this->ownTodos(Todo::progress()));
         self::assertSame('', $back['branch'], 'a released todo keeps a branch nobody is on');
         self::assertSame('', $back['claimed']);
         self::assertSame($queued['body'], $back['body']);
@@ -299,16 +246,16 @@ final class TodoTest extends TestCase
             '# ' . self::MARKER . "\n\n**Serves:** todo/\n**Branch:** todo/" . self::MARKER
                 . "\n**Claimed:** 2026-08-01\n**Waiting on:** which of the two shapes is wanted.\n\nThe half that is done.\n",
         );
-        $inHand = $this->fixture(Todo::progress())[0];
+        $inHand = $this->ownTodos(Todo::progress())[0];
 
         $released = Todo::release($inHand);
 
         self::assertSame('todo/waiting/' . self::MARKER . '.md', $released);
-        $waiting = $this->fixture(Todo::waiting())[0];
+        $waiting = $this->ownTodos(Todo::waiting())[0];
         self::assertSame('which of the two shapes is wanted.', $waiting['waitingOn'], 'the question is what the state carries');
         self::assertSame('', $waiting['branch'], 'a waiting todo names a branch somebody is about to delete');
         self::assertSame('', $waiting['claimed']);
-        self::assertSame([], $this->fixture(Todo::items()), 'a todo blocked on a person is queued behind work nobody is blocked on');
+        self::assertSame([], $this->ownTodos(Todo::items()), 'a todo blocked on a person is queued behind work nobody is blocked on');
     }
 
     /**

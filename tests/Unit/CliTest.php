@@ -8,12 +8,15 @@ use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Input\StringInput;
 use Symfony\Component\Console\Output\BufferedOutput;
+use Typo3CmsMcp\Tests\Support\QueuedTodo;
 use Typo3CmsMcp\Upkeep\Cli;
 use Typo3CmsMcp\Upkeep\Command\TodoClaim;
 use Typo3CmsMcp\Upkeep\Todo;
 
 final class CliTest extends TestCase
 {
+    use QueuedTodo;
+
     /**
      * The queue is worked before what recurs every session, and this is the
      * test because the failure was silent for as long as it existed. A sighting
@@ -22,11 +25,16 @@ final class CliTest extends TestCase
      * asked first, every session opened on the same one and no queued item was
      * ever reached. Nothing was broken, nothing failed, and the queue simply
      * never came up.
+     *
+     * The queue it needs is written rather than assumed. An empty one is the
+     * state the sightings are *for*, so a case about what happens while items
+     * wait cannot also demand that the repository always have some.
      */
     #[Test]
     public function theSightingsWaitForAnEmptyQueue(): void
     {
-        self::assertNotSame([], Todo::items(), 'nothing is queued, and the test says nothing about an empty queue');
+        $this->queueATodo();
+
         self::assertNotSame([], Todo::sightings(), 'nothing recurs every session, so nothing could wait for the queue');
 
         $buffer = new BufferedOutput();
@@ -137,7 +145,9 @@ final class CliTest extends TestCase
     #[Test]
     public function whatIsAskedForOneOfSeveralSessionsIsNeverTheQueue(): void
     {
-        self::assertNotSame([], Todo::items(), 'nothing is queued, so nothing could be handed over by mistake');
+        // The queue is what must not be handed over, so there has to be one to
+        // withhold — and the repository is allowed to have none of its own.
+        $this->queueATodo();
 
         $buffer = new BufferedOutput();
         $exit = Cli::application()->doRun(new StringInput('todo:next --worktree'), $buffer);

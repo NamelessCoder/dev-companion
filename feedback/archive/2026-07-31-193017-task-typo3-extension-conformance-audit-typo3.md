@@ -1,7 +1,8 @@
 ---
 date: 2026-07-31T19:30:17+00:00
 category: bug
-status: open
+status: closed
+closed: 2026-08-02
 model: nemotron-3-ultra-free
 tool: typo3_label_lookup
 directory: /home/benji/projects/site-new

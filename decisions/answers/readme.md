@@ -15,6 +15,9 @@ one is added.
 - [`D-ANS-010`][D-ANS-010] — "Does it still work" is a question for the manual, not the changelog · 2026-08-02
 - [`D-ANS-011`][D-ANS-011] — A scope answer states what a manifest declares, and the comparison is the audit's · 2026-08-02
 - [`D-ANS-012`][D-ANS-012] — An input schema's `oneOf` is a rule no caller is told · 2026-08-02
+- [`D-ANS-013`][D-ANS-013] — What runs a project is a placement, not a missing answer · 2026-08-02
+- [`D-ANS-014`][D-ANS-014] — The extension answer enumerates registrations, not files — and a registration is one wherever it is declared · 2026-08-02
+- [`D-ANS-015`][D-ANS-015] — A registration the extension answer misreads is inside its boundary, not evidence about where it runs · 2026-08-02
 - [`D-ANS-004`][D-ANS-004] — The instruction budget is 2048 characters, on one client's evidence · 2026-07-31
 - [`D-ANS-002`][D-ANS-002] — Three numbers now decide what a lookup answers, and they were measured, not reasoned · 2026-07-30 · confirmed
 - [`D-ANS-003`][D-ANS-003] — Retrieval stays lexical and runtime inspection stays narrow · 2026-07-30 · confirmed
@@ -27,6 +30,9 @@ one is added.
 [D-ANS-010]: ans-010-does-it-still-work-is-a-question-for-the-manual.md
 [D-ANS-011]: ans-011-a-scope-answer-states-what-a-manifest-declares.md
 [D-ANS-012]: ans-012-an-input-oneof-is-a-rule-no-caller-is-told.md
+[D-ANS-013]: ans-013-what-runs-a-project-is-a-placement-not-a-missing-answer.md
+[D-ANS-014]: ans-014-the-extension-answer-enumerates-registrations-not-files.md
+[D-ANS-015]: ans-015-a-registration-the-extension-answer-misreads-is-inside-its-boundary.md
 [D-ANS-004]: ans-004-the-instruction-budget-is-2048-characters-on-one-clients-evidence.md
 [D-ANS-002]: ans-002-three-numbers-decide-what-a-lookup-answers.md
 [D-ANS-003]: ans-003-retrieval-stays-lexical-and-runtime-inspection-stays-narrow.md

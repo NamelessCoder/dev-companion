@@ -21,6 +21,7 @@ when it is added.
 - [`R-ANS-011`][R-ANS-011] — A content element is answered by what it owns · held
 - [`R-ANS-012`][R-ANS-012] — An answer that cannot read something says so · held
 - [`R-ANS-013`][R-ANS-013] — The instructions fit what a client keeps · held
+- [`R-ANS-014`][R-ANS-014] — A registration is answered wherever it is declared · **open**
 
 [R-ANS-001]: ans-001-could-not-ask-never-looks-like-does-not-exist.md
 [R-ANS-002]: ans-002-the-reason-is-in-the-data-not-only-in-the-text.md
@@ -36,3 +37,4 @@ when it is added.
 [R-ANS-011]: ans-011-a-content-element-is-answered-by-what-it-owns.md
 [R-ANS-012]: ans-012-an-answer-that-cannot-read-something-says-so.md
 [R-ANS-013]: ans-013-the-instructions-fit-what-a-client-keeps.md
+[R-ANS-014]: ans-014-a-registration-is-answered-wherever-it-is-declared.md

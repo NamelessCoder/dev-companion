@@ -47,6 +47,7 @@ when it is added.
 - [`R-KNW-037`][R-KNW-037] — A distributed extension has repository conventions of its own · held
 - [`R-KNW-038`][R-KNW-038] — A missing icon identifier has no matches · held
 - [`R-KNW-039`][R-KNW-039] — A backend module in a sitepackage stays backend-module work · held
+- [`R-KNW-040`][R-KNW-040] — An environment variable answer names what the core reads itself · held
 
 [R-KNW-001]: knw-001-upgrade-wizards-and-dataprocessors-have-hints-of-their-own.md
 [R-KNW-002]: knw-002-a-hint-carries-the-words-its-subject-is-asked-about-in.md
@@ -87,3 +88,4 @@ when it is added.
 [R-KNW-037]: knw-037-a-distributed-extension-has-repository-conventions-of-its-own.md
 [R-KNW-038]: knw-038-a-missing-icon-identifier-has-no-matches.md
 [R-KNW-039]: knw-039-a-backend-module-in-a-sitepackage-stays-backend-module-work.md
+[R-KNW-040]: knw-040-an-environment-variable-answer-names-what-the-core-reads-itself.md

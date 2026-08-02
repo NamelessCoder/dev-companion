@@ -55,7 +55,9 @@ Each file opens with its title, then a head of labelled lines:
 - `**Priority:** high`, `normal` or `low` — where it stands among the rest, and
   the whole list. Every todo in a stage carries one and a recurring todo carries
   none, because a cadence is what orders an appointment. A todo written for a
-  feedback starts at `low`: raising it is the judgement the card asks for.
+  feedback starts at `low`: raising it is the judgement the card asks for, and
+  a judged card that is still `low` says so because somebody decided it, not
+  because nobody has looked. What several sessions reported is not `low`.
 - `**Every:** session` or `**Every:** 7 days` — the cadence of a recurring todo.
   A cadence in days is an appointment and comes before the queue; `session` is
   a sighting and comes after it, when the queue is empty.

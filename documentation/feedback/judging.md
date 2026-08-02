@@ -26,6 +26,23 @@ have closed and did not, which is the most valuable half of the corpus.
 Whether the self-criticism is accurate is not assessed, and cannot be: the
 session was there and the reader was not. Only the lever is assessed.
 
+## Read the corpus before the card
+
+    bin/cli feedback:list
+
+One call, grouped by the checkout each feedback was written in and marked where
+no todo names it. It comes before the ladder because the same observation is a
+different judgement depending on how many sessions arrived at it: one report is
+a report, and thirty out of one directory is a domain that has been asking for
+something since the first of them.
+
+That is not a refinement. On 2026-08-03 the board held 48 cards, 30 of them
+still the text `todo:sync` writes and 44 of them `low`, while 35 open feedback
+carried one directory — a core checkout — and one of those, two days old, was a
+session proposing the skill the other 34 kept describing. Every one of them had
+been judged alone or not at all, and nothing in the reading order said to look
+sideways.
+
 ## Where it reports no gap
 
 Some feedback report what worked. The ladder below has no rung for them: every
@@ -156,7 +173,7 @@ changelog number, a deprecation, a version boundary. A feedback taken on trust
 becomes a knowledge entry written with the confidence of a reading and the
 substance of a guess, which is the one failure nothing downstream can detect.
 
-## The answer names the gap, not the fix
+## The answer names the gap, not the fix — where the fix is about TYPO3
 
 A judgement ends at the diagnosis: which step of the ladder, on what evidence,
 and what is missing — not what the entry that fills it will say.
@@ -167,6 +184,19 @@ what makes it cheap enough to walk the corpus at all. A solution named from that
 position is recalled, not read — and the todo that follows copies it down, so
 the guess ends up in `knowledge/` with a verified entry's authority and nobody
 left who would check it.
+
+**That reason does not reach step 1b.** What a tool or a skill is missing is
+established from runs, transcripts, skill descriptions and the corpus — all of
+it in this repository, all of it read rather than recalled. So a judgement that
+lands on 1b decides **that** the thing is built and where its boundary runs, and
+leaves only what it will *say* about TYPO3 to the reading. Withholding that half
+does not protect anything: it turns a domain thirty sessions have described into
+a todo asking whether the domain exists, which is then queued at `low` behind
+the wording nits, and the next run judges the thirty-first report the same way.
+
+`D-SKL-005` is what the rule cost. A core patch review that called this server
+nothing at all was first written up as *establish whether a core review earns a
+skill*, with the corpus that answers it sitting unread on the same board.
 
 The expensive half belongs to the todo anyway. So the outcomes below read as
 *what the work is*, not *what the answer is*: the first concrete step of such a
@@ -203,6 +233,14 @@ The change is real and too large for the spot: it touches code, a schema, a
 contract, or it needs a decision. A requirement records what must hold, a todo
 records the next concrete step, and the feedback stays open until the commit
 that implements it archives it.
+
+**The judgement sets the priority and says what set it.** A card arrives at
+`low` because nobody has judged it, so leaving it there is the one outcome that
+records nothing — and a queue where 44 of 48 cards say `low` has no order at
+all, only a date. What more than one session reported does not stay at `low`.
+Where several cards turn out to be the same gap, one of them carries the work
+and names the others in its `**Serves:**` line, rather than each carrying a
+quarter of it.
 
 ### Trimmed — *autonomous*
 

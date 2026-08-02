@@ -164,7 +164,7 @@ final class Channel
      * archive buys: a closed feedback used to be a filename in a commit, with the
      * front matter that says what it was about long gone.
      *
-     * @return array<int, array{file: string, date: string, category: string, status: string, model: string, tool: string, tools: array<int, string>, title: string, closedBy: ?array{commit: string, date: string, subject: string}}>
+     * @return array<int, array{file: string, date: string, category: string, status: string, model: string, directory: string, tool: string, tools: array<int, string>, title: string, closedBy: ?array{commit: string, date: string, subject: string}}>
      */
     public static function all(
         ?string $status = 'open',
@@ -325,7 +325,7 @@ final class Channel
 
     /**
      * @param array<string, array{commit: string, date: string, subject: string}> $answers
-     * @return array{file: string, date: string, category: string, status: string, model: string, tool: string, tools: array<int, string>, title: string, closedBy: ?array{commit: string, date: string, subject: string}}|null
+     * @return array{file: string, date: string, category: string, status: string, model: string, directory: string, tool: string, tools: array<int, string>, title: string, closedBy: ?array{commit: string, date: string, subject: string}}|null
      */
     private static function parse(string $file, array $answers): ?array
     {
@@ -364,6 +364,11 @@ final class Channel
             // A feedback written before the field existed carries no model, which
             // is the same thing the field says when it was not answered.
             'model' => $meta['model'] ?? self::UNATTRIBUTED,
+            // Where the session stood. It is written into every feedback and was
+            // readable only by opening one, so nothing could see that a gap was
+            // reported by thirty sessions out of one checkout rather than by one
+            // — which is a different judgement (`D-FBK-025`).
+            'directory' => $meta['directory'] ?? '',
             // Both: the string is what a feedback has always carried, the list is
             // what a caller can filter or group by without parsing it back.
             'tool' => implode(', ', $tools),

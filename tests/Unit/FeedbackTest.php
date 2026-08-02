@@ -105,6 +105,25 @@ final class FeedbackTest extends TestCase
     }
 
     #[Test]
+    public function theDirectoryAFeedbackWasWrittenInIsReadBackWithIt(): void
+    {
+        // Written into every feedback since it existed and readable only by
+        // opening one, which is how 35 reports out of one checkout were judged
+        // as 35 unrelated reports — `D-FBK-025`. `feedback:list` groups by it.
+        Instance::discoverFrom('/home/somebody/projects/a-site');
+
+        $file = Channel::record(['observation' => self::MARKER . ' read back with its directory']);
+
+        $listed = array_values(array_filter(
+            Channel::all('open', null, PHP_INT_MAX),
+            static fn(array $feedback): bool => $feedback['file'] === $file,
+        ));
+
+        self::assertCount(1, $listed);
+        self::assertSame('/home/somebody/projects/a-site', $listed[0]['directory']);
+    }
+
+    #[Test]
     public function aNoteWithoutACallerDirectoryClaimsNone(): void
     {
         // The HTTP case: no entrypoint handed a directory in, so the server's

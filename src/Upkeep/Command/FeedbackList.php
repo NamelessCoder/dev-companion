@@ -13,15 +13,22 @@ use Typo3CmsMcp\Upkeep\OpenFeedback;
  *
  * What is to be done about any of it is on the board — one card per open
  * feedback, handed over one at a time like every other todo. This is the other
- * question: what has arrived, newest first, and which of it somebody has taken
- * on.
+ * question: what has arrived, and which of it somebody has taken on.
+ *
+ * Grouped by the checkout it was written in, because that is the reading a
+ * judgement needs and the one nothing offered. A gap reported once is a report;
+ * the same gap reported by thirty sessions out of one directory is a domain,
+ * and the two are judged differently (`D-FBK-025`).
  */
 #[AsCommand(
     name: 'feedback:list',
-    description: 'every open feedback, newest first',
+    description: 'every open feedback, grouped by the checkout it came from',
 )]
 final class FeedbackList
 {
+    /** Where a feedback with no directory is grouped, for a session that left none. */
+    private const NO_DIRECTORY = 'no directory recorded';
+
     public function __invoke(OutputInterface $output): int
     {
         $open = OpenFeedback::all();
@@ -31,9 +38,29 @@ final class FeedbackList
             return 0;
         }
 
-        $output->writeln(sprintf('%d open, newest first.', count($open)));
-        foreach (array_reverse($open) as $feedback) {
-            $output->writeln(sprintf('%s%s', $feedback['file'], $feedback['judged'] ? '' : ' — no todo names it'));
+        $groups = [];
+        foreach ($open as $feedback) {
+            $groups[$feedback['directory'] === '' ? self::NO_DIRECTORY : $feedback['directory']][] = $feedback;
+        }
+        // The biggest corpus first: what several sessions reported from one place
+        // is what a judging run is looking for, and it is the group that is
+        // easiest to miss one card at a time.
+        uasort($groups, static fn(array $a, array $b): int => count($b) <=> count($a));
+
+        $unjudged = count(array_filter($open, static fn(array $feedback): bool => !$feedback['judged']));
+        $output->writeln(sprintf('%d open, %d with no todo naming them, in %d directories.', count($open), $unjudged, count($groups)));
+
+        foreach ($groups as $directory => $feedback) {
+            $output->writeln('');
+            $output->writeln(sprintf('%s — %d, newest first', $directory, count($feedback)));
+            foreach (array_reverse($feedback) as $entry) {
+                $output->writeln(sprintf(
+                    '  %s  %s%s',
+                    $entry['file'],
+                    $entry['model'],
+                    $entry['judged'] ? '' : ' — no todo names it',
+                ));
+            }
         }
 
         return 0;

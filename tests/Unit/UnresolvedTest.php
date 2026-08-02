@@ -25,7 +25,11 @@ final class UnresolvedTest extends TestCase
         $expected = [];
         foreach (Requirements::all() as $requirement) {
             if (!Requirements::state($requirement)->isGuarded()) {
-                $expected[$requirement['id']] = Requirements::state($requirement);
+                // The value rather than the case: the reading is printed, and
+                // it declares `state` as a string. Comparing the enum passed
+                // for as long as every requirement was guarded and the two
+                // empty arrays never said which side was right.
+                $expected[$requirement['id']] = Requirements::state($requirement)->value;
             }
         }
 

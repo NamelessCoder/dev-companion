@@ -1171,6 +1171,61 @@ final class HintsTest extends TestCase
         self::assertStringContainsString('extra.typo3/cms.version', $current);
     }
 
+    /**
+     * A review of `bootstrap_package` found two contentRenderingTemplates
+     * entries naming a directory the move to site sets had removed, and had to
+     * read SysTemplateTreeBuilder and TreeFromLineStreamBuilder out of its own
+     * vendor tree to settle that they were inert. Nothing here answered it: the
+     * hint the question lands on said nothing about the key, and the key is not
+     * deprecated, so no scanner names it either.
+     *
+     * What a reader needs is both halves — what a matched entry does, so a live
+     * one is not deleted, and what makes one unmatchable, so a dead one is not
+     * treated as a defect.
+     */
+    #[Test]
+    public function aRegistrationThatCanNoLongerBeMatchedIsToldApartFromALiveOne(): void
+    {
+        $result = ArchitectureHints::find(
+            ['ext_localconf.php'],
+            'is this contentRenderingTemplates registration still consumed, it names a directory that is gone',
+            6,
+        );
+        self::assertSame('extension-files', $result['matchedHints'][0]['id']);
+
+        $text = implode("\n", array_column((array) ArchitectureHints::byId('extension-files')['hints'], 'text'));
+        // What a matched entry does, and the two identifier shapes that match.
+        self::assertStringContainsString("['defaultContentRendering']", $text);
+        self::assertStringContainsString('configurePlugin()', $text);
+        self::assertStringContainsString('fluidstyledcontent/Configuration/TypoScript/', $text);
+        self::assertStringContainsString('ext_typoscript_setup.typoscript', $text);
+        // Where it is read, so the claim can be re-checked against a checkout.
+        // The two IncludeTree classes hold on every branch; the resolver they
+        // replaced is a statement of its own rather than prose about a version.
+        self::assertStringContainsString('SysTemplateTreeBuilder::addStaticMagicFromGlobals()', $text);
+        self::assertStringContainsString('TreeFromLineStreamBuilder', $text);
+        $onFourteen = implode("\n", array_column((array) ArchitectureHints::byId('extension-files', 14)['hints'], 'text'));
+        self::assertStringNotContainsString('TemplateService', $onFourteen);
+        $onTwelve = implode("\n", array_column((array) ArchitectureHints::byId('extension-files', 12)['hints'], 'text'));
+        self::assertStringContainsString('TemplateService::prependStaticExtra()', $onTwelve);
+        self::assertStringContainsString('TypoScriptParser', $onTwelve);
+        // And why nothing flags a dead one.
+        self::assertStringContainsString('addStaticFile()', $text);
+        self::assertStringContainsString('cleanup rather than a defect', $text);
+        self::assertStringContainsString('not deprecated', $text);
+
+        // The migration these entries are left over from says so where it
+        // happens, because that is the change that strands them.
+        $sets = implode("\n", array_column((array) ArchitectureHints::byId('site-sets', 14)['hints'], 'text'));
+        self::assertStringContainsString('contentRenderingTemplates', $sets);
+        self::assertStringContainsString('extension-files', $sets);
+
+        // Sets are what a caller on the older branch has no migration into, so
+        // the pointer is not offered there.
+        $setsOnTwelve = implode("\n", array_column((array) ArchitectureHints::byId('site-sets', 12)['hints'], 'text'));
+        self::assertStringNotContainsString('contentRenderingTemplates', $setsOnTwelve);
+    }
+
     #[Test]
     public function theIconHintSaysWhichHalfOfTypo3ItIsAbout(): void
     {

@@ -330,7 +330,10 @@
       "ext_tables.php",
       "ext_emconf.php",
       "Configuration/JavaScriptModules.php",
-      "Configuration/Icons.php"
+      "Configuration/Icons.php",
+      "contentRenderingTemplates",
+      "defaultContentRendering",
+      "stale registration"
     ],
     "hints": [
       {
@@ -382,7 +385,13 @@
         "text": "ext_tables.php is not loaded at all. Nothing reads the file and nothing reports it, so an extension that still registers there loses those registrations silently — the backend module, the route or the user setting is simply absent.",
         "since": 15
       },
-      "ext_localconf.php is what is left for what has no declarative file. It runs on every request, so keep it to registration and out of anything that does work."
+      "ext_localconf.php is what is left for what has no declarative file. It runs on every request, so keep it to registration and out of anything that does work.",
+      "$GLOBALS['TYPO3_CONF_VARS']['FE']['contentRenderingTemplates'][] in ext_localconf.php is a membership list of static-include identifiers and does nothing on its own. Every read of it is one test: while a legacy TypoScript static include is resolved, that include's identifier is looked up in the list, and a hit appends FE['defaultTypoScript_<constants|setup>.']['defaultContentRendering'] directly after it. That is the slot ExtensionUtility::configurePlugin() writes every Extbase plugin's TypoScript into, so a matched entry decides ordering — the plugin configuration lands after the content rendering rather than before it. The identifier is the extension key with its underscores removed plus the include path, as in 'fluidstyledcontent/Configuration/TypoScript/', or the bare key alone for an extension shipping ext_typoscript_setup.typoscript. It is read in SysTemplateTreeBuilder::addStaticMagicFromGlobals(), reached from a sys_template include_static_file row, and in TreeFromLineStreamBuilder, reached from an @import or INCLUDE_TYPOSCRIPT line. Grep the checkout for the key to confirm what else reads it on the branch in hand.",
+      {
+        "text": "The pre-IncludeTree resolver reads it too, with the same membership test: TypoScriptParser while it expands an include, and TemplateService::prependStaticExtra() as each static row is prepended.",
+        "until": 12
+      },
+      "So an entry is dead as soon as the include it names is gone, and fluid_styled_content is the live case: it registers that identifier and still ships both Configuration/TypoScript/ and the addStaticFile() call in Configuration/TCA/Overrides/sys_template.php that lets a sys_template pick it. An extension whose TypoScript has moved into Configuration/Sets/ has neither, and no @import of the old path is left either, so nothing can ever match its entries — those lines are a cleanup rather than a defect. Nothing reports them: the key is not deprecated, no changelog entry names it, and fluid_styled_content registers itself the same way, so a deprecation review and the Extension Scanner both pass the file. Site sets are the migration such entries are usually left over from, which is the site-sets hint."
     ],
     "checks": [
       "CI=true ./Build/Scripts/runTests.sh -s functional"

@@ -48,6 +48,10 @@
         "since": 14
       },
       "ExtensionManagementUtility::addTypoScriptSetup() and addStaticFile() are the predecessor and are still called from a few sysexts, addTypoScriptSetup with an includeInSiteSets flag that folds the content into the set mechanism. Both mechanisms coexist; new code ships a set.",
+      {
+        "text": "Moving an extension's TypoScript into a set leaves what registered the old static include behind in ext_localconf.php, and nothing reports it. A $GLOBALS['TYPO3_CONF_VARS']['FE']['contentRenderingTemplates'] entry naming the removed Configuration/TypoScript/ path can no longer be matched by anything, so it is a cleanup rather than a defect — the extension-files hint says what reads that key and what a matched entry would have done.",
+        "since": 13
+      },
       "TypoScript files use the .typoscript extension.",
       "This is how an extension ships TypoScript, and a project's own sitepackage is an extension like any other — the mechanism does not change because the repository is not the core's. Configuring one installation is where it stops being a convention and becomes that site's decision, and this server does not make it.",
       {

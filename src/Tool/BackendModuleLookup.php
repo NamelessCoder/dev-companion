@@ -41,7 +41,7 @@ final class BackendModuleLookup extends ReadOnlyTool
     {
         return Schema::object([
             'query' => Schema::string(),
-            'matchCount' => Schema::integer(),
+            'matchCount' => Schema::nullableInteger(),
             'answeredBy' => Schema::answeredBy(),
             'unavailable' => Schema::unavailable(),
             'modules' => Schema::listOf(Schema::object([
@@ -63,7 +63,7 @@ final class BackendModuleLookup extends ReadOnlyTool
         if (!$result['ok']) {
             return Unanswered::because(
                 $result['error'] !== '' ? $result['error'] : trim($result['output']),
-                ['query' => $query, 'matchCount' => 0, 'modules' => []],
+                ['query' => $query, 'matchCount' => null, 'modules' => []],
             );
         }
 

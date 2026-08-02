@@ -46,7 +46,7 @@ final class ChangelogLookup extends ReadOnlyTool
     {
         return Schema::object([
             'query' => Schema::string(),
-            'matchCount' => Schema::integer('Entries carrying every word of the query, before the limit.'),
+            'matchCount' => Schema::nullableInteger('Entries carrying every word of the query, before the limit.'),
             'entries' => Schema::listOf(Schema::object([
                 'type' => ['type' => 'string', 'enum' => ['Breaking', 'Deprecation', 'Feature', 'Important']],
                 'version' => Schema::string('The version directory it was released in.'),
@@ -71,7 +71,7 @@ final class ChangelogLookup extends ReadOnlyTool
         if (Changelog::directory() === null) {
             return Unanswered::because(
                 'no TYPO3 installation was found whose core package ships the changelog',
-                ['query' => $query, 'matchCount' => 0, 'entries' => [], 'versions' => []],
+                ['query' => $query, 'matchCount' => null, 'entries' => [], 'versions' => []],
             );
         }
 

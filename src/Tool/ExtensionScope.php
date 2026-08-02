@@ -20,6 +20,12 @@ final class ExtensionScope extends ReadOnlyTool
      * The fields the extension schema requires, empty. A miss answers with the
      * same shape as a hit, so a client never has to branch on which it got.
      *
+     * answeredBy is not among them, because the two misses this fills are not
+     * the same answer: an installation that has other extensions and not this
+     * one has answered, and a directory with no installation has not. Sharing
+     * the value made every miss report "nothing", which says the installation
+     * could not be asked about an installation that just listed 27 packages.
+     *
      * @var array<string, mixed>
      */
     private const MISS_FIELDS = [
@@ -44,7 +50,6 @@ final class ExtensionScope extends ReadOnlyTool
         'files' => [],
         'notReadStatically' => [],
         'artifacts' => ['manual' => null, 'readme' => null, 'tests' => [], 'languageFiles' => []],
-        'answeredBy' => 'nothing',
     ];
 
     public static function name(): string
@@ -275,7 +280,10 @@ final class ExtensionScope extends ReadOnlyTool
                     $key,
                     implode(', ', $installed),
                 ),
-            self::MISS_FIELDS + ['key' => $key, 'installed' => $installed],
+            // The package list is what answered, and it is read from the
+            // metadata the installed packages ship rather than from the booted
+            // container — which is what "packages" says.
+            self::MISS_FIELDS + ['key' => $key, 'installed' => $installed, 'answeredBy' => 'packages'],
         );
     }
 }

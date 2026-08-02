@@ -19,6 +19,12 @@ use Typo3CmsMcp\Knowledge\Scope;
 final class Schema
 {
     /**
+     * The sentence every withheld claim carries, so the six tools that withhold
+     * one say it in the same words rather than six.
+     */
+    private const UNCONSULTED = 'Null when nothing was consulted — see unavailable, and never a statement about an installation nothing asked.';
+
+    /**
      * Why an installation-backed answer is unanswered rather than empty.
      *
      * Present exactly when answeredBy is "nothing". The text said this all
@@ -32,6 +38,8 @@ final class Schema
         return self::object([
             'reason' => self::string('What stopped the installation from being asked.'),
             'diagnosis' => self::string('What the reason means where the message alone does not say it — a console that starts and then fails on a missing table has a database without a schema, not a broken installation. Empty where nothing beyond the reason is known.'),
+            'searched' => self::listOf(self::string(), 'Every directory the discovery walked, in order. "Nothing was found" and "the server was started somewhere else" wear one sentence, and only this tells them apart. Empty where discovery never ran.'),
+            'misconfiguration' => self::nullableString('What was set and could not be used, when the reason is a setting rather than the directory — a named root that is not a directory on this machine reads as "nothing was found here" and is not that. Null where nothing was set.'),
             'settings' => self::object([
                 'root' => self::string('Environment variable that names the installation root.'),
                 'console' => self::string('Environment variable that names the console command.'),
@@ -279,5 +287,33 @@ final class Schema
     public static function integer(string $description = ''): array
     {
         return $description === '' ? ['type' => 'integer'] : ['type' => 'integer', 'description' => $description];
+    }
+
+    /**
+     * A count of what the installation has, null where nothing was consulted.
+     *
+     * Zero is a statement about the installation and is never made without one.
+     * A client reads the count as the answer, so a count of 0 beside
+     * answeredBy: "nothing" is the shape "could not ask" is not allowed to
+     * arrive in.
+     *
+     * @return array<string, mixed>
+     */
+    public static function nullableInteger(string $description = ''): array
+    {
+        return ['type' => ['integer', 'null'], 'description' => trim($description . ' ' . self::UNCONSULTED)];
+    }
+
+    /**
+     * A claim about the installation, null where nothing was consulted.
+     *
+     * False says the installation does not have it, which is the same statement
+     * a count of 0 makes and is withheld for the same reason.
+     *
+     * @return array<string, mixed>
+     */
+    public static function nullableBoolean(string $description = ''): array
+    {
+        return ['type' => ['boolean', 'null'], 'description' => trim($description . ' ' . self::UNCONSULTED)];
     }
 }

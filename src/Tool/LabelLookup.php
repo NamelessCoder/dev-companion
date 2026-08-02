@@ -63,7 +63,7 @@ final class LabelLookup extends ReadOnlyTool
     {
         return Schema::object([
             'query' => Schema::string(),
-            'matchCount' => Schema::integer(),
+            'matchCount' => Schema::nullableInteger(),
             'answeredBy' => Schema::answeredBy(),
             'unavailable' => Schema::unavailable(),
             'terms' => Schema::listOf(Schema::object([
@@ -130,7 +130,7 @@ final class LabelLookup extends ReadOnlyTool
                     [
                         'query' => $query,
                         'resource' => $resource === '' ? null : $resource,
-                        'matchCount' => 0,
+                        'matchCount' => null,
                         'labels' => [],
                         'terms' => [],
                     ],

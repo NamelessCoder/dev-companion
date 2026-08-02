@@ -33,7 +33,7 @@ final class FluidNamespaceList extends ReadOnlyTool
     public static function outputSchema(): array
     {
         return Schema::object([
-            'matchCount' => Schema::integer(),
+            'matchCount' => Schema::nullableInteger(),
             'answeredBy' => Schema::answeredBy(),
             'unavailable' => Schema::unavailable(),
             'namespaces' => Schema::listOf(Schema::object([
@@ -54,7 +54,7 @@ final class FluidNamespaceList extends ReadOnlyTool
             // files cannot say is what the container did with them.
             $declared = FluidNamespaces::all();
             if ($declared === []) {
-                return Unanswered::because($answer['error'], ['namespaces' => [], 'matchCount' => 0]);
+                return Unanswered::because($answer['error'], ['namespaces' => [], 'matchCount' => null]);
             }
             $answeredBy = 'packages';
         }

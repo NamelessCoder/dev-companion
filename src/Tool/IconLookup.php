@@ -60,9 +60,9 @@ final class IconLookup extends ReadOnlyTool
     {
         return Schema::object([
             'query' => Schema::string(),
-            'matchCount' => Schema::integer('For a complete identifier, 1 only when that exact identifier is registered and otherwise 0. For a concept search, the number of matching icons.'),
-            'suggestionCount' => Schema::integer('Related identifiers returned beside an identifier validation. The actions-/content- usage prefix alone never makes an icon a suggestion.'),
-            'exactMatch' => ['type' => 'boolean', 'description' => 'Whether the query was a registered identifier. False for a query shaped like one that is not registered — the listed icons are then suggestions, not the answer.'],
+            'matchCount' => Schema::nullableInteger('For a complete identifier, 1 only when that exact identifier is registered and otherwise 0. For a concept search, the number of matching icons.'),
+            'suggestionCount' => Schema::nullableInteger('Related identifiers returned beside an identifier validation. The actions-/content- usage prefix alone never makes an icon a suggestion.'),
+            'exactMatch' => Schema::nullableBoolean('Whether the query was a registered identifier. False for a query shaped like one that is not registered — the listed icons are then suggestions, not the answer.'),
             'answeredBy' => Schema::answeredBy(),
             'unavailable' => Schema::unavailable(),
             'icons' => Schema::listOf(Schema::object([
@@ -97,7 +97,7 @@ final class IconLookup extends ReadOnlyTool
         if (!Instance::isAvailable()) {
             return Unanswered::because(
                 'no TYPO3 installation was found from the directory this server was started in',
-                ['query' => $query, 'matchCount' => 0, 'suggestionCount' => 0, 'exactMatch' => false, 'icons' => []],
+                ['query' => $query, 'matchCount' => null, 'suggestionCount' => null, 'exactMatch' => null, 'icons' => []],
             );
         }
 

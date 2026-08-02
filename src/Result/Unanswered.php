@@ -41,6 +41,13 @@ final class Unanswered
                 'unavailable' => [
                     'reason' => $error,
                     'diagnosis' => $diagnosis,
+                    // Where it looked and what was set wrong travel with the
+                    // answer as well. typo3_server_scope carried both, and a
+                    // caller that has just been told nothing could be asked is
+                    // the one least able to guess that a second tool holds the
+                    // half of the reason that names the way out.
+                    'searched' => Instance::searched(),
+                    'misconfiguration' => Instance::misconfiguration() === '' ? null : Instance::misconfiguration(),
                     'settings' => [
                         'root' => Instance::ROOT_VARIABLE,
                         'console' => Typo3Cli::CONSOLE_VARIABLE,

@@ -28,6 +28,7 @@ skill in it. `feedback/2026-07-31-194826` is the same call from another model in
 the same project, reporting that it restated the skill's own checklist.
 
 Once answered, the feedback is archived by the commit that implements whichever
-side was chosen. `feedback/2026-07-31-194826` is the other half of the same
-property and is unjudged: whoever judges it should read the `D-SKL-001`
-paragraph first rather than derive it a second time.
+side was chosen. `feedback/2026-07-31-194826` was the other half of the same
+property and was judged on 2026-08-02. It does not wait here: what it reports
+survives either answer to the question above, so it is queued as `R-GUI-006` and
+the `D-SKL-001` **Since then** says why.

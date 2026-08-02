@@ -272,3 +272,31 @@ the install writes the entry, reports nine successes, and never says that a
 callable tool is one step further on. The precondition is what a session does
 when the tools are absent. Keeping them from being absent is the install's, and
 that half stays open.
+
+## Since then
+
+`feedback/2026-07-31-194826` was judged on 2026-08-02, and it did not follow its
+two siblings into `todo/waiting/`. The entry above already reads it as the other
+side of `192945` — one session skipped step 3 and reported no loss, this one ran
+it and reported no gain. What the judging run adds is that the second half of
+that sentence stands without the first.
+
+Re-run in this checkout on 2026-08-02: `typo3_task_guide` with `task="review the
+TYPO3 project and site package"` and `changeType=unknown` matches no intent, and
+the checklist it answers with is keep the patch focused, add the narrowest useful
+test coverage, write the commit message. Its two other next lookups are
+`typo3_architecture_lookup` and `typo3_changelog_lookup`, which is the half of
+the complaint about restating the skill. The other half is sharper than the
+report: the enum offers five kinds of change and `unknown`, and
+`knowledge/task-intents.json` holds eleven intents of which none is an audit, so
+nothing a caller can pass says that this task changes nothing.
+
+That is ladder step 1b, and it is why the question above does not gate it. Both
+open answers leave the gap standing — drop step 3 from the base and a caller
+reaching the tool directly still gets a patch checklist; make `typo3_task_guide`
+name the workflow and the checklist under it is the same one.
+[`R-GUI-006`](../../requirements/guides/gui-006-a-review-is-not-answered-with-a-checklist-for-changing-something.md)
+is what must hold, and the todo behind it starts with research rather than the
+enum: what a review brief carries that a change brief does not. The feedback
+stays open until that lands, so this decision's question keeps the two cards it
+already had and loses the third.

@@ -558,6 +558,40 @@ final class HintsTest extends TestCase
     }
 
     #[Test]
+    public function aCompoundIsFoundWhicheverWayTheCallerJoinsIt(): void
+    {
+        // Everything a query passes through is written in spaced compounds —
+        // the domain keywords, the hint patterns, the markers — and one hyphen
+        // used to miss all of them at once. The first query is the sentence a
+        // reporting session wrote its own task down in, and it reached nothing:
+        // the domain fell back to PHP, and the `content element` pattern was
+        // searched for verbatim in a query that spells it with a hyphen.
+        $reached = static fn(string $query): array => array_column(
+            ArchitectureHints::find([], $query, 6)['matchedHints'],
+            'id',
+        );
+
+        self::assertContains(
+            'content-elements',
+            $reached('show assigned related groups in a backend content-element preview template'),
+        );
+
+        // The domain gate is the half that fails first and silently, so it is
+        // asserted where the hint's own category has to be earned: "dark mode"
+        // is a CSS signal and "dark-mode" was none, which left every Backend
+        // CSS hint out of the candidates rather than out of the ranking.
+        self::assertContains('css-light-dark-mode', $reached('dark-mode'));
+        self::assertContains('fluid-viewhelpers', $reached('view-helper'));
+
+        // And the separator inside one word is left alone, which is what
+        // D-ANS-006 is about: these are identifiers, not compounds a caller
+        // joined up, and each is still one token.
+        foreach (['tt_content', 'list_type', 'mod.web_layout'] as $identifier) {
+            self::assertContains('content-elements', $reached($identifier), $identifier);
+        }
+    }
+
+    #[Test]
     public function theCuratedVocabularyStillDecidesWhereItWasWritten(): void
     {
         // Scoring the text is additive: where somebody anticipated a phrasing,

@@ -1,21 +1,20 @@
-# Establish whether a core patch review earns a skill
+# Read the two core clusters, then write the two skills D-SKL-005 decided
 
 **Serves:** feedback/2026-08-02-222817-task-review-03-the-forward-review-review-the.md
-**Priority:** normal
+**Priority:** high
 
-Judged step **1b**, the shape is missing: the answers are here and nothing says
-in which order to ask for them, and the skill whose description is this exact
-review shape is bounded to project, sitepackage and extension. `D-SKL-005`
-carries the evidence and the two things it assumes. What is left is the research
-`documentation/clients/writing-a-skill.md` demands before a skill exists at all:
-read the two core sessions call by call — `REVIEW-03` in
-`scenarios/runs/REVIEW-03.json` and the GD/SVG review behind
-`feedback/2026-08-01-115711` — and say what order they each invented, then ask
-this server what it already answers about reviewing and preparing a core patch,
-with the tools such a skill would route to. The answer that ends this step is
-either the order a skill would hold, written from what the runs did, or the
-finding that a core review needs nothing here that the existing skills and tools
-do not already carry — both are results. What this todo may not do is decide the
-first step for it: `feedback/2026-08-02-144350` shows `typo3_project_scope`
-answering a core checkout with four `gerrit:setup` commands and no test runner,
-and that half is that feedback's work.
+`D-SKL-005` settles that core contribution earns two task skills — reviewing a
+patch and creating one — so what is left is what they say, and that is read
+rather than recalled. Read the two clusters body by body: the fifteen review
+feedback of 2026-08-01 (`2026-08-01-114526` through `2026-08-01-122326`, three
+clients and four models over three different core patches) and the twenty
+creation feedback of 2026-08-02 (`2026-08-02-144315` through
+`2026-08-02-145315`, one session on Forge #105403), plus the two runs whose
+calls are readable — `scenarios/runs/REVIEW-03.json` and its transcript. Say for
+each cluster what order the sessions invented, which step only ran when a
+finding happened to walk into it, and which of this server's tools would have
+answered it; `documentation/clients/writing-a-skill.md` is what that reading
+owes before a line is written, and it also demands asking this server what it
+already covers, with the tools each skill would route to. The output of this
+step is the two orders, written down — not the skills, which are one todo each
+after it.

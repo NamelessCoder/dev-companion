@@ -384,6 +384,8 @@
       "content element",
       "CType",
       "tt_content",
+      "list_type",
+      "mod.web_layout",
       "plugin",
       "Configuration/TCA/Overrides/",
       "addPlugin",

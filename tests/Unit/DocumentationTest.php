@@ -134,6 +134,26 @@ final class DocumentationTest extends TestCase
         );
     }
 
+    /**
+     * And the page of the ViewHelper that gave its name to the question.
+     *
+     * That book titles a page after the tag, so `Global/If.html` is called
+     * "if" and the only word of `f:if` that can reach it is two characters
+     * long. Every one of those was dropped before it was searched for, which
+     * is what left the query answered by `Global/Else.html` — the right family
+     * and the wrong page (`D-ANS-023`).
+     */
+    #[Test]
+    public function aViewHelperNamedAfterAKeywordIsReachedByItsOwnName(): void
+    {
+        $documentation = new Documentation($this->manuals());
+
+        self::assertSame(
+            'https://docs.typo3.org/other/typo3/view-helper-reference/14.3/en-us/Global/If.html',
+            $documentation->lookup(['f:if'], '14.3', 1)['results'][0]['url'],
+        );
+    }
+
     /** And the URL it hands back is one it takes back, on the same version. */
     #[Test]
     public function aPageOfThatManualIsReadBackAtItsOwnBase(): void

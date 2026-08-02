@@ -20,13 +20,29 @@ namespace Typo3CmsMcp\Search;
  */
 final class TermSearch
 {
-    /** Words that carry no topic signal. */
+    /**
+     * Words that carry no topic signal.
+     *
+     * The two-letter ones are here because MIN_LENGTH is two. Until it was,
+     * the floor did this list's work for every word that short and the list
+     * only ever had to name the ones somebody happened to write down —
+     * "set it up from scratch" then reached Setting Up Backend Groups in five
+     * of the 41 scenario prompts, on the word "up" alone.
+     *
+     * "if" is deliberately not one of them, and it is the reason the floor
+     * moved: it names a ViewHelper and a TypoScript function, so it is the
+     * word a caller asking about `f:if` has left. "be" is, and stays so
+     * against the same argument — it is the backend namespace on 17 pages of
+     * the ViewHelper reference, and it is also the English verb in every
+     * sentence saying what something should be.
+     */
     private const STOPWORDS = [
-        'a', 'an', 'and', 'are', 'as', 'at', 'be', 'but', 'by', 'can', 'do',
-        'does', 'for', 'from', 'how', 'i', 'in', 'is', 'it', 'its', 'me', 'my',
-        'not', 'of', 'on', 'or', 'the', 'their', 'them', 'then', 'there',
-        'these', 'this', 'to', 'was', 'what', 'when', 'where', 'which', 'why',
-        'will', 'with', 'you', 'your', 'typo3', 'core',
+        'am', 'an', 'and', 'are', 'as', 'at', 'be', 'but', 'by', 'can', 'do',
+        'does', 'for', 'from', 'go', 'he', 'how', 'in', 'is', 'it', 'its',
+        'me', 'my', 'no', 'not', 'of', 'on', 'or', 'so', 'the', 'their',
+        'them', 'then', 'there', 'these', 'this', 'to', 'up', 'us', 'was',
+        'we', 'what', 'when', 'where', 'which', 'why', 'will', 'with', 'you',
+        'your', 'typo3', 'core',
     ];
 
     /**
@@ -46,6 +62,23 @@ final class TermSearch
     private const PREFIX_FROM_LENGTH = 4;
 
     /**
+     * Shortest word of a query that is searched for at all.
+     *
+     * It is two rather than three because of the line above: a word this short
+     * is matched as a whole word, so none of what makes a short prefix noisy
+     * applies to it. "if" is the case that showed the floor was set against the
+     * wrong risk — `Global/If.html` of the ViewHelper reference is titled "if",
+     * and no query naming `f:if` reached it while every word under three
+     * characters was dropped.
+     *
+     * One character is where it stops. A single letter is a whole word in the
+     * corpus as readily as in the query — the `f` of `f:if` matches the `f` of
+     * every other ViewHelper written out — so it separates nothing and is
+     * carried by whatever happens to spell it out.
+     */
+    private const MIN_LENGTH = 2;
+
+    /**
      * The meaningful terms of a query, reduced to a stem so that word forms of
      * the same word are one term: "deprecate", "deprecated" and "deprecations"
      * all become "deprec" and match the "Deprecations" section.
@@ -57,7 +90,7 @@ final class TermSearch
         $terms = [];
         foreach (preg_split('/[^\p{L}\p{N}_.-]+/u', mb_strtolower(trim($query))) ?: [] as $word) {
             $word = trim($word, '.-');
-            if ($word === '' || strlen($word) < 3 || in_array($word, self::STOPWORDS, true)) {
+            if ($word === '' || strlen($word) < self::MIN_LENGTH || in_array($word, self::STOPWORDS, true)) {
                 continue;
             }
             $terms[] = self::stem($word);

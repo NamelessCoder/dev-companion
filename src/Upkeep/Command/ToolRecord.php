@@ -62,8 +62,29 @@ final class ToolRecord
         }
 
         $output->writeln(sprintf('Answering from %s (TYPO3 %s)', $found, Instance::typo3Version() ?? 'unknown'));
-        file_put_contents(ToolAnswers::file(), ToolAnswers::rendered($today ?? date('Y-m-d')));
-        $output->writeln(substr(ToolAnswers::file(), strlen(Paths::root()) + 1));
+
+        $pages = ToolAnswers::rendered($today ?? date('Y-m-d'));
+        if (!is_dir(ToolAnswers::directory())) {
+            mkdir(ToolAnswers::directory(), 0777, true);
+        }
+        foreach ($pages as $file => $contents) {
+            file_put_contents($file, $contents);
+        }
+
+        // A tool that left the table keeps its page otherwise, and a page
+        // nothing writes any more is the one a reader cannot tell from the rest.
+        foreach (ToolAnswers::written() as $written) {
+            if (!isset($pages[$written->getPathname()])) {
+                unlink($written->getPathname());
+                $output->writeln(sprintf('removed %s, which no call writes any more', $written->getFilename()));
+            }
+        }
+
+        $output->writeln(sprintf(
+            '%s — %d pages',
+            substr(ToolAnswers::directory(), strlen(Paths::root()) + 1),
+            count($pages),
+        ));
 
         return 0;
     }

@@ -6,9 +6,9 @@ status: open
 
 # D-DOC-006 — A recording says what it is of, and nothing fails on its age
 
-**`documentation/clients/tool-answers.md` is evidence rather than a derivation:
-it names the day, the checkout and the console behind it, and no check reads
-it.**
+**The recording under `documentation/clients/tool-answers/` is evidence rather
+than a derivation: it names the day, the checkout and the console behind it, and
+no check reads it.**
 
 The other half of the tool surface — what a filled answer looks like — needs an
 installation, and no test run discovers one. So it is recorded by a command and
@@ -64,6 +64,18 @@ written and stale a week later.
 
 ## Covered by
 
-- `ToolAnswersTest::everyRecordedAnswerIsStillJsonAfterBeingCut`
+- `ToolAnswersTest::everyRecordedAnswerIsJson`
 - `ToolAnswersTest::theRecordingCarriesNobodysDirectoryLayout`
 - `ToolAnswersTest::everyToolTheTableDrivesHasARecordedAnswer`
+
+## Since then
+
+Two of the decisions above did not survive the day they were written. The one
+page became one page per tool and the cut went with it — `D-DOC-007` has the
+measurements and what replaced them. What stands is the rest, and it is the
+larger half: nothing checks the recording, every page says what it is of, the
+absolute paths are substituted before anything else happens to the text, and one
+call table drives both the recording and `ToolContractTest`. The reader this
+entry was written for turned out to be the evidence against its shape: they went
+looking for what a tool answers, found one file of everything, and reported it
+missing.

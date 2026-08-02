@@ -7,8 +7,9 @@ has gone stale. A surface written out a second time by hand stops describing the
 answer at the first change nobody carried across.
 
 What a filled answer looks like is not here, because it is not derivable: it
-needs an installation to call. [tool-answers.md](tool-answers.md) is that half,
-recorded once by `bin/cli tools:record` and checked by nothing. The
+needs an installation to call. [tool-answers/](tool-answers/readme.md) is that
+half — one page per tool, each answer whole, recorded once by `bin/cli
+tools:record` and checked by nothing. Every tool below links to its own. The
 [readme](../../readme.md) says what each tool is for in prose; this page says
 what goes in and what shape comes back.
 
@@ -29,6 +30,8 @@ unclear whether this server can answer a question at all, or which of the
 lookups is the right one.
 
 `readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: false`
+
+**Answered**, once, against a checkout: [tool-answers/typo3_server_scope.md](tool-answers/typo3_server_scope.md).
 
 **Takes** nothing.
 
@@ -111,6 +114,8 @@ Search the local TYPO3 core contribution rules and script notes by topic.
 
 `readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: false`
 
+**Answered**, once, against a checkout: [tool-answers/typo3_rule_lookup.md](tool-answers/typo3_rule_lookup.md).
+
 **Takes**
 
 - `query` *(string, required)* — Topic to look up, in English, for example
@@ -169,6 +174,8 @@ the boundary instead of with commands that do not exist there.
 
 `readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: false`
 
+**Answered**, once, against a checkout: [tool-answers/typo3_script_lookup.md](tool-answers/typo3_script_lookup.md).
+
 **Takes**
 
 - `task` *(string, required)* — The TYPO3 core task, in English, for
@@ -226,6 +233,8 @@ place: each is placed on its own, so a core path and an extension path in one
 call are not answered with one verdict.
 
 `readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: false`
+
+**Answered**, once, against a checkout: [tool-answers/typo3_task_guide.md](tool-answers/typo3_task_guide.md).
 
 **Takes**
 
@@ -381,6 +390,8 @@ suite at all rather than commands that cannot run there.
 
 `readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: false`
 
+**Answered**, once, against a checkout: [tool-answers/typo3_test_run_guide.md](tool-answers/typo3_test_run_guide.md).
+
 **Takes**
 
 - `query` *(string)* — Test or script topic, for example functional,
@@ -444,6 +455,8 @@ TYPO3 backend interface and are withheld, with the reason, where the task names
 the frontend.
 
 `readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: false`
+
+**Answered**, once, against a checkout: [tool-answers/typo3_architecture_lookup.md](tool-answers/typo3_architecture_lookup.md).
 
 **Takes**
 
@@ -555,6 +568,8 @@ docs.typo3.org, unlike the bundled convention lookups.
 
 `readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: true`
 
+**Answered**, once, against a checkout: [tool-answers/typo3_documentation_lookup.md](tool-answers/typo3_documentation_lookup.md).
+
 **Takes**
 
 - `queries` *(array of string)* — Short search queries in English. Pass
@@ -608,6 +623,8 @@ bundled version-bound snapshot answers. Returns markup, classes, custom
 properties, and every source used.
 
 `readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: false`
+
+**Answered**, once, against a checkout: [tool-answers/typo3_component_lookup.md](tool-answers/typo3_component_lookup.md).
 
 **Takes**
 
@@ -716,6 +733,8 @@ versions, never that it does not exist.
 
 `readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: false`
 
+**Answered**, once, against a checkout: [tool-answers/typo3_system_extension_lookup.md](tool-answers/typo3_system_extension_lookup.md).
+
 **Takes**
 
 - `query` *(string)* — An extension key ("theme_camino"), a Composer
@@ -763,6 +782,8 @@ relative to a core checkout; where the answer names a Composer package, an
 installation that has it holds the same files below vendor/.
 
 `readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: false`
+
+**Answered**, once, against a checkout: [tool-answers/typo3_reference_list.md](tool-answers/typo3_reference_list.md).
 
 **Takes**
 
@@ -821,6 +842,8 @@ branch other than what is installed.
 
 `readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: false`
 
+**Answered**, once, against a checkout: [tool-answers/typo3_translation_domain_lookup.md](tool-answers/typo3_translation_domain_lookup.md).
+
 **Takes**
 
 - `path` *(string, required)* — The XLF file path, either as an EXT:
@@ -861,6 +884,8 @@ database has no schema yet is the common case — the same packages' XLF files
 are read instead, and answeredBy says which of the two answered.
 
 `readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: false`
+
+**Answered**, once, against a checkout: [tool-answers/typo3_label_lookup.md](tool-answers/typo3_label_lookup.md).
 
 **Takes**
 
@@ -938,6 +963,8 @@ packages declare, which answeredBy reports as "packages".
 
 `readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: false`
 
+**Answered**, once, against a checkout: [tool-answers/typo3_fluid_namespace_list.md](tool-answers/typo3_fluid_namespace_list.md).
+
 **Takes** nothing.
 
 **Answers with**
@@ -990,6 +1017,8 @@ such as SYS/formEngine/formDataGroup, SYS/caching/cacheConfigurations, or
 SYS/fluid.
 
 `readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: false`
+
+**Answered**, once, against a checkout: [tool-answers/typo3_configuration_lookup.md](tool-answers/typo3_configuration_lookup.md).
 
 **Takes**
 
@@ -1049,6 +1078,8 @@ than answering empty when it cannot. It describes what TYPO3 would create,
 never what the database currently has.
 
 `readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: false`
+
+**Answered**, once, against a checkout: [tool-answers/typo3_schema_lookup.md](tool-answers/typo3_schema_lookup.md).
 
 **Takes**
 
@@ -1119,6 +1150,8 @@ extension's modules are in it.
 
 `readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: false`
 
+**Answered**, once, against a checkout: [tool-answers/typo3_backend_module_lookup.md](tool-answers/typo3_backend_module_lookup.md).
+
 **Takes**
 
 - `query` *(string)* — Module identifier, label, route, or extension name
@@ -1185,6 +1218,8 @@ the identifiers are resolved by IconFactory and rendered by <core:icon>, and a
 frontend template can use neither.
 
 `readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: false`
+
+**Answered**, once, against a checkout: [tool-answers/typo3_icon_lookup.md](tool-answers/typo3_icon_lookup.md).
 
 **Takes**
 
@@ -1268,6 +1303,8 @@ word of the query has to be carried by an entry; narrow further with type and
 version.
 
 `readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: false`
+
+**Answered**, once, against a checkout: [tool-answers/typo3_changelog_lookup.md](tool-answers/typo3_changelog_lookup.md).
 
 **Takes**
 
@@ -1358,6 +1395,8 @@ the ones that exist in this repository, and the ones marked check are the ones
 a task told not to change files can run.
 
 `readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: false`
+
+**Answered**, once, against a checkout: [tool-answers/typo3_project_scope.md](tool-answers/typo3_project_scope.md).
 
 **Takes** nothing.
 
@@ -1459,6 +1498,8 @@ where it says packages the answer names what that leaves out.
 typo3_project_scope names the extensions this can be called for.
 
 `readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: false`
+
+**Answered**, once, against a checkout: [tool-answers/typo3_extension_scope.md](tool-answers/typo3_extension_scope.md).
 
 **Takes**
 
@@ -1590,6 +1631,8 @@ remain a curated index rather than every backend class.
 
 `readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: false`
 
+**Answered**, once, against a checkout: [tool-answers/typo3_catalog_scope.md](tool-answers/typo3_catalog_scope.md).
+
 **Takes**
 
 - `targetVersion` *(string)* — The TYPO3 version to report the catalog's
@@ -1652,6 +1695,8 @@ or extension repository of your own, where the subject and body conventions
 apply but the Forge issue, the Releases: trailer and the changelog do not.
 
 `readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: false`
+
+**Answered**, once, against a checkout: [tool-answers/typo3_commit_message_guide.md](tool-answers/typo3_commit_message_guide.md).
 
 **Takes**
 

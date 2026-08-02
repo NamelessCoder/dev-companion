@@ -12,6 +12,7 @@ earns one.
 - [`D-DOC-004`][D-DOC-004] — A requirement is written in the same sections as a decision · 2026-08-02
 - [`D-DOC-005`][D-DOC-005] — A number is three digits so a group lists in order · 2026-08-02
 - [`D-DOC-006`][D-DOC-006] — A recording says what it is of, and nothing fails on its age · 2026-08-02
+- [`D-DOC-007`][D-DOC-007] — One page per tool, and the answer on it whole · 2026-08-02
 - [`D-DOC-001`][D-DOC-001] — A table is written so it reads unrendered · 2026-08-01
 - [`D-DOC-002`][D-DOC-002] — The prose rule is measured, and only the lead fails on it · 2026-08-01
 
@@ -19,5 +20,6 @@ earns one.
 [D-DOC-004]: doc-004-a-requirement-is-written-in-the-same-sections-as-a-decision.md
 [D-DOC-005]: doc-005-a-number-is-three-digits-so-a-group-lists-in-order.md
 [D-DOC-006]: doc-006-a-recording-says-what-it-is-of.md
+[D-DOC-007]: doc-007-one-page-per-tool-and-the-answer-whole.md
 [D-DOC-001]: doc-001-a-table-is-written-so-it-reads-unrendered.md
 [D-DOC-002]: doc-002-the-prose-rule-is-measured-and-only-the-lead-fails.md

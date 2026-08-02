@@ -66,6 +66,7 @@ final class ToolSurface
             '',
             self::annotations($definition['annotations']),
             '',
+            ...self::recorded($definition['name']),
             ...self::block('Takes', $arguments),
             '',
             ...self::block('Answers with', self::fields($answer, 0)),
@@ -77,6 +78,27 @@ final class ToolSurface
         }
 
         return implode("\n", $lines) . "\n";
+    }
+
+    /**
+     * The page holding what this tool answered, where one was recorded.
+     *
+     * The fields below say what comes back; that page says what a filled one
+     * looks like. It sat one link away in the head of this file, which is a
+     * link nobody follows while reading the tool they came for.
+     *
+     * @return list<string>
+     */
+    private static function recorded(string $name): array
+    {
+        if (!is_file(ToolAnswers::file($name))) {
+            return [];
+        }
+
+        return [
+            sprintf('**Answered**, once, against a checkout: [tool-answers/%s.md](tool-answers/%s.md).', $name, $name),
+            '',
+        ];
     }
 
     /**

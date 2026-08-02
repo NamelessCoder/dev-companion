@@ -675,6 +675,38 @@ final class ScopeTest extends TestCase
         );
     }
 
+    /**
+     * `SITE-01` asks for an honest boundary where the site configuration and
+     * the installation steps are, and the first hand reading of it on
+     * 2026-08-02 found that boundary stated nowhere a caller looks first: the
+     * `site-sets` hint says configuring one installation "stops being a
+     * convention and becomes that site's decision", and orientation named
+     * neither. What is covered stays covered — the set, and how its settings
+     * resolve against the site's own.
+     */
+    #[Test]
+    public function decidingOneSitesConfigurationIsDeclinedInTheOrientation(): void
+    {
+        $scope = Coverage::read();
+
+        $declined = array_values(array_filter(
+            $scope['doesNotCover'],
+            static fn(array $entry): bool => str_contains(mb_strtolower($entry['topic']), "site's configuration"),
+        ));
+        self::assertCount(1, $declined, 'nothing in the orientation declines writing a site configuration');
+        self::assertStringContainsString('docs.typo3.org', $declined[0]['instead']);
+        self::assertStringContainsString('typo3_project_scope', $declined[0]['instead']);
+
+        // The neighbouring subject is not declined with it: a set is a
+        // convention, and the boundary runs between the mechanism and the
+        // values one installation puts in it.
+        self::assertNotNull(ArchitectureHints::byId('site-sets'));
+        self::assertStringContainsString(
+            'site set',
+            mb_strtolower(implode("\n", array_column($scope['covers'], 'topic'))),
+        );
+    }
+
     #[Test]
     public function whatTheScopeExcludesIsNotWhatTheServerAnswers(): void
     {

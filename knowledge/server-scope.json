@@ -195,6 +195,11 @@
       "instead": "Read that extension's own documentation. What an installed extension registers — yours or a third party's — is answered by typo3_extension_scope from the files it ships."
     },
     {
+      "topic": "Deciding one site's configuration: its languages, its base and the variants per environment, its error handling, and the steps that install it",
+      "why": "A site set is a convention and is covered; what one installation writes into config/sites/<identifier>/config.yaml is that site's decision, and nothing here would make one answer to it more right than another. The file is read rather than composed — typo3_project_scope reports the sites a repository configures and the sets they depend on.",
+      "instead": "Read what the project already has with typo3_project_scope, ask typo3_architecture_lookup with id=site-sets for what a set ships and how its settings resolve against a site's own, and take the configuration format and the language setup from https://docs.typo3.org/."
+    },
+    {
       "topic": "Running an installation: server and container setup, deployment, backups, the editorial use of the backend",
       "why": "The knowledge base is about what is written into a TYPO3 project — its extensions, its configuration, its templates and its tests. Operating the installation around it is a different subject with different sources.",
       "instead": "Use the TYPO3 documentation at https://docs.typo3.org/."

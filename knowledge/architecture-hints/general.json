@@ -382,6 +382,7 @@
   {
     "id": "extension-documentation",
     "title": "Documenting a Project Extension",
+    "scope": "extension",
     "appliesTo": [
       "extension documentation",
       "Documentation/Index.rst",
@@ -402,6 +403,7 @@
   {
     "id": "extension-asset-build",
     "title": "Building Assets in a Project Extension",
+    "scope": "extension",
     "appliesTo": [
       "extension asset build",
       "sitepackage assets",
@@ -503,6 +505,7 @@
   {
     "id": "installation-upgrade",
     "title": "Upgrading an Installation",
+    "scope": "project",
     "appliesTo": [
       "upgrade",
       "update typo3",

@@ -2,6 +2,7 @@
   {
     "id": "extension-static-analysis",
     "title": "Setting Up PHPStan for an Extension",
+    "scope": "extension",
     "appliesTo": [
       "phpstan",
       "phpstan.neon",

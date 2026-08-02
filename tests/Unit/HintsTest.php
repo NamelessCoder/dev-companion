@@ -958,6 +958,28 @@ final class HintsTest extends TestCase
         self::assertSame(Scope::Extension, $tests['project-extension-tests']);
     }
 
+    /**
+     * Three hints read as one audience by their titles and are not, which the
+     * checkouts settled rather than intuition: `theme_camino` is a sitepackage
+     * in the core repository and ships `Initialisation/data.xml`, so laying one
+     * out and seeding it are obligations the core has too, and a site set is
+     * how any extension ships TypoScript — `fluid_styled_content` is one. A
+     * declaration would tell a contributor working on those that their own
+     * subject is somebody else's.
+     *
+     * What would change it is a release: the theme leaving the core, which its
+     * own first statement says is announced.
+     */
+    #[Test]
+    public function aHintTheCoreIsAlsoObligedByDeclaresNoAudience(): void
+    {
+        $scopes = array_column(ArchitectureHints::load(), 'scope', 'id');
+
+        foreach (['sitepackage-layout', 'sitepackage-initial-content', 'site-sets'] as $id) {
+            self::assertNull($scopes[$id], $id . ' declares an audience the core is obliged by too');
+        }
+    }
+
     #[Test]
     public function oneCoreObligationInATransferableHintIsMarkedOnItsOwn(): void
     {

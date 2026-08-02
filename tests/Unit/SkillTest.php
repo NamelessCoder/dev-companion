@@ -37,6 +37,21 @@ final class SkillTest extends TestCase
         'typo3-extension-testing' => [
             'typo3_documentation_lookup',
         ],
+        'typo3-core-patch-review' => [
+            'typo3_architecture_lookup',
+            'typo3_rule_lookup',
+            'typo3_changelog_lookup',
+            'typo3_test_run_guide',
+            'typo3_script_lookup',
+            'typo3_commit_message_guide',
+        ],
+        'typo3-core-patch-development' => [
+            'typo3_rule_lookup',
+            'typo3_test_run_guide',
+            'typo3_architecture_lookup',
+            'typo3_script_lookup',
+            'typo3_commit_message_guide',
+        ],
         'typo3-extension-conformance' => [
             'typo3_architecture_lookup',
             'typo3_documentation_lookup',
@@ -515,20 +530,23 @@ final class SkillTest extends TestCase
 
     /**
      * Judgment is what a checklist is for, and it is also the thing a skill
-     * grows a body around: the four that carry it keep it beside them rather
-     * than in the instruction every session pays for. Two are not among them.
+     * grows a body around: the ones that carry it keep it beside them rather
+     * than in the instruction every session pays for. Three are not among them.
      * Building a backend module is construction, and what it needs is the
      * registries, which are tools rather than a list. An upgrade is construction
      * too, and its work list is produced by the sweep rather than read off a
      * rubric — what it would otherwise judge, whether the package is sound in
      * the first place, it hands to the skill whose checklist already covers it.
+     * Writing a core patch is the third: its work list is the issue and the
+     * findings the review skill hands it, and the surfaces it would otherwise
+     * check are that skill's checklist, one directory away.
      */
     #[Test]
     public function judgmentHeavySkillsKeepTheirChecklistBesideThem(): void
     {
         $judging = array_diff(
             array_keys(self::ROUTING_SKILLS),
-            ['typo3-backend-module-development', 'typo3-extension-upgrade'],
+            ['typo3-backend-module-development', 'typo3-extension-upgrade', 'typo3-core-patch-development'],
         );
 
         foreach ($judging as $name) {

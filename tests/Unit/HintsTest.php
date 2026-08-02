@@ -931,6 +931,17 @@ final class HintsTest extends TestCase
         self::assertStringContainsString('importData()', $text, 'where the artifact can be verified at all');
         self::assertStringContainsString('ReferenceIndex::getRelations()', $text, 'what decides whether a uid survives');
         self::assertStringContainsString('--save-files-outside-export-file', $text);
+
+        // The site configuration is remapped by a different mechanism than the
+        // records are, and only one field of it is. A reader who carries the
+        // relation rule over to config.yaml gets the opposite of the answer,
+        // so what the import leaves alone is the half worth holding.
+        self::assertStringContainsString(
+            'the root page id to the page that was actually imported, and nothing else',
+            $text,
+            'what the site configuration import does not remap'
+        );
+        self::assertStringContainsString('t3://page?uid=', $text, 'the reference that ships stale');
     }
 
     #[Test]

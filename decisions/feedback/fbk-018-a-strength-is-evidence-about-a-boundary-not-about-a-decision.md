@@ -200,3 +200,61 @@ still open: this entry has been cited by each of the three judgements above, one
 of which disagrees with half of it. All three were worked at once, in sessions
 that could not see each other, which is why they read as three arrivals at one
 entry rather than as one account continued.
+
+## Confirmed on 2026-08-02
+
+The reading held a fourth time, and this is the first strength whose quotation
+could be checked against the file it credits. `2026-07-31-194823` comes from the
+debrief of the section above, two seconds before the `typo3_extension_scope`
+one and in the same project. It reports that `typo3_architecture_lookup` said
+only `rootPageId` is remapped when a shipped site configuration is imported, and
+that other uid references are not. The session credits that with turning a wrong
+finding into the right one, about a hardcoded `t3://page?uid=2` error target.
+
+The first **Wrong if** did not fire. The strength names one thing the session
+did besides calling the tool: it confirmed the answer against the vendor source.
+It reports no cost for doing so, and a corroboration of an answer that was right
+is not the *did instead* the ladder is walked from. Nothing else in the file
+names a workaround, a repeated call or a fact established elsewhere.
+
+The quotation is evidence about a file, and the file holds it.
+`bin/cli hints:probe` on the feedback's own query reaches
+`sitepackage-initial-content`, and the sentence is in that hint verbatim — the
+import "remaps the root page id to the page that was actually imported, and
+nothing else", with an error handler naming `t3://page?uid=...` as the example
+that ships stale. Re-run on 2026-08-02 through `bin/typo3-cms-mcp` from
+`/home/benji/projects/site-new`: `typo3_architecture_lookup` with the task the
+feedback names returns *Shipping Initial Content with an Extension* whole,
+answered for TYPO3 v14. The core confirms the statement.
+`ImportSiteConfigurationsOnPackageInitialization` loads the configuration,
+assigns `$configuration['rootPageId']` and writes it back, and touches no other
+key. The file is byte-identical in `.checkouts/14.3` and `.checkouts/main`.
+
+The boundary is what an answer carries where somebody wrote it, against what it
+carries where it indexes something. The other side is from the same debrief:
+`2026-07-31-194821` reports that the removal version of a deprecation sat in the
+`.rst` body, and that the session had to open the file to read it.
+`typo3_changelog_lookup` returns the type, the version, the issue, the title,
+the tags and an `EXT:` path, and [`D-ANS-016`](../answers/ans-016-a-miss-names-the-query-that-would-have-hit.md)
+priced its peel on the observation that it "reads file names and never opens an
+entry". So the deciding fact is inside the answer where the corpus is prose this
+repository authored, and behind a pointer where the answer indexes files it did
+not write. One session reported both directions, having seen neither
+implementation.
+
+One change was made, and it is the keep-request in the only form this repository
+has for one. `R-KNW-005` holds the general property that a silent failure is
+named rather than left to the rule, and
+`HintsTest::shippedContentIsAnsweredPastThePointWhereTheFileExists` already
+names the sibling sentence about `ReferenceIndex::getRelations()`. The
+site-configuration sentence was in no assertion, so what the feedback asks be
+kept rested on nobody rewriting the hint. That test names it now. No statement
+about TYPO3 was established to do it: the sentence was already in `knowledge/`,
+and what was added is that it stays.
+
+The feedback is closed by this commit and nothing is queued. What the changelog
+side of the boundary owes belongs to its own card, which is in hand elsewhere,
+and naming its answer from here is the copy-down judging.md warns about. The
+third **Wrong if** is the one this run bears on: a guard is the first thing a
+closed strength has left behind that something other than a commit message can
+point at.

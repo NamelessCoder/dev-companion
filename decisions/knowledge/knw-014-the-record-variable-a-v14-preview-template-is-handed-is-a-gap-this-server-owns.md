@@ -56,7 +56,7 @@ nothing here says what that variable is or what comes back from a field on it.
 - Not step 3. Routing works where the query is spelled the way the corpus
   spells it: `tt_content preview template` reaches `content-elements` at
   `appliesTo(10) + text(129)`. What the caller's own spelling does to the same
-  query is [`D-ANS-022`](../answers/ans-022-a-hyphenated-compound-reaches-neither-the-phrase-nor-the-word.md).
+  query is [`D-ANS-022`](../answers/ans-022-the-matcher-takes-a-hyphenated-compound-apart.md).
 - Not closed on the spot. Every statement has to be read on 13.4 and 14.3 and
   against the Fluid release each of them pins, and this run has read nothing
   but the greps above.
@@ -99,7 +99,7 @@ beside the row's columns and already transforms a relation into a
 A second gap on the same statement was judged on 2026-08-02 and is queued beside
 this one: what a Fluid preview template *replaces* is the content half of the
 preview only, and the header the standard renderer draws stays above it —
-[`D-KNW-015`](knw-015-a-fluid-preview-template-replaces-the-content-half-and-nothing-here-says-so.md).
+[`D-KNW-015`](knw-015-the-corpus-states-what-a-fluid-preview-template-replaces.md).
 Both todos rewrite the one preview statement on the `content-elements` hint, so
 whichever lands second rewrites in place rather than adding beside. The two
 statements differ in what binds them: what `{record}` is changed in 14 and needs

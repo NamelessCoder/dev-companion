@@ -4,7 +4,7 @@ date: 2026-08-02
 status: open
 ---
 
-# D-ANS-022 — A hyphenated compound reaches neither the phrase nor the word
+# D-ANS-022 — The matcher takes a hyphenated compound apart, measured over the corpus first
 
 **A query writing `content-element` reaches nothing that `content element`
 reaches, and both halves of the hint match fail on the hyphen alone.**

@@ -4,7 +4,7 @@ date: 2026-08-02
 status: open
 ---
 
-# D-ANS-030 — The changelog search reads the file name, and the title it prints is not among what it reads
+# D-ANS-030 — The changelog matcher runs over the title it prints
 
 **`typo3_changelog_lookup` matches the entry's file name and the words that name
 spells, while the title the same answer prints is searched by nothing, and the

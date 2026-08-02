@@ -15,7 +15,7 @@ its reason.
 
 The two fixed profiles forcing a caller that wants all but one tool to pay for
 all of them (2026-07-30). The profiles were removed on 2026-08-02 under
-[`D-AUD-004`](../../decisions/audience/aud-004-the-tool-list-is-not-where-the-audience-is-said.md)
+[`D-AUD-004`](../../decisions/audience/aud-004-every-client-is-offered-every-tool-and-the-answer-obliges.md)
 and this is what is left of them: the subtraction the caller declares.
 
 ## Held by

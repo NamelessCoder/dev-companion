@@ -3,7 +3,7 @@
 **Serves:** feedback/2026-08-01-003533-typo3-extension-testing-skill-was-never.md
 **Priority:** low
 
-Judged as [`D-KNW-017`](../../decisions/knowledge/knw-017-a-verification-question-reaches-the-subject-cell-and-never-the-layer-cell.md),
+Judged as [`D-KNW-017`](../../decisions/knowledge/knw-017-a-verification-question-is-routed-to-the-layer-that-verifies.md),
 step 3 of the ladder: `browser-tests` is reachable only by words that name the
 answer, so a question about whether something renders correctly stops at
 `content-elements`. Measure the three candidate crossings against the four

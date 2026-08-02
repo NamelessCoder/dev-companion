@@ -258,7 +258,7 @@ the installer writes into `.mcp.json`. So the fallback the base could teach is
 "go and find a binary", which is precisely what that session did, and it found
 it after the audit rather than before. Then what the hand-driven route produced
 is on record: the same session, at the same minute, filed the feedback behind
-[`D-FBK-019`](../feedback/fbk-019-a-recorded-feedback-is-stored-as-it-was-written-secrets-included.md)
+[`D-FBK-019`](../feedback/fbk-019-a-secret-pasted-into-a-feedback-is-taken-out-on-the-way-in.md)
 and pasted the live encryption key of the site it had just audited into this
 repository. A session acting as its own client sits outside every affordance the
 client layer provides, and that is the shape of what it costs. Last, stopping

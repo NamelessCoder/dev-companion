@@ -31,7 +31,7 @@ project.
   `bin/cli hints:probe "verify the rendered backend preview before reporting the
   work done"` reaches `content-elements` at `appliesTo(15) + text(195)` and
   nothing else — the same landing
-  [`D-KNW-017`](../knowledge/knw-017-a-verification-question-reaches-the-subject-cell-and-never-the-layer-cell.md)
+  [`D-KNW-017`](../knowledge/knw-017-a-verification-question-is-routed-to-the-layer-that-verifies.md)
   measured from four other phrasings, on `feedback/2026-08-01-003533`. It is
   that entry's routing gap read off a fifth sentence, not a second gap. As this
   branch stands, `todo/open/2026-08-02-200948` serves `003533`.

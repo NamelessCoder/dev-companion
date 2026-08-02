@@ -44,7 +44,7 @@ preamble names: a gap with a fourth entry written next to three that exist.
   `fluid-templates`, `content-elements`, `frontend-records` with
   `tca-schema-api`, and `project-extension-tests` — so the joined query misses
   three of the four hints its own parts find. That is
-  [`D-ANS-021`](../answers/ans-021-a-longer-manual-query-re-aims-rather-than-narrows.md)
+  [`D-ANS-021`](../answers/ans-021-a-manual-query-is-told-what-short-buys.md)
   measured on a hint probe rather than on the manual.
 - Nothing about TYPO3 was established here, deliberately. Whether an `f:else`
   really forces an explicit `f:then`, and what `project-extension-tests` already
@@ -100,7 +100,7 @@ lands on something:
 | Half of the summary                                    | Where it is                                              |
 | ------------------------------------------------------ | -------------------------------------------------------- |
 | what a v14 preview template receives, and how a field resolves | [`R-KNW-041`](../../requirements/knowledge/knw-041-a-preview-template-answer-says-what-the-template-is-handed.md), from [`D-KNW-014`](../knowledge/knw-014-the-record-variable-a-v14-preview-template-is-handed-is-a-gap-this-server-owns.md) |
-| `typo3_documentation_lookup` reaching *Record objects*  | `002928`, whose premise [`D-ANS-021`](../answers/ans-021-a-longer-manual-query-re-aims-rather-than-narrows.md) rejected |
+| `typo3_documentation_lookup` reaching *Record objects*  | `002928`, whose premise [`D-ANS-021`](../answers/ans-021-a-manual-query-is-told-what-short-buys.md) rejected |
 | the Fluid conditional, and object access on the record  | `003448` and `003000`; the record half is `R-KNW-041`      |
 | a debug script the container could not see              | `003938`, with `003933` for what to do instead             |
 | one cache command instead of `rm` on the cache directory | `003937`                                                  |
@@ -148,13 +148,13 @@ skill's words.
 | Half of the self-rating                                                                                                | Where it is                                                                          |
 | ---------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
 | §1 `references/base.md` unread, neither scope call made, remembered `composer test:*` in place of the declared commands  | `003356`, judged in [`D-SKL-001`](../task-skills/skl-001-the-order-a-task-starts-in-is-one-file.md) |
-| §2, §3, §5 rendered frontend and backend preview established by curl, the project's own `Tests/E2E` harness untouched, no spec run | `003533`, judged in [`D-KNW-017`](../knowledge/knw-017-a-verification-question-reaches-the-subject-cell-and-never-the-layer-cell.md), with a card in `todo/open/` |
+| §2, §3, §5 rendered frontend and backend preview established by curl, the project's own `Tests/E2E` harness untouched, no spec run | `003533`, judged in [`D-KNW-017`](../knowledge/knw-017-a-verification-question-is-routed-to-the-layer-that-verifies.md), with a card in `todo/open/` |
 | §4 tests written against core ViewHelpers to find out what they do                                                       | `003933`, which reports the same substitution of experiment for reading                |
 | §4 `fwrite` and `extract` debug left in the regression test, and a throwaway `LinkDebugTest`                             | `003938`, whose **Suggestion** asks for the safe way to introspect an installed class  |
 | the premise that the skill was never activated                                                                           | withdrawn by `003736`; `D-KNW-017` records the withdrawal and reads the trigger out    |
 
 Its own query reaches less than its halves do, which is the pattern
-[`D-ANS-021`](../answers/ans-021-a-longer-manual-query-re-aims-rather-than-narrows.md)
+[`D-ANS-021`](../answers/ans-021-a-manual-query-is-told-what-short-buys.md)
 names and `002951` already showed on a probe. Re-run in this checkout on
 2026-08-02, `bin/cli hints:probe` matches nothing for the feedback's own `Query`
 line, nothing for either clause of its **Suggestion** in the words it wrote them
@@ -193,7 +193,7 @@ the one thing in the file no sibling states. `114526` mentions the same failure
 in a clause and files it under "not MCP issues"; only the transcript says what it
 would do instead, which is a runner the core checkout does not contain. So the
 ladder was owed to that half alone, and it is
-[`D-ANS-031`](../answers/ans-031-the-core-answer-names-the-suites-it-does-not-declare-and-not-the-tool-that-runs-them.md).
+[`D-ANS-031`](../answers/ans-031-the-core-answer-names-the-tool-that-runs-the-suites.md).
 
 Two things about the mechanism hold up. A summary is where a session states a
 conclusion, and its siblings are where it states subjects — which is why a

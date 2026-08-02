@@ -9,7 +9,7 @@ status: open
 **A Fluid preview template replaces the content half of the page module preview,
 and the corpus names the header and footer parts drawn around it.**
 
-[`D-KNW-015`](knw-015-a-fluid-preview-template-replaces-the-content-half-and-nothing-here-says-so.md)
+[`D-KNW-015`](knw-015-the-corpus-states-what-a-fluid-preview-template-replaces.md)
 is the finding: the split is real, the manual does not carry it, and nothing
 here said it either. This entry is what took its place — the statement is on
 `content-elements`, and the exposure is now a statement that could go false

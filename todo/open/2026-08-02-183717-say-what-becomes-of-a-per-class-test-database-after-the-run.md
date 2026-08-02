@@ -4,7 +4,7 @@
 **Priority:** low
 
 Step 1a of the ladder, on the evidence in
-[`D-KNW-022`](../../decisions/knowledge/knw-022-the-per-class-test-database-is-stated-and-its-lifetime-is-not.md):
+[`D-KNW-022`](../../decisions/knowledge/knw-022-the-corpus-states-how-long-a-per-class-test-database-lives.md):
 `project-extension-tests` states that every test class gets a database of its
 own and nothing says the database is still there once the run ends, so
 `bin/cli hints:probe "clean up functional test databases"` reaches that hint on
@@ -25,4 +25,4 @@ The feedback's other halves need nothing from this card. That seeding goes
 through DataHandler rather than a direct `INSERT` is stated on
 `datahandler-persistence` and is the `003216` sibling's whole subject, and the
 premise that a test sees only what it primed is
-[`D-KNW-019`](../../decisions/knowledge/knw-019-a-functional-test-sees-only-what-it-primed-and-nothing-here-says-so.md)'s.
+[`D-KNW-019`](../../decisions/knowledge/knw-019-the-corpus-states-that-a-test-sees-only-what-it-primed.md)'s.

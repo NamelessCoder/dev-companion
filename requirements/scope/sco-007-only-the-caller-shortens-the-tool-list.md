@@ -23,7 +23,7 @@ The `project` profile withholding `typo3_test_run_guide` while a core-shaped
 task asked from a site installation was still answered as core work and routed
 to it, twice on a patch and six times on a test task (`E-SITE`, 2026-08-02).
 Weighed and removed under
-[`D-AUD-004`](../../decisions/audience/aud-004-the-tool-list-is-not-where-the-audience-is-said.md).
+[`D-AUD-004`](../../decisions/audience/aud-004-every-client-is-offered-every-tool-and-the-answer-obliges.md).
 
 ## Held by
 

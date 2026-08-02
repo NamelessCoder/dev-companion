@@ -33,7 +33,7 @@ page says the opposite in the sentence it reads first.
   `f:if f:then f:else condition ViewHelper` at `targetVersion: "14"`,
   `typo3_documentation_lookup` returns Developing a custom ViewHelper, the Fluid
   Translate ViewHelper, JavaScript form helpers and three TypoScript *Conditions*
-  pages. That is [`D-ANS-023`](../answers/ans-023-no-viewhelper-is-documented-in-any-manual-this-lookup-indexes.md)
+  pages. That is [`D-ANS-023`](../answers/ans-023-a-viewhelper-question-is-answered-by-widening-the-index.md)
   reproduced.
 - Indexing the ViewHelper reference would not close this, which is what keeps the
   two levers apart. The If page is at

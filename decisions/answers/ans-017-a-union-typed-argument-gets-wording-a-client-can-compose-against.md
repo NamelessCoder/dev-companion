@@ -4,7 +4,7 @@ date: 2026-08-02
 status: open
 ---
 
-# D-ANS-017 — A union-typed argument is a call one client could not compose
+# D-ANS-017 — A union-typed argument gets the wording a client can compose against
 
 **An input schema is a grammar a client generates against, and the surface's only
 union-typed argument is the only one a client never managed to send.**
@@ -56,7 +56,7 @@ and one model recorded four feedback in 49 seconds carrying none.
 ## Decided
 
 - The judgement is **step 4 of the ladder**, wording — in the same sense as
-  [`D-ANS-012`](ans-012-an-input-oneof-is-a-rule-no-caller-is-told.md), where a
+  [`D-ANS-012`](ans-012-an-oneof-alternative-is-stated-where-the-call-is-composed.md), where a
   declaration reached the caller and the caller could not act on it. No tool is
   missing, nothing is misrouted, and the reference says the truth.
 - The feedback is **queued whole**, not trimmed and not closed on the spot. It
@@ -123,7 +123,7 @@ again finds no second union, and the 91 unions in the output schemas are all
 `[X, "null"]` — a nullable field, not an alternative a caller has to choose
 between. So nothing else in this package now says the opposite about the shape,
 which is the reading that kept the keyword in
-[`D-ANS-012`](ans-012-an-input-oneof-is-a-rule-no-caller-is-told.md) and does not
+[`D-ANS-012`](ans-012-an-oneof-alternative-is-stated-where-the-call-is-composed.md) and does not
 apply here.
 
 The string branch gives a client nothing less. `Channel::toolNames()` splits on

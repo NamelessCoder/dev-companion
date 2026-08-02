@@ -8,13 +8,13 @@ client is told to start.
 See [the decisions readme](../readme.md) for how an entry is written and when
 one is added.
 
-- [`D-AUD-004`][D-AUD-004] — The tool list is not where the audience is said · 2026-08-02
+- [`D-AUD-004`][D-AUD-004] — Every client is offered every tool, and the answer says who it obliges · 2026-08-02
 - [`D-AUD-003`][D-AUD-003] — The instructions carry the entry point, because the tool descriptions never arrive · 2026-07-31 · confirmed
-- [`D-AUD-001`][D-AUD-001] — Three audiences, and the positioning that has not caught up · 2026-07-29 · confirmed
+- [`D-AUD-001`][D-AUD-001] — The outward description stays core-first until there is non-core knowledge · 2026-07-29 · confirmed
 
-[D-AUD-004]: aud-004-the-tool-list-is-not-where-the-audience-is-said.md
+[D-AUD-004]: aud-004-every-client-is-offered-every-tool-and-the-answer-obliges.md
 [D-AUD-003]: aud-003-the-instructions-carry-the-entry-point.md
-[D-AUD-001]: aud-001-three-audiences-and-the-positioning-that-has-not-caught-up.md
+[D-AUD-001]: aud-001-the-outward-description-stays-core-first-until-there-is-more.md
 
 ### Revoked, and kept as the record
 

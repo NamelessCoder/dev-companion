@@ -4,7 +4,7 @@
 **Priority:** low
 
 Step 2 of the ladder, on the queries in
-[`D-ANS-029`](../../decisions/answers/ans-029-the-scanner-matcher-is-filed-under-deprecation.md):
+[`D-ANS-029`](../../decisions/answers/ans-029-the-scanner-matcher-is-stated-on-the-route-a-removal-takes.md):
 the matcher sentence is in the corpus under `## Deprecations`, and
 `## Breaking Changes` — which both `typo3_rule_lookup` and the `breaking`
 intent's own `rulesQuery` return — states the `[!!!]` marker and the RST file

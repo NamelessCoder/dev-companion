@@ -4,7 +4,7 @@ date: 2026-08-02
 status: open
 ---
 
-# D-KNW-022 — The per-class test database is stated, and its lifetime is not
+# D-KNW-022 — The corpus states how long a per-class test database lives
 
 **The corpus says every functional test class gets a database of its own, and
 nowhere that the database is still there when the run ends.**
@@ -67,7 +67,7 @@ the live one.
   is 981 words against the 544-word ceiling
   [`D-ANS-025`](../answers/ans-025-a-query-a-hint-carries-whole-is-not-diluted-out-of-it.md)
   measured, and that is the tension
-  [`D-KNW-019`](knw-019-a-functional-test-sees-only-what-it-primed-and-nothing-here-says-so.md)
+  [`D-KNW-019`](knw-019-the-corpus-states-that-a-test-sees-only-what-it-primed.md)
   declined to resolve there.
 - The priming premise is not restated here. It is `D-KNW-019`'s statement, its
   third **Wrong if** is this feedback writing it a second time, and the card

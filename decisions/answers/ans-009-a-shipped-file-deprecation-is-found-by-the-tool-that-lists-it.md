@@ -4,7 +4,7 @@ date: 2026-08-02
 status: open
 ---
 
-# D-ANS-009 — A shipped file is a deprecation predicate no sweep reaches
+# D-ANS-009 — A shipped-file deprecation is found by the tool that lists the file
 
 **A deprecation whose predicate is a file the extension ships is found by the
 tool that lists that file, not by a changelog sweep over what the code calls.**

@@ -4,7 +4,7 @@ date: 2026-08-02
 status: open
 ---
 
-# D-KNW-019 — A functional test sees only what it primed, and nothing here says so
+# D-KNW-019 — The corpus states that a functional test sees only what it primed
 
 **A functional test's database holds nothing but what that test imported, and
 the corpus states every fixture rule without ever stating that premise.**

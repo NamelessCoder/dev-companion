@@ -9,7 +9,7 @@ status: open
 **`typo3_documentation_lookup` searches four manuals, and where one is
 published is part of what the index knows about it.**
 
-[`D-ANS-023`](ans-023-no-viewhelper-is-documented-in-any-manual-this-lookup-indexes.md)
+[`D-ANS-023`](ans-023-a-viewhelper-question-is-answered-by-widening-the-index.md)
 is the finding: three books, none of which documents a ViewHelper. This entry is
 what took its place — the book is carried, and carrying it cost the one thing
 every base used to have in common.

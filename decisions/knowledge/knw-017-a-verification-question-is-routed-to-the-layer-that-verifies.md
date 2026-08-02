@@ -4,7 +4,7 @@ date: 2026-08-02
 status: open
 ---
 
-# D-KNW-017 — A verification question reaches the subject cell and never the layer cell
+# D-KNW-017 — A verification question is routed to the layer that verifies it
 
 **A question about whether something renders correctly reaches the hint that
 says how to build it, and nothing on that path names the layer that would
@@ -91,8 +91,8 @@ involved, and that caller lands on `content-elements` instead.
 
 - The crossing is written and a rendered-verification query still reaches only
   `content-elements`. Then it is ranking rather than routing, and
-  [`D-ANS-021`](../answers/ans-021-a-longer-manual-query-re-aims-rather-than-narrows.md)
-  and [`D-ANS-022`](../answers/ans-022-a-hyphenated-compound-reaches-neither-the-phrase-nor-the-word.md)
+  [`D-ANS-021`](../answers/ans-021-a-manual-query-is-told-what-short-buys.md)
+  and [`D-ANS-022`](../answers/ans-022-the-matcher-takes-a-hyphenated-compound-apart.md)
   are where it belongs.
 - Widening `browser-tests.appliesTo` pulls it into answers that did not want
   it, so every backend-preview question pays for a testing hint.

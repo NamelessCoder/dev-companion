@@ -4,7 +4,7 @@ date: 2026-08-02
 status: open
 ---
 
-# D-ANS-029 — The scanner matcher is filed under deprecation, and a removal never reaches it
+# D-ANS-029 — The scanner matcher is stated on the route a removal takes
 
 **Every route from a breaking change to the extension scanner matcher passes a
 section that states the `[!!!]` marker and the changelog file and nothing else.**

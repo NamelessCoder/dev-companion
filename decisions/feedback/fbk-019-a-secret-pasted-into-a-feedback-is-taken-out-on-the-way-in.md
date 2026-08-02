@@ -4,7 +4,7 @@ date: 2026-08-02
 status: open
 ---
 
-# D-FBK-019 — A recorded feedback is stored as it was written, secrets included
+# D-FBK-019 — A secret pasted into a feedback is taken out on the way in
 
 **`typo3_feedback_record` copies the observation it is handed into a tracked
 file unchanged, and nothing tells the session that a value the installation

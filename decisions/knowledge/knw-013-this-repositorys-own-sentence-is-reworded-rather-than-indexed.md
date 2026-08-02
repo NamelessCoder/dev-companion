@@ -4,7 +4,7 @@ date: 2026-08-02
 status: open
 ---
 
-# D-KNW-013 — The sixth phrasing was this repository's own sentence, and it was reworded rather than indexed
+# D-KNW-013 — This repository's own sentence is reworded rather than indexed
 
 **The conformance checklist's quality surface now names the test suite and the
 supported TYPO3 versions it runs on, and `extension-repository-layout` carries

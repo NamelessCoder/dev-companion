@@ -15,14 +15,14 @@ one is added.
 - [`D-KNW-010`][D-KNW-010] — What the core reads from the environment is a gap this server owns · 2026-08-02
 - [`D-KNW-011`][D-KNW-011] — A rule that names a defect names its correction · 2026-08-02
 - [`D-KNW-012`][D-KNW-012] — `extension.neon` is PHPStan's filename, and the hint keeps the one include it means · 2026-08-02
-- [`D-KNW-013`][D-KNW-013] — The sixth phrasing was this repository's own sentence, and it was reworded rather than indexed · 2026-08-02
+- [`D-KNW-013`][D-KNW-013] — This repository's own sentence is reworded rather than indexed · 2026-08-02
 - [`D-KNW-016`][D-KNW-016] — What an `f:else` does to the branch beside it is a gap this server owns · 2026-08-02
-- [`D-KNW-017`][D-KNW-017] — A verification question reaches the subject cell and never the layer cell · 2026-08-02
+- [`D-KNW-017`][D-KNW-017] — A verification question is routed to the layer that verifies it · 2026-08-02
 - [`D-KNW-018`][D-KNW-018] — What a datamap does to a relation field is a gap this server owns · 2026-08-02 · confirmed
-- [`D-KNW-019`][D-KNW-019] — A functional test sees only what it primed, and nothing here says so · 2026-08-02
+- [`D-KNW-019`][D-KNW-019] — The corpus states that a functional test sees only what it primed · 2026-08-02
 - [`D-KNW-020`][D-KNW-020] — What a preview template is handed is stated on both majors, and a field resolves by its TCA type · 2026-08-02
 - [`D-KNW-021`][D-KNW-021] — A Fluid preview template replaces the content half, and the corpus names what is drawn around it · 2026-08-02
-- [`D-KNW-022`][D-KNW-022] — The per-class test database is stated, and its lifetime is not · 2026-08-02
+- [`D-KNW-022`][D-KNW-022] — The corpus states how long a per-class test database lives · 2026-08-02
 - [`D-KNW-023`][D-KNW-023] — Which page may hold a record is a gap this server owns · 2026-08-02
 - [`D-KNW-024`][D-KNW-024] — The Fluid namespace prefix is what a template question is written in · 2026-08-02
 - [`D-KNW-025`][D-KNW-025] — What a backend preview owes the editor is a gap this server owns · 2026-08-02
@@ -39,14 +39,14 @@ one is added.
 [D-KNW-010]: knw-010-what-the-core-reads-from-the-environment-is-a-gap-this-server-owns.md
 [D-KNW-011]: knw-011-a-rule-that-names-a-defect-names-its-correction.md
 [D-KNW-012]: knw-012-an-extension-neon-is-phpstans-filename-and-not-a-typo3-one.md
-[D-KNW-013]: knw-013-the-sixth-phrasing-was-this-repositorys-own-sentence.md
+[D-KNW-013]: knw-013-this-repositorys-own-sentence-is-reworded-rather-than-indexed.md
 [D-KNW-016]: knw-016-what-an-f-else-does-to-the-branch-beside-it-is-a-gap-this-server-owns.md
-[D-KNW-017]: knw-017-a-verification-question-reaches-the-subject-cell-and-never-the-layer-cell.md
+[D-KNW-017]: knw-017-a-verification-question-is-routed-to-the-layer-that-verifies.md
 [D-KNW-018]: knw-018-what-a-datamap-does-to-a-relation-field-is-a-gap-this-server-owns.md
-[D-KNW-019]: knw-019-a-functional-test-sees-only-what-it-primed-and-nothing-here-says-so.md
+[D-KNW-019]: knw-019-the-corpus-states-that-a-test-sees-only-what-it-primed.md
 [D-KNW-020]: knw-020-what-a-preview-template-is-handed-is-stated-on-both-majors.md
 [D-KNW-021]: knw-021-a-fluid-preview-template-replaces-the-content-half-and-the-corpus-says-so.md
-[D-KNW-022]: knw-022-the-per-class-test-database-is-stated-and-its-lifetime-is-not.md
+[D-KNW-022]: knw-022-the-corpus-states-how-long-a-per-class-test-database-lives.md
 [D-KNW-023]: knw-023-which-page-may-hold-a-record-is-a-gap-this-server-owns.md
 [D-KNW-024]: knw-024-the-fluid-namespace-prefix-is-what-a-template-question-is-written-in.md
 [D-KNW-025]: knw-025-what-a-backend-preview-owes-the-editor-is-a-gap-this-server-owns.md
@@ -58,13 +58,13 @@ one is added.
 ### Revoked, and kept as the record
 
 - [`D-KNW-014`][D-KNW-014] — The record variable a v14 preview template is handed is a gap this server owns · 2026-08-02 → D-KNW-020
-- [`D-KNW-015`][D-KNW-015] — A Fluid preview template replaces the content half, and nothing here says so · 2026-08-02 → D-KNW-021
+- [`D-KNW-015`][D-KNW-015] — The corpus states what a Fluid preview template replaces · 2026-08-02 → D-KNW-021
 - [`D-KNW-003`][D-KNW-003] — `provenance` is not the third spelling of `binding`, and stays · 2026-07-30 → D-KNW-005
 - [`D-KNW-001`][D-KNW-001] — Sitepackage work is answered from the General category · 2026-07-29
 - [`D-KNW-002`][D-KNW-002] — A hint about typo3/testing-framework is verified against tags, not against the checkouts · 2026-07-29
 
 [D-KNW-014]: knw-014-the-record-variable-a-v14-preview-template-is-handed-is-a-gap-this-server-owns.md
-[D-KNW-015]: knw-015-a-fluid-preview-template-replaces-the-content-half-and-nothing-here-says-so.md
+[D-KNW-015]: knw-015-the-corpus-states-what-a-fluid-preview-template-replaces.md
 [D-KNW-003]: knw-003-provenance-is-not-the-third-spelling-of-binding.md
 [D-KNW-001]: knw-001-sitepackage-work-is-answered-from-the-general-category.md
 [D-KNW-002]: knw-002-a-hint-about-typo3-testing-framework-is-verified-against-tags.md

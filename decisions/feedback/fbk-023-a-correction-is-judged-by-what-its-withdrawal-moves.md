@@ -40,7 +40,7 @@ subject the earlier notes were about.
   rewrite. The withdrawal moves the sentence about what the session called, not
   the finding, and it is written into that entry.
 - `003533` — judged as
-  [`D-KNW-017`](../knowledge/knw-017-a-verification-question-reaches-the-subject-cell-and-never-the-layer-cell.md),
+  [`D-KNW-017`](../knowledge/knw-017-a-verification-question-is-routed-to-the-layer-that-verifies.md),
   step 3, on four hint probes against this repository. That entry already
   records the withdrawal and says the trigger is not its lever. Unmoved, and its
   todo stands.

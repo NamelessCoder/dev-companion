@@ -4,7 +4,7 @@ date: 2026-08-02
 status: open
 ---
 
-# D-ANS-021 — A longer manual query re-aims rather than narrows, and the answer never says so
+# D-ANS-021 — A manual query is told what short buys, because the index is a table of contents
 
 **The live-manual search ranks a table of contents, so a query that names its
 subject spends its weight on everything else.**

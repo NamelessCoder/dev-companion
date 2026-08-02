@@ -11,28 +11,28 @@ one is added.
 - [`D-ANS-006`][D-ANS-006] — An identifier is found however it is spelled · 2026-08-02
 - [`D-ANS-007`][D-ANS-007] — Two shapes for "not answered", one word for why · 2026-08-02
 - [`D-ANS-008`][D-ANS-008] — A number a reader cannot reproduce is read as wrong · 2026-08-02
-- [`D-ANS-009`][D-ANS-009] — A shipped file is a deprecation predicate no sweep reaches · 2026-08-02
+- [`D-ANS-009`][D-ANS-009] — A shipped-file deprecation is found by the tool that lists the file · 2026-08-02
 - [`D-ANS-010`][D-ANS-010] — "Does it still work" is a question for the manual, not the changelog · 2026-08-02
 - [`D-ANS-011`][D-ANS-011] — A scope answer states what a manifest declares, and the comparison is the audit's · 2026-08-02
-- [`D-ANS-012`][D-ANS-012] — An input schema's `oneOf` is a rule no caller is told · 2026-08-02
+- [`D-ANS-012`][D-ANS-012] — An `oneOf` alternative is stated where the caller composes the call · 2026-08-02
 - [`D-ANS-013`][D-ANS-013] — What runs a project is a placement, not a missing answer · 2026-08-02
 - [`D-ANS-014`][D-ANS-014] — The extension answer enumerates registrations, not files — and a registration is one wherever it is declared · 2026-08-02
 - [`D-ANS-015`][D-ANS-015] — A registration the extension answer misreads is inside its boundary, not evidence about where it runs · 2026-08-02
 - [`D-ANS-016`][D-ANS-016] — A miss names the query that would have hit, not only the reach of each word · 2026-08-02
-- [`D-ANS-017`][D-ANS-017] — A union-typed argument is a call one client could not compose · 2026-08-02
+- [`D-ANS-017`][D-ANS-017] — A union-typed argument gets the wording a client can compose against · 2026-08-02
 - [`D-ANS-018`][D-ANS-018] — A plugin is a kind of content element, not one whose template is missing · 2026-08-02
 - [`D-ANS-019`][D-ANS-019] — A FlexForm, a site set and a form set are read from the file names and call shapes core itself reads them by · 2026-08-02
 - [`D-ANS-020`][D-ANS-020] — A deprecation is answered by the version that removes it · 2026-08-02
-- [`D-ANS-021`][D-ANS-021] — A longer manual query re-aims rather than narrows, and the answer never says so · 2026-08-02
-- [`D-ANS-022`][D-ANS-022] — A hyphenated compound reaches neither the phrase nor the word · 2026-08-02
+- [`D-ANS-021`][D-ANS-021] — A manual query is told what short buys, because the index is a table of contents · 2026-08-02
+- [`D-ANS-022`][D-ANS-022] — The matcher takes a hyphenated compound apart, measured over the corpus first · 2026-08-02
 - [`D-ANS-024`][D-ANS-024] — A rule reaches only the task that already names its subject · 2026-08-02
 - [`D-ANS-025`][D-ANS-025] — A query a hint carries whole is not diluted out of it · 2026-08-02
 - [`D-ANS-026`][D-ANS-026] — The ViewHelper reference is indexed, and a manual carries the collection it is published in · 2026-08-02
-- [`D-ANS-027`][D-ANS-027] — A fork is filed under the branch the caller did not take · 2026-08-02
+- [`D-ANS-027`][D-ANS-027] — The Extbase fork is placed where a caller who has not chosen passes · 2026-08-02
 - [`D-ANS-028`][D-ANS-028] — A two-letter query word is searched for, and the stopword list is what keeps the others out · 2026-08-02
-- [`D-ANS-029`][D-ANS-029] — The scanner matcher is filed under deprecation, and a removal never reaches it · 2026-08-02
-- [`D-ANS-030`][D-ANS-030] — The changelog search reads the file name, and the title it prints is not among what it reads · 2026-08-02
-- [`D-ANS-031`][D-ANS-031] — The core answer names the suites it does not declare, and not the tool that runs them · 2026-08-02
+- [`D-ANS-029`][D-ANS-029] — The scanner matcher is stated on the route a removal takes · 2026-08-02
+- [`D-ANS-030`][D-ANS-030] — The changelog matcher runs over the title it prints · 2026-08-02
+- [`D-ANS-031`][D-ANS-031] — The core answer names the tool that runs the suites · 2026-08-02
 - [`D-ANS-032`][D-ANS-032] — The dilution reference of the manual ranking is the length of an ordinary title · 2026-08-02
 - [`D-ANS-004`][D-ANS-004] — The instruction budget is 2048 characters, on one client's evidence · 2026-07-31
 - [`D-ANS-002`][D-ANS-002] — Three numbers now decide what a lookup answers, and they were measured, not reasoned · 2026-07-30 · confirmed
@@ -42,28 +42,28 @@ one is added.
 [D-ANS-006]: ans-006-an-identifier-is-found-however-it-is-spelled.md
 [D-ANS-007]: ans-007-two-shapes-for-not-answered-and-one-word-for-why.md
 [D-ANS-008]: ans-008-a-number-a-reader-cannot-reproduce-is-read-as-wrong.md
-[D-ANS-009]: ans-009-a-shipped-file-is-a-deprecation-predicate-no-sweep-reaches.md
+[D-ANS-009]: ans-009-a-shipped-file-deprecation-is-found-by-the-tool-that-lists-it.md
 [D-ANS-010]: ans-010-does-it-still-work-is-a-question-for-the-manual.md
 [D-ANS-011]: ans-011-a-scope-answer-states-what-a-manifest-declares.md
-[D-ANS-012]: ans-012-an-input-oneof-is-a-rule-no-caller-is-told.md
+[D-ANS-012]: ans-012-an-oneof-alternative-is-stated-where-the-call-is-composed.md
 [D-ANS-013]: ans-013-what-runs-a-project-is-a-placement-not-a-missing-answer.md
 [D-ANS-014]: ans-014-the-extension-answer-enumerates-registrations-not-files.md
 [D-ANS-015]: ans-015-a-registration-the-extension-answer-misreads-is-inside-its-boundary.md
 [D-ANS-016]: ans-016-a-miss-names-the-query-that-would-have-hit.md
-[D-ANS-017]: ans-017-a-union-typed-argument-is-a-call-one-client-could-not-compose.md
+[D-ANS-017]: ans-017-a-union-typed-argument-gets-wording-a-client-can-compose-against.md
 [D-ANS-018]: ans-018-a-plugin-is-a-kind-of-content-element-not-one-whose-template-is-missing.md
 [D-ANS-019]: ans-019-three-registration-kinds-read-from-what-core-reads-them-for.md
 [D-ANS-020]: ans-020-a-deprecation-is-answered-by-the-version-that-removes-it.md
-[D-ANS-021]: ans-021-a-longer-manual-query-re-aims-rather-than-narrows.md
-[D-ANS-022]: ans-022-a-hyphenated-compound-reaches-neither-the-phrase-nor-the-word.md
+[D-ANS-021]: ans-021-a-manual-query-is-told-what-short-buys.md
+[D-ANS-022]: ans-022-the-matcher-takes-a-hyphenated-compound-apart.md
 [D-ANS-024]: ans-024-a-rule-reaches-only-the-task-that-already-names-its-subject.md
 [D-ANS-025]: ans-025-a-query-a-hint-carries-whole-is-not-diluted-out-of-it.md
 [D-ANS-026]: ans-026-the-viewhelper-reference-is-indexed-and-a-manual-carries-the-collection-it-is-published-in.md
-[D-ANS-027]: ans-027-a-fork-is-filed-under-the-branch-the-caller-did-not-take.md
+[D-ANS-027]: ans-027-the-extbase-fork-is-placed-where-the-undecided-caller-passes.md
 [D-ANS-028]: ans-028-a-two-letter-query-word-is-searched-for-and-the-stopword-list-is-what-keeps-the-others-out.md
-[D-ANS-029]: ans-029-the-scanner-matcher-is-filed-under-deprecation.md
-[D-ANS-030]: ans-030-the-changelog-search-reads-the-file-name-not-the-title-it-prints.md
-[D-ANS-031]: ans-031-the-core-answer-names-the-suites-it-does-not-declare-and-not-the-tool-that-runs-them.md
+[D-ANS-029]: ans-029-the-scanner-matcher-is-stated-on-the-route-a-removal-takes.md
+[D-ANS-030]: ans-030-the-changelog-matcher-runs-over-the-title-it-prints.md
+[D-ANS-031]: ans-031-the-core-answer-names-the-tool-that-runs-the-suites.md
 [D-ANS-032]: ans-032-the-dilution-reference-of-the-manual-ranking-is-the-length-of-an-ordinary-title.md
 [D-ANS-004]: ans-004-the-instruction-budget-is-2048-characters-on-one-clients-evidence.md
 [D-ANS-002]: ans-002-three-numbers-decide-what-a-lookup-answers.md
@@ -71,8 +71,8 @@ one is added.
 
 ### Revoked, and kept as the record
 
-- [`D-ANS-023`][D-ANS-023] — No ViewHelper is documented in any manual this lookup indexes · 2026-08-02 → D-ANS-026
+- [`D-ANS-023`][D-ANS-023] — A ViewHelper question is answered by widening the manual index · 2026-08-02 → D-ANS-026
 - [`D-ANS-001`][D-ANS-001] — The unanswered result keeps its shape and gains a reason · 2026-07-29 → D-ANS-005
 
-[D-ANS-023]: ans-023-no-viewhelper-is-documented-in-any-manual-this-lookup-indexes.md
+[D-ANS-023]: ans-023-a-viewhelper-question-is-answered-by-widening-the-index.md
 [D-ANS-001]: ans-001-the-unanswered-result-keeps-its-shape-and-gains-a-reason.md

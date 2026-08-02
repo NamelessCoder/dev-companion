@@ -17,6 +17,6 @@ Judged as [`D-FBK-024`](../../decisions/feedback/fbk-024-a-feedback-about-the-ca
 Two halves, and one of them is a sibling's: "finish verification rather than
 shipping unverified work" reaches `content-elements` and never the layer cell,
 which is `feedback/2026-08-01-003533`, judged as
-[`D-KNW-017`](../../decisions/knowledge/knw-017-a-verification-question-reaches-the-subject-cell-and-never-the-layer-cell.md)
+[`D-KNW-017`](../../decisions/knowledge/knw-017-a-verification-question-is-routed-to-the-layer-that-verifies.md)
 — so no card is derived for it here. The conduct half reached no rung, and what
 it would cost is the question above.

@@ -55,7 +55,10 @@ timeless fact, while the server had the other number all along.
   the bold sentence; a listing of 138 entries is read for what each one settled,
   and a title in the past tense or in the negative makes the reader reconstruct
   that. It is [AGENTS.md](../../AGENTS.md)'s "say what is, not what it is not",
-  applied where it is read most and followed least.
+  applied where it is read most and followed least. It holds for every entry,
+  revoked ones included: what a revoked entry preserves is its statement and its
+  **Revoked on** section, and a listing where some titles name a fix and others
+  name a gap is read as two kinds of entry when there is one.
 - The **bold first sentence** is the decision. A reader who stops after it knows
   what was settled; everything under it is what settled it.
 - The sections are a fixed set, in that order: **Evidence**, **Decided**,
@@ -99,11 +102,11 @@ is written for what holds instead — because the reader of a listing has the
 headline and the status and nothing else, and `confirmed` beside a sentence that
 is no longer the case reads as a claim about today.
 
-[`D-ANS-023`](../../decisions/answers/ans-023-no-viewhelper-is-documented-in-any-manual-this-lookup-indexes.md)
-is the worked example. It said that no manual this lookup indexes documents a
-ViewHelper. That was true, the change it asked for was made the same day, its
-three **Wrong if** were measured and none of them held — and from that moment
-its headline described a lookup that no longer existed. It carries its
+[`D-ANS-023`](../../decisions/answers/ans-023-a-viewhelper-question-is-answered-by-widening-the-index.md)
+is the worked example. Its statement said that no manual this lookup indexes
+documents a ViewHelper. That was true, the change it asked for was made the same
+day, its three **Wrong if** were measured and none of them held — and from that
+moment the statement described a lookup that no longer existed. It carries its
 **Confirmed on** for the reading and a **Revoked on** below it for the
 supersession, `revokedBy` points at
 [`D-ANS-026`](../../decisions/answers/ans-026-the-viewhelper-reference-is-indexed-and-a-manual-carries-the-collection-it-is-published-in.md),

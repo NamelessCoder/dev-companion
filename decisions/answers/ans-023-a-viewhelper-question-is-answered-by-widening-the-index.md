@@ -5,7 +5,7 @@ status: revoked
 revokedBy: D-ANS-026
 ---
 
-# D-ANS-023 — No ViewHelper is documented in any manual this lookup indexes
+# D-ANS-023 — A ViewHelper question is answered by widening the manual index
 
 **`typo3_documentation_lookup` searches three books and none of them documents
 a ViewHelper, so a question about `f:if` comes back with whatever prose carries
@@ -137,9 +137,9 @@ It has been a candidate in the three manuals under `/m/` all along.
 
 ## Revoked on 2026-08-02
 
-By the change this entry asked for. The sentence at the head — three books, none
-documenting a ViewHelper — is what the lookup did until that afternoon and is
-not what it does now, and an entry a reader may still build on has to be one
+By the change this entry asked for. The statement under the title — three
+books, none documenting a ViewHelper — is what the lookup did until that
+afternoon and is not what it does now, and an entry a reader may still build on has to be one
 whose statement is true when they read it. The evidence and the confirmation
 above stay: the gap was real, the three **Wrong if** were measured and none
 held, and that reading is the reason the change looks the way it does.

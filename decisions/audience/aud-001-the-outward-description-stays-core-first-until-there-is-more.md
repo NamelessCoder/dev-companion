@@ -4,7 +4,7 @@ date: 2026-07-29
 status: confirmed
 ---
 
-# D-AUD-001 — Three audiences, and the positioning that has not caught up
+# D-AUD-001 — The outward description stays core-first until there is non-core knowledge
 
 **The outward description stays core-first until there is non-core knowledge to
 describe, and the requirement is the record that it is meant to change.**

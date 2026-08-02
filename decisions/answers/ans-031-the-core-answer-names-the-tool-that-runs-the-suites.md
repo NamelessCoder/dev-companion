@@ -4,7 +4,7 @@ date: 2026-08-02
 status: open
 ---
 
-# D-ANS-031 — The core answer names the suites it does not declare, and not the tool that runs them
+# D-ANS-031 — The core answer names the tool that runs the suites
 
 **`typo3_project_scope` tells a core checkout that the core's testing suites are
 not among its declared commands, and never that `typo3_test_run_guide` has

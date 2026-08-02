@@ -4,7 +4,7 @@ date: 2026-08-02
 status: open
 ---
 
-# D-ANS-012 — An input schema's `oneOf` is a rule no caller is told
+# D-ANS-012 — An `oneOf` alternative is stated where the caller composes the call
 
 **An alternative between two arguments declared only as `oneOf` reaches no
 caller: the reference renders none of it, and the rejection names one branch at

@@ -91,7 +91,7 @@ The mechanism is gone rather than repaired. Profiles were weighed against what
 they bought — 2,223 bytes of a 92,189-byte tool list — and deleted on
 2026-08-02, so no client is offered a shorter list unless it asked for one.
 What replaces them is
-[`D-AUD-004`](aud-004-the-tool-list-is-not-where-the-audience-is-said.md), and the
+[`D-AUD-004`](aud-004-every-client-is-offered-every-tool-and-the-answer-obliges.md), and the
 second half of the **Wrong if** cannot be met any more: there is no profile
 left for a deployment without an installation to earn.
 

@@ -4,7 +4,7 @@
 **Priority:** low
 
 Step 2 of the ladder, on the evidence in
-[`D-ANS-031`](../../decisions/answers/ans-031-the-core-answer-names-the-suites-it-does-not-declare-and-not-the-tool-that-runs-them.md):
+[`D-ANS-031`](../../decisions/answers/ans-031-the-core-answer-names-the-tool-that-runs-the-suites.md):
 the commands paragraph in `ProjectScope::text()` tells a core checkout that "the
 core's testing suites do not" exist among its declared commands and names nothing
 that has them, and a session read it and reached for a `Build/bin/phpunit` the

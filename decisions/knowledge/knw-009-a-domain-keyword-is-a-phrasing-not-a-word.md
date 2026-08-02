@@ -98,7 +98,7 @@ ten. Asked through the tool the skill actually calls, the split is total:
 `installation-upgrade`, `deprecated-apis` and `project-repository-layout` —
 the last of them `scope: project`, which is not even the unit under audit.
 
-Both reaches are settled in [`D-KNW-013`](knw-013-the-sixth-phrasing-was-this-repositorys-own-sentence.md),
+Both reaches are settled in [`D-KNW-013`](knw-013-this-repositorys-own-sentence-is-reworded-rather-than-indexed.md),
 which repeated this measurement over the 107 texts the repository has to hand
 now. The sixth phrasing is not a keyword: the checklist sentence was reworded
 to name the test suite and the supported versions it runs on, and the hint half

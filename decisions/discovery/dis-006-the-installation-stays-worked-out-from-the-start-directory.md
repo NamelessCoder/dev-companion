@@ -4,7 +4,7 @@ date: 2026-08-01
 status: open
 ---
 
-# D-DIS-006 — The protocol offers nothing to replace the working directory
+# D-DIS-006 — The installation stays worked out from the directory the server was started in
 
 **Which installation a session is in stays worked out from the directory the
 server was started in, because MCP has no mechanism to be told it instead.**

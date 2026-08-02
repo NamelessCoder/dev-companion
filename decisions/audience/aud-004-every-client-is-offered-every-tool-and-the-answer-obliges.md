@@ -4,7 +4,7 @@ date: 2026-08-02
 status: open
 ---
 
-# D-AUD-004 — The tool list is not where the audience is said
+# D-AUD-004 — Every client is offered every tool, and the answer says who it obliges
 
 **Every client is offered every tool; what an answer is worth outside the core
 is said in the answer, and only the caller shortens the tool list.**

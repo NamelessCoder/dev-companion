@@ -21,7 +21,7 @@ earns one.
 - [`D-FBK-016`][D-FBK-016] — A feedback waits on the board rather than behind it · 2026-08-02
 - [`D-FBK-017`][D-FBK-017] — A judgement turns a feedback into work, and the work closes it · 2026-08-02
 - [`D-FBK-018`][D-FBK-018] — A strength is evidence about a boundary, not about a decision · 2026-08-02 · confirmed
-- [`D-FBK-019`][D-FBK-019] — A recorded feedback is stored as it was written, secrets included · 2026-08-02
+- [`D-FBK-019`][D-FBK-019] — A secret pasted into a feedback is taken out on the way in · 2026-08-02
 - [`D-FBK-020`][D-FBK-020] — A session is charged per call, so the calls are what is budgeted · 2026-08-02 · confirmed
 - [`D-FBK-021`][D-FBK-021] — A summary feedback is judged against its series, not on its own · 2026-08-02
 - [`D-FBK-022`][D-FBK-022] — A feedback brings its card in the commit that brings it in · 2026-08-02
@@ -46,7 +46,7 @@ earns one.
 [D-FBK-016]: fbk-016-a-feedback-waits-on-the-board-rather-than-behind-it.md
 [D-FBK-017]: fbk-017-a-judgement-turns-a-feedback-into-work-and-the-work-closes-it.md
 [D-FBK-018]: fbk-018-a-strength-is-evidence-about-a-boundary-not-about-a-decision.md
-[D-FBK-019]: fbk-019-a-recorded-feedback-is-stored-as-it-was-written-secrets-included.md
+[D-FBK-019]: fbk-019-a-secret-pasted-into-a-feedback-is-taken-out-on-the-way-in.md
 [D-FBK-020]: fbk-020-a-session-is-charged-per-call-so-the-calls-are-what-is-budgeted.md
 [D-FBK-021]: fbk-021-a-summary-feedback-is-judged-against-its-series-not-on-its-own.md
 [D-FBK-022]: fbk-022-a-feedback-brings-its-card-in-the-commit-that-brings-it-in.md

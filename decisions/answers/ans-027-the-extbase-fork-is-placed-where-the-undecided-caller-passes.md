@@ -4,7 +4,7 @@ date: 2026-08-02
 status: open
 ---
 
-# D-ANS-027 — A fork is filed under the branch the caller did not take
+# D-ANS-027 — The Extbase fork is placed where a caller who has not chosen passes
 
 **The Extbase-or-not fork is written on the two hints it forks between, so it
 reaches only a caller who already named the branch they did not take.**

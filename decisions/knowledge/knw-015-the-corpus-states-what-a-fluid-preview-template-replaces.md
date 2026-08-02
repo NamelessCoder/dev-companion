@@ -5,7 +5,7 @@ status: revoked
 revokedBy: D-KNW-021
 ---
 
-# D-KNW-015 — A Fluid preview template replaces the content half, and nothing here says so
+# D-KNW-015 — The corpus states what a Fluid preview template replaces
 
 **A Fluid preview template replaces the content half of a page module preview
 and not the header above it, and nothing in this server says so.**
@@ -151,11 +151,11 @@ judging run on the same day, and the page is unchanged since.
 
 ## Revoked on 2026-08-02
 
-By the work this entry queued. Its headline says nothing here says so, and the
-statement it asked for is on `content-elements` — the split, the four header
+By the work this entry queued. Its statement ends "and nothing in this server
+says so", and what it asked for is on `content-elements` — the split, the four header
 parts by field, and the six footer fields. A reader of a listing has the
-headline and the status and nothing else, so `confirmed` beside "nothing here
-says so" reads as a claim about a gap that is closed.
+title and the status and nothing else, so `confirmed` over a statement ending
+"nothing here says so" reads as a claim about a gap that is closed.
 
 The **Confirmed on** above stays as the reading: both majors were re-read, the
 statement carries no `since` because nothing between them is visible to a

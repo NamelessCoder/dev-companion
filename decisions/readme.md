@@ -77,6 +77,8 @@ and not a defect.
 - [`D-ANS-024`][D-ANS-024] — A rule reaches only the task that already names its subject · 2026-08-02
 - [`D-ANS-025`][D-ANS-025] — A query a hint carries whole is not diluted out of it · 2026-08-02
 - [`D-ANS-026`][D-ANS-026] — The ViewHelper reference is indexed, and a manual carries the collection it is published in · 2026-08-02
+- [`D-ANS-027`][D-ANS-027] — A fork is filed under the branch the caller did not take · 2026-08-02
+- [`D-ANS-028`][D-ANS-028] — A two-letter query word is searched for, and the stopword list is what keeps the others out · 2026-08-02
 - [`D-AUD-004`][D-AUD-004] — The tool list is not where the audience is said · 2026-08-02
 - [`D-COD-003`][D-COD-003] — A directory is read through symfony/finder · 2026-08-02
 - [`D-DIS-007`][D-DIS-007] — The DDEV console is named by the mount, not by the variable · 2026-08-02 · confirmed
@@ -102,6 +104,7 @@ and not a defect.
 - [`D-FBK-020`][D-FBK-020] — A session is charged per call, so the calls are what is budgeted · 2026-08-02 · confirmed
 - [`D-FBK-021`][D-FBK-021] — A summary feedback is judged against its series, not on its own · 2026-08-02
 - [`D-FBK-022`][D-FBK-022] — A feedback brings its card in the commit that brings it in · 2026-08-02
+- [`D-FBK-023`][D-FBK-023] — A correction is judged by what its withdrawal moves · 2026-08-02
 - [`D-KNW-005`][D-KNW-005] — One `Scope` replaced the four vocabularies · 2026-08-02
 - [`D-KNW-006`][D-KNW-006] — A word for a thing administered from the backend adds no domain to a backend-only task · 2026-08-02
 - [`D-KNW-007`][D-KNW-007] — A hint says whose it is in both directions · 2026-08-02
@@ -111,12 +114,15 @@ and not a defect.
 - [`D-KNW-011`][D-KNW-011] — A rule that names a defect names its correction · 2026-08-02
 - [`D-KNW-012`][D-KNW-012] — `extension.neon` is PHPStan's filename, and the hint keeps the one include it means · 2026-08-02
 - [`D-KNW-013`][D-KNW-013] — The sixth phrasing was this repository's own sentence, and it was reworded rather than indexed · 2026-08-02
-- [`D-KNW-014`][D-KNW-014] — The record variable a v14 preview template is handed is a gap this server owns · 2026-08-02 · confirmed
-- [`D-KNW-015`][D-KNW-015] — A Fluid preview template replaces the content half, and nothing here says so · 2026-08-02 · confirmed
 - [`D-KNW-016`][D-KNW-016] — What an `f:else` does to the branch beside it is a gap this server owns · 2026-08-02
 - [`D-KNW-017`][D-KNW-017] — A verification question reaches the subject cell and never the layer cell · 2026-08-02
-- [`D-KNW-018`][D-KNW-018] — What a datamap does to a relation field is a gap this server owns · 2026-08-02
+- [`D-KNW-018`][D-KNW-018] — What a datamap does to a relation field is a gap this server owns · 2026-08-02 · confirmed
 - [`D-KNW-019`][D-KNW-019] — A functional test sees only what it primed, and nothing here says so · 2026-08-02
+- [`D-KNW-020`][D-KNW-020] — What a preview template is handed is stated on both majors, and a field resolves by its TCA type · 2026-08-02
+- [`D-KNW-021`][D-KNW-021] — A Fluid preview template replaces the content half, and the corpus names what is drawn around it · 2026-08-02
+- [`D-KNW-022`][D-KNW-022] — The per-class test database is stated, and its lifetime is not · 2026-08-02
+- [`D-KNW-023`][D-KNW-023] — Which page may hold a record is a gap this server owns · 2026-08-02
+- [`D-KNW-024`][D-KNW-024] — The Fluid namespace prefix is what a template question is written in · 2026-08-02
 - [`D-SCO-009`][D-SCO-009] — The brief is one brief, and names the paths a step is not for · 2026-08-02
 - [`D-SKL-002`][D-SKL-002] — A focused audit narrows what is assessed, not the list it closes on · 2026-08-02
 - [`D-SKL-003`][D-SKL-003] — A sweep is bounded by the changelog's own axes, not by the extension's vocabulary · 2026-08-02
@@ -181,6 +187,8 @@ and not a defect.
 [D-ANS-024]: answers/ans-024-a-rule-reaches-only-the-task-that-already-names-its-subject.md
 [D-ANS-025]: answers/ans-025-a-query-a-hint-carries-whole-is-not-diluted-out-of-it.md
 [D-ANS-026]: answers/ans-026-the-viewhelper-reference-is-indexed-and-a-manual-carries-the-collection-it-is-published-in.md
+[D-ANS-027]: answers/ans-027-a-fork-is-filed-under-the-branch-the-caller-did-not-take.md
+[D-ANS-028]: answers/ans-028-a-two-letter-query-word-is-searched-for-and-the-stopword-list-is-what-keeps-the-others-out.md
 [D-AUD-004]: audience/aud-004-the-tool-list-is-not-where-the-audience-is-said.md
 [D-COD-003]: code/cod-003-a-directory-is-read-through-symfony-finder.md
 [D-DIS-007]: discovery/dis-007-the-ddev-console-is-named-by-the-mount-not-by-the-variable.md
@@ -206,6 +214,7 @@ and not a defect.
 [D-FBK-020]: feedback/fbk-020-a-session-is-charged-per-call-so-the-calls-are-what-is-budgeted.md
 [D-FBK-021]: feedback/fbk-021-a-summary-feedback-is-judged-against-its-series-not-on-its-own.md
 [D-FBK-022]: feedback/fbk-022-a-feedback-brings-its-card-in-the-commit-that-brings-it-in.md
+[D-FBK-023]: feedback/fbk-023-a-correction-is-judged-by-what-its-withdrawal-moves.md
 [D-KNW-005]: knowledge/knw-005-one-scope-replaced-the-four-vocabularies.md
 [D-KNW-006]: knowledge/knw-006-a-word-for-a-thing-administered-from-the-backend.md
 [D-KNW-007]: knowledge/knw-007-a-hint-says-whose-it-is-in-both-directions.md
@@ -215,12 +224,15 @@ and not a defect.
 [D-KNW-011]: knowledge/knw-011-a-rule-that-names-a-defect-names-its-correction.md
 [D-KNW-012]: knowledge/knw-012-an-extension-neon-is-phpstans-filename-and-not-a-typo3-one.md
 [D-KNW-013]: knowledge/knw-013-the-sixth-phrasing-was-this-repositorys-own-sentence.md
-[D-KNW-014]: knowledge/knw-014-the-record-variable-a-v14-preview-template-is-handed-is-a-gap-this-server-owns.md
-[D-KNW-015]: knowledge/knw-015-a-fluid-preview-template-replaces-the-content-half-and-nothing-here-says-so.md
 [D-KNW-016]: knowledge/knw-016-what-an-f-else-does-to-the-branch-beside-it-is-a-gap-this-server-owns.md
 [D-KNW-017]: knowledge/knw-017-a-verification-question-reaches-the-subject-cell-and-never-the-layer-cell.md
 [D-KNW-018]: knowledge/knw-018-what-a-datamap-does-to-a-relation-field-is-a-gap-this-server-owns.md
 [D-KNW-019]: knowledge/knw-019-a-functional-test-sees-only-what-it-primed-and-nothing-here-says-so.md
+[D-KNW-020]: knowledge/knw-020-what-a-preview-template-is-handed-is-stated-on-both-majors.md
+[D-KNW-021]: knowledge/knw-021-a-fluid-preview-template-replaces-the-content-half-and-the-corpus-says-so.md
+[D-KNW-022]: knowledge/knw-022-the-per-class-test-database-is-stated-and-its-lifetime-is-not.md
+[D-KNW-023]: knowledge/knw-023-which-page-may-hold-a-record-is-a-gap-this-server-owns.md
+[D-KNW-024]: knowledge/knw-024-the-fluid-namespace-prefix-is-what-a-template-question-is-written-in.md
 [D-SCO-009]: scope/sco-009-the-brief-is-one-brief-and-names-the-paths-a-step.md
 [D-SKL-002]: task-skills/skl-002-a-focused-audit-narrows-what-is-assessed.md
 [D-SKL-003]: task-skills/skl-003-a-sweep-is-bounded-by-the-changelogs-own-axes.md
@@ -267,6 +279,8 @@ and not a defect.
 ### Revoked, and kept as the record
 
 - [`D-ANS-023`][D-ANS-023] — No ViewHelper is documented in any manual this lookup indexes · 2026-08-02 → D-ANS-026
+- [`D-KNW-014`][D-KNW-014] — The record variable a v14 preview template is handed is a gap this server owns · 2026-08-02 → D-KNW-020
+- [`D-KNW-015`][D-KNW-015] — A Fluid preview template replaces the content half, and nothing here says so · 2026-08-02 → D-KNW-021
 - [`D-FBK-005`][D-FBK-005] — The queue is worked before the pile is sighted · 2026-08-01 → D-FBK-012
 - [`D-SCO-008`][D-SCO-008] — The path decides, and the answer may say it cannot · 2026-08-01 → D-KNW-005
 - [`D-FBK-003`][D-FBK-003] — A session is handed one todo, not the file · 2026-07-31 → D-FBK-002
@@ -282,6 +296,8 @@ and not a defect.
 - [`D-SCO-004`][D-SCO-004] — The frontend is recognised by name, and only the two UI sections go · 2026-07-29
 
 [D-ANS-023]: answers/ans-023-no-viewhelper-is-documented-in-any-manual-this-lookup-indexes.md
+[D-KNW-014]: knowledge/knw-014-the-record-variable-a-v14-preview-template-is-handed-is-a-gap-this-server-owns.md
+[D-KNW-015]: knowledge/knw-015-a-fluid-preview-template-replaces-the-content-half-and-nothing-here-says-so.md
 [D-FBK-005]: feedback/fbk-005-the-queue-is-worked-before-the-pile-is-sighted.md
 [D-SCO-008]: scope/sco-008-the-path-decides-and-the-answer-may-say-it-cannot.md
 [D-FBK-003]: feedback/fbk-003-a-session-is-handed-one-todo-not-the-file.md

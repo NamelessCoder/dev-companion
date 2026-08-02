@@ -50,6 +50,8 @@ when it is added.
 - [`R-KNW-040`][R-KNW-040] — An environment variable answer names what the core reads itself · held
 - [`R-KNW-041`][R-KNW-041] — A preview template answer says what the template is handed · held
 - [`R-KNW-042`][R-KNW-042] — A preview answer says what the default renderer already draws · held
+- [`R-KNW-043`][R-KNW-043] — A datamap answer says what the parent column holds · held
+- [`R-KNW-044`][R-KNW-044] — The fixture rule is stated with the empty database under it · held
 
 [R-KNW-001]: knw-001-upgrade-wizards-and-dataprocessors-have-hints-of-their-own.md
 [R-KNW-002]: knw-002-a-hint-carries-the-words-its-subject-is-asked-about-in.md
@@ -93,3 +95,5 @@ when it is added.
 [R-KNW-040]: knw-040-an-environment-variable-answer-names-what-the-core-reads-itself.md
 [R-KNW-041]: knw-041-a-preview-template-answer-says-what-the-template-is-handed.md
 [R-KNW-042]: knw-042-a-preview-answer-says-what-the-default-renderer-already-draws.md
+[R-KNW-043]: knw-043-a-datamap-answer-says-what-the-parent-column-holds.md
+[R-KNW-044]: knw-044-the-fixture-rule-is-stated-with-the-empty-database-under-it.md

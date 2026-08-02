@@ -18,6 +18,7 @@ when it is added.
 - [`R-FBK-009`][R-FBK-009] — A todo is worked from what was read · held
 - [`R-FBK-010`][R-FBK-010] — Work somebody has in hand is offered to nobody else · held
 - [`R-FBK-011`][R-FBK-011] — A recorded feedback carries no secret out of the installation · held
+- [`R-FBK-012`][R-FBK-012] — A debrief reports the window the session could see · not guarded
 
 [R-FBK-001]: fbk-001-a-feedback-is-about-as-many-tools-as-it-is-about.md
 [R-FBK-002]: fbk-002-a-feedback-that-was-worked-off-stays-answerable-for.md
@@ -30,3 +31,4 @@ when it is added.
 [R-FBK-009]: fbk-009-a-todo-is-worked-from-what-was-read.md
 [R-FBK-010]: fbk-010-work-somebody-has-in-hand-is-offered-to-nobody-else.md
 [R-FBK-011]: fbk-011-a-recorded-feedback-carries-no-secret-out-of-the-installation.md
+[R-FBK-012]: fbk-012-a-debrief-reports-the-window-the-session-could-see.md

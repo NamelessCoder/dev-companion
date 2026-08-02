@@ -2,8 +2,6 @@
 
 **Serves:** feedback/2026-07-31-192945-task-typo3-extension-conformance-audit-of.md
 **Priority:** low
-**Branch:** todo/task-typo3-extension-conformance-audit-of
-**Claimed:** 2026-08-02
 **Waiting on:** what is step 3 of `skills/base.md` for, once a task skill is
     already loaded? Two answers are open and they run opposite ways. Either the
     base says what `typo3_task_guide` is worth to a caller that arrived through

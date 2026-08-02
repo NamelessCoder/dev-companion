@@ -25,6 +25,10 @@ one is added.
 - [`D-KNW-022`][D-KNW-022] — The per-class test database is stated, and its lifetime is not · 2026-08-02
 - [`D-KNW-023`][D-KNW-023] — Which page may hold a record is a gap this server owns · 2026-08-02
 - [`D-KNW-024`][D-KNW-024] — The Fluid namespace prefix is what a template question is written in · 2026-08-02
+- [`D-KNW-025`][D-KNW-025] — What a backend preview owes the editor is a gap this server owns · 2026-08-02
+- [`D-KNW-026`][D-KNW-026] — Where a one-off script may not be written is a gap this server owns · 2026-08-02
+- [`D-KNW-027`][D-KNW-027] — Which caches a change invalidates is a gap this server owns · 2026-08-02
+- [`D-KNW-028`][D-KNW-028] — How a file becomes a processed one is a gap this server owns · 2026-08-02
 - [`D-KNW-004`][D-KNW-004] — Package knowledge needs a producer before it needs discovery · 2026-07-30
 
 [D-KNW-005]: knw-005-one-scope-replaced-the-four-vocabularies.md
@@ -45,6 +49,10 @@ one is added.
 [D-KNW-022]: knw-022-the-per-class-test-database-is-stated-and-its-lifetime-is-not.md
 [D-KNW-023]: knw-023-which-page-may-hold-a-record-is-a-gap-this-server-owns.md
 [D-KNW-024]: knw-024-the-fluid-namespace-prefix-is-what-a-template-question-is-written-in.md
+[D-KNW-025]: knw-025-what-a-backend-preview-owes-the-editor-is-a-gap-this-server-owns.md
+[D-KNW-026]: knw-026-where-a-one-off-script-may-not-be-written-is-a-gap-this-server-owns.md
+[D-KNW-027]: knw-027-which-caches-a-change-invalidates-is-a-gap-this-server-owns.md
+[D-KNW-028]: knw-028-how-a-file-becomes-a-processed-one-is-a-gap-this-server-owns.md
 [D-KNW-004]: knw-004-package-knowledge-needs-a-producer-before-it-needs-discovery.md
 
 ### Revoked, and kept as the record

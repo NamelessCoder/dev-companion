@@ -24,6 +24,7 @@ when it is added.
 - [`R-ANS-014`][R-ANS-014] — A registration is answered wherever it is declared · held
 - [`R-ANS-015`][R-ANS-015] — A label rule reaches the task that never names a label · **open**
 - [`R-ANS-016`][R-ANS-016] — A content-element task is offered the Extbase fork · **open**
+- [`R-ANS-017`][R-ANS-017] — A removal is told what the scanner matcher requires · **open**
 
 [R-ANS-001]: ans-001-could-not-ask-never-looks-like-does-not-exist.md
 [R-ANS-002]: ans-002-the-reason-is-in-the-data-not-only-in-the-text.md
@@ -42,3 +43,4 @@ when it is added.
 [R-ANS-014]: ans-014-a-registration-is-answered-wherever-it-is-declared.md
 [R-ANS-015]: ans-015-a-label-rule-reaches-the-task-that-never-names-a-label.md
 [R-ANS-016]: ans-016-a-content-element-task-is-offered-the-extbase-fork.md
+[R-ANS-017]: ans-017-a-removal-is-told-what-the-scanner-matcher-requires.md

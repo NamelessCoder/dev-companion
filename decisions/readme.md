@@ -79,6 +79,10 @@ and not a defect.
 - [`D-ANS-026`][D-ANS-026] — The ViewHelper reference is indexed, and a manual carries the collection it is published in · 2026-08-02
 - [`D-ANS-027`][D-ANS-027] — A fork is filed under the branch the caller did not take · 2026-08-02
 - [`D-ANS-028`][D-ANS-028] — A two-letter query word is searched for, and the stopword list is what keeps the others out · 2026-08-02
+- [`D-ANS-029`][D-ANS-029] — The scanner matcher is filed under deprecation, and a removal never reaches it · 2026-08-02
+- [`D-ANS-030`][D-ANS-030] — The changelog search reads the file name, and the title it prints is not among what it reads · 2026-08-02
+- [`D-ANS-031`][D-ANS-031] — The core answer names the suites it does not declare, and not the tool that runs them · 2026-08-02
+- [`D-ANS-032`][D-ANS-032] — The dilution reference of the manual ranking is the length of an ordinary title · 2026-08-02
 - [`D-AUD-004`][D-AUD-004] — The tool list is not where the audience is said · 2026-08-02
 - [`D-COD-003`][D-COD-003] — A directory is read through symfony/finder · 2026-08-02
 - [`D-DIS-007`][D-DIS-007] — The DDEV console is named by the mount, not by the variable · 2026-08-02 · confirmed
@@ -105,6 +109,7 @@ and not a defect.
 - [`D-FBK-021`][D-FBK-021] — A summary feedback is judged against its series, not on its own · 2026-08-02
 - [`D-FBK-022`][D-FBK-022] — A feedback brings its card in the commit that brings it in · 2026-08-02
 - [`D-FBK-023`][D-FBK-023] — A correction is judged by what its withdrawal moves · 2026-08-02
+- [`D-FBK-024`][D-FBK-024] — A feedback about the caller's conduct toward its user names no surface · 2026-08-02
 - [`D-KNW-005`][D-KNW-005] — One `Scope` replaced the four vocabularies · 2026-08-02
 - [`D-KNW-006`][D-KNW-006] — A word for a thing administered from the backend adds no domain to a backend-only task · 2026-08-02
 - [`D-KNW-007`][D-KNW-007] — A hint says whose it is in both directions · 2026-08-02
@@ -123,9 +128,14 @@ and not a defect.
 - [`D-KNW-022`][D-KNW-022] — The per-class test database is stated, and its lifetime is not · 2026-08-02
 - [`D-KNW-023`][D-KNW-023] — Which page may hold a record is a gap this server owns · 2026-08-02
 - [`D-KNW-024`][D-KNW-024] — The Fluid namespace prefix is what a template question is written in · 2026-08-02
+- [`D-KNW-025`][D-KNW-025] — What a backend preview owes the editor is a gap this server owns · 2026-08-02
+- [`D-KNW-026`][D-KNW-026] — Where a one-off script may not be written is a gap this server owns · 2026-08-02
+- [`D-KNW-027`][D-KNW-027] — Which caches a change invalidates is a gap this server owns · 2026-08-02
+- [`D-KNW-028`][D-KNW-028] — How a file becomes a processed one is a gap this server owns · 2026-08-02
 - [`D-SCO-009`][D-SCO-009] — The brief is one brief, and names the paths a step is not for · 2026-08-02
 - [`D-SKL-002`][D-SKL-002] — A focused audit narrows what is assessed, not the list it closes on · 2026-08-02
 - [`D-SKL-003`][D-SKL-003] — A sweep is bounded by the changelog's own axes, not by the extension's vocabulary · 2026-08-02
+- [`D-SKL-004`][D-SKL-004] — What a task does when the lookups run out is written for a review · 2026-08-02
 - [`D-COD-001`][D-COD-001] — One file declares one class · 2026-08-01
 - [`D-COD-002`][D-COD-002] — The upkeep CLI is a Symfony Console application · 2026-08-01
 - [`D-DIS-006`][D-DIS-006] — The protocol offers nothing to replace the working directory · 2026-08-01
@@ -189,6 +199,10 @@ and not a defect.
 [D-ANS-026]: answers/ans-026-the-viewhelper-reference-is-indexed-and-a-manual-carries-the-collection-it-is-published-in.md
 [D-ANS-027]: answers/ans-027-a-fork-is-filed-under-the-branch-the-caller-did-not-take.md
 [D-ANS-028]: answers/ans-028-a-two-letter-query-word-is-searched-for-and-the-stopword-list-is-what-keeps-the-others-out.md
+[D-ANS-029]: answers/ans-029-the-scanner-matcher-is-filed-under-deprecation.md
+[D-ANS-030]: answers/ans-030-the-changelog-search-reads-the-file-name-not-the-title-it-prints.md
+[D-ANS-031]: answers/ans-031-the-core-answer-names-the-suites-it-does-not-declare-and-not-the-tool-that-runs-them.md
+[D-ANS-032]: answers/ans-032-the-dilution-reference-of-the-manual-ranking-is-the-length-of-an-ordinary-title.md
 [D-AUD-004]: audience/aud-004-the-tool-list-is-not-where-the-audience-is-said.md
 [D-COD-003]: code/cod-003-a-directory-is-read-through-symfony-finder.md
 [D-DIS-007]: discovery/dis-007-the-ddev-console-is-named-by-the-mount-not-by-the-variable.md
@@ -215,6 +229,7 @@ and not a defect.
 [D-FBK-021]: feedback/fbk-021-a-summary-feedback-is-judged-against-its-series-not-on-its-own.md
 [D-FBK-022]: feedback/fbk-022-a-feedback-brings-its-card-in-the-commit-that-brings-it-in.md
 [D-FBK-023]: feedback/fbk-023-a-correction-is-judged-by-what-its-withdrawal-moves.md
+[D-FBK-024]: feedback/fbk-024-a-feedback-about-the-callers-conduct-toward-its-user-names-no-surface.md
 [D-KNW-005]: knowledge/knw-005-one-scope-replaced-the-four-vocabularies.md
 [D-KNW-006]: knowledge/knw-006-a-word-for-a-thing-administered-from-the-backend.md
 [D-KNW-007]: knowledge/knw-007-a-hint-says-whose-it-is-in-both-directions.md
@@ -233,9 +248,14 @@ and not a defect.
 [D-KNW-022]: knowledge/knw-022-the-per-class-test-database-is-stated-and-its-lifetime-is-not.md
 [D-KNW-023]: knowledge/knw-023-which-page-may-hold-a-record-is-a-gap-this-server-owns.md
 [D-KNW-024]: knowledge/knw-024-the-fluid-namespace-prefix-is-what-a-template-question-is-written-in.md
+[D-KNW-025]: knowledge/knw-025-what-a-backend-preview-owes-the-editor-is-a-gap-this-server-owns.md
+[D-KNW-026]: knowledge/knw-026-where-a-one-off-script-may-not-be-written-is-a-gap-this-server-owns.md
+[D-KNW-027]: knowledge/knw-027-which-caches-a-change-invalidates-is-a-gap-this-server-owns.md
+[D-KNW-028]: knowledge/knw-028-how-a-file-becomes-a-processed-one-is-a-gap-this-server-owns.md
 [D-SCO-009]: scope/sco-009-the-brief-is-one-brief-and-names-the-paths-a-step.md
 [D-SKL-002]: task-skills/skl-002-a-focused-audit-narrows-what-is-assessed.md
 [D-SKL-003]: task-skills/skl-003-a-sweep-is-bounded-by-the-changelogs-own-axes.md
+[D-SKL-004]: task-skills/skl-004-what-a-task-does-when-the-lookups-run-out-is-written-for-a-review.md
 [D-COD-001]: code/cod-001-one-file-declares-one-class.md
 [D-COD-002]: code/cod-002-the-upkeep-cli-is-a-symfony-console-application.md
 [D-DIS-006]: discovery/dis-006-the-protocol-offers-nothing-to-replace-the-working-directory.md

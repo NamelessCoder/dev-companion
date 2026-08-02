@@ -30,6 +30,10 @@ one is added.
 - [`D-ANS-026`][D-ANS-026] — The ViewHelper reference is indexed, and a manual carries the collection it is published in · 2026-08-02
 - [`D-ANS-027`][D-ANS-027] — A fork is filed under the branch the caller did not take · 2026-08-02
 - [`D-ANS-028`][D-ANS-028] — A two-letter query word is searched for, and the stopword list is what keeps the others out · 2026-08-02
+- [`D-ANS-029`][D-ANS-029] — The scanner matcher is filed under deprecation, and a removal never reaches it · 2026-08-02
+- [`D-ANS-030`][D-ANS-030] — The changelog search reads the file name, and the title it prints is not among what it reads · 2026-08-02
+- [`D-ANS-031`][D-ANS-031] — The core answer names the suites it does not declare, and not the tool that runs them · 2026-08-02
+- [`D-ANS-032`][D-ANS-032] — The dilution reference of the manual ranking is the length of an ordinary title · 2026-08-02
 - [`D-ANS-004`][D-ANS-004] — The instruction budget is 2048 characters, on one client's evidence · 2026-07-31
 - [`D-ANS-002`][D-ANS-002] — Three numbers now decide what a lookup answers, and they were measured, not reasoned · 2026-07-30 · confirmed
 - [`D-ANS-003`][D-ANS-003] — Retrieval stays lexical and runtime inspection stays narrow · 2026-07-30 · confirmed
@@ -57,6 +61,10 @@ one is added.
 [D-ANS-026]: ans-026-the-viewhelper-reference-is-indexed-and-a-manual-carries-the-collection-it-is-published-in.md
 [D-ANS-027]: ans-027-a-fork-is-filed-under-the-branch-the-caller-did-not-take.md
 [D-ANS-028]: ans-028-a-two-letter-query-word-is-searched-for-and-the-stopword-list-is-what-keeps-the-others-out.md
+[D-ANS-029]: ans-029-the-scanner-matcher-is-filed-under-deprecation.md
+[D-ANS-030]: ans-030-the-changelog-search-reads-the-file-name-not-the-title-it-prints.md
+[D-ANS-031]: ans-031-the-core-answer-names-the-suites-it-does-not-declare-and-not-the-tool-that-runs-them.md
+[D-ANS-032]: ans-032-the-dilution-reference-of-the-manual-ranking-is-the-length-of-an-ordinary-title.md
 [D-ANS-004]: ans-004-the-instruction-budget-is-2048-characters-on-one-clients-evidence.md
 [D-ANS-002]: ans-002-three-numbers-decide-what-a-lookup-answers.md
 [D-ANS-003]: ans-003-retrieval-stays-lexical-and-runtime-inspection-stays-narrow.md

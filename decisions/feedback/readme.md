@@ -24,6 +24,7 @@ earns one.
 - [`D-FBK-021`][D-FBK-021] — A summary feedback is judged against its series, not on its own · 2026-08-02
 - [`D-FBK-022`][D-FBK-022] — A feedback brings its card in the commit that brings it in · 2026-08-02
 - [`D-FBK-023`][D-FBK-023] — A correction is judged by what its withdrawal moves · 2026-08-02
+- [`D-FBK-024`][D-FBK-024] — A feedback about the caller's conduct toward its user names no surface · 2026-08-02
 - [`D-FBK-006`][D-FBK-006] — A name is cut where the feedback starts to differ · 2026-08-01
 - [`D-FBK-007`][D-FBK-007] — How a todo is worked travels with the todo · 2026-08-01
 - [`D-FBK-008`][D-FBK-008] — One todo is one file, and the queue is in the names · 2026-08-01
@@ -46,6 +47,7 @@ earns one.
 [D-FBK-021]: fbk-021-a-summary-feedback-is-judged-against-its-series-not-on-its-own.md
 [D-FBK-022]: fbk-022-a-feedback-brings-its-card-in-the-commit-that-brings-it-in.md
 [D-FBK-023]: fbk-023-a-correction-is-judged-by-what-its-withdrawal-moves.md
+[D-FBK-024]: fbk-024-a-feedback-about-the-callers-conduct-toward-its-user-names-no-surface.md
 [D-FBK-006]: fbk-006-a-name-is-cut-where-the-feedback-starts-to-differ.md
 [D-FBK-007]: fbk-007-how-a-todo-is-worked-travels-with-the-todo.md
 [D-FBK-008]: fbk-008-one-todo-is-one-file-and-the-queue-is-in-the-names.md

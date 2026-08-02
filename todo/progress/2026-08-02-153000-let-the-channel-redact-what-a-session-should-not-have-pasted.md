@@ -2,6 +2,8 @@
 
 **Serves:** R-FBK-011
 **Priority:** high
+**Branch:** todo/let-the-channel-redact-what-a-session-should-not-have-pasted
+**Claimed:** 2026-08-02
 
 Make `Channel::record()` remove a value that looks like a credential from
 `observation` and `query` before either is written, replacing it with a visible

@@ -2,6 +2,8 @@
 
 **Serves:** R-FBK-011
 **Priority:** normal
+**Branch:** todo/say-in-typo3-feedback-record-that-a-secret-is-not
+**Claimed:** 2026-08-02
 
 Extend the `observation` and `query` field descriptions in
 `src/Tool/FeedbackRecord.php` so a session recording feedback is told what a

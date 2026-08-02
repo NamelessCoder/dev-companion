@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-07-31-172757-the-two-newest-typo3-v14-3-extension.md
 **Priority:** normal
+**Branch:** todo/say-what-shipping-ext-tables-php-costs-from-14-3
+**Claimed:** 2026-08-02
 
 Judged as step 1a on the ladder, in `D-ANS-009`: `#108345` is written whole in
 the `extension-files` hint of `knowledge/architecture-hints/php.json` and

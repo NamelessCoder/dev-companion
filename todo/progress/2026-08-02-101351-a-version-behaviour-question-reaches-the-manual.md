@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-07-31-174524-typo3-v14-backend-layout-compatibility-gap-none.md
 **Priority:** normal
+**Branch:** todo/a-version-behaviour-question-reaches-the-manual
+**Claimed:** 2026-08-02
 
 Step 3 of the ladder, routing: `typo3_documentation_lookup` at the target
 version answers "does pattern X still work in version N" in one call, and the

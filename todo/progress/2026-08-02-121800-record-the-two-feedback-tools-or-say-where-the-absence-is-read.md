@@ -2,6 +2,8 @@
 
 **Serves:** documentation/clients/tool-answers/
 **Priority:** normal
+**Branch:** todo/record-the-two-feedback-tools-or-say-where-the-absence-is-read
+**Claimed:** 2026-08-02
 
 Give `typo3_feedback_record` and `typo3_feedback_list` a recorded answer, or
 state their absence where a reader meets it. Neither has a page under

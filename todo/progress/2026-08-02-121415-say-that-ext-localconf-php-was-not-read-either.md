@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-07-31-174526-stale-registration-detection-gap-ext-localconf.md
 **Priority:** normal
+**Branch:** todo/say-that-ext-localconf-php-was-not-read-either
+**Claimed:** 2026-08-02
 
 Settle what `notReadStatically` claims, then make both places that state it say
 the same thing. `Extension::notReadStatically()` draws from five declarative

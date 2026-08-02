@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-07-31-174526-stale-registration-detection-gap-ext-localconf.md
 **Priority:** normal
+**Branch:** todo/say-what-a-contentrenderingtemplates-entry-is-read-by
+**Claimed:** 2026-08-02
 
 Write into the `extension-files` hint in `knowledge/architecture-hints/php.json`
 what `$GLOBALS['TYPO3_CONF_VARS']['FE']['contentRenderingTemplates']` is read by,

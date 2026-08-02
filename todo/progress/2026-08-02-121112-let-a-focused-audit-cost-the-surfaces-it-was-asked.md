@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-07-31-183648-the-typo3-extension-conformance-skill-provided.md
 **Priority:** normal
+**Branch:** todo/let-a-focused-audit-cost-the-surfaces-it-was-asked
+**Claimed:** 2026-08-02
 
 Step 4 of the ladder, judged in `D-SKL-002`, which carries the evidence and what
 it rejected: `references/checklist.md` line 3 permits a scoped review

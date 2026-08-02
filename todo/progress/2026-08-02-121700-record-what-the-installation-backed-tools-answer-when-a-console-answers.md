@@ -2,6 +2,8 @@
 
 **Serves:** documentation/clients/tool-answers/
 **Priority:** normal
+**Branch:** todo/record-what-the-installation-backed-tools-answer-when-a-console-answers
+**Claimed:** 2026-08-02
 
 Point `bin/cli tools:record` at an installation whose console answers, and
 settle first what then becomes of the shapes the current pages are made of. The

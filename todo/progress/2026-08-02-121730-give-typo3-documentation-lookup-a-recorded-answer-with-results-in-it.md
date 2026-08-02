@@ -2,6 +2,8 @@
 
 **Serves:** documentation/clients/tool-answers/
 **Priority:** normal
+**Branch:** todo/give-typo3-documentation-lookup-a-recorded-answer-with-results-in-it
+**Claimed:** 2026-08-02
 
 Add a call to `Upkeep\ToolCalls` that reaches the manuals, so the page for
 `typo3_documentation_lookup` shows a result. The one call recorded today is

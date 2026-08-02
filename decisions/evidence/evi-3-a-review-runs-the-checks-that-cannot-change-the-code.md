@@ -47,3 +47,14 @@ quoted the commands as subjects of findings instead.
   reviews that now run the checks report the same findings they read out of CI
   files, in which case the runs cost time and settled nothing, and the base's
   three-way distinction was doing all the work by itself.
+
+**Since then** the first **Wrong if** was gone looking for instead of waited
+for, on 2026-08-02, and the classification did carry it: a declared line was
+read as the tool in front of it, so `phpstan analyse && php-cs-fixer fix` and
+four shapes like it answered `check` while rewriting the sources. The **Assumed**
+held per tool and broke on the line — chaining is the convention in a
+`package.json`, where `tsc --noEmit && vite build` is one script. Every command
+on a line is read now, and `ProjectTest::aCommandThatWritesIsNeverReportedAsACheck`
+holds the writers to never getting that answer, which is what makes waiting for
+a run to report a modified checkout unnecessary. The decision stands: what was
+wrong was the reading, not that the declaration can be read.

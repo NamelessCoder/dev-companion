@@ -92,6 +92,111 @@ final class PackageSourcesTest extends TestCase
     }
 
     /**
+     * What an upgrade audit decides on, from the entry that states it —
+     * `D-ANS-020`. The wordings are the corpus's own and the clause wraps in
+     * the file, so the whole text is matched rather than a line.
+     */
+    #[Test]
+    public function aDeprecationSaysWhichVersionItStopsWorkingIn(): void
+    {
+        $root = $this->composerProject();
+        $this->changelogEntry(
+            $root,
+            '14.2',
+            'Deprecation-109412-FormYamlConfigurationRegistration',
+            'Deprecation: #109412 - TypoScript-based form YAML registration',
+            [],
+            "The TypoScript-based paths will still be loaded during the deprecation period\nbut will be removed in TYPO3 v15.0.",
+        );
+        $this->changelogEntry(
+            $root,
+            '13.4',
+            'Deprecation-105297-DeprecateTableoptionsConnectionConfiguration',
+            'Deprecation: #105297 - Tableoptions connection configuration',
+            [],
+            'The keys are deprecated and will be removed with TYPO3 v15 (or later) as breaking change.',
+        );
+        Instance::discoverFrom($root);
+
+        $result = Registry::call('typo3_changelog_lookup', ['type' => 'deprecation']);
+
+        self::assertSame(['15.0', '15'], array_column($result->data['entries'], 'removal'));
+        self::assertStringContainsString('(#109412) — removed in v15.0', $result->text);
+        // The rule is the default and the entry is what carries the exception.
+        // This one skips a major, and on `.checkouts/14.3` the core kept it.
+        self::assertStringContainsString('(#105297) — removed in v15', $result->text);
+    }
+
+    /**
+     * An entry that states no removal is the ordinary case — 31 of the 75
+     * deprecations of 14 — and an empty field beside a populated one is read as
+     * "no removal planned", which is what `D-ANS-009` was built against. So the
+     * rule that covers the silence travels with the answer, as data and not
+     * only as text: `R-ANS-002`.
+     */
+    #[Test]
+    public function whereTheEntryStatesNoRemovalTheRuleTravelsWithTheAnswer(): void
+    {
+        $root = $this->composerProject();
+        $this->changelogEntry($root, '14.1', 'Deprecation-108667-DeprecateCommandNameAlreadyInUseException', 'Deprecation: #108667 - Deprecate CommandNameAlreadyInUseException', []);
+        $this->changelogEntry($root, '14.0', 'Feature-2-SomethingNew', 'Feature: #2 - Something new', []);
+        Instance::discoverFrom($root);
+
+        $deprecation = Registry::call('typo3_changelog_lookup', ['type' => 'deprecation']);
+        self::assertSame('', $deprecation->data['entries'][0]['removal']);
+        self::assertStringContainsString('keeps working until the next major release', $deprecation->data['removalRule']);
+        self::assertStringContainsString('not a promise that no removal is planned', $deprecation->text);
+
+        // An answer carrying no deprecation has nothing for the rule to answer.
+        self::assertArrayNotHasKey('removalRule', Registry::call('typo3_changelog_lookup', ['type' => 'feature'])->data);
+    }
+
+    /**
+     * A removal clause in the prose is not this entry's removal by being there.
+     * Three shapes are in `.checkouts/14.3`: a Feature announcing what replaces
+     * a deprecated mechanism and stating that mechanism's removal, a 13.3
+     * deprecation whose subject "will be removed with v5", which is Fluid
+     * standalone, and an entry recounting what an earlier release already
+     * removed before naming its own. What tells them apart is the type of the
+     * entry, and that a removal is later than the version it was released in.
+     */
+    #[Test]
+    public function aRemovalClauseThatIsNotThisEntrysIsNotReadAsOne(): void
+    {
+        $root = $this->composerProject();
+        $this->changelogEntry(
+            $root,
+            '14.2',
+            'Feature-109412-FormYamlAutoDiscovery',
+            'Feature: #109412 - Auto-discovery of form YAML configurations',
+            [],
+            "This registration mechanism has been deprecated and will be removed in\nTYPO3 v15.0.",
+        );
+        $this->changelogEntry(
+            $root,
+            '13.4',
+            'Deprecation-1-Backreference',
+            'Deprecation: #1 - Backreference',
+            [],
+            "The hook it replaced was removed in v12.4. The interface itself will be\nremoved in TYPO3 v15.0.",
+        );
+        $this->changelogEntry(
+            $root,
+            '13.3',
+            'Deprecation-104223-FluidStandaloneMethods',
+            'Deprecation: #104223 - Fluid standalone methods',
+            [],
+            'The methods log a deprecation level error with Fluid standalone v4, and will be removed with v5.',
+        );
+        Instance::discoverFrom($root);
+
+        $result = Registry::call('typo3_changelog_lookup', []);
+
+        self::assertSame(['109412', '1', '104223'], array_column($result->data['entries'], 'issue'));
+        self::assertSame(['', '15.0', ''], array_column($result->data['entries'], 'removal'));
+    }
+
+    /**
      * The shape two sessions reported from two checkouts, and the one a caller
      * actually types: the thing has a name with separators in it, and the
      * changelog file spells that name apart. Every one of these has an entry in
@@ -243,7 +348,7 @@ final class PackageSourcesTest extends TestCase
     }
 
     /** @param array<int, string> $tags */
-    private function changelogEntry(string $root, string $version, string $name, string $title, array $tags): void
+    private function changelogEntry(string $root, string $version, string $name, string $title, array $tags, string $description = 'Description'): void
     {
         $path = $root . '/vendor/typo3/cms-core/Documentation/Changelog/' . $version;
         if (!is_dir($path)) {
@@ -256,7 +361,7 @@ final class PackageSourcesTest extends TestCase
             $title,
             str_repeat('=', mb_strlen($title)),
             '',
-            'Description',
+            $description,
             '',
             $tags === [] ? '' : '..  index:: ' . implode(', ', $tags),
         ]));

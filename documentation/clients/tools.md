@@ -1311,10 +1311,11 @@ was released in. This is the first stop when building on a major you have not
 built on recently, not only a lookup after the fact — what separates a
 current answer from a two-major-old one is written down here and almost nowhere
 else. Answers "what did this version deprecate", "what changed about X", "which
-release introduced Y". Read from the core package on disk, so it covers exactly
-the versions that installation ships and grows with a Composer update. Every
-word of the query has to be carried by an entry; narrow further with type and
-version.
+release introduced Y". A deprecation carries the version it stops working in
+where the entry states one, and the rule that answers the rest beside it. Read
+from the core package on disk, so it covers exactly the versions that
+installation ships and grows with a Composer update. Every word of the query
+has to be carried by an entry; narrow further with type and version.
 
 `readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: false`
 
@@ -1357,10 +1358,17 @@ version.
     released in.
   - `issue` *(string, required)* — Forge issue number.
   - `title` *(string, required)*
+  - `removal` *(string, required)* — The version a Deprecation states the
+    deprecated thing stops working in — what an upgrade decides on. Empty on
+    the other three types, and on a deprecation whose entry states none, which
+    is most of a major and is not "no removal planned": removalRule is what
+    answers it there.
   - `tags` *(array of string, required)* — Index tags. FullyScanned or
     PartiallyScanned means the extension scanner has a matcher for it.
   - `file` *(string, required)* — EXT: reference of the entry, to read
     the description and the migration.
+- `removalRule` *(string)* — When a deprecation stops working where the
+  entry itself does not say. Returned where the answer carries a deprecation.
 - `versions` *(array of string)* — The versions this installation ships
   changelog entries for, newest first. Anything outside them is not in this
   answer.

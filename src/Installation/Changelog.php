@@ -107,16 +107,18 @@ final class Changelog
     }
 
     /**
-     * The title and the index tags a matched entry carries, read from the file.
+     * The title, the index tags and the stated removal a matched entry carries,
+     * read from the file.
      *
-     * @param array{file: string} $entry
-     * @return array{title: string, tags: array<int, string>}
+     * @param array{file: string, version: string, type: string} $entry
+     * @return array{title: string, tags: array<int, string>, removal: string}
      */
     public static function read(array $entry): array
     {
+        $contents = (string) file_get_contents($entry['file']);
         $title = '';
         $tags = [];
-        foreach (preg_split('/\R/', (string) file_get_contents($entry['file'])) ?: [] as $line) {
+        foreach (preg_split('/\R/', $contents) ?: [] as $line) {
             // "Deprecation: #107208 - <f:debug.render> ViewHelper" — the type
             // and the issue are fields of their own, so the title is what is
             // left of the line.
@@ -129,7 +131,52 @@ final class Changelog
             }
         }
 
-        return ['title' => $title, 'tags' => $tags];
+        return ['title' => $title, 'tags' => $tags, 'removal' => self::removal($contents, $entry)];
+    }
+
+    /**
+     * The version this entry states its subject stops working in, empty where
+     * it states none.
+     *
+     * There is no field to read: the removal is a clause in the Description,
+     * written freely — "will be removed in TYPO3 v15.0", "will be removed with
+     * v15", "marked for removal in v15" are all in `.checkouts/14.3`, and the
+     * sentence wraps, so the whole text is matched rather than a line. 44 of
+     * the 75 deprecations of 14 state one that way and 31 state none, which is
+     * why an empty answer here is the ordinary case rather than a failure.
+     *
+     * Only a Deprecation states one about itself. Ten entries of the other
+     * three types carry the same clause about something else: `14.2`
+     * Feature-109412 announces the replacement and says the mechanism it
+     * replaces will be removed in v15.0, which is the deprecation's removal
+     * and not the feature's.
+     *
+     * What a number has to survive is being later than the version the entry
+     * was released in. Two things in the corpus are not this entry's removal
+     * and read like one: a 13.3 deprecation says its subject "will be removed
+     * with v5", which is Fluid standalone, and an entry recounting what an
+     * earlier release already removed carries that release's number.
+     *
+     * @param array{version: string, type: string} $entry
+     */
+    private static function removal(string $contents, array $entry): string
+    {
+        if ($entry['type'] !== 'Deprecation') {
+            return '';
+        }
+
+        preg_match_all(
+            '/\b(?:will\s+be\s+)?(?:removed|removal)\s+(?:in|with|for|from)\s+(?:TYPO3\s+)?v?(\d+(?:\.\d+)?)\b/i',
+            $contents,
+            $matches,
+        );
+        foreach ($matches[1] as $stated) {
+            if (version_compare($stated, $entry['version'], '>')) {
+                return $stated;
+            }
+        }
+
+        return '';
     }
 
     /** "ExperimentalBackendViewHelpers" as the words it is made of. */

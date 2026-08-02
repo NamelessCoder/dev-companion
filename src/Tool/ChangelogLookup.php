@@ -19,6 +19,26 @@ use Typo3CmsMcp\Search\LabelSearch;
  */
 final class ChangelogLookup extends ReadOnlyTool
 {
+    /**
+     * What an entry that states no removal leaves to be said.
+     *
+     * The removal version is what an upgrade audit decides on, and a field
+     * carrying only what the entry states is empty for 31 of the 75
+     * deprecations of one major. An empty field beside a populated one is read
+     * as "no removal planned" — the silence-as-verdict failure `D-ANS-009` was
+     * built against — so the rule that covers the silence travels with the
+     * answer, as data and not only as text: a client that renders
+     * `structuredContent` and drops the text block is what `R-ANS-002` is
+     * written against.
+     *
+     * The rule is stated, never applied per entry. `13.4` #105297 names v15 and
+     * skips v14, and the core kept it: a number derived from the rule would
+     * have been wrong there, in the field a caller acts on.
+     */
+    private const REMOVAL_RULE = 'A deprecated API keeps working until the next major release. An entry that '
+        . 'states a removal version overrides that, and some state one more than a major away. An empty removal '
+        . 'is what the entry states, not a promise that no removal is planned.';
+
     public static function name(): string
     {
         return 'typo3_changelog_lookup';
@@ -26,7 +46,7 @@ final class ChangelogLookup extends ReadOnlyTool
 
     public static function description(): string
     {
-        return 'Search the TYPO3 changelog of the installation you are working in: one entry per breaking change, deprecation, feature and important note, in the version it was released in. This is the first stop when building on a major you have not built on recently, not only a lookup after the fact — what separates a current answer from a two-major-old one is written down here and almost nowhere else. Answers "what did this version deprecate", "what changed about X", "which release introduced Y". Read from the core package on disk, so it covers exactly the versions that installation ships and grows with a Composer update. Every word of the query has to be carried by an entry; narrow further with type and version.';
+        return 'Search the TYPO3 changelog of the installation you are working in: one entry per breaking change, deprecation, feature and important note, in the version it was released in. This is the first stop when building on a major you have not built on recently, not only a lookup after the fact — what separates a current answer from a two-major-old one is written down here and almost nowhere else. Answers "what did this version deprecate", "what changed about X", "which release introduced Y". A deprecation carries the version it stops working in where the entry states one, and the rule that answers the rest beside it. Read from the core package on disk, so it covers exactly the versions that installation ships and grows with a Composer update. Every word of the query has to be carried by an entry; narrow further with type and version.';
     }
 
     public static function inputSchema(): array
@@ -54,9 +74,11 @@ final class ChangelogLookup extends ReadOnlyTool
                 'version' => Schema::string('The version directory it was released in.'),
                 'issue' => Schema::string('Forge issue number.'),
                 'title' => Schema::string(),
+                'removal' => Schema::string('The version a Deprecation states the deprecated thing stops working in — what an upgrade decides on. Empty on the other three types, and on a deprecation whose entry states none, which is most of a major and is not "no removal planned": removalRule is what answers it there.'),
                 'tags' => Schema::listOf(Schema::string(), 'Index tags. FullyScanned or PartiallyScanned means the extension scanner has a matcher for it.'),
                 'file' => Schema::string('EXT: reference of the entry, to read the description and the migration.'),
-            ], ['type', 'version', 'issue', 'title', 'tags', 'file'])),
+            ], ['type', 'version', 'issue', 'title', 'removal', 'tags', 'file'])),
+            'removalRule' => Schema::string('When a deprecation stops working where the entry itself does not say. Returned where the answer carries a deprecation.'),
             'versions' => Schema::listOf(Schema::string(), 'The versions this installation ships changelog entries for, newest first. Anything outside them is not in this answer.'),
             'answeredBy' => Schema::answeredBy(),
         ], ['query', 'matchCount', 'entries', 'versions', 'answeredBy'], ['query']);
@@ -116,6 +138,7 @@ final class ChangelogLookup extends ReadOnlyTool
                 'version' => $entry['version'],
                 'issue' => $entry['issue'],
                 'title' => $read['title'] === '' ? $entry['source'] : $read['title'],
+                'removal' => $read['removal'],
                 'tags' => $read['tags'],
                 'file' => 'EXT:core/Documentation/Changelog/' . $entry['version'] . '/' . $entry['key'] . '.rst',
             ];
@@ -197,7 +220,14 @@ final class ChangelogLookup extends ReadOnlyTool
             );
         }
         foreach ($entries as $entry) {
-            $lines[] = sprintf('- %s %s: %s (#%s)', $entry['version'], $entry['type'], $entry['title'], $entry['issue']);
+            $lines[] = sprintf(
+                '- %s %s: %s (#%s)%s',
+                $entry['version'],
+                $entry['type'],
+                $entry['title'],
+                $entry['issue'],
+                $entry['removal'] === '' ? '' : sprintf(' — removed in v%s', $entry['removal']),
+            );
             $lines[] = '  ' . $entry['file'] . ($entry['tags'] === [] ? '' : ' — ' . implode(', ', $entry['tags']));
         }
         $lines[] = '';
@@ -205,13 +235,19 @@ final class ChangelogLookup extends ReadOnlyTool
             . 'FullyScanned or PartiallyScanned has an extension scanner matcher behind it, so the Install Tool can '
             . 'find the call sites for you.';
 
-        return ToolResult::create(implode("\n", $lines), [
+        $data = [
             'query' => $query,
             'matchCount' => count($matching),
             'tags' => array_keys($tags),
             'entries' => $entries,
             'versions' => $versions,
             'answeredBy' => 'packages',
-        ]);
+        ];
+        if (in_array('Deprecation', array_column($entries, 'type'), true)) {
+            $lines[] = self::REMOVAL_RULE;
+            $data['removalRule'] = self::REMOVAL_RULE;
+        }
+
+        return ToolResult::create(implode("\n", $lines), $data);
     }
 }

@@ -1,6 +1,8 @@
 # Read one prose section on an LTS for the `D-VER-002` failure
 
 **Serves:** decisions/
+**Branch:** todo/read-one-prose-section-on-an-lts-for-the-d-ver-2
+**Claimed:** 2026-08-02
 
 The prose is not bound and says which half it is, which fails when a section
 misleads on an LTS badly enough that the sentence does not save it — and that

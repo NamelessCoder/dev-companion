@@ -1,6 +1,8 @@
 # Commit in a project repository and see whether `D-GUI-002` holds
 
 **Serves:** decisions/
+**Branch:** todo/commit-in-a-project-repository-and-see-whether-d-gui-2
+**Claimed:** 2026-08-02
 
 The commit workflow is asked for rather than inferred, and the entry is wrong if
 agents commit in a project repository, never pass the argument, and the hard

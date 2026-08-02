@@ -1,6 +1,8 @@
 # Ask `D-SCO-002` a core task that names neither a sysext path nor Gerrit
 
 **Serves:** decisions/
+**Branch:** todo/ask-d-sco-002-a-core-task-that-names-neither-a-sysext
+**Claimed:** 2026-08-02
 
 A core-only intent asks for evidence rather than silence, and the cost is
 stated: a contributor whose task text names neither gets the submission rules as

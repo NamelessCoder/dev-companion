@@ -1,6 +1,8 @@
 # Try `D-SCO-005` from a checkout that is not the one being worked on
 
 **Serves:** decisions/
+**Branch:** todo/try-d-sco-005-from-a-checkout-that-is-not-the-one-being
+**Claimed:** 2026-08-02
 
 The installation is evidence about the task and the weakest kind, and two shapes
 break it: a client run from a site installation while the core sits elsewhere,

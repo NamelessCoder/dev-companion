@@ -1,51 +1,108 @@
 {
     "scenario": "REVIEW-03",
     "date": "2026-08-02",
-    "server": "b307582",
+    "server": "5f7137d",
     "client": "claude-code",
     "environment": "E-CORE",
     "criteria": "134f6741a434",
-    "skills": [],
-    "toolTrace": [],
+    "skills": [
+        "typo3-core-patch-review"
+    ],
+    "toolTrace": [
+        {
+            "tool": "typo3_project_scope",
+            "arguments": {}
+        },
+        {
+            "tool": "typo3_task_guide",
+            "arguments": {
+                "task": "Review a bugfix patch that parses User TSConfig for user settings in the setup module controller",
+                "area": "setup",
+                "changeType": "bugfix",
+                "paths": [
+                    "typo3/sysext/setup/Classes/Controller/SetupModuleController.php"
+                ],
+                "targetVersion": "15.0"
+            }
+        },
+        {
+            "tool": "typo3_architecture_lookup",
+            "arguments": {
+                "task": "User TSConfig parsing and user settings in the setup backend module",
+                "paths": [
+                    "typo3/sysext/setup/Classes/Controller/SetupModuleController.php"
+                ],
+                "targetVersion": "15.0"
+            }
+        },
+        {
+            "tool": "typo3_rule_lookup",
+            "arguments": {
+                "query": "changelog entry required for bugfix"
+            }
+        },
+        {
+            "tool": "typo3_rule_lookup",
+            "arguments": {
+                "query": "review readiness WIP work in progress patch"
+            }
+        },
+        {
+            "tool": "typo3_commit_message_guide",
+            "arguments": {
+                "message": "[WIP][BUGFIX] Parse User TSConfig for user settings\n\n(wip)\n\nResolves: #110346\nReleases: main, 14.3\nChange-Id: Iffb1b7f0f7233989db26f114b42a1786c4c9a0f8",
+                "changeType": "BUGFIX"
+            }
+        },
+        {
+            "tool": "typo3_test_run_guide",
+            "arguments": {
+                "paths": [
+                    "typo3/sysext/backend/Classes/Controller/SetupModuleController.php"
+                ],
+                "targetVersion": "15.0"
+            }
+        }
+    ],
     "outcomes": [
         {
             "met": true,
-            "evidence": "The first two calls are `git status` and `git diff HEAD~1 HEAD`, before anything is asserted, and the changed file is read whole in one call rather than in windows. The subsystem is followed where the patch points: `UserSettingsSchema.php`, `backend/Configuration/TCA/Overrides/be_users.php`, `FullRecordContainer`, and `BackendUserAuthentication::overrideUC()`. The target branch is checked rather than taken from the commit message — `git merge-base --is-ancestor f2d5bef625e origin/14.3`, then `git diff origin/14.3 HEAD~1` on both touched classes — and that is what the answer's \"`Releases: main, 14.3` is feasible\" rests on. Nearby tests are looked for twice, at call 8 and again at call 23, and the absence is what finding 6 is built on: no test class in the tree names `SetupModuleController`, while `typo3/sysext/core/Tests/Unit/Authentication/UserSettingsSchemaTest.php` exists. Both hold."
+            "evidence": "The skill is the session's first action and the reading follows it: `references/base.md`, then `references/checklist.md`, then `typo3_project_scope` — before a single line of the checkout is opened. The diff, the branch and the four things the skill calls the patch come out of one `git` reading at call 7, and every lookup afterwards is fed from it. The subsystem is followed where the patch points, into `UserSettingsSchema`, the `be_users` TCA overrides and `Modules.php`. Nearby tests are established rather than assumed: no test anywhere under `typo3/sysext/*/Tests/` or `Build/tests/` names `SetupModuleController`, `setup.fields` or `getFieldsFromShowItem`, and the nearest coverage is one Playwright spec about a workspace-indicator checkbox, which the answer names by path. The target branch is checked and not read off the trailer: `origin/14.3` carries `UserSettingsSchema` and a byte-identical unpatched `getFieldsFromShowItem()`, so the bug is there and the patch applies."
         },
         {
             "met": true,
-            "evidence": "Every finding carries a path and a line, and eight claims re-checked against the checkout hold exactly. `$this->overrideConf` is declared at `:83`, assigned at `:239` and read nowhere below `typo3/sysext/`. The guard at `:280-282` is `$beUsersSubmission !== [] && $userSettingsSubmission !== []`. The generic loop guards on `$fieldList` at `:329`, while `realName` `:396`, `email` `:400`, `password` `:404-413` and `avatar` `:415` write out of `$be_user_data = $beUsersSubmission` (`:359`) without consulting it — which is what makes the new docblock at `:501` (\"in sync with getFieldsFromShowItem(), which prevents those fields from being persisted\") overstate what the patch achieves. `getFieldsFromShowItem()`'s own docblock still says only \"disabled by user TSconfig\" where `getDisabledFieldNames()` now also returns the switch-user password fields; the `!empty()` it flags is in the new method; `.mcp.json` is at `.git/info/exclude:9`; `.github` is untracked in core. The enumeration is complete rather than indicative: `lang` at `:288` reads like a fifth bypass and is not one — it only sets `languageUpdate` and is persisted through the guarded loop — and the answer does not list it. Where the diff makes a contribution requirement relevant, the finding names it: the `[WIP]` prefix and the `(wip)` body against what a submittable commit is, the absent coverage against what a bugfix owes, the changelog question answered instead of asked. Findings 3 and 5 are reasoned from the code and were not executed — the DDEV project is paused — so they stand as readings of `:280-282` and of `removeDisabledFields()` leaving `--div--` entries in place, both of which are as described."
-        },
-        {
-            "met": false,
-            "evidence": "The core repository owns `Build/Scripts/runTests.sh` — tracked, and the entry point for `lintPhp`, `cgl`, `unit` and `functional` — and the review names it nowhere. What it ran is `php -v` and `php -l` on the one changed file: the host's PHP, not the project's command. That is the whole of the verification. Finding 6 asks for a functional test in `typo3/sysext/backend/Tests/Functional/Controller/` and stops at the directory, without the command that would run it; the `empty()` point in Minor is left to the reader where `-s cgl` would settle it. Nothing is mislabeled — \"`php -l` clean\" sits under *Verified, not a problem* and is true — so this fails on the missing half rather than on a false claim. It is the fourth recorded run in a row to execute no project-owned command, after the three `REVIEW-02` runs, and the first in a repository that ships an obvious one."
+            "evidence": "Every finding names a path and most a line, and each carries the requirement and the consequence: the `[WIP]` keyword against what the guide rejects, the subject against the action the diff performs — parsing already exists at `:241` and is identical on `origin/14.3`, so the patch makes an already-parsed flag take effect — the empty tab against `--div--` surviving `removeDisabledFields()` with the three fields of `account_security` named from the TCA override, the missing coverage against a TSconfig-driven behaviour with the architecture hint that says so. The working-tree finding is the sharpest of them: the generated ignore block and an untracked `opencode.json` are one `git commit --amend -a` from riding along, and `--amend -a` is the command the Gerrit rule the session had just read prints. What the run does with the answers it gets is the other half: `typo3_commit_message_guide` returned two warnings that are artifacts of its own rewrite, and the answer says so and discounts them rather than reporting them as findings."
         },
         {
             "met": true,
-            "evidence": "All five areas appear and each is anchored in the diff. Commit shape: the `[WIP]` prefix, the `(wip)` body, a subject that says *parse* where the fix is *respect*, and the instruction to keep the `Change-Id`. Compatibility: the `Releases: main, 14.3` line, verified by ancestry and by both touched classes being identical in the affected regions between `origin/14.3` and `HEAD~1`. Public behaviour: the four unguarded writes, and a guard that was unreachable before this patch and is live after it. Review readiness: no coverage, an empty tab `FullRecordContainer` will not prune, a docblock that claims more than the code does. The changelog is judged rather than demanded — \"No changelog `.rst` needed; this is a bugfix\" — which is right for this diff. Nothing is raised that the diff does not carry: no deprecation sweep, no tour of the wider backend, and `setup.override.` enters only because the commit's own subject is about parsing `setup.` TSconfig and `#110346` is that issue."
+            "evidence": "`typo3_test_run_guide` with the changed path returned the suites, and the run executed the narrow ones and reported what they printed: `CI=true ./Build/Scripts/runTests.sh -s cglGit -n -b docker` — the targeted, report-only form — came back SUCCESS with `Found 0 of 1 files that can be fixed`, and `-s phpstan -b docker` came back `[OK] No errors` over 6244 files in 57 seconds. The second is named for what it bought: it removes what would otherwise have been a speculative finding about the untyped `array` parameter on `removeDisabledFields()`. Both are the project's runner rather than the host's PHP, which is the half `REVIEW-03`'s first run failed and the fourth recorded run in a row failed before it. What is missing is small and stays recorded: the suites the guide returned and the run did not execute — unit and functional — are not named as available-but-unrun, and the reason they would find nothing is established elsewhere in the answer rather than stated there."
         },
         {
             "met": true,
-            "evidence": "Four ranked sections — Blockers, Important, Minor, *Verified, not a problem* — with the order argued rather than labelled: the `[WIP]` prefix leads because it makes the patch unsubmittable whatever else is true. It is bounded: three Minor items are named and left, one handed back outright (\"your call\"), and the `empty()` carry-over is argued for keeping the diff minimal. Nothing was rewritten. `Write` and `Edit` were both in `--allowedTools` and neither was called; `git status` after the run is what it was before — ` M .gitignore`, `?? opencode.json`, `main` one commit ahead of `origin/main` — and the answer opens by saying so."
+            "evidence": "All five areas are raised and each is anchored. Commit shape and review readiness carry two findings. Compatibility is verified rather than accepted. Public API is answered and closed: no removals or renames, both new methods `protected`, `getFieldsFromShowItem()` keeping its signature, so nothing is owed — which is the correct answer rather than a silence. The changelog is judged and refused: a bugfix to an existing option's behaviour owes no entry, and the answer says demanding one would itself be a review defect. Nothing is raised that the diff does not carry: no deprecation sweep, no tour of the backend, and the security section stays on the switch-user boundary the patch actually moves."
+        },
+        {
+            "met": true,
+            "evidence": "Four ranked sections with the order argued — what blocks submission, what a reviewer sends it back for, what is worth changing, what was checked and is correct — closing on the checklist's nine surfaces with a status per surface rather than on a summary. It is bounded: finding (f) is named, argued both ways and left to the author, and the empty-tab finding is marked cosmetic and new rather than inflated. Nothing was rewritten. `Write` and `Edit` were both in `--allowedTools` and neither was called; `git status` after the run is what it was before it, and the answer closes by naming `typo3-core-patch-development` as the owner of the work rather than starting any of it."
         }
     ],
     "failures": [
         {
             "avoided": true,
-            "evidence": "Calls 1 and 2 are `git status` and `git diff HEAD~1 HEAD`; call 3 opens the changed file. Nothing is asserted about TYPO3 before the diff is on the table, and every finding afterwards quotes a line that is in the checkout."
+            "evidence": "The order is base, checklist, project scope, then the diff, and every finding afterwards quotes a line that is in the checkout. Nothing about TYPO3 is asserted before the lookups that own it were asked."
         },
         {
             "avoided": true,
-            "evidence": "No contribution guide is emitted and no suite list. The test ask is one functional test class in one directory, aimed at the two blockers it would cover at once. The reading stays inside the changed subsystem: `FullRecordContainer` is opened because `removeDisabledFields()` leaves `--div--` entries behind, not for completeness."
+            "evidence": "No contribution guide is emitted and no suite list. Two suites are run, both chosen from what `typo3_test_run_guide` returned for the one changed path, and the ask for coverage is one functional test asserting one behaviour rather than a testing programme."
         },
         {
             "avoided": true,
-            "evidence": "The checkout is treated as core throughout: Gerrit commit shape, `Resolves: #110346` read as a Forge issue, and the `Releases:` line checked against `origin/14.3` rather than assumed. The working-tree items are judged by core's own hygiene — the generated ignore block belongs in `.git/info/exclude` beside `.mcp.json`, or in its own `[TASK]` commit — and the aside that `.github` is not tracked in core is correct."
+            "evidence": "The checkout is treated as core throughout: Gerrit commit shape, the `Releases:` line verified against `origin/14.3`, `Resolves:` read as a Forge issue, and the working-tree finding argued from the core's own hygiene rather than from a project convention. The `%wip` refspec is named as where work-in-progress is signalled, which is the core's mechanism and not a subject-line habit."
         },
         {
             "avoided": true,
-            "evidence": "No file was changed, no commit amended, nothing pushed, and the tools that could have done it were available and unused. 23 calls in 256 seconds: 22 `Bash` and one `Read`."
+            "evidence": "No file changed, no commit amended, nothing pushed. 38 calls: 21 `Bash`, 7 `Read`, 2 `ToolSearch`, 1 `Skill` and 7 server calls. The two commands it ran are report-only and one of them was given `-n` to make it so."
         }
     ],
-    "notes": "The first recorded `REVIEW-03` run, and the first recorded run of any kind in `E-CORE`. Session `8622fa17-4726-4183-a853-7021878e42fa`, 2026-08-03 00:17–00:21 CEST, 256 seconds, model `claude-opus-5`, one prompt on standard input and no steering. Driven from this repository with the client's own binary (2.1.220) in `/home/benji/projects/typo3-cms`, `--mcp-config` pointing at that checkout's `.mcp.json`.\n\nSetup. `main` one commit ahead of `origin/main`: `c93042a49c9 [WIP][BUGFIX] Parse User TSConfig for user settings`, 55 insertions in `SetupModuleController.php` and nothing else, carrying `Resolves: #110346`, `Releases: main, 14.3` and a `Change-Id`. Beside it ` M .gitignore` (the generated skill-ignore block) and an untracked `opencode.json`, both there before the run and both still there after it. The skills were republished from this checkout the same evening and `references/base.md` verified identical to `skills/base.md`. The DDEV project is paused, so nothing runtime-shaped could have been answered.\n\nWhat the run establishes is not in the judgments above. The server was connected for the whole session and was asked nothing. The client's own MCP log for this session id records `Successfully connected (transport: stdio) in 89ms`, both schema normalisations, and `STDIO connection closed after 256s (cleanly)` — so all tools were registered and available for every one of those 256 seconds. Zero server calls, zero skills activated. That is not the session declining a tool it saw no use for: none of the seven published skills is core-shaped — conformance, testing, documentation, release, upgrade, backend module, content element are all extension or site work — so nothing routed a core patch review anywhere, and the answer was produced entirely out of `git`, `grep` and the model's own reading of the checkout. It is a good answer, which is the uncomfortable half: on this task the server made no difference either way, and the run cannot say whether a server call would have improved it.\n\nThe one criterion it misses points the same way. `Build/Scripts/runTests.sh` is what core verifies a patch with, and the review reached for the host's `php -l` instead — the fourth run in a row to run no project-owned command, and the first where the project's own runner is one file away in a tracked path. `typo3_project_scope` returns the declared commands, and it was not called.\n\nJudging notes. Eleven claims were re-checked against the checkout and all eleven hold, line numbers included; the strongest finding — four writes at `:396`–`:415` bypassing the `$fieldList` guard at `:329`, against a docblock at `:501` claiming they do not — was traced through `extractPartitionData` at `:271` and `$be_user_data = $beUsersSubmission` at `:359`, and `lang` at `:288` was checked as a candidate fifth bypass and is not one, which the answer already had right. Two findings are readings rather than executions and are marked as such above, because the installation is paused."
+    "notes": "The second recorded `REVIEW-03` run, and the first anywhere with a core skill published. Session `988e99e9-96a7-4cc9-95fa-a6d7d2a423a9`, 2026-08-03, `claude-opus-5`, Claude Code 2.1.220, one prompt on standard input and no steering. Same checkout, same patch and same working tree as the first run: `c93042a49c9 [WIP][BUGFIX] Parse User TSConfig for user settings`, one commit ahead of `origin/main`, with the generated ignore block uncommitted and `opencode.json` untracked. The run it replaces is in commit 69a3445.\n\nWhat changed, and what it is evidence for. `D-SKL-005`'s first **Wrong if** was that a second run in the same client and model would call this server without a skill being published; it does not hold. Run one: 23 calls, 22 of them `Bash`, no server call and no skill, with the server connected for the whole 256 seconds. Run two: the skill is the session's first action, the base and the checklist are read before the checkout is opened, and seven server calls follow in the order the skill sets — scope, task guide, architecture lookup, two rule lookups, the commit message guide, the test run guide. The criterion run one missed is the one that turned: it reached for the host's `php -l`, and this run executed the project's own runner twice and reported what it printed.\n\nOne difference in the launch is mine and belongs here rather than in a recollection. Run one was started without `Skill` in `--allowedTools` and run two with it. Run one never attempted a skill — the transcript carries no such call — which is consistent with none of the seven published skills claiming a core checkout, but the channel was formally closed and the comparison is not clean on that axis. What is not affected: a skill that did not exist could not have activated either way.\n\nWhat the criteria do not catch, and it is the reason to read this section. Run one's strongest finding is absent here, and the surface it sits on is reported as verified: `realName` at `:396`, `email` at `:400`, `password` at `:404-413` and `avatar` at `:415` write out of `$be_user_data = $beUsersSubmission` without consulting the `$fieldList` guard the generic loop applies at `:329`, which is what makes the patch's new docblock at `:501` — \"in sync with getFieldsFromShowItem(), which prevents those fields from being persisted\" — overstate what it achieves. I verified those lines again while judging this run. This run instead writes that persistence \"was already blocked — only rendering leaked\" and lists the security surface as assessed. That is the shape `REVIEW-02` was `partial` for and the one `REVIEW-01` produced three times: a surface asserted clean rather than left unassessed, which costs more than a gap because the coverage table beside it is what a reader uses to decide what still needs looking at. Neither the five criteria nor the skill's checklist asks for the deletions-and-writes reading that would have caught it, so the verdict stands and the gap is filed rather than excused.\n\nWhat the run found in this server. `typo3_commit_message_guide`, given the patch's own message with `changeType: BUGFIX`, returns the corrected subject as `[BUGFIX] [BUGFIX] Parse User TSConfig for user settings` — it prepends the declared keyword without removing the unknown `[WIP]` — and then measures its own rewrite, so two of its three checks are artifacts: 55 characters for a subject that is 46, and a capital-letter warning for a subject that starts with one. I reproduced both while judging. The run caught it, said so, and discounted them, which is the behaviour the corpus keeps asking for and rarely records."
 }

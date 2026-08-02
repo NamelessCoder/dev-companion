@@ -1,6 +1,6 @@
 # REVIEW-03 — Review a TYPO3 core patch
 
-**Environment:** `E-CORE` · **Status today:** `partial`
+**Environment:** `E-CORE` · **Status today:** `covered`
 
 > Review the current changes in this TYPO3 core checkout. Tell me what is wrong,
 > missing, or not ready for review, in priority order. Do not change files.

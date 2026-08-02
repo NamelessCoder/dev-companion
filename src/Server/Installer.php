@@ -90,6 +90,68 @@ final class Installer
             'mcp' => ['format' => 'toml', 'path' => '.grok/config.toml', 'key' => 'mcp_servers'],
         ],
     ];
+    /**
+     * What the client still needs before a tool in the entry just written can
+     * be called, said beside the line that reports the entry.
+     *
+     * Writing the file registers the server with nothing. A client that scopes
+     * project servers behind an approval has not been asked yet, and a session
+     * that was already open when the file was written is running against the
+     * configuration it started with — both end with an entry that is entirely
+     * correct and no tool in the session, which is where two sessions in one
+     * project went. Which of the two applies is the client's property and not
+     * this package's, so it is said per client and at the terminal, because the
+     * person who can finish the install is looking at one at that moment.
+     *
+     * Each line is what that client's own documentation says, read on
+     * 2026-08-02 and sourced per client in
+     * `documentation/clients/installing.md`. A client whose documentation does
+     * not answer says that rather than the likely answer: the sentence is acted
+     * on by somebody who cannot check it, and there a guess is indistinguishable
+     * from a fact. The two clients that need nothing say that too — "nothing is
+     * left" is the answer a reader most needs to be able to trust.
+     *
+     * @var array<string, string>
+     */
+    private const REMAINING = [
+        self::GENERIC => '.mcp.json is read by more than one client and what is left is each '
+            . 'one\'s own; install --agent=<client> says it for that client. Claude Code, which '
+            . 'reads this file at project scope, reads it when a session starts and asks you to '
+            . 'approve a project server the first time it sees one.',
+        'claude' => 'Claude Code reads .mcp.json when a session starts, so a session that was '
+            . 'already open does not have this entry yet, and it asks you to approve a project '
+            . 'server the first time it sees one: approve at that prompt or in /mcp, and run '
+            . 'claude mcp reset-project-choices if it was once refused.',
+        'amp' => 'Amp requires a workspace server in .amp/settings.json to be approved before it '
+            . 'runs: approve at the prompt when it is first detected, or run '
+            . 'amp mcp approve typo3-cms-mcp. amp mcp doctor names one still awaiting it.',
+        'copilot' => 'VS Code asks you to confirm that you trust a workspace server before it '
+            . 'starts it, so start it from the MCP view and confirm there. chat.mcp.autoStart, '
+            . 'still experimental, restarts it when this file changes.',
+        'cursor' => 'Cursor lists servers under Customize, where one can be toggled off, and asks '
+            . 'for approval before using an MCP tool. Its documentation does not say whether a '
+            . 'window that was already open reads a new .cursor/mcp.json, so check that list.',
+        'junie' => 'Junie enables a server imported from .junie/mcp/mcp.json by default. Its '
+            . 'documentation does not say whether an IDE that was already open reads a new one; '
+            . 'the list is Settings | Tools | Junie | MCP Settings.',
+        'codex' => 'Codex reads MCP servers from a project .codex/config.toml in trusted projects '
+            . 'only, so answer the trust prompt for this directory. Its documentation does not say '
+            . 'whether a running session reads the file again; codex mcp list reports what it has.',
+        'factory' => 'Droid reloads when an mcp.json changes, so this server is available '
+            . 'immediately and nothing is left here. Each of its tools is approved on first use, '
+            . 'and droid mcp permissions keeps that approval.',
+        'kiro' => 'Kiro applies a saved mcp.json and reconnects the server, so nothing is left '
+            . 'here. A tool that autoApprove does not name is still asked about on the call.',
+        'opencode' => 'opencode.json switches a server off with enabled: false, which this entry '
+            . 'does not. Its documentation does not say whether a session that was already open '
+            . 'reads the file again.',
+        'zed' => 'Zed documents context_servers in the file it opens with zed: open settings file '
+            . 'and says nothing about a project .zed/settings.json, so whether this entry is read '
+            . 'at all is unestablished — check the agent panel for the server.',
+        'grok' => 'Grok reads mcp_servers from a project .grok/config.toml, walking up to the git '
+            . 'root. Its documentation does not say whether a running session reads the file '
+            . 'again; grok mcp doctor reports what it has.',
+    ];
 
     public function __construct(
         private readonly string $project,
@@ -226,11 +288,28 @@ final class Installer
     /** @param array{format: string, path: string, key: string, shape?: string} $mcp */
     private function installAgentConfiguration(string $agent, array $mcp): string
     {
-        if ($mcp['format'] === 'toml') {
-            return $this->installTomlConfiguration($mcp['path'], $mcp['key']);
-        }
+        $written = $mcp['format'] === 'toml'
+            ? $this->installTomlConfiguration($mcp['path'], $mcp['key'])
+            : $this->installJsonConfiguration($mcp['path'], $mcp['key'], $mcp['shape'] ?? null, $agent);
 
-        return $this->installJsonConfiguration($mcp['path'], $mcp['key'], $mcp['shape'] ?? null, $agent);
+        return $written . $this->remaining($agent);
+    }
+
+    /**
+     * The step left, indented under the entry it belongs to.
+     *
+     * Under, rather than as a line of its own, because the run writes an entry
+     * per client and a sentence about one of them floating among nine successes
+     * would have to name which. It is said on every run and not only on the run
+     * that wrote the file: what is left is a property of the client and the
+     * session, and neither is changed by this command having found the entry
+     * already correct.
+     */
+    private function remaining(string $agent): string
+    {
+        $remaining = self::REMAINING[$agent] ?? '';
+
+        return $remaining === '' ? '' : "\n  " . wordwrap($remaining, 74, "\n  ");
     }
 
     private function installJsonConfiguration(

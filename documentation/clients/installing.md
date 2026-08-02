@@ -134,6 +134,83 @@ not the one that makes them visible.
 
 That writes the same `.mcp.json` shape with an absolute path.
 
+### A written entry is not a registered server
+
+The note above is one artefact over from the one every client install writes.
+Putting the entry on disk registers the server with nothing: a client that
+scopes project servers behind an approval has not been asked yet, and a session
+that was already open when the file was written is running against the
+configuration it started with. Both end with an entry that is entirely correct,
+a published skill naming eleven tools beside it, and no tool in the session —
+which is where two sessions in one project went, on 2026-07-29 and 2026-07-31.
+
+`install` and `update` print what follows under the line that reports the entry,
+so it is read at the terminal rather than here. What each client needs is the
+client's own property, so each line below is that client's own documentation,
+read on 2026-08-02, and a client whose documentation does not answer is left
+unestablished rather than filled in:
+
+- **Claude Code** (`.mcp.json`) — both. "Claude Code reads `.mcp.json` at
+  session start. Exit and restart the session after editing the file", and "the
+  first time Claude Code sees a project-scoped server, it asks you to approve
+  it". Approve at the prompt or in `/mcp`; a server once refused is reset with
+  `claude mcp reset-project-choices`.
+  ([quickstart](https://code.claude.com/docs/en/mcp-quickstart),
+  [reference](https://code.claude.com/docs/en/mcp))
+- **Amp** (`.amp/settings.json`) — an approval. "MCP servers in workspace
+  settings (`.amp/settings.json`) require explicit approval before they can
+  run", and "in the CLI, you'll be prompted to approve workspace servers when
+  they're first detected". `amp mcp approve typo3-cms-mcp` does it without the
+  prompt, and `amp mcp doctor` shows one `awaiting approval`.
+  ([manual](https://ampcode.com/manual))
+- **VS Code** (`.vscode/mcp.json`) — a trust confirmation. "When you add an MCP
+  server to your workspace or change its configuration, you need to confirm that
+  you trust the server and its capabilities before starting it." The experimental
+  `chat.mcp.autoStart` restarts the server when the configuration changes.
+  ([MCP servers](https://code.visualstudio.com/docs/copilot/customization/mcp-servers))
+- **Codex** (`.codex/config.toml`) — a trusted project. MCP servers can be
+  scoped "to a project with `.codex/config.toml` (trusted projects only)", so the
+  trust prompt for the directory is what admits them. Whether a running session
+  reads the file again is not documented; `codex mcp list` reports what it has.
+  ([MCP](https://learn.chatgpt.com/docs/extend/mcp))
+- **Kiro** (`.kiro/settings/mcp.json`) — nothing. "Changes to MCP configuration
+  apply automatically when you save the file" and "servers will reconnect". A
+  tool `autoApprove` does not name is still asked about on the call.
+  ([MCP configuration](https://kiro.dev/docs/mcp/configuration/))
+- **Droid** (`.factory/mcp.json`) — nothing. "Droid reloads automatically when an
+  `mcp.json` file changes, so new servers are available immediately." Each tool
+  is approved on first use, and `droid mcp permissions` keeps that approval.
+  ([MCP](https://docs.factory.ai/cli/configuration/mcp))
+- **Junie** (`.junie/mcp/mcp.json`) — no approval: servers "imported from the
+  `mcp.json` file are enabled by default". Whether an IDE that was already open
+  reads a new one is not documented; the list is *Settings | Tools | Junie | MCP
+  Settings*.
+  ([MCP configuration](https://junie.jetbrains.com/docs/junie-cli-mcp-configuration.html))
+- **Cursor** (`.cursor/mcp.json`) — unestablished. Servers are listed under
+  *Customize*, where one is toggled off, and "Cursor asks for approval before
+  using MCP tools by default" — which is the tool call, not the server. Whether
+  a window that was already open reads a new file is not documented.
+  ([MCP](https://cursor.com/docs/mcp))
+- **opencode** (`opencode.json`) — unestablished. `enabled: false` switches a
+  server off, which the written entry does not; whether a session that was
+  already open reads the file again is not documented.
+  ([MCP servers](https://opencode.ai/docs/mcp-servers/))
+- **Zed** (`.zed/settings.json`) — unestablished, and further than the others:
+  the documentation puts `context_servers` in the settings file opened with
+  `zed: open settings file` and says nothing about a project `.zed/settings.json`,
+  so whether the written entry is read at all is unconfirmed.
+  ([MCP](https://zed.dev/docs/ai/mcp))
+- **Grok** (`.grok/config.toml`) — unestablished. A project `.grok/config.toml`
+  does contribute `[mcp_servers]`, walking up to the git root; whether a running
+  session reads it again, and whether anything gates it, is not documented.
+  `grok mcp doctor` reports what it has.
+  ([MCP servers](https://docs.x.ai/build/features/mcp-servers))
+
+Antigravity and Pi receive skills only, so there is no entry and nothing to
+finish. Where a session has the entry and still offers no `typo3_` tool,
+[checking that it came up](#checking-that-it-came-up) separates the two halves:
+a server that answers there is not the missing piece.
+
 ## In a DDEV project
 
 Run the installer inside DDEV:

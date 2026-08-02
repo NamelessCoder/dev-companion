@@ -1,6 +1,6 @@
 ---
 id: R-DIS-023
-status: open
+status: held
 restsOn: [D-DIS-009]
 ---
 
@@ -31,6 +31,12 @@ second only after it had already audited a site package without it.
 
 ## Held by
 
-`not guarded`. Nothing reads the installer's output, and what the output would
-have to say is a property of each client rather than of this package — so a
-check can hold that something is said per client, and not that it is true.
+- `InstallerAgentSupportTest::everyClientWithAnEntryIsToldWhatIsLeftBeforeAToolCanBeCalled`
+
+What the output has to say is a property of each client rather than of this
+package, so that test holds that something is said — per client, on both
+commands, and on the line under the entry it is about — and not that it is
+true. What each line claims is sourced per client in
+[installing.md](../../documentation/clients/installing.md), from that client's
+own documentation, and a client whose documentation does not answer says so
+rather than being filled in.

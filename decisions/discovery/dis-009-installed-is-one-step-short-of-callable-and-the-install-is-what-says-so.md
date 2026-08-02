@@ -1,7 +1,7 @@
 ---
 id: D-DIS-009
 date: 2026-08-02
-status: open
+status: confirmed
 ---
 
 # D-DIS-009 — Installed is one step short of callable, and the install is what says so
@@ -30,9 +30,10 @@ with a correct entry beside it and found no tool they could call.
   .mcp.json in the working directory, so every call in this evaluation went
   through a hand-written stdio JSON-RPC wrapper". It filed that as a process
   note, was archived on the strength of its other half, and nobody judged it.
-  `feedback/2026-07-31-185900-during-an-audit-of-the-printworks-3d-site.md` is
-  the same failure on 2026-07-31, found the binary the same way, and found it
-  only after the audit had been written.
+  `feedback/archive/2026-07-31-185900-during-an-audit-of-the-printworks-3d-site.md`
+  is the same failure on 2026-07-31, found the binary the same way, and found it
+  only after the audit had been written. It was archived by the commit that
+  answered it.
 - What the command says when it finishes. Run into an empty directory on
   2026-08-02 it prints nine lines — one for `.mcp.json`, seven for the published
   skills, one for the `.gitignore` block — and every one of them is a past-tense
@@ -99,3 +100,30 @@ with a correct entry beside it and found no tool they could call.
 - A session reaches a skill with the entry present, no tool callable, and drives
   the binary by hand anyway rather than stopping. Then the gap was never in the
   install: the precondition is not being followed, and that is `D-SKL-001`.
+
+## Confirmed on 2026-08-02
+
+Of the four **Wrong if** branches, the second was the one that could be settled
+without another session, and it did not fire. Both mechanisms this entry
+inferred are documented behaviour of the client `site-new` records, read the
+same day in Claude Code's own manual: "Claude Code reads `.mcp.json` at session
+start. Exit and restart the session after editing the file", and "the first time
+Claude Code sees a project-scoped server, it asks you to approve it." So what is
+left is not nothing on the client that matters, and the two sessions were not a
+stale process — the **Assumed** bullet that inferred the client's side from what
+it did not do is now read from the client instead, for that client.
+
+Nor is it one sentence about restarting. Reading all eleven clients that get an
+entry established three different answers: Amp and VS Code gate a workspace
+server behind an approval or a trust confirmation of their own, Kiro and Droid
+reload a saved file and need nothing at all, and five — Cursor, opencode, Zed,
+Grok, and the Codex CLI beyond its trusted-project gate — do not answer the
+question in their documentation, which is recorded as unestablished rather than
+guessed. Per client is what the requirement had to be.
+
+The other three branches still need a session that nobody has had yet: whether a
+third report arrives after the line lands, and whether the line gets read as a
+failed install, are both things only a reader can show.
+[`R-DIS-023`](../../requirements/discovery/dis-023-an-install-says-what-is-left-before-a-tool-can-be-called.md)
+is held from here on, and `documentation/clients/installing.md` carries the
+per-client sources.

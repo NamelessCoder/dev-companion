@@ -1756,7 +1756,15 @@ three times over or not at all.
 - `observation` *(string, required)* — What was missing, wrong, or
   unhelpful. Be specific enough to act on later, and open with one line naming
   the task you were given, so the feedback can be traced back to what exposed
-  it. Written in English, like everything else here.
+  it. Written in English, like everything else here. A finding is the path a
+  value was read at, the shape of what came back, and where it came from. The
+  value itself is not part of it where the installation keeps it secret — an
+  encryption key, a password, a token, the credentials in a connection string.
+  This feedback is committed and pushed into a checkout that installation's
+  owner is not watching, so a secret pasted here as proof has left it for good.
+  The finding is "the key at SYS/encryptionKey is the active one, hardcoded in
+  config/system/settings.php"; the 96 characters after it establish nothing
+  further.
 - `model` *(string, required)* — The model recording this feedback, as it
   identifies itself, for example claude-opus-5 or gpt-5.3-codex. Read it where
   it is written down — what your client reports for the current session, or
@@ -1776,7 +1784,11 @@ three times over or not at all.
 - `query` *(string)* — The arguments that produced the unsatisfying result,
   or the task text where a whole session is what produced it. This is what lets
   somebody re-run the feedback against a later version of the server instead of
-  reading it.
+  reading it. The same rule holds here as for the observation: the arguments
+  and the path they named, never a value the installation keeps secret. A
+  re-run needs to know that SYS/encryptionKey was asked for and that a key came
+  back, not what the key was. A password or a token that was itself an argument
+  is named rather than quoted.
 - `suggestion` *(string)* — What the server should have answered or should
   be able to do instead.
 

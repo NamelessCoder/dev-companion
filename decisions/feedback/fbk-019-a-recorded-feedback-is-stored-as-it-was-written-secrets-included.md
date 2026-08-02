@@ -94,3 +94,25 @@ live encryption key of the site it had just audited into this repository.
   reaches the conformance skill with every tool callable and still does not ask
   `typo3_configuration_lookup` about a configuration claim. Then this was step 4,
   wording, and the skill names the tool without saying when it decides a finding.
+
+## Since then
+
+The wording is in. `observation` and `query` in `FeedbackRecord::inputSchema()`
+now say what a finding needs — the path a value was read at, the shape of what
+came back, where it came from — and that the value is not part of it where the
+installation keeps it secret, naming a key, a password, a token and the
+credentials in a connection string. Both fields, because `query` is described as
+the arguments that produced the result, and the second bullet of **Wrong if**
+above expects a value to move there. `R-FBK-011` is `not guarded` on that: the
+telling exists, and nothing reads either field or the corpus.
+
+Reading the file for it corrected one thing in the **Evidence** above. The key
+appears once, in the observation. The query names the argument and
+`config/system/settings.php:118` without the value — in the archived file, and
+in `77d242b`, which first recorded it. So "its observation and its query both
+quote the 96-character key verbatim" is wrong, and what stands in its place is
+that one field carried the key and the other was the field it would have gone
+in next. Nothing else in the entry turns on it: the leak, the single occurrence
+and the tool inviting it are all as recorded, and the **Wrong if** about a
+session moving the value into `query` is what the second half of the wording is
+written against.

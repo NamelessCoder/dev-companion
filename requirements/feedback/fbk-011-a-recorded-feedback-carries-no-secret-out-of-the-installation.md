@@ -1,6 +1,6 @@
 ---
 id: R-FBK-011
-status: open
+status: held
 restsOn: [D-FBK-019]
 ---
 
@@ -22,11 +22,20 @@ it establish nothing further.
 ## From
 
 `feedback/archive/2026-07-31-185900-after-the-audit-i-invoked-typo3-cms-mcp.md`
-(2026-07-31), which quoted the live encryption key of the audited site twice —
-once in its observation and once in its query — while reporting that
-`typo3_configuration_lookup` had worked.
+(2026-07-31), which pasted the live encryption key of the audited site into its
+observation while reporting that `typo3_configuration_lookup` had worked.
+
+This entry and `D-FBK-019` both said the key was quoted twice, once in the
+observation and once in the query. The file says once. Its query names the
+argument and `config/system/settings.php:118` without the value, and the commit
+that first recorded it, `77d242b`, says the same — so the second field is a
+place the value could go rather than one it went.
 
 ## Held by
 
-Not guarded. Nothing reads what a session writes into `observation`, and no
-check reads the corpus for what a value out of an installation looks like.
+The `observation` and `query` descriptions in `src/Tool/FeedbackRecord.php` say
+what a finding needs — the path, the shape, where the value came from — and that
+a value the installation keeps secret is not part of it. Telling the session is
+the whole of what carries this, and whether it is heard is not guarded: nothing
+reads what a session writes into either field, and no check reads the corpus for
+what a value out of an installation looks like.

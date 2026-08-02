@@ -371,6 +371,27 @@ final class ProjectTest extends TestCase
     }
 
     #[Test]
+    public function aClassCountSaysWhatItCounted(): void
+    {
+        // The count is the whole subtree, and bootstrap_package is where that
+        // shows: 21 files in Classes/Updates/ and six below Criteria/, reported
+        // as one number. A caller counted the top level, got 21, and filed the
+        // answer as wrong — so the number says which it is.
+        $root = $this->composerProject();
+        $extension = $root . '/packages/my_sitepackage';
+        $this->declare($extension . '/Classes/Updates/AbstractUpdate.php', "<?php\n");
+        $this->declare($extension . '/Classes/Updates/BackendLayoutUpdate.php', "<?php\n");
+        $this->declare($extension . '/Classes/Updates/Criteria/HasBackendLayout.php', "<?php\n");
+        Instance::discoverFrom($root);
+
+        $result = Registry::call('typo3_extension_scope', ['extension' => 'my_sitepackage']);
+
+        self::assertSame([['kind' => 'Updates', 'files' => 3]], $result->data['classes']);
+        self::assertStringContainsString('Updates (3)', $result->text);
+        self::assertStringContainsString('its own subdirectories included', $result->text);
+    }
+
+    #[Test]
     public function theContentElementsAnExtensionAddsAreNamedRatherThanPointedAt(): void
     {
         // "It extends tt_content" says where they are registered. What a

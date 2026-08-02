@@ -799,6 +799,14 @@ final class Extension
         return $classes;
     }
 
+    /**
+     * The whole subtree, because a nested helper has no line of its own.
+     *
+     * `Classes/Updates/Criteria/` is under no kind, so counting the top level
+     * alone would leave its files out of the answer altogether. What the number
+     * covers is stated where it is rendered and in the schema, because a reader
+     * who counts one level gets a different one — `D-ANS-008`.
+     */
     private static function countPhpFiles(string $directory): int
     {
         return Finder::create()->files()->in($directory)->name('*.php')->count();

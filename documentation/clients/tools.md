@@ -1559,7 +1559,8 @@ typo3_project_scope names the extensions this can be called for.
 - `classes` *(array of object)*
   - `kind` *(string, required)* — The Classes/ subdirectory, for example
     EventListener or DataProcessing.
-  - `files` *(integer, required)* — PHP files below it.
+  - `files` *(integer, required)* — PHP files anywhere below it, its own
+    subdirectories included.
 - `files` *(array of string)* — Registration files it ships, from
   ext_localconf.php to Initialisation/data.t3d.
 - `notReadStatically` *(array of string)* — Registration files that are

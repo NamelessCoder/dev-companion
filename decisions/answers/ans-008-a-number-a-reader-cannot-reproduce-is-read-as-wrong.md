@@ -65,3 +65,18 @@ checked against the obvious command, disagreeing — and filed as a wrong answer
   count was the right one all along.
 - Nothing else in this server states a number a caller could check, which would
   make the generalisation above one case wearing a rule's clothes.
+
+## Covered by
+
+- `ProjectTest::aClassCountSaysWhatItCounted`
+
+## Since then
+
+The question this entry left to the todo is settled: the count stays the deep
+one and both places say so. `Classes/Updates/Criteria/` is under no kind of its
+own, so a top-level count would drop its six files out of the answer rather than
+report them elsewhere, and the section describes what an extension's `Classes/`
+holds rather than what it registers. The rendered list now carries *Each count
+is every PHP file below that directory, its own subdirectories included*, the
+schema says the same of `files`, and `Extension::countPhpFiles()` says why the
+Finder has no `depth(0)`.

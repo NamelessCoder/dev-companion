@@ -106,7 +106,7 @@ final class ExtensionScope extends ReadOnlyTool
             'typoScript' => Schema::listOf(Schema::string(), 'Files below Configuration/TypoScript/.'),
             'classes' => Schema::listOf(Schema::object([
                 'kind' => Schema::string('The Classes/ subdirectory, for example EventListener or DataProcessing.'),
-                'files' => Schema::integer('PHP files below it.'),
+                'files' => Schema::integer('PHP files anywhere below it, its own subdirectories included.'),
             ], ['kind', 'files'])),
             'files' => Schema::listOf(Schema::string(), 'Registration files it ships, from ext_localconf.php to Initialisation/data.t3d.'),
             'notReadStatically' => Schema::listOf(Schema::string(), 'Registration files that are there but whose entries do not stand in their own text: each assembles its list while it runs, so what it registers is missing from the lists above rather than absent. The booted installation is what answers for them; an empty list here means every file that exists was read.'),
@@ -199,6 +199,10 @@ final class ExtensionScope extends ReadOnlyTool
                 static fn(array $kind): string => $kind['kind'] . ' (' . $kind['files'] . ')',
                 $extension['classes'],
             ));
+            // Said because it is checkable: a caller who counts one level of
+            // Classes/Updates/ gets a smaller number and reads the answer as
+            // wrong rather than as differently measured — D-ANS-008.
+            $lines[] = 'Each count is every PHP file below that directory, its own subdirectories included.';
         }
 
         if ($extension['requires'] !== []) {

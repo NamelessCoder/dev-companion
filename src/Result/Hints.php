@@ -55,16 +55,37 @@ final class Hints
      *
      * @param array{text: string, since: ?int, until: ?int, scope: ?Scope} $statement
      */
-    public static function statement(array $statement, bool $outsideCore = false): string
+    public static function statement(array $statement, Scope $of = Scope::Uncertain): string
     {
         $labels = array_filter([
             Versions::label($statement['since'], $statement['until']),
-            $outsideCore && ($statement['scope'] ?? null) === Scope::Core
-                ? 'binding for a core patch, a convention here'
-                : '',
+            self::obligation($statement['scope'] ?? null, $of),
         ]);
 
         return $labels === [] ? $statement['text'] : $statement['text'] . ' [' . implode('; ', $labels) . ']';
+    }
+
+    /**
+     * What one statement obliges, where that is not this caller.
+     *
+     * Two directions and one rule: a statement declares whose it is, and it is
+     * labelled where the answer is for somebody else. Inside its own scope the
+     * label would be on every line and say nothing, and where nothing placed
+     * the work there is nobody to contrast it with.
+     */
+    private static function obligation(?Scope $declared, Scope $of): string
+    {
+        if ($declared === null || $of === Scope::Uncertain) {
+            return '';
+        }
+        if ($declared === Scope::Core && $of->isOutsideTheCore()) {
+            return 'binding for a core patch, a convention here';
+        }
+        if ($declared->isOutsideTheCore() && $of === Scope::Core) {
+            return 'binding outside the core, context here';
+        }
+
+        return '';
     }
 
     /**
@@ -78,14 +99,22 @@ final class Hints
      *
      * @param array<string, mixed> $hint
      */
-    public static function scopeNotice(array $hint, bool $outsideCore): ?string
+    public static function scopeNotice(array $hint, Scope $of): ?string
     {
-        if (!$outsideCore || ($hint['scope'] ?? null) !== Scope::Core) {
+        $declared = $hint['scope'] ?? null;
+        if ($declared === null || $of === Scope::Uncertain) {
             return null;
         }
+        if ($declared === Scope::Core && $of->isOutsideTheCore()) {
+            return 'Binding for a patch to the TYPO3 core. Here they are conventions you may adopt — worth having '
+                . 'where this repository builds the same thing, and no condition of anything in it.';
+        }
+        if ($declared->isOutsideTheCore() && $of === Scope::Core) {
+            return 'Binding for work outside the TYPO3 core — a project repository or a distributed extension. '
+                . 'In the core it is context for what such a repository has to do, and no condition of a patch.';
+        }
 
-        return 'Binding for a patch to the TYPO3 core. Here they are conventions you may adopt — worth having '
-            . 'where this repository builds the same thing, and no condition of anything in it.';
+        return null;
     }
 
     /**
@@ -113,9 +142,13 @@ final class Hints
     /**
      * The matched hints as text: one section per category, one block per hint.
      *
+     * `$of` is the scope of the paths this block was matched for, so a
+     * statement declaring whose it is can be labelled where the answer is for
+     * somebody else.
+     *
      * @param array<int, array<string, mixed>> $hints
      */
-    public static function sections(array $hints, bool $outsideCore, ?int $target): string
+    public static function sections(array $hints, Scope $of, ?int $target): string
     {
         $examples = self::examples($target);
         $sectionTexts = [];
@@ -123,13 +156,13 @@ final class Hints
             $hintTexts = [];
             foreach ($section['hints'] as $hint) {
                 $block = ['## ' . $hint['title']];
-                $notice = self::scopeNotice($hint, $outsideCore);
+                $notice = self::scopeNotice($hint, $of);
                 if ($notice !== null) {
                     $block[] = $notice;
                 }
                 $block[] = 'Hints:';
                 foreach ($hint['hints'] as $entry) {
-                    $block[] = '- ' . self::statement($entry, $outsideCore);
+                    $block[] = '- ' . self::statement($entry, $of);
                 }
                 if (isset($examples[$hint['id']])) {
                     $block[] = $examples[$hint['id']];

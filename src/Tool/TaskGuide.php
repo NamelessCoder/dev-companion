@@ -271,7 +271,7 @@ final class TaskGuide extends ReadOnlyTool
                 }
                 $sectionTexts[] = Hints::sections(
                     $group['result']['matchedHints'],
-                    $group['scope']->isOutsideTheCore(),
+                    $group['scope'],
                     $target,
                 );
             }

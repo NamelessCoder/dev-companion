@@ -175,6 +175,7 @@
   {
     "id": "project-repository-layout",
     "title": "How a TYPO3 Project Repository Is Laid Out",
+    "scope": "project",
     "appliesTo": [
       "project structure",
       "project layout",
@@ -221,6 +222,7 @@
   {
     "id": "extension-repository-layout",
     "title": "How a Distributed Extension Repository Is Laid Out",
+    "scope": "extension",
     "appliesTo": [
       "distributed extension",
       "reusable extension",

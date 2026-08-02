@@ -9,10 +9,12 @@ one is added.
 
 - [`D-KNW-005`][D-KNW-005] — One `Scope` replaced the four vocabularies · 2026-08-02
 - [`D-KNW-006`][D-KNW-006] — A word for a thing administered from the backend adds no domain to a backend-only task · 2026-08-02
+- [`D-KNW-007`][D-KNW-007] — A hint says whose it is in both directions · 2026-08-02
 - [`D-KNW-004`][D-KNW-004] — Package knowledge needs a producer before it needs discovery · 2026-07-30
 
 [D-KNW-005]: knw-005-one-scope-replaced-the-four-vocabularies.md
 [D-KNW-006]: knw-006-a-word-for-a-thing-administered-from-the-backend.md
+[D-KNW-007]: knw-007-a-hint-says-whose-it-is-in-both-directions.md
 [D-KNW-004]: knw-004-package-knowledge-needs-a-producer-before-it-needs-discovery.md
 
 ### Revoked, and kept as the record

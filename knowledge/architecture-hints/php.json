@@ -156,6 +156,7 @@
   {
     "id": "core-tests",
     "title": "Writing Core Tests",
+    "scope": "core",
     "appliesTo": [
       "/Tests/Unit/",
       "/Tests/Functional/",
@@ -188,6 +189,7 @@
   {
     "id": "project-extension-tests",
     "title": "Testing a Project Extension",
+    "scope": "extension",
     "appliesTo": [
       "automated tests",
       "test suite",

@@ -176,11 +176,13 @@ final class Schema
     {
         return [
             'type' => ['string', 'null'],
-            'enum' => ['core', null],
+            'enum' => ['core', 'project', 'extension', null],
             'description' => sprintf(
                 'Which kind of work %s obliges. "core" means it is a condition of a patch to the TYPO3 core and a '
                 . 'convention anywhere else — the backend\'s own design system, the changelog artifact, the paths '
-                . 'of the mono repository. Null, the ordinary case, means it holds wherever TYPO3 is written: an '
+                . 'of the mono repository. "project" and "extension" are the mirror: what the repository around an '
+                . 'installation, or a package distributed on its own, has to do, and what is context rather than a '
+                . 'condition inside the core. Null, the ordinary case, means it holds wherever TYPO3 is written: an '
                 . 'API that throws throws in a sitepackage too.',
                 $subject,
             ),

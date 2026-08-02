@@ -160,7 +160,7 @@ final class ArchitectureLookup extends ReadOnlyTool
                 }
                 $sectionTexts[] = Hints::sections(
                     $group['result']['matchedHints'],
-                    $group['scope']->isOutsideTheCore(),
+                    $group['scope'],
                     $target,
                 );
             }

@@ -294,12 +294,15 @@ call are not answered with one verdict.
   - `title` *(string, required)*
   - `category` *(string, required)* — PHP, TypeScript, JavaScript, CSS,
     or General.
-  - `scope` *(string or null, required)* — One of `core`, `null`. Which
-    kind of work the whole hint obliges. "core" means it is a condition of a
-    patch to the TYPO3 core and a convention anywhere else — the backend's
-    own design system, the changelog artifact, the paths of the mono
-    repository. Null, the ordinary case, means it holds wherever TYPO3 is
-    written: an API that throws throws in a sitepackage too.
+  - `scope` *(string or null, required)* — One of `core`, `project`,
+    `extension`, `null`. Which kind of work the whole hint obliges. "core"
+    means it is a condition of a patch to the TYPO3 core and a convention
+    anywhere else — the backend's own design system, the changelog artifact,
+    the paths of the mono repository. "project" and "extension" are the mirror:
+    what the repository around an installation, or a package distributed on its
+    own, has to do, and what is context rather than a condition inside the
+    core. Null, the ordinary case, means it holds wherever TYPO3 is written: an
+    API that throws throws in a sitepackage too.
   - `hints` *(array of object, required)*
     - `text` *(string, required)* — The statement itself. It reads the
       same on every version it holds for; the range is beside it, never inside
@@ -310,12 +313,16 @@ call are not answered with one verdict.
       holds on. Null means it still holds.
     - `versions` *(string, required)* — The same range as a sentence,
       empty when the statement is bound to nothing.
-    - `scope` *(string or null, required)* — One of `core`, `null`.
-      Which kind of work this statement obliges. "core" means it is a condition
-      of a patch to the TYPO3 core and a convention anywhere else — the
-      backend's own design system, the changelog artifact, the paths of the
-      mono repository. Null, the ordinary case, means it holds wherever TYPO3
-      is written: an API that throws throws in a sitepackage too.
+    - `scope` *(string or null, required)* — One of `core`, `project`,
+      `extension`, `null`. Which kind of work this statement obliges. "core"
+      means it is a condition of a patch to the TYPO3 core and a convention
+      anywhere else — the backend's own design system, the changelog
+      artifact, the paths of the mono repository. "project" and "extension" are
+      the mirror: what the repository around an installation, or a package
+      distributed on its own, has to do, and what is context rather than a
+      condition inside the core. Null, the ordinary case, means it holds
+      wherever TYPO3 is written: an API that throws throws in a sitepackage
+      too.
   - `checks` *(array of string, required)* — Commands relevant to this
     hint.
 - `rules` *(array of object)* — Rule sections that apply to this task.
@@ -498,12 +505,15 @@ the frontend.
   - `title` *(string, required)*
   - `category` *(string, required)* — PHP, TypeScript, JavaScript, CSS,
     or General.
-  - `scope` *(string or null, required)* — One of `core`, `null`. Which
-    kind of work the whole hint obliges. "core" means it is a condition of a
-    patch to the TYPO3 core and a convention anywhere else — the backend's
-    own design system, the changelog artifact, the paths of the mono
-    repository. Null, the ordinary case, means it holds wherever TYPO3 is
-    written: an API that throws throws in a sitepackage too.
+  - `scope` *(string or null, required)* — One of `core`, `project`,
+    `extension`, `null`. Which kind of work the whole hint obliges. "core"
+    means it is a condition of a patch to the TYPO3 core and a convention
+    anywhere else — the backend's own design system, the changelog artifact,
+    the paths of the mono repository. "project" and "extension" are the mirror:
+    what the repository around an installation, or a package distributed on its
+    own, has to do, and what is context rather than a condition inside the
+    core. Null, the ordinary case, means it holds wherever TYPO3 is written: an
+    API that throws throws in a sitepackage too.
   - `hints` *(array of object, required)*
     - `text` *(string, required)* — The statement itself. It reads the
       same on every version it holds for; the range is beside it, never inside
@@ -514,12 +524,16 @@ the frontend.
       holds on. Null means it still holds.
     - `versions` *(string, required)* — The same range as a sentence,
       empty when the statement is bound to nothing.
-    - `scope` *(string or null, required)* — One of `core`, `null`.
-      Which kind of work this statement obliges. "core" means it is a condition
-      of a patch to the TYPO3 core and a convention anywhere else — the
-      backend's own design system, the changelog artifact, the paths of the
-      mono repository. Null, the ordinary case, means it holds wherever TYPO3
-      is written: an API that throws throws in a sitepackage too.
+    - `scope` *(string or null, required)* — One of `core`, `project`,
+      `extension`, `null`. Which kind of work this statement obliges. "core"
+      means it is a condition of a patch to the TYPO3 core and a convention
+      anywhere else — the backend's own design system, the changelog
+      artifact, the paths of the mono repository. "project" and "extension" are
+      the mirror: what the repository around an installation, or a package
+      distributed on its own, has to do, and what is context rather than a
+      condition inside the core. Null, the ordinary case, means it holds
+      wherever TYPO3 is written: an API that throws throws in a sitepackage
+      too.
   - `checks` *(array of string, required)* — Commands relevant to this
     hint.
 - `availableHints` *(array of object, required)* — The hints that exist in

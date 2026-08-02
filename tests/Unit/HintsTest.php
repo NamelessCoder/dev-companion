@@ -928,6 +928,36 @@ final class HintsTest extends TestCase
         self::assertStringNotContainsString('Binding for a patch', $core->text);
     }
 
+    /**
+     * The same rule the other way round, which the corpus could not say until
+     * `D-KNW-007`: a hint whose whole subject is a repository outside the core
+     * is context there rather than a condition, and inside its own scope the
+     * notice would be on every answer and say nothing.
+     */
+    #[Test]
+    public function whatOnlyBindsOutsideTheCoreSaysSoInsideIt(): void
+    {
+        $inTheCore = Registry::call('typo3_architecture_lookup', [
+            'id' => 'project-repository-layout',
+            'paths' => ['typo3/sysext/core/Classes/Utility/GeneralUtility.php'],
+        ]);
+
+        self::assertSame(Scope::Project->value, $inTheCore->data['hints'][0]['scope']);
+        self::assertStringContainsString('Binding for work outside the TYPO3 core', $inTheCore->text);
+
+        $inAProject = Registry::call('typo3_architecture_lookup', [
+            'id' => 'project-repository-layout',
+            'paths' => ['packages/my_sitepackage/composer.json'],
+        ]);
+        self::assertStringNotContainsString('Binding for work outside', $inAProject->text);
+
+        // The pair the corpus draws this line with: two hints, one subject
+        // each, and now each saying whose it is rather than only its title.
+        $tests = array_column(ArchitectureHints::load(), 'scope', 'id');
+        self::assertSame(Scope::Core, $tests['core-tests']);
+        self::assertSame(Scope::Extension, $tests['project-extension-tests']);
+    }
+
     #[Test]
     public function oneCoreObligationInATransferableHintIsMarkedOnItsOwn(): void
     {

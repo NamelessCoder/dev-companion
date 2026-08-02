@@ -212,14 +212,18 @@ final class VersionsTest extends TestCase
     {
         // Same rule as the version range, for the other question a statement
         // can answer differently per caller: an answer cannot filter or mark
-        // what is phrased inside the sentence, and "core" is the only value
-        // there is — a second one is a vocabulary change, not a data entry.
+        // what is phrased inside the sentence. "core" was the only value for as
+        // long as the corpus wrote only that one, and the mirror is a data
+        // entry rather than a vocabulary change — `Scope::ofKnowledge()` has
+        // offered `project` and `extension` since `D-KNW-005`, and what writes
+        // them are the hints whose whole subject is a repository outside the
+        // core (`D-KNW-007`).
         foreach (ArchitectureHints::load() as $hint) {
             foreach (array_merge([$hint], $hint['hints']) as $entry) {
                 if (($entry['scope'] ?? null) !== null) {
-                    self::assertSame(
-                        Scope::Core,
+                    self::assertContains(
                         $entry['scope'],
+                        Scope::ofKnowledge(),
                         $hint['id'] . ' binds to something this server has no vocabulary for',
                     );
                 }

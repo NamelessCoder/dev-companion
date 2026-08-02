@@ -1,6 +1,8 @@
 # Try `D-AUD-3` against a second `REVIEW-01` run
 
 **Serves:** decisions/
+**Branch:** todo/try-d-aud-3-against-a-second-review-01-run
+**Claimed:** 2026-08-02
 
 The entry names its own experiment: the instructions carry the entry point
 because the tool descriptions never arrive, and it is wrong if the second

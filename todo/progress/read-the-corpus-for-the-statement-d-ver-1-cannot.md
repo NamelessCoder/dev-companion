@@ -1,6 +1,8 @@
 # Read the corpus for the statement `D-VER-1` cannot express
 
 **Serves:** decisions/
+**Branch:** todo/read-the-corpus-for-the-statement-d-ver-1-cannot
+**Claimed:** 2026-08-02
 
 A range is data on the statement, which means it cannot say "true on 12.4 and 14
 but not on 13" — such a statement has to become two. Read the bound statements

@@ -1,6 +1,8 @@
 # Hold every `check` command in `D-EVI-3` to what it may not do
 
 **Serves:** decisions/
+**Branch:** todo/hold-every-check-command-in-d-evi-3-to-what-it-may-not
+**Claimed:** 2026-08-02
 
 A review runs the checks that cannot change the code, and the entry is wrong if
 a run reports a checkout modified by a command classified `check`. The

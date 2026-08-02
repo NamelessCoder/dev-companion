@@ -1296,6 +1296,43 @@ final class HintsTest extends TestCase
     }
 
     /**
+     * The corpus stated every fixture rule and never the premise under them, so
+     * a session read `importCSVDataSet()` as a convention it could also satisfy
+     * another way, fetched records nobody primed, and took the empty table for a
+     * broken query. «empty database per test run» reached neither testing hint.
+     *
+     * The premise holds across every covered line and was read rather than
+     * recalled — `.checkouts/testing-framework` at `8.3.3`, `9.6.1` and
+     * `main`. `FunctionalTestCase::setUp()` builds the instance for the first
+     * test of a class and `Testbase::createDatabaseStructure()` installs the
+     * `CREATE TABLE` statements alone, no rows; every test after it goes through
+     * `initializeTestDatabaseAndTruncateTables()`, which truncates every table
+     * the schema manager lists — or, for sqlite, copies back the `.empty.sqlite`
+     * file taken right after the schema was installed. `setUpBackendUser()` is
+     * the consequence in one method: it throws rather than creating the user.
+     *
+     * Both boundaries are asserted because either one left out makes the
+     * sentence too strong: `$initializeDatabase = false` skips creation and
+     * truncation alike, and `withDatabaseSnapshot()` restores what the first
+     * test of a class created for all the ones after it.
+     */
+    #[Test]
+    public function theFixtureRuleIsStatedWithTheEmptyDatabaseUnderIt(): void
+    {
+        self::assertContains(
+            'core-tests',
+            array_column(ArchitectureHints::find([], 'empty database per test run', 6)['matchedHints'], 'id'),
+            'the premise is not reachable in the words the failing session asked it in',
+        );
+
+        $text = implode("\n", array_column((array) ArchitectureHints::byId('core-tests')['hints'], 'text'));
+        self::assertStringContainsString('empty database', $text);
+        self::assertStringContainsString('importCSVDataSet', $text, 'the premise stands beside the rule it explains');
+        self::assertStringContainsString('$initializeDatabase = false', $text);
+        self::assertStringContainsString('withDatabaseSnapshot()', $text);
+    }
+
+    /**
      * The phrasing that reached the layout instead, measured while settling
      * `D-KNW-008`: two hints are named after a sitepackage and none after
      * setting tests up, so "site package" was the discriminating pair of terms

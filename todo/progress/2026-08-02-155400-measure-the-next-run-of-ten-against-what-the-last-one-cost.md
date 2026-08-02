@@ -2,6 +2,8 @@
 
 **Serves:** decisions/
 **Priority:** normal
+**Branch:** todo/measure-the-next-run-of-ten-against-what-the-last-one-cost
+**Claimed:** 2026-08-02
 
 Read the next run of ten out of the transcripts and write the four numbers into
 a **Confirmed on** or **Revoked on** section of

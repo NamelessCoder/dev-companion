@@ -1,7 +1,9 @@
-# Debrief of the TYPO3 14 testimonials session: the underlying failure was a systemic lack of Fluid...
+# Debrief of a TYPO3 14 backend preview task. The CustomBackendPreview documentation example shows ...
 
-**Serves:** feedback/2026-08-01-003000-underlying-failure-was-a-systemic-lack-of-fluid.md
+**Serves:** feedback/2026-08-01-002930-debrief-of-a-typo3-14-backend-preview-task-the.md
 **Priority:** low
+**Branch:** todo/debrief-of-a-typo3-14-backend-preview-task-the
+**Claimed:** 2026-08-02
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

@@ -1,7 +1,9 @@
-# Debrief of the TYPO3 14 testimonials session. The user had to correct and steer the assistant rep...
+# Debrief of the TYPO3 14 testimonials session: the underlying failure was a systemic lack of Fluid...
 
-**Serves:** feedback/2026-08-01-002951-debrief-of-the-typo3-14-testimonials-session.md
+**Serves:** feedback/2026-08-01-003000-underlying-failure-was-a-systemic-lack-of-fluid.md
 **Priority:** low
+**Branch:** todo/underlying-failure-was-a-systemic-lack-of-fluid
+**Claimed:** 2026-08-02
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

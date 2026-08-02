@@ -2,6 +2,8 @@
 
 **Serves:** R-ANS-007
 **Priority:** normal
+**Branch:** todo/measure-what-a-hyphenated-compound-costs-the-hint-match
+**Claimed:** 2026-08-02
 
 [`D-ANS-022`](../../decisions/answers/ans-022-a-hyphenated-compound-reaches-neither-the-phrase-nor-the-word.md)
 has the diagnosis and the one-character measurement: `content-element` reaches

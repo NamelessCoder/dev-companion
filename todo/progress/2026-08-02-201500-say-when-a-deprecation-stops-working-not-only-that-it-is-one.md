@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-07-31-194821-conformance-review-of-a-typo3-14-site-package-i.md
 **Priority:** normal
+**Branch:** todo/say-when-a-deprecation-stops-working-not-only-that-it-is-one
+**Claimed:** 2026-08-02
 
 Ladder step 2, delivery, on the evidence in
 [`D-ANS-020`](../../decisions/answers/ans-020-a-deprecation-is-answered-by-the-version-that-removes-it.md):

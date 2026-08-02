@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-01-002928-debrief-of-a-typo3-14-backend-preview-task.md, R-DOC-002
 **Priority:** normal
+**Branch:** todo/say-what-a-manual-search-matched-on
+**Claimed:** 2026-08-02
 
 Judged on 2026-08-02 as step 4 of the ladder, wording, with the evidence and the
 two candidates in `D-ANS-021`: the page was indexed all along, and three

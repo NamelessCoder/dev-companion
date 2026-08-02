@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-07-31-194825-typo3-extension-scope-answered-absences-as.md
 **Priority:** normal
+**Branch:** todo/say-the-missing-translation-the-way-the-missing-manual-is-said
+**Claimed:** 2026-08-02
 
 Step 4 of the ladder, wording: the fact is computed and the primary answer drops
 it. `ExtensionScope::text()` renders `manual`, `readme` and `tests` present or

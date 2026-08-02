@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-01-002745-task-show-assigned-related-groups-in-a-typo3-14.md
 **Priority:** normal
+**Branch:** todo/what-a-v14-preview-template-is-handed-and-what-a-field-on-it-resolves-to
+**Claimed:** 2026-08-02
 
 Step 1a of the ladder, on the evidence in
 [`D-KNW-014`](../../decisions/knowledge/knw-014-the-record-variable-a-v14-preview-template-is-handed-is-a-gap-this-server-owns.md):

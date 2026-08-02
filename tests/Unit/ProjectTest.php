@@ -570,6 +570,7 @@ final class ProjectTest extends TestCase
                     'templateName' => null,
                     'source' => null,
                     'pluginSettings' => null,
+                    'flexForm' => null,
                 ],
                 [
                     'identifier' => 'mysitepackage_catalogue',
@@ -577,6 +578,7 @@ final class ProjectTest extends TestCase
                     'templateName' => null,
                     'source' => null,
                     'pluginSettings' => 'Configuration/TypoScript/setup.typoscript',
+                    'flexForm' => null,
                 ],
             ],
             $result->data['contentElements'],
@@ -693,28 +695,26 @@ final class ProjectTest extends TestCase
     #[Test]
     public function aFlexFormBoundThroughACallThisDoesNotReadIsStillReported(): void
     {
-        // registerPlugin() returns the signature it composed out of its first
-        // two arguments, and core binds its own FlexForms against exactly that
-        // variable — so the identifier stands in the file even where the call
-        // that put the element in the list does not. The element itself is
-        // registered by a call this answer does not read, and the binding is
-        // reported rather than dropped: a FlexForm read and then not mentioned
-        // is the same silence as one that was never opened.
+        // A binding is read by one parser and the identifiers by another, and
+        // the second does not recognise every call the first does. Where they
+        // disagree the binding is reported rather than dropped: a FlexForm read
+        // and then not mentioned is the same silence as one never opened.
+        //
+        // The example used to be registerPlugin(), whose signature this reads
+        // out of a variable while the element list did not carry it. It carries
+        // it now — that half arrived on its own branch the same day — so the
+        // case is made with a content type nothing in the file registers, which
+        // is what is left of the disagreement this guards.
         $root = $this->composerProject();
         $extension = $root . '/packages/my_sitepackage';
         $this->declare(
             $extension . '/Configuration/TCA/Overrides/tt_content.php',
             <<<'PHP'
                 <?php
-                $contentTypeName = \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
-                    'my_sitepackage',
-                    'Catalogue',
-                    'LLL:EXT:my_sitepackage/Resources/Private/Language/locallang.xlf:catalogue',
-                );
                 ExtensionManagementUtility::addPiFlexFormValue(
                     '*',
                     'FILE:EXT:my_sitepackage/Configuration/FlexForms/Catalogue.xml',
-                    $contentTypeName,
+                    'mysitepackage_catalogue',
                 );
                 PHP
         );
@@ -729,7 +729,7 @@ final class ProjectTest extends TestCase
                 'flexForm' => 'FILE:EXT:my_sitepackage/Configuration/FlexForms/Catalogue.xml',
             ]],
             $result->data['unlistedFlexForms'],
-            'the signature loses the extension key\'s underscores, which is what registerPlugin() composes',
+            'a binding whose content type no registration call in the file declares is reported, not dropped',
         );
         self::assertStringContainsString('FlexForms bound to a content type none of the above names', $result->text);
     }
@@ -1000,7 +1000,7 @@ final class ProjectTest extends TestCase
 
         self::assertSame('installation', $result->data['answeredBy']);
         self::assertSame(
-            [['identifier' => 'mysitepackage_catalogue', 'kind' => 'plugin', 'templateName' => null, 'source' => null, 'pluginSettings' => null]],
+            [['identifier' => 'mysitepackage_catalogue', 'kind' => 'plugin', 'templateName' => null, 'source' => null, 'pluginSettings' => null, 'flexForm' => null]],
             $result->data['contentElements'],
         );
         self::assertStringContainsString('renders through the dispatcher', $result->text);

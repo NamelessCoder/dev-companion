@@ -400,36 +400,34 @@ final class Extension
             }
 
             if ($token[0] === T_STRING && in_array($token[1], ['addPlugin', 'registerPlugin'], true)) {
-                // Both take the data structure as an argument since v14.2, and
-                // it is where core binds its own from then on. Which argument
-                // it is differs, and so does where the identifier comes from:
-                // addPlugin() carries the select item, registerPlugin() composes
-                // the signature out of its first two.
+                // One handler, because both calls answer two questions at once
+                // and each of them used to have a reader of its own that ran
+                // first and returned.
+                //
+                // The binding: both take the data structure as an argument
+                // since v14.2, and it is where core binds its own from then on.
+                // Which argument it is differs, and so does where the identifier
+                // comes from — addPlugin() carries the select item,
+                // registerPlugin() composes the signature out of its first two.
+                //
+                // The kind: an Extbase plugin is a content element registered by
+                // a call of its own, and this is the only place it can stand.
+                // The identifier is neither argument but the signature both
+                // derive, which is what pluginSignature() already returns above.
                 $arguments = self::arguments($tokens, $index);
-                $isPlugin = $token[1] === 'addPlugin';
-                $identifier = $isPlugin
+                $isAddPlugin = $token[1] === 'addPlugin';
+                $identifier = $isAddPlugin
                     ? self::selectItemValue($arguments[0] ?? [], $variables)
                     : self::pluginSignature($arguments, $variables);
-                $structure = self::dataStructure(self::firstLiteral($arguments[$isPlugin ? 1 : 6] ?? [], $variables));
+                $structure = self::dataStructure(self::firstLiteral($arguments[$isAddPlugin ? 1 : 6] ?? [], $variables));
                 if ($identifier !== null && $structure !== null) {
                     $flexForms[$identifier] = $structure;
                 }
-                continue;
-            }
 
-            if ($token[0] === T_STRING && $token[1] === 'registerPlugin') {
-                // An Extbase plugin is a content element registered by a call of
-                // its own, and this is the only place it can stand: addPlugin()
-                // below it needs the extension key an override file carries and
-                // throws anywhere else. The identifier is neither argument but
-                // the signature both derive — the extension name without its
-                // underscores, the plugin name, lowercased and joined.
-                $arguments = self::arguments($tokens, $index);
-                $extensionName = self::firstLiteral($arguments[0] ?? [], $variables);
-                $pluginName = self::firstLiteral($arguments[1] ?? [], $variables);
-                if ($extensionName !== null && $pluginName !== null) {
-                    $plugins[] = strtolower(str_replace('_', '', $extensionName)) . '_' . strtolower($pluginName);
+                if (!$isAddPlugin && $identifier !== null) {
+                    $plugins[] = $identifier;
                 }
+
                 continue;
             }
 

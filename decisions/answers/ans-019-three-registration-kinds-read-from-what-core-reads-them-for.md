@@ -1,10 +1,10 @@
 ---
-id: D-ANS-016
+id: D-ANS-019
 date: 2026-08-02
 status: open
 ---
 
-# D-ANS-016 — A FlexForm, a site set and a form set are read from the file names and call shapes core itself reads them by
+# D-ANS-019 — A FlexForm, a site set and a form set are read from the file names and call shapes core itself reads them by
 
 **Each of the three registrations `R-ANS-014` names is read by what core reads
 it by, and each of the three moved inside the covered range.**

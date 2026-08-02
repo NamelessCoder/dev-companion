@@ -1,7 +1,8 @@
 ---
 date: 2026-07-31T19:31:09+00:00
 category: missing-knowledge
-status: open
+status: closed
+closed: 2026-08-02
 model: nemotron-3-ultra-free
 tool: typo3_project_scope, typo3_extension_scope, typo3_architecture_lookup, typo3_changelog_lookup, typo3_label_lookup, typo3_icon_lookup
 directory: /home/benji/projects/site-new

@@ -1,7 +1,7 @@
 ---
 id: R-ANS-014
 status: held
-restsOn: [D-ANS-014, D-ANS-016]
+restsOn: [D-ANS-014, D-ANS-019]
 ---
 
 # R-ANS-014 — A registration is answered wherever it is declared
@@ -26,7 +26,7 @@ reachable from a file the answer already opens or already names:
 
 Which of those hold across the covered majors was established against
 `.checkouts/` at 12.4, 13.4 and 14.3 before anything was written, and each of
-the three moved inside that range: [`D-ANS-016`](../../decisions/answers/ans-016-three-registration-kinds-read-from-what-core-reads-them-for.md)
+the three moved inside that range: [`D-ANS-019`](../../decisions/answers/ans-019-three-registration-kinds-read-from-what-core-reads-them-for.md)
 carries the four call shapes, the eight file names and the two registration
 ways, with what would show each wrong.
 

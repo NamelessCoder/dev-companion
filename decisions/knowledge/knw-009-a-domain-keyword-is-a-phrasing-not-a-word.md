@@ -62,3 +62,44 @@ hint in `php.json` was filtered out before anything was scored.
 ## Covered by
 
 - `HintsTest::settingTestsUpInAPackageReachesTheHintAboutThat`
+
+## Since then
+
+The sixth phrasing arrived, and it came out of this repository's own text.
+`typo3-extension-conformance`'s checklist writes its audit surfaces down, and
+the quality one reads "Quality: tests, the check layer, documentation,
+deprecations, and upgrade readiness". Its word for the surface is the bare
+`tests` this entry rejected. So an audit asking in the checklist's own wording
+reaches no PHP hint at all: `bin/cli hints:probe "audit the quality surface of
+an extension: tests, the check layer, deprecations and upgrade readiness"`
+resolves to the `docs` domain alone and returns `deprecated-apis` and
+`installation-upgrade`.
+
+What that cost is on the record. The feedback of 2026-07-31 19:36 UTC reports a
+conformance audit whose recommendation 19 was to "Consider typo3/cms-
+compatibility package for cross-version testing". No covered line ships such a
+package — no `compatibility` sysext under `.checkouts/12.4` or `13.4`, and no
+occurrence of the name anywhere in the checkouts — and
+`typo3_system_extension_lookup` says so outright when asked. The corpus already
+holds what the audit should have said, in `extension-repository-layout`: a
+matrix that resolves per supported version, the lowest and the highest of each
+supported major.
+
+The hint half of **Decided** is the second place it did not reach, and this one
+is inside the PHP domain rather than in front of it. Testing vocabulary reaches
+`project-extension-tests`, whose `appliesTo` carries ten testing phrasings and
+whose statements say nothing about a supported range.
+`extension-repository-layout` carries the range and no testing phrasing, so it
+scores on body text or not at all. "does the test suite cover every supported
+TYPO3 version" ranks the harness hint first at `appliesTo(10) + text(173)`, over
+`text only(209)`; "test the extension on TYPO3 12 and 13" puts it seventh of
+ten. Asked through the tool the skill actually calls, the split is total:
+`typo3_architecture_lookup` for an extension's quality surface returns
+`installation-upgrade`, `deprecated-apis` and `project-repository-layout` —
+the last of them `scope: project`, which is not even the unit under audit.
+
+Neither reach is settled here. The measurement this entry names over the 105
+texts is what decides a sixth phrasing, and a judging run has not repeated it,
+so the entry the first **Wrong if** asks for is not written yet.
+`todo/open/2026-08-02-120326-make-the-cross-version-rule-reachable-from-a-question-about-tests.md`
+owes both, and the feedback stays open until it lands.

@@ -60,6 +60,11 @@ final class ArchitectureHints
      * Share of the query a hint's own words have to cover to answer on their
      * own, when no `appliesTo` pattern was matched. Below it the hint mentions
      * the subject rather than being about it.
+     *
+     * A share is what this is, so it is asked only where there is a part of the
+     * query the hint does not carry: `coversEveryTerm()` is the other way past
+     * the floor, and the two together are what keep the number a statement
+     * about the query rather than about the hint's length.
      */
     private const MIN_COVERAGE = 0.5;
 
@@ -338,7 +343,7 @@ final class ArchitectureHints
         $scored = [];
         foreach ($candidates as $index => $hint) {
             $keywords = self::scoreKeywords($hint, $haystack);
-            [$score, $covered] = TermSearch::score(
+            [$score, $covered, $matchedTerms] = TermSearch::score(
                 $searchable[$index],
                 $weights,
                 self::FIELD_WEIGHTS,
@@ -351,7 +356,7 @@ final class ArchitectureHints
             // named a path, which no term match can read. Coverage means the
             // hint is about what was asked whether or not anybody anticipated
             // it.
-            if ($keywords === 0 && $coverage < self::MIN_COVERAGE) {
+            if ($keywords === 0 && !self::coversEveryTerm($matchedTerms, $weights) && $coverage < self::MIN_COVERAGE) {
                 continue;
             }
 
@@ -524,6 +529,41 @@ final class ArchitectureHints
             'appliesTo' => implode("\n", $hint['appliesTo']),
             'text' => implode("\n", array_column($hint['hints'], 'text')),
         ];
+    }
+
+    /**
+     * Whether the hint's own words cover the whole query rather than part of it.
+     *
+     * MIN_COVERAGE asks what share of the query a hint accounts for, and the
+     * dilution weight damps that share by how much other text the terms were
+     * found among. Where every term of the query is in the hint there is no
+     * share left to doubt — the query is inside the text whole — so damping it
+     * does not lower a fraction, it turns a full cover into a partial one.
+     *
+     * That is what a body past `UNDILUTED_WORDS * e` words did, and it did it at
+     * a stroke rather than by degrees: dilution passes 2 there, a single matched
+     * term covers less than half of a one-term query, and the hint stops being a
+     * candidate for queries it used to answer instead of ranking lower. Measured
+     * over every hint's own body vocabulary asked one term at a time, in the
+     * categories a wordless query selects at all: the hints under that length
+     * are reached by 2427 of their 2438 body terms, the ones over it by 30 of
+     * 2273. `showitem`, `allowProperties`, `sys_registry` and `PidInList` are
+     * each stated by exactly one hint in the corpus and reached none of them.
+     *
+     * Dilution stays where it earns its keep, which is the partial cover: «how
+     * do I write a good sonnet» is covered in part by a text long enough to
+     * contain writing and good, nothing in the corpus carries "sonnet", so this
+     * is false there and the floor still drops it. `D-ANS-025` is the sweep.
+     *
+     * @param array<string, string> $matchedTerms
+     * @param array<string, float> $weights
+     */
+    private static function coversEveryTerm(array $matchedTerms, array $weights): bool
+    {
+        // A query with no terms of its own — paths alone — covers nothing
+        // rather than everything, or saying nothing would admit every
+        // candidate there is.
+        return $weights !== [] && count($matchedTerms) === count($weights);
     }
 
     /**

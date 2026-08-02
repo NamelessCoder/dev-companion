@@ -591,6 +591,66 @@ final class HintsTest extends TestCase
         }
     }
 
+    /**
+     * The gate that closed on length rather than on relevance.
+     *
+     * `MIN_COVERAGE` is a share of the query, and the dilution weight damped it
+     * by the length of the body the term was found in — so past `200 * e` words
+     * a hint stopped being a candidate for any one-term query it was not
+     * curated for. Not ranked lower: dropped, with nothing to say so.
+     *
+     * Each of these four is stated by exactly one hint in the corpus, appears
+     * nowhere in that hint's title or `appliesTo`, and reached nothing at all,
+     * while the hint's own body is what a caller naming it is after. Two hints
+     * are the ones the symptom was reported on and two are the far end of the
+     * corpus at 981 and 1147 words.
+     */
+    #[Test]
+    #[TestWith(['showitem', 'content-elements'])]
+    #[TestWith(['allowProperties', 'extbase'])]
+    #[TestWith(['sys_registry', 'sitepackage-initial-content'])]
+    #[TestWith(['PidInList', 'frontend-records'])]
+    #[TestWith(['withQueryParameters', 'project-extension-tests'])]
+    public function aTermOnlyOneHintStatesReachesItHoweverLongThatHintIs(
+        string $query,
+        string $expected,
+    ): void {
+        self::assertContains(
+            $expected,
+            array_column(ArchitectureHints::find([], $query, 6)['matchedHints'], 'id'),
+            $query,
+        );
+    }
+
+    /**
+     * And the half the dilution weight is still for. A query the corpus has no
+     * answer to is covered in part by a long enough text — «write» and «good»
+     * are in half the hints there are — and what keeps that from being an
+     * answer is the share the floor asks for. Nothing carries "sonnet", so the
+     * cover is never whole and the exception above never applies.
+     *
+     * The negative controls of the sweep assert the outcome; this asserts the
+     * reason, which is the part a change to the floor would take away without
+     * moving them.
+     */
+    #[Test]
+    public function aHintThatCarriesPartOfAQueryStillDoesNotAnswerIt(): void
+    {
+        $longest = array_search(max(ArchitectureHints::bodyWords()), ArchitectureHints::bodyWords(), true);
+
+        $whole = array_column(
+            ArchitectureHints::find([], 'sys_registry dataImported', 6)['matchedHints'],
+            'id',
+        );
+        self::assertContains($longest, $whole, 'both terms are its own');
+
+        $part = array_column(
+            ArchitectureHints::find([], 'sys_registry sonnet', 6)['matchedHints'],
+            'id',
+        );
+        self::assertNotContains($longest, $part, 'half a query is a mention, whatever the other half was');
+    }
+
     #[Test]
     public function theCuratedVocabularyStillDecidesWhereItWasWritten(): void
     {

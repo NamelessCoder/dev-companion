@@ -94,3 +94,18 @@ than eight hand-picked queries, which catches the reference being raised to
 chase it. Four of the eighteen were never written down anywhere and are lost —
 which is the reason the remaining fourteen are in the test now rather than in a
 commit message.
+
+## Since then
+
+The second half of the **Wrong if** happened on 2026-08-02, and neither wall saw
+it: individual hints, rather than the mean, walked past a length at which the
+dilution weight stops damping a coverage share and starts deciding candidacy.
+Past `UNDILUTED_WORDS * e` a one-term query cannot clear the floor at all, so 12
+hints were dropped from every question they were not curated for, while the mean
+this entry watches sat inside its headroom and the sweep it is held by kept
+passing — all of its queries are several words long. The three constants stand
+and none of them moved; what was wrong was reading a share of the query off a
+number that says how long the hint is.
+[`D-ANS-025`](ans-025-a-query-a-hint-carries-whole-is-not-diluted-out-of-it.md)
+is the measurement and the fix, and it leaves both walls where this entry put
+them.

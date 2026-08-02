@@ -80,3 +80,41 @@ reached for all three refused sources and got nothing from any. Its `SELECT`
 and `INSERT` on `tt_content` were what the user corrected to DataHandler, the
 log carried only a stale entry, and the reflection script it wrote into the
 webroot was stopped by the user; the answer came from a manual page.
+
+## Confirmed on 2026-08-02
+
+The runtime half was read a third time and did not fire. `2026-07-31-174526`
+asks for a lookup that says whether a registration is still consumed in the
+installed major. `bootstrap_package` registers two
+`$GLOBALS['TYPO3_CONF_VARS']['FE']['contentRenderingTemplates']` entries naming
+`bootstrappackage/Configuration/TypoScript/`, a directory the move to site sets
+removed, and the session read `SysTemplateTreeBuilder` and
+`TreeFromLineStreamBuilder` out of its own vendor tree to settle that they are
+inert. That is the **Wrong if** met and answered the other way: the diagnosis
+*was* completable from the caller's own checkout, and what it cost was one file
+read, not a source refused here. The key is read in exactly those two classes on
+13.4, 14.3 and `main`, and in them plus `TypoScriptParser` and `TemplateService`
+on 12.4. Every use is a membership test deciding whether
+`FE['defaultTypoScript_<type>.']['defaultContentRendering']` is appended while a
+legacy `EXT:<key>/Configuration/TypoScript/…` static include is resolved.
+Nothing deprecated it: `fluid_styled_content` registers itself the same way on
+every branch, and no changelog entry names it.
+
+What the feedback asked for is a detector — registrations flagged as inert, with
+the version range in which they are. That wants a per-version model of which
+`TYPO3_CONF_VARS` keys the core still reads, and under which conditions, kept
+current across four branches. It would state a fact that has not moved since
+12.4. It would also key on the wrong signal: this API is not deprecated, so
+`deprecated-apis` and the Extension Scanner both answer "fine", and what makes
+the entry dead is that the path it names is gone.
+
+The cheap lever is where the session's own question already lands.
+`typo3_architecture_lookup` with `paths: ["ext_localconf.php"]` and that
+question as the task returns `extension-files`, whose hints say nothing about
+this key, and `bin/cli hints:probe` reaches nothing for
+`contentRenderingTemplates`. The placement works and the sentence is missing,
+which is step 1a of the ladder rather than a tool boundary. Re-running
+`typo3_extension_scope` for `bootstrap_package` also showed the answer telling
+the session there was nothing more to read: `notReadStatically` is `[]` because
+`ext_localconf.php` is not among the five files it is drawn from. Both are
+queued as todos of their own and the feedback stays open behind them.

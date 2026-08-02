@@ -50,6 +50,7 @@ todo/              # the order of the work and where the last session stopped: o
 todo/open/         # the queue, read by the priority in each head and then by the date in each name
 todo/progress/     # what a session has in hand: out of the queue, offered to nobody else, naming the branch the work is on
 todo/waiting/      # what nothing here can start, carrying the question it is blocked on; closing is a deletion and no fourth directory
+src/Upkeep/Links.php # every path this repository writes between its own files, and whether it still resolves
 src/Upkeep/Todo.php  # todo/ as data: what recurs and how often, what is queued, what each todo serves
 documentation/     # how a procedure is carried out, grouped by subject; the rules stay here, the steps live there
 .githooks/         # the hooks this checkout commits through; `composer install` points git at them
@@ -321,6 +322,10 @@ bin/cli knowledge:format <path>   # only that part of it
   quiet failure — the console reads those parameters at one moment only, and a
   command it stops asking keeps every argument in its signature while refusing
   the caller who passes one.
+- Every path this repository writes between its own files resolves —
+  `bin/cli links:check`, and `LinksTest` so a rename that misses a reference
+  fails the suite rather than the next reader. The anchor is not held, because a
+  heading moves and the link still lands on the page.
 - A behaviour worth a rule in `knowledge/` is worth a test: ranking that must
   prefer one match over another, an answer that must say "no match" instead of
   guessing, a catalog field that must stay usable.

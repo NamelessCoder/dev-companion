@@ -22,6 +22,7 @@ use Typo3CmsMcp\Upkeep\Command\FeedbackList;
 use Typo3CmsMcp\Upkeep\Command\HintCoverage;
 use Typo3CmsMcp\Upkeep\Command\HintProbe;
 use Typo3CmsMcp\Upkeep\Command\KnowledgeFormat;
+use Typo3CmsMcp\Upkeep\Command\LinkCheck;
 use Typo3CmsMcp\Upkeep\Command\ProseCheck;
 use Typo3CmsMcp\Upkeep\Command\RepositoryCheck;
 use Typo3CmsMcp\Upkeep\Command\RequirementCheck;
@@ -108,6 +109,7 @@ final class Cli
         $application->addCommand(new TodoCheck());
         $application->addCommand(new TodoSync());
         $application->addCommand(new ProseCheck());
+        $application->addCommand(new LinkCheck());
         $application->addCommand(new FeedbackList());
         $application->addCommand(new FeedbackArchive());
         $application->addCommand(new BacklogList());

@@ -22,7 +22,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 #[AsCommand(
     name: 'repository:check',
-    description: 'requirements, decisions, scenarios, todo, tools, prose, and what none of them fails on',
+    description: 'requirements, decisions, scenarios, todo, tools, links, prose, and what none of them fails on',
 )]
 final class RepositoryCheck
 {
@@ -31,7 +31,7 @@ final class RepositoryCheck
      * checkout. `catalog:check` reads .checkouts/ and `hints:coverage` reports
      * gaps rather than failures, so both are asked for by name.
      */
-    private const CHECKED = ['requirements', 'decisions', 'scenarios', 'todo', 'tools', 'prose'];
+    private const CHECKED = ['requirements', 'decisions', 'scenarios', 'todo', 'tools', 'links', 'prose'];
 
     public function __invoke(OutputInterface $output, Application $application): int
     {

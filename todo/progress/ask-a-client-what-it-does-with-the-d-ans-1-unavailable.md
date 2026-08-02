@@ -1,6 +1,8 @@
 # Ask a client what it does with the `D-ANS-1` unavailable shape
 
 **Serves:** decisions/
+**Branch:** todo/ask-a-client-what-it-does-with-the-d-ans-1-unavailable
+**Claimed:** 2026-08-02
 
 The unavailable case keeps the result shape and carries its reason in an
 `unavailable` object, and it is wrong if clients ignore that object and read a

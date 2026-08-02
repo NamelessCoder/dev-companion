@@ -1,6 +1,8 @@
 # Read two consecutive review runs for the `D-EVI-1` diffusion
 
 **Serves:** decisions/
+**Branch:** todo/read-two-consecutive-review-runs-for-the-d-evi-1
+**Claimed:** 2026-08-02
 
 Forward evidence comes from a review rather than a prompt that knows the answer,
 and it is wrong if two consecutive runs produce findings too diffuse to tie back

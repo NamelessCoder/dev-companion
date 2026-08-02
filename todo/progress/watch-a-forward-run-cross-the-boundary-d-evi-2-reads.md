@@ -1,6 +1,8 @@
 # Watch a forward run cross the boundary `D-EVI-2` reads for
 
 **Serves:** decisions/
+**Branch:** todo/watch-a-forward-run-cross-the-boundary-d-evi-2-reads
+**Claimed:** 2026-08-02
 
 A skill crossing is read rather than run, and the proxy is worth nothing if a
 run that happens to cross shows the session editing documentation with the

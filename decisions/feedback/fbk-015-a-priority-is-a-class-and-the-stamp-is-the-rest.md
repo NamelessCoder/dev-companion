@@ -61,11 +61,12 @@ queueing work at once cannot pick the same one.
 - That three is enough. Two would not separate "next" from "not now", and five
   invites a rank by another name — but nothing has yet needed a fourth, because
   nothing has yet had more than a handful at one priority.
-- That the ordering people want is a priority. It is not always: `2026-08-02`
-  wanted the store tidied before 67 cards landed in it, which is a dependency
-  and was written as `high` for want of anywhere else. Where that recurs, what
-  is missing is a way to say "after that one", and no number of priorities
-  supplies it.
+- That the ordering people want is a priority. The one case to hand is: tidying
+  the store before 67 cards land in it is a preference and not a constraint —
+  either order works — so `high` says it exactly. What no number of priorities
+  could say is "not before that one", and nothing has needed it yet. A todo that
+  truly cannot start is `waiting/`, and two steps that must run in order are
+  usually one todo.
 - That a stamp keeps meaning arrival. Nothing rewrites one today, and the two
   moves that could — a claim and a release — deliberately do not.
 

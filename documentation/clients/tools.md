@@ -1754,10 +1754,10 @@ three times over or not at all.
 
 `readOnlyHint: false` · `destructiveHint: false` · `idempotentHint: false` · `openWorldHint: false`
 
-**Not answered** against a checkout, and deliberately: it is the one tool here
-that writes, and this table has two drivers rather than one. A call recorded
-from it would file a real feedback into the backlog every time
-`ToolContractTest` runs, not only when the recording does.
+**Not answered**, and deliberately: it is the one tool here that writes, and
+this table has two drivers rather than one. A call recorded from it would file
+a real feedback into the backlog every time `ToolContractTest` runs, not only
+when the recording does.
 
 **Takes**
 
@@ -1823,11 +1823,11 @@ was recorded, plus the commit that closed it.
 
 `readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: false`
 
-**Not answered** against a checkout, and deliberately: it answers with the
-backlog somebody else wrote, which is different in every checkout and carries
-the tool names that were current when each feedback was filed. One recorded
-title ends in a tool name cut to length, which reads to `ToolNamingTest` as a
-tool this server does not have.
+**Not answered**, and deliberately: it answers with the backlog somebody else
+wrote, which is different in every checkout and carries the tool names that
+were current when each feedback was filed. One recorded title ends in a tool
+name cut to length, which reads to `ToolNamingTest` as a tool this server does
+not have.
 
 **Takes**
 

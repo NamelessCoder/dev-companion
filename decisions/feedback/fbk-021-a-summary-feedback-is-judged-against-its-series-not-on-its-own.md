@@ -89,3 +89,49 @@ preamble names: a gap with a fourth entry written next to three that exist.
 - A session judges a summary by walking the ladder anyway, and writes the entry
   that a sibling's todo writes again a week later. That is the failure this is
   written against, and nothing checks for it.
+
+## Since then
+
+`003103` — the second summary this entry named — was judged on 2026-08-02 by the
+mapping rather than by the ladder, and the first **Wrong if** did not fire. Its
+**Suggestion** has five clauses where `002951` had four, and every one of them
+lands on something:
+
+| Half of the summary                                    | Where it is                                              |
+| ------------------------------------------------------ | -------------------------------------------------------- |
+| what a v14 preview template receives, and how a field resolves | [`R-KNW-041`](../../requirements/knowledge/knw-041-a-preview-template-answer-says-what-the-template-is-handed.md), from [`D-KNW-014`](../knowledge/knw-014-the-record-variable-a-v14-preview-template-is-handed-is-a-gap-this-server-owns.md) |
+| `typo3_documentation_lookup` reaching *Record objects*  | `002928`, whose premise [`D-ANS-021`](../answers/ans-021-a-longer-manual-query-re-aims-rather-than-narrows.md) rejected |
+| the Fluid conditional, and object access on the record  | `003448` and `003000`; the record half is `R-KNW-041`      |
+| a debug script the container could not see              | `003938`, with `003933` for what to do instead             |
+| one cache command instead of `rm` on the cache directory | `003937`                                                  |
+
+Two of the five are answered rather than carried, which is what makes this
+summary a different case from `002951`. The preview statements are on the
+`content-elements` hint: one variable on 14, a path resolved through the
+record's `has()` and `get()`, null where the path is neither a schema field nor
+a system property, and five TCA types that come back as records. Re-run on
+2026-08-02 against the live 14.3 manuals, `Record API` returns *Record objects*
+third and `record objects` returns it first, so the page was never missing from
+the index; `Record API fluid access` still answers with the wrong pages, and
+each of them now names what it matched on — `acces (title)`, `api (path)` —
+which is what `D-ANS-021` built.
+
+The feedback's own phrasing reaches none of it. `bin/cli hints:probe` on "what
+does a v14 backend preview template receive and how do its fields resolve"
+matches no hint, while `tt_content preview template` reaches `content-elements`
+at `appliesTo(10) + text(123)`. That is the dilution ceiling
+[`D-ANS-006`](../answers/ans-006-an-identifier-is-found-however-it-is-spelled.md)
+meets rather than a second gap in the corpus, and the hint is past 544 words.
+
+One sliver maps to no sibling, and the ladder is still not owed for it. That the
+host's `/tmp` is invisible inside the container, and that `php -r` with a `$var`
+fails through `ddev exec`, is the container around the installation and the
+caller's own shell: `doesNotCover` names *running an installation: server and
+container setup* and sends it to the TYPO3 documentation. The question the
+session was actually asking — how to read a class it has installed — is inside
+the boundary, and `003938` and `003933` own it.
+
+Archiving is the same open question as before, and it is not answered twice.
+`003103` waits on the answer `002951` waits on, with one thing added in its
+favour: two of its five halves have landed, so `closed` would not stand over an
+untouched subject here.

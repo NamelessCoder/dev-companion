@@ -713,6 +713,64 @@ final class HintsTest extends TestCase
     }
 
     #[Test]
+    public function whichEnvironmentVariablesTheCoreReadsItselfIsAnswered(): void
+    {
+        // The other half of the sentence above. "Read deployment values and
+        // secrets from environment variables" tells a project to wire something
+        // up without saying what the core already does, and the corpus said
+        // only that half: a session asking whether TYPO3_ENCRYPTION_KEY is read
+        // automatically got nothing back and answered itself from memory. It
+        // happened to be right. The three the core does read are the ones a
+        // wrong answer is expensive about, because a project that assumes more
+        // of them ships a deployment whose secrets are never applied.
+        $result = ArchitectureHints::find(
+            [],
+            'Does TYPO3 read TYPO3_ENCRYPTION_KEY or TYPO3_DB_HOST from the environment by itself?',
+            6,
+        );
+        self::assertSame('environment-variables', $result['matchedHints'][0]['id']);
+
+        $hint = ArchitectureHints::byId('environment-variables');
+        self::assertNotNull($hint);
+        $text = implode("\n", array_column($hint['hints'], 'text'));
+        self::assertStringContainsString('SystemEnvironmentBuilder is the only thing that reads them', $text);
+        self::assertStringContainsString('TYPO3_CONTEXT', $text);
+        self::assertStringContainsString('TYPO3_PATH_ROOT', $text);
+        self::assertStringContainsString('TYPO3_PATH_APP', $text);
+        self::assertStringContainsString('REDIRECT_ prefix', $text);
+        self::assertStringContainsString('HTTP_TYPO3_CONTEXT', $text);
+        self::assertStringContainsString('resolved by the core\'s YamlFileLoader', $text);
+        self::assertStringContainsString('does not reach config/system/settings.php or additional.php', $text);
+        self::assertStringContainsString('the project\'s own getenv() in config/system/additional.php', $text);
+        self::assertStringContainsString('ships no .env reader', $text);
+        // The variable the reporting session found documented but unread: it
+        // exists, the core does take it, and only while `typo3 setup` runs.
+        self::assertStringContainsString('write settings.php once', $text);
+    }
+
+    #[Test]
+    public function settingTheEncryptionKeyFromAnExtensionIsBoundToWhereItBreaks(): void
+    {
+        // Read on both sides in .checkouts/: up to 14.3 Bootstrap::init()
+        // calls checkEncryptionKey() after ExtLocalconfFactory->load(), on main
+        // before it. So the same ext_localconf.php assignment is merely bad
+        // practice on one branch and a boot failure on the next, and a hint
+        // that stated either one flat would be wrong for half the callers.
+        $onFourteen = implode("\n", array_column(
+            ArchitectureHints::byId('environment-variables', 14)['hints'],
+            'text',
+        ));
+        self::assertStringNotContainsString('ext_localconf.php', $onFourteen);
+
+        $onFifteen = implode("\n", array_column(
+            ArchitectureHints::byId('environment-variables', 15)['hints'],
+            'text',
+        ));
+        self::assertStringContainsString('ext_localconf.php', $onFifteen);
+        self::assertStringContainsString('TYPO3 Encryption is empty', $onFifteen);
+    }
+
+    #[Test]
     public function routedArgumentsAreAnsweredWithTheirCacheHashBoundary(): void
     {
         $result = ArchitectureHints::find(

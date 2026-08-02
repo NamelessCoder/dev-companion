@@ -1,7 +1,8 @@
 ---
 date: 2026-07-31T18:59:00+00:00
 category: missing-knowledge
-status: open
+status: closed
+closed: 2026-08-02
 model: unknown
 tool: typo3_documentation_lookup, typo3_architecture_lookup
 directory: /home/benji/projects/site-new

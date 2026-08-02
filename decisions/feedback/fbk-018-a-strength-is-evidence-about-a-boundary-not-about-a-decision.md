@@ -1,7 +1,7 @@
 ---
 id: D-FBK-018
 date: 2026-08-02
-status: open
+status: confirmed
 ---
 
 # D-FBK-018 — A strength is evidence about a boundary, not about a decision
@@ -102,3 +102,76 @@ The judgement is on [`D-SKL-001`](../task-skills/skl-001-the-order-a-task-starts
 whose **Wrong if** is where the omission lands. The rest of this entry stands.
 The run that judged it established nothing about TYPO3 and named the gap rather
 than the fix, and it left the feedback open behind an answer it may not give.
+
+## Confirmed on 2026-08-02
+
+The same reading held on a second strength, at a second boundary, and the first
+**Wrong if** did not fire. `2026-07-31-193050` reports what this server saved a
+conformance audit of `printworks_sitepackage` from, in
+`/home/benji/projects/site-new`. It names nothing the session did instead: every
+counterfactual in it is *I would have had to read those files by hand*, which is
+what the ladder cannot be walked from. The half that does name it was filed
+nineteen seconds later — `2026-07-31-193109`, same directory, same model, same
+list of tools, titled *what I had to establish elsewhere* — and that one is on
+the board with a card of its own.
+
+The pairing is wider than the one above, which is what makes it a property of
+the corpus rather than a reading of one debrief. Two more feedback from the same
+evening, and two other models, sit on the same line in the same project:
+`2026-07-31-194825` reports the absences `typo3_extension_scope` answers as
+first-class results, and `2026-07-31-194510` reports that the same tool says
+what an extension registers and not what it ships. Both directions are reported
+about one tool, by sessions that never saw each other's runs.
+
+The boundary is **what is registered against what is written in the files**.
+Everything the strength credits is a registration or a convention: the tables,
+the content elements and the icons the installation attributes to the extension,
+its Fluid roots, its requires, its site sets and declared commands, and the
+version-bound hints and changelog entries. Everything the cost lists is a file's
+contents or an absence outside that surface: the bodies of eight test classes,
+the shipped `Initialisation/data.xml`, a `Configuration/Form/…/config.yaml`
+nobody registered, a `PageTitleProvider` that is missing, the runtime PHP
+version. `R-PRJ-005` states the first half as what is answered; neither it nor
+`D-ANS-003` states the second half as the boundary it is.
+
+The strength reproduces. Re-run on 2026-08-02 through `bin/typo3-cms-mcp` from
+that directory: `typo3_project_scope` answers TYPO3 14.3.5, the project
+extension, `main at https://site-new.ddev.site/` with set `bk2k/printworks`, and
+six declared commands; `typo3_extension_scope` answers seven content elements of
+which five carry a `templateName` and two do not, three icons, and three XLF
+files declaring `source-language de`; `typo3_changelog_lookup` with
+`type=deprecation, version=14, limit=30` answers 75 entries and shows 30, with
+the `FullyScanned` and `PartiallyScanned` tags on them. The extension has grown
+two tables since the report, and the answer is now read off a booted
+installation, so it says more than it did rather than less.
+
+So does the lever behind the *wrong path avoided*.
+`typo3_architecture_lookup` with the task *content element with inline children*
+returns **Registering a Content Element**, whose hints say that a plugin is a
+CType like any other and that the list_type detour is gone at v14, and that the
+rendering definition is `tt_content.<CType>` on top of `lib.contentElement`. The
+task *Extbase plugin registration and cHash* returns **Extbase Plugins**,
+**Registering a Content Element** and **Records in the Frontend Without
+Extbase**. `site-sets` and `tca-formengine` are reachable too, from a task
+naming those subsystems, which the two calls behind the report did. The core
+confirms the statement the session acted on:
+`14.0/Important-105538-ListTypeAndSubTypes.rst` in `.checkouts/main` records the
+removal of the `list_type` field and of the plugin subtype with it.
+
+**A strength is not evidence about which tool answered.** This is the second
+corpus in which the credit is misplaced, and both times on the same fact. The
+report has `typo3_project_scope` giving *PHP ^8.4 (actual 8.3.23)*; the tool
+answers `PHP ^8.4` and nothing else, and its own cost sibling says the runtime
+version was found with `bash`. That number was also wrong, which
+`2026-07-31-193611` reports: the tests run in DDEV and the host is not where the
+version is. The looser claim beside it is *filtered v14 deprecations to 30
+relevant entries* for a call that passed `limit: 30` against 75 matches. Neither
+changes what the boundary is, and both are why an account of a run is re-run
+before it is read.
+
+The feedback is closed by this commit and nothing is queued. What the two costs
+ask for — a `ships` list, a lookup for cross-file logic — belongs to their own
+cards, and naming their answer from here is the copy-down that judging.md warns
+about. The entry's second **Wrong if** is still untested: those cards are
+unjudged, and where they land is what says whether a strength pairs with a cost
+at a boundary or only reads that way.

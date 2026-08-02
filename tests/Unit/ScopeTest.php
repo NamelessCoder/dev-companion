@@ -15,6 +15,7 @@ use Typo3CmsMcp\Knowledge\Coverage;
 use Typo3CmsMcp\Knowledge\Documents;
 use Typo3CmsMcp\Knowledge\Scope;
 use Typo3CmsMcp\Paths;
+use Typo3CmsMcp\Result\ToolResult;
 use Typo3CmsMcp\Server\ExcludedTools;
 use Typo3CmsMcp\Tests\Support\TemporaryInstallation;
 use Typo3CmsMcp\Tool\Registry;
@@ -701,6 +702,7 @@ final class ScopeTest extends TestCase
             'typo3_commit_message_guide',
             implode("\n", $core->data['checklist'])
         );
+        self::assertStringNotContainsString('workflow=', self::followUp($core, 'typo3_commit_message_guide'));
 
         // And with the workflow that repository needs, because the default is
         // the core's and demands a Forge issue nobody there has.
@@ -710,6 +712,28 @@ final class ScopeTest extends TestCase
         ]);
         self::assertTrue(Scope::from($project->data['scope'])->isOutsideTheCore());
         self::assertStringContainsString('workflow="project"', implode("\n", $project->data['checklist']));
+
+        // Both halves of the same answer, because they are read at different
+        // moments: the checklist while planning, the follow-up calls at the
+        // step itself. A call listed without the workflow is the default one,
+        // and the default is the core's — which is the hard missing-issue
+        // error, in a repository that has no issue to give it (`D-GUI-002`).
+        self::assertStringContainsString(
+            'workflow="project"',
+            self::followUp($project, 'typo3_commit_message_guide')
+        );
+    }
+
+    /** What a brief says about when to call one of the tools it suggests next. */
+    private static function followUp(ToolResult $brief, string $tool): string
+    {
+        foreach ($brief->data['nextTools'] as $suggestion) {
+            if ($suggestion['tool'] === $tool) {
+                return (string) $suggestion['when'];
+            }
+        }
+
+        self::fail($tool . ' is not among the next lookups of this brief.');
     }
 
     #[Test]

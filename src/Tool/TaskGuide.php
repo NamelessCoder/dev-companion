@@ -364,7 +364,8 @@ final class TaskGuide extends ReadOnlyTool
             $intents,
             $domains,
             array_column($architecture['matchedHints'], 'id'),
-            $target
+            $target,
+            $outsideCore
         );
         if ($outsideCore) {
             $nextTools = array_values(array_filter(
@@ -469,8 +470,13 @@ final class TaskGuide extends ReadOnlyTool
      * @param array<int, string> $hintIds ids of the architecture hints this brief matched
      * @return array<int, array{tool: string, when: string}>
      */
-    private static function nextTools(array $intents, array $domains, array $hintIds, ?int $target): array
-    {
+    private static function nextTools(
+        array $intents,
+        array $domains,
+        array $hintIds,
+        ?int $target,
+        bool $outsideCore,
+    ): array {
         $candidates = [];
         foreach ($intents as $intent) {
             foreach ($intent['tools'] as $tool) {
@@ -501,8 +507,15 @@ final class TaskGuide extends ReadOnlyTool
         $candidates[] = 'typo3_test_run_guide, for the targeted runTests.sh invocation';
         // The one step this brief describes and never pointed at. A caller who
         // read the routing table at the start of a session is committing hours
-        // later, from this list.
-        $candidates[] = 'typo3_commit_message_guide, before committing';
+        // later, from this list — and outside the core it is the follow-up call
+        // that has to carry the workflow, because the guide defaults to the
+        // core's and cannot read a repository off a commit message. The
+        // checklist above says it; a list of calls that leaves it out is one
+        // answer disagreeing with itself about the same step.
+        $candidates[] = $outsideCore
+            ? 'typo3_commit_message_guide with workflow="project", before committing — the default is the '
+                . 'core\'s own and demands an issue number and a release trailer this repository has none of'
+            : 'typo3_commit_message_guide, before committing';
         if (Channel::isAvailable()) {
             $candidates[] = 'typo3_feedback_record, when one of these answers was wrong or incomplete';
         }

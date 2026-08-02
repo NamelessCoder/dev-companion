@@ -4,7 +4,14 @@
 **Held by:**
 `CommitMessageTest::outsideTheCoreNoTrailerIsAddedAndNoneIsDemanded`,
 `CommitMessageTest::outsideTheCoreTheSubjectAndBodyRulesStillHold`,
-`ScopeTest::maintainingAnExtensionIsNotSubmittingAPatchToTheCore`
+`ScopeTest::maintainingAnExtensionIsNotSubmittingAPatchToTheCore`,
+`ScopeTest::theBriefPointsAtTheGuideForTheStepItEndsWith`; the first three hold
+that the guide answers without the trailers **when it is asked to** and the
+last that the brief asks for it by name, but that a session passes
+`workflow="project"` at all is **not guarded**. Left out, the draft carries the
+`Releases:` line this case is written against, and the guide reports a hard
+`missing-issue` error besides — measured on 2026-08-02 and recorded on
+[`D-GUI-002`](../../../decisions/guides/gui-002-the-commit-workflow-is-asked-for-not-inferred.md).
 
 > Somebody reported that our list plugin crashes when the storage page is empty.
 > Reproduce it, fix it, and commit it — we tag a patch release afterwards.

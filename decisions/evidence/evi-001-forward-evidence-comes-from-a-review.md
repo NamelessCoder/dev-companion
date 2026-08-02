@@ -70,3 +70,33 @@ seven of them fall back on where **Held by** says `not guarded` — `CORE-04`,
 those carry weight already: `D-EVI-002` rests on `SKILL-07` read by hand, and
 `SKILL-09` says in as many words that it is what measures the rest. That
 residue is the todo behind this reading, not a correction to this entry.
+
+## Since then
+
+The residue is scheduled and read once, and the list in it was two entries out.
+`SITE-08` is held rather than not guarded since the same day — its brief no
+longer calls a backend-only task Fluid and TypoScript work — and `EXT-03` was
+never in it, though it says outright that nothing makes a session pass
+`workflow="project"`. What the seven have in common is not the shape the count
+suggested: `CORE-04` and `CORE-06` are waiting on knowledge and on a decision,
+carried by `R-KNW-001` and by `R-AUD-004` being open, and the session-recurring
+backlog todo already brings those round. The other five are waiting on what a
+session does, which no test here reaches, so the reading is what they get:
+`todo/recurring/read-the-contract-cases-no-test-can-hold.md`, every 14 days,
+starting from `SKILL-09` because it says it measures the rest.
+
+The first reading was done on 2026-08-02. Four stand: the conformance
+checklist's sink gate is as `SKILL-09` describes it down to the opt-out being on
+the path rather than at the end, the backend-module skill still stops its
+workflow and activates the documentation one before editing, the upgrade skill
+still carries its five steps in order, and a project-scope brief still names
+`workflow="project"` for the commit. `SITE-01` does not: the boundary it asks
+for is stated nowhere — neither `covers` nor `doesNotCover` names the site
+configuration file or the language setup, and the nearest entry is about servers
+and deployment. That is queued as `todo/490`.
+
+Rejected for now: holding each proxy to a digest of the file it stands in, the
+way `catalog:check` holds a demo. It fires exactly when the proxied text moves
+rather than on a clock, which is the better trigger, and it is a build rather
+than a cadence — the reading has to happen once either way before there is a
+digest worth recording.

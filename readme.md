@@ -99,6 +99,10 @@ composing several tools does not mean parsing headings and code fences back out
 of prose. All tools are annotated `readOnlyHint`; only `typo3_feedback_record`
 writes anything, and then only a new file.
 
+What each one takes and the fields it answers with is written out per tool in
+[documentation/clients/tools.md](documentation/clients/tools.md), rendered from
+the classes rather than kept beside them.
+
 Names are `typo3_<subject>_<verb>`, with the verb taken from a fixed set —
 `lookup` finds and may find nothing, `guide` composes an answer for a task,
 `list` enumerates, `scope` states what a source covers, `record` writes. So the

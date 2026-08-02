@@ -36,6 +36,8 @@ use Typo3CmsMcp\Upkeep\Command\TodoList;
 use Typo3CmsMcp\Upkeep\Command\TodoNext;
 use Typo3CmsMcp\Upkeep\Command\TodoRelease;
 use Typo3CmsMcp\Upkeep\Command\TodoWaiting;
+use Typo3CmsMcp\Upkeep\Command\ToolCheck;
+use Typo3CmsMcp\Upkeep\Command\ToolIndex;
 
 /**
  * Everything this repository is kept in order by, as one console application.
@@ -88,6 +90,8 @@ final class Cli
         $application->addCommand(new DecisionList());
         $application->addCommand(new DecisionCheck());
         $application->addCommand(new DecisionIndex());
+        $application->addCommand(new ToolCheck());
+        $application->addCommand(new ToolIndex());
         $application->addCommand(new ScenarioShow());
         $application->addCommand(new ScenarioContract());
         $application->addCommand(new ScenarioRecord());

@@ -21,10 +21,10 @@ use Typo3CmsMcp\Paths;
 final class UpkeepTest extends TestCase
 {
     /**
-     * Every command that only reports. The ones that write — the two indexes,
-     * `scenarios:record`, `feedback:archive`, `checkouts:update` — are left out
-     * on purpose: a test suite that rewrites the repository it is run in is
-     * worse than the gap.
+     * Every command that only reports. The ones that write — the three
+     * indexes, `scenarios:record`, `feedback:archive`, `checkouts:update` — are
+     * left out on purpose: a test suite that rewrites the repository it is run
+     * in is worse than the gap.
      *
      * The ones that take an argument are here with one, because that is the
      * half a class-at-a-time test cannot see: the console reads what a command
@@ -52,6 +52,7 @@ final class UpkeepTest extends TestCase
             'todo:list' => [['todo:list']],
             'todo:waiting' => [['todo:waiting']],
             'todo:check' => [['todo:check']],
+            'tools:check' => [['tools:check']],
             'feedback:list' => [['feedback:list']],
             'feedback:next' => [['feedback:next']],
             'checkouts:status' => [['checkouts:status']],

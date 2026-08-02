@@ -302,8 +302,12 @@
       "call": "typo3_project_scope"
     },
     {
-      "when": "Starting work on a TYPO3 major you have not built on recently — before asking what a version changed or whether an API is still there",
+      "when": "Starting work on a TYPO3 major you have not built on recently — before asking what a version changed",
       "call": "typo3_changelog_lookup"
+    },
+    {
+      "when": "Asking whether a pattern still works in a version — what nothing changed has no changelog entry, so the changelog's silence is not an answer",
+      "call": "typo3_documentation_lookup with targetVersion and short English queries for the reference that documents the pattern, then with page to read it"
     },
     {
       "when": "Upgrading or maintaining an installation, and needing the order of operations",

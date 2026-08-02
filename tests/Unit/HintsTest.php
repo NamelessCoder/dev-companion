@@ -1069,6 +1069,48 @@ final class HintsTest extends TestCase
         self::assertStringContainsString('executeFrontendSubRequest', $text);
     }
 
+    /**
+     * The phrasing that reached the layout instead, measured while settling
+     * `D-KNW-008`: two hints are named after a sitepackage and none after
+     * setting tests up, so "site package" was the discriminating pair of terms
+     * and "tests" separated nothing — `R-ANS-007` working as designed on a
+     * corpus where the word naming the subject is the weaker signal.
+     *
+     * The vocabulary is what moved, not the corpus: three phrasings that name
+     * the work rather than the harness. `add tests` was measured with them and
+     * left out — it puts the project hint ahead of `core-tests` for "add tests
+     * for the DataHandler change", which is a core question.
+     */
+    #[Test]
+    public function settingTestsUpInAPackageReachesTheHintAboutThat(): void
+    {
+        $reaches = static fn(string $task): array => array_column(
+            ArchitectureHints::find(['packages/my_sitepackage/Classes/Foo.php'], $task, 5)['matchedHints'],
+            'id',
+        );
+
+        self::assertSame('project-extension-tests', $reaches('Set up tests for our site package extension')[0] ?? '');
+
+        // The neighbours it was measured against, which any change here has to
+        // keep: each reaches the cell it is about.
+        self::assertContains('project-extension-tests', $reaches('how do I test my extension'));
+        self::assertContains('project-extension-tests', $reaches('add functional tests to the extension'));
+        self::assertContains('extension-static-analysis', $reaches('set up phpstan for our extension'));
+        self::assertContains('browser-tests', $reaches('browser tests for the site package'));
+
+        // And the core side, which is what the fourth phrasing would have cost.
+        $core = array_column(
+            ArchitectureHints::find(
+                ['typo3/sysext/core/Classes/DataHandling/DataHandler.php'],
+                'add tests for the DataHandler change',
+                5,
+            )['matchedHints'],
+            'id',
+        );
+        self::assertContains('core-tests', $core);
+        self::assertNotContains('project-extension-tests', $core, 'a core testing question reached the project hint');
+    }
+
     #[Test]
     public function aProjectExtensionIsToldHowToGetASuiteAtAll(): void
     {

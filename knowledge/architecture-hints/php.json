@@ -192,6 +192,9 @@
     "title": "Testing a Project Extension",
     "scope": "extension",
     "appliesTo": [
+      "set up tests",
+      "write tests",
+      "test setup",
       "automated tests",
       "test suite",
       "phpunit",

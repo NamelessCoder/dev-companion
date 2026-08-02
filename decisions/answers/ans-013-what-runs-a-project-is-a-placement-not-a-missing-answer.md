@@ -1,0 +1,88 @@
+---
+id: D-ANS-013
+date: 2026-08-02
+status: open
+---
+
+# D-ANS-013 — What runs a project is a placement, not a missing answer
+
+**The PHP a DDEV project actually runs is readable here twice over, and neither
+reading reaches `typo3_project_scope`, so `feedback/2026-07-31-193611` is step 2
+of the ladder and is queued as [`R-PRJ-008`](../../requirements/project/prj-008-the-project-answer-says-what-runs-it.md).**
+
+[`D-ANS-011`](ans-011-a-scope-answer-states-what-a-manifest-declares.md) named
+this half and left it open: what the container runs is what that feedback asks
+for. This is the entry it said the card would produce.
+
+## Evidence
+
+- The feedback re-run on 2026-08-02 through `bin/typo3-cms-mcp` from
+  `/home/benji/projects/site-new`, the directory it was written in.
+  `typo3_project_scope` opens with "composer-project, TYPO3 14.3.5, PHP ^8.4"
+  and lists "composer test:unit (composer.json) — unknown: phpunit -c
+  Build/phpunit/UnitTests.xml". Nothing in the answer names DDEV.
+- The three numbers, measured in that project the same day. The host
+  interpreter is 8.3.23, `.ddev/config.yaml` states `php_version: "8.4"` on line
+  4, and `composer.json` requires `^8.4`. The container satisfies the
+  constraint, so the reported mismatch was the host's and blocked nothing.
+- The number is already read here, in a file. `.ddev/config.yaml` states it, and
+  a file is what
+  [`R-PRJ-001`](../../requirements/project/prj-001-the-project-is-describable-from-its-files-alone.md)
+  allows the project answer to be built from.
+- And a second time, live. `Typo3Cli::viaDdev()` takes `raw.php_version` out of
+  `ddev describe -j`; `typo3_server_scope`, run from the same directory on the
+  same day, printed "Its console is reachable via ddev on PHP 8.4", with
+  `console.php` "8.4" and `console.command` "ddev exec --
+  /var/www/html/vendor/bin/typo3".
+- Neither reaches the tool the task is sent to. The `instructions` returned at
+  initialize open with "Start every task with typo3_project_scope", and the
+  routing line for a review names it first as well. `typo3_server_scope` is
+  described there as what says which installation is read, not as what says
+  which PHP runs it.
+- This server asked for the run that went wrong. `skills/base.md` says "Where
+  one of the project's own commands would settle it, run it", pointed at the
+  list `typo3_project_scope` returns — and that list says of each command what
+  it does to the sources, never where it runs. `ddev composer` runs one in the
+  web container, on DDEV v1.25.1 here; the shell the agent has runs it on
+  8.3.23.
+
+## Decided
+
+- Step 2, delivery. The answer is here and is reachable only through a tool the
+  task is not sent to. Not 1a, because the number is in a file this server
+  already opens; not 1b, because no verb is missing — `describe` is the verb and
+  it is the one being called.
+- Queued rather than closed on the spot. It changes `Project::describe()` and
+  the declared output schema of `typo3_project_scope`, and
+  [judging.md](../../documentation/feedback/judging.md) puts a schema beyond a
+  run that has read only this repository.
+- The runtime is to be read from `.ddev/config.yaml` rather than from `ddev
+  describe`, so `R-PRJ-001` stands. The project answers from its files, on a
+  fresh clone, and nothing is started to find out —
+  [`R-DIS-006`](../../requirements/discovery/dis-006-nothing-is-started-as-a-side-effect-of-a-lookup.md).
+- The feedback's own suggestion is not adopted as written. It asks for the
+  version inside the running container, which a stopped project cannot answer
+  and a fresh clone cannot either, and both are states an audit runs in.
+- What the answer says beyond that is not settled here. A judgement ends at the
+  diagnosis, and which environments past DDEV are covered is research the todo
+  owns.
+
+## Assumed
+
+- That `php_version` in `.ddev/config.yaml` is what the web container runs. It
+  matched `ddev describe` in this project on 2026-08-02, and no project was read
+  where the two disagree — an image override or a second `.ddev/config.*.yaml`
+  could produce one.
+- That the session ran the shell's interpreter rather than the container's. The
+  feedback says so itself, and nothing else records that run.
+
+## Wrong if
+
+- A project answer that names DDEV and its PHP is followed by the same finding.
+  The number would then be delivered and not taken, which is step 4 and a
+  rewrite rather than a placement.
+- A recorded review run in a DDEV project puts a declared command through the
+  host shell after the answer has said where it runs.
+- The two readings disagree in a project somebody checks, `.ddev/config.yaml`
+  saying one version and `ddev describe` another. `R-PRJ-008` would then be
+  demanding the number from the wrong file.

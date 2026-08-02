@@ -1,7 +1,7 @@
 ---
 id: D-FBK-020
 date: 2026-08-02
-status: open
+status: confirmed
 ---
 
 # D-FBK-020 — A session is charged per call, so the calls are what is budgeted
@@ -70,3 +70,68 @@ somewhere else.
 ## Covered by
 
 - `CliTest::theTodoItHandsOverNamesTheFileItIs`
+
+## Confirmed on 2026-08-02
+
+The run of ten is in. None of the three **Wrong if** fired, and the first one —
+the same calls per session, or fewer calls at the same cached tokens — is the
+one this entry was waiting on. Calls per session fell from 66.6 to 56.1, and the
+cached tokens fell with them rather than staying put.
+
+The ten are the directories under
+`~/.claude/projects/-home-benji-projects-typo3-cms-mcp--worktrees-*` whose
+transcript was last written after 16:00; the other 82 are the baseline, and no
+directory is in both sets. One of the ten is the aborted first attempt at this
+measurement, `6ee04fe8-8d02-4101-b875-65683cefdac3`, which read transcripts and
+blocked rather than working a todo, so both the ten and the nine without it are
+below. The measuring session itself is excluded from both.
+
+| Measure                        | Baseline 82  | The ten    | The nine   |
+| ------------------------------ | ------------ | ---------- | ---------- |
+| Tool calls per session         | 66.6         | 53.4       | 56.1       |
+| Calls issued beside another    | 2020 of 5465 | 314 of 534 | 291 of 505 |
+| Cheap `bash` of all `bash`     | 2023 of 4111 | 81 of 261  | 74 of 245  |
+| Cached tokens read per session | 8.99M        | 7.14M      | 7.59M      |
+
+**One number in the Evidence above is wrong, and it is the second bullet.** A
+transcript may write one assistant message as several JSONL lines, one per
+content block, each repeating the same `message.id`, the same `requestId` and
+the same `usage`. Over the 82 that split factor is 1.94, so counting `tool_use`
+blocks per line can never see two calls in one message: it is not that no turn
+carried two, it is that the shape the count was taken in cannot hold two.
+Grouped on `message.id` — `requestId` gives the identical totals — 2020 of the
+5465 baseline calls were issued beside another, in 77 of the 82 sessions. So the
+**Assumed** bullet is settled too, and against itself: the client is free to
+batch and *did*, on 37% of its calls, before it was told anything.
+
+The same split inflates the fourth number. Summed per line the baseline is
+736.9M cached tokens, which is the recorded 8.99M per session and reproduces the
+figure the first attempt reported; counted once per message it is 404.2M, or
+4.93M per session. The table uses the per-line method on both sides, because
+that is the one the recorded baseline was taken in and the **Wrong if** is a
+comparison. Counted per message the fall is steeper, not shallower: 4.93M to
+3.85M.
+
+What the rule moved, then, is not batching from nothing but batching from 37% to
+57.6%, in 9 of 9 sessions rather than 77 of 82. Beside it the `bash` habit is
+where the calls actually went: 50.1 `bash` calls per session became 27.2, the
+cheap quarter of them fell from 49.2% to 30.2% of all `bash` (62.3% to 40.0%
+counting a cheap command anywhere in a pipeline rather than at its head), the
+file tool went from 7.6 calls per session to 17.8 and the search tool from 0.18
+to 3.4. The glob tool is still never reached for, on either side.
+
+The other two **Wrong if** did not fire either. No session batched onto a stale
+read: of the 132 batched messages in the run, none carried two calls against one
+path, where the baseline has 12 that do — every one of them a pair of `Edit`
+against a single file. And the orientation reads held rather than being traded
+away for the saving: `.checkouts/` went from 4.74 calls per session to 5.78, in
+the same share of sessions, and `documentation/` with `AGENTS.md` from 6.91 to
+7.00, in all nine. What fell is the reading this entry named as the waste —
+`todo/` from 6.63 per session to 5.00.
+
+Two things this does not establish. The ten todos are not the 82 todos, so a
+16% fall in calls per session is a fall across different work and n is 9; and
+because the cached tokens fell by 15.6% while the calls fell by 15.8%, this run
+is consistent with the cost being per call and equally consistent with it being
+per token. What the run rules out is the case the **Wrong if** named — fewer
+calls bought at the same token cost — and that is the whole of what it settles.

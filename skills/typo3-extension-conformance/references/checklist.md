@@ -19,8 +19,8 @@ Absence of an optional subsystem is not a defect.
   escaping, raw rendering, query construction, user-controlled attributes, URLs
   and paths, and secret exposure. Every one of them is a value and a sink, and
   the finding gate below is how one is established.
-- Quality: tests, the check layer, documentation, deprecations, and upgrade
-  readiness.
+- Quality: the test suite and the supported TYPO3 versions it runs on, the
+  check layer, documentation, deprecations, and upgrade readiness.
 
 ## The check layer
 

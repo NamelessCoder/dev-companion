@@ -98,8 +98,12 @@ ten. Asked through the tool the skill actually calls, the split is total:
 `installation-upgrade`, `deprecated-apis` and `project-repository-layout` —
 the last of them `scope: project`, which is not even the unit under audit.
 
-Neither reach is settled here. The measurement this entry names over the 105
-texts is what decides a sixth phrasing, and a judging run has not repeated it,
-so the entry the first **Wrong if** asks for is not written yet.
-`todo/open/2026-08-02-120326-make-the-cross-version-rule-reachable-from-a-question-about-tests.md`
-owes both, and the feedback stays open until it lands.
+Both reaches are settled in [`D-KNW-013`](knw-013-the-sixth-phrasing-was-this-repositorys-own-sentence.md),
+which repeated this measurement over the 107 texts the repository has to hand
+now. The sixth phrasing is not a keyword: the checklist sentence was reworded
+to name the test suite and the supported versions it runs on, and the hint half
+is two patterns on `extension-repository-layout` that name a version rather
+than a test. The bare word was measured again and rejected again, and a second
+copy of the range rule in `project-extension-tests` moved nothing. What this
+entry decided holds — the two vocabularies were widened together, and neither
+half reaches the rule without the other.

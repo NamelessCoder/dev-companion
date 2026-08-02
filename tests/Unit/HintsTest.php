@@ -13,6 +13,7 @@ use Typo3CmsMcp\Knowledge\Domains;
 use Typo3CmsMcp\Knowledge\Scope;
 use Typo3CmsMcp\Knowledge\TaskIntents;
 use Typo3CmsMcp\Knowledge\TestSuiteHints;
+use Typo3CmsMcp\Paths;
 use Typo3CmsMcp\Tool\Registry;
 
 final class HintsTest extends TestCase
@@ -1205,6 +1206,68 @@ final class HintsTest extends TestCase
         );
         self::assertContains('core-tests', $core);
         self::assertNotContains('project-extension-tests', $core, 'a core testing question reached the project hint');
+    }
+
+    /**
+     * The sixth phrasing `D-KNW-009`'s first **Wrong if** asked about, and it
+     * came out of this repository's own text: the conformance checklist wrote
+     * its quality surface down as the bare `tests` that entry had rejected, so
+     * an audit asking in the checklist's own wording reached no PHP hint at
+     * all and no rule about the supported range either. What that cost is on
+     * the record — a recommendation to use a `typo3/cms-compatibility` package
+     * for cross-version testing that no covered line ships (`D-KNW-013`).
+     *
+     * Both ends are held here because either alone is inert, and the wording
+     * is read out of the checklist rather than quoted: the vocabulary was
+     * widened to meet that sentence, so a session that writes the bare word
+     * back fails here rather than in an audit six weeks later.
+     */
+    #[Test]
+    public function anAuditAskingAboutTestsReachesTheRuleAboutTheSupportedRange(): void
+    {
+        $checklist = (string) file_get_contents(
+            Paths::root() . '/skills/typo3-extension-conformance/references/checklist.md',
+        );
+        preg_match('/^- Quality: (.+?)\.$/ms', $checklist, $surface);
+        self::assertNotSame([], $surface, 'the checklist still writes a quality surface down');
+
+        $reaches = static fn(string $task): array => array_column(
+            ArchitectureHints::find([], $task, 6)['matchedHints'],
+            'id',
+        );
+
+        self::assertContains(
+            'extension-repository-layout',
+            $reaches('audit the quality surface of an extension: ' . $surface[1]),
+            'the audit asks in the checklist\'s own words',
+        );
+        self::assertContains(
+            'extension-repository-layout',
+            $reaches('does the test suite cover every supported TYPO3 version'),
+            'and a caller asks for the same rule without naming a repository at all',
+        );
+
+        // Through the tool the skill actually calls, where the answer used to
+        // be the layout of a repository with an installation in it — which is
+        // not even the unit under audit.
+        $audit = Registry::call('typo3_architecture_lookup', [
+            'task' => 'Quality: ' . $surface[1],
+            'paths' => ['composer.json', 'Tests/', 'Build/'],
+            'targetVersion' => '14',
+        ]);
+        $ids = array_column($audit->data['hints'], 'id');
+        self::assertContains('extension-repository-layout', $ids);
+        self::assertLessThan(
+            array_search('project-repository-layout', $ids, true) === false
+                ? PHP_INT_MAX
+                : (int) array_search('project-repository-layout', $ids, true),
+            (int) array_search('extension-repository-layout', $ids, true),
+            'the repository that is only the extension answers before the one that holds an installation',
+        );
+
+        // The neighbour the widened vocabulary was measured against: a testing
+        // question with no version in it still leads with the harness hint.
+        self::assertSame('project-extension-tests', $reaches('how do I test my extension')[0] ?? '');
     }
 
     #[Test]

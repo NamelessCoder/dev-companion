@@ -272,6 +272,8 @@
       "composer.lock",
       "lock file",
       "supported versions",
+      "supported TYPO3 version",
+      "cross-version",
       "version matrix",
       "vendored dependency",
       "Contrib",

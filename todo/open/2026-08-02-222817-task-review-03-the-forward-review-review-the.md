@@ -1,20 +1,20 @@
-# Read the two core clusters, then write the two skills D-SKL-005 decided
+# Write the core patch review skill
 
-**Serves:** feedback/2026-08-02-222817-task-review-03-the-forward-review-review-the.md
+**Serves:** feedback/2026-08-02-222817-task-review-03-the-forward-review-review-the.md, feedback/2026-08-01-115220-proposal-add-a-dedicated-mcp-skill-typo3-patch.md, feedback/2026-08-01-121847-reviewed-the-core-patch-task-deprecate.md
 **Priority:** high
 
-`D-SKL-005` settles that core contribution earns two task skills — reviewing a
-patch and creating one — so what is left is what they say, and that is read
-rather than recalled. Read the two clusters body by body: the fifteen review
-feedback of 2026-08-01 (`2026-08-01-114526` through `2026-08-01-122326`, three
-clients and four models over three different core patches) and the twenty
-creation feedback of 2026-08-02 (`2026-08-02-144315` through
-`2026-08-02-145315`, one session on Forge #105403), plus the two runs whose
-calls are readable — `scenarios/runs/REVIEW-03.json` and its transcript. Say for
-each cluster what order the sessions invented, which step only ran when a
-finding happened to walk into it, and which of this server's tools would have
-answered it; `documentation/clients/writing-a-skill.md` is what that reading
-owes before a line is written, and it also demands asking this server what it
-already covers, with the tools each skill would route to. The output of this
-step is the two orders, written down — not the skills, which are one todo each
-after it.
+`D-SKL-005` decided it and its **Since then** carries the order, read out of the
+three review sessions rather than invented: read the diff and the target branch
+in the checkout, because this server never does (`2026-08-01-121852`); enumerate
+what the diff removes or renames and require an ExtensionScanner matcher plus a
+Breaking or Deprecation `.rst` for each, `@internal` waiving only the `[!!!]`
+marker (`115711`, `115525`); `typo3_changelog_lookup` for the precedent;
+`typo3_script_lookup` with `typo3_test_run_guide` for the narrowest
+`runTests.sh` suites the changed paths imply; `typo3_commit_message_guide` last
+(`115716`). Write it against `documentation/clients/writing-a-skill.md` — which
+demands calling the tools it routes to before routing to them — publish with
+`bin/typo3-cms-mcp install`, and hold the description to `R-SKL-010`. The
+proposal in `115220` is answered by writing the skill, not by its shape: it
+specifies a callable tool with inputs and outputs, and a skill here is the
+order a task runs in. `REVIEW-03` is the measure afterwards, and its rerun is
+what settles the first **Wrong if** in `D-SKL-005`.

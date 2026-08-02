@@ -93,3 +93,48 @@ server nothing at all. The corpus behind it had been saying the same thing since
 - Both are published and the next core run still hand-reads the checkout. Then
   the domain did not earn them, and what a core session needs from here is
   smaller than 35 feedback made it look.
+
+## Since then
+
+Both clusters were read the same day, which settles the second assumption above:
+they do not merely report a gap, they contain the two orders. Neither had to be
+invented here.
+
+The review order is written down twice by sessions that arrived at it
+independently. `feedback/2026-08-01-115716` states the chain that worked —
+`typo3_changelog_lookup` for the precedent, `typo3_script_lookup` with
+`typo3_test_run_guide` for the exact `runTests.sh` suites, then
+`typo3_commit_message_guide` — and asks for it to be named. `2026-08-01-121847`
+reaches the same steps from the other end, by finding no entry point at all:
+`typo3_server_scope` routes "review, audit or assess" to `typo3_project_scope`,
+`typo3_task_guide` and `typo3_extension_scope`, which author changes and read
+extensions. What the order has to force is in `2026-08-01-115711` and
+`115525`: enumerate what the diff removes or renames, and require an
+ExtensionScanner matcher plus a Breaking or Deprecation `.rst` per removal, with
+method-level `@internal` waiving the `[!!!]` marker and nothing else. Two
+findings were under-stated until a user pushed back, both for want of that step.
+`2026-08-01-121852` carries the boundary the order sits on and calls it the most
+useful answer of the review: this server never reads the checkout, so the diff is
+read here and passed in.
+
+The creation order is one session's whole task, filed in nineteen parts on
+2026-08-02 and explicitly offered as a skill body in `2026-08-02-145315`. It
+runs: assess the Forge issue before believing the report (`145128`, `144800`,
+`145043` — the report was half stale and the maintainers' closure was product
+judgement rather than an API fact); reproduce against the target branch as a
+functional test, because a ViewHelper needs a rendering context (`144456`);
+implement; decide the changelog from its own tree, with the directory named for
+the upcoming version and the file `<Type>-<issue>-<CamelCaseSummary>.rst`
+(`145315`); run the suites through `Build/Scripts/runTests.sh`, which
+`typo3_project_scope` does not name (`144350`) and which needs its own
+dependencies inside a worktree (`144950`) and passes falsely there for `cglGit`
+(`144326`); then the delivery half — the asymmetric `origin`, the `Change-Id`
+hook, and the Gerrit REST query that says whether a patch already exists
+(`144848`, `145230`), reached over Anubis bot protection that answers a
+browser-like `curl` with HTTP 200 and a challenge page (`145217`).
+
+What the reading also shows is that the two orders share their middle and not
+their ends: both establish the change and run the checks through the same three
+tools, the review stops before anything is written, and the creation half is
+mostly what happens after the code is right. That is the boundary this entry
+assumed and it holds.

@@ -11,6 +11,8 @@ The requirements of the same name are in
 [the decisions readme](../readme.md) for how an entry is written and when it
 earns one.
 
+- [`D-FBK-025`][D-FBK-025] — A gap thirty sessions reported is not judged like one report · 2026-08-03
+- [`D-FBK-026`][D-FBK-026] — The ladder had no outcome that builds something · 2026-08-03
 - [`D-FBK-011`][D-FBK-011] — The suite holds what one branch can be right about · 2026-08-02
 - [`D-FBK-012`][D-FBK-012] — The queue comes first, and the sighting hands over one · 2026-08-02
 - [`D-FBK-013`][D-FBK-013] — An empty queue is a state, not a failure · 2026-08-02
@@ -34,6 +36,8 @@ earns one.
 - [`D-FBK-002`][D-FBK-002] — The order of the work is declared, not inferred · 2026-07-31 · confirmed
 - [`D-FBK-004`][D-FBK-004] — The model is asked, because nothing else here can say it · 2026-07-31
 
+[D-FBK-025]: fbk-025-a-gap-thirty-sessions-reported-is-not-judged-like-one-report.md
+[D-FBK-026]: fbk-026-the-ladder-had-no-outcome-that-builds-something.md
 [D-FBK-011]: fbk-011-the-suite-holds-what-one-branch-can-be-right-about.md
 [D-FBK-012]: fbk-012-the-queue-comes-first-and-the-sighting-hands-over-one.md
 [D-FBK-013]: fbk-013-an-empty-queue-is-a-state-not-a-failure.md

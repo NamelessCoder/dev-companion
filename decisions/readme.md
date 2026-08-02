@@ -56,6 +56,9 @@ What is not listed as revoked still holds. `confirmed` marks the ones somebody
 went back to and found standing; the rest are open, which is the ordinary case
 and not a defect.
 
+- [`D-FBK-025`][D-FBK-025] — A gap thirty sessions reported is not judged like one report · 2026-08-03
+- [`D-FBK-026`][D-FBK-026] — The ladder had no outcome that builds something · 2026-08-03
+- [`D-SKL-005`][D-SKL-005] — Core contribution earns two task skills, one for reviewing a patch and one for creating one · 2026-08-03
 - [`D-ANS-005`][D-ANS-005] — A question that is not supported here is answered in a shape of its own · 2026-08-02
 - [`D-ANS-006`][D-ANS-006] — An identifier is found however it is spelled · 2026-08-02
 - [`D-ANS-007`][D-ANS-007] — Two shapes for "not answered", one word for why · 2026-08-02
@@ -176,6 +179,9 @@ and not a defect.
 - [`D-VER-001`][D-VER-001] — A version range is data on the statement, not a sentence in it · 2026-07-29 · confirmed
 - [`D-VER-002`][D-VER-002] — The prose is not bound; it says which half it is · 2026-07-29 · confirmed
 
+[D-FBK-025]: feedback/fbk-025-a-gap-thirty-sessions-reported-is-not-judged-like-one-report.md
+[D-FBK-026]: feedback/fbk-026-the-ladder-had-no-outcome-that-builds-something.md
+[D-SKL-005]: task-skills/skl-005-core-contribution-earns-a-skill-and-the-domain-is-the-work.md
 [D-ANS-005]: answers/ans-005-an-unmet-precondition-is-answered-not-raised.md
 [D-ANS-006]: answers/ans-006-an-identifier-is-found-however-it-is-spelled.md
 [D-ANS-007]: answers/ans-007-two-shapes-for-not-answered-and-one-word-for-why.md

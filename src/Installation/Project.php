@@ -291,6 +291,15 @@ final class Project
     {
         $line = trim($line);
 
+        // One line is one command only where nothing chains another onto it.
+        // Read as the tool in front, `phpstan analyse && php-cs-fixer fix` is
+        // the analyser and the rewriter is never reached — and an npm script
+        // chains by convention, so the shape is the ordinary one there.
+        $chained = self::chained($line);
+        if (count($chained) > 1) {
+            return self::runs($chained, $scripts, $seen);
+        }
+
         // Composer's own prefixes come before any tool: @php picks the PHP the
         // project runs on, @putenv sets a variable for the lines after it, and
         // a bare @name is another script of the same manifest.
@@ -379,6 +388,38 @@ final class Project
             // command it is handed. Neither is readable from the declaration.
             default => self::RUNS_UNDECLARED,
         };
+    }
+
+    /**
+     * The commands one declared line puts on the shell.
+     *
+     * `&&`, `||`, `;`, `|` and a trailing `&` each start another one, and every
+     * one of them runs. A quoted operator does not, because a filter pattern
+     * carries `|` and a message carries `;`.
+     *
+     * @return array<int, string>
+     */
+    private static function chained(string $line): array
+    {
+        $commands = [];
+        $command = '';
+        $quote = '';
+        foreach (str_split($line) as $character) {
+            if ($quote !== '') {
+                $quote = $character === $quote ? '' : $quote;
+            } elseif ($character === '"' || $character === "'") {
+                $quote = $character;
+            } elseif ($character === '&' || $character === '|' || $character === ';') {
+                $commands[] = $command;
+                $command = '';
+
+                continue;
+            }
+            $command .= $character;
+        }
+        $commands[] = $command;
+
+        return array_values(array_filter(array_map(trim(...), $commands), static fn(string $command): bool => $command !== ''));
     }
 
     /** The tool a declared line invokes, without the path, the extension, or the runner in front of it. */

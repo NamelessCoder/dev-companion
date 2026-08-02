@@ -231,6 +231,67 @@ final class ProjectTest extends TestCase
     }
 
     #[Test]
+    public function aCommandThatWritesIsNeverReportedAsACheck(): void
+    {
+        // `D-EVI-3` is wrong if a run reports a checkout modified by a command
+        // marked `check` — and by the time a run reports it, the checkout it
+        // was told to leave alone is modified. So the writers are listed here
+        // instead. Each of them rewrites what it is pointed at, and `check` is
+        // the one answer none of them may have, because it is the answer a
+        // review acts on unasked. `unknown` is not a failure: a body nobody can
+        // read is allowed to be undecided.
+        $writes = [
+            'php-cs-fixer --diff -v fix',
+            'php-cs-fixer fix --config Build/php-cs-fixer.php',
+            'ecs check --fix',
+            'phpcbf --standard=Build/phpcs.xml',
+            'rector process src',
+            'phpstan analyse --generate-baseline Build/phpstan-baseline.neon',
+            'psalm --set-baseline=psalm-baseline.xml',
+            'psalm --alter --issues=MissingReturnType',
+            'eslint --fix Resources/Private/JavaScript',
+            'stylelint --fix Resources/Private/Scss',
+            'tsc',
+            'vite build',
+            'composer install',
+            'composer update --no-progress',
+            'composer dump-autoload',
+            'npm ci',
+            'extension-helper version:set 2.0.0',
+            'extension-helper changelog:create',
+            'git checkout -- .',
+            'rm -rf var/cache',
+            // The writer is not always in front. A line chains, every command
+            // on it runs, and an npm script chains by convention — read as its
+            // first tool, each of these is the check that precedes the write.
+            'phpstan analyse && php-cs-fixer fix',
+            'php-cs-fixer fix --dry-run && rector process src',
+            'php -l src/Extension.php; rm -rf var/log',
+            'phpcs || phpcbf',
+            'tsc --noEmit && vite build',
+            // And a wrapper is worth what it reaches.
+            '@cgl',
+        ];
+
+        $answers = [];
+        foreach ($writes as $declaration) {
+            $answers[$declaration] = Project::runs($declaration, ['cgl' => 'php-cs-fixer fix']);
+        }
+
+        self::assertSame(
+            [],
+            array_keys(array_filter($answers, static fn(string $runs): bool => $runs === Project::RUNS_AS_CHECK)),
+            'a command that rewrites the sources was offered to a task told not to change files',
+        );
+        // The other direction of the same reading, so that "chained" does not
+        // become an answer of its own: a line that chains two checks is one.
+        self::assertSame(
+            Project::RUNS_AS_CHECK,
+            Project::runs('phpstan analyse && phplint -c Build/phplint.yml'),
+        );
+    }
+
+    #[Test]
     public function aPatchedDependencyIsPartOfWhatThisProjectIs(): void
     {
         // A patched package does not behave as its version says, and the next

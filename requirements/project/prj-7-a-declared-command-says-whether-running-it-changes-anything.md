@@ -13,10 +13,12 @@ something; or unknown, where the body does not say.
 
 It is read off the declaration and never by running it, `@name` references are
 followed to the script they name, and a script that reaches one unreadable line
-is unknown rather than safe. What comes before the tool is not the tool: a
-composer prefix and a leading `NAME=value` are the environment the command is
-given, so they are out of the tool name and stay in the declaration the answer
-shows. Unknown is a third answer and not a quiet no: a
+is unknown rather than safe. One line is one command only where nothing chains
+another onto it: `&&`, `||`, `;` and `|` each start one that runs, and the
+strongest claim among them is the claim about the line. What comes before the
+tool is not the tool: a composer prefix and a leading `NAME=value` are the
+environment the command is given, so they are out of the tool name and stay in
+the declaration the answer shows. Unknown is a third answer and not a quiet no: a
 test suite runs the project's own code, and nothing in a manifest covers what
 that code writes. Nor is a check a promise that nothing is written — a checker
 may keep a cache of its own; what it does not do is hand the code back
@@ -39,4 +41,5 @@ derived from CI configuration instead.
 
 **Held by:** `ProjectTest::aDeclaredCommandSaysWhetherRunningItChangesTheSources`,
 `ProjectTest::aCommandThatDeclaresNothingReadableIsNotCalledSafe`,
-`ProjectTest::anEnvironmentAssignmentInFrontOfACommandIsNotTheCommand`
+`ProjectTest::anEnvironmentAssignmentInFrontOfACommandIsNotTheCommand`,
+`ProjectTest::aCommandThatWritesIsNeverReportedAsACheck`

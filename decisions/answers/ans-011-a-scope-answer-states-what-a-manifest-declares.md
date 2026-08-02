@@ -82,3 +82,15 @@ two disagree.
 - `feedback/2026-07-31-193611` is judged and lands somewhere other than declared
   against effective. The pairing above would then be a reading of two files
   rather than a property of these answers.
+
+## Since then
+
+`feedback/2026-07-31-193109` was judged on 2026-08-02 and is a second sighting of
+the same pairing from the same directory 25 minutes later. Its fourth cost
+credits `typo3_project_scope` with `^8.4` and reports 8.3.23 as read by bash, so
+what it compares is a declaration against an effective runtime rather than two
+declarations — which is where the third **Wrong if** expects the other feedback
+to land, arrived at independently. Nothing here changed: the runtime half stays
+with `feedback/2026-07-31-193611`, and answering it from this reading would be
+the copy-down that entry already declines. The rest of that feedback is
+[`D-ANS-015`](ans-015-a-registration-the-extension-answer-misreads-is-inside-its-boundary.md).

@@ -11,17 +11,24 @@ directory: /home/benji/projects/site-new
 
 ## Observation
 
-Task: TYPO3 extension conformance audit. What I had to establish elsewhere (from checkout, own knowledge, web) that the server should have answered:
-1. Actual file contents — 20+ read() calls for TCA, TypoScript, Fluid templates, controllers, repositories, forms, tests, XLF files. The server provides registration metadata but not the implementation details.
-2. Test coverage details — had to read ProductCatalogueTest.php, ProductRequestFormTest.php, HeroCarouselTest.php, EditorialContentElementsTest.php, ProductRepositoryTest.php, PrefillProductRequestFormTest.php, ProductTest.php, ProductDemandTest.php to assess quality surface.
-3. Initialisation/data.xml content — the shipped base content (pages, content elements, products, hero slides) with uids, layouts, and relations. Critical for understanding test fixtures and editor workflow.
-4. PHP version mismatch — discovered via bash, not from server. typo3_project_scope reported PHP ^8.4 from composer.json but actual runtime is 8.3.23.
-5. Missing TypoScript files — Catalogue.typoscript and Teaser.typoscript don't exist (finding #3), confirmed by glob.
-6. Form set registration — Configuration/Form/Printworks/config.yaml existence and content not verified by any lookup.
-7. Settings.definitions.yaml labels — all German, no English source; server doesn't validate translation completeness.
-8. PageTitleProvider absence — not detectable via lookups; had to trace from controller to route enhancer to realize it's missing.
+Trimmed on 2026-08-02 to the two costs that are registrations. Six of the eight
+were the contents of files this server does not read — TCA, Fluid, controllers,
+eight test classes, `Initialisation/data.xml` — which is the boundary the report
+itself calls reasonable. The `PageTitleProvider` rule was delivered, by the
+`frontend-records` hint the same session's `typo3_architecture_lookup` calls both
+returned; the PHP number is `D-ANS-011` and its runtime half is
+`feedback/2026-07-31-193611`; and `settings.definitions.yaml` carries English
+labels, unchanged since the day before the report. `D-ANS-015` has the readings.
 
-The server excels at registration/runtime metadata and conventions; implementation details and cross-file logic still require reading the checkout.
+What is left is two registrations the answer gets wrong.
+`printworkssitepackage_catalogue` and `printworkssitepackage_teaser` are
+`registerPlugin()` calls, and `typo3_extension_scope` lists both under "Content
+elements it adds" as "no templateName in this extension's TypoScript" — an
+Extbase plugin renders through the dispatcher, so finding #3 chased two files
+nothing was going to write. And `Configuration/Form/Printworks/config.yaml` is
+reached by nothing: `Extension::ROOT_FILES` is a fixed list of paths, while a
+form set is discovered by its directory since v14.2 (#109412), the way site sets
+already are.
 
 ## Query
 

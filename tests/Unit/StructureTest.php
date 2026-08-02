@@ -109,6 +109,54 @@ final class StructureTest extends TestCase
     }
 
     /**
+     * A conflict a rebase left behind, in any file this repository keeps.
+     *
+     * Nothing else caught one. A resolution that drops a marker leaves a file
+     * that parses, lints and passes every test that does not happen to read it
+     * — the run of 2026-08-02 left a `>>>>>>>` in a decision, and `composer ci`
+     * went green over it because no test opens that entry. It reached `main` in
+     * a commit whose diff looked deliberate.
+     *
+     * It is here rather than in a `:check` command because this is the suite a
+     * branch runs in its own worktree after the rebase, which is the one moment
+     * a bad resolution exists and the only one where naming it is cheap. That
+     * is the same reason the group listings are deliberately *not* here: a
+     * listing is stale in every branch that adds an entry and correct once on
+     * `main`, while a marker is wrong wherever it stands.
+     *
+     * The two arrow markers are enough on their own. `=======` is a heading
+     * underline in Markdown and a rule in half the documents here, so matching
+     * it would fail on prose that is doing its job, and no resolution takes out
+     * both arrows and leaves the middle.
+     */
+    #[Test]
+    public function noFileCarriesAConflictMarker(): void
+    {
+        // Built rather than written, so that this file is not the first thing
+        // the check reports.
+        $markers = [str_repeat('<', 7), str_repeat('>', 7), str_repeat('|', 7)];
+
+        $found = [];
+        foreach (self::kept() as $file) {
+            $lines = explode("\n", (string) file_get_contents($file));
+            foreach ($lines as $number => $line) {
+                foreach ($markers as $marker) {
+                    if (str_starts_with($line, $marker)) {
+                        $found[] = sprintf(
+                            '%s:%d carries %s',
+                            substr($file, strlen(dirname(__DIR__, 2)) + 1),
+                            $number + 1,
+                            $marker,
+                        );
+                    }
+                }
+            }
+        }
+
+        self::assertSame([], $found, 'a rebase was resolved and one of its markers stayed in the file');
+    }
+
+    /**
      * `.editorconfig` is what an editor obeys while a file is being typed, and
      * php-cs-fixer is what rewrites it afterwards. Where the two disagree, each
      * undoes the other: a line typed at the stated indentation comes back
@@ -140,6 +188,45 @@ final class StructureTest extends TestCase
         }
 
         return $tests;
+    }
+
+    /**
+     * Every file this repository writes and keeps, whatever it is written in.
+     *
+     * A conflict lands wherever the two branches disagreed, and on this
+     * repository that is far more often a decision or a hint than a class — so
+     * the walk is by directory rather than by extension, and the exclusions are
+     * the three trees nobody here authors: `vendor/` and `.worktrees/` belong
+     * to other checkouts, and `.checkouts/` is 861 MB of TYPO3 whose own
+     * history carries conflict markers in test fixtures.
+     *
+     * @return array<int, string>
+     */
+    private static function kept(): array
+    {
+        $root = dirname(__DIR__, 2);
+
+        $files = [];
+        foreach (['AGENTS.md', 'CLAUDE.md', 'readme.md', 'composer.json', 'phpstan.neon', 'phpunit.xml.dist'] as $name) {
+            if (is_file($root . '/' . $name)) {
+                $files[] = $root . '/' . $name;
+            }
+        }
+
+        $directories = array_values(array_filter(
+            array_map(
+                static fn(string $directory): string => $root . '/' . $directory,
+                ['src', 'tests', 'bin', 'decisions', 'requirements', 'todo', 'documentation', 'scenarios', 'skills', 'knowledge', 'feedback'],
+            ),
+            is_dir(...),
+        ));
+        if ($directories !== []) {
+            foreach (Finder::create()->files()->in($directories)->sortByName() as $file) {
+                $files[] = $file->getPathname();
+            }
+        }
+
+        return $files;
     }
 
     /**

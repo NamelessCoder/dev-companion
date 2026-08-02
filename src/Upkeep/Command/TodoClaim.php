@@ -7,6 +7,7 @@ namespace Typo3CmsMcp\Upkeep\Command;
 use Symfony\Component\Console\Attribute\Argument;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Finder\Finder;
 use Typo3CmsMcp\Paths;
 use Typo3CmsMcp\Upkeep\Checkouts;
 use Typo3CmsMcp\Upkeep\Cli;
@@ -111,13 +112,11 @@ final class TodoClaim
         }
         $output->writeln('');
 
-        foreach (self::overlapping($taken) as $what => $titles) {
-            $output->writeln(sprintf(
-                '%s is answered for twice, by %s — one entry two sessions will edit.',
-                $what,
-                implode(' and ', $titles),
-            ));
-            $output->writeln('');
+        foreach (self::overlapping($taken) as $saying => $shared) {
+            foreach ($shared as $what => $titles) {
+                $output->writeln(sprintf('%s ' . $saying . '.', $what, implode(' and ', $titles)));
+                $output->writeln('');
+            }
         }
 
         if (!self::record($output, $root, $claims)) {
@@ -441,29 +440,142 @@ final class TodoClaim
     }
 
     /**
-     * What two of the claimed todos both answer for, counting entries only.
+     * What two of the claimed todos both stand on, in the three ways they can.
      *
-     * A directory is what most of the queue serves, so counting one would put a
-     * line under every claim ever taken — and a warning that is always there is
-     * one nobody reads by the third time. It would also be saying nothing:
-     * `decisions/` names the place a step reports to rather than the file it
-     * edits, and the two todos under it usually touch different entries.
+     * `Serves:` was the whole of this and it missed the collision that cost the
+     * most. On 2026-08-02 two todos with different `Serves:` lines each added a
+     * handler for the same token to one function; the rebase put them one after
+     * the other, each ending in `continue`, and the second was unreachable. The
+     * merge was textually clean and only a test said otherwise.
      *
-     * @param array<int, array{title: string, serves: array<int, string>, ...}> $taken
+     * Both of them named `R-ANS-012` in the body, and both named the class they
+     * were going to edit — one as `Extension::describe()`, the other as
+     * `src/Installation/Extension.php`. Neither is a declaration; both are a
+     * session saying where it is about to work, which is exactly what has to be
+     * compared before the worktrees exist.
      *
-     * @return array<string, array<int, string>>
+     * So three readings, reported apart because they are worth different
+     * things. Two claims answering for one entry are two sessions editing one
+     * file. Two naming one class are the same, one step less certainly. Two
+     * standing on one entry without serving it are working from a single
+     * judgement, which is where a pair of steps that have to agree comes from.
+     *
+     * None of it is a refusal. Nothing here can know which lines a step will
+     * touch, and a claim that guessed would stop work that was never going to
+     * collide.
+     *
+     * @param array<int, array{title: string, serves: array<int, string>, body: string, ...}> $taken
+     *
+     * @return array<string, array<string, array<int, string>>>
      */
     private static function overlapping(array $taken): array
     {
-        $serving = [];
+        $served = [];
         foreach ($taken as $todo) {
             foreach ($todo['serves'] as $what) {
+                // A directory is what most of the queue serves, so counting one
+                // would put a line under every claim ever taken — and a warning
+                // that is always there is one nobody reads by the third time.
+                // It would also be saying nothing: `decisions/` names the place
+                // a step reports to rather than the file it edits.
                 if (!str_ends_with($what, '/')) {
-                    $serving[$what][] = $todo['title'];
+                    $served[$what][] = $todo['title'];
+                }
+            }
+        }
+        $served = array_filter($served, static fn(array $titles): bool => count($titles) > 1);
+
+        $classes = self::classFiles();
+        $named = [];
+        $standing = [];
+        foreach ($taken as $todo) {
+            foreach (self::classesNamedIn($todo['body'], $classes) as $class) {
+                $named[$class][] = $todo['title'];
+            }
+            foreach (self::entriesNamedIn($todo['body']) as $entry) {
+                // What it serves is already said above, and saying it twice
+                // reads as two findings.
+                if (!isset($served[$entry])) {
+                    $standing[$entry][] = $todo['title'];
                 }
             }
         }
 
-        return array_filter($serving, static fn(array $titles): bool => count($titles) > 1);
+        $twice = static fn(array $by): array => array_filter(
+            array_map('array_unique', $by),
+            static fn(array $titles): bool => count($titles) > 1,
+        );
+
+        return [
+            'is answered for twice, by %s — one entry two sessions will edit' => $served,
+            'is named by %s — one class two sessions are about to open' => $twice($named),
+            'is behind %s — one judgement, two steps that have to agree' => $twice($standing),
+        ];
+    }
+
+    /**
+     * The classes of this package, by the name a todo would call one.
+     *
+     * @return array<string, string>
+     */
+    private static function classFiles(): array
+    {
+        $directory = Paths::root() . '/src';
+        if (!is_dir($directory)) {
+            return [];
+        }
+
+        $classes = [];
+        foreach (Finder::create()->files()->in($directory)->name('*.php') as $file) {
+            $classes[$file->getBasename('.php')] = substr($file->getPathname(), strlen(Paths::root()) + 1);
+        }
+
+        return $classes;
+    }
+
+    /**
+     * Which of them a todo names, however it spelled it.
+     *
+     * A step names the class it is going to change as the path, as the class
+     * with the method on it, or as the bare name in backticks, and all three
+     * are the same statement. What is compared is the file each resolves to.
+     *
+     * @param array<string, string> $classes
+     *
+     * @return array<int, string>
+     */
+    private static function classesNamedIn(string $body, array $classes): array
+    {
+        $found = [];
+        if (preg_match_all('/\b[A-Z][A-Za-z0-9]*\b/', $body, $words) === false) {
+            return [];
+        }
+        foreach ($words[0] as $word) {
+            if (isset($classes[$word])) {
+                $found[$classes[$word]] = true;
+            }
+        }
+
+        if (preg_match_all('#\bsrc/[A-Za-z0-9/]+\.php\b#', $body, $paths) !== false) {
+            foreach ($paths[0] as $path) {
+                $found[$path] = true;
+            }
+        }
+
+        return array_keys($found);
+    }
+
+    /**
+     * The requirements and decisions a todo's own paragraph stands on.
+     *
+     * @return array<int, string>
+     */
+    private static function entriesNamedIn(string $body): array
+    {
+        if (preg_match_all('/\b[DR]-[A-Z]{3}-\d{3}\b/', $body, $matches) === false) {
+            return [];
+        }
+
+        return array_values(array_unique($matches[0]));
     }
 }

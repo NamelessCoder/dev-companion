@@ -49,11 +49,25 @@ the claim is given the first free name — `todo/<name>-2`, `.worktrees/<name>-2
 the one failure here that looks like success. `**Branch:**` on the claim is what
 says which is which, which is what it was always for.
 
-What it prints besides the branches is an overlap: two claims answering for one
-entry. Nothing here knows which files a step will touch, so it is a warning to
-read before the worktrees exist rather than a refusal. Two todos on one entry
-are two sessions editing one file, and taking one of them is cheaper than
-merging both.
+What it prints besides the branches is an overlap, in the three ways two claims
+can have one. Nothing here knows which lines a step will touch, so all three are
+a warning to read before the worktrees exist rather than a refusal.
+
+Two claims **answering for** one entry are two sessions editing one file, and
+taking one of them is cheaper than merging both. Two **naming** one class are
+the same a step less certainly — a todo says where it is about to work, as a
+path, as `Class::method()`, or as the bare name, and the claim resolves all
+three to the file. Two **standing on** one requirement or decision without
+serving it are working from a single judgement, which is where a pair of steps
+that have to agree comes from.
+
+The last two are here because `Serves:` alone missed the collision that cost the
+most. On 2026-08-02 two todos with different `Serves:` lines each added a handler
+for one token to one function; the rebase put them in sequence, each ending in
+`continue`, and the second was never reached. Both had named `R-ANS-012` and both
+had named the class — one as `Extension::describe()`, the other as
+`src/Installation/Extension.php`. Neither is a declaration and neither had to be:
+it is a session saying where it is going, in the file the claim reads anyway.
 
 `bin/cli todo:release <name>` is the way back out, for a claim nobody is
 working — a branch that came home with a question left over, one that was
@@ -142,8 +156,8 @@ Nothing about it is special. It reads what the todo serves, settles what the
 step turns on, and leaves the file true — all of
 [working-a-todo.md](working-a-todo.md), which the command names as usual.
 
-Two things are different, and both are consequences of `main` being elsewhere.
-The claim is handed over with both of them attached; this is why they are
+Four things are different, and all of them are consequences of `main` being
+elsewhere. The claim is handed over with them attached; this is why they are
 there:
 
 - **Commit on the branch, never on `main`.** That includes the todo file itself.
@@ -158,6 +172,25 @@ there:
   if it forgets. Nothing in `composer ci` says it, deliberately: a suite that
   held the listing would fail every branch that adds an entry, on the one line
   the branch is told not to touch — `D-FBK-011`.
+- **Say nothing about what another branch has done.** A sibling's state is the
+  one fact a worktree cannot check, and writing it down is how a run of ten
+  leaves two feedback answering for nothing. Twice now the same sentence has
+  been written by both halves of a pair — *the feedback stays open behind the
+  sibling todo, which is another session's claim* — and both times the sibling
+  was finished. Each session was right about its own half and wrong about the
+  half it could not see. What is true instead is shorter: this half is done,
+  and whether the entry closes depends on the other, which was not read here.
+  `TodoTest::everyOpenFeedbackIsOnTheBoard` is what catches the leftover, on
+  the rebase, once both halves are on `main`.
+- **Point at entries, not at positions.** In a file two sessions are both
+  adding to, *above*, *below*, *once*, *the first* and *the other* are all
+  claims about a layout that has one more section in it by the time anybody
+  reads them. The run of 2026-08-02 wrote *this entry has been cited once* into
+  an entry that ended the day with three citations, *the paragraph above* into
+  one that gained three sections in between, and *the **Wrong if** got its
+  other answer* twice, in two accounts that could not both be the other. Name
+  the feedback, the requirement or the decision instead: those survive
+  whatever lands beside them.
 
 ## A question that arrives mid-work
 
@@ -259,9 +292,27 @@ later one, fix what names it, amend, and the check goes quiet. Whichever branch
 merged first keeps the number, so the order is decided by the order the work
 came home rather than by anybody arbitrating it.
 
-**Two sessions can also land on one entry**, and `todo:claim` cannot warn about
-it: the overlap it reports is read off `Serves:`, and this one is created by the
-judging rather than declared before it. Two of the ten judged different feedback
+**What is dangerous is the renumbering, not the collision.** Four runs of ten
+produced seven of them, and twice the files naming the old number did not all
+mean the same entry: `R-PRJ-008` rested on the `D-ANS-013` that kept it while
+five other files meant the one that became `D-ANS-015`, and `ans-006` named the
+`D-ANS-016` that stayed while a requirement and a todo named the one that became
+`D-ANS-019`. A search and replace over the id is wrong in exactly those cases,
+it is silent, and no check fails afterwards — the entry it now points at is real.
+So the references are read one at a time, and `git diff main -- <file>` is what
+settles an ambiguous one: a line this branch added means this branch's entry.
+
+**A marker that survives the resolution is what nothing used to catch.** A file
+with a `>>>>>>>` left in it parses, lints, and passes every test that does not
+happen to read it; the run of 2026-08-02 put one into a decision and `composer
+ci` went green over it, in a commit whose diff looked deliberate.
+`StructureTest::noFileCarriesAConflictMarker` reads every file this repository
+keeps, so the suite the branch already runs after its rebase is where that now
+surfaces.
+
+**Two sessions can also land on one entry** where nothing declared it: the
+overlap `todo:claim` reports is read off what the todos say, and this one is
+created by the judging rather than written down before it. Two of the ten judged different feedback
 into the same `D-SKL-001`, which the rebase surfaced as a conflict in the file.
 Usually both paragraphs belong — each is an account of one reading, which is
 what a **Since then** carries, so the resolution is a heading each rather than a

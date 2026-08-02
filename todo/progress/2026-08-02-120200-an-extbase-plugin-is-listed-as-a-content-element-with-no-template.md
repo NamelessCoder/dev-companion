@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-07-31-193109-task-typo3-extension-conformance-audit-what-i.md
 **Priority:** normal
+**Branch:** todo/an-extbase-plugin-is-listed-as-a-content-element-with-no-template
+**Claimed:** 2026-08-02
 
 Step 1b, on `D-ANS-015`: `typo3_extension_scope` lists an `ExtensionUtility::registerPlugin()`
 identifier under "Content elements it adds" and reports "no templateName in this

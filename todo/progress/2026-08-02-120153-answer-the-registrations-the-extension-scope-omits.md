@@ -2,6 +2,8 @@
 
 **Serves:** R-ANS-014, feedback/2026-07-31-194510-typo3-extension-scope-returns-a-summary-that.md
 **Priority:** normal
+**Branch:** todo/answer-the-registrations-the-extension-scope-omits
+**Claimed:** 2026-08-02
 
 Step 1b: three registration kinds have no shape to be asked for, and the
 evidence is in [`D-ANS-014`](../../decisions/answers/ans-014-the-extension-answer-enumerates-registrations-not-files.md)

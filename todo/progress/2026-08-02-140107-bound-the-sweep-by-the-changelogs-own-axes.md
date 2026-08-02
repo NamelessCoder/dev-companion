@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-07-31-194459-the-conformance-skill-workflow-was-the-right.md
 **Priority:** normal
+**Branch:** todo/bound-the-sweep-by-the-changelogs-own-axes
+**Claimed:** 2026-08-02
 
 Ladder step 4, wording, on the evidence in
 [`D-SKL-003`](../../decisions/task-skills/skl-003-a-sweep-is-bounded-by-the-changelogs-own-axes.md):

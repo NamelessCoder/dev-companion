@@ -1,7 +1,9 @@
-# Conformance review of a TYPO3 14 site package: to confirm that the form-set auto-discovery (#1094...
+# typo3_feedback_record tool parameter causes JSON parse error on every attempt. Tried passing tool...
 
-**Serves:** feedback/2026-07-31-194819-conformance-review-of-a-typo3-14-site-package.md
+**Serves:** feedback/2026-07-31-194548-typo3-feedback-record-tool-parameter-causes.md
 **Priority:** low
+**Branch:** todo/typo3-feedback-record-tool-parameter-causes
+**Claimed:** 2026-08-02
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

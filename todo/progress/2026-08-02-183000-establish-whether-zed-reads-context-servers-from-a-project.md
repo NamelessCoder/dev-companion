@@ -2,6 +2,8 @@
 
 **Serves:** R-DIS-013
 **Priority:** normal
+**Branch:** todo/establish-whether-zed-reads-context-servers-from-a-project
+**Claimed:** 2026-08-02
 
 Reading all eleven clients' documentation on 2026-08-02 for `R-DIS-023` turned
 up one that is not a gap in what the install *says* but possibly in what it

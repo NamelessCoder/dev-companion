@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-07-31-193642-19-suggested-consider-typo3-cms-compatibility.md
 **Priority:** normal
+**Branch:** todo/make-the-cross-version-rule-reachable-from-a-question-about-tests
+**Claimed:** 2026-08-02
 
 Step 2, delivery: the answer is written and no question about tests reaches it.
 `extension-repository-layout` holds it — a matrix that resolves per supported

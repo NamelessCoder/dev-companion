@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-07-31-193611-task-typo3-extension-conformance-audit-my.md, R-PRJ-008
 **Priority:** normal
+**Branch:** todo/say-what-runs-the-project-not-only-what-it-declares
+**Claimed:** 2026-08-02
 
 Give `typo3_project_scope` the environment the repository configures for itself:
 read `.ddev/config.yaml` in `Project::describe()` — never `ddev describe`, so

@@ -2,6 +2,8 @@
 
 **Serves:** R-SKL-002
 **Priority:** normal
+**Branch:** todo/name-the-static-analysis-hint-where-the-skill-defers
+**Claimed:** 2026-08-02
 
 `skills/typo3-extension-testing/references/static-quality.md` opens by letting
 "the checkout, the package's declared TYPO3 and PHP range, and versioned

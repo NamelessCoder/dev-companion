@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-07-31-193619-5-recommended-add-en-xlf-files-with-english.md
 **Priority:** normal
+**Branch:** todo/say-how-a-non-english-source-xlf-is-corrected
+**Claimed:** 2026-08-02
 
 Step 4, and `D-KNW-011` carries the evidence: the `language-files` hint calls a
 non-English source file a defect to report and never says what the report should

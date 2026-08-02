@@ -78,3 +78,17 @@ every base used to have in common.
 
 - `DocumentationTest::aViewHelperQuestionReachesTheManualPublishedOutsideTheCoreCollection`
 - `DocumentationTest::aPageOfThatManualIsReadBackAtItsOwnBase`
+
+## Since then
+
+The tokenizer this entry left undecided is
+[`D-ANS-028`](ans-028-a-two-letter-query-word-is-searched-for-and-the-stopword-list-is-what-keeps-the-others-out.md).
+`TermSearch::terms()` admits a two-letter word, so `f:if` reaches
+`Global/If.html` rather than nothing — and it reaches it eighth. Ten of the
+1419 pages carry `if` as a whole word and all ten score the same, so what
+decides between the page titled "if" and Should Use Cached Page Data If
+Available Event is the order the index was built in. That is this entry's own
+ground rather than the tokenizer's: `UNDILUTED_WORDS` is 12 and no title in any
+of the four books is that long, so a title is never weighed by how much else is
+in it. Nothing has been changed about it here, because at a reference of 3 the
+six results of all 41 scenario prompts change and that needs its own reading.

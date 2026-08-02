@@ -20,12 +20,13 @@ the word. So what has to hold is that its pages are in the index, that they are
 there under its own base, and that a URL handed back from it is one the same
 call takes back.
 
-What this does not promise is the page of a ViewHelper whose name is too short
-to be searched for. `f:if f:then f:else condition ViewHelper` reaches
-`Global/Else.html` and not `Global/If.html`, because `TermSearch::terms()`
-drops every word under three characters and `then` is a stopword. That is a
-limit of the tokenizer both corpora go through, and it carries a todo of its
-own.
+What this does not promise is where in the answer that page comes. A name too
+short to be searched for is no longer the obstacle — `TermSearch::terms()`
+admits a two-letter word, so `f:if` reaches `Global/If.html`. What is left is a
+tie: the page titled "if" scores exactly what the ten other pages whose titles
+carry the word score, and it is eighth of them by the order the index was
+built. `f:or` and `f:then` are a second case of the same shape, unreachable by
+name because `or` and `then` are stopwords. Both carry a todo of their own.
 
 ## From
 

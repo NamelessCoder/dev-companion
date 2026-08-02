@@ -1,10 +1,10 @@
 ---
-id: D-ANS-027
+id: D-ANS-028
 date: 2026-08-02
 status: open
 ---
 
-# D-ANS-027 — A two-letter query word is searched for, and the stopword list is what keeps the others out
+# D-ANS-028 — A two-letter query word is searched for, and the stopword list is what keeps the others out
 
 **`TermSearch::terms()` admits a word of two characters, and the two-letter
 words that say nothing about a subject are named in `STOPWORDS` rather than cut

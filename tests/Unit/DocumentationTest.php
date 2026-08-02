@@ -7,6 +7,7 @@ namespace Typo3CmsMcp\Tests\Unit;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Typo3CmsMcp\Manual\Documentation;
+use Typo3CmsMcp\Tool\Registry;
 
 final class DocumentationTest extends TestCase
 {
@@ -192,5 +193,25 @@ final class DocumentationTest extends TestCase
         self::assertSame([], $answer['results']);
         self::assertNotNull($answer['unavailable']);
         self::assertNotSame('', $answer['unavailable']['reason']);
+        // Which of the two unavailable cases it is, because the remedies are
+        // opposite: this one is answered by asking again (D-ANS-007).
+        self::assertSame('source-not-answering', $answer['unavailable']['cause']);
+    }
+
+    /**
+     * The other one, and the reason the field exists: a release outside the
+     * covered versions is permanent, and nothing is fetched to find that out.
+     */
+    #[Test]
+    public function aVersionOutsideTheCoveredOnesIsNotAskedFor(): void
+    {
+        $answer = Registry::call('typo3_documentation_lookup', [
+            'queries' => ['assets'],
+            'targetVersion' => '9.5',
+        ])->data;
+
+        self::assertSame('unavailable', $answer['status']);
+        self::assertSame('version-not-covered', $answer['unavailable']['cause']);
+        self::assertStringContainsString('outside the covered versions', $answer['unavailable']['reason']);
     }
 }

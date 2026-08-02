@@ -82,10 +82,18 @@ final class DocumentationLookup extends ReadOnlyTool
             ], ['title', 'url', 'document', 'documentTitle', 'documentVersion', 'section', 'excerpt', 'content'])),
             'unavailable' => [
                 'type' => ['object', 'null'],
+                'description' => 'Why nothing was answered, where status says unavailable. Null otherwise.',
                 'properties' => [
+                    'cause' => [
+                        'type' => 'string',
+                        'enum' => ['version-not-covered', 'source-not-answering'],
+                        'description' => 'version-not-covered: the release asked about is outside the ones this server '
+                            . 'knows the manuals for, and asking again changes nothing. source-not-answering: '
+                            . 'docs.typo3.org did not answer this time, and the same call may answer the next.',
+                    ],
                     'reason' => Schema::string(),
                 ],
-                'required' => ['reason'],
+                'required' => ['cause', 'reason'],
             ],
         ], ['mode', 'status', 'targetVersion', 'source', 'queries', 'results', 'unavailable']);
     }
@@ -114,6 +122,7 @@ final class DocumentationLookup extends ReadOnlyTool
                 'queries' => $queries,
                 'results' => [],
                 'unavailable' => [
+                    'cause' => 'version-not-covered',
                     'reason' => sprintf(
                         'TYPO3 %s is outside the covered versions: %s.',
                         $statedVersion,

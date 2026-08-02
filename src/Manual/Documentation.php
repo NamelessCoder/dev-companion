@@ -73,7 +73,7 @@ final class Documentation
      *     excerpt: string,
      *     content: string
      *   }>,
-     *   unavailable: array{reason: string}|null
+     *   unavailable: array{cause: string, reason: string}|null
      * }
      */
     public function lookup(array $queries, string $targetVersion, int $limit = 6): array
@@ -108,6 +108,7 @@ final class Documentation
 
         if ($reachable === 0) {
             return $this->answer('search', 'unavailable', $queries, $targetVersion, [], [
+                'cause' => 'source-not-answering',
                 'reason' => 'The versioned TYPO3 documentation indexes could not be reached.',
             ]);
         }
@@ -180,7 +181,7 @@ final class Documentation
      *     excerpt: string,
      *     content: string
      *   }>,
-     *   unavailable: array{reason: string}|null
+     *   unavailable: array{cause: string, reason: string}|null
      * }
      */
     public function page(string $url, string $targetVersion): array
@@ -202,6 +203,7 @@ final class Documentation
         $html = $this->get($url);
         if ($html === null) {
             return $this->answer('page', 'unavailable', [], $targetVersion, [], [
+                'cause' => 'source-not-answering',
                 'reason' => 'The selected TYPO3 documentation page could not be reached.',
             ]);
         }
@@ -418,7 +420,7 @@ final class Documentation
      * @param list<string> $queries
      * @param 'search'|'page' $mode
      * @param list<array{title: string, url: string, document: string, documentTitle: string, documentVersion: string, section: string, excerpt: string, content: string}> $results
-     * @param array{reason: string}|null $unavailable
+     * @param array{cause: string, reason: string}|null $unavailable
      * @return array{
      *   mode: 'search'|'page',
      *   status: 'answered'|'empty'|'unavailable',
@@ -426,7 +428,7 @@ final class Documentation
      *   source: string,
      *   queries: list<string>,
      *   results: list<array{title: string, url: string, document: string, documentTitle: string, documentVersion: string, section: string, excerpt: string, content: string}>,
-     *   unavailable: array{reason: string}|null
+     *   unavailable: array{cause: string, reason: string}|null
      * }
      */
     private function answer(

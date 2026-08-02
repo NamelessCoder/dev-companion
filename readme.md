@@ -229,6 +229,13 @@ name already says what shape the answer has.
   declaring them. Every other namespace is declared per template. Where the
   console cannot be reached, the installed packages' `Namespaces.php` answer and
   `answeredBy` says so.
+- `typo3_schema_lookup`: lists the columns TYPO3 derives for a table from its
+  TCA — `uid`, `pid`, the timestamps, the delete and disable fields, the
+  language and versioning columns, and one per TCA field. Those are exactly the
+  columns an `ext_tables.sql` does not have to declare, so it is what a
+  redundant declaration is checked against. It describes what TYPO3 would
+  create, never what the database currently has, and it needs that database's
+  server to answer rather than a schema in it.
 - `typo3_configuration_lookup`: reads an effective `TYPO3_CONF_VARS` value — the
   value as it is at runtime after every extension has had its say, not the
   shipped default. For configuration whose assembled shape is the question, such

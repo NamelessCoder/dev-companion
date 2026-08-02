@@ -97,6 +97,8 @@ final class ToolCalls
             'modules' => ['typo3_backend_module_lookup', []],
             'namespaces' => ['typo3_fluid_namespace_list', []],
             'configuration' => ['typo3_configuration_lookup', ['path' => 'SYS/fluid']],
+            'schema: one table' => ['typo3_schema_lookup', ['table' => 'tt_content']],
+            'schema: every table' => ['typo3_schema_lookup', []],
             'changelog: hit' => ['typo3_changelog_lookup', ['query' => 'ext_tables.php']],
             'changelog: miss' => ['typo3_changelog_lookup', ['query' => 'quantumflux']],
             'project' => ['typo3_project_scope', []],

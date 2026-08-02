@@ -1,7 +1,7 @@
 ---
 id: D-DIS-008
 date: 2026-08-02
-status: open
+status: confirmed
 ---
 
 # D-DIS-008 — The columns TYPO3 derives are reachable where the database server is
@@ -66,3 +66,25 @@ output". Whether that output can be had at all is what this settles.
 
 - Nothing yet: what is settled here is that the answer exists, and the todo that
   builds it is what a test can hold.
+
+## Confirmed on 2026-08-02
+
+Run rather than read. `site-new` was already up — TYPO3 14.3.5 under DDEV, a
+full container — and `DefaultTcaSchema::enrich()` answered there through
+`probe.php`: 26 TCA tables in, 27 out, `tt_content` with 72 derived columns and
+`pages` with 69, and the twenty-seventh is `sys_category_record_mm`, which the
+enrichment creates rather than enriches. So handing it one empty
+`Doctrine\DBAL\Schema\Table` per TCA table is what makes the derived set
+readable, and the database it needed was a server that answers rather than a
+schema in it.
+
+`typo3_schema_lookup` is that answer, bounded to the derived side. Its three
+paths were driven against the same installation — the named table, a name TCA
+does not have, and the call that names none — and its two unanswerable paths are
+in `ToolContractTest`. What no test here reaches is the filled one: nothing
+injects a runtime reading, which is the same limit `Icons` has, so the run above
+is the whole of the evidence for it.
+
+The one thing the reading did not predict: the answer names the relation tables
+as such. TYPO3 creates them, so no `ext_tables.sql` declares one at all, and a
+list that showed them beside the others would read as work somebody has to do.

@@ -110,6 +110,51 @@ try {
         ];
     }
     $answer['topics']['contentElements'] = $contentElements;
+
+    // The columns TYPO3 adds to a table by itself, which is what an
+    // ext_tables.sql may leave out. DefaultTcaSchema is handed one empty table
+    // per TCA table — it throws where one is missing — so everything it comes
+    // back with was derived rather than declared. It reaches the ConnectionPool
+    // for the platform of each table, which needs a database server that
+    // answers and not a schema in it (D-DIS-008).
+    //
+    // In a try of its own: a failure here is one topic, and the icons and the
+    // TCA above have already been read.
+    try {
+        $tables = [];
+        foreach (array_keys($tca) as $table) {
+            $tables[(string) $table] = new Doctrine\DBAL\Schema\Table((string) $table);
+        }
+        $derived = [];
+        $enriched = TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+            TYPO3\CMS\Core\Database\Schema\DefaultTcaSchema::class,
+        )->enrich($tables);
+        foreach ($enriched as $table => $definition) {
+            $columns = [];
+            foreach ($definition->getColumns() as $column) {
+                $default = $column->getDefault();
+                $columns[] = [
+                    'name' => $column->getName(),
+                    'type' => Doctrine\DBAL\Types\Type::lookupName($column->getType()),
+                    'notnull' => $column->getNotnull(),
+                    'default' => is_scalar($default) || $default === null ? $default : (string) $default,
+                    'length' => $column->getLength(),
+                ];
+            }
+            // A table the enrichment created rather than enriched is an MM
+            // table: it exists because a relation asked for it, and no
+            // ext_tables.sql needs to declare it at all.
+            $derived[(string) $table] = [
+                'columns' => $columns,
+                'relationTable' => !array_key_exists((string) $table, $tca),
+            ];
+        }
+        $answer['topics']['derivedColumns'] = ['tables' => $derived];
+    } catch (Throwable $failure) {
+        $answer['topics']['derivedColumns'] = [
+            'unavailable' => get_class($failure) . ': ' . $failure->getMessage(),
+        ];
+    }
 } catch (Throwable $failure) {
     if ($answer['reason'] === '') {
         $answer['state'] = 'unreachable';

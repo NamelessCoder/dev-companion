@@ -91,6 +91,7 @@ final class ToolContractTest extends TestCase
         'typo3_backend_module_lookup' => ['query' => 'page'],
         'typo3_changelog_lookup' => ['query' => 'deprecation'],
         'typo3_fluid_namespace_list' => [],
+        'typo3_schema_lookup' => ['table' => 'tt_content'],
         'typo3_project_scope' => [],
         'typo3_extension_scope' => ['extension' => 'news'],
     ];

@@ -1037,6 +1037,79 @@ SYS/fluid.
 The answer carries exactly one of these sets of fields: `path`, `found`,
 `answeredBy` — or `path`, `unsupported`.
 
+## `typo3_schema_lookup`
+
+List the columns TYPO3 derives for a table from its TCA — uid, pid, the
+timestamps, the delete and disable fields, the language and versioning columns,
+and one column per TCA field. Those are exactly the columns an ext_tables.sql
+does not have to declare, so this is what a redundant declaration is checked
+against. Answered by booting the installation you are working in and asking the
+core for them, which needs its database server to answer; it says so rather
+than answering empty when it cannot. It describes what TYPO3 would create,
+never what the database currently has.
+
+`readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: false`
+
+**Takes**
+
+- `table` *(string)* — The table to list the derived columns of, for
+  example "tt_content". Omit to list every table TYPO3 derives columns for,
+  with how many each gets.
+
+**Answers with**
+
+- `table` *(string or null, required)* — The table asked about. Null where
+  none was named and the answer is the list of them.
+- `matchCount` *(integer)* — Columns for a named table, tables for a call
+  that named none. Zero means the name is not a TCA table in this installation,
+  never that TYPO3 derives nothing.
+- `answeredBy` *(string)* — One of `installation`, `packages`.
+  installation: its assembled runtime state answered. packages: read from the
+  files the installed packages ship, because the console could not be asked —
+  overrides applied at runtime are not reflected.
+- `columns` *(array of object)* — Empty where no table was named.
+  - `name` *(string, required)*
+  - `type` *(string, required)* — The Doctrine type the core declares it
+    as: integer, string, text, datetime, json, blob.
+  - `notnull` *(boolean, required)*
+  - `default` *(object)* — The default the core gives it, null where it
+    declares none.
+  - `length` *(integer or null)* — Length where the type carries one.
+- `tables` *(array of object)* — Every table TYPO3 derives columns for.
+  Returned on a call that named none, and on one whose name is not among them.
+  - `table` *(string, required)*
+  - `columnCount` *(integer, required)*
+  - `relationTable` *(boolean, required)* — True where TYPO3 creates the
+    table itself for an MM relation. No ext_tables.sql declares one at all.
+- `unsupported` *(object)*
+  - `cause` *(string, required)* — One of `no-installation`,
+    `misconfigured`, `installation-not-answering`. no-installation: nothing to
+    ask from here, and searched says where it looked. misconfigured: an
+    installation was named and could not be used, so nothing was searched for.
+    installation-not-answering: one was found and its console did not answer
+    — a stopped container or a database with no schema, which is a state that
+    ends without reinstalling anything.
+  - `reason` *(string, required)* — What stopped it, in the words the
+    attempt produced.
+  - `diagnosis` *(string)* — What the reason means where the message
+    alone does not say it — a console that starts and then fails on a missing
+    table has a database without a schema, not a broken installation. Empty
+    where nothing beyond the reason is known.
+  - `searched` *(array of string, required)* — Every directory the
+    discovery walked, in order. "Nothing was found" and "the server was started
+    somewhere else" wear one sentence, and only this tells them apart. Empty
+    where discovery never ran.
+  - `misconfiguration` *(string or null)* — What was set and could not be
+    used. Null where nothing was set.
+  - `settings` *(object, required)*
+    - `root` *(string, required)* — Environment variable that names the
+      installation root.
+    - `console` *(string, required)* — Environment variable that names
+      the console command.
+
+The answer carries exactly one of these sets of fields: `table`, `matchCount`,
+`answeredBy`, `columns`, `tables` — or `table`, `unsupported`.
+
 ## `typo3_backend_module_lookup`
 
 List the backend modules registered in the TYPO3 installation you are working

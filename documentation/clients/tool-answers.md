@@ -42,7 +42,7 @@ Source: typo3://core/typo3-gerrit-workflow (core)
 ## Commit messages
 Rules plus a working draft and check, including 72-character body wrapping. The subject and body conventions are also served without the core workflow, for a commit in a repository that has no Forge issue and no release branches: workflow="project". The same guide is exposed as the user-invoked prompt commit_message.
 Tools: typo3_commit_message_guide, typo3_rule_lookup
-… 117 more lines
+… 121 more lines
 ```
 
 Data:
@@ -84,7 +84,7 @@ Data:
             "why": "The knowledge base describes conventions, not code. No core sources ship with it.",
             "instead": "Read the checkout. Use this server for how the subsystem is built and what a patch has to satisfy."
         },
-        "… 6 more"
+        "… 7 more"
     ],
     "checkoutDiscovery": [
         {
@@ -106,7 +106,7 @@ Data:
             "when": "Starting a core task and looking for the applicable conventions and checks",
             "call": "typo3_task_guide"
         },
-        "… 19 more"
+        "… 20 more"
     ],
     "versions": [
         {
@@ -2439,6 +2439,76 @@ Data:
 ```json
 {
     "path": "SYS/fluid",
+    "unsupported": {
+        "cause": "installation-not-answering",
+        "reason": "<installation> has no TYPO3 console — none of bin/typo3, vendor/bin/typo3 exists",
+        "diagnosis": "",
+        "searched": [
+            "<installation>"
+        ],
+        "misconfiguration": null,
+        "settings": {
+            "root": "TYPO3_MCP_ROOT",
+            "console": "TYPO3_MCP_CONSOLE"
+        }
+    }
+}
+```
+
+## `typo3_schema_lookup` — schema: one table
+
+```json
+{
+    "table": "tt_content"
+}
+```
+
+Text:
+
+```
+This is not answerable here, which is not the same as an empty answer: <installation> has no TYPO3 console — none of bin/typo3, vendor/bin/typo3 exists.
+typo3_server_scope reports the installation and its console.
+```
+
+Data:
+
+```json
+{
+    "table": "tt_content",
+    "unsupported": {
+        "cause": "installation-not-answering",
+        "reason": "<installation> has no TYPO3 console — none of bin/typo3, vendor/bin/typo3 exists",
+        "diagnosis": "",
+        "searched": [
+            "<installation>"
+        ],
+        "misconfiguration": null,
+        "settings": {
+            "root": "TYPO3_MCP_ROOT",
+            "console": "TYPO3_MCP_CONSOLE"
+        }
+    }
+}
+```
+
+## `typo3_schema_lookup` — schema: every table
+
+```json
+{}
+```
+
+Text:
+
+```
+This is not answerable here, which is not the same as an empty answer: <installation> has no TYPO3 console — none of bin/typo3, vendor/bin/typo3 exists.
+typo3_server_scope reports the installation and its console.
+```
+
+Data:
+
+```json
+{
+    "table": null,
     "unsupported": {
         "cause": "installation-not-answering",
         "reason": "<installation> has no TYPO3 console — none of bin/typo3, vendor/bin/typo3 exists",

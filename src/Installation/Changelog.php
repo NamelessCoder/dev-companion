@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Typo3CmsMcp\Installation;
 
+use Symfony\Component\Finder\Finder;
+
 /**
  * The changelog entries of the installation this server was started in.
  *
@@ -52,8 +54,8 @@ final class Changelog
         }
 
         $versions = [];
-        foreach (glob($directory . '/*', GLOB_ONLYDIR) ?: [] as $path) {
-            $versions[] = basename($path);
+        foreach (Finder::create()->directories()->in($directory)->depth(0) as $path) {
+            $versions[] = $path->getFilename();
         }
         usort($versions, static fn(string $a, string $b): int => version_compare($b, $a));
 
@@ -79,8 +81,8 @@ final class Changelog
             if ($version !== '' && !str_starts_with($inVersion, $version)) {
                 continue;
             }
-            foreach (glob($directory . '/' . $inVersion . '/*.rst') ?: [] as $file) {
-                $name = basename($file, '.rst');
+            foreach (Finder::create()->files()->in($directory . '/' . $inVersion)->depth(0)->name('*.rst')->sortByName() as $file) {
+                $name = $file->getBasename('.rst');
                 if (preg_match('/^(Breaking|Deprecation|Feature|Important)-(\d+)-(.+)$/', $name, $matches) !== 1) {
                     continue;
                 }
@@ -96,7 +98,7 @@ final class Changelog
                     // matcher: the title as words, and the file name as it is.
                     'key' => $name,
                     'source' => self::words($matches[3]),
-                    'file' => $file,
+                    'file' => $file->getPathname(),
                 ];
             }
         }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Typo3CmsMcp\Installation;
 
+use Symfony\Component\Finder\Finder;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -173,9 +174,14 @@ final class Project
      */
     private static function sites(string $root): array
     {
+        $directory = $root . '/config/sites';
+        if (!is_dir($directory)) {
+            return [];
+        }
+
         $sites = [];
-        foreach (glob($root . '/config/sites/*/config.yaml') ?: [] as $file) {
-            $configuration = self::yaml($file);
+        foreach (Finder::create()->files()->in($directory)->depth(1)->name('config.yaml')->sortByName() as $file) {
+            $configuration = self::yaml($file->getPathname());
             $languages = [];
             foreach ($configuration['languages'] ?? [] as $language) {
                 if (is_array($language)) {
@@ -184,7 +190,7 @@ final class Project
             }
 
             $sites[] = [
-                'identifier' => basename(dirname($file)),
+                'identifier' => $file->getRelativePath(),
                 'base' => (string) ($configuration['base'] ?? ''),
                 'rootPageId' => isset($configuration['rootPageId']) ? (int) $configuration['rootPageId'] : null,
                 'sets' => array_map('strval', $configuration['dependencies'] ?? []),

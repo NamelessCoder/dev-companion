@@ -6,6 +6,7 @@ namespace Typo3CmsMcp\Upkeep\Command;
 
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Finder\Finder;
 use Typo3CmsMcp\Knowledge\Catalog\DemoMarkup;
 use Typo3CmsMcp\Knowledge\Versions;
 use Typo3CmsMcp\Tool\TranslationDomainLookup;
@@ -120,7 +121,10 @@ final class CatalogCheck
                 return 2;
             }
 
-            $classes = array_map('basename', glob($directory . '/TranslationDomain*.php') ?: []);
+            $classes = [];
+            foreach (Finder::create()->files()->in($directory)->depth(0)->name('TranslationDomain*.php')->sortByName() as $file) {
+                $classes[] = $file->getFilename();
+            }
             $resolves[$version['major']] = $classes !== [];
             $output->writeln(sprintf(
                 '  %-5s %s',
@@ -452,11 +456,8 @@ final class CatalogCheck
     private static function readSources(string $directory, string $extension): string
     {
         $sources = '';
-        $entries = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($directory, \FilesystemIterator::SKIP_DOTS));
-        foreach ($entries as $entry) {
-            if ($entry instanceof \SplFileInfo && $entry->getExtension() === $extension) {
-                $sources .= (string) file_get_contents($entry->getPathname());
-            }
+        foreach (Finder::create()->files()->in($directory)->name('*.' . $extension)->sortByName() as $file) {
+            $sources .= (string) file_get_contents($file->getPathname());
         }
 
         return $sources;
@@ -604,12 +605,12 @@ final class CatalogCheck
 
                 return 2;
             }
-            foreach (scandir($directory) ?: [] as $key) {
-                $manifest = $directory . '/' . $key . '/composer.json';
-                if ($key === '.' || $key === '..' || !is_file($manifest)) {
+            foreach (Finder::create()->directories()->in($directory)->depth(0)->sortByName() as $extension) {
+                $manifest = $extension->getPathname() . '/composer.json';
+                if (!is_file($manifest)) {
                     continue;
                 }
-                $shipped[$key][$version['major']] = (string) (json_decode((string) file_get_contents($manifest), true)['name'] ?? '');
+                $shipped[$extension->getFilename()][$version['major']] = (string) (json_decode((string) file_get_contents($manifest), true)['name'] ?? '');
             }
         }
 

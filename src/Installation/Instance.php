@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Typo3CmsMcp\Installation;
 
+use Symfony\Component\Finder\Finder;
+
 /**
  * The TYPO3 installation the calling agent is working in, if there is one.
  *
@@ -333,14 +335,19 @@ final class Instance
      */
     private static function systemExtensions(string $root): array
     {
+        $sysext = $root . '/typo3/sysext';
+        if (!is_dir($sysext)) {
+            return [];
+        }
+
         $packages = [];
-        foreach (glob($root . '/typo3/sysext/*/composer.json') ?: [] as $manifest) {
-            $declared = self::readJson($manifest);
+        foreach (Finder::create()->files()->in($sysext)->depth(1)->name('composer.json')->sortByName() as $manifest) {
+            $declared = self::readJson($manifest->getPathname());
             if (($declared['type'] ?? '') !== 'typo3-cms-framework') {
                 continue;
             }
 
-            $path = dirname($manifest);
+            $path = dirname($manifest->getPathname());
             $key = $declared['extra']['typo3/cms']['extension-key'] ?? basename($path);
             $packages[(string) $key] = $path;
         }

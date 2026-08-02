@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Typo3CmsMcp\Knowledge\Catalog;
 
+use Symfony\Component\Finder\Finder;
 use Typo3CmsMcp\Installation\Instance;
 
 /**
@@ -199,15 +200,9 @@ final class InstalledComponents
             if (!is_dir($directory)) {
                 continue;
             }
-            $entries = new \RecursiveIteratorIterator(
-                new \RecursiveDirectoryIterator($directory, \RecursiveDirectoryIterator::SKIP_DOTS),
-            );
-            foreach ($entries as $entry) {
-                if (!$entry instanceof \SplFileInfo || !$entry->isFile() || $entry->getExtension() !== 'js') {
-                    continue;
-                }
-                $relative = substr($entry->getPathname(), strlen($package) + 1);
-                $sources[(string) file_get_contents($entry->getPathname())] = 'EXT:' . $key . '/' . $relative;
+            foreach (Finder::create()->files()->in($directory)->name('*.js')->sortByName() as $file) {
+                $relative = substr($file->getPathname(), strlen($package) + 1);
+                $sources[(string) file_get_contents($file->getPathname())] = 'EXT:' . $key . '/' . $relative;
             }
         }
 

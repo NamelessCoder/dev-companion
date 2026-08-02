@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Typo3CmsMcp\Upkeep;
 
+use Symfony\Component\Finder\Finder;
 use Typo3CmsMcp\Paths;
 
 /**
@@ -540,13 +541,15 @@ final class Todo
      */
     private static function read(string $group, string $kind): array
     {
-        $todos = [];
-        foreach (glob(self::directory() . '/' . ($group === '' ? '' : $group . '/') . '*.md') ?: [] as $path) {
-            if (basename($path) !== 'readme.md') {
-                $todos[] = self::parse($path, $kind);
-            }
+        $directory = self::directory() . ($group === '' ? '' : '/' . $group);
+        if (!is_dir($directory)) {
+            return [];
         }
-        usort($todos, static fn(array $a, array $b): int => strcmp($a['path'], $b['path']));
+
+        $todos = [];
+        foreach (Finder::create()->files()->in($directory)->depth(0)->name('*.md')->notName('readme.md')->sortByName() as $file) {
+            $todos[] = self::parse($file->getPathname(), $kind);
+        }
 
         return $todos;
     }

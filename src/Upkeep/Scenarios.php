@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Typo3CmsMcp\Upkeep;
 
+use Symfony\Component\Finder\Finder;
 use Typo3CmsMcp\Paths;
 
 /**
@@ -150,15 +151,9 @@ final class Scenarios
         }
 
         $paths = [];
-        $files = new \RecursiveIteratorIterator(
-            new \RecursiveDirectoryIterator($directory, \FilesystemIterator::SKIP_DOTS),
-        );
-        foreach ($files as $file) {
-            if ($file instanceof \SplFileInfo && $file->getExtension() === 'md') {
-                $paths[] = $file->getPathname();
-            }
+        foreach (Finder::create()->files()->in($directory)->name('*.md')->sortByName() as $file) {
+            $paths[] = $file->getPathname();
         }
-        sort($paths);
 
         return $paths;
     }
@@ -305,11 +300,12 @@ final class Scenarios
         $scenarios = self::load();
 
         $runs = [];
-        foreach (glob(($directory ?? self::runsDirectory()) . '/*.json') ?: [] as $path) {
-            $file = 'scenarios/runs/' . basename($path);
-            $run = json_decode((string) file_get_contents($path), true);
+        foreach (Finder::create()->files()->in($directory ?? self::runsDirectory())->depth(0)->name('*.json')->sortByName() as $entry) {
+            $name = $entry->getBasename('.json');
+            $file = 'scenarios/runs/' . $entry->getFilename();
+            $run = json_decode((string) file_get_contents($entry->getPathname()), true);
             if (!is_array($run)) {
-                $runs[basename($path, '.json')] = [
+                $runs[$name] = [
                     'file' => $file,
                     'run' => [],
                     'verdict' => '',
@@ -318,7 +314,7 @@ final class Scenarios
                 continue;
             }
 
-            $id = is_string($run['scenario'] ?? null) ? $run['scenario'] : basename($path, '.json');
+            $id = is_string($run['scenario'] ?? null) ? $run['scenario'] : $name;
             $scenario = $scenarios[$id] ?? null;
             $runs[$id] = [
                 'file' => $file,

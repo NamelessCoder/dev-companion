@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Typo3CmsMcp\Upkeep;
 
+use Symfony\Component\Finder\Finder;
 use Typo3CmsMcp\Paths;
 
 /**
@@ -135,15 +136,18 @@ final class Decisions
      */
     public static function files(): array
     {
-        $paths = [];
-        foreach (self::GROUPS as $group) {
-            foreach (glob(self::directory() . '/' . $group . '/*.md') ?: [] as $path) {
-                if (basename($path) !== 'readme.md') {
-                    $paths[] = $path;
-                }
-            }
+        $directories = array_values(array_filter(
+            array_map(static fn(string $group): string => self::directory() . '/' . $group, self::GROUPS),
+            is_dir(...),
+        ));
+        if ($directories === []) {
+            return [];
         }
-        sort($paths);
+
+        $paths = [];
+        foreach (Finder::create()->files()->in($directories)->depth(0)->name('*.md')->notName('readme.md')->sortByName() as $file) {
+            $paths[] = $file->getPathname();
+        }
 
         return $paths;
     }

@@ -4,10 +4,11 @@
     "type": "library",
     "license": "MIT",
     "require": {
+        "php": ">=8.2",
         "ext-curl": "*",
         "ext-dom": "*",
-        "php": ">=8.2",
         "mcp/sdk": "^0.7.0",
+        "symfony/finder": "^7.4",
         "symfony/yaml": "^7.4"
     },
     "autoload": {

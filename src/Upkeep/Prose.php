@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Typo3CmsMcp\Upkeep;
 
+use Symfony\Component\Finder\Finder;
 use Typo3CmsMcp\Paths;
 
 /**
@@ -50,16 +51,16 @@ final class Prose
             static fn(string $file): bool => is_file(Paths::root() . '/' . $file),
         );
 
-        foreach (['decisions', 'requirements', 'todo', 'documentation', 'scenarios', 'skills', 'knowledge/documents'] as $directory) {
-            $root = Paths::root() . '/' . $directory;
-            if (!is_dir($root)) {
-                continue;
-            }
-            /** @var \SplFileInfo $file */
-            foreach (new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($root, \RecursiveDirectoryIterator::SKIP_DOTS)) as $file) {
-                if ($file->getExtension() === 'md') {
-                    $files[] = substr($file->getPathname(), strlen(Paths::root()) + 1);
-                }
+        $directories = array_values(array_filter(
+            array_map(
+                static fn(string $directory): string => Paths::root() . '/' . $directory,
+                ['decisions', 'requirements', 'todo', 'documentation', 'scenarios', 'skills', 'knowledge/documents'],
+            ),
+            is_dir(...),
+        ));
+        if ($directories !== []) {
+            foreach (Finder::create()->files()->in($directories)->name('*.md') as $file) {
+                $files[] = substr($file->getPathname(), strlen(Paths::root()) + 1);
             }
         }
 

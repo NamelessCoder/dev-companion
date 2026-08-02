@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Typo3CmsMcp\Installation;
 
+use Symfony\Component\Finder\Finder;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -117,7 +118,7 @@ final class Extension
             'serviceTags' => self::serviceTags($path),
             'fluidRoots' => self::fluidRoots($path),
             'fluidNamespaces' => array_keys(FluidNamespaces::declaredBy($path)),
-            'typoScript' => self::baseNames($path . '/Configuration/TypoScript/*.typoscript', ''),
+            'typoScript' => self::baseNames($path . '/Configuration/TypoScript', '*.typoscript', ''),
             'classes' => self::classes($path),
             'files' => self::files($path),
             'notReadStatically' => self::notReadStatically($path),
@@ -165,10 +166,11 @@ final class Extension
         }
 
         $tests = [];
-        foreach (glob($path . '/Tests/*', GLOB_ONLYDIR) ?: [] as $directory) {
-            $tests[] = basename($directory);
+        if (is_dir($path . '/Tests')) {
+            foreach (Finder::create()->directories()->in($path . '/Tests')->depth(0)->sortByName() as $directory) {
+                $tests[] = $directory->getFilename();
+            }
         }
-        sort($tests);
 
         return [
             'manual' => $manual,
@@ -189,16 +191,22 @@ final class Extension
      */
     private static function languageFiles(string $path): array
     {
+        $directory = $path . '/Resources/Private/Language';
+        if (!is_dir($directory)) {
+            return [];
+        }
+
         $sources = [];
         $translations = [];
-        foreach (glob($path . '/Resources/Private/Language/{*.xlf,*/*.xlf}', GLOB_BRACE) ?: [] as $file) {
-            $relative = substr($file, strlen($path) + 1);
-            $name = basename($file);
-            if (preg_match('/^([a-z]{2}(?:_[A-Z]{2})?)\.(.+\.xlf)$/', $name, $matches) === 1) {
+        // The directory itself and one level below it: a language file sits
+        // beside its translations, or in a subdirectory with them.
+        foreach (Finder::create()->files()->in($directory)->depth('< 2')->name('*.xlf')->sortByName() as $file) {
+            $relative = substr($file->getPathname(), strlen($path) + 1);
+            if (preg_match('/^([a-z]{2}(?:_[A-Z]{2})?)\.(.+\.xlf)$/', $file->getFilename(), $matches) === 1) {
                 $translations[dirname($relative) . '/' . $matches[2]][] = $matches[1];
                 continue;
             }
-            $sources[$relative] = self::sourceLanguage($file);
+            $sources[$relative] = self::sourceLanguage($file->getPathname());
         }
 
         $files = [];
@@ -268,14 +276,19 @@ final class Extension
      */
     private static function overrides(string $path): array
     {
+        $directory = $path . '/Configuration/TCA/Overrides';
+        if (!is_dir($directory)) {
+            return ['tables' => [], 'contentElements' => []];
+        }
+
         $tables = [];
         $elements = [];
-        foreach (glob($path . '/Configuration/TCA/Overrides/*.php') ?: [] as $file) {
-            $found = self::declarationsIn((string) file_get_contents($file));
+        foreach (Finder::create()->files()->in($directory)->depth(0)->name('*.php')->sortByName() as $file) {
+            $found = self::declarationsIn((string) file_get_contents($file->getPathname()));
             if ($found['tables'] === []) {
                 // Nothing recognisable: the conventional file name is the best
                 // that is left, and only where it looks like a table at all.
-                $name = substr(basename($file), 0, -strlen('.php'));
+                $name = $file->getBasename('.php');
                 $found['tables'] = preg_match('/^[a-z][a-z0-9_]*$/', $name) === 1 ? [$name] : [];
             }
             foreach ($found['tables'] as $table) {
@@ -690,21 +703,18 @@ final class Extension
      */
     private static function typoScriptFiles(string $path): array
     {
-        $files = [];
-        foreach (['/Configuration/TypoScript', '/Configuration/Sets'] as $directory) {
-            if (!is_dir($path . $directory)) {
-                continue;
-            }
-            $entries = new \RecursiveIteratorIterator(
-                new \RecursiveDirectoryIterator($path . $directory, \FilesystemIterator::SKIP_DOTS)
-            );
-            foreach ($entries as $entry) {
-                if ($entry instanceof \SplFileInfo && $entry->getExtension() === 'typoscript') {
-                    $files[] = $entry->getPathname();
-                }
-            }
+        $directories = array_values(array_filter(
+            [$path . '/Configuration/TypoScript', $path . '/Configuration/Sets'],
+            is_dir(...),
+        ));
+        if ($directories === []) {
+            return [];
         }
-        sort($files);
+
+        $files = [];
+        foreach (Finder::create()->files()->in($directories)->name('*.typoscript')->sortByName() as $file) {
+            $files[] = $file->getPathname();
+        }
 
         return $files;
     }
@@ -712,12 +722,17 @@ final class Extension
     /** @return array<int, array{name: string, path: string}> */
     private static function siteSets(string $path): array
     {
+        $directory = $path . '/Configuration/Sets';
+        if (!is_dir($directory)) {
+            return [];
+        }
+
         $sets = [];
-        foreach (glob($path . '/Configuration/Sets/*/config.yaml') ?: [] as $file) {
-            $directory = basename(dirname($file));
+        foreach (Finder::create()->files()->in($directory)->depth(1)->name('config.yaml')->sortByName() as $file) {
+            $set = $file->getRelativePath();
             $sets[] = [
-                'name' => (string) (self::yaml($file)['name'] ?? $directory),
-                'path' => 'Configuration/Sets/' . $directory . '/',
+                'name' => (string) (self::yaml($file->getPathname())['name'] ?? $set),
+                'path' => 'Configuration/Sets/' . $set . '/',
             ];
         }
 
@@ -786,17 +801,7 @@ final class Extension
 
     private static function countPhpFiles(string $directory): int
     {
-        $count = 0;
-        $entries = new \RecursiveIteratorIterator(
-            new \RecursiveDirectoryIterator($directory, \FilesystemIterator::SKIP_DOTS)
-        );
-        foreach ($entries as $entry) {
-            if ($entry instanceof \SplFileInfo && $entry->getExtension() === 'php') {
-                ++$count;
-            }
-        }
-
-        return $count;
+        return Finder::create()->files()->in($directory)->name('*.php')->count();
     }
 
     /** @return array<int, string> */
@@ -855,7 +860,7 @@ final class Extension
      */
     private static function tcaTables(string $key, string $path): array
     {
-        $declared = self::baseNames($path . '/Configuration/TCA/*.php');
+        $declared = self::baseNames($path . '/Configuration/TCA', '*.php');
         $runtime = Typo3Runtime::topic('tables');
         if (!is_array($runtime) || $runtime === []) {
             return $declared;
@@ -963,19 +968,21 @@ final class Extension
     }
 
     /**
-     * The file names below a glob, without their extension by default: a TCA
+     * The file names in a directory, without their extension by default: a TCA
      * file is named after its table, and the table is what is wanted.
      *
      * @return array<int, string>
      */
-    private static function baseNames(string $pattern, string $suffix = '.php'): array
+    private static function baseNames(string $directory, string $pattern, string $suffix = '.php'): array
     {
-        $names = [];
-        foreach (glob($pattern) ?: [] as $file) {
-            $name = basename($file);
-            $names[] = $suffix === '' ? $name : substr($name, 0, -strlen($suffix));
+        if (!is_dir($directory)) {
+            return [];
         }
-        sort($names);
+
+        $names = [];
+        foreach (Finder::create()->files()->in($directory)->depth(0)->name($pattern)->sortByName() as $file) {
+            $names[] = $suffix === '' ? $file->getFilename() : $file->getBasename($suffix);
+        }
 
         return $names;
     }

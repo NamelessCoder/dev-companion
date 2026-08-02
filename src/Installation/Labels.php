@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Typo3CmsMcp\Installation;
 
+use Symfony\Component\Finder\Finder;
 use Typo3CmsMcp\Knowledge\Catalog\TranslationDomain;
 
 /**
@@ -66,22 +67,26 @@ final class Labels
      */
     private static function files(string $packagePath): array
     {
-        $patterns = [
-            self::LANGUAGE_DIRECTORY . '/*.xlf',
-            self::LANGUAGE_DIRECTORY . '/*/*.xlf',
-            'Configuration/Sets/*/labels.xlf',
-        ];
+        $language = $packagePath . '/' . self::LANGUAGE_DIRECTORY;
+        $sets = $packagePath . '/Configuration/Sets';
+
+        $found = [];
+        if (is_dir($language)) {
+            $found[] = Finder::create()->files()->in($language)->depth('< 2')->name('*.xlf')->sortByName();
+        }
+        if (is_dir($sets)) {
+            $found[] = Finder::create()->files()->in($sets)->depth(1)->name('labels.xlf')->sortByName();
+        }
 
         $files = [];
-        foreach ($patterns as $pattern) {
-            foreach (glob($packagePath . '/' . $pattern) ?: [] as $absolute) {
-                $relative = substr($absolute, strlen($packagePath) + 1);
+        foreach ($found as $finder) {
+            foreach ($finder as $file) {
                 // A locale prefix means a translation of a file that is itself
                 // in this list, and its trans-unit ids are the same ones.
-                if (preg_match('/^[a-z]{2}([_-][A-Za-z]{2,3})?\./', basename($relative)) === 1) {
+                if (preg_match('/^[a-z]{2}([_-][A-Za-z]{2,3})?\./', $file->getFilename()) === 1) {
                     continue;
                 }
-                $files[] = $relative;
+                $files[] = substr($file->getPathname(), strlen($packagePath) + 1);
             }
         }
 

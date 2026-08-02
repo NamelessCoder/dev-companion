@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Typo3CmsMcp\Feedback;
 
 use Composer\InstalledVersions;
+use Symfony\Component\Finder\Finder;
 use Typo3CmsMcp\Installation\Instance;
 use Typo3CmsMcp\Installation\Typo3Cli;
 use Typo3CmsMcp\Paths;
@@ -156,21 +157,23 @@ final class Channel
     ): array {
         self::assertAvailable();
 
-        $files = $status === 'closed' ? [] : (glob(Paths::feedback() . '/*.md') ?: []);
-        if ($status !== 'open') {
-            $files = [...$files, ...(glob(Paths::feedbackArchive() . '/*.md') ?: [])];
-        }
-        // The filename starts with the timestamp the feedback was recorded at, so
-        // this is newest first across both halves — which directory a feedback is
-        // in says whether it was answered, not when it arrived.
-        usort($files, static fn(string $left, string $right): int => strcmp(basename($right), basename($left)));
+        $directories = array_values(array_filter([
+            $status === 'closed' ? null : Paths::feedback(),
+            $status === 'open' ? null : Paths::feedbackArchive(),
+        ], static fn(?string $directory): bool => $directory !== null && is_dir($directory)));
+
+        $files = $directories === [] ? [] : Finder::create()->files()->in($directories)->depth(0)->name('*.md')
+            // The filename starts with the timestamp the feedback was recorded at, so
+            // this is newest first across both halves — which directory a feedback is
+            // in says whether it was answered, not when it arrived.
+            ->sort(static fn(\SplFileInfo $left, \SplFileInfo $right): int => strcmp($right->getFilename(), $left->getFilename()));
 
         $wanted = $tool === null ? null : (self::toolNames($tool)[0] ?? null);
         $answers = self::answers();
 
         $found = [];
         foreach ($files as $file) {
-            $feedback = self::parse($file, $answers);
+            $feedback = self::parse($file->getPathname(), $answers);
             if ($feedback === null) {
                 continue;
             }
@@ -442,8 +445,8 @@ final class Channel
         // Only the feedback whose name this one would take have to be read, and
         // their own first line is where the shared opening can be measured.
         $shared = 0;
-        foreach (glob($directory . '/*-' . $slug . '.md') ?: [] as $taken) {
-            $shared = max($shared, self::opening($words, self::words(self::heading($taken))));
+        foreach (Finder::create()->files()->in($directory)->depth(0)->name('*-' . $slug . '.md') as $taken) {
+            $shared = max($shared, self::opening($words, self::words(self::heading($taken->getPathname()))));
         }
         if ($shared > 0 && $shared < count($words)) {
             $slug = self::slug(array_slice($words, $shared));

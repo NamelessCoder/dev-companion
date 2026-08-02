@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Typo3CmsMcp\Installation;
 
+use Symfony\Component\Finder\Finder;
 use Typo3CmsMcp\Paths;
 
 /**
@@ -273,9 +274,14 @@ final class Icons
             return [];
         }
 
+        $directory = $corePath . '/Resources/Public/Icons/Flags';
+        if (!is_dir($directory)) {
+            return [];
+        }
+
         $flags = [];
-        foreach (glob($corePath . '/Resources/Public/Icons/Flags/*.webp') ?: [] as $file) {
-            $flags[] = 'flags-' . strtolower(pathinfo($file, PATHINFO_FILENAME));
+        foreach (Finder::create()->files()->in($directory)->depth(0)->name('*.webp')->sortByName() as $file) {
+            $flags[] = 'flags-' . strtolower($file->getBasename('.webp'));
         }
 
         return $flags;

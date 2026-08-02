@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Typo3CmsMcp\Knowledge;
 
+use Symfony\Component\Finder\Finder;
 use Typo3CmsMcp\Paths;
 use Typo3CmsMcp\Search\TermSearch;
 use Typo3CmsMcp\Search\Text;
@@ -114,18 +115,14 @@ final class ArchitectureHints
      */
     public static function load(int|array|null $target = null): array
     {
-        $dir = Paths::knowledge() . '/architecture-hints';
-        $files = glob($dir . '/*.json') ?: [];
-        sort($files);
-
         $hints = [];
-        foreach ($files as $path) {
-            $decoded = json_decode((string) file_get_contents($path), true);
+        foreach (Finder::create()->files()->in(Paths::knowledge() . '/architecture-hints')->depth(0)->name('*.json')->sortByName() as $file) {
+            $decoded = json_decode((string) file_get_contents($file->getPathname()), true);
             if (!is_array($decoded)) {
-                throw new \RuntimeException(sprintf('Invalid architecture-hints/%s', basename($path)));
+                throw new \RuntimeException(sprintf('Invalid architecture-hints/%s', $file->getFilename()));
             }
 
-            $category = self::sectionLabel(substr(basename($path), 0, -strlen('.json')));
+            $category = self::sectionLabel($file->getBasename('.json'));
             foreach ($decoded as $entry) {
                 $hints[] = [
                     'id' => (string) $entry['id'],

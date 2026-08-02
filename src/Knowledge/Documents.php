@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Typo3CmsMcp\Knowledge;
 
+use Symfony\Component\Finder\Finder;
 use Typo3CmsMcp\Paths;
 use Typo3CmsMcp\Search\TermSearch;
 
@@ -52,20 +53,15 @@ final class Documents
     /** @return array<int, array{id: string, title: string, path: string}> */
     public static function documents(): array
     {
-        $dir = Paths::documents();
         $documents = [];
-
-        foreach (glob($dir . '/*.md') ?: [] as $path) {
-            $content = (string) file_get_contents($path);
-            $fileName = basename($path);
+        foreach (Finder::create()->files()->in(Paths::documents())->depth(0)->name('*.md')->sortByName() as $file) {
+            $content = (string) file_get_contents($file->getPathname());
             $documents[] = [
-                'id' => substr($fileName, 0, -strlen('.md')),
-                'title' => self::readTitle($content) ?? $fileName,
-                'path' => $path,
+                'id' => $file->getBasename('.md'),
+                'title' => self::readTitle($content) ?? $file->getFilename(),
+                'path' => $file->getPathname(),
             ];
         }
-
-        usort($documents, static fn(array $a, array $b): int => strcmp($a['id'], $b['id']));
 
         return $documents;
     }

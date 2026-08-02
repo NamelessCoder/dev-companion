@@ -6,6 +6,7 @@ namespace Typo3CmsMcp\Upkeep\Command;
 
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Finder\Finder;
 use Typo3CmsMcp\Paths;
 use Typo3CmsMcp\Upkeep\Cli;
 use Typo3CmsMcp\Upkeep\Requirements;
@@ -123,10 +124,10 @@ final class RequirementCheck
     {
         $methods = [];
         foreach (['Unit', 'Contract', 'Smoke'] as $suite) {
-            foreach (glob(Paths::root() . '/tests/' . $suite . '/*Test.php') ?: [] as $path) {
-                preg_match_all('/public function (\w+)\(/', (string) file_get_contents($path), $matches);
+            foreach (Finder::create()->files()->in(Paths::root() . '/tests/' . $suite)->depth(0)->name('*Test.php')->sortByName() as $file) {
+                preg_match_all('/public function (\w+)\(/', (string) file_get_contents($file->getPathname()), $matches);
                 foreach ($matches[1] as $method) {
-                    $methods[] = basename($path, '.php') . '::' . $method;
+                    $methods[] = $file->getBasename('.php') . '::' . $method;
                 }
             }
         }
@@ -145,13 +146,7 @@ final class RequirementCheck
     {
         $references = [];
         $root = Paths::root();
-        $files = new \RecursiveIteratorIterator(
-            new \RecursiveDirectoryIterator($root . '/scenarios', \FilesystemIterator::SKIP_DOTS),
-        );
-        foreach ($files as $file) {
-            if (!$file instanceof \SplFileInfo || $file->getExtension() !== 'md') {
-                continue;
-            }
+        foreach (Finder::create()->files()->in($root . '/scenarios')->name('*.md')->sortByName() as $file) {
             preg_match_all('/`(R-[A-Z]{3}-\d+[a-z]?)`/', (string) file_get_contents($file->getPathname()), $matches);
             foreach ($matches[1] as $id) {
                 $references[$id] ??= substr($file->getPathname(), strlen($root) + 1);

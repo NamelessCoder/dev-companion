@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Typo3CmsMcp\Server;
 
+use Symfony\Component\Finder\Finder;
 use Typo3CmsMcp\Installation\Typo3Cli;
 use Typo3CmsMcp\Paths;
 
@@ -590,19 +591,12 @@ final class Installer
         if (!mkdir($target, 0777, true) && !is_dir($target)) {
             throw new \RuntimeException('could not create ' . $target);
         }
-        $files = new \RecursiveIteratorIterator(
-            new \RecursiveDirectoryIterator($source, \FilesystemIterator::SKIP_DOTS),
-        );
-        foreach ($files as $file) {
-            if (!$file->isFile()) {
-                continue;
-            }
-            $relative = $files->getSubPathName();
+        foreach (Finder::create()->files()->in($source)->sortByName() as $file) {
             $contents = file_get_contents($file->getPathname());
             if ($contents === false) {
                 throw new \RuntimeException('could not read ' . $file->getPathname());
             }
-            $this->write($target . '/' . $relative, $contents);
+            $this->write($target . '/' . $file->getRelativePathname(), $contents);
         }
     }
 
@@ -618,16 +612,17 @@ final class Installer
         if (!is_dir($path)) {
             return;
         }
-        $files = new \RecursiveIteratorIterator(
-            new \RecursiveDirectoryIterator($path, \FilesystemIterator::SKIP_DOTS),
-            \RecursiveIteratorIterator::CHILD_FIRST,
-        );
-        foreach ($files as $file) {
-            $removed = $file->isDir()
-                ? rmdir($file->getPathname())
-                : unlink($file->getPathname());
+        // The finder walks a directory before what is in it, so reversed it
+        // hands over the deepest entry first — which is the order the entries
+        // can be removed in. A symlink to a directory is unlinked rather than
+        // descended into, the way the walk itself leaves it alone.
+        $entries = Finder::create()->in($path)->ignoreDotFiles(false)->ignoreVCS(false)->reverseSorting();
+        foreach ($entries as $entry) {
+            $removed = $entry->isDir() && !$entry->isLink()
+                ? rmdir($entry->getPathname())
+                : unlink($entry->getPathname());
             if (!$removed) {
-                throw new \RuntimeException('could not remove ' . $file->getPathname());
+                throw new \RuntimeException('could not remove ' . $entry->getPathname());
             }
         }
         if (!rmdir($path)) {

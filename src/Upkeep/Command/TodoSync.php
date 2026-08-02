@@ -1,0 +1,82 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Typo3CmsMcp\Upkeep\Command;
+
+use Symfony\Component\Console\Attribute\AsCommand;
+use Symfony\Component\Console\Output\OutputInterface;
+use Typo3CmsMcp\Paths;
+use Typo3CmsMcp\Upkeep\OpenFeedback;
+use Typo3CmsMcp\Upkeep\Todo;
+
+/**
+ * A card on the board for every open feedback that has none.
+ *
+ * The feedback arrive from every session everywhere and this repository has one
+ * board. What used to bridge the two was a sighting that ran only once the
+ * queue was empty, which meant the pile was visible exactly when there was
+ * nothing else to do; what bridges them now is a card per feedback, sitting in
+ * the queue with everything else and sorting below it, because a feedback
+ * nobody has judged carries no priority.
+ *
+ * The card points and does not copy. `**Serves:**` names the file, the heading
+ * is the feedback's own so that a listing says which one it is, and the step is
+ * the same on every card because it is the same step: judge it. What the
+ * feedback reports is read in the feedback, where it cannot drift away from a
+ * second copy of itself.
+ *
+ * Which feedback already has one is not tracked here either. `Todo::serves()`
+ * reads the queue, what is in hand and what waits, so a card in any of the
+ * three is what marks a feedback as taken on — the same relation
+ * `typo3_feedback_list` has always shown, and one place rather than two.
+ */
+#[AsCommand(
+    name: 'todo:sync',
+    description: 'write a todo for every open feedback that has none',
+)]
+final class TodoSync
+{
+    /**
+     * The step every card carries, because judging one feedback is the same
+     * work whichever it is. What differs is the heading and what it serves.
+     */
+    private const STEP = <<<'TEXT'
+        Judge this feedback rather than fix what it reports: re-run the query that
+        produced it against the server as it is now, then close it, trim it to the half
+        that is still open, or write the todo that takes it on. Write the judgement into
+        `decisions/` — the entry it was made against, or a new one where nothing says it
+        yet — because the commit that closes a feedback is the one place nobody can
+        search afterwards. `documentation/feedback/judging.md` is the ladder and the one
+        question it opens with, and what this feedback actually says is in the file it
+        serves rather than here.
+        TEXT;
+
+    public function __invoke(OutputInterface $output): int
+    {
+        $written = 0;
+        foreach (OpenFeedback::all() as $feedback) {
+            if ($feedback['judged']) {
+                continue;
+            }
+
+            // The feedback's own name is already a stamp and a slug, which is
+            // what a card is named by — so the two are visibly one pair, and
+            // the card's age is when the report arrived rather than when
+            // somebody got round to writing it down.
+            $path = 'todo/open/' . basename($feedback['file']);
+            file_put_contents(
+                Paths::root() . '/' . $path,
+                sprintf("# %s\n\n**Serves:** %s\n\n%s\n", $feedback['title'], $feedback['file'], self::STEP),
+            );
+            $output->writeln($path);
+            ++$written;
+        }
+
+        $output->writeln($written === 0
+            ? 'Every open feedback has a todo.'
+            : sprintf('%d written. What is on the board and unjudged is what nobody has decided about yet.', $written));
+
+        return 0;
+    }
+}

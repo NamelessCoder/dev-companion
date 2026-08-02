@@ -169,7 +169,7 @@ final class Todo
      * todo has to name each: none and the command silently stops doing half its
      * job, two and it does it twice.
      */
-    public const READINGS = ['bin/cli feedback:next', 'bin/cli backlog:list', 'bin/cli todo:waiting'];
+    public const READINGS = ['bin/cli backlog:list', 'bin/cli todo:waiting'];
 
     /**
      * Whether the clock has come round for a recurring todo. Nothing here

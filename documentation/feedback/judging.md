@@ -214,9 +214,12 @@ earned.
 
 ## One at a time, and where the answer is written
 
-`bin/cli feedback:next` hands over the oldest feedback no todo has judged, one
-of them, and exits nonzero while any remain. So a run is one judgement, and the
-loop ends when nothing is unjudged rather than after a fixed number.
+Every open feedback has a card on the board, written by `bin/cli todo:sync`, and
+`bin/cli todo:next` hands over one card like any other todo. A card nobody has
+judged carries no priority and therefore sorts below everything somebody has, so
+the oldest unjudged feedback is what comes up once the decided work is done. A
+run is one judgement, and the loop ends when nothing is unjudged rather than
+after a fixed number.
 
 What that costs is the run that saw several at once: a feedback correcting three
 earlier ones, or the same gap reported by four sessions, is a relationship no

@@ -9,7 +9,12 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Typo3CmsMcp\Upkeep\OpenFeedback;
 
 /**
- * The overview `feedback:next` deliberately does not give, for whoever wants it.
+ * The pile as a pile, for whoever wants to read it rather than work it.
+ *
+ * What is to be done about any of it is on the board — one card per open
+ * feedback, handed over one at a time like every other todo. This is the other
+ * question: what has arrived, newest first, and which of it somebody has taken
+ * on.
  */
 #[AsCommand(
     name: 'feedback:list',

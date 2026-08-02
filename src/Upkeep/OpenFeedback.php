@@ -11,10 +11,9 @@ use Typo3CmsMcp\Feedback\Channel;
  * each with whether a todo already names it.
  *
  * That flag is the whole difference between a feedback that is waiting and one
- * somebody has taken on, and it is what `feedback:next` counts down and
- * `feedback:list` marks. It is read here rather than in either of them, because
- * a list and a chunk of the same list disagreeing about what is judged would be
- * a difference nobody could see.
+ * somebody has taken on. `bin/cli todo:sync` writes a card for every feedback
+ * that has none, and `feedback:list` marks the ones that have — two readings of
+ * one relation, kept here so they cannot disagree about it.
  */
 final class OpenFeedback
 {

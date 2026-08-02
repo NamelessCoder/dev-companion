@@ -9,6 +9,7 @@ use PHPUnit\Framework\TestCase;
 use Typo3CmsMcp\Paths;
 use Typo3CmsMcp\Tests\Support\QueuedTodo;
 use Typo3CmsMcp\Upkeep\Checkouts;
+use Typo3CmsMcp\Upkeep\OpenFeedback;
 use Typo3CmsMcp\Upkeep\Todo;
 
 /**
@@ -49,6 +50,31 @@ final class TodoTest extends TestCase
 
         foreach (Todo::READINGS as $reading) {
             self::assertSame([$reading], array_values(array_filter($run, static fn(string $r): bool => $r === $reading)));
+        }
+    }
+
+    /**
+     * The board is where a feedback waits, so one that is on none is one no
+     * session will be handed. That used to be a sighting's job and is now a
+     * card per feedback, which means the failure has moved: nothing prints the
+     * pile any more, so a feedback with no card is invisible rather than merely
+     * far down a list.
+     *
+     * It holds what `bin/cli todo:sync` leaves behind rather than the command
+     * itself. A feedback recorded since the last run of it is exactly the case
+     * this would catch, and the answer is to run it.
+     */
+    #[Test]
+    public function everyOpenFeedbackIsOnTheBoard(): void
+    {
+        $served = Todo::serves();
+
+        foreach (OpenFeedback::all() as $feedback) {
+            self::assertContains(
+                $feedback['file'],
+                $served,
+                $feedback['file'] . ' is open and no todo answers for it — `bin/cli todo:sync`',
+            );
         }
     }
 

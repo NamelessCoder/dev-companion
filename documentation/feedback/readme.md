@@ -16,7 +16,7 @@ Due is two questions. Has the clock come round, which the todo's `**Every:**`
 answers — `session`, or a number of days, so five sessions in an afternoon do
 not ask the same question five times. And is there anything to do, which the
 todo's `**Run:**` command answers by exiting nonzero when it found work: the
-feedback stop being the next thing the moment the last one is judged, without
+backlog stops being the next thing the moment the last entry is named, without
 anybody editing a todo to say so. What is owed a feedback or a
 backlog entry is that judgement — a todo that takes it on, or the sentence
 saying why it stays as it is — not the work itself, which is what the queue is
@@ -34,19 +34,28 @@ untouched for as long as `feedback/` was not empty — which is always.
 The order is now: what has a clock, then the queue, then the sightings once the
 queue is empty. It follows from what a judgement is. Judging a feedback is
 deciding whether it becomes work; the queue is the work that decision produced.
+
+Since 2026-08-02 the feedback are *in* the queue rather than behind it — one
+card each, written by `bin/cli todo:sync`, carrying no priority until somebody
+judges them and therefore sorting below everything somebody has. The order
+above is unchanged and what enforces it has moved: the priority does it now,
+where a group boundary did it before. What is still behind the queue is the
+backlog sighting, and it is reached when the queue runs dry — which now means
+that nothing decided is left *and* nothing has arrived unjudged.
 Leaving it standing in order to judge more feedback is deciding twice and doing
 nothing, and the pile it decides over grows faster than any session can read
 it.
 
-The second half of the same problem is the size of the reading.
-`bin/cli feedback:next` hands over **one** feedback, the oldest no todo has
-judged, with its category, the model that left it and its own first line — not
-the directory and not a handful either. One query can be re-run in a session
-that also has work of its own; fifty-six cannot, and a session handed all of
-them closes whatever is easiest. It was five until 2026-08-02, cut for a reader
-who could then only find the judgements in the commit that made them. What
-carries that instead is `decisions/`, which is where a judgement is written now
-— see [judging.md](judging.md) and
+The second half of the same problem is the size of the reading, and the board is
+what solves it now. `bin/cli todo:sync` writes one card per open feedback, and
+`bin/cli todo:next` hands over **one** of them, like any other todo — a card
+nobody has judged carries no priority, so the oldest unjudged feedback comes up
+once the decided work is done. One query can be re-run in a session that also
+has work of its own; sixty-seven cannot, and a session handed all of them closes
+whatever is easiest. The portion was five until 2026-08-02, cut for a reader who
+could then only find the judgements in the commit that made them. What carries
+that instead is `decisions/`, which is where a judgement is written now — see
+[judging.md](judging.md) and
 [`D-FBK-012`](../../decisions/feedback/fbk-012-the-queue-comes-first-and-the-sighting-hands-over-one.md).
 `bin/cli feedback:list` is still the whole of it, for whoever wants the
 overview.

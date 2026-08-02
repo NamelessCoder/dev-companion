@@ -12,8 +12,8 @@ one is added.
 - [`D-SCO-8`][D-SCO-8] — The path decides, and the answer may say it cannot · 2026-08-01 · standing
 - [`D-SCO-1`][D-SCO-1] — Outside the core the core test guide declines rather than adapts · 2026-07-29 · corrected
 - [`D-SCO-2`][D-SCO-2] — A core-only intent asks for evidence, not for silence · 2026-07-29 · standing
-- [`D-SCO-3`][D-SCO-3] — What is core-only is decided per line, by what it names · 2026-07-29 · standing
-- [`D-SCO-4`][D-SCO-4] — The frontend is recognised by name, and only the two UI sections go · 2026-07-29 · standing
+- [`D-SCO-3`][D-SCO-3] — What is core-only is decided per line, by what it names · 2026-07-29 · tested
+- [`D-SCO-4`][D-SCO-4] — The frontend is recognised by name, and only the two UI sections go · 2026-07-29 · corrected
 - [`D-SCO-5`][D-SCO-5] — The installation is evidence about the task, and the weakest kind · 2026-07-29 · standing
 - [`D-SCO-6`][D-SCO-6] — Why "project work is out of scope" kept coming back · 2026-07-29 · standing
 

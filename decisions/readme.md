@@ -134,8 +134,8 @@ the repository has moved furthest away from since. Going back to one and adding
 - [`D-KNW-2`][D-KNW-2] — A hint about typo3/testing-framework is verified against tags, not against the checkouts · 2026-07-29 · corrected
 - [`D-SCO-1`][D-SCO-1] — Outside the core the core test guide declines rather than adapts · 2026-07-29 · corrected
 - [`D-SCO-2`][D-SCO-2] — A core-only intent asks for evidence, not for silence · 2026-07-29 · standing
-- [`D-SCO-3`][D-SCO-3] — What is core-only is decided per line, by what it names · 2026-07-29 · standing
-- [`D-SCO-4`][D-SCO-4] — The frontend is recognised by name, and only the two UI sections go · 2026-07-29 · standing
+- [`D-SCO-3`][D-SCO-3] — What is core-only is decided per line, by what it names · 2026-07-29 · tested
+- [`D-SCO-4`][D-SCO-4] — The frontend is recognised by name, and only the two UI sections go · 2026-07-29 · corrected
 - [`D-SCO-5`][D-SCO-5] — The installation is evidence about the task, and the weakest kind · 2026-07-29 · standing
 - [`D-SCO-6`][D-SCO-6] — Why "project work is out of scope" kept coming back · 2026-07-29 · standing
 - [`D-VER-1`][D-VER-1] — A version range is data on the statement, not a sentence in it · 2026-07-29 · standing

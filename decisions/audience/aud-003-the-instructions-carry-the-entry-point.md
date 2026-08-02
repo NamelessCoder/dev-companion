@@ -98,3 +98,23 @@ here: `typo3-backend-module-development` promises "TYPO3 backend UI work" and
 means a module, so this task matched a word in each description and belonged
 wholly to the first. The rewrite is queued rather than made, because a
 description is installed into somebody else's project.
+
+That rewrite landed on 2026-08-02 with the check this entry proposed, and the
+check is the part worth keeping: all seven descriptions were read for the same
+shape, and two carry it. `typo3-content-element-development` now opens on
+content elements with neither side attached and names a custom backend preview
+in the page module second in its list rather than `previews` ninth of eleven;
+`typo3-backend-module-development` no longer claims the backend beyond the
+module it means, says that the preview is not one, and its crossing hands over a
+content element "or its backend preview" instead of a frontend one, because a
+body naming one side while the description names both is the file disagreeing
+with itself where nobody can correct it. The other five do not carry the shape:
+conformance, documentation and testing each name a domain by what is done to it
+and list surfaces from both ends, and the two that could have read as one-sided
+already state the second half — the upgrade skill names dropping an old major
+beside adding a new one, and the release skill names the publication step it
+stops before, deliberately. `R-SKL-010` is the demand, and
+`SkillTest::aBackendPreviewTaskMatchesTheSkillThatOwnsTheElement` holds the pair.
+What none of it settles is whether the wording was what that model was missing:
+the words are what can be changed from here, and only a second run in the same
+client says whether they were the obstacle.

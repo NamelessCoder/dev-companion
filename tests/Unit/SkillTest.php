@@ -410,6 +410,47 @@ final class SkillTest extends TestCase
         }
     }
 
+    /**
+     * The description is the only part of a skill read before it is chosen, so
+     * a domain named by one of its sides leaves the other side reading as
+     * somebody else's work — and the body that covers it is never loaded. This
+     * is the one collision that has been measured; the shape it stands for is
+     * written down in the authoring contract rather than assertable over the
+     * directory, because which sides a skill owns is not in the file.
+     */
+    #[Test]
+    public function aBackendPreviewTaskMatchesTheSkillThatOwnsTheElement(): void
+    {
+        // A session in `site-new` wrote a custom backend preview for a content
+        // element on 2026-08-01, activated no skill and called no tool, and did
+        // the work by reading vendor code — a day after the entry point reached
+        // the instructions, so the channel that failed was the descriptions.
+        // The task matched one word in each: the content-element skill opened on
+        // "frontend content elements" with `previews` ninth of the eleven things
+        // it listed, and the module skill promised "backend UI work". It belongs
+        // wholly to the first, which covers it in as many words and which
+        // `knowledge/task-intents.json` has matched on `backend preview` since
+        // 51e5e5a.
+        $element = self::description('typo3-content-element-development');
+        self::assertStringNotContainsString('frontend content elements', $element);
+        self::assertStringContainsString('backend preview', $element);
+        self::assertStringContainsString('page module', $element);
+
+        // And the other half of the collision: the module skill claimed the
+        // whole backend and owns one room of it.
+        $module = self::description('typo3-backend-module-development');
+        self::assertStringNotContainsString('other TYPO3 backend UI work', $module);
+        self::assertStringContainsString('is not a module', $module);
+        // The crossing in its body says the same, or the file contradicts its
+        // own description in somebody else's project.
+        self::assertStringContainsString(
+            'before implementing a content element or its backend preview',
+            (string) file_get_contents(
+                Paths::root() . '/skills/typo3-backend-module-development/SKILL.md',
+            ),
+        );
+    }
+
     #[Test]
     public function everySkillStatesWhatItOwns(): void
     {
@@ -1034,6 +1075,19 @@ final class SkillTest extends TestCase
             $text = implode(' ', [$cases[$id]['prompt'], ...$cases[$id]['outcomes'], ...$cases[$id]['failures']]);
             self::assertStringNotContainsString('typo3_', $text, $id . ' names a tool of this server');
         }
+    }
+
+    /** The one part of a skill that is read before the skill is chosen. */
+    private static function description(string $name): string
+    {
+        $skill = (string) file_get_contents(Paths::root() . '/skills/' . $name . '/SKILL.md');
+        self::assertSame(
+            1,
+            preg_match('/\ndescription: (.+)\n/', $skill, $matches),
+            $name . ' has no description',
+        );
+
+        return $matches[1];
     }
 
     /**

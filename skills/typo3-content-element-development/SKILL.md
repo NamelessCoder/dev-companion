@@ -1,6 +1,6 @@
 ---
 name: typo3-content-element-development
-description: Build or refactor TYPO3 frontend content elements in extensions and sitepackages. Use for CType registration, editor-facing data models, inline child records, TCA, generated schema, TypoScript rendering, Fluid templates, AssetCollector CSS or JavaScript, previews, localization, and content-element tests.
+description: Build or refactor TYPO3 content elements in extensions and sitepackages, on both sides — what an editor fills in and sees in the page module, and what a visitor gets rendered. Use for CType registration, a custom backend preview of an element in the page module, editor-facing data models, inline child records, TCA, generated schema, TypoScript rendering, Fluid templates for the frontend and for the preview, AssetCollector CSS or JavaScript, localization, and content-element tests.
 ---
 
 # TYPO3 Content Element Development

@@ -1,6 +1,6 @@
 ---
 name: typo3-backend-module-development
-description: Build or change a TYPO3 backend module in a core checkout, extension, site package, or Composer project. Use for module registration, controllers, routes, backend templates, buttons, status markers, labels, icons, or other TYPO3 backend UI work where the implementation must match the active installation and TYPO3 version.
+description: Build or change a TYPO3 backend module in a core checkout, extension, site package, or Composer project. Use for module registration, controllers, routes, backend templates, buttons, status markers, labels, icons, and the rest of a module's own backend UI, where the implementation must match the active installation and TYPO3 version. The backend preview of a content element in the page module is not a module and belongs to content-element work.
 ---
 
 # TYPO3 Backend Module Development
@@ -67,4 +67,4 @@ extension, not to the project around it.
 
 Stop and activate the testing skill before changing test infrastructure, the
 conformance skill before broadening into an audit, and the content-element skill
-before implementing frontend content elements.
+before implementing a content element or its backend preview.

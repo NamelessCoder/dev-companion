@@ -104,6 +104,19 @@ is what a wrong one costs: a review prompt whose every criterion the conformance
 skill's body would have met did not activate it, and all thirty-five calls of
 that session went through Bash.
 
+It names **every side of the domain the skill owns**, and a skill that owns two
+sides of one thing says so in the opening line rather than in the ninth item of
+a list. A domain named by one of its halves — "frontend content elements" for a
+skill that also owns the backend preview of the same element — sends the other
+half to whichever skill happens to carry a word of it, and the body that covers
+it is never loaded. That is the same entry's second sighting, one task later,
+and `SkillTest::aBackendPreviewTaskMatchesTheSkillThatOwnsTheElement` holds the
+pair it was measured on. Which sides a skill owns is not readable off the file,
+so nothing holds this over the directory: it is a question the author answers
+against `This skill owns …` and the crossings in the body, and a crossing that
+names one side while the description names both is the file disagreeing with
+itself in somebody else's project.
+
 **Starting from the base.** The skill links `references/base.md` and then states
 what it *adds* to it. It never restates a step the base already fixes: five
 hand-written copies of one order is what the base replaced, and the copy that

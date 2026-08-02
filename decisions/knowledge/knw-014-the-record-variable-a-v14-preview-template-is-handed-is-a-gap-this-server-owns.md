@@ -75,3 +75,14 @@ nothing here says what that variable is or what comes back from a field on it.
   than on the Record API, so no single statement holds for "a relation in a
   preview". The hint then has to name which field types resolve to records and
   which stay a string, or say nothing.
+
+## Since then
+
+A second gap on the same statement was judged on 2026-08-02 and is queued beside
+this one: what a Fluid preview template *replaces* is the content half of the
+preview only, and the header the standard renderer draws stays above it —
+[`D-KNW-015`](knw-015-a-fluid-preview-template-replaces-the-content-half-and-nothing-here-says-so.md).
+Both todos rewrite the one preview statement on the `content-elements` hint, so
+whichever lands second rewrites in place rather than adding beside. The two
+statements differ in what binds them: what `{record}` is changed in 14 and needs
+a `since`, while the header/content split reads the same on 13.4 and 14.3.

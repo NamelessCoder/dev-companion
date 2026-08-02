@@ -23,6 +23,21 @@ final class CommitMessage
     public const BODY_WIDTH = 72;
 
     /**
+     * What the draft writes where an answer belongs, and what it refuses to
+     * read back as one.
+     *
+     * A message handed in for checking carries whatever the caller left in it,
+     * and a placeholder that survived that far is still the unanswered field it
+     * was drafted as — so it is dropped before the checks run and the field
+     * reports as missing again. Otherwise the one moment a caller asks about
+     * the message they are actually going to commit is the moment this class
+     * calls it clean. Neither value is one anybody could have meant: no Forge
+     * issue is numbered ISSUE_NUMBER and no branch is called RELEASE_TARGET.
+     */
+    public const ISSUE_PLACEHOLDER = '#ISSUE_NUMBER';
+    public const RELEASE_PLACEHOLDER = 'RELEASE_TARGET';
+
+    /**
      * The core's own workflow: Forge issues, release targets, Gerrit.
      *
      * What a commit message looks like and what a commit message has to be
@@ -77,7 +92,7 @@ final class CommitMessage
         $issues = [];
         foreach (array_merge([$input['issue'] ?? null], $input['issues'] ?? []) as $issue) {
             $normalized = self::normalizeIssue(is_string($issue) ? $issue : null);
-            if ($normalized !== null) {
+            if ($normalized !== null && $normalized !== self::ISSUE_PLACEHOLDER) {
                 $issues[$normalized] = true;
             }
         }
@@ -92,7 +107,10 @@ final class CommitMessage
         }
         $relatedIssues = array_keys($relatedIssues);
 
-        $releases = $input['releases'] ?? [];
+        $releases = array_values(array_filter(
+            $input['releases'] ?? [],
+            static fn(string $release): bool => $release !== self::RELEASE_PLACEHOLDER,
+        ));
 
         $prefix = ($isBreaking ? '[!!!]' : '') . '[' . ($changeType === '' ? 'KEYWORD' : $changeType) . ']';
         $subject = $prefix . ' ' . $summary;
@@ -106,7 +124,7 @@ final class CommitMessage
         $isCore = $workflow === self::WORKFLOW_CORE;
         $trailers = [];
         if ($isCore && $issues === []) {
-            $trailers[] = 'Resolves: #ISSUE_NUMBER';
+            $trailers[] = 'Resolves: ' . self::ISSUE_PLACEHOLDER;
         }
         foreach ($issues as $issue) {
             $trailers[] = 'Resolves: ' . $issue;
@@ -120,7 +138,7 @@ final class CommitMessage
         // is nothing to place it against, so it is left out entirely unless the
         // caller named the releases themselves.
         if ($isCore) {
-            $trailers[] = 'Releases: ' . ($releases === [] ? 'RELEASE_TARGET' : implode(', ', $releases));
+            $trailers[] = 'Releases: ' . ($releases === [] ? self::RELEASE_PLACEHOLDER : implode(', ', $releases));
         } elseif ($releases !== []) {
             $trailers[] = 'Releases: ' . implode(', ', $releases);
         }
@@ -361,8 +379,8 @@ final class CommitMessage
             $checks[] = [
                 'level' => 'warning',
                 'code' => 'missing-releases',
-                'message' => 'The draft carries "Releases: RELEASE_TARGET". Replace it with the target versions, '
-                    . 'for example "Releases: main, 13.4".',
+                'message' => 'The draft carries "Releases: ' . self::RELEASE_PLACEHOLDER . '". Replace it with the '
+                    . 'target versions, for example "Releases: main, 13.4".',
             ];
         }
 

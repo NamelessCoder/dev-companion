@@ -24,3 +24,19 @@ warning, the way a missing issue has always produced `Resolves: #ISSUE_NUMBER`.
   rather than a quietly wrong one, and Gerrit rejects it.
 - **Wrong if:** the placeholder shows up in a pushed commit. Then the guide
   would have to refuse the draft outright instead of marking it.
+
+**Since then** the half of that this repository can see was read: what the draft
+itself does. The markers are unmistakable — neither `RELEASE_TARGET` nor
+`#ISSUE_NUMBER` has the shape of a release target or a Forge issue, which is
+what `main` failed at and the reason the placeholder was chosen. The other path
+was not. A message carrying both, handed back to `typo3_commit_message_guide`
+for checking, was answered with "No commit message readiness issues found":
+`parse()` read each placeholder as the answer it stands in for, and the checks
+then had nothing to report. That is the last moment before a push at which
+anything here can speak, and it was the moment the guide called the message
+clean — the **Assumed** above held for the caller who never checks and failed
+for the one who did. `CommitMessage` now drops both placeholders before the
+checks run, so the field reports missing again and the corrected draft still
+carries the marker. The **Wrong if** itself stays unguarded: no pushed commit
+has been seen either way, and only a forward run against a real contribution
+would produce one (2026-08-02).

@@ -148,6 +148,37 @@ final class CommitMessageTest extends TestCase
     }
 
     #[Test]
+    public function neitherPlaceholderCouldBeReadAsAnAnswer(): void
+    {
+        $message = CommitMessage::create(['changeType' => 'TASK', 'summary' => 'Do a thing'])['message'];
+
+        preg_match('/^Resolves: (.*)$/m', $message, $resolves);
+        preg_match('/^Releases: (.*)$/m', $message, $releases);
+
+        // What the real values look like: a Forge issue is digits, a release
+        // target is main or a minor. A placeholder that fits either shape reads
+        // as a decision somebody made, which is what D-GUI-1 rejected "main" for.
+        self::assertDoesNotMatchRegularExpression('/^#\d+$/', $resolves[1]);
+        self::assertDoesNotMatchRegularExpression('/^(main|\d+\.\d+)$/', $releases[1]);
+        self::assertSame(CommitMessage::ISSUE_PLACEHOLDER, $resolves[1]);
+        self::assertSame(CommitMessage::RELEASE_PLACEHOLDER, $releases[1]);
+    }
+
+    #[Test]
+    public function aPlaceholderHandedBackIsStillAnUnansweredField(): void
+    {
+        $parsed = CommitMessage::parse("[TASK] Do a thing\n\nBody.\n\nResolves: #ISSUE_NUMBER\nReleases: RELEASE_TARGET\n");
+        $result = CommitMessage::create($parsed['input']);
+
+        $codes = array_column(array_merge($parsed['checks'], $result['checks']), 'code');
+        self::assertContains('missing-issue', $codes, 'the placeholder is not a Forge issue');
+        self::assertContains('missing-releases', $codes, 'the placeholder is not a release target');
+        self::assertNotContains('no-issues-found', $codes);
+        self::assertStringContainsString('Resolves: #ISSUE_NUMBER', $result['message']);
+        self::assertStringContainsString('Releases: RELEASE_TARGET', $result['message']);
+    }
+
+    #[Test]
     public function aTrailerTheDraftCarriesIsNotAlsoReportedAsMissing(): void
     {
         $parsed = CommitMessage::parse("Fix the thing\n\nBody.\n\nResolves: #1\n");

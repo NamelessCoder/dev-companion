@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Typo3CmsMcp\Tests\Unit;
 
+use PhpCsFixer\ConfigInterface;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Finder\Finder;
+use Typo3CmsMcp\Tests\Support\Editorconfig;
 
 /**
  * What holds the shape of the source tree itself, rather than what any one
@@ -104,6 +106,29 @@ final class StructureTest extends TestCase
         }
 
         self::assertSame([], $found);
+    }
+
+    /**
+     * `.editorconfig` is what an editor obeys while a file is being typed, and
+     * php-cs-fixer is what rewrites it afterwards. Where the two disagree, each
+     * undoes the other: a line typed at the stated indentation comes back
+     * reindented, and nobody looks for the argument in a config file.
+     *
+     * The fixer states its indentation by not stating one — PER-CS 3.0 is four
+     * spaces and `Config` defaults to it — so this asks the config rather than
+     * the rule list.
+     */
+    #[Test]
+    public function editorconfigTypesPhpTheWayTheFixerRewritesIt(): void
+    {
+        $config = require dirname(__DIR__, 2) . '/.php-cs-fixer.dist.php';
+
+        self::assertInstanceOf(ConfigInterface::class, $config);
+        self::assertSame(
+            strlen($config->getIndent()),
+            Editorconfig::indentFor('Paths.php'),
+            '.php-cs-fixer.dist.php and .editorconfig disagree about how PHP is indented',
+        );
     }
 
     /** @return array<int, string> */

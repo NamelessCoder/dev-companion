@@ -8,5 +8,12 @@ trim_trailing_whitespace = true
 indent_style = space
 indent_size = 2
 
+# PER-CS 3.0, which .php-cs-fixer.dist.php declares and rewrites every file to.
+[*.php]
+indent_size = 4
+
+[*.{neon,xml,xml.dist}]
+indent_size = 4
+
 [*.md]
 trim_trailing_whitespace = false

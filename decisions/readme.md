@@ -71,6 +71,9 @@ and not a defect.
 - [`D-ANS-017`][D-ANS-017] — A union-typed argument is a call one client could not compose · 2026-08-02
 - [`D-ANS-018`][D-ANS-018] — A plugin is a kind of content element, not one whose template is missing · 2026-08-02
 - [`D-ANS-019`][D-ANS-019] — A FlexForm, a site set and a form set are read from the file names and call shapes core itself reads them by · 2026-08-02
+- [`D-ANS-020`][D-ANS-020] — A deprecation is answered by the version that removes it · 2026-08-02
+- [`D-ANS-021`][D-ANS-021] — A longer manual query re-aims rather than narrows, and the answer never says so · 2026-08-02
+- [`D-ANS-022`][D-ANS-022] — A hyphenated compound reaches neither the phrase nor the word · 2026-08-02
 - [`D-AUD-004`][D-AUD-004] — The tool list is not where the audience is said · 2026-08-02
 - [`D-COD-003`][D-COD-003] — A directory is read through symfony/finder · 2026-08-02
 - [`D-DIS-007`][D-DIS-007] — The DDEV console is named by the mount, not by the variable · 2026-08-02 · confirmed
@@ -102,6 +105,7 @@ and not a defect.
 - [`D-KNW-011`][D-KNW-011] — A rule that names a defect names its correction · 2026-08-02
 - [`D-KNW-012`][D-KNW-012] — `extension.neon` is PHPStan's filename, and the hint keeps the one include it means · 2026-08-02
 - [`D-KNW-013`][D-KNW-013] — The sixth phrasing was this repository's own sentence, and it was reworded rather than indexed · 2026-08-02
+- [`D-KNW-014`][D-KNW-014] — The record variable a v14 preview template is handed is a gap this server owns · 2026-08-02
 - [`D-SCO-009`][D-SCO-009] — The brief is one brief, and names the paths a step is not for · 2026-08-02
 - [`D-SKL-002`][D-SKL-002] — A focused audit narrows what is assessed, not the list it closes on · 2026-08-02
 - [`D-SKL-003`][D-SKL-003] — A sweep is bounded by the changelog's own axes, not by the extension's vocabulary · 2026-08-02
@@ -160,6 +164,9 @@ and not a defect.
 [D-ANS-017]: answers/ans-017-a-union-typed-argument-is-a-call-one-client-could-not-compose.md
 [D-ANS-018]: answers/ans-018-a-plugin-is-a-kind-of-content-element-not-one-whose-template-is-missing.md
 [D-ANS-019]: answers/ans-019-three-registration-kinds-read-from-what-core-reads-them-for.md
+[D-ANS-020]: answers/ans-020-a-deprecation-is-answered-by-the-version-that-removes-it.md
+[D-ANS-021]: answers/ans-021-a-longer-manual-query-re-aims-rather-than-narrows.md
+[D-ANS-022]: answers/ans-022-a-hyphenated-compound-reaches-neither-the-phrase-nor-the-word.md
 [D-AUD-004]: audience/aud-004-the-tool-list-is-not-where-the-audience-is-said.md
 [D-COD-003]: code/cod-003-a-directory-is-read-through-symfony-finder.md
 [D-DIS-007]: discovery/dis-007-the-ddev-console-is-named-by-the-mount-not-by-the-variable.md
@@ -191,6 +198,7 @@ and not a defect.
 [D-KNW-011]: knowledge/knw-011-a-rule-that-names-a-defect-names-its-correction.md
 [D-KNW-012]: knowledge/knw-012-an-extension-neon-is-phpstans-filename-and-not-a-typo3-one.md
 [D-KNW-013]: knowledge/knw-013-the-sixth-phrasing-was-this-repositorys-own-sentence.md
+[D-KNW-014]: knowledge/knw-014-the-record-variable-a-v14-preview-template-is-handed-is-a-gap-this-server-owns.md
 [D-SCO-009]: scope/sco-009-the-brief-is-one-brief-and-names-the-paths-a-step.md
 [D-SKL-002]: task-skills/skl-002-a-focused-audit-narrows-what-is-assessed.md
 [D-SKL-003]: task-skills/skl-003-a-sweep-is-bounded-by-the-changelogs-own-axes.md

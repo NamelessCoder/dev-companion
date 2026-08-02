@@ -22,6 +22,9 @@ one is added.
 - [`D-ANS-017`][D-ANS-017] — A union-typed argument is a call one client could not compose · 2026-08-02
 - [`D-ANS-018`][D-ANS-018] — A plugin is a kind of content element, not one whose template is missing · 2026-08-02
 - [`D-ANS-019`][D-ANS-019] — A FlexForm, a site set and a form set are read from the file names and call shapes core itself reads them by · 2026-08-02
+- [`D-ANS-020`][D-ANS-020] — A deprecation is answered by the version that removes it · 2026-08-02
+- [`D-ANS-021`][D-ANS-021] — A longer manual query re-aims rather than narrows, and the answer never says so · 2026-08-02
+- [`D-ANS-022`][D-ANS-022] — A hyphenated compound reaches neither the phrase nor the word · 2026-08-02
 - [`D-ANS-004`][D-ANS-004] — The instruction budget is 2048 characters, on one client's evidence · 2026-07-31
 - [`D-ANS-002`][D-ANS-002] — Three numbers now decide what a lookup answers, and they were measured, not reasoned · 2026-07-30 · confirmed
 - [`D-ANS-003`][D-ANS-003] — Retrieval stays lexical and runtime inspection stays narrow · 2026-07-30 · confirmed
@@ -41,6 +44,9 @@ one is added.
 [D-ANS-017]: ans-017-a-union-typed-argument-is-a-call-one-client-could-not-compose.md
 [D-ANS-018]: ans-018-a-plugin-is-a-kind-of-content-element-not-one-whose-template-is-missing.md
 [D-ANS-019]: ans-019-three-registration-kinds-read-from-what-core-reads-them-for.md
+[D-ANS-020]: ans-020-a-deprecation-is-answered-by-the-version-that-removes-it.md
+[D-ANS-021]: ans-021-a-longer-manual-query-re-aims-rather-than-narrows.md
+[D-ANS-022]: ans-022-a-hyphenated-compound-reaches-neither-the-phrase-nor-the-word.md
 [D-ANS-004]: ans-004-the-instruction-budget-is-2048-characters-on-one-clients-evidence.md
 [D-ANS-002]: ans-002-three-numbers-decide-what-a-lookup-answers.md
 [D-ANS-003]: ans-003-retrieval-stays-lexical-and-runtime-inspection-stays-narrow.md

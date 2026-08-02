@@ -8,5 +8,7 @@ See [the requirements readme](../readme.md) for how an entry is written and
 when it is added.
 
 - [`R-DOC-001`][R-DOC-001] — The live manuals answer for the version they were asked for · held
+- [`R-DOC-002`][R-DOC-002] — A manual search says what it matched on · **open**
 
 [R-DOC-001]: doc-001-the-live-manuals-answer-for-the-version-they-were-asked-for.md
+[R-DOC-002]: doc-002-a-manual-search-says-what-it-matched-on.md

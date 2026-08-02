@@ -2,8 +2,6 @@
 
 **Serves:** feedback/2026-07-31-193005-task-typo3-extension-conformance-audit-tool.md
 **Priority:** low
-**Branch:** todo/task-typo3-extension-conformance-audit-tool
-**Claimed:** 2026-08-02
 **Waiting on:** is a session's own log of its tool calls the event the
     `D-SKL-001` **Wrong if** describes — the base outrun — and if it is, what
     moves? Three answers, and none of them may be taken here. The decision

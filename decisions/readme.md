@@ -103,7 +103,7 @@ the repository has moved furthest away from since. Going back to one and adding
 - [`D-SCO-8`][D-SCO-8] — The path decides, and the answer may say it cannot · 2026-08-01 · standing
 - [`D-SKL-1`][D-SKL-1] — The order a task starts in is one file, and the reading comes last in it · 2026-08-01 · tested
 - [`D-ANS-4`][D-ANS-4] — The instruction budget is 2048 characters, on one client's evidence · 2026-07-31 · standing
-- [`D-AUD-3`][D-AUD-3] — The instructions carry the entry point, because the tool descriptions never arrive · 2026-07-31 · standing
+- [`D-AUD-3`][D-AUD-3] — The instructions carry the entry point, because the tool descriptions never arrive · 2026-07-31 · tested
 - [`D-DIS-5`][D-DIS-5] — A registry with no console command is read by booting the installation · 2026-07-31 · tested
 - [`D-EVI-1`][D-EVI-1] — Forward evidence comes from a review, not from a prompt that knows the answer · 2026-07-31 · standing
 - [`D-EVI-2`][D-EVI-2] — A skill crossing is read rather than run · 2026-07-31 · standing
@@ -138,7 +138,7 @@ the repository has moved furthest away from since. Going back to one and adding
 - [`D-SCO-4`][D-SCO-4] — The frontend is recognised by name, and only the two UI sections go · 2026-07-29 · corrected
 - [`D-SCO-5`][D-SCO-5] — The installation is evidence about the task, and the weakest kind · 2026-07-29 · standing
 - [`D-SCO-6`][D-SCO-6] — Why "project work is out of scope" kept coming back · 2026-07-29 · standing
-- [`D-VER-1`][D-VER-1] — A version range is data on the statement, not a sentence in it · 2026-07-29 · standing
+- [`D-VER-1`][D-VER-1] — A version range is data on the statement, not a sentence in it · 2026-07-29 · tested
 - [`D-VER-2`][D-VER-2] — The prose is not bound; it says which half it is · 2026-07-29 · standing
 
 [D-COD-3]: code/cod-3-a-directory-is-read-through-symfony-finder.md

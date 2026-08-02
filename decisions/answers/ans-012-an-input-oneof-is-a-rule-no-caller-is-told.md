@@ -89,3 +89,34 @@ different property and neither stating the rule.
 - Another tool grows an input-side alternative and its callers compose the call
   correctly. Then `oneOf` does reach a caller, and this entry was reading one
   session's mistake as a property of the keyword.
+
+## Covered by
+
+- `ToolContractTest::anArgumentInAnAlternativeNamesTheOnesItExcludes`
+- `StdioServerTest::aCallCarryingNeitherOfTwoAlternativeArgumentsNamesBoth`
+
+## Since then
+
+The first of the two candidates was taken: the keyword stays, the reference
+renders it, and the rule stands in the `queries` and `page` descriptions. Three
+readings decided it rather than a preference between them.
+
+`tools/list` was run against this checkout over stdio and carries the root
+`oneOf` whole, unaltered by the SDK. So the exclusivity is already on the wire
+in a form a client can validate against, and dropping the keyword would take
+that away in exchange for a message this repository does not own — the two
+sentences are built in `Mcp\Server\Handler\Request\CallToolHandler` from the
+schema, and reaching them without dropping the keyword means replacing the
+SDK's request handling rather than wording a tool.
+
+`D-ANS-005` made the same bet deliberately on the other side: the output
+schemas declare their two shapes as `oneOf` and accept that a validator
+ignoring the keyword reads a weaker promise. Dropping it here would have had
+one package saying opposite things about one keyword.
+
+The **Wrong if** above is what settles the order. It is written as "the rule
+lands in the descriptions and the reference, and a session still calls with
+`targetVersion` alone" — a falsification that only exists if the wording is
+tried first, and the answer it names if it fails is dropping the keyword. So
+the second candidate is not discarded; it is what this entry is now waiting to
+find out about.

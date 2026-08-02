@@ -68,14 +68,11 @@ final class ToolSurface
             '',
             ...self::recorded($definition['name']),
             ...self::block('Takes', $arguments),
+            ...self::alternatives($definition['inputSchema'], 'The call carries exactly one of these sets of arguments'),
             '',
             ...self::block('Answers with', self::fields($answer, 0)),
+            ...self::alternatives($answer, 'The answer carries exactly one of these sets of fields'),
         ];
-
-        $alternatives = self::alternatives($answer);
-        if ($alternatives !== '') {
-            array_push($lines, '', $alternatives);
-        }
 
         return implode("\n", $lines) . "\n";
     }
@@ -227,16 +224,24 @@ final class ToolSurface
     }
 
     /**
-     * Where a tool answers with the result or with the reason it could not, the
-     * two are alternatives and the schema says so. A field list alone would
-     * read as one answer carrying everything.
+     * A `oneOf` on either schema, read out. Where a tool answers with the
+     * result or with the reason it could not, the two are alternatives and the
+     * schema says so; a field list alone would read as one answer carrying
+     * everything.
+     *
+     * The same holds on the way in and used to be rendered on neither. An
+     * argument alternative is declared in the one keyword this page did not
+     * read, so `typo3_documentation_lookup` listed `queries` and `page` as two
+     * plain optional arguments and a caller that sent neither was refused for
+     * both branches at once — `D-ANS-012`.
      *
      * @param array<string, mixed> $schema
+     * @return list<string>
      */
-    private static function alternatives(array $schema): string
+    private static function alternatives(array $schema, string $opening): array
     {
         if (!isset($schema['oneOf'])) {
-            return '';
+            return [];
         }
 
         $sets = array_map(
@@ -247,8 +252,7 @@ final class ToolSurface
             (array) $schema['oneOf'],
         );
 
-        return self::wrap('The answer carries exactly one of these sets of fields: '
-            . implode(' — or ', $sets) . '.');
+        return ['', self::wrap($opening . ': ' . implode(' — or ', $sets) . '.')];
     }
 
     /** Wrapped where the repository wraps, with what a continued line opens with. */

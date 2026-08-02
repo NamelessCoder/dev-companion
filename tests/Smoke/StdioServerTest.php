@@ -177,6 +177,48 @@ final class StdioServerTest extends TestCase
         self::assertStringContainsString('query', $response['error']['message']);
     }
 
+    /**
+     * The one input-side alternative on the surface, over the wire that
+     * produced the complaint. `typo3_documentation_lookup` takes `queries` or
+     * `page`, `required` names neither, and a call carrying only
+     * `targetVersion` is refused for both branches at once — one sentence per
+     * branch, joined, because the SDK formats the leaves of a failed `oneOf`
+     * separately. A session read the last half as "page is required", sent
+     * `page: ""`, and reported the tool as unusable for search.
+     *
+     * The keyword stays and the rule is now stated where the call is composed
+     * — both argument descriptions, on the wire in `tools/list` — so this holds
+     * what a client still validates against. `D-ANS-012` says what would show
+     * that the wrong half was fixed.
+     */
+    #[Test]
+    public function aCallCarryingNeitherOfTwoAlternativeArgumentsNamesBoth(): void
+    {
+        $response = $this->session([$this->request(2, 'tools/call', [
+            'name' => 'typo3_documentation_lookup',
+            'arguments' => ['targetVersion' => '14.3'],
+        ])])[2];
+
+        self::assertSame(-32602, $response['error']['code']);
+        self::assertStringContainsString('queries', $response['error']['message']);
+        self::assertStringContainsString('page', $response['error']['message']);
+
+        $documentation = null;
+        foreach ($this->session([$this->request(2, 'tools/list')])[2]['result']['tools'] as $tool) {
+            if ($tool['name'] === 'typo3_documentation_lookup') {
+                $documentation = $tool;
+            }
+        }
+
+        self::assertNotNull($documentation, 'the tool that carries the alternative is not offered');
+        self::assertSame(['targetVersion'], $documentation['inputSchema']['required']);
+        self::assertSame(
+            [['required' => ['queries']], ['required' => ['page']]],
+            $documentation['inputSchema']['oneOf'],
+            'the alternative no longer reaches a client that reads oneOf',
+        );
+    }
+
     #[Test]
     public function anUnknownToolIsAnError(): void
     {

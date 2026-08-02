@@ -46,6 +46,55 @@ final class ToolContractTest extends TestCase
         }
     }
 
+    /**
+     * An argument that excludes another says so in its own description.
+     *
+     * A `oneOf` on the way in is a rule declared in the one place nothing reads
+     * out to a caller: `required` names neither branch, so a caller composing
+     * the call is shown two plain optional arguments, and the refusal that
+     * follows names one branch per sentence rather than the rule. That is
+     * `D-ANS-012`, and the answer was to keep the keyword — a client that reads
+     * it gets exclusivity nothing else declares — and state the rule where the
+     * call is written instead.
+     *
+     * The descriptions are on the wire in `tools/list`, which is why this holds
+     * them rather than the reference alone.
+     */
+    #[Test]
+    public function anArgumentInAnAlternativeNamesTheOnesItExcludes(): void
+    {
+        $declaring = [];
+        foreach (Registry::definitions() as $definition) {
+            $schema = $definition['inputSchema'];
+            if (!isset($schema['oneOf'])) {
+                continue;
+            }
+            $declaring[] = $definition['name'];
+
+            $alternatives = array_merge(...array_map(
+                static fn(array $branch): array => (array) ($branch['required'] ?? []),
+                (array) $schema['oneOf'],
+            ));
+
+            foreach ($alternatives as $argument) {
+                $description = (string) ($schema['properties'][$argument]['description'] ?? '');
+                foreach (array_diff($alternatives, [$argument]) as $excluded) {
+                    self::assertStringContainsString(
+                        $excluded,
+                        $description,
+                        $definition['name'] . ': ' . $argument . ' excludes ' . $excluded . ' and does not say so',
+                    );
+                }
+            }
+        }
+
+        self::assertSame(
+            ['typo3_documentation_lookup'],
+            $declaring,
+            'the input-side alternatives this holds are not the ones that exist',
+        );
+    }
+
     #[Test]
     public function onlyTheFeedbackToolWrites(): void
     {

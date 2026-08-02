@@ -575,14 +575,17 @@ docs.typo3.org, unlike the bundled convention lookups.
 
 - `queries` *(array of string)* — Short search queries in English. Pass
   alternatives separately, for example ["page title event", "page title
-  provider"].
-- `page` *(string)* — Canonical page URL returned by an earlier search.
-  Pass it with the same targetVersion and without queries to read the page as
-  text.
+  provider"]. A call carries queries or page, never both.
+- `page` *(string)* — Canonical page URL returned by an earlier search,
+  read as text. Pass it with the same targetVersion. A call carries queries or
+  page, never both.
 - `targetVersion` *(string, required)* — Covered TYPO3 version whose
   official manual must answer, for example "13.4" or "14". There is no fallback
   to another release.
 - `limit` *(integer)*
+
+The call carries exactly one of these sets of arguments: `queries` — or
+`page`.
 
 **Answers with**
 

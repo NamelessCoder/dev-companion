@@ -144,6 +144,11 @@ final class Todo
      * standing on, and refuses where that is not a worktree carrying a claim.
      * A path handed to a session is one it has no reason to doubt; a claim read
      * out of the checkout it is standing in cannot be the wrong one.
+     *
+     * How to read is in here as well as in `AGENTS.md`, which is the one thing
+     * duplicated on purpose: of the 82 sessions of 2026-08-02, every one opened
+     * the procedure page and 13 opened `AGENTS.md`. A rule about what the first
+     * calls cost has to arrive before them — `D-FBK-020`.
      */
     public const BRIEFING = <<<'TEXT'
         You work in the git worktree you were started in, and only there. Check with
@@ -162,6 +167,11 @@ final class Todo
         If you hit a question this repository cannot answer and that would change what
         you build, do not ask and do not wait. Write it into a `**Waiting on:**` line
         on your claim, commit what you have, and end.
+
+        You are charged one context per call and not one per token, so read the same
+        in fewer of them: send the calls that do not depend on each other together,
+        reach for a file with your own file and search tools rather than through
+        `cat`, `sed`, `grep` and `ls`, and open a file once rather than in windows.
 
         `composer ci` before every commit. Report at the end what you read, what you
         changed, whether it is green, and what state your claim is in.

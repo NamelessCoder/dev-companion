@@ -124,6 +124,28 @@ claim rather than the front of the queue. What that costs and what still
 collides:
 [documentation/feedback/working-todos-in-parallel.md](documentation/feedback/working-todos-in-parallel.md).
 
+## How a session reads
+
+A session is charged one context per call, not one per token. The 82 worktree
+sessions of 2026-08-02 read 718 million cached input tokens back over 5414
+calls, each of which paid for everything before it again, and wrote 5.9 million
+out. The number of calls is the budget; what one of them returns is nearly free
+— `D-FBK-020`.
+
+- **Send the calls that do not depend on each other together.** Not one of those
+  5414 was issued beside another, and most of what a session reads at the start
+  turns on nothing that came before it.
+- **Reach for a file with the client's own file and search tools.** Three
+  quarters of the calls were `bash`, and half of those were `cat`, `sed`, `grep`
+  and `ls` spelling out what one call answers.
+- **Open a file once, whole.** 401 calls were `sed -n` windows into a file the
+  session went on to open again; one opened `src/Installation/Extension.php`
+  sixteen times.
+
+What that does not license is reading less. The step is still read against what
+the repository does today, and a question it turns on is still settled from a
+source — in fewer calls, not from memory.
+
 ## What things are called
 
 One thing, one word. Where two compete, the one that wins is the one somebody

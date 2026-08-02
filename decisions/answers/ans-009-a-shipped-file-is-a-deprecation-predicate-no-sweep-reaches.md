@@ -82,3 +82,33 @@ line beside four files nothing is wrong with, and says nothing about either.
 ## Covered by
 
 - `HintsTest::noHintStatesSomethingThatOnlyHoldsOnOneBranch`
+
+## Since then
+
+Step 1a is done and the first **Wrong if** did not bite. It assumed `since: 14`
+would be a new imprecision, and it is the one the corpus already carries:
+`#108345` is itself a mid-major arrival — `.checkouts/14.3` files its changelog
+under `14.2`, and the changelog says the fields are not yet mandatory in v14 —
+while the `extension-files` statement that carries it is bound `since 14 until
+14` and has been green under
+`HintsTest::noHintStatesSomethingThatOnlyHoldsOnOneBranch` all along. A
+statement that starts holding inside a major is therefore already bound to the
+whole of it here, and `#109438` binding the same way loses the same granularity
+rather than a new one. Nothing needed a minor in the text, so the check that
+forbids it was never in the way.
+
+So `#109438` is written into `extension-files` as two statements. The
+deprecation is `since 14 until 14`, read at both trigger sites in
+`Configuration\Extension\ExtTablesFactory` — `createCacheEntry()` and
+`loadSingleExtTablesFiles()`, neither of which `load()` reaches on a cache hit,
+which is why the statement says an uncached request and cache warm-up and says
+a cached request raises nothing. The removal is `since 15`: on `.checkouts/main`
+the class is gone, `ext_tables.php` appears in no PHP file under
+`typo3/sysext/`, and `15.0/Breaking-109783` names it as no longer considered
+during bootstrap, so a registration left there is lost without a report. The
+migration targets in the statement are the four the deprecation changelog
+names.
+
+What stays open is the delivery half for both files — what
+`typo3_extension_scope` says about the two it already lists — and the feedback
+is archived by that, not by this.

@@ -373,6 +373,15 @@
         "text": "Configuration/user.tsconfig is auto-loaded the same way.",
         "since": 13
       },
+      {
+        "text": "Shipping ext_tables.php is deprecated: every active package that has one and is not a framework package raises an E_USER_DEPRECATED when the file is loaded, which is on an uncached request and while the compiled ext_tables cache entry is being written. A request served from that cache raises nothing, so a functional suite running with failOnDeprecation is usually the first thing to surface it. What the file carried has declarative homes: backend modules in Configuration/Backend/Modules.php, backend routes in Configuration/Backend/Routes.php, user settings through ExtensionManagementUtility::addUserSetting() in Configuration/TCA/Overrides/be_users.php, and the record types a page type allows through the TCA allowedRecordTypes option in Configuration/TCA/Overrides/pages.php. System extensions are exempt, being framework packages.",
+        "since": 14,
+        "until": 14
+      },
+      {
+        "text": "ext_tables.php is not loaded at all. Nothing reads the file and nothing reports it, so an extension that still registers there loses those registrations silently — the backend module, the route or the user setting is simply absent.",
+        "since": 15
+      },
       "ext_localconf.php is what is left for what has no declarative file. It runs on every request, so keep it to registration and out of anything that does work."
     ],
     "checks": [

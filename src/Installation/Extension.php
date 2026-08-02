@@ -67,6 +67,7 @@ final class Extension
      *     typoScript: array<int, string>,
      *     classes: array<int, array{kind: string, files: int}>,
      *     files: array<int, string>,
+     *     deprecatedFiles: array<int, array{file: string, changelog: string, predicate: string, cost: string}>,
      *     notReadStatically: array<int, string>,
      *     artifacts: array{
      *         manual: ?string,
@@ -90,6 +91,7 @@ final class Extension
         }
 
         $overrides = self::overrides($path);
+        $files = self::files($path);
 
         return [
             'key' => $key,
@@ -120,7 +122,8 @@ final class Extension
             'fluidNamespaces' => array_keys(FluidNamespaces::declaredBy($path)),
             'typoScript' => self::baseNames($path . '/Configuration/TypoScript', '*.typoscript', ''),
             'classes' => self::classes($path),
-            'files' => self::files($path),
+            'files' => $files,
+            'deprecatedFiles' => self::deprecatedFiles($manifest, $files),
             'notReadStatically' => self::notReadStatically($path),
             'artifacts' => self::artifacts($path),
         ];
@@ -819,6 +822,77 @@ final class Extension
             self::ROOT_FILES,
             static fn(string $file): bool => is_file($path . '/' . $file),
         ));
+    }
+
+    /**
+     * The registration files it ships that core deprecates, and what each costs.
+     *
+     * `files` names both of them already and says nothing about either, which
+     * is what a reviewer had to find out by running a functional suite instead
+     * — D-ANS-009. Neither deprecation turns on what an extension calls, so no
+     * changelog sweep over its code reaches them: the predicate is the file
+     * being there, plus what composer.json declares beside it, and both are
+     * read here rather than looked up.
+     *
+     * What the file costs is stated with the version it starts at rather than
+     * filtered by the installation's. An extension supporting two majors is
+     * read from both, and withholding the finding on the older one hides the
+     * migration surface that is the whole point of reporting it.
+     *
+     * A framework package is exempt from both. Core skips ext_tables.php for
+     * one outright, and a system extension derives its version from
+     * Typo3Version — which is why the v14 sysexts ship no ext_emconf.php at
+     * all and the v13 ones, which do, are not their caller's to migrate.
+     *
+     * @param array<string, mixed> $manifest
+     * @param array<int, string> $files
+     * @return array<int, array{file: string, changelog: string, predicate: string, cost: string}>
+     */
+    private static function deprecatedFiles(array $manifest, array $files): array
+    {
+        if (($manifest['type'] ?? null) === 'typo3-cms-framework') {
+            return [];
+        }
+
+        $extra = $manifest['extra']['typo3/cms'] ?? null;
+        $extra = is_array($extra) ? $extra : [];
+        // PackageManager::isComposerOnlyCapable(): providesPackages declared —
+        // an empty object counts, and is what an extension shipping no Composer
+        // packages of its own writes — and a version in either of the two
+        // places. Declaring one of the two and not the other still reads the
+        // file.
+        $composerOnly = isset($extra['Package']['providesPackages'])
+            && (($manifest['version'] ?? null) !== null || isset($extra['version']));
+
+        $deprecated = [];
+        if (in_array('ext_tables.php', $files, true)) {
+            $deprecated[] = [
+                'file' => 'ext_tables.php',
+                'changelog' => '#109438',
+                'predicate' => 'The file is there and this package is not a system extension.',
+                'cost' => 'Deprecated in v14.3. Loading it raises an E_USER_DEPRECATED, on an uncached request '
+                    . 'and while the compiled ext_tables cache entry is written; a request served from that cache '
+                    . 'raises nothing, so a functional suite with failOnDeprecation is usually what surfaces it. '
+                    . 'From v15.0 nothing reads the file, and a backend module, a route or a user setting '
+                    . 'registered there is lost without a report.',
+            ];
+        }
+        if (in_array('ext_emconf.php', $files, true) && !$composerOnly) {
+            $deprecated[] = [
+                'file' => 'ext_emconf.php',
+                'changelog' => '#108345',
+                'predicate' => 'The file is there and composer.json declares neither '
+                    . 'extra.typo3/cms.Package.providesPackages nor a version, in extra.typo3/cms.version or in '
+                    . 'the top-level version field.',
+                'cost' => 'Deprecated in v14.2, where the package manifest is read. A Composer installation is '
+                    . 'unaffected: building the package artifact skips the fallback before it is reached, so what '
+                    . 'raises this is classic mode and the functional test instances built like it. From v15.0 '
+                    . 'there is no fallback and the installation throws InvalidPackageManifestException naming '
+                    . 'the two fields.',
+            ];
+        }
+
+        return $deprecated;
     }
 
     /**

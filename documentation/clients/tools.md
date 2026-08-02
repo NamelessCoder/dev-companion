@@ -1495,8 +1495,14 @@ list built in a loop or a table added by a PHP call is in the answer;
 everything else is read from that extension's own files, parsed and never
 executed, so it answers on a fresh clone and for a third-party extension as
 well as for the project's own. answeredBy says which of the two answered, and
-where it says packages the answer names what that leaves out.
-typo3_project_scope names the extensions this can be called for.
+where it says packages the answer names what that leaves out. Where a
+registration file it ships is one a core deprecation turns on —
+ext_tables.php, or ext_emconf.php beside a composer.json declaring neither
+providesPackages nor a version — the answer says which entry and what it
+costs, because that predicate is the file rather than anything the extension
+calls and no changelog search over its code reaches it. That is those two files
+and nothing else, so it is not an upgrade check. typo3_project_scope names the
+extensions this can be called for.
 
 `readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: false`
 
@@ -1564,6 +1570,21 @@ typo3_project_scope names the extensions this can be called for.
     subdirectories included.
 - `files` *(array of string)* — Registration files it ships, from
   ext_localconf.php to Initialisation/data.t3d.
+- `deprecatedFiles` *(array of object)* — The files above that a core
+  deprecation names, each with what shipping it costs. Read from the files this
+  extension ships and from its composer.json, which is where both predicates
+  live — no changelog sweep over what its code calls reaches either. An empty
+  list says none of the registration files above is one of those, not that the
+  extension is ready for the next major: nothing else here is checked for a
+  deprecation, and typo3_changelog_lookup is what answers that question.
+  - `file` *(string, required)* — One of the files above.
+  - `changelog` *(string, required)* — The changelog entry, for
+    typo3_changelog_lookup, which has the description and the migration whole.
+  - `predicate` *(string, required)* — What the deprecation turns on,
+    which is what holds here — shipping the file, and what composer.json
+    declares beside it.
+  - `cost` *(string, required)* — What it raises, from which version, and
+    what the removal does instead.
 - `notReadStatically` *(array of string)* — Declaration files that are
   there but whose entries do not stand in their own text: each assembles its
   list while it runs, so what it registers is missing from the lists above
@@ -1622,8 +1643,8 @@ typo3_project_scope names the extensions this can be called for.
 
 The answer carries exactly one of these sets of fields: `key`, `path`,
 `origin`, `tcaTables`, `tcaOverrides`, `contentElements`, `backendModules`,
-`icons`, `siteSets`, `serviceTags`, `files`, `notReadStatically`, `artifacts`,
-`answeredBy` — or `key`, `unsupported`.
+`icons`, `siteSets`, `serviceTags`, `files`, `deprecatedFiles`,
+`notReadStatically`, `artifacts`, `answeredBy` — or `key`, `unsupported`.
 
 ## `typo3_catalog_scope`
 

@@ -82,6 +82,8 @@ line beside four files nothing is wrong with, and says nothing about either.
 ## Covered by
 
 - `HintsTest::noHintStatesSomethingThatOnlyHoldsOnOneBranch`
+- `ExtensionTest::aFrameworkPackageIsExemptFromBoth`
+- `ExtensionTest::declaringOneOfTheTwoFieldsStillReadsTheFile`
 
 ## Since then
 
@@ -112,3 +114,46 @@ names.
 What stays open is the delivery half for both files — what
 `typo3_extension_scope` says about the two it already lists — and the feedback
 is archived by that, not by this.
+
+Step 2 is done and the open question was the shape: a field of its own, or the
+hint carried beside the answer. It is a field, `deprecatedFiles`, one entry per
+listed file that a deprecation names, each carrying the changelog number, the
+predicate, and what it costs. Three things settled it. The data half of a
+`ToolResult` is a contract clients validate, so a cost said only in the rendered
+text is invisible to half the callers — the reason `D-ANS-008` put the `Classes`
+measure in both. The hint route was already taken by step 1a and did not close
+the feedback: the reviewer had this answer in hand and no reason to type either
+file name into a lookup, which is what a pointer would have asked of them. And
+the second **Wrong if** is about a silence being read as a verdict, which is
+answered by where the boundary is stated rather than by whether there is a
+field — a schema description is a place to state it once, and rendered prose is
+not.
+
+That **Wrong if** is what the shape is built against and it is not covered by
+anything. The field is not called `deprecations`: it is the registration files
+this answer already lists, its description says an empty list is not a clean
+bill and names `typo3_changelog_lookup` as what answers that, and the rendered
+block says the same and is omitted entirely where there is nothing — a rendered
+"none" is the line that would read as a verdict. Whether that is enough is a
+later feedback's to report.
+
+Two things were decided against the todo's own reading and are worth
+disagreeing with. The finding is **not** filtered by the installation's major:
+it names the version it starts at instead, because `bootstrap_package` requires
+`^13.4 || ^14.3` and withholding it on 13.4 hides exactly the migration surface
+this exists to surface. And a framework package is exempt from **both**, where
+core exempts one — `getComposerManifest()` has no such check. It is the right
+answer anyway: on 14 no system extension ships an `ext_emconf.php`, on 13 all
+36 of them do and none is the caller's to migrate, and `#108345` itself says a
+core extension may omit the version because `Typo3Version` supplies it.
+
+The cost sentences now stand in `src/Installation/Extension.php` as well as in
+the `extension-files` hint, which is two spellings of one rule and the thing
+most likely to go wrong here. Nothing holds them to each other and nothing
+could: they are written for different readers, one long and one short. What
+would show it is a reader finding the two disagreeing about when a deprecation
+fires.
+
+Still no requirement. What must hold is one behaviour of one tool, the tests
+above hold it, and a requirement restating them would be a third place the same
+sentence lives.

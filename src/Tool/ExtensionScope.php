@@ -48,6 +48,7 @@ final class ExtensionScope extends ReadOnlyTool
         'typoScript' => [],
         'classes' => [],
         'files' => [],
+        'deprecatedFiles' => [],
         'notReadStatically' => [],
         'artifacts' => ['manual' => null, 'readme' => null, 'tests' => [], 'languageFiles' => []],
     ];
@@ -59,7 +60,7 @@ final class ExtensionScope extends ReadOnlyTool
 
     public static function description(): string
     {
-        return 'Describe what one installed extension registers: the tables its TCA defines and the ones it extends, the content elements it adds to tt_content and the Fluid template each renders through, its backend modules and routes, its icons, its site sets, the service tags it hangs into the container, its middlewares, its Fluid roots and namespaces, and the shape of its Classes/ directory — and what it ships beside all of that: its manual, its README, the test layers it has, and its XLF files with the source language each one declares. Those four are answered even when they are not there, because the absence of a manual or a translation is what a file listing cannot show. The tables, content elements and icons are read from the booted installation where there is one and attributed to this extension by the EXT: reference each entry carries, so a list built in a loop or a table added by a PHP call is in the answer; everything else is read from that extension\'s own files, parsed and never executed, so it answers on a fresh clone and for a third-party extension as well as for the project\'s own. answeredBy says which of the two answered, and where it says packages the answer names what that leaves out. typo3_project_scope names the extensions this can be called for.';
+        return 'Describe what one installed extension registers: the tables its TCA defines and the ones it extends, the content elements it adds to tt_content and the Fluid template each renders through, its backend modules and routes, its icons, its site sets, the service tags it hangs into the container, its middlewares, its Fluid roots and namespaces, and the shape of its Classes/ directory — and what it ships beside all of that: its manual, its README, the test layers it has, and its XLF files with the source language each one declares. Those four are answered even when they are not there, because the absence of a manual or a translation is what a file listing cannot show. The tables, content elements and icons are read from the booted installation where there is one and attributed to this extension by the EXT: reference each entry carries, so a list built in a loop or a table added by a PHP call is in the answer; everything else is read from that extension\'s own files, parsed and never executed, so it answers on a fresh clone and for a third-party extension as well as for the project\'s own. answeredBy says which of the two answered, and where it says packages the answer names what that leaves out. Where a registration file it ships is one a core deprecation turns on — ext_tables.php, or ext_emconf.php beside a composer.json declaring neither providesPackages nor a version — the answer says which entry and what it costs, because that predicate is the file rather than anything the extension calls and no changelog search over its code reaches it. That is those two files and nothing else, so it is not an upgrade check. typo3_project_scope names the extensions this can be called for.';
     }
 
     public static function inputSchema(): array
@@ -109,6 +110,12 @@ final class ExtensionScope extends ReadOnlyTool
                 'files' => Schema::integer('PHP files anywhere below it, its own subdirectories included.'),
             ], ['kind', 'files'])),
             'files' => Schema::listOf(Schema::string(), 'Registration files it ships, from ext_localconf.php to Initialisation/data.t3d.'),
+            'deprecatedFiles' => Schema::listOf(Schema::object([
+                'file' => Schema::string('One of the files above.'),
+                'changelog' => Schema::string('The changelog entry, for typo3_changelog_lookup, which has the description and the migration whole.'),
+                'predicate' => Schema::string('What the deprecation turns on, which is what holds here — shipping the file, and what composer.json declares beside it.'),
+                'cost' => Schema::string('What it raises, from which version, and what the removal does instead.'),
+            ], ['file', 'changelog', 'predicate', 'cost']), 'The files above that a core deprecation names, each with what shipping it costs. Read from the files this extension ships and from its composer.json, which is where both predicates live — no changelog sweep over what its code calls reaches either. An empty list says none of the registration files above is one of those, not that the extension is ready for the next major: nothing else here is checked for a deprecation, and typo3_changelog_lookup is what answers that question.'),
             'notReadStatically' => Schema::listOf(Schema::string(), 'Declaration files that are there but whose entries do not stand in their own text: each assembles its list while it runs, so what it registers is missing from the lists above rather than absent. The booted installation is what answers for them. An empty list says each declaration file that exists stood in its own text, not that everything the extension ships was read: ext_localconf.php and ext_tables.php register by running and are read by nothing here.'),
             'artifacts' => Schema::object([
                 'manual' => Schema::nullableString('Its manual entry point, "Documentation/" where the directory exists without one, null where the extension ships no manual at all.'),
@@ -122,7 +129,7 @@ final class ExtensionScope extends ReadOnlyTool
             ], ['manual', 'readme', 'tests', 'languageFiles'], 'What it ships beside its registrations. Every key is present even when the artifact is not, because the absence of a manual, a test or a translation is the answer a file listing cannot give.'),
             'installed' => Schema::listOf(Schema::string(), 'On a miss: the extension keys this installation does have.'),
             'answeredBy' => Schema::answeredBy(),
-        ], ['key', 'path', 'origin', 'tcaTables', 'tcaOverrides', 'contentElements', 'backendModules', 'icons', 'siteSets', 'serviceTags', 'files', 'notReadStatically', 'artifacts', 'answeredBy'], ['key']);
+        ], ['key', 'path', 'origin', 'tcaTables', 'tcaOverrides', 'contentElements', 'backendModules', 'icons', 'siteSets', 'serviceTags', 'files', 'deprecatedFiles', 'notReadStatically', 'artifacts', 'answeredBy'], ['key']);
     }
 
     public static function answer(array $args): ToolResult
@@ -159,6 +166,29 @@ final class ExtensionScope extends ReadOnlyTool
                 $lines[] = '';
                 $lines[] = $heading . ': ' . implode(', ', $entries);
             }
+        }
+
+        // Directly under the file listing, because that listing is the finding:
+        // both predicates are a file the extension ships, and neither is
+        // reachable by a changelog sweep over what its code calls — D-ANS-009.
+        // Nothing is rendered where there is none. "No deprecated registration
+        // files" is one line away from being read as a compatibility verdict,
+        // and this answer checks nothing else for one.
+        if ($extension['deprecatedFiles'] !== []) {
+            $lines[] = '';
+            $lines[] = 'Deprecated registration files:';
+            foreach ($extension['deprecatedFiles'] as $deprecated) {
+                $lines[] = sprintf(
+                    '- %s (%s) — %s %s',
+                    $deprecated['file'],
+                    $deprecated['changelog'],
+                    $deprecated['predicate'],
+                    $deprecated['cost'],
+                );
+            }
+            $lines[] = 'That is what shipping each file turns on, read from the files themselves. It is not an '
+                . 'upgrade check: nothing else above was looked at for a deprecation, and typo3_changelog_lookup '
+                . 'is what answers that — these two entries whole, and everything they leave out.';
         }
 
         if ($extension['contentElements'] !== []) {

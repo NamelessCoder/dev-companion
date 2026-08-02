@@ -20,6 +20,7 @@ use Typo3CmsMcp\Upkeep\Command\FeedbackList;
 use Typo3CmsMcp\Upkeep\Command\FeedbackNext;
 use Typo3CmsMcp\Upkeep\Command\HintCoverage;
 use Typo3CmsMcp\Upkeep\Command\HintProbe;
+use Typo3CmsMcp\Upkeep\Command\KnowledgeFormat;
 use Typo3CmsMcp\Upkeep\Command\ProseCheck;
 use Typo3CmsMcp\Upkeep\Command\RepositoryCheck;
 use Typo3CmsMcp\Upkeep\Command\RequirementCheck;
@@ -106,6 +107,7 @@ final class Cli
         $application->addCommand(new HintCoverage());
         $application->addCommand(new CatalogCheck());
         $application->addCommand(new CatalogPaths());
+        $application->addCommand(new KnowledgeFormat());
         $application->addCommand(new CheckoutUpdate());
         $application->addCommand(new CheckoutStatus());
         $application->addCommand(new RepositoryCheck());

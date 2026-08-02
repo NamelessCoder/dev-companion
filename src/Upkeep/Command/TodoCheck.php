@@ -6,6 +6,8 @@ namespace Typo3CmsMcp\Upkeep\Command;
 
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Output\OutputInterface;
+use Typo3CmsMcp\Paths;
+use Typo3CmsMcp\Upkeep\Checkouts;
 use Typo3CmsMcp\Upkeep\Cli;
 use Typo3CmsMcp\Upkeep\OpenFeedback;
 use Typo3CmsMcp\Upkeep\Todo;
@@ -115,6 +117,17 @@ final class TodoCheck
                     $problems[] = $where . ' is in hand since '
                         . ($todo['claimed'] === '' ? 'never — `**Claimed:**` is what dates a claim' : $todo['claimed']);
                 }
+                // A claim is right for as long as its branch is. The session
+                // that ended on a question leaves one here on purpose, because
+                // the branch still holds the half that is done — and the moment
+                // that branch is merged and deleted the same file becomes a
+                // lock on a todo with nothing behind it. Nothing noticed that
+                // before: the field was checked for being written, never for
+                // naming something that exists.
+                if ($todo['branch'] !== '' && !self::branchExists($todo['branch'])) {
+                    $problems[] = $where . ' is in hand on ' . $todo['branch']
+                        . ', which is gone — `bin/cli todo:release ' . basename($where) . '`';
+                }
                 continue;
             }
             if ($todo['branch'] !== '' || $todo['claimed'] !== '') {
@@ -189,5 +202,22 @@ final class TodoCheck
         ));
 
         return $problems === [] ? 0 : 1;
+    }
+
+    /**
+     * Whether the branch a claim names is still there.
+     *
+     * Asked of git rather than of the worktree list, because a branch outlives
+     * the worktree it was checked out in and it is the branch that carries the
+     * work. `--quiet` keeps a missing one off the error stream, where it would
+     * read as this command failing.
+     */
+    private static function branchExists(string $branch): bool
+    {
+        [$exitCode] = Checkouts::run([
+            'git', '-C', Paths::root(), 'rev-parse', '--verify', '--quiet', 'refs/heads/' . $branch,
+        ]);
+
+        return $exitCode === 0;
     }
 }

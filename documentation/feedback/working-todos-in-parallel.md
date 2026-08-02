@@ -193,11 +193,19 @@ its own — `bin/cli todo:list` prints the date for exactly that reading.
 
 ## Bringing the branches home
 
+**A run that is finished comes home now.** Checked, merged, worktree gone — and
+none of it waits for the sessions still going. Nine branches held back until the
+tenth reports are nine that each need a bigger rebase when they finally move,
+against a `main` that kept going without them, and the only thing the waiting
+bought was a tidier-looking moment. There is no batch here: there are ten
+sequences of the same four steps, started whenever their session ends.
+
 **One at a time, rebased onto `main` and fast-forwarded — no merge commits.**
 
     git -C .worktrees/<name> rebase main
     (cd .worktrees/<name> && composer ci)
     git merge --ff-only todo/<name>
+    git worktree remove .worktrees/<name> && git branch -d todo/<name>
 
 `main` moves while the sessions run, so a branch cut hours ago is behind it and
 cannot be fast-forwarded as it stands. The rebase is what makes the merge a
@@ -205,6 +213,14 @@ fast-forward, and `--ff-only` is what says so: where it refuses, something is
 not what this procedure assumes, and that is worth stopping for. What comes out
 is one sequence of commits on `main` rather than a merge commit per claim saying
 nothing but that a claim existed.
+
+**The four steps belong to one branch, and the next branch starts them again
+from the top.** `main` moved when the last merge landed, so a branch rebased
+before it is behind again — running two merges from one rebase is the mistake
+the run of 2026-08-02 made, and `--ff-only` caught it, which is what it is for.
+And the worktree goes **after** the merge, never before: removed early it takes
+the only checkout the rebase and the suite can run in, and getting it back costs
+a fresh `composer install`.
 
 **`composer ci` runs in the worktree, after the rebase.** That is the first
 moment the session's work stands on what `main` has become, and it is the only
@@ -233,5 +249,28 @@ work both read the same last number and both took it. There is no number now, so
 there is nothing to collide — two todos are both `normal` and the older one is
 older, whichever branch each arrived on.
 
-Delete the worktree and the branch when the merge is in. A branch named for a
-todo that no longer exists is a claim nobody can release.
+**An id still collides, and that is the one to expect.** A requirement and a
+decision are numbered, every session reads the same last number, and ten of them
+reading it at once produce duplicates: the run of 2026-08-02 wrote `D-ANS-009`
+twice and `D-FBK-018` twice. Nothing can prevent it and nothing needs to —
+`composer ci` in the second branch fails on *two decision files claim the same
+id* once the first is on `main`, which is the rebase doing its job. Renumber the
+later one, fix what names it, amend, and the check goes quiet. Whichever branch
+merged first keeps the number, so the order is decided by the order the work
+came home rather than by anybody arbitrating it.
+
+**Two sessions can also land on one entry**, and `todo:claim` cannot warn about
+it: the overlap it reports is read off `Serves:`, and this one is created by the
+judging rather than declared before it. Two of the ten judged different feedback
+into the same `D-SKL-001`, which the rebase surfaced as a conflict in the file.
+Usually both paragraphs belong — each is an account of one reading, which is
+what a **Since then** carries, so the resolution is a heading each rather than a
+choice between them.
+
+**A claim left in `progress/` is released here**, and it is the one thing the
+merge does not carry. The session that ended on a question left its claim there
+on purpose — the branch was live and held the half that is done — and deleting
+that branch is what turns the same file into a lock on a todo with nothing
+behind it. `bin/cli todo:release <name>` moves it to `waiting/`, where the
+question is what it is now blocked on, and `bin/cli todo:check` reports a claim
+whose branch is gone so that forgetting costs a line rather than a todo.

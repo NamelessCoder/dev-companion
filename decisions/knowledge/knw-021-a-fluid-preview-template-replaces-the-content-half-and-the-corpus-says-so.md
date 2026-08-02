@@ -80,3 +80,14 @@ rather than one that is missing.
 ## Covered by
 
 - `HintsTest::aPreviewAnswerSaysWhatTheDefaultRendererAlreadyDraws`
+
+## Since then
+
+A third gap on the same statement was judged on 2026-08-02 and is queued —
+[`D-KNW-025`](knw-025-what-a-backend-preview-owes-the-editor-is-a-gap-this-server-owns.md).
+This entry's statement ends "what it owes the editor is what those parts do not
+already say", and that is where the two meet: the clause rules out repeating the
+header and rules in a static label that says nothing. What a preview should draw
+instead is the queued statement, and it goes beside this one rather than into it,
+because the two go wrong on different events — this one when the core moves the
+header, the other when the core changes what a preview is for.

@@ -7,6 +7,7 @@ namespace Typo3CmsMcp\Upkeep\Command;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Output\OutputInterface;
 use Typo3CmsMcp\Upkeep\Cli;
+use Typo3CmsMcp\Upkeep\OpenFeedback;
 use Typo3CmsMcp\Upkeep\Todo;
 
 /**
@@ -23,6 +24,12 @@ use Typo3CmsMcp\Upkeep\Todo;
  * words it was asked in — because no session is offered it to ask again, and
  * one in `progress/` to the branch and the date, because a claim nobody can
  * date is one nobody dares take back.
+ *
+ * The last thing it says is about the other direction: an open feedback that no
+ * todo answers for. That is drift rather than a state — `bin/cli todo:sync`
+ * repairs it — and it is reported here because this is what a session runs,
+ * while the case that also holds it is in a suite the session that recorded the
+ * feedback never runs.
  */
 #[AsCommand(
     name: 'todo:check',
@@ -146,6 +153,17 @@ final class TodoCheck
             } elseif (count($named) > 1) {
                 $problems[] = '`' . $command . '` is run by ' . implode(' and ', $named);
             }
+        }
+
+        // An open feedback nothing answers for is one no session will be handed,
+        // and it is drift rather than a state: `bin/cli todo:sync` repairs it,
+        // so this says how many and names the command the way
+        // `bin/cli requirements:check` names the one that rebuilds a listing.
+        // Left to the suite alone it would be found by whoever runs phpunit,
+        // which is not the session that recorded the feedback.
+        $unserved = count(array_filter(OpenFeedback::all(), static fn(array $feedback): bool => !$feedback['judged']));
+        if ($unserved > 0) {
+            $problems[] = sprintf('%d open feedback answered for by no todo — `bin/cli todo:sync`', $unserved);
         }
 
         $errors = Cli::errors($output);

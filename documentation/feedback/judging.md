@@ -234,6 +234,43 @@ A **skip** is the exception and stays out of both. It lasts one pass, is written
 down nowhere, and is not a state a feedback can be left in — a feedback that
 deserves a state gets one of the six answers.
 
+## The three states a feedback is in, and what holds each
+
+A judgement does not close a feedback. It turns it into work, and the work is
+what closes it.
+
+| Where it is                   | What that means            | What holds it                              |
+| ----------------------------- | -------------------------- | ------------------------------------------ |
+| open, no todo serves it       | nobody has judged it       | `bin/cli todo:check` and `todo:sync`        |
+| open, a todo serves it        | judged, the work is queued | `Todo::serves()`, which `feedback:list` marks |
+| `feedback/archive/`           | the improvement landed     | `bin/cli feedback:archive`, in that commit  |
+
+The middle state is the one worth being exact about. `typo3_feedback_list`
+answers an agent somewhere else, and archiving is what that agent reads as
+`closed`; a feedback closed the moment somebody decided about it would tell a
+session its report was dealt with while the thing it reported is still there. So
+the archive waits for the change, which is what AGENTS.md has always said, and
+`Todo::unreadable()` enforces it from the other side — a todo serving an
+archived feedback is reported as a problem, so archiving early costs one error
+per todo the judgement derived.
+
+**The invariant:** a commit that judges a feedback either archives it or leaves
+at least one todo serving it. Anything else drops it back to unjudged, where the
+next `bin/cli todo:sync` writes it a fresh card and the judgement is lost.
+"Nothing to do" is therefore not a special case but the *close* answer:
+archive in the same commit.
+
+What cannot be checked is whether the judgement reached `decisions/`. A state
+check cannot see it, and a judgement may legitimately confirm an entry without
+changing a file. It stays the second **Wrong if** of
+[`D-FBK-012`](../../decisions/feedback/fbk-012-the-queue-comes-first-and-the-sighting-hands-over-one.md),
+watched rather than held.
+
+A feedback that **cannot** be judged is not closed either. The card moves to
+`todo/waiting/` with the question in a `**Waiting on:**` line, where it still
+serves the feedback — so `todo:sync` writes no second card, and no session is
+handed a question nobody can answer.
+
 ## What a todo may not repeat
 
 A todo that serves a feedback does not restate it. It carries what the feedback

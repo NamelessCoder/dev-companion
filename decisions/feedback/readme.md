@@ -17,6 +17,7 @@ earns one.
 - [`D-FBK-014`][D-FBK-014] — Every stage is a directory, and closing is none · 2026-08-02
 - [`D-FBK-015`][D-FBK-015] — A priority is a class, and the stamp is the rest · 2026-08-02
 - [`D-FBK-016`][D-FBK-016] — A feedback waits on the board rather than behind it · 2026-08-02
+- [`D-FBK-017`][D-FBK-017] — A judgement turns a feedback into work, and the work closes it · 2026-08-02
 - [`D-FBK-006`][D-FBK-006] — A name is cut where the feedback starts to differ · 2026-08-01
 - [`D-FBK-007`][D-FBK-007] — How a todo is worked travels with the todo · 2026-08-01
 - [`D-FBK-008`][D-FBK-008] — One todo is one file, and the queue is in the names · 2026-08-01
@@ -32,6 +33,7 @@ earns one.
 [D-FBK-014]: fbk-014-every-stage-is-a-directory-and-closing-is-none.md
 [D-FBK-015]: fbk-015-a-priority-is-a-class-and-the-stamp-is-the-rest.md
 [D-FBK-016]: fbk-016-a-feedback-waits-on-the-board-rather-than-behind-it.md
+[D-FBK-017]: fbk-017-a-judgement-turns-a-feedback-into-work-and-the-work-closes-it.md
 [D-FBK-006]: fbk-006-a-name-is-cut-where-the-feedback-starts-to-differ.md
 [D-FBK-007]: fbk-007-how-a-todo-is-worked-travels-with-the-todo.md
 [D-FBK-008]: fbk-008-one-todo-is-one-file-and-the-queue-is-in-the-names.md

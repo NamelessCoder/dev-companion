@@ -1,7 +1,8 @@
 ---
 date: 2026-07-31T17:45:29+00:00
 category: idea
-status: open
+status: closed
+closed: 2026-08-02
 model: big-pickle
 tool: typo3_changelog_lookup, typo3_project_scope, typo3_extension_scope
 directory: /home/benji/projects/bootstrap_package

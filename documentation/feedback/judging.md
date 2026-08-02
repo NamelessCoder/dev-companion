@@ -26,6 +26,20 @@ have closed and did not, which is the most valuable half of the corpus.
 Whether the self-criticism is accurate is not assessed, and cannot be: the
 session was there and the reader was not. Only the lever is assessed.
 
+## Where it reports no gap
+
+Some feedback report what worked. The ladder below has no rung for them: every
+step names something missing, misplaced or misworded. So the question is asked
+from the other side — what is the strength evidence of?
+
+Not that a decision holds. A session praising its own run reports from where it
+stood, which is why its self-criticism is not assessed either; a decision is
+confirmed by a recorded run, not by an account of one. What a strength carries
+is where a boundary runs, and the costs reported around it are the other side of
+the same boundary — usually from the same debrief. That reading is what goes
+into `decisions/`, and the commit that writes it archives the feedback. [`D-FBK-018`](../../decisions/feedback/fbk-018-a-strength-is-evidence-about-a-boundary-not-about-a-decision.md)
+is the case it was established on.
+
 ## The ladder
 
 The question is asked in five steps, cheapest first. Each step has evidence

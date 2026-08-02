@@ -2,8 +2,6 @@
 
 **Serves:** feedback/2026-07-31-183652-the-typo3-cms-mcp-server-provides-a.md
 **Priority:** low
-**Branch:** todo/the-typo3-cms-mcp-server-provides-a
-**Claimed:** 2026-08-02
 **Waiting on:** does `bin/cli` gain a `feedback:record` command? The
     recommendation is no. It would answer only where `typo3_feedback_record`
     already answers, both being gated on `Channel::isAvailable()`, and Composer

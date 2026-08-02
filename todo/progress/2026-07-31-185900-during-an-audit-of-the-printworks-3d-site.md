@@ -1,7 +1,9 @@
-# Task: TYPO3 extension conformance audit. What the server saved me from:
+# During an audit of the Printworks 3D site package, the typo3-extension-conformance skill was acti...
 
-**Serves:** feedback/2026-07-31-193050-task-typo3-extension-conformance-audit-what-the.md
+**Serves:** feedback/2026-07-31-185900-during-an-audit-of-the-printworks-3d-site.md
 **Priority:** low
+**Branch:** todo/during-an-audit-of-the-printworks-3d-site
+**Claimed:** 2026-08-02
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

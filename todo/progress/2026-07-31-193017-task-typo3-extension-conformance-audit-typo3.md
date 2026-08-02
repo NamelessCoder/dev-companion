@@ -1,7 +1,9 @@
-# Session: Review TYPO3 project and site package for critical problems and risks
+# Task: TYPO3 extension conformance audit. typo3_label_lookup returned a bash error when attempting...
 
-**Serves:** feedback/2026-07-31-190653-session-review-typo3-project-and-site-package.md
+**Serves:** feedback/2026-07-31-193017-task-typo3-extension-conformance-audit-typo3.md
 **Priority:** low
+**Branch:** todo/task-typo3-extension-conformance-audit-typo3
+**Claimed:** 2026-08-02
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

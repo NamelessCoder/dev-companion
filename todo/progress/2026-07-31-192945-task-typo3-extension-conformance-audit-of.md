@@ -1,7 +1,9 @@
-# I had to establish from my own knowledge whether TYPO3 core reads environment variables like TYPO...
+# Task: TYPO3 extension conformance audit of printworks_sitepackage. The typo3-extension-conformanc...
 
-**Serves:** feedback/2026-07-31-185900-i-had-to-establish-from-my-own-knowledge.md
+**Serves:** feedback/2026-07-31-192945-task-typo3-extension-conformance-audit-of.md
 **Priority:** low
+**Branch:** todo/task-typo3-extension-conformance-audit-of
+**Claimed:** 2026-08-02
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

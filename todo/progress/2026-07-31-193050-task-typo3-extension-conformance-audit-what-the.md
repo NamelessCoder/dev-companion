@@ -1,7 +1,9 @@
-# Task: TYPO3 extension conformance audit. typo3_label_lookup returned a bash error when attempting...
+# Task: TYPO3 extension conformance audit. What the server saved me from:
 
-**Serves:** feedback/2026-07-31-193017-task-typo3-extension-conformance-audit-typo3.md
+**Serves:** feedback/2026-07-31-193050-task-typo3-extension-conformance-audit-what-the.md
 **Priority:** low
+**Branch:** todo/task-typo3-extension-conformance-audit-what-the
+**Claimed:** 2026-08-02
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-07-31-172757-the-two-newest-typo3-v14-3-extension.md
 **Priority:** normal
+**Branch:** todo/say-what-the-two-listed-files-cost-in-the-extension-answer
+**Claimed:** 2026-08-02
 
 Step 2 on the ladder in `D-ANS-009`, and the half that archives the feedback.
 Both statements now exist in the `extension-files` hint of

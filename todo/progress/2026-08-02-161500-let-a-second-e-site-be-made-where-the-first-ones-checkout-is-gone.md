@@ -2,6 +2,8 @@
 
 **Serves:** src/Upkeep/
 **Priority:** normal
+**Branch:** todo/let-a-second-e-site-be-made-where-the-first-ones-checkout-is-gone
+**Claimed:** 2026-08-02
 
 `bin/cli environment:create E-SITE` refuses where DDEV already registers
 `typo3-mcp-e-site` at another checkout, which is right while that checkout is

@@ -101,7 +101,7 @@ and not a defect.
 - [`D-SCO-005`][D-SCO-005] — The installation is evidence about the task, and the weakest kind · 2026-07-29
 - [`D-SCO-006`][D-SCO-006] — Why "project work is out of scope" kept coming back · 2026-07-29
 - [`D-VER-001`][D-VER-001] — A version range is data on the statement, not a sentence in it · 2026-07-29 · confirmed
-- [`D-VER-002`][D-VER-002] — The prose is not bound; it says which half it is · 2026-07-29
+- [`D-VER-002`][D-VER-002] — The prose is not bound; it says which half it is · 2026-07-29 · confirmed
 
 [D-AUD-004]: audience/aud-004-the-tool-list-is-not-where-the-audience-is-said.md
 [D-COD-003]: code/cod-003-a-directory-is-read-through-symfony-finder.md

@@ -484,7 +484,16 @@ and in prose; `scope` is the word anything machine-readable uses.
 - Never start something on the caller's machine as a side effect of a lookup. A
   stopped DDEV project is reported with the command that would fix it.
 - Add new rules or scripts to `knowledge/` first; promote recurring workflow
-  logic to a tool only when it has earned it.
+  logic to a tool only when it has earned it. **What earns it is the round trips
+  it takes off the caller.** A session is charged one context per call
+  (`D-FBK-020`), so a question that costs it four calls and a trap — the Forge
+  issue that answers 403, then 200 with a challenge page, then JSON whose
+  decision sits in a field nobody would guess — is worth a tool that answers it
+  in one. The cost moves here permanently and that is the trade rather than the
+  objection: a surface somebody else owns becomes ours to keep true, for a
+  saving every session gets. What does not earn it is a fact the caller reads
+  once from its own checkout, and anything whose lookup would report
+  `unavailable` often enough that the call buys nothing (`D-FBK-027`).
 - Verify facts against the core checkouts below `.checkouts/` before writing
   them into `knowledge/`, and bind what does not hold on all of them. The
   checkouts are this repository's own — one worktree per covered version,

@@ -240,6 +240,14 @@ different tasks is the thing itself, and `bin/cli feedback:list` is where that
 is read. `D-SKL-005` was decided this way and the ask it answers, the proposal
 in `feedback/2026-08-01-115220`, was the weakest evidence in it.
 
+The measure is what it takes off the caller. A session is charged one context
+per call, so a question that costs it four round trips and a trap that reads as
+a success is worth a tool that answers it in one — and the maintenance moving
+here is the trade rather than the objection
+([`D-FBK-027`](../../decisions/feedback/fbk-027-the-server-builds-what-costs-its-caller-round-trips.md)).
+Most feedback that reports such a cost has already counted it; that count is
+what the judgement reads.
+
 What still waits is what nobody here can establish: what the tool answers about
 TYPO3, what the skill says, which of two shapes the practice actually has. That
 is the todo's first step, and it is research rather than a question for the

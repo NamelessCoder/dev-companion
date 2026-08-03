@@ -139,7 +139,7 @@ enum Scope: string
      * which question was never answered, and how to answer it.
      */
     public const UNCERTAIN_NOTICE = 'Nothing here says which repository this work is in — no path with a '
-        . 'shape of its own, no area this server could place, and no installation to read. What follows is the '
+        . 'shape of its own, none the installation knows as a package, and no installation to read. What follows is the '
         . 'core\'s own, so name a path or the repository if it is not, because several of these steps exist '
         . 'nowhere else.';
 
@@ -189,7 +189,7 @@ enum Scope: string
      * @param string $path one path, or '' where the call named none and only
      *                     what was said about it can decide
      */
-    public static function of(string $path, string $text = '', string $area = ''): self
+    public static function of(string $path, string $text = ''): self
     {
         $lowered = ltrim(mb_strtolower(str_replace('\\', '/', $path)), './');
         $prose = mb_strtolower($text);
@@ -231,19 +231,24 @@ enum Scope: string
             }
         }
 
-        // An area that names an installed package which is not a system
-        // extension. The installation is asked because only it knows: the same
-        // key is a system extension in one and a vendor package in the next.
-        // An area it does not have at all says nothing — "FormEngine" and
-        // "backend forms" are areas too.
-        $systemExtension = $area === '' ? null : Instance::isSystemExtension($area);
-        if ($systemExtension === false) {
-            return self::Extension;
-        }
-
-        // The shape of the path, where it carries no marker: which directories
-        // a file sits in says which repository it was laid out for.
+        // What the path itself is still worth once no marker has decided: what
+        // the installation knows it as, then its shape. Both are read off the
+        // path alone, so neither says anything where the call named none.
+        $systemExtension = null;
         if ($lowered !== '') {
+            // A path that is the key of an installed package which is not a
+            // system extension. The installation is asked because only it
+            // knows: the same key is a system extension in one and a vendor
+            // package in the next. A path it has no package for says nothing,
+            // which is most of them — a file inside a package was placed by the
+            // markers above.
+            $systemExtension = Instance::isSystemExtension($lowered);
+            if ($systemExtension === false) {
+                return self::Extension;
+            }
+
+            // Which directories a file sits in says which repository it was
+            // laid out for.
             foreach (self::EXTENSION_LAYOUT as $prefix) {
                 if (str_starts_with($lowered, $prefix) && !self::isTheCoreCheckout()) {
                     return self::Extension;
@@ -256,7 +261,7 @@ enum Scope: string
             }
         }
 
-        // Naming a system extension as the area, or naming the contribution
+        // Naming a system extension by its key, or naming the contribution
         // workflow, is evidence in the other direction. Both beat the weakest
         // signal there is — which installation the session happens to sit in —
         // and neither beats a marker above, because those describe the work
@@ -325,10 +330,10 @@ enum Scope: string
      * @param array<int, string> $paths
      * @return array<int, array{path: string, scope: self}>
      */
-    public static function ofEach(array $paths, string $text = '', string $area = ''): array
+    public static function ofEach(array $paths, string $text = ''): array
     {
         return array_values(array_map(
-            static fn(string $path): array => ['path' => $path, 'scope' => self::of($path, $text, $area)],
+            static fn(string $path): array => ['path' => $path, 'scope' => self::of($path, $text)],
             $paths,
         ));
     }

@@ -14,8 +14,8 @@ and the discovery steps are one list, and it names the paths the core's own
 steps are not for.
 
 `D-SCO-008` left this tool with one verdict because it was asked about one
-`area`, and called that a missing parameter rather than a rule. The parameter is
-here. What it does not do is answer twice.
+`area`, and called that a missing parameter rather than a rule. `paths` is here.
+What it does not do is answer twice.
 
 ## Evidence
 
@@ -36,11 +36,12 @@ here. What it does not do is answer twice.
   before; where one path is in the core it keeps them and the notice names the
   paths they are not for.
 - `scope` stays and means the call as a whole. It is the one group's scope where
-  there is one group, and where the paths disagree it is what the task text and
-  the area say on their own. `scopes` is the per-path answer, in the shape the
-  two path tools already carry.
+  there is one group, and where the paths disagree it is what the task text says
+  on its own. `scopes` is the per-path answer, in the shape the two path tools
+  already carry.
 - The `area` counts as one of the paths, so a call that names only an area is
-  decided exactly as it was.
+  decided exactly as it was. (Superseded on 2026-08-03: the parameter is gone —
+  see **Since then**.)
 
 ## Assumed
 
@@ -80,11 +81,14 @@ scoped `core` as they were, and no step of the brief was filtered by a verdict
 about a string nobody named. What the reporter names is the other half: nothing
 downstream can read `scopes` as the files, because one of its entries is prose.
 
-The repair this entry names for that case — `area` deprecated in its description
-and then removed — is not the only one available. The reporter's alternative
-keeps `area` and marks its entry as one, which is an addition where this entry's
-is a removal, and `AGENTS.md` asks for the first and not the second. Both hold,
-so which is built is not a judgement this process may make on its own. The
-question is with whoever maintains this repository and
-`todo/waiting/2026-08-03-171601-decide-whether-the-area-keeps-its-place-in-the-scopes-array.md`
-carries it in the words it was asked in.
+The maintainer answered on 2026-08-03: `area` is removed rather than deprecated,
+because nothing needs it. So `typo3_task_guide` takes `task` and `paths`, and
+every entry of `scopes` is a path a caller named. What the parameter alone could
+still decide — the installation knowing a key as somebody's package rather than
+as a system extension — is now read off the path, so `paths: ["my_sitepackage"]`
+answers what `area: "my_sitepackage"` answered. That signal keeps its place in
+`R-SCO-001`'s order, and `Scope::of()` lost the third argument no caller had
+left.
+
+The deprecation step `AGENTS.md` implies for a schema is what was waived, and
+`todo/waiting/2026-08-03-171601` is closed by this.

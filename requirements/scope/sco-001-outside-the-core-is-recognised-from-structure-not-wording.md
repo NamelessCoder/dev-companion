@@ -8,16 +8,16 @@ status: held
 **Work outside the core is recognised from structural evidence rather than from
 wording.**
 
-That evidence is the kind of installation, the shape of the paths, and an area
+That evidence is the kind of installation, the shape of the paths, and a path
 the installation knows as somebody's extension.
 
 Evidence of core work wins over the weaker signals, in this order: a
 `typo3/sysext/` path or the contribution workflow named outright, then an an
-extension or project marker, then the area, then the path shape, then the
-contribution workflow named in prose, and last which installation the session
-sits in. A `typo3/sysext/` path is the only marker that ends the question
-outright: prose that names the core in order to rule it out reads to a substring
-search exactly like claiming it.
+extension or project marker, then the package the installation knows that path
+as, then the path shape, then the contribution workflow named in prose, and last
+which installation the session sits in. A `typo3/sysext/` path is the only
+marker that ends the question outright: prose that names the core in order to
+rule it out reads to a substring search exactly like claiming it.
 
 That last signal is the installation the session is **standing in**, not the one
 `TYPO3_MCP_ROOT` names. The variable says which registry the icons and labels
@@ -43,7 +43,7 @@ prose (2026-07-29).
 ## Held by
 
 - `ScopeTest::namingTheCoreInOrderToRuleItOutIsNotEvidenceOfCoreWork`
-- `ScopeTest::anAreaTheInstallationKnowsAsSomebodysExtensionIsOutsideTheCore`
+- `ScopeTest::aPathTheInstallationKnowsAsSomebodysExtensionIsOutsideTheCore`
 - `ScopeTest::inASiteInstallationTheWorkIsOutsideTheCoreUnlessSomethingSaysOtherwise`
 - `ScopeTest::inACoreCheckoutNothingIsPushedOutsideByTheInstallationAlone`
 - `ScopeTest::aPathInsideAnExtensionIsRecognisedByItsShape`

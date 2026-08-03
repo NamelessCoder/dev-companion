@@ -30,7 +30,7 @@ project's own are known is a guess that sounds like advice.
    and what it ships beside that: its manual, its README, its test layers, its
    XLF files with the source language each one declares. What it does *not* ship
    is answered too, and that is the half no file listing can give you.
-3. **`typo3_task_guide`** with a short English task, the affected area, the
+3. **`typo3_task_guide`** with a short English task, the paths it touches, the
    target version and the change type — the workflow this task belongs to and
    the checks that come with it.
 4. **`typo3_hint_lookup`** for each subsystem in scope, with its concrete paths.

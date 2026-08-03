@@ -14,12 +14,11 @@ something only the core repository has are left out rather than handed over.
 ```yaml
 # Short description of the TYPO3 core task, in English.
 task: string
-# Affected subsystem or extension, if known.
-area: string  # optional
 # The files the task is about, as they are in the repository they belong to.
 # Pass them where the work touches more than one place: each is placed on its
 # own, so a core path and an extension path in one call are not answered with
-# one verdict. The area counts as one of them.
+# one verdict. An extension key counts as a path. A subsystem no path can be
+# named for belongs in task, because every entry here is answered as a file.
 paths: [string]  # optional
 # The TYPO3 version this task is for, for example "13.4" or "14". Conventions
 # that do not hold there are left out, including those the repository needs for
@@ -41,10 +40,7 @@ changeType: string  # optional
 
 ```yaml
 task: string
-# Affected subsystem or path, if one was given.
-area: string or null  # optional
-# The paths this brief was composed for, the area among them. Empty where the
-# call named none.
+# The paths this brief was composed for. Empty where the call named none.
 paths: [string]  # optional
 # Which kind of work each path is. Where every path is outside the core, the
 # core checks, the core-only checklist items and the submission route are left
@@ -73,7 +69,7 @@ domains: [string]
 # One of: core, uncertain, project, extension. Which kind of work the call as a
 # whole reads as. Anything but core means the answer holds core conventions that
 # may transfer, not a checklist for the task. Where the paths disagree, scopes
-# is the answer and this is what the task text and the area alone say.
+# is the answer and this is what the task text alone says.
 scope: string  # optional
 # The kinds of core work recognized in the task text.
 intents:  # optional
@@ -192,14 +188,16 @@ none of bin/typo3, vendor/bin/typo3 exists. Nothing checks what is below this
 heading; everything above it is derived from the class that answers the call,
 and `bin/cli tools:check` holds it.
 
-### brief: with area
+### brief: with a path
 
 Called with:
 
 ```json
 {
     "task": "Deprecate a public method",
-    "area": "typo3/sysext/core/Classes/Utility/GeneralUtility.php",
+    "paths": [
+        "typo3/sysext/core/Classes/Utility/GeneralUtility.php"
+    ],
     "changeType": "cleanup"
 }
 ```
@@ -208,9 +206,10 @@ Text:
 
 ```
 Task: Deprecate a public method
-Area: typo3/sysext/core/Classes/Utility/GeneralUtility.php
 Change type: cleanup
 Domains: php
+Paths:
+- typo3/sysext/core/Classes/Utility/GeneralUtility.php
 Recognized as: Deprecation
 
 Hints:
@@ -273,9 +272,8 @@ Source: TYPO3 Core Commit Message Rules (typo3://core/typo3-commit-messages) —
 - Breaking changes must be documented with a changelog RST file.
 - Breaking changes should usually target `main`.
 - A removed or narrowed PHP API gets an extension scanner matcher entry in the
-  same patch, below
-  `typo3/sysext/install/Configuration/ExtensionScanner/Php/`. How the removed
-  member is written where it is used decides the file:
+  same patch, below `typo3/sysext/install/Configuration/ExtensionScanner/Php/`.
+  How the removed member is written where it is used decides the file:
   - `MethodCallMatcher.php` — an instance method.
   - `MethodCallStaticMatcher.php` — a static method.
   - `PropertyPublicMatcher.php` — a removed public property.
@@ -371,7 +369,6 @@ Data:
 ```json
 {
     "task": "Deprecate a public method",
-    "area": "typo3/sysext/core/Classes/Utility/GeneralUtility.php",
     "paths": [
         "typo3/sysext/core/Classes/Utility/GeneralUtility.php"
     ],
@@ -574,7 +571,7 @@ Data:
             "title": "TYPO3 Core Commit Message Rules",
             "uri": "typo3://core/typo3-commit-messages",
             "heading": "Breaking Changes",
-            "body": "- Breaking changes must use `[!!!]` before the keyword.\n- Breaking changes must be documented with a changelog RST file.\n- Breaking changes should usually target `main`.\n- A removed or narrowed PHP API gets an extension scanner matcher entry in the\n  same patch, below\n  `typo3/sysext/install/Configuration/ExtensionScanner/Php/`. How the removed\n  member is written where it is used decides the file:\n  - `MethodCallMatcher.php` — an instance method.\n  - `MethodCallStaticMatcher.php` — a static method.\n  - `PropertyPublicMatcher.php` — a removed public property.\n  - `PropertyProtectedMatcher.php` — a public property that became protected.\n  - `ClassNameMatcher.php` — a whole class or interface.\n- Visibility routes a property and never a method. The method matchers are a\n  weak match on the method name where it is used, and they do not resolve the\n  class, so they cannot see one. A method that is protected, or that has become\n  protected, is entered where a public one is.\n  `RendererRegistry->getRendererInstances` went from public to protected in\n  `Breaking-110277`, and it stands in `MethodCallMatcher.php`. The list above\n  has no row for a protected method because none is needed, and that absence\n  says nothing about whether an entry is owed.\n- An entry is keyed by the fully qualified name with `->` or `::` and carries\n  `restFiles`, naming the changelog file that removed it. The method matchers\n  add `numberOfMandatoryArguments` and `maximumNumberOfArguments`. A member\n  deprecated before it was removed lists both changelog files.\n- Every Breaking and Deprecation entry carries exactly one of `NotScanned`,\n  `PartiallyScanned` and `FullyScanned` in its `.. index::` line, and that tag\n  is the claim those entries have to back: `FullyScanned` says every item the\n  changelog entry names can be found. The scanner reads PHP, so what an entry\n  changes in TypoScript, TCA, YAML or JavaScript is what leaves it partially\n  scanned.\n- `./Build/Scripts/runTests.sh -s checkExtensionScannerRst` checks that the\n  changelog files the matchers name exist, and nothing checks the other\n  direction. A missing entry surfaces when somebody audits the matcher files\n  against the changelog.",
+            "body": "- Breaking changes must use `[!!!]` before the keyword.\n- Breaking changes must be documented with a changelog RST file.\n- Breaking changes should usually target `main`.\n- A removed or narrowed PHP API gets an extension scanner matcher entry in the\n  same patch, below `typo3/sysext/install/Configuration/ExtensionScanner/Php/`.\n  How the removed member is written where it is used decides the file:\n  - `MethodCallMatcher.php` — an instance method.\n  - `MethodCallStaticMatcher.php` — a static method.\n  - `PropertyPublicMatcher.php` — a removed public property.\n  - `PropertyProtectedMatcher.php` — a public property that became protected.\n  - `ClassNameMatcher.php` — a whole class or interface.\n- Visibility routes a property and never a method. The method matchers are a\n  weak match on the method name where it is used, and they do not resolve the\n  class, so they cannot see one. A method that is protected, or that has become\n  protected, is entered where a public one is.\n  `RendererRegistry->getRendererInstances` went from public to protected in\n  `Breaking-110277`, and it stands in `MethodCallMatcher.php`. The list above\n  has no row for a protected method because none is needed, and that absence\n  says nothing about whether an entry is owed.\n- An entry is keyed by the fully qualified name with `->` or `::` and carries\n  `restFiles`, naming the changelog file that removed it. The method matchers\n  add `numberOfMandatoryArguments` and `maximumNumberOfArguments`. A member\n  deprecated before it was removed lists both changelog files.\n- Every Breaking and Deprecation entry carries exactly one of `NotScanned`,\n  `PartiallyScanned` and `FullyScanned` in its `.. index::` line, and that tag\n  is the claim those entries have to back: `FullyScanned` says every item the\n  changelog entry names can be found. The scanner reads PHP, so what an entry\n  changes in TypoScript, TCA, YAML or JavaScript is what leaves it partially\n  scanned.\n- `./Build/Scripts/runTests.sh -s checkExtensionScannerRst` checks that the\n  changelog files the matchers name exist, and nothing checks the other\n  direction. A missing entry surfaces when somebody audits the matcher files\n  against the changelog.",
             "coverage": 1,
             "score": 23,
             "truncated": false
@@ -718,7 +715,6 @@ Text:
 
 ```
 Task: Add a badge to the list module
-Area: unknown
 Change type: unknown
 Domains: php
 Recognized as: Backend UI markup
@@ -804,7 +800,6 @@ Data:
 ```json
 {
     "task": "Add a badge to the list module",
-    "area": null,
     "paths": [],
     "scopes": [],
     "changeType": "unknown",
@@ -1014,7 +1009,6 @@ Text:
 Of the paths given, packages/acme_events/Classes/Domain/Repository/EventRepository.php is outside the TYPO3 core — a project or third-party extension. What follows is split accordingly: what only the core repository has is left out of the half that is about it. The checks below, the changelog and the submission route belong to the core repository, so they are steps for the paths that are in it and for none of the others.
 
 Task: Fix the query that reads the events
-Area: unknown
 Change type: bugfix
 Domains: php
 Paths:
@@ -1106,7 +1100,6 @@ Data:
 ```json
 {
     "task": "Fix the query that reads the events",
-    "area": null,
     "paths": [
         "packages/acme_events/Classes/Domain/Repository/EventRepository.php",
         "typo3/sysext/core/Classes/Database/Query/QueryBuilder.php"

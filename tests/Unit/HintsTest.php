@@ -3340,7 +3340,7 @@ final class HintsTest extends TestCase
     {
         $checks = Registry::call('typo3_task_guide', [
             'task' => 'Fix that TSconfig field label overrides are not respected per record type in FormEngine select fields',
-            'area' => 'backend/FormEngine',
+            'paths' => ['typo3/sysext/backend/Classes/Form'],
             'changeType' => 'bugfix',
         ])->data['checks'];
 
@@ -3398,7 +3398,7 @@ final class HintsTest extends TestCase
         foreach ([
             [
                 'task' => 'Fix f:image failing on a src that carries a cache busting query string',
-                'area' => 'typo3/sysext/fluid',
+                'paths' => ['typo3/sysext/fluid'],
                 'changeType' => 'bugfix',
             ],
             // Outside the core as well: an editor and a visitor are the same
@@ -3406,7 +3406,7 @@ final class HintsTest extends TestCase
             // that the filtering would take out with the changelog.
             [
                 'task' => 'Add a testimonials content element',
-                'area' => 'packages/my_sitepackage/Classes/Controller/TestimonialController.php',
+                'paths' => ['packages/my_sitepackage/Classes/Controller/TestimonialController.php'],
                 'changeType' => 'feature',
             ],
             // The arm that changes nothing carries it too, and it is the case
@@ -3612,7 +3612,7 @@ final class HintsTest extends TestCase
         // asks for it does not have to say "content element" to get there.
         $result = Registry::call('typo3_task_guide', [
             'task' => 'Add a hero carousel content element whose slides editors can create, order, translate and hide inside the element',
-            'area' => 'packages/printworks_sitepackage/',
+            'paths' => ['packages/printworks_sitepackage/'],
         ]);
 
         self::assertContains('content-element', array_column($result->data['intents'], 'id'));

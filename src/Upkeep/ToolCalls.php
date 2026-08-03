@@ -76,9 +76,9 @@ final class ToolCalls
             'rules: miss' => ['typo3_rule_lookup', ['query' => 'quantum entanglement pineapple']],
             'scripts: hit' => ['typo3_script_lookup', ['task' => 'functional tests']],
             'scripts: miss' => ['typo3_script_lookup', ['task' => 'quantum entanglement pineapple']],
-            'brief: with area' => ['typo3_task_guide', [
+            'brief: with a path' => ['typo3_task_guide', [
                 'task' => 'Deprecate a public method',
-                'area' => 'typo3/sysext/core/Classes/Utility/GeneralUtility.php',
+                'paths' => ['typo3/sysext/core/Classes/Utility/GeneralUtility.php'],
                 'changeType' => 'cleanup',
             ]],
             'brief: task only' => ['typo3_task_guide', ['task' => 'Add a badge to the list module']],

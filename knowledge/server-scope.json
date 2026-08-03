@@ -265,7 +265,7 @@
     },
     {
       "when": "Writing a core patch: taking a Forge issue on, fixing a core bug, deprecating or removing core API, or amending a patch after review",
-      "call": "typo3_task_guide with area core, then typo3_hint_lookup with the paths you are changing, typo3_test_run_guide for the suites that can fail, and typo3_rule_lookup for the Gerrit workflow"
+      "call": "typo3_task_guide with the paths you are changing, then typo3_hint_lookup with the same ones, typo3_test_run_guide for the suites that can fail, and typo3_rule_lookup for the Gerrit workflow"
     },
     {
       "when": "Starting a core task and looking for the applicable conventions and checks",

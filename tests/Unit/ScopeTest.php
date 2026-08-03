@@ -33,16 +33,17 @@ final class ScopeTest extends TestCase
     }
 
     #[Test]
-    public function anAreaTheInstallationKnowsAsSomebodysExtensionIsOutsideTheCore(): void
+    public function aPathTheInstallationKnowsAsSomebodysExtensionIsOutsideTheCore(): void
     {
         // The wording gave nothing away — "bootstrap_package" is an extension
-        // key and matches no phrase. The installation knows what it is.
+        // key and matches no phrase. The installation knows what it is, and an
+        // extension key is a path a caller names when there is no file yet.
         Instance::discoverFrom($this->composerProject());
 
-        $extension = Registry::call('typo3_task_guide', ['task' => 'Add a content element', 'area' => 'my_sitepackage']);
+        $extension = Registry::call('typo3_task_guide', ['task' => 'Add a content element', 'paths' => ['my_sitepackage']]);
         self::assertTrue(Scope::from($extension->data['scope'])->isOutsideTheCore());
 
-        $systemExtension = Registry::call('typo3_task_guide', ['task' => 'Add a content element', 'area' => 'core']);
+        $systemExtension = Registry::call('typo3_task_guide', ['task' => 'Add a content element', 'paths' => ['core']]);
         self::assertFalse(Scope::from($systemExtension->data['scope'])->isOutsideTheCore());
     }
 
@@ -388,7 +389,7 @@ final class ScopeTest extends TestCase
      * answer is `outside-core` throughout. That is the finding rather than a
      * simplification: no recorded run has ever been made in `E-CORE`.
      *
-     * @return iterable<string, array{0: string, 1: string, 2: string}>
+     * @return iterable<string, array{0: string, 1: string}>
      */
     public static function everyAudienceTheRecordedRunsDecided(): iterable
     {
@@ -405,13 +406,12 @@ final class ScopeTest extends TestCase
             'printworks_sitepackage',
             'Audit a TYPO3 site package and the surrounding composer project for conformance, security and '
                 . 'upgrade readiness',
-            'printworks_sitepackage',
         ];
         foreach ([
             'composer.json', 'Build/phpunit/UnitTests.xml', 'Tests/E2E/catalogue.spec.ts',
             'config/system/settings.php', 'public/index.php',
         ] as $path) {
-            yield 'REVIEW-01 the project layout, ' . $path => [$path, $project, ''];
+            yield 'REVIEW-01 the project layout, ' . $path => [$path, $project];
         }
         foreach ([
             'extensions/printworks_sitepackage/Configuration/TCA/Overrides/tt_content_hero.php',
@@ -419,7 +419,7 @@ final class ScopeTest extends TestCase
             'extensions/printworks_sitepackage/Configuration/Sets/Printworks/TypoScript/ContentElement/Hero.typoscript',
             'extensions/printworks_sitepackage/Resources/Private/Templates/Content/PrintworksHero.fluid.html',
         ] as $path) {
-            yield 'REVIEW-01 the content element, ' . $path => [$path, $content, ''];
+            yield 'REVIEW-01 the content element, ' . $path => [$path, $content];
         }
         foreach ([
             'extensions/printworks_sitepackage/Classes/Controller/ProductController.php',
@@ -427,7 +427,7 @@ final class ScopeTest extends TestCase
             'extensions/printworks_sitepackage/Classes/Domain/Model/Dto/ProductDemand.php',
             'config/system/settings.php',
         ] as $path) {
-            yield 'REVIEW-01 the frontend security, ' . $path => [$path, $security, ''];
+            yield 'REVIEW-01 the frontend security, ' . $path => [$path, $security];
         }
         foreach ([
             'extensions/printworks_sitepackage/Resources/Private/Language/messages.xlf',
@@ -435,14 +435,13 @@ final class ScopeTest extends TestCase
             'extensions/printworks_sitepackage/Configuration/Services.yaml',
             'extensions/printworks_sitepackage/Classes/EventListener/PrefillProductRequestForm.php',
         ] as $path) {
-            yield 'REVIEW-01 the labels and listeners, ' . $path => [$path, $labels, ''];
+            yield 'REVIEW-01 the labels and listeners, ' . $path => [$path, $labels];
         }
 
         yield 'REVIEW-02 the brief for the audit' => [
             'news',
             'Audit a widely used third-party TYPO3 extension for maintainability and supportability risks across '
                 . 'package metadata, registration, TCA, TypoScript, Fluid, security and tests',
-            'news',
         ];
         foreach ([
             'Extension package metadata, composer.json and ext_emconf.php agreement, autoloading and supported '
@@ -461,7 +460,7 @@ final class ScopeTest extends TestCase
                 => ['Configuration/Backend/Modules.php', 'Classes/Controller/AdministrationController.php'],
         ] as $text => $paths) {
             foreach ($paths as $path) {
-                yield 'REVIEW-02 ' . $path => [$path, $text, ''];
+                yield 'REVIEW-02 ' . $path => [$path, $text];
             }
         }
     }
@@ -485,11 +484,10 @@ final class ScopeTest extends TestCase
     public function theSysextSignalAloneAnsweredEveryDecisionTheRecordedRunsMade(
         string $path,
         string $text,
-        string $area,
     ): void {
         Instance::discoverFrom($this->composerProject());
 
-        self::assertTrue(Scope::of($path, $text, $area)->isOutsideTheCore());
+        self::assertTrue(Scope::of($path, $text)->isOutsideTheCore());
         self::assertSame(Scope::Extension, self::theSysextSignalAlone($path));
     }
 
@@ -501,11 +499,11 @@ final class ScopeTest extends TestCase
      * 2026-08-02 — its nine entries other than `typo3/`, and the two below
      * `Build/` that no other repository keeps there. That is everything a
      * contributor touches which is not below `typo3/sysext/`. The three calls
-     * after them name no path at all, which is the commoner shape: `SITE-*` and
-     * `CORE-*` prompts are sentences, and a brief is asked for before there is
-     * a file to name.
+     * after them are the commoner shape: `SITE-*` and `CORE-*` prompts are
+     * sentences, and a brief is asked for before there is a file to name — so
+     * what is named is a system extension key, or nothing at all.
      *
-     * @return iterable<string, array{0: string, 1: string, 2: string}>
+     * @return iterable<string, array{0: string, 1: string}>
      */
     public static function everyAudienceACoreCheckoutDecides(): iterable
     {
@@ -514,12 +512,12 @@ final class ScopeTest extends TestCase
             'CODE_OF_CONDUCT.md', 'CONTRIBUTING.md', 'INSTALL.md', 'LICENSE.txt', 'README.md', 'SECURITY.md',
             'composer.json', 'composer.lock',
         ] as $path) {
-            yield 'the checkout root, ' . $path => [$path, '', ''];
+            yield 'the checkout root, ' . $path => [$path, ''];
         }
 
-        yield 'a fix that goes to review' => ['', 'Fix the DataHandler regression and push it for review', 'core'];
-        yield 'a new state on a list row' => ['', 'Add a new state to a backend list row', 'backend'];
-        yield 'a deprecation' => ['', 'Deprecate a public API method', ''];
+        yield 'a fix that goes to review' => ['core', 'Fix the DataHandler regression and push it for review'];
+        yield 'a new state on a list row' => ['backend', 'Add a new state to a backend list row'];
+        yield 'a deprecation' => ['', 'Deprecate a public API method'];
     }
 
     /**
@@ -536,21 +534,20 @@ final class ScopeTest extends TestCase
      *
      * Two signals carry the rows: `Build/Scripts/` and `Build/Sources/` are the
      * core's layout where the manifest allows it to be the core, and every
-     * other row is the installation — twice through an area it knows as a
-     * system extension, otherwise through the kind of checkout it is. So this
-     * is the test a simplification fails: collapse `audienceOf` to the marker
-     * and all fourteen of these turn.
+     * other row is the installation — twice through a path it knows as a system
+     * extension key, otherwise through the kind of checkout it is. So this is
+     * the test a simplification fails: collapse `audienceOf` to the marker and
+     * all fourteen of these turn.
      */
     #[Test]
     #[DataProvider('everyAudienceACoreCheckoutDecides')]
     public function theSysextSignalAloneAnsweredNothingACoreCheckoutDecides(
         string $path,
         string $text,
-        string $area,
     ): void {
         Instance::discoverFrom($this->coreCheckout());
 
-        self::assertSame(Scope::Core, Scope::of($path, $text, $area));
+        self::assertSame(Scope::Core, Scope::of($path, $text));
         self::assertSame(
             Scope::Extension,
             self::theSysextSignalAlone($path),
@@ -593,7 +590,7 @@ final class ScopeTest extends TestCase
     {
         $result = Registry::call('typo3_task_guide', [
             'task' => 'Push the fix for review',
-            'area' => 'typo3/sysext/core/Classes/Utility/GeneralUtility.php',
+            'paths' => ['typo3/sysext/core/Classes/Utility/GeneralUtility.php'],
         ]);
 
         $confidence = array_column($result->data['intents'], 'confidence', 'id');
@@ -607,7 +604,7 @@ final class ScopeTest extends TestCase
         // is not one.
         $result = Registry::call('typo3_task_guide', [
             'task' => 'Push the fix for review',
-            'area' => 'packages/my_sitepackage/Classes/Controller/EventController.php',
+            'paths' => ['packages/my_sitepackage/Classes/Controller/EventController.php'],
         ]);
 
         self::assertTrue(Scope::from($result->data['scope'])->isOutsideTheCore());
@@ -960,7 +957,7 @@ final class ScopeTest extends TestCase
         // later out of this list.
         $core = Registry::call('typo3_task_guide', [
             'task' => 'Fix the DataHandler regression',
-            'area' => 'typo3/sysext/core/Classes/DataHandling/DataHandler.php',
+            'paths' => ['typo3/sysext/core/Classes/DataHandling/DataHandler.php'],
         ]);
         self::assertContains('typo3_commit_message_guide', array_column($core->data['nextTools'], 'tool'));
         self::assertStringContainsString(
@@ -973,7 +970,7 @@ final class ScopeTest extends TestCase
         // the core's and demands a Forge issue nobody there has.
         $project = Registry::call('typo3_task_guide', [
             'task' => 'Add a search to the product plugin',
-            'area' => 'packages/my_sitepackage/Classes/Controller/ProductController.php',
+            'paths' => ['packages/my_sitepackage/Classes/Controller/ProductController.php'],
         ]);
         self::assertTrue(Scope::from($project->data['scope'])->isOutsideTheCore());
         self::assertStringContainsString('workflow="project"', implode("\n", $project->data['checklist']));
@@ -1029,7 +1026,7 @@ final class ScopeTest extends TestCase
         // policy is not a partly right answer: the flag says the brief knew.
         $result = Registry::call('typo3_task_guide', [
             'task' => 'Add a data processor and an upgrade wizard to my site package',
-            'area' => 'packages/my_sitepackage/Classes/DataProcessing/CsvProcessor.php',
+            'paths' => ['packages/my_sitepackage/Classes/DataProcessing/CsvProcessor.php'],
             'changeType' => 'feature',
         ]);
 

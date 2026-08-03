@@ -175,8 +175,7 @@ final class TaskGuide extends ReadOnlyTool
             'type' => 'object',
             'properties' => [
                 'task' => ['type' => 'string', 'minLength' => 1, 'description' => 'Short description of the TYPO3 core task, in English.'],
-                'area' => ['type' => 'string', 'description' => 'Affected subsystem or extension, if known.'],
-                'paths' => ['type' => 'array', 'items' => ['type' => 'string'], 'default' => [], 'description' => 'The files the task is about, as they are in the repository they belong to. Pass them where the work touches more than one place: each is placed on its own, so a core path and an extension path in one call are not answered with one verdict. The area counts as one of them.'],
+                'paths' => ['type' => 'array', 'items' => ['type' => 'string'], 'default' => [], 'description' => 'The files the task is about, as they are in the repository they belong to. Pass them where the work touches more than one place: each is placed on its own, so a core path and an extension path in one call are not answered with one verdict. An extension key counts as a path. A subsystem no path can be named for belongs in task, because every entry here is answered as a file.'],
                 'targetVersion' => ['type' => 'string', 'description' => 'The TYPO3 version this task is for, for example "13.4" or "14". Conventions that do not hold there are left out, including those the repository needs for another major it declares. Defaults to every major this repository declares typo3/cms-core for, or to the installation this server was started in where there is no declaration.'],
                 'changeType' => ['type' => 'string', 'enum' => ['bugfix', 'feature', 'cleanup', 'test', 'documentation', 'deprecation', self::AUDIT, self::OPERATIONS, 'unknown'], 'default' => 'unknown', 'description' => 'What kind of change the task is. Two of them write no file and get a brief of their own instead of the steps a patch owes: audit asks for what a review needs, and operations for what running an installation needs — booting the environment a repository declares, importing its data, building its assets. A task that describes either gets that shape without stating the type.'],
             ],
@@ -188,14 +187,13 @@ final class TaskGuide extends ReadOnlyTool
     {
         return Schema::object([
             'task' => Schema::string(),
-            'area' => Schema::nullableString('Affected subsystem or path, if one was given.'),
-            'paths' => Schema::listOf(Schema::string(), 'The paths this brief was composed for, the area among them. Empty where the call named none.'),
+            'paths' => Schema::listOf(Schema::string(), 'The paths this brief was composed for. Empty where the call named none.'),
             'scopes' => Schema::scopes('Which kind of work each path is. Where every path is outside the core, the core checks, the core-only checklist items and the submission route are left out of the whole brief.'),
             'changeType' => Schema::string(),
             'targetVersion' => ['type' => ['integer', 'null'], 'description' => 'The TYPO3 major this repository runs — stated by the caller, or read from the installation. Null means nothing was filtered by version. Where the repository serves several majors, targetVersions is what the answer holds for.'],
             'targetVersions' => Schema::listOf(['type' => 'integer'], 'Every TYPO3 major the answer holds for. One entry is the ordinary case. Several mean this repository declares typo3/cms-core for more than one of them, so a statement was kept when it holds on any — and where two statements about the same subject differ, the difference is the constraint the code lives under rather than drift. Empty when nothing was filtered by version.'),
             'domains' => Schema::listOf(Schema::string()),
-            'scope' => Schema::scope('Which kind of work the call as a whole reads as. Anything but core means the answer holds core conventions that may transfer, not a checklist for the task. Where the paths disagree, scopes is the answer and this is what the task text and the area alone say.'),
+            'scope' => Schema::scope('Which kind of work the call as a whole reads as. Anything but core means the answer holds core conventions that may transfer, not a checklist for the task. Where the paths disagree, scopes is the answer and this is what the task text alone says.'),
             'intents' => Schema::listOf(Schema::object([
                 'id' => Schema::string(),
                 'title' => Schema::string(),
@@ -227,17 +225,12 @@ final class TaskGuide extends ReadOnlyTool
     public static function answer(array $args): ToolResult
     {
         $task = (string) ($args['task'] ?? '');
-        $area = isset($args['area']) ? trim((string) $args['area']) : '';
         $changeType = (string) ($args['changeType'] ?? 'unknown');
 
-        $subject = trim($task . ' ' . $area);
         $paths = array_values(array_filter(array_map(
             static fn(mixed $path): string => trim((string) $path),
             $args['paths'] ?? [],
         )));
-        if ($area !== '') {
-            $paths[] = $area;
-        }
         $domains = Domains::detect($paths, $task . ' ' . (self::CHANGE_TYPE_TERMS[$changeType] ?? ''));
 
         // Several of the conventions below — the changelog, the Gerrit
@@ -249,22 +242,22 @@ final class TaskGuide extends ReadOnlyTool
         // the checks and the discovery steps are filtered where nothing in the
         // call is core work, and the notice names the paths they are not for
         // where something is (D-SCO-009).
-        $scopes = Scope::ofEach($paths, $subject, $area);
-        $groups = Scope::groups($paths, $scopes, $subject);
+        $scopes = Scope::ofEach($paths, $task);
+        $groups = Scope::groups($paths, $scopes, $task);
         $outside = Scope::pathsOf($scopes, Scope::Project, Scope::Extension);
         // One group is the ordinary call, and its scope is the call's. Where
         // the paths disagree there is no one answer, so the whole-call verdict
-        // falls back to what the task text and the area say on their own.
-        $scope = count($groups) === 1 ? $groups[0]['scope'] : Scope::of($area, $subject, $area);
+        // falls back to what the task text says on its own.
+        $scope = count($groups) === 1 ? $groups[0]['scope'] : Scope::of('', $task);
         $outsideCore = array_filter(
             $groups,
             static fn(array $group): bool => !$group['scope']->isOutsideTheCore(),
         ) === [];
 
         $intents = TaskIntents::scoped(
-            TaskIntents::detect($subject . ' ' . $changeType),
+            TaskIntents::detect($task . ' ' . $changeType),
             $scope,
-            Scope::isCoreWork($paths, $subject)
+            Scope::isCoreWork($paths, $task)
         );
         // A stated change type is the caller's own classification and the words
         // of the task do not overrule it: "review the patch that deprecates X"
@@ -318,7 +311,7 @@ final class TaskGuide extends ReadOnlyTool
             $held,
             array_flip(array_column($hints['matchedHints'], 'id')),
         ));
-        $testHints = array_slice(TestSuiteHints::find($subject, $domains, $target), 0, 4);
+        $testHints = array_slice(TestSuiteHints::find($task, $domains, $target), 0, 4);
 
         $lines = [];
         if ($outsideCore) {
@@ -337,7 +330,7 @@ final class TaskGuide extends ReadOnlyTool
         // before stating it — the changelog and the Gerrit route are steps a
         // caller in their own repository cannot take at all.
         if ($scope === Scope::Uncertain) {
-            $lines[] = Scope::UNCERTAIN_NOTICE . ' Name the area or the path, and this brief is composed '
+            $lines[] = Scope::UNCERTAIN_NOTICE . ' Name a path the work touches, and this brief is composed '
                 . 'for the repository it is in.';
             $lines[] = '';
         }
@@ -352,15 +345,14 @@ final class TaskGuide extends ReadOnlyTool
 
         $lines = array_merge($lines, [
             'Task: ' . $task,
-            'Area: ' . ($area === '' ? 'unknown' : $area),
             'Change type: ' . $changeType,
             'Domains: ' . implode(', ', $domains),
         ]);
-        // Named with what each was placed as, because the point of passing more
-        // than one is that the caller can tell which half of the brief is about
-        // which of its files. Silent where the area is the only one, which is
-        // the line above.
-        if (count($paths) > 1) {
+        // Named with what each was placed as, because the point of passing them
+        // is that the caller can tell which half of the brief is about which of
+        // its files. Also where there is one: the verdict on it is what every
+        // filtered list below was filtered by.
+        if ($paths !== []) {
             $lines[] = "Paths:\n" . implode("\n", array_map(
                 static fn(array $entry): string => '- ' . $entry['path']
                     . ($entry['scope'] === Scope::Core ? '' : ' (' . $entry['scope']->value . ')'),
@@ -613,7 +605,6 @@ final class TaskGuide extends ReadOnlyTool
 
         return ToolResult::create(implode("\n", $lines), [
             'task' => $task,
-            'area' => $area === '' ? null : $area,
             'paths' => $paths,
             'scopes' => array_map(static fn(array $entry): array => [
                 'path' => $entry['path'],

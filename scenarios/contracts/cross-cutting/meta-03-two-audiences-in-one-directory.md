@@ -6,7 +6,7 @@
 `ScopeTest::aBriefForPathsOfDifferentAudienceSaysWhichStepsAreForWhich`,
 `ScopeTest::aBriefForExtensionPathsAloneKeepsNoCoreStep`,
 `ScopeTest::aPathInsideAnExtensionIsRecognisedByItsShape`,
-`ScopeTest::anAreaTheInstallationKnowsAsSomebodysExtensionIsOutsideTheCore`,
+`ScopeTest::aPathTheInstallationKnowsAsSomebodysExtensionIsOutsideTheCore`,
 `ScopeTest::whereNothingPlacesTheWorkTheAnswerSaysSoRatherThanAssumingTheCore`
 
 > I am touching `packages/acme_events/Classes/Domain/Repository/EventRepository.php`

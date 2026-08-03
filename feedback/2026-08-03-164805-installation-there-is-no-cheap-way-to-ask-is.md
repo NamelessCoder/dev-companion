@@ -11,17 +11,33 @@ directory: /home/benji/projects/ext-guidedtour
 
 ## Observation
 
-Task: full conformance audit of the project extension EXT:guidedtour against a TYPO3 14.3.5 installation.
+Trimmed on 2026-08-03 to the part that is left. Two of the three instances are
+settled, and the field the proposal rests on has one value.
 
-There is no cheap way to ask "is this API still current in version N", and that question came up repeatedly. The changelog answers "what changed", which is a different question, and the base of the conformance skill states the asymmetry correctly: a pattern nothing has touched for ten majors has no entry at all, so an empty sweep is not an answer about what still works. It then routes that question to typo3_documentation_lookup — which, for the queries I ran, did not reach the relevant pages (filed separately). So the routing exists but terminates nowhere, and the fallback is reading installed source.
+The deprecated one is reached by its own name. `typo3_changelog_lookup` with
+`query: "InfoboxViewHelper STATE_ERROR"` returns `#107648` alone and says
+`removed in v15.0` — the identifier route landed with `D-ANS-042`, the removal
+with `D-ANS-020`. The sweep by `type`, `version` and `tag` is what missed it.
+The `@deprecated` docblock against a `#[\Deprecated]` attribute divides nothing
+here: the attribute occurs zero times in `typo3/sysext` on `.checkouts/12.4`,
+`13.4`, `14.3` and `main`, and zero times in the audited installation.
+`D-ANS-010` carries the readings.
 
-Concrete instances from this one audit:
+What is left is two things.
 
-- The code calls PageRenderer::addInlineLanguageLabelFile(). The v14 deprecation sweep returned addInlineLanguageDomain() (#108963), a neighbouring method with a similar name and a real deprecation. Establishing that the method actually used is *not* deprecated, and still populates TYPO3.lang, took two greps of PageRenderer.php (the method at :821, and :1304/:1355 where inlineLanguageLabelFiles is rendered into the page).
-- PathUtility::getSystemResourceUri() — current, but adjacent to a deprecated sibling; grep of PathUtility.php (filed separately as a hint gap).
-- InfoboxViewHelper::STATE_ERROR — turned out to be deprecated, but only a docblock `@deprecated`, not a PHP #[\Deprecated] attribute, which decides whether it raises E_USER_DEPRECATED at runtime today or merely breaks at v15. That distinction changes the severity of the finding and is not derivable from the changelog entry.
+- The severity the docblock does not state. `InfoboxViewHelper` carries no
+  `trigger_error` at all, so the deprecated constant raises nothing today and
+  breaks at v15. `deprecated-apis` states the marking as an `@deprecated`
+  annotation together with a `trigger_error(..., E_USER_DEPRECATED)` call, and
+  has no word for the docblock standing alone.
+- `PageRenderer::addInlineLanguageLabelFile()` is the shape the routing does not
+  reach. The manual matches page titles and section paths, never the text of a
+  page, so a PHP identifier has no page to be titled after — `inline language
+  labels`, `JavaScript labels backend` and `addInlineLanguageLabelFile` at
+  `targetVersion: "14"` return no page naming the method, while `Infobox
+  ViewHelper state` returns the reference page carrying the deprecation first.
 
-In each case the question is narrow and the answer is a fact about the installed packages: does this identifier exist in the installed version, is it marked deprecated, is the marking a docblock or an attribute, and what does the entry say about removal. That is a mechanical read of code this server already has on disk.
+PathUtility::getSystemResourceUri() was filed separately as a hint gap.
 
 ## Query
 
@@ -29,4 +45,7 @@ typo3_changelog_lookup {type: "deprecation", version: "14", tag: "ext:backend"} 
 
 ## Suggestion
 
-A lookup that takes a class, method, constant or property identifier and answers, from the installed packages: whether it exists in this version, its signature, whether it carries an @deprecated docblock or a #[\Deprecated] attribute (they differ in whether anything is raised at runtime today, which changes a finding's severity), the changelog entry if one exists, and the replacement the entry or docblock names. It closes the "does this still work here" loop the base opens and cannot currently finish, and it would have replaced five separate greps into vendor source in this audit alone. The distinction between a docblock and an attribute is the part no other source gives you.
+What is left of it: say what a deprecation carrying the docblock alone raises,
+and say before the manual is called that it has no page for a PHP identifier.
+The identifier lookup this asked for is declined in `D-ANS-010`, which measures
+what it would have bought.

@@ -169,3 +169,56 @@ silence the other way — an entry that exists and was not reached — and
 `skills/base.md` prescribes is what is not. This entry stands with a boundary
 beside it: the manual answers a silence that is genuine, and a silence produced
 by asking wrongly is not one. `D-SKL-003` carries that half.
+
+## Since then
+
+The first **Wrong if** fired on 2026-08-03, in half, and what decides the half
+is the corpus rather than the routing. `feedback/2026-08-03-164805` audited
+`EXT:guidedtour` against a 14.3.5 installation, followed the routing to
+`typo3_documentation_lookup`, and read `PageRenderer.php` by hand anyway.
+
+Re-run from `/home/benji/projects/ext-guidedtour` on 2026-08-03, the two shapes
+come apart. `Infobox ViewHelper state` at `targetVersion: "14"` returns the
+ViewHelper reference page first, carrying the answer whole — *Deprecated since
+version 14.0 … use the enum ContextualFeedbackSeverity instead*.
+`inline language labels`, `JavaScript labels backend` and
+`addInlineLanguageLabelFile` return the JavaScript chapter index, the label
+reference and TCA pages, and none of them names the method. The tool's own
+header says why: matched against page titles and section paths, never the text
+of a page. A PHP identifier has no page to be titled after.
+
+So the entry stands and its subject narrows. What the manual answers is a
+documented surface — a ViewHelper, a TCA type, a TypoScript setting. For a PHP
+identifier the routing terminates nowhere, and the step after it is the class,
+which `skills/base.md` names in `## When the lookups run out`.
+
+The capability this **Wrong if** reserves stays unbuilt, and this feedback is
+what measures it rather than what triggers it. Its proposal is an identifier
+lookup over the installed packages, and the field it calls the part no other
+source gives — an `@deprecated` docblock against a `#[\Deprecated]` attribute,
+which decides whether anything is raised today — has one value. The attribute
+occurs zero times in `typo3/sysext` on `.checkouts/12.4`, `13.4`, `14.3` and
+`main`, and zero times in the audited installation. What marks a core
+deprecation is the docblock with `trigger_error(..., E_USER_DEPRECATED)` at the
+trigger site: 163 calls in 75 files on 14.3.
+
+The rest of the proposal is answered by the tool that was already called.
+`typo3_changelog_lookup` with `query: "InfoboxViewHelper STATE_ERROR"` returns
+`#107648` alone and says `removed in v15.0`, which is `D-ANS-042` and
+`D-ANS-020` landing. The session swept by `type`, `version` and `tag` instead —
+the query shape `D-SKL-003` is about. `addInlineLanguageLabelFile` returns the
+7.5 Feature entry that introduced it and no deprecation.
+
+What is left is one class read per identifier. `D-ANS-003` declines a tool for
+that and `D-FBK-027` measures it: a fact the caller reads once from a checkout
+it already has open, against the four round trips that bought the Forge lookup.
+The feedback is **trimmed** and two todos carry the rest. Step 1a is the
+statement `deprecated-apis` does not make — `InfoboxViewHelper` carries no
+`trigger_error`, so a constant deprecated by docblock alone raises nothing and
+breaks at v15, which is the severity the session went to the source for. Step 4
+is the sentence telling a documented surface from a PHP identifier before the
+manual is called, on `skills/base.md` or on the conformance skill.
+
+What would trigger the reservation after all is a session that has both: the
+statement in reach and the identifier named in the changelog, and still no way
+to tell whether the thing exists in the version it runs on.

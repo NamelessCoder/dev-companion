@@ -18,7 +18,7 @@
     "hints": [
       "Every record change the backend makes goes through DataHandler. It evaluates the TCA of each field, checks the editor's permissions, keeps workspaces and localizations consistent and updates the reference index. A direct INSERT writes the row and none of that, so the record exists and nothing else about it is true.",
       "DataHandler acts as a backend user: pass one to start() or have one in $GLOBALS['BE_USER']. Permission checks, workspaces and the reference index all hang off it, which is what makes DataHandler the right way to seed and a direct INSERT the wrong one.",
-      "The rest of the subject is its own hint, because each is asked as its own question: datahandler-writing for the datamap, datahandler-relations for a relation field, datahandler-placement for where a record lands, datahandler-seeding for building content that exists nowhere yet, datahandler-testing for covering any of it. Reading records back is persistence-reading and works nothing like this."
+      "The rest of the subject is its own hint, because each is asked as its own question: datahandler-writing for the datamap, datahandler-relations for a relation field, datahandler-placement for which page may hold a record and where it lands on it, datahandler-seeding for building content that exists nowhere yet, datahandler-testing for covering any of it. Reading records back is persistence-reading and works nothing like this."
     ]
   },
   {
@@ -68,7 +68,7 @@
   },
   {
     "id": "datahandler-placement",
-    "title": "Where a New Record Lands, and in What Order",
+    "title": "Which Page May Hold a New Record, and Where It Lands on It",
     "domains": [
       "php"
     ],
@@ -84,9 +84,30 @@
       "reversed order",
       "reverse order",
       "wrong order",
-      "wrong position"
+      "wrong position",
+      "which page",
+      "which pid",
+      "storage folder",
+      "sysfolder",
+      "doktype",
+      "allowedRecordTypes",
+      "rootLevel",
+      "root level",
+      "table not allowed",
+      "record was not created"
     ],
     "hints": [
+      "Which page may hold the record is settled before it is positioned, and getting it wrong costs the record quietly: DataHandler refuses the insert, writes a log entry and carries on, so the run raises nothing and the row is not there. A standard page allows pages, sys_category, sys_file_reference, sys_file_collection and the tables whose TCA declares ctrl.security.ignorePageTypeRestriction — that is how tt_content gets there. A folder, doktype 254, allows every table, which is what makes a storage folder the place a table of your own goes rather than an editorial habit.",
+      "Being an admin does not get past that: the doktype is checked after the permission check an admin and bypassAccessCheckForRecords short-circuit, so a seeding script running as the CLI user meets it in full.",
+      "A pid of 0 is the other question, and the table's own TCA answers it: ctrl.rootLevel is 0 for a table that lives on pages, 1 for one that only exists at the root and -1 for either, and an insert at the root needs an admin or ctrl.security.ignoreRootLevelRestriction on top. pages is exempt and goes anywhere.",
+      {
+        "text": "Which tables a page type allows is declared in the pages TCA, as allowedRecordTypes on that page type; PageDoktypeRegistry reads it from there.",
+        "since": 14
+      },
+      {
+        "text": "Which tables a page type allows is declared in PageDoktypeRegistry itself, and an extension changes it with add() or addAllowedRecordTypes().",
+        "until": 13
+      },
       "A new record is placed at the TOP of its page: the pid field is the positioning pid, and a page uid there means \"first record on that page\". A datamap written in reading order therefore comes out reversed — pages in a menu, content elements in a column.",
       "To place records in order, use the negative form: a pid of -<uid> means \"directly after that record\". A \"NEW\" placeholder may be used there as well, as -NEW..., and resolves once the record it names has been created in the same run."
     ]

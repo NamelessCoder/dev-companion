@@ -1,7 +1,7 @@
 ---
 id: D-KNW-023
 date: 2026-08-02
-status: open
+status: confirmed
 ---
 
 # D-KNW-023 — Which page may hold a record is a gap this server owns
@@ -93,3 +93,34 @@ one this one guessed at.
   another route, and the statement then describes a check the session never met.
 - The three majors differ in more than where the allowed list is declared. The
   hint then gains a statement per major where the todo planned one with a range.
+
+## Covered by
+
+- `HintsTest::thePlacementAnswerSaysWhichPageMayHoldTheRecord`
+
+## Confirmed on 2026-08-03
+
+Both **Wrong if** were read and neither holds. The check is on the path a
+seeding datamap takes: `process_datamap()` calls `hasPermissionToInsert()` on
+`$theRealPid` — the pid after a negative positioning value has been resolved —
+on 13.4, 14.3 and `main`, and 12.4 calls `checkRecordInsertAccess()` in the same
+place. A refusal is a `log()` entry followed by `continue`, so the call returns
+without an error and the record is absent, which is the shape the feedback
+reported.
+
+The three majors also differ in nothing but where the allowed list is declared.
+A folder allows every table and a standard page allows `pages`, `sys_category`,
+`sys_file_reference`, `sys_file_collection` plus every table declaring
+`ctrl.security.ignorePageTypeRestriction` on 12.4, 13.4, 14.3 and `main` alike;
+`pid = 0` is decided by `ctrl.rootLevel` with admin or
+`ctrl.security.ignoreRootLevelRestriction` on top, on all four. Only the
+declaration site moved, so one statement carries `since: 14` for TCA
+`allowedRecordTypes` and one carries `until: 13` for `PageDoktypeRegistry`. On
+`main` the registry's `add()` and `addAllowedRecordTypes()` are gone, which is
+what that boundary predicted.
+
+What the entry assumed about where the statement lands no longer describes the
+corpus. `datahandler-persistence` was split by `D-KNW-030`, and the positioning
+pid now sits on `datahandler-placement` — which is where the statement went, the
+hint being widened from ordering to which page may hold the record at all
+(`R-KNW-058`).

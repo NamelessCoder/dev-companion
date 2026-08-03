@@ -1290,6 +1290,48 @@ final class HintsTest extends TestCase
         self::assertSame('datahandler-relations', array_column($reached['matchedHints'], 'id')[0] ?? '');
     }
 
+    /**
+     * Picking the pid is the first question and the corpus answered only the
+     * second one, so a session seeding a table of its own guessed at both the
+     * page and the storage folder's role — `R-KNW-058`. What the doktype allows
+     * is the same on every covered major; only where the list is declared moved,
+     * which is the one statement carrying a range.
+     */
+    #[Test]
+    public function thePlacementAnswerSaysWhichPageMayHoldTheRecord(): void
+    {
+        $statements = static fn(?int $major): string => implode("\n", array_column(
+            Hints::byId('datahandler-placement', $major)['hints'] ?? [],
+            'text',
+        ));
+        $text = $statements(null);
+
+        self::assertStringContainsString('doktype 254', $text, 'the folder that allows every table');
+        self::assertStringContainsString('ignorePageTypeRestriction', $text, 'how a table joins the four');
+        self::assertStringContainsString('ctrl.rootLevel', $text, 'what decides a pid of 0');
+        self::assertStringContainsString(
+            'writes a log entry and carries on',
+            $text,
+            'the refusal that raises nothing',
+        );
+        self::assertStringContainsString('admin does not get past', $text);
+
+        foreach (Versions::majors() as $major) {
+            self::assertStringContainsString('doktype 254', $statements($major));
+            self::assertStringContainsString(
+                'Which tables a page type allows is declared in',
+                $statements($major),
+                'every major says where the list is declared on it',
+            );
+        }
+
+        self::assertStringContainsString('allowedRecordTypes', $statements(14));
+        self::assertStringContainsString('PageDoktypeRegistry itself', $statements(13));
+
+        $reached = Hints::find([], 'which page may hold a record of my own table, storage folder or standard page', 6);
+        self::assertSame('datahandler-placement', array_column($reached['matchedHints'], 'id')[0] ?? '');
+    }
+
     #[Test]
     public function shippedContentIsAnsweredPastThePointWhereTheFileExists(): void
     {
@@ -2355,16 +2397,18 @@ final class HintsTest extends TestCase
             // A PSR number names an interface, an XLIFF number names a file
             // format, an HTTP number names a response status, and a TYPO3
             // exception code names one throw site for good — assigned once and
-            // never reused, so it says nothing about a branch. None of them
-            // dates the statement against a TYPO3 branch, which is the only
-            // thing this is looking for. Each is worth carrying because it is
-            // the symptom a caller arrives with — so each is written with its
-            // word in front, "HTTP 404" and "exception 1560876294" rather than
-            // bare, which is what makes them exemptible here without also
-            // exempting a count that happens to be three digits long.
+            // never reused, so it says nothing about a branch. A doktype value
+            // is the same: it is the number in the pages row and in the page
+            // tree, and 254 has been the folder for longer than any covered
+            // branch. None of them dates the statement against a TYPO3 branch,
+            // which is the only thing this is looking for. Each is worth
+            // carrying because it is the symptom a caller arrives with — so each
+            // is written with its word in front, "HTTP 404" and "doktype 254"
+            // rather than bare, which is what makes them exemptible here without
+            // also exempting a count that happens to be three digits long.
             $text = (string) preg_replace(
-                ['/\bPSR-\d+/i', '/\bXLIFF \d+\.\d+/i', '/\bHTTP \d{3}\b/i', '/\bexception \d{10}\b/i'],
-                ['PSR', 'XLIFF', 'HTTP', 'exception'],
+                ['/\bPSR-\d+/i', '/\bXLIFF \d+\.\d+/i', '/\bHTTP \d{3}\b/i', '/\bexception \d{10}\b/i', '/\bdoktype \d{1,3}\b/i'],
+                ['PSR', 'XLIFF', 'HTTP', 'exception', 'doktype'],
                 $hint['title'] . "\n" . implode("\n", array_column($hint['hints'], 'text'))
             );
 

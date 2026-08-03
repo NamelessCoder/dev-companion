@@ -259,3 +259,37 @@ exactly the moment the irreversible step is taken.
 `feedback/2026-08-02-144848` is trimmed to those four and stays open behind the
 card. `145230` keeps its own card, because it carries the Gerrit read direction
 as well, which this judgement did not look at.
+
+## Since then
+
+`feedback/2026-08-02-144800` is one of the three this entry cites for the
+creation order's first step, and judging it on 2026-08-03 says the shape it
+asked for arrived while half of what it asked for did not. The feedback wanted
+the assessment guidance on `typo3_task_guide` at `changeType=bugfix`. Re-run
+with its own arguments — `area=fluid`, `targetVersion=15.0` — the guide returns
+"Confirm the target TYPO3 core branch and issue context" and "Reproduce the bug
+first", and nothing about how a report that was closed is read.
+`bin/cli hints:probe` and `typo3_rule_lookup` reach nothing on the question
+either. So the answer went to `typo3-core-patch-development` rather than to the
+placement the feedback named, which is this entry working as decided.
+
+What the skill absorbed is one of that feedback's four readings: the
+maintainers' comments can be product judgement rather than an API fact. Two are
+in neither the skill nor anywhere else, and both are what actually turned the
+session's conclusion — that a closure reason records what the conversation did
+rather than what the report is worth, and that a named alternative closes an
+issue only if it does what the reported code did. The run behind them is
+recorded: the issue was closed "for lack of feedback" after sixteen months, and
+the alternative the maintainer offered drops width, height and cropping, which
+`.checkouts/main` confirms — `f:uri.resource` registers `resource`, `path`,
+`extensionName`, `absolute` and `useCacheBusting`, and `f:uri.image` registers
+`width`, `height` and `crop` beside them.
+
+The gap is wording rather than shape: the section exists and states its one
+reading as a disposition. `D-SKL-009` is what the repair is held to, since a
+disposition three runs read and none followed is what that entry was decided on,
+and the same skill has no recorded run to spend words against. The feedback is
+trimmed to the two readings and its card carries them at `normal`. Its
+neighbours in the cluster are judged on their own cards: `145128` kept the nine
+procedural steps and says so, and `144814` kept the maintainer statement that
+the checkout contradicts.

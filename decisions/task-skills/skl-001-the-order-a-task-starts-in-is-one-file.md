@@ -391,5 +391,6 @@ turned down: it reaches a caller that arrived through a skill and leaves the one
 that arrived without a skill where `feedback/2026-08-01-003356` was. What it
 cost instead was five entries in `knowledge/task-intents.json` and thirty lines
 in `src/`. Both cards that carried the question are closed and both feedback are
-archived. `feedback/2026-07-31-193005` asks the neighbouring question about a
-self-reported call log and keeps its own card.
+archived. `feedback/2026-07-31-193005` asked the neighbouring question about a
+self-reported call log, and it is archived too. Measuring that log needs a
+forward `REVIEW-02` on the model that filed it, and that run was declined.

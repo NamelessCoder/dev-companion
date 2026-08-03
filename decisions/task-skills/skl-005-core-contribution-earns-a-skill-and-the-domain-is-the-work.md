@@ -316,3 +316,66 @@ paragraphs, and the two cards still out — `145128` for the two lookups and
 second of those weighs the length against `D-SKL-010`'s third **Wrong if**,
 which is where a section that grows a sentence per feedback stops being an
 order.
+
+## Since then
+
+`feedback/2026-08-02-145230` is the read direction of the task the section
+before last judged from the write side, and judging it on 2026-08-03 answers
+most of it. Everything the session established by hand about the review server
+is one call now. `typo3_gerrit_lookup` with `issue: 105403`, re-run from
+`/home/benji/projects/typo3-cms`, prints the query `message:105403` and an empty
+answer, under the caveat that a private change is invisible to an anonymous
+read. Asked `issue: 110348` it returns change 95040 as `MERGED` on `main`. The
+endpoint, the `)]}'` prefix the response opens with, `message:<issue>` as the
+question, and that no user-agent games are needed are all inside the tool. `D-ANS-033` is
+where that was decided, and this feedback is one of the four sessions it counts.
+Its second suggestion is answered too: `typo3_commit_message_guide` was given
+that patch's message with a `Change-Id` trailer and returned it verbatim.
+
+What the re-run found still open is the routing, and it is a rung this cluster
+has not landed on before. The question the whole task opened with — has somebody
+already fixed this — was asked by no order that writes a patch. Read on
+2026-08-03, `typo3-core-patch-development` opened with "Establish the issue
+before you believe it" and told the reader to read the issue itself. It named
+neither `typo3_forge_lookup` nor `typo3_gerrit_lookup`, and `typo3_task_guide`,
+called with this task's own shape, named neither either — it returns "Confirm
+the target TYPO3 core branch and issue context". `typo3-core-patch-review` names
+both, and asks the second with the `Change-Id` off a commit that exists already,
+which is the other end of the tool. So the pair was reachable from the order
+that judges a patch and not from the one that writes it.
+
+The server itself is not silent. The `routing` block of
+`knowledge/server-scope.json` carries "Taking a Forge issue on, before believing
+what it describes" with both calls in order. `typo3_server_scope` is the entry
+point this feedback's session used. That is what makes this step 3 rather than
+step 1: the tool exists, the route exists, and the skill that owns the task
+shape did not fire it.
+
+The card that step was queued on was never needed. `feedback/2026-08-02-145128`
+was judged the same day, from the write side of the same task, and the step it
+wrote is this one: "Establish the issue before you believe it" now names
+`typo3_forge_lookup` with the issue number as step 3 and `typo3_gerrit_lookup`
+with the same number as step 4, the second **before any code is written** and
+under the sentence `D-ANS-033` holds it to — nothing public names the issue
+rather than nobody has fixed it. `R-SKL-016` and
+`SkillTest::theAssessmentBeforeAPatchReadsTheIssueAndTheReviewServer` hold it.
+Read from either end of the same task, the two judgements asked for one step,
+which is the evidence this decision was made on rather than a collision.
+
+The placement the feedback asked for is not taken, for the reason the section
+above gives. `typo3_project_scope` in a core checkout answers with the four
+`composer gerrit:setup` scripts and nothing about the review server, and the
+order belongs in the skill.
+
+One item is closed on the spot. The feedback reports that the `commit-msg` hook
+rejected its first message for the 72-character limit, and
+`knowledge/documents/typo3-gerrit-workflow.md` credited that hook with the
+`Change-Id` and the `Resolves:` check only. `checkForLineLength` was read again
+in `/home/benji/projects/typo3-cms/Build/git-hooks/commit-msg`, where it runs
+before `checkForResolves` and rejects any non-comment line over 72 characters,
+and the document now says so. Nothing was left to establish: the fact is the one
+the section above already recorded from `.checkouts/main`.
+
+The write half of this feedback is `144848`'s four items, carried at `high`
+already, so `145230` was trimmed to the routing gap, and the gap is closed by
+the step above. It is archived.

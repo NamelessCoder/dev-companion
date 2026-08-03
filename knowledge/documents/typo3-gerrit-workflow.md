@@ -22,9 +22,9 @@ composer gerrit:setup
 ```
 
 This enables the `commit-msg` hook (adds the `Change-Id`, rejects a commit
-message without a `Resolves:` line) and a `pre-commit` hook that runs local
-checks. The hook file itself lives in `Build/git-hooks/commit-msg` and can also
-be copied manually:
+message with a line longer than 72 characters, and rejects one without a
+`Resolves:` line) and a `pre-commit` hook that runs local checks. The hook file
+itself lives in `Build/git-hooks/commit-msg` and can also be copied manually:
 
 ```bash
 cp Build/git-hooks/commit-msg .git/hooks/commit-msg && chmod +x .git/hooks/commit-msg

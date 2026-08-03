@@ -1,6 +1,6 @@
 ---
 id: R-KNW-063
-status: open
+status: held
 restsOn: [D-KNW-052]
 ---
 
@@ -36,7 +36,12 @@ runs. Saying whether that file is still picked up, and whether its name is still
 right, cost three shell round trips and a read of `typo3fluid/fluid`'s
 `TemplatePaths::resolveFileInPaths()` in the installed vendor tree.
 
+Which root path is the later one is the half no changelog entry states, so the
+statement carries that too: the list is sorted by its integer key before it is
+walked, so the highest key wins rather than the last call — and the sort is
+skipped for the whole list as soon as one key in it is a string.
+
 ## Held by
 
-- Not guarded. Nothing yet asserts that a Fluid answer names the order the chain
-  is walked in.
+- `HintsTest::aTemplateAnswerStatesThatTheFileNameFallbackRunsOncePerRootPath`
+- `HintsTest::theFluidFileExtensionIsWithheldFromTheBranchesThatDoNotResolveIt`

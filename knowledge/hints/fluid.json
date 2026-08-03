@@ -14,7 +14,14 @@
       "namespace",
       "xmlns:",
       "Configuration/Fluid/Namespaces.php",
-      "viewhelper prefix"
+      "viewhelper prefix",
+      "templateRootPaths",
+      "layoutRootPaths",
+      "template root path",
+      "overload a template",
+      "which template file is rendered",
+      "fork of a core template",
+      "resolveFileInPaths"
     ],
     "hints": [
       {
@@ -23,6 +30,25 @@
       },
       {
         "text": "Template files carry the bare .html extension. The .fluid.html form is not resolved here.",
+        "until": 13
+      },
+      "Which of two files that both exist is the one rendered is decided per root path: TemplatePaths::resolveFileInPaths() walks the root paths backwards and tries the whole chain of candidate file names inside each one before moving to the next. So the later root path overloads the earlier one whatever file name extension either side carries, and the file name never decides between two root paths.",
+      "Later is the array and not the call. TYPO3\\CMS\\Fluid\\View\\TemplatePaths sorts every root path list by its integer key on the way in, through ArrayUtility::sortArrayWithIntegerKeys(), so the highest key wins: a path appended without a key of its own — from an event listener, say — takes max+1 and does win, while one given an explicitly lower key loses however late it was set. The sort is skipped for the whole list as soon as one key in it is a string, and then the array's own order decides after all.",
+      "A template, unlike a layout or a partial, is looked for under the controller directory across every root path first, and only then directly under the root paths. A root path holding List/Default.html therefore answers before a later one holding Default.html.",
+      {
+        "text": "Inside one root path the candidates are Foo.fluid.html, Foo.html, a bare Foo, and then those three again with the first character uppercased. So .fluid.html wins over .html in the same directory; the spelling that was asked for is tried before the uppercased one, which is why a template file no longer has to begin with a capital; and an extension's own Login.html still overloads the core's Login.fluid.html when its root path is the later one.",
+        "since": 14
+      },
+      {
+        "text": "The new extension may not be used by an extension that still supports an older TYPO3 major, where Fluid does not look for *.fluid.* at all. Such an extension ships .html, which a sitepackage on this major overloads with either name.",
+        "since": 14
+      },
+      {
+        "text": "A name that carries its own file extension leaves the chain. <f:render partial=\"Foo.html\" /> from a template in format json is looked for as Foo.html.fluid.json, Foo.html.json and then bare Foo.html, so it finds a Foo.html file and never a Foo.fluid.html one — that reference is written out in full.",
+        "since": 14
+      },
+      {
+        "text": "Inside one root path the candidates are Foo.html and then a bare Foo. There is no .fluid.html candidate and no uppercase fallback in the file names here: the action name is capitalised before the lookup, so the file is spelled the way the caller spells it.",
         "until": 13
       },
       "Only a few prefixes are available without declaring them; they are registered globally through the Configuration/Fluid/Namespaces.php of each package, so which ones depends on what is installed. typo3_fluid_namespace_list answers it for your installation.",

@@ -269,6 +269,96 @@ final class HintsTest extends TestCase
         self::assertStringContainsString('computes the URL itself through PathUtility', $guide->text);
     }
 
+    /**
+     * `R-KNW-063`. The audit this comes from had an extension's own
+     * `Resources/Private/Layouts/Login.html` beside the core's
+     * `Login.fluid.html` and could not say from the corpus which of the two
+     * renders. It settled that by reading the resolver out of an installed
+     * vendor tree — three shell round trips for the first half of the verdict.
+     *
+     * Read back the same way, because `typo3fluid/fluid` is in no checkout:
+     * `TemplatePaths::resolveFileInPaths()` in 5.3.1 under `.environments/`
+     * builds its candidates path by path over `array_reverse($paths)`, so the
+     * whole file-name chain runs inside one root path before the next is
+     * tried. Which root path is the later one is not in the changelog entry
+     * that announced the chain, and the two mechanisms could have disagreed:
+     * the core's own `TemplatePaths` sorts each list through
+     * `ArrayUtility::sortArrayWithIntegerKeys()` first, on 12.4, 13.4 and 14.3
+     * alike, and that sort is skipped for the whole list as soon as one key in
+     * it is a string.
+     */
+    #[Test]
+    public function aTemplateAnswerStatesThatTheFileNameFallbackRunsOncePerRootPath(): void
+    {
+        // The path the audit had in hand, and then the question in the words it
+        // would be asked in — which used to fall to the PHP domain before
+        // anything was scored, so no Fluid hint was ever a candidate.
+        $audited = Hints::find(
+            ['Resources/Private/Layouts/Login.html'],
+            'fork of the core backend login layout',
+            6,
+        );
+        self::assertSame('fluid-templates', $audited['matchedHints'][0]['id']);
+
+        foreach ([
+            'which template root path wins override order',
+            'templateRootPaths order override core template',
+            'does my extension Login.html still overload the core Login.fluid.html',
+        ] as $task) {
+            $ids = array_column(Hints::find([], $task, 6)['matchedHints'], 'id');
+            self::assertContains('fluid-templates', $ids, $task);
+        }
+
+        $text = self::statementsOf('fluid-templates');
+
+        // The order, which is what decides between two files that both exist.
+        self::assertStringContainsString('decided per root path', $text);
+        self::assertStringContainsString('walks the root paths backwards', $text);
+        self::assertStringContainsString('Foo.fluid.html, Foo.html, a bare Foo', $text);
+        self::assertStringContainsString('first character uppercased', $text);
+
+        // And which root path is the later one, which is the half no changelog
+        // entry states and the reading had to settle.
+        self::assertStringContainsString('sortArrayWithIntegerKeys', $text);
+        self::assertStringContainsString('takes max+1 and does win', $text);
+        self::assertStringContainsString('as soon as one key in it is a string', $text);
+
+        // The three consequences of the same mechanism an audit needs, and
+        // which the corpus had none of.
+        self::assertStringContainsString('may not be used by an extension that still supports an older TYPO3 major', $text);
+        self::assertStringContainsString('no longer has to begin with a capital', $text);
+        self::assertStringContainsString('carries its own file extension leaves the chain', $text);
+    }
+
+    /**
+     * The chain is the v14 half of that answer. Fluid 2.15.0 and 4.6.1, read in
+     * `.environments/`, try the format and then the bare name and nothing else,
+     * and the action name is capitalised before the lookup rather than after
+     * it. A caller on 13 told about `.fluid.html` would go looking for a file
+     * the resolver there never asks for.
+     */
+    #[Test]
+    public function theFluidFileExtensionIsWithheldFromTheBranchesThatDoNotResolveIt(): void
+    {
+        $on = static fn(int $major): string => implode(
+            "\n",
+            array_column((array) Hints::byId('fluid-templates', $major)['hints'], 'text'),
+        );
+
+        self::assertStringContainsString('Foo.fluid.html, Foo.html, a bare Foo', $on(14));
+
+        foreach ([12, 13] as $major) {
+            self::assertStringNotContainsString('Foo.fluid.html, Foo.html, a bare Foo', $on($major));
+            self::assertStringContainsString('Foo.html and then a bare Foo', $on($major));
+            self::assertStringContainsString('no uppercase fallback', $on($major));
+
+            // The root paths themselves are walked the same way on every major,
+            // so that half carries no version boundary at all.
+            self::assertStringContainsString('decided per root path', $on($major));
+            self::assertStringContainsString('sortArrayWithIntegerKeys', $on($major));
+        }
+    }
+
     #[Test]
     public function aTypoScriptPathReachesTheTypoScriptHintsAndNotTheCssOnes(): void
     {

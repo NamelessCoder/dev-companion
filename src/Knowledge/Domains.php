@@ -108,6 +108,11 @@ final class Domains
             // in this category was ever a candidate (`D-KNW-024`).
             'f:',
             'fluid', 'viewhelper', 'view helper', 'partial', 'pageview',
+            // The root paths a template is resolved out of, asked for in the
+            // two spellings they are written in. `partial` already carries
+            // partialRootPaths by prefix; the other two carry no Fluid signal
+            // at all, and a question about which of them wins fell to PHP.
+            'templaterootpaths', 'layoutrootpaths', 'template root path',
             'page template', 'frontend template', 'content area', 'page layout',
             'backend layout',
             'sitepackage', 'site package', 'content element',

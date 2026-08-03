@@ -20,8 +20,10 @@ use Symfony\Component\Finder\Finder;
  * and it grows with a Composer update rather than with a release of this
  * server.
  *
- * The scan reads file names, not files: the type, the issue number and the
- * title are all in the name, and only what a query matched is opened.
+ * The scan reads file names, not files: the type, the issue number and a
+ * spelling of the title are all in the name, and only what a query matched is
+ * opened. `titled()` is the exception and opens them all, for the search that
+ * the names answered nothing at all for — `D-ANS-041`.
  */
 final class Changelog
 {
@@ -104,6 +106,26 @@ final class Changelog
         }
 
         return $entries;
+    }
+
+    /**
+     * The same entries, each carrying the title its file states.
+     *
+     * A file name spells a title of its own and the two differ — `Deprecate
+     * LocalImageProcessor::getTemporaryImageWithText` against
+     * `LocalImageProcessorGraphicalFunctions`. This is a read per entry, which
+     * is why a search reaches for it only after the names — `D-ANS-041`.
+     *
+     * @param array<int, array{type: string, issue: string, version: string, key: string, source: string, file: string}> $entries
+     * @return array<int, array{type: string, issue: string, version: string, key: string, source: string, file: string, title: string}>
+     */
+    public static function titled(array $entries): array
+    {
+        return array_map(static function (array $entry): array {
+            $entry['title'] = self::read($entry)['title'];
+
+            return $entry;
+        }, $entries);
     }
 
     /**

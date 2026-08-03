@@ -17,10 +17,12 @@ with type and version.
 ## Takes
 
 ```yaml
-# Words the entry has to carry, matched against its title. When no entry carries
-# all of them, the answer names the largest part of the query that does reach
-# entries, which is what to ask again with. Omit to list a version or a type as
-# a whole.
+# Words the entry has to carry, matched against its file name and the words that
+# name spells, and against the title stated inside the file where no entry
+# carries all of them by name — which is what reaches a method name the file
+# name leaves out. When nothing carries all of them there either, the answer
+# names the largest part of the query that does reach entries, which is what to
+# ask again with. Omit to list a version or a type as a whole.
 query: string  # optional
 # One of: breaking, deprecation, feature, important. Restrict to one kind of
 # change. Breaking and deprecation are what affects existing code.

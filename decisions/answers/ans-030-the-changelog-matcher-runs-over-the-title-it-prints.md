@@ -108,3 +108,20 @@ method name.
 - A caller narrows by version, gets nothing, and reads the silence as the
   answer, exactly as this session did. Then the field the matcher reads was not
   what cost this feedback its call, and `D-ANS-016` carries the whole of it.
+
+## Since then
+
+The title half is in the code. `Changelog::titled()` reads the stated title into
+a field of the entry, `LabelSearch` matches it beside the file name and the
+words that name spells, and `query: "getTemporaryImageWithText"` now returns
+`7.1/Deprecation-46770-LocalImageProcessorGraphicalFunctions`. Where the read
+goes was the open half of this entry and is settled in
+[`D-ANS-041`](ans-041-the-changelog-title-is-read-where-the-file-names-carry-nothing.md):
+the names are scanned on every call and the titles are opened only where those
+names carry nothing, so a call that already answers costs what it did. The
+**Wrong if** about a spelling the caller does not type does not hold for the
+title: the match is containment, so
+`LocalImageProcessor::getTemporaryImageWithText` is reached by the bare method
+name. The ones about a query reaching another class and about the read showing
+up as latency are open, and `D-ANS-041` restates both against the read as it now
+stands. Nothing here was read about the body half.

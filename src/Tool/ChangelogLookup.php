@@ -55,7 +55,7 @@ final class ChangelogLookup extends ReadOnlyTool
         return [
             'type' => 'object',
             'properties' => [
-                'query' => ['type' => 'string', 'description' => 'Words the entry has to carry, matched against its title. When no entry carries all of them, the answer names the largest part of the query that does reach entries, which is what to ask again with. Omit to list a version or a type as a whole.'],
+                'query' => ['type' => 'string', 'description' => 'Words the entry has to carry, matched against its file name and the words that name spells, and against the title stated inside the file where no entry carries all of them by name — which is what reaches a method name the file name leaves out. When nothing carries all of them there either, the answer names the largest part of the query that does reach entries, which is what to ask again with. Omit to list a version or a type as a whole.'],
                 'type' => ['type' => 'string', 'enum' => ['breaking', 'deprecation', 'feature', 'important'], 'description' => 'Restrict to one kind of change. Breaking and deprecation are what affects existing code.'],
                 'version' => ['type' => 'string', 'description' => 'Restrict to a version, by prefix: "14" covers 14.0 through 14.3.x, "13.4" covers 13.4 and 13.4.x.'],
                 'tag' => ['type' => 'string', 'description' => 'Restrict to entries carrying this index tag: "ext:form" for the system extension a change is in, "FullyScanned" or "NotScanned" for what the Extension Scanner has a matcher for, "PHP-API", "TCA", "Backend", "Frontend" for the surface. This is what a sweep is bounded by where words are not: every entry of a version and type is read for its tags. The changelog says nothing about which third-party extension a change affects, so an extension key of your own matches no tag.'],
@@ -103,6 +103,17 @@ final class ChangelogLookup extends ReadOnlyTool
         $terms = LabelSearch::terms($query);
         $narrowed = Changelog::entries($type, $version);
         $matching = LabelSearch::carryingEvery($narrowed, $terms);
+
+        // Opening every file for the title inside it costs an order of
+        // magnitude more than scanning the names, so the title is what an empty
+        // answer falls back to rather than what the scan runs over: nothing is
+        // paid where the names answer, and where they answer nothing there is
+        // no answer to slow down — `D-ANS-041`. The counts a miss prints are
+        // taken over the same titled entries, so they say what was searched.
+        if ($matching === [] && $terms !== []) {
+            $narrowed = Changelog::titled($narrowed);
+            $matching = LabelSearch::carryingEvery($narrowed, $terms);
+        }
 
         // The tags are inside the file, so narrowing by one costs a read of
         // every entry that survived the type and the version — 23 ms for the
@@ -161,7 +172,10 @@ final class ChangelogLookup extends ReadOnlyTool
             // narrowing and nothing inside it, the filter is what emptied the
             // answer and that is the first sentence — `D-ANS-016`. The second
             // scan is the whole changelog and costs 48 ms for the 3795 entries
-            // of `/home/benji/projects/typo3-cms`, on a narrowed miss alone.
+            // of `/home/benji/projects/typo3-cms`, on a narrowed miss alone. It
+            // reads the names and not the titles, because what it establishes
+            // is which filter emptied the answer, and the whole-file read is
+            // what the caller pays once it asks again without that filter.
             $outside = [];
             if ($narrowing !== [] && $terms !== []) {
                 $inside = array_column($counts, 'matchCount', 'term');

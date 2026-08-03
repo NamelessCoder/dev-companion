@@ -75,24 +75,24 @@ final class LabelSearch
     }
 
     /**
-     * The labels that carry every term, in the trans-unit id or in the text.
+     * The items that carry every term, in any of the fields searched.
      *
      * No word boundary: a trans-unit id is `labels.save_document`, and an
      * underscore is a word character, so anchoring would drop exactly the ids a
      * caller searches by.
      *
-     * @param array<int, array<string, string>> $labels
+     * @param array<int, array<string, string>> $items
      * @param array<int, string> $terms
      * @return array<int, array<string, string>>
      */
-    public static function carryingEvery(array $labels, array $terms): array
+    public static function carryingEvery(array $items, array $terms): array
     {
         if ($terms === []) {
-            return array_values($labels);
+            return array_values($items);
         }
 
-        return array_values(array_filter($labels, static function (array $label) use ($terms): bool {
-            $haystack = mb_strtolower(($label['key'] ?? '') . ' ' . ($label['source'] ?? ''));
+        return array_values(array_filter($items, static function (array $item) use ($terms): bool {
+            $haystack = self::haystack($item);
             foreach ($terms as $term) {
                 if (!self::carries($haystack, $term)) {
                     return false;
@@ -101,6 +101,20 @@ final class LabelSearch
 
             return true;
         }));
+    }
+
+    /**
+     * The fields a search runs over, as one string.
+     *
+     * A label carries its trans-unit id and its source text. A changelog entry
+     * carries its file name and the words that name spells, and gains the title
+     * inside the file where the names alone reached nothing — `D-ANS-041`.
+     *
+     * @param array<string, string> $item
+     */
+    private static function haystack(array $item): string
+    {
+        return mb_strtolower(($item['key'] ?? '') . ' ' . ($item['source'] ?? '') . ' ' . ($item['title'] ?? ''));
     }
 
     /**
@@ -137,21 +151,21 @@ final class LabelSearch
     }
 
     /**
-     * How many of the labels each term reaches on its own.
+     * How many of the items each term reaches on its own.
      *
      * What a caller needs when the intersection is empty: the term that already
      * narrows enough is the one to ask with, and the term that reaches nothing
      * is the one that was misspelled or does not exist here.
      *
-     * @param array<int, array<string, string>> $labels
+     * @param array<int, array<string, string>> $items
      * @param array<int, string> $terms
      * @return array<int, array{term: string, matchCount: int}>
      */
-    public static function perTermCounts(array $labels, array $terms): array
+    public static function perTermCounts(array $items, array $terms): array
     {
         $counts = [];
         foreach ($terms as $term) {
-            $counts[] = ['term' => $term, 'matchCount' => count(self::carryingEvery($labels, [$term]))];
+            $counts[] = ['term' => $term, 'matchCount' => count(self::carryingEvery($items, [$term]))];
         }
 
         return $counts;
@@ -174,10 +188,7 @@ final class LabelSearch
     public static function largestReachingSubsets(array $items, array $terms): array
     {
         return Subsets::largestReaching(
-            array_map(
-                static fn(array $item): string => mb_strtolower(($item['key'] ?? '') . ' ' . ($item['source'] ?? '')),
-                array_values($items),
-            ),
+            array_map(self::haystack(...), array_values($items)),
             $terms,
             self::carries(...),
         );

@@ -146,11 +146,50 @@ final class ChangelogLookup extends ReadOnlyTool
 
         $versions = Changelog::versions();
         if ($entries === []) {
+            $narrowing = self::narrowing($type, $version);
+            $counts = LabelSearch::perTermCounts($narrowed, $terms);
+            $reached = array_values(array_filter(
+                $counts,
+                static fn(array $term): bool => $term['matchCount'] > 0,
+            ));
+            // Every count on this miss is taken inside the version and the
+            // type, and reads as a fact about the changelog: the reported miss
+            // said "preview reaches 1 entry" at `version: "15"` where all four
+            // words reach without it, and the session concluded the tool could
+            // not reach the entry at all. So where a word reaches outside the
+            // narrowing and nothing inside it, the filter is what emptied the
+            // answer and that is the first sentence — `D-ANS-016`. The second
+            // scan is the whole changelog and costs 48 ms for the 3795 entries
+            // of `/home/benji/projects/typo3-cms`, on a narrowed miss alone.
+            $outside = [];
+            if ($narrowing !== [] && $terms !== []) {
+                $inside = array_column($counts, 'matchCount', 'term');
+                $reaching = array_values(array_filter(
+                    LabelSearch::perTermCounts(Changelog::entries(), $terms),
+                    static fn(array $term): bool => $term['matchCount'] > 0,
+                ));
+                $emptied = array_filter(
+                    $reaching,
+                    static fn(array $term): bool => ($inside[$term['term']] ?? 0) === 0,
+                );
+                $outside = $emptied === [] ? [] : $reaching;
+            }
+
             $lines = [sprintf(
                 'No changelog entry in this installation %s%s.',
                 $terms === [] ? 'matched those filters' : 'carries all of ' . LabelSearch::quoted($terms),
                 $tag === '' ? '' : sprintf(' and the tag "%s"', $tag),
             )];
+            if ($outside !== []) {
+                $lines[] = sprintf(
+                    'Narrowed to %s — %s what emptied this, not the words: without %s, %s. Ask again without %s.',
+                    implode(' and ', $narrowing),
+                    count($narrowing) === 1 ? 'that filter is' : 'those filters are',
+                    count($narrowing) === 1 ? 'it' : 'them',
+                    self::reaches($outside),
+                    count($narrowing) === 1 ? 'it' : 'them',
+                );
+            }
             if ($tag !== '') {
                 $lines[] = $tags === []
                     ? 'Nothing narrowed by that version and type carries any tag at all.'
@@ -160,22 +199,21 @@ final class ChangelogLookup extends ReadOnlyTool
             // the words that do reach something together. Offered where no tag
             // was asked for, because the peel reads file names while a tag is
             // inside the file — a subset counted without the tag would promise
-            // entries the same call does not return.
+            // entries the same call does not return. On the narrowed set, for
+            // the same reason.
             $subsets = $tag === '' ? LabelSearch::largestReachingSubsets($narrowed, $terms) : [];
-            $reached = array_values(array_filter(
-                LabelSearch::perTermCounts($narrowed, $terms),
-                static fn(array $term): bool => $term['matchCount'] > 0,
-            ));
             if (count($terms) > 1 && $reached !== []) {
-                $lines[] = 'On its own, ' . implode(', ', array_map(
-                    static fn(array $term): string => sprintf('"%s" reaches %d entr(ies)', $term['term'], $term['matchCount']),
-                    $reached,
-                )) . ($subsets === [] ? ' — ask again with the one that narrows best.' : '.');
+                $lines[] = ($narrowing === [] ? 'On its own, ' : sprintf('Inside %s, on its own, ', implode(' and ', $narrowing)))
+                    . implode(', ', array_map(
+                        static fn(array $term): string => sprintf('"%s" reaches %d entr(ies)', $term['term'], $term['matchCount']),
+                        $reached,
+                    )) . ($subsets === [] && $outside === [] ? ' — ask again with the one that narrows best.' : '.');
             }
             if ($subsets !== []) {
                 $shown = array_slice($subsets, 0, 4);
                 $lines[] = sprintf(
-                    'No entry carries more than %d of the %d words: %s%s — ask again with the one that narrows best.',
+                    'No entry %scarries more than %d of the %d words: %s%s — ask again with the one that narrows best.',
+                    $narrowing === [] ? '' : 'inside ' . implode(' and ', $narrowing) . ' ',
                     count($subsets[0]['terms']),
                     count($terms),
                     implode(', ', array_map(static fn(array $subset): string => sprintf(
@@ -249,5 +287,42 @@ final class ChangelogLookup extends ReadOnlyTool
         }
 
         return ToolResult::create(implode("\n", $lines), $data);
+    }
+
+    /**
+     * The axes the call was narrowed on, as a miss names them back.
+     *
+     * The tag is not one of them: it is read inside the file rather than off
+     * the name, so the counts a miss prints never saw it, and the tags those
+     * entries do carry are what the answer offers there instead.
+     *
+     * @return array<int, string>
+     */
+    private static function narrowing(string $type, string $version): array
+    {
+        $narrowing = [];
+        if ($version !== '') {
+            $narrowing[] = sprintf('version "%s"', $version);
+        }
+        if ($type !== '') {
+            $narrowing[] = sprintf('type "%s"', $type);
+        }
+
+        return $narrowing;
+    }
+
+    /**
+     * What each word reaches on its own, as a sentence.
+     *
+     * @param array<int, array{term: string, matchCount: int}> $counts
+     */
+    private static function reaches(array $counts): string
+    {
+        return implode(', ', array_map(static fn(array $term): string => sprintf(
+            '"%s" reaches %d entr%s',
+            $term['term'],
+            $term['matchCount'],
+            $term['matchCount'] === 1 ? 'y' : 'ies',
+        ), $counts));
     }
 }

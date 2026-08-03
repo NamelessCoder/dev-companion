@@ -319,6 +319,76 @@ final class PackageSourcesTest extends TestCase
         );
     }
 
+    /**
+     * The miss the feedback of 2026-08-01 arrived through, and the sentence
+     * that cost it its call: `version: "15"` narrows the changelog to 28
+     * entries, "preview" is the one word of four that reaches anything inside
+     * them, and the reach line said so without saying where it was counted. The
+     * session read it as "the tool cannot reach that entry" and went to `grep`,
+     * where all four words reach without the version. So the filter is what the
+     * miss opens with, and the counts that stay are marked as taken inside it —
+     * `D-ANS-016`.
+     */
+    #[Test]
+    public function aMissNarrowedByAVersionOpensWithTheVersionThatEmptiedIt(): void
+    {
+        $root = $this->composerProject();
+        $this->changelogEntry($root, '15.0', 'Feature-1-PreviewOfAPageInTheBackend', 'Feature: #1 - Preview of a page in the backend', []);
+        $this->changelogEntry($root, '13.4', 'Feature-2-GifBuilderThumbnailPreview', 'Feature: #2 - GifBuilder thumbnail preview', []);
+        $this->changelogEntry($root, '13.0', 'Breaking-101955-RemovedPublicMethodsRelatedToImageGeneration', 'Breaking: #101955 - Removed public methods related to Image Generation', []);
+        Instance::discoverFrom($root);
+
+        $query = ['query' => 'GifBuilder placeholder preview thumbnail'];
+        $narrowed = Registry::call('typo3_changelog_lookup', $query + ['version' => '15']);
+
+        self::assertSame(0, $narrowed->data['matchCount']);
+        self::assertStringContainsString(
+            'Narrowed to version "15" — that filter is what emptied this, not the words: without it, '
+            . '"gifbuilder" reaches 1 entry, "preview" reaches 2 entries, "thumbnail" reaches 1 entry. '
+            . 'Ask again without it.',
+            $narrowed->text,
+        );
+        // The count that stays says where it was taken, and the call to action
+        // is dropping the version rather than asking again inside it.
+        self::assertStringContainsString('Inside version "15", on its own, "preview" reaches 1 entr(ies).', $narrowed->text);
+        self::assertStringNotContainsString('ask again with the one that narrows best', $narrowed->text);
+        self::assertLessThan(
+            strpos($narrowed->text, 'Inside version "15"'),
+            strpos($narrowed->text, 'Narrowed to version "15"'),
+        );
+
+        // The same query without the filter has no filter to name: nothing
+        // carries all four words there either, and the words are the whole of
+        // the reason.
+        $unnarrowed = Registry::call('typo3_changelog_lookup', $query);
+        self::assertStringNotContainsString('Narrowed to', $unnarrowed->text);
+        self::assertStringContainsString('On its own, "gifbuilder" reaches 1 entr(ies)', $unnarrowed->text);
+    }
+
+    /**
+     * A version that narrows nothing away is not what emptied the answer, and
+     * the miss that says it is sends the caller to drop a filter that costs it
+     * nothing. What the sentence turns on is a word reaching outside the
+     * narrowing and nothing inside it, not that a narrowing was asked for.
+     */
+    #[Test]
+    public function aFilterThatChangedNothingIsNotBlamedForTheMiss(): void
+    {
+        $root = $this->composerProject();
+        $this->changelogEntry($root, '14.0', 'Feature-1-SomethingAboutForms', 'Feature: #1 - Forms', []);
+        $this->changelogEntry($root, '14.0', 'Breaking-2-YamlLoader', 'Breaking: #2 - Yaml', []);
+        Instance::discoverFrom($root);
+
+        $result = Registry::call('typo3_changelog_lookup', ['query' => 'forms yaml', 'version' => '14']);
+
+        self::assertStringNotContainsString('Narrowed to', $result->text);
+        self::assertStringContainsString(
+            'Inside version "14", on its own, "forms" reaches 1 entr(ies), "yaml" reaches 1 entr(ies) '
+            . '— ask again with the one that narrows best.',
+            $result->text,
+        );
+    }
+
     #[Test]
     public function theChangelogIsNarrowedByTypeAndVersion(): void
     {

@@ -25,3 +25,4 @@ else, with no way to see that a Language Files hint existed (2026-07-29).
 - `LabelSearchTest::anEmptyResultNamesTheLargestPartOfTheQueryThatDoesReach`
 - `PackageSourcesTest::aMissNamesTheLargestPartOfTheQueryThatWouldHaveHit`
 - `PackageSourcesTest::whereNoTwoWordsMeetInOneEntryThePerWordReachIsWhatToAskWith`
+- `PackageSourcesTest::aMissNarrowedByAVersionOpensWithTheVersionThatEmptiedIt`

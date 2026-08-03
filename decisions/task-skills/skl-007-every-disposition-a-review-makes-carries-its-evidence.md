@@ -4,15 +4,14 @@ date: 2026-08-03
 status: open
 ---
 
-# D-SKL-007 — A review reports what it dropped and what the patch introduced
+# D-SKL-007 — Every disposition a review makes carries its evidence
 
-**The core patch review names the candidates it raised and let go together with
-the evidence that let them go, and every finding says whether this patch
-introduced it.**
+**A review disposes of a thing in three ways — it reports it, it drops it, or it
+declares it clean — and all three carry what backs them.**
 
-Both halves are about attribution. A dismissal nobody records reads like a
-surface nobody opened, and a finding that does not say who wrote the line sends
-the author to repair somebody else's work.
+Only the first of the three did. A dismissal nobody records reads like a surface
+nobody opened, and a surface reported as assessed with nothing under it is the
+cheapest sentence in a review to write.
 
 ## Evidence
 
@@ -37,8 +36,19 @@ the author to repair somebody else's work.
   is not about the subject: what makes a dismissal expensive is that its cost
   falls on the reader rather than on the review.
 
+- Every verification step in that pipeline's own guide ends in an emission
+  rather than in a judgement — "Output: quote the call chain with locations",
+  "Output: subsystem invariants checked, or none", "Output: production code, or
+  test code with the severity adjusted". A step that produces nothing was not
+  performed, and the shape of the instruction is what makes that readable.
+
 ## Decided
 
+- The three dispositions are named as three in the checklist's opening, and the
+  demand is stated once for all of them rather than per section.
+- A surface reported as assessed names what was read to assess it. Where the
+  reading did not happen the word is unassessed, which costs the same line and
+  says something a reader can act on.
 - The checklist gains **What a dropped candidate owes**: each candidate let go
   is named with the line that let it go, a candidate is dropped only against
   something that concretely disproves it, and one that can be neither
@@ -82,8 +92,12 @@ the author to repair somebody else's work.
 - The pre-existing obligation appears on findings that the diff plainly
   introduced, which would mean it is being read as a way to soften a report
   rather than as a question about the diff.
+- Surfaces start being reported as unassessed at a rate that says the word is
+  being used to avoid naming a reading rather than to report a missing one. The
+  demand would then have bought a cheaper evasion than the one it closed.
 
 ## Covered by
 
 - `SkillTest::aReviewReportsWhatItDroppedAndWhatDroppedIt`
 - `SkillTest::aFindingSaysWhetherThePatchIntroducedIt`
+- `SkillTest::aSurfaceReportedAsAssessedNamesWhatWasRead`

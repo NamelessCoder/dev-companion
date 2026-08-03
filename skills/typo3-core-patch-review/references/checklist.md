@@ -5,6 +5,14 @@ and each one is answered in the report — assessed, unassessed, or not applicab
 to this diff. A surface this patch does not touch costs one line; a surface
 nobody looked at reads as clean unless it is named.
 
+A review disposes of a thing in three ways: it reports it, it drops it, or it
+declares it clean. All three are claims about a reading the author has to take
+on trust, so all three carry what backs them — the file that was opened, the
+call site that was followed, the command that was run, the lookup that answered.
+Assessed with nothing under it is the cheapest sentence in a review to write and
+the one a reader has no way to check, so where the reading did not happen the
+word is unassessed.
+
 ## Review surfaces
 
 - **Public API.** What the diff removes, renames, or changes the signature of,
@@ -102,7 +110,8 @@ written down.
 - **Worth changing** — real and not blocking. Say so, and do not spend the
   reader's first paragraphs on it.
 - **Correct and checked** — kept short and kept in, because it is the only thing
-  that separates a surface that was read from one that was skipped.
+  that separates a surface that was read from one that was skipped. It names
+  what was read, for the same reason a finding names what it collides with.
 
 Rank by what stops the patch first and by consequence second. A cosmetic finding
 above a behavioural one costs the review its credibility for the rest of the

@@ -19,6 +19,7 @@ when it is added.
 - [`R-SKL-010`][R-SKL-010] — A skill's description names every side of what it owns · held
 - [`R-SKL-011`][R-SKL-011] — A review reports what it dropped and what dropped it · held
 - [`R-SKL-012`][R-SKL-012] — A finding is attributed to the change under review · held
+- [`R-SKL-013`][R-SKL-013] — A surface reported as assessed names what was read · held
 
 [R-SKL-001]: skl-001-a-backend-module-task-activates-its-own-guidance.md
 [R-SKL-002]: skl-002-a-testing-task-verifies-the-harness-before-relying-on-it.md
@@ -32,3 +33,4 @@ when it is added.
 [R-SKL-010]: skl-010-a-skills-description-names-every-side-of-what-it-owns.md
 [R-SKL-011]: skl-011-a-review-reports-what-it-dropped-and-what-dropped-it.md
 [R-SKL-012]: skl-012-a-finding-is-attributed-to-the-change-under-review.md
+[R-SKL-013]: skl-013-a-surface-reported-as-assessed-names-what-was-read.md

@@ -372,6 +372,30 @@ final class SkillTest extends TestCase
     }
 
     #[Test]
+    public function aSurfaceReportedAsAssessedNamesWhatWasRead(): void
+    {
+        // The third disposition was the one that certified itself. Reporting a
+        // finding and dropping a candidate both cost a reading somebody can
+        // check; assessed cost one word, and a surface somebody glanced at read
+        // exactly like one somebody worked through (`D-SKL-007`).
+        $checklist = (string) preg_replace('/\s+/', ' ', (string) file_get_contents(
+            Paths::root() . '/skills/typo3-core-patch-review/references/checklist.md',
+        ));
+
+        self::assertStringContainsString('A review disposes of a thing in three ways', $checklist);
+        self::assertStringContainsString('all three carry what backs them', $checklist);
+        // Unassessed is the cheaper honest answer and costs the same line, which
+        // is what keeps the demand from being answered with a fabricated one.
+        self::assertStringContainsString('where the reading did not happen the word is unassessed', $checklist);
+        // The clean verdict in the rubric is held to the same bar as a finding,
+        // and says so where a reader ranking one would look.
+        self::assertStringContainsString(
+            'It names what was read, for the same reason a finding names what it collides with',
+            $checklist,
+        );
+    }
+
+    #[Test]
     public function aFindingSaysWhetherThePatchIntroducedIt(): void
     {
         // A finding about a line the diff only moved past sends the author to

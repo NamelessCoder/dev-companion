@@ -104,3 +104,30 @@ second instance of the same property.
 - A third instance of `R-GUI-006` arrives from a task shape neither of these two
   covers. The property is then wider than a review, and the shape belongs to a
   task that changes nothing rather than to an audit.
+
+## Since then
+
+`D-GUI-006` filled `R-GUI-006` on 2026-08-03 with the `audit` change type and an
+intent of the same name, and the feedback's own call was re-run against it the
+same day. Two things came back.
+
+The second **Wrong if** had happened. The review shape arrives — the patch
+checklist is gone and the audit intent's three items are there — and it names no
+removal, because the shape says how a finding is reported and not what to look
+for. So the surface this entry decided is stated is now stated: the `audit`
+intent carries the enumeration, and below it the matcher entry, the changelog
+file, the `[!!!]` prefix and the two `.rst` checks, which `Scope::isCoreOnly`
+drops outside the core. `R-GUI-010` is what holds it there, and the rule it
+states is the core's own from `D-ANS-035` rather than the feedback's: `@internal`
+does not waive the marker, it does not decide whether the removal is breaking at
+all.
+
+The feedback's own call does not reach any of it. It states `changeType`
+cleanup, and a stated type overrules the words of the task by `D-GUI-006`, so
+the `audit` intent is filtered out and what comes back is the full patch
+checklist with the Gerrit steps — the answer this feedback reported, unchanged.
+That is `D-GUI-006`'s **Assumed** meeting a counter-instance: the caller was
+reviewing and classified the patch under review rather than their own work.
+Whether a review that names a change type should be answered as one is a
+question about what is wanted rather than about this code, and the card that
+served this feedback carries it.

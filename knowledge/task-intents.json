@@ -209,6 +209,9 @@
     ],
     "rulesQuery": "",
     "checklist": [
+      "Where the review is of a change, enumerate what it removes or renames before judging it: the public classes, methods and properties it takes away, and the signature of anything that stays. A task text names what a change is about and never what it takes away, so this is the one surface no other item here can state for you.",
+      "Hold each removal in a core patch to what it owes, in the diff rather than in the summary: a matcher entry below typo3/sysext/install/Configuration/ExtensionScanner/Php/ keyed by the removed symbol, a Breaking or Deprecation changelog file its restFiles names, and the [!!!] prefix where the change is breaking. @internal on the member does not settle whether it is — whether anything outside the core calls it does, and the core has removed @internal members both ways.",
+      "Run CI=true ./Build/Scripts/runTests.sh -s checkRst and CI=true ./Build/Scripts/runTests.sh -s checkExtensionScannerRst over a core diff that removes something. The second holds a matcher to the changelog file it names and nothing holds a changelog to the matcher it lacks, so a missing matcher is found by reading the removals against the matcher files.",
       "A finding names the location, what the code there does, and the rule or documentation it contradicts. Short of those three it is a question rather than a violation, and reporting it as one costs the maintainer exactly the reading the review skipped.",
       "Run the checks this repository declares rather than recommending them, and read a green result as what its commands cover: an entry no command covers is a gap in the check layer, which is a finding of its own.",
       "Hand each finding over with its consequence and what would remediate it, and route the work to whoever does it. A review changes nothing itself, so the report is what it produces."

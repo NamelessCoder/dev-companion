@@ -2385,6 +2385,57 @@ final class HintsTest extends TestCase
         self::assertContains('Keep the patch focused on the stated task.', $authoring->data['checklist']);
     }
 
+    /**
+     * A review brief names what the change removes, whatever the task says.
+     *
+     * R-GUI-010, and the call is `feedback/2026-08-01-115711`'s own: a core
+     * patch review that under-stated the removal of an `@internal`
+     * `GifBuilder` method until the user pushed back. `D-GUI-004` read why
+     * nothing could have named it — the `breaking` intent matches on words a
+     * review's task text does not have, because what a diff takes away is what
+     * the review is about to find out — so the surface is stated rather than
+     * matched.
+     */
+    #[Test]
+    public function aReviewBriefNamesWhatTheChangeRemoves(): void
+    {
+        $review = Registry::call('typo3_task_guide', [
+            'task' => 'review the core patch replacing GD-based error thumbnails with a static SVG placeholder',
+        ]);
+
+        self::assertContains('audit', array_column($review->data['intents'], 'id'));
+        self::assertNotContains('breaking', array_column($review->data['intents'], 'id'));
+
+        $checklist = implode("\n", $review->data['checklist']);
+        self::assertStringContainsString('enumerate what it removes or renames', $checklist);
+        foreach ([
+            'typo3/sysext/install/Configuration/ExtensionScanner/Php/',
+            'Breaking or Deprecation changelog file',
+            '[!!!]',
+            'CI=true ./Build/Scripts/runTests.sh -s checkExtensionScannerRst',
+        ] as $owed) {
+            self::assertStringContainsString($owed, $checklist);
+        }
+
+        // The rule the surface states is the core's own, read in
+        // `.checkouts/main` for `D-ANS-035`, and not the feedback's: the marker
+        // is not waived by `@internal`, because `@internal` does not decide
+        // whether the removal is breaking at all.
+        self::assertStringContainsString('whether anything outside the core calls it', $checklist);
+
+        // Outside the core the enumeration is still owed and the core's own
+        // obligations are not: a sitepackage has no changelog and no scanner.
+        $extension = Registry::call('typo3_task_guide', [
+            'task' => 'Is this sitepackage written the way TYPO3 14 expects',
+            'changeType' => 'audit',
+        ]);
+
+        $outside = implode("\n", $extension->data['checklist']);
+        self::assertStringContainsString('enumerate what it removes or renames', $outside);
+        self::assertStringNotContainsString('ExtensionScanner', $outside);
+        self::assertStringNotContainsString('runTests.sh', $outside);
+    }
+
     #[Test]
     public function aWordThatOnlyNamesTheSubjectMatchesConditionally(): void
     {

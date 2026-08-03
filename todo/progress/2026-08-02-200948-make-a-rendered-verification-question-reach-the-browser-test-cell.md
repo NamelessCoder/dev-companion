@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-01-003533-typo3-extension-testing-skill-was-never.md
 **Priority:** low
+**Branch:** todo/make-a-rendered-verification-question-reach-the-browser-test-cell
+**Claimed:** 2026-08-03
 
 Judged as
 [`D-KNW-017`](../../decisions/knowledge/knw-017-a-verification-question-is-routed-to-the-layer-that-verifies.md),

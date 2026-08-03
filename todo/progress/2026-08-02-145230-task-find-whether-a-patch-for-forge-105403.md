@@ -1,7 +1,9 @@
-# Task: assess Forge #105403. Recording how Forge has to be operated, because I established all of ...
+# Task: find whether a patch for Forge #105403 already existed, then push mine. Recording how Gerri...
 
-**Serves:** feedback/2026-08-02-145217-task-assess-forge-105403-recording-how-forge.md
+**Serves:** feedback/2026-08-02-145230-task-find-whether-a-patch-for-forge-105403.md
 **Priority:** low
+**Branch:** todo/task-find-whether-a-patch-for-forge-105403
+**Claimed:** 2026-08-03
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

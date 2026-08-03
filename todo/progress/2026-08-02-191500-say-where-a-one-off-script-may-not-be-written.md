@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-01-003938-attempted-to-write-a-php-reflection-script-into.md
 **Priority:** low
+**Branch:** todo/say-where-a-one-off-script-may-not-be-written
+**Claimed:** 2026-08-03
 
 Step 2 of the ladder, on the evidence in
 [`D-KNW-026`](../../decisions/knowledge/knw-026-where-a-one-off-script-may-not-be-written-is-a-gap-this-server-owns.md):

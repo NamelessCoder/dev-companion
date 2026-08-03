@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-01-003313-violated-the-language-file-rules-by-writing.md, R-ANS-015
 **Priority:** low
+**Branch:** todo/carry-the-source-language-rule-to-a-task-that-never
+**Claimed:** 2026-08-03
 
 Step 2 of the ladder, on the two probes in
 [`D-ANS-024`](../../decisions/answers/ans-024-a-rule-reaches-only-the-task-that-already-names-its-subject.md):

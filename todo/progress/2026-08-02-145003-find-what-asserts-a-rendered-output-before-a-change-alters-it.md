@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-02-145003-task-fix-forge-105403-by-changing-the-shape-of.md
 **Priority:** normal
+**Branch:** todo/find-what-asserts-a-rendered-output-before-a-change-alters-it
+**Claimed:** 2026-08-03
 
 Step 1a of the ladder, on the evidence in
 [`D-KNW-040`](../../decisions/knowledge/knw-040-what-asserts-a-rendered-output-is-a-gap-this-server-owns.md):

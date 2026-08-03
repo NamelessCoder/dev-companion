@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-02-144950-task-fix-forge-105403-in-a-git-worktree-of-a.md, R-KNW-052
 **Priority:** normal
+**Branch:** todo/task-fix-forge-105403-in-a-git-worktree-of-a
+**Claimed:** 2026-08-03
 
 Judged as step 1a on 2026-08-03 — `D-KNW-041` carries the reading, so only the
 run is left. Make a git worktree of `.checkouts/typo3.git` outside `.checkouts/`,

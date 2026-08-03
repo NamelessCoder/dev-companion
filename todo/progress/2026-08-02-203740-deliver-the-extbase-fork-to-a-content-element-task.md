@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-01-003925-extbase-was-never-considered-as-an.md, R-ANS-016
 **Priority:** low
+**Branch:** todo/deliver-the-extbase-fork-to-a-content-element-task
+**Claimed:** 2026-08-03
 
 Ladder step 2, delivery: the fork is written on the `extbase` and the
 `frontend-records` hint, and every path to it opens on a word the caller has not

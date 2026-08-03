@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-02-144814-task-assess-forge-105403-and-fix-it-a-core.md
 **Priority:** normal
+**Branch:** todo/task-assess-forge-105403-and-fix-it-a-core
+**Claimed:** 2026-08-03
 
 Judged on 2026-08-03 and trimmed to the half that is left. Steps 1a and 4
 together, on the evidence in

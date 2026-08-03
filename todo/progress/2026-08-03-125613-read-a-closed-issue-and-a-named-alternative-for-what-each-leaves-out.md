@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-02-144800-task-assess-forge-105403-and-fix-it-the-user.md
 **Priority:** normal
+**Branch:** todo/read-a-closed-issue-and-a-named-alternative-for-what-each-leaves-out
+**Claimed:** 2026-08-03
 
 Add the two readings to "Establish the issue before you believe it" in
 `skills/typo3-core-patch-development/SKILL.md`, each as an act with an object

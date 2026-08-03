@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-01-003929-functional-test-database-sprawl-and-loss-of.md
 **Priority:** low
+**Branch:** todo/say-what-becomes-of-a-per-class-test-database-after-the-run
+**Claimed:** 2026-08-03
 
 Step 1a of the ladder, on the evidence in
 [`D-KNW-022`](../../decisions/knowledge/knw-022-the-corpus-states-how-long-a-per-class-test-database-lives.md):

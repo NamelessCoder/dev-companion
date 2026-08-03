@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-02-144511-find-existing-patches-then-write-a-fix-three-of.md, feedback/2026-08-02-145217-task-assess-forge-105403-recording-how-forge.md
 **Priority:** normal
+**Branch:** todo/search-the-issue-tracker-by-words-and-not-only-by-number
+**Claimed:** 2026-08-03
 
 Judged as
 [`D-ANS-038`](../../decisions/answers/ans-038-the-tracker-is-searched-by-words-as-well-as-read-by-number.md),

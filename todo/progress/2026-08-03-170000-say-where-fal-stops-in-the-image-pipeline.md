@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-02-144902-task-fix-forge-105403-in-the-fluid-image.md
 **Priority:** normal
+**Branch:** todo/say-where-fal-stops-in-the-image-pipeline
+**Claimed:** 2026-08-03
 
 Step 1a of the ladder, on the evidence in
 [`D-KNW-042`](../../decisions/knowledge/knw-042-what-the-image-pipeline-does-below-the-task-layer-is-a-gap-this-server-owns.md):

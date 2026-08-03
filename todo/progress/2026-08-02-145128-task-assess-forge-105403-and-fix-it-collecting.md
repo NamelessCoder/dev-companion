@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-02-145128-task-assess-forge-105403-and-fix-it-collecting.md
 **Priority:** normal
+**Branch:** todo/task-assess-forge-105403-and-fix-it-collecting
+**Claimed:** 2026-08-03
 
 Judged on 2026-08-03 as `D-SKL-010`: delivery, and the venue is the skill rather
 than `typo3_task_guide`. Write the assessment step of

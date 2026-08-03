@@ -10,9 +10,9 @@ use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Typo3CmsMcp\Installation\Instance;
 use Typo3CmsMcp\Installation\Typo3Cli;
-use Typo3CmsMcp\Knowledge\ArchitectureHints;
 use Typo3CmsMcp\Knowledge\Coverage;
 use Typo3CmsMcp\Knowledge\Documents;
+use Typo3CmsMcp\Knowledge\Hints;
 use Typo3CmsMcp\Knowledge\Scope;
 use Typo3CmsMcp\Paths;
 use Typo3CmsMcp\Result\ToolResult;
@@ -289,7 +289,7 @@ final class ScopeTest extends TestCase
 
         // The conventions transfer to both, the commands to one: a hint
         // returned for the extension path carries no core check.
-        $hints = Registry::call('typo3_architecture_lookup', [
+        $hints = Registry::call('typo3_hint_lookup', [
             'task' => 'fix the query that reads the events',
             'paths' => [$extension, $core],
         ]);
@@ -700,7 +700,7 @@ final class ScopeTest extends TestCase
         // The neighbouring subject is not declined with it: a set is a
         // convention, and the boundary runs between the mechanism and the
         // values one installation puts in it.
-        self::assertNotNull(ArchitectureHints::byId('site-sets'));
+        self::assertNotNull(Hints::byId('site-sets'));
         self::assertStringContainsString(
             'site set',
             mb_strtolower(implode("\n", array_column($scope['covers'], 'topic'))),
@@ -716,9 +716,9 @@ final class ScopeTest extends TestCase
         // and the two ask for opposite reactions.
         $excluded = mb_strtolower(implode("\n", array_column(Coverage::read()['doesNotCover'], 'topic')));
 
-        self::assertNotNull(ArchitectureHints::byId('sitepackage-layout'));
+        self::assertNotNull(Hints::byId('sitepackage-layout'));
         self::assertStringNotContainsString('extension development', $excluded);
-        self::assertNotNull(ArchitectureHints::byId('installation-upgrade'));
+        self::assertNotNull(Hints::byId('installation-upgrade'));
         self::assertStringNotContainsString('upgrading an installation', $excluded);
 
         // And the list says what it is worth read from the other side.
@@ -895,7 +895,7 @@ final class ScopeTest extends TestCase
 
         $surfaces['readme.md'] = (string) file_get_contents(Paths::root() . '/readme.md');
 
-        foreach (ArchitectureHints::load() as $hint) {
+        foreach (Hints::load() as $hint) {
             $surfaces['the ' . $hint['id'] . ' hint'] = $hint['title'] . ' '
                 . implode(' ', array_column($hint['hints'], 'text'));
         }
@@ -1049,19 +1049,19 @@ final class ScopeTest extends TestCase
 
         // And the id it hands over is one the corpus has, which is the half a
         // sentence in this file cannot state for itself.
-        self::assertNotNull(ArchitectureHints::byId('extension-static-analysis'));
+        self::assertNotNull(Hints::byId('extension-static-analysis'));
     }
 
     #[Test]
     public function aRuleQueryIsPointedAtTheHintCorpusItBelongsIn(): void
     {
         // Which of the two corpora holds a subject is this server's business:
-        // site sets are an architecture hint, the Gerrit workflow is prose, and
+        // site sets are an hint, the Gerrit workflow is prose, and
         // the question is phrased the same way either way.
         $result = Registry::call('typo3_rule_lookup', ['query' => 'site set settings definitions']);
 
         self::assertContains('site-sets', array_column($result->data['alsoInHints'], 'id'));
-        self::assertStringContainsString('typo3_architecture_lookup', $result->text);
+        self::assertStringContainsString('typo3_hint_lookup', $result->text);
     }
 
     /**
@@ -1173,10 +1173,10 @@ final class ScopeTest extends TestCase
     }
 
     #[Test]
-    public function anArchitectureHintKeepsItsAdviceOutsideTheCoreAndLosesItsCoreChecks(): void
+    public function aHintKeepsItsAdviceOutsideTheCoreAndLosesItsCoreChecks(): void
     {
         // The conventions transfer — the commands do not.
-        $result = Registry::call('typo3_architecture_lookup', [
+        $result = Registry::call('typo3_hint_lookup', [
             'task' => 'add a console command to my site package',
             'paths' => ['packages/my_sitepackage/Classes/Command/SeedCommand.php'],
         ]);
@@ -1201,20 +1201,20 @@ final class ScopeTest extends TestCase
     #[Test]
     public function aCoreContributorOnFrontendRenderingLosesTheTwoBackendUiSections(): void
     {
-        $result = Registry::call('typo3_architecture_lookup', [
+        $result = Registry::call('typo3_hint_lookup', [
             'task' => 'Core contribution to the frontend rendering of fluid_styled_content: the CSS and the '
                 . 'TypeScript conventions for its stylesheet and its JavaScript module',
             'paths' => ['typo3/sysext/fluid_styled_content/Resources/Public/Css/ContentElements.css'],
         ]);
 
         self::assertSame(
-            [ArchitectureHints::CATEGORY_TYPESCRIPT, ArchitectureHints::CATEGORY_CSS],
+            [Hints::CATEGORY_TYPESCRIPT, Hints::CATEGORY_CSS],
             $result->data['withheldCategories'],
         );
         foreach ($result->data['hints'] as $hint) {
             self::assertNotContains(
                 $hint['category'],
-                [ArchitectureHints::CATEGORY_CSS, ArchitectureHints::CATEGORY_TYPESCRIPT],
+                [Hints::CATEGORY_CSS, Hints::CATEGORY_TYPESCRIPT],
                 $hint['id'] . ' reached a backend UI section on a frontend task',
             );
         }
@@ -1234,7 +1234,7 @@ final class ScopeTest extends TestCase
             . 'conventions for its stylesheet and its JavaScript module';
         // The clause, not the words: "backend" is in the sentence saying what
         // was withheld and why, so a bare substring passes on the apology.
-        $withheld = Registry::call('typo3_architecture_lookup', ['task' => $task]);
+        $withheld = Registry::call('typo3_hint_lookup', ['task' => $task]);
         self::assertStringContainsString('Name the backend in the task', $withheld->text);
         self::assertStringContainsString('or the styleguide', $withheld->text);
 
@@ -1242,7 +1242,7 @@ final class ScopeTest extends TestCase
             'backend' => $task . ', and the backend module that configures it',
             'styleguide' => $task . ', and the styleguide demo for the component',
         ] as $escape => $escaped) {
-            $result = Registry::call('typo3_architecture_lookup', ['task' => $escaped]);
+            $result = Registry::call('typo3_hint_lookup', ['task' => $escaped]);
 
             self::assertSame([], $result->data['withheldCategories'], $escape . ' withheld a section anyway');
             // Either of the two the notice named, because which one ranks into
@@ -1251,7 +1251,7 @@ final class ScopeTest extends TestCase
             self::assertNotSame(
                 [],
                 array_intersect(
-                    [ArchitectureHints::CATEGORY_CSS, ArchitectureHints::CATEGORY_TYPESCRIPT],
+                    [Hints::CATEGORY_CSS, Hints::CATEGORY_TYPESCRIPT],
                     array_column($result->data['hints'], 'category'),
                 ),
                 $escape . ' brought nothing back',

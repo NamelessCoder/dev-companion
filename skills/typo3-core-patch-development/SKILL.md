@@ -42,8 +42,8 @@ whether it is right.
 
 ## Make the change
 
-Ask `typo3_architecture_lookup` with the concrete paths for the conventions of
-each subsystem you touch, before writing rather than after. A convention fetched
+Ask `typo3_hint_lookup` with the concrete paths for the conventions of each
+subsystem you touch, before writing rather than after. A convention fetched
 afterwards confirms what you already wrote.
 
 Keep the patch one change. What else you noticed is another issue and another

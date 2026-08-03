@@ -32,7 +32,7 @@ final class Registry
         ScriptLookup::class,
         TaskGuide::class,
         TestRunGuide::class,
-        ArchitectureLookup::class,
+        HintLookup::class,
         DocumentationLookup::class,
         ForgeLookup::class,
         GerritLookup::class,

@@ -97,9 +97,9 @@ final class ToolCalls
                 'query' => 'what do I have to run',
                 'paths' => ['Build/Sources/Sass/component/_card.scss'],
             ]],
-            'architecture: path' => ['typo3_architecture_lookup', ['paths' => ['typo3/sysext/core/Classes/DataHandling/DataHandler.php']]],
-            'architecture: topic' => ['typo3_architecture_lookup', ['task' => 'sass build']],
-            'architecture: miss' => ['typo3_architecture_lookup', ['task' => 'quantumflux']],
+            'hints: path' => ['typo3_hint_lookup', ['paths' => ['typo3/sysext/core/Classes/DataHandling/DataHandler.php']]],
+            'hints: topic' => ['typo3_hint_lookup', ['task' => 'sass build']],
+            'hints: miss' => ['typo3_hint_lookup', ['task' => 'quantumflux']],
             // The second call is the first one's answer handed back: that is
             // the two-step the tool documents, and a URL invented here would
             // illustrate a flow no caller has.

@@ -9,7 +9,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Typo3CmsMcp\Installation\Instance;
-use Typo3CmsMcp\Knowledge\ArchitectureHints;
+use Typo3CmsMcp\Knowledge\Hints;
 use Typo3CmsMcp\Knowledge\Scope;
 use Typo3CmsMcp\Knowledge\TaskIntents;
 use Typo3CmsMcp\Knowledge\Versions;
@@ -152,10 +152,10 @@ final class VersionsTest extends TestCase
         // The whole hint is bound: every statement of it arrived in 14, so on
         // 13 there is nothing left of it and it is dropped rather than returned
         // empty. That is the same rule one statement further.
-        self::assertNull(ArchitectureHints::byId('translation-domain', 13));
+        self::assertNull(Hints::byId('translation-domain', 13));
 
         $onFourteen = implode("\n", array_column(
-            ArchitectureHints::byId('translation-domain', 14)['hints'],
+            Hints::byId('translation-domain', 14)['hints'],
             'text',
         ));
         self::assertStringContainsString('translation domain', $onFourteen);
@@ -164,7 +164,7 @@ final class VersionsTest extends TestCase
     #[Test]
     public function withoutATargetTheStatementComesBackWithItsRange(): void
     {
-        $result = Registry::call('typo3_architecture_lookup', ['id' => 'translation-domain']);
+        $result = Registry::call('typo3_hint_lookup', ['id' => 'translation-domain']);
 
         self::assertNull($result->data['targetVersion']);
         $bound = array_values(array_filter(
@@ -187,7 +187,7 @@ final class VersionsTest extends TestCase
         foreach (['typo3_rule_lookup' => 'event listener', 'typo3_script_lookup' => 'unit tests'] as $tool => $query) {
             $text = Registry::call($tool, ['query' => $query, 'task' => $query])->text;
             self::assertStringContainsString('not filtered by version', $text, $tool);
-            self::assertStringContainsString('typo3_architecture_lookup with targetVersion', $text, $tool);
+            self::assertStringContainsString('typo3_hint_lookup with targetVersion', $text, $tool);
         }
     }
 
@@ -196,7 +196,7 @@ final class VersionsTest extends TestCase
     {
         // A version in the prose cannot be filtered, re-rendered or checked,
         // and it is the thing that goes stale silently.
-        foreach (ArchitectureHints::load() as $hint) {
+        foreach (Hints::load() as $hint) {
             foreach ($hint['hints'] as $statement) {
                 self::assertDoesNotMatchRegularExpression(
                     '/\bTYPO3 v\d|\bsince v?\d|\bfrom v\d/i',
@@ -218,7 +218,7 @@ final class VersionsTest extends TestCase
         // offered `project` and `extension` since `D-KNW-005`, and what writes
         // them are the hints whose whole subject is a repository outside the
         // core (`D-KNW-007`).
-        foreach (ArchitectureHints::load() as $hint) {
+        foreach (Hints::load() as $hint) {
             foreach (array_merge([$hint], $hint['hints']) as $entry) {
                 if (($entry['scope'] ?? null) !== null) {
                     self::assertContains(
@@ -264,7 +264,7 @@ final class VersionsTest extends TestCase
         self::assertSame([14], Versions::targets('14'), 'a caller who names a version is asking about it');
 
         $statements = implode("\n", array_column(
-            ArchitectureHints::byId('extension-manifest', Versions::targets())['hints'],
+            Hints::byId('extension-manifest', Versions::targets())['hints'],
             'text',
         ));
         self::assertStringContainsString(
@@ -289,7 +289,7 @@ final class VersionsTest extends TestCase
         ], JSON_THROW_ON_ERROR));
         Instance::discoverFrom($root);
 
-        $result = Registry::call('typo3_architecture_lookup', ['id' => 'extension-manifest']);
+        $result = Registry::call('typo3_hint_lookup', ['id' => 'extension-manifest']);
 
         self::assertSame([13, 14], $result->data['targetVersions']);
         self::assertSame(14, $result->data['targetVersion']);
@@ -314,7 +314,7 @@ final class VersionsTest extends TestCase
         ], JSON_THROW_ON_ERROR));
         Instance::discoverFrom($root);
 
-        $narrowed = Registry::call('typo3_architecture_lookup', ['id' => 'extension-files', 'targetVersion' => '14.3']);
+        $narrowed = Registry::call('typo3_hint_lookup', ['id' => 'extension-files', 'targetVersion' => '14.3']);
 
         self::assertSame([14], $narrowed->data['targetVersions'], 'what the caller stated still wins');
         self::assertStringContainsString('Answered for TYPO3 v14 alone', $narrowed->text);
@@ -335,7 +335,7 @@ final class VersionsTest extends TestCase
         ], JSON_THROW_ON_ERROR));
         Instance::discoverFrom($root);
 
-        $single = Registry::call('typo3_architecture_lookup', ['id' => 'extension-files', 'targetVersion' => '14.3']);
+        $single = Registry::call('typo3_hint_lookup', ['id' => 'extension-files', 'targetVersion' => '14.3']);
         self::assertStringContainsString('Answered for TYPO3 v14: statements that do not hold', $single->text);
         self::assertStringNotContainsString('Answered for TYPO3 v14 alone', $single->text);
         self::assertStringNotContainsString(
@@ -450,7 +450,7 @@ final class VersionsTest extends TestCase
         self::assertSame([14], Versions::targets());
         self::assertStringContainsString(
             'Answered for TYPO3 v14',
-            Registry::call('typo3_architecture_lookup', ['id' => 'extension-manifest'])->text,
+            Registry::call('typo3_hint_lookup', ['id' => 'extension-manifest'])->text,
         );
     }
 }

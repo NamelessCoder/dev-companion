@@ -4,22 +4,22 @@ declare(strict_types=1);
 
 namespace Typo3CmsMcp\Result;
 
-use Typo3CmsMcp\Knowledge\ArchitectureHints;
 use Typo3CmsMcp\Knowledge\Catalog\References;
+use Typo3CmsMcp\Knowledge\Hints;
 use Typo3CmsMcp\Knowledge\Scope;
 use Typo3CmsMcp\Knowledge\Versions;
 
 /**
- * Matched architecture hints, as an answer.
+ * Matched hints, as an answer.
  *
- * The architecture lookup returns them as the answer and the task guide carries
+ * The hint lookup returns them as the answer and the task guide carries
  * them inside a larger one, so the range beside a statement, the notice above a
  * core-scoped hint and the worked example under it are written once.
  */
-final class Hints
+final class MatchedHints
 {
     /**
-     * Matched architecture hints as data, without the internal match patterns.
+     * Matched hints as data, without the internal match patterns.
      *
      * @param array<int, array<string, mixed>> $hints
      * @return array<int, array<string, mixed>>
@@ -151,7 +151,7 @@ final class Hints
     {
         $examples = self::examples($target);
         $sectionTexts = [];
-        foreach (ArchitectureHints::groupByCategory($hints) as $section) {
+        foreach (Hints::groupByCategory($hints) as $section) {
             $hintTexts = [];
             foreach ($section['hints'] as $hint) {
                 $block = ['## ' . $hint['title']];

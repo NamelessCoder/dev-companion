@@ -29,7 +29,7 @@ Nothing else is rewritten: each block is what a client received.
 - [`typo3_script_lookup`](typo3_script_lookup.md) — scripts: hit, scripts: miss
 - [`typo3_task_guide`](typo3_task_guide.md) — brief: with area, brief: task only, brief: paths of two kinds
 - [`typo3_test_run_guide`](typo3_test_run_guide.md) — runTests: all, runTests: hit, runTests: miss, runTests: narrowed by paths
-- [`typo3_architecture_lookup`](typo3_architecture_lookup.md) — architecture: path, architecture: topic, architecture: miss
+- [`typo3_hint_lookup`](typo3_hint_lookup.md) — hints: path, hints: topic, hints: miss
 - [`typo3_documentation_lookup`](typo3_documentation_lookup.md) — documentation: search, documentation: page, documentation: unsupported version
 - [`typo3_forge_lookup`](typo3_forge_lookup.md) — forge: what an issue says and what was decided, forge: no such issue
 - [`typo3_gerrit_lookup`](typo3_gerrit_lookup.md) — gerrit: has this issue a patch already, gerrit: one change by number

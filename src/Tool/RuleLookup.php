@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Typo3CmsMcp\Tool;
 
-use Typo3CmsMcp\Knowledge\ArchitectureHints;
 use Typo3CmsMcp\Knowledge\Documents;
+use Typo3CmsMcp\Knowledge\Hints;
 use Typo3CmsMcp\Knowledge\Scope;
 use Typo3CmsMcp\Result\Prose;
 use Typo3CmsMcp\Result\Schema;
@@ -77,12 +77,12 @@ final class RuleLookup extends ReadOnlyTool
             : $found;
         $withheld = self::withheldDocuments($found, $results);
 
-        // The prose and the architecture hints are two corpora, and which one
+        // The prose and the hints are two corpora, and which one
         // holds a subject is this server's business, not the caller's: site
         // sets are a hint, the Gerrit workflow is prose, and the question is
         // phrased the same way either way. The hints transfer, so they are
         // returned on both sides of the boundary.
-        $hints = ArchitectureHints::find([], $query, 3)['matchedHints'];
+        $hints = Hints::find([], $query, 3)['matchedHints'];
 
         if ($results === [] && $hints === [] && $withheld === []) {
             return self::noMatch($query, $scope, $outsideCore);
@@ -102,7 +102,7 @@ final class RuleLookup extends ReadOnlyTool
             ? sprintf('No section that holds outside the core matched "%s".', $query)
             : Prose::sections($results);
         if ($hints !== []) {
-            $lines[] = "\nThe architecture hints also cover this — call typo3_architecture_lookup with the id:\n"
+            $lines[] = "\nThe hints also cover this — call typo3_hint_lookup with the id:\n"
                 . implode("\n", array_map(
                     static fn(array $hint): string => '- ' . $hint['id'] . ' — ' . $hint['title'],
                     $hints,

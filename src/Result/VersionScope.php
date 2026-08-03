@@ -10,7 +10,7 @@ use Typo3CmsMcp\Knowledge\Versions;
 /**
  * Which TYPO3 versions an answer was selected for, and why.
  *
- * The task guide and the architecture lookup both filter by version and both
+ * The task guide and the hint lookup both filter by version and both
  * have to say what that filtering cost, so the sentence is written once.
  */
 final class VersionScope

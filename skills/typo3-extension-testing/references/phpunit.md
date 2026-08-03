@@ -1,9 +1,8 @@
 # PHPUnit unit and functional guidance
 
 Read this after choosing a PHPUnit layer. Let the checkout, the
-`project-extension-tests` architecture answer, and versioned documentation
-decide concrete package versions, bootstrap APIs, configuration contents, and
-commands.
+`project-extension-tests` hint, and versioned documentation decide concrete
+package versions, bootstrap APIs, configuration contents, and commands.
 
 ## Verify the harness
 

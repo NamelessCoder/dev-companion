@@ -149,9 +149,9 @@ Search the local TYPO3 core contribution rules and script notes by topic.
   - `topics` *(array of string, required)*
 - `elsewhere` *(array of string)* — Documents outside the searched ones
   that do match the query.
-- `alsoInHints` *(array of object)* — Architecture hints matching the same
-  query. They are a second corpus, searched by typo3_architecture_lookup, which
-  takes one of these ids.
+- `alsoInHints` *(array of object)* — Hints matching the same query. They
+  are a second corpus, searched by typo3_hint_lookup, which takes one of these
+  ids.
   - `id` *(string, required)*
   - `title` *(string, required)*
 - `scope` *(string, required)* — One of `core`, `uncertain`, `project`,
@@ -209,9 +209,9 @@ the boundary instead of with commands that do not exist there.
   - `topics` *(array of string, required)*
 - `elsewhere` *(array of string)* — Documents outside the searched ones
   that do match the query.
-- `alsoInHints` *(array of object)* — Architecture hints matching the same
-  query. They are a second corpus, searched by typo3_architecture_lookup, which
-  takes one of these ids.
+- `alsoInHints` *(array of object)* — Hints matching the same query. They
+  are a second corpus, searched by typo3_hint_lookup, which takes one of these
+  ids.
   - `id` *(string, required)*
   - `title` *(string, required)*
 - `scope` *(string, required)* — One of `core`, `uncertain`, `project`,
@@ -223,15 +223,15 @@ the boundary instead of with commands that do not exist there.
 
 ## `typo3_task_guide`
 
-Build a task checklist enriched with matching architecture hints and relevant
-core checks. Built from bundled conventions only: it does not read your
-checkout, so it also names what you have to establish there yourself and routes
-to the lookups that fit the task. Work that reads as a project or third-party
-extension is answered with what transfers only — the core checks, checklist
-items and steps that name something only the core repository has are left out
-rather than handed over. Pass the paths where the work touches more than one
-place: each is placed on its own, so a core path and an extension path in one
-call are not answered with one verdict.
+Build a task checklist enriched with matching hints and relevant core checks.
+Built from bundled conventions only: it does not read your checkout, so it also
+names what you have to establish there yourself and routes to the lookups that
+fit the task. Work that reads as a project or third-party extension is answered
+with what transfers only — the core checks, checklist items and steps that
+name something only the core repository has are left out rather than handed
+over. Pass the paths where the work touches more than one place: each is placed
+on its own, so a core path and an extension path in one call are not answered
+with one verdict.
 
 `readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: false`
 
@@ -299,7 +299,7 @@ call are not answered with one verdict.
     applies only under its condition.
   - `condition` *(string, required)* — When a weakly matched intent
     applies. Empty for a strong match.
-- `architectureHints` *(array of object, required)*
+- `hints` *(array of object, required)*
   - `id` *(string, required)*
   - `title` *(string, required)*
   - `category` *(string, required)* — PHP, TypeScript, JavaScript, CSS,
@@ -442,17 +442,17 @@ suite at all rather than commands that cannot run there.
     - `purpose` *(string, required)*
     - `command` *(string, required)*
 
-## `typo3_architecture_lookup`
+## `typo3_hint_lookup`
 
-Return architecture hints for TYPO3 core paths or task topics, grouped by
-section. Where the paths read as a project or third-party extension the hints
-still come back, because the conventions transfer. The "Backend CSS" and
-"Backend TypeScript and JavaScript" sections describe the TYPO3 backend
-interface and are withheld, with the reason, where the task names the frontend.
+Return hints for TYPO3 core paths or task topics, grouped by section. Where the
+paths read as a project or third-party extension the hints still come back,
+because the conventions transfer. The "Backend CSS" and "Backend TypeScript and
+JavaScript" sections describe the TYPO3 backend interface and are withheld,
+with the reason, where the task names the frontend.
 
 `readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: false`
 
-**Answered**, once: [tool-answers/typo3_architecture_lookup.md](tool-answers/typo3_architecture_lookup.md).
+**Answered**, once: [tool-answers/typo3_hint_lookup.md](tool-answers/typo3_hint_lookup.md).
 
 **Takes**
 
@@ -460,9 +460,9 @@ interface and are withheld, with the reason, where the task names the frontend.
   in the repository they belong to. Each is placed on its own, so a core path
   and an extension path in one call are matched separately, and a statement is
   labelled where it obliges the other one.
-- `task` *(string)* — Short task description or architecture topic, in
-  English. Matching is lexical against English text, so another language
-  reaches only the loanwords.
+- `task` *(string)* — Short task description or topic, in English. Matching
+  is lexical against English text, so another language reaches only the
+  loanwords.
 - `id` *(string)* — Ask for one hint by its id, for example language-files,
   instead of matching. Every answer that returns no hint lists the ids there
   are, so a subject that exists can be requested by name rather than guessed
@@ -476,7 +476,7 @@ interface and are withheld, with the reason, where the task names the frontend.
   version of the installation this server was started in, and where there is no
   installation either, nothing is filtered and every statement carries the
   versions it holds for.
-- `limit` *(integer)* — Maximum number of architecture hints.
+- `limit` *(integer)* — Maximum number of hints.
 
 **Answers with**
 
@@ -938,10 +938,9 @@ installation that has it holds the same files below vendor/.
   - `caveat` *(string or null, required)* — What not to conclude from it
     — that it is read rather than depended on, or which part of it is the
     core's own. Null where there is nothing to warn about.
-  - `hint` *(string or null, required)* — The architecture hint whose
-    conventions it demonstrates, for typo3_architecture_lookup. Null where no
-    hint covers the subject yet, which is exactly when reading the example is
-    worth most.
+  - `hint` *(string or null, required)* — The hint whose conventions it
+    demonstrates, for typo3_hint_lookup. Null where no hint covers the subject
+    yet, which is exactly when reading the example is worth most.
   - `since` *(integer or null, required)* — First covered major that has
     it. Null means every covered major does.
   - `until` *(integer or null, required)* — Last covered major that has

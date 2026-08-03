@@ -45,7 +45,7 @@ final class ReferenceList extends ReadOnlyTool
                 'package' => ['type' => ['string', 'null'], 'description' => 'The Composer package that ships it, so an installation can read it below vendor/. Null means it exists only in the core repository, as everything below Build/ does.'],
                 'reference' => Schema::string('What it is a worked example of.'),
                 'caveat' => ['type' => ['string', 'null'], 'description' => 'What not to conclude from it — that it is read rather than depended on, or which part of it is the core\'s own. Null where there is nothing to warn about.'],
-                'hint' => ['type' => ['string', 'null'], 'description' => 'The architecture hint whose conventions it demonstrates, for typo3_architecture_lookup. Null where no hint covers the subject yet, which is exactly when reading the example is worth most.'],
+                'hint' => ['type' => ['string', 'null'], 'description' => 'The hint whose conventions it demonstrates, for typo3_hint_lookup. Null where no hint covers the subject yet, which is exactly when reading the example is worth most.'],
                 'since' => ['type' => ['integer', 'null'], 'description' => 'First covered major that has it. Null means every covered major does.'],
                 'until' => ['type' => ['integer', 'null'], 'description' => 'Last covered major that has it. Null means the newest one still does.'],
                 'existsOn' => Schema::string('The range in words, empty when every covered version has it.'),
@@ -82,7 +82,7 @@ final class ReferenceList extends ReadOnlyTool
                 : 'In an installation: vendor/' . $entry['package'] . '/, below the same path with the '
                     . 'typo3/sysext/<key>/ prefix removed.');
             if ($entry['hint'] !== null) {
-                $lines[] = '  Conventions: typo3_architecture_lookup id="' . $entry['hint'] . '"';
+                $lines[] = '  Conventions: typo3_hint_lookup id="' . $entry['hint'] . '"';
             }
         }
 

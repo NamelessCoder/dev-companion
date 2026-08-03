@@ -10,8 +10,8 @@ by term overlap.**
 
 A word half the knowledge base carries decides nothing, a term is matched as a
 word rather than as a substring, and which of the two corpora — the prose or
-the architecture hints — holds a subject is not the caller's problem:
-`typo3_rule_lookup` names the hints that match the same query.
+the hints — holds a subject is not the caller's problem: `typo3_rule_lookup`
+names the hints that match the same query.
 
 ## From
 

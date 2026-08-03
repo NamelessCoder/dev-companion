@@ -8,9 +8,9 @@ status: held
 **A lookup that returns nothing says what there would have been to find, and
 what it names can be asked for outright.**
 
-`typo3_architecture_lookup` lists the hint ids of the searched domains on every
-miss and accepts one as `id`, so "your words did not match" is distinguishable
-from "nobody wrote this down" without trying another phrasing.
+`typo3_hint_lookup` lists the hint ids of the searched domains on every miss
+and accepts one as `id`, so "your words did not match" is distinguishable from
+"nobody wrote this down" without trying another phrasing.
 
 ## From
 

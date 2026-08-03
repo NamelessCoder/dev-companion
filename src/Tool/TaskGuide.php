@@ -5,21 +5,21 @@ declare(strict_types=1);
 namespace Typo3CmsMcp\Tool;
 
 use Typo3CmsMcp\Feedback\Channel;
-use Typo3CmsMcp\Knowledge\ArchitectureHints;
 use Typo3CmsMcp\Knowledge\Coverage;
 use Typo3CmsMcp\Knowledge\Domains;
+use Typo3CmsMcp\Knowledge\Hints;
 use Typo3CmsMcp\Knowledge\Scope;
 use Typo3CmsMcp\Knowledge\TaskIntents;
 use Typo3CmsMcp\Knowledge\TestSuiteHints;
 use Typo3CmsMcp\Knowledge\Versions;
-use Typo3CmsMcp\Result\Hints;
+use Typo3CmsMcp\Result\MatchedHints;
 use Typo3CmsMcp\Result\Prose;
 use Typo3CmsMcp\Result\Schema;
 use Typo3CmsMcp\Result\ToolResult;
 use Typo3CmsMcp\Result\VersionScope;
 
 /**
- * A task checklist, enriched with the architecture hints and core checks that
+ * A task checklist, enriched with the hints and core checks that
  * match it.
  */
 final class TaskGuide extends ReadOnlyTool
@@ -72,7 +72,7 @@ final class TaskGuide extends ReadOnlyTool
 
     public static function description(): string
     {
-        return 'Build a task checklist enriched with matching architecture hints and relevant core checks. Built from bundled conventions only: it does not read your checkout, so it also names what you have to establish there yourself and routes to the lookups that fit the task. Work that reads as a project or third-party extension is answered with what transfers only — the core checks, checklist items and steps that name something only the core repository has are left out rather than handed over. Pass the paths where the work touches more than one place: each is placed on its own, so a core path and an extension path in one call are not answered with one verdict.';
+        return 'Build a task checklist enriched with matching hints and relevant core checks. Built from bundled conventions only: it does not read your checkout, so it also names what you have to establish there yourself and routes to the lookups that fit the task. Work that reads as a project or third-party extension is answered with what transfers only — the core checks, checklist items and steps that name something only the core repository has are left out rather than handed over. Pass the paths where the work touches more than one place: each is placed on its own, so a core path and an extension path in one call are not answered with one verdict.';
     }
 
     public static function inputSchema(): array
@@ -108,7 +108,7 @@ final class TaskGuide extends ReadOnlyTool
                 'confidence' => ['type' => 'string', 'enum' => ['strong', 'weak'], 'description' => 'weak: a word named the subject without naming the work, or the intent is a core-only one and nothing in the task says this is core work. Either way it applies only under its condition.'],
                 'condition' => Schema::string('When a weakly matched intent applies. Empty for a strong match.'),
             ], ['id', 'title', 'confidence', 'condition']), 'The kinds of core work recognized in the task text.'),
-            'architectureHints' => Schema::listOf(Schema::architectureHintRecord()),
+            'hints' => Schema::listOf(Schema::hintRecord()),
             'rules' => Schema::listOf(Schema::knowledgeMatch(), 'Rule sections that apply to this task.'),
             'checks' => Schema::listOf(Schema::string(), 'Commands to run, ready to execute from the core root.'),
             'conditionalChecks' => Schema::listOf(Schema::object([
@@ -126,7 +126,7 @@ final class TaskGuide extends ReadOnlyTool
                 'tool' => Schema::string(),
                 'when' => Schema::string(),
             ], ['tool', 'when'])),
-        ], ['task', 'changeType', 'domains', 'architectureHints', 'checks', 'checklist', 'nextTools']);
+        ], ['task', 'changeType', 'domains', 'hints', 'checks', 'checklist', 'nextTools']);
     }
 
     public static function answer(array $args): ToolResult
@@ -184,10 +184,10 @@ final class TaskGuide extends ReadOnlyTool
         // matched for an extension path are answers to different questions.
         $found = [];
         foreach ($groups as $group) {
-            $matched = ArchitectureHints::find($group['paths'], $task, 4, null, $targets);
+            $matched = Hints::find($group['paths'], $task, 4, null, $targets);
             $found[] = ['scope' => $group['scope'], 'paths' => $group['paths'], 'result' => $matched];
         }
-        $architecture = Hints::merged($found);
+        $hints = MatchedHints::merged($found);
         $testHints = array_slice(TestSuiteHints::find($subject, $domains, $target), 0, 4);
 
         $lines = [];
@@ -248,8 +248,8 @@ final class TaskGuide extends ReadOnlyTool
         }
 
         $lines[] = '';
-        $lines[] = 'Architecture hints:';
-        if ($architecture['matchedHints'] !== []) {
+        $lines[] = 'Hints:';
+        if ($hints['matchedHints'] !== []) {
             // One block per group, and the heading only where there is more
             // than one: the caller named two repositories, and which half of
             // the brief is about which path is half of the answer.
@@ -265,7 +265,7 @@ final class TaskGuide extends ReadOnlyTool
                         $group['scope'] === Scope::Core ? '' : ' — ' . $group['scope']->value,
                     );
                 }
-                $sectionTexts[] = Hints::sections(
+                $sectionTexts[] = MatchedHints::sections(
                     $group['result']['matchedHints'],
                     $group['scope'],
                     $target,
@@ -273,8 +273,8 @@ final class TaskGuide extends ReadOnlyTool
             }
             $lines[] = implode("\n\n", $sectionTexts);
         } else {
-            $lines[] = '- No architecture hint matched this task text. That means no convention was recognized, '
-                . 'not that none applies: call typo3_architecture_lookup again with the concrete file paths once they are known.';
+            $lines[] = '- No hint matched this task text. That means no convention was recognized, '
+                . 'not that none applies: call typo3_hint_lookup again with the concrete file paths once they are known.';
         }
 
         // Only the confirmed intents may state a rule as applying: a
@@ -288,7 +288,7 @@ final class TaskGuide extends ReadOnlyTool
             $lines[] = Prose::sections($rules);
         }
 
-        // The checks of a matched architecture hint belong in the list as much
+        // The checks of a matched hint belong in the list as much
         // as the ones an intent carries. Leaving them out dropped the functional
         // suite from a FormEngine brief while the FormEngine hint that names it
         // was right there in the same answer.
@@ -403,7 +403,7 @@ final class TaskGuide extends ReadOnlyTool
         $nextTools = self::nextTools(
             $intents,
             $domains,
-            array_column($architecture['matchedHints'], 'id'),
+            array_column($hints['matchedHints'], 'id'),
             $target,
             $outsideCore
         );
@@ -439,7 +439,7 @@ final class TaskGuide extends ReadOnlyTool
                 'confidence' => (string) $intent['confidence'],
                 'condition' => (string) $intent['condition'],
             ], $intents),
-            'architectureHints' => Hints::records($architecture['matchedHints']),
+            'hints' => MatchedHints::records($hints['matchedHints']),
             'rules' => Prose::records($rules),
             'checks' => $checks,
             'conditionalChecks' => $conditionalChecks,
@@ -514,7 +514,7 @@ final class TaskGuide extends ReadOnlyTool
      *
      * @param array<int, array<string, mixed>> $intents
      * @param array<int, string> $domains
-     * @param array<int, string> $hintIds ids of the architecture hints this brief matched
+     * @param array<int, string> $hintIds ids of the hints this brief matched
      * @return array<int, array{tool: string, when: string}>
      */
     private static function nextTools(
@@ -550,7 +550,7 @@ final class TaskGuide extends ReadOnlyTool
                     . 'built on it recently, not only a lookup after the fact',
                 $target
             );
-        $candidates[] = 'typo3_architecture_lookup with the concrete file paths, once they are known';
+        $candidates[] = 'typo3_hint_lookup with the concrete file paths, once they are known';
         $candidates[] = 'typo3_test_run_guide, for the targeted runTests.sh invocation';
         // The one step this brief describes and never pointed at. A caller who
         // read the routing table at the start of a session is committing hours

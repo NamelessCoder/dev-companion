@@ -426,6 +426,6 @@ final class Domains
      */
     public static function hintCategories(array $domains): array
     {
-        return array_map(ArchitectureHints::label(...), self::hintDomains($domains));
+        return array_map(Hints::label(...), self::hintDomains($domains));
     }
 }

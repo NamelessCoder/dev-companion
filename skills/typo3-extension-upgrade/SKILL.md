@@ -90,7 +90,7 @@ where the code already does it; the alternative is an upgrade that breaks the
 version it was told to keep.
 
 Where a replacement belongs to a subsystem the base did not have in scope, ask
-its conventions before writing it: `typo3_architecture_lookup` with the concrete
+its conventions before writing it: `typo3_hint_lookup` with the concrete
 paths, and `typo3_documentation_lookup` with the target version where the
 official API decides the shape. Where nothing in the declared range replaces a
 removal, that is the answer — one package version cannot serve both, and

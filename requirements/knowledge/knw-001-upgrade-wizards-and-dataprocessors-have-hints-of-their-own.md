@@ -5,8 +5,8 @@ status: held
 
 # R-KNW-001 — Upgrade wizards and DataProcessors have hints of their own
 
-**Upgrade wizards and frontend DataProcessors have architecture hints,
-reachable from the path alone.**
+**Upgrade wizards and frontend DataProcessors have hints, reachable from the
+path alone.**
 
 ## From
 

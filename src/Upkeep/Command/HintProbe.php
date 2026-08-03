@@ -7,10 +7,10 @@ namespace Typo3CmsMcp\Upkeep\Command;
 use Symfony\Component\Console\Attribute\Argument;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Output\OutputInterface;
-use Typo3CmsMcp\Knowledge\ArchitectureHints;
+use Typo3CmsMcp\Knowledge\Hints;
 
 /**
- * What one query reaches in the architecture hint corpus, and why.
+ * What one query reaches in the hint corpus, and why.
  *
  * `catalog:check` exists because a core update invalidates a catalog entry
  * silently. A hint decays the same way and even more quietly: nothing about it
@@ -29,7 +29,7 @@ final class HintProbe
         #[Argument('the query to read the corpus back through')]
         string $query,
     ): int {
-        $result = ArchitectureHints::find([], $query, 10);
+        $result = Hints::find([], $query, 10);
 
         $output->writeln(sprintf('Query:    %s', $query));
         $output->writeln(sprintf('Domains:  %s', implode(', ', $result['domains']) ?: '(none)'));

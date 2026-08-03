@@ -91,7 +91,7 @@ final class TestRunGuide extends ReadOnlyTool
                 . 'suites this guide knows cannot be run from here and are left out rather than handed over. '
                 . 'What such a repository needs instead — assembling a phpunit suite of its own, the browser '
                 . 'tests that go with it, and the static analysis the phpstan suite is the core\'s half of — is '
-                . 'typo3_architecture_lookup with id=project-extension-tests, id=browser-tests and '
+                . 'typo3_hint_lookup with id=project-extension-tests, id=browser-tests and '
                 . 'id=extension-static-analysis. typo3_server_scope states the boundary.',
                 [
                     'query' => $query,
@@ -113,7 +113,7 @@ final class TestRunGuide extends ReadOnlyTool
         if ($outside !== []) {
             $blocks[] = Scope::outsideCoreAmong($outside) . ' Build/Scripts/runTests.sh is not there, so no suite '
                 . 'below is about ' . (count($outside) === 1 ? 'that path' : 'those paths') . '. What such a '
-                . 'repository needs instead is typo3_architecture_lookup with id=project-extension-tests, '
+                . 'repository needs instead is typo3_hint_lookup with id=project-extension-tests, '
                 . 'id=browser-tests and id=extension-static-analysis.';
         }
         // A call that named no path is answered from the core root, and every

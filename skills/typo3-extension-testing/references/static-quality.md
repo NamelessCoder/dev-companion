@@ -49,7 +49,7 @@ ship is absent for a reason rather than missing.
   one: several are not, and an abandoned extension on a current core produces
   false findings instead of types. `vimeo/psalm` is the alternative where a
   project already runs it. Which packages to require is the whole of what this
-  page decides about the analyser; what goes into its configuration is not: `typo3_architecture_lookup` with `id=extension-static-analysis`
+  page decides about the analyser; what goes into its configuration is not: `typo3_hint_lookup` with `id=extension-static-analysis`
   answers where the file belongs, which include it carries, the constants an
   extension's analysis never sees, the manifest excluded rather than fixed, the
   result cache directory, the level, and what a baseline is for. It is read off

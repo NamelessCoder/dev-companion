@@ -24,5 +24,5 @@ An answer that reported `outsideCore: true` and then returned four
 
 - `ScopeTest::aBriefOutsideTheCoreKeepsNothingThatOnlyTheCoreHas`
 - `ScopeTest::noRunTestsCommandIsHandedToARepositoryThatHasNoRunTests`
-- `ScopeTest::anArchitectureHintKeepsItsAdviceOutsideTheCoreAndLosesItsCoreChecks`
+- `ScopeTest::aHintKeepsItsAdviceOutsideTheCoreAndLosesItsCoreChecks`
 - `ScopeTest::twoPathsOfDifferentAudienceInOneCallStayApart`

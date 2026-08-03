@@ -75,8 +75,8 @@ for a review-only request, report the defect without changing it.
    dependency only when changes are in scope and the selected layer requires it;
    never guess its version.
 2. Take configuration and bootstrap templates from the installed dependency or
-   the source named by `typo3_architecture_lookup`. Copy and adapt templates that
-   say they are examples; do not point extension suites into a core checkout.
+   the source named by `typo3_hint_lookup`. Copy and adapt templates that say
+   they are examples; do not point extension suites into a core checkout.
 3. Preserve working configuration, scripts, and CI. Extend them instead of
    creating a parallel harness.
 4. Give each selected layer one stable local command before adding CI. Derive

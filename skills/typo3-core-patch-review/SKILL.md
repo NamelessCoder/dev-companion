@@ -26,8 +26,8 @@ that cannot be corrected.
    is reviewing against the wrong conventions and cannot tell.
 
 The changed paths are the argument, not the subject. Pass them to
-`typo3_architecture_lookup` for the conventions of the subsystem the patch is
-in, one call per subsystem, before forming a view of whether the code is right.
+`typo3_hint_lookup` for the conventions of the subsystem the patch is in, one
+call per subsystem, before forming a view of whether the code is right.
 
 ## What the patch owes, per finding
 

@@ -8,9 +8,9 @@ status: held
 **A repository that declares `typo3/cms-core` for more than one covered major is
 answered for all of them at once.**
 
-`typo3_task_guide` and `typo3_architecture_lookup` keep a statement that holds
-on any of them, name the majors and the declaration in the answer, and report
-them as `targetVersions`.
+`typo3_task_guide` and `typo3_hint_lookup` keep a statement that holds on any
+of them, name the majors and the declaration in the answer, and report them as
+`targetVersions`.
 
 A version the caller states still narrows to that one — and where that is
 below what the repository declares, the answer says so: the major it was

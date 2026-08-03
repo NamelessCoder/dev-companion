@@ -6,9 +6,9 @@ namespace Typo3CmsMcp\Tests\Unit;
 
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Typo3CmsMcp\Knowledge\ArchitectureHints;
 use Typo3CmsMcp\Knowledge\Coverage;
 use Typo3CmsMcp\Knowledge\Documents;
+use Typo3CmsMcp\Knowledge\Hints;
 use Typo3CmsMcp\Knowledge\Scope;
 use Typo3CmsMcp\Knowledge\TaskIntents;
 use Typo3CmsMcp\Knowledge\TestSuiteHints;
@@ -108,12 +108,12 @@ final class KnowledgeTest extends TestCase
         // counted the same. The subject now lives in the hint corpus rather
         // than in prose, and the weighting is the same weighting — so the case
         // is asked of the corpus that holds the answer.
-        $result = ArchitectureHints::find([], 'site set settings definitions', 6);
+        $result = Hints::find([], 'site set settings definitions', 6);
 
         self::assertSame('site-sets', $result['matchedHints'][0]['id']);
         foreach ($result['matchedHints'] as $hint) {
             self::assertNotSame(
-                ArchitectureHints::CATEGORY_CSS,
+                Hints::CATEGORY_CSS,
                 $hint['category'],
                 $hint['id'] . ' answers a TypoScript question with backend CSS',
             );
@@ -202,7 +202,7 @@ final class KnowledgeTest extends TestCase
     public function everyScopeInTheCorpusIsOneTheEnumDeclares(): void
     {
         $written = [];
-        foreach (ArchitectureHints::load() as $hint) {
+        foreach (Hints::load() as $hint) {
             foreach (array_merge([$hint], $hint['hints']) as $entry) {
                 $written[] = $entry['scope'] ?? null;
             }

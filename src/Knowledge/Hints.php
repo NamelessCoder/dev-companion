@@ -10,8 +10,8 @@ use Typo3CmsMcp\Search\TermSearch;
 use Typo3CmsMcp\Search\Text;
 
 /**
- * Loads architecture hints from the JSON files under
- * knowledge/architecture-hints/ and matches them against paths/topics.
+ * Loads hints from the JSON files under
+ * knowledge/hints/ and matches them against paths/topics.
  *
  * Which domain a hint is asked from is the `domains` field of the entry, not
  * the file it sits in. The file name was both jobs at once for as long as there
@@ -20,7 +20,7 @@ use Typo3CmsMcp\Search\Text;
  * selected by every query there is. The file is the subject now — one per
  * subject, named after it — and no hint is `any`.
  */
-final class ArchitectureHints
+final class Hints
 {
     /**
      * The two categories that describe the TYPO3 backend's own interface.
@@ -136,17 +136,17 @@ final class ArchitectureHints
     public static function load(int|array|null $target = null): array
     {
         $hints = [];
-        foreach (Finder::create()->files()->in(Paths::knowledge() . '/architecture-hints')->depth(0)->name('*.json')->sortByName() as $file) {
+        foreach (Finder::create()->files()->in(Paths::knowledge() . '/hints')->depth(0)->name('*.json')->sortByName() as $file) {
             $decoded = json_decode((string) file_get_contents($file->getPathname()), true);
             if (!is_array($decoded)) {
-                throw new \RuntimeException(sprintf('Invalid architecture-hints/%s', $file->getFilename()));
+                throw new \RuntimeException(sprintf('Invalid hints/%s', $file->getFilename()));
             }
 
             foreach ($decoded as $entry) {
                 $domains = array_map('strval', $entry['domains'] ?? []);
                 if ($domains === []) {
                     throw new \RuntimeException(sprintf(
-                        'architecture-hints/%s: %s names no domain, so no query selects it.',
+                        'hints/%s: %s names no domain, so no query selects it.',
                         $file->getFilename(),
                         $entry['id'] ?? '?',
                     ));

@@ -325,7 +325,7 @@ final class ExtensionScope extends ReadOnlyTool
                 );
             }
             $lines[] = 'The source language is what each file declares, not what it should declare — '
-                . 'typo3_architecture_lookup owns that rule.';
+                . 'typo3_hint_lookup owns that rule.';
         }
 
         $lines[] = '';

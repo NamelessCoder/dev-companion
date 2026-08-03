@@ -148,32 +148,32 @@ name already says what shape the answer has.
   that was never set up. The table an override file extends is read from what
   the file does, because those files are numbered rather than named after their
   table.
-- `typo3_rule_lookup`: searches local TYPO3 core rules and script feedback, ranked
-  by the query terms that separate one section from the rest rather than by
-  overlap, and naming the architecture hints that match the same question — the
+- `typo3_rule_lookup`: searches local TYPO3 core rules and script feedback,
+  ranked by the query terms that separate one section from the rest rather
+  than by overlap, and naming the hints that match the same question — the
   caller does not have to know which of the two corpora holds a subject.
 - `typo3_script_lookup`: finds matching feedback for TYPO3 core commands. They run
   in a core checkout, and the answer says so — outside one it returns the
   boundary instead of commands that are not there.
-- `typo3_task_guide`: builds a task checklist enriched with matching
-  architecture hints and relevant core checks. A task that reads as work on a
-  project or third-party extension says so first and keeps only what transfers:
-  no core checks, no checklist item and no follow-up naming something that only
-  the core repository has. Where the work touches more than one place, the paths
-  are placed one by one, and a session that is in the core and in an extension
-  at once gets one brief that says which of the two each step is for.
-- `typo3_test_run_guide`: recommends `Build/Scripts/runTests.sh` commands
-  by topic. Paths that read as a project or third-party extension get no suite:
+- `typo3_task_guide`: builds a task checklist enriched with matching hints and
+  relevant core checks. A task that reads as work on a project or third-party
+  extension says so first and keeps only what transfers: no core checks, no
+  checklist item and no follow-up naming something that only the core
+  repository has. Where the work touches more than one place, the paths are
+  placed one by one, and a session that is in the core and in an extension at
+  once gets one brief that says which of the two each step is for.
+- `typo3_test_run_guide`: recommends `Build/Scripts/runTests.sh` commands by
+  topic. Paths that read as a project or third-party extension get no suite:
   the script is part of the core repository. What such an extension needs
   instead — assembling a phpunit suite of its own — is the
-  `project-extension-tests` architecture hint.
-- `typo3_architecture_lookup`: returns architecture hints for TYPO3 core paths or
-  task topics, grouped by section. Outside the core the hints stay and their
-  check commands are dropped. Two sections are the backend interface's own —
-  `Backend CSS` and `Backend TypeScript` — and are withheld with a reason when
-  the task names the frontend, because there they would be inverted advice
-  rather than merely irrelevant. An answer that matched nothing lists the hint
-  ids there are, and `id` asks for one of them outright.
+  `project-extension-tests` hint.
+- `typo3_hint_lookup`: returns hints for TYPO3 core paths or task topics,
+  grouped by section. Outside the core the hints stay and their check commands
+  are dropped. Two sections are the backend interface's own — `Backend CSS`
+  and `Backend TypeScript` — and are withheld with a reason when the task
+  names the frontend, because there they would be inverted advice rather than
+  merely irrelevant. An answer that matched nothing lists the hint ids there
+  are, and `id` asks for one of them outright.
 - `typo3_documentation_lookup`: searches the public tables of contents of TYPO3
   Explained, TypoScript Explained, the TCA Reference and the Fluid ViewHelper
   Reference on `docs.typo3.org`, for
@@ -297,10 +297,10 @@ Everything the tools and resources answer from lives in `knowledge/`:
   `typo3_rule_lookup` searches: `typo3-core-rules.md`, `typo3-core-scripts.md`,
   `typo3-commit-messages.md`, `typo3-gerrit-workflow.md`,
   `typo3-contribution-sources.md`
-- `architecture-hints/` — one file per subject: `datahandler.json`, `fal.json`,
-  `labels.json`, `site-sets.json` and many more. Each entry names the domains it
-  is asked from in its own `domains` field, so the file says what the hint is
-  about and the tag says which query reaches it
+- `hints/` — one file per subject: `datahandler.json`, `fal.json`,
+  `labels.json`, `site-sets.json` and many more. Each entry names the domains
+  it is asked from in its own `domains` field, so the file says what the hint
+  is about and the tag says which query reaches it
 - `catalog/` — the component catalog (`components.json`,
   `component-checklist.json`, `references.json`, `meta.json`) and the shipped
   system extensions (`system-extensions.json`)

@@ -154,7 +154,7 @@
     "checks": [],
     "tools": [
       "typo3_test_run_guide, for the targeted invocation form",
-      "typo3_architecture_lookup id=project-extension-tests, where the extension is not part of the core and the suite has to be assembled first"
+      "typo3_hint_lookup id=project-extension-tests, where the extension is not part of the core and the suite has to be assembled first"
     ]
   },
   {
@@ -209,7 +209,7 @@
     "checks": [],
     "tools": [
       "typo3_project_scope, for what the installation around this repository already is",
-      "typo3_architecture_lookup with id=sitepackage-initial-content, for what a sitepackage seeds an empty installation with and why the order of the two setup commands decides it"
+      "typo3_hint_lookup with id=sitepackage-initial-content, for what a sitepackage seeds an empty installation with and why the order of the two setup commands decides it"
     ]
   },
   {
@@ -239,7 +239,7 @@
     "tools": [
       "typo3_project_scope, for what this installation is and which commands this repository declares",
       "typo3_changelog_lookup with type=breaking or deprecation and the target version",
-      "typo3_architecture_lookup with id=installation-upgrade, for the order of operations and why it is that order"
+      "typo3_hint_lookup with id=installation-upgrade, for the order of operations and why it is that order"
     ]
   },
   {
@@ -269,7 +269,7 @@
     ],
     "checks": [],
     "tools": [
-      "typo3_architecture_lookup with id=content-elements, for what the element owns and how the record type is registered",
+      "typo3_hint_lookup with id=content-elements, for what the element owns and how the record type is registered",
       "typo3_extension_scope, for the content elements this extension already registers and the templates they render through"
     ]
   }

@@ -33,7 +33,7 @@ project's own are known is a guess that sounds like advice.
 3. **`typo3_task_guide`** with a short English task, the affected area, the
    target version and the change type — the workflow this task belongs to and
    the checks that come with it.
-4. **`typo3_architecture_lookup`** for each subsystem in scope, with its concrete
+4. **`typo3_hint_lookup`** for each subsystem in scope, with its concrete
    paths. One query per subsystem; a single broad query is not subsystem
    evidence.
 5. **`typo3_changelog_lookup` with `type: deprecation`**, at each major the
@@ -84,8 +84,8 @@ verdict that has already formed.
 `typo3_fluid_namespace_list` and `typo3_configuration_lookup` report what is
 registered, what a path resolves to, what a value really is at runtime. They
 establish the facts of this installation and they are never a verdict on it.
-`typo3_architecture_lookup` and `typo3_documentation_lookup` say whether those
-facts are right. A subsystem confirmed by its own runtime lookup can still break
+`typo3_hint_lookup` and `typo3_documentation_lookup` say whether those facts
+are right. A subsystem confirmed by its own runtime lookup can still break
 every rule that governs it, so it is not established until both were asked.
 
 ## A rule is read in both directions

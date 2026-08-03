@@ -69,13 +69,13 @@
       "scope": "core"
     },
     {
-      "topic": "Core architecture conventions: DI, events and hooks, TCA and FormEngine, FormEngine data providers, DataHandler, routing, Fluid templates and ViewHelpers, frontend page rendering with PAGEVIEW, how a sitepackage is laid out, records in the frontend and the routing for them, registering a content element, Extbase plugins, TypoScript site sets and TSconfig, language files, upgrade wizards, frontend DataProcessors, upgrading an installation, testing strategy, assembling a test suite for a project extension, setting up static analysis for an extension, browser and accessibility tests with Playwright",
+      "topic": "Core conventions: DI, events and hooks, TCA and FormEngine, FormEngine data providers, DataHandler, routing, Fluid templates and ViewHelpers, frontend page rendering with PAGEVIEW, how a sitepackage is laid out, records in the frontend and the routing for them, registering a content element, Extbase plugins, TypoScript site sets and TSconfig, language files, upgrade wizards, frontend DataProcessors, upgrading an installation, testing strategy, assembling a test suite for a project extension, setting up static analysis for an extension, browser and accessibility tests with Playwright",
       "depth": "Conventions per subsystem, matched by path or topic, from both angles: what a change to the subsystem has to satisfy, and how the mechanism is used. It describes how the core is built, never what your checkout contains.",
       "tools": [
-        "typo3_architecture_lookup",
+        "typo3_hint_lookup",
         "typo3_task_guide"
       ],
-      "source": "knowledge/architecture-hints/",
+      "source": "knowledge/hints/",
       "scope": "any"
     },
     {
@@ -91,10 +91,10 @@
       "topic": "Backend CSS architecture, design tokens, class naming",
       "depth": "Curated prose covering the Sass sources, the token contract, and the component structure.",
       "tools": [
-        "typo3_architecture_lookup",
+        "typo3_hint_lookup",
         "typo3_rule_lookup"
       ],
-      "source": "knowledge/architecture-hints/backend-css.json",
+      "source": "knowledge/hints/backend-css.json",
       "scope": "any"
     },
     {
@@ -130,7 +130,7 @@
       "tools": [
         "typo3_translation_domain_lookup"
       ],
-      "source": "src/Knowledge/Catalog/TranslationDomain.php, knowledge/architecture-hints/labels.json",
+      "source": "src/Knowledge/Catalog/TranslationDomain.php, knowledge/hints/labels.json",
       "scope": "any"
     },
     {
@@ -181,7 +181,7 @@
     {
       "topic": "Your checkout: changed files, branch, working tree, local git state",
       "why": "This server answers from its own bundled knowledge and never reads, inspects, or runs anything against a TYPO3 core checkout. It cannot be pointed at one.",
-      "instead": "Determine the changed paths yourself (git status, git diff --name-only), then pass them to typo3_architecture_lookup and typo3_task_guide to get the conventions and checks that apply to them."
+      "instead": "Determine the changed paths yourself (git status, git diff --name-only), then pass them to typo3_hint_lookup and typo3_task_guide to get the conventions and checks that apply to them."
     },
     {
       "topic": "The core source itself: API signatures, TCA of a table, existing implementations",
@@ -195,8 +195,8 @@
     },
     {
       "topic": "Frontend theming: the CSS and the JavaScript a website renders",
-      "why": "Everything here about CSS and TypeScript describes the TYPO3 backend interface — its Sass sources, its --typo3-* token contract, its light and dark color schemes, its move away from Bootstrap. For a theme extension those are not a milder version of the right answer, they are the opposite of it. How a theme extension is laid out is a different question and is not excluded here: the core ships its own theme as a system extension, and the conventions it establishes — the template tree, the layout names, the backend layout files — are in the architecture hints.",
-      "instead": "typo3_architecture_lookup withholds the Backend CSS and Backend TypeScript and JavaScript hints where a task names the frontend, and returns what does transfer — Fluid, TypoScript, PHP, and the sitepackage layout. The styling itself is documented at https://docs.typo3.org."
+      "why": "Everything here about CSS and TypeScript describes the TYPO3 backend interface — its Sass sources, its --typo3-* token contract, its light and dark color schemes, its move away from Bootstrap. For a theme extension those are not a milder version of the right answer, they are the opposite of it. How a theme extension is laid out is a different question and is not excluded here: the core ships its own theme as a system extension, and the conventions it establishes — the template tree, the layout names, the backend layout files — are in the hints.",
+      "instead": "typo3_hint_lookup withholds the Backend CSS and Backend TypeScript and JavaScript hints where a task names the frontend, and returns what does transfer — Fluid, TypoScript, PHP, and the sitepackage layout. The styling itself is documented at https://docs.typo3.org."
     },
     {
       "topic": "Whether an uncatalogued component or CSS class exists on your branch",
@@ -216,7 +216,7 @@
     {
       "topic": "Deciding one site's configuration: its languages, its base and the variants per environment, its error handling, and the steps that install it",
       "why": "A site set is a convention and is covered; what one installation writes into config/sites/<identifier>/config.yaml is that site's decision, and nothing here would make one answer to it more right than another. The file is read rather than composed — typo3_project_scope reports the sites a repository configures and the sets they depend on.",
-      "instead": "Read what the project already has with typo3_project_scope, ask typo3_architecture_lookup with id=site-sets for what a set ships and how its settings resolve against a site's own, and take the configuration format and the language setup from https://docs.typo3.org/."
+      "instead": "Read what the project already has with typo3_project_scope, ask typo3_hint_lookup with id=site-sets for what a set ships and how its settings resolve against a site's own, and take the configuration format and the language setup from https://docs.typo3.org/."
     },
     {
       "topic": "Running an installation: server and container setup, deployment, backups, the editorial use of the backend",
@@ -227,7 +227,7 @@
   "checkoutDiscovery": [
     {
       "establish": "Which files the task actually touches",
-      "how": "git status --short and git diff --name-only in the core checkout, then call typo3_architecture_lookup with those paths for the conventions that apply to them."
+      "how": "git status --short and git diff --name-only in the core checkout, then call typo3_hint_lookup with those paths for the conventions that apply to them."
     },
     {
       "establish": "Which tests already cover them",
@@ -265,7 +265,7 @@
     },
     {
       "when": "Writing a core patch: taking a Forge issue on, fixing a core bug, deprecating or removing core API, or amending a patch after review",
-      "call": "typo3_task_guide with area core, then typo3_architecture_lookup with the paths you are changing, typo3_test_run_guide for the suites that can fail, and typo3_rule_lookup for the Gerrit workflow"
+      "call": "typo3_task_guide with area core, then typo3_hint_lookup with the paths you are changing, typo3_test_run_guide for the suites that can fail, and typo3_rule_lookup for the Gerrit workflow"
     },
     {
       "when": "Starting a core task and looking for the applicable conventions and checks",
@@ -285,7 +285,7 @@
     },
     {
       "when": "Working in a concrete file and unsure about the subsystem's conventions",
-      "call": "typo3_architecture_lookup"
+      "call": "typo3_hint_lookup"
     },
     {
       "when": "Needing the official API, reference or tutorial documentation for a covered TYPO3 version",

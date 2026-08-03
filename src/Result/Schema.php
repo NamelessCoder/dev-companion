@@ -11,7 +11,7 @@ use Typo3CmsMcp\Knowledge\Scope;
  * written in.
  *
  * A tool declares its own output schema; what lives here is what more than one
- * of them says — a knowledge match, an architecture hint, a catalog entry, the
+ * of them says — a knowledge match, an hint, a catalog entry, the
  * reason an installation could not be asked. Schemas stay open (no
  * additionalProperties: false) so a new field is an addition rather than a
  * break, and only fields that are always present are required.
@@ -148,7 +148,7 @@ final class Schema
             'alsoInHints' => self::listOf(self::object([
                 'id' => self::string(),
                 'title' => self::string(),
-            ], ['id', 'title']), 'Architecture hints matching the same query. They are a second corpus, searched by typo3_architecture_lookup, which takes one of these ids.'),
+            ], ['id', 'title']), 'Hints matching the same query. They are a second corpus, searched by typo3_hint_lookup, which takes one of these ids.'),
         ], ['query', 'matchCount', 'matches']);
     }
 
@@ -190,7 +190,7 @@ final class Schema
     }
 
     /** @return array<string, mixed> */
-    public static function architectureHintRecord(): array
+    public static function hintRecord(): array
     {
         return self::object([
             'id' => self::string(),
@@ -223,7 +223,7 @@ final class Schema
 
     /**
      * The majors a catalog entry was verified on — the same since/until the
-     * architecture hints carry, so a client reads one model rather than two.
+     * hints carry, so a client reads one model rather than two.
      *
      * @return array<string, mixed>
      */

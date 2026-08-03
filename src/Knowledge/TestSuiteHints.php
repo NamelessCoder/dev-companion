@@ -122,7 +122,7 @@ final class TestSuiteHints
      * The suites any change in one of these domains runs, whatever the task
      * says about itself.
      *
-     * This is what the architecture hints used to carry as a `checks` list on
+     * This is what the hints used to carry as a `checks` list on
      * every entry: twenty-eight of them named nothing but the functional suite
      * and phpstan, which is not a property of the subject but of the domain it
      * is written in. Declared once here, a task in a domain gets them without a

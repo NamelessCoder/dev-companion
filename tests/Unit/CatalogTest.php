@@ -8,13 +8,13 @@ use PHPUnit\Framework\Attributes\After;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Typo3CmsMcp\Installation\Instance;
-use Typo3CmsMcp\Knowledge\ArchitectureHints;
 use Typo3CmsMcp\Knowledge\Catalog\Components;
 use Typo3CmsMcp\Knowledge\Catalog\DemoMarkup;
 use Typo3CmsMcp\Knowledge\Catalog\Meta;
 use Typo3CmsMcp\Knowledge\Catalog\References;
 use Typo3CmsMcp\Knowledge\Catalog\SystemExtensions;
 use Typo3CmsMcp\Knowledge\Catalog\TranslationDomain;
+use Typo3CmsMcp\Knowledge\Hints;
 use Typo3CmsMcp\Knowledge\Versions;
 use Typo3CmsMcp\Tests\Support\TemporaryInstallation;
 use Typo3CmsMcp\Tool\Registry;
@@ -630,7 +630,7 @@ final class CatalogTest extends TestCase
         // The layout hint and the theme it was written from were two answers
         // that never met: the hint was read, the extension was found later by
         // being told about it.
-        $result = Registry::call('typo3_architecture_lookup', [
+        $result = Registry::call('typo3_hint_lookup', [
             'task' => 'directory structure of a sitepackage extension',
             'targetVersion' => '14',
         ]);
@@ -643,7 +643,7 @@ final class CatalogTest extends TestCase
     public function everyIndexedExampleSaysWhatItIsAnExampleOfAndWhereItIs(): void
     {
         $majors = Versions::majors();
-        $hintIds = array_column(ArchitectureHints::load(), 'id');
+        $hintIds = array_column(Hints::load(), 'id');
         foreach (References::load() as $entry) {
             self::assertNotSame('', $entry['reference'], $entry['id'] . ' says nothing about itself');
             self::assertStringNotContainsString('..', $entry['path'], $entry['id'] . ' does not name a path in a checkout');

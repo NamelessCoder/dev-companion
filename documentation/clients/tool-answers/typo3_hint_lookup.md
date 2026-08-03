@@ -1,6 +1,8 @@
-# What `typo3_architecture_lookup` answered
+# What `typo3_hint_lookup` answered
 
-Recorded on 2026-08-02 by `bin/cli tools:record`. Answered against
+The tool was called `typo3_architecture_lookup` when this was recorded, and
+every call below names it by that spelling. Recorded on 2026-08-02 by
+`bin/cli tools:record`. Answered against
 core-checkout, TYPO3 14.3.6-dev, the 14.3 core checkout below .checkouts/,
 whose console could not be reached: <installation> has no TYPO3 console —
 none of bin/typo3, vendor/bin/typo3 exists. Nothing checks this page;

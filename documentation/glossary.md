@@ -17,7 +17,7 @@
   Written by `typo3_feedback_record`, read by `bin/cli feedback`.
 - **forward review** — an open scenario in `scenarios/forward/` that names no
   subsystem, skill or expected finding.
-- **hint** — one statement in `knowledge/architecture-hints/`, reached by
+- **hint** — one statement in `knowledge/hints/`, reached by
   `bin/cli hints:probe`.
 - **installation** — the TYPO3 a calling agent is working in, whose own facts
   are read from it rather than bundled.

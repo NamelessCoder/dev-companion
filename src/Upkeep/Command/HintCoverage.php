@@ -6,12 +6,12 @@ namespace Typo3CmsMcp\Upkeep\Command;
 
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Output\OutputInterface;
-use Typo3CmsMcp\Knowledge\ArchitectureHints;
 use Typo3CmsMcp\Knowledge\Domains;
+use Typo3CmsMcp\Knowledge\Hints;
 use Typo3CmsMcp\Upkeep\Scenarios;
 
 /**
- * What the architecture hint corpus cannot be found by. It never writes.
+ * What the hint corpus cannot be found by. It never writes.
  *
  * Three numbers nobody otherwise knows: hints that their own title does not
  * reach, hints no scenario prompt reaches, and scenario prompts that reach
@@ -27,7 +27,7 @@ final class HintCoverage
 {
     public function __invoke(OutputInterface $output): int
     {
-        $hints = ArchitectureHints::load();
+        $hints = Hints::load();
 
         $output->writeln('Hints their own title does not reach');
         $unreachable = [];
@@ -103,7 +103,7 @@ final class HintCoverage
         foreach ($prompts as $prompt) {
             // The limit typo3_task_guide composes a brief with, rather than the
             // wider one the reachability counts above need.
-            $categories = array_column(ArchitectureHints::find([], $prompt, 4)['matchedHints'], 'category');
+            $categories = array_column(Hints::find([], $prompt, 4)['matchedHints'], 'category');
             if ($categories === []) {
                 continue;
             }
@@ -138,10 +138,10 @@ final class HintCoverage
         // mean. The headroom is the number to read: at MAX_MEAN_BODY_WORDS the
         // corpus is close to the length at which a query it has no answer for
         // gets one anyway, and the constant has to be measured again.
-        $lengths = array_values(ArchitectureHints::bodyWords());
+        $lengths = array_values(Hints::bodyWords());
         sort($lengths);
         $mean = (int) round(array_sum($lengths) / max(1, count($lengths)));
-        $reference = ArchitectureHints::UNDILUTED_WORDS;
+        $reference = Hints::UNDILUTED_WORDS;
         $output->writeln('');
         $output->writeln(sprintf(
             "Hint body length vs. the matcher's %d-word dilution reference\n"
@@ -153,11 +153,11 @@ final class HintCoverage
             max($lengths),
             count(array_filter($lengths, static fn(int $n): bool => $n > $reference)),
             count($lengths),
-            ArchitectureHints::MAX_MEAN_BODY_WORDS - $mean,
-            ArchitectureHints::MAX_MEAN_BODY_WORDS,
+            Hints::MAX_MEAN_BODY_WORDS - $mean,
+            Hints::MAX_MEAN_BODY_WORDS,
         ));
 
-        return $unreachable === [] && $silent === [] && $never === [] && $mean <= ArchitectureHints::MAX_MEAN_BODY_WORDS
+        return $unreachable === [] && $silent === [] && $never === [] && $mean <= Hints::MAX_MEAN_BODY_WORDS
             ? 0
             : 1;
     }
@@ -165,6 +165,6 @@ final class HintCoverage
     /** @return array<int, string> */
     private static function reaches(string $query): array
     {
-        return array_column(ArchitectureHints::find([], $query, 6)['matchedHints'], 'id');
+        return array_column(Hints::find([], $query, 6)['matchedHints'], 'id');
     }
 }

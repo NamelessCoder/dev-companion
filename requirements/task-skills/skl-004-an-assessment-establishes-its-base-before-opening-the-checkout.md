@@ -35,12 +35,12 @@ because the review's own gap and the reader's narrowing are answered by
 different people.
 
 A finding about a user-controlled value is held to the same distinction one
-surface further in: it is a claim about the sink, so it is not established until
-the tag, attribute, header, statement or process the value ends up in is named
-and read, and an opt-out or a quoting helper on the way there is part of the
-path rather than the end of it. Escaping and injection are that same claim about
-different sinks, so the gate is written once for both and the sinks themselves
-are the architecture hints' to answer.
+surface further in: it is a claim about the sink, so it is not established
+until the tag, attribute, header, statement or process the value ends up in is
+named and read, and an opt-out or a quoting helper on the way there is part of
+the path rather than the end of it. Escaping and injection are that same claim
+about different sinks, so the gate is written once for both and the sinks
+themselves are the hints' to answer.
 
 ## From
 

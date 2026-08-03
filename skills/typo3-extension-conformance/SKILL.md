@@ -42,9 +42,9 @@ says whether it is right. That comes from the owner of the convention, and it is
 asked for **before** a view of the subsystem is formed rather than to confirm
 one that already exists:
 
-- `typo3_architecture_lookup` with the subsystem's concrete paths and a short
-  English description. One query per surface in scope; a single broad query is
-  not subsystem evidence.
+- `typo3_hint_lookup` with the subsystem's concrete paths and a short English
+  description. One query per surface in scope; a single broad query is not
+  subsystem evidence.
 - The lookup that owns that surface's runtime facts, where one exists:
   `typo3_backend_module_lookup` for registered modules and routes,
   `typo3_icon_lookup` for icon identifiers, `typo3_label_lookup` for labels and

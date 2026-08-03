@@ -4,7 +4,7 @@
 **Held by:**
 `SkillTest::everySkillRoutesThroughTheOwnersOfItsOwnFactsInOrder`,
 `SkillTest::judgmentHeavySkillsKeepTheirChecklistBesideThem`,
-`ScopeTest::anArchitectureHintKeepsItsAdviceOutsideTheCoreAndLosesItsCoreChecks`
+`ScopeTest::aHintKeepsItsAdviceOutsideTheCoreAndLosesItsCoreChecks`
 
 > Audit our site package for TYPO3 conformance and upgrade readiness.
 > Prioritize real findings with evidence and severity. This is a review only;

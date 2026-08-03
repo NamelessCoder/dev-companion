@@ -204,7 +204,7 @@ final class ScenariosTest extends TestCase
         $recorded = $this->record('REVIEW-01', static function (array $run): array {
             $run['toolTrace'] = [
                 ['tool' => 'typo3_project_scope', 'arguments' => []],
-                ['tool' => 'typo3_architecture_lookup'],
+                ['tool' => 'typo3_hint_lookup'],
                 ['arguments' => ['query' => 'icons']],
             ];
 
@@ -212,7 +212,7 @@ final class ScenariosTest extends TestCase
         });
 
         self::assertSame([
-            'scenarios/runs/REVIEW-01.json tool call 2, typo3_architecture_lookup, does not say what it was called with',
+            'scenarios/runs/REVIEW-01.json tool call 2, typo3_hint_lookup, does not say what it was called with',
             'scenarios/runs/REVIEW-01.json tool call 3 does not name the tool it called',
         ], $recorded['problems']);
 

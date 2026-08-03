@@ -18,8 +18,8 @@ final class Prose
     /**
      * What the prose cannot say of itself.
      *
-     * The architecture hints carry since/until per statement and are filtered
-     * or labelled by version. The markdown documents are the long form of the
+     * The hints carry since/until per statement and are filtered or labelled
+     * by version. The markdown documents are the long form of the
      * same subjects and carry nothing, so a section describing a shape that
      * arrived in v13 reads on v12 exactly as it reads on main. Rather than
      * building a second binding mechanism for prose, every prose answer says
@@ -27,13 +27,13 @@ final class Prose
      *
      * It names both bound corpora, because a caller sent to the wrong one is
      * sent nowhere. The script notes are commands, and a command's range sits
-     * on the suite in test-suite-hints.json rather than in the architecture
-     * hints — a 12.4 reader following this sentence to typo3_architecture_
-     * lookup would have found nothing about which suites that branch has.
+     * on the suite in test-suite-hints.json rather than in the hints — a 12.4
+     * reader following this sentence to typo3_hint_lookup would have found
+     * nothing about which suites that branch has.
      */
     public const NOT_VERSION_BOUND = 'These sections are prose and are not filtered by version. '
         . 'Where a subsystem changed inside the covered range, the statement that changed carries the range '
-        . 'elsewhere: call typo3_architecture_lookup with targetVersion for the convention, and '
+        . 'elsewhere: call typo3_hint_lookup with targetVersion for the convention, and '
         . 'typo3_test_run_guide with targetVersion for a runTests.sh command.';
 
     /**

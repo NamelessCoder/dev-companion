@@ -36,7 +36,7 @@ when its author last happened to see it. Before the first line:
 
 - Ask this server what it already answers about the domain, with the tools the
   skill will route to. `typo3_documentation_lookup` for the official
-  documentation at the versions in play, `typo3_architecture_lookup` for the
+  documentation at the versions in play, `typo3_hint_lookup` for the
   conventions, `typo3_changelog_lookup` for what moved. An author who has not
   called a tool is routing to an answer shape they are guessing at, and a
   surface the server already covers does not need a paragraph in a skill.

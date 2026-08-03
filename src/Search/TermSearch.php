@@ -7,9 +7,9 @@ namespace Typo3CmsMcp\Search;
 /**
  * Scores free-text queries against a corpus of field-addressed documents.
  *
- * Two corpora are searched this way — the prose sections and the architecture
- * hints — and they used to score differently, which is why the same question
- * reached one of them and not the other. What they share is the whole method: a
+ * Two corpora are searched this way — the prose sections and the hints — and
+ * they used to score differently, which is why the same question reached one
+ * of them and not the other. What they share is the whole method: a
  * term is worth what it separates one document from the rest, it is matched at
  * a word boundary rather than as a substring, and where in the document it
  * appears decides how much it counts. What they do not share is the field

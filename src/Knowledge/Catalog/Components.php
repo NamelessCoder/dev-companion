@@ -18,7 +18,7 @@ use Typo3CmsMcp\Paths;
  * process. Search mirrors the term-scoring approach used by TestSuiteHints.
  *
  * An entry also carries the majors it was verified on, as `since`/`until` — the
- * same binding the architecture hints use. The catalog is taken from one
+ * same binding the hints use. The catalog is taken from one
  * revision, so without that a component whose custom-property contract does not
  * exist on the caller's LTS is handed over as fact; with it, the entry is
  * withheld and what to verify against is named instead.
@@ -27,9 +27,9 @@ final class Components
 {
     /**
      * Share of the query a component has to cover to be an answer to it, when
-     * the query did not name it outright. The same threshold the architecture
-     * hints hold their prose matches to, for the same reason: below it the
-     * entry shares a word with the question rather than answering it.
+     * the query did not name it outright. The same threshold the hints hold
+     * their prose matches to, for the same reason: below it the entry shares a
+     * word with the question rather than answering it.
      */
     private const MIN_COVERAGE = 0.5;
 

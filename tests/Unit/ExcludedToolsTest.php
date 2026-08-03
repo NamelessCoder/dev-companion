@@ -68,7 +68,7 @@ final class ExcludedToolsTest extends TestCase
         $offered = $this->toolNames();
         self::assertNotContains('typo3_icon_lookup', $offered);
         self::assertNotContains('typo3_label_lookup', $offered);
-        self::assertContains('typo3_architecture_lookup', $offered);
+        self::assertContains('typo3_hint_lookup', $offered);
     }
 
     #[Test]

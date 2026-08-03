@@ -7,7 +7,7 @@ namespace Typo3CmsMcp\Tests\Unit;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Finder\Finder;
-use Typo3CmsMcp\Knowledge\ArchitectureHints;
+use Typo3CmsMcp\Knowledge\Hints;
 use Typo3CmsMcp\Paths;
 use Typo3CmsMcp\Upkeep\Scenarios;
 
@@ -38,7 +38,7 @@ final class SkillTest extends TestCase
             'typo3_documentation_lookup',
         ],
         'typo3-core-patch-review' => [
-            'typo3_architecture_lookup',
+            'typo3_hint_lookup',
             'typo3_rule_lookup',
             'typo3_changelog_lookup',
             'typo3_test_run_guide',
@@ -48,12 +48,12 @@ final class SkillTest extends TestCase
         'typo3-core-patch-development' => [
             'typo3_rule_lookup',
             'typo3_test_run_guide',
-            'typo3_architecture_lookup',
+            'typo3_hint_lookup',
             'typo3_script_lookup',
             'typo3_commit_message_guide',
         ],
         'typo3-extension-conformance' => [
-            'typo3_architecture_lookup',
+            'typo3_hint_lookup',
             'typo3_documentation_lookup',
         ],
         'typo3-extension-documentation' => [
@@ -67,7 +67,7 @@ final class SkillTest extends TestCase
         'typo3-extension-upgrade' => [
             'typo3_changelog_lookup',
             'typo3_system_extension_lookup',
-            'typo3_architecture_lookup',
+            'typo3_hint_lookup',
             'typo3_documentation_lookup',
         ],
     ];
@@ -84,7 +84,7 @@ final class SkillTest extends TestCase
         $base = (string) file_get_contents(Paths::root() . '/skills/base.md');
 
         $position = -1;
-        foreach (['typo3_project_scope', 'typo3_extension_scope', 'typo3_task_guide', 'typo3_architecture_lookup'] as $tool) {
+        foreach (['typo3_project_scope', 'typo3_extension_scope', 'typo3_task_guide', 'typo3_hint_lookup'] as $tool) {
             $next = strpos($base, $tool);
             self::assertNotFalse($next, $tool . ' is not part of the base');
             self::assertGreaterThan($position, $next, $tool . ' is stated out of order in the base');
@@ -211,7 +211,7 @@ final class SkillTest extends TestCase
 
         $sweep = strpos($base, 'typo3_changelog_lookup');
         self::assertNotFalse($sweep, 'the base never sweeps the deprecations of the installed core');
-        self::assertGreaterThan((int) strpos($base, 'typo3_architecture_lookup'), $sweep);
+        self::assertGreaterThan((int) strpos($base, 'typo3_hint_lookup'), $sweep);
         self::assertLessThan(
             (int) strpos($base, '**Then** read the checkout'),
             $sweep,
@@ -311,12 +311,14 @@ final class SkillTest extends TestCase
         // core wraps the resolved title in htmlspecialchars() two classes
         // further on — neither of which the run opened, while it did open the
         // core ViewHelper that confirmed what it already believed.
-        $checklist = (string) file_get_contents(
+        // Read with the line breaks collapsed: what is asserted is that the
+        // sentence is there, and where it wraps is the formatter's business.
+        $checklist = (string) preg_replace('/\s+/', ' ', (string) file_get_contents(
             Paths::root() . '/skills/typo3-extension-conformance/references/checklist.md',
-        );
+        ));
 
-        self::assertMatchesRegularExpression(
-            '/finding about a user-controlled value is a claim about a \*\*sink\*\*\s+rather than\s+about a call site/',
+        self::assertStringContainsString(
+            'finding about a user-controlled value is a claim about a **sink** rather than about a call site',
             $checklist,
         );
         // Escaping is one sink and a query is another, so the gate is written
@@ -326,11 +328,11 @@ final class SkillTest extends TestCase
         // The half that decides that case: the opt-out the finding condemned is
         // on the path to the sink rather than the end of it, and it is there
         // because the sink escapes.
-        self::assertMatchesRegularExpression('/is on the path rather than\s+at the end of it/', $checklist);
+        self::assertStringContainsString('is on the path rather than at the end of it', $checklist);
         self::assertStringContainsString('report the finding as unverified', $checklist);
         // The sinks themselves are a tool's to answer, so the checklist asks
         // rather than carrying a list that goes stale in a published copy.
-        self::assertStringContainsString('`typo3_architecture_lookup` for the sinks', $checklist);
+        self::assertStringContainsString('`typo3_hint_lookup` for the sinks', $checklist);
     }
 
     #[Test]
@@ -658,13 +660,13 @@ final class SkillTest extends TestCase
         // by name rather than restating it, because a skill is a file no
         // release of this server corrects.
         self::assertStringContainsString(
-            '`typo3_architecture_lookup` with `id=extension-static-analysis`',
+            '`typo3_hint_lookup` with `id=extension-static-analysis`',
             $guidance,
         );
         self::assertStringNotContainsString('phpstan-baseline.neon', $guidance);
         self::assertStringNotContainsString('tmpDir', $guidance);
         self::assertNotNull(
-            ArchitectureHints::byId('extension-static-analysis'),
+            Hints::byId('extension-static-analysis'),
             'the skill defers to an id the corpus does not have',
         );
 
@@ -863,7 +865,7 @@ final class SkillTest extends TestCase
         );
 
         $ask = strpos($skill, 'asked for **before** a view of the subsystem is formed');
-        $lookup = strpos($skill, 'typo3_architecture_lookup');
+        $lookup = strpos($skill, 'typo3_hint_lookup');
         self::assertNotFalse($ask, 'the conformance skill does not say when the conventions are asked for');
         self::assertNotFalse($lookup);
         self::assertLessThan($lookup, $ask, 'the skill asks for conventions after naming what to read');

@@ -4,27 +4,27 @@ declare(strict_types=1);
 
 namespace Typo3CmsMcp\Tool;
 
-use Typo3CmsMcp\Knowledge\ArchitectureHints;
+use Typo3CmsMcp\Knowledge\Hints;
 use Typo3CmsMcp\Knowledge\Scope;
 use Typo3CmsMcp\Knowledge\Versions;
-use Typo3CmsMcp\Result\Hints;
+use Typo3CmsMcp\Result\MatchedHints;
 use Typo3CmsMcp\Result\Schema;
 use Typo3CmsMcp\Result\ToolResult;
 use Typo3CmsMcp\Result\VersionScope;
 
 /**
- * Architecture hints for TYPO3 core paths or task topics, grouped by section.
+ * Hints for TYPO3 core paths or task topics, grouped by section.
  */
-final class ArchitectureLookup extends ReadOnlyTool
+final class HintLookup extends ReadOnlyTool
 {
     public static function name(): string
     {
-        return 'typo3_architecture_lookup';
+        return 'typo3_hint_lookup';
     }
 
     public static function description(): string
     {
-        return 'Return architecture hints for TYPO3 core paths or task topics, grouped by section. Where the paths read as a project or third-party extension the hints still come back, because the conventions transfer. The "Backend CSS" and "Backend TypeScript and JavaScript" sections describe the TYPO3 backend interface and are withheld, with the reason, where the task names the frontend.';
+        return 'Return hints for TYPO3 core paths or task topics, grouped by section. Where the paths read as a project or third-party extension the hints still come back, because the conventions transfer. The "Backend CSS" and "Backend TypeScript and JavaScript" sections describe the TYPO3 backend interface and are withheld, with the reason, where the task names the frontend.';
     }
 
     public static function inputSchema(): array
@@ -33,10 +33,10 @@ final class ArchitectureLookup extends ReadOnlyTool
             'type' => 'object',
             'properties' => [
                 'paths' => ['type' => 'array', 'items' => ['type' => 'string'], 'default' => [], 'description' => 'File paths related to the task, as they are in the repository they belong to. Each is placed on its own, so a core path and an extension path in one call are matched separately, and a statement is labelled where it obliges the other one.'],
-                'task' => ['type' => 'string', 'description' => 'Short task description or architecture topic, in English. Matching is lexical against English text, so another language reaches only the loanwords.'],
+                'task' => ['type' => 'string', 'description' => 'Short task description or topic, in English. Matching is lexical against English text, so another language reaches only the loanwords.'],
                 'id' => ['type' => 'string', 'description' => 'Ask for one hint by its id, for example language-files, instead of matching. Every answer that returns no hint lists the ids there are, so a subject that exists can be requested by name rather than guessed at.'],
                 'targetVersion' => ['type' => 'string', 'description' => 'The TYPO3 version the answer has to hold for, for example "13.4" or "14". State one only to narrow to it: statements that do not hold there are then left out, including those the repository needs for another major it declares. Left out, the answer holds for every major this repository declares typo3/cms-core for, which is what one codebase serving two of them needs; where there is no declaration to read, for the version of the installation this server was started in, and where there is no installation either, nothing is filtered and every statement carries the versions it holds for.'],
-                'limit' => ['type' => 'integer', 'minimum' => 1, 'maximum' => 10, 'default' => 6, 'description' => 'Maximum number of architecture hints.'],
+                'limit' => ['type' => 'integer', 'minimum' => 1, 'maximum' => 10, 'default' => 6, 'description' => 'Maximum number of hints.'],
             ],
         ];
     }
@@ -51,7 +51,7 @@ final class ArchitectureLookup extends ReadOnlyTool
             'targetVersions' => Schema::listOf(['type' => 'integer'], 'Every TYPO3 major the answer holds for. One entry is the ordinary case. Several mean this repository declares typo3/cms-core for more than one of them, so a statement was kept when it holds on any — and where two statements about the same subject differ, the difference is the constraint the code lives under rather than drift. Empty when nothing was filtered by version.'),
             'domains' => Schema::listOf(Schema::string(), 'Hints outside these domains are not returned.'),
             'withheldCategories' => Schema::listOf(Schema::string(), 'Categories that matched the domains but were left out because the task names the frontend. "Backend CSS" and "Backend TypeScript and JavaScript" describe the TYPO3 backend interface and are wrong advice for what a website renders; see docs.typo3.org for frontend theming.'),
-            'hints' => Schema::listOf(Schema::architectureHintRecord()),
+            'hints' => Schema::listOf(Schema::hintRecord()),
             'availableHints' => Schema::listOf(Schema::object([
                 'id' => Schema::string('Ask for this hint outright by passing it as id.'),
                 'title' => Schema::string(),
@@ -81,10 +81,10 @@ final class ArchitectureLookup extends ReadOnlyTool
 
         $found = [];
         foreach ($groups as $group) {
-            $matched = ArchitectureHints::find($group['paths'], $task ?? '', $limit, $id, $targets);
+            $matched = Hints::find($group['paths'], $task ?? '', $limit, $id, $targets);
             $found[] = ['scope' => $group['scope'], 'paths' => $group['paths'], 'result' => $matched];
         }
-        $result = Hints::merged($found);
+        $result = MatchedHints::merged($found);
 
         $lines = [];
         if ($outsideCore) {
@@ -132,7 +132,7 @@ final class ArchitectureLookup extends ReadOnlyTool
                     : ', and ' . implode(' and ', $result['withheldCategories']) . ' was withheld inside them)');
         }
         $lines[] = '';
-        $lines[] = 'Architecture hints:';
+        $lines[] = 'Hints:';
 
         if ($result['matchedHints'] !== []) {
             // One block per scope, and the heading only where there is more
@@ -150,7 +150,7 @@ final class ArchitectureLookup extends ReadOnlyTool
                         $group['scope'] === Scope::Core ? '' : ' — ' . $group['scope']->value,
                     );
                 }
-                $sectionTexts[] = Hints::sections(
+                $sectionTexts[] = MatchedHints::sections(
                     $group['result']['matchedHints'],
                     $group['scope'],
                     $target,
@@ -163,7 +163,7 @@ final class ArchitectureLookup extends ReadOnlyTool
         } elseif ($id !== '') {
             $lines[] = sprintf('There is no hint with the id "%s".', $id);
         } else {
-            $lines[] = 'No architecture hint matched. Name a path or a more specific topic, or ask for one of the ids below.';
+            $lines[] = 'No hint matched. Name a path or a more specific topic, or ask for one of the ids below.';
         }
 
         // The index is the difference between "nothing matched your words" and
@@ -188,7 +188,7 @@ final class ArchitectureLookup extends ReadOnlyTool
             'targetVersions' => $targets,
             'domains' => $result['domains'],
             'withheldCategories' => $result['withheldCategories'],
-            'hints' => Hints::records($result['matchedHints']),
+            'hints' => MatchedHints::records($result['matchedHints']),
             'availableHints' => $result['availableHints'],
         ]);
     }

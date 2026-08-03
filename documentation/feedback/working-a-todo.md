@@ -64,9 +64,10 @@ Where the answer is:
   because they are the code the statement is about and both sides of a version
   boundary are readable in them; `bin/cli checkouts:update` is what makes them
   current. Then the official documentation at the versions in play, and this
-  server's own answers — `typo3_documentation_lookup`, `typo3_changelog_lookup`,
-  `typo3_architecture_lookup` — which are also the fastest way to find that a
-  question is already answered and needs no statement at all.
+  server's own answers — `typo3_documentation_lookup`,
+  `typo3_changelog_lookup`, `typo3_hint_lookup` — which are also the fastest
+  way to find that a question is already answered and needs no statement at
+  all.
 - **about a tool this repository does not own** — Composer, DDEV, the SDK, a CI
   runner, a registry: its own documentation and its own release feedback. What a
   tool does by default is precisely the fact that moves after somebody wrote it

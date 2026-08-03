@@ -6,6 +6,7 @@ namespace Typo3CmsMcp\Upkeep\Command;
 
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Output\OutputInterface;
+use Typo3CmsMcp\Knowledge\Versions;
 use Typo3CmsMcp\Upkeep\Environments;
 
 /**
@@ -19,6 +20,10 @@ use Typo3CmsMcp\Upkeep\Environments;
  * A made one is reported by what it is registered as rather than by whether its
  * directory exists, because the state that matters is the one a case turns on:
  * `E-STOPPED` is `E-SITE` with the project down, and the two are the same files.
+ *
+ * `E-SITE` is one installation per covered version (`D-EVI-006`), so it is a
+ * row per version: which of them are installed here, which are missing, and
+ * which covered line is not made at all.
  */
 #[AsCommand(
     name: 'environment:status',
@@ -33,36 +38,53 @@ final class EnvironmentStatus
         $sources = Environments::sources();
         $projects = Environments::projects();
         foreach (Environments::ids() as $id) {
-            $output->writeln(sprintf('  %-10s %s', $id, $this->state($id, $sources[$id] ?? '', $projects)));
+            if ($id === 'E-SITE') {
+                $output->writeln('  E-SITE     one installation per covered version');
+                foreach (Versions::covered() as $version) {
+                    $branch = $version['branch'];
+                    $output->writeln(sprintf('    %-8s %s', $branch, Environments::refusal($branch) === ''
+                        ? $this->site($branch, $projects)
+                        : 'not made here — `bin/cli environment:create E-SITE ' . $branch . '` says why'));
+                }
+
+                continue;
+            }
+
+            $output->writeln(sprintf('  %-10s %s', $id, $this->state($id, $sources[$id] ?? '')));
         }
 
         $output->writeln('');
-        $output->writeln('`bin/cli environment:create <id>` makes the ones this repository makes, and');
-        $output->writeln('says where the rest come from.');
+        $output->writeln('`bin/cli environment:create <id> [version]` makes the ones this repository');
+        $output->writeln('makes, and says where the rest come from.');
 
         return 0;
     }
 
-    /**
-     * @param array<string, array{name: string, status: string, approot: string, url: string}> $projects
-     */
-    private function state(string $id, string $source, array $projects): string
+    /** What this checkout has of an environment that is not the versioned one. */
+    private function state(string $id, string $source): string
     {
         if ($source !== Environments::MADE) {
             return match ($source) {
                 Environments::ELSEWHERE => 'bin/cli checkouts:update',
-                Environments::STATE => 'a state of E-SITE — stop its DDEV project',
+                Environments::STATE => 'a state of E-SITE — stop one of its DDEV projects',
                 default => 'declared — todo/reference/ names what plays it',
             };
         }
 
         $path = Environments::path($id);
-        if ($id === 'E-NONE') {
-            return is_dir($path) ? $path : 'missing — run bin/cli environment:create E-NONE';
-        }
 
-        $project = $projects[Environments::PROJECT] ?? null;
-        if (!is_file($path . '/config/system/settings.php')) {
+        return is_dir($path) ? $path : 'missing — run bin/cli environment:create ' . $id;
+    }
+
+    /**
+     * @param array<string, array{name: string, status: string, approot: string, url: string}> $projects
+     */
+    private function site(string $branch, array $projects): string
+    {
+        $path = Environments::path('E-SITE', $branch);
+        $name = Environments::project($branch);
+        $project = $projects[$name] ?? null;
+        if (!Environments::installed($branch)) {
             // Where another live checkout holds the name, `create` refuses, so
             // naming it is the answer rather than the command that would. One
             // held for a checkout that is gone is not reported here: `create`
@@ -72,16 +94,16 @@ final class EnvironmentStatus
                 && !Environments::abandoned($project)
                 && rtrim($project['approot'], '/') !== rtrim($path, '/')
             ) {
-                return sprintf('missing here — %s is the one in %s', Environments::PROJECT, $project['approot']);
+                return sprintf('missing here — %s is the one in %s', $name, $project['approot']);
             }
 
-            return 'missing — run bin/cli environment:create E-SITE';
+            return 'missing — run bin/cli environment:create E-SITE ' . $branch;
         }
 
         return sprintf(
             '%s — DDEV project %s is %s',
             $path,
-            Environments::PROJECT,
+            $name,
             $project === null ? 'not registered on this machine' : $project['status'],
         );
     }

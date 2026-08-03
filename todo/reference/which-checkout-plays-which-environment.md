@@ -9,7 +9,10 @@ those skills nor grade its own implementation as behavioral evidence.
 Two of them are no longer a machine's business at all.
 `bin/cli environment:create` makes `E-SITE` and `E-NONE` below `.environments/`,
 so a case that needs an installation to answer from needs nothing off this page
-— `bin/cli environment:status` says what this checkout has. What stays here is
+— `bin/cli environment:status` says what this checkout has. A case naming
+another covered version is `bin/cli environment:create E-SITE <version>`, which
+is one installation per covered line rather than one page entry per machine
+(`D-EVI-006`). What stays here is
 what a scaffold cannot produce: the site package `REVIEW-01` reviews, the three
 extension checkouts whose real infrastructure is what they play (`D-EVI-004`),
 and the core checkout somebody works in, which is where a patch to review comes

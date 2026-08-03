@@ -52,17 +52,25 @@ A case is only meaningful in the working directory it names, and two of the five
 machine:
 
 ```bash
-bin/cli environment:status        # which one this checkout has, and which is only declared
-bin/cli environment:create E-SITE # a DDEV project with TYPO3 installed in it
-bin/cli environment:create E-NONE # a directory with no installation above it
+bin/cli environment:status             # which ones this checkout has, and which are missing
+bin/cli environment:create E-SITE      # a DDEV project with TYPO3 installed in it
+bin/cli environment:create E-SITE 13.4 # the same, on another covered version
+bin/cli environment:create E-NONE      # a directory with no installation above it
 ```
 
 They land below `.environments/`, which is gitignored. `E-SITE` is six `ddev`
 commands: a TYPO3 project, its containers, TYPO3's own base distribution at the
-covered stable version, the system extensions this server's console path asks
-for, and the setup that writes the database, the admin user and a site
-configuration. Minutes on a cold Composer cache, seconds on a warm one, and
-running it again finishes one that stopped halfway.
+version asked for, the system extensions this server's console path asks for,
+and the setup that writes the database, the admin user and a site configuration.
+Minutes on a cold Composer cache, seconds on a warm one, and running it again
+finishes one that stopped halfway.
+
+There is one installation per covered version that has a release, each its own
+directory and its own DDEV project, and the version named none is the covered
+stable one. Asked for one that is already installed the command starts its
+containers rather than building anything, so an environment is made once and
+kept — `D-EVI-006`, which also has what one costs on disk and why the
+development line is not one of them.
 
 What it is for is a directory in which `ddev exec vendor/bin/typo3 …` answers —
 the half of this server that no test reaches, and where both `D-DIS-007` and

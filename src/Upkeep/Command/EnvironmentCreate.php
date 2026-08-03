@@ -15,12 +15,16 @@ use Typo3CmsMcp\Upkeep\Environments;
  *
  * `E-SITE` is the one that costs something and the one that was missing. It is
  * a DDEV project with a TYPO3 installation in it, built from TYPO3's own base
- * distribution at the covered stable version, set up against the database DDEV
- * brings, with a site configuration and a root page — which is to say a
- * directory in which `ddev exec vendor/bin/typo3 …` answers. That is the half
- * of this server no test reaches: `D-DIS-007` and `R-DIS-018` were both found
- * by a real run, in somebody's project, because there was no installation here
- * to find them in.
+ * distribution, set up against the database DDEV brings, with a site
+ * configuration and a root page — which is to say a directory in which
+ * `ddev exec vendor/bin/typo3 …` answers. That is the half of this server no
+ * test reaches: `D-DIS-007` and `R-DIS-018` were both found by a real run, in
+ * somebody's project, because there was no installation here to find them in.
+ *
+ * One of them per covered line, and the version is the second argument —
+ * `D-EVI-006`. Named none it is the covered stable one, which is what a case
+ * that says nothing about a version is run on. Asked for one that is already
+ * installed it starts the containers and never builds again.
  *
  * What it is not is a repository to review. The site package, the extension
  * with real infrastructure, the extension a major behind — those are what a
@@ -43,6 +47,8 @@ final class EnvironmentCreate
         OutputInterface $output,
         #[Argument('which environment, as `scenarios/readme.md` names it')]
         string $environment = 'E-SITE',
+        #[Argument('which covered version to install it on, where the environment has one')]
+        string $version = '',
     ): int {
         $id = strtoupper(trim($environment));
         $sources = Environments::sources();
@@ -64,7 +70,11 @@ final class EnvironmentCreate
             return 1;
         }
 
-        return $id === 'E-NONE' ? $this->nothing($output) : $this->site($output);
+        if ($id === 'E-NONE') {
+            return $this->nothing($output);
+        }
+
+        return $this->site($output, trim($version) === '' ? Environments::branch() : trim($version));
     }
 
     /**
@@ -108,19 +118,18 @@ final class EnvironmentCreate
         return 0;
     }
 
-    /** The DDEV project with a TYPO3 installation in it. */
-    private function site(OutputInterface $output): int
+    /** The DDEV project with a TYPO3 installation of one covered line in it. */
+    private function site(OutputInterface $output, string $branch): int
     {
-        $path = Environments::path('E-SITE');
-        $project = Environments::PROJECT;
-        if (is_file($path . '/config/system/settings.php')) {
-            $output->writeln(sprintf('E-SITE is already at %s, as DDEV project %s.', $path, $project));
-            $output->writeln(sprintf('    ddev delete --omit-snapshot -y %s && rm -rf %s', $project, $path));
-            $output->writeln('is what takes it away, and this command then makes it again.');
+        $refusal = Environments::refusal($branch);
+        if ($refusal !== '') {
+            Cli::errors($output)->writeln($refusal);
 
-            return 0;
+            return 1;
         }
 
+        $path = Environments::path('E-SITE', $branch);
+        $project = Environments::project($branch);
         if (!Environments::ddev()) {
             Cli::errors($output)->writeln(
                 "There is no `ddev` on this machine, and an E-SITE is a DDEV project.\n"
@@ -166,13 +175,17 @@ final class EnvironmentCreate
             return 1;
         }
 
+        if (Environments::installed($branch)) {
+            return $this->resume($output, $branch, $registered['status'] ?? null);
+        }
+
         if (!is_dir($path) && !mkdir($path, 0o777, true) && !is_dir($path)) {
             Cli::errors($output)->writeln('Cannot create ' . $path);
 
             return 2;
         }
 
-        foreach (Environments::build($project) as $what => $command) {
+        foreach (Environments::build($branch) as $what => $command) {
             $output->writeln($what);
             $output->writeln('    ' . implode(' ', $command));
             [$exitCode, $said] = Environments::run($command, $path);
@@ -197,10 +210,63 @@ final class EnvironmentCreate
         }
 
         $output->writeln('');
-        $output->writeln(sprintf('E-SITE is %s, as DDEV project %s.', $path, $project));
-        $output->writeln(sprintf('    https://%s.ddev.site/typo3 — admin / %s', $project, Environments::ADMIN_PASSWORD));
-        $output->writeln('Start an MCP client in that directory to run a case in it.');
+        $this->where($output, $branch);
 
         return 0;
+    }
+
+    /**
+     * An installation that is already there is started, never built again.
+     *
+     * The build is minutes and a hundred packages and the containers are
+     * seconds, so an environment kept between runs is only worth keeping if
+     * asking for it again costs the seconds. DDEV pauses an idle project by
+     * itself, which is the state this meets most of the time.
+     */
+    private function resume(OutputInterface $output, string $branch, ?string $status): int
+    {
+        $path = Environments::path('E-SITE', $branch);
+        $resume = Environments::resume($status);
+        if ($resume === null) {
+            $this->where($output, $branch);
+
+            return 0;
+        }
+
+        $output->writeln(sprintf('The installation is at %s, and its containers are %s.', $path, $status ?? 'not registered'));
+        $output->writeln('    ' . implode(' ', $resume));
+        [$exitCode, $said] = Environments::run($resume, $path);
+        if ($exitCode !== 0) {
+            Cli::errors($output)->writeln(rtrim($said));
+            Cli::errors($output)->writeln('');
+            Cli::errors($output)->writeln('The installation is there and its containers did not come up.');
+
+            return 2;
+        }
+
+        $output->writeln('');
+        $this->where($output, $branch);
+
+        return 0;
+    }
+
+    /** Where the environment is, and what it takes to open it. */
+    private function where(OutputInterface $output, string $branch): void
+    {
+        $project = Environments::project($branch);
+        $output->writeln(sprintf(
+            'E-SITE on TYPO3 %s is %s, as DDEV project %s.',
+            $branch,
+            Environments::path('E-SITE', $branch),
+            $project,
+        ));
+        $output->writeln(sprintf('    https://%s.ddev.site/typo3 — admin / %s', $project, Environments::ADMIN_PASSWORD));
+        $output->writeln('Start an MCP client in that directory to run a case in it.');
+        $output->writeln(sprintf(
+            '    ddev delete --omit-snapshot -y %s && rm -rf %s',
+            $project,
+            Environments::path('E-SITE', $branch),
+        ));
+        $output->writeln('is what takes it away, and this command then makes it again.');
     }
 }

@@ -58,15 +58,22 @@ person can run.
 Two of the five this repository makes for itself, below `.environments/`:
 
 ```bash
-bin/cli environment:status        # which one this checkout has, and which is only declared
-bin/cli environment:create E-SITE # a DDEV project with TYPO3 installed in it
+bin/cli environment:status             # which ones this checkout has, and which are missing
+bin/cli environment:create E-SITE      # a DDEV project with TYPO3 installed in it
+bin/cli environment:create E-SITE 13.4 # the same, on another covered version
 ```
 
 `E-SITE` is the one a run needs and the one that costs something — containers, a
 database, a docker daemon a CI job may not have — and it is made here because
-everything a case needs from it is a property this repository can state. `E-EXT`
-is not: what a case needs from an extension repository is real infrastructure at
-a real revision, which no scaffold produces. `E-CORE` is
+everything a case needs from it is a property this repository can state. One
+installation runs one version, so there is one per covered version that has a
+release: named none, the covered stable one, which is what a case that says
+nothing about a version is run on. `SITE-02` is the case that says otherwise,
+and `bin/cli environment:create E-SITE 13.4` is the previous major it names
+([`D-EVI-006`](../decisions/evidence/evi-006-one-installation-per-covered-version-kept-and-started.md)).
+
+`E-EXT` is not made here: what a case needs from an extension repository is real
+infrastructure at a real revision, which no scaffold produces. `E-CORE` is
 `bin/cli checkouts:update`, and `E-STOPPED` is `E-SITE` with its project
 stopped. Asking `environment:create` for one of those answers with where it
 comes from instead. The reasoning is

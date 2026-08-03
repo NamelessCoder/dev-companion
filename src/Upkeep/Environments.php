@@ -44,15 +44,23 @@ final class Environments
     /** Not a directory at all: a state the environment above it is put into. */
     public const STATE = 'state';
 
+    /** What `knowledge/versions.json` calls the line that has no release. */
+    private const DEVELOPMENT = 'development';
+
     /**
-     * What DDEV registers a created project under.
+     * What DDEV registers a created project under, one name per covered line.
      *
      * The name is global to the machine — `ddev list` is one namespace — while
      * the directory is per checkout, so two checkouts asking for the same
      * environment ask for one name. That is refused rather than taken over,
-     * naming the directory that already holds it.
+     * naming the directory that already holds it. The version is in the name
+     * because it is in the installation: one name for all of them is one
+     * installation for all of them, which is what `D-EVI-006` is about.
      */
-    public const PROJECT = 'typo3-mcp-e-site';
+    public static function project(string $branch): string
+    {
+        return 'typo3-mcp-e-site-' . str_replace('.', '-', $branch);
+    }
 
     /**
      * The password the created installation's admin user gets.
@@ -89,12 +97,14 @@ final class Environments
     public const REQUIRED = ['typo3/cms-lowlevel'];
 
     /**
-     * The PHP the containers run.
+     * The PHP the containers run, on every line an installation is made of.
      *
      * Pinned rather than left to DDEV, which defaults to whatever is current
-     * when it is installed. The covered stable major declares `^8.2`, so this
-     * is inside the range with room above it, and the environment does not
-     * change PHP version because somebody upgraded DDEV.
+     * when it is installed. One pin covers every released covered line: each
+     * one's own `Build/Scripts/runTests.sh` runs this version — 12.4 accepts
+     * `8.1` to `8.5`, 13.4 and 14.3 accept `8.2` to `8.5`, read in
+     * `.checkouts/` on 2026-08-03. The development line is the one it does not
+     * cover, and `refusal()` is where that is said.
      */
     public const PHP = '8.4';
 
@@ -146,7 +156,7 @@ final class Environments
             'E-STOPPED' => sprintf(
                 "Not a directory of its own: it is `E-SITE` with its DDEV project down. Make\n"
                 . "that one, then stop it.\n\n    ddev stop %s",
-                self::PROJECT,
+                self::project(self::branch()),
             ),
             default => 'Nothing here makes it.',
         };
@@ -158,20 +168,31 @@ final class Environments
         return Paths::root() . '/.environments';
     }
 
-    /** Where one environment lives, whether or not it is there yet. */
-    public static function path(string $id): string
+    /**
+     * Where one environment lives, whether or not it is there yet.
+     *
+     * An `E-SITE` is one directory per covered line, because it is one
+     * installation per covered line. `E-NONE` has no version to be of.
+     */
+    public static function path(string $id, ?string $branch = null): string
     {
-        return self::directory() . '/' . strtolower($id);
+        return self::directory() . '/' . strtolower($id) . ($branch === null ? '' : '-' . $branch);
+    }
+
+    /** Whether the installation of a covered line is there to be run in. */
+    public static function installed(string $branch): bool
+    {
+        return is_file(self::path('E-SITE', $branch) . '/config/system/settings.php');
     }
 
     /**
-     * The branch a made installation is built on: the covered version that is
-     * stable.
+     * The line a made installation is built on where nobody says which: the
+     * covered version that is stable.
      *
-     * Read off `knowledge/versions.json` rather than written down, because the
-     * environment a run validates in has to be the version this server answers
-     * for. A repository that starts covering a new stable and keeps making
-     * installations of the old one measures itself in the wrong place.
+     * Read off `knowledge/versions.json` rather than written down, because a
+     * run that names no version validates against the version this server
+     * answers for. A repository that starts covering a new stable and keeps
+     * making installations of the old one measures itself in the wrong place.
      */
     public static function branch(): string
     {
@@ -182,6 +203,83 @@ final class Environments
         }
 
         throw new \RuntimeException('knowledge/versions.json covers no stable version to build an installation of');
+    }
+
+    /**
+     * Every covered line an installation is made of, oldest first.
+     *
+     * One installation runs one version, so a client asking about another
+     * covered line is answered by nothing this repository has. `SITE-02` is
+     * the case that says so out loud — it names `E-SITE` on the previous major
+     * — and it is the reason this is a list rather than `branch()`.
+     *
+     * @return array<int, string>
+     */
+    public static function branches(): array
+    {
+        $branches = [];
+        foreach (Versions::covered() as $version) {
+            if ($version['status'] !== self::DEVELOPMENT) {
+                $branches[] = $version['branch'];
+            }
+        }
+
+        return $branches;
+    }
+
+    /**
+     * Why no installation is made of a version, and an empty string where one
+     * is.
+     *
+     * The development line is covered and is not built: `typo3/cms-base-
+     * distribution` publishes no release above the newest stable, so the only
+     * thing tracking the development core is its `dev-main`, and that core
+     * declares PHP `^8.5` against the version pinned here. Both were read on
+     * 2026-08-03, from packagist and from `.checkouts/main/composer.json`.
+     */
+    public static function refusal(string $branch): string
+    {
+        if (in_array($branch, self::branches(), true)) {
+            return '';
+        }
+
+        foreach (Versions::covered() as $version) {
+            if ($version['branch'] === $branch) {
+                return sprintf(
+                    "%s is the development line, and an installation of it is a different\n"
+                    . "build: %s publishes no release above %s, so it\n"
+                    . "would come from that package's `dev-main`, and the core there declares\n"
+                    . 'PHP `^8.5` where this pins %s.',
+                    $branch,
+                    self::DISTRIBUTION,
+                    self::branch(),
+                    self::PHP,
+                );
+            }
+        }
+
+        return sprintf(
+            "%s is no version this server covers. `knowledge/versions.json` says which,\n"
+            . 'and an installation is made of these: %s',
+            $branch,
+            implode(', ', self::branches()),
+        );
+    }
+
+    /**
+     * What `create` does with an installation that is already there.
+     *
+     * Never the build again, and `ddev start` where the containers are down —
+     * which is every state but `running`, the pause DDEV puts an idle project
+     * into included. A registration that is gone is the same case: `start` in
+     * the directory registers it back. An installation is minutes and a
+     * hundred packages; the containers are seconds.
+     *
+     * @return array<int, string>|null
+     */
+    public static function resume(?string $status): ?array
+    {
+        return $status === 'running' ? null : ['ddev', 'start', '-y'];
     }
 
     /**
@@ -332,9 +430,9 @@ final class Environments
      *
      * @return array<string, array<int, string>>
      */
-    public static function build(string $project): array
+    public static function build(string $branch): array
     {
-        $branch = self::branch();
+        $project = self::project($branch);
         $steps = [
             'A DDEV project of the type TYPO3, serving from public/' => [
                 'ddev', 'config', '--auto',
@@ -370,7 +468,7 @@ final class Environments
             '--admin-username=admin',
             '--admin-user-password=' . self::ADMIN_PASSWORD,
             '--admin-email=admin@example.com',
-            '--project-name=TYPO3 MCP scenario environment',
+            '--project-name=TYPO3 MCP scenario environment ' . $branch,
             // Not optional, whatever the option definition says. Its default is
             // read through the same fallback as the environment variable, so
             // with --no-interaction and nothing passed the validator is handed

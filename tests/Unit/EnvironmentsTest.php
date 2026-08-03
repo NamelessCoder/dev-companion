@@ -74,8 +74,98 @@ final class EnvironmentsTest extends TestCase
         self::assertSame($stable[0]['branch'], Environments::branch());
         self::assertStringContainsString(
             Environments::DISTRIBUTION . ':^' . $stable[0]['branch'],
-            implode(' ', array_merge(...array_values(Environments::build(Environments::PROJECT)))),
+            implode(' ', array_merge(...array_values(Environments::build(Environments::branch())))),
         );
+    }
+
+    /**
+     * One installation runs one version, so what a client on another covered
+     * line would be answered is shown by an installation of that line or by
+     * nothing. `SITE-02` names `E-SITE` on the previous major, which is the
+     * case a single installation cannot be run.
+     */
+    #[Test]
+    public function everyCoveredLineWithAReleaseIsOneAnInstallationIsMadeOf(): void
+    {
+        $made = Environments::branches();
+
+        self::assertContains(Environments::branch(), $made, 'the covered stable line is not made');
+        foreach (Versions::covered() as $version) {
+            $expected = $version['status'] === 'development' ? 'not' : 'is';
+            self::assertSame(
+                $expected === 'is',
+                in_array($version['branch'], $made, true),
+                $version['branch'] . ' is ' . $expected . ' a line an installation is made of',
+            );
+        }
+    }
+
+    /**
+     * Every line but the made ones declines with the reason, because a version
+     * argument is a thing somebody types wrong. The development line is the
+     * one that is covered and still declined: the base distribution has no
+     * release above the stable major and the core there declares PHP `^8.5`.
+     */
+    #[Test]
+    public function aVersionNoInstallationIsMadeOfSaysWhyRatherThanNothing(): void
+    {
+        foreach (Environments::branches() as $branch) {
+            self::assertSame('', Environments::refusal($branch), $branch . ' is made here and still declines');
+        }
+
+        foreach (Versions::covered() as $version) {
+            if (in_array($version['branch'], Environments::branches(), true)) {
+                continue;
+            }
+
+            self::assertStringContainsString(
+                Environments::DISTRIBUTION,
+                Environments::refusal($version['branch']),
+                $version['branch'] . ' declines without saying what is missing',
+            );
+        }
+
+        self::assertStringContainsString('14.9', Environments::refusal('14.9'), 'a version nothing covers is not named back');
+    }
+
+    /**
+     * Each installation is registered under a name of its own, and lives in a
+     * directory of its own. One name for all of them is one installation for
+     * all of them, which is the state `D-EVI-006` was written against.
+     */
+    #[Test]
+    public function eachCoveredLineIsItsOwnProjectAndItsOwnDirectory(): void
+    {
+        $projects = array_map(Environments::project(...), Environments::branches());
+        $paths = array_map(
+            static fn(string $branch): string => Environments::path('E-SITE', $branch),
+            Environments::branches(),
+        );
+
+        self::assertSame($projects, array_unique($projects), 'two covered lines share one DDEV project name');
+        self::assertSame($paths, array_unique($paths), 'two covered lines share one directory');
+        foreach (Environments::branches() as $branch) {
+            self::assertSame(
+                Environments::project($branch),
+                str_replace('.', '-', 'typo3-mcp-e-site-' . $branch),
+                'a DDEV project name carries a character DDEV does not take',
+            );
+        }
+    }
+
+    /**
+     * A build is minutes and a hundred packages and the containers are
+     * seconds. An environment that is kept between runs is only kept if asking
+     * for it again starts what is there — including out of the pause DDEV puts
+     * an idle project into by itself.
+     */
+    #[Test]
+    public function anInstallationThatIsThereIsStartedRatherThanBuiltAgain(): void
+    {
+        self::assertNull(Environments::resume('running'), 'a running project is started a second time');
+        foreach (['stopped', 'paused', null] as $status) {
+            self::assertSame(['ddev', 'start', '-y'], Environments::resume($status), 'a project that is down is not started');
+        }
     }
 
     /**
@@ -87,7 +177,7 @@ final class EnvironmentsTest extends TestCase
     #[Test]
     public function theBuildRequiresTheExtensionsWhoseConsoleCommandsThisServerAsksFor(): void
     {
-        $build = implode(' ', array_merge(...array_values(Environments::build(Environments::PROJECT))));
+        $build = implode(' ', array_merge(...array_values(Environments::build(Environments::branch()))));
 
         self::assertNotSame([], Environments::REQUIRED);
         foreach (Environments::REQUIRED as $package) {
@@ -106,7 +196,7 @@ final class EnvironmentsTest extends TestCase
     public function theSetupStepPassesEveryOptionItCannotBeAskedFor(): void
     {
         $setup = [];
-        foreach (Environments::build(Environments::PROJECT) as $command) {
+        foreach (Environments::build(Environments::branch()) as $command) {
             if (in_array('setup', $command, true)) {
                 $setup = $command;
             }
@@ -134,18 +224,21 @@ final class EnvironmentsTest extends TestCase
     public function theSiteIsCreatedForTheAddressDdevGivesTheProject(): void
     {
         $created = [];
-        foreach (Environments::build(Environments::PROJECT) as $command) {
+        foreach (Environments::build(Environments::branch()) as $command) {
             foreach ($command as $argument) {
                 if (str_starts_with($argument, '--create-site=')) {
                     $created[] = $argument;
                 }
                 if (str_starts_with($argument, '--project-name=') && in_array('config', $command, true)) {
-                    self::assertSame('--project-name=' . Environments::PROJECT, $argument);
+                    self::assertSame('--project-name=' . Environments::project(Environments::branch()), $argument);
                 }
             }
         }
 
-        self::assertSame(['--create-site=https://' . Environments::PROJECT . '.ddev.site/'], $created);
+        self::assertSame(
+            ['--create-site=https://' . Environments::project(Environments::branch()) . '.ddev.site/'],
+            $created,
+        );
     }
 
     /**
@@ -157,7 +250,7 @@ final class EnvironmentsTest extends TestCase
     #[Test]
     public function everyStepOfTheBuildRunsInTheProjectRatherThanOnTheMachine(): void
     {
-        foreach (Environments::build(Environments::PROJECT) as $what => $command) {
+        foreach (Environments::build(Environments::branch()) as $what => $command) {
             self::assertNotSame('', trim((string) $what), 'a step of the build says nothing about itself');
             self::assertSame('ddev', $command[0] ?? '', $what . ' runs outside the project');
         }
@@ -175,14 +268,14 @@ final class EnvironmentsTest extends TestCase
     public function aRegistrationWhoseCheckoutIsGoneHoldsNothingBack(): void
     {
         self::assertTrue(Environments::abandoned([
-            'name' => Environments::PROJECT,
+            'name' => Environments::project(Environments::branch()),
             'status' => 'project directory missing',
             'approot' => Paths::root() . '/.worktrees/a-checkout-that-was-removed/.environments/e-site',
             'url' => '',
         ]), 'an approot that is gone is read as a checkout still holding the name');
 
         self::assertFalse(Environments::abandoned([
-            'name' => Environments::PROJECT,
+            'name' => Environments::project(Environments::branch()),
             'status' => 'running',
             'approot' => Paths::root(),
             'url' => '',
@@ -200,13 +293,13 @@ final class EnvironmentsTest extends TestCase
     #[Test]
     public function clearingARegistrationTakesTheDatabaseThatWouldOutliveIt(): void
     {
-        $discard = Environments::discard(Environments::PROJECT);
+        $discard = Environments::discard(Environments::project(Environments::branch()));
 
         self::assertSame('ddev', $discard[0] ?? '', 'the registration is cleared outside the project');
         self::assertSame('delete', $discard[1] ?? '', 'stop leaves the database the next build fails on');
         self::assertNotContains('--unlist', $discard, 'unlisting frees the name and keeps the database');
         self::assertContains('--omit-snapshot', $discard);
-        self::assertContains(Environments::PROJECT, $discard);
+        self::assertContains(Environments::project(Environments::branch()), $discard);
     }
 
     /**
@@ -220,6 +313,9 @@ final class EnvironmentsTest extends TestCase
         $ignored = preg_split('/\R/', (string) file_get_contents(Paths::root() . '/.gitignore')) ?: [];
 
         self::assertContains('/.environments', array_map(trim(...), $ignored));
-        self::assertStringStartsWith(Environments::directory() . '/', Environments::path('E-SITE'));
+        self::assertStringStartsWith(
+            Environments::directory() . '/',
+            Environments::path('E-SITE', Environments::branch()),
+        );
     }
 }

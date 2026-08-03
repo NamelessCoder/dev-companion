@@ -57,6 +57,7 @@ went back to and found standing; the rest are open, which is the ordinary case
 and not a defect.
 
 - [`D-ANS-033`][D-ANS-033] — The review server is read anonymously, and the answer says what that leaves out · 2026-08-03
+- [`D-ANS-034`][D-ANS-034] — A source outside this package answers JSON, or it did not answer · 2026-08-03
 - [`D-FBK-025`][D-FBK-025] — A judgement reads the corpus, decides the shape, and sets the priority · 2026-08-03
 - [`D-FBK-026`][D-FBK-026] — The ladder needs an outcome that builds something · 2026-08-03
 - [`D-FBK-027`][D-FBK-027] — The server builds what costs its caller round trips · 2026-08-03
@@ -182,6 +183,7 @@ and not a defect.
 - [`D-VER-002`][D-VER-002] — The prose is not bound; it says which half it is · 2026-07-29 · confirmed
 
 [D-ANS-033]: answers/ans-033-the-review-server-is-read-anonymously-and-the-answer-says-what-that-leaves-out.md
+[D-ANS-034]: answers/ans-034-a-source-outside-this-package-answers-json-or-it-did-not-answer.md
 [D-FBK-025]: feedback/fbk-025-a-judgement-reads-the-corpus-decides-the-shape-and-sets-the-priority.md
 [D-FBK-026]: feedback/fbk-026-the-ladder-needs-an-outcome-that-builds-something.md
 [D-FBK-027]: feedback/fbk-027-the-server-builds-what-costs-its-caller-round-trips.md

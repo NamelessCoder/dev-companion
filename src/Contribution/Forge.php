@@ -74,7 +74,7 @@ final class Forge
             // more browser-like one. One retry, because a second failure is
             // an answer about the host rather than about the request.
             $retry = $this->fetch->read($url, ['Accept: application/json'], Fetch::PLAIN_AGENT);
-            $decoded = $retry['body'] === null ? null : self::decoded($retry['body']);
+            $decoded = self::decoded($retry['body']);
         }
         if ($decoded === null) {
             return ['status' => 'unavailable', 'url' => $url, 'issue' => null, 'cause' => 'source-not-parseable'];
@@ -93,11 +93,11 @@ final class Forge
      *
      * @return array<string, mixed>|null
      */
-    private static function decoded(string $body): ?array
+    private static function decoded(?string $body): ?array
     {
-        $decoded = json_decode($body, true);
+        $decoded = Fetch::decode($body);
 
-        return is_array($decoded) && is_array($decoded['issue'] ?? null) ? $decoded['issue'] : null;
+        return is_array($decoded['issue'] ?? null) ? $decoded['issue'] : null;
     }
 
     /**

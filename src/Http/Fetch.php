@@ -83,6 +83,41 @@ final class Fetch
     public const PLAIN_AGENT = 'curl/8.5.0';
 
     /**
+     * What an API prefixes its JSON with so a browser cannot execute the
+     * response as a script. It is not JSON and has to come off before the body
+     * parses; a body that does not start with it is passed through untouched,
+     * because anything else at the head is a portal rather than a guard.
+     */
+    private const XSSI_PREFIX = ")]}'";
+
+    /**
+     * The JSON a body carries, or null for everything that is not JSON.
+     *
+     * The sources that reach outside this package read JSON and nothing else
+     * (`D-ANS-034`). A page with a 200 in front of it is what bot protection
+     * and captive portals answer with, and the only safe reading of one is that
+     * the question was not answered — so this returns null rather than letting
+     * a caller decide how much of an HTML document looks like an answer.
+     *
+     * @return array<mixed>|null
+     */
+    public static function decode(?string $body): ?array
+    {
+        if ($body === null) {
+            return null;
+        }
+
+        $body = ltrim($body);
+        if (str_starts_with($body, self::XSSI_PREFIX)) {
+            $body = ltrim(substr($body, strlen(self::XSSI_PREFIX)));
+        }
+
+        $decoded = json_decode($body, true);
+
+        return is_array($decoded) ? $decoded : null;
+    }
+
+    /**
      * The same read, with the status the host answered.
      *
      * One source needs it: an issue tracker answers 404 for an issue that does

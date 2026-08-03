@@ -24,12 +24,6 @@ final class Gerrit
 {
     public const HOST = 'https://review.typo3.org';
 
-    /**
-     * What every JSON response opens with, to stop a browser executing it as a
-     * script. It is not JSON and has to come off before the body parses.
-     */
-    private const XSSI_PREFIX = ")]}'";
-
     private readonly Fetch $fetch;
 
     /** @param (\Closure(string): ?string)|null $transport */
@@ -75,8 +69,8 @@ final class Gerrit
             return ['status' => 'unavailable', 'query' => $query, 'changes' => [], 'cause' => 'source-not-answering'];
         }
 
-        $decoded = json_decode(self::withoutXssiPrefix($body), true);
-        if (!is_array($decoded)) {
+        $decoded = Fetch::decode($body);
+        if ($decoded === null) {
             return ['status' => 'unavailable', 'query' => $query, 'changes' => [], 'cause' => 'source-not-parseable'];
         }
 
@@ -118,19 +112,5 @@ final class Gerrit
         ];
     }
 
-    /**
-     * The prefix is a fixed string rather than a pattern: anything else at the
-     * head of the body is a proxy or a login page, and treating it as noise to
-     * skip would parse whatever came after it as a review.
-     */
-    private static function withoutXssiPrefix(string $body): string
-    {
-        $body = ltrim($body);
-        if (!str_starts_with($body, self::XSSI_PREFIX)) {
-            return $body;
-        }
-
-        return ltrim(substr($body, strlen(self::XSSI_PREFIX)));
-    }
 
 }

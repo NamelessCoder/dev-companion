@@ -67,6 +67,8 @@ when it is added.
 - [`R-KNW-057`][R-KNW-057] — The push a session cannot take back is answered in full · held
 - [`R-KNW-058`][R-KNW-058] — The placement answer says which page may hold the record · held
 - [`R-KNW-059`][R-KNW-059] — A change is told which cache group holds its old output · held
+- [`R-KNW-060`][R-KNW-060] — The project configuration answer names what DDEV writes and what it cannot configure · **open**
+- [`R-KNW-061`][R-KNW-061] — A translation file is told what a missing `target-language` costs it · **open**
 
 [R-KNW-001]: knw-001-upgrade-wizards-and-dataprocessors-have-hints-of-their-own.md
 [R-KNW-002]: knw-002-a-hint-carries-the-words-its-subject-is-asked-about-in.md
@@ -127,3 +129,5 @@ when it is added.
 [R-KNW-057]: knw-057-the-push-a-session-cannot-take-back-is-answered-in-full.md
 [R-KNW-058]: knw-058-the-placement-answer-says-which-page-may-hold-the-record.md
 [R-KNW-059]: knw-059-a-change-is-told-which-cache-group-holds-its-old-output.md
+[R-KNW-060]: knw-060-the-project-configuration-answer-names-what-ddev-writes-and-what-it-cannot-configure.md
+[R-KNW-061]: knw-061-a-translation-file-is-told-what-a-missing-target-language-costs-it.md

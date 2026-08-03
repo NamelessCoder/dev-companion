@@ -56,7 +56,7 @@ What is not listed as revoked still holds. `confirmed` marks the ones somebody
 went back to and found standing; the rest are open, which is the ordinary case
 and not a defect.
 
-- [`D-ANS-033`][D-ANS-033] — The review server is read anonymously, and the answer says what that leaves out · 2026-08-03
+- [`D-ANS-033`][D-ANS-033] — The review server is read anonymously, and the answer says what that leaves out · 2026-08-03 · confirmed
 - [`D-ANS-034`][D-ANS-034] — A source outside this package answers JSON, or it did not answer · 2026-08-03
 - [`D-ANS-035`][D-ANS-035] — The matcher entry is owed to what the changelog tag claims · 2026-08-03 · confirmed
 - [`D-ANS-036`][D-ANS-036] — A query written in Fluid tags is searched in the book that documents them · 2026-08-03
@@ -67,6 +67,8 @@ and not a defect.
 - [`D-ANS-041`][D-ANS-041] — The changelog title is read where the file names carry nothing · 2026-08-03
 - [`D-ANS-042`][D-ANS-042] — An identifier reaches the changelog entries whose body names it · 2026-08-03
 - [`D-ANS-043`][D-ANS-043] — A miss is answered in data, and says which corpus its silence belongs to · 2026-08-03
+- [`D-ANS-044`][D-ANS-044] — The environment answer carries the lifecycle it declares, beside the interpreter it runs · 2026-08-03
+- [`D-ANS-045`][D-ANS-045] — The Classes section covers the directory it names, and a value read off the tree says so · 2026-08-03
 - [`D-COD-004`][D-COD-004] — What leaves this process goes through one seam · 2026-08-03
 - [`D-DIS-010`][D-DIS-010] — What this package writes into a project ignores itself · 2026-08-03
 - [`D-DOC-009`][D-DOC-009] — Prose names what counts rather than the count · 2026-08-03
@@ -85,6 +87,7 @@ and not a defect.
 - [`D-GUI-005`][D-GUI-005] — The product premise is one statement, on the brief every task passes through · 2026-08-03
 - [`D-GUI-006`][D-GUI-006] — A task that changes nothing is a change type of its own · 2026-08-03
 - [`D-GUI-007`][D-GUI-007] — The brief carries a selection of the hints and says whose they are · 2026-08-03 · confirmed
+- [`D-GUI-008`][D-GUI-008] — Operating an installation is a change type of its own · 2026-08-03
 - [`D-KNW-029`][D-KNW-029] — A hint names the domains it is asked from, and the file names the subject · 2026-08-03
 - [`D-KNW-030`][D-KNW-030] — A hint is one question, and the DataHandler family is six of them · 2026-08-03
 - [`D-KNW-031`][D-KNW-031] — A suite is a property of the domain, not of the hint · 2026-08-03
@@ -101,6 +104,11 @@ and not a defect.
 - [`D-KNW-043`][D-KNW-043] — A rule about what an API may be used for carries the strength of the claim and the source it was read from · 2026-08-03
 - [`D-KNW-044`][D-KNW-044] — One search over the whole Tests/ tree finds what asserts a rendered output · 2026-08-03
 - [`D-KNW-045`][D-KNW-045] — The document root is named by what configures it and by what serves it · 2026-08-03
+- [`D-KNW-046`][D-KNW-046] — The non-interactive install path is a gap this server owns · 2026-08-03
+- [`D-KNW-047`][D-KNW-047] — What installs TYPO3 below the extension being developed is a gap this server owns · 2026-08-03
+- [`D-KNW-048`][D-KNW-048] — What the impexp import rewrites in a site configuration is a gap this server owns · 2026-08-03
+- [`D-KNW-049`][D-KNW-049] — What DDEV writes into the settings is named in full, and so is what it cannot configure · 2026-08-03
+- [`D-KNW-050`][D-KNW-050] — What a missing `target-language` does to a translation file is a gap this server owns · 2026-08-03
 - [`D-SKL-005`][D-SKL-005] — Core contribution earns two task skills, one for reviewing a patch and one for creating one · 2026-08-03
 - [`D-SKL-006`][D-SKL-006] — The site-new cluster earns the route into the skill that owns the task · 2026-08-03
 - [`D-SKL-007`][D-SKL-007] — Every disposition a review makes carries its evidence · 2026-08-03
@@ -108,6 +116,7 @@ and not a defect.
 - [`D-SKL-009`][D-SKL-009] — The rule that keeps not landing is written as an act with an object · 2026-08-03 · confirmed
 - [`D-SKL-010`][D-SKL-010] — The assessment that precedes a core patch reads the issue and the review server · 2026-08-03
 - [`D-SKL-011`][D-SKL-011] — The call plan a skill writes down is measured against the corpus that answers it · 2026-08-03
+- [`D-SKL-012`][D-SKL-012] — Bringing a package's development installation into existence earns a task skill · 2026-08-03
 - [`D-ANS-005`][D-ANS-005] — A question that is not supported here is answered in a shape of its own · 2026-08-02
 - [`D-ANS-006`][D-ANS-006] — An identifier is found however it is spelled · 2026-08-02
 - [`D-ANS-007`][D-ANS-007] — Two shapes for "not answered", one word for why · 2026-08-02
@@ -236,6 +245,8 @@ and not a defect.
 [D-ANS-041]: answers/ans-041-the-changelog-title-is-read-where-the-file-names-carry-nothing.md
 [D-ANS-042]: answers/ans-042-an-identifier-reaches-the-changelog-entries-whose-body-names-it.md
 [D-ANS-043]: answers/ans-043-a-miss-is-answered-in-data-and-says-which-corpus-its-silence-belongs-to.md
+[D-ANS-044]: answers/ans-044-the-environment-answer-carries-the-lifecycle-it-declares.md
+[D-ANS-045]: answers/ans-045-the-classes-section-covers-the-directory-it-names.md
 [D-COD-004]: code/cod-004-what-leaves-this-process-goes-through-one-seam.md
 [D-DIS-010]: discovery/dis-010-what-this-package-writes-into-a-project-ignores-itself.md
 [D-DOC-009]: documentation/doc-009-prose-names-what-counts-rather-than-the-count.md
@@ -254,6 +265,7 @@ and not a defect.
 [D-GUI-005]: guides/gui-005-the-product-premise-is-one-statement-on-the-brief-every-task-passes-through.md
 [D-GUI-006]: guides/gui-006-a-task-that-changes-nothing-is-a-change-type-of-its-own.md
 [D-GUI-007]: guides/gui-007-the-brief-carries-a-selection-of-the-hints-and-says-whose-they-are.md
+[D-GUI-008]: guides/gui-008-operating-an-installation-is-a-change-type-of-its-own.md
 [D-KNW-029]: knowledge/knw-029-a-hint-names-the-domains-it-is-asked-from-and-the-file-names-the-subject.md
 [D-KNW-030]: knowledge/knw-030-a-hint-is-one-question-and-the-datahandler-family-is-six.md
 [D-KNW-031]: knowledge/knw-031-a-suite-is-a-property-of-the-domain-not-of-the-hint.md
@@ -270,6 +282,11 @@ and not a defect.
 [D-KNW-043]: knowledge/knw-043-a-rule-about-what-an-api-may-be-used-for-carries-its-strength-and-its-source.md
 [D-KNW-044]: knowledge/knw-044-one-search-over-the-whole-tests-tree-finds-what-asserts-a-rendered-output.md
 [D-KNW-045]: knowledge/knw-045-the-document-root-is-named-by-what-configures-it-and-by-what-serves-it.md
+[D-KNW-046]: knowledge/knw-046-the-non-interactive-install-path-is-a-gap-this-server-owns.md
+[D-KNW-047]: knowledge/knw-047-what-installs-typo3-below-the-extension-being-developed-is-a-gap-this-server-owns.md
+[D-KNW-048]: knowledge/knw-048-what-the-impexp-import-rewrites-in-a-site-configuration-is-a-gap-this-server-owns.md
+[D-KNW-049]: knowledge/knw-049-what-ddev-writes-into-the-settings-is-named-in-full-and-so-is-what-it-cannot-configure.md
+[D-KNW-050]: knowledge/knw-050-what-a-missing-target-language-does-to-a-translation-file-is-a-gap-this-server-owns.md
 [D-SKL-005]: task-skills/skl-005-core-contribution-earns-a-skill-and-the-domain-is-the-work.md
 [D-SKL-006]: task-skills/skl-006-the-site-new-cluster-earns-the-route-into-the-skill-that-owns-the-task.md
 [D-SKL-007]: task-skills/skl-007-every-disposition-a-review-makes-carries-its-evidence.md
@@ -277,6 +294,7 @@ and not a defect.
 [D-SKL-009]: task-skills/skl-009-the-rule-that-keeps-not-landing-is-written-as-an-act-with-an-object.md
 [D-SKL-010]: task-skills/skl-010-the-assessment-that-precedes-a-core-patch-reads-the-issue-and-the-review-server.md
 [D-SKL-011]: task-skills/skl-011-the-call-plan-a-skill-writes-down-is-measured-against-the-corpus-that-answers-it.md
+[D-SKL-012]: task-skills/skl-012-bringing-a-development-installation-into-existence-earns-a-task-skill.md
 [D-ANS-005]: answers/ans-005-an-unmet-precondition-is-answered-not-raised.md
 [D-ANS-006]: answers/ans-006-an-identifier-is-found-however-it-is-spelled.md
 [D-ANS-007]: answers/ans-007-two-shapes-for-not-answered-and-one-word-for-why.md

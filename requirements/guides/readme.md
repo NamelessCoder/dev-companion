@@ -17,8 +17,8 @@ when it is added.
 - [`R-GUI-008`][R-GUI-008] — A brief states what the change is for before its steps · held
 - [`R-GUI-009`][R-GUI-009] — A hint a brief carries names the lookup that owns it · held
 - [`R-GUI-010`][R-GUI-010] — A review brief names what the change removes · held
-- [`R-GUI-011`][R-GUI-011] — A readiness answer names the classification it was not given · **open**
-- [`R-GUI-012`][R-GUI-012] — A brief names the hints it left behind · **open**
+- [`R-GUI-011`][R-GUI-011] — A readiness answer names the classification it was not given · held
+- [`R-GUI-012`][R-GUI-012] — A brief names the hints it left behind · held
 
 [R-GUI-001]: gui-001-a-guides-checks-describe-the-draft-it-returned.md
 [R-GUI-002]: gui-002-the-commit-rules-are-available-without-the-gerrit-trailers.md

@@ -27,6 +27,8 @@ when it is added.
 - [`R-ANS-017`][R-ANS-017] — A removal is told what the scanner matcher requires · held
 - [`R-ANS-018`][R-ANS-018] — An answer names the tool for what it says is absent · held
 - [`R-ANS-019`][R-ANS-019] — A rendered-verification question reaches the layer that verifies it · held
+- [`R-ANS-020`][R-ANS-020] — The Classes section covers the directory it names · **open**
+- [`R-ANS-021`][R-ANS-021] — The review answer says which patch set it is about · held
 
 [R-ANS-001]: ans-001-could-not-ask-never-looks-like-does-not-exist.md
 [R-ANS-002]: ans-002-the-reason-is-in-the-data-not-only-in-the-text.md
@@ -48,3 +50,5 @@ when it is added.
 [R-ANS-017]: ans-017-a-removal-is-told-what-the-scanner-matcher-requires.md
 [R-ANS-018]: ans-018-an-answer-names-the-tool-for-what-it-says-is-absent.md
 [R-ANS-019]: ans-019-a-rendered-verification-question-reaches-the-layer-that-verifies-it.md
+[R-ANS-020]: ans-020-the-classes-section-covers-the-directory-it-names.md
+[R-ANS-021]: ans-021-the-review-answer-says-which-patch-set-it-is-about.md

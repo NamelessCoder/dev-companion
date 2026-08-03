@@ -23,6 +23,11 @@ one is added.
 - [`D-KNW-043`][D-KNW-043] — A rule about what an API may be used for carries the strength of the claim and the source it was read from · 2026-08-03
 - [`D-KNW-044`][D-KNW-044] — One search over the whole Tests/ tree finds what asserts a rendered output · 2026-08-03
 - [`D-KNW-045`][D-KNW-045] — The document root is named by what configures it and by what serves it · 2026-08-03
+- [`D-KNW-046`][D-KNW-046] — The non-interactive install path is a gap this server owns · 2026-08-03
+- [`D-KNW-047`][D-KNW-047] — What installs TYPO3 below the extension being developed is a gap this server owns · 2026-08-03
+- [`D-KNW-048`][D-KNW-048] — What the impexp import rewrites in a site configuration is a gap this server owns · 2026-08-03
+- [`D-KNW-049`][D-KNW-049] — What DDEV writes into the settings is named in full, and so is what it cannot configure · 2026-08-03
+- [`D-KNW-050`][D-KNW-050] — What a missing `target-language` does to a translation file is a gap this server owns · 2026-08-03
 - [`D-KNW-005`][D-KNW-005] — One `Scope` replaced the four vocabularies · 2026-08-02
 - [`D-KNW-006`][D-KNW-006] — A word for a thing administered from the backend adds no domain to a backend-only task · 2026-08-02
 - [`D-KNW-007`][D-KNW-007] — A hint says whose it is in both directions · 2026-08-02
@@ -62,6 +67,11 @@ one is added.
 [D-KNW-043]: knw-043-a-rule-about-what-an-api-may-be-used-for-carries-its-strength-and-its-source.md
 [D-KNW-044]: knw-044-one-search-over-the-whole-tests-tree-finds-what-asserts-a-rendered-output.md
 [D-KNW-045]: knw-045-the-document-root-is-named-by-what-configures-it-and-by-what-serves-it.md
+[D-KNW-046]: knw-046-the-non-interactive-install-path-is-a-gap-this-server-owns.md
+[D-KNW-047]: knw-047-what-installs-typo3-below-the-extension-being-developed-is-a-gap-this-server-owns.md
+[D-KNW-048]: knw-048-what-the-impexp-import-rewrites-in-a-site-configuration-is-a-gap-this-server-owns.md
+[D-KNW-049]: knw-049-what-ddev-writes-into-the-settings-is-named-in-full-and-so-is-what-it-cannot-configure.md
+[D-KNW-050]: knw-050-what-a-missing-target-language-does-to-a-translation-file-is-a-gap-this-server-owns.md
 [D-KNW-005]: knw-005-one-scope-replaced-the-four-vocabularies.md
 [D-KNW-006]: knw-006-a-word-for-a-thing-administered-from-the-backend.md
 [D-KNW-007]: knw-007-a-hint-says-whose-it-is-in-both-directions.md

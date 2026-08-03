@@ -14,6 +14,7 @@ one is added.
 - [`D-SKL-009`][D-SKL-009] — The rule that keeps not landing is written as an act with an object · 2026-08-03 · confirmed
 - [`D-SKL-010`][D-SKL-010] — The assessment that precedes a core patch reads the issue and the review server · 2026-08-03
 - [`D-SKL-011`][D-SKL-011] — The call plan a skill writes down is measured against the corpus that answers it · 2026-08-03
+- [`D-SKL-012`][D-SKL-012] — Bringing a package's development installation into existence earns a task skill · 2026-08-03
 - [`D-SKL-002`][D-SKL-002] — A focused audit narrows what is assessed, not the list it closes on · 2026-08-02
 - [`D-SKL-003`][D-SKL-003] — A sweep is bounded by the changelog's own axes, not by the extension's vocabulary · 2026-08-02
 - [`D-SKL-004`][D-SKL-004] — What a task does when the lookups run out is written for a review · 2026-08-02
@@ -26,6 +27,7 @@ one is added.
 [D-SKL-009]: skl-009-the-rule-that-keeps-not-landing-is-written-as-an-act-with-an-object.md
 [D-SKL-010]: skl-010-the-assessment-that-precedes-a-core-patch-reads-the-issue-and-the-review-server.md
 [D-SKL-011]: skl-011-the-call-plan-a-skill-writes-down-is-measured-against-the-corpus-that-answers-it.md
+[D-SKL-012]: skl-012-bringing-a-development-installation-into-existence-earns-a-task-skill.md
 [D-SKL-002]: skl-002-a-focused-audit-narrows-what-is-assessed.md
 [D-SKL-003]: skl-003-a-sweep-is-bounded-by-the-changelogs-own-axes.md
 [D-SKL-004]: skl-004-what-a-task-does-when-the-lookups-run-out-is-written-for-a-review.md

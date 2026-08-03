@@ -7,7 +7,7 @@ measured on one afternoon's corpus, and the corpus can grow out of them.
 See [the decisions readme](../readme.md) for how an entry is written and when
 one is added.
 
-- [`D-ANS-033`][D-ANS-033] — The review server is read anonymously, and the answer says what that leaves out · 2026-08-03
+- [`D-ANS-033`][D-ANS-033] — The review server is read anonymously, and the answer says what that leaves out · 2026-08-03 · confirmed
 - [`D-ANS-034`][D-ANS-034] — A source outside this package answers JSON, or it did not answer · 2026-08-03
 - [`D-ANS-035`][D-ANS-035] — The matcher entry is owed to what the changelog tag claims · 2026-08-03 · confirmed
 - [`D-ANS-036`][D-ANS-036] — A query written in Fluid tags is searched in the book that documents them · 2026-08-03
@@ -18,6 +18,8 @@ one is added.
 - [`D-ANS-041`][D-ANS-041] — The changelog title is read where the file names carry nothing · 2026-08-03
 - [`D-ANS-042`][D-ANS-042] — An identifier reaches the changelog entries whose body names it · 2026-08-03
 - [`D-ANS-043`][D-ANS-043] — A miss is answered in data, and says which corpus its silence belongs to · 2026-08-03
+- [`D-ANS-044`][D-ANS-044] — The environment answer carries the lifecycle it declares, beside the interpreter it runs · 2026-08-03
+- [`D-ANS-045`][D-ANS-045] — The Classes section covers the directory it names, and a value read off the tree says so · 2026-08-03
 - [`D-ANS-005`][D-ANS-005] — A question that is not supported here is answered in a shape of its own · 2026-08-02
 - [`D-ANS-006`][D-ANS-006] — An identifier is found however it is spelled · 2026-08-02
 - [`D-ANS-007`][D-ANS-007] — Two shapes for "not answered", one word for why · 2026-08-02
@@ -58,6 +60,8 @@ one is added.
 [D-ANS-041]: ans-041-the-changelog-title-is-read-where-the-file-names-carry-nothing.md
 [D-ANS-042]: ans-042-an-identifier-reaches-the-changelog-entries-whose-body-names-it.md
 [D-ANS-043]: ans-043-a-miss-is-answered-in-data-and-says-which-corpus-its-silence-belongs-to.md
+[D-ANS-044]: ans-044-the-environment-answer-carries-the-lifecycle-it-declares.md
+[D-ANS-045]: ans-045-the-classes-section-covers-the-directory-it-names.md
 [D-ANS-005]: ans-005-an-unmet-precondition-is-answered-not-raised.md
 [D-ANS-006]: ans-006-an-identifier-is-found-however-it-is-spelled.md
 [D-ANS-007]: ans-007-two-shapes-for-not-answered-and-one-word-for-why.md

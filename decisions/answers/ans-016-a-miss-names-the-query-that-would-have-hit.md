@@ -214,3 +214,26 @@ only where it carries every word, while `Documents::search()` keeps a section
 covering half the query's weight, so a subset naming one section returns that
 one and whatever else clears the floor. It is a floor there, computed the same
 way for every subset.
+
+## Since then
+
+The decision this entry names and does not take is taken, as
+[`D-ANS-043`](ans-043-a-miss-is-answered-in-data-and-says-which-corpus-its-silence-belongs-to.md),
+and what took it is the first report of the gap from practice.
+`feedback/2026-08-03-144349` quotes a miss as its six structured fields —
+`matchCount: 0` among them — and states that nothing came back to re-ask with.
+The subsets were in the text of that same answer.
+
+The first **Wrong if** did not fire and the offer is what went unread, which is
+the distinction the entry could not draw when it was written. Re-run on
+2026-08-03 from `/home/benji/projects/typo3-cms`:
+`typo3 directory backend entry point` returns nothing and offers
+`typo3 backend entry point`, which returns
+`13.0 Deprecation: TYPO3 backend entry point script deprecated (#87889)` alone.
+That entry is what the session's review turned on, and the session settled it by
+grep instead.
+
+So the sentence this entry built is answered on its own terms — the offered
+subset was the query that would have hit, on a query nothing here chose. What
+`D-ANS-043` adds is the half above it: the offer is carried as data as well, and
+a miss whose offer also comes back empty names the corpus to ask instead.

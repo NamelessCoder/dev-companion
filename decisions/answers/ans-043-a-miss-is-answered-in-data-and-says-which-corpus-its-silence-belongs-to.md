@@ -1,0 +1,106 @@
+---
+id: D-ANS-043
+date: 2026-08-03
+status: open
+---
+
+# D-ANS-043 — A miss is answered in data, and says which corpus its silence belongs to
+
+**The narrowing a miss computes is a field of the answer as well as a line of
+its text. Where the re-query it offers comes back empty too, the miss names the
+corpus that answers what still holds.**
+
+A session read `matchCount: 0` and nothing beside it, and reported that the
+changelog says nothing about the backend entry point. The re-query the same miss
+had already computed returns the one entry its review turned on.
+
+## Evidence
+
+- `feedback/2026-08-03-144349`, re-run on 2026-08-03 from
+  `/home/benji/projects/typo3-cms`, which ships 15.0. `typo3_changelog_lookup`
+  with `query: "typo3 directory backend entry point"` still returns nothing, and
+  the text carries the whole narrowing: five per-word counts, then
+  `"typo3 backend entry point" reaches 1 entry`.
+- The data half carries none of it. `query`, `matchCount: 0`, `tags: []`,
+  `entries: []`, 55 `versions` and `answeredBy: "packages"` — the six fields the
+  feedback quotes, and no field for what the miss worked out.
+- The narrowing was there when the session ran. `perTermCounts` reached this
+  answer on 2026-08-01 in `40557f5`, the subsets on 2026-08-02 in `cf6bcdb`, the
+  filter sentence at 09:47 on 2026-08-03 in `c410db4`. The feedback is stamped
+  16:43 that day.
+- The offered subset answers the review. `typo3 backend entry point` returns
+  `13.0 Deprecation: TYPO3 backend entry point script deprecated (#87889)`,
+  alone, in one call, matched by name.
+- What #87889 says is what the review was for. Read in the same checkout: the
+  deprecated thing is the script `/typo3/index.php`, "it is still in place", and
+  the route path becomes configurable through
+  `$GLOBALS['TYPO3_CONF_VARS']['BE']['entryPoint']`. Its affected installations
+  are "all installations using the TYPO3 backend `/typo3`".
+- The URL prefix is still there on this branch. `DefaultConfiguration.php:1637`
+  reads `'entryPoint' => '/typo3'` and `UriBuilder.php:199` still constructs
+  `new RequestContext('/typo3/')` — the line the session found by grep, after
+  the changelog.
+- The miss names no tool. Its closing line offers the core repository and
+  docs.typo3.org, and only for a version this installation does not ship.
+- `bin/cli feedback:list` on 2026-08-03: 16 open, 8 of them from this core
+  checkout, five written by one review session. Its sibling
+  `feedback/2026-08-03-144457` reports the same ending — the question settled by
+  grep — for the same question.
+
+## Decided
+
+- **Step 2 of the ladder, delivery.** The narrowing exists, is correct, reaches
+  the entry, and did not reach the session. Nothing about the computation is at
+  fault, so nothing about it changes.
+- **The decision `D-ANS-016` declined is taken here.** Its last **Since then**
+  named this gap and left it: "a miss whose whole guidance is text is that gap
+  already — `matchCount: 0` is the entire structured answer. That is one
+  decision about the shape of a miss rather than three, and this entry does not
+  take it."
+- **Queued rather than closed on the spot.** A field is added to a declared
+  `outputSchema` and the answer is `src/`, which
+  [judging.md](../../documentation/feedback/judging.md) puts on the far side of
+  the autonomous line.
+- **`normal`, and what set it is the corpus rather than this report.** The same
+  ending — an empty lookup, then grep — is in `feedback/2026-08-01-115112`, in
+  the three `2026-07-31-1745` reports `D-ANS-010` was decided on, and in this
+  one's own sibling. Four sessions from two checkouts, none of them `low`.
+- **The feedback's second suggestion is taken in the other order.** It asks the
+  zero to say that a changelog records change events and to send the caller to
+  `typo3_documentation_lookup`. Here the changelog did carry the entry, one
+  subset away, so a sentence naming the manual first would have routed this
+  session away from it. The query that reaches comes first, and the corpus is
+  what to ask once that comes back empty too.
+- **No new requirement.** `R-ANS-002` already says the reason is in the data and
+  `R-ANS-018` that an answer names the tool for what it says is absent. Both are
+  `held`, by cases over `typo3_server_scope` and `typo3_project_scope`. What is
+  missing is the path, not the rule.
+
+## Assumed
+
+- That a caller composing on `structuredContent` reads a field it did not ask
+  for. Nothing measures that. The other reading of this feedback — a session
+  that had the text and quoted only the data — leaves the same lever, so the
+  assumption decides the size of the win and not whether there is one.
+- That the manual answers what the changelog's silence leaves. `D-ANS-010`
+  assumed the same and verified one shape of it, and
+  `feedback/2026-08-03-144457` doubts it for this very question. That card is in
+  hand elsewhere.
+- That a sentence in the miss reaches a session the same sentence in
+  `skills/base.md` did not. This feedback is the evidence for it: the session
+  quotes the base.md routing back and did not follow it.
+
+## Wrong if
+
+- A later feedback quotes the new field and goes to grep anyway. Then the
+  delivery was not what was missing, and what a miss says is worth less than
+  `D-ANS-016` and this entry both assume.
+- The corpus sentence is followed and the manual does not say whether a
+  mechanism still holds. That is `D-ANS-010`'s first **Wrong if**, and it fires
+  here on the same words.
+- A client reports the miss as too long to act on. It already carries up to five
+  sentences, and one more is the cost of the offer being read at all.
+- A subset the data half now promises returns entries a caller cannot use,
+  because the field was filled where the text withholds it — under a `tag`,
+  where `D-ANS-016` established that a subset promises what the same call does
+  not return.

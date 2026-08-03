@@ -127,6 +127,39 @@ settled" is not a sentence a session building a template can write.
 carries that half, and holds the sentence it queues to the distinction this
 entry rests on — one installation's implementation is not what TYPO3 supports.
 
+## Since then
+
+The second and the third **Wrong if** fired together on 2026-08-03, in one
+report, and neither answer is the one they name.
+
+`feedback/2026-08-03-144349` is a core patch review rather than a conformance
+audit, and it ends the same way: an empty changelog, then grep over the
+installed core. The skill half had landed the day before, and the session quotes
+it back — "base.md explicitly routes 'does this still work in version N' to
+`typo3_documentation_lookup`, and I never called it". So the order reached the
+session, was read, and did not fire at the moment the silence arrived. That says
+where the sentence stands rather than what it says: `skills/base.md` and the
+routing block are read before the task, and the miss is where the caller is
+standing when the changelog comes back empty.
+
+The third **Wrong if** is the sharper half. This silence was not genuine: the
+changelog carries
+`13.0 Deprecation: TYPO3 backend entry point script deprecated (#87889)`, which
+says the deprecated thing is the script `/typo3/index.php` and that the route
+path becomes configurable — the load-bearing question of that review. Re-run on
+2026-08-03 from `/home/benji/projects/typo3-cms`, the reported query returns
+nothing and the miss already offers `typo3 backend entry point`, which returns
+that entry alone. So the matching is sound again, and this time the query that
+reaches was computed and printed rather than left to the caller.
+
+The entry stands, and the boundary beside it gains a case. A silence produced by
+asking with one word too many is not one the manual is owed, and the miss is
+what tells the two apart before the routing does. `D-ANS-043` is where that
+lands, and it is why the corpus sentence goes after the offered re-query rather
+than in place of it. The session's own account routes it the other way — it
+reads its changelog call as the wrong corpus for the question — and on this
+evidence that is not what happened.
+
 The third **Wrong if** fired the day the skill half landed, and the answer is
 not the one it names. `feedback/2026-07-31-194459` disputes the changelog's
 silence the other way — an entry that exists and was not reached — and

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Typo3CmsMcp\Tests\Unit;
 
 use PHPUnit\Framework\Attributes\After;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Typo3CmsMcp\Installation\Instance;
@@ -275,6 +276,45 @@ final class LabelSearchTest extends TestCase
         self::assertStringNotContainsString('backend.messages:action.new', $result->text);
         self::assertStringContainsString('Search restricted to the translation resource used', $result->text);
         self::assertStringContainsString($resource, $result->text);
+    }
+
+    /**
+     * Both reports of German written into a source XLF came from a session
+     * that called this tool and named labels nowhere else — `R-ANS-015`. So
+     * the rule rides on the answer rather than on a query the caller would
+     * have had to phrase around labels first.
+     */
+    #[Test]
+    #[DataProvider('whatTheConsoleAnswers')]
+    public function aCallerAboutToWriteAUnitIsToldItsSourceLanguage(string $output): void
+    {
+        $this->consoleThatPrints($output);
+
+        $result = Registry::call('typo3_label_lookup', ['query' => 'testimonial author']);
+
+        self::assertStringContainsString('Write a new trans-unit in English in the unprefixed source file', $result->text);
+        self::assertStringContainsString('de.locallang.xlf for locallang.xlf', $result->text);
+        self::assertStringContainsString('is a defect to correct in place', $result->text);
+        self::assertStringContainsString('an en.-prefixed file is not that correction', $result->text);
+    }
+
+    /**
+     * The two branches a caller about to author a unit arrives on: nothing
+     * matched, and a neighbouring label that may or may not be reusable.
+     *
+     * @return array<string, array{0: string}>
+     */
+    public static function whatTheConsoleAnswers(): array
+    {
+        return [
+            'nothing matched' => ["Labels in active extensions\n===\n\n [WARNING] No language resource files found.\n"],
+            'a neighbour in the same resource' => [(string) json_encode(['items' => [[
+                'resource' => 'EXT:sitepackage/Resources/Private/Language/backend_fields.xlf',
+                'labels' => [
+                    ['domain' => 'sitepackage.backend_fields', 'reference' => 'testimonial.author', 'label' => 'Autor des Testimonials'],
+                ],
+            ]]], JSON_THROW_ON_ERROR)],
+        ];
     }
 
     #[Test]

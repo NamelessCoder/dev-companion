@@ -35,6 +35,22 @@ final class LabelLookup extends ReadOnlyTool
      */
     private const NOTHING_MATCHED = 'No language resource files found';
 
+    /**
+     * The source-language rule, carried here because this is where the caller
+     * still is when it decides — `R-ANS-015`.
+     *
+     * Both sessions that wrote German into a source XLF had called this tool.
+     * Neither called `typo3_task_guide`, whose `labels` intent holds the same
+     * rule, and neither asked for a hint: every other route opens on the word
+     * label, which a session describing its work as a content element has no
+     * reason to type.
+     */
+    private const SOURCE_LANGUAGE = "\n\nWrite a new trans-unit in English in the unprefixed source file, and put any "
+        . 'other wording in the locale-prefixed file beside it — de.locallang.xlf for locallang.xlf — under the same '
+        . 'unit id. A source file that is not English is a defect to correct in place rather than a convention to '
+        . 'continue, and adding an en.-prefixed file is not that correction: typo3_hint_lookup with '
+        . 'id=language-files has what it is.';
+
     public static function name(): string
     {
         return 'typo3_label_lookup';
@@ -191,7 +207,7 @@ final class LabelLookup extends ReadOnlyTool
                 )) . ' — ask again with the one that narrows best.';
             }
 
-            return ToolResult::create(implode("\n", $lines) . $reuseBoundary . $fromFiles, [
+            return ToolResult::create(implode("\n", $lines) . $reuseBoundary . self::SOURCE_LANGUAGE . $fromFiles, [
                 'query' => $query,
                 'resource' => $resource === '' ? null : $resource,
                 'matchCount' => 0,
@@ -217,7 +233,7 @@ final class LabelLookup extends ReadOnlyTool
         $lines[] = 'Reference a label by the domain form shown first (package.resource:key) — in TCA, in '
             . 'LanguageService::sL(), and in f:translate as separate domain and key attributes.';
 
-        return ToolResult::create(implode("\n", $lines) . $reuseBoundary . $fromFiles, [
+        return ToolResult::create(implode("\n", $lines) . $reuseBoundary . self::SOURCE_LANGUAGE . $fromFiles, [
             'query' => $query,
             'resource' => $resource === '' ? null : $resource,
             'matchCount' => $total,

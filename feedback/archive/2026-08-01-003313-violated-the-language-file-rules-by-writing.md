@@ -1,7 +1,8 @@
 ---
 date: 2026-08-01T00:33:13+00:00
 category: missing-knowledge
-status: open
+status: closed
+closed: 2026-08-03
 model: opencode/deepseek-v4-flash-free
 tool: typo3_label_lookup, typo3-extension-documentation
 directory: /home/benji/projects/site-new

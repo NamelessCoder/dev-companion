@@ -129,3 +129,43 @@ ways out end the collision — a file without the marker and a project with
 is which of the two keeps `GFX`, `MAIL` and `SYS` as DDEV already wrote them,
 rather than that one of them is the only one left. The requirement was corrected
 to that in the same commit.
+
+## Since then
+
+Both lifecycle findings have landed, and neither of them in `knowledge/hints/`.
+`D-GUI-008` gave work that operates an installation a change type of its own,
+and the `installation-operations` checklist it wrote states the first one whole:
+`fail_on_hook_fail` defaults to false, so a post-start hook that installs the
+instance can fail while `ddev start` reports success, and an install hook
+belongs behind `fail_on_hook_fail: true`. `D-ANS-044` is not where it went. That
+entry counted this feedback as evidence that the subject recurs, and the field
+it built reports the hooks an environment declares, which says nothing about one
+that fails. The default was re-read at DDEV v1.25.1: its documentation states it
+on the configuration page, and the commented block DDEV writes into a generated
+`config.yaml` carries `# fail_on_hook_fail: False`.
+
+The second one is in `skills/typo3-development-installation/SKILL.md`, as an
+observable rather than as DDEV's behaviour: step 2 has the environment
+configuration read back after a command that rewrites it, to see what was set by
+hand and is gone. That is all it can be, because the finding is not confirmed.
+DDEV's own command documentation says the opposite of the report —
+"`ddev config` will not change configuration that already exists in your
+`.ddev/config.yaml`" — and what the reporting session saw is more likely the
+file being written back out of DDEV's own structure, comments and defaults
+included. Nothing in `knowledge/` asserts it either way, so nothing here rests
+on which of the two it is.
+
+No test names that checklist item.
+`HintsTest::workThatOperatesAnInstallationIsAnsweredWithABootBrief` holds the
+fork and two of the six items rather than the statement, and coverage for one
+more of them is `D-GUI-008`'s to add.
+
+So nothing is owed beyond what those two carry, and `feedback/2026-08-03-162858`
+is archived by this commit. The reporting session's own task, re-run through
+`bin/typo3-cms-mcp` on 2026-08-03 — "run a local TYPO3 14.3.5 development
+instance under DDEV for an extension, on SQLite with no database container" —
+reaches `installation-operations` weakly, so the brief keeps the patch skeleton
+and prints that intent's six items under their condition, the
+`fail_on_hook_fail` one included. `bin/cli hints:probe` on the feedback's query
+now reaches `project-configuration-files` at `appliesTo(47) + text(808)`,
+against the `appliesTo(32) + text(467)` this entry recorded before the rewrite.

@@ -182,6 +182,25 @@ final class KnowledgeTest extends TestCase
     }
 
     #[Test]
+    public function theBreakingRouteStatesWhatTheScannerMatcherRequires(): void
+    {
+        // R-ANS-017. The matcher was stated under Deprecations alone, so a
+        // reviewer asking about a removal was handed the [!!!] marker and the
+        // changelog file and nothing else — D-ANS-029. The query is read off
+        // the intent rather than written here, because that is the one a
+        // removal actually arrives on.
+        $breaking = array_values(array_filter(
+            TaskIntents::load(),
+            static fn(array $intent): bool => $intent['id'] === 'breaking',
+        ));
+
+        $bodies = implode("\n", array_column(Documents::search($breaking[0]['rulesQuery']), 'body'));
+
+        self::assertStringContainsString('Configuration/ExtensionScanner/Php/', $bodies);
+        self::assertStringContainsString('FullyScanned', $bodies);
+    }
+
+    #[Test]
     public function anUnrelatedQueryAnswersWithNothingRatherThanTheNearestProse(): void
     {
         self::assertSame([], Documents::search('quantum entanglement pineapple'));

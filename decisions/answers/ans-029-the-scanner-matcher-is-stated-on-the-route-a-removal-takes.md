@@ -1,7 +1,8 @@
 ---
 id: D-ANS-029
 date: 2026-08-02
-status: open
+status: revoked
+revokedBy: D-ANS-035
 ---
 
 # D-ANS-029 — The scanner matcher is stated on the route a removal takes
@@ -94,3 +95,28 @@ without the matcher. The corpus does state the matcher. It states it under
 - A session is given the matcher rule and goes on to read the matcher files by
   hand anyway. The gap is then the shape of the entry rather than the
   requirement, which is the lookup this entry declines.
+
+## Confirmed on 2026-08-03
+
+The measurement reproduced before the change: `Documents::search` on the
+`breaking` intent's own `rulesQuery` returned `## Breaking Changes`,
+`## Changelog Files`, `## Review Readiness` and `## Summary Line`, and none of
+the four named a matcher. The feedback's own query
+"removing public method extension scanner matcher breaking changelog" still
+matched nothing at all.
+
+The second **Wrong if** fired in part. A matcher is not owed to every removed
+public method, because not every removed public method is a breaking removal —
+`b08282345cd6175b02d69b710f19cd9cd40a04f8` removes an `@internal` one as a plain
+`[TASK]`. What it is owed to is what a Breaking or Deprecation entry's scanned
+tag claims, so the sentence is stated on the tag. `R-ANS-017` demanded delivery
+rather than content and stands unchanged.
+
+## Revoked on 2026-08-03
+
+`## Breaking Changes` now states the matcher, so the route this entry is about
+no longer passes a section that stops at the marker and the changelog file. What
+the rule says is
+[`D-ANS-035`](ans-035-the-matcher-entry-is-owed-to-what-the-changelog-tag-claims.md),
+whose **Wrong if** is a different list: what can go wrong now is a tag nobody
+backs, not a section that says nothing.

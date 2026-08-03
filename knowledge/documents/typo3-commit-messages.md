@@ -54,6 +54,29 @@ Guide.
 - Breaking changes must use `[!!!]` before the keyword.
 - Breaking changes must be documented with a changelog RST file.
 - Breaking changes should usually target `main`.
+- A removed or narrowed PHP API gets an extension scanner matcher entry in the
+  same patch, below
+  `typo3/sysext/install/Configuration/ExtensionScanner/Php/`. How the removed
+  member is written where it is used decides the file:
+  - `MethodCallMatcher.php` — an instance method.
+  - `MethodCallStaticMatcher.php` — a static method.
+  - `PropertyPublicMatcher.php` — a removed public property.
+  - `PropertyProtectedMatcher.php` — a public property that became protected.
+  - `ClassNameMatcher.php` — a whole class or interface.
+- An entry is keyed by the fully qualified name with `->` or `::` and carries
+  `restFiles`, naming the changelog file that removed it. The method matchers
+  add `numberOfMandatoryArguments` and `maximumNumberOfArguments`. A member
+  deprecated before it was removed lists both changelog files.
+- Every Breaking and Deprecation entry carries exactly one of `NotScanned`,
+  `PartiallyScanned` and `FullyScanned` in its `.. index::` line, and that tag
+  is the claim those entries have to back: `FullyScanned` says every item the
+  changelog entry names can be found. The scanner reads PHP, so what an entry
+  changes in TypoScript, TCA, YAML or JavaScript is what leaves it partially
+  scanned.
+- `./Build/Scripts/runTests.sh -s checkExtensionScannerRst` checks that the
+  changelog files the matchers name exist, and nothing checks the other
+  direction. A missing entry surfaces when somebody audits the matcher files
+  against the changelog.
 
 ## Deprecations
 

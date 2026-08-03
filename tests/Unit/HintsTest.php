@@ -2305,6 +2305,22 @@ final class HintsTest extends TestCase
     }
 
     #[Test]
+    public function aRemovalIsToldWhatTheScannerMatcherRequires(): void
+    {
+        // R-ANS-017. "Consider an extension scanner matcher" was the whole of
+        // what a removal was told, and the reviewer of one asked the rules and
+        // was answered without it at all.
+        $result = Registry::call('typo3_task_guide', [
+            'task' => 'Remove public method GifBuilder::getTemporaryImageWithText()',
+        ]);
+
+        $checklist = implode("\n", $result->data['checklist']);
+
+        self::assertStringContainsString('Configuration/ExtensionScanner/Php/', $checklist);
+        self::assertStringContainsString('FullyScanned', $checklist);
+    }
+
+    #[Test]
     public function upgradingAnInstallationIsAnsweredAsAnOrderOfOperations(): void
     {
         // The question a site maintainer asks first — "what do I do, in which

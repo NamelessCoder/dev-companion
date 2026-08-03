@@ -42,7 +42,9 @@
       "Add a changelog file below typo3/sysext/core/Documentation/Changelog/<version>/ named Breaking-<issue>-<Title>.rst.",
       "Prefix the commit summary with [!!!] before the keyword.",
       "Target main; confirm any older release target with the release managers.",
-      "Describe the migration path for extension authors and consider an extension scanner matcher."
+      "Describe the migration path for extension authors.",
+      "Add an extension scanner matcher entry below typo3/sysext/install/Configuration/ExtensionScanner/Php/ for every method, property and class the changelog entry removes, with restFiles naming that entry. Which file takes which kind of removal is in the Breaking Changes section typo3_rule_lookup answers with.",
+      "Tag the changelog entry NotScanned, PartiallyScanned or FullyScanned for what those matchers actually reach."
     ],
     "checks": [
       "CI=true ./Build/Scripts/runTests.sh -s checkRst",

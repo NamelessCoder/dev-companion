@@ -1,7 +1,8 @@
 ---
 date: 2026-08-01T11:55:25+00:00
 category: missing-knowledge
-status: open
+status: closed
+closed: 2026-08-03
 model: deepseek-v4-flash-free
 tool: typo3_task_guide, typo3_commit_message_guide
 directory: /home/benji/projects/typo3-cms

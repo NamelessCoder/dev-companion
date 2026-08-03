@@ -6,6 +6,7 @@ namespace Typo3CmsMcp\Tests\Unit;
 
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
+use Typo3CmsMcp\Paths;
 use Typo3CmsMcp\Tool\Registry;
 use Typo3CmsMcp\Upkeep\ToolAnswers;
 use Typo3CmsMcp\Upkeep\ToolCalls;
@@ -23,98 +24,71 @@ use Typo3CmsMcp\Upkeep\ToolSurface;
 final class ToolSurfaceTest extends TestCase
 {
     #[Test]
-    public function theReferenceIsWhatTheRegistryDeclares(): void
+    public function everyPageIsWhatTheRegistryDeclares(): void
     {
-        self::assertSame(
-            ToolSurface::page(),
-            (string) file_get_contents(ToolSurface::file()),
-            'documentation/clients/tools.md is not what the registry declares — run bin/cli tools:index',
-        );
-    }
-
-    /**
-     * What the comparison above cannot say on its own: that the page is the
-     * whole surface. A renderer that dropped every tool would agree with a file
-     * that had none.
-     */
-    #[Test]
-    public function everyOfferedToolIsOnThePage(): void
-    {
-        $page = (string) file_get_contents(ToolSurface::file());
-
-        $missing = [];
-        foreach (Registry::definitions() as $definition) {
-            if (!str_contains($page, '## `' . $definition['name'] . '`')) {
-                $missing[] = $definition['name'];
-            }
+        foreach (ToolSurface::pages() as $file => $contents) {
+            $named = substr($file, strlen(Paths::root()) + 1);
+            self::assertFileExists($file, $named . ' — run bin/cli tools:index');
+            self::assertSame(
+                $contents,
+                (string) file_get_contents($file),
+                $named . ' is not what the registry declares — run bin/cli tools:index',
+            );
         }
-
-        self::assertSame([], $missing, 'offered and rendered nowhere');
-        self::assertSame(
-            count(Registry::definitions()),
-            substr_count($page, "\n## `typo3_"),
-            'the page carries a section for a tool the registry does not offer',
-        );
     }
 
     /**
-     * Every tool on the page either links to what it answered or says why there
-     * is none, and it says it in its own section.
-     *
-     * Neither happened for the two feedback tools. The head of the page promised
-     * a link for every tool below, the renderer emitted nothing where a page was
-     * missing, and the promise was therefore false in the one direction a reader
-     * cannot check: an absent link and an absent recording look the same.
-     *
-     * The comparison above cannot catch that on its own — it holds the file to
-     * the renderer, and a renderer that says nothing agrees with a file that
-     * says nothing.
+     * What the comparison above cannot say on its own: that the directory is the
+     * whole surface and nothing besides. A renderer that dropped every tool
+     * would agree with a directory that had none, and a tool that left the
+     * registry leaves a page behind that reads like one it still offers.
      */
     #[Test]
-    public function everyToolEitherLinksToItsAnswerOrSaysWhyItHasNone(): void
+    public function theIndexReachesEveryToolAndTheDirectoryHoldsNoOther(): void
     {
-        $sections = self::sections((string) file_get_contents(ToolSurface::file()));
+        $pages = ToolSurface::pages();
+        $index = (string) file_get_contents(ToolSurface::index());
 
         foreach (array_column(Registry::definitions(), 'name') as $name) {
-            self::assertArrayHasKey($name, $sections, $name . ' has no section on the page');
-            $section = (string) preg_replace('/\s+/', ' ', $sections[$name]);
+            self::assertArrayHasKey(ToolSurface::file($name), $pages, $name . ' is offered and rendered nowhere');
+            self::assertStringContainsString('(tools/' . $name . '.md)', $index, $name . ' is on no line of the index');
+        }
 
-            if (is_file(ToolAnswers::file($name))) {
-                self::assertStringContainsString(
-                    '(tool-answers/' . $name . '.md)',
-                    $section,
-                    $name . ' was recorded and its section does not link to the recording',
-                );
+        foreach (ToolSurface::written() as $written) {
+            self::assertArrayHasKey(
+                $written->getPathname(),
+                $pages,
+                $written->getFilename() . ' is a page for a tool the registry does not offer',
+            );
+        }
+    }
+
+    /**
+     * Every page either carries what the tool answered or says why it has none.
+     *
+     * Neither happened for the two feedback tools. The head of the surface
+     * promised a recording for every tool, the renderer emitted nothing where
+     * there was none, and the promise was therefore false in the one direction a
+     * reader cannot check: an absent recording and a forgotten one look the
+     * same.
+     */
+    #[Test]
+    public function everyToolCarriesItsAnswerOrSaysWhyItHasNone(): void
+    {
+        foreach (array_column(Registry::definitions(), 'name') as $name) {
+            $page = (string) preg_replace('/\s+/', ' ', (string) file_get_contents(ToolSurface::file($name)));
+
+            if (!isset(ToolCalls::undriven()[$name])) {
+                self::assertNotSame('', ToolAnswers::recordedIn(ToolSurface::file($name)), $name . ' answered nowhere');
+
                 continue;
             }
 
-            self::assertArrayHasKey(
-                $name,
-                ToolCalls::undriven(),
-                $name . ' has no recorded answer and no written reason for having none',
-            );
             self::assertStringContainsString(
                 (string) preg_replace('/\s+/', ' ', ToolCalls::undriven()[$name]),
-                $section,
-                $name . ' has no recorded answer and its section does not say why',
+                $page,
+                $name . ' has no recorded answer and its page does not say why',
             );
         }
-    }
-
-    /**
-     * The page split at its tool headings, keyed by the tool each part is about.
-     *
-     * @return array<string, string>
-     */
-    private static function sections(string $page): array
-    {
-        preg_match_all('/^## `(typo3_[a-z_]+)`$(.*?)(?=^## `|\z)/ms', $page, $matches, PREG_SET_ORDER);
-
-        $sections = [];
-        foreach ($matches as $match) {
-            $sections[$match[1]] = $match[2];
-        }
-
-        return $sections;
     }
 }

@@ -1,13 +1,74 @@
-# What `typo3_reference_list` answered
+# `typo3_reference_list`
+
+List the worked examples the TYPO3 core ships of its own conventions, and what
+each one is a reference for: the theme extension, the styleguide, the Extbase
+fixture extension, the content element rendering, the browser test suite, the
+static analysis setup. Read one of these before inventing a layout or a test
+harness — they are the version-correct, currently-passing form of what a
+convention describes, and every hint here is a summary of one. Paths are
+relative to a core checkout; where the answer names a Composer package, an
+installation that has it holds the same files below vendor/.
+
+`readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: false`
+
+## Takes
+
+```yaml
+# The TYPO3 version to list for, for example "13.4" or "14". An example that
+# branch does not have is left out rather than qualified. Defaults to the
+# version of the installation this server was started in; where there is none,
+# every entry comes back with the range it exists on.
+targetVersion: string  # optional
+```
+
+## Answers with
+
+```yaml
+# The TYPO3 major the list was composed for — stated by the caller, or read
+# from the installation. Null means every covered version is in it and each
+# entry carries its own range.
+targetVersion: integer or null
+# How many worked examples exist on the version asked about.
+matchCount: integer
+references:
+  - # Stable identifier of the example.
+    id: string
+    # Where it is, relative to the root of a core checkout.
+    path: string
+    # The Composer package that ships it, so an installation can read it below
+    # vendor/. Null means it exists only in the core repository, as everything
+    # below Build/ does.
+    package: string or null
+    # What it is a worked example of.
+    reference: string
+    # What not to conclude from it — that it is read rather than depended on,
+    # or which part of it is the core's own. Null where there is nothing to warn
+    # about.
+    caveat: string or null
+    # The hint whose conventions it demonstrates, for typo3_hint_lookup. Null
+    # where no hint covers the subject yet, which is exactly when reading the
+    # example is worth most.
+    hint: string or null
+    # First covered major that has it. Null means every covered major does.
+    since: integer or null
+    # Last covered major that has it. Null means the newest one still does.
+    until: integer or null
+    # The range in words, empty when every covered version has it.
+    existsOn: string
+# The TYPO3 majors this answer was derived from.
+coveredVersions: [integer]
+```
+
+## Answered
 
 Recorded on 2026-08-02 by `bin/cli tools:record`. Answered against
-core-checkout, TYPO3 14.3.6-dev, the 14.3 core checkout below .checkouts/,
-whose console could not be reached: <installation> has no TYPO3 console —
-none of bin/typo3, vendor/bin/typo3 exists. Nothing checks this page;
-[tools.md](../tools.md) is where the current shape of an answer is, and
-[readme.md](readme.md) is what the recording as a whole is of.
+core-checkout, TYPO3 14.3.6-dev, the 14.3 core checkout below .checkouts/, whose
+console could not be reached: <installation> has no TYPO3 console — none of
+bin/typo3, vendor/bin/typo3 exists. Nothing checks what is below this heading;
+everything above it is derived from the class that answers the call, and
+`bin/cli tools:check` holds it.
 
-## references
+### references
 
 Called with:
 

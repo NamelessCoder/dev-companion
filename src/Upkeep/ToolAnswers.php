@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Typo3CmsMcp\Upkeep;
 
-use Symfony\Component\Finder\Finder;
 use Typo3CmsMcp\Installation\Icons;
 use Typo3CmsMcp\Installation\Instance;
 use Typo3CmsMcp\Installation\Typo3Cli;
@@ -15,20 +14,25 @@ use Typo3CmsMcp\Tool\Registry;
 /**
  * What every tool actually answered, once, written down.
  *
- * `documentation/clients/tools.md` says which fields an answer has; this says
- * what one looks like filled — a match with its score, an `unsupported` with
- * its cause. That half is not derivable from the registry and cannot be a test
- * either: it needs an installation, and no test run discovers one.
+ * The half of a tool's page above `## Answered` says which fields an answer
+ * has; this is what goes below it — what one looks like filled, a match with
+ * its score, an `unsupported` with its cause. That half is not derivable from
+ * the registry and cannot be a test either: it needs an installation, and no
+ * test run discovers one.
  *
  * So it is a recording rather than a check. It is evidence from one machine on
- * one day, every page says so at its head, and nothing fails on it being older
- * than the code — a command only a machine with checkouts can run must not be
- * able to turn CI red.
+ * one day, every section says so where it opens, and nothing fails on it being
+ * older than the code — a command only a machine with checkouts can run must
+ * not be able to turn CI red.
  *
- * One file per tool, and the answers whole. A reader arrives with one tool in
- * hand, and on one page of all of them everything else was in the way. Whole,
- * because what a recording is for is seeing a filled answer, and a block with
- * `… 14 more` where the entries were is a count of one instead.
+ * It sits on the tool's own page rather than in a directory of its own, so the
+ * reader who arrived with one tool in hand meets the shape and a filled answer
+ * without following a link. `ToolSurface` renders the half above and carries
+ * this one over untouched; this writes the half below and carries that one over
+ * the same way.
+ *
+ * The answers are whole. What a recording is for is seeing a filled answer, and
+ * a block with `… 14 more` where the entries were is a count of one instead.
  *
  * Of two working directories, because no single one fills the surface. A core
  * checkout answers the core half and has no console, so the tools that reach an
@@ -58,24 +62,20 @@ final class ToolAnswers
     /** The width the rest of the documentation is written at. */
     private const WIDTH = 79;
 
-    public static function directory(): string
+    /** The recorded half of a page as it stands, and nothing where there is none. */
+    public static function recordedIn(string $file): string
     {
-        return Paths::root() . '/documentation/clients/tool-answers';
-    }
+        if (!is_file($file)) {
+            return '';
+        }
 
-    public static function file(string $tool): string
-    {
-        return self::directory() . '/' . $tool . '.md';
-    }
-
-    /** The map: what the recording is of, and which tool is on which page. */
-    public static function index(): string
-    {
-        return self::directory() . '/readme.md';
+        return preg_match('/^## Answered\n.*/ms', (string) file_get_contents($file), $matched) === 1
+            ? rtrim($matched[0]) . "\n"
+            : '';
     }
 
     /**
-     * The whole recording, keyed by the file each page is written to.
+     * Every page of the surface, the recorded halves rewritten.
      *
      * Every call is answered from `$primary`, and the calls of the
      * installation-backed tools are answered a second time from
@@ -94,9 +94,13 @@ final class ToolAnswers
         }
         self::pointAt($primary);
 
-        $pages = [self::index() => self::indexPage($today, $recordings)];
-        foreach (array_keys($recordings[0]['answers']) as $name) {
-            $pages[self::file($name)] = self::page($today, $name, $recordings);
+        $pages = [ToolSurface::index() => ToolSurface::indexPage()];
+        foreach (Registry::definitions() as $definition) {
+            $name = $definition['name'];
+            $pages[ToolSurface::file($name)] = ToolSurface::page(
+                $definition,
+                isset($recordings[0]['answers'][$name]) ? self::recording($today, $name, $recordings) : '',
+            );
         }
 
         return $pages;
@@ -168,91 +172,6 @@ final class ToolAnswers
         return $names;
     }
 
-    /** What a recording left behind, so a page for a tool that is gone can go with it. */
-    public static function written(): Finder
-    {
-        return Finder::create()->files()->in(self::directory())->name('*.md')->sortByName();
-    }
-
-    /**
-     * @param list<array{against: string, shortly: string, answers: array<string, array<string, array{0: string, 1: string}>>}> $recordings
-     */
-    private static function indexPage(string $today, array $recordings): string
-    {
-        $lines = [
-            '# What the tools answered',
-            '',
-            self::wrap(sprintf(
-                'Recorded on %s by `bin/cli tools:record`, over the calls `Upkeep\\ToolCalls` holds — the same ones '
-                . '`ToolContractTest` validates. One page per tool, each answer whole. It is one run on one machine '
-                . 'and it may be older than the code: nothing checks it, and [tools.md](../tools.md) is where the '
-                . 'current shape of an answer is.',
-                $today,
-            )),
-            '',
-            ...self::wrapped(self::of($recordings) . ' Half of these answers belong to the installation rather '
-                . 'than to this server — which labels and icons exist, what the project consists of — and the '
-                . 'other half would read the same anywhere.'),
-            '',
-            self::wrap(
-                'Absolute paths are written as `<repository>`, `<installation>` and `<home>`, because where a '
-                . 'machine keeps its checkouts is not what these answers are showing. `<installation>` is whichever '
-                . 'of the two an answer says it came from. Nothing else is rewritten: each block is what a client '
-                . 'received.',
-            ),
-            '',
-        ];
-
-        // One line per tool, unwrapped: a break inside a tool name or a call
-        // label costs a reader more than a long line does, and this is the list
-        // somebody scans for the one page they came for.
-        foreach ($recordings[0]['answers'] as $name => $calls) {
-            $lines[] = sprintf(
-                '- [`%s`](%s.md) — %s%s',
-                $name,
-                $name,
-                implode(', ', array_keys($calls)),
-                count($recordings) > 1 && isset($recordings[1]['answers'][$name]) ? ' · from both' : '',
-            );
-        }
-
-        array_push($lines, ...self::absent());
-
-        return implode("\n", $lines) . "\n";
-    }
-
-    /**
-     * The offered tools this recording has no page for, and why.
-     *
-     * It comes after the list rather than before it, because that is where the
-     * reader who scanned the list for their tool and did not find it has
-     * arrived. A map that says which pages are here and nothing about the ones
-     * that are not leaves a deliberate absence looking like an omission — the
-     * same reading `tools.md` invited until it stated it per tool, and the words
-     * are `ToolCalls::undriven()`'s so that the two say the same thing.
-     *
-     * @return list<string>
-     */
-    private static function absent(): array
-    {
-        $offered = array_column(Registry::definitions(), 'name');
-        $undriven = array_intersect_key(ToolCalls::undriven(), array_flip($offered));
-        if ($undriven === []) {
-            return [];
-        }
-
-        $lines = [
-            '',
-            self::wrap('Not here, and stated again in [tools.md](../tools.md) at each of them:'),
-            '',
-        ];
-        foreach ($undriven as $name => $why) {
-            $lines[] = self::wrap(sprintf('- `%s` — %s', $name, $why), '  ');
-        }
-
-        return $lines;
-    }
-
     /**
      * What the recording is of, in as many sentences as it has roots.
      *
@@ -277,31 +196,30 @@ final class ToolAnswers
     }
 
     /**
-     * One tool: what the recording is of, then every call of it.
+     * The recorded half of one tool's page: what it is of, then every call.
      *
-     * The head is on each page rather than left to the index, because a
-     * recording that does not say which day and which installation it is of is
-     * an assertion about nothing — and this is the page somebody arrives on.
+     * It says which day and which installation it came from because a recording
+     * that does not is an assertion about nothing, and because the half above it
+     * is derived and may not make that claim for it — `D-DOC-006`.
      *
      * A call is the unit whether it was answered once or twice, so the second
-     * answer goes under the same heading as the first rather than into a second
-     * pass over the page. The arguments are the same both times and are written
-     * once: what a reader came to compare is the two answers, and a call whose
-     * two halves sit 600 lines apart is not a comparison.
+     * answer goes under the same heading as the first. The arguments are the
+     * same both times and are written once: what a reader came to compare is the
+     * two answers, and a call whose two halves sit 600 lines apart is not a
+     * comparison.
      *
      * @param list<array{against: string, shortly: string, answers: array<string, array<string, array{0: string, 1: string}>>}> $recordings
      */
-    private static function page(string $today, string $name, array $recordings): string
+    private static function recording(string $today, string $name, array $recordings): string
     {
         $of = array_values(array_filter($recordings, static fn(array $r): bool => isset($r['answers'][$name])));
 
         $lines = [
-            '# What `' . $name . '` answered',
+            '## Answered',
             '',
             ...self::wrapped(sprintf(
-                'Recorded on %s by `bin/cli tools:record`. %s Nothing checks this page; [tools.md](../tools.md) is '
-                . 'where the current shape of an answer is, and [readme.md](readme.md) is what the recording as a '
-                . 'whole is of.',
+                'Recorded on %s by `bin/cli tools:record`. %s Nothing checks what is below this heading; everything '
+                . 'above it is derived from the class that answers the call, and `bin/cli tools:check` holds it.',
                 $today,
                 self::of($of),
             )),
@@ -312,7 +230,7 @@ final class ToolAnswers
             if ($tool !== $name) {
                 continue;
             }
-            $lines[] = '## ' . $label;
+            $lines[] = '### ' . $label;
             $lines[] = '';
             $lines[] = 'Called with:';
             $lines[] = '';
@@ -320,11 +238,9 @@ final class ToolAnswers
             $lines[] = '';
 
             foreach ($of as $recording) {
-                // The heading only where there is something to tell apart. On a
-                // page with one answer per call it would name the obvious once
-                // per call and push the answer itself further down.
+                // The heading only where there is something to tell apart.
                 if (count($of) > 1) {
-                    $lines[] = '### From ' . $recording['shortly'];
+                    $lines[] = '#### From ' . $recording['shortly'];
                     $lines[] = '';
                 }
                 [$text, $data] = $recording['answers'][$name][$label];

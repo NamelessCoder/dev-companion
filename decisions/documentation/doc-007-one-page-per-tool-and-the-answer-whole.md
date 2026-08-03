@@ -64,10 +64,10 @@ others nor `… 14 more` where the entries were is what they came for.
 
 - `ToolAnswersTest::noAnswerEndsTheBlockItWasWrittenInto`
 - `ToolAnswersTest::everyRecordedAnswerIsJson`
-- `ToolAnswersTest::theIndexReachesEveryPage`
 - `ToolAnswersTest::everyToolTheTableDrivesHasARecordedAnswer`
 - `ToolAnswersTest::everyToolTheTableLeavesOutSaysWhy`
-- `ToolSurfaceTest::everyToolEitherLinksToItsAnswerOrSaysWhyItHasNone`
+- `ToolSurfaceTest::theIndexReachesEveryToolAndTheDirectoryHoldsNoOther`
+- `ToolSurfaceTest::everyToolCarriesItsAnswerOrSaysWhyItHasNone`
 
 ## Since then
 
@@ -105,3 +105,25 @@ The map under `tool-answers/readme.md` names them too, after the list, where the
 reader who scanned it for their tool has arrived. Nothing checks that half —
 `D-DOC-006` is why, and it holds: a check on a recorded page is one only a
 machine with `.checkouts/` can make green.
+
+The page that links and the page that answers are one page now. `tools.md` held
+the whole surface — two thousand lines of field list — and linked from each tool
+to a recording in a directory of its own, so a reader with one tool in hand
+scrolled past twenty-two others to reach a link to the half they came for.
+`documentation/clients/tools/<tool>.md` carries both halves instead: the derived
+one above a `## Answered` heading and the recording below it, and `tools.md` is
+the index that reaches them.
+
+What that costs is the line this entry and `D-DOC-006` drew between what is
+checked and what is not: it runs through a page now rather than between two
+directories. `tools:index` carries the recorded half over untouched and
+`tools:record` does the same with the derived half, so each command writes only
+what it can produce, and `tools:check` compares the derived half of every page
+against the registry. Where a recorded section says what it is of, it also says
+that nothing checks it — the sentence a reader arriving mid-page needs, and the
+one `D-DOC-006` put on the head of a page that no longer exists.
+
+The recording's own map is gone with the directory. It named the day, the two
+roots and which tool was on which page; the day and the roots are on every page
+already, and which tool is on which page is what an index of tools says by
+existing.

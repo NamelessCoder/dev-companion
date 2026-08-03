@@ -1,13 +1,74 @@
-# What `typo3_script_lookup` answered
+# `typo3_script_lookup`
+
+Find notes for TYPO3 core scripts and commands. They are the core checkout's
+own: a query that reads as a project or third-party extension is answered with
+the boundary instead of with commands that do not exist there.
+
+`readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: false`
+
+## Takes
+
+```yaml
+# The TYPO3 core task, in English, for example unit tests, functional tests,
+# CGL, npm, or dependency install.
+task: string
+```
+
+## Answers with
+
+```yaml
+query: string
+# The exact XLF resource the result was restricted to. Null means the caller did
+# not yet provide the usage context.
+resource: string or null  # optional
+matchCount: integer
+matches:
+  - documentId: string
+    # Title of the knowledge document.
+    title: string
+    # typo3://core resource holding the full document.
+    uri: string
+    # Heading of the matched section.
+    heading: string
+    # The section as written, formatting included.
+    body: string
+    # Share of the query terms the section covers, 0 to 1.
+    coverage: number
+    # Weighted match score; headings weigh more than body text.
+    score: integer
+    # Whether the body was cut; read the resource for the rest.
+    truncated: boolean
+# Documents in the knowledge base with the topics they cover. Returned when
+# nothing matched.
+documents:  # optional
+  - id: string
+    title: string
+    topics: [string]
+# Documents outside the searched ones that do match the query.
+elsewhere: [string]  # optional
+# Hints matching the same query. They are a second corpus, searched by
+# typo3_hint_lookup, which takes one of these ids.
+alsoInHints:  # optional
+  - id: string
+    title: string
+# One of: core, uncertain, project, extension. Which kind of work this answer is
+# for: core, a patch to the TYPO3 core itself; project, the site repository
+# around an installation; extension, a package in it, whether a sitepackage or a
+# third-party one; or uncertain, which means nothing in the call placed the work
+# and what came back is the core's own.
+scope: string
+```
+
+## Answered
 
 Recorded on 2026-08-02 by `bin/cli tools:record`. Answered against
-core-checkout, TYPO3 14.3.6-dev, the 14.3 core checkout below .checkouts/,
-whose console could not be reached: <installation> has no TYPO3 console —
-none of bin/typo3, vendor/bin/typo3 exists. Nothing checks this page;
-[tools.md](../tools.md) is where the current shape of an answer is, and
-[readme.md](readme.md) is what the recording as a whole is of.
+core-checkout, TYPO3 14.3.6-dev, the 14.3 core checkout below .checkouts/, whose
+console could not be reached: <installation> has no TYPO3 console — none of
+bin/typo3, vendor/bin/typo3 exists. Nothing checks what is below this heading;
+everything above it is derived from the class that answers the call, and
+`bin/cli tools:check` holds it.
 
-## scripts: hit
+### scripts: hit
 
 Called with:
 
@@ -200,7 +261,7 @@ Data:
 }
 ```
 
-## scripts: miss
+### scripts: miss
 
 Called with:
 

@@ -147,3 +147,11 @@ DDEV project, and it reported the failure as a console it could not reach.
 `installation`. `D-EVI-004` said the console half of this server was exercised
 by no test and had only ever been corrected by real runs in somebody's project;
 this is the first one it caught at home.
+
+The recording is a section rather than a directory since `D-DOC-007`'s second
+entry, and two of the sentences above move with it. "`tools:check` reads
+`tools.md` and not this" is now: `tools:check` reads every page down to its
+`## Answered` heading and nothing below it. The head that says what a recording
+is of is that section's opening paragraph, where it heads the thing it
+describes; what it may not do is move up into the derived half, which is checked
+and may therefore not claim anything about a file nothing holds.

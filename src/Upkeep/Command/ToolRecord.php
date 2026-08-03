@@ -15,6 +15,7 @@ use Typo3CmsMcp\Upkeep\Checkouts;
 use Typo3CmsMcp\Upkeep\Cli;
 use Typo3CmsMcp\Upkeep\Environments;
 use Typo3CmsMcp\Upkeep\ToolAnswers;
+use Typo3CmsMcp\Upkeep\ToolSurface;
 
 /**
  * Calls every tool once and writes down what came back.
@@ -77,26 +78,24 @@ final class ToolRecord
 
         $installation = $this->consoleAnswering($output, $found);
         $pages = ToolAnswers::rendered($today ?? date('Y-m-d'), $found, $installation);
-        if (!is_dir(ToolAnswers::directory())) {
-            mkdir(ToolAnswers::directory(), 0777, true);
+        if (!is_dir(ToolSurface::directory())) {
+            mkdir(ToolSurface::directory(), 0777, true);
         }
         foreach ($pages as $file => $contents) {
             file_put_contents($file, $contents);
         }
 
-        // A tool that left the table keeps its page otherwise, and a page
-        // nothing writes any more is the one a reader cannot tell from the rest.
-        foreach (ToolAnswers::written() as $written) {
+        foreach (ToolSurface::written() as $written) {
             if (!isset($pages[$written->getPathname()])) {
                 unlink($written->getPathname());
-                $output->writeln(sprintf('removed %s, which no call writes any more', $written->getFilename()));
+                $output->writeln(sprintf('removed %s, which the registry no longer offers', $written->getFilename()));
             }
         }
 
         $output->writeln(sprintf(
             '%s — %d pages',
-            substr(ToolAnswers::directory(), strlen(Paths::root()) + 1),
-            count($pages),
+            substr(ToolSurface::directory(), strlen(Paths::root()) + 1),
+            count($pages) - 1,
         ));
 
         return 0;

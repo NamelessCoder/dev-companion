@@ -16,6 +16,9 @@ use Typo3CmsMcp\Upkeep\ToolSurface;
  * what a caller can see of a tool, and the only place it was readable without
  * calling the server was a list of names in the readme. The fields a tool
  * answers with were written down nowhere at all.
+ *
+ * What a tool answered is not rewritten. It is carried over from the page as it
+ * stands, because `tools:record` is the only thing that can produce it.
  */
 #[AsCommand(
     name: 'tools:index',
@@ -25,8 +28,26 @@ final class ToolIndex
 {
     public function __invoke(OutputInterface $output): int
     {
-        file_put_contents(ToolSurface::file(), ToolSurface::page());
-        $output->writeln(substr(ToolSurface::file(), strlen(Paths::root()) + 1));
+        $pages = ToolSurface::pages();
+        if (!is_dir(ToolSurface::directory())) {
+            mkdir(ToolSurface::directory(), 0777, true);
+        }
+        foreach ($pages as $file => $contents) {
+            file_put_contents($file, $contents);
+        }
+
+        foreach (ToolSurface::written() as $written) {
+            if (!isset($pages[$written->getPathname()])) {
+                unlink($written->getPathname());
+                $output->writeln(sprintf('removed %s, which the registry no longer offers', $written->getFilename()));
+            }
+        }
+
+        $output->writeln(sprintf(
+            '%s — %d pages',
+            substr(ToolSurface::index(), strlen(Paths::root()) + 1),
+            count($pages) - 1,
+        ));
 
         return 0;
     }

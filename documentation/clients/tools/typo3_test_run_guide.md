@@ -1,13 +1,84 @@
-# What `typo3_test_run_guide` answered
+# `typo3_test_run_guide`
+
+Recommend Build/Scripts/runTests.sh commands by topic. Pass the changed paths
+and the answer is narrowed to the suites that can actually fail on them — a
+Sass-only change gets the CSS suites, not the PHP ones. Which suites the script
+offers changes between majors, so a suite that branch does not have is left out
+rather than handed over as a command. The script belongs to the core repository,
+so paths that read as a project or third-party extension get no suite at all
+rather than commands that cannot run there.
+
+`readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: false`
+
+## Takes
+
+```yaml
+# Test or script topic, for example functional, phpstan, TypeScript, composer,
+# or CGL.
+query: string  # optional
+# The changed file paths, as they are in the repository they belong to. Given,
+# only suites touching their domains are returned. Each path is placed on its
+# own: one outside the core narrows nothing and is named in the answer, because
+# runTests.sh is not in its repository.
+paths: [string]  # optional
+# The TYPO3 version the commands have to run on, for example "13.4" or "14".
+# Suites that branch's runTests.sh does not have are left out. Defaults to the
+# version of the installation this server was started in; where there is none,
+# every suite is listed.
+targetVersion: string  # optional
+```
+
+## Answers with
+
+```yaml
+query: string or null  # optional
+# The paths the answer was narrowed by, given ones and ones named in the query.
+paths: [string]  # optional
+# Which kind of work each path is. Only core paths can run a suite: runTests.sh
+# is not in a project or an extension repository, so the others are named in the
+# answer and narrow nothing.
+scopes:
+  - path: string
+    # One of: core, uncertain, project, extension. Which kind of work this
+    # answer is for: core, a patch to the TYPO3 core itself; project, the site
+    # repository around an installation; extension, a package in it, whether a
+    # sitepackage or a third-party one; or uncertain, which means nothing in the
+    # call placed the work and what came back is the core's own.
+    scope: string
+# Domains those paths touch. Empty means nothing was narrowed.
+domains: [string]  # optional
+suites:
+  - suite: string
+    # Full command, run from the core root.
+    command: string
+    # Narrowed form for iterating on a single file or test.
+    targeted: string or null
+    description: string  # optional
+    whenToUse: string  # optional
+    domains: [string]  # optional
+    # The TYPO3 majors whose runTests.sh has this suite, where that is not all
+    # of them. Null means every covered version.
+    versions: string or null
+invocation:
+  notes: [string]
+  options:
+    - option: string
+      description: string
+  examples:
+    - purpose: string
+      command: string
+```
+
+## Answered
 
 Recorded on 2026-08-02 by `bin/cli tools:record`. Answered against
-core-checkout, TYPO3 14.3.6-dev, the 14.3 core checkout below .checkouts/,
-whose console could not be reached: <installation> has no TYPO3 console —
-none of bin/typo3, vendor/bin/typo3 exists. Nothing checks this page;
-[tools.md](../tools.md) is where the current shape of an answer is, and
-[readme.md](readme.md) is what the recording as a whole is of.
+core-checkout, TYPO3 14.3.6-dev, the 14.3 core checkout below .checkouts/, whose
+console could not be reached: <installation> has no TYPO3 console — none of
+bin/typo3, vendor/bin/typo3 exists. Nothing checks what is below this heading;
+everything above it is derived from the class that answers the call, and
+`bin/cli tools:check` holds it.
 
-## runTests: all
+### runTests: all
 
 Called with:
 
@@ -588,7 +659,7 @@ Data:
 }
 ```
 
-## runTests: hit
+### runTests: hit
 
 Called with:
 
@@ -744,7 +815,7 @@ Data:
 }
 ```
 
-## runTests: miss
+### runTests: miss
 
 Called with:
 
@@ -883,7 +954,7 @@ Data:
 }
 ```
 
-## runTests: narrowed by paths
+### runTests: narrowed by paths
 
 Called with:
 

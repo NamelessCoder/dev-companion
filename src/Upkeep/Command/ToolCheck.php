@@ -27,14 +27,25 @@ final class ToolCheck
 {
     public function __invoke(OutputInterface $output): int
     {
-        $file = substr(ToolSurface::file(), strlen(Paths::root()) + 1);
-        $stale = (string) file_get_contents(ToolSurface::file()) !== ToolSurface::page();
+        $pages = ToolSurface::pages();
 
-        if ($stale) {
+        $stale = [];
+        foreach ($pages as $file => $contents) {
+            if (!is_file($file) || (string) file_get_contents($file) !== $contents) {
+                $stale[] = substr($file, strlen(Paths::root()) + 1);
+            }
+        }
+        foreach (ToolSurface::written() as $written) {
+            if (!isset($pages[$written->getPathname()])) {
+                $stale[] = substr($written->getPathname(), strlen(Paths::root()) + 1);
+            }
+        }
+
+        foreach ($stale as $file) {
             Cli::errors($output)->writeln($file . ' is not what the registry declares — run bin/cli tools:index');
         }
-        $output->writeln(sprintf('%d tools, %d problems', count(Registry::definitions()), $stale ? 1 : 0));
+        $output->writeln(sprintf('%d tools, %d problems', count(Registry::definitions()), count($stale)));
 
-        return $stale ? 1 : 0;
+        return $stale === [] ? 0 : 1;
     }
 }

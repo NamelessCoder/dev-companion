@@ -1,13 +1,70 @@
-# What `typo3_system_extension_lookup` answered
+# `typo3_system_extension_lookup`
+
+Answer whether an extension is part of the TYPO3 core, and on which versions:
+the system extensions of every covered TYPO3 line, by extension key and Composer
+package name, each with what it is for and the range it is shipped on.
+Independent of any installation, which is the point — the question comes up for
+a package that is not installed, and "is this core" is otherwise answered from
+memory. A miss means the name is not a system extension on the covered versions,
+never that it does not exist.
+
+`readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: false`
+
+## Takes
+
+```yaml
+# An extension key ("theme_camino"), a Composer package name
+# ("typo3/cms-impexp"), or a word from what it does ("redirects"). Omit to list
+# everything the core ships.
+query: string  # optional
+# The TYPO3 version to answer for, for example "13.4" or "14". Restricts the
+# answer to what that line ships. Defaults to the version of the installation
+# this server was started in; where there is none, every entry comes back with
+# the range it is shipped on.
+targetVersion: string  # optional
+```
+
+## Answers with
+
+```yaml
+query: string
+# The TYPO3 major the answer was composed for — stated by the caller, or read
+# from the installation. Null means every covered version is in the answer and
+# each entry carries its own range.
+targetVersion: integer or null  # optional
+# How many system extensions matched. Zero means the name is not one of them on
+# the versions asked about, not that no such package exists.
+matchCount: integer
+extensions:
+  - # The extension key, as the directory below typo3/sysext is named.
+    key: string
+    # The Composer package name to require it by, where an installation does not
+    # have it already.
+    package: string
+    # What it is for.
+    description: string
+    # First covered major that ships it. Null means every covered major does.
+    since: integer or null
+    # Last covered major that ships it. Null means it is still shipped on the
+    # newest one.
+    until: integer or null
+    # The range in words, empty when it is shipped everywhere this knowledge
+    # base reaches.
+    shippedOn: string
+# The TYPO3 majors this answer was derived from.
+coveredVersions: [integer]
+```
+
+## Answered
 
 Recorded on 2026-08-02 by `bin/cli tools:record`. Answered against
-core-checkout, TYPO3 14.3.6-dev, the 14.3 core checkout below .checkouts/,
-whose console could not be reached: <installation> has no TYPO3 console —
-none of bin/typo3, vendor/bin/typo3 exists. Nothing checks this page;
-[tools.md](../tools.md) is where the current shape of an answer is, and
-[readme.md](readme.md) is what the recording as a whole is of.
+core-checkout, TYPO3 14.3.6-dev, the 14.3 core checkout below .checkouts/, whose
+console could not be reached: <installation> has no TYPO3 console — none of
+bin/typo3, vendor/bin/typo3 exists. Nothing checks what is below this heading;
+everything above it is derived from the class that answers the call, and
+`bin/cli tools:check` holds it.
 
-## system extensions: hit
+### system extensions: hit
 
 Called with:
 
@@ -52,7 +109,7 @@ Data:
 }
 ```
 
-## system extensions: miss
+### system extensions: miss
 
 Called with:
 
@@ -85,7 +142,7 @@ Data:
 }
 ```
 
-## system extensions: everything
+### system extensions: everything
 
 Called with:
 

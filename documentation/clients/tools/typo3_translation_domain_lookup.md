@@ -1,13 +1,65 @@
-# What `typo3_translation_domain_lookup` answered
+# `typo3_translation_domain_lookup`
+
+Compute the translation domain an XLF file resolves to, from its path. The
+domain is the canonical way to reference a label (backend.alt_doc:key) in TCA,
+LanguageService::sL() and f:translate, and it is registered nowhere: it follows
+from the path by the rules the core itself applies, in TranslationDomainMapper
+on one branch and TranslationDomainResolver on the next. Being computed, it also
+answers for a file outside the core and for one a patch is about to add. On a
+version older than translation domains it answers with the full LLL:EXT:
+reference instead, because the domain form renders nothing there and fails at
+runtime rather than at build time. That version is targetVersion, or the
+installation this server was started in where none is stated — state one when
+the work is on another branch than what is installed.
+
+`readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: false`
+
+## Takes
+
+```yaml
+# The XLF file path, either as an EXT: reference
+# ("EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf") or relative
+# to a core checkout
+# ("typo3/sysext/backend/Resources/Private/Language/locallang_alt_doc.xlf").
+path: string
+# The TYPO3 version the label is being written for, for example "13.4" or "14".
+# It decides one thing here and it decides it entirely: below the version that
+# resolves domains the domain form renders nothing, so the answer is the
+# LLL:EXT: reference instead. Defaults to the installation this server was
+# started in, which is the wrong answer for a backport branch or a second
+# checkout — state it there.
+targetVersion: string  # optional
+```
+
+## Answers with
+
+```yaml
+# The XLF path the domain was computed from.
+path: string
+# The TYPO3 major the answer was composed for — stated by the caller, or read
+# from the installation. Null means neither said, and the domain comes back
+# unqualified: it is the form from 14 onwards, and nothing placed this call on a
+# version.
+targetVersion: integer or null  # optional
+# The translation domain it resolves to. Null when the path names no extension,
+# and also when the version this was composed for is too old to resolve domains
+# at all — there the full LLL:EXT: reference is the answer.
+domain: string or null
+# Set only in that second case: what the domain would be on a version that has
+# them. It is not usable on this installation.
+domainOnNewerVersions: string or null  # optional
+```
+
+## Answered
 
 Recorded on 2026-08-02 by `bin/cli tools:record`. Answered against
-core-checkout, TYPO3 14.3.6-dev, the 14.3 core checkout below .checkouts/,
-whose console could not be reached: <installation> has no TYPO3 console —
-none of bin/typo3, vendor/bin/typo3 exists. Nothing checks this page;
-[tools.md](../tools.md) is where the current shape of an answer is, and
-[readme.md](readme.md) is what the recording as a whole is of.
+core-checkout, TYPO3 14.3.6-dev, the 14.3 core checkout below .checkouts/, whose
+console could not be reached: <installation> has no TYPO3 console — none of
+bin/typo3, vendor/bin/typo3 exists. Nothing checks what is below this heading;
+everything above it is derived from the class that answers the call, and
+`bin/cli tools:check` holds it.
 
-## domain: EXT reference
+### domain: EXT reference
 
 Called with:
 
@@ -40,7 +92,7 @@ Data:
 }
 ```
 
-## domain: checkout path
+### domain: checkout path
 
 Called with:
 
@@ -73,7 +125,7 @@ Data:
 }
 ```
 
-## domain: on an older target
+### domain: on an older target
 
 Called with:
 
@@ -105,7 +157,7 @@ Data:
 }
 ```
 
-## domain: miss
+### domain: miss
 
 Called with:
 

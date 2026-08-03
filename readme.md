@@ -100,10 +100,9 @@ of prose. All tools are annotated `readOnlyHint`; only `typo3_feedback_record`
 writes anything, and then only a new file.
 
 What each one takes and the fields it answers with is written out per tool in
-[documentation/clients/tools.md](documentation/clients/tools.md), rendered from
-the classes rather than kept beside them. What a filled answer looks like is
-[documentation/clients/tool-answers/](documentation/clients/tool-answers/readme.md),
-one page per tool, recorded against a checkout on the day it says.
+[documentation/clients/tools.md](documentation/clients/tools.md) — one page per
+tool, rendered from the classes rather than kept beside them, and each carrying
+what that tool answered when it was last recorded.
 
 Names are `typo3_<subject>_<verb>`, with the verb taken from a fixed set —
 `lookup` finds and may find nothing, `guide` composes an answer for a task,

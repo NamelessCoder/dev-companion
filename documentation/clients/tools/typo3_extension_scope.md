@@ -1,19 +1,270 @@
-# What `typo3_extension_scope` answered
+# `typo3_extension_scope`
+
+Describe what one installed extension registers: the tables its TCA defines and
+the ones it extends, the content elements it adds to tt_content with the Fluid
+template each renders through and the FlexForm each binds, its backend modules
+and routes, its icons, its site sets with the files each carries, the form
+configurations it registers and the form definitions they store, its service
+tags, middlewares, Fluid roots and namespaces, and the shape of its Classes/
+directory — and beside all that: its manual, its README, its test layers, and
+its XLF files with the source language each declares. Those four are answered
+when they are absent too, which a file listing cannot show. A content element
+that is an Extbase plugin is marked as one and points at plugin.tx_<identifier>:
+it renders through the dispatcher and has no templateName to be missing. Tables,
+content elements and icons come from the booted installation where there is one,
+attributed to this extension by the EXT: reference each entry carries, so a list
+built in a loop or a table added by a PHP call is in the answer; everything else
+is parsed from that extension's own files, never executed, so it answers on a
+fresh clone and for a third-party extension as well as for the project's own.
+answeredBy says which of the two answered, and names what packages leaves out. A
+registration file it ships that a core deprecation turns on — ext_tables.php, or
+ext_emconf.php beside a composer.json declaring neither providesPackages nor a
+version — is reported with what it costs, because that predicate is the file
+rather than anything the extension calls and no changelog search over its code
+reaches it. That is those two files and nothing else, so it is not an upgrade
+check. typo3_project_scope names the extensions this can be called for.
+
+`readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: false`
+
+## Takes
+
+```yaml
+# The extension key, as typo3_project_scope reports it, for example
+# "my_sitepackage" or "news".
+extension: string
+```
+
+## Answers with
+
+```yaml
+# The extension key that was asked for.
+key: string
+# Absolute path of the extension. Null when the installation does not have it.
+path: string or null  # optional
+# One of: system, project, third-party, fixture, null. system: TYPO3's own.
+# project: inside the repository. third-party: installed as a dependency.
+# fixture: below a Tests/ directory, so it belongs to the test setup.
+origin: string or null  # optional
+# The Composer package name it declares.
+composerName: string or null  # optional
+# What its composer.json says it is.
+description: string or null  # optional
+# What it requires, which is where a version conflict during an upgrade comes
+# from.
+requires:  # optional
+  - package: string
+    constraint: string
+# Tables its Configuration/TCA/ defines, by file name.
+tcaTables: [string]  # optional
+# Tables it extends below Configuration/TCA/Overrides/.
+tcaOverrides: [string]  # optional
+# The content elements it adds to tt_content, where each renders, and what it
+# configures through.
+contentElements:  # optional
+  - # The CType value, read from an addTcaSelectItem(), addRecordType() or
+    # registerPlugin() call in one of those override files. An identifier
+    # assembled at runtime or taken from a constant is not among them.
+    identifier: string
+    # One of: element, plugin. plugin: an Extbase plugin, registered by
+    # ExtensionUtility::registerPlugin(), which renders through the dispatcher
+    # rather than through a templateName of its own. element: everything else.
+    kind: string
+    # The Fluid template it renders through, from
+    # tt_content.<identifier>.templateName in this extension's TypoScript. Null
+    # where its TypoScript does not set one — another extension or the site
+    # configuration may. On a plugin, one set here replaces the Generic wrapper
+    # configurePlugin() generates instead of naming the plugin's template, and
+    # null is the normal case.
+    templateName: string or null
+    # The TypoScript file that set it, relative to the extension.
+    source: string or null
+    # On a plugin: the TypoScript file of this extension that configures
+    # plugin.tx_<identifier>, which is where its templateRootPaths and settings
+    # are. Null where its TypoScript configures nothing there, and on anything
+    # that is not a plugin.
+    pluginSettings: string or null
+    # The FlexForm data structure it binds, as the call declares it — a
+    # FILE:EXT: reference, or "inline" where the XML stands in the override file
+    # itself. Null where it binds none, which is a different element to review
+    # than one that does.
+    flexForm: string or null
+# FlexForm bindings read from the override files whose content type none of the
+# contentElements entries above carries. Usually empty. An entry here is a
+# registration this answer read and could not attribute: the identifier is real
+# and the binding is real, and whatever else registers that element was not
+# established.
+unlistedFlexForms:  # optional
+  - # The content type the binding names.
+    identifier: string
+    # The data structure, as above.
+    flexForm: string
+# Module identifiers from Configuration/Backend/Modules.php.
+backendModules: [string]  # optional
+# Route names from Configuration/Backend/Routes.php and AjaxRoutes.php.
+backendRoutes: [string]  # optional
+# Identifiers from Configuration/Icons.php. typo3_icon_lookup searches every
+# package at once.
+icons: [string]  # optional
+siteSets:  # optional
+  - # The composer-style set name a site depends on.
+    name: string
+    # Relative to the extension.
+    path: string
+    # Which of the files core reads a set directory for are in it:
+    # settings.definitions.yaml, settings.yaml, route-enhancers.yaml,
+    # labels.xlf, page.tsconfig, constants.typoscript, setup.typoscript and
+    # include_static_file.txt. config.yaml is not among them, being what makes
+    # the directory a set. route-enhancers.yaml is read from v14.1; on v13 a set
+    # carrying one is loaded and that file ignored. The last four are the
+    # defaults a set gets where its config.yaml declares no typoscript, pagets
+    # or labels path of its own — one that declares them reads from there
+    # instead, and this list does not say so.
+    files: [string]
+# The form configurations it registers, both ways in. Empty where it registers
+# none — an extension that ships a .form.yaml and registers no storage for it
+# has a form nothing loads, which is what this list is read for.
+formConfigurations:  # optional
+  - # The YAML file, relative to the extension.
+    path: string
+    # The set name its config.yaml declares, which is what disabledSets matches
+    # against. Null for a TypoScript-registered file, which has none.
+    name: string or null
+    # One of: set, typoscript. set: the directory convention
+    # Configuration/Form/<SetName>/config.yaml, collected from every active
+    # extension since v14.2 without being registered anywhere. typoscript:
+    # plugin.tx_form.settings.yamlConfigurations or the module. one beside it,
+    # which is the way before it, deprecated in v14.2 and removed in v15.0.
+    registeredBy: string
+    # What it declares under persistenceManager.allowedExtensionPaths — where
+    # the form definitions it stores live. A storage configured as a file mount
+    # instead is a record and is in no answer read from files.
+    storagePaths: [string]
+    # The .form.yaml files below those of the storage paths that are inside this
+    # extension, relative to it.
+    formDefinitions: [string]
+# Middleware identifiers from Configuration/RequestMiddlewares.php, across the
+# request scopes.
+middlewares: [string]  # optional
+# Tags its Services.yaml carries, such as data.processor, event.listener or
+# console.command.
+serviceTags: [string]  # optional
+# Which of Resources/Private/Templates, Partials and Layouts exist.
+fluidRoots: [string]  # optional
+# Prefixes it registers globally in Configuration/Fluid/Namespaces.php.
+fluidNamespaces: [string]  # optional
+# Files below Configuration/TypoScript/.
+typoScript: [string]  # optional
+classes:  # optional
+  - # The Classes/ subdirectory, for example EventListener or DataProcessing.
+    kind: string
+    # PHP files anywhere below it, its own subdirectories included.
+    files: integer
+# Registration files it ships, from ext_localconf.php to
+# Initialisation/data.t3d.
+files: [string]  # optional
+# The files above that a core deprecation names, each with what shipping it
+# costs. Read from the files this extension ships and from its composer.json,
+# which is where both predicates live — no changelog sweep over what its code
+# calls reaches either. An empty list says none of the registration files above
+# is one of those, not that the extension is ready for the next major: nothing
+# else here is checked for a deprecation, and typo3_changelog_lookup is what
+# answers that question.
+deprecatedFiles:  # optional
+  - # One of the files above.
+    file: string
+    # The changelog entry, for typo3_changelog_lookup, which has the description
+    # and the migration whole.
+    changelog: string
+    # What the deprecation turns on, which is what holds here — shipping the
+    # file, and what composer.json declares beside it.
+    predicate: string
+    # What it raises, from which version, and what the removal does instead.
+    cost: string
+# Declaration files that are there but whose entries do not stand in their own
+# text: each assembles its list while it runs, so what it registers is missing
+# from the lists above rather than absent. The booted installation is what
+# answers for them. An empty list says each declaration file that exists stood
+# in its own text, not that everything the extension ships was read:
+# ext_localconf.php and ext_tables.php register by running and are read by
+# nothing here.
+notReadStatically: [string]  # optional
+# What it ships beside its registrations. Every key is present even when the
+# artifact is not, because the absence of a manual, a test or a translation is
+# the answer a file listing cannot give.
+artifacts:  # optional
+  # Its manual entry point, "Documentation/" where the directory exists without
+  # one, null where the extension ships no manual at all.
+  manual: string or null
+  # The README it ships, null where there is none.
+  readme: string or null
+  # The layers below Tests/, for example Unit and Functional. Empty where the
+  # extension ships no tests.
+  tests: [string]
+  languageFiles:
+    - # Relative to the extension.
+      path: string
+      # The source-language its own <file> element declares, null where it
+      # declares none. This is what the file says, not what it should say.
+      sourceLanguage: string or null
+      # Locales of the prefixed files beside it, such as de for de.messages.xlf.
+      translations: [string]
+# On a miss: the extension keys this installation does have.
+installed: [string]  # optional
+# One of: installation, packages. installation: its assembled runtime state
+# answered. packages: read from the files the installed packages ship, because
+# the console could not be asked — overrides applied at runtime are not
+# reflected.
+answeredBy: string  # optional
+unsupported:  # optional
+  # One of: no-installation, misconfigured, installation-not-answering.
+  # no-installation: nothing to ask from here, and searched says where it
+  # looked. misconfigured: an installation was named and could not be used, so
+  # nothing was searched for. installation-not-answering: one was found and its
+  # console did not answer — a stopped container or a database with no schema,
+  # which is a state that ends without reinstalling anything.
+  cause: string
+  # What stopped it, in the words the attempt produced.
+  reason: string
+  # What the reason means where the message alone does not say it — a console
+  # that starts and then fails on a missing table has a database without a
+  # schema, not a broken installation. Empty where nothing beyond the reason is
+  # known.
+  diagnosis: string  # optional
+  # Every directory the discovery walked, in order. "Nothing was found" and "the
+  # server was started somewhere else" wear one sentence, and only this tells
+  # them apart. Empty where discovery never ran.
+  searched: [string]
+  # What was set and could not be used. Null where nothing was set.
+  misconfiguration: string or null  # optional
+  settings:
+    # Environment variable that names the installation root.
+    root: string
+    # Environment variable that names the console command.
+    console: string
+```
+
+The answer carries exactly one of these sets of fields: `key`, `path`, `origin`,
+`tcaTables`, `tcaOverrides`, `contentElements`, `unlistedFlexForms`,
+`backendModules`, `icons`, `siteSets`, `formConfigurations`, `serviceTags`,
+`files`, `deprecatedFiles`, `notReadStatically`, `artifacts`, `answeredBy` — or
+`key`, `unsupported`.
+
+## Answered
 
 Recorded on 2026-08-02 by `bin/cli tools:record`. Of two working directories,
 because what this server answers depends on which one a client is standing in,
 and neither fills the whole surface. Answered against core-checkout, TYPO3
-14.3.6-dev, the 14.3 core checkout below .checkouts/, whose console could not
-be reached: <installation> has no TYPO3 console — none of bin/typo3,
+14.3.6-dev, the 14.3 core checkout below .checkouts/, whose console could not be
+reached: <installation> has no TYPO3 console — none of bin/typo3,
 vendor/bin/typo3 exists. Answered against composer-project, TYPO3 14.3.5, the
 E-SITE this repository makes below .environments/, whose console answers. The
 tools that declare `answeredBy` carry an answer from each, under a heading
 naming which; every other answer is from the first alone, because nothing in it
-would differ. Nothing checks this page; [tools.md](../tools.md) is where the
-current shape of an answer is, and [readme.md](readme.md) is what the recording
-as a whole is of.
+would differ. Nothing checks what is below this heading; everything above it is
+derived from the class that answers the call, and `bin/cli tools:check` holds
+it.
 
-## extension
+### extension
 
 Called with:
 
@@ -23,7 +274,7 @@ Called with:
 }
 ```
 
-### From the 14.3 core checkout below .checkouts/, whose console could not be reached
+#### From the 14.3 core checkout below .checkouts/, whose console could not be reached
 
 Text:
 
@@ -622,7 +873,7 @@ Data:
 }
 ```
 
-### From the E-SITE this repository makes below .environments/, whose console answers
+#### From the E-SITE this repository makes below .environments/, whose console answers
 
 Text:
 

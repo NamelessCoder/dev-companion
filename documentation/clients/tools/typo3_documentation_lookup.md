@@ -1,13 +1,87 @@
-# What `typo3_documentation_lookup` answered
+# `typo3_documentation_lookup`
+
+Search or read the official live TYPO3 documentation for a covered TYPO3 line.
+Search with several short English queries; every result carries a canonical URL.
+Pass one of those URLs back as page with the same targetVersion to receive that
+page as text, including headings and code examples. This reaches docs.typo3.org,
+unlike the bundled convention lookups.
+
+`readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: true`
+
+## Takes
+
+```yaml
+# Short search queries in English. Pass alternatives separately, for example
+# ["page title event", "page title provider"]. A call carries queries or page,
+# never both.
+queries: [string]  # optional
+# Canonical page URL returned by an earlier search, read as text. Pass it with
+# the same targetVersion. A call carries queries or page, never both.
+page: string  # optional
+# Covered TYPO3 version whose official manual must answer, for example "13.4" or
+# "14". There is no fallback to another release.
+targetVersion: string
+limit: integer  # optional
+```
+
+The call carries exactly one of these sets of arguments: `queries` — or `page`.
+
+## Answers with
+
+```yaml
+# One of: search, page.
+mode: string
+# One of: answered, empty, unavailable.
+status: string
+# The exact documentation release searched.
+targetVersion: string
+# The external documentation host.
+source: string
+queries: [string]
+results:
+  - title: string
+    # Canonical URL of the matching documentation page.
+    url: string
+    # Official document identifier.
+    document: string
+    documentTitle: string
+    documentVersion: string
+    section: string
+    # Short route into the source, empty only when the result page could not be
+    # read after its index matched.
+    excerpt: string
+    # The selected page as text in page mode; empty in search mode.
+    content: string
+    # What this page was matched on. Every query word missing from it reached
+    # this page nowhere, so a result whose match is made of the words around the
+    # subject is an aimed answer rather than one about the subject; ask again
+    # with the subject alone. Empty in page mode.
+    matched:
+      - # The query word, reduced to the stem that was searched for.
+        term: string
+        # One of: title, path, manual. Where it was found: the page title, the
+        # section path it sits in, or the name of the manual.
+        field: string
+# Why nothing was answered, where status says unavailable. Null otherwise.
+unavailable:
+  # One of: version-not-covered, source-not-answering. version-not-covered: the
+  # release asked about is outside the ones this server knows the manuals for,
+  # and asking again changes nothing. source-not-answering: docs.typo3.org did
+  # not answer this time, and the same call may answer the next.
+  cause: string
+  reason: string
+```
+
+## Answered
 
 Recorded on 2026-08-02 by `bin/cli tools:record`. Answered against
-core-checkout, TYPO3 14.3.6-dev, the 14.3 core checkout below .checkouts/,
-whose console could not be reached: <installation> has no TYPO3 console —
-none of bin/typo3, vendor/bin/typo3 exists. Nothing checks this page;
-[tools.md](../tools.md) is where the current shape of an answer is, and
-[readme.md](readme.md) is what the recording as a whole is of.
+core-checkout, TYPO3 14.3.6-dev, the 14.3 core checkout below .checkouts/, whose
+console could not be reached: <installation> has no TYPO3 console — none of
+bin/typo3, vendor/bin/typo3 exists. Nothing checks what is below this heading;
+everything above it is derived from the class that answers the call, and
+`bin/cli tools:check` holds it.
 
-## documentation: search
+### documentation: search
 
 Called with:
 
@@ -89,7 +163,7 @@ Data:
 }
 ```
 
-## documentation: page
+### documentation: page
 
 Called with:
 
@@ -386,7 +460,7 @@ Data:
 }
 ```
 
-## documentation: unsupported version
+### documentation: unsupported version
 
 Called with:
 

@@ -1,15 +1,130 @@
-# What `typo3_hint_lookup` answered
+# `typo3_hint_lookup`
+
+Return hints for TYPO3 core paths or task topics, grouped by section. Where the
+paths read as a project or third-party extension the hints still come back,
+because the conventions transfer. The "Backend CSS" and "Backend TypeScript and
+JavaScript" sections describe the TYPO3 backend interface and are withheld, with
+the reason, where the task names the frontend.
+
+`readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: false`
+
+## Takes
+
+```yaml
+# File paths related to the task, as they are in the repository they belong to.
+# Each is placed on its own, so a core path and an extension path in one call
+# are matched separately, and a statement is labelled where it obliges the other
+# one.
+paths: [string]  # optional
+# Short task description or topic, in English. Matching is lexical against
+# English text, so another language reaches only the loanwords.
+task: string  # optional
+# Ask for one hint by its id, for example language-files, instead of matching.
+# Every answer that returns no hint lists the ids there are, so a subject that
+# exists can be requested by name rather than guessed at.
+id: string  # optional
+# The TYPO3 version the answer has to hold for, for example "13.4" or "14".
+# Statements that do not hold there are left out, including those the repository
+# needs for another major it declares. Defaults to every major this repository
+# declares typo3/cms-core for, or to the installation this server was started in
+# where there is no declaration; where there is neither, nothing is filtered and
+# every statement carries the versions it holds for.
+targetVersion: string  # optional
+# Maximum number of hints.
+limit: integer  # optional
+```
+
+## Answers with
+
+```yaml
+task: string or null  # optional
+paths: [string]
+# Which kind of work each path is. Paths of different scope are matched
+# separately, so a hint that came back for one of them is about that path.
+scopes:
+  - path: string
+    # One of: core, uncertain, project, extension. Which kind of work this
+    # answer is for: core, a patch to the TYPO3 core itself; project, the site
+    # repository around an installation; extension, a package in it, whether a
+    # sitepackage or a third-party one; or uncertain, which means nothing in the
+    # call placed the work and what came back is the core's own.
+    scope: string
+# The TYPO3 major this repository runs — stated by the caller, or read from
+# the installation. Null means nothing was filtered and every statement carries
+# its own range. Where the repository serves several majors, targetVersions is
+# what the answer holds for.
+targetVersion: integer or null  # optional
+# Every TYPO3 major the answer holds for. One entry is the ordinary case.
+# Several mean this repository declares typo3/cms-core for more than one of
+# them, so a statement was kept when it holds on any — and where two
+# statements about the same subject differ, the difference is the constraint the
+# code lives under rather than drift. Empty when nothing was filtered by
+# version.
+targetVersions: [integer]  # optional
+# Hints outside these domains are not returned.
+domains: [string]
+# Categories that matched the domains but were left out because the task names
+# the frontend. "Backend CSS" and "Backend TypeScript and JavaScript" describe
+# the TYPO3 backend interface and are wrong advice for what a website renders;
+# see docs.typo3.org for frontend theming.
+withheldCategories: [string]
+hints:
+  - id: string
+    title: string
+    # PHP, TypeScript, JavaScript, CSS, or General.
+    category: string
+    # One of: core, project, extension, null. Which kind of work the whole hint
+    # obliges. "core" means it is a condition of a patch to the TYPO3 core and a
+    # convention anywhere else — the backend's own design system, the
+    # changelog artifact, the paths of the mono repository. "project" and
+    # "extension" are the mirror: what the repository around an installation, or
+    # a package distributed on its own, has to do, and what is context rather
+    # than a condition inside the core. Null, the ordinary case, means it holds
+    # wherever TYPO3 is written: an API that throws throws in a sitepackage too.
+    scope: string or null
+    hints:
+      - # The statement itself. It reads the same on every version it holds for;
+        # the range is beside it, never inside it.
+        text: string
+        # First TYPO3 major this holds on. Null means as far back as this
+        # knowledge base reaches.
+        since: integer or null
+        # Last TYPO3 major this holds on. Null means it still holds.
+        until: integer or null
+        # The same range as a sentence, empty when the statement is bound to
+        # nothing.
+        versions: string
+        # One of: core, project, extension, null. Which kind of work this
+        # statement obliges. "core" means it is a condition of a patch to the
+        # TYPO3 core and a convention anywhere else — the backend's own design
+        # system, the changelog artifact, the paths of the mono repository.
+        # "project" and "extension" are the mirror: what the repository around
+        # an installation, or a package distributed on its own, has to do, and
+        # what is context rather than a condition inside the core. Null, the
+        # ordinary case, means it holds wherever TYPO3 is written: an API that
+        # throws throws in a sitepackage too.
+        scope: string or null
+# The hints that exist in the searched domains, returned when none matched.
+# Empty on a hit.
+availableHints:
+  - # Ask for this hint outright by passing it as id.
+    id: string
+    title: string
+    category: string
+```
+
+## Answered
 
 The tool was called `typo3_architecture_lookup` when this was recorded, and
 every call below names it by that spelling. Recorded on 2026-08-02 by
-`bin/cli tools:record`. Answered against
-core-checkout, TYPO3 14.3.6-dev, the 14.3 core checkout below .checkouts/,
-whose console could not be reached: <installation> has no TYPO3 console —
-none of bin/typo3, vendor/bin/typo3 exists. Nothing checks this page;
-[tools.md](../tools.md) is where the current shape of an answer is, and
-[readme.md](readme.md) is what the recording as a whole is of.
+`bin/cli tools:record`. Answered against core-checkout, TYPO3 14.3.6-dev, the
+14.3 core checkout below .checkouts/, whose console could not be reached:
+<installation> has no TYPO3 console — none of bin/typo3, vendor/bin/typo3
+exists. Nothing checks what is below this heading; everything above it is
+derived from the class that answers the call, and `bin/cli tools:check` holds
+it.
 
-## architecture: path
+### architecture: path
 
 Called with:
 
@@ -177,7 +292,7 @@ Data:
 }
 ```
 
-## architecture: topic
+### architecture: topic
 
 Called with:
 
@@ -629,7 +744,7 @@ Data:
 }
 ```
 
-## architecture: miss
+### architecture: miss
 
 Called with:
 

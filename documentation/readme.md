@@ -2,11 +2,10 @@
 
 One page per procedure that is long enough to get wrong from memory. The
 directories keep saying what a thing **is** — a requirement, a decision, a
-forward review, a feedback — and each links here for how it is carried out. Two
-things are no procedure and are written by nobody: `clients/tools.md` is the
-tool surface rendered from the classes that declare it, and
-`clients/tool-answers/` is what each of those tools answered once, one page
-apiece.
+forward review, a feedback — and each links here for how it is carried out. One
+thing is no procedure and is written by nobody: `clients/tools.md` and the pages
+under `clients/tools/` are the tool surface, rendered from the classes that
+declare it, each page carrying what that tool answered once.
 
 The split is deliberate. A readme that also holds the workflow is read by
 someone looking for one paragraph and finding six; a workflow with no home ends
@@ -58,13 +57,12 @@ order by, and the launch two of the subjects below share.
 
 - [installing.md](clients/installing.md) — every client and layout the installer
   supports, and the configuration each one gets.
-- [tools.md](clients/tools.md) — every tool, what it takes and the fields it
-  answers with, written from the registry by `bin/cli tools:index`.
-- [tool-answers/](clients/tool-answers/readme.md) — what each of them answered
-  on one day against one checkout, one page per tool, recorded by
-  `bin/cli tools:record`. Evidence rather than a derivation, so nothing checks
-  it. The two tools that are not recorded say why on the map and again in
-  `tools.md`.
+- [tools.md](clients/tools.md) — every tool, and the page saying what it takes
+  and which fields it answers with. Written from the registry by
+  `bin/cli tools:index`, down to each page's `## Answered` heading. Below that
+  heading is what the tool answered on one day against one installation,
+  recorded by `bin/cli tools:record` — evidence rather than a derivation, so
+  nothing checks it. The two tools that are not recorded say why in its place.
 - [writing-a-skill.md](clients/writing-a-skill.md) — what a new task skill has
   to show before it exists, the rules it is written under, and what holds each
   one.

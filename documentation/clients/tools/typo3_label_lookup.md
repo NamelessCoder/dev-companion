@@ -1,19 +1,110 @@
-# What `typo3_label_lookup` answered
+# `typo3_label_lookup`
+
+Search the labels registered in the TYPO3 installation you are working in. Reuse
+is local to the translation resource already used at the consuming code: pass
+resource whenever it is known, and do not reference a match from another module
+or package merely because its text is identical. Answered by the installation
+itself through its console, with the resource overrides it applies. Where the
+console cannot be reached — an installed TYPO3 whose database has no schema yet
+is the common case — the same packages' XLF files are read instead, and
+answeredBy says which of the two answered.
+
+`readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: false`
+
+## Takes
+
+```yaml
+# Words from the label text or its trans-unit id, for example "save document" or
+# "labels.title". Several words are matched independently, ignoring case and
+# order: a label has to carry every one of them, in its text or in its id. When
+# none carries all of them, the answer says how far each word reaches on its
+# own.
+query: string
+# Restrict the search to the extension that owns the consuming code.
+extension: string  # optional
+# Restrict the search to the exact XLF resource already used at the consuming
+# code, for example
+# "EXT:my_sitepackage/Resources/Private/Language/Backend/Import.xlf". A match
+# from another resource is not a reuse candidate.
+resource: string  # optional
+# Maximum number of labels to return.
+limit: integer  # optional
+```
+
+## Answers with
+
+```yaml
+query: string
+matchCount: integer  # optional
+# One of: installation, packages. installation: its assembled runtime state
+# answered. packages: read from the files the installed packages ship, because
+# the console could not be asked — overrides applied at runtime are not
+# reflected.
+answeredBy: string  # optional
+terms:  # optional
+  - # One word of the query; a label has to carry every one of them.
+    term: string
+    # How many labels this word alone reaches — where to narrow when the query
+    # as a whole reaches none.
+    matchCount: integer
+labels:  # optional
+  - # Translation domain reference (package.resource:key) — the canonical
+    # form.
+    ref: string
+    domain: string
+    # The trans-unit id.
+    key: string
+    # The label text in the searched locale.
+    source: string
+    # The XLF file it lives in.
+    resource: string  # optional
+unsupported:  # optional
+  # One of: no-installation, misconfigured, installation-not-answering.
+  # no-installation: nothing to ask from here, and searched says where it
+  # looked. misconfigured: an installation was named and could not be used, so
+  # nothing was searched for. installation-not-answering: one was found and its
+  # console did not answer — a stopped container or a database with no schema,
+  # which is a state that ends without reinstalling anything.
+  cause: string
+  # What stopped it, in the words the attempt produced.
+  reason: string
+  # What the reason means where the message alone does not say it — a console
+  # that starts and then fails on a missing table has a database without a
+  # schema, not a broken installation. Empty where nothing beyond the reason is
+  # known.
+  diagnosis: string  # optional
+  # Every directory the discovery walked, in order. "Nothing was found" and "the
+  # server was started somewhere else" wear one sentence, and only this tells
+  # them apart. Empty where discovery never ran.
+  searched: [string]
+  # What was set and could not be used. Null where nothing was set.
+  misconfiguration: string or null  # optional
+  settings:
+    # Environment variable that names the installation root.
+    root: string
+    # Environment variable that names the console command.
+    console: string
+```
+
+The answer carries exactly one of these sets of fields: `query`, `resource`,
+`matchCount`, `answeredBy`, `terms`, `labels` — or `query`, `unsupported`.
+
+## Answered
 
 Recorded on 2026-08-02 by `bin/cli tools:record`. Of two working directories,
 because what this server answers depends on which one a client is standing in,
 and neither fills the whole surface. Answered against core-checkout, TYPO3
-14.3.6-dev, the 14.3 core checkout below .checkouts/, whose console could not
-be reached: <installation> has no TYPO3 console — none of bin/typo3,
+14.3.6-dev, the 14.3 core checkout below .checkouts/, whose console could not be
+reached: <installation> has no TYPO3 console — none of bin/typo3,
 vendor/bin/typo3 exists. Answered against composer-project, TYPO3 14.3.5, the
 E-SITE this repository makes below .environments/, whose console answers. The
 tools that declare `answeredBy` carry an answer from each, under a heading
 naming which; every other answer is from the first alone, because nothing in it
-would differ. Nothing checks this page; [tools.md](../tools.md) is where the
-current shape of an answer is, and [readme.md](readme.md) is what the recording
-as a whole is of.
+would differ. Nothing checks what is below this heading; everything above it is
+derived from the class that answers the call, and `bin/cli tools:check` holds
+it.
 
-## labels: hit
+### labels: hit
 
 Called with:
 
@@ -23,7 +114,7 @@ Called with:
 }
 ```
 
-### From the 14.3 core checkout below .checkouts/, whose console could not be reached
+#### From the 14.3 core checkout below .checkouts/, whose console could not be reached
 
 Text:
 
@@ -306,7 +397,7 @@ Data:
 }
 ```
 
-### From the E-SITE this repository makes below .environments/, whose console answers
+#### From the E-SITE this repository makes below .environments/, whose console answers
 
 Text:
 
@@ -587,7 +678,7 @@ Data:
 }
 ```
 
-## labels: miss
+### labels: miss
 
 Called with:
 
@@ -597,7 +688,7 @@ Called with:
 }
 ```
 
-### From the 14.3 core checkout below .checkouts/, whose console could not be reached
+#### From the 14.3 core checkout below .checkouts/, whose console could not be reached
 
 Text:
 
@@ -627,7 +718,7 @@ Data:
 }
 ```
 
-### From the E-SITE this repository makes below .environments/, whose console answers
+#### From the E-SITE this repository makes below .environments/, whose console answers
 
 Text:
 

@@ -1,13 +1,112 @@
-# What `typo3_server_scope` answered
+# `typo3_server_scope`
+
+Orientation for this server: what it covers and at which depth, what it
+deliberately does not cover, and which tool to call when. Start here when it is
+unclear whether this server can answer a question at all, or which of the
+lookups is the right one.
+
+`readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: false`
+
+## Takes
+
+Nothing.
+
+## Answers with
+
+```yaml
+# What this server is for.
+purpose: string
+# The boundary statement clients receive at initialize time.
+instructions: string  # optional
+covers:
+  - topic: string
+    # How deeply the topic is covered.
+    depth: string
+    tools: [string]
+    # Knowledge file or typo3:// resource behind the topic.
+    source: string
+    # One of: core, project, extension, any. Which kind of work the answers are
+    # for. core: the contribution process and the scripts of that repository.
+    # any: a convention that holds wherever TYPO3 is written.
+    scope: string
+doesNotCover:
+  - topic: string
+    why: string
+    # What to do instead of asking this server.
+    instead: string
+checkoutDiscovery:  # optional
+  - establish: string
+    how: string
+routing:
+  - when: string
+    call: string
+# The TYPO3 versions the knowledge is bound to. A statement outside a range is
+# left out when a target version is known.
+versions:
+  - major: integer
+    # The branch that line is verified against.
+    branch: string
+    # lts, stable, or development.
+    status: string
+excludedTools:
+  # The tools the caller asked not to be offered, and the only reason the list
+  # is ever shorter than the documented one. Empty unless the variable is set.
+  names: [string]
+  # Environment variable that names them.
+  variable: string
+installation:
+  # Whether there is an installation to read at all.
+  found: boolean
+  # Absolute path of the installation.
+  root: string or null  # optional
+  # core-checkout or composer-project.
+  kind: string or null  # optional
+  # How it was determined: discovery (walked up from the start directory) or
+  # environment (named by TYPO3_MCP_ROOT).
+  via: string or null  # optional
+  # Where the search started, or the configured value.
+  startedFrom: string or null  # optional
+  # The directories the search walked. A failure here means a layout that cannot
+  # be read or a server started in the wrong place — this says which.
+  searched: [string]
+  # TYPO3 packages found in it.
+  packageCount: integer
+  # Set when a configured value could not be followed. Nothing falls back to a
+  # discovered installation.
+  misconfiguration: string or null  # optional
+  console:
+    # False means every installation-backed tool answers with unsupported in
+    # place of its result.
+    reachable: boolean
+    # ddev, php, or override.
+    via: string or null  # optional
+    # The PHP version it runs on, where that is known.
+    php: string or null  # optional
+    # The invocation, as it is run.
+    command: string or null  # optional
+    # Why it cannot be run. Null when it can.
+    reason: string or null  # optional
+    # What limits the console that was found — a project whose containers are
+    # stopped answers what its files say and fails on everything that boots
+    # TYPO3 against its database. Null when nothing limits it.
+    caveat: string or null  # optional
+  settings:  # optional
+    # Environment variable that names the installation root.
+    root: string
+    # Environment variable that names the console command.
+    console: string
+```
+
+## Answered
 
 Recorded on 2026-08-02 by `bin/cli tools:record`. Answered against
-core-checkout, TYPO3 14.3.6-dev, the 14.3 core checkout below .checkouts/,
-whose console could not be reached: <installation> has no TYPO3 console —
-none of bin/typo3, vendor/bin/typo3 exists. Nothing checks this page;
-[tools.md](../tools.md) is where the current shape of an answer is, and
-[readme.md](readme.md) is what the recording as a whole is of.
+core-checkout, TYPO3 14.3.6-dev, the 14.3 core checkout below .checkouts/, whose
+console could not be reached: <installation> has no TYPO3 console — none of
+bin/typo3, vendor/bin/typo3 exists. Nothing checks what is below this heading;
+everything above it is derived from the class that answers the call, and
+`bin/cli tools:check` holds it.
 
-## scope
+### scope
 
 Called with:
 

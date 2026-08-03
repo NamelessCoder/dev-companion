@@ -1,6 +1,6 @@
 # Record the tool answers again, with an E-SITE
 
-**Serves:** documentation/clients/tool-answers/
+**Serves:** documentation/clients/tools/
 **Priority:** low
 
 Left behind by `D-KNW-031`.

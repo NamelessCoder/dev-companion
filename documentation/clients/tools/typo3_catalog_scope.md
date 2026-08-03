@@ -1,13 +1,82 @@
-# What `typo3_catalog_scope` answered
+# `typo3_catalog_scope`
+
+Report whether component contracts come from the active installation or the
+bundled fallback, which TYPO3 core revision the fallback catalogs were taken
+from, what they cover, and how to re-check them. Call this to judge whether a
+lookup miss is authoritative: even with installed sources, component names
+remain a curated index rather than every backend class.
+
+`readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: false`
+
+## Takes
+
+```yaml
+# The TYPO3 version to report the catalog's coverage for, for example "13.4" or
+# "14". Defaults to the version of the installation this server was started in.
+targetVersion: string  # optional
+```
+
+## Answers with
+
+```yaml
+# The core revision behind catalog answers, and how it relates to the
+# installation being read. A miss means "not in this snapshot".
+catalog:
+  repository: string  # optional
+  branch: string
+  # TYPO3 version of the snapshot.
+  version: string
+  # Core revision the catalogs were taken from.
+  commit: string
+  verifiedAt: string
+  # TYPO3 version of the installation this server was started in, where there is
+  # one. Null means there was nothing to compare the snapshot with.
+  installedVersion: string or null  # optional
+  # Set when that installation and the snapshot are different TYPO3 majors, and
+  # what to do about it. Null when they agree or nothing is known.
+  skew: string or null  # optional
+verifyCommand: string
+# One entry per catalog describing what it contains.
+scope: object
+# One entry per catalog with its number of entries.
+counts: object
+# The TYPO3 major the coverage was reported for — stated by the caller, or
+# read from the installation. Null means the whole catalog answers.
+targetVersion: integer or null  # optional
+# How many components were verified on that version.
+verifiedCount: integer
+# One of: installation, catalog.
+componentSource: string
+# Components this catalog has but was never verified on the target version. Left
+# out of components rather than handed over — an empty answer here means "not
+# verified where you are", not "does not exist".
+withheld:
+  - name: string
+    title: string
+    # What to verify the entry against on the target version.
+    sassPaths: [string]  # optional
+    demoPath: string or null  # optional
+    # The TYPO3 major this entry starts holding at, or null when it holds on
+    # every covered version.
+    since: integer or null  # optional
+    # The TYPO3 major it stops holding after, or null when nothing has replaced
+    # it.
+    until: integer or null  # optional
+    # The same range as a sentence, empty when the entry holds on every covered
+    # version.
+    verifiedOn: string
+```
+
+## Answered
 
 Recorded on 2026-08-02 by `bin/cli tools:record`. Answered against
-core-checkout, TYPO3 14.3.6-dev, the 14.3 core checkout below .checkouts/,
-whose console could not be reached: <installation> has no TYPO3 console —
-none of bin/typo3, vendor/bin/typo3 exists. Nothing checks this page;
-[tools.md](../tools.md) is where the current shape of an answer is, and
-[readme.md](readme.md) is what the recording as a whole is of.
+core-checkout, TYPO3 14.3.6-dev, the 14.3 core checkout below .checkouts/, whose
+console could not be reached: <installation> has no TYPO3 console — none of
+bin/typo3, vendor/bin/typo3 exists. Nothing checks what is below this heading;
+everything above it is derived from the class that answers the call, and
+`bin/cli tools:check` holds it.
 
-## catalog scope
+### catalog scope
 
 Called with:
 

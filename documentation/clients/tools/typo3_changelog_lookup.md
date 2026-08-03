@@ -1,19 +1,131 @@
-# What `typo3_changelog_lookup` answered
+# `typo3_changelog_lookup`
+
+Search the TYPO3 changelog of the installation you are working in: one entry per
+breaking change, deprecation, feature and important note, in the version it was
+released in. Answers "what did this version deprecate", "what changed about X",
+"which release introduced Y". This is the first stop when building on a major
+you have not built on recently: what separates a current answer from a
+two-major-old one is written down here and almost nowhere else. A deprecation
+carries the version it stops working in where the entry states one, and the rule
+that answers the rest beside it. Read from the core package on disk, so it
+covers exactly the versions that installation ships and grows with a Composer
+update. Every word of the query has to be carried by an entry; narrow further
+with type and version.
+
+`readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: false`
+
+## Takes
+
+```yaml
+# Words the entry has to carry, matched against its title. When no entry carries
+# all of them, the answer names the largest part of the query that does reach
+# entries, which is what to ask again with. Omit to list a version or a type as
+# a whole.
+query: string  # optional
+# One of: breaking, deprecation, feature, important. Restrict to one kind of
+# change. Breaking and deprecation are what affects existing code.
+type: string  # optional
+# Restrict to a version, by prefix: "14" covers 14.0 through 14.3.x, "13.4"
+# covers 13.4 and 13.4.x.
+version: string  # optional
+# Restrict to entries carrying this index tag: "ext:form" for the system
+# extension a change is in, "FullyScanned" or "NotScanned" for what the
+# Extension Scanner has a matcher for, "PHP-API", "TCA", "Backend", "Frontend"
+# for the surface. This is what a sweep is bounded by where words are not: every
+# entry of a version and type is read for its tags. The changelog says nothing
+# about which third-party extension a change affects, so an extension key of
+# your own matches no tag.
+tag: string  # optional
+# Maximum number of entries.
+limit: integer  # optional
+```
+
+## Answers with
+
+```yaml
+query: string
+# Entries carrying every word of the query and the tag, before the limit.
+matchCount: integer  # optional
+# Every index tag the entries of this version and type carry, with the ones
+# already filtered by among them. Returned where a tag was asked for, so a tag
+# that matched nothing can be replaced by one that exists.
+tags: [string]  # optional
+entries:  # optional
+  - # One of: Breaking, Deprecation, Feature, Important.
+    type: string
+    # The version directory it was released in.
+    version: string
+    # Forge issue number.
+    issue: string
+    title: string
+    # The version a Deprecation states the deprecated thing stops working in —
+    # what an upgrade decides on. Empty on the other three types, and on a
+    # deprecation whose entry states none, which is most of a major and is not
+    # "no removal planned": removalRule is what answers it there.
+    removal: string
+    # Index tags. FullyScanned or PartiallyScanned means the extension scanner
+    # has a matcher for it.
+    tags: [string]
+    # EXT: reference of the entry, to read the description and the migration.
+    file: string
+# When a deprecation stops working where the entry itself does not say. Returned
+# where the answer carries a deprecation.
+removalRule: string  # optional
+# The versions this installation ships changelog entries for, newest first.
+# Anything outside them is not in this answer.
+versions: [string]  # optional
+# One of: installation, packages. installation: its assembled runtime state
+# answered. packages: read from the files the installed packages ship, because
+# the console could not be asked — overrides applied at runtime are not
+# reflected.
+answeredBy: string  # optional
+unsupported:  # optional
+  # One of: no-installation, misconfigured, installation-not-answering.
+  # no-installation: nothing to ask from here, and searched says where it
+  # looked. misconfigured: an installation was named and could not be used, so
+  # nothing was searched for. installation-not-answering: one was found and its
+  # console did not answer — a stopped container or a database with no schema,
+  # which is a state that ends without reinstalling anything.
+  cause: string
+  # What stopped it, in the words the attempt produced.
+  reason: string
+  # What the reason means where the message alone does not say it — a console
+  # that starts and then fails on a missing table has a database without a
+  # schema, not a broken installation. Empty where nothing beyond the reason is
+  # known.
+  diagnosis: string  # optional
+  # Every directory the discovery walked, in order. "Nothing was found" and "the
+  # server was started somewhere else" wear one sentence, and only this tells
+  # them apart. Empty where discovery never ran.
+  searched: [string]
+  # What was set and could not be used. Null where nothing was set.
+  misconfiguration: string or null  # optional
+  settings:
+    # Environment variable that names the installation root.
+    root: string
+    # Environment variable that names the console command.
+    console: string
+```
+
+The answer carries exactly one of these sets of fields: `query`, `matchCount`,
+`entries`, `versions`, `answeredBy` — or `query`, `unsupported`.
+
+## Answered
 
 Recorded on 2026-08-02 by `bin/cli tools:record`. Of two working directories,
 because what this server answers depends on which one a client is standing in,
 and neither fills the whole surface. Answered against core-checkout, TYPO3
-14.3.6-dev, the 14.3 core checkout below .checkouts/, whose console could not
-be reached: <installation> has no TYPO3 console — none of bin/typo3,
+14.3.6-dev, the 14.3 core checkout below .checkouts/, whose console could not be
+reached: <installation> has no TYPO3 console — none of bin/typo3,
 vendor/bin/typo3 exists. Answered against composer-project, TYPO3 14.3.5, the
 E-SITE this repository makes below .environments/, whose console answers. The
 tools that declare `answeredBy` carry an answer from each, under a heading
 naming which; every other answer is from the first alone, because nothing in it
-would differ. Nothing checks this page; [tools.md](../tools.md) is where the
-current shape of an answer is, and [readme.md](readme.md) is what the recording
-as a whole is of.
+would differ. Nothing checks what is below this heading; everything above it is
+derived from the class that answers the call, and `bin/cli tools:check` holds
+it.
 
-## changelog: hit
+### changelog: hit
 
 Called with:
 
@@ -23,7 +135,7 @@ Called with:
 }
 ```
 
-### From the 14.3 core checkout below .checkouts/, whose console could not be reached
+#### From the 14.3 core checkout below .checkouts/, whose console could not be reached
 
 Text:
 
@@ -116,7 +228,7 @@ Data:
 }
 ```
 
-### From the E-SITE this repository makes below .environments/, whose console answers
+#### From the E-SITE this repository makes below .environments/, whose console answers
 
 Text:
 
@@ -209,7 +321,7 @@ Data:
 }
 ```
 
-## changelog: swept by tag
+### changelog: swept by tag
 
 Called with:
 
@@ -220,7 +332,7 @@ Called with:
 }
 ```
 
-### From the 14.3 core checkout below .checkouts/, whose console could not be reached
+#### From the 14.3 core checkout below .checkouts/, whose console could not be reached
 
 Text:
 
@@ -645,7 +757,7 @@ Data:
 }
 ```
 
-### From the E-SITE this repository makes below .environments/, whose console answers
+#### From the E-SITE this repository makes below .environments/, whose console answers
 
 Text:
 
@@ -1070,7 +1182,7 @@ Data:
 }
 ```
 
-## changelog: miss
+### changelog: miss
 
 Called with:
 
@@ -1080,7 +1192,7 @@ Called with:
 }
 ```
 
-### From the 14.3 core checkout below .checkouts/, whose console could not be reached
+#### From the 14.3 core checkout below .checkouts/, whose console could not be reached
 
 Text:
 
@@ -1157,7 +1269,7 @@ Data:
 }
 ```
 
-### From the E-SITE this repository makes below .environments/, whose console answers
+#### From the E-SITE this repository makes below .environments/, whose console answers
 
 Text:
 

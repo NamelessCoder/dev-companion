@@ -121,13 +121,13 @@ final class ProseFormat
      * `tools:index` puts them back — the file then changes in every commit and
      * says nothing by changing.
      *
-     * A recording is out for a second reason. Every block under
-     * `tool-answers/` is what a client received, and rewrapping it makes the
-     * page claim an answer arrived in lines it did not.
+     * A recording is out for a second reason. Every block below a page's
+     * `## Answered` heading is what a client received, and rewrapping it makes
+     * the page claim an answer arrived in lines it did not.
      */
     private static function isWrittenByHand(string $file): bool
     {
-        if ($file === 'documentation/clients/tools.md' || str_starts_with($file, 'documentation/clients/tool-answers/')) {
+        if ($file === 'documentation/clients/tools.md' || str_starts_with($file, 'documentation/clients/tools/')) {
             return false;
         }
 

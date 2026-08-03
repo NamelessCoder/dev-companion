@@ -1,13 +1,139 @@
-# What `typo3_component_lookup` answered
+# `typo3_component_lookup`
+
+Look up TYPO3 backend UI components by name or topic. Where the target is the
+active installation, its backend CSS, JavaScript, and installed styleguide
+templates supply the component contract; the curated catalog supplies the
+searchable names and fallback markup. Without usable installed sources, the
+bundled version-bound snapshot answers. Returns markup, classes, custom
+properties, and every source used.
+
+`readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: false`
+
+## Takes
+
+```yaml
+# Component name, class, or topic, for example badge, card, search box, or
+# input-group. Omit to list the catalog.
+query: string  # optional
+# The TYPO3 version the markup has to hold for, for example "13.4" or "14".
+# Components not verified there are withheld. Defaults to the version of the
+# installation this server was started in; where there is none, the whole
+# catalog is returned and every entry carries the versions it was verified on.
+targetVersion: string  # optional
+```
+
+## Answers with
+
+```yaml
+query: string or null  # optional
+# The TYPO3 major the answer was composed for — stated by the caller, or read
+# from the installation. Null means nothing was withheld and every entry carries
+# the versions it was verified on.
+targetVersion: integer or null  # optional
+# How many components hold on the target version. Ones withheld for it are in
+# withheld, not here.
+matchCount: integer
+components:
+  - name: string
+    title: string
+    summary: string  # optional
+    rootClass: string
+    variants: [string]  # optional
+    modifiers: [string]  # optional
+    subComponents: [string]  # optional
+    customProperties: [string]  # optional
+    # Canonical markup of the component.
+    markup: string  # optional
+    examples: [string]  # optional
+    # Primary Sass source in the core checkout; null for a web component that
+    # carries its own styles.
+    sassPath: string or null
+    # Every Sass source the component spans. A component can be split across
+    # several files.
+    sassPaths: [string]  # optional
+    # Styleguide demo in the core checkout, if there is one.
+    demoPath: string or null
+    # Where the query matched: name, keywords, sub-component classes,
+    # description.
+    matchedIn: [string]  # optional
+    # Every class of this component found in the installed backend CSS. Empty
+    # for a bundled fallback or a custom element without external CSS.
+    classes: [string]
+    # Installed package files consulted for the component contract. Empty for
+    # the bundled fallback.
+    sourceFiles: [string]
+    # One of: installation, catalog. Whether markup came from an installed
+    # styleguide example or the bundled curated fallback.
+    markupSource: string
+    # TYPO3 version whose classes and custom properties this entry describes.
+    contractVersion: string
+    # TYPO3 version whose markup this entry describes. It can differ from
+    # contractVersion when the installed styleguide has no matching example and
+    # bundled markup is the fallback.
+    describesVersion: string
+    # The TYPO3 major this entry starts holding at, or null when it holds on
+    # every covered version.
+    since: integer or null  # optional
+    # The TYPO3 major it stops holding after, or null when nothing has replaced
+    # it.
+    until: integer or null  # optional
+    # The same range as a sentence, empty when the entry holds on every covered
+    # version.
+    verifiedOn: string
+# Components this catalog has but was never verified on the target version. Left
+# out of components rather than handed over — an empty answer here means "not
+# verified where you are", not "does not exist".
+withheld:
+  - name: string
+    title: string
+    # What to verify the entry against on the target version.
+    sassPaths: [string]  # optional
+    demoPath: string or null  # optional
+    # The TYPO3 major this entry starts holding at, or null when it holds on
+    # every covered version.
+    since: integer or null  # optional
+    # The TYPO3 major it stops holding after, or null when nothing has replaced
+    # it.
+    until: integer or null  # optional
+    # The same range as a sentence, empty when the entry holds on every covered
+    # version.
+    verifiedOn: string
+checklist:  # optional
+  title: string
+  intro: string  # optional
+  items: [string]
+# One of: installation, catalog. installation when the class and custom-property
+# contract was read from the active TYPO3 packages; catalog when the bundled
+# snapshot answered.
+componentSource: string
+# The core revision behind catalog answers, and how it relates to the
+# installation being read. A miss means "not in this snapshot".
+catalog:
+  repository: string  # optional
+  branch: string
+  # TYPO3 version of the snapshot.
+  version: string
+  # Core revision the catalogs were taken from.
+  commit: string
+  verifiedAt: string
+  # TYPO3 version of the installation this server was started in, where there is
+  # one. Null means there was nothing to compare the snapshot with.
+  installedVersion: string or null  # optional
+  # Set when that installation and the snapshot are different TYPO3 majors, and
+  # what to do about it. Null when they agree or nothing is known.
+  skew: string or null  # optional
+```
+
+## Answered
 
 Recorded on 2026-08-02 by `bin/cli tools:record`. Answered against
-core-checkout, TYPO3 14.3.6-dev, the 14.3 core checkout below .checkouts/,
-whose console could not be reached: <installation> has no TYPO3 console —
-none of bin/typo3, vendor/bin/typo3 exists. Nothing checks this page;
-[tools.md](../tools.md) is where the current shape of an answer is, and
-[readme.md](readme.md) is what the recording as a whole is of.
+core-checkout, TYPO3 14.3.6-dev, the 14.3 core checkout below .checkouts/, whose
+console could not be reached: <installation> has no TYPO3 console — none of
+bin/typo3, vendor/bin/typo3 exists. Nothing checks what is below this heading;
+everything above it is derived from the class that answers the call, and
+`bin/cli tools:check` holds it.
 
-## components: list
+### components: list
 
 Called with:
 
@@ -1093,7 +1219,7 @@ Data:
 }
 ```
 
-## components: hit
+### components: hit
 
 Called with:
 
@@ -1299,7 +1425,7 @@ Data:
 }
 ```
 
-## components: miss
+### components: miss
 
 Called with:
 

@@ -1,13 +1,177 @@
-# What `typo3_task_guide` answered
+# `typo3_task_guide`
+
+Build a task checklist enriched with matching hints and relevant core checks.
+Built from bundled conventions only: it does not read your checkout, so it also
+names what you have to establish there yourself and routes to the lookups that
+fit the task. Work that reads as a project or third-party extension is answered
+with what transfers only — the core checks, checklist items and steps that name
+something only the core repository has are left out rather than handed over.
+
+`readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: false`
+
+## Takes
+
+```yaml
+# Short description of the TYPO3 core task, in English.
+task: string
+# Affected subsystem or extension, if known.
+area: string  # optional
+# The files the task is about, as they are in the repository they belong to.
+# Pass them where the work touches more than one place: each is placed on its
+# own, so a core path and an extension path in one call are not answered with
+# one verdict. The area counts as one of them.
+paths: [string]  # optional
+# The TYPO3 version this task is for, for example "13.4" or "14". Conventions
+# that do not hold there are left out, including those the repository needs for
+# another major it declares. Defaults to every major this repository declares
+# typo3/cms-core for, or to the installation this server was started in where
+# there is no declaration.
+targetVersion: string  # optional
+# One of: bugfix, feature, cleanup, test, documentation, unknown.
+changeType: string  # optional
+```
+
+## Answers with
+
+```yaml
+task: string
+# Affected subsystem or path, if one was given.
+area: string or null  # optional
+# The paths this brief was composed for, the area among them. Empty where the
+# call named none.
+paths: [string]  # optional
+# Which kind of work each path is. Where every path is outside the core, the
+# core checks, the core-only checklist items and the submission route are left
+# out of the whole brief.
+scopes:  # optional
+  - path: string
+    # One of: core, uncertain, project, extension. Which kind of work this
+    # answer is for: core, a patch to the TYPO3 core itself; project, the site
+    # repository around an installation; extension, a package in it, whether a
+    # sitepackage or a third-party one; or uncertain, which means nothing in the
+    # call placed the work and what came back is the core's own.
+    scope: string
+changeType: string
+# The TYPO3 major this repository runs — stated by the caller, or read from
+# the installation. Null means nothing was filtered by version. Where the
+# repository serves several majors, targetVersions is what the answer holds for.
+targetVersion: integer or null  # optional
+# Every TYPO3 major the answer holds for. One entry is the ordinary case.
+# Several mean this repository declares typo3/cms-core for more than one of
+# them, so a statement was kept when it holds on any — and where two
+# statements about the same subject differ, the difference is the constraint the
+# code lives under rather than drift. Empty when nothing was filtered by
+# version.
+targetVersions: [integer]  # optional
+domains: [string]
+# One of: core, uncertain, project, extension. Which kind of work the call as a
+# whole reads as. Anything but core means the answer holds core conventions that
+# may transfer, not a checklist for the task. Where the paths disagree, scopes
+# is the answer and this is what the task text and the area alone say.
+scope: string  # optional
+# The kinds of core work recognized in the task text.
+intents:  # optional
+  - id: string
+    title: string
+    # One of: strong, weak. weak: a word named the subject without naming the
+    # work, or the intent is a core-only one and nothing in the task says this
+    # is core work. Either way it applies only under its condition.
+    confidence: string
+    # When a weakly matched intent applies. Empty for a strong match.
+    condition: string
+hints:
+  - id: string
+    title: string
+    # PHP, TypeScript, JavaScript, CSS, or General.
+    category: string
+    # One of: core, project, extension, null. Which kind of work the whole hint
+    # obliges. "core" means it is a condition of a patch to the TYPO3 core and a
+    # convention anywhere else — the backend's own design system, the
+    # changelog artifact, the paths of the mono repository. "project" and
+    # "extension" are the mirror: what the repository around an installation, or
+    # a package distributed on its own, has to do, and what is context rather
+    # than a condition inside the core. Null, the ordinary case, means it holds
+    # wherever TYPO3 is written: an API that throws throws in a sitepackage too.
+    scope: string or null
+    hints:
+      - # The statement itself. It reads the same on every version it holds for;
+        # the range is beside it, never inside it.
+        text: string
+        # First TYPO3 major this holds on. Null means as far back as this
+        # knowledge base reaches.
+        since: integer or null
+        # Last TYPO3 major this holds on. Null means it still holds.
+        until: integer or null
+        # The same range as a sentence, empty when the statement is bound to
+        # nothing.
+        versions: string
+        # One of: core, project, extension, null. Which kind of work this
+        # statement obliges. "core" means it is a condition of a patch to the
+        # TYPO3 core and a convention anywhere else — the backend's own design
+        # system, the changelog artifact, the paths of the mono repository.
+        # "project" and "extension" are the mirror: what the repository around
+        # an installation, or a package distributed on its own, has to do, and
+        # what is context rather than a condition inside the core. Null, the
+        # ordinary case, means it holds wherever TYPO3 is written: an API that
+        # throws throws in a sitepackage too.
+        scope: string or null
+# Rule sections that apply to this task.
+rules:  # optional
+  - documentId: string
+    # Title of the knowledge document.
+    title: string
+    # typo3://core resource holding the full document.
+    uri: string
+    # Heading of the matched section.
+    heading: string
+    # The section as written, formatting included.
+    body: string
+    # Share of the query terms the section covers, 0 to 1.
+    coverage: number
+    # Weighted match score; headings weigh more than body text.
+    score: integer
+    # Whether the body was cut; read the resource for the rest.
+    truncated: boolean
+# Commands to run, ready to execute from the core root.
+checks: [string]
+# Checks that only apply if the task really is the kind of work a weakly matched
+# intent suggests.
+conditionalChecks:  # optional
+  - title: string
+    condition: string
+    checks: [string]
+testSuites:  # optional
+  - suite: string
+    # Full command, run from the core root.
+    command: string
+    # Narrowed form for iterating on a single file or test.
+    targeted: string or null
+    description: string  # optional
+    whenToUse: string  # optional
+    domains: [string]  # optional
+    # The TYPO3 majors whose runTests.sh has this suite, where that is not all
+    # of them. Null means every covered version.
+    versions: string or null
+checklist: [string]
+# What this server cannot see and the agent has to establish itself.
+checkoutDiscovery:  # optional
+  - establish: string
+    how: string
+nextTools:
+  - tool: string
+    when: string
+```
+
+## Answered
 
 Recorded on 2026-08-02 by `bin/cli tools:record`. Answered against
-core-checkout, TYPO3 14.3.6-dev, the 14.3 core checkout below .checkouts/,
-whose console could not be reached: <installation> has no TYPO3 console —
-none of bin/typo3, vendor/bin/typo3 exists. Nothing checks this page;
-[tools.md](../tools.md) is where the current shape of an answer is, and
-[readme.md](readme.md) is what the recording as a whole is of.
+core-checkout, TYPO3 14.3.6-dev, the 14.3 core checkout below .checkouts/, whose
+console could not be reached: <installation> has no TYPO3 console — none of
+bin/typo3, vendor/bin/typo3 exists. Nothing checks what is below this heading;
+everything above it is derived from the class that answers the call, and
+`bin/cli tools:check` holds it.
 
-## brief: with area
+### brief: with area
 
 Called with:
 
@@ -440,7 +604,7 @@ Data:
 }
 ```
 
-## brief: task only
+### brief: task only
 
 Called with:
 
@@ -773,7 +937,7 @@ Data:
 }
 ```
 
-## brief: paths of two kinds
+### brief: paths of two kinds
 
 Called with:
 

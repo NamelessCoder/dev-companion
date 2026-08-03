@@ -1,7 +1,9 @@
 # Task: review core commit 9f6c6eb9093 "[TASK] Resolve file sources in ResourceFactory" and report ...
 
-**Serves:** feedback/2026-08-03-144324-task-review-core-commit-9f6c6eb9093-task.md
+**Serves:** feedback/2026-08-03-144457-what-blocks-it-three-questions-decided-findings.md
 **Priority:** low
+**Branch:** todo/what-blocks-it-three-questions-decided-findings
+**Claimed:** 2026-08-03
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

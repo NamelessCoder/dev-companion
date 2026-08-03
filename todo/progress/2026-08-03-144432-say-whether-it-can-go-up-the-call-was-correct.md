@@ -1,7 +1,9 @@
-# Task: review core commit 9f6c6eb9093 "[TASK] Resolve file sources in ResourceFactory" and report ...
+# Task: review core commit 9f6c6eb9093 (#110359) and say whether it can go up.
 
-**Serves:** feedback/2026-08-03-144457-what-blocks-it-three-questions-decided-findings.md
+**Serves:** feedback/2026-08-03-144432-say-whether-it-can-go-up-the-call-was-correct.md
 **Priority:** low
+**Branch:** todo/say-whether-it-can-go-up-the-call-was-correct
+**Claimed:** 2026-08-03
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

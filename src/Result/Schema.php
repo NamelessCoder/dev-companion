@@ -204,8 +204,7 @@ final class Schema
                 'versions' => self::string('The same range as a sentence, empty when the statement is bound to nothing.'),
                 'scope' => self::obliges('this statement'),
             ], ['text', 'since', 'until', 'versions', 'scope'])),
-            'checks' => self::listOf(self::string(), 'Commands relevant to this hint.'),
-        ], ['id', 'title', 'category', 'scope', 'hints', 'checks']);
+        ], ['id', 'title', 'category', 'scope', 'hints']);
     }
 
     /** @return array<string, mixed> */

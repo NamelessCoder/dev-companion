@@ -262,11 +262,9 @@ call are not answered with one verdict.
 - `area` *(string or null)* — Affected subsystem or path, if one was given.
 - `paths` *(array of string)* — The paths this brief was composed for, the
   area among them. Empty where the call named none.
-- `scopes` *(array of object)* — Which kind of work each path is. The hints
-  are matched per group, so one that came back for a path outside the core
-  carries no checks; where every path is outside, the core checks, the
-  core-only checklist items and the submission route are left out of the whole
-  brief.
+- `scopes` *(array of object)* — Which kind of work each path is. Where
+  every path is outside the core, the core checks, the core-only checklist
+  items and the submission route are left out of the whole brief.
   - `path` *(string, required)*
   - `scope` *(string, required)* — One of `core`, `uncertain`, `project`,
     `extension`. Which kind of work this answer is for: core, a patch to the
@@ -335,8 +333,6 @@ call are not answered with one verdict.
       condition inside the core. Null, the ordinary case, means it holds
       wherever TYPO3 is written: an API that throws throws in a sitepackage
       too.
-  - `checks` *(array of string, required)* — Commands relevant to this
-    hint.
 - `rules` *(array of object)* — Rule sections that apply to this task.
   - `documentId` *(string, required)*
   - `title` *(string, required)* — Title of the knowledge document.
@@ -450,10 +446,9 @@ suite at all rather than commands that cannot run there.
 
 Return architecture hints for TYPO3 core paths or task topics, grouped by
 section. Where the paths read as a project or third-party extension the hints
-still come back — the conventions transfer — but without their core check
-commands. The "Backend CSS" and "Backend TypeScript" sections describe the
-TYPO3 backend interface and are withheld, with the reason, where the task names
-the frontend.
+still come back, because the conventions transfer. The "Backend CSS" and
+"Backend TypeScript" sections describe the TYPO3 backend interface and are
+withheld, with the reason, where the task names the frontend.
 
 `readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: false`
 
@@ -463,8 +458,8 @@ the frontend.
 
 - `paths` *(array of string)* — File paths related to the task, as they are
   in the repository they belong to. Each is placed on its own, so a core path
-  and an extension path in one call are matched separately — the hints for
-  the extension path come back without the core checks.
+  and an extension path in one call are matched separately, and a statement is
+  labelled where it obliges the other one.
 - `task` *(string)* — Short task description or architecture topic, in
   English. Matching is lexical against English text, so another language
   reaches only the loanwords.
@@ -489,8 +484,7 @@ the frontend.
 - `paths` *(array of string, required)*
 - `scopes` *(array of object, required)* — Which kind of work each path is.
   Paths of different scope are matched separately, so a hint that came back for
-  one of them is about that path — and a hint for a path outside the core
-  carries no checks.
+  one of them is about that path.
   - `path` *(string, required)*
   - `scope` *(string, required)* — One of `core`, `uncertain`, `project`,
     `extension`. Which kind of work this answer is for: core, a patch to the
@@ -550,8 +544,6 @@ the frontend.
       condition inside the core. Null, the ordinary case, means it holds
       wherever TYPO3 is written: an API that throws throws in a sitepackage
       too.
-  - `checks` *(array of string, required)* — Commands relevant to this
-    hint.
 - `availableHints` *(array of object, required)* — The hints that exist in
   the searched domains, returned when none matched. Empty on a hit.
   - `id` *(string, required)* — Ask for this hint outright by passing it

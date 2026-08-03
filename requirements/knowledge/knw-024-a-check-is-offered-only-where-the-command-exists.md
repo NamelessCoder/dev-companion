@@ -10,11 +10,11 @@ status: held
 Every check this server carries is a `runTests.sh` invocation, and which suites
 that script offers changes between majors — so a check names a suite, and the
 suite carries the range. The binding is declared once, in
-`knowledge/test-suite-hints.json`, and every hint and intent that names the
-suite in `-s <suite>` inherits it; the suite listing itself is filtered the
-same way and carries its range where it has one. A command the caller's
-checkout does not have is not a weaker answer than none — it sends them to
-debug their own checkout for something this server invented for another branch.
+`knowledge/test-suite-hints.json`, and every task intent that names the suite in
+`-s <suite>` inherits it; the suite listing itself is filtered the same way and
+carries its range where it has one. A command the caller's checkout does not
+have is not a weaker answer than none — it sends them to debug their own
+checkout for something this server invented for another branch.
 
 The prose documents cannot inherit anything, so the rule reaches them as a
 restriction instead: a markdown document may name a suite only where every
@@ -30,7 +30,6 @@ labels was handed `runTests.sh -s checkIntegrityXliff`, which arrives in 14
 
 ## Held by
 
-- `HintsTest::aCheckIsNotOfferedOnABranchWhoseScriptHasNoSuchSuite`
 - `HintsTest::theSuiteListItselfIsFilteredByTheBranchItIsAskedFor`
 - `KnowledgeTest::noProseDocumentNamesACheckOnlySomeBranchesHave`
 - `bin/cli catalog:check`, which reads the range each suite actually holds on

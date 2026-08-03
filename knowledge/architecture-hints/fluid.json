@@ -48,9 +48,6 @@
         "until": 12
       },
       "Use typo3_component_lookup for the markup of a backend component and typo3_icon_lookup for an icon identifier, instead of writing either from memory."
-    ],
-    "checks": [
-      "CI=true ./Build/Scripts/runTests.sh -s functional"
     ]
   },
   {
@@ -89,11 +86,6 @@
         "scope": "core"
       },
       "Fluid parsing itself is configured in $GLOBALS['TYPO3_CONF_VARS']['SYS']['fluid'] in typo3/sysext/core/Configuration/DefaultConfiguration.php — interceptors, preProcessors including NamespaceDetectionTemplateProcessor, and expressionNodeTypes."
-    ],
-    "checks": [
-      "CI=true ./Build/Scripts/runTests.sh -s functional",
-      "CI=true ./Build/Scripts/runTests.sh -s cglGit",
-      "CI=true ./Build/Scripts/runTests.sh -s phpstan"
     ]
   },
   {
@@ -153,9 +145,6 @@
       "The navigation is one of them: `dataProcessing.<n> = menu`. Its excludeDoktypes option replaces the default list instead of adding to it, and that default — PageRepository::DOKTYPE_BE_USER_SECTION and DOKTYPE_SYSFOLDER — is what keeps backend user sections and storage folders out of the menu. A configured list has to repeat both of those doktype values, or every storage folder ends up in the navigation: no error, nothing logged, and not visible until the site gets its first folder below the root page.",
       "The content elements on that page are rendered by lib.contentElement, which is a FLUIDTEMPLATE of its own with its own template, partial and layout roots — fluid_styled_content's by default, extended through the styles.templates settings. Pointing one of those roots at the directory PAGEVIEW resolves its own templates from is what makes the page frame collide with the content element frame; the sitepackage layout hint has the naming that keeps them apart.",
       "config.sendCacheHeaders answers a cacheable page with the page cache lifetime as its max-age and an Expires to match — for a page with nothing that expires that is close to a year out. It is suppressed while a backend user is logged in, which is why it bites exactly where nobody is: a browser that has such a response will not ask again, so a fixed template keeps rendering the old page and flushing the server cache changes nothing. Bind it to the application context — [applicationContext == \"Development\"] config.sendCacheHeaders = 0 [END] — and read \"it is right in curl and wrong in the browser\" as the response headers rather than as a bug in the code."
-    ],
-    "checks": [
-      "CI=true ./Build/Scripts/runTests.sh -s functional"
     ]
   }
 ]

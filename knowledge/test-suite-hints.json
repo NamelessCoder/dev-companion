@@ -83,6 +83,7 @@
       "domains": [
         "php"
       ],
+      "base": true,
       "description": "PHP unit tests.",
       "whenToUse": "Use for isolated PHP behavior, utility classes, value objects, and narrow bug fixes.",
       "targeted": "CI=true ./Build/Scripts/runTests.sh -s unit -- --filter <methodName> <path/to/Test.php>"
@@ -95,6 +96,7 @@
         "fluid",
         "typoscript"
       ],
+      "base": true,
       "description": "PHP functional tests, sqlite by default.",
       "whenToUse": "Use for TYPO3 services, persistence, configuration, authentication, routing, and integration behavior.",
       "targeted": "CI=true ./Build/Scripts/runTests.sh -s functional -d sqlite -- <path/to/Test.php>"
@@ -238,6 +240,7 @@
         "typescript",
         "css"
       ],
+      "base": true,
       "description": "Frontend build for TypeScript, Sass, Contrib, and assets.",
       "whenToUse": "Use when backend UI assets, TypeScript, Sass, or generated assets change.",
       "since": 13
@@ -248,6 +251,7 @@
       "domains": [
         "css"
       ],
+      "base": true,
       "description": "Sass to CSS builder, the branch's half of the frontend build that covers stylesheets.",
       "whenToUse": "Use when Sass or CSS sources change. The branches that carry it split the frontend build in two; run buildJavascript for the other half.",
       "until": 12
@@ -258,6 +262,7 @@
       "domains": [
         "typescript"
       ],
+      "base": true,
       "description": "TypeScript to JavaScript builder, the branch's half of the frontend build that covers backend modules.",
       "whenToUse": "Use when TypeScript sources change. The branches that carry it split the frontend build in two; run buildCss for the other half.",
       "until": 12
@@ -268,6 +273,7 @@
       "domains": [
         "css"
       ],
+      "base": true,
       "description": "SCSS linting with TYPO3's stylelint setup.",
       "whenToUse": "Use when Sass or CSS sources change. Internally this runs grunt stylelint in the Build directory."
     },
@@ -286,6 +292,7 @@
       "domains": [
         "typescript"
       ],
+      "base": true,
       "description": "TypeScript linting.",
       "whenToUse": "Use when TypeScript or JavaScript code changes."
     },
@@ -295,6 +302,7 @@
       "domains": [
         "typescript"
       ],
+      "base": true,
       "description": "JavaScript unit tests for the built backend modules.",
       "whenToUse": "Use for TypeScript modules with real logic or state transitions. Run the branch's frontend build first so the tests see the current output."
     },

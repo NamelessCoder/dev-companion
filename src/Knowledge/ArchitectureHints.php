@@ -121,7 +121,7 @@ final class ArchitectureHints
 
     /**
      * @param int|array<int, int>|null $target
-     * @return array<int, array{id: string, title: string, domains: array<int, string>, appliesTo: array<int, string>, hints: array<int, array{text: string, since: ?int, until: ?int, scope: ?Scope}>, checks: array<int, string>, category: string, scope: ?Scope}>
+     * @return array<int, array{id: string, title: string, domains: array<int, string>, appliesTo: array<int, string>, hints: array<int, array{text: string, since: ?int, until: ?int, scope: ?Scope}>, category: string, scope: ?Scope}>
      */
     public static function load(int|array|null $target = null): array
     {
@@ -148,7 +148,6 @@ final class ArchitectureHints
                     'domains' => $domains,
                     'appliesTo' => array_map('strval', $entry['appliesTo'] ?? []),
                     'hints' => array_map(self::statement(...), $entry['hints'] ?? []),
-                    'checks' => array_map('strval', $entry['checks'] ?? []),
                     // The first domain is the one an answer files the hint
                     // under. A hint that crosses domains is asked from all of
                     // them and printed under one, and which one that is is a
@@ -253,10 +252,6 @@ final class ArchitectureHints
                 continue;
             }
             $hint['hints'] = $statements;
-            // A check is a runTests.sh invocation, and which suites that script
-            // offers changes between majors. The range sits on the suite rather
-            // than on every check naming it, so this asks there.
-            $hint['checks'] = TestSuiteHints::checksFor($hint['checks'], max($targets));
             $kept[] = $hint;
         }
 
@@ -268,7 +263,7 @@ final class ArchitectureHints
      * with their own answer instead of waiting for a matching query.
      *
      * @param int|array<int, int>|null $target
-     * @return array{id: string, title: string, appliesTo: array<int, string>, hints: array<int, array{text: string, since: ?int, until: ?int}>, checks: array<int, string>, category: string}|null
+     * @return array{id: string, title: string, appliesTo: array<int, string>, hints: array<int, array{text: string, since: ?int, until: ?int}>, category: string}|null
      */
     public static function byId(string $id, int|array|null $target = null): ?array
     {
@@ -491,26 +486,6 @@ final class ArchitectureHints
         }
 
         return $index;
-    }
-
-    /**
-     * The same hints without their checks.
-     *
-     * A hint is a convention and holds wherever TYPO3 is written; the checks
-     * attached to it are runTests.sh invocations against a script that is part
-     * of the core repository. Outside the core the advice therefore stays and
-     * the commands go.
-     *
-     * @param array<int, array<string, mixed>> $hints
-     * @return array<int, array<string, mixed>>
-     */
-    public static function withoutChecks(array $hints): array
-    {
-        return array_map(static function (array $hint): array {
-            $hint['checks'] = [];
-
-            return $hint;
-        }, $hints);
     }
 
     /**

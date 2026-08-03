@@ -22,7 +22,7 @@ final class TestSuiteHints
     /**
      * @return array{
      *     invocation: array{notes: array<int, string>, options: array<int, array{option: string, description: string}>, examples: array<int, array{purpose: string, command: string}>},
-     *     suites: array<int, array{suite: string, command: string, description: string, whenToUse: string, domains: array<int, string>, targeted: ?string, since: ?int, until: ?int}>
+     *     suites: array<int, array{suite: string, command: string, description: string, whenToUse: string, domains: array<int, string>, base: bool, targeted: ?string, since: ?int, until: ?int}>
      * }
      */
     private static function data(): array
@@ -52,6 +52,7 @@ final class TestSuiteHints
                 'description' => (string) $entry['description'],
                 'whenToUse' => (string) $entry['whenToUse'],
                 'domains' => array_map('strval', $entry['domains'] ?? []),
+                'base' => (bool) ($entry['base'] ?? false),
                 'targeted' => isset($entry['targeted']) ? (string) $entry['targeted'] : null,
                 'since' => isset($entry['since']) ? (int) $entry['since'] : null,
                 'until' => isset($entry['until']) ? (int) $entry['until'] : null,
@@ -59,7 +60,7 @@ final class TestSuiteHints
         ];
     }
 
-    /** @return array<int, array{suite: string, command: string, description: string, whenToUse: string, domains: array<int, string>, targeted: ?string, since: ?int, until: ?int}> */
+    /** @return array<int, array{suite: string, command: string, description: string, whenToUse: string, domains: array<int, string>, base: bool, targeted: ?string, since: ?int, until: ?int}> */
     public static function load(?int $target = null): array
     {
         $suites = self::data()['suites'];
@@ -118,6 +119,32 @@ final class TestSuiteHints
     }
 
     /**
+     * The suites any change in one of these domains runs, whatever the task
+     * says about itself.
+     *
+     * This is what the architecture hints used to carry as a `checks` list on
+     * every entry: twenty-eight of them named nothing but the functional suite
+     * and phpstan, which is not a property of the subject but of the domain it
+     * is written in. Declared once here, a task in a domain gets them without a
+     * matcher having to recognise the words "test" or "suite" in a sentence
+     * about TSconfig field labels.
+     *
+     * @param array<int, string> $domains
+     * @return array<int, string>
+     */
+    public static function baseFor(array $domains, ?int $target): array
+    {
+        $commands = [];
+        foreach (self::load($target) as $suite) {
+            if ($suite['base'] && array_intersect($suite['domains'], $domains) !== []) {
+                $commands[] = $suite['command'];
+            }
+        }
+
+        return $commands;
+    }
+
+    /**
      * The invocation guidance that applies regardless of the chosen suite.
      *
      * @return array{notes: array<int, string>, options: array<int, array{option: string, description: string}>, examples: array<int, array{purpose: string, command: string}>}
@@ -130,7 +157,7 @@ final class TestSuiteHints
     /**
      * Matched suites as data, with the range each one exists on.
      *
-     * @param array<int, array{suite: string, command: string, description: string, whenToUse: string, domains: array<int, string>, targeted: ?string, since: ?int, until: ?int}> $hints
+     * @param array<int, array{suite: string, command: string, description: string, whenToUse: string, domains: array<int, string>, base: bool, targeted: ?string, since: ?int, until: ?int}> $hints
      * @return array<int, array<string, mixed>>
      */
     public static function records(array $hints): array
@@ -155,7 +182,7 @@ final class TestSuiteHints
      * Sass build recommended.
      *
      * @param array<int, string> $domains
-     * @return array<int, array{suite: string, command: string, description: string, whenToUse: string, domains: array<int, string>, targeted: ?string, since: ?int, until: ?int}>
+     * @return array<int, array{suite: string, command: string, description: string, whenToUse: string, domains: array<int, string>, base: bool, targeted: ?string, since: ?int, until: ?int}>
      */
     public static function find(?string $query, array $domains = [], ?int $target = null): array
     {

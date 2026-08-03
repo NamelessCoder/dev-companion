@@ -52,10 +52,6 @@
         "text": "Marking a label unused is a deprecation and is treated as one: it needs its changelog entry, and every usage inside the core migrates in the same patch. The translator history on translate.typo3.org hangs off the key, which is the other thing a deletion throws away.",
         "scope": "core"
       }
-    ],
-    "checks": [
-      "CI=true ./Build/Scripts/runTests.sh -s checkIntegrityXliff",
-      "CI=true ./Build/Scripts/runTests.sh -s normalizeXliff -n"
     ]
   },
   {
@@ -92,8 +88,7 @@
         "until": 13
       },
       "A pack only translates labels that are translation references. EXT:form's standard submit button fallback is the literal Submit; set renderingOptions.submitButtonLabel in the form definition for the site's language."
-    ],
-    "checks": []
+    ]
   },
   {
     "id": "configuration-reach",
@@ -117,8 +112,7 @@
       },
       "Extension configuration is installation-wide. Define there only a value that is genuinely one per TYPO3 installation, and read it through ExtensionConfiguration rather than accessing TYPO3_CONF_VARS['EXTENSIONS'] directly.",
       "A scheduler task's own parameters belong to that task instance. Expose them as fields when the task is configured and persist them with the task instead of turning one task's choice into site or installation configuration."
-    ],
-    "checks": []
+    ]
   },
   {
     "id": "environment-variables",
@@ -157,8 +151,7 @@
         "text": "Setting the encryption key from an extension's ext_localconf.php stops working. The empty-key check moved ahead of extension loading in the bootstrap, so the installation throws \"TYPO3 Encryption is empty\" before the assignment is ever evaluated. Both config/system/settings.php and config/system/additional.php are evaluated before that check, and reading the variable there is the migration.",
         "since": 15
       }
-    ],
-    "checks": []
+    ]
   },
   {
     "id": "icon-usage",
@@ -185,8 +178,7 @@
       "Identifiers follow <family>-<name> and spell the shape, not the intent: a warning is actions-exclamation-triangle, not actions-warning. Search the registry for the shape you want to see, not for the meaning you want to convey.",
       "Which identifiers exist is a property of the installation, not of TYPO3: IconRegistry is assembled from every installed package. Validate one with typo3_icon_lookup, which reads all three sources of your installation — the T3Icons set, the Configuration/Icons.php of every package, and the flag images. An unknown identifier renders an empty box and fails at runtime, not at build time.",
       "T3Icons come from the npm package and are not hand-added to a system extension. An icon that belongs to one extension is registered in its Configuration/Icons.php, which returns an array keyed by identifier with a provider (SvgIconProvider or BitmapIconProvider) and an EXT: source path."
-    ],
-    "checks": []
+    ]
   },
   {
     "id": "sitepackage-layout",
@@ -226,8 +218,7 @@
       },
       "All of this is the extension. What sits around it in a project — where the browser tests go, what belongs in Build/, which scripts the repository exposes — is its own subject, because the core has no answer for it: it is not a project. That is the project repository layout hint.",
       "page.<n> =< lib.fluidPage is a reference and not a copy: it is resolved while the page renders, out of the merged setup, so a data processor added to lib.fluidPage in a file that is imported later still arrives. The copy operator < is the one where the order of the imports decides what the object ends up holding."
-    ],
-    "checks": []
+    ]
   },
   {
     "id": "project-repository-layout",
@@ -276,8 +267,7 @@
       "DDEV is a local-development environment, not the production configuration source. Keep a DDEV-managed additional.php generated and ignored when it only supplies local database settings. When the repository owns one additional.php for every environment, read deployment values and secrets from environment variables and guard DDEV-only overrides with IS_DDEV_PROJECT; never commit production secrets. Disabling DDEV settings management is the other clean choice when the project-owned file handles the local environment too.",
       "var/ is TYPO3's writable state — caches, logs, sessions, and var/transient/ for what a temporary file is written to — and is not committed. A script that exists for one run therefore does not go there because it is ignored; it goes into Build/ with the rest of the tooling, or it is not kept at all.",
       "Whether the built frontend assets are committed is a decision, not a rule, and it has to be made once and written down: committed, a deploy needs no Node and the diff carries generated files; not committed, the build has to run somewhere on the way to production. Both are normal, and the .gitignore is where the answer is read off."
-    ],
-    "checks": []
+    ]
   },
   {
     "id": "extension-repository-layout",
@@ -313,8 +303,7 @@
       "An extension that is also installed outside Composer ships what it needs. Nothing installs its dependencies there, so a library it requires is vendored into the repository and loaded where the class is absent. That copy is a second source of the same dependency: it moves with the declared constraint, or it is a fork nobody bumps.",
       "There is no installation around the extension, so the test setup builds one. The testing framework creates an instance per functional test class from the extensions that test names, and a package below Tests/ is a fixture such an instance loads rather than something the repository ships.",
       "Browser tests belong to the extension here. There is no project around it to own the site they run against, and the development setup that serves that site is part of this repository too — so the configuration, the specs and the command that runs them sit with everything else the package owns."
-    ],
-    "checks": []
+    ]
   },
   {
     "id": "form-framework",
@@ -351,8 +340,7 @@
       },
       "Two EXT:form SC_OPTIONS hooks are still called: ext/form/afterFormStateInitialized changes the runtime after request state is loaded, and ext/form/buildFormDefinitionValidationConfiguration changes the validation rules while the definition is built. Their existence is not a reason to choose them by default: use the narrower PSR-14 event where one exposes the payload the task needs.",
       "plugin.tx_form.settings.formDefinitionOverrides is keyed by the declared, unsuffixed identifier. It is merged with ArrayUtility::mergeRecursiveWithOverrule, so nested maps such as finisher recipients are merged unless their keys are explicitly replaced."
-    ],
-    "checks": []
+    ]
   },
   {
     "id": "frontend-records",
@@ -404,8 +392,7 @@
         "since": 14
       },
       "The <title> of such a detail view is a PageTitleProvider and nothing else. RecordTitleProvider only reports a title that something else has set through setTitle(), and on a page that renders the record itself nothing does — so there is no TypoScript-only way to put a record's title into the head. The provider is a small class listed in config.pageTitleProviders, and it has to be public in Services.yaml."
-    ],
-    "checks": []
+    ]
   },
   {
     "id": "content-elements",
@@ -482,8 +469,7 @@
         "text": "The core's own worked previews are theme_camino's Resources/Private/Templates/ContentPreviews/, where one template iterates an inline relation with f:for and another renders a file field through f:image.",
         "since": 14
       }
-    ],
-    "checks": []
+    ]
   },
   {
     "id": "extension-documentation",
@@ -506,8 +492,7 @@
       "A released ViewHelper argument, translation label, configuration key, event payload or PHP API is public to whoever installed the extension. A breaking change is carried by the extension's semantic version and explained in its own release notes and migration documentation.",
       "Keep the manual with the extension so a package release and the documentation for that release are one revision. Repository-wide deployment notes are a different artifact and belong with the project that deploys it.",
       "For a patch to TYPO3 itself, the documentation-changelog hint has the core's release-note filename, structure and checks; those are repository conventions, not a template for an extension."
-    ],
-    "checks": []
+    ]
   },
   {
     "id": "extension-asset-build",
@@ -532,8 +517,7 @@
       "Decide whether generated assets are committed. If they are, source and output change together; if they are not, the project deployment has to run the build. The extension's package.json and CI are the executable record of that decision.",
       "The public-assets hint covers how Resources/Public files are published and referenced. The extension-files hint covers Configuration/JavaScriptModules.php for backend JavaScript import maps; neither implies a particular bundler.",
       "For a patch to the TYPO3 backend itself, css-source-build-boundaries and backend-typescript describe the core's source trees and generated pairs; those paths and commands do not transfer to an extension."
-    ],
-    "checks": []
+    ]
   },
   {
     "id": "documentation-changelog",
@@ -563,9 +547,6 @@
         "scope": "core"
       },
       "Keep ReST changes focused and validate them before review."
-    ],
-    "checks": [
-      "CI=true ./Build/Scripts/runTests.sh -s checkRst"
     ]
   },
   {
@@ -590,8 +571,7 @@
       "What a branch deprecated is recorded in typo3/sysext/core/Documentation/Changelog/<version>/Deprecation-<issue>-<Title>.rst and in the matchers below typo3/sysext/install/Configuration/ExtensionScanner/Php/. Take the migration path from there instead of assuming a replacement.",
       "A deprecated API keeps working until the next major release, so an existing call site is not automatically a defect. New code uses the replacement the changelog names.",
       "Authoring a deprecation and finding out what a version deprecated are two directions through the same files. From the reading side: the changelog directory and the extension scanner matchers ship with the core and install packages of any installation, the Extension Scanner in the Install Tool runs the matchers over an extension, and `typo3 upgrade:list` and `typo3 upgrade:run` are the console side of the migrations."
-    ],
-    "checks": []
+    ]
   },
   {
     "id": "public-assets",
@@ -620,8 +600,7 @@
         "until": 13
       },
       "Reference such a file as EXT:<key>/Resources/Public/... and let the resolver produce the published URI. The _assets path is an implementation detail and its hash changes with the layout."
-    ],
-    "checks": []
+    ]
   },
   {
     "id": "installation-upgrade",
@@ -660,8 +639,7 @@
       "Then `typo3 cache:flush`, and `typo3 cache:warmup` where the first request must not pay for the rebuild.",
       "What no wizard touches is your own code. The Extension Scanner in the Install Tool runs the core's matchers from typo3/sysext/install/Configuration/ExtensionScanner/Php/ over an extension and finds the call sites a changelog entry named. How much of a change it can find at all is what that entry's FullyScanned, PartiallyScanned or NotScanned tag says, and typo3_changelog_lookup returns it.",
       "Run the sequence in the environment that is safe to break first, then the same commands in the same order everywhere else. An upgrade that was done differently on production is an installation nobody can reproduce — and the site configuration, the TypoScript and the TSconfig are part of what has to be re-checked there, not only the PHP."
-    ],
-    "checks": []
+    ]
   },
   {
     "id": "browser-tests",
@@ -703,9 +681,6 @@
       "Outside the core the layout transfers but the plumbing does not: the specs run against the site as it is served — a real URL, the development environment's own — rather than against a per-test-class instance, and the browsers belong on the host or in an image of their own. Installing them into the web container of a development environment is the step to skip.",
       "The suite is a project of its own in playwright.config.ts, with the login setup declared as a dependency so the authenticated state is written once and reused. Give the site's page types one spec each — that is the list that finds a page layout nobody rendered since the template changed.",
       "Where that configuration and those specs live in a project is the repository's question rather than the extension's — the specs need a running site, so they belong to what is deployed. The project repository layout hint has it. In a repository that is only the extension there is no such split, and the suite belongs to the package like everything else there."
-    ],
-    "checks": [
-      "CI=true ./Build/Scripts/runTests.sh -s e2e"
     ]
   },
   {
@@ -743,7 +718,6 @@
       "Rendering: the sink of a value a template outputs is whatever writes it into the response, which is not always the template. A value handed to a page title, a meta tag or a header is emitted by that API instead, and the ViewHelper that passed it there returns nothing at all.",
       "Database: the QueryBuilder quotes identifiers, not values. expr()->eq('field', $value) quotes the field name and puts $value into the statement exactly as it was handed over — createNamedParameter() is what makes it a bound parameter, and a LIKE value needs escapeLikeWildcards() before that or its wildcards are the caller's. The sink is the executed statement, so what decides the finding is how the value arrived there rather than which builder method was called.",
       "The cheapest evidence is the path executed rather than read: a functional test that renders the template or runs the query and asserts what came out answers the question in one run, and leaves the answer behind for the next reader. Where a value reaches a sink and no test covers that path, the missing coverage is a finding in its own right."
-    ],
-    "checks": []
+    ]
   }
 ]

@@ -989,9 +989,6 @@ final class ScopeTest extends TestCase
         self::assertSame([], $result->data['checks']);
         self::assertSame([], $result->data['testSuites']);
         self::assertSame([], $result->data['conditionalChecks']);
-        foreach ($result->data['architectureHints'] as $hint) {
-            self::assertSame([], $hint['checks'], $hint['id'] . ' kept its core checks');
-        }
         foreach ($result->data['checklist'] as $entry) {
             self::assertFalse(Scope::isCoreOnly($entry), $entry . ' cannot be done outside the core');
         }
@@ -1189,9 +1186,6 @@ final class ScopeTest extends TestCase
             array_values(array_unique(array_column($result->data['scopes'], 'scope'))),
         );
         self::assertNotSame([], $result->data['hints']);
-        foreach ($result->data['hints'] as $hint) {
-            self::assertSame([], $hint['checks'], $hint['id'] . ' handed over a core check');
-        }
         self::assertStringNotContainsString('CI=true', $result->text);
     }
 

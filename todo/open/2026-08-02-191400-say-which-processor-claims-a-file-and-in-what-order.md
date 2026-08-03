@@ -14,9 +14,10 @@ decides the answer is `canProcessTask()` on each of `SvgImageProcessor`,
 `DeferredBackendImageProcessor`, the OnlineMedia `PreviewProcessing` and
 `LocalImageProcessor`, plus the `before` and `after` keys that order them, and
 `ProcessedFileRepository` for where a processed file is looked up before one is
-made. Then place it: `file-abstraction-layer` in
-`knowledge/architecture-hints/php.json` is the candidate, and it stops at
-storages, drivers and metadata today. Whichever hint takes it, its `appliesTo`
+made. Then place it: `knowledge/architecture-hints/fal.json` is the file, and
+`fal-processing` beside `fal-reading` and `fal-writing` is the shape — the
+subject was split along the questions a caller arrives with in `D-KNW-030`, and
+processing is one nobody has written yet. Whichever hint takes it, its `appliesTo`
 has to reach `Classes/Resource/Processing/` and the word "thumbnail", because
 neither reaches anything now, and the corpus's only "processor" is
 `frontend-dataprocessors` in a different subsystem. Say in it that the effective

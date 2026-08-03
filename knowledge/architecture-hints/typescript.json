@@ -16,12 +16,6 @@
       "Keep TypeScript source and generated JavaScript in sync.",
       "Prefer existing TYPO3 backend imports, event patterns, and custom element conventions used nearby.",
       "Frontend modules with state transitions should have focused JavaScript unit coverage."
-    ],
-    "checks": [
-      "CI=true ./Build/Scripts/runTests.sh -s build",
-      "CI=true ./Build/Scripts/runTests.sh -s buildJavascript",
-      "CI=true ./Build/Scripts/runTests.sh -s lintTypescript",
-      "CI=true ./Build/Scripts/runTests.sh -s unitJavascript"
     ]
   },
   {
@@ -44,12 +38,6 @@
       "Keep state transitions explicit and testable.",
       "Check accessibility behavior for controls, dialogs, drag and drop, and status indicators.",
       "For custom elements, keep CSS aligned with the host element API, stable attributes, slots, parts, and custom properties."
-    ],
-    "checks": [
-      "CI=true ./Build/Scripts/runTests.sh -s build",
-      "CI=true ./Build/Scripts/runTests.sh -s buildJavascript",
-      "CI=true ./Build/Scripts/runTests.sh -s lintTypescript",
-      "CI=true ./Build/Scripts/runTests.sh -s unitJavascript"
     ]
   }
 ]

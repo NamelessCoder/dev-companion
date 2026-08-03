@@ -25,10 +25,6 @@
       "ext_emconf.php is excluded rather than fixed. It assigns into $_EXTKEY, which the file including it sets, so the analysis reports the variable as undefined; typo3/testing-framework excludes the ext_emconf.php of its fixture extensions for exactly that reason.",
       "A baseline is what makes the first run usable. Generating one records every finding that is already there into phpstan-baseline.neon, which the configuration includes first, so the run reports what a change added rather than what the package accumulated before anyone looked. It is a work list, not a suppression: an entry that disappears is removed from the file by regenerating it.",
       "The core and typo3/testing-framework both analyse at level 5. Levels are cumulative, so raising one on a package that has never been analysed produces the whole difference at once — which is what the baseline is for."
-    ],
-    "checks": [
-      "vendor/bin/phpstan analyse -c Build/phpstan/phpstan.neon --no-progress --no-interaction",
-      "vendor/bin/phpstan analyse -c Build/phpstan/phpstan.neon --generate-baseline=Build/phpstan/phpstan-baseline.neon"
     ]
   },
   {
@@ -46,10 +42,6 @@
       "Keep changes inside the owning system extension unless a cross-extension contract really changes.",
       "Reuse public APIs from other system extensions instead of depending on internal implementation details.",
       "Check nearby extension-local tests before adding shared behavior."
-    ],
-    "checks": [
-      "CI=true ./Build/Scripts/runTests.sh -s unit",
-      "CI=true ./Build/Scripts/runTests.sh -s functional"
     ]
   },
   {
@@ -74,10 +66,6 @@
       "For a single non-autowirable argument, the #[Autowire] attribute on the constructor parameter keeps the wiring in the class instead of splitting it across a YAML file.",
       "Avoid new GeneralUtility::makeInstance() calls for regular service dependencies unless lifecycle constraints require it.",
       "Some extension points are resolved by class name through the container rather than through makeInstance(), and there a service that is not public simply is not found. Autoconfiguration covers the singletons, the middlewares, the request handlers and the icon providers; anything else that the core looks up that way — the page title providers are the one that bites, because PageTitleProviderManager reads the class name out of TypoScript and asks the container for it — needs its own Services.yaml entry with public: true. The failure is a service-not-found at request time, not a wiring error at build time."
-    ],
-    "checks": [
-      "CI=true ./Build/Scripts/runTests.sh -s functional",
-      "CI=true ./Build/Scripts/runTests.sh -s lintServicesYaml"
     ]
   },
   {
@@ -110,10 +98,6 @@
       "Keep event payloads minimal and stable, and prefer a new event over a hook: a hook is only the right answer where the subsystem still has hook-based extension points.",
       "The surviving hooks are a subsystem fact, not a second extension-point registry. Ask the subsystem hint with the intent — for example prefilling a form field — so it can name both the remaining hook and the narrower event; the form-framework hint records EXT:form's two remaining SC_OPTIONS calls.",
       "A PSR-14 event is public API. A new one needs a changelog entry, careful naming, and regression coverage."
-    ],
-    "checks": [
-      "CI=true ./Build/Scripts/runTests.sh -s unit",
-      "CI=true ./Build/Scripts/runTests.sh -s functional"
     ]
   },
   {
@@ -139,10 +123,6 @@
       "Prefer established TCA option names and existing FormEngine behavior.",
       "Add functional coverage for TCA processing, data providers, or backend form rendering behavior.",
       "A new field or option is user-facing, so it needs its labels in the same change — the field label, and the item labels of a select. An unlabelled field renders its own key to the editor. typo3_label_lookup says which trans-units the installation already has."
-    ],
-    "checks": [
-      "CI=true ./Build/Scripts/runTests.sh -s functional",
-      "CI=true ./Build/Scripts/runTests.sh -s checkIntegrityXliff"
     ]
   },
   {
@@ -167,9 +147,6 @@
       "A provider that reads merged page TSconfig has to depend on PageTsConfigMerged, or it runs before the TSconfig it reads has been merged.",
       "DefaultConfiguration.php is the default of TYPO3_CONF_VARS: an edit there changes behaviour in every installation, so say what changed and why in the patch description.",
       "Registering or reordering a provider is a runtime-configuration change. It is covered by a functional test that renders the form data, not by a unit test of the provider in isolation."
-    ],
-    "checks": [
-      "CI=true ./Build/Scripts/runTests.sh -s functional"
     ]
   },
   {
@@ -202,10 +179,6 @@
       },
       "Run the single test file or method while iterating; a full functional run costs minutes per round. typo3_test_run_guide has the targeted invocation.",
       "Write the narrowest test that exercises the change, and let what the change touches decide the kind: isolated logic is a unit test, while service wiring, persistence, TCA, DataHandler, routing and anything reading configuration only behave like themselves in a functional test. A unit test of those asserts the mock."
-    ],
-    "checks": [
-      "CI=true ./Build/Scripts/runTests.sh -s unit -- --filter <methodName> <path/to/Test.php>",
-      "CI=true ./Build/Scripts/runTests.sh -s functional -d sqlite -- <path/to/Test.php>"
     ]
   },
   {
@@ -267,8 +240,7 @@
       },
       "A frontend response is asserted through $this->executeFrontendSubRequest(new InternalRequest($uri)), which runs the request in the test instance and returns a PSR-7 response. InternalRequest::withQueryParameters() takes scalar values. An Extbase plugin argument is nested two levels deep, so a request that carries one is built with http_build_query() into the URI instead.",
       "A query string built by hand for a cache hash has two more conditions. CacheHashCalculator refuses one that carries relevant parameters without id=<pageId> — 'ID parameter needs to be passed for the cHash calculation!' — and it rawurldecode()s every name and value, which leaves a + as a literal plus where the request the browser sends would have arrived with a space. So encode with PHP_QUERY_RFC3986; otherwise a value containing a space hashes differently than it arrives and the page answers HTTP 404 for something the test never intended to exercise."
-    ],
-    "checks": []
+    ]
   },
   {
     "id": "backend-modules",
@@ -312,9 +284,6 @@
       "After a module POST changes state, return a RedirectResponse with HTTP 303 status. The browser then follows with GET; HTTP 302 does not state that method change and can repeat the POST.",
       "Configuration/Backend/Routes.php and AjaxRoutes.php declare backend routes outside a module, in the same declarative style.",
       "These are declarative files with no schema check behind them: a wrong key does not fail at boot, it fails when a user opens the module. Take the shape from a neighbouring extension."
-    ],
-    "checks": [
-      "CI=true ./Build/Scripts/runTests.sh -s functional"
     ]
   },
   {
@@ -346,9 +315,6 @@
       },
       "A command name, its arguments and its options are what integrators script against, so a new command belongs in a changelog entry.",
       "A console request is not an HTTP one: PSR-7 and middleware conventions do not apply to it, whatever the class name suggests. Behaviour is covered by functional tests."
-    ],
-    "checks": [
-      "CI=true ./Build/Scripts/runTests.sh -s functional"
     ]
   },
   {
@@ -425,9 +391,6 @@
         "until": 12
       },
       "So an entry is dead as soon as the include it names is gone, and fluid_styled_content is the live case: it registers that identifier and still ships both Configuration/TypoScript/ and the addStaticFile() call in Configuration/TCA/Overrides/sys_template.php that lets a sys_template pick it. An extension whose TypoScript has moved into Configuration/Sets/ has neither, and no @import of the old path is left either, so nothing can ever match its entries — those lines are a cleanup rather than a defect. Nothing reports them: the key is not deprecated, no changelog entry names it, and fluid_styled_content registers itself the same way, so a deprecation review and the Extension Scanner both pass the file. Site sets are the migration such entries are usually left over from, which is the site-sets hint."
-    ],
-    "checks": [
-      "CI=true ./Build/Scripts/runTests.sh -s functional"
     ]
   },
   {
@@ -456,9 +419,6 @@
         "text": "The schema is cached per package set, so a change to how it is built is a functional-test change, not a unit-test one.",
         "since": 13
       }
-    ],
-    "checks": [
-      "CI=true ./Build/Scripts/runTests.sh -s functional"
     ]
   },
   {
@@ -485,10 +445,6 @@
       "Middleware is registered in Configuration/RequestMiddlewares.php per request scope, with before and after naming other middleware. Keep each one focused and its position deliberate.",
       "Avoid global state when request-scoped data is available.",
       "This applies to HTTP only. A console command is not a request handler, whatever its class name suggests."
-    ],
-    "checks": [
-      "CI=true ./Build/Scripts/runTests.sh -s functional",
-      "CI=true ./Build/Scripts/runTests.sh -s unit"
     ]
   },
   {
@@ -510,36 +466,6 @@
       "The 'core' cache is reserved for core PHP code. Pick or add a cache with the right frontend for the payload — VariableFrontend for data, PhpFrontend for generated code — and put it in the group whose flush semantics it belongs to.",
       "Anything cached has to survive being flushed at any time; a cache is never the only place a value exists.",
       "Cache behaviour is a wiring concern and is covered by functional tests."
-    ],
-    "checks": [
-      "CI=true ./Build/Scripts/runTests.sh -s functional"
-    ]
-  },
-  {
-    "id": "file-abstraction-layer",
-    "title": "FAL: Storages, Files, and Drivers",
-    "domains": [
-      "php"
-    ],
-    "appliesTo": [
-      "Classes/Resource/",
-      "ResourceStorage",
-      "ResourceFactory",
-      "StorageRepository",
-      "FileReference",
-      "file abstraction",
-      "fal",
-      "driver"
-    ],
-    "hints": [
-      "Files are addressed through the FAL objects — ResourceStorage, Folder, File, FileReference — not by a filesystem path. A storage may be remote, and an absolute path assumes it is not.",
-      "Storages come from StorageRepository; ResourceFactory turns a reference or an identifier into a File or Folder object.",
-      "A storage's backing system is a driver implementing DriverInterface. Behaviour that differs per storage belongs in the driver, not in the calling code.",
-      "File metadata is reached through the MetaDataAspect of a file rather than by querying sys_file_metadata.",
-      "FAL changes touch indexing, permissions and references at once, so they need functional coverage rather than a unit test of the calling code."
-    ],
-    "checks": [
-      "CI=true ./Build/Scripts/runTests.sh -s functional"
     ]
   },
   {
@@ -562,9 +488,6 @@
       "Page-level access is a permission bitmask on the record, applied through the query restrictions rather than by filtering afterwards.",
       "An admin bypass is a deliberate decision, not a shortcut: state why in the patch when adding one.",
       "Permission behaviour is security-sensitive. It needs a functional test that asserts both the allowed and the denied case, and a bug here is worth checking against the maintained release branches."
-    ],
-    "checks": [
-      "CI=true ./Build/Scripts/runTests.sh -s functional"
     ]
   },
   {
@@ -597,9 +520,6 @@
       "State what the wizard needs through getPrerequisites(): DatabaseUpdatedPrerequisite where it works on tables the schema migration creates, ReferenceIndexUpdatedPrerequisite where it relies on the reference index.",
       "Implement ChattyInterface to report progress through setOutput(), and ConfirmableInterface where the change needs the user's consent before it runs. Both are what makes the wizard usable in `typo3 upgrade:run` as well as in the Install Tool.",
       "executeUpdate() returns whether it succeeded, and runs without a request: it is invoked from the console and from the Install Tool, so nothing about it may depend on a frontend or backend context."
-    ],
-    "checks": [
-      "CI=true ./Build/Scripts/runTests.sh -s functional"
     ]
   },
   {
@@ -622,9 +542,6 @@
       "Read the processor's own options from $processorConfiguration and through $cObj->stdWrapValue('option', $processorConfiguration, $default), so every option can be set with stdWrap. $contentObjectConfiguration is the whole content object and belongs to its caller.",
       "Honour the `if` option before doing any work: `if (isset($processorConfiguration['if.']) && !$cObj->checkIf($processorConfiguration['if.'])) { return $processedData; }`. A processor that ignores it runs on every element the TypoScript applies to.",
       "Return $processedData unchanged where there is nothing to add. A processor is one of a chain, and the next one is handed what this one returned."
-    ],
-    "checks": [
-      "CI=true ./Build/Scripts/runTests.sh -s functional"
     ]
   },
   {
@@ -668,9 +585,6 @@
       "A paginator clamps a page number outside its range, so a page beyond the last one answers with the first page rather than with a not-found. Compare the current page against the number of pages in the controller and answer with the not-found response yourself, or the same list is served under an unbounded number of URLs.",
       "A paginated plugin needs a route for the list as well as one for the paginated form. A single route with the page number defaulted only omits the variable when a link is built, and the literal part of the segment stays behind — a link to the first page then points at a path that ends in the prefix of a number that is not there. Routes are tried in the order they are declared, so the paginated one goes before a route whose slug would otherwise swallow it.",
       "Orderings are property names, not column names. Ordering by the order records have in the backend therefore needs a property for that field on the model, although it is not a domain concept."
-    ],
-    "checks": [
-      "CI=true ./Build/Scripts/runTests.sh -s functional"
     ]
   },
   {
@@ -725,9 +639,6 @@
       "impexp:export takes one --table per table, and a custom table nobody named is missing from the export without a word: typo3 impexp:export --table=tt_content --table=tx_myext_product.",
       "Images come along on their own — a sys_file_reference pulls its sys_file record in as a relation and the bytes follow — but by default they are base64 inside the export file, which for an artifact that is committed is the wrong shape. --save-files-outside-export-file writes them beside it instead, into a directory named after the file plus .files, each under its own sha1. The import picks that directory up whenever it sits next to the file, extension:setup included, and reuses a file the target storage already has under the same identifier and hash rather than duplicating it.",
       "A file path handed to the console is resolved by GeneralUtility::getFileAbsFileName(): a relative path is relative to the public directory, not to the project root. EXT:<key>/Initialisation/data.xml is the form that works from anywhere."
-    ],
-    "checks": [
-      "CI=true ./Build/Scripts/runTests.sh -s functional"
     ]
   }
 ]

@@ -21,12 +21,6 @@
       "Not every asset comes out of the Sass build. The CKEditor CSS is built through Build/rollup/ckeditor.js, so a change there is not picked up by a CSS build and looks like nothing happened.",
       "Verify generated assets are in sync when public assets are committed.",
       "Use lintScss for TYPO3's stylelint setup and npm -- run build-css for a focused CSS build while iterating."
-    ],
-    "checks": [
-      "CI=true ./Build/Scripts/runTests.sh -s build",
-      "CI=true ./Build/Scripts/runTests.sh -s buildCss",
-      "CI=true ./Build/Scripts/runTests.sh -s lintScss",
-      "CI=true ./Build/Scripts/runTests.sh -s npm -- run build-css"
     ]
   },
   {
@@ -54,11 +48,6 @@
       "Use forms, scaffold, dashboard, and element folders for their owning concerns instead of creating broad global styles.",
       "Document a component's canonical markup in a // Markup: block at the top of its partial, and let the styleguide demo mirror that markup.",
       "The Sass layer uses @import, not the Dart Sass @use/@forward module system. Follow the existing import style and ordering rather than introducing the newer one in one file."
-    ],
-    "checks": [
-      "CI=true ./Build/Scripts/runTests.sh -s build",
-      "CI=true ./Build/Scripts/runTests.sh -s buildCss",
-      "CI=true ./Build/Scripts/runTests.sh -s lintScss"
     ]
   },
   {
@@ -97,11 +86,6 @@
       "Avoid compatibility workarounds for obsolete browsers outside the active LTS browser target.",
       "Prefer native CSS capabilities over JavaScript workarounds when the feature is supported by the LTS target.",
       "The Popover API is an example where native platform behavior should be preferred over custom JavaScript positioning or visibility logic when the target baseline supports it."
-    ],
-    "checks": [
-      "CI=true ./Build/Scripts/runTests.sh -s build",
-      "CI=true ./Build/Scripts/runTests.sh -s buildCss",
-      "CI=true ./Build/Scripts/runTests.sh -s lintScss"
     ]
   },
   {
@@ -125,11 +109,6 @@
       "Prefer reusing, extending, or composing existing TYPO3 backend components before adding new CSS.",
       "New CSS should express reusable component behavior, not one-off page-specific tweaks.",
       "Utility classes should be used only in exceptional cases and must not replace a missing reusable component."
-    ],
-    "checks": [
-      "CI=true ./Build/Scripts/runTests.sh -s build",
-      "CI=true ./Build/Scripts/runTests.sh -s buildCss",
-      "CI=true ./Build/Scripts/runTests.sh -s lintScss"
     ]
   },
   {
@@ -161,11 +140,6 @@
       "State classes are explicit and consistent: .active, .disabled, .selected, and the .is-* and .has-* forms.",
       "Avoid a generic name that can collide globally. There is one stylesheet and no scoping, so a .header or a .content in a component partial is a name taken from everybody.",
       "Use t3js-* classes only as JavaScript hooks and keep them separate from visual styling selectors."
-    ],
-    "checks": [
-      "CI=true ./Build/Scripts/runTests.sh -s build",
-      "CI=true ./Build/Scripts/runTests.sh -s buildCss",
-      "CI=true ./Build/Scripts/runTests.sh -s lintScss"
     ]
   },
   {
@@ -187,12 +161,6 @@
       "Changed CSS components should update an existing styleguide demo or add one when no demo exists.",
       "Backend component demos usually live below typo3/sysext/styleguide/Resources/Private/Templates/Backend/Components/.",
       "A demo covers what a reviewer would otherwise have to build themselves: the variants, the states, the sizes, with and without an icon, empty and disabled and mid-interaction, in both color schemes, and in RTL where the layout is direction-sensitive. A demo of the default state only shows the case nobody was worried about."
-    ],
-    "checks": [
-      "CI=true ./Build/Scripts/runTests.sh -s build",
-      "CI=true ./Build/Scripts/runTests.sh -s buildCss",
-      "CI=true ./Build/Scripts/runTests.sh -s lintScss",
-      "CI=true ./Build/Scripts/runTests.sh -s functional"
     ]
   },
   {
@@ -232,11 +200,6 @@
       "Expose a small, named component property contract when variants, host context, or states need to tune the component.",
       "Keep specificity low and predictable.",
       "Avoid !important unless overriding external or unavoidable generated styles."
-    ],
-    "checks": [
-      "CI=true ./Build/Scripts/runTests.sh -s lintScss",
-      "CI=true ./Build/Scripts/runTests.sh -s build",
-      "CI=true ./Build/Scripts/runTests.sh -s buildCss"
     ]
   },
   {
@@ -262,13 +225,6 @@
       "Keep custom element Sass below Build/Sources/Sass/element/ when the style belongs to a web component.",
       "Use CSS custom properties, ::part(...), slots, and explicit host attributes as stable styling boundaries.",
       "Do not style arbitrary internal DOM depth when a host selector, part, slot, or custom property can express the contract."
-    ],
-    "checks": [
-      "CI=true ./Build/Scripts/runTests.sh -s build",
-      "CI=true ./Build/Scripts/runTests.sh -s buildCss",
-      "CI=true ./Build/Scripts/runTests.sh -s lintScss",
-      "CI=true ./Build/Scripts/runTests.sh -s lintTypescript",
-      "CI=true ./Build/Scripts/runTests.sh -s unitJavascript"
     ]
   },
   {
@@ -295,12 +251,6 @@
       "ARIA attributes must reflect real accessibility state and must not be introduced only as CSS hooks.",
       "State selectors should map to component properties whenever possible.",
       "Keep JavaScript, markup, CSS, and tests in sync when a state attribute changes."
-    ],
-    "checks": [
-      "CI=true ./Build/Scripts/runTests.sh -s build",
-      "CI=true ./Build/Scripts/runTests.sh -s buildCss",
-      "CI=true ./Build/Scripts/runTests.sh -s lintScss",
-      "CI=true ./Build/Scripts/runTests.sh -s unitJavascript"
     ]
   },
   {
@@ -356,11 +306,6 @@
         "text": "There is no semantic surface, text-color or state layer here. The backend's custom properties are component-scoped — --typo3-component-bg, --typo3-component-color, --typo3-component-border-color, the --typo3-input-* family — and below them sit the Bootstrap variables the backend still builds on.",
         "until": 12
       }
-    ],
-    "checks": [
-      "CI=true ./Build/Scripts/runTests.sh -s build",
-      "CI=true ./Build/Scripts/runTests.sh -s buildCss",
-      "CI=true ./Build/Scripts/runTests.sh -s lintScss"
     ]
   },
   {
@@ -394,11 +339,6 @@
         "text": "Keep surface elevation and shadow strength aligned. A component that is not elevated gets no shadow at all: a decorative one claims a layer the component does not occupy.",
         "since": 13
       }
-    ],
-    "checks": [
-      "CI=true ./Build/Scripts/runTests.sh -s build",
-      "CI=true ./Build/Scripts/runTests.sh -s buildCss",
-      "CI=true ./Build/Scripts/runTests.sh -s lintScss"
     ]
   },
   {
@@ -430,11 +370,6 @@
       "Avoid raw z-index numbers when an existing token matches the intended layer.",
       "Do not use extremely high z-index values to win stacking conflicts; fix the owning stacking context or use the correct layer token.",
       "Keep z-index, shadow strength, and surface elevation aligned."
-    ],
-    "checks": [
-      "CI=true ./Build/Scripts/runTests.sh -s build",
-      "CI=true ./Build/Scripts/runTests.sh -s buildCss",
-      "CI=true ./Build/Scripts/runTests.sh -s lintScss"
     ]
   },
   {
@@ -463,11 +398,6 @@
       "New transitions or animations that move, resize, fade large regions, or affect focus/navigation must respect prefers-reduced-motion: reduce.",
       "Avoid transition: all unless the surrounding component already uses it and the affected properties are intentionally constrained.",
       "Keep motion functional and subtle so it clarifies state changes."
-    ],
-    "checks": [
-      "CI=true ./Build/Scripts/runTests.sh -s build",
-      "CI=true ./Build/Scripts/runTests.sh -s buildCss",
-      "CI=true ./Build/Scripts/runTests.sh -s lintScss"
     ]
   },
   {
@@ -494,11 +424,6 @@
       "Container queries are an example of a modern CSS feature that may be introduced before an LTS release when they are expected to be part of the LTS browser baseline.",
       "Keep container query rules scoped to the owning component, and check it where the containers actually differ: a narrow module column, a sidebar, a dialog, and full-width content.",
       "Do not add global breakpoints for a component-specific layout problem unless the behavior is truly tied to the viewport or scaffold."
-    ],
-    "checks": [
-      "CI=true ./Build/Scripts/runTests.sh -s build",
-      "CI=true ./Build/Scripts/runTests.sh -s buildCss",
-      "CI=true ./Build/Scripts/runTests.sh -s lintScss"
     ]
   },
   {
@@ -529,11 +454,6 @@
         "since": 13
       },
       "Check contrast for text, icons, borders, focus outlines, and state backgrounds in both schemes."
-    ],
-    "checks": [
-      "CI=true ./Build/Scripts/runTests.sh -s build",
-      "CI=true ./Build/Scripts/runTests.sh -s buildCss",
-      "CI=true ./Build/Scripts/runTests.sh -s lintScss"
     ]
   },
   {
@@ -561,11 +481,6 @@
       "Prefer logical properties such as margin-inline, padding-inline, inset-inline, and border-inline over physical left/right properties.",
       "Use TYPO3 position custom properties such as --typo3-position-start, --typo3-position-end, and --typo3-position-modifier for direction-aware calculations.",
       "Direction-aware transforms, icons, carets, flyouts, drag handles, resize handles, trees, lists, tables, toolbars, and form controls need explicit RTL review."
-    ],
-    "checks": [
-      "CI=true ./Build/Scripts/runTests.sh -s build",
-      "CI=true ./Build/Scripts/runTests.sh -s buildCss",
-      "CI=true ./Build/Scripts/runTests.sh -s lintScss"
     ]
   },
   {
@@ -589,11 +504,6 @@
       "Treat Bootstrap as existing infrastructure, not as the preferred target architecture for new TYPO3-specific UI.",
       "Avoid introducing new high-specificity Bootstrap overrides; prefer TYPO3 component styles for TYPO3-specific behavior.",
       "Many Bootstrap component imports are disabled on purpose and left in the source as commented-out @import lines, so the choice stays visible and is never read as an oversight. Do not enable one, and do not recreate what it would have brought — TYPO3 ships its own version of it."
-    ],
-    "checks": [
-      "CI=true ./Build/Scripts/runTests.sh -s build",
-      "CI=true ./Build/Scripts/runTests.sh -s buildCss",
-      "CI=true ./Build/Scripts/runTests.sh -s lintScss"
     ]
   },
   {
@@ -639,11 +549,6 @@
       "Check hover, focus, active, disabled, loading, empty, error, selected, expanded, and collapsed states when applicable.",
       "Do not rely on color alone to communicate state.",
       "Interactive icon-only controls need an accessible name, while decorative icons should be hidden from assistive technology."
-    ],
-    "checks": [
-      "CI=true ./Build/Scripts/runTests.sh -s build",
-      "CI=true ./Build/Scripts/runTests.sh -s buildCss",
-      "CI=true ./Build/Scripts/runTests.sh -s lintScss"
     ]
   },
   {
@@ -670,11 +575,6 @@
       "Use logical spacing for icon and text gaps, for example margin-inline-* or gap, so RTL layouts remain correct.",
       "Define overflow behavior for long labels in compact backend UI.",
       "Hover and focus styles must not cause avoidable layout shifts."
-    ],
-    "checks": [
-      "CI=true ./Build/Scripts/runTests.sh -s build",
-      "CI=true ./Build/Scripts/runTests.sh -s buildCss",
-      "CI=true ./Build/Scripts/runTests.sh -s lintScss"
     ]
   }
 ]

@@ -38,7 +38,6 @@ final class Hints
                 'versions' => Versions::label($statement['since'], $statement['until']),
                 'scope' => ($statement['scope'] ?? null)?->value,
             ], $hint['hints']),
-            'checks' => array_map('strval', $hint['checks']),
         ], array_values($hints));
     }
 
@@ -167,12 +166,6 @@ final class Hints
                 if (isset($examples[$hint['id']])) {
                     $block[] = $examples[$hint['id']];
                 }
-                if ($hint['checks'] !== []) {
-                    $block[] = 'Relevant checks:';
-                    foreach ($hint['checks'] as $check) {
-                        $block[] = '- ' . $check;
-                    }
-                }
                 $hintTexts[] = implode("\n", $block);
             }
             $sectionTexts[] = '### ' . $section['category'] . "\n\n" . implode("\n\n", $hintTexts);
@@ -183,10 +176,6 @@ final class Hints
 
     /**
      * What the groups of one call found, as the one answer the payload is.
-     *
-     * The hints keep the checks of the group they were matched for, so a hint
-     * that matched on both sides carries them once, for the paths that can run
-     * them — which is why the answer names those paths beside them.
      *
      * @param array<int, array{scope: Scope, paths: array<int, string>, result: array<string, mixed>}> $found
      * @return array{matchedHints: array<int, array<string, mixed>>, availableHints: array<int, array<string, mixed>>, domains: array<int, string>, withheldCategories: array<int, string>}

@@ -1,0 +1,114 @@
+[
+  {
+    "id": "fal-basics",
+    "title": "Files Are Addressed Through FAL, Not by Path",
+    "domains": [
+      "php"
+    ],
+    "appliesTo": [
+      "Classes/Resource/",
+      "file abstraction",
+      "fal",
+      "file path",
+      "absolute path",
+      "fileadmin"
+    ],
+    "hints": [
+      "Files are addressed through the FAL objects — ResourceStorage, Folder, File, FileReference — not by a filesystem path. A storage may be remote, and an absolute path assumes it is not.",
+      "The rest of the subject is its own hint: fal-storages-drivers for where a storage comes from and what a driver owns, fal-reading for getting a File and its metadata, fal-writing for putting one in, fal-testing for covering any of it."
+    ]
+  },
+  {
+    "id": "fal-storages-drivers",
+    "title": "Storages and the Drivers Behind Them",
+    "domains": [
+      "php"
+    ],
+    "appliesTo": [
+      "ResourceStorage",
+      "StorageRepository",
+      "DriverInterface",
+      "driver",
+      "storage",
+      "remote storage",
+      "file mount"
+    ],
+    "hints": [
+      "Storages come from StorageRepository: findByUid(), getDefaultStorage(), findAll(), findByStorageType() for the ones on one kind of backend.",
+      "A storage's backing system is a driver implementing DriverInterface. Behaviour that differs per storage belongs in the driver, not in the calling code — that is what makes the same calling code work against a local directory and a remote bucket."
+    ]
+  },
+  {
+    "id": "fal-reading",
+    "title": "Getting a File Object, and Its Metadata",
+    "domains": [
+      "php"
+    ],
+    "appliesTo": [
+      "ResourceFactory",
+      "FileReference",
+      "MetaDataAspect",
+      "sys_file_metadata",
+      "sys_file_reference",
+      "getFileObject",
+      "retrieveFileOrFolderObject",
+      "getPublicUrl",
+      "read a file",
+      "file metadata",
+      "alt text"
+    ],
+    "hints": [
+      "ResourceFactory turns what a record holds into an object: getFileObject($uid) for a sys_file uid, getFileReferenceObject($uid) for a sys_file_reference, getFileObjectFromCombinedIdentifier('<storage>:<identifier>') for the form a storage writes, and retrieveFileOrFolderObject() where the input could be any of them.",
+      "A FileReference is not the file. It carries the fields of the reference record — the title, the alternative text, the crop — over the ones of the sys_file behind it, which getOriginalFile() returns. Reading the title off the original is how a caption set by an editor goes missing.",
+      "File metadata is reached through the MetaDataAspect of a file — $file->getMetaData() — rather than by querying sys_file_metadata.",
+      "The contents come from getContents(), the address for a link or a tag from getPublicUrl(). A public URL may be null, because a storage does not have to be publicly reachable."
+    ]
+  },
+  {
+    "id": "fal-writing",
+    "title": "Putting a File Into a Storage",
+    "domains": [
+      "php"
+    ],
+    "appliesTo": [
+      "addFile",
+      "addUploadedFile",
+      "createFile",
+      "setFileContents",
+      "DuplicationBehavior",
+      "file upload",
+      "upload a file",
+      "write a file",
+      "attach a file to a record"
+    ],
+    "hints": [
+      "A file enters a storage through the folder it lands in: $folder->addFile($localFilePath) takes a file that is already on disk and removes the original, $folder->addUploadedFile() takes a PSR-7 UploadedFileInterface, and createFile() plus setFileContents() writes one from a string. ResourceStorage carries the same operations with the target folder as an argument.",
+      "The conflict mode decides what an existing name does, and the default depends on which object the call was made on: Folder::addFile() cancels and throws ExistingTargetFileNameException, ResourceStorage::addFile() renames the incoming file and returns it under the new name. Both uploads cancel. Pass the mode rather than inheriting whichever default the object happened to carry.",
+      {
+        "text": "It is the backed enum TYPO3\\CMS\\Core\\Resource\\Enum\\DuplicationBehavior.",
+        "since": 13
+      },
+      {
+        "text": "It is the Enumeration class TYPO3\\CMS\\Core\\Resource\\DuplicationBehavior, whose values are read as constants.",
+        "until": 12
+      },
+      "Attaching a file to a record is a second step and a different one: the relation is a sys_file_reference row, written through DataHandler like any other relation — see datahandler-relations. A file in a storage that no reference points at is indexed and unused."
+    ]
+  },
+  {
+    "id": "fal-testing",
+    "title": "Covering FAL Behaviour",
+    "domains": [
+      "php"
+    ],
+    "appliesTo": [
+      "fal test",
+      "file indexing",
+      "sys_file",
+      "reference index"
+    ],
+    "hints": [
+      "FAL changes touch indexing, permissions and references at once, so they need functional coverage rather than a unit test of the calling code."
+    ]
+  }
+]

@@ -47,9 +47,6 @@
         "since": 13,
         "until": 13
       }
-    ],
-    "checks": [
-      "CI=true ./Build/Scripts/runTests.sh -s functional"
     ]
   }
 ]

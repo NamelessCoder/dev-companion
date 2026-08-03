@@ -425,7 +425,7 @@ final class HintsTest extends TestCase
                 'page title provider does not work',
                 'dependency-injection-services',
             ],
-            'a word nobody indexed' => ['file upload storage configuration', 'file-abstraction-layer'],
+            'a word nobody indexed' => ['file upload storage configuration', 'fal-writing'],
             'a backend form' => ['validate a form field in the backend', 'tca-formengine'],
             'where something goes' => ['where do I put my backend layouts', 'sitepackage-layout'],
             'a stale answer' => ['caching does not invalidate', 'caching'],
@@ -571,12 +571,15 @@ final class HintsTest extends TestCase
             'id',
         );
 
-        self::assertSame(['file-abstraction-layer'], $reached('fal storage driver'));
+        self::assertSame(['fal-storages-drivers', 'fal-basics'], $reached('fal storage driver'));
 
         // The same rule on the curated vocabulary, which is the stronger path:
         // an appliesTo hit is admitted whatever the coverage. "fal" is one of
-        // this hint's patterns and it used to be found by plain substring.
-        self::assertNotContains('file-abstraction-layer', $reached('the label is falsch'));
+        // fal-basics's patterns and it used to be found by plain substring.
+        self::assertSame([], array_filter(
+            $reached('the label is falsch'),
+            static fn(string $id): bool => str_starts_with($id, 'fal-'),
+        ));
 
         // And the tolerance itself is intact from four characters up.
         self::assertContains('events-extension-points', $reached('hooks'));
@@ -1247,6 +1250,25 @@ final class HintsTest extends TestCase
     }
 
     /**
+     * Two FAL traps that only show up as "nothing happened": the same call
+     * carries a different default on the folder and on the storage, and a
+     * reference's own fields are the ones an editor filled in.
+     */
+    #[Test]
+    public function theFileAnswersNameWhatFailsSilently(): void
+    {
+        $writing = implode("\n", array_column(ArchitectureHints::byId('fal-writing')['hints'], 'text'));
+
+        self::assertStringContainsString('ExistingTargetFileNameException', $writing);
+        self::assertStringContainsString('ResourceStorage::addFile() renames', $writing);
+
+        $reading = implode("\n", array_column(ArchitectureHints::byId('fal-reading')['hints'], 'text'));
+
+        self::assertStringContainsString('getOriginalFile()', $reading);
+        self::assertStringContainsString('alternative text', $reading, 'what the reference record carries');
+    }
+
+    /**
      * The gap the umbrella hid: `datahandler-persistence` carried `querybuilder`,
      * `restriction`, `enablecolumns`, `hidden record` and `deleted record` in its
      * vocabulary and not one statement about reading a record. The whole corpus
@@ -1888,32 +1910,16 @@ final class HintsTest extends TestCase
         }
     }
 
-    #[Test]
-    public function aCheckIsNotOfferedOnABranchWhoseScriptHasNoSuchSuite(): void
-    {
-        // A check is a runTests.sh invocation, and which suites that script
-        // offers changes between majors. Handing over a command the caller's
-        // checkout does not have is not a weaker answer than none — it sends
-        // them to debug their checkout for something this server invented for
-        // another branch.
-        //
-        // Verified against this repository's own checkouts: no suite matching
-        // xlf or xliff exists in Build/Scripts/runTests.sh on 12.4 or 13.4
-        // under any name, while 14.3 and main have checkIntegrityXliff and
-        // normalizeXliff. So empty is the true answer on 13.4, not a gap.
-        self::assertSame([], ArchitectureHints::byId('language-files', 13)['checks']);
-
-        $onFourteen = ArchitectureHints::byId('language-files', 14)['checks'];
-        self::assertNotSame([], $onFourteen);
-        foreach (['checkIntegrityXliff', 'normalizeXliff'] as $suite) {
-            self::assertNotSame(
-                [],
-                array_filter($onFourteen, static fn(string $check): bool => str_contains($check, $suite)),
-                $suite . ' exists on 14 and has to be offered there',
-            );
-        }
-    }
-
+    /**
+     * A suite is a runTests.sh target, and which ones that script offers changes
+     * between majors. Handing over a command the caller's checkout does not have
+     * is not a weaker answer than none — it sends them to debug their checkout
+     * for something this server invented for another branch.
+     *
+     * Verified against this repository's own checkouts: no suite matching xlf or
+     * xliff exists in Build/Scripts/runTests.sh on 12.4 or 13.4 under any name,
+     * while 14.3 and main have checkIntegrityXliff and normalizeXliff.
+     */
     #[Test]
     public function theSuiteListItselfIsFilteredByTheBranchItIsAskedFor(): void
     {
@@ -2036,12 +2042,17 @@ final class HintsTest extends TestCase
         self::assertStringContainsString('x-unused-since', $guide->text);
     }
 
+    /**
+     * The suites a domain always runs are stated even where nothing in the task
+     * names a suite. This sentence is about TSconfig field labels: the intent
+     * matcher finds the XLIFF checks in it, the suite matcher finds the label
+     * integrity ones, and neither reaches the functional suite the change can
+     * actually fail on. It came off the architecture hints until `D-KNW-031`,
+     * where twenty-eight of them repeated it as their own `checks` list.
+     */
     #[Test]
-    public function theChecksOfAMatchedHintAreStatedAsChecks(): void
+    public function theBaseSuitesOfADomainAreStatedWhateverTheTaskNames(): void
     {
-        // The FormEngine hint names the functional suite; before it was merged
-        // in, the brief listed the XLIFF checks of a weakly matched intent and
-        // dropped the one suite the change could actually fail on.
         $checks = Registry::call('typo3_task_guide', [
             'task' => 'Fix that TSconfig field label overrides are not respected per record type in FormEngine select fields',
             'area' => 'backend/FormEngine',
@@ -2049,6 +2060,17 @@ final class HintsTest extends TestCase
         ])->data['checks'];
 
         self::assertContains('CI=true ./Build/Scripts/runTests.sh -s functional', $checks);
+        self::assertContains('CI=true ./Build/Scripts/runTests.sh -s unit', $checks);
+
+        // And they are the domain's, not one list for everybody: a Sass change
+        // gets the frontend build and no PHP suite.
+        $sass = Registry::call('typo3_task_guide', [
+            'task' => 'Restyle the card component in the backend',
+            'paths' => ['Build/Sources/Sass/component/_card.scss'],
+        ])->data['checks'];
+
+        self::assertContains('CI=true ./Build/Scripts/runTests.sh -s lintScss', $sass);
+        self::assertNotContains('CI=true ./Build/Scripts/runTests.sh -s functional', $sass);
     }
 
     #[Test]

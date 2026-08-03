@@ -96,7 +96,7 @@ final class TaskGuide extends ReadOnlyTool
             'task' => Schema::string(),
             'area' => Schema::nullableString('Affected subsystem or path, if one was given.'),
             'paths' => Schema::listOf(Schema::string(), 'The paths this brief was composed for, the area among them. Empty where the call named none.'),
-            'scopes' => Schema::scopes('Which kind of work each path is. The hints are matched per group, so one that came back for a path outside the core carries no checks; where every path is outside, the core checks, the core-only checklist items and the submission route are left out of the whole brief.'),
+            'scopes' => Schema::scopes('Which kind of work each path is. Where every path is outside the core, the core checks, the core-only checklist items and the submission route are left out of the whole brief.'),
             'changeType' => Schema::string(),
             'targetVersion' => ['type' => ['integer', 'null'], 'description' => 'The TYPO3 major this repository runs — stated by the caller, or read from the installation. Null means nothing was filtered by version. Where the repository serves several majors, targetVersions is what the answer holds for.'],
             'targetVersions' => Schema::listOf(['type' => 'integer'], 'Every TYPO3 major the answer holds for. One entry is the ordinary case. Several mean this repository declares typo3/cms-core for more than one of them, so a statement was kept when it holds on any — and where two statements about the same subject differ, the difference is the constraint the code lives under rather than drift. Empty when nothing was filtered by version.'),
@@ -181,14 +181,10 @@ final class TaskGuide extends ReadOnlyTool
         $target = Versions::target($stated);
         $targets = Versions::targets($stated);
         // Matched per group, because a hint matched for a core path and one
-        // matched for an extension path are answers to different questions —
-        // and the checks come off only the ones the extension path earned.
+        // matched for an extension path are answers to different questions.
         $found = [];
         foreach ($groups as $group) {
             $matched = ArchitectureHints::find($group['paths'], $task, 4, null, $targets);
-            if ($group['scope']->isOutsideTheCore()) {
-                $matched['matchedHints'] = ArchitectureHints::withoutChecks($matched['matchedHints']);
-            }
             $found[] = ['scope' => $group['scope'], 'paths' => $group['paths'], 'result' => $matched];
         }
         $architecture = Hints::merged($found);
@@ -296,7 +292,7 @@ final class TaskGuide extends ReadOnlyTool
         // as the ones an intent carries. Leaving them out dropped the functional
         // suite from a FormEngine brief while the FormEngine hint that names it
         // was right there in the same answer.
-        $checks = self::mergedChecks($confirmed, $architecture['matchedHints'], $target);
+        $checks = self::mergedChecks($confirmed, $domains, $target);
         $conditionalChecks = self::conditionalChecks($conditional, $checks, $target);
 
         // Every check this server knows is a runTests.sh invocation against a
@@ -455,29 +451,31 @@ final class TaskGuide extends ReadOnlyTool
     }
 
     /**
-     * The checks a brief states as applying: those of the confirmed intents and
-     * those of every matched architecture hint, in that order and deduplicated.
+     * The checks a brief states as applying: the base suites of the domains the
+     * task is in, then those of the confirmed intents, deduplicated.
+     *
+     * The base suites come first because they hold whatever the task turns out
+     * to be, and because nothing else states them: an intent is recognised from
+     * the words of the task, and a bugfix in FormEngine names no suite in any
+     * of its words.
      *
      * @param array<int, array<string, mixed>> $intents
-     * @param array<int, array<string, mixed>> $hints
+     * @param array<int, string> $domains
      * @return array<int, string>
      */
-    private static function mergedChecks(array $intents, array $hints, ?int $target): array
+    private static function mergedChecks(array $intents, array $domains, ?int $target): array
     {
         $checks = [];
+        foreach (TestSuiteHints::baseFor($domains, $target) as $command) {
+            $checks[$command] = true;
+        }
         foreach ($intents as $intent) {
             foreach ($intent['checks'] as $check) {
                 $checks[(string) $check] = true;
             }
         }
-        foreach ($hints as $hint) {
-            foreach ($hint['checks'] as $check) {
-                $checks[(string) $check] = true;
-            }
-        }
 
-        // The hints arrive already filtered; the intents do not, and both name
-        // suites that a given branch's runTests.sh may not have.
+        // An intent names suites that a given branch's runTests.sh may not have.
         return TestSuiteHints::checksFor(array_keys($checks), $target);
     }
 

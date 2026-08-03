@@ -24,7 +24,7 @@ final class ArchitectureLookup extends ReadOnlyTool
 
     public static function description(): string
     {
-        return 'Return architecture hints for TYPO3 core paths or task topics, grouped by section. Where the paths read as a project or third-party extension the hints still come back — the conventions transfer — but without their core check commands. The "Backend CSS" and "Backend TypeScript" sections describe the TYPO3 backend interface and are withheld, with the reason, where the task names the frontend.';
+        return 'Return architecture hints for TYPO3 core paths or task topics, grouped by section. Where the paths read as a project or third-party extension the hints still come back, because the conventions transfer. The "Backend CSS" and "Backend TypeScript" sections describe the TYPO3 backend interface and are withheld, with the reason, where the task names the frontend.';
     }
 
     public static function inputSchema(): array
@@ -32,7 +32,7 @@ final class ArchitectureLookup extends ReadOnlyTool
         return [
             'type' => 'object',
             'properties' => [
-                'paths' => ['type' => 'array', 'items' => ['type' => 'string'], 'default' => [], 'description' => 'File paths related to the task, as they are in the repository they belong to. Each is placed on its own, so a core path and an extension path in one call are matched separately — the hints for the extension path come back without the core checks.'],
+                'paths' => ['type' => 'array', 'items' => ['type' => 'string'], 'default' => [], 'description' => 'File paths related to the task, as they are in the repository they belong to. Each is placed on its own, so a core path and an extension path in one call are matched separately, and a statement is labelled where it obliges the other one.'],
                 'task' => ['type' => 'string', 'description' => 'Short task description or architecture topic, in English. Matching is lexical against English text, so another language reaches only the loanwords.'],
                 'id' => ['type' => 'string', 'description' => 'Ask for one hint by its id, for example language-files, instead of matching. Every answer that returns no hint lists the ids there are, so a subject that exists can be requested by name rather than guessed at.'],
                 'targetVersion' => ['type' => 'string', 'description' => 'The TYPO3 version the answer has to hold for, for example "13.4" or "14". State one only to narrow to it: statements that do not hold there are then left out, including those the repository needs for another major it declares. Left out, the answer holds for every major this repository declares typo3/cms-core for, which is what one codebase serving two of them needs; where there is no declaration to read, for the version of the installation this server was started in, and where there is no installation either, nothing is filtered and every statement carries the versions it holds for.'],
@@ -46,7 +46,7 @@ final class ArchitectureLookup extends ReadOnlyTool
         return Schema::object([
             'task' => Schema::nullableString(),
             'paths' => Schema::listOf(Schema::string()),
-            'scopes' => Schema::scopes('Which kind of work each path is. Paths of different scope are matched separately, so a hint that came back for one of them is about that path — and a hint for a path outside the core carries no checks.'),
+            'scopes' => Schema::scopes('Which kind of work each path is. Paths of different scope are matched separately, so a hint that came back for one of them is about that path.'),
             'targetVersion' => ['type' => ['integer', 'null'], 'description' => 'The TYPO3 major this repository runs — stated by the caller, or read from the installation. Null means nothing was filtered and every statement carries its own range. Where the repository serves several majors, targetVersions is what the answer holds for.'],
             'targetVersions' => Schema::listOf(['type' => 'integer'], 'Every TYPO3 major the answer holds for. One entry is the ordinary case. Several mean this repository declares typo3/cms-core for more than one of them, so a statement was kept when it holds on any — and where two statements about the same subject differ, the difference is the constraint the code lives under rather than drift. Empty when nothing was filtered by version.'),
             'domains' => Schema::listOf(Schema::string(), 'Hints outside these domains are not returned.'),
@@ -70,12 +70,10 @@ final class ArchitectureLookup extends ReadOnlyTool
         $target = Versions::target($stated);
         $targets = Versions::targets($stated);
 
-        // The hints transfer — a DataHandler or Fluid convention is the same
-        // one outside the core — but the checks attached to them are all
-        // runTests.sh invocations, and that script lives in the core
-        // repository. So the hints stay and the commands go. Paths of different
-        // scope are asked separately: matched together, an extension path
-        // gets the core path's hints and its checks with them.
+        // Paths of different scope are asked separately, so a statement that
+        // declares whose it is can be labelled against the paths it was matched
+        // for. Matched together, an extension path would be answered under the
+        // core path's scope.
         $scopes = Scope::ofEach($paths, $task ?? '');
         $groups = Scope::groups($paths, $scopes, $task ?? '');
         $outside = Scope::pathsOf($scopes, Scope::Project, Scope::Extension);
@@ -84,23 +82,17 @@ final class ArchitectureLookup extends ReadOnlyTool
         $found = [];
         foreach ($groups as $group) {
             $matched = ArchitectureHints::find($group['paths'], $task ?? '', $limit, $id, $targets);
-            if ($group['scope']->isOutsideTheCore()) {
-                $matched['matchedHints'] = ArchitectureHints::withoutChecks($matched['matchedHints']);
-            }
             $found[] = ['scope' => $group['scope'], 'paths' => $group['paths'], 'result' => $matched];
         }
         $result = Hints::merged($found);
 
         $lines = [];
         if ($outsideCore) {
-            $lines[] = Scope::OUTSIDE_CORE_NOTICE . ' The hints below are conventions that may transfer; the '
-                . 'checks that normally come with them are left out, because Build/Scripts/runTests.sh is part '
-                . 'of the core repository and does not exist here. typo3_server_scope states the boundary.';
+            $lines[] = Scope::OUTSIDE_CORE_NOTICE . ' The hints below are conventions that may transfer. '
+                . 'typo3_server_scope states the boundary.';
             $lines[] = '';
         } elseif ($outside !== []) {
-            $lines[] = Scope::outsideCoreAmong($outside)
-                . ' The conventions matched there transfer; the checks that normally come with them are left out, '
-                . 'because Build/Scripts/runTests.sh is part of the core repository.';
+            $lines[] = Scope::outsideCoreAmong($outside) . ' The conventions matched there transfer.';
             $lines[] = '';
         }
         if (Scope::pathsOf($scopes, Scope::Uncertain) !== []) {

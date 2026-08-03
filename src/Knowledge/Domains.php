@@ -68,6 +68,10 @@ final class Domains
             'unit test', 'functional test', 'test coverage', 'test suite',
             'automated test', 'set up tests', 'write tests',
             'backend module', 'module registration', 'backend route',
+            // Three subjects that are PHP work and were reachable only while
+            // their hints sat in the always-selected bucket: the icon registry,
+            // and what an upgrade or a deprecation costs (`D-KNW-033`).
+            'icon', 'icons', 'upgrade', 'deprecated api',
         ],
         self::TYPESCRIPT => [
             'typescript', 'javascript', 'web component', 'custom element', 'lit',
@@ -100,11 +104,13 @@ final class Domains
             'f:',
             'fluid', 'viewhelper', 'view helper', 'partial', 'pageview',
             'page template', 'frontend template', 'content area', 'page layout',
+            'backend layout',
             'sitepackage', 'site package', 'content element',
             'menu', 'navigation',
         ],
         self::TYPOSCRIPT => [
             'typoscript', 'tsconfig', 'site set', 'sitesets', 'settings definition',
+            'backend layout',
             'constants.typoscript', 'setup.typoscript',
             'sitepackage', 'site package', 'content element',
             'menu', 'navigation',
@@ -114,6 +120,10 @@ final class Domains
         ],
         self::XLIFF => [
             'xlf', 'xliff', 'label', 'translation', 'locallang', 'wording',
+            // What somebody calls the file before they know what is in it, and
+            // the verb they use for the work: `translation` did not match
+            // "translate", which is how SKILL-04 asks for it.
+            'language file', 'language files', 'translate', 'translated',
         ],
     ];
 
@@ -388,6 +398,16 @@ final class Domains
         }
         if (in_array(self::CSS, $domains, true)) {
             $selected[] = self::CSS;
+        }
+        // The two that were detected and had nowhere to go. A label question was
+        // answered from `any` because no hint could say it is about XLIFF, and
+        // the same for a changelog — which is what kept `general.json` holding
+        // the subjects it did (`D-KNW-033`).
+        if (in_array(self::XLIFF, $domains, true)) {
+            $selected[] = self::XLIFF;
+        }
+        if (in_array(self::DOCS, $domains, true)) {
+            $selected[] = self::DOCS;
         }
 
         return $selected;

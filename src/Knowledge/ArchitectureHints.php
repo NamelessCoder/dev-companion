@@ -52,6 +52,8 @@ final class ArchitectureHints
         Domains::TYPESCRIPT => self::CATEGORY_TYPESCRIPT,
         Domains::JAVASCRIPT => 'JavaScript',
         Domains::CSS => self::CATEGORY_CSS,
+        Domains::XLIFF => 'Labels',
+        Domains::DOCS => 'Documentation',
         Domains::ANY => 'General',
     ];
 
@@ -321,19 +323,31 @@ final class ArchitectureHints
         // are withheld rather than applied. A missing answer sends the caller
         // to the frontend documentation; an inverted one sends them to rewrite
         // a working theme against the backend's tokens.
+        //
+        // What is withheld is a hint whose domains are those two and nothing
+        // else, because that is what makes it the backend's design system.
+        // Building a sitepackage's assets and scanning a site for contrast are
+        // asked in the same words and are not that hint; they say so by
+        // carrying a third domain (`D-KNW-033`).
+        $backendUi = [Domains::CSS, Domains::TYPESCRIPT];
         $withheld = [];
-        if (Domains::namesTheFrontend($paths, $task)) {
-            $withheldDomains = array_values(array_intersect(
-                $selected,
-                [Domains::CSS, Domains::TYPESCRIPT],
-            ));
-            $selected = array_values(array_diff($selected, $withheldDomains));
-            $withheld = array_map(self::label(...), $withheldDomains);
+        $withholding = Domains::namesTheFrontend($paths, $task);
+        if ($withholding) {
+            $withheld = array_map(
+                self::label(...),
+                array_values(array_intersect($selected, $backendUi)),
+            );
         }
 
         $candidates = array_values(array_filter(
             self::load($target),
-            static fn(array $hint): bool => array_intersect($hint['domains'], $selected) !== [],
+            static function (array $hint) use ($selected, $withholding, $backendUi): bool {
+                if ($withholding && array_diff($hint['domains'], $backendUi) === []) {
+                    return false;
+                }
+
+                return array_intersect($hint['domains'], $selected) !== [];
+            },
         ));
         if ($backendOnly) {
             // "sitepackage" is ownership context and "records" are what a

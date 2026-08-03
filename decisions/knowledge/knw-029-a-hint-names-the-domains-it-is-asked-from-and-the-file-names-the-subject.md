@@ -94,3 +94,11 @@ that moves that number — `sitepackage-layout` losing 450 words did not stop it
 outranking `project-extension-tests` for "Set up tests for our site package
 extension", because being selected by every query is not a property of its
 length.
+
+## Since then
+
+The third step is done on the same day: `D-KNW-033` names the domains each of
+the 38 `any` hints is really asked from, and the share is 0 of 120. What kept
+being deferred was a behaviour change, and it turned out to be three answers of
+41 — one of which is a commit-message review no longer being handed the frontend
+records hint.

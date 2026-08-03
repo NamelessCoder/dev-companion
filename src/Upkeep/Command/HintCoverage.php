@@ -16,12 +16,12 @@ use Typo3CmsMcp\Upkeep\Scenarios;
  * Three numbers nobody otherwise knows: hints that their own title does not
  * reach, hints no scenario prompt reaches, and scenario prompts that reach
  * nothing. Then two the corpus can grow into rather than out of — what the
- * always-selected category supplies, and the body lengths against the matcher's
+ * always-selected domain supplies, and the body lengths against the matcher's
  * dilution reference. Only the last one fails.
  */
 #[AsCommand(
     name: 'hints:coverage',
-    description: 'the hints no title and no scenario prompt reaches, what General supplies, and the body lengths',
+    description: 'the hints no title and no scenario prompt reaches, what `any` supplies, and the body lengths',
 )]
 final class HintCoverage
 {
@@ -91,13 +91,11 @@ final class HintCoverage
         $output->writeln(sprintf('Hints no scenario prompt reaches (%d of %d)', count($never), count($hints)));
         $output->writeln($never === [] ? '  none' : '  ' . implode("\n  ", $never));
 
-        // What D-KNW-001's second half asks for. General is the one category no
-        // query has to earn, so a hint filed there is reachable from every task
-        // there is — and the entries that go in are the ones that cross the
-        // domains, which is also what makes them long. The share is the number
-        // that says how far that has gone; the failure state it walks towards
-        // is every answer being made of it, so nothing fails on it here and the
-        // decision is where the reading belongs.
+        // What D-KNW-001's second half asks for. `any` is the one domain no
+        // query has to earn, so a hint tagged with it is reachable from every
+        // task there is. `D-KNW-033` took the share to nothing by naming the
+        // domains each of those hints is really asked from; what this reports
+        // is whether it comes back, and the number to watch is the growth.
         $answers = 0;
         $fromGeneral = 0;
         $onlyGeneral = 0;
@@ -120,9 +118,9 @@ final class HintCoverage
         ));
         $output->writeln('');
         $output->writeln(sprintf(
-            "What the always-selected category supplies, over the scenario prompts\n"
-            . "  General holds %d of %d hints and supplies %d of %d matched (%.0f%%)\n"
-            . '  %d of %d answers are made of General alone (every answer is what D-KNW-001 called wrong)',
+            "What the always-selected domain supplies, over the scenario prompts\n"
+            . "  `any` is on %d of %d hints and supplies %d of %d matched (%.0f%%)\n"
+            . '  %d of %d answers are made of it alone%s',
             $general,
             count($hints),
             $fromGeneral,
@@ -130,6 +128,7 @@ final class HintCoverage
             $matched > 0 ? 100 * $fromGeneral / $matched : 0.0,
             $onlyGeneral,
             $answers,
+            $onlyGeneral > 0 ? ' (every answer is what D-KNW-001 called wrong)' : '',
         ));
 
         // The tripwire D-ANS-002 asks for. The matcher discounts a term found in a

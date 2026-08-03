@@ -15,7 +15,13 @@
       "assertCSVDataSet",
       "test fixture",
       "dataset",
-      "csv"
+      "csv",
+      "add tests",
+      "write a test",
+      "test the change",
+      "cover the change",
+      "unit test",
+      "functional test"
     ],
     "hints": [
       "A unit test extends TYPO3\\TestingFramework\\Core\\Unit\\UnitTestCase, a functional test TYPO3\\TestingFramework\\Core\\Functional\\FunctionalTestCase. Both are final and mark cases with the #[Test] attribute rather than a test method-name prefix.",

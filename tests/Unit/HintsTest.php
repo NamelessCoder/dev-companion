@@ -446,7 +446,7 @@ final class HintsTest extends TestCase
             ],
             'a word nobody indexed' => ['file upload storage configuration', 'fal-writing'],
             'a backend form' => ['validate a form field in the backend', 'tca-formengine'],
-            'where something goes' => ['where do I put my backend layouts', 'sitepackage-layout'],
+            'where something goes' => ['where do I put my backend layouts', 'sitepackage-backend-layouts'],
             'a stale answer' => ['caching does not invalidate', 'caching'],
             'a menu that is wrong' => ['menu does not show all pages', 'page-variables-and-processors'],
             'a label in the wrong language' => [
@@ -746,7 +746,7 @@ final class HintsTest extends TestCase
 
         $miss = ArchitectureHints::find([], 'how do I write a good sonnet', 6);
         self::assertSame([], $miss['matchedHints']);
-        self::assertContains('language-files', array_column($miss['availableHints'], 'id'));
+        self::assertContains('dependency-injection', array_column($miss['availableHints'], 'id'));
         foreach ($miss['availableHints'] as $entry) {
             self::assertNotSame('', $entry['title']);
             self::assertNotSame('', $entry['category']);
@@ -1344,6 +1344,8 @@ final class HintsTest extends TestCase
             Domains::FLUID,
             Domains::TYPESCRIPT,
             Domains::CSS,
+            Domains::XLIFF,
+            Domains::DOCS,
         ]);
 
         foreach (ArchitectureHints::load() as $hint) {
@@ -1356,6 +1358,31 @@ final class HintsTest extends TestCase
                 );
             }
         }
+    }
+
+    /**
+     * The bucket, as a number rather than as a plan.
+     *
+     * `any` is still a tag a hint may carry — `D-KNW-029` kept it deliberately —
+     * and nothing carries it since `D-KNW-033` named the domains each of the 38
+     * General hints is really asked from. This fails on the first new one, which
+     * is the point: an `any` hint is reachable from every task there is, so it
+     * has to be argued for in a decision rather than reached for when a query
+     * misses.
+     */
+    #[Test]
+    public function nothingIsTaggedAnyWithoutSayingWhy(): void
+    {
+        $tagged = array_values(array_filter(
+            ArchitectureHints::load(),
+            static fn(array $hint): bool => in_array(Domains::ANY, $hint['domains'], true),
+        ));
+
+        self::assertSame(
+            [],
+            array_column($tagged, 'id'),
+            'a hint every query selects is a decision, not a tag chosen while writing it',
+        );
     }
 
     /**
@@ -1867,14 +1894,21 @@ final class HintsTest extends TestCase
         self::assertContains('sitepackage-layout', array_column($result['matchedHints'], 'id'));
     }
 
+    /**
+     * The order the labels are declared in, which is what a reader meets first.
+     * "General" is not among them any more: every hint names the domains it is
+     * asked from since `D-KNW-033`, so nothing is filed under the label that
+     * meant "belongs to more than one and had nowhere to say so".
+     */
     #[Test]
-    public function hintsAreGroupedWithGeneralFirst(): void
+    public function hintsAreGroupedByDomainWithPhpFirst(): void
     {
         $hints = ArchitectureHints::load();
         $categories = array_column(ArchitectureHints::groupByCategory($hints), 'category');
 
         self::assertSame('PHP', $categories[0]);
-        self::assertContains('General', $categories);
+        self::assertNotContains('General', $categories);
+        self::assertContains('Labels', $categories);
     }
 
     #[Test]

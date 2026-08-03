@@ -3,7 +3,7 @@
     "id": "language-files",
     "title": "Language Files",
     "domains": [
-      "any"
+      "xliff"
     ],
     "appliesTo": [
       ".xlf",
@@ -43,7 +43,7 @@
     "id": "translation-domain",
     "title": "Referencing a Label by Its Domain",
     "domains": [
-      "any"
+      "xliff"
     ],
     "appliesTo": [
       "translation domain",
@@ -71,7 +71,7 @@
     "id": "label-retirement",
     "title": "Retiring a Label Instead of Deleting It",
     "domains": [
-      "any"
+      "xliff"
     ],
     "appliesTo": [
       "delete a label",
@@ -98,7 +98,9 @@
     "id": "site-label-language",
     "title": "Core Labels on a Non-English Site",
     "domains": [
-      "any"
+      "xliff",
+      "typoscript",
+      "php"
     ],
     "appliesTo": [
       "site language",
@@ -134,7 +136,8 @@
     "id": "configuration-reach",
     "title": "Configuration Belongs to Its Reach",
     "domains": [
-      "any"
+      "php",
+      "typoscript"
     ],
     "appliesTo": [
       "configuration scope",
@@ -158,7 +161,7 @@
     "id": "environment-variables",
     "title": "What TYPO3 Reads From the Environment",
     "domains": [
-      "any"
+      "php"
     ],
     "appliesTo": [
       "environment variable",
@@ -190,7 +193,7 @@
     "id": "environment-placeholders",
     "title": "%env() in a YAML Configuration",
     "domains": [
-      "any"
+      "php"
     ],
     "appliesTo": [
       "%env(",
@@ -209,7 +212,8 @@
     "id": "environment-runtime-readers",
     "title": "What Reads the Environment While It Runs",
     "domains": [
-      "any"
+      "php",
+      "typoscript"
     ],
     "appliesTo": [
       "TYPO3_DB_HOST",
@@ -229,7 +233,9 @@
     "id": "icon-usage",
     "title": "Rendering and Registering Icons",
     "domains": [
-      "any"
+      "php",
+      "fluid",
+      "typescript"
     ],
     "appliesTo": [
       "icon",
@@ -256,7 +262,8 @@
     "id": "sitepackage-layout",
     "title": "How a Sitepackage Is Laid Out",
     "domains": [
-      "any"
+      "fluid",
+      "typoscript"
     ],
     "appliesTo": [
       "sitepackage",
@@ -282,9 +289,9 @@
   },
   {
     "id": "sitepackage-templates",
-    "title": "The Template Root and What Is Addressed From It",
+    "title": "The Fluid Template Root and What Is Addressed From It",
     "domains": [
-      "any"
+      "fluid"
     ],
     "appliesTo": [
       "Resources/Private/Templates/",
@@ -306,7 +313,8 @@
     "id": "sitepackage-backend-layouts",
     "title": "Where a Page Layout Is Declared",
     "domains": [
-      "any"
+      "typoscript",
+      "fluid"
     ],
     "appliesTo": [
       "Configuration/BackendLayouts/",
@@ -325,9 +333,9 @@
   },
   {
     "id": "sitepackage-typoscript-reference",
-    "title": "Referencing an Object Instead of Copying It",
+    "title": "Referencing a TypoScript Object Instead of Copying It",
     "domains": [
-      "any"
+      "typoscript"
     ],
     "appliesTo": [
       "=<",
@@ -345,7 +353,7 @@
     "id": "project-repository-layout",
     "title": "How a TYPO3 Project Repository Is Laid Out",
     "domains": [
-      "any"
+      "php"
     ],
     "scope": "project",
     "appliesTo": [
@@ -373,7 +381,8 @@
     "id": "project-build-and-scripts",
     "title": "Build/, the Scripts, and What Is Not Deployed",
     "domains": [
-      "any"
+      "php",
+      "typescript"
     ],
     "scope": "project",
     "appliesTo": [
@@ -401,7 +410,7 @@
     "id": "project-configuration-files",
     "title": "What the Installation Is Configured By",
     "domains": [
-      "any"
+      "php"
     ],
     "scope": "project",
     "appliesTo": [
@@ -425,7 +434,7 @@
     "id": "extension-repository-layout",
     "title": "How a Distributed Extension Repository Is Laid Out",
     "domains": [
-      "any"
+      "php"
     ],
     "scope": "extension",
     "appliesTo": [
@@ -453,7 +462,7 @@
     "id": "extension-repository-dependencies",
     "title": "What Such a Repository Commits, and What It Vendors",
     "domains": [
-      "any"
+      "php"
     ],
     "scope": "extension",
     "appliesTo": [
@@ -473,7 +482,7 @@
     "id": "extension-repository-tests",
     "title": "The Instance an Extension Suite Builds Itself",
     "domains": [
-      "any"
+      "php"
     ],
     "scope": "extension",
     "appliesTo": [
@@ -491,7 +500,8 @@
     "id": "form-framework",
     "title": "EXT:form Configuration and Runtime",
     "domains": [
-      "any"
+      "php",
+      "fluid"
     ],
     "appliesTo": [
       "EXT:form",
@@ -528,7 +538,9 @@
     "id": "frontend-records",
     "title": "Records in the Frontend Without Extbase",
     "domains": [
-      "any"
+      "typoscript",
+      "fluid",
+      "php"
     ],
     "appliesTo": [
       "record",
@@ -556,7 +568,8 @@
     "id": "record-routing",
     "title": "Routing a Record Detail View",
     "domains": [
-      "any"
+      "php",
+      "typoscript"
     ],
     "appliesTo": [
       "routing",
@@ -597,7 +610,8 @@
     "id": "record-page-title",
     "title": "The Title of a Record Detail Page",
     "domains": [
-      "any"
+      "php",
+      "fluid"
     ],
     "appliesTo": [
       "page title",
@@ -615,7 +629,9 @@
     "id": "content-elements",
     "title": "Registering a Content Element",
     "domains": [
-      "any"
+      "php",
+      "fluid",
+      "typoscript"
     ],
     "appliesTo": [
       "content element",
@@ -654,7 +670,9 @@
     "id": "content-element-shape",
     "title": "What a Content Element Owns",
     "domains": [
-      "any"
+      "php",
+      "fluid",
+      "typoscript"
     ],
     "appliesTo": [
       "repeatable",
@@ -678,7 +696,9 @@
     "id": "content-element-preview",
     "title": "The Backend Preview of a Content Element",
     "domains": [
-      "any"
+      "fluid",
+      "php",
+      "typoscript"
     ],
     "appliesTo": [
       "backend preview",
@@ -707,9 +727,9 @@
   },
   {
     "id": "preview-record-variable",
-    "title": "What a Preview Template Is Handed",
+    "title": "What a Fluid Preview Template Is Handed",
     "domains": [
-      "any"
+      "fluid"
     ],
     "appliesTo": [
       "record variable",
@@ -744,7 +764,8 @@
     "id": "extension-documentation",
     "title": "Documenting a Project Extension",
     "domains": [
-      "any"
+      "docs",
+      "php"
     ],
     "scope": "extension",
     "appliesTo": [
@@ -767,7 +788,9 @@
     "id": "extension-asset-build",
     "title": "Building Assets in a Project Extension",
     "domains": [
-      "any"
+      "php",
+      "css",
+      "typescript"
     ],
     "scope": "extension",
     "appliesTo": [
@@ -792,7 +815,7 @@
     "id": "documentation-changelog",
     "title": "Documentation and Changelog",
     "domains": [
-      "any"
+      "docs"
     ],
     "scope": "core",
     "appliesTo": [
@@ -822,7 +845,7 @@
     "id": "deprecated-apis",
     "title": "Deprecated APIs",
     "domains": [
-      "any"
+      "php"
     ],
     "appliesTo": [
       "deprecat",
@@ -846,7 +869,9 @@
     "id": "public-assets",
     "title": "Public Assets and the Publish Step",
     "domains": [
-      "any"
+      "php",
+      "css",
+      "typescript"
     ],
     "appliesTo": [
       "Resources/Public/",
@@ -875,7 +900,7 @@
     "id": "installation-upgrade",
     "title": "Upgrading an Installation",
     "domains": [
-      "any"
+      "php"
     ],
     "scope": "project",
     "appliesTo": [
@@ -915,7 +940,7 @@
     "id": "upgrade-own-code",
     "title": "What No Wizard Touches",
     "domains": [
-      "any"
+      "php"
     ],
     "scope": "project",
     "appliesTo": [
@@ -934,7 +959,8 @@
     "id": "browser-tests",
     "title": "Browser Tests with Playwright",
     "domains": [
-      "any"
+      "php",
+      "typescript"
     ],
     "appliesTo": [
       "playwright",
@@ -965,9 +991,10 @@
   },
   {
     "id": "browser-test-accessibility",
-    "title": "Checking Accessibility From the Same Spec",
+    "title": "Checking Accessibility and Contrast From the Same Spec",
     "domains": [
-      "any"
+      "php",
+      "css"
     ],
     "appliesTo": [
       "accessibility",
@@ -989,7 +1016,8 @@
     "id": "browser-tests-outside-core",
     "title": "The Site a Project Suite Runs Against",
     "domains": [
-      "any"
+      "php",
+      "typescript"
     ],
     "appliesTo": [
       "executeFrontendSubRequest is not a browser test",
@@ -1010,7 +1038,8 @@
     "id": "security-sinks",
     "title": "Following a Value to Its Sink",
     "domains": [
-      "any"
+      "php",
+      "fluid"
     ],
     "appliesTo": [
       "security",

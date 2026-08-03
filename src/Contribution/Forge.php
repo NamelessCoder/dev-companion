@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Typo3CmsMcp\Contribution;
 
 use Typo3CmsMcp\Http\Fetch;
+use Typo3CmsMcp\Http\Recent;
 
 /**
  * The issue tracker a core patch starts from, read over its Redmine API.
@@ -39,6 +40,17 @@ use Typo3CmsMcp\Http\Fetch;
 final class Forge
 {
     public const HOST = 'https://forge.typo3.org';
+
+    /**
+     * Seconds an answered read is held for.
+     *
+     * Longer than the review server's, because nothing the caller does through
+     * this server changes what the tracker says: an issue's status, its target
+     * version and its comments move when somebody else works on them, at the
+     * pace people work. What this is against is a session walking a list of
+     * issues and asking the tracker the same thing a dozen times.
+     */
+    public const HELD_FOR = 300;
 
     /**
      * How many journal entries come back. The decision is usually in the last
@@ -146,6 +158,11 @@ final class Forge
      */
     private function api(string $url, string $key): array
     {
+        $held = Recent::held($url, self::HELD_FOR);
+        if (is_array($held)) {
+            return $held;
+        }
+
         $response = $this->fetch->read($url, ['Accept: application/json']);
         if ($response['body'] === null) {
             return ['status' => $response['status'], 'part' => null, 'cause' => 'source-not-answering'];
@@ -156,11 +173,19 @@ final class Forge
             $part = self::part($this->fetch->read($url, ['Accept: application/json'], Fetch::PLAIN_AGENT)['body'], $key);
         }
 
-        return [
+        $answer = [
             'status' => $response['status'],
             'part' => $part,
             'cause' => $part === null ? 'source-not-parseable' : null,
         ];
+        // Only what the tracker actually answered. A 404 for an issue nobody
+        // has filed yet and a body the protection replaced are both states of
+        // this minute, and holding either turns one bad minute into five.
+        if ($part !== null) {
+            Recent::hold($url, $answer);
+        }
+
+        return $answer;
     }
 
     /**

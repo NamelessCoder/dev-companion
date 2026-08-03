@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Typo3CmsMcp\Contribution;
 
 use Typo3CmsMcp\Http\Fetch;
+use Typo3CmsMcp\Http\Recent;
 
 /**
  * The review server the core's patches live on, read over its REST API.
@@ -23,6 +24,16 @@ use Typo3CmsMcp\Http\Fetch;
 final class Gerrit
 {
     public const HOST = 'https://review.typo3.org';
+
+    /**
+     * Seconds a found change is held for.
+     *
+     * Short, because the caller is the one who changes these answers: it pushes
+     * a patch and asks about it, or amends one and asks which patch set is
+     * current. Long enough that the same question inside one task is asked of
+     * the review server once.
+     */
+    public const HELD_FOR = 30;
 
     private readonly Fetch $fetch;
 
@@ -76,6 +87,11 @@ final class Gerrit
     private function search(string $query, int $limit): array
     {
         $url = self::HOST . '/changes/?q=' . rawurlencode($query) . '&n=' . max(1, min(25, $limit)) . self::CURRENT_REVISION;
+        $held = Recent::held($url, self::HELD_FOR);
+        if (is_array($held)) {
+            return $held;
+        }
+
         $body = $this->fetch->get($url, ['Accept: application/json']);
         if ($body === null) {
             return ['status' => 'unavailable', 'query' => $query, 'changes' => [], 'cause' => 'source-not-answering'];
@@ -93,12 +109,22 @@ final class Gerrit
             }
         }
 
-        return [
+        $answer = [
             'status' => $changes === [] ? 'empty' : 'answered',
             'query' => $query,
             'changes' => $changes,
             'cause' => null,
         ];
+        // Only a change that was found. "No change for this issue" is the
+        // answer the caller can falsify itself by pushing one, and it is the
+        // question asked immediately after a push — so it is fetched every
+        // time, and a stale "there is none" cannot be what sends somebody to
+        // write a patch that exists.
+        if ($answer['status'] === 'answered') {
+            Recent::hold($url, $answer);
+        }
+
+        return $answer;
     }
 
     /**
@@ -133,6 +159,4 @@ final class Gerrit
             'url' => $number > 0 ? self::HOST . '/c/' . ($entry['project'] ?? '') . '/+/' . $number : self::HOST,
         ];
     }
-
-
 }

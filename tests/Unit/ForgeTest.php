@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Typo3CmsMcp\Tests\Unit;
 
+use PHPUnit\Framework\Attributes\After;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Typo3CmsMcp\Contribution\Forge;
+use Typo3CmsMcp\Http\Recent;
 
 /**
  * The tracker is somebody else's host, so what is held here is what this side
@@ -17,6 +19,12 @@ use Typo3CmsMcp\Contribution\Forge;
  */
 final class ForgeTest extends TestCase
 {
+    #[After]
+    public function forgetWhatWasHeld(): void
+    {
+        Recent::forget();
+    }
+
     /**
      * A search answer as the tracker sends it, in the shape measured on
      * 2026-08-03: the hits, then the envelope saying how many there were.

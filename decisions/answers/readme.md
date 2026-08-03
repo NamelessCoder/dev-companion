@@ -8,6 +8,7 @@ See [the decisions readme](../readme.md) for how an entry is written and when
 one is added.
 
 - [`D-ANS-048`][D-ANS-048] — A tool declares what can answer it, and both readers render that · 2026-08-04
+- [`D-ANS-049`][D-ANS-049] — An answer from outside is held where the caller cannot change it · 2026-08-04
 - [`D-ANS-033`][D-ANS-033] — The review server is read anonymously, and the answer says what that leaves out · 2026-08-03 · confirmed
 - [`D-ANS-034`][D-ANS-034] — A source outside this package answers JSON, or it did not answer · 2026-08-03
 - [`D-ANS-035`][D-ANS-035] — The matcher entry is owed to what the changelog tag claims · 2026-08-03 · confirmed
@@ -53,6 +54,7 @@ one is added.
 - [`D-ANS-003`][D-ANS-003] — Retrieval stays lexical and runtime inspection stays narrow · 2026-07-30 · confirmed
 
 [D-ANS-048]: ans-048-a-tool-declares-what-can-answer-it-and-both-readers-render-that.md
+[D-ANS-049]: ans-049-an-answer-from-outside-is-held-where-the-caller-cannot-change-it.md
 [D-ANS-033]: ans-033-the-review-server-is-read-anonymously-and-the-answer-says-what-that-leaves-out.md
 [D-ANS-034]: ans-034-a-source-outside-this-package-answers-json-or-it-did-not-answer.md
 [D-ANS-035]: ans-035-the-matcher-entry-is-owed-to-what-the-changelog-tag-claims.md

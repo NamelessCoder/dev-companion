@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Typo3CmsMcp\Tests\Unit;
 
+use PHPUnit\Framework\Attributes\After;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Typo3CmsMcp\Contribution\Gerrit;
+use Typo3CmsMcp\Http\Recent;
 
 /**
  * The review server is somebody else's host, so what is held here is everything
@@ -17,6 +19,12 @@ use Typo3CmsMcp\Contribution\Gerrit;
  */
 final class GerritTest extends TestCase
 {
+    #[After]
+    public function forgetWhatWasHeld(): void
+    {
+        Recent::forget();
+    }
+
     /**
      * A response as the API sends it: the XSSI prefix, then the array. The two
      * revision fields are what `o=CURRENT_REVISION` adds, in the shape

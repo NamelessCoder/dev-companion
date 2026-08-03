@@ -1,7 +1,8 @@
 ---
 date: 2026-08-03T16:28:36+00:00
 category: missing-knowledge
-status: open
+status: closed
+closed: 2026-08-03
 model: claude-opus-5[1m]
 tool: typo3_task_guide, typo3_configuration_lookup
 directory: /home/benji/projects/ext-guidedtour

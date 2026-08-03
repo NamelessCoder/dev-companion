@@ -1742,6 +1742,40 @@ final class HintsTest extends TestCase
     }
 
     /**
+     * The corpus said only the root page id is remapped on import, which holds
+     * for a configuration shipped in `Initialisation/Site/` and not for one
+     * carried inside the export file: `Import::processSiteConfigurations()`
+     * overwrites `base` as well, so a seeded distribution answers 404 at the
+     * project root — `D-KNW-048`.
+     */
+    #[Test]
+    public function theImportAnswerSaysWhatItRewritesInASiteConfiguration(): void
+    {
+        $reached = array_column(
+            Hints::find([], 'imported site base url 404 root', 6)['matchedHints'],
+            'id',
+        );
+        self::assertContains('initial-content-references', $reached);
+
+        $text = implode("\n", array_column(Hints::byId('initial-content-references')['hints'], 'text'));
+
+        self::assertStringContainsString('overwrites base with /<identifier>/', $text);
+        self::assertStringContainsString('config/sites/<identifier>/config.yaml', $text, 'where it is corrected');
+        // The two conditions under which the method does not run, both of which
+        // read like the cause of a base nobody shipped.
+        self::assertStringContainsString('not an admin', $text);
+        self::assertStringContainsString('ImportSiteConfigurationsOnPackageInitialization', $text);
+
+        // The two statements that say only rootPageId is remapped now name the
+        // route they hold for.
+        self::assertStringContainsString('The Initialisation/Site/ route remaps the root page id', $text);
+
+        $routing = implode("\n", array_column(Hints::byId('record-routing')['hints'], 'text'));
+
+        self::assertStringContainsString('shipped in Initialisation/Site/ only rootPageId is remapped', $routing);
+    }
+
+    /**
      * The tag is the selector, so a domain nobody selects by is a hint nobody
      * reaches — and it fails silently, because an unknown tag reads exactly like
      * a narrow one. `Domains::hintDomains()` is the whole vocabulary there is.

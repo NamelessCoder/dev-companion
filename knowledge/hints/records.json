@@ -66,7 +66,7 @@
         "since": 14
       },
       {
-        "text": "limitToPages takes an Expression Language string as well as a page uid, evaluated with page, site and siteLanguage — so an enhancer can be bound to every page of one backend layout instead of to a uid. That is what makes routing shippable at all: a set is installed into installations whose page ids nobody knows in advance, and of a site configuration shipped with an extension only rootPageId is remapped on import.",
+        "text": "limitToPages takes an Expression Language string as well as a page uid, evaluated with page, site and siteLanguage — so an enhancer can be bound to every page of one backend layout instead of to a uid. That is what makes routing shippable at all: a set is installed into installations whose page ids nobody knows in advance, and of a site configuration shipped in Initialisation/Site/ only rootPageId is remapped on import.",
         "since": 14
       }
     ]

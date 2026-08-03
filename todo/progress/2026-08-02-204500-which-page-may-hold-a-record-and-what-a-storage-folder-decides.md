@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-01-003927-no-understanding-of-pid-storage-semantics.md
 **Priority:** low
+**Branch:** todo/which-page-may-hold-a-record-and-what-a-storage-folder-decides
+**Claimed:** 2026-08-03
 
 Step 1a of the ladder, on the evidence in
 [`D-KNW-023`](../../decisions/knowledge/knw-023-which-page-may-hold-a-record-is-a-gap-this-server-owns.md):

@@ -2,6 +2,8 @@
 
 **Serves:** R-SKL-011
 **Priority:** low
+**Branch:** todo/decide-whether-a-conformance-audit-records-what-it-dropped
+**Claimed:** 2026-08-03
 
 `D-SKL-007` gave the core patch review a dropped-candidate section and scoped
 itself to that skill deliberately. The conformance checklist already carries two

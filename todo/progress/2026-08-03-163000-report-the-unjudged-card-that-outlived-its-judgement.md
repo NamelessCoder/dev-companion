@@ -2,6 +2,8 @@
 
 **Serves:** todo/
 **Priority:** normal
+**Branch:** todo/report-the-unjudged-card-that-outlived-its-judgement
+**Claimed:** 2026-08-03
 
 The second half of
 [`D-FBK-040`](../../decisions/feedback/fbk-040-the-card-a-judgement-folds-into-another-is-deleted-by-the-same-commit.md),

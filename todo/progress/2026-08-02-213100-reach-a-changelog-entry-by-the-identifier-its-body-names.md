@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-01-115112-during-the-same-review-i-wanted-to-confirm-no.md
 **Priority:** low
+**Branch:** todo/reach-a-changelog-entry-by-the-identifier-its-body-names
+**Claimed:** 2026-08-03
 
 Judged as
 [`D-ANS-030`](../../decisions/answers/ans-030-the-changelog-matcher-runs-over-the-title-it-prints.md),

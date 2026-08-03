@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-01-003933-did-not-read-the-source-code-when-it-could-not.md
 **Priority:** low
+**Branch:** todo/name-the-step-a-building-task-takes-when-the-lookups-run-out
+**Claimed:** 2026-08-03
 
 Step 4 of the ladder, on the evidence in
 [`D-SKL-004`](../../decisions/task-skills/skl-004-what-a-task-does-when-the-lookups-run-out-is-written-for-a-review.md):

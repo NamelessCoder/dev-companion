@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-01-003937-cache-clearing-was-done-by-deleting-files-rm-on.md
 **Priority:** low
+**Branch:** todo/which-caches-a-change-invalidates-and-what-clears-them
+**Claimed:** 2026-08-03
 
 Step 1a of the ladder, on the evidence in
 [`D-KNW-027`](../../decisions/knowledge/knw-027-which-caches-a-change-invalidates-is-a-gap-this-server-owns.md):

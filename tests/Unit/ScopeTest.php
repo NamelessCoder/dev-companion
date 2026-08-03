@@ -729,6 +729,51 @@ final class ScopeTest extends TestCase
     }
 
     /**
+     * Denials that are false about this server, in the words they were written
+     * in.
+     *
+     * The half that reads the installation is what makes each of them false —
+     * `typo3_project_scope` answers `kind: core-checkout` for a core checkout
+     * and reads the commands out of its `composer.json`, and
+     * `typo3_schema_lookup` answers a table as the container assembles it.
+     *
+     * @var array<string, string>
+     */
+    private const NOT_TRUE_OF_THIS_SERVER = [
+        'never reads' => 'the installation half reads the directory it was started in',
+        'cannot be pointed at' => 'typo3_project_scope is pointed at one and answers what kind it is',
+        'answers from its own bundled knowledge and never' => 'two of the four sources are outside this package',
+        'no index of it is bundled' => '',
+    ];
+
+    /**
+     * A boundary is a statement about this server, and a false one is worse
+     * than a thin answer: a caller reads it and stops asking.
+     *
+     * The first `doesNotCover` entry told every client this server "never
+     * reads, inspects, or runs anything against a TYPO3 core checkout. It
+     * cannot be pointed at one." Started in a core checkout,
+     * `typo3_project_scope` answers with its kind, its TYPO3 version, its PHP
+     * constraint and the commands it declares. The topic was the only field
+     * anything read, and the sentence was in the `why`.
+     */
+    #[Test]
+    public function noExclusionDeniesASourceTheServerReads(): void
+    {
+        $denied = [];
+        foreach (Coverage::read()['doesNotCover'] as $entry) {
+            $written = mb_strtolower(implode(' ', array_filter($entry, is_string(...))));
+            foreach (self::NOT_TRUE_OF_THIS_SERVER as $claim => $why) {
+                if ($why !== '' && str_contains($written, $claim)) {
+                    $denied[] = sprintf('"%s" — %s: %s', $entry['topic'], $claim, $why);
+                }
+            }
+        }
+
+        self::assertSame([], $denied, 'a boundary denies something this server does');
+    }
+
+    /**
      * How the claim reads when it names who it turns away: something is put
      * beyond this server, and what it names is one of the audiences below.
      *

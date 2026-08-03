@@ -23,3 +23,4 @@ signal that cost confidence rather than time (2026-07-29).
 ## Held by
 
 - `ScopeTest::whatTheScopeExcludesIsNotWhatTheServerAnswers`
+- `ScopeTest::noExclusionDeniesASourceTheServerReads`

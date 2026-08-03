@@ -62,6 +62,7 @@ and not a defect.
 - [`D-FBK-025`][D-FBK-025] — A judgement reads the corpus, decides the shape, and sets the priority · 2026-08-03
 - [`D-FBK-026`][D-FBK-026] — The ladder needs an outcome that builds something · 2026-08-03
 - [`D-FBK-027`][D-FBK-027] — The server builds what costs its caller round trips · 2026-08-03
+- [`D-FBK-037`][D-FBK-037] — API stability is worth a lookup and git state is not · 2026-08-03
 - [`D-KNW-029`][D-KNW-029] — A hint names the domains it is asked from, and the file names the subject · 2026-08-03
 - [`D-KNW-030`][D-KNW-030] — A hint is one question, and the DataHandler family is six of them · 2026-08-03
 - [`D-KNW-031`][D-KNW-031] — A suite is a property of the domain, not of the hint · 2026-08-03
@@ -197,6 +198,7 @@ and not a defect.
 [D-FBK-025]: feedback/fbk-025-a-judgement-reads-the-corpus-decides-the-shape-and-sets-the-priority.md
 [D-FBK-026]: feedback/fbk-026-the-ladder-needs-an-outcome-that-builds-something.md
 [D-FBK-027]: feedback/fbk-027-the-server-builds-what-costs-its-caller-round-trips.md
+[D-FBK-037]: feedback/fbk-037-api-stability-is-worth-a-lookup-and-git-state-is-not.md
 [D-KNW-029]: knowledge/knw-029-a-hint-names-the-domains-it-is-asked-from-and-the-file-names-the-subject.md
 [D-KNW-030]: knowledge/knw-030-a-hint-is-one-question-and-the-datahandler-family-is-six.md
 [D-KNW-031]: knowledge/knw-031-a-suite-is-a-property-of-the-domain-not-of-the-hint.md

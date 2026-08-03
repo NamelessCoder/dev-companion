@@ -1,6 +1,6 @@
 ---
 id: R-KNW-060
-status: open
+status: held
 restsOn: [D-KNW-049]
 ---
 
@@ -16,7 +16,8 @@ processing, the mail transport and the `SYS` block as well, and the trusted
 hosts pattern in that block is what an installation stops answering without. An
 installation whose connection comes from somewhere else — SQLite, a database
 container that was omitted — is the case the generator has no variant for, so
-the answer says which of the two ways out is the only one left there.
+the answer says that leaving the file generated is not among the ways out there,
+and which of the two that are keeps the sections DDEV had right.
 
 ## From
 
@@ -29,4 +30,4 @@ been told about.
 
 ## Held by
 
-- Not guarded. Nothing asserts what the corpus says the generated file contains.
+- `HintsTest::theDdevSettingsAnswerNamesEverySectionItGeneratesAndTheDatabaseItAssumes`

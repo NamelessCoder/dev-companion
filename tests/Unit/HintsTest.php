@@ -1189,6 +1189,43 @@ final class HintsTest extends TestCase
         self::assertStringContainsString('never commit production secrets', $text);
     }
 
+    /**
+     * The corpus named the database settings alone, which made the two ways out
+     * of the generated file look interchangeable: a session took the file over,
+     * wrote that half back, and the installation answered every request with
+     * exception 1396795884 for the trusted hosts pattern nobody had named —
+     * `R-KNW-060`.
+     *
+     * The database-less half is the same omission read the other way. DDEV's
+     * generator writes the DB block unconditionally, so an installation whose
+     * connection comes from somewhere else has to take the file over.
+     */
+    #[Test]
+    public function theDdevSettingsAnswerNamesEverySectionItGeneratesAndTheDatabaseItAssumes(): void
+    {
+        $result = Hints::find(
+            [],
+            'DDEV writes driver mysqli and host db into additional.php although the project runs on SQLite '
+            . 'with omit_containers: [db]',
+            6,
+        );
+        self::assertSame('project-configuration-files', $result['matchedHints'][0]['id']);
+
+        $text = self::statementsOf('project-configuration-files');
+        self::assertStringContainsString('DB for its own database container', $text);
+        self::assertStringContainsString('GFX for the ImageMagick in that container', $text);
+        self::assertStringContainsString('MAIL for its mail catcher', $text);
+        self::assertStringContainsString('SYS with trustedHostsPattern, devIPmask and displayErrors', $text);
+        self::assertStringContainsString('supplying the three non-database sections', $text);
+        self::assertStringContainsString('drops the trusted hosts pattern', $text);
+
+        // What the generator cannot configure, and the one route left where it
+        // cannot: the DB block merges over what settings.php carries.
+        self::assertStringContainsString('no variant that reads the driver', $text);
+        self::assertStringContainsString('omit_containers: [db] cannot leave the file generated', $text);
+        self::assertStringContainsString('drop the DB section, keep GFX, MAIL and SYS', $text);
+    }
+
     #[Test]
     public function whereAOneOffScriptMayNotGoNamesTheDocumentRootAsWellAsVar(): void
     {

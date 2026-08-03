@@ -1,7 +1,7 @@
 ---
 id: D-KNW-049
 date: 2026-08-03
-status: open
+status: confirmed
 ---
 
 # D-KNW-049 — What DDEV writes into the settings is named in full, and so is what it cannot configure
@@ -103,3 +103,29 @@ the ladder, on a hint that already exists, and it is queued as
   `config/system/`. The answer would have to arrive from the question of what
   the environment declares, which is the route `feedback/2026-08-03-154501`
   describes.
+
+## Covered by
+
+- `HintsTest::theDdevSettingsAnswerNamesEverySectionItGeneratesAndTheDatabaseItAssumes`
+
+## Confirmed on 2026-08-03
+
+Read in DDEV v1.25.1 itself, which is what the first and third **Wrong if**
+asked for: the template `pkg/ddevapp/typo3/AdditionalConfiguration.php` and the
+`createTypo3SettingsFile` and `writeTypo3SettingsFile` beside it, at the tag and
+in the binary installed on this machine. The `DB` block carries no condition.
+`DBHostname` is the literal `db`, `DBDriver` is `mysqli` unless the project's
+database type is Postgres, and `GetInternalPort` answers the constant 3306 or
+5432. Nothing on that path reads `omit_containers` or the driver the
+installation was set up with, and the only thing that stops the file being
+written at all is `disable_settings_management`. So DDEV does write the `DB`
+section for a database-less project, as the reporting session described, and the
+one generated file read for the entry was the template rather than a sample of
+it.
+
+One thing the rewrite states differently from `R-KNW-060` as it was queued. Both
+ways out end the collision — a file without the marker and a project with
+`disable_settings_management` are both left alone — so what the statement says
+is which of the two keeps `GFX`, `MAIL` and `SYS` as DDEV already wrote them,
+rather than that one of them is the only one left. The requirement was corrected
+to that in the same commit.

@@ -234,6 +234,15 @@ what was settled. The rest is a report, since a long sentence can be the right
 one and a rewrite driven by a counter produces two short sentences saying what
 one said.
 
+`bin/cli prose:format <path>` is the other half and rewrites rather than reports:
+the markdown this repository writes about itself, rewrapped at the column it is
+already written at. What it is for is the paragraph a rename left ragged — a word
+swept out of a hundred files leaves a hundred short lines behind it. It moves the
+line breaks and nothing else, which `ProseTest` asserts over the whole corpus
+rather than trusts, and it leaves alone everything a break means something in:
+the front matter, a fence, a table, a code span, a link. Named no path it
+rewraps the corpus, which is a diff to look at before it is a diff to make.
+
 ## Tool names
 
 Every tool is named `typo3_<subject>_<verb>`. The prefix never varies, the

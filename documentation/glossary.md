@@ -2,15 +2,14 @@
 
 - **answer** — what became of a feedback: the change, and the commit that made
   it.
-- **archive** — to move a feedback to `feedback/archive/` once it has an
-  answer.
+- **archive** — to move a feedback to `feedback/archive/` once it has an answer.
 - **catalog** — the component catalog in `knowledge/catalog/`.
 - **checkout** — one TYPO3 core worktree below `.checkouts/`, this repository's
   own, created by `bin/cli checkouts:update`.
 - **contract case** — a targeted scenario in `scenarios/contracts/`, naming one
   task shape.
-- **decision** — what a change rested on, and what would show it wrong: one
-  file in `decisions/`.
+- **decision** — what a change rested on, and what would show it wrong: one file
+  in `decisions/`.
 - **a feedback** — one report about this server, written by a session working
   somewhere else. Countable here: one report, one file, one subject.
 - **the feedback channel** — `feedback/`, where feedback arrives and waits.
@@ -23,8 +22,8 @@
   are read from it rather than bundled.
 - **judge** — to work out what should become of one open feedback, on evidence.
 - **knowledge** — everything below `knowledge/`: what the tools answer from.
-- **record** — the verb a feedback comes into being by, and one of the five
-  tool verbs.
+- **record** — the verb a feedback comes into being by, and one of the five tool
+  verbs.
 - **requirement** — what must be true from now on, and what holds it there: one
   file in `requirements/`.
 - **result** — what a tool hands back: the text and the same answer as data.

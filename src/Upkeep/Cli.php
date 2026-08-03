@@ -24,6 +24,7 @@ use Typo3CmsMcp\Upkeep\Command\HintProbe;
 use Typo3CmsMcp\Upkeep\Command\KnowledgeFormat;
 use Typo3CmsMcp\Upkeep\Command\LinkCheck;
 use Typo3CmsMcp\Upkeep\Command\ProseCheck;
+use Typo3CmsMcp\Upkeep\Command\ProseFormat;
 use Typo3CmsMcp\Upkeep\Command\RepositoryCheck;
 use Typo3CmsMcp\Upkeep\Command\RequirementCheck;
 use Typo3CmsMcp\Upkeep\Command\RequirementIndex;
@@ -109,6 +110,7 @@ final class Cli
         $application->addCommand(new TodoCheck());
         $application->addCommand(new TodoSync());
         $application->addCommand(new ProseCheck());
+        $application->addCommand(new ProseFormat());
         $application->addCommand(new LinkCheck());
         $application->addCommand(new FeedbackList());
         $application->addCommand(new FeedbackArchive());

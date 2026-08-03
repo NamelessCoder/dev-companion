@@ -18,10 +18,11 @@ one is added.
 - [`D-KNW-037`][D-KNW-037] — A content-element preview draws the element's own payload, and the corpus names the fields · 2026-08-03
 - [`D-KNW-038`][D-KNW-038] — A hint is reached by the role of a file rather than by the extension it sits in · 2026-08-03
 - [`D-KNW-039`][D-KNW-039] — The type a changelog entry owes is stated in prose and the skeleton stays a hint · 2026-08-03
-- [`D-KNW-040`][D-KNW-040] — What asserts a rendered output is a gap this server owns · 2026-08-03
 - [`D-KNW-041`][D-KNW-041] — The checkout a suite is started in supplies its own dependencies · 2026-08-03
 - [`D-KNW-042`][D-KNW-042] — What the image pipeline does below the task layer is a gap this server owns · 2026-08-03
 - [`D-KNW-043`][D-KNW-043] — A rule about what an API may be used for carries the strength of the claim and the source it was read from · 2026-08-03
+- [`D-KNW-044`][D-KNW-044] — One search over the whole Tests/ tree finds what asserts a rendered output · 2026-08-03
+- [`D-KNW-045`][D-KNW-045] — The document root is named by what configures it and by what serves it · 2026-08-03
 - [`D-KNW-005`][D-KNW-005] — One `Scope` replaced the four vocabularies · 2026-08-02
 - [`D-KNW-006`][D-KNW-006] — A word for a thing administered from the backend adds no domain to a backend-only task · 2026-08-02
 - [`D-KNW-007`][D-KNW-007] — A hint says whose it is in both directions · 2026-08-02
@@ -56,10 +57,11 @@ one is added.
 [D-KNW-037]: knw-037-a-content-element-preview-draws-the-elements-own-payload-and-the-corpus-names-the-fields.md
 [D-KNW-038]: knw-038-a-hint-is-reached-by-the-role-of-a-file-rather-than-by-the-extension-it-sits-in.md
 [D-KNW-039]: knw-039-the-type-a-changelog-entry-owes-is-stated-in-prose-and-the-skeleton-stays-a-hint.md
-[D-KNW-040]: knw-040-what-asserts-a-rendered-output-is-a-gap-this-server-owns.md
 [D-KNW-041]: knw-041-the-checkout-a-suite-is-started-in-supplies-its-own-dependencies.md
 [D-KNW-042]: knw-042-what-the-image-pipeline-does-below-the-task-layer-is-a-gap-this-server-owns.md
 [D-KNW-043]: knw-043-a-rule-about-what-an-api-may-be-used-for-carries-its-strength-and-its-source.md
+[D-KNW-044]: knw-044-one-search-over-the-whole-tests-tree-finds-what-asserts-a-rendered-output.md
+[D-KNW-045]: knw-045-the-document-root-is-named-by-what-configures-it-and-by-what-serves-it.md
 [D-KNW-005]: knw-005-one-scope-replaced-the-four-vocabularies.md
 [D-KNW-006]: knw-006-a-word-for-a-thing-administered-from-the-backend.md
 [D-KNW-007]: knw-007-a-hint-says-whose-it-is-in-both-directions.md
@@ -85,6 +87,7 @@ one is added.
 
 ### Revoked, and kept as the record
 
+- [`D-KNW-040`][D-KNW-040] — What asserts a rendered output is a gap this server owns · 2026-08-03 → D-KNW-044
 - [`D-KNW-014`][D-KNW-014] — The record variable a v14 preview template is handed is a gap this server owns · 2026-08-02 → D-KNW-020
 - [`D-KNW-015`][D-KNW-015] — The corpus states what a Fluid preview template replaces · 2026-08-02 → D-KNW-021
 - [`D-KNW-025`][D-KNW-025] — What a backend preview owes the editor is a gap this server owns · 2026-08-02 → D-KNW-037
@@ -92,6 +95,7 @@ one is added.
 - [`D-KNW-001`][D-KNW-001] — Sitepackage work is answered from the General category · 2026-07-29
 - [`D-KNW-002`][D-KNW-002] — A hint about typo3/testing-framework is verified against tags, not against the checkouts · 2026-07-29
 
+[D-KNW-040]: knw-040-what-asserts-a-rendered-output-is-a-gap-this-server-owns.md
 [D-KNW-014]: knw-014-the-record-variable-a-v14-preview-template-is-handed-is-a-gap-this-server-owns.md
 [D-KNW-015]: knw-015-the-corpus-states-what-a-fluid-preview-template-replaces.md
 [D-KNW-025]: knw-025-what-a-backend-preview-owes-the-editor-is-a-gap-this-server-owns.md

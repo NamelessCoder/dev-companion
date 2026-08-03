@@ -13,6 +13,8 @@ one is added.
 - [`D-ANS-036`][D-ANS-036] — A query written in Fluid tags is searched in the book that documents them · 2026-08-03
 - [`D-ANS-037`][D-ANS-037] — A compound rule query is owed the section its score prefers, and a miss that names the words · 2026-08-03
 - [`D-ANS-038`][D-ANS-038] — The tracker is searched by words as well as read by number · 2026-08-03
+- [`D-ANS-039`][D-ANS-039] — The Extbase fork is delivered by the content-element intent, and it forks on the request rather than on the category · 2026-08-03
+- [`D-ANS-040`][D-ANS-040] — A boundary guard is asked with a query that clears the coverage floor · 2026-08-03
 - [`D-ANS-005`][D-ANS-005] — A question that is not supported here is answered in a shape of its own · 2026-08-02
 - [`D-ANS-006`][D-ANS-006] — An identifier is found however it is spelled · 2026-08-02
 - [`D-ANS-007`][D-ANS-007] — Two shapes for "not answered", one word for why · 2026-08-02
@@ -34,7 +36,6 @@ one is added.
 - [`D-ANS-024`][D-ANS-024] — A rule reaches only the task that already names its subject · 2026-08-02
 - [`D-ANS-025`][D-ANS-025] — A query a hint carries whole is not diluted out of it · 2026-08-02
 - [`D-ANS-026`][D-ANS-026] — The ViewHelper reference is indexed, and a manual carries the collection it is published in · 2026-08-02
-- [`D-ANS-027`][D-ANS-027] — The Extbase fork is placed where a caller who has not chosen passes · 2026-08-02
 - [`D-ANS-028`][D-ANS-028] — A two-letter query word is searched for, and the stopword list is what keeps the others out · 2026-08-02
 - [`D-ANS-030`][D-ANS-030] — The changelog matcher runs over the title it prints · 2026-08-02
 - [`D-ANS-031`][D-ANS-031] — The core answer names the tool that runs the suites · 2026-08-02
@@ -49,6 +50,8 @@ one is added.
 [D-ANS-036]: ans-036-a-query-written-in-fluid-tags-is-searched-in-the-book-that-documents-them.md
 [D-ANS-037]: ans-037-a-compound-rule-query-is-owed-the-section-its-score-prefers-and-a-miss-that-names-the-words.md
 [D-ANS-038]: ans-038-the-tracker-is-searched-by-words-as-well-as-read-by-number.md
+[D-ANS-039]: ans-039-the-extbase-fork-is-delivered-by-the-task-intent-and-forks-on-the-request.md
+[D-ANS-040]: ans-040-a-boundary-guard-is-asked-with-a-query-that-clears-the-floor.md
 [D-ANS-005]: ans-005-an-unmet-precondition-is-answered-not-raised.md
 [D-ANS-006]: ans-006-an-identifier-is-found-however-it-is-spelled.md
 [D-ANS-007]: ans-007-two-shapes-for-not-answered-and-one-word-for-why.md
@@ -70,7 +73,6 @@ one is added.
 [D-ANS-024]: ans-024-a-rule-reaches-only-the-task-that-already-names-its-subject.md
 [D-ANS-025]: ans-025-a-query-a-hint-carries-whole-is-not-diluted-out-of-it.md
 [D-ANS-026]: ans-026-the-viewhelper-reference-is-indexed-and-a-manual-carries-the-collection-it-is-published-in.md
-[D-ANS-027]: ans-027-the-extbase-fork-is-placed-where-the-undecided-caller-passes.md
 [D-ANS-028]: ans-028-a-two-letter-query-word-is-searched-for-and-the-stopword-list-is-what-keeps-the-others-out.md
 [D-ANS-030]: ans-030-the-changelog-matcher-runs-over-the-title-it-prints.md
 [D-ANS-031]: ans-031-the-core-answer-names-the-tool-that-runs-the-suites.md
@@ -82,9 +84,11 @@ one is added.
 ### Revoked, and kept as the record
 
 - [`D-ANS-023`][D-ANS-023] — A ViewHelper question is answered by widening the manual index · 2026-08-02 → D-ANS-026
+- [`D-ANS-027`][D-ANS-027] — The Extbase fork is placed where a caller who has not chosen passes · 2026-08-02 → D-ANS-039
 - [`D-ANS-029`][D-ANS-029] — The scanner matcher is stated on the route a removal takes · 2026-08-02 → D-ANS-035
 - [`D-ANS-001`][D-ANS-001] — The unanswered result keeps its shape and gains a reason · 2026-07-29 → D-ANS-005
 
 [D-ANS-023]: ans-023-a-viewhelper-question-is-answered-by-widening-the-index.md
+[D-ANS-027]: ans-027-the-extbase-fork-is-placed-where-the-undecided-caller-passes.md
 [D-ANS-029]: ans-029-the-scanner-matcher-is-stated-on-the-route-a-removal-takes.md
 [D-ANS-001]: ans-001-the-unanswered-result-keeps-its-shape-and-gains-a-reason.md

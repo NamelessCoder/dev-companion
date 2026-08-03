@@ -59,7 +59,12 @@ when it is added.
 - [`R-KNW-049`][R-KNW-049] — A check that can pass without reading anything says so · held
 - [`R-KNW-050`][R-KNW-050] — A preview answer names what the preview draws from · held
 - [`R-KNW-051`][R-KNW-051] — A changelog question is told which type the change owes · held
-- [`R-KNW-052`][R-KNW-052] — The suite answer names the install a fresh checkout owes · **open**
+- [`R-KNW-052`][R-KNW-052] — The suite answer names the install a fresh checkout owes · held
+- [`R-KNW-053`][R-KNW-053] — The per-class database answer says what survives the run · held
+- [`R-KNW-054`][R-KNW-054] — Where FAL stops in the image pipeline is answered · held
+- [`R-KNW-055`][R-KNW-055] — A rendered-output change is told where the expectations hide · held
+- [`R-KNW-056`][R-KNW-056] — The placement answer names the document root as a place a script may not go · held
+- [`R-KNW-057`][R-KNW-057] — The push a session cannot take back is answered in full · held
 
 [R-KNW-001]: knw-001-upgrade-wizards-and-dataprocessors-have-hints-of-their-own.md
 [R-KNW-002]: knw-002-a-hint-carries-the-words-its-subject-is-asked-about-in.md
@@ -113,3 +118,8 @@ when it is added.
 [R-KNW-050]: knw-050-a-preview-answer-names-what-the-preview-draws-from.md
 [R-KNW-051]: knw-051-a-changelog-question-is-told-which-type-the-change-owes.md
 [R-KNW-052]: knw-052-the-suite-answer-names-the-install-a-fresh-checkout-owes.md
+[R-KNW-053]: knw-053-the-per-class-database-answer-says-what-survives-the-run.md
+[R-KNW-054]: knw-054-where-fal-stops-in-the-image-pipeline-is-answered.md
+[R-KNW-055]: knw-055-a-rendered-output-change-is-told-where-the-expectations-hide.md
+[R-KNW-056]: knw-056-the-placement-answer-names-the-document-root-as-a-place-a-script-may-not-go.md
+[R-KNW-057]: knw-057-the-push-a-session-cannot-take-back-is-answered-in-full.md

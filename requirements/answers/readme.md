@@ -22,10 +22,11 @@ when it is added.
 - [`R-ANS-012`][R-ANS-012] — An answer that cannot read something says so · held
 - [`R-ANS-013`][R-ANS-013] — The instructions fit what a client keeps · held
 - [`R-ANS-014`][R-ANS-014] — A registration is answered wherever it is declared · held
-- [`R-ANS-015`][R-ANS-015] — A label rule reaches the task that never names a label · **open**
-- [`R-ANS-016`][R-ANS-016] — A content-element task is offered the Extbase fork · **open**
+- [`R-ANS-015`][R-ANS-015] — A label rule reaches the task that never names a label · held
+- [`R-ANS-016`][R-ANS-016] — A content-element task is offered the Extbase fork · held
 - [`R-ANS-017`][R-ANS-017] — A removal is told what the scanner matcher requires · held
 - [`R-ANS-018`][R-ANS-018] — An answer names the tool for what it says is absent · held
+- [`R-ANS-019`][R-ANS-019] — A rendered-verification question reaches the layer that verifies it · held
 
 [R-ANS-001]: ans-001-could-not-ask-never-looks-like-does-not-exist.md
 [R-ANS-002]: ans-002-the-reason-is-in-the-data-not-only-in-the-text.md
@@ -46,3 +47,4 @@ when it is added.
 [R-ANS-016]: ans-016-a-content-element-task-is-offered-the-extbase-fork.md
 [R-ANS-017]: ans-017-a-removal-is-told-what-the-scanner-matcher-requires.md
 [R-ANS-018]: ans-018-an-answer-names-the-tool-for-what-it-says-is-absent.md
+[R-ANS-019]: ans-019-a-rendered-verification-question-reaches-the-layer-that-verifies-it.md

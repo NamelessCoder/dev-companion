@@ -16,6 +16,7 @@ earns one.
 - [`D-FBK-027`][D-FBK-027] — The server builds what costs its caller round trips · 2026-08-03
 - [`D-FBK-038`][D-FBK-038] — What decides a breaking removal is the caller, not the marker · 2026-08-03
 - [`D-FBK-039`][D-FBK-039] — A mangled name is rewritten once, and the comparison carries the rest · 2026-08-03
+- [`D-FBK-040`][D-FBK-040] — The card a judgement folds into another is deleted by the same commit · 2026-08-03
 - [`D-FBK-011`][D-FBK-011] — The suite holds what one branch can be right about · 2026-08-02
 - [`D-FBK-012`][D-FBK-012] — The queue comes first, and the sighting hands over one · 2026-08-02
 - [`D-FBK-013`][D-FBK-013] — An empty queue is a state, not a failure · 2026-08-02
@@ -44,6 +45,7 @@ earns one.
 [D-FBK-027]: fbk-027-the-server-builds-what-costs-its-caller-round-trips.md
 [D-FBK-038]: fbk-038-what-decides-a-breaking-removal-is-the-caller-not-the-marker.md
 [D-FBK-039]: fbk-039-a-mangled-name-is-rewritten-once-and-the-comparison-carries-the-rest.md
+[D-FBK-040]: fbk-040-the-card-a-judgement-folds-into-another-is-deleted-by-the-same-commit.md
 [D-FBK-011]: fbk-011-the-suite-holds-what-one-branch-can-be-right-about.md
 [D-FBK-012]: fbk-012-the-queue-comes-first-and-the-sighting-hands-over-one.md
 [D-FBK-013]: fbk-013-an-empty-queue-is-a-state-not-a-failure.md

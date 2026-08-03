@@ -62,6 +62,8 @@ and not a defect.
 - [`D-ANS-036`][D-ANS-036] — A query written in Fluid tags is searched in the book that documents them · 2026-08-03
 - [`D-ANS-037`][D-ANS-037] — A compound rule query is owed the section its score prefers, and a miss that names the words · 2026-08-03
 - [`D-ANS-038`][D-ANS-038] — The tracker is searched by words as well as read by number · 2026-08-03
+- [`D-ANS-039`][D-ANS-039] — The Extbase fork is delivered by the content-element intent, and it forks on the request rather than on the category · 2026-08-03
+- [`D-ANS-040`][D-ANS-040] — A boundary guard is asked with a query that clears the coverage floor · 2026-08-03
 - [`D-COD-004`][D-COD-004] — What leaves this process goes through one seam · 2026-08-03
 - [`D-DOC-009`][D-DOC-009] — Prose names what counts rather than the count · 2026-08-03
 - [`D-DOC-010`][D-DOC-010] — `targetVersion` opens with one sentence and diverges after it · 2026-08-03
@@ -73,6 +75,7 @@ and not a defect.
 - [`D-FBK-027`][D-FBK-027] — The server builds what costs its caller round trips · 2026-08-03
 - [`D-FBK-038`][D-FBK-038] — What decides a breaking removal is the caller, not the marker · 2026-08-03
 - [`D-FBK-039`][D-FBK-039] — A mangled name is rewritten once, and the comparison carries the rest · 2026-08-03
+- [`D-FBK-040`][D-FBK-040] — The card a judgement folds into another is deleted by the same commit · 2026-08-03
 - [`D-GUI-003`][D-GUI-003] — The wrapping conflict is resolved in the answer rather than in silence · 2026-08-03
 - [`D-GUI-004`][D-GUI-004] — A review brief states the removal surface rather than matching it · 2026-08-03
 - [`D-GUI-005`][D-GUI-005] — The product premise is one statement, on the brief every task passes through · 2026-08-03
@@ -89,10 +92,11 @@ and not a defect.
 - [`D-KNW-037`][D-KNW-037] — A content-element preview draws the element's own payload, and the corpus names the fields · 2026-08-03
 - [`D-KNW-038`][D-KNW-038] — A hint is reached by the role of a file rather than by the extension it sits in · 2026-08-03
 - [`D-KNW-039`][D-KNW-039] — The type a changelog entry owes is stated in prose and the skeleton stays a hint · 2026-08-03
-- [`D-KNW-040`][D-KNW-040] — What asserts a rendered output is a gap this server owns · 2026-08-03
 - [`D-KNW-041`][D-KNW-041] — The checkout a suite is started in supplies its own dependencies · 2026-08-03
 - [`D-KNW-042`][D-KNW-042] — What the image pipeline does below the task layer is a gap this server owns · 2026-08-03
 - [`D-KNW-043`][D-KNW-043] — A rule about what an API may be used for carries the strength of the claim and the source it was read from · 2026-08-03
+- [`D-KNW-044`][D-KNW-044] — One search over the whole Tests/ tree finds what asserts a rendered output · 2026-08-03
+- [`D-KNW-045`][D-KNW-045] — The document root is named by what configures it and by what serves it · 2026-08-03
 - [`D-SKL-005`][D-SKL-005] — Core contribution earns two task skills, one for reviewing a patch and one for creating one · 2026-08-03
 - [`D-SKL-006`][D-SKL-006] — The site-new cluster earns the route into the skill that owns the task · 2026-08-03
 - [`D-SKL-007`][D-SKL-007] — Every disposition a review makes carries its evidence · 2026-08-03
@@ -120,7 +124,6 @@ and not a defect.
 - [`D-ANS-024`][D-ANS-024] — A rule reaches only the task that already names its subject · 2026-08-02
 - [`D-ANS-025`][D-ANS-025] — A query a hint carries whole is not diluted out of it · 2026-08-02
 - [`D-ANS-026`][D-ANS-026] — The ViewHelper reference is indexed, and a manual carries the collection it is published in · 2026-08-02
-- [`D-ANS-027`][D-ANS-027] — The Extbase fork is placed where a caller who has not chosen passes · 2026-08-02
 - [`D-ANS-028`][D-ANS-028] — A two-letter query word is searched for, and the stopword list is what keeps the others out · 2026-08-02
 - [`D-ANS-030`][D-ANS-030] — The changelog matcher runs over the title it prints · 2026-08-02
 - [`D-ANS-031`][D-ANS-031] — The core answer names the tool that runs the suites · 2026-08-02
@@ -223,6 +226,8 @@ and not a defect.
 [D-ANS-036]: answers/ans-036-a-query-written-in-fluid-tags-is-searched-in-the-book-that-documents-them.md
 [D-ANS-037]: answers/ans-037-a-compound-rule-query-is-owed-the-section-its-score-prefers-and-a-miss-that-names-the-words.md
 [D-ANS-038]: answers/ans-038-the-tracker-is-searched-by-words-as-well-as-read-by-number.md
+[D-ANS-039]: answers/ans-039-the-extbase-fork-is-delivered-by-the-task-intent-and-forks-on-the-request.md
+[D-ANS-040]: answers/ans-040-a-boundary-guard-is-asked-with-a-query-that-clears-the-floor.md
 [D-COD-004]: code/cod-004-what-leaves-this-process-goes-through-one-seam.md
 [D-DOC-009]: documentation/doc-009-prose-names-what-counts-rather-than-the-count.md
 [D-DOC-010]: documentation/doc-010-targetversion-opens-with-one-sentence-and-diverges-after-it.md
@@ -234,6 +239,7 @@ and not a defect.
 [D-FBK-027]: feedback/fbk-027-the-server-builds-what-costs-its-caller-round-trips.md
 [D-FBK-038]: feedback/fbk-038-what-decides-a-breaking-removal-is-the-caller-not-the-marker.md
 [D-FBK-039]: feedback/fbk-039-a-mangled-name-is-rewritten-once-and-the-comparison-carries-the-rest.md
+[D-FBK-040]: feedback/fbk-040-the-card-a-judgement-folds-into-another-is-deleted-by-the-same-commit.md
 [D-GUI-003]: guides/gui-003-the-wrapping-conflict-is-resolved-in-the-answer-rather-than-in-silence.md
 [D-GUI-004]: guides/gui-004-a-review-brief-states-the-removal-surface-rather-than-matching-it.md
 [D-GUI-005]: guides/gui-005-the-product-premise-is-one-statement-on-the-brief-every-task-passes-through.md
@@ -250,10 +256,11 @@ and not a defect.
 [D-KNW-037]: knowledge/knw-037-a-content-element-preview-draws-the-elements-own-payload-and-the-corpus-names-the-fields.md
 [D-KNW-038]: knowledge/knw-038-a-hint-is-reached-by-the-role-of-a-file-rather-than-by-the-extension-it-sits-in.md
 [D-KNW-039]: knowledge/knw-039-the-type-a-changelog-entry-owes-is-stated-in-prose-and-the-skeleton-stays-a-hint.md
-[D-KNW-040]: knowledge/knw-040-what-asserts-a-rendered-output-is-a-gap-this-server-owns.md
 [D-KNW-041]: knowledge/knw-041-the-checkout-a-suite-is-started-in-supplies-its-own-dependencies.md
 [D-KNW-042]: knowledge/knw-042-what-the-image-pipeline-does-below-the-task-layer-is-a-gap-this-server-owns.md
 [D-KNW-043]: knowledge/knw-043-a-rule-about-what-an-api-may-be-used-for-carries-its-strength-and-its-source.md
+[D-KNW-044]: knowledge/knw-044-one-search-over-the-whole-tests-tree-finds-what-asserts-a-rendered-output.md
+[D-KNW-045]: knowledge/knw-045-the-document-root-is-named-by-what-configures-it-and-by-what-serves-it.md
 [D-SKL-005]: task-skills/skl-005-core-contribution-earns-a-skill-and-the-domain-is-the-work.md
 [D-SKL-006]: task-skills/skl-006-the-site-new-cluster-earns-the-route-into-the-skill-that-owns-the-task.md
 [D-SKL-007]: task-skills/skl-007-every-disposition-a-review-makes-carries-its-evidence.md
@@ -281,7 +288,6 @@ and not a defect.
 [D-ANS-024]: answers/ans-024-a-rule-reaches-only-the-task-that-already-names-its-subject.md
 [D-ANS-025]: answers/ans-025-a-query-a-hint-carries-whole-is-not-diluted-out-of-it.md
 [D-ANS-026]: answers/ans-026-the-viewhelper-reference-is-indexed-and-a-manual-carries-the-collection-it-is-published-in.md
-[D-ANS-027]: answers/ans-027-the-extbase-fork-is-placed-where-the-undecided-caller-passes.md
 [D-ANS-028]: answers/ans-028-a-two-letter-query-word-is-searched-for-and-the-stopword-list-is-what-keeps-the-others-out.md
 [D-ANS-030]: answers/ans-030-the-changelog-matcher-runs-over-the-title-it-prints.md
 [D-ANS-031]: answers/ans-031-the-core-answer-names-the-tool-that-runs-the-suites.md
@@ -381,7 +387,9 @@ and not a defect.
 ### Revoked, and kept as the record
 
 - [`D-FBK-037`][D-FBK-037] — API stability is worth a lookup and git state is not · 2026-08-03 → D-FBK-038
+- [`D-KNW-040`][D-KNW-040] — What asserts a rendered output is a gap this server owns · 2026-08-03 → D-KNW-044
 - [`D-ANS-023`][D-ANS-023] — A ViewHelper question is answered by widening the manual index · 2026-08-02 → D-ANS-026
+- [`D-ANS-027`][D-ANS-027] — The Extbase fork is placed where a caller who has not chosen passes · 2026-08-02 → D-ANS-039
 - [`D-ANS-029`][D-ANS-029] — The scanner matcher is stated on the route a removal takes · 2026-08-02 → D-ANS-035
 - [`D-KNW-014`][D-KNW-014] — The record variable a v14 preview template is handed is a gap this server owns · 2026-08-02 → D-KNW-020
 - [`D-KNW-015`][D-KNW-015] — The corpus states what a Fluid preview template replaces · 2026-08-02 → D-KNW-021
@@ -401,7 +409,9 @@ and not a defect.
 - [`D-SCO-004`][D-SCO-004] — The frontend is recognised by name, and only the two UI sections go · 2026-07-29
 
 [D-FBK-037]: feedback/fbk-037-api-stability-is-worth-a-lookup-and-git-state-is-not.md
+[D-KNW-040]: knowledge/knw-040-what-asserts-a-rendered-output-is-a-gap-this-server-owns.md
 [D-ANS-023]: answers/ans-023-a-viewhelper-question-is-answered-by-widening-the-index.md
+[D-ANS-027]: answers/ans-027-the-extbase-fork-is-placed-where-the-undecided-caller-passes.md
 [D-ANS-029]: answers/ans-029-the-scanner-matcher-is-stated-on-the-route-a-removal-takes.md
 [D-KNW-014]: knowledge/knw-014-the-record-variable-a-v14-preview-template-is-handed-is-a-gap-this-server-owns.md
 [D-KNW-015]: knowledge/knw-015-the-corpus-states-what-a-fluid-preview-template-replaces.md

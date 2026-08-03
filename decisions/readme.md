@@ -58,7 +58,7 @@ and not a defect.
 
 - [`D-ANS-033`][D-ANS-033] — The review server is read anonymously, and the answer says what that leaves out · 2026-08-03
 - [`D-ANS-034`][D-ANS-034] — A source outside this package answers JSON, or it did not answer · 2026-08-03
-- [`D-ANS-035`][D-ANS-035] — The matcher entry is owed to what the changelog tag claims · 2026-08-03
+- [`D-ANS-035`][D-ANS-035] — The matcher entry is owed to what the changelog tag claims · 2026-08-03 · confirmed
 - [`D-ANS-036`][D-ANS-036] — A query written in Fluid tags is searched in the book that documents them · 2026-08-03
 - [`D-ANS-037`][D-ANS-037] — A compound rule query is owed the section its score prefers, and a miss that names the words · 2026-08-03
 - [`D-ANS-038`][D-ANS-038] — The tracker is searched by words as well as read by number · 2026-08-03
@@ -66,6 +66,7 @@ and not a defect.
 - [`D-ANS-040`][D-ANS-040] — A boundary guard is asked with a query that clears the coverage floor · 2026-08-03
 - [`D-ANS-041`][D-ANS-041] — The changelog title is read where the file names carry nothing · 2026-08-03
 - [`D-ANS-042`][D-ANS-042] — An identifier reaches the changelog entries whose body names it · 2026-08-03
+- [`D-ANS-043`][D-ANS-043] — A miss is answered in data, and says which corpus its silence belongs to · 2026-08-03
 - [`D-COD-004`][D-COD-004] — What leaves this process goes through one seam · 2026-08-03
 - [`D-DOC-009`][D-DOC-009] — Prose names what counts rather than the count · 2026-08-03
 - [`D-DOC-010`][D-DOC-010] — `targetVersion` opens with one sentence and diverges after it · 2026-08-03
@@ -82,7 +83,7 @@ and not a defect.
 - [`D-GUI-004`][D-GUI-004] — A review brief states the removal surface rather than matching it · 2026-08-03
 - [`D-GUI-005`][D-GUI-005] — The product premise is one statement, on the brief every task passes through · 2026-08-03
 - [`D-GUI-006`][D-GUI-006] — A task that changes nothing is a change type of its own · 2026-08-03
-- [`D-GUI-007`][D-GUI-007] — The brief carries a selection of the hints and says whose they are · 2026-08-03
+- [`D-GUI-007`][D-GUI-007] — The brief carries a selection of the hints and says whose they are · 2026-08-03 · confirmed
 - [`D-KNW-029`][D-KNW-029] — A hint names the domains it is asked from, and the file names the subject · 2026-08-03
 - [`D-KNW-030`][D-KNW-030] — A hint is one question, and the DataHandler family is six of them · 2026-08-03
 - [`D-KNW-031`][D-KNW-031] — A suite is a property of the domain, not of the hint · 2026-08-03
@@ -105,6 +106,7 @@ and not a defect.
 - [`D-SKL-008`][D-SKL-008] — A review reads the review the patch is already in · 2026-08-03
 - [`D-SKL-009`][D-SKL-009] — The rule that keeps not landing is written as an act with an object · 2026-08-03 · confirmed
 - [`D-SKL-010`][D-SKL-010] — The assessment that precedes a core patch reads the issue and the review server · 2026-08-03
+- [`D-SKL-011`][D-SKL-011] — The call plan a skill writes down is measured against the corpus that answers it · 2026-08-03
 - [`D-ANS-005`][D-ANS-005] — A question that is not supported here is answered in a shape of its own · 2026-08-02
 - [`D-ANS-006`][D-ANS-006] — An identifier is found however it is spelled · 2026-08-02
 - [`D-ANS-007`][D-ANS-007] — Two shapes for "not answered", one word for why · 2026-08-02
@@ -232,6 +234,7 @@ and not a defect.
 [D-ANS-040]: answers/ans-040-a-boundary-guard-is-asked-with-a-query-that-clears-the-floor.md
 [D-ANS-041]: answers/ans-041-the-changelog-title-is-read-where-the-file-names-carry-nothing.md
 [D-ANS-042]: answers/ans-042-an-identifier-reaches-the-changelog-entries-whose-body-names-it.md
+[D-ANS-043]: answers/ans-043-a-miss-is-answered-in-data-and-says-which-corpus-its-silence-belongs-to.md
 [D-COD-004]: code/cod-004-what-leaves-this-process-goes-through-one-seam.md
 [D-DOC-009]: documentation/doc-009-prose-names-what-counts-rather-than-the-count.md
 [D-DOC-010]: documentation/doc-010-targetversion-opens-with-one-sentence-and-diverges-after-it.md
@@ -271,6 +274,7 @@ and not a defect.
 [D-SKL-008]: task-skills/skl-008-a-review-reads-the-review-the-patch-is-already-in.md
 [D-SKL-009]: task-skills/skl-009-the-rule-that-keeps-not-landing-is-written-as-an-act-with-an-object.md
 [D-SKL-010]: task-skills/skl-010-the-assessment-that-precedes-a-core-patch-reads-the-issue-and-the-review-server.md
+[D-SKL-011]: task-skills/skl-011-the-call-plan-a-skill-writes-down-is-measured-against-the-corpus-that-answers-it.md
 [D-ANS-005]: answers/ans-005-an-unmet-precondition-is-answered-not-raised.md
 [D-ANS-006]: answers/ans-006-an-identifier-is-found-however-it-is-spelled.md
 [D-ANS-007]: answers/ans-007-two-shapes-for-not-answered-and-one-word-for-why.md

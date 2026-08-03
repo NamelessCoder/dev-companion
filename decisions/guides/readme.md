@@ -11,7 +11,7 @@ one is added.
 - [`D-GUI-004`][D-GUI-004] — A review brief states the removal surface rather than matching it · 2026-08-03
 - [`D-GUI-005`][D-GUI-005] — The product premise is one statement, on the brief every task passes through · 2026-08-03
 - [`D-GUI-006`][D-GUI-006] — A task that changes nothing is a change type of its own · 2026-08-03
-- [`D-GUI-007`][D-GUI-007] — The brief carries a selection of the hints and says whose they are · 2026-08-03
+- [`D-GUI-007`][D-GUI-007] — The brief carries a selection of the hints and says whose they are · 2026-08-03 · confirmed
 - [`D-GUI-001`][D-GUI-001] — A missing release target becomes a placeholder, not `main` · 2026-07-29
 - [`D-GUI-002`][D-GUI-002] — The commit workflow is asked for, not inferred · 2026-07-29
 

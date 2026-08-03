@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Typo3CmsMcp\Tests\Unit;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Finder\Finder;
@@ -642,7 +643,8 @@ final class FeedbackTest extends TestCase
     }
 
     #[Test]
-    public function aNameIsFoundHoweverItsSeparatorsAreSpelled(): void
+    #[DataProvider('theSpellingsOneNameArrivesIn')]
+    public function aNameIsFoundHoweverItsSeparatorsAreSpelled(string $spelling): void
     {
         // What is stored is what the session wrote, so one name arrives in more
         // than one spelling and the filter is where they meet — `D-ANS-006`
@@ -652,13 +654,19 @@ final class FeedbackTest extends TestCase
             'tool' => 'typo3-extension-conformance',
         ]);
 
-        foreach (['typo3_extension_conformance', 'typo3extensionconformance'] as $spelling) {
-            self::assertContains(
-                $file,
-                array_column(Channel::all('open', null, 200, $spelling), 'file'),
-                $spelling . ' reached nothing',
-            );
-        }
+        self::assertContains(
+            $file,
+            array_column(Channel::all('open', null, 200, $spelling), 'file'),
+        );
+    }
+
+    /** @return array<string, array{0: string}> */
+    public static function theSpellingsOneNameArrivesIn(): array
+    {
+        return [
+            'underscores, which is how this project writes it' => ['typo3_extension_conformance'],
+            'no separator at all' => ['typo3extensionconformance'],
+        ];
     }
 
     /**

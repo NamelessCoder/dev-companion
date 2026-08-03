@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Typo3CmsMcp\Tests\Unit;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Typo3CmsMcp\Knowledge\Versions;
@@ -245,13 +246,25 @@ final class EnvironmentsTest extends TestCase
      * for it again starts what is there — including out of the pause DDEV puts
      * an idle project into by itself.
      */
+    /** @param array<int, string>|null $expected */
     #[Test]
-    public function anInstallationThatIsThereIsStartedRatherThanBuiltAgain(): void
+    #[DataProvider('everyStateDdevReportsAProjectIn')]
+    public function anInstallationThatIsThereIsStartedRatherThanBuiltAgain(?string $status, ?array $expected): void
     {
-        self::assertNull(Environments::resume('running'), 'a running project is started a second time');
-        foreach (['stopped', 'paused', null] as $status) {
-            self::assertSame(['ddev', 'start', '-y'], Environments::resume($status), 'a project that is down is not started');
-        }
+        self::assertSame($expected, Environments::resume($status));
+    }
+
+    /** @return array<string, array{0: ?string, 1: ?array<int, string>}> */
+    public static function everyStateDdevReportsAProjectIn(): array
+    {
+        $start = ['ddev', 'start', '-y'];
+
+        return [
+            'running, so nothing is started a second time' => ['running', null],
+            'stopped' => ['stopped', $start],
+            'the pause DDEV puts an idle project into by itself' => ['paused', $start],
+            'not registered on this machine at all' => [null, $start],
+        ];
     }
 
     /**

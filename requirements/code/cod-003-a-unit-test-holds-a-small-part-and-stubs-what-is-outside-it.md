@@ -28,9 +28,12 @@ rather than the test:
   `expects()`, and one was written here before this said so.
 - **A data provider carries the cases.** Where one behaviour has several
   inputs, they are a provider with a named case each, so a failure names the
-  input rather than a position in a loop. A `foreach` is still right where the
-  cases are a corpus the test walks rather than inputs — every requirement,
-  every hint, every file in a directory.
+  input rather than a position in a loop. Two loops are not that and stay
+  loops: one that walks a corpus — every requirement, every hint, every file
+  in a directory — and one that checks several aspects of a single result,
+  where a provider would rebuild that result per aspect and say nothing more.
+  The suite was read for both on 2026-08-03, and most of what looked like a
+  case table was the second kind.
 - **The seam is the code's, not the test's.** A class that reaches outside
   takes what it reaches through as something a caller can replace. Where there
   is no such seam, making one is part of the work rather than a reason to write

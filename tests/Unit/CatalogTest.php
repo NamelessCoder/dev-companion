@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Typo3CmsMcp\Tests\Unit;
 
 use PHPUnit\Framework\Attributes\After;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Typo3CmsMcp\Installation\Instance;
@@ -232,17 +233,23 @@ final class CatalogTest extends TestCase
     }
 
     #[Test]
-    public function aComponentNamedOutrightWinsOverOneThatMerelyMentionsIt(): void
+    #[DataProvider('theQueriesThatUsedToReturnSomethingElseFirst')]
+    public function aComponentNamedOutrightWinsOverOneThatMerelyMentionsIt(string $query): void
     {
-        // "status indicator" used to return Badge, "note" the Tree via its
-        // node-note sub-component, and "dropzone" nothing at all.
-        foreach (['dropzone', 'note', 'status indicator'] as $query) {
-            self::assertSame(
-                str_replace(' ', '-', $query),
-                Components::find($query)[0]['name'] ?? null,
-                $query . ' does not return itself first'
-            );
-        }
+        self::assertSame(
+            str_replace(' ', '-', $query),
+            Components::find($query)[0]['name'] ?? null,
+        );
+    }
+
+    /** @return array<string, array{0: string}> */
+    public static function theQueriesThatUsedToReturnSomethingElseFirst(): array
+    {
+        return [
+            'dropzone, which returned nothing at all' => ['dropzone'],
+            'note, which returned the Tree by its node-note sub-component' => ['note'],
+            'status indicator, which returned Badge' => ['status indicator'],
+        ];
     }
 
     #[Test]

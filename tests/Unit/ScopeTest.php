@@ -271,6 +271,9 @@ final class ScopeTest extends TestCase
         $extension = 'packages/acme_events/Classes/Domain/Repository/EventRepository.php';
         $core = 'typo3/sysext/core/Classes/Database/Query/QueryBuilder.php';
 
+        // Both orderings of one call rather than two cases: what follows is
+        // about the same pair, and a provider would run it twice to hold a
+        // symmetry that is two lines here.
         foreach ([[$extension, $core], [$core, $extension]] as $paths) {
             $decided = array_column(Scope::ofEach($paths), 'scope', 'path');
             self::assertSame(Scope::Extension, $decided[$extension], 'the core path answered for the other');
@@ -1075,26 +1078,39 @@ final class ScopeTest extends TestCase
      * sentence named it, the decline sent every one of them to the two testing
      * cells, neither of which answers what goes into a phpstan.neon.
      */
+    /** @param array<int, string> $paths */
     #[Test]
-    public function aStaticAnalysisQuestionFromOutsideTheCoreIsSentToItsOwnCell(): void
+    #[DataProvider('theWaysAnExtensionAsksAboutStaticAnalysis')]
+    public function aStaticAnalysisQuestionFromOutsideTheCoreIsSentToItsOwnCell(array $paths): void
     {
-        foreach ([
-            ['packages/my_sitepackage/Classes/Controller/EventController.php'],
-            ['packages/my_sitepackage/Classes/Controller/EventController.php', 'typo3/sysext/core/Classes/Core/Bootstrap.php'],
-        ] as $paths) {
-            $result = Registry::call('typo3_test_run_guide', [
-                'query' => 'set up phpstan for our extension',
-                'paths' => $paths,
-            ]);
+        $result = Registry::call('typo3_test_run_guide', [
+            'query' => 'set up phpstan for our extension',
+            'paths' => $paths,
+        ]);
 
-            self::assertStringContainsString('id=extension-static-analysis', $result->text);
-            self::assertStringContainsString('id=project-extension-tests', $result->text);
-            self::assertStringContainsString('id=browser-tests', $result->text);
-        }
+        self::assertStringContainsString('id=extension-static-analysis', $result->text);
+        self::assertStringContainsString('id=project-extension-tests', $result->text);
+        self::assertStringContainsString('id=browser-tests', $result->text);
 
         // And the id it hands over is one the corpus has, which is the half a
         // sentence in this file cannot state for itself.
         self::assertNotNull(Hints::byId('extension-static-analysis'));
+    }
+
+    /** @return array<string, array{0: array<int, string>}> */
+    public static function theWaysAnExtensionAsksAboutStaticAnalysis(): array
+    {
+        return [
+            'the extension on its own' => [
+                ['packages/my_sitepackage/Classes/Controller/EventController.php'],
+            ],
+            'the extension beside a core path, which used to send it to the core cells' => [
+                [
+                    'packages/my_sitepackage/Classes/Controller/EventController.php',
+                    'typo3/sysext/core/Classes/Core/Bootstrap.php',
+                ],
+            ],
+        ];
     }
 
     #[Test]
@@ -1283,6 +1299,8 @@ final class ScopeTest extends TestCase
         self::assertStringContainsString('Name the backend in the task', $withheld->text);
         self::assertStringContainsString('or the styleguide', $withheld->text);
 
+        // The two escapes the notice above named, checked against the answer
+        // that notice came from — one scenario rather than two cases.
         foreach ([
             'backend' => $task . ', and the backend module that configures it',
             'styleguide' => $task . ', and the styleguide demo for the component',

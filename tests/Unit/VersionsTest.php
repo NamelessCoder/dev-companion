@@ -177,18 +177,27 @@ final class VersionsTest extends TestCase
     }
 
     #[Test]
-    public function proseSaysThatItIsNotTheBoundHalf(): void
+    #[DataProvider('theProseLookupsAndAQueryEachAnswers')]
+    public function proseSaysThatItIsNotTheBoundHalf(string $tool, string $query): void
     {
         // The markdown documents are the long form of what the hints carry, and
         // they carry no range at all — a section describing a shape that
         // arrived in v13 reads on v12 exactly as it reads on main. Rather than
         // a second binding mechanism for prose, the answer says which of the
         // two the caller is holding and where the bound form is.
-        foreach (['typo3_rule_lookup' => 'event listener', 'typo3_script_lookup' => 'unit tests'] as $tool => $query) {
-            $text = Registry::call($tool, ['query' => $query, 'task' => $query])->text;
-            self::assertStringContainsString('not filtered by version', $text, $tool);
-            self::assertStringContainsString('typo3_hint_lookup with targetVersion', $text, $tool);
-        }
+        $text = Registry::call($tool, ['query' => $query, 'task' => $query])->text;
+
+        self::assertStringContainsString('not filtered by version', $text);
+        self::assertStringContainsString('typo3_hint_lookup with targetVersion', $text);
+    }
+
+    /** @return array<string, array{0: string, 1: string}> */
+    public static function theProseLookupsAndAQueryEachAnswers(): array
+    {
+        return [
+            'the rule lookup' => ['typo3_rule_lookup', 'event listener'],
+            'the script lookup' => ['typo3_script_lookup', 'unit tests'],
+        ];
     }
 
     #[Test]

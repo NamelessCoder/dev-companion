@@ -1382,13 +1382,22 @@ final class HintsTest extends TestCase
      * own first statement says is announced.
      */
     #[Test]
-    public function aHintTheCoreIsAlsoObligedByDeclaresNoAudience(): void
+    #[DataProvider('theHintsTheCoreIsObligedByToo')]
+    public function aHintTheCoreIsAlsoObligedByDeclaresNoAudience(string $id): void
     {
         $scopes = array_column(Hints::load(), 'scope', 'id');
 
-        foreach (['sitepackage-layout', 'sitepackage-initial-content', 'site-sets'] as $id) {
-            self::assertNull($scopes[$id], $id . ' declares an audience the core is obliged by too');
-        }
+        self::assertNull($scopes[$id], $id . ' declares an audience the core is obliged by too');
+    }
+
+    /** @return array<string, array{0: string}> */
+    public static function theHintsTheCoreIsObligedByToo(): array
+    {
+        return [
+            'the sitepackage layout' => ['sitepackage-layout'],
+            'the initial content a sitepackage ships' => ['sitepackage-initial-content'],
+            'site sets' => ['site-sets'],
+        ];
     }
 
     /**
@@ -2637,21 +2646,20 @@ final class HintsTest extends TestCase
      * version binding and has to reach a caller on either.
      */
     #[Test]
-    public function aPreviewAnswerSaysWhatTheDefaultRendererAlreadyDraws(): void
+    #[DataProvider('theMajorsThePreviewAnswerIsBoundFor')]
+    public function aPreviewAnswerSaysWhatTheDefaultRendererAlreadyDraws(int $major): void
     {
-        foreach ([13, 14] as $major) {
-            $texts = implode("\n", array_column(
-                Hints::byId('content-element-preview', $major)['hints'],
-                'text',
-            ));
+        $texts = implode("\n", array_column(
+            Hints::byId('content-element-preview', $major)['hints'],
+            'text',
+        ));
 
-            self::assertStringContainsString('replaces the content half', $texts);
-            self::assertStringContainsString('where header_layout hides the header', $texts);
-            self::assertStringContainsString('the date field with its label', $texts);
-            self::assertStringContainsString("record type's label field linked to the edit form", $texts);
-            self::assertStringContainsString('and subheader', $texts);
-            self::assertStringContainsString('space_before_class', $texts);
-        }
+        self::assertStringContainsString('replaces the content half', $texts);
+        self::assertStringContainsString('where header_layout hides the header', $texts);
+        self::assertStringContainsString('the date field with its label', $texts);
+        self::assertStringContainsString("record type's label field linked to the edit form", $texts);
+        self::assertStringContainsString('and subheader', $texts);
+        self::assertStringContainsString('space_before_class', $texts);
 
         // The words the reporting session arrived with. The probe D-KNW-015
         // recorded the gap on reached nothing at all, and «backend preview» was
@@ -2662,6 +2670,17 @@ final class HintsTest extends TestCase
             6,
         );
         self::assertSame('content-element-preview', array_column($reached['matchedHints'], 'id')[0] ?? '');
+    }
+
+    /**
+     * Both majors draw the same four, so the statement carries no version
+     * binding and has to reach a caller on either.
+     *
+     * @return array<string, array{0: int}>
+     */
+    public static function theMajorsThePreviewAnswerIsBoundFor(): array
+    {
+        return ['on 13' => [13], 'on 14' => [14]];
     }
 
     /**

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Typo3CmsMcp\Tests\Unit;
 
 use PHPUnit\Framework\Attributes\After;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Typo3CmsMcp\Installation\Instance;
@@ -26,21 +27,40 @@ final class ExcludedToolsTest extends TestCase
     }
 
     #[Test]
-    public function theKindOfRepositoryNeverShortensTheToolList(): void
+    #[DataProvider('everyKindOfRepositoryAToolListIsAskedFrom')]
+    public function theKindOfRepositoryNeverShortensTheToolList(string $kind): void
     {
         // What the profile used to do here, and the reason it is gone: a
         // Composer project cannot follow the core's contribution process, but
         // whether a task is core work is a property of the task, and a caller
         // writing a core patch from a site installation was left with an answer
         // routing to a tool that had been taken away.
-        foreach ([$this->composerProject(), $this->coreCheckout(), null] as $root) {
-            Instance::discoverFrom($root);
+        Instance::discoverFrom($this->rootOf($kind));
 
-            $offered = $this->toolNames();
-            self::assertContains('typo3_rule_lookup', $offered);
-            self::assertContains('typo3_script_lookup', $offered);
-            self::assertContains('typo3_test_run_guide', $offered);
-        }
+        $offered = $this->toolNames();
+        self::assertContains('typo3_rule_lookup', $offered);
+        self::assertContains('typo3_script_lookup', $offered);
+        self::assertContains('typo3_test_run_guide', $offered);
+    }
+
+    /** @return array<string, array{0: string}> */
+    public static function everyKindOfRepositoryAToolListIsAskedFrom(): array
+    {
+        return [
+            'a Composer project' => ['project'],
+            'a core checkout' => ['core'],
+            'no installation at all' => ['none'],
+        ];
+    }
+
+    /** The roots are built per case, so the provider names one rather than making it. */
+    private function rootOf(string $kind): ?string
+    {
+        return match ($kind) {
+            'project' => $this->composerProject(),
+            'core' => $this->coreCheckout(),
+            default => null,
+        };
     }
 
     #[Test]

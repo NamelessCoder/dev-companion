@@ -98,3 +98,15 @@ What the run leaves open is smaller and new: those hints are cited as
 came from this server, so it is a mislabelled source rather than an invented one
 — but the checklist asks a finding to name the lookup that owns its rule, and
 neither the skill nor the checklist says the guide carries hints of its own.
+
+## Since then
+
+That last question is settled. The two payloads were run against each other on
+this run's own call: the brief carries the four strongest of
+`typo3_hint_lookup`'s hints for those paths, quoted statement for statement, and
+the lookup answers with three more. So the citation was right and what was
+missing is a sentence in the brief saying whose the hints are, which
+[`D-GUI-007`](../guides/gui-007-the-brief-carries-a-selection-of-the-hints-and-says-whose-they-are.md)
+adds. The reading above holds for this task and does not generalise: the four
+that came back were the ones the findings rested on, and the three the call
+would have added are the reason it stays in the skill.

@@ -31,6 +31,31 @@ final class TaskGuide extends ReadOnlyTool
         . 'is the symptom.';
 
     /**
+     * How many hints a brief carries for one group of paths.
+     *
+     * Fewer than the hint lookup's own default, because the hints are one
+     * section of a brief there and the whole answer here. It is a named
+     * constant so that the number the answer states and the number it slices by
+     * are the same number.
+     */
+    public const HINTS_PER_GROUP = 4;
+
+    /**
+     * Whose the hints in a brief are, said where they are printed (R-GUI-009).
+     *
+     * They are `typo3_hint_lookup`'s corpus, matched by the same matcher and
+     * quoted statement for statement — and a selection of it, which is the half
+     * a caller cannot see from here. The fifth recorded `REVIEW-03` run cited
+     * two of them as that lookup without having called it: the attribution was
+     * right, nothing in the answer had said so, and the reader was sent to a
+     * tool that did not answer.
+     */
+    public const HINTS_SOURCE = 'The hints below are typo3_hint_lookup\'s, matched for these paths and quoted '
+        . 'whole. A finding that cites one of these rules is citing that lookup rather than this guide. A brief '
+        . 'carries the %d strongest per group of paths, which is not everything the lookup holds on them — call '
+        . 'it for the rest, by path, with a larger limit, or by id.';
+
+    /**
      * The change type of a task that changes nothing, and the id of the intent
      * that recognizes one described rather than classified. They are the same
      * word because the type is fed to the intent matcher.
@@ -132,7 +157,7 @@ final class TaskGuide extends ReadOnlyTool
                 'confidence' => ['type' => 'string', 'enum' => ['strong', 'weak'], 'description' => 'weak: a word named the subject without naming the work, or the intent is a core-only one and nothing in the task says this is core work. Either way it applies only under its condition.'],
                 'condition' => Schema::string('When a weakly matched intent applies. Empty for a strong match.'),
             ], ['id', 'title', 'confidence', 'condition']), 'The kinds of core work recognized in the task text.'),
-            'hints' => Schema::listOf(Schema::hintRecord()),
+            'hints' => Schema::listOf(Schema::hintRecord(), 'What typo3_hint_lookup answers for these paths, quoted whole and carried here — the strongest few per group of paths, not everything it holds on them. A rule taken from one of these belongs to that lookup, so a report citing it names typo3_hint_lookup and a caller who needs more of the subject calls it directly.'),
             'rules' => Schema::listOf(Schema::knowledgeMatch(), 'Rule sections that apply to this task.'),
             'checks' => Schema::listOf(Schema::string(), 'Commands to run, ready to execute from the core root.'),
             'conditionalChecks' => Schema::listOf(Schema::object([
@@ -220,7 +245,7 @@ final class TaskGuide extends ReadOnlyTool
         // matched for an extension path are answers to different questions.
         $found = [];
         foreach ($groups as $group) {
-            $matched = Hints::find($group['paths'], $task, 4, null, $targets);
+            $matched = Hints::find($group['paths'], $task, self::HINTS_PER_GROUP, null, $targets);
             $found[] = ['scope' => $group['scope'], 'paths' => $group['paths'], 'result' => $matched];
         }
         $hints = MatchedHints::merged($found);
@@ -294,6 +319,11 @@ final class TaskGuide extends ReadOnlyTool
         $lines[] = '';
         $lines[] = 'Hints:';
         if ($hints['matchedHints'] !== []) {
+            // Said above the blocks rather than under them, because what it
+            // corrects is a citation and the citation is written while the
+            // block is being read.
+            $lines[] = sprintf(self::HINTS_SOURCE, self::HINTS_PER_GROUP);
+            $lines[] = '';
             // One block per group, and the heading only where there is more
             // than one: the caller named two repositories, and which half of
             // the brief is about which path is half of the answer.

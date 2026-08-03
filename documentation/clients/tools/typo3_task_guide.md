@@ -82,6 +82,11 @@ intents:  # optional
     confidence: string
     # When a weakly matched intent applies. Empty for a strong match.
     condition: string
+# What typo3_hint_lookup answers for these paths, quoted whole and carried here
+# — the strongest few per group of paths, not everything it holds on them. A
+# rule taken from one of these belongs to that lookup, so a report citing it
+# names typo3_hint_lookup and a caller who needs more of the subject calls it
+# directly.
 hints:
   - id: string
     title: string

@@ -2514,6 +2514,64 @@ final class HintsTest extends TestCase
         }
     }
 
+    /**
+     * R-GUI-009. The fifth recorded `REVIEW-03` run quoted `fluid-viewhelpers`
+     * and `core-tests` as `typo3_hint_lookup` and never called it: the brief had
+     * carried them, correctly and without saying whose they were, and the
+     * report's reader was sent to a tool that had not answered
+     * (`scenarios/runs/REVIEW-03.json`, `D-SKL-009`).
+     */
+    #[Test]
+    public function theHintsABriefCarriesNameTheLookupTheyCameFrom(): void
+    {
+        // The paths of that run, which is the call the defect was found in.
+        $paths = [
+            'typo3/sysext/core/Classes/Resource/ResourceFactory.php',
+            'typo3/sysext/extbase/Classes/Service/ImageService.php',
+            'typo3/sysext/fluid/Classes/ViewHelpers/ImageViewHelper.php',
+            'typo3/sysext/backend/Classes/ViewHelpers/ThumbnailViewHelper.php',
+            'typo3/sysext/core/Tests/Functional/Resource/ResourceFactoryTest.php',
+        ];
+        $task = 'Review a core patch that moves file source resolution from Extbase ImageService into '
+            . 'ResourceFactory and adds a new public method';
+
+        $brief = Registry::call('typo3_task_guide', [
+            'task' => $task,
+            'changeType' => 'audit',
+            'targetVersion' => '15.0',
+            'paths' => $paths,
+        ]);
+        $lookup = Registry::call('typo3_hint_lookup', [
+            'task' => $task,
+            'targetVersion' => '15.0',
+            'paths' => $paths,
+            'limit' => 10,
+        ]);
+
+        self::assertNotSame([], $brief->data['hints']);
+        self::assertStringContainsString(
+            sprintf(TaskGuide::HINTS_SOURCE, TaskGuide::HINTS_PER_GROUP),
+            $brief->text,
+        );
+
+        // Quoted whole rather than summarised, which is what makes the citation
+        // right: a reader following it to typo3_hint_lookup finds the same
+        // statements, not a longer version of them.
+        $owned = [];
+        foreach ($lookup->data['hints'] as $hint) {
+            $owned[$hint['id']] = $hint;
+        }
+        foreach ($brief->data['hints'] as $hint) {
+            self::assertArrayHasKey($hint['id'], $owned, $hint['id'] . ' is not one of the lookup\'s');
+            self::assertSame($owned[$hint['id']], $hint, $hint['id'] . ' is not what the lookup answers');
+        }
+
+        // And a selection of them, which is the other half of what the sentence
+        // states: the brief stops where the lookup goes on.
+        self::assertLessThanOrEqual(TaskGuide::HINTS_PER_GROUP, count($brief->data['hints']));
+        self::assertGreaterThan(count($brief->data['hints']), count($lookup->data['hints']));
+    }
+
     #[Test]
     public function upgradingAnInstallationIsAnsweredAsAnOrderOfOperations(): void
     {

@@ -439,6 +439,56 @@ final class KnowledgeTest extends TestCase
     }
 
     /**
+     * The invocation notes say what a checkout has to hold before any suite
+     * runs, and name the command that puts it there.
+     *
+     * `runTests.sh` mounts the started-from directory alone, so a suite finds
+     * the `vendor/` of that directory or none at all. A git worktree has none —
+     * `/vendor/*` and `/bin/*` are gitignored, so git never brings them — and
+     * the run stops at `bin/phpunit: not found`, which names phpunit rather than
+     * the directory. The note carries the symptom for that reason: a session
+     * that recognises it from the error does not have to reach the diagnosis.
+     *
+     * It sits with the invocation rather than in one suite entry, because it
+     * holds for every suite the script offers and is read before one is chosen.
+     */
+    #[Test]
+    public function theInvocationNotesNameTheInstallAFreshCheckoutOwes(): void
+    {
+        $notes = implode("\n", TestSuiteHints::invocation()['notes']);
+
+        self::assertStringContainsString('vendor/', $notes, 'the notes do not say what a suite runs against');
+        self::assertStringContainsString('composerInstall', $notes, 'the notes name no command that puts one there');
+        self::assertStringContainsString(
+            'bin/phpunit: not found',
+            $notes,
+            'the notes carry the precondition without the symptom it is recognised by',
+        );
+
+        foreach (Versions::majors() as $major) {
+            self::assertContains(
+                'composerInstall',
+                TestSuiteHints::availableOn($major),
+                'the notes hand over a suite ' . $major . ' does not have',
+            );
+        }
+
+        // The prose document offering the install says the same thing. Its
+        // Install Dependencies section used to offer host `composer install`
+        // "after cloning TYPO3 core or changing PHP dependencies", which is
+        // neither of the two cases that actually stop a run.
+        $section = '';
+        foreach (preg_split('/^#{2,3} /m', Documents::read('typo3-core-scripts')) ?: [] as $candidate) {
+            if (str_starts_with($candidate, 'Install Dependencies')) {
+                $section = $candidate;
+            }
+        }
+
+        self::assertStringContainsString('composerInstall', $section, 'the install section names no containerised form');
+        self::assertStringContainsString('worktree', $section, 'the install section does not name the checkout that owes one');
+    }
+
+    /**
      * The innermost entries that name such a suite, so the condition is looked
      * for beside the command rather than anywhere in the file.
      *

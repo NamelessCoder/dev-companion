@@ -1,6 +1,6 @@
 ---
 id: R-KNW-052
-status: open
+status: held
 restsOn: [D-KNW-041]
 ---
 
@@ -32,4 +32,11 @@ and this one keeps a checkout that can run nothing from being handed a command.
 
 A core patch session in a fresh git worktree, spending four round trips and one
 long install before a suite ran — the failing run, the symlink, the second
-failing run, `composerInstall`, then the real run (2026-08-02).
+failing run, `composerInstall`, then the real run (2026-08-02). Reproduced in a
+worktree of `.checkouts/typo3.git` on 2026-08-03, which is the run
+[`D-KNW-041`](../../decisions/knowledge/knw-041-the-checkout-a-suite-is-started-in-supplies-its-own-dependencies.md)
+records.
+
+## Held by
+
+- `KnowledgeTest::theInvocationNotesNameTheInstallAFreshCheckoutOwes`

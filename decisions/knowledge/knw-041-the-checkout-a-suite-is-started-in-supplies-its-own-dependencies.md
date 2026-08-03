@@ -44,6 +44,15 @@ worktree starts without dependencies.
 - Two sessions of the 2026-08-02 core-checkout batch report it. The second names
   it in one clause while filing its other halves separately, which is the corpus
   signal `feedback:list` is read for.
+- Run on 2026-08-03 in a detached worktree of `.checkouts/typo3.git` at main's
+  `c71b2bdb2f`, outside `.checkouts/`, with neither `vendor/` nor `bin/` in it.
+  `-s functional` on `typo3/sysext/fluid/Tests/Functional/ViewHelpers/ImageViewHelperTest.php`
+  printed `/usr/local/bin/docker-php-entrypoint: exec: line 9: bin/phpunit: not found`
+  and `Result of functional … FAILURE`, exiting 127 — the report's message
+  verbatim. `-s composerInstall` in the same directory reported SUCCESS in 11
+  seconds, writing `vendor/`, `bin/` (with `bin/phpunit` in it) and a 47 MB
+  `.cache/composer` the worktree did not have. The same test then reported
+  `OK (70 tests, 146 assertions)`. Docker rather than podman, PHP 8.5, sqlite.
 
 ## Decided
 
@@ -67,16 +76,22 @@ worktree starts without dependencies.
 - That `composerInstall` is what a worktree should be told to run, rather than
   host `composer install`. It is the containerised form and needs no PHP on the
   host, which is why `D-KNW-036` rejected the host path for `cglFixMyCommit.sh`.
-  Nobody has timed either.
-- That the report's account of the failure is what a session sees.
-  `bin/phpunit: not found` was read out of the report and not reproduced here.
+  The 11 seconds above is one measurement on one machine with warm image and
+  package mirrors, and says nothing about the host form, which nobody has timed.
+- That the symlink stays refuted by reading. The run reproduced the failure and
+  the install, and did not repeat the symlink attempt: the mechanism is
+  `CONTAINER_COMMON_PARAMS` above, and the report already watched it fail.
 
 ## Wrong if
 
 - A fresh worktree turns out to run a suite without an install, which would mean
-  the absent `vendor/` was not what stopped that session.
+  the absent `vendor/` was not what stopped that session. Checked on 2026-08-03
+  and it does not: the run above is the evidence.
 - `composerInstall` fails in a worktree for a reason of its own, so that the
-  statement names a command that does not work where it is needed.
+  statement names a command that does not work where it is needed. Checked on
+  the same worktree and it does not.
 - A session reads the note, runs the install in a normal checkout that already
   had one, and pays the long install for nothing. That would mean the condition
-  was written as a step rather than as a precondition.
+  was written as a step rather than as a precondition. This is the one still
+  open: the corpus and the document say "once, in a checkout that has no
+  `vendor/`", and nothing checks that a reader hears it that way.

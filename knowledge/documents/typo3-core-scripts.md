@@ -50,10 +50,25 @@ Frequently needed options:
 ### Install Dependencies
 
 ```bash
-composer install
+CI=true ./Build/Scripts/runTests.sh -s composerInstall
 ```
 
-Use this after cloning TYPO3 core or changing PHP dependencies.
+A suite runs against the `vendor/` and `bin/` of the directory it is started
+from, because `runTests.sh` mounts that directory and nothing else. A fresh
+clone has neither, and so does a git worktree of a checkout that has them:
+`/vendor/*` and `/bin/*` are gitignored, so git never brings them. The first
+suite there stops at `exec: line 9: bin/phpunit: not found`, which names phpunit
+rather than the directory, so the cause is not readable from the symptom. Run
+the install once in that directory first.
+
+Symlinking `vendor/` and `bin/` from another checkout does not stand in for it.
+The target sits outside the one mount and does not resolve inside the container,
+whether the link is absolute or relative.
+
+`composer install` on the host installs the same dependencies, but it wants the
+PHP the branch requires; the containerised form is why `runTests.sh` exists.
+Either way this is a precondition and not a step: a checkout that already has
+`vendor/` needs it again only after `composer.json` or `composer.lock` changed.
 
 ### Run PHP Unit Tests
 

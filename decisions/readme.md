@@ -58,6 +58,8 @@ and not a defect.
 
 - [`D-ANS-033`][D-ANS-033] — The review server is read anonymously, and the answer says what that leaves out · 2026-08-03
 - [`D-ANS-034`][D-ANS-034] — A source outside this package answers JSON, or it did not answer · 2026-08-03
+- [`D-ANS-035`][D-ANS-035] — The matcher entry is owed to what the changelog tag claims · 2026-08-03
+- [`D-ANS-036`][D-ANS-036] — A query written in Fluid tags is searched in the book that documents them · 2026-08-03
 - [`D-DOC-009`][D-DOC-009] — Prose names what counts rather than the count · 2026-08-03
 - [`D-DOC-010`][D-DOC-010] — `targetVersion` opens with one sentence and diverges after it · 2026-08-03
 - [`D-DOC-011`][D-DOC-011] — A schema is written as the shape it validates · 2026-08-03
@@ -65,6 +67,7 @@ and not a defect.
 - [`D-FBK-026`][D-FBK-026] — The ladder needs an outcome that builds something · 2026-08-03
 - [`D-FBK-027`][D-FBK-027] — The server builds what costs its caller round trips · 2026-08-03
 - [`D-FBK-038`][D-FBK-038] — What decides a breaking removal is the caller, not the marker · 2026-08-03
+- [`D-FBK-039`][D-FBK-039] — A mangled name is rewritten once, and the comparison carries the rest · 2026-08-03
 - [`D-KNW-029`][D-KNW-029] — A hint names the domains it is asked from, and the file names the subject · 2026-08-03
 - [`D-KNW-030`][D-KNW-030] — A hint is one question, and the DataHandler family is six of them · 2026-08-03
 - [`D-KNW-031`][D-KNW-031] — A suite is a property of the domain, not of the hint · 2026-08-03
@@ -73,6 +76,9 @@ and not a defect.
 - [`D-KNW-034`][D-KNW-034] — The file is the subject, and JavaScript is not a domain of its own · 2026-08-03
 - [`D-KNW-035`][D-KNW-035] — The corpus and the tool that answers from it are called hints · 2026-08-03
 - [`D-KNW-036`][D-KNW-036] — The standards check handed over is the one that cannot pass empty · 2026-08-03
+- [`D-KNW-037`][D-KNW-037] — A content-element preview draws the element's own payload, and the corpus names the fields · 2026-08-03
+- [`D-KNW-038`][D-KNW-038] — A hint is reached by the role of a file rather than by the extension it sits in · 2026-08-03
+- [`D-KNW-039`][D-KNW-039] — The type a changelog entry owes is stated in prose and the skeleton stays a hint · 2026-08-03
 - [`D-SKL-005`][D-SKL-005] — Core contribution earns two task skills, one for reviewing a patch and one for creating one · 2026-08-03
 - [`D-ANS-005`][D-ANS-005] — A question that is not supported here is answered in a shape of its own · 2026-08-02
 - [`D-ANS-006`][D-ANS-006] — An identifier is found however it is spelled · 2026-08-02
@@ -97,7 +103,6 @@ and not a defect.
 - [`D-ANS-026`][D-ANS-026] — The ViewHelper reference is indexed, and a manual carries the collection it is published in · 2026-08-02
 - [`D-ANS-027`][D-ANS-027] — The Extbase fork is placed where a caller who has not chosen passes · 2026-08-02
 - [`D-ANS-028`][D-ANS-028] — A two-letter query word is searched for, and the stopword list is what keeps the others out · 2026-08-02
-- [`D-ANS-029`][D-ANS-029] — The scanner matcher is stated on the route a removal takes · 2026-08-02
 - [`D-ANS-030`][D-ANS-030] — The changelog matcher runs over the title it prints · 2026-08-02
 - [`D-ANS-031`][D-ANS-031] — The core answer names the tool that runs the suites · 2026-08-02
 - [`D-ANS-032`][D-ANS-032] — The dilution reference of the manual ranking is the length of an ordinary title · 2026-08-02
@@ -146,7 +151,6 @@ and not a defect.
 - [`D-KNW-022`][D-KNW-022] — The corpus states how long a per-class test database lives · 2026-08-02
 - [`D-KNW-023`][D-KNW-023] — Which page may hold a record is a gap this server owns · 2026-08-02
 - [`D-KNW-024`][D-KNW-024] — The Fluid namespace prefix is what a template question is written in · 2026-08-02
-- [`D-KNW-025`][D-KNW-025] — What a backend preview owes the editor is a gap this server owns · 2026-08-02
 - [`D-KNW-026`][D-KNW-026] — Where a one-off script may not be written is a gap this server owns · 2026-08-02
 - [`D-KNW-027`][D-KNW-027] — Which caches a change invalidates is a gap this server owns · 2026-08-02
 - [`D-KNW-028`][D-KNW-028] — How a file becomes a processed one is a gap this server owns · 2026-08-02
@@ -196,6 +200,8 @@ and not a defect.
 
 [D-ANS-033]: answers/ans-033-the-review-server-is-read-anonymously-and-the-answer-says-what-that-leaves-out.md
 [D-ANS-034]: answers/ans-034-a-source-outside-this-package-answers-json-or-it-did-not-answer.md
+[D-ANS-035]: answers/ans-035-the-matcher-entry-is-owed-to-what-the-changelog-tag-claims.md
+[D-ANS-036]: answers/ans-036-a-query-written-in-fluid-tags-is-searched-in-the-book-that-documents-them.md
 [D-DOC-009]: documentation/doc-009-prose-names-what-counts-rather-than-the-count.md
 [D-DOC-010]: documentation/doc-010-targetversion-opens-with-one-sentence-and-diverges-after-it.md
 [D-DOC-011]: documentation/doc-011-a-schema-is-written-as-the-shape-it-validates.md
@@ -203,6 +209,7 @@ and not a defect.
 [D-FBK-026]: feedback/fbk-026-the-ladder-needs-an-outcome-that-builds-something.md
 [D-FBK-027]: feedback/fbk-027-the-server-builds-what-costs-its-caller-round-trips.md
 [D-FBK-038]: feedback/fbk-038-what-decides-a-breaking-removal-is-the-caller-not-the-marker.md
+[D-FBK-039]: feedback/fbk-039-a-mangled-name-is-rewritten-once-and-the-comparison-carries-the-rest.md
 [D-KNW-029]: knowledge/knw-029-a-hint-names-the-domains-it-is-asked-from-and-the-file-names-the-subject.md
 [D-KNW-030]: knowledge/knw-030-a-hint-is-one-question-and-the-datahandler-family-is-six.md
 [D-KNW-031]: knowledge/knw-031-a-suite-is-a-property-of-the-domain-not-of-the-hint.md
@@ -211,6 +218,9 @@ and not a defect.
 [D-KNW-034]: knowledge/knw-034-the-file-is-the-subject-and-javascript-is-not-a-domain.md
 [D-KNW-035]: knowledge/knw-035-the-corpus-and-the-tool-that-answers-from-it-are-called-hints.md
 [D-KNW-036]: knowledge/knw-036-the-standards-check-handed-over-is-the-one-that-cannot-pass-empty.md
+[D-KNW-037]: knowledge/knw-037-a-content-element-preview-draws-the-elements-own-payload-and-the-corpus-names-the-fields.md
+[D-KNW-038]: knowledge/knw-038-a-hint-is-reached-by-the-role-of-a-file-rather-than-by-the-extension-it-sits-in.md
+[D-KNW-039]: knowledge/knw-039-the-type-a-changelog-entry-owes-is-stated-in-prose-and-the-skeleton-stays-a-hint.md
 [D-SKL-005]: task-skills/skl-005-core-contribution-earns-a-skill-and-the-domain-is-the-work.md
 [D-ANS-005]: answers/ans-005-an-unmet-precondition-is-answered-not-raised.md
 [D-ANS-006]: answers/ans-006-an-identifier-is-found-however-it-is-spelled.md
@@ -235,7 +245,6 @@ and not a defect.
 [D-ANS-026]: answers/ans-026-the-viewhelper-reference-is-indexed-and-a-manual-carries-the-collection-it-is-published-in.md
 [D-ANS-027]: answers/ans-027-the-extbase-fork-is-placed-where-the-undecided-caller-passes.md
 [D-ANS-028]: answers/ans-028-a-two-letter-query-word-is-searched-for-and-the-stopword-list-is-what-keeps-the-others-out.md
-[D-ANS-029]: answers/ans-029-the-scanner-matcher-is-stated-on-the-route-a-removal-takes.md
 [D-ANS-030]: answers/ans-030-the-changelog-matcher-runs-over-the-title-it-prints.md
 [D-ANS-031]: answers/ans-031-the-core-answer-names-the-tool-that-runs-the-suites.md
 [D-ANS-032]: answers/ans-032-the-dilution-reference-of-the-manual-ranking-is-the-length-of-an-ordinary-title.md
@@ -284,7 +293,6 @@ and not a defect.
 [D-KNW-022]: knowledge/knw-022-the-corpus-states-how-long-a-per-class-test-database-lives.md
 [D-KNW-023]: knowledge/knw-023-which-page-may-hold-a-record-is-a-gap-this-server-owns.md
 [D-KNW-024]: knowledge/knw-024-the-fluid-namespace-prefix-is-what-a-template-question-is-written-in.md
-[D-KNW-025]: knowledge/knw-025-what-a-backend-preview-owes-the-editor-is-a-gap-this-server-owns.md
 [D-KNW-026]: knowledge/knw-026-where-a-one-off-script-may-not-be-written-is-a-gap-this-server-owns.md
 [D-KNW-027]: knowledge/knw-027-which-caches-a-change-invalidates-is-a-gap-this-server-owns.md
 [D-KNW-028]: knowledge/knw-028-how-a-file-becomes-a-processed-one-is-a-gap-this-server-owns.md
@@ -336,8 +344,10 @@ and not a defect.
 
 - [`D-FBK-037`][D-FBK-037] — API stability is worth a lookup and git state is not · 2026-08-03 → D-FBK-038
 - [`D-ANS-023`][D-ANS-023] — A ViewHelper question is answered by widening the manual index · 2026-08-02 → D-ANS-026
+- [`D-ANS-029`][D-ANS-029] — The scanner matcher is stated on the route a removal takes · 2026-08-02 → D-ANS-035
 - [`D-KNW-014`][D-KNW-014] — The record variable a v14 preview template is handed is a gap this server owns · 2026-08-02 → D-KNW-020
 - [`D-KNW-015`][D-KNW-015] — The corpus states what a Fluid preview template replaces · 2026-08-02 → D-KNW-021
+- [`D-KNW-025`][D-KNW-025] — What a backend preview owes the editor is a gap this server owns · 2026-08-02 → D-KNW-037
 - [`D-FBK-005`][D-FBK-005] — The queue is worked before the pile is sighted · 2026-08-01 → D-FBK-012
 - [`D-SCO-008`][D-SCO-008] — The path decides, and the answer may say it cannot · 2026-08-01 → D-KNW-005
 - [`D-FBK-003`][D-FBK-003] — A session is handed one todo, not the file · 2026-07-31 → D-FBK-002
@@ -354,8 +364,10 @@ and not a defect.
 
 [D-FBK-037]: feedback/fbk-037-api-stability-is-worth-a-lookup-and-git-state-is-not.md
 [D-ANS-023]: answers/ans-023-a-viewhelper-question-is-answered-by-widening-the-index.md
+[D-ANS-029]: answers/ans-029-the-scanner-matcher-is-stated-on-the-route-a-removal-takes.md
 [D-KNW-014]: knowledge/knw-014-the-record-variable-a-v14-preview-template-is-handed-is-a-gap-this-server-owns.md
 [D-KNW-015]: knowledge/knw-015-the-corpus-states-what-a-fluid-preview-template-replaces.md
+[D-KNW-025]: knowledge/knw-025-what-a-backend-preview-owes-the-editor-is-a-gap-this-server-owns.md
 [D-FBK-005]: feedback/fbk-005-the-queue-is-worked-before-the-pile-is-sighted.md
 [D-SCO-008]: scope/sco-008-the-path-decides-and-the-answer-may-say-it-cannot.md
 [D-FBK-003]: feedback/fbk-003-a-session-is-handed-one-todo-not-the-file.md

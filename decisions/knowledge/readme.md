@@ -15,6 +15,9 @@ one is added.
 - [`D-KNW-034`][D-KNW-034] — The file is the subject, and JavaScript is not a domain of its own · 2026-08-03
 - [`D-KNW-035`][D-KNW-035] — The corpus and the tool that answers from it are called hints · 2026-08-03
 - [`D-KNW-036`][D-KNW-036] — The standards check handed over is the one that cannot pass empty · 2026-08-03
+- [`D-KNW-037`][D-KNW-037] — A content-element preview draws the element's own payload, and the corpus names the fields · 2026-08-03
+- [`D-KNW-038`][D-KNW-038] — A hint is reached by the role of a file rather than by the extension it sits in · 2026-08-03
+- [`D-KNW-039`][D-KNW-039] — The type a changelog entry owes is stated in prose and the skeleton stays a hint · 2026-08-03
 - [`D-KNW-005`][D-KNW-005] — One `Scope` replaced the four vocabularies · 2026-08-02
 - [`D-KNW-006`][D-KNW-006] — A word for a thing administered from the backend adds no domain to a backend-only task · 2026-08-02
 - [`D-KNW-007`][D-KNW-007] — A hint says whose it is in both directions · 2026-08-02
@@ -33,7 +36,6 @@ one is added.
 - [`D-KNW-022`][D-KNW-022] — The corpus states how long a per-class test database lives · 2026-08-02
 - [`D-KNW-023`][D-KNW-023] — Which page may hold a record is a gap this server owns · 2026-08-02
 - [`D-KNW-024`][D-KNW-024] — The Fluid namespace prefix is what a template question is written in · 2026-08-02
-- [`D-KNW-025`][D-KNW-025] — What a backend preview owes the editor is a gap this server owns · 2026-08-02
 - [`D-KNW-026`][D-KNW-026] — Where a one-off script may not be written is a gap this server owns · 2026-08-02
 - [`D-KNW-027`][D-KNW-027] — Which caches a change invalidates is a gap this server owns · 2026-08-02
 - [`D-KNW-028`][D-KNW-028] — How a file becomes a processed one is a gap this server owns · 2026-08-02
@@ -47,6 +49,9 @@ one is added.
 [D-KNW-034]: knw-034-the-file-is-the-subject-and-javascript-is-not-a-domain.md
 [D-KNW-035]: knw-035-the-corpus-and-the-tool-that-answers-from-it-are-called-hints.md
 [D-KNW-036]: knw-036-the-standards-check-handed-over-is-the-one-that-cannot-pass-empty.md
+[D-KNW-037]: knw-037-a-content-element-preview-draws-the-elements-own-payload-and-the-corpus-names-the-fields.md
+[D-KNW-038]: knw-038-a-hint-is-reached-by-the-role-of-a-file-rather-than-by-the-extension-it-sits-in.md
+[D-KNW-039]: knw-039-the-type-a-changelog-entry-owes-is-stated-in-prose-and-the-skeleton-stays-a-hint.md
 [D-KNW-005]: knw-005-one-scope-replaced-the-four-vocabularies.md
 [D-KNW-006]: knw-006-a-word-for-a-thing-administered-from-the-backend.md
 [D-KNW-007]: knw-007-a-hint-says-whose-it-is-in-both-directions.md
@@ -65,7 +70,6 @@ one is added.
 [D-KNW-022]: knw-022-the-corpus-states-how-long-a-per-class-test-database-lives.md
 [D-KNW-023]: knw-023-which-page-may-hold-a-record-is-a-gap-this-server-owns.md
 [D-KNW-024]: knw-024-the-fluid-namespace-prefix-is-what-a-template-question-is-written-in.md
-[D-KNW-025]: knw-025-what-a-backend-preview-owes-the-editor-is-a-gap-this-server-owns.md
 [D-KNW-026]: knw-026-where-a-one-off-script-may-not-be-written-is-a-gap-this-server-owns.md
 [D-KNW-027]: knw-027-which-caches-a-change-invalidates-is-a-gap-this-server-owns.md
 [D-KNW-028]: knw-028-how-a-file-becomes-a-processed-one-is-a-gap-this-server-owns.md
@@ -75,12 +79,14 @@ one is added.
 
 - [`D-KNW-014`][D-KNW-014] — The record variable a v14 preview template is handed is a gap this server owns · 2026-08-02 → D-KNW-020
 - [`D-KNW-015`][D-KNW-015] — The corpus states what a Fluid preview template replaces · 2026-08-02 → D-KNW-021
+- [`D-KNW-025`][D-KNW-025] — What a backend preview owes the editor is a gap this server owns · 2026-08-02 → D-KNW-037
 - [`D-KNW-003`][D-KNW-003] — `provenance` is not the third spelling of `binding`, and stays · 2026-07-30 → D-KNW-005
 - [`D-KNW-001`][D-KNW-001] — Sitepackage work is answered from the General category · 2026-07-29
 - [`D-KNW-002`][D-KNW-002] — A hint about typo3/testing-framework is verified against tags, not against the checkouts · 2026-07-29
 
 [D-KNW-014]: knw-014-the-record-variable-a-v14-preview-template-is-handed-is-a-gap-this-server-owns.md
 [D-KNW-015]: knw-015-the-corpus-states-what-a-fluid-preview-template-replaces.md
+[D-KNW-025]: knw-025-what-a-backend-preview-owes-the-editor-is-a-gap-this-server-owns.md
 [D-KNW-003]: knw-003-provenance-is-not-the-third-spelling-of-binding.md
 [D-KNW-001]: knw-001-sitepackage-work-is-answered-from-the-general-category.md
 [D-KNW-002]: knw-002-a-hint-about-typo3-testing-framework-is-verified-against-tags.md

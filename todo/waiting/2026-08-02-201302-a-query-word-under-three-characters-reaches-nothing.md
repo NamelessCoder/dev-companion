@@ -2,8 +2,6 @@
 
 **Serves:** feedback/2026-08-01-003000-underlying-failure-was-a-systemic-lack-of-fluid.md, R-DOC-003
 **Priority:** normal
-**Branch:** todo/a-query-word-under-three-characters-reaches-nothing
-**Claimed:** 2026-08-03
 **Waiting on:** is a word that is a stopword everywhere else worth admitting for
     the one query that names the book titling a page after it? The per-corpus
     admitted list this todo proposed is measured below and is not what the

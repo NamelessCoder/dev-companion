@@ -57,6 +57,8 @@ when it is added.
 - [`R-KNW-047`][R-KNW-047] — An extension copies the phpunit XML and not the bootstrap · held
 - [`R-KNW-048`][R-KNW-048] — Which processor claims a file is answered · held
 - [`R-KNW-049`][R-KNW-049] — A check that can pass without reading anything says so · held
+- [`R-KNW-050`][R-KNW-050] — A preview answer names what the preview draws from · held
+- [`R-KNW-051`][R-KNW-051] — A changelog question is told which type the change owes · held
 
 [R-KNW-001]: knw-001-upgrade-wizards-and-dataprocessors-have-hints-of-their-own.md
 [R-KNW-002]: knw-002-a-hint-carries-the-words-its-subject-is-asked-about-in.md
@@ -107,3 +109,5 @@ when it is added.
 [R-KNW-047]: knw-047-an-extension-copies-the-phpunit-xml-and-not-the-bootstrap.md
 [R-KNW-048]: knw-048-which-processor-claims-a-file-is-answered.md
 [R-KNW-049]: knw-049-a-check-that-can-pass-without-reading-anything-says-so.md
+[R-KNW-050]: knw-050-a-preview-answer-names-what-the-preview-draws-from.md
+[R-KNW-051]: knw-051-a-changelog-question-is-told-which-type-the-change-owes.md

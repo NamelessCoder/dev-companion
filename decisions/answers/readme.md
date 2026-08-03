@@ -9,6 +9,8 @@ one is added.
 
 - [`D-ANS-033`][D-ANS-033] — The review server is read anonymously, and the answer says what that leaves out · 2026-08-03
 - [`D-ANS-034`][D-ANS-034] — A source outside this package answers JSON, or it did not answer · 2026-08-03
+- [`D-ANS-035`][D-ANS-035] — The matcher entry is owed to what the changelog tag claims · 2026-08-03
+- [`D-ANS-036`][D-ANS-036] — A query written in Fluid tags is searched in the book that documents them · 2026-08-03
 - [`D-ANS-005`][D-ANS-005] — A question that is not supported here is answered in a shape of its own · 2026-08-02
 - [`D-ANS-006`][D-ANS-006] — An identifier is found however it is spelled · 2026-08-02
 - [`D-ANS-007`][D-ANS-007] — Two shapes for "not answered", one word for why · 2026-08-02
@@ -32,7 +34,6 @@ one is added.
 - [`D-ANS-026`][D-ANS-026] — The ViewHelper reference is indexed, and a manual carries the collection it is published in · 2026-08-02
 - [`D-ANS-027`][D-ANS-027] — The Extbase fork is placed where a caller who has not chosen passes · 2026-08-02
 - [`D-ANS-028`][D-ANS-028] — A two-letter query word is searched for, and the stopword list is what keeps the others out · 2026-08-02
-- [`D-ANS-029`][D-ANS-029] — The scanner matcher is stated on the route a removal takes · 2026-08-02
 - [`D-ANS-030`][D-ANS-030] — The changelog matcher runs over the title it prints · 2026-08-02
 - [`D-ANS-031`][D-ANS-031] — The core answer names the tool that runs the suites · 2026-08-02
 - [`D-ANS-032`][D-ANS-032] — The dilution reference of the manual ranking is the length of an ordinary title · 2026-08-02
@@ -42,6 +43,8 @@ one is added.
 
 [D-ANS-033]: ans-033-the-review-server-is-read-anonymously-and-the-answer-says-what-that-leaves-out.md
 [D-ANS-034]: ans-034-a-source-outside-this-package-answers-json-or-it-did-not-answer.md
+[D-ANS-035]: ans-035-the-matcher-entry-is-owed-to-what-the-changelog-tag-claims.md
+[D-ANS-036]: ans-036-a-query-written-in-fluid-tags-is-searched-in-the-book-that-documents-them.md
 [D-ANS-005]: ans-005-an-unmet-precondition-is-answered-not-raised.md
 [D-ANS-006]: ans-006-an-identifier-is-found-however-it-is-spelled.md
 [D-ANS-007]: ans-007-two-shapes-for-not-answered-and-one-word-for-why.md
@@ -65,7 +68,6 @@ one is added.
 [D-ANS-026]: ans-026-the-viewhelper-reference-is-indexed-and-a-manual-carries-the-collection-it-is-published-in.md
 [D-ANS-027]: ans-027-the-extbase-fork-is-placed-where-the-undecided-caller-passes.md
 [D-ANS-028]: ans-028-a-two-letter-query-word-is-searched-for-and-the-stopword-list-is-what-keeps-the-others-out.md
-[D-ANS-029]: ans-029-the-scanner-matcher-is-stated-on-the-route-a-removal-takes.md
 [D-ANS-030]: ans-030-the-changelog-matcher-runs-over-the-title-it-prints.md
 [D-ANS-031]: ans-031-the-core-answer-names-the-tool-that-runs-the-suites.md
 [D-ANS-032]: ans-032-the-dilution-reference-of-the-manual-ranking-is-the-length-of-an-ordinary-title.md
@@ -76,7 +78,9 @@ one is added.
 ### Revoked, and kept as the record
 
 - [`D-ANS-023`][D-ANS-023] — A ViewHelper question is answered by widening the manual index · 2026-08-02 → D-ANS-026
+- [`D-ANS-029`][D-ANS-029] — The scanner matcher is stated on the route a removal takes · 2026-08-02 → D-ANS-035
 - [`D-ANS-001`][D-ANS-001] — The unanswered result keeps its shape and gains a reason · 2026-07-29 → D-ANS-005
 
 [D-ANS-023]: ans-023-a-viewhelper-question-is-answered-by-widening-the-index.md
+[D-ANS-029]: ans-029-the-scanner-matcher-is-stated-on-the-route-a-removal-takes.md
 [D-ANS-001]: ans-001-the-unanswered-result-keeps-its-shape-and-gains-a-reason.md

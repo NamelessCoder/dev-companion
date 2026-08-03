@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Typo3CmsMcp\Tests\Unit;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Typo3CmsMcp\Paths;
+use Typo3CmsMcp\Tests\Support\FakeRunner;
 use Typo3CmsMcp\Tests\Support\QueuedTodo;
 use Typo3CmsMcp\Upkeep\Checkouts;
 use Typo3CmsMcp\Upkeep\OpenFeedback;
@@ -297,16 +299,19 @@ final class TodoTest extends TestCase
      * the queue instead of its own claim reads a real todo, starts real work,
      * and is the second person doing it.
      *
-     * The branch is what the case asserts on rather than the fixture's name,
-     * because the suite runs in the worktrees too: there the checkout already
-     * stands on a claim of its own, and "nothing is in hand" is only true on
-     * `main`.
+     * git is stubbed rather than asked, so the case says the same in a
+     * worktree standing on a real claim as it does on `main`. It used to ask
+     * whichever checkout the suite was in, and then had to assert around
+     * whatever that answered.
      */
     #[Test]
     public function aWorktreeStandingOnAClaimIsHandedThatClaim(): void
     {
-        [, $branch] = Checkouts::run(['git', '-C', Paths::root(), 'rev-parse', '--abbrev-ref', 'HEAD']);
-        $branch = trim($branch);
+        $branch = 'todo/' . self::MARKER;
+        Checkouts::useRunner((new FakeRunner())->answer(
+            'git -C ' . Paths::root() . ' rev-parse --abbrev-ref HEAD',
+            ['output' => $branch . "\n"],
+        ));
         $before = Todo::claimed();
 
         @mkdir(Todo::directory() . '/progress');
@@ -317,10 +322,7 @@ final class TodoTest extends TestCase
         );
         $onTheClaim = Todo::claimed();
 
-        self::assertTrue(
-            $before === null || $before['branch'] === $branch,
-            'a checkout is handed a claim somebody else is working'
-        );
+        self::assertNull($before, 'a claim was matched before one was written');
         self::assertNotNull($onTheClaim, 'a checkout standing on a claim is handed the queue');
         self::assertSame($branch, $onTheClaim['branch']);
         self::assertSame('progress', $onTheClaim['kind']);
@@ -335,50 +337,72 @@ final class TodoTest extends TestCase
      * two. So `bin/cli todo:next` refuses in the first case and hands over the
      * queue in the second, and this is the question it tells them apart by.
      *
-     * It creates a real worktree because the plumbing under the answer is the
-     * part that can be wrong: `--path-format=absolute` is not in every git, and
-     * where it is missing both calls fail, the answer is false, and the refusal
-     * quietly never happens again. Comparing the two directories by hand here
-     * would test this test.
+     * What `linked()` does with git's two answers is the part that can be
+     * wrong, and it is what this holds: the directories are compared with
+     * trailing slashes off, and either call failing is read as "not a worktree"
+     * rather than as one. It used to answer by making a real worktree and a
+     * real branch in whichever checkout the suite was running in, which is a
+     * process and a write — `R-COD-003`.
      *
-     * The name carries the process id so that suites running in several
-     * worktrees at once — which is the whole arrangement this holds up — do not
-     * collide on one branch.
+     * What a stub cannot say is whether the local git has
+     * `--path-format=absolute` at all. That is a property of the machine rather
+     * than of this code: where it is missing both calls fail, which is the last
+     * case below, and the refusal quietly stops happening. A real run is what
+     * would show that.
+     *
+     * @param array{0: int, 1: string} $own
+     * @param array{0: int, 1: string} $shared
      */
     #[Test]
-    public function aWorktreeIsToldApartFromTheCheckoutItWasCutFrom(): void
+    #[DataProvider('whatGitAnswersAboutTwoDirectories')]
+    public function aWorktreeIsToldApartFromTheCheckoutItWasCutFrom(array $own, array $shared, bool $linked): void
     {
-        $name = self::MARKER . '-' . getmypid();
-        $path = sys_get_temp_dir() . '/' . $name;
-        $branch = 'tmp/' . $name;
+        $root = '/somewhere/checkout';
+        Checkouts::useRunner((new FakeRunner())
+            ->answer(
+                'git -C ' . $root . ' rev-parse --absolute-git-dir',
+                ['exitCode' => $own[0], 'output' => $own[1]],
+            )
+            ->answer(
+                'git -C ' . $root . ' rev-parse --path-format=absolute --git-common-dir',
+                ['exitCode' => $shared[0], 'output' => $shared[1]],
+            ));
 
-        [$exitCode, $said] = Checkouts::run(['git', '-C', Paths::root(), 'worktree', 'add', $path, '-b', $branch]);
-        self::assertSame(0, $exitCode, 'the worktree this case is about could not be made: ' . $said);
-
-        try {
-            self::assertTrue(Todo::linked($path), 'a worktree is read as the checkout it was cut from');
-            self::assertSame($branch, Todo::standing($path));
-            self::assertFalse(
-                Todo::linked($this->checkout()),
-                'the checkout every worktree is cut from is read as one of them',
-            );
-        } finally {
-            Checkouts::run(['git', '-C', Paths::root(), 'worktree', 'remove', '--force', $path]);
-            Checkouts::run(['git', '-C', Paths::root(), 'branch', '-D', $branch]);
-        }
+        self::assertSame($linked, Todo::linked($root));
     }
 
     /**
-     * The checkout the worktrees hang off, asked for the one way that does not
-     * go through what the case above is holding: `git worktree list` names it
-     * first, whichever of them is asking.
+     * @return array<string, array{0: array{0: int, 1: string}, 1: array{0: int, 1: string}, 2: bool}>
      */
-    private function checkout(): string
+    public static function whatGitAnswersAboutTwoDirectories(): array
     {
-        [, $listed] = Checkouts::run(['git', '-C', Paths::root(), 'worktree', 'list', '--porcelain']);
-        $first = strtok($listed, "\n");
-
-        return substr((string) $first, strlen('worktree '));
+        return [
+            'a worktree keeps its own git dir under the one they share' => [
+                [0, "/repo/.git/worktrees/claim\n"],
+                [0, "/repo/.git\n"],
+                true,
+            ],
+            'the checkout they were cut from answers the same directory twice' => [
+                [0, "/repo/.git\n"],
+                [0, "/repo/.git\n"],
+                false,
+            ],
+            'a trailing slash on one of them is not a difference' => [
+                [0, "/repo/.git\n"],
+                [0, "/repo/.git/\n"],
+                false,
+            ],
+            'the shared one answered nothing, so nothing is claimed' => [
+                [0, "/repo/.git/worktrees/claim\n"],
+                [128, "fatal: unknown option\n"],
+                false,
+            ],
+            'both answered nothing, which is a git without the flag' => [
+                [128, "fatal: unknown option\n"],
+                [128, "fatal: unknown option\n"],
+                false,
+            ],
+        ];
     }
 
     /**

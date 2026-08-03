@@ -24,18 +24,25 @@ interface CommandRunner
     /**
      * Runs one command and waits for it, with both its streams read.
      *
-     * The child never inherits this process's stdin. On the stdio server that
-     * stream is the client's JSON-RPC: a request written while a console
-     * command runs would be read by the console command, and the client would
-     * wait forever for an answer to a request the server never saw.
+     * The child does not inherit this process's stdin unless it is asked for.
+     * On the stdio server that stream is the client's JSON-RPC: a request
+     * written while a console command runs would be read by the console
+     * command, and the client would wait forever for an answer to a request
+     * the server never saw. git is the exception and says so at its call.
      *
      * @param array<int, string> $command the executable and its arguments, unquoted — no shell is involved
      * @param ?string $workingDirectory where to run it, or null for this process's own
      * @param ?int $timeoutSeconds how long to wait before terminating it, or null to wait
+     * @param bool $inheritStdin let the child read this process's stdin, which only git wants
      *
      * @return array{ok: bool, exitCode: int, output: string, error: string}
      */
-    public function run(array $command, ?string $workingDirectory = null, ?int $timeoutSeconds = null): array;
+    public function run(
+        array $command,
+        ?string $workingDirectory = null,
+        ?int $timeoutSeconds = null,
+        bool $inheritStdin = false,
+    ): array;
 
     /**
      * Where an executable of this name is, or null where the machine has none.

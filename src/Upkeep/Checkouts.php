@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Typo3CmsMcp\Upkeep;
 
 use Typo3CmsMcp\Paths;
+use Typo3CmsMcp\Process\CommandRunner;
+use Typo3CmsMcp\Process\SystemRunner;
 
 /**
  * Where the core checkouts live, and the git this repository reads them with.
@@ -33,6 +35,22 @@ final class Checkouts
     }
 
     /**
+     * What leaves this process, and the seam a unit test takes instead.
+     *
+     * `R-COD-003`: a unit test stubs what is outside it. `Todo::standing()`
+     * and `Todo::linked()` ask git through here, and the test that held them
+     * used to answer by making a real worktree and a real branch in whatever
+     * checkout the suite was running in — a process, and one that wrote.
+     */
+    private static ?CommandRunner $runner = null;
+
+    /** What a test hands in, so nothing it drives has to exist on the machine. */
+    public static function useRunner(?CommandRunner $runner): void
+    {
+        self::$runner = $runner;
+    }
+
+    /**
      * One command, with both its streams as one string.
      *
      * Almost every caller runs git, which is what it was named for. The one
@@ -40,21 +58,18 @@ final class Checkouts
      * belongs to the same step and starting it any other way would be a second
      * way to start a process, kept apart by nothing but the name.
      *
+     * Unlike the other two callers of `SystemRunner` this one leaves stdin
+     * inherited — which is what git wants, and why it was written separately
+     * in the first place. It is a parameter rather than two implementations.
+     *
      * @param array<int, string> $command
      *
      * @return array{0: int, 1: string}
      */
     public static function run(array $command, ?string $cwd = null): array
     {
-        $process = proc_open($command, [1 => ['pipe', 'w'], 2 => ['pipe', 'w']], $pipes, $cwd);
-        if (!is_resource($process)) {
-            return [1, ''];
-        }
+        $result = (self::$runner ?? new SystemRunner())->run($command, $cwd, null, true);
 
-        $output = (string) stream_get_contents($pipes[1]) . (string) stream_get_contents($pipes[2]);
-        fclose($pipes[1]);
-        fclose($pipes[2]);
-
-        return [proc_close($process), $output];
+        return [$result['exitCode'], $result['output'] . $result['error']];
     }
 }

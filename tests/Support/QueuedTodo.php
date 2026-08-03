@@ -6,6 +6,7 @@ namespace Typo3CmsMcp\Tests\Support;
 
 use PHPUnit\Framework\Attributes\After;
 use Symfony\Component\Finder\Finder;
+use Typo3CmsMcp\Upkeep\Checkouts;
 use Typo3CmsMcp\Upkeep\Todo;
 
 /**
@@ -50,6 +51,11 @@ trait QueuedTodo
             unlink($file->getPathname());
         }
         @rmdir(Todo::directory() . '/progress');
+
+        // The git a case stubbed goes back with the files it wrote. A static
+        // seam left standing is answered from a table written for another
+        // case, and the test that reads it passes for the wrong reason.
+        Checkouts::useRunner(null);
     }
 
     /**

@@ -46,8 +46,12 @@ final class FakeRunner implements CommandRunner
      *
      * @return array{ok: bool, exitCode: int, output: string, error: string}
      */
-    public function run(array $command, ?string $workingDirectory = null, ?int $timeoutSeconds = null): array
-    {
+    public function run(
+        array $command,
+        ?string $workingDirectory = null,
+        ?int $timeoutSeconds = null,
+        bool $inheritStdin = false,
+    ): array {
         $this->asked[] = ['command' => $command, 'cwd' => $workingDirectory];
         $line = implode(' ', $command);
 

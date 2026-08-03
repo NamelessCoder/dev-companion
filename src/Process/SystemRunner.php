@@ -20,11 +20,19 @@ final class SystemRunner implements CommandRunner
      *
      * @return array{ok: bool, exitCode: int, output: string, error: string}
      */
-    public function run(array $command, ?string $workingDirectory = null, ?int $timeoutSeconds = null): array
-    {
+    public function run(
+        array $command,
+        ?string $workingDirectory = null,
+        ?int $timeoutSeconds = null,
+        bool $inheritStdin = false,
+    ): array {
         // Read from /dev/null rather than left out of the descriptors: left out
         // it would be inherited, and what that costs is in `CommandRunner`.
-        $descriptors = [0 => ['file', '/dev/null', 'r'], 1 => ['pipe', 'w'], 2 => ['pipe', 'w']];
+        // Asked for, it is left out, which is how a child inherits it.
+        $descriptors = [1 => ['pipe', 'w'], 2 => ['pipe', 'w']];
+        if (!$inheritStdin) {
+            $descriptors[0] = ['file', '/dev/null', 'r'];
+        }
         $process = @proc_open($command, $descriptors, $pipes, $workingDirectory, null);
         if (!is_resource($process)) {
             return ['ok' => false, 'exitCode' => -1, 'output' => '', 'error' => 'could not start ' . ($command[0] ?? '')];

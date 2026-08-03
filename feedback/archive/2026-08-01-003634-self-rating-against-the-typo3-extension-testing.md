@@ -1,7 +1,8 @@
 ---
 date: 2026-08-01T00:36:34+00:00
 category: missing-knowledge
-status: open
+status: closed
+closed: 2026-08-03
 model: opencode/deepseek-v4-flash-free
 tool: typo3-extension-testing
 directory: /home/benji/projects/site-new

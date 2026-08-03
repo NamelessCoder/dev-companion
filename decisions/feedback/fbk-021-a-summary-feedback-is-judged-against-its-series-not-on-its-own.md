@@ -207,3 +207,30 @@ nobody else owns, so it stays open behind that half's todo, and
 [`D-FBK-017`](fbk-017-a-judgement-turns-a-feedback-into-work-and-the-work-closes-it.md)'s
 invariant holds without the sixth answer the three cards in `todo/waiting/` are
 waiting on.
+
+## Since then
+
+The second **Wrong if** fired, and the three summaries were archived without the
+sixth answer having been given.
+
+Every sibling has landed. `002745`, `002926`, `002928`, `002930`, `003003` and
+`003448` were archived on 2026-08-02, `003000` and `003929` on 2026-08-03, and
+the halves the other two summaries name — `003356`, `003533`, `003736`,
+`003933`, `003937`, `003938` — with them. So the branch the cards named as the
+conservative one is satisfied on its own terms: `closed` stands over subjects
+that were each worked off, which is what
+[`D-FBK-017`](fbk-017-a-judgement-turns-a-feedback-into-work-and-the-work-closes-it.md)
+asks of the archive, and the question the cards were blocked on did not have to
+be answered to get there.
+
+What held them open is what the **Wrong if** describes. Each closing commit
+archives the feedback it worked off and nothing else, so no commit reached the
+summaries, and nothing reported the state: `bin/cli todo:check` said
+`0 problems` while three cards waited on a question the work had already
+overtaken. The cards are deleted by the commit that archives the feedback, which
+is the invariant's other half.
+
+Archiving on supersession is still undecided, and the case for it has changed
+shape rather than gone away. What the cards weighed was whether `closed` may
+stand over an open subject; what this shows is that the alternative is held by a
+watch nobody keeps.

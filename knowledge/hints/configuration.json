@@ -95,5 +95,43 @@
       "Two console commands do read a fixed set of variables, and only while they run. typo3 setup accepts the TYPO3_DB_ family (DRIVER, HOST, PORT, USERNAME, PASSWORD, DBNAME), the TYPO3_SETUP_ family for the administrator and the site to create, plus TYPO3_PROJECT_NAME and TYPO3_SERVER_TYPE, as answers to the questions it would otherwise ask; typo3 backend:user:create accepts the TYPO3_BE_USER_ family the same way. Ask the command's --help for the exact set, because it has grown between majors. What setup does with those values is write settings.php once, which is why a project can set TYPO3_DB_HOST, watch the installation come up, and still have nothing that reads the variable afterwards.",
       "TypoScript reaches the environment in two places that are easy to miss when auditing what a site depends on: the constant function modifier := getEnv(NAME), and getenv as a getData key, so data = getenv:NAME resolves in stdWrap. Both read the environment of the process serving the request, which is not the shell a deployment script ran in."
     ]
+  },
+  {
+    "id": "installation-setup",
+    "title": "What typo3 setup Takes and What It Refuses",
+    "domains": [
+      "php"
+    ],
+    "appliesTo": [
+      "typo3 setup",
+      "unattended install",
+      "non-interactive install",
+      "install script",
+      "--driver",
+      "--create-site",
+      "--distribution",
+      "--force",
+      "TYPO3_DB_DRIVER",
+      "TYPO3_SETUP_CREATE_SITE",
+      "TYPO3_SETUP_DISTRIBUTION",
+      "pdo_sqlite",
+      "settings.php",
+      "re-runnable installation",
+      "ddev start"
+    ],
+    "hints": [
+      "The command takes a connection type and writes a driver name, and the two spellings differ. --driver and TYPO3_DB_DRIVER accept mysqli, mysqliSocket, pdoMysql, pdoMysqlSocket, postgres or sqlite; config/system/settings.php then carries the DBAL driver behind it, so sqlite is persisted as pdo_sqlite and postgres as pdo_pgsql. Handing the persisted name back is refused with exception 1669905551, saying that connection type does not exist — the file the command wrote is not a source for the option that wrote it.",
+      "sqlite is the connection type that needs nothing else. No host, port, dbname, username or password is read for it, and the file is calculated rather than named: var/sqlite/cms-<random>.sqlite where the project root sits above the document root, the config directory where it does not. The name is random per run, so a second run behind --force points settings.php at a new empty database and leaves the first file on disk.",
+      "It refuses a database that already has tables, with exception 1669747200 naming how many it found; --force overwrites the settings files and never the schema. That check is on the server-database path only — the sqlite path calculates a fresh file and never reaches it. Without --force the run stops earlier still, on config/system/settings.php already existing, which is exception 1669747685 and which --no-interaction answers with no. So the guard an idempotent installer needs is that file: test for it yourself rather than reading an exit code.",
+      {
+        "text": "--create-site <url> and TYPO3_SETUP_CREATE_SITE create the root page and its site configuration under config/sites/, and nothing suppresses them.",
+        "until": 13
+      },
+      {
+        "text": "--distribution names a package whose content is imported instead. It needs typo3/cms-impexp active and may not be combined with --create-site, which is exception 1775034289. Both options are read only where no distribution is active yet, and shipping Initialisation/data.xml or Initialisation/data.t3d is the whole test for being one. In Composer mode every required package is active, so requiring such a package makes both inert: the command warns that they have no effect, writes no site configuration, and the installation has no way to be told its own URL. What imports the distribution is the package initialisation setup triggers as its last step — sitepackage-initial-content.",
+        "since": 14
+      },
+      "Which TYPO3_ variables the command reads, and why nothing reads them once it has run, is environment-runtime-readers."
+    ]
   }
 ]

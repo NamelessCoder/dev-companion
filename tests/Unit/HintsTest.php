@@ -3218,6 +3218,44 @@ final class HintsTest extends TestCase
     }
 
     #[Test]
+    public function anUnattendedInstallIsAnsweredWithWhatTheCommandRefuses(): void
+    {
+        // The script was written from the command's own --help, which names
+        // neither the connection type the option takes nor the driver it
+        // persists, and says nothing about a second run. Four failed runs.
+        $result = Registry::call('typo3_task_guide', [
+            'task' => 'install TYPO3 unattended from a shell script so that "ddev start" sets the instance up on its own',
+        ]);
+
+        self::assertContains('installation-setup', array_column($result->data['intents'], 'id'));
+        self::assertContains('installation-setup', array_column($result->data['hints'], 'id'));
+
+        $statements = self::statementsOf('installation-setup');
+        self::assertStringContainsString('pdo_sqlite', $statements, 'the driver name the option does not take');
+        self::assertStringContainsString(
+            'config/system/settings.php',
+            $statements,
+            'what an idempotent installer guards on, since the command guards on the schema',
+        );
+
+        // The site half is the one that moved. Before the distribution option
+        // existed, --create-site wrote the site configuration whatever else was
+        // installed; since it does, a required package that ships an
+        // initialisation file silences both options.
+        $onThirteen = implode("\n", array_column(Hints::byId('installation-setup', 13)['hints'], 'text'));
+        self::assertStringContainsString('--create-site <url>', $onThirteen);
+        self::assertStringNotContainsString('--distribution', $onThirteen);
+
+        $onFourteen = implode("\n", array_column(Hints::byId('installation-setup', 14)['hints'], 'text'));
+        self::assertStringContainsString('--distribution', $onFourteen);
+        self::assertStringContainsString(
+            'no way to be told its own URL',
+            $onFourteen,
+            'the consequence the two inert options have',
+        );
+    }
+
+    #[Test]
     public function aRepeatableContentElementIsRoutedThroughWhatItOwns(): void
     {
         // A session designed a hero carousel out of generic record references —

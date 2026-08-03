@@ -1,7 +1,7 @@
 ---
 id: D-KNW-046
 date: 2026-08-03
-status: open
+status: confirmed
 ---
 
 # D-KNW-046 — The non-interactive install path is a gap this server owns
@@ -96,3 +96,38 @@ report afterwards and left to find out what the command takes.
 - The entry lands and a later install session still reaches nothing. Then the
   gap was never the knowledge but where an install task looks, and the fix is on
   `installation-setup` rather than in `knowledge/hints/`.
+
+## Covered by
+
+- `HintsTest::anUnattendedInstallIsAnsweredWithWhatTheCommandRefuses`
+
+## Confirmed on 2026-08-03
+
+The reading this was queued for, on all four covered checkouts. The mechanics
+are one flat statement: `SetupCommand::$connectionLabels` keys the same six
+connection types on `12.4`, `13.4`, `14.3` and `main`,
+`getDriverOptions()` sets `sqliteManualConfigurationOptions` to `pdo_sqlite` and
+nothing else on all four, the sqlite path is calculated into `var/sqlite/` by the
+same lines, and the `1669747200` validator is unchanged. So the first **Wrong
+if** does not hold and the assumption the entry rests on is confirmed.
+
+The two site options are the half that moved, which the entry did not expect.
+`12.4` and `13.4` have no `--distribution` option, no `$distributions['active']`
+check and no `setupExtensions()` call, so `--create-site` writes the root page
+and the site configuration there whatever else is installed. `installation-setup`
+carries that as `until: 13` against the `since: 14` statement about the inert
+options, and the same reading bound one statement of
+`sitepackage-initial-content` that was stated flat and is false on both LTS
+branches — that the setup command runs the extension setup as its last step.
+
+One imprecision stays and is worth naming. The option arrived inside the covered
+14 branch, in `926b9a7`, tagged first as `v14.3.0`, and `since` carries a major —
+so a caller on an earlier 14 is told about an option that release does not have.
+The corpus binds by major because `knowledge/versions.json` covers one branch per
+major, and expressing this would be a change to that model rather than to this
+entry.
+
+The third **Wrong if** was measured rather than assumed. `bin/cli hints:probe` on
+the feedback's own query now returns `installation-setup`, and
+`typo3_task_guide` with the feedback's own task carries the hint beside the
+intent it already recognised.

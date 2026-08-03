@@ -141,7 +141,55 @@
         "text": "A ViewHelper is public API. A new one, or a changed argument list, needs a changelog entry under typo3/sysext/core/Documentation/Changelog/.",
         "scope": "core"
       },
-      "Fluid parsing itself is configured in $GLOBALS['TYPO3_CONF_VARS']['SYS']['fluid'] in typo3/sysext/core/Configuration/DefaultConfiguration.php — interceptors, preProcessors including NamespaceDetectionTemplateProcessor, and expressionNodeTypes."
+      "Fluid parsing itself is configured in $GLOBALS['TYPO3_CONF_VARS']['SYS']['fluid'] in typo3/sysext/core/Configuration/DefaultConfiguration.php — interceptors, preProcessors including NamespaceDetectionTemplateProcessor, and expressionNodeTypes.",
+      {
+        "text": "The resource half of this area was rebuilt underneath that shape: a URL to an asset comes from the System Resource API rather than from the ViewHelper doing its own path arithmetic, and fluid-resource-uris is what changed.",
+        "since": 14
+      }
+    ]
+  },
+  {
+    "id": "fluid-resource-uris",
+    "title": "Resource URIs in a Fluid Template, and Where Cache Busting Is Applied",
+    "domains": [
+      "fluid"
+    ],
+    "appliesTo": [
+      "f:resource",
+      "f:uri.resource",
+      "f:uri.image",
+      "system resource",
+      "resource identifier",
+      "cache busting",
+      "cache buster",
+      "useCacheBusting",
+      "SystemResourceFactory",
+      "SystemResourcePublisherInterface",
+      "PublicResourceInterface",
+      "asset url",
+      "url to a stylesheet"
+    ],
+    "hints": [
+      {
+        "text": "f:resource resolves a resource identifier into a resource object and f:uri.resource turns that object into a URI: {f:resource(identifier: 'PKG:my-vendor/site-package:Resources/Public/Css/main.css') -> f:uri.resource()}. Those two are the whole Fluid surface of the System Resource API in TYPO3\\CMS\\Core\\SystemResource. f:image and f:uri.image are not on it — they resolve through FAL and the Extbase ImageService, and their own class documentation sends an extension resource to f:uri.resource instead. f:uri.resource also still takes a plain path with an optional extensionName, so the object form is the addition rather than the replacement.",
+        "since": 14
+      },
+      {
+        "text": "Cache busting belongs to the publisher rather than to the ViewHelper: SystemResourcePublisherInterface::generateUri() adds it while building the URI, from the file modification time for a package resource and from the sha1 for a FAL file. Every resource URI therefore carries one, a query string already written into the identifier no longer suppresses it, and useCacheBusting=\"false\" on f:uri.resource is what switches it off.",
+        "since": 14
+      },
+      {
+        "text": "An identifier is PKG:<composer name>:<path in the package>, EXT:<key>/<path>, FAL:<storage uid>:/<identifier>, an absolute URL, or URI:/<path> for one relative to the host. A bare relative path still resolves and is the predecessor form: below the public directory, or below the configured fileadmin and against the default storage only. A path inside an extension but outside Configuration, Resources/Private and Resources/Public is not addressable at all until Configuration/Resources.php declares it.",
+        "since": 14
+      },
+      {
+        "text": "PublicResourceInterface is the public API of that world and is what a URI can be generated for. Core\\Resource\\File implements it beside the package types, so a FAL file and an extension file are handed to the same generation. Implementing it is not on offer — the interface reserves implementations for the core's own namespace, and a replacement is written as a SystemResourcePublisherInterface instead.",
+        "since": 14
+      },
+      {
+        "text": "There is no resource object here: f:uri.resource takes a path and computes the URL itself through PathUtility, there is no f:resource ViewHelper to hand it one, and a URI carries cache busting only where the calling code put it there.",
+        "until": 13
+      }
     ]
   }
 ]

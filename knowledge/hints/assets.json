@@ -14,11 +14,28 @@
       "_assets",
       "asset",
       "stylesheet",
+      "asset:publish",
+      "system resource",
+      "Configuration/Resources.php",
       "CanNotResolvePublicResourceException"
     ],
     "hints": [
-      "Resources/Public/ of an installed package is published into the document root by the Composer installer, as a symlink below _assets/<hash>/. The hash is the package, not the file.",
-      "That publishing happens when the packages are installed, not at runtime. A file added to Resources/Public/ afterwards is not resolvable until they are installed again, and the remedy is a Composer install rather than a cache flush.",
+      {
+        "text": "Resources/Public/ of an installed package is published into the document root by the Composer installer, as a symlink below _assets/<hash>/. The hash is the package, not the file.",
+        "until": 13
+      },
+      {
+        "text": "That publishing happens when the packages are installed, not at runtime. A file added to Resources/Public/ afterwards is not resolvable until they are installed again, and the remedy is a Composer install rather than a cache flush.",
+        "until": 13
+      },
+      {
+        "text": "TYPO3 publishes Resources/Public/ itself, below _assets/<hash>/ in the document root: the asset:publish command, which composer install runs on its own, extension:setup, and activating an extension. TYPO3_SKIP_ASSET_PUBLISH=1 keeps composer install out of it, and $GLOBALS['TYPO3_CONF_VARS']['SYS']['SystemResources']['filesystemPublishingType'] chooses between linking the folder and copying it — 'mirror' is what a read-only or container deployment needs. Where it linked, a file added afterwards is served straight away; where it copied, asset:publish is what picks it up, and never a cache flush.",
+        "since": 14
+      },
+      {
+        "text": "Which paths of a package are addressable is declared rather than assumed. The default is Configuration, Resources/Private and Resources/Public, and a public folder or single file anywhere else — a Build output directory, say — is published and resolvable only once Configuration/Resources.php names it. That file is evaluated without TYPO3 booted, so nothing global is available in it.",
+        "since": 14
+      },
       {
         "text": "The failure has a name: CanNotResolvePublicResourceException, thrown for a path that plainly exists on disk.",
         "since": 14
@@ -26,6 +43,14 @@
       {
         "text": "Nothing throws here — PathUtility computes the URL from the path either way — so the symptom is an asset that 404s in the browser rather than an exception in PHP.",
         "until": 13
+      },
+      {
+        "text": "In PHP the URL comes from the System Resource API: inject SystemResourceFactory, call createPublicResource() with the identifier — PKG:<composer name>:<path in the package>, EXT:<key>/<path>, FAL:<storage uid>:/<identifier> or a URL — and hand the result to SystemResourcePublisherInterface::generateUri(). Both are injectable, and replacing the publisher is how a CDN gets its own URIs.",
+        "since": 14
+      },
+      {
+        "text": "PathUtility::getPublicResourceWebPath() is what computes such a URL here.",
+        "until": 14
       },
       "Reference such a file as EXT:<key>/Resources/Public/... and let the resolver produce the published URI. The _assets path is an implementation detail and its hash changes with the layout."
     ]

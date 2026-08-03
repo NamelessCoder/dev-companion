@@ -178,6 +178,30 @@ final class HintsTest extends TestCase
     }
 
     #[Test]
+    public function aFluidResourceUriTaskIsAnsweredWithWhoAppliesCacheBusting(): void
+    {
+        // The query is the one a bugfix session arrived with on 15.0.0-dev. It
+        // got the ViewHelper class shape back — correct, and silent about the
+        // API the area had been rebuilt on, which is what the task was about.
+        $query = 'Fix f:image ViewHelper failing when src contains a cache busting query string produced by f:uri.resource';
+        $result = Hints::find([], $query, 6);
+        self::assertSame('fluid-resource-uris', $result['matchedHints'][0]['id']);
+
+        $onFifteen = self::statementsOf('fluid-resource-uris');
+        self::assertStringContainsString('f:image and f:uri.image are not on it', $onFifteen);
+        self::assertStringContainsString('belongs to the publisher rather than to the ViewHelper', $onFifteen);
+        self::assertStringContainsString('useCacheBusting', $onFifteen);
+
+        // Read on both sides in .checkouts/: the SystemResource namespace, the
+        // f:resource ViewHelper and File implementing PublicResourceInterface
+        // are on 14.3 and on main alike, and on 13.4 there is none of it. The
+        // report read the API as a 15 change because it came from 13.
+        $guide = Registry::call('typo3_task_guide', ['task' => $query, 'targetVersion' => '13.4']);
+        self::assertStringNotContainsString('System Resource API', $guide->text);
+        self::assertStringContainsString('computes the URL itself through PathUtility', $guide->text);
+    }
+
+    #[Test]
     public function aTypoScriptPathReachesTheTypoScriptHintsAndNotTheCssOnes(): void
     {
         // .typoscript and .tsconfig used to fall into the generic frontend

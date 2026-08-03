@@ -35,7 +35,11 @@
     ],
     "hints": [
       "Storages come from StorageRepository: findByUid(), getDefaultStorage(), findAll(), findByStorageType() for the ones on one kind of backend.",
-      "A storage's backing system is a driver implementing DriverInterface. Behaviour that differs per storage belongs in the driver, not in the calling code — that is what makes the same calling code work against a local directory and a remote bucket."
+      "A storage's backing system is a driver implementing DriverInterface. Behaviour that differs per storage belongs in the driver, not in the calling code — that is what makes the same calling code work against a local directory and a remote bucket.",
+      {
+        "text": "Uid 0 is the fallback rather than a storage of its own: it stands for the public directory, and the System Resource API refuses every file in it. ResourceFactory::retrieveFileOrFolderObject() still resolves an EXT: path and a bare public path through it, and the source marks both routes for removal once the fallback goes — so a package file is addressed as a system resource, not as a FAL file.",
+        "since": 14
+      }
     ]
   },
   {

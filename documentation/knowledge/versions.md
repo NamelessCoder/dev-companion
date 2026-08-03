@@ -38,6 +38,10 @@ and the failure is silent. The rules below follow from it.
   whose payload is "X is deprecated" becomes a bullet whose payload is "this is
   what new code looks like", bound to the version the new shape arrived in. The
   predecessor is then implied and stays a clause, not a bullet of its own.
+- **Where an area was rebuilt underneath, the hints say so themselves.** Routing
+  the caller to `typo3_changelog_lookup` for what the version changed here is a
+  call a session under time pressure skips, and what it acts on instead is the
+  statement that described the area before it moved.
 - **Where the answer is branch-specific in a way a range cannot express, give
   the procedure, not the result.** Name what to read in the checkout — an
   `@deprecated` annotation, a `trigger_error(..., E_USER_DEPRECATED)` call,

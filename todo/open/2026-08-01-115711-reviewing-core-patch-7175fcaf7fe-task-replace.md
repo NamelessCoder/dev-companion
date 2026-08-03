@@ -2,8 +2,6 @@
 
 **Serves:** feedback/2026-08-01-115711-reviewing-core-patch-7175fcaf7fe-task-replace.md, R-GUI-006
 **Priority:** normal
-**Branch:** todo/reviewing-core-patch-7175fcaf7fe-task-replace
-**Claimed:** 2026-08-03
 
 Judged and trimmed on 2026-08-03; `D-GUI-004` carries the reading and the
 re-run, and nothing of it is repeated here. What is left is one consolidation,

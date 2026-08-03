@@ -31,6 +31,25 @@ carries the marker. The **Wrong if** itself stays unguarded: no pushed commit
 has been seen either way, and only a forward run against a real contribution
 would produce one (2026-08-02).
 
+**Since then** a third field of the same kind was found, and the mechanism above
+does not reach it. `isBreaking` is something the guide cannot know either: it is
+an input, and the tool never sees the diff. A core patch review passed the whole
+message of `9f6c6eb9093` with no `isBreaking` argument. The answer was
+`no-issues-found` and nothing else. That patch removes a protected method from a
+class that is neither `final` nor `@internal`, so whether the subject owed
+`[!!!]` was the open question of the review — and a caller who had not yet
+classified the change is the one most likely to ask
+(`feedback/2026-08-03-144432`). A placeholder cannot carry this field. The
+answer's place in the subject is the *absence* of a marker, so there is nothing
+to write `RELEASE_TARGET` into, and the statement has to move out of the draft
+and into the checks. Re-run on 2026-08-03 against the code as it stands: that
+same message now returns five `body-lines-reflowed` infos and no
+`no-issues-found` at all, and a short-bodied core message still returns
+`no-issues-found` alone — so the silence about the classification survives both
+answers and is not what the clearance wording is doing. `R-GUI-011` is what must
+hold; the judgement queued it rather than making it, because the change is in
+`src/` and adds a check code.
+
 ## Decided
 
 - The draft states what it does not know, in the place where the answer belongs.

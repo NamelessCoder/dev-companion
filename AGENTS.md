@@ -470,14 +470,24 @@ grep for.
 
 - Split changes into small, single-purpose commits and commit as soon as each
   part is verified.
-- The subject says what the commit does. The body says only what the diff
-  cannot: what was measured, what was rejected, what the change rests on. Where
-  a decision or a requirement already carries that, the body names the id
-  instead. A body that summarises the entry beside it is two copies of one
-  reading, and the file is the one a reader searches.
+- The subject is a keyword and then what the commit did, condensed: `[TASK]`,
+  `[BUGFIX]` or `[FEATURE]`, and none other. A documentation change here is a
+  `[TASK]` — `[DOCS]`, `[SECURITY]` and `[!!!]` belong to the core's process,
+  which this checkout does not run.
+- Keep the whole subject line, keyword included, under 52 characters, and never
+  past 72. Wrap the body at 72. Those are the numbers
+  `typo3_commit_message_guide` returns for `workflow="project"`, so what this
+  repository writes by and what its own tool states are one measure rather than
+  two — `D-DOC-013`. The 80 `bin/cli prose:format` wraps at belongs to the
+  markdown corpus and reaches no commit message.
+- The body says only what the diff cannot: what was measured, what was rejected,
+  what the change rests on. Where a decision or a requirement already carries
+  that, the body names the id instead. A body that summarises the entry beside
+  it is two copies of one reading, and the file is the one a reader searches.
 - The prose rule holds here as everywhere: one point per sentence, no sentence
-  restating the one above it. Nothing measures a commit message, so this one is
-  held by rereading it before `git commit`.
+  restating the one above it. Nothing measures a commit message — not the
+  keyword, not the two widths, not this rule — so all of it is held by rereading
+  it before `git commit`.
 - Only commit the files you changed yourself in this session. The working tree
   may already contain unrelated modifications or staged changes from someone
   else — leave them alone.

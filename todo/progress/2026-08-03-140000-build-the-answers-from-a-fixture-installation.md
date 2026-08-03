@@ -2,6 +2,8 @@
 
 **Serves:** documentation/clients/tools/
 **Priority:** high
+**Branch:** todo/build-the-answers-from-a-fixture-installation
+**Claimed:** 2026-08-03
 
 Nine tools declare `answeredBy`, and their pages can only be written on a
 machine that has a booted TYPO3: `typo3_label_lookup`,

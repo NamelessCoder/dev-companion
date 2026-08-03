@@ -154,11 +154,23 @@ fluidRoots: [string]  # optional
 fluidNamespaces: [string]  # optional
 # Files below Configuration/TypoScript/.
 typoScript: [string]  # optional
+# The shape of its Classes/ directory, read off the file tree rather than off a
+# registration.
 classes:  # optional
-  - # The Classes/ subdirectory, for example EventListener or DataProcessing.
-    kind: string
-    # PHP files anywhere below it, its own subdirectories included.
-    files: integer
+  # Every directory directly below Classes/, whatever it is named. Nothing is
+  # filtered, so a directory here is not a registration of any kind — it is
+  # what the extension calls it.
+  directories:
+    - # The directory, directly below Classes/, for example EventListener or
+      # Utility.
+      name: string
+      # PHP files anywhere below it, its own subdirectories included.
+      files: integer
+  # PHP files lying directly in Classes/, under no directory of their own.
+  looseFiles: integer
+  # Every PHP file below Classes/, which is what `find Classes -name '*.php' |
+  # wc -l` gives. The rows above and looseFiles add up to it.
+  total: integer
 # Registration files it ships, from ext_localconf.php to
 # Initialisation/data.t3d.
 files: [string]  # optional
@@ -294,8 +306,8 @@ Fluid roots: Resources/Private/Templates/, Resources/Private/Partials/, Resource
 
 Registration files: ext_localconf.php, ext_tables.sql, Configuration/page.tsconfig, Configuration/user.tsconfig, Configuration/RequestMiddlewares.php, Configuration/Services.yaml, Configuration/JavaScriptModules.php
 
-Classes: Command (8), Controller (90), Domain (5), Event (1), EventListener (4), Form (201), Hooks (2), Middleware (12), Service (2), Upgrades (3), ViewHelpers (15)
-Each count is every PHP file below that directory, its own subdirectories included.
+Classes: Attribute (3), Authentication (4), Backend (22), Breadcrumb (6), Clipboard (2), CodeEditor (6), Command (8), Configuration (5), Context (2), ContextMenu (7), Controller (90), Date (3), DependencyInjection (3), Domain (5), Dto (9), ElementBrowser (6), Event (1), EventListener (4), Exception (8), Form (201), History (4), Hooks (2), Http (3), LinkHandler (9), Localization (11), LoginProvider (4), Middleware (12), Module (17), Preview (5), RecordList (10), Resource (2), Routing (15), Search (22), Security (18), Service (2), Sidebar (7), Template (41), Toolbar (4), Tree (21), Upgrades (3), User (1), UserFunctions (1), Utility (1), View (36), ViewHelpers (15), Wizard (8), 2 directly in Classes/ — 671 PHP files in total.
+Every directory below Classes/ is named here, and each count is every PHP file below that directory, its own subdirectories included. The total is what `find Classes -name '*.php' | wc -l` gives.
 
 Requires: ext-intl *, ext-libxml *, psr/event-dispatcher ^1.0, typo3/cms-core 14.3.*@dev
 
@@ -561,52 +573,196 @@ Data:
     ],
     "fluidNamespaces": [],
     "typoScript": [],
-    "classes": [
-        {
-            "kind": "Command",
-            "files": 8
-        },
-        {
-            "kind": "Controller",
-            "files": 90
-        },
-        {
-            "kind": "Domain",
-            "files": 5
-        },
-        {
-            "kind": "Event",
-            "files": 1
-        },
-        {
-            "kind": "EventListener",
-            "files": 4
-        },
-        {
-            "kind": "Form",
-            "files": 201
-        },
-        {
-            "kind": "Hooks",
-            "files": 2
-        },
-        {
-            "kind": "Middleware",
-            "files": 12
-        },
-        {
-            "kind": "Service",
-            "files": 2
-        },
-        {
-            "kind": "Upgrades",
-            "files": 3
-        },
-        {
-            "kind": "ViewHelpers",
-            "files": 15
-        }
-    ],
+    "classes": {
+        "directories": [
+            {
+                "name": "Attribute",
+                "files": 3
+            },
+            {
+                "name": "Authentication",
+                "files": 4
+            },
+            {
+                "name": "Backend",
+                "files": 22
+            },
+            {
+                "name": "Breadcrumb",
+                "files": 6
+            },
+            {
+                "name": "Clipboard",
+                "files": 2
+            },
+            {
+                "name": "CodeEditor",
+                "files": 6
+            },
+            {
+                "name": "Command",
+                "files": 8
+            },
+            {
+                "name": "Configuration",
+                "files": 5
+            },
+            {
+                "name": "Context",
+                "files": 2
+            },
+            {
+                "name": "ContextMenu",
+                "files": 7
+            },
+            {
+                "name": "Controller",
+                "files": 90
+            },
+            {
+                "name": "Date",
+                "files": 3
+            },
+            {
+                "name": "DependencyInjection",
+                "files": 3
+            },
+            {
+                "name": "Domain",
+                "files": 5
+            },
+            {
+                "name": "Dto",
+                "files": 9
+            },
+            {
+                "name": "ElementBrowser",
+                "files": 6
+            },
+            {
+                "name": "Event",
+                "files": 1
+            },
+            {
+                "name": "EventListener",
+                "files": 4
+            },
+            {
+                "name": "Exception",
+                "files": 8
+            },
+            {
+                "name": "Form",
+                "files": 201
+            },
+            {
+                "name": "History",
+                "files": 4
+            },
+            {
+                "name": "Hooks",
+                "files": 2
+            },
+            {
+                "name": "Http",
+                "files": 3
+            },
+            {
+                "name": "LinkHandler",
+                "files": 9
+            },
+            {
+                "name": "Localization",
+                "files": 11
+            },
+            {
+                "name": "LoginProvider",
+                "files": 4
+            },
+            {
+                "name": "Middleware",
+                "files": 12
+            },
+            {
+                "name": "Module",
+                "files": 17
+            },
+            {
+                "name": "Preview",
+                "files": 5
+            },
+            {
+                "name": "RecordList",
+                "files": 10
+            },
+            {
+                "name": "Resource",
+                "files": 2
+            },
+            {
+                "name": "Routing",
+                "files": 15
+            },
+            {
+                "name": "Search",
+                "files": 22
+            },
+            {
+                "name": "Security",
+                "files": 18
+            },
+            {
+                "name": "Service",
+                "files": 2
+            },
+            {
+                "name": "Sidebar",
+                "files": 7
+            },
+            {
+                "name": "Template",
+                "files": 41
+            },
+            {
+                "name": "Toolbar",
+                "files": 4
+            },
+            {
+                "name": "Tree",
+                "files": 21
+            },
+            {
+                "name": "Upgrades",
+                "files": 3
+            },
+            {
+                "name": "User",
+                "files": 1
+            },
+            {
+                "name": "UserFunctions",
+                "files": 1
+            },
+            {
+                "name": "Utility",
+                "files": 1
+            },
+            {
+                "name": "View",
+                "files": 36
+            },
+            {
+                "name": "ViewHelpers",
+                "files": 15
+            },
+            {
+                "name": "Wizard",
+                "files": 8
+            }
+        ],
+        "looseFiles": 2,
+        "total": 671
+    },
     "files": [
         "ext_localconf.php",
         "ext_tables.sql",
@@ -895,8 +1051,8 @@ Service tags: backend.controller
 
 Registration files: Configuration/Services.yaml
 
-Classes: Controller (1)
-Each count is every PHP file below that directory, its own subdirectories included.
+Classes: Controller (1) — 1 PHP file in total.
+Every directory below Classes/ is named here, and each count is every PHP file below that directory, its own subdirectories included. The total is what `find Classes -name '*.php' | wc -l` gives.
 
 Ships: manual none, readme none, tests none, language files 1
 - Resources/Private/Language/locallang.xlf — source-language en, no translations beside it
@@ -941,12 +1097,16 @@ Data:
     "fluidRoots": [],
     "fluidNamespaces": [],
     "typoScript": [],
-    "classes": [
-        {
-            "kind": "Controller",
-            "files": 1
-        }
-    ],
+    "classes": {
+        "directories": [
+            {
+                "name": "Controller",
+                "files": 1
+            }
+        ],
+        "looseFiles": 0,
+        "total": 1
+    },
     "files": [
         "Configuration/Services.yaml"
     ],

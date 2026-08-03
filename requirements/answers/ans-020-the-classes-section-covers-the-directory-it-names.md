@@ -11,10 +11,10 @@ PHP file under it, and nothing it reads off the file tree is presented as a
 registration.**
 
 The answer promises the shape of an extension's `Classes/` directory. Thirteen
-directory names are recognised and anything else is dropped — not reported under
-another kind, not counted in a total, absent. A caller who checks the section
-against `find` gets a different answer and concludes the section is wrong, which
-is [`D-ANS-008`](../../decisions/answers/ans-008-a-number-a-reader-cannot-reproduce-is-read-as-wrong.md)
+directory names were recognised and anything else was dropped — not reported
+under another kind, not counted in a total, absent. A caller who checks the
+section against `find` got a different answer and concluded the section is wrong,
+which is [`D-ANS-008`](../../decisions/answers/ans-008-a-number-a-reader-cannot-reproduce-is-read-as-wrong.md)
 one level up: there it was a number nobody could reproduce, here it is the list.
 
 The same holds for what this answer states with no declaration behind it.
@@ -33,7 +33,8 @@ asking about. Measured against `.checkouts/14.3` the same day, `core` reports
 
 ## Held by
 
-- Not guarded. Nothing asserts today that a directory below `Classes/` reaches
-  the answer, and the shape such a test would assert is what
-  [`D-ANS-045`](../../decisions/answers/ans-045-the-classes-section-covers-the-directory-it-names.md)
-  leaves to the todo.
+- `ProjectTest::everyDirectoryBelowClassesIsInTheAnswer` — the first half. Every
+  directory below `Classes/` is named, a PHP file lying directly in it is counted
+  where it lies, and the total is the number `find` gives.
+- Not guarded for the second half. Nothing asserts that a value read off the file
+  tree says so, and `fluidRoots` is still rendered among the registrations.

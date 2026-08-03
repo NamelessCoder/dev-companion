@@ -48,7 +48,7 @@ final class ExtensionScope extends ReadOnlyTool
         'fluidRoots' => [],
         'fluidNamespaces' => [],
         'typoScript' => [],
-        'classes' => [],
+        'classes' => ['directories' => [], 'looseFiles' => 0, 'total' => 0],
         'files' => [],
         'deprecatedFiles' => [],
         'notReadStatically' => [],
@@ -122,10 +122,14 @@ final class ExtensionScope extends ReadOnlyTool
             'fluidRoots' => Schema::listOf(Schema::string(), 'Which of Resources/Private/Templates, Partials and Layouts exist.'),
             'fluidNamespaces' => Schema::listOf(Schema::string(), 'Prefixes it registers globally in Configuration/Fluid/Namespaces.php.'),
             'typoScript' => Schema::listOf(Schema::string(), 'Files below Configuration/TypoScript/.'),
-            'classes' => Schema::listOf(Schema::object([
-                'kind' => Schema::string('The Classes/ subdirectory, for example EventListener or DataProcessing.'),
-                'files' => Schema::integer('PHP files anywhere below it, its own subdirectories included.'),
-            ], ['kind', 'files'])),
+            'classes' => Schema::object([
+                'directories' => Schema::listOf(Schema::object([
+                    'name' => Schema::string('The directory, directly below Classes/, for example EventListener or Utility.'),
+                    'files' => Schema::integer('PHP files anywhere below it, its own subdirectories included.'),
+                ], ['name', 'files']), 'Every directory directly below Classes/, whatever it is named. Nothing is filtered, so a directory here is not a registration of any kind — it is what the extension calls it.'),
+                'looseFiles' => Schema::integer('PHP files lying directly in Classes/, under no directory of their own.'),
+                'total' => Schema::integer('Every PHP file below Classes/, which is what `find Classes -name \'*.php\' | wc -l` gives. The rows above and looseFiles add up to it.'),
+            ], ['directories', 'looseFiles', 'total'], 'The shape of its Classes/ directory, read off the file tree rather than off a registration.'),
             'files' => Schema::listOf(Schema::string(), 'Registration files it ships, from ext_localconf.php to Initialisation/data.t3d.'),
             'deprecatedFiles' => Schema::listOf(Schema::object([
                 'file' => Schema::string('One of the files above.'),
@@ -279,16 +283,27 @@ final class ExtensionScope extends ReadOnlyTool
                 . 'mount holds records instead and is in no answer read from files.';
         }
 
-        if ($extension['classes'] !== []) {
+        $classes = $extension['classes'];
+        $rows = array_map(
+            static fn(array $directory): string => $directory['name'] . ' (' . $directory['files'] . ')',
+            $classes['directories'],
+        );
+        if ($classes['looseFiles'] > 0) {
+            // Their own row rather than a directory's, because that is where
+            // they are: core keeps four of them, SingletonInterface.php among
+            // them, and a whitelist of directory names had them nowhere.
+            $rows[] = $classes['looseFiles'] . ' directly in Classes/';
+        }
+        if ($rows !== []) {
             $lines[] = '';
-            $lines[] = 'Classes: ' . implode(', ', array_map(
-                static fn(array $kind): string => $kind['kind'] . ' (' . $kind['files'] . ')',
-                $extension['classes'],
-            ));
-            // Said because it is checkable: a caller who counts one level of
-            // Classes/Updates/ gets a smaller number and reads the answer as
-            // wrong rather than as differently measured — D-ANS-008.
-            $lines[] = 'Each count is every PHP file below that directory, its own subdirectories included.';
+            $lines[] = 'Classes: ' . implode(', ', $rows) . ' — ' . $classes['total']
+                . ' PHP file' . ($classes['total'] === 1 ? '' : 's') . ' in total.';
+            // Both numbers are said because both are checked: a caller who
+            // counts one level of Classes/Updates/ gets a smaller number
+            // (D-ANS-008), and one who runs find over Classes/ gets the total.
+            $lines[] = 'Every directory below Classes/ is named here, and each count is every PHP file below that '
+                . 'directory, its own subdirectories included. The total is what `find Classes -name \'*.php\' | wc -l` '
+                . 'gives.';
         }
 
         if ($extension['requires'] !== []) {

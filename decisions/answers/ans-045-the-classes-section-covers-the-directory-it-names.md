@@ -99,3 +99,23 @@ a caller who trusts the promise never learns there was more to open.
 - `fluidRoots` is read as a registration by a session that had the qualified line
   in front of it. The field would then be the problem rather than its wording,
   and removing it would be the change.
+
+## Since then
+
+The shape left to the todo is settled, and it is all three at once: a row per
+directory, the files lying directly in `Classes/` counted as their own row, and
+the total beside the breakdown. `classes` is an object of those three rather than
+the list of `{kind, files}` it was.
+
+The `Other` bucket alone was rejected. It names no directory, and the name is
+what the audit needed — it went past `Classes/Utility/` without learning there
+was a directory to open. The total is there because the check that found the gap
+was `find Classes -name '*.php' | wc -l`, and summing forty-six rows by hand is
+not that check: `backend` now reports 671 against the 343 its recorded answer
+summed to.
+
+The **Assumed** section's fear is real and accepted. `core` carries seventy
+directories and four loose files, so its line names seventy-one things. The
+cheaper shape buys that back by dropping the names, which is the finding.
+
+The `fluidRoots` half is untouched and still open behind its own todo.

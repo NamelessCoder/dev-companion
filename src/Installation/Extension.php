@@ -30,12 +30,6 @@ use Symfony\Component\Yaml\Yaml;
  */
 final class Extension
 {
-    /** Directories below Classes/ whose name says what the code in them is. */
-    private const CLASS_KINDS = [
-        'Command', 'Controller', 'DataProcessing', 'Domain', 'Event', 'EventListener',
-        'Form', 'Hooks', 'Middleware', 'Service', 'Updates', 'Upgrades', 'ViewHelpers',
-    ];
-
     /**
      * The files core reads from a site set directory by exact name.
      *
@@ -83,7 +77,7 @@ final class Extension
      *     fluidRoots: array<int, string>,
      *     fluidNamespaces: array<int, string>,
      *     typoScript: array<int, string>,
-     *     classes: array<int, array{kind: string, files: int}>,
+     *     classes: array{directories: array<int, array{name: string, files: int}>, looseFiles: int, total: int},
      *     files: array<int, string>,
      *     deprecatedFiles: array<int, array{file: string, changelog: string, predicate: string, cost: string}>,
      *     notReadStatically: array<int, string>,
@@ -1149,28 +1143,48 @@ final class Extension
         return $roots;
     }
 
-    /** @return array<int, array{kind: string, files: int}> */
+    /**
+     * The shape of Classes/: every directory in it, and every PHP file under it.
+     *
+     * Every directory, because thirteen recognised names were a filter nobody
+     * chose — `Classes/Utility/` was in no line of the answer and neither was a
+     * file lying directly in `Classes/`, which for `core` is 106 of 1508 files
+     * (`D-ANS-045`). The total is beside the breakdown because it is the number
+     * a caller checks the section with, and summing seventy rows by hand is not
+     * a check anybody runs.
+     *
+     * @return array{directories: array<int, array{name: string, files: int}>, looseFiles: int, total: int}
+     */
     private static function classes(string $path): array
     {
-        $classes = [];
-        foreach (self::CLASS_KINDS as $kind) {
-            $directory = $path . '/Classes/' . $kind;
-            if (!is_dir($directory)) {
-                continue;
-            }
-            $classes[] = ['kind' => $kind, 'files' => self::countPhpFiles($directory)];
+        $directory = $path . '/Classes';
+        if (!is_dir($directory)) {
+            return ['directories' => [], 'looseFiles' => 0, 'total' => 0];
         }
 
-        return $classes;
+        $directories = [];
+        foreach (Finder::create()->directories()->in($directory)->depth(0)->sortByName() as $entry) {
+            $directories[] = [
+                'name' => $entry->getFilename(),
+                'files' => self::countPhpFiles($entry->getPathname()),
+            ];
+        }
+
+        return [
+            'directories' => $directories,
+            'looseFiles' => Finder::create()->files()->in($directory)->depth(0)->name('*.php')->count(),
+            'total' => self::countPhpFiles($directory),
+        ];
     }
 
     /**
-     * The whole subtree, because a nested helper has no line of its own.
+     * The whole subtree, because a nested directory has no row of its own.
      *
-     * `Classes/Updates/Criteria/` is under no kind, so counting the top level
-     * alone would leave its files out of the answer altogether. What the number
-     * covers is stated where it is rendered and in the schema, because a reader
-     * who counts one level gets a different one — `D-ANS-008`.
+     * `Classes/Updates/Criteria/` is below a directory that is listed rather
+     * than beside it, so counting one level alone would leave its files out of
+     * that row. What the number covers is stated where it is rendered and in
+     * the schema, because a reader who counts one level gets a different one —
+     * `D-ANS-008`.
      */
     private static function countPhpFiles(string $directory): int
     {

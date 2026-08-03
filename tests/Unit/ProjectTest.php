@@ -501,7 +501,10 @@ final class ProjectTest extends TestCase
             $result->data['siteSets'],
         );
         self::assertSame(['Resources/Private/Partials/'], $result->data['fluidRoots']);
-        self::assertSame([['kind' => 'DataProcessing', 'files' => 1]], $result->data['classes']);
+        self::assertSame(
+            ['directories' => [['name' => 'DataProcessing', 'files' => 1]], 'looseFiles' => 0, 'total' => 1],
+            $result->data['classes'],
+        );
         self::assertContains('ext_localconf.php', $result->data['files']);
         self::assertSame(Project::ORIGIN_PROJECT, $result->data['origin']);
 
@@ -526,9 +529,48 @@ final class ProjectTest extends TestCase
 
         $result = Registry::call('typo3_extension_scope', ['extension' => 'my_sitepackage']);
 
-        self::assertSame([['kind' => 'Updates', 'files' => 3]], $result->data['classes']);
+        self::assertSame(
+            ['directories' => [['name' => 'Updates', 'files' => 3]], 'looseFiles' => 0, 'total' => 3],
+            $result->data['classes'],
+        );
         self::assertStringContainsString('Updates (3)', $result->text);
         self::assertStringContainsString('its own subdirectories included', $result->text);
+    }
+
+    #[Test]
+    public function everyDirectoryBelowClassesIsInTheAnswer(): void
+    {
+        // Thirteen recognised names left Classes/Utility/ in no line of the
+        // answer, and the audit that trusted the section never opened the one
+        // class that decided its question — R-ANS-020. A file lying directly
+        // in Classes/ was dropped the same way.
+        $root = $this->composerProject();
+        $extension = $root . '/packages/my_sitepackage';
+        $this->declare($extension . '/Classes/EventListener/LoginTourEventListener.php', "<?php\n");
+        $this->declare($extension . '/Classes/Utility/MascotResolver.php', "<?php\n");
+        $this->declare($extension . '/Classes/Utility/Path/Resolver.php', "<?php\n");
+        $this->declare($extension . '/Classes/SingletonInterface.php', "<?php\n");
+        Instance::discoverFrom($root);
+
+        $result = Registry::call('typo3_extension_scope', ['extension' => 'my_sitepackage']);
+
+        self::assertSame(
+            [
+                'directories' => [
+                    ['name' => 'EventListener', 'files' => 1],
+                    ['name' => 'Utility', 'files' => 2],
+                ],
+                'looseFiles' => 1,
+                'total' => 4,
+            ],
+            $result->data['classes'],
+        );
+        self::assertStringContainsString('Utility (2)', $result->text);
+        self::assertStringContainsString('1 directly in Classes/', $result->text);
+        // The number the caller checks the section with, in the one command
+        // they would check it by.
+        self::assertStringContainsString('4 PHP files in total', $result->text);
+        self::assertStringContainsString("find Classes -name '*.php' | wc -l", $result->text);
     }
 
     #[Test]

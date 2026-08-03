@@ -1434,6 +1434,63 @@ final class HintsTest extends TestCase
     }
 
     /**
+     * The corpus said every test class gets a database of its own and never what
+     * becomes of it, so a session watched the set grow, could not tell a
+     * leftover from the database the site runs on, and started accounting for
+     * records by hand (`D-KNW-022`). «live database versus test database»
+     * reached no hint at all.
+     *
+     * Read rather than recalled, on `.checkouts/testing-framework` at `8`, `9`
+     * and `main`, which agree line for line: the single `dropDatabase()` sits in
+     * `Testbase::setUpTestDatabase()` and runs at the *start* of a class's first
+     * test — drop where it exists, then create — `FunctionalTestCase::tearDown()`
+     * removes a site configuration directory and one cache file, and no ref
+     * declares `tearDownAfterClass()`. `getInstanceIdentifier()` is
+     * `substr(sha1(static::class), 0, 7)`, so the suffix is per class and the
+     * set is bounded by the classes rather than by the runs; and
+     * `DatabaseSnapshot` keeps its rows in memory or in a `.snapshot.sqlite`
+     * written by the first test of the same run, so a leftover is never read
+     * back.
+     *
+     * Both cases that carry no such name are asserted, because either one left
+     * out makes the suffix too strong as the mark: `$initializeDatabase = false`
+     * returns before `setUpTestDatabase()` is reached, and under `pdo_sqlite`
+     * the per-class database is a file below `functional-sqlite-dbs/` with no
+     * `_ft` name anywhere.
+     */
+    #[Test]
+    public function thePerClassDatabaseAnswerSaysWhatSurvivesTheRun(): void
+    {
+        $reaches = static fn(string $task): array => array_column(
+            Hints::find([], $task, 6)['matchedHints'],
+            'id',
+        );
+
+        self::assertContains('project-extension-tests', $reaches('live database versus test database'));
+        self::assertContains('project-extension-tests', $reaches('what happens to the test databases after the run'));
+        self::assertContains('project-extension-tests', $reaches('clean up functional test databases'));
+
+        $text = self::statementsOf('project-extension-tests');
+
+        // What survives, and what reclaims it.
+        self::assertStringContainsString('Nothing drops one after the run ends', $text);
+        self::assertStringContainsString('Testbase::setUpTestDatabase()', $text, 'where the only drop is');
+        self::assertStringContainsString('tearDownAfterClass()', $text, 'what does not exist');
+        self::assertStringContainsString('only when that same class runs again', $text);
+
+        // Why the set is bounded, which is what makes dropping them all safe.
+        self::assertStringContainsString('substr(sha1(<test class>), 0, 7)', $text);
+        self::assertStringContainsString('costs the next run nothing', $text);
+
+        // What tells a leftover from the live database, and the two cases that
+        // carry no such name.
+        self::assertStringContainsString('_ft<7 hex>', $text);
+        self::assertStringContainsString('nothing a functional test writes reaches the configured database', $text);
+        self::assertStringContainsString('$initializeDatabase = false', $text);
+        self::assertStringContainsString('functional-sqlite-dbs/test_<7 hex>.sqlite', $text);
+    }
+
+    /**
      * The chain a patch review read seven core classes for, because nothing
      * below `knowledge/` said how a file becomes a processed one (`D-KNW-028`).
      * What decides it is the order the registry asks in and the first `yes`,

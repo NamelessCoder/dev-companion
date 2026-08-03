@@ -30,11 +30,6 @@ The changed paths are the argument, not the subject. Pass them to
 `typo3_hint_lookup` for the conventions of the subsystem the patch is in, one
 call per subsystem, before forming a view of whether the code is right.
 
-What the diff *does* routes as well as where it sits. A change that builds a
-query, resolves a path, writes a label or registers something the core has to
-find collides with the conventions of that subject wherever its file happens to
-live, and a query naming only the subsystem the paths are in never reaches them.
-
 ## What the project already says about this patch
 
 The message names two things the diff does not contain — the issue it resolves
@@ -53,15 +48,12 @@ and the change it is — and both are read before the code is read a second time
   otherwise make a second time.
 
 **Both arguments come out of the commit message, and that is what makes them
-safe.** `Resolves:` is the Forge issue and `Change-Id:` is the change; each is
-part of the patch being read, and the `Change-Id` keeps naming the same change
-after an amend, which a patch set number does not. Carrying a number in from
-somewhere else is where this goes wrong: the two identifiers are different
-numbers, a change number asked for as an issue still answers, and what comes
-back is a real change and a real issue that belong to neither this patch nor
-each other. Nothing in either payload says so, so the check is the subject — the
-change that comes back carries the subject of the commit under review, or the
-number was wrong rather than the patch.
+safe.** `Resolves:` is the Forge issue, `Change-Id:` is the change, and the
+`Change-Id` still names it after an amend. A number carried in from elsewhere
+does not fail: asked for under the other's name both lookups answer, with a real
+change and a real issue belonging to neither this patch nor each other. So the
+check is the subject — what comes back carries the subject of the commit under
+review, or the number was wrong rather than the patch.
 
 A patch that is not pushed yet has no change, and an answer of nothing is a
 result: say so rather than leaving the surface silent. Where the commit in the
@@ -116,8 +108,11 @@ from the host's own PHP: a check run outside the project's runner is evidence
 about your machine.
 
 A review may run what cannot change the code, and says what it ran and what it
-printed. Anything it did not run stays labelled as available rather than
-passing. "The tests would presumably still pass" is not a review sentence.
+printed. **It then writes out, by name, the suites on that list it did not
+run.** Leaving them out is what makes four green suites read as a finished
+verification, and that is the claim a review is least able to support. "The
+tests would presumably still pass" is not a review sentence, and an unnamed
+suite is the same sentence with the words taken out.
 
 ## Commit shape and target branch
 

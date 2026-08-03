@@ -27,7 +27,9 @@ word is unassessed.
   what it does is available on that branch at all.
 - **Tests.** What exercises the changed behaviour, and whether the layer is the
   one that can fail on it. A change with no coverage is a finding; coverage that
-  cannot fail on this change is a worse one, because it reads as coverage.
+  cannot fail on this change is a worse one, because it reads as coverage. The
+  surface is answered with both halves: what ran, and which of the suites the
+  guide returned nobody started.
 - **Documentation and changelog.** What the diff obliges — the entry, its
   directory, its file name, its cross-references — and equally, whether an entry
   is owed at all. Demanding one where the rules do not is a review defect.

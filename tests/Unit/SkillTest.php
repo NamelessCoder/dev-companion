@@ -374,6 +374,43 @@ final class SkillTest extends TestCase
     }
 
     #[Test]
+    public function aReviewNamesTheSuitesItDidNotRun(): void
+    {
+        // Three REVIEW-03 runs in a row reported green suites and named none of
+        // the ones `typo3_test_run_guide` had returned beside them, at three
+        // skill lengths including the shortest — so the rule was present and
+        // delivered every time. It read as a ban on claiming an unrun suite
+        // passed, and an omission claims nothing, which is why every run was
+        // compliant with the sentence and none with the demand. The rewrite
+        // makes it an act with an object and puts the omission itself in the
+        // example (`D-SKL-009`).
+        $skill = (string) preg_replace('/\s+/', ' ', (string) file_get_contents(
+            Paths::root() . '/skills/typo3-core-patch-review/SKILL.md',
+        ));
+
+        self::assertStringContainsString(
+            '**It then writes out, by name, the suites on that list it did not run.**',
+            $skill,
+        );
+        // The consequence names what the omission does to the reader, which the
+        // banned sentence never said.
+        self::assertStringContainsString('read as a finished verification', $skill);
+        // And it ties the omission to the claim the reader already rejects.
+        self::assertStringContainsString(
+            'an unnamed suite is the same sentence with the words taken out',
+            $skill,
+        );
+
+        $checklist = (string) preg_replace('/\s+/', ' ', (string) file_get_contents(
+            Paths::root() . '/skills/typo3-core-patch-review/references/checklist.md',
+        ));
+        self::assertStringContainsString(
+            'answered with both halves: what ran, and which of the suites the guide returned nobody started',
+            $checklist,
+        );
+    }
+
+    #[Test]
     public function aReviewReadsTheReviewThePatchIsAlreadyIn(): void
     {
         // Both tools existed and no skill routed to either. The third recorded
@@ -409,7 +446,7 @@ final class SkillTest extends TestCase
         );
         // The Change-Id is the one that survives an amend, so it is what a
         // review of a patch that will come back is told to hold.
-        self::assertStringContainsString('keeps naming the same change after an amend', $skill);
+        self::assertStringContainsString('still names it after an amend', $skill);
         // An answer of nothing is a result rather than a silence, which is what
         // keeps a not-yet-pushed patch from reading as unchecked.
         self::assertStringContainsString('an answer of nothing is a result', $skill);

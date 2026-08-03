@@ -74,7 +74,7 @@ names may or may not. Measured against DDEV v1.25.1 on 2026-08-02, by the first
 recording made against an installation of this repository's own — `D-DOC-006`
 has that run.
 
-- `Typo3CliTest::anArgumentTheContainersShellWouldActOnReachesTheConsoleWhole`
+- `Typo3CliTest::everyArgumentReachesTheContainerInTheFormThatSurvivesItsShell`
 
 ## Confirmed on 2026-08-02
 

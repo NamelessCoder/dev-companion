@@ -202,8 +202,13 @@ final class EnvironmentCreate
                 Cli::errors($output)->writeln(
                     'A database an earlier installation populated is the exception: its tables',
                 );
-                Cli::errors($output)->writeln('are refused by the setup whatever is passed, and clearing them is');
-                Cli::errors($output)->writeln('    ' . implode(' ', Environments::discard($project)));
+                Cli::errors($output)->writeln('are refused by the setup whatever is passed. On sqlite that database is');
+                Cli::errors($output)->writeln('a file in the directory, so clearing it is');
+                Cli::errors($output)->writeln(sprintf(
+                    '    %s && rm -rf %s',
+                    implode(' ', Environments::discard($project)),
+                    $path,
+                ));
 
                 return 1;
             }

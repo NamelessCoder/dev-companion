@@ -182,41 +182,35 @@ final class EnvironmentsTest extends TestCase
     }
 
     /**
-     * The development line is set up on sqlite because `setup` cannot finish
-     * against MariaDB on `main`: `getDatabaseList()` asks a connection with no
-     * database selected for a schema manager, and `doctrine/dbal` 4.4.4 throws
-     * `DatabaseRequired` before anything is written. That is a workaround with
-     * a date on it, so what this holds is that it stays one line — the
-     * released builds are untouched, and the DDEV database options go with the
-     * driver rather than being passed to an installation that takes none.
+     * Every line is set up on sqlite and none of them starts a database
+     * container. The two halves are one fact and have to move together: an
+     * installation left on a database driver with `--omit-containers=db` in
+     * front of it builds its containers, installs a hundred packages and dies
+     * at the setup step against a service that was never started.
+     *
+     * What made the choice concrete was the development line, where `setup`
+     * cannot finish against MariaDB at all — `getDatabaseList()` asks a
+     * connection with no database selected for a schema manager, and
+     * `doctrine/dbal` 4.4.4 throws `DatabaseRequired` before anything is
+     * written — and what it buys on every other line is the second container.
      */
     #[Test]
-    public function theDevelopmentLineIsSetUpOnTheOneDatabaseItsSetupCompletesOn(): void
+    public function everyLineIsSetUpOnAFileRatherThanOnAContainerOfItsOwn(): void
     {
-        $development = Environments::branch();
-        foreach (Versions::covered() as $version) {
-            if ($version['status'] === 'development') {
-                $development = $version['branch'];
+        self::assertSame('sqlite', Environments::DRIVER);
+
+        foreach (Environments::branches() as $branch) {
+            $build = implode(' ', array_merge(...array_values(Environments::build($branch))));
+
+            self::assertStringContainsString('--driver=' . Environments::DRIVER, $build, $branch);
+            self::assertStringContainsString('--omit-containers=db', $build, $branch . ' starts a database it does not use');
+            foreach (['--host=db', '--port=3306', '--dbname=db', '--username=db', '--password=db'] as $option) {
+                self::assertStringNotContainsString(
+                    $option,
+                    $build,
+                    $branch . ' passes ' . $option . ' to a setup that takes none',
+                );
             }
-        }
-
-        $build = implode(' ', array_merge(...array_values(Environments::build($development))));
-
-        self::assertSame(Environments::DEVELOPMENT_DRIVER, Environments::driver($development));
-        self::assertStringContainsString('--driver=' . Environments::DEVELOPMENT_DRIVER, $build);
-        foreach (['--host=db', '--port=3306', '--dbname=db', '--username=db', '--password=db'] as $option) {
-            self::assertStringNotContainsString($option, $build, $option . ' is passed to a setup that takes none');
-        }
-
-        foreach (Environments::branches() as $released) {
-            if ($released === $development) {
-                continue;
-            }
-
-            $other = implode(' ', array_merge(...array_values(Environments::build($released))));
-            self::assertSame(Environments::DRIVER, Environments::driver($released), $released);
-            self::assertStringContainsString('--driver=' . Environments::DRIVER, $other, $released);
-            self::assertStringContainsString('--dbname=db', $other, $released . ' is set up against no database');
         }
     }
 
@@ -297,7 +291,11 @@ final class EnvironmentsTest extends TestCase
         self::assertNotSame([], $setup, 'nothing in the build sets the installation up');
         self::assertContains('--no-interaction', $setup);
         self::assertContains('--server-type=other', $setup);
-        foreach (['--driver=', '--host=', '--dbname=', '--admin-username=', '--admin-user-password=', '--create-site='] as $option) {
+        // `--host=` and `--dbname=` were here while the installation was in a
+        // database service. On sqlite the setup asks for neither, and
+        // `everyLineIsSetUpOnAFileRatherThanOnAContainerOfItsOwn` is what
+        // holds them out.
+        foreach (['--driver=', '--admin-username=', '--admin-user-password=', '--create-site='] as $option) {
             self::assertNotSame(
                 [],
                 array_filter($setup, static fn(string $argument): bool => str_starts_with($argument, $option)),

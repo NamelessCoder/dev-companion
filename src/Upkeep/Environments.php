@@ -6,6 +6,8 @@ namespace Typo3CmsMcp\Upkeep;
 
 use Typo3CmsMcp\Knowledge\Versions;
 use Typo3CmsMcp\Paths;
+use Typo3CmsMcp\Process\CommandRunner;
+use Typo3CmsMcp\Process\SystemRunner;
 
 /**
  * The environments a scenario is run in, and which of them this checkout makes
@@ -265,34 +267,31 @@ final class Environments
     }
 
     /**
-     * The database the installation is set up against, which is DDEV's own on
-     * every line but one.
+     * The database every installation is set up against, on every line.
      *
-     * The development line is `sqlite`, and not because anything prefers it:
-     * `vendor/bin/typo3 setup` cannot finish against MariaDB on `main` at all
-     * today. `SetupDatabaseService::getDatabaseList()` builds a connection
-     * with `dbname` unset on purpose — so that a wrong database name can still
-     * be corrected — and then asks it for a schema manager, which
-     * `doctrine/dbal` 4.4.4 refuses: `MySQLMetadataProvider::__construct`
+     * sqlite is a file below `var/sqlite/` in the project directory, so an
+     * environment is its directory and nothing else: no database container to
+     * start, no volume named after the project to outlive it, and `rm -rf` is
+     * the whole of taking one away. That is what `--omit-containers=db` in the
+     * build is paying for — the second container of every line, on a machine
+     * that holds four.
+     *
+     * The development line is what made the choice concrete rather than
+     * cheaper: `vendor/bin/typo3 setup` cannot finish against MariaDB on
+     * `main` at all. `SetupDatabaseService::getDatabaseList()` builds a
+     * connection with `dbname` unset on purpose — so that a wrong database
+     * name can still be corrected — and then asks it for a schema manager,
+     * which `doctrine/dbal` 4.4.4 refuses: `MySQLMetadataProvider::__construct`
      * reads `SELECT DATABASE()`, gets null, and throws `DatabaseRequired`.
      * `SetupCommand::selectAndImportDatabase()` runs that for every driver but
      * sqlite, before anything is written. Measured on 2026-08-03 against
      * `typo3/cms-install` at `af648f05bbc3`, which locks that DBAL itself.
      *
-     * So this is a workaround with a date on it, and the difference it buys is
-     * a real one: an installation on sqlite answers what a console question
-     * asks and says nothing about what MariaDB does under the same schema.
+     * What it costs is real and is `D-EVI-006`'s to carry: an installation on
+     * sqlite answers what a console question asks and says nothing about what
+     * MariaDB does under the same schema.
      */
-    public const DRIVER = 'mysqli';
-
-    /** @see self::DRIVER — sqlite is the one path that setup does not break on `main`. */
-    public const DEVELOPMENT_DRIVER = 'sqlite';
-
-    /** The database driver the installation of one line is set up against. */
-    public static function driver(string $branch): string
-    {
-        return self::development($branch) ? self::DEVELOPMENT_DRIVER : self::DRIVER;
-    }
+    public const DRIVER = 'sqlite';
 
     /**
      * What Composer is asked for on one line, of the distribution and of every
@@ -416,16 +415,18 @@ final class Environments
     }
 
     /**
-     * What clears a registration nothing can reach, and the database with it.
+     * What clears a registration nothing can reach, and whatever DDEV named
+     * after the project with it.
      *
-     * `ddev stop --unlist` is the smaller command and the wrong one. Stop is
-     * documented as non-destructive and leaves the database, which is a volume
-     * named after the project rather than after the directory — so the name is
-     * freed, the next build registers it again, attaches to the same volume,
-     * and the setup step meets the tables the last installation left. `delete`
-     * takes both, and takes them where the directory is already gone: measured
-     * on 2026-08-02 against a registration whose approot had been removed, on
-     * DDEV 1.25.1.
+     * `ddev stop --unlist` is the smaller command and the wrong one: it frees
+     * the name and leaves the volumes, which are named after the project
+     * rather than after the directory, so the next build registers the name
+     * again and attaches to them. That mattered most while the installation
+     * was in a database volume — measured on 2026-08-02 against a registration
+     * whose approot had been removed, on DDEV 1.25.1 — and it is smaller now
+     * that the database is a file in the directory and `--omit-containers=db`
+     * means there is no database volume to leave. `delete` is still the one
+     * that takes what a name is holding, and taking the directory is `rm -rf`.
      *
      * @return array<int, string>
      */
@@ -443,6 +444,22 @@ final class Environments
     }
 
     /**
+     * What leaves this process, and the seam a unit test takes instead.
+     *
+     * `R-COD-003`: a unit test mocks what it needs from outside rather than
+     * starting it. Nothing in the suite drives a build today — the tests read
+     * the commands `build()` returns — and the seam is here so that the one
+     * that wants to can.
+     */
+    private static ?CommandRunner $runner = null;
+
+    /** What a test hands in, so nothing it drives has to exist on the machine. */
+    public static function useRunner(?CommandRunner $runner): void
+    {
+        self::$runner = $runner;
+    }
+
+    /**
      * One step of a build, with both its streams as one string.
      *
      * `Checkouts::run` is the same shape and is not reused, for one reason:
@@ -451,6 +468,11 @@ final class Environments
      * where they think a person is there, and a step that blocks on a terminal
      * nobody is watching is a build that never returns. `R-DIS-018` is the same
      * failure from the server's side, found by a run rather than by a test.
+     * `SystemRunner` is where that is now got right once for both callers.
+     *
+     * No timeout, unlike the console: a step here is a `composer create-project`
+     * of a hundred packages, and the number that would not cut one short on a
+     * cold cache is not one anybody can name.
      *
      * @param array<int, string> $command
      *
@@ -458,21 +480,9 @@ final class Environments
      */
     public static function run(array $command, ?string $cwd = null): array
     {
-        $process = proc_open(
-            $command,
-            [0 => ['file', '/dev/null', 'r'], 1 => ['pipe', 'w'], 2 => ['pipe', 'w']],
-            $pipes,
-            $cwd,
-        );
-        if (!is_resource($process)) {
-            return [1, ''];
-        }
+        $result = (self::$runner ?? new SystemRunner())->run($command, $cwd);
 
-        $output = (string) stream_get_contents($pipes[1]) . (string) stream_get_contents($pipes[2]);
-        fclose($pipes[1]);
-        fclose($pipes[2]);
-
-        return [proc_close($process), $output];
+        return [$result['exitCode'], $result['output'] . $result['error']];
     }
 
     /**
@@ -489,8 +499,9 @@ final class Environments
      * `prepareSystemSettings()` is its only use in 14.3 — while the database
      * is guarded by a validator that refuses any table at all, on the
      * non-interactive path as much as the asked one. A build that meets a
-     * populated database is finished by `discard()` and never by running
-     * again.
+     * populated database is finished by taking the directory away, which on
+     * sqlite is the whole of it: the file is `var/sqlite/` below the project
+     * and nothing named after the project outlives an `rm -rf`.
      *
      * @return array<string, array<int, string>>
      */
@@ -513,15 +524,19 @@ final class Environments
         }
 
         $steps = [
-            'A DDEV project of the type TYPO3, serving from public/' => [
+            'A DDEV project of the type TYPO3, serving from public/, with no database container' => [
                 'ddev', 'config', '--auto',
                 '--project-name=' . $project,
                 '--project-type=typo3',
                 '--docroot=public',
                 '--php-version=' . self::php($branch),
+                // The second container of every line, on a machine that holds
+                // one per covered version. The installation is on sqlite, so
+                // nothing in it reaches a database service — see self::DRIVER.
+                '--omit-containers=db',
                 '--disable-upload-dirs-warning',
             ],
-            'The containers, and the database with them' => ['ddev', 'start', '-y'],
+            'The container it serves from' => ['ddev', 'start', '-y'],
             'TYPO3 ' . $branch . ', from its own base distribution' => $create,
         ];
 
@@ -548,7 +563,7 @@ final class Environments
             ];
         }
 
-        $setup = [
+        $steps['The installation itself: database, admin user, site configuration'] = [
             'ddev', 'exec', 'vendor/bin/typo3', 'setup',
             '--no-interaction',
             // The settings file and nothing else. This is what lets a
@@ -556,16 +571,10 @@ final class Environments
             // file the first attempt wrote, and it does not reach the database
             // an earlier installation populated.
             '--force',
-            '--driver=' . self::driver($branch),
-        ];
-        if (self::driver($branch) !== self::DEVELOPMENT_DRIVER) {
-            // DDEV's own database service, at the names it gives it. sqlite is
-            // a file the installation places itself and takes none of them.
-            array_push($setup, '--host=db', '--port=3306', '--dbname=db', '--username=db', '--password=db');
-        }
-
-        $steps['The installation itself: database, admin user, site configuration'] = [
-            ...$setup,
+            // No host, port, dbname, username or password beside it: sqlite is
+            // a file the installation places below `var/sqlite/` itself, and
+            // there is no database service for those to name.
+            '--driver=' . self::DRIVER,
             '--admin-username=admin',
             '--admin-user-password=' . self::ADMIN_PASSWORD,
             '--admin-email=admin@example.com',

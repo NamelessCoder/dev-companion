@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Typo3CmsMcp\Installation;
 
+use Typo3CmsMcp\Process\CommandRunner;
+use Typo3CmsMcp\Process\SystemRunner;
+
 /**
  * Runs the TYPO3 console of the discovered installation and hands back what it
  * printed.
@@ -39,6 +42,23 @@ final class Typo3Cli
 
     /** A TYPO3 bootstrap can hang on a broken configuration; an MCP session must not. */
     private const TIMEOUT_SECONDS = 90;
+
+    /**
+     * What leaves this process, and the seam a unit test takes instead.
+     *
+     * Static because everything on this class is, and settable because
+     * `R-COD-003` says a unit test stubs what it needs from outside rather
+     * than starting it. `forget()` deliberately leaves it alone: that one
+     * drops the memoized resolution, which a test does between installations
+     * and which would otherwise take the stub with it.
+     */
+    private static ?CommandRunner $runner = null;
+
+    /** What a test hands in, so nothing it drives has to exist on the machine. */
+    public static function useRunner(?CommandRunner $runner): void
+    {
+        self::$runner = $runner;
+    }
 
     /**
      * Where DDEV mounts the project inside its web container.
@@ -768,20 +788,16 @@ final class Typo3Cli
         return $result['ok'] && $result['output'] !== '' ? trim($result['output']) : null;
     }
 
-    /**
-     * Walks PATH rather than shelling out: "command -v" is a shell builtin and
-     * proc_open runs no shell, so asking for it would always come back empty.
-     */
+    /** Where an executable of this name is, asked of the same seam as a run. */
     private static function locateBinary(string $name): ?string
     {
-        foreach (explode(PATH_SEPARATOR, (string) getenv('PATH')) as $directory) {
-            $candidate = rtrim($directory, '/') . '/' . $name;
-            if (is_file($candidate) && is_executable($candidate)) {
-                return $candidate;
-            }
-        }
+        return self::runner()->locate($name);
+    }
 
-        return null;
+    /** The real one, unless a test put something else in its place. */
+    private static function runner(): CommandRunner
+    {
+        return self::$runner ?? new SystemRunner();
     }
 
     /**
@@ -790,65 +806,13 @@ final class Typo3Cli
      */
     private static function execute(array $command, string $workingDirectory): array
     {
-        // The child gets an stdin of its own, closed immediately so it reads
-        // EOF. Left out of the descriptors it would inherit this process's
-        // stdin, which on the stdio server is the client's JSON-RPC stream: a
-        // request written while the console command runs is then read by the
-        // console command, and the client waits forever for an answer to a
-        // request the server never saw.
-        $descriptors = [0 => ['pipe', 'r'], 1 => ['pipe', 'w'], 2 => ['pipe', 'w']];
-        $process = @proc_open($command, $descriptors, $pipes, $workingDirectory, null);
-        if (!is_resource($process)) {
-            return ['ok' => false, 'exitCode' => -1, 'output' => '', 'error' => 'could not start ' . $command[0]];
-        }
+        $result = self::runner()->run($command, $workingDirectory, self::TIMEOUT_SECONDS);
 
-        fclose($pipes[0]);
-        stream_set_blocking($pipes[1], false);
-        stream_set_blocking($pipes[2], false);
+        // The error is trimmed here rather than in the runner: what a caller of
+        // this class does with it is put into an answer a client reads, and a
+        // trailing newline in one of those is a blank line in a tool result.
+        $result['error'] = trim($result['error']);
 
-        $output = '';
-        $error = '';
-        // Taken from the status rather than from proc_close: before PHP 8.3 the
-        // status call reaps the child itself, and proc_close then has nothing
-        // left to wait for and answers -1. Every command would read as failed.
-        $exitCode = -1;
-        $deadline = time() + self::TIMEOUT_SECONDS;
-        while (true) {
-            $output .= (string) stream_get_contents($pipes[1]);
-            $error .= (string) stream_get_contents($pipes[2]);
-
-            $status = proc_get_status($process);
-            if (!$status['running']) {
-                $exitCode = $status['exitcode'];
-                break;
-            }
-            if (time() >= $deadline) {
-                proc_terminate($process);
-
-                return [
-                    'ok' => false,
-                    'exitCode' => -1,
-                    'output' => $output,
-                    'error' => sprintf('timed out after %d seconds', self::TIMEOUT_SECONDS),
-                ];
-            }
-            usleep(20_000);
-        }
-
-        $output .= (string) stream_get_contents($pipes[1]);
-        $error .= (string) stream_get_contents($pipes[2]);
-        fclose($pipes[1]);
-        fclose($pipes[2]);
-        $closed = proc_close($process);
-        if ($exitCode < 0) {
-            $exitCode = $closed;
-        }
-
-        return [
-            'ok' => $exitCode === 0,
-            'exitCode' => $exitCode,
-            'output' => $output,
-            'error' => trim($error),
-        ];
+        return $result;
     }
 }

@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace Typo3CmsMcp\Tests\Unit;
 
 use PHPUnit\Framework\Attributes\After;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Typo3CmsMcp\Installation\Instance;
 use Typo3CmsMcp\Installation\Typo3Cli;
+use Typo3CmsMcp\Tests\Support\FakeRunner;
 use Typo3CmsMcp\Tests\Support\TemporaryInstallation;
 use Typo3CmsMcp\Tool\Registry;
 
@@ -20,18 +22,13 @@ final class Typo3CliTest extends TestCase
 {
     use TemporaryInstallation;
 
-    private ?string $path = null;
-
     #[After]
     public function forgetTheInstance(): void
     {
         putenv(Typo3Cli::CONSOLE_VARIABLE);
         putenv('IS_DDEV_PROJECT');
-        if ($this->path !== null) {
-            putenv('PATH=' . $this->path);
-            $this->path = null;
-        }
         Instance::discoverFrom(null);
+        Typo3Cli::useRunner(null);
         Typo3Cli::forget();
     }
 
@@ -211,8 +208,7 @@ final class Typo3CliTest extends TestCase
      * project at one place whatever that setting says, and that is the place
      * the invocation names.
      *
-     * The project is a stand-in on the PATH rather than a running one: no test
-     * run may depend on containers, and what is held here is the command that
+     * DDEV is stubbed rather than run: what is held here is the command that
      * would be run, which is where the failure was.
      */
     #[Test]
@@ -225,7 +221,7 @@ final class Typo3CliTest extends TestCase
         file_put_contents($root . '/.build/bin/typo3', "#!/usr/bin/env php\n<?php\n");
         mkdir($root . '/.ddev');
         file_put_contents($root . '/.ddev/config.yaml', "name: fixture\ntype: typo3\n");
-        $this->ddevAnswering('{"raw": {"status": "running", "php_version": "8.3"}}');
+        Typo3Cli::useRunner($this->ddevThatIsRunning());
         $this->discover($root);
 
         self::assertSame(
@@ -245,30 +241,61 @@ final class Typo3CliTest extends TestCase
      * TYPO3 rather than by anything here, which is what `D-EVI-004` said an
      * installation of this repository's own would be for.
      *
-     * The stand-in is the joining and the shell, because that is where the
-     * argument was lost: it rewrites the container's mount to the project and
-     * runs the line the way DDEV runs it. What the console then prints is the
-     * argv it was actually given.
+     * What this holds is the quoting, which is this class's part: every
+     * argument reaches `ddev exec` in the form that survives being joined into
+     * a line. That the joining then happens is DDEV's behaviour and is not
+     * reproduced here — it was measured against v1.25.1 on 2026-08-02 and the
+     * measurement is written into `Typo3Cli::pastTheShell()`.
+     *
+     * @param array<int, string> $arguments
      */
     #[Test]
-    public function anArgumentTheContainersShellWouldActOnReachesTheConsoleWhole(): void
+    #[DataProvider('argumentsAShellWouldActOn')]
+    public function everyArgumentReachesTheContainerInTheFormThatSurvivesItsShell(array $arguments): void
     {
         $root = $this->installation();
         mkdir($root . '/vendor/bin', 0o777, true);
-        file_put_contents($root . '/vendor/bin/typo3', "#!/bin/sh\nfor a in \"\$@\"; do echo \"\$a\"; done\n");
-        chmod($root . '/vendor/bin/typo3', 0o755);
+        file_put_contents($root . '/vendor/bin/typo3', "#!/usr/bin/env php\n<?php\n");
         mkdir($root . '/.ddev');
         file_put_contents($root . '/.ddev/config.yaml', "name: fixture\ntype: typo3\n");
-        $this->ddevJoiningLikeTheRealOne($root);
+        $runner = $this->ddevThatIsRunning();
+        Typo3Cli::useRunner($runner);
         $this->discover($root);
 
-        $result = Typo3Cli::run(['language:domain:search', '--regex=/(save)/i']);
+        Typo3Cli::run($arguments);
 
-        self::assertTrue($result['ok'], $result['error']);
-        self::assertSame(
-            ['language:domain:search', '--regex=/(save)/i', '--no-interaction', '--no-ansi'],
-            preg_split('/\R/', trim($result['output'])),
+        $expected = array_map(
+            escapeshellarg(...),
+            array_merge($arguments, ['--no-interaction', '--no-ansi']),
         );
+        self::assertContains(
+            'ddev exec -- /var/www/html/vendor/bin/typo3 ' . implode(' ', $expected),
+            $runner->commands(),
+        );
+    }
+
+    /**
+     * @return array<string, array{0: array<int, string>}>
+     */
+    public static function argumentsAShellWouldActOn(): array
+    {
+        return [
+            'a regex in parentheses, which bash reads as a subshell' => [
+                ['language:domain:search', '--regex=/(save)/i'],
+            ],
+            'a semicolon, which bash reads as the end of the command' => [
+                ['language:domain:search', '--regex=/a;b/'],
+            ],
+            'a dollar, which bash expands' => [
+                ['configuration:show', 'BE/$installToolPassword'],
+            ],
+            'a space, which bash reads as two arguments' => [
+                ['language:domain:search', '--regex=/two words/'],
+            ],
+            'nothing bash acts on, which is quoted the same way' => [
+                ['site:list'],
+            ],
+        ];
     }
 
     #[Test]
@@ -350,40 +377,19 @@ final class Typo3CliTest extends TestCase
     }
 
     /**
-     * A `ddev` on the PATH that describes a running project, so what this
-     * server would invoke is readable without a container being up. It answers
-     * whatever it is asked, because the one call made here is `describe -j`.
+     * A DDEV that says its project is up, standing in for the real one.
+     *
+     * Two things are stubbed and both are the machine: that a `ddev` exists at
+     * all, and what `ddev describe -j` answers. Neither is arranged on the
+     * `PATH` any more — a test that writes an executable into a temporary
+     * directory depends on that directory being writable, on `chmod`, and on a
+     * `/tmp` nobody mounted `noexec`, none of which is what it is testing.
      */
-    private function ddevAnswering(string $description): void
+    private function ddevThatIsRunning(): FakeRunner
     {
-        $this->ddev("cat <<'JSON'\n" . $description . "\nJSON\n");
-    }
-
-    /**
-     * A `ddev` that describes a running project and, on `exec`, does the thing
-     * the real one does with the arguments: joins them into a line and gives
-     * that to bash. The container's mount is rewritten to the project, because
-     * on this side of it /var/www/html is not where the console is.
-     */
-    private function ddevJoiningLikeTheRealOne(string $root): void
-    {
-        $this->ddev(
-            "if [ \"\$1\" = describe ]; then echo '{\"raw\": {\"status\": \"running\", \"php_version\": \"8.3\"}}'; exit 0; fi\n"
-            . "shift 2\n"
-            . "line=\$(printf '%s ' \"\$@\" | sed 's#/var/www/html#" . $root . "#g')\n"
-            . "exec bash -c \"set -eu && ( \$line )\"\n"
-        );
-    }
-
-    /** A stand-in on the PATH, so what this server would invoke is readable with no container up. */
-    private function ddev(string $script): void
-    {
-        $directory = $this->removeAfterwards(sys_get_temp_dir() . '/typo3-cms-mcp-bin-' . bin2hex(random_bytes(6)));
-        mkdir($directory, 0o777, true);
-        file_put_contents($directory . '/ddev', "#!/bin/sh\n" . $script);
-        chmod($directory . '/ddev', 0o755);
-
-        $this->path = (string) getenv('PATH');
-        putenv('PATH=' . $directory . PATH_SEPARATOR . $this->path);
+        return (new FakeRunner())
+            ->with('ddev')
+            ->answer('ddev describe -j', ['output' => '{"raw": {"status": "running", "php_version": "8.3"}}'])
+            ->answer('ddev exec', ['output' => '']);
     }
 }

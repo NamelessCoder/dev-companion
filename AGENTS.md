@@ -328,6 +328,20 @@ bin/cli knowledge:format <path>   # only that part of it
 - One file, one class. A second class in a file is not autoloadable under PSR-4,
   so it works until somebody uses it from anywhere else and then fails as a
   missing class — held by `StructureTest::everyFileDeclaresOneClass`.
+- **A unit test holds a small part and stubs what is outside it** — `R-COD-003`.
+  It starts nothing: no console, no container, no request, no waiting on
+  something being up. It also arranges nothing on the machine: an executable
+  written into a temporary directory and put on the `PATH` is the same
+  dependency one layer down, and this repository had two of those. What the
+  code reaches outside through is a seam a caller replaces —
+  `Typo3CmsMcp\Process\CommandRunner` for a command or an executable lookup,
+  handed in with `Typo3Cli::useRunner()` or `Environments::useRunner()`, and
+  `Typo3CmsMcp\Tests\Support\FakeRunner` is what a test hands in. Where a class
+  has no such seam, making one is part of the work. Several inputs to one
+  behaviour are a `#[DataProvider]` with a named case each, so a failure names
+  the input. `tests/Smoke/` is where a subprocess is the subject, and what it
+  starts is this repository's own CLI. `D-COD-004` has the reasoning, including
+  why no test polices this one.
 - A directory is read with `symfony/finder`, whatever the depth. `glob()`,
   `scandir()` and `RecursiveDirectoryIterator` were two idioms for one question,
   and the deep one cost a dozen lines each time — held by

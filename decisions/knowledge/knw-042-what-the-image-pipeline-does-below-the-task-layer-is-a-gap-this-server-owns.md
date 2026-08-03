@@ -117,3 +117,36 @@ foundation. This one did, twice, as an argument for what could not be changed.
 - A session reads the written statement and still argues from FAL necessity. The
   gap would be in the routing rather than in the corpus, and this entry would
   have answered the cheap rung of the ladder for a step-3 problem.
+
+## Since then
+
+Written on 2026-08-03 into `fal-processing`, read across all four checkouts, and
+one premise the todo carried is wrong. `ContentObjectRenderer::getImgResource()`
+and `GIFBUILDER` are not entry points that never hold a FAL object: a path or an
+`EXT:` path goes through `ResourceFactory::retrieveFileOrFolderObject()` and is
+processed as a `File`, on `12.4` at line 3802 as on `main` at 3373, and
+`GifBuilder`'s own `IMAGE` and mask files come back through `getImgResource()`
+by way of its `getResource()`. They take paths, which is what the feedback saw,
+and they wrap them. What is reached without FAL is `GraphicalFunctions` itself,
+so the hint states the correction rather than the suggestion's wording. The
+conclusion the feedback drew from them stands: the necessity reading is still
+disproved, by the task layer and by `getImageDimensions(string)`.
+
+The first **Wrong if** half fires. The unwrap call is
+`$task->getSourceFile()->getForLocalProcessing(false)` on all four, but the
+class it sits in moved: `LocalCropScaleMaskHelper` and `LocalPreviewHelper` on
+`12.4` and `13.4`, folded into `LocalImageProcessor` on `14.3` and `main`, where
+both helper files are gone. `GraphicalFunctions` moved with it — `resize()` and
+`mask()` do not exist on `12.4`, where `imageMagickConvert()` is the entry and
+`getImageDimensions()` takes no result-object flag. So it is one statement and
+two bound pairs rather than one statement per line. The second **Wrong if** does
+not fire: neither `getImgResource()` nor `GifBuilder` carries a deprecation on
+`14.3` or `main`.
+
+Where it went was `fal-processing` rather than a hint of its own, which this
+entry left to the reading. The query that produced the feedback already lands
+there first — `appliesTo(16) + text(290)` after the change — and a session
+reading the dispatch is the one that infers necessity, so the correction sits
+where it cannot be missed. The title now names both halves.
+[`R-KNW-054`](../../requirements/knowledge/knw-054-where-fal-stops-in-the-image-pipeline-is-answered.md)
+holds it.

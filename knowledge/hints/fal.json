@@ -15,7 +15,7 @@
     ],
     "hints": [
       "Files are addressed through the FAL objects — ResourceStorage, Folder, File, FileReference — not by a filesystem path. A storage may be remote, and an absolute path assumes it is not.",
-      "The rest of the subject is its own hint: fal-storages-drivers for where a storage comes from and what a driver owns, fal-reading for getting a File and its metadata, fal-writing for putting one in, fal-processing for which processor claims it, fal-testing for covering any of it."
+      "The rest of the subject is its own hint: fal-storages-drivers for where a storage comes from and what a driver owns, fal-reading for getting a File and its metadata, fal-writing for putting one in, fal-processing for which processor claims it and what runs below the task layer, fal-testing for covering any of it."
     ]
   },
   {
@@ -117,12 +117,20 @@
   },
   {
     "id": "fal-processing",
-    "title": "Which Processor Claims a File, and in What Order",
+    "title": "Which Processor Claims a File, and What Runs Below It",
     "domains": [
       "php"
     ],
     "appliesTo": [
       "Classes/Resource/Processing/",
+      "Classes/Imaging/",
+      "GraphicalFunctions",
+      "getForLocalProcessing",
+      "imageMagickConvert",
+      "getImgResource",
+      "GIFBUILDER",
+      "image dimensions",
+      "image processing without FAL",
       "thumbnail",
       "processed file",
       "_processed_",
@@ -143,7 +151,26 @@
       "Nothing is processed twice. The service asks ProcessedFileRepository::findOneByOriginalFileAndTaskTypeAndConfiguration() first, and a processor runs only where the task that comes back says fileNeedsProcessing(). A BeforeFileProcessingEvent and an AfterFileProcessingEvent bracket that, and the first of them can replace the processed file outright.",
       "Which processor runs is decided by ProcessorRegistry: it orders SYS/fal/processors with DependencyOrderingService using the before and after keys each entry declares, then asks canProcessTask() down that order and stops at the first that says yes. First match wins, so taking a case over means registering before the processor that would otherwise claim it, never after it. Where none says yes the registry throws exception 1560876294, naming the task type and the task name.",
       "The processors the core registers claim in this order. SvgImageProcessor takes a task whose target extension is svg. DeferredBackendImageProcessor takes a backend request where the fileProcessing aspect asks for deferred processing, where the source file has a width and a height, and where the target is not in the processing folder yet — it persists the processed file, points it at the image_processing route and returns, so the work happens when the browser requests that URL. OnlineMediaPreviewProcessor takes a file an online-media helper knows and whose preview image already exists on disk. LocalImageProcessor takes every other Image.Preview and Image.CropScaleMask and declares no order at all, which is what leaves it last.",
-      "The list is the installation's rather than the core's, because every extension may add to it. typo3_configuration_lookup with SYS/fal/processors answers what is really registered there, and only where the installation can be reached."
+      "The list is the installation's rather than the core's, because every extension may add to it. typo3_configuration_lookup with SYS/fal/processors answers what is really registered there, and only where the installation can be reached.",
+      "FAL stops at the processor. The task's source file is unwrapped with $task->getSourceFile()->getForLocalProcessing(false), which fetches a remotely stored file to local disk, and everything below that call takes a path string rather than a FAL object.",
+      {
+        "text": "The unwrap is in LocalImageProcessor::processCropScaleMask() and its generatePreviewFromFile(); processTask() only delegates.",
+        "since": 14
+      },
+      {
+        "text": "The unwrap is in the two helpers LocalImageProcessor delegates to, LocalCropScaleMaskHelper::process() and LocalPreviewHelper::generatePreviewFromFile().",
+        "until": 13
+      },
+      {
+        "text": "Below it is GraphicalFunctions, which is reached with paths: resize(string $sourceFile, …), mask(string $inputFile, …), getImageDimensions(string $imageFile, …), and imageMagickConvert(), which delegates to resize() and returns the legacy info array.",
+        "since": 13
+      },
+      {
+        "text": "Below it is GraphicalFunctions, which is reached with paths: imageMagickConvert($imagefile, …) is the entry and getImageDimensions($imageFile) returns the info array. It carries no resize() and no mask(), so masking runs through imageMagickExec() and combineExec() instead.",
+        "until": 12
+      },
+      "Image dimensions need no FAL record: GraphicalFunctions::getImageDimensions() and TYPO3\\CMS\\Core\\Type\\File\\ImageInfo both take a path.",
+      "ContentObjectRenderer::getImgResource() and the GIFBUILDER it dispatches to take a path or an EXT: path, but they are not a way past FAL: the string is resolved through ResourceFactory::retrieveFileOrFolderObject() and processed as a File, and GifBuilder's own IMAGE and mask files come back through getImgResource(). What reaches the pipeline without FAL is GraphicalFunctions itself."
     ]
   }
 ]

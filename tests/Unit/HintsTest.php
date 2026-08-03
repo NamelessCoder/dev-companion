@@ -1516,6 +1516,31 @@ final class HintsTest extends TestCase
     }
 
     /**
+     * The half `D-KNW-028` left unsaid, which a session then filled in from the
+     * one call path it had read: that image processing needs a FAL object
+     * (`D-KNW-042`). Both entry points it named as the way past FAL resolve
+     * their string through `ResourceFactory` first, so the correction is part
+     * of the statement rather than a footnote to it.
+     */
+    #[Test]
+    public function whereFalStopsInTheImagePipelineIsAnswered(): void
+    {
+        $reached = array_column(
+            Hints::find([], 'does image processing require a FAL object', 6)['matchedHints'],
+            'id',
+        );
+        self::assertContains('fal-processing', $reached);
+
+        $text = self::statementsOf('fal-processing');
+
+        self::assertStringContainsString('getForLocalProcessing(false)', $text, 'where FAL stops');
+        self::assertStringContainsString('takes a path string', $text, 'what runs below it');
+        self::assertStringContainsString('GraphicalFunctions', $text, 'the layer under the task');
+        self::assertStringContainsString('ImageInfo', $text, 'dimensions without a FAL record');
+        self::assertStringContainsString('not a way past FAL', $text, 'what getImgResource does with a path');
+    }
+
+    /**
      * Two FAL traps that only show up as "nothing happened": the same call
      * carries a different default on the folder and on the storage, and a
      * reference's own fields are the ones an editor filled in.

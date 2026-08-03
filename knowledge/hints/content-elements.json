@@ -37,7 +37,8 @@
         "since": 14
       },
       "ExtensionManagementUtility::addTcaSelectItemGroup() adds a group to the CType selector, positioned with before:<group> or after:<group>, so several elements of one extension arrive together instead of scattered through the list.",
-      "What the element owns before its first field is content-element-shape, and its backend preview is content-element-preview."
+      "What the element owns before its first field is content-element-shape, and its backend preview is content-element-preview.",
+      "Whether it then renders correctly is another layer's answer. A functional test asserts the HTML the template produced; what a reader gets on the page is browser-tests, and browser-tests-outside-core is the site a project's specs run against."
     ]
   },
   {
@@ -97,7 +98,8 @@
       {
         "text": "The core's own worked previews are theme_camino's Resources/Private/Templates/ContentPreviews/, where one template iterates an inline relation with f:for and another renders a file field through f:image.",
         "since": 14
-      }
+      },
+      "Whether the preview came out right is not readable from the template either: the page module renders it inside the backend, so what an editor sees is asserted in a browser test rather than in a functional one. browser-tests is that cell."
     ]
   },
   {

@@ -18,6 +18,7 @@ use Typo3CmsMcp\Knowledge\Versions;
 use Typo3CmsMcp\Paths;
 use Typo3CmsMcp\Tool\Registry;
 use Typo3CmsMcp\Tool\TaskGuide;
+use Typo3CmsMcp\Upkeep\Scenarios;
 
 final class HintsTest extends TestCase
 {
@@ -1767,6 +1768,71 @@ final class HintsTest extends TestCase
         // and the rendering test is what gets mistaken for a frontend test.
         self::assertStringContainsString('@axe-core/playwright', $text);
         self::assertStringContainsString('executeFrontendSubRequest', $text);
+    }
+
+    /**
+     * The layer was covered and unreachable. `browser-tests` could be found only
+     * by words that already name the answer — playwright, e2e, spec.ts — and the
+     * caller who needs it most is the one who has not yet decided that a browser
+     * is involved, so a question about whether an element renders correctly
+     * stopped at `content-elements` and was answered with how to register it
+     * (`D-KNW-017`).
+     *
+     * The crossing is a statement in the two hints those questions do reach,
+     * rather than terms on `browser-tests` itself, and that was measured rather
+     * than preferred: «content element» detects as Fluid and TypoScript, the
+     * hint is PHP and TypeScript, so for half of these queries the domain gate
+     * drops it before a single term is scored. The one term that did carry the
+     * other half — `backend preview` — put a testing hint into "the backend
+     * preview of my content element is empty" as well, which is what that entry
+     * named as the way to get this wrong.
+     */
+    #[Test]
+    public function aRenderedVerificationQuestionReachesTheLayerThatVerifiesIt(): void
+    {
+        foreach ([
+            'verifying the rendered testimonials frontend and the backend page module preview',
+            'verify that the content element renders correctly on the live site',
+            'check the backend page module preview of a content element',
+            'how do I verify rendered output of a content element',
+        ] as $query) {
+            $ids = array_column(Hints::find([], $query, 6)['matchedHints'], 'id');
+            self::assertNotSame([], $ids, $query . ' reaches nothing at all');
+            self::assertStringContainsString(
+                'browser-tests',
+                self::statementsOf(...$ids),
+                sprintf('«%s» reaches %s, and none of them names the layer that verifies it', $query, implode(', ', $ids)),
+            );
+        }
+
+        // The cost the crossing was chosen against: a question about the preview
+        // itself is not a question about tests, and must not pay for one.
+        self::assertNotContains(
+            'browser-tests',
+            array_column(Hints::find([], 'the backend preview of my content element is empty', 6)['matchedHints'], 'id'),
+        );
+    }
+
+    /**
+     * The same gap from the other side, and the one `bin/cli hints:coverage`
+     * reports on: `browser-tests` was reached by no scenario prompt at all.
+     *
+     * The two prompts written for this layer are the two that ask for the
+     * outcome — a smoke test before every deployment, browser coverage after a
+     * regression got through the PHP suite — and neither names Playwright.
+     * They are read from the contracts rather than restated here, so a prompt
+     * that is rewritten into the vocabulary of the answer fails this instead of
+     * passing it quietly.
+     */
+    #[Test]
+    public function theBrowserLayerIsReachedByAPromptThatNamesOnlyTheOutcome(): void
+    {
+        $contracts = Scenarios::contracts();
+        foreach (['SITE-06', 'SKILL-06'] as $id) {
+            self::assertArrayHasKey($id, $contracts);
+            $ids = array_column(Hints::find([], $contracts[$id]['prompt'], 6)['matchedHints'], 'id');
+            self::assertContains('browser-tests', $ids, $id . ' reaches ' . (implode(', ', $ids) ?: 'nothing'));
+        }
     }
 
     /**

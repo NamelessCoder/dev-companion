@@ -5,6 +5,7 @@
 **Held by:**
 `SkillTest::extensionTestingVerifiesItsHarnessBeforeAddingCoverage`,
 `HintsTest::theTestKindThatNeedsABrowserIsCovered`,
+`HintsTest::theBrowserLayerIsReachedByAPromptThatNamesOnlyTheOutcome`,
 `ScopeTest::noRunTestsCommandIsHandedToARepositoryThatHasNoRunTests`
 
 > Before every deployment I want a smoke test: the important pages render, the

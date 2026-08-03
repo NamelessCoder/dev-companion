@@ -102,3 +102,46 @@ involved, and that caller lands on `content-elements` instead.
 - The `content-element` checklist sentence turns out to be deliberate, and two
   surfaces of this server saying opposite things about the same layer is worse
   than the gap. Then this is step 5 and a question rather than a routing fix.
+
+## Since then
+
+The three candidates were measured against the four probe queries on
+2026-08-03, and the first of them cannot win: `browser-tests` is `php` and
+`typescript`, «content element» detects as `fluid` and `typoscript`, so for two
+of the four the domain gate drops the hint before a term is scored. Of the
+terms that carried the other two, only `backend preview` did — and it put
+`browser-tests` into "the backend preview of my content element is empty" and
+into "register a backend preview template for a CType", which is the second
+**Wrong if** happening. The narrower terms that name the want rather than the
+answer — `renders correctly`, `rendered output`, `verify the rendered` — reach
+none of the four.
+
+The third one's premise is withdrawn rather than confirmed. The
+`content-element` checklist sentence is not a wording that can move: it is
+`SKILL-04`'s own criterion, "Functional tests cover persistence and rendering
+order; browser behavior is tested or explicitly reported as unverified". Its
+second half is an honesty obligation and not the licence this entry read it as,
+so nothing was changed there and the third **Wrong if** does not apply — the
+sentence and the crossing say the same thing about the same layer.
+
+So the crossing is the second candidate, written twice because one statement
+cannot carry all four queries: probe 1 reaches `content-element-preview` alone
+and probe 2 `content-elements` alone. `content-elements` gains the frontend
+half — a functional test asserts what the template produced, what a reader gets
+on the page is `browser-tests` — and `content-element-preview` the backend
+half, that the page module renders inside the backend and only a browser test
+sees what an editor does. Over the 41 scenario prompts and eight neighbouring
+phrasings no hint was pulled into an answer it was not in before.
+
+The other half of the entry, that no scenario prompt reaches the cell, is fixed
+where the prompts already are rather than by writing a new one: `SITE-06` asks
+for "a smoke test: the important pages render, the forms submit, the backend
+login works" and `SKILL-06` for "browser coverage", so `smoke test` and
+`browser coverage` are what `appliesTo` gains. `SKILL-06` reached no hint at
+all before this and now reaches `browser-tests`. `backend login` was measured
+with them and dropped: it answered "restrict backend login to an IP range" with
+a testing hint and nothing else. What the two kept terms cost is one query,
+"add a smoke test for the console command", which gets `browser-tests` behind
+`console-commands`.
+
+`R-ANS-019` is what holds the result.

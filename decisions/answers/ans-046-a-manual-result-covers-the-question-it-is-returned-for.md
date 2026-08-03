@@ -133,3 +133,49 @@ went to its vendor tree for the answer.
 - The changelog is named and does not answer, because the entry that carries the
   boundary is in a version the installation does not ship. That is `D-ANS-010`'s
   first **Wrong if** on this server's other corpus.
+
+## Since then
+
+The third **Wrong if** fired before the floor was written. It was measured on
+2026-08-03 over the live 14.3 index this lookup builds — 1419 pages from the
+four manuals — with the coverage `TermSearch::score()` returns divided by
+`array_sum($weights)`, which is the share `Documents::search()` compares.
+
+The four numbers above reproduce. `Fluid template file naming convention v14`
+clears 0.5 nowhere, its best being the collision *Naming* at 0.40; `layout root
+paths login screen override` clears nowhere at a best of 0.22; `fluid.html file
+extension templates` clears once at 0.60; `record objects` clears 15 times with
+*Record objects* at 1.00 and `login provider` 3 times with *LoginProvider* at
+1.00.
+
+What was not measured is the rest of the bullet those last two came from. Three
+queries reach *LoginProvider* and the floor leaves one: `login provider` at
+1.00, `login screen layout` at 0.34, and `login form template`, where nothing
+clears 0.5 at all. Coverage is the share of the query's weight a page carries,
+and that page carries one word of each of those two three-word queries. So a
+floor that returns them is at most 0.34, and a floor that empties `Fluid
+template file naming convention v14` is above 0.40. No value does both.
+
+That is the wrong-measure case in three words rather than in two. Over a corpus
+whose ordinary field is 2.66 words, the page that answers a three-word question
+covers a third of it, and the collisions sit in the same band.
+
+The offer does not carry what the floor drops. `layout root paths login screen
+override` offers `layout login`, which returns *Backend layout*, *Backend
+layouts* and *layout* — three of the six collisions the feedback reported, and
+not *LoginProvider*. `login screen layout` offers `login layout` and returns the
+same three. `Fluid template file naming convention v14` offers `fluid file`,
+which clears the floor 23 times, so the narrowed re-query is broader than the
+query that was narrowed.
+
+Two queries `DocumentationTest` already holds go with them, and both rank their
+page first today. `TCA inline foreign_field foreign_sortby localization
+children` returns *IRRE / inline* at 0.43, and `FunctionalTestCase
+executeFrontendSubRequest CSV fixture TYPO3 14` returns *Functional tests* at
+0.19.
+
+Nothing is built. What a floor at 0.5 takes is a query written the way
+`D-ANS-021` tells a caller to write one, answered as "the manual has nothing" —
+which is the reading `feedback/2026-08-03-164734` reports as the expensive kind
+of wrong answer. Whether that is worth what it takes off the three reported
+queries is on the todo, which stays claimed and carries the question.

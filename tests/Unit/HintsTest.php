@@ -352,6 +352,48 @@ final class HintsTest extends TestCase
         self::assertStringContainsString('default is the fallback of every other locale', $result->text);
     }
 
+    /**
+     * The authoring procedure above says what a correct translation file
+     * declares, and an audit reads a rule the other way round: the file in front
+     * of it declares nothing, and the loader takes <source> without saying so —
+     * `D-KNW-050`. So the consequence is stated as the defect, and it is asked
+     * for from both directions it arrives in, an audit of the file and an
+     * upgrade that changed what the file does.
+     */
+    #[Test]
+    #[TestWith(['full conformance audit of an extension, Resources/Private/Language/de.locallang.xlf'])]
+    #[TestWith(['upgrade an extension to a new TYPO3 major, German labels render in English'])]
+    public function aTranslationFileIsToldWhatAMissingTargetLanguageCostsIt(string $task): void
+    {
+        $result = Registry::call('typo3_hint_lookup', ['task' => $task, 'targetVersion' => '14']);
+
+        self::assertStringContainsString('declares no target-language is read as a default-language template', $result->text);
+        self::assertStringContainsString('discards the <target> wording', $result->text);
+        self::assertStringContainsString('Nothing is raised, logged or deprecated', $result->text);
+        self::assertStringContainsString('No schema check reports this', $result->text);
+        self::assertStringContainsString('leaves target-language optional', $result->text);
+    }
+
+    /**
+     * The same file was read by the language that was asked for rather than by
+     * an attribute of the file, so it kept its translations. A caller told
+     * otherwise would go looking for a defect the branch does not have.
+     */
+    #[Test]
+    #[TestWith(['12'])]
+    #[TestWith(['13'])]
+    public function whatAMissingTargetLanguageCostsIsWithheldFromTheBranchesItCostsNothingOn(string $targetVersion): void
+    {
+        $result = Registry::call('typo3_hint_lookup', [
+            'id' => 'language-files',
+            'targetVersion' => $targetVersion,
+        ]);
+
+        self::assertStringNotContainsString('default-language template', $result->text);
+        self::assertStringNotContainsString('No schema check reports this', $result->text);
+        self::assertStringContainsString('new labels in English in the source XLF', $result->text);
+    }
+
     #[Test]
     public function labelReuseStaysAtTheUsageContext(): void
     {

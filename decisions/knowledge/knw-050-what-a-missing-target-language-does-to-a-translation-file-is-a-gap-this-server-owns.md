@@ -101,3 +101,39 @@ in, because it never says what the file that lacks the attribute does.
 - XLIFF 1.2 does not in fact require `original`, `source-language` and `datatype`
   on `<file>`. The feedback asserts it and this judgement did not check it, so a
   schema check recommended on that basis would rest on nothing.
+
+## Covered by
+
+- `HintsTest::aTranslationFileIsToldWhatAMissingTargetLanguageCostsIt`
+- `HintsTest::whatAMissingTargetLanguageCostsIsWithheldFromTheBranchesItCostsNothingOn`
+
+## Since then
+
+Step 1a landed as two statements in `language-files`, both `since: 14`: what the
+missing attribute does to the file, and that no schema check reports it.
+
+The third **Wrong if** is settled and it holds the other way round than the
+feedback read it. The OASIS specification and its strict schema make `original`,
+`source-language` and `datatype` required on `<file>` and `target-language`
+optional, so the file whose translations are being discarded is valid XLIFF. The
+check the feedback asked for exists in the core as `checkIntegrityXliff`, and
+`Build/Scripts/checkIntegrityXliff.php` in `.checkouts/14.3` validates the
+schema and then those three attributes and never reads `target-language` — it is
+a core suite over source files. So the check belongs nowhere, and what a
+validator cannot see is stated in the hint instead.
+
+The reach holds without changing a skill. `skills/base.md` puts one
+`typo3_hint_lookup` per subsystem in scope in front of every workflow, the
+conformance checklist names translations among its surfaces, and
+`bin/cli hints:probe` reaches `language-files` from the audit phrasing and from
+the upgrade phrasing alike. `bin/cli hints:coverage` reports no hint its own
+title fails to reach and does not count `language-files` among the ones no
+scenario prompt reaches.
+
+What step 2 would be is established, for whoever finds the first **Wrong if**
+happening. `Installation\Extension::languageFiles()` already reads the
+`source-language` of each source file out of its `<file>` element and reports
+the locale-prefixed neighbours by existence alone, so reporting whether each of
+those declares a `target-language` is the same regex one file over. It is not
+queued: the decision above bets on the statement reaching, and taking the step
+before the bet is read would leave nothing to read.

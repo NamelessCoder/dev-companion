@@ -1,6 +1,6 @@
 ---
 id: R-KNW-061
-status: open
+status: held
 restsOn: [D-KNW-050]
 ---
 
@@ -34,5 +34,5 @@ installed source, and the hint that governs that file offered no way to see it.
 
 ## Held by
 
-- Not guarded. Nothing yet asserts that a label answer names the consequence of
-  a missing `target-language`.
+- `HintsTest::aTranslationFileIsToldWhatAMissingTargetLanguageCostsIt`
+- `HintsTest::whatAMissingTargetLanguageCostsIsWithheldFromTheBranchesItCostsNothingOn`

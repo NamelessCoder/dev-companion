@@ -29,8 +29,9 @@ one is added.
 - [`D-KNW-049`][D-KNW-049] — What DDEV writes into the settings is named in full, and so is what it cannot configure · 2026-08-03 · confirmed
 - [`D-KNW-050`][D-KNW-050] — What a missing `target-language` does to a translation file is a gap this server owns · 2026-08-03
 - [`D-KNW-051`][D-KNW-051] — The public-asset answer names the internal static beside the supported route · 2026-08-03
-- [`D-KNW-052`][D-KNW-052] — The order a Fluid template name is resolved in is a gap this server owns · 2026-08-03
+- [`D-KNW-052`][D-KNW-052] — The order a Fluid template name is resolved in is a gap this server owns · 2026-08-03 · confirmed
 - [`D-KNW-053`][D-KNW-053] — The root-package layout is stated from an installation and holds across the covered majors · 2026-08-03
+- [`D-KNW-054`][D-KNW-054] — What booting a declared installation takes is stated as one hint beside the project's own · 2026-08-03
 - [`D-KNW-005`][D-KNW-005] — One `Scope` replaced the four vocabularies · 2026-08-02
 - [`D-KNW-006`][D-KNW-006] — A word for a thing administered from the backend adds no domain to a backend-only task · 2026-08-02
 - [`D-KNW-007`][D-KNW-007] — A hint says whose it is in both directions · 2026-08-02
@@ -78,6 +79,7 @@ one is added.
 [D-KNW-051]: knw-051-the-public-asset-answer-names-the-internal-static-beside-the-supported-route.md
 [D-KNW-052]: knw-052-the-order-a-fluid-template-name-is-resolved-in-is-a-gap-this-server-owns.md
 [D-KNW-053]: knw-053-the-root-package-layout-is-stated-from-an-installation-and-holds-across-the-covered-majors.md
+[D-KNW-054]: knw-054-what-booting-a-declared-installation-takes-is-stated-as-one-hint-beside-the-projects-own.md
 [D-KNW-005]: knw-005-one-scope-replaced-the-four-vocabularies.md
 [D-KNW-006]: knw-006-a-word-for-a-thing-administered-from-the-backend.md
 [D-KNW-007]: knw-007-a-hint-says-whose-it-is-in-both-directions.md

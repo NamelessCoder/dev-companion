@@ -111,8 +111,9 @@ and not a defect.
 - [`D-KNW-049`][D-KNW-049] — What DDEV writes into the settings is named in full, and so is what it cannot configure · 2026-08-03 · confirmed
 - [`D-KNW-050`][D-KNW-050] — What a missing `target-language` does to a translation file is a gap this server owns · 2026-08-03
 - [`D-KNW-051`][D-KNW-051] — The public-asset answer names the internal static beside the supported route · 2026-08-03
-- [`D-KNW-052`][D-KNW-052] — The order a Fluid template name is resolved in is a gap this server owns · 2026-08-03
+- [`D-KNW-052`][D-KNW-052] — The order a Fluid template name is resolved in is a gap this server owns · 2026-08-03 · confirmed
 - [`D-KNW-053`][D-KNW-053] — The root-package layout is stated from an installation and holds across the covered majors · 2026-08-03
+- [`D-KNW-054`][D-KNW-054] — What booting a declared installation takes is stated as one hint beside the project's own · 2026-08-03
 - [`D-SKL-005`][D-SKL-005] — Core contribution earns two task skills, one for reviewing a patch and one for creating one · 2026-08-03
 - [`D-SKL-006`][D-SKL-006] — The site-new cluster earns the route into the skill that owns the task · 2026-08-03
 - [`D-SKL-007`][D-SKL-007] — Every disposition a review makes carries its evidence · 2026-08-03
@@ -295,6 +296,7 @@ and not a defect.
 [D-KNW-051]: knowledge/knw-051-the-public-asset-answer-names-the-internal-static-beside-the-supported-route.md
 [D-KNW-052]: knowledge/knw-052-the-order-a-fluid-template-name-is-resolved-in-is-a-gap-this-server-owns.md
 [D-KNW-053]: knowledge/knw-053-the-root-package-layout-is-stated-from-an-installation-and-holds-across-the-covered-majors.md
+[D-KNW-054]: knowledge/knw-054-what-booting-a-declared-installation-takes-is-stated-as-one-hint-beside-the-projects-own.md
 [D-SKL-005]: task-skills/skl-005-core-contribution-earns-a-skill-and-the-domain-is-the-work.md
 [D-SKL-006]: task-skills/skl-006-the-site-new-cluster-earns-the-route-into-the-skill-that-owns-the-task.md
 [D-SKL-007]: task-skills/skl-007-every-disposition-a-review-makes-carries-its-evidence.md

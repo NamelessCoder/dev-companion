@@ -70,8 +70,9 @@ when it is added.
 - [`R-KNW-060`][R-KNW-060] — The project configuration answer names what DDEV writes and what it cannot configure · held
 - [`R-KNW-061`][R-KNW-061] — A translation file is told what a missing `target-language` costs it · held
 - [`R-KNW-062`][R-KNW-062] — The import answer says what it rewrites in a site configuration · held
-- [`R-KNW-063`][R-KNW-063] — A template answer states that the file-name fallback runs once per root path · **open**
+- [`R-KNW-063`][R-KNW-063] — A template answer states that the file-name fallback runs once per root path · held
 - [`R-KNW-064`][R-KNW-064] — The Composer keys that install TYPO3 beneath an extension are answered · held
+- [`R-KNW-065`][R-KNW-065] — Booting a declared installation is answered as its own subject · held
 
 [R-KNW-001]: knw-001-upgrade-wizards-and-dataprocessors-have-hints-of-their-own.md
 [R-KNW-002]: knw-002-a-hint-carries-the-words-its-subject-is-asked-about-in.md
@@ -137,3 +138,4 @@ when it is added.
 [R-KNW-062]: knw-062-the-import-answer-says-what-it-rewrites-in-a-site-configuration.md
 [R-KNW-063]: knw-063-a-template-answer-states-that-the-file-name-fallback-runs-once-per-root-path.md
 [R-KNW-064]: knw-064-the-composer-keys-that-install-typo3-beneath-an-extension-are-answered.md
+[R-KNW-065]: knw-065-booting-a-declared-installation-is-answered-as-its-own-subject.md

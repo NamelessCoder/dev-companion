@@ -109,6 +109,13 @@ final class ToolCalls
             'forge: no such issue' => ['typo3_forge_lookup', [
                 'issue' => '99999999',
             ]],
+            'forge: which other issues describe this' => ['typo3_forge_lookup', [
+                'query' => 'cache busting',
+                'limit' => 3,
+            ]],
+            'forge: nothing matches these words' => ['typo3_forge_lookup', [
+                'query' => 'quantumflux transponder',
+            ]],
             'gerrit: has this issue a patch already' => ['typo3_gerrit_lookup', [
                 'issue' => '110348',
                 'limit' => 3,

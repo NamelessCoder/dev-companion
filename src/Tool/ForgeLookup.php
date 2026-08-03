@@ -14,6 +14,11 @@ use Typo3CmsMcp\Result\ToolResult;
  * Four round trips and a trap by hand: the request refused, a browser-shaped
  * one answered 200 with a challenge page, then JSON whose decision sits in the
  * journal rather than in the description (`D-FBK-027`).
+ *
+ * A number is not the only way in. Whether somebody else already reported this
+ * is asked before a patch and no number answers it, so `query` searches the
+ * tracker by words — the step two sessions took by hand between reading an
+ * issue and looking for its patch (`D-ANS-038`).
  */
 final class ForgeLookup extends ReadOnlyTool
 {
@@ -24,7 +29,7 @@ final class ForgeLookup extends ReadOnlyTool
 
     public static function description(): string
     {
-        return 'Read a TYPO3 issue from the tracker at forge.typo3.org before writing a patch for it: subject, tracker, status, target version, the TYPO3 and PHP versions it was reported against, related issues, and the comments — where a maintainer who closed or reassigned it said why, which the description never says. An issue that does not exist is answered as such, and so is a tracker that could not be reached. Reading only, and no credential: commenting, assigning and closing stay yours.';
+        return 'Read the TYPO3 issue tracker at forge.typo3.org before writing a patch. Pass issue with a number to read that one: subject, tracker, status, target version, the TYPO3 and PHP versions it was reported against, related issues, and the comments — where a maintainer who closed or reassigned it said why, which the description never says. Or pass query with words to find out which other issues describe the same thing, which the relations of one issue only answer for what somebody linked by hand; each hit comes back with its number, subject, tracker, status and URL. A call carries issue or query, never both. An issue that does not exist is answered as such, and so is a tracker that could not be reached. Reading only, and no credential: commenting, assigning and closing stay yours.';
     }
 
     public static function annotations(): array
@@ -45,10 +50,19 @@ final class ForgeLookup extends ReadOnlyTool
                 'issue' => [
                     'type' => 'string',
                     'minLength' => 1,
-                    'description' => 'Forge issue number, with or without the leading #, for example "110348".',
+                    'description' => 'Forge issue number, with or without the leading #, for example "110348". Reads that one issue whole, comments included. A call carries issue or query, never both.',
                 ],
+                'query' => [
+                    'type' => 'string',
+                    'minLength' => 1,
+                    'description' => 'Words to search the tracker for, for example "image cache busting". Answers the issues whose text matches them — which is how a duplicate nobody has linked is found at all, since the relations of an issue only carry what somebody linked by hand. Nothing is ranked and one wording does not settle it: ask again in the reporter\'s words as well as your own, because an issue worded differently is invisible to this. A call carries issue or query, never both.',
+                ],
+                'limit' => ['type' => 'integer', 'minimum' => 1, 'maximum' => 25, 'default' => 15],
             ],
-            'required' => ['issue'],
+            'oneOf' => [
+                ['required' => ['issue']],
+                ['required' => ['query']],
+            ],
         ];
     }
 
@@ -58,9 +72,10 @@ final class ForgeLookup extends ReadOnlyTool
             'status' => ['type' => 'string', 'enum' => ['answered', 'empty', 'unavailable']],
             'source' => Schema::string('The tracker the answer came from.'),
             'url' => Schema::string('What was read, so the same question can be asked again by hand.'),
+            'query' => Schema::string('The words the tracker was searched for, so a set that looks too narrow can be asked again in other words. Empty where an issue was read by number.'),
             'issue' => [
                 'type' => ['object', 'null'],
-                'description' => 'The issue, where status says answered. Null otherwise.',
+                'description' => 'The issue, where status says answered and a number was asked for. Null otherwise.',
                 'properties' => [
                     'id' => Schema::integer(),
                     'subject' => Schema::string(),
@@ -87,6 +102,13 @@ final class ForgeLookup extends ReadOnlyTool
                 ],
                 'required' => ['id', 'subject', 'status', 'tracker', 'priority', 'targetVersion', 'typo3Version', 'phpVersion', 'createdOn', 'updatedOn', 'url', 'description', 'relations', 'noteCount', 'notes'],
             ],
+            'results' => Schema::listOf(Schema::object([
+                'issue' => Schema::integer('The issue number, which is what this tool reads whole.'),
+                'subject' => Schema::string(),
+                'tracker' => Schema::string('Bug, Feature, Task, Epic.'),
+                'status' => Schema::string('Where it stands: New, Accepted, Under Review, Resolved, Closed, Rejected.'),
+                'url' => Schema::string('Where a person reads it.'),
+            ], ['issue', 'subject', 'tracker', 'status', 'url']), 'The issues whose text matches the query, in the tracker\'s own order — nothing here ranks them, and what a hit is worth is the caller\'s to judge. Empty where an issue was read by number.'),
             'unavailable' => [
                 'type' => ['object', 'null'],
                 'description' => 'Why nothing was answered, where status says unavailable. Null otherwise.',
@@ -102,20 +124,31 @@ final class ForgeLookup extends ReadOnlyTool
                 ],
                 'required' => ['cause', 'reason'],
             ],
-        ], ['status', 'source', 'url', 'issue', 'unavailable']);
+        ], ['status', 'source', 'url', 'query', 'issue', 'results', 'unavailable']);
     }
 
     /** @param array<string, mixed> $args */
     public static function answer(array $args): ToolResult
     {
         $issue = is_string($args['issue'] ?? null) ? trim($args['issue']) : '';
+        $query = is_string($args['query'] ?? null) ? trim($args['query']) : '';
+        $limit = is_int($args['limit'] ?? null) ? $args['limit'] : 15;
+
+        return $issue !== '' ? self::read($issue) : self::searched($query, $limit);
+    }
+
+    /** One issue, whole, which is what a number is asked for. */
+    private static function read(string $issue): ToolResult
+    {
         $answer = (new Forge())->issue($issue);
 
         $data = [
             'status' => $answer['status'],
             'source' => Forge::HOST,
             'url' => $answer['url'],
+            'query' => '',
             'issue' => $answer['issue'],
+            'results' => [],
             'unavailable' => $answer['cause'] === null ? null : [
                 'cause' => $answer['cause'],
                 'reason' => $answer['cause'] === 'source-not-answering'
@@ -159,6 +192,65 @@ final class ForgeLookup extends ReadOnlyTool
                 $lines[] = sprintf('**%s**, %s', $note['author'], $note['on']);
                 $lines[] = $note['note'];
             }
+        }
+
+        return ToolResult::create(implode("\n", $lines), $data);
+    }
+
+    /**
+     * The issues a set of words matches, with what a caller has to know about
+     * the set: these words found it, and other words find other issues.
+     *
+     * An empty answer is where that matters most. A report worded differently
+     * is invisible to a word match, so nothing matching is a statement about
+     * the query and never about whether the bug was reported — `D-ANS-038`
+     * names reading it the other way as the failure this is written against.
+     */
+    private static function searched(string $query, int $limit): ToolResult
+    {
+        $answer = (new Forge())->search($query, $limit);
+
+        $data = [
+            'status' => $answer['status'],
+            'source' => Forge::HOST,
+            'url' => $answer['url'],
+            'query' => $answer['query'],
+            'issue' => null,
+            'results' => $answer['results'],
+            'unavailable' => $answer['cause'] === null ? null : [
+                'cause' => $answer['cause'],
+                'reason' => $answer['cause'] === 'source-not-answering'
+                    ? 'The tracker did not answer. It is reachable at ' . Forge::HOST . ' in a browser; nothing here can answer this offline.'
+                    : 'Something answered with a page rather than with the API. The tracker sits behind bot protection, and what it challenges is a browser-shaped request.',
+            ],
+        ];
+
+        if ($answer['status'] === 'unavailable') {
+            return ToolResult::create(
+                'TYPO3 issue tracker, searched for "' . $answer['query'] . "\"\nCould not answer: " . $data['unavailable']['reason'],
+                $data,
+            );
+        }
+        if ($answer['status'] === 'empty') {
+            return ToolResult::create(
+                'TYPO3 issue tracker: no issue matches "' . $answer['query'] . '" at ' . Forge::HOST . ".\n"
+                . 'These words matched nothing, which is not that nobody reported it: an issue worded differently is '
+                . 'invisible to a word search. Ask again in the words a reporter would have used.',
+                $data,
+            );
+        }
+
+        $lines = [
+            sprintf('TYPO3 issue tracker: %d issues match "%s"', count($answer['results']), $answer['query']),
+            'These words, in the tracker\'s own order and unranked. Another wording finds another set, so this is'
+                . ' which issues mention it rather than which one it duplicates. Read one whole by passing its number as issue.',
+        ];
+        foreach ($answer['results'] as $hit) {
+            $lines[] = '';
+            $lines[] = sprintf('## #%d %s', $hit['issue'], $hit['subject']);
+            // The tracker and the status where the title carried them, which is
+            // every hit the tracker words as it words its own.
+            $lines[] = implode(' · ', array_filter([$hit['tracker'], $hit['status'], $hit['url']]));
         }
 
         return ToolResult::create(implode("\n", $lines), $data);

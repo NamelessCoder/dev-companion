@@ -22,8 +22,8 @@
       "scope": "core"
     },
     {
-      "topic": "What a Forge issue says and what was decided about it",
-      "depth": "The tracker's own API, read live: subject, tracker, status, target version, the TYPO3 and PHP versions it was reported against, related issues, and the comments. The description is what the reporter saw; the comments are where a maintainer said what will happen.",
+      "topic": "What a Forge issue says and what was decided about it, and which other issues describe the same thing",
+      "depth": "The tracker's own API, read live. By number: subject, tracker, status, target version, the TYPO3 and PHP versions it was reported against, related issues, and the comments — the description is what the reporter saw, the comments are where a maintainer said what will happen. By words: the issues whose text matches them, each with its number, subject, tracker, status and URL, in the tracker's own order and unranked. An issue worded differently is invisible to a word search, so words that match nothing are an answer about the words and not about whether the thing was reported.",
       "tools": [
         "typo3_forge_lookup"
       ],
@@ -257,7 +257,7 @@
     },
     {
       "when": "Taking a Forge issue on, before believing what it describes — an issue can be stale, already fixed, or closed on a decision that is not in its description",
-      "call": "typo3_forge_lookup for the issue and its comments, then typo3_gerrit_lookup with the same number for whether a patch exists already"
+      "call": "typo3_forge_lookup for the issue and its comments, then typo3_forge_lookup again with query in the words the issue uses for the other issues describing the same thing — its relations carry only what somebody linked by hand — then typo3_gerrit_lookup with the same number for whether a patch exists already"
     },
     {
       "when": "Reviewing a TYPO3 core patch — the current changes in a core checkout, a commit, or a change fetched from Gerrit — rather than a project or an extension",

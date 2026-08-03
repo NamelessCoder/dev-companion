@@ -41,8 +41,8 @@ say what goes in and what shape comes back.
   core paths or task topics, grouped by section.
 - [`typo3_documentation_lookup`](tools/typo3_documentation_lookup.md) — Search
   or read the official live TYPO3 documentation for a covered TYPO3 line.
-- [`typo3_forge_lookup`](tools/typo3_forge_lookup.md) — Read a TYPO3 issue from
-  the tracker at forge.typo3.org before writing a patch for it.
+- [`typo3_forge_lookup`](tools/typo3_forge_lookup.md) — Read the TYPO3 issue
+  tracker at forge.typo3.org before writing a patch.
 - [`typo3_gerrit_lookup`](tools/typo3_gerrit_lookup.md) — Find out whether a
   TYPO3 core patch already exists, from the review server at review.typo3.org.
 - [`typo3_component_lookup`](tools/typo3_component_lookup.md) — Look up TYPO3

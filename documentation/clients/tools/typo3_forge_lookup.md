@@ -1,21 +1,36 @@
 # `typo3_forge_lookup`
 
-Read a TYPO3 issue from the tracker at forge.typo3.org before writing a patch
-for it: subject, tracker, status, target version, the TYPO3 and PHP versions it
-was reported against, related issues, and the comments — where a maintainer who
-closed or reassigned it said why, which the description never says. An issue
-that does not exist is answered as such, and so is a tracker that could not be
-reached. Reading only, and no credential: commenting, assigning and closing stay
-yours.
+Read the TYPO3 issue tracker at forge.typo3.org before writing a patch. Pass
+issue with a number to read that one: subject, tracker, status, target version,
+the TYPO3 and PHP versions it was reported against, related issues, and the
+comments — where a maintainer who closed or reassigned it said why, which the
+description never says. Or pass query with words to find out which other issues
+describe the same thing, which the relations of one issue only answer for what
+somebody linked by hand; each hit comes back with its number, subject, tracker,
+status and URL. A call carries issue or query, never both. An issue that does
+not exist is answered as such, and so is a tracker that could not be reached.
+Reading only, and no credential: commenting, assigning and closing stay yours.
 
 `readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: true`
 
 ## Takes
 
 ```yaml
-# Forge issue number, with or without the leading #, for example "110348".
-issue: string
+# Forge issue number, with or without the leading #, for example "110348". Reads
+# that one issue whole, comments included. A call carries issue or query, never
+# both.
+issue: string  # optional
+# Words to search the tracker for, for example "image cache busting". Answers
+# the issues whose text matches them — which is how a duplicate nobody has
+# linked is found at all, since the relations of an issue only carry what
+# somebody linked by hand. Nothing is ranked and one wording does not settle it:
+# ask again in the reporter's words as well as your own, because an issue worded
+# differently is invisible to this. A call carries issue or query, never both.
+query: string  # optional
+limit: integer  # optional
 ```
+
+The call carries exactly one of these sets of arguments: `issue` — or `query`.
 
 ## Answers with
 
@@ -26,7 +41,11 @@ status: string
 source: string
 # What was read, so the same question can be asked again by hand.
 url: string
-# The issue, where status says answered. Null otherwise.
+# The words the tracker was searched for, so a set that looks too narrow can be
+# asked again in other words. Empty where an issue was read by number.
+query: string
+# The issue, where status says answered and a number was asked for. Null
+# otherwise.
 issue:
   id: integer
   subject: string
@@ -63,6 +82,19 @@ issue:
     - author: string
       on: string
       note: string
+# The issues whose text matches the query, in the tracker's own order —
+# nothing here ranks them, and what a hit is worth is the caller's to judge.
+# Empty where an issue was read by number.
+results:
+  - # The issue number, which is what this tool reads whole.
+    issue: integer
+    subject: string
+    # Bug, Feature, Task, Epic.
+    tracker: string
+    # Where it stands: New, Accepted, Under Review, Resolved, Closed, Rejected.
+    status: string
+    # Where a person reads it.
+    url: string
 # Why nothing was answered, where status says unavailable. Null otherwise.
 unavailable:
   # One of: source-not-answering, source-not-parseable. source-not-answering:
@@ -125,6 +157,7 @@ Data:
     "status": "answered",
     "source": "https://forge.typo3.org",
     "url": "https://forge.typo3.org/issues/110348.json?include=journals,relations",
+    "query": "",
     "issue": {
         "id": 110348,
         "subject": "Rework AdminPanel \"imagesOnPage\" feature",
@@ -158,6 +191,7 @@ Data:
             }
         ]
     },
+    "results": [],
     "unavailable": null
 }
 ```
@@ -185,7 +219,103 @@ Data:
     "status": "empty",
     "source": "https://forge.typo3.org",
     "url": "https://forge.typo3.org/issues/99999999.json?include=journals,relations",
+    "query": "",
     "issue": null,
+    "results": [],
+    "unavailable": null
+}
+```
+
+### forge: which other issues describe this
+
+Called with:
+
+```json
+{
+    "query": "cache busting",
+    "limit": 3
+}
+```
+
+Text:
+
+```
+TYPO3 issue tracker: 3 issues match "cache busting"
+These words, in the tracker's own order and unranked. Another wording finds another set, so this is which issues mention it rather than which one it duplicates. Read one whole by passing its number as issue.
+
+## #107904 Cache-busting applied to folder paths
+Bug · Closed · https://forge.typo3.org/issues/107904
+
+## #107869 Add option to not add cache busting to generated URIs
+Bug · Closed · https://forge.typo3.org/issues/107869
+
+## #105953 f:uri.resource cache busting not working and in addition causing PHP warninigs when open_basedir is enabled
+Bug · Closed · https://forge.typo3.org/issues/105953
+```
+
+Data:
+
+```json
+{
+    "status": "answered",
+    "source": "https://forge.typo3.org",
+    "url": "https://forge.typo3.org/search.json?q=cache%20busting&issues=1&limit=3",
+    "query": "cache busting",
+    "issue": null,
+    "results": [
+        {
+            "issue": 107904,
+            "subject": "Cache-busting applied to folder paths",
+            "tracker": "Bug",
+            "status": "Closed",
+            "url": "https://forge.typo3.org/issues/107904"
+        },
+        {
+            "issue": 107869,
+            "subject": "Add option to not add cache busting to generated URIs",
+            "tracker": "Bug",
+            "status": "Closed",
+            "url": "https://forge.typo3.org/issues/107869"
+        },
+        {
+            "issue": 105953,
+            "subject": "f:uri.resource cache busting not working and in addition causing PHP warninigs when open_basedir is enabled",
+            "tracker": "Bug",
+            "status": "Closed",
+            "url": "https://forge.typo3.org/issues/105953"
+        }
+    ],
+    "unavailable": null
+}
+```
+
+### forge: nothing matches these words
+
+Called with:
+
+```json
+{
+    "query": "quantumflux transponder"
+}
+```
+
+Text:
+
+```
+TYPO3 issue tracker: no issue matches "quantumflux transponder" at https://forge.typo3.org.
+These words matched nothing, which is not that nobody reported it: an issue worded differently is invisible to a word search. Ask again in the words a reporter would have used.
+```
+
+Data:
+
+```json
+{
+    "status": "empty",
+    "source": "https://forge.typo3.org",
+    "url": "https://forge.typo3.org/search.json?q=quantumflux%20transponder&issues=1&limit=15",
+    "query": "quantumflux transponder",
+    "issue": null,
+    "results": [],
     "unavailable": null
 }
 ```

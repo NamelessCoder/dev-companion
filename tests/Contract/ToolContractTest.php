@@ -92,7 +92,7 @@ final class ToolContractTest extends TestCase
         }
 
         self::assertSame(
-            ['typo3_documentation_lookup', 'typo3_gerrit_lookup'],
+            ['typo3_documentation_lookup', 'typo3_forge_lookup', 'typo3_gerrit_lookup'],
             $declaring,
             'the input-side alternatives this holds are not the ones that exist',
         );

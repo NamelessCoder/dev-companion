@@ -98,13 +98,19 @@ final class ToolAnswers
         ?string $installation = null,
         array $tools = [],
     ): array {
+        $backed = self::installationBacked();
+        if ($tools !== []) {
+            $backed = array_values(array_intersect($backed, $tools));
+        }
+
         $recordings = [self::recordAgainst($primary, $tools)];
-        if ($installation !== null) {
-            $backed = self::installationBacked();
-            $recordings[] = self::recordAgainst(
-                $installation,
-                $tools === [] ? $backed : array_values(array_intersect($backed, $tools)),
-            );
+        // No second recording where the named tools have no installation-backed
+        // one among them. An empty list means every tool to `recordAgainst`, so
+        // narrowing to one that answers the same from any root would otherwise
+        // record the whole surface a second time and head every page it touched
+        // with a second provenance it does not have.
+        if ($installation !== null && $backed !== []) {
+            $recordings[] = self::recordAgainst($installation, $backed);
         }
         self::pointAt($primary);
 

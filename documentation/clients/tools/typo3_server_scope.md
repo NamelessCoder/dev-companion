@@ -128,8 +128,8 @@ Source: typo3://core/typo3-core-rules (core)
 Curated prose, command level. Covers the local git side; it cannot talk to the Gerrit server.
 Tools: typo3_rule_lookup
 Source: typo3://core/typo3-gerrit-workflow (core)
-## What a Forge issue says and what was decided about it
-The tracker's own API, read live: subject, tracker, status, target version, the TYPO3 and PHP versions it was reported against, related issues, and the comments. The description is what the reporter saw; the comments are where a maintainer said what will happen.
+## What a Forge issue says and what was decided about it, and which other issues describe the same thing
+The tracker's own API, read live. By number: subject, tracker, status, target version, the TYPO3 and PHP versions it was reported against, related issues, and the comments — the description is what the reporter saw, the comments are where a maintainer said what will happen. By words: the issues whose text matches them, each with its number, subject, tracker, status and URL, in the tracker's own order and unranked. An issue worded differently is invisible to a word search, so words that match nothing are an answer about the words and not about whether the thing was reported.
 Tools: typo3_forge_lookup
 Source: https://forge.typo3.org (network) (core)
 ## Whether a patch for an issue already exists on the review server
@@ -233,7 +233,7 @@ Instead: Use the TYPO3 documentation at https://docs.typo3.org/.
 
 Which tool to call when:
 - Asked to review, audit or assess a project, a site package or an extension — before opening the first file, because what a finding is worth depends on the version and the commands this repository has → typo3_project_scope, then typo3_task_guide for the workflow and typo3_extension_scope for each extension in scope
-- Taking a Forge issue on, before believing what it describes — an issue can be stale, already fixed, or closed on a decision that is not in its description → typo3_forge_lookup for the issue and its comments, then typo3_gerrit_lookup with the same number for whether a patch exists already
+- Taking a Forge issue on, before believing what it describes — an issue can be stale, already fixed, or closed on a decision that is not in its description → typo3_forge_lookup for the issue and its comments, then typo3_forge_lookup again with query in the words the issue uses for the other issues describing the same thing — its relations carry only what somebody linked by hand — then typo3_gerrit_lookup with the same number for whether a patch exists already
 - Reviewing a TYPO3 core patch — the current changes in a core checkout, a commit, or a change fetched from Gerrit — rather than a project or an extension → typo3_rule_lookup per obligation the diff raises, typo3_changelog_lookup for the precedent, typo3_test_run_guide with the changed paths, then typo3_commit_message_guide
 - Writing a core patch: taking a Forge issue on, fixing a core bug, deprecating or removing core API, or amending a patch after review → typo3_task_guide with area core, then typo3_hint_lookup with the paths you are changing, typo3_test_run_guide for the suites that can fail, and typo3_rule_lookup for the Gerrit workflow
 - Starting a core task and looking for the applicable conventions and checks → typo3_task_guide
@@ -293,8 +293,8 @@ Data:
             "scope": "core"
         },
         {
-            "topic": "What a Forge issue says and what was decided about it",
-            "depth": "The tracker's own API, read live: subject, tracker, status, target version, the TYPO3 and PHP versions it was reported against, related issues, and the comments. The description is what the reporter saw; the comments are where a maintainer said what will happen.",
+            "topic": "What a Forge issue says and what was decided about it, and which other issues describe the same thing",
+            "depth": "The tracker's own API, read live. By number: subject, tracker, status, target version, the TYPO3 and PHP versions it was reported against, related issues, and the comments — the description is what the reporter saw, the comments are where a maintainer said what will happen. By words: the issues whose text matches them, each with its number, subject, tracker, status and URL, in the tracker's own order and unranked. An issue worded differently is invisible to a word search, so words that match nothing are an answer about the words and not about whether the thing was reported.",
             "tools": [
                 "typo3_forge_lookup"
             ],
@@ -528,7 +528,7 @@ Data:
         },
         {
             "when": "Taking a Forge issue on, before believing what it describes — an issue can be stale, already fixed, or closed on a decision that is not in its description",
-            "call": "typo3_forge_lookup for the issue and its comments, then typo3_gerrit_lookup with the same number for whether a patch exists already"
+            "call": "typo3_forge_lookup for the issue and its comments, then typo3_forge_lookup again with query in the words the issue uses for the other issues describing the same thing — its relations carry only what somebody linked by hand — then typo3_gerrit_lookup with the same number for whether a patch exists already"
         },
         {
             "when": "Reviewing a TYPO3 core patch — the current changes in a core checkout, a commit, or a change fetched from Gerrit — rather than a project or an extension",

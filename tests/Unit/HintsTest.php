@@ -3221,6 +3221,32 @@ final class HintsTest extends TestCase
     }
 
     /**
+     * A backend-module task reaches the skill that owns it (R-SKL-001).
+     *
+     * The words of `SITE-07` matched `backend-ui` and nothing else, and that
+     * intent names no skill: the brief answered with the markup a module writes
+     * while the workflow that decides where the module sits, who may open it
+     * and how it is proven stayed unloaded. Inside the core the same task is a
+     * patch and owes what a patch owes, which is the split `tests` and `audit`
+     * already make.
+     */
+    #[Test]
+    public function aBackendModuleTaskReachesTheSkillThatOwnsIt(): void
+    {
+        $package = Registry::call('typo3_task_guide', [
+            'task' => 'add a backend module to our site package that lists imported records',
+            'paths' => ['packages/printworks_sitepackage'],
+        ]);
+        $core = Registry::call('typo3_task_guide', [
+            'task' => 'fix the doc header button in the list module',
+            'paths' => ['typo3/sysext/backend/Classes/Controller/RecordListController.php'],
+        ]);
+
+        self::assertSame(['typo3-backend-module-development'], $package->data['skills']);
+        self::assertSame(['typo3-core-patch-development'], $core->data['skills']);
+    }
+
+    /**
      * Work that operates an installation is answered as a boot, not as a patch
      * and not as a review.
      *

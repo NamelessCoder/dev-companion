@@ -112,6 +112,33 @@
     ]
   },
   {
+    "id": "backend-module",
+    "title": "Adding or changing a backend module",
+    "skill": "typo3-backend-module-development",
+    "skillCore": "typo3-core-patch-development",
+    "match": [
+      "backend module",
+      "module registration",
+      "Configuration/Backend/Modules.php",
+      "module identifier",
+      "doc header",
+      "docheader"
+    ],
+    "rulesQuery": "",
+    "checklist": [
+      "Settle where the module sits before it is named: which module it hangs under, where it stands among that parent's children, and who may open it. The identifier is what the route, the module's persisted per-user state and a user's bookmarks are keyed by, so a later rename is an alias kept beside the module rather than an edit to it.",
+      "Read the modules this installation already registers before choosing that place. A parent that is not there and an identifier that is taken are written the same way as a working one, and both fail when a user opens the module rather than when the file is saved.",
+      "Answer who may open the module and what a request inside it may read as two questions. The access declared on the registration decides the first — the entry in the tree, and the route behind it — and says nothing about the second, so a module showing records somebody else owns checks that itself.",
+      "Prove the module by opening it: the entry appears where it was placed, the route answers, the icon renders instead of an empty box, the labels resolve instead of showing their keys, and the access declared lets in whom it claims to. None of the five fails at build time, and a green test suite reports none of them."
+    ],
+    "checks": [],
+    "tools": [
+      "typo3_backend_module_lookup, before choosing the identifier, the parent or the route: it reports what this installation already registers",
+      "typo3_hint_lookup with id=backend-modules, for the registration file, what a module builds into its doc header, and what its own POST answers with",
+      "typo3_translation_domain_lookup, for the XLF the module's labels are declared through"
+    ]
+  },
+  {
     "id": "backend-ui",
     "title": "Backend UI markup",
     "match": [

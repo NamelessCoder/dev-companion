@@ -7,14 +7,18 @@
     ],
     "rulesQuery": "deprecation changelog",
     "checklist": [
-      "Add a changelog file below typo3/sysext/core/Documentation/Changelog/<version>/ named Deprecation-<issue>-<Title>.rst.",
-      "Use [TASK] or [FEATURE] as the commit keyword. A deprecation must never use the [!!!] breaking prefix.",
-      "Keep the deprecated API working and let it trigger E_USER_DEPRECATED; removal happens in a later major.",
-      "Document the migration path in the changelog and consider an extension scanner matcher.",
-      "Migrate all core usages of the deprecated API in the same patch."
+      "Annotate the member @deprecated since TYPO3 v<the version this lands in>, will be removed in TYPO3 v<the next major>. and close that line with the migration sentence. Read both versions off the branch you are on rather than off an example.",
+      "Keep the member working and open its body with trigger_error('<Class>-><member>() is deprecated since TYPO3 v<the version this lands in> and will be removed in TYPO3 v<the next major>. <migration>', E_USER_DEPRECATED). The docblock and the message say the same three things, and the removal is a patch of its own in that major.",
+      "Migrate every caller of the deprecated API in the same patch, and confirm none is left behind.",
+      "Add a changelog file below typo3/sysext/core/Documentation/Changelog/<the minor this is released in>/ named Deprecation-<issue>-<UpperCamelCaseDescription>.rst. Nothing has to include it: that directory's Index.rst pulls Deprecation-* in by glob, so the filename is the inclusion.",
+      "Open the changelog file with .. include:: /Includes.rst.txt and a unique .. _deprecation-<issue>-<unix timestamp>: anchor directly above the 'Deprecation: #<issue> - <title>' headline, with See :issue:`<issue>` under it. Then Description, Impact, Affected installations and Migration — the last two are what this type owes over a feature entry.",
+      "End the changelog file with .. index:: carrying at least one subject tag and exactly one of FullyScanned, PartiallyScanned or NotScanned. Build/Scripts/validateRstFiles.php rejects a Deprecation file without the scanner tag, so it is owed rather than considered.",
+      "Back a FullyScanned or PartiallyScanned tag with an extension scanner matcher: an entry below typo3/sysext/install/Configuration/ExtensionScanner/Php/, keyed by the deprecated symbol and naming the changelog file in its restFiles. NotScanned is for what no matcher can find, not for what nobody wrote.",
+      "Use [TASK] or [FEATURE] as the commit keyword. A deprecation must never use the [!!!] breaking prefix."
     ],
     "checks": [
-      "CI=true ./Build/Scripts/runTests.sh -s checkRst"
+      "CI=true ./Build/Scripts/runTests.sh -s checkRst",
+      "CI=true ./Build/Scripts/runTests.sh -s checkExtensionScannerRst"
     ],
     "tools": [
       "typo3_commit_message_guide with isDeprecation=true, to get the keyword and prefix rules checked"

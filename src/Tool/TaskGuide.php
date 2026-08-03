@@ -37,6 +37,11 @@ final class TaskGuide extends ReadOnlyTool
         'cleanup' => ['Keep the cleanup mechanical; avoid mixing behavioural changes into the same patch.'],
         'test' => ['Confirm the test fails without the fix and passes with it; avoid asserting on incidental output.'],
         'documentation' => ['Run ./Build/Scripts/runTests.sh -s checkRst to validate ReST syntax.'],
+        // The one type whose rules are stated elsewhere: the change type is fed
+        // to the intent matcher below, where `deprecation` already carries them
+        // for the caller who describes the work instead of classifying it. A
+        // block here would print every one of those items a second time.
+        'deprecation' => [],
         'unknown' => [],
     ];
 
@@ -45,6 +50,7 @@ final class TaskGuide extends ReadOnlyTool
         'documentation' => 'documentation changelog rst',
         'test' => 'unit test functional test',
         'feature' => 'changelog',
+        'deprecation' => 'deprecation changelog rst deprecated api',
         'bugfix' => '',
         'cleanup' => '',
         'unknown' => '',
@@ -84,7 +90,7 @@ final class TaskGuide extends ReadOnlyTool
                 'area' => ['type' => 'string', 'description' => 'Affected subsystem or extension, if known.'],
                 'paths' => ['type' => 'array', 'items' => ['type' => 'string'], 'default' => [], 'description' => 'The files the task is about, as they are in the repository they belong to. Pass them where the work touches more than one place: each is placed on its own, so a core path and an extension path in one call are not answered with one verdict. The area counts as one of them.'],
                 'targetVersion' => ['type' => 'string', 'description' => 'The TYPO3 version this task is for, for example "13.4" or "14". Conventions that do not hold there are left out, including those the repository needs for another major it declares. Defaults to every major this repository declares typo3/cms-core for, or to the installation this server was started in where there is no declaration.'],
-                'changeType' => ['type' => 'string', 'enum' => ['bugfix', 'feature', 'cleanup', 'test', 'documentation', 'unknown'], 'default' => 'unknown'],
+                'changeType' => ['type' => 'string', 'enum' => ['bugfix', 'feature', 'cleanup', 'test', 'documentation', 'deprecation', 'unknown'], 'default' => 'unknown'],
             ],
             'required' => ['task'],
         ];

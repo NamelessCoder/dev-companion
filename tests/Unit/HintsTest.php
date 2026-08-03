@@ -17,6 +17,7 @@ use Typo3CmsMcp\Knowledge\TestSuiteHints;
 use Typo3CmsMcp\Knowledge\Versions;
 use Typo3CmsMcp\Paths;
 use Typo3CmsMcp\Tool\Registry;
+use Typo3CmsMcp\Tool\TaskGuide;
 
 final class HintsTest extends TestCase
 {
@@ -2157,6 +2158,52 @@ final class HintsTest extends TestCase
         $intents = TaskIntents::detect('Deprecate GeneralUtility::getUrl()');
 
         self::assertContains('deprecation', array_column($intents, 'id'));
+    }
+
+    /**
+     * A deprecation is a change type, and the rules it owes arrive with it.
+     *
+     * The reviewing session behind `feedback/2026-08-01-122113` classified the
+     * patch rather than describing it, and the one core patch shape with a
+     * fixed rule set was the one the enum had no value for — so it verified
+     * every rule by grepping the `setCorrelationId` precedent instead. The
+     * rules asserted here are that precedent, read in `.checkouts/main`.
+     */
+    #[Test]
+    public function aDeprecationIsAChangeTypeThatCarriesWhatOneOwes(): void
+    {
+        self::assertContains(
+            'deprecation',
+            TaskGuide::inputSchema()['properties']['changeType']['enum'],
+        );
+
+        $brief = Registry::call('typo3_task_guide', [
+            'task' => 'Review the patch that deprecates the AssetCollector media handling',
+            'changeType' => 'deprecation',
+        ]);
+
+        self::assertContains('deprecation', array_column($brief->data['intents'], 'id'));
+        foreach ([
+            '@deprecated since TYPO3 v',
+            'E_USER_DEPRECATED',
+            'Deprecation-<issue>-<UpperCamelCaseDescription>.rst',
+            '_deprecation-<issue>-<unix timestamp>:',
+            'NotScanned',
+            'typo3/sysext/install/Configuration/ExtensionScanner/Php/',
+        ] as $owed) {
+            self::assertStringContainsString($owed, $brief->text);
+        }
+        self::assertContains(
+            'CI=true ./Build/Scripts/runTests.sh -s checkExtensionScannerRst',
+            $brief->data['checks'],
+        );
+
+        // Once, not twice: the change type routes into the intent that already
+        // carries the rules, rather than holding a second copy of them.
+        self::assertSame(
+            array_values(array_unique($brief->data['checklist'])),
+            $brief->data['checklist'],
+        );
     }
 
     #[Test]

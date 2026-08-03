@@ -27,7 +27,7 @@ paths: [string]  # optional
 # typo3/cms-core for, or to the installation this server was started in where
 # there is no declaration.
 targetVersion: string  # optional
-# One of: bugfix, feature, cleanup, test, documentation, unknown.
+# One of: bugfix, feature, cleanup, test, documentation, deprecation, unknown.
 changeType: string  # optional
 ```
 

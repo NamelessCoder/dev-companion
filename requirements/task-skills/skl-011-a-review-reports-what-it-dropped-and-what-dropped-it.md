@@ -24,13 +24,18 @@ rather than because it is impossible.
 
 ## From
 
+The second recorded `REVIEW-03` run did this once, unprompted, and it is the
+only recorded instance: `typo3_commit_message_guide` returned two warnings that
+are artifacts of its own rewrite, and the answer named them, said why they do
+not hold, and discounted them rather than reporting them as findings. The
+judgement calls that "the behaviour the corpus keeps asking for and rarely
+records". Nothing in the skill asked for it, so nothing makes the next run do
+it, and every dismissal that run made in silence is unreadable either way.
+
 The conformance checklist stated the bar for a security verdict alone — it "has
 to be disproved before it can be dismissed" — and the reason under it is about
-who pays for a wrong dismissal rather than about security. A published
-multi-pass review pipeline for a large C project, read on 2026-08-03, carries
-the disproved candidates alongside the raised ones through every pass and lets a
-candidate be discarded only against concrete proof; `D-SKL-007` records what was
-taken from it and what was rejected.
+who pays for a wrong dismissal rather than about security. `D-SKL-007` records
+where the general form was read and what was rejected with it.
 
 ## Held by
 

@@ -15,6 +15,19 @@ cheapest sentence in a review to write.
 
 ## Evidence
 
+- The second recorded `REVIEW-03` run carries all three dispositions and asked
+  for none of them. It discounted two `typo3_commit_message_guide` warnings by
+  naming why they do not hold; it attributed twice, establishing that the
+  parsing the patch adds already exists on `origin/14.3` and marking the
+  empty-tab finding new; and it reported the security surface as assessed while
+  the finding of the run before it — four fields written past the `$fieldList`
+  guard — went unmade. Two behaviours that nothing required, and one failure
+  that nothing caught, in one run judged as meeting every criterion.
+- That run's own judgement names the third as a shape rather than an accident:
+  "a surface asserted clean rather than left unassessed, which costs more than a
+  gap because the coverage table beside it is what a reader uses to decide what
+  still needs looking at" — the shape `REVIEW-02` was partial for and
+  `REVIEW-01` produced three times.
 - A published multi-pass review pipeline for a large C project, read on
   2026-08-03, carries two lists through every pass rather than one: what the
   pass raised, and what it raised and disproved. Its consolidation pass is told
@@ -35,7 +48,6 @@ cheapest sentence in a review to write.
   whose sink escapes. The bar is written for the subject and the reason under it
   is not about the subject: what makes a dismissal expensive is that its cost
   falls on the reader rather than on the review.
-
 - Every verification step in that pipeline's own guide ends in an emission
   rather than in a judgement — "Output: quote the call chain with locations",
   "Output: subsystem invariants checked, or none", "Output: production code, or

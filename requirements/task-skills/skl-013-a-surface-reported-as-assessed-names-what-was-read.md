@@ -18,12 +18,23 @@ unassessed, which costs the same line and says something a reader can act on.
 
 ## From
 
-The checklist already said that a surface nobody looked at reads as clean unless
-it is named, and then let the naming be a single word. A published multi-pass
-review pipeline for a large C project, read on 2026-08-03, ends every
-verification step of its own guide in an emission rather than a judgement, on
-the ground that a step producing nothing was not performed. `D-SKL-007` records
-what was taken from it and what was rejected.
+The second recorded `REVIEW-03` run met all five criteria and reported the
+security surface as assessed. Its own notes file the gap: the strongest finding
+of the run before it is absent, because four fields are written out of
+`$be_user_data = $beUsersSubmission` without consulting the `$fieldList` guard
+the generic loop applies, which is what makes the patch's new docblock overstate
+what it achieves. The judgement names the shape — "a surface asserted clean
+rather than left unassessed, which costs more than a gap because the coverage
+table beside it is what a reader uses to decide what still needs looking at" —
+and records it as the shape `REVIEW-02` was partial for and `REVIEW-01` produced
+three times.
+
+What this requirement buys is the honest word, not the reading. The same note
+says neither the criteria nor the checklist asks for the deletions-and-writes
+reading that would have caught the finding, and naming what was read does not
+make that reading happen. It turns a wrong "assessed" into an "unassessed" a
+reader can act on, which is what the judgement itself argues is the cheaper of
+the two failures.
 
 ## Held by
 

@@ -22,11 +22,16 @@ lower one, because reachability is what a diff establishes worst.
 
 ## From
 
-A published multi-pass review pipeline for a large C project, read on
-2026-08-03, flags every finding as introduced or pre-existing, requires the
-reported wording to state it, keeps pre-existing findings out of the report
-below its top two severities, and runs a benchmark of its own for that one
-property. `D-SKL-007` records what was taken from it and what was rejected.
+The second recorded `REVIEW-03` run attributed twice without being asked to, and
+both were load-bearing. It established that the parsing the patch adds already
+exists one line up and is byte-identical on `origin/14.3`, which turns the
+finding from "the patch parses TSConfig" into "the patch makes an already-parsed
+flag take effect" — a different report to the author. And it marked the
+empty-tab finding "cosmetic and new" rather than inflating it. Nothing in the
+skill asked for either, so nothing makes the next run do it.
+
+`D-SKL-007` records where the general form was read and what was rejected with
+it.
 
 ## Held by
 

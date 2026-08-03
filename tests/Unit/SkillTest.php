@@ -552,6 +552,41 @@ final class SkillTest extends TestCase
     }
 
     #[Test]
+    public function obligationsThatShareADocumentAreOneRuleQuery(): void
+    {
+        // The skill told a reviewer to ask per obligation because "a query that
+        // names two reaches neither", and the REVIEW-03 run of 2026-08-03
+        // followed it: `changelog entry` then `breaking change`, both returning
+        // `## Breaking Changes` and `## Changelog Files` whole. Re-run the same
+        // day, `breaking change changelog entry` returns both at 100% plus the
+        // three sections the two calls added between them, while four subjects
+        // in one query drop `## Deprecations` below `Documents::MIN_COVERAGE`.
+        // So the count was never the axis and the length is (`D-SKL-011`).
+        $skill = (string) preg_replace('/\s+/', ' ', (string) file_get_contents(
+            Paths::root() . '/skills/typo3-core-patch-review/SKILL.md',
+        ));
+
+        self::assertStringContainsString(
+            '**Obligations that share a document are one call.**',
+            $skill,
+        );
+        // The pair it was measured on, so the rule is checkable rather than
+        // taken on the skill's word.
+        self::assertStringContainsString(
+            '`breaking change changelog entry` returns both sections whole',
+            $skill,
+        );
+        // And the bound, which is what the withdrawn sentence was reaching for.
+        self::assertStringContainsString('Length is the limit rather than the count', $skill);
+        self::assertStringContainsString(
+            'a query naming four obligations dropped the deprecation section',
+            $skill,
+        );
+        // The claim about the ranker that moved under the skill is gone.
+        self::assertStringNotContainsString('a query that names two reaches neither', $skill);
+    }
+
+    #[Test]
     public function aReviewReadsTheReviewThePatchIsAlreadyIn(): void
     {
         // Both tools existed and no skill routed to either. The third recorded

@@ -70,9 +70,15 @@ Ask the owner of each obligation rather than recalling it:
 
 - `typo3_rule_lookup` for the contribution rules the diff makes relevant — what
   a breaking change owes, what a deprecation owes, what belongs in a changelog
-  entry, and what review readiness means. Ask it per obligation and not once:
-  the sections it returns are named by subject, and a query that names two
-  reaches neither.
+  entry, and what review readiness means. The sections are named by subject, so
+  ask in the words of a subject rather than in a sentence about the patch.
+  **Obligations that share a document are one call.**
+  `breaking change changelog entry` returns both sections whole, and asking the
+  two separately returns the same pair twice. Length is the limit rather than
+  the count. Coverage is measured against the query's own words, so a query
+  naming four obligations dropped the deprecation section that one subject alone
+  returns. A genuinely different subject — testing, code style, the Gerrit
+  workflow — is a call of its own.
 - Enumerate what the diff **removes or renames** before asking. A public class,
   method, property, constant, TCA field, TypoScript path or Fluid ViewHelper
   argument that disappears is the finding class this review exists for, and it
@@ -90,9 +96,9 @@ Ask the owner of each obligation rather than recalling it:
   file. So a query naming one of them and coming back empty has established
   nothing, and neither has one narrowed to the branch this patch targets: a
   precedent is filed under the version it landed in, which is an earlier one by
-  definition. Where the subject words miss as well, the precedent is still
-  there and the checkout is what holds it — `Documentation/Changelog`, which
-  this server does not read and you do. Say which of the two answered.
+  definition. Where the subject words miss as well, the precedent is still there
+  and the checkout is what holds it — `Documentation/Changelog`, which this
+  server does not read and you do. Say which of the two answered.
 
 Every finding names the changed path it is about. A statement about the
 subsystem that does not tie to a line in this diff belongs in the issue, not in

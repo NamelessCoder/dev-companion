@@ -18,8 +18,18 @@ some questions have no bundled answer that could be right — which labels exist
 which icons are registered, what a configuration value is after every extension
 has had its say. Those are properties of an installation, so the server finds
 the one you are working in and asks *it*, through its own console or by booting
-it in a subprocess of its own. Where that cannot be done, the packages are read
-instead and the answer says so and what it leaves out.
+it in a subprocess of its own.
+
+**It answers before the installation does.** The bundled knowledge needs nothing
+running, and that is the state much of it is asked in: a project that does not
+exist yet, an upgrade that left the site unbootable, a core checkout with no
+database. Where a question is about the installation itself, that installation
+is booted through its own interpreter, in its own container where it runs in
+one. Where it comes up without its essential configuration it holds core
+packages only, and every registry in it answers with a subset that looks like
+the whole — so that state is named rather than passed on as an answer. Where it
+does not come up at all, the packages are read instead, and every answer carries
+which of the two it came from and what that leaves out.
 
 **It is queried in English**, whatever language the user is speaking. The
 knowledge is written in English and the matching is lexical, so a query in
@@ -49,8 +59,10 @@ asks this server first. Where the server answers, that answer is what the task
 is done from. Where it does not, the agent solves the task on its own — and that
 is the half worth something, because the agent now holds an answer the knowledge
 base did not have. So the session ends by handing it back, and a gap found that
-way arrives with its answer attached. See
-[Improvement feedback](#improvement-feedback).
+way arrives with its answer attached. That is also what decides what gets built
+next: what this server does not answer yet is mostly what no session has handed
+back yet, and a boundary is the other thing and is stated as one in
+`typo3_server_scope`. See [Improvement feedback](#improvement-feedback).
 
 It is built on the official [`mcp/sdk`](https://packagist.org/packages/mcp/sdk)
 and speaks **stdio** (`bin/typo3-cms-mcp`): the MCP client launches it as a

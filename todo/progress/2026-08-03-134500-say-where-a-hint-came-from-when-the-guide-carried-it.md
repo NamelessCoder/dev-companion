@@ -2,6 +2,8 @@
 
 **Serves:** scenarios/
 **Priority:** normal
+**Branch:** todo/say-where-a-hint-came-from-when-the-guide-carried-it
+**Claimed:** 2026-08-03
 
 The fifth recorded `REVIEW-03` run quoted two hints as `typo3_hint_lookup` and
 never called it. The rules are correct and came from this server:

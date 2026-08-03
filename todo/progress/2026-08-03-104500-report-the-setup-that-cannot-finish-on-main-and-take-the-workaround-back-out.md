@@ -2,6 +2,8 @@
 
 **Serves:** scenarios/
 **Priority:** normal
+**Branch:** todo/report-the-setup-that-cannot-finish-on-main-and-take-the-workaround-back-out
+**Claimed:** 2026-08-03
 
 `vendor/bin/typo3 setup` cannot finish against MariaDB on the development line
 at all, and nothing outside this repository knows.

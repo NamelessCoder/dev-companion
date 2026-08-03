@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-01-115115-in-the-same-session-typo3-project-scope.md
 **Priority:** normal
+**Branch:** todo/let-the-section-a-prose-query-is-about-survive-the-words-around-it
+**Claimed:** 2026-08-03
 
 Judged as
 [`D-ANS-037`](../../decisions/answers/ans-037-a-compound-rule-query-is-owed-the-section-its-score-prefers-and-a-miss-that-names-the-words.md),

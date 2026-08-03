@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-02-144315-task-fix-a-typo3-core-bug-in-the-fluid-image.md, R-GUI-007
 **Priority:** normal
+**Branch:** todo/say-which-half-of-the-wrapping-conflict-a-draft-took
+**Claimed:** 2026-08-03
 
 Queued on the evidence in
 [`D-GUI-003`](../../decisions/guides/gui-003-the-wrapping-conflict-is-resolved-in-the-answer-rather-than-in-silence.md),

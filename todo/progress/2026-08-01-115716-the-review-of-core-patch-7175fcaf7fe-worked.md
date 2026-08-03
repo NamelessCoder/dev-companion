@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-01-115716-the-review-of-core-patch-7175fcaf7fe-worked.md
 **Priority:** high
+**Branch:** todo/the-review-of-core-patch-7175fcaf7fe-worked
+**Claimed:** 2026-08-03
 
 Judged as the review half of
 [`D-SKL-005`](../../decisions/task-skills/skl-005-core-contribution-earns-a-skill-and-the-domain-is-the-work.md),

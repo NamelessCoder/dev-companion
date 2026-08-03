@@ -1,7 +1,9 @@
-# Task: fix Forge #105403 in the Fluid image ViewHelpers.
+# Task: fix Forge #105403 and push the patch to Gerrit as a private change. Every mechanical fact n...
 
-**Serves:** feedback/2026-08-02-144902-task-fix-forge-105403-in-the-fluid-image.md
+**Serves:** feedback/2026-08-02-144848-task-fix-forge-105403-and-push-the-patch-to.md
 **Priority:** low
+**Branch:** todo/task-fix-forge-105403-and-push-the-patch-to
+**Claimed:** 2026-08-03
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

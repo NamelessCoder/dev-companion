@@ -1,7 +1,9 @@
-# Task: assess Forge #105403 and fix it. Collecting the method that assessment actually required, a...
+# Task: assess Forge #105403 and fix it. The user had to correct my assessment twice before the wor...
 
-**Serves:** feedback/2026-08-02-145128-task-assess-forge-105403-and-fix-it-collecting.md
+**Serves:** feedback/2026-08-02-144800-task-assess-forge-105403-and-fix-it-the-user.md
 **Priority:** low
+**Branch:** todo/task-assess-forge-105403-and-fix-it-the-user
+**Claimed:** 2026-08-03
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

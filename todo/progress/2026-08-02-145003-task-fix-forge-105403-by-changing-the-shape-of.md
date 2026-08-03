@@ -1,7 +1,9 @@
-# Task: assess Forge #105403 and fix it.
+# Task: fix Forge #105403 by changing the shape of rendered image and resource URIs across TYPO3 core.
 
-**Serves:** feedback/2026-08-02-144814-task-assess-forge-105403-and-fix-it-a-core.md
+**Serves:** feedback/2026-08-02-145003-task-fix-forge-105403-by-changing-the-shape-of.md
 **Priority:** low
+**Branch:** todo/task-fix-forge-105403-by-changing-the-shape-of
+**Claimed:** 2026-08-03
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

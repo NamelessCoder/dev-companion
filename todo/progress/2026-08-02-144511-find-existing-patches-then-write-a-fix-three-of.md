@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-02-144511-find-existing-patches-then-write-a-fix-three-of.md
 **Priority:** low
+**Branch:** todo/find-existing-patches-then-write-a-fix-three-of
+**Claimed:** 2026-08-03
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

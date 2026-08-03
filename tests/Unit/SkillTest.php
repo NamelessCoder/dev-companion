@@ -37,6 +37,11 @@ final class SkillTest extends TestCase
         'typo3-extension-testing' => [
             'typo3_documentation_lookup',
         ],
+        'typo3-development-installation' => [
+            'typo3_server_scope',
+            'typo3_documentation_lookup',
+            'typo3_configuration_lookup',
+        ],
         'typo3-core-patch-review' => [
             'typo3_hint_lookup',
             'typo3_forge_lookup',
@@ -1094,7 +1099,7 @@ final class SkillTest extends TestCase
     /**
      * Judgment is what a checklist is for, and it is also the thing a skill
      * grows a body around: the ones that carry it keep it beside them rather
-     * than in the instruction every session pays for. Three are not among them.
+     * than in the instruction every session pays for. Four are not among them.
      * Building a backend module is construction, and what it needs is the
      * registries, which are tools rather than a list. An upgrade is construction
      * too, and its work list is produced by the sweep rather than read off a
@@ -1102,14 +1107,23 @@ final class SkillTest extends TestCase
      * the first place, it hands to the skill whose checklist already covers it.
      * Writing a core patch is the third: its work list is the issue and the
      * findings the review skill hands it, and the surfaces it would otherwise
-     * check are that skill's checklist, one directory away.
+     * check are that skill's checklist, one directory away. Bringing an
+     * installation into existence is the fourth, and the one where a rubric
+     * would be furthest from the evidence: its work list is the order the five
+     * steps' dependencies force, and what it would otherwise judge — whether the
+     * installation is right — is what a cold start answers.
      */
     #[Test]
     public function judgmentHeavySkillsKeepTheirChecklistBesideThem(): void
     {
         $judging = array_diff(
             array_keys(self::ROUTING_SKILLS),
-            ['typo3-backend-module-development', 'typo3-extension-upgrade', 'typo3-core-patch-development'],
+            [
+                'typo3-backend-module-development',
+                'typo3-extension-upgrade',
+                'typo3-core-patch-development',
+                'typo3-development-installation',
+            ],
         );
 
         foreach ($judging as $name) {
@@ -1331,6 +1345,84 @@ final class SkillTest extends TestCase
         self::assertMatchesRegularExpression(
             '/What the sweep\s+returned goes to `typo3-extension-upgrade` whole/',
             (string) file_get_contents(Paths::root() . '/skills/typo3-extension-conformance/SKILL.md'),
+        );
+    }
+
+    /**
+     * Seven feedback from two projects on one day, and `D-SKL-012` is where they
+     * were read. The two projects are the two shapes this holds the skill to:
+     * one repository had no installation and had to produce one, the other
+     * declared its own environment and had to boot it, and a skill that carries
+     * only the first sends the second back to the patch workflow both of them
+     * already landed in.
+     */
+    #[Test]
+    public function anInstallationIsBuiltInDependencyOrderAndHandsOverOnceItAnswers(): void
+    {
+        $skill = (string) file_get_contents(
+            Paths::root() . '/skills/typo3-development-installation/SKILL.md',
+        );
+        $flat = self::flat($skill);
+
+        // The entry condition, and the one place this skill contradicts the
+        // base's first instruction: `typo3_project_scope` in a repository with
+        // no installation answers `unsupported: no-installation`, which reads
+        // like the disconnected server the base stops for and is the task.
+        self::assertStringContainsString(
+            'no installation to describe is the task, not the disconnected server',
+            $flat,
+        );
+
+        $order = [
+            '[references/base.md](references/base.md)',
+            '## Boot what the repository already declares',
+            '## Create one where none is declared',
+            '## Prove it from the state it will be started in again',
+            '## Where this stops',
+        ];
+        $position = -1;
+        foreach ($order as $step) {
+            $next = strpos($skill, $step);
+            self::assertNotFalse($next, $step . ' is not part of the installation workflow');
+            self::assertGreaterThan($position, $next, $step . ' is stated out of order');
+            $position = $next;
+        }
+
+        // The five steps in the order their dependencies force, which is what
+        // `162745` numbered after inventing it once.
+        $steps = [
+            '**Make the package\'s own manifest the Composer root package.**',
+            '**Declare the container.**',
+            '**Install non-interactively.**',
+            '**Seed the content the package is to be developed against**',
+            '**Decide what the install wrote into the repository.**',
+        ];
+        $position = -1;
+        foreach ($steps as $step) {
+            $next = strpos($skill, $step);
+            self::assertNotFalse($next, $step . ' is not one of the steps');
+            self::assertGreaterThan($position, $next, $step . ' is stated out of order');
+            $position = $next;
+        }
+
+        // The environment that generates settings knows only the services it
+        // provides itself, which is the collision `162858` paid a debugging
+        // cycle for. The hint owns the boundary; this owns the case.
+        self::assertStringContainsString('id=project-configuration-files', $skill);
+        self::assertStringContainsString('knows only the services it provides itself', $flat);
+
+        // Named once in the description, which is what a client routes on, and
+        // nowhere in the body: what that product does by default is the fact
+        // that moves after this file is published into somebody else's project.
+        self::assertStringContainsString('DDEV where it declares one', self::description('typo3-development-installation'));
+        self::assertStringNotContainsString('DDEV', substr($skill, (int) strpos($skill, "\n---\n") + 5));
+
+        // Both directions of the crossing, because the feedback asked for both.
+        self::assertStringContainsString('typo3-extension-testing', $skill);
+        self::assertStringContainsString('stop before editing that owner\'s files, and activate it', $flat);
+        self::assertStringContainsString(
+            'a suite that needs a served site and has none is this workflow first',
+            $flat,
         );
     }
 

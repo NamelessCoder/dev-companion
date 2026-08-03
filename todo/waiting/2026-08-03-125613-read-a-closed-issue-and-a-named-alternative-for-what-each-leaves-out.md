@@ -2,8 +2,6 @@
 
 **Serves:** feedback/2026-08-02-144800-task-assess-forge-105403-and-fix-it-the-user.md
 **Priority:** normal
-**Branch:** todo/read-a-closed-issue-and-a-named-alternative-for-what-each-leaves-out
-**Claimed:** 2026-08-03
 **Waiting on:** the wording is on the branch and needs the reading
     `writing-a-skill.md` asks for by name, because a published skill is a copy
     no release of this server corrects. Does step 3 of "Establish the issue

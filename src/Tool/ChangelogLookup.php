@@ -80,6 +80,12 @@ final class ChangelogLookup extends ReadOnlyTool
                 'tags' => Schema::listOf(Schema::string(), 'Index tags. FullyScanned or PartiallyScanned means the extension scanner has a matcher for it.'),
                 'file' => Schema::string('EXT: reference of the entry, to read the description and the migration.'),
             ], ['type', 'version', 'issue', 'title', 'removal', 'tags', 'file'])),
+            'termCounts' => self::termCounts('What each word of the query reaches on its own, inside the version and the type that were asked for. A word at 0 is the one that emptied the answer — it is misspelled, or nothing here is named after it. Returned on a miss that carried words. These are counts and not a query: termSubsets is what can be asked outright.'),
+            'termCountsWithoutTheNarrowing' => self::termCounts('The same words counted over the whole changelog rather than inside the version and the type. Returned only where a word reaches there and nothing inside the narrowing, which makes the filter what emptied this answer rather than the words: ask again without it.'),
+            'termSubsets' => Schema::listOf(Schema::object([
+                'terms' => Schema::listOf(Schema::string(), 'Words of the query, as a query to ask again with.'),
+                'matchCount' => Schema::integer('Entries carrying every word of this subset, inside the same version and type.'),
+            ], ['terms', 'matchCount']), 'The largest parts of the query that do reach entries, narrowest first — every one of them, because the one a tie-break puts first is not always the one being looked for. Withheld where a tag was asked for: these are counted off the entry names and a tag is read inside the file, so a subset offered there would promise entries the same call does not return.'),
             'removalRule' => Schema::string('When a deprecation stops working where the entry itself does not say. Returned where the answer carries a deprecation.'),
             'versions' => Schema::listOf(Schema::string(), 'The versions this installation ships changelog entries for, newest first. Anything outside them is not in this answer.'),
             'answeredBy' => Schema::answeredBy(),
@@ -245,6 +251,18 @@ final class ChangelogLookup extends ReadOnlyTool
                     'entries',
                     $narrowing === [] ? '' : 'inside ' . implode(' and ', $narrowing),
                 );
+                // Where the offered re-query comes back empty too, what is
+                // missing is the corpus and not the words — `D-ANS-010`, which
+                // routes "does it still work" to the manual. After the offer
+                // and never in place of it: the reported miss did carry the
+                // entry its review turned on, one subset away, and a sentence
+                // naming the manual first is what would have routed that
+                // session away from it (`D-ANS-043`). Offered nowhere else,
+                // because "that" is the re-query and a miss with none has
+                // nothing for this sentence to follow.
+                $lines[] = 'Where that comes back empty too, ask typo3_documentation_lookup with targetVersion: a '
+                    . 'changelog records change events, so a mechanism nobody changed has no entry here, and '
+                    . 'whether one still holds in a version is what the manual answers.';
             }
             $lines[] = sprintf(
                 'The changelog here covers %s. A version this installation does not ship is not in it — read that '
@@ -252,14 +270,38 @@ final class ChangelogLookup extends ReadOnlyTool
                 $versions === [] ? 'nothing' : implode(', ', array_slice($versions, 0, 8)) . ' and older',
             );
 
-            return ToolResult::create(implode("\n", $lines), [
+            // What the miss worked out is a field as well as a line. A session
+            // read `matchCount: 0` and the five fields beside it, reported that
+            // nothing came back to re-ask with, and settled its question by
+            // grep — while the text of that same answer offered the subset that
+            // returns the entry its review turned on (`D-ANS-043`, and
+            // `R-ANS-002` for the client that renders `structuredContent` and
+            // drops the text block).
+            //
+            // Each field is present where it was computed and absent where it
+            // was withheld, under the two withholdings the text already makes:
+            // the subsets never travel beside a `tag`, and a count says which
+            // side of the narrowing it was taken on by which of the two fields
+            // carries it.
+            $data = [
                 'query' => $query,
                 'matchCount' => 0,
                 'tags' => array_keys($tags),
                 'entries' => [],
                 'versions' => $versions,
                 'answeredBy' => 'packages',
-            ]);
+            ];
+            if ($counts !== []) {
+                $data['termCounts'] = $counts;
+            }
+            if ($outside !== []) {
+                $data['termCountsWithoutTheNarrowing'] = $outside;
+            }
+            if ($subsets !== []) {
+                $data['termSubsets'] = $subsets;
+            }
+
+            return ToolResult::create(implode("\n", $lines), $data);
         }
 
         $lines = [sprintf(
@@ -314,6 +356,24 @@ final class ChangelogLookup extends ReadOnlyTool
         }
 
         return ToolResult::create(implode("\n", $lines), $data);
+    }
+
+    /**
+     * What each word of the query reaches on its own, as a field.
+     *
+     * The same shape twice, and which of the two fields carries it is what says
+     * where it was counted: a number taken inside a version reads as a fact
+     * about the changelog otherwise, which is the miss `D-ANS-016` was
+     * corrected for.
+     *
+     * @return array<string, mixed>
+     */
+    private static function termCounts(string $description): array
+    {
+        return Schema::listOf(Schema::object([
+            'term' => Schema::string('The word, lowercased as it was searched for.'),
+            'matchCount' => Schema::integer(),
+        ], ['term', 'matchCount']), $description);
     }
 
     /**

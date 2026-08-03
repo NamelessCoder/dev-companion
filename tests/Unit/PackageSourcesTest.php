@@ -283,6 +283,95 @@ final class PackageSourcesTest extends TestCase
         self::assertSame(1, substr_count($result->text, 'ask again with the one that narrows best'));
     }
 
+    /**
+     * The same miss read by a client that renders `structuredContent` and drops
+     * the text block, which is what `R-ANS-002` is written against. The session
+     * `D-ANS-043` was decided on quoted `matchCount: 0` and the five fields
+     * beside it, reported that nothing came back to re-ask with, and went to
+     * `grep` — while the subset that returns the entry its review turned on was
+     * in the text of that same answer. So the counts and the subsets travel as
+     * data too, and which of the two count fields carries a number is what says
+     * whether it was taken inside the narrowing or outside it.
+     */
+    #[Test]
+    public function theNarrowingAMissComputesIsAFieldAsWellAsALine(): void
+    {
+        $root = $this->composerProject();
+        $this->changelogEntry($root, '14.2', 'Deprecation-109412-FormYamlConfigurationRegistration', 'Deprecation: #109412 - TypoScript-based form YAML registration', []);
+        $this->changelogEntry($root, '14.2', 'Feature-109412-FormYamlAutoDiscovery', 'Feature: #109412 - Auto-discovery of form YAML configurations', []);
+        $this->changelogEntry($root, '13.4', 'Breaking-101392-GetIdentifierRemoved', 'Breaking: #101392 - getIdentifier() removed', []);
+        Instance::discoverFrom($root);
+
+        $query = ['query' => 'form set yaml registration deprecated'];
+        $data = Registry::call('typo3_changelog_lookup', $query)->data;
+
+        // Every word, the ones reaching nothing included: a zero is what the
+        // text leaves out of its sentence and is the word to drop.
+        self::assertSame([
+            ['term' => 'form', 'matchCount' => 2],
+            ['term' => 'set', 'matchCount' => 0],
+            ['term' => 'yaml', 'matchCount' => 2],
+            ['term' => 'registration', 'matchCount' => 1],
+            ['term' => 'deprecated', 'matchCount' => 0],
+        ], $data['termCounts']);
+        self::assertSame([['terms' => ['form', 'yaml', 'registration'], 'matchCount' => 1]], $data['termSubsets']);
+        self::assertArrayNotHasKey('termCountsWithoutTheNarrowing', $data, 'nothing was narrowed away');
+
+        // Withheld beside a tag for the reason the text withholds it: the
+        // subsets are counted off the entry names and a tag is inside the file,
+        // so one offered here would promise entries this call does not return.
+        // The counts are not a promise and stay — `D-ANS-016`.
+        $tagged = Registry::call('typo3_changelog_lookup', $query + ['tag' => 'ext:core'])->data;
+        self::assertArrayNotHasKey('termSubsets', $tagged);
+        self::assertSame(['form', 'set', 'yaml', 'registration', 'deprecated'], array_column($tagged['termCounts'], 'term'));
+
+        // Narrowed, the counts inside are zeros and what the words reach
+        // outside is the second field: the filter is what emptied this.
+        $narrowed = Registry::call('typo3_changelog_lookup', $query + ['version' => '13.4'])->data;
+        self::assertSame([0, 0, 0, 0, 0], array_column($narrowed['termCounts'], 'matchCount'));
+        self::assertSame([
+            ['term' => 'form', 'matchCount' => 2],
+            ['term' => 'yaml', 'matchCount' => 2],
+            ['term' => 'registration', 'matchCount' => 1],
+        ], $narrowed['termCountsWithoutTheNarrowing']);
+        self::assertArrayNotHasKey('termSubsets', $narrowed, 'nothing inside the version reaches two words');
+    }
+
+    /**
+     * What the miss owes once the query it offered comes back empty too: the
+     * corpus. A changelog records change events, so a mechanism nobody changed
+     * has no entry here — `D-ANS-010` — and `R-ANS-018` is that an answer
+     * saying something is absent names the tool that has it. After the offer
+     * and not in place of it: the reported miss did carry the entry, one subset
+     * away, and a sentence naming the manual first would have routed that
+     * session away from it.
+     */
+    #[Test]
+    public function aMissThatOffersARequeryNamesTheCorpusToAskWhenItComesBackEmptyToo(): void
+    {
+        $root = $this->composerProject();
+        $this->changelogEntry($root, '14.2', 'Deprecation-109412-FormYamlConfigurationRegistration', 'Deprecation: #109412 - TypoScript-based form YAML registration', ['ext:form']);
+        $this->changelogEntry($root, '14.2', 'Feature-109412-FormYamlAutoDiscovery', 'Feature: #109412 - Auto-discovery of form YAML configurations', ['ext:form']);
+        Instance::discoverFrom($root);
+
+        $query = ['query' => 'form set yaml registration deprecated'];
+        $text = Registry::call('typo3_changelog_lookup', $query)->text;
+
+        self::assertStringContainsString('a changelog records change events', $text);
+        self::assertStringContainsString('typo3_documentation_lookup with targetVersion', $text);
+        self::assertLessThan(
+            strpos($text, 'Where that comes back empty too'),
+            strpos($text, 'No entry carries more than'),
+        );
+
+        // Nowhere else, because "that" is the offered query: a miss carrying
+        // none has nothing for the sentence to follow.
+        self::assertStringNotContainsString(
+            'typo3_documentation_lookup',
+            Registry::call('typo3_changelog_lookup', $query + ['tag' => 'ext:core'])->text,
+        );
+    }
+
     #[Test]
     public function whereNoTwoWordsMeetInOneEntryThePerWordReachIsWhatToAskWith(): void
     {

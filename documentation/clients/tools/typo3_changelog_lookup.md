@@ -81,6 +81,34 @@ entries:  # optional
     tags: [string]
     # EXT: reference of the entry, to read the description and the migration.
     file: string
+# What each word of the query reaches on its own, inside the version and the
+# type that were asked for. A word at 0 is the one that emptied the answer —
+# it is misspelled, or nothing here is named after it. Returned on a miss that
+# carried words. These are counts and not a query: termSubsets is what can be
+# asked outright.
+termCounts:  # optional
+  - # The word, lowercased as it was searched for.
+    term: string
+    matchCount: integer
+# The same words counted over the whole changelog rather than inside the version
+# and the type. Returned only where a word reaches there and nothing inside the
+# narrowing, which makes the filter what emptied this answer rather than the
+# words: ask again without it.
+termCountsWithoutTheNarrowing:  # optional
+  - # The word, lowercased as it was searched for.
+    term: string
+    matchCount: integer
+# The largest parts of the query that do reach entries, narrowest first —
+# every one of them, because the one a tie-break puts first is not always the
+# one being looked for. Withheld where a tag was asked for: these are counted
+# off the entry names and a tag is read inside the file, so a subset offered
+# there would promise entries the same call does not return.
+termSubsets:  # optional
+  - # Words of the query, as a query to ask again with.
+    terms: [string]
+    # Entries carrying every word of this subset, inside the same version and
+    # type.
+    matchCount: integer
 # When a deprecation stops working where the entry itself does not say. Returned
 # where the answer carries a deprecation.
 removalRule: string  # optional

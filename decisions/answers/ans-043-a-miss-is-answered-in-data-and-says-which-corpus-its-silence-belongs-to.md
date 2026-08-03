@@ -104,3 +104,32 @@ had already computed returns the one entry its review turned on.
   because the field was filled where the text withholds it — under a `tag`,
   where `D-ANS-016` established that a subset promises what the same call does
   not return.
+
+## Covered by
+
+- `PackageSourcesTest::theNarrowingAMissComputesIsAFieldAsWellAsALine`
+- `PackageSourcesTest::aMissThatOffersARequeryNamesTheCorpusToAskWhenItComesBackEmptyToo`
+
+## Since then
+
+Built on 2026-08-03. The miss branch held every value already and declared none
+of them, so what this cost is three fields in `outputSchema()` and three lines
+beside `matchCount`: `termCounts`, `termCountsWithoutTheNarrowing` and
+`termSubsets`. Each is present where it was computed and absent where the text
+withholds it. Re-run from `/home/benji/projects/typo3-cms`, which ships 15.0:
+`typo3 directory backend entry point` returns the five per-word counts and
+`{"terms": ["typo3", "backend", "entry", "point"], "matchCount": 1}` as data.
+That subset still returns `13.0` #87889 alone.
+
+Which of the two count fields carries a number is what says where it was taken,
+rather than a marker inside one of them. The pair is what a narrowed miss
+computes anyway, and a caller reading `termCounts` alone reads counts that are
+true inside the narrowing it asked for. The words reaching nothing are in that
+field as well, which the sentence leaves out of its list: a zero is the word to
+drop, and in data it costs no reading.
+
+The corpus sentence follows the offered subset and stands nowhere else. "That"
+in "where that comes back empty too" is the re-query, so a miss offering none
+has nothing for the sentence to follow — under a `tag`, or where no two words of
+the query meet in one entry. Whether a session that reads it follows it is the
+third **Assumed** above, and this settles nothing about it.

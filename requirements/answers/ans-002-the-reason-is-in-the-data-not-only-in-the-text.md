@@ -20,3 +20,4 @@ twice concluded an extension registered no icons and no labels (2026-07-29).
 
 - `ScopeTest::anUnanswerableLookupCarriesItsReasonInTheData`
 - `ScopeTest::theInstallationDiagnosticIsDataRatherThanProse`
+- `PackageSourcesTest::theNarrowingAMissComputesIsAFieldAsWellAsALine`

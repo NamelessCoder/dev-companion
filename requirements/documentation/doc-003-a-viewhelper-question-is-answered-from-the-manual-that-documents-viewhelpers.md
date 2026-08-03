@@ -1,7 +1,7 @@
 ---
 id: R-DOC-003
 status: held
-restsOn: [D-ANS-026, D-ANS-032, D-ANS-036]
+restsOn: [D-ANS-026, D-ANS-032, D-ANS-036, D-ANS-047]
 ---
 
 # R-DOC-003 — A ViewHelper question is answered from the manual that documents ViewHelpers
@@ -30,9 +30,11 @@ the two TypoScript pages titled `if` are not candidates for a query written in
 Fluid tags. What is left is the tie inside the book. `security.ifAuthenticated`
 is three words and so undiluted as well, it scores what the one-word title
 scores, no field weight separates them because both matched in the title, and
-the order among them is the order the index was built in. `f:or` and `f:then` do
-not get that far: `or` and `then` are stopwords, so those queries have no term
-left at all. That carries a todo of its own.
+the order among them is the order the index was built in. A tag named after a
+stopword now gets that far too: `or` and `then` are in the list for what they do
+in a sentence, and a word written behind a namespace prefix is not in one
+(`D-ANS-047`), so `f:or` and `f:then` reach `Global/Or.html` and
+`Global/Then.html` first rather than coming back empty.
 
 ## From
 
@@ -45,4 +47,5 @@ with Developing a custom ViewHelper and the Translate ViewHelper.
 
 - `DocumentationTest::aViewHelperQuestionReachesTheManualPublishedOutsideTheCoreCollection`
 - `DocumentationTest::aQueryWrittenInFluidTagsIsAnsweredFromTheFluidBook`
+- `DocumentationTest::aTagNamedAfterAStopwordIsReachedByItsOwnName`
 - `DocumentationTest::aPageOfThatManualIsReadBackAtItsOwnBase`

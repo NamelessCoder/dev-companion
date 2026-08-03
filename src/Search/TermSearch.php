@@ -35,6 +35,10 @@ final class TermSearch
      * against the same argument — it is the backend namespace on 17 pages of
      * the ViewHelper reference, and it is also the English verb in every
      * sentence saying what something should be.
+     *
+     * A word in this list is still a term where a query writes it behind a
+     * namespace prefix, so a tag named after one does not have to be kept out
+     * of it — `D-ANS-047`.
      */
     private const STOPWORDS = [
         'am', 'an', 'and', 'are', 'as', 'at', 'be', 'but', 'by', 'can', 'do',
@@ -111,14 +115,30 @@ final class TermSearch
     /**
      * The words of a query that are searched for at all, as they were written.
      *
+     * A word written behind a namespace prefix is never a stopword, because it
+     * is not prose there: the `or` of `f:or` is the name of a ViewHelper and
+     * the `core` of `EXT:core` is an extension key. Both are in the list for
+     * what they do in a sentence, and `f:or` and `f:then` had no term left at
+     * all — `D-ANS-047`.
+     *
+     * The prefix itself is dropped by MIN_LENGTH where it is one or two
+     * letters, which is every namespace the corpora carry.
+     *
      * @return array<int, string>
      */
     private static function meaningful(string $query): array
     {
+        $query = mb_strtolower(trim($query));
         $words = [];
-        foreach (preg_split('/[^\p{L}\p{N}_.-]+/u', mb_strtolower(trim($query))) ?: [] as $word) {
+        foreach (preg_split('/[^\p{L}\p{N}_.-]+/u', $query, -1, PREG_SPLIT_OFFSET_CAPTURE) ?: [] as [$word, $offset]) {
+            // The colon has to touch both sides, which is what separates a
+            // qualified name from the colon of a sentence.
+            $qualified = $offset > 0 && $query[$offset - 1] === ':';
             $word = trim($word, '.-');
-            if ($word === '' || strlen($word) < self::MIN_LENGTH || in_array($word, self::STOPWORDS, true)) {
+            if ($word === '' || strlen($word) < self::MIN_LENGTH) {
+                continue;
+            }
+            if (!$qualified && in_array($word, self::STOPWORDS, true)) {
                 continue;
             }
             $words[] = $word;

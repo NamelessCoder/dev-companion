@@ -90,3 +90,15 @@ already made a domain keyword for the hints.
 
 - `DocumentationTest::aQueryWrittenInFluidTagsIsAnsweredFromTheFluidBook`
 - `DocumentationTest::aQueryIsRoutedToABookOnlyWhileThatBookAnswers`
+
+## Since then
+
+The half this left open is built and is
+[`D-ANS-047`](ans-047-a-word-behind-a-namespace-prefix-is-searched-for-as-the-name-it-is.md):
+a query naming a tag whose name is in `TermSearch::STOPWORDS` reached the route
+with no term for the book to rank, so `f:or` and `f:then` were routed and came
+back empty. One number recorded above moved with it, measured on the same roots
+at 14.3 on 2026-08-03: `f:if f:then f:else condition ViewHelper` now ranks
+`Global/If.html` 5th rather than 4th, behind the `Global/Then.html` its second
+tag reaches. Its six are pages of this book before and after, and `f:if` alone
+is unchanged.

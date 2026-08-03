@@ -21,6 +21,7 @@ one is added.
 - [`D-ANS-044`][D-ANS-044] — The environment answer carries the lifecycle it declares, beside the interpreter it runs · 2026-08-03
 - [`D-ANS-045`][D-ANS-045] — The Classes section covers the directory it names, and a value read off the tree says so · 2026-08-03
 - [`D-ANS-046`][D-ANS-046] — A manual result covers the question it is returned for, and the silence names the corpus that answers · 2026-08-03
+- [`D-ANS-047`][D-ANS-047] — A word behind a namespace prefix is searched for as the name it is · 2026-08-03
 - [`D-ANS-005`][D-ANS-005] — A question that is not supported here is answered in a shape of its own · 2026-08-02
 - [`D-ANS-006`][D-ANS-006] — An identifier is found however it is spelled · 2026-08-02
 - [`D-ANS-007`][D-ANS-007] — Two shapes for "not answered", one word for why · 2026-08-02
@@ -64,6 +65,7 @@ one is added.
 [D-ANS-044]: ans-044-the-environment-answer-carries-the-lifecycle-it-declares.md
 [D-ANS-045]: ans-045-the-classes-section-covers-the-directory-it-names.md
 [D-ANS-046]: ans-046-a-manual-result-covers-the-question-it-is-returned-for.md
+[D-ANS-047]: ans-047-a-word-behind-a-namespace-prefix-is-searched-for-as-the-name-it-is.md
 [D-ANS-005]: ans-005-an-unmet-precondition-is-answered-not-raised.md
 [D-ANS-006]: ans-006-an-identifier-is-found-however-it-is-spelled.md
 [D-ANS-007]: ans-007-two-shapes-for-not-answered-and-one-word-for-why.md

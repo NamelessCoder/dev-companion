@@ -24,7 +24,32 @@ final class TermSearchTest extends TestCase
     public function aTwoLetterWordIsATerm(): void
     {
         self::assertSame(['if'], TermSearch::terms('f:if'));
-        self::assertSame(['if', 'else', 'condit'], TermSearch::terms('f:if f:then f:else condition'));
+        self::assertSame(['if', 'then', 'else', 'condit'], TermSearch::terms('f:if f:then f:else condition'));
+    }
+
+    /**
+     * A word behind a namespace prefix is the name of a thing rather than the
+     * English word it is spelled like, so the stopword list does not reach it —
+     * `f:or` and `f:then` otherwise have no term at all (`D-ANS-047`).
+     */
+    #[Test]
+    public function aWordBehindANamespacePrefixIsNotAStopword(): void
+    {
+        self::assertSame(['or'], TermSearch::terms('f:or'));
+        self::assertSame(['then'], TermSearch::terms('f:then'));
+        self::assertSame(['ext', 'core'], TermSearch::terms('EXT:core'));
+    }
+
+    /**
+     * The colon has to touch both sides. A sentence puts a space after it, and
+     * that is what keeps the same word a stopword in prose — seven of the 41
+     * scenario prompts say "or" or "then" in a sentence.
+     */
+    #[Test]
+    public function theSameWordAfterTheColonOfASentenceIsNot(): void
+    {
+        self::assertSame(['note', 'label', 'wrong'], TermSearch::terms('Note: the label is wrong'));
+        self::assertSame(['fix', 'that', 'take', 'throug', 'review'], TermSearch::terms('fix that, then take it through review'));
     }
 
     /**

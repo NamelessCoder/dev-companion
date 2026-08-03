@@ -193,6 +193,24 @@ final class DocumentationTest extends TestCase
     }
 
     /**
+     * A tag named after a word the stopword list holds reaches its page too.
+     * `f:then` is one term or none, and the list is what it is because "then"
+     * says nothing in a sentence — which is not what it does behind a namespace
+     * prefix (`D-ANS-047`).
+     */
+    #[Test]
+    public function aTagNamedAfterAStopwordIsReachedByItsOwnName(): void
+    {
+        $answer = (new Documentation($this->manuals()))->lookup(['f:then'], '14.3', 1);
+
+        self::assertSame('answered', $answer['status']);
+        self::assertSame(
+            'https://docs.typo3.org/other/typo3/view-helper-reference/14.3/en-us/Global/Then.html',
+            $answer['results'][0]['url'],
+        );
+    }
+
+    /**
      * A book that did not answer routes nothing. The route is in front of the
      * scoring, so a root that is down would otherwise leave such a query with
      * no candidates and report "no match" for a reason the caller cannot see.

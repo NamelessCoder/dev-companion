@@ -70,6 +70,7 @@ and not a defect.
 - [`D-ANS-044`][D-ANS-044] — The environment answer carries the lifecycle it declares, beside the interpreter it runs · 2026-08-03
 - [`D-ANS-045`][D-ANS-045] — The Classes section covers the directory it names, and a value read off the tree says so · 2026-08-03
 - [`D-ANS-046`][D-ANS-046] — A manual result covers the question it is returned for, and the silence names the corpus that answers · 2026-08-03
+- [`D-ANS-047`][D-ANS-047] — A word behind a namespace prefix is searched for as the name it is · 2026-08-03
 - [`D-COD-004`][D-COD-004] — What leaves this process goes through one seam · 2026-08-03
 - [`D-DIS-010`][D-DIS-010] — What this package writes into a project ignores itself · 2026-08-03
 - [`D-DOC-009`][D-DOC-009] — Prose names what counts rather than the count · 2026-08-03
@@ -254,6 +255,7 @@ and not a defect.
 [D-ANS-044]: answers/ans-044-the-environment-answer-carries-the-lifecycle-it-declares.md
 [D-ANS-045]: answers/ans-045-the-classes-section-covers-the-directory-it-names.md
 [D-ANS-046]: answers/ans-046-a-manual-result-covers-the-question-it-is-returned-for.md
+[D-ANS-047]: answers/ans-047-a-word-behind-a-namespace-prefix-is-searched-for-as-the-name-it-is.md
 [D-COD-004]: code/cod-004-what-leaves-this-process-goes-through-one-seam.md
 [D-DIS-010]: discovery/dis-010-what-this-package-writes-into-a-project-ignores-itself.md
 [D-DOC-009]: documentation/doc-009-prose-names-what-counts-rather-than-the-count.md

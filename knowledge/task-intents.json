@@ -318,6 +318,7 @@
     "checks": [],
     "tools": [
       "typo3_project_scope, for what this repository declares: the TYPO3 and PHP it runs, the environment it ships, and the commands in its composer.json",
+      "typo3_hint_lookup with id=installation-boot, for what a clone owes the installation before it answers: the schema an imported database is behind on, the caches it brought with it, the backend user nobody has the password for, the host the site configuration names, and where the files were expected",
       "typo3_hint_lookup with id=project-configuration-files, for which file configures what in an installation, and with id=extension-asset-build for the build a repository declares"
     ]
   },

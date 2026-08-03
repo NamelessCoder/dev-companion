@@ -1355,6 +1355,56 @@ final class HintsTest extends TestCase
         self::assertStringContainsString('drop the DB section, keep GFX, MAIL and SYS', $text);
     }
 
+    /**
+     * `R-KNW-065`. The reported brief carried four PHP hints and none of them
+     * was about booting anything, because the corpus said nothing about it: the
+     * change type `operations` moved the checklist and could not move this, and
+     * the four cards `D-SKL-012` put first landed the install rather than the
+     * boot. What the task asks for is the second run of each step — a database
+     * from elsewhere, a user that is already taken, a base that names another
+     * host — and every one of those fails quietly.
+     */
+    #[Test]
+    public function bootingADeclaredInstallationIsAnsweredBeforeThePhpFallback(): void
+    {
+        $reported = Hints::find(
+            [],
+            'Boot up a TYPO3 project locally for the first time from a fresh clone: install dependencies, '
+            . 'start the local environment, import the demo database and fileadmin, build frontend assets, '
+            . 'create a backend user, verify the site responds',
+            6,
+        );
+        self::assertSame('installation-boot', $reported['matchedHints'][0]['id']);
+
+        $text = self::statementsOf('installation-boot');
+
+        // Not the setup command, which is what a boot query used to be
+        // answered with once it reached the corpus at all.
+        self::assertStringContainsString('refuses an existing config/system/settings.php', $text);
+        self::assertStringContainsString('typo3_project_scope reports the DDEV hooks', $text);
+
+        // What closes the gap between an imported database and the code in
+        // front of it, and what it deliberately leaves standing.
+        self::assertStringContainsString('add, change, create_table and change_table', $text);
+        self::assertStringContainsString('Nothing is dropped and nothing is renamed', $text);
+        self::assertStringContainsString('database:updateschema is not the core\'s command', $text);
+        self::assertStringContainsString('hash, pages and rootline caches', $text);
+
+        // The two answers of the user step that only a script sees.
+        self::assertStringContainsString('asked even under --no-interaction', $text);
+        self::assertStringContainsString('1670797516', $text);
+
+        // Why the site that was booted answers nothing on the host it is
+        // reachable at.
+        self::assertStringContainsString('host, scheme and port on the route as requirements', $text);
+        self::assertStringContainsString('1396795884', $text);
+
+        // And where the files were expected, which the database and not the
+        // repository says.
+        self::assertStringContainsString('sys_file_storage carries basePath and pathType', $text);
+        self::assertStringContainsString('cleanup:localprocessedfiles', $text);
+    }
+
     #[Test]
     public function whereAOneOffScriptMayNotGoNamesTheDocumentRootAsWellAsVar(): void
     {

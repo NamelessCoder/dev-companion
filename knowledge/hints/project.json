@@ -1,5 +1,44 @@
 [
   {
+    "id": "installation-boot",
+    "title": "Booting the Installation a Project Repository Declares",
+    "domains": [
+      "php"
+    ],
+    "scope": "project",
+    "appliesTo": [
+      "boot the installation",
+      "boot a project",
+      "boot up",
+      "booting a project",
+      "fresh clone",
+      "from a fresh clone",
+      "start the local environment",
+      "start the environment",
+      "ddev import-db",
+      "ddev import-files",
+      "ddev pull",
+      "import the database",
+      "import a database",
+      "database dump",
+      "create a backend user",
+      "backend:user:create",
+      "TYPO3_BE_USER_PASSWORD",
+      "cleanup:localprocessedfiles",
+      "verify the site responds",
+      "run the site locally"
+    ],
+    "hints": [
+      "A clone of a project repository is not an installation yet, and what it is missing is what the repository does not carry: the database, the files the storages point at, and everything below var/. Booting it is four steps — install the dependencies, start the environment the repository declares, bring the data in, and make the installation agree with the code — and typo3 setup is none of them: it refuses an existing config/system/settings.php with exception 1669747685, and a database that already holds tables with exception 1669747200. Where the environment declares a lifecycle, that lifecycle is the procedure rather than a description of one: typo3_project_scope reports the DDEV hooks and the pull recipes, and commands typed beside them boot something this repository does not describe.",
+      "An imported database was dumped from a different point in the history than the code in front of it, and typo3 extension:setup is what closes that gap. It migrates the schema of every active package before it runs each package's own setup, and it applies the additive suggestions only: add, change, create_table and change_table. Nothing is dropped and nothing is renamed, so a column the code no longer declares survives the run and no data is lost to it — and a table the code needs and the dump has not got is created. database:updateschema is not the core's command; a project whose hooks call it has typo3-console required beside the core.",
+      "Then the caches, because the dump carries them: the hash, pages and rootline caches are configured to the database backend by default, so the imported tables hold another installation's cached pages, hashes and rootlines. typo3 cache:flush empties them and the file-backed ones below var/cache with it; --group takes system, pages or di, and the default is all of them.",
+      "The backend users arrive with the dump and their passwords do not, so a boot creates one of its own. typo3 backend:user:create reads TYPO3_BE_USER_NAME, TYPO3_BE_USER_PASSWORD, TYPO3_BE_USER_EMAIL, TYPO3_BE_USER_GROUPS, TYPO3_BE_USER_ADMIN and TYPO3_BE_USER_MAINTAINER where the matching option is absent, and two of its answers only show up in a script. The password question is asked even under --no-interaction where neither the option nor the variable supplied one, so an unattended hook waits on stdin instead of failing. And a username the imported database already holds is refused with exception 1670797516, deleted rows counted — which is how a second boot fails on the step that worked the first time. backend:resetpassword is the way into a user that exists.",
+      "The site configuration is in the repository, so a clone is served under whatever host its base names. SiteMatcher builds one route per site and per language out of that base and puts its host, scheme and port on the route as requirements, so a request arriving on the local host matches no site: the result is a NullSite, and the installation answers its own root with a page-not-found rather than with the page tree. A base that is a bare path carries no host requirement and matches every host, and %env() in the base is the other way one configuration serves two environments. Above that sits the host check: VerifyHostHeader throws exception 1396795884 for an HTTP_HOST that does not match SYS/trustedHostsPattern, and an empty pattern denies every host there is.",
+      "Where the files are expected is in the database rather than in the repository. sys_file_storage carries basePath and pathType, and the local driver resolves a relative one below the public path and anything else as an absolute path — one outside the project root throws exception 1704807715, one that is not a directory throws exception 1299233097. So a dump brings the storage layout of the installation it came from, and a clone that imported the database and not the files keeps every sys_file row with nothing behind it. cleanup:localprocessedfiles is what deletes the processed-file records whose files are gone.",
+      "Three neighbours: installation-setup for an installation that has to be created rather than booted, project-configuration-files for who owns config/system/ while the environment generates into it, and project-build-and-scripts for what the repository does not commit."
+    ]
+  },
+  {
     "id": "project-repository-layout",
     "title": "How a TYPO3 Project Repository Is Laid Out",
     "domains": [

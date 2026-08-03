@@ -1,23 +1,27 @@
 # What this server has to do
 
-A feedback is a question, and it leaves the backlog once it is answered.
-The requirement the feedback established is not a question and does not go away
-with it: it has to keep holding while everything around it changes. This
-directory is where it survives the feedback.
+Every entry states one thing that must be true of this server, names where the
+demand came from, and says what holds it to that — a test where there is one,
+`not guarded` where there is none.
 
-Every entry states one thing that must be true, names where the demand came
-from, and says what holds it to that — a test where there is one, `not guarded`
-where there is none. An entry marked **open** is a requirement that has been
-accepted and not yet met; that is the backlog, and it is deliberately the same
-list, because a requirement nobody has implemented yet and one that could
-silently regress are the same kind of thing.
+This is the base the rest of the record stands on.
+[decisions/](../decisions/readme.md) says what a change rested on and what would
+show it wrong; a requirement is what has to keep holding afterwards, and it
+names the decisions it stands on in its own `restsOn:`. Neither directory
+belongs to `feedback/`: a feedback is one route a demand arrives by, and the
+most common one, but an entry outlives the question that produced it.
 
-Rules for keeping it usable: an entry is added when a feedback is worked off,
-not when it arrives — a feedback nobody has judged yet is a feedback, not a
-requirement. An entry is never deleted because it was implemented; it is
-deleted only when the requirement itself is withdrawn, and then the reason goes
-in [decisions/](../decisions/readme.md). Assumptions and evidence live there
-too; these files hold only what must be true.
+An entry marked **open** is a requirement that has been accepted and not yet
+met; that is the backlog, and it is deliberately the same list, because a
+requirement nobody has implemented yet and one that could silently regress are
+the same kind of thing.
+
+Rules for keeping it usable: where a feedback is the route, the entry is added
+when it is worked off rather than when it arrives — a feedback nobody has judged
+yet is a feedback, not a requirement. An entry is never deleted because it was
+implemented; it is deleted only when the requirement itself is withdrawn, and
+then the reason goes in [decisions/](../decisions/readme.md). Assumptions and
+evidence live there too; these files hold only what must be true.
 
 ## Where an entry lives
 
@@ -63,6 +67,6 @@ thing it always meant.
 
 How one is written — the sections, what **Held by** owes a reader, what it may
 declare it rests on, and what `open`, `not guarded` and `held` mean:
-[documentation/feedback/writing-a-requirement.md](../documentation/feedback/writing-a-requirement.md).
+[documentation/requirements/writing-a-requirement.md](../documentation/requirements/writing-a-requirement.md).
 `bin/cli requirements:check` holds every file to that shape, and `composer test`
 runs the same check through `RequirementsTest`.

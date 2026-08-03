@@ -410,9 +410,11 @@ without taking a case with it.
   one that was only partially addressed — trim it to the part that is left.
 - Nothing is deleted from the archive. A feedback is a session's report about
   this server, which is evidence nothing else here holds.
-- What outlives it is split three ways: `requirements/` for what must be true
-  from now on and what holds it there, `decisions/` for what a change rested on
-  and what would show it wrong, `todo/` for the order of the work.
+- What outlives it goes to three directories, and none of them is the feedback's
+  own: `requirements/` for what must be true from now on and what holds it
+  there, `decisions/` for what a change rested on and what would show it wrong,
+  `todo/` for the order of the work. A feedback is one route into the first two,
+  and an entry is read long after the question that produced it was answered.
 - Three states mean unfinished — a requirement marked **open**, one held by
   `not guarded`, a decision still `open` whose **Wrong if** nobody has been back
   to. All three are legitimate, so no check may fail on them, and
@@ -423,10 +425,10 @@ session this repository cannot read, judging one, what each of the three files
 holds, and what `bin/cli backlog:list` reports:
 [documentation/feedback/readme.md](documentation/feedback/readme.md). The
 sections a requirement is written in and what its three states mean:
-[documentation/feedback/writing-a-requirement.md](documentation/feedback/writing-a-requirement.md).
+[documentation/requirements/writing-a-requirement.md](documentation/requirements/writing-a-requirement.md).
 The sections a decision is written in, what a later session adds to the foot of
 one, and what `open`, `confirmed` and `revoked` promise a reader:
-[documentation/feedback/writing-a-decision.md](documentation/feedback/writing-a-decision.md).
+[documentation/decisions/writing-a-decision.md](documentation/decisions/writing-a-decision.md).
 Running a forward review, judging it, and reading one that stopped without an
 error:
 [documentation/evidence/forward-runs.md](documentation/evidence/forward-runs.md).

@@ -4,11 +4,12 @@ What a requirement **is** and where it lives is
 [requirements/readme.md](../../requirements/readme.md). This is how one is
 written.
 
-An entry is added when a feedback is worked off, not when it arrives: a feedback
-nobody has judged yet is a feedback, not a requirement. What the entry holds is
-only what must be true — the assumptions and the evidence behind the change are
+Where a feedback is the route, the entry is added when it is worked off rather
+than when it arrives: a feedback nobody has judged yet is a feedback, not a
+requirement. What the entry holds is only what must be true — the assumptions
+and the evidence behind the change are
 [decisions/](../../decisions/readme.md), and how one of those is written is
-[writing-a-decision.md](writing-a-decision.md).
+[writing-a-decision.md](../decisions/writing-a-decision.md).
 
 ## What an entry looks like
 

@@ -32,18 +32,24 @@ order by, and the launch two of the subjects below share.
 - [judging.md](feedback/judging.md) — what is asked of one open feedback, in
   which order and on what evidence, and which answers may be given without
   asking first.
-- [writing-a-requirement.md](feedback/writing-a-requirement.md) — the sections
-  an entry is written in, what **Held by** owes a reader, and what `open`,
-  `not guarded` and `held` mean.
-- [writing-a-decision.md](feedback/writing-a-decision.md) — the sections an
-  entry is written in, what a later session adds to the foot of one, and what
-  `open`, `confirmed` and `revoked` promise a reader.
 - [working-a-todo.md](feedback/working-a-todo.md) — what is read before the todo
   `bin/cli todo:next` handed over is changed, where a question the step turns on
   is settled rather than recalled, and what the queue says afterwards.
 - [working-todos-in-parallel.md](feedback/working-todos-in-parallel.md) — how
   several sessions get different todos, where each of them writes, and how what
   they wrote comes back.
+
+## [requirements/](requirements/writing-a-requirement.md) — what has to keep holding
+
+- [writing-a-requirement.md](requirements/writing-a-requirement.md) — the
+  sections an entry is written in, what **Held by** owes a reader, and what
+  `open`, `not guarded` and `held` mean.
+
+## [decisions/](decisions/writing-a-decision.md) — what a change rested on
+
+- [writing-a-decision.md](decisions/writing-a-decision.md) — the sections an
+  entry is written in, what a later session adds to the foot of one, and what
+  `open`, `confirmed` and `revoked` promise a reader.
 
 ## [knowledge/](knowledge/versions.md) — what the server answers, and from where
 
@@ -74,9 +80,9 @@ order by, and the launch two of the subjects below share.
 - [forward-runs.md](evidence/forward-runs.md) — running a forward review,
   judging it, and what to do when one stops without an error.
 
-What does **not** belong here: what must hold — that is
-[requirements/](../requirements/readme.md); what a change assumed —
-[decisions/](../decisions/readme.md); the order of the work —
-[todo/](../todo/readme.md), which is also where this machine's checkouts are
-named; and the conventions every session works under, which stay in
-[AGENTS.md](../AGENTS.md) because they are read before anything else is.
+What does **not** belong here are the entries themselves, only the procedure for
+writing one: what must hold is [requirements/](../requirements/readme.md), what
+a change assumed is [decisions/](../decisions/readme.md), and the order of the
+work is [todo/](../todo/readme.md), which is also where this machine's checkouts
+are named. The conventions every session works under stay in
+[AGENTS.md](../AGENTS.md), because they are read before anything else is.

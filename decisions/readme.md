@@ -1,8 +1,7 @@
 # What was decided, and on what evidence
 
-A feedback is archived by the commit that closes it, and the commit message
-says what changed and why. What a commit message cannot carry is the part that
-may not survive: the assumption the change rests on, the evidence that was
+A commit message says what changed and why. What it cannot carry is the part
+that may not survive: the assumption the change rests on, the evidence that was
 available at the time, and what would show the decision to have been wrong.
 
 That is what this directory is for. One entry per decision worth revisiting. An
@@ -10,6 +9,13 @@ entry is not a changelog line — a change nobody would need to reconsider does
 not belong here. When an assumption is later disproved, the entry stays and
 gains a **Revoked on** line: the wrong assumption is the useful part, because
 it names the place where the next one is likely to sit.
+
+An entry backs what stands on it.
+[requirements/](../requirements/readme.md) holds what must be true, and a
+requirement names the decisions it rests on in its own `restsOn:`, so a revoked
+one is readable from the requirement written on top of it. Neither directory
+belongs to `feedback/`: a feedback is one occasion on which a decision gets
+made, and the entry is read long after that question was answered.
 
 ## Where an entry lives
 
@@ -47,7 +53,7 @@ An id is never reused, and an entry is never deleted: a decision that turned out
 wrong is the one most worth reading, and it is revoked in place.
 
 How one is written — the sections, what a later session adds, and when to go
-back to one: [documentation/feedback/writing-a-decision.md](../documentation/feedback/writing-a-decision.md).
+back to one: [documentation/decisions/writing-a-decision.md](../documentation/decisions/writing-a-decision.md).
 `bin/cli decisions:check` holds every file to that shape.
 
 ## Every decision, newest first

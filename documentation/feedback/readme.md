@@ -191,10 +191,15 @@ their own front matter — `closed:`, `commit:` and `subject:`. They were all
 moved in one commit, and that move says nothing about any of them; every
 feedback archived since is answered by the commit that archived it.
 
-## The three files around it
+## Where the answer goes
 
 Archiving the feedback takes the question out of the backlog, and the commit
-message records the answer. What outlives both is split three ways:
+message records the answer. What outlives both goes to three directories, and
+two of them are not this workflow's: `requirements/` and `decisions/` are the
+record this repository keeps whether or not a feedback was what produced an
+entry. How each one is written has a page of its own —
+[writing-a-requirement.md](../requirements/writing-a-requirement.md) and
+[writing-a-decision.md](../decisions/writing-a-decision.md).
 
 - `requirements/` — what must be true from now on. A feedback is a question; the
   requirement it established has to keep holding while everything around it

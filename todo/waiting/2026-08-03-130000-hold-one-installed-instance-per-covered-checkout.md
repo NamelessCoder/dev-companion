@@ -2,8 +2,6 @@
 
 **Serves:** scenarios/
 **Priority:** normal
-**Branch:** todo/hold-one-installed-instance-per-covered-checkout
-**Claimed:** 2026-08-03
 **Waiting on:** does the development line get an installation of its own shape,
     or stay declined? It is the one covered line `environment:create` does not
     make. `typo3/cms-base-distribution` publishes no release above `v14.3.0`,

@@ -90,6 +90,10 @@ final class Requirements
      */
     public static function group(string $group): array
     {
+        if ($group === '') {
+            return self::all();
+        }
+
         return array_filter(self::all(), static fn(array $r): bool => $r['group'] === $group);
     }
 
@@ -100,12 +104,42 @@ final class Requirements
      */
     public static function listing(string $group): string
     {
+        if ($group !== '') {
+            return Listing::render(self::entries($group, ''));
+        }
+
+        // The whole of it is read by group rather than as one run of 184 lines:
+        // the id already sorts that way, and the heading is what says where the
+        // run the reader is in stops.
+        $listing = '';
+        foreach (self::GROUPS as $name) {
+            $entries = self::entries($name, $name . '/');
+            if ($entries === []) {
+                continue;
+            }
+
+            $listing .= '### ' . $name . "\n\n" . Listing::render($entries) . "\n";
+        }
+
+        return rtrim($listing, "\n") . "\n";
+    }
+
+    /**
+     * One group as a listing renders it.
+     *
+     * The prefix is what the readme being written stands in: nothing from the
+     * group's own, the group's directory from the one above it.
+     *
+     * @return array<int, array{ref: string, path: string, says: string}>
+     */
+    private static function entries(string $group, string $prefix): array
+    {
         $entries = [];
         foreach (self::group($group) as $requirement) {
             $state = self::state($requirement);
             $entries[] = [
                 'ref' => $requirement['id'],
-                'path' => $requirement['file'],
+                'path' => $prefix . $requirement['file'],
                 'says' => sprintf(
                     '%s · %s',
                     $requirement['title'],
@@ -114,7 +148,7 @@ final class Requirements
             ];
         }
 
-        return Listing::render($entries);
+        return $entries;
     }
 
     /**

@@ -1,7 +1,8 @@
 ---
 date: 2026-08-01T11:48:07+00:00
 category: idea
-status: open
+status: closed
+closed: 2026-08-03
 model: GPT-5 mini
 tool: typo3_project_scope
 directory: /home/benji/projects/typo3-cms

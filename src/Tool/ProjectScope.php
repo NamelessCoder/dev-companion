@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Typo3CmsMcp\Tool;
 
+use Typo3CmsMcp\Installation\Instance;
 use Typo3CmsMcp\Installation\Project;
 use Typo3CmsMcp\Installation\Typo3Cli;
 use Typo3CmsMcp\Result\Schema;
@@ -123,9 +124,10 @@ final class ProjectScope extends ReadOnlyTool
         $lines[] = '';
         $lines[] = $project['commands'] === []
             ? 'This repository declares no commands of its own in composer.json or package.json. What to run is '
-                . 'then whatever its CI configuration does.'
-            : 'Commands this repository declares — these exist here, the core\'s testing suites do not. '
-                . 'What each one does to the sources is read off its body, never by running it: a check reports '
+                . 'then whatever its CI configuration does.' . self::suites($project['kind'])
+            : 'Commands this repository declares — these exist here, the core\'s testing suites do not.'
+                . self::suites($project['kind'])
+                . ' What each one does to the sources is read off its body, never by running it: a check reports '
                 . 'and leaves them as they are, a change rewrites something, and unknown is a body that does not '
                 . 'say — a test suite runs the project\'s own code, and no declaration covers that. A task told '
                 . 'not to change files can run the checks and nothing else. A check may still write a cache of '
@@ -158,6 +160,24 @@ final class ProjectScope extends ReadOnlyTool
         }
 
         return ToolResult::create(implode("\n", $lines), $project + ['answeredBy' => 'packages']);
+    }
+
+    /**
+     * Where the suites this list says are absent are run.
+     *
+     * The sentence named an absence and nothing that has it, and a session read
+     * it and reached for a `Build/bin/phpunit` the checkout does not contain —
+     * `D-ANS-031`. Only in a core checkout: everywhere else there are no core
+     * suites to point at, and runTests.sh is not in that repository.
+     */
+    private static function suites(string $kind): string
+    {
+        if ($kind !== Instance::KIND_CORE_CHECKOUT) {
+            return '';
+        }
+
+        return ' The core\'s suites are run by Build/Scripts/runTests.sh, which no manifest here declares. '
+            . 'typo3_test_run_guide names the ones a change needs, with the invocation.';
     }
 
     /**

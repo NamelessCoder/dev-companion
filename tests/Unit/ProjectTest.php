@@ -217,6 +217,38 @@ final class ProjectTest extends TestCase
 
         self::assertStringContainsString('composer ci', $text);
         self::assertStringContainsString('testing suites do not', $text);
+        // Nothing here runs a core suite, so there is nothing to point at:
+        // runTests.sh is not in this repository.
+        self::assertStringNotContainsString('typo3_test_run_guide', $text);
+    }
+
+    #[Test]
+    public function whatACoreCheckoutDoesNotDeclareIsSaidWithTheToolThatHasIt(): void
+    {
+        // The four gerrit hook installers are the whole of what a core checkout
+        // declares, and the sentence beside them said the suites are not among
+        // them and named nothing that has them. A session read that, went
+        // looking by hand, and reported preferring a `Build/bin/phpunit` the
+        // checkout has no directory for — `D-ANS-031`.
+        $root = $this->coreCheckout('15.0.0-dev');
+        $this->manifest($root, ['scripts' => ['gerrit:setup' => 'Acme\\Scripts::install']]);
+        Instance::discoverFrom($root);
+
+        $text = Registry::call('typo3_project_scope', [])->text;
+
+        self::assertStringContainsString('testing suites do not', $text);
+        self::assertStringContainsString('Build/Scripts/runTests.sh', $text);
+        self::assertStringContainsString('typo3_test_run_guide', $text);
+
+        // And where the manifest declares nothing at all, because the pointer
+        // is what the checkout is rather than what it happens to have declared.
+        $bare = $this->coreCheckout();
+        Instance::discoverFrom($bare);
+
+        self::assertStringContainsString(
+            'typo3_test_run_guide',
+            Registry::call('typo3_project_scope', [])->text,
+        );
     }
 
     #[Test]

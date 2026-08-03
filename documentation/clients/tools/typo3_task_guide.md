@@ -86,7 +86,7 @@ intents:  # optional
 # — the strongest few per group of paths, not everything it holds on them. A
 # rule taken from one of these belongs to that lookup, so a report citing it
 # names typo3_hint_lookup and a caller who needs more of the subject calls it
-# directly.
+# directly. What was left is named in omittedHints.
 hints:
   - id: string
     title: string
@@ -123,6 +123,16 @@ hints:
         # ordinary case, means it holds wherever TYPO3 is written: an API that
         # throws throws in a sitepackage too.
         scope: string or null
+# What typo3_hint_lookup also holds for these paths and this brief did not
+# carry, named rather than counted. Empty means what it carries is everything
+# that matched. A subject listed here and not in hints is one the brief did not
+# reach, so it is the gap the pointer to that lookup stands for.
+omittedHints:
+  - # Ask for this hint outright by passing it as id.
+    id: string
+    title: string
+    # PHP, TypeScript, JavaScript, CSS, or General.
+    category: string
 # Rule sections that apply to this task.
 rules:  # optional
   - documentId: string
@@ -201,6 +211,8 @@ Domains: php
 Recognized as: Deprecation
 
 Hints:
+The hints below are typo3_hint_lookup's, matched for these paths and quoted whole. A finding that cites one of these rules is citing that lookup rather than this guide. A brief carries the 4 strongest per group of paths, which is not everything the lookup holds on them — call it for the rest, by path, with a larger limit, or by id.
+
 ### PHP
 
 ## System Extension Boundaries
@@ -262,6 +274,14 @@ Source: TYPO3 Core Commit Message Rules (typo3://core/typo3-commit-messages) —
   - `PropertyPublicMatcher.php` — a removed public property.
   - `PropertyProtectedMatcher.php` — a public property that became protected.
   - `ClassNameMatcher.php` — a whole class or interface.
+- Visibility routes a property and never a method. The method matchers are a
+  weak match on the method name where it is used, and they do not resolve the
+  class, so they cannot see one. A method that is protected, or that has become
+  protected, is entered where a public one is.
+  `RendererRegistry->getRendererInstances` went from public to protected in
+  `Breaking-110277`, and it stands in `MethodCallMatcher.php`. The list above
+  has no row for a protected method because none is needed, and that absence
+  says nothing about whether an entry is owed.
 - An entry is keyed by the fully qualified name with `->` or `::` and carries
   `restFiles`, naming the changelog file that removed it. The method matchers
   add `numberOfMandatoryArguments` and `maximumNumberOfArguments`. A member
@@ -502,6 +522,7 @@ Data:
             ]
         }
     ],
+    "omittedHints": [],
     "rules": [
         {
             "documentId": "typo3-commit-messages",
@@ -510,7 +531,7 @@ Data:
             "heading": "Deprecations",
             "body": "- Deprecations must not use `[!!!]`.\n- Deprecations may only use `[TASK]` or `[FEATURE]`.\n- Deprecations must be documented with a changelog RST file.\n- Deprecations need migration guidance and may need extension scanner\n  considerations.\n- All of the above is the authoring side. Reading it — what a given version\n  deprecated, and what that means for code that uses it — works the other way\n  round: the changelog files below `Documentation/Changelog/` of the core\n  package and the matchers below the install package's\n  `Configuration/ExtensionScanner/Php/` are what an installation is checked\n  against, by the Extension Scanner in the Install Tool. Both directories ship\n  with a Composer installation.",
             "coverage": 1,
-            "score": 63,
+            "score": 70,
             "truncated": false
         },
         {
@@ -518,9 +539,9 @@ Data:
             "title": "TYPO3 Core Commit Message Rules",
             "uri": "typo3://core/typo3-commit-messages",
             "heading": "Breaking Changes",
-            "body": "- Breaking changes must use `[!!!]` before the keyword.\n- Breaking changes must be documented with a changelog RST file.\n- Breaking changes should usually target `main`.\n- A removed or narrowed PHP API gets an extension scanner matcher entry in the\n  same patch, below\n  `typo3/sysext/install/Configuration/ExtensionScanner/Php/`. How the removed\n  member is written where it is used decides the file:\n  - `MethodCallMatcher.php` — an instance method.\n  - `MethodCallStaticMatcher.php` — a static method.\n  - `PropertyPublicMatcher.php` — a removed public property.\n  - `PropertyProtectedMatcher.php` — a public property that became protected.\n  - `ClassNameMatcher.php` — a whole class or interface.\n- An entry is keyed by the fully qualified name with `->` or `::` and carries\n  `restFiles`, naming the changelog file that removed it. The method matchers\n  add `numberOfMandatoryArguments` and `maximumNumberOfArguments`. A member\n  deprecated before it was removed lists both changelog files.\n- Every Breaking and Deprecation entry carries exactly one of `NotScanned`,\n  `PartiallyScanned` and `FullyScanned` in its `.. index::` line, and that tag\n  is the claim those entries have to back: `FullyScanned` says every item the\n  changelog entry names can be found. The scanner reads PHP, so what an entry\n  changes in TypoScript, TCA, YAML or JavaScript is what leaves it partially\n  scanned.\n- `./Build/Scripts/runTests.sh -s checkExtensionScannerRst` checks that the\n  changelog files the matchers name exist, and nothing checks the other\n  direction. A missing entry surfaces when somebody audits the matcher files\n  against the changelog.",
+            "body": "- Breaking changes must use `[!!!]` before the keyword.\n- Breaking changes must be documented with a changelog RST file.\n- Breaking changes should usually target `main`.\n- A removed or narrowed PHP API gets an extension scanner matcher entry in the\n  same patch, below\n  `typo3/sysext/install/Configuration/ExtensionScanner/Php/`. How the removed\n  member is written where it is used decides the file:\n  - `MethodCallMatcher.php` — an instance method.\n  - `MethodCallStaticMatcher.php` — a static method.\n  - `PropertyPublicMatcher.php` — a removed public property.\n  - `PropertyProtectedMatcher.php` — a public property that became protected.\n  - `ClassNameMatcher.php` — a whole class or interface.\n- Visibility routes a property and never a method. The method matchers are a\n  weak match on the method name where it is used, and they do not resolve the\n  class, so they cannot see one. A method that is protected, or that has become\n  protected, is entered where a public one is.\n  `RendererRegistry->getRendererInstances` went from public to protected in\n  `Breaking-110277`, and it stands in `MethodCallMatcher.php`. The list above\n  has no row for a protected method because none is needed, and that absence\n  says nothing about whether an entry is owed.\n- An entry is keyed by the fully qualified name with `->` or `::` and carries\n  `restFiles`, naming the changelog file that removed it. The method matchers\n  add `numberOfMandatoryArguments` and `maximumNumberOfArguments`. A member\n  deprecated before it was removed lists both changelog files.\n- Every Breaking and Deprecation entry carries exactly one of `NotScanned`,\n  `PartiallyScanned` and `FullyScanned` in its `.. index::` line, and that tag\n  is the claim those entries have to back: `FullyScanned` says every item the\n  changelog entry names can be found. The scanner reads PHP, so what an entry\n  changes in TypoScript, TCA, YAML or JavaScript is what leaves it partially\n  scanned.\n- `./Build/Scripts/runTests.sh -s checkExtensionScannerRst` checks that the\n  changelog files the matchers name exist, and nothing checks the other\n  direction. A missing entry surfaces when somebody audits the matcher files\n  against the changelog.",
             "coverage": 1,
-            "score": 25,
+            "score": 23,
             "truncated": false
         }
     ],
@@ -668,6 +689,8 @@ Domains: php
 Recognized as: Backend UI markup
 
 Hints:
+The hints below are typo3_hint_lookup's, matched for these paths and quoted whole. A finding that cites one of these rules is citing that lookup rather than this guide. A brief carries the 4 strongest per group of paths, which is not everything the lookup holds on them — call it for the rest, by path, with a larger limit, or by id.
+
 ### PHP
 
 ## Backend Module and Route Registration
@@ -832,6 +855,7 @@ Data:
             ]
         }
     ],
+    "omittedHints": [],
     "rules": [
         {
             "documentId": "typo3-core-rules",
@@ -840,7 +864,7 @@ Data:
             "heading": "Testing",
             "body": "- Unit tests are expected for isolated behavior.\n- Functional tests are expected for persistence, configuration, routing, backend\n  behavior, or integration with TYPO3 services.\n- End-to-end tests, the `e2e` suite, are useful when the change affects editor\n  or administrator workflows and only breaks in the assembled backend. They\n  replaced the former acceptance suites.\n- Document tests that could not be executed and why.",
             "coverage": 0.5,
-            "score": 29,
+            "score": 31,
             "truncated": false
         }
     ],
@@ -963,6 +987,8 @@ Paths:
 - typo3/sysext/core/Classes/Database/Query/QueryBuilder.php
 
 Hints:
+The hints below are typo3_hint_lookup's, matched for these paths and quoted whole. A finding that cites one of these rules is citing that lookup rather than this guide. A brief carries the 4 strongest per group of paths, which is not everything the lookup holds on them — call it for the rest, by path, with a larger limit, or by id.
+
 # For typo3/sysext/core/Classes/Database/Query/QueryBuilder.php
 
 ### PHP
@@ -1000,6 +1026,9 @@ Use when a deprecation or breaking change adds extension scanner matchers.
 ## checkIntegrityPhp
 `CI=true ./Build/Scripts/runTests.sh -s checkIntegrityPhp`
 Use before review after touching PHP files; it catches conventions that neither lintPhp nor cgl covers.
+## composerInstall
+`CI=true ./Build/Scripts/runTests.sh -s composerInstall`
+Use once in a checkout that has no vendor/ or bin/ yet, before any other suite: a fresh clone, and a git worktree, which starts without both because /vendor/* and /bin/* are gitignored. Without it every PHP suite stops at `exec: line 9: bin/phpunit: not found`. It is a precondition and not a step — a checkout that already has vendor/ needs it again only after composer.json or composer.lock changed. It needs no PHP on the host, unlike `composer install` run there.
 ## e2e
 `CI=true ./Build/Scripts/runTests.sh -s e2e`
 Use for editor or administrator workflows that only break in the assembled backend.
@@ -1170,6 +1199,7 @@ Data:
             ]
         }
     ],
+    "omittedHints": [],
     "rules": [],
     "checks": [
         "CI=true ./Build/Scripts/runTests.sh -s unit",
@@ -1199,6 +1229,19 @@ Data:
                 "php"
             ],
             "versions": "TYPO3 v13 and newer"
+        },
+        {
+            "suite": "composerInstall",
+            "command": "CI=true ./Build/Scripts/runTests.sh -s composerInstall",
+            "targeted": null,
+            "description": "Installs the PHP dependencies of the checkout it is run in, into its own vendor/ and bin/, inside the container.",
+            "whenToUse": "Use once in a checkout that has no vendor/ or bin/ yet, before any other suite: a fresh clone, and a git worktree, which starts without both because /vendor/* and /bin/* are gitignored. Without it every PHP suite stops at `exec: line 9: bin/phpunit: not found`. It is a precondition and not a step — a checkout that already has vendor/ needs it again only after composer.json or composer.lock changed. It needs no PHP on the host, unlike `composer install` run there.",
+            "domains": [
+                "php",
+                "fluid",
+                "typoscript"
+            ],
+            "versions": ""
         },
         {
             "suite": "e2e",

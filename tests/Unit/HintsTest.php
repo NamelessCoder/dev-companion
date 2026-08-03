@@ -16,6 +16,7 @@ use Typo3CmsMcp\Knowledge\TaskIntents;
 use Typo3CmsMcp\Knowledge\TestSuiteHints;
 use Typo3CmsMcp\Knowledge\Versions;
 use Typo3CmsMcp\Paths;
+use Typo3CmsMcp\Tool\HintLookup;
 use Typo3CmsMcp\Tool\Registry;
 use Typo3CmsMcp\Tool\TaskGuide;
 use Typo3CmsMcp\Upkeep\Scenarios;
@@ -3005,6 +3006,60 @@ final class HintsTest extends TestCase
         // states: the brief stops where the lookup goes on.
         self::assertLessThanOrEqual(TaskGuide::HINTS_PER_GROUP, count($brief->data['hints']));
         self::assertGreaterThan(count($brief->data['hints']), count($lookup->data['hints']));
+    }
+
+    /**
+     * R-GUI-012. The same run read the four hints the brief carried, made no
+     * separate call, and established `#[Autowire(lazy: true)]` for the patch's
+     * new service dependency by grepping three call sites out of the checkout —
+     * `dependency-injection` is the seventh hint the lookup holds for those
+     * paths, and the brief had stated a count rather than the subjects
+     * (`feedback/2026-08-03-144410`).
+     */
+    #[Test]
+    public function aBriefNamesTheHintsItLeftBehind(): void
+    {
+        $paths = [
+            'typo3/sysext/core/Classes/Resource/ResourceFactory.php',
+            'typo3/sysext/extbase/Classes/Service/ImageService.php',
+            'typo3/sysext/fluid/Classes/ViewHelpers/ImageViewHelper.php',
+            'typo3/sysext/backend/Classes/ViewHelpers/ThumbnailViewHelper.php',
+            'typo3/sysext/core/Tests/Functional/Resource/ResourceFactoryTest.php',
+        ];
+        $task = 'Review a core patch that moves file source resolution from Extbase ImageService into '
+            . 'ResourceFactory and adds a new public method';
+
+        $brief = Registry::call('typo3_task_guide', [
+            'task' => $task,
+            'changeType' => 'audit',
+            'targetVersion' => '15.0',
+            'paths' => $paths,
+        ]);
+        $lookup = Registry::call('typo3_hint_lookup', [
+            'task' => $task,
+            'targetVersion' => '15.0',
+            'paths' => $paths,
+            'limit' => HintLookup::MAX_HINTS,
+        ]);
+
+        $carried = array_column($brief->data['hints'], 'id');
+        $left = array_column($brief->data['omittedHints'], 'id');
+
+        // The measurement D-GUI-007 was decided from: four carried, three left,
+        // and the one the report went to the checkout for is among the three.
+        self::assertSame(['fal-reading', 'fal-processing', 'dependency-injection'], $left);
+        // What the pointer stands for is what the lookup would answer, so the
+        // two halves are that answer and nothing else.
+        self::assertSame(array_column($lookup->data['hints'], 'id'), array_merge($carried, $left));
+
+        // Named rather than quoted: the ids are in the copy a reader is looking
+        // at, and each record is what the lookup takes back as an id.
+        self::assertStringContainsString(sprintf(TaskGuide::HINTS_OMITTED, implode(', ', $left)), $brief->text);
+        foreach ($brief->data['omittedHints'] as $entry) {
+            self::assertNotSame('', $entry['title']);
+            self::assertNotSame('', $entry['category']);
+            self::assertArrayNotHasKey('hints', $entry);
+        }
     }
 
     #[Test]

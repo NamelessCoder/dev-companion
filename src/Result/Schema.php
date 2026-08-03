@@ -207,6 +207,21 @@ final class Schema
         ], ['id', 'title', 'category', 'scope', 'hints']);
     }
 
+    /**
+     * A hint named rather than quoted: what an answer says exists without
+     * carrying it, and what typo3_hint_lookup takes as an id.
+     *
+     * @return array<string, mixed>
+     */
+    public static function hintReference(): array
+    {
+        return self::object([
+            'id' => self::string('Ask for this hint outright by passing it as id.'),
+            'title' => self::string(),
+            'category' => self::string('PHP, TypeScript, JavaScript, CSS, or General.'),
+        ], ['id', 'title', 'category']);
+    }
+
     /** @return array<string, mixed> */
     public static function testSuiteRecord(): array
     {

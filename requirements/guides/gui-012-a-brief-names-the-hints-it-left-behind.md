@@ -1,6 +1,6 @@
 ---
 id: R-GUI-012
-status: open
+status: held
 restsOn: [D-GUI-007]
 ---
 
@@ -9,13 +9,13 @@ restsOn: [D-GUI-007]
 **Where `typo3_task_guide` carries fewer hints than `typo3_hint_lookup` holds
 for the same paths, the brief names the ones it left.**
 
-The sentence a brief carries today states the count and not the subjects, so a
-caller reading four hint bodies cannot tell whether the fifth is a variation of
-one of them or the one subsystem the work is really in. "Call it for the rest"
-is then a pointer with nothing behind it, and the cheapest way to find out what
-the rest is remains the call the pointer was standing in for. The ids are what
-turns it into a reason: three names under the four bodies is one line, and a
-subsystem the brief did not reach is visible before a file is opened.
+A sentence that states the count and not the subjects leaves a caller reading
+four hint bodies unable to tell whether the fifth is a variation of one of them
+or the one subsystem the work is really in. "Call it for the rest" is then a
+pointer with nothing behind it, and the cheapest way to find out what the rest
+is remains the call the pointer was standing in for. The ids are what turns it
+into a reason: three names under the four bodies is one line, and a subsystem
+the brief did not reach is visible before a file is opened.
 
 ## From
 
@@ -28,4 +28,4 @@ that brief was composed for.
 
 ## Held by
 
-- Not guarded. Nothing yet asserts that a brief names what it did not carry.
+- `HintsTest::aBriefNamesTheHintsItLeftBehind`

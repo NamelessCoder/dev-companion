@@ -17,6 +17,15 @@ use Typo3CmsMcp\Result\VersionScope;
  */
 final class HintLookup extends ReadOnlyTool
 {
+    /**
+     * The most hints one call answers with, and the ceiling `limit` is taken at.
+     *
+     * A brief matches a second time at this number to name what its own slice
+     * dropped (`R-GUI-012`), so what it points at is what this tool would hand
+     * back rather than a longer list nothing answers with.
+     */
+    public const MAX_HINTS = 10;
+
     public static function name(): string
     {
         return 'typo3_hint_lookup';
@@ -36,7 +45,7 @@ final class HintLookup extends ReadOnlyTool
                 'task' => ['type' => 'string', 'description' => 'Short task description or topic, in English. Matching is lexical against English text, so another language reaches only the loanwords.'],
                 'id' => ['type' => 'string', 'description' => 'Ask for one hint by its id, for example language-files, instead of matching. Every answer that returns no hint lists the ids there are, so a subject that exists can be requested by name rather than guessed at.'],
                 'targetVersion' => ['type' => 'string', 'description' => 'The TYPO3 version the answer has to hold for, for example "13.4" or "14". Statements that do not hold there are left out, including those the repository needs for another major it declares. Defaults to every major this repository declares typo3/cms-core for, or to the installation this server was started in where there is no declaration; where there is neither, nothing is filtered and every statement carries the versions it holds for.'],
-                'limit' => ['type' => 'integer', 'minimum' => 1, 'maximum' => 10, 'default' => 6, 'description' => 'Maximum number of hints.'],
+                'limit' => ['type' => 'integer', 'minimum' => 1, 'maximum' => self::MAX_HINTS, 'default' => 6, 'description' => 'Maximum number of hints.'],
             ],
         ];
     }
@@ -52,11 +61,7 @@ final class HintLookup extends ReadOnlyTool
             'domains' => Schema::listOf(Schema::string(), 'Hints outside these domains are not returned.'),
             'withheldCategories' => Schema::listOf(Schema::string(), 'Categories that matched the domains but were left out because the task names the frontend. "Backend CSS" and "Backend TypeScript and JavaScript" describe the TYPO3 backend interface and are wrong advice for what a website renders; see docs.typo3.org for frontend theming.'),
             'hints' => Schema::listOf(Schema::hintRecord()),
-            'availableHints' => Schema::listOf(Schema::object([
-                'id' => Schema::string('Ask for this hint outright by passing it as id.'),
-                'title' => Schema::string(),
-                'category' => Schema::string(),
-            ], ['id', 'title', 'category']), 'The hints that exist in the searched domains, returned when none matched. Empty on a hit.'),
+            'availableHints' => Schema::listOf(Schema::hintReference(), 'The hints that exist in the searched domains, returned when none matched. Empty on a hit.'),
         ], ['paths', 'domains', 'withheldCategories', 'scopes', 'hints', 'availableHints']);
     }
 

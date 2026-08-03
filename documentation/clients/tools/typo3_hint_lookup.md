@@ -110,6 +110,7 @@ availableHints:
   - # Ask for this hint outright by passing it as id.
     id: string
     title: string
+    # PHP, TypeScript, JavaScript, CSS, or General.
     category: string
 ```
 
@@ -155,7 +156,7 @@ Hints:
 Hints:
 - Every record change the backend makes goes through DataHandler. It evaluates the TCA of each field, checks the editor's permissions, keeps workspaces and localizations consistent and updates the reference index. A direct INSERT writes the row and none of that, so the record exists and nothing else about it is true.
 - DataHandler acts as a backend user: pass one to start() or have one in $GLOBALS['BE_USER']. Permission checks, workspaces and the reference index all hang off it, which is what makes DataHandler the right way to seed and a direct INSERT the wrong one.
-- The rest of the subject is its own hint, because each is asked as its own question: datahandler-writing for the datamap, datahandler-relations for a relation field, datahandler-placement for where a record lands, datahandler-seeding for building content that exists nowhere yet, datahandler-testing for covering any of it. Reading records back is persistence-reading and works nothing like this.
+- The rest of the subject is its own hint, because each is asked as its own question: datahandler-writing for the datamap, datahandler-relations for a relation field, datahandler-placement for which page may hold a record and where it lands on it, datahandler-seeding for building content that exists nowhere yet, datahandler-testing for covering any of it. Reading records back is persistence-reading and works nothing like this.
 
 ## Testing DataHandler Behaviour
 Hints:
@@ -238,7 +239,7 @@ Data:
                     "scope": null
                 },
                 {
-                    "text": "The rest of the subject is its own hint, because each is asked as its own question: datahandler-writing for the datamap, datahandler-relations for a relation field, datahandler-placement for where a record lands, datahandler-seeding for building content that exists nowhere yet, datahandler-testing for covering any of it. Reading records back is persistence-reading and works nothing like this.",
+                    "text": "The rest of the subject is its own hint, because each is asked as its own question: datahandler-writing for the datamap, datahandler-relations for a relation field, datahandler-placement for which page may hold a record and where it lands on it, datahandler-seeding for building content that exists nowhere yet, datahandler-testing for covering any of it. Reading records back is persistence-reading and works nothing like this.",
                     "since": null,
                     "until": null,
                     "versions": "",
@@ -732,7 +733,7 @@ Hints that exist in these domains, requestable by id:
 - datahandler-basics — DataHandler Is the Write Path for Records (PHP)
 - datahandler-writing — Writing Records with a Datamap (PHP)
 - datahandler-relations — What a Datamap Does to a Relation Field (PHP)
-- datahandler-placement — Where a New Record Lands, and in What Order (PHP)
+- datahandler-placement — Which Page May Hold a New Record, and Where It Lands on It (PHP)
 - datahandler-seeding — Seeding Records with a Script (PHP)
 - datahandler-testing — Testing DataHandler Behaviour (PHP)
 - frontend-dataprocessors — Frontend DataProcessors (PHP)
@@ -763,10 +764,11 @@ Hints that exist in these domains, requestable by id:
 - fal-reading — Getting a File Object, and Its Metadata (PHP)
 - fal-writing — Putting a File Into a Storage (PHP)
 - fal-testing — Covering FAL Behaviour (PHP)
-- fal-processing — Which Processor Claims a File, and in What Order (PHP)
+- fal-processing — Which Processor Claims a File, and What Runs Below It (PHP)
 - form-framework — EXT:form Configuration and Runtime (PHP)
 - icon-usage — Rendering and Registering Icons (PHP)
 - site-label-language — Core Labels on a Non-English Site (Labels)
+- page-cache-flushing — Which Caches a Change Invalidates, and What Clears the Rest (Fluid)
 - persistence-reading — Reading Records, and What Is Hidden From the Query (PHP)
 - project-repository-layout — How a TYPO3 Project Repository Is Laid Out (PHP)
 - project-build-and-scripts — Build/, the Scripts, and What Is Not Deployed (PHP)
@@ -894,7 +896,7 @@ Data:
         },
         {
             "id": "datahandler-placement",
-            "title": "Where a New Record Lands, and in What Order",
+            "title": "Which Page May Hold a New Record, and Where It Lands on It",
             "category": "PHP"
         },
         {
@@ -1049,7 +1051,7 @@ Data:
         },
         {
             "id": "fal-processing",
-            "title": "Which Processor Claims a File, and in What Order",
+            "title": "Which Processor Claims a File, and What Runs Below It",
             "category": "PHP"
         },
         {
@@ -1066,6 +1068,11 @@ Data:
             "id": "site-label-language",
             "title": "Core Labels on a Non-English Site",
             "category": "Labels"
+        },
+        {
+            "id": "page-cache-flushing",
+            "title": "Which Caches a Change Invalidates, and What Clears the Rest",
+            "category": "Fluid"
         },
         {
             "id": "persistence-reading",

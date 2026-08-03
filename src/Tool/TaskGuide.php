@@ -56,6 +56,19 @@ final class TaskGuide extends ReadOnlyTool
         . 'it for the rest, by path, with a larger limit, or by id.';
 
     /**
+     * Which hints the brief left, said where the count is (R-GUI-012).
+     *
+     * The sentence above states how many were carried and not which ones were
+     * not, so a subsystem the brief did not reach is invisible until the lookup
+     * is called. The review that lost `dependency-injection` on a patch
+     * injecting a new service read four hint bodies and established the rule by
+     * grepping three call sites out of the checkout instead
+     * (`feedback/2026-08-03-144410`).
+     */
+    public const HINTS_OMITTED = 'What it holds for these paths and this brief left: %s. Each is one call away '
+        . 'by id, and a subject named there and not below is one this brief did not reach.';
+
+    /**
      * The change type of a task that changes nothing, and the id of the intent
      * that recognizes one described rather than classified. They are the same
      * word because the type is fed to the intent matcher.
@@ -157,7 +170,8 @@ final class TaskGuide extends ReadOnlyTool
                 'confidence' => ['type' => 'string', 'enum' => ['strong', 'weak'], 'description' => 'weak: a word named the subject without naming the work, or the intent is a core-only one and nothing in the task says this is core work. Either way it applies only under its condition.'],
                 'condition' => Schema::string('When a weakly matched intent applies. Empty for a strong match.'),
             ], ['id', 'title', 'confidence', 'condition']), 'The kinds of core work recognized in the task text.'),
-            'hints' => Schema::listOf(Schema::hintRecord(), 'What typo3_hint_lookup answers for these paths, quoted whole and carried here — the strongest few per group of paths, not everything it holds on them. A rule taken from one of these belongs to that lookup, so a report citing it names typo3_hint_lookup and a caller who needs more of the subject calls it directly.'),
+            'hints' => Schema::listOf(Schema::hintRecord(), 'What typo3_hint_lookup answers for these paths, quoted whole and carried here — the strongest few per group of paths, not everything it holds on them. A rule taken from one of these belongs to that lookup, so a report citing it names typo3_hint_lookup and a caller who needs more of the subject calls it directly. What was left is named in omittedHints.'),
+            'omittedHints' => Schema::listOf(Schema::hintReference(), 'What typo3_hint_lookup also holds for these paths and this brief did not carry, named rather than counted. Empty means what it carries is everything that matched. A subject listed here and not in hints is one the brief did not reach, so it is the gap the pointer to that lookup stands for.'),
             'rules' => Schema::listOf(Schema::knowledgeMatch(), 'Rule sections that apply to this task.'),
             'checks' => Schema::listOf(Schema::string(), 'Commands to run, ready to execute from the core root.'),
             'conditionalChecks' => Schema::listOf(Schema::object([
@@ -175,7 +189,7 @@ final class TaskGuide extends ReadOnlyTool
                 'tool' => Schema::string(),
                 'when' => Schema::string(),
             ], ['tool', 'when'])),
-        ], ['task', 'changeType', 'domains', 'hints', 'checks', 'checklist', 'nextTools']);
+        ], ['task', 'changeType', 'domains', 'hints', 'omittedHints', 'checks', 'checklist', 'nextTools']);
     }
 
     public static function answer(array $args): ToolResult
@@ -244,11 +258,29 @@ final class TaskGuide extends ReadOnlyTool
         // Matched per group, because a hint matched for a core path and one
         // matched for an extension path are answers to different questions.
         $found = [];
+        $held = [];
         foreach ($groups as $group) {
             $matched = Hints::find($group['paths'], $task, self::HINTS_PER_GROUP, null, $targets);
             $found[] = ['scope' => $group['scope'], 'paths' => $group['paths'], 'result' => $matched];
+            // The same match a second time at the lookup's own ceiling, so that
+            // what the slice above dropped can be named rather than counted
+            // (R-GUI-012). Matched rather than looked up, because the pointer
+            // has to name what that tool would answer for these paths.
+            foreach (Hints::find($group['paths'], $task, HintLookup::MAX_HINTS, null, $targets)['matchedHints'] as $hint) {
+                $held[(string) $hint['id']] ??= [
+                    'id' => (string) $hint['id'],
+                    'title' => (string) $hint['title'],
+                    'category' => (string) $hint['category'],
+                ];
+            }
         }
         $hints = MatchedHints::merged($found);
+        // Per call rather than per group: a hint the brief carries for one group
+        // of paths is in the answer, whichever group left it.
+        $omitted = array_values(array_diff_key(
+            $held,
+            array_flip(array_column($hints['matchedHints'], 'id')),
+        ));
         $testHints = array_slice(TestSuiteHints::find($subject, $domains, $target), 0, 4);
 
         $lines = [];
@@ -323,6 +355,9 @@ final class TaskGuide extends ReadOnlyTool
             // corrects is a citation and the citation is written while the
             // block is being read.
             $lines[] = sprintf(self::HINTS_SOURCE, self::HINTS_PER_GROUP);
+            if ($omitted !== []) {
+                $lines[] = sprintf(self::HINTS_OMITTED, implode(', ', array_column($omitted, 'id')));
+            }
             $lines[] = '';
             // One block per group, and the heading only where there is more
             // than one: the caller named two repositories, and which half of
@@ -534,6 +569,7 @@ final class TaskGuide extends ReadOnlyTool
                 'condition' => (string) $intent['condition'],
             ], $intents),
             'hints' => MatchedHints::records($hints['matchedHints']),
+            'omittedHints' => $omitted,
             'rules' => Prose::records($rules),
             'checks' => $checks,
             'conditionalChecks' => $conditionalChecks,

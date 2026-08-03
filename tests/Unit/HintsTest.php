@@ -2413,6 +2413,38 @@ final class HintsTest extends TestCase
         self::assertStringContainsString('FullyScanned', $checklist);
     }
 
+    /**
+     * R-GUI-008. The session that reported this had every fact it needed and
+     * still read a report about f:image as an API question — is the value
+     * passed of the type the argument accepts — where the product asks what the
+     * editor and the visitor get once the image is replaced
+     * (`feedback/2026-08-02-145043`).
+     */
+    #[Test]
+    public function everyBriefOpensOnThePremiseADefectIsJudgedBy(): void
+    {
+        foreach ([
+            [
+                'task' => 'Fix f:image failing on a src that carries a cache busting query string',
+                'area' => 'typo3/sysext/fluid',
+                'changeType' => 'bugfix',
+            ],
+            // Outside the core as well: an editor and a visitor are the same
+            // two people there, and the premise names no core-only artifact
+            // that the filtering would take out with the changelog.
+            [
+                'task' => 'Add a testimonials content element',
+                'area' => 'packages/my_sitepackage/Classes/Controller/TestimonialController.php',
+                'changeType' => 'feature',
+            ],
+        ] as $call) {
+            $brief = Registry::call('typo3_task_guide', $call);
+
+            self::assertSame(TaskGuide::PRODUCT_PREMISE, $brief->data['checklist'][0], $call['task']);
+            self::assertStringContainsString(TaskGuide::PRODUCT_PREMISE, $brief->text, $call['task']);
+        }
+    }
+
     #[Test]
     public function upgradingAnInstallationIsAnsweredAsAnOrderOfOperations(): void
     {

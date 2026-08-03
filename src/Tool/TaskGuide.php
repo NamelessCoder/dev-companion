@@ -24,6 +24,12 @@ use Typo3CmsMcp\Result\VersionScope;
  */
 final class TaskGuide extends ReadOnlyTool
 {
+    /** The premise every checklist below is composed under, stated once (R-GUI-008). */
+    public const PRODUCT_PREMISE = 'Content changes, so what is delivered has to be the version that is '
+        . 'current after the change — that is what the editor and the visitor are owed. A defect is judged by '
+        . 'that outcome: the old version still being served is the defect, and the error it eventually throws '
+        . 'is the symptom.';
+
     /** @var array<string, array<int, string>> */
     private const CHANGE_TYPE_CHECKLIST = [
         'bugfix' => [
@@ -344,6 +350,11 @@ final class TaskGuide extends ReadOnlyTool
         }
 
         $checklist = [
+            // First, because it decides which facts matter: everything below it
+            // is about the code, and a session that never asks what the change
+            // does to the editor and the visitor reads a report as an API
+            // question and answers the wrong one (R-GUI-008).
+            self::PRODUCT_PREMISE,
             $outsideCore
                 ? 'Confirm the target branch and the issue context of this repository.'
                 : 'Confirm the target TYPO3 core branch and issue context.',

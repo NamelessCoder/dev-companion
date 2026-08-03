@@ -139,3 +139,47 @@ their ends: both establish the change and run the checks through the same three
 tools, the review stops before anything is written, and the creation half is
 mostly what happens after the code is right. That is the boundary this entry
 assumed and it holds.
+
+## Since then
+
+The review order above was read off `feedback/2026-08-01-115716`, and one of the
+four links it names does not hold. Re-run on 2026-08-03 through
+`bin/typo3-cms-mcp` from `/home/benji/projects/typo3-cms`, the checkout it was
+written in: `typo3_changelog_lookup` reaches `13.0/Breaking-101955` from
+`image generation` and from `removed public methods`, which are the words the
+entry is titled in, and from nothing the diff carries. `GifBuilder` reaches four
+entries and not that one, `getTemporaryImageWithText` reaches none, and the
+session's own query `GifBuilder placeholder preview thumbnail` at version 15
+reaches none — the answer now names the version filter as what emptied it.
+
+The session says so itself. `feedback/2026-08-01-115112`, filed four seconds
+earlier by the same model in the same directory, reports that it found
+`Breaking-101955` by grepping `Documentation/Changelog` because the lookup could
+not reach it. So the strength credits a tool for the finding its sibling records
+as that tool's miss, which is the third corpus in which the credit is misplaced
+and the second time on this server's own matcher
+([`D-FBK-018`](../feedback/fbk-018-a-strength-is-evidence-about-a-boundary-not-about-a-decision.md)).
+
+That changes the order's first step rather than the decision above it. A
+reviewer holds what the diff removes — a class and a method name — and that is
+the one thing the matcher does not carry
+([`D-ANS-030`](../answers/ans-030-the-changelog-matcher-runs-over-the-title-it-prints.md),
+whose own example is this method). Until the two cards serving `115112` land,
+the review order reaches a precedent by the entry's own subject words or from
+the checkout's `Documentation/Changelog`, and it says which. An order that opens
+with a step that misses in the case the review needed it would ship that miss
+into somebody else's project.
+
+The other three links reproduce. `typo3_script_lookup` on functional tests
+returns the `runTests.sh` section with `CI=true` and the `--` passthrough;
+`typo3_test_run_guide` with the patch's four changed paths and
+`targetVersion: 15` narrows to the php domain and carries
+`checkExtensionScannerRst` with the sentence that names a removal as what it is
+for; `typo3_commit_message_guide` returns the patch's message corrected and
+warns that the 68-character summary is over 52, which `2026-08-01-115115`
+reports as well. One credit there is looser than the answer: the narrowing is to
+a domain and returns 13 suites, and the four the report calls "the exact
+`runTests.sh` suites" are the ones the session picked out of them.
+
+The feedback stays open behind the card this entry left for the review cluster,
+which nothing had written until now.

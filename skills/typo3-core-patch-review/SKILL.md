@@ -99,6 +99,15 @@ Ask the owner of each obligation rather than recalling it:
   definition. Where the subject words miss as well, the precedent is still there
   and the checkout is what holds it — `Documentation/Changelog`, which this
   server does not read and you do. Say which of the two answered.
+- **Sweep the checkout for the call sites before proposing an alternative.** A
+  recommendation to a core reviewer needs precedent rather than taste, and
+  whether an idiom is established in the core is precedent this server does not
+  hold. The base's step after the lookups starts at the class that implements a
+  behaviour; this question has none, and PHP source as code is outside what this
+  server reads. The checkout answers it, and the answer is the call sites at
+  their paths and lines. Say how many there are — one is a coincidence and a
+  spread across system extensions is a convention. A review that proposes an
+  alternative and names none has argued from taste.
 
 Every finding names the changed path it is about. A statement about the
 subsystem that does not tie to a line in this diff belongs in the issue, not in

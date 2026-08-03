@@ -552,6 +552,56 @@ final class SkillTest extends TestCase
     }
 
     #[Test]
+    public function anIdiomPrecedentIsSweptFromTheCheckoutRatherThanLookedUp(): void
+    {
+        // `feedback/2026-08-03-144457` reviewed a core commit and settled three
+        // questions by grep. Two of them name a class, which the base's step
+        // after the lookups reaches; "is this idiom established in core" reaches
+        // nothing, because it is a sweep for call sites with no class to start
+        // at — and a reviewer asks it of every alternative it proposes, which is
+        // the count that feedback carries. The boundary was already written, in
+        // `knowledge/server-scope.json`, where `typo3_server_scope` alone
+        // returns it and no review order calls it (`D-SKL-004`).
+        //
+        // Read in `.checkouts/main` on 2026-08-03 rather than recalled: the lazy
+        // autowire attribute stands at `core/Classes/Site/Set/SetRegistry.php:43`,
+        // `form/Classes/EventListener/DataStructureIdentifierListener.php:68` and
+        // `form/Classes/Domain/Configuration/PersistenceConfigurationService.php:41`,
+        // while `knowledge/hints/di.json` carries the plain attribute and
+        // nothing about the lazy form. So no lookup here answered it and the
+        // checkout did.
+        $skill = (string) preg_replace('/\s+/', ' ', (string) file_get_contents(
+            Paths::root() . '/skills/typo3-core-patch-review/SKILL.md',
+        ));
+
+        // An act with an object, because the same position has already cost a
+        // rule that was present and read past (`D-SKL-009`).
+        self::assertStringContainsString(
+            '**Sweep the checkout for the call sites before proposing an alternative.**',
+            $skill,
+        );
+        // The bar that makes it a step of the review rather than a nicety.
+        self::assertStringContainsString('needs precedent rather than taste', $skill);
+        // Why the base's own step does not reach it, said where a reviewer who
+        // has just read the base would otherwise apply it anyway.
+        self::assertStringContainsString(
+            'starts at the class that implements a behaviour; this question has none',
+            $skill,
+        );
+        self::assertStringContainsString('PHP source as code is outside what this server reads', $skill);
+        // What the answer is, so that "I checked" is not the report.
+        self::assertStringContainsString('the call sites at their paths and lines', $skill);
+        self::assertStringContainsString(
+            'one is a coincidence and a spread across system extensions is a convention',
+            $skill,
+        );
+        // And the identifier stays out: the attribute this was measured on is a
+        // core fact, and a published skill is what no release of this server
+        // corrects.
+        self::assertStringNotContainsString('Autowire', $skill);
+    }
+
+    #[Test]
     public function obligationsThatShareADocumentAreOneRuleQuery(): void
     {
         // The skill told a reviewer to ask per obligation because "a query that

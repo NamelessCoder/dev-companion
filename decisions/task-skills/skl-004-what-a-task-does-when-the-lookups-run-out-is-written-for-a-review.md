@@ -190,3 +190,47 @@ The dependency-injection slice of that session is not this card's.
 that would have answered the second question is missing — that is 1a, and it is
 reported by the sibling `feedback/2026-08-03-144410`, which is in hand on its
 own branch.
+
+## Since then
+
+The second question got its placement on 2026-08-03, and it is the review skill
+rather than the base. What decides between the two is who asks: a reviewer asks
+whether an idiom is established of every alternative it proposes, and a session
+that is building something asks how the core wires a subsystem — which is
+`typo3_hint_lookup` at step 4 and has a home already. The bar is the reviewer's
+too, because a recommendation to a core reviewer needs precedent rather than
+taste, and nothing a construction task produces is held to that. So the sentence
+is a bullet in `skills/typo3-core-patch-review/SKILL.md` beside the
+changelog-precedent step whose wording it shares, and `skills/base.md` does not
+grow — which is what
+[`D-SKL-001`](skl-001-the-order-a-task-starts-in-is-one-file.md) watches, and
+its arithmetic stays at 1452 words.
+
+The bullet says what the base's own step cannot reach and why: that step starts
+at the class implementing a behaviour, and this question has no class to start
+at. It carries no core identifier, because the attribute it was measured on is
+the fact no release of this server corrects.
+
+Both halves were read rather than recalled. In `.checkouts/main` on 2026-08-03
+the lazy autowire attribute stands at `core/Classes/Site/Set/SetRegistry.php:43`,
+`form/Classes/EventListener/DataStructureIdentifierListener.php:68` and
+`form/Classes/Domain/Configuration/PersistenceConfigurationService.php:41`, five
+occurrences across the three, while `knowledge/hints/di.json` carries the plain
+attribute alone. So the checkout answered and no lookup here did, which is the
+sentence the feedback asked for rather than the tool it offered second — and
+that tool is declined in
+[`D-ANS-003`](../answers/ans-003-retrieval-stays-lexical-and-runtime-inspection-stays-narrow.md),
+whose reading ends by handing this sentence here.
+
+The feedback's own remaining doubt is settled with it. It asks whether
+`typo3_documentation_lookup` would in fact have answered its first question, and
+run through `bin/typo3-cms-mcp` on 2026-08-03 it does not: at `14.3` the queries
+*backend entry point URL path* and *backend routing request context* return the
+routing pages of TYPO3 Explained, and none of them states the backend entry
+path, which sits in `backend/Classes/Routing/UriBuilder.php:199`. That is this
+boundary from the other side rather than a second gap, so the feedback is
+archived rather than trimmed. The same two queries at `main` answer
+`version-not-covered` with the reason *TYPO3 main is outside the covered
+versions: 12.4, 13.4, 14.3, main*, which names `main` on both sides of itself.
+That is a defect in the miss and it belongs to nobody's entry yet; it is
+recorded here because this run is where it was seen.

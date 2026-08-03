@@ -1,7 +1,7 @@
 # Build the installation answers from a fixture
 
 **Serves:** documentation/clients/tools/
-**Priority:** normal
+**Priority:** high
 
 Nine tools declare `answeredBy`, and their pages can only be written on a
 machine that has a booted TYPO3: `typo3_label_lookup`,

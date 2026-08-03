@@ -83,6 +83,17 @@ Ask the owner of each obligation rather than recalling it:
   change is the strongest argument a review can make, and it is also the one
   that settles disagreement without an appeal to taste.
 
+  **Ask it in the words the entry is titled in, not in the identifier the diff
+  removes.** What the enumeration above leaves you holding is a class and a
+  method name, while a removal is titled after what was removed *about* — the
+  subsystem, the kind of API — and carries the identifiers in a list inside the
+  file. So a query naming one of them and coming back empty has established
+  nothing, and neither has one narrowed to the branch this patch targets: a
+  precedent is filed under the version it landed in, which is an earlier one by
+  definition. Where the subject words miss as well, the precedent is still
+  there and the checkout is what holds it — `Documentation/Changelog`, which
+  this server does not read and you do. Say which of the two answered.
+
 Every finding names the changed path it is about. A statement about the
 subsystem that does not tie to a line in this diff belongs in the issue, not in
 a review of a patch.

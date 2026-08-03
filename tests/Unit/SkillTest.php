@@ -411,6 +411,45 @@ final class SkillTest extends TestCase
     }
 
     #[Test]
+    public function aPrecedentIsAskedForInTheWordsAnEntryIsTitledIn(): void
+    {
+        // `feedback/2026-08-01-115716` credits `typo3_changelog_lookup` with the
+        // decisive finding of that review, and `feedback/2026-08-01-115112`,
+        // filed four seconds earlier by the same session, reports that the same
+        // lookup could not reach it and that grepping `Documentation/Changelog`
+        // did. Re-run from that checkout on 2026-08-03: `getTemporaryImageWithText`
+        // reaches nothing, the session's own `GifBuilder placeholder preview
+        // thumbnail` at version 15 reaches nothing, and `image generation`
+        // reaches `13.0 Breaking-101955` alone, in one call — the matcher runs
+        // over the file name, and the removed method is in a list inside the
+        // file (`D-ANS-030`). So the step this order opens on is the one the
+        // feedback got wrong, and an order that opens with a miss in the case
+        // the review needed it would ship that miss into somebody's project.
+        $skill = (string) preg_replace('/\s+/', ' ', (string) file_get_contents(
+            Paths::root() . '/skills/typo3-core-patch-review/SKILL.md',
+        ));
+
+        self::assertStringContainsString(
+            '**Ask it in the words the entry is titled in, not in the identifier the diff removes.**',
+            $skill,
+        );
+        // Why the identifier is what the reviewer is holding, and where it
+        // actually sits in the entry.
+        self::assertStringContainsString('carries the identifiers in a list inside the file', $skill);
+        // The empty answer is the trap: it reads as "no precedent exists" from
+        // both the identifier and the version filter, and it is neither.
+        self::assertStringContainsString('coming back empty has established nothing', $skill);
+        self::assertStringContainsString(
+            'a precedent is filed under the version it landed in',
+            $skill,
+        );
+        // And the source that answered when the lookup did not, which the server
+        // cannot reach itself.
+        self::assertStringContainsString('`Documentation/Changelog`, which this server does not read', $skill);
+        self::assertStringContainsString('Say which of the two answered', $skill);
+    }
+
+    #[Test]
     public function aReviewReadsTheReviewThePatchIsAlreadyIn(): void
     {
         // Both tools existed and no skill routed to either. The third recorded

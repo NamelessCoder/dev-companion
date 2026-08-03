@@ -1,7 +1,7 @@
 ---
 id: R-DOC-003
 status: held
-restsOn: [D-ANS-026, D-ANS-032]
+restsOn: [D-ANS-026, D-ANS-032, D-ANS-036]
 ---
 
 # R-DOC-003 — A ViewHelper question is answered from the manual that documents ViewHelpers
@@ -20,19 +20,19 @@ what has to hold is that its pages are in the index, that they are there under
 its own base, and that a URL handed back from it is one the same call takes
 back.
 
-What this does not promise is where in the answer that page comes. A name too
-short to be searched for is no longer the obstacle — `TermSearch::terms()`
-admits a two-letter word, so `f:if` reaches `Global/If.html` — and neither is
-the ranking constant: `D-ANS-032` weighs a title by its length and the page is
-fourth of the ten rather than eighth. What is left is what neither reaches.
-Three of those ten are titled `if` — the two TypoScript function pages and this
-one — and a fourth is `security.ifAuthenticated`, which is three words and so
-undiluted as well. All four score the same, no field weight separates them
-because all four matched in the title, and the order among them is the order the
-index was built in. What does separate them is the book, which the query names
-by its `f:` prefix and nothing in `Documentation` reads. `f:or` and `f:then` do
+What this does not promise is where in the answer that page comes. Three steps
+took it from eighth of the ten pages carrying `if` to second. A name too short
+to be searched for was the first — `TermSearch::terms()` admits a two-letter
+word, so `f:if` reaches `Global/If.html` at all — and the ranking constant the
+second, `D-ANS-032` weighing a title by its length. The third is the book, which
+the query names by its `f:` prefix and `Documentation` now reads (`D-ANS-036`):
+the two TypoScript pages titled `if` are not candidates for a query written in
+Fluid tags. What is left is the tie inside the book. `security.ifAuthenticated`
+is three words and so undiluted as well, it scores what the one-word title
+scores, no field weight separates them because both matched in the title, and
+the order among them is the order the index was built in. `f:or` and `f:then` do
 not get that far: `or` and `then` are stopwords, so those queries have no term
-left at all. Both carry a todo of their own.
+left at all. That carries a todo of its own.
 
 ## From
 
@@ -44,4 +44,5 @@ with Developing a custom ViewHelper and the Translate ViewHelper.
 ## Held by
 
 - `DocumentationTest::aViewHelperQuestionReachesTheManualPublishedOutsideTheCoreCollection`
+- `DocumentationTest::aQueryWrittenInFluidTagsIsAnsweredFromTheFluidBook`
 - `DocumentationTest::aPageOfThatManualIsReadBackAtItsOwnBase`

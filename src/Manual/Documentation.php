@@ -6,6 +6,7 @@ namespace Typo3CmsMcp\Manual;
 
 use Typo3CmsMcp\Http\Fetch;
 use Typo3CmsMcp\Search\TermSearch;
+use Typo3CmsMcp\Search\Text;
 
 /**
  * Searches and reads the official, versioned TYPO3 manuals.
@@ -109,7 +110,7 @@ final class Documentation
     {
         $queries = array_values(array_filter(array_map(trim(...), $queries), static fn(string $query): bool => $query !== ''));
         $pages = [];
-        $reachable = 0;
+        $indexed = [];
 
         foreach (self::DOCUMENTS as $document => $manual) {
             $base = self::base($document, $targetVersion);
@@ -117,7 +118,7 @@ final class Documentation
             if ($html === null) {
                 continue;
             }
-            ++$reachable;
+            $indexed[$document] = true;
 
             foreach ($this->links($html, $base) as $link) {
                 $pages[$document . '|' . $link['url']] = [
@@ -136,7 +137,7 @@ final class Documentation
             }
         }
 
-        if ($reachable === 0) {
+        if ($indexed === []) {
             return $this->answer('search', 'unavailable', $queries, $targetVersion, [], [
                 'cause' => 'source-not-answering',
                 'reason' => 'The versioned TYPO3 documentation indexes could not be reached.',
@@ -148,10 +149,14 @@ final class Documentation
         // are carry it.
         $searchable = array_column($pages, 'searchable');
         foreach ($queries as $query) {
+            $book = self::book($query, $indexed);
             $weights = TermSearch::weights(TermSearch::terms(self::split($query)), $searchable);
             $scores = [];
             $matched = [];
             foreach ($pages as $key => $page) {
+                if ($book !== null && $page['document'] !== $book) {
+                    continue;
+                }
                 [$scores[$key], , $matched[$key]] = TermSearch::score(
                     $page['searchable'],
                     $weights,
@@ -322,6 +327,30 @@ final class Documentation
             && !str_starts_with($href, '_')
             && !str_starts_with($href, 'https://')
             && str_ends_with(explode('#', $href, 2)[0], '.html');
+    }
+
+    /**
+     * The one manual a query names by the namespace prefix it is written in.
+     *
+     * `f:` is the Fluid namespace prefix, which a session reporting what a
+     * template did writes instead of the word Fluid — a domain keyword for the
+     * hints since `D-KNW-024` and read by nothing here. It selects the book
+     * rather than weighing it, and `D-ANS-036` is what measured the difference:
+     * naming the book as a query word lifts every page whose title carries
+     * "Fluid" by the title weight and the book's own pages by the smaller
+     * manual one.
+     *
+     * Only a book that answered, so a root that is down leaves the query the
+     * whole index rather than no candidates at all.
+     *
+     * @param array<string, true> $indexed
+     */
+    private static function book(string $query, array $indexed): ?string
+    {
+        // Anchored at a word boundary, so `conf:` and `if:` are not the prefix.
+        $book = Text::containsWord($query, 'f:') ? 'typo3/view-helper-reference' : null;
+
+        return $book !== null && isset($indexed[$book]) ? $book : null;
     }
 
     /**

@@ -1,46 +1,47 @@
-# A query written in Fluid tags does not reach the Fluid book by name
+# `f:or` and `f:then` have no term left to search for
 
 **Serves:** feedback/2026-08-01-003000-underlying-failure-was-a-systemic-lack-of-fluid.md, R-DOC-003
 **Priority:** normal
 **Branch:** todo/a-query-word-under-three-characters-reaches-nothing
 **Claimed:** 2026-08-03
+**Waiting on:** is a word that is a stopword everywhere else worth admitting for
+    the one query that names the book titling a page after it? The per-corpus
+    admitted list this todo proposed is measured below and is not what the
+    evidence points at; what it points at instead is a `TermSearch::terms()`
+    that takes the words one query admits, which is a parameter on the tokenizer
+    all three corpora call. Putting this back in the queue unbuilt is one of the
+    answers, and so is deciding that two queries do not buy the concept.
 
-The last of *a query word under three characters reaches nothing*, which was
-three steps rather than two. The tokenizer was the first
-([`D-ANS-028`](../../decisions/answers/ans-028-a-two-letter-query-word-is-searched-for-and-the-stopword-list-is-what-keeps-the-others-out.md)):
-`TermSearch::terms()` admits a two-letter word, so `f:if` reaches
-`Global/If.html` at all. The ranking constant was the second
-([`D-ANS-032`](../../decisions/answers/ans-032-the-dilution-reference-of-the-manual-ranking-is-the-length-of-an-ordinary-title.md)):
-`Documentation::UNDILUTED_WORDS` is 3 rather than 12, so a title is weighed by
-its length and the page is fourth of ten rather than eighth.
+The book half is done and is
+[`D-ANS-036`](../../decisions/answers/ans-036-a-query-written-in-fluid-tags-is-searched-in-the-book-that-documents-them.md):
+`f:` selects the Fluid ViewHelper Reference as the manual a query is searched
+in, so `Global/If.html` is second of the ten pages carrying `if` rather than
+fourth and the two TypoScript pages titled `if` are no longer candidates for a
+query written in Fluid tags. What is left is the two queries that never reach
+the scoring at all: `or` and `then` are in `TermSearch::STOPWORDS`, so `f:or`
+and `f:then` have no term and come back empty.
 
-Fourth is where those two stop, and the measurement says so rather than guesses
-it. Three of the ten pages carrying `if` are titled `if` — the two TypoScript
-function pages and this one — and `security.ifAuthenticated` is three words, so
-all four are undiluted and score 198, and the order among them is the order the
-index was built in. No dilution reference separates identical titles, and the
-field weights cannot either: all four matched in `title`, so any title weight
-scales all four alike — measured at `title` 4, 6 and 8, `path` 1, `manual` 4,
-and the rank does not move. `f:or` and `f:then` do not get that far. Both words
-are stopwords, so those queries have no term left at all.
+What the measurement showed, so nobody runs it again. Both words taken out of
+the shared list, read over the 41 scenario prompts of `Scenarios::load()` and
+`::contracts()`, the 121 hint titles, and the four manual roots at 14.3 fetched
+once on 2026-08-03:
 
-What separates the three pages titled `if` is the book, and the query says which
-book: `f:` is the Fluid namespace prefix, which
-[`D-KNW-024`](../../decisions/knowledge/knw-024-the-fluid-namespace-prefix-is-what-a-template-question-is-written-in.md)
-made a domain keyword for the hints and nothing reads for the manuals. So the
-step is to give `Documentation` that route — the `manual` field of the Fluid
-ViewHelper Reference is what the prefix should reach, the way
-`Domains::detect()` routes a hint — and to measure it the same way: the 41
-prompts of `Scenarios::load()` and `::contracts()` through
-`Documentation::lookup()` at 14.3 with the manual roots fetched once, plus the
-seven queries this repository already asserts an answer for, whose ranks
-`D-ANS-032` records to compare against.
+- The hint corpus does not move. All 162 texts reach the same domains and the
+  same first three hints through `Hints::find()` before and after, because
+  neither word is in an `appliesTo` pattern or a hint title.
+- The manual corpus does, both ways. `f:or` reaches `Global/Or.html` and
+  `f:then` reaches `Global/Then.html`, each first and each from nothing — and
+  **seven of the 41 prompts lose a page of their six** to one of those two, on
+  the English conjunction: *anything an editor or a visitor could reach*, *fix
+  that, then take me through pushing it for review*.
+- So the corpus is not what decides, which is what the proposed shape assumed.
+  The corpus that goes wrong is the one being admitted for, and the hints — the
+  corpus the shared list was feared for — are the ones nothing happens to.
 
-`f:or` and `f:then` need one thing more, and it is the open question: whether a
-stopword can be admitted for one corpus and not another. `STOPWORDS` is shared,
-so taking `or` and `then` out of it makes `Global/Or.html` a candidate for every
-English "or" in the hints and the prose too. What would settle it is measuring
-both — a per-corpus admitted list against the shared one — over
-`bin/cli hints:probe`, `bin/cli hints:coverage` and the same 41 prompts. Nothing
-here has needed a per-corpus stopword yet, so whether it is worth the concept is
-the part to say out loud rather than assume.
+What separates those seven prompts from `f:or` is that one query names the book
+and the other says "or" in a sentence, and `Documentation::book()` now reads
+exactly that signal. Every query that moved above carries `f:` or is one of the
+seven, and no scenario prompt carries `f:`, so admitting a word only for a query
+that is routed to the book costs the seven nothing. That is the shape to build
+if the concept is wanted, and the concept is a parameter on the one tokenizer
+the prose, hint and manual corpora share.

@@ -170,6 +170,45 @@ final class DocumentationTest extends TestCase
         );
     }
 
+    /**
+     * And the book it belongs to, which is what neither the tokenizer nor the
+     * dilution reference reaches. Three pages of the corpus are titled `if`, so
+     * all three are undiluted, all three matched the title, and no field weight
+     * separates identical titles (`D-ANS-032`). The query says which book in
+     * the `f:` it is written in (`D-ANS-036`).
+     */
+    #[Test]
+    public function aQueryWrittenInFluidTagsIsAnsweredFromTheFluidBook(): void
+    {
+        $answer = (new Documentation($this->manuals()))->lookup(['f:if'], '14.3', 3);
+
+        self::assertSame(
+            'https://docs.typo3.org/other/typo3/view-helper-reference/14.3/en-us/Global/If.html',
+            $answer['results'][0]['url'],
+        );
+        self::assertSame([], array_filter(
+            $answer['results'],
+            static fn(array $result): bool => $result['document'] !== 'typo3/view-helper-reference',
+        ));
+    }
+
+    /**
+     * A book that did not answer routes nothing. The route is in front of the
+     * scoring, so a root that is down would otherwise leave such a query with
+     * no candidates and report "no match" for a reason the caller cannot see.
+     */
+    #[Test]
+    public function aQueryIsRoutedToABookOnlyWhileThatBookAnswers(): void
+    {
+        $manuals = $this->manuals();
+        $answer = (new Documentation(static fn(string $url): ?string => str_contains($url, 'view-helper-reference')
+            ? null
+            : $manuals($url)))->lookup(['f:if'], '14.3', 3);
+
+        self::assertSame('answered', $answer['status']);
+        self::assertSame('typo3/reference-typoscript', $answer['results'][0]['document']);
+    }
+
     /** And the URL it hands back is one it takes back, on the same version. */
     #[Test]
     public function aPageOfThatManualIsReadBackAtItsOwnBase(): void
@@ -283,6 +322,12 @@ final class DocumentationTest extends TestCase
             ],
             'typo3/reference-typoscript' => [
                 'ContentObjects/Case/Index.html' => 'CASE',
+                // The two pages `f:if` used to be answered with. That book
+                // titles a function page after the function, so the corpus
+                // holds three pages titled `if` and only the book tells them
+                // apart.
+                'Functions/If.html' => 'if',
+                'Guide/TypoScriptFunctions/If/Index.html' => 'if',
             ],
             'typo3/reference-tca' => [
                 'ColumnsConfig/Type/Inline/Index.html' => 'IRRE / inline',

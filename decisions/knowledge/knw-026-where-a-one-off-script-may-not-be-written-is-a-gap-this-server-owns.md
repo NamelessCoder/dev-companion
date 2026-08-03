@@ -100,3 +100,22 @@ place it does not name, and any way of reaching it from the moment it is needed.
 - The next report of this comes from a session that never asked where a file
   goes. The rule would then have to arrive from the introspection question,
   which is `003933`'s route rather than this one's.
+
+## Since then
+
+The lookup this entry queued was done on 2026-08-03 and the first **Wrong if**
+is what it found. DDEV mounts the project directory at `/var/www/html` and
+serves the docroot below it, which its TYPO3 project type sets to `public`, so
+`/var/www/html/check_record.php` was at the project root and was never served.
+The clause therefore rests on both reasons rather than on the served one alone,
+and
+[`D-KNW-045`](knw-045-the-document-root-is-named-by-what-configures-it-and-by-what-serves-it.md)
+carries the readings and the sentence that landed.
+
+Two of the three measurements above had also gone stale. The clause moved to
+`project-build-and-scripts` in `knowledge/hints/project.json` with the refiling
+in
+[`D-KNW-032`](knw-032-the-corpus-is-filed-by-question-and-two-splits-were-taken-back.md),
+and by 2026-08-03 both "where do I put a one-off script" and "one-off debug
+script placement in a TYPO3 project" reached it. What still reached nothing was
+the feedback's own query, which is the one this entry was written about.

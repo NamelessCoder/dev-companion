@@ -1033,6 +1033,38 @@ final class HintsTest extends TestCase
     }
 
     #[Test]
+    public function whereAOneOffScriptMayNotGoNamesTheDocumentRootAsWellAsVar(): void
+    {
+        // The corpus placed such a script — Build/, and not var/ because var/
+        // is ignored — and named no place that is served. A session debugging
+        // the Record class wrote check_record.php into the root of a DDEV
+        // project and ran it there, and this query reached nothing at all.
+        $result = Hints::find(
+            [],
+            'writing and executing a PHP script in the live webroot to introspect core classes',
+            6,
+        );
+        self::assertSame('project-build-and-scripts', $result['matchedHints'][0]['id']);
+
+        $placement = Hints::find([], 'where do I put a one-off script', 6);
+        self::assertContains('project-build-and-scripts', array_column($placement['matchedHints'], 'id'));
+
+        // Named by what configures it rather than by a path, because the path
+        // is a setting: typo3/cms-composer-installers defaults web-dir to
+        // public and the root composer.json is what moves it.
+        $text = self::statementsOf('project-build-and-scripts');
+        self::assertStringContainsString('extra.typo3/cms.web-dir', $text);
+        self::assertStringContainsString('public/ where that key is absent', $text);
+        self::assertStringContainsString('/var/www/html', $text);
+        // Both reasons: the served one is what only the document root has, and
+        // the outliving one is what also covers the project root above it,
+        // which is where the reported file actually went.
+        self::assertStringContainsString('reachable over HTTP', $text);
+        self::assertStringContainsString('after the run that wrote it ends', $text);
+        self::assertStringContainsString('it goes into Build/, or it is not written at all', $text);
+    }
+
+    #[Test]
     public function whichEnvironmentVariablesTheCoreReadsItselfIsAnswered(): void
     {
         // The other half of the sentence above. "Read deployment values and

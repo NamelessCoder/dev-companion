@@ -155,6 +155,33 @@ final class KnowledgeTest extends TestCase
     }
 
     #[Test]
+    public function aChangelogQuestionIsToldWhichTypeTheChangeOwes(): void
+    {
+        // R-KNW-051. The list of four says nothing about which one is being
+        // written, and the type is the one part checkRst does not report: a
+        // session that guessed it passes every suite. The corpus answered with
+        // five bullets that named a Task- prefix no branch's validator accepts,
+        // and the session behind feedback/2026-08-02-145315 picked the type by
+        // reading neighbouring entries.
+        $bodies = implode("\n", array_column(Documents::search('changelog file'), 'body'));
+
+        foreach (['Breaking', 'Deprecation', 'Feature', 'Important'] as $type) {
+            self::assertStringContainsString($type, $bodies, 'no changelog type ' . $type);
+        }
+        self::assertStringContainsString('last resort', $bodies, 'nothing separates Important from the other three');
+
+        $intent = array_values(array_filter(
+            TaskIntents::load(),
+            static fn(array $entry): bool => $entry['id'] === 'changelog',
+        ))[0] ?? [];
+        self::assertStringNotContainsString(
+            'Task-',
+            implode("\n", $intent['checklist'] ?? []),
+            'the changelog intent hands over a prefix checkRst rejects',
+        );
+    }
+
+    #[Test]
     public function anUnrelatedQueryAnswersWithNothingRatherThanTheNearestProse(): void
     {
         self::assertSame([], Documents::search('quantum entanglement pineapple'));

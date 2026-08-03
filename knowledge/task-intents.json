@@ -63,13 +63,16 @@
     ],
     "rulesQuery": "changelog rst documentation",
     "checklist": [
-      "Changelog files live below typo3/sysext/core/Documentation/Changelog/<version>/ and use the Breaking-, Deprecation-, Feature-, Important- or Task- prefix with the Forge issue number.",
-      "Include the ..  include:: /Includes.rst.txt header and a reference label, as in the neighbouring files."
+      "Changelog files live below typo3/sysext/core/Documentation/Changelog/, in the directory of the minor version the change is released in; a backport goes into the <lts>.x directory of the oldest branch it reaches. The file is named <Type>-<forgeIssueNumber>-<UpperCamelCaseDescription>.rst.",
+      "The type is the first of four that describes the change: Breaking where it moves or removes core functionality third-party code may use, Deprecation where it marks core functionality for a planned removal, Feature where it adds functionality, Important for anything else that may require manual action and the only one an LTS release may carry. A casual bug fix owes no entry. There is no Task type; checkRst fails a title opening with anything else.",
+      "Fill in the skeleton the type owes rather than copying a neighbour: the include, the anchor, the fenced title, the See :issue: line, the sections that type carries, and the .. index:: tags the file ends on."
     ],
     "checks": [
       "CI=true ./Build/Scripts/runTests.sh -s checkRst"
     ],
-    "tools": []
+    "tools": [
+      "typo3_hint_lookup with id=documentation-changelog, for that skeleton and the tags the file ends on"
+    ]
   },
   {
     "id": "labels",

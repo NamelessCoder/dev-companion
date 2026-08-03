@@ -72,10 +72,26 @@ Guide.
 
 ## Changelog Files
 
-- Changelog entries live below `typo3/sysext/core/Documentation/Changelog/`.
-- Common filename prefixes include `Breaking-`, `Deprecation-`, `Feature-`,
-  `Important-`, and `Task-`.
-- Include the Forge issue number in changelog filenames when possible.
+- Changelog entries live below `typo3/sysext/core/Documentation/Changelog/`, in
+  the directory of the minor version the change is released in. A backport goes
+  into the `<lts>.x` directory of the oldest branch it reaches, in every branch
+  that carries it.
+- The file is named `<Type>-<forgeIssueNumber>-<UpperCamelCaseDescription>.rst`.
+- The type is the first of four that describes the change: `Breaking` where it
+  moves or removes core functionality third-party code may use, `Deprecation`
+  where it marks core functionality for a planned removal, `Feature` where it
+  adds functionality, and `Important` for anything else that may require manual
+  action. `Important` is the last resort, and the only one of the four an LTS
+  release may carry.
+- A casual bug fix owes no entry, because its commit message carries the
+  information.
+- `Task` is a commit message keyword and not a changelog type. Those four are
+  the whole list, and `checkRst` fails a title opening with anything else.
+- `Documentation/Changelog/Howto.rst` in the core checkout is the authority on
+  all of this, and `Build/Scripts/validateRstFiles.php` is what reports the
+  piece a file is missing.
+- The skeleton the file has to have, down to the tags it ends on, is
+  `typo3_hint_lookup` with the id `documentation-changelog`.
 - Run `./Build/Scripts/runTests.sh -s checkRst` for ReST changes.
 - These rules are for writing an entry. An installation reads them instead: the
   same files ship with the core package, and `typo3 upgrade:list` and

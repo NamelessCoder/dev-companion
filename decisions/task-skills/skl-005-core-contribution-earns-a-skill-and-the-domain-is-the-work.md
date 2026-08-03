@@ -202,3 +202,60 @@ more before the line was written.
 That closes the card this entry left for the review cluster, and
 `feedback/2026-08-01-115716` with it. Both skills are published; what is left of
 this entry is its **Wrong if**, and only a run reaches that.
+
+## Since then
+
+The delivery half was re-run on 2026-08-03 against the server as it stands, to
+judge `feedback/2026-08-02-144848`. Most of what that feedback reports has
+landed since it was written.
+
+`typo3_rule_lookup` on `gerrit push private change` returns six sections, from
+`typo3-gerrit-workflow` and `typo3-commit-messages`. They carry the push URL
+that points at review.typo3.org while the fetch stays on GitHub,
+`composer gerrit:setup` and the `commit-msg` hook, the `HEAD:refs/for/main`
+magic ref, `%wip`, and the one commit that is amended rather than appended to.
+They also carry the `Change-Id` that binds a new patch set to its review.
+`typo3_commit_message_guide` was given that patch's message with a `Change-Id`
+trailer and returned it verbatim. Its `message` argument now states in its own
+description that unknown trailers such as `Change-Id` are kept, so an amended
+patch set stays valid. That is the second half of the feedback's suggestion,
+answered where it asked for it.
+
+Four things are not here, and the word `private` in that query reaches none of
+them.
+
+- **The unlisted push.** `%private` occurs nowhere in `knowledge/` or `skills/`.
+  The skill that owns the step says it does: *"`typo3_rule_lookup` for the
+  Gerrit workflow has both forms."* It has one. The same skill makes the
+  question mandatory — *"Ask whether the change goes up visible to everyone or
+  unlisted, every time"* — and calls the push the step that is not reversible.
+  So the one obligation the skill will not let a session skip is routed to an
+  answer carrying only the variant that publishes.
+- **Where the push goes.** The corpus has `git remote set-url --push`, which is
+  what a human runs once per clone. It has no way to read what a checkout is
+  already configured to push to, and the skill says to establish that without
+  naming a key. `remote.origin.pushurl` and `.gitreview` are what answer it.
+  `.checkouts/main/.gitreview` carries `host`, `port`, `project` and
+  `defaultbranch=main`, exactly as the feedback reports.
+- **Whether the refspec holds from a git worktree.** The user asked outright.
+  Two sessions answer yes from practice, and nothing here answers at all.
+- **A Forge issue that is closed.** `knowledge/task-intents.json` routes a
+  session to read that an issue is closed. Nothing says a change may not hang
+  off one, or that reopening it comes before the push.
+
+The 72-character limit is answered, in `typo3-commit-messages.md`, but it is
+attributed to the message rules rather than to the hook.
+`.checkouts/main/Build/git-hooks/commit-msg` enforces it in `checkForLineLength`
+and rejects a missing `Resolves:` in `checkForResolves`. The corpus credits that
+hook with the second check only.
+
+**Judged 1a, and queued at `high`.** The knowledge is missing rather than
+mislaid: the tool exists, the document exists, and the fact is not in it. So
+neither placement nor wording would deliver it. The priority is not the `low` a
+card arrives at, for two reasons. `144848` and `145230` report the same four
+items from two task shapes. And the skill's promise makes the gap reachable at
+exactly the moment the irreversible step is taken.
+
+`feedback/2026-08-02-144848` is trimmed to those four and stays open behind the
+card. `145230` keeps its own card, because it carries the Gerrit read direction
+as well, which this judgement did not look at.

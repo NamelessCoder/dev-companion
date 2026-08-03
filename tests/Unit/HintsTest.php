@@ -856,6 +856,72 @@ final class HintsTest extends TestCase
         self::assertContains('frontend-page-rendering', array_column($result['matchedHints'], 'id'));
     }
 
+    /**
+     * `R-KNW-059`. The session this comes from ran `rm` on a cache directory
+     * after a template edit, which is the one cache in the list that was
+     * already correct: a compiled template is keyed on the file's modification
+     * time, so the edit rewrote it. What kept answering with the old page was
+     * the page cache, in another group and in the database.
+     */
+    #[Test]
+    public function aChangeIsToldWhichCacheGroupHoldsItsOldOutput(): void
+    {
+        // The feedback's own query, which reached nothing.
+        $result = Hints::find([], 'clearing the fluid_template (and code) caches after template changes', 6);
+        self::assertContains('page-cache-flushing', array_column($result['matchedHints'], 'id'));
+
+        // It arrives from three kinds of change, and they are three domains.
+        foreach ([
+            'which cache do I flush after a TypoScript change',
+            'clear the caches after a TCA change',
+            'my Fluid template change does not show on the page',
+        ] as $task) {
+            $ids = array_column(Hints::find([], $task, 6)['matchedHints'], 'id');
+            self::assertContains('page-cache-flushing', $ids, $task);
+        }
+
+        $text = self::statementsOf('page-cache-flushing');
+
+        // The half that says no command is owed, and the half that says which
+        // one is. Either alone leaves the caller where the feedback found them.
+        self::assertStringContainsString('modification time', $text);
+        self::assertStringContainsString('var/cache/code/fluid_template', $text);
+        self::assertStringContainsString('--group=pages', $text);
+        self::assertStringContainsString('--group=system', $text);
+        self::assertStringContainsString('Typo3DatabaseBackend', $text);
+
+        // `cache:flushtags` is the core's own command on 14 and on neither of
+        // the majors below it.
+        $on = static fn(int $major): string => implode(
+            "\n",
+            array_column((array) Hints::byId('page-cache-flushing', $major)['hints'], 'text'),
+        );
+        self::assertStringContainsString('cache:flushtags', $on(14));
+        self::assertStringNotContainsString('cache:flushtags', $on(13));
+        self::assertStringNotContainsString('cache:flushtags', $on(12));
+    }
+
+    /**
+     * The nearest thing the corpus had was `caching`, whose statements are
+     * about the `cacheConfigurations` entry and which frontend a payload wants.
+     * Clearing a cache and declaring one are asked in the same words and are
+     * not the same question (`D-KNW-027`).
+     */
+    #[Test]
+    public function clearingACacheAndDeclaringOneAreDifferentQuestions(): void
+    {
+        $clearing = array_column(Hints::find([], 'how do I clear the TYPO3 caches', 6)['matchedHints'], 'id');
+        self::assertSame('page-cache-flushing', $clearing[0]);
+
+        foreach ([
+            'declare a new cache for my extension',
+            'inject a cache into a service instead of asking CacheManager',
+        ] as $task) {
+            $ids = array_column(Hints::find([], $task, 6)['matchedHints'], 'id');
+            self::assertSame('caching', $ids[0], $task);
+        }
+    }
+
     #[Test]
     public function anExtbasePluginHasAHintOfItsOwn(): void
     {

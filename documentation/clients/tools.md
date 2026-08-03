@@ -218,9 +218,6 @@ names what you have to establish there yourself and routes to the lookups that
 fit the task. Work that reads as a project or third-party extension is answered
 with what transfers only — the core checks, checklist items and steps that name
 something only the core repository has are left out rather than handed over.
-Pass the paths where the work touches more than one place: each is placed on its
-own, so a core path and an extension path in one call are not answered with one
-verdict.
 
 `readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: false`
 
@@ -236,12 +233,10 @@ verdict.
   place: each is placed on its own, so a core path and an extension path in one
   call are not answered with one verdict. The area counts as one of them.
 - `targetVersion` *(string)* — The TYPO3 version this task is for, for example
-  "13.4" or "14". State one only to narrow to it: conventions that do not hold
-  there are then left out, including those the repository needs for another
-  major it declares. Left out, the answer holds for every major this repository
-  declares typo3/cms-core for, which is what one codebase serving two of them
-  needs; where there is no declaration to read, for the version of the
-  installation this server was started in.
+  "13.4" or "14". Conventions that do not hold there are left out, including
+  those the repository needs for another major it declares. Defaults to every
+  major this repository declares typo3/cms-core for, or to the installation this
+  server was started in where there is no declaration.
 - `changeType` *(string)* — One of `bugfix`, `feature`, `cleanup`, `test`,
   `documentation`, `unknown`.
 
@@ -447,14 +442,12 @@ the reason, where the task names the frontend.
   instead of matching. Every answer that returns no hint lists the ids there
   are, so a subject that exists can be requested by name rather than guessed at.
 - `targetVersion` *(string)* — The TYPO3 version the answer has to hold for, for
-  example "13.4" or "14". State one only to narrow to it: statements that do not
-  hold there are then left out, including those the repository needs for another
-  major it declares. Left out, the answer holds for every major this repository
-  declares typo3/cms-core for, which is what one codebase serving two of them
-  needs; where there is no declaration to read, for the version of the
-  installation this server was started in, and where there is no installation
-  either, nothing is filtered and every statement carries the versions it holds
-  for.
+  example "13.4" or "14". Statements that do not hold there are left out,
+  including those the repository needs for another major it declares. Defaults
+  to every major this repository declares typo3/cms-core for, or to the
+  installation this server was started in where there is no declaration; where
+  there is neither, nothing is filtered and every statement carries the versions
+  it holds for.
 - `limit` *(integer)* — Maximum number of hints.
 
 **Answers with**
@@ -915,16 +908,15 @@ installation that has it holds the same files below vendor/.
 
 Compute the translation domain an XLF file resolves to, from its path. The
 domain is the canonical way to reference a label (backend.alt_doc:key) in TCA,
-LanguageService::sL() and f:translate, and it is registered nowhere — it follows
-from the path by the rules the core itself applies, which live in
-TranslationDomainMapper on one branch and TranslationDomainResolver on the next.
-Because it is computed, it also answers for a file outside the core and for one
-a patch is about to add. Where the version it is composed for is older than
-translation domains, it answers with the full LLL:EXT: reference instead: the
-domain form renders nothing there and fails at runtime rather than at build
-time. That version is the one stated as targetVersion, and the installation this
-server was started in where none is — state it when the work is on a branch
-other than what is installed.
+LanguageService::sL() and f:translate, and it is registered nowhere: it follows
+from the path by the rules the core itself applies, in TranslationDomainMapper
+on one branch and TranslationDomainResolver on the next. Being computed, it also
+answers for a file outside the core and for one a patch is about to add. On a
+version older than translation domains it answers with the full LLL:EXT:
+reference instead, because the domain form renders nothing there and fails at
+runtime rather than at build time. That version is targetVersion, or the
+installation this server was started in where none is stated — state one when
+the work is on another branch than what is installed.
 
 `readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: false`
 
@@ -1290,13 +1282,13 @@ The answer carries exactly one of these sets of fields: `query`, `matchCount`,
 ## `typo3_icon_lookup`
 
 Validate or find an icon identifier in the TYPO3 backend icon registry of the
-installation you are working in. The registry is read from the running
-installation, so what a package registers in a loop or from ext_localconf.php is
-in the answer as well as what its Configuration/Icons.php declares; where the
-installation cannot be booted — no console, or a checkout with no configuration
-yet — the T3Icons set, the package registration files and the flag images are
-read instead, answeredBy says 'packages', and the answer states what that leaves
-out. Identifiers spell shapes rather than intents, so concept words are mapped:
+installation you are working in. It is read from the running installation, so
+what a package registers in a loop or from ext_localconf.php is in the answer as
+well as what its Configuration/Icons.php declares; where the installation cannot
+be booted — no console, or a checkout with no configuration yet — the T3Icons
+set, the package registration files and the flag images are read instead,
+answeredBy says 'packages', and the answer states what that leaves out.
+Identifiers spell shapes rather than intents, so concept words are mapped:
 "warning" finds actions-exclamation-triangle. Backend only: the identifiers are
 resolved by IconFactory and rendered by <core:icon>, and a frontend template can
 use neither.
@@ -1377,15 +1369,15 @@ The answer carries exactly one of these sets of fields: `query`, `matchCount`,
 
 Search the TYPO3 changelog of the installation you are working in: one entry per
 breaking change, deprecation, feature and important note, in the version it was
-released in. This is the first stop when building on a major you have not built
-on recently, not only a lookup after the fact — what separates a current answer
-from a two-major-old one is written down here and almost nowhere else. Answers
-"what did this version deprecate", "what changed about X", "which release
-introduced Y". A deprecation carries the version it stops working in where the
-entry states one, and the rule that answers the rest beside it. Read from the
-core package on disk, so it covers exactly the versions that installation ships
-and grows with a Composer update. Every word of the query has to be carried by
-an entry; narrow further with type and version.
+released in. Answers "what did this version deprecate", "what changed about X",
+"which release introduced Y". This is the first stop when building on a major
+you have not built on recently: what separates a current answer from a
+two-major-old one is written down here and almost nowhere else. A deprecation
+carries the version it stops working in where the entry states one, and the rule
+that answers the rest beside it. Read from the core package on disk, so it
+covers exactly the versions that installation ships and grows with a Composer
+update. Every word of the query has to be carried by an entry; narrow further
+with type and version.
 
 `readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: false`
 
@@ -1406,10 +1398,9 @@ an entry; narrow further with type and version.
   the system extension a change is in, "FullyScanned" or "NotScanned" for what
   the Extension Scanner has a matcher for, "PHP-API", "TCA", "Backend",
   "Frontend" for the surface. This is what a sweep is bounded by where words are
-  not: every entry of a version and type is read for its tags. The tags name the
-  system extension the change is in — the changelog says nothing about which
-  third-party extension a change affects, so an extension key of your own
-  matches none of them.
+  not: every entry of a version and type is read for its tags. The changelog
+  says nothing about which third-party extension a change affects, so an
+  extension key of your own matches no tag.
 - `limit` *(integer)* — Maximum number of entries.
 
 **Answers with**
@@ -1479,17 +1470,15 @@ The answer carries exactly one of these sets of fields: `query`, `matchCount`,
 Describe the project around the TYPO3 installation this server was started in:
 its TYPO3 and PHP constraints, the extensions that are its own rather than
 TYPO3's, the sites it configures with the site sets each depends on, and the
-commands it declares in composer.json and package.json, each with what running
-it does to the sources: a check that hands the code back as it was, a change
-that rewrites something, or unknown where the declared body does not say. Read
-from files only — no console, no database — so it answers on a fresh clone. It
-also says which environment the repository configures to run itself in — a DDEV
-project states the PHP its container runs — because that is a different
-interpreter from the caller's shell and the commands below are run in it. Call
-it before recommending or running a check: the commands listed here are the ones
-that exist in this repository, the ones marked check are the ones a task told
-not to change files can run, and where an environment is named they are run
-inside it rather than directly.
+commands it declares in composer.json and package.json — each marked a check
+that hands the code back as it was, a change that rewrites something, or unknown
+where the declared body does not say. Read from files only, no console and no
+database, so it answers on a fresh clone. It also names the environment the
+repository configures to run itself in: a DDEV project states the PHP its
+container runs, which is a different interpreter from the caller's shell and
+where the commands below are run. Call it before recommending or running a check
+— these are the commands that exist in this repository, and the ones marked
+check are what a task told not to change files may run.
 
 `readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: false`
 
@@ -1600,26 +1589,23 @@ The answer carries exactly one of these sets of fields: `root`, `environment`,
 Describe what one installed extension registers: the tables its TCA defines and
 the ones it extends, the content elements it adds to tt_content with the Fluid
 template each renders through and the FlexForm each binds, its backend modules
-and routes, its icons, its site sets and the files each set carries, the form
-configurations it registers and the form definitions they store, the service
-tags it hangs into the container, its middlewares, its Fluid roots and
-namespaces, and the shape of its Classes/ directory — and what it ships beside
-all of that: its manual, its README, the test layers it has, and its XLF files
-with the source language each one declares. Those four are answered even when
-they are not there, because the absence of a manual or a translation is what a
-file listing cannot show. A content element that is an Extbase plugin is said to
-be one and points at plugin.tx_<identifier>, because it renders through the
-dispatcher and has no templateName to be missing. The tables, content elements
-and icons are read from the booted installation where there is one and
+and routes, its icons, its site sets with the files each carries, the form
+configurations it registers and the form definitions they store, its service
+tags, middlewares, Fluid roots and namespaces, and the shape of its Classes/
+directory — and beside all that: its manual, its README, its test layers, and
+its XLF files with the source language each declares. Those four are answered
+when they are absent too, which a file listing cannot show. A content element
+that is an Extbase plugin is marked as one and points at plugin.tx_<identifier>:
+it renders through the dispatcher and has no templateName to be missing. Tables,
+content elements and icons come from the booted installation where there is one,
 attributed to this extension by the EXT: reference each entry carries, so a list
 built in a loop or a table added by a PHP call is in the answer; everything else
-is read from that extension's own files, parsed and never executed, so it
-answers on a fresh clone and for a third-party extension as well as for the
-project's own. answeredBy says which of the two answered, and where it says
-packages the answer names what that leaves out. Where a registration file it
-ships is one a core deprecation turns on — ext_tables.php, or ext_emconf.php
-beside a composer.json declaring neither providesPackages nor a version — the
-answer says which entry and what it costs, because that predicate is the file
+is parsed from that extension's own files, never executed, so it answers on a
+fresh clone and for a third-party extension as well as for the project's own.
+answeredBy says which of the two answered, and names what packages leaves out. A
+registration file it ships that a core deprecation turns on — ext_tables.php, or
+ext_emconf.php beside a composer.json declaring neither providesPackages nor a
+version — is reported with what it costs, because that predicate is the file
 rather than anything the extension calls and no changelog search over its code
 reaches it. That is those two files and nothing else, so it is not an upgrade
 check. typo3_project_scope names the extensions this can be called for.
@@ -1932,12 +1918,10 @@ but the Forge issue, the Releases: trailer and the changelog do not.
 
 Leave feedback about a gap, wrong answer, or missing capability of this
 knowledge server — and about what it did well, because what worked is what must
-not be broken later. The feedback is stored as markdown in this server's own
-checkout — not in the project you are working in, so do not look for the file
-there — and is read back with typo3_feedback_list. Use it whenever an answer was
-incomplete or a lookup found nothing that should have been there. One feedback
-per subject: a feedback carrying three complaints is worked off three times over
-or not at all.
+not be broken later. Stored as markdown in this server's own checkout and read
+back with typo3_feedback_list, not in the project you are working in, so do not
+look for the file there. One feedback per subject: a feedback carrying three
+complaints is worked off three times over or not at all.
 
 `readOnlyHint: false` · `destructiveHint: false` · `idempotentHint: false` · `openWorldHint: false`
 
@@ -1948,26 +1932,24 @@ the recording does.
 
 **Takes**
 
-- `observation` *(string, required)* — What was missing, wrong, or unhelpful. Be
-  specific enough to act on later, and open with one line naming the task you
-  were given, so the feedback can be traced back to what exposed it. Written in
-  English, like everything else here. A finding is the path a value was read at,
-  the shape of what came back, and where it came from. The value itself is not
-  part of it where the installation keeps it secret — an encryption key, a
-  password, a token, the credentials in a connection string. This feedback is
-  committed and pushed into a checkout that installation's owner is not
-  watching, so a secret pasted here as proof has left it for good. The finding
-  is "the key at SYS/encryptionKey is the active one, hardcoded in
-  config/system/settings.php"; the 96 characters after it establish nothing
-  further.
+- `observation` *(string, required)* — What was missing, wrong, or unhelpful,
+  specific enough to act on later, in English. Open with one line naming the
+  task you were given, so the feedback can be traced back to what exposed it. A
+  finding is the path a value was read at, the shape of what came back, and
+  where it came from — never the value itself where the installation keeps it
+  secret: an encryption key, a password, a token, the credentials in a
+  connection string. This is committed and pushed into a checkout that
+  installation's owner is not watching, so a secret pasted here as proof has
+  left it for good. The finding is "the key at SYS/encryptionKey is the active
+  one, hardcoded in config/system/settings.php"; the 96 characters after it
+  establish nothing further.
 - `model` *(string, required)* — The model recording this feedback, as it
   identifies itself, for example claude-opus-5 or gpt-5.3-codex. Read it where
   it is written down — what your client reports for the current session, or the
-  person running you — rather than from what you remember about yourself. A
-  feedback about what a session did or did not do is evidence about one model's
-  behaviour, and one filed as "unknown" cannot be told apart from another
-  model's. That fallback is for a session that looked and could not find out; an
-  invented identifier is still worse than none.
+  person running you — rather than from what you remember about yourself: a
+  feedback is evidence about one model's behaviour, and one filed as "unknown"
+  cannot be told apart from another model's. That fallback is for a session that
+  looked and could not find out; an invented identifier is worse than none.
 - `category` *(string)* — One of `missing-knowledge`, `wrong-answer`,
   `tool-gap`, `bug`, `idea`. missing-knowledge: the knowledge base lacks the
   answer. wrong-answer: the answer was incorrect. tool-gap: no tool covers the
@@ -1977,13 +1959,13 @@ the recording does.
   typo3-extension-conformance. Several are named in one string, separated by
   commas.
 - `query` *(string)* — The arguments that produced the unsatisfying result, or
-  the task text where a whole session is what produced it. This is what lets
-  somebody re-run the feedback against a later version of the server instead of
-  reading it. The same rule holds here as for the observation: the arguments and
-  the path they named, never a value the installation keeps secret. A re-run
-  needs to know that SYS/encryptionKey was asked for and that a key came back,
-  not what the key was. A password or a token that was itself an argument is
-  named rather than quoted.
+  the task text where a whole session is what produced it, so somebody can
+  re-run the feedback against a later version of the server instead of reading
+  it. The rule from observation holds: the arguments and the path they named,
+  never a value the installation keeps secret. A re-run needs to know that
+  SYS/encryptionKey was asked for and that a key came back, not what the key
+  was; a password or a token that was itself an argument is named rather than
+  quoted.
 - `suggestion` *(string)* — What the server should have answered or should be
   able to do instead.
 

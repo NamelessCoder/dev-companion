@@ -72,7 +72,7 @@ final class TaskGuide extends ReadOnlyTool
 
     public static function description(): string
     {
-        return 'Build a task checklist enriched with matching hints and relevant core checks. Built from bundled conventions only: it does not read your checkout, so it also names what you have to establish there yourself and routes to the lookups that fit the task. Work that reads as a project or third-party extension is answered with what transfers only — the core checks, checklist items and steps that name something only the core repository has are left out rather than handed over. Pass the paths where the work touches more than one place: each is placed on its own, so a core path and an extension path in one call are not answered with one verdict.';
+        return 'Build a task checklist enriched with matching hints and relevant core checks. Built from bundled conventions only: it does not read your checkout, so it also names what you have to establish there yourself and routes to the lookups that fit the task. Work that reads as a project or third-party extension is answered with what transfers only — the core checks, checklist items and steps that name something only the core repository has are left out rather than handed over.';
     }
 
     public static function inputSchema(): array
@@ -83,7 +83,7 @@ final class TaskGuide extends ReadOnlyTool
                 'task' => ['type' => 'string', 'minLength' => 1, 'description' => 'Short description of the TYPO3 core task, in English.'],
                 'area' => ['type' => 'string', 'description' => 'Affected subsystem or extension, if known.'],
                 'paths' => ['type' => 'array', 'items' => ['type' => 'string'], 'default' => [], 'description' => 'The files the task is about, as they are in the repository they belong to. Pass them where the work touches more than one place: each is placed on its own, so a core path and an extension path in one call are not answered with one verdict. The area counts as one of them.'],
-                'targetVersion' => ['type' => 'string', 'description' => 'The TYPO3 version this task is for, for example "13.4" or "14". State one only to narrow to it: conventions that do not hold there are then left out, including those the repository needs for another major it declares. Left out, the answer holds for every major this repository declares typo3/cms-core for, which is what one codebase serving two of them needs; where there is no declaration to read, for the version of the installation this server was started in.'],
+                'targetVersion' => ['type' => 'string', 'description' => 'The TYPO3 version this task is for, for example "13.4" or "14". Conventions that do not hold there are left out, including those the repository needs for another major it declares. Defaults to every major this repository declares typo3/cms-core for, or to the installation this server was started in where there is no declaration.'],
                 'changeType' => ['type' => 'string', 'enum' => ['bugfix', 'feature', 'cleanup', 'test', 'documentation', 'unknown'], 'default' => 'unknown'],
             ],
             'required' => ['task'],

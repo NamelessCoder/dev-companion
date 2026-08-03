@@ -45,7 +45,7 @@ final class CatalogCheck
      *
      * Existence carries the statement that the four boilerplate files are there
      * to be copied; each needle carries one sentence of `project-extension-tests`
-     * in `knowledge/architecture-hints/php.json`, named beside it. What no needle
+     * in `knowledge/architecture-hints/testing.json`, named beside it. What no needle
      * covers is not guarded — this is the load-bearing half, not the hint.
      *
      * @var array<string, array<int, string>>

@@ -12,6 +12,7 @@ one is added.
 - [`D-KNW-031`][D-KNW-031] — A suite is a property of the domain, not of the hint · 2026-08-03
 - [`D-KNW-032`][D-KNW-032] — The corpus is filed by question, and two splits were taken back · 2026-08-03
 - [`D-KNW-033`][D-KNW-033] — Every hint names the domains it is asked from, and none is `any` · 2026-08-03
+- [`D-KNW-034`][D-KNW-034] — The file is the subject, and JavaScript is not a domain of its own · 2026-08-03
 - [`D-KNW-005`][D-KNW-005] — One `Scope` replaced the four vocabularies · 2026-08-02
 - [`D-KNW-006`][D-KNW-006] — A word for a thing administered from the backend adds no domain to a backend-only task · 2026-08-02
 - [`D-KNW-007`][D-KNW-007] — A hint says whose it is in both directions · 2026-08-02
@@ -41,6 +42,7 @@ one is added.
 [D-KNW-031]: knw-031-a-suite-is-a-property-of-the-domain-not-of-the-hint.md
 [D-KNW-032]: knw-032-the-corpus-is-filed-by-question-and-two-splits-were-taken-back.md
 [D-KNW-033]: knw-033-every-hint-names-the-domains-it-is-asked-from-and-none-is-any.md
+[D-KNW-034]: knw-034-the-file-is-the-subject-and-javascript-is-not-a-domain.md
 [D-KNW-005]: knw-005-one-scope-replaced-the-four-vocabularies.md
 [D-KNW-006]: knw-006-a-word-for-a-thing-administered-from-the-backend.md
 [D-KNW-007]: knw-007-a-hint-says-whose-it-is-in-both-directions.md

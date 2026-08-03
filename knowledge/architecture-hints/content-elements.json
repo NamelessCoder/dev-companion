@@ -1,0 +1,137 @@
+[
+  {
+    "id": "content-elements",
+    "title": "Registering a Content Element",
+    "domains": [
+      "php",
+      "fluid",
+      "typoscript"
+    ],
+    "appliesTo": [
+      "content element",
+      "CType",
+      "tt_content",
+      "list_type",
+      "addPlugin",
+      "addRecordType",
+      "addTcaSelectItemGroup",
+      "Configuration/TCA/Overrides/",
+      "content type",
+      "wizard"
+    ],
+    "hints": [
+      {
+        "text": "A content element is a record type of tt_content, registered in Configuration/TCA/Overrides/tt_content.php with ExtensionManagementUtility::addRecordType(): the item — label, description, value, icon, group — then the showitem list for the type, then per-type overrides such as columnsOverrides, and optionally a position. The showitem list is the point: a type that does not bring one is a type whose backend form is somebody else's.",
+        "since": 13
+      },
+      {
+        "text": "The predecessor is addPlugin() plus addToAllTCAtypes(), which registers the item and then patches the field list of every type. It is what an older extension looks like; a new record type is better added in one call.",
+        "until": 12
+      },
+      {
+        "text": "addPlugin() is what is left for a plugin with a FlexForm, and it takes two arguments here — the item array and the FlexForm. The $field and $extensionKey arguments are gone, so the example that passes 'CType' and the extension key is from the branch before this one and is a TypeError on this one. It also seeds the new type's field list from the header type when the type declares none, so a plugin registered that way silently shows the header element's fields until a showitem replaces them.",
+        "since": 14
+      },
+      {
+        "text": "A plugin is a CType like any other. The list_type detour, where one CType held every plugin and a second field chose between them, is gone, so what used to be a list_type value is a CType value now.",
+        "since": 14
+      },
+      "ExtensionManagementUtility::addTcaSelectItemGroup() adds a group to the CType selector, positioned with before:<group> or after:<group>, so several elements of one extension arrive together instead of scattered through the list.",
+      "What the element owns before its first field is content-element-shape, and its backend preview is content-element-preview."
+    ]
+  },
+  {
+    "id": "content-element-shape",
+    "title": "What a Content Element Owns",
+    "domains": [
+      "php",
+      "fluid",
+      "typoscript"
+    ],
+    "appliesTo": [
+      "repeatable",
+      "collection",
+      "slides",
+      "carousel",
+      "slider",
+      "accordion",
+      "tabs",
+      "child table",
+      "type=inline",
+      "own table for the element"
+    ],
+    "hints": [
+      {
+        "text": "What the element owns is decided before its first field, and it is the one decision the rest of it cannot be refactored out of: fields on tt_content for a bounded element; a child table of its own with type=inline for a repeatable ordered collection — slides, tabs, accordion panels — where the parent owns each child's sorting, translation, visibility and deletion; a reference to existing records where reuse is a requirement somebody stated, and the referenced record keeps its own lifecycle and renders wherever else it is referenced; a container of arbitrary tt_content where arbitrary nesting is a requirement somebody stated. The last two are technically possible for a list of slides and are what an element ends up with when the editor workflow was never described: they hand the editor a lifecycle that belongs somewhere else."
+      }
+    ]
+  },
+  {
+    "id": "content-element-preview",
+    "title": "The Backend Preview of a Content Element",
+    "domains": [
+      "fluid",
+      "php",
+      "typoscript"
+    ],
+    "appliesTo": [
+      "backend preview",
+      "mod.web_layout.tt_content.preview",
+      "preview template",
+      "page module",
+      "GridColumnItem",
+      "preview is empty"
+    ],
+    "hints": [
+      "The backend preview of an element is a Fluid template registered in page TSconfig as mod.web_layout.tt_content.preview.<CType>, and the rendering definition is TypoScript: tt_content.<CType> on top of lib.contentElement. How the template name follows from the CType is in the sitepackage layout hint.",
+      "That template replaces the content half of the preview and nothing around it. GridColumnItem::getPreview() renders the header first and dispatches the event the Fluid renderer listens on after it, so the listener's output becomes the content alone. The header is already four parts: the notice where header_layout hides the header, the date field with its label, the record type's label field linked to the edit form — header on tt_content — and subheader. The footer below the content carries starttime, endtime, fe_group, space_before_class, space_after_class and the internal description. So a template that renders {record.header}, {record.subheader} or {record.date} shows them twice, and what it owes the editor is what those parts do not already say.",
+      {
+        "text": "That preview template is handed one variable, record. The columns of the row are no longer variables of their own, so a template that reads {header} renders an empty spot and logs nothing.",
+        "since": 14
+      },
+      {
+        "text": "Beside record, the preview template is handed every column of the row as a variable of its own — {header}, {bodytext} — and a plugin's FlexForm as {pi_flexform_transformed}. Reading the same values off record is what keeps the template working on the next major.",
+        "until": 13
+      },
+      {
+        "text": "The core's own worked previews are theme_camino's Resources/Private/Templates/ContentPreviews/, where one template iterates an inline relation with f:for and another renders a file field through f:image.",
+        "since": 14
+      }
+    ]
+  },
+  {
+    "id": "preview-record-variable",
+    "title": "What a Fluid Preview Template Is Handed",
+    "domains": [
+      "fluid"
+    ],
+    "appliesTo": [
+      "record variable",
+      "systemProperties",
+      "record.uid",
+      "record.header",
+      "lazy collection",
+      "relational field in a template",
+      "selectSingle",
+      "empty spot in the preview"
+    ],
+    "hints": [
+      {
+        "text": "{record.header} resolves through the record's container methods: the record is a PSR-11 container, and Fluid asks has() and get() for a path segment before it tries any getter. So every field is {record.<column>}, and {record.uid} and {record.pid} are there as well.",
+        "since": 13
+      },
+      {
+        "text": "Only the fields the record type's schema declares are on the record. The enable fields, the timestamps, the sorting and the language and workspace columns are not: they become system properties, reached as {record.systemProperties.disabled} or {record.systemProperties.createdAt}. A path that hits neither raises nothing and resolves to null, so a field that is not there is an empty preview.",
+        "since": 13
+      },
+      {
+        "text": "A relational field comes back as records rather than as the uid list in the column, and that covers type=select with a relation, group, inline, category and file. A field that relates to many is a lazy collection f:for iterates and f:if counts, each item a record read the same way — {item.title}; one that relates to one is the record itself, or null where the relation is broken. A file field yields the file references f:image takes. Nothing is queried until the template touches the field.",
+        "since": 13
+      },
+      {
+        "text": "type=select without a relation is a static list and stays values: an array of the selected values, or the single value where the renderType is selectSingle.",
+        "since": 13
+      }
+    ]
+  }
+]

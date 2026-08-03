@@ -1,0 +1,34 @@
+[
+  {
+    "id": "events-extension-points",
+    "title": "Events and Extension Points",
+    "domains": [
+      "php"
+    ],
+    "appliesTo": [
+      "/Event/",
+      "EventListener",
+      "EventDispatcher",
+      "Hooks",
+      "hook",
+      "event listener",
+      "extension point",
+      "psr-14",
+      "AsEventListener"
+    ],
+    "hints": [
+      {
+        "text": "A listener is registered with the #[AsEventListener] attribute from TYPO3\\CMS\\Core\\Attribute, on the class or on a single method. Its arguments are identifier, event, method, before and after; the attribute is repeatable, so one class can listen to several events. Autoconfiguration picks it up — do not add an event.listener tag to Services.yaml, no core listener is registered that way.",
+        "since": 13
+      },
+      {
+        "text": "Without the attribute, a listener is registered with an event.listener tag in Configuration/Services.yaml, carrying an identifier and the method; the event itself is taken from that method's parameter type. That is the only mechanism there, and every core listener uses it.",
+        "until": 12
+      },
+      "Event classes live in Classes/Event/ of the extension that dispatches them, are final, and are readonly where the payload is immutable. A listener that may change the outcome gets setters on the event instead of a return value.",
+      "Keep event payloads minimal and stable, and prefer a new event over a hook: a hook is only the right answer where the subsystem still has hook-based extension points.",
+      "The surviving hooks are a subsystem fact, not a second extension-point registry. Ask the subsystem hint with the intent — for example prefilling a form field — so it can name both the remaining hook and the narrower event; the form-framework hint records EXT:form's two remaining SC_OPTIONS calls.",
+      "A PSR-14 event is public API. A new one needs a changelog entry, careful naming, and regression coverage."
+    ]
+  }
+]

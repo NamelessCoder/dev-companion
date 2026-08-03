@@ -1,0 +1,56 @@
+[
+  {
+    "id": "documentation-changelog",
+    "title": "Documentation and Changelog",
+    "domains": [
+      "docs"
+    ],
+    "scope": "core",
+    "appliesTo": [
+      ".rst",
+      "Documentation/",
+      "Changelog/",
+      "changelog entry",
+      "release note"
+    ],
+    "hints": [
+      "User-facing behavior changes may need documentation or changelog entries.",
+      "This is the core-repository side. A project extension uses its own manual, semantic version and release notes; see extension-documentation.",
+      "A changelog file is needed for a Breaking change, a Deprecation, a Feature, or an Important message. A casual bug fix needs none — its commit message carries the information.",
+      "The filename is <Type>-<forgeIssueNumber>-<UpperCamelCaseDescription>.rst, in the directory of the minor version the change is released in; a backport goes into the <lts>.x directory of the oldest branch it reaches, in every branch that carries it.",
+      "The file opens with an include of /Includes.rst.txt, then an anchor of the form <type>-<issue>-<unique identifier> (a UNIX timestamp by convention), then the title \"Type: #<issue> - <summary>\" fenced by an overline and underline row of = at least as long as it, then \"See :issue:`<issue>`\".",
+      "Every type has a Description section; every type except Important has an Impact section; Deprecation and Breaking additionally have Affected installations and Migration.",
+      "The file ends with an .. index:: line carrying at least two and at most about five tags from the fixed list in typo3/sysext/core/Documentation/Changelog/Howto.rst. A Deprecation or Breaking file also carries exactly one of NotScanned, PartiallyScanned or FullyScanned.",
+      "A deprecation entry names the replacement and the migration path; without both it does not do its job. Add an extension scanner matcher when the deprecated API can be found statically.",
+      {
+        "text": "Literals in the prose take role markup — :php:, :yaml:, :typoscript:, :file: — rather than plain double backticks, and the section headings under the title are underlined only, while the title itself is fenced above and below. Getting either wrong fails checkRst, which is a review round lost to something mechanical: typo3/sysext/core/Documentation/Changelog/Howto.rst is the authority, and Build/Scripts/validateRstFiles.php is what reports the missing piece.",
+        "scope": "core"
+      },
+      "Keep ReST changes focused and validate them before review."
+    ]
+  },
+  {
+    "id": "extension-documentation",
+    "title": "Documenting a Project Extension",
+    "domains": [
+      "docs",
+      "php"
+    ],
+    "scope": "extension",
+    "appliesTo": [
+      "extension documentation",
+      "Documentation/Index.rst",
+      "guides.xml",
+      "docs.typo3.org",
+      "semantic version",
+      "release notes",
+      "public api"
+    ],
+    "hints": [
+      "An extension's manual lives in Documentation/, with Index.rst as its entry point and guides.xml as the renderer configuration. docs.typo3.org renders that tree; the extension does not copy the core's Documentation/Changelog artifact into itself.",
+      "A released ViewHelper argument, translation label, configuration key, event payload or PHP API is public to whoever installed the extension. A breaking change is carried by the extension's semantic version and explained in its own release notes and migration documentation.",
+      "Keep the manual with the extension so a package release and the documentation for that release are one revision. Repository-wide deployment notes are a different artifact and belong with the project that deploys it.",
+      "For a patch to TYPO3 itself, the documentation-changelog hint has the core's release-note filename, structure and checks; those are repository conventions, not a template for an extension."
+    ]
+  }
+]

@@ -1,14 +1,19 @@
 [
   {
     "id": "backend-typescript",
-    "title": "Backend TypeScript Modules",
+    "title": "Backend TypeScript Sources and the JavaScript They Become",
     "domains": [
       "typescript"
     ],
     "scope": "core",
     "appliesTo": [
       "Build/Sources/TypeScript/",
-      "Resources/Public/JavaScript/"
+      "Resources/Public/JavaScript/",
+      "javascript",
+      "js module",
+      "es module",
+      "add javascript",
+      "generated javascript"
     ],
     "hints": [
       "TypeScript source lives in Build/Sources/TypeScript/ and the JavaScript generated from it in the owning system extension's Resources/Public/JavaScript/. The generated file is committed, so a source change that is not built leaves the two disagreeing and the browser running the old one.",
@@ -31,7 +36,8 @@
       "Resources/Public/JavaScript/backend",
       "web component",
       "custom element",
-      "LitElement"
+      "LitElement",
+      "javascript"
     ],
     "hints": [
       "Keep custom elements focused on rendering and interaction orchestration.",

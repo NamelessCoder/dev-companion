@@ -1,0 +1,28 @@
+[
+  {
+    "id": "routing-request-handling",
+    "title": "Routing, Middleware, and Request Handling",
+    "domains": [
+      "php"
+    ],
+    "appliesTo": [
+      "/Http/",
+      "/Middleware/",
+      "/Routing/",
+      "/Controller/",
+      "Configuration/RequestMiddlewares.php",
+      "middleware",
+      "psr-7",
+      "psr-15",
+      "http request",
+      "request handling",
+      "site configuration"
+    ],
+    "hints": [
+      "Prefer PSR-7 request and response objects for HTTP behavior.",
+      "Middleware is registered in Configuration/RequestMiddlewares.php per request scope, with before and after naming other middleware. Keep each one focused and its position deliberate.",
+      "Avoid global state when request-scoped data is available.",
+      "This applies to HTTP only. A console command is not a request handler, whatever its class name suggests."
+    ]
+  }
+]

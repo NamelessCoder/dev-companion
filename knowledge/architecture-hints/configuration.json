@@ -1,0 +1,99 @@
+[
+  {
+    "id": "configuration-reach",
+    "title": "Configuration Belongs to Its Reach",
+    "domains": [
+      "php",
+      "typoscript"
+    ],
+    "appliesTo": [
+      "configuration scope",
+      "storage pid",
+      "ext_conf_template.txt",
+      "ExtensionConfiguration",
+      "scheduler task",
+      "task configuration"
+    ],
+    "hints": [
+      "Choose the owner of a configuration value by where the value may differ, not by which extension reads it.",
+      {
+        "text": "A value that may differ per site belongs to the site's settings. A set declares its key, type and default in Configuration/Sets/<Set>/settings.definitions.yaml; the site can override it in config/sites/<site>/settings.yaml.",
+        "since": 13
+      },
+      "Extension configuration is installation-wide. Define there only a value that is genuinely one per TYPO3 installation, and read it through ExtensionConfiguration rather than accessing TYPO3_CONF_VARS['EXTENSIONS'] directly.",
+      "A scheduler task's own parameters belong to that task instance. Expose them as fields when the task is configured and persist them with the task instead of turning one task's choice into site or installation configuration."
+    ]
+  },
+  {
+    "id": "environment-variables",
+    "title": "What TYPO3 Reads From the Environment",
+    "domains": [
+      "php"
+    ],
+    "appliesTo": [
+      "environment variable",
+      "env var",
+      "getenv",
+      "putenv",
+      ".env",
+      "dotenv",
+      "TYPO3_CONTEXT",
+      "TYPO3_PATH_ROOT",
+      "TYPO3_PATH_APP",
+      "TYPO3_ENCRYPTION_KEY",
+      "encryptionKey",
+      "encryption key",
+      "application context",
+      "deployment secret"
+    ],
+    "hints": [
+      "Three environment variables reach TYPO3 with no project code behind them, and SystemEnvironmentBuilder is the only thing that reads them: TYPO3_CONTEXT selects the application context, TYPO3_PATH_ROOT names the document root and TYPO3_PATH_APP the project root above it. Each is also accepted with a REDIRECT_ prefix, which is what a web server forwards into FastCGI, and the context additionally as HTTP_TYPO3_CONTEXT for Apache suexec. No other key of TYPO3_CONF_VARS has an environment variable behind it.",
+      "Everything else a deployment takes from the environment is the project's own getenv() in config/system/additional.php: the encryption key, the database credentials, the trusted-host pattern, the mail transport. No running installation picks up TYPO3_ENCRYPTION_KEY or TYPO3_DB_HOST by itself — $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = getenv('TYPO3_ENCRYPTION_KEY'); is the line that makes that variable exist, and a readme documenting the name without such a line documents nothing. TYPO3 also ships no .env reader, so whatever puts a .env file into the process environment — DDEV, the container runtime, a dotenv component the project required — is the project's choice as well.",
+      {
+        "text": "Setting the encryption key from an extension's ext_localconf.php stops working. The empty-key check moved ahead of extension loading in the bootstrap, so the installation throws \"TYPO3 Encryption is empty\" before the assignment is ever evaluated. Both config/system/settings.php and config/system/additional.php are evaluated before that check, and reading the variable there is the migration.",
+        "since": 15
+      },
+      "Where a placeholder is written instead is environment-placeholders, and what reads the environment while it runs is environment-runtime-readers."
+    ]
+  },
+  {
+    "id": "environment-placeholders",
+    "title": "%env() in a YAML Configuration",
+    "domains": [
+      "php"
+    ],
+    "appliesTo": [
+      "%env(",
+      "YamlFileLoader",
+      "placeholder",
+      "site configuration placeholder",
+      "config.yaml",
+      "backend module rewrites"
+    ],
+    "hints": [
+      "%env(NAME)% is a YAML placeholder resolved by the core's YamlFileLoader, not a configuration syntax that holds everywhere, and it throws when the variable is unset rather than falling back. It reaches what that loader reads — a site's config.yaml and settings.yaml, the form framework's YAML, an RTE preset — and config/services.yaml resolves the same spelling through Symfony's own container, where the TYPO3: prefix additionally exposes Environment methods rather than the process environment. It does not reach config/system/settings.php or additional.php, which are plain PHP that no YAML loader sees.",
+      "A placeholder already in a site configuration survives the backend module but cannot be introduced there. The module loads config.yaml with imports processed and placeholders left alone, so the raw %env(NAME)% is what is edited, and SiteWriter runs YamlPlaceholderGuard over what comes back, which refuses a placeholder that was not in the file before. A value taken from the environment is therefore put into config.yaml by hand."
+    ]
+  },
+  {
+    "id": "environment-runtime-readers",
+    "title": "What Reads the Environment While It Runs",
+    "domains": [
+      "php",
+      "typoscript"
+    ],
+    "appliesTo": [
+      "TYPO3_DB_HOST",
+      "TYPO3_SETUP",
+      "TYPO3_BE_USER",
+      "typo3 setup",
+      "getEnv(",
+      "getenv as a getData key",
+      "data = getenv"
+    ],
+    "hints": [
+      "Two console commands do read a fixed set of variables, and only while they run. typo3 setup accepts the TYPO3_DB_ family (DRIVER, HOST, PORT, USERNAME, PASSWORD, DBNAME), the TYPO3_SETUP_ family for the administrator and the site to create, plus TYPO3_PROJECT_NAME and TYPO3_SERVER_TYPE, as answers to the questions it would otherwise ask; typo3 backend:user:create accepts the TYPO3_BE_USER_ family the same way. Ask the command's --help for the exact set, because it has grown between majors. What setup does with those values is write settings.php once, which is why a project can set TYPO3_DB_HOST, watch the installation come up, and still have nothing that reads the variable afterwards.",
+      "TypoScript reaches the environment in two places that are easy to miss when auditing what a site depends on: the constant function modifier := getEnv(NAME), and getenv as a getData key, so data = getenv:NAME resolves in stdWrap. Both read the environment of the process serving the request, which is not the shell a deployment script ran in."
+    ]
+  }
+]

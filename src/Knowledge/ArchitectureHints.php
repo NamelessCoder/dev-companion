@@ -17,8 +17,8 @@ use Typo3CmsMcp\Search\Text;
  * the file it sits in. The file name was both jobs at once for as long as there
  * was one file per domain, and the cost of that was a hint belonging to two
  * domains having nowhere to go: it went into `general.json`, whose domain is
- * selected by every query there is. The file is free to be a subject now, and
- * `any` is what a hint says when it really does hold everywhere.
+ * selected by every query there is. The file is the subject now — one per
+ * subject, named after it — and no hint is `any`.
  */
 final class ArchitectureHints
 {
@@ -32,7 +32,16 @@ final class ArchitectureHints
      * for whatever is written in it.
      */
     public const CATEGORY_CSS = 'Backend CSS';
-    public const CATEGORY_TYPESCRIPT = 'Backend TypeScript';
+
+    /**
+     * Both halves in the heading, because a caller says the second one.
+     *
+     * The sources are TypeScript and the conventions are TypeScript's, but a
+     * `.js` file is what the backend ships and "javascript" is what somebody
+     * types who has not opened `Build/Sources/` yet. A heading that names only
+     * the source reads as somebody else's subject.
+     */
+    public const CATEGORY_TYPESCRIPT = 'Backend TypeScript and JavaScript';
 
     /**
      * What each domain is called where a caller reads it.
@@ -50,7 +59,6 @@ final class ArchitectureHints
         Domains::TYPOSCRIPT => 'TypoScript',
         Domains::FLUID => 'Fluid',
         Domains::TYPESCRIPT => self::CATEGORY_TYPESCRIPT,
-        Domains::JAVASCRIPT => 'JavaScript',
         Domains::CSS => self::CATEGORY_CSS,
         Domains::XLIFF => 'Labels',
         Domains::DOCS => 'Documentation',

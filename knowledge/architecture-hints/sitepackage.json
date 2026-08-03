@@ -1,0 +1,93 @@
+[
+  {
+    "id": "sitepackage-layout",
+    "title": "How a Sitepackage Is Laid Out",
+    "domains": [
+      "fluid",
+      "typoscript"
+    ],
+    "appliesTo": [
+      "sitepackage",
+      "site package",
+      "theme extension",
+      "theme",
+      "directory structure",
+      "folder structure",
+      "how do I lay out"
+    ],
+    "hints": [
+      {
+        "text": "The core ships a theme of its own — the package typo3/theme-camino, typo3/sysext/theme_camino in a core checkout, absent from a Composer project that did not require it. It is where the layout below is worked out in full, so read it rather than invent one. Read, not depend on: it is the theme of one release line, announced to move out of the core into a repository of its own, and a project sitepackage that requires it or extends its set buys that migration for nothing.",
+        "since": 14
+      },
+      {
+        "text": "The language files are split by who reads them — the frontend messages, the backend field labels, the backend layout titles, the content element previews. Each file is its own translation domain, and the domain is what a label is referenced by, so the split is what makes the references readable.",
+        "since": 14
+      },
+      "All of this is the extension. What sits around it in a project — where the browser tests go, what belongs in Build/, which scripts the repository exposes — is its own subject, because the core has no answer for it: it is not a project. That is the project repository layout hint.",
+      "Where the files themselves go is its own hint: sitepackage-templates for the template root, sitepackage-backend-layouts for the page layouts, sitepackage-typoscript-reference for how one object reaches another."
+    ]
+  },
+  {
+    "id": "sitepackage-templates",
+    "title": "The Fluid Template Root and What Is Addressed From It",
+    "domains": [
+      "fluid"
+    ],
+    "appliesTo": [
+      "Resources/Private/Templates/",
+      "content element template",
+      "page template",
+      "f:layout name",
+      "Layouts/",
+      "Partials/",
+      "template is not found",
+      "templateName"
+    ],
+    "hints": [
+      "One template root carries all of it: Resources/Private/Templates/, with Pages/ for the page templates, Content/ for the content element templates, ContentPreviews/ for their backend previews, Layouts/, and Partials/ grouped in subdirectories. That directory is the single paths entry PAGEVIEW is given, and lib.contentElement is pointed at Templates/Content/ with the same Layouts/ and Partials/ — so the page and its content elements are rendered out of one tree instead of two.",
+      "A layout is addressed with its subdirectory: <f:layout name=\"Pages/Default\" /> in a page template, <f:layout name=\"Content/Default\" /> in a content element. The page frame and the content element frame are both called Default, and fluid_styled_content ships a Default of its own, so a shared Layouts/ root without those subdirectories renders the site header and footer inside every single content element — on a page that still comes back without an error.",
+      "The template of a content element is derived from its CType rather than configured per element: lib.contentElement carries templateName.ifEmpty.cObject with case = uppercamelcase, so my_ext_text_teaser renders Content/MyExtTextTeaser.fluid.html. That is what makes a snake_case CType a requirement rather than a habit — words the identifier does not separate the file name does not separate either."
+    ]
+  },
+  {
+    "id": "sitepackage-backend-layouts",
+    "title": "Where a Page Layout Is Declared",
+    "domains": [
+      "typoscript",
+      "fluid"
+    ],
+    "appliesTo": [
+      "Configuration/BackendLayouts/",
+      "backend layout",
+      "page layout",
+      "mod.web_layout.BackendLayouts",
+      "BackendLayouts"
+    ],
+    "hints": [
+      "One page layout per file, and one name for it: the identifier the file declares below mod.web_layout.BackendLayouts is also what the page template is named after, so the file name, the identifier and Pages/<Name>.fluid.html are one name written in three places.",
+      {
+        "text": "Where those files live follows from one question — does anything reach a backend without the set? A project sitepackage ships one set and no Configuration/page.tsconfig of its own, so nothing does: the layouts belong in Configuration/Sets/<Set>/BackendLayouts/, pulled in with @import './BackendLayouts/*.tsconfig' from the set's page.tsconfig, which is the same place and the same form the TypoScript split already has. Configuration/BackendLayouts/ at extension level is for the other case — several sets, or a distributable theme like theme_camino, where the extension is the unit and an extension-level page.tsconfig carries what has to apply whether a site depends on the set or not. Where the extension has no such file, moving the layouts up there is an indirection with no effect. The directory keeps its name either way, because the name says what is in it: page TSconfig that is not a backend layout goes into page.tsconfig or a sibling directory, not in there.",
+        "since": 13
+      }
+    ]
+  },
+  {
+    "id": "sitepackage-typoscript-reference",
+    "title": "Referencing a TypoScript Object Instead of Copying It",
+    "domains": [
+      "typoscript"
+    ],
+    "appliesTo": [
+      "=<",
+      "reference operator",
+      "copy operator",
+      "lib.fluidPage",
+      "data processor is missing",
+      "import order"
+    ],
+    "hints": [
+      "page.<n> =< lib.fluidPage is a reference and not a copy: it is resolved while the page renders, out of the merged setup, so a data processor added to lib.fluidPage in a file that is imported later still arrives. The copy operator < is the one where the order of the imports decides what the object ends up holding."
+    ]
+  }
+]

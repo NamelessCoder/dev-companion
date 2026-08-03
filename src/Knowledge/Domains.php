@@ -22,6 +22,14 @@ use Typo3CmsMcp\Search\Text;
 final class Domains
 {
     public const PHP = 'php';
+    /**
+     * TypeScript and the JavaScript it becomes, as one domain.
+     *
+     * A `.js` file in the backend is the committed output of a `.ts` one, so a
+     * path to either detects as this and a hint about either is tagged with it.
+     * `javascript` was a category of its own until `D-KNW-034` and never a
+     * domain: nothing detected as it and no hint was ever filed under it.
+     */
     public const TYPESCRIPT = 'typescript';
     public const TYPOSCRIPT = 'typoscript';
     public const CSS = 'css';
@@ -30,16 +38,13 @@ final class Domains
     public const XLIFF = 'xliff';
 
     /**
-     * The two a hint may be tagged with and no path ever detects as.
+     * The one a hint may be tagged with and no path ever detects as.
      *
-     * `javascript` is what the backend's generated modules are, and detection
-     * folds them into TypeScript because a `.js` file there is the output of a
-     * `.ts` one. `any` is a hint that holds wherever TYPO3 is written and is
-     * therefore selected by every query — the bucket every cross-domain hint
-     * used to fall into for want of a second tag, so what it costs is worth
-     * counting rather than assuming.
+     * `any` is a hint that holds wherever TYPO3 is written and is therefore
+     * selected by every query — the bucket every cross-domain hint used to fall
+     * into for want of a second tag. Nothing carries it since `D-KNW-033`, and
+     * `HintsTest` fails on the first one that does.
      */
-    public const JAVASCRIPT = 'javascript';
     public const ANY = 'any';
 
     /** @var array<string, array<int, string>> Domain to file extensions. */
@@ -394,7 +399,6 @@ final class Domains
         }
         if (in_array(self::TYPESCRIPT, $domains, true)) {
             $selected[] = self::TYPESCRIPT;
-            $selected[] = self::JAVASCRIPT;
         }
         if (in_array(self::CSS, $domains, true)) {
             $selected[] = self::CSS;

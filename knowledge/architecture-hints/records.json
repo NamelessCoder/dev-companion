@@ -1,0 +1,93 @@
+[
+  {
+    "id": "frontend-records",
+    "title": "Records in the Frontend Without Extbase",
+    "domains": [
+      "typoscript",
+      "fluid",
+      "php"
+    ],
+    "appliesTo": [
+      "record",
+      "records",
+      "custom table",
+      "database table",
+      "detail view",
+      "list view",
+      "detail page",
+      "teaser",
+      "database-query",
+      "record uid"
+    ],
+    "hints": [
+      {
+        "text": "A table of your own is a TCA file and nothing else: Configuration/TCA/<table>.php declares it and the schema is derived from those columns. Reading its records on a page needs no model, no repository and no controller — that is what a data processor is for, and Extbase enters the picture when pagination, search, validated arguments or forms do.",
+        "since": 13
+      },
+      "The chain is configured as dataProcessing on the PAGEVIEW or on lib.contentElement: database-query with table, pidInList or uidInList and orderBy, and a nested dataProcessing of its own. record-transformation there turns the rows into record objects, files resolves the references of an image field, and comma-separated-value parses a text field that carries a table.",
+      "List and detail can be the same page. Fill the list variable unconditionally, fill the single record only when the request carries the argument — if.isTrue.data = GP:<argument> on that processor — and let the template branch on whether it is there. uidInList.data = GP:<argument> is safe on its own: the select is built by ContentObjectRenderer, which runs uidInList through GeneralUtility::intExplode() before it reaches the query.",
+      "How such a page is addressed is record-routing, and what its title comes from is record-page-title."
+    ]
+  },
+  {
+    "id": "record-routing",
+    "title": "Routing a Record Detail View",
+    "domains": [
+      "php",
+      "typoscript"
+    ],
+    "appliesTo": [
+      "routing",
+      "detail url",
+      "speaking url",
+      "route enhancer",
+      "routeEnhancers",
+      "route-enhancers.yaml",
+      "PersistedAliasMapper",
+      "routeFieldName",
+      "slug",
+      "uniqueInSite",
+      "cHash",
+      "cache hash",
+      "limitToPages",
+      "routing argument"
+    ],
+    "hints": [
+      {
+        "text": "The site set ships the routing for it, in route-enhancers.yaml next to config.yaml. A detail view of that shape is a Simple enhancer whose routePath carries the argument, with a PersistedAliasMapper aspect naming the table and the slug field. The mapper's direction matters: link generation receives the record uid as the query argument and replaces it with routeFieldName in the path; route matching looks that field value up and hands the uid to the application. Thus ?record=<uid> becomes /detail/<route-field-value> — do not pass the route-field value as the query argument or validate it there.",
+        "since": 14
+      },
+      {
+        "text": "Make routeFieldName a TCA slug with eval uniqueInSite so the reverse lookup is unambiguous within the current site. A path value for which the mapper finds no visible record rejects the enhanced route before rendering, so the record lookup is the input validation; load the selected record by the resolved uid rather than trusting display data from the request.",
+        "since": 14
+      },
+      {
+        "text": "An argument that an enhancer maps through a static aspect — including PersistedAliasMapper and StaticValueMapper — is a routing argument and needs no cHash: the mapper restricts it to a finite or persisted set and PageArguments keeps it out of dynamicArguments. An argument left in the query string is dynamic and does need the hash on a cacheable page, so each value gets its own page-cache variant instead of reusing the first response.",
+        "since": 14
+      },
+      {
+        "text": "limitToPages takes an Expression Language string as well as a page uid, evaluated with page, site and siteLanguage — so an enhancer can be bound to every page of one backend layout instead of to a uid. That is what makes routing shippable at all: a set is installed into installations whose page ids nobody knows in advance, and of a site configuration shipped with an extension only rootPageId is remapped on import.",
+        "since": 14
+      }
+    ]
+  },
+  {
+    "id": "record-page-title",
+    "title": "The Title of a Record Detail Page",
+    "domains": [
+      "php",
+      "fluid"
+    ],
+    "appliesTo": [
+      "page title",
+      "PageTitleProvider",
+      "RecordTitleProvider",
+      "setTitle",
+      "title tag",
+      "browser tab title"
+    ],
+    "hints": [
+      "The <title> of such a detail view is a PageTitleProvider and nothing else. RecordTitleProvider only reports a title that something else has set through setTitle(), and on a page that renders the record itself nothing does — so there is no TypoScript-only way to put a record's title into the head. The provider is a small class listed in config.pageTitleProviders, and it has to be public in Services.yaml."
+    ]
+  }
+]

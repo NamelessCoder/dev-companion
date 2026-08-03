@@ -158,5 +158,112 @@
       "A frontend response is asserted through $this->executeFrontendSubRequest(new InternalRequest($uri)), which runs the request in the test instance and returns a PSR-7 response. InternalRequest::withQueryParameters() takes scalar values. An Extbase plugin argument is nested two levels deep, so a request that carries one is built with http_build_query() into the URI instead.",
       "A query string built by hand for a cache hash has two more conditions. CacheHashCalculator refuses one that carries relevant parameters without id=<pageId> — 'ID parameter needs to be passed for the cHash calculation!' — and it rawurldecode()s every name and value, which leaves a + as a literal plus where the request the browser sends would have arrived with a space. So encode with PHP_QUERY_RFC3986; otherwise a value containing a space hashes differently than it arrives and the page answers HTTP 404 for something the test never intended to exercise."
     ]
+  },
+  {
+    "id": "browser-tests",
+    "title": "Browser Tests with Playwright",
+    "domains": [
+      "php",
+      "typescript"
+    ],
+    "appliesTo": [
+      "playwright",
+      "browser test",
+      "end-to-end",
+      "end to end",
+      "e2e",
+      "acceptance test",
+      "spec.ts",
+      "codeception"
+    ],
+    "hints": [
+      "Playwright is where a browser is involved, and the core is the worked example: Build/playwright.config.ts declares the projects and their dependencies, Build/tests/playwright/ holds the suite.",
+      {
+        "text": "Its layout is what transfers: e2e/ for the specs, fixtures/ for the page objects a spec composes itself from, helper/ for the login setup every other project depends on.",
+        "since": 13
+      },
+      {
+        "text": "Below e2e/ it is one directory per module, and the accessibility scan is a module among them rather than a suite beside them.",
+        "since": 14
+      },
+      {
+        "text": "Codeception acceptance tests still sit next to it under typo3/sysext/core/Tests/Acceptance/. New specs are written in Playwright; the two suites are not merged, they replace each other module by module.",
+        "until": 13
+      },
+      "Two neighbours: browser-test-accessibility for what the same spec can assert, browser-tests-outside-core for the site they run against."
+    ]
+  },
+  {
+    "id": "browser-test-accessibility",
+    "title": "Checking Accessibility and Contrast From the Same Spec",
+    "domains": [
+      "php",
+      "css"
+    ],
+    "appliesTo": [
+      "accessibility",
+      "axe",
+      "axe-core",
+      "wcag",
+      "contrast",
+      "color-contrast",
+      "violations",
+      "brand colour"
+    ],
+    "hints": [
+      "Accessibility is checked from the same specs, with @axe-core/playwright: build an AxeBuilder over the page, scan, and assert the violation list is empty. This is the part no PHP test can stand in for, and the one that finds something on the first run.",
+      "The core's own scan disables the color-contrast rule, because it scans the backend it also styles. A site suite must not copy that line: contrast is where a theme actually fails. A brand colour that carries a decorative surface fails as text and as a button background, and a disabled control styled with the border grey fails hardest of all — none of which any assertion on the markup can see, because the markup is correct.",
+      "The fix for that has a shape: split the palette rather than darken the brand. One custom property for the decorative use, a darker one of the same hue for anything a reader has to read, and the rule that everything textual takes the second — instead of a brand colour bent until it passes everywhere and looks right nowhere."
+    ]
+  },
+  {
+    "id": "browser-tests-outside-core",
+    "title": "The Site a Project Suite Runs Against",
+    "domains": [
+      "php",
+      "typescript"
+    ],
+    "appliesTo": [
+      "executeFrontendSubRequest is not a browser test",
+      "rendering test",
+      "real url",
+      "login setup",
+      "authenticated state",
+      "where do the browser tests go"
+    ],
+    "hints": [
+      "A functional test with executeFrontendSubRequest() runs no JavaScript, applies no stylesheet and speaks no HTTP. It is a rendering test, and calling it a frontend test is how a suite ends up with no browser in it at all. The two are complements: the rendering test asserts what the template produced, the browser test asserts what a reader gets.",
+      "Outside the core the layout transfers but the plumbing does not: the specs run against the site as it is served — a real URL, the development environment's own — rather than against a per-test-class instance, and the browsers belong on the host or in an image of their own. Installing them into the web container of a development environment is the step to skip.",
+      "The suite is a project of its own in playwright.config.ts, with the login setup declared as a dependency so the authenticated state is written once and reused. Give the site's page types one spec each — that is the list that finds a page layout nobody rendered since the template changed.",
+      "Where that configuration and those specs live in a project is the repository's question rather than the extension's — the specs need a running site, so they belong to what is deployed. The project repository layout hint has it. In a repository that is only the extension there is no such split, and the suite belongs to the package like everything else there."
+    ]
+  },
+  {
+    "id": "extension-static-analysis",
+    "title": "Setting Up PHPStan for an Extension",
+    "domains": [
+      "php"
+    ],
+    "scope": "extension",
+    "appliesTo": [
+      "phpstan",
+      "phpstan.neon",
+      "static analysis",
+      "analyse",
+      "baseline",
+      "phpstan-baseline",
+      "tmpDir",
+      "result cache",
+      "set up static analysis",
+      "level"
+    ],
+    "hints": [
+      "The configuration belongs to the package, in Build/phpstan/ beside the phpunit configurations the test setup already put there. typo3/testing-framework is the setup worth reading: it is a TYPO3 package with no core mono repository around it, which is the situation an extension is in. Its paths are the package's own Classes and Tests directories, and it includes the phpstan-phpunit extension so test code is understood as tests rather than as ordinary classes.",
+      "Set tmpDir to a path inside the repository. PHPStan otherwise writes its result cache to /tmp/phpstan, every checkout on the machine shares that one directory, and the cache stores absolute paths — so a checkout that has been deleted since fails the analysis of every other one, with an internal error naming a path the caller has never seen. The core and typo3/testing-framework both set it, and both explain it in the same words: a local cache dir instead of /tmp. CI is the exception the core makes in a second configuration file that overrides it back to /tmp, because that container is discarded after the run and caching it buys nothing.",
+      "TYPO3 defines constants at runtime that the analysis never gets to see, so they are declared in a file named under bootstrapFiles — LF and CR, and ORIGINAL_ROOT where the test setup uses it. Without it every use of them is reported as an undefined constant, which is a wall of findings about code that is correct.",
+      "ext_emconf.php is excluded rather than fixed. It assigns into $_EXTKEY, which the file including it sets, so the analysis reports the variable as undefined; typo3/testing-framework excludes the ext_emconf.php of its fixture extensions for exactly that reason.",
+      "A baseline is what makes the first run usable. Generating one records every finding that is already there into phpstan-baseline.neon, which the configuration includes first, so the run reports what a change added rather than what the package accumulated before anyone looked. It is a work list, not a suppression: an entry that disappears is removed from the file by regenerating it.",
+      "The core and typo3/testing-framework both analyse at level 5. Levels are cumulative, so raising one on a package that has never been analysed produces the whole difference at once — which is what the baseline is for."
+    ]
   }
 ]

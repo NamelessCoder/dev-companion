@@ -1245,9 +1245,15 @@ final class ScopeTest extends TestCase
             $result = Registry::call('typo3_architecture_lookup', ['task' => $escaped]);
 
             self::assertSame([], $result->data['withheldCategories'], $escape . ' withheld a section anyway');
-            self::assertContains(
-                ArchitectureHints::CATEGORY_CSS,
-                array_column($result->data['hints'], 'category'),
+            // Either of the two the notice named, because which one ranks into
+            // the answer is the matcher's business and the escape's promise is
+            // that they are candidates again.
+            self::assertNotSame(
+                [],
+                array_intersect(
+                    [ArchitectureHints::CATEGORY_CSS, ArchitectureHints::CATEGORY_TYPESCRIPT],
+                    array_column($result->data['hints'], 'category'),
+                ),
                 $escape . ' brought nothing back',
             );
         }

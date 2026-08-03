@@ -1,0 +1,79 @@
+[
+  {
+    "id": "tca-formengine",
+    "title": "TCA, FormEngine, and Backend Forms",
+    "domains": [
+      "php"
+    ],
+    "appliesTo": [
+      "Configuration/TCA/",
+      "FormEngine",
+      "/Form/",
+      "Tca",
+      "TCA",
+      "tca field",
+      "backend form",
+      "form element",
+      "field configuration",
+      "record editing"
+    ],
+    "hints": [
+      "TCA changes can affect persisted data, editor workflows, and generated backend forms.",
+      "Prefer established TCA option names and existing FormEngine behavior.",
+      "Add functional coverage for TCA processing, data providers, or backend form rendering behavior.",
+      "A new field or option is user-facing, so it needs its labels in the same change — the field label, and the item labels of a select. An unlabelled field renders its own key to the editor. typo3_label_lookup says which trans-units the installation already has."
+    ]
+  },
+  {
+    "id": "tca-schema-api",
+    "title": "TCA Schema API",
+    "domains": [
+      "php"
+    ],
+    "appliesTo": [
+      "Classes/Schema/",
+      "TcaSchema",
+      "TcaSchemaFactory",
+      "schema api",
+      "tca schema"
+    ],
+    "hints": [
+      {
+        "text": "typo3/sysext/core/Classes/Schema/ is the typed API over TCA. Ask TcaSchemaFactory for a TcaSchema and query it — fields, capabilities, relations, labels — instead of reading $GLOBALS['TCA'] directly.",
+        "since": 13
+      },
+      {
+        "text": "A patch that reads TCA is increasingly expected to go through the schema rather than through the array; new code that touches record structure should not add a fresh $GLOBALS['TCA'] access.",
+        "since": 13
+      },
+      {
+        "text": "The schema is cached per package set, so a change to how it is built is a functional-test change, not a unit-test one.",
+        "since": 13
+      }
+    ]
+  },
+  {
+    "id": "formdata-providers",
+    "title": "FormEngine Data Providers",
+    "domains": [
+      "php"
+    ],
+    "appliesTo": [
+      "Configuration/DefaultConfiguration.php",
+      "FormDataProvider",
+      "formDataGroup",
+      "tcaDatabaseRecord",
+      "tcaSelectTreeAjaxFieldData",
+      "tcaInputPlaceholderRecord",
+      "flexFormSegment",
+      "form data provider"
+    ],
+    "hints": [
+      "FormEngine assembles its data through providers registered per form data group in $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']. The core declares the defaults in typo3/sysext/core/Configuration/DefaultConfiguration.php, but extensions add to them, so which groups and providers your installation really has is what typo3_configuration_lookup with path SYS/formEngine/formDataGroup answers.",
+      "Each provider maps to an array with 'depends' and 'before', both listing other provider classes. That graph is what orders the run, not the order the entries are written in — so the fix for a provider that sees stale data is usually an added dependency, not a change inside the provider class.",
+      "A provider that reads merged page TSconfig has to depend on PageTsConfigMerged, or it runs before the TSconfig it reads has been merged.",
+      "DefaultConfiguration.php is the default of TYPO3_CONF_VARS: an edit there changes behaviour in every installation, so say what changed and why in the patch description.",
+      "Registering or reordering a provider is a runtime-configuration change. It is covered by a functional test that renders the form data, not by a unit test of the provider in isolation."
+    ]
+  }
+]

@@ -1,0 +1,60 @@
+[
+  {
+    "id": "public-assets",
+    "title": "Public Assets and the Publish Step",
+    "domains": [
+      "php",
+      "css",
+      "typescript"
+    ],
+    "appliesTo": [
+      "Resources/Public/",
+      "public asset",
+      "public resource",
+      "_assets",
+      "asset",
+      "stylesheet",
+      "CanNotResolvePublicResourceException"
+    ],
+    "hints": [
+      "Resources/Public/ of an installed package is published into the document root by the Composer installer, as a symlink below _assets/<hash>/. The hash is the package, not the file.",
+      "That publishing happens when the packages are installed, not at runtime. A file added to Resources/Public/ afterwards is not resolvable until they are installed again, and the remedy is a Composer install rather than a cache flush.",
+      {
+        "text": "The failure has a name: CanNotResolvePublicResourceException, thrown for a path that plainly exists on disk.",
+        "since": 14
+      },
+      {
+        "text": "Nothing throws here — PathUtility computes the URL from the path either way — so the symptom is an asset that 404s in the browser rather than an exception in PHP.",
+        "until": 13
+      },
+      "Reference such a file as EXT:<key>/Resources/Public/... and let the resolver produce the published URI. The _assets path is an implementation detail and its hash changes with the layout."
+    ]
+  },
+  {
+    "id": "extension-asset-build",
+    "title": "Building Assets in a Project Extension",
+    "domains": [
+      "php",
+      "css",
+      "typescript"
+    ],
+    "scope": "extension",
+    "appliesTo": [
+      "extension asset build",
+      "sitepackage assets",
+      "frontend assets",
+      "Resources/Public/Css/",
+      "Resources/Public/JavaScript/",
+      ".scss",
+      ".ts",
+      "sass build",
+      "typescript build"
+    ],
+    "hints": [
+      "An extension owns its asset source, build tool and generated output; installing it into TYPO3 does not attach its Sass or TypeScript to the core's Build/Sources pipelines. Put only browser-consumable output below Resources/Public/ and keep the source where the extension's own package scripts name it.",
+      "Decide whether generated assets are committed. If they are, source and output change together; if they are not, the project deployment has to run the build. The extension's package.json and CI are the executable record of that decision.",
+      "The public-assets hint covers how Resources/Public files are published and referenced. The extension-declarative-files hint covers Configuration/JavaScriptModules.php for backend JavaScript import maps; neither implies a particular bundler.",
+      "For a patch to the TYPO3 backend itself, css-source-build-boundaries and backend-typescript describe the core's source trees and generated pairs; those paths and commands do not transfer to an extension."
+    ]
+  }
+]

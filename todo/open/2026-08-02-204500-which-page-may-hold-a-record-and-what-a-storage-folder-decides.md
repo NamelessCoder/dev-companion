@@ -17,5 +17,5 @@ standard page refuses, what the TCA root-level capability decides for `pid = 0`,
 and where the allowed list is declared on each major, `PageDoktypeRegistry` up to
 13.4 and TCA `allowedRecordTypes` on 14.3. Then write it as one statement beside
 the positioning-pid statement on `datahandler-persistence` in
-`knowledge/architecture-hints/php.json`, with a version range only where the three
+`knowledge/architecture-hints/records.json`, with a version range only where the three
 majors differ, and a requirement for what has to keep holding.

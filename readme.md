@@ -291,22 +291,19 @@ name already says what shape the answer has.
 
 ## Knowledge base
 
-Everything the tools and resources answer from lives in `knowledge/`. The
-markdown documents are what `typo3://core/{documentId}` serves; the JSON files
-drive the individual tools:
+Everything the tools and resources answer from lives in `knowledge/`:
 
-- `typo3-core-rules.md`
-- `typo3-core-scripts.md`
-- `typo3-commit-messages.md`
-- `typo3-gerrit-workflow.md`
-- `typo3-contribution-sources.md`
-- `architecture-hints/` (`php.json`, `fluid.json`, `typoscript.json`,
-  `css.json`, `typescript.json`, `general.json`; each entry names the domains
-  it is asked from in its own `domains` field, so the file it sits in is where
-  it is kept and not what selects it)
-- `catalog/` (the component catalog: `components.json`,
-  `component-checklist.json`, `meta.json`, and the system extensions:
-  `system-extensions.json`)
+- `documents/` — the prose corpus `typo3://core/{documentId}` serves and
+  `typo3_rule_lookup` searches: `typo3-core-rules.md`, `typo3-core-scripts.md`,
+  `typo3-commit-messages.md`, `typo3-gerrit-workflow.md`,
+  `typo3-contribution-sources.md`
+- `architecture-hints/` — one file per subject: `datahandler.json`, `fal.json`,
+  `labels.json`, `site-sets.json` and many more. Each entry names the domains it
+  is asked from in its own `domains` field, so the file says what the hint is
+  about and the tag says which query reaches it
+- `catalog/` — the component catalog (`components.json`,
+  `component-checklist.json`, `references.json`, `meta.json`) and the shipped
+  system extensions (`system-extensions.json`)
 - `test-suite-hints.json`, `task-intents.json`, `icon-concepts.json`,
   `server-scope.json`, `versions.json`
 

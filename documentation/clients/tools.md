@@ -447,8 +447,8 @@ suite at all rather than commands that cannot run there.
 Return architecture hints for TYPO3 core paths or task topics, grouped by
 section. Where the paths read as a project or third-party extension the hints
 still come back, because the conventions transfer. The "Backend CSS" and
-"Backend TypeScript" sections describe the TYPO3 backend interface and are
-withheld, with the reason, where the task names the frontend.
+"Backend TypeScript and JavaScript" sections describe the TYPO3 backend
+interface and are withheld, with the reason, where the task names the frontend.
 
 `readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: false`
 
@@ -507,9 +507,9 @@ withheld, with the reason, where the task names the frontend.
   not returned.
 - `withheldCategories` *(array of string, required)* — Categories that
   matched the domains but were left out because the task names the frontend.
-  "Backend CSS" and "Backend TypeScript" describe the TYPO3 backend interface
-  and are wrong advice for what a website renders; see docs.typo3.org for
-  frontend theming.
+  "Backend CSS" and "Backend TypeScript and JavaScript" describe the TYPO3
+  backend interface and are wrong advice for what a website renders; see
+  docs.typo3.org for frontend theming.
 - `hints` *(array of object, required)*
   - `id` *(string, required)*
   - `title` *(string, required)*

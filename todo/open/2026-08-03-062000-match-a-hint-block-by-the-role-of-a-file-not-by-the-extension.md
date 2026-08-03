@@ -3,7 +3,7 @@
 **Serves:** feedback/2026-08-02-144431-because-one-of-the-two-paths-i-passed-was-typo3.md
 **Priority:** normal
 
-The `extbase` block in `knowledge/architecture-hints/php.json` carries the bare
+The `extbase` block in `knowledge/architecture-hints/extbase.json` carries the bare
 word `extbase` in its `appliesTo`, so every path below `sysext/extbase/` matches
 it: a core bugfix passing `Classes/Service/ImageService.php` got the thirteen
 plugin hints — registerPlugin, FlexForm, the paginators, cacheHash — as the

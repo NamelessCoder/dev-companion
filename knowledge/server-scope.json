@@ -94,7 +94,7 @@
         "typo3_architecture_lookup",
         "typo3_rule_lookup"
       ],
-      "source": "knowledge/architecture-hints/css.json",
+      "source": "knowledge/architecture-hints/backend-css.json",
       "scope": "any"
     },
     {
@@ -130,7 +130,7 @@
       "tools": [
         "typo3_translation_domain_lookup"
       ],
-      "source": "src/Knowledge/Catalog/TranslationDomain.php, knowledge/architecture-hints/general.json",
+      "source": "src/Knowledge/Catalog/TranslationDomain.php, knowledge/architecture-hints/labels.json",
       "scope": "any"
     },
     {
@@ -196,7 +196,7 @@
     {
       "topic": "Frontend theming: the CSS and the JavaScript a website renders",
       "why": "Everything here about CSS and TypeScript describes the TYPO3 backend interface — its Sass sources, its --typo3-* token contract, its light and dark color schemes, its move away from Bootstrap. For a theme extension those are not a milder version of the right answer, they are the opposite of it. How a theme extension is laid out is a different question and is not excluded here: the core ships its own theme as a system extension, and the conventions it establishes — the template tree, the layout names, the backend layout files — are in the architecture hints.",
-      "instead": "typo3_architecture_lookup withholds the Backend CSS and Backend TypeScript hints where a task names the frontend, and returns what does transfer — Fluid, TypoScript, PHP, and the sitepackage layout. The styling itself is documented at https://docs.typo3.org."
+      "instead": "typo3_architecture_lookup withholds the Backend CSS and Backend TypeScript and JavaScript hints where a task names the frontend, and returns what does transfer — Fluid, TypoScript, PHP, and the sitepackage layout. The styling itself is documented at https://docs.typo3.org."
     },
     {
       "topic": "Whether an uncatalogued component or CSS class exists on your branch",

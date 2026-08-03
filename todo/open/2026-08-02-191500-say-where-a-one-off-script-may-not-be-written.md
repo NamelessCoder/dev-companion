@@ -13,7 +13,7 @@ from `extra.typo3/cms.web-dir` in `composer.json` and the default the installer
 applies, and what DDEV's TYPO3 project type serves from `/var/www/html` — from
 DDEV's own documentation, because that is the claim the entry's first **Wrong
 if** turns on. Then extend that clause in
-`knowledge/architecture-hints/general.json` so it names the document root and
+`knowledge/architecture-hints/project.json` so it names the document root and
 says what makes it the wrong place: a file there is reachable over HTTP and
 outlives the run that wrote it. Add the words to the hint's `appliesTo` that a
 session about to write such a file would use — `debug script`, `one-off script`,

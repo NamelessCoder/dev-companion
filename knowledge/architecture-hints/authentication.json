@@ -1,0 +1,24 @@
+[
+  {
+    "id": "authentication-permissions",
+    "title": "Authentication and Permissions",
+    "domains": [
+      "php"
+    ],
+    "appliesTo": [
+      "Classes/Authentication/",
+      "BackendUserAuthentication",
+      "FrontendUserAuthentication",
+      "permission",
+      "access check",
+      "authentication",
+      "authorization"
+    ],
+    "hints": [
+      "BackendUserAuthentication is the authority on what a backend user may do: isAdmin(), check($type, $value) for table, field and module access, checkLanguageAccess() for a language. Ask it — never re-implement an equivalent check.",
+      "Page-level access is a permission bitmask on the record, applied through the query restrictions rather than by filtering afterwards.",
+      "An admin bypass is a deliberate decision, not a shortcut: state why in the patch when adding one.",
+      "Permission behaviour is security-sensitive. It needs a functional test that asserts both the allowed and the denied case, and a bug here is worth checking against the maintained release branches."
+    ]
+  }
+]

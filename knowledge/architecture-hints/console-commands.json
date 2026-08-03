@@ -1,0 +1,33 @@
+[
+  {
+    "id": "console-commands",
+    "title": "Console Commands",
+    "domains": [
+      "php"
+    ],
+    "appliesTo": [
+      "Classes/Command/",
+      "Classes/Console/",
+      "console command",
+      "symfony command",
+      "AsCommand",
+      "command line"
+    ],
+    "hints": [
+      {
+        "text": "A console command is a class under Classes/Command/ extending the Symfony Command, registered with the #[AsCommand] attribute on the class: #[AsCommand('site:sets:list', 'Shows the list of available site sets.')]. A third argument holds former names kept as aliases.",
+        "since": 13
+      },
+      {
+        "text": "Autoconfiguration picks the attribute up. A console.command tag in Services.yaml is only for a command that needs explicit wiring on top of it.",
+        "since": 13
+      },
+      {
+        "text": "Without the attribute, a command is registered with a console.command tag in Configuration/Services.yaml, carrying the command name, its description, whether it may be scheduled, and an alias entry per former name.",
+        "until": 12
+      },
+      "A command name, its arguments and its options are what integrators script against, so a new command belongs in a changelog entry.",
+      "A console request is not an HTTP one: PSR-7 and middleware conventions do not apply to it, whatever the class name suggests. Behaviour is covered by functional tests."
+    ]
+  }
+]

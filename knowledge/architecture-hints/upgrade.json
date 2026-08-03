@@ -1,0 +1,117 @@
+[
+  {
+    "id": "installation-upgrade",
+    "title": "Upgrading an Installation",
+    "domains": [
+      "php"
+    ],
+    "scope": "project",
+    "appliesTo": [
+      "upgrade",
+      "update typo3",
+      "major upgrade",
+      "composer update",
+      "new major",
+      "version jump",
+      "migration",
+      "maintenance",
+      "site maintenance",
+      "extension:setup",
+      "upgrade:list",
+      "upgrade:run",
+      "upgrade:mark:undone",
+      "cache:flush",
+      "cache:warmup",
+      "upgrade wizard"
+    ],
+    "hints": [
+      "The order is: find out what breaks, move the code, then the database, then the caches. Reading first is what makes it one pass instead of three — typo3_project_scope says which TYPO3 and PHP this installation is on and which extensions are its own, and typo3_changelog_lookup with type breaking or deprecation says what the target version did to them.",
+      "The third-party extensions decide when the upgrade can happen, not whether it should. One without a release for the target major blocks the whole step, and Composer's own resolution is where that surfaces — so require the new constraints for typo3/cms-* and for every extension in one call rather than one at a time, and read the conflict it reports as the list of what has to be replaced, patched or dropped.",
+      "Raise the PHP version the target requires before the TYPO3 constraint, in composer.json and in the environment that actually runs it — a DDEV project states its own in .ddev/config.yaml. Resolving against a PHP nobody runs produces a lock file that installs and an installation that does not boot.",
+      "Everything up to here is revertible with git and everything after it is not. Take a database dump before the first command that writes, and do the pass on a copy: the schema changes and the upgrade wizards are what makes an upgrade one-way.",
+      "After the packages changed, `typo3 extension:setup` is the step that applies them: database schema changes, static data, the setup of every installed extension. It is the core's own command — `database:updateschema` belongs to the TYPO3 Console extension (helhum/typo3-console), which an installation only has if it required it.",
+      "Then the wizards. `typo3 upgrade:list` shows what is pending and why, `typo3 upgrade:run` runs all of them and takes a single wizard identifier as an argument. A wizard states its own prerequisites — a schema that is up to date, a current reference index — so one that refuses usually means a step above was skipped.",
+      {
+        "text": "`typo3 upgrade:mark:undone <identifier>` marks a wizard as not run, which is the way back from one that ran against the wrong data. Without it a wizard is done for good.",
+        "since": 13
+      },
+      "Then `typo3 cache:flush`, and `typo3 cache:warmup` where the first request must not pay for the rebuild.",
+      "What no wizard touches is upgrade-own-code."
+    ]
+  },
+  {
+    "id": "upgrade-own-code",
+    "title": "What No Wizard Touches",
+    "domains": [
+      "php"
+    ],
+    "scope": "project",
+    "appliesTo": [
+      "extension scanner",
+      "ExtensionScanner",
+      "my own code after an upgrade",
+      "same commands everywhere",
+      "staging then production"
+    ],
+    "hints": [
+      "What no wizard touches is your own code. The Extension Scanner in the Install Tool runs the core's matchers from typo3/sysext/install/Configuration/ExtensionScanner/Php/ over an extension and finds the call sites a changelog entry named. How much of a change it can find at all is what that entry's FullyScanned, PartiallyScanned or NotScanned tag says, and typo3_changelog_lookup returns it.",
+      "Run the sequence in the environment that is safe to break first, then the same commands in the same order everywhere else. An upgrade that was done differently on production is an installation nobody can reproduce — and the site configuration, the TypoScript and the TSconfig are part of what has to be re-checked there, not only the PHP."
+    ]
+  },
+  {
+    "id": "deprecated-apis",
+    "title": "Deprecated APIs",
+    "domains": [
+      "php"
+    ],
+    "appliesTo": [
+      "deprecat",
+      "@deprecated",
+      "e_user_deprecated",
+      "extension scanner",
+      "legacy api",
+      "upgrade",
+      "upgrade wizard",
+      "extension scanner",
+      "compatibility"
+    ],
+    "hints": [
+      "Whether an API is deprecated is a property of the branch you work on, not of TYPO3 as a whole, and this server does not know your branch. Read the declaration itself: an @deprecated annotation together with a trigger_error(..., E_USER_DEPRECATED) call is what marks one.",
+      "What a branch deprecated is recorded in typo3/sysext/core/Documentation/Changelog/<version>/Deprecation-<issue>-<Title>.rst and in the matchers below typo3/sysext/install/Configuration/ExtensionScanner/Php/. Take the migration path from there instead of assuming a replacement.",
+      "A deprecated API keeps working until the next major release, so an existing call site is not automatically a defect. New code uses the replacement the changelog names.",
+      "Authoring a deprecation and finding out what a version deprecated are two directions through the same files. From the reading side: the changelog directory and the extension scanner matchers ship with the core and install packages of any installation, the Extension Scanner in the Install Tool runs the matchers over an extension, and `typo3 upgrade:list` and `typo3 upgrade:run` are the console side of the migrations."
+    ]
+  },
+  {
+    "id": "upgrade-wizards",
+    "title": "Upgrade Wizards",
+    "domains": [
+      "php"
+    ],
+    "appliesTo": [
+      "Classes/Upgrades/",
+      "Classes/Updates/",
+      "upgrade wizard",
+      "upgradewizard",
+      "upgrade:run",
+      "data migration",
+      "migrate records",
+      "install tool"
+    ],
+    "hints": [
+      {
+        "text": "An upgrade wizard implements UpgradeWizardInterface: getTitle(), getDescription(), updateNecessary(), executeUpdate() and getPrerequisites(). Which namespace ships it has moved between branches — read whether the installed core has it below Core/Classes/Upgrades/ or install/Classes/Updates/, and take the attribute and the marker interfaces from the same place.",
+        "since": 13
+      },
+      {
+        "text": "Registration is the #[UpgradeWizard('identifier')] attribute on the class, which tags it for the registry. Nothing about a wizard is registered in ext_localconf.php.",
+        "since": 13
+      },
+      "updateNecessary() answers about data, never about a version number: it decides whether the wizard is offered, it is asked again after a run, and a wizard whose data is already migrated returns false. Writing it as \"has this wizard run\" is what makes a migration unrepeatable and a half-finished one invisible.",
+      "A wizard is marked as done after one successful run. Implement RepeatableInterface where it is meant to be run again — a migration over records that keep being created is the case for it.",
+      "State what the wizard needs through getPrerequisites(): DatabaseUpdatedPrerequisite where it works on tables the schema migration creates, ReferenceIndexUpdatedPrerequisite where it relies on the reference index.",
+      "Implement ChattyInterface to report progress through setOutput(), and ConfirmableInterface where the change needs the user's consent before it runs. Both are what makes the wizard usable in `typo3 upgrade:run` as well as in the Install Tool.",
+      "executeUpdate() returns whether it succeeded, and runs without a request: it is invoked from the console and from the Install Tool, so nothing about it may depend on a frontend or backend context."
+    ]
+  }
+]

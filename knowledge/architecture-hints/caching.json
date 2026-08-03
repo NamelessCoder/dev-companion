@@ -1,0 +1,23 @@
+[
+  {
+    "id": "caching",
+    "title": "Caches",
+    "domains": [
+      "php"
+    ],
+    "appliesTo": [
+      "/Cache/",
+      "CacheManager",
+      "FrontendInterface",
+      "cache",
+      "caching"
+    ],
+    "hints": [
+      "Caches are declared in $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations'] in typo3/sysext/core/Configuration/DefaultConfiguration.php: one entry per cache with a frontend class, a backend class, options and groups. Adding a cache means adding an entry there.",
+      "Inject a cache as a service with #[Autowire(service: 'cache.<name>')] on the constructor parameter rather than asking CacheManager for it at call time.",
+      "The 'core' cache is reserved for core PHP code. Pick or add a cache with the right frontend for the payload — VariableFrontend for data, PhpFrontend for generated code — and put it in the group whose flush semantics it belongs to.",
+      "Anything cached has to survive being flushed at any time; a cache is never the only place a value exists.",
+      "Cache behaviour is a wiring concern and is covered by functional tests."
+    ]
+  }
+]

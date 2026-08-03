@@ -219,6 +219,13 @@ them are machines.
   where the confusion actually happened.
 - Length is a symptom. A paragraph that will not come out short is usually two
   points, or one that is not yet understood.
+- No count of something that grows. "34 files holding 120 hints" is true on the
+  day it is written and wrong on the next commit, and nothing fails when it
+  turns: a reader believes it and a maintainer never sees it. Name the thing and
+  the command that counts it — "one file per subject, which `bin/cli
+  hints:coverage` counts" — or say "and many more". A number belongs where it
+  was measured: a decision records what a sweep found on its date, and a report
+  prints what is true when it runs.
 
 `bin/cli prose:check` counts what that costs: the sentences over 30 words, worst
 file first. It fails on one of them — the bold sentence a requirement or a

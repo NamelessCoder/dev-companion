@@ -146,5 +146,88 @@
       },
       "So an entry is dead as soon as the include it names is gone, and fluid_styled_content is the live case: it registers that identifier and still ships both Configuration/TypoScript/ and the addStaticFile() call in Configuration/TCA/Overrides/sys_template.php that lets a sys_template pick it. An extension whose TypoScript has moved into Configuration/Sets/ has neither, and no @import of the old path is left either, so nothing can ever match its entries — those lines are a cleanup rather than a defect. Nothing reports them: the key is not deprecated, no changelog entry names it, and fluid_styled_content registers itself the same way, so a deprecation review and the Extension Scanner both pass the file. Site sets are the migration such entries are usually left over from, which is the site-sets hint."
     ]
+  },
+  {
+    "id": "extension-repository-layout",
+    "title": "How a Distributed Extension Repository Is Laid Out",
+    "domains": [
+      "php"
+    ],
+    "scope": "extension",
+    "appliesTo": [
+      "distributed extension",
+      "reusable extension",
+      "published extension",
+      "standalone extension",
+      "extension repository",
+      "extension package",
+      "supported versions",
+      "supported TYPO3 version",
+      "cross-version",
+      "version matrix",
+      "TER",
+      "extension release"
+    ],
+    "hints": [
+      "A distributed extension repository has one unit, and it is the package. The test setup, the build tooling, the CI matrix and the release script all exist to develop, verify and ship that one package, and none of it is deployed anywhere. The question that sorts a project repository into two units — could this be installed into a different project — has one answer here, and it is everything.",
+      "What the package supports is the constraint in its composer.json, and every judgment about compatibility is made against that. The version the development setup happens to run is one of the supported majors, not the range: an interface that is deprecated on the newest one is still the interface the code has to call while an older one is supported.",
+      "One branch usually serves every supported major. What exists only on the newer one is used behind a check, what the newer one deprecates stays until the older one is dropped, and the file the older one still reads stays with it. A recorded suppression for such a deprecation is the work list for the release that drops that major, not debt that release is waiting on.",
+      "Two neighbours: extension-repository-dependencies for what is committed and what is vendored, extension-repository-tests for the instance the suite builds itself."
+    ]
+  },
+  {
+    "id": "extension-repository-dependencies",
+    "title": "What Such a Repository Commits, and What It Vendors",
+    "domains": [
+      "php"
+    ],
+    "scope": "extension",
+    "appliesTo": [
+      "composer.lock",
+      "lock file",
+      "vendored dependency",
+      "Contrib",
+      "classic mode",
+      "install outside composer"
+    ],
+    "hints": [
+      "The lock file is not committed. A package states the boundaries it supports and the installing project resolves inside them; a resolution committed here pins nothing where it matters and hides the range that has to hold. What stands in for it is a matrix that resolves per supported version — the lowest and the highest of each supported major — so that green means the declared range is green rather than one resolution of it.",
+      "An extension that is also installed outside Composer ships what it needs. Nothing installs its dependencies there, so a library it requires is vendored into the repository and loaded where the class is absent. That copy is a second source of the same dependency: it moves with the declared constraint, or it is a fork nobody bumps."
+    ]
+  },
+  {
+    "id": "extension-repository-tests",
+    "title": "The Instance an Extension Suite Builds Itself",
+    "domains": [
+      "php"
+    ],
+    "scope": "extension",
+    "appliesTo": [
+      "no installation around it",
+      "test instance",
+      "browser tests for a published extension",
+      "development setup"
+    ],
+    "hints": [
+      "There is no installation around the extension, so the test setup builds one. The testing framework creates an instance per functional test class from the extensions that test names, and a package below Tests/ is a fixture such an instance loads rather than something the repository ships.",
+      "Browser tests belong to the extension here. There is no project around it to own the site they run against, and the development setup that serves that site is part of this repository too — so the configuration, the specs and the command that runs them sit with everything else the package owns."
+    ]
+  },
+  {
+    "id": "system-extension-boundaries",
+    "title": "System Extension Boundaries",
+    "domains": [
+      "php"
+    ],
+    "appliesTo": [
+      "typo3/sysext/",
+      "sysext",
+      "system extension"
+    ],
+    "hints": [
+      "Keep changes inside the owning system extension unless a cross-extension contract really changes.",
+      "Reuse public APIs from other system extensions instead of depending on internal implementation details.",
+      "Check nearby extension-local tests before adding shared behavior."
+    ]
   }
 ]

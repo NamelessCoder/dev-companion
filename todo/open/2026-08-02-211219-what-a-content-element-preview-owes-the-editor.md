@@ -12,7 +12,7 @@ templates in
 for what the core's own previews draw — which columns, which relations, where
 they crop, and what they leave to the header. Then write that as one statement
 beside the existing preview statements on the `content-elements` hint in
-`knowledge/architecture-hints/general.json`, naming the field kinds a preview
+`knowledge/architecture-hints/content-elements.json`, naming the field kinds a preview
 draws from rather than asking for a summary, with a requirement for what has to
 keep holding. Settle the version binding while reading: `theme_camino` ships on
 14 only and 13.4 has no worked preview, so the evidence is one major and the

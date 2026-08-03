@@ -1,0 +1,108 @@
+[
+  {
+    "id": "sitepackage-initial-content",
+    "title": "Shipping Initial Content with an Extension",
+    "domains": [
+      "php"
+    ],
+    "appliesTo": [
+      "Initialisation/",
+      "initial content",
+      "distribution",
+      "data.t3d",
+      "data.xml",
+      "extension:setup",
+      "ship content",
+      "sitepackage",
+      "site package"
+    ],
+    "hints": [
+      "An extension ships content as Initialisation/data.t3d or Initialisation/data.xml. It is imported once, when the package is set up — typo3 extension:setup is what triggers it. Initialisation/Site/<identifier>/ ships the site configuration alongside it, and Initialisation/Files/ is copied into the fileadmin directory under the extension key.",
+      "typo3 setup and typo3 extension:setup are two commands, and the second one is where the content arrives: it fires the package initialization. The setup command runs it as its last step, so a first install does both — but an extension whose shipped content changed afterwards is set up with the second one on its own.",
+      {
+        "text": "An extension that ships one of those files is a distribution as far as the setup command is concerned: the presence of the file is the entire test. So when such a package is already active, setup skips its own site creation and says that --distribution and --create-site have no effect; the two options exclude each other in any case, and --distribution needs typo3/cms-impexp to be active before it is offered at all.",
+        "since": 14
+      },
+      {
+        "text": "The setup dispatches a package initialization event, and every import — the content, the site configurations, the static SQL — is a listener on it, so an extension can add its own.",
+        "since": 13
+      },
+      "Three neighbours: initial-content-import-once for why a changed file does not arrive, initial-content-references for what survives the import, impexp-artifact for writing the file in the first place."
+    ]
+  },
+  {
+    "id": "initial-content-import-once",
+    "title": "Why a Changed Data File Does Not Arrive",
+    "domains": [
+      "php"
+    ],
+    "appliesTo": [
+      "extensionDataImport",
+      "sys_registry",
+      "dataImported",
+      "imported nothing",
+      "content did not arrive",
+      "import again"
+    ],
+    "hints": [
+      "The import runs exactly once and remembers that in the registry, namespace extensionDataImport. A second setup imports nothing, which is the point — and also why a changed data file does not reach an installation that already ran it. Deleting that one sys_registry row is what makes extension:setup import the file again.",
+      {
+        "text": "The key is <extension_key>:Initialisation/dataImported, and <extension_key>:Initialisation/data.t3d blocks the import just as well, because both are checked.",
+        "since": 14
+      },
+      {
+        "text": "The key is the extension's path below the public directory with Initialisation/dataImported appended — typo3conf/ext/<extension_key>/Initialisation/dataImported for an extension installed there — and the sibling ending in Initialisation/data.t3d blocks the import just as well, because both are checked.",
+        "until": 13
+      },
+      "So the file is write-only on the installation it was exported from: whoever maintains it cannot see the effect of their own change there, and reading the XML back is reasoning rather than verification. Import it where it can be imported — a functional test is the cheap form: get(Import::class), loadFile('EXT:<key>/Initialisation/data.xml'), importData(), then assert the records arrived. typo3/sysext/impexp/Tests/Functional/ImportTest.php is the worked example."
+    ]
+  },
+  {
+    "id": "initial-content-references",
+    "title": "What Survives the Import, and What Points at a Stranger",
+    "domains": [
+      "php"
+    ],
+    "appliesTo": [
+      "ReferenceIndex",
+      "remapped uid",
+      "soft reference",
+      "t3://page",
+      "Initialisation/Site/",
+      "site identifier already exists",
+      "wrong page after import"
+    ],
+    "hints": [
+      "What survives the import is what the reference index sees. The export gathers relations with ReferenceIndex::getRelations(), so a uid is remapped where TCA declares the field as a relation, or where a soft reference parser finds it — a type=link field ships as a typolink soft reference with the record it points at, a type=group to pages as a database relation, inside a FlexForm as well. The same page uid in a plain input or number field is exported as the integer it is and imported as that integer, pointing at whatever the target installation has under it. Nothing warns, so the field type is what decides whether shipped content survives.",
+      "The site configuration import remaps the root page id to the page that was actually imported, and nothing else. Every other reference in the shipped config.yaml — an error handler naming t3://page?uid=..., a redirect target — keeps the uid it was exported with, so it points at a stranger's record on the second installation. Ship a site configuration with no uid in it but the root page; where one is unavoidable, the configuration is good for a first install and nothing else, and the extension says so where someone will read it.",
+      "A site identifier that already exists is skipped with a warning, so a fresh installation and an existing one behave differently. Creating a site during setup and shipping one in Initialisation/Site/ are alternatives, not steps: the first one leaves a site behind that makes the second one be skipped."
+    ]
+  },
+  {
+    "id": "impexp-artifact",
+    "title": "Writing the Export a Distribution Ships",
+    "domains": [
+      "php"
+    ],
+    "appliesTo": [
+      "impexp",
+      "impexp:export",
+      "impexp:import",
+      "typo3/cms-impexp",
+      "--table",
+      "save-files-outside-export-file",
+      "export the page tree"
+    ],
+    "hints": [
+      "The import lives in EXT:impexp, so an extension that ships content has to require typo3/cms-impexp.",
+      {
+        "text": "Without it the requirement check only logs a warning: the setup succeeds and the installation comes up empty, which is far harder to notice than a failure.",
+        "since": 13
+      },
+      "Once content exists, the console's impexp export writes the artifact and impexp import reads it back — which is also the way in for the first build, where there is nothing to export yet and hand-writing T3D is not an option: seed with DataHandler, then export.",
+      "impexp:export takes one --table per table, and a custom table nobody named is missing from the export without a word: typo3 impexp:export --table=tt_content --table=tx_myext_product.",
+      "Images come along on their own — a sys_file_reference pulls its sys_file record in as a relation and the bytes follow — but by default they are base64 inside the export file, which for an artifact that is committed is the wrong shape. --save-files-outside-export-file writes them beside it instead, into a directory named after the file plus .files, each under its own sha1. The import picks that directory up whenever it sits next to the file, extension:setup included, and reuses a file the target storage already has under the same identifier and hash rather than duplicating it.",
+      "A file path handed to the console is resolved by GeneralUtility::getFileAbsFileName(): a relative path is relative to the public directory, not to the project root. EXT:<key>/Initialisation/data.xml is the form that works from anywhere."
+    ]
+  }
+]

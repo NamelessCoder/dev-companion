@@ -87,7 +87,7 @@ final class ProseFormat
      */
     private static function targets(array $paths): array
     {
-        $files = Prose::documents();
+        $files = array_values(array_filter(Prose::documents(), self::isWrittenByHand(...)));
         if ($paths === []) {
             return $files;
         }
@@ -108,5 +108,30 @@ final class ProseFormat
         }
 
         return array_values($named);
+    }
+
+    /**
+     * Whether a file has a writer already.
+     *
+     * Not because it is generated — the column is no longer the difference,
+     * since `ToolSurface` wraps through `Wrap` like everything else here. It is
+     * that a generator decides what a line is: `tools:index` keeps the
+     * annotations of a tool on one line however wide, because they are one
+     * fact. A formatter cannot know that, so it wraps them, and the next
+     * `tools:index` puts them back — the file then changes in every commit and
+     * says nothing by changing.
+     *
+     * A recording is out for a second reason. Every block under
+     * `tool-answers/` is what a client received, and rewrapping it makes the
+     * page claim an answer arrived in lines it did not.
+     */
+    private static function isWrittenByHand(string $file): bool
+    {
+        if ($file === 'documentation/clients/tools.md' || str_starts_with($file, 'documentation/clients/tool-answers/')) {
+            return false;
+        }
+
+        return basename($file) !== 'readme.md'
+            || (!str_starts_with($file, 'decisions/') && !str_starts_with($file, 'requirements/'));
     }
 }

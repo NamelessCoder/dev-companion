@@ -23,9 +23,6 @@ use Typo3CmsMcp\Tool\Registry;
  */
 final class ToolSurface
 {
-    /** The width the rest of the documentation is written at. */
-    private const WIDTH = 79;
-
     /**
      * Where the generated part begins, so the head above it survives a
      * regeneration — the same arrangement the two index commands write under.
@@ -258,6 +255,6 @@ final class ToolSurface
     /** Wrapped where the repository wraps, with what a continued line opens with. */
     private static function wrap(string $text, string $continuation = ''): string
     {
-        return wordwrap($text, self::WIDTH - strlen($continuation), "\n" . $continuation);
+        return Wrap::text($text, $continuation);
     }
 }

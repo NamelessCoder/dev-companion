@@ -139,6 +139,31 @@ final class ProseTest extends TestCase
     }
 
     /**
+     * The head of a todo is fields rather than a paragraph, and stays so.
+     *
+     * `**Serves:**` and `**Priority:**` stand on their own lines; joined into
+     * one, `Todo` reads neither. `**Waiting on:**` is one field over several
+     * lines, and what says so is the hang under it.
+     */
+    #[Test]
+    public function aFieldIsOneLineAndAHangingIndentIsKept(): void
+    {
+        $head = "**Serves:** decisions/\n**Priority:** normal\n"
+            . "**Waiting on:** which name the tool takes, because the directory and the class\n"
+            . "    follow whichever wins and renaming one of the three alone is two names for\n"
+            . '    one thing.';
+
+        $lines = explode("\n", Wrap::document($head));
+
+        self::assertSame('**Serves:** decisions/', $lines[0]);
+        self::assertSame('**Priority:** normal', $lines[1]);
+        self::assertStringStartsWith('**Waiting on:**', $lines[2]);
+        foreach (array_slice($lines, 3) as $line) {
+            self::assertStringStartsWith('    ', $line, 'the hang is gone: ' . $line);
+        }
+    }
+
+    /**
      * The formatter writes no line past the column that was not already there.
      *
      * Stated that way round rather than as a ceiling, because the lines it

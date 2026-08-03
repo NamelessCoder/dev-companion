@@ -106,7 +106,15 @@ final class Wrap
                 continue;
             }
 
-            if ($item) {
+            // A field is one line, or one line and what hangs under it. Joined
+            // to the field below it, `**Serves:**` and `**Priority:**` become
+            // one line that `Todo` reads as neither.
+            $field = preg_match('/^\*\*[^*]+:\*\*/', trim($line)) === 1;
+            $under = $paragraph !== []
+                && preg_match('/^\*\*[^*]+:\*\*/', trim($paragraph[0])) === 1
+                && self::indent($line) <= self::indent($paragraph[0]);
+
+            if ($item || $field || $under) {
                 $out = [...$out, ...self::flush($paragraph)];
                 $paragraph = [];
             }
@@ -116,6 +124,14 @@ final class Wrap
         }
 
         return implode("\n", [...$out, ...self::flush($paragraph)]);
+    }
+
+    /** How far a line is indented. */
+    private static function indent(string $line): int
+    {
+        preg_match('/^(\s*)/', $line, $match);
+
+        return mb_strlen($match[1]);
     }
 
     /**
@@ -131,6 +147,10 @@ final class Wrap
         $trimmed = trim($line);
 
         return $trimmed === ''
+            // One code span or one link and nothing else is an entry rather
+            // than a sentence — what a contract case lists under **Held by:**,
+            // one test per line. Packed two to a line they stop being a list.
+            || preg_match('/^(?:`[^`]+`|\[[^\]]+\]\([^)]+\))[.,;:]?$/', $trimmed) === 1
             || str_starts_with($trimmed, '#')
             || str_starts_with($trimmed, '|')
             || str_starts_with($trimmed, '>')
@@ -157,6 +177,14 @@ final class Wrap
         $first = $match[1] . ($match[2] ?? '');
         $continuation = str_repeat(' ', mb_strlen($first));
 
+        // A hanging indent is the block's own, not an accident of wrapping: it
+        // is what makes `**Waiting on:**` in a todo one field over several
+        // lines rather than a field and a paragraph. Where the second line sits
+        // further in than the first, that is where the rest of them go.
+        if (isset($paragraph[1]) && self::indent($paragraph[1]) > mb_strlen($continuation)) {
+            $continuation = str_repeat(' ', self::indent($paragraph[1]));
+        }
+
         $text = implode(' ', array_map(
             static fn(string $line): string => trim($line),
             $paragraph,
@@ -166,6 +194,19 @@ final class Wrap
         $text = (string) preg_replace('/^(?:[-*+]|\d+\.)\s+/', '', $text);
 
         return self::lines($text, $first, $continuation);
+    }
+
+    /**
+     * One run of text, wrapped — for whatever writes markdown without having a
+     * document to hand, which is every generator here.
+     *
+     * It is the same wrapping the corpus is held to, and that is the point of
+     * it being reachable: a generator with a column of its own writes a file
+     * `prose:format` then disagrees with, and the two rewrite each other.
+     */
+    public static function text(string $text, string $continuation = ''): string
+    {
+        return implode("\n", self::lines($text, '', $continuation));
     }
 
     /**

@@ -1,15 +1,62 @@
 # Writing a requirement
 
-What a requirement **is** and where it lives is
-[requirements/readme.md](../../requirements/readme.md). This is how one is
-written.
+A requirement states one thing that must be true of this server, names where the
+demand came from, and says what holds it to that — a test where there is one,
+`not guarded` where there is none.
+
+It is the base the rest of the record stands on.
+[decisions/](../../decisions/readme.md) holds what a change rested on and what
+would show it wrong; a requirement is what has to keep holding afterwards, and
+it names the decisions it stands on in its own `restsOn:`. Neither directory
+belongs to `feedback/`: a feedback is one route a demand arrives by, and the
+most common one, but an entry outlives the question that produced it.
+
+[requirements/](../../requirements/readme.md) is where the entries are kept and
+nothing else. This page is what one is, where it goes and how it is written; how
+a decision is written is
+[writing-a-decision.md](../decisions/writing-a-decision.md).
+
+## Where an entry lives
+
+One requirement is one file, named after its id, in the group its id names. The
+group is not a filing preference: it is what the requirement is about, and the
+prefix carries it, so a file's id decides its path and two entries cannot
+quietly share a number.
+
+| Group                                                       | What it is about                                    |
+| ----------------------------------------------------------- | --------------------------------------------------- |
+| [audience/](../../requirements/audience/readme.md)           | Who the answer has to be right for                  |
+| [discovery/](../../requirements/discovery/readme.md)         | Which installation is read, and how                 |
+| [answers/](../../requirements/answers/readme.md)             | What a caller may conclude from one                 |
+| [documentation/](../../requirements/documentation/readme.md) | What the live manuals answer                        |
+| [task-skills/](../../requirements/task-skills/readme.md)     | What an installed workflow owes the task            |
+| [project/](../../requirements/project/readme.md)             | The repository the caller is standing in            |
+| [scope/](../../requirements/scope/readme.md)                 | Core conventions where they apply, and nowhere else |
+| [guides/](../../requirements/guides/readme.md)               | What a returned draft is worth                      |
+| [feedback/](../../requirements/feedback/readme.md)           | What the backlog has to stay usable for             |
+| [knowledge/](../../requirements/knowledge/readme.md)         | What the knowledge base has to cover                |
+| [code/](../../requirements/code/readme.md)                   | What must hold of the source itself                 |
+
+The number is three digits wide, in the file name and in the id alike, because
+that is what lists a group in the order it was written: unpadded, `dis-10` sorts
+between `dis-1` and `dis-2` in every directory listing and in anything that
+compares the ids as text. A decision is numbered the same way, so one habit
+covers both. `bin/cli requirements:check` fails on any other width.
+
+Each group's `readme.md` says what that group is about, and the listing at the
+foot of it is generated from the files below it by `bin/cli requirements:index` —
+a listing kept by hand is a second copy of the directory that only says what was
+true once.
+
+An id is never reused: a withdrawn requirement takes its number with it, so a
+number that appears in an old commit, feedback or scenario still means the one
+thing it always meant. An entry is never deleted because it was implemented; it
+is deleted only when the requirement itself is withdrawn, and then the reason
+goes in `decisions/`.
 
 Where a feedback is the route, the entry is added when it is worked off rather
 than when it arrives: a feedback nobody has judged yet is a feedback, not a
-requirement. What the entry holds is only what must be true — the assumptions
-and the evidence behind the change are
-[decisions/](../../decisions/readme.md), and how one of those is written is
-[writing-a-decision.md](../decisions/writing-a-decision.md).
+requirement.
 
 ## What an entry looks like
 
@@ -67,7 +114,8 @@ installation until the client was restarted (2026-07-29).
 They are the `RequirementState` enum. `bin/cli requirements:check` cannot fail
 on **open** or **not guarded**; both are legitimate, and `bin/cli backlog:list`
 reads them out instead, together with whether a todo in
-[todo/](../../todo/readme.md) names the id.
+[todo/](../../todo/readme.md) names the id. Nothing in `requirements/` reaches
+the order of the work on its own; that listing is the whole of the coupling.
 
 ## What it rests on
 

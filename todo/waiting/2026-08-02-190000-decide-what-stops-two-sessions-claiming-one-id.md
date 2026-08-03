@@ -107,7 +107,8 @@ alone, so it is close to the third option in cost and does not remove the
 collision. It composes with the first, and it is the only one of the four that
 would have caught the two failures on record.
 
-Read `decisions/readme.md` first — the three-digit width is there for the sort
+Read `documentation/decisions/writing-a-decision.md` first — the three-digit
+width is there for the sort
 order of a directory listing, which is the thing the third option gives up and
 the first two keep. `bin/cli todo:claim`'s overlap warning and
 `StructureTest::noFileCarriesAConflictMarker` came out of the same four runs and

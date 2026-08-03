@@ -1,59 +1,12 @@
 # What was decided, and on what evidence
 
-A commit message says what changed and why. What it cannot carry is the part
-that may not survive: the assumption the change rests on, the evidence that was
-available at the time, and what would show the decision to have been wrong.
+The working directory: one file per decision, in the group its id names. The
+listing below and the one at the foot of each group's own `readme.md` are
+written by `bin/cli decisions:index`.
 
-That is what this directory is for. One entry per decision worth revisiting. An
-entry is not a changelog line — a change nobody would need to reconsider does
-not belong here. When an assumption is later disproved, the entry stays and
-gains a **Revoked on** line: the wrong assumption is the useful part, because
-it names the place where the next one is likely to sit.
-
-An entry backs what stands on it.
-[requirements/](../requirements/readme.md) holds what must be true, and a
-requirement names the decisions it rests on in its own `restsOn:`, so a revoked
-one is readable from the requirement written on top of it. Neither directory
-belongs to `feedback/`: a feedback is one occasion on which a decision gets
-made, and the entry is read long after that question was answered.
-
-## Where an entry lives
-
-One decision is one file, named after its id, in the group its id names. The
-group is what the decision is about, and the prefix carries it, so a file's id
-decides its path and two entries cannot quietly share a number.
-
-The number is three digits wide, in the file name and in the id alike, because
-that is what lists a group in the order it was written: unpadded, `dis-10` sorts
-between `dis-1` and `dis-2` in every directory listing and in anything that
-compares the ids as text. A requirement is numbered the same way, so one habit
-covers both. `bin/cli decisions:check` fails on any other width.
-
-| Group                                     | What it is about                                        |
-| ----------------------------------------- | ------------------------------------------------------- |
-| [audience/](audience/readme.md)           | Who the server answers for, and how it says so          |
-| [discovery/](discovery/readme.md)         | Which installation is read, and how                     |
-| [answers/](answers/readme.md)             | What a lookup returns, and what decides it              |
-| [knowledge/](knowledge/readme.md)         | What the corpus holds and how it is written             |
-| [versions/](versions/readme.md)           | What a statement holds on                               |
-| [catalog/](catalog/readme.md)             | The curated indexes and where their contract comes from |
-| [scope/](scope/readme.md)                 | Core conventions where they apply, and nowhere else     |
-| [guides/](guides/readme.md)               | What a returned draft is worth                          |
-| [evidence/](evidence/readme.md)           | How this server is measured                             |
-| [task-skills/](task-skills/readme.md)     | What an installed workflow owes the task                |
-| [feedback/](feedback/readme.md)           | What the backlog has to stay usable for                 |
-| [documentation/](documentation/readme.md) | How what is written here is written                     |
-| [code/](code/readme.md)                   | How the source is laid out                              |
-
-Each group's `readme.md` says what that group is about, and the listing at the
-foot of it is generated from the files below it by `bin/cli decisions:index`, as
-is the listing at the foot of this file.
-
-An id is never reused, and an entry is never deleted: a decision that turned out
-wrong is the one most worth reading, and it is revoked in place.
-
-How one is written — the sections, what a later session adds, and when to go
-back to one: [documentation/decisions/writing-a-decision.md](../documentation/decisions/writing-a-decision.md).
+What a decision is, where an entry goes, how one is written and what a later
+session adds to it:
+[documentation/decisions/writing-a-decision.md](../documentation/decisions/writing-a-decision.md).
 `bin/cli decisions:check` holds every file to that shape.
 
 ## Every decision, newest first
@@ -84,6 +37,7 @@ and not a defect.
 - [`D-DOC-011`][D-DOC-011] — A schema is written as the shape it validates · 2026-08-03
 - [`D-DOC-012`][D-DOC-012] — The second root is an installation this repository writes · 2026-08-03
 - [`D-DOC-013`][D-DOC-013] — A commit here is three keywords and a condensed subject · 2026-08-03
+- [`D-DOC-014`][D-DOC-014] — A working directory holds entries, and the documentation describes them · 2026-08-03
 - [`D-EVI-006`][D-EVI-006] — One installation per covered version, kept and started · 2026-08-03
 - [`D-FBK-025`][D-FBK-025] — A judgement reads the corpus, decides the shape, and sets the priority · 2026-08-03
 - [`D-FBK-026`][D-FBK-026] — The ladder needs an outcome that builds something · 2026-08-03
@@ -270,6 +224,7 @@ and not a defect.
 [D-DOC-011]: documentation/doc-011-a-schema-is-written-as-the-shape-it-validates.md
 [D-DOC-012]: documentation/doc-012-the-second-root-is-an-installation-this-repository-writes.md
 [D-DOC-013]: documentation/doc-013-a-commit-here-is-three-keywords-and-a-condensed-subject.md
+[D-DOC-014]: documentation/doc-014-a-working-directory-holds-entries-and-the-documentation-describes-them.md
 [D-EVI-006]: evidence/evi-006-one-installation-per-covered-version-kept-and-started.md
 [D-FBK-025]: feedback/fbk-025-a-judgement-reads-the-corpus-decides-the-shape-and-sets-the-priority.md
 [D-FBK-026]: feedback/fbk-026-the-ladder-needs-an-outcome-that-builds-something.md

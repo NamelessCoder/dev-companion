@@ -1,72 +1,10 @@
 # What this server has to do
 
-Every entry states one thing that must be true of this server, names where the
-demand came from, and says what holds it to that — a test where there is one,
-`not guarded` where there is none.
+The working directory: one file per requirement, in the group its id names, and
+a listing at the foot of each group's own `readme.md` written by
+`bin/cli requirements:index`.
 
-This is the base the rest of the record stands on.
-[decisions/](../decisions/readme.md) says what a change rested on and what would
-show it wrong; a requirement is what has to keep holding afterwards, and it
-names the decisions it stands on in its own `restsOn:`. Neither directory
-belongs to `feedback/`: a feedback is one route a demand arrives by, and the
-most common one, but an entry outlives the question that produced it.
-
-An entry marked **open** is a requirement that has been accepted and not yet
-met; that is the backlog, and it is deliberately the same list, because a
-requirement nobody has implemented yet and one that could silently regress are
-the same kind of thing.
-
-Rules for keeping it usable: where a feedback is the route, the entry is added
-when it is worked off rather than when it arrives — a feedback nobody has judged
-yet is a feedback, not a requirement. An entry is never deleted because it was
-implemented; it is deleted only when the requirement itself is withdrawn, and
-then the reason goes in [decisions/](../decisions/readme.md). Assumptions and
-evidence live there too; these files hold only what must be true.
-
-## Where an entry lives
-
-One requirement is one file, named after its id, in the group its id names. The
-group is not a filing preference: it is what the requirement is about, and the
-prefix carries it, so a file's id decides its path and two entries cannot
-quietly share a number.
-
-The number is three digits wide, in the file name and in the id alike, because
-that is what lists a group in the order it was written: unpadded, `dis-10` sorts
-between `dis-1` and `dis-2` in every directory listing and in anything that
-compares the ids as text. A decision is numbered the same way, so one habit
-covers both. `bin/cli requirements:check` fails on any other width.
-
-| Group                                     | What it is about                                    |
-| ----------------------------------------- | --------------------------------------------------- |
-| [audience/](audience/readme.md)           | Who the answer has to be right for                  |
-| [discovery/](discovery/readme.md)         | Which installation is read, and how                 |
-| [answers/](answers/readme.md)             | What a caller may conclude from one                 |
-| [documentation/](documentation/readme.md) | What the live manuals answer                        |
-| [task-skills/](task-skills/readme.md)     | What an installed workflow owes the task            |
-| [project/](project/readme.md)             | The repository the caller is standing in            |
-| [scope/](scope/readme.md)                 | Core conventions where they apply, and nowhere else |
-| [guides/](guides/readme.md)               | What a returned draft is worth                      |
-| [feedback/](feedback/readme.md)           | What the backlog has to stay usable for             |
-| [knowledge/](knowledge/readme.md)         | What the knowledge base has to cover                |
-| [code/](code/readme.md)                   | What must hold of the source itself                 |
-
-Each group's `readme.md` says what that group is about, and the listing at the
-foot of it is generated from the files below it by `bin/cli requirements:index` —
-a listing kept by hand is a second copy of the directory that only says what
-was true once.
-
-That check cannot fail on an entry being **open** or `not guarded` — both are
-legitimate, and the second is the only honest answer for a requirement no test
-can hold. `bin/cli backlog:list` reads them out instead, together with whether
-a todo in [todo/](../todo/readme.md) names the id. Nothing here reaches the order of
-the work on its own; that listing is the whole of the coupling.
-
-An id is never reused: a withdrawn requirement takes its number with it, so a
-number that appears in an old commit, feedback or scenario still means the one
-thing it always meant.
-
-How one is written — the sections, what **Held by** owes a reader, what it may
-declare it rests on, and what `open`, `not guarded` and `held` mean:
+What a requirement is, where an entry goes and how one is written:
 [documentation/requirements/writing-a-requirement.md](../documentation/requirements/writing-a-requirement.md).
-`bin/cli requirements:check` holds every file to that shape, and `composer test`
-runs the same check through `RequirementsTest`.
+`bin/cli requirements:check` holds every file to that shape, and
+`bin/cli backlog:list` reads out the ones nothing answers for.

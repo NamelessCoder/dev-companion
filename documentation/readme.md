@@ -1,11 +1,15 @@
 # How the work is done
 
-One page per procedure that is long enough to get wrong from memory. The
-directories keep saying what a thing **is** — a requirement, a decision, a
-forward review, a feedback — and each links here for how it is carried out. One
-thing is no procedure and is written by nobody: `clients/tools.md` and the pages
-under `clients/tools/` are the tool surface, rendered from the classes that
-declare it, each page carrying what that tool answered once.
+One page per procedure that is long enough to get wrong from memory. One thing
+is no procedure and is written by nobody: `clients/tools.md` and the pages under
+`clients/tools/` are the tool surface, rendered from the classes that declare
+it, each page carrying what that tool answered once.
+
+`requirements/` and `decisions/` are working directories, and the whole of what
+one of their entries is — what it states, where it goes, how it is written —
+is here. Both readmes are what a command writes into them and a line pointing
+back. The other directories still say what a thing **is** on their own and link
+here for how it is carried out.
 
 The split is deliberate. A readme that also holds the workflow is read by
 someone looking for one paragraph and finding six; a workflow with no home ends
@@ -80,9 +84,9 @@ order by, and the launch two of the subjects below share.
 - [forward-runs.md](evidence/forward-runs.md) — running a forward review,
   judging it, and what to do when one stops without an error.
 
-What does **not** belong here are the entries themselves, only the procedure for
-writing one: what must hold is [requirements/](../requirements/readme.md), what
-a change assumed is [decisions/](../decisions/readme.md), and the order of the
-work is [todo/](../todo/readme.md), which is also where this machine's checkouts
-are named. The conventions every session works under stay in
+What does **not** belong here are the entries themselves: what must hold is
+[requirements/](../requirements/readme.md), what a change assumed is
+[decisions/](../decisions/readme.md), and the order of the work is
+[todo/](../todo/readme.md), which is also where this machine's checkouts are
+named. The conventions every session works under stay in
 [AGENTS.md](../AGENTS.md), because they are read before anything else is.

@@ -22,9 +22,15 @@ rather than the test:
   a temporary directory and putting it on the `PATH` is still a dependency on
   that directory being writable, on `chmod`, and on a `/tmp` nobody mounted
   `noexec`. A stub is handed to the code, not left where the code will find it.
+- **The double is PHPUnit's.** `self::createStub()` where it only has to
+  answer, `self::createMock()` where the call itself is the assertion. A
+  hand-written class implementing the interface re-invents `willReturn()` and
+  `expects()`, and one was written here before this said so.
 - **A data provider carries the cases.** Where one behaviour has several
   inputs, they are a provider with a named case each, so a failure names the
-  input rather than a position in a loop.
+  input rather than a position in a loop. A `foreach` is still right where the
+  cases are a corpus the test walks rather than inputs — every requirement,
+  every hint, every file in a directory.
 - **The seam is the code's, not the test's.** A class that reaches outside
   takes what it reaches through as something a caller can replace. Where there
   is no such seam, making one is part of the work rather than a reason to write
@@ -32,12 +38,19 @@ rather than the test:
 
 ## From
 
-Two shapes in this repository, both of which passed for a mock. `Typo3CliTest`
-wrote a `ddev` into a temporary directory, made it executable and prepended
-that directory to the `PATH`, so `Typo3Cli::execute()` forked a real shell to
-reach it; `Typo3Cli::locateBinary()` walked the real `PATH` beside it. Neither
-needed DDEV to be installed, so neither read as a test against a running thing
-— and both were exactly that, one layer down.
+Three shapes in this repository, none of which read as a test against a running
+thing and all of which were one. `Typo3CliTest` wrote a `ddev` into a temporary
+directory, made it executable and prepended that directory to the `PATH`, so
+`Typo3Cli::execute()` forked a real shell to reach it, and
+`Typo3Cli::locateBinary()` walked the real `PATH` beside it. `TodoTest` ran
+`git worktree add -b` in whatever checkout the suite was in and removed it
+afterwards, and wrote its fixtures into the real `todo/` — where a run that
+died in between left them, in the queue the next session reads. The third was
+the fix for the first: a hand-written `FakeRunner` doing what
+`self::createStub()` does.
+
+The suite runs the same with `PATH=/usr/bin:/bin` now, which is the whole of
+what this is for.
 
 ## Held by
 
@@ -47,6 +60,6 @@ needed DDEV to be installed, so neither read as a test against a running thing
   shape instead of on this server's.
 - What stands in for a guard is that the seams exist —
   `Typo3CmsMcp\Process\CommandRunner` for what leaves the process,
-  `Typo3CmsMcp\Tests\Support\FakeRunner` for what a test hands in — so the
-  cheaper way to write the test is the one this asks for. `D-COD-004` is where
-  that reasoning is.
+  `Todo::useDirectory()` for a queue to write into — so the cheaper way to
+  write the test is the one this asks for, and what fills the seam is
+  PHPUnit's own double. `D-COD-004` is where that reasoning is.

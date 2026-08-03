@@ -57,10 +57,16 @@ them instead of arranging for the real thing.
 - Inheriting stdin is a parameter on `run()` rather than a second
   implementation. git wants it, the console and the build must not have it, and
   one flag says which is which where two classes said it by being two classes.
-- `FakeRunner` answers from a table keyed by the command line, longest prefix
-  winning, and records what it was asked. A command nothing was written for
-  answers as one that could not be started, because a silent empty success is
-  how a test passes over a call it never meant to allow.
+- What a test hands in is `self::createStub(CommandRunner::class)`, configured
+  with `willReturn()`, `willReturnCallback()` or `willReturnOnConsecutiveCalls()`
+  as the case needs. A `FakeRunner` class was written for this first, with a
+  table keyed by the command line and a `commands()` recorder — which is
+  `willReturnCallback()` and `expects()->with()` written again by hand. It was
+  deleted.
+- `Todo::useDirectory()` is the same seam for the queue: the cases that hold
+  claiming and releasing write into a `todo/` of their own below the system
+  temporary directory. A todo's path is relative to the root that directory
+  sits in, so the redirect carries the root with it.
 - Rejected: a test that reads the other tests and fails where one starts a
   process. It was written, it worked, and it was taken out — the rule is the
   practice rather than something a check polices, and the seams are what make

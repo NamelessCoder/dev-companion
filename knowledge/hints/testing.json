@@ -265,5 +265,46 @@
       "A baseline is what makes the first run usable. Generating one records every finding that is already there into phpstan-baseline.neon, which the configuration includes first, so the run reports what a change added rather than what the package accumulated before anyone looked. It is a work list, not a suppression: an entry that disappears is removed from the file by regenerating it.",
       "The core and typo3/testing-framework both analyse at level 5. Levels are cumulative, so raising one on a package that has never been analysed produces the whole difference at once — which is what the baseline is for."
     ]
+  },
+  {
+    "id": "unit-test-doubles",
+    "title": "Unit Tests, Test Doubles and Data Providers in PHPUnit",
+    "domains": [
+      "php"
+    ],
+    "scope": "extension",
+    "appliesTo": [
+      "unit test",
+      "unit tests",
+      "mock",
+      "mocks",
+      "stub",
+      "stubs",
+      "test double",
+      "doubles",
+      "createStub",
+      "createMock",
+      "getMockBuilder",
+      "willReturn",
+      "willReturnCallback",
+      "willReturnMap",
+      "data provider",
+      "dataProvider",
+      "DataProvider",
+      "phpunit",
+      "UnitTestCase",
+      "FunctionalTestCase",
+      "fixture",
+      "fixtures",
+      "test isolation"
+    ],
+    "hints": [
+      "A unit test exercises one small part and nothing outside the process it runs in. It starts no database, no container and no subprocess, makes no HTTP request, and writes into no directory the repository keeps. That is what makes a red test mean the code changed rather than the machine did: the same suite has to answer the same on a laptop with nothing installed. Where a class reaches outside, the way past is a seam in that class — a collaborator it takes rather than creates — and where there is no seam, making one is part of the work rather than a reason to write a test that starts the real thing. TYPO3 splits this by base class: TYPO3\\TestingFramework\\Core\\Unit\\UnitTestCase for the isolated ones, TYPO3\\TestingFramework\\Core\\Functional\\FunctionalTestCase for what genuinely needs a database and an installation.",
+      "Arranging the real thing where the test can find it is still a dependency on the machine. Writing an executable into a temporary directory and putting that directory on the PATH looks like a mock and is not one: it depends on the directory being writable, on chmod, and on a /tmp nobody mounted noexec, and the code under test still forks a shell. The same applies to writing fixture files into the package's own directories and deleting them afterwards — a run that dies in between leaves them behind, in the directories the next run reads. UnitTestCase::$testFilesToDelete exists for files a test cannot avoid writing, and the better answer is usually not to write them.",
+      "Stub when the double only has to answer, mock when the call itself is what you are asserting. self::createStub(SomeInterface::class) returns a double with no expectations; self::createMock(SomeInterface::class) adds expects($this->once())->method('x')->with(...), which fails the test when the call does not happen or happens with other arguments. The distinction is worth keeping: a stub carrying expectations turns an unrelated refactoring into a failing test about a call nobody was asserting. The core's own unit tests reach for the stub markedly more often than for the mock, which is the ratio to expect when most doubles are there to answer rather than to be checked.",
+      "The verbs on a configured method are willReturn(), willReturnMap() for a table of arguments to results, willReturnCallback() where the answer depends on what was passed, willReturnOnConsecutiveCalls() where one method is called several times in a known order, willReturnSelf() for fluent interfaces and willThrowException(). self::createConfiguredStub($class, ['method' => $value]) is the short form for a double answering a few methods with fixed values. withConsecutive() is gone from current PHPUnit and has no replacement of the same shape: express it with willReturnCallback() recording what it was handed, and assert on the record afterwards.",
+      "Several inputs to one behaviour belong in a data provider rather than in a foreach inside the test. A failure then names the case instead of a position in a loop, and the run reports how many of them there are. The provider is a public static method returning an array keyed by a sentence describing the case, and it is bound with the #[PHPUnit\\Framework\\Attributes\\DataProvider('providerName')] attribute — the core uses the attribute throughout its unit tests and the older @dataProvider annotation nowhere, so the attribute is what a patch is written against. A loop is still right where the cases are not inputs but a corpus the test walks: every registered icon, every file in a directory, every entry of a configuration. There the assertion message carries the offending name and one failure is the whole answer.",
+      "Which PHPUnit is available is not a free choice in an extension. It is decided by the oldest typo3/testing-framework the extension still supports, so the constraint to read before reaching for a newer API is that package's requirement rather than what the core happens to be on."
+    ]
   }
 ]

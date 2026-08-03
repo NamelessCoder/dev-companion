@@ -10,7 +10,7 @@ use Typo3CmsMcp\Upkeep\Checkouts;
 use Typo3CmsMcp\Upkeep\Todo;
 
 /**
- * A queued todo of the test's own, for the cases that need one to hold.
+ * A queue of the test's own, for the cases that need a todo in it to hold.
  *
  * The queue empties. That is not the repository running out — it is the state
  * the sightings are reached in, and the whole of what `**Every:** session`
@@ -22,51 +22,92 @@ use Typo3CmsMcp\Upkeep\Todo;
  * not skip itself past one either (`StructureTest::noTestSkipsItselfInsteadOfHolding`),
  * and both roads out lead here. See `D-FBK-013`.
  *
- * It goes at the end of the queue, where it displaces nothing that a case about
- * the front of the queue is reading, and carries a marker so that wherever the
- * move under test has left it, it is found again and taken away.
+ * It is made below the system temporary directory and `Todo` is pointed at it
+ * for the length of the case. It used to be written into the real `todo/`,
+ * carrying a marker in its name so that whatever the move under test did with
+ * it, it could be found again and taken away — which held while every run
+ * finished, and left a fixture in the queue a session reads whenever one did
+ * not. A unit test writes into no directory this repository keeps
+ * (`R-COD-003`).
  *
  * @phpstan-import-type Section from Todo
  */
 trait QueuedTodo
 {
-    /**
-     * What makes a leftover recognizable. Fixtures are written into the real
-     * `todo/`, because a claim, a release and the order `todo:next` reads are
-     * all properties of that directory and of nothing a temporary copy could
-     * stand in for.
-     */
+    /** What a fixture is called, so a case can pick its own out of what it wrote. */
     private const MARKER = 'phpunit-todo-fixture';
+
+    /** The queue this case is writing into, made on the first write. */
+    private ?string $ownQueue = null;
 
     #[After]
     public function removeQueuedTodos(): void
     {
-        $directories = array_values(array_filter([
-            Todo::directory() . '/open',
-            Todo::directory() . '/progress',
-            Todo::directory() . '/waiting',
-        ], is_dir(...)));
+        // Both seams go back before anything else, so a case that fails
+        // halfway still leaves the next one reading this checkout's own queue
+        // and starting this machine's own git.
+        Todo::useDirectory(null);
+        Checkouts::useRunner(null);
 
-        foreach (Finder::create()->files()->in($directories)->depth(0)->name('*.md')->contains(self::MARKER) as $file) {
+        if ($this->ownQueue === null) {
+            return;
+        }
+
+        $queue = $this->ownQueue;
+        $this->ownQueue = null;
+        if (!is_dir($queue)) {
+            return;
+        }
+
+        foreach (Finder::create()->files()->in($queue) as $file) {
             unlink($file->getPathname());
         }
-        @rmdir(Todo::directory() . '/progress');
-
-        // The git a case stubbed goes back with the files it wrote. A static
-        // seam left standing is answered from a table written for another
-        // case, and the test that reads it passes for the wrong reason.
-        Checkouts::useRunner(null);
+        // Deepest first, so a directory is empty by the time it is removed.
+        $directories = [];
+        foreach (Finder::create()->directories()->in($queue) as $directory) {
+            $directories[] = $directory->getPathname();
+        }
+        usort($directories, static fn(string $a, string $b): int => substr_count($b, '/') <=> substr_count($a, '/'));
+        foreach ($directories as $directory) {
+            @rmdir($directory);
+        }
+        @rmdir($queue);
     }
 
     /**
-     * One queued todo, behind whatever the queue already has.
+     * The queue this case writes into, made once and pointed at.
      *
-     * It is `low` and stamped today, which is what puts it last however long the
-     * queue is: below everything somebody has judged higher, and behind the
-     * other `low` ones because they are older. A case about the front of the
-     * queue is therefore reading something this fixture cannot have displaced.
+     * Empty rather than a copy of the real one: what these cases hold is what
+     * a claim, a release and the order `todo:next` reads do to a queue, and
+     * every one of them says which todos are in it first. A copy would make
+     * the case depend on what this checkout happens to be carrying, which is
+     * the dependency the fixtures existed to remove.
+     */
+    private function ownQueue(): string
+    {
+        if ($this->ownQueue !== null) {
+            return $this->ownQueue;
+        }
+
+        // A root of its own with a `todo` in it, because a todo's path is
+        // relative to that root and moving one resolves the two against each
+        // other.
+        $root = sys_get_temp_dir() . '/' . self::MARKER . '-' . getmypid() . '-' . bin2hex(random_bytes(6));
+        foreach (['open', 'progress', 'waiting', 'recurring', 'reference'] as $stage) {
+            mkdir($root . '/todo/' . $stage, 0o777, true);
+        }
+
+        Todo::useDirectory($root . '/todo');
+
+        return $this->ownQueue = $root;
+    }
+
+    /**
+     * One queued todo, behind whatever this case has already queued.
      *
-     * A case that is about the order says which priority and which stamp it
+     * It is `low` and stamped today, which is what puts it last: below
+     * everything judged higher and behind the other `low` ones because they
+     * are older. A case about the order says which priority and which stamp it
      * needs instead.
      *
      * @return Section
@@ -75,7 +116,7 @@ trait QueuedTodo
     {
         $name = sprintf('%s-%s.md', $stamp ?? date('Y-m-d-His'), self::MARKER);
         file_put_contents(
-            Todo::directory() . '/open/' . $name,
+            $this->ownQueue() . '/todo/open/' . $name,
             '# ' . self::MARKER . "\n\n**Serves:** todo/\n**Priority:** " . $priority
             . "\n\nThe step this fixture stands for.\n",
         );
@@ -84,10 +125,43 @@ trait QueuedTodo
     }
 
     /**
-     * This test's own todos among the repository's, in the order they were
-     * handed over. Sessions working several todos at once leave real claims in
-     * `progress/` while the suite runs, so what a case wrote is only readable
-     * by picking it back out.
+     * One claim in hand, as a session working it would have left it.
+     *
+     * Written here rather than in the cases because three of them wrote the
+     * same file by hand into the real `todo/progress/`, and a write that is
+     * spelled out four times is four places to forget where it goes.
+     */
+    private function claimInProgress(string $branch, string $claimed = '2026-08-01', string $waitingOn = ''): void
+    {
+        file_put_contents(
+            $this->ownQueue() . '/todo/progress/' . self::MARKER . '.md',
+            '# ' . self::MARKER . "\n\n**Serves:** todo/\n**Branch:** " . $branch
+                . "\n**Claimed:** " . $claimed
+                . ($waitingOn === '' ? '' : "\n**Waiting on:** " . $waitingOn)
+                . "\n\nThe step this claim was taken for.\n",
+        );
+    }
+
+    /**
+     * One recurring todo of this case's own, at the cadence it names.
+     *
+     * `session` is the one the sightings are read from, and a case about what
+     * comes before the queue needs one to exist. It used to read whichever the
+     * repository was carrying, which made the case pass or fail on a directory
+     * it was not about.
+     */
+    private function recurATodo(string $every = 'session', string $title = self::MARKER . '-recurring'): void
+    {
+        file_put_contents(
+            $this->ownQueue() . '/todo/recurring/' . $title . '.md',
+            '# ' . $title . "\n\n**Serves:** todo/\n**Every:** " . $every
+            . "\n\nThe reading this fixture stands for.\n",
+        );
+    }
+
+    /**
+     * This case's own todos among what it queued, in the order they were
+     * handed over.
      *
      * @param array<int, Section> $todos
      * @param string|null         $named one file of them, where the case wrote more than one

@@ -335,9 +335,12 @@ bin/cli knowledge:format <path>   # only that part of it
   dependency one layer down, and this repository had two of those. What the
   code reaches outside through is a seam a caller replaces —
   `Typo3CmsMcp\Process\CommandRunner` for a command or an executable lookup,
-  handed in with `Typo3Cli::useRunner()` or `Environments::useRunner()`, and
-  `Typo3CmsMcp\Tests\Support\FakeRunner` is what a test hands in. Where a class
-  has no such seam, making one is part of the work. Several inputs to one
+  handed in with `Typo3Cli::useRunner()`, `Environments::useRunner()` or
+  `Checkouts::useRunner()`, and `Todo::useDirectory()` for a queue to write
+  into. The double is PHPUnit's — `self::createStub()` where it only has to
+  answer, `self::createMock()` where the call itself is the assertion — rather
+  than a class written by hand. Where a class has no such seam, making one is
+  part of the work. Several inputs to one
   behaviour are a `#[DataProvider]` with a named case each, so a failure names
   the input. `tests/Smoke/` is where a subprocess is the subject, and what it
   starts is this repository's own CLI. `D-COD-004` has the reasoning, including

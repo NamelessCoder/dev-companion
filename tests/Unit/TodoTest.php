@@ -8,7 +8,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Typo3CmsMcp\Paths;
-use Typo3CmsMcp\Tests\Support\FakeRunner;
+use Typo3CmsMcp\Process\CommandRunner;
 use Typo3CmsMcp\Tests\Support\QueuedTodo;
 use Typo3CmsMcp\Upkeep\Checkouts;
 use Typo3CmsMcp\Upkeep\OpenFeedback;
@@ -171,13 +171,9 @@ final class TodoTest extends TestCase
     #[Test]
     public function whatIsInHandIsOfferedToNobodyElse(): void
     {
+        $this->queueATodo();
         $queued = Todo::items();
-        @mkdir(Todo::directory() . '/progress');
-        file_put_contents(
-            Todo::directory() . '/progress/' . self::MARKER . '.md',
-            '# ' . self::MARKER . "\n\n**Serves:** todo/\n**Branch:** todo/" . self::MARKER
-                . "\n**Claimed:** 2026-08-01\n\nThe step this claim was taken for.\n",
-        );
+        $this->claimInProgress('todo/' . self::MARKER);
 
         $inHand = $this->ownTodos(Todo::progress());
 
@@ -271,12 +267,7 @@ final class TodoTest extends TestCase
     #[Test]
     public function aClaimThatCarriesAQuestionIsReleasedIntoWaiting(): void
     {
-        @mkdir(Todo::directory() . '/progress');
-        file_put_contents(
-            Todo::directory() . '/progress/' . self::MARKER . '.md',
-            '# ' . self::MARKER . "\n\n**Serves:** todo/\n**Branch:** todo/" . self::MARKER
-                . "\n**Claimed:** 2026-08-01\n**Waiting on:** which of the two shapes is wanted.\n\nThe half that is done.\n",
-        );
+        $this->claimInProgress('todo/' . self::MARKER, '2026-08-01', 'which of the two shapes is wanted.');
         $inHand = $this->ownTodos(Todo::progress())[0];
 
         $released = Todo::release($inHand);
@@ -307,19 +298,19 @@ final class TodoTest extends TestCase
     #[Test]
     public function aWorktreeStandingOnAClaimIsHandedThatClaim(): void
     {
+        // The queue is made before the first read, so `claimed()` answers from
+        // this case's own rather than from whatever the checkout is carrying.
+        $this->ownQueue();
+
         $branch = 'todo/' . self::MARKER;
-        Checkouts::useRunner((new FakeRunner())->answer(
-            'git -C ' . Paths::root() . ' rev-parse --abbrev-ref HEAD',
-            ['output' => $branch . "\n"],
-        ));
+        $git = self::createStub(CommandRunner::class);
+        $git->method('run')->willReturn(
+            ['ok' => true, 'exitCode' => 0, 'output' => $branch . "\n", 'error' => ''],
+        );
+        Checkouts::useRunner($git);
         $before = Todo::claimed();
 
-        @mkdir(Todo::directory() . '/progress');
-        file_put_contents(
-            Todo::directory() . '/progress/' . self::MARKER . '.md',
-            '# ' . self::MARKER . "\n\n**Serves:** todo/\n**Branch:** " . $branch
-                . "\n**Claimed:** 2026-08-01\n\nThe step this claim was taken for.\n",
-        );
+        $this->claimInProgress($branch);
         $onTheClaim = Todo::claimed();
 
         self::assertNull($before, 'a claim was matched before one was written');
@@ -358,15 +349,15 @@ final class TodoTest extends TestCase
     public function aWorktreeIsToldApartFromTheCheckoutItWasCutFrom(array $own, array $shared, bool $linked): void
     {
         $root = '/somewhere/checkout';
-        Checkouts::useRunner((new FakeRunner())
-            ->answer(
-                'git -C ' . $root . ' rev-parse --absolute-git-dir',
-                ['exitCode' => $own[0], 'output' => $own[1]],
-            )
-            ->answer(
-                'git -C ' . $root . ' rev-parse --path-format=absolute --git-common-dir',
-                ['exitCode' => $shared[0], 'output' => $shared[1]],
-            ));
+        $git = self::createStub(CommandRunner::class);
+        // Two calls, in the order `linked()` makes them: its own git dir, then
+        // the one it shares. `willReturnOnConsecutiveCalls` is what says that
+        // without repeating the argument lists the method signature has.
+        $git->method('run')->willReturnOnConsecutiveCalls(
+            ['ok' => $own[0] === 0, 'exitCode' => $own[0], 'output' => $own[1], 'error' => ''],
+            ['ok' => $shared[0] === 0, 'exitCode' => $shared[0], 'output' => $shared[1], 'error' => ''],
+        );
+        Checkouts::useRunner($git);
 
         self::assertSame($linked, Todo::linked($root));
     }

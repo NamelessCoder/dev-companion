@@ -7,10 +7,11 @@ namespace Typo3CmsMcp\Tests\Unit;
 use PHPUnit\Framework\Attributes\After;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use Typo3CmsMcp\Installation\Instance;
 use Typo3CmsMcp\Installation\Typo3Cli;
-use Typo3CmsMcp\Tests\Support\FakeRunner;
+use Typo3CmsMcp\Process\CommandRunner;
 use Typo3CmsMcp\Tests\Support\TemporaryInstallation;
 use Typo3CmsMcp\Tool\Registry;
 
@@ -258,8 +259,7 @@ final class Typo3CliTest extends TestCase
         file_put_contents($root . '/vendor/bin/typo3', "#!/usr/bin/env php\n<?php\n");
         mkdir($root . '/.ddev');
         file_put_contents($root . '/.ddev/config.yaml', "name: fixture\ntype: typo3\n");
-        $runner = $this->ddevThatIsRunning();
-        Typo3Cli::useRunner($runner);
+        Typo3Cli::useRunner($this->ddevThatIsRunning($commands));
         $this->discover($root);
 
         Typo3Cli::run($arguments);
@@ -270,7 +270,7 @@ final class Typo3CliTest extends TestCase
         );
         self::assertContains(
             'ddev exec -- /var/www/html/vendor/bin/typo3 ' . implode(' ', $expected),
-            $runner->commands(),
+            $commands,
         );
     }
 
@@ -385,11 +385,33 @@ final class Typo3CliTest extends TestCase
      * directory depends on that directory being writable, on `chmod`, and on a
      * `/tmp` nobody mounted `noexec`, none of which is what it is testing.
      */
-    private function ddevThatIsRunning(): FakeRunner
+    /**
+     * @param array<int, string>|null $commands filled with every command the code under test ran
+     *
+     * @param-out array<int, string> $commands
+     */
+    private function ddevThatIsRunning(?array &$commands = null): CommandRunner&Stub
     {
-        return (new FakeRunner())
-            ->with('ddev')
-            ->answer('ddev describe -j', ['output' => '{"raw": {"status": "running", "php_version": "8.3"}}'])
-            ->answer('ddev exec', ['output' => '']);
+        $commands = [];
+        $ddev = self::createStub(CommandRunner::class);
+        $ddev->method('locate')->willReturn('/usr/local/bin/ddev');
+        $ddev->method('run')->willReturnCallback(
+            static function (array $command) use (&$commands): array {
+                $commands[] = implode(' ', $command);
+
+                // The one call this class makes of its own accord is
+                // `describe -j`, and everything else here is the console. Both
+                // are answered with the description, because what the cases
+                // read is the command rather than what came back from it.
+                return [
+                    'ok' => true,
+                    'exitCode' => 0,
+                    'output' => '{"raw": {"status": "running", "php_version": "8.3"}}',
+                    'error' => '',
+                ];
+            },
+        );
+
+        return $ddev;
     }
 }

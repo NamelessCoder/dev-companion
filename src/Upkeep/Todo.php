@@ -204,9 +204,39 @@ final class Todo
         return $next === false || $now === false || $next <= $now;
     }
 
+    /**
+     * A queue somewhere other than this checkout's, which only a test asks
+     * for.
+     *
+     * `R-COD-003`: a unit test writes into no directory this repository keeps.
+     * The cases that hold claiming and releasing have to write a todo to have
+     * one, and they used to write it into the real `todo/` — a fixture in the
+     * queue a session reads, removed afterwards by a marker in its name, and
+     * left behind by any run that died in between.
+     */
+    private static ?string $directory = null;
+
+    /**
+     * Where the queue is read and written, for as long as a test says so.
+     *
+     * The directory has to be named `todo` below a root of its own, because a
+     * todo's `path` is relative to that root — `todo/open/....md` — and moving
+     * one resolves the two against each other.
+     */
+    public static function useDirectory(?string $directory): void
+    {
+        self::$directory = $directory;
+    }
+
     public static function directory(): string
     {
-        return Paths::root() . '/todo';
+        return self::$directory ?? Paths::root() . '/todo';
+    }
+
+    /** The checkout the queue belongs to, which a relative path is resolved against. */
+    private static function root(): string
+    {
+        return self::$directory === null ? Paths::root() : dirname(self::$directory);
     }
 
     /**
@@ -315,16 +345,16 @@ final class Todo
      */
     private static function move(array $todo, string $to, string $head): string
     {
-        $directory = dirname(Paths::root() . '/' . $to);
+        $directory = dirname(self::root() . '/' . $to);
         if (!is_dir($directory) && !mkdir($directory) && !is_dir($directory)) {
             throw new \RuntimeException($directory . ' is not there and cannot be made');
         }
 
         file_put_contents(
-            Paths::root() . '/' . $to,
+            self::root() . '/' . $to,
             '# ' . $todo['title'] . "\n\n" . trim($head) . "\n\n" . $todo['body'] . "\n",
         );
-        unlink(Paths::root() . '/' . $todo['path']);
+        unlink(self::root() . '/' . $todo['path']);
 
         return $to;
     }

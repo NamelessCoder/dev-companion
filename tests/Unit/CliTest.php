@@ -33,9 +33,10 @@ final class CliTest extends TestCase
     #[Test]
     public function theSightingsWaitForAnEmptyQueue(): void
     {
+        $this->recurATodo();
         $this->queueATodo();
 
-        self::assertNotSame([], Todo::sightings(), 'nothing recurs every session, so nothing could wait for the queue');
+        self::assertNotSame([], Todo::sightings(), 'the fixture that recurs every session was not read back');
 
         $buffer = new BufferedOutput();
         Cli::application()->doRun(new StringInput('todo:next'), $buffer);

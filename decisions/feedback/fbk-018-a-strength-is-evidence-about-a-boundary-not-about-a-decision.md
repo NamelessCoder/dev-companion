@@ -638,3 +638,68 @@ The third **Wrong if** is answered again rather than tested: this run left a
 guard, `KnowledgeTest::theMatcherListSaysWhatItsMissingRowsDoNotMean`, on prose
 whose value the reporting session located precisely in it having no such
 sentence.
+
+## Confirmed on 2026-08-03
+
+The first **Wrong if** fired again, in a shape none of the readings above
+carries: the lever is a **request for something the answer already does**.
+`feedback/2026-08-03-164818` reports a conformance audit of `EXT:guidedtour` in
+`/home/benji/projects/ext-guidedtour` and credits three answers, then asks that
+`typo3_extension_scope`'s `deprecatedFiles` be extended to the other file-level
+predicates an extension can trip — naming `ext_tables.php`, `#109438`, which the
+same call has checked since `a886a2d`.
+
+The quotations are checked before the boundary is, re-run on 2026-08-03 through
+this package from that directory:
+
+- The `ext_emconf.php` finding comes back verbatim: the predicate naming
+  `providesPackages` and the two version fields, `#108345`, and the sentence
+  that a Composer installation is unaffected because the package artifact skips
+  the fallback.
+- `typo3_backend_module_lookup` settles all three identifiers with their owning
+  package — `web_layout` and `records` at `typo3/cms-backend`,
+  `media_management` at `typo3/cms-filelist`, which is the attribution the
+  report says turned an identifier check into a dependency finding.
+- The tag-bounded sweep reproduces, and its count is read off two calls rather
+  than three: `ext:core` answers 30 of the 75 deprecations of v14 and
+  `ext:backend` 19, which is the 49 the report states, while `JavaScript`
+  answers 6 that are almost all already among them.
+
+The lever is in the suggestion, and what it is evidence about is the answer
+rather than the session. Beside the ask stands *the audited package happened not
+to ship one, and confirming that took a separate look* — a confirmation the same
+answer had already given in its `Registration files:` line. Both are one wording
+defect, judged onto
+[`D-ANS-009`](../answers/ans-009-a-shipped-file-deprecation-is-found-by-the-tool-that-lists-it.md),
+whose **Wrong if** is where it lands: the rendered block says *these two entries
+whole* on an answer that rendered one, and names neither file, so what was
+checked and not found is readable in the schema description and nowhere a caller
+looking at the text can see. A strength that proposes a feature is therefore
+read against the feature: where it already exists, the ask is evidence that the
+answer does not say so.
+
+The boundary is **what an answer qualifies about what it found, against what it
+says about what it did not find**. Everything this strength credits is a
+qualification travelling with a hit: a predicate with the condition under which
+its cost is zero, a module with the package that declares it, a tag list wide
+enough to bound the next call. The costs from the same debrief are one shape,
+and it is the other side — an answer's silence read as a finding. Five files,
+one session, one directory: `164651` reports a `Classes/` subdirectory that is
+absent rather than reported, `164805` that a changelog sweep answers what
+changed and not what still holds, `164710` a hint naming one of two supported
+entry points, `164734` six substring hits that read as "the manual has nothing",
+`164749` a forked core file with nothing to say which file it forks. What each
+one costs is the reading the caller supplies where the answer stops.
+
+One keep-request rested on nothing and is held now:
+`PackageSourcesTest::theTagListTravelsWithAHitAsWellAsWithAMiss`. `tags` is not
+among the keys `ChangelogLookup::outputSchema()` requires and the hit path was
+in no assertion, so the list a sweep's second and third call are read off could
+have been dropped without a failure. The other two are held already — the
+`deprecatedFiles` shape by `D-ANS-009`'s three tests, and the module
+attribution by `extension` being a required key of the answer.
+
+The feedback is trimmed to the wording half and stays open behind the card that
+carries it. No statement about TYPO3 was established here: the re-runs read this
+server's answers, and the covered set was read in
+`Extension::deprecatedFiles()`.

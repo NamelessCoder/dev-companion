@@ -1,7 +1,7 @@
 ---
 id: D-ANS-009
 date: 2026-08-02
-status: open
+status: confirmed
 ---
 
 # D-ANS-009 — A shipped-file deprecation is found by the tool that lists the file
@@ -154,3 +154,42 @@ fires.
 Still no requirement. What must hold is one behaviour of one tool, the tests
 above hold it, and a requirement restating them would be a third place the same
 sentence lives.
+
+## Confirmed on 2026-08-03
+
+The statement holds, reported by a session that had never read this entry.
+`feedback/2026-08-03-164818` audited `EXT:guidedtour` in
+`/home/benji/projects/ext-guidedtour` and calls the `ext_emconf.php` finding one
+it could not have derived from a file listing, for the reason the entry was
+written on: the trigger is the file being there rather than anything the
+extension calls, so no changelog search over its code reaches it. It reproduces.
+Re-run on 2026-08-03 through this package from that directory,
+`typo3_extension_scope` with `guidedtour` renders the predicate, `#108345` and
+the sentence saying a Composer installation is unaffected — verbatim, in the
+text and in `deprecatedFiles`.
+
+The second **Wrong if** did not fire, and what arrived instead is its opposite.
+Nothing read the block as a compatibility verdict. What the session could not
+read is which files were looked at. `ext_tables.php` is checked by the same
+call and did not fire because the extension ships none, and the report asks for
+that check to be built — *ext_tables.php in v14.3, #109438, is the obvious
+sibling* — with *the audited package happened not to ship one, and confirming
+that took a separate look* beside it. The confirmation was in the answer it
+already had: `ROOT_FILES` in `src/Installation/Extension.php` carries
+`ext_tables.php`, so the `Registration files:` line lists it wherever it exists.
+Its own quotation dates the copy it ran against — the `ext_emconf.php` cost
+sentence exists only since `a886a2d` of 2026-08-02, which is the commit that
+checks both files — so the sibling it asks for was in the answer it was reading.
+
+One sentence is what both turn on. The block ends *typo3_changelog_lookup is
+what answers that — these two entries whole*, which names a set of two on an
+answer that rendered one, and names neither file. The covered set is stated in
+the tool description and in the `deprecatedFiles` schema description, and both
+name both files; the rendered text, which `ToolResult` makes the primary answer,
+gives it as a number that does not match what stands above it. Step 4, wording.
+It changes `src/`, so it is queued rather than closed on the spot, and the
+feedback is trimmed to that half.
+
+The empty case is untouched. This block rendered, so nothing in the report bears
+on rendering nothing where there is no finding, which is what this entry decided
+and why.

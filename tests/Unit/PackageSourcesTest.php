@@ -260,6 +260,34 @@ final class PackageSourcesTest extends TestCase
     }
 
     /**
+     * What the second and third call of a sweep are read off rather than
+     * guessed, which `feedback/2026-08-03-164818` asks be kept. The tag list is
+     * held on a miss, where it is what to ask again with; on a hit it is in no
+     * assertion and not among the keys `outputSchema()` requires, so dropping
+     * it would break nothing and leave a caller bounding a sweep with the tags
+     * it happened to see.
+     */
+    #[Test]
+    public function theTagListTravelsWithAHitAsWellAsWithAMiss(): void
+    {
+        $root = $this->composerProject();
+        $this->changelogEntry($root, '14.0', 'Deprecation-1-Scanned', 'Deprecation: #1 - Scanned', ['PHP-API', 'FullyScanned', 'ext:core']);
+        $this->changelogEntry($root, '14.0', 'Deprecation-2-Unscanned', 'Deprecation: #2 - Unscanned', ['TCA', 'NotScanned', 'ext:form']);
+        Instance::discoverFrom($root);
+
+        $hit = Registry::call('typo3_changelog_lookup', ['type' => 'deprecation', 'tag' => 'ext:core']);
+
+        self::assertSame(['1'], array_column($hit->data['entries'], 'issue'));
+        // Every tag the version and the type narrowed to, the one filtered by
+        // among them — not the tags of the entries that came back, which is
+        // the list a caller already has.
+        self::assertSame(
+            ['FullyScanned', 'NotScanned', 'PHP-API', 'TCA', 'ext:core', 'ext:form'],
+            $hit->data['tags'],
+        );
+    }
+
+    /**
      * The miss the feedback of 2026-07-31 arrived through: five words, each of
      * them reaching entries on its own, and nothing carrying all five. What
      * ends it is a query the caller can ask rather than five numbers, because

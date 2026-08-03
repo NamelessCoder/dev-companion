@@ -5,18 +5,19 @@ the ones it extends, the content elements it adds to tt_content with the Fluid
 template each renders through and the FlexForm each binds, its backend modules
 and routes, its icons, its site sets with the files each carries, the form
 configurations it registers and the form definitions they store, its service
-tags, middlewares, Fluid roots and namespaces, and the shape of its Classes/
-directory — and beside all that: its manual, its README, its test layers, and
-its XLF files with the source language each declares. Those four are answered
-when they are absent too, which a file listing cannot show. A content element
-that is an Extbase plugin is marked as one and points at plugin.tx_<identifier>:
-it renders through the dispatcher and has no templateName to be missing. Tables,
-content elements and icons come from the booted installation where there is one,
-attributed to this extension by the EXT: reference each entry carries, so a list
-built in a loop or a table added by a PHP call is in the answer; everything else
-is parsed from that extension's own files, never executed, so it answers on a
-fresh clone and for a third-party extension as well as for the project's own.
-answeredBy says which of the two answered, and names what packages leaves out. A
+tags, middlewares, which of the three Fluid root directories it ships and the
+namespaces it registers globally, and the shape of its Classes/ directory — and
+beside all that: its manual, its README, its test layers, and its XLF files with
+the source language each declares. Those four are answered when they are absent
+too, which a file listing cannot show. A content element that is an Extbase
+plugin is marked as one and points at plugin.tx_<identifier>: it renders through
+the dispatcher and has no templateName to be missing. Tables, content elements
+and icons come from the booted installation where there is one, attributed to
+this extension by the EXT: reference each entry carries, so a list built in a
+loop or a table added by a PHP call is in the answer; everything else is parsed
+from that extension's own files, never executed, so it answers on a fresh clone
+and for a third-party extension as well as for the project's own. answeredBy
+says which of the two answered, and names what packages leaves out. A
 registration file it ships that a core deprecation turns on — ext_tables.php, or
 ext_emconf.php beside a composer.json declaring neither providesPackages nor a
 version — is reported with what it costs, because that predicate is the file
@@ -302,9 +303,10 @@ Backend routes: login, main, state-tracker, logout, password_forget, password_fo
 
 Middlewares: typo3/cms-core/normalized-params-attribute, typo3/cms-backend/locked-backend, typo3/cms-backend/https-redirector, typo3/cms-backend/csp-report, typo3/cms-backend/backend-routing, typo3/cms-core/request-token-middleware, typo3/cms-backend/authentication, typo3/cms-backend/backend-module-validator, typo3/cms-backend/sudo-mode-interceptor, typo3/cms-backend/site-resolver, typo3/cms-backend/page-context, typo3/cms-backend/csp-headers, typo3/cms-backend/js-label-importmap-resolver, typo3/cms-backend/response-headers, typo3/cms-core/response-propagation
 
-Fluid roots: Resources/Private/Templates/, Resources/Private/Partials/, Resources/Private/Layouts/
-
 Registration files: ext_localconf.php, ext_tables.sql, Configuration/page.tsconfig, Configuration/user.tsconfig, Configuration/RequestMiddlewares.php, Configuration/Services.yaml, Configuration/JavaScriptModules.php
+
+Fluid root directories it ships: Resources/Private/Templates/, Resources/Private/Partials/, Resources/Private/Layouts/
+Each is a directory that is there rather than a root something declared. An Extbase controller of this extension falls back to these three; every other view is pointed at a root by TypoScript or by a call while the request runs, and neither of those is in this list.
 
 Classes: Attribute (3), Authentication (4), Backend (22), Breadcrumb (6), Clipboard (2), CodeEditor (6), Command (8), Configuration (5), Context (2), ContextMenu (7), Controller (90), Date (3), DependencyInjection (3), Domain (5), Dto (9), ElementBrowser (6), Event (1), EventListener (4), Exception (8), Form (201), History (4), Hooks (2), Http (3), LinkHandler (9), Localization (11), LoginProvider (4), Middleware (12), Module (17), Preview (5), RecordList (10), Resource (2), Routing (15), Search (22), Security (18), Service (2), Sidebar (7), Template (41), Toolbar (4), Tree (21), Upgrades (3), User (1), UserFunctions (1), Utility (1), View (36), ViewHelpers (15), Wizard (8), 2 directly in Classes/ — 671 PHP files in total.
 Every directory below Classes/ is named here, and each count is every PHP file below that directory, its own subdirectories included. The total is what `find Classes -name '*.php' | wc -l` gives.

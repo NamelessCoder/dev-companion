@@ -133,7 +133,7 @@ The tracker's own API, read live. By number: subject, tracker, status, target ve
 Tools: typo3_forge_lookup
 Source: https://forge.typo3.org (network) (core)
 ## Whether a patch for an issue already exists on the review server
-The anonymous Gerrit REST API, read live: change number, subject, status, target branch and review URL. A change pushed as private is not visible to it.
+The anonymous Gerrit REST API, read live: change number, subject, status, target branch, review URL, and the patch set that is current with the commit it is — which is what says whether a checkout is the revision under review. A change pushed as private is not visible to it.
 Tools: typo3_gerrit_lookup
 Source: https://review.typo3.org (network) (core)
 ## Commit messages
@@ -185,7 +185,7 @@ Answered by that installation rather than from a snapshot, across the packages i
 Tools: typo3_component_lookup, typo3_label_lookup, typo3_icon_lookup, typo3_backend_module_lookup, typo3_fluid_namespace_list, typo3_configuration_lookup, typo3_schema_lookup
 Source: the discovered TYPO3 installation — read from the installation being worked in, not from a bundled snapshot. (any)
 ## The project around the installation: its extensions, its sites and their sets, its own commands, and what one of those extensions registers
-Read from the repository's files — composer.json, package.json, config/sites — so it answers on a fresh clone, before anything is installed or migrated. It describes what is there and does not rate it; the one thing it volunteers is a core deprecation whose predicate is a registration file the extension ships, because nothing a caller would think to search for reaches that. Per extension: the tables its TCA defines and extends, the content elements it adds to tt_content with the Fluid template each renders through and the FlexForm each binds, its backend modules and routes, its icons, its site sets and the files core reads each set for, the form configurations it registers and the definitions they store, its service tags, its middlewares, its Fluid roots and namespaces, the shape of its Classes/ directory, and which of the registration files it ships a deprecation names. Its tables, content elements and icons come from the booted installation where there is one; the rest is declared in files, and where the installation could not be booted the answer says what a file-read list leaves out.
+Read from the repository's files — composer.json, package.json, config/sites — so it answers on a fresh clone, before anything is installed or migrated. It describes what is there and does not rate it; the one thing it volunteers is a core deprecation whose predicate is a registration file the extension ships, because nothing a caller would think to search for reaches that. Per extension: the tables its TCA defines and extends, the content elements it adds to tt_content with the Fluid template each renders through and the FlexForm each binds, its backend modules and routes, its icons, its site sets and the files core reads each set for, the form configurations it registers and the definitions they store, its service tags, its middlewares, which of the Fluid root directories it ships and the namespaces it registers globally, the shape of its Classes/ directory, and which of the registration files it ships a deprecation names. Its tables, content elements and icons come from the booted installation where there is one; the rest is read from files, and where the installation could not be booted the answer says what a file-read list leaves out.
 Tools: typo3_project_scope, typo3_extension_scope
 Source: the discovered project — read from the installation being worked in, not from a bundled snapshot. (any)
 ## What a TYPO3 version broke, deprecated, added or noted
@@ -218,9 +218,9 @@ Instead: typo3_hint_lookup withholds the Backend CSS and Backend TypeScript and 
 ## Whether an uncatalogued component or CSS class exists on your branch
 The active installation supplies the contract for curated component entries, but the searchable index is deliberately a subset rather than every class in backend.css. Without an installation, even those entries fall back to one pinned core snapshot.
 Instead: Call typo3_catalog_scope to see which source answered, then inspect the installed backend CSS or the target checkout when the class is outside the curated index.
-## Gerrit review state beyond what an anonymous read answers: votes, CI results, patch-set diffs, and anything a private change carries
+## Gerrit review state beyond what an anonymous read answers: votes, CI results, the comments and the diff of a patch set, and anything a private change carries
 The review API is read without a credential, so what a reviewer sees and what a private change contains are outside it. Nothing here writes to Gerrit at all.
-Instead: typo3_gerrit_lookup answers whether a change exists, what it is called, which branch it targets and whether it is still open. Votes, patch sets and CI belong in the web UI; pushing and amending are git, and typo3://core/typo3-gerrit-workflow carries those.
+Instead: typo3_gerrit_lookup answers whether a change exists, what it is called, which branch it targets, whether it is still open, and which patch set is current with the commit it is — hold that commit against your own HEAD. Votes, comments, CI and the diff of a patch set belong in the web UI; pushing and amending are git, and typo3://core/typo3-gerrit-workflow carries those.
 ## What someone else's extension does: the API, the options and the documentation of a package the core does not ship
 Writing an extension is covered — the extension author is one of the three audiences this exists for, and the registration files, the subsystem conventions, the sitepackage layout and the test suite are all here. What is not here is the inside of somebody else's package: it has its own API, its own release cycle and its own documentation, and none of them is read by this server. Whether a name belongs to the core at all is a different question, and typo3_system_extension_lookup answers it.
 Instead: Read that extension's own documentation. What an installed extension registers — yours or a third party's — is answered by typo3_extension_scope from the files it ships.
@@ -303,7 +303,7 @@ Data:
         },
         {
             "topic": "Whether a patch for an issue already exists on the review server",
-            "depth": "The anonymous Gerrit REST API, read live: change number, subject, status, target branch and review URL. A change pushed as private is not visible to it.",
+            "depth": "The anonymous Gerrit REST API, read live: change number, subject, status, target branch, review URL, and the patch set that is current with the commit it is — which is what says whether a checkout is the revision under review. A change pushed as private is not visible to it.",
             "tools": [
                 "typo3_gerrit_lookup"
             ],
@@ -430,7 +430,7 @@ Data:
         },
         {
             "topic": "The project around the installation: its extensions, its sites and their sets, its own commands, and what one of those extensions registers",
-            "depth": "Read from the repository's files — composer.json, package.json, config/sites — so it answers on a fresh clone, before anything is installed or migrated. It describes what is there and does not rate it; the one thing it volunteers is a core deprecation whose predicate is a registration file the extension ships, because nothing a caller would think to search for reaches that. Per extension: the tables its TCA defines and extends, the content elements it adds to tt_content with the Fluid template each renders through and the FlexForm each binds, its backend modules and routes, its icons, its site sets and the files core reads each set for, the form configurations it registers and the definitions they store, its service tags, its middlewares, its Fluid roots and namespaces, the shape of its Classes/ directory, and which of the registration files it ships a deprecation names. Its tables, content elements and icons come from the booted installation where there is one; the rest is declared in files, and where the installation could not be booted the answer says what a file-read list leaves out.",
+            "depth": "Read from the repository's files — composer.json, package.json, config/sites — so it answers on a fresh clone, before anything is installed or migrated. It describes what is there and does not rate it; the one thing it volunteers is a core deprecation whose predicate is a registration file the extension ships, because nothing a caller would think to search for reaches that. Per extension: the tables its TCA defines and extends, the content elements it adds to tt_content with the Fluid template each renders through and the FlexForm each binds, its backend modules and routes, its icons, its site sets and the files core reads each set for, the form configurations it registers and the definitions they store, its service tags, its middlewares, which of the Fluid root directories it ships and the namespaces it registers globally, the shape of its Classes/ directory, and which of the registration files it ships a deprecation names. Its tables, content elements and icons come from the booted installation where there is one; the rest is read from files, and where the installation could not be booted the answer says what a file-read list leaves out.",
             "tools": [
                 "typo3_project_scope",
                 "typo3_extension_scope"
@@ -475,9 +475,9 @@ Data:
             "instead": "Call typo3_catalog_scope to see which source answered, then inspect the installed backend CSS or the target checkout when the class is outside the curated index."
         },
         {
-            "topic": "Gerrit review state beyond what an anonymous read answers: votes, CI results, patch-set diffs, and anything a private change carries",
+            "topic": "Gerrit review state beyond what an anonymous read answers: votes, CI results, the comments and the diff of a patch set, and anything a private change carries",
             "why": "The review API is read without a credential, so what a reviewer sees and what a private change contains are outside it. Nothing here writes to Gerrit at all.",
-            "instead": "typo3_gerrit_lookup answers whether a change exists, what it is called, which branch it targets and whether it is still open. Votes, patch sets and CI belong in the web UI; pushing and amending are git, and typo3://core/typo3-gerrit-workflow carries those."
+            "instead": "typo3_gerrit_lookup answers whether a change exists, what it is called, which branch it targets, whether it is still open, and which patch set is current with the commit it is — hold that commit against your own HEAD. Votes, comments, CI and the diff of a patch set belong in the web UI; pushing and amending are git, and typo3://core/typo3-gerrit-workflow carries those."
         },
         {
             "topic": "What someone else's extension does: the API, the options and the documentation of a package the core does not ship",

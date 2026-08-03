@@ -574,6 +574,27 @@ final class ProjectTest extends TestCase
     }
 
     #[Test]
+    public function aFluidRootIsRenderedAsADirectoryRatherThanAsADeclaration(): void
+    {
+        // The audited extension of feedback/2026-08-03-164651 declares no root
+        // at all: it appends its layout root to setLayoutRootPaths() while an
+        // event runs, and got the line an extension that declares one gets.
+        $root = $this->composerProject();
+        $extension = $root . '/packages/my_sitepackage';
+        $this->declare($extension . '/Resources/Private/Layouts/Login.html', '');
+        Instance::discoverFrom($root);
+
+        $result = Registry::call('typo3_extension_scope', ['extension' => 'my_sitepackage']);
+
+        self::assertSame(['Resources/Private/Layouts/'], $result->data['fluidRoots']);
+        self::assertStringContainsString(
+            'Fluid root directories it ships: Resources/Private/Layouts/',
+            $result->text,
+        );
+        self::assertStringContainsString('rather than a root something declared', $result->text);
+    }
+
+    #[Test]
     public function theContentElementsAnExtensionAddsAreNamedRatherThanPointedAt(): void
     {
         // "It extends tt_content" says where they are registered. What a

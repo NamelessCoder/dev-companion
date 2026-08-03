@@ -1,6 +1,6 @@
 ---
 id: R-ANS-020
-status: open
+status: held
 restsOn: [D-ANS-045]
 ---
 
@@ -18,9 +18,9 @@ which is [`D-ANS-008`](../../decisions/answers/ans-008-a-number-a-reader-cannot-
 one level up: there it was a number nobody could reproduce, here it is the list.
 
 The same holds for what this answer states with no declaration behind it.
-`fluidRoots` is three `is_dir()` calls, and the line rendering it stands among
-the service tags and the middlewares with nothing to say it was read off the
-tree.
+`fluidRoots` is three `is_dir()` calls, so the line rendering it stands apart
+from the service tags and the middlewares and says the extension ships the
+directory rather than that it declared a root.
 
 ## From
 
@@ -36,5 +36,5 @@ asking about. Measured against `.checkouts/14.3` the same day, `core` reports
 - `ProjectTest::everyDirectoryBelowClassesIsInTheAnswer` — the first half. Every
   directory below `Classes/` is named, a PHP file lying directly in it is counted
   where it lies, and the total is the number `find` gives.
-- Not guarded for the second half. Nothing asserts that a value read off the file
-  tree says so, and `fluidRoots` is still rendered among the registrations.
+- `ProjectTest::aFluidRootIsRenderedAsADirectoryRatherThanAsADeclaration` — the
+  second half: the line says the directory is shipped rather than declared.

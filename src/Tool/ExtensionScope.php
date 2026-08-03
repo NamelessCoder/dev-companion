@@ -62,7 +62,7 @@ final class ExtensionScope extends ReadOnlyTool
 
     public static function description(): string
     {
-        return 'Describe what one installed extension registers: the tables its TCA defines and the ones it extends, the content elements it adds to tt_content with the Fluid template each renders through and the FlexForm each binds, its backend modules and routes, its icons, its site sets with the files each carries, the form configurations it registers and the form definitions they store, its service tags, middlewares, Fluid roots and namespaces, and the shape of its Classes/ directory — and beside all that: its manual, its README, its test layers, and its XLF files with the source language each declares. Those four are answered when they are absent too, which a file listing cannot show. A content element that is an Extbase plugin is marked as one and points at plugin.tx_<identifier>: it renders through the dispatcher and has no templateName to be missing. Tables, content elements and icons come from the booted installation where there is one, attributed to this extension by the EXT: reference each entry carries, so a list built in a loop or a table added by a PHP call is in the answer; everything else is parsed from that extension\'s own files, never executed, so it answers on a fresh clone and for a third-party extension as well as for the project\'s own. answeredBy says which of the two answered, and names what packages leaves out. A registration file it ships that a core deprecation turns on — ext_tables.php, or ext_emconf.php beside a composer.json declaring neither providesPackages nor a version — is reported with what it costs, because that predicate is the file rather than anything the extension calls and no changelog search over its code reaches it. That is those two files and nothing else, so it is not an upgrade check. typo3_project_scope names the extensions this can be called for.';
+        return 'Describe what one installed extension registers: the tables its TCA defines and the ones it extends, the content elements it adds to tt_content with the Fluid template each renders through and the FlexForm each binds, its backend modules and routes, its icons, its site sets with the files each carries, the form configurations it registers and the form definitions they store, its service tags, middlewares, which of the three Fluid root directories it ships and the namespaces it registers globally, and the shape of its Classes/ directory — and beside all that: its manual, its README, its test layers, and its XLF files with the source language each declares. Those four are answered when they are absent too, which a file listing cannot show. A content element that is an Extbase plugin is marked as one and points at plugin.tx_<identifier>: it renders through the dispatcher and has no templateName to be missing. Tables, content elements and icons come from the booted installation where there is one, attributed to this extension by the EXT: reference each entry carries, so a list built in a loop or a table added by a PHP call is in the answer; everything else is parsed from that extension\'s own files, never executed, so it answers on a fresh clone and for a third-party extension as well as for the project\'s own. answeredBy says which of the two answered, and names what packages leaves out. A registration file it ships that a core deprecation turns on — ext_tables.php, or ext_emconf.php beside a composer.json declaring neither providesPackages nor a version — is reported with what it costs, because that predicate is the file rather than anything the extension calls and no changelog search over its code reaches it. That is those two files and nothing else, so it is not an upgrade check. typo3_project_scope names the extensions this can be called for.';
     }
 
     public static function inputSchema(): array
@@ -177,7 +177,6 @@ final class ExtensionScope extends ReadOnlyTool
             'Icons' => $extension['icons'],
             'Middlewares' => $extension['middlewares'],
             'Service tags' => $extension['serviceTags'],
-            'Fluid roots' => $extension['fluidRoots'],
             'Fluid namespaces declared globally' => $extension['fluidNamespaces'],
             'TypoScript files' => $extension['typoScript'],
             'Registration files' => $extension['files'],
@@ -187,6 +186,17 @@ final class ExtensionScope extends ReadOnlyTool
                 $lines[] = '';
                 $lines[] = $heading . ': ' . implode(', ', $entries);
             }
+        }
+
+        // Apart from the registrations above, because this one is three is_dir()
+        // calls: an extension appending its layout root from an event listener
+        // got the same line as one that declares it — D-ANS-045.
+        if ($extension['fluidRoots'] !== []) {
+            $lines[] = '';
+            $lines[] = 'Fluid root directories it ships: ' . implode(', ', $extension['fluidRoots']);
+            $lines[] = 'Each is a directory that is there rather than a root something declared. An Extbase '
+                . 'controller of this extension falls back to these three; every other view is pointed at a root '
+                . 'by TypoScript or by a call while the request runs, and neither of those is in this list.';
         }
 
         // Directly under the file listing, because that listing is the finding:

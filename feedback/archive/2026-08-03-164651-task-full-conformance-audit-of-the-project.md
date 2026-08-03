@@ -1,7 +1,8 @@
 ---
 date: 2026-08-03T16:46:51+00:00
 category: bug
-status: open
+status: closed
+closed: 2026-08-03
 model: claude-opus-5[1m]
 tool: typo3_extension_scope
 directory: /home/benji/projects/ext-guidedtour

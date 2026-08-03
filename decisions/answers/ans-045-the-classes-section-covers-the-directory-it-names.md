@@ -118,4 +118,28 @@ The **Assumed** section's fear is real and accepted. `core` carries seventy
 directories and four loose files, so its line names seventy-one things. The
 cheaper shape buys that back by dropping the names, which is the finding.
 
-The `fluidRoots` half is untouched and still open behind its own todo.
+The `fluidRoots` half is done. The line stands apart from the registrations as
+`Fluid root directories it ships`, with what a directory being there does not
+say: an Extbase controller of the extension falls back to the three, and every
+other view is pointed at a root by TypoScript or by a call while the request
+runs. That fallback is `ActionController::addDefaultPathToPaths()`, read in
+`.checkouts/14.3` and `.checkouts/13.4`, which is what the wording rests on. The
+description says which of the three it ships, and the schema field is untouched.
+
+The third assumption above was checked and is half wrong. `files` is a reading:
+every name in `Extension::ROOT_FILES` is one core reads by that exact name —
+`TsConfigTreeBuilder` for `Configuration/page.tsconfig`,
+`AbstractServiceProvider` for `Configuration/Fluid/Namespaces.php`, `ImportMap`
+for `Configuration/JavaScriptModules.php`,
+`ImportContentOnPackageInitialization` for `Initialisation/data.t3d`, all in
+`.checkouts/14.3`. `artifacts` is rendered under `Ships:` and says it is beside
+the registrations. `typoScript` is in the `fluidRoots` position after all: a
+file below `Configuration/TypoScript/` is loaded by nothing until
+`addStaticFile()`, a site set, an `@import` or `contentRenderingTemplates` names
+it. What keeps it out of the same failure is that both places already name files
+rather than an effect — the line reads `TypoScript files:` and the schema `Files
+below Configuration/TypoScript/.` — so it was left as it is.
+
+`knowledge/server-scope.json` said "the rest is declared in files" of everything
+this tool answers, which is the same sentence one level out; it now says "read
+from files".

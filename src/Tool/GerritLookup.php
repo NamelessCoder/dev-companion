@@ -25,7 +25,7 @@ final class GerritLookup extends ReadOnlyTool
 
     public static function description(): string
     {
-        return 'Find out whether a TYPO3 core patch already exists, from the review server at review.typo3.org. Pass issue with a Forge issue number to search the commit messages of every change for it — the question "has somebody already fixed this" — or change with the Change-Id from a commit message, or the change number a review URL ends with, to read the one it names. Answers with the change number, subject, status, target branch and review URL. A call carries issue or change, never both. This reaches the network, and it reads: reviewing, voting and uploading stay yours.';
+        return 'Find out whether a TYPO3 core patch already exists, from the review server at review.typo3.org. Pass issue with a Forge issue number to search the commit messages of every change for it — the question "has somebody already fixed this" — or change with the Change-Id from a commit message, or the change number a review URL ends with, to read the one it names. Answers with the change number, subject, status, target branch, review URL, and the patch set that is current on the server with the commit it is — which is what says whether a checkout is the revision under review. A call carries issue or change, never both. This reaches the network, and it reads: reviewing, voting and uploading stay yours.';
     }
 
     public static function annotations(): array
@@ -73,6 +73,8 @@ final class GerritLookup extends ReadOnlyTool
                 'subject' => Schema::string('The commit subject.'),
                 'status' => Schema::string('NEW while it is open, MERGED once it landed, ABANDONED when it was given up.'),
                 'branch' => Schema::string('The branch the change targets.'),
+                'patchSet' => Schema::integer('The patch set that is current on the server, counting from 1. Zero where the server named none.'),
+                'commit' => Schema::string('The commit the current patch set is. A checkout whose HEAD is another commit is not the revision under review.'),
                 'project' => Schema::string('The Gerrit project it was pushed to.'),
                 'updated' => Schema::string('When the change last moved.'),
                 'url' => Schema::string('Where a person reads the review.'),
@@ -128,13 +130,30 @@ final class GerritLookup extends ReadOnlyTool
                 ? 'No change names this issue in its commit message. This reads the review server anonymously, so a change pushed as private is invisible here — the answer is that nothing public exists, not that nobody has fixed it.'
                 : 'The review server knows no change with this number.';
         } else {
+            $named = false;
             foreach ($answer['changes'] as $entry) {
                 $lines[] = '';
                 $lines[] = sprintf('## %s (%s)', $entry['subject'], $entry['status']);
                 $lines[] = sprintf('Change %d · %s · %s', $entry['number'], $entry['branch'], $entry['url']);
+                if ($entry['patchSet'] > 0) {
+                    $named = $named || $entry['commit'] !== '';
+                    $lines[] = $entry['commit'] === ''
+                        ? sprintf('Patch set %d', $entry['patchSet'])
+                        : sprintf('Patch set %d · %s', $entry['patchSet'], $entry['commit']);
+                }
                 if ($entry['updated'] !== '') {
                     $lines[] = 'Last moved: ' . $entry['updated'];
                 }
+            }
+            // The one thing this answer knows and the checkout does not: which
+            // revision the review is of. Nothing here can read a local `HEAD`,
+            // so the comparison is the caller's and the sentence is what says
+            // there is one to make.
+            if ($named) {
+                $lines[] = '';
+                $lines[] = 'Hold the commit against `git rev-parse HEAD` in the checkout. Where the two '
+                    . 'differ, the checkout is not the revision under review, and a review says which of '
+                    . 'the two it read.';
             }
         }
 

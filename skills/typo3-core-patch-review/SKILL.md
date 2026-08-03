@@ -42,10 +42,10 @@ and the change it is — and both are read before the code is read a second time
   meant to stand alone, which decides every finding about what is missing from
   it.
 - `typo3_gerrit_lookup` with the `Change-Id` the message carries. It answers
-  whether the change is on the review server, at which patch set, against which
-  branch and in what state. A comment somebody left on an earlier patch set and
-  nobody answered is a finding of its own, and it is the one this review would
-  otherwise make a second time.
+  whether the change is on the review server, at which patch set and with which
+  commit, against which branch and in what state. A comment somebody left on an
+  earlier patch set and nobody answered is a finding of its own, and it is the
+  one this review would otherwise make a second time.
 
 **Both arguments come out of the commit message, and that is what makes them
 safe.** `Resolves:` is the Forge issue, `Change-Id:` is the change, and the
@@ -59,7 +59,9 @@ A patch that is not pushed yet has no change, and an answer of nothing is a
 result: say so rather than leaving the surface silent. Where the commit in the
 checkout and the change on the server differ, name which of the two was read —
 reviewing an older patch set than the one that exists is the failure this step
-is here for, and the checkout cannot report it.
+is here for, and the checkout cannot report it. The answer carries the commit
+the current patch set is: hold it against `git rev-parse HEAD`, and where the
+two differ say which one the findings are about.
 
 Reading is the whole of it. Voting, commenting and uploading stay with the
 person doing the review.

@@ -32,7 +32,7 @@
     },
     {
       "topic": "Whether a patch for an issue already exists on the review server",
-      "depth": "The anonymous Gerrit REST API, read live: change number, subject, status, target branch and review URL. A change pushed as private is not visible to it.",
+      "depth": "The anonymous Gerrit REST API, read live: change number, subject, status, target branch, review URL, and the patch set that is current with the commit it is — which is what says whether a checkout is the revision under review. A change pushed as private is not visible to it.",
       "tools": [
         "typo3_gerrit_lookup"
       ],
@@ -204,9 +204,9 @@
       "instead": "Call typo3_catalog_scope to see which source answered, then inspect the installed backend CSS or the target checkout when the class is outside the curated index."
     },
     {
-      "topic": "Gerrit review state beyond what an anonymous read answers: votes, CI results, patch-set diffs, and anything a private change carries",
+      "topic": "Gerrit review state beyond what an anonymous read answers: votes, CI results, the comments and the diff of a patch set, and anything a private change carries",
       "why": "The review API is read without a credential, so what a reviewer sees and what a private change contains are outside it. Nothing here writes to Gerrit at all.",
-      "instead": "typo3_gerrit_lookup answers whether a change exists, what it is called, which branch it targets and whether it is still open. Votes, patch sets and CI belong in the web UI; pushing and amending are git, and typo3://core/typo3-gerrit-workflow carries those."
+      "instead": "typo3_gerrit_lookup answers whether a change exists, what it is called, which branch it targets, whether it is still open, and which patch set is current with the commit it is — hold that commit against your own HEAD. Votes, comments, CI and the diff of a patch set belong in the web UI; pushing and amending are git, and typo3://core/typo3-gerrit-workflow carries those."
     },
     {
       "topic": "What someone else's extension does: the API, the options and the documentation of a package the core does not ship",

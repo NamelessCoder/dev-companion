@@ -5,9 +5,10 @@ review.typo3.org. Pass issue with a Forge issue number to search the commit
 messages of every change for it — the question "has somebody already fixed this"
 — or change with the Change-Id from a commit message, or the change number a
 review URL ends with, to read the one it names. Answers with the change number,
-subject, status, target branch and review URL. A call carries issue or change,
-never both. This reaches the network, and it reads: reviewing, voting and
-uploading stay yours.
+subject, status, target branch, review URL, and the patch set that is current on
+the server with the commit it is — which is what says whether a checkout is the
+revision under review. A call carries issue or change, never both. This reaches
+the network, and it reads: reviewing, voting and uploading stay yours.
 
 `readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: true`
 
@@ -52,6 +53,12 @@ changes:
     status: string  # optional
     # The branch the change targets.
     branch: string  # optional
+    # The patch set that is current on the server, counting from 1. Zero where
+    # the server named none.
+    patchSet: integer  # optional
+    # The commit the current patch set is. A checkout whose HEAD is another
+    # commit is not the revision under review.
+    commit: string  # optional
     # The Gerrit project it was pushed to.
     project: string  # optional
     # When the change last moved.
@@ -96,7 +103,10 @@ Query: message:110348
 
 ## [TASK] Deprecate AssetCollector media handling (MERGED)
 Change 95040 · main · https://review.typo3.org/c/Packages/TYPO3.CMS/+/95040
+Patch set 3 · e82b930e6e0587842427496c5ce01f625b27fb66
 Last moved: 2026-08-02 20:40:50.000000000
+
+Hold the commit against `git rev-parse HEAD` in the checkout. Where the two differ, the checkout is not the revision under review, and a review says which of the two it read.
 ```
 
 Data:
@@ -112,6 +122,8 @@ Data:
             "subject": "[TASK] Deprecate AssetCollector media handling",
             "status": "MERGED",
             "branch": "main",
+            "patchSet": 3,
+            "commit": "e82b930e6e0587842427496c5ce01f625b27fb66",
             "project": "Packages/TYPO3.CMS",
             "updated": "2026-08-02 20:40:50.000000000",
             "url": "https://review.typo3.org/c/Packages/TYPO3.CMS/+/95040"
@@ -139,7 +151,10 @@ Query: change:89011
 
 ## [TASK] Raise --dev phpunit/phpunit:^11.5.17 (MERGED)
 Change 89011 · main · https://review.typo3.org/c/Packages/TYPO3.CMS/+/89011
+Patch set 4 · fabe19d4150feb4b80317bba217d289115c6d00d
 Last moved: 2025-04-09 19:01:42.000000000
+
+Hold the commit against `git rev-parse HEAD` in the checkout. Where the two differ, the checkout is not the revision under review, and a review says which of the two it read.
 ```
 
 Data:
@@ -155,6 +170,8 @@ Data:
             "subject": "[TASK] Raise --dev phpunit/phpunit:^11.5.17",
             "status": "MERGED",
             "branch": "main",
+            "patchSet": 4,
+            "commit": "fabe19d4150feb4b80317bba217d289115c6d00d",
             "project": "Packages/TYPO3.CMS",
             "updated": "2025-04-09 19:01:42.000000000",
             "url": "https://review.typo3.org/c/Packages/TYPO3.CMS/+/89011"

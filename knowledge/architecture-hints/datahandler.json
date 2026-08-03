@@ -1,0 +1,167 @@
+[
+  {
+    "id": "datahandler-basics",
+    "title": "DataHandler Is the Write Path for Records",
+    "domains": [
+      "php"
+    ],
+    "appliesTo": [
+      "DataHandler",
+      "/Persistence/",
+      "persistence",
+      "write a record",
+      "record changes",
+      "tcemain",
+      "backend user",
+      "BE_USER"
+    ],
+    "hints": [
+      "Every record change the backend makes goes through DataHandler. It evaluates the TCA of each field, checks the editor's permissions, keeps workspaces and localizations consistent and updates the reference index. A direct INSERT writes the row and none of that, so the record exists and nothing else about it is true.",
+      "DataHandler acts as a backend user: pass one to start() or have one in $GLOBALS['BE_USER']. Permission checks, workspaces and the reference index all hang off it, which is what makes DataHandler the right way to seed and a direct INSERT the wrong one.",
+      "The rest of the subject is its own hint, because each is asked as its own question: datahandler-writing for the datamap, datahandler-relations for a relation field, datahandler-placement for where a record lands, datahandler-seeding for building content that exists nowhere yet, datahandler-testing for covering any of it. Reading records back is persistence-reading and works nothing like this."
+    ],
+    "checks": [
+      "CI=true ./Build/Scripts/runTests.sh -s functional",
+      "CI=true ./Build/Scripts/runTests.sh -s phpstan"
+    ]
+  },
+  {
+    "id": "datahandler-writing",
+    "title": "Writing Records with a Datamap",
+    "domains": [
+      "php"
+    ],
+    "appliesTo": [
+      "datamap",
+      "data map",
+      "process_datamap",
+      "cmdmap",
+      "command map",
+      "process_cmdmap",
+      "substNEWwithIDs",
+      "write records",
+      "create records",
+      "update a record",
+      "delete a record",
+      "copy a record",
+      "move a record"
+    ],
+    "hints": [
+      "Writing records goes through a datamap: $dataMap[<table>][<uid or \"NEW\" plus a unique suffix>][<field>], handed to start($dataMap, $cmdMap) and then process_datamap(). Moving, copying and deleting go through the command map instead. A new record's real uid comes back in substNEWwithIDs, keyed by the placeholder."
+    ],
+    "checks": [
+      "CI=true ./Build/Scripts/runTests.sh -s functional",
+      "CI=true ./Build/Scripts/runTests.sh -s phpstan"
+    ]
+  },
+  {
+    "id": "datahandler-relations",
+    "title": "What a Datamap Does to a Relation Field",
+    "domains": [
+      "php"
+    ],
+    "appliesTo": [
+      "relation field",
+      "foreign_field",
+      "foreign_table_field",
+      "foreign_match_fields",
+      "mm relation",
+      "inline records",
+      "irre",
+      "child records"
+    ],
+    "hints": [
+      "A relation field takes a comma-separated list of the related uids on the parent's own field, \"NEW\" placeholders included; those resolve once the children have been created in the same run. Where the field declares foreign_field, DataHandler writes the parent uid onto every child, together with foreign_table_field, foreign_match_fields and a sorting value counted up in list order. The parent's own column then holds the number of children rather than the list, as an MM field's column does. Only a relation stored in the parent column itself keeps the list, so a child's pointer column and a parent's counter are never written by hand."
+    ],
+    "checks": [
+      "CI=true ./Build/Scripts/runTests.sh -s functional",
+      "CI=true ./Build/Scripts/runTests.sh -s phpstan"
+    ]
+  },
+  {
+    "id": "datahandler-placement",
+    "title": "Where a New Record Lands, and in What Order",
+    "domains": [
+      "php"
+    ],
+    "appliesTo": [
+      "sorting",
+      "sortby",
+      "record order",
+      "order of records",
+      "positioning pid",
+      "negative pid",
+      "first record on the page",
+      "top of the page",
+      "reversed order",
+      "reverse order",
+      "wrong order",
+      "wrong position"
+    ],
+    "hints": [
+      "A new record is placed at the TOP of its page: the pid field is the positioning pid, and a page uid there means \"first record on that page\". A datamap written in reading order therefore comes out reversed — pages in a menu, content elements in a column.",
+      "To place records in order, use the negative form: a pid of -<uid> means \"directly after that record\". A \"NEW\" placeholder may be used there as well, as -NEW..., and resolves once the record it names has been created in the same run."
+    ],
+    "checks": [
+      "CI=true ./Build/Scripts/runTests.sh -s functional",
+      "CI=true ./Build/Scripts/runTests.sh -s phpstan"
+    ]
+  },
+  {
+    "id": "datahandler-seeding",
+    "title": "Seeding Records with a Script",
+    "domains": [
+      "php"
+    ],
+    "appliesTo": [
+      "seed",
+      "seeding",
+      "seed content",
+      "create pages programmatically",
+      "build a page tree",
+      "one-off script",
+      "CommandLineUserAuthentication",
+      "Bootstrap::init"
+    ],
+    "hints": [
+      "A page tree that has to be established again — on the next installation, in a fresh environment, after a reset — is what impexp is for: the exported T3D or XML is the artifact, impexp:import puts it back into a page tree, and extension:setup does the same for a package that ships one. Seed with a script for content that exists nowhere yet, then export it. sitepackage-initial-content is the shipping half.",
+      "No console command hands you a DataHandler, so seeding is a script that boots TYPO3 itself. Bootstrap::init($classLoader), and nothing else: the second parameter is $failsafe, and the CLI binary passes it as true only because the command application finishes the boot afterwards. In failsafe mode the container is the reduced one, TCA is never built, and makeInstance() then constructs a core service itself with no arguments — so the failure reads as a constructor missing its arguments rather than as a service that is not registered.",
+      "Then the backend user, in that order: Bootstrap::initializeBackendUser(CommandLineUserAuthentication::class) creates it, Bootstrap::initializeBackendAuthentication() logs it in, and the second one alone has no $GLOBALS['BE_USER'] to check. Anything that reads a site attribute needs $GLOBALS['LANG'] as well, which the command application builds with LanguageServiceFactory::createFromUserPreferences($GLOBALS['BE_USER']).",
+      "In one datamap the pages are processed before every other table, so a record whose pid is the NEW id of a page created in the same call still lands on it. Between two other tables the order of the datamap decides, and a NEW id that has not been substituted yet leaves that record unwritten — a log entry, no exception. Where the target is not a page, create it in a first process_datamap() call, read substNEWwithIDs, and pass real ids in the second."
+    ],
+    "checks": [
+      "CI=true ./Build/Scripts/runTests.sh -s functional"
+    ]
+  },
+  {
+    "id": "datahandler-testing",
+    "title": "Testing DataHandler Behaviour",
+    "domains": [
+      "php"
+    ],
+    "appliesTo": [
+      "DataHandler",
+      "DataHandler test",
+      "AbstractDataHandlerActionTestCase",
+      "data scenario",
+      "workspace",
+      "localization",
+      "hidden record",
+      "deleted record",
+      "versioned record"
+    ],
+    "hints": [
+      "DataHandler and persistence changes are high-impact and usually need functional tests.",
+      "Preserve workspace, localization, permissions, and hook or event behavior unless intentionally changed.",
+      "Test edge cases with deleted, hidden, localized, versioned, or workspace records when relevant.",
+      {
+        "text": "DataHandler scenarios extend AbstractDataHandlerActionTestCase instead of FunctionalTestCase; it carries the scenario setup those tests share. It lives in typo3/sysext/core/Tests/Functional/DataScenarios/, which is the core's own test tree — an extension writes an ordinary FunctionalTestCase and primes its records with CSV fixtures.",
+        "scope": "core"
+      }
+    ],
+    "checks": [
+      "CI=true ./Build/Scripts/runTests.sh -s functional",
+      "CI=true ./Build/Scripts/runTests.sh -s phpstan"
+    ]
+  }
+]

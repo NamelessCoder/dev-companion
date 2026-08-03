@@ -2,6 +2,9 @@
   {
     "id": "extension-static-analysis",
     "title": "Setting Up PHPStan for an Extension",
+    "domains": [
+      "php"
+    ],
     "scope": "extension",
     "appliesTo": [
       "phpstan",
@@ -31,6 +34,9 @@
   {
     "id": "system-extension-boundaries",
     "title": "System Extension Boundaries",
+    "domains": [
+      "php"
+    ],
     "appliesTo": [
       "typo3/sysext/",
       "sysext",
@@ -49,6 +55,9 @@
   {
     "id": "dependency-injection-services",
     "title": "Dependency Injection and Services",
+    "domains": [
+      "php"
+    ],
     "appliesTo": [
       "Configuration/Services.yaml",
       "/Service/",
@@ -74,6 +83,9 @@
   {
     "id": "events-extension-points",
     "title": "Events and Extension Points",
+    "domains": [
+      "php"
+    ],
     "appliesTo": [
       "/Event/",
       "EventListener",
@@ -107,6 +119,9 @@
   {
     "id": "tca-formengine",
     "title": "TCA, FormEngine, and Backend Forms",
+    "domains": [
+      "php"
+    ],
     "appliesTo": [
       "Configuration/TCA/",
       "FormEngine",
@@ -133,6 +148,9 @@
   {
     "id": "formdata-providers",
     "title": "FormEngine Data Providers",
+    "domains": [
+      "php"
+    ],
     "appliesTo": [
       "Configuration/DefaultConfiguration.php",
       "FormDataProvider",
@@ -157,6 +175,9 @@
   {
     "id": "core-tests",
     "title": "Writing Core Tests",
+    "domains": [
+      "php"
+    ],
     "scope": "core",
     "appliesTo": [
       "/Tests/Unit/",
@@ -175,7 +196,6 @@
       "A functional test starts on an empty database: the first test of a class installs the schema and no rows, every test after it is preceded by a truncation of all tables, and the framework imports nothing of its own — so the only records a test run sees are the ones it primed. A record nobody imported is absent rather than stale: setUpBackendUser(1) fails with \"does not exist in the database\" until a be_users fixture is imported. Two things change that — protected bool $initializeDatabase = false skips creation and truncation entirely, and withDatabaseSnapshot() carries rows the first test of a class created past the truncation for the rest of it.",
       "State is set up and asserted with CSV fixtures, not hand-written inserts: $this->importCSVDataSet(__DIR__ . '/Fixtures/pages.csv') in setUp(), $this->assertCSVDataSet(__DIR__ . '/Fixtures/Expected.csv') for the result. The files live in a Fixtures/ directory next to the test class. This is the expected form for persistence behaviour.",
       "Take services from the container with $this->get(SomeService::class) rather than constructing them, so the test exercises the real wiring.",
-      "DataHandler scenarios extend AbstractDataHandlerActionTestCase instead of FunctionalTestCase; it carries the scenario setup those tests share.",
       {
         "text": "Tests mirror the class path: typo3/sysext/<ext>/Classes/Foo/Bar.php is tested by typo3/sysext/<ext>/Tests/{Unit,Functional}/Foo/BarTest.php.",
         "scope": "core"
@@ -191,6 +211,9 @@
   {
     "id": "project-extension-tests",
     "title": "Testing a Project Extension",
+    "domains": [
+      "php"
+    ],
     "scope": "extension",
     "appliesTo": [
       "test coverage",
@@ -250,6 +273,9 @@
   {
     "id": "backend-modules",
     "title": "Backend Module and Route Registration",
+    "domains": [
+      "php"
+    ],
     "appliesTo": [
       "Configuration/Backend/Modules.php",
       "Configuration/Backend/Routes.php",
@@ -294,6 +320,9 @@
   {
     "id": "console-commands",
     "title": "Console Commands",
+    "domains": [
+      "php"
+    ],
     "appliesTo": [
       "Classes/Command/",
       "Classes/Console/",
@@ -325,6 +354,9 @@
   {
     "id": "extension-files",
     "title": "Extension Registration Files",
+    "domains": [
+      "php"
+    ],
     "appliesTo": [
       "ext_tables.sql",
       "ext_localconf.php",
@@ -401,6 +433,9 @@
   {
     "id": "tca-schema-api",
     "title": "TCA Schema API",
+    "domains": [
+      "php"
+    ],
     "appliesTo": [
       "Classes/Schema/",
       "TcaSchema",
@@ -427,49 +462,11 @@
     ]
   },
   {
-    "id": "datahandler-persistence",
-    "title": "DataHandler and Persistence",
-    "appliesTo": [
-      "DataHandler",
-      "/Persistence/",
-      "/Database/",
-      "ext_tables.sql",
-      "hidden record",
-      "deleted record",
-      "enable field",
-      "enablecolumns",
-      "restriction",
-      "workspace",
-      "localization",
-      "persistence",
-      "database query",
-      "querybuilder",
-      "datamap",
-      "cmdmap",
-      "seed",
-      "seeding",
-      "create records",
-      "sorting",
-      "sortby"
-    ],
-    "hints": [
-      "DataHandler and persistence changes are high-impact and usually need functional tests.",
-      "Preserve workspace, localization, permissions, and hook or event behavior unless intentionally changed.",
-      "Test edge cases with deleted, hidden, localized, versioned, or workspace records when relevant.",
-      "Writing records goes through a datamap: $dataMap[<table>][<uid or \"NEW\" plus a unique suffix>][<field>], handed to start($dataMap, $cmdMap) and then process_datamap(). Moving, copying and deleting go through the command map instead. A new record's real uid comes back in substNEWwithIDs, keyed by the placeholder.",
-      "A relation field takes a comma-separated list of the related uids on the parent's own field, \"NEW\" placeholders included; those resolve once the children have been created in the same run. Where the field declares foreign_field, DataHandler writes the parent uid onto every child, together with foreign_table_field, foreign_match_fields and a sorting value counted up in list order. The parent's own column then holds the number of children rather than the list, as an MM field's column does. Only a relation stored in the parent column itself keeps the list, so a child's pointer column and a parent's counter are never written by hand.",
-      "A new record is placed at the TOP of its page: the pid field is the positioning pid, and a page uid there means \"first record on that page\". A datamap written in reading order therefore comes out reversed — pages in a menu, content elements in a column.",
-      "To place records in order, use the negative form: a pid of -<uid> means \"directly after that record\". A \"NEW\" placeholder may be used there as well, as -NEW..., and resolves once the record it names has been created in the same run.",
-      "DataHandler acts as a backend user: pass one to start() or have one in $GLOBALS['BE_USER']. Permission checks, workspaces and the reference index all hang off it, which is what makes DataHandler the right way to seed and a direct INSERT the wrong one."
-    ],
-    "checks": [
-      "CI=true ./Build/Scripts/runTests.sh -s functional",
-      "CI=true ./Build/Scripts/runTests.sh -s phpstan"
-    ]
-  },
-  {
     "id": "routing-request-handling",
     "title": "Routing, Middleware, and Request Handling",
+    "domains": [
+      "php"
+    ],
     "appliesTo": [
       "/Http/",
       "/Middleware/",
@@ -497,6 +494,9 @@
   {
     "id": "caching",
     "title": "Caches",
+    "domains": [
+      "php"
+    ],
     "appliesTo": [
       "/Cache/",
       "CacheManager",
@@ -518,6 +518,9 @@
   {
     "id": "file-abstraction-layer",
     "title": "FAL: Storages, Files, and Drivers",
+    "domains": [
+      "php"
+    ],
     "appliesTo": [
       "Classes/Resource/",
       "ResourceStorage",
@@ -542,6 +545,9 @@
   {
     "id": "authentication-permissions",
     "title": "Authentication and Permissions",
+    "domains": [
+      "php"
+    ],
     "appliesTo": [
       "Classes/Authentication/",
       "BackendUserAuthentication",
@@ -564,6 +570,9 @@
   {
     "id": "upgrade-wizards",
     "title": "Upgrade Wizards",
+    "domains": [
+      "php"
+    ],
     "appliesTo": [
       "Classes/Upgrades/",
       "Classes/Updates/",
@@ -596,6 +605,9 @@
   {
     "id": "frontend-dataprocessors",
     "title": "Frontend DataProcessors",
+    "domains": [
+      "php"
+    ],
     "appliesTo": [
       "Classes/DataProcessing/",
       "dataprocessor",
@@ -618,6 +630,9 @@
   {
     "id": "extbase",
     "title": "Extbase Plugins",
+    "domains": [
+      "php"
+    ],
     "appliesTo": [
       "extbase",
       "plugin",
@@ -661,6 +676,9 @@
   {
     "id": "sitepackage-initial-content",
     "title": "Shipping Initial Content with an Extension",
+    "domains": [
+      "php"
+    ],
     "appliesTo": [
       "Initialisation/",
       "initial content",
@@ -704,9 +722,6 @@
       "The site configuration import remaps the root page id to the page that was actually imported, and nothing else. Every other reference in the shipped config.yaml — an error handler naming t3://page?uid=..., a redirect target — keeps the uid it was exported with, so it points at a stranger's record on the second installation. Ship a site configuration with no uid in it but the root page; where one is unavoidable, the configuration is good for a first install and nothing else, and the extension says so where someone will read it.",
       "A site identifier that already exists is skipped with a warning, so a fresh installation and an existing one behave differently. Creating a site during setup and shipping one in Initialisation/Site/ are alternatives, not steps: the first one leaves a site behind that makes the second one be skipped.",
       "Once content exists, the console's impexp export writes the artifact and impexp import reads it back — which is also the way in for the first build, where there is nothing to export yet and hand-writing T3D is not an option: seed with DataHandler, then export.",
-      "No console command hands you a DataHandler, so seeding is a throwaway script that boots TYPO3 itself. Bootstrap::init($classLoader), and nothing else: the second parameter is $failsafe, and the CLI binary passes it as true only because the command application finishes the boot afterwards. In failsafe mode the container is the reduced one, TCA is never built, and makeInstance() then constructs a core service itself with no arguments — so the failure reads as a constructor missing its arguments rather than as a service that is not registered.",
-      "Then the backend user, in that order: Bootstrap::initializeBackendUser(CommandLineUserAuthentication::class) creates it, Bootstrap::initializeBackendAuthentication() logs it in, and the second one alone has no $GLOBALS['BE_USER'] to check. Anything that reads a site attribute needs $GLOBALS['LANG'] as well, which the command application builds with LanguageServiceFactory::createFromUserPreferences($GLOBALS['BE_USER']).",
-      "In one datamap the pages are processed before every other table, so a record whose pid is the NEW id of a page created in the same call still lands on it. Between two other tables the order of the datamap decides, and a NEW id that has not been substituted yet leaves that record unwritten — a log entry, no exception. Where the target is not a page, create it in a first process_datamap() call, read substNEWwithIDs, and pass real ids in the second.",
       "impexp:export takes one --table per table, and a custom table nobody named is missing from the export without a word: typo3 impexp:export --table=tt_content --table=tx_myext_product.",
       "Images come along on their own — a sys_file_reference pulls its sys_file record in as a relation and the bytes follow — but by default they are base64 inside the export file, which for an artifact that is committed is the wrong shape. --save-files-outside-export-file writes them beside it instead, into a directory named after the file plus .files, each under its own sha1. The import picks that directory up whenever it sits next to the file, extension:setup included, and reuses a file the target storage already has under the same identifier and hash rather than duplicating it.",
       "A file path handed to the console is resolved by GeneralUtility::getFileAbsFileName(): a relative path is relative to the public directory, not to the project root. EXT:<key>/Initialisation/data.xml is the form that works from anywhere."

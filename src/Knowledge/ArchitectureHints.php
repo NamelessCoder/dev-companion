@@ -10,8 +10,15 @@ use Typo3CmsMcp\Search\TermSearch;
 use Typo3CmsMcp\Search\Text;
 
 /**
- * Loads architecture hints from one JSON file per section under
+ * Loads architecture hints from the JSON files under
  * knowledge/architecture-hints/ and matches them against paths/topics.
+ *
+ * Which domain a hint is asked from is the `domains` field of the entry, not
+ * the file it sits in. The file name was both jobs at once for as long as there
+ * was one file per domain, and the cost of that was a hint belonging to two
+ * domains having nowhere to go: it went into `general.json`, whose domain is
+ * selected by every query there is. The file is free to be a subject now, and
+ * `any` is what a hint says when it really does hold everywhere.
  */
 final class ArchitectureHints
 {
@@ -27,15 +34,25 @@ final class ArchitectureHints
     public const CATEGORY_CSS = 'Backend CSS';
     public const CATEGORY_TYPESCRIPT = 'Backend TypeScript';
 
-    /** @var array<string, string> */
-    private const SECTION_LABELS = [
-        'php' => 'PHP',
-        'typoscript' => 'TypoScript',
-        'fluid' => 'Fluid',
-        'typescript' => self::CATEGORY_TYPESCRIPT,
-        'javascript' => 'JavaScript',
-        'css' => self::CATEGORY_CSS,
-        'general' => 'General',
+    /**
+     * What each domain is called where a caller reads it.
+     *
+     * The domain is the vocabulary the matcher selects by and the label is the
+     * heading an answer prints, and they are two fields because they change for
+     * different reasons: `Domains::CSS` is what a `.scss` path detects as, while
+     * "Backend CSS" is a sentence to somebody who has to be told whose
+     * conventions these are.
+     *
+     * @var array<string, string>
+     */
+    private const DOMAIN_LABELS = [
+        Domains::PHP => 'PHP',
+        Domains::TYPOSCRIPT => 'TypoScript',
+        Domains::FLUID => 'Fluid',
+        Domains::TYPESCRIPT => self::CATEGORY_TYPESCRIPT,
+        Domains::JAVASCRIPT => 'JavaScript',
+        Domains::CSS => self::CATEGORY_CSS,
+        Domains::ANY => 'General',
     ];
 
 
@@ -104,7 +121,7 @@ final class ArchitectureHints
 
     /**
      * @param int|array<int, int>|null $target
-     * @return array<int, array{id: string, title: string, appliesTo: array<int, string>, hints: array<int, array{text: string, since: ?int, until: ?int, scope: ?Scope}>, checks: array<int, string>, category: string, scope: ?Scope}>
+     * @return array<int, array{id: string, title: string, domains: array<int, string>, appliesTo: array<int, string>, hints: array<int, array{text: string, since: ?int, until: ?int, scope: ?Scope}>, checks: array<int, string>, category: string, scope: ?Scope}>
      */
     public static function load(int|array|null $target = null): array
     {
@@ -115,15 +132,28 @@ final class ArchitectureHints
                 throw new \RuntimeException(sprintf('Invalid architecture-hints/%s', $file->getFilename()));
             }
 
-            $category = self::sectionLabel($file->getBasename('.json'));
             foreach ($decoded as $entry) {
+                $domains = array_map('strval', $entry['domains'] ?? []);
+                if ($domains === []) {
+                    throw new \RuntimeException(sprintf(
+                        'architecture-hints/%s: %s names no domain, so no query selects it.',
+                        $file->getFilename(),
+                        $entry['id'] ?? '?',
+                    ));
+                }
+
                 $hints[] = [
                     'id' => (string) $entry['id'],
                     'title' => (string) $entry['title'],
+                    'domains' => $domains,
                     'appliesTo' => array_map('strval', $entry['appliesTo'] ?? []),
                     'hints' => array_map(self::statement(...), $entry['hints'] ?? []),
                     'checks' => array_map('strval', $entry['checks'] ?? []),
-                    'category' => $category,
+                    // The first domain is the one an answer files the hint
+                    // under. A hint that crosses domains is asked from all of
+                    // them and printed under one, and which one that is is a
+                    // judgment its author makes by writing it first.
+                    'category' => self::label($domains[0]),
                     'scope' => isset($entry['scope']) ? Scope::from((string) $entry['scope']) : null,
                 ];
             }
@@ -290,24 +320,25 @@ final class ArchitectureHints
         $backendOnly = $backendModule || Domains::namesOnlyTheBackend($paths, $task);
 
         $domains = Domains::detect($paths, $task);
-        $categories = Domains::hintCategories($domains);
+        $selected = Domains::hintDomains($domains);
 
-        // Where the task is about the website, the two backend UI categories
+        // Where the task is about the website, the two backend UI domains
         // are withheld rather than applied. A missing answer sends the caller
         // to the frontend documentation; an inverted one sends them to rewrite
         // a working theme against the backend's tokens.
         $withheld = [];
         if (Domains::namesTheFrontend($paths, $task)) {
-            $withheld = array_values(array_intersect(
-                $categories,
-                [self::CATEGORY_CSS, self::CATEGORY_TYPESCRIPT],
+            $withheldDomains = array_values(array_intersect(
+                $selected,
+                [Domains::CSS, Domains::TYPESCRIPT],
             ));
-            $categories = array_values(array_diff($categories, $withheld));
+            $selected = array_values(array_diff($selected, $withheldDomains));
+            $withheld = array_map(self::label(...), $withheldDomains);
         }
 
         $candidates = array_values(array_filter(
             self::load($target),
-            static fn(array $hint): bool => in_array($hint['category'], $categories, true),
+            static fn(array $hint): bool => array_intersect($hint['domains'], $selected) !== [],
         ));
         if ($backendOnly) {
             // "sitepackage" is ownership context and "records" are what a
@@ -397,7 +428,7 @@ final class ArchitectureHints
             // What there would have been to find. A caller that phrased the
             // query differently from the hint has no way to tell that from a
             // subject nobody wrote down, and tries another phrasing either way.
-            'availableHints' => $matchedHints === [] ? self::index($categories) : [],
+            'availableHints' => $matchedHints === [] ? self::index($selected) : [],
         ];
     }
 
@@ -444,16 +475,16 @@ final class ArchitectureHints
     }
 
     /**
-     * Every hint there is, by id and title, optionally narrowed to categories.
+     * Every hint there is, by id and title, optionally narrowed to domains.
      *
-     * @param array<int, string>|null $categories
+     * @param array<int, string>|null $domains
      * @return array<int, array{id: string, title: string, category: string}>
      */
-    public static function index(?array $categories): array
+    public static function index(?array $domains): array
     {
         $index = [];
         foreach (self::load() as $hint) {
-            if ($categories !== null && !in_array($hint['category'], $categories, true)) {
+            if ($domains !== null && array_intersect($hint['domains'], $domains) === []) {
                 continue;
             }
             $index[] = ['id' => $hint['id'], 'title' => $hint['title'], 'category' => $hint['category']];
@@ -496,7 +527,7 @@ final class ArchitectureHints
             $grouped[$hint['category']][] = $hint;
         }
 
-        $order = array_values(self::SECTION_LABELS);
+        $order = array_values(self::DOMAIN_LABELS);
         $rank = static function (string $category) use ($order): int {
             $index = array_search($category, $order, true);
             return $index === false ? count($order) : $index;
@@ -601,8 +632,12 @@ final class ArchitectureHints
         return $score;
     }
 
-    private static function sectionLabel(string $fileBaseName): string
+    /**
+     * What a domain is called in an answer. A domain nobody named a label for
+     * is printed as it was written, which is how a new one announces itself.
+     */
+    public static function label(string $domain): string
     {
-        return self::SECTION_LABELS[$fileBaseName] ?? ucfirst($fileBaseName);
+        return self::DOMAIN_LABELS[$domain] ?? ucfirst($domain);
     }
 }

@@ -2,6 +2,9 @@
   {
     "id": "site-sets",
     "title": "Site Sets",
+    "domains": [
+      "typoscript"
+    ],
     "appliesTo": [
       "Configuration/Sets/",
       "site set",
@@ -69,6 +72,9 @@
   {
     "id": "tsconfig",
     "title": "Page and User TSconfig",
+    "domains": [
+      "typoscript"
+    ],
     "appliesTo": [
       "Configuration/page.tsconfig",
       "Configuration/user.tsconfig",

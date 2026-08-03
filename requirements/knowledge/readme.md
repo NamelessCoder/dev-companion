@@ -52,6 +52,8 @@ when it is added.
 - [`R-KNW-042`][R-KNW-042] — A preview answer says what the default renderer already draws · held
 - [`R-KNW-043`][R-KNW-043] — A datamap answer says what the parent column holds · held
 - [`R-KNW-044`][R-KNW-044] — The fixture rule is stated with the empty database under it · held
+- [`R-KNW-045`][R-KNW-045] — Reading records is covered as its own subject · held
+- [`R-KNW-046`][R-KNW-046] — impexp is the way a page tree is established again · held
 
 [R-KNW-001]: knw-001-upgrade-wizards-and-dataprocessors-have-hints-of-their-own.md
 [R-KNW-002]: knw-002-a-hint-carries-the-words-its-subject-is-asked-about-in.md
@@ -97,3 +99,5 @@ when it is added.
 [R-KNW-042]: knw-042-a-preview-answer-says-what-the-default-renderer-already-draws.md
 [R-KNW-043]: knw-043-a-datamap-answer-says-what-the-parent-column-holds.md
 [R-KNW-044]: knw-044-the-fixture-rule-is-stated-with-the-empty-database-under-it.md
+[R-KNW-045]: knw-045-reading-records-is-covered-as-its-own-subject.md
+[R-KNW-046]: knw-046-impexp-is-the-way-a-page-tree-is-established-again.md

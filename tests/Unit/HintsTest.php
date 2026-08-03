@@ -8,6 +8,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\TestWith;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Finder\Finder;
 use Typo3CmsMcp\Knowledge\ArchitectureHints;
 use Typo3CmsMcp\Knowledge\Domains;
 use Typo3CmsMcp\Knowledge\Scope;
@@ -660,19 +661,28 @@ final class HintsTest extends TestCase
     #[Test]
     public function aHintThatCarriesPartOfAQueryStillDoesNotAnswerIt(): void
     {
-        $longest = array_search(max(ArchitectureHints::bodyWords()), ArchitectureHints::bodyWords(), true);
+        // Both terms belong to this one, and it is long enough to be damped —
+        // which is what makes it the case worth asserting. It was named as
+        // "the longest hint there is" until the corpus was split by subject and
+        // the longest became one that carries neither term.
+        $diluted = 'sitepackage-initial-content';
+        self::assertGreaterThan(
+            ArchitectureHints::UNDILUTED_WORDS,
+            ArchitectureHints::bodyWords()[$diluted],
+            'a hint the matcher does not damp would prove nothing here',
+        );
 
         $whole = array_column(
             ArchitectureHints::find([], 'sys_registry dataImported', 6)['matchedHints'],
             'id',
         );
-        self::assertContains($longest, $whole, 'both terms are its own');
+        self::assertContains($diluted, $whole, 'both terms are its own');
 
         $part = array_column(
             ArchitectureHints::find([], 'sys_registry sonnet', 6)['matchedHints'],
             'id',
         );
-        self::assertNotContains($longest, $part, 'half a query is a mention, whatever the other half was');
+        self::assertNotContains($diluted, $part, 'half a query is a mention, whatever the other half was');
     }
 
     #[Test]
@@ -1022,13 +1032,20 @@ final class HintsTest extends TestCase
         // "Seed with DataHandler, then export" named the way in and stopped
         // where the work starts. Getting a DataHandler at all is a hand-written
         // boot, and each of its steps is a trap.
-        $hint = ArchitectureHints::byId('sitepackage-initial-content');
-        self::assertNotNull($hint);
-        $text = implode("\n", array_column($hint['hints'], 'text'));
+        //
+        // The two halves are two hints since D-KNW-030: how records come into
+        // being is DataHandler's subject, and shipping the export is the
+        // package's. What this holds is that neither half lost its steps.
+        $seeding = ArchitectureHints::byId('datahandler-seeding');
+        self::assertNotNull($seeding);
+        $steps = implode("\n", array_column($seeding['hints'], 'text'));
 
-        self::assertStringContainsString('Bootstrap::init', $text);
-        self::assertStringContainsString('initializeBackendUser', $text);
-        self::assertStringContainsString('--table', $text);
+        self::assertStringContainsString('Bootstrap::init', $steps);
+        self::assertStringContainsString('initializeBackendUser', $steps);
+
+        $shipping = ArchitectureHints::byId('sitepackage-initial-content');
+        self::assertNotNull($shipping);
+        self::assertStringContainsString('--table', implode("\n", array_column($shipping['hints'], 'text')));
     }
 
     /**
@@ -1043,7 +1060,7 @@ final class HintsTest extends TestCase
     public function aRelationInADatamapSaysWhatTheParentColumnEndsUpHolding(): void
     {
         $statements = static fn(?int $major): string => implode("\n", array_column(
-            ArchitectureHints::byId('datahandler-persistence', $major)['hints'] ?? [],
+            ArchitectureHints::byId('datahandler-relations', $major)['hints'] ?? [],
             'text',
         ));
         $text = $statements(null);
@@ -1071,7 +1088,7 @@ final class HintsTest extends TestCase
             'IRRE inline child records written through DataHandler datamap parent field',
             6,
         );
-        self::assertSame('datahandler-persistence', array_column($reached['matchedHints'], 'id')[0] ?? '');
+        self::assertSame('datahandler-relations', array_column($reached['matchedHints'], 'id')[0] ?? '');
     }
 
     #[Test]
@@ -1227,6 +1244,106 @@ final class HintsTest extends TestCase
         foreach (['sitepackage-layout', 'sitepackage-initial-content', 'site-sets'] as $id) {
             self::assertNull($scopes[$id], $id . ' declares an audience the core is obliged by too');
         }
+    }
+
+    /**
+     * The gap the umbrella hid: `datahandler-persistence` carried `querybuilder`,
+     * `restriction`, `enablecolumns`, `hidden record` and `deleted record` in its
+     * vocabulary and not one statement about reading a record. The whole corpus
+     * held one sentence naming any of the reading APIs, and it was about a menu.
+     */
+    #[Test]
+    public function readingRecordsIsAnsweredAsWellAsWritingThem(): void
+    {
+        $reached = array_column(
+            ArchitectureHints::find([], 'why is a record missing from my query result', 6)['matchedHints'],
+            'id',
+        );
+        self::assertContains('persistence-reading', $reached);
+
+        $text = implode("\n", array_column(ArchitectureHints::byId('persistence-reading')['hints'], 'text'));
+
+        // What is applied without being asked for, and what is a step after the
+        // query rather than a condition in it. Both read as a missing record.
+        self::assertStringContainsString('DefaultRestrictionContainer', $text);
+        self::assertStringContainsString('removeAll()', $text);
+        self::assertStringContainsString('versionOL', $text);
+        self::assertStringContainsString('getLanguageOverlay', $text);
+    }
+
+    /**
+     * impexp is how a site or a page tree is established again — the export is
+     * the artifact a distribution ships and re-imports, not the leftover of a
+     * seeding run. The corpus said "seed with DataHandler, then export", which
+     * reads as the other way round.
+     */
+    #[Test]
+    public function theSeedingAnswerNamesImpexpAsTheWayATreeIsEstablishedAgain(): void
+    {
+        $text = implode("\n", array_column(ArchitectureHints::byId('datahandler-seeding')['hints'], 'text'));
+
+        self::assertStringContainsString('impexp:import', $text);
+        self::assertStringContainsString('exists nowhere yet', $text, 'what a seeding script is for');
+    }
+
+    /**
+     * The tag is the selector, so a domain nobody selects by is a hint nobody
+     * reaches — and it fails silently, because an unknown tag reads exactly like
+     * a narrow one. `Domains::hintDomains()` is the whole vocabulary there is.
+     */
+    #[Test]
+    public function everyHintIsTaggedWithADomainSomeQuerySelects(): void
+    {
+        $selectable = Domains::hintDomains([
+            Domains::PHP,
+            Domains::TYPOSCRIPT,
+            Domains::FLUID,
+            Domains::TYPESCRIPT,
+            Domains::CSS,
+        ]);
+
+        foreach (ArchitectureHints::load() as $hint) {
+            self::assertNotEmpty($hint['domains'], $hint['id'] . ' names no domain');
+            foreach ($hint['domains'] as $domain) {
+                self::assertContains(
+                    $domain,
+                    $selectable,
+                    $hint['id'] . ' is tagged ' . $domain . ', which no query selects',
+                );
+            }
+        }
+    }
+
+    /**
+     * What the file a hint sits in is allowed to mean: nothing.
+     *
+     * It used to be the domain, which is why a hint belonging to two of them had
+     * to be filed as `general` — the one domain every query selects. The tag
+     * carries it now, so the file is free to be the subject, and this fails the
+     * moment somebody re-derives the domain from the file name.
+     */
+    #[Test]
+    public function theFileAHintSitsInDoesNotDecideWhatSelectsIt(): void
+    {
+        $filed = [];
+        $files = Finder::create()->files()->in(Paths::knowledge() . '/architecture-hints')->depth(0)->name('*.json');
+        foreach ($files as $file) {
+            foreach (json_decode((string) file_get_contents($file->getPathname()), true) as $entry) {
+                $filed[$entry['id']] = $file->getBasename('.json');
+            }
+        }
+
+        $differ = array_values(array_filter(
+            ArchitectureHints::load(),
+            static fn(array $hint): bool => $hint['domains'] !== [$filed[$hint['id']]],
+        ));
+
+        // The `general.json` entries are the proof today: their file says
+        // `general` and their tag says `any`, so a matcher that read the file
+        // name would select them by a domain that is not in the vocabulary at
+        // all. When the corpus is filed by subject the same test passes for
+        // every entry in it.
+        self::assertNotSame([], $differ, 'every hint would answer the same if the file name were still the domain');
     }
 
     #[Test]

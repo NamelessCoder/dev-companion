@@ -1,0 +1,55 @@
+[
+  {
+    "id": "persistence-reading",
+    "title": "Reading Records, and What Is Hidden From the Query",
+    "domains": [
+      "php"
+    ],
+    "appliesTo": [
+      "/Database/",
+      "querybuilder",
+      "database query",
+      "read records",
+      "select records",
+      "fetch records",
+      "restriction",
+      "removeAll",
+      "DeletedRestriction",
+      "enable field",
+      "enablecolumns",
+      "enableFields",
+      "hidden record",
+      "deleted record",
+      "start and end time",
+      "workspace overlay",
+      "versionOL",
+      "language overlay",
+      "getLanguageOverlay",
+      "PageRepository",
+      "record is missing"
+    ],
+    "hints": [
+      "A QueryBuilder from ConnectionPool::getQueryBuilderForTable() already carries a DefaultRestrictionContainer: DeletedRestriction, HiddenRestriction, StartTimeRestriction and EndTimeRestriction. A plain select therefore hides disabled and time-restricted rows without saying so, which is what a record that is in the database and not in the result usually is.",
+      "Taking them off is deliberate and partial: getRestrictions()->removeAll() drops all four, and the ordinary form adds DeletedRestriction back, because a deleted row is not a row. BackendUtility::getRecord() is the worked example — removeAll(), then DeletedRestriction unless the caller asked for it too.",
+      "The frontend uses FrontendRestrictionContainer instead, which PageRepository sets with the current Context: the same four plus WorkspaceRestriction and FrontendGroupRestriction. Access groups and workspaces are conditions there and nowhere else.",
+      "Outside the frontend a query returns the live record, and the workspace version is put on top of it afterwards: PageRepository::versionOL($table, $row) overlays it in place. It is a step after the query, not a condition in it.",
+      "The translation works the same way: PageRepository::getLanguageOverlay($table, $row, ?LanguageAspect) replaces the row's fields with the translated ones and honours the fallback chain the LanguageAspect describes. Selecting rows by sys_language_uid is not the same thing and misses the fallback. PageRepository::getPage() shows the order both are applied in: versionOL() first, then the language overlay.",
+      {
+        "text": "PageRepository::getDefaultConstraints($table, $enableFieldsToIgnore) returns the enable-field conditions as QueryBuilder expressions, for a query that builds its own restrictions.",
+        "since": 13
+      },
+      {
+        "text": "PageRepository::enableFields() returns the same conditions as an SQL fragment instead.",
+        "until": 12
+      },
+      {
+        "text": "PageRepository::enableFields() is deprecated, and getDefaultConstraints() is what replaces it.",
+        "since": 13,
+        "until": 13
+      }
+    ],
+    "checks": [
+      "CI=true ./Build/Scripts/runTests.sh -s functional"
+    ]
+  }
+]

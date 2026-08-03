@@ -29,6 +29,19 @@ final class Domains
     public const DOCS = 'docs';
     public const XLIFF = 'xliff';
 
+    /**
+     * The two a hint may be tagged with and no path ever detects as.
+     *
+     * `javascript` is what the backend's generated modules are, and detection
+     * folds them into TypeScript because a `.js` file there is the output of a
+     * `.ts` one. `any` is a hint that holds wherever TYPO3 is written and is
+     * therefore selected by every query — the bucket every cross-domain hint
+     * used to fall into for want of a second tag, so what it costs is worth
+     * counting rather than assuming.
+     */
+    public const JAVASCRIPT = 'javascript';
+    public const ANY = 'any';
+
     /** @var array<string, array<int, string>> Domain to file extensions. */
     private const EXTENSIONS = [
         self::PHP => ['php', 'yaml', 'yml'],
@@ -351,32 +364,44 @@ final class Domains
     }
 
     /**
-     * Architecture hint categories that belong to the given domains. General
-     * hints always apply.
+     * The hint domains a task in the given domains is answered from. A hint
+     * tagged `any` always applies.
+     *
+     * @param array<int, string> $domains
+     * @return array<int, string>
+     */
+    public static function hintDomains(array $domains): array
+    {
+        $selected = [self::ANY];
+        if (in_array(self::PHP, $domains, true)) {
+            $selected[] = self::PHP;
+        }
+        if (in_array(self::TYPOSCRIPT, $domains, true)) {
+            $selected[] = self::TYPOSCRIPT;
+        }
+        if (in_array(self::FLUID, $domains, true)) {
+            $selected[] = self::FLUID;
+        }
+        if (in_array(self::TYPESCRIPT, $domains, true)) {
+            $selected[] = self::TYPESCRIPT;
+            $selected[] = self::JAVASCRIPT;
+        }
+        if (in_array(self::CSS, $domains, true)) {
+            $selected[] = self::CSS;
+        }
+
+        return $selected;
+    }
+
+    /**
+     * The same, as the labels an answer prints. Only a report reads this — what
+     * selects a hint is the domain, and a label is what it is called afterwards.
      *
      * @param array<int, string> $domains
      * @return array<int, string>
      */
     public static function hintCategories(array $domains): array
     {
-        $categories = ['General'];
-        if (in_array(self::PHP, $domains, true)) {
-            $categories[] = 'PHP';
-        }
-        if (in_array(self::TYPOSCRIPT, $domains, true)) {
-            $categories[] = 'TypoScript';
-        }
-        if (in_array(self::FLUID, $domains, true)) {
-            $categories[] = 'Fluid';
-        }
-        if (in_array(self::TYPESCRIPT, $domains, true)) {
-            $categories[] = ArchitectureHints::CATEGORY_TYPESCRIPT;
-            $categories[] = 'JavaScript';
-        }
-        if (in_array(self::CSS, $domains, true)) {
-            $categories[] = ArchitectureHints::CATEGORY_CSS;
-        }
-
-        return $categories;
+        return array_map(ArchitectureHints::label(...), self::hintDomains($domains));
     }
 }

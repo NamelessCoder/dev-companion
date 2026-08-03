@@ -2,6 +2,9 @@
   {
     "id": "css-source-build-boundaries",
     "title": "CSS Source and Build Boundaries",
+    "domains": [
+      "css"
+    ],
     "scope": "core",
     "appliesTo": [
       "Build/Sources/Sass/",
@@ -29,6 +32,9 @@
   {
     "id": "css-components",
     "title": "CSS Component Structure",
+    "domains": [
+      "css"
+    ],
     "scope": "core",
     "appliesTo": [
       "Build/Sources/Sass/component/",
@@ -58,6 +64,9 @@
   {
     "id": "css-browser-target",
     "title": "CSS Browser Target",
+    "domains": [
+      "css"
+    ],
     "scope": "core",
     "appliesTo": [
       "browser",
@@ -98,6 +107,9 @@
   {
     "id": "css-minimal-reusable-components",
     "title": "Minimal CSS and Reusable Components",
+    "domains": [
+      "css"
+    ],
     "scope": "core",
     "appliesTo": [
       "utility",
@@ -123,6 +135,9 @@
   {
     "id": "css-class-naming",
     "title": "CSS Class Naming",
+    "domains": [
+      "css"
+    ],
     "scope": "core",
     "appliesTo": [
       "class name",
@@ -156,6 +171,9 @@
   {
     "id": "css-styleguide-demos",
     "title": "Styleguide Demos for CSS Components",
+    "domains": [
+      "css"
+    ],
     "scope": "core",
     "appliesTo": [
       "styleguide",
@@ -180,6 +198,9 @@
   {
     "id": "css-tokens-specificity",
     "title": "CSS Tokens and Specificity",
+    "domains": [
+      "css"
+    ],
     "scope": "core",
     "appliesTo": [
       "variable",
@@ -221,6 +242,9 @@
   {
     "id": "css-web-components",
     "title": "Web Components and Element Styles",
+    "domains": [
+      "css"
+    ],
     "scope": "core",
     "appliesTo": [
       "Build/Sources/Sass/element/",
@@ -250,6 +274,9 @@
   {
     "id": "css-state-attributes",
     "title": "State Attributes and Semantic Selectors",
+    "domains": [
+      "css"
+    ],
     "scope": "core",
     "appliesTo": [
       "aria-",
@@ -279,6 +306,9 @@
   {
     "id": "css-color-surface-tokens",
     "title": "Color and Surface Tokens",
+    "domains": [
+      "css"
+    ],
     "scope": "core",
     "appliesTo": [
       "surface",
@@ -336,6 +366,9 @@
   {
     "id": "css-shadow-layering",
     "title": "Shadow Tokens and Layering",
+    "domains": [
+      "css"
+    ],
     "scope": "core",
     "appliesTo": [
       "shadow",
@@ -371,6 +404,9 @@
   {
     "id": "css-z-index-layering",
     "title": "Z-Index and Overlay Layering",
+    "domains": [
+      "css"
+    ],
     "scope": "core",
     "appliesTo": [
       "z-index",
@@ -404,6 +440,9 @@
   {
     "id": "css-motion-transitions",
     "title": "Motion and Transitions",
+    "domains": [
+      "css"
+    ],
     "scope": "core",
     "appliesTo": [
       "transition",
@@ -434,6 +473,9 @@
   {
     "id": "css-container-queries",
     "title": "Container Queries and Responsive Components",
+    "domains": [
+      "css"
+    ],
     "scope": "core",
     "appliesTo": [
       "container query",
@@ -462,6 +504,9 @@
   {
     "id": "css-light-dark-mode",
     "title": "Light and Dark Mode CSS",
+    "domains": [
+      "css"
+    ],
     "scope": "core",
     "appliesTo": [
       "light",
@@ -494,6 +539,9 @@
   {
     "id": "css-rtl-logical-properties",
     "title": "RTL and Logical CSS Properties",
+    "domains": [
+      "css"
+    ],
     "scope": "core",
     "appliesTo": [
       "rtl",
@@ -523,6 +571,9 @@
   {
     "id": "css-bootstrap-transition",
     "title": "Bootstrap Transition in Backend CSS",
+    "domains": [
+      "css"
+    ],
     "scope": "core",
     "appliesTo": [
       "bootstrap",
@@ -548,6 +599,9 @@
   {
     "id": "css-accessibility-states",
     "title": "CSS Accessibility, Contrast, and States",
+    "domains": [
+      "css"
+    ],
     "scope": "core",
     "appliesTo": [
       "focus",
@@ -595,6 +649,9 @@
   {
     "id": "css-icon-text-layout-stability",
     "title": "Icons, Text, and Layout Stability",
+    "domains": [
+      "css"
+    ],
     "scope": "core",
     "appliesTo": [
       "icon",

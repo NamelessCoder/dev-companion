@@ -2,6 +2,9 @@
   {
     "id": "backend-typescript",
     "title": "Backend TypeScript Modules",
+    "domains": [
+      "typescript"
+    ],
     "scope": "core",
     "appliesTo": [
       "Build/Sources/TypeScript/",
@@ -24,6 +27,9 @@
   {
     "id": "backend-ui",
     "title": "Backend UI and Web Components",
+    "domains": [
+      "typescript"
+    ],
     "scope": "core",
     "appliesTo": [
       "typo3/sysext/backend/",

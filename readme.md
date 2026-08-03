@@ -300,8 +300,10 @@ drive the individual tools:
 - `typo3-commit-messages.md`
 - `typo3-gerrit-workflow.md`
 - `typo3-contribution-sources.md`
-- `architecture-hints/` (one JSON file per section: `php.json`, `fluid.json`,
-  `typoscript.json`, `css.json`, `typescript.json`, `general.json`)
+- `architecture-hints/` (`php.json`, `fluid.json`, `typoscript.json`,
+  `css.json`, `typescript.json`, `general.json`; each entry names the domains
+  it is asked from in its own `domains` field, so the file it sits in is where
+  it is kept and not what selects it)
 - `catalog/` (the component catalog: `components.json`,
   `component-checklist.json`, `meta.json`, and the system extensions:
   `system-extensions.json`)

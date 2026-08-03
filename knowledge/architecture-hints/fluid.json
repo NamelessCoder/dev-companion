@@ -2,6 +2,9 @@
   {
     "id": "fluid-templates",
     "title": "Fluid Templates, Partials and Layouts",
+    "domains": [
+      "fluid"
+    ],
     "appliesTo": [
       "Resources/Private/Templates/",
       "Resources/Private/Partials/",
@@ -53,6 +56,9 @@
   {
     "id": "fluid-viewhelpers",
     "title": "ViewHelpers",
+    "domains": [
+      "fluid"
+    ],
     "appliesTo": [
       "Classes/ViewHelpers/",
       "viewhelper",
@@ -93,6 +99,9 @@
   {
     "id": "frontend-page-rendering",
     "title": "Frontend Page Rendering with PAGEVIEW",
+    "domains": [
+      "fluid"
+    ],
     "appliesTo": [
       "PAGEVIEW",
       "pageview",

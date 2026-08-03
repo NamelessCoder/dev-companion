@@ -2,6 +2,9 @@
   {
     "id": "language-files",
     "title": "Language Files",
+    "domains": [
+      "any"
+    ],
     "appliesTo": [
       ".xlf",
       ".xliff",
@@ -58,6 +61,9 @@
   {
     "id": "site-label-language",
     "title": "Core Labels on a Non-English Site",
+    "domains": [
+      "any"
+    ],
     "appliesTo": [
       "site language",
       "site configuration",
@@ -92,6 +98,9 @@
   {
     "id": "configuration-reach",
     "title": "Configuration Belongs to Its Reach",
+    "domains": [
+      "any"
+    ],
     "appliesTo": [
       "configuration scope",
       "storage pid",
@@ -114,6 +123,9 @@
   {
     "id": "environment-variables",
     "title": "What TYPO3 Reads From the Environment",
+    "domains": [
+      "any"
+    ],
     "appliesTo": [
       "environment variable",
       "env var",
@@ -151,6 +163,9 @@
   {
     "id": "icon-usage",
     "title": "Rendering and Registering Icons",
+    "domains": [
+      "any"
+    ],
     "appliesTo": [
       "icon",
       "IconFactory",
@@ -176,6 +191,9 @@
   {
     "id": "sitepackage-layout",
     "title": "How a Sitepackage Is Laid Out",
+    "domains": [
+      "any"
+    ],
     "appliesTo": [
       "sitepackage",
       "site package",
@@ -214,6 +232,9 @@
   {
     "id": "project-repository-layout",
     "title": "How a TYPO3 Project Repository Is Laid Out",
+    "domains": [
+      "any"
+    ],
     "scope": "project",
     "appliesTo": [
       "project structure",
@@ -261,6 +282,9 @@
   {
     "id": "extension-repository-layout",
     "title": "How a Distributed Extension Repository Is Laid Out",
+    "domains": [
+      "any"
+    ],
     "scope": "extension",
     "appliesTo": [
       "distributed extension",
@@ -295,6 +319,9 @@
   {
     "id": "form-framework",
     "title": "EXT:form Configuration and Runtime",
+    "domains": [
+      "any"
+    ],
     "appliesTo": [
       "EXT:form",
       "form framework",
@@ -330,6 +357,9 @@
   {
     "id": "frontend-records",
     "title": "Records in the Frontend Without Extbase",
+    "domains": [
+      "any"
+    ],
     "appliesTo": [
       "record",
       "records",
@@ -380,6 +410,9 @@
   {
     "id": "content-elements",
     "title": "Registering a Content Element",
+    "domains": [
+      "any"
+    ],
     "appliesTo": [
       "content element",
       "CType",
@@ -455,6 +488,9 @@
   {
     "id": "extension-documentation",
     "title": "Documenting a Project Extension",
+    "domains": [
+      "any"
+    ],
     "scope": "extension",
     "appliesTo": [
       "extension documentation",
@@ -476,6 +512,9 @@
   {
     "id": "extension-asset-build",
     "title": "Building Assets in a Project Extension",
+    "domains": [
+      "any"
+    ],
     "scope": "extension",
     "appliesTo": [
       "extension asset build",
@@ -499,6 +538,9 @@
   {
     "id": "documentation-changelog",
     "title": "Documentation and Changelog",
+    "domains": [
+      "any"
+    ],
     "scope": "core",
     "appliesTo": [
       ".rst",
@@ -529,6 +571,9 @@
   {
     "id": "deprecated-apis",
     "title": "Deprecated APIs",
+    "domains": [
+      "any"
+    ],
     "appliesTo": [
       "deprecat",
       "@deprecated",
@@ -551,6 +596,9 @@
   {
     "id": "public-assets",
     "title": "Public Assets and the Publish Step",
+    "domains": [
+      "any"
+    ],
     "appliesTo": [
       "Resources/Public/",
       "public asset",
@@ -578,6 +626,9 @@
   {
     "id": "installation-upgrade",
     "title": "Upgrading an Installation",
+    "domains": [
+      "any"
+    ],
     "scope": "project",
     "appliesTo": [
       "upgrade",
@@ -615,6 +666,9 @@
   {
     "id": "browser-tests",
     "title": "Browser Tests with Playwright",
+    "domains": [
+      "any"
+    ],
     "appliesTo": [
       "playwright",
       "browser test",
@@ -657,6 +711,9 @@
   {
     "id": "security-sinks",
     "title": "Following a Value to Its Sink",
+    "domains": [
+      "any"
+    ],
     "appliesTo": [
       "security",
       "security review",

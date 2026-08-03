@@ -20,8 +20,6 @@
     reported session could not see, it costs no query that answers today, and it
     leaves the floor available once there is a measure for it. Putting the todo
     back is one of the answers.
-**Branch:** todo/hold-a-manual-result-to-the-coverage-the-score-already-computes
-**Claimed:** 2026-08-03
 
 The floor itself is three lines and the constant is what has none.
 `TermSearch::score()` returns the coverage as its second value and

@@ -83,49 +83,141 @@ final class EnvironmentsTest extends TestCase
      * line would be answered is shown by an installation of that line or by
      * nothing. `SITE-02` names `E-SITE` on the previous major, which is the
      * case a single installation cannot be run.
+     *
+     * Every covered line, the development one included: it was the line whose
+     * answers about the next major nothing here could show, and a version
+     * `versions.json` covers while `create` declines is the same gap under a
+     * different name.
      */
     #[Test]
-    public function everyCoveredLineWithAReleaseIsOneAnInstallationIsMadeOf(): void
+    public function everyCoveredLineIsOneAnInstallationIsMadeOf(): void
     {
         $made = Environments::branches();
 
         self::assertContains(Environments::branch(), $made, 'the covered stable line is not made');
         foreach (Versions::covered() as $version) {
-            $expected = $version['status'] === 'development' ? 'not' : 'is';
-            self::assertSame(
-                $expected === 'is',
-                in_array($version['branch'], $made, true),
-                $version['branch'] . ' is ' . $expected . ' a line an installation is made of',
+            self::assertContains(
+                $version['branch'],
+                $made,
+                $version['branch'] . ' is covered and is no line an installation is made of',
             );
         }
     }
 
     /**
-     * Every line but the made ones declines with the reason, because a version
-     * argument is a thing somebody types wrong. The development line is the
-     * one that is covered and still declined: the base distribution has no
-     * release above the stable major and the core there declares PHP `^8.5`.
+     * A version argument is a thing somebody types wrong, and what the mistake
+     * needs back is which versions there are. Nothing covered declines any
+     * more, so a refusal naming a covered line is this drifting apart from
+     * `knowledge/versions.json`.
      */
     #[Test]
     public function aVersionNoInstallationIsMadeOfSaysWhyRatherThanNothing(): void
     {
-        foreach (Environments::branches() as $branch) {
-            self::assertSame('', Environments::refusal($branch), $branch . ' is made here and still declines');
-        }
-
         foreach (Versions::covered() as $version) {
-            if (in_array($version['branch'], Environments::branches(), true)) {
-                continue;
-            }
-
-            self::assertStringContainsString(
-                Environments::DISTRIBUTION,
+            self::assertSame(
+                '',
                 Environments::refusal($version['branch']),
-                $version['branch'] . ' declines without saying what is missing',
+                $version['branch'] . ' is covered and still declines',
             );
         }
 
         self::assertStringContainsString('14.9', Environments::refusal('14.9'), 'a version nothing covers is not named back');
+        self::assertStringContainsString(
+            implode(', ', Environments::branches()),
+            Environments::refusal('14.9'),
+            'a refusal does not say which versions there are instead',
+        );
+    }
+
+    /**
+     * The development line is a different build rather than a different
+     * version argument, and every part of that difference is here: the
+     * distribution has no release above the newest stable so it comes from
+     * `dev-main`, whose twenty-four `dev-main` requires need a minimum
+     * stability the default refuses, and the core there declares PHP `^8.5`
+     * where the released lines are pinned to 8.4.
+     *
+     * Asserted against the built command rather than against the constants,
+     * because a step that dropped one of the three comes out looking finished:
+     * the stability flag missing is a resolver error, but the PHP pin missing
+     * is an installation that builds and then answers as the wrong PHP.
+     */
+    #[Test]
+    public function theDevelopmentLineIsBuiltFromDevMainOnThePhpItsCoreDeclares(): void
+    {
+        $development = array_values(array_filter(
+            Versions::covered(),
+            static fn(array $version): bool => $version['status'] === 'development',
+        ));
+
+        self::assertCount(1, $development, 'knowledge/versions.json covers no single development line');
+        $branch = $development[0]['branch'];
+
+        self::assertTrue(Environments::development($branch));
+        self::assertSame(Environments::DEVELOPMENT_PHP, Environments::php($branch));
+        self::assertNotSame(Environments::PHP, Environments::php($branch));
+
+        $build = Environments::build($branch);
+        $flat = implode(' ', array_merge(...array_values($build)));
+
+        self::assertStringContainsString('--php-version=' . Environments::DEVELOPMENT_PHP, $flat);
+        self::assertStringContainsString(Environments::DISTRIBUTION . ':dev-main', $flat);
+        self::assertStringContainsString('--stability=dev', $flat);
+        foreach (Environments::REQUIRED as $package) {
+            self::assertStringContainsString('require ' . $package . ':dev-main', $flat, $package . ' is required at a release');
+        }
+
+        // Every released line keeps the pin and the caret, which is the half
+        // this could break without failing anywhere else.
+        foreach (Environments::branches() as $released) {
+            if ($released === $branch) {
+                continue;
+            }
+
+            $other = implode(' ', array_merge(...array_values(Environments::build($released))));
+            self::assertStringContainsString('--php-version=' . Environments::PHP, $other, $released);
+            self::assertStringContainsString(Environments::DISTRIBUTION . ':^' . $released, $other, $released);
+            self::assertStringNotContainsString('--stability', $other, $released . ' is built at a stability of its own');
+        }
+    }
+
+    /**
+     * The development line is set up on sqlite because `setup` cannot finish
+     * against MariaDB on `main`: `getDatabaseList()` asks a connection with no
+     * database selected for a schema manager, and `doctrine/dbal` 4.4.4 throws
+     * `DatabaseRequired` before anything is written. That is a workaround with
+     * a date on it, so what this holds is that it stays one line — the
+     * released builds are untouched, and the DDEV database options go with the
+     * driver rather than being passed to an installation that takes none.
+     */
+    #[Test]
+    public function theDevelopmentLineIsSetUpOnTheOneDatabaseItsSetupCompletesOn(): void
+    {
+        $development = Environments::branch();
+        foreach (Versions::covered() as $version) {
+            if ($version['status'] === 'development') {
+                $development = $version['branch'];
+            }
+        }
+
+        $build = implode(' ', array_merge(...array_values(Environments::build($development))));
+
+        self::assertSame(Environments::DEVELOPMENT_DRIVER, Environments::driver($development));
+        self::assertStringContainsString('--driver=' . Environments::DEVELOPMENT_DRIVER, $build);
+        foreach (['--host=db', '--port=3306', '--dbname=db', '--username=db', '--password=db'] as $option) {
+            self::assertStringNotContainsString($option, $build, $option . ' is passed to a setup that takes none');
+        }
+
+        foreach (Environments::branches() as $released) {
+            if ($released === $development) {
+                continue;
+            }
+
+            $other = implode(' ', array_merge(...array_values(Environments::build($released))));
+            self::assertSame(Environments::DRIVER, Environments::driver($released), $released);
+            self::assertStringContainsString('--driver=' . Environments::DRIVER, $other, $released);
+            self::assertStringContainsString('--dbname=db', $other, $released . ' is set up against no database');
+        }
     }
 
     /**

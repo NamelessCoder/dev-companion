@@ -97,16 +97,31 @@ final class Environments
     public const REQUIRED = ['typo3/cms-lowlevel'];
 
     /**
-     * The PHP the containers run, on every line an installation is made of.
+     * The PHP the containers run, on every released line an installation is
+     * made of.
      *
      * Pinned rather than left to DDEV, which defaults to whatever is current
      * when it is installed. One pin covers every released covered line: each
      * one's own `Build/Scripts/runTests.sh` runs this version — 12.4 accepts
      * `8.1` to `8.5`, 13.4 and 14.3 accept `8.2` to `8.5`, read in
-     * `.checkouts/` on 2026-08-03. The development line is the one it does not
-     * cover, and `refusal()` is where that is said.
+     * `.checkouts/` on 2026-08-03.
      */
     public const PHP = '8.4';
+
+    /**
+     * The PHP the development line's containers run, which is not that one.
+     *
+     * `.checkouts/main/composer.json` declares `"php": "^8.5"` and a platform
+     * of `8.5.0`, so the released pin does not install that line at all — the
+     * constraint is refused before anything is downloaded. DDEV 1.25.1 offers
+     * `5.6` through `8.5`, so the version is there to ask for; both read on
+     * 2026-08-03.
+     *
+     * Two pins rather than one at 8.5 for every line: what a released line's
+     * environment is for is answering the way an installation of it answers,
+     * and its own test script runs 8.4.
+     */
+    public const DEVELOPMENT_PHP = '8.5';
 
     /**
      * How each environment in `scenarios/readme.md` is come by.
@@ -213,49 +228,98 @@ final class Environments
      * the case that says so out loud — it names `E-SITE` on the previous major
      * — and it is the reason this is a list rather than `branch()`.
      *
+     * Every covered line, the development one included. It was declined while
+     * the only question about it was what it cost; what it buys is the one
+     * line on which this server's answers about the next major can be seen at
+     * all, and that is a judgement about what this repository is for rather
+     * than one its files hold — `D-EVI-006`.
+     *
      * @return array<int, string>
      */
     public static function branches(): array
     {
         $branches = [];
         foreach (Versions::covered() as $version) {
-            if ($version['status'] !== self::DEVELOPMENT) {
-                $branches[] = $version['branch'];
-            }
+            $branches[] = $version['branch'];
         }
 
         return $branches;
+    }
+
+    /** Whether a covered line is the one that has no release. */
+    public static function development(string $branch): bool
+    {
+        foreach (Versions::covered() as $version) {
+            if ($version['branch'] === $branch) {
+                return $version['status'] === self::DEVELOPMENT;
+            }
+        }
+
+        return false;
+    }
+
+    /** The PHP the containers of one line run. */
+    public static function php(string $branch): string
+    {
+        return self::development($branch) ? self::DEVELOPMENT_PHP : self::PHP;
+    }
+
+    /**
+     * The database the installation is set up against, which is DDEV's own on
+     * every line but one.
+     *
+     * The development line is `sqlite`, and not because anything prefers it:
+     * `vendor/bin/typo3 setup` cannot finish against MariaDB on `main` at all
+     * today. `SetupDatabaseService::getDatabaseList()` builds a connection
+     * with `dbname` unset on purpose — so that a wrong database name can still
+     * be corrected — and then asks it for a schema manager, which
+     * `doctrine/dbal` 4.4.4 refuses: `MySQLMetadataProvider::__construct`
+     * reads `SELECT DATABASE()`, gets null, and throws `DatabaseRequired`.
+     * `SetupCommand::selectAndImportDatabase()` runs that for every driver but
+     * sqlite, before anything is written. Measured on 2026-08-03 against
+     * `typo3/cms-install` at `af648f05bbc3`, which locks that DBAL itself.
+     *
+     * So this is a workaround with a date on it, and the difference it buys is
+     * a real one: an installation on sqlite answers what a console question
+     * asks and says nothing about what MariaDB does under the same schema.
+     */
+    public const DRIVER = 'mysqli';
+
+    /** @see self::DRIVER — sqlite is the one path that setup does not break on `main`. */
+    public const DEVELOPMENT_DRIVER = 'sqlite';
+
+    /** The database driver the installation of one line is set up against. */
+    public static function driver(string $branch): string
+    {
+        return self::development($branch) ? self::DEVELOPMENT_DRIVER : self::DRIVER;
+    }
+
+    /**
+     * What Composer is asked for on one line, of the distribution and of every
+     * package required beside it.
+     *
+     * `typo3/cms-base-distribution` publishes no release above the newest
+     * stable — `v14.3.0` is its top tag — so the development line is its
+     * `dev-main`, which requires `dev-main` of all twenty-four core packages.
+     * Read from packagist on 2026-08-03.
+     */
+    public static function constraint(string $branch): string
+    {
+        return self::development($branch) ? 'dev-main' : '^' . $branch;
     }
 
     /**
      * Why no installation is made of a version, and an empty string where one
      * is.
      *
-     * The development line is covered and is not built: `typo3/cms-base-
-     * distribution` publishes no release above the newest stable, so the only
-     * thing tracking the development core is its `dev-main`, and that core
-     * declares PHP `^8.5` against the version pinned here. Both were read on
-     * 2026-08-03, from packagist and from `.checkouts/main/composer.json`.
+     * Every covered line is made now, so what is left to decline is a version
+     * this server does not cover — which is a thing somebody types wrong, and
+     * the answer it needs is which ones there are.
      */
     public static function refusal(string $branch): string
     {
         if (in_array($branch, self::branches(), true)) {
             return '';
-        }
-
-        foreach (Versions::covered() as $version) {
-            if ($version['branch'] === $branch) {
-                return sprintf(
-                    "%s is the development line, and an installation of it is a different\n"
-                    . "build: %s publishes no release above %s, so it\n"
-                    . "would come from that package's `dev-main`, and the core there declares\n"
-                    . 'PHP `^8.5` where this pins %s.',
-                    $branch,
-                    self::DISTRIBUTION,
-                    self::branch(),
-                    self::PHP,
-                );
-            }
         }
 
         return sprintf(
@@ -433,28 +497,58 @@ final class Environments
     public static function build(string $branch): array
     {
         $project = self::project($branch);
+        $constraint = self::constraint($branch);
+        $create = ['ddev', 'composer', 'create-project', self::DISTRIBUTION . ':' . $constraint];
+        if (self::development($branch)) {
+            // The distribution's `dev-main` declares no `minimum-stability` of
+            // its own, so the twenty-four `dev-main` requires it carries are
+            // refused by the default `stable` before anything is downloaded.
+            // The flag is on `create-project` alone: the requires below name a
+            // dev version outright, and a root requirement's own constraint is
+            // what sets its stability flag.
+            $create[] = '--stability=dev';
+            // And nothing is installed yet, because what create-project would
+            // install cannot resolve until the step after this one has run.
+            $create[] = '--no-install';
+        }
+
         $steps = [
             'A DDEV project of the type TYPO3, serving from public/' => [
                 'ddev', 'config', '--auto',
                 '--project-name=' . $project,
                 '--project-type=typo3',
                 '--docroot=public',
-                '--php-version=' . self::PHP,
+                '--php-version=' . self::php($branch),
                 '--disable-upload-dirs-warning',
             ],
             'The containers, and the database with them' => ['ddev', 'start', '-y'],
-            'TYPO3 ' . $branch . ', from its own base distribution' => [
-                'ddev', 'composer', 'create-project', self::DISTRIBUTION . ':^' . $branch,
-            ],
+            'TYPO3 ' . $branch . ', from its own base distribution' => $create,
         ];
 
-        foreach (self::REQUIRED as $package) {
-            $steps['The console commands this server asks for, from ' . $package] = [
-                'ddev', 'composer', 'require', $package . ':^' . $branch, '--no-interaction',
+        if (self::development($branch)) {
+            // The distribution pins `config.platform.php` to 8.2.0 on the same
+            // branch whose `typo3/cms-core: dev-main` requires `php ^8.5`, so
+            // Composer resolves against a PHP its own root requirement refuses
+            // and the install ends in "your php version (8.2.0; overridden via
+            // config.platform, actual: 8.5.3) does not satisfy that
+            // requirement". Measured on 2026-08-03 at `dev-main` c374dbc.
+            //
+            // Unset rather than raised to the pin above: what this environment
+            // is for is answering the way an installation of that line
+            // answers, which is against the PHP the container actually runs.
+            // A released line keeps the pin, where it is not in conflict.
+            $steps['The platform pin the distribution outgrew on this branch'] = [
+                'ddev', 'composer', 'config', '--unset', 'platform.php',
             ];
         }
 
-        $steps['The installation itself: database, admin user, site configuration'] = [
+        foreach (self::REQUIRED as $package) {
+            $steps['The console commands this server asks for, from ' . $package] = [
+                'ddev', 'composer', 'require', $package . ':' . $constraint, '--no-interaction',
+            ];
+        }
+
+        $setup = [
             'ddev', 'exec', 'vendor/bin/typo3', 'setup',
             '--no-interaction',
             // The settings file and nothing else. This is what lets a
@@ -462,9 +556,16 @@ final class Environments
             // file the first attempt wrote, and it does not reach the database
             // an earlier installation populated.
             '--force',
-            // DDEV's own database service, at the names it gives it.
-            '--driver=mysqli', '--host=db', '--port=3306',
-            '--dbname=db', '--username=db', '--password=db',
+            '--driver=' . self::driver($branch),
+        ];
+        if (self::driver($branch) !== self::DEVELOPMENT_DRIVER) {
+            // DDEV's own database service, at the names it gives it. sqlite is
+            // a file the installation places itself and takes none of them.
+            array_push($setup, '--host=db', '--port=3306', '--dbname=db', '--username=db', '--password=db');
+        }
+
+        $steps['The installation itself: database, admin user, site configuration'] = [
+            ...$setup,
             '--admin-username=admin',
             '--admin-user-password=' . self::ADMIN_PASSWORD,
             '--admin-email=admin@example.com',

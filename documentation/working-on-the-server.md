@@ -65,12 +65,17 @@ and the setup that writes the database, the admin user and a site configuration.
 Minutes on a cold Composer cache, seconds on a warm one, and running it again
 finishes one that stopped halfway.
 
-There is one installation per covered version that has a release, each its own
-directory and its own DDEV project, and the version named none is the covered
-stable one. Asked for one that is already installed the command starts its
-containers rather than building anything, so an environment is made once and
-kept — `D-EVI-006`, which also has what one costs on disk and why the
-development line is not one of them.
+There is one installation per covered version, each its own directory and its
+own DDEV project, and the version named none is the covered stable one. Asked
+for one that is already installed the command starts its containers rather than
+building anything, so an environment is made once and kept — `D-EVI-006`, which
+also has what one costs on disk.
+
+The development line is one of them and is built differently: from the base
+distribution's `dev-main` at a dev stability, on PHP 8.5, because that is what
+its core declares. It is the only line on which this server's answers about the
+next major can be seen at all, and it moves under the machine daily — nothing
+re-makes it, so `ddev delete` and `create` again is what refreshes it.
 
 What it is for is a directory in which `ddev exec vendor/bin/typo3 …` answers —
 the half of this server that no test reaches, and where both `D-DIS-007` and

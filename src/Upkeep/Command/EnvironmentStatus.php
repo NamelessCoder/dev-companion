@@ -22,8 +22,9 @@ use Typo3CmsMcp\Upkeep\Environments;
  * `E-STOPPED` is `E-SITE` with the project down, and the two are the same files.
  *
  * `E-SITE` is one installation per covered version (`D-EVI-006`), so it is a
- * row per version: which of them are installed here, which are missing, and
- * which covered line is not made at all.
+ * row per version: which of them are installed here and which are missing.
+ * Every covered line is made now, the development one included, so a row that
+ * declines is a version argument this repository stopped covering.
  */
 #[AsCommand(
     name: 'environment:status',

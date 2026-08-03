@@ -110,15 +110,24 @@ trait QueuedTodo
      * are older. A case about the order says which priority and which stamp it
      * needs instead.
      *
+     * What it serves and what its step says are the same two parameters: a case
+     * about one todo needs neither, and a case about the relation between two
+     * of them — the card `todo:sync` wrote and the todo a judgement replaced it
+     * with — is about nothing else.
+     *
      * @return Section
      */
-    private function queueATodo(string $priority = 'low', ?string $stamp = null): array
-    {
+    private function queueATodo(
+        string $priority = 'low',
+        ?string $stamp = null,
+        string $serves = 'todo/',
+        string $step = 'The step this fixture stands for.',
+    ): array {
         $name = sprintf('%s-%s.md', $stamp ?? date('Y-m-d-His'), self::MARKER);
         file_put_contents(
             $this->ownQueue() . '/todo/open/' . $name,
-            '# ' . self::MARKER . "\n\n**Serves:** todo/\n**Priority:** " . $priority
-            . "\n\nThe step this fixture stands for.\n",
+            '# ' . self::MARKER . "\n\n**Serves:** " . $serves . "\n**Priority:** " . $priority
+            . "\n\n" . $step . "\n",
         );
 
         return $this->ownTodos(Todo::items(), $name)[0];

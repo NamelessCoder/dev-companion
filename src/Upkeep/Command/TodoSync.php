@@ -50,8 +50,13 @@ final class TodoSync
     /**
      * The step every card carries, because judging one feedback is the same
      * work whichever it is. What differs is the heading and what it serves.
+     *
+     * Read from outside as well as written from here, which is what makes a
+     * card that still asks for a judgement findable: `Todo::folded()` compares
+     * a body against this constant rather than against a phrase somebody would
+     * have to keep in step with it — `D-FBK-040`.
      */
-    private const STEP = <<<'TEXT'
+    public const STEP = <<<'TEXT'
         Judge this feedback rather than fix what it reports: re-run the query that
         produced it against the server as it is now, then close it, trim it to the half
         that is still open, or write the todo that takes it on. Write the judgement into

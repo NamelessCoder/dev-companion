@@ -11,6 +11,7 @@ use Typo3CmsMcp\Paths;
 use Typo3CmsMcp\Process\CommandRunner;
 use Typo3CmsMcp\Tests\Support\QueuedTodo;
 use Typo3CmsMcp\Upkeep\Checkouts;
+use Typo3CmsMcp\Upkeep\Command\TodoSync;
 use Typo3CmsMcp\Upkeep\OpenFeedback;
 use Typo3CmsMcp\Upkeep\Todo;
 
@@ -78,6 +79,63 @@ final class TodoTest extends TestCase
                 $feedback['file'] . ' is open and no todo answers for it — `bin/cli todo:sync`',
             );
         }
+    }
+
+    /**
+     * The same relation from above, which is the half `bin/cli todo:sync` cannot
+     * see: it skips a feedback a todo already serves, so it never writes a
+     * second card, and it never looks at the card that was already there when a
+     * later judgement folded that feedback onto another todo. What is left is a
+     * card asking for a judgement somebody has made, ten lines away in a listing
+     * and sharing no word with it — which is one claimed session, spent
+     * arriving where the repository already was (`D-FBK-040`).
+     */
+    #[Test]
+    public function noJudgementLeavesBehindTheCardItReplaced(): void
+    {
+        self::assertSame(
+            [],
+            array_column(Todo::folded(), 'card'),
+            'a card still asks for a judgement another todo serves — delete the card the judgement replaced',
+        );
+    }
+
+    /**
+     * What tells the two apart is the step, and the step is a constant: every
+     * card `bin/cli todo:sync` writes carries the same sentence, because judging
+     * one feedback is the same work whichever it is, and a judgement is what
+     * replaces it. So a body still equal to `TodoSync::STEP` is a card nobody
+     * has judged, and beside a todo that serves the same feedback it is the one
+     * to delete.
+     *
+     * Both other readings are here because both are legitimate and neither may
+     * be reported: a card standing alone is the ordinary state of the board, and
+     * a feedback a judgement split across two todos is two pieces of work rather
+     * than a pair — what is wrong is an unjudged card beside a judged one, not
+     * two cards.
+     */
+    #[Test]
+    public function theCardAJudgementReplacedIsFoundByTheStepItStillCarries(): void
+    {
+        $feedback = 'feedback/' . self::MARKER . '.md';
+        $card = $this->queueATodo('low', '2026-08-02-090000', $feedback, TodoSync::STEP);
+
+        self::assertSame([], Todo::folded(), 'a card nobody has judged yet is one somebody has');
+
+        $judged = $this->queueATodo('normal', '2026-08-03-090000', $feedback);
+
+        self::assertSame(
+            [['card' => $card['path'], 'feedback' => $feedback, 'judged' => [$judged['path']]]],
+            Todo::folded(),
+        );
+
+        $split = $this->queueATodo('normal', '2026-08-03-090001', $feedback);
+
+        self::assertSame(
+            [['card' => $card['path'], 'feedback' => $feedback, 'judged' => [$judged['path'], $split['path']]]],
+            Todo::folded(),
+            'a feedback split across two judged todos is reported as a card nobody judged',
+        );
     }
 
     /**

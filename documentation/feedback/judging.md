@@ -286,7 +286,13 @@ records nothing — and a queue where 44 of 48 cards say `low` has no order at
 all, only a date. What more than one session reported does not stay at `low`.
 Where several cards turn out to be the same gap, one of them carries the work
 and names the others in its `**Serves:**` line, rather than each carrying a
-quarter of it.
+quarter of it. **The cards it took over are deleted by the same commit.**
+`todo:sync` writes no second card and removes none, so one left standing is a
+card asking the next session for the judgement this one has just made — and it
+is titled after its feedback while the todo that replaced it is titled after the
+work, so a listing prints the two with no word in common. `bin/cli todo:check`
+reports the pair, `R-FBK-014` is why, and deleting the card is the whole of the
+repair.
 
 ### Trimmed — *autonomous*
 
@@ -364,6 +370,11 @@ at least one todo serving it. Anything else drops it back to unjudged, where the
 next `bin/cli todo:sync` writes it a fresh card and the judgement is lost.
 "Nothing to do" is therefore not a special case but the *close* answer: archive
 in the same commit.
+
+The same invariant from above: it leaves no card still asking for the judgement
+beside the todo that carries it. One does not cost a lost judgement, it costs a
+found one twice — a session claims the card, reads the feedback and arrives
+where this commit already was.
 
 What cannot be checked is whether the judgement reached `decisions/`. A state
 check cannot see it, and a judgement may legitimately confirm an entry without

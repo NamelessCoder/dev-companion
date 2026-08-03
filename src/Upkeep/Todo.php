@@ -6,6 +6,7 @@ namespace Typo3CmsMcp\Upkeep;
 
 use Symfony\Component\Finder\Finder;
 use Typo3CmsMcp\Paths;
+use Typo3CmsMcp\Upkeep\Command\TodoSync;
 
 /**
  * Reads todo/, where one todo is one file and the order is in the names.
@@ -594,6 +595,60 @@ final class Todo
         }
 
         return array_keys($served);
+    }
+
+    /**
+     * The cards a judgement folded into another todo and nothing took away.
+     *
+     * `bin/cli todo:sync` writes one card per open feedback and skips whichever
+     * a todo already serves, so no feedback is ever given a second card. What it
+     * cannot do is look backwards: a session that judges a cluster writes one
+     * todo carrying two feedback on its `**Serves:**` line, and the card the
+     * first of them already had stays in the queue asking for the judgement that
+     * has just been made. The next session claims it, reads the feedback, and
+     * spends itself arriving where somebody already arrived — which is what
+     * `D-FBK-040` cost.
+     *
+     * The pair is one grouping over the three states of work somebody has taken
+     * on, which is what `serves()` already reads, plus the one thing that tells
+     * the two cards apart: the step. It is the same sentence on every card
+     * `todo:sync` writes and it is a constant, so a body still equal to it is a
+     * card nobody has judged — while the todo beside it, whatever it says, is
+     * one somebody wrote.
+     *
+     * What repairs it is a deletion and not a move, so this reports rather than
+     * acts: `todo:sync` repairs drift and anybody runs it, and a command that
+     * removes a claimed card is how a judgement gets lost instead of found.
+     *
+     * @return array<int, array{card: string, feedback: string, judged: array<int, string>}>
+     */
+    public static function folded(): array
+    {
+        $todos = array_merge(self::items(), self::progress(), self::waiting());
+
+        $serving = [];
+        foreach ($todos as $todo) {
+            foreach ($todo['serves'] as $what) {
+                $serving[$what][] = $todo['path'];
+            }
+        }
+
+        $folded = [];
+        foreach ($todos as $todo) {
+            if ($todo['body'] !== TodoSync::STEP) {
+                continue;
+            }
+            foreach ($todo['serves'] as $what) {
+                $judged = array_values(array_diff($serving[$what], [$todo['path']]));
+                if ($judged === []) {
+                    continue;
+                }
+
+                $folded[] = ['card' => $todo['path'], 'feedback' => $what, 'judged' => $judged];
+            }
+        }
+
+        return $folded;
     }
 
     /**

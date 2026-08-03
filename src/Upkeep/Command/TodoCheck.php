@@ -27,11 +27,14 @@ use Typo3CmsMcp\Upkeep\Todo;
  * one in `progress/` to the branch and the date, because a claim nobody can
  * date is one nobody dares take back.
  *
- * The last thing it says is about the other direction: an open feedback that no
- * todo answers for. That is drift rather than a state — `bin/cli todo:sync`
- * repairs it — and it is reported here because this is what a session runs,
- * while the case that also holds it is in a suite the session that recorded the
- * feedback never runs.
+ * The last two things it says are about the other direction, where the fault is
+ * in the relation between a feedback and the todos rather than in one file: an
+ * open feedback that no todo answers for, and a card still asking for a
+ * judgement another todo has already been given. Both are drift rather than a
+ * state — the first is repaired by `bin/cli todo:sync` and the second by the
+ * deletion it names — and both are reported here because this is what a session
+ * runs, while the cases that also hold them are in a suite the session that
+ * recorded the feedback never runs.
  */
 #[AsCommand(
     name: 'todo:check',
@@ -185,6 +188,18 @@ final class TodoCheck
         $unserved = count(array_filter(OpenFeedback::all(), static fn(array $feedback): bool => !$feedback['judged']));
         if ($unserved > 0) {
             $problems[] = sprintf('%d open feedback answered for by no todo — `bin/cli todo:sync`', $unserved);
+        }
+
+        // And the same relation from above. `todo:sync` never writes a second
+        // card, so the pair only ever arrives the other way round: a judgement
+        // folds a feedback onto another todo's `Serves:` line and the card it
+        // already had keeps asking for the judgement that has just been made.
+        // Nothing repairs this one — the fold deletes the card, and what is
+        // named here is that deletion.
+        foreach (Todo::folded() as $pair) {
+            $problems[] = $pair['card'] . ' still asks for the judgement of ' . $pair['feedback']
+                . ', which is already served by ' . implode(' and ', $pair['judged'])
+                . ' — delete the card the judgement replaced';
         }
 
         $errors = Cli::errors($output);

@@ -21,20 +21,20 @@ packages, and a root package on its own is not an installation.**
 
 ## Wrong if
 
-- A monorepo whose root declares a TYPO3 package type but is not the thing
-  being worked on, or a setup that installs the root into the vendor directory
-  as well — the two entries then resolve to the same realpath under one key,
-  which is intended, but has not been seen in the wild here.
+- A monorepo whose root declares a TYPO3 package type but is not the thing being
+  worked on, or a setup that installs the root into the vendor directory as well
+  — the two entries then resolve to the same realpath under one key, which is
+  intended, but has not been seen in the wild here.
 
 ## Confirmed on `2026-08-01`
 
 Both shapes were built as fixtures, which is as far as resolution can be taken
-without an installation. The second collapses as the entry said. A root
-required through a path repository is symlinked back into the vendor directory,
-both entries derive `bootstrap_package` from the same package name, and both
-resolve to one realpath — so it is a single package at the root, and it stays
-the project's own. Reading the vendor path instead would have made the
-extension being edited a dependency of the repository it is.
+without an installation. The second collapses as the entry said. A root required
+through a path repository is symlinked back into the vendor directory, both
+entries derive `bootstrap_package` from the same package name, and both resolve
+to one realpath — so it is a single package at the root, and it stays the
+project's own. Reading the vendor path instead would have made the extension
+being edited a dependency of the repository it is.
 
 The first displaces nothing. A monorepo root declaring `typo3-cms-extension` is
 counted under its own key beside the packages below it, and each of those keeps

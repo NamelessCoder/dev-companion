@@ -1,8 +1,8 @@
 # Forward runs
 
 What a forward review is, and the five of them, are in
-[scenarios/forward/readme.md](../../scenarios/forward/readme.md). This is how one is
-carried out.
+[scenarios/forward/readme.md](../../scenarios/forward/readme.md). This is how
+one is carried out.
 
 ## Running one
 
@@ -12,10 +12,11 @@ carried out.
    evidence, as long as it is given the prompt and nothing else. What such a
    launch has to get right — the session id the grading later needs among it —
    is [driving-a-session.md](../driving-a-session.md).
-   [todo/reference/](../../todo/reference/) says which checkout plays which environment on this
-   machine, and how the client is reached there. A recorded review runs in one
-   of those and not in the `E-SITE` this repository makes for itself: what a
-   review would find in a scaffold is what this repository put there
+   [todo/reference/](../../todo/reference/) says which checkout plays which
+   environment on this machine, and how the client is reached there. A recorded
+   review runs in one of those and not in the `E-SITE` this repository makes for
+   itself: what a review would find in a scaffold is what this repository put
+   there
    ([`D-EVI-004`](../../decisions/evidence/evi-004-the-environment-is-made-here-and-the-repository-under-review-is-not.md)).
 2. `bin/cli scenarios:record <id> <client>` writes the empty run, and
    `bin/cli scenarios:show <id>` prints the prompt and the numbered criteria.
@@ -80,38 +81,38 @@ things.
 The run itself, as one file below [scenarios/runs/](../../scenarios/runs/): the
 environment, the server it ran against, the skills the session activated, the
 tools it reached for and what it asked them, and one judgment with evidence per
-criterion. The verdict
-is not written into it — it follows from the judgments, and a review whose mark
-disagrees with what its run establishes is a failing check rather than a
-sentence nobody rereads.
+criterion. The verdict is not written into it — it follows from the judgments,
+and a review whose mark disagrees with what its run establishes is a failing
+check rather than a sentence nobody rereads.
 
 Everything else a run produces, it produces on top of that — and a run that went
-well produces it too. What a run teaches is rarely the verdict: three `REVIEW-02`
-runs in two repositories were all judged `covered` or better against the same
-criteria, and the thing worth keeping from them is that not one of the three
-executed a single project-owned command and not one of the answers said so. That
-is neither a criterion nor a property of the repository under review, and left in
-the run's evidence field it is read once, by whoever judged that run.
+well produces it too. What a run teaches is rarely the verdict: three
+`REVIEW-02` runs in two repositories were all judged `covered` or better against
+the same criteria, and the thing worth keeping from them is that not one of the
+three executed a single project-owned command and not one of the answers said
+so. That is neither a criterion nor a property of the repository under review,
+and left in the run's evidence field it is read once, by whoever judged that
+run.
 
 So after judging, ask what the run taught that is **not** specific to the one
 repository, and file each answer where the recurring work already walks:
 
 - `typo3_feedback_record` for what was missing, wrong, or unhelpful — with the
-  review id in the observation, so the feedback can be traced back to the task that
-  exposed it. Give it the run's own prompt as its query, so the feedback can be
-  re-run against a later server the way every other feedback is, and the model the
-  run ran as, because what a run teaches about behaviour belongs to that model
-  and not to the next one.
+  review id in the observation, so the feedback can be traced back to the task
+  that exposed it. Give it the run's own prompt as its query, so the feedback
+  can be re-run against a later server the way every other feedback is, and the
+  model the run ran as, because what a run teaches about behaviour belongs to
+  that model and not to the next one.
 - A new contract case, when the session exposes a repeatable task or failure
   shape worth holding directly. That is the more valuable outcome of the two.
 
 Both of those are written by whoever judged the run, from the transcript. When
 the run happened in an agent whose transcript is not readable here, the session
 is the only thing that can report it, and it is asked for its own debrief after
-the work is finished — the generic prompt for that is in [the feedback
-pages](../feedback/readme.md). What comes back is weaker evidence than a
-transcript and the run says so: it is what the session claims about itself, and
-the answer it gave is still judged the usual way.
+the work is finished — the generic prompt for that is in
+[the feedback pages](../feedback/readme.md). What comes back is weaker evidence
+than a transcript and the run says so: it is what the session claims about
+itself, and the answer it gave is still judged the usual way.
 
 A defect the same session fixes is the exception: that is a requirement and the
 commit that closed it, not a feedback that would be archived on creation.
@@ -120,7 +121,8 @@ archives it, and what has to keep holding afterwards goes into
 [requirements/](../../requirements/readme.md).
 
 For a `gap` review, do not re-file the part that is already written down — its
-**Status today** line names the requirement. File what the task needed beyond it.
+**Status today** line names the requirement. File what the task needed beyond
+it.
 
 ## When a run stops without an error
 

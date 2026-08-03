@@ -8,15 +8,14 @@ status: held
 **A lookup that returns nothing says what there would have been to find, and
 what it names can be asked for outright.**
 
-`typo3_hint_lookup` lists the hint ids of the searched domains on every miss
-and accepts one as `id`, so "your words did not match" is distinguishable from
+`typo3_hint_lookup` lists the hint ids of the searched domains on every miss and
+accepts one as `id`, so "your words did not match" is distinguishable from
 "nobody wrote this down" without trying another phrasing.
 
 ## From
 
-A query naming XLF, labels and language files returning the TCA hint and
-nothing else, with no way to see that a Language Files hint existed
-(2026-07-29).
+A query naming XLF, labels and language files returning the TCA hint and nothing
+else, with no way to see that a Language Files hint existed (2026-07-29).
 
 ## Held by
 

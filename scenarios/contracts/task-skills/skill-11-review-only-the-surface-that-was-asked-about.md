@@ -15,16 +15,16 @@ a focused prompt. This case is what measures it.
 
 **What has to come out of it**
 
-- The surface list is written whole, from the checklist and the extension
-  scope, and the report closes on all of it — not on the security entry alone.
+- The surface list is written whole, from the checklist and the extension scope,
+  and the report closes on all of it — not on the security entry alone.
 - The entries the request left out carry a state that says so, and it is
   distinct from the one an in-scope surface nobody reached carries: what the
   request excluded and what the review missed are separately readable.
 - Neither of those entries reads as clean, and neither carries a finding, a
   severity or a "nothing to report".
 - The reading is where the narrowing lands: the security surface gets the
-  conventions lookup, the runtime lookup and the checkout reading the skill
-  asks for on an in-scope surface, and an unrequested surface gets none of it.
+  conventions lookup, the runtime lookup and the checkout reading the skill asks
+  for on an in-scope surface, and an unrequested surface gets none of it.
 - Each security finding is still held to the gate — the sink is named and read,
   and an unfollowed value is reported as unverified rather than dropped for
   being outside a narrower reading.

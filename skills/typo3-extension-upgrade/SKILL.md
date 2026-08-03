@@ -6,10 +6,10 @@ description: Carry a TYPO3 extension, sitepackage, or project package from the T
 # TYPO3 Extension Upgrade
 
 Cross a package from the range it declares to the range it is meant to declare,
-in an order where each step decides what the next one is worth.
-Keep this skill as routing and workflow; never retain version-specific APIs,
-constraints, replacements, or the contents of a changelog — every one of those
-is a property of the installation being read and of the target being aimed at.
+in an order where each step decides what the next one is worth. Keep this skill
+as routing and workflow; never retain version-specific APIs, constraints,
+replacements, or the contents of a changelog — every one of those is a property
+of the installation being read and of the target being aimed at.
 
 ## The order
 
@@ -35,15 +35,15 @@ sites the others cannot:
   a reachable backend and an administrator, and it reads the extension's
   installed files. It finds the call sites of what its matchers cover, and the
   `FullyScanned` / `PartiallyScanned` tag the base carries out of the changelog
-  is what says whether its silence on an entry means anything. A clean scan for a
-  partially scanned entry is not a result; those call sites are yours to find.
+  is what says whether its silence on an entry means anything. A clean scan for
+  a partially scanned entry is not a result; those call sites are yours to find.
 - **The deprecation annotations on what this package actually calls**, in the
   installed core and in the packages it depends on. A changelog entry is per
   release and is reached by the tags of the system extension it sits in; an
   annotation sits on the class, method or property itself, so a symbol whose
-  entry falls outside the tags the sweep named — or carries no `ext:` tag at
-  all — is reached only this way, and a class deprecated as a whole takes every
-  call site of it with it.
+  entry falls outside the tags the sweep named — or carries no `ext:` tag at all
+  — is reached only this way, and a class deprecated as a whole takes every call
+  site of it with it.
 
 Both the changelog and the scanner answer from the **core that is installed**,
 which is the boundary this whole order rests on: they say what this package owes
@@ -55,16 +55,17 @@ looked up. Once the resolution below puts the installation on the target, run
 the sweep again there; that second pass is what says the work is done.
 
 Write the result down before changing a file: one entry per call site, with the
-identifier, the path and line in this package, which declared major deprecates or
-removes it, and which of the three established it. That list is the work, and it
-is what the result closes on — including the entries that came back empty, with
-the majors they covered.
+identifier, the path and line in this package, which declared major deprecates
+or removes it, and which of the three established it. That list is the work, and
+it is what the result closes on — including the entries that came back empty,
+with the majors they covered.
 
 ## Resolve the range, rather than assert it
 
 - The declared range is in the Composer manifest and in `ext_emconf.php`, and
   the two either say the same thing or the difference is itself a finding: for a
-  non-Composer installation `ext_emconf.php` is the only constraint that governs.
+  non-Composer installation `ext_emconf.php` is the only constraint that
+  governs.
 - The PHP range is the intersection of what every declared TYPO3 major supports,
   never the PHP the current machine happens to run.
 - Where the package requires a system extension, establish that the target still
@@ -90,12 +91,11 @@ where the code already does it; the alternative is an upgrade that breaks the
 version it was told to keep.
 
 Where a replacement belongs to a subsystem the base did not have in scope, ask
-its conventions before writing it: `typo3_hint_lookup` with the concrete
-paths, and `typo3_documentation_lookup` with the target version where the
-official API decides the shape. Where nothing in the declared range replaces a
-removal, that is the answer — one package version cannot serve both, and
-choosing silently is how a supported version stops working without anyone
-noticing.
+its conventions before writing it: `typo3_hint_lookup` with the concrete paths,
+and `typo3_documentation_lookup` with the target version where the official API
+decides the shape. Where nothing in the declared range replaces a removal, that
+is the answer — one package version cannot serve both, and choosing silently is
+how a supported version stops working without anyone noticing.
 
 Change what the work list justifies. An upgrade is not a modernization, a
 cleanup or a rewrite: anything the list did not produce goes to the workflow
@@ -117,8 +117,8 @@ different range.
 4. Report the work list with every entry closed or explicitly left open, the
    resolutions with what the solver printed, what changed and what deliberately
    did not, and the matrix cell by cell. A cell nobody ran is named as unrun
-   rather than left out — the matrix is the claim the package makes about itself,
-   and an unrun cell is the part of that claim nothing stands behind.
+   rather than left out — the matrix is the claim the package makes about
+   itself, and an unrun cell is the part of that claim nothing stands behind.
 
 This skill owns crossing a package from one supported range to another: the
 sweep that says what breaks, the constraints that say what may be declared, the

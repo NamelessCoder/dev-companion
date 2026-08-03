@@ -1,8 +1,8 @@
 # What is written down, and where
 
 Four files hold four different kinds of thing, and keeping them apart is what
-keeps any of them readable. [AGENTS.md](../../AGENTS.md) has the rules; this is what
-each one is for and how the work moves between them.
+keeps any of them readable. [AGENTS.md](../../AGENTS.md) has the rules; this is
+what each one is for and how the work moves between them.
 
 ## Where a session starts
 
@@ -17,19 +17,18 @@ answers — `session`, or a number of days, so five sessions in an afternoon do
 not ask the same question five times. And is there anything to do, which the
 todo's `**Run:**` command answers by exiting nonzero when it found work: the
 backlog stops being the next thing the moment the last entry is named, without
-anybody editing a todo to say so. What is owed a feedback or a
-backlog entry is that judgement — a todo that takes it on, or the sentence
-saying why it stays as it is — not the work itself, which is what the queue is
-for.
+anybody editing a todo to say so. What is owed a feedback or a backlog entry is
+that judgement — a todo that takes it on, or the sentence saying why it stays as
+it is — not the work itself, which is what the queue is for.
 
 ## Why the queue comes first
 
-For a while it did not, and the effect is worth writing down. A todo that
-recurs every session is due for as long as anything is unjudged, `next` asked
-the recurring ones first, and feedback arrives from every session everywhere
-while one session closes a handful. So every session opened on the same
-sighting, the queue behind it was never reached, and entries sat in it
-untouched for as long as `feedback/` was not empty — which is always.
+For a while it did not, and the effect is worth writing down. A todo that recurs
+every session is due for as long as anything is unjudged, `next` asked the
+recurring ones first, and feedback arrives from every session everywhere while
+one session closes a handful. So every session opened on the same sighting, the
+queue behind it was never reached, and entries sat in it untouched for as long
+as `feedback/` was not empty — which is always.
 
 The order is now: what has a clock, then the queue, then the sightings once the
 queue is empty. It follows from what a judgement is. Judging a feedback is
@@ -37,24 +36,23 @@ deciding whether it becomes work; the queue is the work that decision produced.
 
 Since 2026-08-02 the feedback are *in* the queue rather than behind it — one
 card each, written by `bin/cli todo:sync` at `low`, which is below everything
-somebody has judged to be worth more. The order
-above is unchanged and what enforces it has moved: the priority does it now,
-where a group boundary did it before. What is still behind the queue is the
-backlog sighting, and it is reached when the queue runs dry — which now means
-that nothing decided is left *and* nothing has arrived unjudged.
-Leaving it standing in order to judge more feedback is deciding twice and doing
-nothing, and the pile it decides over grows faster than any session can read
-it.
+somebody has judged to be worth more. The order above is unchanged and what
+enforces it has moved: the priority does it now, where a group boundary did it
+before. What is still behind the queue is the backlog sighting, and it is
+reached when the queue runs dry — which now means that nothing decided is left
+*and* nothing has arrived unjudged. Leaving it standing in order to judge more
+feedback is deciding twice and doing nothing, and the pile it decides over grows
+faster than any session can read it.
 
 The second half of the same problem is the size of the reading, and the board is
 what solves it now. `bin/cli todo:sync` writes one card per open feedback, and
 `bin/cli todo:next` hands over **one** of them, like any other todo — a fresh
 card is `low`, so the oldest unjudged feedback comes up once the decided work is
-done. One query can be re-run in a session that also
-has work of its own; sixty-seven cannot, and a session handed all of them closes
-whatever is easiest. The portion was five until 2026-08-02, cut for a reader who
-could then only find the judgements in the commit that made them. What carries
-that instead is `decisions/`, which is where a judgement is written now — see
+done. One query can be re-run in a session that also has work of its own;
+sixty-seven cannot, and a session handed all of them closes whatever is easiest.
+The portion was five until 2026-08-02, cut for a reader who could then only find
+the judgements in the commit that made them. What carries that instead is
+`decisions/`, which is where a judgement is written now — see
 [judging.md](judging.md) and
 [`D-FBK-012`](../../decisions/feedback/fbk-012-the-queue-comes-first-and-the-sighting-hands-over-one.md).
 `bin/cli feedback:list` is still the whole of it, for whoever wants the
@@ -64,13 +62,13 @@ What runs the sync is `.githooks/pre-commit`, on any commit that touches
 `feedback/`: it writes the missing cards and stages them, so the feedback and
 its card arrive together. `composer install` is what points git at that
 directory, and the hook repairs rather than refuses — a commit made where it is
-not enabled is caught by `bin/cli todo:check` and by CI, which is where the
-20 cards of 2026-08-02 were found —
+not enabled is caught by `bin/cli todo:check` and by CI, which is where the 20
+cards of 2026-08-02 were found —
 [`D-FBK-022`](../../decisions/feedback/fbk-022-a-feedback-brings-its-card-in-the-commit-that-brings-it-in.md).
 
 What `next` can never do is run a feedback's own query against the server as it
-is now. A feedback is evidence about a version of this server that may no
-longer exist, and that reading is the session's.
+is now. A feedback is evidence about a version of this server that may no longer
+exist, and that reading is the session's.
 
 ## What happens to the todo it printed
 
@@ -78,8 +76,8 @@ Everything on this page is about the order of the work. What is read before the
 todo at the front of it is changed, why the step is judged rather than executed,
 where a question the work turns on is settled instead of recalled, and what is
 asked because nothing here can answer it, is one page of its own:
-[working-a-todo.md](working-a-todo.md), which `bin/cli todo:next` names with every
-todo it hands over.
+[working-a-todo.md](working-a-todo.md), which `bin/cli todo:next` names with
+every todo it hands over.
 
 ## Keeping the queue current
 
@@ -100,16 +98,16 @@ somebody else's agent leaves nothing here. The only thing that can report such a
 run is the session itself, and it will not do so unprompted — an agent that
 finished its task considers itself done.
 
-So it is asked, in a message of its own **after** the work is finished. Before or
-alongside it, the debrief becomes part of the task: an agent told it will be
+So it is asked, in a message of its own **after** the work is finished. Before
+or alongside it, the debrief becomes part of the task: an agent told it will be
 asked which tools helped calls tools to have an answer. The prompt below is
-generic on purpose — it names no scenario, no skill and no tool, so the same text
-works after a review, an implementation, or a question the server could not
+generic on purpose — it names no scenario, no skill and no tool, so the same
+text works after a review, an implementation, or a question the server could not
 answer at all.
 
-What it asks for is the report, never the shape of the feedback. What each
-field wants — one feedback per subject, the task named in the first line, where
-to read the model identifier rather than remember it — belongs to
+What it asks for is the report, never the shape of the feedback. What each field
+wants — one feedback per subject, the task named in the first line, where to
+read the model identifier rather than remember it — belongs to
 `typo3_feedback_record` and is written in its parameters, which is the only
 documentation a client actually reads. A prompt that restates it is a second
 copy that ages, and it would only reach the sessions somebody handed it to.
@@ -181,22 +179,22 @@ requirement it established says what must be true from now on; it does not say
 what a session in somebody else's agent ran into on a Tuesday, and that is the
 half worth reading when the next one runs into it too.
 
-Keeping it is also what makes the closed half of `typo3_feedback_list` usable:
-a feedback read from a commit was a filename and a subject, with the category, the
+Keeping it is also what makes the closed half of `typo3_feedback_list` usable: a
+feedback read from a commit was a filename and a subject, with the category, the
 tools and the model gone with the file, so a query about one tool could only be
 answered from the open half. Both halves are now the same files read the same
 way.
 
-The feedback worked off before the archive existed were restored into it from the
-commits that deleted them, and those carry the commit that closed them in their
-own front matter — `closed:`, `commit:` and `subject:`. They were all moved in
-one commit, and that move says nothing about any of them; every feedback archived
-since is answered by the commit that archived it.
+The feedback worked off before the archive existed were restored into it from
+the commits that deleted them, and those carry the commit that closed them in
+their own front matter — `closed:`, `commit:` and `subject:`. They were all
+moved in one commit, and that move says nothing about any of them; every
+feedback archived since is answered by the commit that archived it.
 
 ## The three files around it
 
-Archiving the feedback takes the question out of the backlog, and the commit message
-records the answer. What outlives both is split three ways:
+Archiving the feedback takes the question out of the backlog, and the commit
+message records the answer. What outlives both is split three ways:
 
 - `requirements/` — what must be true from now on. A feedback is a question; the
   requirement it established has to keep holding while everything around it
@@ -213,15 +211,15 @@ records the answer. What outlives both is split three ways:
   When an assumption is later disproved, correct the entry in place rather than
   deleting it — the wrong assumption is the useful part, because it names where
   the next one is likely to sit.
-- `todo/` — the order of the work, and where the last session stopped. The
-  other files say what must be true, what was asked and what was assumed; none
-  of them says what to do next. A session can end anywhere, and the next one
-  starts by reading this. One todo is one file: it names what it serves and
-  what the next concrete step is, and is deleted when done rather than ticked.
-  Where it sits says whether it is the queue, what recurs, what waits on an
-  answer nothing here can give, or what is kept for reading, and a queued one
-  carries the priority that decides how soon — that is what `bin/cli todo:next`
-  reads and what `bin/cli todo:check` holds.
+- `todo/` — the order of the work, and where the last session stopped. The other
+  files say what must be true, what was asked and what was assumed; none of them
+  says what to do next. A session can end anywhere, and the next one starts by
+  reading this. One todo is one file: it names what it serves and what the next
+  concrete step is, and is deleted when done rather than ticked. Where it sits
+  says whether it is the queue, what recurs, what waits on an answer nothing
+  here can give, or what is kept for reading, and a queued one carries the
+  priority that decides how soon — that is what `bin/cli todo:next` reads and
+  what `bin/cli todo:check` holds.
 
 ## What nothing fails on
 
@@ -231,11 +229,11 @@ may fail on them, which is exactly why nothing read them for as long as they
 existed.
 
 `bin/cli backlog:list` is that reading; `bin/cli todo:next` opens with it and
-`bin/cli repository:check` closes with it. It names every requirement nothing answers for,
-says whether a queued todo names it — read from what the queue declares it
-serves, so the page listing what is deliberately *not* queued does not count as
-having taken one on — and gives the oldest open decision as the one the
-repository has moved furthest away from.
+`bin/cli repository:check` closes with it. It names every requirement nothing
+answers for, says whether a queued todo names it — read from what the queue
+declares it serves, so the page listing what is deliberately *not* queued does
+not count as having taken one on — and gives the oldest open decision as the one
+the repository has moved furthest away from.
 
 Standing on that list is not the problem. Standing on it with no todo naming it
 is a decision nobody has taken, and taking it — a todo, or the sentence in

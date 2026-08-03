@@ -38,7 +38,8 @@ stopped meaning anything the moment every entry named its own domains.
 - `tsconfig.json` is `typo3-tsconfig.json`. The name TypeScript's own compiler
   configuration has does not belong to a file about page and user TSconfig.
 - `Domains::JAVASCRIPT` is deleted rather than kept for a hint that might want
-  it. A domain nothing detects as is a tag that can only mislead the next author.
+  it. A domain nothing detects as is a tag that can only mislead the next
+  author.
 - The heading is "Backend TypeScript and JavaScript", and both backend hints
   carry the JavaScript vocabulary. The sources are TypeScript and the
   conventions are TypeScript's, but the artefact is JavaScript and a heading

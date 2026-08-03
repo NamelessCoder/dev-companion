@@ -26,7 +26,8 @@ reachable from a file the answer already opens or already names:
 
 Which of those hold across the covered majors was established against
 `.checkouts/` at 12.4, 13.4 and 14.3 before anything was written, and each of
-the three moved inside that range: [`D-ANS-019`](../../decisions/answers/ans-019-three-registration-kinds-read-from-what-core-reads-them-for.md)
+the three moved inside that range:
+[`D-ANS-019`](../../decisions/answers/ans-019-three-registration-kinds-read-from-what-core-reads-them-for.md)
 carries the four call shapes, the eight file names and the two registration
 ways, with what would show each wrong.
 
@@ -39,9 +40,9 @@ cannot: what a declaration means, and which of the four artifacts is absent.
 `feedback/2026-07-31-194510`, a conformance audit of a TYPO3 14 site package
 that fell back to `glob` and `read` for the whole file tree. Re-run on
 2026-08-02 against `printworks_sitepackage`: its two FlexForms, its
-`route-enhancers.yaml` and its form set are in no answer this server gives,
-and the two content elements the answer describes least are exactly the two
-whose FlexForm it did not read.
+`route-enhancers.yaml` and its form set are in no answer this server gives, and
+the two content elements the answer describes least are exactly the two whose
+FlexForm it did not read.
 
 ## Held by
 

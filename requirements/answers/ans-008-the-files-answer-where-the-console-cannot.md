@@ -9,18 +9,18 @@ status: held
 where the files hold it anyway.**
 
 `typo3_label_lookup` falls back to the XLF files of the same packages and
-`typo3_fluid_namespace_list` to their `Configuration/Fluid/Namespaces.php`;
-both report `answeredBy: "packages"` and name what the weaker source leaves
-out. A console that exits successfully and prints neither a payload nor the
-words it prints for an empty result settled nothing and takes the same route:
-an exit code of 0 is not an answer. Where nothing can answer, the failure is
-diagnosed rather than passed through: a query against a missing table means the
-database has no schema, not that the installation is broken.
+`typo3_fluid_namespace_list` to their `Configuration/Fluid/Namespaces.php`; both
+report `answeredBy: "packages"` and name what the weaker source leaves out. A
+console that exits successfully and prints neither a payload nor the words it
+prints for an empty result settled nothing and takes the same route: an exit
+code of 0 is not an answer. Where nothing can answer, the failure is diagnosed
+rather than passed through: a query against a missing table means the database
+has no schema, not that the installation is broken.
 
 ## From
 
-An installed TYPO3 13.4.33 before the dump was imported, where the labels sat
-in the files and both console-backed lookups returned a raw SQL stack trace
+An installed TYPO3 13.4.33 before the dump was imported, where the labels sat in
+the files and both console-backed lookups returned a raw SQL stack trace
 (2026-07-29).
 
 ## Held by

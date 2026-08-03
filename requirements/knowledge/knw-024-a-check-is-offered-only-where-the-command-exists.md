@@ -23,9 +23,9 @@ covered major has it, and a narrower one belongs in the hints, where
 
 ## From
 
-Seven checks naming a suite absent from at least one covered branch, found
-while unifying the obligation vocabulary — a 13.4 core contributor asking about
-labels was handed `runTests.sh -s checkIntegrityXliff`, which arrives in 14
+Seven checks naming a suite absent from at least one covered branch, found while
+unifying the obligation vocabulary — a 13.4 core contributor asking about labels
+was handed `runTests.sh -s checkIntegrityXliff`, which arrives in 14
 (2026-07-30).
 
 ## Held by

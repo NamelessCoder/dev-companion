@@ -28,9 +28,9 @@ that presents it — a choice made silently is not a question saved, it is a
 question moved to where the answer costs a rewrite. Putting the todo back is one
 of the answers offered, because the person asked may have none either, and a
 todo that carries its open question into the next session is worth more than one
-closed on a guess. It goes to the end of the queue when it does: `bin/cli todo:next`
-hands over the first queued item and has no notion of blocked, so one left in
-place is handed to every session behind it.
+closed on a guess. It goes to the end of the queue when it does:
+`bin/cli todo:next` hands over the first queued item and has no notion of
+blocked, so one left in place is handed to every session behind it.
 
 Nothing can check that the reading happened. A todo worked from the checkouts is
 shaped exactly like one worked from memory, and what this repository produces is

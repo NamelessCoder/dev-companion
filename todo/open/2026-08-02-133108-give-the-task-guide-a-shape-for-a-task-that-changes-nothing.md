@@ -10,7 +10,8 @@ first what a review brief would carry that the change one does not —
 account of what an audit does here, and `TaskGuide::CHANGE_TYPE_CHECKLIST` with
 the five generic items above it is what a change one carries. Then place the
 shape: an audit entry in `knowledge/task-intents.json`, a value on the
-`changeType` enum, or both — the enum is a declared schema, so `ToolContractTest`
-is written in the same commit. This does not turn on the question the two waiting
-cards for the same property carry: `typo3_task_guide` is reachable without a
-skill, and a caller who arrives that way gets the same wrong-shaped brief.
+`changeType` enum, or both — the enum is a declared schema, so
+`ToolContractTest` is written in the same commit. This does not turn on the
+question the two waiting cards for the same property carry: `typo3_task_guide`
+is reachable without a skill, and a caller who arrives that way gets the same
+wrong-shaped brief.

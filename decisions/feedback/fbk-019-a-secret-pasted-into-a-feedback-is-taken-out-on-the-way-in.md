@@ -19,9 +19,9 @@ live encryption key of the site it had just audited into this repository.
   `feedback/2026-07-31-185900-after-the-audit-i-invoked-typo3-cms-mcp.md`
   reports a success: `typo3_configuration_lookup` with path `SYS/encryptionKey`
   returned the effective runtime value, which turned an inferred audit finding
-  into an established one. Its observation quotes the 96-character key
-  verbatim — once, and this entry said twice until 2026-08-02, which
-  **Since then** reads back.
+  into an established one. Its observation quotes the 96-character key verbatim
+  — once, and this entry said twice until 2026-08-02, which **Since then** reads
+  back.
 - The behaviour it praises still stands. Re-run on 2026-08-02 against the server
   as it is now, over stdio with `TYPO3_MCP_ROOT=/home/benji/projects/site-new`:
   `SYS/encryptionKey` came back `found: true`, `answeredBy: installation`, a
@@ -60,15 +60,16 @@ live encryption key of the site it had just audited into this repository.
   todo serves it.
 - The secret is queued as work of its own rather than closed on the spot. It
   changes a tool's declared schema and description, which a judging run does not
-  improvise — [`R-FBK-011`](../../requirements/feedback/fbk-011-a-recorded-feedback-carries-no-secret-out-of-the-installation.md)
+  improvise —
+  [`R-FBK-011`](../../requirements/feedback/fbk-011-a-recorded-feedback-carries-no-secret-out-of-the-installation.md)
   says what must hold and a todo carries the next step.
 - What the guard is stays open. Wording on the fields, a refusal in
-  `Channel::record()`, a redaction pass, or the wording alone — a judging run has
-  established the gap, not the fix.
+  `Channel::record()`, a redaction pass, or the wording alone — a judging run
+  has established the gap, not the fix.
 - The recorded file was not rewritten. Editing the key out would leave every
   commit that carries it untouched and would alter a session's report, which the
-  archive exists to keep. Rotating the key belongs to whoever owns that site, and
-  it is not an action this repository takes on its own.
+  archive exists to keep. Rotating the key belongs to whoever owns that site,
+  and it is not an action this repository takes on its own.
 
 ## Assumed
 
@@ -93,8 +94,9 @@ live encryption key of the site it had just audited into this repository.
   cost more than the leak it prevents.
 - The suggestion half turns out to have been right after all: a later session
   reaches the conformance skill with every tool callable and still does not ask
-  `typo3_configuration_lookup` about a configuration claim. Then this was step 4,
-  wording, and the skill names the tool without saying when it decides a finding.
+  `typo3_configuration_lookup` about a configuration claim. Then this was step
+  4, wording, and the skill names the tool without saying when it decides a
+  finding.
 
 ## Since then
 
@@ -160,5 +162,5 @@ take out one value, the key this was written for, and
 that measurement kept as a check.
 
 Both halves were worked at once, in two sessions that could not see each other,
-and both read the archived file and found the same false sentence — which is
-why the correction is recorded once above and stands over both accounts.
+and both read the archived file and found the same false sentence — which is why
+the correction is recorded once above and stands over both accounts.

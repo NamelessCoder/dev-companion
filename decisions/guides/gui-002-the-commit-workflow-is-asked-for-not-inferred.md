@@ -25,9 +25,9 @@ paths and the task text. This one does not.
 ## Assumed
 
 - The caller knows which repository they are committing in, and the pointer at
-  the end of every answer is enough for them to find the other mode. The
-  default is `core` because dropping rules must be something the caller asked
-  for, never something a typo achieves.
+  the end of every answer is enough for them to find the other mode. The default
+  is `core` because dropping rules must be something the caller asked for, never
+  something a typo achieves.
 - `[SECURITY]` stays refused for core work. The keyword exists in the core's
   history — the Security Team writes those commits — so its absence from the
   enum was a gap, but accepting it for a contributor would be a wrong answer
@@ -35,9 +35,9 @@ paths and the task text. This one does not.
 
 ## Wrong if
 
-- Agents commit in a project repository and never pass the argument, so the
-  hard `missing-issue` error stays the normal answer there. The next step would
-  then be for `typo3_task_guide`, which does compute `outsideCore`, to hand the
+- Agents commit in a project repository and never pass the argument, so the hard
+  `missing-issue` error stays the normal answer there. The next step would then
+  be for `typo3_task_guide`, which does compute `outsideCore`, to hand the
   workflow to the commit guide by naming it in the follow-up tool call it
   suggests.
 
@@ -61,11 +61,11 @@ pointer arrives at the moment of use rather than at the start of the session.
 That is the opposite of what `D-AUD-003` found for descriptions nobody has to
 fetch. `knowledge/server-scope.json` names the argument in the covered topic,
 and its routing entry — "Writing or amending the commit message" — does not.
-`typo3_task_guide` outside the core named it in the checklist and left it out
-of the follow-up calls printed underneath, which is one answer disagreeing with
+`typo3_task_guide` outside the core named it in the checklist and left it out of
+the follow-up calls printed underneath, which is one answer disagreeing with
 itself about one step; the commit that writes this line closes that half and
-`ScopeTest::theBriefPointsAtTheGuideForTheStepItEndsWith` holds both. The
-fourth channel is the worst of them: none of the seven published skills names
+`ScopeTest::theBriefPointsAtTheGuideForTheStepItEndsWith` holds both. The fourth
+channel is the worst of them: none of the seven published skills names
 `typo3_commit_message_guide` at all, so a session that reaches this server
 through a skill has no route to the step at all, let alone to the argument.
 
@@ -78,7 +78,7 @@ written down here as an option and not as a decision.
 
 What would settle the first claim is one run: a session in `E-EXT` asked to fix
 something and commit it, graded on whether it passed the argument. Nothing
-produces that run today. The three forward reviews are reviews, `D-EVI-003`
-says a review changes nothing, and so none of them ever reaches a commit.
-`EXT-03` is the case that names this task shape, and a contract case is read
-rather than run forward. The entry stays open until that run exists.
+produces that run today. The three forward reviews are reviews, `D-EVI-003` says
+a review changes nothing, and so none of them ever reaches a commit. `EXT-03` is
+the case that names this task shape, and a contract case is read rather than run
+forward. The entry stays open until that run exists.

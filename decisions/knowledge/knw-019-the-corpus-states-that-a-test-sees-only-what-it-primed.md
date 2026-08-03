@@ -16,8 +16,8 @@ primed, and the failure looks like a broken query rather than an empty table.
 
 ## Evidence
 
-- Of the three things the feedback names, two are answered today. `bin/cli
-  hints:probe "correct request type in a functional test"` reaches
+- Of the three things the feedback names, two are answered today.
+  `bin/cli hints:probe "correct request type in a functional test"` reaches
   `project-extension-tests`, which states the request type outright:
   `$this->executeFrontendSubRequest(new InternalRequest($uri))`, with the
   cache-hash conditions of a hand-built query string beside it. `DataHandler`
@@ -27,12 +27,13 @@ primed, and the failure looks like a broken query rather than an empty table.
 - The fixture rule is stated too, on `core-tests`: "State is set up and asserted
   with CSV fixtures, not hand-written inserts", with `importCSVDataSet()` in
   `setUp()` and `assertCSVDataSet()` for the result.
-- The premise under that rule is stated nowhere. `bin/cli hints:probe "empty
-  database per test run"` reaches `datahandler-persistence` on text alone and
-  neither test hint. A search of `knowledge/` and `skills/` for an empty,
-  truncated or primed database finds one sentence, on `project-extension-tests`,
-  and it is about the file-backed caches that survive the truncation — what
-  outlives a test rather than what a test starts with.
+- The premise under that rule is stated nowhere.
+  `bin/cli hints:probe "empty database per test run"` reaches
+  `datahandler-persistence` on text alone and neither test hint. A search of
+  `knowledge/` and `skills/` for an empty, truncated or primed database finds
+  one sentence, on `project-extension-tests`, and it is about the file-backed
+  caches that survive the truncation — what outlives a test rather than what a
+  test starts with.
 - The skill the reporting session names is silent in the same way.
   `skills/typo3-extension-testing/references/phpunit.md` asks for fixtures that
   are "minimal, deterministic, and explicit about their expected result" and for
@@ -42,9 +43,9 @@ primed, and the failure looks like a broken query rather than an empty table.
   statement rather than a guess. On `.checkouts/testing-framework/9` at tag
   `9.6.1`, `FunctionalTestCase::setUp()` builds the instance and the schema for
   the first test of a class and, for every test after it, calls
-  `initializeTestDatabaseAndTruncateTables()` — the comment above
-  `$isFirstTest` says so in those words. `$initializeDatabase = true` is a
-  property a test class may turn off.
+  `initializeTestDatabaseAndTruncateTables()` — the comment above `$isFirstTest`
+  says so in those words. `$initializeDatabase = true` is a property a test
+  class may turn off.
 - Where the statement lands is a question the word counts already narrow.
   `core-tests` is 212 words and its `appliesTo` already carries
   `importCSVDataSet`, `dataset` and `csv`; `project-extension-tests` is 947,
@@ -54,8 +55,9 @@ primed, and the failure looks like a broken query rather than an empty table.
   [`D-FBK-021`](../feedback/fbk-021-a-summary-feedback-is-judged-against-its-series-not-on-its-own.md)
   maps the series: the live-database inserts are the subject of `003216`, the
   per-class test databases and the lost track of manual edits are `003929`. That
-  nothing reached this session at all is `003356` and `003533`, which report that
-  no skill was activated and no lookup was made before the user asked for one.
+  nothing reached this session at all is `003356` and `003533`, which report
+  that no skill was activated and no lookup was made before the user asked for
+  one.
 
 ## Decided
 

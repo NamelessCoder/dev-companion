@@ -5,15 +5,15 @@ status: held
 
 # R-KNW-022 — A hint is a candidate for the question it is asked from
 
-**A hint is a candidate for the question its subject is asked from, not only
-for the one its category is named after.**
+**A hint is a candidate for the question its subject is asked from, not only for
+the one its category is named after.**
 
-Domains withhold whole categories before anything is scored, so a category
-whose vocabulary is the vocabulary of somebody who already knows the answer is
-invisible: the words a caller arrives with are what they can see — a colour,
-a dark mode, a shadow, a spacing — and the words the hints were filed under
-are `sass`, `scss`, `css`. A hint that its own title does not reach is
-unreachable, and that is the floor this holds. It is
+Domains withhold whole categories before anything is scored, so a category whose
+vocabulary is the vocabulary of somebody who already knows the answer is
+invisible: the words a caller arrives with are what they can see — a colour, a
+dark mode, a shadow, a spacing — and the words the hints were filed under are
+`sass`, `scss`, `css`. A hint that its own title does not reach is unreachable,
+and that is the floor this holds. It is
 [`R-KNW-013`](knw-013-a-statement-lives-in-the-category-it-is-asked-from.md) at
 the gate rather than in the filing, and it does not widen what is answered:
 `namesTheFrontend` still withholds the backend's own design system where the

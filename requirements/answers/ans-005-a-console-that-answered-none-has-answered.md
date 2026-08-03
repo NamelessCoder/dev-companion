@@ -9,9 +9,9 @@ status: held
 
 The `unsupported` answer is reserved for a console that could not be reached or
 that failed — this is
-[R-ANS-001](ans-001-could-not-ask-never-looks-like-does-not-exist.md) in the other
-direction, and a zero-hit answer dressed as a breakage sends the caller to fix
-an installation instead of narrowing a query.
+[R-ANS-001](ans-001-could-not-ask-never-looks-like-does-not-exist.md) in the
+other direction, and a zero-hit answer dressed as a breakage sends the caller to
+fix an installation instead of narrowing a query.
 
 ## From
 

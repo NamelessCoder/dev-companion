@@ -7,8 +7,8 @@ status: open
 # D-DOC-007 — One page per tool, and the answer on it whole
 
 **The recording is a directory: `documentation/clients/tool-answers/<tool>.md`,
-each answer as the client received it, and every tool in `tools.md` links to
-its own.**
+each answer as the client received it, and every tool in `tools.md` links to its
+own.**
 
 `D-DOC-006` put all of it on one page, and the page is what forced the cut. Both
 go together: a reader arrives with one tool in hand, and neither the twenty-one
@@ -92,14 +92,14 @@ recording that call files a real feedback into the backlog on every test run.
 What replaces the blanket claim:
 
 - Every tool either links to its recording **or states, in its own section, why
-  it has none**. The renderer has no third branch: a tool with neither a page nor
-  a written reason renders as saying so, which is a defect a reader can see.
+  it has none**. The renderer has no third branch: a tool with neither a page
+  nor a written reason renders as saying so, which is a defect a reader can see.
 - The reasons are `ToolCalls::undriven()`, beside the table that leaves those
   tools out, and `tools.md`, the recording's own map and the test all read that
   one copy.
-- `ToolAnswersTest` holds the table against that list rather than against the two
-  names it used to carry. A third tool dropping out is made green by writing the
-  reason, which is the only work that was ever wanted here.
+- `ToolAnswersTest` holds the table against that list rather than against the
+  two names it used to carry. A third tool dropping out is made green by writing
+  the reason, which is the only work that was ever wanted here.
 
 The map under `tool-answers/readme.md` names them too, after the list, where the
 reader who scanned it for their tool has arrived. Nothing checks that half —

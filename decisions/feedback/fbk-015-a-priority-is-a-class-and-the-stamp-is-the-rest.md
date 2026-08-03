@@ -21,11 +21,12 @@ queueing work at once cannot pick the same one.
   named renumbering as the fix in the paragraph about bringing branches home.
   Both existed because both sessions read the same last number and both took it
   — a rank has to be unique, and nothing could make it so across two branches.
-- The tens. [`D-FBK-008`](fbk-008-one-todo-is-one-file-and-the-queue-is-in-the-names.md)
-  chose them so a todo could be put between two others, and wrote as its
-  **Wrong if** that a commit renaming more than a handful of files to move one
-  would show them too tight. Nothing ever reordered the queue under that shape,
-  so the mechanism was never used and its cost was paid on every insert.
+- The tens.
+  [`D-FBK-008`](fbk-008-one-todo-is-one-file-and-the-queue-is-in-the-names.md)
+  chose them so a todo could be put between two others, and wrote as its **Wrong
+  if** that a commit renaming more than a handful of files to move one would
+  show them too tight. Nothing ever reordered the queue under that shape, so the
+  mechanism was never used and its cost was paid on every insert.
 - The page of what is deliberately not queued, on 2026-08-02. Its four catalog
   items say of themselves that nothing blocks them and that they serve no open
   feedback, "which is why it is below everything that does" — a priority,
@@ -43,8 +44,8 @@ queueing work at once cannot pick the same one.
   for a feedback before anybody has decided what the feedback is worth — so
   nothing needs a default, and a default would have hidden the state.
 - The stamp in the name is the order below the word, in the shape a feedback is
-  already named in. `read()` sorts by name and PHP's sort holds equals in
-  place, so the second half of the order costs nothing.
+  already named in. `read()` sorts by name and PHP's sort holds equals in place,
+  so the second half of the order costs nothing.
 - A claim keeps its name. The number was a place in one order and had to be
   dropped where that order did not reach; the stamp is when the work arrived,
   which is as true in hand as in the queue, so a claim and a release are moves
@@ -76,10 +77,10 @@ queueing work at once cannot pick the same one.
   first is a rank returning through the vocabulary, the second means the field
   is ceremony and the order is really the age. `bin/cli todo:list` prints the
   word on every line, so either is visible from one command.
-- A dependency is written as a priority often enough that the word stops
-  meaning importance. The assumption above says this has already happened once.
-- Two todos at one priority and one age turn out to need separating, which
-  would mean the stamp is too coarse or the order was a rank after all.
+- A dependency is written as a priority often enough that the word stops meaning
+  importance. The assumption above says this has already happened once.
+- Two todos at one priority and one age turn out to need separating, which would
+  mean the stamp is too coarse or the order was a rank after all.
 
 ## Covered by
 

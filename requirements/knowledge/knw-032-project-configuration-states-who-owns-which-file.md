@@ -9,11 +9,10 @@ status: held
 project-owned, subsequently loaded `additional.php`, and state how DDEV's
 generated marker changes that ownership.**
 
-They warn that a regenerated ignore file can hide an as-yet-untracked
-deployment configuration and require checking that the project file remains
-tracked. DDEV is identified as local-only: a shared project file guards its
-local overrides and reads deployment secrets from the environment rather than
-committing them.
+They warn that a regenerated ignore file can hide an as-yet-untracked deployment
+configuration and require checking that the project file remains tracked. DDEV
+is identified as local-only: a shared project file guards its local overrides
+and reads deployment secrets from the environment rather than committing them.
 
 ## From
 

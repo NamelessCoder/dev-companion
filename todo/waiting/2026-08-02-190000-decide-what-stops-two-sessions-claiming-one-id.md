@@ -22,8 +22,8 @@ is mechanical, so the collision itself costs a few minutes.
 The renumbering is the part that is not safe. Twice the files naming the old
 number did not all mean the same entry — `R-PRJ-008` rested on the `D-ANS-013`
 that kept its number while five other files meant the one that became
-`D-ANS-015` — and a search and replace over the id is silently wrong there,
-with no check failing afterwards because the entry it now points at exists.
+`D-ANS-015` — and a search and replace over the id is silently wrong there, with
+no check failing afterwards because the entry it now points at exists.
 `git diff main -- <file>` settles it, and that is a step somebody has to know to
 take. `working-todos-in-parallel.md` now says so, which is the cheap half of
 this and not the answer.
@@ -82,10 +82,11 @@ step.** Each is a different trade and none of them is obviously right:
   measured above — but the width is not. A claim cannot know which group it will
   write into, so a block has to be reserved in each, and it has to fit the worst
   case: 15 decisions landed in `answers/` on 2026-08-02 alone. Ten claims
-  reserving ten apiece spend 100 numbers per group per run, and three digits then
-  lasts about ten runs. Four have happened in three days. `D-DOC-005` assumed no
-  group reaches 1000, on the evidence that `requirements/knowledge/` took a year
-  to reach 39; this is the option that breaks that assumption rather than
+  reserving ten apiece spend 100 numbers per group per run, and three digits
+  then lasts about ten runs. Four have happened in three days. `D-DOC-005`
+  assumed no group reaches 1000, on the evidence that `requirements/knowledge/`
+  took a year to reach 39; this is the option that breaks that assumption rather
+  than
   `decisions:check`.
 - **Take the number out, as the queue already did.** `todo/` had exactly this
   problem and answered it by having no number at all — "two todos are both
@@ -93,22 +94,22 @@ step.** Each is a different trade and none of them is obviously right:
   222 files, and unlike `D-DOC-005`'s 1393 it is not mechanical: a number can be
   repadded, but a citation handle has to become a name somebody chose. The
   precedent is also weaker than it reads. `D-FBK-008`'s **Since then** says the
-  todo number was a *rank*, and a rank is what only one session can hand out;
-  a decision number is an identity, and the date and file name replace a rank
-  more cleanly than they replace a handle.
+  todo number was a *rank*, and a rank is what only one session can hand out; a
+  decision number is an identity, and the date and file name replace a rank more
+  cleanly than they replace a handle.
 
 An option none of the three covers, found while measuring and not recommended:
 **check the citations instead of moving them.** Requiring the link form for
 cross-entry citations would let a check compare the label against the target,
-which is the one thing that would catch a mis-pointing rather than report it.
-It converts 352 bare ids in 120 files inside `decisions/` and `requirements/`
+which is the one thing that would catch a mis-pointing rather than report it. It
+converts 352 bare ids in 120 files inside `decisions/` and `requirements/`
 alone, so it is close to the third option in cost and does not remove the
 collision. It composes with the first, and it is the only one of the four that
 would have caught the two failures on record.
 
-Read `decisions/readme.md` first — the three-digit width is there for the
-sort order of a directory listing, which is the thing the third option gives up
-and the first two keep. `bin/cli todo:claim`'s overlap warning and
+Read `decisions/readme.md` first — the three-digit width is there for the sort
+order of a directory listing, which is the thing the third option gives up and
+the first two keep. `bin/cli todo:claim`'s overlap warning and
 `StructureTest::noFileCarriesAConflictMarker` came out of the same four runs and
 are already in; this is the one finding of that review that was not implemented,
 because it is the one where the repository would be choosing rather than

@@ -11,9 +11,9 @@ A statement dated in its sentence cannot be filtered, and in markdown there is
 no field to move the date into.
 
 So the subject moves to the hint corpus rather than the sentence being reworded
-— a version-bound statement is evidence that it was filed in the wrong
-corpus. This is the version binding applied to the half of `knowledge/` the
-binding cannot reach, and it is what decides what may stay as prose at all.
+— a version-bound statement is evidence that it was filed in the wrong corpus.
+This is the version binding applied to the half of `knowledge/` the binding
+cannot reach, and it is what decides what may stay as prose at all.
 
 ## From
 

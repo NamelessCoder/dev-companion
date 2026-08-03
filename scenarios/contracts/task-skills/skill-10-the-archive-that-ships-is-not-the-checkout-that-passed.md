@@ -16,12 +16,11 @@ excluded by one packaging mechanism and not by the other · **Contract:** `held`
 - The release target is settled before anything is built: which registries,
   which version, from which ref — asked where the checkout cannot answer it.
 - An archive is built for each registry in scope, through the mechanism that
-  registry actually uses, and through the repository's own release command
-  where it declares one.
+  registry actually uses, and through the repository's own release command where
+  it declares one.
 - The file lists of those archives are compared against **each other**, and the
   editor configuration that ships to one and not to the other is reported as a
-  finding with the exclusion list each mechanism read and where that list
-  lives.
+  finding with the exclusion list each mechanism read and where that list lives.
 - Development configuration, credentials, local environment files and build
   sources are each named as present or absent, rather than left unmentioned.
 - Version, constraints, licence and package identity are checked across every
@@ -29,9 +28,9 @@ excluded by one packaging mechanism and not by the other · **Contract:** `held`
 - The checks the project declares are run against the candidate, and a check
   that passes in the checkout while failing on the artifact is reported as a
   blocker.
-- The answer ends with the artifact path and checksum, the includes and
-  excludes per registry, the blockers, and the publication steps written out
-  and not taken.
+- The answer ends with the artifact path and checksum, the includes and excludes
+  per registry, the blockers, and the publication steps written out and not
+  taken.
 
 **How it fails**
 
@@ -45,5 +44,5 @@ excluded by one packaging mechanism and not by the other · **Contract:** `held`
   and a confirmed target.
 - The report is a summary of what looked fine, without the artifact path, the
   file sets, or the steps deliberately not taken.
-- Blockers and recommendations are mixed into one list, so the maintainer has
-  to re-read it to find what actually stops the release.
+- Blockers and recommendations are mixed into one list, so the maintainer has to
+  re-read it to find what actually stops the release.

@@ -62,8 +62,8 @@ vendor/            # Composer dependencies (mcp/sdk); gitignored
 
 Every class below `src/` sits in the group it belongs to, and a new one that
 fits none of them is a group nobody has named yet rather than a file at the
-root. The four an answer can come from are `Knowledge/`, what this package ships;
-`Installation/`, the TYPO3 the caller is standing in; `Manual/`, which is
+root. The four an answer can come from are `Knowledge/`, what this package
+ships; `Installation/`, the TYPO3 the caller is standing in; `Manual/`, which is
 `docs.typo3.org`; and `Contribution/`, the services the core's own process runs
 through. The last two reach outside this process, which is what their tools'
 `openWorldHint` says and what a caller reads before it calls. `Tool/` is what a
@@ -191,8 +191,8 @@ gone; carrying both shapes at once is the expensive half of every feature.
   second caller is also what shows what the two actually have in common — guess
   before it arrives and the abstraction is built around the wrong thing.
 - Deleting needs no feature to justify it. A simplification that stands on its
-  own is its own commit, and a review of code nobody has touched in a while is
-  a legitimate task.
+  own is its own commit, and a review of code nobody has touched in a while is a
+  legitimate task.
 - Shorter is not the same as denser. Fewer concepts, fewer branches, fewer
   moving parts — not fewer lines wrung out of the same logic.
 
@@ -211,21 +211,21 @@ them are machines.
 
 - One point per sentence. A sentence that restates the previous one in other
   words is deleted, not shortened.
-- The rule first, the reason after it, and only where the reason is not
-  obvious. A justification nobody would dispute is filler.
+- The rule first, the reason after it, and only where the reason is not obvious.
+  A justification nobody would dispute is filler.
 - One example, where an example is needed at all. The second one rarely adds a
   case and always adds a paragraph.
-- Say what is, not what it is not. A list of what something is not belongs
-  where the confusion actually happened.
+- Say what is, not what it is not. A list of what something is not belongs where
+  the confusion actually happened.
 - Length is a symptom. A paragraph that will not come out short is usually two
   points, or one that is not yet understood.
 - No count of something that grows. "34 files holding 120 hints" is true on the
   day it is written and wrong on the next commit, and nothing fails when it
   turns: a reader believes it and a maintainer never sees it. Name the thing and
-  the command that counts it — "one file per subject, which `bin/cli
-  hints:coverage` counts" — or say "and many more". A number belongs where it
-  was measured: a decision records what a sweep found on its date, and a report
-  prints what is true when it runs.
+  the command that counts it — "one file per subject, which
+  `bin/cli hints:coverage` counts" — or say "and many more". A number belongs
+  where it was measured: a decision records what a sweep found on its date, and
+  a report prints what is true when it runs.
 
 `bin/cli prose:check` counts what that costs: the sentences over 30 words, worst
 file first. It fails on one of them — the bold sentence a requirement or a
@@ -234,14 +234,15 @@ what was settled. The rest is a report, since a long sentence can be the right
 one and a rewrite driven by a counter produces two short sentences saying what
 one said.
 
-`bin/cli prose:format <path>` is the other half and rewrites rather than reports:
-the markdown this repository writes about itself, rewrapped at the column it is
-already written at. What it is for is the paragraph a rename left ragged — a word
-swept out of a hundred files leaves a hundred short lines behind it. It moves the
-line breaks and nothing else, which `ProseTest` asserts over the whole corpus
-rather than trusts, and it leaves alone everything a break means something in:
-the front matter, a fence, a table, a code span, a link. Named no path it
-rewraps the corpus, which is a diff to look at before it is a diff to make.
+`bin/cli prose:format <path>` is the other half and rewrites rather than
+reports: the markdown this repository writes about itself, rewrapped at the
+column it is already written at. What it is for is the paragraph a rename left
+ragged — a word swept out of a hundred files leaves a hundred short lines behind
+it. It moves the line breaks and nothing else, which `ProseTest` asserts over
+the whole corpus rather than trusts, and it leaves alone everything a break
+means something in: the front matter, a fence, a table, a code span, a link.
+Named no path it rewraps the corpus, which is a diff to look at before it is a
+diff to make.
 
 ## Tool names
 
@@ -314,26 +315,26 @@ bin/cli knowledge:format <path>   # only that part of it
   writes by. A rule is added there when the code already follows it and the
   fixer is what keeps it followed — not to introduce a style nobody has written
   in yet, which is a reformatting of the whole tree wearing a rule's clothes.
-- One file, one class. A second class in a file is not autoloadable under
-  PSR-4, so it works until somebody uses it from anywhere else and then fails
-  as a missing class — held by `StructureTest::everyFileDeclaresOneClass`.
+- One file, one class. A second class in a file is not autoloadable under PSR-4,
+  so it works until somebody uses it from anywhere else and then fails as a
+  missing class — held by `StructureTest::everyFileDeclaresOneClass`.
 - A directory is read with `symfony/finder`, whatever the depth. `glob()`,
-  `scandir()` and `RecursiveDirectoryIterator` were two idioms for one
-  question, and the deep one cost a dozen lines each time — held by
-  `StructureTest::everyDirectoryIsReadThroughTheFinder` and stated in `D-COD-003`.
-  A directory that may be absent is guarded with `is_dir()`, because Finder
-  throws where `glob()` returned nothing.
+  `scandir()` and `RecursiveDirectoryIterator` were two idioms for one question,
+  and the deep one cost a dozen lines each time — held by
+  `StructureTest::everyDirectoryIsReadThroughTheFinder` and stated in
+  `D-COD-003`. A directory that may be absent is guarded with `is_dir()`,
+  because Finder throws where `glob()` returned nothing.
 - Every entrypoint is driven by a test that goes through it. `tests/Unit/`
   reaches a class at a time, which is where a command can be held to its rules
   and still be unreachable: what it reads is resolved from where its own file
-  sits, and moving that file is not something any of those tests goes past.
-  Both binaries have such a test, and a third would need one — held by
+  sits, and moving that file is not something any of those tests goes past. Both
+  binaries have such a test, and a third would need one — held by
   `StdioServerTest`, `EntrypointTest` and `UpkeepTest`.
 - `tests/Unit/` covers the searching, ranking, and rendering logic;
   `tests/Contract/` holds every tool to its declared schemas and annotations, on
   a hit and on a miss, and to the naming schema; `tests/Smoke/` drives both
-  entrypoints as subprocesses — `bin/typo3-cms-mcp` over JSON-RPC, `bin/cli`
-  by its reading commands.
+  entrypoints as subprocesses — `bin/typo3-cms-mcp` over JSON-RPC, `bin/cli` by
+  its reading commands.
 - `src/Upkeep/Command/` and the console are held to each other by
   `UpkeepCommandTest`: every class in the directory is registered, the
   application carries no command that is not one of them, each is named
@@ -367,9 +368,9 @@ Agents using this server record improvement feedback through
 `typo3_feedback_record`, one markdown file per feedback below `feedback/`.
 `scenarios/` holds the sessions those came out of, so they can be run again:
 open forward reviews in `scenarios/forward/`, targeted contract cases in
-`scenarios/contracts/`. A prompt names a kind of project, never one
-installation on somebody's machine — that lives in `todo/reference/`, where it can go
-stale without taking a case with it.
+`scenarios/contracts/`. A prompt names a kind of project, never one installation
+on somebody's machine — that lives in `todo/reference/`, where it can go stale
+without taking a case with it.
 
 - A feedback arriving brings its card with it: `.githooks/pre-commit` runs
   `bin/cli todo:sync` where the commit touches `feedback/`, and stages what it
@@ -387,8 +388,8 @@ stale without taking a case with it.
   from now on and what holds it there, `decisions/` for what a change rested on
   and what would show it wrong, `todo/` for the order of the work.
 - Three states mean unfinished — a requirement marked **open**, one held by
-  `not guarded`, a decision still `open` whose **Wrong if** nobody has been
-  back to. All three are legitimate, so no check may fail on them, and
+  `not guarded`, a decision still `open` whose **Wrong if** nobody has been back
+  to. All three are legitimate, so no check may fail on them, and
   `bin/cli backlog:list` reads them out instead.
 
 How each of those is carried out — the debrief that gets a feedback out of a
@@ -397,8 +398,8 @@ holds, and what `bin/cli backlog:list` reports:
 [documentation/feedback/readme.md](documentation/feedback/readme.md). The
 sections a requirement is written in and what its three states mean:
 [documentation/feedback/writing-a-requirement.md](documentation/feedback/writing-a-requirement.md).
-The sections a decision is written in, what a later session adds to the foot of one,
-and what `open`, `confirmed` and `revoked` promise a reader:
+The sections a decision is written in, what a later session adds to the foot of
+one, and what `open`, `confirmed` and `revoked` promise a reader:
 [documentation/feedback/writing-a-decision.md](documentation/feedback/writing-a-decision.md).
 Running a forward review, judging it, and reading one that stopped without an
 error:
@@ -424,16 +425,16 @@ tells its callers.
 
 Some of it is already guarded: `ScopeTest` holds the scope and the tool list to
 each other in both directions, and `ToolNamingTest` holds every tool name
-written in `knowledge/`, in a skill, or in a rendered answer to the registry —
-a skill matters twice over, because it is installed into somebody else's
-project, where a stale name is not corrected by the next release of this server. Those catch a
-name going stale, not a sentence going false. Prose is on you.
+written in `knowledge/`, in a skill, or in a rendered answer to the registry — a
+skill matters twice over, because it is installed into somebody else's project,
+where a stale name is not corrected by the next release of this server. Those
+catch a name going stale, not a sentence going false. Prose is on you.
 
 That property is also why a skill is written under rules of its own — what it is
 named and routed by, what it may state, what it leaves to the tool that owns it,
 and what has to be shown before a domain becomes one at all:
-[documentation/clients/writing-a-skill.md](documentation/clients/writing-a-skill.md), where every
-rule names the test that holds it.
+[documentation/clients/writing-a-skill.md](documentation/clients/writing-a-skill.md),
+where every rule names the test that holds it.
 
 Before committing, reread the paragraphs your change touches rather than
 searching for a keyword. The sentence that goes wrong is usually the general one
@@ -462,13 +463,14 @@ deliberately, so knowledge that holds only for core contribution is written as
 core-only rather than as the rule, and knowledge that holds only from one TYPO3
 version says so; see the audience requirements in `requirements/audience/`.
 
-In the code and in every payload that is one word, `scope`: the `Knowledge\Scope`
-enum, whose cases are `core`, `project`, `extension`, `any` and `uncertain`. A
-statement in `knowledge/` declares one, a path is placed in one, and nothing
-else says the same thing under another name — `binding`, `provenance`,
-`audience` and an `outsideCore` boolean were four spellings of it until
-`D-KNW-005`. Audience stays the word for the idea, in `requirements/audience/`
-and in prose; `scope` is the word anything machine-readable uses.
+In the code and in every payload that is one word, `scope`: the
+`Knowledge\Scope` enum, whose cases are `core`, `project`, `extension`, `any`
+and `uncertain`. A statement in `knowledge/` declares one, a path is placed in
+one, and nothing else says the same thing under another name — `binding`,
+`provenance`, `audience` and an `outsideCore` boolean were four spellings of it
+until `D-KNW-005`. Audience stays the word for the idea, in
+`requirements/audience/` and in prose; `scope` is the word anything
+machine-readable uses.
 
 - **Everything below `knowledge/` is written in English**, and so is every query
   that reaches it. That is a property of the matcher rather than a preference:
@@ -521,19 +523,18 @@ and in prose; `scope` is the word anything machine-readable uses.
   at any time. Verifying against whatever checkout happens to be on the machine
   makes the evidence unreproducible for the next person. A statement whose
   subject is `typo3/testing-framework` is verified there too, in
-  `.checkouts/testing-framework/<line>` — the same command keeps one worktree per
-  release line the covered branches pin, because that package releases on a cycle
-  of its own and the core repository does not contain it.
+  `.checkouts/testing-framework/<line>` — the same command keeps one worktree
+  per release line the covered branches pin, because that package releases on a
+  cycle of its own and the core repository does not contain it.
 
 ### Which versions an answer holds for
 
 The knowledge base covers more than one TYPO3. A statement that does not hold on
 all of them says so **as data, not as prose** — `since` and `until` on the
-statement, never a version number in the sentence, which `HintsTest` enforces.
-A bound statement is verified on both sides of its boundary and the commit
-message names both branches; that is evidence nobody can reconstruct later.
-Which versions are covered is declared in `knowledge/versions.json` and nowhere
-else.
+statement, never a version number in the sentence, which `HintsTest` enforces. A
+bound statement is verified on both sides of its boundary and the commit message
+names both branches; that is evidence nobody can reconstruct later. Which
+versions are covered is declared in `knowledge/versions.json` and nowhere else.
 
 The mechanism exists because the alternative is worse: a caller on an LTS given
 a `main` answer changes code that then fails at runtime, and the failure is

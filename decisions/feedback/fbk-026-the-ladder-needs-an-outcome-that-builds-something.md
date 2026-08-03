@@ -46,10 +46,9 @@ decide exactly that.
 - *Queued* is repair of something that exists; *taken on* is a capability that
   does not. The old wording made them one rung apart in size.
 - What justifies building is the corpus rather than the ask. Two sessions
-  arriving at the same shape from different tasks is the evidence; one
-  session's suggestion is the weakest thing in the file, because its author was
-  guessing about this repository exactly as much as a judging run guesses about
-  TYPO3.
+  arriving at the same shape from different tasks is the evidence; one session's
+  suggestion is the weakest thing in the file, because its author was guessing
+  about this repository exactly as much as a judging run guesses about TYPO3.
 - *Proposed* now has to say what building would have cost and what the corpus
   behind it weighs. It is the outcome that looks like diligence from every
   angle, and it was the cheapest one to reach.
@@ -63,8 +62,8 @@ decide exactly that.
 
 ## Wrong if
 
-- Something is built that the reading afterwards shows was the wrong shape —
-  a tool whose verb is wrong, a skill covering half a domain. Then the decision
+- Something is built that the reading afterwards shows was the wrong shape — a
+  tool whose verb is wrong, a skill covering half a domain. Then the decision
   needed the research in front of it and this entry moved it behind.
 - The corpus stops distinguishing anything, because every feedback becomes a
   feature. The signal is *taken on* being reached with one session behind it

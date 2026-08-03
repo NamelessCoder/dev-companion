@@ -5,10 +5,10 @@ description: Write a TYPO3 core patch and carry it to review — assess the issu
 
 # TYPO3 Core Patch Development
 
-Carry one change from an issue to a patch somebody can review.
-Keep this skill as routing and working order; the suites, the scripts, the
-contribution rules and the Gerrit commands are lookups, and a copy of them here
-goes stale in somebody else's checkout with nothing to report it.
+Carry one change from an issue to a patch somebody can review. Keep this skill
+as routing and working order; the suites, the scripts, the contribution rules
+and the Gerrit commands are lookups, and a copy of them here goes stale in
+somebody else's checkout with nothing to report it.
 
 ## Establish the issue before you believe it
 
@@ -97,9 +97,10 @@ is local and reversible; the push is neither.
 **Ask whether the change goes up visible to everyone or unlisted, every time.**
 The two are different refspecs and the difference is not a preference: one
 publishes the change to whoever watches the project and notifies reviewers, and
-neither the publication nor the notification is quietly undone. `typo3_rule_lookup`
-for the Gerrit workflow has both forms. Which one this change wants is the
-user's decision and never a default read off what the session did last.
+neither the publication nor the notification is quietly undone.
+`typo3_rule_lookup` for the Gerrit workflow has both forms. Which one this
+change wants is the user's decision and never a default read off what the
+session did last.
 
 ## Amending after review
 

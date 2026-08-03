@@ -49,8 +49,7 @@ docs.typo3.org. It does not, and that is the whole of what this settles.
 - Neither option the todo offered was taken, and both fail for the same reason.
   A call the contract test skips by name and a second table read only by
   `tools:record` each buy independence from a host that the measurement says is
-  not needed, and each pay for it in the one currency this table exists to
-  save.
+  not needed, and each pay for it in the one currency this table exists to save.
 - Two calls rather than one, because the second's argument is the first's
   answer. `documentation: search` asks two queries at 14.3 and
   `documentation: page` hands the canonical URL of its first result back, which
@@ -81,9 +80,8 @@ docs.typo3.org. It does not, and that is the whole of what this settles.
 - The recording is re-run while the host is down and the page silently goes back
   to showing no answer. The head says which day it is of and says nothing about
   whether docs.typo3.org answered, so it would read as a defect in the tool.
-- 14.3 leaves the covered versions and both calls fall to
-  `version-not-covered`, which puts the page back where it started while
-  everything stays green.
+- 14.3 leaves the covered versions and both calls fall to `version-not-covered`,
+  which puts the page back where it started while everything stays green.
 
 ## Covered by
 

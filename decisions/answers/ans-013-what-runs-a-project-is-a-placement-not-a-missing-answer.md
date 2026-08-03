@@ -8,7 +8,8 @@ status: open
 
 **The PHP a DDEV project actually runs is readable here twice over, and neither
 reading reaches `typo3_project_scope`, so `feedback/2026-07-31-193611` is step 2
-of the ladder and is queued as [`R-PRJ-008`](../../requirements/project/prj-008-the-project-answer-says-what-runs-it.md).**
+of the ladder and is queued as
+[`R-PRJ-008`](../../requirements/project/prj-008-the-project-answer-says-what-runs-it.md).**
 
 [`D-ANS-011`](ans-011-a-scope-answer-states-what-a-manifest-declares.md) named
 this half and left it open: what the container runs is what that feedback asks
@@ -21,10 +22,10 @@ for. This is the entry it said the card would produce.
   `typo3_project_scope` opens with "composer-project, TYPO3 14.3.5, PHP ^8.4"
   and lists "composer test:unit (composer.json) — unknown: phpunit -c
   Build/phpunit/UnitTests.xml". Nothing in the answer names DDEV.
-- The three numbers, measured in that project the same day. The host
-  interpreter is 8.3.23, `.ddev/config.yaml` states `php_version: "8.4"` on line
-  4, and `composer.json` requires `^8.4`. The container satisfies the
-  constraint, so the reported mismatch was the host's and blocked nothing.
+- The three numbers, measured in that project the same day. The host interpreter
+  is 8.3.23, `.ddev/config.yaml` states `php_version: "8.4"` on line 4, and
+  `composer.json` requires `^8.4`. The container satisfies the constraint, so
+  the reported mismatch was the host's and blocked nothing.
 - The number is already read here, in a file. `.ddev/config.yaml` states it, and
   a file is what
   [`R-PRJ-001`](../../requirements/project/prj-001-the-project-is-describable-from-its-files-alone.md)
@@ -56,9 +57,9 @@ for. This is the entry it said the card would produce.
   the declared output schema of `typo3_project_scope`, and
   [judging.md](../../documentation/feedback/judging.md) puts a schema beyond a
   run that has read only this repository.
-- The runtime is to be read from `.ddev/config.yaml` rather than from `ddev
-  describe`, so `R-PRJ-001` stands. The project answers from its files, on a
-  fresh clone, and nothing is started to find out —
+- The runtime is to be read from `.ddev/config.yaml` rather than from
+  `ddev describe`, so `R-PRJ-001` stands. The project answers from its files, on
+  a fresh clone, and nothing is started to find out —
   [`R-DIS-006`](../../requirements/discovery/dis-006-nothing-is-started-as-a-side-effect-of-a-lookup.md).
 - The feedback's own suggestion is not adopted as written. It asks for the
   version inside the running container, which a stopped project cannot answer

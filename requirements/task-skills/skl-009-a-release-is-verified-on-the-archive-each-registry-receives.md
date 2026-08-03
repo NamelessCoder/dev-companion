@@ -37,15 +37,15 @@ The feedback of 2026-07-30 17:44 and its re-run in `E-EXT` on 2026-07-31, seven
 commits past a tag: no skill activated and no tool was called across forty-one
 `Bash` calls, because not one of the six published skills carried the words
 *release*, *publish*, *registry*, *artifact*, *archive* or *tag*. The run
-established the gap it was asked to name — 1558 files in the export against
-1559 in the registry tool's archive, the two extra being tracked editor
-configuration — and no check in that green checkout said so.
+established the gap it was asked to name — 1558 files in the export against 1559
+in the registry tool's archive, the two extra being tracked editor configuration
+— and no check in that green checkout said so.
 
 ## Held by
 
 - `SkillTest::aReleaseVerifiesTheArtifactAgainstEachRegistrysOwnExclusions`
 - `SkillTest::everySkillStartsFromTheBaseBeforeItsOwnEvidence`
 - `SkillTest::everySkillRoutesThroughTheOwnersOfItsOwnFactsInOrder`,
-- `SKILL-10`. That a session does the comparison rather than reading one
-  archive is not guarded: `D-EVI-002` accepts that proxy for what a skill file
-  states, and no forward review grades the file a run came out of.
+- `SKILL-10`. That a session does the comparison rather than reading one archive
+  is not guarded: `D-EVI-002` accepts that proxy for what a skill file states,
+  and no forward review grades the file a run came out of.

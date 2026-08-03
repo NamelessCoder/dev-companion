@@ -10,15 +10,15 @@ status: open
 each on its own branch in its own worktree.**
 
 `todo/` was already the shape this needs. One todo is one file, decided in
-`D-FBK-008` so that two sessions could add, move or drop work without writing the
-same file — and the case it was decided for was two sessions doing that one after
-the other. The same property carries them doing it at once: each session touches
-its own file in `todo/` and no other, so the claims never conflict.
+`D-FBK-008` so that two sessions could add, move or drop work without writing
+the same file — and the case it was decided for was two sessions doing that one
+after the other. The same property carries them doing it at once: each session
+touches its own file in `todo/` and no other, so the claims never conflict.
 
 
 **Since then** the boundary the fourth **Decided** drew has moved, and only that
-one. `bin/cli todo:claim` now commits the claims onto `main`, cuts a worktree per
-claim, installs in each and starts a session in each — it carries the
+one. `bin/cli todo:claim` now commits the claims onto `main`, cuts a worktree
+per claim, installs in each and starts a session in each — it carries the
 arrangement out instead of naming it. What held for as long as the rest was done
 by somebody reading a page stopped holding when it was done by a session: three
 steps that must happen in one order are one step, and the run that got the order
@@ -47,28 +47,28 @@ working directory, the message, and a session id apiece.
 
 ## Decided
 
-- A fifth place, `todo/progress/`, beside the queue, what recurs, what waits
-  and what is kept for reading. `bin/cli todo:claim <n>` moves the front of the
+- A fifth place, `todo/progress/`, beside the queue, what recurs, what waits and
+  what is kept for reading. `bin/cli todo:claim <n>` moves the front of the
   queue into it and `bin/cli todo:release` moves one back. The second is not an
   extra: a session ends where it ends, and a state that can only be entered
   fills up with claims nobody is working and nobody else is offered.
 - That `bin/cli todo:next` reads the branch the checkout is on and hands over
   that branch's claim. `AGENTS.md` says where a session starts before it says
   anything else, and that sentence has to keep being true in a worktree —
-  otherwise the one thing every session does is the one thing a parallel
-  session must not.
+  otherwise the one thing every session does is the one thing a parallel session
+  must not.
 - That this repository owns the moving of files and the naming of branches, and
   names the rest. The worktree, the merge and what a question that arrives
   mid-work leaves behind are on one page,
   [documentation/feedback/working-todos-in-parallel.md](../../documentation/feedback/working-todos-in-parallel.md),
-  handed over with every claim — the same line `todo:next` draws when it names
-  a `Run:` command it does not own instead of running it.
+  handed over with every claim — the same line `todo:next` draws when it names a
+  `Run:` command it does not own instead of running it.
 - That a question a session cannot settle is recorded rather than asked. One
-  session working alone asks and waits; one of several would block a worktree
-  on a person answering three others. It writes the question into
-  `**Waiting on:**` on its claim, commits what it has, and ends — and only the
-  claim comes back to `main`, so `main` says what is open and where the work is
-  without carrying the half-finished change.
+  session working alone asks and waits; one of several would block a worktree on
+  a person answering three others. It writes the question into `**Waiting on:**`
+  on its claim, commits what it has, and ends — and only the claim comes back to
+  `main`, so `main` says what is open and where the work is without carrying the
+  half-finished change.
 
 ## Assumed
 
@@ -82,11 +82,11 @@ working directory, the message, and a session id apiece.
 
 ## Wrong if
 
-- `progress/` grows a claim nobody has released in a fortnight, which would
-  mean the state is cheap to enter and expensive to leave — the same failure
+- `progress/` grows a claim nobody has released in a fortnight, which would mean
+  the state is cheap to enter and expensive to leave — the same failure
   `waiting/` is watched for, and there is no recurring todo asking after this
   one. Or a merge conflicts inside `todo/`, which would mean the one file per
   todo does not hold what it is being asked to hold here. Or the claims keep
   being taken two at a time on work that turns out to share a file, in which
-  case the overlap warning is reading the wrong signal: it counts entries a
-  todo serves, and most of this queue serves a directory.
+  case the overlap warning is reading the wrong signal: it counts entries a todo
+  serves, and most of this queue serves a directory.

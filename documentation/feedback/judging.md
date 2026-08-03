@@ -2,10 +2,9 @@
 
 A feedback is a session's report about this server, left by an agent working
 somewhere else. What it is *not* is a work item: it names what went wrong from
-where that session stood, and what to do about it is a judgement nobody has
-made yet. This page is that judgement — what is asked of a feedback, in which
-order, on what evidence, and which of the answers may be given without asking
-first.
+where that session stood, and what to do about it is a judgement nobody has made
+yet. This page is that judgement — what is asked of a feedback, in which order,
+on what evidence, and which of the answers may be given without asking first.
 
 **What the channel is for is deciding what to build.** It exists because the
 sessions using this server are the only ones who find out what it does not
@@ -63,13 +62,14 @@ stood, which is why its self-criticism is not assessed either; a decision is
 confirmed by a recorded run, not by an account of one. What a strength carries
 is where a boundary runs, and the costs reported around it are the other side of
 the same boundary — usually from the same debrief. That reading is what goes
-into `decisions/`, and the commit that writes it archives the feedback. [`D-FBK-018`](../../decisions/feedback/fbk-018-a-strength-is-evidence-about-a-boundary-not-about-a-decision.md)
+into `decisions/`, and the commit that writes it archives the feedback.
+[`D-FBK-018`](../../decisions/feedback/fbk-018-a-strength-is-evidence-about-a-boundary-not-about-a-decision.md)
 is the case it was established on.
 
 ## The ladder
 
-The question is asked in five steps, cheapest first. Each step has evidence
-that can be checked in this repository, and the first one that answers stops the
+The question is asked in five steps, cheapest first. Each step has evidence that
+can be checked in this repository, and the first one that answers stops the
 descent. A feedback that is not walked down the ladder is guessed at, and the
 guess is step one either way: written as a fourth entry beside three that
 already say it, or waved off as something the wording will fix.
@@ -85,12 +85,12 @@ rule nobody reached is one report, and a shape nobody has is thirty.
 Two halves, told apart by what is missing rather than by what the feedback asks
 for.
 
-**1a — the knowledge is missing.** `bin/cli hints:probe "<the feedback's own
-query>"` reaches nothing, and a search of `knowledge/` and `skills/` confirms
-it. Becomes the work of establishing what actually holds — against
-`.checkouts/`, and the manual after it — and writing that. Never the feedback's
-own suggestion copied into `knowledge/`: its author was guessing about TYPO3
-exactly as much as the judging run would be.
+**1a — the knowledge is missing.**
+`bin/cli hints:probe "<the feedback's own query>"` reaches nothing, and a search
+of `knowledge/` and `skills/` confirms it. Becomes the work of establishing what
+actually holds — against `.checkouts/`, and the manual after it — and writing
+that. Never the feedback's own suggestion copied into `knowledge/`: its author
+was guessing about TYPO3 exactly as much as the judging run would be.
 
 **1b — the shape is missing.** The answer is in principle available here, and
 there is no way to get it in the form the task needed. **A tool answers a
@@ -279,9 +279,9 @@ disagreed with.
 Something that already exists has to change, and it is too large for the spot:
 it touches code, a schema, a contract, or it needs a decision. Where the change
 is a capability this server does not have yet, the answer above it is the one —
-this rung is repair, that one is building. A requirement records what must hold, a todo
-records the next concrete step, and the feedback stays open until the commit
-that implements it archives it.
+this rung is repair, that one is building. A requirement records what must hold,
+a todo records the next concrete step, and the feedback stays open until the
+commit that implements it archives it.
 
 **The judgement sets the priority and says what set it.** A card arrives at
 `low` because nobody has judged it, so leaving it there is the one outcome that
@@ -365,8 +365,8 @@ per todo the judgement derived.
 **The invariant:** a commit that judges a feedback either archives it or leaves
 at least one todo serving it. Anything else drops it back to unjudged, where the
 next `bin/cli todo:sync` writes it a fresh card and the judgement is lost.
-"Nothing to do" is therefore not a special case but the *close* answer:
-archive in the same commit.
+"Nothing to do" is therefore not a special case but the *close* answer: archive
+in the same commit.
 
 What cannot be checked is whether the judgement reached `decisions/`. A state
 check cannot see it, and a judgement may legitimately confirm an entry without
@@ -388,7 +388,7 @@ concrete step. One or two sentences, not a paragraph.
 Otherwise the same account sits in `feedback/`, in `todo/` and, once a
 requirement is written, a third time in `requirements/` — three places to
 maintain, and any one of them can be brought up to date and leave the other two
-saying something else. `bin/cli todo:next` prints the feedback a todo serves along
-with it, which is what lets the todo carry only its own half: the feedback is
-what happened once, the requirement is what must hold from now on, the todo is
-what to do next.
+saying something else. `bin/cli todo:next` prints the feedback a todo serves
+along with it, which is what lets the todo carry only its own half: the feedback
+is what happened once, the requirement is what must hold from now on, the todo
+is what to do next.

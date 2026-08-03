@@ -33,8 +33,8 @@ correct answer is "still supported".
   write here — only something to point at.
 - The routing block pointed the other way. `typo3_changelog_lookup` was routed
   for "before asking what a version changed **or whether an API is still
-  there**", and the entry for `typo3_documentation_lookup` named a source
-  — "Needing the official API, reference or tutorial documentation" — which a
+  there**", and the entry for `typo3_documentation_lookup` named a source —
+  "Needing the official API, reference or tutorial documentation" — which a
   session holding a behaviour question does not recognise as its own.
 - The same session reported the same shape twice more.
   `feedback/2026-07-31-174526` ends "No lookup covers whether such a
@@ -75,11 +75,11 @@ correct answer is "still supported".
 
 ## Wrong if
 
-- A session follows the new routing entry, calls
-  `typo3_documentation_lookup` at the target version, and still has to read the
-  installed core by hand. Then the manual is not the answer for this shape and
-  the feedback's own proposal — a capability that resolves behaviour rather than
-  change — is what was missing after all.
+- A session follows the new routing entry, calls `typo3_documentation_lookup` at
+  the target version, and still has to read the installed core by hand. Then the
+  manual is not the answer for this shape and the feedback's own proposal — a
+  capability that resolves behaviour rather than change — is what was missing
+  after all.
 - The skill half lands and a later conformance review reports the same "I had to
   read installed vendor core" ending. Then the order was not what kept the tool
   from firing.

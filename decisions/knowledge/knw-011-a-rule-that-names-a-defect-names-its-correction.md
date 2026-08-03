@@ -71,9 +71,10 @@ consistent with the rule.
 - The corrected wording lands and a later run still recommends adding an
   `en.`-prefixed file. Then the wording was not what held the reader back, and
   the gap is step 2 instead.
-- The audit-shaped query is what fails. `bin/cli hints:probe "TYPO3 extension
-  conformance audit of a site package"` reaches `sitepackage-layout` and not
-  `language-files` today, so a session that never phrases its task around labels
-  is not offered the rule at all. A second feedback of this shape, from a run
-  that demonstrably called `typo3_architecture_lookup` without naming a language
-  file, would move the answer to step 2.
+- The audit-shaped query is what fails.
+  `bin/cli hints:probe "TYPO3 extension conformance audit of a site package"`
+  reaches `sitepackage-layout` and not `language-files` today, so a session that
+  never phrases its task around labels is not offered the rule at all. A second
+  feedback of this shape, from a run that demonstrably called
+  `typo3_architecture_lookup` without naming a language file, would move the
+  answer to step 2.

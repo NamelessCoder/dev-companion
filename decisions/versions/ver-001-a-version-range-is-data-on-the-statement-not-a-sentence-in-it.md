@@ -19,12 +19,12 @@ everything that is not.
 ## Decided
 
 - Bind the statement, not the hint, and bind it with `since` and `until` fields
-  rather than words in the sentence. A subsystem does not change wholesale —
-  one sentence in it does, and the other six are unaffected — so per-hint
-  versions would duplicate what did not change.
+  rather than words in the sentence. A subsystem does not change wholesale — one
+  sentence in it does, and the other six are unaffected — so per-hint versions
+  would duplicate what did not change.
 - A bare string stays a valid statement and means "holds on every covered
-  version". The two hundred existing bullets are exactly that, so nothing had
-  to be rewritten to introduce the model.
+  version". The two hundred existing bullets are exactly that, so nothing had to
+  be rewritten to introduce the model.
 
 ## Assumed
 

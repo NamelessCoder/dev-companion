@@ -19,14 +19,14 @@ Absence of an optional subsystem is not a defect.
   escaping, raw rendering, query construction, user-controlled attributes, URLs
   and paths, and secret exposure. Every one of them is a value and a sink, and
   the finding gate below is how one is established.
-- Quality: the test suite and the supported TYPO3 versions it runs on, the
-  check layer, documentation, deprecations, and upgrade readiness.
+- Quality: the test suite and the supported TYPO3 versions it runs on, the check
+  layer, documentation, deprecations, and upgrade readiness.
 
 ## The check layer
 
-The commands a repository declares are where this surface is read, never what
-it is. Measure them against what a complete layer covers, each entry named by
-what the check establishes rather than by the tool behind it:
+The commands a repository declares are where this surface is read, never what it
+is. Measure them against what a complete layer covers, each entry named by what
+the check establishes rather than by the tool behind it:
 
 - **Syntax** — every shipped PHP file parses on every PHP version the package
   declares support for.
@@ -44,28 +44,28 @@ what the check establishes rather than by the tool behind it:
   repository maintains, never the bundle a build step produced from them.
 
 Which of them apply is decided by what the package ships: a check whose subject
-it does not ship is absent for a reason, while one whose subject it ships and
-no command covers is a gap in the layer rather than an optional subsystem, and
-that absence is the finding. Ask the same of where each one runs — syntax and
-analysis depend on the PHP and TYPO3 combination and belong in a matrix, while
-a standards, manifest or format check is version-independent and one run of it
+it does not ship is absent for a reason, while one whose subject it ships and no
+command covers is a gap in the layer rather than an optional subsystem, and that
+absence is the finding. Ask the same of where each one runs — syntax and
+analysis depend on the PHP and TYPO3 combination and belong in a matrix, while a
+standards, manifest or format check is version-independent and one run of it
 proves as much as sixteen, so a matrix whose every cell runs only
 version-independent steps establishes that the files parse and nothing more.
 
-The checks that exist are run, and what they printed is the ceiling of what
-this surface is worth rather than its verdict: a green net proves the entries
-it covers and nothing about the ones it has none for, so say which of the
-entries above it leaves untouched. Establishing a missing one is
-`typo3-extension-testing`'s workflow, and it names the default tool per check;
-a review names the gap, routes it there, and changes nothing.
+The checks that exist are run, and what they printed is the ceiling of what this
+surface is worth rather than its verdict: a green net proves the entries it
+covers and nothing about the ones it has none for, so say which of the entries
+above it leaves untouched. Establishing a missing one is
+`typo3-extension-testing`'s workflow, and it names the default tool per check; a
+review names the gap, routes it there, and changes nothing.
 
 ## Content element architecture
 
 Before accepting a content-element implementation, verify the editor workflow
 and ownership model rather than only the CType registration:
 
-- Repeatable content owned by one element should normally use a dedicated
-  inline child table. References to existing records require an explicit reuse
+- Repeatable content owned by one element should normally use a dedicated inline
+  child table. References to existing records require an explicit reuse
   requirement and reviewed visibility, localization, lifecycle and duplicate
   rendering behavior.
 - Keep shared content-element setup in the generic override and move one
@@ -104,18 +104,18 @@ A finding needs a concrete location, observed evidence, applicable rule or
 documentation, consequence, remediation, and relevant project check. Otherwise
 record it as a question or unverified category, not a violation.
 
-A finding about a user-controlled value is a claim about a **sink** rather
-than about a call site, and escaping and injection are the same claim about
-different sinks: the tag or attribute the value is printed into, the statement
-it is executed in, the header, path or process it ends up in. It is not
-established until that sink is named and the code at it is read. Everything
-before it is the path, and an escaping opt-out, a quoting helper or a
-ViewHelper that hands its rendered children to another component is on the
-path rather than at the end of it — where the sink protects the value on its
-own, that opt-out is what keeps it from being encoded or quoted twice. Ask
-`typo3_hint_lookup` for the sinks of the surface in hand, follow the value
-into the installed package that emits or executes it, and where the path can
-be rendered or run, let the repository's own test settle it. Otherwise report
-the finding as unverified and say which class went unread. A security verdict
-is the expensive kind to get wrong: it has to be disproved before it can be
-dismissed, which costs the maintainer exactly the reading the review skipped.
+A finding about a user-controlled value is a claim about a **sink** rather than
+about a call site, and escaping and injection are the same claim about different
+sinks: the tag or attribute the value is printed into, the statement it is
+executed in, the header, path or process it ends up in. It is not established
+until that sink is named and the code at it is read. Everything before it is the
+path, and an escaping opt-out, a quoting helper or a ViewHelper that hands its
+rendered children to another component is on the path rather than at the end of
+it — where the sink protects the value on its own, that opt-out is what keeps it
+from being encoded or quoted twice. Ask `typo3_hint_lookup` for the sinks of the
+surface in hand, follow the value into the installed package that emits or
+executes it, and where the path can be rendered or run, let the repository's own
+test settle it. Otherwise report the finding as unverified and say which class
+went unread. A security verdict is the expensive kind to get wrong: it has to be
+disproved before it can be dismissed, which costs the maintainer exactly the
+reading the review skipped.

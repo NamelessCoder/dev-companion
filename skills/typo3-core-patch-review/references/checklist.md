@@ -1,9 +1,9 @@
 # Core patch review checklist
 
-The surfaces below are written down whole before the diff is read a second
-time, and each one is answered in the report — assessed, unassessed, or not
-applicable to this diff. A surface this patch does not touch costs one line; a
-surface nobody looked at reads as clean unless it is named.
+The surfaces below are written down whole before the diff is read a second time,
+and each one is answered in the report — assessed, unassessed, or not applicable
+to this diff. A surface this patch does not touch costs one line; a surface
+nobody looked at reads as clean unless it is named.
 
 ## Review surfaces
 
@@ -49,8 +49,8 @@ recall rather than from a lookup is a preference with a citation.
 
 Distinguish what was verified from what was reasoned. A behaviour traced into
 the installed code, a command that was run with its output, and a reading of the
-diff are three different weights, and a report that does not separate them
-hands the reader a uniform confidence the review did not have.
+diff are three different weights, and a report that does not separate them hands
+the reader a uniform confidence the review did not have.
 
 ## Severity
 

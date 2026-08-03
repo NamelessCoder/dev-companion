@@ -28,8 +28,8 @@
   them — the changed files, the covering test, the branch.
 - The recommended test command is targeted at the DataHandler tests, not four
   full suites.
-- The commit message is a valid TYPO3 core message and the checks reported on
-  it describe the draft that was returned.
+- The commit message is a valid TYPO3 core message and the checks reported on it
+  describe the draft that was returned.
 - Backporting is described as the merging core team member's job for a patch
   that targets `main`.
 

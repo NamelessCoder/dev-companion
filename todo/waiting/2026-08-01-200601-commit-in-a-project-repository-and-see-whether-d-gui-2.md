@@ -3,14 +3,14 @@
 **Serves:** decisions/
 **Priority:** normal
 **Waiting on:** may a session be run in one of the `E-EXT` checkouts that
-    changes code and commits it, so the first half of the `D-GUI-002`
-    **Wrong if** can be watched rather than reasoned about? Nothing produces
-    that run today: the three forward reviews are reviews, `D-EVI-003` says a
-    review changes nothing, and `EXT-03` is a contract case, which is read
-    rather than run forward. So either a fourth forward review is written whose
-    task ends in a commit, or the run is driven ad hoc and reported as a
-    feedback. Both are a change to how this repository takes evidence, and the
-    checkouts belong to somebody.
+    changes code and commits it, so the first half of the `D-GUI-002` **Wrong
+    if** can be watched rather than reasoned about? Nothing produces that run
+    today: the three forward reviews are reviews, `D-EVI-003` says a review
+    changes nothing, and `EXT-03` is a contract case, which is read rather than
+    run forward. So either a fourth forward review is written whose task ends in
+    a commit, or the run is driven ad hoc and reported as a feedback. Both are a
+    change to how this repository takes evidence, and the checkouts belong to
+    somebody.
 
 The half that could be settled here is settled, and it is recorded on
 `D-GUI-002` in a **Since then** section: the call without the argument really

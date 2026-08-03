@@ -42,15 +42,15 @@ boundary:
 
 - The four places that state one. - `knowledge/server-scope.json` carried it as
   a `doesNotCover` entry — "The knowledge base is scoped to contributing to the
-  core" — and that entry is the canonical text anyone writing about scope
-  copies from. - `knowledge/typo3-core-architecture.md` opened its TypoScript
-  section with "Configuring an installation with TypoScript is out of this
-  server's scope". It is a knowledge document, so the sentence was also handed
-  to callers. - `Scope::OUTSIDE_CORE_NOTICE` said the server "only knows the
-  core's own conventions". Every tool opens with it, so the framing was
-  reinforced in the answers themselves. - `requirements/` says the opposite in
-  R-AUD-001 and R-AUD-002 and flags the conflict — but R-AUD-002 is **open**, and
-  nothing decided which side wins.
+  core" — and that entry is the canonical text anyone writing about scope copies
+  from. - `knowledge/typo3-core-architecture.md` opened its TypoScript section
+  with "Configuring an installation with TypoScript is out of this server's
+  scope". It is a knowledge document, so the sentence was also handed to
+  callers. - `Scope::OUTSIDE_CORE_NOTICE` said the server "only knows the core's
+  own conventions". Every tool opens with it, so the framing was reinforced in
+  the answers themselves. - `requirements/` says the opposite in R-AUD-001 and
+  R-AUD-002 and flags the conflict — but R-AUD-002 is **open**, and nothing
+  decided which side wins.
 
 ## Decided
 
@@ -73,8 +73,8 @@ boundary:
 
 ## Since then
 
-The **Assumed** was right and the pull was the name. On 2026-08-02
-`outsideCore` was removed rather than renamed: one enum, `Knowledge\Scope`,
-says which kind of work an answer is for, and there is no longer a field whose
-only content is what the work is not
+The **Assumed** was right and the pull was the name. On 2026-08-02 `outsideCore`
+was removed rather than renamed: one enum, `Knowledge\Scope`, says which kind of
+work an answer is for, and there is no longer a field whose only content is what
+the work is not
 ([`D-KNW-005`](../knowledge/knw-005-one-scope-replaced-the-four-vocabularies.md)).

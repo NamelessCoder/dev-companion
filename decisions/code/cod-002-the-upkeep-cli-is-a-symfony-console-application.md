@@ -31,8 +31,8 @@ passed nothing should be told.
   installation of this package needs. Commands are invokable classes carrying
   `#[AsCommand]`, with their arguments on the parameters of `__invoke` under
   `#[Argument]`, which is the only arrangement where what a command takes is
-  declared where it is used. `Upkeep\Cli` registers every one of them and is
-  the only place a command is switched on.
+  declared where it is used. `Upkeep\Cli` registers every one of them and is the
+  only place a command is switched on.
 
 ## Assumed
 
@@ -68,14 +68,14 @@ only where the tool already answers.
 What that session actually hit is one file over in the same batch: none of this
 server's tools were callable in its client at all, which
 `feedback/2026-07-31-185900-during-an-audit-of-the-printworks-3d-site.md` says
-and which is still open. Its two feedback from 18:36 carry no `directory:`
-line, and the stdio entrypoint always supplies one, since it hands `getcwd()`
-to `Instance::discoverFrom()`. So they were written by reaching into this
-checkout rather than by calling the server the project was configured for. A
-session that reaches that far can start `bin/typo3-cms-mcp` instead, which is
-what this one did twenty minutes later — and then every tool answers rather
-than one. A second way in is as undiscoverable as the first was, so it is not
-the lever that report names.
+and which is still open. Its two feedback from 18:36 carry no `directory:` line,
+and the stdio entrypoint always supplies one, since it hands `getcwd()` to
+`Instance::discoverFrom()`. So they were written by reaching into this checkout
+rather than by calling the server the project was configured for. A session that
+reaches that far can start `bin/typo3-cms-mcp` instead, which is what this one
+did twenty minutes later — and then every tool answers rather than one. A second
+way in is as undiscoverable as the first was, so it is not the lever that report
+names.
 
 The question went up on 2026-08-02 and came back no: the command is not added,
 because the feedback rests on a premise this checkout does not have. Nothing

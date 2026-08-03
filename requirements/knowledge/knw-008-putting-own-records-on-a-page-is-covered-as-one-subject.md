@@ -15,9 +15,9 @@ reachable from a task that names none of them.
 
 ## From
 
-A product list, detail view and teaser element built for a sitepackage,
-answered with backend-form and shipping-content hints while the mechanism the
-whole task consists of was written down nowhere (2026-07-29).
+A product list, detail view and teaser element built for a sitepackage, answered
+with backend-form and shipping-content hints while the mechanism the whole task
+consists of was written down nowhere (2026-07-29).
 
 ## Held by
 

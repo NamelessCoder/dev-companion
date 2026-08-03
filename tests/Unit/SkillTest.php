@@ -98,13 +98,13 @@ final class SkillTest extends TestCase
 
         // The near miss, not the omission: a runtime lookup answers what is
         // registered, never whether it is right.
-        self::assertMatchesRegularExpression(
-            '/confirmed by its own runtime lookup can still break\s+every rule that governs it/',
-            $base,
+        self::assertStringContainsString(
+            'confirmed by its own runtime lookup can still break every rule that governs it',
+            self::flat($base),
         );
-        self::assertMatchesRegularExpression(
-            '/settled into the opposite of a rule is a finding, not a\s+local style/',
-            $base,
+        self::assertStringContainsString(
+            'settled into the opposite of a rule is a finding, not a local style',
+            self::flat($base),
         );
 
         // And the direction that sentence invites if it stands alone. REVIEW-02
@@ -126,9 +126,9 @@ final class SkillTest extends TestCase
         // said nothing about it, so findings read out of a CI file stood beside
         // findings with a verified path and line at the same confidence.
         self::assertStringContainsString('What a finding rests on is part of the finding', $base);
-        self::assertMatchesRegularExpression(
-            '/a file that was read, at its path and its line; a\s+command that was run, with what it printed; a mechanism traced into an\s+installed\s+package/',
-            $base,
+        self::assertStringContainsString(
+            'a file that was read, at its path and its line; a command that was run, with what it printed; a mechanism traced into an installed package',
+            self::flat($base),
         );
         // And what it owes to the commands the repository already declares.
         // The same three runs were told not to change files and read that as
@@ -138,13 +138,13 @@ final class SkillTest extends TestCase
             '/Where one of the project\'s own commands would settle it, run\s+it/',
             $base,
         );
-        self::assertMatchesRegularExpression(
-            '/a check reports and hands the code back\s+as it was, so even a task told not to change files runs it/',
-            $base,
+        self::assertStringContainsString(
+            'a check reports and hands the code back as it was, so even a task told not to change files runs it',
+            self::flat($base),
         );
-        self::assertMatchesRegularExpression(
-            '/an unknown — a test suite, a shell pipeline, a\s+console command — is named in the answer as evidence that is available rather\s+than run unasked/',
-            $base,
+        self::assertStringContainsString(
+            'an unknown — a test suite, a shell pipeline, a console command — is named in the answer as evidence that is available rather than run unasked',
+            self::flat($base),
         );
 
         // One hop, like every other reference: the base is read, not followed
@@ -218,15 +218,18 @@ final class SkillTest extends TestCase
             'the sweep is left until after the checkout has been read',
         );
         self::assertStringContainsString('`type: deprecation`', $base);
-        self::assertMatchesRegularExpression(
-            '/bounded by `tag` and with the query\s+omitted/',
-            $base,
+        self::assertStringContainsString(
+            'bounded by `tag` and with the query omitted',
+            self::flat($base),
         );
         // The extension's surface picks the tags and nothing else, which is the
         // half of "from the extension's surface" that survives.
         self::assertStringContainsString('Step 2 picks the tags instead', $base);
         self::assertStringContainsString('name the system extension a change is **in**', $base);
-        self::assertMatchesRegularExpression('/An extension\s+key of your own is not among them/', $base);
+        self::assertStringContainsString(
+            'An extension key of your own is not among them',
+            self::flat($base),
+        );
         // And the wording that cost the two sweeps is gone rather than softened.
         self::assertStringNotContainsString('query set', $base);
         // And what the caller does with the answer: an identifier the checkout
@@ -273,9 +276,9 @@ final class SkillTest extends TestCase
             $manual,
             'the manual is offered only after the checkout has been read',
         );
-        self::assertMatchesRegularExpression(
-            '/A changelog records change events, so a pattern nothing has touched for ten\s+majors has no entry at all/',
-            $base,
+        self::assertStringContainsString(
+            'A changelog records change events, so a pattern nothing has touched for ten majors has no entry at all',
+            self::flat($base),
         );
         self::assertStringContainsString('"Does this still work in version N"', $base);
 
@@ -285,9 +288,9 @@ final class SkillTest extends TestCase
         // than a licence to reconstruct the contract from the installed core.
         self::assertStringContainsString('the finding says', $base);
         self::assertStringContainsString('Undocumented is not unsupported', $base);
-        self::assertMatchesRegularExpression(
-            '/installed core shows what one version implements rather than what it\s+supports/',
-            $base,
+        self::assertStringContainsString(
+            'installed core shows what one version implements rather than what it supports',
+            self::flat($base),
         );
 
         // Written once. The conformance skill's own entry carried the narrower
@@ -480,7 +483,7 @@ final class SkillTest extends TestCase
     public function noSkillKeepsASecondCopyOfWhatAToolOwns(): void
     {
         foreach (self::skills() as $name => $skill) {
-            self::assertStringContainsString('Keep this skill as routing', $skill, $name);
+            self::assertStringContainsString('Keep this skill as routing', self::flat($skill), $name);
             // A version number in a permanently loaded instruction is the one
             // fact that cannot be re-asked when the installation is a different
             // one, and no answer says it came from here.
@@ -612,9 +615,9 @@ final class SkillTest extends TestCase
         $guidance = (string) file_get_contents($directory . '/references/static-quality.md');
 
         self::assertStringNotContainsString('only when the project already uses them', $skill);
-        self::assertMatchesRegularExpression(
-            '/establishes them whether or not the\s+project already runs them/',
-            $skill,
+        self::assertStringContainsString(
+            'establishes them whether or not the project already runs them',
+            self::flat($skill),
         );
         self::assertStringContainsString(
             '[references/static-quality.md](references/static-quality.md)',
@@ -649,9 +652,9 @@ final class SkillTest extends TestCase
         // And the sentence that keeps the list from becoming the requirement:
         // it is the default where nothing covers the check, and it loses to
         // whatever the project already runs for the same one.
-        self::assertMatchesRegularExpression(
-            '/default per check where the checkout covers it with\s+nothing, never as a replacement for what it already runs/',
-            $guidance,
+        self::assertStringContainsString(
+            'default per check where the checkout covers it with nothing, never as a replacement for what it already runs',
+            self::flat($guidance),
         );
 
         // The list above stops at which packages to require. What goes inside
@@ -731,15 +734,18 @@ final class SkillTest extends TestCase
         self::assertStringContainsString('`type: breaking`', $skill);
         self::assertStringContainsString('**The Extension Scanner**', $skill);
         self::assertStringContainsString('`FullyScanned` / `PartiallyScanned`', $skill);
-        self::assertMatchesRegularExpression('/A clean scan for a\s+partially scanned entry is not a result/', $skill);
+        self::assertStringContainsString(
+            'A clean scan for a partially scanned entry is not a result',
+            self::flat($skill),
+        );
         self::assertStringContainsString('**The deprecation annotations on what this package actually calls**', $skill);
 
         // And the boundary both of those inherit: they answer from the core that
         // is installed, so the target's own changes are documentation until the
         // installation is on it.
-        self::assertMatchesRegularExpression(
-            '/they do not know what the target major\s+changed until the installation is on it/',
-            $skill,
+        self::assertStringContainsString(
+            'they do not know what the target major changed until the installation is on it',
+            self::flat($skill),
         );
         self::assertStringContainsString('never from memory', $skill);
 
@@ -780,8 +786,8 @@ final class SkillTest extends TestCase
         // The tool is offered everywhere, so being able to call it says nothing
         // about being able to follow the answer: runTests.sh exists in the core
         // repository alone, and that is what the skill has to gate on.
-        self::assertStringContainsString('only for an actual core patch', $skill);
-        self::assertStringContainsString('Never present it as a project', $skill);
+        self::assertStringContainsString('only for an actual core patch', self::flat($skill));
+        self::assertStringContainsString('Never present it as a project', self::flat($skill));
         self::assertStringNotContainsString('profile', $skill);
         self::assertLessThan(
             strpos($skill, 'typo3_test_run_guide'),
@@ -796,17 +802,18 @@ final class SkillTest extends TestCase
             Paths::root() . '/skills/typo3-backend-module-development/SKILL.md',
         );
 
-        $verified = strpos($skill, 'implementation is verified');
-        $stop = strpos($skill, 'stop this workflow');
-        $activate = strpos($skill, 'Activate `typo3-extension-documentation` before editing documentation');
+        $flat = self::flat($skill);
+        $verified = strpos($flat, 'implementation is verified');
+        $stop = strpos($flat, 'stop this workflow');
+        $activate = strpos($flat, 'Activate `typo3-extension-documentation` before editing documentation');
         self::assertNotFalse($verified);
         self::assertNotFalse($stop);
         self::assertNotFalse($activate);
         self::assertLessThan($stop, $verified);
         self::assertLessThan($activate, $stop);
-        self::assertMatchesRegularExpression(
-            '/belongs to that\s+extension, not to the project around it/',
-            $skill,
+        self::assertStringContainsString(
+            'belongs to that extension, not to the project around it',
+            self::flat($skill),
         );
     }
 
@@ -841,9 +848,9 @@ final class SkillTest extends TestCase
         // The file tree is a trap where a surface has no files, so the list is
         // derived from the surfaces and never from what a listing happens to
         // show.
-        self::assertMatchesRegularExpression(
-            '/A surface is in scope because the checklist names it, not because\s+the file tree\s+shows it/',
-            $skill,
+        self::assertStringContainsString(
+            'A surface is in scope because the checklist names it, not because the file tree shows it',
+            self::flat($skill),
         );
         self::assertGreaterThan(
             $position,
@@ -880,9 +887,9 @@ final class SkillTest extends TestCase
         // The runtime lookup is the near miss, not the omission: the third run
         // reached for a translation tool and picked the one that reports what a
         // path resolves to, then filed the surface as clean.
-        self::assertMatchesRegularExpression(
-            '/confirmed by its own runtime\s+lookup and still break every rule that governs it/',
-            $skill,
+        self::assertStringContainsString(
+            'confirmed by its own runtime lookup and still break every rule that governs it',
+            self::flat($skill),
         );
 
         // And a surface nobody asked about is named, because silence about it
@@ -898,9 +905,9 @@ final class SkillTest extends TestCase
             '/Stopping at findings is not stopping at reading/',
             $skill,
         );
-        self::assertMatchesRegularExpression(
-            '/marks as checks hand the code back as it was, and an audit\s+told not to change files runs them/',
-            $skill,
+        self::assertStringContainsString(
+            'marks as checks hand the code back as it was, and an audit told not to change files runs them',
+            self::flat($skill),
         );
     }
 
@@ -930,18 +937,18 @@ final class SkillTest extends TestCase
         // entries the request left out stay on it under a state of their own.
         self::assertStringContainsString('narrowed to the ones this kind of checkout can have', $skill);
         self::assertStringContainsString('mark the rest **not', $skill);
-        self::assertMatchesRegularExpression(
-            '/A request that names no\s+surface is not a focused one/',
-            $skill,
+        self::assertStringContainsString(
+            'A request that names no surface is not a focused one',
+            self::flat($skill),
         );
 
         // The report is where the two states are told apart, and the number is
         // read off the step that writes the list: it said step 5 for two days
         // after the block was renumbered to three.
         self::assertStringContainsString('the surface list written in step 3', $skill);
-        self::assertMatchesRegularExpression(
-            '/Unassessed and not requested both mean nothing was established there, and they\s+are not the same thing/',
-            $skill,
+        self::assertStringContainsString(
+            'Unassessed and not requested both mean nothing was established there, and they are not the same thing',
+            self::flat($skill),
         );
         self::assertStringContainsString('let neither read as clean', $skill);
 
@@ -970,9 +977,9 @@ final class SkillTest extends TestCase
 
         self::assertStringNotContainsString('declared validation commands', $checklist);
         self::assertStringContainsString('## The check layer', $checklist);
-        self::assertMatchesRegularExpression(
-            '/commands a repository declares are where this surface is read, never what\s+it is/',
-            $checklist,
+        self::assertStringContainsString(
+            'commands a repository declares are where this surface is read, never what it is',
+            self::flat($checklist),
         );
 
         // The expectation is the same one the skill that establishes a missing
@@ -997,9 +1004,9 @@ final class SkillTest extends TestCase
         // what it declares a command for — otherwise the surface is back where
         // it was, and the missing one reads as an optional subsystem the
         // opening line already excuses.
-        self::assertMatchesRegularExpression(
-            '/no command covers is a gap in the layer rather than an optional subsystem, and\s+that absence is the finding/',
-            $checklist,
+        self::assertStringContainsString(
+            'no command covers is a gap in the layer rather than an optional subsystem, and that absence is the finding',
+            self::flat($checklist),
         );
         self::assertStringContainsString('the ceiling of what', $checklist);
 
@@ -1109,6 +1116,20 @@ final class SkillTest extends TestCase
 
         return $matches[1];
     }
+
+    /**
+     * A skill read with its wrapping taken out.
+     *
+     * What these assert is the wording, not where the line ends. Matched
+     * against the file as it stands, a sentence that moves one word breaks a
+     * test about something the change never touched — which is what a rewrap
+     * of the corpus did to six of them.
+     */
+    private static function flat(string $skill): string
+    {
+        return (string) preg_replace('/\s+/', ' ', $skill);
+    }
+
 
     /**
      * Every published skill, read from the directory the installer publishes.

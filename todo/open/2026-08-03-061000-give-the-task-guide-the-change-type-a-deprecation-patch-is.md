@@ -11,8 +11,8 @@ grepping the `setCorrelationId` precedent instead. Establish against
 the `@deprecated` docblock wording, the `trigger_error(…, E_USER_DEPRECATED)`
 message shape, the changelog file named `Deprecation-<issue>-<slug>` with its
 anchor and its `Index.rst` inclusion, whether a scanner matcher is owed or an
-explicit `NotScanned` tag is, that removal is staged for the next major, and that
-no core caller of the deprecated API is left behind —
+explicit `NotScanned` tag is, that removal is staged for the next major, and
+that no core caller of the deprecated API is left behind —
 `typo3/sysext/core/Documentation/Changelog/Howto.rst` is the authority on the
 tag. Then add the type beside the six in the enum and its block in the two
 tables above it, and route it in `knowledge/task-intents.json`. It changes a

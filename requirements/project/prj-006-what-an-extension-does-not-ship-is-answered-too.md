@@ -19,8 +19,8 @@ one it ought to be stays a convention in the knowledge base.
 ## From
 
 Three `REVIEW-01` runs (2026-07-31), none of which reported that the site
-package ships no manual, and none of which reported the German
-`source-language` of its three XLF files while reading them.
+package ships no manual, and none of which reported the German `source-language`
+of its three XLF files while reading them.
 
 ## Held by
 

@@ -5,8 +5,9 @@
 **Waiting on:** the question `2026-08-01-002951` waits on, and the same answer
     settles both: may a summary feedback be archived once every half it names is
     carried by a named sibling, or does it stay open until the last of those
-    siblings lands? This one is the stronger case for archiving — two of its five
-    halves have landed, so `closed` would not stand over an untouched subject.
+    siblings lands? This one is the stronger case for archiving — two of its
+    five halves have landed, so `closed` would not stand over an untouched
+    subject.
 
 Judged, and the judgement is at the foot of
 [`D-FBK-021`](../../decisions/feedback/fbk-021-a-summary-feedback-is-judged-against-its-series-not-on-its-own.md):

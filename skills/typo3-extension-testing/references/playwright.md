@@ -68,9 +68,9 @@ playwright-report/       # generated and ignored or uploaded
 
 ## Establish or repair it
 
-- Put configuration and specs at the project level unless the repository
-  already owns them elsewhere. A standalone extension cannot prove a rendered
-  journey without a site that mounts it.
+- Put configuration and specs at the project level unless the repository already
+  owns them elsewhere. A standalone extension cannot prove a rendered journey
+  without a site that mounts it.
 - Read the base URL from environment or project configuration rather than
   committing a developer-specific host.
 - Add stable package scripts for a targeted run, the normal suite, and any

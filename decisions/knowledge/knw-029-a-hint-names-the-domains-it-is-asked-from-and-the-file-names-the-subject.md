@@ -21,18 +21,19 @@ grew a bucket that answers everything.
   is what `D-KNW-001`'s **Wrong if** named, and it is a property of the shelf
   rather than of the hints — `content-elements` is PHP, Fluid and TypoScript at
   once and had no way to say it.
-- The granularity the file name imposed is uneven in the same direction:
-  Backend CSS holds 19 hints of 115 words on average, one subject each, while
-  `php.json` holds 21 for the whole framework at 338, and `general.json` 19 at
+- The granularity the file name imposed is uneven in the same direction: Backend
+  CSS holds 19 hints of 115 words on average, one subject each, while `php.json`
+  holds 21 for the whole framework at 338, and `general.json` 19 at
   418. `datahandler-persistence` is one hint over eight statements covering the
-  datamap, relation resolution, record placement, the backend user, workspaces
-  and the testing obligation.
-- Its `appliesTo` names `querybuilder`, `restriction`, `enablecolumns`, `hidden
-  record` and `deleted record`, and not one of its statements is about reading
-  records. A grep for `removeAll|DefaultRestriction|enableFields|LanguageAspect|
-  PageRepository|VersionState` over the whole corpus returns a single hit, and
-  that one is about `excludeDoktypes` in a menu processor. The umbrella hid the
-  gap by carrying the vocabulary for it.
+       datamap, relation resolution, record placement, the backend user,
+       workspaces and the testing obligation.
+- Its `appliesTo` names `querybuilder`, `restriction`, `enablecolumns`,
+  `hidden record` and `deleted record`, and not one of its statements is about
+  reading records. A grep for
+  `removeAll|DefaultRestriction|enableFields|LanguageAspect| PageRepository|VersionState`
+  over the whole corpus returns a single hit, and that one is about
+  `excludeDoktypes` in a menu processor. The umbrella hid the gap by carrying
+  the vocabulary for it.
 
 ## Decided
 

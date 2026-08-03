@@ -23,6 +23,7 @@ through.
 The feedback's own example needs nothing from this card. The `f:if`/`f:then`
 branch contract is on `fluid-templates` and its query reaches it, which is
 [`D-KNW-016`](../../decisions/knowledge/knw-016-what-an-f-else-does-to-the-branch-beside-it-is-a-gap-this-server-owns.md)
-with [`D-KNW-024`](../../decisions/knowledge/knw-024-the-fluid-namespace-prefix-is-what-a-template-question-is-written-in.md),
+with
+[`D-KNW-024`](../../decisions/knowledge/knw-024-the-fluid-namespace-prefix-is-what-a-template-question-is-written-in.md),
 and the `003448` sibling that carried it is archived. Whether a skill activates
 at all is the `003356` sibling's, waiting on its own question.

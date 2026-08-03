@@ -57,8 +57,8 @@ with a correct entry beside it and found no tool they could call.
   reached the session, and the piece of this server that owns the delivery is
   the install rather than a skill or a hint.
 - Queued rather than closed on the spot. The change is a line of installer
-  output, which is `src/`, and what is left to do differs per client — a
-  judging run has established the gap and not the fix.
+  output, which is `src/`, and what is left to do differs per client — a judging
+  run has established the gap and not the fix.
   [`R-DIS-023`](../../requirements/discovery/dis-023-an-install-says-what-is-left-before-a-tool-can-be-called.md)
   says what must hold and a todo carries the next step.
 - Against making the server reach further at runtime. Whether a client registers
@@ -81,8 +81,8 @@ with a correct entry beside it and found no tool they could call.
   file was written, is theirs; nothing establishes that they read the output
   rather than scrolling past nine success lines.
 - That naming the step is worth the line. `D-AUD-003` records a message at
-  initialize failing to reach its reader, and this is a different position —
-  a terminal, a person, at the moment they asked for something.
+  initialize failing to reach its reader, and this is a different position — a
+  terminal, a person, at the moment they asked for something.
 
 ## Wrong if
 

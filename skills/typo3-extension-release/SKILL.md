@@ -22,9 +22,9 @@ packaging tools or version facts.
 3. Settle the target before building anything: which registries this package
    publishes to, which version is being prepared, and from which ref. The
    checkout answers some of it — the declared registries, the last tag, the
-   distance to it — and where it does not, ask. A release prepared for the
-   wrong target is verified against the wrong rules, and every later step
-   inherits that.
+   distance to it — and where it does not, ask. A release prepared for the wrong
+   target is verified against the wrong rules, and every later step inherits
+   that.
 4. `typo3_documentation_lookup` with several short English queries for the
    requirements of each registry in scope and for the metadata a published
    extension has to carry. Registry rules change on their own schedule and this

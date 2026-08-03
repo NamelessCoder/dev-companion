@@ -40,11 +40,11 @@ installation until the client was restarted (2026-07-29).
 - The **bold first sentence** is the requirement. Everything under it is why it
   is one, and a reader who stops after the bold line has read the whole demand.
 - **From** is the session, review or feedback the demand came out of, with its
-  date. It is evidence, not decoration: it is what tells the next person
-  whether the requirement still describes a real failure.
+  date. It is evidence, not decoration: it is what tells the next person whether
+  the requirement still describes a real failure.
 - **Held by** lists the tests that hold it, one per line, or says in as many
-  words that something is not guarded. A whole test class is a legitimate item
-  — `VersionsTest` in full is a claim about every method in it, and naming them
+  words that something is not guarded. A whole test class is a legitimate item —
+  `VersionsTest` in full is a claim about every method in it, and naming them
   one at a time would go stale on the next one written. A test named there has
   to exist; a requirement claiming a test that was renamed away is a claim
   nobody answers for.
@@ -56,11 +56,11 @@ installation until the client was restarted (2026-07-29).
 - **open** — accepted and not built yet. That is the backlog, and it is
   deliberately the same list, because a requirement nobody has implemented and
   one that could silently regress are the same kind of thing.
-- **not guarded** — built, and **Held by** names no test. It is never written
-  in the front matter: an entry may not claim it of itself, and it is what a
-  claim of `held` turns out to be. It is the honest answer for a requirement no
-  test can hold, and it is the one worth seeing in a listing, because from afar
-  it looks exactly like `held`.
+- **not guarded** — built, and **Held by** names no test. It is never written in
+  the front matter: an entry may not claim it of itself, and it is what a claim
+  of `held` turns out to be. It is the honest answer for a requirement no test
+  can hold, and it is the one worth seeing in a listing, because from afar it
+  looks exactly like `held`.
 - **held** — built, and the tests it names hold it there.
 
 They are the `RequirementState` enum. `bin/cli requirements:check` cannot fail
@@ -89,4 +89,5 @@ would say.
 `bin/cli requirements:check` holds every file to the shape above, and
 `composer test` runs the same check through `RequirementsTest`, except the
 listing: that one is generated from every file in a group, so it is held by the
-command alone — [`D-FBK-011`](../../decisions/feedback/fbk-011-the-suite-holds-what-one-branch-can-be-right-about.md).
+command alone —
+[`D-FBK-011`](../../decisions/feedback/fbk-011-the-suite-holds-what-one-branch-can-be-right-about.md).

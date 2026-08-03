@@ -24,11 +24,12 @@ it was filed, so what it reports is not that the answer is missing.
   `knowledge/task-intents.json` on 2026-07-30, and `8f0f589` put the same rule
   into the `language-files` hint the same day. `0e6cf08` added the correction to
   both on 2026-08-02. Step 1a is out, and `R-KNW-033` holds what landed.
-- The two probes are the finding. `bin/cli hints:probe "add a testimonials
-  content element to the sitepackage"` reaches `content-elements`,
-  `sitepackage-layout` and `frontend-page-rendering`, and no language hint at
-  all. The same task with one word added — "add labels for a testimonials
-  content element" — reaches `content-elements` and `language-files`.
+- The two probes are the finding.
+  `bin/cli hints:probe "add a testimonials content element to the sitepackage"`
+  reaches `content-elements`, `sitepackage-layout` and
+  `frontend-page-rendering`, and no language hint at all. The same task with one
+  word added — "add labels for a testimonials content element" — reaches
+  `content-elements` and `language-files`.
 - The hint that does fire says nothing about labels. `content-elements` runs to
   fourteen hints covering what an element owns, `addRecordType`, the preview
   template and the record variable. None of them names an XLF file.

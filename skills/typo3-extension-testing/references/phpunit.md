@@ -20,13 +20,13 @@ package versions, bootstrap APIs, configuration contents, and commands.
    passes locally rather than a second invocation assembled independently.
 5. When `typo3/testing-framework` is missing, use its official compatibility
    information only to form candidates. Let Composer resolve the newest
-   candidate that intersects the package's TYPO3, PHP, PHPUnit, minimum-stability,
-   and lock constraints. Do not name or write a concrete constraint until the
-   solver has accepted it.
-6. Select the functional database from existing project or CI infrastructure
-   and the behavior under test. SQLite is useful only when the production schema
-   and queries support it; it is not the default merely because it needs no
-   service container.
+   candidate that intersects the package's TYPO3, PHP, PHPUnit,
+   minimum-stability, and lock constraints. Do not name or write a concrete
+   constraint until the solver has accepted it.
+6. Select the functional database from existing project or CI infrastructure and
+   the behavior under test. SQLite is useful only when the production schema and
+   queries support it; it is not the default merely because it needs no service
+   container.
 
 ## Choose the folders
 
@@ -64,8 +64,8 @@ Tests/
   when copying them. If a project already uses `Build/UnitTests.xml` or another
   working shape, adapt it rather than moving files for cosmetic consistency.
 - Calculate testsuite paths from the final configuration location. A path copied
-  from `Build/phpunit/` is wrong after moving the XML file to `Build/`, even when
-  the rest of the template is unchanged.
+  from `Build/phpunit/` is wrong after moving the XML file to `Build/`, even
+  when the rest of the template is unchanged.
 
 ## Write the test
 
@@ -75,16 +75,16 @@ Tests/
 - Use a functional test for dependency injection, configuration, persistence,
   repositories, TCA, DataHandler, routing, database schema, and server-side
   frontend rendering.
-- Load only the extensions the behavior needs, derived from package
-  requirements and the subject under test.
+- Load only the extensions the behavior needs, derived from package requirements
+  and the subject under test.
 - Keep fixtures beside the test, minimal, deterministic, and explicit about
   their expected result. Avoid records from the developer's installation.
-- Resolve services from the functional test container when wiring is part of
-  the contract.
+- Resolve services from the functional test container when wiring is part of the
+  contract.
 - Reset or isolate state that survives between tests. A test that passes alone
   but fails in its containing suite is not finished.
-- Add the smallest real assertion that proves the behavior. Never use a
-  vacuous assertion to certify the harness.
+- Add the smallest real assertion that proves the behavior. Never use a vacuous
+  assertion to certify the harness.
 
 ## Prove it
 

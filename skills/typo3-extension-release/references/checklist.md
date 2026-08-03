@@ -27,16 +27,16 @@ this package cannot have is answered by saying so.
 - **Generated material.** Compiled frontend assets, generated documentation,
   vendored copies — whether they are built, whether they are current, and
   whether they belong in the archive or are rebuilt by whoever installs it.
-- **Exclusions.** What the archive must not carry, which is the surface with
-  two owners; see below.
+- **Exclusions.** What the archive must not carry, which is the surface with two
+  owners; see below.
 - **Checks.** The commands `typo3_project_scope` reports, run against the
   candidate rather than against the working tree.
 - **Publication steps.** Named, ordered, and not taken.
 
 ## The two exclusion mechanisms
 
-An extension is published through more than one channel, and the channels do
-not share an exclusion list:
+An extension is published through more than one channel, and the channels do not
+share an exclusion list:
 
 - The version-control export builds an archive from committed files and honours
   the export-ignore attributes committed beside them.
@@ -56,9 +56,9 @@ defect:
    mechanism that registry uses.
 2. List the files in each.
 3. Compare the lists against **each other**. Every difference is either a file
-   that should be excluded everywhere or one that should be included
-   everywhere; there is no third answer, and which of the two it is decides
-   which mechanism is wrong.
+   that should be excluded everywhere or one that should be included everywhere;
+   there is no third answer, and which of the two it is decides which mechanism
+   is wrong.
 4. Read the exclusion list each mechanism used, and say where it lives. A rule
    the maintainer cannot find is a rule they cannot fix.
 

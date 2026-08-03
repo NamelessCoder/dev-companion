@@ -6,15 +6,15 @@ status: open
 
 # D-FBK-004 — The model is asked, because nothing else here can say it
 
-**`typo3_feedback_record` asks the caller which model is recording the
-feedback, declares the field required, and writes `unknown` rather than
-refusing the feedback when it does not arrive.**
+**`typo3_feedback_record` asks the caller which model is recording the feedback,
+declares the field required, and writes `unknown` rather than refusing the
+feedback when it does not arrive.**
 
 A feedback that reports behaviour is evidence about a model. Nothing on this
 side of the connection knows which one: the MCP handshake carries `clientInfo`,
-the client rather than the model behind it, and the SDK keeps it in the
-session, which a tool handler is not given. So it is asked for, in the one
-place the answer is cheap — the call that is already being made.
+the client rather than the model behind it, and the SDK keeps it in the session,
+which a tool handler is not given. So it is asked for, in the one place the
+answer is cheap — the call that is already being made.
 
 ## Evidence
 
@@ -33,18 +33,18 @@ place the answer is cheap — the call that is already being made.
   for a model that does not know its own identifier, because an invented name
   attributes a habit to a model that never had it and there is no way to find
   that out afterwards. The field is always written, so an unattributed feedback
-  is visibly unattributed rather than indistinguishable from one recorded
-  before the field existed.
+  is visibly unattributed rather than indistinguishable from one recorded before
+  the field existed.
 
 ## Assumed
 
-- That a model asked for its identifier answers with the one it was given
-  rather than the one it believes it should be. Nothing verifies this and
-  nothing can — the string is whatever arrives.
-- That the model is the half worth having. The client decides whether a skill
-  is offered at all, which the previous day's finding about
-  `chat.useAgentSkills` is exactly about, and it is not asked for here: it is
-  knowable without asking, once the SDK hands `client_info` to a handler.
+- That a model asked for its identifier answers with the one it was given rather
+  than the one it believes it should be. Nothing verifies this and nothing can —
+  the string is whatever arrives.
+- That the model is the half worth having. The client decides whether a skill is
+  offered at all, which the previous day's finding about `chat.useAgentSkills`
+  is exactly about, and it is not asked for here: it is knowable without asking,
+  once the SDK hands `client_info` to a handler.
 
 ## Wrong if
 

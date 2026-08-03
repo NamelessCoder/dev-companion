@@ -13,8 +13,8 @@
   requirement and its consequence.
 - The proposed verification is the narrowest applicable project command before
   broader suites, and commands that were not run remain labeled as such.
-- Public behavior, compatibility, documentation or changelog work, commit
-  shape, and review readiness are raised only when the diff makes them relevant.
+- Public behavior, compatibility, documentation or changelog work, commit shape,
+  and review readiness are raised only when the diff makes them relevant.
 - The result is prioritized and bounded; it does not rewrite the patch during a
   review-only request.
 

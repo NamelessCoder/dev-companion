@@ -23,13 +23,12 @@ behind the paragraph explaining why the order is what it is.
   because the entry already carries a **Corrected on**, and the status names one
   line only — what a second **Wrong if** coming back clean is called is a gap in
   that vocabulary, not a claim about this one. Each session opened with the
-  check it was asked for
-  and then called `bin/cli todo:next --worktree` exactly once; across 146 shell
-  calls between them, `bin/cli todo:list` was run zero times. None asked for
-  context beyond the todo, and none recorded a `**Waiting on:**`, so no session
-  was blocked on something the one todo withheld. Read from the session
-  transcripts rather than from what the sessions reported about themselves,
-  which is what the caller-chosen session id in
+  check it was asked for and then called `bin/cli todo:next --worktree` exactly
+  once; across 146 shell calls between them, `bin/cli todo:list` was run zero
+  times. None asked for context beyond the todo, and none recorded a
+  `**Waiting on:**`, so no session was blocked on something the one todo
+  withheld. Read from the session transcripts rather than from what the sessions
+  reported about themselves, which is what the caller-chosen session id in
   [driving-a-session.md](../../documentation/driving-a-session.md) is for. Two
   things it does not settle: all three were handed a message naming
   `todo:next --worktree` as where the work is, so they were steered to the
@@ -50,28 +49,27 @@ behind the paragraph explaining why the order is what it is.
   not print, so the instruction resolved to nothing for its only intended
   reader. Of the three standing sections, two were performed and one printed a
   command to run, and nothing in the output distinguished them. The listings
-  both exited 0 whatever they found. What replaced it is 19 lines and 139
-  words.
+  both exited 0 whatever they found. What replaced it is 19 lines and 139 words.
 
 ## Decided
 
 - One todo, whole, with its `Run:` command already executed. Due is the cadence
   — `session`, or a number of days with a `Checked:` date, so five sessions in
-  an afternoon do not ask five times whether the SDK has released — and then
-  the command's exit code, which is what lets the feedback stop being the next
-  thing the moment the last one is judged without anybody editing the file.
-  With that, a todo that recurs is a todo with a cadence rather than a kind of
-  section, so `**Standing:** feedback | backlog | by hand` became fields any
-  todo can carry and the three special cases in the dispatcher went with it.
-  One paragraph is one step, and the six items that carried more became ten.
+  an afternoon do not ask five times whether the SDK has released — and then the
+  command's exit code, which is what lets the feedback stop being the next thing
+  the moment the last one is judged without anybody editing the file. With that,
+  a todo that recurs is a todo with a cadence rather than a kind of section, so
+  `**Standing:** feedback | backlog | by hand` became fields any todo can carry
+  and the three special cases in the dispatcher went with it. One paragraph is
+  one step, and the six items that carried more became ten.
 
 ## Assumed
 
 - That the judgement, not the work, is the right threshold for "there is
-  something here". A feedback some todo already names is being worked off in
-  the order the queue has it, and stopping to re-read it is how the queue never
-  gets reached. Nothing has run long enough to show that the ones already named
-  stay named.
+  something here". A feedback some todo already names is being worked off in the
+  order the queue has it, and stopping to re-read it is how the queue never gets
+  reached. Nothing has run long enough to show that the ones already named stay
+  named.
 - That a session which never sees the queue does not need it to work in the
   right order — the order is the file's, and it is the file that decides which
   todo is printed. What this gives up is the reader who would have noticed that
@@ -81,24 +79,23 @@ behind the paragraph explaining why the order is what it is.
 ## Wrong if
 
 - Sessions start asking for context `next` withheld, or open by running
-  `todo list` anyway — then one todo is less than the minimum and the cut was
-  in the wrong place. Or a recurring todo blocks the queue for more than a
-  session or two, which would mean its command answers "there is work" to a
-  state nobody can finish. Or the todos grow back into packages, because
-  splitting them is a habit and nothing checks it: the paragraph is prose by
-  design, and no check can tell one step from three.
+  `todo list` anyway — then one todo is less than the minimum and the cut was in
+  the wrong place. Or a recurring todo blocks the queue for more than a session
+  or two, which would mean its command answers "there is work" to a state nobody
+  can finish. Or the todos grow back into packages, because splitting them is a
+  habit and nothing checks it: the paragraph is prose by design, and no check
+  can tell one step from three.
 
 ## Revoked on 2026-08-01
 
-The second **Wrong if** happened, in the form the first **Assumed** described.
-A recurring todo blocked the queue — not for a session or two but for every
-session there was, and the feedback it sighted were what nobody could finish:
-56 open, 55 of them named by no todo, against a queue of 38 items that `next`
-never reached. The threshold was right and the order was wrong. Judging a
-feedback is what puts an item *into* the queue, so asking the sighting first
-means deciding twice and doing nothing, and the directory it decides over grows
-from every session everywhere while one session judges a handful. `next` now
-asks in three groups — what has a clock, then the queue, then the sightings
-once the queue is empty — and the sighting hands over five rather than the
-directory, because five judgements are the number somebody can disagree with
-before the commit is made.
+The second **Wrong if** happened, in the form the first **Assumed** described. A
+recurring todo blocked the queue — not for a session or two but for every
+session there was, and the feedback it sighted were what nobody could finish: 56
+open, 55 of them named by no todo, against a queue of 38 items that `next` never
+reached. The threshold was right and the order was wrong. Judging a feedback is
+what puts an item *into* the queue, so asking the sighting first means deciding
+twice and doing nothing, and the directory it decides over grows from every
+session everywhere while one session judges a handful. `next` now asks in three
+groups — what has a clock, then the queue, then the sightings once the queue is
+empty — and the sighting hands over five rather than the directory, because five
+judgements are the number somebody can disagree with before the commit is made.

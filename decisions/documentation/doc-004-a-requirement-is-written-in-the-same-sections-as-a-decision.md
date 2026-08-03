@@ -9,14 +9,14 @@ status: open
 **A requirement is written in `## From` and `## Held by`, the second a list of
 tests, and its three states are the `RequirementState` enum.**
 
-`D-DOC-003` gave decisions sections because a label repeated up to seven times in
-one entry. That reason does not exist here, and a different one does.
+`D-DOC-003` gave decisions sections because a label repeated up to seven times
+in one entry. That reason does not exist here, and a different one does.
 
 ## Evidence
 
-- Requirements carry a median of two labelled fields and a maximum of two —
-  only `From`, on 115 entries, and `Held by`, on 123 — and neither ever appears
-  twice in one file. Nothing like the repetition `D-DOC-003` was written against.
+- Requirements carry a median of two labelled fields and a maximum of two — only
+  `From`, on 115 entries, and `Held by`, on 123 — and neither ever appears twice
+  in one file. Nothing like the repetition `D-DOC-003` was written against.
 - `Held by` names more than one test on 60 of the 123 entries, three or more on
   34, and nine on `R-AUD-004`, all inside one comma-separated sentence with the
   prose that qualifies them running through it. That is a list written as a
@@ -34,8 +34,8 @@ one entry. That reason does not exist here, and a different one does.
   item: `VersionsTest` in full is a claim about every method in it, and naming
   them one at a time would go stale on the next one written.
 - `not guarded` is not a written state and never was. It is what a claim of
-  `held` turns out to be when the entry names no test, so `RequirementState`
-  has three cases and only two of them may appear in front matter —
+  `held` turns out to be when the entry names no test, so `RequirementState` has
+  three cases and only two of them may appear in front matter —
   `RequirementState::written()` is that list.
 - How a requirement is written moved to
   `documentation/feedback/writing-a-requirement.md`, which is what
@@ -44,13 +44,13 @@ one entry. That reason does not exist here, and a different one does.
 
 ## Assumed
 
-- That the 123 entries survived a scripted rewrite. The converter split `Held
-  by` on the backticked test names, which assumes the prose between two of them
-  belongs to the first — true in every entry read by hand, and not something
-  any check would notice if it were wrong somewhere.
+- That the 123 entries survived a scripted rewrite. The converter split
+  `Held by` on the backticked test names, which assumes the prose between two of
+  them belongs to the first — true in every entry read by hand, and not
+  something any check would notice if it were wrong somewhere.
 - That one paragraph of body prose sitting between `From` and `Held by` was the
-  only one. It was found by counting, and it was in an entry written earlier
-  the same day; it moved above `## From` rather than becoming part of it.
+  only one. It was found by counting, and it was in an entry written earlier the
+  same day; it moved above `## From` rather than becoming part of it.
 
 ## Wrong if
 

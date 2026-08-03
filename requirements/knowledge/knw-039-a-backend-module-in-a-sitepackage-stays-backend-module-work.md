@@ -7,8 +7,8 @@ status: held
 
 **A backend module owned by a sitepackage remains backend-module work.**
 
-Its domains include PHP, its registration hint ranks first, and generic
-mentions of `sitepackage` and `records` do not pull in the package-layout or
+Its domains include PHP, its registration hint ranks first, and generic mentions
+of `sitepackage` and `records` do not pull in the package-layout or
 initial-content or frontend-record-rendering guides. Those guides apply only
 when the task asks for that layout, content shipping or frontend rendering, not
 when the words merely name the owner and the data a backend module reviews.

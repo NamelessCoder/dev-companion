@@ -22,8 +22,8 @@ and checkout.
 - Browser: rendered journeys, backend interaction, JavaScript, or accessibility
   behavior that cannot be established below the UI.
 - Static quality: defects and style no test observes — static analysis, coding
-  standards, structural rules. Established when the task asks for them,
-  extended rather than invented when it does not.
+  standards, structural rules. Established when the task asks for them, extended
+  rather than invented when it does not.
 
 ## Respect the functional frontend boundary
 
@@ -35,8 +35,8 @@ and checkout.
   exercise focus behavior or inspect the browser accessibility tree.
 - Use a browser test for interactive claims, and describe untested interaction
   as unverified rather than as frontend-tested.
-- Documentation/configuration: validate examples and declarations directly;
-  do not disguise a file-presence assertion as a behavioral test.
+- Documentation/configuration: validate examples and declarations directly; do
+  not disguise a file-presence assertion as a behavioral test.
 
 Prefer the lowest layer that observes the contract and would fail for the
 reported defect. Record why a higher layer is necessary.

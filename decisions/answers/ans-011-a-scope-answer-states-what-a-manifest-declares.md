@@ -16,12 +16,12 @@ two disagree.
 
 ## Evidence
 
-- `feedback/2026-07-31-190653`, re-run on 2026-08-02 through
-  `bin/typo3-cms-mcp` from `/home/benji/projects/site-new`, the directory it was
-  written in. `typo3_project_scope` opens with "composer-project, TYPO3 14.3.5,
-  PHP ^8.4". `typo3_extension_scope` with `printworks_sitepackage` carries
-  "Requires: php ^8.3, typo3/cms-core ^14.3" and, on its own line, "Ships:
-  manual none, readme none, tests Functional+Unit".
+- `feedback/2026-07-31-190653`, re-run on 2026-08-02 through `bin/typo3-cms-mcp`
+  from `/home/benji/projects/site-new`, the directory it was written in.
+  `typo3_project_scope` opens with "composer-project, TYPO3 14.3.5, PHP ^8.4".
+  `typo3_extension_scope` with `printworks_sitepackage` carries "Requires: php
+  ^8.3, typo3/cms-core ^14.3" and, on its own line, "Ships: manual none, readme
+  none, tests Functional+Unit".
 - Both things the feedback records as established elsewhere were in answers it
   says it already had. It lists both calls as made, then reports reading
   composer.json for the PHP constraint and being surprised by the absent manual
@@ -36,10 +36,11 @@ two disagree.
   directory, half an hour later, it compared the extension's declared constraint
   against the host's PHP 8.3.23 and reported "PHP version mismatch blocks all
   tests", which the DDEV container the suite runs in makes false.
-- The comparison is already somebody's. `skills/typo3-extension-conformance/references/checklist.md`
-  opens its surfaces with "Package: identity, Composer constraints, autoloading,
-  extension metadata, and supported TYPO3/PHP range", and the skill states that
-  it owns assessment and prioritization.
+- The comparison is already somebody's.
+  `skills/typo3-extension-conformance/references/checklist.md` opens its
+  surfaces with "Package: identity, Composer constraints, autoloading, extension
+  metadata, and supported TYPO3/PHP range", and the skill states that it owns
+  assessment and prioritization.
 
 ## Decided
 
@@ -53,8 +54,8 @@ two disagree.
   Nothing was added to `D-SKL-001` or `D-SKL-002`.
 - The boundary stays where it is. A tool that reported two declarations as
   disagreeing would be judging rather than answering, `validate` is not one of
-  the five verbs in [AGENTS.md](../../AGENTS.md), and the checklist surface above
-  is where that judgement is already owed.
+  the five verbs in [AGENTS.md](../../AGENTS.md), and the checklist surface
+  above is where that judgement is already owed.
 - The runtime half is named and not filled here. What PHP the container actually
   runs is what `feedback/2026-07-31-193611` asks for, it has a card of its own,
   and answering it from this run would be the copy-down
@@ -85,8 +86,8 @@ two disagree.
 
 ## Since then
 
-`feedback/2026-07-31-193109` was judged on 2026-08-02 and is a second sighting of
-the same pairing from the same directory 25 minutes later. Its fourth cost
+`feedback/2026-07-31-193109` was judged on 2026-08-02 and is a second sighting
+of the same pairing from the same directory 25 minutes later. Its fourth cost
 credits `typo3_project_scope` with `^8.4` and reports 8.3.23 as read by bash, so
 what it compares is a declaration against an effective runtime rather than two
 declarations — which is where the third **Wrong if** expects the other feedback

@@ -1,9 +1,9 @@
 # Writing a task skill
 
 What the published skills are is in [AGENTS.md](../../AGENTS.md), and the order
-every one of them starts in is [skills/base.md](../../skills/base.md), which is one
-file rather than a paragraph each. This page is the other half: how a skill is
-**written**, and what holds each rule to that.
+every one of them starts in is [skills/base.md](../../skills/base.md), which is
+one file rather than a paragraph each. This page is the other half: how a skill
+is **written**, and what holds each rule to that.
 
 The rules are narrow for one reason. A skill is not a document this repository
 keeps — it is a copy the installer writes into somebody else's project, where
@@ -18,8 +18,8 @@ and skills that exist **fail to carry the task** — not when the subject is lar
 enough to look like it deserves one. Release, static analysis, performance and
 security have each looked like a skill at some point; what settles it is a case
 in [scenarios/](../../scenarios/readme.md) or a run in
-[scenarios/runs/](../../scenarios/runs/) where the existing workflow was reached for
-and came up short.
+[scenarios/runs/](../../scenarios/runs/) where the existing workflow was reached
+for and came up short.
 
 What such a run shows is almost always smaller than the domain: an order nobody
 keeps, a step that only runs when a finding happens to walk into it, a boundary
@@ -57,11 +57,11 @@ invents surfaces that do not exist and misses the one that decides the case.
 ## The draft is read by somebody before it is published
 
 A skill is not finished when its tests pass. Those hold its shape — the name,
-the base, the references, that it keeps no second copy of what a tool owns —
-and no assertion here can say whether the workflow it describes is the one a
-maintainer actually runs, whether its order matches how the work really goes,
-or whether the step that decides the outcome is in it at all. The person who
-asked for the skill can say all three, and is the only one who can.
+the base, the references, that it keeps no second copy of what a tool owns — and
+no assertion here can say whether the workflow it describes is the one a
+maintainer actually runs, whether its order matches how the work really goes, or
+whether the step that decides the outcome is in it at all. The person who asked
+for the skill can say all three, and is the only one who can.
 
 So the draft is shown before it is published: `SKILL.md` and every reference,
 whole, not summarised. And feedback is **asked for by name** — does this match
@@ -154,16 +154,16 @@ that owner, carry across only the scope and verified behaviour it needs
 
 A skill exists for its readers once it is in `Installer::SKILLS`. Add it there,
 add it to the lists in `tests/Smoke/InstallerTest.php` that read the published
-directory back, and the installer copies `skills/base.md` into the new
-directory as `references/base.md` — one copy per skill, because each of them
-lands in another project alone and a link out of its own directory would resolve
-here and nowhere it is actually read.
+directory back, and the installer copies `skills/base.md` into the new directory
+as `references/base.md` — one copy per skill, because each of them lands in
+another project alone and a link out of its own directory would resolve here and
+nowhere it is actually read.
 
 Then run the installer in the checkout that plays the environment the skill is
 for, before any run that is meant to measure it. The published skills are a copy
 and nothing reports that they are older than the server;
-[todo/reference/](../../todo/reference/) says which checkout plays which environment on this
-machine and how the installer is reached there.
+[todo/reference/](../../todo/reference/) says which checkout plays which
+environment on this machine and how the installer is reached there.
 
 ## What none of this holds
 
@@ -182,6 +182,7 @@ reorganisation can leave it present while the behaviour goes.
 accepts that proxy for the skill crossing and says why no forward run will
 replace it. Everywhere else, what measures the behaviour is a case in
 [scenarios/contracts/](../../scenarios/contracts/readme.md) or an open review in
-[scenarios/forward/](../../scenarios/forward/readme.md) — and a forward run grades
-the answer a session produced, never the file it came out of, which is why the
-authoring contract is the half of a skill that has to be written down instead.
+[scenarios/forward/](../../scenarios/forward/readme.md) — and a forward run
+grades the answer a session produced, never the file it came out of, which is
+why the authoring contract is the half of a skill that has to be written down
+instead.

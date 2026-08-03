@@ -148,8 +148,8 @@ CI=true ./Build/Scripts/runTests.sh -s npm -- run build
 
 Runs npm commands inside the TYPO3 core test environment.
 
-Useful package scripts for frontend and CSS work include `run build`, `run
-build-css`, `run lint`, and `run watch:build`.
+Useful package scripts for frontend and CSS work include `run build`,
+`run build-css`, `run lint`, and `run watch:build`.
 
 ## Script Notes
 

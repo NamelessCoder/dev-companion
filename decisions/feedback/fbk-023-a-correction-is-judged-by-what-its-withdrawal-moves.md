@@ -31,11 +31,12 @@ subject the earlier notes were about.
   came in. Three siblings, three answers.
 - `002926` — archived on 2026-08-02. Its judgement is the **Since then** of
   [`D-AUD-003`](../audience/aud-003-the-instructions-carry-the-entry-point.md)
-  and [`R-SKL-010`](../../requirements/task-skills/skl-010-a-skills-description-names-every-side-of-what-it-owns.md),
-  and it rests on the descriptions themselves: `typo3-content-element-development`
-  opened on "frontend content elements" and reached `previews` ninth of eleven,
-  while the task was a backend preview the same skill covers in as many words.
-  That was read off the files here, and
+  and
+  [`R-SKL-010`](../../requirements/task-skills/skl-010-a-skills-description-names-every-side-of-what-it-owns.md),
+  and it rests on the descriptions themselves:
+  `typo3-content-element-development` opened on "frontend content elements" and
+  reached `previews` ninth of eleven, while the task was a backend preview the
+  same skill covers in as many words. That was read off the files here, and
   `SkillTest::aBackendPreviewTaskMatchesTheSkillThatOwnsTheElement` holds the
   rewrite. The withdrawal moves the sentence about what the session called, not
   the finding, and it is written into that entry.

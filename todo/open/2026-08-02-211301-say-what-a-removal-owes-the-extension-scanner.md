@@ -15,10 +15,11 @@ anything: whether every removed public method gets a `MethodCallMatcher.php`
 entry or only the statically findable ones, which of the matcher files below
 `typo3/sysext/install/Configuration/ExtensionScanner/Php/` a removal belongs in,
 and how the entry's `restFiles` relates to the changelog entry's `FullyScanned`,
-`PartiallyScanned` or `NotScanned` tag. `Breaking-101955-RemovedPublicMethodsRelatedToImageGeneration.rst`
-and `MethodCallMatcher.php:5969` in `.checkouts/main` are the worked example,
-and `typo3/sysext/core/Documentation/Changelog/Howto.rst` is the authority on
-the tag. Then write what holds into `## Breaking Changes` of
+`PartiallyScanned` or `NotScanned` tag.
+`Breaking-101955-RemovedPublicMethodsRelatedToImageGeneration.rst` and
+`MethodCallMatcher.php:5969` in `.checkouts/main` are the worked example, and
+`typo3/sysext/core/Documentation/Changelog/Howto.rst` is the authority on the
+tag. Then write what holds into `## Breaking Changes` of
 `knowledge/documents/typo3-commit-messages.md`, and settle in the same reading
 whether the `breaking` intent's "consider an extension scanner matcher" stays a
 recommendation.

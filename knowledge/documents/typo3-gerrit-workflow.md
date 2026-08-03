@@ -1,7 +1,6 @@
 # TYPO3 Gerrit Workflow
 
-Source:
-https://docs.typo3.org/m/typo3/guide-contributionworkflow/main/en-us/
+Source: https://docs.typo3.org/m/typo3/guide-contributionworkflow/main/en-us/
 
 TYPO3 core patches are not submitted as pull requests. They are pushed to Gerrit
 at https://review.typo3.org, one commit per patch, and improved by amending that
@@ -57,14 +56,14 @@ git commit --amend -a
 git push origin HEAD:refs/for/main
 ```
 
-- Keep the `Change-Id:` line untouched. It is what links the new patch set to the
-  existing review; a changed or removed `Change-Id` opens an unrelated second
-  change.
+- Keep the `Change-Id:` line untouched. It is what links the new patch set to
+  the existing review; a changed or removed `Change-Id` opens an unrelated
+  second change.
 - Earlier patch sets are never overwritten. Reviewers can diff between them, so
   amending is safe.
-- Before amending, fetch the current patch set from Gerrit (the "Download"
-  menu of the change offers the `git fetch … && git cherry-pick FETCH_HEAD`
-  command) when it is not already the local commit.
+- Before amending, fetch the current patch set from Gerrit (the "Download" menu
+  of the change offers the `git fetch … && git cherry-pick FETCH_HEAD` command)
+  when it is not already the local commit.
 
 ## Release Branches and Backports
 
@@ -77,9 +76,9 @@ the normal case the patch targets `main` and the merging core team member takes
 care of the backport. The `Releases:` line in the commit message names the
 branches the change is meant for.
 
-A backport is a cherry-pick of the merged commit onto the release branch, usually
-started from Gerrit's "Cherry pick" action. The `Change-Id` of the original
-change is kept unchanged — that is what lets Gerrit link the backport to it.
-Everything below the `Change-Id` line (`Reviewed-by:`, `Tested-by:`, and the
-blank lines) is removed, and the code is adjusted to the older branch where it no
-longer applies cleanly.
+A backport is a cherry-pick of the merged commit onto the release branch,
+usually started from Gerrit's "Cherry pick" action. The `Change-Id` of the
+original change is kept unchanged — that is what lets Gerrit link the backport
+to it. Everything below the `Change-Id` line (`Reviewed-by:`, `Tested-by:`, and
+the blank lines) is removed, and the code is adjusted to the older branch where
+it no longer applies cleanly.

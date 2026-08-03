@@ -28,7 +28,8 @@ used to answer.
   own body vocabulary — its body terms minus everything its title and its
   `appliesTo` already index — asked one term at a time against the hint it
   belongs to. Read over the categories a query with no domain signal selects at
-  all, because the gate of [`D-KNW-009`](../knowledge/knw-009-a-domain-keyword-is-a-phrasing-not-a-word.md)
+  all, because the gate of
+  [`D-KNW-009`](../knowledge/knw-009-a-domain-keyword-is-a-phrasing-not-a-word.md)
   sits upstream of this one and holds Backend CSS, Fluid and TypoScript out at
   3% whatever their length. The 30 always-selected hints under 544 words are
   reached by **2427 of their 2438** body terms. The 10 over it, by **30 of
@@ -39,14 +40,15 @@ used to answer.
   the index. Three of the four are asserted to be in those hints by tests
   written before this, so the repository already held that the answer is there
   and that nobody could ask for it by name.
-- The shape [`D-ANS-022`](ans-022-the-matcher-takes-a-hyphenated-compound-apart.md)
-  used, over the queries a caller writes: the 208 multi-word bare `appliesTo`
-  patterns and the 41 scenario prompts, taken apart into 1360 one-term queries
-  against the hint they belong to. 419 reached before, 572 after, none lost. All
-  153 gains fall on the 8 hints over the line, and **not one on a curated
-  pattern's own words** — an `appliesTo` field is a dozen words and is never
-  diluted, which is why curating `list_type` and `mod.web_layout` repaired the
-  reported case, and why the curated half of a sweep cannot see this gate.
+- The shape
+  [`D-ANS-022`](ans-022-the-matcher-takes-a-hyphenated-compound-apart.md) used,
+  over the queries a caller writes: the 208 multi-word bare `appliesTo` patterns
+  and the 41 scenario prompts, taken apart into 1360 one-term queries against
+  the hint they belong to. 419 reached before, 572 after, none lost. All 153
+  gains fall on the 8 hints over the line, and **not one on a curated pattern's
+  own words** — an `appliesTo` field is a dozen words and is never diluted,
+  which is why curating `list_type` and `mod.web_layout` repaired the reported
+  case, and why the curated half of a sweep cannot see this gate.
 - What it moves, over the same 302 whole queries — 41 prompts, 66 titles, 208
   patterns: **0 changed their first hit and 0 entries left a top-6 answer**; 71
   gained entries below what was already there. The 12 recoverable queries of the
@@ -82,10 +84,10 @@ used to answer.
 - Not curating the identifiers into `appliesTo`, which is what the reported case
   was repaired with. It is 153 patterns over 8 hints today and it grows with
   every hint written; most of the words are ordinary prose rather than
-  vocabulary anybody would index; and a pattern outranks a text hit, so
-  curating for reachability also decides what comes first. The two patterns
-  already added stay for that reason — removing them now would move a ranking
-  this did not measure.
+  vocabulary anybody would index; and a pattern outranks a text hit, so curating
+  for reachability also decides what comes first. The two patterns already added
+  stay for that reason — removing them now would move a ranking this did not
+  measure.
 - Not splitting the hints that outgrew the line. It keeps the text route working
   by changing which id a caller is routed to, it has to be done again each time
   one grows, and with the gate fixed nothing asks for it.

@@ -26,8 +26,8 @@ read by hand is what stands in for it (`D-EVI-002`)
 
 **How it fails**
 
-- The backend-module skill remains the only active skill and edits
-  documentation itself.
+- The backend-module skill remains the only active skill and edits documentation
+  itself.
 - Both workflows run as one undifferentiated checklist with no observable
   ownership boundary.
 - Extension functionality is documented at project level or internal controller

@@ -32,8 +32,8 @@ evidence about the architecture.
 Extbase. `feedback/2026-08-01-003313` is the same debrief's other delivery
 report, queued as `R-ANS-015`.
 
-Measured on 2026-08-02: `bin/cli hints:probe "new content element for
-testimonials with a repeatable list of entries, TCA and Fluid rendering"`
+Measured on 2026-08-02:
+`bin/cli hints:probe "new content element for testimonials with a repeatable list of entries, TCA and Fluid rendering"`
 reaches `content-elements` and `tca-formengine`. Adding the word records is what
 brings `frontend-records` back, and naming Extbase, a plugin, a repository or
 pagination is what brings `extbase` back.

@@ -21,11 +21,11 @@ the numbers and stops there.
   `form sets discover yaml configuration` both still return nothing, and every
   word of both reaches entries on its own — 358, 213, 17, 29 and 144 for the
   first.
-- The sentence the sibling tool already carries would have ended it. `query:
-  "yaml"` with no type and no version returns 17 entries, and the first two are
-  `14.2 Deprecation: TypoScript-based form YAML registration (#109412)` and
-  `14.2 Feature: Auto-discovery of form YAML configurations (#109412)` — the two
-  entries the feedback names, in one more call rather than three.
+- The sentence the sibling tool already carries would have ended it.
+  `query: "yaml"` with no type and no version returns 17 entries, and the first
+  two are `14.2 Deprecation: TypoScript-based form YAML registration (#109412)`
+  and `14.2 Feature: Auto-discovery of form YAML configurations (#109412)` — the
+  two entries the feedback names, in one more call rather than three.
 - The rule the feedback asks for is the wrong way round. It wants the word with
   the smallest reach dropped. That word is `yaml` at 17, and it is the one term
   both target entries carry; dropping it loses them.
@@ -75,7 +75,8 @@ the numbers and stops there.
 ## Wrong if
 
 - A caller follows the offered re-query and gets entries about something else,
-  because the surviving subset is the query's vague half rather than its subject.
+  because the surviving subset is the query's vague half rather than its
+  subject.
 - A miss carrying the sentence is followed by the same trial-and-error in a
   later feedback. Then the next call was not what the session was missing, and
   `D-SKL-003`'s bounds are the whole of the answer.
@@ -105,10 +106,10 @@ Every largest subset is named rather than the best of them, which the evidence
 above had already decided and the implementation made visible. On
 `form set yaml registration deprecated` there are two, they reach one entry
 each, and the narrower-first tie-break puts `form set yaml` first — that returns
-`10.2 Feature: Unify form setup YAML loading (#84203)`, not the deprecation. Both
-named, the caller reads `form yaml registration` beside it and gets #109412 in
-one call. Re-queried against the same checkout: all four offered subsets return
-what the miss said they would.
+`10.2 Feature: Unify form setup YAML loading (#84203)`, not the deprecation.
+Both named, the caller reads `form yaml registration` beside it and gets #109412
+in one call. Re-queried against the same checkout: all four offered subsets
+return what the miss said they would.
 
 In `LabelSearch` rather than in `ChangelogLookup`, because it takes the items
 and the terms `carryingEvery()` and `perTermCounts()` take and answers with the
@@ -128,8 +129,8 @@ for.
 The same wording is owed for the filters, and `feedback/2026-08-01-115112` is
 what shows it. Re-run on 2026-08-02 from `/home/benji/projects/typo3-cms`,
 `query: "GifBuilder placeholder preview thumbnail"` with `version: "15"` returns
-nothing and says that "preview" reaches 1 entry. Every number in that sentence is
-counted inside `15.0`, and nothing marks it as such. Drop the version and all
+nothing and says that "preview" reaches 1 entry. Every number in that sentence
+is counted inside `15.0`, and nothing marks it as such. Drop the version and all
 four words reach — 4, 10, 28 and 9 — and `image generation` returns the `13.0`
 entry the session was after, alone, in one call.
 

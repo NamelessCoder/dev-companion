@@ -28,9 +28,8 @@ green, never both.
 ## Decided
 
 - The assertion leaves both suites — it was `everyGroupListsWhatIsInIt` in each
-  of them. It stays in the
-  two check commands, which is where the merge procedure already runs it, and
-  `repository:check` carries them.
+  of them. It stays in the two check commands, which is where the merge
+  procedure already runs it, and `repository:check` carries them.
 - The line drawn is which run can be right about what: the suite holds what one
   entry is on its own — its id, its group, its date, its status, its fields, the
   tests it names — and the commands hold what only a checkout with every file in
@@ -54,9 +53,9 @@ green, never both.
 
 ## Wrong if
 
-- A listing goes stale on `main` and stays there, because the merge procedure
-  is the only thing that runs the command and a session working alone never
-  does. Then the index belongs in a hook or in `todo:next`, not in a suite that
+- A listing goes stale on `main` and stays there, because the merge procedure is
+  the only thing that runs the command and a session working alone never does.
+  Then the index belongs in a hook or in `todo:next`, not in a suite that
   branches cannot pass.
 
 ## Covered by

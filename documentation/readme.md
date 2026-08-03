@@ -28,8 +28,8 @@ order by, and the launch two of the subjects below share.
 ## [feedback/](feedback/readme.md) — how this repository works on itself
 
 - [readme.md](feedback/readme.md) — how the work moves between `feedback/`,
-  `requirements/`, `decisions/` and `todo/`, and the debrief that gets
-  feedback out of a session this repository cannot read.
+  `requirements/`, `decisions/` and `todo/`, and the debrief that gets feedback
+  out of a session this repository cannot read.
 - [judging.md](feedback/judging.md) — what is asked of one open feedback, in
   which order and on what evidence, and which answers may be given without
   asking first.
@@ -40,8 +40,8 @@ order by, and the launch two of the subjects below share.
   entry is written in, what a later session adds to the foot of one, and what
   `open`, `confirmed` and `revoked` promise a reader.
 - [working-a-todo.md](feedback/working-a-todo.md) — what is read before the todo
-  `bin/cli todo:next` handed over is changed, where a question the step turns on is
-  settled rather than recalled, and what the queue says afterwards.
+  `bin/cli todo:next` handed over is changed, where a question the step turns on
+  is settled rather than recalled, and what the queue says afterwards.
 - [working-todos-in-parallel.md](feedback/working-todos-in-parallel.md) — how
   several sessions get different todos, where each of them writes, and how what
   they wrote comes back.
@@ -61,9 +61,10 @@ order by, and the launch two of the subjects below share.
 - [tools.md](clients/tools.md) — every tool, what it takes and the fields it
   answers with, written from the registry by `bin/cli tools:index`.
 - [tool-answers/](clients/tool-answers/readme.md) — what each of them answered
-  on one day against one checkout, one page per tool, recorded by `bin/cli
-  tools:record`. Evidence rather than a derivation, so nothing checks it. The
-  two tools that are not recorded say why on the map and again in `tools.md`.
+  on one day against one checkout, one page per tool, recorded by
+  `bin/cli tools:record`. Evidence rather than a derivation, so nothing checks
+  it. The two tools that are not recorded say why on the map and again in
+  `tools.md`.
 - [writing-a-skill.md](clients/writing-a-skill.md) — what a new task skill has
   to show before it exists, the rules it is written under, and what holds each
   one.
@@ -76,6 +77,6 @@ order by, and the launch two of the subjects below share.
 What does **not** belong here: what must hold — that is
 [requirements/](../requirements/readme.md); what a change assumed —
 [decisions/](../decisions/readme.md); the order of the work —
-[todo/](../todo/readme.md), which is also where this machine's checkouts are named;
-and the conventions every session works under, which stay in
+[todo/](../todo/readme.md), which is also where this machine's checkouts are
+named; and the conventions every session works under, which stay in
 [AGENTS.md](../AGENTS.md) because they are read before anything else is.

@@ -3,7 +3,8 @@
 **Serves:** feedback/2026-08-01-115112-during-the-same-review-i-wanted-to-confirm-no.md
 **Priority:** low
 
-Judged as [`D-ANS-030`](../../decisions/answers/ans-030-the-changelog-matcher-runs-over-the-title-it-prints.md),
+Judged as
+[`D-ANS-030`](../../decisions/answers/ans-030-the-changelog-matcher-runs-over-the-title-it-prints.md),
 step 1b of the ladder, and the half the title alone does not answer:
 `getTemporaryImageWithText` is in the body of `13.0/Breaking-101955`,
 `8.0/Breaking-72426` and `7.1/Deprecation-46770`, in the title of the last one

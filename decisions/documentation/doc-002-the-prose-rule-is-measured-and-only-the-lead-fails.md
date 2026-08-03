@@ -26,13 +26,13 @@ downstream can tell apart from prose that was thought through.
 
 ## Decided
 
-- 30 words, because that is where the leads stopped being one point. It is not
-  a style ceiling read off a manual, and it is the same number in the check and
-  in the rule it holds.
+- 30 words, because that is where the leads stopped being one point. It is not a
+  style ceiling read off a manual, and it is the same number in the check and in
+  the rule it holds.
 - The body is reported and never fails. A long sentence can be the right one,
   and a rewrite made to satisfy a counter produces two short sentences saying
-  what one said. What the count is for is the file with twenty of them, which
-  is a file nobody has reread since it was written.
+  what one said. What the count is for is the file with twenty of them, which is
+  a file nobody has reread since it was written.
 - The lead fails, because that sentence has a job the rest of the file does not
   — a reader who stops after it knows what was settled, and nobody stops after
   96 words.
@@ -42,9 +42,9 @@ downstream can tell apart from prose that was thought through.
 
 ## Assumed
 
-- That the counts move down. The report is a number nobody is obliged to act
-  on, which is the same shape as the three states `bin/cli backlog:list` names,
-  and those sat unread until something printed them.
+- That the counts move down. The report is a number nobody is obliged to act on,
+  which is the same shape as the three states `bin/cli backlog:list` names, and
+  those sat unread until something printed them.
 
 ## Wrong if
 

@@ -26,9 +26,9 @@ nothing and the silence reads as a clean bill for the next major.
   `bin/typo3-cms-mcp`, against TYPO3 14.3. The first query still returns
   nothing, and the per-word reach line says why — "form" reaches 63 entries,
   "deprecated" 87, "yaml" 2, and no entry carries all five.
-- The same call bounded by the changelog's own axes answers it. `type:
-  deprecation` with `version: 14` and no query at all returns 75 entries; adding
-  `tag: ext:form` returns 6, among them
+- The same call bounded by the changelog's own axes answers it.
+  `type: deprecation` with `version: 14` and no query at all returns 75 entries;
+  adding `tag: ext:form` returns 6, among them
   `14.2 Deprecation: TypoScript-based form YAML registration (#109412)` — the
   entry the word queries missed, tagged `FullyScanned`.
 - Neither bound is in `skills/base.md`. Step 5 names `type: deprecation` and
@@ -49,8 +49,8 @@ nothing and the silence reads as a clean bill for the next major.
 ## Decided
 
 - **Step 4 of the ladder, wording.** The rule was delivered and the session
-  followed it: it called the right tool with the right `type` and lost the
-  sweep to the query shape the step itself prescribes. No verb is missing —
+  followed it: it called the right tool with the right `type` and lost the sweep
+  to the query shape the step itself prescribes. No verb is missing —
   `D-ANS-006` shipped the enumeration and the tag — and no routing entry would
   have changed the call.
 - **Queued rather than closed on the spot.** `skills/base.md` is a skill
@@ -112,13 +112,13 @@ one entry per major outside itself, and that is the gap the annotations source
 in `typo3-extension-upgrade` covers rather than a reason to widen.
 
 `ext:` alone is a weak bound for a sitepackage, which is why the step names the
-surface tags beside it. `printworks_sitepackage`, the package both feedback swept,
-requires core, fluid_styled_content, form, frontend, impexp and seo; of those,
-`ext:core` carries 30 of the 75 on its own and three of the six carry none, so
-the six calls it declares reach 34. What that package actually is reaches
-further and narrower: `TCA` 12, `Fluid` 5, `TypoScript` 3, `YAML` 3, `TSConfig`
-and `FlexForm` 1 each. It also renders through Fluid and configures the backend
-without requiring `typo3/cms-fluid` or `typo3/cms-backend`, whose 14
+surface tags beside it. `printworks_sitepackage`, the package both feedback
+swept, requires core, fluid_styled_content, form, frontend, impexp and seo; of
+those, `ext:core` carries 30 of the 75 on its own and three of the six carry
+none, so the six calls it declares reach 34. What that package actually is
+reaches further and narrower: `TCA` 12, `Fluid` 5, `TypoScript` 3, `YAML` 3,
+`TSConfig` and `FlexForm` 1 each. It also renders through Fluid and configures
+the backend without requiring `typo3/cms-fluid` or `typo3/cms-backend`, whose 14
 deprecations are 5 and 19 — which is why the step says *requires, renders
 through or registers into* rather than reading the manifest.
 

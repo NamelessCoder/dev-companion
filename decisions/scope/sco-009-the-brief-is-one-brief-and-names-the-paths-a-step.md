@@ -31,10 +31,10 @@ here. What it does not do is answer twice.
 - The hints are matched per group and rendered per group under a `# For <path>`
   heading, which is the shape `typo3_architecture_lookup` already answers in.
   The payload merges them, as it does there.
-- Everything else stays one list. Where every path is outside the core the
-  brief drops the checks, the core-only checklist items and the discovery steps
-  as before; where one path is in the core it keeps them and the notice names
-  the paths they are not for.
+- Everything else stays one list. Where every path is outside the core the brief
+  drops the checks, the core-only checklist items and the discovery steps as
+  before; where one path is in the core it keeps them and the notice names the
+  paths they are not for.
 - `scope` stays and means the call as a whole. It is the one group's scope where
   there is one group, and where the paths disagree it is what the task text and
   the area say on their own. `scopes` is the per-path answer, in the shape the

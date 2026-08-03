@@ -14,17 +14,17 @@ place it does not name, and any way of reaching it from the moment it is needed.
 
 ## Evidence
 
-- The feedback's own query reaches nothing. `bin/cli hints:probe "writing and
-  executing a PHP script in the live webroot to introspect core classes"`
+- The feedback's own query reaches nothing.
+  `bin/cli hints:probe "writing and executing a PHP script in the live webroot to introspect core classes"`
   matched no hint on 2026-08-02, and returned its 40 candidates as an index.
 - The placement rule is here, on `project-repository-layout` in
   `knowledge/architecture-hints/general.json`. `Build/` is for "what runs before
   or around the site rather than in it", and what it lists there includes "a
   one-off script that seeds an installation".
-- The same hint says where such a script may not go, and it names one place:
-  "A script that exists for one run therefore does not go there because it is
-  ignored; it goes into Build/ with the rest of the tooling, or it is not kept at
-  all." The place is `var/`, and the reason given is that `var/` is not
+- The same hint says where such a script may not go, and it names one place: "A
+  script that exists for one run therefore does not go there because it is
+  ignored; it goes into Build/ with the rest of the tooling, or it is not kept
+  at all." The place is `var/`, and the reason given is that `var/` is not
   committed.
 - The document root occurs three times below `knowledge/` and never as a place a
   file may not be written. They are `public-assets` on `_assets/` publishing,
@@ -36,29 +36,32 @@ place it does not name, and any way of reaching it from the moment it is needed.
 - The one phrasing that reaches it is the one that needs it least. "write a php
   file into the document root and call it in the browser" returns
   `project-repository-layout` at `text(109)` and `public-assets` at `text(67)`.
-- That contrast is [`D-ANS-024`](../answers/ans-024-a-rule-reaches-only-the-task-that-already-names-its-subject.md)
-  measured on a second rule. A caller who can phrase that query has already taken
-  the decision the rule exists to change.
-- The corpus endorses a throwaway boot script for a neighbouring purpose and says
-  nothing about where it lives. `sitepackage-initial-content` states that seeding
-  "is a throwaway script that boots TYPO3 itself", down to
+- That contrast is
+  [`D-ANS-024`](../answers/ans-024-a-rule-reaches-only-the-task-that-already-names-its-subject.md)
+  measured on a second rule. A caller who can phrase that query has already
+  taken the decision the rule exists to change.
+- The corpus endorses a throwaway boot script for a neighbouring purpose and
+  says nothing about where it lives. `sitepackage-initial-content` states that
+  seeding "is a throwaway script that boots TYPO3 itself", down to
   `Bootstrap::init($classLoader)` and its `$failsafe` argument.
-- No tool is what is missing. [`D-ANS-003`](../answers/ans-003-retrieval-stays-lexical-and-runtime-inspection-stays-narrow.md)
+- No tool is what is missing.
+  [`D-ANS-003`](../answers/ans-003-retrieval-stays-lexical-and-runtime-inspection-stays-narrow.md)
   read this same script on 2026-08-02 as evidence about its runtime half, and
   recorded that the answer came from a manual page.
 - The other half of the **Suggestion** belongs to a sibling.
   `feedback/2026-08-01-003933` asks for the installed source to be read instead
-  of guessed at, which [`D-FBK-021`](../feedback/fbk-021-a-summary-feedback-is-judged-against-its-series-not-on-its-own.md)
-  already mapped as "what to do instead". It is in hand on another branch as this
-  is written.
+  of guessed at, which
+  [`D-FBK-021`](../feedback/fbk-021-a-summary-feedback-is-judged-against-its-series-not-on-its-own.md)
+  already mapped as "what to do instead". It is in hand on another branch as
+  this is written.
 - Whether the file was served is not established here. The session wrote
   `/var/www/html/check_record.php`, and what a DDEV TYPO3 project serves from
   that path is a DDEV and Composer question. This run read only this repository.
 
 ## Decided
 
-- Step 2 of the ladder. The rule exists, is worded as a rule, and is reached only
-  by a caller who already names the document root.
+- Step 2 of the ladder. The rule exists, is worded as a rule, and is reached
+  only by a caller who already names the document root.
 - The clause that would name the document root is missing as well. That is the
   wording half of the same sentence, it lands in the same place, and it is
   therefore one card rather than two.
@@ -68,9 +71,10 @@ place it does not name, and any way of reaching it from the moment it is needed.
   keeps a lookup out of a run that has read only this repository.
 - Not step 1b. A runtime tool for this was refused in `D-ANS-003`, on the
   evidence of this very session.
-- The introspection half is not restated. `003933` owns it, and a second card for
-  one step is the overlap `bin/cli todo:claim` warns about. The card written here
-  names that overlap, so the two sentences are placed together rather than twice.
+- The introspection half is not restated. `003933` owns it, and a second card
+  for one step is the overlap `bin/cli todo:claim` warns about. The card written
+  here names that overlap, so the two sentences are placed together rather than
+  twice.
 - The feedback stays open. The card in `todo/open/` is what archives it when the
   clause lands.
 - The debug leftovers the self-rating reports are the same substitution seen
@@ -83,8 +87,8 @@ place it does not name, and any way of reaching it from the moment it is needed.
 - That `project-repository-layout` is the hint that carries it. A session about
   to write a debug file is deciding where a file goes, whether or not it phrases
   the question that way.
-- That words in `appliesTo` can make the rule reach. The moment it is needed is a
-  decision the caller has already taken, and no path signal carries it.
+- That words in `appliesTo` can make the rule reach. The moment it is needed is
+  a decision the caller has already taken, and no path signal carries it.
 
 ## Wrong if
 
@@ -94,5 +98,5 @@ place it does not name, and any way of reaching it from the moment it is needed.
 - A session is offered the extended clause and writes into the document root
   anyway. That is step 4 and a rewrite, not a placement.
 - The next report of this comes from a session that never asked where a file
-  goes. The rule would then have to arrive from the introspection question, which
-  is `003933`'s route rather than this one's.
+  goes. The rule would then have to arrive from the introspection question,
+  which is `003933`'s route rather than this one's.

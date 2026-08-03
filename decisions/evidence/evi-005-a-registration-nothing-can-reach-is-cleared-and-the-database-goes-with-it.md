@@ -23,8 +23,9 @@ directory nobody can visit.
   a directory that did not exist. DDEV's own `status` for it was the string
   `project directory missing`. `bin/cli environment:create E-SITE` refused,
   naming that path and saying nothing about what to do, and
-  `bin/cli environment:status` said `missing — run bin/cli environment:create
-  E-SITE`, which was advice that could not work.
+  `bin/cli environment:status` said
+  `missing — run bin/cli environment:create E-SITE`, which was advice that could
+  not work.
 - The database is a volume named after the project, not after the directory:
   `typo3-mcp-e-site-mariadb` was on the machine beside the dead registration,
   with `ddev-typo3-mcp-e-site-snapshots`. That is why a build under the same
@@ -39,12 +40,12 @@ directory nobody can visit.
   both volumes and the two built images with them. The missing directory is not
   an obstacle to it.
 - `--force` reaches the settings file and nothing else. In `.checkouts/14.3` at
-  `v14.3.5-81-gfaf60eea22` it is declared `Force settings overwrite - use this
-  if TYPO3 has been installed already`, and `prepareSystemSettings($force)` is
-  its only use in `SetupCommand`. The table check is `$dbNameValidator` in
-  `selectAndImportDatabase`, which throws whenever `tables !== 0` and is called
-  on the non-interactive path as much as the asked one. No option of the setup
-  gets past it.
+  `v14.3.5-81-gfaf60eea22` it is declared
+  `Force settings overwrite - use this if TYPO3 has been installed already`, and
+  `prepareSystemSettings($force)` is its only use in `SetupCommand`. The table
+  check is `$dbNameValidator` in `selectAndImportDatabase`, which throws
+  whenever `tables !== 0` and is called on the non-interactive path as much as
+  the asked one. No option of the setup gets past it.
 - The fix was run end to end afterwards, on a registration reproduced the same
   way — configured, started so it had a volume, then its directory removed.
   `environment:create E-SITE` cleared it and built a working installation in 32
@@ -67,17 +68,17 @@ directory nobody can visit.
 - Where the approot **is** there, the refusal stands unchanged. That is a live
   checkout's environment and taking it over would stop it without saying so.
 - `environment:status` reports and never clears. It names the other checkout
-  where one holds the name, and otherwise keeps naming the create command,
-  which is now true because create clears what it can reach past.
+  where one holds the name, and otherwise keeps naming the create command, which
+  is now true because create clears what it can reach past.
 - The promise above `build()` is corrected rather than kept. "Every one of them
   is idempotent or forced" does not hold at the setup step against a populated
   database, and the sentence `environment:create` printed on failure — "this
   command carries on from it" — was that same promise at the moment somebody
   reads it.
 - Rejected: recognising TYPO3's `contains already` message in the build output.
-  It is a hardcoded English string in `SetupCommand` with no translation
-  behind it, and binding a guard here to it would fail silently on the day it
-  is reworded. The failure message names the exception instead.
+  It is a hardcoded English string in `SetupCommand` with no translation behind
+  it, and binding a guard here to it would fail silently on the day it is
+  reworded. The failure message names the exception instead.
 - Rejected: having the create stop where it finds a database it did not put
   there. Nothing here can ask that question before the containers are up, and
   the place it belongs is TYPO3's setup, which is not this repository's.
@@ -96,8 +97,8 @@ directory nobody can visit.
 ## Wrong if
 
 - A session loses a database it wanted to an approot that was only temporarily
-  absent. Then the clearing needs to ask, or to keep the snapshot `delete`
-  would otherwise take.
+  absent. Then the clearing needs to ask, or to keep the snapshot `delete` would
+  otherwise take.
 - `ddev delete` stops working on a project whose directory is gone, which would
   put the two-command sequence back and leave the volume to the build.
 - TYPO3's setup gains a way past a populated database. Then the create has an

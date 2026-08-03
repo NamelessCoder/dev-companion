@@ -24,8 +24,8 @@ same case.
   its console. The manual is reachable from anywhere or from nowhere, and none
   of those fields has a value there — merging would either fake them or loosen
   the required list the eight promise.
-- The remedies are opposite. `unsupported` is answered by naming a root;
-  a manual that did not respond is answered by asking again.
+- The remedies are opposite. `unsupported` is answered by naming a root; a
+  manual that did not respond is answered by asking again.
 - What was actually wrong is inside the manual's own field. `unavailable`
   covered both a release outside the covered versions — permanent, and asking
   again changes nothing — and docs.typo3.org not responding, which is the
@@ -43,8 +43,8 @@ same case.
   each naming a remedy.
 - `status` stays a discriminator rather than becoming a `oneOf`. The manual's
   three states are states of the answer, and `empty` is a result: the caller
-  rephrases. On the installation side the same case is a count of zero, which
-  is why the shape there splits in two and this one does not.
+  rephrases. On the installation side the same case is a count of zero, which is
+  why the shape there splits in two and this one does not.
 
 ## Assumed
 
@@ -57,8 +57,8 @@ same case.
 
 - A caller retries a `version-not-covered` answer, or gives up on a
   `source-not-answering` one. Both would mean the value is not reaching the
-  behaviour, and the fix is to say the remedy in the reason rather than to add
-  a third field.
+  behaviour, and the fix is to say the remedy in the reason rather than to add a
+  third field.
 - A third source arrives that is neither an installation nor a manual and fits
   neither shape. Then the split is between "here" and "elsewhere" rather than
   between the two sources this server has.

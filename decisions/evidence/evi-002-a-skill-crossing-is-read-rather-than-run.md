@@ -11,8 +11,8 @@ the skill text and by the contract case read by hand.**
 
 No forward run will be scheduled to produce it.
 
-Every other half of `R-SKL-003` has evidence. This one asked for a run that cannot
-exist, and the feedback asking for it stayed open for that reason alone.
+Every other half of `R-SKL-003` has evidence. This one asked for a run that
+cannot exist, and the feedback asking for it stayed open for that reason alone.
 
 ## Evidence
 
@@ -22,9 +22,9 @@ exist, and the feedback asking for it stayed open for that reason alone.
   responsible for re-checking them. Naming the next owner is therefore
   evidenced. What no run shows is the activation itself — a review stops at
   findings by design, so `REVIEW-01` cannot produce it however often it is run.
-  Re-read on 2026-07-31, the skill still carries the transition in the order
-  the test asserts: implementation verified, workflow stopped, documentation
-  skill activated, extension scope carried across.
+  Re-read on 2026-07-31, the skill still carries the transition in the order the
+  test asserts: implementation verified, workflow stopped, documentation skill
+  activated, extension scope carried across.
 
 ## Decided
 
@@ -38,9 +38,9 @@ exist, and the feedback asking for it stayed open for that reason alone.
 
 ## Assumed
 
-- That the wording decides the behavior — that an assertion on the order of
-  four sentences in `SKILL.md` stands in for what an agent does with them. That
-  is a proxy, and it is the only one available.
+- That the wording decides the behavior — that an assertion on the order of four
+  sentences in `SKILL.md` stands in for what an agent does with them. That is a
+  proxy, and it is the only one available.
 
 ## Wrong if
 
@@ -52,21 +52,21 @@ exist, and the feedback asking for it stayed open for that reason alone.
 ## Confirmed on 2026-08-02
 
 The **Wrong if** has not happened, and nothing that ran could have produced it.
-Read out of the client transcripts for the four checkouts that play `E-SITE`
-and `E-EXT`, 14 sessions have run there since the transition wording landed in
+Read out of the client transcripts for the four checkouts that play `E-SITE` and
+`E-EXT`, 14 sessions have run there since the transition wording landed in
 `f9e9639` on 2026-07-30 at 17:35 UTC. Not one of the 14 edited a file: 11
 activated `typo3-extension-conformance` and nothing else, three activated no
 skill at all. `typo3-backend-module-development` has activated once in those
 checkouts ever, on 2026-07-30 at 16:20:17 in `site-new` — 75 minutes before the
 wording existed. That session edited the project-level `readme.md` at 16:40:29
-with no second skill activated, which is the run `R-SKL-003` was written **From**
-and not new evidence. What it settles is that the reading is cheap where there
-is something to read: the failing shape is a `Skill` call and an `Edit` path in
-one transcript with nothing between them. What is missing is a run. The
-sessions these environments now get are `REVIEW-01` and `REVIEW-02`, and a
-review neither edits — `D-EVI-003` — nor reaches this skill. So the **Wrong if**
-is out of a forward run's reach for the same reason the activation is, and what
-would produce it is an implementation prompt: `SKILL-07`, a contract case. The
-wording is at least where it would have to act. Re-read on 2026-08-02 the skill
-still carries the transition in the order the test asserts, and the copy
-published into each of the four checkouts is identical to it.
+with no second skill activated, which is the run `R-SKL-003` was written
+**From** and not new evidence. What it settles is that the reading is cheap
+where there is something to read: the failing shape is a `Skill` call and an
+`Edit` path in one transcript with nothing between them. What is missing is a
+run. The sessions these environments now get are `REVIEW-01` and `REVIEW-02`,
+and a review neither edits — `D-EVI-003` — nor reaches this skill. So the
+**Wrong if** is out of a forward run's reach for the same reason the activation
+is, and what would produce it is an implementation prompt: `SKILL-07`, a
+contract case. The wording is at least where it would have to act. Re-read on
+2026-08-02 the skill still carries the transition in the order the test asserts,
+and the copy published into each of the four checkouts is identical to it.

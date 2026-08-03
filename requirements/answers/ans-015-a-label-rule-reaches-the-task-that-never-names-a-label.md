@@ -30,10 +30,10 @@ sessions that would not have broken it.
 the same in a sitepackage whose existing XLF files were German. Between the two,
 the rule landed and the second report arrived anyway.
 
-Measured on 2026-08-02: `bin/cli hints:probe "add a testimonials content element
-to the sitepackage"` reaches `content-elements`, `sitepackage-layout` and
-`frontend-page-rendering`. Adding the word labels to the same query is what
-brings `language-files` back.
+Measured on 2026-08-02:
+`bin/cli hints:probe "add a testimonials content element to the sitepackage"`
+reaches `content-elements`, `sitepackage-layout` and `frontend-page-rendering`.
+Adding the word labels to the same query is what brings `language-files` back.
 
 ## Held by
 

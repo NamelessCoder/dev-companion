@@ -129,8 +129,8 @@ the same share of sessions, and `documentation/` with `AGENTS.md` from 6.91 to
 7.00, in all nine. What fell is the reading this entry named as the waste —
 `todo/` from 6.63 per session to 5.00.
 
-Two things this does not establish. The ten todos are not the 82 todos, so a
-16% fall in calls per session is a fall across different work and n is 9; and
+Two things this does not establish. The ten todos are not the 82 todos, so a 16%
+fall in calls per session is a fall across different work and n is 9; and
 because the cached tokens fell by 15.6% while the calls fell by 15.8%, this run
 is consistent with the cost being per call and equally consistent with it being
 per token. What the run rules out is the case the **Wrong if** named — fewer

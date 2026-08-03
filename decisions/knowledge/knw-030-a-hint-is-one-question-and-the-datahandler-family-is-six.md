@@ -28,10 +28,11 @@ patch-review obligation. Which of them a caller got depended on how much of its
   300-word ceiling, up from 3 words of headroom to 22, with no statement
   deleted. The General share falls from 63% to 59% for the same reason: six
   reachable PHP hints displace what the always-on bucket used to supply.
-- `hints:probe "how do I read records without the hidden and starttime
-  restrictions"` answers `persistence-reading` first, and `"seed a page tree
-  with content programmatically"` answers `datahandler-seeding`. Neither query
-  reached anything about its subject before.
+- `hints:probe "how do I read records without the hidden and starttime restrictions"`
+  answers `persistence-reading` first, and
+  `"seed a page tree with content programmatically"` answers
+  `datahandler-seeding`. Neither query reached anything about its subject
+  before.
 
 ## Decided
 

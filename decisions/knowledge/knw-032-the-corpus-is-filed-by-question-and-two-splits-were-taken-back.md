@@ -16,18 +16,20 @@ words to 126.
 ## Evidence
 
 - Eighteen umbrella hints were split, largest first: `extension-files` at 1076
-  words into five, `project-extension-tests` into four, `sitepackage-initial-content`
-  into four, `content-elements` into four, `sitepackage-layout` into four,
-  `fluid-templates` into four, `site-sets` into four, `frontend-page-rendering`
-  into five, plus `extbase`, `project-repository-layout`, `language-files`,
-  `environment-variables`, `browser-tests`, `installation-upgrade`,
-  `frontend-records`, `extension-repository-layout` and
+  words into five, `project-extension-tests` into four,
+  `sitepackage-initial-content` into four, `content-elements` into four,
+  `sitepackage-layout` into four, `fluid-templates` into four, `site-sets` into
+  four, `frontend-page-rendering` into five, plus `extbase`,
+  `project-repository-layout`, `language-files`, `environment-variables`,
+  `browser-tests`, `installation-upgrade`, `frontend-records`,
+  `extension-repository-layout` and
   `dependency-injection-services`.
 - Eight of the new hints could not be reached by their own title, which
-  `hints:coverage` reports and `HintsTest` fails on. It was the domain gate every
-  time and never the scoring: "Conditions, Escaping and Array Literals" carries
-  no Fluid signal, so the query fell back to PHP and the hint's own domain was
-  never a candidate. Each title gained the word its domain is detected by.
+  `hints:coverage` reports and `HintsTest` fails on. It was the domain gate
+  every time and never the scoring: "Conditions, Escaping and Array Literals"
+  carries no Fluid signal, so the query fell back to PHP and the hint's own
+  domain was never a candidate. Each title gained the word its domain is
+  detected by.
 - The `any` share did not move. `D-KNW-029` carries that reading.
 
 ## Decided
@@ -39,10 +41,10 @@ words to 126.
 - The entry hint names its neighbours in a closing statement. A caller who lands
   in the middle of a family otherwise cannot see that the rest exists.
 - `language-source-locale` and `upgrade-commands` were merged back into their
-  entry hint. Both had a rule that has to travel with the general question:
-  the source-language correction reaches a task that never mentions a locale,
-  and the order of operations is what "how do I upgrade" is asking for. A split
-  that costs a stated requirement is a wrong split, whatever it does to the mean.
+  entry hint. Both had a rule that has to travel with the general question: the
+  source-language correction reaches a task that never mentions a locale, and
+  the order of operations is what "how do I upgrade" is asking for. A split that
+  costs a stated requirement is a wrong split, whatever it does to the mean.
 - A pattern is added to a hint only where it discriminates within its family.
   "add tests for" on `project-extension-tests` put the project hint into a core
   DataHandler question, which is the same failure the bare `DataHandler` pattern

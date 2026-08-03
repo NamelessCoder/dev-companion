@@ -15,13 +15,13 @@ follows for what gets built.
 
 ## Evidence
 
-- The measured case is a Forge issue. `feedback/2026-08-02-144511` and
-  `145217` record what it cost: `WebFetch` returned 403, `curl` with a
-  browser-like user agent returned **200 with a challenge page** — a success
-  status wrapping a non-answer — and the default user agent finally returned
-  JSON, which then had to be searched by hand because the decision sits in
-  `journals[]` rather than in the issue body. Four round trips and a trap that
-  reads as a result, for one question.
+- The measured case is a Forge issue. `feedback/2026-08-02-144511` and `145217`
+  record what it cost: `WebFetch` returned 403, `curl` with a browser-like user
+  agent returned **200 with a challenge page** — a success status wrapping a
+  non-answer — and the default user agent finally returned JSON, which then had
+  to be searched by hand because the decision sits in `journals[]` rather than
+  in the issue body. Four round trips and a trap that reads as a result, for one
+  question.
 - A lookup answers the same question in one call, with the fields named in the
   schema. The caller pays one call and reads no HTML.
 - Nothing about that cost is specific to one session. Every core task that
@@ -49,8 +49,9 @@ follows for what gets built.
   measured here; a client that batches calls or charges differently would move
   the line, and no such client has been measured.
 - That a maintained surface is cheaper for everybody than every session
-  rediscovering the same access path. Four sessions in one directory rediscovered
-  the Forge one; none of them wrote it down where the next would find it.
+  rediscovering the same access path. Four sessions in one directory
+  rediscovered the Forge one; none of them wrote it down where the next would
+  find it.
 
 ## Wrong if
 

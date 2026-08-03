@@ -8,8 +8,8 @@ status: held
 **A hint carries the words its subject is asked about in, not only its file
 extensions and its internal vocabulary.**
 
-`appliesTo` is what the matcher scores, so a subject nobody can phrase their
-way to is a subject the server does not have.
+`appliesTo` is what the matcher scores, so a subject nobody can phrase their way
+to is a subject the server does not have.
 
 ## From
 

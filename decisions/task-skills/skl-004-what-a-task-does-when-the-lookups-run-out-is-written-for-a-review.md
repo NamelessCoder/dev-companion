@@ -27,9 +27,9 @@ order. Nothing here states that boundary.
   [`D-KNW-016`](../knowledge/knw-016-what-an-f-else-does-to-the-branch-beside-it-is-a-gap-this-server-owns.md)
   wrote the statement and
   [`D-KNW-024`](../knowledge/knw-024-the-fluid-namespace-prefix-is-what-a-template-question-is-written-in.md)
-  is what makes a query written in Fluid tags reach it. `003448` is archived.
-  So the source reading this feedback holds up as the example would not be
-  needed today.
+  is what makes a query written in Fluid tags reach it. `003448` is archived. So
+  the source reading this feedback holds up as the example would not be needed
+  today.
 - What is left reaches nothing that answers it. This feedback's own query —
   *reading viewhelper source (IfViewHelper) when unable to determine expected
   behavior* — reaches `fluid-viewhelpers` at `appliesTo(10) + text(68)`, alone.
@@ -39,8 +39,8 @@ order. Nothing here states that boundary.
 - `skills/base.md` names reading three times, and every one of them is about the
   project's own checkout or is a prohibition. "Do not fall back to general TYPO3
   knowledge or start reading the checkout" is the answer for a server that is
-  not there. "**Then** read the checkout. Not before" orders the project's
-  files against the lookups. Step 5 adds that "the installed core shows what one
+  not there. "**Then** read the checkout. Not before" orders the project's files
+  against the lookups. Step 5 adds that "the installed core shows what one
   version implements rather than what it supports", which is a limit on a
   reading rather than an instruction to take one.
 - The one sentence for the exhausted case is written for a review. "Where the

@@ -22,18 +22,19 @@ files. What is actually missing is a statement in `knowledge/`.
   TYPO3 15.0.0-dev, PHP ^8.5 declared and 8.5 in DDEV", then no extensions, no
   sites, and four `gerrit:setup` commands that all answer `runs: unknown`.
   Neither the text nor the data names a processor or a task type.
-- The feedback contradicts itself on exactly that point. It credits the tool with
-  returning "the declared processors and processingTaskTypes", lists the
+- The feedback contradicts itself on exactly that point. It credits the tool
+  with returning "the declared processors and processingTaskTypes", lists the
   processing classes it read by hand two paragraphs later, and then asks for the
   mapping to be added. This is the third corpus in which a strength's credit is
-  misplaced — [`D-FBK-018`](../feedback/fbk-018-a-strength-is-evidence-about-a-boundary-not-about-a-decision.md)
+  misplaced —
+  [`D-FBK-018`](../feedback/fbk-018-a-strength-is-evidence-about-a-boundary-not-about-a-decision.md)
   records two — and the first where the credit goes to no tool at all.
 - The sibling from the same debrief asks for the same thing, more precisely.
-  `feedback/2026-08-01-114807` was filed two minutes and forty-one seconds later,
-  same model and same directory, and its suggestion reads "Consider adding
-  `processingTaskTypes` and `SYS.fal.processors` to the `typo3_project_scope`
-  output". Its transcript names the seven files it opened instead —
-  `GraphicalFunctions`, `LocalImageProcessor`, `SvgImageProcessor`,
+  `feedback/2026-08-01-114807` was filed two minutes and forty-one seconds
+  later, same model and same directory, and its suggestion reads "Consider
+  adding `processingTaskTypes` and `SYS.fal.processors` to the
+  `typo3_project_scope` output". Its transcript names the seven files it opened
+  instead — `GraphicalFunctions`, `LocalImageProcessor`, `SvgImageProcessor`,
   `ThumbnailViewHelper`, `PreviewNotAvailable.svg`,
   `DeferredBackendImageProcessor` and `PreviewProcessing` — over about ten
   `read_file` calls. That feedback has a card of its own, in hand elsewhere.
@@ -42,12 +43,13 @@ files. What is actually missing is a statement in `knowledge/`.
   extension's `ext_localconf.php`. `typo3_project_scope` reads `composer.json`,
   `package.json`, `config/sites/` and `.ddev/config.yaml`, and its own
   description says it reads files only, so it answers on a fresh clone.
-- It is also a constant of the core. Both keys are identical on `.checkouts/12.4`,
-  `13.4`, `14.3` and `main`: four processors — `SvgImageProcessor`,
-  `DeferredBackendImageProcessor`, the OnlineMedia `PreviewProcessing` and
-  `LocalImageProcessor`, ordered by `before` and `after` — and two task types,
-  `Image.Preview` and `Image.CropScaleMask`. A constant of the core is knowledge
-  rather than a property of the project in front of the caller.
+- It is also a constant of the core. Both keys are identical on
+  `.checkouts/12.4`, `13.4`, `14.3` and `main`: four processors —
+  `SvgImageProcessor`, `DeferredBackendImageProcessor`, the OnlineMedia
+  `PreviewProcessing` and `LocalImageProcessor`, ordered by `before` and `after`
+  — and two task types, `Image.Preview` and `Image.CropScaleMask`. A constant of
+  the core is knowledge rather than a property of the project in front of the
+  caller.
 - Where the question really is about the installation, a tool answers it and the
   routing already points there. `typo3_configuration_lookup` reads an effective
   `TYPO3_CONF_VARS` path, `knowledge/server-scope.json` routes "Needing a
@@ -55,10 +57,10 @@ files. What is actually missing is a statement in `knowledge/`.
   names it under "Two kinds of lookup". Its answer is more than the suggestion
   asks for, because a files-only reader could only report the shipped default.
 - That tool needs the installation, and a core checkout may not offer one.
-  Called from the same directory on 2026-08-02 with `SYS/fal/processors` and with
-  `SYS/fal/processingTaskTypes`, it answers unsupported, cause
-  `installation-not-answering`: "the DDEV project is paused". A patch review does
-  not boot a checkout, so the runtime route is not always open.
+  Called from the same directory on 2026-08-02 with `SYS/fal/processors` and
+  with `SYS/fal/processingTaskTypes`, it answers unsupported, cause
+  `installation-not-answering`: "the DDEV project is paused". A patch review
+  does not boot a checkout, so the runtime route is not always open.
 - The knowledge half is empty. `bin/cli hints:probe` on the feedback's own query
   reaches nothing. Six processing-shaped queries — "image processing",
   "thumbnail generation", "ProcessedFile processing task", "GraphicalFunctions
@@ -75,11 +77,11 @@ files. What is actually missing is a statement in `knowledge/`.
   different subsystem a lexical query can hand back instead.
 - It is inside the boundary rather than outside it. `doesNotCover` in
   `knowledge/server-scope.json` excludes "the core source itself: API
-  signatures, TCA of a table, existing implementations", which is the
-  line-level reading this session also did and does not ask for. The
-  architecture topic beside it covers "conventions per subsystem", from "what a
-  change to the subsystem has to satisfy" and "how the mechanism is used". The
-  processing chain is the second of those.
+  signatures, TCA of a table, existing implementations", which is the line-level
+  reading this session also did and does not ask for. The architecture topic
+  beside it covers "conventions per subsystem", from "what a change to the
+  subsystem has to satisfy" and "how the mechanism is used". The processing
+  chain is the second of those.
 
 ## Decided
 
@@ -132,9 +134,9 @@ files. What is actually missing is a statement in `knowledge/`.
 
 ## Since then
 
-Written on 2026-08-03 as `fal-processing`, and one sentence of the evidence above
-is off: `SYS/fal/processors` is not identical on all four covered majors. On
-`12.4` the `SvgImageProcessor` entry declares `before: [LocalImageProcessor]`
+Written on 2026-08-03 as `fal-processing`, and one sentence of the evidence
+above is off: `SYS/fal/processors` is not identical on all four covered majors.
+On `12.4` the `SvgImageProcessor` entry declares `before: [LocalImageProcessor]`
 alone, where `13.4`, `14.3` and `main` name `DeferredBackendImageProcessor`
 beside it. The resulting order is the same either way, because the deferred
 processor declares `after: [SvgImageProcessor]` on every branch — so the hint

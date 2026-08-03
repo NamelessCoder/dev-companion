@@ -20,10 +20,10 @@ Extension Scanner, whose silence is worth what the `FullyScanned` /
 `PartiallyScanned` tag says it is worth and nothing more, and the deprecation
 annotations on the symbols this package actually calls, because an annotation
 sits on the class while an entry is reached only through the tags the sweep
-named. Both answer from
-the core that is **installed**, which is the boundary the order rests on: what
-the target major changed is official documentation until the installation is on
-it, never recall, and the sweep is run again once it is.
+named. Both answer from the core that is **installed**, which is the boundary
+the order rests on: what the target major changed is official documentation
+until the installation is on it, never recall, and the sweep is run again once
+it is.
 
 That the shapes an older declared major requires are a requirement rather than
 debt is a decision the assessment workflow already makes correctly; it is stated
@@ -36,19 +36,19 @@ those has a named owner.
 The `REVIEW-02` run of 2026-07-31 in an extension declaring two majors against
 an installation a major behind, which established both halves at once. The
 multi-major decisions were made, and made well — the older major's YAML
-registration argued as required because the attribute form is unavailable
-there, and the same excuse refused for a deprecated ViewHelper shape whose
-replacement works on both. What was absent was the order: the deprecation with
-the largest consequence for that package's next major sat on 24 call sites in
-11 files and the surface was reported as clean, the one deprecated API named
-was reached because a finding walked into it, and the Extension Scanner was
-never called in a checkout that has one.
+registration argued as required because the attribute form is unavailable there,
+and the same excuse refused for a deprecated ViewHelper shape whose replacement
+works on both. What was absent was the order: the deprecation with the largest
+consequence for that package's next major sat on 24 call sites in 11 files and
+the surface was reported as clean, the one deprecated API named was reached
+because a finding walked into it, and the Extension Scanner was never called in
+a checkout that has one.
 
 ## Held by
 
 - `SkillTest::anUpgradeIsOrderedWorkAndOwnsOnlyTheCrossing`
 - `SkillTest::everySkillStartsFromTheBaseBeforeItsOwnEvidence`
 - `SkillTest::everySkillRoutesThroughTheOwnersOfItsOwnFactsInOrder`, `EXT-01`.
-- That a session works in this order is not guarded and will not be by a
-  forward run — `D-EVI-001` admits only an open review as forward evidence, and a
-  review stops at findings by design.
+- That a session works in this order is not guarded and will not be by a forward
+  run — `D-EVI-001` admits only an open review as forward evidence, and a review
+  stops at findings by design.

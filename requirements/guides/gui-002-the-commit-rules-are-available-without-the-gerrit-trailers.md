@@ -9,9 +9,10 @@ status: held
 because the conventions are used well outside the core and the trailers are
 not.**
 
-This is [R-AUD-003](../audience/aud-003-commit-conventions-differ-by-audience.md)
-for the one guide that has the problem today. Which of the two rule sets was
-applied is part of the answer, in the text and in the data.
+This is
+[R-AUD-003](../audience/aud-003-commit-conventions-differ-by-audience.md) for
+the one guide that has the problem today. Which of the two rule sets was applied
+is part of the answer, in the text and in the data.
 
 ## From
 

@@ -8,9 +8,9 @@ status: held
 **Where an answer covers one side of the authoring-versus-reading split, it
 names the side it is on and points at the other in one line.**
 
-This is [R-KNW-003](knw-003-a-hint-says-how-a-subsystem-is-used.md) for the prose,
-and it is a pointer rather than site documentation, so it stays inside the
-stated scope.
+This is [R-KNW-003](knw-003-a-hint-says-how-a-subsystem-is-used.md) for the
+prose, and it is a pointer rather than site documentation, so it stays inside
+the stated scope.
 
 ## From
 

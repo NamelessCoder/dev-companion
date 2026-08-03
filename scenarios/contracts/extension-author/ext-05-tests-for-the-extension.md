@@ -40,4 +40,5 @@
 - CI YAML written before its local command has passed.
 - Existing working tests or scripts replaced because the task was treated as a
   blank project.
-- `assertTrue(true)` presented as proof that the harness exercises the extension.
+- `assertTrue(true)` presented as proof that the harness exercises the
+  extension.

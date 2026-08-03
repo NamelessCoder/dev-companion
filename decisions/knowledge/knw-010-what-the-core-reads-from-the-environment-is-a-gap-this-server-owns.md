@@ -36,17 +36,17 @@ already read from it.
   `typo3/sysext/` on 12.4, 13.4 or 14.3.
 - On `main` it occurs once, in
   `Changelog/15.0/Breaking-110319-EncryptionKeyCheckedBeforeLoadingExtLocalconf.rst`,
-  as the project's own `getenv('TYPO3_ENCRYPTION_KEY')` in the migration
-  example — which is the inferred answer confirmed from the core's own text. The
-  same entry moves the empty-key check ahead of `ext_localconf.php` loading, so
-  an installation that wires the key from an extension throws on 15.0. That is a
+  as the project's own `getenv('TYPO3_ENCRYPTION_KEY')` in the migration example
+  — which is the inferred answer confirmed from the core's own text. The same
+  entry moves the empty-key check ahead of `ext_localconf.php` loading, so an
+  installation that wires the key from an extension throws on 15.0. That is a
   version boundary no reading of 13.4 would have shown.
 - The tool that was broken at the time is not what the gap is:
   `typo3_documentation_lookup` answers again, and
   `queries=["encryption key environment variable"]` at 13.4 returns the Site
   Handling "Environment variables" page. `typo3_changelog_lookup` reads the
-  changelog out of an installation, so the 15.0 entry is reachable only where one
-  is present and never from what this server ships.
+  changelog out of an installation, so the 15.0 entry is reachable only where
+  one is present and never from what this server ships.
 
 ## Decided
 
@@ -56,13 +56,14 @@ already read from it.
   deployment, backups — not what its configuration files contain, and this
   server already answers the project side of the same subject.
 - Not closed on the spot. Every statement has to be read on four branches, and
-  the judging run has read nothing but this repository plus the four greps above.
+  the judging run has read nothing but this repository plus the four greps
+  above.
 
 ## Assumed
 
 - The question arrives as project work rather than as operations. The session
-  reporting it was writing `config/system/additional.php`, which is a file in the
-  repository this server answers about.
+  reporting it was writing `config/system/additional.php`, which is a file in
+  the repository this server answers about.
 
 ## Wrong if
 
@@ -71,5 +72,5 @@ already read from it.
   named as the route, and `project-repository-layout` needs that pointer rather
   than a statement of its own.
 - The 15.0 boundary moves again before the statement is written, which is what a
-  development branch is. The `since` on the statement is then read off the branch
-  rather than off this entry.
+  development branch is. The `since` on the statement is then read off the
+  branch rather than off this entry.

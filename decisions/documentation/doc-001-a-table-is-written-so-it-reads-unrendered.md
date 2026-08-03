@@ -12,12 +12,11 @@ aligned.**
 The compact `| --- |` form is not used, and neither is anything that would make
 a cell span lines.
 
-Both forms render identically, so the compact one looks like the cheaper
-choice. It is cheaper only for whoever writes it once, and the file is read many
-times in the state it was written in: in a diff, in an editor with no preview,
-in a terminal, and by a model that receives it as text. Unaligned, a row is a
-run of words with pipes in it, and which cell a value belongs to has to be
-counted out.
+Both forms render identically, so the compact one looks like the cheaper choice.
+It is cheaper only for whoever writes it once, and the file is read many times
+in the state it was written in: in a diff, in an editor with no preview, in a
+terminal, and by a model that receives it as text. Unaligned, a row is a run of
+words with pipes in it, and which cell a value belongs to has to be counted out.
 
 ## Evidence
 
@@ -29,8 +28,8 @@ counted out.
 
 ## Decided
 
-- Columns are padded to the width of their widest cell, and the separator row
-  is dashes of that same width. The generators write the same shape, so a
+- Columns are padded to the width of their widest cell, and the separator row is
+  dashes of that same width. The generators write the same shape, so a
   regenerated listing does not undo it.
 - A cell that will not fit on a line means the content is not a table. It
   becomes a list — `- **term** — what it is`, wrapped like prose. What a table
@@ -40,8 +39,8 @@ counted out.
   since an unaligned table hides how wide it really is.
 - The multi-line forms are rejected rather than unavailable. Pandoc grid tables
   solve it and GitHub does not render them; `<br>` renders everywhere and puts
-  markup in the middle of a sentence, which is the thing this decision exists
-  to prevent.
+  markup in the middle of a sentence, which is the thing this decision exists to
+  prevent.
 
 ## Assumed
 
@@ -52,6 +51,6 @@ counted out.
 
 - Alignment drifts because nothing holds it — then it is a rule nobody can
   follow reliably and it needs a check in `bin/cli` rather than a decision. Or
-  something genuinely tabular turns up whose cells cannot be shortened, in
-  which case a list will read worse than the table did and the exception has to
-  say so where it is taken.
+  something genuinely tabular turns up whose cells cannot be shortened, in which
+  case a list will read worse than the table did and the exception has to say so
+  where it is taken.

@@ -10,9 +10,9 @@ status: open
 category, where it used to fall back to PHP and see none of it.**
 
 A session reporting what a template did writes `f:if`, `f:else`,
-`f:link.typolink`. It names no path, no file extension and never the word
-Fluid, so `Domains::detect()` found no signal at all and returned the PHP
-fallback — and `fluid.json` was filtered out before a single hint was scored.
+`f:link.typolink`. It names no path, no file extension and never the word Fluid,
+so `Domains::detect()` found no signal at all and returned the PHP fallback —
+and `fluid.json` was filtered out before a single hint was scored.
 
 ## Evidence
 
@@ -31,11 +31,11 @@ fallback — and `fluid.json` was filtered out before a single hint was scored.
   entry at `appliesTo(14)`. Both readings are of the same corpus and only the
   second used the feedback's own words.
 - Nothing else moved. Over the 107 texts this repository has to hand — 41
-  scenario prompts and 66 hint titles — the domains detected and the first
-  three hints returned are identical before and after, for every one of them.
-- The prefix cannot land inside a word. `Text::containsWord()` anchors at a
-  word boundary, so `f:` is reached by `<f:if` and by `f:render` and not by
-  `conf:` or `if:`.
+  scenario prompts and 66 hint titles — the domains detected and the first three
+  hints returned are identical before and after, for every one of them.
+- The prefix cannot land inside a word. `Text::containsWord()` anchors at a word
+  boundary, so `f:` is reached by `<f:if` and by `f:render` and not by `conf:`
+  or `if:`.
 
 ## Decided
 

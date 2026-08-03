@@ -16,9 +16,8 @@ named beside them.
 
 ## From
 
-An answer that reported `outsideCore: true` and then returned four
-`runTests.sh` suites for a repository that has no `Build/Scripts/`
-(2026-07-29).
+An answer that reported `outsideCore: true` and then returned four `runTests.sh`
+suites for a repository that has no `Build/Scripts/` (2026-07-29).
 
 ## Held by
 

@@ -9,9 +9,9 @@ outside `[a-z0-9_]`, so a hyphen goes and an underscore stays: the skill
 a name the project does not have anywhere, and the tool's own description asks
 for the hyphenated one. The corpus already carries 46 such names, and the second
 effect is the one nobody can see: `typo3_documentation_lookup` appears 12 times
-in the `tool:` front matter and `typo3documentationlookup` five, so one tool sits
-under two identifiers and a `typo3_feedback_list` filtered on the right name
-misses five of seventeen reports about it — the sideways reading
+in the `tool:` front matter and `typo3documentationlookup` five, so one tool
+sits under two identifiers and a `typo3_feedback_list` filtered on the right
+name misses five of seventeen reports about it — the sideways reading
 [`D-FBK-025`](../../decisions/feedback/fbk-025-a-judgement-reads-the-corpus-decides-the-shape-and-sets-the-priority.md)
 makes the first duty of a judgement. Keep the given spelling when writing the
 front matter and normalise both sides where they are compared, which the filter

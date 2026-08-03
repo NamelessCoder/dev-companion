@@ -22,8 +22,8 @@ is the shape of the answer and the boundary it stops at.
 - Verified live while building. `issue: 110348` answers with change 95040,
   `[TASK] Deprecate AssetCollector media handling`, MERGED on `main`;
   `change: 89011` resolves to the phpunit raise of 2025-04-09.
-- `issue: 105403` answers **empty**, and the checkout it was asked from carries a
-  patch for exactly that issue. That patch was pushed `%private`, which an
+- `issue: 105403` answers **empty**, and the checkout it was asked from carries
+  a patch for exactly that issue. That patch was pushed `%private`, which an
   anonymous read cannot see. The empty answer is therefore about the review
   server rather than about the world, and a caller that reads it as "nobody has
   fixed this" has been misled by a true statement.

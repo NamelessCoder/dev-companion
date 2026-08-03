@@ -13,9 +13,9 @@ A client that truncates says so to its own debug output and to nobody else, so
 the sentences past the limit are not missing in a way anything reports: the
 server believes it said them and the agent never read them. What falls off is
 the end, which is where the statements that qualify everything before them sit —
-[`R-AUD-006`](../audience/aud-006-the-query-language-is-english.md) was written down
-as "the entire mitigation" and was the first thing cut. Length is therefore a
-property of the instructions rather than of the client, and it is held here so
+[`R-AUD-006`](../audience/aud-006-the-query-language-is-english.md) was written
+down as "the entire mitigation" and was the first thing cut. Length is therefore
+a property of the instructions rather than of the client, and it is held here so
 that the next sentence added has to displace one.
 
 ## From

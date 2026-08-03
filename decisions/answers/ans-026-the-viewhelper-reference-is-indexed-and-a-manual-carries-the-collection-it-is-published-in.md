@@ -6,8 +6,8 @@ status: open
 
 # D-ANS-026 — The ViewHelper reference is indexed, and a manual carries the collection it is published in
 
-**`typo3_documentation_lookup` searches four manuals, and where one is
-published is part of what the index knows about it.**
+**`typo3_documentation_lookup` searches four manuals, and where one is published
+is part of what the index knows about it.**
 
 [`D-ANS-023`](ans-023-a-viewhelper-question-is-answered-by-widening-the-index.md)
 is the finding: three books, none of which documents a ViewHelper. This entry is
@@ -28,8 +28,8 @@ every base used to have in common.
 - The pages excerpt. The If page opens with "This ViewHelper implements an
   if/else condition"; the Then page is 184 characters and still says what it is
   for.
-- What differs from the three of the core is the base and nothing else.
-  Every one of them is `/m/<document>/<version>/en-us/`; this one is `/other/`.
+- What differs from the three of the core is the base and nothing else. Every
+  one of them is `/m/<document>/<version>/en-us/`; this one is `/other/`.
 - One question that merely says Fluid is not taken over by it. Measured live at
   14.3, `Fluid template layout partial section` still puts Multi-language Fluid
   templates first, with the `section` and `layout` pages second and fifth. All
@@ -84,11 +84,11 @@ every base used to have in common.
 The tokenizer this entry left undecided is
 [`D-ANS-028`](ans-028-a-two-letter-query-word-is-searched-for-and-the-stopword-list-is-what-keeps-the-others-out.md).
 `TermSearch::terms()` admits a two-letter word, so `f:if` reaches
-`Global/If.html` rather than nothing — and it reaches it eighth. Ten of the
-1419 pages carry `if` as a whole word and all ten score the same, so what
-decides between the page titled "if" and Should Use Cached Page Data If
-Available Event is the order the index was built in. That is this entry's own
-ground rather than the tokenizer's: `UNDILUTED_WORDS` is 12 and no title in any
-of the four books is that long, so a title is never weighed by how much else is
-in it. Nothing has been changed about it here, because at a reference of 3 the
-six results of all 41 scenario prompts change and that needs its own reading.
+`Global/If.html` rather than nothing — and it reaches it eighth. Ten of the 1419
+pages carry `if` as a whole word and all ten score the same, so what decides
+between the page titled "if" and Should Use Cached Page Data If Available Event
+is the order the index was built in. That is this entry's own ground rather than
+the tokenizer's: `UNDILUTED_WORDS` is 12 and no title in any of the four books
+is that long, so a title is never weighed by how much else is in it. Nothing has
+been changed about it here, because at a reference of 3 the six results of all
+41 scenario prompts change and that needs its own reading.

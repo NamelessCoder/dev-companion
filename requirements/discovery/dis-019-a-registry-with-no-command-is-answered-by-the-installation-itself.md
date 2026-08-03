@@ -29,9 +29,9 @@ A `REVIEW-02` run against `georgringer/news` (2026-07-31) that was told the
 extension registers `provider` and `source`; and the measurement that followed
 it — on a set-up site with news installed the booted registry holds 1314 icon
 identifiers against 1289 read from files, the 25 extra being the ones its
-`Configuration/Icons.php` builds in a `foreach` plus one TYPO3 derives from
-TCA, while a second site without news agreed on all 1287. In the extension's
-own repository, which has no `settings.php`, the same boot yields a failsafe
+`Configuration/Icons.php` builds in a `foreach` plus one TYPO3 derives from TCA,
+while a second site without news agreed on all 1287. In the extension's own
+repository, which has no `settings.php`, the same boot yields a failsafe
 container with 1259 core icons and none of the extension's own.
 
 ## Held by

@@ -10,9 +10,9 @@ observation that tell it apart from the feedback already in the directory.**
 
 A session files one feedback per subject and files them in one breath, so they
 open on the sentence that says which session this is, and that sentence is
-longer than the 48 characters a name has room for. Seventeen feedback then
-carry the same name to the character and differ by their timestamp — the one
-thing about a feedback nobody looks for — while being about seventeen different
+longer than the 48 characters a name has room for. Seventeen feedback then carry
+the same name to the character and differ by their timestamp — the one thing
+about a feedback nobody looks for — while being about seventeen different
 things.
 
 The name is what a listing shows, what a `**Serves:**` line in

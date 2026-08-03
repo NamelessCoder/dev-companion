@@ -33,8 +33,8 @@ in it, and nothing beside them says the shell is not where they run.
 `/home/benji/projects/site-new` whose first finding was "PHP version mismatch
 blocks all tests" — the host's 8.3.23 against a declared `^8.4`, while the
 container the suite runs in has 8.4 and the tests were never blocked. Re-run on
-2026-08-02: `typo3_project_scope` still answers "PHP ^8.4" and lists `composer
-test:unit`, and names DDEV nowhere.
+2026-08-02: `typo3_project_scope` still answers "PHP ^8.4" and lists
+`composer test:unit`, and names DDEV nowhere.
 
 ## Held by
 

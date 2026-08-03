@@ -11,10 +11,10 @@ status: open
 `tests/`.**
 
 There were two idioms for one question. A flat listing was `glob()` with `?: []`
-behind it; a recursive one was a `RecursiveIteratorIterator` with an `instanceof`
-check, an extension comparison and a `sort()` after it. The second shape ran to
-a dozen lines and appeared eleven times, five of those as a directory removal
-copied between test classes.
+behind it; a recursive one was a `RecursiveIteratorIterator` with an
+`instanceof` check, an extension comparison and a `sort()` after it. The second
+shape ran to a dozen lines and appeared eleven times, five of those as a
+directory removal copied between test classes.
 
 ## Evidence
 
@@ -27,14 +27,13 @@ copied between test classes.
 
 ## Decided
 
-- `symfony/finder` in `require` rather than `require-dev`, because half the
-  call sites are on the server's own answer paths — the installation's
-  extensions, its labels, its changelog. A directory that may be absent now
-  says so with `is_dir()`, since Finder throws where `glob()` returned nothing:
-  the tolerance was implicit and is written down at every site that relied on
-  it. `GLOB_BRACE` is gone with it, which is a portability question rather than
-  a style one — the constant is undefined wherever the C library has no brace
-  expansion.
+- `symfony/finder` in `require` rather than `require-dev`, because half the call
+  sites are on the server's own answer paths — the installation's extensions,
+  its labels, its changelog. A directory that may be absent now says so with
+  `is_dir()`, since Finder throws where `glob()` returned nothing: the tolerance
+  was implicit and is written down at every site that relied on it. `GLOB_BRACE`
+  is gone with it, which is a portability question rather than a style one — the
+  constant is undefined wherever the C library has no brace expansion.
 
 ## Assumed
 
@@ -49,6 +48,6 @@ copied between test classes.
 - Finder stops walking a directory before what is in it. `Directory::remove()`
   and `Installer::removeDirectory()` take `reverseSorting()` to mean
   deepest-first, which holds because the traversal is `SELF_FIRST` and nothing
-  else. The failure is loud — `rmdir` on a directory that still has something
-  in it — and the fallback is the explicit sort by depth, which does not depend
-  on the traversal order at all.
+  else. The failure is loud — `rmdir` on a directory that still has something in
+  it — and the fallback is the explicit sort by depth, which does not depend on
+  the traversal order at all.

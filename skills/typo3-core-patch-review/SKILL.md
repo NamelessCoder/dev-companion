@@ -6,9 +6,9 @@ description: Review a TYPO3 core patch and say what is wrong, missing, or not re
 # TYPO3 Core Patch Review
 
 Review one patch against the checkout it sits in, and report in priority order.
-Keep this skill as routing and review method; the contribution rules, the
-suites and the commit-message rules are lookups, and a copy of them here is one
-that cannot be corrected.
+Keep this skill as routing and review method; the contribution rules, the suites
+and the commit-message rules are lookups, and a copy of them here is one that
+cannot be corrected.
 
 ## Establish the patch, then the rules it is judged by
 
@@ -20,10 +20,10 @@ that cannot be corrected.
    surfaces, what a finding owes, and the severity rubric.
 3. Establish the patch itself. The server does not read your working tree, and
    what it needs from you is exactly what a patch is: **the changed paths**,
-   **the branch it targets**, **the commit message**, and **the issue it names**.
-   One reading of the diff produces all four, and every lookup below takes one
-   of them as its argument. A review that has not established the target branch
-   is reviewing against the wrong conventions and cannot tell.
+   **the branch it targets**, **the commit message**, and **the issue it
+   names**. One reading of the diff produces all four, and every lookup below
+   takes one of them as its argument. A review that has not established the
+   target branch is reviewing against the wrong conventions and cannot tell.
 
 The changed paths are the argument, not the subject. Pass them to
 `typo3_hint_lookup` for the conventions of the subsystem the patch is in, one
@@ -33,11 +33,11 @@ call per subsystem, before forming a view of whether the code is right.
 
 Ask the owner of each obligation rather than recalling it:
 
-- `typo3_rule_lookup` for the contribution rules the diff makes relevant —
-  what a breaking change owes, what a deprecation owes, what belongs in a
-  changelog entry, and what review readiness means. Ask it per obligation and
-  not once: the sections it returns are named by subject, and a query that
-  names two reaches neither.
+- `typo3_rule_lookup` for the contribution rules the diff makes relevant — what
+  a breaking change owes, what a deprecation owes, what belongs in a changelog
+  entry, and what review readiness means. Ask it per obligation and not once:
+  the sections it returns are named by subject, and a query that names two
+  reaches neither.
 - Enumerate what the diff **removes or renames** before asking. A public class,
   method, property, constant, TCA field, TypoScript path or Fluid ViewHelper
   argument that disappears is the finding class this review exists for, and it

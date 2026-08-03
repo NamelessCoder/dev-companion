@@ -14,10 +14,10 @@ the same unit id. A non-English source file already present in a package is a
 defect to report rather than a local convention to continue, and the report says
 what to do about it: the source file keeps its path and its unit ids and its
 wording becomes English, the wording it replaced moves into the locale-prefixed
-file beside it as `<target>` under `source-language="en"
-target-language="<locale>"`, and adding an `en.`-prefixed file is not the
-correction — the unprefixed file is read as the `default` locale that every
-other locale falls back to.
+file beside it as `<target>` under
+`source-language="en" target-language="<locale>"`, and adding an `en.`-prefixed
+file is not the correction — the unprefixed file is read as the `default` locale
+that every other locale falls back to.
 
 ## From
 

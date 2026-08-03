@@ -22,23 +22,23 @@ is the installation's rather than a package's, and where the installation could
 not be booted the parsed list stands and the answer says what it leaves out.
 
 The table an override file extends is read from what the file does, never from
-its name — extensions number those files to fix their load order, and write
-one file per element — and the content elements are the identifiers of the
-items it adds to `tt_content.CType`, in both the positional and the keyed item
-shape and through either call that adds one — `addTcaSelectItem()`, which
-names the table first, and `addRecordType()`, whose table is its fifth argument
-and defaults to `tt_content` — rather than the pointer at `tt_content` that
-says where they are registered. Each carries the template it renders through,
-read from its own TypoScript and left unknown where that says nothing, because
-a template name derived from the identifier sends the caller to a file that is
-not there. A file that returns an array is read for *that* array and for no
-other literal in it, and where its list is only knowable by running the file —
-built in a `foreach`, assembled into a variable — nothing is returned rather
-than the keys of the literal lying beside it, and the file that hit that floor
-is named rather than left as an omitted section; that is the parser's floor, and
-the booted installation is what raises it. What is declared is answered; what
-an extension does at runtime is named as not covered rather than guessed. The
-project's Composer patches are part of what the project is.
+its name — extensions number those files to fix their load order, and write one
+file per element — and the content elements are the identifiers of the items it
+adds to `tt_content.CType`, in both the positional and the keyed item shape and
+through either call that adds one — `addTcaSelectItem()`, which names the table
+first, and `addRecordType()`, whose table is its fifth argument and defaults to
+`tt_content` — rather than the pointer at `tt_content` that says where they are
+registered. Each carries the template it renders through, read from its own
+TypoScript and left unknown where that says nothing, because a template name
+derived from the identifier sends the caller to a file that is not there. A file
+that returns an array is read for *that* array and for no other literal in it,
+and where its list is only knowable by running the file — built in a `foreach`,
+assembled into a variable — nothing is returned rather than the keys of the
+literal lying beside it, and the file that hit that floor is named rather than
+left as an omitted section; that is the parser's floor, and the booted
+installation is what raises it. What is declared is answered; what an extension
+does at runtime is named as not covered rather than guessed. The project's
+Composer patches are part of what the project is.
 
 ## From
 
@@ -47,8 +47,8 @@ scope named the extension and nothing inside it (2026-07-29); a session whose
 CType, registered with `addRecordType()` in a file of its own, came back as no
 content element at all (2026-07-30); and a `REVIEW-02` run against
 `georgringer/news` (2026-07-31) that was told the extension registers the icons
-`provider` and `source` — the keys of the literal its `foreach` builds each
-icon from.
+`provider` and `source` — the keys of the literal its `foreach` builds each icon
+from.
 
 ## Held by
 

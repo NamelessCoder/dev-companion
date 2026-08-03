@@ -21,10 +21,10 @@ extension checkout not being recognised as an installation at all.
 
 ## Assumed
 
-- What the root `composer.json` declares is enough to find both the packages
-  and the console. Composer's `config.vendor-dir` and `config.bin-dir` are the
-  only two ways either moves in practice, and everything else — DDEV, the
-  interpreter choice — was already right and simply never got a binary.
+- What the root `composer.json` declares is enough to find both the packages and
+  the console. Composer's `config.vendor-dir` and `config.bin-dir` are the only
+  two ways either moves in practice, and everything else — DDEV, the interpreter
+  choice — was already right and simply never got a binary.
 - Invoking the console through a path relative to the installation root works
   inside DDEV as it does on the host.
 
@@ -48,26 +48,26 @@ for the command that runs. From the project root the call answers
 `bash: .build/bin/typo3: No such file or directory`, exit 127. A relative path
 does not work inside DDEV as it does on the host. It works as long as nothing
 has moved the working directory, which is the default and not the guarantee the
-entry took it for. The absolute `bin-dir` half of the same **Wrong if**
-happened as written and the decision held there. Composer 2.9.5 accepts one and
-installs the binaries there — a fixture project declaring
-`"bin-dir": "<root>/.build/bin"` got its console at exactly that path — and
-this server then found no console at all and named only the two defaults. What
-was missing is that absolute is a spelling of the same directory. One below the
-root is now expressed relative to it, which is the form both DDEV and the host
-need, and `autoloader()` reads an absolute `vendor-dir` the same way. One
-outside the root still has no usable form and is named in the reason with
+entry took it for. The absolute `bin-dir` half of the same **Wrong if** happened
+as written and the decision held there. Composer 2.9.5 accepts one and installs
+the binaries there — a fixture project declaring
+`"bin-dir": "<root>/.build/bin"` got its console at exactly that path — and this
+server then found no console at all and named only the two defaults. What was
+missing is that absolute is a spelling of the same directory. One below the root
+is now expressed relative to it, which is the form both DDEV and the host need,
+and `autoloader()` reads an absolute `vendor-dir` the same way. One outside the
+root still has no usable form and is named in the reason with
 `TYPO3_MCP_CONSOLE`. `R-DIS-003` holds both.
 
 ## Since then
 
 The repair is measured and not yet made. Both `/var/www/html/.build/bin/typo3`
-and `$DDEV_APPROOT/.build/bin/typo3` answer in both working directories, and
-the second is the one that guesses nothing: DDEV sets
-`DDEV_APPROOT=/var/www/html` in the container itself, and `ddev exec` hands its
-arguments to the container's bash, which expands it. What that still needs is
-the DDEV version the variable can be relied on from, because a form that
-silently resolves to `/.build/bin/typo3` on an older one is worse than the
-relative path it replaces. It is v1.24.5, which makes the mount the form that
-guesses nothing and the variable the one with a version on it — made on
-2026-08-02, with the reading in `D-DIS-007`.
+and `$DDEV_APPROOT/.build/bin/typo3` answer in both working directories, and the
+second is the one that guesses nothing: DDEV sets `DDEV_APPROOT=/var/www/html`
+in the container itself, and `ddev exec` hands its arguments to the container's
+bash, which expands it. What that still needs is the DDEV version the variable
+can be relied on from, because a form that silently resolves to
+`/.build/bin/typo3` on an older one is worse than the relative path it replaces.
+It is v1.24.5, which makes the mount the form that guesses nothing and the
+variable the one with a version on it — made on 2026-08-02, with the reading in
+`D-DIS-007`.

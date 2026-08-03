@@ -9,9 +9,9 @@ status: held
 interface's.**
 
 They do not match a frontend theme, nor a PHP file whose name merely contains
-"scss". They are named `Backend CSS` and `Backend TypeScript` in every answer, and
-where a task names the frontend they are withheld with the reason rather than
-applied.
+"scss". They are named `Backend CSS` and `Backend TypeScript` in every answer,
+and where a task names the frontend they are withheld with the reason rather
+than applied.
 
 ## From
 

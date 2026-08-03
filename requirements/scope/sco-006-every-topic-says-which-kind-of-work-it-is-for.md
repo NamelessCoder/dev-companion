@@ -9,9 +9,9 @@ restsOn: [D-KNW-005]
 **Every covered topic states which kind of work its answers are for, as a
 `Scope`: `core` or `any`.**
 
-The boundary runs through the middle of this server rather than around it, and
-a caller that has to work that out per tool ends up trusting all of it or none
-of it.
+The boundary runs through the middle of this server rather than around it, and a
+caller that has to work that out per tool ends up trusting all of it or none of
+it.
 
 Where an answer is read from is a different question and `source` already
 answers it, so `installation` stopped being a value of this field on 2026-08-02

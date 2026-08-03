@@ -2,9 +2,9 @@
 
 **Serves:** feedback/2026-08-01-003634-self-rating-against-the-typo3-extension-testing.md
 **Priority:** low
-**Waiting on:** the question `2026-08-01-002951` and `2026-08-01-003103` wait on,
-    and one answer settles all three: may a summary feedback be archived once
-    every half it names is carried by a named sibling, or does it stay open
+**Waiting on:** the question `2026-08-01-002951` and `2026-08-01-003103` wait
+    on, and one answer settles all three: may a summary feedback be archived
+    once every half it names is carried by a named sibling, or does it stay open
     until the last of those siblings lands? This is the third of the series and
     the weakest case for archiving on its own — no half of it has landed, and
     one is queued as work — but it is the strongest case for the sixth answer

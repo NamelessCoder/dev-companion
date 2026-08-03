@@ -41,8 +41,8 @@ read off one revision together, and a caller pastes them together.
 
 ## Decided
 
-- `since`/`until` sits on the entry rather than on its fields. The finer split
-  — this variant since v14, that property since v13 — is what the Sass sources
+- `since`/`until` sits on the entry rather than on its fields. The finer split —
+  this variant since v14, that property since v13 — is what the Sass sources
   already say, and it would put four ranges in an answer whose reader wants one
   question answered: can I paste this.
 - An entry that does not hold on the stated version is withheld, not qualified.
@@ -50,22 +50,21 @@ read off one revision together, and a caller pastes them together.
   that does not exist fails in a browser without an error.
 - The binding is derived by `bin/cli catalog:check`, not judged. An entry holds
   on a version when every Sass file it names exists there and every class and
-  custom property it names that the newest covered version writes in its Sass
-  is written there too — plus, for a custom element, its tag name in the
-  TypeScript that defines it.
+  custom property it names that the newest covered version writes in its Sass is
+  written there too — plus, for a custom element, its tag name in the TypeScript
+  that defines it.
 
 ## Assumed
 
 - What the core writes in its own Sass is the evidence. Classes Bootstrap
   generates from a state map — `btn-secondary`, `badge-secondary`,
   `callout-warning` — appear in no stylesheet on any covered version and are
-  therefore not evidence for or against; including the TypeScript corpus in
-  that check made an incidental v14 usage of `btn-secondary` bind Buttons to
-  v14.
+  therefore not evidence for or against; including the TypeScript corpus in that
+  check made an incidental v14 usage of `btn-secondary` bind Buttons to v14.
 
 ## Wrong if
 
-- An entry's markup changed while every name in it stayed — the derivation
-  reads names, not structure, and would call that unchanged. Also a range with
-  a hole in it, which `derivedSince()` reports as no binding at all, on the
-  grounds that such an entry needs splitting rather than a number.
+- An entry's markup changed while every name in it stayed — the derivation reads
+  names, not structure, and would call that unchanged. Also a range with a hole
+  in it, which `derivedSince()` reports as no binding at all, on the grounds
+  that such an entry needs splitting rather than a number.

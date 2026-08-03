@@ -166,7 +166,8 @@ and it reaches because it names the layer. That is `D-KNW-017` measured a second
 time from a different sentence, not a second gap.
 
 What this summary adds beyond the mapping is where the boundary runs, which is
-what [`D-FBK-018`](fbk-018-a-strength-is-evidence-about-a-boundary-not-about-a-decision.md)
+what
+[`D-FBK-018`](fbk-018-a-strength-is-evidence-about-a-boundary-not-about-a-decision.md)
 says a strength carries. Its two strengths are that the functional PHPUnit layer
 was the right one for the rendering defect and that the regression test it left
 behind passes; its costs are all on the other side of that same line, where
@@ -180,19 +181,19 @@ card, and archiving is the question `002951` and `003103` already carry.
 ## Since then
 
 The first **Wrong if** fired on the fourth summary judged this way, and the
-mapping is what found it rather than what missed it. `feedback/2026-08-01-114807`
-is a numbered transcript of a GPT-5 mini session reviewing one core patch in
-`/home/benji/projects/typo3-cms`. Five of its halves map: the
-`typo3_project_scope` strength and the `processingTaskTypes` suggestion onto
-`114526` and `115220` from the same session, the seven classes read by hand onto
-`114526`, and an editor's `grep_search` timeout onto the boundary
+mapping is what found it rather than what missed it.
+`feedback/2026-08-01-114807` is a numbered transcript of a GPT-5 mini session
+reviewing one core patch in `/home/benji/projects/typo3-cms`. Five of its halves
+map: the `typo3_project_scope` strength and the `processingTaskTypes` suggestion
+onto `114526` and `115220` from the same session, the seven classes read by hand
+onto `114526`, and an editor's `grep_search` timeout onto the boundary
 `doesNotCover` already draws. The sixth maps onto nothing.
 
-That sixth is a failed test run and what the session concluded from it, and it is
-the one thing in the file no sibling states. `114526` mentions the same failure
-in a clause and files it under "not MCP issues"; only the transcript says what it
-would do instead, which is a runner the core checkout does not contain. So the
-ladder was owed to that half alone, and it is
+That sixth is a failed test run and what the session concluded from it, and it
+is the one thing in the file no sibling states. `114526` mentions the same
+failure in a clause and files it under "not MCP issues"; only the transcript
+says what it would do instead, which is a runner the core checkout does not
+contain. So the ladder was owed to that half alone, and it is
 [`D-ANS-031`](../answers/ans-031-the-core-answer-names-the-tool-that-runs-the-suites.md).
 
 Two things about the mechanism hold up. A summary is where a session states a

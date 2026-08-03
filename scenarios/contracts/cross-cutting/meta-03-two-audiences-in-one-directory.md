@@ -18,14 +18,15 @@
 
 - To keep the two apart: one path is core work with everything that entails, the
   other is extension work with none of it.
-- To say which is which from the shape of the paths, without being told in prose.
+- To say which is which from the shape of the paths, without being told in
+  prose.
 
 **What has to come out of it**
 
 - The core path gets the core conventions, the core checks and the submission
   route; the extension path gets the conventions that transfer and nothing else.
-- Where the audience genuinely cannot be decided, the answer says it is uncertain
-  rather than picking one silently (`R-AUD-002`).
+- Where the audience genuinely cannot be decided, the answer says it is
+  uncertain rather than picking one silently (`R-AUD-002`).
 
 **How it fails**
 

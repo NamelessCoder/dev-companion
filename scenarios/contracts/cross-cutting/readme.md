@@ -6,5 +6,5 @@ cannot reach an installation, working on a task whose audience is genuinely
 ambiguous, and using a client that shows the agent only the data half of an
 answer. They are targeted contract cases rather than open forward reviews.
 
-See [the contract readme](../readme.md) for the states and how to print one,
-and [the scenario readme](../../readme.md) for the audiences and environments.
+See [the contract readme](../readme.md) for the states and how to print one, and
+[the scenario readme](../../readme.md) for the audiences and environments.

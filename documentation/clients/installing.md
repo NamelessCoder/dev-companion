@@ -2,8 +2,8 @@
 
 Requirements: **PHP 8.2+** and Composer. The package works both ways — as a
 standalone checkout and as a Composer dependency of another project. The
-[readme](../../readme.md) has the short version; this page has the cases it leaves
-out.
+[readme](../../readme.md) has the short version; this page has the cases it
+leaves out.
 
 ## Standalone
 
@@ -38,9 +38,9 @@ and which ones is knowledge only the project has.
 
 Both commands write the client entry, because what belongs in it is a property
 of the project rather than of the run: a project that required this package
-after it was first installed, or that gained a DDEV configuration since, needs
-a different entry than the one that is there, and `update` is what moves it.
-An entry that starts something other than this server is somebody else's and is
+after it was first installed, or that gained a DDEV configuration since, needs a
+different entry than the one that is there, and `update` is what moves it. An
+entry that starts something other than this server is somebody else's and is
 refused instead — the two commands then say so and change nothing.
 
 Naming no client at all is a setup of its own, recorded as `generic`: `install`
@@ -104,21 +104,21 @@ setup, and `vendor/bin/typo3-cms-mcp update` to refresh it and every other
 client installed there.
 
 `vendor/bin/typo3-cms-mcp help` lists both commands and every client they
-accept. Passing anything else fails with that same text: without an argument
-the entrypoint is the MCP transport itself and waits on stdin, which at a
-terminal is indistinguishable from a hang.
+accept. Passing anything else fails with that same text: without an argument the
+entrypoint is the MCP transport itself and waits on stdin, which at a terminal
+is indistinguishable from a hang.
 
 The same commands support the agent identifiers `amp`, `junie`, `cursor`,
-`claude`, `copilot`, `factory`, `kiro`, `opencode`, `antigravity`, `zed`,
-`pi`, and `grok`. Each receives the skill at its native project path and,
-where the client supports it, its native MCP configuration. Antigravity and Pi
-receive skills only.
+`claude`, `copilot`, `factory`, `kiro`, `opencode`, `antigravity`, `zed`, `pi`,
+and `grok`. Each receives the skill at its native project path and, where the
+client supports it, its native MCP configuration. Antigravity and Pi receive
+skills only.
 
 ### VS Code reads the skills only once it is told to
 
 `--agent=copilot` writes them to `.github/skills`, which is one of the two
-locations VS Code searches by default — but only if `chat.useAgentSkills` is
-on, and it is not:
+locations VS Code searches by default — but only if `chat.useAgentSkills` is on,
+and it is not:
 
 ```json
 "chat.useAgentSkills": true
@@ -165,14 +165,15 @@ unestablished rather than filled in:
   ([manual](https://ampcode.com/manual))
 - **VS Code** (`.vscode/mcp.json`) — a trust confirmation. "When you add an MCP
   server to your workspace or change its configuration, you need to confirm that
-  you trust the server and its capabilities before starting it." The experimental
-  `chat.mcp.autoStart` restarts the server when the configuration changes.
+  you trust the server and its capabilities before starting it." The
+  experimental `chat.mcp.autoStart` restarts the server when the configuration
+  changes.
   ([MCP servers](https://code.visualstudio.com/docs/copilot/customization/mcp-servers))
 - **Codex** (`.codex/config.toml`) — a trusted project. MCP servers can be
-  scoped "to a project with `.codex/config.toml` (trusted projects only)", so the
-  trust prompt for the directory is what admits them. Whether a running session
-  reads the file again is not documented; `codex mcp list` reports what it has.
-  ([MCP](https://learn.chatgpt.com/docs/extend/mcp))
+  scoped "to a project with `.codex/config.toml` (trusted projects only)", so
+  the trust prompt for the directory is what admits them. Whether a running
+  session reads the file again is not documented; `codex mcp list` reports what
+  it has. ([MCP](https://learn.chatgpt.com/docs/extend/mcp))
 - **Zed** (`.zed/settings.json`) — a trusted worktree. The MCP page describes
   `context_servers` only in the file opened with `zed: open settings file`, but
   the project file is where the rest of the documentation puts it: "every
@@ -180,12 +181,12 @@ unestablished rather than filled in:
   configuration options that may require installing and spawning language
   servers or MCP servers", and Zed's own advisory for the vulnerability the
   trust model answers says "the Zed IDE loads Model Context Protocol (MCP)
-  configurations from the `settings.json` file located within a project's
-  `.zed` subdirectory". So the written entry is read — behind a gate the other
-  clients do not have. Restricted Mode, which every worktree starts in,
-  prevents "project settings (`.zed/settings.json`) from being parsed and
-  applied" and "MCP servers from being installed and spawned"; the title bar
-  carries an exclamation mark until the directory is trusted there or with
+  configurations from the `settings.json` file located within a project's `.zed`
+  subdirectory". So the written entry is read — behind a gate the other clients
+  do not have. Restricted Mode, which every worktree starts in, prevents
+  "project settings (`.zed/settings.json`) from being parsed and applied" and
+  "MCP servers from being installed and spawned"; the title bar carries an
+  exclamation mark until the directory is trusted there or with
   `workspace::ToggleWorktreeSecurity`. Whether a window that was already open
   reads a new file is not documented (read 2026-08-02, when the current release
   was v1.13.1; the trust model arrived in v0.218.2-pre).
@@ -196,10 +197,10 @@ unestablished rather than filled in:
   apply automatically when you save the file" and "servers will reconnect". A
   tool `autoApprove` does not name is still asked about on the call.
   ([MCP configuration](https://kiro.dev/docs/mcp/configuration/))
-- **Droid** (`.factory/mcp.json`) — nothing. "Droid reloads automatically when an
-  `mcp.json` file changes, so new servers are available immediately." Each tool
-  is approved on first use, and `droid mcp permissions` keeps that approval.
-  ([MCP](https://docs.factory.ai/cli/configuration/mcp))
+- **Droid** (`.factory/mcp.json`) — nothing. "Droid reloads automatically when
+  an `mcp.json` file changes, so new servers are available immediately." Each
+  tool is approved on first use, and `droid mcp permissions` keeps that
+  approval. ([MCP](https://docs.factory.ai/cli/configuration/mcp))
 - **Junie** (`.junie/mcp/mcp.json`) — no approval: servers "imported from the
   `mcp.json` file are enabled by default". Whether an IDE that was already open
   reads a new one is not documented; the list is *Settings | Tools | Junie | MCP

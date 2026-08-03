@@ -9,9 +9,9 @@ status: held
 record uid and emits the configured route-field value, while route matching
 resolves that value back to the uid.**
 
-It also states the consequences that make the design useful: site-unique
-values, rejection of unmatched paths before rendering, and no cHash for the
-mapped argument.
+It also states the consequences that make the design useful: site-unique values,
+rejection of unmatched paths before rendering, and no cHash for the mapped
+argument.
 
 ## From
 

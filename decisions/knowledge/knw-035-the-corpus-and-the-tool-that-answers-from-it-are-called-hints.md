@@ -9,15 +9,15 @@ status: open
 **The corpus is `knowledge/hints/`, the class that loads it is
 `Knowledge\Hints`, and the tool that answers from it is `typo3_hint_lookup`.**
 
-`architecture` had stopped describing what the corpus holds, and it was the
-only place in the repository still using the word for it.
+`architecture` had stopped describing what the corpus holds, and it was the only
+place in the repository still using the word for it.
 
 ## Evidence
 
-- The corpus answers label rules, upgrade command sequences, test-harness
-  setup, browser tests and changelog conventions. None of those is
-  architecture, and the outward `topic` in `knowledge/server-scope.json` listed
-  them under "Core architecture conventions".
+- The corpus answers label rules, upgrade command sequences, test-harness setup,
+  browser tests and changelog conventions. None of those is architecture, and
+  the outward `topic` in `knowledge/server-scope.json` listed them under "Core
+  architecture conventions".
 - `hint` was already the word everywhere else: the glossary defines it, the
   `hints:probe` and `hints:coverage` subjects use it, `HintsTest` is named for
   it, and `knowledge/test-suite-hints.json` is a second corpus of them.
@@ -38,8 +38,8 @@ only place in the repository still using the word for it.
   so a client reading the guide's brief was going to be corrected anyway.
 - What recorded a call under the former name keeps it and says so — the forward
   runs in `scenarios/runs/`, the recorded answer under
-  `documentation/clients/tool-answers/`, the archived feedback. A recording
-  says what it is of (`D-DOC-006`).
+  `documentation/clients/tool-answers/`, the archived feedback. A recording says
+  what it is of (`D-DOC-006`).
 - The decisions that name `knowledge/architecture-hints/*.json` files are left
   as they are. Those paths were already stale from the refiling that preceded
   this, and an entry is a dated record rather than a description of today.
@@ -53,10 +53,10 @@ only place in the repository still using the word for it.
 
 ## Wrong if
 
-- A session reports `typo3_hint_lookup` as unknown, which would mean a client
-  is holding a tool list from before the rename and nothing told it.
-- A caller's brief comes back without hints because it reads
-  `architectureHints` from the payload.
+- A session reports `typo3_hint_lookup` as unknown, which would mean a client is
+  holding a tool list from before the rename and nothing told it.
+- A caller's brief comes back without hints because it reads `architectureHints`
+  from the payload.
 - The word `architecture` returns for part of this corpus, which would mean the
   subject it was dropped for is back and one of the two words is wrong.
 

@@ -11,7 +11,8 @@ the caller naming it.**
 
 Which repository the server was started in shapes what an answer says, never
 whether the tool that says it is there: whether a task is core work is a
-property of the task, which is [`R-AUD-002`](../audience/aud-002-the-audience-is-a-property-of-the-task.md),
+property of the task, which is
+[`R-AUD-002`](../audience/aud-002-the-audience-is-a-property-of-the-task.md),
 and the tool list cannot vary per task. Where the caller does exclude one,
 nothing the server hands out points at it, and `typo3_server_scope` — which no
 caller can exclude — names what went and which variable took it: a shorter list

@@ -21,22 +21,23 @@ phpstan-phpunit include an extension's configuration actually has.
   testing-framework" — as outdated, and asks that `typo3_architecture_lookup`
   reflect the current PHPStan configuration for an extension.
 - Re-run from this checkout on 2026-08-02: `typo3_architecture_lookup` with the
-  feedback's own query, `extension.neon recommendation outdated - no longer
-  needed for TYPO3 PHPStan`, returns `extension-static-analysis` and nothing
-  else. It puts the configuration in `Build/phpstan/`, reads it off
-  typo3/testing-framework, and the only include it names is the phpstan-phpunit
-  extension. That hint landed in `733ed3a` on 2026-08-02, after the feedback was
-  written, so what the suggestion asks for is there.
+  feedback's own query,
+  `extension.neon recommendation outdated - no longer needed for TYPO3 PHPStan`,
+  returns `extension-static-analysis` and nothing else. It puts the
+  configuration in `Build/phpstan/`, reads it off typo3/testing-framework, and
+  the only include it names is the phpstan-phpunit extension. That hint landed
+  in `733ed3a` on 2026-08-02, after the feedback was written, so what the
+  suggestion asks for is there.
 - `.checkouts/testing-framework/8` (8.3.3), `9` (9.6.1) and `main` (27587653)
-  ship two `.neon` files each and no `extension.neon`: `Build/phpstan/phpstan.neon`
-  and the baseline beside it. There is no TYPO3 file of that name to include, on
-  any release line the covered majors pin.
+  ship two `.neon` files each and no `extension.neon`:
+  `Build/phpstan/phpstan.neon` and the baseline beside it. There is no TYPO3
+  file of that name to include, on any release line the covered majors pin.
 - Those same three configurations do include one:
   `../../.Build/vendor/phpstan/phpstan-phpunit/extension.neon`. The name is
   PHPStan's own convention for a package shipping rules or stubs —
   `composer/pcre` in this repository's lock declares
-  `extra.phpstan.includes: ["extension.neon"]`, which `phpstan/extension-installer`
-  wires up.
+  `extra.phpstan.includes: ["extension.neon"]`, which
+  `phpstan/extension-installer` wires up.
 - The package half was already answered when the feedback was written.
   `skills/typo3-extension-testing/references/static-quality.md`, from `b0eded4`
   on 2026-07-31, names `phpstan/phpstan` on the extension's own paths and says

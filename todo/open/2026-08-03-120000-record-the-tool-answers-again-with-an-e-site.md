@@ -6,10 +6,10 @@
 Left behind by `D-KNW-031`.
 
 `documentation/clients/tool-answers/` is stale for the two tools that carried
-hints: `typo3_hint_lookup` and `typo3_task_guide` still show a `Relevant
-checks:` block under every hint, which no answer prints since the `checks`
-field left the corpus. The brief's own `checks` are the base suites of the
-domain now, which is a different list and a different reason.
+hints: `typo3_hint_lookup` and `typo3_task_guide` still show a
+`Relevant checks:` block under every hint, which no answer prints since the
+`checks` field left the corpus. The brief's own `checks` are the base suites of
+the domain now, which is a different list and a different reason.
 
 Do not re-record without an E-SITE. `bin/cli tools:record` writes what it can
 reach, and reached from a checkout alone it drops the second recording of every

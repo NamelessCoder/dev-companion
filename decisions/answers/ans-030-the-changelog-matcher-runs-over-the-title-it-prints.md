@@ -18,14 +18,15 @@ method name.
 ## Evidence
 
 - `feedback/2026-08-01-115112` re-run on 2026-08-02 from
-  `/home/benji/projects/typo3-cms`, against the 3794 entries that checkout
-  ships in `Documentation/Changelog/7.5` through `15.0`.
-- The reported cause is disproved. `query: "GifBuilder placeholder preview
-  thumbnail"` with `version: "15"` returns nothing and reports that "preview"
-  reaches 1 entry, which is the count inside `15.0`. Drop the version and every
-  word reaches: gifbuilder 4, placeholder 10, preview 28, thumbnail 9.
-- The entry the session wanted is in `13.0`, not in 15. `query: "image
-  generation"` with no version returns
+  `/home/benji/projects/typo3-cms`, against the 3794 entries that checkout ships
+  in `Documentation/Changelog/7.5` through `15.0`.
+- The reported cause is disproved.
+  `query: "GifBuilder placeholder preview thumbnail"` with `version: "15"`
+  returns nothing and reports that "preview" reaches 1 entry, which is the count
+  inside `15.0`. Drop the version and every word reaches: gifbuilder 4,
+  placeholder 10, preview 28, thumbnail 9.
+- The entry the session wanted is in `13.0`, not in 15.
+  `query: "image generation"` with no version returns
   `13.0 Breaking: Removed public methods related to Image Generation (#101955)`,
   alone, in one call. So the title is what would have reached it, and the
   version filter is what emptied the answer.
@@ -58,8 +59,8 @@ method name.
 
 - **Step 1b of the ladder, and not step 4.** No rewrite of the schema makes
   `getTemporaryImageWithText` reach the entry whose printed title carries it.
-  The field the matcher runs over has to change, so the shape is what is
-  missing rather than the wording.
+  The field the matcher runs over has to change, so the shape is what is missing
+  rather than the wording.
 - **Queued rather than closed on the spot.** Both halves are `src/`, and the
   `query` description is a declared schema, which
   [judging.md](../../documentation/feedback/judging.md) puts on the far side of
@@ -85,9 +86,9 @@ method name.
 
 - That a caller after a removed method types the method name. The feedback says
   so outright in its own suggestion, and it is still one session.
-- That the read stays affordable as the changelog grows. It is 3794 entries
-  here against the 3766 `D-ANS-016` measured in `.checkouts/14.3`, and the cost
-  is per file rather than per entry matched, so an unfiltered miss pays it whole.
+- That the read stays affordable as the changelog grows. It is 3794 entries here
+  against the 3766 `D-ANS-016` measured in `.checkouts/14.3`, and the cost is
+  per file rather than per entry matched, so an unfiltered miss pays it whole.
 - That the `:php:` roles are worth indexing rather than only the Removed-lists
   the report names. 10842 distinct roles is a wide index, and nothing measured
   here says how much of it is a class an entry merely mentions.

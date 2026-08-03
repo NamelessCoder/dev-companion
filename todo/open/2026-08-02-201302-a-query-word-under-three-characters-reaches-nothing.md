@@ -27,12 +27,12 @@ book: `f:` is the Fluid namespace prefix, which
 [`D-KNW-024`](../../decisions/knowledge/knw-024-the-fluid-namespace-prefix-is-what-a-template-question-is-written-in.md)
 made a domain keyword for the hints and nothing reads for the manuals. So the
 step is to give `Documentation` that route — the `manual` field of the Fluid
-ViewHelper Reference is what the prefix should reach, the way `Domains::detect()`
-routes a hint — and to measure it the same way: the 41 prompts of
-`Scenarios::load()` and `::contracts()` through `Documentation::lookup()` at
-14.3 with the manual roots fetched once, plus the seven queries this repository
-already asserts an answer for, whose ranks `D-ANS-032` records to compare
-against.
+ViewHelper Reference is what the prefix should reach, the way
+`Domains::detect()` routes a hint — and to measure it the same way: the 41
+prompts of `Scenarios::load()` and `::contracts()` through
+`Documentation::lookup()` at 14.3 with the manual roots fetched once, plus the
+seven queries this repository already asserts an answer for, whose ranks
+`D-ANS-032` records to compare against.
 
 `f:or` and `f:then` need one thing more, and it is the open question: whether a
 stopword can be admitted for one corpus and not another. `STOPWORDS` is shared,

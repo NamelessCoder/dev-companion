@@ -6,9 +6,9 @@ status: open
 
 # D-SCO-007 — The signals are combined per call, and a call is not a path
 
-**`Scope::isOutsideCore()` combines the signals `R-SCO-001` orders over the whole
-call: every path is folded into one string and one boolean comes back. `META-03`
-is therefore a feature and not a wording change.**
+**`Scope::isOutsideCore()` combines the signals `R-SCO-001` orders over the
+whole call: every path is folded into one string and one boolean comes back.
+`META-03` is therefore a feature and not a wording change.**
 
 Nothing decides per path, and nothing can say the audience is uncertain.
 
@@ -32,15 +32,15 @@ asks what applies to each. Read against `Scope`, the question was which half of
   payload distinction per line; the audience it draws it from is per call.
 - Of the four call sites, two can receive two paths at all —
   `typo3_architecture_lookup` and `typo3_test_run_guide` take a `paths` array.
-  `typo3_task_guide` takes one `area` string, so the prompt `META-03` is
-  written in cannot be put to it in the first place.
+  `typo3_task_guide` takes one `area` string, so the prompt `META-03` is written
+  in cannot be put to it in the first place.
 
 ## Decided
 
-- Two things are missing rather than one. The unit of decision has to become
-  the path, and the answer has to gain a third value for the case `R-AUD-002`
-  names — signals that disagree with nothing to resolve them. A `bool` has room
-  for neither, so this is the rename `D-SCO-006` predicted: `outsideCore` becomes
+- Two things are missing rather than one. The unit of decision has to become the
+  path, and the answer has to gain a third value for the case `R-AUD-002` names
+  — signals that disagree with nothing to resolve them. A `bool` has room for
+  neither, so this is the rename `D-SCO-006` predicted: `outsideCore` becomes
   the audience of a path.
 - Against a mixed call answering `true` for the whole of it, which keeps one
   verdict per session and merely picks the other side of it, and against a

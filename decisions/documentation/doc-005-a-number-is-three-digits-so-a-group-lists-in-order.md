@@ -23,8 +23,8 @@ opened with the tenth, and so did the index generated from it.
   `D-FBK-10` first, then 6 through 9, then 1. `Requirements::all()` sorts with
   `strnatcmp` and was already right, which is why the tooling looked fine from
   one side and not from the other.
-- Padding it cost 183 renames and 1393 ids rewritten across 289 files. All of
-  it was mechanical: the number is the only thing that changed.
+- Padding it cost 183 renames and 1393 ids rewritten across 289 files. All of it
+  was mechanical: the number is the only thing that changed.
 
 ## Decided
 

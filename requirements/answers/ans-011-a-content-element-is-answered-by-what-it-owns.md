@@ -13,8 +13,8 @@ existing records, or a container of arbitrary content, and which one it is
 follows from the editor workflow rather than from what a list can technically
 do.
 
-The shapes that decide it — a carousel, a slider, an accordion, slides —
-reach that answer without the task having to call itself a content element.
+The shapes that decide it — a carousel, a slider, an accordion, slides — reach
+that answer without the task having to call itself a content element.
 
 ## From
 

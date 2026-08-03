@@ -35,8 +35,8 @@ second only after it had already audited a site package without it.
 
 What the output has to say is a property of each client rather than of this
 package, so that test holds that something is said — per client, on both
-commands, and on the line under the entry it is about — and not that it is
-true. What each line claims is sourced per client in
+commands, and on the line under the entry it is about — and not that it is true.
+What each line claims is sourced per client in
 [installing.md](../../documentation/clients/installing.md), from that client's
 own documentation, and a client whose documentation does not answer says so
 rather than being filled in.

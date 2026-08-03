@@ -17,9 +17,9 @@ looking like the least important thing in the repository.
 
 ## Evidence
 
-- `Wait for the producer D-KNW-004 needs`, at the end of a queue of 34 on the day
-  this was written. Its own paragraph said it waits on something outside this
-  repository entirely, and its position said it is lower priority than 33
+- `Wait for the producer D-KNW-004 needs`, at the end of a queue of 34 on the
+  day this was written. Its own paragraph said it waits on something outside
+  this repository entirely, and its position said it is lower priority than 33
   pieces of work — two different claims, one of them made by the file system.
   Every session that reached it would have re-read the same paragraph to learn
   it cannot be started.
@@ -39,22 +39,22 @@ looking like the least important thing in the repository.
 - That `bin/cli todo:next` names how many are waiting and nothing more, as one
   field of the line that already says how many are behind this todo. A blocked
   todo is addressed to whoever can answer it, and a state nothing ever mentions
-  is a file nobody opens again. The paragraph stays the one todo's (`D-FBK-003`);
-  `bin/cli todo:list` is where the questions are readable.
+  is a file nobody opens again. The paragraph stays the one todo's
+  (`D-FBK-003`); `bin/cli todo:list` is where the questions are readable.
 
 ## Assumed
 
 - That the two cases can be told apart when the commit is written — a question
   that is merely unasked goes last, one that cannot be answered here waits.
   Nothing checks it, and the cheap mistake is the wrong one: a todo parked in
-  `waiting/` is out of every session's way, which is exactly what a session
-  that does not want to work it would choose.
+  `waiting/` is out of every session's way, which is exactly what a session that
+  does not want to work it would choose.
 
 ## Wrong if
 
-- `waiting/` grows past two or three, which would mean it has become where
-  todos go to be forgotten rather than where questions are kept. Or a todo sits
-  there with its question answered in the conversation and nobody moved it
-  back, which would mean the seven-day todo is being run and not acted on. Or
-  the count in `next` turns out to be read as work and starts being asked
-  about; then it belongs only in `todo list`.
+- `waiting/` grows past two or three, which would mean it has become where todos
+  go to be forgotten rather than where questions are kept. Or a todo sits there
+  with its question answered in the conversation and nobody moved it back, which
+  would mean the seven-day todo is being run and not acted on. Or the count in
+  `next` turns out to be read as work and starts being asked about; then it
+  belongs only in `todo list`.

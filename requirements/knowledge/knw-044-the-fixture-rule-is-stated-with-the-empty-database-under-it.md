@@ -11,10 +11,10 @@ knowledge base states that beside the fixture rule resting on it.**
 
 Without the premise the CSV fixture rule reads as one convention among several,
 achievable another way. A session that reads it so fetches records nobody
-primed, and the failure looks like a broken query rather than an empty table.
-So the premise is stated where the rule is, in the words a caller asks it in —
-an empty database per test run — and with the two boundaries that would make it
-too strong unqualified: `$initializeDatabase = false` and
+primed, and the failure looks like a broken query rather than an empty table. So
+the premise is stated where the rule is, in the words a caller asks it in — an
+empty database per test run — and with the two boundaries that would make it too
+strong unqualified: `$initializeDatabase = false` and
 `withDatabaseSnapshot()`.
 
 ## From

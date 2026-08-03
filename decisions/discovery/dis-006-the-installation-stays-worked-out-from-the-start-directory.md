@@ -35,14 +35,14 @@ in the specification twelve months before it may be removed at all.
 - The bundled SDK could not have sent the request anyway. `Mcp\Schema\Root`,
   `ListRootsRequest` and `RootsListChangedNotification` are declared, but
   `ClientGateway::request()` is private and the only server-to-client calls it
-  exposes are `sample()` and `elicit()`. Reaching past that for a feature
-  marked deprecated is work with a withdrawal date on it.
+  exposes are `sample()` and `elicit()`. Reaching past that for a feature marked
+  deprecated is work with a withdrawal date on it.
 
 ## Wrong if
 
-- A later revision adds a way for a client to state where the session is that
-  is not deprecated on arrival — the deprecation registry is where that would
-  show. Also wrong if a client emerges that starts this server somewhere other
-  than the session's directory, which would break the walk-up without breaking
+- A later revision adds a way for a client to state where the session is that is
+  not deprecated on arrival — the deprecation registry is where that would show.
+  Also wrong if a client emerges that starts this server somewhere other than
+  the session's directory, which would break the walk-up without breaking
   anything the specification promises: `R-DIS-022` is what would fail, and
   `TYPO3_MCP_ROOT` is what such a setup would have to state.

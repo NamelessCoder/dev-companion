@@ -14,11 +14,11 @@ registered.
 
 ## From
 
-A patch review replacing GD read seven core classes by hand — `GraphicalFunctions`,
-`LocalImageProcessor`, `SvgImageProcessor`, `ThumbnailViewHelper`,
-`DeferredBackendImageProcessor`, `PreviewProcessing` and `PreviewNotAvailable.svg` —
-because nothing below `knowledge/` said which of them runs when (2026-08-01,
-judged as `D-KNW-028`).
+A patch review replacing GD read seven core classes by hand —
+`GraphicalFunctions`, `LocalImageProcessor`, `SvgImageProcessor`,
+`ThumbnailViewHelper`, `DeferredBackendImageProcessor`, `PreviewProcessing` and
+`PreviewNotAvailable.svg` — because nothing below `knowledge/` said which of
+them runs when (2026-08-01, judged as `D-KNW-028`).
 
 ## Held by
 

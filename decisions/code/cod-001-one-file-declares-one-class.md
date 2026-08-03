@@ -23,10 +23,10 @@ there.
 
 ## Decided
 
-- One file, one class, held by `StructureTest::everyFileDeclaresOneClass`
-  rather than by review. Two exceptions are named in the test and are not
-  classes at all: `bootstrap.php`, which locates the autoloader, and
-  `Runtime/probe.php`, which runs inside somebody else's installation.
+- One file, one class, held by `StructureTest::everyFileDeclaresOneClass` rather
+  than by review. Two exceptions are named in the test and are not classes at
+  all: `bootstrap.php`, which locates the autoloader, and `Runtime/probe.php`,
+  which runs inside somebody else's installation.
 
 ## Assumed
 
@@ -36,7 +36,7 @@ there.
 
 ## Wrong if
 
-- Something genuinely needs two declarations in one file — a backed enum used
-  by exactly one class, say — and splitting it makes both harder to read. Then
-  the rule needs an allowed list rather than a flat ban, and the test is where
-  it goes.
+- Something genuinely needs two declarations in one file — a backed enum used by
+  exactly one class, say — and splitting it makes both harder to read. Then the
+  rule needs an allowed list rather than a flat ban, and the test is where it
+  goes.

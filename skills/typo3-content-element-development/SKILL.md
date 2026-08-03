@@ -33,12 +33,12 @@ content before implementing it.
 - Use fields on `tt_content` for one bounded element.
 - Use a dedicated child table with `type=inline` when an element owns a
   repeatable ordered collection such as slides, tabs, accordions or cards.
-- Use references to existing records only when reuse is an explicit
-  requirement and the lifecycle, visibility, localization and duplicate
-  rendering behavior are understood.
+- Use references to existing records only when reuse is an explicit requirement
+  and the lifecycle, visibility, localization and duplicate rendering behavior
+  are understood.
 - Use a container of arbitrary `tt_content` only when arbitrary nested content
-  is a deliberate requirement. Do not substitute the generic `records` field
-  for an owned repeatable model.
+  is a deliberate requirement. Do not substitute the generic `records` field for
+  an owned repeatable model.
 
 Read [references/checklist.md](references/checklist.md) before creating or
 changing a content element.
@@ -49,10 +49,10 @@ changing a content element.
   `tt_content` override.
 - Put one element's fields and registration in a named sibling override.
 - Put a custom record table in its own TCA file.
-- Put one element's rendering in a dedicated TypoScript file below the
-  project's established content-element directory.
-- Keep the Fluid template under the project's content-element template root
-  and follow the CType-to-template naming convention.
+- Put one element's rendering in a dedicated TypoScript file below the project's
+  established content-element directory.
+- Keep the Fluid template under the project's content-element template root and
+  follow the CType-to-template naming convention.
 - Load element-only CSS and JavaScript from the template through the Fluid
   AssetCollector. Use global page inclusion only for assets required site-wide.
 
@@ -63,8 +63,8 @@ changing a content element.
 - Use domain label files for backend fields and frontend message files for
   visitor-facing text. Do not hard-code JavaScript state labels.
 - Add a useful backend preview for a custom CType.
-- Use Core data processors where they express the query; add a custom
-  processor only for behavior the Core processors cannot represent.
+- Use Core data processors where they express the query; add a custom processor
+  only for behavior the Core processors cannot represent.
 - Keep raw Fluid output limited to markup already rendered by a trusted TYPO3
   rendering API.
 
@@ -73,8 +73,8 @@ changing a content element.
 - Validate PHP, YAML, Fluid, XLIFF and TypoScript through commands the project
   actually declares.
 - Add unit tests only for isolated logic.
-- Add functional coverage for TCA, schema, inline persistence, localization
-  and rendered output.
+- Add functional coverage for TCA, schema, inline persistence, localization and
+  rendered output.
 - Treat a functional frontend subrequest as proof of server-side HTML rendering
   and AssetCollector registration only. It does not execute JavaScript, apply
   CSS, measure layout or prove interaction. Report that boundary explicitly.
@@ -83,6 +83,6 @@ changing a content element.
 - Re-run `typo3_extension_scope` after the change and report parser blind spots
   separately from implementation defects.
 
-This skill owns content-element architecture and implementation. Use the
-testing skill for test infrastructure, the documentation skill for manuals,
-and the conformance skill for a broader extension audit.
+This skill owns content-element architecture and implementation. Use the testing
+skill for test infrastructure, the documentation skill for manuals, and the
+conformance skill for a broader extension audit.

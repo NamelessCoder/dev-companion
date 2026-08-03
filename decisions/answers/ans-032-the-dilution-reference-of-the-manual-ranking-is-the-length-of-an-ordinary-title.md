@@ -44,25 +44,27 @@ supposed to apply it.
   top-6 answer while 104 arrive. It is not a marginal change and it is not
   presented as one.
 - What arrives, read one prompt at a time. `CORE-01` is a DataHandler bug and
-  gained `DataHandler` and `DataHandler basics`, neither of which was in its six;
-  `CORE-04` deprecates `GeneralUtility::getUrl()` and gained Deprecation
+  gained `DataHandler` and `DataHandler basics`, neither of which was in its
+  six; `CORE-04` deprecates `GeneralUtility::getUrl()` and gained Deprecation
   Handling; `CORE-05` is a functional test that fails locally and passes in CI
   and gained CI/CD Automation. What leaves is mostly event class names —
   `AfterPageUrlsForSiteForRedirectIntegrityHaveBeenCollectedEvent`,
-  `ShouldUseCachedPageDataIfAvailableEvent`, five `ModifyRecordList*Event` pages.
-- The counter that says the opposite, because it was run first and not
-  following it is a decision. The mean number of query words reaching a returned
-  page falls from 2.00 at 12 to 1.72 at 3, and results reached by one word or
-  none rise from 79 of 258 to 114. That instrument counts a long class name as
-  the better answer for the words it happens to contain, which is the failure
-  being fixed rather than a measure of it.
-- What it does not buy, which is the question it was picked for. `Global/If.html`
-  is fourth and not first: three of the ten pages carrying `if` are titled `if`
-  — `Guide/TypoScriptFunctions/If/Index.html`, `Functions/If.html` and this one —
-  and `security.ifAuthenticated` is three words, so all four are undiluted, all
-  four score 198, and the order among them is the order the index was built in.
-  No length reference separates identical titles. What separates them is the
-  book, and the query says which book in the `f:` prefix that
+  `ShouldUseCachedPageDataIfAvailableEvent`, five `ModifyRecordList*Event`
+  pages.
+- The counter that says the opposite, because it was run first and not following
+  it is a decision. The mean number of query words reaching a returned page
+  falls from 2.00 at 12 to 1.72 at 3, and results reached by one word or none
+  rise from 79 of 258 to 114. That instrument counts a long class name as the
+  better answer for the words it happens to contain, which is the failure being
+  fixed rather than a measure of it.
+- What it does not buy, which is the question it was picked for.
+  `Global/If.html` is fourth and not first: three of the ten pages carrying `if`
+  are titled `if` — `Guide/TypoScriptFunctions/If/Index.html`,
+  `Functions/If.html` and this one — and `security.ifAuthenticated` is three
+  words, so all four are undiluted, all four score 198, and the order among them
+  is the order the index was built in. No length reference separates identical
+  titles. What separates them is the book, and the query says which book in the
+  `f:` prefix that
   [`D-KNW-024`](../knowledge/knw-024-the-fluid-namespace-prefix-is-what-a-template-question-is-written-in.md)
   made a domain keyword for the hints and nothing reads for the manuals.
 - The field weights, which were the other candidate and are now measured. All

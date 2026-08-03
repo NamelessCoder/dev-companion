@@ -15,9 +15,9 @@ the page a reader gets — and calling it a frontend test is what hides that.
 ## From
 
 Browser tests answered with the id index and a section about site sets, while
-the core works the conventions out in `Build/tests/playwright/`; and a first
-axe run on a theme that passed every other test, which failed on contrast four
-times and was right each time (2026-07-29).
+the core works the conventions out in `Build/tests/playwright/`; and a first axe
+run on a theme that passed every other test, which failed on contrast four times
+and was right each time (2026-07-29).
 
 ## Held by
 

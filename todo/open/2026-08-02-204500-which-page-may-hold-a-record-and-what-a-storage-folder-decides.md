@@ -12,11 +12,11 @@ own has nothing when it picks the pid. Read
 `PageDoktypeRegistry::isRecordTypeAllowedForDoktype()` and
 `getAllowedTypesForDoktype()`, and the `pages` TCA entries for
 `DOKTYPE_SYSFOLDER` and `DOKTYPE_DEFAULT`, on `.checkouts/12.4`,
-`.checkouts/13.4` and `.checkouts/14.3` — for what a storage folder allows
-that a standard page refuses, what the TCA root-level capability decides for
+`.checkouts/13.4` and `.checkouts/14.3` — for what a storage folder allows that
+a standard page refuses, what the TCA root-level capability decides for
 `pid = 0`, and where the allowed list is declared on each major,
 `PageDoktypeRegistry` up to 13.4 and TCA `allowedRecordTypes` on 14.3. Then
 write it as one statement beside the positioning-pid statement on
 `datahandler-persistence` in `knowledge/hints/records.json`, with a version
-range only where the three majors differ, and a requirement for what has to
-keep holding.
+range only where the three majors differ, and a requirement for what has to keep
+holding.

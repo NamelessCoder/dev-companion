@@ -29,9 +29,9 @@ Then, for this workflow:
   implements; documentation that outruns it is the defect this workflow exists
   to avoid.
 
-For backend documentation, verify modules through
-`typo3_backend_module_lookup`, icons through `typo3_icon_lookup`, and undeclared
-Fluid prefixes through `typo3_fluid_namespace_list` when those facts appear.
+For backend documentation, verify modules through `typo3_backend_module_lookup`,
+icons through `typo3_icon_lookup`, and undeclared Fluid prefixes through
+`typo3_fluid_namespace_list` when those facts appear.
 
 ## Choose the documentation surface
 
@@ -62,8 +62,8 @@ stable public API.
   explicit.
 - Validate internal links, referenced paths, configuration examples, and code
   identifiers against the checkout.
-- Run documentation, lint, and test commands only when the project declares
-  them or the task establishes them.
+- Run documentation, lint, and test commands only when the project declares them
+  or the task establishes them.
 - Report the files updated, validation performed, and any behavior that could
   not be verified from the installation or project.
 

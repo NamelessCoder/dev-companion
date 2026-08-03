@@ -48,22 +48,22 @@ live documentation is unavailable, keep the failure distinct from no match.
   changelogs, Gerrit rules, and `Build/Scripts/runTests.sh` only for an actual
   core patch.
 - Run the repository's own relevant checks. Use `typo3_test_run_guide` with the
-  changed paths only for an actual core patch: it answers `Build/Scripts/runTests.sh`,
-  which exists in the core repository alone. Never present it as a project
-  command, whatever the task turns out to be — what decides is the work, not
-  whether the tool is in the list.
+  changed paths only for an actual core patch: it answers
+  `Build/Scripts/runTests.sh`, which exists in the core repository alone. Never
+  present it as a project command, whatever the task turns out to be — what
+  decides is the work, not whether the tool is in the list.
 - Re-run the lookups when the target version, extension, or implementation
   choice changes; do not treat an earlier result as universal.
 
 This skill owns backend module registration, controllers, routes, and backend UI
 implementation.
 
-When implementation is verified and only documentation remains, stop this workflow.
-Activate `typo3-extension-documentation` before editing documentation.
+When implementation is verified and only documentation remains, stop this
+workflow. Activate `typo3-extension-documentation` before editing documentation.
 Carry forward the extension key, target version, and verified public behavior;
-let that skill select the documentation surface.
-Documentation for functionality encapsulated in an extension belongs to that
-extension, not to the project around it.
+let that skill select the documentation surface. Documentation for functionality
+encapsulated in an extension belongs to that extension, not to the project
+around it.
 
 Stop and activate the testing skill before changing test infrastructure, the
 conformance skill before broadening into an audit, and the content-element skill

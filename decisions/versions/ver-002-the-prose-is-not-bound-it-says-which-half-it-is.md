@@ -9,18 +9,18 @@ status: confirmed
 **The prose carries no version binding and says so in every answer, naming
 `typo3_architecture_lookup` with `targetVersion` as where the bound form is.**
 
-The architecture hints now carry `since`/`until` on every statement that
-changed inside the covered range. The markdown documents below `knowledge/` are
-the long form of the same subjects and carry nothing — the event listener
-attribute, the Fluid file extension, the backend tokens and the translation
-domains are all described there as the shape, with no range.
+The architecture hints now carry `since`/`until` on every statement that changed
+inside the covered range. The markdown documents below `knowledge/` are the long
+form of the same subjects and carry nothing — the event listener attribute, the
+Fluid file extension, the backend tokens and the translation domains are all
+described there as the shape, with no range.
 
 ## Decided
 
-- No binding mechanism for prose. It would need per-bullet metadata in
-  markdown, a parser, a renderer and a test, for a corpus that is read whole
-  rather than filtered, and the same statements are already bound where a
-  caller acts on them.
+- No binding mechanism for prose. It would need per-bullet metadata in markdown,
+  a parser, a renderer and a test, for a corpus that is read whole rather than
+  filtered, and the same statements are already bound where a caller acts on
+  them.
 - Every prose answer says so instead, in one sentence from
   `Tools::renderSections()`, and names `typo3_architecture_lookup` with
   `targetVersion` as where the bound form is. One sentence in one place, so a
@@ -30,8 +30,7 @@ domains are all described there as the shape, with no range.
 
 - A caller that is told the prose is unfiltered will ask the hints when the
   version matters. The alternative — filtering prose sections by the ranges of
-  the hints that share their subject — would guess at a mapping nobody
-  declared.
+  the hints that share their subject — would guess at a mapping nobody declared.
 
 ## Wrong if
 
@@ -67,7 +66,7 @@ beside it. What did not hold is the second half of the sentence in
 that branch has. It now names the test run guide for a command, and the
 architecture lookup for a convention. That is still one sentence in one place.
 
-What this leaves open is the class of prose statement that is not a command.
-The guard added here compares a `-s <suite>` token against the ranges the suites
+What this leaves open is the class of prose statement that is not a command. The
+guard added here compares a `-s <suite>` token against the ranges the suites
 already carry, and nothing equivalent exists for a sentence describing a shape —
 for that, the **Wrong if** is still read rather than run.

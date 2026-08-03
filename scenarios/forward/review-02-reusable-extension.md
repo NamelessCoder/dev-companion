@@ -9,8 +9,8 @@
 **What has to come out of it**
 
 - The review establishes the extension key, supported TYPO3 and PHP range,
-  repository-owned commands, and whether the checkout is a standalone
-  extension or part of an installation.
+  repository-owned commands, and whether the checkout is a standalone extension
+  or part of an installation.
 - It inspects only subsystems the extension actually contains and supports each
   finding with a concrete path, behavior, or failed project-owned check.
 - Compatibility, behavioral correctness, test evidence, documentation, static

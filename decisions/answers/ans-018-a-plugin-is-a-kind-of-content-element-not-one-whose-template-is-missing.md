@@ -24,11 +24,11 @@ ever going to write.
   setup after `defaultContentRendering`. So the answer's "no templateName in
   this extension's TypoScript" was true of the extension and false of the
   element.
-- `Generic.fluid.html` in `.checkouts/14.3` — `Generic.html` in `.checkouts/13.4`,
-  the same body — renders `{content}` where there is any and otherwise
-  `<f:cObject typoscriptObjectPath="tt_content.{data.CType}.20">`. That cObject
-  is the `EXTBASEPLUGIN`, which is what "renders through the dispatcher" means
-  concretely.
+- `Generic.fluid.html` in `.checkouts/14.3` — `Generic.html` in
+  `.checkouts/13.4`, the same body — renders `{content}` where there is any and
+  otherwise `<f:cObject typoscriptObjectPath="tt_content.{data.CType}.20">`.
+  That cObject is the `EXTBASEPLUGIN`, which is what "renders through the
+  dispatcher" means concretely.
 - `tt_content.<identifier>.templateName` therefore does reach a plugin: it is
   the wrapper's template, core sets it to `Generic`, and one set over it has to
   render `tt_content.<identifier>.20` or `{content}` or the plugin's own output
@@ -44,9 +44,10 @@ ever going to write.
   the CType column. One identifier addresses both places, so nothing has to be
   derived to name the second.
 - `registerPlugin()` can only stand in `Configuration/TCA/Overrides/`, which is
-  the directory this answer already parses: `ExtensionManagementUtility::addPlugin()`
-  below it needs the extension key an override file passes and throws with
-  1404068038 anywhere else, and `.checkouts/13.4` says so in the message.
+  the directory this answer already parses:
+  `ExtensionManagementUtility::addPlugin()` below it needs the extension key an
+  override file passes and throws with 1404068038 anywhere else, and
+  `.checkouts/13.4` says so in the message.
 - On `.checkouts/14.3` `addPlugin()` writes to `CType` and nothing else
   (#105538). On `.checkouts/13.4` it writes to `list_type` unless
   `configurePlugin()` recorded `CType`, which is #105076 deprecating that form
@@ -56,8 +57,8 @@ ever going to write.
 
 - The `contentElements` entry carries `kind` — `element` or `plugin` — and, on a
   plugin, `pluginSettings`: the file of this extension's TypoScript that
-  configures `plugin.tx_<identifier>`. That is what replaces the absence, because
-  it is the file the caller was looking for when they went looking for a
+  configures `plugin.tx_<identifier>`. That is what replaces the absence,
+  because it is the file the caller was looking for when they went looking for a
   template.
 - The kind is read from the `registerPlugin()` call rather than asked of the
   booted installation. The call is in a file this answer already tokenises and
@@ -70,8 +71,8 @@ ever going to write.
   recognised call before, so two registered plugins were previously absent from
   the file-read answer altogether.
 - The `list_type` residue is said in prose rather than branched on by version.
-  One sentence names it, `ext_localconf.php` and the version it went away in;
-  a `Instance::typo3Major()` branch would have put a second shape of this answer
+  One sentence names it, `ext_localconf.php` and the version it went away in; a
+  `Instance::typo3Major()` branch would have put a second shape of this answer
   into the code for a form that is gone in the newest covered major.
 - `typoScriptValues()` now holds reference lines — `plugin.tx_x < lib.y` — and
   not only assignments. A path that is only ever referenced was invisible to a
@@ -81,9 +82,9 @@ ever going to write.
 ## Assumed
 
 - That `plugin.tx_<identifier>` is where the caller's next question goes, rather
-  than the controller and action list. `configurePlugin()` in `ext_localconf.php`
-  holds that list and is read by nothing here, so the answer names the file it
-  can name.
+  than the controller and action list. `configurePlugin()` in
+  `ext_localconf.php` holds that list and is read by nothing here, so the answer
+  names the file it can name.
 - That a plugin whose `registerPlugin()` arguments are not literals is rare
   enough to leave to the general rule. Such an identifier is reported as an
   element again, with the `templateName` sentence that was wrong for the two in
@@ -99,8 +100,9 @@ ever going to write.
   CType it is not, and the prose sentence is where a reader has to catch it.
 - An extension registers a plugin from a loop or a constant and the answer calls
   it an element with no template. The classification would then need the runtime
-  after all, and `$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions']`
-  is where the probe would read it.
+  after all, and
+  `$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions']` is where the
+  probe would read it.
 - A caller wanted the Fluid template file and `plugin.tx_<identifier>.view` did
   not get them there — because the path is set in a site set, or because the
   controller and action decide the template name. The pointer would then be one

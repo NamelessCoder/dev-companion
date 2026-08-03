@@ -14,13 +14,14 @@
 **What the agent needs from this server**
 
 - Nothing, honestly, beyond recognising that this is not the TYPO3 backend. The
-  server's CSS knowledge is the backend's, and the backend left Bootstrap behind.
+  server's CSS knowledge is the backend's, and the backend left Bootstrap
+  behind.
 - The Fluid side of the templates, where it comes up.
 
 **What has to come out of it**
 
-- The backend CSS architecture, its design tokens and its class naming do **not**
-  come back as advice for a Bootstrap frontend theme.
+- The backend CSS architecture, its design tokens and its class naming do
+  **not** come back as advice for a Bootstrap frontend theme.
 - If CSS knowledge is offered at all, it is marked as the core backend's and as
   not applying here.
 

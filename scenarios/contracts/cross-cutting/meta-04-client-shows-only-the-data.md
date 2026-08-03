@@ -10,9 +10,9 @@ drops the text block · **Contract:** `held` — `R-ANS-002`
 
 **What has to come out of it**
 
-- Everything the agent needs in order to act is in the structured data: whether a
-  lookup was answered by the installation or by nothing, the reason where it was
-  not, the installation and console diagnostic, the coverage and source of a
+- Everything the agent needs in order to act is in the structured data: whether
+  a lookup was answered by the installation or by nothing, the reason where it
+  was not, the installation and console diagnostic, the coverage and source of a
   match.
 - The session reaches the same conclusion it reaches with the text visible.
 

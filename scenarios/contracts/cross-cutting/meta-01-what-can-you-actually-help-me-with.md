@@ -21,8 +21,8 @@
   bundled knowledge, what is asked of this installation, and what the agent has
   to establish in the checkout itself.
 - The installation being read is named, along with how it was found.
-- The boundaries are stated as boundaries, not as "I can probably help with
-  that too".
+- The boundaries are stated as boundaries, not as "I can probably help with that
+  too".
 
 **How it fails**
 

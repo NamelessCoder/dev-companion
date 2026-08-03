@@ -107,12 +107,12 @@ it in the report rather than in a rule. `REVIEW-01`'s answer carried five
 categories where one would have done: High/Medium/Low, "Recommendations (no
 verified violation)", "Assessed and clean", "Not applicable" for the subsystems
 the extension does not register, and "Unassessed — not the same as clean", with
-a reason per entry on the last. It then invented a sixth nobody had asked it
-for — the consent checkbox reported as "a legal call, not a TYPO3 conformance
+a reason per entry on the last. It then invented a sixth nobody had asked it for
+— the consent checkbox reported as "a legal call, not a TYPO3 conformance
 defect" — which is a surface placed outside the review rather than filed as a
-finding. A report that already keeps four kinds of "no finding here" apart
-keeps a fifth apart too, and the fifth is the cheaper one to write: not
-requested says who narrowed it.
+finding. A report that already keeps four kinds of "no finding here" apart keeps
+a fifth apart too, and the fifth is the cheaper one to write: not requested says
+who narrowed it.
 
 The other half of the assumption — that an entry can be closed at a cost of one
 line, without the reading — is `REVIEW-02`. Its coverage table closes

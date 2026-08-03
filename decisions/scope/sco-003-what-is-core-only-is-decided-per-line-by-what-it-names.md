@@ -9,10 +9,10 @@ status: confirmed
 **Whether a line is core-only is a mechanical check over the rendered text
 rather than a flag on each entry.**
 
-`typo3_task_guide` now drops core-only material outside the core. What counts
-as core-only is not a flag on each entry but a check on its text: does it name
-something that exists in the core repository and nowhere else —
-`typo3/sysext/`, `Build/Scripts/`, Gerrit, a Change-Id, the core branch policy.
+`typo3_task_guide` now drops core-only material outside the core. What counts as
+core-only is not a flag on each entry but a check on its text: does it name
+something that exists in the core repository and nowhere else — `typo3/sysext/`,
+`Build/Scripts/`, Gerrit, a Change-Id, the core branch policy.
 
 ## Decided
 
@@ -32,23 +32,23 @@ something that exists in the core repository and nowhere else —
 ## Wrong if
 
 - A checklist item has to survive although it names a core path — advice about
-  reading the core as a reference rather than changing it would be exactly
-  that. It would then need the flag after all.
+  reading the core as a reference rather than changing it would be exactly that.
+  It would then need the flag after all.
 
 ## Confirmed on 2026-08-02
 
 The **Wrong if** has not happened. Read out of the three corpora the check runs
-over in `TaskGuide` — the 50 checklist lines a brief can put in front of it,
-the 6 checkout discovery steps, the follow-up tools — six drop, and all six
-instruct writing into the core or pushing to it: the three changelog files
-below `typo3/sysext/core/Documentation/Changelog/`, the `checkRst` run through
-`Build/Scripts/runTests.sh`, and pushing to `refs/for/`. Not one is advice
-about reading the core, so the shape that would need the flag is not in the
-corpus and the mechanical check keeps its case. The nearest thing to it is a
-discovery step rather than a checklist item, and it is worth naming because the
-next session will find it and stop there: the icon step belongs to everyone —
-an identifier that is not registered renders an empty box in any repository —
-and it is dropped whole for the by-hand fallback it ends on,
+over in `TaskGuide` — the 50 checklist lines a brief can put in front of it, the
+6 checkout discovery steps, the follow-up tools — six drop, and all six instruct
+writing into the core or pushing to it: the three changelog files below
+`typo3/sysext/core/Documentation/Changelog/`, the `checkRst` run through
+`Build/Scripts/runTests.sh`, and pushing to `refs/for/`. Not one is advice about
+reading the core, so the shape that would need the flag is not in the corpus and
+the mechanical check keeps its case. The nearest thing to it is a discovery step
+rather than a checklist item, and it is worth naming because the next session
+will find it and stop there: the icon step belongs to everyone — an identifier
+that is not registered renders an empty box in any repository — and it is
+dropped whole for the by-hand fallback it ends on,
 `typo3/sysext/core/Resources/Public/Icons/T3Icons/icons.json` and the `Flags/`
 directory beside it. Dropping it costs nothing today, on two counts. The
 transferable half arrives twice regardless, from lines that carry no marker:

@@ -17,10 +17,10 @@ caller is holding.
 
 How it is worked out is not fixed here: today the entrypoint hands in the
 working directory and `Instance` walks up from it, which is what
-[`R-DIS-001`](dis-001-discovery-belongs-to-the-stdio-entrypoint-alone.md) restricts
-to that one caller, and `TYPO3_MCP_ROOT` is how it is stated outright instead.
-Nothing in the protocol replaces either — `roots` was the candidate and is
-deprecated, which
+[`R-DIS-001`](dis-001-discovery-belongs-to-the-stdio-entrypoint-alone.md)
+restricts to that one caller, and `TYPO3_MCP_ROOT` is how it is stated outright
+instead. Nothing in the protocol replaces either — `roots` was the candidate and
+is deprecated, which
 [`D-DIS-006`](../../decisions/discovery/dis-006-the-installation-stays-worked-out-from-the-start-directory.md)
 records. Should one arrive, the mechanism may change; this may not.
 
@@ -28,8 +28,8 @@ records. Should one arrive, the mechanism may change; this may not.
 
 The line that finds it could be deleted from the entrypoint with all 495 tests
 staying green, because every test that covers discovery hands `Instance` a
-directory itself and so covers what happens after somebody does. Nothing
-covered that somebody does (2026-08-01).
+directory itself and so covers what happens after somebody does. Nothing covered
+that somebody does (2026-08-01).
 
 ## Held by
 

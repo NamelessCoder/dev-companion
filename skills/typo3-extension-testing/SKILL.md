@@ -6,11 +6,10 @@ description: Set up, add, extend, repair, review, or run tests and static qualit
 # TYPO3 Extension Testing
 
 Establish or grow the smallest useful test and static-quality surface at the
-correct layer. Make
-the first green run part of setup, and run only commands supported by the
-checkout. Keep this skill as routing and workflow; never retain version-specific
-APIs, paths, dependency constraints, or commands that the installation or
-checkout owns.
+correct layer. Make the first green run part of setup, and run only commands
+supported by the checkout. Keep this skill as routing and workflow; never retain
+version-specific APIs, paths, dependency constraints, or commands that the
+installation or checkout owns.
 
 ## Establish the test surface
 
@@ -33,8 +32,8 @@ Then, for this workflow:
 - Read the target code, existing tests and fixtures, test configuration,
   dependency manifests, CI, and the development environment.
 
-If a lookup is unavailable, state the gap separately from a lookup that found
-no match. Do not replace current project evidence with remembered TYPO3 setup.
+If a lookup is unavailable, state the gap separately from a lookup that found no
+match. Do not replace current project evidence with remembered TYPO3 setup.
 
 ## Choose the layer and its owner
 
@@ -52,8 +51,8 @@ After selecting a layer, read only its implementation guide:
 - Use a functional test when TYPO3 bootstrapping, configuration, database
   schema, DataHandler, repositories, services, or integration between framework
   components is part of the behavior.
-- Use a browser test for rendered user journeys, backend interaction, JavaScript,
-  or accessibility behavior that cannot be established below the UI.
+- Use a browser test for rendered user journeys, backend interaction,
+  JavaScript, or accessibility behavior that cannot be established below the UI.
 - Use static analysis and coding standards for the defects and the style no test
   observes. A task that asks for them establishes them whether or not the
   project already runs them; a task that does not ask extends what is there and
@@ -87,8 +86,9 @@ for a review-only request, report the defect without changing it.
    requires. Never translate a core-only `runTests.sh` command into an extension
    command.
 6. For browser tests, require a runnable site and establish project-owned runner
-   configuration, scripts, artifacts, and one real target. Choose host, container,
-   or dedicated browser image from the project rather than imposing one topology.
+   configuration, scripts, artifacts, and one real target. Choose host,
+   container, or dedicated browser image from the project rather than imposing
+   one topology.
 7. For static analysis and coding standards, establish one project-owned command
    per check and keep the command that reports apart from the one that writes.
    Fix a new finding rather than recording it in a baseline, and keep automatic
@@ -113,8 +113,8 @@ for a review-only request, report the defect without changing it.
 
 ## Prove the result
 
-1. Prove setup with a meaningful test at every layer established by the task.
-   Do not add `assertTrue(true)` or production code whose only purpose is to give
+1. Prove setup with a meaningful test at every layer established by the task. Do
+   not add `assertTrue(true)` or production code whose only purpose is to give
    the harness something to test. If no unit-testable behavior exists, prove
    discovery and report the unit suite as empty.
 2. Run the narrowest relevant test first, then its containing local suite.
@@ -123,10 +123,10 @@ for a review-only request, report the defect without changing it.
    artifact or report is produced.
 5. For a static check, run it again after its fix command and inspect the
    working tree for files the fixer touched outside the intended scope.
-6. Report the exact commands run, results, files added or changed, and checks not
-   run with the reason.
+6. Report the exact commands run, results, files added or changed, and checks
+   not run with the reason.
 
 This skill owns testing and static-quality infrastructure, the changes they
-require, and the execution of both. For a
-broad conformance audit, documentation rewrite, or backend-module implementation,
-hand that work to the corresponding skill and retain only the testing part.
+require, and the execution of both. For a broad conformance audit, documentation
+rewrite, or backend-module implementation, hand that work to the corresponding
+skill and retain only the testing part.

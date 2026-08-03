@@ -21,8 +21,8 @@ method; do not embed versioned TYPO3 facts.
    checklist's surfaces narrowed to the ones this kind of checkout can have. It
    is the work list, and the coverage the report closes on is this same list
    with every entry answered.
-4. Where the request names what it is about — security only, configuration
-   only, one subsystem — read the surfaces it names and mark the rest **not
+4. Where the request names what it is about — security only, configuration only,
+   one subsystem — read the surfaces it names and mark the rest **not
    requested** on that same list. The request narrows the reading, never the
    list: an entry nobody asked about costs one line, and dropping it instead is
    what leaves the reader unable to ask for the rest. A request that names no
@@ -48,12 +48,12 @@ one that already exists:
 - The lookup that owns that surface's runtime facts, where one exists:
   `typo3_backend_module_lookup` for registered modules and routes,
   `typo3_icon_lookup` for icon identifiers, `typo3_label_lookup` for labels and
-  overrides, `typo3_fluid_namespace_list` for globally available Fluid
-  prefixes, `typo3_configuration_lookup` for effective runtime configuration.
-- `typo3_documentation_lookup` with several short English queries and the
-  target version where an official API or configuration detail decides the
-  finding, and for every "does this still work here" a surface raises — the
-  base says why the changelog cannot answer that one.
+  overrides, `typo3_fluid_namespace_list` for globally available Fluid prefixes,
+  `typo3_configuration_lookup` for effective runtime configuration.
+- `typo3_documentation_lookup` with several short English queries and the target
+  version where an official API or configuration detail decides the finding, and
+  for every "does this still work here" a surface raises — the base says why the
+  changelog cannot answer that one.
 
 The first two answer different questions and neither stands in for the other. A
 runtime lookup reports what is registered, what a path resolves to, what a value
@@ -81,8 +81,8 @@ a verified violation from a recommendation and from missing evidence.
 The deprecation sweep the base fixes is reported the same way, and a review that
 found nothing says the sweep ran and came back empty, with the majors it
 covered. A sweep that is only visible when it produces a finding cannot be told
-apart from one that never ran, and the surface it covers is the one whose silence
-reads as a clean bill for the next major.
+apart from one that never ran, and the surface it covers is the one whose
+silence reads as a clean bill for the next major.
 
 ## Report and improve
 

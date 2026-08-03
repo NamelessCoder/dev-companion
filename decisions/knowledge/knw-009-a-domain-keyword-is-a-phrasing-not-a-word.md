@@ -24,25 +24,25 @@ hint in `php.json` was filtered out before anything was scored.
   domain by it — `SKILL-01` and `SKILL-04`.
 - The bare word was tried first and is worse than the gap. `SKILL-04` does not
   move, and `SKILL-01` — "Review our site package's test coverage" — went from
-  `sitepackage-layout` to `sitepackage-initial-content` ahead of it, reaching
-  no testing hint either way. Term weights are taken over the candidates
+  `sitepackage-layout` to `sitepackage-initial-content` ahead of it, reaching no
+  testing hint either way. Term weights are taken over the candidates
   (`R-ANS-007`), so widening the candidate set reweighs every term in it, and a
   keyword that only widens buys a different wrong answer.
 - The phrasings do move it, once `project-extension-tests` also carries
   `test coverage` in its `appliesTo`: `SKILL-01` leads with that hint, and so
   does the query this started from, with or without a path.
-- What none of them moves: "test the frontend rendering of the page",
-  "browser tests for the site package", "add tests for the DataHandler change"
-  and the three other phrasings `HintsTest` holds.
+- What none of them moves: "test the frontend rendering of the page", "browser
+  tests for the site package", "add tests for the DataHandler change" and the
+  three other phrasings `HintsTest` holds.
 
 ## Decided
 
 - The domain vocabulary and the hint vocabulary are widened together. A domain
   makes a category a candidate; what wins inside it is the hint's own
   `appliesTo`, and moving one without the other trades a miss for a wrong hit.
-- No bare `test`. `Text::containsWord()` matches at a word boundary as a
-  prefix, so `test` would also carry "testing" and "tests" — the reach is not
-  the problem, the reweighing is.
+- No bare `test`. `Text::containsWord()` matches at a word boundary as a prefix,
+  so `test` would also carry "testing" and "tests" — the reach is not the
+  problem, the reweighing is.
 
 ## Assumed
 
@@ -70,8 +70,8 @@ The sixth phrasing arrived, and it came out of this repository's own text.
 the quality one reads "Quality: tests, the check layer, documentation,
 deprecations, and upgrade readiness". Its word for the surface is the bare
 `tests` this entry rejected. So an audit asking in the checklist's own wording
-reaches no PHP hint at all: `bin/cli hints:probe "audit the quality surface of
-an extension: tests, the check layer, deprecations and upgrade readiness"`
+reaches no PHP hint at all:
+`bin/cli hints:probe "audit the quality surface of an extension: tests, the check layer, deprecations and upgrade readiness"`
 resolves to the `docs` domain alone and returns `deprecated-apis` and
 `installation-upgrade`.
 
@@ -95,15 +95,16 @@ TYPO3 version" ranks the harness hint first at `appliesTo(10) + text(173)`, over
 `text only(209)`; "test the extension on TYPO3 12 and 13" puts it seventh of
 ten. Asked through the tool the skill actually calls, the split is total:
 `typo3_architecture_lookup` for an extension's quality surface returns
-`installation-upgrade`, `deprecated-apis` and `project-repository-layout` —
-the last of them `scope: project`, which is not even the unit under audit.
+`installation-upgrade`, `deprecated-apis` and `project-repository-layout` — the
+last of them `scope: project`, which is not even the unit under audit.
 
-Both reaches are settled in [`D-KNW-013`](knw-013-this-repositorys-own-sentence-is-reworded-rather-than-indexed.md),
+Both reaches are settled in
+[`D-KNW-013`](knw-013-this-repositorys-own-sentence-is-reworded-rather-than-indexed.md),
 which repeated this measurement over the 107 texts the repository has to hand
-now. The sixth phrasing is not a keyword: the checklist sentence was reworded
-to name the test suite and the supported versions it runs on, and the hint half
-is two patterns on `extension-repository-layout` that name a version rather
-than a test. The bare word was measured again and rejected again, and a second
-copy of the range rule in `project-extension-tests` moved nothing. What this
-entry decided holds — the two vocabularies were widened together, and neither
-half reaches the rule without the other.
+now. The sixth phrasing is not a keyword: the checklist sentence was reworded to
+name the test suite and the supported versions it runs on, and the hint half is
+two patterns on `extension-repository-layout` that name a version rather than a
+test. The bare word was measured again and rejected again, and a second copy of
+the range rule in `project-extension-tests` moved nothing. What this entry
+decided holds — the two vocabularies were widened together, and neither half
+reaches the rule without the other.

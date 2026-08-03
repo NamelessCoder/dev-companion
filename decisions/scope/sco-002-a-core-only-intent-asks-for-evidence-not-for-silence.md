@@ -10,11 +10,11 @@ status: confirmed
 either way it is demoted to a conditional match rather than dropped or stated.**
 
 `outsideCore` was to be the gate for the patch submission intent. It is not
-enough: the reported task — "Maintain and extend the third-party TYPO3
-extension bk2k/bootstrap-package … review TCA …" — does not trip a single
-outside-core marker, because "third-party TYPO3 extension" is not the phrase
-the list carries. Gating on the flag alone would have left the feedback's own
-case answered exactly as before.
+enough: the reported task — "Maintain and extend the third-party TYPO3 extension
+bk2k/bootstrap-package … review TCA …" — does not trip a single outside-core
+marker, because "third-party TYPO3 extension" is not the phrase the list
+carries. Gating on the flag alone would have left the feedback's own case
+answered exactly as before.
 
 ## Decided
 
@@ -32,9 +32,9 @@ case answered exactly as before.
 
 ## Wrong if
 
-- A core contributor's task text names neither a sysext path nor Gerrit and
-  they now get the submission rules as conditional rather than as fact. That is
-  the cost of not guessing, and the condition line is what keeps it cheap.
+- A core contributor's task text names neither a sysext path nor Gerrit and they
+  now get the submission rules as conditional rather than as fact. That is the
+  cost of not guessing, and the condition line is what keeps it cheap.
 
 ## Covered by
 
@@ -55,5 +55,6 @@ condition, and the submission steps under it rather than dropped. That is the
 demotion this decided, met in the one text it was predicted to be met in. What
 keeps it cheap is that the condition is a sentence the contributor settles from
 their own intent, and naming a sysext path in the same session turns it into a
-stated match; `ScopeTest::aCoreTaskThatNamesNeitherAPathNorGerritKeepsTheSubmissionRules`
-and `ScopeTest::aCorePathStillMakesTheSameWordAPatchSubmission` hold both halves.
+stated match;
+`ScopeTest::aCoreTaskThatNamesNeitherAPathNorGerritKeepsTheSubmissionRules` and
+`ScopeTest::aCorePathStillMakesTheSameWordAPatchSubmission` hold both halves.

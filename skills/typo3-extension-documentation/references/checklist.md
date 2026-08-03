@@ -17,10 +17,10 @@ Read this before choosing the documentation surface and again before finishing.
 
 - The checkout is authoritative for what this package implements: registration,
   keys, defaults, paths, examples, and supported behavior.
-- Installation lookups are authoritative for effective registrations and
-  runtime state, but a parser miss is not proof of absence. If dynamic PHP code
-  and parsed output disagree, describe the parser limitation and verify the
-  code path.
+- Installation lookups are authoritative for effective registrations and runtime
+  state, but a parser miss is not proof of absence. If dynamic PHP code and
+  parsed output disagree, describe the parser limitation and verify the code
+  path.
 - Composer constraints and versioned official documentation own compatibility
   and external TYPO3 API claims.
 - Tests may demonstrate behavior, but do not turn internal implementation

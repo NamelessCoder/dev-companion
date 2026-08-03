@@ -14,8 +14,7 @@ without overriding a submitted value.
 ## From
 
 A sitepackage form task whose complete answer had to be read from the installed
-system extension and whose isolated identifier test was misleading
-(2026-07-29).
+system extension and whose isolated identifier test was misleading (2026-07-29).
 
 ## Held by
 

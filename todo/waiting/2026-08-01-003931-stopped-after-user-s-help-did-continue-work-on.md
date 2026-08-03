@@ -13,7 +13,8 @@
     reporting session could not state. The recommendation is not to write one.
     Answering "the harness's" archives the feedback, and this card with it.
 
-Judged as [`D-FBK-024`](../../decisions/feedback/fbk-024-a-feedback-about-the-callers-conduct-toward-its-user-names-no-surface.md).
+Judged as
+[`D-FBK-024`](../../decisions/feedback/fbk-024-a-feedback-about-the-callers-conduct-toward-its-user-names-no-surface.md).
 Two halves, and one of them is a sibling's: "finish verification rather than
 shipping unverified work" reaches `content-elements` and never the layer cell,
 which is `feedback/2026-08-01-003533`, judged as

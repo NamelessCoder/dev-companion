@@ -62,17 +62,18 @@ serving it are working from a single judgement, which is where a pair of steps
 that have to agree comes from.
 
 The last two are here because `Serves:` alone missed the collision that cost the
-most. On 2026-08-02 two todos with different `Serves:` lines each added a handler
-for one token to one function; the rebase put them in sequence, each ending in
-`continue`, and the second was never reached. Both had named `R-ANS-012` and both
-had named the class — one as `Extension::describe()`, the other as
-`src/Installation/Extension.php`. Neither is a declaration and neither had to be:
-it is a session saying where it is going, in the file the claim reads anyway.
+most. On 2026-08-02 two todos with different `Serves:` lines each added a
+handler for one token to one function; the rebase put them in sequence, each
+ending in `continue`, and the second was never reached. Both had named
+`R-ANS-012` and both had named the class — one as `Extension::describe()`, the
+other as `src/Installation/Extension.php`. Neither is a declaration and neither
+had to be: it is a session saying where it is going, in the file the claim reads
+anyway.
 
-`bin/cli todo:release <name>` is the way back out, for a claim nobody is
-working — a branch that came home with a question left over, one that was
-abandoned, a session that never started. Where it goes is read off the claim,
-and the branch is left alone either way.
+`bin/cli todo:release <name>` is the way back out, for a claim nobody is working
+— a branch that came home with a question left over, one that was abandoned, a
+session that never started. Where it goes is read off the claim, and the branch
+is left alone either way.
 
 ## The worktree
 
@@ -90,8 +91,8 @@ back at the main checkout. `bin/cli` then reads and writes the todos,
 requirements and decisions of the checkout the session is not in, and nothing
 about the output looks wrong.
 
-`.checkouts/` is the opposite case and is symlinked on purpose. It is 861 MB,
-it is gitignored, and a session working a todo only ever reads it. Only
+`.checkouts/` is the opposite case and is symlinked on purpose. It is 861 MB, it
+is gitignored, and a session working a todo only ever reads it. Only
 `bin/cli checkouts:update` writes there, and that is not a claim's work.
 
 ## Starting the sessions
@@ -135,20 +136,20 @@ wrong.
 
 What the message therefore cannot name is which todo is whose, and that half was
 never the prompt's to answer. A path a session is handed is one it has no reason
-to doubt: a worktree on a branch the claim never named — or one cut from a `main`
-that did not carry the claim yet — passes every check the session can make and
-then reads the queue, where it finds real work belonging to somebody else. So it
-is read out of the checkout instead:
+to doubt: a worktree on a branch the claim never named — or one cut from a
+`main` that did not carry the claim yet — passes every check the session can
+make and then reads the queue, where it finds real work belonging to somebody
+else. So it is read out of the checkout instead:
 
     bin/cli todo:next --worktree
 
 The same command every session in this repository starts with, and the flag is
-the sentence the prompt used to carry: *this session is one of several*. Standing
-on a claim, it hands over that claim and names the branch it is committed on.
-Standing on none — the wrong branch, a claim that was not on `main` yet, or a
-session started in the main checkout at all — it says which of those it is and
-stops. Where it refuses, that is the end of the session and not a cue to find
-something else to do.
+the sentence the prompt used to carry: *this session is one of several*.
+Standing on a claim, it hands over that claim and names the branch it is
+committed on. Standing on none — the wrong branch, a claim that was not on
+`main` yet, or a session started in the main checkout at all — it says which of
+those it is and stops. Where it refuses, that is the end of the session and not
+a cue to find something else to do.
 
 ## What the session does with it
 
@@ -161,7 +162,8 @@ elsewhere. The claim is handed over with them attached; this is why they are
 there:
 
 - **Commit on the branch, never on `main`.** That includes the todo file itself.
-  A finished claim is a deletion in the branch, and the merge is what carries it.
+  A finished claim is a deletion in the branch, and the merge is what carries
+  it.
 - **Leave the group listings alone** — the block at the foot of a
   `requirements/<group>/readme.md` or `decisions/<group>/readme.md`. It is
   generated from every file in the group, and a worktree can only see its own
@@ -178,19 +180,18 @@ there:
   been written by both halves of a pair — *the feedback stays open behind the
   sibling todo, which is another session's claim* — and both times the sibling
   was finished. Each session was right about its own half and wrong about the
-  half it could not see. What is true instead is shorter: this half is done,
-  and whether the entry closes depends on the other, which was not read here.
-  `TodoTest::everyOpenFeedbackIsOnTheBoard` is what catches the leftover, on
-  the rebase, once both halves are on `main`.
-- **Point at entries, not at positions.** In a file two sessions are both
-  adding to, *above*, *below*, *once*, *the first* and *the other* are all
-  claims about a layout that has one more section in it by the time anybody
-  reads them. The run of 2026-08-02 wrote *this entry has been cited once* into
-  an entry that ended the day with three citations, *the paragraph above* into
-  one that gained three sections in between, and *the **Wrong if** got its
-  other answer* twice, in two accounts that could not both be the other. Name
-  the feedback, the requirement or the decision instead: those survive
-  whatever lands beside them.
+  half it could not see. What is true instead is shorter: this half is done, and
+  whether the entry closes depends on the other, which was not read here.
+  `TodoTest::everyOpenFeedbackIsOnTheBoard` is what catches the leftover, on the
+  rebase, once both halves are on `main`.
+- **Point at entries, not at positions.** In a file two sessions are both adding
+  to, *above*, *below*, *once*, *the first* and *the other* are all claims about
+  a layout that has one more section in it by the time anybody reads them. The
+  run of 2026-08-02 wrote *this entry has been cited once* into an entry that
+  ended the day with three citations, *the paragraph above* into one that gained
+  three sections in between, and *the **Wrong if** got its other answer* twice,
+  in two accounts that could not both be the other. Name the feedback, the
+  requirement or the decision instead: those survive whatever lands beside them.
 
 ## A question that arrives mid-work
 
@@ -298,25 +299,26 @@ mean the same entry: `R-PRJ-008` rested on the `D-ANS-013` that kept it while
 five other files meant the one that became `D-ANS-015`, and `ans-006` named the
 `D-ANS-016` that stayed while a requirement and a todo named the one that became
 `D-ANS-019`. A search and replace over the id is wrong in exactly those cases,
-it is silent, and no check fails afterwards — the entry it now points at is real.
-So the references are read one at a time, and `git diff main -- <file>` is what
-settles an ambiguous one: a line this branch added means this branch's entry.
+it is silent, and no check fails afterwards — the entry it now points at is
+real. So the references are read one at a time, and `git diff main -- <file>` is
+what settles an ambiguous one: a line this branch added means this branch's
+entry.
 
 **A marker that survives the resolution is what nothing used to catch.** A file
 with a `>>>>>>>` left in it parses, lints, and passes every test that does not
-happen to read it; the run of 2026-08-02 put one into a decision and `composer
-ci` went green over it, in a commit whose diff looked deliberate.
+happen to read it; the run of 2026-08-02 put one into a decision and
+`composer ci` went green over it, in a commit whose diff looked deliberate.
 `StructureTest::noFileCarriesAConflictMarker` reads every file this repository
 keeps, so the suite the branch already runs after its rebase is where that now
 surfaces.
 
 **Two sessions can also land on one entry** where nothing declared it: the
 overlap `todo:claim` reports is read off what the todos say, and this one is
-created by the judging rather than written down before it. Two of the ten judged different feedback
-into the same `D-SKL-001`, which the rebase surfaced as a conflict in the file.
-Usually both paragraphs belong — each is an account of one reading, which is
-what a **Since then** carries, so the resolution is a heading each rather than a
-choice between them.
+created by the judging rather than written down before it. Two of the ten judged
+different feedback into the same `D-SKL-001`, which the rebase surfaced as a
+conflict in the file. Usually both paragraphs belong — each is an account of one
+reading, which is what a **Since then** carries, so the resolution is a heading
+each rather than a choice between them.
 
 **A claim left in `progress/` is released here**, and it is the one thing the
 merge does not carry. The session that ended on a question left its claim there

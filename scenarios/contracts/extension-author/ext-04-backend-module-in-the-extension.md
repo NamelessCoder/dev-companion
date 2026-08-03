@@ -17,11 +17,11 @@ of its own · **Contract:** `open`
 - How a backend module is registered and what the registration file contains.
 - Which modules are already registered in this installation, so the new one gets
   a place in the tree rather than a collision.
-- The backend UI components for the list, the buttons and the state markers, with
-  their real markup.
+- The backend UI components for the list, the buttons and the state markers,
+  with their real markup.
 - Registered icons for the module and its actions.
-- Existing labels for the recurring wordings — save, delete, refresh — before new
-  ones are invented, and which language a new one is written in.
+- Existing labels for the recurring wordings — save, delete, refresh — before
+  new ones are invented, and which language a new one is written in.
 - The official module API documentation for the installation's version, far
   enough to write the controller from.
 

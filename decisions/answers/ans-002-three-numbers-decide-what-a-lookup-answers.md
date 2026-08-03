@@ -18,19 +18,19 @@ out of.
 
 ## Decided
 
-- A term nothing in the corpus carries weighs `log(total) / 2`, as if the
-  square root of the corpus held it. At zero — the previous behaviour — «how do
-  I write a good sonnet» decayed into a query about *writing* and about *good*,
-  and something always answers that. At full weight, one unfamiliar word sank
+- A term nothing in the corpus carries weighs `log(total) / 2`, as if the square
+  root of the corpus held it. At zero — the previous behaviour — «how do I write
+  a good sonnet» decayed into a query about *writing* and about *good*, and
+  something always answers that. At full weight, one unfamiliar word sank
   queries the corpus does answer: nobody wrote «upload», and the storage hint
-  stopped being the answer to «file upload storage configuration». The sweep
-  was flat between a quarter and three quarters, so the middle was taken.
+  stopped being the answer to «file upload storage configuration». The sweep was
+  flat between a quarter and three quarters, so the middle was taken.
 - A term found in a field longer than the corpus's ordinary field counts less,
-  on a log scale. Without it the longest hint — over a thousand words —
-  answered at full confidence whenever a query's words all appeared in it
-  somewhere. This is the one that carried the precision: with the unknown-term
-  weight already in place, turning dilution off put the returned hints back up
-  from 33 to 49 for the same recall.
+  on a log scale. Without it the longest hint — over a thousand words — answered
+  at full confidence whenever a query's words all appeared in it somewhere. This
+  is the one that carried the precision: with the unknown-term weight already in
+  place, turning dilution off put the returned hints back up from 33 to 49 for
+  the same recall.
 - The reference length is per corpus, not global — 200 words for the hints, 400
   for the prose. Hint bodies are uncapped and differ by more than twenty times,
   so the mean is the meaningful reference; prose sections are cut at
@@ -42,14 +42,14 @@ out of.
 ## Assumed
 
 - The hint corpus keeps roughly its current shape. 200 is its mean body length
-  today, and a corpus that doubles its typical hint makes the ordinary hint
-  look like an outlier to this code.
+  today, and a corpus that doubles its typical hint makes the ordinary hint look
+  like an outlier to this code.
 
 ## Wrong if
 
 - Hints get longer on average — the dissolution of the architecture prose into
-  this corpus is queued and moves in that direction — or a query that should
-  hit goes missing while its hint is plainly about it. Both show up in
+  this corpus is queued and moves in that direction — or a query that should hit
+  goes missing while its hint is plainly about it. Both show up in
   `bin/cli hints:coverage` once that exists; until then the eight queries in
   `HintsTest` are the only tripwire, and they are a sample.
 
@@ -70,21 +70,21 @@ fixed under `R-ANS-008b`: a three-letter term matched as a prefix, and
 ## Confirmed on `2026-08-01`
 
 The first symptom happened and the decision holds anyway.
-`bin/cli hints:coverage` reads a mean hint body of 266 words against the 200
-the reference was picked as — 212 on the day, taken to a round number — so the
-corpus has grown a quarter, the dissolution of the architecture prose
-accounting for 20 words of it and the seven hints written since for 34. The
-second symptom did not happen: the fourteen recoverable queries of the sweep of
-eighteen all still answer as they were recorded to.
+`bin/cli hints:coverage` reads a mean hint body of 266 words against the 200 the
+reference was picked as — 212 on the day, taken to a round number — so the
+corpus has grown a quarter, the dissolution of the architecture prose accounting
+for 20 words of it and the seven hints written since for 34. The second symptom
+did not happen: the fourteen recoverable queries of the sweep of eighteen all
+still answer as they were recorded to.
 
-What the re-measurement settles is that the number should not follow the mean
-it was named after. Swept again over those fourteen, recall is whole from a
+What the re-measurement settles is that the number should not follow the mean it
+was named after. Swept again over those fourteen, recall is whole from a
 reference of 120 words up to 320, and the hints returned climb the whole way —
-21 at 120, 26 at 200, 30 at the mean of 266 — so the low end of the range is
-the precise one, and 200 is a floor the ordinary hint now sits above rather
-than the average it was measured as. At 340 «how do I write a good sonnet» is
-answered by `installation-upgrade`, which is long enough by then to contain it:
-the exact failure the weight exists to prevent, and the far wall.
+21 at 120, 26 at 200, 30 at the mean of 266 — so the low end of the range is the
+precise one, and 200 is a floor the ordinary hint now sits above rather than the
+average it was measured as. At 340 «how do I write a good sonnet» is answered by
+`installation-upgrade`, which is long enough by then to contain it: the exact
+failure the weight exists to prevent, and the far wall.
 
 So the corpus has roughly a fifth of mean growth left, and both walls are
 watched now instead of one. `ArchitectureHints::MAX_MEAN_BODY_WORDS` is a

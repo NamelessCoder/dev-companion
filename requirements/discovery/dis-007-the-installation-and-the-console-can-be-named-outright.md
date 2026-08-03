@@ -9,8 +9,8 @@ status: held
 answer says which of the two was used.**
 
 Every layout-specific discovery failure is then a one-line fix for the user
-instead of five tools silently going quiet. A stated setting that cannot be
-used is reported, never quietly replaced by a discovered one.
+instead of five tools silently going quiet. A stated setting that cannot be used
+is reported, never quietly replaced by a discovered one.
 
 ## From
 

@@ -22,8 +22,8 @@ transferable convention and somebody else's package advice.
   `packageVersion` derived from Composer rather than trusted from its file,
   `authority: "package"`, and `appliesTo` fixed to that Composer package by
   default. A package may augment its own namespace. An explicit override target
-  is valid only below the same package authority; matching the path or name of
-  a bundled core convention never overrides it.
+  is valid only below the same package authority; matching the path or name of a
+  bundled core convention never overrides it.
 - No discovery path or general loader is added yet. There is one canonical
   package skill in this repository and no real third-party producer whose
   layout, update cycle or override need has established a common shape. A
@@ -47,7 +47,7 @@ transferable convention and somebody else's package advice.
 ## Since then
 
 The maintainer settled on 2026-08-02 that no third-party package contributes
-data here for now. From here the missing discovery path is a scope choice
-rather than a wait, so **Wrong if** narrows: a producer being ready is no
-longer enough on its own. The todo that carried the question is gone with it,
-and this entry is where the question is kept.
+data here for now. From here the missing discovery path is a scope choice rather
+than a wait, so **Wrong if** narrows: a producer being ready is no longer enough
+on its own. The todo that carried the question is gone with it, and this entry
+is where the question is kept.

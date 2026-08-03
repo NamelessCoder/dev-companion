@@ -12,8 +12,8 @@ Those are the cache hash of a GET form, the property mapping of an object
 argument, an unpersisted argument dropped from a link, a paginator clamping an
 out-of-range page, and the routes a paginated plugin needs.
 
-Each of them answers with a wrong page or an error page rather than with a
-stack trace anyone could search for.
+Each of them answers with a wrong page or an error page rather than with a stack
+trace anyone could search for.
 
 ## From
 

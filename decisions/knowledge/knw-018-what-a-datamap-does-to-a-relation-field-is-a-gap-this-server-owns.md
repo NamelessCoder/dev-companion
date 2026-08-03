@@ -32,16 +32,15 @@ field, which is where this one reached for SQL.
   `knowledge/` only where a relation is *read* in a template
   (`frontend-records`) or *declared* in TCA (`content-elements`).
 - The query reaches the right hint, and the hint has nothing to say.
-  `bin/cli hints:probe "IRRE inline child records written through DataHandler
-  datamap parent field"` returns `datahandler-persistence` at `appliesTo(18) +
-  text(324)`. Its seven statements are the datamap, the positioning pid and the
-  backend user.
+  `bin/cli hints:probe "IRRE inline child records written through DataHandler datamap parent field"`
+  returns `datahandler-persistence` at `appliesTo(18) + text(324)`. Its seven
+  statements are the datamap, the positioning pid and the backend user.
 - The feedback's claim about TYPO3 holds, and one method carries the answer. On
   `.checkouts/14.3`, `DataHandler::checkValue_inline_processDBdata()` starts a
   `RelationHandler` on the value array of child uids; where the field declares
   `foreign_field` it calls `writeForeignField()` and stores `countItems(false)`
-  in the parent's own column. The comment at the write site says the same:
-  "list of children (csv) or number of relations (foreign_field)".
+  in the parent's own column. The comment at the write site says the same: "list
+  of children (csv) or number of relations (foreign_field)".
 - So the int column that "rejects a comma list" is a counter DataHandler
   maintains, and writing the child's parent column by hand repeats work
   DataHandler had already done. That is one statement, and this run may not

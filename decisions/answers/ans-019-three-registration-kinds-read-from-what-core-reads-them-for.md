@@ -12,8 +12,8 @@ it by, and each of the three moved inside the covered range.**
 That is four call shapes for a FlexForm binding, eight file names in a site set
 directory, and two ways a form configuration is registered.
 
-`D-ANS-014` left what each of the three actually is to this step, because
-naming a fix from a single sitepackage is a copy-down. The reading is against
+`D-ANS-014` left what each of the three actually is to this step, because naming
+a fix from a single sitepackage is a copy-down. The reading is against
 `.checkouts/` at 12.4, 13.4 and 14.3, and it changed the answer in two places:
 the FlexForm call the feedback named is deprecated on the version the audit ran
 on, and one of the three kinds does not exist at all on the oldest covered
@@ -22,23 +22,23 @@ major.
 ## Evidence
 
 - A FlexForm binding is four calls, not one.
-  `ExtensionManagementUtility::addPiFlexFormValue()` binds by its third
-  argument on 12.4 (`ExtensionManagementUtility.php:1032`) and 13.4 (`:945`),
-  and on 14.3 (`:971`) it raises `E_USER_DEPRECATED`, is removed in v15, and
-  points at two replacements. Both are in 14.3: `addPlugin()` takes the data
-  structure as its second argument (`:921`) where 13.4's second argument is the
-  plugin type (`:875`), and `ExtensionUtility::registerPlugin()` takes it as a
-  seventh (`extbase/Classes/Utility/ExtensionUtility.php:119`). The fourth is
-  the `columnsOverrides` assignment on `pi_flexform` the deprecation message
-  names, which is what the first one writes into TCA anyway.
+  `ExtensionManagementUtility::addPiFlexFormValue()` binds by its third argument
+  on 12.4 (`ExtensionManagementUtility.php:1032`) and 13.4 (`:945`), and on 14.3
+  (`:971`) it raises `E_USER_DEPRECATED`, is removed in v15, and points at two
+  replacements. Both are in 14.3: `addPlugin()` takes the data structure as its
+  second argument (`:921`) where 13.4's second argument is the plugin type
+  (`:875`), and `ExtensionUtility::registerPlugin()` takes it as a seventh
+  (`extbase/Classes/Utility/ExtensionUtility.php:119`). The fourth is the
+  `columnsOverrides` assignment on `pi_flexform` the deprecation message names,
+  which is what the first one writes into TCA anyway.
 - The binding stands in the file's own text, and the identifier it belongs to
-  usually does too. Every core caller passes the data structure as a
-  `FILE:EXT:` literal. The identifier is a literal in the `columnsOverrides`
-  and direct forms; in the shape core writes itself — felogin and form on 13.4
-  — it is the variable `$contentTypeName` holding what `registerPlugin()`
-  returned, and that return is `strtolower($extensionName)` without its
-  underscores plus `'_'` plus `strtolower($pluginName)`, composed from two
-  arguments that do stand in the file, on all three majors.
+  usually does too. Every core caller passes the data structure as a `FILE:EXT:`
+  literal. The identifier is a literal in the `columnsOverrides` and direct
+  forms; in the shape core writes itself — felogin and form on 13.4 — it is the
+  variable `$contentTypeName` holding what `registerPlugin()` returned, and that
+  return is `strtolower($extensionName)` without its underscores plus `'_'` plus
+  `strtolower($pluginName)`, composed from two arguments that do stand in the
+  file, on all three majors.
 - A site set directory is read for eight names beside `config.yaml`.
   `YamlSetDefinitionProvider` reads `settings.definitions.yaml`, `settings.yaml`
   and `labels.xlf` on 13.4 and 14.3, and `route-enhancers.yaml` on 14.3 only
@@ -48,19 +48,19 @@ major.
   `constants.typoscript`, `setup.typoscript` and `include_static_file.txt` from.
   `AbstractServiceProvider::configureSetCollector()` is the walk, at depth 1.
 - Site sets do not exist on 12.4: `typo3/sysext/core/Classes/Site/Set/` is not
-  in that checkout. The kind is answered where it is there and is nothing on
-  the oldest covered major, which needs no binding because an extension that
-  ships no such directory gets an empty list either way.
+  in that checkout. The kind is answered where it is there and is nothing on the
+  oldest covered major, which needs no binding because an extension that ships
+  no such directory gets an empty list either way.
 - A form configuration is registered two ways.
   `14.2/Feature-109412-FormYamlAutoDiscovery.rst` and
-  `FormYamlCollectorConfigurator` collect `Configuration/Form/<SetName>/config.yaml`
-  from every active package at depth 1, identified by the `name` the file
-  declares rather than by the directory, ordered by `priority` and disabled
-  through `EXTENSIONS.form.disabledSets`. Before it, and still read in 14.3
-  with a deprecation, a YAML file is registered by TypoScript under
-  `plugin.tx_form.settings.yamlConfigurations` or the `module.` one beside it —
-  `Mvc/Configuration/ConfigurationManager.php:71`, deprecated by
-  `14.2/Deprecation-109412`. Both files carry
+  `FormYamlCollectorConfigurator` collect
+  `Configuration/Form/<SetName>/config.yaml` from every active package at depth
+  1, identified by the `name` the file declares rather than by the directory,
+  ordered by `priority` and disabled through `EXTENSIONS.form.disabledSets`.
+  Before it, and still read in 14.3 with a deprecation, a YAML file is
+  registered by TypoScript under `plugin.tx_form.settings.yamlConfigurations` or
+  the `module.` one beside it — `Mvc/Configuration/ConfigurationManager.php:71`,
+  deprecated by `14.2/Deprecation-109412`. Both files carry
   `persistenceManager.allowedExtensionPaths`, which is where the definitions
   are.
 
@@ -85,7 +85,8 @@ major.
   taking it here would be two sessions editing one list.
 - The site set answer is the file names and not their contents. What
   `route-enhancers.yaml` enhances is the file, and a caller holding its name can
-  read it; that it is there at all is what no tree walk told anybody to look for.
+  read it; that it is there at all is what no tree walk told anybody to look
+  for.
 - A form storage configured as a file mount is stated as unanswerable rather
   than left out. It is a record, and nothing that reads files reaches it.
 - `todo/2026-08-02-120201-a-form-set-is-a-registration-the-extension-answer-never-reaches`
@@ -95,10 +96,9 @@ major.
 
 ## Assumed
 
-- That a `config.yaml` declaring its own `typoscript`, `pagets` or `labels`
-  path is rare enough to be a sentence rather than a field. None of the sets in
-  the three checkouts declares one, and the answer says the list is the
-  defaults.
+- That a `config.yaml` declaring its own `typoscript`, `pagets` or `labels` path
+  is rare enough to be a sentence rather than a field. None of the sets in the
+  three checkouts declares one, and the answer says the list is the defaults.
 - That an inline FlexForm is worth reporting as being there and not worth
   quoting. The XML is a document rather than a fact about the registration, and
   no core caller writes one.
@@ -109,11 +109,11 @@ major.
 
 ## Wrong if
 
-- An extension binds a FlexForm through a fifth shape and the answer reports
-  the element as binding none. `unlistedFlexForms` would not catch it — nothing
-  was read — and only a session that opened the override file would notice.
-- A form set turns out to be registered by running rather than by its
-  directory. `FormYamlCollectorConfigurator` reads `TYPO3_CONF_VARS` at
+- An extension binds a FlexForm through a fifth shape and the answer reports the
+  element as binding none. `unlistedFlexForms` would not catch it — nothing was
+  read — and only a session that opened the override file would notice.
+- A form set turns out to be registered by running rather than by its directory.
+  `FormYamlCollectorConfigurator` reads `TYPO3_CONF_VARS` at
   service-instantiation time, so an `ext_localconf.php` that writes
   `disabledSets` switches a set off that this answer still lists.
 - A session holding the site set's file list still opens the set directory to

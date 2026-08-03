@@ -1,8 +1,8 @@
 # Which versions an answer holds for
 
-The rule is in [AGENTS.md](../../AGENTS.md): a statement that does not hold on every
-covered TYPO3 says so as data. This is how it is written, and what follows from
-it.
+The rule is in [AGENTS.md](../../AGENTS.md): a statement that does not hold on
+every covered TYPO3 says so as data. This is how it is written, and what follows
+from it.
 
 Which versions are covered is declared in `knowledge/versions.json` and nowhere
 else; every check that needs the list reads it from there.
@@ -20,9 +20,9 @@ everywhere the knowledge base reaches, which is what most of them do.
 ]
 ```
 
-That is the whole mechanism, and it exists because the alternative is worse:
-a caller on an LTS given a `main` answer changes code that then fails at
-runtime, and the failure is silent. The rules below follow from it.
+That is the whole mechanism, and it exists because the alternative is worse: a
+caller on an LTS given a `main` answer changes code that then fails at runtime,
+and the failure is silent. The rules below follow from it.
 
 - **Bind the statement, not the hint.** A subsystem does not change wholesale;
   one sentence in it does. Splitting a hint per version duplicates the six
@@ -60,16 +60,17 @@ runtime, and the failure is silent. The rules below follow from it.
   case and means it holds wherever TYPO3 is written — an API that throws throws
   in a sitepackage too. `VersionsTest::whoIsObligedIsWrittenAsDataToo` holds the
   vocabulary to that one value; a second one is a decision, not a data entry.
-- **The catalogs carry the same binding, and it decides.** A `knowledge/catalog/`
-  entry is markup taken from one revision, so `since`/`until` there is the whole
-  entry rather than one sentence, and `targetVersion` withholds it instead of
-  qualifying it — a class that does not exist fails in a browser, silently.
-  The binding is derived, not judged: `bin/cli catalog:check` re-reads every
-  covered checkout and reports each entry whose recorded range no longer
-  matches, so a core update invalidates it loudly. It is derived from names, so
-  a demo rewritten around the same classes reads as unchanged — the entry
-  records a digest of what each covered demo said, and the same command fails on
-  a rewrite no name would show (`D-CAT-001`).
+- **The catalogs carry the same binding, and it decides.** A
+  `knowledge/catalog/` entry is markup taken from one revision, so
+  `since`/`until` there is the whole entry rather than one sentence, and
+  `targetVersion` withholds it instead of qualifying it — a class that does not
+  exist fails in a browser, silently. The binding is derived, not judged:
+  `bin/cli catalog:check` re-reads every covered checkout and reports each entry
+  whose recorded range no longer matches, so a core update invalidates it
+  loudly. It is derived from names, so a demo rewritten around the same classes
+  reads as unchanged — the entry records a digest of what each covered demo
+  said, and the same command fails on a rewrite no name would show
+  (`D-CAT-001`).
 - **A directory is not evidence that what it demonstrates is inside it.** Where
   a worked example promises a shape rather than a path, the entry names the two
   or three files that carry that shape in `files`, and the range is derived from

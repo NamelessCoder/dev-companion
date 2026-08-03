@@ -12,8 +12,8 @@ around it.**
 
 Registering the template says where the output goes and not what is already on
 the page above it. The header is drawn before the event the Fluid renderer
-listens on is dispatched, and that listener sets the content alone, so nothing
-a template writes can remove or move it.
+listens on is dispatched, and that listener sets the content alone, so nothing a
+template writes can remove or move it.
 
 The parts are named by field rather than as "the header", because that is what
 decides which line a template may write. A session told only that a header

@@ -27,19 +27,19 @@ condition stays cheap to answer.
 **What has to come out of it**
 
 - Both submission steps arrive whole — one commit amended rather than a second
-  one, and the `refs/for/` refspec with the `Change-Id` kept. Neither is
-  dropped for want of evidence.
+  one, and the `refs/for/` refspec with the `Change-Id` kept. Neither is dropped
+  for want of evidence.
 - The condition each carries is one the contributor settles from their own
   intent, without a lookup and without reading the rest of the answer.
-- The rest of the brief is the core's own: the target branch, the issue
-  context, the `runTests.sh` suites.
+- The rest of the brief is the core's own: the target branch, the issue context,
+  the `runTests.sh` suites.
 - Naming a `typo3/sysext/` path in the same session turns the condition into a
   stated match rather than repeating it.
 
 **How it fails**
 
-- The submission steps withheld, so the contributor has to ask a second time
-  for a workflow the server already knows.
+- The submission steps withheld, so the contributor has to ask a second time for
+  a workflow the server already knows.
 - A condition phrased as a question about the repository rather than about the
   patch, which the contributor answers by guessing what the server meant.
 - The core checklist demoted along with the intent, which turns one unproven

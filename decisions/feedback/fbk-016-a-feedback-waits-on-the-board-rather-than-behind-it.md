@@ -6,12 +6,12 @@ status: open
 
 # D-FBK-016 — A feedback waits on the board rather than behind it
 
-**Every open feedback has a todo of its own, written by `bin/cli todo:sync`,
-and what asks for is the judgement rather than the fix.**
+**Every open feedback has a todo of its own, written by `bin/cli todo:sync`, and
+what asks for is the judgement rather than the fix.**
 
 The pile was reachable only through a sighting that ran when the queue was
-empty. A card per feedback puts it in the one place a session already looks,
-and the priority does what the group boundary did.
+empty. A card per feedback puts it in the one place a session already looks, and
+the priority does what the group boundary did.
 
 ## Evidence
 

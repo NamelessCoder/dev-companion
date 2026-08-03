@@ -16,10 +16,9 @@ for.
 ## Evidence
 
 - One measurement, one character apart.
-  `bin/cli hints:probe "show assigned related groups in a backend content
-  element preview template"` returns `content-elements` at
-  `appliesTo(15) + text(181)`. The same sentence with `content-element`
-  matches nothing and returns 40 hints as the index.
+  `bin/cli hints:probe "show assigned related groups in a backend content element preview template"`
+  returns `content-elements` at `appliesTo(15) + text(181)`. The same sentence
+  with `content-element` matches nothing and returns 40 hints as the index.
 - The keyword half. `ArchitectureHints::scoreKeywords()` looks for the pattern
   in the query rather than the query in the hint, and a pattern of bare words
   goes through `TermSearch::carries()`, which anchors it at a word boundary. So
@@ -30,17 +29,17 @@ for.
   characters. `content-element` becomes `conten`, which is what `content`
   becomes on its own — `element`, the discriminating term, never enters the
   query at all.
-- It is general, and the shorter compounds fail the other way.
-  `site-package` becomes `site-p` and `fluid-templates` becomes `fluid-`;
-  those stems keep the hyphen, so they reach only text hyphenated the same way.
-  Asked as a query, `content-elements` returns `extension-files` and
-  `sitepackage-layout` ahead of the hint of that name, all three at
+- It is general, and the shorter compounds fail the other way. `site-package`
+  becomes `site-p` and `fluid-templates` becomes `fluid-`; those stems keep the
+  hyphen, so they reach only text hyphenated the same way. Asked as a query,
+  `content-elements` returns `extension-files` and `sitepackage-layout` ahead of
+  the hint of that name, all three at
   `text only(52)`.
 - The separators are kept on purpose and the rule is not that they should go.
   `mod.web_layout`, `list_type` and `tt_content` are one token each, and
   `tt_content preview template` reaches `content-elements` at
-  `appliesTo(10) + text(129)` because of it. What has no owner is the compound
-  a caller hyphenates where the corpus spells it apart.
+  `appliesTo(10) + text(129)` because of it. What has no owner is the compound a
+  caller hyphenates where the corpus spells it apart.
 
 ## Decided
 
@@ -113,8 +112,8 @@ The last is what was changed. Nothing spaced moved under it: the 41 prompts, the
 returned before, `bin/cli hints:coverage` prints the same page byte for byte,
 and `tt_content`, `list_type` and `mod.web_layout` are untouched — only the
 space between two words is loosened, and a separator inside one word is left as
-`D-ANS-006` has it. The sentence this started from returns `content-elements`
-at `appliesTo(15)`, the same way in as the spaced spelling.
+`D-ANS-006` has it. The sentence this started from returns `content-elements` at
+`appliesTo(15)`, the same way in as the spaced spelling.
 
 So the **Wrong if** above did not happen, and the corpus side it points at is
 not the cheaper half after all: it would have meant the hyphenated spelling of

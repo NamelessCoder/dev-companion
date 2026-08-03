@@ -33,9 +33,8 @@ project's own are known is a guess that sounds like advice.
 3. **`typo3_task_guide`** with a short English task, the affected area, the
    target version and the change type — the workflow this task belongs to and
    the checks that come with it.
-4. **`typo3_hint_lookup`** for each subsystem in scope, with its concrete
-   paths. One query per subsystem; a single broad query is not subsystem
-   evidence.
+4. **`typo3_hint_lookup`** for each subsystem in scope, with its concrete paths.
+   One query per subsystem; a single broad query is not subsystem evidence.
 5. **`typo3_changelog_lookup` with `type: deprecation`**, at each major the
    package declares, bounded by `tag` and with the query omitted. Those three
    are the changelog's own axes, and the extension's vocabulary is not among
@@ -84,9 +83,9 @@ verdict that has already formed.
 `typo3_fluid_namespace_list` and `typo3_configuration_lookup` report what is
 registered, what a path resolves to, what a value really is at runtime. They
 establish the facts of this installation and they are never a verdict on it.
-`typo3_hint_lookup` and `typo3_documentation_lookup` say whether those facts
-are right. A subsystem confirmed by its own runtime lookup can still break
-every rule that governs it, so it is not established until both were asked.
+`typo3_hint_lookup` and `typo3_documentation_lookup` say whether those facts are
+right. A subsystem confirmed by its own runtime lookup can still break every
+rule that governs it, so it is not established until both were asked.
 
 ## A rule is read in both directions
 
@@ -110,9 +109,9 @@ turns a review into a list of everything the author did on purpose.
 
 Three things carry one: a file that was read, at its path and its line; a
 command that was run, with what it printed; a mechanism traced into an installed
-package. Say which of the three it is. Leaving it unsaid gives a finding read out
-of a CI file the weight of one with a verified line, and the reader has no way to
-separate them again.
+package. Say which of the three it is. Leaving it unsaid gives a finding read
+out of a CI file the weight of one with a verified line, and the reader has no
+way to separate them again.
 
 Where one of the project's own commands would settle it, run it.
 `typo3_project_scope` marks each command it lists **check**, **change** or

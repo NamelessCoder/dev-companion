@@ -6,7 +6,8 @@ This page is the order those answers are looked up in, what each step can and
 cannot see, and what an answer has to say when it came from the wrong one.
 
 The rules stay in [AGENTS.md](../../AGENTS.md); what a change assumed is in
-[decisions/discovery/](../../decisions/discovery/readme.md). This is the procedure.
+[decisions/discovery/](../../decisions/discovery/readme.md). This is the
+procedure.
 
 ## The order
 
@@ -28,10 +29,10 @@ brings its own interpreter and fails as an exit code.
 
 ## How the probe gets there
 
-[`src/Installation/probe.php`](../../src/Installation/probe.php) is read as text, never
-included. `Typo3Runtime` strips its opening tag, writes the installation's
-declared autoloader path into it, and hands it to `Typo3Cli::php()`, which
-delivers it as:
+[`src/Installation/probe.php`](../../src/Installation/probe.php) is read as
+text, never included. `Typo3Runtime` strips its opening tag, writes the
+installation's declared autoloader path into it, and hands it to
+`Typo3Cli::php()`, which delivers it as:
 
 ```
 <interpreter> -r 'eval(base64_decode("<payload>"));'
@@ -66,12 +67,12 @@ otherwise sit in front of the payload.
 | `unreachable` | No console, no interpreter, or the boot failed                   | Same — the files answer, with the reason                            |
 
 **Failsafe is the state worth knowing.** `Bootstrap::init()` turns it on when
-`checkIfEssentialConfigurationExists()` fails, which is the ordinary condition of
-an extension repository: `composer install` has run, there is no `settings.php`,
-and there is no database. Every registry still answers, `isLoaded()` still says
-`true` for the extension being worked on, and what comes back is a core-only
-subset that looks complete. Measured against `georgringer/news`: 1259 icons, not
-one of them the extension's own.
+`checkIfEssentialConfigurationExists()` fails, which is the ordinary condition
+of an extension repository: `composer install` has run, there is no
+`settings.php`, and there is no database. Every registry still answers,
+`isLoaded()` still says `true` for the extension being worked on, and what comes
+back is a core-only subset that looks complete. Measured against
+`georgringer/news`: 1259 icons, not one of them the extension's own.
 
 Only a `full` reading is remembered. A caller that reads "the DDEV project is
 stopped", starts it, and asks again must get the better answer in the same

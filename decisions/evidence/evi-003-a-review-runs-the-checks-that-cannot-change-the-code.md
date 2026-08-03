@@ -19,13 +19,14 @@ quoted the commands as subjects of findings instead.
 **Since then** the first **Wrong if** was gone looking for instead of waited
 for, on 2026-08-02, and the classification did carry it: a declared line was
 read as the tool in front of it, so `phpstan analyse && php-cs-fixer fix` and
-four shapes like it answered `check` while rewriting the sources. The **Assumed**
-held per tool and broke on the line — chaining is the convention in a
-`package.json`, where `tsc --noEmit && vite build` is one script. Every command
-on a line is read now, and `ProjectTest::aCommandThatWritesIsNeverReportedAsACheck`
-holds the writers to never getting that answer, which is what makes waiting for
-a run to report a modified checkout unnecessary. The decision stands: what was
-wrong was the reading, not that the declaration can be read.
+four shapes like it answered `check` while rewriting the sources. The
+**Assumed** held per tool and broke on the line — chaining is the convention in
+a `package.json`, where `tsc --noEmit && vite build` is one script. Every
+command on a line is read now, and
+`ProjectTest::aCommandThatWritesIsNeverReportedAsACheck` holds the writers to
+never getting that answer, which is what makes waiting for a run to report a
+modified checkout unnecessary. The decision stands: what was wrong was the
+reading, not that the declaration can be read.
 
 ## Evidence
 
@@ -45,13 +46,13 @@ wrong was the reading, not that the declaration can be read.
 - The checks are run, and the answer says what they printed. The objection that
   a failing command tells you less than the configuration that would make it
   fail is about what a finding says, not about whether to gather it, and
-  survives as a limit: the finding still names the configuration, and the run
-  is what takes it from derived to established. The objection that a review
-  must not change files is answered by the property rather than by abstaining
-  from all of them. Rejected: running everything, which breaks the instruction
-  the user gave; running nothing, which is what was measured; and asking the
-  user per command, which is a question the answer could not have been formed
-  against before `typo3_project_scope` carried `runs`.
+  survives as a limit: the finding still names the configuration, and the run is
+  what takes it from derived to established. The objection that a review must
+  not change files is answered by the property rather than by abstaining from
+  all of them. Rejected: running everything, which breaks the instruction the
+  user gave; running nothing, which is what was measured; and asking the user
+  per command, which is a question the answer could not have been formed against
+  before `typo3_project_scope` carried `runs`.
 
 ## Assumed
 
@@ -59,8 +60,8 @@ wrong was the reading, not that the declaration can be read.
   `phpstan analyze`, `phplint` and `eslint` without `--fix` do not rewrite the
   sources they are pointed at — but they are configurable, a fixer can be given
   a rule set that writes elsewhere, and a caching checker leaves a file behind.
-  What is claimed is that the code comes back unchanged, not that the
-  filesystem does.
+  What is claimed is that the code comes back unchanged, not that the filesystem
+  does.
 
 ## Wrong if
 

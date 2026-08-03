@@ -18,13 +18,13 @@ the three audiences of `R-AUD-001` outright is that value.
 ## Evidence
 
 - The four, as they stood. `binding` on 28 hint and intent entries, one value,
-  `core`. `provenance` on the 16 covered topics, three values: four
-  `core-only`, eight `transferable`, four `installation`. `audience` in five
-  tool output schemas, three values, one of them spelled as a negation —
-  `outside-core`. `outsideCore`, a required boolean beside it in the same five
-  schemas, saying the same thing again with less room.
-- `R-AUD-001` has named three audiences since 2026-07-29 and the code implemented
-  two of them. An extension author and a site developer both read
+  `core`. `provenance` on the 16 covered topics, three values: four `core-only`,
+  eight `transferable`, four `installation`. `audience` in five tool output
+  schemas, three values, one of them spelled as a negation — `outside-core`.
+  `outsideCore`, a required boolean beside it in the same five schemas, saying
+  the same thing again with less room.
+- `R-AUD-001` has named three audiences since 2026-07-29 and the code
+  implemented two of them. An extension author and a site developer both read
   `outside-core`, so neither could be answered for, and the corpus had already
   worked around it in prose: `project-repository-layout` and
   `extension-repository-layout` are two hints, `core-tests` and
@@ -34,8 +34,8 @@ the three audiences of `R-AUD-001` outright is that value.
 ## Decided
 
 - The word is `scope`, not `audience`. `audience` stays the idea the repository
-  is organised around — `requirements/audience/` and R-AUD-001 through R-AUD-006 —
-  and `scope` is what the code and the payloads say, because one word beats a
+  is organised around — `requirements/audience/` and R-AUD-001 through R-AUD-006
+  — and `scope` is what the code and the payloads say, because one word beats a
   second one that means the same thing.
 - An enum rather than string constants, so a value that is not one of the five
   cannot be written, passed or returned. `Scope::from()` on the corpus is what
@@ -53,33 +53,33 @@ the three audiences of `R-AUD-001` outright is that value.
   to `Knowledge\Coverage`. The name goes to the vocabulary because the
   vocabulary is what the rest of the server says; the map is read by one tool
   and one resource index.
-- `any` and `uncertain` belong to one side each rather than to both. A
-  statement can hold wherever TYPO3 is written and a path cannot, because a
-  path is one piece of work; a path can be one nothing placed, and a statement
-  nobody could place is one nobody should have written. `Scope::ofPaths()` and
+- `any` and `uncertain` belong to one side each rather than to both. A statement
+  can hold wherever TYPO3 is written and a path cannot, because a path is one
+  piece of work; a path can be one nothing placed, and a statement nobody could
+  place is one nobody should have written. `Scope::ofPaths()` and
   `Scope::ofKnowledge()` are the two sets.
 
 ## Assumed
 
 - `project` and `extension` can be told apart from structure. `PROJECT_WORK` is
   the evidence — `config/sites/`, `config/system/`, `public/`, `var/`, `.ddev/`
-  — read after the extension containers, so a sitepackage's own
-  `Configuration/` is not mistaken for the site's. Where nothing structural
-  says which, a Composer project falls to `project`, which is the repository
-  the session is in rather than a package inside it.
+  — read after the extension containers, so a sitepackage's own `Configuration/`
+  is not mistaken for the site's. Where nothing structural says which, a
+  Composer project falls to `project`, which is the repository the session is in
+  rather than a package inside it.
 - Answering `project` where the old code answered `outside-core` costs nothing,
-  because both are outside the core and R-SCO-002 draws its line there. Eleven of
-  the paths in `theSysextSignalAloneAnsweredEveryDecisionTheRecordedRunsMade`
+  because both are outside the core and R-SCO-002 draws its line there. Eleven
+  of the paths in `theSysextSignalAloneAnsweredEveryDecisionTheRecordedRunsMade`
   now answer `project` rather than `extension`, and that test was narrowed to
   the claim the recorded runs actually made.
 
 ## Wrong if
 
-- A caller is handed extension advice for site-configuration work or the
-  reverse — `config/sites/` answered as a package, or a path under `packages/`
-  answered as the project around it. The two are one repository in most
-  sessions, which is what made one value survive this long, and it is what will
-  make a wrong split hard to notice.
+- A caller is handed extension advice for site-configuration work or the reverse
+  — `config/sites/` answered as a package, or a path under `packages/` answered
+  as the project around it. The two are one repository in most sessions, which
+  is what made one value survive this long, and it is what will make a wrong
+  split hard to notice.
 - A fourth kind of work arrives that is none of the five — a distribution, or a
   TYPO3 fork maintained downstream. Then the enum is the thing that has to
   change rather than a string somewhere, which is the cost this entry accepted

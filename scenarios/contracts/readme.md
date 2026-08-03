@@ -10,8 +10,8 @@ this known task shape still receive the required workflow?” They do not answer
 “can an agent inspect an unfamiliar repository and decide what matters?” and
 therefore do not receive recorded forward runs or a `Status today`.
 
-`bin/cli scenarios:contract <id>` prints a case and its criteria. PHPUnit holds the
-files to the contract format; the relevant tool and skill tests hold the
+`bin/cli scenarios:contract <id>` prints a case and its criteria. PHPUnit holds
+the files to the contract format; the relevant tool and skill tests hold the
 behavior directly.
 
 ## Contract states
@@ -31,8 +31,8 @@ both halves, so a test renamed or deleted takes the case's claim down with it
 rather than leaving it standing.
 
 `held` and `not guarded` can appear together — the case names the tests that
-hold most of it and the part nothing covers, the way a requirement does. A
-case with nothing behind it at all is a case whose state is fiction.
+hold most of it and the part nothing covers, the way a requirement does. A case
+with nothing behind it at all is a case whose state is fiction.
 
 ## Where a case lives
 

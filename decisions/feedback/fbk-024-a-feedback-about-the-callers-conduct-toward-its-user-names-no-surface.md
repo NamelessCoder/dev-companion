@@ -28,9 +28,9 @@ project.
   (e.g. actually rendering the preview) rather than stopping or shipping
   unverified work".
 - The second half is a subject a sibling owns.
-  `bin/cli hints:probe "verify the rendered backend preview before reporting the
-  work done"` reaches `content-elements` at `appliesTo(15) + text(195)` and
-  nothing else — the same landing
+  `bin/cli hints:probe "verify the rendered backend preview before reporting the work done"`
+  reaches `content-elements` at `appliesTo(15) + text(195)` and nothing else —
+  the same landing
   [`D-KNW-017`](../knowledge/knw-017-a-verification-question-is-routed-to-the-layer-that-verifies.md)
   measured from four other phrasings, on `feedback/2026-08-01-003533`. It is
   that entry's routing gap read off a fifth sentence, not a second gap. As this
@@ -67,8 +67,8 @@ project.
 
 ## Decided
 
-- No card is derived for the verification half. It is `003533`'s subject,
-  judged as `D-KNW-017`, and a second card for one step is the overlap
+- No card is derived for the verification half. It is `003533`'s subject, judged
+  as `D-KNW-017`, and a second card for one step is the overlap
   `bin/cli todo:claim` was taught to warn about. This is
   [`D-FBK-021`](fbk-021-a-summary-feedback-is-judged-against-its-series-not-on-its-own.md)'s
   mapping applied to a half rather than to a whole feedback: `003931` is not a

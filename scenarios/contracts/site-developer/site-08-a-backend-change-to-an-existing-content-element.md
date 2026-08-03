@@ -15,8 +15,8 @@
 
 - The TCA conventions for adding the field, and where a CType's registration
   declares its icon.
-- An icon identifier the installation has registered, rather than one that
-  reads plausibly.
+- An icon identifier the installation has registered, rather than one that reads
+  plausibly.
 - Nothing about where templates live: the element exists and its output is not
   what was asked about.
 

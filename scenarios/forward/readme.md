@@ -2,8 +2,8 @@
 
 These are deliberately broad repository reviews. The prompt names the working
 context and the user's intent, but no subsystem, skill, tool, expected defect,
-or implementation shape. What the agent chooses to inspect and prioritize is
-the evidence.
+or implementation shape. What the agent chooses to inspect and prioritize is the
+evidence.
 
 See [the scenario readme](../readme.md) for the audiences and the environments,
 and [contracts/](../contracts/readme.md) for the targeted cases these are not.

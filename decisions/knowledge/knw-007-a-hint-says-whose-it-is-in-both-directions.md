@@ -19,8 +19,8 @@ a repository outside the core has to do" — it said nothing, which reads as
 - Four hints are audience-specific and declared nothing: `core-tests` and
   `project-extension-tests` in `php.json`, `project-repository-layout` and
   `extension-repository-layout` in `general.json`. Their titles say whose they
-  are and no field did, so `R-AUD-005` — an answer says who it obliges — was
-  met for the core half of the corpus only.
+  are and no field did, so `R-AUD-005` — an answer says who it obliges — was met
+  for the core half of the corpus only.
 - At least seven more read the same way — `extension-documentation`,
   `extension-asset-build`, `extension-static-analysis`, `sitepackage-layout`,
   `sitepackage-initial-content`, `installation-upgrade`, `site-sets` — and each
@@ -56,8 +56,8 @@ a repository outside the core has to do" — it said nothing, which reads as
 
 ## Wrong if
 
-- The label starts appearing on answers a caller is squarely inside, which
-  would mean the group's scope is not what the hint was matched for.
+- The label starts appearing on answers a caller is squarely inside, which would
+  mean the group's scope is not what the hint was matched for.
 - A hint turns out to need both directions at once — binding for a project and
   for a core patch in different sentences. The statement-level field is where
   that goes, and a hint needing it per statement in both directions is one hint
@@ -72,11 +72,11 @@ a repository outside the core has to do" — it said nothing, which reads as
 ## Since then
 
 The seven that were left are read, and four of them declare an audience:
-`extension-documentation`, `extension-asset-build` and `extension-static-analysis`
-are `extension` — each already says in its own last statement that the core's
-counterpart is a different hint whose paths do not transfer — and
-`installation-upgrade` is `project`, being the repository around an installation
-rather than any package in it.
+`extension-documentation`, `extension-asset-build` and
+`extension-static-analysis` are `extension` — each already says in its own last
+statement that the core's counterpart is a different hint whose paths do not
+transfer — and `installation-upgrade` is `project`, being the repository around
+an installation rather than any package in it.
 
 The other three stay undeclared, and the checkouts settled that rather than the
 titles. `theme_camino` is a sitepackage **in the core repository** and it ships

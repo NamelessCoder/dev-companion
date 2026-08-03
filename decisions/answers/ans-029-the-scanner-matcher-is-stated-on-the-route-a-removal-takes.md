@@ -7,7 +7,8 @@ status: open
 # D-ANS-029 — The scanner matcher is stated on the route a removal takes
 
 **Every route from a breaking change to the extension scanner matcher passes a
-section that states the `[!!!]` marker and the changelog file and nothing else.**
+section that states the `[!!!]` marker and the changelog file and nothing
+else.**
 
 That is step 2 of the ladder, and it is queued as
 [`R-ANS-017`](../../requirements/answers/ans-017-a-removal-is-told-what-the-scanner-matcher-requires.md).
@@ -20,23 +21,24 @@ without the matcher. The corpus does state the matcher. It states it under
 ## Evidence
 
 - Both of the feedback's own queries still miss.
-  `bin/cli hints:probe "removing public method extension scanner matcher
-  breaking changelog"` returns `deprecated-apis` and `installation-upgrade` as
-  candidates only, and `bin/cli hints:probe "breaking change internal method
-  removal changelog"` reaches nothing at all. `RuleLookup::answer()` re-run on
-  2026-08-02 answers the first with "no section that holds outside the core
-  matched" and the second with the list of document topics.
+  `bin/cli hints:probe "removing public method extension scanner matcher breaking changelog"`
+  returns `deprecated-apis` and `installation-upgrade` as candidates only, and
+  `bin/cli hints:probe "breaking change internal method removal changelog"`
+  reaches nothing at all. `RuleLookup::answer()` re-run on 2026-08-02 answers
+  the first with "no section that holds outside the core matched" and the second
+  with the list of document topics.
 - The short query the feedback asks for works already, and lands in the wrong
   place. `typo3_rule_lookup "extension scanner"` returns `## Deprecations` of
   `knowledge/documents/typo3-commit-messages.md` at 100% of the query terms —
   the section that names `Configuration/ExtensionScanner/Php/`. Reachability was
   never the failure.
 - The section a breaking change reaches names no matcher. The `breaking` intent
-  of `knowledge/task-intents.json` carries `rulesQuery: "breaking change
-  changelog"`, which `TaskIntents::sections()` puts through `Documents::search`
-  at `src/Knowledge/TaskIntents.php:168`. Run today that query returns
-  `## Breaking Changes`, `## Changelog Files`, `## Review Readiness` and
-  `## Summary Line`, and none of the four mentions the extension scanner.
+  of `knowledge/task-intents.json` carries
+  `rulesQuery: "breaking change changelog"`, which `TaskIntents::sections()`
+  puts through `Documents::search` at `src/Knowledge/TaskIntents.php:168`. Run
+  today that query returns `## Breaking Changes`, `## Changelog Files`,
+  `## Review Readiness` and `## Summary Line`, and none of the four mentions the
+  extension scanner.
 - The rule exists on one route and is hedged there. The same intent matches on
   `remove public` and `removed public`, its checklist says "consider an
   extension scanner matcher", and its checks carry `checkExtensionScannerRst`. A
@@ -62,8 +64,8 @@ without the matcher. The corpus does state the matcher. It states it under
   answered out of the section its query matched.
 - Queued rather than closed on the spot. What the `## Breaking Changes` section
   should say about a matcher is a statement about TYPO3, and
-  [judging.md](../../documentation/feedback/judging.md) keeps a run that has read
-  only this repository out of writing one.
+  [judging.md](../../documentation/feedback/judging.md) keeps a run that has
+  read only this repository out of writing one.
 - The feedback's second suggestion is declined on the measurement. A single-term
   query reaches the matcher sentence today; the sentence sits under the wrong
   heading, which no retrieval change repairs.

@@ -37,11 +37,11 @@ what the commit message says.
 
 **The conventions are the core's own**, and several of them have no counterpart
 in a project or an extension — the changelog, the Gerrit workflow, the core
-testing suites. So the answers say which repository they are for, worked
-out from structure rather than from wording. What transfers is still answered;
-what only the core has is left out with the reason. The tools are not: every
-client is offered all of them, because whether a task is core work is a property
-of the task and the tool list cannot vary per task.
+testing suites. So the answers say which repository they are for, worked out
+from structure rather than from wording. What transfers is still answered; what
+only the core has is left out with the reason. The tools are not: every client
+is offered all of them, because whether a task is core work is a property of the
+task and the tool list cannot vary per task.
 
 **Those files are trained by being used.** An agent gets a real task in a real
 checkout and works under one rule: whatever it would otherwise search for, it
@@ -85,8 +85,8 @@ the package, so nothing else needs to be deployed or configured.
 Codex, Claude, Cursor, Copilot, Zed and eight more clients, DDEV projects where
 the server has to start inside the container, the generated `.mcp.json` shapes,
 and the two environment variables that end a failed discovery:
-[documentation/clients/installing.md](documentation/clients/installing.md). Changing this
-repository rather than using it:
+[documentation/clients/installing.md](documentation/clients/installing.md).
+Changing this repository rather than using it:
 [documentation/working-on-the-server.md](documentation/working-on-the-server.md).
 
 ## Tools
@@ -121,12 +121,13 @@ name already says what shape the answer has.
   question can be answered here at all.
 - `typo3_changelog_lookup`: searches the TYPO3 changelog the installed core
   ships — one entry per breaking change, deprecation, feature and important
-  feedback, by words, type and version. Answers what a release changed rather than
-  how to write such an entry, and names the versions that installation covers so
-  a gap is visible. A sweep that cannot be phrased is bounded by `tag` instead —
-  `FullyScanned` for what the Extension Scanner has a matcher for, `ext:form`
-  for the system extension a change is in — and a tag nothing carries comes back
-  with the ones that exist. Nothing is bundled: it grows with a Composer update.
+  feedback, by words, type and version. Answers what a release changed rather
+  than how to write such an entry, and names the versions that installation
+  covers so a gap is visible. A sweep that cannot be phrased is bounded by `tag`
+  instead — `FullyScanned` for what the Extension Scanner has a matcher for,
+  `ext:form` for the system extension a change is in — and a tag nothing carries
+  comes back with the ones that exist. Nothing is bundled: it grows with a
+  Composer update.
 - `typo3_project_scope`: describes the project around the discovered
   installation — its TYPO3 and PHP constraints, the extensions that are its own,
   the sites it configures with the site sets they depend on, and the commands it
@@ -140,49 +141,47 @@ name already says what shape the answer has.
   and routes, its icons, its site sets and the files core reads each one for,
   the form configurations it registers and the definitions they store, its
   service tags, its middlewares, its Fluid roots and namespaces, the shape of
-  its `Classes/`. Its tables, content elements and
-  icons come from the booted installation where there is one, attributed to the
-  extension by the `EXT:` reference each entry carries, because a list built in
-  a loop is in no file; the rest is read from its files, which is why it answers
-  for a third-party extension as well as for the project's own and on a checkout
-  that was never set up. The table an override file extends is read from what
-  the file does, because those files are numbered rather than named after their
-  table.
+  its `Classes/`. Its tables, content elements and icons come from the booted
+  installation where there is one, attributed to the extension by the `EXT:`
+  reference each entry carries, because a list built in a loop is in no file;
+  the rest is read from its files, which is why it answers for a third-party
+  extension as well as for the project's own and on a checkout that was never
+  set up. The table an override file extends is read from what the file does,
+  because those files are numbered rather than named after their table.
 - `typo3_rule_lookup`: searches local TYPO3 core rules and script feedback,
-  ranked by the query terms that separate one section from the rest rather
-  than by overlap, and naming the hints that match the same question — the
-  caller does not have to know which of the two corpora holds a subject.
-- `typo3_script_lookup`: finds matching feedback for TYPO3 core commands. They run
-  in a core checkout, and the answer says so — outside one it returns the
+  ranked by the query terms that separate one section from the rest rather than
+  by overlap, and naming the hints that match the same question — the caller
+  does not have to know which of the two corpora holds a subject.
+- `typo3_script_lookup`: finds matching feedback for TYPO3 core commands. They
+  run in a core checkout, and the answer says so — outside one it returns the
   boundary instead of commands that are not there.
 - `typo3_task_guide`: builds a task checklist enriched with matching hints and
   relevant core checks. A task that reads as work on a project or third-party
   extension says so first and keeps only what transfers: no core checks, no
-  checklist item and no follow-up naming something that only the core
-  repository has. Where the work touches more than one place, the paths are
-  placed one by one, and a session that is in the core and in an extension at
-  once gets one brief that says which of the two each step is for.
+  checklist item and no follow-up naming something that only the core repository
+  has. Where the work touches more than one place, the paths are placed one by
+  one, and a session that is in the core and in an extension at once gets one
+  brief that says which of the two each step is for.
 - `typo3_test_run_guide`: recommends `Build/Scripts/runTests.sh` commands by
-  topic. Paths that read as a project or third-party extension get no suite:
-  the script is part of the core repository. What such an extension needs
-  instead — assembling a phpunit suite of its own — is the
-  `project-extension-tests` hint.
+  topic. Paths that read as a project or third-party extension get no suite: the
+  script is part of the core repository. What such an extension needs instead —
+  assembling a phpunit suite of its own — is the `project-extension-tests` hint.
 - `typo3_hint_lookup`: returns hints for TYPO3 core paths or task topics,
   grouped by section. Outside the core the hints stay and their check commands
-  are dropped. Two sections are the backend interface's own — `Backend CSS`
-  and `Backend TypeScript` — and are withheld with a reason when the task
-  names the frontend, because there they would be inverted advice rather than
-  merely irrelevant. An answer that matched nothing lists the hint ids there
-  are, and `id` asks for one of them outright.
+  are dropped. Two sections are the backend interface's own — `Backend CSS` and
+  `Backend TypeScript` — and are withheld with a reason when the task names the
+  frontend, because there they would be inverted advice rather than merely
+  irrelevant. An answer that matched nothing lists the hint ids there are, and
+  `id` asks for one of them outright.
 - `typo3_documentation_lookup`: searches the public tables of contents of TYPO3
   Explained, TypoScript Explained, the TCA Reference and the Fluid ViewHelper
-  Reference on `docs.typo3.org`, for
-  an explicitly requested covered release. A compound name is taken apart, so
-  `AssetCollector` reaches the page called "Assets". Every result carries its canonical URL, document,
-  version and section. Pass that URL back as `page` with the same
-  `targetVersion` to read its headings, prose and code examples as text. It
-  never falls through to another release, and an unreachable service is
-  distinct from a search that answered with no match.
+  Reference on `docs.typo3.org`, for an explicitly requested covered release. A
+  compound name is taken apart, so `AssetCollector` reaches the page called
+  "Assets". Every result carries its canonical URL, document, version and
+  section. Pass that URL back as `page` with the same `targetVersion` to read
+  its headings, prose and code examples as text. It never falls through to
+  another release, and an unreachable service is distinct from a search that
+  answered with no match.
 - `typo3_forge_lookup`: reads one issue from the tracker at `forge.typo3.org`
   before a patch is written for it — subject, tracker, status, target version,
   the TYPO3 and PHP versions it was reported against, the issues it relates to,
@@ -194,23 +193,23 @@ name already says what shape the answer has.
   anonymous review API at `review.typo3.org`. `issue` searches every change
   whose commit message names a Forge issue — the question every core task asks
   before it starts — and `change` reads one by its number. It answers with the
-  change number, subject, status, target branch and review URL, and it says
-  when the review server did not answer rather than reporting nothing found. A
-  change pushed as private is invisible to an anonymous read, which the empty
-  answer says. Reading only: voting, uploading and amending stay with the
-  caller's git and the web UI.
+  change number, subject, status, target branch and review URL, and it says when
+  the review server did not answer rather than reporting nothing found. A change
+  pushed as private is invisible to an anonymous read, which the empty answer
+  says. Reading only: voting, uploading and amending stay with the caller's git
+  and the web UI.
 - `typo3_component_lookup`: looks up backend UI components by name or topic and
   returns markup, classes, the custom-property contract, and every source used.
-  When `targetVersion` is the active installation, the installed backend CSS
-  and JavaScript decide the contract and an installed styleguide example wins
-  over bundled markup. The curated catalog remains the searchable index and
-  fallback for other versions or missing package evidence; every field says
-  which version and source it describes.
-- `typo3_system_extension_lookup`: says whether an extension is part of the
-  core and on which versions, by extension key or Composer package name, with
-  what it is for. It answers for an extension that is not installed, which is
-  when the question comes up; a miss means "not a system extension on these
-  versions", never "does not exist".
+  When `targetVersion` is the active installation, the installed backend CSS and
+  JavaScript decide the contract and an installed styleguide example wins over
+  bundled markup. The curated catalog remains the searchable index and fallback
+  for other versions or missing package evidence; every field says which version
+  and source it describes.
+- `typo3_system_extension_lookup`: says whether an extension is part of the core
+  and on which versions, by extension key or Composer package name, with what it
+  is for. It answers for an extension that is not installed, which is when the
+  question comes up; a miss means "not a system extension on these versions",
+  never "does not exist".
 - `typo3_reference_list`: names the worked examples the core ships of its own
   conventions — the theme extension, the styleguide, the Extbase fixture
   extension, the content element rendering, the browser suite, the static
@@ -229,14 +228,14 @@ name already says what shape the answer has.
   the backend's, and frontend rendering reaches none of it.
 - `typo3_label_lookup`: searches the labels the installation has registered (XLF
   trans-units) and returns the domain reference (`package.resource:key`) and the
-  source text. Pass the XLF `resource` already used at the consuming code:
-  reuse is local to that resource, and a matching label in another module or
-  package is not a shared vocabulary.
-  Several words are matched independently, ignoring case and order: a label has
-  to carry every one of them, and where none does, the answer says how far each
-  word reaches on its own. Where the console cannot be reached — an installed
-  TYPO3 whose database has no schema yet — the same packages' XLF files are read
-  instead, and `answeredBy` says which of the two answered.
+  source text. Pass the XLF `resource` already used at the consuming code: reuse
+  is local to that resource, and a matching label in another module or package
+  is not a shared vocabulary. Several words are matched independently, ignoring
+  case and order: a label has to carry every one of them, and where none does,
+  the answer says how far each word reaches on its own. Where the console cannot
+  be reached — an installed TYPO3 whose database has no schema yet — the same
+  packages' XLF files are read instead, and `answeredBy` says which of the two
+  answered.
 - `typo3_translation_domain_lookup`: computes the translation domain an XLF file
   resolves to, from its path. Nothing registers a domain — it follows from the
   path by the rules the core itself applies — so this answers for a file in any
@@ -272,15 +271,15 @@ name already says what shape the answer has.
   trailer included; `workflow="project"` keeps the subject and body conventions
   and drops the trailers, for the repositories that use the one without having
   the other.
-- `typo3_feedback_record`: records what was missing, wrong, or unhelpful about an
-  answer as a feedback under `feedback/` (standalone checkout only, see
+- `typo3_feedback_record`: records what was missing, wrong, or unhelpful about
+  an answer as a feedback under `feedback/` (standalone checkout only, see
   [Improvement feedback](#improvement-feedback)).
-- `typo3_feedback_list`: lists those feedback, newest first, so they can be worked
-  off, filtered by status, category or the tool they are about. `status="closed"`
-  reads the ones already worked off out of `feedback/archive/`, where the commit
-  that archived one is what says what came of it — the feedback itself is kept,
-  not deleted, so the category, the tools and the model are still there to filter
-  on (standalone checkout only).
+- `typo3_feedback_list`: lists those feedback, newest first, so they can be
+  worked off, filtered by status, category or the tool they are about.
+  `status="closed"` reads the ones already worked off out of
+  `feedback/archive/`, where the commit that archived one is what says what came
+  of it — the feedback itself is kept, not deleted, so the category, the tools
+  and the model are still there to filter on (standalone checkout only).
 
 ## Resources
 
@@ -298,9 +297,9 @@ Everything the tools and resources answer from lives in `knowledge/`:
   `typo3-commit-messages.md`, `typo3-gerrit-workflow.md`,
   `typo3-contribution-sources.md`
 - `hints/` — one file per subject: `datahandler.json`, `fal.json`,
-  `labels.json`, `site-sets.json` and many more. Each entry names the domains
-  it is asked from in its own `domains` field, so the file says what the hint
-  is about and the tag says which query reaches it
+  `labels.json`, `site-sets.json` and many more. Each entry names the domains it
+  is asked from in its own `domains` field, so the file says what the hint is
+  about and the tag says which query reaches it
 - `catalog/` — the component catalog (`components.json`,
   `component-checklist.json`, `references.json`, `meta.json`) and the shipped
   system extensions (`system-extensions.json`)
@@ -331,23 +330,24 @@ a second time and one that needed a code change does not vanish.
 Each feedback carries the working directory the session that left it ran in, as
 `directory:` in its front matter, so a gap can be checked against the project it
 was found in rather than against whatever is at hand. It is the same directory
-the stdio entrypoint hands to instance discovery; a feedback left over an endpoint
-that has none carries none. That directory is also why the feedback is reported back
-as an absolute path: it is written into this server's checkout and not into the
-project the session is in, and a relative path sent to a caller standing
-somewhere else reads as a write that failed.
+the stdio entrypoint hands to instance discovery; a feedback left over an
+endpoint that has none carries none. That directory is also why the feedback is
+reported back as an absolute path: it is written into this server's checkout and
+not into the project the session is in, and a relative path sent to a caller
+standing somewhere else reads as a write that failed.
 
-A feedback also carries `model:` — the model that left it, as it named itself. Much
-of what arrives is about what a session did rather than about what an answer
-said, and that is one model's behaviour: unattributed, two models' habits are one
-undifferentiated report and neither can be worked off. The write never fails on
-it, and a model that does not know its own identifier is asked to send `unknown`
-rather than an invented one, so a feedback nobody can attribute says so.
+A feedback also carries `model:` — the model that left it, as it named itself.
+Much of what arrives is about what a session did rather than about what an
+answer said, and that is one model's behaviour: unattributed, two models' habits
+are one undifferentiated report and neither can be worked off. The write never
+fails on it, and a model that does not know its own identifier is asked to send
+`unknown` rather than an invented one, so a feedback nobody can attribute says
+so.
 
 Both tools exist **only in a standalone checkout**. Installed as a Composer
 dependency the package lives in `vendor/`, where anything written would be lost
 on the next `composer install`; there the server stays strictly read-only and
 neither tool appears in `tools/list`.
 
-Working on this repository — layout, conventions, and how feedback is worked off —
-is documented in [AGENTS.md](AGENTS.md).
+Working on this repository — layout, conventions, and how feedback is worked off
+— is documented in [AGENTS.md](AGENTS.md).

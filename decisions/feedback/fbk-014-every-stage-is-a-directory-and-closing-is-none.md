@@ -50,8 +50,8 @@ built a path.
 ## Assumed
 
 - That three stages are all a todo has. Nothing here reviews, approves or
-  schedules, so the states are: nobody has it, somebody has it, nobody can
-  start it.
+  schedules, so the states are: nobody has it, somebody has it, nobody can start
+  it.
 - That deleting loses nothing anybody will look for. It is what this repository
   has always done, and no session has yet asked a question about a finished todo
   that `git log` could not answer.

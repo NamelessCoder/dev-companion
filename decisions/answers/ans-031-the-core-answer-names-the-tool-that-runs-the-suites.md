@@ -40,24 +40,24 @@ not there. It did not say where they were.
   bootstrap". `/home/benji/projects/typo3-cms` has no `Build/bin/` at all, and
   `Build/phpunit/` holds four files: `UnitTests.xml`, `FunctionalTests.xml` and
   a bootstrap for each. None of them is a runner.
-- The answer is here, whole. `bin/cli hints:probe "run PHPUnit tests in the
-  TYPO3 core checkout"` reaches `project-extension-tests`, and
-  `knowledge/test-suite-hints.json` carries the invocation notes.
-  `typo3_test_run_guide`, re-run on 2026-08-02 through `bin/typo3-cms-mcp` from
-  that directory with the two processing classes the session read, answers
-  `unit`, `functional` and `e2e`, each as a `CI=true
-  ./Build/Scripts/runTests.sh` command with a targeted form beside it.
+- The answer is here, whole.
+  `bin/cli hints:probe "run PHPUnit tests in the TYPO3 core checkout"` reaches
+  `project-extension-tests`, and `knowledge/test-suite-hints.json` carries the
+  invocation notes. `typo3_test_run_guide`, re-run on 2026-08-02 through
+  `bin/typo3-cms-mcp` from that directory with the two processing classes the
+  session read, answers `unit`, `functional` and `e2e`, each as a
+  `CI=true ./Build/Scripts/runTests.sh` command with a targeted form beside it.
 - One hop away, `typo3_task_guide` hands it over by name. Asked with the
   session's own task on the same day it answers "Find the file there, then ask
   typo3_test_run_guide for the targeted runTests.sh invocation", and lists that
   tool again under *Next lookups for this task*.
 - Neither reaches the session. The routing line — "About to run tests or any
-  other core check" — is in the `routing` block of `knowledge/server-scope.json`,
-  which a caller sees only by calling `typo3_server_scope`. The `instructions`
-  returned at initialize name two tools: `typo3_project_scope` in the imperative
-  ("Start every task with"), and `typo3_task_guide` in a sentence describing what
-  it gives. The session called the first and reports that no other lookup was
-  activated.
+  other core check" — is in the `routing` block of
+  `knowledge/server-scope.json`, which a caller sees only by calling
+  `typo3_server_scope`. The `instructions` returned at initialize name two
+  tools: `typo3_project_scope` in the imperative ("Start every task with"), and
+  `typo3_task_guide` in a sentence describing what it gives. The session called
+  the first and reports that no other lookup was activated.
 - The answer it did hold is where the question came up. Re-run on 2026-08-02
   from the same directory, `typo3_project_scope` opens "core-checkout, TYPO3
   15.0.0-dev, PHP ^8.5 declared and 8.5 in DDEV", and its commands paragraph
@@ -65,10 +65,10 @@ not there. It did not say where they were.
   testing suites do not". Four `gerrit:setup` scripts follow it. No sentence in
   the answer names a tool.
 - The other model in the same directory got there. `115716`,
-  deepseek-v4-flash-free, nine minutes later, on the same patch: "typo3_script_lookup
-  plus typo3_test_run_guide supplied the exact runTests.sh suites
-  (functional/unit, cglGit, phpstan, checkExtensionScannerRst)". So the corpus
-  and the routing are not what failed.
+  deepseek-v4-flash-free, nine minutes later, on the same patch:
+  "typo3_script_lookup plus typo3_test_run_guide supplied the exact runTests.sh
+  suites (functional/unit, cglGit, phpstan, checkExtensionScannerRst)". So the
+  corpus and the routing are not what failed.
 - The strength half credits the wrong tool, which is the pattern
   [`D-FBK-018`](../feedback/fbk-018-a-strength-is-evidence-about-a-boundary-not-about-a-decision.md)
   names. It reports that `typo3_project_scope` "listed processors in the default
@@ -94,16 +94,16 @@ not there. It did not say where they were.
   the assertion in `ProjectTest::theAnswerNamesTheCommandsThatExistHere`, and
   [judging.md](../../documentation/feedback/judging.md) puts `src/` beyond a run
   that has read only this repository.
-- The feedback's own **Suggestion** is not judged here.
-  `processingTaskTypes` and `SYS.fal.processors` are `TYPO3_CONF_VARS` paths —
-  both are in `typo3/sysext/core/Configuration/DefaultConfiguration.php` under
-  `SYS.fal` — so what they ask of the project answer is what
+- The feedback's own **Suggestion** is not judged here. `processingTaskTypes`
+  and `SYS.fal.processors` are `TYPO3_CONF_VARS` paths — both are in
+  `typo3/sysext/core/Configuration/DefaultConfiguration.php` under `SYS.fal` —
+  so what they ask of the project answer is what
   [`D-ANS-011`](ans-011-a-scope-answer-states-what-a-manifest-declares.md) keeps
   out of it and `typo3_configuration_lookup` is routed for. Saying more from
   here would be the copy-down onto two siblings' cards that `D-FBK-021` forbids.
-- Nothing on another branch was touched. `114526` is in hand in another
-  worktree and `115220` has a card in `todo/open/`, so neither file was edited
-  and neither `Serves:` line gained this feedback.
+- Nothing on another branch was touched. `114526` is in hand in another worktree
+  and `115220` has a card in `todo/open/`, so neither file was edited and
+  neither `Serves:` line gained this feedback.
 - Whether this feedback may be archived is not decided here, and it is not the
   archiving question the three summaries in `todo/waiting/` carry. This one has
   a half no sibling owns, so it stays open behind the todo that half produced.

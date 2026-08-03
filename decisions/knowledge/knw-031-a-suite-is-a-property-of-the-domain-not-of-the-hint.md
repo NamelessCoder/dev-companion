@@ -16,8 +16,8 @@ written in.
 
 ## Evidence
 
-- The split by set: 28 generic, 31 naming a suite the subject actually implies
-  — `lintScss` and `buildCss` on the CSS hints, `checkIntegrityXliff` and
+- The split by set: 28 generic, 31 naming a suite the subject actually implies —
+  `lintScss` and `buildCss` on the CSS hints, `checkIntegrityXliff` and
   `normalizeXliff` on the labels one, `checkRst` on the changelog one,
   `lintServicesYaml` on dependency injection, `e2e` on browser tests.
 - Removing the field alone made a core bugfix brief name no check at all.

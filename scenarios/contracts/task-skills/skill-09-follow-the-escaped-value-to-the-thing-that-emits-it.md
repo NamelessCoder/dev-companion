@@ -21,14 +21,14 @@ behavior goes. This case is what measures the rest.
 - The value is followed to the thing that emits it: the answer names the tag,
   attribute, header or API it is finally written through, and the call that
   escapes it there or the absence of one.
-- That reading crosses into the installed package below the vendor tree,
-  because the class that emits the value is not one the extension ships.
+- That reading crosses into the installed package below the vendor tree, because
+  the class that emits the value is not one the extension ships.
 - A ViewHelper that hands its rendered children to another component is
   recognized as emitting nothing, so the opt-out inside it is on the path to a
   sink rather than at the end of one.
-- An opt-out that exists to keep a value from being encoded twice is reported
-  as that — at most a maintainability note naming what it depends on — instead
-  of as a violation.
+- An opt-out that exists to keep a value from being encoded twice is reported as
+  that — at most a maintainability note naming what it depends on — instead of
+  as a violation.
 - Where the value cannot be followed that far, the finding is reported as
   unverified and says which class was not read, rather than being dropped or
   promoted.
@@ -38,8 +38,8 @@ behavior goes. This case is what measures the rest.
 **How it fails**
 
 - The finding is established from the template line, the disabled escaping on
-  the core formatting ViewHelper and the plain field type in TCA — three
-  correct citations, none of them the sink.
+  the core formatting ViewHelper and the plain field type in TCA — three correct
+  citations, none of them the sink.
 - The only class opened is the one that confirms what the review already
   believes, while the extension's own ViewHelper and the class that emits the
   resolved value go unread.

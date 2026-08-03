@@ -23,9 +23,9 @@ The shape was never the thing worth keeping.
   where discovery looked and what was set wrong. Beside it stands only the
   caller's own arguments coming back, which claim nothing about anything.
 - The output schema declares the two as `oneOf`, so a hit keeps every field it
-  ever required and an answer carrying both shapes is invalid. The
-  specification makes conformance a server MUST and validation a client SHOULD,
-  so the schema is the promise and it says which of the two arrived.
+  ever required and an answer carrying both shapes is invalid. The specification
+  makes conformance a server MUST and validation a client SHOULD, so the schema
+  is the promise and it says which of the two arrived.
 - `cause` is `no-installation`, `misconfigured` or `installation-not-answering`.
   Prose already carried the difference and only prose did; `META-02` requires
   "nothing found" and "found but not running" to be distinguishable, and a

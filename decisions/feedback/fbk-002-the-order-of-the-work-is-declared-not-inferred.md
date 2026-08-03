@@ -37,16 +37,16 @@ the point of declaring it: each was an edit rather than a rewrite. See
 
 ## Decided
 
-- One line per section, in the bold-label shape `requirements/` and
-  `decisions/` are already read by. Three alternatives were rejected with it.
-  Inferring the kind from position (the standing ones come first) breaks the
-  day somebody inserts a section, silently and in the direction that hides
-  work. Moving the queue into a structured file turns the next concrete step
-  into a field, and that paragraph — written for whoever has read nothing else
-  — is the most valuable thing in the repository's upkeep. Making it a tool of
-  the server rather than a command of `bin/cli` was rejected for the reason
-  `Cli` already gives: this server is about the TYPO3 core, not about the
-  repository it lives in.
+- One line per section, in the bold-label shape `requirements/` and `decisions/`
+  are already read by. Three alternatives were rejected with it. Inferring the
+  kind from position (the standing ones come first) breaks the day somebody
+  inserts a section, silently and in the direction that hides work. Moving the
+  queue into a structured file turns the next concrete step into a field, and
+  that paragraph — written for whoever has read nothing else — is the most
+  valuable thing in the repository's upkeep. Making it a tool of the server
+  rather than a command of `bin/cli` was rejected for the reason `Cli` already
+  gives: this server is about the TYPO3 core, not about the repository it lives
+  in.
 
 ## Assumed
 
@@ -54,13 +54,13 @@ the point of declaring it: each was an edit rather than a rewrite. See
   the four files itself as before. Nothing in this repository can show that — a
   forward run happens in someone else's checkout, and a session here may not
   grade its own behaviour as evidence. What it rests on instead is that the
-  command is strictly cheaper than what it replaces and returns what the
-  reading would have.
-- That the line stays current because it is also what makes an item readable.
-  It is written when the item is, it names what the commit that finishes the
-  item will delete, and `bin/cli todo:check` fails when it names a feedback
-  that is already gone. A marker nobody would otherwise need would have been
-  the kind that rots.
+  command is strictly cheaper than what it replaces and returns what the reading
+  would have.
+- That the line stays current because it is also what makes an item readable. It
+  is written when the item is, it names what the commit that finishes the item
+  will delete, and `bin/cli todo:check` fails when it names a feedback that is
+  already gone. A marker nobody would otherwise need would have been the kind
+  that rots.
 
 ## Wrong if
 

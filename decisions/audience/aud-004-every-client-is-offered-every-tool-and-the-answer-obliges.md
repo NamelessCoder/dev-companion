@@ -44,24 +44,24 @@ the right one at all.
 - `typo3_server_scope` cannot be excluded. It is what tells a client why the
   list is shorter than the documentation says, and a client that has lost it
   cannot tell a configured server from a broken one.
-- The `provenance` of a topic no longer decides whether the topic is offered.
-  It says what an answer is worth outside the core, which is R-SCO-006, and that
-  is a statement about the answer rather than about the list.
+- The `provenance` of a topic no longer decides whether the topic is offered. It
+  says what an answer is worth outside the core, which is R-SCO-006, and that is
+  a statement about the answer rather than about the list.
 - The `profile` object in the `typo3_server_scope` output schema is replaced by
   `excludedTools`, not kept alongside it. A field whose concept is gone has no
   honest value, and this is a breaking change to that schema.
 
 ## Assumed
 
-- An agent offered a tool it cannot usefully follow does better than one
-  offered nothing. `typo3_test_run_guide` in a project answers with
-  `runTests.sh`, which exists in the core repository alone — the bet is that a
-  correction beats a gap, and that R-SCO-001's per-path audience is what keeps
-  the correction attached.
+- An agent offered a tool it cannot usefully follow does better than one offered
+  nothing. `typo3_test_run_guide` in a project answers with `runTests.sh`, which
+  exists in the core repository alone — the bet is that a correction beats a
+  gap, and that R-SCO-001's per-path audience is what keeps the correction
+  attached.
 - Nobody was relying on the shorter list to keep an agent away from core-only
   advice. Nothing in `feedback/` or `scenarios/runs/` shows an agent reaching
-  for one of the three tools where it did not belong, but nothing shows it
-  being prevented either — the profile was never observed working.
+  for one of the three tools where it did not belong, but nothing shows it being
+  prevented either — the profile was never observed working.
 
 ## Wrong if
 
@@ -70,6 +70,6 @@ the right one at all.
   review rules as if the caller could follow them. That is the failure the
   profile was aimed at, and it now has to be caught by what the answer says
   rather than by the tool being absent.
-- The 2.4% turns out to be measured against the wrong thing — a client that
-  pays per tool rather than per byte, or one whose limit is a count. Then the
+- The 2.4% turns out to be measured against the wrong thing — a client that pays
+  per tool rather than per byte, or one whose limit is a count. Then the
   argument that the profile bought nothing does not hold.

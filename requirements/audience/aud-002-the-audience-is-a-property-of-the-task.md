@@ -8,10 +8,10 @@ restsOn: [D-SCO-007]
 
 **The audience is a property of the task, not of the directory.**
 
-Extensions are routinely developed inside a site installation, a site package
-is an extension, and a core checkout can be the place someone debugs their
-site. Signals are combined, and where they disagree the answer says the
-audience is uncertain instead of picking one silently.
+Extensions are routinely developed inside a site installation, a site package is
+an extension, and a core checkout can be the place someone debugs their site.
+Signals are combined, and where they disagree the answer says the audience is
+uncertain instead of picking one silently.
 
 The unit of that decision is the path, because a call is not one piece of work:
 `Scope::of()` answers `core`, `project`, `extension` or `uncertain` for one

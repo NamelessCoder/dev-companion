@@ -1,13 +1,13 @@
 # Working a todo
 
-`bin/cli todo:next` hands over one todo, and what happens between reading it and the
-commit is the work. This page is that part alone. What is due, what recurs, and
-what a finished todo leaves behind is in
-[feedback/readme.md](readme.md); nothing here repeats it.
+`bin/cli todo:next` hands over one todo, and what happens between reading it and
+the commit is the work. This page is that part alone. What is due, what recurs,
+and what a finished todo leaves behind is in [feedback/readme.md](readme.md);
+nothing here repeats it.
 
 The todo is not the instruction it looks like. Its paragraph is one session's
-belief about where to start, written before the work it describes was done, by
-a session that has ended and cannot be asked. It is the best starting point the
+belief about where to start, written before the work it describes was done, by a
+session that has ended and cannot be asked. It is the best starting point the
 repository has and it is still a claim: the file it names may have moved, the
 check it proposes may already exist, the thing it says is missing may have
 arrived in the four commits since. A session that opens by editing has tested
@@ -17,11 +17,11 @@ after the change is written.
 ## What is read before the first change
 
 - **What it serves.** The `Serves:` line names a requirement, a decision, a
-  feedback, a directory, and that is where the todo's reason lives — the paragraph
-  is only its next step. Read them whole. A todo serving a decision is usually
-  that entry's **Wrong if** compressed into a sentence, and the entry itself
-  says what evidence would settle it; a todo serving a requirement says what
-  must hold, and often names the test that would hold it.
+  feedback, a directory, and that is where the todo's reason lives — the
+  paragraph is only its next step. Read them whole. A todo serving a decision is
+  usually that entry's **Wrong if** compressed into a sentence, and the entry
+  itself says what evidence would settle it; a todo serving a requirement says
+  what must hold, and often names the test that would hold it.
 - **What the code does now**, rather than what the todo says it does. The
   reading is the class, the check or the corpus the step names, plus the test
   that covers it today — because the honest form of most steps here is "the
@@ -53,9 +53,9 @@ What is produced here is acted on without being checked: a statement in
 `knowledge/` reaches a session in somebody else's project, a skill is a file no
 release of this server corrects, a requirement is what the next author is held
 to, a decision is what nobody reopens until it fails. An answer that was
-established and one that was remembered are indistinguishable in all four —
-same sentence, same confidence — and the second is wrong from the day the thing
-it describes moved.
+established and one that was remembered are indistinguishable in all four — same
+sentence, same confidence — and the second is wrong from the day the thing it
+describes moved.
 
 So a gap that opens while working a todo is researched rather than filled in.
 Where the answer is:
@@ -64,21 +64,21 @@ Where the answer is:
   because they are the code the statement is about and both sides of a version
   boundary are readable in them; `bin/cli checkouts:update` is what makes them
   current. Then the official documentation at the versions in play, and this
-  server's own answers — `typo3_documentation_lookup`,
-  `typo3_changelog_lookup`, `typo3_hint_lookup` — which are also the fastest
-  way to find that a question is already answered and needs no statement at
-  all.
+  server's own answers — `typo3_documentation_lookup`, `typo3_changelog_lookup`,
+  `typo3_hint_lookup` — which are also the fastest way to find that a question
+  is already answered and needs no statement at all.
 - **about a tool this repository does not own** — Composer, DDEV, the SDK, a CI
   runner, a registry: its own documentation and its own release feedback. What a
   tool does by default is precisely the fact that moves after somebody wrote it
   down here, and the version in `composer.lock` is what says which behaviour is
   the one in play.
-- **about this server** — the query is re-run against the server as it is now.
-  A feedback, a recorded run and a quoted answer are all evidence about a version
-  that may no longer exist, and reading one instead of running it is how a
-  fixed problem gets fixed twice.
+- **about this server** — the query is re-run against the server as it is now. A
+  feedback, a recorded run and a quoted answer are all evidence about a version
+  that may no longer exist, and reading one instead of running it is how a fixed
+  problem gets fixed twice.
 - **about the practice a skill describes** — that research is already written
-  down, in [writing-a-skill.md](../clients/writing-a-skill.md), and it is the same shape.
+  down, in [writing-a-skill.md](../clients/writing-a-skill.md), and it is the
+  same shape.
 
 Answering from recall is the failure this is written against; leaving a question
 open is not. Where it cannot be settled here — it needs an installation, a run
@@ -126,10 +126,10 @@ Where nothing can be done until somebody answers, it moves to `todo/waiting/`
 instead and carries the question in a `**Waiting on:**` line. That is the
 difference the state exists for: parked among the workable ones such a todo
 reads as ordinary work while it is actually waiting on a person, and every
-session that reaches it re-derives the same question. No session is
-offered it, and the way back is a todo of its own — every seven days,
-`bin/cli todo:waiting` prints what is blocked and the questions get asked again.
-The answer is what moves one back into the queue.
+session that reaches it re-derives the same question. No session is offered it,
+and the way back is a todo of its own — every seven days, `bin/cli todo:waiting`
+prints what is blocked and the questions get asked again. The answer is what
+moves one back into the queue.
 
 Either way it keeps its file, and the session's job is to leave it startable
 cold: the open question written into its paragraph in the words it was asked in,
@@ -139,9 +139,9 @@ every session.
 
 What comes back is written into the file it belongs in — the todo when it
 changes the order, the step or what it is waiting on, `decisions/` when it is
-the kind of answer somebody will want the reason for later — because an
-answer that lives only in the conversation is gone when the session ends, and so
-is a deferral nobody wrote down.
+the kind of answer somebody will want the reason for later — because an answer
+that lives only in the conversation is gone when the session ends, and so is a
+deferral nobody wrote down.
 
 ## What the commit carries, and what the file says afterwards
 
@@ -178,11 +178,11 @@ one taken.
 ## What none of this holds
 
 Nothing on this page can be checked. A todo worked from the checkouts and the
-manuals is shaped exactly like one worked from memory — same diff, same
-message, and the sentence that turns out false is the confident one in both. A
-choice made silently is shaped exactly like one that had nothing to choose.
-What can be done is done: the page exists, `bin/cli todo:next` names it with every
-todo it hands over, and
+manuals is shaped exactly like one worked from memory — same diff, same message,
+and the sentence that turns out false is the confident one in both. A choice
+made silently is shaped exactly like one that had nothing to choose. What can be
+done is done: the page exists, `bin/cli todo:next` names it with every todo it
+hands over, and
 [`R-FBK-009`](../../requirements/feedback/fbk-009-a-todo-is-worked-from-what-was-read.md)
 carries it with the reason. Whether the reading happened is the session's, and
 the session is the only one who will ever know.

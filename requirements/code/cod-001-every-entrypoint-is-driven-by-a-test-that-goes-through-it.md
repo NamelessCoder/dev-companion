@@ -15,12 +15,12 @@ and still be unreachable.
 
 ## From
 
-Moving the upkeep into `src/Upkeep/` put its subjects one directory deeper,
-five of them resolved the repository root as `dirname(__DIR__, 2)` from their
-own file, and `bin/cli requirements:check` died on a path that no longer
-existed. All 483 tests stayed green, because none of them went through
-`bin/cli` — a smoke layer existed and covered the other binary alone. It was
-found by running the command by hand, one commit late (2026-08-01).
+Moving the upkeep into `src/Upkeep/` put its subjects one directory deeper, five
+of them resolved the repository root as `dirname(__DIR__, 2)` from their own
+file, and `bin/cli requirements:check` died on a path that no longer existed.
+All 483 tests stayed green, because none of them went through `bin/cli` — a
+smoke layer existed and covered the other binary alone. It was found by running
+the command by hand, one commit late (2026-08-01).
 
 ## Held by
 

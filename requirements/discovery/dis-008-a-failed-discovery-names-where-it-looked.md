@@ -12,8 +12,8 @@ the wrong directory.
 
 ## From
 
-The same session; "no installation found" was indistinguishable from "started
-in the wrong directory".
+The same session; "no installation found" was indistinguishable from "started in
+the wrong directory".
 
 ## Held by
 

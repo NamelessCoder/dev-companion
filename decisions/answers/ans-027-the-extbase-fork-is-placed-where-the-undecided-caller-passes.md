@@ -26,8 +26,8 @@ before it was filed.
   table's records needs no model, no repository and no controller and that
   Extbase enters when pagination, search, validated arguments or forms do. Step
   1a is out.
-- The probes are the finding. `bin/cli hints:probe "new content element for
-  testimonials with a repeatable list of entries, TCA and Fluid rendering"`
+- The probes are the finding.
+  `bin/cli hints:probe "new content element for testimonials with a repeatable list of entries, TCA and Fluid rendering"`
   reaches `content-elements` and `tca-formengine`; "content element architecture
   for a new element in a sitepackage" reaches `content-elements`,
   `sitepackage-layout` and `frontend-page-rendering`. Neither reaches `extbase`
@@ -54,7 +54,8 @@ before it was filed.
 - What the feedback asks to be checked is already answered, by a call the base
   already orders. `typo3_extension_scope` reports each content element with a
   `kind` of `element` or `plugin`, where `plugin` is an Extbase plugin
-  registered by `ExtensionUtility::registerPlugin()` ([`D-ANS-018`](ans-018-a-plugin-is-a-kind-of-content-element-not-one-whose-template-is-missing.md)),
+  registered by `ExtensionUtility::registerPlugin()`
+  ([`D-ANS-018`](ans-018-a-plugin-is-a-kind-of-content-element-not-one-whose-template-is-missing.md)),
   and `skills/base.md` puts that call at step 2, before the checkout is read.
   Both places that name it frame the answer as where an element renders: the
   intent asks for it "for the content elements this extension already registers
@@ -67,22 +68,23 @@ before it was filed.
   on 2026-07-29. Not 1b, because the tool that reports what the extension
   already uses exists and the base already calls it. Not 4, because nothing here
   shows the wording was read and failed to take.
-- The second sighting of [`D-ANS-024`](ans-024-a-rule-reaches-only-the-task-that-already-names-its-subject.md),
-  from the same debrief, and it adds one thing to it. A rule can still be reached
-  by a caller describing its own subject; a fork filed under one of its branches
-  cannot, because the word that opens the path is the option the caller has not
-  thought of. Naming Extbase is what a session does after it has considered
-  Extbase.
+- The second sighting of
+  [`D-ANS-024`](ans-024-a-rule-reaches-only-the-task-that-already-names-its-subject.md),
+  from the same debrief, and it adds one thing to it. A rule can still be
+  reached by a caller describing its own subject; a fork filed under one of its
+  branches cannot, because the word that opens the path is the option the caller
+  has not thought of. Naming Extbase is what a session does after it has
+  considered Extbase.
 - Queued rather than closed on the spot. The placement is the `content-elements`
   hint, the `content-element` checklist in `knowledge/task-intents.json`, or the
   skill's own architecture section — three different claims about who a fork
   belongs to, and the last is a file installed into somebody else's project.
 - It also needs TYPO3 read before it is worded, which is the other thing
   [judging.md](../../documentation/feedback/judging.md) keeps out of a judging
-  run. A plugin is a `CType` like any other since v14, so on the covered versions
-  "a content element or an Extbase plugin" is not the two categories it was, and
-  what the fork actually asks has to be established in `.checkouts/` rather than
-  carried over from the sentence that exists.
+  run. A plugin is a `CType` like any other since v14, so on the covered
+  versions "a content element or an Extbase plugin" is not the two categories it
+  was, and what the fork actually asks has to be established in `.checkouts/`
+  rather than carried over from the sentence that exists.
 - The feedback's own suggestion is not adopted as written. It asks for a rule to
   check how the extension's other plugins are built; that answer is already
   reported and already ordered. What it needs and does not name is that the

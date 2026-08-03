@@ -28,22 +28,22 @@ that one fix would have been the wrong fix.
   `typo3-extension-conformance` — "Audit or improve a TYPO3 project,
   sitepackage, or extension … Use for extension reviews, … quality or readiness
   assessments" — did not activate against "Review this TYPO3 project and its
-  site package. Identify the most important concrete problems, risks, or
-  missing safeguards". Its body would have met both criteria the run failed:
-  step 1 is `typo3_project_scope`, and it hands fixes to the testing and
-  documentation skills.
+  site package. Identify the most important concrete problems, risks, or missing
+  safeguards". Its body would have met both criteria the run failed: step 1 is
+  `typo3_project_scope`, and it hands fixes to the testing and documentation
+  skills.
 
 ## Decided
 
 - The `instructions` open with `typo3_project_scope` as the first call of any
-  task and name reviewing alongside upgrading and writing code, the
-  working-tree sentence stops being a disclaimer and becomes a division of
-  labour, and the review shape gets a `routing` entry of its own. The skill
-  description leads with the open request — review a repository and say what is
-  wrong with it, in priority order — instead of promising compatibility, which
-  described one of the seven things that run actually found. The tool
-  descriptions are left alone: they are not the channel that failed, because
-  under deferral they are not a channel at all.
+  task and name reviewing alongside upgrading and writing code, the working-tree
+  sentence stops being a disclaimer and becomes a division of labour, and the
+  review shape gets a `routing` entry of its own. The skill description leads
+  with the open request — review a repository and say what is wrong with it, in
+  priority order — instead of promising compatibility, which described one of
+  the seven things that run actually found. The tool descriptions are left
+  alone: they are not the channel that failed, because under deferral they are
+  not a channel at all.
 
 ## Wrong if
 
@@ -52,8 +52,8 @@ that one fix would have been the wrong fix.
   `extension-conformance` for a site project — and, past that, the possibility
   that a repository review genuinely needs nothing this server has except the
   installed version, the icon and label registries and the component contract.
-  That answer would be worth having; it is much smaller than the current
-  surface implies.
+  That answer would be worth having; it is much smaller than the current surface
+  implies.
 
 ## Confirmed on 2026-07-31
 
@@ -63,21 +63,22 @@ as the session's first action, `typo3_project_scope` was the second call, and
 `typo3_extension_scope` followed. Both channels this entry changed carried, so
 the wording was part of the obstacle after all. What the run did not do is
 follow the skill past step 2. Thirty-eight of its 45 calls were still Bash, and
-`typo3_task_guide`, `typo3_architecture_lookup` and
-`typo3_documentation_lookup` were loaded through `ToolSearch` and never called.
-That is the order rather than the entry point, and `D-SKL-001` owns it. The
-second suspicion falls with the first: run 4 called eight tools fifteen times
-and was judged `covered`, and the two findings three runs had missed came from
-those calls. A repository review therefore needs more of this server than the
-version, the registries and the component contract. The run stands in commit
-`021eac8`, the two runs after it having overwritten the file.
+`typo3_task_guide`, `typo3_architecture_lookup` and `typo3_documentation_lookup`
+were loaded through `ToolSearch` and never called. That is the order rather than
+the entry point, and `D-SKL-001` owns it. The second suspicion falls with the
+first: run 4 called eight tools fifteen times and was judged `covered`, and the
+two findings three runs had missed came from those calls. A repository review
+therefore needs more of this server than the version, the registries and the
+component contract. The run stands in commit `021eac8`, the two runs after it
+having overwritten the file.
 
 ## Since then
 
 The same three channels failed again on a task that builds rather than reviews.
 A session in `site-new` wrote a custom backend preview for a TYPO3 14 content
 element and called nothing — no tool, no skill, the work done by reading vendor
-code (`feedback/2026-08-01-002926-debrief-of-a-typo3-14-backend-content-element.md`).
+code
+(`feedback/2026-08-01-002926-debrief-of-a-typo3-14-backend-content-element.md`).
 It ran on 2026-08-01, a day after `b85036b` put `typo3_project_scope` at the
 head of the `instructions`, so the entry point this entry added was in the text
 and did not fire. That is not the **Wrong if**: it was a different client and a
@@ -114,10 +115,10 @@ and list surfaces from both ends, and the two that could have read as one-sided
 already state the second half — the upgrade skill names dropping an old major
 beside adding a new one, and the release skill names the publication step it
 stops before, deliberately. `R-SKL-010` is the demand, and
-`SkillTest::aBackendPreviewTaskMatchesTheSkillThatOwnsTheElement` holds the pair.
-What none of it settles is whether the wording was what that model was missing:
-the words are what can be changed from here, and only a second run in the same
-client says whether they were the obstacle.
+`SkillTest::aBackendPreviewTaskMatchesTheSkillThatOwnsTheElement` holds the
+pair. What none of it settles is whether the wording was what that model was
+missing: the words are what can be changed from here, and only a second run in
+the same client says whether they were the obstacle.
 
 The sighting's own author has since withdrawn half of it. A fourth feedback of
 that session, `feedback/2026-08-01-003736`, says its conversation begins at an
@@ -130,17 +131,17 @@ reading that the entry point was in the text and did not fire — the entry poin
 may have fired and gone unrecorded. `D-FBK-023` is the judgement of the
 correction and says what it moves in the two siblings beside this one.
 
-What that withdrawal left open, `REVIEW-03` answers on 2026-08-03. The
-delivery is no longer inferred: the transcript's own attachments carry the
-`mcp_instructions_delta` in full, opening with `Start every task with
-typo3_project_scope`, and the `skill_listing` with all seven descriptions,
-against 23 calls that are 22 `Bash` and one `Read`. Same client as the four
-`REVIEW-01` runs, `claude-opus-5`, one prompt and no steering. So the entry
-point was in the session's context, in the first sentence of the block, and no
-tool was called for 256 seconds. This is not the **Wrong if** above, which was
-about the second `REVIEW-01` run and held: it is the boundary of what this entry
-claims. An entry point carries a task where a skill is there to receive it; in
-`E-CORE` there is none, and `typo3-extension-conformance` — the skill whose
-description is the same review shape — is bounded to project, sitepackage and
-extension and correctly stayed out. `D-SKL-005` carries that half and the run
-that showed it.
+What that withdrawal left open, `REVIEW-03` answers on 2026-08-03. The delivery
+is no longer inferred: the transcript's own attachments carry the
+`mcp_instructions_delta` in full, opening with
+`Start every task with typo3_project_scope`, and the `skill_listing` with all
+seven descriptions, against 23 calls that are 22 `Bash` and one `Read`. Same
+client as the four `REVIEW-01` runs, `claude-opus-5`, one prompt and no
+steering. So the entry point was in the session's context, in the first sentence
+of the block, and no tool was called for 256 seconds. This is not the **Wrong
+if** above, which was about the second `REVIEW-01` run and held: it is the
+boundary of what this entry claims. An entry point carries a task where a skill
+is there to receive it; in `E-CORE` there is none, and
+`typo3-extension-conformance` — the skill whose description is the same review
+shape — is bounded to project, sitepackage and extension and correctly stayed
+out. `D-SKL-005` carries that half and the run that showed it.

@@ -31,8 +31,8 @@ checked against the obvious command, disagreeing — and filed as a wrong answer
 
 - The judgement is **step 4 of the ladder**, wording, not a wrong answer and not
   a gap. What failed is that the number could not be reproduced, and a reader
-  who cannot reproduce a number does not conclude they measured something else
-  — they conclude the answer is wrong. This one arrived as a `wrong-answer`
+  who cannot reproduce a number does not conclude they measured something else —
+  they conclude the answer is wrong. This one arrived as a `wrong-answer`
   feedback from a session that had done nothing careless.
 - It is **queued rather than closed on the spot**, because the fix touches
   `src/` and a declared `outputSchema`, which

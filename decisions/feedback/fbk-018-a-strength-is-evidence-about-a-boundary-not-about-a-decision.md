@@ -43,15 +43,15 @@ other side: what is the strength evidence of?
 
 - The feedback is closed by this commit. There is nothing to queue: keeping
   something is not work, and the two costs it points at are on the board with
-  cards of their own. [`D-FBK-017`](fbk-017-a-judgement-turns-a-feedback-into-work-and-the-work-closes-it.md)
+  cards of their own.
+  [`D-FBK-017`](fbk-017-a-judgement-turns-a-feedback-into-work-and-the-work-closes-it.md)
   makes "nothing to do" the close answer rather than a special case.
 - A strength does not confirm a decision. It is a session's account of its own
-  run, which is what
-  [judging.md](../../documentation/feedback/judging.md) already refuses to
-  assess in the other direction — the session was there and the reader was not.
-  `D-SKL-001` is confirmed by recorded runs with timings in them, and a
-  self-report cannot be read against its **Wrong if** the same way. Nothing was
-  added to it here.
+  run, which is what [judging.md](../../documentation/feedback/judging.md)
+  already refuses to assess in the other direction — the session was there and
+  the reader was not. `D-SKL-001` is confirmed by recorded runs with timings in
+  them, and a self-report cannot be read against its **Wrong if** the same way.
+  Nothing was added to it here.
 - What the strength is evidence for is where the corpus stops. It and the two
   costs are one boundary from both sides: the changelog answers what **changed**
   at a version, and both costs asked what still **holds** at one. A change
@@ -88,19 +88,19 @@ other side: what is the strength evidence of?
   be right about the asymmetry and wrong about it mattering, and `R-PRJ-006` is
   what would need the sentence instead.
 - A strength is found whose praise implies a property the answer does not have,
-  and checking its quotations reaches that property anyway. The step added
-  below — read what the praise implies, not only what it quotes — would then be
-  one this entry did not need.
+  and checking its quotations reaches that property anyway. The step added below
+  — read what the praise implies, not only what it quotes — would then be one
+  this entry did not need.
 - The text is not where an absence has to be said, because the clients that
   matter render the data. `R-ANS-002` assumes the opposite client, and no
   recorded run here shows which of the two a session is.
 
 ## Since then
 
-The first **Wrong if** fired on the next strength judged, `feedback/2026-07-31-192945`.
-Read as boundary-evidence only it says the conformance skill's order is a good
-one, which nothing here doubted. What it actually carries is a lever, and the
-lever is the praise itself.
+The first **Wrong if** fired on the next strength judged,
+`feedback/2026-07-31-192945`. Read as boundary-evidence only it says the
+conformance skill's order is a good one, which nothing here doubted. What it
+actually carries is a lever, and the lever is the praise itself.
 
 The strength recites the order it followed, and the recitation is this server's
 order with one step gone. That can be checked against a file, which is what the
@@ -110,7 +110,8 @@ one addition. Where a strength quotes something this repository owns, the
 quotation is evidence about the file rather than about the session, and it is
 read before the boundary is.
 
-The judgement is on [`D-SKL-001`](../task-skills/skl-001-the-order-a-task-starts-in-is-one-file.md),
+The judgement is on
+[`D-SKL-001`](../task-skills/skl-001-the-order-a-task-starts-in-is-one-file.md),
 whose **Wrong if** is where the omission lands. The rest of this entry stands.
 The run that judged it established nothing about TYPO3 and named the gap rather
 than the fix, and it left the feedback open behind an answer it may not give.
@@ -157,18 +158,17 @@ the `FullyScanned` and `PartiallyScanned` tags on them. The extension has grown
 two tables since the report, and the answer is now read off a booted
 installation, so it says more than it did rather than less.
 
-So does the lever behind the *wrong path avoided*.
-`typo3_architecture_lookup` with the task *content element with inline children*
-returns **Registering a Content Element**, whose hints say that a plugin is a
-CType like any other and that the list_type detour is gone at v14, and that the
-rendering definition is `tt_content.<CType>` on top of `lib.contentElement`. The
-task *Extbase plugin registration and cHash* returns **Extbase Plugins**,
-**Registering a Content Element** and **Records in the Frontend Without
-Extbase**. `site-sets` and `tca-formengine` are reachable too, from a task
-naming those subsystems, which the two calls behind the report did. The core
-confirms the statement the session acted on:
-`14.0/Important-105538-ListTypeAndSubTypes.rst` in `.checkouts/main` records the
-removal of the `list_type` field and of the plugin subtype with it.
+So does the lever behind the *wrong path avoided*. `typo3_architecture_lookup`
+with the task *content element with inline children* returns **Registering a
+Content Element**, whose hints say that a plugin is a CType like any other and
+that the list_type detour is gone at v14, and that the rendering definition is
+`tt_content.<CType>` on top of `lib.contentElement`. The task *Extbase plugin
+registration and cHash* returns **Extbase Plugins**, **Registering a Content
+Element** and **Records in the Frontend Without Extbase**. `site-sets` and
+`tca-formengine` are reachable too, from a task naming those subsystems, which
+the two calls behind the report did. The core confirms the statement the session
+acted on: `14.0/Important-105538-ListTypeAndSubTypes.rst` in `.checkouts/main`
+records the removal of the `list_type` field and of the plugin subtype with it.
 
 **A strength is not evidence about which tool answered.** This is the second
 corpus in which the credit is misplaced, and both times on the same fact. The
@@ -196,12 +196,12 @@ extension audit, "the tool chain works well", one suggestion and nothing
 reported as broken. Read as boundary-evidence it says what its four siblings
 from the same debrief already say, and closing it there would have been correct
 by this entry. What it actually carries is the numbered order those calls came
-in, which no other feedback in the corpus does, and read against `skills/base.md`
-that order is the base outrun: step 3 skipped, and the checkout read before the
-conventions lookups rather than after them. The praise is what names it — the
-session graded the run as working and asked for the file reading to be blessed
-with a batch-read hint, which is the one thing both the base and the conformance
-skill refuse.
+in, which no other feedback in the corpus does, and read against
+`skills/base.md` that order is the base outrun: step 3 skipped, and the checkout
+read before the conventions lookups rather than after them. The praise is what
+names it — the session graded the run as working and asked for the file reading
+to be blessed with a batch-read hint, which is the one thing both the base and
+the conformance skill refuse.
 
 So a strength is not closed on the strength of being one. The ladder is walked
 over what it reports it *did*, and only the part that reports how well it went
@@ -217,10 +217,10 @@ entry rather than as one account continued.
 
 The reading held a fourth time, and this is the first strength whose quotation
 could be checked against the file it credits. `2026-07-31-194823` comes from the
-debrief of the section above, two seconds before the `typo3_extension_scope`
-one and in the same project. It reports that `typo3_architecture_lookup` said
-only `rootPageId` is remapped when a shipped site configuration is imported, and
-that other uid references are not. The session credits that with turning a wrong
+debrief of the section above, two seconds before the `typo3_extension_scope` one
+and in the same project. It reports that `typo3_architecture_lookup` said only
+`rootPageId` is remapped when a shipped site configuration is imported, and that
+other uid references are not. The session credits that with turning a wrong
 finding into the right one, about a hardcoded `t3://page?uid=2` error target.
 
 The first **Wrong if** did not fire. The strength names one thing the session
@@ -247,7 +247,8 @@ carries where it indexes something. The other side is from the same debrief:
 `2026-07-31-194821` reports that the removal version of a deprecation sat in the
 `.rst` body, and that the session had to open the file to read it.
 `typo3_changelog_lookup` returns the type, the version, the issue, the title,
-the tags and an `EXT:` path, and [`D-ANS-016`](../answers/ans-016-a-miss-names-the-query-that-would-have-hit.md)
+the tags and an `EXT:` path, and
+[`D-ANS-016`](../answers/ans-016-a-miss-names-the-query-that-would-have-hit.md)
 priced its peel on the observation that it "reads file names and never opens an
 entry". So the deciding fact is inside the answer where the corpus is prose this
 repository authored, and behind a pointer where the answer indexes files it did
@@ -287,11 +288,11 @@ Four of them are here, re-run on 2026-08-02 through `bin/typo3-cms-mcp` from
 `/home/benji/projects/site-new`, the directory it was written in:
 
 - *no manual, no README, which test layers exist and which do not* reproduces.
-  `typo3_extension_scope` with `printworks_sitepackage` answers `Ships: manual
-  none, readme none, tests Functional+Unit`.
+  `typo3_extension_scope` with `printworks_sitepackage` answers
+  `Ships: manual none, readme none, tests Functional+Unit`.
 - *read the XLF source languages* reproduces: three files below
-  `Resources/Private/Language/`, each at `source-language de, no translations
-  beside it`.
+  `Resources/Private/Language/`, each at
+  `source-language de, no translations beside it`.
 - *the answeredBy attribution* reproduces. That answer says `installation`;
   `typo3_project_scope`, which reads files and asks nothing, says `packages`.
 - *the commands the repository actually declares, with what each does to the
@@ -316,34 +317,37 @@ of the four artifacts and not for the fourth. `ExtensionScope` renders `manual`,
 `readme` and `tests` present or absent in one `Ships:` line, and renders the
 language files only where the list is not empty. Run against `rte_ckeditor` in
 `.checkouts/14.3`, which ships none, the data carries `languageFiles: []`. The
-text runs from `Ships: manual Documentation/Index.rst, readme README.rst, tests
-Functional+Unit` straight into the boundary paragraph. No sentence in it says
-the extension ships no translations.
+text runs from
+`Ships: manual Documentation/Index.rst, readme README.rst, tests Functional+Unit`
+straight into the boundary paragraph. No sentence in it says the extension ships
+no translations.
 
 [`R-PRJ-006`](../../requirements/project/prj-006-what-an-extension-does-not-ship-is-answered-too.md)
 names the XLF files among the four whose absence is answered. `ToolResult` says
 the text is the primary answer and the data is what a client composes with.
 [`R-ANS-002`](../../requirements/answers/ans-002-the-reason-is-in-the-data-not-only-in-the-text.md)
 states the same rule in the other direction, for a client that renders the data
-and drops the text. `ProjectTest::whatAnExtensionDoesNotShipIsAnswerdRatherThanLeftOut`
-asserts the present case in both halves of the answer and the absent case in the
-data alone, which is why nothing failed.
+and drops the text.
+`ProjectTest::whatAnExtensionDoesNotShipIsAnswerdRatherThanLeftOut` asserts the
+present case in both halves of the answer and the absent case in the data alone,
+which is why nothing failed.
 
 Step 4, wording. Not step 1a, because `Extension::artifacts()` already returns
 the key; not 1b, because no verb and no order is missing; not step 2, because
-nothing has to move — the same builder renders the three artifacts beside it.
-It changes `src/`, so it is queued rather than closed on the spot. The feedback
-is trimmed to that half and stays open behind the todo *Say the missing
-translation the way the missing manual is said*. The other three are held
-requirements that reproduce, and keeping something is not work.
+nothing has to move — the same builder renders the three artifacts beside it. It
+changes `src/`, so it is queued rather than closed on the spot. The feedback is
+trimmed to that half and stays open behind the todo *Say the missing translation
+the way the missing manual is said*. The other three are held requirements that
+reproduce, and keeping something is not work.
 
 Two things are assumed rather than established. First, that the text is where
 the absence has to be said. `R-ANS-002` was written for a client that drops it,
 the client assumed here is the opposite one, and what `ToolResult` says about
 which half is primary is the whole of the evidence. Second, that `rte_ckeditor`
-is not a special case. It is the one extension in `.checkouts/14.3/typo3/sysext/`
-with no `.xlf` file at all, so the shape was found in the only place this
-machine offers it. Both are written into the **Wrong if** above.
+is not a special case. It is the one extension in
+`.checkouts/14.3/typo3/sysext/` with no `.xlf` file at all, so the shape was
+found in the only place this machine offers it. Both are written into the
+**Wrong if** above.
 
 ## Confirmed on 2026-08-02
 

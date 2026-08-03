@@ -6,9 +6,9 @@ status: open
 
 # D-DOC-003 — A decision says what came back, and a requirement says what it rests on
 
-**The decision states are `open`, `confirmed` and `revoked`, an entry is
-written in sections rather than labelled bullets, and a requirement names the
-decisions it rests on.**
+**The decision states are `open`, `confirmed` and `revoked`, an entry is written
+in sections rather than labelled bullets, and a requirement names the decisions
+it rests on.**
 
 `corrected` was one word for four outcomes, and the status is the only thing a
 reader has before opening a file that may be months old. Naming what a
@@ -17,8 +17,8 @@ than silent.
 
 ## Evidence
 
-- The twelve entries carrying `corrected`, read on 2026-08-02. On three it
-  meant reversed and replaced — D-AUD-002, D-KNW-003, D-SCO-008. On three the **Wrong
+- The twelve entries carrying `corrected`, read on 2026-08-02. On three it meant
+  reversed and replaced — D-AUD-002, D-KNW-003, D-SCO-008. On three the **Wrong
   if** had fired with nothing replacing it — D-FBK-003, D-KNW-001, D-CAT-002. On
   three one named part was wrong and the rest held; D-FBK-005 says so outright:
   "the order this entry is mostly about … is untouched … what was wrong is the
@@ -29,10 +29,10 @@ than silent.
   both lines, so the run had to be folded into the revocation prose and the
   two-stage history was lost.
 - Twelve entries name a test in prose and nothing read it. One of the names in
-  `D-KNW-003` was already stale — a `KnowledgeTest` method renamed that morning —
-  and the entry still read as though something held it. The check written here
-  caught it on its first run, and caught a second stale name in this entry's
-  own first draft.
+  `D-KNW-003` was already stale — a `KnowledgeTest` method renamed that morning
+  — and the entry still read as though something held it. The check written here
+  caught it on its first run, and caught a second stale name in this entry's own
+  first draft.
 - `R-FBK-007` rests on `D-FBK-005`, which is revoked. The requirement is `held`,
   its test passes, and nothing anywhere says the reasoning under it was
   disproved.
@@ -40,19 +40,19 @@ than silent.
 ## Decided
 
 - Three states, not four. `amended` was weighed for the three partly-wrong
-  entries and dropped: a reader who must not build on part of an entry is
-  better served by `revoked` plus a dated line naming what fell than by a state
-  that says "some of this is safe" without saying which.
+  entries and dropped: a reader who must not build on part of an entry is better
+  served by `revoked` plus a dated line naming what fell than by a state that
+  says "some of this is safe" without saying which.
 - `open` rather than `standing`, and it is not a workflow step. An entry is
-  written by the commit that implements it, so every open decision is already
-  in the code; `open` says nobody has been back to the **Wrong if**.
-  `confirmed` rather than `tested`, because several of these readings are
-  readings rather than runs.
+  written by the commit that implements it, so every open decision is already in
+  the code; `open` says nobody has been back to the **Wrong if**. `confirmed`
+  rather than `tested`, because several of these readings are readings rather
+  than runs.
 - The status names the last dated line. An entry may carry several, and what a
   reader relies on is the latest.
-- `Covered by` is optional. Most entries here are about process and nothing
-  runs over them, so requiring it would have produced a field saying "nothing"
-  on two thirds of the directory.
+- `Covered by` is optional. Most entries here are about process and nothing runs
+  over them, so requiring it would have produced a field saying "nothing" on two
+  thirds of the directory.
 - Every test named *anywhere* in an entry has to exist, not only the ones under
   `Covered by`. The prose makes the same claim and goes stale the same way.
 - A requirement resting on a revoked decision is read out by
@@ -60,16 +60,16 @@ than silent.
   judgement, and AGENTS.md holds that no check may fail on a state that is
   legitimately unfinished. What does fail is `restsOn` naming an id no decision
   has.
-- The generated listing is two lists — what still holds, then what was revoked
-  — and a revoked entry shows its successor from `revokedBy`. One list of 55
-  rows made a revoked entry look exactly like something to build on.
+- The generated listing is two lists — what still holds, then what was revoked —
+  and a revoked entry shows its successor from `revokedBy`. One list of 55 rows
+  made a revoked entry look exactly like something to build on.
 - The body is `## Evidence`, `## Decided`, `## Assumed`, `## Wrong if`,
   `## Covered by` and a dated section per later reading, each holding bullets.
   It was a flat list of bullets carrying a bold label, and the label repeated:
   measured over the 56 entries, `Decided` carries more than one item on 25 of
   the 53 that have it and `Assumed` on 22 of 49, up to seven in one entry. A
-  section says the word once. The dated sections carry prose instead of
-  bullets, because each is an account of one reading rather than a list.
+  section says the word once. The dated sections carry prose instead of bullets,
+  because each is an account of one reading rather than a list.
 - `Covered by` is a list, one test per line, rather than a comma-separated
   sentence. It is read by a check, and a list is what it is.
 

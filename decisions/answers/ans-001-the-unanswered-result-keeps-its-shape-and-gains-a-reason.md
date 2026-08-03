@@ -11,9 +11,9 @@ revokedBy: D-ANS-005
 its reason in an `unavailable` object, with `found` null rather than false.**
 
 Two feedback asked for the unavailable case to stop looking like an empty one.
-One proposed dropping `matchCount`, `icons`, `found` altogether and returning
-an error-shaped object instead, or renaming `answeredBy: "nothing"` to
-something that cannot be read as "no source had it".
+One proposed dropping `matchCount`, `icons`, `found` altogether and returning an
+error-shaped object instead, or renaming `answeredBy: "nothing"` to something
+that cannot be read as "no source had it".
 
 ## Decided
 
@@ -25,9 +25,9 @@ something that cannot be read as "no source had it".
 
 ## Assumed
 
-- A caller that reads `unavailable.reason` is better served than one that has
-  to interpret an enum value, so renaming `nothing` buys little and breaks
-  every client that already matches on it.
+- A caller that reads `unavailable.reason` is better served than one that has to
+  interpret an enum value, so renaming `nothing` buys little and breaks every
+  client that already matches on it.
 
 ## Wrong if
 
@@ -85,13 +85,13 @@ well-formed answer and still needs the session. It changes what that session
 measures: a client misreading the old payload would have answered a question
 about a shape that is no longer sent.
 
-It also puts a lever between doing nothing and `isError: true`. The `instructions`
-sent at initialize never mention `answeredBy`, so a client is told to call the
-installation-backed lookups and never told that a miss and an unanswerable
-answer are different things. Saying it there is cheaper than turning an answer
-into an error. It is not free: `R-ANS-013` holds the instructions to a budget a
-client keeps, so the sentence has to displace one, and which one is a trade
-nobody has made yet.
+It also puts a lever between doing nothing and `isError: true`. The
+`instructions` sent at initialize never mention `answeredBy`, so a client is
+told to call the installation-backed lookups and never told that a miss and an
+unanswerable answer are different things. Saying it there is cheaper than
+turning an answer into an error. It is not free: `R-ANS-013` holds the
+instructions to a budget a client keeps, so the sentence has to displace one,
+and which one is a trade nobody has made yet.
 
 ## Revoked on 2026-08-02
 

@@ -31,18 +31,19 @@ one this one guessed at.
   and `storagePid` occur below `knowledge/` in one sentence, on the Fluid hint
   `frontend-page-rendering`, and from the opposite angle: `excludeDoktypes`
   keeping storage folders *out* of a menu.
-- That sentence is also unreachable from this task. `bin/cli hints:probe
-  "doktype 254 sysfolder storagePid page tree"` matches nothing at all: the
-  query is classified `php`, and the one place the words occur is Fluid.
+- That sentence is also unreachable from this task.
+  `bin/cli hints:probe "doktype 254 sysfolder storagePid page tree"` matches
+  nothing at all: the query is classified `php`, and the one place the words
+  occur is Fluid.
 - The feedback's claim about TYPO3 holds, and the mechanism is one method. On
-  `.checkouts/14.3`, `DataHandler::isTableAllowedForThisPage()` decides an insert
-  on two things — the TCA root-level capability where the pid is 0, and
+  `.checkouts/14.3`, `DataHandler::isTableAllowedForThisPage()` decides an
+  insert on two things — the TCA root-level capability where the pid is 0, and
   `PageDoktypeRegistry::isRecordTypeAllowedForDoktype()` against the target
   page's doktype everywhere else.
-- The storage folder is the doktype that allows any table. `Configuration/TCA/
-  pages.php` gives `DOKTYPE_SYSFOLDER` an `allowedRecordTypes` of `['*']`, above
-  the comment "a general purpose storage folder for whatever you like. In CMS
-  context it's NOT a viewable page."
+- The storage folder is the doktype that allows any table.
+  `Configuration/TCA/ pages.php` gives `DOKTYPE_SYSFOLDER` an
+  `allowedRecordTypes` of `['*']`, above the comment "a general purpose storage
+  folder for whatever you like. In CMS context it's NOT a viewable page."
 - A standard page is the other side of it. `DOKTYPE_DEFAULT` declares no
   `allowedRecordTypes`, so `getAllowedTypesForDoktype()` falls back to `pages`,
   `sys_category`, `sys_file_reference` and `sys_file_collection`. A table of
@@ -53,10 +54,10 @@ one this one guessed at.
   `hasPermissionToInsert()` calls `isTableAllowedForThisPage()` after it, so the
   doktype is checked on the run a seeding script makes.
 - Where that list is declared moved between majors. On 12.4 and 13.4 it is
-  hardcoded in `PageDoktypeRegistry` as `allowedTables => '*'`; on 14.3 it is TCA,
-  and both `add()` and `addAllowedRecordTypes()` are deprecated for removal in
-  v15. So the statement needs a range read across three checkouts, and this run
-  may not write it.
+  hardcoded in `PageDoktypeRegistry` as `allowedTables => '*'`; on 14.3 it is
+  TCA, and both `add()` and `addAllowedRecordTypes()` are deprecated for removal
+  in v15. So the statement needs a range read across three checkouts, and this
+  run may not write it.
 
 ## Decided
 
@@ -70,8 +71,10 @@ one this one guessed at.
   `feedback/2026-08-01-003356-did-not-consult-the-mcp-knowledge-server-or.md`,
   judged on its own card; walking it again here gives one gap a second entry.
 - The DataHandler-instead-of-SQL and inline-relation halves of the same debrief
-  are `feedback/2026-08-01-003216-lacked-datahandler-knowledge-and-worked-around.md`
-  and [`D-KNW-018`](knw-018-what-a-datamap-does-to-a-relation-field-is-a-gap-this-server-owns.md).
+  are
+  `feedback/2026-08-01-003216-lacked-datahandler-knowledge-and-worked-around.md`
+  and
+  [`D-KNW-018`](knw-018-what-a-datamap-does-to-a-relation-field-is-a-gap-this-server-owns.md).
   This entry adds only where a record may be put.
 
 ## Assumed

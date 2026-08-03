@@ -29,18 +29,18 @@ contrasted.
 
 ## Assumed
 
-- The `VERSION` constant in that class stays where it is and stays a literal.
-  It has been in `Classes/Information/Typo3Version.php` on every branch this
-  was checked against, and a missing or unparseable one yields null, which
-  reads as "nothing to compare with" rather than as a wrong version.
+- The `VERSION` constant in that class stays where it is and stays a literal. It
+  has been in `Classes/Information/Typo3Version.php` on every branch this was
+  checked against, and a missing or unparseable one yields null, which reads as
+  "nothing to compare with" rather than as a wrong version.
 
 ## Wrong if
 
 - The domain API is backported into a 13.x patch release, which would make the
   constant in `Tools` wrong. It is one number in one place for that reason.
-- A caller works on a version other than the installation the server found —
-  the second checkout, the backport branch. The version is then read from the
-  wrong place, and nothing accepts a stated one yet.
+- A caller works on a version other than the installation the server found — the
+  second checkout, the backport branch. The version is then read from the wrong
+  place, and nothing accepts a stated one yet.
 
 ## Confirmed on 2026-08-02
 

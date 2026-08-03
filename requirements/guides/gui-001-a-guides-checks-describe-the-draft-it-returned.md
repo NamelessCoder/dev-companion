@@ -14,8 +14,8 @@ again — the draft returned still carries it, so the checks still name it.
 
 ## From
 
-`Releases: main` being appended and `missing-releases` warned in the same
-answer (2026-07-29).
+`Releases: main` being appended and `missing-releases` warned in the same answer
+(2026-07-29).
 
 ## Held by
 

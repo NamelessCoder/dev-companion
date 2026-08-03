@@ -33,9 +33,9 @@ would produce one (2026-08-02).
 
 ## Decided
 
-- The draft states what it does not know, in the place where the answer
-  belongs. A placeholder is visible in a `git commit` editor and in a diff; a
-  plausible default is not, and `main` is the wrong answer for every backport.
+- The draft states what it does not know, in the place where the answer belongs.
+  A placeholder is visible in a `git commit` editor and in a diff; a plausible
+  default is not, and `main` is the wrong answer for every backport.
 
 ## Assumed
 

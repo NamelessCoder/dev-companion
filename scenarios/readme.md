@@ -8,10 +8,10 @@ or it is not.
 Two different tests used to be called scenarios here, and the name hid the
 difference:
 
-- [Open forward reviews](forward/readme.md) ask only for a review of the
-  current project, extension, or core patch. They do not name a subsystem,
-  expected defect, skill, tool, or implementation. What the agent chooses to
-  inspect and prioritize is the evidence, and only these receive recorded runs.
+- [Open forward reviews](forward/readme.md) ask only for a review of the current
+  project, extension, or core patch. They do not name a subsystem, expected
+  defect, skill, tool, or implementation. What the agent chooses to inspect and
+  prioritize is the evidence, and only these receive recorded runs.
 - [Targeted contract cases](contracts/readme.md) name one task shape or failure
   mode so its routing and workflow can be held still. They are intentionally
   specific and do not claim that an agent discovered their subject.
@@ -51,8 +51,9 @@ that directory, then paste the prompt.
 
 An environment is a kind of working directory, never one particular
 installation. Which checkout on this machine plays one of them belongs in
-[todo/reference/](../todo/reference/), where it can go stale without taking a case with it — a
-prompt that names somebody's project is a prompt only that person can run.
+[todo/reference/](../todo/reference/), where it can go stale without taking a
+case with it — a prompt that names somebody's project is a prompt only that
+person can run.
 
 Two of the five this repository makes for itself, below `.environments/`:
 
@@ -63,9 +64,9 @@ bin/cli environment:create E-SITE # a DDEV project with TYPO3 installed in it
 
 `E-SITE` is the one a run needs and the one that costs something — containers, a
 database, a docker daemon a CI job may not have — and it is made here because
-everything a case needs from it is a property this repository can state.
-`E-EXT` is not: what a case needs from an extension repository is real
-infrastructure at a real revision, which no scaffold produces. `E-CORE` is
+everything a case needs from it is a property this repository can state. `E-EXT`
+is not: what a case needs from an extension repository is real infrastructure at
+a real revision, which no scaffold produces. `E-CORE` is
 `bin/cli checkouts:update`, and `E-STOPPED` is `E-SITE` with its project
 stopped. Asking `environment:create` for one of those answers with where it
 comes from instead. The reasoning is
@@ -79,9 +80,10 @@ exists to prevent. A recorded forward review still runs in a real project.
 
 ## Running one
 
-- A forward review: [forward/readme.md](forward/readme.md). `bin/cli scenarios:show
+- A forward review: [forward/readme.md](forward/readme.md). `bin/cli
+  scenarios:show
   <id>` prints what to paste, `record` writes the empty run, `check` holds every
   recorded run to its review.
-- A contract case: [contracts/readme.md](contracts/readme.md). `bin/cli scenarios
-  contract <id>` prints it for inspection; it cannot be recorded as a forward
-  run.
+- A contract case: [contracts/readme.md](contracts/readme.md).
+  `bin/cli scenarios contract <id>` prints it for inspection; it cannot be
+  recorded as a forward run.

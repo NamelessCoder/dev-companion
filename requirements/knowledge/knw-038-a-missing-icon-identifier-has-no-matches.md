@@ -14,8 +14,8 @@ not by themselves make every icon in that category a match or a suggestion.
 
 ## From
 
-`actions-definitely-does-not-exist` correctly described as missing in text
-while its structured answer claimed 556 matches from the `actions-` prefix
+`actions-definitely-does-not-exist` correctly described as missing in text while
+its structured answer claimed 556 matches from the `actions-` prefix
 (2026-07-30).
 
 ## Held by

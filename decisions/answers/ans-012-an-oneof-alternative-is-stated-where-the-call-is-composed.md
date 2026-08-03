@@ -18,31 +18,31 @@ different property and neither stating the rule.
 
 ## Evidence
 
-- `feedback/2026-07-31-185900`, re-run on 2026-08-02 against the server as it
-  is now — `bin/typo3-cms-mcp` over stdio from this worktree.
-  `{"queries": ["encryption key environment variable TYPO3_ENCRYPTION_KEY"],
-  "targetVersion": "14.3"}`, no `page`, is answered: six results from
-  docs.typo3.org, the first the coreapi page on environment variables in site
-  handling at 14.3. The chicken-and-egg the feedback reports does not exist and
-  did not exist on the day it was written.
-- The message it quotes has one producer. Arguments of `{"targetVersion":
-  "14.3"}` alone are rejected with `Missing required properties: queries.;
-  Missing required properties: page.` — one per `oneOf` branch, joined, because
-  the SDK's `SchemaValidator` collects the leaves of a failed `oneOf` and
-  formats each on its own. A caller that acts on the last half sends
-  `page: ""`, which is the second thing the feedback reports and is rejected
-  correctly: `Minimum string length is 1, found 0`.
+- `feedback/2026-07-31-185900`, re-run on 2026-08-02 against the server as it is
+  now — `bin/typo3-cms-mcp` over stdio from this worktree.
+  `{"queries": ["encryption key environment variable TYPO3_ENCRYPTION_KEY"], "targetVersion": "14.3"}`,
+  no `page`, is answered: six results from docs.typo3.org, the first the coreapi
+  page on environment variables in site handling at 14.3. The chicken-and-egg
+  the feedback reports does not exist and did not exist on the day it was
+  written.
+- The message it quotes has one producer. Arguments of
+  `{"targetVersion": "14.3"}` alone are rejected with
+  `Missing required properties: queries.; Missing required properties: page.` —
+  one per `oneOf` branch, joined, because the SDK's `SchemaValidator` collects
+  the leaves of a failed `oneOf` and formats each on its own. A caller that acts
+  on the last half sends `page: ""`, which is the second thing the feedback
+  reports and is rejected correctly: `Minimum string length is 1, found 0`.
 - The session called this checkout. `/home/benji/projects/site-new/.mcp.json`
   runs `/home/benji/projects/typo3-cms-mcp/bin/typo3-cms-mcp`, and `9ced27c` —
   2026-07-30, the day before the report — is where `required` became
   `['targetVersion']` with the `oneOf` beside it. So the schema the session read
   and the server it called are the ones above, and its reading of the schema was
   right.
-- The keyword is on the wire and nowhere else. `tools/list` carries the
-  `oneOf` whole, while `documentation/clients/tools.md` lists `queries` and
-  `page` as plain optional arguments: `ToolSurface::alternatives()` runs on the
-  output schema only (`src/Upkeep/ToolSurface.php:75`), where it renders "the
-  answer carries exactly one of these sets of fields" for nine tools.
+- The keyword is on the wire and nowhere else. `tools/list` carries the `oneOf`
+  whole, while `documentation/clients/tools.md` lists `queries` and `page` as
+  plain optional arguments: `ToolSurface::alternatives()` runs on the output
+  schema only (`src/Upkeep/ToolSurface.php:75`), where it renders "the answer
+  carries exactly one of these sets of fields" for nine tools.
 - Nothing else here is shaped like this. `typo3_documentation_lookup` is the
   only tool declaring an input-side `oneOf`, which is why one tool's callers hit
   it and the rest of the surface never did.
@@ -106,17 +106,17 @@ readings decided it rather than a preference between them.
 in a form a client can validate against, and dropping the keyword would take
 that away in exchange for a message this repository does not own — the two
 sentences are built in `Mcp\Server\Handler\Request\CallToolHandler` from the
-schema, and reaching them without dropping the keyword means replacing the
-SDK's request handling rather than wording a tool.
+schema, and reaching them without dropping the keyword means replacing the SDK's
+request handling rather than wording a tool.
 
-`D-ANS-005` made the same bet deliberately on the other side: the output
-schemas declare their two shapes as `oneOf` and accept that a validator
-ignoring the keyword reads a weaker promise. Dropping it here would have had
-one package saying opposite things about one keyword.
+`D-ANS-005` made the same bet deliberately on the other side: the output schemas
+declare their two shapes as `oneOf` and accept that a validator ignoring the
+keyword reads a weaker promise. Dropping it here would have had one package
+saying opposite things about one keyword.
 
 The **Wrong if** above is what settles the order. It is written as "the rule
 lands in the descriptions and the reference, and a session still calls with
 `targetVersion` alone" — a falsification that only exists if the wording is
-tried first, and the answer it names if it fails is dropping the keyword. So
-the second candidate is not discarded; it is what this entry is now waiting to
-find out about.
+tried first, and the answer it names if it fails is dropping the keyword. So the
+second candidate is not discarded; it is what this entry is now waiting to find
+out about.

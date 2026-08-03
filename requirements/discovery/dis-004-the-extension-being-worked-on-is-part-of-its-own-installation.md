@@ -10,8 +10,7 @@ installation, although Composer lists dependencies rather than the root.**
 
 ## From
 
-29 registered icons of the root extension reported as non-existent
-(2026-07-29).
+29 registered icons of the root extension reported as non-existent (2026-07-29).
 
 ## Held by
 

@@ -7,5 +7,5 @@ next to one. This audience is where the boundary between "core convention" and
 plausible. These targeted cases hold that boundary without claiming to be an
 open review of an unfamiliar extension.
 
-See [the contract readme](../readme.md) for the states and how to print one,
-and [the scenario readme](../../readme.md) for the audiences and environments.
+See [the contract readme](../readme.md) for the states and how to print one, and
+[the scenario readme](../../readme.md) for the audiences and environments.

@@ -3,7 +3,8 @@
 **Serves:** feedback/2026-08-01-115112-during-the-same-review-i-wanted-to-confirm-no.md
 **Priority:** low
 
-Judged as [`D-ANS-030`](../../decisions/answers/ans-030-the-changelog-matcher-runs-over-the-title-it-prints.md),
+Judged as
+[`D-ANS-030`](../../decisions/answers/ans-030-the-changelog-matcher-runs-over-the-title-it-prints.md),
 step 1b of the ladder: `Changelog::entries()` hands `LabelSearch` the file name
 and the words it spells, while `Changelog::read()` opens the file for the title
 the answer then prints, and 708 of the 3794 entries in

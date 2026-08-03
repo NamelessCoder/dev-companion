@@ -9,10 +9,9 @@ status: open
 **A test that needs a queued todo writes one, and nothing in the suite asserts
 that this repository has a queue.**
 
-The queue is the one directory here that a commit is supposed to empty. What
-the three cases holding it non-empty produced was a red suite on the session
-that finished the last todo, which is the one session that had done nothing
-wrong.
+The queue is the one directory here that a commit is supposed to empty. What the
+three cases holding it non-empty produced was a red suite on the session that
+finished the last todo, which is the one session that had done nothing wrong.
 
 ## Evidence
 
@@ -24,8 +23,8 @@ wrong.
   `TodoTest::everyTodoAnswersForSomethingThatCanStillBeRead` — each of which
   opened with `assertNotSame([], Todo::items())`. The third said what all three
   meant: "nothing is queued, which is a state this can be in but not silently".
-  Two PHP warnings came from the same emptiness, where the queued fixture read
-  a position off `$items[count($items) - 1]` and found key -1.
+  Two PHP warnings came from the same emptiness, where the queued fixture read a
+  position off `$items[count($items) - 1]` and found key -1.
 - The commands had the case and the suite did not. `bin/cli todo:next` reaches
   the sightings only with the queue empty, which is the whole of what
   `**Every:** session` means, and closes with "Nothing is due and nothing is

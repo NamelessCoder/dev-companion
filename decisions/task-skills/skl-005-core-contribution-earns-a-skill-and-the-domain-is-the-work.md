@@ -9,9 +9,9 @@ status: open
 **Core contribution earns two task skills — reviewing a patch and creating one —
 and what shows it is 35 feedback out of one checkout rather than one run.**
 
-`REVIEW-03` is the run that made it visible: a core patch review that called this
-server nothing at all. The corpus behind it had been saying the same thing since
-2026-08-01, unjudged.
+`REVIEW-03` is the run that made it visible: a core patch review that called
+this server nothing at all. The corpus behind it had been saying the same thing
+since 2026-08-01, unjudged.
 
 ## Evidence
 
@@ -19,9 +19,10 @@ server nothing at all. The corpus behind it had been saying the same thing since
   skill — session `8622fa17`, `claude-opus-5`, Claude Code 2.1.220, one prompt
   and no steering, judged `partial` in `scenarios/runs/REVIEW-03.json`. Not a
   delivery failure: the transcript's attachments carry the
-  `mcp_instructions_delta` in full, first sentence `Start every task with
-  typo3_project_scope`, and the `skill_listing` with all seven descriptions;
-  only the 22 tools arrived deferred, as names without descriptions.
+  `mcp_instructions_delta` in full, first sentence
+  `Start every task with typo3_project_scope`, and the `skill_listing` with all
+  seven descriptions; only the 22 tools arrived deferred, as names without
+  descriptions.
 - The nearest skill matches the shape and excludes the checkout.
   `typo3-extension-conformance` is "Review, audit, or improve a TYPO3 project,
   sitepackage, or extension … and report what is wrong with it in priority
@@ -108,14 +109,14 @@ independently. `feedback/2026-08-01-115716` states the chain that worked —
 reaches the same steps from the other end, by finding no entry point at all:
 `typo3_server_scope` routes "review, audit or assess" to `typo3_project_scope`,
 `typo3_task_guide` and `typo3_extension_scope`, which author changes and read
-extensions. What the order has to force is in `2026-08-01-115711` and
-`115525`: enumerate what the diff removes or renames, and require an
-ExtensionScanner matcher plus a Breaking or Deprecation `.rst` per removal, with
-method-level `@internal` waiving the `[!!!]` marker and nothing else. Two
-findings were under-stated until a user pushed back, both for want of that step.
+extensions. What the order has to force is in `2026-08-01-115711` and `115525`:
+enumerate what the diff removes or renames, and require an ExtensionScanner
+matcher plus a Breaking or Deprecation `.rst` per removal, with method-level
+`@internal` waiving the `[!!!]` marker and nothing else. Two findings were
+under-stated until a user pushed back, both for want of that step.
 `2026-08-01-121852` carries the boundary the order sits on and calls it the most
-useful answer of the review: this server never reads the checkout, so the diff is
-read here and passed in.
+useful answer of the review: this server never reads the checkout, so the diff
+is read here and passed in.
 
 The creation order is one session's whole task, filed in nineteen parts on
 2026-08-02 and explicitly offered as a skill body in `2026-08-02-145315`. It

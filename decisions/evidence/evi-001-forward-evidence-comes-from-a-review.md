@@ -19,10 +19,9 @@ Those are two different tests, and one file shape hid it.
 - Every one of the 32 prompts named its own subsystem, and several named the
   implementation — a status list with a refresh action, a carousel with inline
   children. The one recorded forward run, `EXT-04` on 2026-07-30, met all five
-  criteria it was judged against and produced six defects none of them
-  measured, which is what a prompt that already contains the answer buys. Five
-  prompts additionally named one project on one machine, so nobody else could
-  run them.
+  criteria it was judged against and produced six defects none of them measured,
+  which is what a prompt that already contains the answer buys. Five prompts
+  additionally named one project on one machine, so nobody else could run them.
 
 ## Decided
 
@@ -37,9 +36,9 @@ Those are two different tests, and one file shape hid it.
 
 - Two consecutive review runs produce findings too diffuse to tie back to a
   requirement or a feedback — then the broad prompt measures the model's taste
-  rather than this server. Or the contract cases quietly stop being read
-  because nothing schedules them, and the routing they hold rots while the
-  three reviews stay green.
+  rather than this server. Or the contract cases quietly stop being read because
+  nothing schedules them, and the routing they hold rots while the three reviews
+  stay green.
 
 ## Confirmed on 2026-08-02
 
@@ -52,12 +51,11 @@ rule quoted from `knowledge/architecture-hints/general.json`, and the absent
 the console and settled `D-EVI-003`; run 5 produced four feedbacks, all archived
 the same day in `419b622`, `5e76417`, `25100e7` and `cc15e3a`. Thirteen
 requirements and five decisions name one of the two reviews as what they were
-written from. A minority ties back to nothing, and it is the same shape in
-both: `REVIEW-01`'s deployment cluster `H-1` to `M-4`, `REVIEW-02`'s findings 3
-and 4 — correct, anchored to lines, and this server's in no part. So the
-measure is per run rather than per finding. Each of these four runs produced at
-least one finding a stated rule made it find, and at least one this repository
-could file.
+written from. A minority ties back to nothing, and it is the same shape in both:
+`REVIEW-01`'s deployment cluster `H-1` to `M-4`, `REVIEW-02`'s findings 3 and 4
+— correct, anchored to lines, and this server's in no part. So the measure is
+per run rather than per finding. Each of these four runs produced at least one
+finding a stated rule made it find, and at least one this repository could file.
 
 ## Confirmed on 2026-08-02
 
@@ -68,8 +66,8 @@ named test is renamed away. What nothing schedules is the reading by hand that
 seven of them fall back on where **Held by** says `not guarded` — `CORE-04`,
 `CORE-06`, `EXT-01`, `SITE-01`, `SITE-08`, `SKILL-07` and `SKILL-09`. Two of
 those carry weight already: `D-EVI-002` rests on `SKILL-07` read by hand, and
-`SKILL-09` says in as many words that it is what measures the rest. That
-residue is the todo behind this reading, not a correction to this entry.
+`SKILL-09` says in as many words that it is what measures the rest. That residue
+is the todo behind this reading, not a correction to this entry.
 
 ## Since then
 

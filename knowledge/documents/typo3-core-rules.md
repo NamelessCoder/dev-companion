@@ -25,9 +25,9 @@ documentation when rules depend on a specific branch or current policy.
 - Unit tests are expected for isolated behavior.
 - Functional tests are expected for persistence, configuration, routing, backend
   behavior, or integration with TYPO3 services.
-- End-to-end tests, the `e2e` suite, are useful when the change affects editor or
-  administrator workflows and only breaks in the assembled backend. They replaced
-  the former acceptance suites.
+- End-to-end tests, the `e2e` suite, are useful when the change affects editor
+  or administrator workflows and only breaks in the assembled backend. They
+  replaced the former acceptance suites.
 - Document tests that could not be executed and why.
 
 ## Review Readiness

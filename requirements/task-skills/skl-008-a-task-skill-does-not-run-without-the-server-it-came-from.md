@@ -30,5 +30,5 @@ returned a full answer regardless, repeatedly and without either side noticing
 ## Held by
 
 - `SkillTest::theBaseStopsTheTaskWhenTheServerIsNotConnected`, which holds the
-  precondition in `skills/base.md` and therefore in every published copy; that
-  a session actually stops is not guarded, and will not be — see `D-EVI-002`.
+  precondition in `skills/base.md` and therefore in every published copy; that a
+  session actually stops is not guarded, and will not be — see `D-EVI-002`.

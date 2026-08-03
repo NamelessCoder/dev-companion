@@ -17,10 +17,11 @@ is their content rather than their absence.
 
 ## Evidence
 
-- The `content-elements` hint carries the assignment split by major. `since: 14`:
-  the template "is handed one variable, record", and a template that reads
-  `{header}` renders an empty spot and logs nothing. `until: 13`: beside
-  `record` it is handed every column of the row and a plugin's FlexForm as
+- The `content-elements` hint carries the assignment split by major.
+  `since: 14`: the template "is handed one variable, record", and a template
+  that reads `{header}` renders an empty spot and logs nothing. `until: 13`:
+  beside `record` it is handed every column of the row and a plugin's FlexForm
+  as
   `{pi_flexform_transformed}`.
 - The resolution half carries `since: 13` rather than `since: 14`, because both
   majors assign the record. `.checkouts/13.4`'s
@@ -32,17 +33,17 @@ is their content rather than their absence.
   it tries any getter, so every field is `{record.<column>}`. What the schema
   does not declare is not on the record — the enable fields, the timestamps, the
   sorting and the language and workspace columns are
-  `{record.systemProperties.disabled}` — and a path that hits neither resolves to
-  null rather than raising.
+  `{record.systemProperties.disabled}` — and a path that hits neither resolves
+  to null rather than raising.
 - What a field resolves to is named by TCA type rather than as one rule for "a
   relation": `type=select` with a relation, `group`, `inline`, `category` and
   `file` come back as records, a relation to many as a lazy collection `f:for`
   iterates, and `type=select` without a relation stays values — the single value
   where `renderType` is `selectSingle`.
-- The subject is reachable from the question it was missing for. `bin/cli
-  hints:probe` on "Record API field access in a backend content element preview
-  Fluid template" puts `content-elements` first at `appliesTo(15) + text(288)`,
-  ahead of `fluid-templates`.
+- The subject is reachable from the question it was missing for.
+  `bin/cli hints:probe` on "Record API field access in a backend content element
+  preview Fluid template" puts `content-elements` first at
+  `appliesTo(15) + text(288)`, ahead of `fluid-templates`.
 
 ## Decided
 
@@ -55,7 +56,8 @@ is their content rather than their absence.
   `D-KNW-014` it reads out of `bin/cli backlog:list` as a requirement whose
   ground is gone.
 - The version split stays data on the statement — `since` and `until` — and no
-  sentence names a major ([`D-VER-001`](../versions/ver-001-a-version-range-is-data-on-the-statement-not-a-sentence-in-it.md)).
+  sentence names a major
+  ([`D-VER-001`](../versions/ver-001-a-version-range-is-data-on-the-statement-not-a-sentence-in-it.md)).
 - Not restated here: the reading the statements were written from. It is in
   `D-KNW-014`'s **Evidence** and its **Confirmed on**, which is what the revoked
   entry is kept for.
@@ -78,9 +80,9 @@ is their content rather than their absence.
   describes a boundary rather than the present, and a caller on that major is
   told the row's columns are gone when something else is.
 - Fluid stops resolving a path segment through `has()` and `get()` ahead of the
-  getters, or the core stops handing the template a container. `{record.<column>}`
-  then works for another reason, and the sentence explaining why is right by
-  accident.
+  getters, or the core stops handing the template a container.
+  `{record.<column>}` then works for another reason, and the sentence explaining
+  why is right by accident.
 
 ## Covered by
 

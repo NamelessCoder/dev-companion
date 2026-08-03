@@ -23,8 +23,8 @@ on.
 
 ## From
 
-A session that could not verify whether the core reads `TYPO3_ENCRYPTION_KEY`
-or `TYPO3_DB_HOST` and answered from its own knowledge instead — correctly, but
+A session that could not verify whether the core reads `TYPO3_ENCRYPTION_KEY` or
+`TYPO3_DB_HOST` and answered from its own knowledge instead — correctly, but
 unverifiably, because the corpus stated the project half of the boundary without
 the core half (2026-07-31).
 

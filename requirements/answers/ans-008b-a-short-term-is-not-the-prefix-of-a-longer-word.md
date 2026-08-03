@@ -5,8 +5,8 @@ status: held
 
 # R-ANS-008b — A short term is not the prefix of a longer word
 
-**A short term is matched as a whole word, not as the prefix of a longer one,
-on both the query side and the curated vocabulary.**
+**A short term is matched as a whole word, not as the prefix of a longer one, on
+both the query side and the curated vocabulary.**
 
 Prefix matching exists so a stem finds every form of its word; at three
 characters there is no form left to find and it matches whatever starts with
@@ -15,8 +15,7 @@ those letters. It compounds with
 which weighs a term by how few documents carry it: an accident landing in
 exactly one document becomes the most discriminating term in the query and
 decides the answer. A pattern carrying punctuation — a path fragment, `.xlf`,
-`lll:` — keeps plain containment, being specific enough not to land by
-accident.
+`lll:` — keeps plain containment, being specific enough not to land by accident.
 
 ## From
 

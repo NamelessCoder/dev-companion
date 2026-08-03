@@ -26,8 +26,8 @@ because a split inherits the tag it was split from.
   `general.json` held what it did: `xliff` and `docs`. Labels, the translation
   domain, label retirement and the changelog are theirs.
 - Four vocabulary gaps showed up as answers that got worse, each fixed where it
-  belonged: `icon` and `upgrade` were not PHP words, `translate` was not an XLIFF
-  word beside `translation`, and `backend layout` was neither Fluid nor
+  belonged: `icon` and `upgrade` were not PHP words, `translate` was not an
+  XLIFF word beside `translation`, and `backend layout` was neither Fluid nor
   TypoScript. Each had been carried by `any` rather than by the vocabulary.
 
 ## Decided
@@ -52,9 +52,10 @@ because a split inherits the tag it was split from.
 
 - The tags are right where nothing measured them. Three answers moved, so 37 of
   the 38 were only ever reachable through the bucket, and what they are really
-  asked from is a judgment per hint that the scenario prompts do not all exercise.
-- Losing `frontend-records` from a commit-message review is an improvement rather
-  than a regression. Nothing in that prompt is about rendering records.
+  asked from is a judgment per hint that the scenario prompts do not all
+  exercise.
+- Losing `frontend-records` from a commit-message review is an improvement
+  rather than a regression. Nothing in that prompt is about rendering records.
 
 ## Wrong if
 

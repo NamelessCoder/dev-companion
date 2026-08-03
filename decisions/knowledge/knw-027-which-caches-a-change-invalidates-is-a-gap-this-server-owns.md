@@ -9,19 +9,19 @@ status: open
 **How a change is cleared from an installation's caches is inside this server's
 boundary and missing from it, so the feedback is queued rather than closed.**
 
-The corpus names `typo3 cache:flush` once, as the last step of an upgrade, behind
-a condition that excludes work on the code. A session that had just edited a
-Fluid template reached none of it and deleted a cache directory instead.
+The corpus names `typo3 cache:flush` once, as the last step of an upgrade,
+behind a condition that excludes work on the code. A session that had just
+edited a Fluid template reached none of it and deleted a cache directory
+instead.
 
 ## Evidence
 
 - The feedback's own query reaches nothing. Run in this checkout on 2026-08-02,
-  `bin/cli hints:probe "clearing the fluid_template (and code) caches after
-  template changes"` classifies it `fluid`, offers 22 candidates and matches
-  none of them.
+  `bin/cli hints:probe "clearing the fluid_template (and code) caches after template changes"`
+  classifies it `fluid`, offers 22 candidates and matches none of them.
 - The nearest hint the corpus has answers a different question. "how do I clear
-  the TYPO3 caches" reaches `caching` in `php.json` at `appliesTo(5) +
-  text(55)`, whose statements are about declaring a cache: the
+  the TYPO3 caches" reaches `caching` in `php.json` at
+  `appliesTo(5) + text(55)`, whose statements are about declaring a cache: the
   `cacheConfigurations` entry, which frontend a payload wants, injecting
   `cache.<name>` instead of asking `CacheManager`.
 - The one place the command is stated is fenced off from this task.
@@ -41,12 +41,13 @@ Fluid template reached none of it and deleted a cache directory instead.
   defaults to `all`; `CacheFlushTagsCommand` takes tags; `CacheWarmupCommand`
   takes the same groups. The first one's own help is "Useful after code changes
   during development or after deployments."
-- What the deletion reaches is one cache of one group. `DefaultConfiguration.php`
-  declares `fluid_template` as a `FluidTemplateCache` over `SimpleFileBackend` in
-  group `system`, so its directory is a real path; `pages`, `hash` and `rootline`
-  are `Typo3DatabaseBackend` in group `pages`, which no file deletion reaches.
-  `cache:flush` dispatches `CacheFlushEvent` over every group and
-  `CacheManager::handleCacheFlushEvent()` turns that into `flushCachesInGroup()`.
+- What the deletion reaches is one cache of one group.
+  `DefaultConfiguration.php` declares `fluid_template` as a `FluidTemplateCache`
+  over `SimpleFileBackend` in group `system`, so its directory is a real path;
+  `pages`, `hash` and `rootline` are `Typo3DatabaseBackend` in group `pages`,
+  which no file deletion reaches. `cache:flush` dispatches `CacheFlushEvent`
+  over every group and `CacheManager::handleCacheFlushEvent()` turns that into
+  `flushCachesInGroup()`.
 - Whether a template change needs any of it was deliberately not established
   here. The identifier a compiled template is stored under belongs to standalone
   `typo3fluid/fluid`, which no checkout vendors, and that answer decides whether
@@ -74,7 +75,8 @@ Fluid template reached none of it and deleted a cache directory instead.
 ## Assumed
 
 - That the answer is one statement rather than three. A template, a TypoScript
-  and a TCA change may invalidate different groups, and the reading may split it.
+  and a TCA change may invalidate different groups, and the reading may split
+  it.
 - That `var/cache/code/fluid_template` was a real path in that installation. It
   is where a `SimpleFileBackend` PHP cache writes, and nothing here saw the
   project the session was in.

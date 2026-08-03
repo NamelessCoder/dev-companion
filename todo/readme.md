@@ -6,14 +6,14 @@ work** and where the last one stopped — not what must be true (that is
 asked (that is `feedback/`), not the map of what the audiences need (that is
 `scenarios/`). Those three outlive the work; this one is consumed by it.
 
-Nobody reads it to start. `bin/cli todo:next` prints the one todo that is due and
-nothing else, `bin/cli todo:list` is the overview, and this is where both of
+Nobody reads it to start. `bin/cli todo:next` prints the one todo that is due
+and nothing else, `bin/cli todo:list` is the overview, and this is where both of
 them read from.
 
 One todo is one file, and where it sits says what it is. Three of the
 directories are the stages one runs through, and moving between them is the
-whole of what happens to a todo; the other two sit beside the stages rather
-than among them.
+whole of what happens to a todo; the other two sit beside the stages rather than
+among them.
 
 - **`open/`** — the queue, read by the priority in each head and, where two say
   the same, by the date in each name. Nothing here is a position, so moving a
@@ -27,11 +27,11 @@ than among them.
   the work is and since when, because a claim nobody came back to has to be
   readable as one. Finishing it is still a deletion, and the answer to a
   question it carries is what puts it back.
-- **`waiting/`** — what no session can start, because it is blocked on an
-  answer nothing here can produce. It says what it waits on, `bin/cli todo:next`
-  offers it to nobody, and the answer is what moves it back into the queue.
-  A recurring todo asks every seven days what is in here, so a question waits
-  rather than disappears.
+- **`waiting/`** — what no session can start, because it is blocked on an answer
+  nothing here can produce. It says what it waits on, `bin/cli todo:next` offers
+  it to nobody, and the answer is what moves it back into the queue. A recurring
+  todo asks every seven days what is in here, so a question waits rather than
+  disappears.
 
 There is no fourth stage for what is done. A finished todo is deleted, and the
 commit that finished it is the record — a directory of them would be a second
@@ -39,8 +39,8 @@ thing to keep true. The one exception is not here at all: a worked-off feedback
 is kept in `feedback/archive/`, because the agent asking what became of its
 report has no git to read the deletion out of.
 
-- **`recurring/`** — what comes round and is never deleted, so it has no
-  closing to run towards.
+- **`recurring/`** — what comes round and is never deleted, so it has no closing
+  to run towards.
 - **`reference/`** — not work at all: what a session would otherwise rediscover
   and mistake for some.
 
@@ -50,21 +50,21 @@ is named in, so one habit covers both — and that is what a listing sorts by.
 Each file opens with its title, then a head of labelled lines:
 
 - `**Serves:** <ids>` — what this answers for: a requirement, a feedback, a
-  scenario, a directory. Without it, it is an idea rather than a todo, and
-  ideas go in the feedback that had them.
+  scenario, a directory. Without it, it is an idea rather than a todo, and ideas
+  go in the feedback that had them.
 - `**Priority:** high`, `normal` or `low` — where it stands among the rest, and
   the whole list. Every todo in a stage carries one and a recurring todo carries
   none, because a cadence is what orders an appointment. A todo written for a
-  feedback starts at `low`: raising it is the judgement the card asks for, and
-  a judged card that is still `low` says so because somebody decided it, not
+  feedback starts at `low`: raising it is the judgement the card asks for, and a
+  judged card that is still `low` says so because somebody decided it, not
   because nobody has looked. What several sessions reported is not `low`.
 - `**Every:** session` or `**Every:** 7 days` — the cadence of a recurring todo.
-  A cadence in days is an appointment and comes before the queue; `session` is
-  a sighting and comes after it, when the queue is empty.
+  A cadence in days is an appointment and comes before the queue; `session` is a
+  sighting and comes after it, when the queue is empty.
 - `**Checked:** <date>` — when a todo measured in days last ran. The session
   that runs it writes the date.
-- `**Run:** <command>` — where the step starts. `bin/cli todo:next` runs the ones
-  this repository owns and names the rest.
+- `**Run:** <command>` — where the step starts. `bin/cli todo:next` runs the
+  ones this repository owns and names the rest.
 - `**Waiting on:** <the question>` — what a todo is blocked on, in the words it
   was asked in, wrapped onto indented lines where it is longer than one.
   `bin/cli todo:waiting` is what asks it again. In `waiting/` it is the whole of

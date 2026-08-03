@@ -11,8 +11,8 @@ be true of the launch.
 
 - **The build that is current.** A client that also ships inside an editor keeps
   its own binary there, and the one on `PATH` can be an old release pinned to a
-  model that has since been retired. It then fails looking like the work
-  failing rather than the client being wrong, which is the expensive way round.
+  model that has since been retired. It then fails looking like the work failing
+  rather than the client being wrong, which is the expensive way round.
 - **A session id the caller chose.** That is what makes the transcript findable
   afterwards. A session started without one still does the work; it cannot be
   graded, and for a forward run the grading is the point.
@@ -44,7 +44,8 @@ found by searching for it literally. Which skills activated and which tools were
 called are read from there rather than from what the session says about itself.
 
 What a session is **told** is a separate question, and it is answered where the
-work is: [feedback/working-todos-in-parallel.md](feedback/working-todos-in-parallel.md)
+work is:
+[feedback/working-todos-in-parallel.md](feedback/working-todos-in-parallel.md)
 carries the prompt a worktree session is started with, and
 [evidence/forward-runs.md](evidence/forward-runs.md) says that a forward run is
 given its scenario prompt verbatim and nothing besides.

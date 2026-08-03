@@ -10,8 +10,8 @@ down as such.**
 
 They are one unit rather than two, the declared constraint rather than the
 installed version as the statement of support, no committed lock file,
-dependencies shipped where the extension also installs outside Composer, and
-the browser suite belonging to the package.
+dependencies shipped where the extension also installs outside Composer, and the
+browser suite belonging to the package.
 
 The project repository layout names what it is about, so the two are not read
 for each other.

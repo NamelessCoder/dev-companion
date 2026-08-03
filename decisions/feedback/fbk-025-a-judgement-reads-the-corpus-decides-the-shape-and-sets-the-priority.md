@@ -52,11 +52,11 @@ others that were also `low`.
 
 ## Assumed
 
-- That the throughput was never the problem. 175 archived says the process
-  works off what it is pointed at, so what was missing is where it points.
+- That the throughput was never the problem. 175 archived says the process works
+  off what it is pointed at, so what was missing is where it points.
 - That grouping by directory is the right axis. It is the axis the corpus
-  happened to have; a gap reported from four different checkouts would not
-  group at all, and only the model and the task shape would say they are one.
+  happened to have; a gap reported from four different checkouts would not group
+  at all, and only the model and the task shape would say they are one.
 
 ## Wrong if
 

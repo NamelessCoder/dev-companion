@@ -21,12 +21,12 @@ is the first thing an editor sees.
 ## Evidence
 
 - The miss reproduces against the manual as this server serves it today. Called
-  over stdio with the feedback's own `page` argument and `targetVersion:
-  "14.3"`, `typo3_documentation_lookup` returns *Configure custom backend
-  preview for content element* with `status: answered`, and the example under
-  *Preview rendering with a Fluid template and page TSconfig* is still
-  `<h2>{record.header}</h2>` followed by `<p>{record.bodytext}</p>`. Nothing in
-  that section says the header is drawn by anybody else.
+  over stdio with the feedback's own `page` argument and
+  `targetVersion: "14.3"`, `typo3_documentation_lookup` returns *Configure
+  custom backend preview for content element* with `status: answered`, and the
+  example under *Preview rendering with a Fluid template and page TSconfig* is
+  still `<h2>{record.header}</h2>` followed by `<p>{record.bodytext}</p>`.
+  Nothing in that section says the header is drawn by anybody else.
   `renderPageModulePreviewHeader()` does appear on the page — in the
   `PreviewRendererInterface` listing under *Writing a preview renderer*, which
   is the PHP route a session taking the TSconfig route has no reason to read.
@@ -54,11 +54,12 @@ is the first thing an editor sees.
   queues, which is `since 14`.
 - Nothing below `knowledge/` or `skills/` says it. `bin/cli hints:probe` reaches
   nothing on "backend preview element header already rendered default renderer"
-  or on "backend preview template header duplicate StandardContentPreviewRenderer".
-  The one preview statement on the `content-elements` hint gives the TSconfig key
+  or on "backend preview template header duplicate
+  StandardContentPreviewRenderer". The one preview statement on the
+  `content-elements` hint gives the TSconfig key
   `mod.web_layout.tt_content.preview.<CType>` and the TypoScript beside it;
-  `skills/typo3-content-element-development/SKILL.md` has one line, "Add a useful
-  backend preview for a custom CType".
+  `skills/typo3-content-element-development/SKILL.md` has one line, "Add a
+  useful backend preview for a custom CType".
 - The same gap is reported from the other side by
   `feedback/2026-08-01-003935-guidance-item-previews-for-content-elements.md`,
   which asks for a preview that summarises the assigned data rather than "a
@@ -152,8 +153,8 @@ judging run on the same day, and the page is unchanged since.
 ## Revoked on 2026-08-02
 
 By the work this entry queued. Its statement ends "and nothing in this server
-says so", and what it asked for is on `content-elements` — the split, the four header
-parts by field, and the six footer fields. A reader of a listing has the
+says so", and what it asked for is on `content-elements` — the split, the four
+header parts by field, and the six footer fields. A reader of a listing has the
 title and the status and nothing else, so `confirmed` over a statement ending
 "nothing here says so" reads as a claim about a gap that is closed.
 
@@ -166,5 +167,5 @@ What holds from here is
 [`D-KNW-021`](knw-021-a-fluid-preview-template-replaces-the-content-half-and-the-corpus-says-so.md),
 and what must keep holding is `R-KNW-042`, which now rests on the successor. One
 of this entry's three **Wrong if** survives into it — the core moving the header
-behind the event — and it is a different failure there: a statement in the corpus
-that has gone false, rather than a statement nobody had written yet.
+behind the event — and it is a different failure there: a statement in the
+corpus that has gone false, rather than a statement nobody had written yet.

@@ -6,8 +6,8 @@ restsOn: [D-ANS-005]
 
 # R-ANS-001 — "Could not ask" never looks like "does not exist"
 
-**An answer that means "could not ask" is never shaped like one that means
-"does not exist".**
+**An answer that means "could not ask" is never shaped like one that means "does
+not exist".**
 
 A tool that cannot reach the installation answers with `unsupported` and states
 nothing else: no count to read as a count, no flag to read as a fact, no empty
@@ -25,13 +25,13 @@ hit promises every field it always did and an answer carrying both is invalid.
 ## From
 
 Two feedback asking that the unavailable case stop looking like an empty one,
-and a client that twice concluded an extension registered no icons and no
-labels (2026-07-29). Reading the tools against it on 2026-08-02 found the shape
-still being made: `typo3_icon_lookup` answered a directory with no installation
-with `matchCount: 0`, `suggestionCount: 0` and `exactMatch: false` — field for
-field the miss it emits against a reachable one — and `typo3_extension_scope`
-reported `answeredBy: "nothing"` for every miss, including against an
-installation that had just listed 27 packages.
+and a client that twice concluded an extension registered no icons and no labels
+(2026-07-29). Reading the tools against it on 2026-08-02 found the shape still
+being made: `typo3_icon_lookup` answered a directory with no installation with
+`matchCount: 0`, `suggestionCount: 0` and `exactMatch: false` — field for field
+the miss it emits against a reachable one — and `typo3_extension_scope` reported
+`answeredBy: "nothing"` for every miss, including against an installation that
+had just listed 27 packages.
 
 ## Held by
 

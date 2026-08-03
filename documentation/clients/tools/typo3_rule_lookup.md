@@ -104,13 +104,59 @@ Source: TYPO3 Core Commit Message Rules (typo3://core/typo3-commit-messages) —
   against, by the Extension Scanner in the Install Tool. Both directories ship
   with a Composer installation.
 
+## Breaking Changes
+Source: TYPO3 Core Commit Message Rules (typo3://core/typo3-commit-messages) — matches 100% of the query terms
+
+- Breaking changes must use `[!!!]` before the keyword.
+- Breaking changes must be documented with a changelog RST file.
+- Breaking changes should usually target `main`.
+- A removed or narrowed PHP API gets an extension scanner matcher entry in the
+  same patch, below
+  `typo3/sysext/install/Configuration/ExtensionScanner/Php/`. How the removed
+  member is written where it is used decides the file:
+  - `MethodCallMatcher.php` — an instance method.
+  - `MethodCallStaticMatcher.php` — a static method.
+  - `PropertyPublicMatcher.php` — a removed public property.
+  - `PropertyProtectedMatcher.php` — a public property that became protected.
+  - `ClassNameMatcher.php` — a whole class or interface.
+- An entry is keyed by the fully qualified name with `->` or `::` and carries
+  `restFiles`, naming the changelog file that removed it. The method matchers
+  add `numberOfMandatoryArguments` and `maximumNumberOfArguments`. A member
+  deprecated before it was removed lists both changelog files.
+- Every Breaking and Deprecation entry carries exactly one of `NotScanned`,
+  `PartiallyScanned` and `FullyScanned` in its `.. index::` line, and that tag
+  is the claim those entries have to back: `FullyScanned` says every item the
+  changelog entry names can be found. The scanner reads PHP, so what an entry
+  changes in TypoScript, TCA, YAML or JavaScript is what leaves it partially
+  scanned.
+- `./Build/Scripts/runTests.sh -s checkExtensionScannerRst` checks that the
+  changelog files the matchers name exist, and nothing checks the other
+  direction. A missing entry surfaces when somebody audits the matcher files
+  against the changelog.
+
 ## Changelog Files
 Source: TYPO3 Core Commit Message Rules (typo3://core/typo3-commit-messages) — matches 100% of the query terms
 
-- Changelog entries live below `typo3/sysext/core/Documentation/Changelog/`.
-- Common filename prefixes include `Breaking-`, `Deprecation-`, `Feature-`,
-  `Important-`, and `Task-`.
-- Include the Forge issue number in changelog filenames when possible.
+- Changelog entries live below `typo3/sysext/core/Documentation/Changelog/`, in
+  the directory of the minor version the change is released in. A backport goes
+  into the `<lts>.x` directory of the oldest branch it reaches, in every branch
+  that carries it.
+- The file is named `<Type>-<forgeIssueNumber>-<UpperCamelCaseDescription>.rst`.
+- The type is the first of four that describes the change: `Breaking` where it
+  moves or removes core functionality third-party code may use, `Deprecation`
+  where it marks core functionality for a planned removal, `Feature` where it
+  adds functionality, and `Important` for anything else that may require manual
+  action. `Important` is the last resort, and the only one of the four an LTS
+  release may carry.
+- A casual bug fix owes no entry, because its commit message carries the
+  information.
+- `Task` is a commit message keyword and not a changelog type. Those four are
+  the whole list, and `checkRst` fails a title opening with anything else.
+- `Documentation/Changelog/Howto.rst` in the core checkout is the authority on
+  all of this, and `Build/Scripts/validateRstFiles.php` is what reports the
+  piece a file is missing.
+- The skeleton the file has to have, down to the tags it ends on, is
+  `typo3_hint_lookup` with the id `documentation-changelog`.
 - Run `./Build/Scripts/runTests.sh -s checkRst` for ReST changes.
 - These rules are for writing an entry. An installation reads them instead: the
   same files ship with the core package, and `typo3 upgrade:list` and
@@ -134,7 +180,7 @@ Data:
 ```json
 {
     "query": "deprecation",
-    "matchCount": 3,
+    "matchCount": 4,
     "matches": [
         {
             "documentId": "typo3-commit-messages",
@@ -143,7 +189,17 @@ Data:
             "heading": "Deprecations",
             "body": "- Deprecations must not use `[!!!]`.\n- Deprecations may only use `[TASK]` or `[FEATURE]`.\n- Deprecations must be documented with a changelog RST file.\n- Deprecations need migration guidance and may need extension scanner\n  considerations.\n- All of the above is the authoring side. Reading it — what a given version\n  deprecated, and what that means for code that uses it — works the other way\n  round: the changelog files below `Documentation/Changelog/` of the core\n  package and the matchers below the install package's\n  `Configuration/ExtensionScanner/Php/` are what an installation is checked\n  against, by the Extension Scanner in the Install Tool. Both directories ship\n  with a Composer installation.",
             "coverage": 1,
-            "score": 85,
+            "score": 73,
+            "truncated": false
+        },
+        {
+            "documentId": "typo3-commit-messages",
+            "title": "TYPO3 Core Commit Message Rules",
+            "uri": "typo3://core/typo3-commit-messages",
+            "heading": "Breaking Changes",
+            "body": "- Breaking changes must use `[!!!]` before the keyword.\n- Breaking changes must be documented with a changelog RST file.\n- Breaking changes should usually target `main`.\n- A removed or narrowed PHP API gets an extension scanner matcher entry in the\n  same patch, below\n  `typo3/sysext/install/Configuration/ExtensionScanner/Php/`. How the removed\n  member is written where it is used decides the file:\n  - `MethodCallMatcher.php` — an instance method.\n  - `MethodCallStaticMatcher.php` — a static method.\n  - `PropertyPublicMatcher.php` — a removed public property.\n  - `PropertyProtectedMatcher.php` — a public property that became protected.\n  - `ClassNameMatcher.php` — a whole class or interface.\n- An entry is keyed by the fully qualified name with `->` or `::` and carries\n  `restFiles`, naming the changelog file that removed it. The method matchers\n  add `numberOfMandatoryArguments` and `maximumNumberOfArguments`. A member\n  deprecated before it was removed lists both changelog files.\n- Every Breaking and Deprecation entry carries exactly one of `NotScanned`,\n  `PartiallyScanned` and `FullyScanned` in its `.. index::` line, and that tag\n  is the claim those entries have to back: `FullyScanned` says every item the\n  changelog entry names can be found. The scanner reads PHP, so what an entry\n  changes in TypoScript, TCA, YAML or JavaScript is what leaves it partially\n  scanned.\n- `./Build/Scripts/runTests.sh -s checkExtensionScannerRst` checks that the\n  changelog files the matchers name exist, and nothing checks the other\n  direction. A missing entry surfaces when somebody audits the matcher files\n  against the changelog.",
+            "coverage": 1,
+            "score": 18,
             "truncated": false
         },
         {
@@ -151,9 +207,9 @@ Data:
             "title": "TYPO3 Core Commit Message Rules",
             "uri": "typo3://core/typo3-commit-messages",
             "heading": "Changelog Files",
-            "body": "- Changelog entries live below `typo3/sysext/core/Documentation/Changelog/`.\n- Common filename prefixes include `Breaking-`, `Deprecation-`, `Feature-`,\n  `Important-`, and `Task-`.\n- Include the Forge issue number in changelog filenames when possible.\n- Run `./Build/Scripts/runTests.sh -s checkRst` for ReST changes.\n- These rules are for writing an entry. An installation reads them instead: the\n  same files ship with the core package, and `typo3 upgrade:list` and\n  `typo3 upgrade:run` are what acts on the migrations behind them.",
+            "body": "- Changelog entries live below `typo3/sysext/core/Documentation/Changelog/`, in\n  the directory of the minor version the change is released in. A backport goes\n  into the `<lts>.x` directory of the oldest branch it reaches, in every branch\n  that carries it.\n- The file is named `<Type>-<forgeIssueNumber>-<UpperCamelCaseDescription>.rst`.\n- The type is the first of four that describes the change: `Breaking` where it\n  moves or removes core functionality third-party code may use, `Deprecation`\n  where it marks core functionality for a planned removal, `Feature` where it\n  adds functionality, and `Important` for anything else that may require manual\n  action. `Important` is the last resort, and the only one of the four an LTS\n  release may carry.\n- A casual bug fix owes no entry, because its commit message carries the\n  information.\n- `Task` is a commit message keyword and not a changelog type. Those four are\n  the whole list, and `checkRst` fails a title opening with anything else.\n- `Documentation/Changelog/Howto.rst` in the core checkout is the authority on\n  all of this, and `Build/Scripts/validateRstFiles.php` is what reports the\n  piece a file is missing.\n- The skeleton the file has to have, down to the tags it ends on, is\n  `typo3_hint_lookup` with the id `documentation-changelog`.\n- Run `./Build/Scripts/runTests.sh -s checkRst` for ReST changes.\n- These rules are for writing an entry. An installation reads them instead: the\n  same files ship with the core package, and `typo3 upgrade:list` and\n  `typo3 upgrade:run` are what acts on the migrations behind them.",
             "coverage": 1,
-            "score": 21,
+            "score": 18,
             "truncated": false
         },
         {
@@ -163,7 +219,7 @@ Data:
             "heading": "Review Readiness",
             "body": "- The change should be reproducible from the issue or task description.\n- The patch should include a concise explanation of the problem and the chosen\n  fix.\n- Breaking changes, migrations, and deprecations need clear notes.\n- Security-sensitive behavior needs extra care and focused tests.",
             "coverage": 1,
-            "score": 21,
+            "score": 18,
             "truncated": false
         }
     ],

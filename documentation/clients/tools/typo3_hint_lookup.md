@@ -788,6 +788,7 @@ Hints that exist in these domains, requestable by id:
 - browser-test-accessibility — Checking Accessibility and Contrast From the Same Spec (PHP)
 - browser-tests-outside-core — The Site a Project Suite Runs Against (PHP)
 - extension-static-analysis — Setting Up PHPStan for an Extension (PHP)
+- unit-test-doubles — Unit Tests, Test Doubles and Data Providers in PHPUnit (PHP)
 - installation-upgrade — Upgrading an Installation (PHP)
 - upgrade-own-code — What No Wizard Touches (PHP)
 - deprecated-apis — Deprecated APIs (PHP)
@@ -1169,6 +1170,11 @@ Data:
         {
             "id": "extension-static-analysis",
             "title": "Setting Up PHPStan for an Extension",
+            "category": "PHP"
+        },
+        {
+            "id": "unit-test-doubles",
+            "title": "Unit Tests, Test Doubles and Data Providers in PHPUnit",
             "category": "PHP"
         },
         {

@@ -211,7 +211,7 @@ Hints:
 - A deprecated API keeps working until the next major release, so an existing call site is not automatically a defect. New code uses the replacement the changelog names.
 - Authoring a deprecation and finding out what a version deprecated are two directions through the same files. From the reading side: the changelog directory and the extension scanner matchers ship with the core and install packages of any installation, the Extension Scanner in the Install Tool runs the matchers over an extension, and `typo3 upgrade:list` and `typo3 upgrade:run` are the console side of the migrations.
 - @internal on a class or on a member says it is not public API, and both are read: a public class can carry an internal method. It is an input to whether a removal is breaking and never the answer on its own.
-- What settles it is whether anything outside the core calls it. The core has removed @internal members both as a breaking change and as an Important note, and what separates the two is the call sites rather than the marker: a Breaking entry names them in its Affected installations section, and the extension scanner matchers are where they are looked for. Writing that section is the test of whether there is one.
+- What settles it is whether anything outside the core calls it. The core has removed @internal members both as a breaking change and as an Important note, and what separates the two is the call sites rather than the marker: a Breaking entry names them in its Affected installations section, and the extension scanner matchers are where they are looked for. Writing that section is the test of whether there is one. Where there is none, the removal is an ordinary [TASK] with no marker, no changelog entry and no matcher.
 - An absent annotation is not a statement that something is public API. Read the changelog for the subsystem and the extension scanner matchers before concluding either way.
 
 ## Events and Extension Points
@@ -242,22 +242,41 @@ Source: TYPO3 Core Commit Message Rules (typo3://core/typo3-commit-messages) —
   against, by the Extension Scanner in the Install Tool. Both directories ship
   with a Composer installation.
 
-## Changelog Files
+## Breaking Changes
 Source: TYPO3 Core Commit Message Rules (typo3://core/typo3-commit-messages) — matches 100% of the query terms
 
-- Changelog entries live below `typo3/sysext/core/Documentation/Changelog/`.
-- Common filename prefixes include `Breaking-`, `Deprecation-`, `Feature-`,
-  `Important-`, and `Task-`.
-- Include the Forge issue number in changelog filenames when possible.
-- Run `./Build/Scripts/runTests.sh -s checkRst` for ReST changes.
-- These rules are for writing an entry. An installation reads them instead: the
-  same files ship with the core package, and `typo3 upgrade:list` and
-  `typo3 upgrade:run` are what acts on the migrations behind them.
+- Breaking changes must use `[!!!]` before the keyword.
+- Breaking changes must be documented with a changelog RST file.
+- Breaking changes should usually target `main`.
+- A removed or narrowed PHP API gets an extension scanner matcher entry in the
+  same patch, below
+  `typo3/sysext/install/Configuration/ExtensionScanner/Php/`. How the removed
+  member is written where it is used decides the file:
+  - `MethodCallMatcher.php` — an instance method.
+  - `MethodCallStaticMatcher.php` — a static method.
+  - `PropertyPublicMatcher.php` — a removed public property.
+  - `PropertyProtectedMatcher.php` — a public property that became protected.
+  - `ClassNameMatcher.php` — a whole class or interface.
+- An entry is keyed by the fully qualified name with `->` or `::` and carries
+  `restFiles`, naming the changelog file that removed it. The method matchers
+  add `numberOfMandatoryArguments` and `maximumNumberOfArguments`. A member
+  deprecated before it was removed lists both changelog files.
+- Every Breaking and Deprecation entry carries exactly one of `NotScanned`,
+  `PartiallyScanned` and `FullyScanned` in its `.. index::` line, and that tag
+  is the claim those entries have to back: `FullyScanned` says every item the
+  changelog entry names can be found. The scanner reads PHP, so what an entry
+  changes in TypoScript, TCA, YAML or JavaScript is what leaves it partially
+  scanned.
+- `./Build/Scripts/runTests.sh -s checkExtensionScannerRst` checks that the
+  changelog files the matchers name exist, and nothing checks the other
+  direction. A missing entry surfaces when somebody audits the matcher files
+  against the changelog.
 
 Relevant TYPO3 core checks:
 - `CI=true ./Build/Scripts/runTests.sh -s unit`
 - `CI=true ./Build/Scripts/runTests.sh -s functional`
 - `CI=true ./Build/Scripts/runTests.sh -s checkRst`
+- `CI=true ./Build/Scripts/runTests.sh -s checkExtensionScannerRst`
 ## unit
 `CI=true ./Build/Scripts/runTests.sh -s unit`
 Targeted: `CI=true ./Build/Scripts/runTests.sh -s unit -- --filter <methodName> <path/to/Test.php>`
@@ -276,17 +295,21 @@ Targeted: `CI=true ./Build/Scripts/runTests.sh -s cgl -n`
 Use for a focused pre-review check after creating a commit, from a normal checkout only. Its file list comes from git inside the container, and a git worktree keeps its gitdir outside the mounted directory: git fails, the list is empty, and the suite reports SUCCESS having read nothing. Use `cgl -n` where the checkout may be a worktree — it asks git nothing.
 
 Suggested checklist:
+- Content changes, so what is delivered has to be the version that is current after the change — that is what the editor and the visitor are owed. A defect is judged by that outcome: the old version still being served is the defect, and the error it eventually throws is the symptom.
 - Confirm the target TYPO3 core branch and issue context.
 - Inspect nearby code, tests, and established subsystem conventions.
 - Keep the patch focused on the stated task.
 - Add or update the narrowest useful test coverage.
 - Run targeted tests first; broaden to CGL, functional, or npm checks when relevant.
 - Keep the cleanup mechanical; avoid mixing behavioural changes into the same patch.
-- Add a changelog file below typo3/sysext/core/Documentation/Changelog/<version>/ named Deprecation-<issue>-<Title>.rst.
+- Annotate the member @deprecated since TYPO3 v<the version this lands in>, will be removed in TYPO3 v<the next major>. and close that line with the migration sentence. Read both versions off the branch you are on rather than off an example.
+- Keep the member working and open its body with trigger_error('<Class>-><member>() is deprecated since TYPO3 v<the version this lands in> and will be removed in TYPO3 v<the next major>. <migration>', E_USER_DEPRECATED). The docblock and the message say the same three things, and the removal is a patch of its own in that major.
+- Migrate every caller of the deprecated API in the same patch, and confirm none is left behind.
+- Add a changelog file below typo3/sysext/core/Documentation/Changelog/<the minor this is released in>/ named Deprecation-<issue>-<UpperCamelCaseDescription>.rst. Nothing has to include it: that directory's Index.rst pulls Deprecation-* in by glob, so the filename is the inclusion.
+- Open the changelog file with .. include:: /Includes.rst.txt and a unique .. _deprecation-<issue>-<unix timestamp>: anchor directly above the 'Deprecation: #<issue> - <title>' headline, with See :issue:`<issue>` under it. Then Description, Impact, Affected installations and Migration — the last two are what this type owes over a feature entry.
+- End the changelog file with .. index:: carrying at least one subject tag and exactly one of FullyScanned, PartiallyScanned or NotScanned. Build/Scripts/validateRstFiles.php rejects a Deprecation file without the scanner tag, so it is owed rather than considered.
+- Back a FullyScanned or PartiallyScanned tag with an extension scanner matcher: an entry below typo3/sysext/install/Configuration/ExtensionScanner/Php/, keyed by the deprecated symbol and naming the changelog file in its restFiles. NotScanned is for what no matcher can find, not for what nobody wrote.
 - Use [TASK] or [FEATURE] as the commit keyword. A deprecation must never use the [!!!] breaking prefix.
-- Keep the deprecated API working and let it trigger E_USER_DEPRECATED; removal happens in a later major.
-- Document the migration path in the changelog and consider an extension scanner matcher.
-- Migrate all core usages of the deprecated API in the same patch.
 - Write the commit message with typo3_commit_message_guide: summarize the changed behavior, the affected area and the commands you ran, and it hands back a draft that carries the keyword, the trailers and the wrapping.
 
 Establish in your checkout — this server cannot see it:
@@ -415,7 +438,7 @@ Data:
                     "scope": null
                 },
                 {
-                    "text": "What settles it is whether anything outside the core calls it. The core has removed @internal members both as a breaking change and as an Important note, and what separates the two is the call sites rather than the marker: a Breaking entry names them in its Affected installations section, and the extension scanner matchers are where they are looked for. Writing that section is the test of whether there is one.",
+                    "text": "What settles it is whether anything outside the core calls it. The core has removed @internal members both as a breaking change and as an Important note, and what separates the two is the call sites rather than the marker: a Breaking entry names them in its Affected installations section, and the extension scanner matchers are where they are looked for. Writing that section is the test of whether there is one. Where there is none, the removal is an ordinary [TASK] with no marker, no changelog entry and no matcher.",
                     "since": null,
                     "until": null,
                     "versions": "",
@@ -482,24 +505,25 @@ Data:
             "heading": "Deprecations",
             "body": "- Deprecations must not use `[!!!]`.\n- Deprecations may only use `[TASK]` or `[FEATURE]`.\n- Deprecations must be documented with a changelog RST file.\n- Deprecations need migration guidance and may need extension scanner\n  considerations.\n- All of the above is the authoring side. Reading it — what a given version\n  deprecated, and what that means for code that uses it — works the other way\n  round: the changelog files below `Documentation/Changelog/` of the core\n  package and the matchers below the install package's\n  `Configuration/ExtensionScanner/Php/` are what an installation is checked\n  against, by the Extension Scanner in the Install Tool. Both directories ship\n  with a Composer installation.",
             "coverage": 1,
-            "score": 74,
+            "score": 63,
             "truncated": false
         },
         {
             "documentId": "typo3-commit-messages",
             "title": "TYPO3 Core Commit Message Rules",
             "uri": "typo3://core/typo3-commit-messages",
-            "heading": "Changelog Files",
-            "body": "- Changelog entries live below `typo3/sysext/core/Documentation/Changelog/`.\n- Common filename prefixes include `Breaking-`, `Deprecation-`, `Feature-`,\n  `Important-`, and `Task-`.\n- Include the Forge issue number in changelog filenames when possible.\n- Run `./Build/Scripts/runTests.sh -s checkRst` for ReST changes.\n- These rules are for writing an entry. An installation reads them instead: the\n  same files ship with the core package, and `typo3 upgrade:list` and\n  `typo3 upgrade:run` are what acts on the migrations behind them.",
+            "heading": "Breaking Changes",
+            "body": "- Breaking changes must use `[!!!]` before the keyword.\n- Breaking changes must be documented with a changelog RST file.\n- Breaking changes should usually target `main`.\n- A removed or narrowed PHP API gets an extension scanner matcher entry in the\n  same patch, below\n  `typo3/sysext/install/Configuration/ExtensionScanner/Php/`. How the removed\n  member is written where it is used decides the file:\n  - `MethodCallMatcher.php` — an instance method.\n  - `MethodCallStaticMatcher.php` — a static method.\n  - `PropertyPublicMatcher.php` — a removed public property.\n  - `PropertyProtectedMatcher.php` — a public property that became protected.\n  - `ClassNameMatcher.php` — a whole class or interface.\n- An entry is keyed by the fully qualified name with `->` or `::` and carries\n  `restFiles`, naming the changelog file that removed it. The method matchers\n  add `numberOfMandatoryArguments` and `maximumNumberOfArguments`. A member\n  deprecated before it was removed lists both changelog files.\n- Every Breaking and Deprecation entry carries exactly one of `NotScanned`,\n  `PartiallyScanned` and `FullyScanned` in its `.. index::` line, and that tag\n  is the claim those entries have to back: `FullyScanned` says every item the\n  changelog entry names can be found. The scanner reads PHP, so what an entry\n  changes in TypoScript, TCA, YAML or JavaScript is what leaves it partially\n  scanned.\n- `./Build/Scripts/runTests.sh -s checkExtensionScannerRst` checks that the\n  changelog files the matchers name exist, and nothing checks the other\n  direction. A missing entry surfaces when somebody audits the matcher files\n  against the changelog.",
             "coverage": 1,
-            "score": 28,
+            "score": 25,
             "truncated": false
         }
     ],
     "checks": [
         "CI=true ./Build/Scripts/runTests.sh -s unit",
         "CI=true ./Build/Scripts/runTests.sh -s functional",
-        "CI=true ./Build/Scripts/runTests.sh -s checkRst"
+        "CI=true ./Build/Scripts/runTests.sh -s checkRst",
+        "CI=true ./Build/Scripts/runTests.sh -s checkExtensionScannerRst"
     ],
     "conditionalChecks": [],
     "testSuites": [
@@ -551,17 +575,21 @@ Data:
         }
     ],
     "checklist": [
+        "Content changes, so what is delivered has to be the version that is current after the change — that is what the editor and the visitor are owed. A defect is judged by that outcome: the old version still being served is the defect, and the error it eventually throws is the symptom.",
         "Confirm the target TYPO3 core branch and issue context.",
         "Inspect nearby code, tests, and established subsystem conventions.",
         "Keep the patch focused on the stated task.",
         "Add or update the narrowest useful test coverage.",
         "Run targeted tests first; broaden to CGL, functional, or npm checks when relevant.",
         "Keep the cleanup mechanical; avoid mixing behavioural changes into the same patch.",
-        "Add a changelog file below typo3/sysext/core/Documentation/Changelog/<version>/ named Deprecation-<issue>-<Title>.rst.",
+        "Annotate the member @deprecated since TYPO3 v<the version this lands in>, will be removed in TYPO3 v<the next major>. and close that line with the migration sentence. Read both versions off the branch you are on rather than off an example.",
+        "Keep the member working and open its body with trigger_error('<Class>-><member>() is deprecated since TYPO3 v<the version this lands in> and will be removed in TYPO3 v<the next major>. <migration>', E_USER_DEPRECATED). The docblock and the message say the same three things, and the removal is a patch of its own in that major.",
+        "Migrate every caller of the deprecated API in the same patch, and confirm none is left behind.",
+        "Add a changelog file below typo3/sysext/core/Documentation/Changelog/<the minor this is released in>/ named Deprecation-<issue>-<UpperCamelCaseDescription>.rst. Nothing has to include it: that directory's Index.rst pulls Deprecation-* in by glob, so the filename is the inclusion.",
+        "Open the changelog file with .. include:: /Includes.rst.txt and a unique .. _deprecation-<issue>-<unix timestamp>: anchor directly above the 'Deprecation: #<issue> - <title>' headline, with See :issue:`<issue>` under it. Then Description, Impact, Affected installations and Migration — the last two are what this type owes over a feature entry.",
+        "End the changelog file with .. index:: carrying at least one subject tag and exactly one of FullyScanned, PartiallyScanned or NotScanned. Build/Scripts/validateRstFiles.php rejects a Deprecation file without the scanner tag, so it is owed rather than considered.",
+        "Back a FullyScanned or PartiallyScanned tag with an extension scanner matcher: an entry below typo3/sysext/install/Configuration/ExtensionScanner/Php/, keyed by the deprecated symbol and naming the changelog file in its restFiles. NotScanned is for what no matcher can find, not for what nobody wrote.",
         "Use [TASK] or [FEATURE] as the commit keyword. A deprecation must never use the [!!!] breaking prefix.",
-        "Keep the deprecated API working and let it trigger E_USER_DEPRECATED; removal happens in a later major.",
-        "Document the migration path in the changelog and consider an extension scanner matcher.",
-        "Migrate all core usages of the deprecated API in the same patch.",
         "Write the commit message with typo3_commit_message_guide: summarize the changed behavior, the affected area and the commands you ran, and it hands back a draft that carries the keyword, the trailers and the wrapping."
     ],
     "checkoutDiscovery": [
@@ -674,6 +702,7 @@ Targeted: `CI=true ./Build/Scripts/runTests.sh -s cgl -n`
 Use for a focused pre-review check after creating a commit, from a normal checkout only. Its file list comes from git inside the container, and a git worktree keeps its gitdir outside the mounted directory: git fails, the list is empty, and the suite reports SUCCESS having read nothing. Use `cgl -n` where the checkout may be a worktree — it asks git nothing.
 
 Suggested checklist:
+- Content changes, so what is delivered has to be the version that is current after the change — that is what the editor and the visitor are owed. A defect is judged by that outcome: the old version still being served is the defect, and the error it eventually throws is the symptom.
 - Confirm the target TYPO3 core branch and issue context.
 - Inspect nearby code, tests, and established subsystem conventions.
 - Keep the patch focused on the stated task.
@@ -831,6 +860,7 @@ Data:
         }
     ],
     "checklist": [
+        "Content changes, so what is delivered has to be the version that is current after the change — that is what the editor and the visitor are owed. A defect is judged by that outcome: the old version still being served is the defect, and the error it eventually throws is the symptom.",
         "Confirm the target TYPO3 core branch and issue context.",
         "Inspect nearby code, tests, and established subsystem conventions.",
         "Keep the patch focused on the stated task.",
@@ -970,6 +1000,7 @@ Use before review after touching PHP files; it catches conventions that neither 
 Use for editor or administrator workflows that only break in the assembled backend.
 
 Suggested checklist:
+- Content changes, so what is delivered has to be the version that is current after the change — that is what the editor and the visitor are owed. A defect is judged by that outcome: the old version still being served is the defect, and the error it eventually throws is the symptom.
 - Confirm the target TYPO3 core branch and issue context.
 - Inspect nearby code, tests, and established subsystem conventions.
 - Keep the patch focused on the stated task.
@@ -1179,6 +1210,7 @@ Data:
         }
     ],
     "checklist": [
+        "Content changes, so what is delivered has to be the version that is current after the change — that is what the editor and the visitor are owed. A defect is judged by that outcome: the old version still being served is the defect, and the error it eventually throws is the symptom.",
         "Confirm the target TYPO3 core branch and issue context.",
         "Inspect nearby code, tests, and established subsystem conventions.",
         "Keep the patch focused on the stated task.",

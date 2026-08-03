@@ -40,7 +40,7 @@ final class CommitMessageTest extends TestCase
         foreach ($this->bodyLines($result['message']) as $line) {
             self::assertLessThanOrEqual(72, mb_strlen($line), 'unwrapped line: ' . $line);
         }
-        self::assertSame([], $this->checkCodes($result['checks'], 'body-line-too-long'));
+        self::assertSame([], $this->checksWithCode($result['checks'], 'body-line-too-long'));
     }
 
     #[Test]
@@ -56,7 +56,101 @@ final class CommitMessageTest extends TestCase
         ]);
 
         self::assertStringContainsString($url, $result['message']);
-        self::assertNotSame([], $this->checkCodes($result['checks'], 'body-line-too-long'));
+        self::assertNotSame([], $this->checksWithCode($result['checks'], 'body-line-too-long'));
+    }
+
+    /**
+     * The body of `feedback/2026-08-02-144315`: four command lines at column 0,
+     * returned as one running paragraph with nothing saying so.
+     */
+    #[Test]
+    public function aRunOfLinesTheWrappingJoinedIsNamed(): void
+    {
+        $result = CommitMessage::create([
+            'changeType' => 'BUGFIX',
+            'summary' => 'Hint at public URIs passed to f:image src',
+            'issue' => '105403',
+            'releases' => ['main'],
+            'body' => "Executed commands:\nCI=true ./Build/Scripts/runTests.sh -s cgl -n\n"
+                . 'CI=true ./Build/Scripts/runTests.sh -s phpstan',
+        ]);
+
+        $reflowed = $this->checksWithCode($result['checks'], 'body-lines-reflowed');
+        self::assertCount(1, $reflowed);
+        self::assertStringContainsString('Lines 1 to 3', $reflowed[0]['message']);
+        self::assertNotContains('no-issues-found', array_column($result['checks'], 'code'));
+    }
+
+    #[Test]
+    public function aBodyTheWrappingLeftAloneReportsNoReflow(): void
+    {
+        $result = CommitMessage::create([
+            'changeType' => 'TASK',
+            'summary' => 'Keep structure',
+            'issue' => '1',
+            'releases' => ['main'],
+            'body' => "Executed commands:\n\n    ./Build/Scripts/runTests.sh -s cgl -n",
+        ]);
+
+        self::assertSame(['no-issues-found'], array_column($result['checks'], 'code'));
+        self::assertStringContainsString("\n    ./Build/Scripts/runTests.sh -s cgl -n", $result['message']);
+    }
+
+    /**
+     * Each block is its own run, so the caller reads which lines went where
+     * rather than one report covering the whole body.
+     */
+    #[Test]
+    public function eachJoinedRunIsReportedOnItsOwn(): void
+    {
+        $result = CommitMessage::create([
+            'changeType' => 'TASK',
+            'summary' => 'Do a thing',
+            'issue' => '1',
+            'releases' => ['main'],
+            'body' => "First paragraph,\nbroken by hand.\n\nSecond paragraph,\nbroken as well.",
+        ]);
+
+        $reflowed = $this->checksWithCode($result['checks'], 'body-lines-reflowed');
+        self::assertCount(2, $reflowed);
+        self::assertStringContainsString('Lines 1 to 2', $reflowed[0]['message']);
+        self::assertStringContainsString('Lines 4 to 5', $reflowed[1]['message']);
+    }
+
+    /**
+     * `Build/git-hooks/commit-msg`, `checkForLineLength()`, is
+     * `grep -q -E '^[^#].{72}'`: under the core workflow a line the guide left
+     * over the width is a commit the hook refuses — D-GUI-003.
+     */
+    #[Test]
+    public function aLineOverTheWidthIsAnErrorForTheCoreAndAWarningOutsideIt(): void
+    {
+        $body = "Executed commands:\n"
+            . '    CI=true ./Build/Scripts/runTests.sh -s functional -- '
+            . 'typo3/sysext/fluid/Tests/Functional/ViewHelpers/ImageViewHelperTest.php';
+
+        $core = CommitMessage::create([
+            'changeType' => 'BUGFIX',
+            'summary' => 'Fix it',
+            'issue' => '1',
+            'releases' => ['main'],
+            'body' => $body,
+        ]);
+        $project = CommitMessage::create([
+            'changeType' => 'BUGFIX',
+            'summary' => 'Fix it',
+            'workflow' => CommitMessage::WORKFLOW_PROJECT,
+            'body' => $body,
+        ]);
+
+        self::assertSame(['error'], array_column(
+            $this->checksWithCode($core['checks'], 'body-line-too-long'),
+            'level'
+        ));
+        self::assertSame(['warning'], array_column(
+            $this->checksWithCode($project['checks'], 'body-line-too-long'),
+            'level'
+        ));
     }
 
     #[Test]
@@ -429,13 +523,13 @@ final class CommitMessageTest extends TestCase
 
     /**
      * @param array<int, array{level: string, code: string, message: string}> $checks
-     * @return array<int, string>
+     * @return array<int, array{level: string, code: string, message: string}>
      */
-    private function checkCodes(array $checks, string $code): array
+    private function checksWithCode(array $checks, string $code): array
     {
         return array_values(array_filter(
-            array_column($checks, 'code'),
-            static fn(string $found): bool => $found === $code
+            $checks,
+            static fn(array $check): bool => $check['code'] === $code
         ));
     }
 }

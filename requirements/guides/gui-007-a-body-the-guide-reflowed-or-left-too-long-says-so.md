@@ -1,6 +1,6 @@
 ---
 id: R-GUI-007
-status: open
+status: held
 restsOn: [D-GUI-003]
 ---
 
@@ -27,4 +27,8 @@ whether it is indented, fenced or a URL.
 
 ## Held by
 
-Nothing: the shape this demands does not exist yet.
+- `CommitMessageTest::aRunOfLinesTheWrappingJoinedIsNamed`
+- `CommitMessageTest::eachJoinedRunIsReportedOnItsOwn`
+- `CommitMessageTest::aBodyTheWrappingLeftAloneReportsNoReflow`
+- `CommitMessageTest::aLineOverTheWidthIsAnErrorForTheCoreAndAWarningOutsideIt`
+- `CommitMessageGuideTest::aCheckedMessageStillSaysWhatTheWrappingJoined`

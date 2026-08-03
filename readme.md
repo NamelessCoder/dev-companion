@@ -265,11 +265,12 @@ name already says what shape the answer has.
 - `typo3_commit_message_guide`: drafts and checks TYPO3 commit messages — from
   parts, or by passing an existing `message` to check and correct one in a
   piece. The emitted draft is ready to commit: the body is wrapped at 72
-  characters, and fenced code, indented blocks, lists, and long URLs keep their
-  shape. It defaults to the core contribution rules, Forge issue and `Releases:`
-  trailer included; `workflow="project"` keeps the subject and body conventions
-  and drops the trailers, for the repositories that use the one without having
-  the other.
+  characters, and the checks name every run of lines the wrapping joined and
+  every line it could not bring under the width — under the core rules the
+  second one is an error, because the commit hook refuses it. It defaults to the
+  core contribution rules, Forge issue and `Releases:` trailer included;
+  `workflow="project"` keeps the subject and body conventions and drops the
+  trailers, for the repositories that use the one without having the other.
 - `typo3_feedback_record`: records what was missing, wrong, or unhelpful about
   an answer as a feedback under `feedback/` (standalone checkout only, see
   [Improvement feedback](#improvement-feedback)).

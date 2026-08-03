@@ -20,7 +20,7 @@ final class CommitMessageGuide extends ReadOnlyTool
 
     public static function description(): string
     {
-        return 'Draft and check a TYPO3 commit message. Either assemble one from parts (changeType plus summary) or pass an existing message to check and correct it. The returned draft is ready to commit: the body is wrapped at 72 characters, with fenced code, indented blocks, list structure, and long URLs left intact. Defaults to the core contribution rules; pass workflow="project" in a project or extension repository of your own, where the subject and body conventions apply but the Forge issue, the Releases: trailer and the changelog do not.';
+        return 'Draft and check a TYPO3 commit message. Either assemble one from parts (changeType plus summary) or pass an existing message to check and correct it. The returned draft is ready to commit: the body is wrapped at 72 characters, and the checks name every run of lines the wrapping joined and every line it could not bring under the width. Defaults to the core contribution rules; pass workflow="project" in a project or extension repository of your own, where the subject and body conventions apply but the Forge issue, the Releases: trailer and the changelog do not.';
     }
 
     public static function inputSchema(): array
@@ -35,7 +35,7 @@ final class CommitMessageGuide extends ReadOnlyTool
                 'issue' => ['type' => 'string', 'description' => 'Forge issue number, with or without leading #.'],
                 'relatedIssues' => ['type' => 'array', 'items' => ['type' => 'string'], 'default' => [], 'description' => 'Optional related Forge issue numbers.'],
                 'releases' => ['type' => 'array', 'items' => ['type' => 'string'], 'description' => 'Target releases, for example main or 13.4. Left out, the draft carries a RELEASE_TARGET placeholder and the checks ask for it — the branches a change is released on are not guessed.'],
-                'body' => ['type' => 'string', 'description' => 'Optional commit body. It is wrapped at 72 characters in the draft.'],
+                'body' => ['type' => 'string', 'description' => 'Optional commit body. It is wrapped at 72 characters in the draft: indent a block to keep the line breaks you wrote, and keep those lines under the width yourself.'],
                 'isBreaking' => ['type' => 'boolean', 'default' => false, 'description' => 'Whether this is a breaking change requiring [!!!].'],
                 'isDeprecation' => ['type' => 'boolean', 'default' => false, 'description' => 'Whether this is a deprecation.'],
             ],
@@ -96,9 +96,11 @@ final class CommitMessageGuide extends ReadOnlyTool
         $checks = $result['checks'];
         if ($parseChecks !== []) {
             // "Nothing to complain about" only holds when nothing complained.
+            // Dropped by code rather than by level, because what the wrapping
+            // did to the body is reported at info too and is not a complaint.
             $checks = array_values(array_filter(
                 $checks,
-                static fn(array $check): bool => $check['level'] !== 'info'
+                static fn(array $check): bool => $check['code'] !== 'no-issues-found'
             ));
         }
 

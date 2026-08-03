@@ -2,11 +2,12 @@
 
 Draft and check a TYPO3 commit message. Either assemble one from parts
 (changeType plus summary) or pass an existing message to check and correct it.
-The returned draft is ready to commit: the body is wrapped at 72 characters,
-with fenced code, indented blocks, list structure, and long URLs left intact.
-Defaults to the core contribution rules; pass workflow="project" in a project or
-extension repository of your own, where the subject and body conventions apply
-but the Forge issue, the Releases: trailer and the changelog do not.
+The returned draft is ready to commit: the body is wrapped at 72 characters, and
+the checks name every run of lines the wrapping joined and every line it could
+not bring under the width. Defaults to the core contribution rules; pass
+workflow="project" in a project or extension repository of your own, where the
+subject and body conventions apply but the Forge issue, the Releases: trailer
+and the changelog do not.
 
 `readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: false`
 
@@ -36,7 +37,9 @@ relatedIssues: [string]  # optional
 # RELEASE_TARGET placeholder and the checks ask for it — the branches a change
 # is released on are not guessed.
 releases: [string]  # optional
-# Optional commit body. It is wrapped at 72 characters in the draft.
+# Optional commit body. It is wrapped at 72 characters in the draft: indent a
+# block to keep the line breaks you wrote, and keep those lines under the width
+# yourself.
 body: string  # optional
 # Whether this is a breaking change requiring [!!!].
 isBreaking: boolean  # optional

@@ -79,3 +79,16 @@ says nothing either way.
 - Block recognition turns ordinary prose into text that is never rewrapped, and
   a body reaches Gerrit ragged at column 40. Then keeping the hard breaks is the
   wrong half of the trade and only the report should stay.
+
+## Since then
+
+The `...:` lead-in heuristic was not built, and the report is the whole of the
+resolution. `wrapBody()` hands back the runs of caller-written lines it joined,
+`body-lines-reflowed` names each of them, and the check says that indenting is
+what keeps the breaks — so a caller who wanted the block has it in one edit,
+without this class guessing which lines a colon gathers. That guess is the
+second **Wrong if** above, and nothing was found that would make it safe: the
+same lead-in stands over a command block and over a sentence somebody broke at
+column 40, and only the caller can tell them apart. Indentation is a mark the
+caller wrote on purpose, which is why it stays the one thing block recognition
+reads.

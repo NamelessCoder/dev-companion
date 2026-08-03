@@ -134,7 +134,8 @@ final class CommitMessage
         }
         $prefix = $drafts . ($isBreaking ? '[!!!]' : '') . '[' . ($changeType === '' ? 'KEYWORD' : $changeType) . ']';
         $subject = $prefix . ' ' . $summary;
-        $body = self::wrapBody(isset($input['body']) ? (string) $input['body'] : '');
+        $wrapped = self::wrapBody(isset($input['body']) ? (string) $input['body'] : '');
+        $body = $wrapped['body'];
 
         $parts = [$subject];
         if ($body !== '') {
@@ -178,6 +179,7 @@ final class CommitMessage
                 $subject,
                 $summary,
                 $body,
+                $wrapped['joined'],
                 $issues,
                 $isBreaking,
                 $isDeprecation,
@@ -399,6 +401,7 @@ final class CommitMessage
     }
 
     /**
+     * @param array<int, array{first: int, last: int}> $joined
      * @param array<int, string> $issues
      * @param array<int, string> $releases
      * @return array<int, array{level: string, code: string, message: string}>
@@ -408,6 +411,7 @@ final class CommitMessage
         string $subject,
         string $summary,
         string $body,
+        array $joined,
         array $issues,
         bool $isBreaking,
         bool $isDeprecation,
@@ -452,16 +456,39 @@ final class CommitMessage
             $checks[] = ['level' => 'warning', 'code' => 'summary-extension-prefix', 'message' => 'Avoid EXT:... in the summary when the changed files already show the system extension context.'];
         }
 
+        // Which half of the wrapping conflict this draft took, both ways round:
+        // what was joined here, what was left over the width below — R-GUI-007.
+        foreach ($joined as $run) {
+            $checks[] = [
+                'level' => 'info',
+                'code' => 'body-lines-reflowed',
+                'message' => sprintf(
+                    'Lines %d to %d of the body you passed were joined into one paragraph and rewrapped at '
+                    . '%d characters. Indent them to keep the line breaks you wrote.',
+                    $run['first'],
+                    $run['last'],
+                    self::BODY_WIDTH,
+                ),
+            ];
+        }
+
+        // The level follows the tooling that enforces it: the core's
+        // `Build/git-hooks/commit-msg` refuses the commit, and outside it no
+        // hook runs — D-GUI-003.
         foreach (self::overlongBodyLines($body) as $line) {
             $checks[] = [
-                'level' => 'warning',
+                'level' => $isCore ? 'error' : 'warning',
                 'code' => 'body-line-too-long',
                 'message' => sprintf(
                     'Body line %d is %d characters long and could not be wrapped at %d characters '
-                    . '(a URL, a code line, or another unbreakable token). Shorten it if it is prose.',
+                    . '(a URL, a code line, or another unbreakable token). %s',
                     $line['number'],
                     $line['length'],
                     self::BODY_WIDTH,
+                    $isCore
+                        ? 'Shorten or break it yourself: the commit-msg hook refuses every line over the width, '
+                            . 'indented, fenced and URL alike.'
+                        : 'Shorten it if it is prose.',
                 ),
             ];
         }
@@ -507,49 +534,52 @@ final class CommitMessage
     }
 
     /**
-     * Wraps the body at 72 characters, the width the core rules ask for.
+     * Wraps the body at 72 characters, the width the core rules ask for, and
+     * says which runs of the caller's lines it joined to do it.
      *
      * Only prose is reflowed. Fenced code, indented blocks, and list items keep
      * their structure, and a word longer than the width — a URL, a class name,
      * a command — is never broken: it goes on a line of its own and is reported
      * by the checks instead.
+     *
+     * A block is recognised by its indentation alone, and what lines a `...:`
+     * lead-in gathers is deliberately not guessed — D-GUI-003.
+     *
+     * @return array{body: string, joined: array<int, array{first: int, last: int}>}
      */
-    private static function wrapBody(string $body): string
+    private static function wrapBody(string $body): array
     {
         $lines = preg_split('/\R/', trim($body)) ?: [];
 
         $output = [];
+        $joined = [];
         $paragraph = [];
         $inFence = false;
 
-        foreach ($lines as $line) {
+        foreach ($lines as $index => $line) {
             $line = rtrim($line);
 
             if (str_starts_with(ltrim($line), '```')) {
-                $output = self::flushParagraph($output, $paragraph);
-                $paragraph = [];
+                self::flushParagraph($output, $paragraph, $joined);
                 $inFence = !$inFence;
                 $output[] = $line;
                 continue;
             }
 
             if ($inFence || preg_match('/^\s/', $line) === 1) {
-                $output = self::flushParagraph($output, $paragraph);
-                $paragraph = [];
+                self::flushParagraph($output, $paragraph, $joined);
                 $output[] = $line;
                 continue;
             }
 
             if (trim($line) === '') {
-                $output = self::flushParagraph($output, $paragraph);
-                $paragraph = [];
+                self::flushParagraph($output, $paragraph, $joined);
                 $output[] = '';
                 continue;
             }
 
             if (preg_match('/^([-*+]\s+|\d+[.)]\s+)(.*)$/', $line, $matches) === 1) {
-                $output = self::flushParagraph($output, $paragraph);
-                $paragraph = [];
+                self::flushParagraph($output, $paragraph, $joined);
                 $output[] = self::wrapParagraph(
                     $matches[2],
                     $matches[1],
@@ -558,26 +588,37 @@ final class CommitMessage
                 continue;
             }
 
-            $paragraph[] = $line;
+            $paragraph[] = ['number' => $index + 1, 'text' => $line];
         }
 
-        return rtrim(implode("\n", self::flushParagraph($output, $paragraph)));
+        self::flushParagraph($output, $paragraph, $joined);
+
+        return ['body' => rtrim(implode("\n", $output)), 'joined' => $joined];
     }
 
     /**
-     * Wraps the collected prose lines as one paragraph and appends them.
+     * Wraps the collected prose lines as one paragraph, appends them, and notes
+     * the run where more than one line went into it.
      *
      * @param array<int, string> $output
-     * @param array<int, string> $paragraph
-     * @return array<int, string>
+     * @param array<int, array{number: int, text: string}> $paragraph
+     * @param array<int, array{first: int, last: int}> $joined
      */
-    private static function flushParagraph(array $output, array $paragraph): array
+    private static function flushParagraph(array &$output, array &$paragraph, array &$joined): void
     {
-        if ($paragraph !== []) {
-            $output[] = self::wrapParagraph(implode(' ', $paragraph), '', '');
+        if ($paragraph === []) {
+            return;
         }
 
-        return $output;
+        if (count($paragraph) > 1) {
+            $joined[] = [
+                'first' => $paragraph[0]['number'],
+                'last' => $paragraph[array_key_last($paragraph)]['number'],
+            ];
+        }
+
+        $output[] = self::wrapParagraph(implode(' ', array_column($paragraph, 'text')), '', '');
+        $paragraph = [];
     }
 
     /** Greedy word wrap that never splits a word. */

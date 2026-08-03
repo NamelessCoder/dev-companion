@@ -192,6 +192,23 @@ final class HintsTest extends TestCase
         self::assertStringContainsString('belongs to the publisher rather than to the ViewHelper', $onFifteen);
         self::assertStringContainsString('useCacheBusting', $onFifteen);
 
+        // The rule the same session was handed in the tracker — "you must not
+        // use f:image for anything but FAL resources" — and which the corpus
+        // used to repeat by flattening the two image ViewHelpers into one
+        // documented rule. Only f:uri.image carries it, on every checkout, and
+        // f:image's own example is an EXT: path the core's suite covers.
+        // `D-KNW-043`.
+        self::assertStringContainsString('discouraged, not forbidden', $onFifteen);
+        self::assertStringContainsString('f:uri.image\'s class documentation', $onFifteen);
+        self::assertStringContainsString('SvgImageViewHelperTest', $onFifteen);
+        self::assertStringContainsString('fallback storage', $onFifteen);
+        self::assertStringNotContainsString('their own class documentation sends', $onFifteen);
+
+        // Asked in the words of the rule rather than in the words of the API,
+        // it used to reach nothing at all.
+        $asQuoted = Hints::find([], 'must not use f:image for anything but FAL resources', 6);
+        self::assertSame('fluid-resource-uris', $asQuoted['matchedHints'][0]['id']);
+
         // Read on both sides in .checkouts/: the SystemResource namespace, the
         // f:resource ViewHelper and File implementing PublicResourceInterface
         // are on 14.3 and on main alike, and on 13.4 there is none of it. The

@@ -1,7 +1,8 @@
 ---
 id: D-KNW-025
 date: 2026-08-02
-status: open
+status: revoked
+revokedBy: D-KNW-037
 ---
 
 # D-KNW-025 — What a backend preview owes the editor is a gap this server owns
@@ -86,3 +87,28 @@ of one element apart by.
 - 13.4 needs a different answer. `theme_camino` is a 14 package and no worked
   preview ships on 13.4, so a statement read off it may arrive carrying a
   `since` that a design rule does not deserve.
+
+## Confirmed on 2026-08-03
+
+All three **Wrong if** were gone back to and none of them held. The directory
+holds ten templates rather than the nine counted above, and the ten agree: every
+one draws the record's own payload, none renders a label naming the element, and
+none renders a field the header already draws. What lands is the field kinds
+rather than advice, and it carries no `since` — the reading is
+[`D-KNW-037`](knw-037-a-content-element-preview-draws-the-elements-own-payload-and-the-corpus-names-the-fields.md),
+and what must keep holding is `R-KNW-050`.
+
+What was not fixed is the routing. The feedback's own wording, "backend content
+preview should show an abstract view of the assigned related data", still matches
+nothing at all — no candidate scores, this hint included, because the query names
+no subject the corpus spells. Two `appliesTo` phrasings tried against that wording
+changed nothing and were taken back out. It is `D-ANS-022`'s ground rather than
+this entry's, and the first evidence bullet above already recorded it.
+
+## Revoked on 2026-08-03
+
+By the work this entry queued. Its statement says the rule is "missing from it",
+and it is on `content-elements` now, so `confirmed` over that sentence would read
+as a claim about a gap that is closed. What holds from here is `D-KNW-037`, whose
+**Wrong if** is a different list: what can go wrong now is a statement in the
+corpus going false as the core's own previews move, not a rule nobody had written.

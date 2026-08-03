@@ -2355,6 +2355,47 @@ final class HintsTest extends TestCase
         self::assertSame('content-element-preview', array_column($reached['matchedHints'], 'id')[0] ?? '');
     }
 
+    /**
+     * Registration, what the template is handed and what the header already
+     * draws are all stated, and a preview reading "Testimonials element"
+     * satisfies every one of them. What the statement names is read off the ten
+     * previews in theme_camino's ContentPreviews/ on 14.3: all ten draw the
+     * record's own payload, none renders a label naming the element, and the
+     * only header any of them draws is a child's, in TextmediaTeaserGrid. The
+     * field kinds are asserted one at a time, because "show a summary" changes
+     * no line of the template somebody writes. It holds on every covered major:
+     * the evidence is a 14 package, and what a preview owes the editor is not a
+     * property of a major — how a field is reached carries the binding instead.
+     */
+    #[Test]
+    public function aPreviewAnswerNamesTheFieldsThePreviewDrawsFrom(): void
+    {
+        foreach (Versions::majors() as $major) {
+            $texts = implode("\n", array_column(
+                Hints::byId('content-element-preview', $major)['hints'],
+                'text',
+            ));
+
+            self::assertStringContainsString("the element's own payload", $texts);
+            self::assertStringContainsString('without opening either', $texts);
+
+            self::assertStringContainsString('the text columns stripped of their markup', $texts);
+            self::assertStringContainsString('every file relation as a thumbnail', $texts);
+            self::assertStringContainsString('a link field as its label', $texts);
+            self::assertStringContainsString('a select as the translated label', $texts);
+            self::assertStringContainsString('each child of an inline relation', $texts);
+
+            self::assertStringContainsString('label naming the element', $texts);
+        }
+
+        $reached = Hints::find(
+            [],
+            'what a backend preview of a content element should show the editor',
+            6,
+        );
+        self::assertSame('content-element-preview', array_column($reached['matchedHints'], 'id')[0] ?? '');
+    }
+
     #[Test]
     public function withoutAnySignalTheDomainIsPhp(): void
     {

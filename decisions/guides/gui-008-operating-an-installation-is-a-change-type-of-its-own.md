@@ -117,3 +117,30 @@ message — for work that writes no file.
   documentation restated, with nothing about TYPO3 in it. Then what was missing
   was the environment's lifecycle in `typo3_project_scope`, which
   `feedback/2026-08-03-154501` reports, and not a shape in this brief.
+
+## Covered by
+
+- `HintsTest::workThatOperatesAnInstallationIsAnsweredWithABootBrief`
+
+## Since then
+
+The value, the intent and the fork landed together. The intent is
+`installation-operations`, and `operations` is one of its needles rather than
+its id: the caller states what the work is, while the corpus keeps the three
+installation intents named after the installation. The narrowed needle was
+measured against what this entry names — `install` became `installing typo3`,
+and `feedback/2026-08-03-162826`'s own task still reaches `installation-setup`
+at strong confidence, because `install typo3` was already a strong needle of it.
+The reported call reaches `installation-operations` and nothing else.
+
+The terms entry is the half that could not be taken as decided, and it is empty.
+`CHANGE_TYPE_TERMS` reaches the domains the brief reports, and with them its
+checks and its next lookups; the hints are matched by `Hints::find()`, which
+detects the domains it selects by from the paths and the task text and never
+sees the change type. Measured on the reported call with `frontend build
+sitepackage`: the four hints came back identical, and the brief moved to
+`buildCss`, `lintScss` and `typo3_component_lookup`, which is what writes
+backend markup. So the hint half of `feedback/2026-08-03-154508` is open, and
+what it needs is a statement about the subject rather than a domain signal —
+which is what the cards behind `D-SKL-012` hold. That feedback is trimmed to it
+rather than archived.

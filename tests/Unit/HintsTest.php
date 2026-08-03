@@ -16,6 +16,7 @@ use Typo3CmsMcp\Knowledge\TaskIntents;
 use Typo3CmsMcp\Knowledge\TestSuiteHints;
 use Typo3CmsMcp\Knowledge\Versions;
 use Typo3CmsMcp\Paths;
+use Typo3CmsMcp\Result\ToolResult;
 use Typo3CmsMcp\Tool\HintLookup;
 use Typo3CmsMcp\Tool\Registry;
 use Typo3CmsMcp\Tool\TaskGuide;
@@ -2980,6 +2981,89 @@ final class HintsTest extends TestCase
 
         self::assertNotContains('audit', array_column($authoring->data['intents'], 'id'));
         self::assertContains('Keep the patch focused on the stated task.', $authoring->data['checklist']);
+    }
+
+    /**
+     * Work that operates an installation is answered as a boot, not as a patch
+     * and not as a review.
+     *
+     * D-GUI-008, and the first call is `feedback/2026-08-03-154508`'s own:
+     * booting a Composer project from a fresh clone had no change type of its
+     * own, so `unknown` handed it the patch skeleton, and the one intent it
+     * reached was `installation-setup` — matched on `install dependencies`,
+     * which is Composer's install and not TYPO3's.
+     */
+    #[Test]
+    public function workThatOperatesAnInstallationIsAnsweredWithABootBrief(): void
+    {
+        self::assertContains('operations', TaskGuide::inputSchema()['properties']['changeType']['enum']);
+
+        $confidences = static fn(ToolResult $brief): array => array_column(
+            $brief->data['intents'],
+            'confidence',
+            'id',
+        );
+        $described = Registry::call('typo3_task_guide', [
+            'task' => 'Boot up a TYPO3 project locally for the first time from a fresh clone: install '
+                . 'dependencies, start the local environment, import the demo database and fileadmin, build '
+                . 'frontend assets, create a backend user, verify the site responds',
+        ]);
+        $stated = Registry::call('typo3_task_guide', [
+            'task' => 'Bring the demo installation this repository declares up on this machine',
+            'changeType' => 'operations',
+        ]);
+
+        foreach ([$described, $stated] as $brief) {
+            self::assertSame('strong', $confidences($brief)['installation-operations'] ?? null);
+
+            $checklist = implode("\n", $brief->data['checklist']);
+            self::assertStringNotContainsString('Keep the patch focused', $checklist);
+            self::assertStringNotContainsString('test coverage', $checklist);
+            self::assertStringNotContainsString('typo3_commit_message_guide', $checklist);
+            self::assertNotContains(
+                'typo3_commit_message_guide',
+                array_column($brief->data['nextTools'], 'tool'),
+                'the follow-up calls name the step the checklist dropped',
+            );
+
+            // Nor the review's, which is the second half of the fork: a boot
+            // reports what it produced, and a surface it did not reach is not a
+            // finding it is withholding.
+            self::assertStringNotContainsString('Report what the review did not reach', $checklist);
+            self::assertStringContainsString('the URL the installation answers on', $checklist);
+
+            // What it owes instead: the environment this repository declares,
+            // and the import that seeds it.
+            self::assertStringContainsString('.ddev/config.yaml', $checklist);
+            self::assertStringContainsString('typo3 extension:setup', $checklist);
+        }
+
+        // The value is half of it; the needle is the other half. The reported
+        // call no longer reaches the intent whose five items are all properties
+        // of the setup command.
+        self::assertArrayNotHasKey('installation-setup', $confidences($described));
+
+        // And a task that really does create an installation still does —
+        // `feedback/2026-08-03-162826`, which D-GUI-008 names as the measure.
+        $installing = Registry::call('typo3_task_guide', [
+            'task' => 'install TYPO3 14.3.5 unattended from a shell script so that "ddev start" sets the '
+                . 'instance up on its own',
+        ]);
+
+        self::assertSame('strong', $confidences($installing)['installation-setup'] ?? null);
+        self::assertSame('weak', $confidences($installing)['installation-operations'] ?? null);
+        self::assertContains('Keep the patch focused on the stated task.', $installing->data['checklist']);
+
+        // A stated change type that does change something drops both intents
+        // that write no file, so the patch steps stay for work that boots
+        // something and fixes it — D-GUI-008's own **Wrong if**.
+        $patch = Registry::call('typo3_task_guide', [
+            'task' => 'fix the deploy hook so the import runs when booting the installation',
+            'changeType' => 'bugfix',
+        ]);
+
+        self::assertArrayNotHasKey('installation-operations', $confidences($patch));
+        self::assertContains('Keep the patch focused on the stated task.', $patch->data['checklist']);
     }
 
     /**

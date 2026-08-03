@@ -75,6 +75,26 @@ final class TaskGuide extends ReadOnlyTool
      */
     private const AUDIT = 'audit';
 
+    /**
+     * The other change type that writes no file, and the intent it reaches.
+     *
+     * The word is a needle of that intent for the same reason as above, and it
+     * is not its id: the intent stands beside `installation-setup` and
+     * `installation-upgrade` as the third thing that is done to an installation,
+     * rather than being what a caller states about the work (`D-GUI-008`).
+     */
+    private const OPERATIONS = 'operations';
+    private const OPERATIONS_INTENT = 'installation-operations';
+
+    /**
+     * The intents whose brief is not a patch's. A stated change type that does
+     * change something drops both, because the caller's own classification is
+     * what the words of the task do not overrule.
+     *
+     * @var array<int, string>
+     */
+    private const CHANGES_NOTHING = [self::AUDIT, self::OPERATIONS_INTENT];
+
     /** @var array<string, array<int, string>> */
     private const CHANGE_TYPE_CHECKLIST = [
         'bugfix' => [
@@ -97,6 +117,10 @@ final class TaskGuide extends ReadOnlyTool
         // intent's, for the same reason, and what it does not owe is the
         // checklist this one is not assembled into at all — see answer().
         self::AUDIT => [],
+        // The other one. What operating an installation owes is the intent's,
+        // which this value reaches through the matcher, and what it does not owe
+        // is the skeleton a review is composed into — see answer().
+        self::OPERATIONS => [],
         'unknown' => [],
     ];
 
@@ -109,6 +133,14 @@ final class TaskGuide extends ReadOnlyTool
         'bugfix' => '',
         'cleanup' => '',
         self::AUDIT => '',
+        // Empty, and measured rather than assumed: the terms here reach
+        // Domains::detect() for this brief alone, while the hints are matched by
+        // Hints::find() from the paths and the task text. `frontend build
+        // sitepackage` — the vocabulary an asset build is asked for in — left
+        // the four hints of `feedback/2026-08-03-154508` identical and moved the
+        // brief to buildCss, lintScss and the component lookup, which is what
+        // writes backend markup rather than what boots an installation.
+        self::OPERATIONS => '',
         'unknown' => '',
     ];
 
@@ -146,7 +178,7 @@ final class TaskGuide extends ReadOnlyTool
                 'area' => ['type' => 'string', 'description' => 'Affected subsystem or extension, if known.'],
                 'paths' => ['type' => 'array', 'items' => ['type' => 'string'], 'default' => [], 'description' => 'The files the task is about, as they are in the repository they belong to. Pass them where the work touches more than one place: each is placed on its own, so a core path and an extension path in one call are not answered with one verdict. The area counts as one of them.'],
                 'targetVersion' => ['type' => 'string', 'description' => 'The TYPO3 version this task is for, for example "13.4" or "14". Conventions that do not hold there are left out, including those the repository needs for another major it declares. Defaults to every major this repository declares typo3/cms-core for, or to the installation this server was started in where there is no declaration.'],
-                'changeType' => ['type' => 'string', 'enum' => ['bugfix', 'feature', 'cleanup', 'test', 'documentation', 'deprecation', self::AUDIT, 'unknown'], 'default' => 'unknown', 'description' => 'What kind of change the task is. audit is the one that changes nothing: it asks for the brief a review needs instead of the steps a patch owes, and a task that describes a review gets it without stating the type.'],
+                'changeType' => ['type' => 'string', 'enum' => ['bugfix', 'feature', 'cleanup', 'test', 'documentation', 'deprecation', self::AUDIT, self::OPERATIONS, 'unknown'], 'default' => 'unknown', 'description' => 'What kind of change the task is. Two of them write no file and get a brief of their own instead of the steps a patch owes: audit asks for what a review needs, and operations for what running an installation needs — booting the environment a repository declares, importing its data, building its assets. A task that describes either gets that shape without stating the type.'],
             ],
             'required' => ['task'],
         ];
@@ -238,15 +270,20 @@ final class TaskGuide extends ReadOnlyTool
         // of the task do not overrule it: "review the patch that deprecates X"
         // is authoring work described from the reviewer's side, and a brief
         // that answered it as a review would leave out the steps that patch
-        // owes. Where no type was stated, the words are all there is.
-        if ($changeType !== self::AUDIT && $changeType !== 'unknown') {
+        // owes. The same holds for the boot half of "fix the post-start hook so
+        // the import runs". Where no type was stated, the words are all there
+        // is.
+        if (!in_array($changeType, [self::AUDIT, self::OPERATIONS, 'unknown'], true)) {
             $intents = array_values(array_filter(
                 $intents,
-                static fn(array $intent): bool => $intent['id'] !== self::AUDIT,
+                static fn(array $intent): bool => !in_array($intent['id'], self::CHANGES_NOTHING, true),
             ));
         }
         $confirmed = TaskIntents::confirmed($intents);
-        $changesNothing = in_array(self::AUDIT, array_column($confirmed, 'id'), true);
+        $confirmedIds = array_column($confirmed, 'id');
+        $reviews = in_array(self::AUDIT, $confirmedIds, true);
+        $operates = in_array(self::OPERATIONS_INTENT, $confirmedIds, true);
+        $changesNothing = $reviews || $operates;
         $conditional = array_values(array_filter(
             $intents,
             static fn(array $intent): bool => !in_array($intent, $confirmed, true)
@@ -446,32 +483,57 @@ final class TaskGuide extends ReadOnlyTool
             }
         }
 
-        // Three of the five below are steps a review does not take, and handing
-        // them to one was the whole of R-GUI-006. What replaces them is the
-        // reading a finding rests on rather than a second copy of an audit
-        // workflow: what the review is about is the audit intent's checklist.
+        // Three of the five in the last arm are steps a review does not take,
+        // and handing them to one was the whole of R-GUI-006. What replaces
+        // them is the reading a finding rests on rather than a second copy of an
+        // audit workflow: what the review is about is the audit intent's
+        // checklist. The two before it are each other's counterpart — a review
+        // owes the gaps it left, a boot owes what it produced — and neither owes
+        // the other's, which is why the two shapes that write no file are two
+        // arms rather than one (D-GUI-008).
         //
-        // The premise opens both arms. R-GUI-008 is about every brief, and the
+        // Each arm carries only what its intent does not: this is the skeleton
+        // the intent's own items are appended to, and the arm is chosen by that
+        // intent having matched.
+        //
+        // The premise opens all three. R-GUI-008 is about every brief, and the
         // review is the case it was written from: a session that never asks
         // what the change does to the editor and the visitor reads a report as
         // an API question and answers the wrong one.
-        $checklist = $changesNothing ? [
-            self::PRODUCT_PREMISE,
-            'Establish what this repository is before reading a file: the TYPO3 and PHP versions it supports, '
-                . 'and the commands it declares. Whether a finding holds is a property of them.',
-            'Inspect nearby code, tests, and established subsystem conventions.',
-            'Report what the review did not reach — a surface the request left out, a subsystem this '
-                . 'repository does not ship, a claim no read code settles. Silence there reads as coverage.',
-        ] : [
-            self::PRODUCT_PREMISE,
-            $outsideCore
-                ? 'Confirm the target branch and the issue context of this repository.'
-                : 'Confirm the target TYPO3 core branch and issue context.',
-            'Inspect nearby code, tests, and established subsystem conventions.',
-            'Keep the patch focused on the stated task.',
-            'Add or update the narrowest useful test coverage.',
-            'Run targeted tests first; broaden to CGL, functional, or npm checks when relevant.',
-        ];
+        if ($reviews) {
+            $checklist = [
+                self::PRODUCT_PREMISE,
+                'Establish what this repository is before reading a file: the TYPO3 and PHP versions it supports, '
+                    . 'and the commands it declares. Whether a finding holds is a property of them.',
+                'Inspect nearby code, tests, and established subsystem conventions.',
+                'Report what the review did not reach — a surface the request left out, a subsystem this '
+                    . 'repository does not ship, a claim no read code settles. Silence there reads as coverage.',
+            ];
+        } elseif ($operates) {
+            $checklist = [
+                self::PRODUCT_PREMISE,
+                'Establish what this repository declares before running anything: the TYPO3 and PHP it runs, the '
+                    . 'environment it ships, and the commands it declares to start, import and build. What boots '
+                    . 'this installation is those files rather than a procedure that holds for every project.',
+                'Read the state you are starting from: which steps have run already, and what a failed attempt '
+                    . 'left behind. A command that is safe against an empty installation is not safe against a '
+                    . 'half-built one.',
+                'Report what nobody else can see afterwards: the URL the installation answers on, the backend '
+                    . 'user that now exists with the values you chose for it, and every step you had to correct '
+                    . 'by hand. What is not written down is derived again by the next session.',
+            ];
+        } else {
+            $checklist = [
+                self::PRODUCT_PREMISE,
+                $outsideCore
+                    ? 'Confirm the target branch and the issue context of this repository.'
+                    : 'Confirm the target TYPO3 core branch and issue context.',
+                'Inspect nearby code, tests, and established subsystem conventions.',
+                'Keep the patch focused on the stated task.',
+                'Add or update the narrowest useful test coverage.',
+                'Run targeted tests first; broaden to CGL, functional, or npm checks when relevant.',
+            ];
+        }
         foreach (self::CHANGE_TYPE_CHECKLIST[$changeType] ?? [] as $entry) {
             $checklist[] = $entry;
         }

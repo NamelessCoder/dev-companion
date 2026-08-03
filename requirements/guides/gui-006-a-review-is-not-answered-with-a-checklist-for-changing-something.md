@@ -1,7 +1,7 @@
 ---
 id: R-GUI-006
 status: held
-restsOn: [D-GUI-006]
+restsOn: [D-GUI-006, D-GUI-008]
 ---
 
 # R-GUI-006 — A review is not answered with a checklist for changing something
@@ -18,6 +18,11 @@ workflow; they are steps a review may not take. The `audit` change type and the
 intent of the same name are the shape it gets instead, and a task that describes
 a review reaches it without stating the type.
 
+A review is not the only work that writes no file. `D-GUI-008` added
+`operations` beside it for bringing an installation up, and that one owes
+neither the patch steps nor the review's "report what the review did not reach",
+so the skeleton forks three ways rather than two.
+
 ## From
 
 A conformance review of a site package in `site-new` that ran the call and
@@ -31,3 +36,4 @@ the commit message with typo3_commit_message_guide".
 ## Held by
 
 - `HintsTest::aTaskThatChangesNothingIsNotAnsweredWithAPatchChecklist`
+- `HintsTest::workThatOperatesAnInstallationIsAnsweredWithABootBrief`

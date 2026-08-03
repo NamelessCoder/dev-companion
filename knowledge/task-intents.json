@@ -235,7 +235,7 @@
     ],
     "matchWeak": [
       "setup",
-      "install"
+      "installing typo3"
     ],
     "condition": "only if the task is setting an installation up rather than working on the code in one",
     "rulesQuery": "",
@@ -282,6 +282,43 @@
       "typo3_project_scope, for what this installation is and which commands this repository declares",
       "typo3_changelog_lookup with type=breaking or deprecation and the target version",
       "typo3_hint_lookup with id=installation-upgrade, for the order of operations and why it is that order"
+    ]
+  },
+  {
+    "id": "installation-operations",
+    "title": "Bringing an installation up and running it",
+    "match": [
+      "operations",
+      "boot a",
+      "boot the",
+      "boot up",
+      "booting",
+      "spin up",
+      "start the environment",
+      "start the local environment"
+    ],
+    "matchWeak": [
+      "ddev start",
+      "seed",
+      "development instance",
+      "local instance",
+      "fresh clone",
+      "import the database"
+    ],
+    "condition": "only if the task is bringing an installation up or running one rather than changing the code in it",
+    "rulesQuery": "",
+    "checklist": [
+      "In a DDEV project the lifecycle hooks in .ddev/config.yaml — post-start, post-import-db, pre-pull, post-pull — and the pull providers under .ddev/providers/ are the install and the import: they are what installs the dependencies, updates the schema and creates the backend user, so equivalent commands typed beside them boot something this repository does not describe. typo3_project_scope reports the environment and the composer scripts, and those hooks are read from the file itself.",
+      "Where no installation exists yet, the order is typo3 setup for config/system/settings.php, the admin user and the schema, then typo3 extension:setup for the extension setup and the content a required distribution package imports, then typo3 cache:flush. The setup command refuses a database that already holds tables, so a script that runs a second time needs its own guard on settings.php — --force rewrites the settings files and not the schema.",
+      "Seed a distribution by requiring its package and running typo3 extension:setup. Since v14 the setup command's --distribution and --create-site are inert in Composer mode as soon as a required package ships Initialisation/data.xml: every Composer-required package counts as an active distribution, so the command reports that the options have no effect and writes no site configuration at all.",
+      "Since v14 a site configuration that arrives with an import lands on base /<identifier>/, because Import::processSiteConfigurations() overwrites what the export carried — the importer cannot know the URL of the installation it is importing into. A seeded installation therefore answers 404 at its own root until that base is corrected in config/sites/<identifier>/config.yaml, and the cause is not in the distribution package.",
+      "Leave config/system/additional.php to DDEV where DDEV writes it. While the #ddev-generated marker line is in that file it is rewritten on every start, and it supplies the database connection, the container's ImageMagick paths, Mailpit and SYS/trustedHostsPattern — so hand-writing those is redundant, and switching settings management off costs the trusted hosts exception the router's host name raises. Where the installation does not use DDEV's database container, on SQLite or with omit_containers: [db], that generated mysqli connection overrides what typo3 setup wrote into settings.php: take the file over by removing the marker line and leaving its database section out.",
+      "Verify by requesting the site and the backend rather than by reading a green start. DDEV's fail_on_hook_fail defaults to false, so a post-start hook that installs the instance can fail while ddev start reports success — an install hook belongs behind fail_on_hook_fail: true."
+    ],
+    "checks": [],
+    "tools": [
+      "typo3_project_scope, for what this repository declares: the TYPO3 and PHP it runs, the environment it ships, and the commands in its composer.json",
+      "typo3_hint_lookup with id=project-configuration-files, for which file configures what in an installation, and with id=extension-asset-build for the build a repository declares"
     ]
   },
   {

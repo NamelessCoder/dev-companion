@@ -30,9 +30,15 @@ final class Documents
      * section titled "Design Tokens" is about design tokens, and one that
      * mentions them in passing is not.
      *
+     * The document title sits between the two, and it is what a caller naming
+     * the subject before the question is matched on — `D-ANS-037`. It says what
+     * every section under it is about, so it is worth more than a passing
+     * mention and less than the section's own heading, which is the only field
+     * that separates one section of a document from the next.
+     *
      * @var array<string, int>
      */
-    private const FIELD_WEIGHTS = ['heading' => 4, 'body' => 1];
+    private const FIELD_WEIGHTS = ['heading' => 4, 'title' => 2, 'body' => 1];
 
     /**
      * Section length that still counts for what its terms say.
@@ -154,7 +160,7 @@ final class Documents
             }
         }
 
-        $weights = TermSearch::weights($terms, array_map(self::searchable(...), $candidates));
+        $weights = TermSearch::weights($terms, array_map(self::distinguishing(...), $candidates));
         $askedFor = array_sum($weights);
 
         $matches = [];
@@ -270,7 +276,33 @@ final class Documents
      */
     private static function searchable(array $candidate): array
     {
-        return ['heading' => (string) $candidate['heading'], 'body' => (string) $candidate['body']];
+        return [
+            'heading' => (string) $candidate['heading'],
+            'title' => (string) $candidate['title'],
+            'body' => (string) $candidate['body'],
+        ];
+    }
+
+    /**
+     * The fields that say how much a term separates one section from the next.
+     *
+     * The title is not one of them, because it is the same string in every
+     * section of its document: counting it there makes a term look common in
+     * proportion to how many sections that document happens to have, which is a
+     * fact about its length rather than about what the term distinguishes. It
+     * is enough to sink a query — `commit message sitepackage` answered with
+     * the commit conventions until the title of the document carrying them was
+     * counted against its own words.
+     *
+     * @param array<string, mixed> $candidate
+     * @return array<string, string>
+     */
+    private static function distinguishing(array $candidate): array
+    {
+        $fields = self::searchable($candidate);
+        unset($fields['title']);
+
+        return $fields;
     }
 
     /** @return array{0: string, 1: bool} */

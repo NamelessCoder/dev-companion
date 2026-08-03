@@ -136,3 +136,61 @@ task sentence is not one.
 - The score turns out to be the wrong tie-break, because a heading weighs four
   and a long section can out-score a short one that answers. `## Summary Line`
   won on a heading match here, which is the easy case.
+
+## Covered by
+
+- `KnowledgeTest::aQueryThatNamesItsDocumentReachesTheSectionThatAnswersIt`
+- `KnowledgeTest::everyDocumentIsReachedByItsOwnTitle`
+- `KnowledgeTest::anUnrelatedQueryAnswersWithNothingRatherThanTheNearestProse`
+
+## Since then
+
+The third answer was built on 2026-08-03: `Documents::FIELD_WEIGHTS` gains
+`title => 2` and the matcher is handed the document title. `MIN_COVERAGE` is
+untouched, so the floor the first **Wrong if** is about never moved.
+
+The three were measured over 490 queries — the 424 multi-word `appliesTo`
+patterns that name no path, the 41 scenario prompts, the 20 section headings
+and the 5 document titles.
+
+- Yielding the gate to the score, admitting every section a query term reaches
+  and ranking by score, returns the nearest unrelated section to 87 queries
+  that reached nothing, 40 of the 41 prompts among them. It moves 28 first hits
+  besides.
+- Admitting the largest covering subset, with coverage measured against the
+  best cover any section reaches, returns the same 87. A relative floor admits
+  its own best by construction, so «how do I write a good sonnet» is answered
+  too.
+- The title in the searched fields moves one first hit of the 424 patterns —
+  `commit the build`, from `## Changelog Files` to `## Breaking Changes` of the
+  same document — none of the prompts, none of the headings, and takes nothing
+  away from a query that reached something.
+
+`commit message summary line length` now returns `## Summary Line` first at
+score 175 and coverage 0.778, and the two Gerrit sections last at 0.525. The
+weight is 2 because a title says what every section under it is about, which is
+worth more than a passing mention in a body and less than the section's own
+heading; 1, 2 and 3 are indistinguishable over the sweep, and 4 moves a second
+first hit.
+
+The title counts for the score and not for the term weighting, which is what
+`Documents::distinguishing()` is. One title is repeated in every section of its
+document, so weighing terms over it makes a word look common in proportion to
+how many sections that document has — counted there,
+`commit message sitepackage` lost the commit conventions it is answered with.
+
+The third **Wrong if** half held. No caller query in the sweep was in
+`## Summary Line`'s state, so nothing says the gate is crowded; the same gap
+sits on the corpus's own front doors instead, where four of the five documents
+were not reached by their own title and one reached nothing at all. All five
+reach their own document first now.
+
+What it costs is the order inside a document that a query names and no section
+of it answers: every section covers the same terms at the same score, and the
+ranking falls to the heading. `commit message sitepackage` outside the core is
+six sections of the commit conventions with nothing withheld — the core-only
+documents are outranked rather than dropped at the boundary, which is why
+`ScopeTest::aRuleAnswerKeepsWhatTransfersAndWithholdsWhatDoesNot` no longer
+asserts that something was withheld. The query in
+`whatARuleAnswerWithheldIsNamedRatherThanMissing` reaches both halves and holds
+it.

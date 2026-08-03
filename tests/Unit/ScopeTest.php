@@ -1143,7 +1143,12 @@ final class ScopeTest extends TestCase
             array_values(array_unique(array_column($result->data['matches'], 'documentId'))),
             'a section that holds anywhere was withheld, or one that does not was handed over',
         );
-        self::assertNotSame([], $result->data['withheldDocuments'], 'the core-only documents matched and went unmentioned');
+        // That a miss on the boundary is named is held by
+        // whatARuleAnswerWithheldIsNamedRatherThanMissing, on a query that
+        // still reaches both halves. This one no longer does: since D-ANS-037
+        // put the document title among the searched fields, a query naming the
+        // commit conventions is answered by that document's own sections
+        // before a core-only one is a candidate.
         foreach ($result->data['withheldDocuments'] as $document) {
             self::assertTrue(
                 Documents::isCoreOnly($document['id']),

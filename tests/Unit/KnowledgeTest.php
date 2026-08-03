@@ -203,9 +203,50 @@ final class KnowledgeTest extends TestCase
     }
 
     #[Test]
+    public function aQueryThatNamesItsDocumentReachesTheSectionThatAnswersIt(): void
+    {
+        // D-ANS-037. "commit message summary line length" returned two Gerrit
+        // workflow sections at coverage 0.525 and score 38, and the section
+        // carrying the 52-character rule sat at 0.429 — the two words naming the
+        // document were in no field the matcher read, so the section they
+        // belong to paid for them and the sections merely saying the subject's
+        // name did not.
+        $results = Documents::search('commit message summary line length');
+
+        self::assertSame(
+            ['typo3-commit-messages', 'Summary Line'],
+            [$results[0]['id'] ?? null, $results[0]['heading'] ?? null],
+        );
+    }
+
+    #[Test]
+    public function everyDocumentIsReachedByItsOwnTitle(): void
+    {
+        // The weakest thing that can be asked of this corpus, and only two of
+        // the five documents did it: "TYPO3 Core Script Help" returned nothing,
+        // and three titles were answered first by another document.
+        foreach (Documents::documents() as $document) {
+            $results = Documents::search($document['title']);
+
+            self::assertSame(
+                $document['id'],
+                $results[0]['id'] ?? null,
+                $document['title'] . ' does not reach ' . $document['id'],
+            );
+        }
+    }
+
+    #[Test]
     public function anUnrelatedQueryAnswersWithNothingRatherThanTheNearestProse(): void
     {
         self::assertSame([], Documents::search('quantum entanglement pineapple'));
+
+        // The floor is what stops a query the corpus cannot answer from being
+        // answered by whatever is nearest, and it stayed where it is when the
+        // title was weighted in — D-ANS-037. This is the query that measured it
+        // for the hint corpus in D-ANS-025: long enough that something always
+        // carries part of it.
+        self::assertSame([], Documents::search('how do I write a good sonnet'));
     }
 
     #[Test]

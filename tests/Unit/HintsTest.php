@@ -1264,6 +1264,57 @@ final class HintsTest extends TestCase
     }
 
     #[Test]
+    public function thePublicAssetAnswerSeparatesTheSupportedRouteFromTheInternalStaticBesideIt(): void
+    {
+        // The query an audit of a v14 extension arrived with. What came back
+        // named the factory and the publisher, and named
+        // getPublicResourceWebPath() as "what computes such a URL here" with no
+        // word of its deprecation, because that statement was banded up to 14.
+        // The method the audited code actually called was in neither sentence,
+        // so the session read PathUtility itself and stopped at the signature —
+        // one line above the @internal. `D-KNW-051`.
+        $result = Registry::call('typo3_hint_lookup', [
+            'task' => 'Backend JavaScript ES modules, import maps and public assets shipped by an '
+                . 'extension for the TYPO3 backend',
+            'paths' => [
+                'Configuration/JavaScriptModules.php',
+                'Resources/Public/JavaScript/',
+                'Resources/Public/Css/',
+            ],
+            'targetVersion' => '14.3',
+        ]);
+
+        self::assertStringContainsString('getSystemResourceUri', $result->text);
+        self::assertStringContainsString('before this major reaches LTS', $result->text);
+        self::assertStringContainsString('E_USER_DEPRECATED', $result->text);
+        self::assertStringNotContainsString(
+            'getPublicResourceWebPath() is what computes such a URL here',
+            $result->text,
+        );
+
+        // The three classes the route is injected from, against the migration
+        // example that imports them from a namespace none of them is in.
+        self::assertStringContainsString('TYPO3\CMS\Core\SystemResource', $result->text);
+
+        // Asked in the words of the API rather than in the words of the
+        // subject — R-KNW-002.
+        $asAsked = Hints::find([], 'PathUtility::getSystemResourceUri for an EXT: image path', 6);
+        self::assertSame('public-assets', $asAsked['matchedHints'][0]['id']);
+
+        // On 13 the deprecation had not happened and neither had the API.
+        $onThirteen = Registry::call('typo3_hint_lookup', [
+            'task' => 'public assets shipped by an extension',
+            'paths' => ['Resources/Public/Css/'],
+            'targetVersion' => '13.4',
+        ]);
+        self::assertStringContainsString(
+            'getPublicResourceWebPath() is what computes such a URL here',
+            $onThirteen->text,
+        );
+        self::assertStringNotContainsString('getSystemResourceUri', $onThirteen->text);
+    }
+
+    #[Test]
     public function coreOnlyDocumentationAndBuildHintsHaveProjectTwins(): void
     {
         $documentation = Hints::byId('extension-documentation');

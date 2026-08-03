@@ -17,7 +17,10 @@
       "asset:publish",
       "system resource",
       "Configuration/Resources.php",
-      "CanNotResolvePublicResourceException"
+      "CanNotResolvePublicResourceException",
+      "PathUtility",
+      "getSystemResourceUri",
+      "getPublicResourceWebPath"
     ],
     "hints": [
       {
@@ -45,12 +48,20 @@
         "until": 13
       },
       {
-        "text": "In PHP the URL comes from the System Resource API: inject SystemResourceFactory, call createPublicResource() with the identifier — PKG:<composer name>:<path in the package>, EXT:<key>/<path>, FAL:<storage uid>:/<identifier> or a URL — and hand the result to SystemResourcePublisherInterface::generateUri(). Both are injectable, and replacing the publisher is how a CDN gets its own URIs.",
+        "text": "In PHP the URL comes from the System Resource API: inject SystemResourceFactory, call createPublicResource() with the identifier — PKG:<composer name>:<path in the package>, EXT:<key>/<path>, FAL:<storage uid>:/<identifier> or a URL — and hand the result to SystemResourcePublisherInterface::generateUri(). Both are injectable, and replacing the publisher is how a CDN gets its own URIs. They live in TYPO3\\CMS\\Core\\SystemResource: the factory directly below it, the publisher interface and UriGenerationOptions below its Publishing namespace. The migration example in the changelog entry that deprecated the old way imports all three from TYPO3\\CMS\\Core\\Resource instead, where none of them is.",
         "since": 14
       },
       {
         "text": "PathUtility::getPublicResourceWebPath() is what computes such a URL here.",
-        "until": 14
+        "until": 13
+      },
+      {
+        "text": "PathUtility::getPublicResourceWebPath() still exists and still resolves such a path, and it is the way out rather than the way in: it is deprecated here, every call raises E_USER_DEPRECATED, and the next major has removed it.",
+        "since": 14
+      },
+      {
+        "text": "PathUtility::getSystemResourceUri() sits beside it in the same class and is a third thing: neither the supported route nor the deprecated one. Its docblock marks it @internal and announces its removal, or its becoming private, before this major reaches LTS — which has not happened yet, so the signature reads as current API and is not one. It is there so the core can migrate its own call sites. Extension code calling it is a finding rather than a static shorthand, and the factory and the publisher above are the whole of what is offered.",
+        "since": 14
       },
       "Reference such a file as EXT:<key>/Resources/Public/... and let the resolver produce the published URI. The _assets path is an implementation detail and its hash changes with the layout."
     ]

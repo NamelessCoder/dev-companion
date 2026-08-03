@@ -185,7 +185,7 @@ final class Channel
             // in says whether it was answered, not when it arrived.
             ->sort(static fn(\SplFileInfo $left, \SplFileInfo $right): int => strcmp($right->getFilename(), $left->getFilename()));
 
-        $wanted = $tool === null ? null : (self::toolNames($tool)[0] ?? null);
+        $wanted = $tool === null ? null : (self::comparable(self::toolNames($tool)[0] ?? '') ?: null);
         $answers = self::answers();
 
         $found = [];
@@ -197,7 +197,7 @@ final class Channel
             if ($category !== null && $feedback['category'] !== $category) {
                 continue;
             }
-            if ($wanted !== null && !in_array($wanted, $feedback['tools'], true)) {
+            if ($wanted !== null && !in_array($wanted, array_map(self::comparable(...), $feedback['tools']), true)) {
                 continue;
             }
 
@@ -628,6 +628,12 @@ final class Channel
      * declared union away, and an array reaching `record()` from outside is
      * refused by the validator before this is called.
      *
+     * What is left of a name after the separators is kept as it was written,
+     * hyphen included: a skill is `typo3-extension-conformance` in the listing
+     * a session reads it from and in `skills/`, and stripping the hyphen stored
+     * an identifier the project carries nowhere — invisible to the grep that is
+     * the obvious way to ask what was reported about it (`R-FBK-013`).
+     *
      * @return array<int, string>
      */
     private static function toolNames(mixed $value): array
@@ -641,12 +647,27 @@ final class Channel
             if (!is_string($candidate)) {
                 continue;
             }
-            $name = (string) preg_replace('/[^a-z0-9_]/', '', strtolower(trim($candidate)));
+            $name = (string) preg_replace('/[^a-z0-9_-]/', '', strtolower(trim($candidate)));
             if ($name !== '') {
                 $names[] = $name;
             }
         }
 
         return array_values(array_unique($names));
+    }
+
+    /**
+     * One name in the form two spellings of it can be compared in.
+     *
+     * A tool is `typo3_documentation_lookup` and a skill is
+     * `typo3-extension-conformance`, and a session names either with whichever
+     * separator it has in front of it. What is stored is what was written, so
+     * the filter is where the spellings meet — the rule `D-ANS-006` already
+     * applies to an identifier a caller looks up, applied to the one thing this
+     * backlog is filtered by.
+     */
+    private static function comparable(string $name): string
+    {
+        return (string) preg_replace('/[^a-z0-9]/', '', $name);
     }
 }

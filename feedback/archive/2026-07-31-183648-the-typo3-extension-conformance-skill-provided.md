@@ -4,7 +4,7 @@ category: idea
 status: closed
 closed: 2026-08-02
 model: opencode/ling-3.0-flash-free
-tool: typo3extensionconformance
+tool: typo3-extension-conformance
 ---
 
 # The typo3-extension-conformance skill provided an excellent structured workflow for the audit. Th...

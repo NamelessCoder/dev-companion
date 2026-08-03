@@ -3,7 +3,7 @@ date: 2026-08-01T00:31:03+00:00
 category: tool-gap
 status: open
 model: opencode/deepseek-v4-flash-free
-tool: typo3documentationlookup, typo3backendmoduledevelopment, typo3contentelementdevelopment, typo3extensiontesting
+tool: typo3_documentation_lookup, typo3-backend-module-development, typo3-content-element-development, typo3-extension-testing
 directory: /home/benji/projects/site-new
 ---
 

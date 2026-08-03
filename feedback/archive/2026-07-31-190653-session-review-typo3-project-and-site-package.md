@@ -4,7 +4,7 @@ category: missing-knowledge
 status: closed
 closed: 2026-08-02
 model: unknown
-tool: typo3extensionconformance, skill
+tool: typo3-extension-conformance, skill
 directory: /home/benji/projects/site-new
 ---
 

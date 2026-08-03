@@ -616,6 +616,96 @@ final class FeedbackTest extends TestCase
     }
 
     /**
+     * A skill is spelled `typo3-extension-conformance` in the listing a session
+     * reads it from, in `skills/`, and in the description that invites naming
+     * one here. Stored as `typo3extensionconformance` it was an identifier the
+     * project carries nowhere, and the grep that answers "what has been
+     * reported about this skill" found none of the seven feedback about it.
+     */
+    #[Test]
+    public function aRecordedNameKeepsTheSpellingItWasGivenIn(): void
+    {
+        $file = Channel::record([
+            'observation' => self::MARKER . ' the skill was read and its lookups were not run',
+            'tool' => 'typo3-extension-conformance',
+        ]);
+
+        self::assertStringContainsString(
+            'tool: typo3-extension-conformance',
+            (string) file_get_contents(Paths::root() . '/' . $file)
+        );
+        self::assertSame(['typo3-extension-conformance'], self::noteFor($file)['tools']);
+        self::assertContains(
+            $file,
+            array_column(Channel::all('open', null, 200, 'typo3-extension-conformance'), 'file'),
+        );
+    }
+
+    #[Test]
+    public function aNameIsFoundHoweverItsSeparatorsAreSpelled(): void
+    {
+        // What is stored is what the session wrote, so one name arrives in more
+        // than one spelling and the filter is where they meet — `D-ANS-006`
+        // applied to the one thing this backlog is filtered by.
+        $file = Channel::record([
+            'observation' => self::MARKER . ' named the skill with hyphens',
+            'tool' => 'typo3-extension-conformance',
+        ]);
+
+        foreach (['typo3_extension_conformance', 'typo3extensionconformance'] as $spelling) {
+            self::assertContains(
+                $file,
+                array_column(Channel::all('open', null, 200, $spelling), 'file'),
+                $spelling . ' reached nothing',
+            );
+        }
+    }
+
+    /**
+     * The corpus, because that is where the mangled names are: 43 of them were
+     * rewritten to the spelling the project uses when the stripping was fixed,
+     * and a name arriving mangled again is what this catches — `D-FBK-039`.
+     *
+     * Only a name that resolves to something this project has is judged. A
+     * feedback naming a tool that has since been renamed away, or naming its
+     * client's wrapper, is a session's report and is left as it was written.
+     */
+    #[Test]
+    public function everyNameTheCorpusCarriesIsSpelledTheWayThisProjectSpellsIt(): void
+    {
+        $spellings = [];
+        foreach ([...array_column(Registry::definitions(), 'name'), ...self::skillNames()] as $name) {
+            $spellings[(string) preg_replace('/[^a-z0-9]/', '', $name)] = $name;
+        }
+
+        $mangled = [];
+        $corpus = Channel::all('all', null, PHP_INT_MAX);
+        self::assertGreaterThan(100, count($corpus), 'the corpus this reads was not read');
+
+        foreach ($corpus as $feedback) {
+            foreach ($feedback['tools'] as $name) {
+                $spelling = $spellings[(string) preg_replace('/[^a-z0-9]/', '', $name)] ?? $name;
+                if ($spelling !== $name) {
+                    $mangled[] = $feedback['file'] . ': ' . $name . ' is spelled ' . $spelling;
+                }
+            }
+        }
+
+        self::assertSame([], $mangled, 'stored under a spelling this project does not use');
+    }
+
+    /** @return array<int, string> */
+    private static function skillNames(): array
+    {
+        $names = [];
+        foreach (Finder::create()->directories()->in(Paths::root() . '/skills')->depth(0) as $skill) {
+            $names[] = $skill->getFilename();
+        }
+
+        return $names;
+    }
+
+    /**
      * @return array{file: string, date: string, category: string, status: string, model: string, tool: string, tools: array<int, string>, title: string}
      */
     private static function noteFor(string $file): array

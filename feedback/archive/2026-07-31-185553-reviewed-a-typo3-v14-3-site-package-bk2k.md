@@ -4,7 +4,7 @@ category: tool-gap
 status: closed
 closed: 2026-08-02
 model: unknown
-tool: typo3extensionconformance
+tool: typo3-extension-conformance
 directory: /home/benji/projects/site-new
 ---
 

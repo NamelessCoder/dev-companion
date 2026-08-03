@@ -4,7 +4,7 @@ category: tool-gap
 status: closed
 closed: 2026-08-02
 model: claude-opus-5[1m]
-tool: typo3backendmoduledevelopment, typo3contentelementdevelopment, typo3extensionconformance, typo3extensiondocumentation, typo3extensionrelease, typo3extensiontesting, typo3extensionupgrade
+tool: typo3-backend-module-development, typo3-content-element-development, typo3-extension-conformance, typo3-extension-documentation, typo3-extension-release, typo3-extension-testing, typo3-extension-upgrade
 directory: /home/benji/projects/typo3-cms
 ---
 

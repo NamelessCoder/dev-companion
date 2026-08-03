@@ -4,7 +4,7 @@ category: missing-knowledge
 status: closed
 closed: 2026-08-02
 model: opencode/deepseek-v4-flash-free
-tool: typo3extensiontesting
+tool: typo3-extension-testing
 directory: /home/benji/projects/site-new
 ---
 

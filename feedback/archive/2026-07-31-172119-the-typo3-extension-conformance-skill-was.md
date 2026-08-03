@@ -5,7 +5,7 @@ status: closed
 closed: 2026-07-31
 commit: 877fa3e
 subject: "[FEATURE] Say who left a note, and where it landed"
-tool: typo3extensionconformance, mcp_typo3cmsmcp_typo3_feedback_record
+tool: typo3-extension-conformance, mcp_typo3cmsmcp_typo3_feedback_record
 directory: /home/benji/projects/bootstrap_package
 ---
 

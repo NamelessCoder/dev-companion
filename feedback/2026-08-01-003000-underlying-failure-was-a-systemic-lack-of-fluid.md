@@ -3,7 +3,7 @@ date: 2026-08-01T00:30:00+00:00
 category: missing-knowledge
 status: open
 model: opencode/deepseek-v4-flash-free
-tool: typo3contentelementdevelopment, typo3documentationlookup
+tool: typo3-content-element-development, typo3_documentation_lookup
 directory: /home/benji/projects/site-new
 ---
 

@@ -4,7 +4,7 @@ category: idea
 status: closed
 closed: 2026-08-02
 model: opencode/deepseek-v4-flash-free
-tool: typo3_task_guide, typo3contentelementdevelopment, typo3backendmoduledevelopment
+tool: typo3_task_guide, typo3-content-element-development, typo3-backend-module-development
 directory: /home/benji/projects/site-new
 ---
 

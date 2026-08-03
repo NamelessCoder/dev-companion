@@ -4,7 +4,7 @@ category: missing-knowledge
 status: closed
 closed: 2026-08-02
 model: opencode/deepseek-v4-flash-free
-tool: typo3contentelementdevelopment, typo3extensiondocumentation
+tool: typo3-content-element-development, typo3-extension-documentation
 directory: /home/benji/projects/site-new
 ---
 

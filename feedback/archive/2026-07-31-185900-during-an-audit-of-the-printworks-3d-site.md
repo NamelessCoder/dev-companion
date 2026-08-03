@@ -4,7 +4,7 @@ category: tool-gap
 status: closed
 closed: 2026-08-02
 model: unknown
-tool: typo3extensionconformance, typo3_project_scope, typo3_architecture_lookup, typo3_configuration_lookup, typo3_documentation_lookup, typo3_changelog_lookup
+tool: typo3-extension-conformance, typo3_project_scope, typo3_architecture_lookup, typo3_configuration_lookup, typo3_documentation_lookup, typo3_changelog_lookup
 directory: /home/benji/projects/site-new
 ---
 

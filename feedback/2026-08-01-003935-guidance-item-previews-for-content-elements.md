@@ -3,7 +3,7 @@ date: 2026-08-01T00:39:35+00:00
 category: idea
 status: open
 model: opencode/deepseek-v4-flash-free
-tool: typo3contentelementdevelopment
+tool: typo3-content-element-development
 directory: /home/benji/projects/site-new
 ---
 

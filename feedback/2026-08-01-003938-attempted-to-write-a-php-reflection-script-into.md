@@ -3,7 +3,7 @@ date: 2026-08-01T00:39:38+00:00
 category: wrong-answer
 status: open
 model: opencode/deepseek-v4-flash-free
-tool: typo3extensiontesting
+tool: typo3-extension-testing
 directory: /home/benji/projects/site-new
 ---
 

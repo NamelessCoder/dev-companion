@@ -25,4 +25,8 @@ Shell roundtrip after typo3_extension_scope reported fluidRoots for guidedtour: 
 
 ## Suggestion
 
-Two things. Add the v14 *.fluid.html naming to the Fluid/template hints together with the fallback order TemplatePaths::resolveFileInPaths() actually applies, so a reviewer can judge a plain .html file without reading the resolver. And consider a lookup that takes an extension-relative template/layout/partial path and returns the core file it shadows or was forked from in the installed version, with that file's current path and content — turning a fragile fork into a diff. A staleness signal for forks would then be derivable rather than hand-assembled, which is where the two most consequential findings of this audit came from.
+Add the fallback order TemplatePaths::resolveFileInPaths() actually applies to the Fluid/template hints, so a reviewer can judge which of two files that both exist is the one rendered without reading the resolver.
+
+The naming half of this ask is answered and is struck. `fluid-templates` states that template files carry the .fluid.html extension on v14 and that the bare .html form still resolves, so a directory of .html templates is the predecessor rather than a mistake to fix on sight. It was written on 2026-08-02, the day before this was filed, and it is the first hint returned for `Resources/Private/Layouts/Login.html`.
+
+The lookup half is judged and is not built: with the order stated it is the Fluid roots `typo3_extension_scope` already reports plus that chain, after which the diff is one command in a tree the auditor has open. The reading is in `D-ANS-003`, and `D-KNW-052` carries what is left open here.

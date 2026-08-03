@@ -190,3 +190,34 @@ and an installed package answers for the release it is pinned to, which is the
 
 What that session lacked is the sentence saying in advance that this question
 has no home here. That is `D-SKL-004`'s and is queued there.
+
+## Confirmed on 2026-08-03
+
+The runtime half was read a fifth time and did not fire.
+`feedback/2026-08-03-164749` asks for a lookup that takes an extension-relative
+template, layout or partial path and returns the core file it shadows or was
+forked from in the installed version, with that file's current path and content —
+turning a fragile fork into a diff, and making a staleness signal for forks
+derivable rather than hand-assembled. The audit behind it forks the core backend
+login layout and registers it by appending a layout root path while an event
+runs, and its own report calls the hand-made diff the single most productive
+artifact of the run.
+
+The three round trips it counts were bought by the file name rather than by the
+mapping. `diff` against `Login.html` failed, a `find` produced `Login.fluid.html`,
+and the third call was the diff — and the rename together with the fact that a
+bare `.html` still resolves is in `fluid-templates` with `since: 14`, written the
+day before this feedback and returned first for the audited path. With that in
+hand the mapping is the Fluid roots `typo3_extension_scope` already reports plus
+the per-root-path fallback chain, and the diff is one command in a tree the
+auditor has open — which is where `D-FBK-027` draws the line, and the same
+counting as the precedent sweep above. So the **Wrong if** is answered the other
+way a second time: the diagnosis completed from the caller's own checkout, and it
+produced the two findings the report ranks highest.
+
+What is missing is a sentence and not a shape, so the lever moved to `D-KNW-052`:
+nothing here states that the chain is walked once per root path, which is what
+decides whether a forked `Login.html` overloads the core's `Login.fluid.html` at
+all. The **Wrong if** of that entry names the one thing that would bring this
+half back — a root path order that can only be read from the running
+installation.

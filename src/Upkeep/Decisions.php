@@ -26,6 +26,13 @@ final class Decisions
      *
      * @var array<string, string>
      */
+    /**
+     * The heading the revoked entries stand under, wherever a listing is
+     * written. They keep a run of their own rather than a marker in the one
+     * above, which is what the listing's own comment says why.
+     */
+    public const REVOKED = 'Revoked, and kept as the record';
+
     public const GROUPS = [
         'AUD' => 'audience',
         'DIS' => 'discovery',
@@ -137,7 +144,14 @@ final class Decisions
         // kept and read — the wrong assumption is the useful part — but it is
         // not something to build on, and mixed into one list it looked exactly
         // like something to build on.
-        $sections = ['' => [], 'Revoked, and kept as the record' => []];
+        // The whole of it is read by group rather than as one run of every
+        // entry: an id names its group in the prefix, which is what a commit
+        // and a requirement's `restsOn` arrive with. Inside a group the order
+        // is unchanged and newest first, and what was decided lately across all
+        // of them is `bin/cli decisions:list`.
+        $sections = $group === '' ? array_fill_keys(array_values(self::GROUPS), []) : ['' => []];
+        $sections[self::REVOKED] = [];
+
         foreach (self::group($group) as $decision) {
             $status = DecisionStatus::tryFrom($decision['status']);
             $entry = [
@@ -147,7 +161,7 @@ final class Decisions
                     . ($status === DecisionStatus::Confirmed ? ' · confirmed' : '')
                     . ($decision['revokedBy'] === '' ? '' : ' → ' . $decision['revokedBy']),
             ];
-            $sections[$status?->stillHolds() === false ? 'Revoked, and kept as the record' : ''][] = $entry;
+            $sections[$status?->stillHolds() === false ? self::REVOKED : ($group === '' ? $decision['group'] : '')][] = $entry;
         }
 
         $listing = '';

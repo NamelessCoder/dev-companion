@@ -24,10 +24,15 @@ final class DecisionIndex
 {
     /**
      * Where the generated listing begins, so everything above it survives a
-     * regeneration. Both shapes are matched: the table these listings were
-     * until D-DOC-001, and the list they are now.
+     * regeneration. Three shapes are matched: the table these listings were
+     * until D-DOC-001, the list they are now, and the group heading the root
+     * readme carries above each run of it.
+     *
+     * That last one is why prose above a listing may not use a third-level
+     * heading: it would be read as the start of the generated half and go with
+     * the next regeneration.
      */
-    private const LISTING_STARTS = '/(?:\| Decided\s|- \[`D-)[^\n]*(?:\n.*)?$/s';
+    private const LISTING_STARTS = '/(?:\| Decided\s|### |- \[`D-)[^\n]*(?:\n.*)?$/s';
 
     public function __invoke(OutputInterface $output): int
     {

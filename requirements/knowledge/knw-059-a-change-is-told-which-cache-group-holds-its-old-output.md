@@ -23,15 +23,15 @@ another group, in the database.
 
 So the statement carries both, and either half alone leaves it wrong. Naming
 `typo3 cache:flush` without the mechanism sends the caller to delete a directory
-that holds nothing they need deleted — the `pages` group is `Typo3DatabaseBackend`
-for `pages`, `hash` and `rootline`, which no file deletion reaches. Naming the
-mechanism without the groups leaves them with a template that recompiled and a
-page that did not change.
+that holds nothing they need deleted — the `pages` group is
+`Typo3DatabaseBackend` for `pages`, `hash` and `rootline`, which no file
+deletion reaches. Naming the mechanism without the groups leaves them with a
+template that recompiled and a page that did not change.
 
 The reach is the second demand. The question arrives from a template, from
 TypoScript and from TCA, which are three different domains, and it has to
-separate from the question of how a cache is *declared* — that one is
-`caching` in `php.json` and is a different subject.
+separate from the question of how a cache is *declared* — that one is `caching`
+in `php.json` and is a different subject.
 
 ## From
 

@@ -88,11 +88,11 @@ its own card was retired into it. That feedback is the Forge half of the cluster
 answered here except the search.
 
 The re-run is what says so. `typo3_forge_lookup` with `issue: 105403` answers in
-one call what the feedback established in four: subject, tracker, status `Under
-Review`, target version, the reported TYPO3 version, both relations, and all six
-comments. The three the feedback called decisive are among them — the two
-maintainer verdicts, Georg Ringer's "closing as lack of feedback" and the Gerrit
-bot's patch-set notes, which is the route it found to the patch when
+one call what the feedback established in four: subject, tracker, status
+`Under Review`, target version, the reported TYPO3 version, both relations, and
+all six comments. The three the feedback called decisive are among them — the
+two maintainer verdicts, Georg Ringer's "closing as lack of feedback" and the
+Gerrit bot's patch-set notes, which is the route it found to the patch when
 `changesets` was empty. The tool asks for `include=journals,relations` and never
 requests `changesets`, so the trap it warned about is not reachable.
 `typo3_gerrit_lookup` with the same number answers `empty` with the private

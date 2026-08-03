@@ -10,21 +10,21 @@ restsOn: [D-KNW-017]
 establishes that, without having named Playwright, a browser or an end-to-end
 test in its own words.**
 
-The knowledge is not what is missing. `browser-tests` and its two neighbours
-say what a browser test is for, that a functional test through
+The knowledge is not what is missing. `browser-tests` and its two neighbours say
+what a browser test is for, that a functional test through
 `executeFrontendSubRequest()` is a rendering test rather than a frontend one,
-and what the core's own suite does — and every route to them opens on
-vocabulary the caller has to supply first.
+and what the core's own suite does — and every route to them opens on vocabulary
+the caller has to supply first.
 
-The caller who needs the layer is the one who has not yet decided that a
-browser is involved. A session verifying an element by reading the HTML it
-curled is not asking for Playwright; it is asking whether the page came out
-right, and that is the point at which the layer is still cheap to choose.
+The caller who needs the layer is the one who has not yet decided that a browser
+is involved. A session verifying an element by reading the HTML it curled is not
+asking for Playwright; it is asking whether the page came out right, and that is
+the point at which the layer is still cheap to choose.
 
 So the crossing is owed by the answers such a question does reach, and by the
 prompts this repository measures itself with: a scenario asking for the outcome
-— a smoke test before a deployment, browser coverage after a regression — has
-to reach the cell as well.
+— a smoke test before a deployment, browser coverage after a regression — has to
+reach the cell as well.
 
 ## From
 

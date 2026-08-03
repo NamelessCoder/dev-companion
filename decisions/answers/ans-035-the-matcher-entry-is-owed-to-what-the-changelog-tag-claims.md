@@ -48,9 +48,9 @@ about the matchers.
   said "what the call site looks like", and the word "site" occurred nowhere
   else in the prose corpus: `TermSearch` weighs a term nothing carries as
   `log(25)/2` and one exactly one section carries as `log(25)`, so introducing
-  it raised its own weight from 1.61 to 3.22, and
-  `## Review Readiness` — which carries none of it — fell from 0.51 coverage to
-  0.41 and out of the answer to "review readiness for my site package", which
+  it raised its own weight from 1.61 to 3.22, and `## Review Readiness` — which
+  carries none of it — fell from 0.51 coverage to 0.41 and out of the answer to
+  "review readiness for my site package", which
   `ScopeTest::whatARuleAnswerWithheldIsNamedRatherThanMissing` asks.
 
 ## Decided
@@ -58,14 +58,14 @@ about the matchers.
 - `## Breaking Changes` of `knowledge/documents/typo3-commit-messages.md` states
   the matcher: which file takes which kind of removal, what an entry carries,
   what the tag claims, and that `checkExtensionScannerRst` checks one direction
-  only. The feedback's failing query
-  "removing public method extension scanner matcher breaking changelog" reached
-  nothing and now returns that section at 209.
-- The feedback's other query stays a miss and is left one.
-  "breaking change internal method removal changelog" is six terms no section
-  covers half the weight of, and it is answered with the list of covered
-  sections, `## Breaking Changes` among them. Widening the floor to catch it is
-  the retrieval change `D-ANS-029` declined on the measurement.
+  only. The feedback's failing query "removing public method extension scanner
+  matcher breaking changelog" reached nothing and now returns that section at
+  209.
+- The feedback's other query stays a miss and is left one. "breaking change
+  internal method removal changelog" is six terms no section covers half the
+  weight of, and it is answered with the list of covered sections,
+  `## Breaking Changes` among them. Widening the floor to catch it is the
+  retrieval change `D-ANS-029` declined on the measurement.
 - The `breaking` intent stops recommending it. "Consider an extension scanner
   matcher" becomes the entry and the tag, as two checklist items, because the
   reading found an obligation rather than an option.
@@ -171,9 +171,10 @@ rather than left to the reader.
 One draft was thrown away for the reason this entry already records. It said
 "the name at the call site", and
 `aMissThatWithheldADocumentSaysTheBoundaryEmptiedIt` failed at once: "how do I
-push a patch for review from my site package" matched the new prose on `site`. The word is still carried by nothing else in the
-corpus, so the evidence bullet above holds a second time, and the sentence uses
-"where it is used" — the vocabulary the bullet above it already spends.
+push a patch for review from my site package" matched the new prose on `site`.
+The word is still carried by nothing else in the corpus, so the evidence bullet
+above holds a second time, and the sentence uses "where it is used" — the
+vocabulary the bullet above it already spends.
 
 The first **Wrong if** is untouched. The third is what this bears on, from an
 angle it did not name: the removal was reviewed *with* the matcher rule

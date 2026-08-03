@@ -24,17 +24,17 @@ task sentence is not one.
 ## Evidence
 
 - The strength reproduces whole, re-run on 2026-08-03 through
-  `bin/typo3-cms-mcp` from `/home/benji/projects/typo3-cms`, the directory it was
-  written in. `typo3_project_scope` answers
+  `bin/typo3-cms-mcp` from `/home/benji/projects/typo3-cms`, the directory it
+  was written in. `typo3_project_scope` answers
   `core-checkout, TYPO3 15.0.0-dev, PHP ^8.5 declared and 8.5 in DDEV`, with
   `Extensions: none beyond TYPO3's own.` and
   `Sites: none configured below config/sites/.` — the report's four claims, in
   its own words. `typo3_rule_lookup "breaking change"` returns
   `## Breaking Changes` and `## Changelog Files` at 100% of the query terms, and
   the first of them states the `[!!!]` marker, the changelog RST and the
-  extension scanner matcher.  `typo3_commit_message_guide` on the patch's own
-  subject answers `WARNING: The summary line is 68 characters long. Below 52
-  characters is preferred.`
+  extension scanner matcher. `typo3_commit_message_guide` on the patch's own
+  subject answers
+  `WARNING: The summary line is 68 characters long. Below 52 characters is preferred.`
 - The compound query this session actually recorded is answered. It is in the
   sibling `feedback/2026-08-01-115109`, now archived, and
   [`D-ANS-029`](ans-029-the-scanner-matcher-is-stated-on-the-route-a-removal-takes.md)
@@ -61,8 +61,8 @@ task sentence is not one.
   `## Summary Line` does not contain the words *commit* or *message*, which
   stand in the title and the preamble of `typo3-commit-messages.md`. This is
   [`D-ANS-021`](ans-021-a-manual-query-is-told-what-short-buys.md)'s finding on
-  a second corpus, and worse in one way: there the subject term was merely cheap,
-  here it is absent from the field being searched.
+  a second corpus, and worse in one way: there the subject term was merely
+  cheap, here it is absent from the field being searched.
 - Where a compound query does miss, the caller is told the wrong reason.
   `RuleLookup::answer()` reaches `noMatch()` only where the prose, the hints and
   the withheld documents are all empty; where hints matched, an empty prose
@@ -72,8 +72,8 @@ task sentence is not one.
   `/home/benji/projects/typo3-cms` with `scope: core` and
   `withheldDocuments: []` — a boundary that did not apply and withheld nothing.
 - A judging run has already been misled by it. `D-ANS-029` quoted that sentence
-  back on 2026-08-02 as what the tool answered a core-checkout query, and read it
-  as an answer rather than as a claim about scope.
+  back on 2026-08-02 as what the tool answered a core-checkout query, and read
+  it as an answer rather than as a claim about scope.
 - The miss also drops the orientation the other path gives. `noMatch()` lists
   every document with its topics, which is what `R-ANS-006` holds this tool to
   and what a caller can ask for outright; the hint-matched miss lists neither
@@ -90,9 +90,9 @@ task sentence is not one.
   words, and keeping something is not work; the feedback is trimmed to its last
   sentence and stays open behind the two cards below.
 - **The miss sentence is step 4, wording.** The tool was called correctly and
-  answered honestly; what it delivered was a reason that is false inside the core
-  and orientation the sibling path already has. Queued rather than closed on the
-  spot, because it is `src/`.
+  answered honestly; what it delivered was a reason that is false inside the
+  core and orientation the sibling path already has. Queued rather than closed
+  on the spot, because it is `src/`.
 - **The coverage floor is a gap in the gate rather than in the wording.** The
   scoring preferred the right section by more than three to one and a share
   computed over the query's own length overruled it, which is
@@ -131,8 +131,9 @@ task sentence is not one.
   query as having failed. Then what the caller could not see was the ranking
   rather than the reason, and the second card is the whole of the answer.
 - A sweep finds `## Summary Line` is the only section this reaches, because the
-  prose corpus is small and its headings already carry their documents' subjects.
-  Then this is one section that needed a word, not a property of the gate.
+  prose corpus is small and its headings already carry their documents'
+  subjects. Then this is one section that needed a word, not a property of the
+  gate.
 - The score turns out to be the wrong tie-break, because a heading weighs four
   and a long section can out-score a short one that answers. `## Summary Line`
   won on a heading match here, which is the easy case.
@@ -154,17 +155,16 @@ The third answer was built on 2026-08-03: `Documents::FIELD_WEIGHTS` gains
 untouched, so the floor the first **Wrong if** is about never moved.
 
 The three were measured over 490 queries — the 424 multi-word `appliesTo`
-patterns that name no path, the 41 scenario prompts, the 20 section headings
-and the 5 document titles.
+patterns that name no path, the 41 scenario prompts, the 20 section headings and
+the 5 document titles.
 
 - Yielding the gate to the score, admitting every section a query term reaches
-  and ranking by score, returns the nearest unrelated section to 87 queries
-  that reached nothing, 40 of the 41 prompts among them. It moves 28 first hits
+  and ranking by score, returns the nearest unrelated section to 87 queries that
+  reached nothing, 40 of the 41 prompts among them. It moves 28 first hits
   besides.
-- Admitting the largest covering subset, with coverage measured against the
-  best cover any section reaches, returns the same 87. A relative floor admits
-  its own best by construction, so «how do I write a good sonnet» is answered
-  too.
+- Admitting the largest covering subset, with coverage measured against the best
+  cover any section reaches, returns the same 87. A relative floor admits its
+  own best by construction, so «how do I write a good sonnet» is answered too.
 - The title in the searched fields moves one first hit of the 424 patterns —
   `commit the build`, from `## Changelog Files` to `## Breaking Changes` of the
   same document — none of the prompts, none of the headings, and takes nothing
@@ -202,16 +202,17 @@ it.
 ## Since then
 
 The miss half was built on 2026-08-03. `RuleLookup::answer()` reads the boundary
-as a reason only where it withheld something: an empty prose result with an empty
-`withheldDocuments` is the miss answer whatever the hints did, and the
+as a reason only where it withheld something: an empty prose result with an
+empty `withheldDocuments` is the miss answer whatever the hints did, and the
 outside-core sentence stands where a document really was dropped for it. Re-run
 from `/home/benji/projects/typo3-cms`, the query this entry was written on
-answers *No knowledge section matched …*, then *No section carries more than 2 of
-the 8 words: "patch replacing" reaches 1 section, "review patch" reaches 7
+answers *No knowledge section matched …*, then *No section carries more than 2
+of the 8 words: "patch replacing" reaches 1 section, "review patch" reaches 7
 sections — ask again with the one that narrows best*, then the two hints it
 already carried and the topic list. Both offered subsets return sections when
-they are asked. The other path is unchanged and reachable: *how do I push a patch
-for review from my site package* withholds the Gerrit workflow and says so.
+they are asked. The other path is unchanged and reachable: *how do I push a
+patch for review from my site package* withholds the Gerrit workflow and says
+so.
 
 The subsets are `D-ANS-016`'s computation on a second corpus, and what that took
 was the matcher. `Search\Subsets` holds the one pass and is handed the corpus's
@@ -219,10 +220,10 @@ own `carries()`, because a subset offered on the labels' substring rule would
 name sections a prose re-query does not return. They are counted over the
 documents the call may answer from, so a subset offered outside the core is not
 answered with the withholding notice, and what is named back is the caller's own
-spelling rather than the stem it was reduced to — `TermSearch::words()` — because
-both re-query to the same sections and only one of them reads as a typo. The
-sentence around them is `Result\Miss`, which the changelog miss now prints from
-as well, so the two cannot drift apart in wording.
+spelling rather than the stem it was reduced to — `TermSearch::words()` —
+because both re-query to the same sections and only one of them reads as a typo.
+The sentence around them is `Result\Miss`, which the changelog miss now prints
+from as well, so the two cannot drift apart in wording.
 
 What differs from the changelog is the count. `Documents::search()` keeps a
 section covering half the query's weight, so *"patch replacing" reaches 1

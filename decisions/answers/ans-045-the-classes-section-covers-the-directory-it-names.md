@@ -58,20 +58,20 @@ a caller who trusts the promise never learns there was more to open.
 - The whitelist goes, and the boundary is that no directory below `Classes/` and
   no PHP file under it is absent from the answer. That is settled here because
   it is about this answer's shape rather than about TYPO3.
-- Which shape carries it belongs to the todo. A row per directory, the feedback's
-  `Other` bucket for a name that matches nothing known, a total beside the
-  breakdown — all three satisfy the line above, and the tool is where they are
-  weighed against each other.
+- Which shape carries it belongs to the todo. A row per directory, the
+  feedback's `Other` bucket for a name that matches nothing known, a total
+  beside the breakdown — all three satisfy the line above, and the tool is where
+  they are weighed against each other.
 - **Queued rather than closed on the spot.** Both halves touch `src/` and the
   declared `outputSchema`, which
-  [judging.md](../../documentation/feedback/judging.md) puts on the reviewed side
-  of that line.
+  [judging.md](../../documentation/feedback/judging.md) puts on the reviewed
+  side of that line.
 - The priority is `high` for the classes half, and this is what set it. The
   filter is silent, it holds for every extension this server answers for, and
   `skills/typo3-extension-conformance` routes an audit at exactly this section.
-- The `fluidRoots` half is step 4, wording, and narrow: the rendered line and the
-  tool description, not the schema field, which already says what it means. It is
-  `normal`, and it is a second todo because it is a second step.
+- The `fluidRoots` half is step 4, wording, and narrow: the rendered line and
+  the tool description, not the schema field, which already says what it means.
+  It is `normal`, and it is a second todo because it is a second step.
 - The feedback stays open behind the two todos, and the card that asked for this
   judgement is deleted by the same commit.
 
@@ -84,8 +84,8 @@ a caller who trusts the promise never learns there was more to open.
   subtree, `D-ANS-008` settled that it says so, and nothing here disputes a
   number.
 - That `typoScript`, `files` and `artifacts` are not in the `fluidRoots`
-  position. Each names a file that is there, which is nearer to a reading than to
-  a guess, and none of them was checked here.
+  position. Each names a file that is there, which is nearer to a reading than
+  to a guess, and none of them was checked here.
 
 ## Wrong if
 
@@ -96,16 +96,16 @@ a caller who trusts the promise never learns there was more to open.
 - A caller checks the section after the change and still gets a number `find`
   disagrees with. What was missing would then be the shape rather than the
   coverage.
-- `fluidRoots` is read as a registration by a session that had the qualified line
-  in front of it. The field would then be the problem rather than its wording,
-  and removing it would be the change.
+- `fluidRoots` is read as a registration by a session that had the qualified
+  line in front of it. The field would then be the problem rather than its
+  wording, and removing it would be the change.
 
 ## Since then
 
 The shape left to the todo is settled, and it is all three at once: a row per
 directory, the files lying directly in `Classes/` counted as their own row, and
-the total beside the breakdown. `classes` is an object of those three rather than
-the list of `{kind, files}` it was.
+the total beside the breakdown. `classes` is an object of those three rather
+than the list of `{kind, files}` it was.
 
 The `Other` bucket alone was rejected. It names no directory, and the name is
 what the audit needed — it went past `Classes/Utility/` without learning there
@@ -137,8 +137,8 @@ the registrations. `typoScript` is in the `fluidRoots` position after all: a
 file below `Configuration/TypoScript/` is loaded by nothing until
 `addStaticFile()`, a site set, an `@import` or `contentRenderingTemplates` names
 it. What keeps it out of the same failure is that both places already name files
-rather than an effect — the line reads `TypoScript files:` and the schema `Files
-below Configuration/TypoScript/.` — so it was left as it is.
+rather than an effect — the line reads `TypoScript files:` and the schema
+`Files below Configuration/TypoScript/.` — so it was left as it is.
 
 `knowledge/server-scope.json` said "the rest is declared in files" of everything
 this tool answers, which is the same sentence one level out; it now says "read

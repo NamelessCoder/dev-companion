@@ -11,17 +11,18 @@ the `vendor/` of the checkout it is started from, and name the command that puts
 one there.**
 
 `runTests.sh` mounts the checkout and nothing else, so the dependencies a suite
-finds are the ones in that directory. A git worktree of a core checkout has none:
-`/vendor/*` and `/bin/*` are gitignored, and git therefore never brings them. The
-first suite fails on `bin/phpunit: not found`, which names phpunit rather than
-the checkout, so the cause is not readable from the symptom.
+finds are the ones in that directory. A git worktree of a core checkout has
+none: `/vendor/*` and `/bin/*` are gitignored, and git therefore never brings
+them. The first suite fails on `bin/phpunit: not found`, which names phpunit
+rather than the checkout, so the cause is not readable from the symptom.
 
-The obvious repair fails in the same way. A `vendor/` symlinked from the original
-checkout points outside the one bind mount, and nothing inside the container can
-follow it.
+The obvious repair fails in the same way. A `vendor/` symlinked from the
+original checkout points outside the one bind mount, and nothing inside the
+container can follow it.
 
-The note belongs with the invocation rather than with one suite, because it holds
-for every suite the script offers, and the caller reads it before choosing one.
+The note belongs with the invocation rather than with one suite, because it
+holds for every suite the script offers, and the caller reads it before choosing
+one.
 
 This is the neighbour of
 [`R-KNW-049`](knw-049-a-check-that-can-pass-without-reading-anything-says-so.md):

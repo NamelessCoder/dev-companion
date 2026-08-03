@@ -10,10 +10,11 @@ restsOn: [D-KNW-026, D-KNW-045]
 may not go, because a file there is served and outlives the run.**
 
 Which directory that is belongs in the same answer, and so does the project root
-above it. Where such a script goes was already answered, and the only place it named as
-wrong was `var/` — for the one reason that `var/` is ignored. That leaves the
-directory a session actually reaches for unmentioned, and the reason it gives
-does not carry: a file in the document root is not ignored, it is served.
+above it. Where such a script goes was already answered, and the only place it
+named as wrong was `var/` — for the one reason that `var/` is ignored. That
+leaves the directory a session actually reaches for unmentioned, and the reason
+it gives does not carry: a file in the document root is not ignored, it is
+served.
 
 Naming the directory is half of it. `extra.typo3/cms.web-dir` in the root
 `composer.json` is what decides it and `public/` is what a project has when the

@@ -26,8 +26,8 @@ for a file that resolves files and builds URLs.
   was the directory name. After: the first two, and nothing from the family.
 - The report's own query, both paths and the task: `fluid-viewhelpers` stays
   first at `appliesTo(30)` and `extbase` is gone from the answer.
-- `packages/my_ext/Classes/Domain/Repository/ProductRepository.php` still reaches
-  `extbase-domain-mapping` at `appliesTo(36)`, and
+- `packages/my_ext/Classes/Domain/Repository/ProductRepository.php` still
+  reaches `extbase-domain-mapping` at `appliesTo(36)`, and
   `Configuration/TCA/Overrides/tt_content.php` still reaches
   `extbase-plugin-registration` at `appliesTo(42)`. Those are role patterns and
   are what the family is meant to be found by.
@@ -51,8 +51,8 @@ for a file that resolves files and builds URLs.
   them occurs in a path.
 - `impexp` and `styleguide` keep their bare key. There the extension is the
   subject of the hint and the key is the only name that subject has, so a file
-  below it is about it — which is exactly what `extbase`, a framework whose files
-  carry a dozen roles, is not.
+  below it is about it — which is exactly what `extbase`, a framework whose
+  files carry a dozen roles, is not.
 - The entry hint keeps its id, per `D-KNW-032`, and is now reached by its own
   title through its body alone: `appliesTo(0) text(241)`.
 

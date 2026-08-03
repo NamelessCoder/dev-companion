@@ -15,10 +15,11 @@ statement that could go false rather than one that is missing.
 
 ## Evidence
 
-- `theme_camino/Resources/Private/Templates/ContentPreviews/` on `.checkouts/14.3`
-  holds ten templates, not the nine `D-KNW-025` counted: `Author`, `Hero`,
-  `Linklist`, `Testimonial`, `Text`, `Textmedia`, `TextmediaTeaser`,
-  `TextmediaTeaserGrid`, `Textpic`, `Textteaser`. All ten were read.
+- `theme_camino/Resources/Private/Templates/ContentPreviews/` on
+  `.checkouts/14.3` holds ten templates, not the nine `D-KNW-025` counted:
+  `Author`, `Hero`, `Linklist`, `Testimonial`, `Text`, `Textmedia`,
+  `TextmediaTeaser`, `TextmediaTeaserGrid`, `Textpic`, `Textteaser`. All ten
+  were read.
 - The ten agree on what is left out. None renders a label naming the element,
   and none renders `record.header`, `record.subheader` or `record.date`. The one
   header drawn anywhere is `item.header` in `TextmediaTeaserGrid`, which is a
@@ -28,21 +29,21 @@ statement that could go false rather than one that is missing.
   child's `text` — through `f:format.stripTags` keeping `<br><sup><sub>` and
   `f:sanitize.html`, cropped only where they repeat, at 150 characters per tile
   in `TextmediaTeaserGrid`. File relations — `image`, `assets`, a child's
-  `images` — as `f:image` thumbnails at `height="64"`, `Hero` once per configured
-  crop variant, and a reference whose `properties.hidden` is set is drawn with a
-  modifier class rather than left out. Link fields as their label beside what
-  `f:uri.typolink` resolves for them, with a translated warning in place of the
-  URI where it resolves to none. A select — `link_config`, `link_icon` — as the
-  `f:translate` of its item label rather than as the stored value.  Each child of
-  an inline relation as a line of its own, by the columns that identify it:
-  `Linklist` and `Author` by label and link, `TextmediaTeaserGrid` by header,
-  text, link and images.
+  `images` — as `f:image` thumbnails at `height="64"`, `Hero` once per
+  configured crop variant, and a reference whose `properties.hidden` is set is
+  drawn with a modifier class rather than left out. Link fields as their label
+  beside what `f:uri.typolink` resolves for them, with a translated warning in
+  place of the URI where it resolves to none. A select — `link_config`,
+  `link_icon` — as the `f:translate` of its item label rather than as the stored
+  value. Each child of an inline relation as a line of its own, by the columns
+  that identify it: `Linklist` and `Author` by label and link,
+  `TextmediaTeaserGrid` by header, text, link and images.
 - Two of those go past the payload to state the record cannot: a broken link
   target and a hidden file reference are exactly what an editor would otherwise
   open the form to find.
-- The statement is reached where the subject is named. `bin/cli hints:probe "what
-  a backend preview of a content element should show the editor"` ranks
-  `content-element-preview` first, on `appliesTo(15) + text(348)`.
+- The statement is reached where the subject is named.
+  `bin/cli hints:probe "what a backend preview of a content element should show the editor"`
+  ranks `content-element-preview` first, on `appliesTo(15) + text(348)`.
 
 ## Decided
 
@@ -50,14 +51,14 @@ statement that could go false rather than one that is missing.
   what the default renderer already draws. That statement ends "what it owes the
   editor is what those parts do not already say", and this is the answer to it.
 - No `since`. The evidence is one major — `theme_camino` ships on 14 and main,
-  and 13.4 has no `ContentPreviews/` anywhere in the core — but the rule is about
-  what the output owes the editor rather than about how a field is reached, and
-  the access mechanics on the same hint carry their bindings already. Binding it
-  would withhold a design rule from the LTS because the core shipped its worked
-  example late.
+  and 13.4 has no `ContentPreviews/` anywhere in the core — but the rule is
+  about what the output owes the editor rather than about how a field is
+  reached, and the access mechanics on the same hint carry their bindings
+  already. Binding it would withhold a design rule from the LTS because the core
+  shipped its worked example late.
 - Not the feedback's own suggestion. "Group titles, counts, references" is the
-  answer for the element that session was building; what landed is the five kinds
-  read off the core.
+  answer for the element that session was building; what landed is the five
+  kinds read off the core.
 - The `appliesTo` of the hint is unchanged. Two phrasings were tried against the
   feedback's original query and neither made it match, so they were taken back
   out rather than kept as untested vocabulary.
@@ -67,9 +68,9 @@ statement that could go false rather than one that is missing.
 - `theme_camino` is the core's position on what a preview shows. It is the theme
   of one release line and announced to move out of the core, so it is evidence
   rather than a contract.
-- Naming the kinds is enough to change a template. The alternative is a statement
-  that points at the ten examples instead, which costs the caller a checkout it
-  may not have.
+- Naming the kinds is enough to change a template. The alternative is a
+  statement that points at the ten examples instead, which costs the caller a
+  checkout it may not have.
 
 ## Wrong if
 

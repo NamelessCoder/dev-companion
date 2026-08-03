@@ -118,9 +118,9 @@ for. So the surface this entry decided is stated is now stated: the `audit`
 intent carries the enumeration, and below it the matcher entry, the changelog
 file, the `[!!!]` prefix and the two `.rst` checks, which `Scope::isCoreOnly`
 drops outside the core. `R-GUI-010` is what holds it there, and the rule it
-states is the core's own from `D-ANS-035` rather than the feedback's: `@internal`
-does not waive the marker, it does not decide whether the removal is breaking at
-all.
+states is the core's own from `D-ANS-035` rather than the feedback's:
+`@internal` does not waive the marker, it does not decide whether the removal is
+breaking at all.
 
 The feedback's own call does not reach any of it. It states `changeType`
 cleanup, and a stated type overrules the words of the task by `D-GUI-006`, so

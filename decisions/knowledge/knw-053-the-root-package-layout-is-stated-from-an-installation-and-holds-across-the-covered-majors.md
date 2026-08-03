@@ -29,10 +29,10 @@ major. So the hint carries no `since` and no `until`.
   `^5.0.2` on `13.4`, `14.3` and `main`, and all four environments below
   `.environments/` carry v5.0.2.
 - `app-dir` is dropped rather than applied. The generated
-  `vendor/typo3/autoload-include.php` sets `TYPO3_PATH_APP` to the Composer
-  root and `TYPO3_PATH_ROOT` to the `web-dir`, and `typo3 setup` then wrote
-  `config/system/settings.php` and `var/` into the repository while
-  `fileadmin/` and `typo3temp/` went to `.build/public/`.
+  `vendor/typo3/autoload-include.php` sets `TYPO3_PATH_APP` to the Composer root
+  and `TYPO3_PATH_ROOT` to the `web-dir`, and `typo3 setup` then wrote
+  `config/system/settings.php` and `var/` into the repository while `fileadmin/`
+  and `typo3temp/` went to `.build/public/`.
 - `web-dir` has a boundary of its own. Set to `../outside-public` it is reset to
   the default with «TYPO3 public path must be a subdirectory of Composer root
   directory», which is the same guard and worth the clause.

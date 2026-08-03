@@ -332,19 +332,18 @@ bin/cli knowledge:format <path>   # only that part of it
   It starts nothing: no console, no container, no request, no waiting on
   something being up. It also arranges nothing on the machine: an executable
   written into a temporary directory and put on the `PATH` is the same
-  dependency one layer down, and this repository had two of those. What the
-  code reaches outside through is a seam a caller replaces —
+  dependency one layer down, and this repository had two of those. What the code
+  reaches outside through is a seam a caller replaces —
   `Typo3CmsMcp\Process\CommandRunner` for a command or an executable lookup,
   handed in with `Typo3Cli::useRunner()`, `Environments::useRunner()` or
   `Checkouts::useRunner()`, and `Todo::useDirectory()` for a queue to write
   into. The double is PHPUnit's — `self::createStub()` where it only has to
   answer, `self::createMock()` where the call itself is the assertion — rather
   than a class written by hand. Where a class has no such seam, making one is
-  part of the work. Several inputs to one
-  behaviour are a `#[DataProvider]` with a named case each, so a failure names
-  the input. `tests/Smoke/` is where a subprocess is the subject, and what it
-  starts is this repository's own CLI. `D-COD-004` has the reasoning, including
-  why no test polices this one.
+  part of the work. Several inputs to one behaviour are a `#[DataProvider]` with
+  a named case each, so a failure names the input. `tests/Smoke/` is where a
+  subprocess is the subject, and what it starts is this repository's own CLI.
+  `D-COD-004` has the reasoning, including why no test polices this one.
 - A directory is read with `symfony/finder`, whatever the depth. `glob()`,
   `scandir()` and `RecursiveDirectoryIterator` were two idioms for one question,
   and the deep one cost a dozen lines each time — held by

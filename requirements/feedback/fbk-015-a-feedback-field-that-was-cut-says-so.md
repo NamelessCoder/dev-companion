@@ -13,8 +13,8 @@ report that was altered says so — the same ground the redaction marker stands
 on. What a cut needs it for is worse than what a redaction does: a redaction
 leaves the name of the value beside its marker, while a cut falls on a character
 count, mid-word, and takes with it every sign that the sentence was going
-anywhere. Read months later, a report that stopped short and a report that
-ended are the same file.
+anywhere. Read months later, a report that stopped short and a report that ended
+are the same file.
 
 Both halves are owed, because they reach different readers. The marker is for
 whoever judges the feedback, who was not there. The answer is for the session
@@ -31,8 +31,8 @@ characters and ends `the skill fixed the or`, found while judging it onto
 `D-FBK-018`. What the cut took was the sentence naming the shape the session was
 reporting, which is the half the judgement turned on, and neither the file nor
 the answer of `typo3_feedback_record` said anything had been removed. One field
-in 235 recorded feedback sits on the cap, so this is rare rather than
-widespread — and undetectable from the file, which is why it is worth a line.
+in 235 recorded feedback sits on the cap, so this is rare rather than widespread
+— and undetectable from the file, which is why it is worth a line.
 
 ## Held by
 

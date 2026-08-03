@@ -20,10 +20,11 @@ flattened `f:image` and `f:uri.image` into a single documented rule, and only
 ## Evidence
 
 - The feedback. `feedback/2026-08-02-144814`, `claude-opus-5[1m]`, from
-  `/home/benji/projects/typo3-cms`, `tool: typo3_task_guide,
-  typo3_documentation_lookup`: a maintainer's tracker comment quoted as a rule,
-  repeated as correct in the session's first assessment, and disproved by the
-  checkout only because the user asked what it made of the statement.
+  `/home/benji/projects/typo3-cms`,
+  `tool: typo3_task_guide, typo3_documentation_lookup`: a maintainer's tracker
+  comment quoted as a rule, repeated as correct in the session's first
+  assessment, and disproved by the checkout only because the user asked what it
+  made of the statement.
 - The corpus carried the same over-strong reading. `fluid-resource-uris` in
   `knowledge/hints/fluid.json` read "f:image and f:uri.image are not on it —
   they resolve through FAL and the Extbase ImageService, and **their** own class
@@ -50,11 +51,11 @@ flattened `f:image` and `f:uri.image` into a single documented rule, and only
   an `EXT:` path through it, and that the source marks the route for removal —
   `@todo` on `ResourceFactory` lines 195 and 212 of `main`. So the *reason* for
   the discouragement was here and the *strength* of it was not.
-- Nothing reached the session's question. `bin/cli hints:probe "must not use
-  f:image for anything but FAL resources"` matched no hint, 23 returned as the
-  index; the feedback's own `Query` line reached `fluid-viewhelpers`,
-  `system-extension-boundaries`, `core-tests` and `fal-basics`, and neither of
-  the two hints that bear on it.
+- Nothing reached the session's question.
+  `bin/cli hints:probe "must not use f:image for anything but FAL resources"`
+  matched no hint, 23 returned as the index; the feedback's own `Query` line
+  reached `fluid-viewhelpers`, `system-extension-boundaries`, `core-tests` and
+  `fal-basics`, and neither of the two hints that bear on it.
 - The instructions already draw the line this feedback found, and draw it around
   three artifacts. `knowledge/server-scope.json` sends the caller to the
   checkout for "what changed, which branch you are on, and whether a path still
@@ -80,10 +81,10 @@ flattened `f:image` and `f:uri.image` into a single documented rule, and only
   [`D-KNW-011`](knw-011-a-rule-that-names-a-defect-names-its-correction.md).
   A session arrives at this hint holding the "must not", and a hint that does
   not contradict it leaves it standing.
-- `appliesTo` gains `f:image`, `extension resource` and `EXT: path in a
-  template`, because the question is asked in the words of the rule rather than
-  in the words of the API — `R-KNW-002`. The probe that matched nothing now
-  reaches `fluid-resource-uris` first.
+- `appliesTo` gains `f:image`, `extension resource` and
+  `EXT: path in a template`, because the question is asked in the words of the
+  rule rather than in the words of the API — `R-KNW-002`. The probe that matched
+  nothing now reaches `fluid-resource-uris` first.
 - Not decided here: the feedback's third suggestion, that guidance tell a
   session a rule quoted from a tracker or from prose docs is a claim to verify
   against the checkout. That orders a task rather than stating a fact, so it is

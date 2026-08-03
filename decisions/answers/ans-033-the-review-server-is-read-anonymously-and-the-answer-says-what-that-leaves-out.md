@@ -85,13 +85,12 @@ set that is. A review of a superseded revision is wrong in every finding after
 it, and nothing in the answer let the session notice.
 
 `o=CURRENT_REVISION` carries it, over the same anonymous path this entry
-settled. Verified against `review.typo3.org` on 2026-08-03:
-`change:Id53f1068d…` answers change 95070 at `current_revision` `03c13a44…`,
-`change:95040` answers patch set 3 at `e82b930e…`, and `message:110359` carries
-the same on the search direction. No credential was passed and none was asked
-for, which is the second **Wrong if** not firing. The cost is one option on the
-URL and a larger body — the option also returns the revision's `ref`, which is
-read for nothing here.
+settled. Verified against `review.typo3.org` on 2026-08-03: `change:Id53f1068d…`
+answers change 95070 at `current_revision` `03c13a44…`, `change:95040` answers
+patch set 3 at `e82b930e…`, and `message:110359` carries the same on the search
+direction. No credential was passed and none was asked for, which is the second
+**Wrong if** not firing. The cost is one option on the URL and a larger body —
+the option also returns the revision's `ref`, which is read for nothing here.
 
 Half of what was expected turned out otherwise, and it decides which field
 matters. `current_revision_number` is in the default answer already: change

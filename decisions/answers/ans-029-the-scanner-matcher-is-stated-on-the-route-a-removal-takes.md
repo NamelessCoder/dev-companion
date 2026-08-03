@@ -101,9 +101,8 @@ without the matcher. The corpus does state the matcher. It states it under
 The measurement reproduced before the change: `Documents::search` on the
 `breaking` intent's own `rulesQuery` returned `## Breaking Changes`,
 `## Changelog Files`, `## Review Readiness` and `## Summary Line`, and none of
-the four named a matcher. The feedback's own query
-"removing public method extension scanner matcher breaking changelog" still
-matched nothing at all.
+the four named a matcher. The feedback's own query "removing public method
+extension scanner matcher breaking changelog" still matched nothing at all.
 
 The second **Wrong if** fired in part. A matcher is not owed to every removed
 public method, because not every removed public method is a breaking removal —

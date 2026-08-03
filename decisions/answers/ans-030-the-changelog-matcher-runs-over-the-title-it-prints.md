@@ -133,16 +133,16 @@ stands. Nothing here was read about the body half.
 The body half is answered, by
 [`D-ANS-042`](ans-042-an-identifier-reaches-the-changelog-entries-whose-body-names-it.md):
 an identifier a body writes reaches that entry, where the file names carried
-nothing of the query. `getTemporaryImageWithText` returns `13.0/Breaking-101955`,
-`8.0/Breaking-72426` and `7.1/Deprecation-46770`, so the sentence above saying
-the body is searched by nothing describes what this entry was written against
-rather than what the tool does.
+nothing of the query. `getTemporaryImageWithText` returns
+`13.0/Breaking-101955`, `8.0/Breaking-72426` and `7.1/Deprecation-46770`, so the
+sentence above saying the body is searched by nothing describes what this entry
+was written against rather than what the tool does.
 
 The first **Wrong if** above did not happen and cannot, in the shape it was
 written in. `GraphicalFunctions` is answered by the six entries named after it
-and never by the eighteen whose bodies write it, because the bodies are read only
-where the names reached nothing. What replaces it is the same failure for an
-identifier nothing is named after, and `D-ANS-042` carries it.
+and never by the eighteen whose bodies write it, because the bodies are read
+only where the names reached nothing. What replaces it is the same failure for
+an identifier nothing is named after, and `D-ANS-042` carries it.
 
 Both halves fall to the same read. The title and the identifiers are taken out
 of one opening of the file, in the one place a query that no file name carried

@@ -186,15 +186,15 @@ which nothing had written until now.
 
 ## Since then
 
-The step that reading corrected is in the published skill. `typo3_changelog_lookup`
-keeps its place in the review order — the precedent is still the strongest
-argument a review makes — and what changed is what it is asked with: the words
-the entry is titled in rather than the identifier the diff removes, no version
-filter narrowing it to the branch the patch targets, and the checkout's
-`Documentation/Changelog` where neither reaches it, with the review saying which
-of the two answered. Written so it stays right when the two cards serving
-`feedback/2026-08-01-115112` land: what it forbids is reading an empty answer as
-"no precedent exists", which is the mistake either way.
+The step that reading corrected is in the published skill.
+`typo3_changelog_lookup` keeps its place in the review order — the precedent is
+still the strongest argument a review makes — and what changed is what it is
+asked with: the words the entry is titled in rather than the identifier the diff
+removes, no version filter narrowing it to the branch the patch targets, and the
+checkout's `Documentation/Changelog` where neither reaches it, with the review
+saying which of the two answered. Written so it stays right when the two cards
+serving `feedback/2026-08-01-115112` land: what it forbids is reading an empty
+answer as "no precedent exists", which is the mistake either way.
 `SkillTest::aPrecedentIsAskedForInTheWordsAnEntryIsTitledIn` holds it, and the
 three calls above were reproduced from `/home/benji/projects/typo3-cms` once
 more before the line was written.
@@ -327,10 +327,11 @@ is one call now. `typo3_gerrit_lookup` with `issue: 105403`, re-run from
 answer, under the caveat that a private change is invisible to an anonymous
 read. Asked `issue: 110348` it returns change 95040 as `MERGED` on `main`. The
 endpoint, the `)]}'` prefix the response opens with, `message:<issue>` as the
-question, and that no user-agent games are needed are all inside the tool. `D-ANS-033` is
-where that was decided, and this feedback is one of the four sessions it counts.
-Its second suggestion is answered too: `typo3_commit_message_guide` was given
-that patch's message with a `Change-Id` trailer and returned it verbatim.
+question, and that no user-agent games are needed are all inside the tool.
+`D-ANS-033` is where that was decided, and this feedback is one of the four
+sessions it counts. Its second suggestion is answered too:
+`typo3_commit_message_guide` was given that patch's message with a `Change-Id`
+trailer and returned it verbatim.
 
 What the re-run found still open is the routing, and it is a rung this cluster
 has not landed on before. The question the whole task opened with — has somebody
@@ -385,16 +386,17 @@ the step above. It is archived.
 The four things the delivery half was missing are in
 `knowledge/documents/typo3-gerrit-workflow.md`, and `typo3_rule_lookup` on
 `gerrit push private change` returns two sections rather than six, re-run on
-2026-08-03 from the bundled core checkout: `Push a Private or Work in Progress
-Change` first and `Pushing From a Git Worktree` behind it, both carrying every
-term of the query and neither truncated. The four sections that used to answer
-that query carry none of its subject and no longer clear the coverage floor.
+2026-08-03 from the bundled core checkout:
+`Push a Private or Work in Progress Change` first and
+`Pushing From a Git Worktree` behind it, both carrying every term of the query
+and neither truncated. The four sections that used to answer that query carry
+none of its subject and no longer clear the coverage floor.
 
 Three of the four are not checkout facts, so where each came from:
 
 - `%private` and `%wip` are Gerrit's own documentation, served by
-  review.typo3.org. `user-upload.html` has the push options and the way back
-  out — `%remove-private`, `%ready`, and that omitting `private` on a later push
+  review.typo3.org. `user-upload.html` has the push options and the way back out
+  — `%remove-private`, `%ready`, and that omitting `private` on a later push
   does not publish a change — and `intro-user.html` has what each one is:
   private decides who can see the change, work in progress decides who is asked
   to act. The contribution manual's cheat sheet carries `%wip` alone, which is

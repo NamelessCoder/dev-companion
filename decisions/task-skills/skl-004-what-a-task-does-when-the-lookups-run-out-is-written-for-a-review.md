@@ -127,7 +127,8 @@ supports.
 Step 5 was the other candidate and it is where the reading would not have been
 found. Its paragraph asks "does this still work in version N", and the session
 this entry judges held a question about what an unaltered ViewHelper does — the
-mismatch [`D-ANS-010`](../answers/ans-010-does-it-still-work-is-a-question-for-the-manual.md)
+mismatch
+[`D-ANS-010`](../answers/ans-010-does-it-still-work-is-a-question-for-the-manual.md)
 already recorded against the conformance skill's narrower condition, a session
 holding a behaviour question does not match itself against a condition written
 for another one. What step 5 did give up is the displacement this card asked
@@ -212,7 +213,8 @@ at. It carries no core identifier, because the attribute it was measured on is
 the fact no release of this server corrects.
 
 Both halves were read rather than recalled. In `.checkouts/main` on 2026-08-03
-the lazy autowire attribute stands at `core/Classes/Site/Set/SetRegistry.php:43`,
+the lazy autowire attribute stands at
+`core/Classes/Site/Set/SetRegistry.php:43`,
 `form/Classes/EventListener/DataStructureIdentifierListener.php:68` and
 `form/Classes/Domain/Configuration/PersistenceConfigurationService.php:41`, five
 occurrences across the three, while `knowledge/hints/di.json` carries the plain

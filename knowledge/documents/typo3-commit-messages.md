@@ -55,9 +55,8 @@ Guide.
 - Breaking changes must be documented with a changelog RST file.
 - Breaking changes should usually target `main`.
 - A removed or narrowed PHP API gets an extension scanner matcher entry in the
-  same patch, below
-  `typo3/sysext/install/Configuration/ExtensionScanner/Php/`. How the removed
-  member is written where it is used decides the file:
+  same patch, below `typo3/sysext/install/Configuration/ExtensionScanner/Php/`.
+  How the removed member is written where it is used decides the file:
   - `MethodCallMatcher.php` — an instance method.
   - `MethodCallStaticMatcher.php` — a static method.
   - `PropertyPublicMatcher.php` — a removed public property.

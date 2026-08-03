@@ -267,10 +267,10 @@ declared protected and raises from `PublicPropertyDeprecationTrait::__get()` two
 files away. Read in `.checkouts/14.3`: 58 of the 98 files carrying `@deprecated`
 hold no `trigger_error` at all, 22 of those markers being on methods.
 
-So the severity is a property of the declaration, and the entry that announces it
-can be wrong about it. `Deprecation-107648` states *Using these constants will
-trigger a PHP deprecation warning*, which nothing does — and the constants are
-gone from `InfoboxViewHelper` on `main`, so a call site that never saw a
+So the severity is a property of the declaration, and the entry that announces
+it can be wrong about it. `Deprecation-107648` states *Using these constants
+will trigger a PHP deprecation warning*, which nothing does — and the constants
+are gone from `InfoboxViewHelper` on `main`, so a call site that never saw a
 deprecation fails at v15. What carries such a case is the extension scanner
 instead: `ClassConstantMatcher` keys all five constants against that entry.
 `deprecated-apis` now states both halves, and

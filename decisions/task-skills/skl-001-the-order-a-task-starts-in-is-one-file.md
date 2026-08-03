@@ -372,6 +372,6 @@ at a corpus that cannot carry it, which `D-ANS-010` re-ran from
 The alternative was the conformance skill, and it is the one this entry keeps
 refusing: the upgrade skill starts from the same sweep, and the conformance
 skill's own sentence defers to the base for why the changelog cannot answer.
-Half of what it bought is a reading the base was already sending sessions into
-— the class in `## When the lookups run out` is where an identifier now
-terminates — so the growth buys the step after it as well.
+Half of what it bought is a reading the base was already sending sessions into —
+the class in `## When the lookups run out` is where an identifier now terminates
+— so the growth buys the step after it as well.

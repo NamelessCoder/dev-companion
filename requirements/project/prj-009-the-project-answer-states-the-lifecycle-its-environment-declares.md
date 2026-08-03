@@ -25,10 +25,10 @@ missing.
 
 ## From
 
-`feedback/2026-08-03-154501` (2026-08-03), a boot of an existing Composer project
-from a fresh clone in `/home/benji/projects/site-demo-typo3-org`, whose every
-step came from reading `.ddev/config.yaml` and `.ddev/providers/dump.yaml` by
-hand. Re-run the same day: `environment` is still `via`, `php`, `source` and
+`feedback/2026-08-03-154501` (2026-08-03), a boot of an existing Composer
+project from a fresh clone in `/home/benji/projects/site-demo-typo3-org`, whose
+every step came from reading `.ddev/config.yaml` and `.ddev/providers/dump.yaml`
+by hand. Re-run the same day: `environment` is still `via`, `php`, `source` and
 `entered`, and `commands` still holds the one composer script.
 
 ## Held by

@@ -4,10 +4,10 @@
 **Priority:** normal
 **Waiting on:** the floor has no value that both empties the reported queries
     and keeps a short one that works today. At 0.5 the three queries of
-    `feedback/2026-08-03-164734` stop returning six collisions, and `login
-    screen layout` and `login form template` are emptied with them — the two
-    queries `D-ANS-046`'s own evidence offers as proof that *LoginProvider* is
-    reachable. Returning that page needs a floor at 0.34 or under; emptying
+    `feedback/2026-08-03-164734` stop returning six collisions, and
+    `login screen layout` and `login form template` are emptied with them — the
+    two queries `D-ANS-046`'s own evidence offers as proof that *LoginProvider*
+    is reachable. Returning that page needs a floor at 0.34 or under; emptying
     `Fluid template file naming convention v14` needs one above the collision it
     tops out at, 0.40. Three answers. Ship 0.5 as decided, and a query of three
     words or more is answered as a miss unless a page is titled after it, which

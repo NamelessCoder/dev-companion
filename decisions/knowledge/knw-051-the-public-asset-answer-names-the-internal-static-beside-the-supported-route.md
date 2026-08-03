@@ -12,8 +12,8 @@ status: open
 `public-assets` named the supported route and the deprecated predecessor, and
 left `PathUtility::getSystemResourceUri()` to whoever opened the class. The
 reporting session opened it, read the signature, and cleared the call as current
-API. One line above the signature the docblock reads `@internal Will be removed
-(or made private) before v14 LTS release`.
+API. One line above the signature the docblock reads
+`@internal Will be removed (or made private) before v14 LTS release`.
 
 ## Evidence
 
@@ -41,11 +41,12 @@ API. One line above the signature the docblock reads `@internal Will be removed
   removal the docblock announces is ahead rather than behind, which is what
   makes the finding current rather than historical.
 - The deprecated sibling is deprecated in the version the hint was answering
-  for. `getPublicResourceWebPath()` at line 112 opens on `trigger_error(...,
-  E_USER_DEPRECATED)`, `Deprecation-107537-getPublicResourcesWebPath.rst` in the
-  14.0 changelog says it is "deprecated first, before being removed with TYPO3
-  v15.0", and it is absent from `main`. The statement's `until: 14` band was
-  therefore rendering it as current advice on the one version where it warns.
+  for. `getPublicResourceWebPath()` at line 112 opens on
+  `trigger_error(..., E_USER_DEPRECATED)`,
+  `Deprecation-107537-getPublicResourcesWebPath.rst` in the 14.0 changelog says
+  it is "deprecated first, before being removed with TYPO3 v15.0", and it is
+  absent from `main`. The statement's `until: 14` band was therefore rendering
+  it as current advice on the one version where it warns.
 - The same changelog is evidence for the reading rather than against it: it says
   `getPublicResourceWebPath` "was marked internal since its introduction" and
   was deprecated anyway because "there were no good alternatives" — the core's
@@ -88,7 +89,8 @@ API. One line above the signature the docblock reads `@internal Will be removed
   [`D-KNW-011`](knw-011-a-rule-that-names-a-defect-names-its-correction.md).
   A session arrives at this hint having already found the method in the class,
   and a hint that is silent about it leaves what the class suggested standing.
-  That is the shape of [`D-KNW-043`](knw-043-a-rule-about-what-an-api-may-be-used-for-carries-its-strength-and-its-source.md)
+  That is the shape of
+  [`D-KNW-043`](knw-043-a-rule-about-what-an-api-may-be-used-for-carries-its-strength-and-its-source.md)
   read from the other side: there the corpus flattened two neighbouring APIs
   into one strength, here it stated one and said nothing about the third.
 - The general rule the feedback proposed is inverted rather than adopted. It

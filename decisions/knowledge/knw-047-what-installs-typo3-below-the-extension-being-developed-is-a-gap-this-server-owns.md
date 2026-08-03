@@ -26,8 +26,8 @@ time.
   `appliesTo(6) + text(238)`, and nothing else. The first is what an extension
   declares about itself, the second is where a script goes; neither says how an
   installation comes to be below the package.
-- Narrowing the query loses even that. `bin/cli hints:probe "TYPO3 extension
-  composer root package app-dir web-dir typo3/cms-cli local installation"`
+- Narrowing the query loses even that.
+  `bin/cli hints:probe "TYPO3 extension composer root package app-dir web-dir typo3/cms-cli local installation"`
   matches nothing at all, and 78 hints come back as the index.
 - The words are absent. `app-dir`, `vendor-dir`, `bin-dir` and `cms-cli` occur
   nowhere below `knowledge/` or `skills/`. `web-dir` occurs once, in
@@ -48,11 +48,11 @@ time.
 - Part of the third claim is answered already, and reachable. `public-assets`
   states that `Resources/Public/` of an installed package is published into the
   document root below `_assets/<hash>/`, and
-  `bin/cli hints:probe "where does a composer-installed extension land,
-  typo3conf/ext symlink or _assets"` reaches it at `appliesTo(7) + text(231)`.
-  What no hint says is the half the reporting session called worth stating
-  positively: that a root-package extension is loaded from the repository root,
-  so an empty `typo3conf/ext/` beside it is not a broken installation.
+  `bin/cli hints:probe "where does a composer-installed extension land, typo3conf/ext symlink or _assets"`
+  reaches it at `appliesTo(7) + text(231)`. What no hint says is the half the
+  reporting session called worth stating positively: that a root-package
+  extension is loaded from the repository root, so an empty `typo3conf/ext/`
+  beside it is not a broken installation.
 - The discovery side already knows the root package.
   [`D-DIS-001`](../discovery/dis-001-the-root-package-counts-as-an-installed-package.md)
   counts it among the installed packages and was confirmed against two fixtures
@@ -108,8 +108,8 @@ time.
 ## Wrong if
 
 - The `app-dir` message turns out to be conditional — on the installer major, or
-  on `web-dir` being set beside it. It is then one statement per line rather than
-  one statement, and the todo plans one.
+  on `web-dir` being set beside it. It is then one statement per line rather
+  than one statement, and the todo plans one.
 - The umbrella card lands a skill that owns the local environment. The statement
   belongs in that skill's material then, and these four cards should be folded
   into it under one `**Serves:**` line.
@@ -122,12 +122,12 @@ time.
 
 ## Since then
 
-The card this entry queued was worked on 2026-08-03, and the last **Assumed**
-is what it disproved: the network is reachable from here, so the layout was
-built rather than reasoned about and all three claims were read off it. The
-first **Wrong if** did not hold — the `app-dir` message is raised from the
-presence of the key alone, and every covered major requires the same installer
-major — so what landed is one statement per claim and unbound.
+The card this entry queued was worked on 2026-08-03, and the last **Assumed** is
+what it disproved: the network is reachable from here, so the layout was built
+rather than reasoned about and all three claims were read off it. The first
+**Wrong if** did not hold — the `app-dir` message is raised from the presence of
+the key alone, and every covered major requires the same installer major — so
+what landed is one statement per claim and unbound.
 [`D-KNW-053`](knw-053-the-root-package-layout-is-stated-from-an-installation-and-holds-across-the-covered-majors.md)
 carries the readings and the sentences,
 [`R-KNW-064`](../../requirements/knowledge/knw-064-the-composer-keys-that-install-typo3-beneath-an-extension-are-answered.md)

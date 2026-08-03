@@ -6,15 +6,16 @@ restsOn: [D-ANS-045]
 
 # R-ANS-020 — The Classes section covers the directory it names
 
-**`typo3_extension_scope` names every directory below `Classes/` and counts every
-PHP file under it, and nothing it reads off the file tree is presented as a
-registration.**
+**`typo3_extension_scope` names every directory below `Classes/` and counts
+every PHP file under it, and nothing it reads off the file tree is presented as
+a registration.**
 
 The answer promises the shape of an extension's `Classes/` directory. Thirteen
 directory names were recognised and anything else was dropped — not reported
 under another kind, not counted in a total, absent. A caller who checks the
-section against `find` got a different answer and concluded the section is wrong,
-which is [`D-ANS-008`](../../decisions/answers/ans-008-a-number-a-reader-cannot-reproduce-is-read-as-wrong.md)
+section against `find` got a different answer and concluded the section is
+wrong, which is
+[`D-ANS-008`](../../decisions/answers/ans-008-a-number-a-reader-cannot-reproduce-is-read-as-wrong.md)
 one level up: there it was a number nobody could reproduce, here it is the list.
 
 The same holds for what this answer states with no declaration behind it.
@@ -34,7 +35,7 @@ asking about. Measured against `.checkouts/14.3` the same day, `core` reports
 ## Held by
 
 - `ProjectTest::everyDirectoryBelowClassesIsInTheAnswer` — the first half. Every
-  directory below `Classes/` is named, a PHP file lying directly in it is counted
-  where it lies, and the total is the number `find` gives.
+  directory below `Classes/` is named, a PHP file lying directly in it is
+  counted where it lies, and the total is the number `find` gives.
 - `ProjectTest::aFluidRootIsRenderedAsADirectoryRatherThanAsADeclaration` — the
   second half: the line says the directory is shipped rather than declared.

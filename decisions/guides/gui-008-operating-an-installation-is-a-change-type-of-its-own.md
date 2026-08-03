@@ -17,15 +17,13 @@ message — for work that writes no file.
 ## Evidence
 
 - `feedback/2026-08-03-154508`, re-run on 2026-08-03 in this repository with the
-  query it states: `task="Boot up a TYPO3 project locally for the first time
-  from a fresh clone: install dependencies, start the local environment, import
-  the demo database and fileadmin, build frontend assets, create a backend user,
-  verify the site responds"`, `changeType="unknown"`, no area and no paths. What
-  comes back is what the report says, item for item — "Confirm the target TYPO3
-  core branch and issue context", "Keep the patch focused on the stated task",
-  "Add or update the narrowest useful test coverage", and the commit-message
-  step, closing a list of five conditional items that are the `typo3 setup`
-  command's.
+  query it states:
+  `task="Boot up a TYPO3 project locally for the first time from a fresh clone: install dependencies, start the local environment, import the demo database and fileadmin, build frontend assets, create a backend user, verify the site responds"`,
+  `changeType="unknown"`, no area and no paths. What comes back is what the
+  report says, item for item — "Confirm the target TYPO3 core branch and issue
+  context", "Keep the patch focused on the stated task", "Add or update the
+  narrowest useful test coverage", and the commit-message step, closing a list
+  of five conditional items that are the `typo3 setup` command's.
 - One needle fired, and it is a weak one: `install`, of `installation-setup`. It
   matched the phrase `install dependencies`, which is Composer's install and not
   TYPO3's. `Text::containsWord()` matches inside a word, so the same needle also
@@ -42,10 +40,10 @@ message — for work that writes no file.
   it" — two intents asking the caller for a fact the enum has no way to state.
 - `bin/cli feedback:list` on 2026-08-03: 29 open, and five of them are tasks
   that operate an installation rather than change one. Two from
-  `/home/benji/projects/site-demo-typo3-org` — this one and
-  `2026-08-03-154501` — and three from `/home/benji/projects/ext-guidedtour`,
-  `2026-08-03-162826`, `-162836` and `-162858`, which install, seed and run a
-  local instance and name `typo3_task_guide` as a tool they called.
+  `/home/benji/projects/site-demo-typo3-org` — this one and `2026-08-03-154501`
+  — and three from `/home/benji/projects/ext-guidedtour`, `2026-08-03-162826`,
+  `-162836` and `-162858`, which install, seed and run a local instance and name
+  `typo3_task_guide` as a tool they called.
 - `D-GUI-006` is the same failure in its first shape, and its own words are what
   this one runs into: `audit` is "the one type whose rules are stated
   elsewhere", the only value on the enum that changes nothing, and it asks for
@@ -106,10 +104,10 @@ message — for work that writes no file.
 
 ## Wrong if
 
-- A brief comes back without the patch steps for work that does change
-  something — "fix the deploy hook so the import runs" is the form it would
-  take. The answer is then the one `D-GUI-006`'s **Wrong if** names: the needle
-  or the value carries a condition, rather than the shape being given up.
+- A brief comes back without the patch steps for work that does change something
+  — "fix the deploy hook so the import runs" is the form it would take. The
+  answer is then the one `D-GUI-006`'s **Wrong if** names: the needle or the
+  value carries a condition, rather than the shape being given up.
 - The narrowed `install` needle stops reaching a task that really does create an
   installation. `feedback/2026-08-03-162826` — installing TYPO3 unattended from
   a shell script — is the task to measure it against.
@@ -137,10 +135,10 @@ The terms entry is the half that could not be taken as decided, and it is empty.
 `CHANGE_TYPE_TERMS` reaches the domains the brief reports, and with them its
 checks and its next lookups; the hints are matched by `Hints::find()`, which
 detects the domains it selects by from the paths and the task text and never
-sees the change type. Measured on the reported call with `frontend build
-sitepackage`: the four hints came back identical, and the brief moved to
-`buildCss`, `lintScss` and `typo3_component_lookup`, which is what writes
-backend markup. So the hint half of `feedback/2026-08-03-154508` is open, and
-what it needs is a statement about the subject rather than a domain signal —
+sees the change type. Measured on the reported call with
+`frontend build sitepackage`: the four hints came back identical, and the brief
+moved to `buildCss`, `lintScss` and `typo3_component_lookup`, which is what
+writes backend markup. So the hint half of `feedback/2026-08-03-154508` is open,
+and what it needs is a statement about the subject rather than a domain signal —
 which is what the cards behind `D-SKL-012` hold. That feedback is trimmed to it
 rather than archived.

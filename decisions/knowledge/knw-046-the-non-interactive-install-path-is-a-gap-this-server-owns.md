@@ -19,10 +19,10 @@ report afterwards and left to find out what the command takes.
 ## Evidence
 
 - The miss reproduces on the server as it is now. `typo3_task_guide` with the
-  feedback's own task recognises the intent — *Setting an installation up* —
-  and its checklist carries the four credential lines and the `--create-site`
-  caveat for a sitepackage, and no line about drivers, environment variables or
-  a re-run. `typo3_hint_lookup` with the feedback's query matches no hint at all
+  feedback's own task recognises the intent — *Setting an installation up* — and
+  its checklist carries the four credential lines and the `--create-site` caveat
+  for a sitepackage, and no line about drivers, environment variables or a
+  re-run. `typo3_hint_lookup` with the feedback's query matches no hint at all
   and falls back to the id index. `bin/cli hints:probe` on the same query
   reaches `sitepackage-initial-content`, `datahandler-seeding`,
   `environment-runtime-readers` and `fal-storages-drivers`, none of which is
@@ -32,20 +32,21 @@ report afterwards and left to find out what the command takes.
   initialisation file counts as a distribution, that setup then skips its own
   site creation, and that the two options exclude each other. It is titled and
   worded for an extension author shipping content, and `installation-setup`
-  reaches it only as a pointer in its `tools` list. What it does not say is
-  what the feedback paid for: the consequence is that no site configuration is
+  reaches it only as a pointer in its `tools` list. What it does not say is what
+  the feedback paid for: the consequence is that no site configuration is
   written, so an installation seeded this way cannot be told its own URL.
 - Every claim the feedback makes about TYPO3 holds at 14.3, read in
   `.checkouts/14.3`. `SetupCommand::$connectionLabels` keys the accepted
-  connection types `mysqli, mysqliSocket, pdoMysql, pdoMysqlSocket, postgres,
-  sqlite`, and `SetupDatabaseService` line 678 sets
-  `sqliteManualConfigurationOptions` to `driver => pdo_sqlite` — so the value
-  written to `settings.php` is not a value the option accepts. The same service
-  calculates the path itself, `var/sqlite/cms-<hex>.sqlite`. The two options
-  throw `1775034289` together, warn *have no effect, when distributions are
-  already active* where `$distributions['active']` is not empty, and
-  `getAvailableDistributions()` classifies by `PackageManager::isPackageActive()`.
-  The database validator throws `1669747200` where `tables !== 0`.
+  connection types
+  `mysqli, mysqliSocket, pdoMysql, pdoMysqlSocket, postgres, sqlite`, and
+  `SetupDatabaseService` line 678 sets `sqliteManualConfigurationOptions` to
+  `driver => pdo_sqlite` — so the value written to `settings.php` is not a value
+  the option accepts. The same service calculates the path itself,
+  `var/sqlite/cms-<hex>.sqlite`. The two options throw `1775034289` together,
+  warn *have no effect, when distributions are already active* where
+  `$distributions['active']` is not empty, and `getAvailableDistributions()`
+  classifies by `PackageManager::isPackageActive()`. The database validator
+  throws `1669747200` where `tables !== 0`.
 - The order the feedback verified is one command longer than it needs to be.
   `SetupCommand` calls `setupExtensions()` as its last step, which is what
   `sitepackage-initial-content` already states, so `typo3 extension:setup` after
@@ -70,10 +71,10 @@ report afterwards and left to find out what the command takes.
   instance up is what six of them are about, from two directories, plus two in
   `feedback/archive/`. The specific gap is one session's, and the domain it sits
   in is not.
-- The three cards its siblings carry stay where they are. `2026-08-03-162836`
-  is the impexp base rewrite and `2026-08-03-162858` is DDEV's settings
-  management, which are different subjects with different evidence, and both are
-  in hand elsewhere.
+- The three cards its siblings carry stay where they are. `2026-08-03-162836` is
+  the impexp base rewrite and `2026-08-03-162858` is DDEV's settings management,
+  which are different subjects with different evidence, and both are in hand
+  elsewhere.
 
 ## Assumed
 
@@ -105,29 +106,29 @@ report afterwards and left to find out what the command takes.
 
 The reading this was queued for, on all four covered checkouts. The mechanics
 are one flat statement: `SetupCommand::$connectionLabels` keys the same six
-connection types on `12.4`, `13.4`, `14.3` and `main`,
-`getDriverOptions()` sets `sqliteManualConfigurationOptions` to `pdo_sqlite` and
-nothing else on all four, the sqlite path is calculated into `var/sqlite/` by the
-same lines, and the `1669747200` validator is unchanged. So the first **Wrong
-if** does not hold and the assumption the entry rests on is confirmed.
+connection types on `12.4`, `13.4`, `14.3` and `main`, `getDriverOptions()` sets
+`sqliteManualConfigurationOptions` to `pdo_sqlite` and nothing else on all four,
+the sqlite path is calculated into `var/sqlite/` by the same lines, and the
+`1669747200` validator is unchanged. So the first **Wrong if** does not hold and
+the assumption the entry rests on is confirmed.
 
 The two site options are the half that moved, which the entry did not expect.
 `12.4` and `13.4` have no `--distribution` option, no `$distributions['active']`
 check and no `setupExtensions()` call, so `--create-site` writes the root page
-and the site configuration there whatever else is installed. `installation-setup`
-carries that as `until: 13` against the `since: 14` statement about the inert
-options, and the same reading bound one statement of
+and the site configuration there whatever else is installed.
+`installation-setup` carries that as `until: 13` against the `since: 14`
+statement about the inert options, and the same reading bound one statement of
 `sitepackage-initial-content` that was stated flat and is false on both LTS
 branches — that the setup command runs the extension setup as its last step.
 
 One imprecision stays and is worth naming. The option arrived inside the covered
-14 branch, in `926b9a7`, tagged first as `v14.3.0`, and `since` carries a major —
-so a caller on an earlier 14 is told about an option that release does not have.
-The corpus binds by major because `knowledge/versions.json` covers one branch per
-major, and expressing this would be a change to that model rather than to this
-entry.
+14 branch, in `926b9a7`, tagged first as `v14.3.0`, and `since` carries a major
+— so a caller on an earlier 14 is told about an option that release does not
+have. The corpus binds by major because `knowledge/versions.json` covers one
+branch per major, and expressing this would be a change to that model rather
+than to this entry.
 
-The third **Wrong if** was measured rather than assumed. `bin/cli hints:probe` on
-the feedback's own query now returns `installation-setup`, and
+The third **Wrong if** was measured rather than assumed. `bin/cli hints:probe`
+on the feedback's own query now returns `installation-setup`, and
 `typo3_task_guide` with the feedback's own task carries the hint beside the
 intent it already recognised.

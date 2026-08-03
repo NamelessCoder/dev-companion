@@ -171,16 +171,16 @@ text and in `deprecatedFiles`.
 
 The second **Wrong if** did not fire, and what arrived instead is its opposite.
 Nothing read the block as a compatibility verdict. What the session could not
-read is which files were looked at. `ext_tables.php` is checked by the same
-call and did not fire because the extension ships none, and the report asks for
-that check to be built — *ext_tables.php in v14.3, #109438, is the obvious
-sibling* — with *the audited package happened not to ship one, and confirming
-that took a separate look* beside it. The confirmation was in the answer it
-already had: `ROOT_FILES` in `src/Installation/Extension.php` carries
-`ext_tables.php`, so the `Registration files:` line lists it wherever it exists.
-Its own quotation dates the copy it ran against — the `ext_emconf.php` cost
-sentence exists only since `a886a2d` of 2026-08-02, which is the commit that
-checks both files — so the sibling it asks for was in the answer it was reading.
+read is which files were looked at. `ext_tables.php` is checked by the same call
+and did not fire because the extension ships none, and the report asks for that
+check to be built — *ext_tables.php in v14.3, #109438, is the obvious sibling* —
+with *the audited package happened not to ship one, and confirming that took a
+separate look* beside it. The confirmation was in the answer it already had:
+`ROOT_FILES` in `src/Installation/Extension.php` carries `ext_tables.php`, so
+the `Registration files:` line lists it wherever it exists. Its own quotation
+dates the copy it ran against — the `ext_emconf.php` cost sentence exists only
+since `a886a2d` of 2026-08-02, which is the commit that checks both files — so
+the sibling it asks for was in the answer it was reading.
 
 One sentence is what both turn on. The block ends *typo3_changelog_lookup is
 what answers that — these two entries whole*, which names a set of two on an
@@ -197,15 +197,15 @@ and why.
 
 ## Since then
 
-Step 4 is done. Two shapes were open and the todo left the choice to the tool: the closing
-sentence naming both files, or a line per file that was checked and did not
-fire. It is the sentence, and the reason is the second **Wrong if** again. A
-line reading *ext_tables.php — checked, not shipped* stands under a heading that
-says *Deprecated registration files*, where it is a rendered "none" at file
-granularity — the thing this entry keeps out of the empty case, moved one level
-down and back into the block. The sentence states the coverage once, as a
-property of the check rather than a verdict on a file, and what the reporting
-session went and confirmed by hand was the coverage, not a bullet.
+Step 4 is done. Two shapes were open and the todo left the choice to the tool:
+the closing sentence naming both files, or a line per file that was checked and
+did not fire. It is the sentence, and the reason is the second **Wrong if**
+again. A line reading *ext_tables.php — checked, not shipped* stands under a
+heading that says *Deprecated registration files*, where it is a rendered "none"
+at file granularity — the thing this entry keeps out of the empty case, moved
+one level down and back into the block. The sentence states the coverage once,
+as a property of the check rather than a verdict on a file, and what the
+reporting session went and confirmed by hand was the coverage, not a bullet.
 
 The block now closes *Two files are checked, ext_tables.php and ext_emconf.php,
 so one of them missing from this block was looked at rather than skipped: the

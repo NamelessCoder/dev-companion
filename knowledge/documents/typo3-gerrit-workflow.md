@@ -134,11 +134,12 @@ commit made in a worktree and writes its `Change-Id` there;
 `git rev-parse --git-path hooks` names the directory it is taken from.
 
 What decides the push is the branch point rather than the worktree: what goes up
-is `HEAD` and every ancestor the target branch does not already have. A worktree branched off an up-to-date `origin/main` sends one
-commit, one branched off a local `main` that is behind sends what lies between
-as well, and `git log --oneline origin/main..HEAD` is what says which of the two
-this is. Where a worktree does change the answer is the checks: a suite that
-takes its file list from git can report success having inspected nothing in one.
+is `HEAD` and every ancestor the target branch does not already have. A worktree
+branched off an up-to-date `origin/main` sends one commit, one branched off a
+local `main` that is behind sends what lies between as well, and
+`git log --oneline origin/main..HEAD` is what says which of the two this is.
+Where a worktree does change the answer is the checks: a suite that takes its
+file list from git can report success having inspected nothing in one.
 
 ## Update an Existing Patch
 

@@ -99,16 +99,18 @@ rather than advice, and it carries no `since` — the reading is
 and what must keep holding is `R-KNW-050`.
 
 What was not fixed is the routing. The feedback's own wording, "backend content
-preview should show an abstract view of the assigned related data", still matches
-nothing at all — no candidate scores, this hint included, because the query names
-no subject the corpus spells. Two `appliesTo` phrasings tried against that wording
-changed nothing and were taken back out. It is `D-ANS-022`'s ground rather than
-this entry's, and the first evidence bullet above already recorded it.
+preview should show an abstract view of the assigned related data", still
+matches nothing at all — no candidate scores, this hint included, because the
+query names no subject the corpus spells. Two `appliesTo` phrasings tried
+against that wording changed nothing and were taken back out. It is
+`D-ANS-022`'s ground rather than this entry's, and the first evidence bullet
+above already recorded it.
 
 ## Revoked on 2026-08-03
 
 By the work this entry queued. Its statement says the rule is "missing from it",
-and it is on `content-elements` now, so `confirmed` over that sentence would read
-as a claim about a gap that is closed. What holds from here is `D-KNW-037`, whose
-**Wrong if** is a different list: what can go wrong now is a statement in the
-corpus going false as the core's own previews move, not a rule nobody had written.
+and it is on `content-elements` now, so `confirmed` over that sentence would
+read as a claim about a gap that is closed. What holds from here is `D-KNW-037`,
+whose **Wrong if** is a different list: what can go wrong now is a statement in
+the corpus going false as the core's own previews move, not a rule nobody had
+written.

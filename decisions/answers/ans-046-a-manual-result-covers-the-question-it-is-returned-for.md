@@ -22,14 +22,15 @@ went to its vendor tree for the answer.
   `DocumentationLookup::answer()` in this worktree, `targetVersion: 14`. All six
   results reproduce, in the order reported and with the same `matched` fields.
   The account of what came back is accurate to the page.
-- Its account of the mechanism is accurate in the part that decides the
-  ranking and wrong in one word. Matching is not substring: `TermSearch` reduces
-  a query word to a stem and looks for it at a word boundary, which is why
-  `templa` and `overri` are what the answer reports.
-- Asked one query at a time at `limit: 10`, `layout root paths login screen
-  override` ranks *LoginProvider* ninth of the 1419 pages the four manuals index
-  at 14.3. Each of the six above it carries exactly one of the six terms —
-  `path`, `root`, `overri`, and `layout` three times.
+- Its account of the mechanism is accurate in the part that decides the ranking
+  and wrong in one word. Matching is not substring: `TermSearch` reduces a query
+  word to a stem and looks for it at a word boundary, which is why `templa` and
+  `overri` are what the answer reports.
+- Asked one query at a time at `limit: 10`,
+  `layout root paths login screen override` ranks *LoginProvider* ninth of the
+  1419 pages the four manuals index at 14.3. Each of the six above it carries
+  exactly one of the six terms — `path`, `root`, `overri`, and `layout` three
+  times.
 - *LoginProvider* is the page that answers that query.
   `ApiOverview/Backend/LoginProvider.html` says extensions extend the template,
   layout and partial lookup paths in the provider, and that the template must
@@ -55,11 +56,11 @@ went to its vendor tree for the answer.
   weight. The coverage is not missing here: `TermSearch::score()` returns it as
   its second value and `lookup()` discards it in the destructuring.
 - Measured over the same 1419 pages at the rule search's own `MIN_COVERAGE` of
-  0.5: `Fluid template file naming convention v14` and `layout root paths login
-  screen override` clear it nowhere, and `fluid.html file extension templates`
-  clears it once. The queries the entries above were built on survive —
-  `record objects` clears it 15 times with *Record objects* at 1.00, and
-  `login provider` 3 times with *LoginProvider* at 1.00.
+  0.5: `Fluid template file naming convention v14` and
+  `layout root paths login screen override` clear it nowhere, and
+  `fluid.html file extension templates` clears it once. The queries the entries
+  above were built on survive — `record objects` clears it 15 times with *Record
+  objects* at 1.00, and `login provider` 3 times with *LoginProvider* at 1.00.
 - `Search\Subsets::largestReaching()` over the same index and the same matcher
   offers `layout login` for the third query, `naming conven` and `fluid file`
   among four for the second.
@@ -73,10 +74,10 @@ went to its vendor tree for the answer.
 
 - **`D-ANS-021`'s first **Wrong if** fired, and the lever it named is not the
   one.** That entry expected the index itself to be next, and page bodies to be
-  what a table of contents cannot carry. Two of these three queries have no
-  page body to match either: the manual shows the new file extension in 49
-  captions and explains it nowhere, so body text would have returned 49 pages
-  that answer nothing.
+  what a table of contents cannot carry. Two of these three queries have no page
+  body to match either: the manual shows the new file extension in 49 captions
+  and explains it nowhere, so body text would have returned 49 pages that answer
+  nothing.
 - **The suggestion is rejected on its premise and taken on what it is after.**
   Its second half is the one this evidence supports: where nothing clears a
   threshold, say so rather than return the best six collisions.
@@ -103,9 +104,9 @@ went to its vendor tree for the answer.
 ## Assumed
 
 - That the floor can be set where it drops these and keeps what is already held.
-  Measured against the live 14.3 index above; the fixtures in `DocumentationTest`
-  are corpora of a few pages, where a term's weight and a page's dilution do not
-  behave as they do over 1419.
+  Measured against the live 14.3 index above; the fixtures in
+  `DocumentationTest` are corpora of a few pages, where a term's weight and a
+  page's dilution do not behave as they do over 1419.
 - That a caller told the manual documents something nowhere asks the changelog.
   `D-ANS-043` assumed the same about its corpus sentence, and nothing here
   measures it either.
@@ -142,37 +143,39 @@ four manuals — with the coverage `TermSearch::score()` returns divided by
 `array_sum($weights)`, which is the share `Documents::search()` compares.
 
 The four numbers above reproduce. `Fluid template file naming convention v14`
-clears 0.5 nowhere, its best being the collision *Naming* at 0.40; `layout root
-paths login screen override` clears nowhere at a best of 0.22; `fluid.html file
-extension templates` clears once at 0.60; `record objects` clears 15 times with
-*Record objects* at 1.00 and `login provider` 3 times with *LoginProvider* at
-1.00.
+clears 0.5 nowhere, its best being the collision *Naming* at 0.40;
+`layout root paths login screen override` clears nowhere at a best of 0.22;
+`fluid.html file extension templates` clears once at 0.60; `record objects`
+clears 15 times with *Record objects* at 1.00 and `login provider` 3 times with
+*LoginProvider* at 1.00.
 
 What was not measured is the rest of the bullet those last two came from. Three
 queries reach *LoginProvider* and the floor leaves one: `login provider` at
 1.00, `login screen layout` at 0.34, and `login form template`, where nothing
 clears 0.5 at all. Coverage is the share of the query's weight a page carries,
 and that page carries one word of each of those two three-word queries. So a
-floor that returns them is at most 0.34, and a floor that empties `Fluid
-template file naming convention v14` is above 0.40. No value does both.
+floor that returns them is at most 0.34, and a floor that empties
+`Fluid template file naming convention v14` is above 0.40. No value does both.
 
 That is the wrong-measure case in three words rather than in two. Over a corpus
 whose ordinary field is 2.66 words, the page that answers a three-word question
 covers a third of it, and the collisions sit in the same band.
 
-The offer does not carry what the floor drops. `layout root paths login screen
-override` offers `layout login`, which returns *Backend layout*, *Backend
-layouts* and *layout* — three of the six collisions the feedback reported, and
-not *LoginProvider*. `login screen layout` offers `login layout` and returns the
-same three. `Fluid template file naming convention v14` offers `fluid file`,
-which clears the floor 23 times, so the narrowed re-query is broader than the
-query that was narrowed.
+The offer does not carry what the floor drops.
+`layout root paths login screen override` offers `layout login`, which returns
+*Backend layout*, *Backend layouts* and *layout* — three of the six collisions
+the feedback reported, and not *LoginProvider*. `login screen layout` offers
+`login layout` and returns the same three.
+`Fluid template file naming convention v14` offers `fluid file`, which clears
+the floor 23 times, so the narrowed re-query is broader than the query that was
+narrowed.
 
 Two queries `DocumentationTest` already holds go with them, and both rank their
-page first today. `TCA inline foreign_field foreign_sortby localization
-children` returns *IRRE / inline* at 0.43, and `FunctionalTestCase
-executeFrontendSubRequest CSV fixture TYPO3 14` returns *Functional tests* at
-0.19.
+page first today.
+`TCA inline foreign_field foreign_sortby localization children` returns *IRRE /
+inline* at 0.43, and
+`FunctionalTestCase executeFrontendSubRequest CSV fixture TYPO3 14` returns
+*Functional tests* at 0.19.
 
 Nothing is built. What a floor at 0.5 takes is a query written the way
 `D-ANS-021` tells a caller to write one, answered as "the manual has nothing" —

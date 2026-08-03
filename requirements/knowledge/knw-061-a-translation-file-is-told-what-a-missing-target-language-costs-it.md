@@ -12,11 +12,11 @@ discarded.**
 
 The labels then render in the source wording, and nothing is raised, logged or
 deprecated. The rule that governs such a file today says what a correct one
-declares. That
-is enough to write one and not enough to recognise one that is already wrong,
-which is the direction an audit reads a rule in. So the statement is phrased as
-the defect and names what is observed — English in a German backend, a
-maintained translation file in the package, no error and no log line anywhere.
+declares. That is enough to write one and not enough to recognise one that is
+already wrong, which is the direction an audit reads a rule in. So the statement
+is phrased as the defect and names what is observed — English in a German
+backend, a maintained translation file in the package, no error and no log line
+anywhere.
 
 The version boundary is the second half, and the statement is wrong without it.
 Up to 13.4 the same file was read correctly, because the parser decided on the

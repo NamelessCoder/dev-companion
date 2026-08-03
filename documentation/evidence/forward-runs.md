@@ -40,16 +40,15 @@ one is carried out.
    transcript carries the other half of the same **Wrong if**: a lookup that
    answers `answeredBy: packages` against an installation that was up and
    configured is a boot that did not finish, and a 90-second gap in front of it
-   is the timeout.
-6. Grade against **What has to come out of it** and **How it fails**, and write
-   the judgment and its evidence into the recorded run, together with the skills
-   that activated and the tools the session actually called. A call is the name
-   **and** the arguments it was made with, copied from the transcript, `{}`
-   where the tool takes none: the name says a lookup happened, and what it was
-   asked is most of what the judgment turns on — one query per surface or one
-   broad one, which version a lookup was given, whether a returned id was
-   followed. `bin/cli scenarios:check` — and `composer test` — then hold that
-   run to its review.
+   is the timeout. 6. Grade against **What has to come out of it** and **How it
+   fails**, and write the judgment and its evidence into the recorded run,
+   together with the skills that activated and the tools the session actually
+   called. A call is the name **and** the arguments it was made with, copied
+   from the transcript, `{}` where the tool takes none: the name says a lookup
+   happened, and what it was asked is most of what the judgment turns on — one
+   query per surface or one broad one, which version a lookup was given, whether
+   a returned id was followed. `bin/cli scenarios:check` — and `composer test` —
+   then hold that run to its review.
 
 ## Judging one
 

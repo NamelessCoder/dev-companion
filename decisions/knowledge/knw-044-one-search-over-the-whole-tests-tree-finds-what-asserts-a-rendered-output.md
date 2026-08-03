@@ -20,10 +20,10 @@ reaches them.
 ## Evidence
 
 - Measured on `.checkouts/main` at `c71b2bdb2f`, against the 26 files
-  `feedback/2026-08-02-145003` had to touch. Grepping
-  `typo3/sysext/*/Tests/` for `fileadmin/|typo3temp/assets|Resources/Public/`
-  reaches 24 of them, 188 files to read. Restricted to `--include='*Test.php'`
-  the same pattern reaches 21, and 91 files — it loses all three
+  `feedback/2026-08-02-145003` had to touch. Grepping `typo3/sysext/*/Tests/`
+  for `fileadmin/|typo3temp/assets|Resources/Public/` reaches 24 of them, 188
+  files to read. Restricted to `--include='*Test.php'` the same pattern reaches
+  21, and 91 files — it loses all three
   `backend/Tests/Functional/Template/Fixtures/*CopyToClipboard.php`, which are
   where those expectations actually are.
 - The two it never reaches hold no expectation. `ShortcutButtonTest` has a
@@ -72,9 +72,8 @@ reaches them.
 - `D-KNW-040` is revoked rather than confirmed. Its **Wrong if** naming the
   single search is what happened, and its statement — that this is missing from
   the server — stopped describing the server with this commit.
-- No tool is built, which `D-KNW-040` decided and this reading does not
-  disturb: the search runs in the caller's checkout and this server does not
-  read it.
+- No tool is built, which `D-KNW-040` decided and this reading does not disturb:
+  the search runs in the caller's checkout and this server does not read it.
 
 ## Assumed
 

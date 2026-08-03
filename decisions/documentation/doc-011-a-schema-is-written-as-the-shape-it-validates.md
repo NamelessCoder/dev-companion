@@ -27,10 +27,10 @@ a caller reads a schema for.
 ## Decided
 
 - One key per field, the fields of an object or of a list entry nested under it,
-  and the value is the type. `[string]` is a list of strings; a `- ` opens a list
-  of objects.
-- The description is a comment above the key rather than behind it. Behind it,
-  a sentence pushes the shape off the right of the block and the reader loses the
+  and the value is the type. `[string]` is a list of strings; a `- ` opens a
+  list of objects.
+- The description is a comment above the key rather than behind it. Behind it, a
+  sentence pushes the shape off the right of the block and the reader loses the
   column the keys line up in.
 - A field carries `# optional` where it may be absent, and nothing where it is
   required. Required is the promise a client validates against, so it is the
@@ -45,8 +45,8 @@ a caller reads a schema for.
 ## Assumed
 
 - A reader takes `name: string` as a type rather than as a value. Nothing was
-  measured about that; the alternative is a second column of `(string,
-  required)` annotations, which is the list this replaced.
+  measured about that; the alternative is a second column of
+  `(string, required)` annotations, which is the list this replaced.
 
 ## Wrong if
 

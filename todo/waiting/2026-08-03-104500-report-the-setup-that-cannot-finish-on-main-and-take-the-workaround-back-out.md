@@ -62,9 +62,9 @@ Two call sites reach it:
 - `SetupCommand::selectAndImportDatabase()`, for every driver but `pdo_sqlite`,
   before anything is written. It catches the DBAL exception, prints *A database
   is required for the method:
-  `Doctrine\DBAL\Platforms\MySQL\MySQLMetadataProvider::__construct`* and returns
-  `Command::FAILURE`, so `vendor/bin/typo3 setup` cannot complete against MySQL
-  or MariaDB by any option it offers.
+  `Doctrine\DBAL\Platforms\MySQL\MySQLMetadataProvider::__construct`* and
+  returns `Command::FAILURE`, so `vendor/bin/typo3 setup` cannot complete
+  against MySQL or MariaDB by any option it offers.
 - `InstallerController::showDatabaseSelectAction()`, which catches it into
   `errors` and renders the step with an empty database list, so the browser
   installer offers no database to pick.

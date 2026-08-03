@@ -33,35 +33,34 @@ somebody else's checkout with nothing to report it.
    reading are acts, and what they produce goes into the assessment before any
    code:
    - **Read the closure reason and the target version for what the conversation
-     decided, and write that down rather than what the report is worth.**
-     Closed for lack of feedback after a long silence is as consistent with an
-     answer the reporter could not use as with the reporter giving up. A target
-     version says which branch a fix was still expected on. Say what the closure
-     settles and what it leaves open; a closed issue is not a finding that the
-     need is absent.
+     decided, and write that down rather than what the report is worth.** Closed
+     for lack of feedback after a long silence is as consistent with an answer
+     the reporter could not use as with the reporter giving up. A target version
+     says which branch a fix was still expected on. Say what the closure settles
+     and what it leaves open; a closed issue is not a finding that the need is
+     absent.
    - **Where a comment names an alternative, write out what the alternative
      drops against what the reported code did.** Name the arguments and the
      behaviour the reported code had and the replacement does not. An
      alternative closes an issue only if it does the same work, and what it
-     drops is usually the capability the reporter was reaching for.
-4. `typo3_gerrit_lookup` with the same issue number, **before any code is
-   written**. Its cheapest outcome is the one that cancels the work and it costs
-   one call. An answer of nothing is a result, and a narrow one: the review
-   server is read without a credential, so it says that nothing public names the
-   issue rather than that nobody has fixed it, and a change pushed unlisted is
-   invisible to it.
-5. **Verify in the checkout every rule the issue quotes.** A rule about what an
-   API may or may not be used for is a claim, the way a path or an identifier
-   is. Read the class it names, its docblock and the core's own tests for the
-   form under dispute, and say which of the three carries the rule. Enforced in
-   code, warned about as fragile and advised in prose are three different
-   claims, and two neighbouring APIs regularly make different ones. Carry it at
-   the strength its own source puts on it. An assessment that hardens "may
-   change in a future version" into "must not" argues the patch away on a rule
-   nothing holds.
-6. **Reproduce against the branch you are fixing**, not against the version in
-   the report. Half of what a stale issue describes is usually gone, and the
-   half that remains is the patch.
+     drops is usually the capability the reporter was reaching for. 4.
+     `typo3_gerrit_lookup` with the same issue number, **before any code is
+     written**. Its cheapest outcome is the one that cancels the work and it
+     costs one call. An answer of nothing is a result, and a narrow one: the
+     review server is read without a credential, so it says that nothing public
+     names the issue rather than that nobody has fixed it, and a change pushed
+     unlisted is invisible to it. 5. **Verify in the checkout every rule the
+     issue quotes.** A rule about what an API may or may not be used for is a
+     claim, the way a path or an identifier is. Read the class it names, its
+     docblock and the core's own tests for the form under dispute, and say which
+     of the three carries the rule. Enforced in code, warned about as fragile
+     and advised in prose are three different claims, and two neighbouring APIs
+     regularly make different ones. Carry it at the strength its own source puts
+     on it. An assessment that hardens "may change in a future version" into
+     "must not" argues the patch away on a rule nothing holds. 6. **Reproduce
+     against the branch you are fixing**, not against the version in the report.
+     Half of what a stale issue describes is usually gone, and the half that
+     remains is the patch.
 
 Whether that reproduction can be a test is a property of what you are changing,
 and `typo3_test_run_guide` with the paths you are about to touch is what says

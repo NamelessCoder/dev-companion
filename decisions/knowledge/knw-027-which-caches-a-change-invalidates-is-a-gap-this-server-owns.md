@@ -114,8 +114,8 @@ partial or layout is written under a new identifier and the stale entry is
 simply never read again. The deletion the feedback reported reached the one
 cache that was already correct. What answers with the old page is the `pages`
 cache: `PrepareTypoScriptFrontendRendering` builds its identifier from the page
-id, type, user groups, site, language base, route arguments, `sys_template`
-rows and the TypoScript condition lists, and no template file enters it. So the
+id, type, user groups, site, language base, route arguments, `sys_template` rows
+and the TypoScript condition lists, and no template file enters it. So the
 statement is a correction *and* a command, and it sits beside the
 `sendCacheHeaders` one as this entry said it would.
 
@@ -127,8 +127,8 @@ it is.
 Both **Assumed** resolved. The answer is one hint and several statements rather
 than one sentence — a template change needs group `pages` for the rendered page
 and nothing for itself, TypoScript needs `pages` where it is a file and nothing
-where it is a record, TCA needs `system`. And `var/cache/code/fluid_template`
-is the path: `SimpleFileBackend::setCache()` picks `code` over `data` on the
+where it is a record, TCA needs `system`. And `var/cache/code/fluid_template` is
+the path: `SimpleFileBackend::setCache()` picks `code` over `data` on the
 frontend being a `PhpFrontend`, which `FluidTemplateCache` is.
 
 Two findings the entry did not anticipate, both in the statement. `di` is not a

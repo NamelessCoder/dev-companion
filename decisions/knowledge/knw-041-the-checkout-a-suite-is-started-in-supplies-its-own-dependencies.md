@@ -20,8 +20,8 @@ worktree starts without dependencies.
   `system-extension-boundaries`, `core-tests`, `fluid-viewhelpers` and
   `project-build-and-scripts`. None of them names `vendor/`, a worktree or an
   install.
-- `knowledge/test-suite-hints.json` offers 25 suites and `composerInstall` is not
-  one of them. Its `invocation.notes` say where the script is run and how
+- `knowledge/test-suite-hints.json` offers 25 suites and `composerInstall` is
+  not one of them. Its `invocation.notes` say where the script is run and how
   arguments reach the tool, and say nothing about what the directory has to hold
   first.
 - `knowledge/documents/typo3-core-scripts.md` has an *Install Dependencies*
@@ -30,8 +30,8 @@ worktree starts without dependencies.
   wants the branch's PHP, which is the condition `runTests.sh` exists to remove
   (`D-KNW-036`).
 - `.checkouts/main/.gitignore:55` is `/bin/*` and `:56` is `/vendor/*`. The same
-  two lines are `:58` and `:59` on 12.4. A worktree therefore starts with neither
-  directory, and git will never bring them.
+  two lines are `:58` and `:59` on 12.4. A worktree therefore starts with
+  neither directory, and git will never bring them.
 - `composerInstall` is a suite on every covered branch — 12.4, 13.4, 14.3 and
   main. On main it is `Build/Scripts/runTests.sh:1203` and it runs
   `composer install --no-progress --no-interaction` in the PHP container.
@@ -46,8 +46,10 @@ worktree starts without dependencies.
   signal `feedback:list` is read for.
 - Run on 2026-08-03 in a detached worktree of `.checkouts/typo3.git` at main's
   `c71b2bdb2f`, outside `.checkouts/`, with neither `vendor/` nor `bin/` in it.
-  `-s functional` on `typo3/sysext/fluid/Tests/Functional/ViewHelpers/ImageViewHelperTest.php`
-  printed `/usr/local/bin/docker-php-entrypoint: exec: line 9: bin/phpunit: not found`
+  `-s functional` on
+  `typo3/sysext/fluid/Tests/Functional/ViewHelpers/ImageViewHelperTest.php`
+  printed
+  `/usr/local/bin/docker-php-entrypoint: exec: line 9: bin/phpunit: not found`
   and `Result of functional … FAILURE`, exiting 127 — the report's message
   verbatim. `-s composerInstall` in the same directory reported SUCCESS in 11
   seconds, writing `vendor/`, `bin/` (with `bin/phpunit` in it) and a 47 MB

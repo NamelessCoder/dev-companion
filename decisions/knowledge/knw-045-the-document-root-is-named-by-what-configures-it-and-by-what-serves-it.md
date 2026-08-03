@@ -23,44 +23,44 @@ sentence.
 
 - The default is `public`. `typo3/cms-composer-installers` v5.0.2 — the version
   every Composer installation on this machine has locked — carries
-  `'web-dir' => 'public'` in `Config::$defaultConfig`, merges
-  `extra.typo3/cms` from the root package over it, and resets a `web-dir` that
-  is not below the Composer root back to the default with a warning. Where the
-  root package is `typo3/cms` itself the default becomes `.`, which is the core
-  checkout rather than a project. `InstallerScripts/EntryPoint` writes its
-  target to `$pluginConfig->get('web-dir') . '/' . $this->target`, so the
-  entry point lands in the same directory the setting names.
-- DDEV mounts the project directory there. Its documentation for the
-  performance settings says "DDEV mounts a fast Docker volume onto
-  `/var/www/html` inside the `web` container", and `docroot` is documented as
-  the "Relative path to the document root containing `index.php` or
-  `index.html`", which "DDEV will attempt to detect ... otherwise falling back
-  to the current directory". The TYPO3 quickstart configures
-  `ddev config --project-type=typo3 --docroot=public`. Read at DDEV v1.25.1,
-  the version installed here.
-- So the served directory is `/var/www/html/<docroot>` and not
-  `/var/www/html`. `site-new`, the project the feedback came out of, has
-  `type: typo3` and `docroot: public` in `.ddev/config.yaml`,
-  `extra.typo3/cms.web-dir` set to `public` in its `composer.json`, and a
-  `#ddev-generated` `.ddev/nginx_full/nginx-site.conf` headed "ddev typo3
-  config" whose server block is `root /var/www/html/public;`.
+  `'web-dir' => 'public'` in `Config::$defaultConfig`, merges `extra.typo3/cms`
+  from the root package over it, and resets a `web-dir` that is not below the
+  Composer root back to the default with a warning. Where the root package is
+  `typo3/cms` itself the default becomes `.`, which is the core checkout rather
+  than a project. `InstallerScripts/EntryPoint` writes its target to
+  `$pluginConfig->get('web-dir') . '/' . $this->target`, so the entry point
+  lands in the same directory the setting names.
+- DDEV mounts the project directory there. Its documentation for the performance
+  settings says "DDEV mounts a fast Docker volume onto `/var/www/html` inside
+  the `web` container", and `docroot` is documented as the "Relative path to the
+  document root containing `index.php` or `index.html`", which "DDEV will
+  attempt to detect ... otherwise falling back to the current directory". The
+  TYPO3 quickstart configures
+  `ddev config --project-type=typo3 --docroot=public`. Read at DDEV v1.25.1, the
+  version installed here.
+- So the served directory is `/var/www/html/<docroot>` and not `/var/www/html`.
+  `site-new`, the project the feedback came out of, has `type: typo3` and
+  `docroot: public` in `.ddev/config.yaml`, `extra.typo3/cms.web-dir` set to
+  `public` in its `composer.json`, and a `#ddev-generated`
+  `.ddev/nginx_full/nginx-site.conf` headed "ddev typo3 config" whose server
+  block is `root /var/www/html/public;`.
 - That is `D-KNW-026`'s first **Wrong if**. The file the session wrote,
   `/var/www/html/check_record.php`, sat at the project root, one directory above
   the document root, and nothing served it.
 - The clause had moved as well. It is on `project-build-and-scripts` in
   `knowledge/hints/project.json` since the refiling in
   [`D-KNW-032`](knw-032-the-corpus-is-filed-by-question-and-two-splits-were-taken-back.md),
-  not on `project-repository-layout` in `knowledge/architecture-hints/general.json`
-  where `D-KNW-026` recorded it.
+  not on `project-repository-layout` in
+  `knowledge/architecture-hints/general.json` where `D-KNW-026` recorded it.
 - Two of the three probes `D-KNW-026` recorded as reaching nothing now reach it.
   On 2026-08-03, before this change, "where do I put a one-off script" returned
   `project-build-and-scripts` at `appliesTo(14) + text(242)` and "one-off debug
   script placement in a TYPO3 project" returned it at `text only(253)`.
 - The feedback's own query was the one still reaching nothing. Afterwards
-  `bin/cli hints:probe "writing and executing a PHP script in the live webroot
-  to introspect core classes"` returns `project-build-and-scripts` first, at
-  `appliesTo(7) + text(274)`, and "can I write a debug php file into the
-  webroot" returns it at `appliesTo(7) + text(368)`.
+  `bin/cli hints:probe "writing and executing a PHP script in the live webroot to introspect core classes"`
+  returns `project-build-and-scripts` first, at `appliesTo(7) + text(274)`, and
+  "can I write a debug php file into the webroot" returns it at
+  `appliesTo(7) + text(368)`.
 
 ## Decided
 
@@ -77,8 +77,8 @@ sentence.
 - `appliesTo` gains `debug script`, `scratch script`, `document root` and
   `webroot`; `one-off script` was already there. Those are the words of a
   session about to write the file, rather than of one asking where files go.
-- The introspection half stays where it was assigned. `feedback/2026-08-01-003933`
-  owns it, and
+- The introspection half stays where it was assigned.
+  `feedback/2026-08-01-003933` owns it, and
   [`D-SKL-004`](../task-skills/skl-004-what-a-task-does-when-the-lookups-run-out-is-written-for-a-review.md)
   puts it in `skills/base.md` rather than in this corpus, so the two sentences
   are in one place each and neither is written twice.
@@ -94,8 +94,8 @@ sentence.
 
 ## Wrong if
 
-- A session is offered the clause and writes into the document root anyway.
-  That is step 4 and a rewrite, not a placement — carried over from
+- A session is offered the clause and writes into the document root anyway. That
+  is step 4 and a rewrite, not a placement — carried over from
   `D-KNW-026`.
 - DDEV stops mounting the project at `/var/www/html`, or its TYPO3 project type
   stops defaulting the docroot to `public`. Both were read at v1.25.1.

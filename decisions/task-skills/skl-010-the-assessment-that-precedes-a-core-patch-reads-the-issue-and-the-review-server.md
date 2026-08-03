@@ -28,11 +28,11 @@ checkout the feedback was written in.
   symptom, is `R-GUI-008` and opens the checklist of every brief.
 - The knowledge the session established by hand is here as well. The re-run of
   its own call — task "Fix f:image ViewHelper failing when src contains a cache
-  busting query string", `changeType=bugfix`, `area=fluid`,
-  `targetVersion=15.0` — returns the hint `fluid-resource-uris`, which states
-  where cache busting is applied and that `f:image` and `f:uri.image` are not on
-  the System Resource API. That is the inconsistency the session hunted for,
-  answered rather than hunted.
+  busting query string", `changeType=bugfix`, `area=fluid`, `targetVersion=15.0`
+  — returns the hint `fluid-resource-uris`, which states where cache busting is
+  applied and that `f:image` and `f:uri.image` are not on the System Resource
+  API. That is the inconsistency the session hunted for, answered rather than
+  hunted.
 - The same answer's `nextTools` names six tools for a bugfix and neither lookup.
   The skill's step 3 says to read the issue and names nothing to read it with.
 - `typo3_forge_lookup` with `issue: 105403` answers what the report cannot.
@@ -44,9 +44,8 @@ checkout the feedback was written in.
   call.** They are #99203 and #105953. `Feature-99203` under `13.2/` in
   `.checkouts/13.4` — "Streamline FE/versionNumberInFilename to 'EXT:'
   resources" — is the entry that gave `f:uri.resource` its `useCacheBusting`
-  argument. The feedback
-  attributes that to #100696 and reached it by searching Forge on the feature
-  wording; one lookup on the reported issue reaches it.
+  argument. The feedback attributes that to #100696 and reached it by searching
+  Forge on the feature wording; one lookup on the reported issue reaches it.
 - The changelog route to the same fact misses. `typo3_changelog_lookup` with
   `cache busting resource ViewHelper` at version 13 matches nothing and says
   which words reach what, because the entry is titled for
@@ -128,11 +127,11 @@ before the section was written and answer as the evidence above records them.
 Two of the seven steps left in the feedback are not in the change, and neither
 is a slip. Step 5, read the area's history before designing anything, is the
 skill's "Find out whether the area is moving before you build on it" and the
-sentence under it about a method that is gone by the time the patch is
-finished — it was already carried and the change adds nothing to it. Step 7,
-weigh who reported the issue, is not carried by any of the three rungs and is
-deliberately not a fourth: the **Wrong if** above says a skill that grows a
-sentence per feedback stops being an order, the rungs here already come from a
-single report, and what the tracker answer actually names is the author of each
-note rather than of the issue. A second session reporting an assessment formed
-on the reporter's standing is what would make it a rung.
+sentence under it about a method that is gone by the time the patch is finished
+— it was already carried and the change adds nothing to it. Step 7, weigh who
+reported the issue, is not carried by any of the three rungs and is deliberately
+not a fourth: the **Wrong if** above says a skill that grows a sentence per
+feedback stops being an order, the rungs here already come from a single report,
+and what the tracker answer actually names is the author of each note rather
+than of the issue. A second session reporting an assessment formed on the
+reporter's standing is what would make it a rung.

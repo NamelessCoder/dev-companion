@@ -142,7 +142,7 @@ answering.
 `knowledge/versions.json` marks stable" was one installation, and it is one per
 covered version that has a release since
 [`D-EVI-006`](evi-006-one-installation-per-covered-version-kept-and-started.md):
-a case naming another covered line was run on the stable one or not at all.
-That entry also carries the number this one weighed against `.checkouts/` and
-never measured — about 260 MB a line. The stable branch is still what a case
-that names no version is made of, and everything else here stands.
+a case naming another covered line was run on the stable one or not at all. That
+entry also carries the number this one weighed against `.checkouts/` and never
+measured — about 260 MB a line. The stable branch is still what a case that
+names no version is made of, and everything else here stands.

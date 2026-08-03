@@ -20,7 +20,7 @@ The registry is not reconstructed from the files the packages ship.
   `tcarecords-tx_news_domain_model_news-default`, which TYPO3 derives from TCA
   and no file contains. On the other, without news, both sources agree on all
   1287. Not one identifier was read from the files that the runtime does not
-        have, so the parser is exact and short, never wrong.
+  have, so the parser is exact and short, never wrong.
 - The same probe against `georgringer/news` itself — an extension repository
   with `composer install` and no `settings.php` — returns a `FailsafeContainer`
   with 1259 core icons and none of the extension's own, while

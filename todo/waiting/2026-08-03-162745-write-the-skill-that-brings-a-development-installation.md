@@ -25,8 +25,8 @@ was the one question reaching nothing when the draft was written, so step 1
 routes to `typo3_documentation_lookup` and the installed installer package;
 `extension-repository-installation` in `knowledge/hints/extension.json` answers
 it now and is first on that query, which is the id that step should carry.
-`installation-setup` in `knowledge/hints/configuration.json` is the same case for
-step 3, which currently names only `environment-runtime-readers` beside a
+`installation-setup` in `knowledge/hints/configuration.json` is the same case
+for step 3, which currently names only `environment-runtime-readers` beside a
 documentation lookup for the options. What the draft already routes to holds:
 `sitepackage-initial-content` and its two neighbours own the seeding,
 `project-configuration-files` the environment's settings against the

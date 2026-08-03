@@ -6,8 +6,8 @@ restsOn: [D-GUI-007]
 
 # R-GUI-009 — A hint a brief carries names the lookup that owns it
 
-**Where `typo3_task_guide` carries hints, it says they are
-`typo3_hint_lookup`'s and that it carries the strongest few of them.**
+**Where `typo3_task_guide` carries hints, it says they are `typo3_hint_lookup`'s
+and that it carries the strongest few of them.**
 
 A guide that quotes another tool's corpus is the only place a reader can learn
 whose the rule is. Without the sentence a report either cites the tool that did

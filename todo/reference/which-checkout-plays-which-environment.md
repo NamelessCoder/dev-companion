@@ -12,11 +12,10 @@ so a case that needs an installation to answer from needs nothing off this page
 — `bin/cli environment:status` says what this checkout has. A case naming
 another covered version is `bin/cli environment:create E-SITE <version>`, which
 is one installation per covered line rather than one page entry per machine
-(`D-EVI-006`). What stays here is
-what a scaffold cannot produce: the site package `REVIEW-01` reviews, the three
-extension checkouts whose real infrastructure is what they play (`D-EVI-004`),
-and the core checkout somebody works in, which is where a patch to review comes
-from.
+(`D-EVI-006`). What stays here is what a scaffold cannot produce: the site
+package `REVIEW-01` reviews, the three extension checkouts whose real
+infrastructure is what they play (`D-EVI-004`), and the core checkout somebody
+works in, which is where a patch to review comes from.
 
 - **`E-CORE`** — `/home/benji/projects/typo3-cms`, the core repository itself:
   `main` at TYPO3 15.0.0-dev, PHP `^8.5` declared and 8.5 in DDEV, no extensions

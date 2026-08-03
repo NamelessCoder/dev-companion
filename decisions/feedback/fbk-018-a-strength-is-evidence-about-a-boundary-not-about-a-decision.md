@@ -572,8 +572,8 @@ review of `9f6c6eb9093` (#110359), each with the finding it produced, from
 `/home/benji/projects/typo3-cms`. Four of the five reproduce in its own words,
 re-run on 2026-08-03 through this package from that directory:
 
-- `typo3_forge_lookup` on 110359 answers `Under Review`, target version 15.0,
-  a `## Reported` heading with nothing under it, and the one automated Gerrit
+- `typo3_forge_lookup` on 110359 answers `Under Review`, target version 15.0, a
+  `## Reported` heading with nothing under it, and the one automated Gerrit
   note. The empty description is still rendered as an empty description.
 - `typo3_gerrit_lookup` answers in both directions and names the query it ran,
   `message:110359` and `change:Id53f1068d…`. The issue direction returns exactly
@@ -614,11 +614,11 @@ The first is in its own item 2. The session credits the Change-Id lookup with
 establishing that it was "reading the same patch set that exists on the server",
 and that fact is in neither half of the answer. Re-run with `data`, the change
 carries `number`, `subject`, `status`, `branch`, `project`, `updated` and `url`
-— no revision, no patch-set number, no commit hash. The number it reports,
-patch set 1, is in the automated Forge note the *other* call returned. That is
-the fourth corpus in which a strength misplaces its credit. It is the first
-where what is credited is a question the tool cannot answer as it stands:
-whether the checkout is the revision under review. The card carries it.
+— no revision, no patch-set number, no commit hash. The number it reports, patch
+set 1, is in the automated Forge note the *other* call returned. That is the
+fourth corpus in which a strength misplaces its credit. It is the first where
+what is credited is a question the tool cannot answer as it stands: whether the
+checkout is the revision under review. The card carries it.
 
 The second is this file. Its observation is exactly 4000 characters and ends
 `the shape that made this work: the skill fixed the or` — cut mid-word by
@@ -696,8 +696,8 @@ One keep-request rested on nothing and is held now:
 among the keys `ChangelogLookup::outputSchema()` requires and the hit path was
 in no assertion, so the list a sweep's second and third call are read off could
 have been dropped without a failure. The other two are held already — the
-`deprecatedFiles` shape by `D-ANS-009`'s three tests, and the module
-attribution by `extension` being a required key of the answer.
+`deprecatedFiles` shape by `D-ANS-009`'s three tests, and the module attribution
+by `extension` being a required key of the answer.
 
 The feedback is trimmed to the wording half and stays open behind the card that
 carries it. No statement about TYPO3 was established here: the re-runs read this

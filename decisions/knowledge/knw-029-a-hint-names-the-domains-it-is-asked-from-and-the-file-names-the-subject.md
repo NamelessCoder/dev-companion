@@ -23,10 +23,10 @@ grew a bucket that answers everything.
   once and had no way to say it.
 - The granularity the file name imposed is uneven in the same direction: Backend
   CSS holds 19 hints of 115 words on average, one subject each, while `php.json`
-  holds 21 for the whole framework at 338, and `general.json` 19 at
-  418. `datahandler-persistence` is one hint over eight statements covering the
-       datamap, relation resolution, record placement, the backend user,
-       workspaces and the testing obligation.
+  holds 21 for the whole framework at 338, and `general.json` 19 at 418.
+  `datahandler-persistence` is one hint over eight statements covering the
+  datamap, relation resolution, record placement, the backend user, workspaces
+  and the testing obligation.
 - Its `appliesTo` names `querybuilder`, `restriction`, `enablecolumns`,
   `hidden record` and `deleted record`, and not one of its statements is about
   reading records. A grep for

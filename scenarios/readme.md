@@ -71,9 +71,9 @@ the covered stable one, which is what a case that says nothing about a version
 is run on. `SITE-02` is the case that says otherwise, and
 `bin/cli environment:create E-SITE 13.4` is the previous major it names
 ([`D-EVI-006`](../decisions/evidence/evi-006-one-installation-per-covered-version-kept-and-started.md)).
-The development line is `bin/cli environment:create E-SITE main`, built from
-the base distribution's `dev-main` on PHP 8.5 because no release of either
-covers it.
+The development line is `bin/cli environment:create E-SITE main`, built from the
+base distribution's `dev-main` on PHP 8.5 because no release of either covers
+it.
 
 `E-EXT` is not made here: what a case needs from an extension repository is real
 infrastructure at a real revision, which no scaffold produces. `E-CORE` is

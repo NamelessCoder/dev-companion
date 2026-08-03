@@ -23,8 +23,8 @@ it was read from. The rest of that file is how the project boots.
   in. `typo3_project_scope` opens with "composer-project, TYPO3 14.3.5, PHP ^8.3
   declared and 8.3 in DDEV", its `environment` is
   `{"via":"ddev","php":"8.3","source":".ddev/config.yaml","entered":false}`, and
-  its `commands` hold one entry — `composer frontend-builds`. The four fields and
-  the one command are what the feedback quotes.
+  its `commands` hold one entry — `composer frontend-builds`. The four fields
+  and the one command are what the feedback quotes.
 - What the same file holds and the answer does not. `.ddev/config.yaml` states
   `hooks` at four stages: `post-start` runs `composer install`; `post-import-db`
   runs `bin/typo3 database:updateschema`, then `extension:setup` and
@@ -42,23 +42,23 @@ it was read from. The rest of that file is how the project boots.
   `.ddev/config.yaml` and every `.ddev/config.*.yaml` beside it, and takes
   `php_version` out of them and nothing else.
 - Nothing else here answers it. A search of `src/` for hooks and providers finds
-  one line, and it is about a git `commit-msg` hook. `bin/cli hints:probe "DDEV
-  lifecycle hooks post-start post-import-db pull provider bootstrap a project"`
+  one line, and it is about a git `commit-msg` hook.
+  `bin/cli hints:probe "DDEV lifecycle hooks post-start post-import-db pull provider bootstrap a project"`
   reaches three PHP hints — `events-extension-points`,
   `project-configuration-files`, `extension-boot-files` — and none of them is
   about a local environment.
 - The corpus, read before the card. `bin/cli feedback:list` reports 29 open in
-  four directories, two of them from this one. The sibling `2026-08-03-154508` is
-  the same session on `typo3_task_guide` and a different gap, so it stays its own
-  card. Two more from `/home/benji/projects/ext-guidedtour` —
+  four directories, two of them from this one. The sibling `2026-08-03-154508`
+  is the same session on `typo3_task_guide` and a different gap, so it stays its
+  own card. Two more from `/home/benji/projects/ext-guidedtour` —
   `2026-08-03-162858` on `fail_on_hook_fail`, `2026-08-03-162745` on a
   `post-start` install hook — write a DDEV lifecycle rather than read one, which
   makes the subject recurrent and this reading of it single.
 
 ## Decided
 
-- Queued rather than closed on the spot. It changes `Project::describe()` and the
-  declared `outputSchema` of `typo3_project_scope`, and
+- Queued rather than closed on the spot. It changes `Project::describe()` and
+  the declared `outputSchema` of `typo3_project_scope`, and
   [judging.md](../../documentation/feedback/judging.md) puts a schema beyond a
   run that has read only this repository.
 - The rung is 1b in kind and neither of the two instances that page names. Not
@@ -69,18 +69,19 @@ it was read from. The rest of that file is how the project boots.
   the `instructions`, and already opens the file. That is repair, which is the
   queued rung rather than the one above it.
 - `normal` rather than `low`, on one session and what it counted. A boot read by
-  hand end to end is the cost `D-FBK-027` weighs, the field it belongs in already
-  exists, and the answer read as complete while the executable half was absent —
-  which is the trap that page names beside the round trips.
+  hand end to end is the cost `D-FBK-027` weighs, the field it belongs in
+  already exists, and the answer read as complete while the executable half was
+  absent — which is the trap that page names beside the round trips.
 - The feedback's suggestion is taken in shape, not in wording. It asks for the
   hooks "marked check or change the way the composer commands already are", and
   whether `Project::runs()` can read a hook body at all is part of the reading
-  the todo owns: the bodies here run `bin/typo3`, which that rule already answers
+  the todo owns: the bodies here run `bin/typo3`, which that rule already
+  answers
   `unknown`.
-- [`D-ANS-011`](ans-011-a-scope-answer-states-what-a-manifest-declares.md) is not
-  crossed. The environment field reads a file that is no manifest already, which
-  is what `D-ANS-013` settled, and this adds to that field rather than to the
-  manifest ones.
+- [`D-ANS-011`](ans-011-a-scope-answer-states-what-a-manifest-declares.md) is
+  not crossed. The environment field reads a file that is no manifest already,
+  which is what `D-ANS-013` settled, and this adds to that field rather than to
+  the manifest ones.
 - What the answer says is not settled here. How DDEV merges `hooks` across
   `.ddev/config.*.yaml` and what `override_config` does to them, whether a
   provider is reported at all, how a project's own is told from a
@@ -103,12 +104,12 @@ it was read from. The rest of that file is how the project boots.
   `.ddev/config.yaml` by hand to boot anyway. The lifecycle would then be
   delivered and not taken, which is step 4 and a rewrite rather than a field.
 - A project is read whose hooks are not in these files — an `override_config`
-  that drops them, or a `.ddev/commands/` carrying what the hooks carry here — so
-  an answer built from `config.yaml` states a lifecycle the container does not
-  run. `R-PRJ-009` would then be demanding it from the wrong place.
+  that drops them, or a `.ddev/commands/` carrying what the hooks carry here —
+  so an answer built from `config.yaml` states a lifecycle the container does
+  not run. `R-PRJ-009` would then be demanding it from the wrong place.
 - A second boot reports the same cost in a project whose environment declares no
-  lifecycle, the procedure living in its README. The gap would then be the README
-  rather than the environment, and this field would be built and unused.
+  lifecycle, the procedure living in its README. The gap would then be the
+  README rather than the environment, and this field would be built and unused.
 
 ## Since then
 

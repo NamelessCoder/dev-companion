@@ -28,7 +28,8 @@ that carries a bugfix is the same inconsistency inside one version, which is
 what separates a defect from a wish. The blast radius is established while
 assessing, because it decides the change type and everything downstream of it.
 
-This is [R-SKL-014](skl-014-a-review-reads-what-the-project-already-says-about-the-patch.md)
+This is
+[R-SKL-014](skl-014-a-review-reads-what-the-project-already-says-about-the-patch.md)
 on the other side of the same work: the review reads both surfaces by the
 numbers the commit message carries, and the session about to write the patch has
 only the issue number and is the one that can still be spared the work.

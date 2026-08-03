@@ -895,6 +895,45 @@ final class HintsTest extends TestCase
         );
     }
 
+    /**
+     * The two sentences a core session credited with deciding its work, and the
+     * one it had to read neighbouring files for. It asked that the first two
+     * survive any trim of the block, and an assertion is the only form this
+     * repository has for a keep-request — `D-FBK-018`.
+     */
+    #[Test]
+    public function aViewHelperPatchIsToldWhichTestItOwesAndWhichChangelogType(): void
+    {
+        $viewHelpers = self::statementsOf('fluid-viewhelpers');
+
+        self::assertStringContainsString('Tests/Functional/ViewHelpers/', $viewHelpers);
+        self::assertStringContainsString(
+            'a ViewHelper needs a rendering context',
+            $viewHelpers,
+            'the reason, which is what makes the test layer obviously right',
+        );
+        self::assertStringContainsString('Documentation/Changelog/', $viewHelpers);
+        self::assertStringContainsString(
+            'documentation-changelog',
+            $viewHelpers,
+            'where the type of the entry is decided',
+        );
+
+        // The obligation is stated in the Fluid block and discharged in the
+        // docs one, which a task about a ViewHelper bug never asks for: the
+        // changelog intent matches the task text, and that text is about the
+        // bug. The pointer is what crosses it, so the sentence it leads to has
+        // to decide the type rather than only name the four.
+        $changelog = self::statementsOf('documentation-changelog');
+        self::assertStringContainsString('may require manual action', $changelog);
+        self::assertStringContainsString('marked for a planned removal', $changelog);
+        self::assertStringContainsString(
+            'the directory of the minor version',
+            $changelog,
+            'where the file goes',
+        );
+    }
+
     #[Test]
     public function registeringSomethingSoTheCoreFindsItIsCovered(): void
     {

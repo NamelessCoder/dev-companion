@@ -369,3 +369,66 @@ test covered in the data alone.
 
 The last **Wrong if** is untouched by this. Which half of the answer a client
 renders is still unrecorded, and this change writes the absence into both.
+
+## Confirmed on 2026-08-03
+
+The reading held a fifth time, on the first strength whose quotations are hints
+this repository wrote for the domain the task was actually in.
+`feedback/2026-08-02-144456` comes from a core checkout,
+`/home/benji/projects/typo3-cms`, and reports a fix in the Fluid image
+ViewHelpers for Forge #105403. It credits three answers: that ViewHelpers are
+covered by functional tests and why, that a ViewHelper is public API and owes a
+changelog entry, and `typo3_project_scope` reporting `15.0.0-dev`.
+
+The quotations are checked before the boundary is. Re-run on 2026-08-03 through
+`bin/typo3-cms-mcp` from that directory with the feedback's own arguments —
+`typo3_task_guide` with the task *Fix f:image ViewHelper failing when src
+contains a cache busting query string produced by f:uri.resource*,
+`changeType=bugfix`, `area=fluid`, `targetVersion=15.0` — and both sentences
+come back verbatim in the `fluid-viewhelpers` block. The third reproduces by
+half. `typo3_project_scope` answers
+`core-checkout, TYPO3 15.0.0-dev, PHP ^8.5 declared and 8.5 in DDEV`, and names
+neither `Changelog/15.0/` nor a `Releases: main` trailer; the session derived
+both from the version. The derivation was right — `.checkouts/main` carries
+`Documentation/Changelog/15.0/` — which is why nothing in the report reads as
+one. That is the third corpus in which a strength misplaces its credit, and the
+first where what is credited is the reader's own inference rather than another
+tool.
+
+The lever is what the session did instead, and it is one sentence at the end: it
+read neighbouring changelog files to decide which of Breaking, Deprecation,
+Feature or Important its entry was. Step 2, delivery. The rule is here twice —
+the `changelog` intent in `knowledge/task-intents.json` carries the
+discrimination, and the `documentation-changelog` hint carries the filename and
+the version directory — and neither reached a task about a ViewHelper bug.
+`TaskIntents::detect()` matches an intent against the task text, and that text
+is about the bug; the sentence saying a changelog is owed arrives from a hint,
+after the matching that would have delivered the rest.
+
+The boundary is between an obligation and the rule that discharges it. A hint
+states what a change owes because the caller is working in that domain, while
+what it takes to discharge it belongs to the domain of the artifact and is
+reachable only from a query already about that artifact. Nothing crossed between
+the two, and the reading the feedback reports is what that cost.
+
+Three changes, all of them placement and wording of rules already here. The
+`fluid-viewhelpers` statement now names the minor-version directory and sends
+the type decision to `documentation-changelog`. That hint gains the sentence
+which decides the type, read off `Documentation/Changelog/Howto.rst` in
+`.checkouts/main` rather than moved on trust: the four types are defined there,
+with Important as the last resort and the only one an LTS release may carry.
+`HintsTest::aViewHelperPatchIsToldWhichTestItOwesAndWhichChangelogType` holds
+the two sentences the feedback asks be kept, which is the keep-request in the
+only form this repository has for one.
+
+One thing was rejected. An intent that fires because a delivered hint says a
+changelog is owed, rather than because the task text says "changelog", would
+answer the crossing itself instead of pointing across it — and it touches
+`src/`, which is queued rather than closed on the spot. A pointer costs the
+caller one call and this is the one report of the crossing; a second report is
+what would make it worth the schema.
+
+What the change rests on is that the discrimination now stands in
+`task-intents.json` and in the hint corpus at once. It is wrong if one is
+rewritten and the other keeps the old wording, because then this run bought a
+delivery and paid for it with two statements of one rule.

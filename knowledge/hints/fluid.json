@@ -138,7 +138,7 @@
       },
       "ViewHelpers are covered by functional tests under Tests/Functional/ViewHelpers/, not unit tests: a ViewHelper needs a rendering context, so a unit test asserts the wrong thing.",
       {
-        "text": "A ViewHelper is public API. A new one, or a changed argument list, needs a changelog entry under typo3/sysext/core/Documentation/Changelog/.",
+        "text": "A ViewHelper is public API. A new one, or a changed argument list, needs a changelog entry under typo3/sysext/core/Documentation/Changelog/, in the directory of the minor version it is released in. Which of the four types the entry is, and what it has to contain, is documentation-changelog.",
         "scope": "core"
       },
       "Fluid parsing itself is configured in $GLOBALS['TYPO3_CONF_VARS']['SYS']['fluid'] in typo3/sysext/core/Configuration/DefaultConfiguration.php — interceptors, preProcessors including NamespaceDetectionTemplateProcessor, and expressionNodeTypes.",

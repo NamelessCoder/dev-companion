@@ -54,15 +54,19 @@ final class InstallerAgentSupportTest extends TestCase
                     $directory . '/' . $paths['skills']
                     . '/typo3-backend-module-development/SKILL.md',
                 );
-                $gitignore = (string) file_get_contents($directory . '/.gitignore');
-                self::assertStringContainsString("/typo3-cms-mcp.json\n", $gitignore);
-                self::assertStringContainsString(
-                    '/' . $paths['skills'] . "/typo3-backend-module-development/\n",
-                    $gitignore,
+                // Nothing this package writes is ignored from a file the
+                // project owns, so an install into a project that has no
+                // .gitignore leaves it without one.
+                self::assertFileDoesNotExist($directory . '/.gitignore');
+                self::assertSame("*\n", file_get_contents($directory . '/.typo3-cms-mcp/.gitignore'));
+                self::assertSame(
+                    "*\n",
+                    file_get_contents(
+                        $directory . '/' . $paths['skills'] . '/typo3-backend-module-development/.gitignore',
+                    ),
                 );
                 if (isset($paths['mcp'])) {
                     self::assertFileExists($directory . '/' . $paths['mcp']);
-                    self::assertStringNotContainsString('/' . $paths['mcp'], $gitignore);
                 }
             } finally {
                 Directory::remove($directory);

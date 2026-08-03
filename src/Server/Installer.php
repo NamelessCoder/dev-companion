@@ -23,9 +23,14 @@ final class Installer
         'typo3-extension-upgrade',
     ];
     private const BASE = 'references/base.md';
-    private const STATE = 'typo3-cms-mcp.json';
-    private const IGNORE_BEGIN = '# BEGIN typo3-cms-mcp (generated)';
-    private const IGNORE_END = '# END typo3-cms-mcp';
+    private const STATE_DIRECTORY = '.typo3-cms-mcp';
+    private const STATE = self::STATE_DIRECTORY . '/state.json';
+    /**
+     * What a directory this package owns says to git about itself: everything
+     * below it, this file included, so the directory is invisible and no line
+     * about it is owed to anybody else's file.
+     */
+    private const IGNORE_ALL = "*\n";
     /**
      * The setup that names no client: the entry every client reads, and the
      * skills at the path the clients that agreed on one share. It is a client
@@ -180,11 +185,11 @@ final class Installer
     /**
      * Bring the clients installed here up to date.
      *
-     * Without an agent that is every client `typo3-cms-mcp.json` records, which
-     * is the case that matters: a project is usually worked on by more than one
-     * client, and naming them one at a time meant remembering which of them the
-     * project had — a list nobody keeps, so the second client silently kept the
-     * skills of the version it was installed with.
+     * Without an agent that is every client `.typo3-cms-mcp/state.json`
+     * records, which is the case that matters: a project is usually worked on
+     * by more than one client, and naming them one at a time meant remembering
+     * which of them the project had — a list nobody keeps, so the second client
+     * silently kept the skills of the version it was installed with.
      *
      * The setup that named no client is one of them, so it is refreshed the
      * same way and needs no case of its own.
@@ -240,12 +245,12 @@ final class Installer
     }
 
     /**
-     * What the run leaves behind: the clients installed here, and the ignores
-     * that follow from them.
+     * What the run leaves behind: the clients installed here, in the directory
+     * that ignores itself.
      *
-     * Both are written once per run rather than per client, because both are
-     * one file for the whole project. Writing them inside the loop would let
-     * the first client of a run decide what the second one sees.
+     * The record is written once per run rather than per client, because it is
+     * one file for the whole project. Writing it inside the loop would let the
+     * first client of a run decide what the second one sees.
      *
      * @param array{skills: list<string>, agents: list<string>} $state
      * @param list<string> $installed
@@ -261,7 +266,7 @@ final class Installer
             'agents' => $agents,
             'skills' => self::SKILLS,
         ]);
-        $messages[] = $this->ignoreGenerated($agents);
+        $this->write($this->project . '/' . self::STATE_DIRECTORY . '/.gitignore', self::IGNORE_ALL);
 
         return $messages;
     }
@@ -524,83 +529,6 @@ final class Installer
         return implode("\n", $messages);
     }
 
-    /**
-     * The ignore block, between its markers, written whole every time.
-     *
-     * What it has to ignore follows from which clients are installed and which
-     * skills exist, and both change. Adding the missing lines left the ones
-     * that had become wrong — a skill that was renamed, a client nobody
-     * publishes to any more — in a file the project shares, where a line that
-     * ignores nothing looks exactly like one that ignores something. The
-     * markers are what makes replacing it safe: everything between them is
-     * this installer's and goes, everything outside is the project's and stays,
-     * and neither has to be recognised by what it says.
-     *
-     * @param list<string> $agents
-     */
-    private function ignoreGenerated(array $agents): string
-    {
-        $path = $this->project . '/.gitignore';
-        $contents = is_file($path) ? (string) file_get_contents($path) : '';
-        $lines = preg_split('/\R/', $contents);
-        if ($lines === false) {
-            throw new \RuntimeException('could not read ' . $path);
-        }
-
-        $block = [self::IGNORE_BEGIN, '/' . self::STATE];
-        foreach ($agents as $agent) {
-            foreach (self::SKILLS as $skill) {
-                $block[] = '/' . trim($this->definition($agent)['skills'], '/') . '/' . $skill . '/';
-            }
-        }
-        $block = array_values(array_unique($block));
-        $block[] = self::IGNORE_END;
-
-        $kept = $this->withoutGeneratedBlock($lines);
-        $rewritten = ($kept === [] ? '' : implode("\n", $kept) . "\n\n") . implode("\n", $block) . "\n";
-
-        return ($this->write($path, $rewritten) ? 'Wrote' : 'Reused')
-            . ' generated skill ignores in ' . $path . '.';
-    }
-
-    /**
-     * The file without the block, and without the gap it leaves behind.
-     *
-     * The blank line that separated the block from what is above it is the
-     * block's, so a run that takes the block out and puts it back has to leave
-     * the file it found — otherwise every run adds an empty line.
-     *
-     * @param list<string> $lines
-     * @return list<string>
-     */
-    private function withoutGeneratedBlock(array $lines): array
-    {
-        $kept = [];
-        $inside = false;
-        $closed = false;
-        foreach ($lines as $line) {
-            if ($inside) {
-                $inside = $line !== self::IGNORE_END;
-                $closed = !$inside;
-                continue;
-            }
-            if ($line === self::IGNORE_BEGIN) {
-                $inside = true;
-                continue;
-            }
-            if ($closed && $line === '' && ($kept === [] || end($kept) === '')) {
-                continue;
-            }
-            $closed = false;
-            $kept[] = $line;
-        }
-        while ($kept !== [] && end($kept) === '') {
-            array_pop($kept);
-        }
-
-        return $kept;
-    }
-
     private function publishSkill(string $skillsPath, string $skill): string
     {
         $source = Paths::root() . '/skills/' . $skill;
@@ -615,6 +543,11 @@ final class Installer
             $target . '/' . self::BASE,
             (string) file_get_contents(Paths::root() . '/skills/' . basename(self::BASE)),
         );
+        // The directory says to git what it is, rather than the project's own
+        // `.gitignore` saying it on its behalf. Everything in here is written
+        // by this package and replaced whole on the next run, and the skills
+        // beside it — the project's own — are not covered by a word of it.
+        $this->write($target . '/.gitignore', self::IGNORE_ALL);
 
         return 'Published ' . $skill . ' in ' . $target . '.';
     }

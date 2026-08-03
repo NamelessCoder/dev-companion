@@ -78,9 +78,12 @@ vendor/bin/typo3-cms-mcp install
 leaves every other entry alone, and publishes the task skills to
 `.agents/skills` — the two locations a client finds without being configured for
 it. `--agent=<id>` writes them where that client actually reads them instead.
-Either way the setup is recorded in `typo3-cms-mcp.json`, so a later `update`
-refreshes all of them without being told which. The knowledge base ships inside
-the package, so nothing else needs to be deployed or configured.
+Either way the setup is recorded in `.typo3-cms-mcp/state.json`, so a later
+`update` refreshes all of them without being told which. Every directory the
+package writes carries its own `.gitignore`, so nothing has to be added to the
+project's — and the skills the project wrote itself stay visible beside them.
+The knowledge base ships inside the package, so nothing else needs to be
+deployed or configured.
 
 Codex, Claude, Cursor, Copilot, Zed and eight more clients, DDEV projects where
 the server has to start inside the container, the generated `.mcp.json` shapes,

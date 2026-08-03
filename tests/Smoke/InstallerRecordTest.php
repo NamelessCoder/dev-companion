@@ -13,9 +13,9 @@ use Typo3CmsMcp\Tests\Support\Directory;
  * What a project records about the clients installed in it.
  *
  * A project is worked on by more than one client, and which ones is knowledge
- * only the project has. It keeps it in `typo3-cms-mcp.json`, so that an update
- * needs no list from whoever runs it, and so that the ignores can be written
- * for the clients that are actually there.
+ * only the project has. It keeps it in `.typo3-cms-mcp/state.json`, so that an
+ * update needs no list from whoever runs it, and so that a skill this package
+ * has stopped shipping can be taken out of every client it reached.
  */
 final class InstallerRecordTest extends TestCase
 {
@@ -91,9 +91,9 @@ final class InstallerRecordTest extends TestCase
             // It is recorded like any other client, so it is refreshed like
             // one — the setup that names nobody needs no case of its own.
             self::assertSame(['generic'], $this->state($directory)['agents']);
-            self::assertStringContainsString(
-                '/.agents/skills/' . self::SKILL . "/\n",
-                (string) file_get_contents($directory . '/.gitignore'),
+            self::assertSame(
+                "*\n",
+                file_get_contents($directory . '/.agents/skills/' . self::SKILL . '/.gitignore'),
             );
 
             file_put_contents($skill, "User change.\n");
@@ -131,43 +131,39 @@ final class InstallerRecordTest extends TestCase
             self::assertSame(1, $this->execute($directory, ['update'], $stdout, $stderr));
             self::assertStringContainsString('nothing is installed here', $stderr);
             self::assertStringContainsString('install --agent=', $stderr);
-            self::assertFileDoesNotExist($directory . '/typo3-cms-mcp.json');
+            self::assertFileDoesNotExist($directory . '/.typo3-cms-mcp/state.json');
         } finally {
             Directory::remove($directory);
         }
     }
 
+    /**
+     * The project's `.gitignore` is the project's, on a run that has every
+     * reason to touch it.
+     *
+     * This is the one file an install used to write into, and the case that
+     * would show it doing so again is an `update` in a project that has one:
+     * nine skills are republished, the record is rewritten, and what the
+     * project wrote stays byte for byte what it was.
+     */
     #[Test]
-    public function theIgnoreBlockIsReplacedBetweenItsMarkersAndNothingElseIs(): void
+    public function neitherCommandWritesIntoTheProjectsGitignore(): void
     {
         $directory = $this->directory();
 
         try {
             $stdout = '';
             $stderr = '';
+            file_put_contents($directory . '/.gitignore', "/vendor/\n\n/.idea/\n");
             self::assertSame(0, $this->execute($directory, ['install', '--agent=claude'], $stdout, $stderr), $stderr);
-            // A block from a run that published a skill this version no longer
-            // ships, into a client this project no longer has.
-            file_put_contents($directory . '/.gitignore', "/vendor/\n\n"
-                . "# BEGIN typo3-cms-mcp (generated)\n"
-                . "/typo3-cms-mcp.json\n"
-                . '/.claude/skills/obsolete-typo3-skill/' . "\n"
-                . '/.github/skills/' . self::SKILL . '/' . "\n"
-                . "# END typo3-cms-mcp\n\n"
-                . "/.idea/\n");
-
             self::assertSame(0, $this->execute($directory, ['update'], $stdout, $stderr), $stderr);
 
-            $gitignore = (string) file_get_contents($directory . '/.gitignore');
-            self::assertStringStartsWith("/vendor/\n\n/.idea/\n\n", $gitignore);
-            self::assertSame(1, substr_count($gitignore, '# BEGIN typo3-cms-mcp'));
-            self::assertSame(1, substr_count($gitignore, '# END typo3-cms-mcp'));
-            self::assertStringEndsWith("# END typo3-cms-mcp\n", $gitignore);
-            self::assertStringContainsString('/.claude/skills/' . self::SKILL . "/\n", $gitignore);
-            // The skill this version no longer ships, and the client that is
-            // not installed here: both were lines that ignored nothing.
-            self::assertStringNotContainsString('obsolete-typo3-skill', $gitignore);
-            self::assertStringNotContainsString('/.github/skills/', $gitignore);
+            self::assertSame("/vendor/\n\n/.idea/\n", file_get_contents($directory . '/.gitignore'));
+            self::assertSame(
+                "*\n",
+                file_get_contents($directory . '/.claude/skills/' . self::SKILL . '/.gitignore'),
+            );
+            self::assertSame("*\n", file_get_contents($directory . '/.typo3-cms-mcp/.gitignore'));
         } finally {
             Directory::remove($directory);
         }
@@ -177,7 +173,7 @@ final class InstallerRecordTest extends TestCase
     private function state(string $directory): array
     {
         return json_decode(
-            (string) file_get_contents($directory . '/typo3-cms-mcp.json'),
+            (string) file_get_contents($directory . '/.typo3-cms-mcp/state.json'),
             true,
             flags: JSON_THROW_ON_ERROR,
         );

@@ -32,9 +32,9 @@ Refresh them after updating this package:
 ```
 
 `update` takes `--agent=<client>` as well, but rarely needs to: `install`
-records every client it set up in `typo3-cms-mcp.json`, and without an agent
-`update` refreshes all of them. A project is usually worked on by more than one,
-and which ones is knowledge only the project has.
+records every client it set up in `.typo3-cms-mcp/state.json`, and without an
+agent `update` refreshes all of them. A project is usually worked on by more
+than one, and which ones is knowledge only the project has.
 
 Both commands write the client entry, because what belongs in it is a property
 of the project rather than of the run: a project that required this package
@@ -49,13 +49,19 @@ the two locations a client finds without being configured for it. It is
 refreshed by the same `update` as every named client. `--agent=` does not take
 `generic`, because it is nobody's name.
 
-Install and update write `typo3-cms-mcp.json` and the package-owned skill
-directories into the project's `.gitignore`, between `# BEGIN typo3-cms-mcp` and
-`# END typo3-cms-mcp`. Everything between those markers belongs to this package
-and is replaced whole on every run, so a client that is gone or a skill that was
-renamed leaves no line behind; everything outside them is the project's and is
-never touched. Merged agent or MCP configuration such as `.codex/config.toml` or
-`.mcp.json` is not ignored, because the project may share it.
+Neither command touches the project's `.gitignore`. Every directory this package
+writes — each published skill, and `.typo3-cms-mcp/` where the record sits —
+carries a `.gitignore` of its own that says `*`, which covers the directory and
+that file with it: git reports nothing there, and a skill the project wrote
+itself, in the same skills directory, stays visible. Merged agent or MCP
+configuration such as `.codex/config.toml` or `.mcp.json` is ignored nowhere,
+because the project may share it.
+
+Development builds before this wrote a `typo3-cms-mcp.json` at the project root
+and a block between `# BEGIN typo3-cms-mcp` and `# END typo3-cms-mcp` into the
+project's `.gitignore`. Neither is read or removed by anything here — the
+package is unreleased, so a project that has them was set up by hand and takes
+them out the same way, and the next `install` records the clients again.
 
 It writes the following shape with the actual absolute path:
 

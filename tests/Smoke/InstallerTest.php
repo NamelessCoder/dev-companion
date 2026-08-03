@@ -77,7 +77,7 @@ final class InstallerTest extends TestCase
             self::assertStringContainsString(Paths::root() . '/bin/typo3-cms-mcp', $configuration);
 
             $skill = $directory . '/.agents/skills/typo3-backend-module-development/SKILL.md';
-            $state = $directory . '/typo3-cms-mcp.json';
+            $state = $directory . '/.typo3-cms-mcp/state.json';
             self::assertFileEquals(
                 Paths::root() . '/skills/typo3-backend-module-development/SKILL.md',
                 $skill,
@@ -99,9 +99,10 @@ final class InstallerTest extends TestCase
                     'typo3-extension-upgrade',
                 ],
             ], json_decode((string) file_get_contents($state), true, flags: JSON_THROW_ON_ERROR));
-            $gitignore = (string) file_get_contents($directory . '/.gitignore');
-            self::assertStringStartsWith("/vendor/\n", $gitignore);
-            self::assertStringContainsString("/typo3-cms-mcp.json\n", $gitignore);
+            // The project's own .gitignore is what it was before the install,
+            // and every directory this package wrote says `*` about itself.
+            self::assertSame("/vendor/\n", file_get_contents($directory . '/.gitignore'));
+            self::assertSame("*\n", file_get_contents($directory . '/.typo3-cms-mcp/.gitignore'));
             foreach ([
                 'typo3-backend-module-development',
                 'typo3-content-element-development',
@@ -113,12 +114,11 @@ final class InstallerTest extends TestCase
                 'typo3-extension-testing',
                 'typo3-extension-upgrade',
             ] as $publishedSkill) {
-                self::assertStringContainsString(
-                    '/.agents/skills/' . $publishedSkill . "/\n",
-                    $gitignore,
+                self::assertSame(
+                    "*\n",
+                    file_get_contents($directory . '/.agents/skills/' . $publishedSkill . '/.gitignore'),
                 );
             }
-            self::assertStringNotContainsString('/.codex/config.toml', $gitignore);
             foreach ([
                 'typo3-content-element-development',
                 'typo3-core-patch-development',
@@ -349,8 +349,9 @@ final class InstallerTest extends TestCase
         $stale = "[mcp_servers.typo3-cms-mcp]\ncommand = \"php\"\nargs = [\"/elsewhere/bin/typo3-cms-mcp\"]\n\n";
         $below = "[features]\nweb_search = true\n";
         file_put_contents($directory . '/.codex/config.toml', $unrelated . $stale . $below);
+        self::assertTrue(mkdir($directory . '/.typo3-cms-mcp'));
         file_put_contents(
-            $directory . '/typo3-cms-mcp.json',
+            $directory . '/.typo3-cms-mcp/state.json',
             json_encode(['version' => 1, 'agents' => ['codex'], 'skills' => []], JSON_THROW_ON_ERROR),
         );
 
@@ -422,13 +423,13 @@ final class InstallerTest extends TestCase
             self::assertTrue(mkdir($stale));
             self::assertNotFalse(file_put_contents($stale . '/SKILL.md', "obsolete\n"));
             $state = json_decode(
-                (string) file_get_contents($directory . '/typo3-cms-mcp.json'),
+                (string) file_get_contents($directory . '/.typo3-cms-mcp/state.json'),
                 true,
                 flags: JSON_THROW_ON_ERROR,
             );
             $state['skills'][] = 'obsolete-typo3-skill';
             file_put_contents(
-                $directory . '/typo3-cms-mcp.json',
+                $directory . '/.typo3-cms-mcp/state.json',
                 json_encode($state, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR) . "\n",
             );
 
@@ -437,6 +438,70 @@ final class InstallerTest extends TestCase
         } finally {
             Directory::remove($directory);
         }
+    }
+
+    /**
+     * What the ignores are for, asked of git rather than of the files.
+     *
+     * Everything else here reads what was written; this reads what the tool it
+     * was written for makes of it, in a repository of its own, because the
+     * property being kept is about `git status` and not about a file's
+     * contents. A skill the project wrote itself sits beside the published ones
+     * throughout: it is what tells "this package's directories are invisible"
+     * apart from "the whole skills directory is".
+     */
+    #[Test]
+    public function gitReportsTheProjectsOwnFilesAndNothingThisPackageWrote(): void
+    {
+        // A property of this repository rather than of the machine: it is a git
+        // checkout, its coverage is fetched by `checkouts:update` and it commits
+        // through `.githooks/`. A checkout without git is a failure with a
+        // sentence, not a test that quietly goes away.
+        $version = '';
+        self::assertSame(0, $this->git(sys_get_temp_dir(), ['--version'], $version), 'git does not answer here');
+
+        $directory = $this->directory();
+        $output = '';
+        self::assertSame(0, $this->git($directory, ['init', '--quiet'], $output), $output);
+        self::assertTrue(mkdir($directory . '/.claude/skills', 0777, true));
+        file_put_contents($directory . '/.claude/skills/my-own-skill.md', "Mine.\n");
+        file_put_contents($directory . '/composer.json', "{}\n");
+
+        try {
+            $stderr = '';
+            self::assertSame(0, $this->execute($directory, ['install', '--agent=claude'], $stderr), $stderr);
+
+            self::assertSame(0, $this->git($directory, ['status', '--porcelain', '-uall'], $output), $output);
+            $reported = array_values(array_filter(explode("\n", $output)));
+            sort($reported);
+            self::assertSame([
+                '?? .claude/skills/my-own-skill.md',
+                '?? .mcp.json',
+                '?? composer.json',
+            ], $reported, $output);
+        } finally {
+            Directory::remove($directory);
+        }
+    }
+
+    /** @param list<string> $arguments */
+    private function git(string $directory, array $arguments, string &$output): int
+    {
+        $process = proc_open(
+            ['git', ...$arguments],
+            [0 => ['pipe', 'r'], 1 => ['pipe', 'w'], 2 => ['pipe', 'w']],
+            $pipes,
+            $directory,
+        );
+        if (!is_resource($process)) {
+            return 127;
+        }
+        fclose($pipes[0]);
+        $output = (string) stream_get_contents($pipes[1]) . stream_get_contents($pipes[2]);
+        fclose($pipes[1]);
+        fclose($pipes[2]);
+
+        return proc_close($process);
     }
 
     private function install(string $directory, string &$stderr): int

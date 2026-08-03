@@ -172,7 +172,7 @@
       "A distributed extension repository has one unit, and it is the package. The test setup, the build tooling, the CI matrix and the release script all exist to develop, verify and ship that one package, and none of it is deployed anywhere. The question that sorts a project repository into two units — could this be installed into a different project — has one answer here, and it is everything.",
       "What the package supports is the constraint in its composer.json, and every judgment about compatibility is made against that. The version the development setup happens to run is one of the supported majors, not the range: an interface that is deprecated on the newest one is still the interface the code has to call while an older one is supported.",
       "One branch usually serves every supported major. What exists only on the newer one is used behind a check, what the newer one deprecates stays until the older one is dropped, and the file the older one still reads stays with it. A recorded suppression for such a deprecation is the work list for the release that drops that major, not debt that release is waiting on.",
-      "Two neighbours: extension-repository-dependencies for what is committed and what is vendored, extension-repository-tests for the instance the suite builds itself."
+      "Three neighbours: extension-repository-dependencies for what is committed and what is vendored, extension-repository-tests for the instance the suite builds itself, extension-repository-installation for the Composer keys that install TYPO3 beneath the package."
     ]
   },
   {
@@ -211,6 +211,37 @@
     "hints": [
       "There is no installation around the extension, so the test setup builds one. The testing framework creates an instance per functional test class from the extensions that test names, and a package below Tests/ is a fixture such an instance loads rather than something the repository ships.",
       "Browser tests belong to the extension here. There is no project around it to own the site they run against, and the development setup that serves that site is part of this repository too — so the configuration, the specs and the command that runs them sit with everything else the package owns."
+    ]
+  },
+  {
+    "id": "extension-repository-installation",
+    "title": "Installing TYPO3 Beneath the Extension Repository",
+    "domains": [
+      "php"
+    ],
+    "scope": "extension",
+    "appliesTo": [
+      "app-dir",
+      "web-dir",
+      "vendor-dir",
+      "bin-dir",
+      "extra.typo3/cms",
+      "typo3/cms-cli",
+      "root package",
+      "composer root package",
+      "Composer root",
+      "install TYPO3 beneath the extension",
+      "install TYPO3 locally",
+      "local development environment",
+      "run the extension locally",
+      "typo3conf/ext is empty",
+      ".build"
+    ],
+    "hints": [
+      "The extension's own composer.json can be the Composer root that installs TYPO3 beneath it: it keeps the type typo3-cms-extension and requires typo3/cms-core. What moves the installation out of the way is config.vendor-dir and config.bin-dir, which are Composer's own keys, plus extra.typo3/cms.web-dir for the document root the installer writes index.php into. The console is then at <bin-dir>/typo3.",
+      "extra.typo3/cms.app-dir moves nothing. It is accepted where it is written and reported where it is used: every install and every autoload dump prints «Changing app-dir is not supported any more. TYPO3 application dir will always be set to Composer root directory», whether or not web-dir is set beside it, and extra.typo3/cms.root-dir is answered the same way. So the application directory is the Composer root, which here is the repository itself — config/ with settings.php, additional.php and sites/, and var/ with the caches, the logs, the sessions and a file-backed database, are written into the versioned tree and belong in .gitignore. web-dir is honoured, and only below the Composer root: one pointing outside it is reset to the default with «TYPO3 public path must be a subdirectory of Composer root directory».",
+      "typo3/cms-cli is not the root package's to require. typo3/cms-core requires it and pins a major of its own, which has nothing to do with the TYPO3 version, so a root constraint that mirrors the TYPO3 major cannot resolve — and the failure names typo3/cms-core as what it conflicts with rather than the line that is wrong. It arrives as a dependency of the core, and the console binary is there without being asked for.",
+      "The extension being the root package changes where it is loaded from. Its package path is the Composer root itself, and its Resources/Public/ is published as a symlink out of the document root and up into that root — so an edit below Resources/Public/ is live after a reload with no build step. Nothing is installed into typo3conf/ext/ in a Composer installation: that directory is empty where it exists at all, and it is not a broken installation. Where public resources land and how they are addressed is public-assets."
     ]
   },
   {

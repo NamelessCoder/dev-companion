@@ -80,6 +80,54 @@ final class HintsTest extends TestCase
     }
 
     /**
+     * `R-KNW-064`. Two of the three findings are traps rather than absences:
+     * `app-dir` is accepted where it is written and ignored where it is used,
+     * and the `cms-cli` failure blames a version line that looks wrong and is
+     * not. A hint that named the keys and not their two failures would leave a
+     * session exactly where the report found it.
+     */
+    #[Test]
+    public function installingTypo3BeneathTheExtensionNamesTheKeyThatMovesNothing(): void
+    {
+        // The feedback's own query, which used to reach the manifest and the
+        // project scripts, and the narrowed one, which reached nothing at all.
+        $reported = Hints::find(
+            [],
+            'Making a TYPO3 extension\'s own composer.json install a full TYPO3 into .build/ so the extension '
+            . 'can be run locally: which config/extra keys apply, and which packages may be required.',
+            6,
+        );
+        self::assertContains('extension-repository-installation', array_column($reported['matchedHints'], 'id'));
+
+        $narrowed = Hints::find(
+            [],
+            'TYPO3 extension composer root package app-dir web-dir typo3/cms-cli local installation',
+            6,
+        );
+        self::assertSame('extension-repository-installation', $narrowed['matchedHints'][0]['id']);
+
+        $text = self::statementsOf('extension-repository-installation');
+
+        // The keys that move the installation, and the one that is accepted and
+        // then ignored — with the message, because that is what a session sees.
+        self::assertStringContainsString('config.vendor-dir and config.bin-dir', $text);
+        self::assertStringContainsString('Changing app-dir is not supported any more', $text);
+        self::assertStringContainsString('whether or not web-dir is set beside it', $text);
+        self::assertStringContainsString('belong in .gitignore', $text);
+        self::assertStringContainsString('must be a subdirectory of Composer root directory', $text);
+
+        // The constraint belongs to the core on every covered major, so the
+        // root package requiring the package itself is what cannot resolve.
+        self::assertStringContainsString('not the root package\'s to require', $text);
+        self::assertStringContainsString('pins a major of its own', $text);
+
+        // And the placement, which the empty directory beside it reads against.
+        self::assertStringContainsString('package path is the Composer root itself', $text);
+        self::assertStringContainsString('empty where it exists at all', $text);
+        self::assertStringContainsString('public-assets', $text);
+    }
+
+    /**
      * Setting the analysis up is the extension author's question, and the core
      * is no answer to it: its configuration sits in a mono repository, half of
      * what it declares is its own rule set, and the paths are relative to a

@@ -119,3 +119,19 @@ time.
 - Nothing here can install a root package without the network. The statement is
   then bound to a reading of the installer's source rather than to a run, and it
   has to say so.
+
+## Since then
+
+The card this entry queued was worked on 2026-08-03, and the last **Assumed**
+is what it disproved: the network is reachable from here, so the layout was
+built rather than reasoned about and all three claims were read off it. The
+first **Wrong if** did not hold — the `app-dir` message is raised from the
+presence of the key alone, and every covered major requires the same installer
+major — so what landed is one statement per claim and unbound.
+[`D-KNW-053`](knw-053-the-root-package-layout-is-stated-from-an-installation-and-holds-across-the-covered-majors.md)
+carries the readings and the sentences,
+[`R-KNW-064`](../../requirements/knowledge/knw-064-the-composer-keys-that-install-typo3-beneath-an-extension-are-answered.md)
+what has to keep holding, and the statement is
+`extension-repository-installation` rather than a clause in
+`project-build-and-scripts`: that hint is about the repository that holds an
+installation, and this is the repository that is only the extension.

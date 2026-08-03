@@ -78,7 +78,15 @@ written down here as an option and not as a decision.
 
 What would settle the first claim is one run: a session in `E-EXT` asked to fix
 something and commit it, graded on whether it passed the argument. Nothing
-produces that run today. The three forward reviews are reviews, `D-EVI-003` says
-a review changes nothing, and so none of them ever reaches a commit. `EXT-03` is
-the case that names this task shape, and a contract case is read rather than run
-forward. The entry stays open until that run exists.
+produced that run, because the three forward reviews are reviews, `D-EVI-003`
+says a review changes nothing, and `EXT-03` is a contract case, which is read
+rather than run forward. What that run may be was answered on 2026-08-03. A
+session may change code and commit in one of the checkouts, and this server may
+do neither itself: it says what is to be done, it validates, and every tool but
+`typo3_feedback_record` carries `readOnlyHint`. The run is driven ad hoc and
+recorded as a feedback, so neither `D-EVI-001` nor `D-EVI-003` is opened for it,
+and `todo/open/2026-08-01-200601` is what carries it. The fourth channel moved
+on the same day: the two core skills were published and both name the tool, and
+the seven the reading above counted still do not. A session in an extension
+checkout reaches for one of those seven, so the hole the run has to be designed
+around is where it was. The entry stays open until that run exists.

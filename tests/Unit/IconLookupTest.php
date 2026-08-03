@@ -117,6 +117,27 @@ final class IconLookupTest extends TestCase
         self::assertTrue($result->data['exactMatch']);
     }
 
+    #[Test]
+    public function anIdentifierRegisteredSinceTheLastCallIsFound(): void
+    {
+        // The registry is read once per call, not once per process. A caller
+        // registers an icon and asks about it in the same session, and a
+        // reading kept from before that edit answers that it is not registered
+        // — which is the one answer this tool exists to prevent.
+        $root = $this->installationWithItsOwnIcon();
+        Instance::discoverFrom($root);
+
+        $before = Registry::call('typo3_icon_lookup', ['query' => 'acme-teaser']);
+        file_put_contents(
+            $root . '/packages/my_sitepackage/Configuration/Icons.php',
+            "<?php\nreturn ['acme-teaser' => ['provider' => 'x', 'source' => 'y']];\n"
+        );
+        $after = Registry::call('typo3_icon_lookup', ['query' => 'acme-teaser']);
+
+        self::assertFalse($before->data['exactMatch'] ?? false);
+        self::assertTrue($after->data['exactMatch'] ?? false);
+    }
+
     /** A Composer project whose own extension registers an icon. */
     private function installationWithItsOwnIcon(): string
     {

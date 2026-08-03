@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Typo3CmsMcp\Tool;
 
 use Typo3CmsMcp\Feedback\Channel;
+use Typo3CmsMcp\Installation\Icons;
+use Typo3CmsMcp\Installation\Typo3Runtime;
 use Typo3CmsMcp\Result\ToolResult;
 use Typo3CmsMcp\Server\ExcludedTools;
 
@@ -83,12 +85,34 @@ final class Registry
         ], self::offered());
     }
 
-    /** @param array<string, mixed> $args */
+    /**
+     * The answer one tool gives, and the end of what was read for it.
+     *
+     * One boot answers every topic a call needs, so the reading is memoized for
+     * the length of the call and dropped with it. Keeping it past the answer it
+     * was taken for is what makes an installation answer about itself as it was
+     * before the caller's own edit: between two calls the agent writes, and the
+     * icon it registered a minute ago comes back unregistered from a registry
+     * read before it existed. A boot costs time and no tokens, and a wrong
+     * answer costs both.
+     *
+     * The console resolution is not dropped with them. It memoizes only
+     * successes, and a project stopped mid-session fails at the boot rather
+     * than answering from a stale reading — so re-resolving per call buys
+     * nothing and pays `ddev describe` for it.
+     *
+     * @param array<string, mixed> $args
+     */
     public static function call(string $name, array $args): ToolResult
     {
         foreach (self::offered() as $tool) {
             if ($tool::name() === $name) {
-                return $tool::answer($args);
+                try {
+                    return $tool::answer($args);
+                } finally {
+                    Typo3Runtime::forget();
+                    Icons::forget();
+                }
             }
         }
 

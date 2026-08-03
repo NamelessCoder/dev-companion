@@ -7,6 +7,7 @@ because it looks exactly like an installation that has nothing to say.
 See [the decisions readme](../readme.md) for how an entry is written and when
 one is added.
 
+- [`D-DIS-011`][D-DIS-011] — What was read from the installation lives as long as the call · 2026-08-04
 - [`D-DIS-010`][D-DIS-010] — What this package writes into a project ignores itself · 2026-08-03
 - [`D-DIS-007`][D-DIS-007] — The DDEV console is named by the mount, not by the variable · 2026-08-02 · confirmed
 - [`D-DIS-008`][D-DIS-008] — The columns TYPO3 derives are reachable where the database server is · 2026-08-02 · confirmed
@@ -16,6 +17,7 @@ one is added.
 - [`D-DIS-001`][D-DIS-001] — The root package counts as an installed package · 2026-07-29 · confirmed
 - [`D-DIS-004`][D-DIS-004] — The version comes from the core package, not from the console · 2026-07-29 · confirmed
 
+[D-DIS-011]: dis-011-what-was-read-from-the-installation-lives-as-long-as-the-call.md
 [D-DIS-010]: dis-010-what-this-package-writes-into-a-project-ignores-itself.md
 [D-DIS-007]: dis-007-the-ddev-console-is-named-by-the-mount-not-by-the-variable.md
 [D-DIS-008]: dis-008-the-columns-typo3-derives-are-reachable-where-the-database-is.md

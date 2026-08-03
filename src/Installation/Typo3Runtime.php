@@ -25,12 +25,12 @@ namespace Typo3CmsMcp\Installation;
  * - **unreachable** — no console could be resolved, no interpreter derived, or
  *   the boot failed. Also a reason, never silence.
  *
- * The reading is done once and then kept, because it costs a boot and one
- * reading answers every topic. A reading that is not full is kept only for as
- * long as the console it was taken through stays the same: a caller that reads
- * "the DDEV project is stopped" and starts it is resolved through DDEV
- * afterwards, and asks again — which is the rule `Typo3Cli::resolve()` and
- * `Instance::describe()` follow, applied to the thing that changes here.
+ * The reading is memoized for the length of one tool call, because it costs a
+ * boot and one reading answers every topic. `Registry::call` drops it when the
+ * call ends, and that is what keeps an answer from describing the installation
+ * as it was before the caller's own edit. It is also why nothing here has to
+ * notice a project that was started, or configured, since the last reading:
+ * between two calls there is no reading left to be stale.
  */
 final class Typo3Runtime
 {
@@ -46,9 +46,6 @@ final class Typo3Runtime
     /** @var array{state: string, reason: string, topics: array<string, mixed>}|null */
     private static ?array $answer = null;
 
-    /** The console this reading was taken through; null while there is none. */
-    private static ?string $through = null;
-
     /**
      * What the running installation reports, or why it did not.
      *
@@ -56,20 +53,14 @@ final class Typo3Runtime
      */
     public static function ask(): array
     {
-        $through = Typo3Cli::resolve()['via'] ?? '';
-        // A full reading is the installation and is kept. One that is not gets
-        // kept too — an answer costs a boot, and four topics are read out of
-        // one answer — but only for as long as the way in stays the same: the
-        // caller that reads "the DDEV project is stopped", starts it, and asks
-        // again is resolved through DDEV rather than through this machine's PHP,
-        // and that is the reading worth taking twice. What this does not catch
-        // is a system configured mid-session, which keeps its failsafe reading
-        // until the server is restarted.
-        if (self::$answer !== null && (self::$answer['state'] === self::STATE_FULL || self::$through === $through)) {
+        // Every state is kept alike, because within one call there is nothing
+        // for any of them to become: the console that was resolved stays
+        // resolved, and a project the caller starts on reading "the DDEV
+        // project is stopped" is started between two calls, where no reading
+        // survives to be corrected.
+        if (self::$answer !== null) {
             return self::$answer;
         }
-
-        self::$through = $through;
 
         return self::$answer = self::read();
     }
@@ -96,11 +87,16 @@ final class Typo3Runtime
         return $answer['state'] === self::STATE_FULL ? '' : $answer['reason'];
     }
 
-    /** Drops the memoized reading; for tests that move between installations. */
+    /**
+     * Drops the memoized reading.
+     *
+     * Called at the end of every tool call, which is what bounds the reading to
+     * the answer it was taken for — `Registry::call` carries the reason. Also
+     * what a recording and a test move between two installations with.
+     */
     public static function forget(): void
     {
         self::$answer = null;
-        self::$through = null;
     }
 
     /**

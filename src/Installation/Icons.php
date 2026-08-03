@@ -152,7 +152,13 @@ final class Icons
             . 'TYPO3 derives from TCA, are not in it';
     }
 
-    /** Drops the memoized registry; for tests that move between installations. */
+    /**
+     * Drops the memoized registry.
+     *
+     * Called at the end of every tool call, for the reason `Registry::call`
+     * carries: it sits on the runtime reading, so it goes when that goes. Also
+     * what a recording and a test move between two installations with.
+     */
     public static function forget(): void
     {
         self::$icons = null;

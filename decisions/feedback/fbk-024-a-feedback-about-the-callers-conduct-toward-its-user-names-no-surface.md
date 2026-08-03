@@ -1,7 +1,7 @@
 ---
 id: D-FBK-024
 date: 2026-08-02
-status: open
+status: confirmed
 ---
 
 # D-FBK-024 — A feedback about the caller's conduct toward its user names no surface
@@ -118,3 +118,22 @@ project.
 - A conduct rule arrives in `instructions` or `skills/base.md` by some other
   route, unpriced. This entry is then the record that the cost was named once
   and the question was left open, and the ladder gained a rung nobody declared.
+
+## Confirmed on 2026-08-04
+
+The question was put to the user, and the answer is that no such rule is
+written. Turn-taking between a session and the person it works for belongs to
+the client harness and to the project's own conventions. That was the second
+**Assumed** bullet, read off what this server is rather than measured; it is now
+what the person who maintains it says, so the surface stays as it was and the
+2048 characters go on carrying the entry point.
+
+`feedback/2026-08-01-003931` is archived with this reading and the card that
+carried the question is deleted. The verification half needed nothing here: its
+sibling `feedback/2026-08-01-003533` was worked off on 2026-08-03, which is the
+crossing `D-KNW-017` describes.
+
+The **Wrong if** is unchanged and none of the three is spent. The answer was
+given against the cost of the two surfaces, not against a report of the
+boundary; a later feedback that carries the user's own account is still evidence
+this entry never had.

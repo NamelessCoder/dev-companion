@@ -109,3 +109,48 @@ it was read from. The rest of that file is how the project boots.
 - A second boot reports the same cost in a project whose environment declares no
   lifecycle, the procedure living in its README. The gap would then be the README
   rather than the environment, and this field would be built and unused.
+
+## Since then
+
+The four readings this entry left open were taken from DDEV v1.25.1 — the DDEV
+on the machine, since `composer.lock` names none — and the field was built on
+them. `ddev debug configyaml` answered the first two, in a project laid out for
+it: the hooks of one stage concatenate across `.ddev/config.yaml` and every
+`.ddev/config.*.yaml` and `.ddev/config.*.yml` beside it in filename order, and
+a stage no later file mentions keeps what it had. `override_config: true`
+replaces per stage and only for the stages the file carrying it names, so
+`post-start: []` under it erased that one stage and left `post-import-db` and
+`pre-pull` standing, and a plain file sorting after it appended to what it had
+left. That settles the **Assumed** entry above, which is narrower than it read:
+the flag never replaces the whole `hooks` map.
+
+The providers are reported and DDEV's own are not. `ddev pull` offered every
+`.yaml` in `.ddev/providers/` and neither the `.yml` nor the `.yaml.example`
+beside them, so a recipe is that exact shape. `#ddev-generated` is DDEV's own
+signature for a file it replaces while the marker is there
+(`nodeps.DdevFileSignature`, matched as a literal anywhere in the file by
+`fileutil.FgrepStringInFile`), so it is what tells a recipe DDEV writes into
+every project from one this repository decided on — and reporting both would
+name ten integrations in a project that has one.
+
+`.ddev/commands/` is left out. A custom command is run when it is asked for,
+which is what the declared commands already are, and DDEV lists it under
+`ddev -h` by the `## Usage:` line inside the script rather than by its filename.
+What tied `.ddev/providers/dump.yaml` to this requirement was that the hooks
+name it: the `pre-pull` stage fetches the archive, `ddev pull dump` takes the
+dump out of it, `post-pull` clears up, and reporting the hooks without the
+recipe would describe half a procedure. Nothing in `.ddev/commands/` stands in
+that relation to a stage. Whether it belongs beside the declared commands is a
+different question, and `R-PRJ-007` and `D-ANS-011` hold that list to what a
+manifest declares.
+
+The hooks are not marked `check` or `change`, which is where the feedback's
+wording is not taken. `Project::runs()` answers whether a caller may run
+something, and a hook is not the caller's to run; the demo project's nine hooks
+would come back three `change` and six `unknown`, next to command text that is
+short and printed whole. The mark earns its place on a `cgl` whose body nobody
+sees.
+
+Re-run against `/home/benji/projects/site-demo-typo3-org` on 2026-08-03, the
+answer now carries all nine hooks in the file's order with the container each
+runs in — `ddev restart` the one on the host — and `ddev pull dump` beside them.

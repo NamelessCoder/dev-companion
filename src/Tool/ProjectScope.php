@@ -27,7 +27,7 @@ final class ProjectScope extends ReadOnlyTool
 
     public static function description(): string
     {
-        return 'Describe the project around the TYPO3 installation this server was started in: its TYPO3 and PHP constraints, the extensions that are its own rather than TYPO3\'s, the sites it configures with the site sets each depends on, and the commands it declares in composer.json and package.json — each marked a check that hands the code back as it was, a change that rewrites something, or unknown where the declared body does not say. Read from files only, no console and no database, so it answers on a fresh clone. It also names the environment the repository configures to run itself in: a DDEV project states the PHP its container runs, which is a different interpreter from the caller\'s shell and where the commands below are run. Call it before recommending or running a check — these are the commands that exist in this repository, and the ones marked check are what a task told not to change files may run.';
+        return 'Describe the project around the TYPO3 installation this server was started in: its TYPO3 and PHP constraints, the extensions that are its own rather than TYPO3\'s, the sites it configures with the site sets each depends on, and the commands it declares in composer.json and package.json — each marked a check that hands the code back as it was, a change that rewrites something, or unknown where the declared body does not say. Read from files only, no console and no database, so it answers on a fresh clone. It also names the environment the repository configures to run itself in: a DDEV project states the PHP its container runs, which is a different interpreter from the caller\'s shell and where the commands below are run, plus what that environment runs without being asked — each hook as the stage it fires at and the command it runs, and the pull recipes its database and files come from. Call it before booting such a project or before recommending or running a check — these are the commands that exist in this repository, and the ones marked check are what a task told not to change files may run.';
     }
 
     public static function inputSchema(): array
@@ -51,8 +51,18 @@ final class ProjectScope extends ReadOnlyTool
                     'php' => Schema::nullableString('The PHP that environment runs, where its files state it. Null is not "none": a DDEV project that states no php_version gets the default of the installed DDEV, and an environment named by TYPO3_MCP_CONSOLE states its version nowhere this server can read. typo3_server_scope reports the version the console actually answers on.'),
                     'source' => Schema::string('Where this was read: the .ddev config file that states the version last, or TYPO3_MCP_CONSOLE.'),
                     'entered' => ['type' => 'boolean', 'description' => 'True when this server is already running inside that environment, so its shell is that environment and a declared command needs nothing in front of it.'],
+                    'hooks' => Schema::listOf(Schema::object([
+                        'stage' => Schema::string('The DDEV stage it fires at: post-start, post-import-db, pre-pull and the rest.'),
+                        'command' => Schema::string('What that stage runs, as the file states it. A block of several lines is joined with ";", which is what the shell does with it.'),
+                        'service' => Schema::nullableString('The container it runs in, "web" where the task names none. Null means it runs on the host instead, which is what an exec-host task is.'),
+                    ], ['stage', 'command', 'service']), 'What this environment runs without being asked, from .ddev/config.yaml and every .ddev/config.*.yaml beside it. The commands list is what a caller may run; these fire on their own at the stage each names, so an environment that installs dependencies on start and updates the schema on import says so here. Empty means those files declare no hooks. Unmarked, unlike the commands: runs says whether a caller may run something, and a hook is not the caller\'s to run.'),
+                    'providers' => Schema::listOf(Schema::object([
+                        'name' => Schema::string('What to pass: "ddev pull <name>".'),
+                        'source' => Schema::string('The recipe file, relative to the project root.'),
+                        'operations' => Schema::listOf(Schema::string(), 'pull, push, or both — which of the two the recipe declares commands for. A recipe with no push commands is one you cannot push upstream with.'),
+                    ], ['name', 'source', 'operations']), 'The pull and push recipes below .ddev/providers/ that this repository wrote, which is where its database and files come from. DDEV writes its own recipes into every project and marks them #ddev-generated; those are left out, because they say what DDEV puts everywhere rather than what this project decided.'),
                 ],
-                'required' => ['via', 'php', 'source', 'entered'],
+                'required' => ['via', 'php', 'source', 'entered', 'hooks', 'providers'],
             ],
             'extensions' => Schema::listOf(Schema::object([
                 'key' => Schema::string(),
@@ -145,6 +155,10 @@ final class ProjectScope extends ReadOnlyTool
             );
         }
 
+        foreach (self::lifecycle($project['environment']) as $line) {
+            $lines[] = $line;
+        }
+
         if ($project['patches'] !== []) {
             $lines[] = '';
             $lines[] = 'Patched dependencies — these packages do not behave as their version says, and the next '
@@ -189,7 +203,7 @@ final class ProjectScope extends ReadOnlyTool
      * machines. Empty where there is one machine, so the line an ordinary
      * project answers with does not change.
      *
-     * @param array{via: string, php: ?string, source: string, entered: bool}|null $environment
+     * @param array{via: string, php: ?string, source: string, entered: bool, hooks: array<int, array{stage: string, command: string, service: ?string}>, providers: array<int, array{name: string, source: string, operations: array<int, string>}>}|null $environment
      */
     private static function runtime(?array $environment): string
     {
@@ -223,7 +237,7 @@ final class ProjectScope extends ReadOnlyTool
      * is built for — which is the finding `feedback/2026-07-31-193611` reported
      * as a version mismatch that blocked nothing.
      *
-     * @param array{via: string, php: ?string, source: string, entered: bool}|null $environment
+     * @param array{via: string, php: ?string, source: string, entered: bool, hooks: array<int, array{stage: string, command: string, service: ?string}>, providers: array<int, array{name: string, source: string, operations: array<int, string>}>}|null $environment
      */
     private static function whereTheyRun(?array $environment): string
     {
@@ -252,5 +266,63 @@ final class ProjectScope extends ReadOnlyTool
                 . 'whatever PHP this machine carries%s, which is not what the project is built for.',
             $environment['php'] === null ? '' : ' rather than on ' . $environment['php'],
         );
+    }
+
+    /**
+     * What the environment runs by itself, which the commands above never
+     * covered: those are what a caller may run, these run without being asked.
+     *
+     * `R-PRJ-009`. A boot of a demo site took its schema update, its extension
+     * setup and its backend user out of `.ddev/config.yaml` by hand, beside an
+     * answer that had opened the same file for one PHP version
+     * (`feedback/2026-08-03-154501`). Said even where there are none, because
+     * an answer that names no hook reads as "there is none" whether this looked
+     * or not.
+     *
+     * @param array{via: string, php: ?string, source: string, entered: bool, hooks: array<int, array{stage: string, command: string, service: ?string}>, providers: array<int, array{name: string, source: string, operations: array<int, string>}>}|null $environment
+     * @return array<int, string>
+     */
+    private static function lifecycle(?array $environment): array
+    {
+        if ($environment === null || $environment['via'] !== Typo3Cli::VIA_DDEV) {
+            return [];
+        }
+
+        $lines = [''];
+        $lines[] = $environment['hooks'] === []
+            ? 'That DDEV project declares no hooks in .ddev/config.yaml or the config.*.yaml beside it, so the '
+                . 'commands above are the whole of what runs here.'
+            : 'What that DDEV project runs without being asked. The commands above are what you may run; these fire '
+                . 'at the stage each one names, in the order .ddev/config.yaml and the config.*.yaml beside it '
+                . 'state them:';
+        foreach ($environment['hooks'] as $hook) {
+            $lines[] = sprintf(
+                '- %s, %s: %s',
+                $hook['stage'],
+                $hook['service'] === null ? 'on the host' : 'in the ' . $hook['service'] . ' container',
+                $hook['command'],
+            );
+        }
+
+        if ($environment['providers'] !== []) {
+            $lines[] = '';
+            $lines[] = 'Where its database and files come from — the recipes below .ddev/providers/ this repository '
+                . 'wrote. DDEV puts its own into every project and marks them #ddev-generated; those are not this '
+                . 'project\'s and are left out:';
+            foreach ($environment['providers'] as $provider) {
+                $lines[] = sprintf(
+                    '- %s (%s)',
+                    $provider['operations'] === []
+                        ? $provider['name'] . ', which declares neither a pull nor a push command'
+                        : implode(', ', array_map(
+                            static fn(string $operation): string => 'ddev ' . $operation . ' ' . $provider['name'],
+                            $provider['operations'],
+                        )),
+                    $provider['source'],
+                );
+            }
+        }
+
+        return $lines;
     }
 }

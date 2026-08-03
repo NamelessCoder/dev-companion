@@ -1,6 +1,6 @@
 ---
 id: R-PRJ-009
-status: open
+status: held
 restsOn: [D-ANS-044]
 ---
 
@@ -33,5 +33,6 @@ hand. Re-run the same day: `environment` is still `via`, `php`, `source` and
 
 ## Held by
 
-Nothing yet. The requirement is open, and the tests belong to the commit that
-builds it.
+- `ProjectTest::theAnswerStatesWhatTheEnvironmentRunsWithoutBeingAsked`
+- `ProjectTest::aHookAConfigBesideTheBaseOneTakesAwayIsNotStillReported`
+- `ProjectTest::aPullRecipeDdevWroteIsNotOneThisRepositoryDecidedOn`

@@ -106,6 +106,8 @@ final class ProjectTest extends TestCase
             'php' => '8.4',
             'source' => '.ddev/config.local.yaml',
             'entered' => false,
+            'hooks' => [],
+            'providers' => [],
         ], $project['environment']);
 
         $text = Registry::call('typo3_project_scope', [])->text;
@@ -145,6 +147,157 @@ final class ProjectTest extends TestCase
     }
 
     #[Test]
+    public function theAnswerStatesWhatTheEnvironmentRunsWithoutBeingAsked(): void
+    {
+        // A boot of a demo site read its schema update, its extension setup and
+        // its backend user out of .ddev/config.yaml by hand, beside an answer
+        // that had opened the same file for one PHP version and reported one
+        // composer script — feedback/2026-08-03-154501, R-PRJ-009. Every task
+        // type DDEV v1.25.1 supports is here, because which of them a hook uses
+        // decides where its command runs.
+        $root = $this->composerProject();
+        $this->declare($root . '/.ddev/config.yaml', <<<'YAML'
+            name: site-new
+            type: typo3
+            php_version: "8.3"
+            hooks:
+                post-start:
+                    - exec: composer install
+                    - exec:
+                      exec_raw: [ls, -lR, /var/www/html]
+                post-import-db:
+                    - exec: |
+                        bin/typo3 extension:setup
+                        bin/typo3 cache:flush
+                    - exec: mysql -e "SELECT 1"
+                      service: db
+                post-pull:
+                    - exec-host: ddev restart
+                    - composer: install --no-dev
+            YAML);
+        Instance::discoverFrom($root);
+
+        self::assertSame(
+            [
+                ['stage' => 'post-start', 'command' => 'composer install', 'service' => 'web'],
+                // The argument list form, which is a command with no shell
+                // around it rather than a task that states none.
+                ['stage' => 'post-start', 'command' => 'ls -lR /var/www/html', 'service' => 'web'],
+                // A block is several lines in one shell and nothing stops it at
+                // the first failure, so ";" is the join and "&&" would not be.
+                ['stage' => 'post-import-db', 'command' => 'bin/typo3 extension:setup; bin/typo3 cache:flush', 'service' => 'web'],
+                ['stage' => 'post-import-db', 'command' => 'mysql -e "SELECT 1"', 'service' => 'db'],
+                ['stage' => 'post-pull', 'command' => 'ddev restart', 'service' => null],
+                ['stage' => 'post-pull', 'command' => 'composer install --no-dev', 'service' => 'web'],
+            ],
+            Project::describe()['environment']['hooks'],
+        );
+
+        $text = Registry::call('typo3_project_scope', [])->text;
+        self::assertStringContainsString('runs without being asked', $text);
+        self::assertStringContainsString('- post-start, in the web container: composer install', $text);
+        // The two that are not the web container, and the pair that would read
+        // as the same machine if only the command were carried.
+        self::assertStringContainsString('- post-import-db, in the db container: mysql -e "SELECT 1"', $text);
+        self::assertStringContainsString('- post-pull, on the host: ddev restart', $text);
+
+        // A DDEV project that declares none says so. An answer that names no
+        // hook reads as "there is none" whether this looked or not, which is
+        // the silence the environment field already exists against.
+        $bare = $this->composerProject();
+        $this->declare($bare . '/.ddev/config.yaml', "name: bare\ntype: typo3\n");
+        Instance::discoverFrom($bare);
+
+        self::assertSame([], Project::describe()['environment']['hooks']);
+        self::assertStringContainsString(
+            'declares no hooks',
+            Registry::call('typo3_project_scope', [])->text,
+        );
+    }
+
+    #[Test]
+    public function aHookAConfigBesideTheBaseOneTakesAwayIsNotStillReported(): void
+    {
+        // DDEV merges hooks per stage across config.yaml and every
+        // config.*.yaml beside it, and override_config: true replaces instead —
+        // per stage, and only for the stages the file carrying it names.
+        // Measured against DDEV v1.25.1 through `ddev debug configyaml` on
+        // 2026-08-03. Reading the base file alone would state a lifecycle the
+        // container does not run.
+        $root = $this->composerProject();
+        $this->declare($root . '/.ddev/config.yaml', <<<'YAML'
+            name: site-new
+            hooks:
+                post-start:
+                    - exec: composer install
+                post-import-db:
+                    - exec: bin/typo3 database:updateschema
+            YAML);
+        $this->declare($root . '/.ddev/config.aaa.yaml', "hooks:\n    post-start:\n        - exec: npm ci\n");
+        Instance::discoverFrom($root);
+
+        self::assertSame(
+            ['composer install', 'npm ci', 'bin/typo3 database:updateschema'],
+            array_column(Project::describe()['environment']['hooks'], 'command'),
+            'a merged stage concatenates in filename order, which is the order the container runs it in',
+        );
+
+        // The same project with the stage taken away again, which is what a
+        // developer's own config.local.yaml is for and the one shape a merge
+        // cannot express.
+        $this->declare($root . '/.ddev/config.zzz.yaml', "override_config: true\nhooks:\n    post-start: []\n");
+        Instance::discoverFrom($root);
+
+        self::assertSame(
+            [['stage' => 'post-import-db', 'command' => 'bin/typo3 database:updateschema', 'service' => 'web']],
+            Project::describe()['environment']['hooks'],
+            'override_config replaces the stages its own file names and leaves the others alone',
+        );
+    }
+
+    #[Test]
+    public function aPullRecipeDdevWroteIsNotOneThisRepositoryDecidedOn(): void
+    {
+        // The other half of the demo site's import: pre-pull fetches the zip,
+        // `ddev pull dump` copies the dump out of it, post-pull clears up. DDEV
+        // writes nine recipes of its own into every project, so listing them
+        // all would report ten integrations in a project that has one — and
+        // #ddev-generated is DDEV's own statement of which those are, the
+        // signature it replaces the file by while the marker is there.
+        $root = $this->composerProject();
+        $this->declare($root . '/.ddev/config.yaml', "name: site-new\ntype: typo3\n");
+        $this->declare(
+            $root . '/.ddev/providers/dump.yaml',
+            "db_pull_command:\n  command: cp dump.sql.gz .ddev/.downloads/db.sql.gz\nfiles_pull_command:\n  command: 'true'\n",
+        );
+        $this->declare(
+            $root . '/.ddev/providers/live.yaml',
+            "db_pull_command:\n  command: 'true'\ndb_push_command:\n  command: 'true'\n",
+        );
+        $this->declare($root . '/.ddev/providers/acquia.yaml', "#ddev-generated\ndb_pull_command:\n  command: 'true'\n");
+        // Neither of these is a recipe: `ddev pull` offered the .yaml files in
+        // that directory and neither the .yml nor the .yaml.example beside them.
+        $this->declare($root . '/.ddev/providers/rsync.yaml.example', "db_pull_command:\n  command: 'true'\n");
+        $this->declare($root . '/.ddev/providers/other.yml', "db_pull_command:\n  command: 'true'\n");
+        Instance::discoverFrom($root);
+
+        self::assertSame(
+            [
+                ['name' => 'dump', 'source' => '.ddev/providers/dump.yaml', 'operations' => ['pull']],
+                ['name' => 'live', 'source' => '.ddev/providers/live.yaml', 'operations' => ['pull', 'push']],
+            ],
+            Project::describe()['environment']['providers'],
+        );
+
+        $text = Registry::call('typo3_project_scope', [])->text;
+        self::assertStringContainsString('- ddev pull dump (.ddev/providers/dump.yaml)', $text);
+        // A recipe with no push command is one nothing can be pushed upstream
+        // with, and the difference is worth the word.
+        self::assertStringContainsString('- ddev pull live, ddev push live (.ddev/providers/live.yaml)', $text);
+        self::assertStringNotContainsString('acquia', $text);
+    }
+
+    #[Test]
     public function anEnvironmentThatIsNotDdevIsSaidToBeUnreadRatherThanAbsent(): void
     {
         // A stated console is how a layout this server could not work out gets
@@ -161,6 +314,8 @@ final class ProjectTest extends TestCase
             'php' => null,
             'source' => Typo3Cli::CONSOLE_VARIABLE,
             'entered' => false,
+            'hooks' => [],
+            'providers' => [],
         ], Project::describe()['environment']);
         self::assertStringContainsString(
             'nothing readable here says which PHP that is',

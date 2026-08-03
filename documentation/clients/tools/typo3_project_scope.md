@@ -9,9 +9,12 @@ where the declared body does not say. Read from files only, no console and no
 database, so it answers on a fresh clone. It also names the environment the
 repository configures to run itself in: a DDEV project states the PHP its
 container runs, which is a different interpreter from the caller's shell and
-where the commands below are run. Call it before recommending or running a check
-— these are the commands that exist in this repository, and the ones marked
-check are what a task told not to change files may run.
+where the commands below are run, plus what that environment runs without being
+asked — each hook as the stage it fires at and the command it runs, and the pull
+recipes its database and files come from. Call it before booting such a project
+or before recommending or running a check — these are the commands that exist in
+this repository, and the ones marked check are what a task told not to change
+files may run.
 
 `readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: false`
 
@@ -56,6 +59,37 @@ environment:  # optional
   # shell is that environment and a declared command needs nothing in front of
   # it.
   entered: boolean
+  # What this environment runs without being asked, from .ddev/config.yaml and
+  # every .ddev/config.*.yaml beside it. The commands list is what a caller may
+  # run; these fire on their own at the stage each names, so an environment that
+  # installs dependencies on start and updates the schema on import says so
+  # here. Empty means those files declare no hooks. Unmarked, unlike the
+  # commands: runs says whether a caller may run something, and a hook is not
+  # the caller's to run.
+  hooks:
+    - # The DDEV stage it fires at: post-start, post-import-db, pre-pull and the
+      # rest.
+      stage: string
+      # What that stage runs, as the file states it. A block of several lines is
+      # joined with ";", which is what the shell does with it.
+      command: string
+      # The container it runs in, "web" where the task names none. Null means it
+      # runs on the host instead, which is what an exec-host task is.
+      service: string or null
+  # The pull and push recipes below .ddev/providers/ that this repository wrote,
+  # which is where its database and files come from. DDEV writes its own recipes
+  # into every project and marks them #ddev-generated; those are left out,
+  # because they say what DDEV puts everywhere rather than what this project
+  # decided.
+  providers:
+    - # What to pass: "ddev pull <name>".
+      name: string
+      # The recipe file, relative to the project root.
+      source: string
+      # pull, push, or both — which of the two the recipe declares commands
+      # for. A recipe with no push commands is one you cannot push upstream
+      # with.
+      operations: [string]
 # Extensions that are not TYPO3 system extensions.
 extensions:  # optional
   - key: string

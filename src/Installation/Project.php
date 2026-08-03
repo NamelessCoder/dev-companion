@@ -52,13 +52,28 @@ final class Project
     public const RUNS_UNDECLARED = 'unknown';
 
     /**
+     * The keys a DDEV hook task states its command under.
+     *
+     * `exec` runs it in a container, `exec-host` on the machine DDEV was
+     * called from, `composer` in the web container with `composer` in front.
+     */
+    private const DDEV_TASKS = ['exec', 'exec-host', 'composer'];
+
+    /**
+     * What DDEV marks the files it owns with, and replaces them by while the
+     * marker is there — `nodeps.DdevFileSignature` in v1.25.1, matched as a
+     * literal anywhere in the file the way `fileutil.FgrepStringInFile` does.
+     */
+    private const DDEV_SIGNATURE = '#ddev-generated';
+
+    /**
      * @return array{
      *     root: string,
      *     kind: string,
      *     typo3Version: ?string,
      *     phpConstraint: ?string,
      *     coreConstraint: ?string,
-     *     environment: array{via: string, php: ?string, source: string, entered: bool}|null,
+     *     environment: array{via: string, php: ?string, source: string, entered: bool, hooks: array<int, array{stage: string, command: string, service: ?string}>, providers: array<int, array{name: string, source: string, operations: array<int, string>}>}|null,
      *     extensions: array<int, array{key: string, path: string, origin: string}>,
      *     sites: array<int, array{identifier: string, base: string, rootPageId: ?int, sets: array<int, string>, languages: array<int, string>}>,
      *     commands: array<int, array{command: string, source: string, declares: string, runs: string}>,
@@ -108,21 +123,29 @@ final class Project
      * and starting anything to find out is the whole of what `R-DIS-006`
      * forbids — so a stopped project reads exactly like a running one here.
      *
-     * @return array{via: string, php: ?string, source: string, entered: bool}|null
+     * The interpreter is half of it. What the environment runs by itself is the
+     * other half and is `R-PRJ-009`: a boot whose schema update, extension
+     * setup and backend user all sat in `.ddev/config.yaml` was carried out by
+     * reading that file by hand, beside an answer that had opened it for one
+     * PHP version (`feedback/2026-08-03-154501`).
+     *
+     * @return array{via: string, php: ?string, source: string, entered: bool, hooks: array<int, array{stage: string, command: string, service: ?string}>, providers: array<int, array{name: string, source: string, operations: array<int, string>}>}|null
      */
     private static function environment(string $root): ?array
     {
         if (is_file($root . '/.ddev/config.yaml')) {
-            [$php, $source] = self::ddevPhp($root);
+            $ddev = self::ddev($root);
 
             return [
                 'via' => Typo3Cli::VIA_DDEV,
-                'php' => $php,
-                'source' => $source,
+                'php' => $ddev['php'],
+                'source' => $ddev['source'],
                 // DDEV sets this inside the web container, and there the shell
                 // the caller has is the environment. Telling it to put `ddev`
                 // in front of a command would name a binary that is not there.
                 'entered' => filter_var(getenv('IS_DDEV_PROJECT'), FILTER_VALIDATE_BOOL),
+                'hooks' => $ddev['hooks'],
+                'providers' => self::ddevProviders($root),
             ];
         }
 
@@ -140,6 +163,10 @@ final class Project
                 'php' => null,
                 'source' => Typo3Cli::CONSOLE_VARIABLE,
                 'entered' => false,
+                // A command line names a way in and no files, so there is
+                // nothing here to read a lifecycle out of.
+                'hooks' => [],
+                'providers' => [],
             ];
         }
 
@@ -158,25 +185,30 @@ final class Project
     }
 
     /**
-     * The PHP a DDEV project runs, and the file it is stated in.
+     * What a DDEV project's configuration says: the PHP it runs, the file that
+     * states it, and the tasks it runs at a stage of its own.
      *
      * `.ddev/config.yaml` is read first, then every `.ddev/config.*.yaml` and
-     * `.ddev/config.*.yml` beside it in filename order, and the last statement
-     * of the version is the one that holds. That is DDEV's own merge — measured
-     * against v1.25.1 on 2026-08-02, where a base `8.1` beside `config.aaa.yaml`
-     * saying `8.2` and `config.zzz.yaml` saying `8.0` came out of `ddev debug
-     * configyaml` as 8.0, and where `config.override.yaml` took no special last
-     * place but sorted with the rest. Reading the base file alone would report
-     * a version the container does not run in every project that keeps its
-     * local settings in the `config.local.yaml` DDEV gitignores for that.
+     * `.ddev/config.*.yml` beside it in filename order. The last statement of
+     * the version is the one that holds; the hooks of one stage concatenate in
+     * that same order, and a stage no later file mentions keeps what it had.
+     * `override_config: true` replaces instead, per stage and only for the
+     * stages the file carrying it names — so `post-start: []` under it erases
+     * that one stage and leaves the rest, and a plain file after it appends to
+     * what it left. Reading the base file alone would report a lifecycle the
+     * container does not run in every project that keeps its local settings in
+     * the `config.local.yaml` DDEV gitignores for that.
      *
-     * Null where nothing states one: DDEV then uses the default of the DDEV
-     * that is installed, which is not in these files and is not the same number
-     * from one release to the next.
+     * All of it measured against DDEV v1.25.1 through `ddev debug configyaml`,
+     * on 2026-08-02 for the version and 2026-08-03 for the hooks.
      *
-     * @return array{0: ?string, 1: string}
+     * Null where nothing states a version: DDEV then uses the default of the
+     * DDEV that is installed, which is not in these files and is not the same
+     * number from one release to the next.
+     *
+     * @return array{php: ?string, source: string, hooks: array<int, array{stage: string, command: string, service: ?string}>}
      */
-    private static function ddevPhp(string $root): array
+    private static function ddev(string $root): array
     {
         $files = ['.ddev/config.yaml'];
         foreach (Finder::create()->files()->in($root . '/.ddev')->depth(0)
@@ -186,15 +218,143 @@ final class Project
 
         $php = null;
         $source = '.ddev/config.yaml';
+        $stages = [];
         foreach ($files as $file) {
-            $version = self::phpVersion(self::yaml($root . '/' . $file)['php_version'] ?? null);
+            $configuration = self::yaml($root . '/' . $file);
+            $version = self::phpVersion($configuration['php_version'] ?? null);
             if ($version !== null) {
                 $php = $version;
                 $source = $file;
             }
+
+            $replaces = ($configuration['override_config'] ?? null) === true;
+            foreach (is_array($configuration['hooks'] ?? null) ? $configuration['hooks'] : [] as $stage => $tasks) {
+                if (is_array($tasks)) {
+                    $stages[(string) $stage] = $replaces ? $tasks : [...$stages[(string) $stage] ?? [], ...$tasks];
+                }
+            }
         }
 
-        return [$php, $source];
+        $hooks = [];
+        foreach ($stages as $stage => $tasks) {
+            foreach ($tasks as $task) {
+                $hook = self::hook($stage, $task);
+                if ($hook !== null) {
+                    $hooks[] = $hook;
+                }
+            }
+        }
+
+        return ['php' => $php, 'source' => $source, 'hooks' => $hooks];
+    }
+
+    /**
+     * One task of one stage, or null where it states no command.
+     *
+     * Unmarked, unlike the declared commands: `runs()` answers whether a caller
+     * may run something, and a hook is not the caller's to run. What it does to
+     * the sources is in the command beside it, which is short and printed
+     * whole — the mark earns its place on a `cgl` whose body nobody sees.
+     *
+     * @return array{stage: string, command: string, service: ?string}|null
+     */
+    private static function hook(string $stage, mixed $task): ?array
+    {
+        if (!is_array($task)) {
+            return null;
+        }
+
+        foreach (self::DDEV_TASKS as $type) {
+            if (!array_key_exists($type, $task)) {
+                continue;
+            }
+            $command = self::hookCommand($task[$type], $task['exec_raw'] ?? null);
+            if ($command === '') {
+                continue;
+            }
+
+            return [
+                'stage' => $stage,
+                'command' => $type === 'composer' ? 'composer ' . $command : $command,
+                // The one task type that runs on the machine DDEV was called
+                // from rather than inside the project.
+                'service' => $type === 'exec-host'
+                    ? null
+                    : (is_string($task['service'] ?? null) ? $task['service'] : 'web'),
+            ];
+        }
+
+        return null;
+    }
+
+    /**
+     * The command one task runs, from the string it states or the `exec_raw`
+     * argument list it states instead.
+     *
+     * A block command is several lines in one shell and nothing stops it at the
+     * first failure, so the lines are joined with `;` — the `&&` the composer
+     * scripts are joined with would say the file does something it does not.
+     */
+    private static function hookCommand(mixed $stated, mixed $raw): string
+    {
+        if (is_string($stated) && trim($stated) !== '') {
+            $lines = array_filter(array_map(trim(...), explode("\n", trim($stated))));
+
+            return implode('; ', $lines);
+        }
+
+        return is_array($raw) ? implode(' ', array_map(strval(...), $raw)) : '';
+    }
+
+    /**
+     * The pull and push recipes this repository wrote, which are what
+     * `ddev pull <name>` and `ddev push <name>` run.
+     *
+     * `.ddev/providers/<name>.yaml` exactly, measured against DDEV v1.25.1 on
+     * 2026-08-03: `ddev pull` offered the two `.yaml` files in that directory
+     * and neither the `.yml` nor the `.yaml.example` beside them.
+     *
+     * DDEV writes its own recipes into every project — Acquia, Lagoon, Upsun,
+     * platform.sh and four examples — and marks each with the signature it
+     * replaces the file by while the marker is there. So a marked one says what
+     * DDEV puts everywhere and an unmarked one says what this repository
+     * decided, and listing both would report ten integrations in a project that
+     * has one.
+     *
+     * @return array<int, array{name: string, source: string, operations: array<int, string>}>
+     */
+    private static function ddevProviders(string $root): array
+    {
+        $directory = $root . '/.ddev/providers';
+        if (!is_dir($directory)) {
+            return [];
+        }
+
+        $providers = [];
+        foreach (Finder::create()->files()->in($directory)->depth(0)->name('*.yaml')->sortByName() as $file) {
+            if (str_contains((string) file_get_contents($file->getPathname()), self::DDEV_SIGNATURE)) {
+                continue;
+            }
+
+            $declared = ['pull' => false, 'push' => false];
+            foreach (array_keys(self::yaml($file->getPathname())) as $stanza) {
+                // A recipe may obtain the dump in one stanza and import it in
+                // another, and either half makes it one you can pull with.
+                $declared['pull'] = $declared['pull'] || preg_match('/_(pull|import)_command$/', (string) $stanza) === 1;
+                $declared['push'] = $declared['push'] || str_ends_with((string) $stanza, '_push_command');
+            }
+
+            $providers[] = [
+                'name' => $file->getBasename('.yaml'),
+                'source' => '.ddev/providers/' . $file->getFilename(),
+                'operations' => array_values(array_filter(
+                    ['pull', 'push'],
+                    static fn(string $operation): bool => $declared[$operation],
+                )),
+            ];
+        }
+
+        return $providers;
     }
 
     /**

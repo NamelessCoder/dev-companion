@@ -221,6 +221,22 @@ them are machines.
   belongs where it was measured: a decision records what a sweep found on its
   date, and a report prints what is true when it runs.
 
+### Comments
+
+A comment earns its lines by saying what the code cannot: why this and not the
+obvious alternative, what was measured, what breaks if somebody changes it back.
+Everything else is deleted, and the same rules apply as above — one point per
+sentence, no sentence restating the one before it.
+
+- A comment that restates the line under it is noise. Where the code is unclear,
+  the fix is the name, not a sentence explaining the name.
+- No docblock that repeats the signature. `@param` and `@return` earn their line
+  where they say an array's shape and nowhere else.
+- The reason lives in one place. Where a decision or a requirement carries it,
+  the comment names the id instead of retelling it.
+- Length is a symptom here too. Six paragraphs above a private method is usually
+  a decision that was never written down as one.
+
 `bin/cli prose:check` counts what that costs: the sentences over 30 words, worst
 file first. It fails on one of them — the bold sentence a requirement or a
 decision opens with, because a reader who stops after it is supposed to know

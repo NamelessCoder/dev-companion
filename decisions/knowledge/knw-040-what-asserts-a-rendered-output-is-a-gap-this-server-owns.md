@@ -1,7 +1,8 @@
 ---
 id: D-KNW-040
 date: 2026-08-03
-status: open
+status: revoked
+revokedBy: D-KNW-044
 ---
 
 # D-KNW-040 — What asserts a rendered output is a gap this server owns
@@ -85,3 +86,25 @@ caller to iterate narrowly.
 - The shapes turn out to belong to the image and asset area rather than to the
   corpus. A session changing some other rendered value would then reach a
   statement written for somebody else's paths.
+
+## Revoked on 2026-08-03
+
+The first **Wrong if** is what happened. One search does reach them — over the
+whole `Tests/` tree rather than the files named `*Test.php`, and for the text
+around the changed value rather than the value — and it reaches 24 of the 26
+files the reporting session had to touch, while the two it misses hold no
+expectation. The shapes are eight ways of encoding one value, not eight places
+to look, so this entry's "which shapes the corpus actually uses is what the
+reading settles" was the wrong question to have queued: what the reading settled
+was where the files are.
+
+The statement stopped describing this server with the same commit. `core-tests`
+now says where the expectations hide and the invocation notes carry the
+exception to iterating narrowly, so "missing from it" is no longer the case, and
+`normal` rather than `low` was right for a reason this entry did not have — the
+cost was one search away, not a corpus survey away.
+
+[`D-KNW-044`](knw-044-one-search-over-the-whole-tests-tree-finds-what-asserts-a-rendered-output.md)
+carries what holds instead, with the counts, the two checkouts that show the
+shapes take no version range, and a **Wrong if** about the aim rather than about
+the shapes.

@@ -1807,6 +1807,55 @@ final class HintsTest extends TestCase
     }
 
     /**
+     * `R-KNW-055`. The question is "I am changing rendered output, what asserts
+     * it", and before this statement existed the corpus answered a different
+     * one: `hints:probe` with the reporting session's own query returned
+     * system-extension-boundaries, project-build-and-scripts,
+     * routing-request-handling and caching, none of them about a test
+     * expectation.
+     *
+     * The two halves are asserted separately because either one alone leaves
+     * the search wrong, and both were measured on `.checkouts/main` at
+     * `c71b2bdb2f` over `typo3/sysext/*\/Tests/`. Grepping the tree for
+     * `fileadmin/|typo3temp/assets|Resources/Public/` reaches 188 files and 24
+     * of the 26 the session had to touch; the same pattern restricted to
+     * `*Test.php` reaches 91 and 21, losing all three
+     * `backend/Tests/Functional/Template/Fixtures/*CopyToClipboard.php` files,
+     * which are the ones holding the expectations. The two it never reaches
+     * hold none: `ShortcutButtonTest` requires its expected markup from those
+     * fixtures, and `FluidEmailTest` asserts no URI at that commit at all.
+     *
+     * Searching for the value rather than around it is the other half:
+     * `\?[0-9]{9,10}`, the rendered cache buster itself, reaches 1 of the 26.
+     * The ratio is a property of the corpus rather than of the asset area —
+     * `<a href=|<img src=|<script src=` sits at 44 of 71 in `*Test.php`, `&amp;`
+     * at 49 of 79 — and it holds on 13.4 (85 of 179) and 14.3 (94 of 192) as it
+     * does on main, so the statement carries no version range.
+     */
+    #[Test]
+    public function aRenderedOutputChangeIsToldWhereTheExpectationsHide(): void
+    {
+        self::assertContains(
+            'core-tests',
+            array_column(Hints::find([], 'I am changing rendered output, what asserts it', 6)['matchedHints'], 'id'),
+            'the question is not reachable in the words the reporting session asked it in',
+        );
+
+        $text = implode("\n", array_column((array) Hints::byId('core-tests')['hints'], 'text'));
+
+        // Where they hide: not in the file the caller would think to search.
+        self::assertStringContainsString('typo3/sysext/*/Tests/', $text);
+        self::assertStringContainsString('*Test.php', $text);
+        self::assertStringContainsString('.message', $text);
+        self::assertStringContainsString('contentMatchRegExp', $text);
+
+        // And what to search for, which is never the value that changed.
+        self::assertStringContainsString('around the value rather than the value itself', $text);
+        self::assertStringContainsString('quoted-printable', $text);
+        self::assertStringContainsString('{$fileMtimeActions}', $text);
+    }
+
+    /**
      * The phrasing that reached the layout instead, measured while settling
      * `D-KNW-008`: two hints are named after a sitepackage and none after
      * setting tests up, so "site package" was the discriminating pair of terms
@@ -2375,6 +2424,34 @@ final class HintsTest extends TestCase
             'Everything after `--` is handed to the underlying tool unchanged',
             implode("\n", TestSuiteHints::invocation()['notes'])
         );
+    }
+
+    /**
+     * `R-KNW-055`, the other half. `TestSuiteHints::invocation()` is emitted
+     * with every `typo3_test_run_guide` answer, so the iterate-narrowly note
+     * reaches the one caller it is wrong for whether or not they asked about
+     * tests — and it is right for every other change, which is why what lands
+     * beside it is the exception rather than a rewrite.
+     *
+     * Both notes are asserted together because the exception is only readable
+     * next to the rule: on its own it says run the whole suite, which is the
+     * advice `feedback/2026-08-02-145003` was already given and the one that
+     * cost it fifteen runs. What makes it cheap is the search before the run,
+     * so the note points at the statement that says where to aim it.
+     */
+    #[Test]
+    public function theIterateNarrowlyNoteCarriesTheOneChangeItIsWrongFor(): void
+    {
+        $notes = implode("\n", TestSuiteHints::invocation()['notes']);
+
+        self::assertStringContainsString(
+            'run a single test file or a single test method instead of a whole suite',
+            $notes,
+            'the rule the exception is an exception to',
+        );
+        self::assertStringContainsString('alters rendered output', $notes);
+        self::assertStringContainsString('core-tests', $notes, 'the exception says where the expectations hide');
+        self::assertStringContainsString('rather than widening the path set', $notes);
     }
 
     #[Test]

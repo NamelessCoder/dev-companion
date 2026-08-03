@@ -6,6 +6,7 @@
       "Prefix scripted and non-interactive runs with `CI=true`. It drops the interactive container flags, skips the SIGINT trap, and selects the CI phpstan config. Without a TTY the script also removes the interactive flags on its own, but `CI=true` is the explicit form and the one to use from an agent.",
       "Everything after `--` is handed to the underlying tool unchanged: phpunit for the test suites, npm for `-s npm`, composer for `-s composer`.",
       "While iterating, run a single test file or a single test method instead of a whole suite; a full functional run costs minutes per round.",
+      "The exception is a change that alters rendered output — a URI, a tag, an attribute other tests assert verbatim. Narrowing then reports the blast radius one failing suite at a time, and each round costs a run. Find the expectations by searching the checkout first and fix them in one pass; `typo3_hint_lookup` for `core-tests` says where they hide, which is largely not in files named `*Test.php`. Run the full functional suite once to confirm, rather than widening the path set round after round.",
       "`./Build/Scripts/runTests.sh -h` lists the suites and option values the checked-out branch actually supports."
     ],
     "options": [

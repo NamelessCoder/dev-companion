@@ -204,7 +204,11 @@ final class ExtensionScope extends ReadOnlyTool
         // reachable by a changelog sweep over what its code calls — D-ANS-009.
         // Nothing is rendered where there is none. "No deprecated registration
         // files" is one line away from being read as a compatibility verdict,
-        // and this answer checks nothing else for one.
+        // and this answer checks nothing else for one. Which two files were
+        // checked is the closing sentence rather than a line per file that did
+        // not fire, for the same reason: a clean line under this heading is
+        // that verdict at file granularity, and a reviewer confirmed the absent
+        // sibling by hand for want of the sentence, not for want of a bullet.
         if ($extension['deprecatedFiles'] !== []) {
             $lines[] = '';
             $lines[] = 'Deprecated registration files:';
@@ -217,9 +221,12 @@ final class ExtensionScope extends ReadOnlyTool
                     $deprecated['cost'],
                 );
             }
-            $lines[] = 'That is what shipping each file turns on, read from the files themselves. It is not an '
+            $lines[] = 'That is what shipping each file turns on, read from the files themselves. Two files are '
+                . 'checked, ext_tables.php and ext_emconf.php, so one of them missing from this block was looked '
+                . 'at rather than skipped: the extension does not ship it, or, for ext_emconf.php, its '
+                . 'composer.json declares the providesPackages and the version that exempt it. It is not an '
                 . 'upgrade check: nothing else above was looked at for a deprecation, and typo3_changelog_lookup '
-                . 'is what answers that — these two entries whole, and everything they leave out.';
+                . 'is what answers that — #109438 and #108345 whole, and everything they leave out.';
         }
 
         if ($extension['contentElements'] !== []) {

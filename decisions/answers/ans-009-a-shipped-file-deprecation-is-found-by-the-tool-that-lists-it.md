@@ -83,6 +83,7 @@ line beside four files nothing is wrong with, and says nothing about either.
 - `HintsTest::noHintStatesSomethingThatOnlyHoldsOnOneBranch`
 - `ExtensionTest::aFrameworkPackageIsExemptFromBoth`
 - `ExtensionTest::declaringOneOfTheTwoFieldsStillReadsTheFile`
+- `ProjectTest::theDeprecatedFilesBlockNamesBothFilesItLookedAt`
 
 ## Since then
 
@@ -193,3 +194,39 @@ feedback is trimmed to that half.
 The empty case is untouched. This block rendered, so nothing in the report bears
 on rendering nothing where there is no finding, which is what this entry decided
 and why.
+
+## Since then
+
+Step 4 is done. Two shapes were open and the todo left the choice to the tool: the closing
+sentence naming both files, or a line per file that was checked and did not
+fire. It is the sentence, and the reason is the second **Wrong if** again. A
+line reading *ext_tables.php — checked, not shipped* stands under a heading that
+says *Deprecated registration files*, where it is a rendered "none" at file
+granularity — the thing this entry keeps out of the empty case, moved one level
+down and back into the block. The sentence states the coverage once, as a
+property of the check rather than a verdict on a file, and what the reporting
+session went and confirmed by hand was the coverage, not a bullet.
+
+The block now closes *Two files are checked, ext_tables.php and ext_emconf.php,
+so one of them missing from this block was looked at rather than skipped: the
+extension does not ship it, or, for ext_emconf.php, its composer.json declares
+the providesPackages and the version that exempt it.* Those are the only two
+ways a checked file stays out of a block that rendered — a framework package is
+exempt from both and returns nothing at all, so it never reaches this sentence.
+The pointer that followed lost its count: *these two entries whole* is now
+*#109438 and #108345 whole*, because the changelog number of the file that did
+not fire is in no rendered entry, and the number was what did not match what
+stood above it.
+
+`ProjectTest::theDeprecatedFilesBlockNamesBothFilesItLookedAt` holds it, on the
+reported case — an extension shipping `ext_emconf.php` and no `ext_tables.php`,
+so one entry renders and the sentence names two files. It is the first assertion
+on this block at all; the three that existed cover `deprecatedFiles` as data,
+and the rendered text, which `ToolResult` makes the primary answer, was held by
+nothing. That is how a sentence saying *two* survived beside an answer rendering
+one.
+
+The feedback is archived by this. Its suggestion asks for the other file-level
+predicates as well as for the covered set, and the first half was already true
+when it was written — `ext_tables.php` has been checked by the same call since
+`a886a2d`, which is what the judging session trimmed the report to.

@@ -1428,6 +1428,37 @@ final class ProjectTest extends TestCase
     }
 
     #[Test]
+    public function theDeprecatedFilesBlockNamesBothFilesItLookedAt(): void
+    {
+        // The audit of 2026-08-03 got this block for ext_emconf.php alone and
+        // could not tell from it that ext_tables.php had been checked too, so
+        // it confirmed the absent sibling by hand. The block closed on "these
+        // two entries whole" — a set of two rendered as one entry, naming
+        // neither file. What the check covers is fixed at two, so the sentence
+        // names them; a file that did not fire gets no line of its own, which
+        // under this heading would read as the compatibility verdict D-ANS-009
+        // keeps out of the empty case.
+        $root = $this->composerProject();
+        $extension = $root . '/packages/my_sitepackage';
+        $this->declare($extension . '/ext_emconf.php', "<?php\n\$EM_CONF[\$_EXTKEY] = [];\n");
+        Instance::discoverFrom($root);
+
+        $result = Registry::call('typo3_extension_scope', ['extension' => 'my_sitepackage']);
+
+        // One entry, because the package ships no ext_tables.php — the case
+        // that was reported.
+        self::assertSame(['ext_emconf.php'], array_column($result->data['deprecatedFiles'], 'file'));
+        self::assertStringContainsString(
+            'Two files are checked, ext_tables.php and ext_emconf.php',
+            $result->text,
+        );
+        self::assertStringContainsString('looked at rather than skipped', $result->text);
+        // The changelog of the file that did not fire is in no rendered entry,
+        // so the pointer carries both numbers rather than a count.
+        self::assertStringContainsString('#109438 and #108345 whole', $result->text);
+    }
+
+    #[Test]
     public function anExtensionTheInstallationDoesNotHaveIsAMissWithTheKeysItDoes(): void
     {
         $root = $this->composerProject();

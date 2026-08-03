@@ -165,6 +165,8 @@ final class KnowledgeTest extends TestCase
         // reading neighbouring entries.
         $bodies = implode("\n", array_column(Documents::search('changelog file'), 'body'));
 
+        // Four aspects of one search result rather than four cases: a
+        // provider would run the same search four times and say nothing more.
         foreach (['Breaking', 'Deprecation', 'Feature', 'Important'] as $type) {
             self::assertStringContainsString($type, $bodies, 'no changelog type ' . $type);
         }

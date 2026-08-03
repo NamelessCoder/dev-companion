@@ -313,6 +313,19 @@ final class Channel
         return $redaction->text;
     }
 
+    /**
+     * The checkout the feedback store belongs to, which a path is made
+     * relative to.
+     *
+     * Read off the store rather than from `Paths::root()`, so that a test
+     * writing into a store of its own is handed back the same relative path
+     * `record()` gave it — `R-COD-003`.
+     */
+    public static function root(): string
+    {
+        return dirname(Paths::feedback());
+    }
+
     private static function assertAvailable(): void
     {
         if (!self::isAvailable()) {
@@ -350,7 +363,7 @@ final class Channel
         }
 
         $tools = self::toolNames($meta['tool'] ?? '');
-        $relative = substr($file, strlen(Paths::root()) + 1);
+        $relative = substr($file, strlen(self::root()) + 1);
         $archived = str_starts_with($relative, 'feedback/archive/');
 
         return [

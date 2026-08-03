@@ -11,6 +11,7 @@ use Typo3CmsMcp\Feedback\Channel;
 use Typo3CmsMcp\Feedback\Redaction;
 use Typo3CmsMcp\Installation\Instance;
 use Typo3CmsMcp\Paths;
+use Typo3CmsMcp\Tests\Support\RecordedFeedback;
 use Typo3CmsMcp\Tool\Registry;
 
 /**
@@ -20,25 +21,17 @@ use Typo3CmsMcp\Tool\Registry;
  */
 final class FeedbackTest extends TestCase
 {
-    private const MARKER = 'phpunit-feedback-fixture';
+    use RecordedFeedback;
 
     protected function tearDown(): void
     {
         Instance::discoverFrom(null);
-        $directories = array_values(array_filter([Paths::feedback(), Paths::feedbackArchive()], is_dir(...)));
-        if ($directories === []) {
-            return;
-        }
-
-        foreach (Finder::create()->files()->in($directories)->depth(0)->name('*.md')->contains(self::MARKER) as $file) {
-            unlink($file->getPathname());
-        }
     }
 
     #[Test]
     public function aNoteBecomesOneMarkdownFileWithFrontMatter(): void
     {
-        $file = Channel::record([
+        $file = $this->recordFeedback([
             'observation' => self::MARKER . ' the lookup found nothing',
             'category' => 'missing-knowledge',
             'tool' => 'typo3_component_lookup',
@@ -47,7 +40,7 @@ final class FeedbackTest extends TestCase
         ]);
 
         self::assertStringStartsWith('feedback/', $file);
-        $contents = (string) file_get_contents(Paths::root() . '/' . $file);
+        $contents = (string) file_get_contents($this->inStore($file));
         self::assertStringContainsString('category: missing-knowledge', $contents);
         self::assertStringContainsString('status: open', $contents);
         self::assertStringContainsString('tool: typo3_component_lookup', $contents);
@@ -70,7 +63,7 @@ final class FeedbackTest extends TestCase
         // The dash sits where a 97-byte cut goes through the middle of it.
         $observation = self::MARKER . ' ' . str_repeat('a', 94 - strlen(self::MARKER)) . '— and the rest of the line';
 
-        $contents = (string) file_get_contents(Paths::root() . '/' . Channel::record(['observation' => $observation]));
+        $contents = (string) file_get_contents($this->inStore($this->recordFeedback(['observation' => $observation])));
 
         preg_match('/^# (.*)$/m', $contents, $heading);
         self::assertSame($heading[1], mb_convert_encoding($heading[1], 'UTF-8', 'UTF-8'), 'the heading was cut through a character');
@@ -80,7 +73,7 @@ final class FeedbackTest extends TestCase
     #[Test]
     public function theAgentNeverControlsWhereTheNoteIsWritten(): void
     {
-        $file = Channel::record([
+        $file = $this->recordFeedback([
             'observation' => '../../' . self::MARKER . " escape attempt\nsecond line",
         ]);
 
@@ -96,11 +89,11 @@ final class FeedbackTest extends TestCase
         // directory, which is what makes the feedback checkable later.
         Instance::discoverFrom('/home/somebody/projects/a-site');
 
-        $file = Channel::record(['observation' => self::MARKER . ' asked in a project']);
+        $file = $this->recordFeedback(['observation' => self::MARKER . ' asked in a project']);
 
         self::assertStringContainsString(
             'directory: /home/somebody/projects/a-site',
-            (string) file_get_contents(Paths::root() . '/' . $file)
+            (string) file_get_contents($this->inStore($file))
         );
     }
 
@@ -112,7 +105,7 @@ final class FeedbackTest extends TestCase
         // as 35 unrelated reports — `D-FBK-025`. `feedback:list` groups by it.
         Instance::discoverFrom('/home/somebody/projects/a-site');
 
-        $file = Channel::record(['observation' => self::MARKER . ' read back with its directory']);
+        $file = $this->recordFeedback(['observation' => self::MARKER . ' read back with its directory']);
 
         $listed = array_values(array_filter(
             Channel::all('open', null, PHP_INT_MAX),
@@ -130,11 +123,11 @@ final class FeedbackTest extends TestCase
         // own working directory is not passed off as the caller's.
         Instance::discoverFrom(null);
 
-        $file = Channel::record(['observation' => self::MARKER . ' asked over http']);
+        $file = $this->recordFeedback(['observation' => self::MARKER . ' asked over http']);
 
         self::assertStringNotContainsString(
             'directory:',
-            (string) file_get_contents(Paths::root() . '/' . $file)
+            (string) file_get_contents($this->inStore($file))
         );
     }
 
@@ -144,14 +137,14 @@ final class FeedbackTest extends TestCase
         // Half the feedback are about what a session did rather than about what an
         // answer said, and that is one model's behaviour. Unattributed, two
         // models' habits arrive as one report.
-        $file = Channel::record([
+        $file = $this->recordFeedback([
             'observation' => self::MARKER . ' the skill was read and its lookups were not run',
             'model' => 'claude-opus-5',
         ]);
 
         self::assertStringContainsString(
             'model: claude-opus-5',
-            (string) file_get_contents(Paths::root() . '/' . $file)
+            (string) file_get_contents($this->inStore($file))
         );
         self::assertSame('claude-opus-5', self::noteFor($file)['model']);
     }
@@ -162,11 +155,11 @@ final class FeedbackTest extends TestCase
         // The write never fails on the attribution — the feedback is worth more
         // than the name — but an unattributed one says it is unattributed,
         // which a missing front-matter line cannot.
-        $file = Channel::record(['observation' => self::MARKER . ' recorded by nobody in particular']);
+        $file = $this->recordFeedback(['observation' => self::MARKER . ' recorded by nobody in particular']);
 
         self::assertStringContainsString(
             'model: unknown',
-            (string) file_get_contents(Paths::root() . '/' . $file)
+            (string) file_get_contents($this->inStore($file))
         );
         self::assertSame(Channel::UNATTRIBUTED, self::noteFor($file)['model']);
     }
@@ -178,6 +171,7 @@ final class FeedbackTest extends TestCase
         // one recorded from a site package was reported as feedback/<name>.md,
         // looked for under that project, not found, and reported back as a
         // failed write.
+        $this->ownFeedbackStore();
         $result = Registry::call('typo3_feedback_record', [
             'observation' => self::MARKER . ' recorded through the tool',
             'model' => 'claude-opus-5',
@@ -185,7 +179,7 @@ final class FeedbackTest extends TestCase
 
         $path = $result->data['path'] ?? '';
         self::assertIsString($path);
-        self::assertStringStartsWith(Paths::root() . '/feedback/', $path);
+        self::assertStringStartsWith($this->ownFeedbackStore() . '/feedback/', $path);
         self::assertFileExists($path);
         self::assertStringContainsString($path, $result->text);
         // And it says whose checkout that is, because the caller cannot tell.
@@ -195,14 +189,14 @@ final class FeedbackTest extends TestCase
     #[Test]
     public function anUnknownCategoryFallsBackToIdea(): void
     {
-        $file = Channel::record([
+        $file = $this->recordFeedback([
             'observation' => self::MARKER . ' something',
             'category' => 'nonsense',
         ]);
 
         self::assertStringContainsString(
             'category: idea',
-            (string) file_get_contents(Paths::root() . '/' . $file)
+            (string) file_get_contents($this->inStore($file))
         );
     }
 
@@ -210,7 +204,7 @@ final class FeedbackTest extends TestCase
     public function anEmptyObservationIsRejected(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        Channel::record(['observation' => '   ']);
+        $this->recordFeedback(['observation' => '   ']);
     }
 
     /**
@@ -226,12 +220,12 @@ final class FeedbackTest extends TestCase
         $key = str_repeat('9f2b7c4d', 12);
         $redacted = [];
 
-        $file = Channel::record([
+        $file = $this->recordFeedback([
             'observation' => self::MARKER . ' called typo3_configuration_lookup with path SYS/encryptionKey. '
                 . 'The key ' . $key . ' is the active value, hardcoded in config/system/settings.php.',
         ], $redacted);
 
-        $contents = (string) file_get_contents(Paths::root() . '/' . $file);
+        $contents = (string) file_get_contents($this->inStore($file));
         self::assertStringNotContainsString($key, $contents);
         self::assertStringContainsString('[redacted: a 96-character hexadecimal value]', $contents);
         self::assertSame(['observation: a 96-character hexadecimal value'], $redacted);
@@ -254,13 +248,13 @@ final class FeedbackTest extends TestCase
         $key = str_repeat('9f2b7c4d', 12);
         $redacted = [];
 
-        $file = Channel::record([
+        $file = $this->recordFeedback([
             'observation' => self::MARKER . ' the key ' . $key . ' came back from the installation',
             'query' => 'path=SYS/encryptionKey returned ' . $key,
             'suggestion' => 'say that ' . $key . ' is hardcoded rather than generated',
         ], $redacted);
 
-        self::assertStringNotContainsString($key, (string) file_get_contents(Paths::root() . '/' . $file));
+        self::assertStringNotContainsString($key, (string) file_get_contents($this->inStore($file)));
         self::assertSame([
             'observation: a 96-character hexadecimal value',
             'query: a 96-character hexadecimal value',
@@ -335,6 +329,7 @@ final class FeedbackTest extends TestCase
         // archive keeps a session's report because the report is the evidence,
         // so an altered one has to say so — and the session that wrote it is
         // the only reader who still knows what stood there.
+        $this->ownFeedbackStore();
         $result = Registry::call('typo3_feedback_record', [
             'observation' => self::MARKER . ' the key ' . str_repeat('9f2b7c4d', 12) . ' is the active one',
             'model' => 'claude-opus-5',
@@ -346,6 +341,7 @@ final class FeedbackTest extends TestCase
         self::assertStringContainsString('[redacted: ...]', $result->text);
 
         // And an ordinary feedback says nothing about redaction at all.
+        $this->ownFeedbackStore();
         $ordinary = Registry::call('typo3_feedback_record', [
             'observation' => self::MARKER . ' the icon lookup found nothing for content-accordion',
             'model' => 'claude-opus-5',
@@ -407,9 +403,9 @@ final class FeedbackTest extends TestCase
     {
         $opening = self::MARKER . ' debrief of the session, missed item: ';
 
-        $first = Channel::record(['observation' => $opening . 'nothing said which pid the records go to']);
-        $second = Channel::record(['observation' => $opening . 'the fixture harness was written by hand']);
-        $third = Channel::record(['observation' => $opening . 'clearing the cache meant deleting files']);
+        $first = $this->recordFeedback(['observation' => $opening . 'nothing said which pid the records go to']);
+        $second = $this->recordFeedback(['observation' => $opening . 'the fixture harness was written by hand']);
+        $third = $this->recordFeedback(['observation' => $opening . 'clearing the cache meant deleting files']);
 
         self::assertStringContainsString('debrief-of-the-session', $first);
         self::assertStringContainsString('the-fixture-harness-was-written', $second);
@@ -421,7 +417,7 @@ final class FeedbackTest extends TestCase
     #[Test]
     public function recordedNotesAreListedNewestFirst(): void
     {
-        $file = Channel::record(['observation' => self::MARKER . ' a listed feedback']);
+        $file = $this->recordFeedback(['observation' => self::MARKER . ' a listed feedback']);
 
         $found = Channel::all('open', null, 100);
         $files = array_column($found, 'file');
@@ -440,7 +436,7 @@ final class FeedbackTest extends TestCase
         // wrote it seeing the file simply stop existing — and left the closed
         // half of the list as bare filenames, with the front matter that says
         // what the feedback was about gone with the file.
-        $file = Channel::record([
+        $file = $this->recordFeedback([
             'observation' => self::MARKER . ' the archive keeps what the feedback said',
             'category' => 'tool-gap',
             'tool' => 'typo3_component_lookup',
@@ -448,10 +444,10 @@ final class FeedbackTest extends TestCase
 
         $archived = Channel::archive($file);
         self::assertSame('feedback/archive/' . basename($file), $archived);
-        self::assertFileDoesNotExist(Paths::root() . '/' . $file);
+        self::assertFileDoesNotExist($this->inStore($file));
         self::assertStringContainsString(
             'status: closed',
-            (string) file_get_contents(Paths::root() . '/' . $archived),
+            (string) file_get_contents($this->inStore($archived)),
         );
 
         self::assertNotContains($file, array_column(Channel::all('open', null, 200), 'file'));
@@ -495,7 +491,7 @@ final class FeedbackTest extends TestCase
         self::assertSame('Answer label lookups with the translation domain', $mine[0]['closedBy']['subject']);
 
         // An open feedback is in the same list and says it is open.
-        $file = Channel::record(['observation' => self::MARKER . ' open beside the closed ones']);
+        $file = $this->recordFeedback(['observation' => self::MARKER . ' open beside the closed ones']);
         $all = Channel::all('all', null, 200);
         self::assertContains($file, array_column($all, 'file'));
         self::assertContains('closed', array_column($all, 'status'));
@@ -504,10 +500,14 @@ final class FeedbackTest extends TestCase
     /**
      * One archived feedback, as `bin/cli feedback:archive` leaves it: below
      * feedback/archive/, with the commit that closed it written into its front
-     * matter. Removed again by tearDown, like every other fixture here.
+     * matter, in this case's own store like every other fixture here.
      */
     private function archived(string $subject): string
     {
+        // The store before the write, so this lands beside what the case
+        // records rather than in the archive this repository keeps.
+        $this->ownFeedbackStore();
+
         $name = '2026-07-28-120000-' . self::MARKER . '.md';
         $path = Paths::feedbackArchive() . '/' . $name;
 
@@ -534,7 +534,7 @@ final class FeedbackTest extends TestCase
     #[Test]
     public function onlyAnOpenNoteCanBeArchived(): void
     {
-        $file = Channel::record(['observation' => self::MARKER . ' archived once']);
+        $file = $this->recordFeedback(['observation' => self::MARKER . ' archived once']);
         Channel::archive($file);
 
         // The same feedback twice is the mistake this catches: the second call
@@ -546,7 +546,7 @@ final class FeedbackTest extends TestCase
     #[Test]
     public function theListCanBeRestrictedToACategory(): void
     {
-        Channel::record(['observation' => self::MARKER . ' a bug feedback', 'category' => 'bug']);
+        $this->recordFeedback(['observation' => self::MARKER . ' a bug feedback', 'category' => 'bug']);
 
         foreach (Channel::all('all', 'bug', 100) as $feedback) {
             self::assertSame('bug', $feedback['category']);
@@ -559,14 +559,14 @@ final class FeedbackTest extends TestCase
         // An observation about the four tools that go quiet together is a
         // normal one. Stripping the separator ran their names into
         // "typo3_label_lookuptypo3_icon_lookup", which no filter can match.
-        $file = Channel::record([
+        $file = $this->recordFeedback([
             'observation' => self::MARKER . ' both lookups went quiet',
             'tool' => 'typo3_label_lookup, typo3_icon_lookup',
         ]);
 
         self::assertStringContainsString(
             'tool: typo3_label_lookup, typo3_icon_lookup',
-            (string) file_get_contents(Paths::root() . '/' . $file)
+            (string) file_get_contents($this->inStore($file))
         );
 
         $feedback = self::noteFor($file);
@@ -588,7 +588,7 @@ final class FeedbackTest extends TestCase
     #[Test]
     public function theRecorderStillTakesAListTheSchemaNoLongerDeclares(): void
     {
-        $file = Channel::record([
+        $file = $this->recordFeedback([
             'observation' => self::MARKER . ' recorded with a list',
             'tool' => ['typo3_label_lookup', 'typo3_icon_lookup'],
         ]);
@@ -599,7 +599,7 @@ final class FeedbackTest extends TestCase
     #[Test]
     public function theListCanBeRestrictedToOneTool(): void
     {
-        $file = Channel::record([
+        $file = $this->recordFeedback([
             'observation' => self::MARKER . ' about two tools',
             'tool' => 'typo3_label_lookup typo3_icon_lookup',
         ]);
@@ -625,14 +625,14 @@ final class FeedbackTest extends TestCase
     #[Test]
     public function aRecordedNameKeepsTheSpellingItWasGivenIn(): void
     {
-        $file = Channel::record([
+        $file = $this->recordFeedback([
             'observation' => self::MARKER . ' the skill was read and its lookups were not run',
             'tool' => 'typo3-extension-conformance',
         ]);
 
         self::assertStringContainsString(
             'tool: typo3-extension-conformance',
-            (string) file_get_contents(Paths::root() . '/' . $file)
+            (string) file_get_contents($this->inStore($file))
         );
         self::assertSame(['typo3-extension-conformance'], self::noteFor($file)['tools']);
         self::assertContains(
@@ -647,7 +647,7 @@ final class FeedbackTest extends TestCase
         // What is stored is what the session wrote, so one name arrives in more
         // than one spelling and the filter is where they meet — `D-ANS-006`
         // applied to the one thing this backlog is filtered by.
-        $file = Channel::record([
+        $file = $this->recordFeedback([
             'observation' => self::MARKER . ' named the skill with hyphens',
             'tool' => 'typo3-extension-conformance',
         ]);

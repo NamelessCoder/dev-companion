@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Typo3CmsMcp\Tests\Unit;
 
 use PHPUnit\Framework\Attributes\After;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Typo3CmsMcp\Installation\Icons;
@@ -36,17 +37,25 @@ final class IconLookupTest extends TestCase
     }
 
     #[Test]
-    public function everyAnswerSaysTheIdentifiersAreTheBackendRegistrys(): void
+    #[DataProvider('theThreeShapesAnIconAnswerTakes')]
+    public function everyAnswerSaysTheIdentifiersAreTheBackendRegistrys(string $query): void
     {
         Instance::discoverFrom($this->installationWithItsOwnIcon());
 
-        // A hit, a miss, and the browsing answer with no query at all.
-        foreach (['acme-product', 'quantumflux', ''] as $query) {
-            $result = Registry::call('typo3_icon_lookup', ['query' => $query]);
+        $result = Registry::call('typo3_icon_lookup', ['query' => $query]);
 
-            self::assertStringContainsString('backend icon registry', $result->text, 'query: ' . $query);
-            self::assertStringContainsString('backend icon registry', (string) ($result->data['scope'] ?? ''));
-        }
+        self::assertStringContainsString('backend icon registry', $result->text);
+        self::assertStringContainsString('backend icon registry', (string) ($result->data['scope'] ?? ''));
+    }
+
+    /** @return array<string, array{0: string}> */
+    public static function theThreeShapesAnIconAnswerTakes(): array
+    {
+        return [
+            'a hit' => ['acme-product'],
+            'a miss' => ['quantumflux'],
+            'the browsing answer, with no query at all' => [''],
+        ];
     }
 
     #[Test]

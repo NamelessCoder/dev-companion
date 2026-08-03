@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Typo3CmsMcp\Tests\Unit;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Typo3CmsMcp\Knowledge\CommitMessage;
@@ -354,15 +355,23 @@ final class CommitMessageTest extends TestCase
 
     /** The order is the subject's, and the breaking marker is read either way round. */
     #[Test]
-    public function aDraftPrefixStandsBesideTheBreakingMarker(): void
+    #[DataProvider('theTwoOrdersADraftAndABreakingMarkerCanBeWrittenIn')]
+    public function aDraftPrefixStandsBesideTheBreakingMarker(string $subject): void
     {
-        foreach (['[WIP][!!!][FEATURE]', '[!!!][WIP][FEATURE]'] as $subject) {
-            $parsed = CommitMessage::parse($subject . " Change the resource API\n\nResolves: #1\nReleases: main\n");
+        $parsed = CommitMessage::parse($subject . " Change the resource API\n\nResolves: #1\nReleases: main\n");
 
-            self::assertTrue($parsed['input']['isBreaking'], $subject);
-            self::assertSame(['WIP'], $parsed['input']['draftPrefixes'], $subject);
-            self::assertSame('FEATURE', $parsed['input']['changeType'], $subject);
-        }
+        self::assertTrue($parsed['input']['isBreaking']);
+        self::assertSame(['WIP'], $parsed['input']['draftPrefixes']);
+        self::assertSame('FEATURE', $parsed['input']['changeType']);
+    }
+
+    /** @return array<string, array{0: string}> */
+    public static function theTwoOrdersADraftAndABreakingMarkerCanBeWrittenIn(): array
+    {
+        return [
+            'the draft prefix first' => ['[WIP][!!!][FEATURE]'],
+            'the breaking marker first' => ['[!!!][WIP][FEATURE]'],
+        ];
     }
 
     /** A marker on its own is a subject without a keyword, and says so. */

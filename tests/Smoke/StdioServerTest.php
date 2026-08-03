@@ -6,7 +6,6 @@ namespace Typo3CmsMcp\Tests\Smoke;
 
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Finder\Finder;
 use Typo3CmsMcp\Installation\Instance;
 use Typo3CmsMcp\Knowledge\Coverage;
 use Typo3CmsMcp\Paths;
@@ -33,6 +32,8 @@ final class StdioServerTest extends TestCase
 
     private ?string $temporaryRoot = null;
 
+    private ?string $feedbackDirectory = null;
+
     protected function tearDown(): void
     {
         if ($this->temporaryRoot !== null) {
@@ -40,11 +41,32 @@ final class StdioServerTest extends TestCase
         }
         $this->temporaryRoot = null;
 
-        if (is_dir(Paths::feedback())) {
-            foreach (Finder::create()->files()->in(Paths::feedback())->depth(0)->name('*.md')->contains(self::MARKER) as $file) {
-                unlink($file->getPathname());
-            }
+        if ($this->feedbackDirectory !== null) {
+            Directory::remove(dirname($this->feedbackDirectory));
+            $this->feedbackDirectory = null;
         }
+    }
+
+    /**
+     * Where a server started here records what it is asked to record.
+     *
+     * The server runs as a subprocess, so the static redirect a unit test uses
+     * cannot reach it and the directory is handed over in the environment
+     * instead. Without it a recorded feedback lands in the corpus this
+     * repository keeps, where the next run reads it as a report somebody left
+     * — `R-COD-003`.
+     */
+    private function ownFeedbackDirectory(): string
+    {
+        if ($this->feedbackDirectory === null) {
+            // Named `feedback` below a root of its own, so the path the
+            // server answers with keeps the shape it has in a real checkout.
+            $root = sys_get_temp_dir() . '/' . self::MARKER . '-' . getmypid() . '-' . bin2hex(random_bytes(6));
+            $this->feedbackDirectory = $root . '/feedback';
+            mkdir($this->feedbackDirectory . '/archive', 0o777, true);
+        }
+
+        return $this->feedbackDirectory;
     }
 
     #[Test]
@@ -227,7 +249,7 @@ final class StdioServerTest extends TestCase
         ]);
 
         $recorded = (string) file_get_contents(
-            Paths::root() . '/' . $answers[2]['result']['structuredContent']['file']
+            dirname($this->ownFeedbackDirectory()) . '/' . $answers[2]['result']['structuredContent']['file']
         );
         self::assertStringContainsString('tool: typo3_label_lookup, typo3_icon_lookup', $recorded);
 
@@ -315,7 +337,7 @@ final class StdioServerTest extends TestCase
             [0 => ['pipe', 'r'], 1 => ['pipe', 'w'], 2 => ['pipe', 'w']],
             $pipes,
             $root,
-            getenv() + ['TYPO3_MCP_CONSOLE' => PHP_BINARY . ' ' . $root . '/console.php']
+            getenv() + ['TYPO3_MCP_CONSOLE' => PHP_BINARY . ' ' . $root . '/console.php', Paths::FEEDBACK_VARIABLE => $this->ownFeedbackDirectory()]
         );
         self::assertIsResource($process);
 
@@ -479,6 +501,7 @@ final class StdioServerTest extends TestCase
             [0 => ['pipe', 'r'], 1 => ['pipe', 'w'], 2 => ['pipe', 'w']],
             $pipes,
             $cwd,
+            getenv() + [Paths::FEEDBACK_VARIABLE => $this->ownFeedbackDirectory()],
         );
         self::assertIsResource($process);
 

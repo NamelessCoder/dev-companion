@@ -45,12 +45,42 @@ final class Paths
     }
 
     /**
+     * A feedback store somewhere other than this checkout's, which only a test
+     * asks for.
+     *
+     * `R-COD-003`: a unit test writes into no directory this repository keeps.
+     * The cases that hold recording, filtering and archiving have to write a
+     * feedback to have one, and they used to write it into the real
+     * `feedback/` — carrying a marker in the name so it could be found again
+     * and removed, which holds while every run finishes and leaves a fixture
+     * in the corpus whenever one does not. The archive follows it, because the
+     * two are one store and a move between them is what half the cases are
+     * about.
+     */
+    private static ?string $feedback = null;
+
+    /** Where feedback is read and written, for as long as a test says so. */
+    public static function useFeedback(?string $directory): void
+    {
+        self::$feedback = $directory;
+    }
+
+    /**
+     * The same redirect for a server started as a subprocess, which a static
+     * setter cannot reach. The stdio smoke test records through the real
+     * binary, and without this the file lands in the corpus this repository
+     * keeps.
+     */
+    public const FEEDBACK_VARIABLE = 'TYPO3_MCP_FEEDBACK_DIR';
+
+    /**
      * Improvement feedback recorded by agents. Only written to in a standalone
      * checkout; see Feedback.
      */
     public static function feedback(): string
     {
-        return self::root() . '/feedback';
+        return self::$feedback
+            ?? (($stated = getenv(self::FEEDBACK_VARIABLE)) === false || $stated === '' ? self::root() . '/feedback' : $stated);
     }
 
     /**

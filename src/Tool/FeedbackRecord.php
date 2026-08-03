@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Typo3CmsMcp\Tool;
 
 use Typo3CmsMcp\Feedback\Channel;
-use Typo3CmsMcp\Paths;
 use Typo3CmsMcp\Result\Schema;
 use Typo3CmsMcp\Result\ToolResult;
 
@@ -80,7 +79,10 @@ final class FeedbackRecord implements Tool
         // reported back as feedback/<name>.md, looked for under that project,
         // not found, and written off as a failed write — the file was there the
         // whole time, one checkout over.
-        $path = Paths::root() . '/' . $file;
+        // Against the store rather than the checkout: the two are the same
+        // thing in a real installation and differ where a test writes into one
+        // of its own, and what this reports has to be where the file is.
+        $path = Channel::root() . '/' . $file;
 
         return ToolResult::create(
             sprintf(

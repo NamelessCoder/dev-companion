@@ -49,6 +49,8 @@ final class SkillTest extends TestCase
         ],
         'typo3-core-patch-development' => [
             'typo3_rule_lookup',
+            'typo3_forge_lookup',
+            'typo3_gerrit_lookup',
             'typo3_test_run_guide',
             'typo3_hint_lookup',
             'typo3_script_lookup',
@@ -498,6 +500,66 @@ final class SkillTest extends TestCase
         ));
         self::assertStringContainsString('**The review this patch is already in.**', $checklist);
         self::assertStringContainsString('The issue is read for that, not inferred from the message', $checklist);
+    }
+
+    /**
+     * The mirror of the one above, on the skill that writes the patch instead
+     * of judging it. `D-SKL-008` put both calls into the review and recorded, as
+     * its own evidence, that development routed to neither — and the session
+     * that can still be spared the work is the one about to write the code
+     * (`D-SKL-010`).
+     */
+    #[Test]
+    public function theAssessmentBeforeAPatchReadsTheIssueAndTheReviewServer(): void
+    {
+        // Four sessions in one week ran both calls by hand
+        // (`feedback/2026-08-02-144511`, `144848`, `145217`, `145230`), and the
+        // fifth filed the assessment method it had to rediscover
+        // (`feedback/2026-08-02-145128`). Measured again through this branch's
+        // server on 2026-08-03: `typo3_forge_lookup` with issue 105403 answers
+        // `Under Review` at `next-patchlevel` against the "closing as lack of
+        // feedback" the notes carry, and its relations name #99203, whose entry
+        // is what gave the resource ViewHelper its cache-busting argument. The
+        // route the feedback took to that fact was a Forge search on the feature
+        // wording, and a `typo3_changelog_lookup` for it misses, because the
+        // entry is titled for something else (`D-ANS-030`).
+        $skill = (string) preg_replace('/\s+/', ' ', (string) file_get_contents(
+            Paths::root() . '/skills/typo3-core-patch-development/SKILL.md',
+        ));
+
+        self::assertStringContainsString('`typo3_forge_lookup` with the issue number', $skill);
+        // What the description does not carry, which is the reason the call is
+        // here rather than a reading of the report.
+        self::assertStringContainsString('status and target version as they stand today', $skill);
+        self::assertStringContainsString('**relations**, which are one hop from the change that introduced', $skill);
+        self::assertStringContainsString('**notes**, where a maintainer said why', $skill);
+
+        // `typo3_gerrit_lookup` with issue 105403 answers empty from a checkout
+        // that holds a patch for exactly that issue, because it was pushed
+        // unlisted — so the empty answer is about the review server and not
+        // about the world (`D-ANS-033`), and the order that reads it otherwise
+        // has been misled by a true statement.
+        self::assertStringContainsString('`typo3_gerrit_lookup` with the same issue number', $skill);
+        self::assertStringContainsString('**before any code is written**', $skill);
+        self::assertStringContainsString('nothing public names the issue rather than that nobody has fixed it', $skill);
+        // Before the code, because the outcome that cancels the work is worth
+        // nothing once the work is done.
+        self::assertLessThan(
+            strpos($skill, '## Make the change'),
+            strpos($skill, 'typo3_gerrit_lookup'),
+        );
+
+        // The three rungs. Each one changed what the filing session concluded,
+        // and none is carried by the order the skill had before.
+        self::assertStringContainsString('check that blocker against what the branch has today', $skill);
+        self::assertStringContainsString(
+            'The argument that carries a bugfix is the same inconsistency inside one version',
+            $skill,
+        );
+        self::assertStringContainsString('Establish the blast radius here rather than meeting it while working', $skill);
+        // It is an assessment step because it decides the change type, which
+        // everything downstream is built on.
+        self::assertStringContainsString('a change that has to announce itself, or a breaking one', $skill);
     }
 
     #[Test]

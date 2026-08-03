@@ -18,13 +18,25 @@ somebody else's checkout with nothing to report it.
    a deprecation and a removal are four different sets of obligations, and which
    one you are in decides the changelog entry, the commit subject and the target
    branch.
-3. Read the issue itself and treat it as a report rather than as a
-   specification. An issue can be stale, half fixed, or right about the symptom
-   and wrong about the cause, and the maintainers' comments on it can be product
-   judgement rather than an API fact. Establish which of those you have before
-   writing code: what the reporter saw, what the branch does today, and what the
-   project intends the API to be for.
-4. **Verify in the checkout every rule the issue quotes.** A rule about what an
+3. `typo3_forge_lookup` with the issue number, and read what comes back as a
+   report rather than as a specification. An issue can be stale, half fixed, or
+   right about the symptom and wrong about the cause, and the maintainers'
+   comments on it can be product judgement rather than an API fact. Three parts
+   of that answer are not in the description a session otherwise starts from:
+   the **status and target version as they stand today**, which is where a
+   closure or a reassignment shows without the report ever being rewritten; the
+   **relations**, which are one hop from the change that introduced the
+   behaviour being complained about, and reach it when a query on the wording
+   does not; and the **notes**, where a maintainer said why. Establish which of
+   those you have before writing code: what the reporter saw, what the branch
+   does today, and what the project intends the API to be for.
+4. `typo3_gerrit_lookup` with the same issue number, **before any code is
+   written**. Its cheapest outcome is the one that cancels the work and it costs
+   one call. An answer of nothing is a result, and a narrow one: the review
+   server is read without a credential, so it says that nothing public names the
+   issue rather than that nobody has fixed it, and a change pushed unlisted is
+   invisible to it.
+5. **Verify in the checkout every rule the issue quotes.** A rule about what an
    API may or may not be used for is a claim, the way a path or an identifier
    is. Read the class it names, its docblock and the core's own tests for the
    form under dispute, and say which of the three carries the rule. Enforced in
@@ -33,7 +45,7 @@ somebody else's checkout with nothing to report it.
    the strength its own source puts on it. An assessment that hardens "may
    change in a future version" into "must not" argues the patch away on a rule
    nothing holds.
-5. **Reproduce against the branch you are fixing**, not against the version in
+6. **Reproduce against the branch you are fixing**, not against the version in
    the report. Half of what a stale issue describes is usually gone, and the
    half that remains is the patch.
 
@@ -48,6 +60,28 @@ code now does, which is true of any code. Where there is none, reproduce by hand
 and write down the steps and what you saw, because that is what a reviewer
 repeats — an unreproducible claim is what sends a patch back regardless of
 whether it is right.
+
+A reason for not doing something is dated and the API it rested on is not. Where
+the issue carries a decision to defer — it needs an event that does not exist,
+there is no API for this yet — check that blocker against what the branch has
+today before treating it as standing. An expired objection is written in the
+same words as one that still holds, and nothing in the notes separates them.
+
+The argument that carries a bugfix is the same inconsistency inside one version.
+"The same input is handled one way here and another way there, on the branch as
+it stands" is a defect a reviewer can act on; "this would be better if it also
+did that" is a wish, and agreeing with it does not make it a bug. Finding the
+place where the system already does the right thing is what turns the second
+into the first, and failing to find one is an answer as well — it says the
+change is a feature, and step 2 has already priced what that owes.
+
+Establish the blast radius here rather than meeting it while working. How much
+of the behaviour the suites already pin down has to change with it is what
+decides whether this is a quiet bugfix, a change that has to announce itself, or
+a breaking one, and that decision sits upstream of the target branch, the commit
+subject and the entry. Discovered incrementally it arrives after the change has
+been characterised, and then it is the characterisation that has to be taken
+back.
 
 ## Make the change
 

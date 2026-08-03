@@ -51,12 +51,15 @@ use Typo3CmsMcp\Upkeep\ToolSurface;
 )]
 final class ToolRecord
 {
+    /** @param list<string> $tools */
     public function __invoke(
         OutputInterface $output,
         #[Argument('the installation to answer from, defaulting to the newest core checkout below .checkouts/')]
         ?string $root = null,
         #[Argument('the date the recording carries, defaulting to today')]
         ?string $today = null,
+        #[Argument('the tools to answer for, defaulting to all of them')]
+        array $tools = [],
     ): int {
         $root ??= self::newestCheckout();
         if (!is_dir($root)) {
@@ -77,7 +80,7 @@ final class ToolRecord
         $output->writeln(sprintf('Answering from %s (TYPO3 %s)', $found, Instance::typo3Version() ?? 'unknown'));
 
         $installation = $this->consoleAnswering($output, $found);
-        $pages = ToolAnswers::rendered($today ?? date('Y-m-d'), $found, $installation);
+        $pages = ToolAnswers::rendered($today ?? date('Y-m-d'), $found, $installation, $tools);
         if (!is_dir(ToolSurface::directory())) {
             mkdir(ToolSurface::directory(), 0777, true);
         }
@@ -85,10 +88,15 @@ final class ToolRecord
             file_put_contents($file, $contents);
         }
 
-        foreach (ToolSurface::written() as $written) {
-            if (!isset($pages[$written->getPathname()])) {
-                unlink($written->getPathname());
-                $output->writeln(sprintf('removed %s, which the registry no longer offers', $written->getFilename()));
+        // Only where the whole surface was written. Named tools leave every
+        // other page alone, and a page nothing wrote this run is not a page
+        // nothing writes any more.
+        if ($tools === []) {
+            foreach (ToolSurface::written() as $written) {
+                if (!isset($pages[$written->getPathname()])) {
+                    unlink($written->getPathname());
+                    $output->writeln(sprintf('removed %s, which the registry no longer offers', $written->getFilename()));
+                }
             }
         }
 

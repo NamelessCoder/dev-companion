@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Typo3CmsMcp\Tests\Unit;
 
+use Mcp\Capability\Discovery\SchemaValidator;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Typo3CmsMcp\Paths;
@@ -137,6 +138,79 @@ final class ToolAnswersTest extends TestCase
         }
 
         self::assertSame([], $missing, 'driven by the table and recorded nowhere — run bin/cli tools:record');
+    }
+
+    /**
+     * Every answer on a page is one the tool could have given.
+     *
+     * A recording was evidence and was therefore held to nothing: it said what
+     * came back on a day, and a field that has since left the schema goes on
+     * being shown to every reader. What the pages are for is the endpoint and
+     * the states it answers in, and a state illustrated by an answer the schema
+     * no longer allows illustrates nothing.
+     *
+     * This is the one thing that can be checked without an installation: the
+     * answer is on the page and the schema is in the class, so the two can be
+     * held to each other wherever the suite runs.
+     */
+    #[Test]
+    public function everyAnswerOnAPageIsOneItsSchemaAllows(): void
+    {
+        $schemas = [];
+        foreach (Registry::definitions() as $definition) {
+            $schemas[$definition['name']] = $definition['outputSchema'] ?? [];
+        }
+
+        $validator = new SchemaValidator();
+        $broken = [];
+        foreach (self::recorded() as $name => $section) {
+            foreach (self::answers($section) as $state => $answer) {
+                $errors = $validator->validateAgainstJsonSchema(json_decode($answer), $schemas[$name]);
+                if ($errors !== []) {
+                    $broken[] = $name . ' — ' . $state . ': ' . implode(' ', array_column($errors, 'message'));
+                }
+            }
+        }
+
+        // All of them, because one at a time says a page is stale and the list
+        // says how far the recording as a whole has drifted from the classes.
+        self::assertSame([], $broken, 'answers no schema allows');
+    }
+
+    /**
+     * The data half of every answer in a section, by the state it is under.
+     *
+     * A state answered from two working directories carries two, and both are
+     * the same tool's: the key keeps them apart by the heading each sits under.
+     *
+     * @return array<string, string>
+     */
+    private static function answers(string $section): array
+    {
+        $blocks = self::blocks($section);
+        $answers = [];
+        $state = '';
+        $from = '';
+        $index = 0;
+
+        foreach (explode("\n", self::outsideBlocks($section)) as $line) {
+            if (str_starts_with($line, '### ')) {
+                $state = substr($line, 4);
+                $from = '';
+            }
+            if (str_starts_with($line, '#### From ')) {
+                $from = ', ' . substr($line, 10);
+            }
+            if ($line === 'Called with:') {
+                ++$index;
+            }
+            if ($line === 'Data:') {
+                $answers[$state . $from] = $blocks[$index + 1][1] ?? '';
+                $index += 2;
+            }
+        }
+
+        return $answers;
     }
 
     /**

@@ -84,23 +84,36 @@ final class ToolAnswers
      * installation root as it stands, so an answer has to be rendered while the
      * root it came from is the one that is pointed at.
      *
+     * `$tools` narrows the run to the tools named. What is not named keeps the
+     * section its page already carries, which is the only way to answer for one
+     * tool without dropping every answer this root cannot produce.
+     *
+     * @param list<string> $tools
      * @return array<string, string>
      */
-    public static function rendered(string $today, string $primary, ?string $installation = null): array
-    {
-        $recordings = [self::recordAgainst($primary)];
+    public static function rendered(
+        string $today,
+        string $primary,
+        ?string $installation = null,
+        array $tools = [],
+    ): array {
+        $recordings = [self::recordAgainst($primary, $tools)];
         if ($installation !== null) {
-            $recordings[] = self::recordAgainst($installation, self::installationBacked());
+            $backed = self::installationBacked();
+            $recordings[] = self::recordAgainst(
+                $installation,
+                $tools === [] ? $backed : array_values(array_intersect($backed, $tools)),
+            );
         }
         self::pointAt($primary);
 
         $pages = [ToolSurface::index() => ToolSurface::indexPage()];
         foreach (Registry::definitions() as $definition) {
             $name = $definition['name'];
-            $pages[ToolSurface::file($name)] = ToolSurface::page(
-                $definition,
-                isset($recordings[0]['answers'][$name]) ? self::recording($today, $name, $recordings) : '',
-            );
+            $answered = $tools !== [] && !in_array($name, $tools, true)
+                ? self::recordedIn(ToolSurface::file($name))
+                : (isset($recordings[0]['answers'][$name]) ? self::recording($today, $name, $recordings) : '');
+            $pages[ToolSurface::file($name)] = ToolSurface::page($definition, $answered);
         }
 
         return $pages;

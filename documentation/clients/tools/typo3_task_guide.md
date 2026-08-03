@@ -164,12 +164,12 @@ nextTools:
 
 ## Answered
 
-Recorded on 2026-08-02 by `bin/cli tools:record`. Answered against
-core-checkout, TYPO3 14.3.6-dev, the 14.3 core checkout below .checkouts/, whose
-console could not be reached: <installation> has no TYPO3 console — none of
-bin/typo3, vendor/bin/typo3 exists. Nothing checks what is below this heading;
-everything above it is derived from the class that answers the call, and
-`bin/cli tools:check` holds it.
+Recorded on 2026-08-03 by `bin/cli tools:record`. Answered against
+core-checkout, TYPO3 14.3.6-dev, the 14.3 core checkout below .checkouts/,
+whose console could not be reached: <installation> has no TYPO3 console —
+none of bin/typo3, vendor/bin/typo3 exists. Nothing checks what is below this
+heading; everything above it is derived from the class that answers the call,
+and `bin/cli tools:check` holds it.
 
 ### brief: with area
 
@@ -192,7 +192,7 @@ Change type: cleanup
 Domains: php
 Recognized as: Deprecation
 
-Architecture hints:
+Hints:
 ### PHP
 
 ## System Extension Boundaries
@@ -200,9 +200,16 @@ Hints:
 - Keep changes inside the owning system extension unless a cross-extension contract really changes.
 - Reuse public APIs from other system extensions instead of depending on internal implementation details.
 - Check nearby extension-local tests before adding shared behavior.
-Relevant checks:
-- CI=true ./Build/Scripts/runTests.sh -s unit
-- CI=true ./Build/Scripts/runTests.sh -s functional
+
+## Deprecated APIs
+Hints:
+- Whether an API is deprecated is a property of the branch you work on, not of TYPO3 as a whole, and this server does not know your branch. Read the declaration itself: an @deprecated annotation together with a trigger_error(..., E_USER_DEPRECATED) call is what marks one.
+- What a branch deprecated is recorded in typo3/sysext/core/Documentation/Changelog/<version>/Deprecation-<issue>-<Title>.rst and in the matchers below typo3/sysext/install/Configuration/ExtensionScanner/Php/. Take the migration path from there instead of assuming a replacement.
+- A deprecated API keeps working until the next major release, so an existing call site is not automatically a defect. New code uses the replacement the changelog names.
+- Authoring a deprecation and finding out what a version deprecated are two directions through the same files. From the reading side: the changelog directory and the extension scanner matchers ship with the core and install packages of any installation, the Extension Scanner in the Install Tool runs the matchers over an extension, and `typo3 upgrade:list` and `typo3 upgrade:run` are the console side of the migrations.
+- @internal on a class or on a member says it is not public API, and both are read: a public class can carry an internal method. It is an input to whether a removal is breaking and never the answer on its own.
+- What settles it is whether anything outside the core calls it. The core has removed @internal members both as a breaking change and as an Important note, and what separates the two is the call sites rather than the marker: a Breaking entry names them in its Affected installations section, and the extension scanner matchers are where they are looked for. Writing that section is the test of whether there is one.
+- An absent annotation is not a statement that something is public API. Read the changelog for the subsystem and the extension scanner matchers before concluding either way.
 
 ## Events and Extension Points
 Hints:
@@ -211,22 +218,10 @@ Hints:
 - Keep event payloads minimal and stable, and prefer a new event over a hook: a hook is only the right answer where the subsystem still has hook-based extension points.
 - The surviving hooks are a subsystem fact, not a second extension-point registry. Ask the subsystem hint with the intent — for example prefilling a form field — so it can name both the remaining hook and the narrower event; the form-framework hint records EXT:form's two remaining SC_OPTIONS calls.
 - A PSR-14 event is public API. A new one needs a changelog entry, careful naming, and regression coverage.
-Relevant checks:
-- CI=true ./Build/Scripts/runTests.sh -s unit
-- CI=true ./Build/Scripts/runTests.sh -s functional
-
-### General
-
-## Deprecated APIs
-Hints:
-- Whether an API is deprecated is a property of the branch you work on, not of TYPO3 as a whole, and this server does not know your branch. Read the declaration itself: an @deprecated annotation together with a trigger_error(..., E_USER_DEPRECATED) call is what marks one.
-- What a branch deprecated is recorded in typo3/sysext/core/Documentation/Changelog/<version>/Deprecation-<issue>-<Title>.rst and in the matchers below typo3/sysext/install/Configuration/ExtensionScanner/Php/. Take the migration path from there instead of assuming a replacement.
-- A deprecated API keeps working until the next major release, so an existing call site is not automatically a defect. New code uses the replacement the changelog names.
-- Authoring a deprecation and finding out what a version deprecated are two directions through the same files. From the reading side: the changelog directory and the extension scanner matchers ship with the core and install packages of any installation, the Extension Scanner in the Install Tool runs the matchers over an extension, and `typo3 upgrade:list` and `typo3 upgrade:run` are the console side of the migrations.
 
 Rules that apply to this task:
 
-These sections are prose and are not filtered by version. Where a subsystem changed inside the covered range, the statement that changed carries the range elsewhere: call typo3_architecture_lookup with targetVersion for the convention, and typo3_test_run_guide with targetVersion for a runTests.sh command.
+These sections are prose and are not filtered by version. Where a subsystem changed inside the covered range, the statement that changed carries the range elsewhere: call typo3_hint_lookup with targetVersion for the convention, and typo3_test_run_guide with targetVersion for a runTests.sh command.
 
 ## Deprecations
 Source: TYPO3 Core Commit Message Rules (typo3://core/typo3-commit-messages) — matches 100% of the query terms
@@ -257,9 +252,9 @@ Source: TYPO3 Core Commit Message Rules (typo3://core/typo3-commit-messages) —
   `typo3 upgrade:run` are what acts on the migrations behind them.
 
 Relevant TYPO3 core checks:
-- `CI=true ./Build/Scripts/runTests.sh -s checkRst`
 - `CI=true ./Build/Scripts/runTests.sh -s unit`
 - `CI=true ./Build/Scripts/runTests.sh -s functional`
+- `CI=true ./Build/Scripts/runTests.sh -s checkRst`
 ## unit
 `CI=true ./Build/Scripts/runTests.sh -s unit`
 Targeted: `CI=true ./Build/Scripts/runTests.sh -s unit -- --filter <methodName> <path/to/Test.php>`
@@ -274,7 +269,8 @@ Targeted: `CI=true ./Build/Scripts/runTests.sh -s cgl -n`
 Use before review when PHP formatting or file headers may be affected. Add `-n` to only report.
 ## cglGit
 `CI=true ./Build/Scripts/runTests.sh -s cglGit`
-Use for a focused pre-review check after creating a commit. Much faster than a full cgl run.
+Targeted: `CI=true ./Build/Scripts/runTests.sh -s cgl -n`
+Use for a focused pre-review check after creating a commit, from a normal checkout only. Its file list comes from git inside the container, and a git worktree keeps its gitdir outside the mounted directory: git fails, the list is empty, and the suite reports SUCCESS having read nothing. Use `cgl -n` where the checkout may be a worktree — it asks git nothing.
 
 Suggested checklist:
 - Confirm the target TYPO3 core branch and issue context.
@@ -292,7 +288,7 @@ Suggested checklist:
 
 Establish in your checkout — this server cannot see it:
 - Which files the task actually touches
-  git status --short and git diff --name-only in the core checkout, then call typo3_architecture_lookup with those paths for the conventions that apply to them.
+  git status --short and git diff --name-only in the core checkout, then call typo3_hint_lookup with those paths for the conventions that apply to them.
 - Which tests already cover them
   Core tests mirror the class path below typo3/sysext/<ext>/Tests/Unit/ and Tests/Functional/. Find the file there, then ask typo3_test_run_guide for the targeted runTests.sh invocation.
 - The branch you are on and the branches the change is meant for
@@ -307,7 +303,7 @@ Establish in your checkout — this server cannot see it:
 Next lookups for this task:
 - typo3_commit_message_guide — with isDeprecation=true, to get the keyword and prefix rules checked
 - typo3_changelog_lookup — for what 14 changed about this area — the first stop when you have not built on it recently, not only a lookup after the fact
-- typo3_architecture_lookup — with the concrete file paths, once they are known
+- typo3_hint_lookup — with the concrete file paths, once they are known
 - typo3_test_run_guide — for the targeted runTests.sh invocation
 - typo3_feedback_record — when one of these answers was wrong or incomplete
 ```
@@ -344,7 +340,7 @@ Data:
             "condition": ""
         }
     ],
-    "architectureHints": [
+    "hints": [
         {
             "id": "system-extension-boundaries",
             "title": "System Extension Boundaries",
@@ -372,16 +368,12 @@ Data:
                     "versions": "",
                     "scope": null
                 }
-            ],
-            "checks": [
-                "CI=true ./Build/Scripts/runTests.sh -s unit",
-                "CI=true ./Build/Scripts/runTests.sh -s functional"
             ]
         },
         {
             "id": "deprecated-apis",
             "title": "Deprecated APIs",
-            "category": "General",
+            "category": "PHP",
             "scope": null,
             "hints": [
                 {
@@ -411,9 +403,29 @@ Data:
                     "until": null,
                     "versions": "",
                     "scope": null
+                },
+                {
+                    "text": "@internal on a class or on a member says it is not public API, and both are read: a public class can carry an internal method. It is an input to whether a removal is breaking and never the answer on its own.",
+                    "since": null,
+                    "until": null,
+                    "versions": "",
+                    "scope": null
+                },
+                {
+                    "text": "What settles it is whether anything outside the core calls it. The core has removed @internal members both as a breaking change and as an Important note, and what separates the two is the call sites rather than the marker: a Breaking entry names them in its Affected installations section, and the extension scanner matchers are where they are looked for. Writing that section is the test of whether there is one.",
+                    "since": null,
+                    "until": null,
+                    "versions": "",
+                    "scope": null
+                },
+                {
+                    "text": "An absent annotation is not a statement that something is public API. Read the changelog for the subsystem and the extension scanner matchers before concluding either way.",
+                    "since": null,
+                    "until": null,
+                    "versions": "",
+                    "scope": null
                 }
-            ],
-            "checks": []
+            ]
         },
         {
             "id": "events-extension-points",
@@ -456,10 +468,6 @@ Data:
                     "versions": "",
                     "scope": null
                 }
-            ],
-            "checks": [
-                "CI=true ./Build/Scripts/runTests.sh -s unit",
-                "CI=true ./Build/Scripts/runTests.sh -s functional"
             ]
         }
     ],
@@ -471,7 +479,7 @@ Data:
             "heading": "Deprecations",
             "body": "- Deprecations must not use `[!!!]`.\n- Deprecations may only use `[TASK]` or `[FEATURE]`.\n- Deprecations must be documented with a changelog RST file.\n- Deprecations need migration guidance and may need extension scanner\n  considerations.\n- All of the above is the authoring side. Reading it — what a given version\n  deprecated, and what that means for code that uses it — works the other way\n  round: the changelog files below `Documentation/Changelog/` of the core\n  package and the matchers below the install package's\n  `Configuration/ExtensionScanner/Php/` are what an installation is checked\n  against, by the Extension Scanner in the Install Tool. Both directories ship\n  with a Composer installation.",
             "coverage": 1,
-            "score": 72,
+            "score": 74,
             "truncated": false
         },
         {
@@ -486,9 +494,9 @@ Data:
         }
     ],
     "checks": [
-        "CI=true ./Build/Scripts/runTests.sh -s checkRst",
         "CI=true ./Build/Scripts/runTests.sh -s unit",
-        "CI=true ./Build/Scripts/runTests.sh -s functional"
+        "CI=true ./Build/Scripts/runTests.sh -s functional",
+        "CI=true ./Build/Scripts/runTests.sh -s checkRst"
     ],
     "conditionalChecks": [],
     "testSuites": [
@@ -530,9 +538,9 @@ Data:
         {
             "suite": "cglGit",
             "command": "CI=true ./Build/Scripts/runTests.sh -s cglGit",
-            "targeted": null,
+            "targeted": "CI=true ./Build/Scripts/runTests.sh -s cgl -n",
             "description": "Checks and fixes coding guideline issues in the latest committed patch.",
-            "whenToUse": "Use for a focused pre-review check after creating a commit. Much faster than a full cgl run.",
+            "whenToUse": "Use for a focused pre-review check after creating a commit, from a normal checkout only. Its file list comes from git inside the container, and a git worktree keeps its gitdir outside the mounted directory: git fails, the list is empty, and the suite reports SUCCESS having read nothing. Use `cgl -n` where the checkout may be a worktree — it asks git nothing.",
             "domains": [
                 "php"
             ],
@@ -556,7 +564,7 @@ Data:
     "checkoutDiscovery": [
         {
             "establish": "Which files the task actually touches",
-            "how": "git status --short and git diff --name-only in the core checkout, then call typo3_architecture_lookup with those paths for the conventions that apply to them."
+            "how": "git status --short and git diff --name-only in the core checkout, then call typo3_hint_lookup with those paths for the conventions that apply to them."
         },
         {
             "establish": "Which tests already cover them",
@@ -589,7 +597,7 @@ Data:
             "when": "for what 14 changed about this area — the first stop when you have not built on it recently, not only a lookup after the fact"
         },
         {
-            "tool": "typo3_architecture_lookup",
+            "tool": "typo3_hint_lookup",
             "when": "with the concrete file paths, once they are known"
         },
         {
@@ -623,7 +631,7 @@ Change type: unknown
 Domains: php
 Recognized as: Backend UI markup
 
-Architecture hints:
+Hints:
 ### PHP
 
 ## Backend Module and Route Registration
@@ -636,43 +644,31 @@ Hints:
 - After a module POST changes state, return a RedirectResponse with HTTP 303 status. The browser then follows with GET; HTTP 302 does not state that method change and can repeat the POST.
 - Configuration/Backend/Routes.php and AjaxRoutes.php declare backend routes outside a module, in the same declarative style.
 - These are declarative files with no schema check behind them: a wrong key does not fail at boot, it fails when a user opens the module. Take the shape from a neighbouring extension.
-Relevant checks:
-- CI=true ./Build/Scripts/runTests.sh -s functional
 
 Rules that apply to this task:
 
-These sections are prose and are not filtered by version. Where a subsystem changed inside the covered range, the statement that changed carries the range elsewhere: call typo3_architecture_lookup with targetVersion for the convention, and typo3_test_run_guide with targetVersion for a runTests.sh command.
+These sections are prose and are not filtered by version. Where a subsystem changed inside the covered range, the statement that changed carries the range elsewhere: call typo3_hint_lookup with targetVersion for the convention, and typo3_test_run_guide with targetVersion for a runTests.sh command.
 
 ## Testing
-Source: TYPO3 Core Contribution Rules (typo3://core/typo3-core-rules) — matches 67% of the query terms
+Source: TYPO3 Core Contribution Rules (typo3://core/typo3-core-rules) — matches 50% of the query terms
 
 - Unit tests are expected for isolated behavior.
 - Functional tests are expected for persistence, configuration, routing, backend
   behavior, or integration with TYPO3 services.
-- End-to-end tests, the `e2e` suite, are useful when the change affects editor or
-  administrator workflows and only breaks in the assembled backend. They replaced
-  the former acceptance suites.
+- End-to-end tests, the `e2e` suite, are useful when the change affects editor
+  or administrator workflows and only breaks in the assembled backend. They
+  replaced the former acceptance suites.
 - Document tests that could not be executed and why.
 
 Relevant TYPO3 core checks:
+- `CI=true ./Build/Scripts/runTests.sh -s unit`
+- `CI=true ./Build/Scripts/runTests.sh -s functional`
 - `CI=true ./Build/Scripts/runTests.sh -s lintScss`
 - `CI=true ./Build/Scripts/runTests.sh -s build`
-- `CI=true ./Build/Scripts/runTests.sh -s functional`
-## unit
-`CI=true ./Build/Scripts/runTests.sh -s unit`
-Targeted: `CI=true ./Build/Scripts/runTests.sh -s unit -- --filter <methodName> <path/to/Test.php>`
-Use for isolated PHP behavior, utility classes, value objects, and narrow bug fixes.
-## functional
-`CI=true ./Build/Scripts/runTests.sh -s functional`
-Targeted: `CI=true ./Build/Scripts/runTests.sh -s functional -d sqlite -- <path/to/Test.php>`
-Use for TYPO3 services, persistence, configuration, authentication, routing, and integration behavior.
-## cgl
-`CI=true ./Build/Scripts/runTests.sh -s cgl`
-Targeted: `CI=true ./Build/Scripts/runTests.sh -s cgl -n`
-Use before review when PHP formatting or file headers may be affected. Add `-n` to only report.
 ## cglGit
 `CI=true ./Build/Scripts/runTests.sh -s cglGit`
-Use for a focused pre-review check after creating a commit. Much faster than a full cgl run.
+Targeted: `CI=true ./Build/Scripts/runTests.sh -s cgl -n`
+Use for a focused pre-review check after creating a commit, from a normal checkout only. Its file list comes from git inside the container, and a git worktree keeps its gitdir outside the mounted directory: git fails, the list is empty, and the suite reports SUCCESS having read nothing. Use `cgl -n` where the checkout may be a worktree — it asks git nothing.
 
 Suggested checklist:
 - Confirm the target TYPO3 core branch and issue context.
@@ -686,7 +682,7 @@ Suggested checklist:
 
 Establish in your checkout — this server cannot see it:
 - Which files the task actually touches
-  git status --short and git diff --name-only in the core checkout, then call typo3_architecture_lookup with those paths for the conventions that apply to them.
+  git status --short and git diff --name-only in the core checkout, then call typo3_hint_lookup with those paths for the conventions that apply to them.
 - Which tests already cover them
   Core tests mirror the class path below typo3/sysext/<ext>/Tests/Unit/ and Tests/Functional/. Find the file there, then ask typo3_test_run_guide for the targeted runTests.sh invocation.
 - The branch you are on and the branches the change is meant for
@@ -702,7 +698,7 @@ Next lookups for this task:
 - typo3_component_lookup — before writing backend markup or CSS classes
 - typo3_backend_module_lookup — to compare the declaration with modules registered by the active installation
 - typo3_changelog_lookup — for what 14 changed about this area — the first stop when you have not built on it recently, not only a lookup after the fact
-- typo3_architecture_lookup — with the concrete file paths, once they are known
+- typo3_hint_lookup — with the concrete file paths, once they are known
 - typo3_test_run_guide — for the targeted runTests.sh invocation
 - typo3_commit_message_guide — before committing
 - typo3_feedback_record — when one of these answers was wrong or incomplete
@@ -733,7 +729,7 @@ Data:
             "condition": "only if the change adds or alters backend component markup or CSS classes"
         }
     ],
-    "architectureHints": [
+    "hints": [
         {
             "id": "backend-modules",
             "title": "Backend Module and Route Registration",
@@ -796,9 +792,6 @@ Data:
                     "versions": "",
                     "scope": null
                 }
-            ],
-            "checks": [
-                "CI=true ./Build/Scripts/runTests.sh -s functional"
             ]
         }
     ],
@@ -808,60 +801,26 @@ Data:
             "title": "TYPO3 Core Contribution Rules",
             "uri": "typo3://core/typo3-core-rules",
             "heading": "Testing",
-            "body": "- Unit tests are expected for isolated behavior.\n- Functional tests are expected for persistence, configuration, routing, backend\n  behavior, or integration with TYPO3 services.\n- End-to-end tests, the `e2e` suite, are useful when the change affects editor or\n  administrator workflows and only breaks in the assembled backend. They replaced\n  the former acceptance suites.\n- Document tests that could not be executed and why.",
-            "coverage": 0.667,
-            "score": 28,
+            "body": "- Unit tests are expected for isolated behavior.\n- Functional tests are expected for persistence, configuration, routing, backend\n  behavior, or integration with TYPO3 services.\n- End-to-end tests, the `e2e` suite, are useful when the change affects editor\n  or administrator workflows and only breaks in the assembled backend. They\n  replaced the former acceptance suites.\n- Document tests that could not be executed and why.",
+            "coverage": 0.5,
+            "score": 29,
             "truncated": false
         }
     ],
     "checks": [
+        "CI=true ./Build/Scripts/runTests.sh -s unit",
+        "CI=true ./Build/Scripts/runTests.sh -s functional",
         "CI=true ./Build/Scripts/runTests.sh -s lintScss",
-        "CI=true ./Build/Scripts/runTests.sh -s build",
-        "CI=true ./Build/Scripts/runTests.sh -s functional"
+        "CI=true ./Build/Scripts/runTests.sh -s build"
     ],
     "conditionalChecks": [],
     "testSuites": [
         {
-            "suite": "unit",
-            "command": "CI=true ./Build/Scripts/runTests.sh -s unit",
-            "targeted": "CI=true ./Build/Scripts/runTests.sh -s unit -- --filter <methodName> <path/to/Test.php>",
-            "description": "PHP unit tests.",
-            "whenToUse": "Use for isolated PHP behavior, utility classes, value objects, and narrow bug fixes.",
-            "domains": [
-                "php"
-            ],
-            "versions": ""
-        },
-        {
-            "suite": "functional",
-            "command": "CI=true ./Build/Scripts/runTests.sh -s functional",
-            "targeted": "CI=true ./Build/Scripts/runTests.sh -s functional -d sqlite -- <path/to/Test.php>",
-            "description": "PHP functional tests, sqlite by default.",
-            "whenToUse": "Use for TYPO3 services, persistence, configuration, authentication, routing, and integration behavior.",
-            "domains": [
-                "php",
-                "fluid",
-                "typoscript"
-            ],
-            "versions": ""
-        },
-        {
-            "suite": "cgl",
-            "command": "CI=true ./Build/Scripts/runTests.sh -s cgl",
-            "targeted": "CI=true ./Build/Scripts/runTests.sh -s cgl -n",
-            "description": "Checks and fixes coding guideline issues for all core PHP files.",
-            "whenToUse": "Use before review when PHP formatting or file headers may be affected. Add `-n` to only report.",
-            "domains": [
-                "php"
-            ],
-            "versions": ""
-        },
-        {
             "suite": "cglGit",
             "command": "CI=true ./Build/Scripts/runTests.sh -s cglGit",
-            "targeted": null,
+            "targeted": "CI=true ./Build/Scripts/runTests.sh -s cgl -n",
             "description": "Checks and fixes coding guideline issues in the latest committed patch.",
-            "whenToUse": "Use for a focused pre-review check after creating a commit. Much faster than a full cgl run.",
+            "whenToUse": "Use for a focused pre-review check after creating a commit, from a normal checkout only. Its file list comes from git inside the container, and a git worktree keeps its gitdir outside the mounted directory: git fails, the list is empty, and the suite reports SUCCESS having read nothing. Use `cgl -n` where the checkout may be a worktree — it asks git nothing.",
             "domains": [
                 "php"
             ],
@@ -881,7 +840,7 @@ Data:
     "checkoutDiscovery": [
         {
             "establish": "Which files the task actually touches",
-            "how": "git status --short and git diff --name-only in the core checkout, then call typo3_architecture_lookup with those paths for the conventions that apply to them."
+            "how": "git status --short and git diff --name-only in the core checkout, then call typo3_hint_lookup with those paths for the conventions that apply to them."
         },
         {
             "establish": "Which tests already cover them",
@@ -918,7 +877,7 @@ Data:
             "when": "for what 14 changed about this area — the first stop when you have not built on it recently, not only a lookup after the fact"
         },
         {
-            "tool": "typo3_architecture_lookup",
+            "tool": "typo3_hint_lookup",
             "when": "with the concrete file paths, once they are known"
         },
         {
@@ -965,67 +924,38 @@ Paths:
 - packages/acme_events/Classes/Domain/Repository/EventRepository.php (extension)
 - typo3/sysext/core/Classes/Database/Query/QueryBuilder.php
 
-Architecture hints:
+Hints:
 # For typo3/sysext/core/Classes/Database/Query/QueryBuilder.php
 
 ### PHP
 
-## DataHandler and Persistence
+## Reading Records, and What Is Hidden From the Query
 Hints:
-- DataHandler and persistence changes are high-impact and usually need functional tests.
-- Preserve workspace, localization, permissions, and hook or event behavior unless intentionally changed.
-- Test edge cases with deleted, hidden, localized, versioned, or workspace records when relevant.
-- Writing records goes through a datamap: $dataMap[<table>][<uid or "NEW" plus a unique suffix>][<field>], handed to start($dataMap, $cmdMap) and then process_datamap(). Moving, copying and deleting go through the command map instead. A new record's real uid comes back in substNEWwithIDs, keyed by the placeholder.
-- A new record is placed at the TOP of its page: the pid field is the positioning pid, and a page uid there means "first record on that page". A datamap written in reading order therefore comes out reversed — pages in a menu, content elements in a column.
-- To place records in order, use the negative form: a pid of -<uid> means "directly after that record". A "NEW" placeholder may be used there as well, as -NEW..., and resolves once the record it names has been created in the same run.
-- DataHandler acts as a backend user: pass one to start() or have one in $GLOBALS['BE_USER']. Permission checks, workspaces and the reference index all hang off it, which is what makes DataHandler the right way to seed and a direct INSERT the wrong one.
-Relevant checks:
-- CI=true ./Build/Scripts/runTests.sh -s functional
-- CI=true ./Build/Scripts/runTests.sh -s phpstan
+- A QueryBuilder from ConnectionPool::getQueryBuilderForTable() already carries a DefaultRestrictionContainer: DeletedRestriction, HiddenRestriction, StartTimeRestriction and EndTimeRestriction. A plain select therefore hides disabled and time-restricted rows without saying so, which is what a record that is in the database and not in the result usually is.
+- Taking them off is deliberate and partial: getRestrictions()->removeAll() drops all four, and the ordinary form adds DeletedRestriction back, because a deleted row is not a row. BackendUtility::getRecord() is the worked example — removeAll(), then DeletedRestriction unless the caller asked for it too.
+- The frontend uses FrontendRestrictionContainer instead, which PageRepository sets with the current Context: the same four plus WorkspaceRestriction and FrontendGroupRestriction. Access groups and workspaces are conditions there and nowhere else.
+- Outside the frontend a query returns the live record, and the workspace version is put on top of it afterwards: PageRepository::versionOL($table, $row) overlays it in place. It is a step after the query, not a condition in it.
+- The translation works the same way: PageRepository::getLanguageOverlay($table, $row, ?LanguageAspect) replaces the row's fields with the translated ones and honours the fallback chain the LanguageAspect describes. Selecting rows by sys_language_uid is not the same thing and misses the fallback. PageRepository::getPage() shows the order both are applied in: versionOL() first, then the language overlay.
+- PageRepository::getDefaultConstraints($table, $enableFieldsToIgnore) returns the enable-field conditions as QueryBuilder expressions, for a query that builds its own restrictions. [TYPO3 v13 and newer]
 
 ## System Extension Boundaries
 Hints:
 - Keep changes inside the owning system extension unless a cross-extension contract really changes.
 - Reuse public APIs from other system extensions instead of depending on internal implementation details.
 - Check nearby extension-local tests before adding shared behavior.
-Relevant checks:
-- CI=true ./Build/Scripts/runTests.sh -s unit
-- CI=true ./Build/Scripts/runTests.sh -s functional
 
 # For packages/acme_events/Classes/Domain/Repository/EventRepository.php — extension
 
 ### PHP
 
-## Extbase Plugins
+## Models, Repositories and the Table Behind Them
 Hints:
-- Extbase is what a frontend needs beyond reading records: pagination, a search with arguments, validation, forms. Rendering records read-only needs none of it — see the records hint — and mixing the two questions is where most of the wrong answers here come from.
-- A plugin is registered by two calls that do different things. ExtensionUtility::registerPlugin() belongs in Configuration/TCA/Overrides/tt_content.php and adds the item to the CType selector, optionally with a FlexForm; ExtensionUtility::configurePlugin() belongs in ext_localconf.php and declares which controller actions exist and which of them are not cacheable. Neither one replaces the other.
-- The plugin signature both calls derive — the extension name and the plugin name, lowercased and joined by an underscore — is four things at once: the value in the CType column, the TypoScript key below tt_content, the key the FlexForm is registered under, and the namespace the plugin's own arguments arrive in. Renaming a plugin renames all four, and existing content keeps the old value.
-- configurePlugin() takes a plugin type as its last argument that has to be omitted or given as "CType": a plugin is a content type of its own and nothing else, and anything else throws. [TYPO3 v14 and newer]
 - A model maps onto the table its class name implies. Configuration/Extbase/Persistence/Classes.php is where a table named differently is mapped, together with the per-property column names and the record type of a single-table inheritance.
-- Which paginator to use follows from what is being paginated: QueryResultPaginator for an Extbase query result, QueryBuilderPaginator for a Doctrine query builder, ArrayPaginator for an array that is already in memory. The last one paginates in PHP, so choosing it for a query means every record is fetched in order to show one page. SlidingWindowPagination on top of any of them produces the page numbers.
-- A search form submitted by GET on a cacheable action answers with a page-not-found, and putting the action into the non-cacheable list does not fix it: the cache hash is validated by a middleware, long before Extbase knows which action was called. The plugin's arguments have to be excluded from the hash as well, in $GLOBALS['TYPO3_CONF_VARS']['FE']['cacheHash']['excludedParameters']. A name there carries an indicator: ^ matches the beginning of a parameter name, ~ any part of it, and no indicator at all is an exact match — the one entry that covers a whole plugin is the prefix form. The hidden fields a Fluid form adds need the same treatment.
-- An object argument maps nothing until its properties are allowed. A request that hands a controller an object other than a persisted entity fails with "It is not allowed to map property" until the matching initialize<Action>Action() calls allowProperties() on that argument's property mapping configuration. That is the secure default rather than a defect.
-- An object that is not persisted is dropped from a generated link without a word: the URI builder serialises an entity by its uid, and something built for the request has none — so the filter of a search is gone on page two while the link looks correct. Pass such state to a link as plain arguments.
-- A paginator clamps a page number outside its range, so a page beyond the last one answers with the first page rather than with a not-found. Compare the current page against the number of pages in the controller and answer with the not-found response yourself, or the same list is served under an unbounded number of URLs.
-- A paginated plugin needs a route for the list as well as one for the paginated form. A single route with the page number defaulted only omits the variable when a link is built, and the literal part of the segment stays behind — a link to the first page then points at a path that ends in the prefix of a number that is not there. Routes are tried in the order they are declared, so the paginated one goes before a route whose slug would otherwise swallow it.
 - Orderings are property names, not column names. Ordering by the order records have in the backend therefore needs a property for that field on the model, although it is not a domain concept.
-Worked example: typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example — typo3_reference_list for what it demonstrates and where an installation has it.
-
-## DataHandler and Persistence
-Hints:
-- DataHandler and persistence changes are high-impact and usually need functional tests.
-- Preserve workspace, localization, permissions, and hook or event behavior unless intentionally changed.
-- Test edge cases with deleted, hidden, localized, versioned, or workspace records when relevant.
-- Writing records goes through a datamap: $dataMap[<table>][<uid or "NEW" plus a unique suffix>][<field>], handed to start($dataMap, $cmdMap) and then process_datamap(). Moving, copying and deleting go through the command map instead. A new record's real uid comes back in substNEWwithIDs, keyed by the placeholder.
-- A new record is placed at the TOP of its page: the pid field is the positioning pid, and a page uid there means "first record on that page". A datamap written in reading order therefore comes out reversed — pages in a menu, content elements in a column.
-- To place records in order, use the negative form: a pid of -<uid> means "directly after that record". A "NEW" placeholder may be used there as well, as -NEW..., and resolves once the record it names has been created in the same run.
-- DataHandler acts as a backend user: pass one to start() or have one in $GLOBALS['BE_USER']. Permission checks, workspaces and the reference index all hang off it, which is what makes DataHandler the right way to seed and a direct INSERT the wrong one.
 
 Relevant TYPO3 core checks:
-- `CI=true ./Build/Scripts/runTests.sh -s functional`
-- `CI=true ./Build/Scripts/runTests.sh -s phpstan`
 - `CI=true ./Build/Scripts/runTests.sh -s unit`
+- `CI=true ./Build/Scripts/runTests.sh -s functional`
 ## checkExtensionScannerRst
 `CI=true ./Build/Scripts/runTests.sh -s checkExtensionScannerRst`
 Use when a deprecation or breaking change adds extension scanner matchers.
@@ -1048,7 +978,7 @@ Suggested checklist:
 
 Establish in your checkout — this server cannot see it:
 - Which files the task actually touches
-  git status --short and git diff --name-only in the core checkout, then call typo3_architecture_lookup with those paths for the conventions that apply to them.
+  git status --short and git diff --name-only in the core checkout, then call typo3_hint_lookup with those paths for the conventions that apply to them.
 - Which tests already cover them
   Core tests mirror the class path below typo3/sysext/<ext>/Tests/Unit/ and Tests/Functional/. Find the file there, then ask typo3_test_run_guide for the targeted runTests.sh invocation.
 - The branch you are on and the branches the change is meant for
@@ -1062,7 +992,7 @@ Establish in your checkout — this server cannot see it:
 
 Next lookups for this task:
 - typo3_changelog_lookup — for what 14 changed about this area — the first stop when you have not built on it recently, not only a lookup after the fact
-- typo3_architecture_lookup — with the concrete file paths, once they are known
+- typo3_hint_lookup — with the concrete file paths, once they are known
 - typo3_test_run_guide — for the targeted runTests.sh invocation
 - typo3_commit_message_guide — before committing
 - typo3_feedback_record — when one of these answers was wrong or incomplete
@@ -1098,66 +1028,55 @@ Data:
     ],
     "scope": "core",
     "intents": [],
-    "architectureHints": [
+    "hints": [
         {
-            "id": "datahandler-persistence",
-            "title": "DataHandler and Persistence",
+            "id": "persistence-reading",
+            "title": "Reading Records, and What Is Hidden From the Query",
             "category": "PHP",
             "scope": null,
             "hints": [
                 {
-                    "text": "DataHandler and persistence changes are high-impact and usually need functional tests.",
+                    "text": "A QueryBuilder from ConnectionPool::getQueryBuilderForTable() already carries a DefaultRestrictionContainer: DeletedRestriction, HiddenRestriction, StartTimeRestriction and EndTimeRestriction. A plain select therefore hides disabled and time-restricted rows without saying so, which is what a record that is in the database and not in the result usually is.",
                     "since": null,
                     "until": null,
                     "versions": "",
                     "scope": null
                 },
                 {
-                    "text": "Preserve workspace, localization, permissions, and hook or event behavior unless intentionally changed.",
+                    "text": "Taking them off is deliberate and partial: getRestrictions()->removeAll() drops all four, and the ordinary form adds DeletedRestriction back, because a deleted row is not a row. BackendUtility::getRecord() is the worked example — removeAll(), then DeletedRestriction unless the caller asked for it too.",
                     "since": null,
                     "until": null,
                     "versions": "",
                     "scope": null
                 },
                 {
-                    "text": "Test edge cases with deleted, hidden, localized, versioned, or workspace records when relevant.",
+                    "text": "The frontend uses FrontendRestrictionContainer instead, which PageRepository sets with the current Context: the same four plus WorkspaceRestriction and FrontendGroupRestriction. Access groups and workspaces are conditions there and nowhere else.",
                     "since": null,
                     "until": null,
                     "versions": "",
                     "scope": null
                 },
                 {
-                    "text": "Writing records goes through a datamap: $dataMap[<table>][<uid or \"NEW\" plus a unique suffix>][<field>], handed to start($dataMap, $cmdMap) and then process_datamap(). Moving, copying and deleting go through the command map instead. A new record's real uid comes back in substNEWwithIDs, keyed by the placeholder.",
+                    "text": "Outside the frontend a query returns the live record, and the workspace version is put on top of it afterwards: PageRepository::versionOL($table, $row) overlays it in place. It is a step after the query, not a condition in it.",
                     "since": null,
                     "until": null,
                     "versions": "",
                     "scope": null
                 },
                 {
-                    "text": "A new record is placed at the TOP of its page: the pid field is the positioning pid, and a page uid there means \"first record on that page\". A datamap written in reading order therefore comes out reversed — pages in a menu, content elements in a column.",
+                    "text": "The translation works the same way: PageRepository::getLanguageOverlay($table, $row, ?LanguageAspect) replaces the row's fields with the translated ones and honours the fallback chain the LanguageAspect describes. Selecting rows by sys_language_uid is not the same thing and misses the fallback. PageRepository::getPage() shows the order both are applied in: versionOL() first, then the language overlay.",
                     "since": null,
                     "until": null,
                     "versions": "",
                     "scope": null
                 },
                 {
-                    "text": "To place records in order, use the negative form: a pid of -<uid> means \"directly after that record\". A \"NEW\" placeholder may be used there as well, as -NEW..., and resolves once the record it names has been created in the same run.",
-                    "since": null,
+                    "text": "PageRepository::getDefaultConstraints($table, $enableFieldsToIgnore) returns the enable-field conditions as QueryBuilder expressions, for a query that builds its own restrictions.",
+                    "since": 13,
                     "until": null,
-                    "versions": "",
-                    "scope": null
-                },
-                {
-                    "text": "DataHandler acts as a backend user: pass one to start() or have one in $GLOBALS['BE_USER']. Permission checks, workspaces and the reference index all hang off it, which is what makes DataHandler the right way to seed and a direct INSERT the wrong one.",
-                    "since": null,
-                    "until": null,
-                    "versions": "",
+                    "versions": "TYPO3 v13 and newer",
                     "scope": null
                 }
-            ],
-            "checks": [
-                "CI=true ./Build/Scripts/runTests.sh -s functional",
-                "CI=true ./Build/Scripts/runTests.sh -s phpstan"
             ]
         },
         {
@@ -1187,90 +1106,16 @@ Data:
                     "versions": "",
                     "scope": null
                 }
-            ],
-            "checks": [
-                "CI=true ./Build/Scripts/runTests.sh -s unit",
-                "CI=true ./Build/Scripts/runTests.sh -s functional"
             ]
         },
         {
-            "id": "extbase",
-            "title": "Extbase Plugins",
+            "id": "extbase-domain-mapping",
+            "title": "Models, Repositories and the Table Behind Them",
             "category": "PHP",
             "scope": null,
             "hints": [
                 {
-                    "text": "Extbase is what a frontend needs beyond reading records: pagination, a search with arguments, validation, forms. Rendering records read-only needs none of it — see the records hint — and mixing the two questions is where most of the wrong answers here come from.",
-                    "since": null,
-                    "until": null,
-                    "versions": "",
-                    "scope": null
-                },
-                {
-                    "text": "A plugin is registered by two calls that do different things. ExtensionUtility::registerPlugin() belongs in Configuration/TCA/Overrides/tt_content.php and adds the item to the CType selector, optionally with a FlexForm; ExtensionUtility::configurePlugin() belongs in ext_localconf.php and declares which controller actions exist and which of them are not cacheable. Neither one replaces the other.",
-                    "since": null,
-                    "until": null,
-                    "versions": "",
-                    "scope": null
-                },
-                {
-                    "text": "The plugin signature both calls derive — the extension name and the plugin name, lowercased and joined by an underscore — is four things at once: the value in the CType column, the TypoScript key below tt_content, the key the FlexForm is registered under, and the namespace the plugin's own arguments arrive in. Renaming a plugin renames all four, and existing content keeps the old value.",
-                    "since": null,
-                    "until": null,
-                    "versions": "",
-                    "scope": null
-                },
-                {
-                    "text": "configurePlugin() takes a plugin type as its last argument that has to be omitted or given as \"CType\": a plugin is a content type of its own and nothing else, and anything else throws.",
-                    "since": 14,
-                    "until": null,
-                    "versions": "TYPO3 v14 and newer",
-                    "scope": null
-                },
-                {
                     "text": "A model maps onto the table its class name implies. Configuration/Extbase/Persistence/Classes.php is where a table named differently is mapped, together with the per-property column names and the record type of a single-table inheritance.",
-                    "since": null,
-                    "until": null,
-                    "versions": "",
-                    "scope": null
-                },
-                {
-                    "text": "Which paginator to use follows from what is being paginated: QueryResultPaginator for an Extbase query result, QueryBuilderPaginator for a Doctrine query builder, ArrayPaginator for an array that is already in memory. The last one paginates in PHP, so choosing it for a query means every record is fetched in order to show one page. SlidingWindowPagination on top of any of them produces the page numbers.",
-                    "since": null,
-                    "until": null,
-                    "versions": "",
-                    "scope": null
-                },
-                {
-                    "text": "A search form submitted by GET on a cacheable action answers with a page-not-found, and putting the action into the non-cacheable list does not fix it: the cache hash is validated by a middleware, long before Extbase knows which action was called. The plugin's arguments have to be excluded from the hash as well, in $GLOBALS['TYPO3_CONF_VARS']['FE']['cacheHash']['excludedParameters']. A name there carries an indicator: ^ matches the beginning of a parameter name, ~ any part of it, and no indicator at all is an exact match — the one entry that covers a whole plugin is the prefix form. The hidden fields a Fluid form adds need the same treatment.",
-                    "since": null,
-                    "until": null,
-                    "versions": "",
-                    "scope": null
-                },
-                {
-                    "text": "An object argument maps nothing until its properties are allowed. A request that hands a controller an object other than a persisted entity fails with \"It is not allowed to map property\" until the matching initialize<Action>Action() calls allowProperties() on that argument's property mapping configuration. That is the secure default rather than a defect.",
-                    "since": null,
-                    "until": null,
-                    "versions": "",
-                    "scope": null
-                },
-                {
-                    "text": "An object that is not persisted is dropped from a generated link without a word: the URI builder serialises an entity by its uid, and something built for the request has none — so the filter of a search is gone on page two while the link looks correct. Pass such state to a link as plain arguments.",
-                    "since": null,
-                    "until": null,
-                    "versions": "",
-                    "scope": null
-                },
-                {
-                    "text": "A paginator clamps a page number outside its range, so a page beyond the last one answers with the first page rather than with a not-found. Compare the current page against the number of pages in the controller and answer with the not-found response yourself, or the same list is served under an unbounded number of URLs.",
-                    "since": null,
-                    "until": null,
-                    "versions": "",
-                    "scope": null
-                },
-                {
-                    "text": "A paginated plugin needs a route for the list as well as one for the paginated form. A single route with the page number defaulted only omits the variable when a link is built, and the literal part of the segment stays behind — a link to the first page then points at a path that ends in the prefix of a number that is not there. Routes are tried in the order they are declared, so the paginated one goes before a route whose slug would otherwise swallow it.",
                     "since": null,
                     "until": null,
                     "versions": "",
@@ -1283,15 +1128,13 @@ Data:
                     "versions": "",
                     "scope": null
                 }
-            ],
-            "checks": []
+            ]
         }
     ],
     "rules": [],
     "checks": [
-        "CI=true ./Build/Scripts/runTests.sh -s functional",
-        "CI=true ./Build/Scripts/runTests.sh -s phpstan",
-        "CI=true ./Build/Scripts/runTests.sh -s unit"
+        "CI=true ./Build/Scripts/runTests.sh -s unit",
+        "CI=true ./Build/Scripts/runTests.sh -s functional"
     ],
     "conditionalChecks": [],
     "testSuites": [
@@ -1345,7 +1188,7 @@ Data:
     "checkoutDiscovery": [
         {
             "establish": "Which files the task actually touches",
-            "how": "git status --short and git diff --name-only in the core checkout, then call typo3_architecture_lookup with those paths for the conventions that apply to them."
+            "how": "git status --short and git diff --name-only in the core checkout, then call typo3_hint_lookup with those paths for the conventions that apply to them."
         },
         {
             "establish": "Which tests already cover them",
@@ -1374,7 +1217,7 @@ Data:
             "when": "for what 14 changed about this area — the first stop when you have not built on it recently, not only a lookup after the fact"
         },
         {
-            "tool": "typo3_architecture_lookup",
+            "tool": "typo3_hint_lookup",
             "when": "with the concrete file paths, once they are known"
         },
         {

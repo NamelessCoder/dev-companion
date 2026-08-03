@@ -142,3 +142,12 @@ beside it. The resulting order is the same either way, because the deferred
 processor declares `after: [SvgImageProcessor]` on every branch — so the hint
 carries no range, and what was wrong was the reading of the declaration rather
 than the conclusion drawn from it. `processingTaskTypes` is identical.
+
+The boundary this entry drew was reached from below on 2026-08-03. A session
+that had asserted twice that image processing requires a FAL object filed
+`feedback/2026-08-02-144902`, and the hint written here answers everything up to
+the processor and nothing after it — `LocalImageProcessor` unwraps to a local
+path and `GraphicalFunctions` takes path strings, neither of which the corpus
+says anywhere.
+[`D-KNW-042`](knw-042-what-the-image-pipeline-does-below-the-task-layer-is-a-gap-this-server-owns.md)
+takes that half on, and this entry keeps the dispatch it decided.

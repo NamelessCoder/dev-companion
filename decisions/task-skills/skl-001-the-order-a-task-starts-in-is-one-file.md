@@ -360,3 +360,18 @@ which named the installed source as the step after the lookups and paid for part
 of it by displacing the review-only sentence it found on step 5. Both are what
 this decision's **Wrong if** watches, and the file is now nearly three times the
 length that made it short.
+
+## Since then
+
+The base grew again on 2026-08-03, from 1452 words to 1531, and the 79 it spent
+bound a route it already ordered rather than adding one. Step 5 sent "does this
+still work in version N" to the manual, and the manual matches page titles and
+section paths and never the text of a page — so a PHP identifier was being sent
+at a corpus that cannot carry it, which `D-ANS-010` re-ran from
+`/home/benji/projects/ext-guidedtour` and this file now says before the call.
+The alternative was the conformance skill, and it is the one this entry keeps
+refusing: the upgrade skill starts from the same sweep, and the conformance
+skill's own sentence defers to the base for why the changelog cannot answer.
+Half of what it bought is a reading the base was already sending sessions into
+— the class in `## When the lookups run out` is where an identifier now
+terminates — so the growth buys the step after it as well.

@@ -68,8 +68,16 @@ project's own are known is a guess that sounds like advice.
    majors has no entry at all. An empty sweep is therefore not an answer about
    what still works. "Does this still work in version N" goes to
    `typo3_documentation_lookup` at that version — here, and whenever the reading
-   raises it again. Where the manual has no page for it either, that is a result
-   and not an answer. Undocumented is not unsupported.
+   raises it again.
+
+   That is a question for a documented surface — a ViewHelper, a TCA type, a
+   TypoScript setting. The manual matches page titles and section paths, never
+   the text of a page, so a PHP identifier has no page to be titled after. It
+   reaches whatever its own words happen to spell instead. An identifier goes to
+   `typo3_changelog_lookup` under its own name, which reaches the entries
+   writing it however the change was titled, and then to the class below. Where
+   the manual has no page for a surface either, that is a result and not an
+   answer. Undocumented is not unsupported.
 
 **Then** read the checkout. Not before: listing the files first makes everything
 after the listing look optional, and the conventions arrive as a footnote to a

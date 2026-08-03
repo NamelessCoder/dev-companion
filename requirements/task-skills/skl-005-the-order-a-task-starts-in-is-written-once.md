@@ -36,8 +36,12 @@ Scanner finds the remaining call sites or the reader does.
 That step also says what an empty result is worth, because a changelog records
 change events and a pattern nothing changed has no entry: "does this still work
 in version N" goes to `typo3_documentation_lookup` at that version, there and
-whenever the reading raises it again, and where the manual has no page either
-that miss is a result rather than an answer.
+whenever the reading raises it again. What that answers is a documented surface,
+because the manual matches page titles and section paths and never the text of a
+page: a PHP identifier has no page to be titled after, and goes to
+`typo3_changelog_lookup` under its own name and then to the class. Where the
+manual has no page for a surface either, that miss is a result rather than an
+answer.
 
 A behaviour question that survives all of them is read out of the installed
 source — the class that implements it and the one it inherits from — as the step

@@ -297,6 +297,33 @@ final class SkillTest extends TestCase
         // than a licence to reconstruct the contract from the installed core.
         self::assertStringContainsString('that is a result and not an answer', self::flat($base));
         self::assertStringContainsString('Undocumented is not unsupported', $base);
+
+        // And what that half is worth is bounded by what the manual can be
+        // asked. `feedback/2026-08-03-164805` followed this routing and read
+        // `PageRenderer.php` by hand anyway: re-run from
+        // `/home/benji/projects/ext-guidedtour` on 2026-08-03,
+        // `Infobox ViewHelper state` at `targetVersion: "14"` returns the
+        // ViewHelper reference page first, carrying the deprecation whole,
+        // while `addInlineLanguageLabelFile` and `inline language labels`
+        // return the label reference and TCA pages that spell "label" and
+        // "add" in their titles and name the method nowhere. The tool's own
+        // header says why, and the identifier route is the one that answers:
+        // `typo3_changelog_lookup` with `addInlineLanguageLabelFile` returns
+        // the 7.5 Feature entry that introduced it and no deprecation, which
+        // is `D-ANS-042` — so the miss above is a result for a surface and the
+        // wrong corpus for an identifier (`D-ANS-010`).
+        self::assertStringContainsString(
+            'The manual matches page titles and section paths, never the text of a page',
+            self::flat($base),
+        );
+        self::assertStringContainsString('a PHP identifier has no page to be titled after', self::flat($base));
+        $identifier = strpos($base, 'An identifier goes to');
+        self::assertNotFalse($identifier, 'the base leaves a PHP identifier pointed at the manual');
+        self::assertLessThan(
+            (int) strpos($base, '**Then** read the checkout'),
+            $identifier,
+            'the identifier route is offered after the reading it exists to save',
+        );
         // The limit that carries the second half now stands where the reading
         // it limits is ordered rather than here, where nobody is reading the
         // core — the section below, which `D-SKL-004` earned.
@@ -314,6 +341,11 @@ final class SkillTest extends TestCase
         );
         self::assertStringContainsString('does this still work here', $skill);
         self::assertStringNotContainsString('A changelog records change events', $skill);
+        // The bound on the same routing is written in the same one place. The
+        // conformance skill defers to the base for why the changelog cannot
+        // answer, and the upgrade skill starts from the same sweep, so a copy
+        // here is the second hand-written order `D-SKL-001` exists to prevent.
+        self::assertStringNotContainsString('page titles and section paths', $skill);
     }
 
     #[Test]

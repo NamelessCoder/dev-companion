@@ -222,3 +222,32 @@ manual is called, on `skills/base.md` or on the conformance skill.
 What would trigger the reservation after all is a session that has both: the
 statement in reach and the identifier named in the changelog, and still no way
 to tell whether the thing exists in the version it runs on.
+
+## Since then
+
+Step 4 landed on 2026-08-03, in `skills/base.md` and not in the conformance
+skill. Both carried the routing and only one carries it once. The conformance
+skill states its own condition and then defers — "the base says why the
+changelog cannot answer that one" — so a bound written there would leave the
+sentence it bounds standing unqualified in the file every published skill is
+given. `typo3-extension-upgrade` starts from the same sweep, which is why step 5
+is in the base at all, and a second copy of an order is what `D-SKL-001` exists
+to prevent. It cost 79 words, 1452 to 1531, and that entry keeps the arithmetic.
+
+The readings were re-run from `/home/benji/projects/ext-guidedtour` through this
+checkout's `bin/typo3-cms-mcp` before the sentence was written, and the two
+shapes still come apart. `Infobox ViewHelper state` at `targetVersion: "14"`
+returns `be.infobox` from the ViewHelper reference first, carrying *Deprecated
+since version 14.0 … use the enum ContextualFeedbackSeverity instead*.
+`addInlineLanguageLabelFile` and `inline language labels` return the label
+reference, a TCA renderType and the `addRecord` field control — pages matched on
+`label` and `add` in their titles, naming the method nowhere.
+`typo3_changelog_lookup` with the same identifier returns the 7.5 Feature entry
+that introduced it and no deprecation, which is the answer the filing session
+went to `PageRenderer.php` for.
+
+So what the base now says at the point of the call is which corpus a question
+has. A documented surface goes to the manual, an identifier to the changelog
+under its own name and then to the class, and the miss-is-a-result sentence
+stands for the surface it was written about. The feedback keeps its other half:
+what a deprecation carrying the docblock alone raises is a todo of its own.

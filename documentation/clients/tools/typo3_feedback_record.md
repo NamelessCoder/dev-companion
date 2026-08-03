@@ -65,6 +65,12 @@ path: string
 # which is the ordinary case. Each removal stands in the file as a [redacted:
 # ...] marker, so the report says of itself that it was altered.
 redacted: [string]
+# What was cut for length before the feedback was written, one entry per field,
+# naming the field and how much of it went. Empty where nothing was cut, which
+# is the ordinary case. Each cut stands in the file as a [cut: ...] marker where
+# the field stops, so the report says of itself that it is short of what was
+# written.
+cut: [string]
 ```
 
 ## Not answered

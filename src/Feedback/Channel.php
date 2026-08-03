@@ -46,6 +46,12 @@ final class Channel
     /** What a feedback says about the model where none was named. */
     public const UNATTRIBUTED = 'unknown';
 
+    /**
+     * How a field cut for length says so, the way Redaction marks a value it
+     * took out of one.
+     */
+    private const CUT_MARKER = '[cut: %s]';
+
     /** Separates the commits in the log a feedback's own answer is read from. */
     private const COMMIT_MARKER = "\x00";
 
@@ -71,15 +77,20 @@ final class Channel
      * was altered says so or it is not a report. See Redaction for what counts
      * and why the thresholds are where they are.
      *
+     * A field too long to be stored whole is altered as well, and `$cut` is
+     * what went from it — reported for the same reason and beside it.
+     *
      * @param array<string, mixed> $args
      * @param array<int, string>   $redacted what was removed, by field and shape
+     * @param array<int, string>   $cut      what was cut for length, by field and how much
      */
-    public static function record(array $args, array &$redacted = []): string
+    public static function record(array $args, array &$redacted = [], array &$cut = []): string
     {
         self::assertAvailable();
 
         $redacted = [];
-        $observation = self::text($args['observation'] ?? '');
+        $cut = [];
+        $observation = self::text('observation', $args['observation'] ?? '', $cut);
         if ($observation === '') {
             throw new \InvalidArgumentException('An observation is required.');
         }
@@ -87,12 +98,12 @@ final class Channel
         $category = self::category($args['category'] ?? null);
         $tools = self::toolNames($args['tool'] ?? null);
         $observation = self::withoutSecrets('observation', $observation, $redacted);
-        $query = self::withoutSecrets('query', self::text($args['query'] ?? ''), $redacted);
+        $query = self::withoutSecrets('query', self::text('query', $args['query'] ?? '', $cut), $redacted);
         // The third field for the same reason as the other two, though neither
         // the leak this was written for nor the todo that carried it named it:
         // it is prose a session writes and it is written into the same file, so
         // leaving it out would be a hole with nothing behind it.
-        $suggestion = self::withoutSecrets('suggestion', self::text($args['suggestion'] ?? ''), $redacted);
+        $suggestion = self::withoutSecrets('suggestion', self::text('suggestion', $args['suggestion'] ?? '', $cut), $redacted);
         $model = self::model($args['model'] ?? null);
 
         $directory = Paths::feedback();
@@ -592,15 +603,45 @@ final class Channel
         return mb_strlen($firstLine) > 100 ? mb_substr($firstLine, 0, 97) . '...' : $firstLine;
     }
 
-    private static function text(mixed $value): string
+    /**
+     * One field as it is stored: cut where a stored field ends, and saying so
+     * where it was cut.
+     *
+     * Marked for the reason a redaction is marked — a report that was altered
+     * says so, or a reader cannot tell it from one that ended there. The cut
+     * needs it more. A redaction leaves the name of what it took standing
+     * beside its marker, while this falls on a character count, mid-word, and
+     * takes with it every sign that the sentence was going anywhere.
+     * `feedback/2026-08-03-144316` lost the sentence naming what it was
+     * reporting, and neither the file nor the answer said a word had gone.
+     *
+     * The marker stands past the cap rather than inside it, which is where
+     * title() puts its own. The cap is what a session's prose is held to, and
+     * taking the marker's characters out of that prose would cut the field
+     * twice over in order to say once that it was cut.
+     *
+     * @param array<int, string> $cut
+     */
+    private static function text(string $field, mixed $value, array &$cut): string
     {
         if (!is_string($value)) {
             return '';
         }
 
         $text = trim($value);
+        $length = mb_strlen($text);
+        if ($length <= self::MAX_FIELD_LENGTH) {
+            return $text;
+        }
 
-        return mb_strlen($text) > self::MAX_FIELD_LENGTH ? mb_substr($text, 0, self::MAX_FIELD_LENGTH) : $text;
+        $what = sprintf(
+            '%d characters past the %d-character limit',
+            $length - self::MAX_FIELD_LENGTH,
+            self::MAX_FIELD_LENGTH,
+        );
+        $cut[] = $field . ': ' . $what;
+
+        return mb_substr($text, 0, self::MAX_FIELD_LENGTH) . ' ' . sprintf(self::CUT_MARKER, $what);
     }
 
     private static function category(mixed $value): string

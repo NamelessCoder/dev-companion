@@ -67,13 +67,18 @@ final class FeedbackRecord implements Tool
                 Schema::string(),
                 'What was removed before the feedback was written, one entry per value, naming the field it stood in and the shape it had. Empty where nothing was removed, which is the ordinary case. Each removal stands in the file as a [redacted: ...] marker, so the report says of itself that it was altered.',
             ),
-        ], ['file', 'path', 'redacted']);
+            'cut' => Schema::listOf(
+                Schema::string(),
+                'What was cut for length before the feedback was written, one entry per field, naming the field and how much of it went. Empty where nothing was cut, which is the ordinary case. Each cut stands in the file as a [cut: ...] marker where the field stops, so the report says of itself that it is short of what was written.',
+            ),
+        ], ['file', 'path', 'redacted', 'cut']);
     }
 
     public static function answer(array $args): ToolResult
     {
         $redacted = [];
-        $file = Channel::record($args, $redacted);
+        $cut = [];
+        $file = Channel::record($args, $redacted, $cut);
         // The absolute path, because the relative one is relative to somewhere
         // the caller has never been. A feedback recorded from a site package was
         // reported back as feedback/<name>.md, looked for under that project,
@@ -91,8 +96,8 @@ final class FeedbackRecord implements Tool
                 . 'It will be picked up when the knowledge base is next improved; '
                 . 'nothing about the current answer changes.',
                 $path,
-            ) . self::redactionNotice($redacted),
-            ['file' => $file, 'path' => $path, 'redacted' => $redacted],
+            ) . self::redactionNotice($redacted) . self::truncationNotice($cut),
+            ['file' => $file, 'path' => $path, 'redacted' => $redacted, 'cut' => $cut],
         );
     }
 
@@ -120,6 +125,33 @@ final class FeedbackRecord implements Tool
             . 'the path and the shape of the value, never the value. Everything else was stored as you wrote it.',
             count($redacted) === 1 ? 'One value was' : sprintf('%d values were', count($redacted)),
             implode('; ', $redacted),
+        );
+    }
+
+    /**
+     * What was cut off the end of a field, said back to whoever wrote it.
+     *
+     * The same ground as the redaction notice, and the half nothing else can
+     * report. A redacted value leaves a name beside its marker; a cut leaves
+     * mid-word, so the file gives a later reader no sign that the sentence was
+     * going somewhere — and this answer reaches the one session that still has
+     * the rest of it.
+     *
+     * @param array<int, string> $cut
+     */
+    private static function truncationNotice(array $cut): string
+    {
+        if ($cut === []) {
+            return '';
+        }
+
+        return "\n\n" . sprintf(
+            '%s longer than a stored field and cut — %s. Each stands in the file as a `[cut: ...]` marker where '
+            . 'it stops, so a reader can see the report is short of what was written. Where what went carried the '
+            . 'finding, it is worth recording again in fewer words: this answer is the last moment anything still '
+            . 'has the rest of it.',
+            count($cut) === 1 ? 'One field was' : sprintf('%d fields were', count($cut)),
+            implode('; ', $cut),
         );
     }
 }

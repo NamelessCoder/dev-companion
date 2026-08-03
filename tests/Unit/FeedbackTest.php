@@ -352,6 +352,86 @@ final class FeedbackTest extends TestCase
     }
 
     /**
+     * The observation of `feedback/2026-08-03-144316` is exactly 4000
+     * characters and ends `the skill fixed the or`. What the cut took was the
+     * sentence naming the shape the session was reporting — the half the
+     * judgement of it turned on — and nothing said it had happened: not the
+     * file, not the answer. A cut is blinder than a redaction, which leaves the
+     * name of what it took standing beside its marker.
+     */
+    #[Test]
+    public function aFieldCutForLengthSaysSoInTheFileAndInTheAnswer(): void
+    {
+        $observation = self::observationOfLength(4200);
+        $this->ownFeedbackStore();
+
+        $result = Registry::call('typo3_feedback_record', [
+            'observation' => $observation,
+            'query' => self::observationOfLength(4100),
+            'model' => 'claude-opus-5',
+        ]);
+
+        // One entry per field that was cut, in the order the fields are read,
+        // and each says how much of it went rather than only that some did.
+        self::assertSame([
+            'observation: 200 characters past the 4000-character limit',
+            'query: 100 characters past the 4000-character limit',
+        ], $result->data['cut']);
+        self::assertStringContainsString('2 fields were longer than a stored field and cut', $result->text);
+        self::assertStringContainsString('observation: 200 characters', $result->text);
+        self::assertStringContainsString('[cut: ...]', $result->text);
+
+        // And the file says it of itself, for the reader who was not there.
+        $contents = (string) file_get_contents((string) $result->data['path']);
+        $stored = self::sectionOf($contents, 'Observation');
+        self::assertStringEndsWith('[cut: 200 characters past the 4000-character limit]', $stored);
+        self::assertLessThan(mb_strlen($observation), mb_strlen($stored));
+        self::assertStringContainsString('[cut: 100 characters past the 4000-character limit]', $contents);
+    }
+
+    #[Test]
+    public function aFieldExactlyOnTheCapIsNotMarked(): void
+    {
+        // The case the marker must not reach: nothing was taken, so a marker
+        // would say something happened that did not — and a reader has no way
+        // to check it against what the session wrote.
+        $this->ownFeedbackStore();
+
+        $result = Registry::call('typo3_feedback_record', [
+            'observation' => self::observationOfLength(4000),
+            'model' => 'claude-opus-5',
+        ]);
+
+        self::assertSame([], $result->data['cut']);
+        self::assertStringNotContainsString('cut', $result->text);
+        self::assertStringNotContainsString('[cut:', (string) file_get_contents((string) $result->data['path']));
+    }
+
+    /**
+     * A fixture observation of exactly that many characters, in prose: a run of
+     * one repeated character is what Redaction takes for a hexadecimal value,
+     * and this case is about the length rule rather than that one.
+     */
+    private static function observationOfLength(int $characters): string
+    {
+        $opening = self::MARKER . ' the session reported at length. ';
+        $filler = 'It went on for another sentence about what it had seen. ';
+        $text = $opening . str_repeat($filler, (int) ceil($characters / strlen($filler)));
+
+        // Ends on a full stop rather than wherever the count falls, so that
+        // trailing whitespace is never what the trim in `text()` removes.
+        return mb_substr($text, 0, $characters - 1) . '.';
+    }
+
+    /** What one `## ` section of a recorded feedback holds. */
+    private static function sectionOf(string $contents, string $heading): string
+    {
+        preg_match('/^## ' . $heading . '\R\R(.*?)(?=\R## |\z)/ms', $contents, $section);
+
+        return trim($section[1] ?? '');
+    }
+
+    /**
      * The corpus is what the thresholds were settled against, so it is what
      * says whether they still hold: 207 recorded feedback, one value among them
      * that had to go, and every git revision, class path and changelog

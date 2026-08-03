@@ -1,0 +1,82 @@
+---
+id: D-KNW-041
+date: 2026-08-03
+status: open
+---
+
+# D-KNW-041 — The checkout a suite is started in supplies its own dependencies
+
+**The test-suite corpus states that `runTests.sh` runs against the `vendor/` of
+the checkout it is started from, and names `composerInstall` as what puts one
+there.**
+
+A session fixing a core bug in a fresh git worktree spent four round trips and
+one long install before a single suite ran. Nothing in `knowledge/` says that a
+worktree starts without dependencies.
+
+## Evidence
+
+- `bin/cli hints:probe` on the feedback's own query reaches four hints:
+  `system-extension-boundaries`, `core-tests`, `fluid-viewhelpers` and
+  `project-build-and-scripts`. None of them names `vendor/`, a worktree or an
+  install.
+- `knowledge/test-suite-hints.json` offers 25 suites and `composerInstall` is not
+  one of them. Its `invocation.notes` say where the script is run and how
+  arguments reach the tool, and say nothing about what the directory has to hold
+  first.
+- `knowledge/documents/typo3-core-scripts.md` has an *Install Dependencies*
+  section. It offers host `composer install` for "after cloning TYPO3 core or
+  changing PHP dependencies", which a worktree is neither of. The host form also
+  wants the branch's PHP, which is the condition `runTests.sh` exists to remove
+  (`D-KNW-036`).
+- `.checkouts/main/.gitignore:55` is `/bin/*` and `:56` is `/vendor/*`. The same
+  two lines are `:58` and `:59` on 12.4. A worktree therefore starts with neither
+  directory, and git will never bring them.
+- `composerInstall` is a suite on every covered branch — 12.4, 13.4, 14.3 and
+  main. On main it is `Build/Scripts/runTests.sh:1203` and it runs
+  `composer install --no-progress --no-interaction` in the PHP container.
+- The symlink repair the report tried cannot work, by the mechanism `D-KNW-036`
+  already established. `CONTAINER_COMMON_PARAMS` at
+  `Build/Scripts/runTests.sh:983` and `:988` is
+  `-v ${CORE_ROOT}:${CORE_ROOT} -w ${CORE_ROOT}`, and `CORE_ROOT` at `:808` is
+  `${PWD}`. A link whose target sits outside that one mount does not resolve
+  inside the container.
+- Two sessions of the 2026-08-02 core-checkout batch report it. The second names
+  it in one clause while filing its other halves separately, which is the corpus
+  signal `feedback:list` is read for.
+
+## Decided
+
+- Step 1a of the ladder: the knowledge is missing. Not delivery and not wording,
+  because there is no sentence anywhere in `knowledge/` to move or to rewrite.
+- Queued rather than closed on the spot. The change writes a new statement about
+  the core's own build script, and `judging.md` puts anything that has to be
+  looked up about TYPO3 on the todo side, however small.
+- `normal` rather than `low`, and not `high`. Two sessions reported it, and the
+  cost is the four round trips `D-FBK-027` measures by. It stays under the false
+  green of `D-KNW-036` because this failure is loud: the run stops and the
+  message is on screen.
+- The reading above is written here so that the todo does not pay for it again.
+  What the todo still owes is the run rather than the sources.
+- It goes into the corpus rather than into `typo3-core-patch-development`. A
+  skill is a copy in somebody else's project that no release corrects, and this
+  is a fact about a versioned script.
+
+## Assumed
+
+- That `composerInstall` is what a worktree should be told to run, rather than
+  host `composer install`. It is the containerised form and needs no PHP on the
+  host, which is why `D-KNW-036` rejected the host path for `cglFixMyCommit.sh`.
+  Nobody has timed either.
+- That the report's account of the failure is what a session sees.
+  `bin/phpunit: not found` was read out of the report and not reproduced here.
+
+## Wrong if
+
+- A fresh worktree turns out to run a suite without an install, which would mean
+  the absent `vendor/` was not what stopped that session.
+- `composerInstall` fails in a worktree for a reason of its own, so that the
+  statement names a command that does not work where it is needed.
+- A session reads the note, runs the install in a normal checkout that already
+  had one, and pays the long install for nothing. That would mean the condition
+  was written as a step rather than as a precondition.

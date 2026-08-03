@@ -78,3 +78,24 @@ consistent with the rule.
   feedback of this shape, from a run that demonstrably called
   `typo3_architecture_lookup` without naming a language file, would move the
   answer to step 2.
+
+## Since then
+
+The rewrite queued here landed in `0e6cf08` on 2026-08-02, and the first **Wrong
+if** did not fire on the next run to meet it. `feedback/2026-08-03-164659` is a
+conformance audit of `EXT:guidedtour` against a TYPO3 14.3.5 installation, filed
+a day later. It quotes the corrected wording back nearly verbatim and recommends
+an `en.`-prefixed file nowhere, so the correction arrived and was read.
+
+The second **Wrong if** is untested rather than cleared: that session named
+`Resources/Private/Language/locallang.xlf` in the `paths` of its
+`typo3_task_guide` call, which is the case the rule already reaches.
+
+What the audit reports instead is the other direction of the same rule. The
+correction says what a translation file declares; it never says what a
+translation file missing that declaration does, so nothing in it fires on a
+`de.locallang.xlf` that is already wrong — which is the direction
+`skills/typo3-extension-conformance` asks every returned rule to be read in.
+That is a gap rather than a wording failure, because the fact it needs is a
+runtime consequence that changed in v14, and it has an entry of its own in
+[`D-KNW-050`](knw-050-what-a-missing-target-language-does-to-a-translation-file-is-a-gap-this-server-owns.md).

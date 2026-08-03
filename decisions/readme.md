@@ -4,10 +4,11 @@ The working directory: one file per decision, in the group its id names. The
 listing below and the one at the foot of each group's own `readme.md` are
 written by `bin/cli decisions:index`.
 
-What a decision is, where an entry goes, how one is written and what a later
-session adds to it:
-[documentation/decisions/writing-a-decision.md](../documentation/decisions/writing-a-decision.md).
-`bin/cli decisions:check` holds every file to that shape.
+What a decision is and what its states mean:
+[documentation/decisions/what-a-decision-is.md](../documentation/decisions/what-a-decision-is.md).
+Where an entry goes, how one is written and what a later session adds to it:
+[documentation/decisions/writing-a-decision.md](../documentation/decisions/writing-a-decision.md),
+which `bin/cli decisions:check` holds every file to.
 
 ## Every decision, by group
 

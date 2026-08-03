@@ -423,11 +423,15 @@ without taking a case with it.
 How each of those is carried out — the debrief that gets a feedback out of a
 session this repository cannot read, judging one, what each of the three files
 holds, and what `bin/cli backlog:list` reports:
-[documentation/feedback/readme.md](documentation/feedback/readme.md). The
-sections a requirement is written in and what its three states mean:
+[documentation/feedback/readme.md](documentation/feedback/readme.md). What a
+requirement is and what its three states mean:
+[documentation/requirements/what-a-requirement-is.md](documentation/requirements/what-a-requirement-is.md),
+and the sections one is written in:
 [documentation/requirements/writing-a-requirement.md](documentation/requirements/writing-a-requirement.md).
-The sections a decision is written in, what a later session adds to the foot of
-one, and what `open`, `confirmed` and `revoked` promise a reader:
+What a decision carries that a commit message cannot, and what `open`,
+`confirmed` and `revoked` promise a reader:
+[documentation/decisions/what-a-decision-is.md](documentation/decisions/what-a-decision-is.md),
+and the sections one is written in, with what a later session adds to the foot:
 [documentation/decisions/writing-a-decision.md](documentation/decisions/writing-a-decision.md).
 Running a forward review, judging it, and reading one that stopped without an
 error:

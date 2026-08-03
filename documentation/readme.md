@@ -43,17 +43,21 @@ order by, and the launch two of the subjects below share.
   several sessions get different todos, where each of them writes, and how what
   they wrote comes back.
 
-## [requirements/](requirements/writing-a-requirement.md) — what has to keep holding
+## [requirements/](requirements/what-a-requirement-is.md) — what has to keep holding
 
-- [writing-a-requirement.md](requirements/writing-a-requirement.md) — the
-  sections an entry is written in, what **Held by** owes a reader, and what
-  `open`, `not guarded` and `held` mean.
+- [what-a-requirement-is.md](requirements/what-a-requirement-is.md) — what one
+  states, what it stands on, and what `open`, `not guarded` and `held` mean.
+- [writing-a-requirement.md](requirements/writing-a-requirement.md) — where an
+  entry goes, the sections it is written in, and what **Held by** owes a reader.
 
-## [decisions/](decisions/writing-a-decision.md) — what a change rested on
+## [decisions/](decisions/what-a-decision-is.md) — what a change rested on
 
-- [writing-a-decision.md](decisions/writing-a-decision.md) — the sections an
-  entry is written in, what a later session adds to the foot of one, and what
-  `open`, `confirmed` and `revoked` promise a reader.
+- [what-a-decision-is.md](decisions/what-a-decision-is.md) — what one carries
+  that a commit message cannot, and what `open`, `confirmed` and `revoked`
+  promise a reader.
+- [writing-a-decision.md](decisions/writing-a-decision.md) — where an entry
+  goes, the sections it is written in, and what a later session adds to the foot
+  of one.
 
 ## [knowledge/](knowledge/versions.md) — what the server answers, and from where
 

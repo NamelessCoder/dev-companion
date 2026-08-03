@@ -1,29 +1,8 @@
 # Writing a decision, and going back to one
 
-A commit message says what changed and why. What it cannot carry is the part
-that may not survive: the assumption the change rests on, the evidence that was
-available at the time, and what would show the decision to have been wrong.
-That is what a decision is for, and one entry is one decision worth revisiting.
-
-An entry backs what stands on it.
-[requirements/](../../requirements/readme.md) holds what must be true, and a
-requirement names the decisions it rests on in its own `restsOn:`, so a revoked
-one is readable from the requirement written on top of it. Neither directory
-belongs to `feedback/`: a feedback is one occasion on which a decision gets
-made, and the entry is read long after that question was answered.
-
-[decisions/](../../decisions/readme.md) is where the entries are kept and
-nothing else. This page is what one is, where it goes, how it is written and
-what a later session does with it; how a requirement is written is
-[writing-a-requirement.md](../requirements/writing-a-requirement.md).
-
-An entry is written by the commit that implements it. Nothing here is a proposal
-stage: by the time a decision exists, the change it describes is in the code,
-and what the file carries is the part a commit message cannot — the assumption,
-the evidence available at the time, and what would show it wrong.
-
-An entry is not a changelog line: a change nobody would need to reconsider does
-not belong here.
+What a decision is, what rests on it and what its states mean is
+[what-a-decision-is.md](what-a-decision-is.md). This page is where an entry
+goes, how it is written, and what a later session adds to one.
 
 ## Where an entry lives
 
@@ -139,15 +118,6 @@ A dated section at the foot and nothing else: **Confirmed on `<date>`** where
 somebody went back and it held, **Revoked on `<date>`** where it did not, and
 **Since then** for what followed without a date of its own. Those carry prose
 rather than bullets, because each is an account of one reading.
-
-`status` is one of `open`, `confirmed` and `revoked` — the `DecisionStatus` enum
-— and it names the **last** dated section rather than the only one. A decision
-has a history: `D-KNW-003` was confirmed by a run on the morning of 2026-08-02
-and revoked by the evidence that arrived the same day, and both are in the file.
-What a reader relies on is the latest.
-
-The status is not a workflow. `open` does not mean unbuilt — it means nobody has
-been back to the **Wrong if** yet.
 
 `revokedBy` is what a revoked entry owes its reader: where to go instead. It
 names one decision, only a revoked entry may carry it, and the generated listing

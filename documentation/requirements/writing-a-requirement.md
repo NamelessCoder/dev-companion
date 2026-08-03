@@ -1,20 +1,8 @@
 # Writing a requirement
 
-A requirement states one thing that must be true of this server, names where the
-demand came from, and says what holds it to that — a test where there is one,
-`not guarded` where there is none.
-
-It is the base the rest of the record stands on.
-[decisions/](../../decisions/readme.md) holds what a change rested on and what
-would show it wrong; a requirement is what has to keep holding afterwards, and
-it names the decisions it stands on in its own `restsOn:`. Neither directory
-belongs to `feedback/`: a feedback is one route a demand arrives by, and the
-most common one, but an entry outlives the question that produced it.
-
-[requirements/](../../requirements/readme.md) is where the entries are kept and
-nothing else. This page is what one is, where it goes and how it is written; how
-a decision is written is
-[writing-a-decision.md](../decisions/writing-a-decision.md).
+What a requirement is, what it stands on and what its states mean is
+[what-a-requirement-is.md](what-a-requirement-is.md). This page is where an
+entry goes and how it is written.
 
 ## Where an entry lives
 
@@ -101,26 +89,6 @@ installation until the client was restarted (2026-07-29).
   one at a time would go stale on the next one written. A test named there has
   to exist; a requirement claiming a test that was renamed away is a claim
   nobody answers for.
-
-## What the state means
-
-`status` is `held` or `open`, and a third state is derived from them:
-
-- **open** — accepted and not built yet. That is the backlog, and it is
-  deliberately the same list, because a requirement nobody has implemented and
-  one that could silently regress are the same kind of thing.
-- **not guarded** — built, and **Held by** names no test. It is never written in
-  the front matter: an entry may not claim it of itself, and it is what a claim
-  of `held` turns out to be. It is the honest answer for a requirement no test
-  can hold, and it is the one worth seeing in a listing, because from afar it
-  looks exactly like `held`.
-- **held** — built, and the tests it names hold it there.
-
-They are the `RequirementState` enum. `bin/cli requirements:check` cannot fail
-on **open** or **not guarded**; both are legitimate, and `bin/cli backlog:list`
-reads them out instead, together with whether a todo in
-[todo/](../../todo/readme.md) names the id. Nothing in `requirements/` reaches
-the order of the work on its own; that listing is the whole of the coupling.
 
 ## What it rests on
 

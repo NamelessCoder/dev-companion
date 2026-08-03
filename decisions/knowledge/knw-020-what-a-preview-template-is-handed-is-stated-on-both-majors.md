@@ -53,7 +53,7 @@ is their content rather than their absence.
   that is closed.
 - `R-KNW-041` now rests on this entry rather than on the revoked one. The
   reasoning under the requirement moved rather than went, and left pointing at
-  `D-KNW-014` it reads out of `bin/cli backlog:list` as a requirement whose
+  `D-KNW-014` it reads out of `bin/cli unresolved:list` as a requirement whose
   ground is gone.
 - The version split stays data on the statement — `since` and `until` — and no
   sentence names a major

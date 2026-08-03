@@ -7,7 +7,6 @@ namespace Typo3CmsMcp\Upkeep;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Output\ConsoleOutputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Typo3CmsMcp\Upkeep\Command\BacklogList;
 use Typo3CmsMcp\Upkeep\Command\CatalogCheck;
 use Typo3CmsMcp\Upkeep\Command\CatalogPaths;
 use Typo3CmsMcp\Upkeep\Command\CheckoutStatus;
@@ -43,6 +42,7 @@ use Typo3CmsMcp\Upkeep\Command\TodoWaiting;
 use Typo3CmsMcp\Upkeep\Command\ToolCheck;
 use Typo3CmsMcp\Upkeep\Command\ToolIndex;
 use Typo3CmsMcp\Upkeep\Command\ToolRecord;
+use Typo3CmsMcp\Upkeep\Command\UnresolvedList;
 
 /**
  * Everything this repository is kept in order by, as one console application.
@@ -114,7 +114,7 @@ final class Cli
         $application->addCommand(new LinkCheck());
         $application->addCommand(new FeedbackList());
         $application->addCommand(new FeedbackArchive());
-        $application->addCommand(new BacklogList());
+        $application->addCommand(new UnresolvedList());
         $application->addCommand(new HintProbe());
         $application->addCommand(new HintCoverage());
         $application->addCommand(new CatalogCheck());

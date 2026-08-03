@@ -21,7 +21,7 @@ quietly share a number.
 | [project/](../../requirements/project/readme.md)             | The repository the caller is standing in            |
 | [scope/](../../requirements/scope/readme.md)                 | Core conventions where they apply, and nowhere else |
 | [guides/](../../requirements/guides/readme.md)               | What a returned draft is worth                      |
-| [feedback/](../../requirements/feedback/readme.md)           | What the backlog has to stay usable for             |
+| [feedback/](../../requirements/feedback/readme.md)           | What the feedback channel has to stay usable for    |
 | [knowledge/](../../requirements/knowledge/readme.md)         | What the knowledge base has to cover                |
 | [code/](../../requirements/code/readme.md)                   | What must hold of the source itself                 |
 
@@ -104,7 +104,7 @@ restsOn: [D-FBK-005]
 
 `bin/cli requirements:check` fails on an id no decision has. Whether a decision
 it rests on was later revoked is a reading rather than a failure, and
-`bin/cli backlog:list` is where it is read out — a revoked decision leaves the
+`bin/cli unresolved:list` is where it is read out — a revoked decision leaves the
 requirement's test green and the reasoning under it gone, which nothing else
 would say.
 

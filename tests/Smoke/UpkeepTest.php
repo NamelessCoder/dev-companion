@@ -48,7 +48,7 @@ final class UpkeepTest extends TestCase
             'catalog:check' => [['catalog:check']],
             'hints:coverage' => [['hints:coverage']],
             'hints:probe, which takes the query to read the corpus back through' => [['hints:probe', 'extbase controller']],
-            'backlog:list' => [['backlog:list']],
+            'unresolved:list' => [['unresolved:list']],
             'todo:list' => [['todo:list']],
             'todo:waiting' => [['todo:waiting']],
             'todo:check' => [['todo:check']],

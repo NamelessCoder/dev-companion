@@ -18,7 +18,7 @@ namespace Typo3CmsMcp\Upkeep;
  *
  * This is the reading, and it reports rather than fails. Whether an entry is
  * worth working off is a judgement, and the judgement stays with whoever runs
- * `bin/cli backlog:list`. What it cannot stay is invisible.
+ * `bin/cli unresolved:list`. What it cannot stay is invisible.
  */
 final class Unresolved
 {

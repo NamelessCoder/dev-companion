@@ -200,7 +200,7 @@ final class TodoTest extends TestCase
      * the whole of what the state adds: `bin/cli todo:next` offers it to nobody, so
      * the question it is blocked on is asked by no session again. What it took
      * on still counts as taken on — a waiting todo that stopped answering for
-     * its requirement would put that requirement back on the backlog for the
+     * its requirement would put that requirement back among the unresolved for the
      * next session to queue a second time.
      */
     #[Test]
@@ -223,7 +223,7 @@ final class TodoTest extends TestCase
      * works at a time and wrong the moment two do. What is in hand is out of
      * the queue, so the second session is handed the item behind it rather than
      * the same one — and it still answers for what it took on, because a
-     * requirement that fell back onto the backlog while somebody was working on
+     * requirement that fell back among the unresolved while somebody was working on
      * it is one a second session queues all over again.
      */
     #[Test]
@@ -502,7 +502,7 @@ final class TodoTest extends TestCase
      * What the queue answers for is read from the queue alone. The page listing
      * what is deliberately *not* queued names ids too, and counting those makes
      * an entry nobody has taken on look taken on — which is the one thing
-     * `bin/cli backlog:list` exists to say out loud. Nor does a recurring todo
+     * `bin/cli unresolved:list` exists to say out loud. Nor does a recurring todo
      * take anything on: it watches a directory, and the same directory being
      * named by a queued todo is the difference between noticing that decisions
      * are standing and sorting them.

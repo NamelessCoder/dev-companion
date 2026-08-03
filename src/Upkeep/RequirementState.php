@@ -13,13 +13,13 @@ namespace Typo3CmsMcp\Upkeep;
  * it looks exactly like one that is. `Held` is the only state that promises a
  * reader something will fail if the sentence stops being true.
  *
- * None of the three is an error. `bin/cli backlog:list` reads them out and
+ * None of the three is an error. `bin/cli unresolved:list` reads them out and
  * fails on none of them, because whether an entry is worth working off is a
  * judgement — see `D-FBK-001`.
  */
 enum RequirementState: string
 {
-    /** Written down and not built. The backlog. */
+    /** Written down and not built. */
     case Open = 'open';
 
     /** Built, and nothing would catch it going wrong. */

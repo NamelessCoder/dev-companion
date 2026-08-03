@@ -46,7 +46,7 @@ scenarios/contracts/ # targeted cases per audience, task skill and cross-cutting
 scenarios/runs/    # one recorded forward run per review: where it ran, against which server, which skills and tools it reached for, and the judgment per criterion
 skills/            # canonical task skills installed into supported agent clients
 skills/base.md     # the order every task starts in, copied into each published skill as references/base.md
-requirements/      # what must hold, and what holds it there: one requirement per file, grouped by what it is about; open ones are the backlog
+requirements/      # what must hold, and what holds it there: one requirement per file, grouped by what it is about; open ones are not built yet
 decisions/         # what a change assumed, and what would show it to be wrong: one decision per file, grouped by what it is about
 todo/              # the order of the work and where the last session stopped: one todo per file, and where a file sits is the stage it is in; `bin/cli todo:next` prints one of them
 todo/open/         # the queue, read by the priority in each head and then by the date in each name
@@ -418,11 +418,11 @@ without taking a case with it.
 - Three states mean unfinished — a requirement marked **open**, one held by
   `not guarded`, a decision still `open` whose **Wrong if** nobody has been back
   to. All three are legitimate, so no check may fail on them, and
-  `bin/cli backlog:list` reads them out instead.
+  `bin/cli unresolved:list` reads them out instead.
 
 How each of those is carried out — the debrief that gets a feedback out of a
 session this repository cannot read, judging one, what each of the three files
-holds, and what `bin/cli backlog:list` reports:
+holds, and what `bin/cli unresolved:list` reports:
 [documentation/feedback/readme.md](documentation/feedback/readme.md). What a
 requirement is and what its three states mean:
 [documentation/requirements/readme.md](documentation/requirements/readme.md),

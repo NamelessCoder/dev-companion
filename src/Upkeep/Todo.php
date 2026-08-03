@@ -183,7 +183,7 @@ final class Todo
      * todo has to name each: none and the command silently stops doing half its
      * job, two and it does it twice.
      */
-    public const READINGS = ['bin/cli backlog:list', 'bin/cli todo:waiting'];
+    public const READINGS = ['bin/cli unresolved:list', 'bin/cli todo:waiting'];
 
     /**
      * Whether the clock has come round for a recurring todo. Nothing here
@@ -546,8 +546,9 @@ final class Todo
     }
 
     /**
-     * What recurs every session: sighting what arrived from outside — the feedback
-     * and the backlog — and deciding what of it becomes work.
+     * What recurs every session: sighting what arrived from outside — the
+     * feedback and what nothing answers for — and deciding what of it becomes
+     * work.
      *
      * Asked last, once the queue is empty, because that decision is what puts
      * entries into the queue. While the queue still has any, sighting more is

@@ -22,7 +22,7 @@ decides its path and two entries cannot quietly share a number.
 | [guides/](../../decisions/guides/readme.md)               | What a returned draft is worth                          |
 | [evidence/](../../decisions/evidence/readme.md)           | How this server is measured                             |
 | [task-skills/](../../decisions/task-skills/readme.md)     | What an installed workflow owes the task                |
-| [feedback/](../../decisions/feedback/readme.md)           | What the backlog has to stay usable for                 |
+| [feedback/](../../decisions/feedback/readme.md)           | What the feedback channel has to stay usable for        |
 | [documentation/](../../decisions/documentation/readme.md) | How what is written here is written                     |
 | [code/](../../decisions/code/readme.md)                   | How the source is laid out                              |
 
@@ -158,14 +158,14 @@ A requirement says which decisions it stands on, in its own front matter —
 `restsOn: [D-FBK-005]`. That is the one crossing neither directory can see on
 its own: a decision is revoked, the requirement written on top of it keeps its
 `held` status and its passing test, and the reasoning under it is gone.
-`bin/cli backlog:list` reads that out; nothing fails on it, because whether the
+`bin/cli unresolved:list` reads that out; nothing fails on it, because whether the
 requirement still stands is a judgement.
 
 ## Going back to one
 
 Most decisions are open and stay that way, which is what makes the state easy to
 stop seeing: a **Wrong if** written and never read is a promise, and nothing
-says when to keep it. `bin/cli backlog:list` counts them and names the oldest —
+says when to keep it. `bin/cli unresolved:list` counts them and names the oldest —
 not because age disproves anything, but because that is the entry the repository
 has moved furthest away from since. Going back to one and adding **Confirmed
 on** or **Revoked on** is a legitimate task with no feature behind it.

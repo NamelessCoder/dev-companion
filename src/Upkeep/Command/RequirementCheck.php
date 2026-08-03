@@ -75,7 +75,7 @@ final class RequirementCheck
             }
             foreach ($requirement['restsOn'] as $decision) {
                 // Whether the decision still holds is a reading rather than a
-                // failure, and bin/cli backlog:list is where that is read out.
+                // failure, and bin/cli unresolved:list is where that is read out.
                 // What fails here is a pointer at nothing.
                 if (!isset($decisions[$decision])) {
                     $problems[] = $id . ' rests on ' . $decision . ', which no decision has';

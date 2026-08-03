@@ -1,4 +1,4 @@
-# Feedback — what the backlog has to stay usable for
+# Feedback — what the feedback channel has to stay usable for
 
 Feedback, scenarios and recorded runs are how this server learns what it got
 wrong. These hold the record readable for the agent that reported something and

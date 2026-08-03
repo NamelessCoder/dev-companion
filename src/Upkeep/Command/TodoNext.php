@@ -49,7 +49,7 @@ use Typo3CmsMcp\Upkeep\Todo;
  *   produces — so leaving it standing to sight more is deciding twice and
  *   doing nothing.
  * - Then, with the queue empty, what recurs every session: the feedback and
- *   the backlog, whose whole output is new entries for the queue that just
+ *   the unresolved, whose whole output is new entries for the queue that just
  *   ran dry.
  */
 #[AsCommand(
@@ -112,7 +112,7 @@ final class TodoNext
             }
         }
 
-        $output->writeln("Nothing is due and nothing is queued. What is waiting is in `bin/cli backlog:list`,\n"
+        $output->writeln("Nothing is due and nothing is queued. What is waiting is in `bin/cli unresolved:list`,\n"
             . 'and taking one on is a todo in todo/.');
         // An empty queue with todos in hand is not an empty repository, and the
         // difference matters here more than anywhere: this is the one branch

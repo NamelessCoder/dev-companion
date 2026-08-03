@@ -685,7 +685,7 @@ final class FeedbackTest extends TestCase
             'tool' => 'typo3_label_lookup typo3_icon_lookup',
         ]);
 
-        // The obvious thing to want from a backlog: every feedback about one tool,
+        // The obvious thing to want from a store of these: every feedback about one tool,
         // including the ones that name it alongside others.
         $files = array_column(Channel::all('all', null, 100, 'typo3_icon_lookup'), 'file');
         self::assertContains($file, $files);
@@ -728,7 +728,7 @@ final class FeedbackTest extends TestCase
     {
         // What is stored is what the session wrote, so one name arrives in more
         // than one spelling and the filter is where they meet — `D-ANS-006`
-        // applied to the one thing this backlog is filtered by.
+        // applied to the one thing this store is filtered by.
         $file = $this->recordFeedback([
             'observation' => self::MARKER . ' named the skill with hyphens',
             'tool' => 'typo3-extension-conformance',

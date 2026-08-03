@@ -11,9 +11,9 @@ was recorded, plus the commit that closed it.
 ## Takes
 
 ```yaml
-# One of: open, closed, all. open: the feedback still in the backlog. closed:
-# the ones already worked off, each with the commit subject saying what came of
-# it. all: both. The category and tool filters apply to either.
+# One of: open, closed, all. open: the feedback nobody has worked off yet.
+# closed: the ones already worked off, each with the commit subject saying what
+# came of it. all: both. The category and tool filters apply to either.
 status: string  # optional
 # One of: missing-knowledge, wrong-answer, tool-gap, bug, idea. Restrict the
 # list to one category.
@@ -34,8 +34,8 @@ notes:
   - file: string
     date: string
     category: string
-    # open while the feedback is in the backlog, closed once it was worked off
-    # and moved to the archive.
+    # open while the feedback is still to be worked off, closed once it was
+    # moved to the archive.
     status: string
     # The model that left the feedback. "unknown" where it named none or
     # predates the field.
@@ -56,7 +56,7 @@ notes:
 
 ## Not answered
 
-And deliberately: it answers with the backlog somebody else wrote, which is
+And deliberately: it answers with the feedback somebody else wrote, which is
 different in every checkout and carries the tool names that were current when
 each feedback was filed. One recorded title ends in a tool name cut to length,
 which reads to `ToolNamingTest` as a tool this server does not have.

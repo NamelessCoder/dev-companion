@@ -23,10 +23,10 @@ use Typo3CmsMcp\Upkeep\Unresolved;
  * find out.
  */
 #[AsCommand(
-    name: 'backlog:list',
+    name: 'unresolved:list',
     description: 'the requirements nothing answers for, and the decisions nobody has been back to',
 )]
-final class BacklogList
+final class UnresolvedList
 {
     /**
      * What is waiting, and whether the pipeline knows about it.
@@ -40,7 +40,7 @@ final class BacklogList
      *
      * Nonzero says there is something to do, which is how `bin/cli todo:next` knows
      * the todo that starts here is still the next thing. Not a failure: a
-     * backlog nobody owes anything to is the good outcome and exits 0.
+     * repository nobody owes anything to is the good outcome and exits 0.
      */
     public function __invoke(OutputInterface $output): int
     {
@@ -60,13 +60,13 @@ final class BacklogList
 
         // What is owed here is the judgement, not the work: a requirement some
         // todo names has had it, and the open decisions have had it as soon
-        // as a todo takes on sorting them. Everything else would make a backlog
+        // as a todo takes on sorting them. Everything else would make a list
         // that is legitimately long the only thing a session is ever offered.
         $unjudged = array_filter($requirements, static fn(array $r): bool => !$r['queued']);
         $sorting = in_array('decisions/', Todo::serves(), true);
 
         // Before the count of what nobody has been back to, because this one is
-        // not a backlog item: the reasoning under a held requirement is gone and
+        // not one of them: the reasoning under a held requirement is gone and
         // its test is still green, so nothing else in this report would say so.
         foreach (Unresolved::requirementsOnRevokedDecisions() as $resting) {
             $output->writeln(sprintf(

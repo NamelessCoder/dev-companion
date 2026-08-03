@@ -43,7 +43,7 @@ downstream can tell apart from prose that was thought through.
 ## Assumed
 
 - That the counts move down. The report is a number nobody is obliged to act on,
-  which is the same shape as the three states `bin/cli backlog:list` names, and
+  which is the same shape as the three states `bin/cli unresolved:list` names, and
   those sat unread until something printed them.
 
 ## Wrong if

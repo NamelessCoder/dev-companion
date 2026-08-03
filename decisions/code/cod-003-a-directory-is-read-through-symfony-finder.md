@@ -21,7 +21,7 @@ directory removal copied between test classes.
 - Written on 2026-08-02, converting all 45 call sites at once — 20 flat, 11
   recursive, 6 removals, plus the three flat ones that were doing something
   `glob()` cannot. `composer ci` before and after; the outputs of
-  `bin/cli todo:list` and `bin/cli backlog:list` were compared across the
+  `bin/cli todo:list` and `bin/cli unresolved:list` were compared across the
   change. `symfony/finder` was already in the tree as a dev dependency of
   php-cs-fixer, and it requires nothing but PHP.
 

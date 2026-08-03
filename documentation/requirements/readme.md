@@ -24,9 +24,9 @@ assumed.
 
 `status` is `held` or `open`, and a third state is derived from them:
 
-- **open** — accepted and not built yet. That is the backlog, and it is
-  deliberately the same list, because a requirement nobody has implemented and
-  one that could silently regress are the same kind of thing.
+- **open** — accepted and not built yet. It is read out beside **not guarded**
+  rather than in a list of its own, because a requirement nobody has implemented
+  and one that could silently regress are the same kind of thing.
 - **not guarded** — built, and **Held by** names no test. It is never written in
   the front matter: an entry may not claim it of itself, and it is what a claim
   of `held` turns out to be. It is the honest answer for a requirement no test
@@ -36,6 +36,6 @@ assumed.
 
 They are the `RequirementState` enum. `bin/cli requirements:check` cannot fail
 on **open** or **not guarded**; both are legitimate, and
-[`bin/cli backlog:list`](../feedback/readme.md) reads them out instead, together
+[`bin/cli unresolved:list`](../feedback/readme.md) reads them out instead, together
 with whether a todo names the id. Nothing in `requirements/` reaches the order
 of the work on its own; that listing is the whole of the coupling.

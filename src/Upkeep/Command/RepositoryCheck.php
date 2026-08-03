@@ -43,7 +43,7 @@ final class RepositoryCheck
         }
 
         $output->writeln('── unresolved');
-        $application->doRun(new StringInput('backlog:list'), $output);
+        $application->doRun(new StringInput('unresolved:list'), $output);
 
         return $worst;
     }

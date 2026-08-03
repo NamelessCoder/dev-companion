@@ -32,7 +32,7 @@ in the file. What a reader relies on is the latest.
 The status is not a workflow. `open` does not mean unbuilt — it means nobody has
 been back to the **Wrong if** yet. Most decisions are open and stay that way,
 which is what makes the state easy to stop seeing, and
-[`bin/cli backlog:list`](../feedback/readme.md) is what reads them out.
+[`bin/cli unresolved:list`](../feedback/readme.md) is what reads them out.
 
 `revokedBy` is what a revoked entry owes its reader: where to go instead. It
 names one decision, only a revoked entry may carry it, and the generated listing

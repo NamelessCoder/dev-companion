@@ -679,7 +679,7 @@ final class Channel
      * An observation is regularly about several tools at once — the four that
      * go quiet together when the console cannot be reached, say. Stripping
      * everything but [a-z0-9_] from one string ran their names together into
-     * one unsearchable word, which is what a backlog is least able to afford:
+     * one unsearchable word, which is what a growing pile is least able to afford:
      * the obvious thing to want from the list is every feedback about one tool.
      *
      * A string is split on what separates names in one — a comma or a space —
@@ -725,7 +725,7 @@ final class Channel
      * separator it has in front of it. What is stored is what was written, so
      * the filter is where the spellings meet — the rule `D-ANS-006` already
      * applies to an identifier a caller looks up, applied to the one thing this
-     * backlog is filtered by.
+     * store is filtered by.
      */
     private static function comparable(string $name): string
     {

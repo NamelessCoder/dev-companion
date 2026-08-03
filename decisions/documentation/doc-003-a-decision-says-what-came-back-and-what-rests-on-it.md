@@ -56,7 +56,7 @@ than silent.
 - Every test named *anywhere* in an entry has to exist, not only the ones under
   `Covered by`. The prose makes the same claim and goes stale the same way.
 - A requirement resting on a revoked decision is read out by
-  `bin/cli backlog:list` and fails nothing. Whether it still stands is a
+  `bin/cli unresolved:list` and fails nothing. Whether it still stands is a
   judgement, and AGENTS.md holds that no check may fail on a state that is
   legitimately unfinished. What does fail is `restsOn` naming an id no decision
   has.

@@ -14,7 +14,7 @@ which `bin/cli requirements:check` holds every file to.
 
 **open** is accepted and not built yet, `not guarded` is built and named by no
 test. Both are legitimate, nothing fails on either, and
-`bin/cli backlog:list` is what reads them out.
+`bin/cli unresolved:list` is what reads them out.
 
 ### audience
 

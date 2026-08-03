@@ -8,7 +8,7 @@ what each one is for and how the work moves between them.
 
     bin/cli todo:next
 
-One todo, not the queue and not the backlog. Context is not free: a session
+One todo, not the queue and not everything nothing has answered for. Context is not free: a session
 handed all of it reads for ten minutes and then starts by summarising what it
 read.
 
@@ -16,8 +16,9 @@ Due is two questions. Has the clock come round, which the todo's `**Every:**`
 answers — `session`, or a number of days, so five sessions in an afternoon do
 not ask the same question five times. And is there anything to do, which the
 todo's `**Run:**` command answers by exiting nonzero when it found work: the
-backlog stops being the next thing the moment the last entry is named, without
-anybody editing a todo to say so. What is owed a feedback or a backlog entry is
+sighting stops being the next thing the moment the last entry is named, without
+anybody editing a todo to say so. What is owed a feedback or an unresolved entry
+is
 that judgement — a todo that takes it on, or the sentence saying why it stays as
 it is — not the work itself, which is what the queue is for.
 
@@ -38,7 +39,8 @@ Since 2026-08-02 the feedback are *in* the queue rather than behind it — one
 card each, written by `bin/cli todo:sync` at `low`, which is below everything
 somebody has judged to be worth more. The order above is unchanged and what
 enforces it has moved: the priority does it now, where a group boundary did it
-before. What is still behind the queue is the backlog sighting, and it is
+before. What is still behind the queue is the sighting of what nothing answers for, and
+it is
 reached when the queue runs dry — which now means that nothing decided is left
 *and* nothing has arrived unjudged. Leaving it standing in order to judge more
 feedback is deciding twice and doing nothing, and the pile it decides over grows
@@ -193,7 +195,7 @@ feedback archived since is answered by the commit that archived it.
 
 ## Where the answer goes
 
-Archiving the feedback takes the question out of the backlog, and the commit
+Archiving the feedback takes the question out of the open ones, and the commit
 message records the answer. What outlives both goes to three directories, and
 two of them are not this workflow's: `requirements/` and `decisions/` are the
 record this repository keeps whether or not a feedback was what produced an
@@ -205,7 +207,7 @@ entry. How each one is written has a page of its own —
   requirement it established has to keep holding while everything around it
   changes, so it is written down with what holds it to that: a test, or
   `not guarded`. A requirement that has been accepted but not yet implemented is
-  in the same group, marked **open** — that is the backlog. Add the entry in the
+  in the same group, marked **open** — decided and not done. Add the entry in the
   commit that works the feedback off, and name the test in the same commit that
   writes it. An entry is deleted only when the requirement is withdrawn.
 - `decisions/` — what the change rests on. When it rests on an assumption that
@@ -233,7 +235,7 @@ hold and a decision nothing has come back about are not defects — so no check
 may fail on them, which is exactly why nothing read them for as long as they
 existed.
 
-`bin/cli backlog:list` is that reading; `bin/cli todo:next` opens with it and
+`bin/cli unresolved:list` is that reading; `bin/cli todo:next` opens with it and
 `bin/cli repository:check` closes with it. It names every requirement nothing
 answers for, says whether a queued todo names it — read from what the queue
 declares it serves, so the page listing what is deliberately *not* queued does

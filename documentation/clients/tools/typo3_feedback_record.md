@@ -77,5 +77,5 @@ cut: [string]
 
 And deliberately: it is the one tool here that writes, and this table has two
 drivers rather than one. A call recorded from it would file a real feedback into
-the backlog every time `ToolContractTest` runs, not only when the recording
+the open ones every time `ToolContractTest` runs, not only when the recording
 does.

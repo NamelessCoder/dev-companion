@@ -152,9 +152,10 @@ final class Requirements
     }
 
     /**
-     * `open` is the backlog. Everything else is held by the tests it names, or
-     * says outright that nothing holds it — the third state is the one worth
-     * seeing in a listing, because it looks exactly like the first from afar.
+     * `open` is written down and not built. Everything else is held by the
+     * tests it names, or says outright that nothing holds it — the third state
+     * is the one worth seeing in a listing, because it looks exactly like the
+     * first from afar.
      *
      * The three words are the state itself, and a reader that wants one of them
      * emphasised says so where it renders. Bolding `open` in here is what made

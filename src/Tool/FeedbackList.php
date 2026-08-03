@@ -29,7 +29,7 @@ final class FeedbackList extends ReadOnlyTool
         return [
             'type' => 'object',
             'properties' => [
-                'status' => ['type' => 'string', 'enum' => ['open', 'closed', 'all'], 'default' => 'open', 'description' => 'open: the feedback still in the backlog. closed: the ones already worked off, each with the commit subject saying what came of it. all: both. The category and tool filters apply to either.'],
+                'status' => ['type' => 'string', 'enum' => ['open', 'closed', 'all'], 'default' => 'open', 'description' => 'open: the feedback nobody has worked off yet. closed: the ones already worked off, each with the commit subject saying what came of it. all: both. The category and tool filters apply to either.'],
                 'category' => ['type' => 'string', 'enum' => Channel::CATEGORIES, 'description' => 'Restrict the list to one category.'],
                 'tool' => ['type' => 'string', 'description' => 'Restrict the list to the feedback about one tool, for example typo3_label_lookup. A feedback naming several tools is matched by each of them.'],
                 'limit' => ['type' => 'integer', 'minimum' => 1, 'maximum' => 100, 'default' => 20, 'description' => 'Maximum number of feedback to return.'],
@@ -45,7 +45,7 @@ final class FeedbackList extends ReadOnlyTool
                 'file' => Schema::string(),
                 'date' => Schema::string(),
                 'category' => Schema::string(),
-                'status' => Schema::string('open while the feedback is in the backlog, closed once it was worked off and moved to the archive.'),
+                'status' => Schema::string('open while the feedback is still to be worked off, closed once it was moved to the archive.'),
                 'model' => Schema::string('The model that left the feedback. "unknown" where it named none or predates the field.'),
                 'tool' => Schema::string('The tools the feedback is about, comma-separated. Empty when it names none.'),
                 'tools' => Schema::listOf(Schema::string(), 'The same names as a list, to filter or group by without parsing.'),

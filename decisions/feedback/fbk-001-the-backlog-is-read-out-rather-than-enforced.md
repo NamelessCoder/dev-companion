@@ -27,7 +27,7 @@ whether the check has to fail until an entry is queued.
 
 ## Decided
 
-- `bin/cli backlog:list` reads both out, `bin/cli repository:check` closes with
+- `bin/cli unresolved:list` reads both out, `bin/cli repository:check` closes with
   the same block, and the exit code is untouched. Three stricter shapes were
   rejected with it: failing the check while an `open` requirement has no item,
   requiring `not guarded` to carry a reason, and giving `standing` an expiry.
@@ -57,7 +57,7 @@ whether the check has to fail until an entry is queued.
 ## Confirmed on 2026-08-02
 
 Neither half of the **Wrong if**. No id is reported with `no todo names it` at
-all — `bin/cli backlog:list` says every requirement is met and guarded — so the
+all — `bin/cli unresolved:list` says every requirement is met and guarded — so the
 first half currently has no subject to repeat, which is a weaker result than it
 looks: it says the requirement side is clean, not that a session acts on the
 line when it is not. The second half is the one with movement. The standing
@@ -69,3 +69,10 @@ came back `tested` rather than `corrected`, so the entries were standing because
 they were still true, and the summary was not hiding a queue. Four is a day
 rather than a trend, and the oldest standing entry is still older than this
 reading.
+
+**Since then** the command was renamed. What this entry calls the backlog is
+read out by `bin/cli unresolved:list` from 2026-08-04, and the word itself was
+retired because it named three different sets at once —
+[`D-FBK-041`](fbk-041-what-nothing-answers-for-is-called-unresolved.md). What
+was decided here is untouched: the reading still reports and still fails
+nothing.

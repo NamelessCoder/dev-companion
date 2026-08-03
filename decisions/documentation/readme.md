@@ -9,6 +9,7 @@ See [the decisions readme](../readme.md) for how an entry is written and when it
 earns one.
 
 - [`D-DOC-009`][D-DOC-009] — Prose names what counts rather than the count · 2026-08-03
+- [`D-DOC-010`][D-DOC-010] — `targetVersion` opens with one sentence and diverges after it · 2026-08-03
 - [`D-DOC-003`][D-DOC-003] — A decision says what came back, and a requirement says what it rests on · 2026-08-02
 - [`D-DOC-004`][D-DOC-004] — A requirement is written in the same sections as a decision · 2026-08-02
 - [`D-DOC-005`][D-DOC-005] — A number is three digits so a group lists in order · 2026-08-02
@@ -19,6 +20,7 @@ earns one.
 - [`D-DOC-002`][D-DOC-002] — The prose rule is measured, and only the lead fails on it · 2026-08-01
 
 [D-DOC-009]: doc-009-prose-names-what-counts-rather-than-the-count.md
+[D-DOC-010]: doc-010-targetversion-opens-with-one-sentence-and-diverges-after-it.md
 [D-DOC-003]: doc-003-a-decision-says-what-came-back-and-what-rests-on-it.md
 [D-DOC-004]: doc-004-a-requirement-is-written-in-the-same-sections-as-a-decision.md
 [D-DOC-005]: doc-005-a-number-is-three-digits-so-a-group-lists-in-order.md

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Typo3CmsMcp\Tests\Unit;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Typo3CmsMcp\Paths;
@@ -136,6 +137,73 @@ final class ProseTest extends TestCase
         $document = "---\nid: D-KNW-035\nstatus: open\n---\n\n# A heading that is long enough to be wrapped if anything wrapped a heading at all\n\n```php\n\$a = 'one very long line of code that no formatter here is allowed to touch at all';\n```\n\n    bin/cli todo:next\n\n| a | b |\n| - | - |\n\n> quoted material that is left where it stands even when it runs past the column\n";
 
         self::assertSame($document, Wrap::document($document));
+    }
+
+    /**
+     * A list is what markdown reads as one, and a figure at the head of a line
+     * is not.
+     *
+     * The formatter decides where a paragraph ends, so reading a marker where
+     * markdown reads none reformats prose that nobody wrote as a list — and no
+     * word moves, so the corpus assertions above pass while it happens. The
+     * rule markdown uses is what separates the two: a bullet and a `1.` may
+     * interrupt a paragraph, any other figure only as the next item of the list
+     * already running.
+     */
+    #[Test]
+    #[DataProvider('linesThatOpenAnItemAndLinesThatOnlyLookLikeIt')]
+    public function aListIsWhatMarkdownReadsAsOne(string $markdown, string $expected): void
+    {
+        self::assertSame($expected, Wrap::document($markdown));
+    }
+
+    /** @return array<string, array{0: string, 1: string}> */
+    public static function linesThatOpenAnItemAndLinesThatOnlyLookLikeIt(): array
+    {
+        return [
+            // `D-KNW-049` has one, and a run of the formatter hung the rest of
+            // the paragraph off the port number.
+            'a figure a wrap left at the head of a line is prose' => [
+                "and `GetInternalPort` answers the constant 3306 or\n"
+                . "5432. Nothing on that path reads `omit_containers`, and the file is\n"
+                . 'written anyway.',
+                'and `GetInternalPort` answers the constant 3306 or 5432. Nothing on that path'
+                . "\nreads `omit_containers`, and the file is written anyway.",
+            ],
+            'an ordered list runs on past the item it starts with' => [
+                "1. The first of them, long enough that it has to be wrapped somewhere near the end of it.\n"
+                . '2. The second.',
+                "1. The first of them, long enough that it has to be wrapped somewhere near the\n"
+                . "   end of it.\n"
+                . '2. The second.',
+            ],
+            'a bracket closes an ordered marker as a full stop does' => [
+                "1) The first of them, long enough that it has to be wrapped somewhere near the end of it.\n"
+                . '2) The second.',
+                "1) The first of them, long enough that it has to be wrapped somewhere near the\n"
+                . "   end of it.\n"
+                . '2) The second.',
+            ],
+            'a bullet interrupts a paragraph wherever it stands' => [
+                "The paragraph this one interrupts.\n"
+                . '- The item, long enough that it has to be wrapped somewhere near the end of it all.',
+                "The paragraph this one interrupts.\n"
+                . "- The item, long enough that it has to be wrapped somewhere near the end of it\n"
+                . '  all.',
+            ],
+            'a figure under an item of another list is that item still' => [
+                "- The first of them, long enough that it has to be wrapped somewhere near\n"
+                . '  5432. Nothing on that path reads it.',
+                "- The first of them, long enough that it has to be wrapped somewhere near 5432.\n"
+                . '  Nothing on that path reads it.',
+            ],
+            'a marker with nothing after it opens no item' => [
+                "-\n- The item, long enough that it has to be wrapped somewhere near the end of it all.",
+                "-\n"
+                . "- The item, long enough that it has to be wrapped somewhere near the end of it\n"
+                . '  all.',
+            ],
+        ];
     }
 
     /**

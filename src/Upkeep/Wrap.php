@@ -32,6 +32,16 @@ final class Wrap
     /** What stands in for a space that may not be broken at. */
     private const KEPT = "\x00";
 
+    /**
+     * What opens a list item: a bullet or a number, and text for it to carry.
+     *
+     * The number is closed by a full stop or a bracket, both of which markdown
+     * reads as a marker, and runs to nine digits, which is where markdown stops
+     * reading one. Captured are the indent, the marker and the gap after it,
+     * because together they are what the item's first line opens with.
+     */
+    private const MARKER = '/^(\s*)([-*+]|\d{1,9}[.)])([ \t]+)(?=\S)/';
+
     /** Spans a line break would break: a code span, and a markdown link. */
     private const UNBREAKABLE = '/`[^`\n]*`|\[[^\]\n]*\]\([^)\n]*\)/';
 
@@ -48,6 +58,7 @@ final class Wrap
         $lines = explode("\n", $markdown);
         $out = [];
         $paragraph = [];
+        $open = null;
 
         $fence = null;
         $verbatim = false;
@@ -76,7 +87,7 @@ final class Wrap
             }
 
             if (preg_match('/^\s{0,3}(```+|~~~+)/', $line, $match) === 1) {
-                $out = [...$out, ...self::flush($paragraph)];
+                $out = [...$out, ...self::flush($paragraph, $open !== null)];
                 $paragraph = [];
                 $fence = $match[1];
                 $out[] = $line;
@@ -85,7 +96,8 @@ final class Wrap
                 continue;
             }
 
-            $item = preg_match('/^(\s*)(?:[-*+]|\d+\.)\s/', $line) === 1;
+            $marker = self::marker($line);
+            $item = $marker !== null && ($paragraph === [] || self::interrupts($marker, $open));
 
             // An indented code block opens after a blank line and nowhere else.
             // Inside a list, four spaces is the continuation of the item above.
@@ -97,7 +109,7 @@ final class Wrap
             $verbatim = false;
 
             if (self::isVerbatim($line) || ($blank && !$item && preg_match('/^(?: {4}|\t)/', $line) === 1)) {
-                $out = [...$out, ...self::flush($paragraph)];
+                $out = [...$out, ...self::flush($paragraph, $open !== null)];
                 $paragraph = [];
                 $out[] = $line;
                 $verbatim = preg_match('/^(?: {4}|\t)/', $line) === 1;
@@ -115,15 +127,62 @@ final class Wrap
                 && self::indent($line) <= self::indent($paragraph[0]);
 
             if ($item || $field || $under) {
-                $out = [...$out, ...self::flush($paragraph)];
+                $out = [...$out, ...self::flush($paragraph, $open !== null)];
                 $paragraph = [];
             }
 
+            // What the open paragraph is: the marker it began with, or nothing
+            // where it began with prose. `flush()` is told rather than asked,
+            // because the same line reads as a marker or not depending on what
+            // stands above it.
+            if ($paragraph === []) {
+                $open = $item ? $marker : null;
+            }
             $paragraph[] = $line;
             $blank = false;
         }
 
-        return implode("\n", [...$out, ...self::flush($paragraph)]);
+        return implode("\n", [...$out, ...self::flush($paragraph, $open !== null)]);
+    }
+
+    /**
+     * What a line opens a list item with, where it opens one at all: its indent
+     * and its marker.
+     *
+     * @return array{string, string}|null
+     */
+    private static function marker(string $line): ?array
+    {
+        if (preg_match(self::MARKER, $line, $match) !== 1) {
+            return null;
+        }
+
+        return [$match[1], $match[2]];
+    }
+
+    /**
+     * Whether an item may open where a paragraph is already running.
+     *
+     * Markdown lets a bullet and a `1.` interrupt a paragraph and no other
+     * number, which would otherwise open an item wherever a wrapped line
+     * happens to begin with a figure — `D-KNW-049` has one starting `5432.`.
+     * The exception is the list already running: its next item stands at the
+     * same indent and closes with the same delimiter, which is what `2.` under
+     * `1.` is and a stray figure is not.
+     *
+     * @param array{string, string}      $marker
+     * @param array{string, string}|null $open
+     */
+    private static function interrupts(array $marker, ?array $open): bool
+    {
+        if (!ctype_digit($marker[1][0]) || in_array($marker[1], ['1.', '1)'], true)) {
+            return true;
+        }
+
+        return $open !== null
+            && ctype_digit($open[1][0])
+            && $open[0] === $marker[0]
+            && substr($open[1], -1) === substr($marker[1], -1);
     }
 
     /** How far a line is indented. */
@@ -163,11 +222,15 @@ final class Wrap
      * One paragraph, wrapped: the first line keeps what it opens with, and
      * every line after it lines up under the first word.
      *
+     * Whether it is a list item is what `document()` decided rather than what
+     * the first line looks like from here, because the same line reads as one
+     * or not depending on what stood above it.
+     *
      * @param list<string> $paragraph
      *
      * @return list<string>
      */
-    private static function flush(array $paragraph): array
+    private static function flush(array $paragraph, bool $item): array
     {
         if ($paragraph === []) {
             return [];
@@ -181,8 +244,15 @@ final class Wrap
             return [$paragraph[0]];
         }
 
-        preg_match('/^(\s*)((?:[-*+]|\d+\.)\s+)?/', $paragraph[0], $match);
-        $first = $match[1] . ($match[2] ?? '');
+        preg_match('/^(\s*)/', $paragraph[0], $match);
+        $first = $match[1];
+        if ($item) {
+            preg_match(self::MARKER, $paragraph[0], $match);
+            // The marker is carried by the opening prefix, so the text it
+            // belongs to starts after it.
+            $first = $match[1] . $match[2] . $match[3];
+            $paragraph[0] = mb_substr($paragraph[0], mb_strlen($first));
+        }
         $continuation = str_repeat(' ', mb_strlen($first));
 
         // A hanging indent is the block's own, not an accident of wrapping: it
@@ -197,9 +267,6 @@ final class Wrap
             static fn(string $line): string => trim($line),
             $paragraph,
         ));
-        // The marker is carried by the opening prefix, so the text it belongs
-        // to starts after it.
-        $text = (string) preg_replace('/^(?:[-*+]|\d+\.)\s+/', '', $text);
 
         return self::lines($text, $first, $continuation);
     }

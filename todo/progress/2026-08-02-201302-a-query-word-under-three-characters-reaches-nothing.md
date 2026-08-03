@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-01-003000-underlying-failure-was-a-systemic-lack-of-fluid.md, R-DOC-003
 **Priority:** normal
+**Branch:** todo/a-query-word-under-three-characters-reaches-nothing
+**Claimed:** 2026-08-03
 
 The last of *a query word under three characters reaches nothing*, which was
 three steps rather than two. The tokenizer was the first

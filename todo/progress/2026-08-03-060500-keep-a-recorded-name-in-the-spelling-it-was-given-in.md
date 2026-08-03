@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-02-150625-task-file-feedback-about-typo3-core-work-naming.md
 **Priority:** normal
+**Branch:** todo/keep-a-recorded-name-in-the-spelling-it-was-given-in
+**Claimed:** 2026-08-03
 
 `Channel::toolNames()` in `src/Feedback/Channel.php:644` strips every character
 outside `[a-z0-9_]`, so a hyphen goes and an underscore stays: the skill

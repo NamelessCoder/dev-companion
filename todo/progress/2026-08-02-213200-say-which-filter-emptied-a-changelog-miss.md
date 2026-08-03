@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-01-115112-during-the-same-review-i-wanted-to-confirm-no.md
 **Priority:** normal
+**Branch:** todo/say-which-filter-emptied-a-changelog-miss
+**Claimed:** 2026-08-03
 
 Judged into
 [`D-ANS-016`](../../decisions/answers/ans-016-a-miss-names-the-query-that-would-have-hit.md),

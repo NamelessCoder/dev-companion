@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-01-115109-reviewing-the-core-patch-replace-gd-based-error.md, feedback/2026-08-01-115525-in-the-review-of-core-patch-7175fcaf7fe-task.md, R-ANS-017
 **Priority:** normal
+**Branch:** todo/say-what-a-removal-owes-the-extension-scanner
+**Claimed:** 2026-08-03
 
 Step 2 of the ladder, on the queries in
 [`D-ANS-029`](../../decisions/answers/ans-029-the-scanner-matcher-is-stated-on-the-route-a-removal-takes.md):

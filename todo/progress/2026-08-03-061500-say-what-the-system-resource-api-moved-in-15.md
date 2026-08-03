@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-02-144420-on-15-0-0-dev-the-fluid-viewhelpers.md
 **Priority:** normal
+**Branch:** todo/say-what-the-system-resource-api-moved-in-15
+**Claimed:** 2026-08-03
 
 `grep -rl SystemResource knowledge/` returns nothing, while
 `typo3/sysext/core/Classes/SystemResource/` is on `main` with a factory, a

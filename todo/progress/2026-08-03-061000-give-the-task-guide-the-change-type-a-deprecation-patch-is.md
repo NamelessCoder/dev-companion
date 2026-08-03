@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-01-122113-typo3-task-guide-has-no-deprecation-changetype.md
 **Priority:** normal
+**Branch:** todo/give-the-task-guide-the-change-type-a-deprecation-patch-is
+**Claimed:** 2026-08-03
 
 `typo3_task_guide` offers bugfix, feature, cleanup, test, documentation and
 unknown — `src/Tool/TaskGuide.php:87` — so the one core patch shape with a fixed

@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-01-003935-guidance-item-previews-for-content-elements.md
 **Priority:** normal
+**Branch:** todo/what-a-content-element-preview-owes-the-editor
+**Claimed:** 2026-08-03
 
 Step 1a of the ladder, on the evidence in
 [`D-KNW-025`](../../decisions/knowledge/knw-025-what-a-backend-preview-owes-the-editor-is-a-gap-this-server-owns.md):

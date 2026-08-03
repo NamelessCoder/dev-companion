@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-01-114807-session-debrief-precise-transcript-and-tool.md, feedback/2026-08-02-144350-which-required-running-unit-functional-cgl-and.md
 **Priority:** normal
+**Branch:** todo/point-the-core-answer-at-the-tool-that-runs-the-suites
+**Claimed:** 2026-08-03
 
 Step 2 of the ladder, on the evidence in
 [`D-ANS-031`](../../decisions/answers/ans-031-the-core-answer-names-the-tool-that-runs-the-suites.md):
@@ -31,4 +33,3 @@ was called about thirty times that session, with its invocation shape taken from
 the project's own `CLAUDE.md`. It also names what a file-read answer would buy
 beyond the clause: the `-s` cases read out of the script would make the suite
 list follow the branch, where the acceptance suites no longer exist on `main`.
-

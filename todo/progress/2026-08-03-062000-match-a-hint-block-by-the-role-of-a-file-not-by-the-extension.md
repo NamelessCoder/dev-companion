@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-02-144431-because-one-of-the-two-paths-i-passed-was-typo3.md
 **Priority:** normal
+**Branch:** todo/match-a-hint-block-by-the-role-of-a-file-not-by-the-extension
+**Claimed:** 2026-08-03
 
 The `extbase` block in `knowledge/hints/extbase.json` carries the bare word
 `extbase` in its `appliesTo`, so every path below `sysext/extbase/` matches it:

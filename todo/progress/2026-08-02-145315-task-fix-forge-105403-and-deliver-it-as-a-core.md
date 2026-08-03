@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-02-145315-task-fix-forge-105403-and-deliver-it-as-a-core.md
 **Priority:** normal
+**Branch:** todo/task-fix-forge-105403-and-deliver-it-as-a-core
+**Claimed:** 2026-08-03
 
 The order half of this feedback is in `typo3-core-patch-development`; what is
 left is the half a skill may not carry. `typo3_rule_lookup` today answers that a

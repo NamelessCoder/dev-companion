@@ -833,6 +833,43 @@ final class HintsTest extends TestCase
         self::assertStringContainsString('allowProperties', $text);
     }
 
+    /**
+     * The extension a file sits in is not what the file is, and a bare extension
+     * key in `appliesTo` cannot tell the two apart — `D-KNW-038`. The paths and
+     * the task are the ones a core bugfix arrived with: `ImageService` resolves
+     * files and builds URLs, and the plugin briefing was the largest block of
+     * the answer it got.
+     *
+     * `hints:coverage` cannot see this. It counts what nothing reaches, and a
+     * hint that answers everything is reached by all of it.
+     */
+    #[Test]
+    public function aFileBelowAnExtensionIsAnsweredByItsRoleRatherThanByTheExtension(): void
+    {
+        $result = Hints::find(
+            [
+                'typo3/sysext/fluid/Classes/ViewHelpers/ImageViewHelper.php',
+                'typo3/sysext/extbase/Classes/Service/ImageService.php',
+            ],
+            'Fix f:image ViewHelper failing when src contains a cache busting query string produced by f:uri.resource',
+            6,
+        );
+        $ids = array_column($result['matchedHints'], 'id');
+
+        self::assertContains('fluid-viewhelpers', $ids, 'what the task is about');
+        self::assertSame(
+            [],
+            array_values(array_filter($ids, static fn(string $id): bool => str_starts_with($id, 'extbase'))),
+            'nothing in the Extbase family bears on a file-resolution helper',
+        );
+
+        // And the same word asked as a question still reaches the family.
+        self::assertContains(
+            'extbase',
+            array_column(Hints::find([], 'do I need extbase for a list of records', 6)['matchedHints'], 'id'),
+        );
+    }
+
     #[Test]
     public function registeringSomethingSoTheCoreFindsItIsCovered(): void
     {

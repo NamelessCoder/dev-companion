@@ -6,9 +6,13 @@
       "php"
     ],
     "appliesTo": [
-      "extbase",
-      "when to use extbase",
-      "do I need extbase"
+      "use extbase",
+      "using extbase",
+      "need extbase",
+      "extbase plugin",
+      "extbase extension",
+      "extbase controller",
+      "without extbase"
     ],
     "hints": [
       "Extbase is what a frontend needs beyond reading records: pagination, a search with arguments, validation, forms. Rendering records read-only needs none of it — see the records hint — and mixing the two questions is where most of the wrong answers here come from.",

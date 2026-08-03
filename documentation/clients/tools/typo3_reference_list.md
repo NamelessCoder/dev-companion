@@ -61,12 +61,12 @@ coveredVersions: [integer]
 
 ## Answered
 
-Recorded on 2026-08-02 by `bin/cli tools:record`. Answered against
-core-checkout, TYPO3 14.3.6-dev, the 14.3 core checkout below .checkouts/, whose
-console could not be reached: <installation> has no TYPO3 console — none of
-bin/typo3, vendor/bin/typo3 exists. Nothing checks what is below this heading;
-everything above it is derived from the class that answers the call, and
-`bin/cli tools:check` holds it.
+Recorded on 2026-08-03 by `bin/cli tools:record`. Answered against
+core-checkout, TYPO3 14.3.6-dev, the 14.3 core checkout below .checkouts/,
+whose console could not be reached: <installation> has no TYPO3 console —
+none of bin/typo3, vendor/bin/typo3 exists. Nothing checks what is below this
+heading; everything above it is derived from the class that answers the call,
+and `bin/cli tools:check` holds it.
 
 ### references
 
@@ -86,23 +86,23 @@ Paths are relative to a core checkout. Where none is at hand, they are also the 
   A sitepackage worked out in full: one template root with Pages/, Content/ and ContentPreviews/, a site set carrying its TypoScript, page TSconfig, settings and labels, backend layouts, and its content elements registered as record types of tt_content.
   Read it, do not depend on it: it is the theme of one release line and is announced to move out of the core into a repository of its own.
   In an installation: vendor/typo3/theme-camino/, below the same path with the typo3/sysext/<key>/ prefix removed.
-  Conventions: typo3_architecture_lookup id="sitepackage-layout"
+  Conventions: typo3_hint_lookup id="sitepackage-layout"
 - typo3/sysext/styleguide — TYPO3 v13 and newer
   Every backend component as rendered markup and every TCA field type as a record you can open: the demo pages the component catalog names, and a TCA corpus that answers what a column configuration looks like when it works.
   In an installation: vendor/typo3/cms-styleguide/, below the same path with the typo3/sysext/<key>/ prefix removed.
-  Conventions: typo3_architecture_lookup id="css-styleguide-demos"
+  Conventions: typo3_hint_lookup id="css-styleguide-demos"
 - typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example
   An Extbase extension the core keeps green: domain models with their TCA, repositories, controllers and validators — and, in the functional tests around it, how a repository is exercised at all, request and configuration manager included.
   In an installation: vendor/typo3/cms-extbase/, below the same path with the typo3/sysext/<key>/ prefix removed.
-  Conventions: typo3_architecture_lookup id="extbase"
+  Conventions: typo3_hint_lookup id="extbase"
 - typo3/sysext/fluid_styled_content
   The content elements every installation has: how a record type is registered, the TypoScript that renders it on lib.contentElement, the templates a sitepackage overrides, and the backend previews beside them.
   In an installation: vendor/typo3/cms-fluid-styled-content/, below the same path with the typo3/sysext/<key>/ prefix removed.
-  Conventions: typo3_architecture_lookup id="content-elements"
+  Conventions: typo3_hint_lookup id="content-elements"
 - Build/tests/playwright/e2e — TYPO3 v14 and newer
   A browser suite that runs: specs one directory per module here, the page objects they compose themselves from in ../fixtures/, the login setup every project depends on in ../helper/, and the accessibility scan among them. Build/playwright.config.ts is where the projects and their dependencies are declared.
   Only in the core repository — no Composer package ships it.
-  Conventions: typo3_architecture_lookup id="browser-tests"
+  Conventions: typo3_hint_lookup id="browser-tests"
 - Build/phpstan
   The PHPStan setup of a large TYPO3 codebase: the configuration a project copies, the baseline that makes adopting it possible at all, and the custom rules in src/.
   Only in the core repository — no Composer package ships it.

@@ -66,12 +66,12 @@ withheldDocuments:  # optional
 
 ## Answered
 
-Recorded on 2026-08-02 by `bin/cli tools:record`. Answered against
-core-checkout, TYPO3 14.3.6-dev, the 14.3 core checkout below .checkouts/, whose
-console could not be reached: <installation> has no TYPO3 console — none of
-bin/typo3, vendor/bin/typo3 exists. Nothing checks what is below this heading;
-everything above it is derived from the class that answers the call, and
-`bin/cli tools:check` holds it.
+Recorded on 2026-08-03 by `bin/cli tools:record`. Answered against
+core-checkout, TYPO3 14.3.6-dev, the 14.3 core checkout below .checkouts/,
+whose console could not be reached: <installation> has no TYPO3 console —
+none of bin/typo3, vendor/bin/typo3 exists. Nothing checks what is below this
+heading; everything above it is derived from the class that answers the call,
+and `bin/cli tools:check` holds it.
 
 ### rules: hit
 
@@ -86,7 +86,7 @@ Called with:
 Text:
 
 ```
-These sections are prose and are not filtered by version. Where a subsystem changed inside the covered range, the statement that changed carries the range elsewhere: call typo3_architecture_lookup with targetVersion for the convention, and typo3_test_run_guide with targetVersion for a runTests.sh command.
+These sections are prose and are not filtered by version. Where a subsystem changed inside the covered range, the statement that changed carries the range elsewhere: call typo3_hint_lookup with targetVersion for the convention, and typo3_test_run_guide with targetVersion for a runTests.sh command.
 
 ## Deprecations
 Source: TYPO3 Core Commit Message Rules (typo3://core/typo3-commit-messages) — matches 100% of the query terms
@@ -125,10 +125,8 @@ Source: TYPO3 Core Contribution Rules (typo3://core/typo3-core-rules) — matche
 - Breaking changes, migrations, and deprecations need clear notes.
 - Security-sensitive behavior needs extra care and focused tests.
 
-The architecture hints also cover this — call typo3_architecture_lookup with the id:
-- deprecated-apis — Deprecated APIs
+The hints also cover this — call typo3_hint_lookup with the id:
 - documentation-changelog — Documentation and Changelog
-- form-framework — EXT:form Configuration and Runtime
 ```
 
 Data:
@@ -145,7 +143,7 @@ Data:
             "heading": "Deprecations",
             "body": "- Deprecations must not use `[!!!]`.\n- Deprecations may only use `[TASK]` or `[FEATURE]`.\n- Deprecations must be documented with a changelog RST file.\n- Deprecations need migration guidance and may need extension scanner\n  considerations.\n- All of the above is the authoring side. Reading it — what a given version\n  deprecated, and what that means for code that uses it — works the other way\n  round: the changelog files below `Documentation/Changelog/` of the core\n  package and the matchers below the install package's\n  `Configuration/ExtensionScanner/Php/` are what an installation is checked\n  against, by the Extension Scanner in the Install Tool. Both directories ship\n  with a Composer installation.",
             "coverage": 1,
-            "score": 83,
+            "score": 85,
             "truncated": false
         },
         {
@@ -173,16 +171,8 @@ Data:
     "withheldDocuments": [],
     "alsoInHints": [
         {
-            "id": "deprecated-apis",
-            "title": "Deprecated APIs"
-        },
-        {
             "id": "documentation-changelog",
             "title": "Documentation and Changelog"
-        },
-        {
-            "id": "form-framework",
-            "title": "EXT:form Configuration and Runtime"
         }
     ]
 }
@@ -204,7 +194,7 @@ Text:
 No knowledge section matched "quantum entanglement pineapple".
 
 This knowledge base covers:
-- TYPO3 Core Commit Message Rules: Summary Line, Body, Relationships, Breaking Changes, Deprecations, Changelog Files
+- TYPO3 Core Commit Message Rules: Summary Line, Work in Progress, Body, Relationships, Breaking Changes, Deprecations, Changelog Files
 - TYPO3 Contribution Sources: Core Contribution Guide, Local Policy
 - TYPO3 Core Contribution Rules: Contribution Flow, Code Style, Testing, Review Readiness
 - TYPO3 Core Script Help: Invoking runTests.sh, Common Commands, Script Notes
@@ -229,6 +219,7 @@ Data:
             "title": "TYPO3 Core Commit Message Rules",
             "topics": [
                 "Summary Line",
+                "Work in Progress",
                 "Body",
                 "Relationships",
                 "Breaking Changes",

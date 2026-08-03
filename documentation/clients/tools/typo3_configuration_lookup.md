@@ -64,14 +64,14 @@ The answer carries exactly one of these sets of fields: `path`, `found`,
 
 ## Answered
 
-Recorded on 2026-08-02 by `bin/cli tools:record`. Of two working directories,
+Recorded on 2026-08-03 by `bin/cli tools:record`. Of two working directories,
 because what this server answers depends on which one a client is standing in,
 and neither fills the whole surface. Answered against core-checkout, TYPO3
-14.3.6-dev, the 14.3 core checkout below .checkouts/, whose console could not be
-reached: <installation> has no TYPO3 console — none of bin/typo3,
-vendor/bin/typo3 exists. Answered against composer-project, TYPO3 14.3.5, the
-E-SITE this repository makes below .environments/, whose console answers. The
-tools that declare `answeredBy` carry an answer from each, under a heading
+14.3.6-dev, the 14.3 core checkout below .checkouts/, whose console could not
+be reached: <installation> has no TYPO3 console — none of bin/typo3,
+vendor/bin/typo3 exists. Answered against composer-project, TYPO3 14.3.0, the
+installation this repository writes below .fixtures/, whose console answers.
+The tools that declare `answeredBy` carry an answer from each, under a heading
 naming which; every other answer is from the first alone, because nothing in it
 would differ. Nothing checks what is below this heading; everything above it is
 derived from the class that answers the call, and `bin/cli tools:check` holds
@@ -117,7 +117,7 @@ Data:
 }
 ```
 
-#### From the E-SITE this repository makes below .environments/, whose console answers
+#### From the installation this repository writes below .fixtures/, whose console answers
 
 Text:
 
@@ -126,19 +126,13 @@ Effective value of TYPO3_CONF_VARS/SYS/fluid in this installation:
 
 ```json
 {
-    "interceptors": [],
-    "preProcessors": [
-        "TYPO3Fluid\\Fluid\\Core\\Parser\\TemplateProcessor\\EscapingModifierTemplateProcessor",
-        "TYPO3Fluid\\Fluid\\Core\\Parser\\TemplateProcessor\\PassthroughSourceModifierTemplateProcessor",
-        "TYPO3Fluid\\Fluid\\Core\\Parser\\TemplateProcessor\\NamespaceDetectionTemplateProcessor",
-        "TYPO3Fluid\\Fluid\\Core\\Parser\\TemplateProcessor\\RemoveCommentsTemplateProcessor"
-    ],
-    "expressionNodeTypes": [
-        "TYPO3Fluid\\Fluid\\Core\\Parser\\SyntaxTree\\Expression\\CastingExpressionNode",
-        "TYPO3Fluid\\Fluid\\Core\\Parser\\SyntaxTree\\Expression\\MathExpressionNode",
-        "TYPO3Fluid\\Fluid\\Core\\Parser\\SyntaxTree\\Expression\\TernaryExpressionNode"
-    ],
-    "namespaces": []
+    "namespaces": {
+        "f": [
+            "TYPO3Fluid\\Fluid\\ViewHelpers",
+            "TYPO3\\CMS\\Fluid\\ViewHelpers"
+        ]
+    },
+    "interceptors": []
 }
 ```
 
@@ -152,19 +146,13 @@ Data:
     "path": "SYS/fluid",
     "found": true,
     "value": {
-        "interceptors": [],
-        "preProcessors": [
-            "TYPO3Fluid\\Fluid\\Core\\Parser\\TemplateProcessor\\EscapingModifierTemplateProcessor",
-            "TYPO3Fluid\\Fluid\\Core\\Parser\\TemplateProcessor\\PassthroughSourceModifierTemplateProcessor",
-            "TYPO3Fluid\\Fluid\\Core\\Parser\\TemplateProcessor\\NamespaceDetectionTemplateProcessor",
-            "TYPO3Fluid\\Fluid\\Core\\Parser\\TemplateProcessor\\RemoveCommentsTemplateProcessor"
-        ],
-        "expressionNodeTypes": [
-            "TYPO3Fluid\\Fluid\\Core\\Parser\\SyntaxTree\\Expression\\CastingExpressionNode",
-            "TYPO3Fluid\\Fluid\\Core\\Parser\\SyntaxTree\\Expression\\MathExpressionNode",
-            "TYPO3Fluid\\Fluid\\Core\\Parser\\SyntaxTree\\Expression\\TernaryExpressionNode"
-        ],
-        "namespaces": []
+        "namespaces": {
+            "f": [
+                "TYPO3Fluid\\Fluid\\ViewHelpers",
+                "TYPO3\\CMS\\Fluid\\ViewHelpers"
+            ]
+        },
+        "interceptors": []
     },
     "answeredBy": "installation"
 }

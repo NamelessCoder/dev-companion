@@ -251,12 +251,18 @@ The answer carries exactly one of these sets of fields: `key`, `path`, `origin`,
 
 ## Answered
 
-Recorded on 2026-08-03 by `bin/cli tools:record`. Answered against
-core-checkout, TYPO3 14.3.6-dev, the 14.3 core checkout below .checkouts/,
-whose console could not be reached: <installation> has no TYPO3 console —
-none of bin/typo3, vendor/bin/typo3 exists. Nothing checks what is below this
-heading; everything above it is derived from the class that answers the call,
-and `bin/cli tools:check` holds it.
+Recorded on 2026-08-03 by `bin/cli tools:record`. Of two working directories,
+because what this server answers depends on which one a client is standing in,
+and neither fills the whole surface. Answered against core-checkout, TYPO3
+14.3.6-dev, the 14.3 core checkout below .checkouts/, whose console could not
+be reached: <installation> has no TYPO3 console — none of bin/typo3,
+vendor/bin/typo3 exists. Answered against composer-project, TYPO3 14.3.0, the
+installation this repository writes below .fixtures/, whose console answers.
+The tools that declare `answeredBy` carry an answer from each, under a heading
+naming which; every other answer is from the first alone, because nothing in it
+would differ. Nothing checks what is below this heading; everything above it is
+derived from the class that answers the call, and `bin/cli tools:check` holds
+it.
 
 ### extension
 
@@ -267,6 +273,8 @@ Called with:
     "extension": "backend"
 }
 ```
+
+#### From the 14.3 core checkout below .checkouts/, whose console could not be reached
 
 Text:
 
@@ -866,5 +874,96 @@ Data:
         ]
     },
     "answeredBy": "packages"
+}
+```
+
+#### From the installation this repository writes below .fixtures/, whose console answers
+
+Text:
+
+```
+backend (system) — <installation>/vendor/typo3/cms-backend
+The fixture installation's backend package.
+
+Backend modules: web_list, acme_events
+
+Backend routes: login, main
+
+Icons: actions-close, actions-document-open, actions-open
+
+Service tags: backend.controller
+
+Registration files: Configuration/Services.yaml
+
+Classes: Controller (1)
+Each count is every PHP file below that directory, its own subdirectories included.
+
+Ships: manual none, readme none, tests none, language files 1
+- Resources/Private/Language/locallang.xlf — source-language en, no translations beside it
+The source language is what each file declares, not what it should declare — typo3_hint_lookup owns that rule.
+
+The tables, content elements and icons are what the booted installation has, attributed to this extension by the EXT: reference each entry carries; everything else is read from its files. What a hook or an event listener changes at request time is in neither.
+```
+
+Data:
+
+```json
+{
+    "key": "backend",
+    "path": "<installation>/vendor/typo3/cms-backend",
+    "origin": "system",
+    "composerName": "typo3/cms-backend",
+    "description": "The fixture installation's backend package.",
+    "requires": [],
+    "tcaTables": [],
+    "tcaOverrides": [],
+    "contentElements": [],
+    "unlistedFlexForms": [],
+    "backendModules": [
+        "web_list",
+        "acme_events"
+    ],
+    "backendRoutes": [
+        "login",
+        "main"
+    ],
+    "icons": [
+        "actions-close",
+        "actions-document-open",
+        "actions-open"
+    ],
+    "siteSets": [],
+    "formConfigurations": [],
+    "middlewares": [],
+    "serviceTags": [
+        "backend.controller"
+    ],
+    "fluidRoots": [],
+    "fluidNamespaces": [],
+    "typoScript": [],
+    "classes": [
+        {
+            "kind": "Controller",
+            "files": 1
+        }
+    ],
+    "files": [
+        "Configuration/Services.yaml"
+    ],
+    "deprecatedFiles": [],
+    "notReadStatically": [],
+    "artifacts": {
+        "manual": null,
+        "readme": null,
+        "tests": [],
+        "languageFiles": [
+            {
+                "path": "Resources/Private/Language/locallang.xlf",
+                "sourceLanguage": "en",
+                "translations": []
+            }
+        ]
+    },
+    "answeredBy": "installation"
 }
 ```

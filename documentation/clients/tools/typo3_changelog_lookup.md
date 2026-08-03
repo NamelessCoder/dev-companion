@@ -112,12 +112,18 @@ The answer carries exactly one of these sets of fields: `query`, `matchCount`,
 
 ## Answered
 
-Recorded on 2026-08-03 by `bin/cli tools:record`. Answered against
-core-checkout, TYPO3 14.3.6-dev, the 14.3 core checkout below .checkouts/,
-whose console could not be reached: <installation> has no TYPO3 console —
-none of bin/typo3, vendor/bin/typo3 exists. Nothing checks what is below this
-heading; everything above it is derived from the class that answers the call,
-and `bin/cli tools:check` holds it.
+Recorded on 2026-08-03 by `bin/cli tools:record`. Of two working directories,
+because what this server answers depends on which one a client is standing in,
+and neither fills the whole surface. Answered against core-checkout, TYPO3
+14.3.6-dev, the 14.3 core checkout below .checkouts/, whose console could not
+be reached: <installation> has no TYPO3 console — none of bin/typo3,
+vendor/bin/typo3 exists. Answered against composer-project, TYPO3 14.3.0, the
+installation this repository writes below .fixtures/, whose console answers.
+The tools that declare `answeredBy` carry an answer from each, under a heading
+naming which; every other answer is from the first alone, because nothing in it
+would differ. Nothing checks what is below this heading; everything above it is
+derived from the class that answers the call, and `bin/cli tools:check` holds
+it.
 
 ### changelog: hit
 
@@ -128,6 +134,8 @@ Called with:
     "query": "ext_tables.php"
 }
 ```
+
+#### From the 14.3 core checkout below .checkouts/, whose console could not be reached
 
 Text:
 
@@ -223,6 +231,49 @@ Data:
 }
 ```
 
+#### From the installation this repository writes below .fixtures/, whose console answers
+
+Text:
+
+```
+1 changelog entry carrying "ext_tables.php":
+- 14.3 Deprecation: ext_tables.php in the fixture extension (#900001) — removed in v15.0
+  EXT:core/Documentation/Changelog/14.3/Deprecation-900001-ExtTablesPhpInTheFixtureExtension.rst — PHP-API, FullyScanned, ext:acme_events
+
+Read the file for the description and the migration. A Deprecation or Breaking entry tagged FullyScanned or PartiallyScanned has an extension scanner matcher behind it, so the Install Tool can find the call sites for you.
+A deprecated API keeps working until the next major release. An entry that states a removal version overrides that, and some state one more than a major away. An empty removal is what the entry states, not a promise that no removal is planned.
+```
+
+Data:
+
+```json
+{
+    "query": "ext_tables.php",
+    "matchCount": 1,
+    "tags": [],
+    "entries": [
+        {
+            "type": "Deprecation",
+            "version": "14.3",
+            "issue": "900001",
+            "title": "ext_tables.php in the fixture extension",
+            "removal": "15.0",
+            "tags": [
+                "PHP-API",
+                "FullyScanned",
+                "ext:acme_events"
+            ],
+            "file": "EXT:core/Documentation/Changelog/14.3/Deprecation-900001-ExtTablesPhpInTheFixtureExtension.rst"
+        }
+    ],
+    "versions": [
+        "14.3"
+    ],
+    "answeredBy": "packages",
+    "removalRule": "A deprecated API keeps working until the next major release. An entry that states a removal version overrides that, and some state one more than a major away. An empty removal is what the entry states, not a promise that no removal is planned."
+}
+```
+
 ### changelog: swept by tag
 
 Called with:
@@ -233,6 +284,8 @@ Called with:
     "tag": "FullyScanned"
 }
 ```
+
+#### From the 14.3 core checkout below .checkouts/, whose console could not be reached
 
 Text:
 
@@ -679,6 +732,54 @@ Data:
 }
 ```
 
+#### From the installation this repository writes below .fixtures/, whose console answers
+
+Text:
+
+```
+1 of the 2 entries narrowed by version and type are tagged "FullyScanned":
+- 14.3 Deprecation: ext_tables.php in the fixture extension (#900001) — removed in v15.0
+  EXT:core/Documentation/Changelog/14.3/Deprecation-900001-ExtTablesPhpInTheFixtureExtension.rst — PHP-API, FullyScanned, ext:acme_events
+
+Read the file for the description and the migration. A Deprecation or Breaking entry tagged FullyScanned or PartiallyScanned has an extension scanner matcher behind it, so the Install Tool can find the call sites for you.
+A deprecated API keeps working until the next major release. An entry that states a removal version overrides that, and some state one more than a major away. An empty removal is what the entry states, not a promise that no removal is planned.
+```
+
+Data:
+
+```json
+{
+    "query": "",
+    "matchCount": 1,
+    "tags": [
+        "FullyScanned",
+        "NotScanned",
+        "PHP-API",
+        "ext:acme_events"
+    ],
+    "entries": [
+        {
+            "type": "Deprecation",
+            "version": "14.3",
+            "issue": "900001",
+            "title": "ext_tables.php in the fixture extension",
+            "removal": "15.0",
+            "tags": [
+                "PHP-API",
+                "FullyScanned",
+                "ext:acme_events"
+            ],
+            "file": "EXT:core/Documentation/Changelog/14.3/Deprecation-900001-ExtTablesPhpInTheFixtureExtension.rst"
+        }
+    ],
+    "versions": [
+        "14.3"
+    ],
+    "answeredBy": "packages",
+    "removalRule": "A deprecated API keeps working until the next major release. An entry that states a removal version overrides that, and some state one more than a major away. An empty removal is what the entry states, not a promise that no removal is planned."
+}
+```
+
 ### changelog: miss
 
 Called with:
@@ -688,6 +789,8 @@ Called with:
     "query": "quantumflux"
 }
 ```
+
+#### From the 14.3 core checkout below .checkouts/, whose console could not be reached
 
 Text:
 
@@ -759,6 +862,30 @@ Data:
         "7.2",
         "7.1",
         "7.0"
+    ],
+    "answeredBy": "packages"
+}
+```
+
+#### From the installation this repository writes below .fixtures/, whose console answers
+
+Text:
+
+```
+No changelog entry in this installation carries all of "quantumflux".
+The changelog here covers 14.3 and older. A version this installation does not ship is not in it — read that one in the core repository or at https://docs.typo3.org.
+```
+
+Data:
+
+```json
+{
+    "query": "quantumflux",
+    "matchCount": 0,
+    "tags": [],
+    "entries": [],
+    "versions": [
+        "14.3"
     ],
     "answeredBy": "packages"
 }

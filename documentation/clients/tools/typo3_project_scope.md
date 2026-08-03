@@ -136,12 +136,18 @@ The answer carries exactly one of these sets of fields: `root`, `environment`,
 
 ## Answered
 
-Recorded on 2026-08-03 by `bin/cli tools:record`. Answered against
-core-checkout, TYPO3 14.3.6-dev, the 14.3 core checkout below .checkouts/,
-whose console could not be reached: <installation> has no TYPO3 console —
-none of bin/typo3, vendor/bin/typo3 exists. Nothing checks what is below this
-heading; everything above it is derived from the class that answers the call,
-and `bin/cli tools:check` holds it.
+Recorded on 2026-08-03 by `bin/cli tools:record`. Of two working directories,
+because what this server answers depends on which one a client is standing in,
+and neither fills the whole surface. Answered against core-checkout, TYPO3
+14.3.6-dev, the 14.3 core checkout below .checkouts/, whose console could not
+be reached: <installation> has no TYPO3 console — none of bin/typo3,
+vendor/bin/typo3 exists. Answered against composer-project, TYPO3 14.3.0, the
+installation this repository writes below .fixtures/, whose console answers.
+The tools that declare `answeredBy` carry an answer from each, under a heading
+naming which; every other answer is from the first alone, because nothing in it
+would differ. Nothing checks what is below this heading; everything above it is
+derived from the class that answers the call, and `bin/cli tools:check` holds
+it.
 
 ### project
 
@@ -150,6 +156,8 @@ Called with:
 ```json
 {}
 ```
+
+#### From the 14.3 core checkout below .checkouts/, whose console could not be reached
 
 Text:
 
@@ -203,6 +211,82 @@ Data:
             "command": "composer gerrit:setup:preCommitHook:disable",
             "source": "composer.json",
             "declares": "TYPO3\\CMS\\Composer\\Scripts\\InstallerScripts::disablePreCommitHook",
+            "runs": "unknown"
+        }
+    ],
+    "patches": [],
+    "answeredBy": "packages"
+}
+```
+
+#### From the installation this repository writes below .fixtures/, whose console answers
+
+Text:
+
+```
+<installation> — composer-project, TYPO3 14.3.0, PHP ^8.2
+
+Extensions that are not TYPO3's own:
+- acme_events (project) — packages/acme_events
+
+Sites, with the sets each one depends on:
+- fixture at https://fixture.example.org/, root page 1, sets: typo3/fluid-styled-content, acme/acme-events
+
+Commands this repository declares — these exist here, the core's testing suites do not. What each one does to the sources is read off its body, never by running it: a check reports and leaves them as they are, a change rewrites something, and unknown is a body that does not say — a test suite runs the project's own code, and no declaration covers that. A task told not to change files can run the checks and nothing else. A check may still write a cache of its own; what it does not do is hand the code back different.
+Nothing in this repository configures an environment of its own — .ddev/config.yaml and TYPO3_MCP_CONSOLE are what this reads — so these run wherever you run them.
+- composer cgl (composer.json) — change: php-cs-fixer fix
+- composer cgl:ci (composer.json) — check: php-cs-fixer fix --dry-run --diff
+- composer test (composer.json) — unknown: phpunit -c Build/phpunit.xml
+```
+
+Data:
+
+```json
+{
+    "root": "<installation>",
+    "kind": "composer-project",
+    "typo3Version": "14.3.0",
+    "phpConstraint": "^8.2",
+    "coreConstraint": "^14.3",
+    "environment": null,
+    "extensions": [
+        {
+            "key": "acme_events",
+            "path": "packages/acme_events",
+            "origin": "project"
+        }
+    ],
+    "sites": [
+        {
+            "identifier": "fixture",
+            "base": "https://fixture.example.org/",
+            "rootPageId": 1,
+            "sets": [
+                "typo3/fluid-styled-content",
+                "acme/acme-events"
+            ],
+            "languages": [
+                "English"
+            ]
+        }
+    ],
+    "commands": [
+        {
+            "command": "composer cgl",
+            "source": "composer.json",
+            "declares": "php-cs-fixer fix",
+            "runs": "change"
+        },
+        {
+            "command": "composer cgl:ci",
+            "source": "composer.json",
+            "declares": "php-cs-fixer fix --dry-run --diff",
+            "runs": "check"
+        },
+        {
+            "command": "composer test",
+            "source": "composer.json",
+            "declares": "phpunit -c Build/phpunit.xml",
             "runs": "unknown"
         }
     ],

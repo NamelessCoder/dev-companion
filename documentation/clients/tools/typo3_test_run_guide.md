@@ -71,12 +71,12 @@ invocation:
 
 ## Answered
 
-Recorded on 2026-08-02 by `bin/cli tools:record`. Answered against
-core-checkout, TYPO3 14.3.6-dev, the 14.3 core checkout below .checkouts/, whose
-console could not be reached: <installation> has no TYPO3 console — none of
-bin/typo3, vendor/bin/typo3 exists. Nothing checks what is below this heading;
-everything above it is derived from the class that answers the call, and
-`bin/cli tools:check` holds it.
+Recorded on 2026-08-03 by `bin/cli tools:record`. Answered against
+core-checkout, TYPO3 14.3.6-dev, the 14.3 core checkout below .checkouts/,
+whose console could not be reached: <installation> has no TYPO3 console —
+none of bin/typo3, vendor/bin/typo3 exists. Nothing checks what is below this
+heading; everything above it is derived from the class that answers the call,
+and `bin/cli tools:check` holds it.
 
 ### runTests: all
 
@@ -119,9 +119,11 @@ Use before review when PHP formatting or file headers may be affected. Add `-n` 
 ## cglGit
 Command from the TYPO3 core root:
 `CI=true ./Build/Scripts/runTests.sh -s cglGit`
+Targeted run while iterating:
+`CI=true ./Build/Scripts/runTests.sh -s cgl -n`
 
 Checks and fixes coding guideline issues in the latest committed patch.
-Use for a focused pre-review check after creating a commit. Much faster than a full cgl run.
+Use for a focused pre-review check after creating a commit, from a normal checkout only. Its file list comes from git inside the container, and a git worktree keeps its gitdir outside the mounted directory: git fails, the list is empty, and the suite reports SUCCESS having read nothing. Use `cgl -n` where the checkout may be a worktree — it asks git nothing.
 
 ## lintPhp
 Command from the TYPO3 core root:
@@ -290,7 +292,7 @@ Examples:
   `CI=true ./Build/Scripts/runTests.sh -s functional -- typo3/sysext/core/Tests/Functional/DataHandling/Regular/Modify/ActionTest.php`
 - Functional tests on mariadb, to reproduce a DBMS-specific bug:
   `CI=true ./Build/Scripts/runTests.sh -s functional -d mariadb -- typo3/sysext/impexp/Tests/Functional/`
-- Coding guidelines of the latest commit only:
+- Coding guidelines of the latest commit only, from a normal checkout — from a git worktree it reads no file and still reports SUCCESS:
   `CI=true ./Build/Scripts/runTests.sh -s cglGit`
 - A single npm package script:
   `CI=true ./Build/Scripts/runTests.sh -s npm -- run build-css`
@@ -345,9 +347,9 @@ Data:
         {
             "suite": "cglGit",
             "command": "CI=true ./Build/Scripts/runTests.sh -s cglGit",
-            "targeted": null,
+            "targeted": "CI=true ./Build/Scripts/runTests.sh -s cgl -n",
             "description": "Checks and fixes coding guideline issues in the latest committed patch.",
-            "whenToUse": "Use for a focused pre-review check after creating a commit. Much faster than a full cgl run.",
+            "whenToUse": "Use for a focused pre-review check after creating a commit, from a normal checkout only. Its file list comes from git inside the container, and a git worktree keeps its gitdir outside the mounted directory: git fails, the list is empty, and the suite reports SUCCESS having read nothing. Use `cgl -n` where the checkout may be a worktree — it asks git nothing.",
             "domains": [
                 "php"
             ],
@@ -643,7 +645,7 @@ Data:
                 "command": "CI=true ./Build/Scripts/runTests.sh -s functional -d mariadb -- typo3/sysext/impexp/Tests/Functional/"
             },
             {
-                "purpose": "Coding guidelines of the latest commit only",
+                "purpose": "Coding guidelines of the latest commit only, from a normal checkout — from a git worktree it reads no file and still reports SUCCESS",
                 "command": "CI=true ./Build/Scripts/runTests.sh -s cglGit"
             },
             {
@@ -706,7 +708,7 @@ Examples:
   `CI=true ./Build/Scripts/runTests.sh -s functional -- typo3/sysext/core/Tests/Functional/DataHandling/Regular/Modify/ActionTest.php`
 - Functional tests on mariadb, to reproduce a DBMS-specific bug:
   `CI=true ./Build/Scripts/runTests.sh -s functional -d mariadb -- typo3/sysext/impexp/Tests/Functional/`
-- Coding guidelines of the latest commit only:
+- Coding guidelines of the latest commit only, from a normal checkout — from a git worktree it reads no file and still reports SUCCESS:
   `CI=true ./Build/Scripts/runTests.sh -s cglGit`
 - A single npm package script:
   `CI=true ./Build/Scripts/runTests.sh -s npm -- run build-css`
@@ -799,7 +801,7 @@ Data:
                 "command": "CI=true ./Build/Scripts/runTests.sh -s functional -d mariadb -- typo3/sysext/impexp/Tests/Functional/"
             },
             {
-                "purpose": "Coding guidelines of the latest commit only",
+                "purpose": "Coding guidelines of the latest commit only, from a normal checkout — from a git worktree it reads no file and still reports SUCCESS",
                 "command": "CI=true ./Build/Scripts/runTests.sh -s cglGit"
             },
             {
@@ -857,7 +859,7 @@ Examples:
   `CI=true ./Build/Scripts/runTests.sh -s functional -- typo3/sysext/core/Tests/Functional/DataHandling/Regular/Modify/ActionTest.php`
 - Functional tests on mariadb, to reproduce a DBMS-specific bug:
   `CI=true ./Build/Scripts/runTests.sh -s functional -d mariadb -- typo3/sysext/impexp/Tests/Functional/`
-- Coding guidelines of the latest commit only:
+- Coding guidelines of the latest commit only, from a normal checkout — from a git worktree it reads no file and still reports SUCCESS:
   `CI=true ./Build/Scripts/runTests.sh -s cglGit`
 - A single npm package script:
   `CI=true ./Build/Scripts/runTests.sh -s npm -- run build-css`
@@ -938,7 +940,7 @@ Data:
                 "command": "CI=true ./Build/Scripts/runTests.sh -s functional -d mariadb -- typo3/sysext/impexp/Tests/Functional/"
             },
             {
-                "purpose": "Coding guidelines of the latest commit only",
+                "purpose": "Coding guidelines of the latest commit only, from a normal checkout — from a git worktree it reads no file and still reports SUCCESS",
                 "command": "CI=true ./Build/Scripts/runTests.sh -s cglGit"
             },
             {
@@ -1013,7 +1015,7 @@ Examples:
   `CI=true ./Build/Scripts/runTests.sh -s functional -- typo3/sysext/core/Tests/Functional/DataHandling/Regular/Modify/ActionTest.php`
 - Functional tests on mariadb, to reproduce a DBMS-specific bug:
   `CI=true ./Build/Scripts/runTests.sh -s functional -d mariadb -- typo3/sysext/impexp/Tests/Functional/`
-- Coding guidelines of the latest commit only:
+- Coding guidelines of the latest commit only, from a normal checkout — from a git worktree it reads no file and still reports SUCCESS:
   `CI=true ./Build/Scripts/runTests.sh -s cglGit`
 - A single npm package script:
   `CI=true ./Build/Scripts/runTests.sh -s npm -- run build-css`
@@ -1126,7 +1128,7 @@ Data:
                 "command": "CI=true ./Build/Scripts/runTests.sh -s functional -d mariadb -- typo3/sysext/impexp/Tests/Functional/"
             },
             {
-                "purpose": "Coding guidelines of the latest commit only",
+                "purpose": "Coding guidelines of the latest commit only, from a normal checkout — from a git worktree it reads no file and still reports SUCCESS",
                 "command": "CI=true ./Build/Scripts/runTests.sh -s cglGit"
             },
             {

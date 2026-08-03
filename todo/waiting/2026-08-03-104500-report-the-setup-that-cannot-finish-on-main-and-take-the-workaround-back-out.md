@@ -2,8 +2,6 @@
 
 **Serves:** scenarios/
 **Priority:** normal
-**Branch:** todo/report-the-setup-that-cannot-finish-on-main-and-take-the-workaround-back-out
-**Claimed:** 2026-08-03
 **Waiting on:** who files the report below on Forge — writing to it needs an
     authenticated account and this repository holds no credentials for one — and
     whether the sqlite driver is still meant to be reversed at all, now that it

@@ -59,6 +59,7 @@ when it is added.
 - [`R-KNW-049`][R-KNW-049] — A check that can pass without reading anything says so · held
 - [`R-KNW-050`][R-KNW-050] — A preview answer names what the preview draws from · held
 - [`R-KNW-051`][R-KNW-051] — A changelog question is told which type the change owes · held
+- [`R-KNW-052`][R-KNW-052] — The suite answer names the install a fresh checkout owes · **open**
 
 [R-KNW-001]: knw-001-upgrade-wizards-and-dataprocessors-have-hints-of-their-own.md
 [R-KNW-002]: knw-002-a-hint-carries-the-words-its-subject-is-asked-about-in.md
@@ -111,3 +112,4 @@ when it is added.
 [R-KNW-049]: knw-049-a-check-that-can-pass-without-reading-anything-says-so.md
 [R-KNW-050]: knw-050-a-preview-answer-names-what-the-preview-draws-from.md
 [R-KNW-051]: knw-051-a-changelog-question-is-told-which-type-the-change-owes.md
+[R-KNW-052]: knw-052-the-suite-answer-names-the-install-a-fresh-checkout-owes.md

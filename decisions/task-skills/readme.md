@@ -12,6 +12,7 @@ one is added.
 - [`D-SKL-007`][D-SKL-007] — Every disposition a review makes carries its evidence · 2026-08-03
 - [`D-SKL-008`][D-SKL-008] — A review reads the review the patch is already in · 2026-08-03
 - [`D-SKL-009`][D-SKL-009] — The rule that keeps not landing is written as an act with an object · 2026-08-03 · confirmed
+- [`D-SKL-010`][D-SKL-010] — The assessment that precedes a core patch reads the issue and the review server · 2026-08-03
 - [`D-SKL-002`][D-SKL-002] — A focused audit narrows what is assessed, not the list it closes on · 2026-08-02
 - [`D-SKL-003`][D-SKL-003] — A sweep is bounded by the changelog's own axes, not by the extension's vocabulary · 2026-08-02
 - [`D-SKL-004`][D-SKL-004] — What a task does when the lookups run out is written for a review · 2026-08-02
@@ -22,6 +23,7 @@ one is added.
 [D-SKL-007]: skl-007-every-disposition-a-review-makes-carries-its-evidence.md
 [D-SKL-008]: skl-008-a-review-reads-the-review-the-patch-is-already-in.md
 [D-SKL-009]: skl-009-the-rule-that-keeps-not-landing-is-written-as-an-act-with-an-object.md
+[D-SKL-010]: skl-010-the-assessment-that-precedes-a-core-patch-reads-the-issue-and-the-review-server.md
 [D-SKL-002]: skl-002-a-focused-audit-narrows-what-is-assessed.md
 [D-SKL-003]: skl-003-a-sweep-is-bounded-by-the-changelogs-own-axes.md
 [D-SKL-004]: skl-004-what-a-task-does-when-the-lookups-run-out-is-written-for-a-review.md

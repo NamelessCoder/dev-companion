@@ -203,6 +203,58 @@ final class KnowledgeTest extends TestCase
         self::assertStringContainsString('FullyScanned', $bodies);
     }
 
+    /**
+     * R-KNW-057. The query is the skill's own step arriving: `typo3-core-patch-
+     * development` makes the visible-or-unlisted question mandatory and tells
+     * the caller the Gerrit lookup "has both forms", and the corpus carried the
+     * one that publishes alone — six sections on this query and `%private` in
+     * none of them (`D-SKL-005`, 2026-08-03).
+     */
+    #[Test]
+    public function theUnlistedPushIsAnsweredBesideTheOneThatPublishes(): void
+    {
+        $bodies = implode("\n", array_column(Documents::search('gerrit push private change'), 'body'));
+
+        self::assertStringContainsString('%private', $bodies);
+        self::assertStringContainsString('%wip', $bodies);
+        // The two are chosen between rather than looked up, so the answer says
+        // what each one does to the change and not only how it is typed.
+        self::assertStringContainsString('View Private Changes', $bodies, 'nothing says who can see a private change');
+        // The flag that does not come off by omitting it is the one a caller
+        // cannot guess the way back out of.
+        self::assertStringContainsString('%remove-private', $bodies, 'the flag that sticks is offered with no way back');
+    }
+
+    /**
+     * R-KNW-057. The three readings around the same push: where this checkout
+     * sends it, whether the refspec holds from a worktree, and what the state of
+     * the issue behind it means. One test rather than three, because they are
+     * three aspects of the step the skill calls irreversible.
+     */
+    #[Test]
+    public function theWriteDirectionIsAnsweredAroundThePushItself(): void
+    {
+        $bodies = static fn(string $query): string => implode(
+            "\n",
+            array_column(Documents::search($query), 'body'),
+        );
+
+        // Read rather than set: the corpus had `git remote set-url --push`,
+        // which is what a human runs once per clone, and no way to ask a
+        // checkout where it is already pointed.
+        $where = $bodies('where does this checkout push');
+        self::assertStringContainsString('remote.origin.pushurl', $where);
+        self::assertStringContainsString('.gitreview', $where);
+
+        $worktree = $bodies('push from a git worktree');
+        self::assertStringContainsString('refs/for/main', $worktree);
+        self::assertStringContainsString('commit-msg', $worktree, 'nothing says the hook reaches a worktree');
+
+        // The hook checks that a Resolves: line is there, not what state the
+        // issue named in it is in, so nothing refuses the push.
+        self::assertStringContainsString('Resolves:', $bodies('forge issue closed change'));
+    }
+
     #[Test]
     public function aQueryThatNamesItsDocumentReachesTheSectionThatAnswersIt(): void
     {

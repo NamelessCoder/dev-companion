@@ -33,6 +33,38 @@ cp Build/git-hooks/commit-msg .git/hooks/commit-msg && chmod +x .git/hooks/commi
 Without the hook, the first push is rejected because the commit has no
 `Change-Id`.
 
+## Where This Checkout Pushes
+
+The command above is the writing side. Where a checkout is already pointed is
+four questions of its own, and neither the directory name nor the URL it fetches
+from answers them — the sources are hosted on GitLab and mirrored to GitHub,
+which is what a clone usually fetches, while Gerrit is coupled to GitLab.
+
+```bash
+git remote -v
+git config --get remote.origin.pushurl
+git config --get remote.origin.push
+cat .gitreview
+```
+
+- `git remote -v` prints a `(fetch)` and a `(push)` line per remote. The two
+  differ only where a push URL is set, so the same URL twice means a push goes
+  back where the clone came from.
+- `remote.origin.pushurl` is that push URL, and `git remote set-url --push` is
+  the command that writes it. Unset, the read prints nothing and exits non-zero,
+  and the fetch URL is what a push uses — a clone in that state cannot open a
+  change on Gerrit at all, which is what a checkout kept for looking things up
+  is normally in.
+- `remote.origin.push` is the refspec a bare `git push` uses. Set to
+  `+refs/heads/main:refs/for/main`, `git push` on its own goes to Gerrit; unset,
+  it addresses the branch, which Gerrit rejects.
+- `.gitreview` in the checkout root carries `host`, `port`, `project` and
+  `defaultbranch` under a `[gerrit]` heading. It is the `git-review` tool's
+  configuration and git itself never looks at it, so it says where the project
+  lives on Gerrit even in a clone whose remote points nowhere near it. With an
+  account name those values are the push URL:
+  `ssh://<username>@<host>:<port>/<project>.git`.
+
 ## Push a Patch for Review
 
 ```bash
@@ -40,11 +72,73 @@ git push origin HEAD:refs/for/main
 ```
 
 `refs/for/<branch>` is Gerrit's magic ref: it opens a review instead of writing
-to the branch. Push a work in progress with `%wip`:
+to the branch. A plain push like this one publishes the change to everyone who
+can read the project and puts it in front of reviewers. The two forms that do
+not are below, and which of the three a change wants is the author's to say.
+
+## Push a Private or Work in Progress Change
 
 ```bash
+git push origin HEAD:refs/for/main%private
 git push origin HEAD:refs/for/main%wip
 ```
+
+Both are Gerrit push options appended to the magic ref. Git carries the string
+and does not read it, so the form is the same from any client and any checkout.
+
+- `%private` decides **who can see the change**: its owner, the reviewers added
+  to it, and accounts holding the View Private Changes capability, and nobody
+  else. It is not a quieter way to ask for review — somebody who was not added
+  by name cannot reach the change at all.
+- `%wip` decides **who is asked to act**. A work in progress change is visible
+  to anyone, but it notifies no reviewer, stays out of reviewers' dashboards,
+  and sends nothing on most later operations. It says to the review server what
+  `[WIP]` in the subject says to a reader.
+
+Coming back out is not symmetrical:
+
+- `%private` sticks. A further patch set pushed without the option does not
+  publish the change; `%remove-private` is what removes the flag.
+- `%wip` comes off with `%ready` on a push, or with the change's own "Start
+  Review" button. Only the change owner, project owners and the administrators
+  of the review server may use `%wip` and `%ready` on a push.
+
+What `%private` does not do:
+
+- It does not survive the merge. A private change that is merged becomes visible
+  to everyone who can read the target branch and loses the flag, so it is no way
+  to land a security fix quietly.
+- It does not hide from a follow-up. A non-private change pushed on top of it
+  makes the private parent visible through the parent relationship.
+- It does not hide the commit from whoever knows its id. Anyone who could
+  otherwise see the change can fetch the commit by its hash.
+
+A Gerrit account can also be set to open every new change as work in progress,
+so what state a push produced is read off the change rather than off the command
+that made it.
+
+## Pushing From a Git Worktree
+
+Nothing about the push changes in a `git worktree`: same remote, same magic ref,
+same options.
+
+```bash
+git push origin HEAD:refs/for/main%private
+```
+
+`HEAD` resolves to that worktree's own commit, while the remotes, the
+configuration and the hooks live in the one git directory every worktree of a
+clone shares. So `git config --get remote.origin.pushurl` answers the same in
+all of them, and the `commit-msg` hook installed once for the clone runs for a
+commit made in a worktree and writes its `Change-Id` there;
+`git rev-parse --git-path hooks` names the directory it is taken from.
+
+What decides the push is the branch point rather than the worktree: what goes up
+is `HEAD` and every ancestor the target branch does not already have. A worktree branched off an up-to-date `origin/main` sends one
+commit, one branched off a local `main` that is behind sends what lies between
+as well, and `git log --oneline origin/main..HEAD` is what says which of the two
+this is. Where a worktree does change the answer is the checks: a suite that
+takes its file list from git can report success having inspected nothing in one.
 
 ## Update an Existing Patch
 
@@ -64,6 +158,29 @@ git push origin HEAD:refs/for/main
 - Before amending, fetch the current patch set from Gerrit (the "Download" menu
   of the change offers the `git fetch … && git cherry-pick FETCH_HEAD` command)
   when it is not already the local commit.
+
+## The Forge Issue a Change Hangs Off
+
+Every core change names its issue in the commit message with
+`Resolves: #<issue number>`, and the `commit-msg` hook checks that such a line
+is there — a number, not what state the issue is in. Gerrit does not ask Forge
+either, so a push against a closed issue is refused by nothing and opens a
+change that looks like any other.
+
+Forge is the side that notices: an issue gets a comment from Gerrit Code Review
+linking the change when its first patch set arrives, and that is what moves a
+report to "Under Review". Whether that also happens on a report that is closed
+is a property of the tracker's own workflow and is not established here.
+
+Closed is what Forge uses for a report that is outdated, no longer reproducible,
+outside the project's goals, left without feedback, or attached to an abandoned
+patch. A change hanging off one asks whoever looks at it to reverse a decision
+the issue already records, without saying so anywhere in the change itself. So
+the closure is settled before the push rather than after it: reopened where the
+reason no longer holds, which is the tracker's step and may need whoever closed
+it, or answered on the change with why it stands anyway. No rule requires the
+reopening — anyone may contribute a patch to any issue — and what skipping it
+costs is the first question anybody reading the change will ask.
 
 ## Release Branches and Backports
 

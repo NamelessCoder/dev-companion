@@ -379,3 +379,46 @@ the section above already recorded from `.checkouts/main`.
 The write half of this feedback is `144848`'s four items, carried at `high`
 already, so `145230` was trimmed to the routing gap, and the gap is closed by
 the step above. It is archived.
+
+## Since then
+
+The four things the delivery half was missing are in
+`knowledge/documents/typo3-gerrit-workflow.md`, and `typo3_rule_lookup` on
+`gerrit push private change` returns two sections rather than six, re-run on
+2026-08-03 from the bundled core checkout: `Push a Private or Work in Progress
+Change` first and `Pushing From a Git Worktree` behind it, both carrying every
+term of the query and neither truncated. The four sections that used to answer
+that query carry none of its subject and no longer clear the coverage floor.
+
+Three of the four are not checkout facts, so where each came from:
+
+- `%private` and `%wip` are Gerrit's own documentation, served by
+  review.typo3.org. `user-upload.html` has the push options and the way back
+  out — `%remove-private`, `%ready`, and that omitting `private` on a later push
+  does not publish a change — and `intro-user.html` has what each one is:
+  private decides who can see the change, work in progress decides who is asked
+  to act. The contribution manual's cheat sheet carries `%wip` alone, which is
+  why the corpus did.
+- Where a checkout pushes is `remote.origin.pushurl`, `remote.origin.push` and
+  `.gitreview`. The setup guide at docs.typo3.org writes the first two, and the
+  bundled checkout is the case that shows why reading them is a question of its
+  own: it has no `pushurl` at all, fetches and pushes GitHub, and its
+  `.gitreview` names review.typo3.org.
+- The worktree answer was established rather than taken from the two sessions
+  that reported it from practice. In a scratch clone with a worktree, `HEAD`
+  resolves to the worktree's own commit, `git rev-parse --git-path hooks` points
+  at the clone's hook directory, a `commit-msg` hook there runs for a commit
+  made in the worktree, `remote.origin.pushurl` reads the same in both, and
+  `HEAD:refs/for/main` carried exactly the worktree's commit.
+- The closed issue is the one that stays partly open.
+  `Build/git-hooks/commit-msg` checks `^Resolves: #[0-9]+$` and nothing about
+  the issue behind the number, and Gerrit does not ask Forge, so nothing refuses
+  the push. The manual's issue workflow says a report moves to "Under Review"
+  when its first patch set arrives and that anyone may patch any issue, and it
+  demands no reopening anywhere. Whether the automation also moves a closed
+  report is unestablished, and the document says so: Forge answers a fetch of
+  the issue with HTTP 403, which is the bot protection
+  `feedback/2026-08-02-145217` reports.
+
+[`R-KNW-057`](../../requirements/knowledge/knw-057-the-push-a-session-cannot-take-back-is-answered-in-full.md)
+is what holds the four, and `feedback/2026-08-02-144848` is archived with it.

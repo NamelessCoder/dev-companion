@@ -1160,11 +1160,20 @@ final class ScopeTest extends TestCase
     /**
      * A thinner answer that does not say what it left out reads as "nobody
      * wrote this down", which is the one thing it does not mean.
+     *
+     * The query is the one that clears the coverage floor with room —
+     * `Code Style` covers 0.612 of it against a floor of 0.5 — and it is chosen
+     * that way rather than for its wording. `review readiness for my site
+     * package` stood here at 0.508, and the four sections `R-KNW-057` added
+     * about the Gerrit push took it to 0.462 without touching the section it
+     * depends on: coverage is a share of the query's weight, and a term is
+     * weighed by how few sections carry it, so anything added anywhere moves it
+     * — `D-ANS-040`.
      */
     #[Test]
     public function whatARuleAnswerWithheldIsNamedRatherThanMissing(): void
     {
-        $outside = Registry::call('typo3_rule_lookup', ['query' => 'review readiness for my site package']);
+        $outside = Registry::call('typo3_rule_lookup', ['query' => 'code style rules for my site package']);
 
         self::assertContains('typo3-core-rules', array_column($outside->data['withheldDocuments'], 'id'));
         self::assertStringStartsWith('This reads as work outside the TYPO3 core', $outside->text);

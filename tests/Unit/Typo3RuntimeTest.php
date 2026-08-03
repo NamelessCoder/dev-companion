@@ -10,6 +10,7 @@ use PHPUnit\Framework\TestCase;
 use Typo3CmsMcp\Installation\Instance;
 use Typo3CmsMcp\Installation\Typo3Cli;
 use Typo3CmsMcp\Installation\Typo3Runtime;
+use Typo3CmsMcp\Process\CommandRunner;
 use Typo3CmsMcp\Upkeep\Fixture;
 
 /**
@@ -31,6 +32,7 @@ final class Typo3RuntimeTest extends TestCase
     {
         putenv(Typo3Cli::CONSOLE_VARIABLE);
         Instance::discoverFrom(null);
+        Typo3Cli::useRunner(null);
         Typo3Cli::forget();
         Typo3Runtime::forget();
     }
@@ -79,6 +81,17 @@ final class Typo3RuntimeTest extends TestCase
     #[Test]
     public function aStatedConsoleNoInterpreterCanBeDerivedFromIsSaidOutLoud(): void
     {
+        // `env` is a program, and this case is about the answer for a stated
+        // console whose first word is one and still names no interpreter.
+        // Whether this machine has an `env` is not what it holds — read off
+        // the real `PATH` it passed here and failed on a machine carrying
+        // only PHP, with the answer for a program that does not exist.
+        $ran = self::createStub(CommandRunner::class);
+        $ran->method('locate')->willReturnCallback(
+            static fn(string $name): ?string => $name === 'env' ? '/usr/bin/env' : null,
+        );
+        Typo3Cli::useRunner($ran);
+
         $this->root = $this->installationWithAConsole();
         putenv(Typo3Cli::CONSOLE_VARIABLE . '=env /some/where/cli');
         $this->discover($this->root);

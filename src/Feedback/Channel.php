@@ -238,7 +238,7 @@ final class Channel
             '--format=%x00%h%x1f%ad%x1f%s',
             '--',
             'feedback/archive',
-        ], Paths::root());
+        ], self::root());
         if ($log === null) {
             return [];
         }
@@ -264,8 +264,15 @@ final class Channel
     }
 
     /**
-     * Runs one git command in this checkout and returns its output, or null
-     * where git could not answer.
+     * Runs one git command in the checkout the store belongs to, and returns
+     * its output — or null where git could not answer.
+     *
+     * The working directory is the store's own root rather than
+     * `Paths::root()`, which is the same directory in an installation and is
+     * not one in a test writing into a store of its own. There the temporary
+     * root carries no `.git`, this answers null before starting anything, and
+     * a unit test that only wanted to list feedback does not run `git log`
+     * — `R-COD-003`.
      *
      * @param array<int, string> $command
      */

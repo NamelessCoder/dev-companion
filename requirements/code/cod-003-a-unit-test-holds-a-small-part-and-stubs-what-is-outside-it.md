@@ -52,8 +52,10 @@ died in between left them, in the queue the next session reads. The third was
 the fix for the first: a hand-written `FakeRunner` doing what
 `self::createStub()` does.
 
-The suite runs the same with `PATH=/usr/bin:/bin` now, which is the whole of
-what this is for.
+The suite runs the same with nothing but `php` and `sh` on the `PATH` now —
+no git, no ddev, no docker, not even `env` — which is the whole of what this is
+for, and the check worth repeating: a `PATH` that still carries `/usr/bin` says
+much less than it looks like it does.
 
 ## Held by
 

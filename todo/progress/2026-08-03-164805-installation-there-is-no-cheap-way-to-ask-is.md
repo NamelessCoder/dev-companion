@@ -1,7 +1,9 @@
 # Task: full conformance audit of the project extension EXT:guidedtour against a TYPO3 14.3.5 insta...
 
-**Serves:** feedback/2026-08-03-164710-installation-the-audited-extension-resolves-ext.md
+**Serves:** feedback/2026-08-03-164805-installation-there-is-no-cheap-way-to-ask-is.md
 **Priority:** low
+**Branch:** todo/installation-there-is-no-cheap-way-to-ask-is
+**Claimed:** 2026-08-03
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

@@ -2,6 +2,8 @@
 
 **Serves:** R-KNW-061, feedback/2026-08-03-164659-installation-the-highest-impact-finding-of-the.md
 **Priority:** normal
+**Branch:** todo/say-what-a-translation-file-with-no-target-language-renders
+**Claimed:** 2026-08-03
 
 [`D-KNW-050`](../../decisions/knowledge/knw-050-what-a-missing-target-language-does-to-a-translation-file-is-a-gap-this-server-owns.md),
 step 1a: `language-files` names `target-language` only inside the correction of a

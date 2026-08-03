@@ -2,6 +2,8 @@
 
 **Serves:** R-ANS-020, feedback/2026-08-03-164651-task-full-conformance-audit-of-the-project.md
 **Priority:** normal
+**Branch:** todo/say-that-the-fluid-roots-were-read-off-the-directory
+**Claimed:** 2026-08-03
 
 `Extension::fluidRoots()` at `src/Installation/Extension.php:1140` is `is_dir()`
 over Templates, Partials and Layouts, and the schema at

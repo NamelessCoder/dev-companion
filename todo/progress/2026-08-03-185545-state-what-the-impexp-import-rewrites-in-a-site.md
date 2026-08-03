@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-03-162836-task-seed-a-local-typo3-14-3-5-development.md
 **Priority:** normal
+**Branch:** todo/state-what-the-impexp-import-rewrites-in-a-site
+**Claimed:** 2026-08-03
 
 `D-KNW-048` is the judgement this comes out of, and it names what was read. Write into `knowledge/hints/distribution.json` what
 `Import::processSiteConfigurations()` does to a site configuration carried

@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-03-162745-task-give-a-standalone-typo3-extension.md
 **Priority:** normal
+**Branch:** todo/write-the-skill-that-brings-a-development-installation
+**Claimed:** 2026-08-03
 
 Do the reading `documentation/clients/writing-a-skill.md` asks for, before a
 line of the skill is written, and end it with the draft in front of the person

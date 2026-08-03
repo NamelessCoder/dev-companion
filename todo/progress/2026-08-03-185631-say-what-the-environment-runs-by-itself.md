@@ -2,6 +2,8 @@
 
 **Serves:** R-PRJ-009, feedback/2026-08-03-154501-task-boot-an-existing-typo3-composer-project.md
 **Priority:** normal
+**Branch:** todo/say-what-the-environment-runs-by-itself
+**Claimed:** 2026-08-03
 
 [`D-ANS-044`](../../decisions/answers/ans-044-the-environment-answer-carries-the-lifecycle-it-declares.md)
 is the judgement and the evidence; what is left is the reading DDEV owes and the

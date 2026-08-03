@@ -1,7 +1,9 @@
 # Task: full conformance audit of the project extension EXT:guidedtour against a TYPO3 14.3.5 insta...
 
-**Serves:** feedback/2026-08-03-164734-installation-the-extension-ships-a-fork-of-the.md
+**Serves:** feedback/2026-08-03-164818-installation-recording-what-worked-so-it-does.md
 **Priority:** low
+**Branch:** todo/installation-recording-what-worked-so-it-does
+**Claimed:** 2026-08-03
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

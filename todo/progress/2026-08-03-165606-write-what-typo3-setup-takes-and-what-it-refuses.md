@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-03-162826-task-install-typo3-14-3-5-unattended-from-a.md
 **Priority:** normal
+**Branch:** todo/write-what-typo3-setup-takes-and-what-it-refuses
+**Claimed:** 2026-08-03
 
 Step 1a on the mechanics and step 2 on the two site options, judged in
 `D-KNW-046`, which carries the evidence and the 14.3 reading. Write one hint —

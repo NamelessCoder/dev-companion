@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-03-162759-setting-the-extension-s-own-composer-json-up-as.md
 **Priority:** normal
+**Branch:** todo/say-which-composer-keys-install-typo3-below-an-extension
+**Claimed:** 2026-08-03
 
 Step 1a of the ladder, on the evidence in
 [`D-KNW-047`](../../decisions/knowledge/knw-047-what-installs-typo3-below-the-extension-being-developed-is-a-gap-this-server-owns.md):

@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-03-154508-start-the-environment-import-a-database-and.md
 **Priority:** normal
+**Branch:** todo/give-work-that-operates-an-installation-its-own-change-type
+**Claimed:** 2026-08-03
 
 [`D-GUI-008`](../../decisions/guides/gui-008-operating-an-installation-is-a-change-type-of-its-own.md),
 which a session booting a Composer project paid for on 2026-08-03: it had no

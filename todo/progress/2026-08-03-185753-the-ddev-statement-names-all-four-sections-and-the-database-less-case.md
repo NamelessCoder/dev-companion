@@ -2,6 +2,8 @@
 
 **Serves:** R-KNW-060, feedback/2026-08-03-162858-task-run-a-local-typo3-14-3-5-development.md
 **Priority:** normal
+**Branch:** todo/the-ddev-statement-names-all-four-sections-and-the-database-less-case
+**Claimed:** 2026-08-03
 
 Establish from DDEV's own documentation and sources at v1.25.1 what its TYPO3
 settings management generates when the database container is omitted — the

@@ -2,6 +2,8 @@
 
 **Serves:** R-ANS-020, feedback/2026-08-03-164651-task-full-conformance-audit-of-the-project.md
 **Priority:** high
+**Branch:** todo/report-every-directory-below-classes
+**Claimed:** 2026-08-03
 
 `Extension::CLASS_KINDS` at `src/Installation/Extension.php:34` is a closed list
 of thirteen names, and `Extension::classes()` below it iterates that and nothing

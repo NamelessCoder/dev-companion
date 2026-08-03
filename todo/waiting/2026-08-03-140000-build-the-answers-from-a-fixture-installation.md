@@ -2,8 +2,6 @@
 
 **Serves:** documentation/clients/tools/
 **Priority:** normal
-**Branch:** todo/build-the-answers-from-a-fixture-installation
-**Claimed:** 2026-08-03
 **Waiting on:** may the tool pages be built against a second fixture standing in
     for the core checkout, when `typo3_component_lookup` then answers from the
     bundled catalog rather than from an installed backend? Three answers below,

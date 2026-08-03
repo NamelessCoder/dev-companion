@@ -149,22 +149,22 @@ final class VersionsTest extends TestCase
         // Translation domains do not exist below the version they arrived in,
         // and the domain string is syntactically fine there — the label just
         // renders empty.
-        $statements = static fn(?int $target): array => array_column(
-            ArchitectureHints::byId('language-files', $target)['hints'],
-            'text'
-        );
+        // The whole hint is bound: every statement of it arrived in 14, so on
+        // 13 there is nothing left of it and it is dropped rather than returned
+        // empty. That is the same rule one statement further.
+        self::assertNull(ArchitectureHints::byId('translation-domain', 13));
 
-        $onThirteen = implode("\n", $statements(13));
-        self::assertStringNotContainsString('translation domain', $onThirteen);
-
-        $onFourteen = implode("\n", $statements(14));
+        $onFourteen = implode("\n", array_column(
+            ArchitectureHints::byId('translation-domain', 14)['hints'],
+            'text',
+        ));
         self::assertStringContainsString('translation domain', $onFourteen);
     }
 
     #[Test]
     public function withoutATargetTheStatementComesBackWithItsRange(): void
     {
-        $result = Registry::call('typo3_architecture_lookup', ['id' => 'language-files']);
+        $result = Registry::call('typo3_architecture_lookup', ['id' => 'translation-domain']);
 
         self::assertNull($result->data['targetVersion']);
         $bound = array_values(array_filter(
@@ -264,7 +264,7 @@ final class VersionsTest extends TestCase
         self::assertSame([14], Versions::targets('14'), 'a caller who names a version is asking about it');
 
         $statements = implode("\n", array_column(
-            ArchitectureHints::byId('extension-files', Versions::targets())['hints'],
+            ArchitectureHints::byId('extension-manifest', Versions::targets())['hints'],
             'text',
         ));
         self::assertStringContainsString(
@@ -289,7 +289,7 @@ final class VersionsTest extends TestCase
         ], JSON_THROW_ON_ERROR));
         Instance::discoverFrom($root);
 
-        $result = Registry::call('typo3_architecture_lookup', ['id' => 'extension-files']);
+        $result = Registry::call('typo3_architecture_lookup', ['id' => 'extension-manifest']);
 
         self::assertSame([13, 14], $result->data['targetVersions']);
         self::assertSame(14, $result->data['targetVersion']);
@@ -450,7 +450,7 @@ final class VersionsTest extends TestCase
         self::assertSame([14], Versions::targets());
         self::assertStringContainsString(
             'Answered for TYPO3 v14',
-            Registry::call('typo3_architecture_lookup', ['id' => 'extension-files'])->text,
+            Registry::call('typo3_architecture_lookup', ['id' => 'extension-manifest'])->text,
         );
     }
 }

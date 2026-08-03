@@ -1,0 +1,150 @@
+[
+  {
+    "id": "extension-manifest",
+    "title": "What Makes a Directory an Extension",
+    "domains": [
+      "php"
+    ],
+    "appliesTo": [
+      "composer.json",
+      "ext_emconf.php",
+      "extension key",
+      "package manifest",
+      "providesPackages",
+      "extension version",
+      "typo3-cms-extension",
+      "InvalidPackageManifestException",
+      "extension title"
+    ],
+    "hints": [
+      {
+        "text": "An extension is recognised by its composer.json, and the package metadata is read from there: the type has to be typo3-cms-extension (typo3-cms-framework for a system extension), the key is extra.typo3/cms.extension-key, the version is extra.typo3/cms.version or the top-level version field, and extra.typo3/cms.Package.providesPackages lists the Composer packages the extension itself ships — present as an empty object where it ships none.",
+        "since": 14
+      },
+      {
+        "text": "ext_emconf.php is the deprecated fallback for exactly that metadata, and what decides whether it is read is composer.json declaring both fields rather than either: providesPackages present — as an empty object where the extension ships no Composer packages of its own — and a version in extra.typo3/cms.version or in the top-level version field. Declaring one of the two and not the other still reads the file and still raises an E_USER_DEPRECATED during cache warm-up, which a functional test suite running with failOnDeprecation is usually the first thing to surface; a fixture extension therefore needs a version of its own, and any value does, since nothing evaluates it under test. A Composer installation is unaffected either way — building the package artifact skips the fallback before it is reached.",
+        "since": 14,
+        "until": 14
+      },
+      {
+        "text": "Declaring both fields stops TYPO3 evaluating ext_emconf.php, which is not the same as being free to delete it: Tailor and the TER read that file, so an extension published there keeps it and keeps its contents in step with composer.json. One that goes nowhere near the TER can drop it.",
+        "since": 14
+      },
+      {
+        "text": "There is no fallback left: an extension whose composer.json does not declare both the version and providesPackages has an invalid package manifest, and the installation throws InvalidPackageManifestException naming the two fields instead of reading ext_emconf.php. System extensions are exempt, a framework package deriving its version from Typo3Version.",
+        "since": 15
+      },
+      {
+        "text": "ext_emconf.php is what makes a directory an extension outside Composer — the scan looks for that file — and its $EM_CONF array carries the title, the version, the state and the constraints on other extensions. In a Composer installation composer.json is the authority and the file is TER metadata.",
+        "until": 13
+      },
+      {
+        "text": "The backend title of an extension comes out of the composer.json description, split on the first \" - \": what stands before it becomes the title, the rest the description. An extension whose description is one sentence is listed with that whole sentence as its title.",
+        "since": 14
+      }
+    ]
+  },
+  {
+    "id": "extension-schema-sql",
+    "title": "Declaring Tables and Columns",
+    "domains": [
+      "php"
+    ],
+    "appliesTo": [
+      "ext_tables.sql",
+      "database schema",
+      "add a column",
+      "new table",
+      "schema analyzer",
+      "column is missing"
+    ],
+    "hints": [
+      {
+        "text": "ext_tables.sql carries only the delta the schema analyzer needs — the tables and columns TCA does not already describe. It is not a schema dump, and a column TCA defines does not belong in it.",
+        "since": 13
+      },
+      {
+        "text": "ext_tables.sql declares every table and every column of the extension. Nothing is derived from TCA here, so a column that is missing from the file is missing from the database.",
+        "until": 12
+      }
+    ]
+  },
+  {
+    "id": "extension-declarative-files",
+    "title": "The Files an Extension Is Configured By",
+    "domains": [
+      "php"
+    ],
+    "appliesTo": [
+      "Configuration/JavaScriptModules.php",
+      "Configuration/Icons.php",
+      "Configuration/page.tsconfig",
+      "Configuration/user.tsconfig",
+      "import map",
+      "register an icon",
+      "auto-loaded"
+    ],
+    "hints": [
+      "Configuration/JavaScriptModules.php declares the import map for an extension's backend JavaScript: a dependencies list of other extensions and an imports map from bare specifier to an EXT: path, with an optional exclude list.",
+      "Configuration/Icons.php returns an array keyed by icon identifier, each entry naming a provider (SvgIconProvider or BitmapIconProvider) and an EXT: source path.",
+      "Configuration/page.tsconfig is auto-loaded from that path and needs no registration call.",
+      {
+        "text": "Configuration/user.tsconfig is auto-loaded the same way.",
+        "since": 13
+      }
+    ]
+  },
+  {
+    "id": "extension-boot-files",
+    "title": "What Still Runs at Boot, and What No Longer Does",
+    "domains": [
+      "php"
+    ],
+    "appliesTo": [
+      "ext_localconf.php",
+      "ext_tables.php",
+      "registration file",
+      "stale registration",
+      "registration is gone",
+      "boot"
+    ],
+    "hints": [
+      {
+        "text": "Shipping ext_tables.php is deprecated: every active package that has one and is not a framework package raises an E_USER_DEPRECATED when the file is loaded, which is on an uncached request and while the compiled ext_tables cache entry is being written. A request served from that cache raises nothing, so a functional suite running with failOnDeprecation is usually the first thing to surface it. What the file carried has declarative homes: backend modules in Configuration/Backend/Modules.php, backend routes in Configuration/Backend/Routes.php, user settings through ExtensionManagementUtility::addUserSetting() in Configuration/TCA/Overrides/be_users.php, and the record types a page type allows through the TCA allowedRecordTypes option in Configuration/TCA/Overrides/pages.php. System extensions are exempt, being framework packages.",
+        "since": 14,
+        "until": 14
+      },
+      {
+        "text": "ext_tables.php is not loaded at all. Nothing reads the file and nothing reports it, so an extension that still registers there loses those registrations silently — the backend module, the route or the user setting is simply absent.",
+        "since": 15
+      },
+      "ext_localconf.php is what is left for what has no declarative file. It runs on every request, so keep it to registration and out of anything that does work."
+    ]
+  },
+  {
+    "id": "content-rendering-templates",
+    "title": "contentRenderingTemplates and Where Plugin TypoScript Lands",
+    "domains": [
+      "php",
+      "typoscript"
+    ],
+    "appliesTo": [
+      "contentRenderingTemplates",
+      "defaultContentRendering",
+      "include_static_file",
+      "static include",
+      "configurePlugin",
+      "plugin typoscript",
+      "typoscript order",
+      "stale registration"
+    ],
+    "hints": [
+      "$GLOBALS['TYPO3_CONF_VARS']['FE']['contentRenderingTemplates'][] in ext_localconf.php is a membership list of static-include identifiers and does nothing on its own. Every read of it is one test: while a legacy TypoScript static include is resolved, that include's identifier is looked up in the list, and a hit appends FE['defaultTypoScript_<constants|setup>.']['defaultContentRendering'] directly after it. That is the slot ExtensionUtility::configurePlugin() writes every Extbase plugin's TypoScript into, so a matched entry decides ordering — the plugin configuration lands after the content rendering rather than before it. The identifier is the extension key with its underscores removed plus the include path, as in 'fluidstyledcontent/Configuration/TypoScript/', or the bare key alone for an extension shipping ext_typoscript_setup.typoscript. It is read in SysTemplateTreeBuilder::addStaticMagicFromGlobals(), reached from a sys_template include_static_file row, and in TreeFromLineStreamBuilder, reached from an @import or INCLUDE_TYPOSCRIPT line. Grep the checkout for the key to confirm what else reads it on the branch in hand.",
+      {
+        "text": "The pre-IncludeTree resolver reads it too, with the same membership test: TypoScriptParser while it expands an include, and TemplateService::prependStaticExtra() as each static row is prepended.",
+        "until": 12
+      },
+      "So an entry is dead as soon as the include it names is gone, and fluid_styled_content is the live case: it registers that identifier and still ships both Configuration/TypoScript/ and the addStaticFile() call in Configuration/TCA/Overrides/sys_template.php that lets a sys_template pick it. An extension whose TypoScript has moved into Configuration/Sets/ has neither, and no @import of the old path is left either, so nothing can ever match its entries — those lines are a cleanup rather than a defect. Nothing reports them: the key is not deprecated, no changelog entry names it, and fluid_styled_content registers itself the same way, so a deprecation review and the Extension Scanner both pass the file. Site sets are the migration such entries are usually left over from, which is the site-sets hint."
+    ]
+  }
+]

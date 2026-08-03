@@ -8,14 +8,11 @@
     "appliesTo": [
       "Configuration/Sets/",
       "site set",
-      "settings.definitions.yaml",
-      "settings.yaml",
-      "config/sites/",
+      "set",
       "setup.typoscript",
       "constants.typoscript",
-      "BackendLayouts",
-      "backend layout",
-      "page.tsconfig"
+      ".typoscript",
+      "how does an extension ship typoscript"
     ],
     "hints": [
       {
@@ -26,6 +23,27 @@
         "text": "Next to config.yaml the set may hold setup.typoscript, settings.definitions.yaml, settings.yaml, labels.xlf, page.tsconfig and route-enhancers.yaml. Only config.yaml is required.",
         "since": 13
       },
+      "TypoScript files use the .typoscript extension.",
+      "This is how an extension ships TypoScript, and a project's own sitepackage is an extension like any other — the mechanism does not change because the repository is not the core's. Configuring one installation is where it stops being a convention and becomes that site's decision, and this server does not make it.",
+      "Its neighbours: site-set-settings for what replaces constants, site-set-labels-and-layouts for what a set declares beside TypoScript, site-set-migration for what the move leaves behind."
+    ]
+  },
+  {
+    "id": "site-set-settings",
+    "title": "Site Set Settings Instead of TypoScript Constants",
+    "domains": [
+      "typoscript"
+    ],
+    "appliesTo": [
+      "settings.definitions.yaml",
+      "settings.yaml",
+      "site settings",
+      "constants",
+      "dotted path",
+      "{settings.",
+      "config/sites/"
+    ],
+    "hints": [
       {
         "text": "settings.definitions.yaml is where a set declares its settings: a categories map and a settings map, each entry with default, type and category. It is the replacement for TypoScript constants — reaching for constants.typoscript in new code is the mistake to avoid here.",
         "since": 13
@@ -37,7 +55,24 @@
       {
         "text": "A site's config/sites/<identifier>/settings.yaml and the settings key inline in its config.yaml are alternatives, not layers: when settings.yaml exists, TYPO3 uses it wholesale and does not merge the inline values into it. Set defaults sit below whichever site-local source wins. The backend settings editor persists to settings.yaml, so keep a site's own values in one place or the first backend save can silently leave inline values behind.",
         "since": 13
-      },
+      }
+    ]
+  },
+  {
+    "id": "site-set-labels-and-layouts",
+    "title": "Labels and Page Layouts a Site Set Ships",
+    "domains": [
+      "typoscript"
+    ],
+    "appliesTo": [
+      "labels.xlf",
+      "set labels",
+      "page.tsconfig in a set",
+      "BackendLayouts",
+      "backend layout",
+      "column identifier"
+    ],
+    "hints": [
       {
         "text": "The set's labels.xlf resolves to the translation domain <ext>.sets.<setname>; typo3_translation_domain_lookup computes it from the path.",
         "since": 14
@@ -49,14 +84,30 @@
       {
         "text": "A page layout the set ships in page.tsconfig declares its columns under mod.web_layout.BackendLayouts, and every column needs an explicit `identifier`: that identifier is what the frontend template addresses as {content.<identifier>}. Leaving it out is accepted on the branches that still fall back to a generated one, and the template can then no longer reach its own content — the page renders empty and nothing is logged.",
         "since": 14
-      },
+      }
+    ]
+  },
+  {
+    "id": "site-set-migration",
+    "title": "What Moving TypoScript Into a Set Leaves Behind",
+    "domains": [
+      "typoscript"
+    ],
+    "appliesTo": [
+      "addTypoScriptSetup",
+      "addStaticFile",
+      "includeInSiteSets",
+      "static include",
+      "contentRenderingTemplates",
+      "stale registration",
+      "migrate to site sets"
+    ],
+    "hints": [
       "ExtensionManagementUtility::addTypoScriptSetup() and addStaticFile() are the predecessor and are still called from a few sysexts, addTypoScriptSetup with an includeInSiteSets flag that folds the content into the set mechanism. Both mechanisms coexist; new code ships a set.",
       {
-        "text": "Moving an extension's TypoScript into a set leaves what registered the old static include behind in ext_localconf.php, and nothing reports it. A $GLOBALS['TYPO3_CONF_VARS']['FE']['contentRenderingTemplates'] entry naming the removed Configuration/TypoScript/ path can no longer be matched by anything, so it is a cleanup rather than a defect — the extension-files hint says what reads that key and what a matched entry would have done.",
+        "text": "Moving an extension's TypoScript into a set leaves what registered the old static include behind in ext_localconf.php, and nothing reports it. A $GLOBALS['TYPO3_CONF_VARS']['FE']['contentRenderingTemplates'] entry naming the removed Configuration/TypoScript/ path can no longer be matched by anything, so it is a cleanup rather than a defect — the content-rendering-templates hint says what reads that key and what a matched entry would have done.",
         "since": 13
       },
-      "TypoScript files use the .typoscript extension.",
-      "This is how an extension ships TypoScript, and a project's own sitepackage is an extension like any other — the mechanism does not change because the repository is not the core's. Configuring one installation is where it stops being a convention and becomes that site's decision, and this server does not make it.",
       {
         "text": "Site set resolution is covered by functional tests under typo3/sysext/core/Tests/Functional/Site/Set/; the labels have their own check, checkIntegritySetLabels.",
         "since": 13,

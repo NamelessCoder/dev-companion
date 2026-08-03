@@ -1,7 +1,7 @@
 [
   {
     "id": "fluid-templates",
-    "title": "Fluid Templates, Partials and Layouts",
+    "title": "Fluid Template Files and Their Namespaces",
     "domains": [
       "fluid"
     ],
@@ -11,9 +11,10 @@
       "Resources/Private/Layouts/",
       ".fluid.html",
       "fluid template",
-      "f:if",
-      "f:then",
-      "f:else"
+      "namespace",
+      "xmlns:",
+      "Configuration/Fluid/Namespaces.php",
+      "viewhelper prefix"
     ],
     "hints": [
       {
@@ -26,6 +27,25 @@
       },
       "Only a few prefixes are available without declaring them; they are registered globally through the Configuration/Fluid/Namespaces.php of each package, so which ones depends on what is installed. typo3_fluid_namespace_list answers it for your installation.",
       "Every other namespace is declared per template, including the backend one: xmlns:be=\"http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers\" on the root element, together with data-namespace-typo3-fluid=\"true\" so the declaration is stripped from the rendered output.",
+      "Use typo3_component_lookup for the markup of a backend component and typo3_icon_lookup for an icon identifier, instead of writing either from memory.",
+      "What a template may and may not do is fluid-layouts-sections, and where an expression goes wrong is fluid-conditions-and-arrays."
+    ]
+  },
+  {
+    "id": "fluid-backend-view",
+    "title": "How a Backend Module Resolves a Fluid Template",
+    "domains": [
+      "fluid"
+    ],
+    "appliesTo": [
+      "view factory",
+      "templateRootPaths",
+      "partialRootPaths",
+      "StandaloneView",
+      "backend module template",
+      "partial is not found"
+    ],
+    "hints": [
       {
         "text": "A backend module resolves templates through the templateRootPaths of its view factory, so a partial is referenced by its name below Resources/Private/Partials, never by a file path.",
         "since": 13
@@ -33,9 +53,46 @@
       {
         "text": "There is no view factory here: a backend module builds its own view — StandaloneView with setTemplateRootPaths() and setPartialRootPaths(), or the Extbase view of an Extbase module — and the rule is the same, a partial is referenced by its name rather than by a file path.",
         "until": 12
-      },
+      }
+    ]
+  },
+  {
+    "id": "fluid-layouts-sections",
+    "title": "What a Fluid Layout Renders, and What Is Never Executed",
+    "domains": [
+      "fluid"
+    ],
+    "appliesTo": [
+      "f:layout",
+      "f:section",
+      "f:comment",
+      "nothing is rendered",
+      "markup outside a section",
+      "html comment"
+    ],
+    "hints": [
       "A template that declares a layout renders its sections and nothing else. Markup, an <f:variable> assignment or any other ViewHelper call outside <f:section> is never executed — the layout is rendered in place of the template body, so the value is simply absent, no error is raised and nothing is logged. A variable a section uses is declared inside that section.",
-      "Notes in a template belong in <f:comment>, whose children are not rendered at all. An HTML comment is part of the response, and the {expressions} inside it are resolved on the way there — a comment that documents the variables of a loop ships their values to the browser.",
+      "Notes in a template belong in <f:comment>, whose children are not rendered at all. An HTML comment is part of the response, and the {expressions} inside it are resolved on the way there — a comment that documents the variables of a loop ships their values to the browser."
+    ]
+  },
+  {
+    "id": "fluid-conditions-and-arrays",
+    "title": "Fluid Conditions, Escaping and Array Literals",
+    "domains": [
+      "fluid"
+    ],
+    "appliesTo": [
+      "f:if",
+      "f:then",
+      "f:else",
+      "escapeOutput",
+      "escaping",
+      "array literal",
+      "empty array",
+      "additionalParams",
+      "the branch renders nothing"
+    ],
+    "hints": [
       "Fluid escapes output by default. Do not work around it in the template; if a ViewHelper has to return markup, that decision belongs in the ViewHelper via escapeOutput.",
       "Once an <f:if> carries an <f:else>, its then-branch has to be an explicit <f:then>. Without one the markup between <f:if> and <f:else> is no branch at all: with the condition true it renders nothing, a ViewHelper standing there is never called, no error is raised and nothing is logged — the else content is what appears. An <f:else if=\"...\"> child does the same. Only an <f:if> that has neither renders its inline body as the then-branch. The working shape is <f:if condition=\"{testimonial.data.link}\"><f:then><f:link.typolink parameter=\"{testimonial.data.link}\">{testimonial.data.company}</f:link.typolink></f:then><f:else>{testimonial.data.company}</f:else></f:if>.",
       "An array literal needs at least one key-value pair: there is no {} and it is not an empty array. It evaluates to null wherever it stands — an attribute value, an inline argument, the body of an f:variable — and a null argument is not one that was given, so the ViewHelper gets the default declared for it. additionalParams=\"{}\" therefore passes no array rather than an empty one, which is usually what was meant anyway.",
@@ -46,8 +103,7 @@
       {
         "text": "An array-typed argument that has to be absent under a condition needs two calls here, one in f:then and one in f:else. Written as one — additionalParams=\"{f:if(condition: c, then: params)}\" — it hands the argument an empty string instead, because an f:if with no else evaluates to that rather than to null. A ViewHelper that casts it then builds a query parameter out of nothing, (array)'' being a one-element array holding an empty string, and nothing reports it.",
         "until": 12
-      },
-      "Use typo3_component_lookup for the markup of a backend component and typo3_icon_lookup for an icon identifier, instead of writing either from memory."
+      }
     ]
   },
   {
@@ -97,21 +153,13 @@
     "appliesTo": [
       "PAGEVIEW",
       "pageview",
-      "frontend",
       "page rendering",
       "frontend template",
       "page template",
-      "backend_layout",
-      "page layout",
-      "content area",
-      "contentArea",
-      "f:render.contentArea",
-      "sitepackage",
-      "Resources/Private/Pages/",
       "FLUIDTEMPLATE",
-      "dataProcessing",
-      "menu",
-      "navigation"
+      "backend_layout",
+      "pagets__",
+      "which template renders the page"
     ],
     "hints": [
       {
@@ -126,6 +174,25 @@
         "text": "The template name is not configurable. It is the page layout identifier with the pagets__ prefix stripped, and \"default\" where the page declares none — so backend_layout = pagets__landingpage renders Pages/Landingpage and nothing else will.",
         "since": 13
       },
+      "Its neighbours: page-content-areas for addressing a column, page-variables-and-processors for what the template is handed, page-cache-headers for what a cacheable page answers with."
+    ]
+  },
+  {
+    "id": "page-content-areas",
+    "title": "Addressing a Content Area in a Page Template",
+    "domains": [
+      "fluid"
+    ],
+    "appliesTo": [
+      "contentAs",
+      "content area",
+      "contentArea",
+      "f:render.contentArea",
+      "{content.",
+      "column identifier",
+      "the column is empty"
+    ],
+    "hints": [
       {
         "text": "The content of the page arrives as one variable holding the content areas, named by the `contentAs` option and \"content\" by default. A single area is addressed as {content.<identifier>} and rendered with <f:render.contentArea contentArea=\"{content.main}\" />.",
         "since": 14
@@ -133,7 +200,25 @@
       {
         "text": "Those identifiers are the ones the page layout declares for its columns in mod.web_layout.BackendLayouts — see the site set hints. A column without an explicit identifier cannot be addressed by name, and the template then renders empty with no error.",
         "since": 14
-      },
+      }
+    ]
+  },
+  {
+    "id": "page-variables-and-processors",
+    "title": "What a Page Template Is Handed",
+    "domains": [
+      "fluid"
+    ],
+    "appliesTo": [
+      "settings.",
+      "dataProcessing",
+      "data processor",
+      "menu",
+      "navigation",
+      "excludeDoktypes",
+      "variables."
+    ],
+    "hints": [
       {
         "text": "The site set settings are assigned as {settings.<path>}. PAGEVIEW assigns `site`, `language` and `page` itself and rejects a variables. entry that uses one of those names.",
         "since": 13
@@ -142,8 +227,39 @@
         "text": "Data processors are configured on the PAGEVIEW object as dataProcessing., the same way FLUIDTEMPLATE takes them.",
         "since": 13
       },
-      "The navigation is one of them: `dataProcessing.<n> = menu`. Its excludeDoktypes option replaces the default list instead of adding to it, and that default — PageRepository::DOKTYPE_BE_USER_SECTION and DOKTYPE_SYSFOLDER — is what keeps backend user sections and storage folders out of the menu. A configured list has to repeat both of those doktype values, or every storage folder ends up in the navigation: no error, nothing logged, and not visible until the site gets its first folder below the root page.",
-      "The content elements on that page are rendered by lib.contentElement, which is a FLUIDTEMPLATE of its own with its own template, partial and layout roots — fluid_styled_content's by default, extended through the styles.templates settings. Pointing one of those roots at the directory PAGEVIEW resolves its own templates from is what makes the page frame collide with the content element frame; the sitepackage layout hint has the naming that keeps them apart.",
+      "The navigation is one of them: `dataProcessing.<n> = menu`. Its excludeDoktypes option replaces the default list instead of adding to it, and that default — PageRepository::DOKTYPE_BE_USER_SECTION and DOKTYPE_SYSFOLDER — is what keeps backend user sections and storage folders out of the menu. A configured list has to repeat both of those doktype values, or every storage folder ends up in the navigation: no error, nothing logged, and not visible until the site gets its first folder below the root page."
+    ]
+  },
+  {
+    "id": "page-content-element-rendering",
+    "title": "How the Content Elements on a Page Are Rendered",
+    "domains": [
+      "fluid"
+    ],
+    "appliesTo": [
+      "lib.contentElement",
+      "fluid_styled_content",
+      "content element rendering",
+      "element template roots"
+    ],
+    "hints": [
+      "The content elements on that page are rendered by lib.contentElement, which is a FLUIDTEMPLATE of its own with its own template, partial and layout roots — fluid_styled_content's by default, extended through the styles.templates settings. Pointing one of those roots at the directory PAGEVIEW resolves its own templates from is what makes the page frame collide with the content element frame; the sitepackage layout hint has the naming that keeps them apart."
+    ]
+  },
+  {
+    "id": "page-cache-headers",
+    "title": "What a Cacheable Page Template Answers With",
+    "domains": [
+      "fluid"
+    ],
+    "appliesTo": [
+      "sendCacheHeaders",
+      "max-age",
+      "Expires header",
+      "cache header",
+      "page is cached in the browser"
+    ],
+    "hints": [
       "config.sendCacheHeaders answers a cacheable page with the page cache lifetime as its max-age and an Expires to match — for a page with nothing that expires that is close to a year out. It is suppressed while a backend user is logged in, which is why it bites exactly where nobody is: a browser that has such a response will not ask again, so a fixed template keeps rendering the old page and flushing the server cache changes nothing. Bind it to the application context — [applicationContext == \"Development\"] config.sendCacheHeaders = 0 [END] — and read \"it is right in curl and wrong in the browser\" as the response headers rather than as a bug in the code."
     ]
   }

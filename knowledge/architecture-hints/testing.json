@@ -1,0 +1,156 @@
+[
+  {
+    "id": "core-tests",
+    "title": "Writing Core Tests",
+    "domains": [
+      "php"
+    ],
+    "scope": "core",
+    "appliesTo": [
+      "/Tests/Unit/",
+      "/Tests/Functional/",
+      "FunctionalTestCase",
+      "UnitTestCase",
+      "importCSVDataSet",
+      "assertCSVDataSet",
+      "test fixture",
+      "dataset",
+      "csv"
+    ],
+    "hints": [
+      "A unit test extends TYPO3\\TestingFramework\\Core\\Unit\\UnitTestCase, a functional test TYPO3\\TestingFramework\\Core\\Functional\\FunctionalTestCase. Both are final and mark cases with the #[Test] attribute rather than a test method-name prefix.",
+      "A functional test declares its environment through properties: protected array $coreExtensionsToLoad, $testExtensionsToLoad and $configurationToUseInTestInstance. Load only what the test needs — every extension costs setup time per test class.",
+      "A functional test starts on an empty database: the first test of a class installs the schema and no rows, every test after it is preceded by a truncation of all tables, and the framework imports nothing of its own — so the only records a test run sees are the ones it primed. A record nobody imported is absent rather than stale: setUpBackendUser(1) fails with \"does not exist in the database\" until a be_users fixture is imported. Two things change that — protected bool $initializeDatabase = false skips creation and truncation entirely, and withDatabaseSnapshot() carries rows the first test of a class created past the truncation for the rest of it.",
+      "State is set up and asserted with CSV fixtures, not hand-written inserts: $this->importCSVDataSet(__DIR__ . '/Fixtures/pages.csv') in setUp(), $this->assertCSVDataSet(__DIR__ . '/Fixtures/Expected.csv') for the result. The files live in a Fixtures/ directory next to the test class. This is the expected form for persistence behaviour.",
+      "Take services from the container with $this->get(SomeService::class) rather than constructing them, so the test exercises the real wiring.",
+      {
+        "text": "Tests mirror the class path: typo3/sysext/<ext>/Classes/Foo/Bar.php is tested by typo3/sysext/<ext>/Tests/{Unit,Functional}/Foo/BarTest.php.",
+        "scope": "core"
+      },
+      "Run the single test file or method while iterating; a full functional run costs minutes per round. typo3_test_run_guide has the targeted invocation.",
+      "Write the narrowest test that exercises the change, and let what the change touches decide the kind: isolated logic is a unit test, while service wiring, persistence, TCA, DataHandler, routing and anything reading configuration only behave like themselves in a functional test. A unit test of those asserts the mock."
+    ]
+  },
+  {
+    "id": "project-extension-tests",
+    "title": "Setting a Test Suite Up in an Extension",
+    "domains": [
+      "php"
+    ],
+    "scope": "extension",
+    "appliesTo": [
+      "set up tests for",
+      "set up tests",
+      "test setup",
+      "write tests",
+      "test coverage",
+      "automated tests",
+      "test suite",
+      "phpunit",
+      "UnitTests.xml",
+      "FunctionalTests.xml",
+      "testing-framework",
+      "Database credentials for tests",
+      "typo3DatabaseName",
+      "typo3DatabaseDriver",
+      "unit test",
+      "functional test",
+      "FunctionalTestCase",
+      "UnitTestCase",
+      "importCSVDataSet",
+      "csv fixture",
+      "test my extension",
+      "tests for the extension"
+    ],
+    "hints": [
+      "The conventions of a core test hold here — UnitTestCase, FunctionalTestCase, final classes, #[Test], CSV fixtures, $this->get() for services — but the harness they run in does not exist yet and is the whole first day.",
+      "typo3/testing-framework ships UnitTests.xml and FunctionalTests.xml under Resources/Core/Build/, and the files say in their own header that extensions should copy them rather than reference them: their testsuite directory points into the core mono repository. Copy those two to Build/ in the extension, point each testsuite at Tests/Unit/ and Tests/Functional/, and run them as vendor/bin/phpunit -c Build/UnitTests.xml. There is no runTests.sh outside the core.",
+      "The two bootstraps beside them are the exception: they hold nothing an extension configures — a Testbase, ORIGINAL_ROOT and two directories created below typo3temp/var/ — so copying them buys a file nobody updates. Point the bootstrap attribute of each copied XML at the one in the vendor directory instead: bootstrap=\"../vendor/typo3/testing-framework/Resources/Core/Build/FunctionalTestsBootstrap.php\" from a Build/ beside vendor/.",
+      "A functional run needs database credentials in the environment: typo3DatabaseDriver, typo3DatabaseHost, typo3DatabaseName, typo3DatabaseUsername, typo3DatabasePassword. Without them it stops with \"Database credentials for tests are neither set through environment variables, and can not be found in an existing LocalConfiguration file\", which does not name the variables it is missing.",
+      "Every test class gets a database of its own — the configured name plus a hash of the class — so that account has to be allowed to create databases. Under DDEV that means root rather than the user the site itself runs as.",
+      "What a functional test then needs from the installation around it is three more questions: extension-test-extensions, extension-test-site and extension-test-frontend-request."
+    ]
+  },
+  {
+    "id": "extension-test-extensions",
+    "title": "Which Extensions a Functional Test Loads",
+    "domains": [
+      "php"
+    ],
+    "scope": "extension",
+    "appliesTo": [
+      "testExtensionsToLoad",
+      "coreExtensionsToLoad",
+      "Test extension path",
+      "which does not exist",
+      "load an extension in a test",
+      "package collection"
+    ],
+    "hints": [
+      "$testExtensionsToLoad takes paths relative to the document root, not to the project root: in a Composer installation with a public/ web directory, \"extensions/my_sitepackage\" is looked for below public/ and fails with \"Test extension path ... not found\". Name the extension key or the Composer package name instead — those are resolved against the installed packages, and that is the form a project wants.",
+      "Every TYPO3 extension the extension under test requires has to be loaded as well, in $coreExtensionsToLoad or $testExtensionsToLoad. A missing one fails at setup with 'Package \"x\" depends on package \"y\" which does not exist' — thrown by the testing framework's own package collection, not by the installation, so it is a test-only failure — and the list to mirror is the extension's own require entries. That makes every requirement a change to every test class: the moment the extension requires one more, each class whose list does not name it fails at setup, including the classes that have nothing to do with what was added."
+    ]
+  },
+  {
+    "id": "extension-test-site",
+    "title": "Writing a Site Configuration in a Test",
+    "domains": [
+      "php"
+    ],
+    "scope": "extension",
+    "appliesTo": [
+      "SiteBasedTestTrait",
+      "SiteWriter",
+      "SiteConfiguration",
+      "site configuration in a test",
+      "setUpFrontendRootPage",
+      "No page configured for type",
+      "site settings in a test",
+      "flushCaches",
+      "sys_template in a test"
+    ],
+    "hints": [
+      "SiteBasedTestTrait is not available. The core's Tests/ directories are export-ignored, so the typo3/cms-core Composer package ships none of them, and the trait every core frontend test builds on cannot be used outside the mono repository. Writing the site configuration in setUp() is what it does anyway.",
+      {
+        "text": "That is one call: $this->get(SiteWriter::class)->write($identifier, $configuration), with the same array the site's config.yaml holds — rootPageId, base, languages, and the sets the site depends on.",
+        "since": 13
+      },
+      {
+        "text": "That is one call: $this->get(SiteConfiguration::class)->write($identifier, $configuration), with the same array the site's config.yaml holds — rootPageId, base, languages.",
+        "until": 12
+      },
+      "That write is not a replace. Where the file already exists it becomes the base, the new array is diffed against it — modified keys applied, keys the array no longer names unset — and the base is read without import processing, so an imports: section is never seen as missing and survives every later write. Which matters here because the test instance is built once per test class and only the database is reset between tests: the configuration one test wrote is what the next one merges into. A class whose tests need different sites writes the whole configuration in setUp(), or removes the file before writing it again.",
+      "The file-backed caches live in that instance too — core, typoscript, assets and l10n are file backends, while pages and hash are in the database and do go with the truncation. So a site setting a test changed can still be answered out of the TypoScript the test before it cached, and CacheManager::flushCaches() after writing the configuration is what makes the class deterministic. Both of these fail only in a suite: the test passes when it is run alone with --filter, which is what makes \"it works on its own\" evidence of nothing.",
+      {
+        "text": "Site settings go into that same array under the settings key, and may be written as flat dotted keys — 'my_ext.products.requestPage' => 4 — as well as as a nested tree, because SiteSettings resolves both and flattens a tree into dotted keys itself. Worth knowing because a set's own settings.yaml uses the nested form, so the flat one looks like it should not work.",
+        "since": 13
+      },
+      {
+        "text": "setUpFrontendRootPage() and site sets exclude each other. It writes a sys_template row with the clear flag set, and a sys_template that clears resets the AST — dropping the set TypoScript that was included before it. The frontend then answers \"No page configured for type=0\" and nothing points at the sys_template as the cause. A test whose site takes its TypoScript from a set must not call it, and the settings a plugin needs belong in the pi_flexform of the fixture content element, which is where the site keeps them too.",
+        "since": 13
+      }
+    ]
+  },
+  {
+    "id": "extension-test-frontend-request",
+    "title": "Asserting a Frontend Response in a Test",
+    "domains": [
+      "php"
+    ],
+    "scope": "extension",
+    "appliesTo": [
+      "executeFrontendSubRequest",
+      "InternalRequest",
+      "frontend response in a test",
+      "assert the rendered page",
+      "cache hash in a test",
+      "ID parameter needs to be passed",
+      "cHash calculation",
+      "PHP_QUERY_RFC3986"
+    ],
+    "hints": [
+      "A frontend response is asserted through $this->executeFrontendSubRequest(new InternalRequest($uri)), which runs the request in the test instance and returns a PSR-7 response. InternalRequest::withQueryParameters() takes scalar values. An Extbase plugin argument is nested two levels deep, so a request that carries one is built with http_build_query() into the URI instead.",
+      "A query string built by hand for a cache hash has two more conditions. CacheHashCalculator refuses one that carries relevant parameters without id=<pageId> — 'ID parameter needs to be passed for the cHash calculation!' — and it rawurldecode()s every name and value, which leaves a + as a literal plus where the request the browser sends would have arrived with a space. So encode with PHP_QUERY_RFC3986; otherwise a value containing a space hashes differently than it arrives and the page answers HTTP 404 for something the test never intended to exercise."
+    ]
+  }
+]

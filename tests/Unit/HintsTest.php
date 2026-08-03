@@ -20,6 +20,25 @@ use Typo3CmsMcp\Tool\Registry;
 
 final class HintsTest extends TestCase
 {
+    /**
+     * Every statement of the named hints, as one text.
+     *
+     * A subject is several hints since `D-KNW-030`, so a test asking whether the
+     * corpus states something names the hints it was split into. What a caller
+     * gets is still one of them; that is what the reachability cases assert.
+     */
+    private static function statementsOf(string ...$ids): string
+    {
+        $texts = [];
+        foreach ($ids as $id) {
+            $hint = ArchitectureHints::byId($id);
+            self::assertNotNull($hint, $id . ' is not a hint');
+            $texts[] = implode("\n", array_column($hint['hints'], 'text'));
+        }
+
+        return implode("\n", $texts);
+    }
+
     #[Test]
     public function aPhpPathIsNeverAnsweredWithFrontendConventions(): void
     {
@@ -149,7 +168,7 @@ final class HintsTest extends TestCase
             6,
         );
 
-        self::assertContains('fluid-templates', array_column($reached['matchedHints'], 'id'));
+        self::assertContains('fluid-conditions-and-arrays', array_column($reached['matchedHints'], 'id'));
 
         // The prefix is a token rather than a word, so it cannot land inside
         // one. A question about PHP stays PHP.
@@ -419,17 +438,17 @@ final class HintsTest extends TestCase
             // PageTitleProviderManager, and neither phrasing reached it.
             'a service the container did not build' => [
                 'my extension service is not found at runtime',
-                'dependency-injection-services',
+                'di-service-not-found',
             ],
             'the symptom that service produces' => [
                 'page title provider does not work',
-                'dependency-injection-services',
+                'di-service-not-found',
             ],
             'a word nobody indexed' => ['file upload storage configuration', 'fal-writing'],
             'a backend form' => ['validate a form field in the backend', 'tca-formengine'],
             'where something goes' => ['where do I put my backend layouts', 'sitepackage-layout'],
             'a stale answer' => ['caching does not invalidate', 'caching'],
-            'a menu that is wrong' => ['menu does not show all pages', 'frontend-page-rendering'],
+            'a menu that is wrong' => ['menu does not show all pages', 'page-variables-and-processors'],
             'a label in the wrong language' => [
                 'the frontend shows the wrong language label',
                 'language-files',
@@ -614,9 +633,10 @@ final class HintsTest extends TestCase
         // And the separator inside one word is left alone, which is what
         // D-ANS-006 is about: these are identifiers, not compounds a caller
         // joined up, and each is still one token.
-        foreach (['tt_content', 'list_type', 'mod.web_layout'] as $identifier) {
+        foreach (['tt_content', 'list_type'] as $identifier) {
             self::assertContains('content-elements', $reached($identifier), $identifier);
         }
+        self::assertContains('content-element-preview', $reached('mod.web_layout'));
     }
 
     /**
@@ -635,10 +655,10 @@ final class HintsTest extends TestCase
      */
     #[Test]
     #[TestWith(['showitem', 'content-elements'])]
-    #[TestWith(['allowProperties', 'extbase'])]
-    #[TestWith(['sys_registry', 'sitepackage-initial-content'])]
+    #[TestWith(['allowProperties', 'extbase-arguments'])]
+    #[TestWith(['sys_registry', 'initial-content-import-once'])]
     #[TestWith(['PidInList', 'frontend-records'])]
-    #[TestWith(['withQueryParameters', 'project-extension-tests'])]
+    #[TestWith(['withQueryParameters', 'extension-test-frontend-request'])]
     public function aTermOnlyOneHintStatesReachesItHoweverLongThatHintIs(
         string $query,
         string $expected,
@@ -668,7 +688,7 @@ final class HintsTest extends TestCase
         // which is what makes it the case worth asserting. It was named as
         // "the longest hint there is" until the corpus was split by subject and
         // the longest became one that carries neither term.
-        $diluted = 'sitepackage-initial-content';
+        $diluted = 'extension-test-site';
         self::assertGreaterThan(
             ArchitectureHints::UNDILUTED_WORDS,
             ArchitectureHints::bodyWords()[$diluted],
@@ -676,13 +696,13 @@ final class HintsTest extends TestCase
         );
 
         $whole = array_column(
-            ArchitectureHints::find([], 'sys_registry dataImported', 6)['matchedHints'],
+            ArchitectureHints::find([], 'diffed truncation', 6)['matchedHints'],
             'id',
         );
         self::assertContains($diluted, $whole, 'both terms are its own');
 
         $part = array_column(
-            ArchitectureHints::find([], 'sys_registry sonnet', 6)['matchedHints'],
+            ArchitectureHints::find([], 'diffed sonnet', 6)['matchedHints'],
             'id',
         );
         self::assertNotContains($diluted, $part, 'half a query is a mention, whatever the other half was');
@@ -773,7 +793,7 @@ final class HintsTest extends TestCase
 
         // The failures are the half that cost the session, and each of them
         // answers with a wrong page rather than with an error.
-        $text = implode("\n", array_column((array) ArchitectureHints::byId('extbase')['hints'], 'text'));
+        $text = implode("\n", array_column((array) ArchitectureHints::byId('extbase-arguments')['hints'], 'text'));
         self::assertStringContainsString('cacheHash', $text);
         self::assertStringContainsString('allowProperties', $text);
     }
@@ -787,7 +807,7 @@ final class HintsTest extends TestCase
         $element = ArchitectureHints::find([], 'register a new content element with its own CType', 6);
         self::assertContains('content-elements', array_column($element['matchedHints'], 'id'));
 
-        $di = ArchitectureHints::byId('dependency-injection-services');
+        $di = ArchitectureHints::byId('di-service-not-found');
         self::assertNotNull($di);
         self::assertStringContainsString(
             'public: true',
@@ -813,7 +833,7 @@ final class HintsTest extends TestCase
 
         self::assertContains('frontend-records', $ids);
         self::assertContains('sitepackage-layout', $ids);
-        self::assertContains('frontend-page-rendering', $ids, 'a sitepackage is frontend work');
+        self::assertContains('record-routing', $ids, 'the detail view has to be addressable');
         self::assertNotContains(ArchitectureHints::CATEGORY_CSS, array_column($result['matchedHints'], 'category'));
     }
 
@@ -831,9 +851,7 @@ final class HintsTest extends TestCase
         );
         self::assertContains('site-sets', array_column($result['matchedHints'], 'id'));
 
-        $hint = ArchitectureHints::byId('site-sets');
-        self::assertNotNull($hint);
-        $text = implode("\n", array_column($hint['hints'], 'text'));
+        $text = self::statementsOf('site-sets', 'site-set-settings');
         self::assertStringContainsString('alternatives, not layers', $text);
         self::assertStringContainsString('does not merge', $text);
         self::assertStringContainsString('backend settings editor', $text);
@@ -847,11 +865,9 @@ final class HintsTest extends TestCase
             'Who owns additional.php in a TYPO3 project that uses DDEV?',
             6,
         );
-        self::assertSame('project-repository-layout', $result['matchedHints'][0]['id']);
+        self::assertSame('project-configuration-files', $result['matchedHints'][0]['id']);
 
-        $hint = ArchitectureHints::byId('project-repository-layout');
-        self::assertNotNull($hint);
-        $text = implode("\n", array_column($hint['hints'], 'text'));
+        $text = self::statementsOf('project-repository-layout', 'project-configuration-files');
         self::assertStringContainsString('settings.php is the configuration array written by TYPO3', $text);
         self::assertStringContainsString('additional.php is optional PHP loaded afterwards', $text);
         self::assertStringContainsString('Remove that marker to take the file over', $text);
@@ -880,9 +896,7 @@ final class HintsTest extends TestCase
         );
         self::assertSame('environment-variables', $result['matchedHints'][0]['id']);
 
-        $hint = ArchitectureHints::byId('environment-variables');
-        self::assertNotNull($hint);
-        $text = implode("\n", array_column($hint['hints'], 'text'));
+        $text = self::statementsOf('environment-variables', 'environment-placeholders', 'environment-runtime-readers');
         self::assertStringContainsString('SystemEnvironmentBuilder is the only thing that reads them', $text);
         self::assertStringContainsString('TYPO3_CONTEXT', $text);
         self::assertStringContainsString('TYPO3_PATH_ROOT', $text);
@@ -907,7 +921,7 @@ final class HintsTest extends TestCase
         // practice on one branch and a boot failure on the next, and a hint
         // that stated either one flat would be wrong for half the callers.
         $onFourteen = implode("\n", array_column(
-            ArchitectureHints::byId('environment-variables', 14)['hints'],
+            ArchitectureHints::byId('environment-runtime-readers', 14)['hints'],
             'text',
         ));
         self::assertStringNotContainsString('ext_localconf.php', $onFourteen);
@@ -929,11 +943,9 @@ final class HintsTest extends TestCase
             6
         );
         $ids = array_column($result['matchedHints'], 'id');
-        self::assertSame('frontend-records', $ids[0]);
+        self::assertSame('record-routing', $ids[0]);
 
-        $hint = ArchitectureHints::byId('frontend-records');
-        self::assertNotNull($hint);
-        $text = implode("\n", array_column($hint['hints'], 'text'));
+        $text = self::statementsOf('frontend-records', 'record-routing', 'record-page-title');
         self::assertStringContainsString('PersistedAliasMapper and StaticValueMapper', $text);
         self::assertStringContainsString('needs no cHash', $text);
         self::assertStringContainsString('dynamicArguments', $text);
@@ -948,7 +960,7 @@ final class HintsTest extends TestCase
             $query,
             6,
         );
-        self::assertSame('frontend-records', $result['matchedHints'][0]['id']);
+        self::assertSame('record-routing', $result['matchedHints'][0]['id']);
 
         $guide = Registry::call('typo3_task_guide', [
             'task' => $query,
@@ -1013,7 +1025,7 @@ final class HintsTest extends TestCase
         $assetText = implode("\n", array_column($assets['hints'], 'text'));
         self::assertStringContainsString('does not attach', $assetText);
         self::assertStringContainsString('public-assets', $assetText);
-        self::assertStringContainsString('extension-files', $assetText);
+        self::assertStringContainsString('extension-declarative-files', $assetText);
 
         $docsQuery = ArchitectureHints::find(
             [],
@@ -1046,9 +1058,7 @@ final class HintsTest extends TestCase
         self::assertStringContainsString('Bootstrap::init', $steps);
         self::assertStringContainsString('initializeBackendUser', $steps);
 
-        $shipping = ArchitectureHints::byId('sitepackage-initial-content');
-        self::assertNotNull($shipping);
-        self::assertStringContainsString('--table', implode("\n", array_column($shipping['hints'], 'text')));
+        self::assertStringContainsString('--table', self::statementsOf('impexp-artifact'));
     }
 
     /**
@@ -1102,9 +1112,7 @@ final class HintsTest extends TestCase
         // it came from had already run it and nothing said where else it could
         // be. What is remapped and what ships as a stale integer was missing
         // for the same reason — it is only visible on the way back in.
-        $hint = ArchitectureHints::byId('sitepackage-initial-content');
-        self::assertNotNull($hint);
-        $text = implode("\n", array_column($hint['hints'], 'text'));
+        $text = self::statementsOf('initial-content-import-once', 'initial-content-references', 'impexp-artifact');
 
         // The key is the operative half of the registry entry; the namespace
         // alone re-triggers nothing.
@@ -1133,7 +1141,7 @@ final class HintsTest extends TestCase
         // has to be reachable from the word the question is asked with.
         $result = ArchitectureHints::find([], 'main navigation of the site, menu levels and which pages it shows', 6);
 
-        self::assertContains('frontend-page-rendering', array_column($result['matchedHints'], 'id'));
+        self::assertContains('page-variables-and-processors', array_column($result['matchedHints'], 'id'));
     }
 
     #[Test]
@@ -1149,9 +1157,9 @@ final class HintsTest extends TestCase
             6
         );
         $ids = array_column($result['matchedHints'], 'id');
-        self::assertContains('frontend-page-rendering', $ids);
+        self::assertContains('page-variables-and-processors', $ids);
 
-        $text = implode("\n", array_column((array) ArchitectureHints::byId('frontend-page-rendering')['hints'], 'text'));
+        $text = implode("\n", array_column((array) ArchitectureHints::byId('page-variables-and-processors')['hints'], 'text'));
         self::assertStringContainsString('excludeDoktypes', $text);
     }
 
@@ -1164,9 +1172,7 @@ final class HintsTest extends TestCase
         $result = ArchitectureHints::find([], 'directory structure of a sitepackage extension', 6);
         self::assertContains('sitepackage-layout', array_column($result['matchedHints'], 'id'));
 
-        $hint = ArchitectureHints::byId('sitepackage-layout');
-        self::assertNotNull($hint);
-        $text = implode("\n", array_column($hint['hints'], 'text'));
+        $text = self::statementsOf('sitepackage-layout', 'sitepackage-templates', 'sitepackage-backend-layouts', 'sitepackage-typoscript-reference');
         self::assertStringContainsString('theme_camino', $text);
         self::assertStringContainsString('Content/Default', $text, 'the layout name collision is the load-bearing half');
     }
@@ -1247,6 +1253,22 @@ final class HintsTest extends TestCase
         foreach (['sitepackage-layout', 'sitepackage-initial-content', 'site-sets'] as $id) {
             self::assertNull($scopes[$id], $id . ' declares an audience the core is obliged by too');
         }
+    }
+
+    /**
+     * The upstream XML's own header says to copy the bootstrap along with it,
+     * which is boilerplate maintenance advice rather than a requirement: the
+     * file holds a Testbase, ORIGINAL_ROOT and two directories, and nothing an
+     * extension configures. A copy is a file nobody updates afterwards.
+     */
+    #[Test]
+    public function theBootstrapIsReferencedRatherThanCopied(): void
+    {
+        $text = self::statementsOf('project-extension-tests');
+
+        self::assertStringContainsString('Copy those two to Build/', $text, 'the XML is copied');
+        self::assertStringContainsString('vendor/typo3/testing-framework', $text, 'the bootstrap is referenced');
+        self::assertStringNotContainsString('Copy all four', $text);
     }
 
     /**
@@ -1401,9 +1423,7 @@ final class HintsTest extends TestCase
         $result = ArchitectureHints::find([], 'how do I structure the repository around my sitepackage', 6);
         self::assertContains('project-repository-layout', array_column($result['matchedHints'], 'id'));
 
-        $hint = ArchitectureHints::byId('project-repository-layout');
-        self::assertNotNull($hint);
-        $text = implode("\n", array_column($hint['hints'], 'text'));
+        $text = self::statementsOf('project-repository-layout', 'project-configuration-files', 'project-build-and-scripts');
         self::assertStringContainsString('config/sites/', $text);
         self::assertStringContainsString('composer.json and package.json', $text, 'nothing else says how a project is run');
     }
@@ -1415,9 +1435,7 @@ final class HintsTest extends TestCase
         // distributable theme. In a sitepackage with one set and no
         // Configuration/page.tsconfig it is an indirection with no effect,
         // because the set is the only path into any backend.
-        $hint = ArchitectureHints::byId('sitepackage-layout');
-        self::assertNotNull($hint);
-        $text = implode("\n", array_column($hint['hints'], 'text'));
+        $text = self::statementsOf('sitepackage-layout', 'sitepackage-templates', 'sitepackage-backend-layouts', 'sitepackage-typoscript-reference');
         self::assertStringContainsString('Configuration/Sets/<Set>/BackendLayouts/', $text);
         self::assertStringContainsString('Configuration/page.tsconfig', $text, 'the condition is what makes it transfer');
     }
@@ -1429,9 +1447,7 @@ final class HintsTest extends TestCase
         // outside a section of a template that declares a layout is never
         // executed, and an HTML comment is rendered into the response with its
         // expressions resolved. Neither is logged, so neither is searchable.
-        $hint = ArchitectureHints::byId('fluid-templates');
-        self::assertNotNull($hint);
-        $text = implode("\n", array_column($hint['hints'], 'text'));
+        $text = self::statementsOf('fluid-templates', 'fluid-backend-view', 'fluid-layouts-sections', 'fluid-conditions-and-arrays');
 
         self::assertStringContainsString('<f:section>', $text);
         self::assertStringContainsString('<f:comment>', $text);
@@ -1450,7 +1466,7 @@ final class HintsTest extends TestCase
         );
         self::assertContains('browser-tests', array_column($result['matchedHints'], 'id'));
 
-        $text = implode("\n", array_column((array) ArchitectureHints::byId('browser-tests')['hints'], 'text'));
+        $text = self::statementsOf('browser-tests', 'browser-test-accessibility', 'browser-tests-outside-core');
         // The accessibility half is the one that finds defects no PHP test can,
         // and the rendering test is what gets mistaken for a frontend test.
         self::assertStringContainsString('@axe-core/playwright', $text);
@@ -1633,7 +1649,7 @@ final class HintsTest extends TestCase
         );
         self::assertContains('project-extension-tests', array_column($result['matchedHints'], 'id'));
 
-        $text = implode("\n", array_column((array) ArchitectureHints::byId('project-extension-tests', 14)['hints'], 'text'));
+        $text = self::statementsOf('project-extension-tests', 'extension-test-extensions', 'extension-test-site');
         // Each of these is a failure whose message does not name its cause.
         self::assertStringContainsString('typo3DatabaseUsername', $text);
         self::assertStringContainsString('$testExtensionsToLoad', $text);
@@ -1648,12 +1664,12 @@ final class HintsTest extends TestCase
         // current and left out the one that costs something: ext_emconf.php,
         // absent from the list, reads as "not relevant" rather than as "declare
         // this in composer.json instead".
-        $hint = ArchitectureHints::byId('extension-files');
+        $hint = ArchitectureHints::byId('extension-manifest');
         self::assertNotNull($hint);
         $text = implode("\n", array_column($hint['hints'], 'text'));
         self::assertStringContainsString('ext_emconf.php', $text);
 
-        $current = implode("\n", array_column((array) ArchitectureHints::byId('extension-files', 14)['hints'], 'text'));
+        $current = implode("\n", array_column((array) ArchitectureHints::byId('extension-manifest', 14)['hints'], 'text'));
         self::assertStringContainsString('providesPackages', $current);
         self::assertStringContainsString('extra.typo3/cms.version', $current);
     }
@@ -1678,9 +1694,9 @@ final class HintsTest extends TestCase
             'is this contentRenderingTemplates registration still consumed, it names a directory that is gone',
             6,
         );
-        self::assertSame('extension-files', $result['matchedHints'][0]['id']);
+        self::assertSame('content-rendering-templates', $result['matchedHints'][0]['id']);
 
-        $text = implode("\n", array_column((array) ArchitectureHints::byId('extension-files')['hints'], 'text'));
+        $text = self::statementsOf('content-rendering-templates', 'site-set-migration');
         // What a matched entry does, and the two identifier shapes that match.
         self::assertStringContainsString("['defaultContentRendering']", $text);
         self::assertStringContainsString('configurePlugin()', $text);
@@ -1691,9 +1707,9 @@ final class HintsTest extends TestCase
         // replaced is a statement of its own rather than prose about a version.
         self::assertStringContainsString('SysTemplateTreeBuilder::addStaticMagicFromGlobals()', $text);
         self::assertStringContainsString('TreeFromLineStreamBuilder', $text);
-        $onFourteen = implode("\n", array_column((array) ArchitectureHints::byId('extension-files', 14)['hints'], 'text'));
+        $onFourteen = implode("\n", array_column((array) ArchitectureHints::byId('content-rendering-templates', 14)['hints'], 'text'));
         self::assertStringNotContainsString('TemplateService', $onFourteen);
-        $onTwelve = implode("\n", array_column((array) ArchitectureHints::byId('extension-files', 12)['hints'], 'text'));
+        $onTwelve = implode("\n", array_column((array) ArchitectureHints::byId('content-rendering-templates', 12)['hints'], 'text'));
         self::assertStringContainsString('TemplateService::prependStaticExtra()', $onTwelve);
         self::assertStringContainsString('TypoScriptParser', $onTwelve);
         // And why nothing flags a dead one.
@@ -1703,13 +1719,13 @@ final class HintsTest extends TestCase
 
         // The migration these entries are left over from says so where it
         // happens, because that is the change that strands them.
-        $sets = implode("\n", array_column((array) ArchitectureHints::byId('site-sets', 14)['hints'], 'text'));
+        $sets = implode("\n", array_column((array) ArchitectureHints::byId('site-set-migration', 14)['hints'], 'text'));
         self::assertStringContainsString('contentRenderingTemplates', $sets);
-        self::assertStringContainsString('extension-files', $sets);
+        self::assertStringContainsString('content-rendering-templates', $sets);
 
         // Sets are what a caller on the older branch has no migration into, so
         // the pointer is not offered there.
-        $setsOnTwelve = implode("\n", array_column((array) ArchitectureHints::byId('site-sets', 12)['hints'], 'text'));
+        $setsOnTwelve = implode("\n", array_column((array) ArchitectureHints::byId('site-set-migration', 12)['hints'], 'text'));
         self::assertStringNotContainsString('contentRenderingTemplates', $setsOnTwelve);
     }
 
@@ -2132,7 +2148,7 @@ final class HintsTest extends TestCase
             static fn(array $entry): bool => $entry['id'] === 'content-elements',
         ));
         self::assertCount(1, $hint);
-        $ownership = $hint[0]['hints'][0]['text'];
+        $ownership = self::statementsOf('content-element-shape');
         self::assertStringContainsString('type=inline', $ownership);
         self::assertStringContainsString('reuse is a requirement somebody stated', $ownership);
 
@@ -2140,9 +2156,13 @@ final class HintsTest extends TestCase
         // and stays a conditional match, because nothing in it says the work is
         // a content element.
         $vague = Registry::call('typo3_task_guide', ['task' => 'Add a Hero Carousel that rotates different elements']);
-        self::assertContains(
-            'content-elements',
-            array_column($vague->data['architectureHints'], 'id'),
+        self::assertNotSame(
+            [],
+            array_intersect(
+                ['content-elements', 'content-element-shape'],
+                array_column($vague->data['architectureHints'], 'id'),
+            ),
+            'a carousel is the subject even where nothing in the wording says content element',
         );
     }
 
@@ -2159,14 +2179,17 @@ final class HintsTest extends TestCase
     public function aPreviewTemplateSaysWhatItIsHandedAndWhatAFieldResolvesTo(): void
     {
         $onThirteen = implode("\n", array_column(
-            ArchitectureHints::byId('content-elements', 13)['hints'],
+            ArchitectureHints::byId('content-element-preview', 13)['hints'],
             'text',
         ));
         self::assertStringContainsString('{pi_flexform_transformed}', $onThirteen);
         self::assertStringNotContainsString('no longer variables of their own', $onThirteen);
 
         $onFourteen = implode("\n", array_column(
-            ArchitectureHints::byId('content-elements', 14)['hints'],
+            ArchitectureHints::byId('content-element-preview', 14)['hints'],
+            'text',
+        )) . "\n" . implode("\n", array_column(
+            ArchitectureHints::byId('preview-record-variable', 14)['hints'],
             'text',
         ));
         self::assertStringContainsString('handed one variable, record', $onFourteen);
@@ -2213,7 +2236,7 @@ final class HintsTest extends TestCase
     {
         foreach ([13, 14] as $major) {
             $texts = implode("\n", array_column(
-                ArchitectureHints::byId('content-elements', $major)['hints'],
+                ArchitectureHints::byId('content-element-preview', $major)['hints'],
                 'text',
             ));
 
@@ -2233,7 +2256,7 @@ final class HintsTest extends TestCase
             'backend preview element header already rendered by the default renderer',
             6,
         );
-        self::assertSame('content-elements', array_column($reached['matchedHints'], 'id')[0] ?? '');
+        self::assertSame('content-element-preview', array_column($reached['matchedHints'], 'id')[0] ?? '');
     }
 
     #[Test]

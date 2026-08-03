@@ -45,30 +45,6 @@
     ]
   },
   {
-    "id": "dependency-injection-services",
-    "title": "Dependency Injection and Services",
-    "domains": [
-      "php"
-    ],
-    "appliesTo": [
-      "Configuration/Services.yaml",
-      "/Service/",
-      "/Services/",
-      "DependencyInjection",
-      "constructor injection",
-      "service wiring",
-      "autowiring",
-      "autoconfigure"
-    ],
-    "hints": [
-      "Autowiring and autoconfiguration are on for the core sysexts: their Configuration/Services.yaml sets autowire, autoconfigure and public: false under _defaults and registers the whole Classes/ tree as a resource. A new service in Classes/ therefore needs no Services.yaml entry at all.",
-      "Prefer constructor injection with a readonly promoted property. Services.yaml is for what autowiring cannot resolve: a scalar or non-autowirable argument, an alias, a service that has to be public, or a factory.",
-      "For a single non-autowirable argument, the #[Autowire] attribute on the constructor parameter keeps the wiring in the class instead of splitting it across a YAML file.",
-      "Avoid new GeneralUtility::makeInstance() calls for regular service dependencies unless lifecycle constraints require it.",
-      "Some extension points are resolved by class name through the container rather than through makeInstance(), and there a service that is not public simply is not found. Autoconfiguration covers the singletons, the middlewares, the request handlers and the icon providers; anything else that the core looks up that way — the page title providers are the one that bites, because PageTitleProviderManager reads the class name out of TypoScript and asks the container for it — needs its own Services.yaml entry with public: true. The failure is a service-not-found at request time, not a wiring error at build time."
-    ]
-  },
-  {
     "id": "events-extension-points",
     "title": "Events and Extension Points",
     "domains": [
@@ -150,99 +126,6 @@
     ]
   },
   {
-    "id": "core-tests",
-    "title": "Writing Core Tests",
-    "domains": [
-      "php"
-    ],
-    "scope": "core",
-    "appliesTo": [
-      "/Tests/Unit/",
-      "/Tests/Functional/",
-      "FunctionalTestCase",
-      "UnitTestCase",
-      "importCSVDataSet",
-      "assertCSVDataSet",
-      "test fixture",
-      "dataset",
-      "csv"
-    ],
-    "hints": [
-      "A unit test extends TYPO3\\TestingFramework\\Core\\Unit\\UnitTestCase, a functional test TYPO3\\TestingFramework\\Core\\Functional\\FunctionalTestCase. Both are final and mark cases with the #[Test] attribute rather than a test method-name prefix.",
-      "A functional test declares its environment through properties: protected array $coreExtensionsToLoad, $testExtensionsToLoad and $configurationToUseInTestInstance. Load only what the test needs — every extension costs setup time per test class.",
-      "A functional test starts on an empty database: the first test of a class installs the schema and no rows, every test after it is preceded by a truncation of all tables, and the framework imports nothing of its own — so the only records a test run sees are the ones it primed. A record nobody imported is absent rather than stale: setUpBackendUser(1) fails with \"does not exist in the database\" until a be_users fixture is imported. Two things change that — protected bool $initializeDatabase = false skips creation and truncation entirely, and withDatabaseSnapshot() carries rows the first test of a class created past the truncation for the rest of it.",
-      "State is set up and asserted with CSV fixtures, not hand-written inserts: $this->importCSVDataSet(__DIR__ . '/Fixtures/pages.csv') in setUp(), $this->assertCSVDataSet(__DIR__ . '/Fixtures/Expected.csv') for the result. The files live in a Fixtures/ directory next to the test class. This is the expected form for persistence behaviour.",
-      "Take services from the container with $this->get(SomeService::class) rather than constructing them, so the test exercises the real wiring.",
-      {
-        "text": "Tests mirror the class path: typo3/sysext/<ext>/Classes/Foo/Bar.php is tested by typo3/sysext/<ext>/Tests/{Unit,Functional}/Foo/BarTest.php.",
-        "scope": "core"
-      },
-      "Run the single test file or method while iterating; a full functional run costs minutes per round. typo3_test_run_guide has the targeted invocation.",
-      "Write the narrowest test that exercises the change, and let what the change touches decide the kind: isolated logic is a unit test, while service wiring, persistence, TCA, DataHandler, routing and anything reading configuration only behave like themselves in a functional test. A unit test of those asserts the mock."
-    ]
-  },
-  {
-    "id": "project-extension-tests",
-    "title": "Testing a Project Extension",
-    "domains": [
-      "php"
-    ],
-    "scope": "extension",
-    "appliesTo": [
-      "test coverage",
-      "set up tests",
-      "write tests",
-      "test setup",
-      "automated tests",
-      "test suite",
-      "phpunit",
-      "unit test",
-      "functional test",
-      "testExtensionsToLoad",
-      "coreExtensionsToLoad",
-      "FunctionalTests.xml",
-      "UnitTests.xml",
-      "testing-framework",
-      "SiteBasedTestTrait",
-      "setUpFrontendRootPage",
-      "FunctionalTestCase",
-      "importCSVDataSet",
-      "csv fixture",
-      "executeFrontendSubRequest",
-      "InternalRequest",
-      "SiteWriter"
-    ],
-    "hints": [
-      "The conventions of a core test hold here — UnitTestCase, FunctionalTestCase, final classes, #[Test], CSV fixtures, $this->get() for services — but the harness they run in does not exist yet and is the whole first day.",
-      "typo3/testing-framework ships UnitTests.xml, FunctionalTests.xml and the two bootstraps under Resources/Core/Build/, and the files say in their own header that extensions should copy them rather than reference them: their testsuite directory points into the core mono repository. Copy all four to Build/ in the extension, point each testsuite at Tests/Unit/ and Tests/Functional/, and run them as vendor/bin/phpunit -c Build/UnitTests.xml. There is no runTests.sh outside the core.",
-      "A functional run needs database credentials in the environment: typo3DatabaseDriver, typo3DatabaseHost, typo3DatabaseName, typo3DatabaseUsername, typo3DatabasePassword. Without them it stops with \"Database credentials for tests are neither set through environment variables, and can not be found in an existing LocalConfiguration file\", which does not name the variables it is missing.",
-      "Every test class gets a database of its own — the configured name plus a hash of the class — so that account has to be allowed to create databases. Under DDEV that means root rather than the user the site itself runs as.",
-      "$testExtensionsToLoad takes paths relative to the document root, not to the project root: in a Composer installation with a public/ web directory, \"extensions/my_sitepackage\" is looked for below public/ and fails with \"Test extension path ... not found\". Name the extension key or the Composer package name instead — those are resolved against the installed packages, and that is the form a project wants.",
-      "Every TYPO3 extension the extension under test requires has to be loaded as well, in $coreExtensionsToLoad or $testExtensionsToLoad. A missing one fails at setup with 'Package \"x\" depends on package \"y\" which does not exist' — thrown by the testing framework's own package collection, not by the installation, so it is a test-only failure — and the list to mirror is the extension's own require entries. That makes every requirement a change to every test class: the moment the extension requires one more, each class whose list does not name it fails at setup, including the classes that have nothing to do with what was added.",
-      "SiteBasedTestTrait is not available. The core's Tests/ directories are export-ignored, so the typo3/cms-core Composer package ships none of them, and the trait every core frontend test builds on cannot be used outside the mono repository. Writing the site configuration in setUp() is what it does anyway.",
-      {
-        "text": "That is one call: $this->get(SiteWriter::class)->write($identifier, $configuration), with the same array the site's config.yaml holds — rootPageId, base, languages, and the sets the site depends on.",
-        "since": 13
-      },
-      {
-        "text": "That is one call: $this->get(SiteConfiguration::class)->write($identifier, $configuration), with the same array the site's config.yaml holds — rootPageId, base, languages.",
-        "until": 12
-      },
-      "That write is not a replace. Where the file already exists it becomes the base, the new array is diffed against it — modified keys applied, keys the array no longer names unset — and the base is read without import processing, so an imports: section is never seen as missing and survives every later write. Which matters here because the test instance is built once per test class and only the database is reset between tests: the configuration one test wrote is what the next one merges into. A class whose tests need different sites writes the whole configuration in setUp(), or removes the file before writing it again.",
-      "The file-backed caches live in that instance too — core, typoscript, assets and l10n are file backends, while pages and hash are in the database and do go with the truncation. So a site setting a test changed can still be answered out of the TypoScript the test before it cached, and CacheManager::flushCaches() after writing the configuration is what makes the class deterministic. Both of these fail only in a suite: the test passes when it is run alone with --filter, which is what makes \"it works on its own\" evidence of nothing.",
-      {
-        "text": "Site settings go into that same array under the settings key, and may be written as flat dotted keys — 'my_ext.products.requestPage' => 4 — as well as as a nested tree, because SiteSettings resolves both and flattens a tree into dotted keys itself. Worth knowing because a set's own settings.yaml uses the nested form, so the flat one looks like it should not work.",
-        "since": 13
-      },
-      {
-        "text": "setUpFrontendRootPage() and site sets exclude each other. It writes a sys_template row with the clear flag set, and a sys_template that clears resets the AST — dropping the set TypoScript that was included before it. The frontend then answers \"No page configured for type=0\" and nothing points at the sys_template as the cause. A test whose site takes its TypoScript from a set must not call it, and the settings a plugin needs belong in the pi_flexform of the fixture content element, which is where the site keeps them too.",
-        "since": 13
-      },
-      "A frontend response is asserted through $this->executeFrontendSubRequest(new InternalRequest($uri)), which runs the request in the test instance and returns a PSR-7 response. InternalRequest::withQueryParameters() takes scalar values. An Extbase plugin argument is nested two levels deep, so a request that carries one is built with http_build_query() into the URI instead.",
-      "A query string built by hand for a cache hash has two more conditions. CacheHashCalculator refuses one that carries relevant parameters without id=<pageId> — 'ID parameter needs to be passed for the cHash calculation!' — and it rawurldecode()s every name and value, which leaves a + as a literal plus where the request the browser sends would have arrived with a space. So encode with PHP_QUERY_RFC3986; otherwise a value containing a space hashes differently than it arrives and the page answers HTTP 404 for something the test never intended to exercise."
-    ]
-  },
-  {
     "id": "backend-modules",
     "title": "Backend Module and Route Registration",
     "domains": [
@@ -315,82 +198,6 @@
       },
       "A command name, its arguments and its options are what integrators script against, so a new command belongs in a changelog entry.",
       "A console request is not an HTTP one: PSR-7 and middleware conventions do not apply to it, whatever the class name suggests. Behaviour is covered by functional tests."
-    ]
-  },
-  {
-    "id": "extension-files",
-    "title": "Extension Registration Files",
-    "domains": [
-      "php"
-    ],
-    "appliesTo": [
-      "ext_tables.sql",
-      "ext_localconf.php",
-      "ext_tables.php",
-      "ext_emconf.php",
-      "Configuration/JavaScriptModules.php",
-      "Configuration/Icons.php",
-      "contentRenderingTemplates",
-      "defaultContentRendering",
-      "stale registration"
-    ],
-    "hints": [
-      {
-        "text": "ext_tables.sql carries only the delta the schema analyzer needs — the tables and columns TCA does not already describe. It is not a schema dump, and a column TCA defines does not belong in it.",
-        "since": 13
-      },
-      {
-        "text": "ext_tables.sql declares every table and every column of the extension. Nothing is derived from TCA here, so a column that is missing from the file is missing from the database.",
-        "until": 12
-      },
-      {
-        "text": "An extension is recognised by its composer.json, and the package metadata is read from there: the type has to be typo3-cms-extension (typo3-cms-framework for a system extension), the key is extra.typo3/cms.extension-key, the version is extra.typo3/cms.version or the top-level version field, and extra.typo3/cms.Package.providesPackages lists the Composer packages the extension itself ships — present as an empty object where it ships none.",
-        "since": 14
-      },
-      {
-        "text": "ext_emconf.php is the deprecated fallback for exactly that metadata, and what decides whether it is read is composer.json declaring both fields rather than either: providesPackages present — as an empty object where the extension ships no Composer packages of its own — and a version in extra.typo3/cms.version or in the top-level version field. Declaring one of the two and not the other still reads the file and still raises an E_USER_DEPRECATED during cache warm-up, which a functional test suite running with failOnDeprecation is usually the first thing to surface; a fixture extension therefore needs a version of its own, and any value does, since nothing evaluates it under test. A Composer installation is unaffected either way — building the package artifact skips the fallback before it is reached.",
-        "since": 14,
-        "until": 14
-      },
-      {
-        "text": "Declaring both fields stops TYPO3 evaluating ext_emconf.php, which is not the same as being free to delete it: Tailor and the TER read that file, so an extension published there keeps it and keeps its contents in step with composer.json. One that goes nowhere near the TER can drop it.",
-        "since": 14
-      },
-      {
-        "text": "There is no fallback left: an extension whose composer.json does not declare both the version and providesPackages has an invalid package manifest, and the installation throws InvalidPackageManifestException naming the two fields instead of reading ext_emconf.php. System extensions are exempt, a framework package deriving its version from Typo3Version.",
-        "since": 15
-      },
-      {
-        "text": "ext_emconf.php is what makes a directory an extension outside Composer — the scan looks for that file — and its $EM_CONF array carries the title, the version, the state and the constraints on other extensions. In a Composer installation composer.json is the authority and the file is TER metadata.",
-        "until": 13
-      },
-      {
-        "text": "The backend title of an extension comes out of the composer.json description, split on the first \" - \": what stands before it becomes the title, the rest the description. An extension whose description is one sentence is listed with that whole sentence as its title.",
-        "since": 14
-      },
-      "Configuration/JavaScriptModules.php declares the import map for an extension's backend JavaScript: a dependencies list of other extensions and an imports map from bare specifier to an EXT: path, with an optional exclude list.",
-      "Configuration/Icons.php returns an array keyed by icon identifier, each entry naming a provider (SvgIconProvider or BitmapIconProvider) and an EXT: source path.",
-      "Configuration/page.tsconfig is auto-loaded from that path and needs no registration call.",
-      {
-        "text": "Configuration/user.tsconfig is auto-loaded the same way.",
-        "since": 13
-      },
-      {
-        "text": "Shipping ext_tables.php is deprecated: every active package that has one and is not a framework package raises an E_USER_DEPRECATED when the file is loaded, which is on an uncached request and while the compiled ext_tables cache entry is being written. A request served from that cache raises nothing, so a functional suite running with failOnDeprecation is usually the first thing to surface it. What the file carried has declarative homes: backend modules in Configuration/Backend/Modules.php, backend routes in Configuration/Backend/Routes.php, user settings through ExtensionManagementUtility::addUserSetting() in Configuration/TCA/Overrides/be_users.php, and the record types a page type allows through the TCA allowedRecordTypes option in Configuration/TCA/Overrides/pages.php. System extensions are exempt, being framework packages.",
-        "since": 14,
-        "until": 14
-      },
-      {
-        "text": "ext_tables.php is not loaded at all. Nothing reads the file and nothing reports it, so an extension that still registers there loses those registrations silently — the backend module, the route or the user setting is simply absent.",
-        "since": 15
-      },
-      "ext_localconf.php is what is left for what has no declarative file. It runs on every request, so keep it to registration and out of anything that does work.",
-      "$GLOBALS['TYPO3_CONF_VARS']['FE']['contentRenderingTemplates'][] in ext_localconf.php is a membership list of static-include identifiers and does nothing on its own. Every read of it is one test: while a legacy TypoScript static include is resolved, that include's identifier is looked up in the list, and a hit appends FE['defaultTypoScript_<constants|setup>.']['defaultContentRendering'] directly after it. That is the slot ExtensionUtility::configurePlugin() writes every Extbase plugin's TypoScript into, so a matched entry decides ordering — the plugin configuration lands after the content rendering rather than before it. The identifier is the extension key with its underscores removed plus the include path, as in 'fluidstyledcontent/Configuration/TypoScript/', or the bare key alone for an extension shipping ext_typoscript_setup.typoscript. It is read in SysTemplateTreeBuilder::addStaticMagicFromGlobals(), reached from a sys_template include_static_file row, and in TreeFromLineStreamBuilder, reached from an @import or INCLUDE_TYPOSCRIPT line. Grep the checkout for the key to confirm what else reads it on the branch in hand.",
-      {
-        "text": "The pre-IncludeTree resolver reads it too, with the same membership test: TypoScriptParser while it expands an include, and TemplateService::prependStaticExtra() as each static row is prepended.",
-        "until": 12
-      },
-      "So an entry is dead as soon as the include it names is gone, and fluid_styled_content is the live case: it registers that identifier and still ships both Configuration/TypoScript/ and the addStaticFile() call in Configuration/TCA/Overrides/sys_template.php that lets a sys_template pick it. An extension whose TypoScript has moved into Configuration/Sets/ has neither, and no @import of the old path is left either, so nothing can ever match its entries — those lines are a cleanup rather than a defect. Nothing reports them: the key is not deprecated, no changelog entry names it, and fluid_styled_content registers itself the same way, so a deprecation review and the Extension Scanner both pass the file. Site sets are the migration such entries are usually left over from, which is the site-sets hint."
     ]
   },
   {
@@ -545,49 +352,6 @@
     ]
   },
   {
-    "id": "extbase",
-    "title": "Extbase Plugins",
-    "domains": [
-      "php"
-    ],
-    "appliesTo": [
-      "extbase",
-      "plugin",
-      "Classes/Controller/",
-      "Classes/Domain/Model/",
-      "Classes/Domain/Repository/",
-      "repository",
-      "domain model",
-      "pagination",
-      "paginate",
-      "search form",
-      "flexform",
-      "FlexForm"
-    ],
-    "hints": [
-      "Extbase is what a frontend needs beyond reading records: pagination, a search with arguments, validation, forms. Rendering records read-only needs none of it — see the records hint — and mixing the two questions is where most of the wrong answers here come from.",
-      "A plugin is registered by two calls that do different things. ExtensionUtility::registerPlugin() belongs in Configuration/TCA/Overrides/tt_content.php and adds the item to the CType selector, optionally with a FlexForm; ExtensionUtility::configurePlugin() belongs in ext_localconf.php and declares which controller actions exist and which of them are not cacheable. Neither one replaces the other.",
-      "The plugin signature both calls derive — the extension name and the plugin name, lowercased and joined by an underscore — is four things at once: the value in the CType column, the TypoScript key below tt_content, the key the FlexForm is registered under, and the namespace the plugin's own arguments arrive in. Renaming a plugin renames all four, and existing content keeps the old value.",
-      {
-        "text": "configurePlugin() takes a plugin type as its last argument that has to be omitted or given as \"CType\": a plugin is a content type of its own and nothing else, and anything else throws.",
-        "since": 14
-      },
-      {
-        "text": "configurePlugin() still takes \"list_type\" as its last argument and warns about it. New code omits the argument or passes \"CType\", because that is the shape that survives the next major.",
-        "since": 13,
-        "until": 13
-      },
-      "A model maps onto the table its class name implies. Configuration/Extbase/Persistence/Classes.php is where a table named differently is mapped, together with the per-property column names and the record type of a single-table inheritance.",
-      "Which paginator to use follows from what is being paginated: QueryResultPaginator for an Extbase query result, QueryBuilderPaginator for a Doctrine query builder, ArrayPaginator for an array that is already in memory. The last one paginates in PHP, so choosing it for a query means every record is fetched in order to show one page. SlidingWindowPagination on top of any of them produces the page numbers.",
-      "A search form submitted by GET on a cacheable action answers with a page-not-found, and putting the action into the non-cacheable list does not fix it: the cache hash is validated by a middleware, long before Extbase knows which action was called. The plugin's arguments have to be excluded from the hash as well, in $GLOBALS['TYPO3_CONF_VARS']['FE']['cacheHash']['excludedParameters']. A name there carries an indicator: ^ matches the beginning of a parameter name, ~ any part of it, and no indicator at all is an exact match — the one entry that covers a whole plugin is the prefix form. The hidden fields a Fluid form adds need the same treatment.",
-      "An object argument maps nothing until its properties are allowed. A request that hands a controller an object other than a persisted entity fails with \"It is not allowed to map property\" until the matching initialize<Action>Action() calls allowProperties() on that argument's property mapping configuration. That is the secure default rather than a defect.",
-      "An object that is not persisted is dropped from a generated link without a word: the URI builder serialises an entity by its uid, and something built for the request has none — so the filter of a search is gone on page two while the link looks correct. Pass such state to a link as plain arguments.",
-      "A paginator clamps a page number outside its range, so a page beyond the last one answers with the first page rather than with a not-found. Compare the current page against the number of pages in the controller and answer with the not-found response yourself, or the same list is served under an unbounded number of URLs.",
-      "A paginated plugin needs a route for the list as well as one for the paginated form. A single route with the page number defaulted only omits the variable when a link is built, and the literal part of the segment stays behind — a link to the first page then points at a path that ends in the prefix of a number that is not there. Routes are tried in the order they are declared, so the paginated one goes before a route whose slug would otherwise swallow it.",
-      "Orderings are property names, not column names. Ordering by the order records have in the backend therefore needs a property for that field on the model, although it is not a domain concept."
-    ]
-  },
-  {
     "id": "sitepackage-initial-content",
     "title": "Shipping Initial Content with an Extension",
     "domains": [
@@ -597,11 +361,9 @@
       "Initialisation/",
       "initial content",
       "distribution",
-      "impexp",
       "data.t3d",
       "data.xml",
       "extension:setup",
-      "seed content",
       "ship content",
       "sitepackage",
       "site package"
@@ -617,6 +379,24 @@
         "text": "The setup dispatches a package initialization event, and every import — the content, the site configurations, the static SQL — is a listener on it, so an extension can add its own.",
         "since": 13
       },
+      "Three neighbours: initial-content-import-once for why a changed file does not arrive, initial-content-references for what survives the import, impexp-artifact for writing the file in the first place."
+    ]
+  },
+  {
+    "id": "initial-content-import-once",
+    "title": "Why a Changed Data File Does Not Arrive",
+    "domains": [
+      "php"
+    ],
+    "appliesTo": [
+      "extensionDataImport",
+      "sys_registry",
+      "dataImported",
+      "imported nothing",
+      "content did not arrive",
+      "import again"
+    ],
+    "hints": [
       "The import runs exactly once and remembers that in the registry, namespace extensionDataImport. A second setup imports nothing, which is the point — and also why a changed data file does not reach an installation that already ran it. Deleting that one sys_registry row is what makes extension:setup import the file again.",
       {
         "text": "The key is <extension_key>:Initialisation/dataImported, and <extension_key>:Initialisation/data.t3d blocks the import just as well, because both are checked.",
@@ -626,19 +406,102 @@
         "text": "The key is the extension's path below the public directory with Initialisation/dataImported appended — typo3conf/ext/<extension_key>/Initialisation/dataImported for an extension installed there — and the sibling ending in Initialisation/data.t3d blocks the import just as well, because both are checked.",
         "until": 13
       },
-      "So the file is write-only on the installation it was exported from: whoever maintains it cannot see the effect of their own change there, and reading the XML back is reasoning rather than verification. Import it where it can be imported — a functional test is the cheap form: get(Import::class), loadFile('EXT:<key>/Initialisation/data.xml'), importData(), then assert the records arrived. typo3/sysext/impexp/Tests/Functional/ImportTest.php is the worked example.",
+      "So the file is write-only on the installation it was exported from: whoever maintains it cannot see the effect of their own change there, and reading the XML back is reasoning rather than verification. Import it where it can be imported — a functional test is the cheap form: get(Import::class), loadFile('EXT:<key>/Initialisation/data.xml'), importData(), then assert the records arrived. typo3/sysext/impexp/Tests/Functional/ImportTest.php is the worked example."
+    ]
+  },
+  {
+    "id": "initial-content-references",
+    "title": "What Survives the Import, and What Points at a Stranger",
+    "domains": [
+      "php"
+    ],
+    "appliesTo": [
+      "ReferenceIndex",
+      "remapped uid",
+      "soft reference",
+      "t3://page",
+      "Initialisation/Site/",
+      "site identifier already exists",
+      "wrong page after import"
+    ],
+    "hints": [
       "What survives the import is what the reference index sees. The export gathers relations with ReferenceIndex::getRelations(), so a uid is remapped where TCA declares the field as a relation, or where a soft reference parser finds it — a type=link field ships as a typolink soft reference with the record it points at, a type=group to pages as a database relation, inside a FlexForm as well. The same page uid in a plain input or number field is exported as the integer it is and imported as that integer, pointing at whatever the target installation has under it. Nothing warns, so the field type is what decides whether shipped content survives.",
+      "The site configuration import remaps the root page id to the page that was actually imported, and nothing else. Every other reference in the shipped config.yaml — an error handler naming t3://page?uid=..., a redirect target — keeps the uid it was exported with, so it points at a stranger's record on the second installation. Ship a site configuration with no uid in it but the root page; where one is unavoidable, the configuration is good for a first install and nothing else, and the extension says so where someone will read it.",
+      "A site identifier that already exists is skipped with a warning, so a fresh installation and an existing one behave differently. Creating a site during setup and shipping one in Initialisation/Site/ are alternatives, not steps: the first one leaves a site behind that makes the second one be skipped."
+    ]
+  },
+  {
+    "id": "impexp-artifact",
+    "title": "Writing the Export a Distribution Ships",
+    "domains": [
+      "php"
+    ],
+    "appliesTo": [
+      "impexp",
+      "impexp:export",
+      "impexp:import",
+      "typo3/cms-impexp",
+      "--table",
+      "save-files-outside-export-file",
+      "export the page tree"
+    ],
+    "hints": [
       "The import lives in EXT:impexp, so an extension that ships content has to require typo3/cms-impexp.",
       {
         "text": "Without it the requirement check only logs a warning: the setup succeeds and the installation comes up empty, which is far harder to notice than a failure.",
         "since": 13
       },
-      "The site configuration import remaps the root page id to the page that was actually imported, and nothing else. Every other reference in the shipped config.yaml — an error handler naming t3://page?uid=..., a redirect target — keeps the uid it was exported with, so it points at a stranger's record on the second installation. Ship a site configuration with no uid in it but the root page; where one is unavoidable, the configuration is good for a first install and nothing else, and the extension says so where someone will read it.",
-      "A site identifier that already exists is skipped with a warning, so a fresh installation and an existing one behave differently. Creating a site during setup and shipping one in Initialisation/Site/ are alternatives, not steps: the first one leaves a site behind that makes the second one be skipped.",
       "Once content exists, the console's impexp export writes the artifact and impexp import reads it back — which is also the way in for the first build, where there is nothing to export yet and hand-writing T3D is not an option: seed with DataHandler, then export.",
       "impexp:export takes one --table per table, and a custom table nobody named is missing from the export without a word: typo3 impexp:export --table=tt_content --table=tx_myext_product.",
       "Images come along on their own — a sys_file_reference pulls its sys_file record in as a relation and the bytes follow — but by default they are base64 inside the export file, which for an artifact that is committed is the wrong shape. --save-files-outside-export-file writes them beside it instead, into a directory named after the file plus .files, each under its own sha1. The import picks that directory up whenever it sits next to the file, extension:setup included, and reuses a file the target storage already has under the same identifier and hash rather than duplicating it.",
       "A file path handed to the console is resolved by GeneralUtility::getFileAbsFileName(): a relative path is relative to the public directory, not to the project root. EXT:<key>/Initialisation/data.xml is the form that works from anywhere."
+    ]
+  },
+  {
+    "id": "dependency-injection",
+    "title": "Wiring a Service",
+    "domains": [
+      "php"
+    ],
+    "appliesTo": [
+      "Configuration/Services.yaml",
+      "/Service/",
+      "/Services/",
+      "DependencyInjection",
+      "constructor injection",
+      "service wiring",
+      "autowiring",
+      "autoconfigure",
+      "Autowire attribute",
+      "makeInstance"
+    ],
+    "hints": [
+      "Autowiring and autoconfiguration are on for the core sysexts: their Configuration/Services.yaml sets autowire, autoconfigure and public: false under _defaults and registers the whole Classes/ tree as a resource. A new service in Classes/ therefore needs no Services.yaml entry at all.",
+      "Prefer constructor injection with a readonly promoted property. Services.yaml is for what autowiring cannot resolve: a scalar or non-autowirable argument, an alias, a service that has to be public, or a factory.",
+      "For a single non-autowirable argument, the #[Autowire] attribute on the constructor parameter keeps the wiring in the class instead of splitting it across a YAML file.",
+      "Avoid new GeneralUtility::makeInstance() calls for regular service dependencies unless lifecycle constraints require it.",
+      "A service the container resolves by class name rather than by injection is a different question: di-service-not-found."
+    ]
+  },
+  {
+    "id": "di-service-not-found",
+    "title": "A Service the Container Cannot Find at Runtime",
+    "domains": [
+      "php"
+    ],
+    "appliesTo": [
+      "service not found",
+      "ServiceNotFoundException",
+      "public: true",
+      "public service",
+      "PageTitleProvider",
+      "page title provider",
+      "resolved by class name",
+      "extension point not found",
+      "works in the core but not in my extension"
+    ],
+    "hints": [
+      "Some extension points are resolved by class name through the container rather than through makeInstance(), and there a service that is not public simply is not found. Autoconfiguration covers the singletons, the middlewares, the request handlers and the icon providers; anything else that the core looks up that way — the page title providers are the one that bites, because PageTitleProviderManager reads the class name out of TypoScript and asks the container for it — needs its own Services.yaml entry with public: true. The failure is a service-not-found at request time, not a wiring error at build time."
     ]
   }
 ]

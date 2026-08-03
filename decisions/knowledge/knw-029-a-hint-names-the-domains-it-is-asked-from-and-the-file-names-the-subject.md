@@ -78,3 +78,19 @@ grew a bucket that answers everything.
 
 - `HintsTest::everyHintIsTaggedWithADomainSomeQuerySelects`
 - `HintsTest::theFileAHintSitsInDoesNotDecideWhatSelectsIt`
+
+## Since then
+
+The first **Wrong if** fired, and splitting is what showed it. The corpus went
+from 66 hints to 120 on 2026-08-03 and `general.json` grew with it, from 19
+entries to 38 — every one of them still tagged `any`, because a split inherits
+the tag of what it was split from. The share is unmoved: General holds 38 of 120
+hints and supplies 37 of 59 matched over the scenario prompts, 63% as before,
+and 17 of 31 answers are made of it alone.
+
+So filing by subject does not dissolve the bucket on its own. What is left is
+the re-tagging the entry's own third step names, and it is now the only thing
+that moves that number — `sitepackage-layout` losing 450 words did not stop it
+outranking `project-extension-tests` for "Set up tests for our site package
+extension", because being selected by every query is not a property of its
+length.

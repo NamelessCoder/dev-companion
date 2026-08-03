@@ -1,7 +1,7 @@
 # Writing a decision, and going back to one
 
 What a decision is, what rests on it and what its states mean is
-[what-a-decision-is.md](what-a-decision-is.md). This page is where an entry
+[readme.md](readme.md). This page is where an entry
 goes, how it is written, and what a later session adds to one.
 
 ## Where an entry lives

@@ -6,10 +6,10 @@ is no procedure and is written by nobody: `clients/tools.md` and the pages under
 it, each page carrying what that tool answered once.
 
 `requirements/` and `decisions/` are working directories, and the whole of what
-one of their entries is — what it states, where it goes, how it is written —
-is here. Both readmes are what a command writes into them and a line pointing
-back. The other directories still say what a thing **is** on their own and link
-here for how it is carried out.
+one of their entries is — what it states, where it goes, how it is written — is
+here. Each of those two holds a listing a command writes and a line pointing
+back at this directory. The others still say what a thing **is** on their own
+and link here for how it is carried out.
 
 The split is deliberate. A readme that also holds the workflow is read by
 someone looking for one paragraph and finding six; a workflow with no home ends
@@ -43,18 +43,17 @@ order by, and the launch two of the subjects below share.
   several sessions get different todos, where each of them writes, and how what
   they wrote comes back.
 
-## [requirements/](requirements/what-a-requirement-is.md) — what has to keep holding
+## [requirements/](requirements/readme.md) — what has to keep holding
 
-- [what-a-requirement-is.md](requirements/what-a-requirement-is.md) — what one
-  states, what it stands on, and what `open`, `not guarded` and `held` mean.
+- [readme.md](requirements/readme.md) — what one states, what it stands on, and
+  what `open`, `not guarded` and `held` mean.
 - [writing-a-requirement.md](requirements/writing-a-requirement.md) — where an
   entry goes, the sections it is written in, and what **Held by** owes a reader.
 
-## [decisions/](decisions/what-a-decision-is.md) — what a change rested on
+## [decisions/](decisions/readme.md) — what a change rested on
 
-- [what-a-decision-is.md](decisions/what-a-decision-is.md) — what one carries
-  that a commit message cannot, and what `open`, `confirmed` and `revoked`
-  promise a reader.
+- [readme.md](decisions/readme.md) — what one carries that a commit message
+  cannot, and what `open`, `confirmed` and `revoked` promise a reader.
 - [writing-a-decision.md](decisions/writing-a-decision.md) — where an entry
   goes, the sections it is written in, and what a later session adds to the foot
   of one.

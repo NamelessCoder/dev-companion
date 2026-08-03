@@ -10,7 +10,7 @@ it: the change is finished, the demand is not.
 
 This is the base. What a change rested on and what would show it wrong is a
 decision, and a requirement names the ones it stands on in its own `restsOn:` —
-[what a decision is](../decisions/what-a-decision-is.md). Where an entry goes
+[what a decision is](../decisions/readme.md). Where an entry goes
 and how it is written is
 [writing-a-requirement.md](writing-a-requirement.md).
 

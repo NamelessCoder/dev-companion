@@ -12,7 +12,7 @@ change it describes is in the code.
 An entry backs what stands on it. What must be true from now on is a
 requirement, and it names the decisions it rests on in its own `restsOn:`, so a
 revoked one is readable from the requirement written on top of it —
-[what a requirement is](../requirements/what-a-requirement-is.md). Where an
+[what a requirement is](../requirements/readme.md). Where an
 entry goes and how it is written is
 [writing-a-decision.md](writing-a-decision.md).
 

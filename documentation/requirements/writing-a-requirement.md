@@ -1,7 +1,7 @@
 # Writing a requirement
 
 What a requirement is, what it stands on and what its states mean is
-[what-a-requirement-is.md](what-a-requirement-is.md). This page is where an
+[readme.md](readme.md). This page is where an
 entry goes and how it is written.
 
 ## Where an entry lives

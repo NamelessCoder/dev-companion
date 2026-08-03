@@ -41,9 +41,12 @@ releases: [string]  # optional
 # block to keep the line breaks you wrote, and keep those lines under the width
 # yourself.
 body: string  # optional
-# Whether this is a breaking change requiring [!!!].
+# Whether this is a breaking change requiring [!!!]. Left out, the checks say
+# the classification was assumed: it is a property of the diff, which this tool
+# never sees.
 isBreaking: boolean  # optional
-# Whether this is a deprecation.
+# Whether this is a deprecation. Left out, it is assumed the same way and the
+# checks say so.
 isDeprecation: boolean  # optional
 ```
 
@@ -98,6 +101,7 @@ Releases: RELEASE_TARGET
 
 Checks:
 - WARNING: The draft carries "Releases: RELEASE_TARGET". Replace it with the target versions, for example "Releases: main, 13.4".
+- INFO: The subject carries no [!!!] and the call passed no isBreaking, so the classification was assumed rather than checked. It is a property of the diff, which this tool never sees: a removed or narrowed public or protected member makes the change breaking. A breaking change owes [!!!], a Breaking changelog entry and an extension scanner matcher. isDeprecation is assumed the same way. Confirm both against the diff and call again with what you found; typo3_rule_lookup(query "breaking change") has the rules.
 
 Checked against the core contribution rules, trailers included. workflow="project" applies the same subject and body rules without the Forge issue and the Releases: trailer.
 ````
@@ -112,6 +116,11 @@ Data:
             "level": "warning",
             "code": "missing-releases",
             "message": "The draft carries \"Releases: RELEASE_TARGET\". Replace it with the target versions, for example \"Releases: main, 13.4\"."
+        },
+        {
+            "level": "info",
+            "code": "breaking-not-assessed",
+            "message": "The subject carries no [!!!] and the call passed no isBreaking, so the classification was assumed rather than checked. It is a property of the diff, which this tool never sees: a removed or narrowed public or protected member makes the change breaking. A breaking change owes [!!!], a Breaking changelog entry and an extension scanner matcher. isDeprecation is assumed the same way. Confirm both against the diff and call again with what you found; typo3_rule_lookup(query \"breaking change\") has the rules."
         }
     ],
     "workflow": "core"
@@ -143,6 +152,7 @@ Releases: main
 
 Checks:
 - INFO: No commit message readiness issues found by the local checks.
+- INFO: The subject carries no [!!!] and the call passed no isBreaking, so the classification was assumed rather than checked. It is a property of the diff, which this tool never sees: a removed or narrowed public or protected member makes the change breaking. A breaking change owes [!!!], a Breaking changelog entry and an extension scanner matcher. isDeprecation is assumed the same way. Confirm both against the diff and call again with what you found; typo3_rule_lookup(query "breaking change") has the rules.
 
 Checked against the core contribution rules, trailers included. workflow="project" applies the same subject and body rules without the Forge issue and the Releases: trailer.
 ````
@@ -157,6 +167,11 @@ Data:
             "level": "info",
             "code": "no-issues-found",
             "message": "No commit message readiness issues found by the local checks."
+        },
+        {
+            "level": "info",
+            "code": "breaking-not-assessed",
+            "message": "The subject carries no [!!!] and the call passed no isBreaking, so the classification was assumed rather than checked. It is a property of the diff, which this tool never sees: a removed or narrowed public or protected member makes the change breaking. A breaking change owes [!!!], a Breaking changelog entry and an extension scanner matcher. isDeprecation is assumed the same way. Confirm both against the diff and call again with what you found; typo3_rule_lookup(query \"breaking change\") has the rules."
         }
     ],
     "workflow": "core"

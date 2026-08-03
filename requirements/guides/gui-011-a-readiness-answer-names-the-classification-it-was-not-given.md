@@ -1,6 +1,6 @@
 ---
 id: R-GUI-011
-status: open
+status: held
 restsOn: [D-GUI-001]
 ---
 
@@ -17,7 +17,10 @@ it, so a caller who has not yet classified the change reads a scoped result as a
 clearance — and that caller is the one most likely to ask.
 
 A subject that already carries `[!!!]` needs nothing said: the caller has
-answered, and the changelog and release-target checks fire on it today.
+answered, and the changelog and release-target checks fire on it today. So has a
+caller who passed `isBreaking` themselves, whichever value — which is why the
+field is carried through as `null` where nobody supplied it rather than as
+`false`, and why the input schema no longer declares `false` as its default.
 
 ## From
 
@@ -30,4 +33,6 @@ message was reported the day before by the session behind `R-GUI-007`
 
 ## Held by
 
-- Nothing yet. The requirement is open, and the check does not exist.
+- `CommitMessageTest::aClassificationNobodyGaveIsNamedInTheChecks`
+- `CommitMessageTest::aClassificationTheCallerGaveIsNotAskedAboutAgain`
+- `CommitMessageGuideTest::aCheckedMessageSaysTheClassificationWasAssumed`

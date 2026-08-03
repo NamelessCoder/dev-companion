@@ -92,7 +92,7 @@ final class CommitMessageTest extends TestCase
             'body' => "Executed commands:\n\n    ./Build/Scripts/runTests.sh -s cgl -n",
         ]);
 
-        self::assertSame(['no-issues-found'], array_column($result['checks'], 'code'));
+        self::assertSame(['no-issues-found', 'breaking-not-assessed'], array_column($result['checks'], 'code'));
         self::assertStringContainsString("\n    ./Build/Scripts/runTests.sh -s cgl -n", $result['message']);
     }
 
@@ -230,7 +230,7 @@ final class CommitMessageTest extends TestCase
             'releases' => ['main'],
         ]);
 
-        self::assertSame(['no-issues-found'], array_column($result['checks'], 'code'));
+        self::assertSame(['no-issues-found', 'breaking-not-assessed'], array_column($result['checks'], 'code'));
     }
 
     #[Test]
@@ -282,6 +282,57 @@ final class CommitMessageTest extends TestCase
         $codes = array_column(array_merge($parsed['checks'], $result['checks']), 'code');
         self::assertContains('missing-releases', $codes, 'the draft has no release target either');
         self::assertStringNotContainsString('Releases: main', $result['message']);
+    }
+
+    /**
+     * The case of `feedback/2026-08-03-144432`: a whole core message checked
+     * with no `isBreaking`, whose subject carries no `[!!!]` — R-GUI-011. The
+     * subject cannot say which of "not breaking" and "nobody looked" it means,
+     * so `parse()` hands the field back unanswered.
+     */
+    #[Test]
+    public function aClassificationNobodyGaveIsNamedInTheChecks(): void
+    {
+        $parsed = CommitMessage::parse("[TASK] Do a thing\n\nBody.\n\nResolves: #1\nReleases: main\n");
+        $result = CommitMessage::create($parsed['input']);
+
+        self::assertNull($parsed['input']['isBreaking']);
+
+        $codes = array_column($result['checks'], 'code');
+        self::assertContains('breaking-not-assessed', $codes);
+        self::assertContains('no-issues-found', $codes, 'the caveat stands beside the clearance, not inside it');
+
+        $check = $this->checksWithCode($result['checks'], 'breaking-not-assessed')[0];
+        self::assertSame('info', $check['level']);
+        self::assertStringContainsString('isDeprecation', $check['message'], 'the same field owes the same sentence');
+    }
+
+    /** @param array<string, mixed> $answered */
+    #[Test]
+    #[DataProvider('theWaysACallerAnswersTheClassification')]
+    public function aClassificationTheCallerGaveIsNotAskedAboutAgain(array $answered): void
+    {
+        $result = CommitMessage::create(array_merge([
+            'changeType' => 'TASK',
+            'summary' => 'Do a thing',
+            'issue' => '1',
+            'releases' => ['main'],
+        ], $answered));
+
+        self::assertNotContains('breaking-not-assessed', array_column($result['checks'], 'code'));
+    }
+
+    /** @return array<string, array{0: array<string, mixed>}> */
+    public static function theWaysACallerAnswersTheClassification(): array
+    {
+        return [
+            'the subject carries the breaking marker' => [['isBreaking' => true]],
+            'the caller passed isBreaking false' => [['isBreaking' => false]],
+            'the caller named a deprecation, which is a classification too' => [['isDeprecation' => true]],
+            'outside the core there is no changelog and no matcher to owe' => [
+                ['workflow' => CommitMessage::WORKFLOW_PROJECT],
+            ],
+        ];
     }
 
     #[Test]

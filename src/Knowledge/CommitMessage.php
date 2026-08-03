@@ -86,8 +86,8 @@ final class CommitMessage
      *   releases?: array<int, string>,
      *   body?: ?string,
      *   draftPrefixes?: array<int, string>,
-     *   isBreaking?: bool,
-     *   isDeprecation?: bool,
+     *   isBreaking?: ?bool,
+     *   isDeprecation?: ?bool,
      *   extraTrailers?: array<int, string>,
      *   workflow?: string
      * } $input
@@ -98,8 +98,8 @@ final class CommitMessage
         $workflow = self::workflow($input['workflow'] ?? null);
         $changeType = trim((string) ($input['changeType'] ?? ''));
         $summary = self::normalizeSummary((string) $input['summary']);
-        $isBreaking = (bool) ($input['isBreaking'] ?? false);
-        $isDeprecation = (bool) ($input['isDeprecation'] ?? false);
+        $isBreaking = self::classification($input['isBreaking'] ?? null);
+        $isDeprecation = self::classification($input['isDeprecation'] ?? null);
 
         $issues = [];
         foreach (array_merge([$input['issue'] ?? null], $input['issues'] ?? []) as $issue) {
@@ -132,7 +132,7 @@ final class CommitMessage
         foreach ($input['draftPrefixes'] ?? [] as $marker) {
             $drafts .= '[' . $marker . ']';
         }
-        $prefix = $drafts . ($isBreaking ? '[!!!]' : '') . '[' . ($changeType === '' ? 'KEYWORD' : $changeType) . ']';
+        $prefix = $drafts . ($isBreaking === true ? '[!!!]' : '') . '[' . ($changeType === '' ? 'KEYWORD' : $changeType) . ']';
         $subject = $prefix . ' ' . $summary;
         $wrapped = self::wrapBody(isset($input['body']) ? (string) $input['body'] : '');
         $body = $wrapped['body'];
@@ -190,6 +190,18 @@ final class CommitMessage
     }
 
     /**
+     * What the caller said about the change, or null where nobody said.
+     *
+     * `false` and "not supplied" are different answers to a classification the
+     * tool cannot derive, so the second is carried through rather than
+     * collapsed into the first — R-GUI-011.
+     */
+    private static function classification(mixed $value): ?bool
+    {
+        return $value === null ? null : (bool) $value;
+    }
+
+    /**
      * The workflow a message is written for, defaulting to the core's.
      *
      * An unknown value is the core's too rather than an exception: the argument
@@ -228,7 +240,9 @@ final class CommitMessage
         }
 
         $changeType = '';
-        $isBreaking = false;
+        // A subject without [!!!] answers nothing: the caller may have
+        // classified the change as not breaking, or never have classified it.
+        $isBreaking = null;
         $draftPrefixes = [];
         $summary = $subject;
         // The markers in front of the keyword are taken off one at a time, in
@@ -413,8 +427,8 @@ final class CommitMessage
         string $body,
         array $joined,
         array $issues,
-        bool $isBreaking,
-        bool $isDeprecation,
+        ?bool $isBreaking,
+        ?bool $isDeprecation,
         array $releases,
         string $workflow
     ): array {
@@ -493,18 +507,18 @@ final class CommitMessage
             ];
         }
 
-        if ($isDeprecation && $isBreaking) {
+        if ($isDeprecation === true && $isBreaking === true) {
             $checks[] = ['level' => 'error', 'code' => 'deprecation-breaking-prefix', 'message' => 'Deprecations must not use the [!!!] breaking prefix.'];
         }
 
-        if ($isDeprecation && !in_array($changeType, ['TASK', 'FEATURE'], true)) {
+        if ($isDeprecation === true && !in_array($changeType, ['TASK', 'FEATURE'], true)) {
             $checks[] = ['level' => 'error', 'code' => 'deprecation-keyword', 'message' => 'Deprecations may only use [TASK] or [FEATURE].'];
         }
 
         // The changelog and the release targets are the core's process, not the
         // message's shape: both name a file and a role that exist in the core
         // repository alone.
-        if ($isCore && ($isBreaking || $isDeprecation)) {
+        if ($isCore && ($isBreaking === true || $isDeprecation === true)) {
             $checks[] = [
                 'level' => 'warning',
                 'code' => 'changelog-required',
@@ -512,7 +526,7 @@ final class CommitMessage
             ];
         }
 
-        if ($isCore && $isBreaking) {
+        if ($isCore && $isBreaking === true) {
             foreach ($releases as $release) {
                 if ($release !== 'main') {
                     $checks[] = ['level' => 'warning', 'code' => 'breaking-release-target', 'message' => 'Breaking changes should usually target main. Confirm older release targets with the release managers.'];
@@ -523,6 +537,23 @@ final class CommitMessage
 
         if ($checks === []) {
             $checks[] = ['level' => 'info', 'code' => 'no-issues-found', 'message' => 'No commit message readiness issues found by the local checks.'];
+        }
+
+        // Beside whatever else the checks found rather than inside the
+        // clearance, because the message this was reported on returned five
+        // reflow infos and no clearance at all — R-GUI-011. A caller who named
+        // a deprecation has read the diff, so nothing is owed there.
+        if ($isCore && $isBreaking === null && $isDeprecation !== true) {
+            $checks[] = [
+                'level' => 'info',
+                'code' => 'breaking-not-assessed',
+                'message' => 'The subject carries no [!!!] and the call passed no isBreaking, so the '
+                    . 'classification was assumed rather than checked. It is a property of the diff, which this '
+                    . 'tool never sees: a removed or narrowed public or protected member makes the change '
+                    . 'breaking. A breaking change owes [!!!], a Breaking changelog entry and an extension '
+                    . 'scanner matcher. isDeprecation is assumed the same way. Confirm both against the diff and '
+                    . 'call again with what you found; typo3_rule_lookup(query "breaking change") has the rules.',
+            ];
         }
 
         return $checks;

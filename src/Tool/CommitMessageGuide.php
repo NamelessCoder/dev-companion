@@ -36,8 +36,8 @@ final class CommitMessageGuide extends ReadOnlyTool
                 'relatedIssues' => ['type' => 'array', 'items' => ['type' => 'string'], 'default' => [], 'description' => 'Optional related Forge issue numbers.'],
                 'releases' => ['type' => 'array', 'items' => ['type' => 'string'], 'description' => 'Target releases, for example main or 13.4. Left out, the draft carries a RELEASE_TARGET placeholder and the checks ask for it — the branches a change is released on are not guessed.'],
                 'body' => ['type' => 'string', 'description' => 'Optional commit body. It is wrapped at 72 characters in the draft: indent a block to keep the line breaks you wrote, and keep those lines under the width yourself.'],
-                'isBreaking' => ['type' => 'boolean', 'default' => false, 'description' => 'Whether this is a breaking change requiring [!!!].'],
-                'isDeprecation' => ['type' => 'boolean', 'default' => false, 'description' => 'Whether this is a deprecation.'],
+                'isBreaking' => ['type' => 'boolean', 'description' => 'Whether this is a breaking change requiring [!!!]. Left out, the checks say the classification was assumed: it is a property of the diff, which this tool never sees.'],
+                'isDeprecation' => ['type' => 'boolean', 'description' => 'Whether this is a deprecation. Left out, it is assumed the same way and the checks say so.'],
             ],
             'anyOf' => [
                 ['required' => ['message']],

@@ -50,6 +50,19 @@ answers and is not what the clearance wording is doing. `R-GUI-011` is what must
 hold; the judgement queued it rather than making it, because the change is in
 `src/` and adds a check code.
 
+**Since then** that check exists as `breaking-not-assessed`, and building it
+took one thing the placeholder mechanism never needed: a third value. `false`
+and "not supplied" had been the same answer everywhere — `create()` read
+`$input['isBreaking'] ?? false` and `parse()` wrote the key from the subject —
+so the field is now `?bool` and `null` all the way through, which is the only
+form in which the checks can tell a caller who classified the change from one
+who never did. `default: false` came off the input schema in the same move: a
+client that materialises a declared default would have sent the assumption back
+as an answer and silenced the check for exactly the caller it is written for.
+`isDeprecation` shares the one check rather than getting a second of its own —
+nothing in a subject answers it either way, so a separate check would have fired
+on almost every core call and said what this one already says (2026-08-03).
+
 ## Decided
 
 - The draft states what it does not know, in the place where the answer belongs.

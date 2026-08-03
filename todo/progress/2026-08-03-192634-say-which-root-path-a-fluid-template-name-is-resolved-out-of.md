@@ -2,6 +2,8 @@
 
 **Serves:** R-KNW-063, feedback/2026-08-03-164749-installation-the-extension-ships-resources.md
 **Priority:** normal
+**Branch:** todo/say-which-root-path-a-fluid-template-name-is-resolved-out-of
+**Claimed:** 2026-08-03
 
 [`D-KNW-052`](../../decisions/knowledge/knw-052-the-order-a-fluid-template-name-is-resolved-in-is-a-gap-this-server-owns.md),
 step 1a: `fluid-templates` in `knowledge/hints/fluid.json` says a bare `.html`

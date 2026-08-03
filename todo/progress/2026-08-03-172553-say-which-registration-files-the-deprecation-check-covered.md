@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-03-164818-installation-recording-what-worked-so-it-does.md
 **Priority:** normal
+**Branch:** todo/say-which-registration-files-the-deprecation-check-covered
+**Claimed:** 2026-08-03
 
 `ExtensionScope::answer()` at `src/Tool/ExtensionScope.php:206` closes the
 deprecated-files block with *typo3_changelog_lookup is what answers that — these

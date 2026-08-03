@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-03-164734-installation-the-extension-ships-a-fork-of-the.md
 **Priority:** normal
+**Branch:** todo/hold-a-manual-result-to-the-coverage-the-score-already-computes
+**Claimed:** 2026-08-03
 
 Step 5 of the ladder rather than 4: `D-ANS-021`'s first **Wrong if** fired — the
 match line was delivered, read, and did not save the call — and the lever that

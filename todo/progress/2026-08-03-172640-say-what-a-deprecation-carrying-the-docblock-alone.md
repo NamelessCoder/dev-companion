@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-03-164805-installation-there-is-no-cheap-way-to-ask-is.md
 **Priority:** normal
+**Branch:** todo/say-what-a-deprecation-carrying-the-docblock-alone
+**Claimed:** 2026-08-03
 
 `deprecated-apis` in `knowledge/hints/upgrade.json` states the marking as a pair
 — "an @deprecated annotation together with a trigger_error(...,

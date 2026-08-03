@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-03-164805-installation-there-is-no-cheap-way-to-ask-is.md
 **Priority:** normal
+**Branch:** todo/say-that-the-manual-has-no-page-for-a-php-identifier
+**Claimed:** 2026-08-03
 
 `skills/base.md` routes "does this still work in version N" to
 `typo3_documentation_lookup`, and `skills/typo3-extension-conformance/SKILL.md`

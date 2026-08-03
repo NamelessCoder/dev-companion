@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-03-154508-start-the-environment-import-a-database-and.md
 **Priority:** low
+**Branch:** todo/start-the-environment-import-a-database-and
+**Claimed:** 2026-08-03
 
 The hint half of that feedback, which `D-GUI-008` assumed `CHANGE_TYPE_TERMS`
 would move and which it cannot: the terms of a change type reach

@@ -29,7 +29,21 @@ somebody else's checkout with nothing to report it.
    behaviour being complained about, and reach it when a query on the wording
    does not; and the **notes**, where a maintainer said why. Establish which of
    those you have before writing code: what the reporter saw, what the branch
-   does today, and what the project intends the API to be for.
+   does today, and what the project intends the API to be for. Two of that
+   reading are acts, and what they produce goes into the assessment before any
+   code:
+   - **Read the closure reason and the target version for what the conversation
+     decided, and write that down rather than what the report is worth.**
+     Closed for lack of feedback after a long silence is as consistent with an
+     answer the reporter could not use as with the reporter giving up. A target
+     version says which branch a fix was still expected on. Say what the closure
+     settles and what it leaves open; a closed issue is not a finding that the
+     need is absent.
+   - **Where a comment names an alternative, write out what the alternative
+     drops against what the reported code did.** Name the arguments and the
+     behaviour the reported code had and the replacement does not. An
+     alternative closes an issue only if it does the same work, and what it
+     drops is usually the capability the reporter was reaching for.
 4. `typo3_gerrit_lookup` with the same issue number, **before any code is
    written**. Its cheapest outcome is the one that cancels the work and it costs
    one call. An answer of nothing is a result, and a narrow one: the review

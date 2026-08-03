@@ -653,6 +653,65 @@ final class SkillTest extends TestCase
     }
 
     #[Test]
+    public function aClosedIssueIsReadForWhatTheConversationDecided(): void
+    {
+        // `feedback/2026-08-02-144800` is a session that read Forge #105403 as
+        // settled because a maintainer had closed it, called the report
+        // "teilweise valide", and committed a better exception message — a
+        // politer way of telling the reporter they were holding it wrong. The
+        // user rejected that framing twice before the work moved. Both misreads
+        // were of the same two things: a closure for lack of feedback over
+        // sixteen months, which says what the exchange did rather than what the
+        // need is worth, and a maintainer's alternative that drops width, height
+        // and cropping, which is why the reporter had wrapped one ViewHelper in
+        // the other. The step already said the comments can be product judgement
+        // and the session read it, so what is added is stated the way
+        // `D-SKL-009` holds a rule that gets read and not followed: an act with
+        // an object, producing something the assessment carries.
+        $skill = (string) preg_replace('/\s+/', ' ', (string) file_get_contents(
+            Paths::root() . '/skills/typo3-core-patch-development/SKILL.md',
+        ));
+
+        self::assertStringContainsString(
+            '**Read the closure reason and the target version for what the conversation decided, '
+            . 'and write that down rather than what the report is worth.**',
+            $skill,
+        );
+        // The reading that was actually available in the report: silence is
+        // evidence about the answer as much as about the reporter.
+        self::assertStringContainsString(
+            'as consistent with an answer the reporter could not use as with the reporter giving up',
+            $skill,
+        );
+        self::assertStringContainsString('a closed issue is not a finding that the need is absent', $skill);
+
+        self::assertStringContainsString(
+            '**Where a comment names an alternative, write out what the alternative drops '
+            . 'against what the reported code did.**',
+            $skill,
+        );
+        // What the writing-out is over, so that "it is not the same thing" is
+        // not an answer to it.
+        self::assertStringContainsString(
+            'Name the arguments and the behaviour the reported code had and the replacement does not',
+            $skill,
+        );
+        self::assertStringContainsString('closes an issue only if it does the same work', $skill);
+
+        // The step is the wording of the reading and not a section of its own,
+        // so it stays inside "Establish the issue before you believe it" and
+        // ahead of the reproduction.
+        $establish = strpos($skill, '## Establish the issue before you believe it');
+        $closure = strpos($skill, '**Read the closure reason and the target version');
+        $reproduce = strpos($skill, '**Reproduce against the branch you are fixing**');
+        self::assertNotFalse($establish);
+        self::assertNotFalse($closure);
+        self::assertNotFalse($reproduce);
+        self::assertLessThan($closure, $establish);
+        self::assertLessThan($reproduce, $closure);
+    }
+
+    #[Test]
     public function everySkillStartsFromTheBaseBeforeItsOwnEvidence(): void
     {
         foreach (self::skills() as $name => $skill) {

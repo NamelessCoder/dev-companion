@@ -24,7 +24,16 @@ somebody else's checkout with nothing to report it.
    judgement rather than an API fact. Establish which of those you have before
    writing code: what the reporter saw, what the branch does today, and what the
    project intends the API to be for.
-4. **Reproduce against the branch you are fixing**, not against the version in
+4. **Verify in the checkout every rule the issue quotes.** A rule about what an
+   API may or may not be used for is a claim, the way a path or an identifier
+   is. Read the class it names, its docblock and the core's own tests for the
+   form under dispute, and say which of the three carries the rule. Enforced in
+   code, warned about as fragile and advised in prose are three different
+   claims, and two neighbouring APIs regularly make different ones. Carry it at
+   the strength its own source puts on it. An assessment that hardens "may
+   change in a future version" into "must not" argues the patch away on a rule
+   nothing holds.
+5. **Reproduce against the branch you are fixing**, not against the version in
    the report. Half of what a stale issue describes is usually gone, and the
    half that remains is the patch.
 

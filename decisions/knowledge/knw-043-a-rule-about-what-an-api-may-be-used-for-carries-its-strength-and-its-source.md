@@ -128,3 +128,13 @@ flattened `f:image` and `f:uri.image` into a single documented rule, and only
 ## Covered by
 
 - `HintsTest::aFluidResourceUriTaskIsAnsweredWithWhoAppliesCacheBusting`
+
+## Since then
+
+The half deferred above landed on 2026-08-03. "Verify in the checkout every rule
+the issue quotes" is the fourth step of `typo3-core-patch-development`'s
+assessment, before the reproduction, and it names the three strengths this entry
+separates. `R-SKL-015` holds it, and `feedback/2026-08-02-144814` is archived on
+both halves. What is left here is the first **Wrong if** — a session that reads
+the corrected statement and still reports "must not" says the hint was not the
+missing part.

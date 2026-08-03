@@ -293,3 +293,26 @@ trimmed to the two readings and its card carries them at `normal`. Its
 neighbours in the cluster are judged on their own cards: `145128` kept the nine
 procedural steps and says so, and `144814` kept the maintainer statement that
 the checkout contradicts.
+
+## Since then
+
+`feedback/2026-08-02-144814` is the third of the assessment cluster, and what
+was left of it is a step rather than a fact. A rule quoted from a tracker
+comment or from prose documentation is a claim to verify against the checkout,
+the way a path and an identifier already are.
+
+It is written into "Establish the issue before you believe it" as an act with an
+object (`D-SKL-009`). What it names is the class, its docblock and the core's
+own tests for the form under dispute, and the report says which of the three
+carries the rule. The strength that source puts on it is carried rather than
+rounded up, which is the distinction `D-KNW-043` corrected the corpus on. It
+sits before the reproduction step: the reading that ended that session's
+assessment ended it before anything was reproduced.
+
+`R-SKL-015` and `SkillTest::aRuleQuotedAtTheIssueIsVerifiedInTheCheckout` hold
+it, and the feedback is archived. The section is now five steps and three
+paragraphs, and the two cards still out — `145128` for the two lookups and
+`144800` for the closure reading — land in the same one. Whoever writes the
+second of those weighs the length against `D-SKL-010`'s third **Wrong if**,
+which is where a section that grows a sentence per feedback stops being an
+order.

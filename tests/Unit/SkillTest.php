@@ -552,6 +552,45 @@ final class SkillTest extends TestCase
     }
 
     #[Test]
+    public function aRuleQuotedAtTheIssueIsVerifiedInTheCheckout(): void
+    {
+        // `feedback/2026-08-02-144814`: Forge #105403 was answered with "you
+        // *must not* use f:image for anything but FAL resources", and the
+        // session repeated it as correct in its own assessment until the user
+        // asked what it made of the statement. The checkout says something
+        // weaker on 12.4, 13.4, 14.3 and `main` alike — `ImageViewHelper`'s own
+        // first example is an `EXT:` path, `SvgImageViewHelperTest` renders that
+        // form with width, height, `crop` and `fileExtension`, and what both
+        // docblocks warn about is stability rather than support (`D-KNW-043`).
+        // The instructions sent a session to the checkout for what changed, for
+        // the branch and for whether a path or an identifier still exists. A
+        // behavioural rule was on none of those lists, and it is the claim that
+        // closed the issue.
+        $skill = self::flat((string) file_get_contents(
+            Paths::root() . '/skills/typo3-core-patch-development/SKILL.md',
+        ));
+
+        // An act with an object rather than a disposition to be sceptical, which
+        // is what the same position already cost once (`D-SKL-009`).
+        self::assertStringContainsString('**Verify in the checkout every rule the issue quotes.**', $skill);
+        // The claim is the same kind of thing as the two the base already sends
+        // to the checkout, which is what makes it checkable there at all.
+        self::assertStringContainsString('a claim, the way a path or an identifier is', $skill);
+        // Named surfaces, because the docblock and the test are where the two
+        // neighbouring ViewHelpers of that report differ.
+        self::assertStringContainsString("the class it names, its docblock and the core's own tests", $skill);
+        // The three strengths, and the report saying which one it found.
+        self::assertStringContainsString('say which of the three carries the rule', $skill);
+        self::assertStringContainsString('Carry it at the strength its own source puts on it', $skill);
+        // Before the reproduction: a rule read as a prohibition ends the
+        // assessment before anything is reproduced, which is what happened.
+        self::assertLessThan(
+            strpos($skill, '**Reproduce against the branch you are fixing**'),
+            strpos($skill, '**Verify in the checkout every rule the issue quotes.**'),
+        );
+    }
+
+    #[Test]
     public function everySkillStartsFromTheBaseBeforeItsOwnEvidence(): void
     {
         foreach (self::skills() as $name => $skill) {

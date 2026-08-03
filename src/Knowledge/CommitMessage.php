@@ -66,6 +66,17 @@ final class CommitMessage
     private const KNOWN_TRAILERS = ['resolves', 'related', 'releases'];
 
     /**
+     * Prefixes that say the change is not offered for merge yet.
+     *
+     * They stand before the keyword where `[!!!]` stands and are not keywords:
+     * a subject reads `[WIP][BUGFIX] …`. `[POC]` is written `[PoC]` as often as
+     * not, which is why they are matched without regard to case. What they mark
+     * is a state rather than a kind of change, so they come off before the patch
+     * is merged and no merged commit carries one.
+     */
+    private const DRAFT_PREFIXES = ['WIP', 'POC'];
+
+    /**
      * @param array{
      *   changeType?: string,
      *   summary: string,
@@ -74,6 +85,7 @@ final class CommitMessage
      *   relatedIssues?: array<int, string>,
      *   releases?: array<int, string>,
      *   body?: ?string,
+     *   draftPrefixes?: array<int, string>,
      *   isBreaking?: bool,
      *   isDeprecation?: bool,
      *   extraTrailers?: array<int, string>,
@@ -112,7 +124,15 @@ final class CommitMessage
             static fn(string $release): bool => $release !== self::RELEASE_PLACEHOLDER,
         ));
 
-        $prefix = ($isBreaking ? '[!!!]' : '') . '[' . ($changeType === '' ? 'KEYWORD' : $changeType) . ']';
+        // A draft prefix the caller wrote is kept rather than corrected away:
+        // the answer is the message they are about to commit, and stripping the
+        // one word that says "not yet" would hand back a subject that offers the
+        // patch for merge. That it has to go before it is merged is a check.
+        $drafts = '';
+        foreach ($input['draftPrefixes'] ?? [] as $marker) {
+            $drafts .= '[' . $marker . ']';
+        }
+        $prefix = $drafts . ($isBreaking ? '[!!!]' : '') . '[' . ($changeType === '' ? 'KEYWORD' : $changeType) . ']';
         $subject = $prefix . ' ' . $summary;
         $body = self::wrapBody(isset($input['body']) ? (string) $input['body'] : '');
 
@@ -207,11 +227,43 @@ final class CommitMessage
 
         $changeType = '';
         $isBreaking = false;
+        $draftPrefixes = [];
         $summary = $subject;
-        if (preg_match('/^(\[!!!\])?\[([A-Za-z]+)\]\s*(.*)$/', $subject, $matches) === 1) {
-            $isBreaking = $matches[1] !== '';
-            $changeType = strtoupper($matches[2]);
-            $summary = trim($matches[3]);
+        // The markers in front of the keyword are taken off one at a time, in
+        // whatever order the subject wrote them: [WIP][!!!][FEATURE] says what
+        // [!!!][WIP][FEATURE] says. Peeling them first is also what lets a
+        // subject that is nothing but a marker — [WIP] Livesearch — be reported
+        // as the missing keyword it is rather than as an unknown one.
+        $rest = $subject;
+        $markers = '/^\[(' . implode('|', array_merge(['!!!'], self::DRAFT_PREFIXES)) . ')\]\s*/i';
+        while (preg_match($markers, $rest, $marker) === 1) {
+            if ($marker[1] === '!!!') {
+                $isBreaking = true;
+            } else {
+                $draftPrefixes[] = strtoupper($marker[1]);
+            }
+            $rest = substr($rest, strlen($marker[0]));
+        }
+        $summary = $rest;
+
+        if ($draftPrefixes !== []) {
+            $checks[] = [
+                'level' => 'warning',
+                'code' => 'not-merge-ready',
+                'message' => sprintf(
+                    '%s says the change is still being worked on and is not offered for merge. It comes off '
+                        . 'before the patch is merged, where [!!!] is the only prefix a subject may carry.',
+                    implode('', array_map(
+                        static fn(string $marker): string => '[' . $marker . ']',
+                        $draftPrefixes,
+                    )),
+                ),
+            ];
+        }
+
+        if (preg_match('/^\[([A-Za-z]+)\]\s*(.*)$/', $rest, $matches) === 1) {
+            $changeType = strtoupper($matches[1]);
+            $summary = trim($matches[2]);
 
             $keywordCheck = self::keywordCheck($changeType, $workflow);
             if ($keywordCheck !== null) {
@@ -281,6 +333,7 @@ final class CommitMessage
                 'relatedIssues' => $relatedIssues,
                 'releases' => $releases,
                 'body' => trim(implode("\n", $lines)),
+                'draftPrefixes' => $draftPrefixes,
                 'isBreaking' => $isBreaking,
                 'extraTrailers' => $extraTrailers,
             ],

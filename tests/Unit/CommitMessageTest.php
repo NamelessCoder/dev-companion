@@ -324,6 +324,58 @@ final class CommitMessageTest extends TestCase
         self::assertSame('', $parsed['input']['changeType']);
     }
 
+    /**
+     * A subject the review server is full of — 36 of 200 open changes on
+     * 2026-08-03 — and the one this tool used to answer with `[KEYWORD]
+     * [BUGFIX] …`, having read `[WIP]` as the keyword and rewritten a correct
+     * subject into one that does not exist.
+     */
+    #[Test]
+    public function aDraftPrefixIsNotAKeywordAndIsKept(): void
+    {
+        $parsed = CommitMessage::parse("[WIP][BUGFIX] Parse User TSConfig\n\nBody.\n\nResolves: #1\nReleases: main\n");
+        $result = CommitMessage::create($parsed['input']);
+
+        self::assertSame('BUGFIX', $parsed['input']['changeType']);
+        self::assertSame(['WIP'], $parsed['input']['draftPrefixes']);
+        self::assertNotContains('unknown-keyword', array_column($parsed['checks'], 'code'));
+        self::assertContains('not-merge-ready', array_column($parsed['checks'], 'code'));
+        self::assertStringStartsWith('[WIP][BUGFIX] Parse User TSConfig', $result['message']);
+    }
+
+    #[Test]
+    public function aProofOfConceptIsTheSameMarkerHoweverItIsSpelled(): void
+    {
+        $parsed = CommitMessage::parse("[PoC][FEATURE] Bind a form to TCA\n\nResolves: #1\nReleases: main\n");
+
+        self::assertSame(['POC'], $parsed['input']['draftPrefixes']);
+        self::assertSame('FEATURE', $parsed['input']['changeType']);
+    }
+
+    /** The order is the subject's, and the breaking marker is read either way round. */
+    #[Test]
+    public function aDraftPrefixStandsBesideTheBreakingMarker(): void
+    {
+        foreach (['[WIP][!!!][FEATURE]', '[!!!][WIP][FEATURE]'] as $subject) {
+            $parsed = CommitMessage::parse($subject . " Change the resource API\n\nResolves: #1\nReleases: main\n");
+
+            self::assertTrue($parsed['input']['isBreaking'], $subject);
+            self::assertSame(['WIP'], $parsed['input']['draftPrefixes'], $subject);
+            self::assertSame('FEATURE', $parsed['input']['changeType'], $subject);
+        }
+    }
+
+    /** A marker on its own is a subject without a keyword, and says so. */
+    #[Test]
+    public function aSubjectThatIsOnlyADraftPrefixIsMissingItsKeyword(): void
+    {
+        $parsed = CommitMessage::parse("[WIP] Livesearch\n\nResolves: #1\nReleases: main\n");
+
+        self::assertContains('missing-keyword', array_column($parsed['checks'], 'code'));
+        self::assertContains('not-merge-ready', array_column($parsed['checks'], 'code'));
+        self::assertSame('Livesearch', $parsed['input']['summary']);
+    }
+
     #[Test]
     public function aMissingBlankLineAfterTheSummaryIsReported(): void
     {

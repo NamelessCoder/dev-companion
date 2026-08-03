@@ -11,6 +11,7 @@ Guide.
 
 - Start with one of `[BUGFIX]`, `[FEATURE]`, `[TASK]`, or `[DOCS]`.
 - Add `[!!!]` before the keyword for breaking changes.
+- `[!!!]` is the only prefix a merge-ready subject carries.
 - Do not use `[SECURITY]` unless this is handled by the TYPO3 Security Team.
 - Keep the summary below 52 characters if possible and below 72 characters in
   any case.
@@ -20,6 +21,17 @@ Guide.
 - Start the summary text after the keyword with a capital letter.
 - Avoid `EXT:some_extension` in the subject when the changed files already make
   the extension context clear.
+
+## Work in Progress
+
+- `[WIP]` and `[POC]` go before the keyword, where `[!!!]` goes:
+  `[WIP][BUGFIX] Parse User TSConfig for user settings`. They mark a state, not
+  a kind of change — work in progress, and proof of concept.
+- A change carrying one is not offered for merge. Both come off before it is
+  merged, and no merged commit carries either.
+- `[POC]` is written `[PoC]` as often as not, and the two are the same marker.
+- Gerrit says the same thing to the review server rather than to a reader:
+  pushing with `%wip` opens the change as work in progress.
 
 ## Body
 

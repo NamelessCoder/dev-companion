@@ -29,12 +29,9 @@ is dropped by the coverage floor. `summary line length` returns it first. The
 two words naming the document are what cost it: a document title is in no
 searched field.
 
-Where a compound query does miss altogether, the reason is wrong.
-`RuleLookup::answer()` reaches its no-match answer only where prose, hints and
-withheld documents are all empty; where hints matched, an empty prose result
-prints `No section that holds outside the core matched` whatever the scope, so
-inside a core checkout the caller is told a boundary emptied an answer it
-withheld nothing from. `D-ANS-037` has the readings.
+Trimmed again on 2026-08-03: the other half of the last sentence, the miss that
+blamed the core boundary for words that reached nothing, is answered — the
+`D-ANS-037` **Since then** has what it now prints.
 
 ## Query
 

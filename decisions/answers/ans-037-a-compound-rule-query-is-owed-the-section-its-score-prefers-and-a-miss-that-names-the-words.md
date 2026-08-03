@@ -142,6 +142,10 @@ task sentence is not one.
 - `KnowledgeTest::aQueryThatNamesItsDocumentReachesTheSectionThatAnswersIt`
 - `KnowledgeTest::everyDocumentIsReachedByItsOwnTitle`
 - `KnowledgeTest::anUnrelatedQueryAnswersWithNothingRatherThanTheNearestProse`
+- `KnowledgeTest::aMissInsideTheCoreNamesTheWordsRatherThanTheBoundary`
+- `KnowledgeTest::aMissThatWithheldADocumentSaysTheBoundaryEmptiedIt`
+- `KnowledgeTest::whatAMissOffersToAskAgainWithReturnsSections`
+- `KnowledgeTest::aSubsetIsNamedInTheWordsTheQueryWasWrittenIn`
 
 ## Since then
 
@@ -194,3 +198,34 @@ documents are outranked rather than dropped at the boundary, which is why
 asserts that something was withheld. The query in
 `whatARuleAnswerWithheldIsNamedRatherThanMissing` reaches both halves and holds
 it.
+
+## Since then
+
+The miss half was built on 2026-08-03. `RuleLookup::answer()` reads the boundary
+as a reason only where it withheld something: an empty prose result with an empty
+`withheldDocuments` is the miss answer whatever the hints did, and the
+outside-core sentence stands where a document really was dropped for it. Re-run
+from `/home/benji/projects/typo3-cms`, the query this entry was written on
+answers *No knowledge section matched …*, then *No section carries more than 2 of
+the 8 words: "patch replacing" reaches 1 section, "review patch" reaches 7
+sections — ask again with the one that narrows best*, then the two hints it
+already carried and the topic list. Both offered subsets return sections when
+they are asked. The other path is unchanged and reachable: *how do I push a patch
+for review from my site package* withholds the Gerrit workflow and says so.
+
+The subsets are `D-ANS-016`'s computation on a second corpus, and what that took
+was the matcher. `Search\Subsets` holds the one pass and is handed the corpus's
+own `carries()`, because a subset offered on the labels' substring rule would
+name sections a prose re-query does not return. They are counted over the
+documents the call may answer from, so a subset offered outside the core is not
+answered with the withholding notice, and what is named back is the caller's own
+spelling rather than the stem it was reduced to — `TermSearch::words()` — because
+both re-query to the same sections and only one of them reads as a typo. The
+sentence around them is `Result\Miss`, which the changelog miss now prints from
+as well, so the two cannot drift apart in wording.
+
+What differs from the changelog is the count. `Documents::search()` keeps a
+section covering half the query's weight, so *"patch replacing" reaches 1
+section* returns two — a floor rather than the length of the answer, where the
+changelog's number is exact because a hit there carries every word. It is
+computed the same way for every subset, which is what the caller picks one by.

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Typo3CmsMcp\Tool;
 
 use Typo3CmsMcp\Installation\Changelog;
+use Typo3CmsMcp\Result\Miss;
 use Typo3CmsMcp\Result\Schema;
 use Typo3CmsMcp\Result\ToolResult;
 use Typo3CmsMcp\Result\Unsupported;
@@ -210,19 +211,12 @@ final class ChangelogLookup extends ReadOnlyTool
                     )) . ($subsets === [] && $outside === [] ? ' — ask again with the one that narrows best.' : '.');
             }
             if ($subsets !== []) {
-                $shown = array_slice($subsets, 0, 4);
-                $lines[] = sprintf(
-                    'No entry %scarries more than %d of the %d words: %s%s — ask again with the one that narrows best.',
-                    $narrowing === [] ? '' : 'inside ' . implode(' and ', $narrowing) . ' ',
-                    count($subsets[0]['terms']),
+                $lines[] = Miss::largestReaching(
+                    $subsets,
                     count($terms),
-                    implode(', ', array_map(static fn(array $subset): string => sprintf(
-                        '"%s" reaches %d entr%s',
-                        implode(' ', $subset['terms']),
-                        $subset['matchCount'],
-                        $subset['matchCount'] === 1 ? 'y' : 'ies',
-                    ), $shown)),
-                    count($subsets) > count($shown) ? sprintf(', and %d more', count($subsets) - count($shown)) : '',
+                    'entry',
+                    'entries',
+                    $narrowing === [] ? '' : 'inside ' . implode(' and ', $narrowing),
                 );
             }
             $lines[] = sprintf(

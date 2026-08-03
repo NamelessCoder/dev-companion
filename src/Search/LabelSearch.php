@@ -158,29 +158,14 @@ final class LabelSearch
     }
 
     /**
-     * The most of a query anything still carries, as a query that can be asked.
+     * The most of a query a label or a changelog entry still carries, as a
+     * query that can be asked.
      *
-     * What a caller needs that the per-term counts cannot say: which words have
-     * to go. The term with the smallest reach is the one to keep rather than
-     * the one to drop — `yaml` reaches 17 of 3766 entries and is the word both
-     * target entries carry — and no marginal count says which drop lets the
-     * intersection survive, because two of the five had to go before anything
-     * matched (`D-ANS-016`).
-     *
-     * Read as subsets that would be tried one level at a time, this is 15
-     * filter passes for a five-word query and a depth nobody has bounded. It is
-     * one pass instead: a subset reaches an item exactly when that item carries
-     * every word of it, so the largest subsets that reach anything are the
-     * largest sets of words a single item carries. 15 ms over the 3766 entries
-     * of 14.3 against the 28 ms the peel costs, at any depth, and the count is
-     * exact — no item carries more than the largest set, so the items carrying
-     * one of them are all a re-query returns.
-     *
-     * Every largest subset is returned rather than one of them. On
-     * `form set yaml registration deprecated` there are two, they reach one
-     * entry each, and the one a tie-break picks first is
-     * `Unify form setup YAML loading` rather than the deprecation that was
-     * being looked for.
+     * The computation is `Subsets`, which the prose corpus reaches with its own
+     * matcher; what is this corpus's own is the field pair and the matching:
+     * the same `carries()` `carryingEvery()` and `perTermCounts()` answer with,
+     * identifier spellings included. 15 ms over the 3766 entries of 14.3
+     * against the 28 ms the peel it replaced costs (`D-ANS-016`).
      *
      * @param array<int, array<string, string>> $items
      * @param array<int, string> $terms
@@ -188,37 +173,13 @@ final class LabelSearch
      */
     public static function largestReachingSubsets(array $items, array $terms): array
     {
-        if (count($terms) < 2) {
-            return [];
-        }
-
-        $reached = [];
-        $largest = 0;
-        foreach ($items as $item) {
-            $haystack = mb_strtolower(($item['key'] ?? '') . ' ' . ($item['source'] ?? ''));
-            $carried = array_values(array_filter(
-                $terms,
-                static fn(string $term): bool => self::carries($haystack, $term),
-            ));
-            // A subset, so a query that hits is not answered with itself, and a
-            // single word is what the per-term counts already say.
-            if (count($carried) < 2 || count($carried) === count($terms)) {
-                continue;
-            }
-            $largest = max($largest, count($carried));
-            $key = implode(' ', $carried);
-            $reached[$key] = ($reached[$key] ?? 0) + 1;
-        }
-
-        $subsets = [];
-        foreach ($reached as $key => $matchCount) {
-            $carried = explode(' ', (string) $key);
-            if (count($carried) === $largest) {
-                $subsets[] = ['terms' => $carried, 'matchCount' => $matchCount];
-            }
-        }
-        usort($subsets, static fn(array $a, array $b): int => $a['matchCount'] <=> $b['matchCount']);
-
-        return $subsets;
+        return Subsets::largestReaching(
+            array_map(
+                static fn(array $item): string => mb_strtolower(($item['key'] ?? '') . ' ' . ($item['source'] ?? '')),
+                array_values($items),
+            ),
+            $terms,
+            self::carries(...),
+        );
     }
 }

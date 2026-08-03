@@ -7,9 +7,11 @@ namespace Typo3CmsMcp\Tool;
 use Typo3CmsMcp\Knowledge\Documents;
 use Typo3CmsMcp\Knowledge\Hints;
 use Typo3CmsMcp\Knowledge\Scope;
+use Typo3CmsMcp\Result\Miss;
 use Typo3CmsMcp\Result\Prose;
 use Typo3CmsMcp\Result\Schema;
 use Typo3CmsMcp\Result\ToolResult;
+use Typo3CmsMcp\Search\TermSearch;
 
 /**
  * The local TYPO3 core contribution rules and script notes, by topic.
@@ -84,8 +86,14 @@ final class RuleLookup extends ReadOnlyTool
         // returned on both sides of the boundary.
         $hints = Hints::find([], $query, 3)['matchedHints'];
 
-        if ($results === [] && $hints === [] && $withheld === []) {
-            return self::noMatch($query, $scope, $outsideCore);
+        // The boundary is only the reason for a miss where it withheld
+        // something. Blaming it wherever a hint had matched printed "No section
+        // that holds outside the core matched" inside the core, on a call that
+        // withheld nothing, and a judging run read that back as an answer —
+        // `D-ANS-037`. Every other empty result is a miss and gets the miss
+        // answer.
+        if ($results === [] && $withheld === []) {
+            return self::noMatch($query, $scope, $outsideCore, $hints);
         }
 
         $lines = [];
@@ -102,11 +110,7 @@ final class RuleLookup extends ReadOnlyTool
             ? sprintf('No section that holds outside the core matched "%s".', $query)
             : Prose::sections($results);
         if ($hints !== []) {
-            $lines[] = "\nThe hints also cover this — call typo3_hint_lookup with the id:\n"
-                . implode("\n", array_map(
-                    static fn(array $hint): string => '- ' . $hint['id'] . ' — ' . $hint['title'],
-                    $hints,
-                ));
+            $lines[] = "\n" . self::alsoInHints($hints);
         }
 
         return ToolResult::create(implode("\n", $lines), [
@@ -128,32 +132,64 @@ final class RuleLookup extends ReadOnlyTool
      * It carries the same fields a hit does, boundary included: a client that
      * validates the answer must not have to branch on which of the two it got,
      * and a miss is where it is most likely to look.
+     *
+     * The words that emptied it come first, because that is what the caller can
+     * act on in the same call: the topic list says what is here, and the subset
+     * says which part of this query reaches it (`R-ANS-006`). The subsets are
+     * counted over the documents this call may answer from, so one offered
+     * outside the core is not answered with the withholding notice.
+     *
+     * @param array<int, array<string, mixed>> $hints
      */
-    private static function noMatch(string $query, Scope $scope, bool $outsideCore): ToolResult
+    private static function noMatch(string $query, Scope $scope, bool $outsideCore, array $hints): ToolResult
     {
-        $documents = implode("\n", array_map(
+        $visible = array_values(array_filter(
+            array_column(Documents::documents(), 'id'),
+            static fn(string $id): bool => !$outsideCore || !Documents::isCoreOnly($id),
+        ));
+
+        $blocks = [sprintf('No knowledge section matched "%s".', $query)];
+        $subsets = Documents::largestReachingSubsets($query, $visible);
+        if ($subsets !== []) {
+            $blocks[] = Miss::largestReaching($subsets, count(TermSearch::terms($query)), 'section', 'sections');
+        }
+        if ($hints !== []) {
+            $blocks[] = self::alsoInHints($hints);
+        }
+        $blocks[] = "This knowledge base covers:\n" . implode("\n", array_map(
             static fn(array $document): string => '- ' . $document['title'] . ': ' . implode(', ', $document['topics']),
             Documents::topics()
         ));
-
-        $text = sprintf(
-            "No knowledge section matched \"%s\".\n\nThis knowledge base covers:\n%s\n\n"
-            . 'For backend UI components use typo3_component_lookup, and call typo3_server_scope for what '
+        $blocks[] = 'For backend UI components use typo3_component_lookup, and call typo3_server_scope for what '
             . 'this server covers at all. '
-            . 'If the topic should be covered here, leave a feedback with typo3_feedback_record.',
-            $query,
-            $documents
-        );
+            . 'If the topic should be covered here, leave a feedback with typo3_feedback_record.';
 
-        return ToolResult::create($text, [
+        return ToolResult::create(implode("\n\n", $blocks), [
             'query' => $query,
             'matchCount' => 0,
             'matches' => [],
             'scope' => $scope->value,
             'withheldDocuments' => [],
-            'alsoInHints' => [],
+            'alsoInHints' => array_map(
+                static fn(array $hint): array => ['id' => $hint['id'], 'title' => $hint['title']],
+                $hints,
+            ),
             'documents' => Documents::topics(),
         ]);
+    }
+
+    /**
+     * The hints that answer the same question, as the call that returns them.
+     *
+     * @param array<int, array<string, mixed>> $hints
+     */
+    private static function alsoInHints(array $hints): string
+    {
+        return "The hints also cover this — call typo3_hint_lookup with the id:\n"
+            . implode("\n", array_map(
+                static fn(array $hint): string => '- ' . $hint['id'] . ' — ' . $hint['title'],
+                $hints,
+            ));
     }
 
     /**

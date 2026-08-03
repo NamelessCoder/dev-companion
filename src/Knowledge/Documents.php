@@ -6,6 +6,7 @@ namespace Typo3CmsMcp\Knowledge;
 
 use Symfony\Component\Finder\Finder;
 use Typo3CmsMcp\Paths;
+use Typo3CmsMcp\Search\Subsets;
 use Typo3CmsMcp\Search\TermSearch;
 
 /**
@@ -209,6 +210,53 @@ final class Documents
         }
 
         return $results;
+    }
+
+    /**
+     * The most of a query some section still carries, as a query that can be
+     * asked outright.
+     *
+     * What a miss here owes that the topic list cannot say: which words emptied
+     * it. A query longer than the topic it names is dropped by MIN_COVERAGE
+     * whole, so the section that answers part of it is unreachable and nothing
+     * in the answer points at it.
+     *
+     * The matcher is this corpus's own, and the fields are the ones `search()`
+     * reads — a subset is only worth offering where the same call returns
+     * something for it. What is named back is the caller's own spelling of each
+     * term rather than the stem it was reduced to; both reach the same
+     * sections.
+     *
+     * The count is what carries every word of the subset, which here is a floor
+     * rather than the length of the answer: `search()` keeps a section covering
+     * half the query's weight, so the re-query returns those sections and
+     * whatever else clears MIN_COVERAGE. It is one pass and it is comparable
+     * across the subsets, which is what the caller picks one by.
+     *
+     * @param array<int, string> $documentIds Restrict to these documents.
+     * @return array<int, array{terms: array<int, string>, matchCount: int}> Narrowest first.
+     */
+    public static function largestReachingSubsets(string $query, array $documentIds = []): array
+    {
+        $texts = [];
+        foreach (self::documents() as $document) {
+            if ($documentIds !== [] && !in_array($document['id'], $documentIds, true)) {
+                continue;
+            }
+
+            $content = (string) file_get_contents($document['path']);
+            foreach (self::sections($content) as $section) {
+                $texts[] = $section['heading'] . ' ' . $section['body'];
+            }
+        }
+
+        $words = TermSearch::words($query);
+        $subsets = Subsets::largestReaching($texts, TermSearch::terms($query), TermSearch::carries(...));
+
+        return array_map(static fn(array $subset): array => [
+            'terms' => array_map(static fn(string $term): string => $words[$term] ?? $term, $subset['terms']),
+            'matchCount' => $subset['matchCount'],
+        ], $subsets);
     }
 
     /**

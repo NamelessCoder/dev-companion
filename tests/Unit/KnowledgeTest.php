@@ -15,6 +15,7 @@ use Typo3CmsMcp\Knowledge\TaskIntents;
 use Typo3CmsMcp\Knowledge\TestSuiteHints;
 use Typo3CmsMcp\Knowledge\Versions;
 use Typo3CmsMcp\Paths;
+use Typo3CmsMcp\Tool\Registry;
 
 final class KnowledgeTest extends TestCase
 {
@@ -284,6 +285,83 @@ final class KnowledgeTest extends TestCase
     {
         foreach (Documents::topics() as $document) {
             self::assertNotSame([], $document['topics'], $document['id'] . ' reports no topics');
+        }
+    }
+
+    /**
+     * The query `feedback/2026-08-01-115115` was working on, asked from the core
+     * checkout it was written in: nothing matched, nothing was withheld, and the
+     * answer blamed the boundary for both — which `D-ANS-029` then quoted back
+     * as what the tool answers a core query (`D-ANS-037`).
+     */
+    #[Test]
+    public function aMissInsideTheCoreNamesTheWordsRatherThanTheBoundary(): void
+    {
+        $result = Registry::call('typo3_rule_lookup', [
+            'query' => 'review of core patch replacing GD error thumbnails with SVG placeholder',
+        ]);
+
+        self::assertSame(0, $result->data['matchCount']);
+        self::assertSame(Scope::Core->value, $result->data['scope']);
+        self::assertSame([], $result->data['withheldDocuments'], 'nothing was withheld, so nothing was left out for the boundary');
+        self::assertStringNotContainsString('holds outside the core', $result->text);
+        self::assertStringContainsString('No knowledge section matched', $result->text);
+        self::assertStringContainsString('This knowledge base covers:', $result->text);
+        self::assertStringContainsString('ask again with the one that narrows best', $result->text);
+        // The hints that matched are what this path already had, and they are
+        // the reason it was not the miss answer in the first place.
+        self::assertNotSame([], $result->data['alsoInHints']);
+        self::assertStringContainsString('typo3_hint_lookup', $result->text);
+    }
+
+    /**
+     * The other miss path: outside the core, with a document dropped for the
+     * boundary. That is the one case the sentence is true in, and it stays.
+     */
+    #[Test]
+    public function aMissThatWithheldADocumentSaysTheBoundaryEmptiedIt(): void
+    {
+        $result = Registry::call('typo3_rule_lookup', [
+            'query' => 'how do I push a patch for review from my site package',
+        ]);
+
+        self::assertSame(0, $result->data['matchCount']);
+        self::assertSame(['typo3-gerrit-workflow'], array_column($result->data['withheldDocuments'], 'id'));
+        self::assertStringContainsString('No section that holds outside the core matched', $result->text);
+    }
+
+    #[Test]
+    public function whatAMissOffersToAskAgainWithReturnsSections(): void
+    {
+        $result = Registry::call('typo3_rule_lookup', [
+            'query' => 'review of core patch replacing GD error thumbnails with SVG placeholder',
+        ]);
+
+        preg_match_all('/"([^"]+)" reaches \d+ sections?/', $result->text, $offered);
+        self::assertNotSame([], $offered[1], 'the miss names no part of the query that would have reached anything');
+
+        foreach ($offered[1] as $subset) {
+            self::assertGreaterThan(
+                0,
+                Registry::call('typo3_rule_lookup', ['query' => $subset])->data['matchCount'],
+                $subset . ' is offered as the next call and returns nothing',
+            );
+        }
+    }
+
+    #[Test]
+    public function aSubsetIsNamedInTheWordsTheQueryWasWrittenIn(): void
+    {
+        $query = 'review of core patch replacing GD error thumbnails with SVG placeholder';
+        $written = preg_split('/\s+/', mb_strtolower($query)) ?: [];
+
+        $subsets = Documents::largestReachingSubsets($query);
+
+        self::assertNotSame([], $subsets);
+        foreach ($subsets as $subset) {
+            foreach ($subset['terms'] as $term) {
+                self::assertContains($term, $written, 'a miss hands back the stem rather than the word that was typed');
+            }
         }
     }
 

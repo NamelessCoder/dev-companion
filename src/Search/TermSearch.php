@@ -87,16 +87,44 @@ final class TermSearch
      */
     public static function terms(string $query): array
     {
-        $terms = [];
+        return array_values(array_unique(array_map(self::stem(...), self::meaningful($query))));
+    }
+
+    /**
+     * The caller's own word behind each term, so an answer that hands a query
+     * back is one they recognise: "commit message line" rather than
+     * "commit messag line". The stem re-queries to the same term, so what is
+     * named is still exactly what was measured.
+     *
+     * @return array<string, string> The first word of the query that produced each term.
+     */
+    public static function words(string $query): array
+    {
+        $words = [];
+        foreach (self::meaningful($query) as $word) {
+            $words[self::stem($word)] ??= $word;
+        }
+
+        return $words;
+    }
+
+    /**
+     * The words of a query that are searched for at all, as they were written.
+     *
+     * @return array<int, string>
+     */
+    private static function meaningful(string $query): array
+    {
+        $words = [];
         foreach (preg_split('/[^\p{L}\p{N}_.-]+/u', mb_strtolower(trim($query))) ?: [] as $word) {
             $word = trim($word, '.-');
             if ($word === '' || strlen($word) < self::MIN_LENGTH || in_array($word, self::STOPWORDS, true)) {
                 continue;
             }
-            $terms[] = self::stem($word);
+            $words[] = $word;
         }
 
-        return array_values(array_unique($terms));
+        return $words;
     }
 
     /**

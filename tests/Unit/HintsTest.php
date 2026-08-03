@@ -923,6 +923,44 @@ final class HintsTest extends TestCase
         self::assertStringContainsString('Settle first that the change is breaking at all', $brief);
     }
 
+    /**
+     * What a deprecation carrying the docblock alone raises, which is nothing.
+     *
+     * A conformance audit went to the installed core for the severity of
+     * `InfoboxViewHelper::STATE_ERROR` — `feedback/2026-08-03-164805`. The
+     * corpus stated the marking as a pair and had no word for the half of it
+     * the constant carries. Read in `.checkouts/14.3`: that file has no
+     * `trigger_error` at all, and none can be added, because a class constant
+     * is read without anything in the declaring class running. The other half
+     * is what keeps the reading from being applied to a method — the trigger
+     * for one can sit in the caller, or in the magic accessor of a
+     * compatibility trait, so a file without one settles nothing there.
+     */
+    #[Test]
+    public function whatADeprecationCarryingTheDocblockAloneRaisesIsStated(): void
+    {
+        $reached = array_column(
+            Hints::find([], 'does a deprecated class constant raise a deprecation', 6)['matchedHints'],
+            'id',
+        );
+        self::assertContains('deprecated-apis', $reached);
+
+        $written = json_encode(Hints::byId('deprecated-apis'), JSON_THROW_ON_ERROR);
+        self::assertStringContainsString('no trigger_error can be attached to it anywhere', $written);
+        self::assertStringContainsString('fatal error in the major that removes it', $written);
+        self::assertStringContainsString('ClassConstantMatcher', $written);
+
+        // The guard that keeps that reading off a method, and the measurement
+        // it rests on: the attribute the core marks nothing with.
+        self::assertStringContainsString('does not have to sit in the declaring body', $written);
+        self::assertStringContainsString('#[\\\\Deprecated] attribute', $written);
+
+        // The branch is not something the server is blind to where an
+        // installation answers, which is where the changelog is read from.
+        self::assertStringNotContainsString('does not know your branch', $written);
+        self::assertStringContainsString('typo3_project_scope', $written);
+    }
+
     #[Test]
     public function aPathAloneReachesTheHintForTheSubsystemItIsIn(): void
     {

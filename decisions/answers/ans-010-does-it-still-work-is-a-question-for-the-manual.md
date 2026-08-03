@@ -225,6 +225,8 @@ to tell whether the thing exists in the version it runs on.
 
 ## Since then
 
+### Step 4, which corpus a question has
+
 Step 4 landed on 2026-08-03, in `skills/base.md` and not in the conformance
 skill. Both carried the routing and only one carries it once. The conformance
 skill states its own condition and then defers — "the base says why the
@@ -251,3 +253,31 @@ has. A documented surface goes to the manual, an identifier to the changelog
 under its own name and then to the class, and the miss-is-a-result sentence
 stands for the surface it was written about. The feedback keeps its other half:
 what a deprecation carrying the docblock alone raises is a todo of its own.
+### Step 1a, what a docblock alone raises
+
+Step 1a landed on 2026-08-03, and what makes a reading of `@deprecated` alone
+conclusive is the kind of member rather than the file it sits in. A class
+constant and an enum case are read without anything in the declaring class
+running, so no `trigger_error` can be attached to one anywhere; PHP's
+`#[\Deprecated]` attribute is the only other thing that would raise, and the
+measurement above is that the core carries none. For a method, a property or a
+class the same absence says nothing. `AbstractTypolinkBuilder::build()` is
+announced from `LinkFactory`, and `BackendUserAuthentication::$errorMsg` is
+declared protected and raises from `PublicPropertyDeprecationTrait::__get()` two
+files away. Read in `.checkouts/14.3`: 58 of the 98 files carrying `@deprecated`
+hold no `trigger_error` at all, 22 of those markers being on methods.
+
+So the severity is a property of the declaration, and the entry that announces it
+can be wrong about it. `Deprecation-107648` states *Using these constants will
+trigger a PHP deprecation warning*, which nothing does — and the constants are
+gone from `InfoboxViewHelper` on `main`, so a call site that never saw a
+deprecation fails at v15. What carries such a case is the extension scanner
+instead: `ClassConstantMatcher` keys all five constants against that entry.
+`deprecated-apis` now states both halves, and
+`HintsTest::whatADeprecationCarryingTheDocblockAloneRaisesIsStated` holds them.
+
+The opening sentence of that hint went with it, because it was false where this
+entry's own subject is. "This server does not know your branch" holds for the
+bundled corpus, not for the server: `typo3_project_scope` reads the installed
+version off the core package, and `typo3_changelog_lookup` answers from the
+changelog that package ships.

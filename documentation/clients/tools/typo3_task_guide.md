@@ -226,8 +226,12 @@ Hints:
 
 ## Deprecated APIs
 Hints:
-- Whether an API is deprecated is a property of the branch you work on, not of TYPO3 as a whole, and this server does not know your branch. Read the declaration itself: an @deprecated annotation together with a trigger_error(..., E_USER_DEPRECATED) call is what marks one.
+- Whether an API is deprecated is a property of the branch you work on, not of TYPO3 as a whole. Where you work in an installation the server reads that branch: typo3_project_scope names the TYPO3 version installed there, and typo3_changelog_lookup answers from the changelog its core package ships.
+- Read the declaration itself: an @deprecated annotation together with a trigger_error(..., E_USER_DEPRECATED) call is what marks one. The core marks nothing with PHP's #[\Deprecated] attribute, so finding none says nothing about what is deprecated.
+- The trigger does not have to sit in the declaring body, so a file without one settles nothing. A method, a property or a class can raise from its caller, from the __get() and __call() of PublicPropertyDeprecationTrait and PublicMethodDeprecationTrait where the member was made protected and listed there, or from whatever resolves the class.
+- A class constant and an enum case are where the docblock stands alone: nothing runs when one is read, so no trigger_error can be attached to it anywhere. Such a deprecation raises nothing — no deprecation log entry, nothing for a test suite running with failOnDeprecation — and the call site turns into a fatal error in the major that removes it. What finds it is the extension scanner, through the ClassConstantMatcher entry the deprecating patch owes it, rather than anything at runtime.
 - What a branch deprecated is recorded in typo3/sysext/core/Documentation/Changelog/<version>/Deprecation-<issue>-<Title>.rst and in the matchers below typo3/sysext/install/Configuration/ExtensionScanner/Php/. Take the migration path from there instead of assuming a replacement.
+- An entry's Impact section is prose and can promise a deprecation warning the code does not raise. What is raised is a property of the declaration, so read that for the severity rather than the entry.
 - A deprecated API keeps working until the next major release, so an existing call site is not automatically a defect. New code uses the replacement the changelog names.
 - Authoring a deprecation and finding out what a version deprecated are two directions through the same files. From the reading side: the changelog directory and the extension scanner matchers ship with the core and install packages of any installation, the Extension Scanner in the Install Tool runs the matchers over an extension, and `typo3 upgrade:list` and `typo3 upgrade:run` are the console side of the migrations.
 - @internal on a class or on a member says it is not public API, and both are read: a public class can carry an internal method. It is an input to whether a removal is breaking and never the answer on its own.
@@ -431,7 +435,28 @@ Data:
             "scope": null,
             "hints": [
                 {
-                    "text": "Whether an API is deprecated is a property of the branch you work on, not of TYPO3 as a whole, and this server does not know your branch. Read the declaration itself: an @deprecated annotation together with a trigger_error(..., E_USER_DEPRECATED) call is what marks one.",
+                    "text": "Whether an API is deprecated is a property of the branch you work on, not of TYPO3 as a whole. Where you work in an installation the server reads that branch: typo3_project_scope names the TYPO3 version installed there, and typo3_changelog_lookup answers from the changelog its core package ships.",
+                    "since": null,
+                    "until": null,
+                    "versions": "",
+                    "scope": null
+                },
+                {
+                    "text": "Read the declaration itself: an @deprecated annotation together with a trigger_error(..., E_USER_DEPRECATED) call is what marks one. The core marks nothing with PHP's #[\\Deprecated] attribute, so finding none says nothing about what is deprecated.",
+                    "since": null,
+                    "until": null,
+                    "versions": "",
+                    "scope": null
+                },
+                {
+                    "text": "The trigger does not have to sit in the declaring body, so a file without one settles nothing. A method, a property or a class can raise from its caller, from the __get() and __call() of PublicPropertyDeprecationTrait and PublicMethodDeprecationTrait where the member was made protected and listed there, or from whatever resolves the class.",
+                    "since": null,
+                    "until": null,
+                    "versions": "",
+                    "scope": null
+                },
+                {
+                    "text": "A class constant and an enum case are where the docblock stands alone: nothing runs when one is read, so no trigger_error can be attached to it anywhere. Such a deprecation raises nothing — no deprecation log entry, nothing for a test suite running with failOnDeprecation — and the call site turns into a fatal error in the major that removes it. What finds it is the extension scanner, through the ClassConstantMatcher entry the deprecating patch owes it, rather than anything at runtime.",
                     "since": null,
                     "until": null,
                     "versions": "",
@@ -439,6 +464,13 @@ Data:
                 },
                 {
                     "text": "What a branch deprecated is recorded in typo3/sysext/core/Documentation/Changelog/<version>/Deprecation-<issue>-<Title>.rst and in the matchers below typo3/sysext/install/Configuration/ExtensionScanner/Php/. Take the migration path from there instead of assuming a replacement.",
+                    "since": null,
+                    "until": null,
+                    "versions": "",
+                    "scope": null
+                },
+                {
+                    "text": "An entry's Impact section is prose and can promise a deprecation warning the code does not raise. What is raised is a property of the declaration, so read that for the severity rather than the entry.",
                     "since": null,
                     "until": null,
                     "versions": "",

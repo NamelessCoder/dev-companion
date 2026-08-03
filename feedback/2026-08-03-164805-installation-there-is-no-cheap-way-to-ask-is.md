@@ -23,13 +23,13 @@ here: the attribute occurs zero times in `typo3/sysext` on `.checkouts/12.4`,
 `13.4`, `14.3` and `main`, and zero times in the audited installation.
 `D-ANS-010` carries the readings.
 
-What is left is two things.
+The severity is settled and `deprecated-apis` states it: a class constant is read
+without anything in the declaring class running, so no `trigger_error` can be
+attached to one anywhere, and the extension scanner is what finds such a call
+site rather than a deprecation log.
 
-- The severity the docblock does not state. `InfoboxViewHelper` carries no
-  `trigger_error` at all, so the deprecated constant raises nothing today and
-  breaks at v15. `deprecated-apis` states the marking as an `@deprecated`
-  annotation together with a `trigger_error(..., E_USER_DEPRECATED)` call, and
-  has no word for the docblock standing alone.
+What is left is the routing.
+
 - `PageRenderer::addInlineLanguageLabelFile()` is the shape the routing does not
   reach. The manual matches page titles and section paths, never the text of a
   page, so a PHP identifier has no page to be titled after — `inline language
@@ -45,7 +45,6 @@ typo3_changelog_lookup {type: "deprecation", version: "14", tag: "ext:backend"} 
 
 ## Suggestion
 
-What is left of it: say what a deprecation carrying the docblock alone raises,
-and say before the manual is called that it has no page for a PHP identifier.
-The identifier lookup this asked for is declined in `D-ANS-010`, which measures
-what it would have bought.
+What is left of it: say before the manual is called that it has no page for a PHP
+identifier. The identifier lookup this asked for is declined in `D-ANS-010`,
+which measures what it would have bought.

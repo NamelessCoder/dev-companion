@@ -1,0 +1,625 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Typo3CmsMcp\Upkeep;
+
+use Symfony\Component\Finder\Finder;
+use Typo3CmsMcp\Paths;
+
+/**
+ * A TYPO3 installation this repository writes, whose console answers.
+ *
+ * Nine tools answer from the installation the caller is standing in, and which
+ * of two answers they give depends on whether its console can be reached:
+ * `installation` where TYPO3 booted and said so, `packages` where the files had
+ * to stand in. A core checkout below `.checkouts/` is the second of those and
+ * has nothing to boot, so the first shape could only ever be recorded against a
+ * real site — which is one machine's, and three pages lost their second answer
+ * the first time somebody recorded without one.
+ *
+ * So the installation is written here instead: a Composer project whose
+ * `vendor/autoload.php` the real probe really boots into and whose
+ * `vendor/bin/typo3` really answers the four commands those tools run. Nothing
+ * is faked on this side of the process boundary — `Typo3Cli` resolves it,
+ * starts it and reads what it printed exactly as it does anywhere else, which
+ * is the property that makes an answer recorded from here worth writing down.
+ *
+ * It is written rather than committed, for the reason `.checkouts/` is not in
+ * git either: what produces it is the source, and a copy of the output beside
+ * it is a second thing to keep true. Unlike a checkout it costs no network and
+ * no minute, so nothing has to be run before `tools:record` — that command
+ * writes it on its way past.
+ *
+ * What shapes it is `ToolCalls`: the label the search asks for is in it, the
+ * tagged deprecation the sweep asks for is in it, and the queries that ask for
+ * nothing find nothing. Shaping it after a real site instead is what the
+ * `E-SITE` already is, and neither its labels nor its changelog would have
+ * anything to do with what is asked of them.
+ *
+ * Everything in it says whose it is. An answer recorded from here is true of
+ * this installation and of nothing else, so an entry a reader could take for
+ * TYPO3's own is the one thing it must not carry — `D-DOC-006` is why the
+ * distinction is not decoration.
+ */
+final class Fixture
+{
+    /** The extension the fixture's own registrations belong to. */
+    public const EXTENSION = 'acme_events';
+
+    /** Where it is written: below the checkout, ignored by git, rewritten whole. */
+    public static function directory(): string
+    {
+        return Paths::root() . '/.fixtures';
+    }
+
+    public static function root(): string
+    {
+        return self::directory() . '/installation';
+    }
+
+    /**
+     * The version it states it is.
+     *
+     * Read off `knowledge/versions.json` rather than written down, for the
+     * reason `Environments::branch()` reads it: an installation recorded
+     * against a version this server no longer answers for measures the wrong
+     * thing.
+     */
+    public static function typo3Version(): string
+    {
+        return Environments::branch() . '.0';
+    }
+
+    /** Writes it whole and hands back the root it was written to. */
+    public static function write(): string
+    {
+        $root = self::root();
+        self::clear($root);
+        foreach (self::files() as $path => $contents) {
+            self::put($root . '/' . $path, $contents);
+        }
+        self::bootsInto($root, self::ICONS, self::TABLES, self::CONTENT_ELEMENTS);
+
+        return $root;
+    }
+
+    /**
+     * Writes an autoloader that boots into a container answering the four
+     * topics.
+     *
+     * The probe is the real one and this is what it lands in, so everything it
+     * reads has to be here in the shape it reads it in: a registry whose icons
+     * carry `EXT:<key>/` sources and a TCA whose titles carry `LLL:EXT:<key>/`,
+     * because that reference is the only attribution either of them has.
+     *
+     * The Doctrine and schema classes are the fourth topic. `DefaultTcaSchema`
+     * is what says which columns TYPO3 derives for a table and which table
+     * exists only because a relation asked for it, and a container without it
+     * answers that topic `unavailable` — which is a state, and not the one this
+     * installation is written to show.
+     *
+     * @param array<string, string> $icons identifier => source, as the registry resolves it
+     * @param array<string, string> $tables table => ctrl title
+     * @param array<string, array{0: string, 1: string}> $contentElements CType => [label, icon]
+     */
+    public static function bootsInto(
+        string $root,
+        array $icons = [],
+        array $tables = [],
+        array $contentElements = [],
+        bool $failsafe = false,
+    ): void {
+        $items = [];
+        foreach ($contentElements as $value => [$label, $icon]) {
+            $items[] = ['label' => $label, 'value' => $value, 'icon' => $icon];
+        }
+
+        $state = var_export([
+            'icons' => $icons,
+            'tables' => $tables,
+            'items' => $items,
+            'failsafe' => $failsafe,
+        ], true);
+
+        self::put($root . '/vendor/autoload.php', <<<PHP
+            <?php
+            namespace {
+                \$GLOBALS['FAKE'] = {$state};
+                \$GLOBALS['TCA'] = ['tt_content' => ['columns' => ['CType' => ['config' => [
+                    'items' => \$GLOBALS['FAKE']['items'],
+                ]]]]];
+                foreach (\$GLOBALS['FAKE']['tables'] as \$table => \$title) {
+                    \$GLOBALS['TCA'][\$table] = ['ctrl' => ['title' => \$title]];
+                }
+            }
+            namespace TYPO3\\CMS\\Core\\Core {
+                class SystemEnvironmentBuilder {
+                    public const REQUESTTYPE_CLI = 2;
+                    public static function run(int \$level = 0, int \$type = 0): void {}
+                }
+                class Bootstrap {
+                    public static function init(\$classLoader) {
+                        return \$GLOBALS['FAKE']['failsafe']
+                            ? new \\TYPO3\\CMS\\Core\\DependencyInjection\\FailsafeContainer()
+                            : new \\Fake\\Container();
+                    }
+                }
+            }
+            namespace TYPO3\\CMS\\Core\\DependencyInjection {
+                class FailsafeContainer {}
+            }
+            namespace TYPO3\\CMS\\Core\\Imaging {
+                class IconRegistry {
+                    public function getAllRegisteredIconIdentifiers(): array {
+                        return array_keys(\$GLOBALS['FAKE']['icons']);
+                    }
+                    public function getIconConfigurationByIdentifier(string \$identifier): array {
+                        return ['options' => ['source' => \$GLOBALS['FAKE']['icons'][\$identifier] ?? '']];
+                    }
+                    public function getDeprecatedIcons(): array { return []; }
+                }
+            }
+            namespace TYPO3\\CMS\\Core\\Utility {
+                class GeneralUtility {
+                    public static function makeInstance(string \$class) { return new \$class(); }
+                }
+            }
+            namespace Doctrine\\DBAL\\Types {
+                class Type {
+                    public function __construct(public string \$name = 'string') {}
+                    public static function lookupName(Type \$type): string { return \$type->name; }
+                }
+            }
+            namespace Doctrine\\DBAL\\Schema {
+                class Column {
+                    public function __construct(
+                        private string \$name,
+                        private string \$type,
+                        private bool \$notnull,
+                        private \$default,
+                        private ?int \$length,
+                    ) {}
+                    public function getName(): string { return \$this->name; }
+                    public function getType(): \\Doctrine\\DBAL\\Types\\Type {
+                        return new \\Doctrine\\DBAL\\Types\\Type(\$this->type);
+                    }
+                    public function getNotnull(): bool { return \$this->notnull; }
+                    public function getDefault() { return \$this->default; }
+                    public function getLength(): ?int { return \$this->length; }
+                }
+                class Table {
+                    private array \$columns = [];
+                    public function __construct(private string \$name) {}
+                    public function getName(): string { return \$this->name; }
+                    public function addColumn(string \$name, string \$type, bool \$notnull, \$default, ?int \$length): void {
+                        \$this->columns[] = new Column(\$name, \$type, \$notnull, \$default, \$length);
+                    }
+                    public function getColumns(): array { return \$this->columns; }
+                }
+            }
+            namespace TYPO3\\CMS\\Core\\Database\\Schema {
+                class DefaultTcaSchema {
+                    // What core derives for every TCA table, and the relation
+                    // table a relation asks for: the two shapes the topic exists
+                    // to tell apart.
+                    public function enrich(array \$tables): array {
+                        foreach (\$tables as \$table) {
+                            \$table->addColumn('uid', 'integer', true, null, null);
+                            \$table->addColumn('pid', 'integer', true, 0, null);
+                            \$table->addColumn('tstamp', 'integer', true, 0, null);
+                            \$table->addColumn('deleted', 'smallint', true, 0, null);
+                        }
+                        \$relation = new \\Doctrine\\DBAL\\Schema\\Table('tx_acme_events_event_category_mm');
+                        \$relation->addColumn('uid_local', 'integer', true, 0, null);
+                        \$relation->addColumn('uid_foreign', 'integer', true, 0, null);
+                        \$relation->addColumn('sorting', 'integer', true, 0, null);
+                        \$tables['tx_acme_events_event_category_mm'] = \$relation;
+                        return \$tables;
+                    }
+                }
+            }
+            namespace Fake {
+                class Container {
+                    public function get(string \$id) { return new \$id(); }
+                }
+            }
+            namespace {
+                return new \\Fake\\Container();
+            }
+            PHP);
+    }
+
+    /**
+     * Every file of it, by where it goes.
+     *
+     * One list rather than a method per package, because what a reader of this
+     * class needs first is what the installation is — and that is the list.
+     *
+     * @return array<string, string>
+     */
+    private static function files(): array
+    {
+        $branch = Environments::branch();
+
+        return [
+            'composer.json' => self::json([
+                'name' => 'typo3-mcp/fixture-installation',
+                'description' => 'Written by Typo3CmsMcp\\Upkeep\\Fixture so this server has an installation to '
+                    . 'answer from. It is nobody\'s site.',
+                'type' => 'project',
+                'require' => [
+                    'php' => '^8.2',
+                    'typo3/cms-core' => '^' . $branch,
+                    'typo3/cms-backend' => '^' . $branch,
+                ],
+                'scripts' => [
+                    'cgl' => 'php-cs-fixer fix',
+                    'cgl:ci' => 'php-cs-fixer fix --dry-run --diff',
+                    'test' => 'phpunit -c Build/phpunit.xml',
+                ],
+                'extra' => ['typo3/cms' => ['web-dir' => 'public']],
+            ]),
+            'config/sites/fixture/config.yaml' => self::site(),
+            'vendor/bin/typo3' => self::console(),
+            'vendor/composer/installed.json' => self::json(['packages' => [
+                [
+                    'name' => 'typo3/cms-core',
+                    'type' => 'typo3-cms-framework',
+                    'install-path' => '../typo3/cms-core',
+                    'extra' => ['typo3/cms' => ['extension-key' => 'core']],
+                ],
+                [
+                    'name' => 'typo3/cms-backend',
+                    'type' => 'typo3-cms-framework',
+                    'install-path' => '../typo3/cms-backend',
+                    'extra' => ['typo3/cms' => ['extension-key' => 'backend']],
+                ],
+                [
+                    'name' => 'acme/acme-events',
+                    'type' => 'typo3-cms-extension',
+                    'install-path' => '../../packages/' . self::EXTENSION,
+                    'extra' => ['typo3/cms' => ['extension-key' => self::EXTENSION]],
+                ],
+            ]]),
+            'vendor/typo3/cms-core/composer.json' => self::manifest('typo3/cms-core', 'core', 'typo3-cms-framework'),
+            'vendor/typo3/cms-core/Classes/Information/Typo3Version.php' => sprintf(
+                "<?php\n\nnamespace TYPO3\\CMS\\Core\\Information;\n\n"
+                . "class Typo3Version\n{\n    protected const VERSION = '%s';\n}\n",
+                self::typo3Version(),
+            ),
+            'vendor/typo3/cms-backend/composer.json' => self::manifest(
+                'typo3/cms-backend',
+                'backend',
+                'typo3-cms-framework',
+            ),
+            'vendor/typo3/cms-backend/Configuration/Backend/Modules.php' => "<?php\n\nreturn [\n"
+                . "    'web_list' => ['parent' => 'web', 'path' => '/module/web/list'],\n"
+                . "    'acme_events' => ['parent' => 'web', 'path' => '/module/web/acme-events'],\n];\n",
+            'vendor/typo3/cms-backend/Configuration/Backend/Routes.php' => "<?php\n\nreturn [\n"
+                . "    'login' => ['path' => '/login'],\n    'main' => ['path' => '/main'],\n];\n",
+            'vendor/typo3/cms-backend/Configuration/Icons.php' => "<?php\n\nreturn [\n"
+                . "    'actions-open' => ['source' => 'EXT:backend/Resources/Public/Icons/actions-open.svg'],\n"
+                . "    'actions-close' => ['source' => 'EXT:backend/Resources/Public/Icons/actions-close.svg'],\n];\n",
+            'vendor/typo3/cms-backend/Configuration/Services.yaml' => "services:\n"
+                . "  _defaults:\n    autowire: true\n    autoconfigure: true\n"
+                . "  TYPO3\\CMS\\Backend\\Controller\\FixtureModuleController:\n"
+                . "    tags:\n      - name: backend.controller\n",
+            'vendor/typo3/cms-backend/Classes/Controller/FixtureModuleController.php' => "<?php\n\n"
+                . "namespace TYPO3\\CMS\\Backend\\Controller;\n\nclass FixtureModuleController\n{\n}\n",
+            'vendor/typo3/cms-backend/Resources/Private/Language/locallang.xlf' => self::labelFile([
+                'labels.save' => 'Save',
+                'labels.saveAndClose' => 'Save and close',
+                'labels.close' => 'Close',
+            ]),
+            'vendor/typo3/cms-core/Resources/Private/Language/locallang_core.xlf' => self::labelFile([
+                'labels.savedok' => 'Save document',
+                'labels.cancel' => 'Cancel',
+            ]),
+            'packages/' . self::EXTENSION . '/composer.json' => self::manifest(
+                'acme/acme-events',
+                self::EXTENSION,
+                'typo3-cms-extension',
+            ),
+            'packages/' . self::EXTENSION . '/ext_tables.php' => "<?php\n\n"
+                . "// The file Deprecation-900001 is about. It is here so the entry has a subject.\n"
+                . "defined('TYPO3') or die();\n",
+            'packages/' . self::EXTENSION . '/Configuration/TCA/tx_acme_events_event.php' => "<?php\n\nreturn [\n"
+                . "    'ctrl' => ['title' => 'LLL:EXT:" . self::EXTENSION
+                . "/Resources/Private/Language/locallang_db.xlf:tx_acme_events_event'],\n];\n",
+            'packages/' . self::EXTENSION . '/Configuration/Icons.php' => "<?php\n\nreturn [\n"
+                . "    'acme-events-teaser' => ['source' => 'EXT:" . self::EXTENSION
+                . "/Resources/Public/Icons/teaser.svg'],\n];\n",
+            'packages/' . self::EXTENSION . '/Resources/Private/Language/locallang_db.xlf' => self::labelFile([
+                'tx_acme_events_event' => 'Event',
+                'tx_acme_events_event.title' => 'Title',
+            ]),
+            'packages/' . self::EXTENSION . '/Classes/Domain/Model/Event.php' => "<?php\n\n"
+                . "namespace Acme\\AcmeEvents\\Domain\\Model;\n\nclass Event\n{\n}\n",
+            ...self::changelog($branch),
+        ];
+    }
+
+    /**
+     * The icons the registry answers with.
+     *
+     * `actions-open` is the one `ToolCalls` asks for by name; the rest are what
+     * a list looks like around it, and each one is attributed by the `EXT:`
+     * source it carries.
+     *
+     * @var array<string, string>
+     */
+    private const ICONS = [
+        'actions-open' => 'EXT:backend/Resources/Public/Icons/actions-open.svg',
+        'actions-close' => 'EXT:backend/Resources/Public/Icons/actions-close.svg',
+        'actions-document-open' => 'EXT:backend/Resources/Public/Icons/actions-document-open.svg',
+        'acme-events-teaser' => 'EXT:acme_events/Resources/Public/Icons/teaser.svg',
+        'content-text' => 'EXT:core/Resources/Public/Icons/content-text.svg',
+        'mimetypes-x-content-text' => 'EXT:core/Resources/Public/Icons/mimetypes-x-content-text.svg',
+    ];
+
+    /** @var array<string, string> */
+    private const TABLES = [
+        'pages' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:pages',
+        'tt_content' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:tt_content',
+        'tx_acme_events_event' => 'LLL:EXT:acme_events/Resources/Private/Language/locallang_db.xlf:tx_acme_events_event',
+    ];
+
+    /** @var array<string, array{0: string, 1: string}> */
+    private const CONTENT_ELEMENTS = [
+        'text' => ['LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.text', 'content-text'],
+        'acme_events_teaser' => [
+            'LLL:EXT:acme_events/Resources/Private/Language/locallang_db.xlf:CType.teaser',
+            'acme-events-teaser',
+        ],
+    ];
+
+    /**
+     * The changelog the installed core ships.
+     *
+     * Three entries, and each is one of the states `ToolCalls` asks for: the
+     * query that names a file, the sweep for a deprecation carrying a scanner
+     * tag, and the deprecation that carries none. Every issue number is far
+     * outside the range Forge has ever issued and every title names this
+     * fixture, so no entry here can be read as something TYPO3 deprecated.
+     *
+     * @return array<string, string>
+     */
+    private static function changelog(string $branch): array
+    {
+        $directory = 'vendor/typo3/cms-core/Documentation/Changelog/' . $branch . '/';
+
+        return [
+            $directory . 'Deprecation-900001-ExtTablesPhpInTheFixtureExtension.rst' => self::entry(
+                'Deprecation: #900001 - ext_tables.php in the fixture extension',
+                'PHP-API, FullyScanned, ext:' . self::EXTENSION,
+                'The fixture extension registers through :file:`ext_tables.php`, which is read on every request '
+                . "and will be removed in TYPO3 v15.0.\nMove the registration to :file:`Configuration/TCA/` instead.",
+            ),
+            $directory . 'Deprecation-900002-TheFixtureLegacyLabelFile.rst' => self::entry(
+                'Deprecation: #900002 - The fixture legacy label file',
+                'PHP-API, NotScanned, ext:' . self::EXTENSION,
+                'The fixture extension ships one label file per table. Nothing scans for it, which is what makes '
+                . 'this entry the other half of a sweep by tag.',
+            ),
+            $directory . 'Feature-900003-ATeaserContentElementInTheFixture.rst' => self::entry(
+                'Feature: #900003 - A teaser content element in the fixture',
+                'TCA, ext:' . self::EXTENSION,
+                'The fixture extension registers one content element, so the installation has a CType that is not '
+                . 'the core\'s.',
+            ),
+        ];
+    }
+
+    /** One changelog entry, in the shape `Changelog` reads them in. */
+    private static function entry(string $heading, string $tags, string $description): string
+    {
+        return sprintf(
+            ".. include:: /Includes.rst.txt\n\n%s\n%s\n%s\n\nDescription\n===========\n\n%s\n\nImpact\n"
+            . "======\n\nNothing outside this fixture.\n\n.. index:: %s\n",
+            str_repeat('=', strlen($heading)),
+            $heading,
+            str_repeat('=', strlen($heading)),
+            $description,
+            $tags,
+        );
+    }
+
+    /**
+     * The console, answering the four commands the installation-backed tools
+     * run and refusing everything else the way a console does.
+     *
+     * It is a program rather than a recording: `language:domain:search` applies
+     * the regex it was handed, so the query that asks for nothing gets the
+     * warning the real console prints and the tool takes the "none" branch it
+     * exists for. A script that printed the same payload whatever it was asked
+     * would record one answer twice.
+     */
+    private static function console(): string
+    {
+        $labels = var_export([
+            'EXT:backend/Resources/Private/Language/locallang.xlf' => [
+                'domain' => 'backend.locallang',
+                'labels' => ['labels.save' => 'Save', 'labels.saveAndClose' => 'Save and close', 'labels.close' => 'Close'],
+            ],
+            'EXT:core/Resources/Private/Language/locallang_core.xlf' => [
+                'domain' => 'core.locallang_core',
+                'labels' => ['labels.savedok' => 'Save document', 'labels.cancel' => 'Cancel'],
+            ],
+            'EXT:acme_events/Resources/Private/Language/locallang_db.xlf' => [
+                'domain' => 'acme_events.locallang_db',
+                'labels' => ['tx_acme_events_event' => 'Event', 'tx_acme_events_event.title' => 'Title'],
+            ],
+        ], true);
+        $namespaces = var_export([
+            'core' => ['TYPO3\\CMS\\Core\\ViewHelpers'],
+            'f' => ['TYPO3Fluid\\Fluid\\ViewHelpers', 'TYPO3\\CMS\\Fluid\\ViewHelpers'],
+        ], true);
+        $configuration = var_export([
+            'SYS/fluid' => [
+                'namespaces' => [
+                    'f' => ['TYPO3Fluid\\Fluid\\ViewHelpers', 'TYPO3\\CMS\\Fluid\\ViewHelpers'],
+                ],
+                'interceptors' => [],
+            ],
+        ], true);
+
+        return <<<PHP
+            #!/usr/bin/env php
+            <?php
+
+            // The console of the fixture installation. It is started by
+            // Typo3Cli as a subprocess, exactly as a real one is.
+
+            \$arguments = array_slice(\$argv, 1);
+            \$command = \$arguments[0] ?? '';
+            \$option = static function (string \$name) use (\$arguments): ?string {
+                foreach (\$arguments as \$argument) {
+                    if (str_starts_with(\$argument, '--' . \$name . '=')) {
+                        return substr(\$argument, strlen(\$name) + 3);
+                    }
+                }
+                return null;
+            };
+
+            if (\$command === 'language:domain:search') {
+                \$resources = {$labels};
+                \$regex = \$option('regex');
+                \$extension = \$option('extension');
+                \$items = [];
+                foreach (\$resources as \$resource => \$declared) {
+                    if (\$extension !== null && \$extension !== '' && !str_starts_with(\$resource, 'EXT:' . \$extension . '/')) {
+                        continue;
+                    }
+                    \$matched = [];
+                    foreach (\$declared['labels'] as \$reference => \$label) {
+                        if (\$regex !== null && \$regex !== ''
+                            && preg_match(\$regex, \$reference) !== 1 && preg_match(\$regex, \$label) !== 1) {
+                            continue;
+                        }
+                        \$matched[] = ['domain' => \$declared['domain'], 'reference' => \$reference, 'label' => \$label];
+                    }
+                    if (\$matched !== []) {
+                        \$items[] = ['resource' => \$resource, 'domain' => \$declared['domain'], 'labels' => \$matched];
+                    }
+                }
+                if (\$items === []) {
+                    // What the console prints instead of a payload, and it
+                    // exits successfully doing it: an installation that
+                    // answered "none" rather than one that could not be asked.
+                    fwrite(STDOUT, "No language resource files found\\n");
+                    exit(0);
+                }
+                fwrite(STDOUT, json_encode(['items' => \$items], JSON_UNESCAPED_SLASHES));
+                exit(0);
+            }
+
+            if (\$command === 'fluid:namespaces') {
+                fwrite(STDOUT, json_encode({$namespaces}, JSON_UNESCAPED_SLASHES));
+                exit(0);
+            }
+
+            if (\$command === 'configuration:show') {
+                \$known = {$configuration};
+                \$path = trim(\$arguments[1] ?? '', '/');
+                if (!array_key_exists(\$path, \$known)) {
+                    fwrite(STDERR, 'No configuration found for path "' . \$path . '"' . "\\n");
+                    exit(1);
+                }
+                fwrite(STDOUT, json_encode(\$known[\$path], JSON_UNESCAPED_SLASHES));
+                exit(0);
+            }
+
+            if (\$command === 'debug:backend:modules') {
+                fwrite(STDOUT, implode("\\n", [
+                    'Main level;Second level;Third level;Pkg;Labels;Path;Position',
+                    'web;;;backend;Web;/module/web;',
+                    'web;web_list;;backend;Records;/module/web/list;after:web_layout',
+                    'web;acme_events;;acme_events;Events;/module/web/acme-events;after:web_list',
+                    'site;;;backend;Site Management;/module/site;',
+                ]) . "\\n");
+                exit(0);
+            }
+
+            fwrite(STDERR, 'Command "' . \$command . '" is not defined.' . "\\n");
+            exit(1);
+            PHP;
+    }
+
+    /** A site the project configures, in the shape `Project` reads one in. */
+    private static function site(): string
+    {
+        return "rootPageId: 1\n"
+            . "base: 'https://fixture.example.org/'\n"
+            . "dependencies:\n"
+            . "  - typo3/fluid-styled-content\n"
+            . "  - acme/acme-events\n"
+            . "languages:\n"
+            . "  -\n    title: English\n    languageId: 0\n    locale: en_US.UTF-8\n    base: /\n";
+    }
+
+    /** @param array<string, string> $labels */
+    private static function labelFile(array $labels): string
+    {
+        $units = '';
+        foreach ($labels as $key => $source) {
+            $units .= sprintf(
+                "      <trans-unit id=\"%s\">\n        <source>%s</source>\n      </trans-unit>\n",
+                $key,
+                $source,
+            );
+        }
+
+        return "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\" ?>\n<xliff version=\"1.0\">\n"
+            . "  <file source-language=\"en\" datatype=\"plaintext\" original=\"messages\">\n    <body>\n"
+            . $units
+            . "    </body>\n  </file>\n</xliff>\n";
+    }
+
+    private static function manifest(string $name, string $key, string $type): string
+    {
+        return self::json([
+            'name' => $name,
+            'type' => $type,
+            'description' => sprintf('The fixture installation\'s %s package.', $key),
+            'extra' => ['typo3/cms' => ['extension-key' => $key]],
+        ]);
+    }
+
+    /** @param array<string, mixed> $value */
+    private static function json(array $value): string
+    {
+        return (string) json_encode($value, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+    }
+
+    private static function put(string $path, string $contents): void
+    {
+        $directory = dirname($path);
+        if (!is_dir($directory)) {
+            mkdir($directory, 0o777, true);
+        }
+        file_put_contents($path, $contents);
+    }
+
+    /**
+     * Takes the last one away before writing this one.
+     *
+     * A file the shape no longer has would otherwise stay: an extension that
+     * was renamed keeps answering under both keys, and the recording shows an
+     * installation nothing here describes.
+     */
+    private static function clear(string $root): void
+    {
+        if (!is_dir($root)) {
+            return;
+        }
+
+        // Read whole before anything is removed: the walk is lazy, and a
+        // directory taken away under it is one the iterator then descends into.
+        $entries = iterator_to_array(Finder::create()->in($root)->sortByName()->reverseSorting(), false);
+        foreach ($entries as $entry) {
+            $entry->isDir() ? rmdir($entry->getPathname()) : unlink($entry->getPathname());
+        }
+        rmdir($root);
+    }
+}

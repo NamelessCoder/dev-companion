@@ -7,5 +7,6 @@ vendor/
 .phpstan.cache/
 /.checkouts
 /.environments
+/.fixtures
 /.worktrees
 /.session-command

@@ -148,6 +148,15 @@ DDEV project, and it reported the failure as a console it could not reach.
 by no test and had only ever been corrected by real runs in somebody's project;
 this is the first one it caught at home.
 
+The second root is no longer the `E-SITE`. "Both are recreatable here by one
+command each" was the property the whole choice rested on and it is only half
+true: a checkout is recreatable wherever git runs, and a DDEV project is
+recreatable wherever DDEV does. The recording is committed from whichever
+machine ran it last, so on 2026-08-03 a re-record without DDEV took the second
+answer off three pages and nothing failed. What answers there now is an
+installation this repository writes, and `D-DOC-012` has what the exchange costs
+per page — including the half of it that is a loss.
+
 The recording is a section rather than a directory since `D-DOC-007`'s second
 entry, and two of the sentences above move with it. "`tools:check` reads
 `tools.md` and not this" is now: `tools:check` reads every page down to its

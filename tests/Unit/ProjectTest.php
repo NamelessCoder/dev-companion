@@ -11,9 +11,9 @@ use Typo3CmsMcp\Installation\Instance;
 use Typo3CmsMcp\Installation\Project;
 use Typo3CmsMcp\Installation\Typo3Cli;
 use Typo3CmsMcp\Installation\Typo3Runtime;
-use Typo3CmsMcp\Tests\Support\FakeInstallation;
 use Typo3CmsMcp\Tests\Support\TemporaryInstallation;
 use Typo3CmsMcp\Tool\Registry;
+use Typo3CmsMcp\Upkeep\Fixture;
 
 /**
  * What the repository around the installation consists of.
@@ -23,7 +23,6 @@ use Typo3CmsMcp\Tool\Registry;
  */
 final class ProjectTest extends TestCase
 {
-    use FakeInstallation;
     use TemporaryInstallation;
 
     #[After]
@@ -1080,7 +1079,7 @@ final class ProjectTest extends TestCase
         );
         mkdir($root . '/bin');
         file_put_contents($root . '/bin/typo3', "#!/usr/bin/env php\n<?php\n");
-        $this->fakeTypo3(
+        Fixture::bootsInto(
             $root,
             [
                 'acme-teaser' => 'EXT:my_sitepackage/Resources/Public/Icons/teaser.svg',
@@ -1126,7 +1125,7 @@ final class ProjectTest extends TestCase
         );
         mkdir($root . '/bin');
         file_put_contents($root . '/bin/typo3', "#!/usr/bin/env php\n<?php\n");
-        $this->fakeTypo3(
+        Fixture::bootsInto(
             $root,
             ['acme-catalogue' => 'EXT:my_sitepackage/Resources/Public/Icons/catalogue.svg'],
             [],

@@ -1,0 +1,106 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Typo3CmsMcp\Tests\Unit;
+
+use PHPUnit\Framework\Attributes\After;
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\TestCase;
+use Typo3CmsMcp\Installation\Icons;
+use Typo3CmsMcp\Installation\Instance;
+use Typo3CmsMcp\Installation\Typo3Cli;
+use Typo3CmsMcp\Installation\Typo3Runtime;
+use Typo3CmsMcp\Tool\Registry;
+use Typo3CmsMcp\Upkeep\Fixture;
+use Typo3CmsMcp\Upkeep\ToolCalls;
+
+/**
+ * The installation this repository writes, held to what it is written for.
+ *
+ * The second half of a tool's page is recorded rather than checked, because it
+ * needs an installation and no test run discovers one — `D-DOC-006`. This is
+ * the exception the fixture creates: it is an installation this repository
+ * produces itself, so what it answers can be asked here, on any machine, and a
+ * fixture that stopped booting would otherwise be found by the next recording
+ * quietly writing `unsupported` onto nine pages.
+ *
+ * What is held is that it answers, not what it answers with. The second is the
+ * recording's, and pinning a label or a column here would make every change to
+ * the fixture a change to this file as well.
+ */
+final class FixtureTest extends TestCase
+{
+    #[After]
+    public function forgetTheInstance(): void
+    {
+        Instance::discoverFrom(null);
+        Typo3Cli::forget();
+        Typo3Runtime::forget();
+        Icons::forget();
+    }
+
+    #[Test]
+    public function theWrittenInstallationBootsAndItsConsoleAnswers(): void
+    {
+        $this->standIn();
+
+        self::assertTrue(Typo3Cli::isAvailable(), Typo3Cli::reason());
+
+        $answer = Typo3Runtime::ask();
+
+        self::assertSame(Typo3Runtime::STATE_FULL, $answer['state'], $answer['reason']);
+        self::assertSame(
+            ['icons', 'deprecatedIcons', 'tables', 'contentElements', 'derivedColumns'],
+            array_keys($answer['topics']),
+            'the topics the probe reads, all of them: a container missing one answers that topic unavailable',
+        );
+    }
+
+    /**
+     * Every call of an installation-backed tool comes back as an answer.
+     *
+     * `unsupported` is what those tools say where there was nothing to ask, and
+     * a second recording of it says what the first already said — the core
+     * checkout has no console and reports exactly that. So the property that
+     * makes this root worth recording against is that not one call falls to it.
+     */
+    #[Test]
+    public function everyInstallationBackedToolAnswersFromIt(): void
+    {
+        $this->standIn();
+
+        $unanswered = [];
+        foreach (ToolCalls::all() as $label => [$name, $arguments]) {
+            if (!$this->declaresAnsweredBy($name)) {
+                continue;
+            }
+            $data = Registry::call($name, $arguments)->data;
+            if (isset($data['unsupported'])) {
+                $unanswered[] = $label . ': ' . ($data['unsupported']['reason'] ?? '');
+            }
+        }
+
+        self::assertSame([], $unanswered, 'calls the fixture installation could not answer');
+    }
+
+    private function declaresAnsweredBy(string $name): bool
+    {
+        foreach (Registry::definitions() as $definition) {
+            if ($definition['name'] === $name) {
+                return isset($definition['outputSchema']['properties']['answeredBy']);
+            }
+        }
+
+        return false;
+    }
+
+    /** Writes it and points every reading of an installation at it. */
+    private function standIn(): void
+    {
+        Instance::discoverFrom(Fixture::write());
+        Typo3Cli::forget();
+        Typo3Runtime::forget();
+        Icons::forget();
+    }
+}

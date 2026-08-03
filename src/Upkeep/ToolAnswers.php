@@ -36,9 +36,10 @@ use Typo3CmsMcp\Tool\Registry;
  *
  * Of two working directories, because no single one fills the surface. A core
  * checkout answers the core half and has no console, so the tools that reach an
- * installation come back `unsupported` or read the packages; a site
- * installation answers those from its booted TYPO3 and has no `runTests.sh`,
- * `Build/Sources` or `EXT:styleguide` for the other half to read. Recording
+ * installation come back `unsupported` or read the packages; the installation
+ * `Fixture` writes answers those from its booted TYPO3 and has no
+ * `runTests.sh`, `Build/Sources` or `EXT:styleguide` for the other half to
+ * read. Recording
  * against one of them alone is a trade rather than an improvement, and
  * `D-DOC-006` has what each side costs. So the second recording is added where
  * it is the answer and nowhere else: a tool that declares `answeredBy` is
@@ -315,11 +316,16 @@ final class ToolAnswers
     /**
      * A recorded root, named by what it is rather than by where it sits.
      *
-     * The core checkouts and the made environments are both this repository's
-     * own — `bin/cli checkouts:update` recreates one and `bin/cli
-     * environment:create` the other — so naming which says how to record the
-     * same thing again. Anything else is somebody's machine, and the path to it
-     * is not evidence anybody else can use.
+     * The three this repository can produce are named as such — `bin/cli
+     * tools:record` writes the fixture itself, `bin/cli checkouts:update` makes
+     * a core checkout and `bin/cli environment:create` an environment — so
+     * naming which says how to record the same thing again. Anything else is
+     * somebody's machine, and the path to it is not evidence anybody else can
+     * use.
+     *
+     * The fixture is named first and named as one. What it answers is true of
+     * it and of nothing else, and a reader who cannot see that from the heading
+     * has a page of two answers it looks like one machine gave.
      *
      * Both sides are resolved first: a worktree reaches the checkouts through a
      * symlink, so the recording made in one would otherwise call this
@@ -328,6 +334,11 @@ final class ToolAnswers
     private static function describeRoot(string $root): string
     {
         $root = (string) (realpath($root) ?: $root);
+
+        $fixture = (string) realpath(Fixture::root());
+        if ($fixture !== '' && $root === $fixture) {
+            return 'the installation this repository writes below .fixtures/';
+        }
 
         $checkouts = (string) realpath(Checkouts::directory());
         if ($checkouts !== '' && str_starts_with($root, $checkouts)) {

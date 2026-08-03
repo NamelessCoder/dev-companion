@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
 use Typo3CmsMcp\Installation\Instance;
 use Typo3CmsMcp\Installation\Typo3Cli;
 use Typo3CmsMcp\Installation\Typo3Runtime;
-use Typo3CmsMcp\Tests\Support\FakeInstallation;
+use Typo3CmsMcp\Upkeep\Fixture;
 
 /**
  * Asking the installation itself, and what happens on the three ways that fail.
@@ -24,8 +24,6 @@ use Typo3CmsMcp\Tests\Support\FakeInstallation;
  */
 final class Typo3RuntimeTest extends TestCase
 {
-    use FakeInstallation;
-
     private string $root = '';
 
     #[After]
@@ -98,7 +96,7 @@ final class Typo3RuntimeTest extends TestCase
         // registry answers with EXT: sources and the TCA with LLL:EXT: titles,
         // which is what an entry is attributed by on the way back.
         $root = $this->installationWithAConsole();
-        $this->fakeTypo3(
+        Fixture::bootsInto(
             $root,
             ['ext-acme-teaser' => 'EXT:acme/Resources/Public/Icons/teaser.svg', 'actions-add' => 'EXT:core/Resources/Public/Icons/T3Icons/actions/add.svg'],
             ['tx_acme_event' => 'LLL:EXT:acme/Resources/Private/Language/locallang_db.xlf:tx_acme_event'],
@@ -124,7 +122,7 @@ final class Typo3RuntimeTest extends TestCase
         // It answers — with core packages and nothing else, which is the state
         // every extension repository is in and the one that looks complete.
         $root = $this->installationWithAConsole();
-        $this->fakeTypo3($root, failsafe: true);
+        Fixture::bootsInto($root, failsafe: true);
         $this->discover($root);
 
         $answer = Typo3Runtime::ask();

@@ -60,9 +60,11 @@ order by, and the launch two of the subjects below share.
 - [tools.md](clients/tools.md) — every tool, and the page saying what it takes
   and which fields it answers with. Written from the registry by
   `bin/cli tools:index`, down to each page's `## Answered` heading. Below that
-  heading is what the tool answered on one day against one installation,
-  recorded by `bin/cli tools:record` — evidence rather than a derivation, so
-  nothing checks it. The two tools that are not recorded say why in its place.
+  heading is what the tool answered on one day, recorded by
+  `bin/cli tools:record` against a core checkout and, for the tools whose answer
+  the installation decides, against one this repository writes — evidence rather
+  than a derivation, so nothing checks it. The two tools that are not recorded
+  say why in its place.
 - [writing-a-skill.md](clients/writing-a-skill.md) — what a new task skill has
   to show before it exists, the rules it is written under, and what holds each
   one.

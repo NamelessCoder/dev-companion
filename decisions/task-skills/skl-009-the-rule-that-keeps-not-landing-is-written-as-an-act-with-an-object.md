@@ -1,7 +1,7 @@
 ---
 id: D-SKL-009
 date: 2026-08-03
-status: open
+status: confirmed
 ---
 
 # D-SKL-009 — The rule that keeps not landing is written as an act with an object
@@ -76,3 +76,25 @@ produced it.
 ## Covered by
 
 - `SkillTest::aReviewNamesTheSuitesItDidNotRun`
+
+## Confirmed on 2026-08-03
+
+The fifth recorded `REVIEW-03` run, on the same patch and the same criteria with
+the reworded skill, wrote the list out: the suites `typo3_test_run_guide`
+returned and it did not run, by name, with the `Tests` row of its surface table
+repeating it. Three runs before it read the old sentence and produced nothing.
+Neither of the first two **Wrong if** holds, so the placement this entry kept in
+reserve is not the reading that was needed.
+
+The second one is answered better than it was asked. `typo3_hint_lookup` stayed
+uncalled after the paragraph beside it was removed, which rules that paragraph
+out as what displaced it — and the run's own answer says why the call is not
+missing: the hints it quotes came back inside `typo3_task_guide`, domain names
+included. The call is redundant on this task rather than lost, and the
+assumption that one dropped call is a signal was the wrong question.
+
+What the run leaves open is smaller and new: those hints are cited as
+`typo3_hint_lookup`, which was never called. The rules are quoted correctly and
+came from this server, so it is a mislabelled source rather than an invented one
+— but the checklist asks a finding to name the lookup that owns its rule, and
+neither the skill nor the checklist says the guide carries hints of its own.

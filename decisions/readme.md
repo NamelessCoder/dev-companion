@@ -69,6 +69,7 @@ and not a defect.
 - [`D-KNW-033`][D-KNW-033] — Every hint names the domains it is asked from, and none is `any` · 2026-08-03
 - [`D-KNW-034`][D-KNW-034] — The file is the subject, and JavaScript is not a domain of its own · 2026-08-03
 - [`D-KNW-035`][D-KNW-035] — The corpus and the tool that answers from it are called hints · 2026-08-03
+- [`D-KNW-036`][D-KNW-036] — The standards check handed over is the one that cannot pass empty · 2026-08-03
 - [`D-SKL-005`][D-SKL-005] — Core contribution earns two task skills, one for reviewing a patch and one for creating one · 2026-08-03
 - [`D-ANS-005`][D-ANS-005] — A question that is not supported here is answered in a shape of its own · 2026-08-02
 - [`D-ANS-006`][D-ANS-006] — An identifier is found however it is spelled · 2026-08-02
@@ -203,6 +204,7 @@ and not a defect.
 [D-KNW-033]: knowledge/knw-033-every-hint-names-the-domains-it-is-asked-from-and-none-is-any.md
 [D-KNW-034]: knowledge/knw-034-the-file-is-the-subject-and-javascript-is-not-a-domain.md
 [D-KNW-035]: knowledge/knw-035-the-corpus-and-the-tool-that-answers-from-it-are-called-hints.md
+[D-KNW-036]: knowledge/knw-036-the-standards-check-handed-over-is-the-one-that-cannot-pass-empty.md
 [D-SKL-005]: task-skills/skl-005-core-contribution-earns-a-skill-and-the-domain-is-the-work.md
 [D-ANS-005]: answers/ans-005-an-unmet-precondition-is-answered-not-raised.md
 [D-ANS-006]: answers/ans-006-an-identifier-is-found-however-it-is-spelled.md

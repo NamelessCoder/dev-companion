@@ -6,6 +6,7 @@ namespace Typo3CmsMcp\Tests\Unit;
 
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Finder\Finder;
 use Typo3CmsMcp\Knowledge\Coverage;
 use Typo3CmsMcp\Knowledge\Documents;
 use Typo3CmsMcp\Knowledge\Hints;
@@ -13,9 +14,20 @@ use Typo3CmsMcp\Knowledge\Scope;
 use Typo3CmsMcp\Knowledge\TaskIntents;
 use Typo3CmsMcp\Knowledge\TestSuiteHints;
 use Typo3CmsMcp\Knowledge\Versions;
+use Typo3CmsMcp\Paths;
 
 final class KnowledgeTest extends TestCase
 {
+    /**
+     * The suites whose script asks git for the files to inspect.
+     *
+     * Both take the last commit's files from `git diff-tree` and treat an empty
+     * answer as nothing to do. `checkGitSubmodule` asks git too and fails
+     * loudly instead, which a session can see; `checkExtensionScannerRst` was
+     * reported as a suspect and reads the files itself.
+     */
+    private const GIT_DRIVEN_SUITES = ['cglGit', 'cglHeaderGit'];
+
     #[Test]
     public function everyBundledDocumentIsListedWithATitle(): void
     {
@@ -221,5 +233,69 @@ final class KnowledgeTest extends TestCase
                 $scope->value . ' is written in the corpus and is not a scope a statement may declare',
             );
         }
+    }
+
+    /**
+     * A suite that takes its file list from git carries the condition it holds
+     * under, wherever it is recommended.
+     *
+     * `cglGit` reports SUCCESS having read no file when it is run from a git
+     * worktree: `cglFixMyCommit.sh` asks git for the files of the last commit,
+     * `runTests.sh` mounts the checkout alone, a worktree keeps its gitdir
+     * outside that mount, and an empty list is "all is well" to the script. A
+     * false green is the one failure a reading session cannot see, so the entry
+     * that offers the command says where it does not hold — in the same entry,
+     * because nothing carries a caller from one to the next.
+     */
+    #[Test]
+    public function aSuiteThatAsksGitForItsFilesNamesWhereItDoesNotHold(): void
+    {
+        $unqualified = [];
+        foreach (Finder::create()->files()->in(Paths::knowledge())->name('*.json') as $file) {
+            $data = json_decode((string) file_get_contents($file->getPathname()), true, 512, JSON_THROW_ON_ERROR);
+            foreach (self::entriesNaming(is_array($data) ? $data : []) as $entry) {
+                if (!str_contains(strtolower(json_encode($entry, JSON_THROW_ON_ERROR)), 'worktree')) {
+                    $unqualified[] = $file->getFilename() . ': ' . json_encode($entry, JSON_THROW_ON_ERROR);
+                }
+            }
+        }
+
+        foreach (Finder::create()->files()->in(Paths::knowledge() . '/documents')->name('*.md') as $file) {
+            foreach (preg_split('/^## /m', (string) file_get_contents($file->getPathname())) ?: [] as $section) {
+                if (str_contains($section, 'cglGit') && !str_contains(strtolower($section), 'worktree')) {
+                    $unqualified[] = $file->getFilename() . ': ' . substr($section, 0, 60);
+                }
+            }
+        }
+
+        self::assertSame([], $unqualified, 'a git-driven suite is recommended without the condition it holds under');
+    }
+
+    /**
+     * The innermost entries that name such a suite, so the condition is looked
+     * for beside the command rather than anywhere in the file.
+     *
+     * @param array<mixed> $data
+     *
+     * @return list<array<mixed>>
+     */
+    private static function entriesNaming(array $data): array
+    {
+        $found = [];
+        $children = array_filter($data, is_array(...));
+        foreach ($children as $child) {
+            $found = [...$found, ...self::entriesNaming($child)];
+        }
+        if ($found !== []) {
+            return $found;
+        }
+
+        foreach (self::GIT_DRIVEN_SUITES as $suite) {
+            if (str_contains(json_encode($data, JSON_THROW_ON_ERROR), $suite)) {
+                return [$data];
+            }
+        }
+
+        return [];
     }
 }

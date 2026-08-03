@@ -77,11 +77,16 @@ to reproduce DBMS-specific behaviour.
 ### Run Coding Standards
 
 ```bash
-CI=true ./Build/Scripts/runTests.sh -s cglGit
+CI=true ./Build/Scripts/runTests.sh -s cgl -n
 ```
 
-Checks and fixes coding guidelines for the latest commit. `-s cgl` does the same
-for all core PHP files and takes considerably longer; `-n` only reports.
+Checks coding guidelines for all core PHP files and reports without changing
+them; drop `-n` to have them fixed. `-s cglGit` runs
+`Build/Scripts/cglFixMyCommit.sh` over the latest commit alone and is quicker,
+but only from a normal checkout: that script asks git for its file list inside
+the container, and a git worktree keeps its gitdir outside the mounted
+directory, so git fails, the list comes back empty and the suite reports SUCCESS
+having read no file. `-s cgl` asks git nothing and works from either.
 
 ### Run PHPStan
 

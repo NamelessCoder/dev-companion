@@ -14,6 +14,7 @@ one is added.
 - [`D-KNW-033`][D-KNW-033] — Every hint names the domains it is asked from, and none is `any` · 2026-08-03
 - [`D-KNW-034`][D-KNW-034] — The file is the subject, and JavaScript is not a domain of its own · 2026-08-03
 - [`D-KNW-035`][D-KNW-035] — The corpus and the tool that answers from it are called hints · 2026-08-03
+- [`D-KNW-036`][D-KNW-036] — The standards check handed over is the one that cannot pass empty · 2026-08-03
 - [`D-KNW-005`][D-KNW-005] — One `Scope` replaced the four vocabularies · 2026-08-02
 - [`D-KNW-006`][D-KNW-006] — A word for a thing administered from the backend adds no domain to a backend-only task · 2026-08-02
 - [`D-KNW-007`][D-KNW-007] — A hint says whose it is in both directions · 2026-08-02
@@ -45,6 +46,7 @@ one is added.
 [D-KNW-033]: knw-033-every-hint-names-the-domains-it-is-asked-from-and-none-is-any.md
 [D-KNW-034]: knw-034-the-file-is-the-subject-and-javascript-is-not-a-domain.md
 [D-KNW-035]: knw-035-the-corpus-and-the-tool-that-answers-from-it-are-called-hints.md
+[D-KNW-036]: knw-036-the-standards-check-handed-over-is-the-one-that-cannot-pass-empty.md
 [D-KNW-005]: knw-005-one-scope-replaced-the-four-vocabularies.md
 [D-KNW-006]: knw-006-a-word-for-a-thing-administered-from-the-backend.md
 [D-KNW-007]: knw-007-a-hint-says-whose-it-is-in-both-directions.md

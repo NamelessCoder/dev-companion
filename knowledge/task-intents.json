@@ -176,7 +176,7 @@
       "Push with git push origin HEAD:refs/for/<branch> and keep the Change-Id line untouched."
     ],
     "checks": [
-      "CI=true ./Build/Scripts/runTests.sh -s cglGit"
+      "CI=true ./Build/Scripts/runTests.sh -s cgl -n"
     ],
     "tools": [
       "typo3_commit_message_guide, to check the message before pushing"

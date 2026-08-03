@@ -114,3 +114,14 @@ judgements of which not one reached the rung where a skill is built.
 - One of the eight facts turns out to be what a loaded skill would still have
   lacked. Then it was filed as knowledge and belonged in a skill body, and the
   cluster carried a skill statement after all.
+
+## Since then
+
+The route this entry says the cluster earns was built on 2026-08-03 —
+[`D-SKL-013`](skl-013-the-guide-names-the-skill-that-owns-the-task.md).
+`typo3_task_guide` names the skill that owns the recognized work, and the
+testimonials task this entry measured names `typo3-content-element-development`.
+Both cards the **Decided** above names are closed by it, the eight queued cards
+keep the order set here, and the second **Wrong if** is now something that can
+be observed rather than a hypothetical: the guide names the skill, so the next
+build session in that project either reaches it or does not.

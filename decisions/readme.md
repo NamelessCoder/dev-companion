@@ -124,6 +124,7 @@ and not a defect.
 - [`D-SKL-010`][D-SKL-010] — The assessment that precedes a core patch reads the issue and the review server · 2026-08-03
 - [`D-SKL-011`][D-SKL-011] — The call plan a skill writes down is measured against the corpus that answers it · 2026-08-03
 - [`D-SKL-012`][D-SKL-012] — Bringing a package's development installation into existence earns a task skill · 2026-08-03
+- [`D-SKL-013`][D-SKL-013] — The guide names the skill that owns the task · 2026-08-03
 - [`D-ANS-005`][D-ANS-005] — A question that is not supported here is answered in a shape of its own · 2026-08-02
 - [`D-ANS-006`][D-ANS-006] — An identifier is found however it is spelled · 2026-08-02
 - [`D-ANS-007`][D-ANS-007] — Two shapes for "not answered", one word for why · 2026-08-02
@@ -309,6 +310,7 @@ and not a defect.
 [D-SKL-010]: task-skills/skl-010-the-assessment-that-precedes-a-core-patch-reads-the-issue-and-the-review-server.md
 [D-SKL-011]: task-skills/skl-011-the-call-plan-a-skill-writes-down-is-measured-against-the-corpus-that-answers-it.md
 [D-SKL-012]: task-skills/skl-012-bringing-a-development-installation-into-existence-earns-a-task-skill.md
+[D-SKL-013]: task-skills/skl-013-the-guide-names-the-skill-that-owns-the-task.md
 [D-ANS-005]: answers/ans-005-an-unmet-precondition-is-answered-not-raised.md
 [D-ANS-006]: answers/ans-006-an-identifier-is-found-however-it-is-spelled.md
 [D-ANS-007]: answers/ans-007-two-shapes-for-not-answered-and-one-word-for-why.md

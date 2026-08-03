@@ -26,7 +26,7 @@ final class TaskIntents
     ];
 
     /**
-     * @return array<int, array{id: string, title: string, scope: ?Scope, match: array<int, string>, matchWeak: array<int, string>, condition: string, rulesQuery: string, checklist: array<int, string>, checks: array<int, string>, tools: array<int, string>}>
+     * @return array<int, array{id: string, title: string, skill: string, skillCore: string, scope: ?Scope, match: array<int, string>, matchWeak: array<int, string>, condition: string, rulesQuery: string, checklist: array<int, string>, checks: array<int, string>, tools: array<int, string>}>
      */
     public static function load(): array
     {
@@ -38,6 +38,14 @@ final class TaskIntents
         return array_map(static fn(array $entry): array => [
             'id' => (string) $entry['id'],
             'title' => (string) $entry['title'],
+            // The task skill that owns this kind of work, on each side of the
+            // core boundary, and empty where no published skill does. The two
+            // are separate entries rather than one because the same words name
+            // two workflows: an audit is the conformance skill's outside the
+            // core and the patch review's inside it, and each of those two
+            // descriptions hands the other side away in as many words.
+            'skill' => (string) ($entry['skill'] ?? ''),
+            'skillCore' => (string) ($entry['skillCore'] ?? ''),
             // Whether the intent is the core's own contribution process rather
             // than a kind of work. Patch submission is one: outside the core
             // there is no Gerrit to submit to, so the intent is not a weaker
@@ -149,6 +157,39 @@ final class TaskIntents
         }
 
         return $scoped;
+    }
+
+    /**
+     * The task skills that own the work these intents recognized, in catalog
+     * order and deduplicated.
+     *
+     * This is the one route from an answer to the workflow the caller should be
+     * in. `skills/base.md` has told every task since 2026-07-31 that this call
+     * returns "the workflow this task belongs to" and the server has told every
+     * client at initialize that it "hands the parts that have their own
+     * workflow to the skill that owns them", while nothing here named one: a
+     * session that reached no skill got the brief and stayed where it was
+     * (`D-SKL-013`).
+     *
+     * Only confirmed intents route. A weak match is a word that named the
+     * subject without naming the work, and loading a whole workflow on one is
+     * the wrong answer rather than a partly wrong one — the same reason its
+     * checklist items are marked with their condition instead of stated.
+     *
+     * @param array<int, array<string, mixed>> $intents
+     * @return array<int, string>
+     */
+    public static function skills(array $intents, bool $coreWork): array
+    {
+        $skills = [];
+        foreach (self::confirmed($intents) as $intent) {
+            $skill = (string) $intent[$coreWork ? 'skillCore' : 'skill'];
+            if ($skill !== '') {
+                $skills[$skill] = true;
+            }
+        }
+
+        return array_keys($skills);
     }
 
     /**

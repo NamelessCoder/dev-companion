@@ -2,9 +2,10 @@
 
 Build a task checklist enriched with matching hints and relevant core checks.
 Built from bundled conventions only: it does not read your checkout, so it also
-names what you have to establish there yourself and routes to the lookups that
-fit the task. Work that reads as a project or third-party extension is answered
-with what transfers only — the core checks, checklist items and steps that name
+names what you have to establish there yourself, routes to the lookups that fit
+the task, and names the task skill that owns the work where a published one
+does. Work that reads as a project or third-party extension is answered with
+what transfers only — the core checks, checklist items and steps that name
 something only the core repository has are left out rather than handed over.
 
 `readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: false`
@@ -81,6 +82,12 @@ intents:  # optional
     confidence: string
     # When a weakly matched intent applies. Empty for a strong match.
     condition: string
+# The task skills that own the recognized work, named so that a caller who
+# reached this server without one can load it. A skill is a file in your own
+# project rather than something this server can see, so a name here is not a
+# promise that it is installed. Empty means no published skill owns what was
+# recognized, which is not a statement that the work has no workflow.
+skills: [string]
 # What typo3_hint_lookup answers for these paths, quoted whole and carried here
 # — the strongest few per group of paths, not everything it holds on them. A
 # rule taken from one of these belongs to that lookup, so a report citing it
@@ -211,6 +218,7 @@ Domains: php
 Paths:
 - typo3/sysext/core/Classes/Utility/GeneralUtility.php
 Recognized as: Deprecation
+Owned by: typo3-core-patch-development. Load it where this project has it installed — the skill carries the working order for this kind of work, and this brief is one call inside it.
 
 Hints:
 The hints below are typo3_hint_lookup's, matched for these paths and quoted whole. A finding that cites one of these rules is citing that lookup rather than this guide. A brief carries the 4 strongest per group of paths, which is not everything the lookup holds on them — call it for the rest, by path, with a larger limit, or by id.
@@ -394,6 +402,9 @@ Data:
             "confidence": "strong",
             "condition": ""
         }
+    ],
+    "skills": [
+        "typo3-core-patch-development"
     ],
     "hints": [
         {
@@ -819,6 +830,7 @@ Data:
             "condition": "only if the change adds or alters backend component markup or CSS classes"
         }
     ],
+    "skills": [],
     "hints": [
         {
             "id": "backend-modules",
@@ -1124,6 +1136,7 @@ Data:
     ],
     "scope": "core",
     "intents": [],
+    "skills": [],
     "hints": [
         {
             "id": "persistence-reading",

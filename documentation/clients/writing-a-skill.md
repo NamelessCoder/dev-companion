@@ -152,12 +152,18 @@ that owner, carry across only the scope and verified behaviour it needs
 
 ## Publishing it
 
-A skill exists for its readers once it is in `Installer::SKILLS`. Add it there,
-add it to the lists in `tests/Smoke/InstallerTest.php` that read the published
-directory back, and the installer copies `skills/base.md` into the new directory
-as `references/base.md` — one copy per skill, because each of them lands in
-another project alone and a link out of its own directory would resolve here and
-nowhere it is actually read.
+A skill exists for its readers once it is in `Installer::SKILLS`, and nothing
+this server answers with may name one before that: `knowledge/task-intents.json`
+routes a recognized task to the skill that owns it
+([`D-SKL-013`](../../decisions/task-skills/skl-013-the-guide-names-the-skill-that-owns-the-task.md)),
+and `SkillTest::everySkillNamedInKnowledgeIsPublished` holds every name there to
+that list. A route into a skill nobody has installed is worse than none, because
+the caller cannot tell the two apart. Add it there, add it to the lists in
+`tests/Smoke/InstallerTest.php` that read the published directory back, and the
+installer copies `skills/base.md` into the new directory as `references/base.md`
+— one copy per skill, because each of them lands in another project alone and a
+link out of its own directory would resolve here and nowhere it is actually
+read.
 
 Then run the installer in the checkout that plays the environment the skill is
 for, before any run that is meant to measure it. The published skills are a copy

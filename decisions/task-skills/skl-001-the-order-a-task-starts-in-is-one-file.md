@@ -375,3 +375,21 @@ skill's own sentence defers to the base for why the changelog cannot answer.
 Half of what it bought is a reading the base was already sending sessions into —
 the class in `## When the lookups run out` is where an identifier now terminates
 — so the growth buys the step after it as well.
+
+## Since then
+
+The question this entry opened on 2026-08-02 — what step 3 is for once a task
+skill is loaded — was answered on 2026-08-03 by the person who was asked, and it
+is the second of the two: `typo3_task_guide` names the workflow step 3 says it
+returns
+([`D-SKL-013`](skl-013-the-guide-names-the-skill-that-owns-the-task.md)).
+
+The base is unchanged by it, which is the half worth recording here. Step 3
+keeps the words it has carried since `66813e3` and the arithmetic stays at 1531,
+so the answer that would have corrected or grown this file is the one that was
+turned down: it reaches a caller that arrived through a skill and leaves the one
+that arrived without a skill where `feedback/2026-08-01-003356` was. What it
+cost instead was five entries in `knowledge/task-intents.json` and thirty lines
+in `src/`. Both cards that carried the question are closed and both feedback are
+archived. `feedback/2026-07-31-193005` asks the neighbouring question about a
+self-reported call log and keeps its own card.

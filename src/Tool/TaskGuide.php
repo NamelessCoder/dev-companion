@@ -69,6 +69,17 @@ final class TaskGuide extends ReadOnlyTool
         . 'by id, and a subject named there and not below is one this brief did not reach.';
 
     /**
+     * Where the task belongs, said in the answer that recognized it
+     * (`D-SKL-013`).
+     *
+     * The skill is a file in the caller's own project and this server cannot
+     * see it, so the line names it and stops there: what it is worth is the
+     * order it carries, and a brief is one call inside that order.
+     */
+    public const SKILLS_OWNING = 'Owned by: %s. Load it where this project has it installed — the skill carries '
+        . 'the working order for this kind of work, and this brief is one call inside it.';
+
+    /**
      * The change type of a task that changes nothing, and the id of the intent
      * that recognizes one described rather than classified. They are the same
      * word because the type is fed to the intent matcher.
@@ -166,7 +177,7 @@ final class TaskGuide extends ReadOnlyTool
 
     public static function description(): string
     {
-        return 'Build a task checklist enriched with matching hints and relevant core checks. Built from bundled conventions only: it does not read your checkout, so it also names what you have to establish there yourself and routes to the lookups that fit the task. Work that reads as a project or third-party extension is answered with what transfers only — the core checks, checklist items and steps that name something only the core repository has are left out rather than handed over.';
+        return 'Build a task checklist enriched with matching hints and relevant core checks. Built from bundled conventions only: it does not read your checkout, so it also names what you have to establish there yourself, routes to the lookups that fit the task, and names the task skill that owns the work where a published one does. Work that reads as a project or third-party extension is answered with what transfers only — the core checks, checklist items and steps that name something only the core repository has are left out rather than handed over.';
     }
 
     public static function inputSchema(): array
@@ -200,6 +211,7 @@ final class TaskGuide extends ReadOnlyTool
                 'confidence' => ['type' => 'string', 'enum' => ['strong', 'weak'], 'description' => 'weak: a word named the subject without naming the work, or the intent is a core-only one and nothing in the task says this is core work. Either way it applies only under its condition.'],
                 'condition' => Schema::string('When a weakly matched intent applies. Empty for a strong match.'),
             ], ['id', 'title', 'confidence', 'condition']), 'The kinds of core work recognized in the task text.'),
+            'skills' => Schema::listOf(Schema::string(), 'The task skills that own the recognized work, named so that a caller who reached this server without one can load it. A skill is a file in your own project rather than something this server can see, so a name here is not a promise that it is installed. Empty means no published skill owns what was recognized, which is not a statement that the work has no workflow.'),
             'hints' => Schema::listOf(Schema::hintRecord(), 'What typo3_hint_lookup answers for these paths, quoted whole and carried here — the strongest few per group of paths, not everything it holds on them. A rule taken from one of these belongs to that lookup, so a report citing it names typo3_hint_lookup and a caller who needs more of the subject calls it directly. What was left is named in omittedHints.'),
             'omittedHints' => Schema::listOf(Schema::hintReference(), 'What typo3_hint_lookup also holds for these paths and this brief did not carry, named rather than counted. Empty means what it carries is everything that matched. A subject listed here and not in hints is one the brief did not reach, so it is the gap the pointer to that lookup stands for.'),
             'rules' => Schema::listOf(Schema::knowledgeMatch(), 'Rule sections that apply to this task.'),
@@ -219,7 +231,7 @@ final class TaskGuide extends ReadOnlyTool
                 'tool' => Schema::string(),
                 'when' => Schema::string(),
             ], ['tool', 'when'])),
-        ], ['task', 'changeType', 'domains', 'hints', 'omittedHints', 'checks', 'checklist', 'nextTools']);
+        ], ['task', 'changeType', 'domains', 'skills', 'hints', 'omittedHints', 'checks', 'checklist', 'nextTools']);
     }
 
     public static function answer(array $args): ToolResult
@@ -254,10 +266,11 @@ final class TaskGuide extends ReadOnlyTool
             static fn(array $group): bool => !$group['scope']->isOutsideTheCore(),
         ) === [];
 
+        $coreWork = Scope::isCoreWork($paths, $task);
         $intents = TaskIntents::scoped(
             TaskIntents::detect($task . ' ' . $changeType),
             $scope,
-            Scope::isCoreWork($paths, $task)
+            $coreWork
         );
         // A stated change type is the caller's own classification and the words
         // of the task do not overrule it: "review the patch that deprecates X"
@@ -281,6 +294,10 @@ final class TaskGuide extends ReadOnlyTool
             $intents,
             static fn(array $intent): bool => !in_array($intent, $confirmed, true)
         ));
+        // The core's own skills own the work only where nothing in the call is
+        // outside it. A path in an extension settles the side, and the word
+        // "core" in a task text about a sitepackage does not.
+        $skills = TaskIntents::skills($confirmed, $coreWork && !$outsideCore);
 
         $stated = isset($args['targetVersion']) ? (string) $args['targetVersion'] : null;
         $target = Versions::target($stated);
@@ -375,6 +392,12 @@ final class TaskGuide extends ReadOnlyTool
         foreach ($conditional as $intent) {
             $lines[] = 'Possibly also: ' . $intent['title'] . ', ' . $intent['condition']
                 . '. Its checklist items are marked as conditional below and its checks are listed separately.';
+        }
+        // Above the payload rather than under it: a caller that is in the wrong
+        // workflow is in it for the whole answer, and the line is worth nothing
+        // once the reading has started.
+        if ($skills !== []) {
+            $lines[] = sprintf(self::SKILLS_OWNING, implode(', ', $skills));
         }
 
         $lines[] = '';
@@ -621,6 +644,7 @@ final class TaskGuide extends ReadOnlyTool
                 'confidence' => (string) $intent['confidence'],
                 'condition' => (string) $intent['condition'],
             ], $intents),
+            'skills' => $skills,
             'hints' => MatchedHints::records($hints['matchedHints']),
             'omittedHints' => $omitted,
             'rules' => Prose::records($rules),

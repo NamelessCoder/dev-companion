@@ -11,7 +11,16 @@ use Typo3CmsMcp\Paths;
 final class Installer
 {
     private const SERVER = 'typo3-cms-mcp';
-    private const SKILLS = [
+
+    /**
+     * The skills this server publishes, which is also where a skill starts
+     * existing for its readers. An answer that names one names it from here —
+     * `knowledge/task-intents.json` routes a task to the skill that owns it,
+     * and a name this list does not carry is one nobody can load.
+     *
+     * @var array<int, string>
+     */
+    public const SKILLS = [
         'typo3-backend-module-development',
         'typo3-content-element-development',
         'typo3-core-patch-development',

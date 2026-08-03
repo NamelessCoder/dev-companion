@@ -9,6 +9,7 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\Finder\Finder;
 use Typo3CmsMcp\Knowledge\Hints;
 use Typo3CmsMcp\Paths;
+use Typo3CmsMcp\Server\Installer;
 use Typo3CmsMcp\Upkeep\Scenarios;
 
 final class SkillTest extends TestCase
@@ -1064,6 +1065,41 @@ final class SkillTest extends TestCase
                 Paths::root() . '/skills/typo3-backend-module-development/SKILL.md',
             ),
         );
+    }
+
+    /**
+     * A skill exists for its readers once it is published, so a skill this
+     * server names in an answer is one the caller can actually load
+     * (`D-SKL-013`). The draft in `skills/` is not that: it is shown to
+     * somebody first, and `typo3-development-installation` has been sitting
+     * there since 2026-08-03 waiting for exactly that review.
+     */
+    #[Test]
+    public function everySkillNamedInKnowledgeIsPublished(): void
+    {
+        $intents = json_decode(
+            (string) file_get_contents(Paths::knowledgeFile('task-intents.json')),
+            true,
+        );
+        self::assertIsArray($intents);
+
+        $named = [];
+        foreach ($intents as $intent) {
+            foreach (['skill', 'skillCore'] as $key) {
+                if (($intent[$key] ?? '') !== '') {
+                    $named[] = [$intent['id'], $intent[$key]];
+                }
+            }
+        }
+        self::assertNotSame([], $named, 'no task routes to the skill that owns it');
+
+        foreach ($named as [$intent, $skill]) {
+            self::assertContains(
+                $skill,
+                Installer::SKILLS,
+                $intent . ' routes to ' . $skill . ', which this server does not publish',
+            );
+        }
     }
 
     #[Test]

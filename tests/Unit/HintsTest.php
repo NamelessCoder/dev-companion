@@ -3162,6 +3162,65 @@ final class HintsTest extends TestCase
     }
 
     /**
+     * A brief names the task skill that owns the work.
+     *
+     * D-SKL-013. `skills/base.md` has told every task since 2026-07-31 that
+     * this call returns "the workflow this task belongs to", and the
+     * `instructions` every client receives at initialize say it "hands the
+     * parts that have their own workflow to the skill that owns them" — while
+     * `TaskGuide` named no skill at all. `feedback/2026-08-01-003356` is what
+     * that cost: a session in `site-new` built a content element with a custom
+     * backend preview, loaded no skill, and guessed at facts
+     * `typo3-content-element-development` exists to route.
+     */
+    #[Test]
+    public function aBriefNamesTheSkillThatOwnsTheWork(): void
+    {
+        // That session's own task, re-run.
+        $element = Registry::call('typo3_task_guide', [
+            'task' => 'build a testimonials content element with a custom backend preview',
+            'changeType' => 'feature',
+            'targetVersion' => '14',
+        ]);
+
+        self::assertContains('typo3-content-element-development', $element->data['skills']);
+        self::assertStringContainsString('typo3-content-element-development', $element->text);
+        // Above the payload, because a caller in the wrong workflow is in it
+        // for the whole answer.
+        self::assertLessThan(
+            (int) strpos($element->text, 'Hints:'),
+            (int) strpos($element->text, 'Owned by:'),
+        );
+
+        // The other half of the same question: a session that arrived through a
+        // skill is told which one owns the task, and the two sides of an audit
+        // are two skills whose own descriptions hand each other away.
+        $package = Registry::call('typo3_task_guide', [
+            'task' => 'TYPO3 extension conformance audit of the site package',
+            'paths' => ['packages/printworks_sitepackage'],
+        ]);
+        $patch = Registry::call('typo3_task_guide', [
+            'task' => 'review the patch on this core branch',
+            'paths' => ['typo3/sysext/frontend/Classes/ContentObject/ContentObjectRenderer.php'],
+        ]);
+
+        self::assertSame(['typo3-extension-conformance'], $package->data['skills']);
+        self::assertSame(['typo3-core-patch-review'], $patch->data['skills']);
+
+        // A weak match routes nothing. The word named the subject without
+        // naming the work, and a whole workflow loaded on one of those is the
+        // wrong answer rather than a partly wrong one.
+        $weak = Registry::call('typo3_task_guide', [
+            'task' => 'restyle the slider on the homepage',
+            'paths' => ['packages/printworks_sitepackage'],
+        ]);
+
+        self::assertContains('content-element', array_column($weak->data['intents'], 'id'));
+        self::assertSame([], $weak->data['skills']);
+        self::assertStringNotContainsString('Owned by:', $weak->text);
+    }
+
+    /**
      * Work that operates an installation is answered as a boot, not as a patch
      * and not as a review.
      *

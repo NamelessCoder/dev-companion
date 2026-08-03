@@ -17,6 +17,15 @@ installation — that pointer may not be written before the skill is published,
 because it would name a skill nobody has installed. Then run the installer in
 the checkout that plays the environment, which `todo/reference/` names.
 
+Publishing also gains the route into it. `knowledge/task-intents.json` carries
+the skill that owns each recognized task since
+[`D-SKL-013`](../../decisions/task-skills/skl-013-the-guide-names-the-skill-that-owns-the-task.md),
+and `installation-setup` and `installation-operations` are the two entries left
+empty because this skill is not published yet —
+`SkillTest::everySkillNamedInKnowledgeIsPublished` is what would fail if they
+were filled in first. Both take `skill`, not `skillCore`: setting a development
+installation up is not core work.
+
 The four knowledge cards `D-SKL-012` put before publishing have all landed —
 `165606`, `185545`, `185618` and `185753` — so the review is the only thing
 publishing still waits on. Two of them change the draft rather than merely

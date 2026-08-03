@@ -1,7 +1,7 @@
 ---
 id: D-GUI-007
 date: 2026-08-03
-status: open
+status: confirmed
 ---
 
 # D-GUI-007 — The brief carries a selection of the hints and says whose they are
@@ -68,9 +68,37 @@ judgement.
   then be read as a substitute for the call, and what is left is to say in the
   skill what the brief cannot say — that four is not a subsystem sweep.
 - `HINTS_PER_GROUP` is ever raised to the lookup's own default. The second half
-  of the sentence stops being true where the brief carries everything the
-  lookup would.
+  of the sentence stops being true where the brief carries everything the lookup
+  would.
 
 ## Covered by
 
 - `HintsTest::theHintsABriefCarriesNameTheLookupTheyCameFrom`
+
+## Confirmed on 2026-08-03
+
+The call this was decided from was made again, against the server on this
+branch. The sentence is on the answer and rendered from `HINTS_PER_GROUP`, and
+the brief still carries `fluid-viewhelpers`, `system-extension-boundaries`,
+`core-tests` and `fal-basics`. `typo3_hint_lookup`, given the same five paths,
+the same task text and `targetVersion` `15.0`, answers those four and then
+`fal-reading` and `fal-processing` at its default, and `dependency-injection` at
+`limit=10`. That is what was measured at `99785b8`, unchanged.
+
+What the reading adds is the rejected alternative priced by the session that
+proposed it. `feedback/2026-08-03-144410` is the same run's own debrief, written
+at 14:44 and fifteen minutes before this sentence landed in `e306b02`. It argues
+that the brief's four hints make the separate call a re-fetch, and then names
+what skipping it cost: no dependency-injection hint, and
+`#[Autowire(lazy: true)]` established instead by grepping three call sites out
+of the checkout. The hint it wanted is the seventh the lookup holds for its own
+paths.
+
+Neither **Wrong if** has been reached. No run has been recorded since the
+sentence landed, so nothing yet says whether it is read as attribution or as
+permission, and `HINTS_PER_GROUP` is still four.
+
+What the same feedback asks for beyond this entry is the subjects rather than
+the count: the brief says it carries four and never says which three it left, so
+the gap a caller would follow the pointer for is invisible until the call is
+made. That is `R-GUI-012`, and it does not disturb what is decided here.

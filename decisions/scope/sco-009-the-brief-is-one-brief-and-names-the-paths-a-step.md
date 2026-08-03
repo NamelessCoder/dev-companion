@@ -63,3 +63,28 @@ here. What it does not do is answer twice.
 
 - `ScopeTest::aBriefForPathsOfDifferentAudienceSaysWhichStepsAreForWhich`
 - `ScopeTest::aBriefForExtensionPathsAloneKeepsNoCoreStep`
+
+## Since then
+
+The second **Wrong if** has been reached, at the harmless end of what it
+describes. A core patch review passed five `typo3/sysext/` paths and the `area`
+`core Resource / extbase Service / fluid ViewHelpers` in one call, and reported
+the payload it got back: the area arrived as the sixth entry of `paths` and as
+`{"path": "core Resource / extbase Service / fluid ViewHelpers", "scope": "core"}`
+in `scopes` (`feedback/2026-08-03-144410`, 2026-08-03). The call was made again
+on this branch and reproduces both entries exactly.
+
+The two subjects agreed, which is the half of the bullet that did not happen.
+The area describes the same three subsystems the five paths are in, so it was
+scoped `core` as they were, and no step of the brief was filtered by a verdict
+about a string nobody named. What the reporter names is the other half: nothing
+downstream can read `scopes` as the files, because one of its entries is prose.
+
+The repair this entry names for that case — `area` deprecated in its description
+and then removed — is not the only one available. The reporter's alternative
+keeps `area` and marks its entry as one, which is an addition where this entry's
+is a removal, and `AGENTS.md` asks for the first and not the second. Both hold,
+so which is built is not a judgement this process may make on its own. The
+question is with whoever maintains this repository and
+`todo/waiting/2026-08-03-171601-decide-whether-the-area-keeps-its-place-in-the-scopes-array.md`
+carries it in the words it was asked in.

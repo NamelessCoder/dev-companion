@@ -65,15 +65,50 @@ final class Fetch
      *
      * @param array<int, string> $headers extra request headers, in `Name: value` form
      */
-    public function get(string $url, array $headers = []): ?string
+    public function get(string $url, array $headers = [], ?string $agent = null): ?string
+    {
+        return $this->read($url, $headers, $agent)['body'];
+    }
+
+    /**
+     * What a host that challenges browsers answers instead.
+     *
+     * The protection in front of one of the sources here inverts the usual
+     * repair: a browser-shaped agent gets a 200 and a challenge page, and a
+     * plain client agent gets the answer. So where a body did not parse as what
+     * was asked for, the retry is not "look more like a browser" but the
+     * opposite, and it is worth one extra round trip because the alternative is
+     * telling the caller that the source is down when it is not.
+     */
+    public const PLAIN_AGENT = 'curl/8.5.0';
+
+    /**
+     * The same read, with the status the host answered.
+     *
+     * One source needs it: an issue tracker answers 404 for an issue that does
+     * not exist, and "there is no such issue" is a different answer to the
+     * caller than "the tracker did not answer". Everything else collapses both
+     * into a body it did not get, which is why `get()` is the shorter one.
+     *
+     * A transport is a body without a status, so an injected one reports 200
+     * for what it returns and 0 for what it does not. What that leaves
+     * untestable is the mapping of one status onto one answer, and the source
+     * that does the mapping says so.
+     *
+     * @param array<int, string> $headers extra request headers, in `Name: value` form
+     * @return array{status: int, body: ?string}
+     */
+    public function read(string $url, array $headers = [], ?string $agent = null): array
     {
         if ($this->transport !== null) {
-            return ($this->transport)($url);
+            $body = ($this->transport)($url);
+
+            return ['status' => $body === null ? 0 : 200, 'body' => $body];
         }
 
         $handle = curl_init($url);
         if ($handle === false) {
-            return null;
+            return ['status' => 0, 'body' => null];
         }
 
         curl_setopt_array($handle, [
@@ -82,13 +117,15 @@ final class Fetch
             CURLOPT_MAXREDIRS => self::MAX_REDIRECTS,
             CURLOPT_CONNECTTIMEOUT => self::CONNECT_TIMEOUT,
             CURLOPT_TIMEOUT => self::TIMEOUT,
-            CURLOPT_USERAGENT => 'typo3-cms-mcp/' . Factory::SERVER_VERSION,
+            CURLOPT_USERAGENT => $agent ?? 'typo3-cms-mcp/' . Factory::SERVER_VERSION,
             CURLOPT_HTTPHEADER => $headers,
         ]);
         $body = curl_exec($handle);
-        $status = curl_getinfo($handle, CURLINFO_RESPONSE_CODE);
-        curl_close($handle);
+        $status = (int) curl_getinfo($handle, CURLINFO_RESPONSE_CODE);
 
-        return is_string($body) && $status >= 200 && $status < 300 ? $body : null;
+        return [
+            'status' => $status,
+            'body' => is_string($body) && $status >= 200 && $status < 300 ? $body : null,
+        ];
     }
 }

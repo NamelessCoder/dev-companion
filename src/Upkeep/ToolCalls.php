@@ -103,6 +103,12 @@ final class ToolCalls
             // The second call is the first one's answer handed back: that is
             // the two-step the tool documents, and a URL invented here would
             // illustrate a flow no caller has.
+            'forge: what an issue says and what was decided' => ['typo3_forge_lookup', [
+                'issue' => '110348',
+            ]],
+            'forge: no such issue' => ['typo3_forge_lookup', [
+                'issue' => '99999999',
+            ]],
             'gerrit: has this issue a patch already' => ['typo3_gerrit_lookup', [
                 'issue' => '110348',
                 'limit' => 3,

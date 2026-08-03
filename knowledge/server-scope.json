@@ -22,6 +22,15 @@
       "scope": "core"
     },
     {
+      "topic": "What a Forge issue says and what was decided about it",
+      "depth": "The tracker's own API, read live: subject, tracker, status, target version, the TYPO3 and PHP versions it was reported against, related issues, and the comments. The description is what the reporter saw; the comments are where a maintainer said what will happen.",
+      "tools": [
+        "typo3_forge_lookup"
+      ],
+      "source": "https://forge.typo3.org (network)",
+      "scope": "core"
+    },
+    {
       "topic": "Whether a patch for an issue already exists on the review server",
       "depth": "The anonymous Gerrit REST API, read live: change number, subject, status, target branch and review URL. A change pushed as private is not visible to it.",
       "tools": [
@@ -245,6 +254,10 @@
     {
       "when": "Asked to review, audit or assess a project, a site package or an extension — before opening the first file, because what a finding is worth depends on the version and the commands this repository has",
       "call": "typo3_project_scope, then typo3_task_guide for the workflow and typo3_extension_scope for each extension in scope"
+    },
+    {
+      "when": "Taking a Forge issue on, before believing what it describes — an issue can be stale, already fixed, or closed on a decision that is not in its description",
+      "call": "typo3_forge_lookup for the issue and its comments, then typo3_gerrit_lookup with the same number for whether a patch exists already"
     },
     {
       "when": "Reviewing a TYPO3 core patch — the current changes in a core checkout, a commit, or a change fetched from Gerrit — rather than a project or an extension",

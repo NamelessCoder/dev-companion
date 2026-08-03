@@ -34,6 +34,7 @@ final class Registry
         TestRunGuide::class,
         ArchitectureLookup::class,
         DocumentationLookup::class,
+        ForgeLookup::class,
         GerritLookup::class,
         ComponentLookup::class,
         SystemExtensionLookup::class,

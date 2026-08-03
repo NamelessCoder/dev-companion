@@ -627,6 +627,72 @@ The call carries exactly one of these sets of arguments: `queries` — or
     time, and the same call may answer the next.
   - `reason` *(string, required)*
 
+## `typo3_forge_lookup`
+
+Read a TYPO3 issue from the tracker at forge.typo3.org before writing a patch
+for it: subject, tracker, status, target version, the TYPO3 and PHP versions it
+was reported against, related issues, and the comments — where a maintainer
+who closed or reassigned it said why, which the description never says. An
+issue that does not exist is answered as such, and so is a tracker that could
+not be reached. Reading only, and no credential: commenting, assigning and
+closing stay yours.
+
+`readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: true`
+
+**Answered**, once: [tool-answers/typo3_forge_lookup.md](tool-answers/typo3_forge_lookup.md).
+
+**Takes**
+
+- `issue` *(string, required)* — Forge issue number, with or without the
+  leading #, for example "110348".
+
+**Answers with**
+
+- `status` *(string, required)* — One of `answered`, `empty`,
+  `unavailable`.
+- `source` *(string, required)* — The tracker the answer came from.
+- `url` *(string, required)* — What was read, so the same question can be
+  asked again by hand.
+- `issue` *(object or null, required)* — The issue, where status says
+  answered. Null otherwise.
+  - `id` *(integer, required)*
+  - `subject` *(string, required)*
+  - `status` *(string, required)* — New, Accepted, Resolved, Closed,
+    Rejected — the tracker's own word.
+  - `tracker` *(string, required)* — Bug, Feature, Task, Epic.
+  - `priority` *(string, required)*
+  - `targetVersion` *(string, required)* — The release it is scheduled
+    for, empty where none is set.
+  - `typo3Version` *(string, required)* — The TYPO3 version it was
+    reported against, which is not the version it still reproduces on.
+  - `phpVersion` *(string, required)*
+  - `createdOn` *(string, required)*
+  - `updatedOn` *(string, required)*
+  - `url` *(string, required)* — Where a person reads it.
+  - `description` *(string, required)* — The report as it was written,
+    which is what the reporter saw and not what was decided.
+  - `relations` *(array of object, required)* — Issues this one is filed
+    against, which is where a duplicate or a blocker is named.
+    - `issue` *(integer, required)* — The other issue.
+    - `relation` *(string, required)* — duplicates, relates, blocked,
+      precedes.
+  - `noteCount` *(integer, required)* — How many comments the issue
+    carries in total.
+  - `notes` *(array of object, required)* — The most recent comments,
+    oldest first. A closure, a reassignment and a "we will not do this" are
+    here rather than in the description.
+    - `author` *(string, required)*
+    - `on` *(string, required)*
+    - `note` *(string, required)*
+- `unavailable` *(object or null, required)* — Why nothing was answered,
+  where status says unavailable. Null otherwise.
+  - `cause` *(string, required)* — One of `source-not-answering`,
+    `source-not-parseable`. source-not-answering: the tracker did not answer
+    this time. source-not-parseable: something answered with a page rather than
+    with the API, which is what the bot protection in front of it looks like
+    from here.
+  - `reason` *(string, required)*
+
 ## `typo3_gerrit_lookup`
 
 Find out whether a TYPO3 core patch already exists, from the review server at

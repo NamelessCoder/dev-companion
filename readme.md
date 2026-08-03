@@ -183,6 +183,13 @@ name already says what shape the answer has.
   `targetVersion` to read its headings, prose and code examples as text. It
   never falls through to another release, and an unreachable service is
   distinct from a search that answered with no match.
+- `typo3_forge_lookup`: reads one issue from the tracker at `forge.typo3.org`
+  before a patch is written for it — subject, tracker, status, target version,
+  the TYPO3 and PHP versions it was reported against, the issues it relates to,
+  and the comments. The comments are the point: a maintainer closing an issue,
+  reassigning it, or saying the API may not be used that way says it there, and
+  the description never carries it. An issue that does not exist is answered as
+  such and not as a tracker that failed to answer.
 - `typo3_gerrit_lookup`: answers whether a core patch already exists, from the
   anonymous review API at `review.typo3.org`. `issue` searches every change
   whose commit message names a Forge issue — the question every core task asks

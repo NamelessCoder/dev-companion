@@ -129,3 +129,14 @@ files. What is actually missing is a statement in `knowledge/`.
 - `feedback/2026-08-01-114807` is judged and lands somewhere other than here.
   The pairing above would then be a reading of two files rather than one
   debrief's report.
+
+## Since then
+
+Written on 2026-08-03 as `fal-processing`, and one sentence of the evidence above
+is off: `SYS/fal/processors` is not identical on all four covered majors. On
+`12.4` the `SvgImageProcessor` entry declares `before: [LocalImageProcessor]`
+alone, where `13.4`, `14.3` and `main` name `DeferredBackendImageProcessor`
+beside it. The resulting order is the same either way, because the deferred
+processor declares `after: [SvgImageProcessor]` on every branch — so the hint
+carries no range, and what was wrong was the reading of the declaration rather
+than the conclusion drawn from it. `processingTaskTypes` is identical.

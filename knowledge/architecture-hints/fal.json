@@ -15,7 +15,7 @@
     ],
     "hints": [
       "Files are addressed through the FAL objects — ResourceStorage, Folder, File, FileReference — not by a filesystem path. A storage may be remote, and an absolute path assumes it is not.",
-      "The rest of the subject is its own hint: fal-storages-drivers for where a storage comes from and what a driver owns, fal-reading for getting a File and its metadata, fal-writing for putting one in, fal-testing for covering any of it."
+      "The rest of the subject is its own hint: fal-storages-drivers for where a storage comes from and what a driver owns, fal-reading for getting a File and its metadata, fal-writing for putting one in, fal-processing for which processor claims it, fal-testing for covering any of it."
     ]
   },
   {
@@ -109,6 +109,37 @@
     ],
     "hints": [
       "FAL changes touch indexing, permissions and references at once, so they need functional coverage rather than a unit test of the calling code."
+    ]
+  },
+  {
+    "id": "fal-processing",
+    "title": "Which Processor Claims a File, and in What Order",
+    "domains": [
+      "php"
+    ],
+    "appliesTo": [
+      "Classes/Resource/Processing/",
+      "thumbnail",
+      "processed file",
+      "_processed_",
+      "image processing",
+      "ProcessorRegistry",
+      "canProcessTask",
+      "ProcessedFileRepository",
+      "FileProcessingService",
+      "Image.Preview",
+      "Image.CropScaleMask",
+      "processor is not called",
+      "scale an image",
+      "crop an image",
+      "preview image"
+    ],
+    "hints": [
+      "Processing starts at the file: $file->process($taskType, $configuration) hands over to ResourceStorage::processFile() and then to FileProcessingService. There are two task types and no more — Image.Preview and Image.CropScaleMask, declared in SYS/fal/processingTaskTypes — so a processor can only claim one of those two unless a task type is registered beside them.",
+      "Nothing is processed twice. The service asks ProcessedFileRepository::findOneByOriginalFileAndTaskTypeAndConfiguration() first, and a processor runs only where the task that comes back says fileNeedsProcessing(). A BeforeFileProcessingEvent and an AfterFileProcessingEvent bracket that, and the first of them can replace the processed file outright.",
+      "Which processor runs is decided by ProcessorRegistry: it orders SYS/fal/processors with DependencyOrderingService using the before and after keys each entry declares, then asks canProcessTask() down that order and stops at the first that says yes. First match wins, so taking a case over means registering before the processor that would otherwise claim it, never after it. Where none says yes the registry throws exception 1560876294, naming the task type and the task name.",
+      "The processors the core registers claim in this order. SvgImageProcessor takes a task whose target extension is svg. DeferredBackendImageProcessor takes a backend request where the fileProcessing aspect asks for deferred processing, where the source file has a width and a height, and where the target is not in the processing folder yet — it persists the processed file, points it at the image_processing route and returns, so the work happens when the browser requests that URL. OnlineMediaPreviewProcessor takes a file an online-media helper knows and whose preview image already exists on disk. LocalImageProcessor takes every other Image.Preview and Image.CropScaleMask and declares no order at all, which is what leaves it last.",
+      "The list is the installation's rather than the core's, because every extension may add to it. typo3_configuration_lookup with SYS/fal/processors answers what is really registered there, and only where the installation can be reached."
     ]
   }
 ]

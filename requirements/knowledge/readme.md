@@ -55,6 +55,7 @@ when it is added.
 - [`R-KNW-045`][R-KNW-045] — Reading records is covered as its own subject · held
 - [`R-KNW-046`][R-KNW-046] — impexp is the way a page tree is established again · held
 - [`R-KNW-047`][R-KNW-047] — An extension copies the phpunit XML and not the bootstrap · held
+- [`R-KNW-048`][R-KNW-048] — Which processor claims a file is answered · held
 
 [R-KNW-001]: knw-001-upgrade-wizards-and-dataprocessors-have-hints-of-their-own.md
 [R-KNW-002]: knw-002-a-hint-carries-the-words-its-subject-is-asked-about-in.md
@@ -103,3 +104,4 @@ when it is added.
 [R-KNW-045]: knw-045-reading-records-is-covered-as-its-own-subject.md
 [R-KNW-046]: knw-046-impexp-is-the-way-a-page-tree-is-established-again.md
 [R-KNW-047]: knw-047-an-extension-copies-the-phpunit-xml-and-not-the-bootstrap.md
+[R-KNW-048]: knw-048-which-processor-claims-a-file-is-answered.md

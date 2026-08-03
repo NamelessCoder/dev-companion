@@ -1272,6 +1272,31 @@ final class HintsTest extends TestCase
     }
 
     /**
+     * The chain a patch review read seven core classes for, because nothing
+     * below `knowledge/` said how a file becomes a processed one (`D-KNW-028`).
+     * What decides it is the order the registry asks in and the first `yes`,
+     * which is why registering after the processor that already claims a case
+     * changes nothing.
+     */
+    #[Test]
+    public function whichProcessorClaimsAFileIsAnswered(): void
+    {
+        $reached = array_column(
+            ArchitectureHints::find([], 'which processor makes the thumbnail', 6)['matchedHints'],
+            'id',
+        );
+        self::assertContains('fal-processing', $reached);
+
+        $text = self::statementsOf('fal-processing');
+
+        self::assertStringContainsString('stops at the first that says yes', $text, 'what decides it');
+        self::assertStringContainsString('never after it', $text, 'the mistake the order makes possible');
+        self::assertStringContainsString('fileNeedsProcessing()', $text, 'why a processor may not run at all');
+        self::assertStringContainsString('1560876294', $text, 'what an unclaimed task throws');
+        self::assertStringContainsString('typo3_configuration_lookup', $text, 'where the real list is');
+    }
+
+    /**
      * Two FAL traps that only show up as "nothing happened": the same call
      * carries a different default on the folder and on the storage, and a
      * reference's own fields are the ones an editor filled in.
@@ -1937,16 +1962,18 @@ final class HintsTest extends TestCase
 
         foreach (ArchitectureHints::load() as $hint) {
             // A PSR number names an interface, an XLIFF number names a file
-            // format, and an HTTP number names a response status. None of them
+            // format, an HTTP number names a response status, and a TYPO3
+            // exception code names one throw site for good — assigned once and
+            // never reused, so it says nothing about a branch. None of them
             // dates the statement against a TYPO3 branch, which is the only
-            // thing this is looking for. The status is worth carrying because it
-            // is the symptom a caller arrives with — so it is written as
-            // "HTTP 404" rather than bare, which is what makes it exemptible
-            // here without also exempting a count that happens to be three
-            // digits long.
+            // thing this is looking for. Each is worth carrying because it is
+            // the symptom a caller arrives with — so each is written with its
+            // word in front, "HTTP 404" and "exception 1560876294" rather than
+            // bare, which is what makes them exemptible here without also
+            // exempting a count that happens to be three digits long.
             $text = (string) preg_replace(
-                ['/\bPSR-\d+/i', '/\bXLIFF \d+\.\d+/i', '/\bHTTP \d{3}\b/i'],
-                ['PSR', 'XLIFF', 'HTTP'],
+                ['/\bPSR-\d+/i', '/\bXLIFF \d+\.\d+/i', '/\bHTTP \d{3}\b/i', '/\bexception \d{10}\b/i'],
+                ['PSR', 'XLIFF', 'HTTP', 'exception'],
                 $hint['title'] . "\n" . implode("\n", array_column($hint['hints'], 'text'))
             );
 

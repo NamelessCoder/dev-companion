@@ -203,6 +203,23 @@ final class KnowledgeTest extends TestCase
         self::assertStringContainsString('FullyScanned', $bodies);
     }
 
+    #[Test]
+    public function theMatcherListSaysWhatItsMissingRowsDoNotMean(): void
+    {
+        // R-ANS-017. The five rows name a visibility twice, on the property
+        // half, and a reviewer read the list as closed over visibilities: no
+        // row for a protected method, therefore no matcher can exist for one,
+        // therefore the entry is NotScanned. It reported that to a core
+        // reviewer as a finding and filed the list's silence as the thing that
+        // corrected it (`feedback/2026-08-03-144316`, D-ANS-035). The method
+        // matchers are a weak match on the call site and never see a
+        // visibility, so what the list omits is what needs no row.
+        $bodies = implode("\n", array_column(Documents::search('breaking change'), 'body'));
+
+        self::assertStringContainsString('Visibility routes a property and never a method', $bodies);
+        self::assertStringContainsString('getRendererInstances', $bodies);
+    }
+
     /**
      * R-KNW-057. The query is the skill's own step arriving: `typo3-core-patch-
      * development` makes the visible-or-unlisted question mandatory and tells

@@ -63,6 +63,14 @@ Guide.
   - `PropertyPublicMatcher.php` — a removed public property.
   - `PropertyProtectedMatcher.php` — a public property that became protected.
   - `ClassNameMatcher.php` — a whole class or interface.
+- Visibility routes a property and never a method. The method matchers are a
+  weak match on the method name where it is used, and they do not resolve the
+  class, so they cannot see one. A method that is protected, or that has become
+  protected, is entered where a public one is.
+  `RendererRegistry->getRendererInstances` went from public to protected in
+  `Breaking-110277`, and it stands in `MethodCallMatcher.php`. The list above
+  has no row for a protected method because none is needed, and that absence
+  says nothing about whether an entry is owed.
 - An entry is keyed by the fully qualified name with `->` or `::` and carries
   `restFiles`, naming the changelog file that removed it. The method matchers
   add `numberOfMandatoryArguments` and `maximumNumberOfArguments`. A member

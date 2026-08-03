@@ -558,3 +558,83 @@ The third **Wrong if** is the one this bears on, from the other side. A closed
 strength left nothing to point at; this entry has now been cited by five
 judgements and read as the reason to check a clause that a boundary reading
 would have closed unread.
+
+## Confirmed on 2026-08-03
+
+The **Since then** says a quotation is evidence about the file rather than about
+the session, and the section above says a strength's quotation dates a file
+without verifying it. Both assume there is a sentence to check.
+`feedback/2026-08-03-144316` is the first strength that praises an **absence**,
+and an absence dates nothing.
+
+It is the fullest strength in the corpus — five behaviours of a core patch
+review of `9f6c6eb9093` (#110359), each with the finding it produced, from
+`/home/benji/projects/typo3-cms`. Four of the five reproduce in its own words,
+re-run on 2026-08-03 through this package from that directory:
+
+- `typo3_forge_lookup` on 110359 answers `Under Review`, target version 15.0,
+  a `## Reported` heading with nothing under it, and the one automated Gerrit
+  note. The empty description is still rendered as an empty description.
+- `typo3_gerrit_lookup` answers in both directions and names the query it ran,
+  `message:110359` and `change:Id53f1068d…`. The issue direction returns exactly
+  one change, so no part 3 has been pushed.
+- `typo3_changelog_lookup` with the bare query `ResourceFactory` and no filters
+  returns all four entries, `Feature-72904` and `Important-107735` among them —
+  the precedent and the counter-direction the session built its placement
+  finding out of.
+- `typo3_test_run_guide` with the seven changed paths and `targetVersion 15.0`
+  narrows to php and fluid, returns all nine suites rather than the narrowed
+  ones, and carries the `cglGit` worktree caveat unprompted.
+
+The fifth is refused, and the judgement of it is
+[`D-ANS-035`](../answers/ans-035-the-matcher-entry-is-owed-to-what-the-changelog-tag-claims.md).
+The five matcher rows were read as closed over visibilities, which produced a
+finding telling a core reviewer that a matcher cannot exist for a removed
+protected method. It can, and the core enters one.
+
+**An absence is not evidence, and a strength that praises one is the report to
+check hardest.** A quoted sentence is a claim somebody wrote, so a re-run can
+put it beside the file and see whether it still stands. An absence is a claim
+about a boundary nobody drew: the reader supplies both the set the list is
+closed over and the conclusion, and neither is in the file. So the check is not
+whether the words are still there — they were, verbatim, at 100% — but whether
+the enumeration is exhaustive over the axis the praise reads into it. Only the
+domain answers that, which is why this one needed `.checkouts/main` and the
+earlier keep-requests did not.
+
+The order the **Since then** sets is unchanged and gains a rung: read what the
+praise quotes, then what the praise implies, then what it praises the file for
+**not** saying. A keep-request for an omission is a request to freeze a reading,
+and the reading is the part nobody wrote down.
+
+Two things were found that the strength does not report, and both are queued
+rather than closed, because both touch `src/`.
+
+The first is in its own item 2. The session credits the Change-Id lookup with
+establishing that it was "reading the same patch set that exists on the server",
+and that fact is in neither half of the answer. Re-run with `data`, the change
+carries `number`, `subject`, `status`, `branch`, `project`, `updated` and `url`
+— no revision, no patch-set number, no commit hash. The number it reports,
+patch set 1, is in the automated Forge note the *other* call returned. That is
+the fourth corpus in which a strength misplaces its credit. It is the first
+where what is credited is a question the tool cannot answer as it stands:
+whether the checkout is the revision under review. The card carries it.
+
+The second is this file. Its observation is exactly 4000 characters and ends
+`the shape that made this work: the skill fixed the or` — cut mid-word by
+`Channel::MAX_FIELD_LENGTH`, with no marker and nothing in the tool's answer
+saying so. What went with it is the one sentence naming the shape the session
+credits, which is the boundary half this entry exists to read. One field in 235
+recorded feedback sits on that cap, so it is rare and it is undetectable. The
+same class marks a redaction `[redacted: ...]` and says out loud that a report
+which was altered has to say so, and `title()` three lines above ends its own
+cut in `...`. Only `text()` is silent.
+
+The feedback is trimmed to the patch-set half and stays open behind its card,
+which is rewritten from the judging card and titled after the work. The
+truncation is a card of its own against `feedback/`.
+
+The third **Wrong if** is answered again rather than tested: this run left a
+guard, `KnowledgeTest::theMatcherListSaysWhatItsMissingRowsDoNotMean`, on prose
+whose value the reporting session located precisely in it having no such
+sentence.

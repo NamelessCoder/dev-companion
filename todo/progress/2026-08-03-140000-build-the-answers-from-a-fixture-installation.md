@@ -1,41 +1,50 @@
 # Build the installation answers from a fixture
 
 **Serves:** documentation/clients/tools/
-**Priority:** high
+**Priority:** normal
 **Branch:** todo/build-the-answers-from-a-fixture-installation
 **Claimed:** 2026-08-03
+**Waiting on:** may the tool pages be built against a second fixture standing in
+    for the core checkout, when `typo3_component_lookup` then answers from the
+    bundled catalog rather than from an installed backend? Three answers below,
+    and the reading behind them is here.
 
-Nine tools declare `answeredBy`, and their pages can only be written on a
-machine that has a booted TYPO3: `typo3_label_lookup`,
-`typo3_fluid_namespace_list`, `typo3_configuration_lookup`,
-`typo3_schema_lookup`, `typo3_backend_module_lookup`, `typo3_icon_lookup`,
-`typo3_changelog_lookup`, `typo3_project_scope`, `typo3_extension_scope`. That
-is why three of them show no such answer today.
+Half of it is done. `Upkeep\Fixture` writes a Composer project below
+`.fixtures/` whose console answers and whose container boots full, and
+`tools:record` records the installation-backed tools against it rather than
+against the made `E-SITE`. All nine carry a second answer now, on every machine,
+the three that had none included. `D-DOC-012` has what that cost per page, what
+it bought, and what it gave up — the `E-SITE` reached its console through
+`ddev exec` and nothing exercises that transport any more.
+`todo/open/2026-08-03-120000-record-the-tool-answers-again-with-an-e-site.md`
+asked for those three pages and is answered by this; it is another session's
+file, so it was left where it is.
 
-A page documents the endpoint and the states it answers in, not what one machine
-returned on one day. So the answer under a state may be produced rather than
-recorded, and `tests/Support/FakeInstallation.php` is the proof it can be: it
-writes a `vendor/autoload.php` that the real probe really boots into, really
-returning icons, TCA and content elements. What it does not yet cover is the
-console — `typo3_label_lookup` runs `language:domain:search` through
-`Typo3Cli::run` — and everything goes through `Typo3Cli::execute`, which is one
-seam.
+What is left is the sentence this todo opened with: `tools:check` holding the
+whole page rather than its upper half. It does not follow from the fixture, and
+what the reading found is why.
 
-The step: lift the fake out of `tests/Support/` into an installation this
-repository writes, shaped per state rather than after a real site, and let the
-pages be built against it. Then `tools:check` holds the whole page instead of
-its upper half, the docs build with no DDEV and no network, and
-`bin/cli tools:record` is left with the three tools that reach outside
-(`D-DOC-008`).
+- Every page carries the primary root's answers, and that root is a core
+  checkout below `.checkouts/` — fetched over the network, absent in CI. Nothing
+  below `## Answered` is derivable anywhere until the primary root is too, so
+  this is one fixture more rather than a check over the one that exists.
+- Two of the tools that turn on it need only that `Knowledge\Scope` reads the
+  installation as `core-checkout`, which a fixture supplies by declaring
+  `"type": "typo3-cms-core"`: `typo3_test_run_guide` and `typo3_script_lookup`
+  are otherwise answered from `knowledge/`.
+- `typo3_component_lookup` is the one that does not.
+  `Knowledge\Catalog\InstalledComponents` derives every class and custom
+  property name from the installed `EXT:backend`'s `backend.css` and takes the
+  styleguide's markup where that package is installed. A written stylesheet puts
+  a fabricated class list on the page; no stylesheet at all falls back to the
+  bundled catalog, which is the answer a caller with no installation gets.
+- The three that reach outside stay recorded whichever way it goes —
+  `D-DOC-008`.
 
-Settle before writing it:
-
-- Where the fixture lives, and whether it is committed or built by a command the
-  way `.checkouts/` is.
-- What a state is, and where it is declared. `Upkeep\ToolCalls` already keys
-  every call by one — "rules: hit", "labels: miss" — so the table may already be
-  the list, or the list may belong beside the tool.
-- Whether an answer produced from a fixture may sit under the same heading as
-  one recorded from a real installation, or whether the page has to say which of
-  the two a reader is looking at. It has to say it: a fixture answer is true of
-  the fixture, and `D-DOC-006` is why that distinction is not decoration.
+The three answers, so the question is a choice rather than an opening: a second
+fixture shaped as a core checkout, and `typo3_component_lookup` loses what an
+installed backend shows; the primary root stays a real checkout, and
+`tools:check` goes on holding the derived half alone; or the answered half is
+checked for the nine installation-backed tools only, which splits one
+`## Answered` section into a checked part and an unchecked one and runs against
+the line `D-DOC-007` drew between the two halves of a page.

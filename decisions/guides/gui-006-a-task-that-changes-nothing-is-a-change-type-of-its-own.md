@@ -68,3 +68,25 @@ kinds of change as well, so a review fell through to the patch checklist.
 ## Covered by
 
 - `HintsTest::aTaskThatChangesNothingIsNotAnsweredWithAPatchChecklist`
+
+## Since then
+
+The statement holds and the enum turned out to be one value short of it. A task
+that changes nothing is not only a review: `feedback/2026-08-03-154508` booted a
+Composer project from a fresh clone — start the environment, import a database
+and files, build the assets, create a backend user — and had no value to state.
+`audit` asks for a review brief, so `unknown` was the honest choice, and
+`unknown` is this skeleton.
+
+Re-run on 2026-08-03 in this repository, the reported call still comes back with
+"Confirm the target TYPO3 core branch and issue context", "Keep the patch
+focused on the stated task", "Add or update the narrowest useful test coverage"
+and the commit-message step. Which is the same three items this entry was
+decided on, reached from the other side: not a review that fell through, but
+work that operates an installation and has no type at all.
+
+[`D-GUI-008`](gui-008-operating-an-installation-is-a-change-type-of-its-own.md)
+is where that lands. It takes the mechanism this entry established — a value on
+the enum and an intent of the same word, because the type is fed to the intent
+matcher — and it keeps the skeletons apart rather than sharing the review's:
+"report what the review did not reach" is a step a boot does not take either.

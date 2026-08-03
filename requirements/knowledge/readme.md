@@ -65,6 +65,8 @@ when it is added.
 - [`R-KNW-055`][R-KNW-055] — A rendered-output change is told where the expectations hide · held
 - [`R-KNW-056`][R-KNW-056] — The placement answer names the document root as a place a script may not go · held
 - [`R-KNW-057`][R-KNW-057] — The push a session cannot take back is answered in full · held
+- [`R-KNW-058`][R-KNW-058] — The placement answer says which page may hold the record · held
+- [`R-KNW-059`][R-KNW-059] — A change is told which cache group holds its old output · held
 
 [R-KNW-001]: knw-001-upgrade-wizards-and-dataprocessors-have-hints-of-their-own.md
 [R-KNW-002]: knw-002-a-hint-carries-the-words-its-subject-is-asked-about-in.md
@@ -123,3 +125,5 @@ when it is added.
 [R-KNW-055]: knw-055-a-rendered-output-change-is-told-where-the-expectations-hide.md
 [R-KNW-056]: knw-056-the-placement-answer-names-the-document-root-as-a-place-a-script-may-not-go.md
 [R-KNW-057]: knw-057-the-push-a-session-cannot-take-back-is-answered-in-full.md
+[R-KNW-058]: knw-058-the-placement-answer-says-which-page-may-hold-the-record.md
+[R-KNW-059]: knw-059-a-change-is-told-which-cache-group-holds-its-old-output.md

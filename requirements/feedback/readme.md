@@ -20,6 +20,7 @@ when it is added.
 - [`R-FBK-011`][R-FBK-011] — A recorded feedback carries no secret out of the installation · held
 - [`R-FBK-012`][R-FBK-012] — A debrief reports the window the session could see · not guarded
 - [`R-FBK-013`][R-FBK-013] — A recorded name keeps the spelling it was given in · held
+- [`R-FBK-014`][R-FBK-014] — A judgement takes the card it replaced with it · held
 
 [R-FBK-001]: fbk-001-a-feedback-is-about-as-many-tools-as-it-is-about.md
 [R-FBK-002]: fbk-002-a-feedback-that-was-worked-off-stays-answerable-for.md
@@ -34,3 +35,4 @@ when it is added.
 [R-FBK-011]: fbk-011-a-recorded-feedback-carries-no-secret-out-of-the-installation.md
 [R-FBK-012]: fbk-012-a-debrief-reports-the-window-the-session-could-see.md
 [R-FBK-013]: fbk-013-a-recorded-name-keeps-the-spelling-it-was-given-in.md
+[R-FBK-014]: fbk-014-a-judgement-takes-the-card-it-replaced-with-it.md

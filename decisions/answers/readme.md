@@ -15,6 +15,8 @@ one is added.
 - [`D-ANS-038`][D-ANS-038] — The tracker is searched by words as well as read by number · 2026-08-03
 - [`D-ANS-039`][D-ANS-039] — The Extbase fork is delivered by the content-element intent, and it forks on the request rather than on the category · 2026-08-03
 - [`D-ANS-040`][D-ANS-040] — A boundary guard is asked with a query that clears the coverage floor · 2026-08-03
+- [`D-ANS-041`][D-ANS-041] — The changelog title is read where the file names carry nothing · 2026-08-03
+- [`D-ANS-042`][D-ANS-042] — An identifier reaches the changelog entries whose body names it · 2026-08-03
 - [`D-ANS-005`][D-ANS-005] — A question that is not supported here is answered in a shape of its own · 2026-08-02
 - [`D-ANS-006`][D-ANS-006] — An identifier is found however it is spelled · 2026-08-02
 - [`D-ANS-007`][D-ANS-007] — Two shapes for "not answered", one word for why · 2026-08-02
@@ -52,6 +54,8 @@ one is added.
 [D-ANS-038]: ans-038-the-tracker-is-searched-by-words-as-well-as-read-by-number.md
 [D-ANS-039]: ans-039-the-extbase-fork-is-delivered-by-the-task-intent-and-forks-on-the-request.md
 [D-ANS-040]: ans-040-a-boundary-guard-is-asked-with-a-query-that-clears-the-floor.md
+[D-ANS-041]: ans-041-the-changelog-title-is-read-where-the-file-names-carry-nothing.md
+[D-ANS-042]: ans-042-an-identifier-reaches-the-changelog-entries-whose-body-names-it.md
 [D-ANS-005]: ans-005-an-unmet-precondition-is-answered-not-raised.md
 [D-ANS-006]: ans-006-an-identifier-is-found-however-it-is-spelled.md
 [D-ANS-007]: ans-007-two-shapes-for-not-answered-and-one-word-for-why.md

@@ -39,10 +39,10 @@ one is added.
 - [`D-KNW-020`][D-KNW-020] — What a preview template is handed is stated on both majors, and a field resolves by its TCA type · 2026-08-02
 - [`D-KNW-021`][D-KNW-021] — A Fluid preview template replaces the content half, and the corpus names what is drawn around it · 2026-08-02
 - [`D-KNW-022`][D-KNW-022] — The corpus states how long a per-class test database lives · 2026-08-02
-- [`D-KNW-023`][D-KNW-023] — Which page may hold a record is a gap this server owns · 2026-08-02
+- [`D-KNW-023`][D-KNW-023] — Which page may hold a record is a gap this server owns · 2026-08-02 · confirmed
 - [`D-KNW-024`][D-KNW-024] — The Fluid namespace prefix is what a template question is written in · 2026-08-02
 - [`D-KNW-026`][D-KNW-026] — Where a one-off script may not be written is a gap this server owns · 2026-08-02
-- [`D-KNW-027`][D-KNW-027] — Which caches a change invalidates is a gap this server owns · 2026-08-02
+- [`D-KNW-027`][D-KNW-027] — Which caches a change invalidates is a gap this server owns · 2026-08-02 · confirmed
 - [`D-KNW-028`][D-KNW-028] — How a file becomes a processed one is a gap this server owns · 2026-08-02
 - [`D-KNW-004`][D-KNW-004] — Package knowledge needs a producer before it needs discovery · 2026-07-30
 

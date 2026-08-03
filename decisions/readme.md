@@ -64,6 +64,8 @@ and not a defect.
 - [`D-ANS-038`][D-ANS-038] — The tracker is searched by words as well as read by number · 2026-08-03
 - [`D-ANS-039`][D-ANS-039] — The Extbase fork is delivered by the content-element intent, and it forks on the request rather than on the category · 2026-08-03
 - [`D-ANS-040`][D-ANS-040] — A boundary guard is asked with a query that clears the coverage floor · 2026-08-03
+- [`D-ANS-041`][D-ANS-041] — The changelog title is read where the file names carry nothing · 2026-08-03
+- [`D-ANS-042`][D-ANS-042] — An identifier reaches the changelog entries whose body names it · 2026-08-03
 - [`D-COD-004`][D-COD-004] — What leaves this process goes through one seam · 2026-08-03
 - [`D-DOC-009`][D-DOC-009] — Prose names what counts rather than the count · 2026-08-03
 - [`D-DOC-010`][D-DOC-010] — `targetVersion` opens with one sentence and diverges after it · 2026-08-03
@@ -171,10 +173,10 @@ and not a defect.
 - [`D-KNW-020`][D-KNW-020] — What a preview template is handed is stated on both majors, and a field resolves by its TCA type · 2026-08-02
 - [`D-KNW-021`][D-KNW-021] — A Fluid preview template replaces the content half, and the corpus names what is drawn around it · 2026-08-02
 - [`D-KNW-022`][D-KNW-022] — The corpus states how long a per-class test database lives · 2026-08-02
-- [`D-KNW-023`][D-KNW-023] — Which page may hold a record is a gap this server owns · 2026-08-02
+- [`D-KNW-023`][D-KNW-023] — Which page may hold a record is a gap this server owns · 2026-08-02 · confirmed
 - [`D-KNW-024`][D-KNW-024] — The Fluid namespace prefix is what a template question is written in · 2026-08-02
 - [`D-KNW-026`][D-KNW-026] — Where a one-off script may not be written is a gap this server owns · 2026-08-02
-- [`D-KNW-027`][D-KNW-027] — Which caches a change invalidates is a gap this server owns · 2026-08-02
+- [`D-KNW-027`][D-KNW-027] — Which caches a change invalidates is a gap this server owns · 2026-08-02 · confirmed
 - [`D-KNW-028`][D-KNW-028] — How a file becomes a processed one is a gap this server owns · 2026-08-02
 - [`D-SCO-009`][D-SCO-009] — The brief is one brief, and names the paths a step is not for · 2026-08-02
 - [`D-SKL-002`][D-SKL-002] — A focused audit narrows what is assessed, not the list it closes on · 2026-08-02
@@ -228,6 +230,8 @@ and not a defect.
 [D-ANS-038]: answers/ans-038-the-tracker-is-searched-by-words-as-well-as-read-by-number.md
 [D-ANS-039]: answers/ans-039-the-extbase-fork-is-delivered-by-the-task-intent-and-forks-on-the-request.md
 [D-ANS-040]: answers/ans-040-a-boundary-guard-is-asked-with-a-query-that-clears-the-floor.md
+[D-ANS-041]: answers/ans-041-the-changelog-title-is-read-where-the-file-names-carry-nothing.md
+[D-ANS-042]: answers/ans-042-an-identifier-reaches-the-changelog-entries-whose-body-names-it.md
 [D-COD-004]: code/cod-004-what-leaves-this-process-goes-through-one-seam.md
 [D-DOC-009]: documentation/doc-009-prose-names-what-counts-rather-than-the-count.md
 [D-DOC-010]: documentation/doc-010-targetversion-opens-with-one-sentence-and-diverges-after-it.md

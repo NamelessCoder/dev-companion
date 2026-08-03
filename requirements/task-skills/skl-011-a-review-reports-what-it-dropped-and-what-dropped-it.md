@@ -22,6 +22,13 @@ made on the strength of a comment, a docblock or an annotation without reading
 the implementation it describes, and one made because a path looks unlikely
 rather than because it is impossible.
 
+It holds over both reviews this server owns — the core patch review and the
+conformance audit — because what makes a dismissal expensive is the reader who
+pays for it rather than the surface it was made on. What the audit adds is one
+boundary: a subsystem the package does not ship is answered on the coverage list
+as not applicable and is not a dropped candidate, so the list holds what was
+entertained as a defect and then was not one.
+
 ## From
 
 The second recorded `REVIEW-03` run did this once, unprompted, and it is the
@@ -36,6 +43,20 @@ The conformance checklist stated the bar for a security verdict alone — it "ha
 to be disproved before it can be dismissed" — and the reason under it is about
 who pays for a wrong dismissal rather than about security. `D-SKL-007` records
 where the general form was read and what was rejected with it.
+
+Whether an audit can carry the same demand was measured on the two recorded
+conformance runs rather than argued from the size of the surface (2026-08-03).
+Both write dismissals into the answer already, four each, and neither was asked
+for one: `REVIEW-01` discounts the Content Security Policy and RTE-sanitizer
+settings as core defaults rather than project regressions, places the consent
+checkbox outside what this server answers, and clears the dotless translation
+domain against `LocalizationUtility:66`; `REVIEW-02` leaves the `ext_tables.sql`
+delta-only rule unraised for want of a schema-analyzer comparison, keeps the
+`event.listener` and `console.command` YAML tags and the
+`getMajorVersion() < 13` branch as required by the declared range, and reads
+`provider` and `source` among the returned icon identifiers as an artifact of
+the tool. Four is a section a reader sits through, and the first of
+`REVIEW-02`'s is already the open case written in the shape this asks for.
 
 ## Held by
 

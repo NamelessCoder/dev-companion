@@ -373,6 +373,40 @@ final class SkillTest extends TestCase
             'what was raised while reading and dropped, with what dropped it',
             $skill,
         );
+
+        // The audit is held to it too, measured rather than assumed: the two
+        // recorded conformance runs write four dismissals each into the answer
+        // with nothing asking for them, which is a section a reader sits
+        // through and not the flood the narrower scope was written against.
+        $audit = (string) preg_replace('/\s+/', ' ', (string) file_get_contents(
+            Paths::root() . '/skills/typo3-extension-conformance/references/checklist.md',
+        ));
+
+        self::assertStringContainsString('## What a dropped candidate owes', $audit);
+        self::assertStringContainsString('dropping is the step nothing records', $audit);
+        self::assertStringContainsString('dropped only where something concretely disproves it', $audit);
+        self::assertStringContainsString('neither established nor disproved is reported as open', $audit);
+        self::assertStringContainsString('read the implementation it describes', $audit);
+        self::assertStringContainsString('Unlikely is not disproved', $audit);
+        // What the audit adds and the patch review has no use for: six surfaces
+        // enumerated whole mean most of them are absent in any one package, and
+        // an absence already answered as not applicable would fill this section
+        // with subsystems nobody entertained.
+        self::assertStringContainsString(
+            'A subsystem the package does not ship never enters this list',
+            $audit,
+        );
+        // The bar came into the checklist for a security verdict alone, and what
+        // makes it a bar is who pays for a wrong dismissal.
+        self::assertStringContainsString('the bar is not that subject\'s', $audit);
+
+        $auditSkill = (string) preg_replace('/\s+/', ' ', (string) file_get_contents(
+            Paths::root() . '/skills/typo3-extension-conformance/SKILL.md',
+        ));
+        self::assertStringContainsString(
+            'what was raised while reading and dropped, with what dropped it',
+            $auditSkill,
+        );
     }
 
     #[Test]

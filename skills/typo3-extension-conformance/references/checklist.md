@@ -119,3 +119,38 @@ test settle it. Otherwise report the finding as unverified and say which class
 went unread. A security verdict is the expensive kind to get wrong: it has to be
 disproved before it can be dismissed, which costs the maintainer exactly the
 reading the review skipped.
+
+## What a dropped candidate owes
+
+An audit drops more than it reports, and dropping is the step nothing records.
+Each candidate raised while reading and then let go is named with what let it go
+— the setting that turned out to be the core default, the guard that turned out
+to be there, the rule that turned out not to govern this package, the class that
+was actually read. One sentence each, beside the findings.
+
+A subsystem the package does not ship never enters this list. It is answered on
+the coverage list as not applicable and costs the line it costs there; what
+belongs here is what was entertained as a defect and then was not one.
+
+The two directions are not held to the same bar. Raising a candidate costs a
+reading; dropping one costs the maintainer a finding, silently, and nothing
+afterwards says it happened. So a candidate is dropped only where something
+concretely disproves it, and one that can be neither established nor disproved
+is reported as open, with the reading that would settle it named beside it —
+which is the finding gate's question rather than violation, read from the other
+side.
+
+Two dismissals go wrong reliably:
+
+- Dropped because a comment, a docblock or an annotation says the code behaves
+  that way. That is a sentence somebody wrote, not the behaviour — read the
+  implementation it describes, and where the two disagree the disagreement is
+  the finding.
+- Dropped because it looks unlikely to happen. Unlikely is not disproved. What
+  disproves a path is what makes it impossible: a guard that cannot be passed or
+  a caller that cannot exist, at a line.
+
+The gate above states this bar for a security verdict, which is where it is
+steepest, and the bar is not that subject's: what makes a dismissal expensive is
+that its cost falls on the maintainer rather than on the audit, and it does that
+on every surface here.

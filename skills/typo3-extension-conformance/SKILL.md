@@ -94,6 +94,12 @@ Order findings by severity and include:
 4. the consequence;
 5. a scoped remediation and relevant project check.
 
+Beside them, report what was raised while reading and dropped, with what dropped
+it. A candidate let go in silence and a surface nobody opened leave the same
+trace in the report, and the checklist's *What a dropped candidate owes* is the
+bar each one is held to — including the one that could be neither established
+nor disproved, which is reported as open rather than dropped.
+
 For a requested audit, stop after findings unless fixes were also requested.
 Stopping at findings is not stopping at reading: the commands
 `typo3_project_scope` marks as checks hand the code back as it was, and an audit

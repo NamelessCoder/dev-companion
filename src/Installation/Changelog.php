@@ -22,8 +22,11 @@ use Symfony\Component\Finder\Finder;
  *
  * The scan reads file names, not files: the type, the issue number and a
  * spelling of the title are all in the name, and only what a query matched is
- * opened. `titled()` is the exception and opens them all, for the search that
- * the names answered nothing at all for — `D-ANS-041`.
+ * opened. Two things the names do not carry are read out of the files
+ * themselves, and both only where the names reached nothing at all — the title
+ * as it is stated, by `titled()`, and the identifiers a removed method is asked
+ * for by, by `identifiers()`. `D-ANS-041` holds the first and `D-ANS-042` the
+ * second.
  */
 final class Changelog
 {
@@ -154,6 +157,39 @@ final class Changelog
         }
 
         return ['title' => $title, 'tags' => $tags, 'removal' => self::removal($contents, $entry)];
+    }
+
+    /**
+     * The identifiers an entry names, as its body spells them.
+     *
+     * A caller after a removed method types the method name, and the name is in
+     * the body rather than in the file name. Every inline literal is read
+     * whatever markup it is written in: the `:php:` role postdates 9.0, and the
+     * three entries naming `getTemporaryImageWithText` write it in two spellings
+     * between them.
+     *
+     * Only a word carrying a hump or an underscore is one, which is what keeps
+     * the index free of the words a query is made of. `Request`, `Event` and
+     * `File` are class names spelled exactly like what a caller means by them,
+     * and a term is compared to this index whole — `D-ANS-042`.
+     *
+     * @param array{file: string} $entry
+     * @return array<int, string>
+     */
+    public static function identifiers(array $entry): array
+    {
+        preg_match_all('/``[^`]+``|`[^`]+`/', (string) file_get_contents($entry['file']), $literals);
+        $names = [];
+        foreach ($literals[0] as $literal) {
+            preg_match_all('/[A-Za-z_][A-Za-z0-9_]{2,}/', $literal, $words);
+            foreach ($words[0] as $word) {
+                if (preg_match('/[a-z][A-Z]|[A-Z][A-Z][a-z]|_/', $word) === 1) {
+                    $names[$word] = true;
+                }
+            }
+        }
+
+        return array_keys($names);
     }
 
     /**

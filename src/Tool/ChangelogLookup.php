@@ -47,7 +47,7 @@ final class ChangelogLookup extends ReadOnlyTool
 
     public static function description(): string
     {
-        return 'Search the TYPO3 changelog of the installation you are working in: one entry per breaking change, deprecation, feature and important note, in the version it was released in. Answers "what did this version deprecate", "what changed about X", "which release introduced Y". This is the first stop when building on a major you have not built on recently: what separates a current answer from a two-major-old one is written down here and almost nowhere else. A deprecation carries the version it stops working in where the entry states one, and the rule that answers the rest beside it. Read from the core package on disk, so it covers exactly the versions that installation ships and grows with a Composer update. Every word of the query has to be carried by an entry; narrow further with type and version.';
+        return 'Search the TYPO3 changelog of the installation you are working in: one entry per breaking change, deprecation, feature and important note, in the version it was released in. Answers "what did this version deprecate", "what changed about X", "which release introduced Y". This is the first stop when building on a major you have not built on recently: what separates a current answer from a two-major-old one is written down here and almost nowhere else. A deprecation carries the version it stops working in where the entry states one, and the rule that answers the rest beside it. Read from the core package on disk, so it covers exactly the versions that installation ships and grows with a Composer update. Every word of the query has to be carried by an entry; narrow further with type and version. A method or class you found in the code is a query of its own: an identifier reaches the entries naming it, whether or not the change was titled after it.';
     }
 
     public static function inputSchema(): array
@@ -55,7 +55,7 @@ final class ChangelogLookup extends ReadOnlyTool
         return [
             'type' => 'object',
             'properties' => [
-                'query' => ['type' => 'string', 'description' => 'Words the entry has to carry, matched against its file name and the words that name spells, and against the title stated inside the file where no entry carries all of them by name — which is what reaches a method name the file name leaves out. When nothing carries all of them there either, the answer names the largest part of the query that does reach entries, which is what to ask again with. Omit to list a version or a type as a whole.'],
+                'query' => ['type' => 'string', 'description' => 'Words the entry has to carry, matched against its file name and the words that name spells. Where no entry carries all of them by name, the title stated inside the file is searched as well, which reaches a method name the file name leaves out; and a class, method or constant name reaches the entries that write it in their text, so a removed API can be asked for by the identifier you have, in any spelling of it: bare, qualified by its class, or fully qualified. When nothing carries all of them there either, the answer names the largest part of the query that does reach entries, which is what to ask again with. Omit to list a version or a type as a whole.'],
                 'type' => ['type' => 'string', 'enum' => ['breaking', 'deprecation', 'feature', 'important'], 'description' => 'Restrict to one kind of change. Breaking and deprecation are what affects existing code.'],
                 'version' => ['type' => 'string', 'description' => 'Restrict to a version, by prefix: "14" covers 14.0 through 14.3.x, "13.4" covers 13.4 and 13.4.x.'],
                 'tag' => ['type' => 'string', 'description' => 'Restrict to entries carrying this index tag: "ext:form" for the system extension a change is in, "FullyScanned" or "NotScanned" for what the Extension Scanner has a matcher for, "PHP-API", "TCA", "Backend", "Frontend" for the surface. This is what a sweep is bounded by where words are not: every entry of a version and type is read for its tags. The changelog says nothing about which third-party extension a change affects, so an extension key of your own matches no tag.'],
@@ -69,6 +69,7 @@ final class ChangelogLookup extends ReadOnlyTool
         return Schema::installationAnswer([
             'query' => Schema::string(),
             'matchCount' => Schema::integer('Entries carrying every word of the query and the tag, before the limit.'),
+            'matchedIn' => Schema::string('Where the query was carried: "name" for the entry names, "body" where no name carried it and the inside of the file did — the title as it is stated, or an identifier the text writes. A body match can name the identifier without being about it, so read the title of each. Returned where the answer carries entries.'),
             'tags' => Schema::listOf(Schema::string(), 'Every index tag the entries of this version and type carry, with the ones already filtered by among them. Returned where a tag was asked for, so a tag that matched nothing can be replaced by one that exists.'),
             'entries' => Schema::listOf(Schema::object([
                 'type' => ['type' => 'string', 'enum' => ['Breaking', 'Deprecation', 'Feature', 'Important']],
@@ -104,15 +105,27 @@ final class ChangelogLookup extends ReadOnlyTool
         $narrowed = Changelog::entries($type, $version);
         $matching = LabelSearch::carryingEvery($narrowed, $terms);
 
-        // Opening every file for the title inside it costs an order of
-        // magnitude more than scanning the names, so the title is what an empty
-        // answer falls back to rather than what the scan runs over: nothing is
-        // paid where the names answer, and where they answer nothing there is
-        // no answer to slow down — `D-ANS-041`. The counts a miss prints are
-        // taken over the same titled entries, so they say what was searched.
+        // The names answer first and the file only where they answered nothing,
+        // so a call that hits today pays no read and nothing that matches today
+        // stops matching. Opening every file costs an order of magnitude more
+        // than scanning the names, and where the names answer nothing there is
+        // no answer to slow down — `D-ANS-041`, and `D-ANS-042` for what the
+        // same read takes out of the body.
+        //
+        // Two things are taken out of that one read, because the file is open
+        // either way: the title as it is stated, which the name spells
+        // differently, and the identifiers the body writes, which the name
+        // leaves out. The counts and subsets a miss prints run over the same
+        // enriched entries, so they say what was actually searched.
+        $read = false;
         if ($matching === [] && $terms !== []) {
-            $narrowed = Changelog::titled($narrowed);
+            $narrowed = array_map(
+                static fn(array $entry): array => $entry
+                    + ['identifiers' => implode(' ', Changelog::identifiers($entry))],
+                Changelog::titled($narrowed),
+            );
             $matching = LabelSearch::carryingEvery($narrowed, $terms);
+            $read = $matching !== [];
         }
 
         // The tags are inside the file, so narrowing by one costs a read of
@@ -256,6 +269,11 @@ final class ChangelogLookup extends ReadOnlyTool
             $query === '' ? '' : sprintf(' carrying %s', LabelSearch::quoted($terms)),
             count($matching) > count($entries) ? sprintf(' — showing the first %d', count($entries)) : '',
         )];
+        if ($read) {
+            $lines[] = 'No entry is named after that, so these are the ones carrying it inside the file — in the '
+                . 'title as it is stated, or as an identifier their text writes. Naming it is not the same as '
+                . 'being about it: the title says what each one changed.';
+        }
         if ($tag !== '') {
             $lines[0] = sprintf(
                 '%d of the %d entries narrowed by version and type are tagged "%s"%s:',
@@ -284,6 +302,7 @@ final class ChangelogLookup extends ReadOnlyTool
         $data = [
             'query' => $query,
             'matchCount' => count($matching),
+            'matchedIn' => $read ? 'body' : 'name',
             'tags' => array_keys($tags),
             'entries' => $entries,
             'versions' => $versions,

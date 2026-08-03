@@ -81,6 +81,10 @@ final class LabelSearch
      * underscore is a word character, so anchoring would drop exactly the ids a
      * caller searches by.
      *
+     * An item may carry an `identifiers` field as well — the names its own text
+     * writes, which a term reaches whole rather than as a substring. That is the
+     * second way of carrying a term, and an item without the field has one.
+     *
      * @param array<int, array<string, string>> $items
      * @param array<int, string> $terms
      * @return array<int, array<string, string>>
@@ -93,8 +97,9 @@ final class LabelSearch
 
         return array_values(array_filter($items, static function (array $item) use ($terms): bool {
             $haystack = self::haystack($item);
+            $identifiers = mb_strtolower($item['identifiers'] ?? '');
             foreach ($terms as $term) {
-                if (!self::carries($haystack, $term)) {
+                if (!self::carries($haystack, $term) && !self::names($identifiers, $term)) {
                     return false;
                 }
             }
@@ -108,13 +113,38 @@ final class LabelSearch
      *
      * A label carries its trans-unit id and its source text. A changelog entry
      * carries its file name and the words that name spells, and gains the title
-     * inside the file where the names alone reached nothing — `D-ANS-041`.
+     * inside the file where the names alone reached nothing — `D-ANS-041`. What
+     * an entry's body names is not here: an identifier is reached whole, by
+     * `names()`, and a substring match over it is what that rule exists to
+     * refuse.
      *
      * @param array<string, string> $item
      */
     private static function haystack(array $item): string
     {
         return mb_strtolower(($item['key'] ?? '') . ' ' . ($item['source'] ?? '') . ' ' . ($item['title'] ?? ''));
+    }
+
+    /**
+     * Whether one of the identifiers an item names is the one the term asks for.
+     *
+     * Whole and never a substring: the index is what a body writes, and a term
+     * contained in one of its names is how "image" would reach every entry
+     * naming `imageCreateFromFile`. What is compared is the name the term ends
+     * in, because a caller types the identifier at whichever specificity they
+     * have it — bare, qualified by its class, or fully qualified — and the last
+     * segment is the one the query is about.
+     */
+    private static function names(string $identifiers, string $term): bool
+    {
+        if ($identifiers === '') {
+            return false;
+        }
+
+        $qualified = preg_replace('/\(.*$/', '', $term) ?? $term;
+        $segments = preg_split('/\\\\|::|->/', $qualified, -1, PREG_SPLIT_NO_EMPTY) ?: [];
+
+        return $segments !== [] && in_array(end($segments), explode(' ', $identifiers), true);
     }
 
     /**

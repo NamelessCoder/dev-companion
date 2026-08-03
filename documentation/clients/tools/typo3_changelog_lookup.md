@@ -10,7 +10,9 @@ carries the version it stops working in where the entry states one, and the rule
 that answers the rest beside it. Read from the core package on disk, so it
 covers exactly the versions that installation ships and grows with a Composer
 update. Every word of the query has to be carried by an entry; narrow further
-with type and version.
+with type and version. A method or class you found in the code is a query of its
+own: an identifier reaches the entries naming it, whether or not the change was
+titled after it.
 
 `readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: false`
 
@@ -18,11 +20,14 @@ with type and version.
 
 ```yaml
 # Words the entry has to carry, matched against its file name and the words that
-# name spells, and against the title stated inside the file where no entry
-# carries all of them by name — which is what reaches a method name the file
-# name leaves out. When nothing carries all of them there either, the answer
-# names the largest part of the query that does reach entries, which is what to
-# ask again with. Omit to list a version or a type as a whole.
+# name spells. Where no entry carries all of them by name, the title stated
+# inside the file is searched as well, which reaches a method name the file name
+# leaves out; and a class, method or constant name reaches the entries that
+# write it in their text, so a removed API can be asked for by the identifier
+# you have, in any spelling of it: bare, qualified by its class, or fully
+# qualified. When nothing carries all of them there either, the answer names the
+# largest part of the query that does reach entries, which is what to ask again
+# with. Omit to list a version or a type as a whole.
 query: string  # optional
 # One of: breaking, deprecation, feature, important. Restrict to one kind of
 # change. Breaking and deprecation are what affects existing code.
@@ -48,6 +53,12 @@ limit: integer  # optional
 query: string
 # Entries carrying every word of the query and the tag, before the limit.
 matchCount: integer  # optional
+# Where the query was carried: "name" for the entry names, "body" where no name
+# carried it and the inside of the file did — the title as it is stated, or an
+# identifier the text writes. A body match can name the identifier without being
+# about it, so read the title of each. Returned where the answer carries
+# entries.
+matchedIn: string  # optional
 # Every index tag the entries of this version and type carry, with the ones
 # already filtered by among them. Returned where a tag was asked for, so a tag
 # that matched nothing can be replaced by one that exists.

@@ -156,3 +156,37 @@ the falsifier fails for a sharper reason than the queries being question-shaped:
 the ranking was right and the caller was told nothing about it. `D-ANS-021` is
 where that goes, and it is a judgement about wording rather than about
 retrieval.
+
+## Confirmed on 2026-08-03
+
+The runtime half was read a fourth time and did not fire.
+`feedback/2026-08-03-144457` asks for an idiom-precedent lookup: given an
+attribute, a class or a call — `#[Autowire(lazy: true)]`, `SingletonInterface`,
+`#[AsEventListener]` — return the core call sites with their paths and lines,
+read from the installed core package the way `typo3_extension_scope` reads an
+installed extension. What a review buys with it is a proposed alternative that
+carries precedent instead of taste.
+
+The session that asks for it had already finished without it, and its own report
+says the checkout is the honest fallback. Both readings reproduce in
+`.checkouts/main` at `c71b2bdb2f` today, at one grep each:
+`typo3/sysext/backend/Classes/Routing/UriBuilder.php:199` constructs
+`new RequestContext('/typo3/')`, and `#[Autowire(lazy: true)]` stands in the
+three files the feedback names — `core/Classes/Site/Set/SetRegistry.php:43`,
+`form/Classes/EventListener/DataStructureIdentifierListener.php:68` and
+`form/Classes/Domain/Configuration/PersistenceConfigurationService.php:41` —
+five occurrences across them. So the **Wrong if** is tested and answered the
+other way for the second time: the diagnosis completed from the caller's own
+checkout, and the **Decided** bullet holds that a runtime tool starts with the
+session that could not finish without it.
+
+`D-FBK-027` reads the same evidence from the other side. What does not qualify
+is a fact the caller reads once from its own checkout, and a precedent sweep is
+one grep in a tree the reviewer already has open — against the four round trips
+and the challenge page that bought the Forge lookup. The lookup would also have
+to say which core it answers for: a review reads a working tree at a revision,
+and an installed package answers for the release it is pinned to, which is the
+`unavailable`-shaped half of the same entry.
+
+What that session lacked is the sentence saying in advance that this question
+has no home here. That is `D-SKL-004`'s and is queued there.

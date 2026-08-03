@@ -150,3 +150,43 @@ the installed source rather than the installed core. Those packages ship
 have named something an installation does not have — the class and the one it
 inherits from is what is there, and `IfViewHelper` carries the branch contract
 in its docblock, with `<f:then>` explicit in every `f:else` example it gives.
+
+## Since then
+
+A second session reached the same shape from the review side, three minutes
+before the section landed. `feedback/2026-08-03-144457` reviewed core commit
+9f6c6eb9093 and settled three questions by grepping its checkout: whether the
+`/typo3/` URL prefix still exists on `main`, whether `#[Autowire(lazy: true)]`
+is an established core pattern, and whether `LinkService` builds its handlers
+eagerly.
+
+The section reaches the first and the third and not the second. Both of those
+ask what a named class does, which is what "the class that implements the
+behaviour and the one it inherits from" answers, and the first is step 5's
+before it is the section's — the session says so itself: it asked
+`typo3_changelog_lookup` where the base routes "does this still hold in version
+N" to `typo3_documentation_lookup`, and it counts that skip as its own. Whether
+an idiom is established is neither. It is a sweep for call sites, it has no
+class to start at, and a reviewer asks it of every alternative it proposes,
+which is the count that feedback carries.
+
+That boundary is stated, in `knowledge/server-scope.json` — *PHP source as code:
+a method signature, whether a class or member is @internal or public API, an
+implementation to copy* — and only `typo3_server_scope` returns it. The session
+called no scope tool and `typo3-core-patch-review` orders none, so what is left
+of the feedback is step 2 rather than 1a: the sentence exists and does not pass
+where the task does. Queued as `2026-08-03-144457` at `normal`, which is what
+the two placements and the count set; the feedback stays open behind it.
+
+The review skill already carries that sentence one subject over. Its
+changelog-precedent step says the precedent "is still there and the checkout is
+what holds it — `Documentation/Changelog`, which this server does not read and
+you do", and asks the review to say which of the two answered. The code
+precedent is the same sentence with the corpus changed, which is what makes the
+placement a choice between two files rather than a wording nobody has.
+
+The dependency-injection slice of that session is not this card's.
+`knowledge/hints/di.json` carries `#[Autowire]` and not the lazy form, so a hint
+that would have answered the second question is missing — that is 1a, and it is
+reported by the sibling `feedback/2026-08-03-144410`, which is in hand on its
+own branch.

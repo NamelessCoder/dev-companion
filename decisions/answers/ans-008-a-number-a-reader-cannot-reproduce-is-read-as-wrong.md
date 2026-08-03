@@ -72,6 +72,17 @@ checked against the obvious command, disagreeing — and filed as a wrong answer
 
 ## Since then
 
+The first **Wrong if** above has been reached from beside it rather than head on.
+`feedback/2026-08-03-164651`, judged on 2026-08-03, disputes the same section
+again and not a number in it: `Classes/Utility/` is under no recognised kind, so
+it is in no line of the answer, and the caller who ran `find` over `Classes/` got
+three files where the answer accounted for two. The qualifier this entry asked
+for landed and holds; what could not be reproduced this time is the list of
+kinds, which is a property of `Extension::CLASS_KINDS` rather than of any count.
+That is
+[`D-ANS-045`](ans-045-the-classes-section-covers-the-directory-it-names.md), and
+nothing decided here moves.
+
 The question this entry left to the todo is settled: the count stays the deep
 one and both places say so. `Classes/Updates/Criteria/` is under no kind of its
 own, so a top-level count would drop its six files out of the answer rather than

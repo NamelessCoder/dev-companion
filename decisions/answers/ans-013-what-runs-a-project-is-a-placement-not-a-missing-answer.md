@@ -95,3 +95,17 @@ for. This is the entry it said the card would produce.
 - The two readings disagree in a project somebody checks, `.ddev/config.yaml`
   saying one version and `ddev describe` another. `R-PRJ-008` would then be
   demanding the number from the wrong file.
+
+## Since then
+
+The field this produced was read in practice on 2026-08-03, by a session booting
+a Composer project from a fresh clone in `/home/benji/projects/site-demo-typo3-org`
+(`feedback/2026-08-03-154501`). None of the three **Wrong if** fired: the
+interpreter arrived, it was right, and the report credits it. What that session
+went to `.ddev/config.yaml` by hand for was the other thing the file states —
+the hooks that install dependencies on start, update the schema on import and
+create the backend user, and the pull provider that makes the data import
+reproducible. So the placement holds and the field is short rather than wrong,
+which is
+[`D-ANS-044`](ans-044-the-environment-answer-carries-the-lifecycle-it-declares.md)
+and `R-PRJ-009` after it.

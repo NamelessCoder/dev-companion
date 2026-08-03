@@ -60,16 +60,13 @@ tests/             # unit, tool contract, and stdio smoke tests
 vendor/            # Composer dependencies (mcp/sdk); gitignored
 ```
 
-Every class below `src/` sits in the group it belongs to, and a new one that
-fits none of them is a group nobody has named yet rather than a file at the
-root. The four an answer can come from are `Knowledge/`, what this package
-ships; `Installation/`, the TYPO3 the caller is standing in; `Manual/`, which is
-`docs.typo3.org`; and `Contribution/`, the services the core's own process runs
-through. The last two reach outside this process, which is what their tools'
-`openWorldHint` says and what a caller reads before it calls. `Tool/` is what a
-client can call, `Result/` is what it hands back, `Server/` is how it is started
-at all, and `Upkeep/` is not part of the server. Only `Paths` sits loose,
-because it is the one thing the server and the upkeep both stand on.
+Every class below `src/` sits in the group it belongs to, and one that fits none
+of them is a group nobody has named yet rather than a file at the root. An
+answer comes from four of them — `Knowledge/`, `Installation/`, `Manual/` and
+`Contribution/` — and the last two reach outside this process, which is what
+their tools' `openWorldHint` says and what a caller reads before it calls.
+`Paths` sits loose because it is the one thing the server and the upkeep both
+stand on.
 
 Both binaries are the same shape: locate the autoloader, hand the arguments to
 the class that owns them — `Server\Entrypoint`, and `Upkeep\Cli` by way of the
@@ -103,14 +100,13 @@ waits is not a worse outcome than one done on a guess. What comes back goes into
 `todo/` or `decisions/`, because an answer that lives only in the conversation
 ends with it.
 
-Nor in whatever the agent can remember on its own. A client that offers a
-private memory across sessions is not a place this repository keeps anything:
-what was established goes into `todo/`, `requirements/`, `decisions/` or
-`documentation/`, where the next session reads it and a wrong line can be
-corrected. A note only one agent can see is read by nobody else, drifts as the
-checkout moves under it, and is believed anyway because it arrives sounding
-settled — the failure this server exists to answer, turned on the repository
-itself.
+Nor in whatever the agent can remember on its own. A client's private memory is
+not a place this repository keeps anything: what was established goes into
+`todo/`, `requirements/`, `decisions/` or `documentation/`, where the next
+session reads it and a wrong line can be corrected. A note only one agent can
+see drifts as the checkout moves under it and is believed anyway, because it
+arrives sounding settled — the failure this server exists to answer, turned on
+the repository itself.
 
 Keeping [todo/](todo/readme.md) current is part of the work, not a step after
 it. A session that ends with the queue matching what is actually true has handed
@@ -132,11 +128,10 @@ collides:
 
 ## How a session reads
 
-A session is charged one context per call, not one per token. The 82 worktree
-sessions of 2026-08-02 read 718 million cached input tokens back over 5414
-calls, each of which paid for everything before it again, and wrote 5.9 million
-out. The number of calls is the budget; what one of them returns is nearly free
-— `D-FBK-020`.
+A session is charged one context per call, not one per token: the number of
+calls is the budget, and what one of them returns is nearly free. The 82
+worktree sessions of 2026-08-02 read 718 million cached input tokens back over
+5414 calls and wrote 5.9 million out — `D-FBK-020`.
 
 - **Send the calls that do not depend on each other together.** Not one of those
   5414 was issued beside another, and most of what a session reads at the start
@@ -221,11 +216,10 @@ them are machines.
   points, or one that is not yet understood.
 - No count of something that grows. "34 files holding 120 hints" is true on the
   day it is written and wrong on the next commit, and nothing fails when it
-  turns: a reader believes it and a maintainer never sees it. Name the thing and
-  the command that counts it — "one file per subject, which
-  `bin/cli hints:coverage` counts" — or say "and many more". A number belongs
-  where it was measured: a decision records what a sweep found on its date, and
-  a report prints what is true when it runs.
+  turns. Name the thing and the command that counts it — "one file per subject,
+  which `bin/cli hints:coverage` counts" — or say "and many more". A number
+  belongs where it was measured: a decision records what a sweep found on its
+  date, and a report prints what is true when it runs.
 
 `bin/cli prose:check` counts what that costs: the sentences over 30 words, worst
 file first. It fails on one of them — the bold sentence a requirement or a
@@ -408,10 +402,9 @@ What each kind of scenario is for: [scenarios/readme.md](scenarios/readme.md).
 
 ## What describes this server to someone else
 
-Four things describe this server outward, and a change that leaves any of them
-wrong is not finished — it is a change plus a false statement. They ship with
-the code, so a stale one is not a documentation debt, it is a lie the server
-tells its callers.
+Four things describe this server outward, and they ship with the code. A change
+that leaves any of them wrong is not finished: a stale one is not a
+documentation debt, it is a lie the server tells its callers.
 
 - `readme.md` — what the server is and what it will not do. Its opening
   paragraphs are a promise; when a capability changes what the server may touch,

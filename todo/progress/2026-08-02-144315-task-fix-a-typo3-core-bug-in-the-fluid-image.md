@@ -1,7 +1,9 @@
-# Same session: what worked and must not be broken later. typo3_server_scope's explicit boundary — ...
+# Task: fix a TYPO3 core bug in the Fluid image ViewHelpers (Forge #105403) and write the commit me...
 
-**Serves:** feedback/2026-08-01-121852-same-session-what-worked-and-must-not-be-broken.md
+**Serves:** feedback/2026-08-02-144315-task-fix-a-typo3-core-bug-in-the-fluid-image.md
 **Priority:** low
+**Branch:** todo/task-fix-a-typo3-core-bug-in-the-fluid-image
+**Claimed:** 2026-08-03
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

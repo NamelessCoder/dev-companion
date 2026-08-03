@@ -2,6 +2,8 @@
 
 **Serves:** feedback/, decisions/
 **Priority:** normal
+**Branch:** todo/read-the-second-cluster-sideways-as-well
+**Claimed:** 2026-08-03
 
 The reading
 [`D-FBK-025`](../../decisions/feedback/fbk-025-a-judgement-reads-the-corpus-decides-the-shape-and-sets-the-priority.md)

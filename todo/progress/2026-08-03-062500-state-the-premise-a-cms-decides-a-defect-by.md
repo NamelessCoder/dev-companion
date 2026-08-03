@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-02-145043-task-assess-forge-105403-and-fix-it-the-single.md
 **Priority:** normal
+**Branch:** todo/state-the-premise-a-cms-decides-a-defect-by
+**Claimed:** 2026-08-03
 
 A session records why its first assessment of a core bug was wrong: it read the
 report as an API question — is the value passed to `f:image` of the type the

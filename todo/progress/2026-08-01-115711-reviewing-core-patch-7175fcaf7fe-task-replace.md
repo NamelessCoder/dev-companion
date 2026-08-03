@@ -1,7 +1,9 @@
-# Task: fix a TYPO3 core bug in the Fluid image ViewHelpers (Forge #105403) and write the commit me...
+# Reviewing core patch 7175fcaf7fe ("[TASK] Replace GD-based error thumbnails with static SVG place...
 
-**Serves:** feedback/2026-08-02-144315-task-fix-a-typo3-core-bug-in-the-fluid-image.md
+**Serves:** feedback/2026-08-01-115711-reviewing-core-patch-7175fcaf7fe-task-replace.md
 **Priority:** low
+**Branch:** todo/reviewing-core-patch-7175fcaf7fe-task-replace
+**Claimed:** 2026-08-03
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

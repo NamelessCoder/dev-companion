@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-02-144456-recording-what-worked-so-it-is-not-lost-in-a.md
 **Priority:** low
+**Branch:** todo/recording-what-worked-so-it-is-not-lost-in-a
+**Claimed:** 2026-08-03
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

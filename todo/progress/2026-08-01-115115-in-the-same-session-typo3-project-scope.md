@@ -1,7 +1,9 @@
-# Reviewing core patch 7175fcaf7fe ("[TASK] Replace GD-based error thumbnails with static SVG place...
+# In the same session typo3_project_scope correctly identified the checkout as a TYPO3 core (15.0.0...
 
-**Serves:** feedback/2026-08-01-115711-reviewing-core-patch-7175fcaf7fe-task-replace.md
+**Serves:** feedback/2026-08-01-115115-in-the-same-session-typo3-project-scope.md
 **Priority:** low
+**Branch:** todo/in-the-same-session-typo3-project-scope
+**Claimed:** 2026-08-03
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

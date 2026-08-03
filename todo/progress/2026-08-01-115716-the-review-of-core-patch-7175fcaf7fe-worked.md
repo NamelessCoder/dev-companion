@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-01-115716-the-review-of-core-patch-7175fcaf7fe-worked.md
 **Priority:** low
+**Branch:** todo/the-review-of-core-patch-7175fcaf7fe-worked
+**Claimed:** 2026-08-03
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

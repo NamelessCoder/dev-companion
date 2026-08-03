@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-07-31-194826-after-loading-the-typo3-extension-conformance.md, R-GUI-006
 **Priority:** low
+**Branch:** todo/give-the-task-guide-a-shape-for-a-task-that-changes-nothing
+**Claimed:** 2026-08-03
 
 Ladder step 1b, the shape half: the brief is composed and there is no way to ask
 for it in the form a review needs, so an audit gets the patch checklist. Read

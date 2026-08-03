@@ -2,6 +2,8 @@
 
 **Serves:** scenarios/
 **Priority:** normal
+**Branch:** todo/hold-one-installed-instance-per-covered-checkout
+**Claimed:** 2026-08-03
 
 `bin/cli environment:create E-SITE` makes one installation, on one version, and
 `Environments::PROJECT` is a single DDEV name global to the machine. So the

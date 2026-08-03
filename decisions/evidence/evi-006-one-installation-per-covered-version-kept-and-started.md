@@ -187,3 +187,53 @@ half what a released one costs rather than the 260 MB the refusal priced it at.
 `site:list` returns the created site, `language:domain:search` finds 159 label
 references and `configuration:show BE/debug` answers, which is what
 `scenarios/readme.md` requires of an `E-SITE`.
+
+### 2026-08-03 — the defect is a TYPO3 change on three branches, not a DBAL bump on one
+
+The account above names the DBAL bump as what brought the failure and `main` as
+where it lives, and the **Wrong if** below prices the sqlite driver as the
+development line's workaround. All three have been read again and none of them
+holds.
+
+What put the refusing call there is Forge #110258, *Use Doctrine introspection
+API for table and database names*, merged to `main`, `14.3` and `13.4` on
+2026-08-02. It replaced `listDatabases()` — a plain `getListDatabasesSQL()`
+query — with `introspectDatabaseNames()`, which reaches
+`AbstractSchemaManager::createSchemaProvider()` and constructs
+`MySQLMetadataProvider`, whose constructor runs `SELECT DATABASE()` and throws
+`DatabaseRequired` on the null it always gets from a connection with no database
+selected. The provider's own `getAllDatabaseNames()` reads
+`information_schema.SCHEMATA` and needs no current database; only the
+constructor does. `12.4` is on `doctrine/dbal ^3.9`, has no introspection API to
+move to, and is unaffected; `13.4` and `14.3` lock the same `~4.4.3` as `main`,
+so the DBAL version was never the difference between them.
+
+The evidence that produced the wrong account is worth keeping, because it is a
+trap this repository will meet again. `.checkouts/` was fetched before
+2026-08-02, so `getDatabaseList()` read there shows `listDatabases()` on all
+three branches — while the `typo3/cms-install` the environment had installed
+already carried the new call. Two readings of one file that disagreed about the
+date read as a version boundary. `bin/cli checkouts:update` is what dates them,
+and a checkout is only evidence about the day it was fetched.
+
+Why the 14.3 installation built anyway is the same date, from the other side: it
+installs `^14.3`, and no release carries the backport — `typo3/cms-install`
+v14.3.5 and v13.4.33 are both from 2026-07-14, read from packagist on
+2026-08-03. So the next patch release of either line ships a `setup` that cannot
+finish against MySQL or MariaDB, and this is not a next-major problem.
+
+It is unreported and unfixed. Five differently worded Forge searches return
+#110258 and nothing else, and `file:SetupDatabaseService.php after:2026-08-01`
+in Gerrit is the three merged backports and no fourth change. The report is
+written and waiting on somebody with an account, on
+`todo/progress/2026-08-03-104500-report-the-setup-that-cannot-finish-on-main-and-take-the-workaround-back-out.md`.
+
+The workaround the **Wrong if** watches is no longer one. `c27f8bd` removed
+`Environments::DEVELOPMENT_DRIVER` and put every covered line on sqlite, for a
+reason the defect did not buy: no database container, no volume named after the
+project, and `rm -rf` is the whole of taking an environment away. What the
+**Wrong if** was written to catch — an installation whose database is not the
+one every other line runs — cannot happen now, and what replaced it is that no
+line's database is MariaDB. Whether that is reversed is a question about what
+these environments are for rather than about the defect, and it is on the card
+above.

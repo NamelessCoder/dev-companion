@@ -277,15 +277,19 @@ final class Environments
      * that holds four.
      *
      * The development line is what made the choice concrete rather than
-     * cheaper: `vendor/bin/typo3 setup` cannot finish against MariaDB on
-     * `main` at all. `SetupDatabaseService::getDatabaseList()` builds a
-     * connection with `dbname` unset on purpose — so that a wrong database
-     * name can still be corrected — and then asks it for a schema manager,
-     * which `doctrine/dbal` 4.4.4 refuses: `MySQLMetadataProvider::__construct`
-     * reads `SELECT DATABASE()`, gets null, and throws `DatabaseRequired`.
+     * cheaper: `vendor/bin/typo3 setup` cannot finish against MariaDB there at
+     * all. `SetupDatabaseService::getDatabaseList()` builds a connection with
+     * `dbname` unset on purpose — so that a wrong database name can still be
+     * corrected — and then asks it for a schema manager, which
+     * `doctrine/dbal` 4.4.4 refuses: `MySQLMetadataProvider::__construct` reads
+     * `SELECT DATABASE()`, gets null, and throws `DatabaseRequired`.
      * `SetupCommand::selectAndImportDatabase()` runs that for every driver but
-     * sqlite, before anything is written. Measured on 2026-08-03 against
-     * `typo3/cms-install` at `af648f05bbc3`, which locks that DBAL itself.
+     * sqlite, before anything is written.
+     *
+     * That is Forge #110258 rather than a property of the development line: it
+     * was merged to `14.3` and `13.4` on the same day, and reaches them as soon
+     * as either releases. `D-EVI-006` carries the reading and what is still
+     * open on it.
      *
      * What it costs is real and is `D-EVI-006`'s to carry: an installation on
      * sqlite answers what a console question asks and says nothing about what

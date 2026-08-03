@@ -522,3 +522,39 @@ established for it: all three are read in
 `CGLCHECK_DRY_RUN`, which `cgl` turns into `--dry-run --diff`.
 
 The feedback is closed by this commit and nothing is queued.
+
+## Confirmed on 2026-08-03
+
+The first **Wrong if** fired again, and this time the lever is a clause the
+strength appends to its own praise. `feedback/2026-08-01-115115` credits
+`typo3_project_scope`, `typo3_rule_lookup` and `typo3_commit_message_guide` from
+a core patch review in `/home/benji/projects/typo3-cms`, asks that all three
+stay as they are, and ends: *the compound rule_lookup queries failed but the
+single-term ones worked*. That names no workaround and quotes no file, so it is
+neither of the two shapes above — it is the report's own qualification of what
+it is praising, and it is the only sentence in the file nothing else in its
+session states.
+
+The **Since then** holds: the quotations were checked before the boundary was,
+and all three reproduce in the report's own words — re-run on 2026-08-03 through
+`bin/typo3-cms-mcp` from that directory, `15.0.0-dev`, `PHP ^8.5`, no extensions
+and no sites; `## Breaking Changes` and `## Changelog Files` at 100% for
+`breaking change`; and *the summary line is 68 characters long* on the patch's
+own subject. The credit is not misplaced here, which is the third corpus in
+which that was worth checking and the first where it held.
+
+The boundary is **what a topic is asked for in**. Everything the strength
+credits was asked for as a topic or as an artifact: a directory, a two-word
+subject, a commit message. What its last clause reports is the same corpus asked
+in a sentence, and the cost side is from the same session — `115109`, archived,
+whose compound query `D-ANS-029` measured missing. The judgement of that half is
+[`D-ANS-037`](../answers/ans-037-a-compound-rule-query-is-owed-the-section-its-score-prefers-and-a-miss-that-names-the-words.md),
+where the mechanism is measured: two words naming the document drop the section
+that answers below `Documents::MIN_COVERAGE` while its score stays three times
+the winner's. The feedback is trimmed to that clause and stays open behind the
+two cards it queues.
+
+The third **Wrong if** is the one this bears on, from the other side. A closed
+strength left nothing to point at; this entry has now been cited by five
+judgements and read as the reason to check a clause that a boundary reading
+would have closed unread.

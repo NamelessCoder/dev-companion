@@ -33,6 +33,18 @@ interface Tool
     /** What a client chooses this tool by. It is the only documentation most of them read. */
     public static function description(): string;
 
+    /**
+     * Where this tool's answer can come from, first one first.
+     *
+     * Declared per tool rather than kept as a list somewhere, for the reason
+     * every such list here is derived: a list is what still names a tool after
+     * the tool stopped answering that way. Registry renders it into the
+     * description a client reads and typo3_server_scope groups the tools by it.
+     *
+     * @return array<int, Source>
+     */
+    public static function answersFrom(): array;
+
     /** @return array<string, mixed> */
     public static function inputSchema(): array;
 

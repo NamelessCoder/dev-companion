@@ -24,6 +24,12 @@ final class ServerScope extends ReadOnlyTool
         return 'typo3_server_scope';
     }
 
+    /** @return array<int, Source> */
+    public static function answersFrom(): array
+    {
+        return [Source::Knowledge, Source::Installation];
+    }
+
     public static function description(): string
     {
         return 'Orientation for this server: what it covers and at which depth, what it deliberately does not cover, and which tool to call when. Start here when it is unclear whether this server can answer a question at all, or which of the lookups is the right one.';
@@ -64,6 +70,11 @@ final class ServerScope extends ReadOnlyTool
                 'branch' => Schema::string('The branch that line is verified against.'),
                 'status' => Schema::string('lts, stable, or development.'),
             ], ['major', 'branch', 'status']), 'The TYPO3 versions the knowledge is bound to. A statement outside a range is left out when a target version is known.'),
+            'answersFrom' => Schema::listOf(Schema::object([
+                'source' => Schema::string('installation, packages, knowledge, network or checkout.'),
+                'meaning' => Schema::string('What that source is, and what it cannot answer.'),
+                'tools' => Schema::listOf(Schema::string(), 'The offered tools it can answer. A tool with two sources stands under both.'),
+            ], ['source', 'meaning', 'tools']), 'Which tools are worth calling in the state this machine is in — nothing running answers from knowledge and packages alone. Every tool states its own sources at the foot of its description; this groups them the other way round.'),
             'excludedTools' => Schema::object([
                 'names' => Schema::listOf(Schema::string(), 'The tools the caller asked not to be offered, and the only reason the list is ever shorter than the documented one. Empty unless the variable is set.'),
                 'variable' => Schema::string('Environment variable that names them.'),
@@ -90,7 +101,7 @@ final class ServerScope extends ReadOnlyTool
                     'console' => Schema::string('Environment variable that names the console command.'),
                 ], ['root', 'console']),
             ], ['found', 'searched', 'packageCount', 'console']),
-        ], ['purpose', 'covers', 'doesNotCover', 'routing', 'versions', 'excludedTools', 'installation']);
+        ], ['purpose', 'covers', 'doesNotCover', 'routing', 'versions', 'answersFrom', 'excludedTools', 'installation']);
     }
 
     public static function answer(array $args): ToolResult
@@ -243,14 +254,52 @@ final class ServerScope extends ReadOnlyTool
                 . 'Missing something that belongs here? Leave feedback about it.';
         }
 
+        $lines[] = '';
+        $lines[] = 'Where the answers come from, which is what says whether a question can be asked at all right '
+            . 'now. Every tool states the same thing at the foot of its own description.';
+        foreach (self::answersFromReport() as $entry) {
+            $lines[] = '## Answers from ' . $entry['source'];
+            $lines[] = $entry['meaning'];
+            $lines[] = 'Tools: ' . implode(', ', $entry['tools']);
+        }
+
         return ToolResult::create(implode("\n", $lines), $coverage + [
             'versions' => Versions::covered(),
             'excludedTools' => [
                 'names' => ExcludedTools::all(),
                 'variable' => ExcludedTools::VARIABLE,
             ],
+            'answersFrom' => self::answersFromReport(),
             'installation' => self::installationReport(),
         ]);
+    }
+
+    /**
+     * The offered tools grouped by what can answer them.
+     *
+     * Grouped rather than listed per tool, because the question it is here for
+     * is asked about the state of the machine and not about one tool: nothing
+     * is running, so what is still worth calling. A tool answering from two
+     * sources stands under both, which is the answer to that question for it.
+     *
+     * @return array<int, array{source: string, meaning: string, tools: array<int, string>}>
+     */
+    private static function answersFromReport(): array
+    {
+        $report = [];
+        foreach (Source::cases() as $source) {
+            $tools = [];
+            foreach (Registry::definitions() as $definition) {
+                if (in_array($source->value, $definition['answersFrom'], true)) {
+                    $tools[] = $definition['name'];
+                }
+            }
+            if ($tools !== []) {
+                $report[] = ['source' => $source->value, 'meaning' => $source->meaning(), 'tools' => $tools];
+            }
+        }
+
+        return $report;
     }
 
     /**

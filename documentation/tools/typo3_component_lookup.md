@@ -5,9 +5,12 @@ active installation, its backend CSS, JavaScript, and installed styleguide
 templates supply the component contract; the curated catalog supplies the
 searchable names and fallback markup. Without usable installed sources, the
 bundled version-bound snapshot answers. Returns markup, classes, custom
-properties, and every source used.
+properties, and every source used. Answers from: packages, knowledge.
 
 `readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: false`
+
+Answers from [`packages`](answer-sources.md#packages),
+[`knowledge`](answer-sources.md#knowledge).
 
 ## Takes
 

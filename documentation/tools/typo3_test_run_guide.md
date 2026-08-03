@@ -6,9 +6,11 @@ Sass-only change gets the CSS suites, not the PHP ones. Which suites the script
 offers changes between majors, so a suite that branch does not have is left out
 rather than handed over as a command. The script belongs to the core repository,
 so paths that read as a project or third-party extension get no suite at all
-rather than commands that cannot run there.
+rather than commands that cannot run there. Answers from: knowledge.
 
 `readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: false`
+
+Answers from [`knowledge`](answer-sources.md#knowledge).
 
 ## Takes
 
@@ -251,6 +253,13 @@ Command from the TYPO3 core root:
 End-to-end tests driving a real backend with Playwright.
 Use for editor or administrator workflows that only break in the assembled backend.
 
+## composerInstall
+Command from the TYPO3 core root:
+`CI=true ./Build/Scripts/runTests.sh -s composerInstall`
+
+Installs the PHP dependencies of the checkout it is run in, into its own vendor/ and bin/, inside the container.
+Use once in a checkout that has no vendor/ or bin/ yet, before any other suite: a fresh clone, and a git worktree, which starts without both because /vendor/* and /bin/* are gitignored. Without it every PHP suite stops at `exec: line 9: bin/phpunit: not found`. It is a precondition and not a step — a checkout that already has vendor/ needs it again only after composer.json or composer.lock changed. It needs no PHP on the host, unlike `composer install` run there.
+
 ## npm
 Command from the TYPO3 core root:
 `CI=true ./Build/Scripts/runTests.sh -s npm -- <npm command>`
@@ -267,9 +276,11 @@ Use for composer dumpautoload, require, info, and dependency tasks.
 
 ## Invoking runTests.sh
 - Run runTests.sh from the TYPO3 core checkout root. It starts a container (podman by default, `-b docker` to switch) and runs the suite inside it.
+- A suite runs against the `vendor/` and `bin/` of the directory it is started from, because the script mounts that directory and nothing else. A fresh clone has neither, and so does a git worktree of a checkout that has them — `/vendor/*` and `/bin/*` are gitignored, so git never brings them. The run then stops at `/usr/local/bin/docker-php-entrypoint: exec: line 9: bin/phpunit: not found`, which names phpunit rather than the directory. Run `CI=true ./Build/Scripts/runTests.sh -s composerInstall` once in that directory first. Symlinking `vendor/` and `bin/` from another checkout does not stand in for it: the target sits outside the one mount and does not resolve inside the container.
 - Prefix scripted and non-interactive runs with `CI=true`. It drops the interactive container flags, skips the SIGINT trap, and selects the CI phpstan config. Without a TTY the script also removes the interactive flags on its own, but `CI=true` is the explicit form and the one to use from an agent.
 - Everything after `--` is handed to the underlying tool unchanged: phpunit for the test suites, npm for `-s npm`, composer for `-s composer`.
 - While iterating, run a single test file or a single test method instead of a whole suite; a full functional run costs minutes per round.
+- The exception is a change that alters rendered output — a URI, a tag, an attribute other tests assert verbatim. Narrowing then reports the blast radius one failing suite at a time, and each round costs a run. Find the expectations by searching the checkout first and fix them in one pass; `typo3_hint_lookup` for `core-tests` says where they hide, which is largely not in files named `*Test.php`. Run the full functional suite once to confirm, rather than widening the path set round after round.
 - `./Build/Scripts/runTests.sh -h` lists the suites and option values the checked-out branch actually supports.
 
 Options:
@@ -558,6 +569,19 @@ Data:
             "versions": "TYPO3 v13 and newer"
         },
         {
+            "suite": "composerInstall",
+            "command": "CI=true ./Build/Scripts/runTests.sh -s composerInstall",
+            "targeted": null,
+            "description": "Installs the PHP dependencies of the checkout it is run in, into its own vendor/ and bin/, inside the container.",
+            "whenToUse": "Use once in a checkout that has no vendor/ or bin/ yet, before any other suite: a fresh clone, and a git worktree, which starts without both because /vendor/* and /bin/* are gitignored. Without it every PHP suite stops at `exec: line 9: bin/phpunit: not found`. It is a precondition and not a step — a checkout that already has vendor/ needs it again only after composer.json or composer.lock changed. It needs no PHP on the host, unlike `composer install` run there.",
+            "domains": [
+                "php",
+                "fluid",
+                "typoscript"
+            ],
+            "versions": ""
+        },
+        {
             "suite": "npm",
             "command": "CI=true ./Build/Scripts/runTests.sh -s npm -- <npm command>",
             "targeted": null,
@@ -584,9 +608,11 @@ Data:
     "invocation": {
         "notes": [
             "Run runTests.sh from the TYPO3 core checkout root. It starts a container (podman by default, `-b docker` to switch) and runs the suite inside it.",
+            "A suite runs against the `vendor/` and `bin/` of the directory it is started from, because the script mounts that directory and nothing else. A fresh clone has neither, and so does a git worktree of a checkout that has them — `/vendor/*` and `/bin/*` are gitignored, so git never brings them. The run then stops at `/usr/local/bin/docker-php-entrypoint: exec: line 9: bin/phpunit: not found`, which names phpunit rather than the directory. Run `CI=true ./Build/Scripts/runTests.sh -s composerInstall` once in that directory first. Symlinking `vendor/` and `bin/` from another checkout does not stand in for it: the target sits outside the one mount and does not resolve inside the container.",
             "Prefix scripted and non-interactive runs with `CI=true`. It drops the interactive container flags, skips the SIGINT trap, and selects the CI phpstan config. Without a TTY the script also removes the interactive flags on its own, but `CI=true` is the explicit form and the one to use from an agent.",
             "Everything after `--` is handed to the underlying tool unchanged: phpunit for the test suites, npm for `-s npm`, composer for `-s composer`.",
             "While iterating, run a single test file or a single test method instead of a whole suite; a full functional run costs minutes per round.",
+            "The exception is a change that alters rendered output — a URI, a tag, an attribute other tests assert verbatim. Narrowing then reports the blast radius one failing suite at a time, and each round costs a run. Find the expectations by searching the checkout first and fix them in one pass; `typo3_hint_lookup` for `core-tests` says where they hide, which is largely not in files named `*Test.php`. Run the full functional suite once to confirm, rather than widening the path set round after round.",
             "`./Build/Scripts/runTests.sh -h` lists the suites and option values the checked-out branch actually supports."
         ],
         "options": [
@@ -683,9 +709,11 @@ Use for type-sensitive PHP changes and API contract changes.
 
 ## Invoking runTests.sh
 - Run runTests.sh from the TYPO3 core checkout root. It starts a container (podman by default, `-b docker` to switch) and runs the suite inside it.
+- A suite runs against the `vendor/` and `bin/` of the directory it is started from, because the script mounts that directory and nothing else. A fresh clone has neither, and so does a git worktree of a checkout that has them — `/vendor/*` and `/bin/*` are gitignored, so git never brings them. The run then stops at `/usr/local/bin/docker-php-entrypoint: exec: line 9: bin/phpunit: not found`, which names phpunit rather than the directory. Run `CI=true ./Build/Scripts/runTests.sh -s composerInstall` once in that directory first. Symlinking `vendor/` and `bin/` from another checkout does not stand in for it: the target sits outside the one mount and does not resolve inside the container.
 - Prefix scripted and non-interactive runs with `CI=true`. It drops the interactive container flags, skips the SIGINT trap, and selects the CI phpstan config. Without a TTY the script also removes the interactive flags on its own, but `CI=true` is the explicit form and the one to use from an agent.
 - Everything after `--` is handed to the underlying tool unchanged: phpunit for the test suites, npm for `-s npm`, composer for `-s composer`.
 - While iterating, run a single test file or a single test method instead of a whole suite; a full functional run costs minutes per round.
+- The exception is a change that alters rendered output — a URI, a tag, an attribute other tests assert verbatim. Narrowing then reports the blast radius one failing suite at a time, and each round costs a run. Find the expectations by searching the checkout first and fix them in one pass; `typo3_hint_lookup` for `core-tests` says where they hide, which is largely not in files named `*Test.php`. Run the full functional suite once to confirm, rather than widening the path set round after round.
 - `./Build/Scripts/runTests.sh -h` lists the suites and option values the checked-out branch actually supports.
 
 Options:
@@ -740,9 +768,11 @@ Data:
     "invocation": {
         "notes": [
             "Run runTests.sh from the TYPO3 core checkout root. It starts a container (podman by default, `-b docker` to switch) and runs the suite inside it.",
+            "A suite runs against the `vendor/` and `bin/` of the directory it is started from, because the script mounts that directory and nothing else. A fresh clone has neither, and so does a git worktree of a checkout that has them — `/vendor/*` and `/bin/*` are gitignored, so git never brings them. The run then stops at `/usr/local/bin/docker-php-entrypoint: exec: line 9: bin/phpunit: not found`, which names phpunit rather than the directory. Run `CI=true ./Build/Scripts/runTests.sh -s composerInstall` once in that directory first. Symlinking `vendor/` and `bin/` from another checkout does not stand in for it: the target sits outside the one mount and does not resolve inside the container.",
             "Prefix scripted and non-interactive runs with `CI=true`. It drops the interactive container flags, skips the SIGINT trap, and selects the CI phpstan config. Without a TTY the script also removes the interactive flags on its own, but `CI=true` is the explicit form and the one to use from an agent.",
             "Everything after `--` is handed to the underlying tool unchanged: phpunit for the test suites, npm for `-s npm`, composer for `-s composer`.",
             "While iterating, run a single test file or a single test method instead of a whole suite; a full functional run costs minutes per round.",
+            "The exception is a change that alters rendered output — a URI, a tag, an attribute other tests assert verbatim. Narrowing then reports the blast radius one failing suite at a time, and each round costs a run. Find the expectations by searching the checkout first and fix them in one pass; `typo3_hint_lookup` for `core-tests` says where they hide, which is largely not in files named `*Test.php`. Run the full functional suite once to confirm, rather than widening the path set round after round.",
             "`./Build/Scripts/runTests.sh -h` lists the suites and option values the checked-out branch actually supports."
         ],
         "options": [
@@ -834,9 +864,11 @@ No runTests.sh suite matched "quantumflux". Try "unit", "functional", "phpstan",
 
 ## Invoking runTests.sh
 - Run runTests.sh from the TYPO3 core checkout root. It starts a container (podman by default, `-b docker` to switch) and runs the suite inside it.
+- A suite runs against the `vendor/` and `bin/` of the directory it is started from, because the script mounts that directory and nothing else. A fresh clone has neither, and so does a git worktree of a checkout that has them — `/vendor/*` and `/bin/*` are gitignored, so git never brings them. The run then stops at `/usr/local/bin/docker-php-entrypoint: exec: line 9: bin/phpunit: not found`, which names phpunit rather than the directory. Run `CI=true ./Build/Scripts/runTests.sh -s composerInstall` once in that directory first. Symlinking `vendor/` and `bin/` from another checkout does not stand in for it: the target sits outside the one mount and does not resolve inside the container.
 - Prefix scripted and non-interactive runs with `CI=true`. It drops the interactive container flags, skips the SIGINT trap, and selects the CI phpstan config. Without a TTY the script also removes the interactive flags on its own, but `CI=true` is the explicit form and the one to use from an agent.
 - Everything after `--` is handed to the underlying tool unchanged: phpunit for the test suites, npm for `-s npm`, composer for `-s composer`.
 - While iterating, run a single test file or a single test method instead of a whole suite; a full functional run costs minutes per round.
+- The exception is a change that alters rendered output — a URI, a tag, an attribute other tests assert verbatim. Narrowing then reports the blast radius one failing suite at a time, and each round costs a run. Find the expectations by searching the checkout first and fix them in one pass; `typo3_hint_lookup` for `core-tests` says where they hide, which is largely not in files named `*Test.php`. Run the full functional suite once to confirm, rather than widening the path set round after round.
 - `./Build/Scripts/runTests.sh -h` lists the suites and option values the checked-out branch actually supports.
 
 Options:
@@ -879,9 +911,11 @@ Data:
     "invocation": {
         "notes": [
             "Run runTests.sh from the TYPO3 core checkout root. It starts a container (podman by default, `-b docker` to switch) and runs the suite inside it.",
+            "A suite runs against the `vendor/` and `bin/` of the directory it is started from, because the script mounts that directory and nothing else. A fresh clone has neither, and so does a git worktree of a checkout that has them — `/vendor/*` and `/bin/*` are gitignored, so git never brings them. The run then stops at `/usr/local/bin/docker-php-entrypoint: exec: line 9: bin/phpunit: not found`, which names phpunit rather than the directory. Run `CI=true ./Build/Scripts/runTests.sh -s composerInstall` once in that directory first. Symlinking `vendor/` and `bin/` from another checkout does not stand in for it: the target sits outside the one mount and does not resolve inside the container.",
             "Prefix scripted and non-interactive runs with `CI=true`. It drops the interactive container flags, skips the SIGINT trap, and selects the CI phpstan config. Without a TTY the script also removes the interactive flags on its own, but `CI=true` is the explicit form and the one to use from an agent.",
             "Everything after `--` is handed to the underlying tool unchanged: phpunit for the test suites, npm for `-s npm`, composer for `-s composer`.",
             "While iterating, run a single test file or a single test method instead of a whole suite; a full functional run costs minutes per round.",
+            "The exception is a change that alters rendered output — a URI, a tag, an attribute other tests assert verbatim. Narrowing then reports the blast radius one failing suite at a time, and each round costs a run. Find the expectations by searching the checkout first and fix them in one pass; `typo3_hint_lookup` for `core-tests` says where they hide, which is largely not in files named `*Test.php`. Run the full functional suite once to confirm, rather than widening the path set round after round.",
             "`./Build/Scripts/runTests.sh -h` lists the suites and option values the checked-out branch actually supports."
         ],
         "options": [
@@ -990,9 +1024,11 @@ Use when Sass or CSS sources change. Internally this runs grunt stylelint in the
 
 ## Invoking runTests.sh
 - Run runTests.sh from the TYPO3 core checkout root. It starts a container (podman by default, `-b docker` to switch) and runs the suite inside it.
+- A suite runs against the `vendor/` and `bin/` of the directory it is started from, because the script mounts that directory and nothing else. A fresh clone has neither, and so does a git worktree of a checkout that has them — `/vendor/*` and `/bin/*` are gitignored, so git never brings them. The run then stops at `/usr/local/bin/docker-php-entrypoint: exec: line 9: bin/phpunit: not found`, which names phpunit rather than the directory. Run `CI=true ./Build/Scripts/runTests.sh -s composerInstall` once in that directory first. Symlinking `vendor/` and `bin/` from another checkout does not stand in for it: the target sits outside the one mount and does not resolve inside the container.
 - Prefix scripted and non-interactive runs with `CI=true`. It drops the interactive container flags, skips the SIGINT trap, and selects the CI phpstan config. Without a TTY the script also removes the interactive flags on its own, but `CI=true` is the explicit form and the one to use from an agent.
 - Everything after `--` is handed to the underlying tool unchanged: phpunit for the test suites, npm for `-s npm`, composer for `-s composer`.
 - While iterating, run a single test file or a single test method instead of a whole suite; a full functional run costs minutes per round.
+- The exception is a change that alters rendered output — a URI, a tag, an attribute other tests assert verbatim. Narrowing then reports the blast radius one failing suite at a time, and each round costs a run. Find the expectations by searching the checkout first and fix them in one pass; `typo3_hint_lookup` for `core-tests` says where they hide, which is largely not in files named `*Test.php`. Run the full functional suite once to confirm, rather than widening the path set round after round.
 - `./Build/Scripts/runTests.sh -h` lists the suites and option values the checked-out branch actually supports.
 
 Options:
@@ -1067,9 +1103,11 @@ Data:
     "invocation": {
         "notes": [
             "Run runTests.sh from the TYPO3 core checkout root. It starts a container (podman by default, `-b docker` to switch) and runs the suite inside it.",
+            "A suite runs against the `vendor/` and `bin/` of the directory it is started from, because the script mounts that directory and nothing else. A fresh clone has neither, and so does a git worktree of a checkout that has them — `/vendor/*` and `/bin/*` are gitignored, so git never brings them. The run then stops at `/usr/local/bin/docker-php-entrypoint: exec: line 9: bin/phpunit: not found`, which names phpunit rather than the directory. Run `CI=true ./Build/Scripts/runTests.sh -s composerInstall` once in that directory first. Symlinking `vendor/` and `bin/` from another checkout does not stand in for it: the target sits outside the one mount and does not resolve inside the container.",
             "Prefix scripted and non-interactive runs with `CI=true`. It drops the interactive container flags, skips the SIGINT trap, and selects the CI phpstan config. Without a TTY the script also removes the interactive flags on its own, but `CI=true` is the explicit form and the one to use from an agent.",
             "Everything after `--` is handed to the underlying tool unchanged: phpunit for the test suites, npm for `-s npm`, composer for `-s composer`.",
             "While iterating, run a single test file or a single test method instead of a whole suite; a full functional run costs minutes per round.",
+            "The exception is a change that alters rendered output — a URI, a tag, an attribute other tests assert verbatim. Narrowing then reports the blast radius one failing suite at a time, and each round costs a run. Find the expectations by searching the checkout first and fix them in one pass; `typo3_hint_lookup` for `core-tests` says where they hide, which is largely not in files named `*Test.php`. Run the full functional suite once to confirm, rather than widening the path set round after round.",
             "`./Build/Scripts/runTests.sh -h` lists the suites and option values the checked-out branch actually supports."
         ],
         "options": [

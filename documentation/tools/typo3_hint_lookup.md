@@ -4,9 +4,11 @@ Return hints for TYPO3 core paths or task topics, grouped by section. Where the
 paths read as a project or third-party extension the hints still come back,
 because the conventions transfer. The "Backend CSS" and "Backend TypeScript and
 JavaScript" sections describe the TYPO3 backend interface and are withheld, with
-the reason, where the task names the frontend.
+the reason, where the task names the frontend. Answers from: knowledge.
 
 `readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: false`
+
+Answers from [`knowledge`](answer-sources.md#knowledge).
 
 ## Takes
 
@@ -726,6 +728,7 @@ Hints that exist in these domains, requestable by id:
 - environment-variables — What TYPO3 Reads From the Environment (PHP)
 - environment-placeholders — %env() in a YAML Configuration (PHP)
 - environment-runtime-readers — What Reads the Environment While It Runs (PHP)
+- installation-setup — What typo3 setup Takes and What It Refuses (PHP)
 - console-commands — Console Commands (PHP)
 - content-elements — Registering a Content Element (PHP)
 - content-element-shape — What a Content Element Owns (PHP)
@@ -758,6 +761,7 @@ Hints that exist in these domains, requestable by id:
 - extension-repository-layout — How a Distributed Extension Repository Is Laid Out (PHP)
 - extension-repository-dependencies — What Such a Repository Commits, and What It Vendors (PHP)
 - extension-repository-tests — The Instance an Extension Suite Builds Itself (PHP)
+- extension-repository-installation — Installing TYPO3 Beneath the Extension Repository (PHP)
 - system-extension-boundaries — System Extension Boundaries (PHP)
 - fal-basics — Files Are Addressed Through FAL, Not by Path (PHP)
 - fal-storages-drivers — Storages and the Drivers Behind Them (PHP)
@@ -770,6 +774,7 @@ Hints that exist in these domains, requestable by id:
 - site-label-language — Core Labels on a Non-English Site (Labels)
 - page-cache-flushing — Which Caches a Change Invalidates, and What Clears the Rest (Fluid)
 - persistence-reading — Reading Records, and What Is Hidden From the Query (PHP)
+- installation-boot — Booting the Installation a Project Repository Declares (PHP)
 - project-repository-layout — How a TYPO3 Project Repository Is Laid Out (PHP)
 - project-build-and-scripts — Build/, the Scripts, and What Is Not Deployed (PHP)
 - project-configuration-files — What the Installation Is Configured By (PHP)
@@ -857,6 +862,11 @@ Data:
         {
             "id": "environment-runtime-readers",
             "title": "What Reads the Environment While It Runs",
+            "category": "PHP"
+        },
+        {
+            "id": "installation-setup",
+            "title": "What typo3 setup Takes and What It Refuses",
             "category": "PHP"
         },
         {
@@ -1020,6 +1030,11 @@ Data:
             "category": "PHP"
         },
         {
+            "id": "extension-repository-installation",
+            "title": "Installing TYPO3 Beneath the Extension Repository",
+            "category": "PHP"
+        },
+        {
             "id": "system-extension-boundaries",
             "title": "System Extension Boundaries",
             "category": "PHP"
@@ -1077,6 +1092,11 @@ Data:
         {
             "id": "persistence-reading",
             "title": "Reading Records, and What Is Hidden From the Query",
+            "category": "PHP"
+        },
+        {
+            "id": "installation-boot",
+            "title": "Booting the Installation a Project Repository Declares",
             "category": "PHP"
         },
         {

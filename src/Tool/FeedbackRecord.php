@@ -19,6 +19,12 @@ final class FeedbackRecord implements Tool
         return 'typo3_feedback_record';
     }
 
+    /** @return array<int, Source> */
+    public static function answersFrom(): array
+    {
+        return [Source::Checkout];
+    }
+
     public static function description(): string
     {
         return 'Leave feedback about a gap, wrong answer, or missing capability of this knowledge server — and about what it did well, because what worked is what must not be broken later. Stored as markdown in this server\'s own checkout and read back with typo3_feedback_list, not in the project you are working in, so do not look for the file there. One feedback per subject: a feedback carrying three complaints is worked off three times over or not at all.';

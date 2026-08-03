@@ -18,6 +18,12 @@ final class CommitMessageGuide extends ReadOnlyTool
         return 'typo3_commit_message_guide';
     }
 
+    /** @return array<int, Source> */
+    public static function answersFrom(): array
+    {
+        return [Source::Knowledge];
+    }
+
     public static function description(): string
     {
         return 'Draft and check a TYPO3 commit message. Either assemble one from parts (changeType plus summary) or pass an existing message to check and correct it. The returned draft is ready to commit: the body is wrapped at 72 characters, and the checks name every run of lines the wrapping joined and every line it could not bring under the width. Defaults to the core contribution rules; pass workflow="project" in a project or extension repository of your own, where the subject and body conventions apply but the Forge issue, the Releases: trailer and the changelog do not.';

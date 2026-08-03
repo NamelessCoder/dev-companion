@@ -119,6 +119,14 @@ Names are `typo3_<subject>_<verb>`, with the verb taken from a fixed set —
 `list` enumerates, `scope` states what a source covers, `record` writes. So the
 name already says what shape the answer has.
 
+Every tool also declares which sources can answer it, and says so at the foot of
+its own description: the installation, the files its packages ship, the bundled
+knowledge, a service over the network, or this checkout. That is what says
+whether a question can be asked at all in the state the machine is in —
+`typo3_server_scope` groups the tools by it, and
+[Where an answer comes from](documentation/tools/answer-sources.md) is the same
+statement read as a page.
+
 What one is for, what it takes and the fields it answers with is written out per
 tool in [documentation/tools/](documentation/tools/readme.md) — one page per
 tool, rendered from the classes rather than kept beside them, and each carrying

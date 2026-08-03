@@ -8,9 +8,12 @@ review URL ends with, to read the one it names. Answers with the change number,
 subject, status, target branch, review URL, and the patch set that is current on
 the server with the commit it is — which is what says whether a checkout is the
 revision under review. A call carries issue or change, never both. This reaches
-the network, and it reads: reviewing, voting and uploading stay yours.
+the network, and it reads: reviewing, voting and uploading stay yours. Answers
+from: network.
 
 `readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: true`
+
+Answers from [`network`](answer-sources.md#network).
 
 ## Takes
 

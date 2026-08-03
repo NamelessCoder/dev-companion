@@ -2,9 +2,12 @@
 
 Find notes for TYPO3 core scripts and commands. They are the core checkout's
 own: a query that reads as a project or third-party extension is answered with
-the boundary instead of with commands that do not exist there.
+the boundary instead of with commands that do not exist there. Answers from:
+knowledge.
 
 `readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: false`
+
+Answers from [`knowledge`](answer-sources.md#knowledge).
 
 ## Takes
 
@@ -127,15 +130,30 @@ Frequently needed options:
 - `-b docker|podman` selects the container runtime; podman is the default.
 
 ## Common Commands
-Source: TYPO3 Core Script Help (typo3://core/typo3-core-scripts) — matches 88% of the query terms
+Source: TYPO3 Core Script Help (typo3://core/typo3-core-scripts) — matches 69% of the query terms
 
 ### Install Dependencies
 
 ```bash
-composer install
+CI=true ./Build/Scripts/runTests.sh -s composerInstall
 ```
 
-Use this after cloning TYPO3 core or changing PHP dependencies.
+A suite runs against the `vendor/` and `bin/` of the directory it is started
+from, because `runTests.sh` mounts that directory and nothing else. A fresh
+clone has neither, and so does a git worktree of a checkout that has them:
+`/vendor/*` and `/bin/*` are gitignored, so git never brings them. The first
+suite there stops at `exec: line 9: bin/phpunit: not found`, which names phpunit
+rather than the directory, so the cause is not readable from the symptom. Run
+the install once in that directory first.
+
+Symlinking `vendor/` and `bin/` from another checkout does not stand in for it.
+The target sits outside the one mount and does not resolve inside the container,
+whether the link is absolute or relative.
+
+`composer install` on the host installs the same dependencies, but it wants the
+PHP the branch requires; the containerised form is why `runTests.sh` exists.
+Either way this is a precondition and not a step: a checkout that already has
+`vendor/` needs it again only after `composer.json` or `composer.lock` changed.
 
 ### Run PHP Unit Tests
 
@@ -180,39 +198,6 @@ Useful for type-sensitive PHP changes and API contract changes.
 
 ### Check ReST Documentation
 
-```bash
-CI=true ./Build/Scripts/runTests.sh -s checkRst
-```
-
-Required for every changelog entry below
-`typo3/sysext/core/Documentation/Changelog/`.
-
-### Check and Normalize XLIFF
-
-Editing language files calls for a check that the XLIFF is valid and a run that
-normalizes its formatting, so the diff carries no noise. Which suites those are
-is a property of the branch, and some branches have neither: ask
-`typo3_test_run_guide` with the `targetVersion` for the commands that exist on
-yours.
-
-### Run TypeScript/Frontend Checks
-
-The frontend build covers backend UI, JavaScript, TypeScript, Sass, contrib and
-generated assets. Whether it is one suite or split in two changed inside the
-covered range, so ask `typo3_test_run_guide` with the `targetVersion` rather
-than copying a command from here.
-
-### Run SCSS Linting
-
-```bash
-CI=true ./Build/Scripts/runTests.sh -s lintScss
-```
-
-Runs the TYPO3 Core stylelint setup for Sass sources. Internally this runs
-`grunt stylelint` in the `Build` directory.
-
-### Run CSS Build Only
-
 (section truncated — read typo3://core/typo3-core-scripts for the rest)
 
 These commands run in a TYPO3 core checkout. In any other repository, what to run is declared in its own composer.json, package.json and CI configuration.
@@ -240,9 +225,9 @@ Data:
             "title": "TYPO3 Core Script Help",
             "uri": "typo3://core/typo3-core-scripts",
             "heading": "Common Commands",
-            "body": "### Install Dependencies\n\n```bash\ncomposer install\n```\n\nUse this after cloning TYPO3 core or changing PHP dependencies.\n\n### Run PHP Unit Tests\n\n```bash\nCI=true ./Build/Scripts/runTests.sh -s unit\n```\n\nRuns the TYPO3 core unit test suite. Add a path or `--filter` after `--` when\nworking on a narrow area.\n\n### Run Functional Tests\n\n```bash\nCI=true ./Build/Scripts/runTests.sh -s functional\n```\n\nRuns functional tests. Use these for changes that touch TYPO3 services,\npersistence, configuration, or integrations. Add `-d mariadb` or `-d postgres`\nto reproduce DBMS-specific behaviour.\n\n### Run Coding Standards\n\n```bash\nCI=true ./Build/Scripts/runTests.sh -s cgl -n\n```\n\nChecks coding guidelines for all core PHP files and reports without changing\nthem; drop `-n` to have them fixed. `-s cglGit` runs\n`Build/Scripts/cglFixMyCommit.sh` over the latest commit alone and is quicker,\nbut only from a normal checkout: that script asks git for its file list inside\nthe container, and a git worktree keeps its gitdir outside the mounted\ndirectory, so git fails, the list comes back empty and the suite reports SUCCESS\nhaving read no file. `-s cgl` asks git nothing and works from either.\n\n### Run PHPStan\n\n```bash\nCI=true ./Build/Scripts/runTests.sh -s phpstan\n```\n\nUseful for type-sensitive PHP changes and API contract changes.\n\n### Check ReST Documentation\n\n```bash\nCI=true ./Build/Scripts/runTests.sh -s checkRst\n```\n\nRequired for every changelog entry below\n`typo3/sysext/core/Documentation/Changelog/`.\n\n### Check and Normalize XLIFF\n\nEditing language files calls for a check that the XLIFF is valid and a run that\nnormalizes its formatting, so the diff carries no noise. Which suites those are\nis a property of the branch, and some branches have neither: ask\n`typo3_test_run_guide` with the `targetVersion` for the commands that exist on\nyours.\n\n### Run TypeScript/Frontend Checks\n\nThe frontend build covers backend UI, JavaScript, TypeScript, Sass, contrib and\ngenerated assets. Whether it is one suite or split in two changed inside the\ncovered range, so ask `typo3_test_run_guide` with the `targetVersion` rather\nthan copying a command from here.\n\n### Run SCSS Linting\n\n```bash\nCI=true ./Build/Scripts/runTests.sh -s lintScss\n```\n\nRuns the TYPO3 Core stylelint setup for Sass sources. Internally this runs\n`grunt stylelint` in the `Build` directory.\n\n### Run CSS Build Only",
-            "coverage": 0.876,
-            "score": 9,
+            "body": "### Install Dependencies\n\n```bash\nCI=true ./Build/Scripts/runTests.sh -s composerInstall\n```\n\nA suite runs against the `vendor/` and `bin/` of the directory it is started\nfrom, because `runTests.sh` mounts that directory and nothing else. A fresh\nclone has neither, and so does a git worktree of a checkout that has them:\n`/vendor/*` and `/bin/*` are gitignored, so git never brings them. The first\nsuite there stops at `exec: line 9: bin/phpunit: not found`, which names phpunit\nrather than the directory, so the cause is not readable from the symptom. Run\nthe install once in that directory first.\n\nSymlinking `vendor/` and `bin/` from another checkout does not stand in for it.\nThe target sits outside the one mount and does not resolve inside the container,\nwhether the link is absolute or relative.\n\n`composer install` on the host installs the same dependencies, but it wants the\nPHP the branch requires; the containerised form is why `runTests.sh` exists.\nEither way this is a precondition and not a step: a checkout that already has\n`vendor/` needs it again only after `composer.json` or `composer.lock` changed.\n\n### Run PHP Unit Tests\n\n```bash\nCI=true ./Build/Scripts/runTests.sh -s unit\n```\n\nRuns the TYPO3 core unit test suite. Add a path or `--filter` after `--` when\nworking on a narrow area.\n\n### Run Functional Tests\n\n```bash\nCI=true ./Build/Scripts/runTests.sh -s functional\n```\n\nRuns functional tests. Use these for changes that touch TYPO3 services,\npersistence, configuration, or integrations. Add `-d mariadb` or `-d postgres`\nto reproduce DBMS-specific behaviour.\n\n### Run Coding Standards\n\n```bash\nCI=true ./Build/Scripts/runTests.sh -s cgl -n\n```\n\nChecks coding guidelines for all core PHP files and reports without changing\nthem; drop `-n` to have them fixed. `-s cglGit` runs\n`Build/Scripts/cglFixMyCommit.sh` over the latest commit alone and is quicker,\nbut only from a normal checkout: that script asks git for its file list inside\nthe container, and a git worktree keeps its gitdir outside the mounted\ndirectory, so git fails, the list comes back empty and the suite reports SUCCESS\nhaving read no file. `-s cgl` asks git nothing and works from either.\n\n### Run PHPStan\n\n```bash\nCI=true ./Build/Scripts/runTests.sh -s phpstan\n```\n\nUseful for type-sensitive PHP changes and API contract changes.\n\n### Check ReST Documentation",
+            "coverage": 0.688,
+            "score": 7,
             "truncated": true
         }
     ],

@@ -3,13 +3,15 @@
 Search the labels registered in the TYPO3 installation you are working in. Reuse
 is local to the translation resource already used at the consuming code: pass
 resource whenever it is known, and do not reference a match from another module
-or package merely because its text is identical. Answered by the installation
-itself through its console, with the resource overrides it applies. Where the
-console cannot be reached — an installed TYPO3 whose database has no schema yet
-is the common case — the same packages' XLF files are read instead, and
-answeredBy says which of the two answered.
+or package merely because its text is identical. The console answers with the
+resource overrides the installation applies; where it cannot be reached — an
+installed TYPO3 whose database has no schema yet is the common case — the same
+packages' XLF files are read instead. Answers from: installation, packages.
 
 `readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: false`
+
+Answers from [`installation`](answer-sources.md#installation),
+[`packages`](answer-sources.md#packages).
 
 ## Takes
 
@@ -199,6 +201,8 @@ Text:
 Reference a label by the domain form shown first (package.resource:key) — in TCA, in LanguageService::sL(), and in f:translate as separate domain and key attributes.
 
 A match is reusable only when its resource is the one already used at the consuming code. A label from another module or package is not a shared vocabulary merely because its text matches; call again with resource once that usage context is known.
+
+Write a new trans-unit in English in the unprefixed source file, and put any other wording in the locale-prefixed file beside it — de.locallang.xlf for locallang.xlf — under the same unit id. A source file that is not English is a defect to correct in place rather than a convention to continue, and adding an en.-prefixed file is not that correction: typo3_hint_lookup with id=language-files has what it is.
 
 Read from the XLF files of the installed packages: the console could not be asked (<installation> has no TYPO3 console — none of bin/typo3, vendor/bin/typo3 exists). What that leaves out is the assembled runtime state — a label an installation replaces through LANG/resourceOverrides is shown here as its package ships it.
 ```
@@ -416,6 +420,8 @@ Text:
 Reference a label by the domain form shown first (package.resource:key) — in TCA, in LanguageService::sL(), and in f:translate as separate domain and key attributes.
 
 A match is reusable only when its resource is the one already used at the consuming code. A label from another module or package is not a shared vocabulary merely because its text matches; call again with resource once that usage context is known.
+
+Write a new trans-unit in English in the unprefixed source file, and put any other wording in the locale-prefixed file beside it — de.locallang.xlf for locallang.xlf — under the same unit id. A source file that is not English is a defect to correct in place rather than a convention to continue, and adding an en.-prefixed file is not that correction: typo3_hint_lookup with id=language-files has what it is.
 ```
 
 Data:
@@ -477,6 +483,8 @@ No label in <installation> matches "quantumflux". This is an answer about your i
 
 A match is reusable only when its resource is the one already used at the consuming code. A label from another module or package is not a shared vocabulary merely because its text matches; call again with resource once that usage context is known.
 
+Write a new trans-unit in English in the unprefixed source file, and put any other wording in the locale-prefixed file beside it — de.locallang.xlf for locallang.xlf — under the same unit id. A source file that is not English is a defect to correct in place rather than a convention to continue, and adding an en.-prefixed file is not that correction: typo3_hint_lookup with id=language-files has what it is.
+
 Read from the XLF files of the installed packages: the console could not be asked (<installation> has no TYPO3 console — none of bin/typo3, vendor/bin/typo3 exists). What that leaves out is the assembled runtime state — a label an installation replaces through LANG/resourceOverrides is shown here as its package ships it.
 ```
 
@@ -506,6 +514,8 @@ Text:
 No label in <installation> matches "quantumflux". This is an answer about your installation rather than about TYPO3 in general.
 
 A match is reusable only when its resource is the one already used at the consuming code. A label from another module or package is not a shared vocabulary merely because its text matches; call again with resource once that usage context is known.
+
+Write a new trans-unit in English in the unprefixed source file, and put any other wording in the locale-prefixed file beside it — de.locallang.xlf for locallang.xlf — under the same unit id. A source file that is not English is a defect to correct in place rather than a convention to continue, and adding an en.-prefixed file is not that correction: typo3_hint_lookup with id=language-files has what it is.
 ```
 
 Data:

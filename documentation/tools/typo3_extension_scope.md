@@ -23,9 +23,13 @@ ext_emconf.php beside a composer.json declaring neither providesPackages nor a
 version — is reported with what it costs, because that predicate is the file
 rather than anything the extension calls and no changelog search over its code
 reaches it. That is those two files and nothing else, so it is not an upgrade
-check. typo3_project_scope names the extensions this can be called for.
+check. typo3_project_scope names the extensions this can be called for. Answers
+from: installation, packages.
 
 `readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: false`
+
+Answers from [`installation`](answer-sources.md#installation),
+[`packages`](answer-sources.md#packages).
 
 ## Takes
 

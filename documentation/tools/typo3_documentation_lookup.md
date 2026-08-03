@@ -6,9 +6,11 @@ Pass one of those URLs back as page with the same targetVersion to receive that
 page as text, including headings and code examples. A query naming a Fluid tag
 such as f:if is answered from the ViewHelper reference alone; ask without the
 prefix for the other manuals' Fluid chapters. This reaches docs.typo3.org,
-unlike the bundled convention lookups.
+unlike the bundled convention lookups. Answers from: network.
 
 `readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: true`
+
+Answers from [`network`](answer-sources.md#network).
 
 ## Takes
 

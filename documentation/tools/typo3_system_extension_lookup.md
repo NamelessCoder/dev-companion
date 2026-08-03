@@ -6,9 +6,11 @@ package name, each with what it is for and the range it is shipped on.
 Independent of any installation, which is the point — the question comes up for
 a package that is not installed, and "is this core" is otherwise answered from
 memory. A miss means the name is not a system extension on the covered versions,
-never that it does not exist.
+never that it does not exist. Answers from: knowledge.
 
 `readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: false`
+
+Answers from [`knowledge`](answer-sources.md#knowledge).
 
 ## Takes
 

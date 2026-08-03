@@ -24,6 +24,13 @@ required output field is present on every path through the tool, misses
 included. Absolute paths in a recorded answer are written as `<repository>`,
 `<installation>` and `<home>`, so no page carries one machine's layout.
 
+Each page names the sources that can answer that tool, under its annotations and
+at the foot of its description, and links them into
+[Where an answer comes from](answer-sources.md) — which is the same statement
+read the other way round, one heading per source with the tools it answers. What
+it settles is not what a tool is about but whether it can be asked at all in the
+state the machine is in.
+
 The [readme](../../readme.md) groups the tools by where their answers come from;
 a page here says what one tool is for, what goes in and what shape comes back.
 

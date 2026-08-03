@@ -20,6 +20,12 @@ final class ScriptLookup extends ReadOnlyTool
         return 'typo3_script_lookup';
     }
 
+    /** @return array<int, Source> */
+    public static function answersFrom(): array
+    {
+        return [Source::Knowledge];
+    }
+
     public static function description(): string
     {
         return 'Find notes for TYPO3 core scripts and commands. They are the core checkout\'s own: a query that reads as a project or third-party extension is answered with the boundary instead of with commands that do not exist there.';

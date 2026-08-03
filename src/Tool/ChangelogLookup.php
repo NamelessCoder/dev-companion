@@ -45,6 +45,12 @@ final class ChangelogLookup extends ReadOnlyTool
         return 'typo3_changelog_lookup';
     }
 
+    /** @return array<int, Source> */
+    public static function answersFrom(): array
+    {
+        return [Source::Packages];
+    }
+
     public static function description(): string
     {
         return 'Search the TYPO3 changelog of the installation you are working in: one entry per breaking change, deprecation, feature and important note, in the version it was released in. Answers "what did this version deprecate", "what changed about X", "which release introduced Y". This is the first stop when building on a major you have not built on recently: what separates a current answer from a two-major-old one is written down here and almost nowhere else. A deprecation carries the version it stops working in where the entry states one, and the rule that answers the rest beside it. Read from the core package on disk, so it covers exactly the versions that installation ships and grows with a Composer update. Every word of the query has to be carried by an entry; narrow further with type and version. A method or class you found in the code is a query of its own: an identifier reaches the entries naming it, whether or not the change was titled after it.';
@@ -88,7 +94,7 @@ final class ChangelogLookup extends ReadOnlyTool
             ], ['terms', 'matchCount']), 'The largest parts of the query that do reach entries, narrowest first — every one of them, because the one a tie-break puts first is not always the one being looked for. Withheld where a tag was asked for: these are counted off the entry names and a tag is read inside the file, so a subset offered there would promise entries the same call does not return.'),
             'removalRule' => Schema::string('When a deprecation stops working where the entry itself does not say. Returned where the answer carries a deprecation.'),
             'versions' => Schema::listOf(Schema::string(), 'The versions this installation ships changelog entries for, newest first. Anything outside them is not in this answer.'),
-            'answeredBy' => Schema::answeredBy(),
+            'answeredBy' => Schema::answeredBy(self::answersFrom()),
         ], ['query', 'matchCount', 'entries', 'versions', 'answeredBy'], ['query']);
     }
 

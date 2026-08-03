@@ -22,9 +22,15 @@ final class BackendModuleLookup extends ReadOnlyTool
         return 'typo3_backend_module_lookup';
     }
 
+    /** @return array<int, Source> */
+    public static function answersFrom(): array
+    {
+        return [Source::Installation];
+    }
+
     public static function description(): string
     {
-        return 'List the backend modules registered in the TYPO3 installation you are working in, with the extension that declares each one, its place in the module tree, its labels and its route. Answered by the installation, so a project extension\'s modules are in it.';
+        return 'List the backend modules registered in the TYPO3 installation you are working in, with the extension that declares each one, its place in the module tree, its labels and its route. A project extension\'s modules are in it, because the installation is asked rather than a snapshot.';
     }
 
     public static function inputSchema(): array
@@ -42,7 +48,7 @@ final class BackendModuleLookup extends ReadOnlyTool
         return Schema::installationAnswer([
             'query' => Schema::string(),
             'matchCount' => Schema::integer(),
-            'answeredBy' => Schema::answeredBy(),
+            'answeredBy' => Schema::answeredBy(self::answersFrom()),
             'modules' => Schema::listOf(Schema::object([
                 'identifier' => Schema::string(),
                 'parents' => Schema::listOf(Schema::string(), 'The modules it sits under, outermost first.'),

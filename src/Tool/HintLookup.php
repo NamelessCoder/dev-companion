@@ -31,6 +31,12 @@ final class HintLookup extends ReadOnlyTool
         return 'typo3_hint_lookup';
     }
 
+    /** @return array<int, Source> */
+    public static function answersFrom(): array
+    {
+        return [Source::Knowledge];
+    }
+
     public static function description(): string
     {
         return 'Return hints for TYPO3 core paths or task topics, grouped by section. Where the paths read as a project or third-party extension the hints still come back, because the conventions transfer. The "Backend CSS" and "Backend TypeScript and JavaScript" sections describe the TYPO3 backend interface and are withheld, with the reason, where the task names the frontend.';

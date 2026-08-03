@@ -31,9 +31,15 @@ final class SchemaLookup extends ReadOnlyTool
         return 'typo3_schema_lookup';
     }
 
+    /** @return array<int, Source> */
+    public static function answersFrom(): array
+    {
+        return [Source::Installation];
+    }
+
     public static function description(): string
     {
-        return 'List the columns TYPO3 derives for a table from its TCA — uid, pid, the timestamps, the delete and disable fields, the language and versioning columns, and one column per TCA field. Those are exactly the columns an ext_tables.sql does not have to declare, so this is what a redundant declaration is checked against. Answered by booting the installation you are working in and asking the core for them, which needs its database server to answer; it says so rather than answering empty when it cannot. It describes what TYPO3 would create, never what the database currently has.';
+        return 'List the columns TYPO3 derives for a table from its TCA — uid, pid, the timestamps, the delete and disable fields, the language and versioning columns, and one column per TCA field. Those are exactly the columns an ext_tables.sql does not have to declare, so this is what a redundant declaration is checked against. The core is asked for them by booting the installation, which needs its database server to answer; it says so rather than answering empty when it cannot. It describes what TYPO3 would create, never what the database currently has.';
     }
 
     public static function inputSchema(): array
@@ -51,7 +57,7 @@ final class SchemaLookup extends ReadOnlyTool
         return Schema::installationAnswer([
             'table' => Schema::nullableString('The table asked about. Null where none was named and the answer is the list of them.'),
             'matchCount' => Schema::integer('Columns for a named table, tables for a call that named none. Zero means the name is not a TCA table in this installation, never that TYPO3 derives nothing.'),
-            'answeredBy' => Schema::answeredBy(),
+            'answeredBy' => Schema::answeredBy(self::answersFrom()),
             'columns' => Schema::listOf(Schema::object([
                 'name' => Schema::string(),
                 'type' => Schema::string('The Doctrine type the core declares it as: integer, string, text, datetime, json, blob.'),

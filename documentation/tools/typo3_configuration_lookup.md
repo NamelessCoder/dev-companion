@@ -4,8 +4,11 @@ Read an effective TYPO3_CONF_VARS value from the installation you are working in
 — the value as it is at runtime after every extension has had its say, not the
 shipped default. Use it for configuration whose assembled shape matters, such as
 SYS/formEngine/formDataGroup, SYS/caching/cacheConfigurations, or SYS/fluid.
+Answers from: installation.
 
 `readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: false`
+
+Answers from [`installation`](answer-sources.md#installation).
 
 ## Takes
 
@@ -26,10 +29,7 @@ path: string
 found: boolean  # optional
 # The effective runtime value, of whatever shape the configuration has.
 value: object  # optional
-# One of: installation, packages. installation: its assembled runtime state
-# answered. packages: read from the files the installed packages ship, because
-# the console could not be asked — overrides applied at runtime are not
-# reflected.
+# One of: installation. installation: its assembled runtime state answered.
 answeredBy: string  # optional
 unsupported:  # optional
   # One of: no-installation, misconfigured, installation-not-answering.

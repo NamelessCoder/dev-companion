@@ -3,11 +3,14 @@
 List the Fluid ViewHelper namespaces that are globally available in the TYPO3
 installation you are working in, so a template knows which prefixes it may use
 without declaring them. Every other namespace has to be declared per template
-with an xmlns attribute. Answered by the installation itself; where its console
-cannot be reached, by the Configuration/Fluid/Namespaces.php the installed
-packages declare, which answeredBy reports as "packages".
+with an xmlns attribute. Where the console cannot be reached, the
+Configuration/Fluid/Namespaces.php the installed packages declare is read
+instead. Answers from: installation, packages.
 
 `readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: false`
+
+Answers from [`installation`](answer-sources.md#installation),
+[`packages`](answer-sources.md#packages).
 
 ## Takes
 

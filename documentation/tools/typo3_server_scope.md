@@ -3,9 +3,12 @@
 Orientation for this server: what it covers and at which depth, what it
 deliberately does not cover, and which tool to call when. Start here when it is
 unclear whether this server can answer a question at all, or which of the
-lookups is the right one.
+lookups is the right one. Answers from: knowledge, installation.
 
 `readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: false`
+
+Answers from [`knowledge`](answer-sources.md#knowledge),
+[`installation`](answer-sources.md#installation).
 
 ## Takes
 
@@ -48,6 +51,17 @@ versions:
     branch: string
     # lts, stable, or development.
     status: string
+# Which tools are worth calling in the state this machine is in — nothing
+# running answers from knowledge and packages alone. Every tool states its own
+# sources at the foot of its description; this groups them the other way round.
+answersFrom:
+  - # installation, packages, knowledge, network or checkout.
+    source: string
+    # What that source is, and what it cannot answer.
+    meaning: string
+    # The offered tools it can answer. A tool with two sources stands under
+    # both.
+    tools: [string]
 excludedTools:
   # The tools the caller asked not to be offered, and the only reason the list
   # is ever shorter than the documented one. Empty unless the variable is set.
@@ -117,7 +131,7 @@ Called with:
 Text:
 
 ```
-A curated knowledge base for working with TYPO3, for the three audiences that do: the core contributor, the extension author, and the site developer. It holds the conventions each subsystem is built on and how its mechanisms are used, the core's own contribution process — the rules, the Gerrit workflow, the scripts and test suites — and a searchable index of backend UI components whose contract is read from the active installation where possible. It also answers what is registered in the installation it was started in, which no bundled snapshot could get right. Every answer says which TYPO3 versions it holds for and which of the three kinds of work it belongs to.
+A curated knowledge base for working with TYPO3, for the three audiences that do: the core contributor, the extension author, and the site developer. It holds the conventions each subsystem is built on and how its mechanisms are used, the core's own contribution process — the rules, the Gerrit workflow, the scripts and test suites — and a searchable index of backend UI components whose contract is read from the active installation where possible. It also answers what is registered in the installation it was started in, which no bundled snapshot could get right. Where that installation does not boot, or does not exist yet, the bundled knowledge and the installed packages answer instead, and the answer says which of them it came from and what that leaves out. Every answer says which TYPO3 versions it holds for and which of the three kinds of work it belongs to.
 
 Covered, and how deeply. Each topic says which kind of work its answers are for: core is the contribution process and the scripts that belong to that repository, any is a convention that holds wherever TYPO3 is written. Where the source names the installation, the answer is read from the one this server was started in rather than from any snapshot.
 ## Contribution rules and review readiness
@@ -264,13 +278,30 @@ Its console cannot be run right now, so questions that only the installation can
 
 Every lookup and guide is read-only. typo3_documentation_lookup reads the official, versioned manuals at docs.typo3.org; apart from that and the installation named above, nothing is fetched, executed, or looked up online.
 The one exception is typo3_feedback_record, this server's only write: it creates a new markdown feedback under feedback/ and touches nothing else. Missing something that belongs here? Leave feedback about it.
+
+Where the answers come from, which is what says whether a question can be asked at all right now. Every tool states the same thing at the foot of its own description.
+## Answers from installation
+The installation this server was started in, booted or asked through its console: its assembled state after every extension has had its say, and nothing at all where it cannot be reached.
+Tools: typo3_server_scope, typo3_label_lookup, typo3_fluid_namespace_list, typo3_configuration_lookup, typo3_schema_lookup, typo3_backend_module_lookup, typo3_icon_lookup, typo3_extension_scope
+## Answers from packages
+The files the installed packages ship, read rather than executed. Answers on a fresh clone and with the containers down; what a package registers by running is not in it.
+Tools: typo3_component_lookup, typo3_label_lookup, typo3_fluid_namespace_list, typo3_icon_lookup, typo3_changelog_lookup, typo3_project_scope, typo3_extension_scope, typo3_catalog_scope
+## Answers from knowledge
+The knowledge base inside this package. Needs nothing running, and is bound to TYPO3 versions rather than to an installation.
+Tools: typo3_server_scope, typo3_rule_lookup, typo3_script_lookup, typo3_task_guide, typo3_test_run_guide, typo3_hint_lookup, typo3_component_lookup, typo3_system_extension_lookup, typo3_reference_list, typo3_translation_domain_lookup, typo3_catalog_scope, typo3_commit_message_guide
+## Answers from network
+A service outside this machine. An unreachable one is said out loud rather than answered as empty.
+Tools: typo3_documentation_lookup, typo3_forge_lookup, typo3_gerrit_lookup
+## Answers from checkout
+This server's own checkout, which is why the tool offering it exists only in a standalone one.
+Tools: typo3_feedback_record, typo3_feedback_list
 ```
 
 Data:
 
 ```json
 {
-    "purpose": "A curated knowledge base for working with TYPO3, for the three audiences that do: the core contributor, the extension author, and the site developer. It holds the conventions each subsystem is built on and how its mechanisms are used, the core's own contribution process — the rules, the Gerrit workflow, the scripts and test suites — and a searchable index of backend UI components whose contract is read from the active installation where possible. It also answers what is registered in the installation it was started in, which no bundled snapshot could get right. Every answer says which TYPO3 versions it holds for and which of the three kinds of work it belongs to.",
+    "purpose": "A curated knowledge base for working with TYPO3, for the three audiences that do: the core contributor, the extension author, and the site developer. It holds the conventions each subsystem is built on and how its mechanisms are used, the core's own contribution process — the rules, the Gerrit workflow, the scripts and test suites — and a searchable index of backend UI components whose contract is read from the active installation where possible. It also answers what is registered in the installation it was started in, which no bundled snapshot could get right. Where that installation does not boot, or does not exist yet, the bundled knowledge and the installed packages answer instead, and the answer says which of them it came from and what that leaves out. Every answer says which TYPO3 versions it holds for and which of the three kinds of work it belongs to.",
     "instructions": "Start every task with typo3_project_scope: the installation's TYPO3 version, the extensions that are the project's own, the sites it configures, and the commands the repository actually declares — a check you recommend that the repository does not declare is a wrong answer however sensible it sounds. typo3_task_guide then gives the workflow the task belongs to, and hands the parts that have their own workflow to the skill that owns them. This server writes no patch and sees none: what changed, which branch you are on, and whether a path still exists are yours to read in the checkout.\n\nBefore writing backend markup or CSS classes, call typo3_component_lookup with the targetVersion. Before choosing or emitting a backend icon identifier, call typo3_icon_lookup against the installation. Before adding or rewording a label, pass the XLF resource used at the consuming code to typo3_label_lookup — a match in another resource is not reusable there. Guessed, these three fail only at runtime.\n\nWhat is a property of an installation rather than of TYPO3 is asked of that installation instead of answered from the catalogue. Answers are filtered by targetVersion or by the version read, and a statement that does not hold on every covered line carries the range it does.\n\nQuery this server in English whatever language you speak with the user: its knowledge is English and its matching lexical, so a query in another language reaches only the loanwords. Translate the subject before you call, and the answer back.\n\ntypo3_server_scope says what is covered, at which depth, by which tool, and which installation is read.",
     "covers": [
         {
@@ -653,6 +684,71 @@ Data:
         "names": [],
         "variable": "TYPO3_MCP_EXCLUDE_TOOLS"
     },
+    "answersFrom": [
+        {
+            "source": "installation",
+            "meaning": "The installation this server was started in, booted or asked through its console: its assembled state after every extension has had its say, and nothing at all where it cannot be reached.",
+            "tools": [
+                "typo3_server_scope",
+                "typo3_label_lookup",
+                "typo3_fluid_namespace_list",
+                "typo3_configuration_lookup",
+                "typo3_schema_lookup",
+                "typo3_backend_module_lookup",
+                "typo3_icon_lookup",
+                "typo3_extension_scope"
+            ]
+        },
+        {
+            "source": "packages",
+            "meaning": "The files the installed packages ship, read rather than executed. Answers on a fresh clone and with the containers down; what a package registers by running is not in it.",
+            "tools": [
+                "typo3_component_lookup",
+                "typo3_label_lookup",
+                "typo3_fluid_namespace_list",
+                "typo3_icon_lookup",
+                "typo3_changelog_lookup",
+                "typo3_project_scope",
+                "typo3_extension_scope",
+                "typo3_catalog_scope"
+            ]
+        },
+        {
+            "source": "knowledge",
+            "meaning": "The knowledge base inside this package. Needs nothing running, and is bound to TYPO3 versions rather than to an installation.",
+            "tools": [
+                "typo3_server_scope",
+                "typo3_rule_lookup",
+                "typo3_script_lookup",
+                "typo3_task_guide",
+                "typo3_test_run_guide",
+                "typo3_hint_lookup",
+                "typo3_component_lookup",
+                "typo3_system_extension_lookup",
+                "typo3_reference_list",
+                "typo3_translation_domain_lookup",
+                "typo3_catalog_scope",
+                "typo3_commit_message_guide"
+            ]
+        },
+        {
+            "source": "network",
+            "meaning": "A service outside this machine. An unreachable one is said out loud rather than answered as empty.",
+            "tools": [
+                "typo3_documentation_lookup",
+                "typo3_forge_lookup",
+                "typo3_gerrit_lookup"
+            ]
+        },
+        {
+            "source": "checkout",
+            "meaning": "This server's own checkout, which is why the tool offering it exists only in a standalone one.",
+            "tools": [
+                "typo3_feedback_record",
+                "typo3_feedback_list"
+            ]
+        }
+    ],
     "installation": {
         "found": true,
         "root": "<installation>",

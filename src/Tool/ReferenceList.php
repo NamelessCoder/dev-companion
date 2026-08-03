@@ -19,6 +19,12 @@ final class ReferenceList extends ReadOnlyTool
         return 'typo3_reference_list';
     }
 
+    /** @return array<int, Source> */
+    public static function answersFrom(): array
+    {
+        return [Source::Knowledge];
+    }
+
     public static function description(): string
     {
         return 'List the worked examples the TYPO3 core ships of its own conventions, and what each one is a reference for: the theme extension, the styleguide, the Extbase fixture extension, the content element rendering, the browser test suite, the static analysis setup. Read one of these before inventing a layout or a test harness — they are the version-correct, currently-passing form of what a convention describes, and every hint here is a summary of one. Paths are relative to a core checkout; where the answer names a Composer package, an installation that has it holds the same files below vendor/.';

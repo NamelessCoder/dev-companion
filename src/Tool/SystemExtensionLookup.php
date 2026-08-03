@@ -24,6 +24,12 @@ final class SystemExtensionLookup extends ReadOnlyTool
         return 'typo3_system_extension_lookup';
     }
 
+    /** @return array<int, Source> */
+    public static function answersFrom(): array
+    {
+        return [Source::Knowledge];
+    }
+
     public static function description(): string
     {
         return 'Answer whether an extension is part of the TYPO3 core, and on which versions: the system extensions of every covered TYPO3 line, by extension key and Composer package name, each with what it is for and the range it is shipped on. Independent of any installation, which is the point — the question comes up for a package that is not installed, and "is this core" is otherwise answered from memory. A miss means the name is not a system extension on the covered versions, never that it does not exist.';

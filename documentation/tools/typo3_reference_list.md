@@ -7,9 +7,12 @@ static analysis setup. Read one of these before inventing a layout or a test
 harness — they are the version-correct, currently-passing form of what a
 convention describes, and every hint here is a summary of one. Paths are
 relative to a core checkout; where the answer names a Composer package, an
-installation that has it holds the same files below vendor/.
+installation that has it holds the same files below vendor/. Answers from:
+knowledge.
 
 `readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: false`
+
+Answers from [`knowledge`](answer-sources.md#knowledge).
 
 ## Takes
 

@@ -23,6 +23,12 @@ final class CatalogScope extends ReadOnlyTool
         return 'typo3_catalog_scope';
     }
 
+    /** @return array<int, Source> */
+    public static function answersFrom(): array
+    {
+        return [Source::Packages, Source::Knowledge];
+    }
+
     public static function description(): string
     {
         return 'Report whether component contracts come from the active installation or the bundled fallback, which TYPO3 core revision the fallback catalogs were taken from, what they cover, and how to re-check them. Call this to judge whether a lookup miss is authoritative: even with installed sources, component names remain a curated index rather than every backend class.';

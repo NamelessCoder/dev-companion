@@ -12,9 +12,11 @@ covers exactly the versions that installation ships and grows with a Composer
 update. Every word of the query has to be carried by an entry; narrow further
 with type and version. A method or class you found in the code is a query of its
 own: an identifier reaches the entries naming it, whether or not the change was
-titled after it.
+titled after it. Answers from: packages.
 
 `readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: false`
+
+Answers from [`packages`](answer-sources.md#packages).
 
 ## Takes
 
@@ -115,10 +117,9 @@ removalRule: string  # optional
 # The versions this installation ships changelog entries for, newest first.
 # Anything outside them is not in this answer.
 versions: [string]  # optional
-# One of: installation, packages. installation: its assembled runtime state
-# answered. packages: read from the files the installed packages ship, because
-# the console could not be asked — overrides applied at runtime are not
-# reflected.
+# One of: packages. packages: read from the files the installed packages ship,
+# because the console could not be asked — overrides applied at runtime are
+# not reflected.
 answeredBy: string  # optional
 unsupported:  # optional
   # One of: no-installation, misconfigured, installation-not-answering.
@@ -195,6 +196,7 @@ Data:
 {
     "query": "ext_tables.php",
     "matchCount": 1,
+    "matchedIn": "name",
     "tags": [],
     "entries": [
         {
@@ -291,6 +293,7 @@ Data:
 {
     "query": "ext_tables.php",
     "matchCount": 1,
+    "matchedIn": "name",
     "tags": [],
     "entries": [
         {
@@ -383,6 +386,7 @@ Data:
 {
     "query": "",
     "matchCount": 384,
+    "matchedIn": "name",
     "tags": [
         "Backend",
         "CLI",
@@ -792,6 +796,7 @@ Data:
 {
     "query": "",
     "matchCount": 1,
+    "matchedIn": "name",
     "tags": [
         "FullyScanned",
         "NotScanned",
@@ -904,7 +909,13 @@ Data:
         "7.1",
         "7.0"
     ],
-    "answeredBy": "packages"
+    "answeredBy": "packages",
+    "termCounts": [
+        {
+            "term": "quantumflux",
+            "matchCount": 0
+        }
+    ]
 }
 ```
 
@@ -928,6 +939,12 @@ Data:
     "versions": [
         "14.3"
     ],
-    "answeredBy": "packages"
+    "answeredBy": "packages",
+    "termCounts": [
+        {
+            "term": "quantumflux",
+            "matchCount": 0
+        }
+    ]
 }
 ```

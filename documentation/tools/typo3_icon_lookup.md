@@ -10,9 +10,12 @@ answeredBy says 'packages', and the answer states what that leaves out.
 Identifiers spell shapes rather than intents, so concept words are mapped:
 "warning" finds actions-exclamation-triangle. Backend only: the identifiers are
 resolved by IconFactory and rendered by <core:icon>, and a frontend template can
-use neither.
+use neither. Answers from: installation, packages.
 
 `readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: false`
+
+Answers from [`installation`](answer-sources.md#installation),
+[`packages`](answer-sources.md#packages).
 
 ## Takes
 

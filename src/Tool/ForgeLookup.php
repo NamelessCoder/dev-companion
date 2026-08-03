@@ -27,6 +27,12 @@ final class ForgeLookup extends ReadOnlyTool
         return 'typo3_forge_lookup';
     }
 
+    /** @return array<int, Source> */
+    public static function answersFrom(): array
+    {
+        return [Source::Network];
+    }
+
     public static function description(): string
     {
         return 'Read the TYPO3 issue tracker at forge.typo3.org before writing a patch. Pass issue with a number to read that one: subject, tracker, status, target version, the TYPO3 and PHP versions it was reported against, related issues, and the comments — where a maintainer who closed or reassigned it said why, which the description never says. Or pass query with words to find out which other issues describe the same thing, which the relations of one issue only answer for what somebody linked by hand; each hit comes back with its number, subject, tracker, status and URL. A call carries issue or query, never both. An issue that does not exist is answered as such, and so is a tracker that could not be reached. Reading only, and no credential: commenting, assigning and closing stay yours.';

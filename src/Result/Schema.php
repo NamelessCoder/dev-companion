@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Typo3CmsMcp\Result;
 
 use Typo3CmsMcp\Knowledge\Scope;
+use Typo3CmsMcp\Tool\Source;
 
 /**
  * The record shapes several tools answer with, and the builders they are
@@ -77,20 +78,38 @@ final class Schema
     }
 
     /**
-     * Which of the two sources answered. An answer that came from neither is
+     * Which source answered this call. An answer that came from none of them is
      * not one of its cases — that is unsupported, and it replaces the answer
      * rather than labelling it.
      *
+     * The cases are the tool's own `answersFrom()`, so a tool that can only be
+     * answered one way says so instead of declaring a fallback it does not
+     * have. Sources that never label an answer are left out: a knowledge file
+     * and a network service are what the whole tool reads, never one call.
+     *
+     * @param array<int, Source> $sources what the tool declares it answers from
      * @return array<string, mixed>
      */
-    public static function answeredBy(): array
+    public static function answeredBy(array $sources): array
     {
+        $labelled = array_values(array_filter(
+            $sources,
+            static fn(Source $source): bool => $source === Source::Installation || $source === Source::Packages,
+        ));
+
+        $meaning = [
+            Source::Installation->value => 'installation: its assembled runtime state answered.',
+            Source::Packages->value => 'packages: read from the files the installed packages ship, because the '
+                . 'console could not be asked — overrides applied at runtime are not reflected.',
+        ];
+
         return [
             'type' => 'string',
-            'enum' => ['installation', 'packages'],
-            'description' => 'installation: its assembled runtime state answered. packages: read from the files '
-                . 'the installed packages ship, because the console could not be asked — overrides applied at '
-                . 'runtime are not reflected.',
+            'enum' => array_map(static fn(Source $source): string => $source->value, $labelled),
+            'description' => implode(' ', array_map(
+                static fn(Source $source): string => $meaning[$source->value],
+                $labelled,
+            )),
         ];
     }
 

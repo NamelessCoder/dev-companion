@@ -14,9 +14,11 @@ asked — each hook as the stage it fires at and the command it runs, and the pu
 recipes its database and files come from. Call it before booting such a project
 or before recommending or running a check — these are the commands that exist in
 this repository, and the ones marked check are what a task told not to change
-files may run.
+files may run. Answers from: packages.
 
 `readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: false`
+
+Answers from [`packages`](answer-sources.md#packages).
 
 ## Takes
 
@@ -132,10 +134,9 @@ patches:  # optional
     description: string
     # The patch file, relative to the project root.
     file: string
-# One of: installation, packages. installation: its assembled runtime state
-# answered. packages: read from the files the installed packages ship, because
-# the console could not be asked — overrides applied at runtime are not
-# reflected.
+# One of: packages. packages: read from the files the installed packages ship,
+# because the console could not be asked — overrides applied at runtime are
+# not reflected.
 answeredBy: string  # optional
 unsupported:  # optional
   # One of: no-installation, misconfigured, installation-not-answering.

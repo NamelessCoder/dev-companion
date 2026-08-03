@@ -20,6 +20,12 @@ final class ConfigurationLookup extends ReadOnlyTool
         return 'typo3_configuration_lookup';
     }
 
+    /** @return array<int, Source> */
+    public static function answersFrom(): array
+    {
+        return [Source::Installation];
+    }
+
     public static function description(): string
     {
         return 'Read an effective TYPO3_CONF_VARS value from the installation you are working in — the value as it is at runtime after every extension has had its say, not the shipped default. Use it for configuration whose assembled shape matters, such as SYS/formEngine/formDataGroup, SYS/caching/cacheConfigurations, or SYS/fluid.';
@@ -42,7 +48,7 @@ final class ConfigurationLookup extends ReadOnlyTool
             'path' => Schema::string('The TYPO3_CONF_VARS path that was read.'),
             'found' => ['type' => 'boolean', 'description' => 'Whether the installation has a value at that path. Present only where one was asked: false is a statement about an installation, and where there was none to ask, unsupported stands in place of this answer.'],
             'value' => ['description' => 'The effective runtime value, of whatever shape the configuration has.'],
-            'answeredBy' => Schema::answeredBy(),
+            'answeredBy' => Schema::answeredBy(self::answersFrom()),
         ], ['path', 'found', 'answeredBy'], ['path']);
     }
 

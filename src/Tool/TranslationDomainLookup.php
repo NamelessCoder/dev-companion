@@ -45,6 +45,12 @@ final class TranslationDomainLookup extends ReadOnlyTool
         return 'typo3_translation_domain_lookup';
     }
 
+    /** @return array<int, Source> */
+    public static function answersFrom(): array
+    {
+        return [Source::Knowledge];
+    }
+
     public static function description(): string
     {
         return 'Compute the translation domain an XLF file resolves to, from its path. The domain is the canonical way to reference a label (backend.alt_doc:key) in TCA, LanguageService::sL() and f:translate, and it is registered nowhere: it follows from the path by the rules the core itself applies, in TranslationDomainMapper on one branch and TranslationDomainResolver on the next. Being computed, it also answers for a file outside the core and for one a patch is about to add. On a version older than translation domains it answers with the full LLL:EXT: reference instead, because the domain form renders nothing there and fails at runtime rather than at build time. That version is targetVersion, or the installation this server was started in where none is stated — state one when the work is on another branch than what is installed.';

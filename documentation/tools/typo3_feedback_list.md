@@ -4,9 +4,11 @@ List improvement feedback recorded via typo3_feedback_record, newest first, so
 they can be worked off. Filter by status, by category, or by the tool a feedback
 is about. A feedback that was worked off is kept, not deleted, so
 status="closed" answers "what became of what I reported" — the feedback as it
-was recorded, plus the commit that closed it.
+was recorded, plus the commit that closed it. Answers from: checkout.
 
 `readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: false`
+
+Answers from [`checkout`](answer-sources.md#checkout).
 
 ## Takes
 

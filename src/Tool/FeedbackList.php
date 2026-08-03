@@ -19,6 +19,12 @@ final class FeedbackList extends ReadOnlyTool
         return 'typo3_feedback_list';
     }
 
+    /** @return array<int, Source> */
+    public static function answersFrom(): array
+    {
+        return [Source::Checkout];
+    }
+
     public static function description(): string
     {
         return 'List improvement feedback recorded via typo3_feedback_record, newest first, so they can be worked off. Filter by status, by category, or by the tool a feedback is about. A feedback that was worked off is kept, not deleted, so status="closed" answers "what became of what I reported" — the feedback as it was recorded, plus the commit that closed it.';

@@ -7,9 +7,11 @@ the checks name every run of lines the wrapping joined and every line it could
 not bring under the width. Defaults to the core contribution rules; pass
 workflow="project" in a project or extension repository of your own, where the
 subject and body conventions apply but the Forge issue, the Releases: trailer
-and the changelog do not.
+and the changelog do not. Answers from: knowledge.
 
 `readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: false`
+
+Answers from [`knowledge`](answer-sources.md#knowledge).
 
 ## Takes
 

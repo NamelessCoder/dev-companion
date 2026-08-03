@@ -10,9 +10,11 @@ version older than translation domains it answers with the full LLL:EXT:
 reference instead, because the domain form renders nothing there and fails at
 runtime rather than at build time. That version is targetVersion, or the
 installation this server was started in where none is stated — state one when
-the work is on another branch than what is installed.
+the work is on another branch than what is installed. Answers from: knowledge.
 
 `readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: false`
+
+Answers from [`knowledge`](answer-sources.md#knowledge).
 
 ## Takes
 

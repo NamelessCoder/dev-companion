@@ -10,8 +10,11 @@ somebody linked by hand; each hit comes back with its number, subject, tracker,
 status and URL. A call carries issue or query, never both. An issue that does
 not exist is answered as such, and so is a tracker that could not be reached.
 Reading only, and no credential: commenting, assigning and closing stay yours.
+Answers from: network.
 
 `readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: true`
+
+Answers from [`network`](answer-sources.md#network).
 
 ## Takes
 

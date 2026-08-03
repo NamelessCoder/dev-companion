@@ -7,8 +7,11 @@ the task, and names the task skill that owns the work where a published one
 does. Work that reads as a project or third-party extension is answered with
 what transfers only — the core checks, checklist items and steps that name
 something only the core repository has are left out rather than handed over.
+Answers from: knowledge.
 
 `readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: false`
+
+Answers from [`knowledge`](answer-sources.md#knowledge).
 
 ## Takes
 

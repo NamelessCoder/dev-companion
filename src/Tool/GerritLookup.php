@@ -23,6 +23,12 @@ final class GerritLookup extends ReadOnlyTool
         return 'typo3_gerrit_lookup';
     }
 
+    /** @return array<int, Source> */
+    public static function answersFrom(): array
+    {
+        return [Source::Network];
+    }
+
     public static function description(): string
     {
         return 'Find out whether a TYPO3 core patch already exists, from the review server at review.typo3.org. Pass issue with a Forge issue number to search the commit messages of every change for it — the question "has somebody already fixed this" — or change with the Change-Id from a commit message, or the change number a review URL ends with, to read the one it names. Answers with the change number, subject, status, target branch, review URL, and the patch set that is current on the server with the commit it is — which is what says whether a checkout is the revision under review. A call carries issue or change, never both. This reaches the network, and it reads: reviewing, voting and uploading stay yours.';

@@ -7,6 +7,7 @@ namespace Typo3CmsMcp\Upkeep;
 use Symfony\Component\Finder\Finder;
 use Typo3CmsMcp\Paths;
 use Typo3CmsMcp\Tool\Registry;
+use Typo3CmsMcp\Tool\Source;
 
 /**
  * The tool surface as a directory: one page per tool, and an index that reaches
@@ -23,6 +24,9 @@ use Typo3CmsMcp\Tool\Registry;
  */
 final class ToolSurface
 {
+    /** The page every tool page links its sources into, relative to a tool page. */
+    public const SOURCES_PAGE = 'answer-sources.md';
+
     /** Where the generated listing begins, so the head above it survives a regeneration. */
     private const LISTING_STARTS = '/^- \[`typo3_.*$/ms';
 
@@ -58,7 +62,7 @@ final class ToolSurface
      */
     public static function pages(): array
     {
-        $pages = [self::index() => self::indexPage()];
+        $pages = self::standingPages();
         foreach (Registry::definitions() as $definition) {
             $pages[self::file($definition['name'])] = self::page(
                 $definition,
@@ -70,13 +74,30 @@ final class ToolSurface
     }
 
     /**
+     * The pages of this directory that belong to no single tool.
+     *
+     * Both `tools:index` and `tools:record` write the surface and then delete
+     * what is not in what they wrote, so a page only one of them knows about is
+     * removed by the other. There is one list of them and both read it.
+     *
+     * @return array<string, string>
+     */
+    public static function standingPages(): array
+    {
+        return [
+            self::index() => self::indexPage(),
+            self::directory() . '/' . self::SOURCES_PAGE => self::sourcesPage(),
+        ];
+    }
+
+    /**
      * One page: the derived half, then whatever recording goes under it.
      *
      * A tool the recording table leaves out keeps no recorded half, whatever an
      * earlier table left on its page — the written reason and a recorded answer
      * would otherwise contradict each other on one page.
      *
-     * @param array{name: string, description: string, inputSchema: array<string, mixed>, annotations: array<string, bool>, outputSchema: array<string, mixed>|null} $definition
+     * @param array{name: string, description: string, answersFrom: array<int, string>, inputSchema: array<string, mixed>, annotations: array<string, bool>, outputSchema: array<string, mixed>|null} $definition
      */
     public static function page(array $definition, string $recorded): string
     {
@@ -131,7 +152,7 @@ final class ToolSurface
     }
 
     /**
-     * @param array{name: string, description: string, inputSchema: array<string, mixed>, annotations: array<string, bool>, outputSchema: array<string, mixed>|null} $definition
+     * @param array{name: string, description: string, answersFrom: array<int, string>, inputSchema: array<string, mixed>, annotations: array<string, bool>, outputSchema: array<string, mixed>|null} $definition
      */
     private static function head(array $definition): string
     {
@@ -141,6 +162,8 @@ final class ToolSurface
             self::wrap($definition['description']),
             '',
             self::annotations($definition['annotations']),
+            '',
+            self::wrap(self::answerSources($definition['answersFrom'])),
             '',
             '## Takes',
             '',
@@ -183,6 +206,62 @@ final class ToolSurface
         }
 
         return ['## Not answered', '', self::wrap('And deliberately: ' . ToolCalls::undriven()[$name]), ''];
+    }
+
+    /**
+     * The sources, linked to what each one means.
+     *
+     * A reader who has not met the word cannot tell `packages` from
+     * `installation`, and the difference is the whole point of the line: one
+     * answers with the containers down and the other does not. So the page
+     * carries the names and the page behind them carries the meanings, written
+     * once from the enum.
+     *
+     * @param array<int, string> $sources
+     */
+    private static function answerSources(array $sources): string
+    {
+        return 'Answers from ' . implode(', ', array_map(
+            static fn(string $source): string => sprintf('[`%s`](%s#%s)', $source, self::SOURCES_PAGE, $source),
+            $sources,
+        )) . '.';
+    }
+
+    /** The page the sources on every tool page link into. */
+    public static function sourcesPage(): string
+    {
+        $lines = [
+            '# Where an answer comes from',
+            '',
+            self::wrap(
+                'Every tool declares which sources can answer it, and says so at the foot of its own description '
+                . 'and on its page here. What that answers is not what a tool is about but whether it can be '
+                . 'asked at all right now: with nothing running, the tools under knowledge and packages are the '
+                . 'ones still worth calling. Which source answered one call is `answeredBy` in that answer, '
+                . 'where the tool has two. This page is written by `bin/cli tools:index` from the Source enum.',
+            ),
+            '',
+        ];
+
+        foreach (Source::cases() as $source) {
+            $tools = [];
+            foreach (Registry::definitions() as $definition) {
+                if (in_array($source->value, $definition['answersFrom'], true)) {
+                    $tools[] = sprintf('[`%s`](%s.md)', $definition['name'], $definition['name']);
+                }
+            }
+            array_push(
+                $lines,
+                '## ' . $source->value,
+                '',
+                self::wrap($source->meaning()),
+                '',
+                self::wrap($tools === [] ? 'No tool answers from it.' : implode(', ', $tools) . '.'),
+                '',
+            );
+        }
+
+        return implode("\n", $lines);
     }
 
     /**

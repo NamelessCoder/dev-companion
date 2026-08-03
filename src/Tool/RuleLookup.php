@@ -23,6 +23,12 @@ final class RuleLookup extends ReadOnlyTool
         return 'typo3_rule_lookup';
     }
 
+    /** @return array<int, Source> */
+    public static function answersFrom(): array
+    {
+        return [Source::Knowledge];
+    }
+
     public static function description(): string
     {
         return 'Search the local TYPO3 core contribution rules and script notes by topic.';

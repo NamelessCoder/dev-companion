@@ -60,6 +60,12 @@ final class ExtensionScope extends ReadOnlyTool
         return 'typo3_extension_scope';
     }
 
+    /** @return array<int, Source> */
+    public static function answersFrom(): array
+    {
+        return [Source::Installation, Source::Packages];
+    }
+
     public static function description(): string
     {
         return 'Describe what one installed extension registers: the tables its TCA defines and the ones it extends, the content elements it adds to tt_content with the Fluid template each renders through and the FlexForm each binds, its backend modules and routes, its icons, its site sets with the files each carries, the form configurations it registers and the form definitions they store, its service tags, middlewares, which of the three Fluid root directories it ships and the namespaces it registers globally, and the shape of its Classes/ directory — and beside all that: its manual, its README, its test layers, and its XLF files with the source language each declares. Those four are answered when they are absent too, which a file listing cannot show. A content element that is an Extbase plugin is marked as one and points at plugin.tx_<identifier>: it renders through the dispatcher and has no templateName to be missing. Tables, content elements and icons come from the booted installation where there is one, attributed to this extension by the EXT: reference each entry carries, so a list built in a loop or a table added by a PHP call is in the answer; everything else is parsed from that extension\'s own files, never executed, so it answers on a fresh clone and for a third-party extension as well as for the project\'s own. answeredBy says which of the two answered, and names what packages leaves out. A registration file it ships that a core deprecation turns on — ext_tables.php, or ext_emconf.php beside a composer.json declaring neither providesPackages nor a version — is reported with what it costs, because that predicate is the file rather than anything the extension calls and no changelog search over its code reaches it. That is those two files and nothing else, so it is not an upgrade check. typo3_project_scope names the extensions this can be called for.';
@@ -149,7 +155,7 @@ final class ExtensionScope extends ReadOnlyTool
                 ], ['path', 'sourceLanguage', 'translations'])),
             ], ['manual', 'readme', 'tests', 'languageFiles'], 'What it ships beside its registrations. Every key is present even when the artifact is not, because the absence of a manual, a test or a translation is the answer a file listing cannot give.'),
             'installed' => Schema::listOf(Schema::string(), 'On a miss: the extension keys this installation does have.'),
-            'answeredBy' => Schema::answeredBy(),
+            'answeredBy' => Schema::answeredBy(self::answersFrom()),
         ], ['key', 'path', 'origin', 'tcaTables', 'tcaOverrides', 'contentElements', 'unlistedFlexForms', 'backendModules', 'icons', 'siteSets', 'formConfigurations', 'serviceTags', 'files', 'deprecatedFiles', 'notReadStatically', 'artifacts', 'answeredBy'], ['key']);
     }
 

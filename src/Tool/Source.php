@@ -1,0 +1,78 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Typo3CmsMcp\Tool;
+
+/**
+ * Where a tool's answer can come from, as the tool itself declares it.
+ *
+ * A caller choosing a tool reads what it is about in the description. What is
+ * not in there is whether the answer will exist at all when nothing is running,
+ * and that decides how a task is planned rather than only how an answer is
+ * read: a tool answering from the knowledge base answers on a fresh clone, and
+ * one answering from the installation alone is the reason to start the
+ * containers before the task instead of in the middle of it.
+ *
+ * What a tool declares is the set of sources that can answer it, first one
+ * first. Which one did answer is `answeredBy` in the output schema, and it is a
+ * different statement: this one is about the tool, that one about the call.
+ */
+enum Source: string
+{
+    /** The installation this server was started in: booted, or asked through its console. */
+    case Installation = 'installation';
+
+    /** The files the installed packages ship, read rather than executed. */
+    case Packages = 'packages';
+
+    /** The knowledge base inside this package, which needs nothing running. */
+    case Knowledge = 'knowledge';
+
+    /** A service read over the network, named in the tool's own description. */
+    case Network = 'network';
+
+    /** This server's own checkout, where the feedback files live. */
+    case Checkout = 'checkout';
+
+    /** What this source is, for the one answer that lists them all. */
+    public function meaning(): string
+    {
+        return match ($this) {
+            self::Installation => 'The installation this server was started in, booted or asked through its '
+                . 'console: its assembled state after every extension has had its say, and nothing at all where '
+                . 'it cannot be reached.',
+            self::Packages => 'The files the installed packages ship, read rather than executed. Answers on a '
+                . 'fresh clone and with the containers down; what a package registers by running is not in it.',
+            self::Knowledge => 'The knowledge base inside this package. Needs nothing running, and is bound to '
+                . 'TYPO3 versions rather than to an installation.',
+            self::Network => 'A service outside this machine. An unreachable one is said out loud rather than '
+                . 'answered as empty.',
+            self::Checkout => "This server's own checkout, which is why the tool offering it exists only in a "
+                . 'standalone one.',
+        };
+    }
+
+    /**
+     * The sentence appended to every tool description.
+     *
+     * Uniform and short on purpose: every client reads it in every session and
+     * pays for it in tokens each time, so it carries the names and leaves what
+     * they mean to typo3_server_scope, which is asked once and by choice.
+     *
+     * @param array<int, self> $sources
+     */
+    public static function clause(array $sources): string
+    {
+        return 'Answers from: ' . implode(', ', array_map(
+            static fn(self $source): string => $source->value,
+            $sources,
+        )) . '.';
+    }
+
+    /** @return array<int, string> */
+    public static function values(): array
+    {
+        return array_map(static fn(self $source): string => $source->value, self::cases());
+    }
+}

@@ -5,9 +5,11 @@ knowledge server — and about what it did well, because what worked is what mus
 not be broken later. Stored as markdown in this server's own checkout and read
 back with typo3_feedback_list, not in the project you are working in, so do not
 look for the file there. One feedback per subject: a feedback carrying three
-complaints is worked off three times over or not at all.
+complaints is worked off three times over or not at all. Answers from: checkout.
 
 `readOnlyHint: false` · `destructiveHint: false` · `idempotentHint: false` · `openWorldHint: false`
+
+Answers from [`checkout`](answer-sources.md#checkout).
 
 ## Takes
 

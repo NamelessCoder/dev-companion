@@ -56,9 +56,15 @@ final class LabelLookup extends ReadOnlyTool
         return 'typo3_label_lookup';
     }
 
+    /** @return array<int, Source> */
+    public static function answersFrom(): array
+    {
+        return [Source::Installation, Source::Packages];
+    }
+
     public static function description(): string
     {
-        return 'Search the labels registered in the TYPO3 installation you are working in. Reuse is local to the translation resource already used at the consuming code: pass resource whenever it is known, and do not reference a match from another module or package merely because its text is identical. Answered by the installation itself through its console, with the resource overrides it applies. Where the console cannot be reached — an installed TYPO3 whose database has no schema yet is the common case — the same packages\' XLF files are read instead, and answeredBy says which of the two answered.';
+        return 'Search the labels registered in the TYPO3 installation you are working in. Reuse is local to the translation resource already used at the consuming code: pass resource whenever it is known, and do not reference a match from another module or package merely because its text is identical. The console answers with the resource overrides the installation applies; where it cannot be reached — an installed TYPO3 whose database has no schema yet is the common case — the same packages\' XLF files are read instead.';
     }
 
     public static function inputSchema(): array
@@ -80,7 +86,7 @@ final class LabelLookup extends ReadOnlyTool
         return Schema::installationAnswer([
             'query' => Schema::string(),
             'matchCount' => Schema::integer(),
-            'answeredBy' => Schema::answeredBy(),
+            'answeredBy' => Schema::answeredBy(self::answersFrom()),
             'terms' => Schema::listOf(Schema::object([
                 'term' => Schema::string('One word of the query; a label has to carry every one of them.'),
                 'matchCount' => Schema::integer('How many labels this word alone reaches — where to narrow when the query as a whole reaches none.'),

@@ -40,6 +40,12 @@ final class IconLookup extends ReadOnlyTool
         return 'typo3_icon_lookup';
     }
 
+    /** @return array<int, Source> */
+    public static function answersFrom(): array
+    {
+        return [Source::Installation, Source::Packages];
+    }
+
     public static function description(): string
     {
         return 'Validate or find an icon identifier in the TYPO3 backend icon registry of the installation you are working in. It is read from the running installation, so what a package registers in a loop or from ext_localconf.php is in the answer as well as what its Configuration/Icons.php declares; where the installation cannot be booted — no console, or a checkout with no configuration yet — the T3Icons set, the package registration files and the flag images are read instead, answeredBy says \'packages\', and the answer states what that leaves out. Identifiers spell shapes rather than intents, so concept words are mapped: "warning" finds actions-exclamation-triangle. Backend only: the identifiers are resolved by IconFactory and rendered by <core:icon>, and a frontend template can use neither.';
@@ -63,7 +69,7 @@ final class IconLookup extends ReadOnlyTool
             'matchCount' => Schema::integer('For a complete identifier, 1 only when that exact identifier is registered and otherwise 0. For a concept search, the number of matching icons.'),
             'suggestionCount' => Schema::integer('Related identifiers returned beside an identifier validation. The actions-/content- usage prefix alone never makes an icon a suggestion.'),
             'exactMatch' => ['type' => 'boolean', 'description' => 'Whether the query was a registered identifier. False for a query shaped like one that is not registered — the listed icons are then suggestions, not the answer.'],
-            'answeredBy' => Schema::answeredBy(),
+            'answeredBy' => Schema::answeredBy(self::answersFrom()),
             'icons' => Schema::listOf(Schema::object([
                 'identifier' => Schema::string(),
                 'category' => Schema::string(),

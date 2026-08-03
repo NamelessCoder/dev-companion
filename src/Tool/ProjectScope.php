@@ -25,6 +25,12 @@ final class ProjectScope extends ReadOnlyTool
         return 'typo3_project_scope';
     }
 
+    /** @return array<int, Source> */
+    public static function answersFrom(): array
+    {
+        return [Source::Packages];
+    }
+
     public static function description(): string
     {
         return 'Describe the project around the TYPO3 installation this server was started in: its TYPO3 and PHP constraints, the extensions that are its own rather than TYPO3\'s, the sites it configures with the site sets each depends on, and the commands it declares in composer.json and package.json — each marked a check that hands the code back as it was, a change that rewrites something, or unknown where the declared body does not say. Read from files only, no console and no database, so it answers on a fresh clone. It also names the environment the repository configures to run itself in: a DDEV project states the PHP its container runs, which is a different interpreter from the caller\'s shell and where the commands below are run, plus what that environment runs without being asked — each hook as the stage it fires at and the command it runs, and the pull recipes its database and files come from. Call it before booting such a project or before recommending or running a check — these are the commands that exist in this repository, and the ones marked check are what a task told not to change files may run.';
@@ -87,7 +93,7 @@ final class ProjectScope extends ReadOnlyTool
                 'description' => Schema::string('What the patch is for, where composer.json says.'),
                 'file' => Schema::string('The patch file, relative to the project root.'),
             ], ['package', 'description', 'file']), 'Patches from extra.patches. A patched package does not behave as its version says.'),
-            'answeredBy' => Schema::answeredBy(),
+            'answeredBy' => Schema::answeredBy(self::answersFrom()),
         ], ['root', 'environment', 'extensions', 'sites', 'commands', 'patches', 'answeredBy'], []);
     }
 

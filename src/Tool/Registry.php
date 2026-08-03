@@ -69,6 +69,7 @@ final class Registry
      * @return array<int, array{
      *     name: string,
      *     description: string,
+     *     answersFrom: array<int, string>,
      *     inputSchema: array<string, mixed>,
      *     annotations: array<string, bool>,
      *     outputSchema: array<string, mixed>|null
@@ -76,9 +77,16 @@ final class Registry
      */
     public static function definitions(): array
     {
+        // The sources are appended to the description here rather than written
+        // into each one, so a tool that gains or loses a source cannot say the
+        // old thing in the sentence a client actually reads.
         return array_map(static fn(string $tool): array => [
             'name' => $tool::name(),
-            'description' => $tool::description(),
+            'description' => rtrim($tool::description()) . ' ' . Source::clause($tool::answersFrom()),
+            'answersFrom' => array_map(
+                static fn(Source $source): string => $source->value,
+                $tool::answersFrom(),
+            ),
             'inputSchema' => $tool::inputSchema(),
             'annotations' => $tool::annotations(),
             'outputSchema' => $tool::outputSchema(),

@@ -2,10 +2,12 @@
 
 List the backend modules registered in the TYPO3 installation you are working
 in, with the extension that declares each one, its place in the module tree, its
-labels and its route. Answered by the installation, so a project extension's
-modules are in it.
+labels and its route. A project extension's modules are in it, because the
+installation is asked rather than a snapshot. Answers from: installation.
 
 `readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: false`
+
+Answers from [`installation`](answer-sources.md#installation).
 
 ## Takes
 
@@ -20,10 +22,7 @@ query: string  # optional
 ```yaml
 query: string
 matchCount: integer  # optional
-# One of: installation, packages. installation: its assembled runtime state
-# answered. packages: read from the files the installed packages ship, because
-# the console could not be asked — overrides applied at runtime are not
-# reflected.
+# One of: installation. installation: its assembled runtime state answered.
 answeredBy: string  # optional
 modules:  # optional
   - identifier: string

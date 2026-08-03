@@ -50,6 +50,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 
 ### answers
 
+- [`D-ANS-048`][D-ANS-048] — A tool declares what can answer it, and both readers render that · 2026-08-04
 - [`D-ANS-033`][D-ANS-033] — The review server is read anonymously, and the answer says what that leaves out · 2026-08-03 · confirmed
 - [`D-ANS-034`][D-ANS-034] — A source outside this package answers JSON, or it did not answer · 2026-08-03
 - [`D-ANS-035`][D-ANS-035] — The matcher entry is owed to what the changelog tag claims · 2026-08-03 · confirmed
@@ -94,6 +95,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-ANS-002`][D-ANS-002] — Three numbers now decide what a lookup answers, and they were measured, not reasoned · 2026-07-30 · confirmed
 - [`D-ANS-003`][D-ANS-003] — Retrieval stays lexical and runtime inspection stays narrow · 2026-07-30 · confirmed
 
+[D-ANS-048]: answers/ans-048-a-tool-declares-what-can-answer-it-and-both-readers-render-that.md
 [D-ANS-033]: answers/ans-033-the-review-server-is-read-anonymously-and-the-answer-says-what-that-leaves-out.md
 [D-ANS-034]: answers/ans-034-a-source-outside-this-package-answers-json-or-it-did-not-answer.md
 [D-ANS-035]: answers/ans-035-the-matcher-entry-is-owed-to-what-the-changelog-tag-claims.md

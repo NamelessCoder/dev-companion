@@ -22,6 +22,12 @@ final class ComponentLookup extends ReadOnlyTool
         return 'typo3_component_lookup';
     }
 
+    /** @return array<int, Source> */
+    public static function answersFrom(): array
+    {
+        return [Source::Packages, Source::Knowledge];
+    }
+
     public static function description(): string
     {
         return 'Look up TYPO3 backend UI components by name or topic. Where the target is the active installation, its backend CSS, JavaScript, and installed styleguide templates supply the component contract; the curated catalog supplies the searchable names and fallback markup. Without usable installed sources, the bundled version-bound snapshot answers. Returns markup, classes, custom properties, and every source used.';

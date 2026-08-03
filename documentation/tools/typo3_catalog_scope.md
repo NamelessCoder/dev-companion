@@ -4,9 +4,13 @@ Report whether component contracts come from the active installation or the
 bundled fallback, which TYPO3 core revision the fallback catalogs were taken
 from, what they cover, and how to re-check them. Call this to judge whether a
 lookup miss is authoritative: even with installed sources, component names
-remain a curated index rather than every backend class.
+remain a curated index rather than every backend class. Answers from: packages,
+knowledge.
 
 `readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: false`
+
+Answers from [`packages`](answer-sources.md#packages),
+[`knowledge`](answer-sources.md#knowledge).
 
 ## Takes
 

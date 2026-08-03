@@ -175,6 +175,12 @@ final class TaskGuide extends ReadOnlyTool
         return 'typo3_task_guide';
     }
 
+    /** @return array<int, Source> */
+    public static function answersFrom(): array
+    {
+        return [Source::Knowledge];
+    }
+
     public static function description(): string
     {
         return 'Build a task checklist enriched with matching hints and relevant core checks. Built from bundled conventions only: it does not read your checkout, so it also names what you have to establish there yourself, routes to the lookups that fit the task, and names the task skill that owns the work where a published one does. Work that reads as a project or third-party extension is answered with what transfers only — the core checks, checklist items and steps that name something only the core repository has are left out rather than handed over.';

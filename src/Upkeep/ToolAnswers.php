@@ -114,7 +114,7 @@ final class ToolAnswers
         }
         self::pointAt($primary);
 
-        $pages = [ToolSurface::index() => ToolSurface::indexPage()];
+        $pages = ToolSurface::standingPages();
         foreach (Registry::definitions() as $definition) {
             $name = $definition['name'];
             $answered = $tools !== [] && !in_array($name, $tools, true)

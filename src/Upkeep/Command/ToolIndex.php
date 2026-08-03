@@ -46,7 +46,7 @@ final class ToolIndex
         $output->writeln(sprintf(
             '%s — %d pages',
             substr(ToolSurface::index(), strlen(Paths::root()) + 1),
-            count($pages) - 1,
+            count($pages) - count(ToolSurface::standingPages()),
         ));
 
         return 0;

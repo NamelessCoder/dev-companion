@@ -1,7 +1,9 @@
-# Task: seed a local TYPO3 14.3.5 development instance with demo content from a distribution packag...
+# Task: give a standalone TYPO3 extension repository a local development environment in which the e...
 
-**Serves:** feedback/2026-08-03-162836-task-seed-a-local-typo3-14-3-5-development.md
+**Serves:** feedback/2026-08-03-162745-task-give-a-standalone-typo3-extension.md
 **Priority:** low
+**Branch:** todo/task-give-a-standalone-typo3-extension
+**Claimed:** 2026-08-03
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-03-144410-task-review-core-commit-9f6c6eb9093-110359-and.md, R-GUI-012
 **Priority:** normal
+**Branch:** todo/say-in-the-brief-which-hints-it-left-behind
+**Claimed:** 2026-08-03
 
 Judged against
 [`D-GUI-007`](../../decisions/guides/gui-007-the-brief-carries-a-selection-of-the-hints-and-says-whose-they-are.md),

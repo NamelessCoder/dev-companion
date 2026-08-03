@@ -1,7 +1,9 @@
-# Task: give a standalone TYPO3 extension repository a local development environment in which the e...
+# Task: full conformance audit of the project extension EXT:guidedtour against a TYPO3 14.3.5 insta...
 
-**Serves:** feedback/2026-08-03-162745-task-give-a-standalone-typo3-extension.md
+**Serves:** feedback/2026-08-03-164659-installation-the-highest-impact-finding-of-the.md
 **Priority:** low
+**Branch:** todo/installation-the-highest-impact-finding-of-the
+**Claimed:** 2026-08-03
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

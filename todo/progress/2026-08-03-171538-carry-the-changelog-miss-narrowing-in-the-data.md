@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-03-144349-task-review-core-commit-9f6c6eb9093-110359-the.md
 **Priority:** normal
+**Branch:** todo/carry-the-changelog-miss-narrowing-in-the-data
+**Claimed:** 2026-08-03
 
 [`D-ANS-043`](../../decisions/answers/ans-043-a-miss-is-answered-in-data-and-says-which-corpus-its-silence-belongs-to.md),
 which a review session paid for on 2026-08-03: it read `matchCount: 0` and the

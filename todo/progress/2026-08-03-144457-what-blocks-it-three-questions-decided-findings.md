@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-03-144457-what-blocks-it-three-questions-decided-findings.md
 **Priority:** normal
+**Branch:** todo/what-blocks-it-three-questions-decided-findings
+**Claimed:** 2026-08-03
 
 `skills/base.md`'s `## When the lookups run out` answers a behaviour question
 with the class that implements it and the one it inherits from. *Is

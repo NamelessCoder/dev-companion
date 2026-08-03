@@ -1,7 +1,9 @@
-# Task: boot an existing TYPO3 Composer project locally from a fresh clone, changing no code — inst...
+# Task: give a standalone TYPO3 extension repository a local development environment. Setting the e...
 
-**Serves:** feedback/2026-08-03-154501-task-boot-an-existing-typo3-composer-project.md
+**Serves:** feedback/2026-08-03-162759-setting-the-extension-s-own-composer-json-up-as.md
 **Priority:** low
+**Branch:** todo/setting-the-extension-s-own-composer-json-up-as
+**Claimed:** 2026-08-03
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

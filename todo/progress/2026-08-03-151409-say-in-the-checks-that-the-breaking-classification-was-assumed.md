@@ -2,6 +2,8 @@
 
 **Serves:** R-GUI-011, feedback/2026-08-03-144432-say-whether-it-can-go-up-the-call-was-correct.md
 **Priority:** normal
+**Branch:** todo/say-in-the-checks-that-the-breaking-classification-was-assumed
+**Claimed:** 2026-08-03
 
 Add an `info` check `breaking-not-assessed` to `CommitMessage::checks()`, for a
 core message whose subject carries no `[!!!]` and whose caller passed no

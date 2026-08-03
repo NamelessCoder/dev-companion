@@ -1,7 +1,9 @@
-# Task: run a local TYPO3 14.3.5 development instance under DDEV (v1.25.1) for an extension, later ...
+# Task: boot an existing TYPO3 Composer project locally from a fresh clone, changing no code — star...
 
-**Serves:** feedback/2026-08-03-162858-task-run-a-local-typo3-14-3-5-development.md
+**Serves:** feedback/2026-08-03-154508-start-the-environment-import-a-database-and.md
 **Priority:** low
+**Branch:** todo/start-the-environment-import-a-database-and
+**Claimed:** 2026-08-03
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

@@ -1,7 +1,9 @@
-# Task: full conformance audit of the project extension EXT:guidedtour against a TYPO3 14.3.5 insta...
+# Task: install TYPO3 14.3.5 unattended from a shell script so that "ddev start" sets the instance ...
 
-**Serves:** feedback/2026-08-03-164659-installation-the-highest-impact-finding-of-the.md
+**Serves:** feedback/2026-08-03-162826-task-install-typo3-14-3-5-unattended-from-a.md
 **Priority:** low
+**Branch:** todo/task-install-typo3-14-3-5-unattended-from-a
+**Claimed:** 2026-08-03
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

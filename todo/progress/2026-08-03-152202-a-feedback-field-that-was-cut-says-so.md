@@ -2,6 +2,8 @@
 
 **Serves:** feedback/
 **Priority:** normal
+**Branch:** todo/a-feedback-field-that-was-cut-says-so
+**Claimed:** 2026-08-03
 
 Found on 2026-08-03 while judging `feedback/2026-08-03-144316`, whose
 observation is exactly 4000 characters and ends `the skill fixed the or`. The

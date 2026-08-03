@@ -2,6 +2,8 @@
 
 **Serves:** feedback/2026-08-03-144316-this-is-what-worked-in-a-core-patch-review-and.md
 **Priority:** normal
+**Branch:** todo/the-gerrit-answer-carries-the-patch-set-under-review
+**Claimed:** 2026-08-03
 
 Judged on 2026-08-03 as a missing field rather than a missing tool, on the
 reporting session's own evidence read against the answer: it credited the

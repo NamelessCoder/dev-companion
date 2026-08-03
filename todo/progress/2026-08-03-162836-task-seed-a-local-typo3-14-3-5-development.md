@@ -1,7 +1,9 @@
-# Task: install TYPO3 14.3.5 unattended from a shell script so that "ddev start" sets the instance ...
+# Task: seed a local TYPO3 14.3.5 development instance with demo content from a distribution packag...
 
-**Serves:** feedback/2026-08-03-162826-task-install-typo3-14-3-5-unattended-from-a.md
+**Serves:** feedback/2026-08-03-162836-task-seed-a-local-typo3-14-3-5-development.md
 **Priority:** low
+**Branch:** todo/task-seed-a-local-typo3-14-3-5-development
+**Claimed:** 2026-08-03
 
 Judge this feedback rather than fix what it reports: re-run the query that
 produced it against the server as it is now, then close it, trim it to the half

@@ -2789,6 +2789,55 @@ final class HintsTest extends TestCase
     }
 
     /**
+     * The reported miss is a testimonials element built on TCA and a
+     * DatabaseQueryProcessor, in an extension whose other plugins are Extbase,
+     * with Extbase never considered. The fork is written on the extbase and the
+     * frontend-records hint, and both open on a word this task has no reason to
+     * use — which is asserted here, because it is what the checklist delivers
+     * instead of. The wording is read off `.checkouts/14.3`:
+     * `registerPlugin()` hands `addPlugin()` a `SelectItem` for the CType
+     * column, the same column `addRecordType()` writes, and
+     * `configurePlugin()` generates `tt_content.<signature> =< lib.contentElement`
+     * with `20 = EXTBASEPLUGIN`. So the fork is not element or plugin.
+     */
+    #[Test]
+    public function aContentElementTaskIsOfferedTheExtbaseForkWithoutNamingIt(): void
+    {
+        $task = 'new content element for testimonials with a repeatable list of entries, TCA and Fluid rendering';
+
+        $reached = array_column(Hints::find([], $task, 6)['matchedHints'], 'id');
+        self::assertNotContains('extbase', $reached, 'the fork is filed under a branch this task did not name');
+        self::assertNotContains('frontend-records', $reached);
+
+        $result = Registry::call('typo3_task_guide', ['task' => $task]);
+        self::assertContains('content-element', array_column($result->data['intents'], 'id'));
+
+        $checklist = implode("\n", $result->data['checklist']);
+        self::assertStringContainsString('needs Extbase', $checklist);
+        self::assertStringContainsString('same CType selector', $checklist);
+        self::assertStringContainsString('no model, no repository and no controller', $checklist);
+        // The other half: what the extension already does is reported and is
+        // evidence about the architecture, not only about where a template is.
+        self::assertStringContainsString('kind of element or plugin', $checklist);
+
+        // A fork is only worth anything while the choice is still free, so it
+        // arrives before the registration and the template do.
+        self::assertLessThan(
+            (int) strpos($checklist, 'Register this element in a file of its own'),
+            (int) strpos($checklist, 'needs Extbase'),
+        );
+
+        // Where the rest of the fork is, carried by the checklist rather than
+        // by the tool list: nextTools keeps one entry per tool, and this is not
+        // the only intent a content-element task matches that names the lookup.
+        self::assertStringContainsString('id=extbase', $checklist);
+        self::assertStringContainsString('id=frontend-records', $checklist);
+
+        $when = array_column($result->data['nextTools'], 'when', 'tool');
+        self::assertStringContainsString('architecture this extension already has', $when['typo3_extension_scope'] ?? '');
+    }
+
+    /**
      * The corpus registered the preview template and stopped there, so a
      * session arrived at a template with one variable in it and no statement
      * about what that variable is. Both halves are read off the checkouts:

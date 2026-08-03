@@ -1,7 +1,7 @@
 ---
 id: R-ANS-016
-status: open
-restsOn: [D-ANS-027]
+status: held
+restsOn: [D-ANS-027, D-ANS-039]
 ---
 
 # R-ANS-016 — A content-element task is offered the Extbase fork
@@ -11,18 +11,22 @@ Extbase-or-not fork without having named Extbase, a plugin or a repository
 first.**
 
 The fork itself is on the `extbase` and the `frontend-records` hint and is not
-restated here. What this demands is that it arrive, and it does not today: both
-paths to it open on a word the caller has to supply, and the word is the option
-they have not considered. A session describing its work as the work — a new
-content element with a repeatable list — is describing the decision, at the one
-point where it is still free to make.
+restated here. What this demands is that it arrive: both paths to it open on a
+word the caller has to supply, and the word is the option they have not
+considered. A session describing its work as the work — a new content element
+with a repeatable list — is describing the decision, at the one point where it
+is still free to make.
+
+It also demands that the fork be right about the versions it is delivered on. A
+plugin is a `CType` like any other since v14, registered into the same selector
+as any other element, so a wording that offers "a content element or an Extbase
+plugin" offers two categories that are one.
 
 The other half is what the extension already does. `typo3_extension_scope`
 reports each content element with a `kind` of `element` or `plugin` and
 `skills/base.md` orders that call before the checkout is read, so the convention
-is in the session's hands already; both places that name the call describe its
-answer as where an element renders. What this requires is that it also read as
-evidence about the architecture.
+is in the session's hands already. What this requires is that it read as
+evidence about the architecture rather than only about where an element renders.
 
 ## From
 
@@ -40,6 +44,9 @@ pagination is what brings `extbase` back.
 
 ## Held by
 
-Not guarded. Nothing today asks a query to reach a hint it does not name, and
-which answer carries the fork is open — `bin/cli hints:coverage` reports what a
-scenario prompt reaches, and its prompts are not this shape.
+- `HintsTest::aContentElementTaskIsOfferedTheExtbaseForkWithoutNamingIt`
+
+It holds this the way the fork is delivered: the two hints stay unreachable from
+the reporting query, and the `content-element` checklist is what carries the
+fork to it instead. What no test holds is whether a session acts on a checklist
+item it was handed.

@@ -2215,6 +2215,60 @@ final class HintsTest extends TestCase
         self::assertNotSame([], $invocation['examples']);
     }
 
+    /**
+     * The three things that make a suite command runnable unattended, on the
+     * patch a session reported them from.
+     *
+     * `feedback/2026-08-01-121852` reviewed the AssetCollector deprecation and
+     * reported the answer to these paths as the one that "ran clean first try",
+     * naming CI=true, the `--` passthrough and `-n` for cgl. Narrowing was
+     * already held — by theSuiteListItselfIsFilteredByTheBranchItIsAskedFor and
+     * aPathNamedInTheQueryNarrowsTheSuitesAsAnExplicitPathWould — and the
+     * invocation itself by nothing: `targeted` could have been dropped from
+     * every entry in knowledge/test-suite-hints.json and no test would have
+     * noticed, while `catalog:check` verifies the `-s <suite>` of a command and
+     * not its options.
+     *
+     * All three are read in `.checkouts/main/Build/Scripts/runTests.sh`: line 6
+     * branches on `CI`, `shift $((OPTIND - 1))` hands what follows `--` to the
+     * tool, and `-n` sets CGLCHECK_DRY_RUN, which the cgl suite turns into
+     * `--dry-run --diff`.
+     */
+    #[Test]
+    public function theTargetedInvocationSurvivesWithTheThreeThingsThatMakeItRunnable(): void
+    {
+        $answer = Registry::call('typo3_test_run_guide', [
+            'query' => 'functional unit cgl phpstan',
+            'paths' => [
+                'typo3/sysext/core/Classes/Page/AssetCollector.php',
+                'typo3/sysext/core/Tests/Unit/Page/AssetCollectorTest.php',
+                'typo3/sysext/frontend/Tests/Functional/ContentObject/ImageContentObjectTest.php',
+            ],
+            'targetVersion' => 'main',
+        ]);
+
+        $targeted = [];
+        foreach ($answer->data['suites'] as $suite) {
+            self::assertStringStartsWith('CI=true ', $suite['command'], $suite['suite'] . ' is handed over without CI=true');
+            if ($suite['targeted'] !== null) {
+                self::assertStringStartsWith('CI=true ', $suite['targeted']);
+                $targeted[$suite['suite']] = $suite['targeted'];
+            }
+        }
+
+        self::assertSame('CI=true ./Build/Scripts/runTests.sh -s cgl -n', $targeted['cgl'] ?? null);
+        self::assertStringContainsString(' -- ', $targeted['unit'] ?? '');
+        self::assertStringContainsString(' -- ', $targeted['functional'] ?? '');
+        self::assertStringContainsString('Targeted run while iterating:', $answer->text);
+
+        // And the note that says why the passthrough is there at all, which is
+        // what tells a caller the form generalises past the examples.
+        self::assertStringContainsString(
+            'Everything after `--` is handed to the underlying tool unchanged',
+            implode("\n", TestSuiteHints::invocation()['notes'])
+        );
+    }
+
     #[Test]
     public function aDeprecationTaskIsRecognizedAsOne(): void
     {

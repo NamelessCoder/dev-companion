@@ -91,6 +91,9 @@ other side: what is the strength evidence of?
   and checking its quotations reaches that property anyway. The step added below
   — read what the praise implies, not only what it quotes — would then be one
   this entry did not need.
+- A keep-request is refused on a re-run and the sentence turns out to have been
+  right after all, so that reading a strength against today's file lost
+  something the session knew and this repository had forgotten.
 - The text is not where an absence has to be said, because the clients that
   matter render the data. `R-ANS-002` assumes the opposite client, and no
   recorded run here shows which of the two a session is.
@@ -432,3 +435,90 @@ What the change rests on is that the discrimination now stands in
 `task-intents.json` and in the hint corpus at once. It is wrong if one is
 rewritten and the other keeps the old wording, because then this run bought a
 delivery and paid for it with two statements of one rule.
+## Confirmed on 2026-08-03
+
+The **Since then** above says a quotation is evidence about the file rather than
+about the session, and is read before the boundary is. This is the strength that
+says what such a quotation is evidence *of*, because here the file held it and
+the file was wrong.
+
+`feedback/2026-08-01-121852` reviewed the AssetCollector deprecation in
+`/home/benji/projects/typo3-cms` and calls one answer "the single most useful of
+the whole review": that this server "never reads, inspects or runs anything
+against a TYPO3 core checkout; determine the changed paths yourself and pass
+them to typo3_architecture_lookup and typo3_task_guide". The quotation is exact.
+It is the first `doesNotCover` entry of `knowledge/server-scope.json` at
+`18a371a`, which is the version that was in play on 2026-08-01, down to the tool
+name — `typo3_architecture_lookup` was renamed to `typo3_hint_lookup` at
+`7553cb3` afterwards.
+
+That sentence was false when it was praised, and `f8be448` deleted it two days
+later. `typo3_project_scope`, started in the very checkout this review was
+written in, answers
+`core-checkout, TYPO3 15.0.0-dev, PHP ^8.5 declared and 8.5 in DDEV` with the
+four `composer gerrit:setup` scripts it read there. The boundary that holds is
+git, not the checkout, and `R-SCO-008` now carries
+`ScopeTest::noExclusionDeniesASourceTheServerReads` for it.
+
+So the keep-request is refused, and that is the point worth recording: there is
+nothing left to keep. What the session acted on was never the `why` it quotes —
+it was the `instead` beside it, *determine the changed paths yourself and pass
+them in*, which is true, survived the rewrite, and is what
+`typo3-core-patch-review` now opens with. An exclusion is used through its
+`instead`; its `why` is read once and believed, and no use of it tests the
+claim. That is why the session that called the sentence its most useful answer
+is also the one that could not notice it was untrue.
+
+The corpus reports both sides on one day. `feedback/2026-08-01-115115` comes
+from the same checkout and the same review week, and its strength is that
+`typo3_project_scope` "correctly identified the checkout as a TYPO3 core
+(15.0.0-dev, PHP ^8.5, no project extensions, no sites)" — the reading the other
+strength praises this server for never doing. Neither session saw the other, and
+both were right about what they received.
+
+**A strength's quotation dates a file; it does not verify it.** What it
+establishes is that the sentence was there and was read, which is what makes it
+evidence at all. Whether it was true is a separate question with a separate
+source, and a keep-request is therefore answered against the file as it is now
+rather than against the praise.
+
+The rest of the report reproduces. Re-run on 2026-08-03 through
+`bin/typo3-cms-mcp` from `/home/benji/projects/typo3-cms`, whose DDEV project is
+paused, so the console was not reachable and neither tool needs it:
+
+- `typo3_test_run_guide` with the eleven changed paths of `e82b930e6e0`, the
+  patch under review, narrows to the php, fluid and docs domains and answers
+  `cgl`, `cglGit`, `functional`, `phpstan`, `unit` and `checkIntegrityPhp`.
+  Every command carries `CI=true`, `cgl` carries `-n`, and `unit` and
+  `functional` carry the `--` passthrough — the three things the report names as
+  what ran clean first try.
+- `typo3_commit_message_guide` with that patch's message returns it wrapped at
+  72 characters and one check: the changelog `.rst` a deprecation owes. No
+  readiness is claimed anywhere in the answer, which is the "no false readiness
+  flags" the report credits.
+- The per-tool attribution it asks be kept is in every topic of
+  `typo3_server_scope`, as the `Tools:` and `Source:` lines.
+
+Its suggestion has landed. `1b61d5d` put the review row into `routing` —
+`typo3_rule_lookup` per obligation, `typo3_changelog_lookup` for the precedent,
+`typo3_test_run_guide` with the changed paths, then `typo3_commit_message_guide`
+— and published
+[`D-SKL-005`](../task-skills/skl-005-core-contribution-earns-a-skill-and-the-domain-is-the-work.md)'s
+`typo3-core-patch-review`, which states this feedback's boundary in the working
+form. The companion note it points at is `feedback/archive/2026-08-01-121847`,
+from the same review and closed on 2026-08-02.
+
+One thing was found unguarded and is guarded now, which is what the third
+**Wrong if** asks a closed strength to leave behind. The narrowing this report
+credits was held twice over; the invocation was held by nothing. Dropping
+`targeted` from every entry of `knowledge/test-suite-hints.json` broke no test,
+and `catalog:check` verifies the `-s <suite>` of a command against
+`.checkouts/`, never its options.
+`HintsTest::theTargetedInvocationSurvivesWithTheThreeThingsThatMakeItRunnable`
+names them on the paths the report is about. No statement about TYPO3 was
+established for it: all three are read in
+`.checkouts/main/Build/Scripts/runTests.sh`, where line 6 branches on `CI`,
+`shift $((OPTIND - 1))` hands what follows `--` to the tool, and `-n` sets
+`CGLCHECK_DRY_RUN`, which `cgl` turns into `--dry-run --diff`.
+
+The feedback is closed by this commit and nothing is queued.

@@ -3,7 +3,8 @@
 Find out whether a TYPO3 core patch already exists, from the review server at
 review.typo3.org. Pass issue with a Forge issue number to search the commit
 messages of every change for it — the question "has somebody already fixed this"
-— or change with a change number to read one. Answers with the change number,
+— or change with the Change-Id from a commit message, or the change number a
+review URL ends with, to read the one it names. Answers with the change number,
 subject, status, target branch and review URL. A call carries issue or change,
 never both. This reaches the network, and it reads: reviewing, voting and
 uploading stay yours.
@@ -17,8 +18,13 @@ uploading stay yours.
 # Searches every change whose commit message names it, which is where Resolves:
 # and Related: put it. A call carries issue or change, never both.
 issue: string  # optional
-# Gerrit change number, the digits a review URL ends with, for example "89011".
-# A call carries issue or change, never both.
+# One change to read, named either by the Change-Id its commit message carries,
+# for example "I0f4c5b9a3e2d1c7b8a6f5e4d3c2b1a0f9e8d7c6b", or by the change
+# number a review URL ends with, for example "89011". Prefer the Change-Id where
+# the commit is in front of you: it is part of the patch being read, it survives
+# being amended into a new patch set, and it cannot be mistaken for the Forge
+# issue number the way a bare change number can. A call carries issue or change,
+# never both.
 change: string  # optional
 limit: integer  # optional
 ```

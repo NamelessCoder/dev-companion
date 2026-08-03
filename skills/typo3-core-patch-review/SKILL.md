@@ -35,6 +35,43 @@ query, resolves a path, writes a label or registers something the core has to
 find collides with the conventions of that subject wherever its file happens to
 live, and a query naming only the subsystem the paths are in never reaches them.
 
+## What the project already says about this patch
+
+The message names two things the diff does not contain — the issue it resolves
+and the change it is — and both are read before the code is read a second time.
+
+- `typo3_forge_lookup` with the issue number. What the change is *for* belongs
+  to the issue, and a review that takes it from the commit message has the
+  author's account of the problem and of the solution. It is also where a series
+  says it is one: an issue calling itself a part tells you the patch is not
+  meant to stand alone, which decides every finding about what is missing from
+  it.
+- `typo3_gerrit_lookup` with the `Change-Id` the message carries. It answers
+  whether the change is on the review server, at which patch set, against which
+  branch and in what state. A comment somebody left on an earlier patch set and
+  nobody answered is a finding of its own, and it is the one this review would
+  otherwise make a second time.
+
+**Both arguments come out of the commit message, and that is what makes them
+safe.** `Resolves:` is the Forge issue and `Change-Id:` is the change; each is
+part of the patch being read, and the `Change-Id` keeps naming the same change
+after an amend, which a patch set number does not. Carrying a number in from
+somewhere else is where this goes wrong: the two identifiers are different
+numbers, a change number asked for as an issue still answers, and what comes
+back is a real change and a real issue that belong to neither this patch nor
+each other. Nothing in either payload says so, so the check is the subject — the
+change that comes back carries the subject of the commit under review, or the
+number was wrong rather than the patch.
+
+A patch that is not pushed yet has no change, and an answer of nothing is a
+result: say so rather than leaving the surface silent. Where the commit in the
+checkout and the change on the server differ, name which of the two was read —
+reviewing an older patch set than the one that exists is the failure this step
+is here for, and the checkout cannot report it.
+
+Reading is the whole of it. Voting, commenting and uploading stay with the
+person doing the review.
+
 ## What the patch owes, per finding
 
 Ask the owner of each obligation rather than recalling it:

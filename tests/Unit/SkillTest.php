@@ -39,6 +39,8 @@ final class SkillTest extends TestCase
         ],
         'typo3-core-patch-review' => [
             'typo3_hint_lookup',
+            'typo3_forge_lookup',
+            'typo3_gerrit_lookup',
             'typo3_rule_lookup',
             'typo3_changelog_lookup',
             'typo3_test_run_guide',
@@ -369,6 +371,57 @@ final class SkillTest extends TestCase
             'what was raised while reading and dropped, with what dropped it',
             $skill,
         );
+    }
+
+    #[Test]
+    public function aReviewReadsTheReviewThePatchIsAlreadyIn(): void
+    {
+        // Both tools existed and no skill routed to either. The third recorded
+        // REVIEW-03 run reviewed change 95070 without asking for it: the issue
+        // it resolves is called "Avoid calling ImageService methods - part 2",
+        // carries no description, and its part 1 is already in origin/main —
+        // so the run judged a series as a patch standing alone, and its own
+        // report closed by saying the issue had not been fetched (`D-SKL-008`).
+        $skill = (string) preg_replace('/\s+/', ' ', (string) file_get_contents(
+            Paths::root() . '/skills/typo3-core-patch-review/SKILL.md',
+        ));
+
+        self::assertStringContainsString('## What the project already says about this patch', $skill);
+        self::assertStringContainsString('`typo3_forge_lookup` with the issue number', $skill);
+        self::assertStringContainsString('`typo3_gerrit_lookup` with the `Change-Id` the message carries', $skill);
+        // The issue is where a series announces itself, which is what makes the
+        // set rule reachable at all.
+        self::assertStringContainsString('an issue calling itself a part tells you the patch is not', $skill);
+        // An unanswered comment is the finding this step exists for.
+        self::assertStringContainsString('nobody answered is a finding of its own', $skill);
+        // The trap, measured on 2026-08-03 rather than assumed: the Forge issue
+        // and the Gerrit change are different numbers, and swapping them does
+        // not fail. `typo3_gerrit_lookup` given 95070 as an issue answers with
+        // change 70860, a MERGED acceptance-test cleanup from 2021, because it
+        // searches commit messages for the string; `typo3_forge_lookup` given
+        // the same number answers with issue 95070, a closed 11.4 task. Both
+        // report `answered` and neither payload says the number was the other
+        // one's, so a review can read a 2021 change believing it read this one.
+        self::assertStringContainsString('Both arguments come out of the commit message', $skill);
+        self::assertStringContainsString(
+            'carries the subject of the commit under review, or the number was wrong',
+            $skill,
+        );
+        // The Change-Id is the one that survives an amend, so it is what a
+        // review of a patch that will come back is told to hold.
+        self::assertStringContainsString('keeps naming the same change after an amend', $skill);
+        // An answer of nothing is a result rather than a silence, which is what
+        // keeps a not-yet-pushed patch from reading as unchecked.
+        self::assertStringContainsString('an answer of nothing is a result', $skill);
+        // Reading only: the server holds no credential and the review does not
+        // vote on the caller's behalf.
+        self::assertStringContainsString('Voting, commenting and uploading stay with the person', $skill);
+
+        $checklist = (string) preg_replace('/\s+/', ' ', (string) file_get_contents(
+            Paths::root() . '/skills/typo3-core-patch-review/references/checklist.md',
+        ));
+        self::assertStringContainsString('**The review this patch is already in.**', $checklist);
+        self::assertStringContainsString('The issue is read for that, not inferred from the message', $checklist);
     }
 
     #[Test]

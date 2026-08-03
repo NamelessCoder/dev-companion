@@ -35,6 +35,11 @@ word is unassessed.
   markers the change type requires.
 - **Review readiness.** Whether the patch can be understood from the issue and
   the message alone, and whether a reviewer can reproduce what it claims to fix.
+  The issue is read for that, not inferred from the message that names it.
+- **The review this patch is already in.** What the issue asks for, whether the
+  change is on the review server and at which patch set, and whether a comment
+  from an earlier one went unanswered. An unanswered comment is why a change
+  sits unmerged, and none of this is visible from the checkout.
 - **Security.** Where the diff touches authorization, user input, output
   escaping, file paths, or a boundary between what a role may and may not do. A
   finding here is a value and a sink, and both are established or it is not a

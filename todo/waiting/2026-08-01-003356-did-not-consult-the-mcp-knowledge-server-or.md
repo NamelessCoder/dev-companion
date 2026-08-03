@@ -19,6 +19,13 @@ joins them. The other half of the feedback — that no skill activated — alrea
 has the `D-AUD-003` description rewrite of 2026-08-02 against it, made for this
 same task shape and not yet confirmed by a run.
 
+The whole `site-new` corpus was read sideways on 2026-08-03 and the reading is
+[`D-SKL-006`](../../decisions/task-skills/skl-006-the-site-new-cluster-earns-the-route-into-the-skill-that-owns-the-task.md).
+It settles what this session's fourteen feedback are evidence about: the skill
+that owns the task exists and was never loaded, so the cluster earns no new one.
+The question above is what it earns, and `todo/waiting/2026-07-31-192945` asks
+it from inside a skill.
+
 What the reading established, so the answer does not need it again. `site-new`
 runs `bin/typo3-cms-mcp` out of the main checkout, and `18a371a` put the
 hand-off sentence into the `instructions` at 18:33 CEST on 2026-07-31, six hours

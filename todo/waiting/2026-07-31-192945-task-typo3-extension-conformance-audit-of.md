@@ -27,6 +27,12 @@ back at steps 4 and 5, and names no workflow — `src/Tool/TaskGuide.php` has no
 skill in it. `feedback/2026-07-31-194826` is the same call from another model in
 the same project, reporting that it restated the skill's own checklist.
 
+The whole `site-new` corpus was read sideways on 2026-08-03 and the reading is
+[`D-SKL-006`](../../decisions/task-skills/skl-006-the-site-new-cluster-earns-the-route-into-the-skill-that-owns-the-task.md).
+It changes nothing here and adds one thing: `2026-08-01-003356` asks this same
+question from outside a skill, and one answer settles both cards. It also says
+why the answer outranks the eight queued cards of that cluster.
+
 Once answered, the feedback is archived by the commit that implements whichever
 side was chosen. `feedback/2026-07-31-194826` was the other half of the same
 property and was judged on 2026-08-02. It does not wait here: what it reports

@@ -17,7 +17,8 @@ cannot be corrected.
    result: a rule fetched after the diff has been read confirms a reading
    instead of testing it.
 2. Read [references/checklist.md](references/checklist.md) for the review
-   surfaces, what a finding owes, and the severity rubric.
+   surfaces, what a finding owes, what a dropped candidate owes, and the
+   severity rubric.
 3. Establish the patch itself. The server does not read your working tree, and
    what it needs from you is exactly what a patch is: **the changed paths**,
    **the branch it targets**, **the commit message**, and **the issue it
@@ -28,6 +29,11 @@ cannot be corrected.
 The changed paths are the argument, not the subject. Pass them to
 `typo3_hint_lookup` for the conventions of the subsystem the patch is in, one
 call per subsystem, before forming a view of whether the code is right.
+
+What the diff *does* routes as well as where it sits. A change that builds a
+query, resolves a path, writes a label or registers something the core has to
+find collides with the conventions of that subject wherever its file happens to
+live, and a query naming only the subsystem the paths are in never reaches them.
 
 ## What the patch owes, per finding
 
@@ -51,6 +57,12 @@ Ask the owner of each obligation rather than recalling it:
 Every finding names the changed path it is about. A statement about the
 subsystem that does not tie to a line in this diff belongs in the issue, not in
 a review of a patch.
+
+Where the patch is one of a set, a finding is read against the state at the end
+of the set before it is reported. What a later patch in the same set removes is
+not a defect of the set, and establishing that is a reading of that patch rather
+than of what a message promises about it. It is still reported where each patch
+has to stand on its own, and it names the later one that settles it.
 
 ## Verification is the project's own, and it is narrowed by the diff
 
@@ -89,7 +101,8 @@ Order by what stops the patch, and say why each one stops it:
 2. what a reviewer would send it back for;
 3. what is worth changing and would not block it;
 4. what was checked and is correct — briefly, so a silent surface and a verified
-   one are not read alike.
+   one are not read alike;
+5. what was raised while reading and dropped, with what dropped it.
 
 Close on the checklist's surfaces with each one marked assessed, unassessed or
 not applicable to this diff. A review that reports only findings cannot be told

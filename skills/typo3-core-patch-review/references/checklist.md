@@ -37,20 +37,60 @@ nobody looked at reads as clean unless it is named.
 
 ## What a finding owes
 
-Every finding carries four things, and one of them is the one reviews skip:
+Every finding carries five things, and two of them are the ones reviews skip:
 
 1. the changed path, at its line;
 2. what the patch does there;
 3. the rule or the behaviour it collides with, from the lookup that owns it;
-4. **the consequence** — what breaks, for whom, and when it would be noticed.
+4. **the consequence** — what breaks, for whom, and when it would be noticed;
+5. **whether this patch introduced it** — the line the diff wrote and the line
+   it only moved past are two different requests to the author.
 
 A finding without the fourth is a preference. A finding whose rule came from
-recall rather than from a lookup is a preference with a citation.
+recall rather than from a lookup is a preference with a citation. A finding
+without the fifth sends the author to repair something they did not change, and
+nothing in the report says it was not meant to.
+
+What the patch did not introduce is reported in those words. It stays in the
+review where it blocks submission on its own and goes to the issue tracker
+otherwise, because the reading that was asked for is of a change, and a list of
+what was already wrong around it is a second review nobody ordered.
 
 Distinguish what was verified from what was reasoned. A behaviour traced into
 the installed code, a command that was run with its output, and a reading of the
 diff are three different weights, and a report that does not separate them hands
 the reader a uniform confidence the review did not have.
+
+## What a dropped candidate owes
+
+A review drops more than it reports, and dropping is the step nothing records.
+Each candidate raised while reading and then let go is named with what let it go
+— the guard that turned out to be there, the caller that holds it, the rule that
+turned out not to apply, the line that was actually read. One sentence each, and
+it is what tells the reader that a quiet surface went quiet after the reading
+rather than before it.
+
+The two directions are not held to the same bar. Raising a candidate costs a
+reading; dropping one costs the author a finding, silently, and nothing
+afterwards says it happened. So a candidate is dropped only where something
+concretely disproves it, and one that can be neither established nor disproved
+is reported as open, with the reading that would settle it named beside it.
+
+Two dismissals go wrong reliably:
+
+- Dropped because a comment, a docblock or an annotation says the code behaves
+  that way. That is a sentence somebody wrote, not the behaviour — read the
+  implementation it describes, and where the two disagree the disagreement is
+  the finding.
+- Dropped because it looks unlikely to happen. Unlikely is not disproved. What
+  disproves a path is what makes it impossible: a guard that cannot be passed or
+  a caller that cannot exist, at a line.
+
+Before a finding is reported, make the author's case against it — the caller
+they know holds the guard, the invariant the subsystem carries, the choice the
+commit message already states. What survives that is reported together with what
+it survived; what does not is a dropped candidate, with the same evidence
+written down.
 
 ## Severity
 
@@ -67,3 +107,8 @@ the reader a uniform confidence the review did not have.
 Rank by what stops the patch first and by consequence second. A cosmetic finding
 above a behavioural one costs the review its credibility for the rest of the
 list.
+
+Who can reach the path raises a rank and never lowers one. A diff is the weakest
+evidence there is about reachability, and a real finding ranked down because it
+looked hard to reach is the mistake this rubric cannot recover from: where the
+path could not be established, rank on consequence and say so.

@@ -339,6 +339,66 @@ final class SkillTest extends TestCase
     }
 
     #[Test]
+    public function aReviewReportsWhatItDroppedAndWhatDroppedIt(): void
+    {
+        // What a review let go is the half nothing recorded: a candidate dropped
+        // in silence and a surface nobody opened leave the same trace in the
+        // report. The conformance checklist already states the bar for one
+        // subject — a security verdict has to be disproved before it can be
+        // dismissed — and what makes it a bar is not the subject but who pays
+        // for it being wrong, which is the reader either way (`D-SKL-007`).
+        $checklist = (string) preg_replace('/\s+/', ' ', (string) file_get_contents(
+            Paths::root() . '/skills/typo3-core-patch-review/references/checklist.md',
+        ));
+
+        self::assertStringContainsString('## What a dropped candidate owes', $checklist);
+        self::assertStringContainsString('dropping is the step nothing records', $checklist);
+        // The asymmetry is the whole of it: raising a candidate costs a reading,
+        // dropping one costs the author a finding and announces nothing.
+        self::assertStringContainsString('dropped only where something concretely disproves it', $checklist);
+        self::assertStringContainsString('neither established nor disproved is reported as open', $checklist);
+        // The two dismissals that go wrong: the docblock read in place of the
+        // implementation, and "unlikely" standing in for "impossible".
+        self::assertStringContainsString('read the implementation it describes', $checklist);
+        self::assertStringContainsString('Unlikely is not disproved', $checklist);
+
+        $skill = (string) preg_replace('/\s+/', ' ', (string) file_get_contents(
+            Paths::root() . '/skills/typo3-core-patch-review/SKILL.md',
+        ));
+        self::assertStringContainsString(
+            'what was raised while reading and dropped, with what dropped it',
+            $skill,
+        );
+    }
+
+    #[Test]
+    public function aFindingSaysWhetherThePatchIntroducedIt(): void
+    {
+        // A finding about a line the diff only moved past sends the author to
+        // repair something they did not change, and a report that does it reads
+        // exactly like one that meant to (`D-SKL-007`).
+        $checklist = (string) preg_replace('/\s+/', ' ', (string) file_get_contents(
+            Paths::root() . '/skills/typo3-core-patch-review/references/checklist.md',
+        ));
+
+        self::assertStringContainsString('Every finding carries five things', $checklist);
+        self::assertStringContainsString('**whether this patch introduced it**', $checklist);
+        self::assertStringContainsString('What the patch did not introduce is reported in those words', $checklist);
+        // The other half of attributing a finding: a diff is the weakest
+        // evidence there is about who reaches a path, so what it shows may raise
+        // a rank and never lower one.
+        self::assertStringContainsString('raises a rank and never lowers one', $checklist);
+
+        // A patch that is one of a set is read against the end of the set, by
+        // opening the later patch rather than by believing a message about it.
+        $skill = (string) preg_replace('/\s+/', ' ', (string) file_get_contents(
+            Paths::root() . '/skills/typo3-core-patch-review/SKILL.md',
+        ));
+        self::assertStringContainsString('read against the state at the end of the set', $skill);
+        self::assertStringContainsString('rather than of what a message promises about it', $skill);
+    }
+
+    #[Test]
     public function everySkillStartsFromTheBaseBeforeItsOwnEvidence(): void
     {
         foreach (self::skills() as $name => $skill) {

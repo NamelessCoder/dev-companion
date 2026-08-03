@@ -68,14 +68,22 @@ project's own are known is a guess that sounds like advice.
    majors has no entry at all. An empty sweep is therefore not an answer about
    what still works. "Does this still work in version N" goes to
    `typo3_documentation_lookup` at that version — here, and whenever the reading
-   raises it again. Where the manual has no page for it either, the finding says
-   the question could not be settled. Undocumented is not unsupported, and the
-   installed core shows what one version implements rather than what it
-   supports.
+   raises it again. Where the manual has no page for it either, that is a result
+   and not an answer. Undocumented is not unsupported.
 
 **Then** read the checkout. Not before: listing the files first makes everything
 after the listing look optional, and the conventions arrive as a footnote to a
 verdict that has already formed.
+
+## When the lookups run out
+
+A behaviour question that survives the lookups above is read out of the
+installed source rather than guessed at. What answers it is the class that
+implements the behaviour and the one it inherits from. That reading is the step
+after the lookups, and what it replaces is changing the code until it works.
+What it settles is what this installation does and never what TYPO3 supports. So
+a finding says the question could not be settled beyond the version installed,
+and an answer built on the reading names the version it holds for.
 
 ## Two kinds of lookup, and neither stands in for the other
 

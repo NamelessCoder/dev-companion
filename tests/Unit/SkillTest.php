@@ -290,10 +290,13 @@ final class SkillTest extends TestCase
         // instance — an ext_localconf.php content-rendering registration — is a
         // key the manual has no page for, so a miss there is a result rather
         // than a licence to reconstruct the contract from the installed core.
-        self::assertStringContainsString('the finding says', $base);
+        self::assertStringContainsString('that is a result and not an answer', self::flat($base));
         self::assertStringContainsString('Undocumented is not unsupported', $base);
+        // The limit that carries the second half now stands where the reading
+        // it limits is ordered rather than here, where nobody is reading the
+        // core — the section below, which `D-SKL-004` earned.
         self::assertStringContainsString(
-            'installed core shows what one version implements rather than what it supports',
+            'what this installation does and never what TYPO3 supports',
             self::flat($base),
         );
 
@@ -306,6 +309,69 @@ final class SkillTest extends TestCase
         );
         self::assertStringContainsString('does this still work here', $skill);
         self::assertStringNotContainsString('A changelog records change events', $skill);
+    }
+
+    #[Test]
+    public function theInstalledSourceIsTheStepAfterTheLookupsAndItsAnswerIsVersionBound(): void
+    {
+        // The base's one sentence for an exhausted question was written for a
+        // review — "the finding says the question could not be settled" — and
+        // `feedback/2026-08-01-003933` is a session building a content element
+        // in `site-new`, which had no finding to write and a template that had
+        // to render. It guessed at the `f:if` branch contract and changed the
+        // markup until the user corrected it, while the installed source sat in
+        // the checkout: `IfViewHelper` ships in `typo3fluid/fluid` rather than
+        // in `typo3/cms-fluid`, and its docblock carries `<f:then>` explicitly
+        // in every `f:else` example it gives (`D-SKL-004`).
+        //
+        // The reading is bounded rather than licensed. `D-ANS-010` refused the
+        // installed core as a substitute for the manual, so what the step
+        // settles is this installation and the answer says so — "read the
+        // source before guessing", as the feedback proposed it, would license
+        // the reconstruction that entry turned down.
+        $base = (string) file_get_contents(Paths::root() . '/skills/base.md');
+
+        $step = strpos($base, '## When the lookups run out');
+        self::assertNotFalse($step, 'the base names no step for a question the lookups leave open');
+        // After the lookups and after the checkout, or it is the reverse of the
+        // workflow rather than the end of it.
+        self::assertGreaterThan(
+            (int) strpos($base, '**Then** read the checkout'),
+            $step,
+            'the base sends the session into the installed source before its own calls',
+        );
+        self::assertStringContainsString(
+            'A behaviour question that survives the lookups above is read out of the installed source',
+            self::flat($base),
+        );
+        // An act with an object, because the same position has already cost a
+        // rule that was present and read past (`D-SKL-009`).
+        self::assertStringContainsString(
+            'the class that implements the behaviour and the one it inherits from',
+            self::flat($base),
+        );
+        // What it replaces is what the filing session actually did, named in
+        // those words rather than left to be inferred from a prohibition.
+        self::assertStringContainsString('what it replaces is changing the code until it works', self::flat($base));
+
+        // `D-ANS-010`'s boundary, carried in the sentence that orders the
+        // reading: one installation's implementation is not what TYPO3
+        // supports.
+        self::assertStringContainsString(
+            'What it settles is what this installation does and never what TYPO3 supports',
+            self::flat($base),
+        );
+        // And both dispositions, because naming only the first is what this
+        // step was queued to repair: a session that reports and a session that
+        // has to produce something that works.
+        self::assertStringContainsString(
+            'a finding says the question could not be settled beyond the version installed',
+            self::flat($base),
+        );
+        self::assertStringContainsString(
+            'an answer built on the reading names the version it holds for',
+            self::flat($base),
+        );
     }
 
     #[Test]

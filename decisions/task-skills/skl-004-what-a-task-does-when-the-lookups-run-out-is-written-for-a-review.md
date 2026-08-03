@@ -109,3 +109,44 @@ order. Nothing here states that boundary.
 - The same task shape files again with a skill active and the Fluid statement in
   reach, and still names source reading. Then it is the activation rather than
   the order, and the lever is `003356`'s.
+
+## Covered by
+
+- `SkillTest::theInstalledSourceIsTheStepAfterTheLookupsAndItsAnswerIsVersionBound`
+
+## Since then
+
+The step landed on 2026-08-03, as a section of its own rather than in place of
+the sentence this entry names. `## When the lookups run out` stands after
+"**Then** read the checkout", where the base already orders a reading against
+the lookups, and it says what answers the question, what the reading replaces,
+and what it may not be carried into: the class that implements the behaviour and
+the one it inherits from, changing the code until it works, and what TYPO3
+supports.
+
+Step 5 was the other candidate and it is where the reading would not have been
+found. Its paragraph asks "does this still work in version N", and the session
+this entry judges held a question about what an unaltered ViewHelper does — the
+mismatch [`D-ANS-010`](../answers/ans-010-does-it-still-work-is-a-question-for-the-manual.md)
+already recorded against the conformance skill's narrower condition, a session
+holding a behaviour question does not match itself against a condition written
+for another one. What step 5 did give up is the displacement this card asked
+for. The review-only sentence is gone from it — a miss in the manual is a result
+and not an answer there now — and the limit that stood beside it moved into the
+new section, where the reading it limits is the one being ordered.
+
+The **Assumed** above was measured and its arithmetic was two commits stale.
+`wc -w skills/base.md` reads 496 at `66813e3`, 1099 at `1960e50` — the number
+this entry carries — 1188 at `4767362`, 1367 at `0fac7c6`, and 1452 with this
+change. So the tag bounding of 2026-08-02 spent 179 words after this card was
+queued, and the budget the card was measured against was not the one it landed
+in.
+
+What the wording says about the installed source was read rather than recalled,
+in `/home/benji/projects/site-new/vendor` on 2026-08-03. `IfViewHelper` ships in
+`typo3fluid/fluid` and not in `typo3/cms-fluid`, which is why the section says
+the installed source rather than the installed core. Those packages ship
+`Classes/` and no `Tests/`, so a step naming the tests beside the class would
+have named something an installation does not have — the class and the one it
+inherits from is what is there, and `IfViewHelper` carries the branch contract
+in its docblock, with `<f:then>` explicit in every `f:else` example it gives.

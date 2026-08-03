@@ -1,7 +1,7 @@
 ---
 id: R-SKL-005
 status: held
-restsOn: [D-EVI-003, D-SKL-003]
+restsOn: [D-EVI-003, D-SKL-003, D-SKL-004]
 ---
 
 # R-SKL-005 — The order a task starts in is written once
@@ -37,8 +37,16 @@ That step also says what an empty result is worth, because a changelog records
 change events and a pattern nothing changed has no entry: "does this still work
 in version N" goes to `typo3_documentation_lookup` at that version, there and
 whenever the reading raises it again, and where the manual has no page either
-the finding says the question could not be settled rather than reconstructing
-the contract from what the installed core implements.
+that miss is a result rather than an answer.
+
+A behaviour question that survives all of them is read out of the installed
+source — the class that implements it and the one it inherits from — as the step
+after the lookups rather than in place of them, and what that replaces is
+changing the code until it works. What it settles is what this installation does
+and never what TYPO3 supports, so a finding says the question could not be
+settled beyond the version installed and an answer built on the reading names
+the version it holds for. Both dispositions are named, because a session that
+has to produce working markup cannot write a finding.
 
 It also names the three things a finding can rest on — a file that was read at
 its path and line, a command that was run, or a mechanism traced into an
@@ -77,13 +85,18 @@ call — `D-ANS-010`, re-run 2026-08-02. The sweep's own bound was replaced last
 by two models sweeping one sitepackage on the same day with word queries the
 step told them to derive and getting nothing back from either
 (`feedback/2026-07-31-194459`, `feedback/2026-07-31-194819`); `D-SKL-003`
-carries the re-run and what the two bounds return.
+carries the re-run and what the two bounds return. The step after the lookups
+came from the other kind of session: `feedback/2026-08-01-003933` was building a
+content element in `site-new`, guessed at the `f:if` branch contract and changed
+the markup until the user corrected it, and the base's one sentence for an
+exhausted question was addressed to a review it was not writing — `D-SKL-004`.
 
 ## Held by
 
 - `SkillTest::theBaseFixesTheOrderEveryTaskStartsIn`
 - `SkillTest::theDeprecationSweepRunsFromTheExtensionsSurfaceAndIsReportedWhenItFindsNothing`
 - `SkillTest::theChangelogsSilenceIsNotAnAnswerAboutWhatStillWorks`
+- `SkillTest::theInstalledSourceIsTheStepAfterTheLookupsAndItsAnswerIsVersionBound`
 - `SkillTest::everySkillStartsFromTheBaseBeforeItsOwnEvidence`
 - `SkillTest::anAssessmentAsksBeforeItJudgesAndSaysWhatItDidNotAsk`
 - `InstallerTest::codexInstallAndUpdatePreserveConfigurationAndTrackTheirSkillsCentrally`

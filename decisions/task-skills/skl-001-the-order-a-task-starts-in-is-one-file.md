@@ -347,3 +347,16 @@ all, so the sentence may never have been read. That does not gate the finding: a
 caller that reads it and makes the call still reaches no skill. Nothing was
 changed here, and the feedback waits behind the same question on a card of its
 own.
+
+## Since then
+
+The base grew twice more, and the arithmetic this entry keeps is 1367 words
+before 2026-08-03 and 1452 after it. The first of the two is `0fac7c6`, which
+spent 179 words replacing the deprecation sweep's query set with the changelog's
+own axes — the bound two models had already swept a sitepackage with and got
+nothing back from. The second is
+[`D-SKL-004`](skl-004-what-a-task-does-when-the-lookups-run-out-is-written-for-a-review.md),
+which named the installed source as the step after the lookups and paid for part
+of it by displacing the review-only sentence it found on step 5. Both are what
+this decision's **Wrong if** watches, and the file is now nearly three times the
+length that made it short.

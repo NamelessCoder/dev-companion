@@ -77,8 +77,7 @@ already say it, or waved off as something the wording will fix.
 The ladder orders the *diagnosis*, not the appetite. Step 1 is the most
 expensive answer and regularly the right one; the cheap rungs exist so that a
 rule which was already written and never arrived is not rebuilt, not so that the
-answer stays small. `bin/cli feedback:list` tells the two apart in one call: a
-rule nobody reached is one report, and a shape nobody has is thirty.
+answer stays small. `bin/cli feedback:list` tells the two apart in one call.
 
 ### 1. Gap — the answer is not here
 
@@ -119,12 +118,11 @@ independently by two sessions. That last one is the evidence
 file — *that a domain earned a skill at all*. Its bar still has to be cleared;
 the feedback shows it has been reached, not that it can be skipped.
 
-Both are *taken on* rather than closed on the spot: the judgement decides that
-the tool or the skill is built and where its boundary runs, and the building
-waits for the reading because a tool and a skill are contracts — a skill lands
-in somebody else's project, where a mistake is not corrected by the next release
-of this server. What may not wait is the decision. A 1b left as a question is a
-domain nobody owns, filed again by the next session that hits it.
+Both are *taken on* rather than closed on the spot, and the building waits for
+the reading because a tool and a skill are contracts — a skill lands in somebody
+else's project, where a mistake is not corrected by the next release of this
+server. What may not wait is the decision. A 1b left as a question is a domain
+nobody owns, filed again by the next session that hits it.
 
 **The category is not the answer.** `tool-gap`, `missing-knowledge`,
 `wrong-answer` are how the reporting session saw it from where it stood, with no
@@ -216,9 +214,8 @@ the wording nits, and the next run judges the thirty-first report the same way.
 nothing at all was first written up as *establish whether a core review earns a
 skill*, with the corpus that answers it sitting unread on the same board.
 
-The expensive half belongs to the todo anyway. So the outcomes below read as
-*what the work is*, not *what the answer is*: the first concrete step of such a
-todo is research, and the writing comes after it.
+The expensive half belongs to the todo anyway, so the outcomes below read as
+*what the work is* rather than *what the answer is*.
 
 ## The answers
 

@@ -438,6 +438,14 @@ grep for.
 
 - Split changes into small, single-purpose commits and commit as soon as each
   part is verified.
+- The subject says what the commit does. The body says only what the diff
+  cannot: what was measured, what was rejected, what the change rests on. Where
+  a decision or a requirement already carries that, the body names the id
+  instead. A body that summarises the entry beside it is two copies of one
+  reading, and the file is the one a reader searches.
+- The prose rule holds here as everywhere: one point per sentence, no sentence
+  restating the one above it. Nothing measures a commit message, so this one is
+  held by rereading it before `git commit`.
 - Only commit the files you changed yourself in this session. The working tree
   may already contain unrelated modifications or staged changes from someone
   else — leave them alone.

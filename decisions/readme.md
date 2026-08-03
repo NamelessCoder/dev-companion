@@ -69,6 +69,7 @@ and not a defect.
 - [`D-ANS-043`][D-ANS-043] — A miss is answered in data, and says which corpus its silence belongs to · 2026-08-03
 - [`D-ANS-044`][D-ANS-044] — The environment answer carries the lifecycle it declares, beside the interpreter it runs · 2026-08-03
 - [`D-ANS-045`][D-ANS-045] — The Classes section covers the directory it names, and a value read off the tree says so · 2026-08-03
+- [`D-ANS-046`][D-ANS-046] — A manual result covers the question it is returned for, and the silence names the corpus that answers · 2026-08-03
 - [`D-COD-004`][D-COD-004] — What leaves this process goes through one seam · 2026-08-03
 - [`D-DIS-010`][D-DIS-010] — What this package writes into a project ignores itself · 2026-08-03
 - [`D-DOC-009`][D-DOC-009] — Prose names what counts rather than the count · 2026-08-03
@@ -104,11 +105,14 @@ and not a defect.
 - [`D-KNW-043`][D-KNW-043] — A rule about what an API may be used for carries the strength of the claim and the source it was read from · 2026-08-03
 - [`D-KNW-044`][D-KNW-044] — One search over the whole Tests/ tree finds what asserts a rendered output · 2026-08-03
 - [`D-KNW-045`][D-KNW-045] — The document root is named by what configures it and by what serves it · 2026-08-03
-- [`D-KNW-046`][D-KNW-046] — The non-interactive install path is a gap this server owns · 2026-08-03
+- [`D-KNW-046`][D-KNW-046] — The non-interactive install path is a gap this server owns · 2026-08-03 · confirmed
 - [`D-KNW-047`][D-KNW-047] — What installs TYPO3 below the extension being developed is a gap this server owns · 2026-08-03
 - [`D-KNW-048`][D-KNW-048] — What the impexp import rewrites in a site configuration is a gap this server owns · 2026-08-03
-- [`D-KNW-049`][D-KNW-049] — What DDEV writes into the settings is named in full, and so is what it cannot configure · 2026-08-03
+- [`D-KNW-049`][D-KNW-049] — What DDEV writes into the settings is named in full, and so is what it cannot configure · 2026-08-03 · confirmed
 - [`D-KNW-050`][D-KNW-050] — What a missing `target-language` does to a translation file is a gap this server owns · 2026-08-03
+- [`D-KNW-051`][D-KNW-051] — The public-asset answer names the internal static beside the supported route · 2026-08-03
+- [`D-KNW-052`][D-KNW-052] — The order a Fluid template name is resolved in is a gap this server owns · 2026-08-03
+- [`D-KNW-053`][D-KNW-053] — The root-package layout is stated from an installation and holds across the covered majors · 2026-08-03
 - [`D-SKL-005`][D-SKL-005] — Core contribution earns two task skills, one for reviewing a patch and one for creating one · 2026-08-03
 - [`D-SKL-006`][D-SKL-006] — The site-new cluster earns the route into the skill that owns the task · 2026-08-03
 - [`D-SKL-007`][D-SKL-007] — Every disposition a review makes carries its evidence · 2026-08-03
@@ -121,7 +125,7 @@ and not a defect.
 - [`D-ANS-006`][D-ANS-006] — An identifier is found however it is spelled · 2026-08-02
 - [`D-ANS-007`][D-ANS-007] — Two shapes for "not answered", one word for why · 2026-08-02
 - [`D-ANS-008`][D-ANS-008] — A number a reader cannot reproduce is read as wrong · 2026-08-02
-- [`D-ANS-009`][D-ANS-009] — A shipped-file deprecation is found by the tool that lists the file · 2026-08-02
+- [`D-ANS-009`][D-ANS-009] — A shipped-file deprecation is found by the tool that lists the file · 2026-08-02 · confirmed
 - [`D-ANS-010`][D-ANS-010] — "Does it still work" is a question for the manual, not the changelog · 2026-08-02
 - [`D-ANS-011`][D-ANS-011] — A scope answer states what a manifest declares, and the comparison is the audit's · 2026-08-02
 - [`D-ANS-012`][D-ANS-012] — An `oneOf` alternative is stated where the caller composes the call · 2026-08-02
@@ -247,6 +251,7 @@ and not a defect.
 [D-ANS-043]: answers/ans-043-a-miss-is-answered-in-data-and-says-which-corpus-its-silence-belongs-to.md
 [D-ANS-044]: answers/ans-044-the-environment-answer-carries-the-lifecycle-it-declares.md
 [D-ANS-045]: answers/ans-045-the-classes-section-covers-the-directory-it-names.md
+[D-ANS-046]: answers/ans-046-a-manual-result-covers-the-question-it-is-returned-for.md
 [D-COD-004]: code/cod-004-what-leaves-this-process-goes-through-one-seam.md
 [D-DIS-010]: discovery/dis-010-what-this-package-writes-into-a-project-ignores-itself.md
 [D-DOC-009]: documentation/doc-009-prose-names-what-counts-rather-than-the-count.md
@@ -287,6 +292,9 @@ and not a defect.
 [D-KNW-048]: knowledge/knw-048-what-the-impexp-import-rewrites-in-a-site-configuration-is-a-gap-this-server-owns.md
 [D-KNW-049]: knowledge/knw-049-what-ddev-writes-into-the-settings-is-named-in-full-and-so-is-what-it-cannot-configure.md
 [D-KNW-050]: knowledge/knw-050-what-a-missing-target-language-does-to-a-translation-file-is-a-gap-this-server-owns.md
+[D-KNW-051]: knowledge/knw-051-the-public-asset-answer-names-the-internal-static-beside-the-supported-route.md
+[D-KNW-052]: knowledge/knw-052-the-order-a-fluid-template-name-is-resolved-in-is-a-gap-this-server-owns.md
+[D-KNW-053]: knowledge/knw-053-the-root-package-layout-is-stated-from-an-installation-and-holds-across-the-covered-majors.md
 [D-SKL-005]: task-skills/skl-005-core-contribution-earns-a-skill-and-the-domain-is-the-work.md
 [D-SKL-006]: task-skills/skl-006-the-site-new-cluster-earns-the-route-into-the-skill-that-owns-the-task.md
 [D-SKL-007]: task-skills/skl-007-every-disposition-a-review-makes-carries-its-evidence.md

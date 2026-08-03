@@ -2,8 +2,6 @@
 
 **Serves:** feedback/2026-08-03-162745-task-give-a-standalone-typo3-extension.md
 **Priority:** normal
-**Branch:** todo/write-the-skill-that-brings-a-development-installation
-**Claimed:** 2026-08-03
 **Waiting on:** the review of the draft in
     `skills/typo3-development-installation/`, asked for on 2026-08-03 and
     unanswered: does the order match how the task is really done, which step is
@@ -19,18 +17,20 @@ installation — that pointer may not be written before the skill is published,
 because it would name a skill nobody has installed. Then run the installer in
 the checkout that plays the environment, which `todo/reference/` names.
 
-Publishing also waits on the four knowledge cards `D-SKL-012` put first, and on
-this branch none of them has landed: `165606`, `185545`, `185618` and `185753`
-are all in hand elsewhere. What the corpus answers today was measured from a
-fixture repository with no installation, and the draft routes to what exists:
-`environment-runtime-readers` names the variables `typo3 setup` reads,
+The four knowledge cards `D-SKL-012` put before publishing have all landed —
+`165606`, `185545`, `185618` and `185753` — so the review is the only thing
+publishing still waits on. Two of them change the draft rather than merely
+unblocking it, and that is the step after the answer. The Composer root package
+was the one question reaching nothing when the draft was written, so step 1
+routes to `typo3_documentation_lookup` and the installed installer package;
+`extension-repository-installation` in `knowledge/hints/extension.json` answers
+it now and is first on that query, which is the id that step should carry.
+`installation-setup` in `knowledge/hints/configuration.json` is the same case for
+step 3, which currently names only `environment-runtime-readers` beside a
+documentation lookup for the options. What the draft already routes to holds:
 `sitepackage-initial-content` and its two neighbours own the seeding,
-`project-configuration-files` owns the environment's settings against the
-installation's own, `project-build-and-scripts` owns what is not committed. The
-Composer root package is the one question that reaches nothing at all — the
-query returns no hint and falls back to the id index — so the draft routes it to
-`typo3_documentation_lookup` and the installed installer package instead. When
-`185618` lands, that step gets the id it should have had.
+`project-configuration-files` the environment's settings against the
+installation's own, `project-build-and-scripts` what is not committed.
 
 `knowledge/server-scope.json` is the other thing publishing touches:
 `doesNotCover` still says "Running an installation: server and container setup",

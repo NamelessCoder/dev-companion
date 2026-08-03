@@ -27,7 +27,7 @@ when it is added.
 - [`R-ANS-017`][R-ANS-017] — A removal is told what the scanner matcher requires · held
 - [`R-ANS-018`][R-ANS-018] — An answer names the tool for what it says is absent · held
 - [`R-ANS-019`][R-ANS-019] — A rendered-verification question reaches the layer that verifies it · held
-- [`R-ANS-020`][R-ANS-020] — The Classes section covers the directory it names · **open**
+- [`R-ANS-020`][R-ANS-020] — The Classes section covers the directory it names · held
 - [`R-ANS-021`][R-ANS-021] — The review answer says which patch set it is about · held
 
 [R-ANS-001]: ans-001-could-not-ask-never-looks-like-does-not-exist.md

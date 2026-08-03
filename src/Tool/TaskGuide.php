@@ -30,6 +30,13 @@ final class TaskGuide extends ReadOnlyTool
         . 'that outcome: the old version still being served is the defect, and the error it eventually throws '
         . 'is the symptom.';
 
+    /**
+     * The change type of a task that changes nothing, and the id of the intent
+     * that recognizes one described rather than classified. They are the same
+     * word because the type is fed to the intent matcher.
+     */
+    private const AUDIT = 'audit';
+
     /** @var array<string, array<int, string>> */
     private const CHANGE_TYPE_CHECKLIST = [
         'bugfix' => [
@@ -48,6 +55,10 @@ final class TaskGuide extends ReadOnlyTool
         // for the caller who describes the work instead of classifying it. A
         // block here would print every one of those items a second time.
         'deprecation' => [],
+        // The type that changes nothing. What a review owes is the audit
+        // intent's, for the same reason, and what it does not owe is the
+        // checklist this one is not assembled into at all — see answer().
+        self::AUDIT => [],
         'unknown' => [],
     ];
 
@@ -59,6 +70,7 @@ final class TaskGuide extends ReadOnlyTool
         'deprecation' => 'deprecation changelog rst deprecated api',
         'bugfix' => '',
         'cleanup' => '',
+        self::AUDIT => '',
         'unknown' => '',
     ];
 
@@ -96,7 +108,7 @@ final class TaskGuide extends ReadOnlyTool
                 'area' => ['type' => 'string', 'description' => 'Affected subsystem or extension, if known.'],
                 'paths' => ['type' => 'array', 'items' => ['type' => 'string'], 'default' => [], 'description' => 'The files the task is about, as they are in the repository they belong to. Pass them where the work touches more than one place: each is placed on its own, so a core path and an extension path in one call are not answered with one verdict. The area counts as one of them.'],
                 'targetVersion' => ['type' => 'string', 'description' => 'The TYPO3 version this task is for, for example "13.4" or "14". Conventions that do not hold there are left out, including those the repository needs for another major it declares. Defaults to every major this repository declares typo3/cms-core for, or to the installation this server was started in where there is no declaration.'],
-                'changeType' => ['type' => 'string', 'enum' => ['bugfix', 'feature', 'cleanup', 'test', 'documentation', 'deprecation', 'unknown'], 'default' => 'unknown'],
+                'changeType' => ['type' => 'string', 'enum' => ['bugfix', 'feature', 'cleanup', 'test', 'documentation', 'deprecation', self::AUDIT, 'unknown'], 'default' => 'unknown', 'description' => 'What kind of change the task is. audit is the one that changes nothing: it asks for the brief a review needs instead of the steps a patch owes, and a task that describes a review gets it without stating the type.'],
             ],
             'required' => ['task'],
         ];
@@ -183,7 +195,19 @@ final class TaskGuide extends ReadOnlyTool
             $scope,
             Scope::isCoreWork($paths, $subject)
         );
+        // A stated change type is the caller's own classification and the words
+        // of the task do not overrule it: "review the patch that deprecates X"
+        // is authoring work described from the reviewer's side, and a brief
+        // that answered it as a review would leave out the steps that patch
+        // owes. Where no type was stated, the words are all there is.
+        if ($changeType !== self::AUDIT && $changeType !== 'unknown') {
+            $intents = array_values(array_filter(
+                $intents,
+                static fn(array $intent): bool => $intent['id'] !== self::AUDIT,
+            ));
+        }
         $confirmed = TaskIntents::confirmed($intents);
+        $changesNothing = in_array(self::AUDIT, array_column($confirmed, 'id'), true);
         $conditional = array_values(array_filter(
             $intents,
             static fn(array $intent): bool => !in_array($intent, $confirmed, true)
@@ -221,6 +245,14 @@ final class TaskGuide extends ReadOnlyTool
         if ($scope === Scope::Uncertain) {
             $lines[] = Scope::UNCERTAIN_NOTICE . ' Name the area or the path, and this brief is composed '
                 . 'for the repository it is in.';
+            $lines[] = '';
+        }
+        // Said once, because the steps a caller expects and does not find are
+        // the ones they go looking for a second time.
+        if ($changesNothing) {
+            $lines[] = 'This is a brief for work that changes nothing, so what a patch owes — the focused '
+                . 'diff, the test coverage, the commit message — is left out below. Pass changeType where '
+                . 'the task does change something.';
             $lines[] = '';
         }
 
@@ -349,11 +381,23 @@ final class TaskGuide extends ReadOnlyTool
             }
         }
 
-        $checklist = [
-            // First, because it decides which facts matter: everything below it
-            // is about the code, and a session that never asks what the change
-            // does to the editor and the visitor reads a report as an API
-            // question and answers the wrong one (R-GUI-008).
+        // Three of the five below are steps a review does not take, and handing
+        // them to one was the whole of R-GUI-006. What replaces them is the
+        // reading a finding rests on rather than a second copy of an audit
+        // workflow: what the review is about is the audit intent's checklist.
+        //
+        // The premise opens both arms. R-GUI-008 is about every brief, and the
+        // review is the case it was written from: a session that never asks
+        // what the change does to the editor and the visitor reads a report as
+        // an API question and answers the wrong one.
+        $checklist = $changesNothing ? [
+            self::PRODUCT_PREMISE,
+            'Establish what this repository is before reading a file: the TYPO3 and PHP versions it supports, '
+                . 'and the commands it declares. Whether a finding holds is a property of them.',
+            'Inspect nearby code, tests, and established subsystem conventions.',
+            'Report what the review did not reach — a surface the request left out, a subsystem this '
+                . 'repository does not ship, a claim no read code settles. Silence there reads as coverage.',
+        ] : [
             self::PRODUCT_PREMISE,
             $outsideCore
                 ? 'Confirm the target branch and the issue context of this repository.'
@@ -376,13 +420,15 @@ final class TaskGuide extends ReadOnlyTool
                 $checklist[] = ucfirst((string) $intent['condition']) . ': ' . lcfirst((string) $entry);
             }
         }
-        $checklist[] = $outsideCore
-            ? 'Write the commit message with typo3_commit_message_guide and workflow="project": '
-                . 'summarize the changed behavior, the affected area and the commands you ran, and it '
-                . 'hands back a draft that is wrapped and checked.'
-            : 'Write the commit message with typo3_commit_message_guide: summarize the changed behavior, '
-                . 'the affected area and the commands you ran, and it hands back a draft that carries '
-                . 'the keyword, the trailers and the wrapping.';
+        if (!$changesNothing) {
+            $checklist[] = $outsideCore
+                ? 'Write the commit message with typo3_commit_message_guide and workflow="project": '
+                    . 'summarize the changed behavior, the affected area and the commands you ran, and it '
+                    . 'hands back a draft that is wrapped and checked.'
+                : 'Write the commit message with typo3_commit_message_guide: summarize the changed behavior, '
+                    . 'the affected area and the commands you ran, and it hands back a draft that carries '
+                    . 'the keyword, the trailers and the wrapping.';
+        }
 
         // Per line, not per section: a checklist mixes "reproduce the bug with
         // a failing test" — true anywhere — with a changelog file below
@@ -422,7 +468,8 @@ final class TaskGuide extends ReadOnlyTool
             $domains,
             array_column($hints['matchedHints'], 'id'),
             $target,
-            $outsideCore
+            $outsideCore,
+            $changesNothing
         );
         if ($outsideCore) {
             $nextTools = array_values(array_filter(
@@ -540,6 +587,7 @@ final class TaskGuide extends ReadOnlyTool
         array $hintIds,
         ?int $target,
         bool $outsideCore,
+        bool $changesNothing,
     ): array {
         $candidates = [];
         foreach ($intents as $intent) {
@@ -575,11 +623,14 @@ final class TaskGuide extends ReadOnlyTool
         // that has to carry the workflow, because the guide defaults to the
         // core's and cannot read a repository off a commit message. The
         // checklist above says it; a list of calls that leaves it out is one
-        // answer disagreeing with itself about the same step.
-        $candidates[] = $outsideCore
-            ? 'typo3_commit_message_guide with workflow="project", before committing — the default is the '
-                . 'core\'s own and demands an issue number and a release trailer this repository has none of'
-            : 'typo3_commit_message_guide, before committing';
+        // answer disagreeing with itself about the same step — which is why a
+        // review, whose checklist ends without it, does not point at it either.
+        if (!$changesNothing) {
+            $candidates[] = $outsideCore
+                ? 'typo3_commit_message_guide with workflow="project", before committing — the default is the '
+                    . 'core\'s own and demands an issue number and a release trailer this repository has none of'
+                : 'typo3_commit_message_guide, before committing';
+        }
         if (Channel::isAvailable()) {
             $candidates[] = 'typo3_feedback_record, when one of these answers was wrong or incomplete';
         }

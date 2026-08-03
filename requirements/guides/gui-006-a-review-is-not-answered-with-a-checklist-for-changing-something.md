@@ -1,6 +1,7 @@
 ---
 id: R-GUI-006
-status: open
+status: held
+restsOn: [D-GUI-006]
 ---
 
 # R-GUI-006 — A review is not answered with a checklist for changing something
@@ -9,12 +10,13 @@ status: open
 patch focused, add test coverage and write the commit message.**
 
 `typo3_task_guide` composes its checklist from `changeType` and the intents in
-`knowledge/task-intents.json`. Both enumerate kinds of change — the enum offers
-bugfix, feature, cleanup, test, documentation and `unknown`, and none of the
-eleven intents is an audit — so a review falls through to the generic patch
-checklist. Those items are not redundant beside a review's own workflow; they
-are steps a review may not take, and the tool has no value a caller can state
-the difference with.
+`knowledge/task-intents.json`, and both enumerated kinds of change alone until
+`D-GUI-006`: the enum offered bugfix, feature, cleanup, test, documentation and
+`unknown`, none of the eleven intents was an audit, and a review fell through to
+the generic patch checklist. Those items are not redundant beside a review's own
+workflow; they are steps a review may not take. The `audit` change type and the
+intent of the same name are the shape it gets instead, and a task that describes
+a review reaches it without stating the type.
 
 ## From
 
@@ -28,4 +30,4 @@ the commit message with typo3_commit_message_guide".
 
 ## Held by
 
-Nothing: the shape this demands does not exist yet.
+- `HintsTest::aTaskThatChangesNothingIsNotAnsweredWithAPatchChecklist`

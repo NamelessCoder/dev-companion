@@ -2323,6 +2323,59 @@ final class HintsTest extends TestCase
         );
     }
 
+    /**
+     * A task that changes nothing is not answered with the steps a patch owes.
+     *
+     * R-GUI-006, and the call is the one the requirement was re-run with: a
+     * conformance review of a site package, classified as nothing because the
+     * enum had no value for it. The three items asserted away are what came
+     * back for it — a focused patch, test coverage, and a commit message for a
+     * session that commits nothing.
+     */
+    #[Test]
+    public function aTaskThatChangesNothingIsNotAnsweredWithAPatchChecklist(): void
+    {
+        self::assertContains('audit', TaskGuide::inputSchema()['properties']['changeType']['enum']);
+
+        $described = Registry::call('typo3_task_guide', [
+            'task' => 'review the TYPO3 project and site package',
+        ]);
+        $stated = Registry::call('typo3_task_guide', [
+            'task' => 'Is this sitepackage written the way TYPO3 14 expects',
+            'changeType' => 'audit',
+        ]);
+
+        foreach ([$described, $stated] as $brief) {
+            self::assertContains('audit', array_column($brief->data['intents'], 'id'));
+
+            $checklist = implode("\n", $brief->data['checklist']);
+            self::assertStringNotContainsString('Keep the patch focused', $checklist);
+            self::assertStringNotContainsString('test coverage', $checklist);
+            self::assertStringNotContainsString('typo3_commit_message_guide', $checklist);
+            self::assertNotContains(
+                'typo3_commit_message_guide',
+                array_column($brief->data['nextTools'], 'tool'),
+                'the follow-up calls name the step the checklist dropped',
+            );
+
+            // What it does owe instead: a finding is a piece of read code, and
+            // a check nobody ran proves nothing about what it covers.
+            self::assertStringContainsString('rule or documentation it contradicts', $checklist);
+            self::assertStringContainsString('gap in the check layer', $checklist);
+        }
+
+        // The caller's own classification wins over the words: the same task
+        // text, stated as a deprecation, is authoring work seen from the
+        // reviewer's side and keeps every step that patch owes.
+        $authoring = Registry::call('typo3_task_guide', [
+            'task' => 'Review the patch that deprecates the AssetCollector media handling',
+            'changeType' => 'deprecation',
+        ]);
+
+        self::assertNotContains('audit', array_column($authoring->data['intents'], 'id'));
+        self::assertContains('Keep the patch focused on the stated task.', $authoring->data['checklist']);
+    }
+
     #[Test]
     public function aWordThatOnlyNamesTheSubjectMatchesConditionally(): void
     {
@@ -2436,6 +2489,13 @@ final class HintsTest extends TestCase
                 'task' => 'Add a testimonials content element',
                 'area' => 'packages/my_sitepackage/Classes/Controller/TestimonialController.php',
                 'changeType' => 'feature',
+            ],
+            // The arm that changes nothing carries it too, and it is the case
+            // R-GUI-008 was written from: the session that read a report as an
+            // API question was assessing one, not patching it.
+            [
+                'task' => 'Is this sitepackage written the way TYPO3 14 expects',
+                'changeType' => 'audit',
             ],
         ] as $call) {
             $brief = Registry::call('typo3_task_guide', $call);

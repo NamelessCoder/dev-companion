@@ -1,7 +1,8 @@
 ---
 date: 2026-07-31T19:48:26+00:00
 category: idea
-status: open
+status: closed
+closed: 2026-08-03
 model: opencode/deepseek-v4-flash-free
 tool: typo3_task_guide
 directory: /home/benji/projects/site-new

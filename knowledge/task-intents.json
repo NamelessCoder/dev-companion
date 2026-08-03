@@ -196,6 +196,30 @@
     ]
   },
   {
+    "id": "audit",
+    "title": "Review or audit",
+    "match": [
+      "audit",
+      "conformance",
+      "code review",
+      "review the",
+      "review this",
+      "review of",
+      "reviewing"
+    ],
+    "rulesQuery": "",
+    "checklist": [
+      "A finding names the location, what the code there does, and the rule or documentation it contradicts. Short of those three it is a question rather than a violation, and reporting it as one costs the maintainer exactly the reading the review skipped.",
+      "Run the checks this repository declares rather than recommending them, and read a green result as what its commands cover: an entry no command covers is a gap in the check layer, which is a finding of its own.",
+      "Hand each finding over with its consequence and what would remediate it, and route the work to whoever does it. A review changes nothing itself, so the report is what it produces."
+    ],
+    "checks": [],
+    "tools": [
+      "typo3_project_scope, for the TYPO3 and PHP versions this repository supports and the commands it declares",
+      "typo3_extension_scope, for what each extension in scope registers"
+    ]
+  },
+  {
     "id": "installation-setup",
     "title": "Setting an installation up",
     "match": [

@@ -27,7 +27,10 @@ paths: [string]  # optional
 # typo3/cms-core for, or to the installation this server was started in where
 # there is no declaration.
 targetVersion: string  # optional
-# One of: bugfix, feature, cleanup, test, documentation, deprecation, unknown.
+# One of: bugfix, feature, cleanup, test, documentation, deprecation, audit,
+# unknown. What kind of change the task is. audit is the one that changes
+# nothing: it asks for the brief a review needs instead of the steps a patch
+# owes, and a task that describes a review gets it without stating the type.
 changeType: string  # optional
 ```
 

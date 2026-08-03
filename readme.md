@@ -102,187 +102,51 @@ composing several tools does not mean parsing headings and code fences back out
 of prose. All tools are annotated `readOnlyHint`; only `typo3_feedback_record`
 writes anything, and then only a new file.
 
-What each one takes and the fields it answers with is written out per tool in
-[documentation/clients/tools.md](documentation/clients/tools.md) — one page per
-tool, rendered from the classes rather than kept beside them, and each carrying
-what that tool answered when it was last recorded.
-
 Names are `typo3_<subject>_<verb>`, with the verb taken from a fixed set —
 `lookup` finds and may find nothing, `guide` composes an answer for a task,
 `list` enumerates, `scope` states what a source covers, `record` writes. So the
 name already says what shape the answer has.
 
-- `typo3_server_scope`: orientation — what this server covers and at which
-  depth, what it deliberately does not, and which tool to call when. Every
-  covered topic says which kind of work its answers are for: `core` for the
-  contribution process and the scripts of that repository, `any` for a
-  convention that holds wherever TYPO3 is written. Its `source` says where the
-  answer is read from, which is the installation itself for four of them. It
+What one is for, what it takes and the fields it answers with is written out per
+tool in [documentation/tools/](documentation/tools/readme.md) — one page per
+tool, rendered from the classes rather than kept beside them, and each carrying
+what that tool answered when it was last recorded. Below is the same surface
+grouped by where an answer comes from.
+
+- **Orientation.** `typo3_server_scope` says what this server covers and at
+  which depth, what it deliberately does not, and which tool to call when. It
   also names any tool the caller excluded, so a shorter list than this one has a
   reason a client can read. The place to start when it is unclear whether a
   question can be answered here at all.
-- `typo3_changelog_lookup`: searches the TYPO3 changelog the installed core
-  ships — one entry per breaking change, deprecation, feature and important
-  feedback, by words, type and version. Answers what a release changed rather
-  than how to write such an entry, and names the versions that installation
-  covers so a gap is visible. A sweep that cannot be phrased is bounded by `tag`
-  instead — `FullyScanned` for what the Extension Scanner has a matcher for,
-  `ext:form` for the system extension a change is in — and a tag nothing carries
-  comes back with the ones that exist. Nothing is bundled: it grows with a
-  Composer update.
-- `typo3_project_scope`: describes the project around the discovered
-  installation — its TYPO3 and PHP constraints, the extensions that are its own,
-  the sites it configures with the site sets they depend on, and the commands it
-  declares in `composer.json` and `package.json`. Files only, so it answers on a
-  fresh clone; and the commands it lists are the ones that exist there. The
-  dependencies it patches are in it too, because a patched package does not
-  behave as its version says.
-- `typo3_extension_scope`: what one of those extensions registers — the tables
-  its TCA defines and the ones it extends, the content elements it adds with the
-  template each renders through and the FlexForm each binds, its backend modules
-  and routes, its icons, its site sets and the files core reads each one for,
-  the form configurations it registers and the definitions they store, its
-  service tags, its middlewares, its Fluid roots and namespaces, the shape of
-  its `Classes/`. Its tables, content elements and icons come from the booted
-  installation where there is one, attributed to the extension by the `EXT:`
-  reference each entry carries, because a list built in a loop is in no file;
-  the rest is read from its files, which is why it answers for a third-party
-  extension as well as for the project's own and on a checkout that was never
-  set up. The table an override file extends is read from what the file does,
-  because those files are numbered rather than named after their table.
-- `typo3_rule_lookup`: searches local TYPO3 core rules and script feedback,
-  ranked by the query terms that separate one section from the rest rather than
-  by overlap, and naming the hints that match the same question — the caller
-  does not have to know which of the two corpora holds a subject.
-- `typo3_script_lookup`: finds matching feedback for TYPO3 core commands. They
-  run in a core checkout, and the answer says so — outside one it returns the
-  boundary instead of commands that are not there.
-- `typo3_task_guide`: builds a task checklist enriched with matching hints and
-  relevant core checks. A task that reads as work on a project or third-party
-  extension says so first and keeps only what transfers: no core checks, no
-  checklist item and no follow-up naming something that only the core repository
-  has. Where the work touches more than one place, the paths are placed one by
-  one, and a session that is in the core and in an extension at once gets one
-  brief that says which of the two each step is for.
-- `typo3_test_run_guide`: recommends `Build/Scripts/runTests.sh` commands by
-  topic. Paths that read as a project or third-party extension get no suite: the
-  script is part of the core repository. What such an extension needs instead —
-  assembling a phpunit suite of its own — is the `project-extension-tests` hint.
-- `typo3_hint_lookup`: returns hints for TYPO3 core paths or task topics,
-  grouped by section. Outside the core the hints stay and their check commands
-  are dropped. Two sections are the backend interface's own — `Backend CSS` and
-  `Backend TypeScript` — and are withheld with a reason when the task names the
-  frontend, because there they would be inverted advice rather than merely
-  irrelevant. An answer that matched nothing lists the hint ids there are, and
-  `id` asks for one of them outright.
-- `typo3_documentation_lookup`: searches the public tables of contents of TYPO3
-  Explained, TypoScript Explained, the TCA Reference and the Fluid ViewHelper
-  Reference on `docs.typo3.org`, for an explicitly requested covered release. A
-  compound name is taken apart, so `AssetCollector` reaches the page called
-  "Assets". Every result carries its canonical URL, document, version and
-  section. Pass that URL back as `page` with the same `targetVersion` to read
-  its headings, prose and code examples as text. It never falls through to
-  another release, and an unreachable service is distinct from a search that
-  answered with no match.
-- `typo3_forge_lookup`: reads one issue from the tracker at `forge.typo3.org`
-  before a patch is written for it — subject, tracker, status, target version,
-  the TYPO3 and PHP versions it was reported against, the issues it relates to,
-  and the comments. The comments are the point: a maintainer closing an issue,
-  reassigning it, or saying the API may not be used that way says it there, and
-  the description never carries it. An issue that does not exist is answered as
-  such and not as a tracker that failed to answer.
-- `typo3_gerrit_lookup`: answers whether a core patch already exists, from the
-  anonymous review API at `review.typo3.org`. `issue` searches every change
-  whose commit message names a Forge issue — the question every core task asks
-  before it starts — and `change` reads one by its number. It answers with the
-  change number, subject, status, target branch and review URL, and it says when
-  the review server did not answer rather than reporting nothing found. A change
-  pushed as private is invisible to an anonymous read, which the empty answer
-  says. Reading only: voting, uploading and amending stay with the caller's git
-  and the web UI.
-- `typo3_component_lookup`: looks up backend UI components by name or topic and
-  returns markup, classes, the custom-property contract, and every source used.
-  When `targetVersion` is the active installation, the installed backend CSS and
-  JavaScript decide the contract and an installed styleguide example wins over
-  bundled markup. The curated catalog remains the searchable index and fallback
-  for other versions or missing package evidence; every field says which version
-  and source it describes.
-- `typo3_system_extension_lookup`: says whether an extension is part of the core
-  and on which versions, by extension key or Composer package name, with what it
-  is for. It answers for an extension that is not installed, which is when the
-  question comes up; a miss means "not a system extension on these versions",
-  never "does not exist".
-- `typo3_reference_list`: names the worked examples the core ships of its own
-  conventions — the theme extension, the styleguide, the Extbase fixture
-  extension, the content element rendering, the browser suite, the static
-  analysis setup — with one line on what each is a reference for and which
-  versions have it. Every hint here is a summary of something that exists in
-  full and passing, and where a hint is thin, reading the example is the better
-  answer.
-- `typo3_catalog_scope`: says where the component contracts came from — the
-  active installation or the bundled snapshot — which core revision that
-  snapshot was taken from, what it covers, and how to re-check it. Read it to
-  judge whether a lookup miss is authoritative: even with installed sources the
-  component names stay a curated index rather than every backend class.
-- `typo3_icon_lookup`: validates and discovers icon identifiers (the registered
-  T3Icons names), grouped by category, so unknown identifiers are caught before
-  runtime. Every answer says which half of TYPO3 they belong to: the registry is
-  the backend's, and frontend rendering reaches none of it.
-- `typo3_label_lookup`: searches the labels the installation has registered (XLF
-  trans-units) and returns the domain reference (`package.resource:key`) and the
-  source text. Pass the XLF `resource` already used at the consuming code: reuse
-  is local to that resource, and a matching label in another module or package
-  is not a shared vocabulary. Several words are matched independently, ignoring
-  case and order: a label has to carry every one of them, and where none does,
-  the answer says how far each word reaches on its own. Where the console cannot
-  be reached — an installed TYPO3 whose database has no schema yet — the same
-  packages' XLF files are read instead, and `answeredBy` says which of the two
-  answered.
-- `typo3_translation_domain_lookup`: computes the translation domain an XLF file
-  resolves to, from its path. Nothing registers a domain — it follows from the
-  path by the rules the core itself applies — so this answers for a file in any
-  extension and for one a patch is about to add, which is exactly when it cannot
-  be looked up. On an installation older than translation domains it answers
-  with the full `LLL:EXT:` reference instead, because the domain form renders
-  nothing there and fails at runtime rather than at build time.
-- `typo3_backend_module_lookup`: lists the backend modules the installation has
-  registered, with the extension that declares each one, its place in the module
-  tree, its labels and its route. Answered by the installation, so a project
-  extension's modules are in it.
-- `typo3_fluid_namespace_list`: lists the Fluid ViewHelper namespaces that are
-  globally available, so a template knows which prefixes it may use without
-  declaring them. Every other namespace is declared per template. Where the
-  console cannot be reached, the installed packages' `Namespaces.php` answer and
-  `answeredBy` says so.
-- `typo3_schema_lookup`: lists the columns TYPO3 derives for a table from its
-  TCA — `uid`, `pid`, the timestamps, the delete and disable fields, the
-  language and versioning columns, and one per TCA field. Those are exactly the
-  columns an `ext_tables.sql` does not have to declare, so it is what a
-  redundant declaration is checked against. It describes what TYPO3 would
-  create, never what the database currently has, and it needs that database's
-  server to answer rather than a schema in it.
-- `typo3_configuration_lookup`: reads an effective `TYPO3_CONF_VARS` value — the
-  value as it is at runtime after every extension has had its say, not the
-  shipped default. For configuration whose assembled shape is the question, such
-  as `SYS/formEngine/formDataGroup` or `SYS/caching/cacheConfigurations`.
-- `typo3_commit_message_guide`: drafts and checks TYPO3 commit messages — from
-  parts, or by passing an existing `message` to check and correct one in a
-  piece. The emitted draft is ready to commit: the body is wrapped at 72
-  characters, and the checks name every run of lines the wrapping joined and
-  every line it could not bring under the width — under the core rules the
-  second one is an error, because the commit hook refuses it. It defaults to the
-  core contribution rules, Forge issue and `Releases:` trailer included;
-  `workflow="project"` keeps the subject and body conventions and drops the
-  trailers, for the repositories that use the one without having the other.
-- `typo3_feedback_record`: records what was missing, wrong, or unhelpful about
-  an answer as a feedback under `feedback/` (standalone checkout only, see
-  [Improvement feedback](#improvement-feedback)).
-- `typo3_feedback_list`: lists those feedback, newest first, so they can be
-  worked off, filtered by status, category or the tool they are about.
-  `status="closed"` reads the ones already worked off out of
-  `feedback/archive/`, where the commit that archived one is what says what came
-  of it — the feedback itself is kept, not deleted, so the category, the tools
-  and the model are still there to filter on (standalone checkout only).
+- **The bundled knowledge.** The core's conventions, its contribution process
+  and the checks a patch has to survive: `typo3_rule_lookup`,
+  `typo3_hint_lookup`, `typo3_script_lookup`, `typo3_task_guide`,
+  `typo3_test_run_guide` and `typo3_commit_message_guide`. The curated catalogs
+  answer from here too — the backend UI components, the extensions the core
+  ships, the worked examples it ships of its own conventions, and the
+  translation domain an XLF path resolves to: `typo3_component_lookup`,
+  `typo3_system_extension_lookup`, `typo3_reference_list` and
+  `typo3_translation_domain_lookup`, with `typo3_catalog_scope` for which core
+  revision they were taken from.
+- **The installation you are working in.** What no bundled answer could be right
+  about, because it is a property of the packages and the version that are
+  active: `typo3_project_scope`, `typo3_extension_scope`, `typo3_label_lookup`,
+  `typo3_icon_lookup`, `typo3_backend_module_lookup`,
+  `typo3_fluid_namespace_list`, `typo3_schema_lookup`,
+  `typo3_configuration_lookup` and `typo3_changelog_lookup`. Where the
+  installation cannot be booted the packages are read instead, and the answer
+  says so and what it leaves out.
+- **The official documentation.** `typo3_documentation_lookup` searches the
+  public tables of contents on `docs.typo3.org` for an explicitly requested
+  covered release, and reads a result it returned as text.
+- **The core's own services.** `typo3_forge_lookup` reads an issue and its
+  comments before a patch is written for it, and `typo3_gerrit_lookup` answers
+  whether a patch for it exists already. Reading only: voting, uploading and
+  amending stay with the caller's git and the web UI.
+- **This server itself.** `typo3_feedback_record` records what was missing,
+  wrong or unhelpful about an answer, and `typo3_feedback_list` reads those
+  back, open ones and archived ones. Both exist only in a standalone checkout,
+  see [Improvement feedback](#improvement-feedback).
 
 ## Resources
 

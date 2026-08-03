@@ -1,9 +1,9 @@
 # How the work is done
 
 One page per procedure that is long enough to get wrong from memory. One thing
-is no procedure and is written by nobody: `clients/tools.md` and the pages under
-`clients/tools/` are the tool surface, rendered from the classes that declare
-it, each page carrying what that tool answered once.
+is no procedure and is written by nobody: `tools/` is the tool surface, rendered
+from the classes that declare it, each page carrying what that tool answered
+once.
 
 `requirements/` and `decisions/` are working directories, and the whole of what
 one of their entries is — what it states, where it goes, how it is written — is
@@ -70,17 +70,20 @@ order by, and the launch two of the subjects below share.
 
 - [installing.md](clients/installing.md) — every client and layout the installer
   supports, and the configuration each one gets.
-- [tools.md](clients/tools.md) — every tool, and the page saying what it takes
-  and which fields it answers with. Written from the registry by
+- [writing-a-skill.md](clients/writing-a-skill.md) — what a new task skill has
+  to show before it exists, the rules it is written under, and what holds each
+  one.
+
+## [tools/](tools/readme.md) — the surface a client is offered
+
+- [readme.md](tools/readme.md) — every tool, and the page saying what it is for,
+  what it takes and which fields it answers with. Written from the registry by
   `bin/cli tools:index`, down to each page's `## Answered` heading. Below that
   heading is what the tool answered on one day, recorded by
   `bin/cli tools:record` against a core checkout and, for the tools whose answer
   the installation decides, against one this repository writes — evidence rather
   than a derivation, so nothing checks it. The two tools that are not recorded
   say why in its place.
-- [writing-a-skill.md](clients/writing-a-skill.md) — what a new task skill has
-  to show before it exists, the rules it is written under, and what holds each
-  one.
 
 ## [evidence/](evidence/forward-runs.md) — how the server is measured
 

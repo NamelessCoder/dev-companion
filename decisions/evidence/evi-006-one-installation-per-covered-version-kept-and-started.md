@@ -35,7 +35,7 @@ covered line would be answered was shown by nothing.
 - The recording no longer runs on any of them. `D-DOC-012` moved the second root
   to the installation this repository writes below `.fixtures/`, and rejected a
   third — so the number of installed instances is a question about `scenarios/`
-  alone, not about `documentation/clients/tools/`.
+  alone, not about `documentation/tools/`.
 - `typo3/cms-base-distribution` publishes no release above the newest stable:
   `v14.3.0` is its top tag, and the only thing tracking the development core is
   its `dev-main`. That core declares PHP `^8.5` where the containers here are

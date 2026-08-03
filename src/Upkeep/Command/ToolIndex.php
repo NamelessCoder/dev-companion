@@ -22,7 +22,7 @@ use Typo3CmsMcp\Upkeep\ToolSurface;
  */
 #[AsCommand(
     name: 'tools:index',
-    description: 'rewrite the tool reference under documentation/clients/ from the registry',
+    description: 'rewrite the tool reference under documentation/tools/ from the registry',
 )]
 final class ToolIndex
 {

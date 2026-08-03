@@ -28,12 +28,12 @@ final class ToolSurface
 
     public static function index(): string
     {
-        return Paths::root() . '/documentation/clients/tools.md';
+        return Paths::root() . '/documentation/tools/readme.md';
     }
 
     public static function directory(): string
     {
-        return Paths::root() . '/documentation/clients/tools';
+        return Paths::root() . '/documentation/tools';
     }
 
     public static function file(string $tool): string
@@ -107,7 +107,7 @@ final class ToolSurface
         $lines = [];
         foreach (Registry::definitions() as $definition) {
             $lines[] = self::wrap(sprintf(
-                '- [`%s`](tools/%s.md) — %s',
+                '- [`%s`](%s.md) — %s',
                 $definition['name'],
                 $definition['name'],
                 self::opening($definition['description']),

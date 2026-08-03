@@ -1,6 +1,6 @@
 # Build the installation answers from a fixture
 
-**Serves:** documentation/clients/tools/
+**Serves:** documentation/tools/
 **Priority:** normal
 **Waiting on:** may the tool pages be built against a second fixture standing in
     for the core checkout, when `typo3_component_lookup` then answers from the

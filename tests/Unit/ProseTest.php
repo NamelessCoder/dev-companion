@@ -148,14 +148,15 @@ final class ProseTest extends TestCase
     #[Test]
     public function aFieldIsOneLineAndAHangingIndentIsKept(): void
     {
-        $head = "**Serves:** decisions/\n**Priority:** normal\n"
+        $head = "**Serves:** feedback/2026-08-02-144326-working-inside-a-git-worktree-created-under.md\n"
+            . "**Priority:** normal\n"
             . "**Waiting on:** which name the tool takes, because the directory and the class\n"
             . "    follow whichever wins and renaming one of the three alone is two names for\n"
             . '    one thing.';
 
         $lines = explode("\n", Wrap::document($head));
 
-        self::assertSame('**Serves:** decisions/', $lines[0]);
+        self::assertSame('**Serves:** feedback/2026-08-02-144326-working-inside-a-git-worktree-created-under.md', $lines[0]);
         self::assertSame('**Priority:** normal', $lines[1]);
         self::assertStringStartsWith('**Waiting on:**', $lines[2]);
         foreach (array_slice($lines, 3) as $line) {

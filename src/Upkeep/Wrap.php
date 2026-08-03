@@ -173,6 +173,14 @@ final class Wrap
             return [];
         }
 
+        // A field on one line stays on one line, however wide. `**Serves:**`
+        // and the path after it are one field, and split over two lines the
+        // label is all `Todo` finds — a long path is a long line, and that is
+        // the cheaper of the two.
+        if (!isset($paragraph[1]) && preg_match('/^\*\*[^*]+:\*\*/', trim($paragraph[0])) === 1) {
+            return [$paragraph[0]];
+        }
+
         preg_match('/^(\s*)((?:[-*+]|\d+\.)\s+)?/', $paragraph[0], $match);
         $first = $match[1] . ($match[2] ?? '');
         $continuation = str_repeat(' ', mb_strlen($first));

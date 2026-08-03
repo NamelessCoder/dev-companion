@@ -14,7 +14,7 @@ earns one.
 - [`D-FBK-025`][D-FBK-025] — A judgement reads the corpus, decides the shape, and sets the priority · 2026-08-03
 - [`D-FBK-026`][D-FBK-026] — The ladder needs an outcome that builds something · 2026-08-03
 - [`D-FBK-027`][D-FBK-027] — The server builds what costs its caller round trips · 2026-08-03
-- [`D-FBK-037`][D-FBK-037] — API stability is worth a lookup and git state is not · 2026-08-03
+- [`D-FBK-038`][D-FBK-038] — What decides a breaking removal is the caller, not the marker · 2026-08-03
 - [`D-FBK-011`][D-FBK-011] — The suite holds what one branch can be right about · 2026-08-02
 - [`D-FBK-012`][D-FBK-012] — The queue comes first, and the sighting hands over one · 2026-08-02
 - [`D-FBK-013`][D-FBK-013] — An empty queue is a state, not a failure · 2026-08-02
@@ -41,7 +41,7 @@ earns one.
 [D-FBK-025]: fbk-025-a-judgement-reads-the-corpus-decides-the-shape-and-sets-the-priority.md
 [D-FBK-026]: fbk-026-the-ladder-needs-an-outcome-that-builds-something.md
 [D-FBK-027]: fbk-027-the-server-builds-what-costs-its-caller-round-trips.md
-[D-FBK-037]: fbk-037-api-stability-is-worth-a-lookup-and-git-state-is-not.md
+[D-FBK-038]: fbk-038-what-decides-a-breaking-removal-is-the-caller-not-the-marker.md
 [D-FBK-011]: fbk-011-the-suite-holds-what-one-branch-can-be-right-about.md
 [D-FBK-012]: fbk-012-the-queue-comes-first-and-the-sighting-hands-over-one.md
 [D-FBK-013]: fbk-013-an-empty-queue-is-a-state-not-a-failure.md
@@ -67,8 +67,10 @@ earns one.
 
 ### Revoked, and kept as the record
 
+- [`D-FBK-037`][D-FBK-037] — API stability is worth a lookup and git state is not · 2026-08-03 → D-FBK-038
 - [`D-FBK-005`][D-FBK-005] — The queue is worked before the pile is sighted · 2026-08-01 → D-FBK-012
 - [`D-FBK-003`][D-FBK-003] — A session is handed one todo, not the file · 2026-07-31 → D-FBK-002
 
+[D-FBK-037]: fbk-037-api-stability-is-worth-a-lookup-and-git-state-is-not.md
 [D-FBK-005]: fbk-005-the-queue-is-worked-before-the-pile-is-sighted.md
 [D-FBK-003]: fbk-003-a-session-is-handed-one-todo-not-the-file.md

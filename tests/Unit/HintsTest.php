@@ -753,6 +753,41 @@ final class HintsTest extends TestCase
         }
     }
 
+    /**
+     * Whether a removal is breaking is a question the corpus answers, and it
+     * answers that the annotation does not settle it.
+     *
+     * A patch review reported reading the class and its history by hand to
+     * establish that `GifBuilder` is public API while the removed member is
+     * `@internal`, and asked for a lookup that reports the marker. The core has
+     * filed removals of `@internal` members both ways — `Breaking-110319`
+     * because non-Composer bootstraps called them, `Important-108796` because
+     * nothing did — so a tool answering the marker would answer beside the
+     * question. What was missing is the rule.
+     */
+    #[Test]
+    public function whetherARemovalIsBreakingIsAnsweredAndTheMarkerDoesNotSettleIt(): void
+    {
+        $reached = array_column(
+            Hints::find([], 'is removing this internal method breaking', 6)['matchedHints'],
+            'id',
+        );
+        self::assertContains('deprecated-apis', $reached);
+
+        $written = json_encode(Hints::byId('deprecated-apis'), JSON_THROW_ON_ERROR);
+        self::assertStringContainsString('@internal', $written);
+        self::assertStringContainsString('never the answer on its own', $written);
+        self::assertStringContainsString('whether anything outside the core calls it', $written);
+
+        // And the brief for the change type says it before it says how to write
+        // the entry, because the entry is what a wrong answer produces.
+        $brief = Registry::call('typo3_task_guide', [
+            'task' => 'Remove an internal method from a public core class',
+            'changeType' => 'breaking',
+        ])->text;
+        self::assertStringContainsString('Settle first that the change is breaking at all', $brief);
+    }
+
     #[Test]
     public function aPathAloneReachesTheHintForTheSubsystemItIsIn(): void
     {

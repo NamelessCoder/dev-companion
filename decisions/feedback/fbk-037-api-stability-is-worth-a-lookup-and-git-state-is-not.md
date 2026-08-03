@@ -1,7 +1,8 @@
 ---
 id: D-FBK-037
 date: 2026-08-03
-status: open
+status: revoked
+revokedBy: D-FBK-038
 ---
 
 # D-FBK-037 — API stability is worth a lookup and git state is not
@@ -74,3 +75,21 @@ Judged against `D-FBK-027` they come apart.
 ## Covered by
 
 - `ScopeTest::noExclusionDeniesASourceTheServerReads`
+
+## Revoked on 2026-08-03
+
+Half of this was decided without reading the core's own changelogs, and that
+half is wrong. `Breaking-110319-RemovedUnusedInternalBootstrapMethods` removed
+three `@internal` methods and is filed **Breaking**, because non-Composer
+bootstrap scripts called them and the extension scanner reports the usages.
+`Important-108796-InternalShortcutClassesRenamedToBookmark` renamed `@internal`
+classes and is filed **Important**. The marker is an input and not the decision,
+so a lookup reporting it would have answered beside the question — and told the
+reviewer of 110319 the opposite of what the core concluded.
+
+What was missing was the rule rather than the fact, which is what the corpus
+already does for the sibling question: `deprecated-apis` tells a caller to read
+the `@deprecated` declaration itself rather than offering a lookup for it.
+[`D-FBK-038`](fbk-038-what-decides-a-breaking-removal-is-the-caller-not-the-marker.md)
+carries what holds, the git half included, and the card this queued is deleted
+rather than reshaped: the answer is a statement in the corpus and it is written.

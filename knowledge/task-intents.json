@@ -27,10 +27,14 @@
       "breaking",
       "remove public",
       "removed public",
-      "drop support"
+      "drop support",
+      "@internal",
+      "is this breaking",
+      "public api"
     ],
     "rulesQuery": "breaking change changelog",
     "checklist": [
+      "Settle first that the change is breaking at all: @internal says the API is not public and does not decide it, and what does is whether anything outside the core calls it. The core has removed @internal members both ways.",
       "Add a changelog file below typo3/sysext/core/Documentation/Changelog/<version>/ named Breaking-<issue>-<Title>.rst.",
       "Prefix the commit summary with [!!!] before the keyword.",
       "Target main; confirm any older release target with the release managers.",

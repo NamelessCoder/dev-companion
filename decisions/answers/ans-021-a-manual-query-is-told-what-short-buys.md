@@ -143,3 +143,24 @@ The stems are reported as they were matched — `templa`, `acces` — rather tha
 the words they came from. That is what the search did, and it is also the only
 place a caller can see that `record.header` arrived as `record`. Nothing
 measures whether a caller reads a stem as a typo.
+
+## Since then
+
+The first **Wrong if** fired, and the reading it produced moves the lever it
+named. `feedback/2026-08-03-164734` arrived on 2026-08-03 with three questions
+of four to six words, read the match line, described the ranking correctly from
+it — stems and all, which answers the last paragraph above — and reported the
+same miss. So the wording was delivered, taken, and did not save the call.
+
+What it does not confirm is the sentence after it. This entry expected the index
+to be next and page bodies to be what a table of contents cannot carry. Two of
+those three queries have no page body to match either: TYPO3 Explained 14.3
+writes `.fluid.html` in 49 code-example captions and states the convention in no
+sentence at all, so matching within a page returns 49 pages that answer nothing.
+The third one's page is in the index and reachable — `login provider` returns
+*LoginProvider* first, where the six-word query ranks it ninth.
+
+[`D-ANS-046`](ans-046-a-manual-result-covers-the-question-it-is-returned-for.md)
+is where that goes: the coverage `TermSearch::score()` already computes and this
+lookup discards, and what the resulting miss says. It is queued, and the
+feedback stays open behind it.

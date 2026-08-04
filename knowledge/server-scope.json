@@ -70,6 +70,16 @@
       "scope": "extension"
     },
     {
+      "topic": "The Playwright suite a project runs its browser tests from",
+      "depth": "The configuration, the backend login and one spec, whole and ready to write out, with the login in the variant each TYPO3 major needs. Beside them: where the base URL and the credentials come from, why the login runs once, and which locator on the login form is ambiguous. It does not install anything and names no dependency version.",
+      "tools": [
+        "typo3_rule_lookup",
+        "typo3_hint_lookup"
+      ],
+      "source": "typo3://guides/project/testing/playwright",
+      "scope": "project"
+    },
+    {
       "topic": "Where the upstream contribution documentation is",
       "depth": "The official contribution workflow guide is not bundled: this names its entry points, so a question past what the local documents answer is sent to the source rather than guessed at. The local policy that sits beside it is this repository's own.",
       "tools": [

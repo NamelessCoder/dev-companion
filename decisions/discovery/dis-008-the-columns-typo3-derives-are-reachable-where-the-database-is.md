@@ -88,3 +88,42 @@ is the whole of the evidence for it.
 The one thing the reading did not predict: the answer names the relation tables
 as such. TYPO3 creates them, so no `ext_tables.sql` declares one at all, and a
 list that showed them beside the others would read as work somebody has to do.
+
+## Since then
+
+The condition is the driver's, not this answer's, and the statement above is a
+MySQL project generalised. `Connection::getDatabasePlatform()` builds a version
+provider — `StaticServerVersionProvider` where `serverVersion` sits in the
+connection parameters, the connection itself otherwise — and hands it to
+`Driver::getDatabasePlatform()`, which is where the server is asked for or is
+not. `AbstractSQLiteDriver` ignores the provider and returns a `SQLitePlatform`.
+`AbstractMySQLDriver` and `AbstractPostgreSQLDriver` open with
+`$versionProvider->getServerVersion()`, and that is `Connection::connect()`.
+Read in doctrine/dbal 4.4.4, which `.environments/e-site-13.4`, `e-site-14.3`
+and `e-site-main` install, and in 3.10.6, which `e-site-12.4` installs and where
+the same split is `VersionAwarePlatformDriver`: the SQLite driver does not
+implement it, so `detectDatabasePlatform()` never asks for a version either.
+
+Against the drivers TYPO3 has both a driver and a platform check for — `mysqli`,
+`pdo_mysql`, `pdo_pgsql` and `pdo_sqlite`, in `DatabaseCheck` on 12.4 and on
+14.3, and there is no mssql driver on either — that is: a MySQL, MariaDB or
+PostgreSQL installation loses this answer while its database server is down, a
+SQLite one never does, and even the first three keep it where the connection
+parameters state a `serverVersion`.
+
+Measured on 2026-08-04 against `.environments/e-site-14.3`: TYPO3 14.3.5 on
+`pdo_sqlite`, whose database file is a path inside the DDEV container. Driven
+with that installation's own console on this machine's PHP 8.3, whose PDO
+carries `mysql` and nothing else, `typo3_schema_lookup` answered `pages` with
+the same 69 derived columns the run above recorded through `ddev exec` with the
+project up. Nothing opened the database, and there was no driver to open it
+with.
+
+What holds is the rest: no schema, no SQL, no log, and an empty `Table` per TCA
+table is what makes the derived set readable. What is too broad is the third
+**Evidence** bullet — "one with no database at all does not" — and the first
+**Decided** bullet, which names a responding database server as the one
+condition the other runtime answers do not have. Where the platform really does
+need the server, the shape is the one that bullet promised: the enrichment
+throws, `probe.php` reports the topic `unavailable`, and `SchemaLookup` answers
+`unsupported` carrying the exception.

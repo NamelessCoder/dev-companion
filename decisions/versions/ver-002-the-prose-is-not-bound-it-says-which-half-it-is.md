@@ -1,7 +1,8 @@
 ---
 id: D-VER-002
 date: 2026-07-29
-status: confirmed
+status: revoked
+revokedBy: D-VER-005
 ---
 
 # D-VER-002 — The prose is not bound; it says which half it is
@@ -70,3 +71,19 @@ What this leaves open is the class of prose statement that is not a command. The
 guard added here compares a `-s <suite>` token against the ranges the suites
 already carry, and nothing equivalent exists for a sentence describing a shape —
 for that, the **Wrong if** is still read rather than run.
+
+## Revoked on 2026-08-04
+
+The class this entry left open arrived as a section whose body is a file the
+caller writes out verbatim. Both properties this rested on fail there: the
+document is where the caller acts rather than a long form of something bound
+elsewhere, and there is no hint carrying the file for the range to sit on. The
+remedy that absorbed the **Wrong if** in August cannot be applied either — a
+command could be taken out of the prose because its range already lived on a
+suite, and a file has nowhere to be taken out to.
+
+What holds instead is
+[`D-VER-005`](ver-005-a-document-section-declares-the-majors-it-holds-for.md),
+whose **Wrong if** is a different list: what can go wrong now is a variant
+handed over with nothing saying which to write, not a section that misleads
+because nothing could filter it.

@@ -254,15 +254,15 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 
 ### versions
 
+- [`D-VER-005`][D-VER-005] — A document section declares the majors it holds for · 2026-08-04
 - [`D-VER-004`][D-VER-004] — A supported range is a property of the package, not of the checkout · 2026-07-31 · confirmed
 - [`D-VER-003`][D-VER-003] — The Fluid engine gets no version axis of its own, because the core pins it · 2026-07-30 · confirmed
 - [`D-VER-001`][D-VER-001] — A version range is data on the statement, not a sentence in it · 2026-07-29 · confirmed
-- [`D-VER-002`][D-VER-002] — The prose is not bound; it says which half it is · 2026-07-29 · confirmed
 
+[D-VER-005]: versions/ver-005-a-document-section-declares-the-majors-it-holds-for.md
 [D-VER-004]: versions/ver-004-a-supported-range-is-a-property-of-the-package.md
 [D-VER-003]: versions/ver-003-the-fluid-engine-gets-no-version-axis-of-its-own.md
 [D-VER-001]: versions/ver-001-a-version-range-is-data-on-the-statement-not-a-sentence-in-it.md
-[D-VER-002]: versions/ver-002-the-prose-is-not-bound-it-says-which-half-it-is.md
 
 ### catalog
 
@@ -502,6 +502,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-KNW-002`][D-KNW-002] — A hint about typo3/testing-framework is verified against tags, not against the checkouts · 2026-07-29
 - [`D-SCO-001`][D-SCO-001] — Outside the core the core test guide declines rather than adapts · 2026-07-29
 - [`D-SCO-004`][D-SCO-004] — The frontend is recognised by name, and only the two UI sections go · 2026-07-29
+- [`D-VER-002`][D-VER-002] — The prose is not bound; it says which half it is · 2026-07-29 → D-VER-005
 
 [D-FBK-037]: feedback/fbk-037-api-stability-is-worth-a-lookup-and-git-state-is-not.md
 [D-KNW-040]: knowledge/knw-040-what-asserts-a-rendered-output-is-a-gap-this-server-owns.md
@@ -525,3 +526,4 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 [D-KNW-002]: knowledge/knw-002-a-hint-about-typo3-testing-framework-is-verified-against-tags.md
 [D-SCO-001]: scope/sco-001-outside-the-core-the-core-test-guide-declines-rather-than-adapts.md
 [D-SCO-004]: scope/sco-004-the-frontend-is-recognised-by-name-and-only-the-two-ui-sections-go.md
+[D-VER-002]: versions/ver-002-the-prose-is-not-bound-it-says-which-half-it-is.md

@@ -129,12 +129,9 @@ The third **Wrong if** is still the one to watch, and nothing has read it yet:
 no session has been observed skipping step 3 after matching a skill on its
 `description`.
 
-The maintainer's review the same day took the step back out of two of the eight
-skills — `D-SKL-014`, **Since then** — and nothing above changes with it. What
-the fourth **Wrong if** turned on was that the base is copied into every skill,
-review-only ones included, so the commit step is a body's and not this file's;
-that is more true with six than with eight. `typo3-extension-conformance` is now
-the review-only case named in the paragraph above rather than the exception to
-it, and `typo3-extension-release` is unpublished. The condition on step 3 is
-untouched: the cost it names is the path-specific brief, which no skill of
-either count carries.
+`typo3-extension-conformance` is the review-only case the paragraph above names
+rather than an exception to it — `D-SKL-014`, **Since then**. Nothing here
+changes with that: what the fourth **Wrong if** turned on is that the base is
+copied into every skill, review-only ones included, so the commit step is a
+body's and not this file's. The condition on step 3 is untouched, and the cost
+it names is the path-specific brief, which no skill carries.

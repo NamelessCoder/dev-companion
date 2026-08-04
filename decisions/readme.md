@@ -18,10 +18,12 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 
 ### audience
 
+- [`D-AUD-005`][D-AUD-005] — An exclusion naming no tool is reported on stderr, and the server starts · 2026-08-04
 - [`D-AUD-004`][D-AUD-004] — Every client is offered every tool, and the answer says who it obliges · 2026-08-02
 - [`D-AUD-003`][D-AUD-003] — The instructions carry the entry point, because the tool descriptions never arrive · 2026-07-31 · confirmed
 - [`D-AUD-001`][D-AUD-001] — The outward description stays core-first until there is non-core knowledge · 2026-07-29 · confirmed
 
+[D-AUD-005]: audience/aud-005-an-exclusion-naming-no-tool-is-reported-on-stderr.md
 [D-AUD-004]: audience/aud-004-every-client-is-offered-every-tool-and-the-answer-obliges.md
 [D-AUD-003]: audience/aud-003-the-instructions-carry-the-entry-point.md
 [D-AUD-001]: audience/aud-001-the-outward-description-stays-core-first-until-there-is-more.md
@@ -53,6 +55,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-ANS-048`][D-ANS-048] — A tool declares what can answer it, and both readers render that · 2026-08-04
 - [`D-ANS-049`][D-ANS-049] — An answer from outside is held where the caller cannot change it · 2026-08-04
 - [`D-ANS-050`][D-ANS-050] — A curated needle matches the word it is, and a stem matches past its end · 2026-08-04
+- [`D-ANS-051`][D-ANS-051] — A manual result carries how much of the question it covers, and no page is taken away for covering little · 2026-08-04
 - [`D-ANS-033`][D-ANS-033] — The review server is read anonymously, and the answer says what that leaves out · 2026-08-03 · confirmed
 - [`D-ANS-034`][D-ANS-034] — A source outside this package answers JSON, or it did not answer · 2026-08-03
 - [`D-ANS-035`][D-ANS-035] — The matcher entry is owed to what the changelog tag claims · 2026-08-03 · confirmed
@@ -100,6 +103,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 [D-ANS-048]: answers/ans-048-a-tool-declares-what-can-answer-it-and-both-readers-render-that.md
 [D-ANS-049]: answers/ans-049-an-answer-from-outside-is-held-where-the-caller-cannot-change-it.md
 [D-ANS-050]: answers/ans-050-a-curated-needle-matches-the-word-it-is-and-a-stem-matches-past-its-end.md
+[D-ANS-051]: answers/ans-051-a-manual-result-carries-how-much-of-the-question-it-covers.md
 [D-ANS-033]: answers/ans-033-the-review-server-is-read-anonymously-and-the-answer-says-what-that-leaves-out.md
 [D-ANS-034]: answers/ans-034-a-source-outside-this-package-answers-json-or-it-did-not-answer.md
 [D-ANS-035]: answers/ans-035-the-matcher-entry-is-owed-to-what-the-changelog-tag-claims.md
@@ -420,6 +424,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 
 ### documentation
 
+- [`D-DOC-015`][D-DOC-015] — A renumber moves what a link path settles and names the rest · 2026-08-04
 - [`D-DOC-009`][D-DOC-009] — Prose names what counts rather than the count · 2026-08-03
 - [`D-DOC-010`][D-DOC-010] — `targetVersion` opens with one sentence and diverges after it · 2026-08-03
 - [`D-DOC-011`][D-DOC-011] — A schema is written as the shape it validates · 2026-08-03
@@ -435,6 +440,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-DOC-001`][D-DOC-001] — A table is written so it reads unrendered · 2026-08-01
 - [`D-DOC-002`][D-DOC-002] — The prose rule is measured, and only the lead fails on it · 2026-08-01
 
+[D-DOC-015]: documentation/doc-015-a-renumber-moves-what-a-link-path-settles-and-names-the-rest.md
 [D-DOC-009]: documentation/doc-009-prose-names-what-counts-rather-than-the-count.md
 [D-DOC-010]: documentation/doc-010-targetversion-opens-with-one-sentence-and-diverges-after-it.md
 [D-DOC-011]: documentation/doc-011-a-schema-is-written-as-the-shape-it-validates.md

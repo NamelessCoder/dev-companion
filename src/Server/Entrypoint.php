@@ -35,6 +35,7 @@ final class Entrypoint
 
         if ($command === null) {
             Instance::discoverFrom(getcwd() ?: null);
+            self::reportUnknownExclusions();
             Factory::create()->run(new StdioTransport());
 
             return 0;
@@ -49,6 +50,38 @@ final class Entrypoint
         fwrite(STDERR, 'typo3-cms-mcp: no such command "' . $command . "\".\n\n" . self::usage());
 
         return 2;
+    }
+
+    /**
+     * An excluded name no tool answers to, said on stderr before the transport
+     * starts.
+     *
+     * stdout is the protocol from the next line on, so stderr is the one
+     * channel a started server has left — which is where the stdio transport
+     * puts a server's own output, for a client to capture, forward or ignore.
+     * `src/bootstrap.php` says the other startup problem this binary has there
+     * too.
+     *
+     * It is a warning and the server starts: the list is read once, out of an
+     * environment nobody validates it against, and a name gone stale under a
+     * rename would otherwise take every tool down with it. What it costs
+     * meanwhile is one tool in the list that the caller did not want, which is
+     * context rather than harm — `D-AUD-005`.
+     */
+    private static function reportUnknownExclusions(): void
+    {
+        $unknown = ExcludedTools::unknown();
+        if ($unknown === []) {
+            return;
+        }
+
+        fwrite(STDERR, sprintf(
+            'typo3-cms-mcp: %s names %s, which this server does not offer, so %s excluded nothing. '
+            . "typo3_server_scope lists the tools it does offer.\n",
+            ExcludedTools::VARIABLE,
+            implode(', ', $unknown),
+            count($unknown) === 1 ? 'it' : 'they',
+        ));
     }
 
     /**

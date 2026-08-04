@@ -136,6 +136,32 @@ final class ExcludedToolsTest extends TestCase
         self::assertContains(Scope::Any, array_column(Coverage::offered()['covers'], 'scope'));
     }
 
+    /**
+     * The hole `a4470ee` fell into: `typo3_project_scope` was renamed, and the
+     * caller who had excluded it got the tool back under its new name with
+     * nothing said on either side. The name is reported now, and the exclusion
+     * beside it still takes its tool away.
+     */
+    #[Test]
+    public function aNameNoToolAnswersToIsReportedAndTheRealOneBesideItStillExcludes(): void
+    {
+        putenv(ExcludedTools::VARIABLE . '=typo3_project_scope, typo3_icon_lookup');
+
+        self::assertSame(['typo3_project_scope'], ExcludedTools::unknown());
+
+        $offered = $this->toolNames();
+        self::assertNotContains('typo3_icon_lookup', $offered);
+        self::assertContains('typo3_project_describe', $offered, 'the renamed tool is what the caller now gets');
+    }
+
+    #[Test]
+    public function aListEveryToolAnswersToIsReportedAsNothing(): void
+    {
+        putenv(ExcludedTools::VARIABLE . '=typo3_icon_lookup, typo3_server_scope');
+
+        self::assertSame([], ExcludedTools::unknown());
+    }
+
     #[Test]
     public function theToolThatExplainsAShortListCannotBeExcluded(): void
     {

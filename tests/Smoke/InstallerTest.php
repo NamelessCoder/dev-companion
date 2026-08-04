@@ -41,6 +41,45 @@ final class InstallerTest extends TestCase
         }
     }
 
+    /**
+     * The entry is the caller's file, and the run owns the command in it and
+     * nothing else. `env` is where that matters: an exclusion written in by
+     * hand was replaced away by the next install, and the tools it had taken
+     * out came back with nothing said — the same silence `D-AUD-005` is about,
+     * reached from the other side.
+     */
+    #[Test]
+    public function installKeepsWhatTheCallerPutInTheEntryAndRewritesOnlyTheCommand(): void
+    {
+        $directory = $this->directory();
+        file_put_contents($directory . '/.mcp.json', json_encode([
+            'mcpServers' => [
+                'typo3-cms-mcp' => [
+                    'type' => 'stdio',
+                    'command' => 'php',
+                    'args' => ['/gone/bin/typo3-cms-mcp'],
+                    'env' => ['TYPO3_MCP_EXCLUDE_TOOLS' => 'typo3_icon_lookup'],
+                ],
+            ],
+        ], JSON_THROW_ON_ERROR));
+
+        try {
+            $stderr = '';
+            self::assertSame(0, $this->install($directory, $stderr), $stderr);
+
+            $entry = json_decode(
+                (string) file_get_contents($directory . '/.mcp.json'),
+                true,
+                flags: JSON_THROW_ON_ERROR,
+            )['mcpServers']['typo3-cms-mcp'];
+
+            self::assertSame(['TYPO3_MCP_EXCLUDE_TOOLS' => 'typo3_icon_lookup'], $entry['env']);
+            self::assertSame([Paths::root() . '/bin/typo3-cms-mcp'], $entry['args'], 'the command is still rewritten');
+        } finally {
+            Directory::remove($directory);
+        }
+    }
+
     #[Test]
     public function installRefusesToReplaceAnotherCommand(): void
     {

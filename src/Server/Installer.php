@@ -365,9 +365,31 @@ final class Installer
                 $relativePath . ' already has a different typo3-cms-mcp server; refusing to replace it',
             );
         }
-        $target[self::SERVER] = $this->jsonServer($shape);
+        $target[self::SERVER] = $this->jsonServer($shape) + $this->carriedOver($existing);
 
         return $this->message($this->writeJson($path, $configuration), $path);
+    }
+
+    /**
+     * What an entry already there keeps: every field this package does not
+     * write itself.
+     *
+     * The command and the shape around it are a property of the project and are
+     * rewritten on every run, which is what `update` is for. The rest is the
+     * caller's, and `env` is why this exists: a `TYPO3_MCP_EXCLUDE_TOOLS`
+     * written into the entry by hand was replaced away by the next install, and
+     * the tools it had taken out came back with nothing said on either side —
+     * `D-AUD-005`.
+     *
+     * @return array<array-key, mixed>
+     */
+    private function carriedOver(mixed $existing): array
+    {
+        if (!is_array($existing)) {
+            return [];
+        }
+
+        return array_diff_key($existing, array_flip(['type', 'command', 'args', 'enabled']));
     }
 
     /**

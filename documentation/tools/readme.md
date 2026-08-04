@@ -1,17 +1,19 @@
 # The tool surface
 
 Every tool this server offers, one page each. A page says what the tool is
-called, what it takes, the fields it answers with and what it answered when it
-was last recorded, and this is the list of them.
+called, what it takes, the fields it answers with and what a call to it comes
+back with, and this is the list of them.
 
 The half of a page above its `## Answered` heading is written by `bin/cli
 tools:index` from the classes that answer the calls, and `bin/cli tools:check`
 fails where it has gone stale — a surface written out a second time by hand
-stops describing the answer at the first change nobody carried across. The half
-below it is not derivable, because a filled answer needs an installation to
-call: `bin/cli tools:record` writes it and nothing checks it, so a page may say
-what it answered on a day the code has since moved past. Two tools have no
-recorded half on purpose and say so in its place.
+stops describing the answer at the first change nobody carried across. What is
+below that heading is one of two things, and the sentence it opens with says
+which. Where a tool's answers read nothing an installation contains, they are
+derived and held by that same check. Where they do, an installation has to be
+called for them: `bin/cli tools:record` writes those and nothing checks them, so
+such a page may say what it answered on a day the code has since moved past. Two
+tools have no answered half at all, on purpose, and say so in its place.
 
 A client may be offered fewer than these. `TYPO3_MCP_EXCLUDE_TOOLS` names the
 tools a caller does not want offered, the two feedback tools exist only in a

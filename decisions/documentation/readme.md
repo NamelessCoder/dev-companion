@@ -9,6 +9,7 @@ See [the decisions readme](../readme.md) for how an entry is written and when it
 earns one.
 
 - [`D-DOC-015`][D-DOC-015] — A renumber moves what a link path settles and names the rest · 2026-08-04
+- [`D-DOC-016`][D-DOC-016] — An answer that reads no installation is derived and checked like the fields above it · 2026-08-04
 - [`D-DOC-009`][D-DOC-009] — Prose names what counts rather than the count · 2026-08-03
 - [`D-DOC-010`][D-DOC-010] — `targetVersion` opens with one sentence and diverges after it · 2026-08-03
 - [`D-DOC-011`][D-DOC-011] — A schema is written as the shape it validates · 2026-08-03
@@ -25,6 +26,7 @@ earns one.
 - [`D-DOC-002`][D-DOC-002] — The prose rule is measured, and only the lead fails on it · 2026-08-01
 
 [D-DOC-015]: doc-015-a-renumber-moves-what-a-link-path-settles-and-names-the-rest.md
+[D-DOC-016]: doc-016-an-answer-that-reads-no-installation-is-derived-and-checked.md
 [D-DOC-009]: doc-009-prose-names-what-counts-rather-than-the-count.md
 [D-DOC-010]: doc-010-targetversion-opens-with-one-sentence-and-diverges-after-it.md
 [D-DOC-011]: doc-011-a-schema-is-written-as-the-shape-it-validates.md

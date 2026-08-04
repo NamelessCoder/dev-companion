@@ -17,10 +17,14 @@ use Typo3CmsMcp\Tool\Source;
  * the first change nobody carried across, so this renders it from
  * Registry::definitions() and `tools:check` fails where a page has gone stale.
  *
- * The rest of a page is `ToolAnswers`': what a filled answer looks like needs an
- * installation to call, so it is recorded under the page's `## Answered`
- * heading and checked by nothing. Each of the two commands carries the other's
- * half over untouched, which is what lets one file hold both.
+ * The rest of a page is `ToolAnswers`', under the page's `## Answered` heading,
+ * and it is one of two things. What a filled answer looks like usually needs an
+ * installation to call, so it is recorded and checked by nothing, and each of
+ * the two commands carries the other's half over untouched — which is what lets
+ * one file hold both. Where a tool's answers read nothing an installation
+ * contains, that half is derived here instead and falls inside the same check
+ * as the fields above it: `ToolCalls::derived()` is the set and what measured
+ * it.
  */
 final class ToolSurface
 {
@@ -58,15 +62,24 @@ final class ToolSurface
      * installation on a day, nothing here can derive it again, and a
      * regeneration that dropped it would make `tools:index` delete evidence.
      *
+     * The derived half is the other case and is written here rather than
+     * carried: eight tools read nothing an installation contains, so their
+     * answers follow from the registry and `knowledge/` the way the fields
+     * above them do. That is what puts them inside what `tools:check` holds —
+     * `ToolCalls::derived()` is the set and why.
+     *
      * @return array<string, string>
      */
     public static function pages(): array
     {
+        $derived = ToolAnswers::derivedSections();
+
         $pages = self::standingPages();
         foreach (Registry::definitions() as $definition) {
-            $pages[self::file($definition['name'])] = self::page(
+            $name = $definition['name'];
+            $pages[self::file($name)] = self::page(
                 $definition,
-                ToolAnswers::recordedIn(self::file($definition['name'])),
+                $derived[$name] ?? ToolAnswers::recordedIn(self::file($name)),
             );
         }
 

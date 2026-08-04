@@ -59,12 +59,12 @@ coveredVersions: [integer]
 
 ## Answered
 
-Recorded on 2026-08-03 by `bin/cli tools:record`. Answered against
-core-checkout, TYPO3 14.3.6-dev, the 14.3 core checkout below .checkouts/,
-whose console could not be reached: <installation> has no TYPO3 console —
-none of bin/typo3, vendor/bin/typo3 exists. Nothing checks what is below this
-heading; everything above it is derived from the class that answers the call,
-and `bin/cli tools:check` holds it.
+Derived by `bin/cli tools:index`, and `bin/cli tools:check` holds it — the
+same as everything above this heading. This tool reads nothing an installation
+contains: what reaches its answer is the bundled knowledge and which TYPO3
+major the caller is on, so what comes back is written down rather than recorded
+from one machine's checkout. Answered against the core checkout this repository
+writes below .fixtures/, declaring TYPO3 14.3.0.
 
 ### system extensions: hit
 

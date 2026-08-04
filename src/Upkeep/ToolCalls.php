@@ -58,6 +58,39 @@ final class ToolCalls
     }
 
     /**
+     * The tools whose answered half is derived rather than recorded.
+     *
+     * A recording is evidence because the answer belongs to an installation
+     * nobody else has. These eight read none: what reaches their answer is
+     * `knowledge/` and two declarations about the root — that it is the core
+     * monorepo, and which TYPO3 major that is. So the answer is the same for
+     * every caller on that major, which makes it derivable, and what is
+     * derivable is checked rather than believed.
+     *
+     * Measured on 2026-08-04 against `.checkouts/14.3` and against a root
+     * holding nothing but those two declarations: these eight came back
+     * byte-identical over their 20 calls, and every other tool moved.
+     * `typo3_translation_domain_lookup` is the near miss and belongs to the
+     * recorded half — it prints the installation's exact version into its text,
+     * so a derived page would state a patch level no checkout here has.
+     *
+     * @return list<string>
+     */
+    public static function derived(): array
+    {
+        return [
+            'typo3_commit_message_guide',
+            'typo3_hint_lookup',
+            'typo3_reference_list',
+            'typo3_rule_lookup',
+            'typo3_script_lookup',
+            'typo3_system_extension_lookup',
+            'typo3_task_guide',
+            'typo3_test_run_guide',
+        ];
+    }
+
+    /**
      * The calls, keyed by what each one is an example of.
      *
      * An installation-backed tool answers from whatever the caller is standing

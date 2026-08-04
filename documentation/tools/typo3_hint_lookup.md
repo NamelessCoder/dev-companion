@@ -120,12 +120,12 @@ availableHints:
 
 ## Answered
 
-Recorded on 2026-08-04 by `bin/cli tools:record`. Answered against
-core-checkout, TYPO3 15.0.0-dev, the main core checkout below .checkouts/,
-whose console could not be reached: the installation requires PHP 8.5.0 and no
-interpreter on this machine provides it (running 8.3.23). Nothing checks what
-is below this heading; everything above it is derived from the class that
-answers the call, and `bin/cli tools:check` holds it.
+Derived by `bin/cli tools:index`, and `bin/cli tools:check` holds it — the
+same as everything above this heading. This tool reads nothing an installation
+contains: what reaches its answer is the bundled knowledge and which TYPO3
+major the caller is on, so what comes back is written down rather than recorded
+from one machine's checkout. Answered against the core checkout this repository
+writes below .fixtures/, declaring TYPO3 14.3.0.
 
 ### hints: path
 
@@ -144,7 +144,7 @@ Text:
 ```
 Paths:
 - typo3/sysext/core/Classes/DataHandling/DataHandler.php
-Answered for TYPO3 v15: statements that do not hold there are left out.
+Answered for TYPO3 v14: statements that do not hold there are left out.
 Domains: php (hints outside these domains are not shown)
 
 Hints:
@@ -211,6 +211,7 @@ What matched above is a guess at your words. The rest of these domains, requesta
 - extension-repository-dependencies — What Such a Repository Commits, and What It Vendors (PHP)
 - extension-repository-tests — The Instance an Extension Suite Builds Itself (PHP)
 - extension-repository-installation — Installing TYPO3 Beneath the Extension Repository (PHP)
+- extension-ter-release — What Publishing to the TER Requires of an Extension (PHP)
 - fal-basics — Files Are Addressed Through FAL, Not by Path (PHP)
 - fal-storages-drivers — Storages and the Drivers Behind Them (PHP)
 - fal-reading — Getting a File Object, and Its Metadata (PHP)
@@ -243,6 +244,7 @@ What matched above is a guess at your words. The rest of these domains, requesta
 - browser-test-accessibility — Checking Accessibility and Contrast From the Same Spec (PHP)
 - browser-tests-outside-core — The Site a Project Suite Runs Against (PHP)
 - extension-static-analysis — Setting Up PHPStan for an Extension (PHP)
+- extension-coding-standards — Setting Up the Coding Standards Fixer for an Extension (PHP)
 - unit-test-doubles — Unit Tests, Test Doubles and Data Providers in PHPUnit (PHP)
 - installation-upgrade — Upgrading an Installation (PHP)
 - upgrade-own-code — What No Wizard Touches (PHP)
@@ -264,9 +266,9 @@ Data:
             "scope": "core"
         }
     ],
-    "targetVersion": 15,
+    "targetVersion": 14,
     "targetVersions": [
-        15
+        14
     ],
     "domains": [
         "php"
@@ -575,6 +577,11 @@ Data:
             "category": "PHP"
         },
         {
+            "id": "extension-ter-release",
+            "title": "What Publishing to the TER Requires of an Extension",
+            "category": "PHP"
+        },
+        {
             "id": "fal-basics",
             "title": "Files Are Addressed Through FAL, Not by Path",
             "category": "PHP"
@@ -735,6 +742,11 @@ Data:
             "category": "PHP"
         },
         {
+            "id": "extension-coding-standards",
+            "title": "Setting Up the Coding Standards Fixer for an Extension",
+            "category": "PHP"
+        },
+        {
             "id": "unit-test-doubles",
             "title": "Unit Tests, Test Doubles and Data Providers in PHPUnit",
             "category": "PHP"
@@ -777,7 +789,7 @@ Text:
 
 ```
 Task: sass build
-Answered for TYPO3 v15: statements that do not hold there are left out.
+Answered for TYPO3 v14: statements that do not hold there are left out.
 Domains: css (hints outside these domains are not shown)
 
 Hints:
@@ -868,9 +880,9 @@ Data:
     "task": "sass build",
     "paths": [],
     "scopes": [],
-    "targetVersion": 15,
+    "targetVersion": 14,
     "targetVersions": [
-        15
+        14
     ],
     "domains": [
         "css"
@@ -1284,7 +1296,7 @@ Text:
 
 ```
 Task: quantumflux
-Answered for TYPO3 v15: statements that do not hold there are left out.
+Answered for TYPO3 v14: statements that do not hold there are left out.
 Domains: php (hints outside these domains are not shown)
 
 Hints:
@@ -1335,6 +1347,7 @@ Hints that exist in these domains, requestable by id:
 - extension-repository-tests — The Instance an Extension Suite Builds Itself (PHP)
 - extension-repository-installation — Installing TYPO3 Beneath the Extension Repository (PHP)
 - system-extension-boundaries — System Extension Boundaries (PHP)
+- extension-ter-release — What Publishing to the TER Requires of an Extension (PHP)
 - fal-basics — Files Are Addressed Through FAL, Not by Path (PHP)
 - fal-storages-drivers — Storages and the Drivers Behind Them (PHP)
 - fal-reading — Getting a File Object, and Its Metadata (PHP)
@@ -1367,6 +1380,7 @@ Hints that exist in these domains, requestable by id:
 - browser-test-accessibility — Checking Accessibility and Contrast From the Same Spec (PHP)
 - browser-tests-outside-core — The Site a Project Suite Runs Against (PHP)
 - extension-static-analysis — Setting Up PHPStan for an Extension (PHP)
+- extension-coding-standards — Setting Up the Coding Standards Fixer for an Extension (PHP)
 - unit-test-doubles — Unit Tests, Test Doubles and Data Providers in PHPUnit (PHP)
 - installation-upgrade — Upgrading an Installation (PHP)
 - upgrade-own-code — What No Wizard Touches (PHP)
@@ -1381,9 +1395,9 @@ Data:
     "task": "quantumflux",
     "paths": [],
     "scopes": [],
-    "targetVersion": 15,
+    "targetVersion": 14,
     "targetVersions": [
-        15
+        14
     ],
     "domains": [
         "php"
@@ -1612,6 +1626,11 @@ Data:
             "category": "PHP"
         },
         {
+            "id": "extension-ter-release",
+            "title": "What Publishing to the TER Requires of an Extension",
+            "category": "PHP"
+        },
+        {
             "id": "fal-basics",
             "title": "Files Are Addressed Through FAL, Not by Path",
             "category": "PHP"
@@ -1769,6 +1788,11 @@ Data:
         {
             "id": "extension-static-analysis",
             "title": "Setting Up PHPStan for an Extension",
+            "category": "PHP"
+        },
+        {
+            "id": "extension-coding-standards",
+            "title": "Setting Up the Coding Standards Fixer for an Extension",
             "category": "PHP"
         },
         {

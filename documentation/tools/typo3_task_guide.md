@@ -191,14 +191,12 @@ nextTools:
 
 ## Answered
 
-`typo3_project_describe` was called `typo3_project_scope` when this was
-recorded, and the answers below name it by that spelling.
-Recorded on 2026-08-03 by `bin/cli tools:record`. Answered against
-core-checkout, TYPO3 14.3.6-dev, the 14.3 core checkout below .checkouts/,
-whose console could not be reached: <installation> has no TYPO3 console —
-none of bin/typo3, vendor/bin/typo3 exists. Nothing checks what is below this
-heading; everything above it is derived from the class that answers the call,
-and `bin/cli tools:check` holds it.
+Derived by `bin/cli tools:index`, and `bin/cli tools:check` holds it — the
+same as everything above this heading. This tool reads nothing an installation
+contains: what reaches its answer is the bundled knowledge and which TYPO3
+major the caller is on, so what comes back is written down rather than recorded
+from one machine's checkout. Answered against the core checkout this repository
+writes below .fixtures/, declaring TYPO3 14.3.0.
 
 ### brief: with a path
 
@@ -222,7 +220,7 @@ Change type: cleanup
 Domains: php
 Paths:
 - typo3/sysext/core/Classes/Utility/GeneralUtility.php
-Recognized as: Deprecation
+Recognized as: Deprecation, Putting a repository right
 Owned by: typo3-core-patch-development. Load it where this project has it installed — the skill carries the working order for this kind of work, and this brief is one call inside it.
 
 Hints:
@@ -238,7 +236,7 @@ Hints:
 
 ## Deprecated APIs
 Hints:
-- Whether an API is deprecated is a property of the branch you work on, not of TYPO3 as a whole. Where you work in an installation the server reads that branch: typo3_project_scope names the TYPO3 version installed there, and typo3_changelog_lookup answers from the changelog its core package ships.
+- Whether an API is deprecated is a property of the branch you work on, not of TYPO3 as a whole. Where you work in an installation the server reads that branch: typo3_project_describe names the TYPO3 version installed there, and typo3_changelog_lookup answers from the changelog its core package ships.
 - Read the declaration itself: an @deprecated annotation together with a trigger_error(..., E_USER_DEPRECATED) call is what marks one. The core marks nothing with PHP's #[\Deprecated] attribute, so finding none says nothing about what is deprecated.
 - The trigger does not have to sit in the declaring body, so a file without one settles nothing. A method, a property or a class can raise from its caller, from the __get() and __call() of PublicPropertyDeprecationTrait and PublicMethodDeprecationTrait where the member was made protected and listed there, or from whatever resolves the class.
 - A class constant and an enum case are where the docblock stands alone: nothing runs when one is read, so no trigger_error can be attached to it anywhere. Such a deprecation raises nothing — no deprecation log entry, nothing for a test suite running with failOnDeprecation — and the call site turns into a fatal error in the major that removes it. What finds it is the extension scanner, through the ClassConstantMatcher entry the deprecating patch owes it, rather than anything at runtime.
@@ -353,6 +351,12 @@ Suggested checklist:
 - End the changelog file with .. index:: carrying at least one subject tag and exactly one of FullyScanned, PartiallyScanned or NotScanned. Build/Scripts/validateRstFiles.php rejects a Deprecation file without the scanner tag, so it is owed rather than considered.
 - Back a FullyScanned or PartiallyScanned tag with an extension scanner matcher: an entry below typo3/sysext/install/Configuration/ExtensionScanner/Php/, keyed by the deprecated symbol and naming the changelog file in its restFiles. NotScanned is for what no matcher can find, not for what nobody wrote.
 - Use [TASK] or [FEATURE] as the commit keyword. A deprecation must never use the [!!!] breaking prefix.
+- Run the audit before writing the list, and let it own the findings: what a surface is, what evidence a finding rests on, what it is worth and who fixes it are the conformance workflow's answers. A list built from a reading of the checkout instead is an impression, and the items in it are not the ones the report would have given.
+- Show the list whole and let the maintainer cut items, reorder them or stop, before a single file is changed. That agreement is the one step nothing downstream recovers, and a list arriving with the changes it produced is one nobody had the chance to disagree with.
+- Keep the list in the reply rather than committing it into the repository. A worklist committed into somebody's history is a file nobody asked for that has to be taken out again; what the history keeps is the commits the items produced, each saying which item it closed.
+- Work an item in the workflow that owns it, and stop before editing files another owner has. An item no workflow owns is worked here only where the project's own suite, linter or static analysis proves the change — anything else goes back unassigned, because a finding nobody owns and no check covers is a hole in the workflow map and quietly filling it hides the hole.
+- Hand the worked list back for the re-check rather than grading it. A cleanup that declares its own findings gone has no evidence for it, and the audit kept that responsibility when it handed each finding over.
+- Report the items still open, the ones dropped with what dropped them, and the ones sent back unassigned. A finished list and an abandoned one read alike in a summary.
 - Write the commit message with typo3_commit_message_guide: summarize the changed behavior, the affected area and the commands you ran, and it hands back a draft that carries the keyword, the trailers and the wrapping.
 
 Establish in your checkout — this server cannot see it:
@@ -371,6 +375,8 @@ Establish in your checkout — this server cannot see it:
 
 Next lookups for this task:
 - typo3_commit_message_guide — with isDeprecation=true, to get the keyword and prefix rules checked
+- typo3_project_describe — for what the repository is before anything in it is changed
+- typo3_extension_describe — for what each extension in scope registers
 - typo3_changelog_lookup — for what 14 changed about this area — the first stop when you have not built on it recently, not only a lookup after the fact
 - typo3_hint_lookup — with the concrete file paths, once they are known
 - typo3_test_run_guide — for the targeted runTests.sh invocation
@@ -406,6 +412,12 @@ Data:
             "title": "Deprecation",
             "confidence": "strong",
             "condition": ""
+        },
+        {
+            "id": "cleanup",
+            "title": "Putting a repository right",
+            "confidence": "strong",
+            "condition": "only if the task asks for the repository as a whole to be changed rather than reviewed, or for the findings of a review to be worked off"
         }
     ],
     "skills": [
@@ -448,7 +460,7 @@ Data:
             "scope": null,
             "hints": [
                 {
-                    "text": "Whether an API is deprecated is a property of the branch you work on, not of TYPO3 as a whole. Where you work in an installation the server reads that branch: typo3_project_scope names the TYPO3 version installed there, and typo3_changelog_lookup answers from the changelog its core package ships.",
+                    "text": "Whether an API is deprecated is a property of the branch you work on, not of TYPO3 as a whole. Where you work in an installation the server reads that branch: typo3_project_describe names the TYPO3 version installed there, and typo3_changelog_lookup answers from the changelog its core package ships.",
                     "since": null,
                     "until": null,
                     "versions": "",
@@ -664,6 +676,12 @@ Data:
         "End the changelog file with .. index:: carrying at least one subject tag and exactly one of FullyScanned, PartiallyScanned or NotScanned. Build/Scripts/validateRstFiles.php rejects a Deprecation file without the scanner tag, so it is owed rather than considered.",
         "Back a FullyScanned or PartiallyScanned tag with an extension scanner matcher: an entry below typo3/sysext/install/Configuration/ExtensionScanner/Php/, keyed by the deprecated symbol and naming the changelog file in its restFiles. NotScanned is for what no matcher can find, not for what nobody wrote.",
         "Use [TASK] or [FEATURE] as the commit keyword. A deprecation must never use the [!!!] breaking prefix.",
+        "Run the audit before writing the list, and let it own the findings: what a surface is, what evidence a finding rests on, what it is worth and who fixes it are the conformance workflow's answers. A list built from a reading of the checkout instead is an impression, and the items in it are not the ones the report would have given.",
+        "Show the list whole and let the maintainer cut items, reorder them or stop, before a single file is changed. That agreement is the one step nothing downstream recovers, and a list arriving with the changes it produced is one nobody had the chance to disagree with.",
+        "Keep the list in the reply rather than committing it into the repository. A worklist committed into somebody's history is a file nobody asked for that has to be taken out again; what the history keeps is the commits the items produced, each saying which item it closed.",
+        "Work an item in the workflow that owns it, and stop before editing files another owner has. An item no workflow owns is worked here only where the project's own suite, linter or static analysis proves the change — anything else goes back unassigned, because a finding nobody owns and no check covers is a hole in the workflow map and quietly filling it hides the hole.",
+        "Hand the worked list back for the re-check rather than grading it. A cleanup that declares its own findings gone has no evidence for it, and the audit kept that responsibility when it handed each finding over.",
+        "Report the items still open, the ones dropped with what dropped them, and the ones sent back unassigned. A finished list and an abandoned one read alike in a summary.",
         "Write the commit message with typo3_commit_message_guide: summarize the changed behavior, the affected area and the commands you ran, and it hands back a draft that carries the keyword, the trailers and the wrapping."
     ],
     "checkoutDiscovery": [
@@ -696,6 +714,14 @@ Data:
         {
             "tool": "typo3_commit_message_guide",
             "when": "with isDeprecation=true, to get the keyword and prefix rules checked"
+        },
+        {
+            "tool": "typo3_project_describe",
+            "when": "for what the repository is before anything in it is changed"
+        },
+        {
+            "tool": "typo3_extension_describe",
+            "when": "for what each extension in scope registers"
         },
         {
             "tool": "typo3_changelog_lookup",
@@ -736,20 +762,7 @@ Domains: php
 Recognized as: Backend UI markup
 
 Hints:
-The hints below are typo3_hint_lookup's, matched for these paths and quoted whole. A finding that cites one of these rules is citing that lookup rather than this guide. A brief carries the 4 strongest per group of paths, which is not everything the lookup holds on them — call it for the rest, by path, with a larger limit, or by id.
-
-### PHP
-
-## Backend Module and Route Registration
-Hints:
-- A backend module is declared in the owning extension's Configuration/Backend/Modules.php, which returns an array keyed by module identifier. There is no registration call.
-- The keys of an entry are parent (the identifier of the module it sits under), access ("user", "admin", ...), path (the backend route it answers on), iconIdentifier, labels, aliases (former identifiers kept working), routes, and moduleData for the module's persisted per-user state.
-- routes maps a route name to a target of the form Controller::class . '::method'; the entry named _default is what the module opens with.
-- labels is a translation domain, not a file path. typo3_translation_domain_lookup computes it for the XLF file the module's labels live in. [TYPO3 v14 and newer]
-- Configure a module shortcut with $moduleTemplate->getDocHeaderComponent()->setShortcutContext($routeIdentifier, $displayName, $arguments). The doc header creates and positions the ShortcutButton; do not add one to its button bar manually. [TYPO3 v14 and newer]
-- After a module POST changes state, return a RedirectResponse with HTTP 303 status. The browser then follows with GET; HTTP 302 does not state that method change and can repeat the POST.
-- Configuration/Backend/Routes.php and AjaxRoutes.php declare backend routes outside a module, in the same declarative style.
-- These are declarative files with no schema check behind them: a wrong key does not fail at boot, it fails when a user opens the module. Take the shape from a neighbouring extension.
+- No hint matched this task text. That means no convention was recognized, not that none applies: call typo3_hint_lookup again with the concrete file paths once they are known.
 
 Rules that apply to this task:
 
@@ -803,7 +816,6 @@ Establish in your checkout — this server cannot see it:
 
 Next lookups for this task:
 - typo3_component_lookup — before writing backend markup or CSS classes
-- typo3_backend_module_lookup — to compare the declaration with modules registered by the active installation
 - typo3_changelog_lookup — for what 14 changed about this area — the first stop when you have not built on it recently, not only a lookup after the fact
 - typo3_hint_lookup — with the concrete file paths, once they are known
 - typo3_test_run_guide — for the targeted runTests.sh invocation
@@ -836,72 +848,7 @@ Data:
         }
     ],
     "skills": [],
-    "hints": [
-        {
-            "id": "backend-modules",
-            "title": "Backend Module and Route Registration",
-            "category": "PHP",
-            "scope": null,
-            "hints": [
-                {
-                    "text": "A backend module is declared in the owning extension's Configuration/Backend/Modules.php, which returns an array keyed by module identifier. There is no registration call.",
-                    "since": null,
-                    "until": null,
-                    "versions": "",
-                    "scope": null
-                },
-                {
-                    "text": "The keys of an entry are parent (the identifier of the module it sits under), access (\"user\", \"admin\", ...), path (the backend route it answers on), iconIdentifier, labels, aliases (former identifiers kept working), routes, and moduleData for the module's persisted per-user state.",
-                    "since": null,
-                    "until": null,
-                    "versions": "",
-                    "scope": null
-                },
-                {
-                    "text": "routes maps a route name to a target of the form Controller::class . '::method'; the entry named _default is what the module opens with.",
-                    "since": null,
-                    "until": null,
-                    "versions": "",
-                    "scope": null
-                },
-                {
-                    "text": "labels is a translation domain, not a file path. typo3_translation_domain_lookup computes it for the XLF file the module's labels live in.",
-                    "since": 14,
-                    "until": null,
-                    "versions": "TYPO3 v14 and newer",
-                    "scope": null
-                },
-                {
-                    "text": "Configure a module shortcut with $moduleTemplate->getDocHeaderComponent()->setShortcutContext($routeIdentifier, $displayName, $arguments). The doc header creates and positions the ShortcutButton; do not add one to its button bar manually.",
-                    "since": 14,
-                    "until": null,
-                    "versions": "TYPO3 v14 and newer",
-                    "scope": null
-                },
-                {
-                    "text": "After a module POST changes state, return a RedirectResponse with HTTP 303 status. The browser then follows with GET; HTTP 302 does not state that method change and can repeat the POST.",
-                    "since": null,
-                    "until": null,
-                    "versions": "",
-                    "scope": null
-                },
-                {
-                    "text": "Configuration/Backend/Routes.php and AjaxRoutes.php declare backend routes outside a module, in the same declarative style.",
-                    "since": null,
-                    "until": null,
-                    "versions": "",
-                    "scope": null
-                },
-                {
-                    "text": "These are declarative files with no schema check behind them: a wrong key does not fail at boot, it fails when a user opens the module. Take the shape from a neighbouring extension.",
-                    "since": null,
-                    "until": null,
-                    "versions": "",
-                    "scope": null
-                }
-            ]
-        }
-    ],
+    "hints": [],
     "omittedHints": [],
     "rules": [
         {
@@ -976,10 +923,6 @@ Data:
         {
             "tool": "typo3_component_lookup",
             "when": "before writing backend markup or CSS classes"
-        },
-        {
-            "tool": "typo3_backend_module_lookup",
-            "when": "to compare the declaration with modules registered by the active installation"
         },
         {
             "tool": "typo3_changelog_lookup",

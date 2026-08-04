@@ -157,6 +157,14 @@ answer off three pages and nothing failed. What answers there now is an
 installation this repository writes, and `D-DOC-012` has what the exchange costs
 per page — including the half of it that is a loss.
 
+Part of that half turned out not to be a recording at all. Eight tools read
+nothing an installation contains — what reaches their answer is `knowledge/` and
+two declarations about the root — so there was no evidence under those headings
+to keep, only a derivation nobody checked. They are derived and held by
+`tools:check` since `D-DOC-016`, which has the measurement; this entry's
+statement holds of what is left, and the second **Wrong if** above is what those
+eight pages were doing when they were re-derived.
+
 The recording is a section rather than a directory since `D-DOC-007`'s second
 entry, and two of the sentences above move with it. "`tools:check` reads
 `tools.md` and not this" is now: `tools:check` reads every page down to its

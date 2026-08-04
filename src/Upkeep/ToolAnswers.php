@@ -16,14 +16,21 @@ use Typo3CmsMcp\Tool\Registry;
  *
  * The half of a tool's page above `## Answered` says which fields an answer
  * has; this is what goes below it — what one looks like filled, a match with
- * its score, an `unsupported` with its cause. That half is not derivable from
- * the registry and cannot be a test either: it needs an installation, and no
- * test run discovers one.
+ * its score, an `unsupported` with its cause.
  *
- * So it is a recording rather than a check. It is evidence from one machine on
- * one day, every section says so where it opens, and nothing fails on it being
+ * For most tools that half is not derivable from the registry and cannot be a
+ * test either: it needs an installation, and no test run discovers one. So it
+ * is a recording rather than a check. It is evidence from one machine on one
+ * day, every section says so where it opens, and nothing fails on it being
  * older than the code — a command only a machine with checkouts can run must
  * not be able to turn CI red.
+ *
+ * The tools `ToolCalls::derived()` names are the other case. Their answers read
+ * nothing an installation contains, so there is no evidence to record: what a
+ * call comes back with follows from `knowledge/` and from which TYPO3 major the
+ * caller is on, both of which are here. `derivedSections()` writes that half
+ * against `CoreFixture`, and `tools:check` holds it exactly as it holds the
+ * fields above it.
  *
  * It sits on the tool's own page rather than in a directory of its own, so the
  * reader who arrived with one tool in hand meets the shape and a filled answer
@@ -103,6 +110,7 @@ final class ToolAnswers
             $backed = array_values(array_intersect($backed, $tools));
         }
 
+        $derived = self::derivedSections($tools);
         $recordings = [self::recordAgainst($primary, $tools)];
         // No second recording where the named tools have no installation-backed
         // one among them. An empty list means every tool to `recordAgainst`, so
@@ -117,9 +125,9 @@ final class ToolAnswers
         $pages = ToolSurface::standingPages();
         foreach (Registry::definitions() as $definition) {
             $name = $definition['name'];
-            $answered = $tools !== [] && !in_array($name, $tools, true)
+            $answered = $derived[$name] ?? ($tools !== [] && !in_array($name, $tools, true)
                 ? self::recordedIn(ToolSurface::file($name))
-                : (isset($recordings[0]['answers'][$name]) ? self::recording($today, $name, $recordings) : '');
+                : (isset($recordings[0]['answers'][$name]) ? self::recording($today, $name, $recordings) : ''));
             $pages[ToolSurface::file($name)] = ToolSurface::page($definition, $answered);
         }
 
@@ -144,6 +152,11 @@ final class ToolAnswers
             if ($only !== [] && !in_array($name, $only, true)) {
                 continue;
             }
+            // A derived answer is not evidence about this root, and recording
+            // it would put a second one under the same heading that says so.
+            if (in_array($name, ToolCalls::derived(), true)) {
+                continue;
+            }
             $answers[$name][$label] = self::answer($name, $arguments);
         }
 
@@ -161,7 +174,7 @@ final class ToolAnswers
      * second recording showing the first installation's registries under the
      * second one's head.
      */
-    private static function pointAt(string $root): void
+    private static function pointAt(?string $root): void
     {
         Instance::discoverFrom($root);
         Typo3Cli::forget();
@@ -234,17 +247,27 @@ final class ToolAnswers
     {
         $of = array_values(array_filter($recordings, static fn(array $r): bool => isset($r['answers'][$name])));
 
-        $lines = [
-            '## Answered',
-            '',
-            ...self::wrapped(sprintf(
-                'Recorded on %s by `bin/cli tools:record`. %s Nothing checks what is below this heading; everything '
-                . 'above it is derived from the class that answers the call, and `bin/cli tools:check` holds it.',
-                $today,
-                self::of($of),
-            )),
-            '',
-        ];
+        return self::answered($name, sprintf(
+            'Recorded on %s by `bin/cli tools:record`. %s Nothing checks what is below this heading; everything '
+            . 'above it is derived from the class that answers the call, and `bin/cli tools:check` holds it.',
+            $today,
+            self::of($of),
+        ), $of);
+    }
+
+    /**
+     * The answered half of one tool: what it is of, then every call it drives.
+     *
+     * Both halves of the surface come through here — a recording of one or two
+     * roots, and a derived section of exactly one — because what a reader
+     * compares is the same thing either way: the call, then what came back.
+     * Only the opening sentence says which kind of evidence it is looking at.
+     *
+     * @param list<array{against: string, shortly: string, answers: array<string, array<string, array{0: string, 1: string}>>}> $of
+     */
+    private static function answered(string $name, string $opening, array $of): string
+    {
+        $lines = ['## Answered', '', ...self::wrapped($opening), ''];
 
         foreach (ToolCalls::all() as $label => [$tool, $arguments]) {
             if ($tool !== $name) {
@@ -276,6 +299,71 @@ final class ToolAnswers
         }
 
         return implode("\n", $lines);
+    }
+
+    /**
+     * The answered half of every derived tool, against the root that declares
+     * nothing but its identity.
+     *
+     * It points at that root and puts back whatever was pointed at before,
+     * because both callers reach this in the middle of something else:
+     * `tools:index` and `tools:check` are standing wherever they were started,
+     * and `tools:record` is between its two recordings.
+     *
+     * @param list<string> $only the tools a caller narrowed the run to, empty for all of them
+     * @return array<string, string>
+     */
+    public static function derivedSections(array $only = []): array
+    {
+        $names = ToolCalls::derived();
+        if ($only !== []) {
+            $names = array_values(array_intersect($names, $only));
+        }
+        if ($names === []) {
+            return [];
+        }
+
+        $was = Instance::startedFrom();
+        self::pointAt(CoreFixture::write());
+
+        $opening = sprintf(
+            'Derived by `bin/cli tools:index`, and `bin/cli tools:check` holds it — the same as everything above '
+            . 'this heading. This tool reads nothing an installation contains: what reaches its answer is the '
+            . 'bundled knowledge and which TYPO3 major the caller is on, so what comes back is written down rather '
+            . 'than recorded from one machine\'s checkout. Answered against %s, declaring TYPO3 %s.',
+            self::describeRoot(CoreFixture::root()),
+            CoreFixture::typo3Version(),
+        );
+
+        $sections = [];
+        foreach ($names as $name) {
+            $sections[$name] = self::answered($name, $opening, [[
+                'against' => $opening,
+                'shortly' => '',
+                'answers' => [$name => self::answersOf($name)],
+            ]]);
+        }
+
+        self::pointAt($was);
+
+        return $sections;
+    }
+
+    /**
+     * Every call one tool drives, answered from wherever this is pointed.
+     *
+     * @return array<string, array{0: string, 1: string}>
+     */
+    private static function answersOf(string $name): array
+    {
+        $answers = [];
+        foreach (ToolCalls::all() as $label => [$tool, $arguments]) {
+            if ($tool === $name) {
+                $answers[$label] = self::answer($name, $arguments);
+            }
+        }
+
+        return $answers;
     }
 
     /** The installation these answers came out of, in one sentence. */
@@ -344,6 +432,11 @@ final class ToolAnswers
         $fixture = (string) realpath(Fixture::root());
         if ($fixture !== '' && $root === $fixture) {
             return 'the installation this repository writes below .fixtures/';
+        }
+
+        $checkout = (string) realpath(CoreFixture::root());
+        if ($checkout !== '' && $root === $checkout) {
+            return 'the core checkout this repository writes below .fixtures/';
         }
 
         $checkouts = (string) realpath(Checkouts::directory());

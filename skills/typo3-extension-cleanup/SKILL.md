@@ -69,7 +69,11 @@ versioned TYPO3 facts.
 
 12. Hand the worked list back to `typo3-extension-conformance` for the re-check.
     It kept responsibility for that when it handed the finding over, and a
-    cleanup that grades its own work has no evidence the finding is gone.
+    cleanup that grades its own work has no evidence the finding is gone. The
+    re-check re-runs what the finding was about instead of re-reading the files
+    it changed: a file that reads correctly can still be rewritten by the
+    environment that owns it, and the difference only shows once that
+    environment runs again.
 13. Report what is left: the items still open, the items dropped with what
     dropped them, the ones sent back unassigned, and every finding the audit
     reported as open or unassessed that this work did not settle. A finished

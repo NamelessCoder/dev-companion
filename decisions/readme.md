@@ -354,6 +354,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-SKL-017`][D-SKL-017] — A named check is established against the package it lands on · 2026-08-04
 - [`D-SKL-018`][D-SKL-018] — The guide of the chosen layer arrives with the brief · 2026-08-04
 - [`D-SKL-019`][D-SKL-019] — An absent surface is asked for by the id of its convention · 2026-08-04
+- [`D-SKL-020`][D-SKL-020] — A re-check runs what the finding was about · 2026-08-04
 - [`D-SKL-005`][D-SKL-005] — Core contribution earns two task skills, one for reviewing a patch and one for creating one · 2026-08-03
 - [`D-SKL-006`][D-SKL-006] — The site-new cluster earns the route into the skill that owns the task · 2026-08-03
 - [`D-SKL-007`][D-SKL-007] — Every disposition a review makes carries its evidence · 2026-08-03
@@ -374,6 +375,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 [D-SKL-017]: task-skills/skl-017-a-named-check-is-established-against-the-package-it-lands-on.md
 [D-SKL-018]: task-skills/skl-018-the-guide-of-the-chosen-layer-arrives-with-the-brief.md
 [D-SKL-019]: task-skills/skl-019-an-absent-surface-is-asked-for-by-the-id-of-its-convention.md
+[D-SKL-020]: task-skills/skl-020-a-re-check-runs-what-the-finding-was-about.md
 [D-SKL-005]: task-skills/skl-005-core-contribution-earns-a-skill-and-the-domain-is-the-work.md
 [D-SKL-006]: task-skills/skl-006-the-site-new-cluster-earns-the-route-into-the-skill-that-owns-the-task.md
 [D-SKL-007]: task-skills/skl-007-every-disposition-a-review-makes-carries-its-evidence.md

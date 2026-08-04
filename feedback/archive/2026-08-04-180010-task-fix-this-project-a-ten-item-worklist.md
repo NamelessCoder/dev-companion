@@ -1,7 +1,8 @@
 ---
 date: 2026-08-04T18:00:10+00:00
 category: idea
-status: open
+status: closed
+closed: 2026-08-04
 model: claude-opus-5
 tool: typo3-extension-cleanup, typo3-extension-conformance
 directory: /home/benji/projects/site-new

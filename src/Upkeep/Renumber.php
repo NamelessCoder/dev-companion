@@ -1,0 +1,225 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Typo3CmsMcp\Upkeep;
+
+use Symfony\Component\Finder\Finder;
+
+/**
+ * Moving a decision to another number, and naming what nobody here can move.
+ *
+ * Two sessions reading one `main` hand out one id twice, and the rebase catches
+ * it: `composer ci` in the second branch fails on *two decision files claim the
+ * same id*. Renumbering the later one is the fix, and the renumbering is the
+ * dangerous part rather than the collision. Twice the files naming the old
+ * number did not all mean the same entry — `R-PRJ-008` rested on the
+ * `D-ANS-013` that kept its number while five other files meant the one that
+ * became `D-ANS-015` — so a search and replace over the id is silently wrong
+ * there, and no check fails afterwards because the entry it now points at
+ * exists.
+ *
+ * So a reference is moved only where the file itself says which entry is meant,
+ * which is a link path, and every other one is reported. That is the split the
+ * measurement asks for: both mis-pointings on record were bare references, and
+ * the failure was not knowing which ones to read. Every occurrence is accounted
+ * for — moved or named, never silently left — which is what
+ * `RenumberTest::everyMentionIsEitherMovedOrNamed` holds. `D-DOC-015` is the
+ * reasoning.
+ */
+final class Renumber
+{
+    /** A file larger than this is not prose somebody wrote an id into. */
+    private const LARGEST = 2_000_000;
+
+    /**
+     * What one call did: the entry it moved, the references it settled from a
+     * link path, and the ones only a person can.
+     *
+     * @return array{from: string, to: string, file: string, moved: list<array{file: string, line: int, text: string}>, named: list<array{file: string, line: int, text: string}>}
+     */
+    public static function decision(string $root, string $from, string $to): array
+    {
+        $file = self::file($root, $from);
+        if ($file === '') {
+            throw new \InvalidArgumentException($from . ' is no decision in ' . $root . '/decisions/');
+        }
+        if ($from === $to) {
+            throw new \InvalidArgumentException($from . ' already has that number');
+        }
+        if (substr($from, 0, 6) !== substr($to, 0, 6)) {
+            // The prefix names the group directory, so this would be a
+            // re-filing rather than a renumbering, and what the entry is about
+            // moves with it.
+            throw new \InvalidArgumentException($from . ' and ' . $to . ' are not in one group');
+        }
+        $taken = self::file($root, $to);
+        if ($taken !== '') {
+            throw new \InvalidArgumentException($to . ' is already ' . self::relative($root, $taken));
+        }
+
+        $old = basename($file);
+        $new = self::name($old, $to);
+        $entry = dirname($file) . '/' . $new;
+        rename($file, $entry);
+
+        $moved = [];
+        $named = [];
+        foreach (self::documents($root) as $path) {
+            $contents = (string) file_get_contents($path);
+            if (!str_contains($contents, $from) && !str_contains($contents, $old)) {
+                continue;
+            }
+
+            $rewritten = self::rewrite(
+                $contents,
+                $from,
+                $to,
+                $old,
+                $new,
+                $path === $entry,
+                self::relative($root, $path),
+                $moved,
+                $named,
+            );
+            if ($rewritten !== $contents) {
+                file_put_contents($path, $rewritten);
+            }
+        }
+
+        return [
+            'from' => $from,
+            'to' => $to,
+            'file' => self::relative($root, $entry),
+            'moved' => $moved,
+            'named' => $named,
+        ];
+    }
+
+    /**
+     * One document, line by line: what the line settles is rewritten, what it
+     * does not is recorded where it stands.
+     *
+     * A line naming the entry's own file settles the id on it, which is every
+     * markdown link and the reference definition a generated listing ends with.
+     * A reference-style link is the one form whose path sits on another line, so
+     * a file carrying that definition settles its own usages of it too. The
+     * entry's own front matter and heading are the id rather than a reference to
+     * it.
+     *
+     * @param list<array{file: string, line: int, text: string}> $moved
+     * @param list<array{file: string, line: int, text: string}> $named
+     */
+    private static function rewrite(
+        string $contents,
+        string $from,
+        string $to,
+        string $old,
+        string $new,
+        bool $isTheEntry,
+        string $relative,
+        array &$moved,
+        array &$named,
+    ): string {
+        // The lookahead is the letter suffix: `R-ANS-008b` is the entry split
+        // off `R-ANS-008` and never a spelling of it — D-DOC-005.
+        $id = '/\b' . preg_quote($from, '/') . '(?![0-9a-z])/';
+        $defines = preg_match('/^\[' . preg_quote($from, '/') . '\]:\s*\S*' . preg_quote($old, '/') . '\s*$/m', $contents) === 1;
+        $usage = '/\[`?' . preg_quote($from, '/') . '`?\]\[' . preg_quote($from, '/') . '\]/';
+
+        $lines = explode("\n", $contents);
+        foreach ($lines as $number => $line) {
+            if (preg_match($id, $line) !== 1 && !str_contains($line, $old)) {
+                continue;
+            }
+
+            $settled = str_contains($line, $old)
+                || ($defines && preg_match($usage, $line) === 1)
+                || ($isTheEntry && preg_match('/^(?:id:\s|# )/', $line) === 1);
+
+            if ($settled) {
+                $lines[$number] = (string) preg_replace($id, $to, str_replace($old, $new, $line));
+                $moved[] = ['file' => $relative, 'line' => $number + 1, 'text' => trim($lines[$number])];
+                continue;
+            }
+
+            $named[] = ['file' => $relative, 'line' => $number + 1, 'text' => trim($line)];
+        }
+
+        return implode("\n", $lines);
+    }
+
+    /** The file one id is written in, or '' where no decision has it. */
+    public static function file(string $root, string $id): string
+    {
+        $directory = $root . '/decisions/' . (Decisions::GROUPS[substr($id, 2, 3)] ?? '');
+        if (!is_dir($directory)) {
+            return '';
+        }
+
+        foreach (Finder::create()->files()->in($directory)->depth(0)->name(strtolower(substr($id, 2)) . '-*.md')->sortByName() as $file) {
+            return $file->getPathname();
+        }
+
+        return '';
+    }
+
+    /**
+     * The next number free in a group, which is one past the highest rather
+     * than the first gap. An id is never reused, and nothing reads a gap:
+     * `decisions:check` reads the width, the group, the heading, the date, the
+     * status, the field order and the duplicates, and never one number against
+     * the next.
+     */
+    public static function next(string $root, string $prefix): string
+    {
+        $directory = $root . '/decisions/' . (Decisions::GROUPS[$prefix] ?? '');
+        $highest = 0;
+        if (is_dir($directory)) {
+            foreach (Finder::create()->files()->in($directory)->depth(0)->name('*.md')->notName('readme.md') as $file) {
+                preg_match('/^[a-z]+-(\d+)/', $file->getBasename(), $number);
+                $highest = max($highest, (int) ($number[1] ?? 0));
+            }
+        }
+
+        if ($highest >= 999) {
+            throw new \RuntimeException($prefix . ' has reached 999, and a number is three digits wide — D-DOC-005');
+        }
+
+        return sprintf('D-%s-%03d', $prefix, $highest + 1);
+    }
+
+    /** The file name the entry takes under its new id, its slug untouched. */
+    private static function name(string $old, string $to): string
+    {
+        return (string) preg_replace(
+            '/^[a-z]+-\d+[a-z]?-/',
+            strtolower(substr($to, 2, 3)) . '-' . substr($to, 6) . '-',
+            $old,
+        );
+    }
+
+    /**
+     * Everything this repository writes an id into, which is every file it
+     * keeps. `vendor/` is somebody else's, and `.checkouts/` and the worktrees
+     * are other checkouts that a dot in the name already excludes.
+     *
+     * @return list<string>
+     */
+    private static function documents(string $root): array
+    {
+        $paths = [];
+        foreach (Finder::create()->files()->in($root)->exclude(['vendor', 'node_modules'])->sortByName() as $file) {
+            if ($file->getSize() <= self::LARGEST) {
+                $paths[] = $file->getPathname();
+            }
+        }
+
+        return $paths;
+    }
+
+    private static function relative(string $root, string $path): string
+    {
+        return str_starts_with($path, $root . '/') ? substr($path, strlen($root) + 1) : $path;
+    }
+}

@@ -14,6 +14,7 @@ use Typo3CmsMcp\Upkeep\Command\CheckoutUpdate;
 use Typo3CmsMcp\Upkeep\Command\DecisionCheck;
 use Typo3CmsMcp\Upkeep\Command\DecisionIndex;
 use Typo3CmsMcp\Upkeep\Command\DecisionList;
+use Typo3CmsMcp\Upkeep\Command\DecisionRenumber;
 use Typo3CmsMcp\Upkeep\Command\EnvironmentCreate;
 use Typo3CmsMcp\Upkeep\Command\EnvironmentStatus;
 use Typo3CmsMcp\Upkeep\Command\FeedbackArchive;
@@ -95,6 +96,7 @@ final class Cli
         $application->addCommand(new DecisionList());
         $application->addCommand(new DecisionCheck());
         $application->addCommand(new DecisionIndex());
+        $application->addCommand(new DecisionRenumber());
         $application->addCommand(new ToolCheck());
         $application->addCommand(new ToolIndex());
         $application->addCommand(new ToolRecord());

@@ -47,6 +47,32 @@ regeneration.
 An id is never reused, and an entry is never deleted: a decision that turned out
 wrong is the one most worth reading, and it is revoked in place.
 
+## Moving one to another number
+
+    bin/cli decisions:renumber <decision> [<number>]
+
+Two sessions reading one `main` write one id, and the second one to come home
+moves. The dangerous half is the move rather than the collision, so the command
+splits the references in two: everything whose own line names the entry's file
+is rewritten — the entry, its name, every link, and the reference definitions
+the generated listings end with — and everything else is printed with its file,
+its line and its text.
+
+**What is printed is what has to be read, one at a time.** A bare id says
+nothing about which entry it means, and both mis-pointings on record were one: a
+requirement's `restsOn:`, where existence is checked and correctness is not, and
+an id in a sentence, where neither is. `git diff main -- <file>` settles it — a
+line this branch added means this branch's entry — and a search and replace over
+the whole list is the failure this command exists to make visible, not one it
+prevents.
+[`D-DOC-015`](../../decisions/documentation/doc-015-a-renumber-moves-what-a-link-path-settles-and-names-the-rest.md)
+is what the split was measured against.
+
+Named no number, the entry takes the next one free in its group, which is one
+past the highest rather than the first gap. The generated listings are put back
+in order where they already carried the entry, because the number is what a
+group sorts on.
+
 ## What an entry looks like
 
 ```markdown

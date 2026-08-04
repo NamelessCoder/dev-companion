@@ -304,9 +304,17 @@ five other files meant the one that became `D-ANS-015`, and `ans-006` named the
 `D-ANS-016` that stayed while a requirement and a todo named the one that became
 `D-ANS-019`. A search and replace over the id is wrong in exactly those cases,
 it is silent, and no check fails afterwards — the entry it now points at is
-real. So the references are read one at a time, and `git diff main -- <file>` is
-what settles an ambiguous one: a line this branch added means this branch's
-entry.
+real.
+
+    bin/cli decisions:renumber <decision>
+
+That moves the entry and every reference whose own line names its file, and
+prints the rest — the bare ones, which is what both mis-pointings were. Those
+are read one at a time, and `git diff main -- <file>` is what settles an
+ambiguous one: a line this branch added means this branch's entry. The list is
+the whole of them, so a reference nobody read is one somebody skipped rather
+than one nothing mentioned —
+[`D-DOC-015`](../../decisions/documentation/doc-015-a-renumber-moves-what-a-link-path-settles-and-names-the-rest.md).
 
 **A marker that survives the resolution is what nothing used to catch.** A file
 with a `>>>>>>>` left in it parses, lints, and passes every test that does not

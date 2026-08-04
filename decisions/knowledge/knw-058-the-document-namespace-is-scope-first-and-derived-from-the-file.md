@@ -6,9 +6,8 @@ status: open
 
 # D-KNW-058 — The document namespace is scope first and derived from the file
 
-**A document sits below a directory named for the scope it answers for, its path
-below `knowledge/documents/` is its id, and its resource URI is that path under
-`typo3://guides/`.**
+**A document is `<scope>/<topic>/<name>` below `knowledge/documents/`, that path
+is its id, and its resource URI is the path under `typo3://guides/`.**
 
 `typo3://core/` was true of every document while every document was the core's
 own process. The first one that answers for a package alone is announced to
@@ -39,9 +38,17 @@ every client under a prefix that says the opposite.
 - The first segment is the scope, spelled as `Knowledge\Scope` spells it, and it
   is the scope: moving a document between those directories is how it is
   rescoped, so no field repeats it and the two cannot drift apart.
-- The segments below it are the subject, as deep as the subject needs.
-  `extension/testing/phpunit` is one document about one thing rather than a
-  short name carrying three words of context.
+- Three segments, every time: the scope, one topic, one name. A shape that holds
+  for the extension pages and not for the core's is two conventions, and the
+  core's are the four a reader meets first.
+- The topic segment is free text rather than a closed list. Six documents are
+  too few to know what the list would be, and a vocabulary guessed before its
+  members exist is the abstraction `AGENTS.md` calls speculation until the
+  second caller.
+- One topic under two scopes is the ordinary case rather than a collision.
+  `core/testing` and `extension/testing` are the row and the column `D-KNW-008`
+  describes, and the namespace is where the crossing becomes visible instead of
+  being carried by prose.
 - The prefix is `typo3://guides/`. `core` cannot stay: it names one of the
   scopes below it now, and a prefix that repeats a segment says nothing.
 - `depth(0)` is replaced rather than dropped. A file publishes itself only from
@@ -63,6 +70,10 @@ every client under a prefix that says the opposite.
 
 - A document lands in a directory that is not a scope, so nothing publishes it
   and nothing says it was meant to be published.
+- A document sits at another depth than three, so a caller who learned to read
+  one URI cannot predict the next.
+- The topic segments drift into synonyms of each other, which is what a closed
+  list would have prevented and free text cannot.
 - A file that is not a document is published because it was laid inside a scope
   directory.
 - The scope in the path and the scope a `covers` row states for the same

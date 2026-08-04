@@ -135,3 +135,14 @@ The first and third are where they were. No build session in `site-new` has been
 filed since — the three open feedbacks are from `ext-guidedtour` and
 `typo3-cms`, none of them newer than the day this was decided — and the mapping
 is still the same five intents.
+
+The third **Wrong if** holds and the numbers it was written with do not. Read in
+this checkout on 2026-08-04: `knowledge/task-intents.json` carries fifteen
+intents of which seven route, and one published skill —
+`typo3-extension-documentation` — is reached by no intent. Of the three the
+bullet named, `typo3-backend-module-development` is routed by the
+`backend-module` intent and the release skill no longer exists. What the bullet
+warns against is untouched by that: a name invented for a row nobody asked for
+is still a route into a workflow nobody asked for, and
+[`D-SKL-016`](skl-016-acting-on-a-conformance-report-earns-a-task-skill-of-its-own.md)
+is the entry that had to answer to it.

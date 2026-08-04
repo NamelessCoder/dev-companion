@@ -3,48 +3,42 @@
 **Serves:** R-GUI-006
 **Priority:** normal
 
-`typo3-extension-conformance` stopped offering to change anything on 2026-08-04:
-its `description` opened "Review, audit, or improve a TYPO3 project…" and the
-word is gone, because a client selects a skill on that line and the skill was
-being loaded for change requests whatever its body said (`D-SKL-014`, **Since
-then**). What the word was also doing is the hole this card is about. A request
-worded as a change — "look over my repository and put it right", "improve the
-code quality of my sitepackage" — now reaches no workflow at all.
+Draft the skill `D-SKL-016` decided on — the one a request worded as a change
+reaches, which starts from the conformance report, writes the findings into a
+worklist it commits, and then works that list off — and draft it the way
+[writing-a-skill.md](../../documentation/clients/writing-a-skill.md) prescribes
+rather than from the shape alone: ask this server what it already answers about
+the domain before the first line, and read
+`skills/typo3-extension-conformance/SKILL.md` whole, because the boundary is
+narrow and is where this draft will go wrong. Conformance already names the
+workflow each finding goes to and already hands over for the changes; what this
+skill adds is the entry point, the order across many findings, and staying with
+the list until it is empty. A draft that re-derives the findings is the first
+**Wrong if** of `D-SKL-016` happening. The draft is shown to the maintainer and
+feedback asked for by name before anything reaches `Installer::SKILLS`, and the
+intent in `knowledge/task-intents.json` is the second half of publishing rather
+than part of writing it, because
+`SkillTest::everySkillNamedInKnowledgeIsPublished` holds every name there to
+that list.
 
-That was established rather than assumed. `TaskIntents::detect()` was run in
-this checkout on 2026-08-04 against four such wordings, and none of them matches
-an intent, so `TaskIntents::scoped()` returns nothing and
-`TaskIntents::skills()` returns an empty list: `typo3_task_guide` names no
-skill. The `audit` intent is the one that would have to carry it and its needles
-are `audit`, `conformance`, `code review`, `review the`, `review this`,
-`review of` and `reviewing` — every one of them a word for looking, none of them
-a word for fixing. The same call with
-`review the TYPO3 project and site package` returns
-`typo3-extension-conformance`, so the intent works and the wording is what it
-does not reach.
+## What is settled, and what the reading found
 
-So the guide channel never carried this shape. Removing "improve" did not open
-the hole; it removed the one route there was, and that route was the wrong one —
-it sent a request for changes into the workflow that exists to make none
-(`R-GUI-006`). The correction is right and the hole is real, and they are two
-findings rather than one.
+The hole was re-measured in this checkout on 2026-08-04 rather than taken from
+the card. `TaskIntents::detect()` returns nothing for "look over my repository
+and put it right", "improve the code quality of my sitepackage", "clean up my
+extension and fix what is wrong" and "make my TYPO3 project better", while
+"review the TYPO3 project and site package" returns
+`typo3-extension-conformance`. The intent works and the wording is what it does
+not reach.
 
-What is open is what such a task should reach, and it is a question about what
-is wanted rather than one this checkout answers. Two things it is not: inventing
-a skill for it, and widening another skill's `description` until the words fall
-into it — the second is how the removed word got there. The candidates worth
-putting to the maintainer are an intent in `knowledge/task-intents.json` that
-recognises the shape and routes it to whichever workflow owns the change, a
-brief that names conformance as the reading such a task starts with and hands
-the changes on from its findings, and leaving it unrouted on the ground that a
-task naming no subsystem cannot be routed to one workflow at all. Read
-`D-SKL-013` first: it is where five of the thirteen intents route and where the
-reason the other eight do not is written down, and three of those eight are
-unrouted for exactly the reason the third candidate proposes.
+What such a task should reach was the open question, and the maintainer answered
+it on 2026-08-04: a skill of its own, conformance as its precondition, a derived
+worklist that is committed, then worked off. That sets aside this card's own
+ruling that a skill was one of the two things it must not be. `D-SKL-016`
+carries the answer, what it rests on and what would show it wrong.
 
-`normal` rather than `high`: no recorded session has brought this wording, so
-nothing measured what it costs, and `D-AUD-003` — the entry that measured a
-review prompt reaching no skill — is about a wording the `audit` intent now
-catches. `normal` rather than `low`: this is a whole shape of request, not one
-phrase, and every session bringing it lands in Bash with none of the four owning
-calls made.
+Two facts in `D-SKL-013` had gone stale under the card and are corrected in that
+entry's **Since then**: fifteen intents rather than thirteen, seven of them
+routing rather than five, and of the three published skills its third **Wrong
+if** calls unreached, one is routed and one no longer exists. The warning that
+bullet carries is untouched, and it is what this draft has to answer to.

@@ -65,3 +65,30 @@ out what to put in the directory.
 - A session that read the document still opens a vendor package to copy a file.
   Then what was missing is a template the server hands over, not a description
   of one.
+
+**Since then**, on 2026-08-04, the scaffold was established and written as
+`knowledge/documents/extension/documentation/manual.md`.
+
+The minimal set is two files, and the official reference says so: an entry point
+`Documentation/Index.rst` and a `Documentation/guides.xml`. `Includes.rst.txt`
+is optional and conventional, `Sitemap.rst` is filled by the renderer. What the
+renderer needs of the configuration is the namespace, the theme class on
+`extension` and `title` on `project`; the rest of the attributes produce the
+edit link and the project header.
+
+Both were verified by rendering rather than by reading. A directory holding only
+those two files rendered, and the measurement that made the page worth writing
+is the exit code: a tree whose `Index.rst` includes a missing `Includes.rst.txt`
+logs the failed directive, prints "Successfully placed" and exits **0**; the
+same run with `--fail-on-log` exits **1**. So the flag is what turns the
+renderer into a check, which is what the reporting session said and what neither
+the official page nor the renderer's README states.
+
+Two files that look like the template are named as not being it: a core system
+extension's `guides.xml`, which points `edit-on-github` at `typo3/typo3` and
+carries `typo3-core-preferred`, and the `Settings.cfg` an unmigrated manual
+still ships — `/home/benji/projects/bootstrap_package` is one, so a session
+copying from a real published extension can land on the replaced renderer.
+
+The document is announced in `knowledge/server-scope.json`, which
+`ScopeTest::everyKnowledgeDocumentIsAnnouncedByTheScope` requires.

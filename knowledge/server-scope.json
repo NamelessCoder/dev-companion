@@ -70,6 +70,16 @@
       "scope": "extension"
     },
     {
+      "topic": "What an extension's Documentation/ directory consists of",
+      "depth": "The two files that make a directory a manual and the conventional ones beside them: a minimal guides.xml to copy, the Index.rst header and toctree that pull the chapters in, and the two files that look like a template and are not — a core system extension's renderer configuration and the Settings.cfg of a manual that predates it. Beside them the render command, what its \"successfully placed\" does not promise, and the flag that makes a failed directive a non-zero exit. It does not write the chapters, and what a manual is for is the extension-documentation hint.",
+      "tools": [
+        "typo3_rule_lookup",
+        "typo3_hint_lookup"
+      ],
+      "source": "typo3://guides/extension/documentation/manual",
+      "scope": "extension"
+    },
+    {
       "topic": "The Playwright suite a project runs its browser tests from",
       "depth": "The configuration, the backend login and one spec, whole and ready to write out, with the login in the variant each TYPO3 major needs. Beside them: where the base URL and the credentials come from, why the login runs once, and which locator on the login form is ambiguous. It does not install anything and names no dependency version.",
       "tools": [

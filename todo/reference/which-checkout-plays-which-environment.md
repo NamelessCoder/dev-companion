@@ -52,9 +52,9 @@ works in, which is where a patch to review comes from.
   from, so one run from a worktree points the client at that worktree until the
   install is repeated from here — which is what the run of 2026-08-04 did, and
   undid afterwards. Repeating it in `/home/benji/projects/syntax` that day took
-  the checkout from five published skills to nine. The ignore block it had
-  still names the five, and the four that arrived carry a `.gitignore` of their
-  own, so the block being short of them leaves nothing untracked.
+  the checkout from five published skills to nine. The ignore block it had still
+  names the five, and the four that arrived carry a `.gitignore` of their own,
+  so the block being short of them leaves nothing untracked.
   - `/home/benji/projects/syntax` — `bk2k/syntax` 5.0.0, TYPO3 14.3.0 below
     `.build/vendor`, DDEV project `syntax` on PHP 8.2, declared
     `^13.4 || ^14.3`. **Static quality infrastructure is incomplete**:
@@ -64,12 +64,12 @@ works in, which is where a patch to review comes from.
     run of any kind to reach the console half from an extension checkout. **It
     is committed in**, which is what the run of 2026-08-04 for `D-GUI-002` left
     behind: `bc0946c` on `master`, one line of TypoScript, unpushed and
-    untagged, so the tree is clean again and `master` is one ahead of the
-    5.0.0 release commit. That run also started the DDEV project and left it
-    up, and rewrote `tt_content` uid 1 in its database into a PHP snippet to
-    have something to render — the record was `syntax_language=none` with
-    placeholder text before. Both are outside git, and a run that needs the
-    fixture back is the one that restores it.
+    untagged, so the tree is clean again and `master` is one ahead of the 5.0.0
+    release commit. That run also started the DDEV project and left it up, and
+    rewrote `tt_content` uid 1 in its database into a PHP snippet to have
+    something to render — the record was `syntax_language=none` with placeholder
+    text before. Both are outside git, and a run that needs the fixture back is
+    the one that restores it.
   - `/home/benji/projects/bootstrap_package` — TYPO3 14.3.0 below
     `.build/vendor`, DDEV project `bootstrap-package` on PHP 8.5. **Complete**
     infrastructure, which is what it plays. `REVIEW-02` ran here twice on

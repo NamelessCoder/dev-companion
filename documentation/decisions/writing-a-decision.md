@@ -1,8 +1,8 @@
 # Writing a decision, and going back to one
 
 What a decision is, what rests on it and what its states mean is
-[readme.md](readme.md). This page is where an entry
-goes, how it is written, and what a later session adds to one.
+[readme.md](readme.md). This page is where an entry goes, how it is written, and
+what a later session adds to one.
 
 ## Where an entry lives
 
@@ -184,17 +184,18 @@ A requirement says which decisions it stands on, in its own front matter —
 `restsOn: [D-FBK-005]`. That is the one crossing neither directory can see on
 its own: a decision is revoked, the requirement written on top of it keeps its
 `held` status and its passing test, and the reasoning under it is gone.
-`bin/cli unresolved:list` reads that out; nothing fails on it, because whether the
-requirement still stands is a judgement.
+`bin/cli unresolved:list` reads that out; nothing fails on it, because whether
+the requirement still stands is a judgement.
 
 ## Going back to one
 
 Most decisions are open and stay that way, which is what makes the state easy to
 stop seeing: a **Wrong if** written and never read is a promise, and nothing
-says when to keep it. `bin/cli unresolved:list` counts them and names the oldest —
-not because age disproves anything, but because that is the entry the repository
-has moved furthest away from since. Going back to one and adding **Confirmed
-on** or **Revoked on** is a legitimate task with no feature behind it.
+says when to keep it. `bin/cli unresolved:list` counts them and names the oldest
+— not because age disproves anything, but because that is the entry the
+repository has moved furthest away from since. Going back to one and adding
+**Confirmed on** or **Revoked on** is a legitimate task with no feature behind
+it.
 
 `bin/cli decisions:check` holds every file to the shape above, and
 `composer test` runs the same check through `DecisionsTest`, except the listing:

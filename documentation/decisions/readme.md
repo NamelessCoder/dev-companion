@@ -12,8 +12,8 @@ change it describes is in the code.
 An entry backs what stands on it. What must be true from now on is a
 requirement, and it names the decisions it rests on in its own `restsOn:`, so a
 revoked one is readable from the requirement written on top of it —
-[what a requirement is](../requirements/readme.md). Where an
-entry goes and how it is written is
+[what a requirement is](../requirements/readme.md). Where an entry goes and how
+it is written is
 [writing-a-decision.md](writing-a-decision.md).
 
 A feedback is one occasion on which a decision gets made. It is not what this
@@ -23,11 +23,11 @@ question somebody had to be asked.
 
 ## What the state means
 
-`status` is one of `open`, `confirmed` and `revoked` — the `DecisionStatus`
-enum — and it names the **last** dated section rather than the only one. A
-decision has a history: `D-KNW-003` was confirmed by a run on the morning of
-2026-08-02 and revoked by the evidence that arrived the same day, and both are
-in the file. What a reader relies on is the latest.
+`status` is one of `open`, `confirmed` and `revoked` — the `DecisionStatus` enum
+— and it names the **last** dated section rather than the only one. A decision
+has a history: `D-KNW-003` was confirmed by a run on the morning of 2026-08-02
+and revoked by the evidence that arrived the same day, and both are in the file.
+What a reader relies on is the latest.
 
 The status is not a workflow. `open` does not mean unbuilt — it means nobody has
 been back to the **Wrong if** yet. Most decisions are open and stay that way,

@@ -11,9 +11,7 @@ most of what accumulates here: entries that name a decision each and are read
 against different parts of the checkout. It is not worth doing for two todos
 about one file, and it is not worth doing for one.
 
-![Main carries the shared claim state while one branch and worktree carries
-each session's unfinished work; completed branches return one at a time through
-rebase, checks and a fast-forward merge.](../images/parallel-todos.svg)
+![Main carries the shared claim state while one branch and worktree carries each session's unfinished work; completed branches return one at a time through rebase, checks and a fast-forward merge.](../images/parallel-todos.svg)
 
 ## What is everybody's and what is one session's
 

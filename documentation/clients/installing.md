@@ -5,9 +5,7 @@ standalone checkout and as a Composer dependency of another project. The
 [readme](../../readme.md) has the short version; this page has the cases it
 leaves out.
 
-![A standalone checkout or Composer dependency is installed into a project,
-which writes client configuration, publishes skills, records the setup and is
-then approved and verified in the client.](../images/install-flow.svg)
+![A standalone checkout or Composer dependency is installed into a project, which writes client configuration, publishes skills, records the setup and is then approved and verified in the client.](../images/install-flow.svg)
 
 ## Standalone
 

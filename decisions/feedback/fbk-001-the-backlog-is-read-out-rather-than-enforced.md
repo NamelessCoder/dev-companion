@@ -27,14 +27,14 @@ whether the check has to fail until an entry is queued.
 
 ## Decided
 
-- `bin/cli unresolved:list` reads both out, `bin/cli repository:check` closes with
-  the same block, and the exit code is untouched. Three stricter shapes were
-  rejected with it: failing the check while an `open` requirement has no item,
-  requiring `not guarded` to carry a reason, and giving `standing` an expiry.
-  All three turn a legitimate state into an error — a principle no test can hold
-  and a decision nothing has come back about are not defects — and the third
-  would have made CI red on 29 entries the day it landed, which is how a check
-  gets switched off rather than answered.
+- `bin/cli unresolved:list` reads both out, `bin/cli repository:check` closes
+  with the same block, and the exit code is untouched. Three stricter shapes
+  were rejected with it: failing the check while an `open` requirement has no
+  item, requiring `not guarded` to carry a reason, and giving `standing` an
+  expiry. All three turn a legitimate state into an error — a principle no test
+  can hold and a decision nothing has come back about are not defects — and the
+  third would have made CI red on 29 entries the day it landed, which is how a
+  check gets switched off rather than answered.
 
 ## Assumed
 
@@ -57,9 +57,9 @@ whether the check has to fail until an entry is queued.
 ## Confirmed on 2026-08-02
 
 Neither half of the **Wrong if**. No id is reported with `no todo names it` at
-all — `bin/cli unresolved:list` says every requirement is met and guarded — so the
-first half currently has no subject to repeat, which is a weaker result than it
-looks: it says the requirement side is clean, not that a session acts on the
+all — `bin/cli unresolved:list` says every requirement is met and guarded — so
+the first half currently has no subject to repeat, which is a weaker result than
+it looks: it says the requirement side is clean, not that a session acts on the
 line when it is not. The second half is the one with movement. The standing
 count fell from 42 to 38 of 52 that day before this entry's own status changed
 it to 37, across four back-checks — three from sessions run in parallel, the

@@ -8,8 +8,8 @@ status: held
 **A feedback is about as many tools as it is about.**
 
 The names survive recording as names, are listed as a list, and the store can be
-filtered by one of them — the obvious question to ask of it is what is
-open about one tool.
+filtered by one of them — the obvious question to ask of it is what is open
+about one tool.
 
 How they arrive is one string, separated by commas: the declared argument is a
 plain `string` since `D-ANS-017`, and a list on the wire is refused. That is

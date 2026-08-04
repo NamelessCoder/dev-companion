@@ -10,8 +10,8 @@ it: the change is finished, the demand is not.
 
 This is the base. What a change rested on and what would show it wrong is a
 decision, and a requirement names the ones it stands on in its own `restsOn:` —
-[what a decision is](../decisions/readme.md). Where an entry goes
-and how it is written is
+[what a decision is](../decisions/readme.md). Where an entry goes and how it is
+written is
 [writing-a-requirement.md](writing-a-requirement.md).
 
 A feedback is one route a demand arrives by, and the most common one. It is not
@@ -36,6 +36,6 @@ assumed.
 
 They are the `RequirementState` enum. `bin/cli requirements:check` cannot fail
 on **open** or **not guarded**; both are legitimate, and
-[`bin/cli unresolved:list`](../feedback/readme.md) reads them out instead, together
-with whether a todo names the id. Nothing in `requirements/` reaches the order
-of the work on its own; that listing is the whole of the coupling.
+[`bin/cli unresolved:list`](../feedback/readme.md) reads them out instead,
+together with whether a todo names the id. Nothing in `requirements/` reaches
+the order of the work on its own; that listing is the whole of the coupling.

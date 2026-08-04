@@ -275,8 +275,8 @@ because the verb is what tells a caller which shape the answer has:
 
 Nothing here writes into the TYPO3 installation it read, and that boundary is
 what "read-only" means throughout this repository. `record` is the other kind of
-writing and says so, because one word for both is how `453e439` read the feedback
-channel as a hole in the posture — `D-FBK-042`.
+writing and says so, because one word for both is how `453e439` read the
+feedback channel as a hole in the posture — `D-FBK-042`.
 
 `scope` and `describe` are the pair that gets confused. A scope answers for a
 source and states the boundary of what it can be asked; a describe answers for

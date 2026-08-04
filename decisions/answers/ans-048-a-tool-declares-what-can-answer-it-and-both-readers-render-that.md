@@ -11,9 +11,9 @@ client reads, the `answeredBy` cases and the orientation answer are rendered
 from that one declaration.**
 
 A caller could read what a tool is about and not whether it would answer at all
-with the containers down. Three tools declared `answeredBy: installation |
-packages` while only ever emitting `installation`, so the schema promised a
-fallback that was never going to arrive.
+with the containers down. Three tools declared
+`answeredBy: installation | packages` while only ever emitting `installation`,
+so the schema promised a fallback that was never going to arrive.
 
 ## Evidence
 

@@ -9,8 +9,8 @@ status: open
 **What the tracker and the review server answered is held in the process for a
 while, and what they did not answer is fetched again every time.**
 
-Every lookup went over somebody else's network to somebody else's machine, and
-a session walking a list of issues asked forge.typo3.org the same thing once per
+Every lookup went over somebody else's network to somebody else's machine, and a
+session walking a list of issues asked forge.typo3.org the same thing once per
 call.
 
 ## Evidence

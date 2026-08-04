@@ -31,7 +31,8 @@ repository fails when they turn.
   sweep found on the day it ran, which is why the counts in `D-KNW-032` and
   `D-KNW-033` stay: they are evidence rather than a description.
 - A report prints what is true when it runs. That is what `hints:coverage`,
-  `todo:list` and `unresolved:list` are for, and why none of them is transcribed.
+  `todo:list` and `unresolved:list` are for, and why none of them is
+  transcribed.
 
 ## Assumed
 

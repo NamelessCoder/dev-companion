@@ -19,9 +19,9 @@ file sits is what it is, and a claim that lived in a field of a file still in
 the queue would be a claim only the checkout it was set in can see.
 
 What it took on stays taken on. A requirement whose todo dropped off the list of
-what is answered for would go back onto `bin/cli unresolved:list` while somebody is
-working on it, and the next session would queue it a second time — the same trap
-`waiting/` was already kept out of.
+what is answered for would go back onto `bin/cli unresolved:list` while somebody
+is working on it, and the next session would queue it a second time — the same
+trap `waiting/` was already kept out of.
 
 The claim carries what tells it from one nobody came back to: the branch the
 work is on, so a half-finished diff can be found, and the day it was taken, so a

@@ -11,9 +11,9 @@ status: open
 tool verbs as the sixth, and `Knowledge\Scope` is untouched.**
 
 `scope` named two things that both go out on the wire: the enum whose cases are
-`core`, `project`, `extension`, `any` and `uncertain`, and the tool verb for what
-a source covers. The two tools whose names read as cases of that enum were also
-the two carrying the verb wrongly, so one rename settles both.
+`core`, `project`, `extension`, `any` and `uncertain`, and the tool verb for
+what a source covers. The two tools whose names read as cases of that enum were
+also the two carrying the verb wrongly, so one rename settles both.
 
 ## Evidence
 
@@ -50,10 +50,10 @@ the two carrying the verb wrongly, so one rename settles both.
   caller named and states what that thing is; a `scope` answers for a source and
   states the boundary of what it can be asked.
 - The classes follow the names: `Tool\ProjectScope` is `Tool\ProjectDescribe`
-  and `Tool\ExtensionScope` is `Tool\ExtensionDescribe`. Every tool class here is
-  the CamelCase of its tool name and `Registry` is the only thing that lists
-  them, so leaving the classes behind would have been the two-names-for-one-thing
-  the rename removes.
+  and `Tool\ExtensionScope` is `Tool\ExtensionDescribe`. Every tool class here
+  is the CamelCase of its tool name and `Registry` is the only thing that lists
+  them, so leaving the classes behind would have been the
+  two-names-for-one-thing the rename removes.
 - What recorded a call under the former spelling keeps it and gains a line
   saying so — the three forward runs and the recorded halves of four tool pages
   — because a recording says what it is of (`D-DOC-006`). The archived feedback

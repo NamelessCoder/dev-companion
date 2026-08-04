@@ -7,13 +7,12 @@ status: open
 # D-DIS-011 — What was read from the installation lives as long as the call
 
 **What was read from the installation is memoized for one tool call and dropped
-when it returns, so no answer describes it as it was before the caller's
-edit.**
+when it returns, so no answer describes it as it was before the caller's edit.**
 
-Both were memoized for the process. Between two calls is where the agent
-writes, so `typo3_icon_lookup` answered "not registered" about an icon
-registered a minute earlier — the one answer that tool exists to prevent, in the
-shape that looks exactly like the answer it is there to give.
+Both were memoized for the process. Between two calls is where the agent writes,
+so `typo3_icon_lookup` answered "not registered" about an icon registered a
+minute earlier — the one answer that tool exists to prevent, in the shape that
+looks exactly like the answer it is there to give.
 
 ## Evidence
 

@@ -8,9 +8,9 @@ what each one is for and how the work moves between them.
 
     bin/cli todo:next
 
-One todo, not the queue and not everything nothing has answered for. Context is not free: a session
-handed all of it reads for ten minutes and then starts by summarising what it
-read.
+One todo, not the queue and not everything nothing has answered for. Context is
+not free: a session handed all of it reads for ten minutes and then starts by
+summarising what it read.
 
 Due is two questions. Has the clock come round, which the todo's `**Every:**`
 answers — `session`, or a number of days, so five sessions in an afternoon do
@@ -18,9 +18,8 @@ not ask the same question five times. And is there anything to do, which the
 todo's `**Run:**` command answers by exiting nonzero when it found work: the
 sighting stops being the next thing the moment the last entry is named, without
 anybody editing a todo to say so. What is owed a feedback or an unresolved entry
-is
-that judgement — a todo that takes it on, or the sentence saying why it stays as
-it is — not the work itself, which is what the queue is for.
+is that judgement — a todo that takes it on, or the sentence saying why it stays
+as it is — not the work itself, which is what the queue is for.
 
 ## Why the queue comes first
 
@@ -39,12 +38,11 @@ Since 2026-08-02 the feedback are *in* the queue rather than behind it — one
 card each, written by `bin/cli todo:sync` at `low`, which is below everything
 somebody has judged to be worth more. The order above is unchanged and what
 enforces it has moved: the priority does it now, where a group boundary did it
-before. What is still behind the queue is the sighting of what nothing answers for, and
-it is
-reached when the queue runs dry — which now means that nothing decided is left
-*and* nothing has arrived unjudged. Leaving it standing in order to judge more
-feedback is deciding twice and doing nothing, and the pile it decides over grows
-faster than any session can read it.
+before. What is still behind the queue is the sighting of what nothing answers
+for, and it is reached when the queue runs dry — which now means that nothing
+decided is left *and* nothing has arrived unjudged. Leaving it standing in order
+to judge more feedback is deciding twice and doing nothing, and the pile it
+decides over grows faster than any session can read it.
 
 The second half of the same problem is the size of the reading, and the board is
 what solves it now. `bin/cli todo:sync` writes one card per open feedback, and
@@ -232,9 +230,9 @@ entry. How each one is written has a page of its own —
   requirement it established has to keep holding while everything around it
   changes, so it is written down with what holds it to that: a test, or
   `not guarded`. A requirement that has been accepted but not yet implemented is
-  in the same group, marked **open** — decided and not done. Add the entry in the
-  commit that works the feedback off, and name the test in the same commit that
-  writes it. An entry is deleted only when the requirement is withdrawn.
+  in the same group, marked **open** — decided and not done. Add the entry in
+  the commit that works the feedback off, and name the test in the same commit
+  that writes it. An entry is deleted only when the requirement is withdrawn.
 - `decisions/` — what the change rests on. When it rests on an assumption that
   could later turn out wrong, record what was assumed, what evidence there was
   at the time, and what would show it to be wrong. One decision is one file, in

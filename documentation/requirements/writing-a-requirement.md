@@ -1,8 +1,7 @@
 # Writing a requirement
 
 What a requirement is, what it stands on and what its states mean is
-[readme.md](readme.md). This page is where an
-entry goes and how it is written.
+[readme.md](readme.md). This page is where an entry goes and how it is written.
 
 ## Where an entry lives
 
@@ -104,8 +103,8 @@ restsOn: [D-FBK-005]
 
 `bin/cli requirements:check` fails on an id no decision has. Whether a decision
 it rests on was later revoked is a reading rather than a failure, and
-`bin/cli unresolved:list` is where it is read out — a revoked decision leaves the
-requirement's test green and the reasoning under it gone, which nothing else
+`bin/cli unresolved:list` is where it is read out — a revoked decision leaves
+the requirement's test green and the reasoning under it gone, which nothing else
 would say.
 
 `bin/cli requirements:check` holds every file to the shape above, and

@@ -16,9 +16,9 @@ again a directory away.
 
 ## Evidence
 
-- The split it replaces was never decided. `documentation/readme.md` stated it
-  — the directories say what a thing is and link away for how it is carried out
-  — and `D-DOC-004` applied it once, cutting `requirements/readme.md` from 107
+- The split it replaces was never decided. `documentation/readme.md` stated it —
+  the directories say what a thing is and link away for how it is carried out —
+  and `D-DOC-004` applied it once, cutting `requirements/readme.md` from 107
   lines to 62. No entry in `decisions/` carried it.
 - The duplication was in the same words. `requirements/readme.md` and
   `writing-a-requirement.md` both said that **open** is the backlog, and that a

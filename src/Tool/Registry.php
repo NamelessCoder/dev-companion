@@ -104,10 +104,14 @@ final class Registry
      * read before it existed. A boot costs time and no tokens, and a wrong
      * answer costs both.
      *
-     * The console resolution is not dropped with them. It memoizes only
-     * successes, and a project stopped mid-session fails at the boot rather
-     * than answering from a stale reading — so re-resolving per call buys
-     * nothing and pays `ddev describe` for it.
+     * The console resolution is not dropped with them, for a narrower reason
+     * than this carried before `4b43734`. A project stopped mid-session does
+     * not fail at the boot: where host PHP satisfies the bound the installation
+     * pins, it resolves through that interpreter and answers with a caveat.
+     * `resolve()` declines to remember that one, so there is nothing left here
+     * to drop. Dropping per call would take the uncaveated resolution with it,
+     * and that one is discovered once per process — 0.492s cold against 0.002s
+     * warm.
      *
      * @param array<string, mixed> $args
      */

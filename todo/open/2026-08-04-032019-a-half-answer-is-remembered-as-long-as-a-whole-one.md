@@ -5,13 +5,20 @@
 
 `typo3_server_scope` reads the console state into locals now and writes both
 halves of its answer from them, which is the step this card named and the
-maintainer chose over putting the memo back: the guarantee stays inside
-`Typo3Cli`, so the upkeep commands that call it directly keep it too. Measured
-against a stopped DDEV project whose pin host PHP satisfies — the caveated
-resolution, `.environments/e-site-13.4`'s shape — on 2026-08-04: six
-`ddev describe -j` and 2.648s per answer before, two and 0.869s after, at 0.25s
-a describe. Running, or once the resolution is remembered, it is one describe
-and 0.002s either way, and
+maintainer chose over putting the memo back. The reason first written here — the
+guarantee stays inside `Typo3Cli`, so the upkeep commands that call it directly
+keep it too — does not hold: the only two callers outside a tool,
+`ToolAnswers::pointAt()` and `ToolRecord`, call `Typo3Cli::forget()` themselves,
+so neither would have kept a stale resolution either way. What actually rules
+the memo out is one state over: dropping it in `Registry::call`'s `finally`
+drops every resolution, and the uncaveated one is meant to be discovered once
+per process — 0.492s cold against 0.002s warm, paid again by every tool call.
+Dropping only the caveated one is the same concept a fourth accessor adds, for
+the same 0.25s. Measured against a stopped DDEV project whose pin host PHP
+satisfies — the caveated resolution, `.environments/e-site-13.4`'s shape — on
+2026-08-04: six `ddev describe -j` and 2.648s per answer before, two and 0.869s
+after, at 0.25s a describe. Running, or once the resolution is remembered, it is
+one describe and 0.002s either way, and
 `Typo3CliTest::theScopeAnswerDescribesAStoppedProjectOncePerHalfRatherThanPerSentence`
 fails at six.
 
@@ -29,10 +36,10 @@ options are (a) add it and have `ServerScope` read the state in one call,
 leaving `resolve()`, `reason()` and `caveat()` for the callers that want one
 thing; (b) leave it at two, and the class keeps three accessors that each mean
 one thing; (c) memoize the caveated resolution again and drop it in
-`Registry::call`'s `finally`, which is what the maintainer already rejected
-because it moves the guarantee out of the class. Recommended: (b). The saving is
-0.25s on one tool in one state, and a fourth way to ask the same question is a
-concept added to a class whose three accessors are each one sentence.
+`Registry::call`'s `finally`, which the maintainer already rejected and which
+the paragraph above prices. Recommended: (b). The saving is 0.25s on one tool in
+one state, and a fourth way to ask the same question is a concept added to a
+class whose three accessors are each one sentence.
 
 One thing this reading found next door, workable without an answer:
 `Unsupported::because()` reads `Typo3Cli::caveat()` twice in two lines, so every

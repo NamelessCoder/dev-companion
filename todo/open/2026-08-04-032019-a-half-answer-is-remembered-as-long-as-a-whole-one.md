@@ -1,33 +1,47 @@
-# A half answer is remembered as long as a whole one
+# One resolution per console state, not one per accessor
 
 **Serves:** R-DIS-009, R-DIS-010, META-02
 **Priority:** low
 
-`Typo3Cli::resolve()` no longer remembers a caveated resolution, and `R-DIS-009`
-says so — a console reached through an interpreter of this machine while the
-project's DDEV is stopped is the weaker of two answers, and the stronger one
-arrives with the `ddev start` the caveat asked for. Measured in one process
-against `.environments/e-site-13.4` stopped on 2026-08-04, which pins `8.2.0`
-and is satisfied by host PHP 8.3: before, the first resolution came back
-`via=php` with the caveat and `ddev start` changed nothing for the rest of the
-process; after, the call following the start comes back `via=ddev` with no
-caveat, and is memoized from there
-(`Typo3CliTest::aStoppedProjectThisMachineCanRunIsAskedAgainAfterItStarts`).
+`typo3_server_scope` reads the console state into locals now and writes both
+halves of its answer from them, which is the step this card named and the
+maintainer chose over putting the memo back: the guarantee stays inside
+`Typo3Cli`, so the upkeep commands that call it directly keep it too. Measured
+against a stopped DDEV project whose pin host PHP satisfies — the caveated
+resolution, `.environments/e-site-13.4`'s shape — on 2026-08-04: six
+`ddev describe -j` and 2.648s per answer before, two and 0.869s after, at 0.25s
+a describe. Running, or once the resolution is remembered, it is one describe
+and 0.002s either way, and
+`Typo3CliTest::theScopeAnswerDescribesAStoppedProjectOncePerHalfRatherThanPerSentence`
+fails at six.
 
-What is left is what it costs the one tool a caller reaches in that state.
-`ddev describe -j` on a stopped project is 0.25s and a whole resolution is
-0.44s, both measured there; `typo3_server_scope` enters `resolve()` six times —
-`resolve()`, `reason()` and `caveat()`, in the text half and again in the data
-half — so that answer went from 0.44s to 2.615s while the project is stopped.
-Reading the console state once into locals in `src/Tool/ServerScope.php` and
-answering both halves from it changes nothing a caller sees and brings it back
-to one `ddev describe -j` per call. That is the next step.
+Two rather than the one this card predicted, and the reason is the class rather
+than the caller: `reason()` and `caveat()` resolve on their own, so what limits
+a console cannot be read from outside `Typo3Cli` without a second resolution.
+Getting to one means an accessor that hands back the invocation, the reason and
+the caveat from a single resolve — which is a change to `Typo3Cli`, and the
+question below.
 
-The alternative, if the memo is wanted back: memoize the caveated resolution as
-before and drop it in `Registry::call`'s `finally` beside `Typo3Runtime::forget()`
-and `Icons::forget()`, which is the lifetime `D-DIS-011` already gives what was
-read from the installation. It costs one `ddev describe -j` per tool call rather
-than per resolution, and moves the guarantee out of `Typo3Cli` into the
-registry, so the upkeep commands that call `Typo3Cli` directly keep a stale
-caveated resolution for their process. Not taken, because the step above buys
-the same cost without moving it.
+**Open question, as it goes to whoever queued this:** is a fourth accessor on
+`Typo3Cli` — say `state(): array{invocation, reason, caveat}` from one
+resolution — worth the last 0.25s of a stopped project's scope answer? The
+options are (a) add it and have `ServerScope` read the state in one call,
+leaving `resolve()`, `reason()` and `caveat()` for the callers that want one
+thing; (b) leave it at two, and the class keeps three accessors that each mean
+one thing; (c) memoize the caveated resolution again and drop it in
+`Registry::call`'s `finally`, which is what the maintainer already rejected
+because it moves the guarantee out of the class. Recommended: (b). The saving is
+0.25s on one tool in one state, and a fourth way to ask the same question is a
+concept added to a class whose three accessors are each one sentence.
+
+One thing this reading found next door, workable without an answer:
+`Unsupported::because()` reads `Typo3Cli::caveat()` twice in two lines, so every
+unsupported answer resolves once more than it needs. Measured the same day
+against the same stopped fixture, `typo3_label_lookup`,
+`typo3_fluid_namespace_list` and `typo3_configuration_lookup` each cost three
+describes and 1.35s — one for the run, two for those lines. Reading it into a
+local is one line and takes each of them to two.
+
+`low` for both halves. What is left is 0.25s per answer in a state the caller is
+told to leave by starting its project, and the six-fold cost this card was
+opened for is gone.

@@ -214,10 +214,24 @@ final class ServerScope extends ReadOnlyTool
         // What the installation can be asked is a different question from
         // whether one was found, and the answer is actionable often enough to
         // belong here rather than in a failing tool call.
+        //
+        // Read once, and both halves of the answer are written from these
+        // locals. `reason()` and `caveat()` each re-enter `resolve()`, which no
+        // longer remembers a failed or caveated resolution (`R-DIS-009`), so
+        // every read of the console state pays a `ddev describe -j` of its own
+        // while the project is stopped. This answer made six of them, 2.648s
+        // against `.environments/e-site-13.4` with its project down on
+        // 2026-08-04. Two are left, 0.869s there: a failed resolution carries no
+        // caveat and a successful one carries no reason, so only one of the two
+        // is asked, and neither can be had from outside `Typo3Cli` without
+        // resolving again. Nothing changes where the resolution is remembered —
+        // one describe, 0.002s on the second call.
         $console = Typo3Cli::resolve();
+        $reason = $console === null ? Typo3Cli::reason() : '';
+        $caveat = $console === null ? '' : Typo3Cli::caveat();
         if ($instance !== null && $console === null) {
             $lines[] = 'Its console cannot be run right now, so questions that only the installation can answer — which '
-                . 'labels exist, which backend modules are registered — have no answer here: ' . Typo3Cli::reason() . '. '
+                . 'labels exist, which backend modules are registered — have no answer here: ' . $reason . '. '
                 . 'Where the command that would work is known, ' . Typo3Cli::CONSOLE_VARIABLE
                 . ' states it, for example "ddev exec .build/bin/typo3".';
         }
@@ -237,8 +251,8 @@ final class ServerScope extends ReadOnlyTool
                 $console['php'] === '' ? 'an unreported version' : $console['php'],
             );
         }
-        if ($instance !== null && Typo3Cli::caveat() !== '') {
-            $lines[] = 'Reachable is not the same as ready here: ' . Typo3Cli::caveat() . '.';
+        if ($instance !== null && $caveat !== '') {
+            $lines[] = 'Reachable is not the same as ready here: ' . $caveat . '.';
         }
 
         $lines[] = '';
@@ -270,7 +284,7 @@ final class ServerScope extends ReadOnlyTool
                 'variable' => ExcludedTools::VARIABLE,
             ],
             'answersFrom' => self::answersFromReport(),
-            'installation' => self::installationReport(),
+            'installation' => self::installationReport($console, $reason, $caveat),
         ]);
     }
 
@@ -332,12 +346,17 @@ final class ServerScope extends ReadOnlyTool
      * read as one: an extension with forty registered icons was reported as
      * registering none, twice.
      *
+     * The console state is handed in rather than read again, which is half of
+     * the cost measured above. It is also the half that could disagree: each of
+     * the two resolved for itself, so a project coming up between them left the
+     * text and the data of one answer saying different things.
+     *
+     * @param array{command: array<int, string>, via: string, php: string}|null $console
      * @return array<string, mixed>
      */
-    private static function installationReport(): array
+    private static function installationReport(?array $console, string $reason, string $caveat): array
     {
         $instance = Instance::describe();
-        $console = Typo3Cli::resolve();
 
         return [
             'found' => $instance !== null,
@@ -353,12 +372,12 @@ final class ServerScope extends ReadOnlyTool
                 'via' => $console['via'] ?? null,
                 'php' => ($console['php'] ?? '') === '' ? null : $console['php'],
                 'command' => $console === null ? null : implode(' ', $console['command']),
-                'reason' => $console === null ? Typo3Cli::reason() : null,
+                'reason' => $console === null ? $reason : null,
                 // Reachable and ready are two questions, and the second one has
                 // its own answer: a console reached through an interpreter on
                 // this machine while the project's containers are stopped runs,
                 // and runs outside the runtime the project declares.
-                'caveat' => Typo3Cli::caveat() === '' ? null : Typo3Cli::caveat(),
+                'caveat' => $caveat === '' ? null : $caveat,
             ],
             'settings' => [
                 'root' => Instance::ROOT_VARIABLE,

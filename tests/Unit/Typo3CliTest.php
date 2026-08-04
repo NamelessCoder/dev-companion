@@ -444,6 +444,39 @@ final class Typo3CliTest extends TestCase
         self::assertSame('', Typo3Cli::caveat());
     }
 
+    /**
+     * What that state costs the tool that reports it. A caveated resolution is
+     * not remembered, so every read of the console state resolves again and
+     * pays a `ddev describe -j` for it — 0.25s against
+     * `.environments/e-site-13.4` with its project down on 2026-08-04. This
+     * answer read it six times, a resolution and two caveat reads in each of
+     * its halves, and took 2.648s there; it reads it into locals now and takes
+     * 0.869s.
+     *
+     * Two rather than one because `reason()` and `caveat()` resolve on their
+     * own: what limits a console cannot be had from outside `Typo3Cli` without
+     * asking for it, and asking is a resolution.
+     */
+    #[Test]
+    public function theScopeAnswerDescribesAStoppedProjectOncePerHalfRatherThanPerSentence(): void
+    {
+        $root = $this->installation();
+        $this->console($root);
+        mkdir($root . '/.ddev');
+        file_put_contents($root . '/.ddev/config.yaml', "name: fixture\ntype: typo3\n");
+        Typo3Cli::useRunner($this->ddevThatStartsAfterTheFirstLook($status, $commands));
+        $this->discover($root);
+
+        $scope = Registry::call('typo3_server_scope', []);
+
+        self::assertNotNull($scope->data['installation']['console']['caveat'], 'the state this is about');
+        self::assertSame(
+            2,
+            count(array_keys($commands, 'ddev describe -j', true)),
+            'both halves of the answer are written from one reading of the console state',
+        );
+    }
+
     #[Test]
     public function aConsoleAlreadyInsideDdevIsReadyThroughItsDirectPhp(): void
     {
@@ -542,17 +575,22 @@ final class Typo3CliTest extends TestCase
      * every `php99.x` it might use, and a stub that says yes to all of them
      * would put the describe payload where a PHP version belongs.
      *
+     * @param array<int, string>|null $commands filled with every command the code under test ran
+     *
      * @param-out string $status
+     * @param-out array<int, string> $commands
      */
-    private function ddevThatStartsAfterTheFirstLook(?string &$status = null): CommandRunner&Stub
+    private function ddevThatStartsAfterTheFirstLook(?string &$status = null, ?array &$commands = null): CommandRunner&Stub
     {
         $status = 'stopped';
+        $commands = [];
         $ddev = self::createStub(CommandRunner::class);
         $ddev->method('locate')->willReturnCallback(
             static fn(string $name): ?string => $name === 'ddev' ? '/usr/local/bin/ddev' : null
         );
         $ddev->method('run')->willReturnCallback(
-            static function (array $command) use (&$status): array {
+            static function (array $command) use (&$status, &$commands): array {
+                $commands[] = implode(' ', $command);
                 $output = $command === ['ddev', 'describe', '-j']
                     ? sprintf('{"raw": {"status": "%s", "php_version": "8.3"}}', $status)
                     : PHP_VERSION;

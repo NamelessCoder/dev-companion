@@ -9,8 +9,8 @@ src/               # grouped by what a class is: only Paths and the bootstrap si
 src/Server/        # starting this server and setting a project up for it
 src/Server/Entrypoint.php  # what `bin/typo3-cms-mcp` runs: the commands, the usage, the transport
 src/Server/Factory.php     # builds the mcp/sdk server from the tool definitions
-src/Server/Installer.php   # writes guarded generic or agent-specific client setup
-src/Server/Profile.php     # which half of the server a client is offered (TYPO3_MCP_PROFILE)
+src/Server/Installer.php   # writes guarded generic or agent-specific client setup, and publishes the skills
+src/Server/ExcludedTools.php  # the tools a caller asked not to be offered (TYPO3_MCP_EXCLUDE_TOOLS)
 src/Tool/          # one class per tool: its description, its schemas, its answer
 src/Tool/Tool.php  # the interface each one implements; ReadOnlyTool carries the annotations
 src/Tool/Registry.php  # every tool this server has, and the only place one is switched on

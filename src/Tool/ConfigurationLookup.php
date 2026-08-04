@@ -28,7 +28,7 @@ final class ConfigurationLookup extends ReadOnlyTool
 
     public static function description(): string
     {
-        return 'Read an effective TYPO3_CONF_VARS value from the installation you are working in — the value as it is at runtime after every extension has had its say, not the shipped default. Use it for configuration whose assembled shape matters, such as SYS/formEngine/formDataGroup, SYS/caching/cacheConfigurations, or SYS/fluid.';
+        return 'Read an effective TYPO3_CONF_VARS value from the installation you are working in — the value as it is at runtime after every extension has had its say, not the shipped default. Use it for configuration whose assembled shape matters, such as SYS/formEngine/formDataGroup, SYS/caching/cacheConfigurations, or SYS/fluid. It answers for the installation as it stands, in the environment it is in: a value that has to be shown resolving under another environment — a variable set, a development-environment marker absent — is the project\'s own console, one run per environment.';
     }
 
     public static function inputSchema(): array

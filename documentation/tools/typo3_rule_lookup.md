@@ -209,7 +209,7 @@ Data:
             "body": "- Deprecations must not use `[!!!]`.\n- Deprecations may only use `[TASK]` or `[FEATURE]`.\n- Deprecations must be documented with a changelog RST file.\n- Deprecations need migration guidance and may need extension scanner\n  considerations.\n- All of the above is the authoring side. Reading it — what a given version\n  deprecated, and what that means for code that uses it — works the other way\n  round: the changelog files below `Documentation/Changelog/` of the core\n  package and the matchers below the install package's\n  `Configuration/ExtensionScanner/Php/` are what an installation is checked\n  against, by the Extension Scanner in the Install Tool. Both directories ship\n  with a Composer installation.",
             "versions": "",
             "coverage": 1,
-            "score": 95,
+            "score": 96,
             "truncated": false
         },
         {
@@ -279,7 +279,7 @@ This knowledge base covers:
 - TYPO3 Contribution Sources: Core Contribution Guide, Local Policy
 - TYPO3 Core Script Help: Invoking runTests.sh, Common Commands, Script Notes
 - Setting Up PHPUnit in a TYPO3 Extension: Build/UnitTests.xml, Build/FunctionalTests.xml, What was changed in the copied files, Running the suites, Database credentials for the functional suite, What is left after a run
-- Setting Up Playwright in a TYPO3 Project: Build/playwright.config.ts, Build/tests/browser/helper/login.setup.ts, Build/tests/browser/e2e/backend.spec.ts, The environment the suite reads, What the login setup asserts, and why it differs by version, What is not committed
+- Setting Up Playwright in a TYPO3 Project: Build/playwright.config.ts, Build/tests/browser/helper/login.setup.ts, Build/tests/browser/frontend/pages.spec.ts, Build/tests/browser/e2e/backend.spec.ts, The environment the suite reads, What the login setup asserts, and why it differs by version, What is not committed
 
 For backend UI components use typo3_component_lookup, and call typo3_server_scope for what this server covers at all. If the topic should be covered here, leave a feedback with typo3_feedback_record.
 ```
@@ -367,6 +367,7 @@ Data:
             "topics": [
                 "Build/playwright.config.ts",
                 "Build/tests/browser/helper/login.setup.ts",
+                "Build/tests/browser/frontend/pages.spec.ts",
                 "Build/tests/browser/e2e/backend.spec.ts",
                 "The environment the suite reads",
                 "What the login setup asserts, and why it differs by version",

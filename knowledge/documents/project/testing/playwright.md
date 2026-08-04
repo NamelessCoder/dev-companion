@@ -1,8 +1,8 @@
 ---
 description: >-
-  The Playwright configuration, the backend login and one spec a project owns, whole, and the environment they read the site from.
+  The Playwright configuration, the backend login and a spec per project a repository owns, whole, and the environment they read the site from.
 whenToUse: >-
-  When a repository that serves a TYPO3 site has no browser suite yet. A rendering test through a functional test is not one of these; it runs no script and speaks no HTTP.
+  When a repository that serves a TYPO3 site has no browser suite yet, for what a visitor gets and for what an editor does. A rendering test through a functional test is neither; it runs no script and speaks no HTTP.
 hints:
   - browser-tests
   - browser-tests-outside-core
@@ -11,10 +11,11 @@ hints:
 # Setting Up Playwright in a TYPO3 Project
 
 The suite belongs to what is deployed rather than to a package: the specs need a
-served site, a real URL and an authenticated backend. The core's own
-configuration does not transfer — it points its test directory into the core
-tree, writes its report below `typo3temp/` and logs into the instance the
-install tool made.
+served site and a real URL. It runs in three projects — the frontend as a
+visitor sees it, the login that authenticates once, and the backend journeys
+that depend on it. The core's own configuration does not transfer — it points
+its test directory into the core tree, writes its report below `typo3temp/` and
+logs into the instance the install tool made.
 
 ## Build/playwright.config.ts
 
@@ -26,7 +27,19 @@ import * as dotenv from 'dotenv';
 // Resolved from this file rather than from the working directory: dotenv's own
 // default is process.cwd(), so the suite would read a different .env depending
 // on where it was started.
-dotenv.config({ path: path.join(__dirname, '../.env') });
+//
+// The cascade is the order of this list and nothing else. dotenv does not
+// overwrite what is already in process.env, so a variable CI exports wins over
+// both files, and the first file that defines one wins over the second. Do not
+// add override: true to make .env.local win — it inverts the list, and the
+// committed .env would beat the private file.
+dotenv.config({
+  path: [
+    path.join(__dirname, '../.env.local'),
+    path.join(__dirname, '../.env'),
+  ],
+  quiet: true,
+});
 
 export default defineConfig({
   testDir: './tests/browser',
@@ -45,6 +58,12 @@ export default defineConfig({
     {
       name: 'login',
       testMatch: 'helper/login.setup.ts',
+    },
+    {
+      // No login dependency and no stored state: a visitor is anonymous, and a
+      // backend session changes what the frontend renders.
+      name: 'frontend',
+      testMatch: 'frontend/**/*.spec.ts',
     },
     {
       name: 'e2e',
@@ -110,6 +129,30 @@ setup('authenticate in the backend', async ({ page }) => {
 });
 ```
 
+## Build/tests/browser/frontend/pages.spec.ts
+
+```ts
+import { test, expect } from '@playwright/test';
+
+// One entry per page type the site has: the list that finds the layout nobody
+// rendered since the template changed.
+const pages = [
+  { name: 'the home page', path: '/' },
+];
+
+for (const page_ of pages) {
+  test(`${page_.name} renders for a visitor`, async ({ page }) => {
+    const response = await page.goto(page_.path);
+
+    expect(response?.status()).toBe(200);
+    await expect(page).toHaveTitle(/.+/);
+    // TYPO3 answers 200 with its own error page where rendering threw, so the
+    // status alone does not say the page came out.
+    await expect(page.locator('body')).not.toContainText('Oops, an error occurred');
+  });
+}
+```
+
 ## Build/tests/browser/e2e/backend.spec.ts
 
 ```ts
@@ -133,14 +176,25 @@ TYPO3_BACKEND_USER=admin
 TYPO3_BACKEND_PASSWORD=
 ```
 
-Commit that as `.env.example` and keep `.env` out of the repository. The
-configuration loads it with `dotenv` and resolves the path from the
-configuration file rather than from the working directory: dotenv's own default
-is `process.cwd()`, so a suite started from the project root and one started
-from `Build/` would read different files, and one of them would read none.
+Both files sit at the project root, beside `Build/` — which is where a TYPO3
+project keeps its `.env` anyway, so the suite reads the same file the rest of
+the repository does rather than one of its own. Commit `.env` with the password
+left empty, and keep `.env.local` out of the repository for what one developer
+fills in. CI exports the same three as environment variables and needs neither
+file.
 
-CI passes the same three as environment variables instead. Nothing else in the
-suite is machine-specific, so a checkout runs it after filling one file in.
+Three properties of the loader decide that layout, and none of them is the
+default anybody assumes. It resolves a relative path against `process.cwd()`, so
+the configuration passes paths of its own — otherwise a suite started from the
+project root and one started from `Build/` read different files, and one of them
+reads none. It does not overwrite a variable already in the environment, which
+is what lets CI win over both files without either being touched. And of the
+files, the first one in the list that defines a variable is the one that wins.
+
+`override: true` is the option to leave alone. It does not make the private file
+win — it inverts the list, so the committed `.env` overwrites `.env.local` and
+the developer's own value is the one that disappears. The cascade is the order
+of that list and nothing else.
 
 ## What the login setup asserts, and why it differs by version
 
@@ -165,8 +219,9 @@ the one element meant.
 
 ## What is not committed
 
-`Build/.auth/` holds the session the setup writes and is generated. So are
-`var/playwright-report/` and `var/playwright-results/`, which the configuration
-puts below `var/` because that is where a TYPO3 project already keeps what it
-does not deploy. Ignore all three. Accepted visual baselines are the exception
-and belong beside the specs that own them.
+`.env.local` is the first entry. `Build/.auth/` holds the session the setup
+writes and is generated, and so are `var/playwright-report/` and
+`var/playwright-results/`, which the configuration puts below `var/` because
+that is where a TYPO3 project already keeps what it does not deploy. Ignore all
+four. Accepted visual baselines are the exception and belong beside the specs
+that own them.

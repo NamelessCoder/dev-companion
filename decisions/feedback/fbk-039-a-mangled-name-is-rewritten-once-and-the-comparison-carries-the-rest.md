@@ -65,3 +65,22 @@ name a grep finds.
 
 - `FeedbackTest::everyNameTheCorpusCarriesIsSpelledTheWayThisProjectSpellsIt`
 - `FeedbackTest::aNameIsFoundHoweverItsSeparatorsAreSpelled`
+
+**Since then**, on 2026-08-04, the second **Wrong if** happened.
+`feedback/2026-08-04-180241` recorded `ListMcpResourcesTool` beside two
+`typo3_*` names and read it back as `listmcpresourcestool`, in the joined string
+and in the split array alike. `Channel::toolNames()` keeps the separators the
+commit above restored and still lowercases what is left, so the mangling is a
+different one and the writer is where it lives — which is exactly what this
+entry named as the sign that rewriting the data had been the cheaper half.
+
+`Channel::comparable()` carries the other half of it: it strips everything
+outside `[a-z0-9]`, so a stored name in the spelling it was given in would lose
+its capitals rather than fold them, and the filter would not find the name it
+holds. Both are one repair and neither has been made yet.
+
+The report's second item is answered without a change. It asks whether
+`feedback/2026-08-04-175804` should be recategorised from `bug` to
+`missing-knowledge`; it should not, because the ladder is walked from the
+observation and never from the front matter, and that feedback was judged as
+`1a` regardless of what its category says — `D-KNW-061`.

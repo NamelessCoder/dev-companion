@@ -76,7 +76,8 @@ final class ServerScope extends ReadOnlyTool
                 'tools' => Schema::listOf(Schema::string(), 'The offered tools it can answer. A tool with two sources stands under both.'),
             ], ['source', 'meaning', 'tools']), 'Which tools are worth calling in the state this machine is in — nothing running answers from knowledge and packages alone. Every tool states its own sources at the foot of its description; this groups them the other way round.'),
             'excludedTools' => Schema::object([
-                'names' => Schema::listOf(Schema::string(), 'The tools the caller asked not to be offered, and the only reason the list is ever shorter than the documented one. Empty unless the variable is set.'),
+                'names' => Schema::listOf(Schema::string(), 'The tools that are really gone, and the only reason the list is ever shorter than the documented one. Empty unless the variable is set.'),
+                'ignored' => Schema::listOf(Schema::string(), 'Names in the variable that took nothing away: no tool answers to the name, or it is one of the three this server offers whatever the variable says. Each of them is in the tool list. Absent means nothing to report, which is the ordinary case.'),
                 'variable' => Schema::string('Environment variable that names them.'),
             ], ['names', 'variable']),
             'installation' => Schema::object([
@@ -114,6 +115,10 @@ final class ServerScope extends ReadOnlyTool
             // the whole server, and a client that reads what it holds first and
             // that a tool is missing second has been told and then corrected.
             $lines[] = self::exclusionLine();
+            $lines[] = '';
+        }
+        if (self::ignored() !== []) {
+            $lines[] = self::ignoredLine();
             $lines[] = '';
         }
 
@@ -281,6 +286,7 @@ final class ServerScope extends ReadOnlyTool
             'versions' => Versions::covered(),
             'excludedTools' => [
                 'names' => ExcludedTools::all(),
+                'ignored' => self::ignored(),
                 'variable' => ExcludedTools::VARIABLE,
             ],
             'answersFrom' => self::answersFromReport(),
@@ -333,6 +339,45 @@ final class ServerScope extends ReadOnlyTool
             implode(', ', ExcludedTools::all()),
             count(ExcludedTools::all()) === 1 ? 'is' : 'are',
             ExcludedTools::VARIABLE,
+        );
+    }
+
+    /**
+     * The names in the variable that took nothing away, in one list.
+     *
+     * The two reasons are one fact to a client: the tool is in the list it was
+     * handed. Which of the two it is says what somebody has to change, and that
+     * is what the sentence below carries — a startup warning on stderr says it
+     * too, and a client is free to show that to nobody.
+     *
+     * @return array<int, string>
+     */
+    private static function ignored(): array
+    {
+        return [...ExcludedTools::unknown(), ...ExcludedTools::offeredAnyway()];
+    }
+
+    private static function ignoredLine(): string
+    {
+        $unknown = ExcludedTools::unknown();
+        $offeredAnyway = ExcludedTools::offeredAnyway();
+        $reasons = [];
+        if ($unknown !== []) {
+            $reasons[] = implode(', ', $unknown) . ' — no tool of this server answers to that name';
+        }
+        if ($offeredAnyway !== []) {
+            $reasons[] = implode(', ', $offeredAnyway)
+                . ' — offered whatever the variable says, because a client that lost it could not tell '
+                . 'a configured server from a broken one, and because the feedback channel is how a session '
+                . 'hands back what it found';
+        }
+
+        return sprintf(
+            '%s names %s, which took nothing away and %s in the tool list you were handed: %s.',
+            ExcludedTools::VARIABLE,
+            implode(', ', self::ignored()),
+            count(self::ignored()) === 1 ? 'is' : 'are',
+            implode('; ', $reasons),
         );
     }
 

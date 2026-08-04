@@ -111,7 +111,61 @@ final class ExcludedToolsTest extends TestCase
         $scope = Registry::call('typo3_server_scope', []);
 
         self::assertSame([], $scope->data['excludedTools']['names']);
+        self::assertSame([], $scope->data['excludedTools']['ignored']);
         self::assertStringNotContainsString(ExcludedTools::VARIABLE, $scope->text);
+    }
+
+    /**
+     * What both client surfaces said before this: the name the caller wrote,
+     * whether or not it took a tool away. Measured on 2026-08-04 with
+     * `TYPO3_MCP_EXCLUDE_TOOLS=typo3_project_scope` — the instructions opened
+     * "typo3_project_scope is left out of your tool list" out of the budget
+     * `R-ANS-013` holds, while `typo3_project_describe` was in the list.
+     */
+    #[Test]
+    #[DataProvider('everyNameThatTakesNoToolAway')]
+    public function neitherSurfaceCallsAToolExcludedThatIsInTheList(string $name): void
+    {
+        putenv(ExcludedTools::VARIABLE . '=' . $name);
+
+        self::assertContains($name, $this->toolNames(), 'the premise: the tool is offered');
+        self::assertSame([], ExcludedTools::all());
+        self::assertStringNotContainsString('left out of your tool list', Coverage::instructions());
+
+        $scope = Registry::call('typo3_server_scope', []);
+        self::assertSame([], $scope->data['excludedTools']['names']);
+        self::assertStringNotContainsString('is left out', $scope->text);
+        self::assertStringNotContainsString('missing from the tool list', $scope->text);
+    }
+
+    /** @return array<string, array{0: string}> */
+    public static function everyNameThatTakesNoToolAway(): array
+    {
+        return [
+            'the tool that explains a short list' => ['typo3_server_scope'],
+            'a feedback tool the channel decides' => ['typo3_feedback_record'],
+        ];
+    }
+
+    /**
+     * The other half: a name that took nothing away is still said, where the
+     * client reads it. `D-AUD-005` put the stderr line in and left this open,
+     * because a client is free to capture that stream and show it to nobody.
+     */
+    #[Test]
+    public function theScopeNamesWhatTookNothingAwayAsIgnoredRatherThanAsExcluded(): void
+    {
+        putenv(ExcludedTools::VARIABLE . '=typo3_project_scope, typo3_feedback_record, typo3_icon_lookup');
+
+        $scope = Registry::call('typo3_server_scope', []);
+
+        self::assertSame(['typo3_icon_lookup'], $scope->data['excludedTools']['names']);
+        self::assertSame(
+            ['typo3_project_scope', 'typo3_feedback_record'],
+            $scope->data['excludedTools']['ignored'],
+        );
+        self::assertStringContainsString('took nothing away', $scope->text);
+        self::assertStringContainsString('no tool of this server answers to that name', $scope->text);
     }
 
     #[Test]

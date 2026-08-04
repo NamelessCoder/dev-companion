@@ -1,7 +1,7 @@
 ---
 id: R-SCO-009
 status: held
-restsOn: [D-AUD-004, D-FBK-042]
+restsOn: [D-AUD-004, D-FBK-042, D-AUD-006]
 ---
 
 # R-SCO-009 — Individual tools can be excluded
@@ -10,7 +10,9 @@ restsOn: [D-AUD-004, D-FBK-042]
 the three the server names.**
 
 The scope answer names the resulting omissions, so a shorter tool list carries
-its reason.
+its reason — and names nothing else, because a name in the variable that took no
+tool away is reported as that rather than as a missing capability
+([`D-AUD-006`](../../decisions/audience/aud-006-the-server-reports-the-exclusion-that-happened-and-the-installer-keeps-the-line-it-did-not-write.md)).
 
 Every tool that answers about TYPO3 can go. Three cannot, and both reasons are
 about what the caller would be left holding:
@@ -26,7 +28,8 @@ about what the caller would be left holding:
   session hands back what it found.
 
 Neither exception weakens the read-only posture, and reading it as one is the
-mistake [`D-FBK-042`](../../decisions/feedback/fbk-042-the-read-only-boundary-is-the-installation-and-the-channel-writes-on-this-side-of-it.md)
+mistake
+[`D-FBK-042`](../../decisions/feedback/fbk-042-the-read-only-boundary-is-the-installation-and-the-channel-writes-on-this-side-of-it.md)
 was written for: `typo3_feedback_record` writes into this server's own checkout
 and never into the installation being read.
 
@@ -48,3 +51,4 @@ feedback tools past the filter, which is exactly the list above.
 - `ExcludedToolsTest::theScopeNamesWhatTheCallerExcluded`
 - `ExcludedToolsTest::theToolThatExplainsAShortListCannotBeExcluded`
 - `ExcludedToolsTest::theFeedbackToolsFollowTheChannelAndNoExclusionReachesThem`
+- `ExcludedToolsTest::neitherSurfaceCallsAToolExcludedThatIsInTheList`

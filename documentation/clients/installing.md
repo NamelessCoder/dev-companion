@@ -47,6 +47,13 @@ different entry than the one that is there, and `update` is what moves it. An
 entry that starts something other than this server is somebody else's and is
 refused instead — the two commands then say so and change nothing.
 
+They own the command in that entry and nothing else. Whatever the caller put
+beside it stays — `env` above all, which is the only place a client
+configuration carries `TYPO3_MCP_EXCLUDE_TOOLS`. In a `.codex/config.toml` or a
+`.grok/config.toml` that means every line of the section this package does not
+write, so a value continued on the next line is refused with the line number
+rather than rewritten around: keeping a line means knowing where it ends.
+
 Naming no client at all is a setup of its own, recorded as `generic`: `install`
 then writes the `.mcp.json` entry and publishes the skills to `.agents/skills`,
 the two locations a client finds without being configured for it. It is
@@ -294,11 +301,21 @@ installation was answered as core work and then sent to a tool the client had
 not been given.
 
 - `TYPO3_MCP_EXCLUDE_TOOLS` removes tools by their comma-separated names, and is
-  the only thing that shortens the list. `typo3_server_scope` is never one of
-  them: it is what explains a shorter list.
+  the only thing that shortens the list. Three names never shorten it:
+  `typo3_server_scope`, because it is what explains a shorter list, and
+  `typo3_feedback_record` and `typo3_feedback_list`, because the feedback
+  channel is a development tool for building this server rather than part of
+  using it — `R-SCO-009`.
+- A name in it that takes no tool away is reported rather than absorbed, on
+  stderr before the transport starts and again under `excludedTools.ignored` in
+  `typo3_server_scope`. That covers both reasons a name takes nothing away: no
+  tool of this server answers to it — a rename, or a typo — or it is one of the
+  three above.
 
-`typo3_server_scope` names what was excluded, and nothing routes to a tool that
-is not there.
+`typo3_server_scope` names what was really excluded, and nothing routes to a
+tool that is not there. What the server says is gone is what is gone: a name
+that changed nothing is never reported as a missing capability, because a client
+cannot check the claim and pays for it out of the instructions it is sent.
 
 ## What comes with it
 

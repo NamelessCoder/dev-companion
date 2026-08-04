@@ -9,11 +9,13 @@ See [the decisions readme](../readme.md) for how an entry is written and when
 one is added.
 
 - [`D-AUD-005`][D-AUD-005] — An exclusion naming no tool is reported on stderr, and the server starts · 2026-08-04
+- [`D-AUD-006`][D-AUD-006] — The server reports the exclusion that happened, and the installer keeps the line it did not write · 2026-08-04
 - [`D-AUD-004`][D-AUD-004] — Every client is offered every tool, and the answer says who it obliges · 2026-08-02
 - [`D-AUD-003`][D-AUD-003] — The instructions carry the entry point, because the tool descriptions never arrive · 2026-07-31 · confirmed
 - [`D-AUD-001`][D-AUD-001] — The outward description stays core-first until there is non-core knowledge · 2026-07-29 · confirmed
 
 [D-AUD-005]: aud-005-an-exclusion-naming-no-tool-is-reported-on-stderr.md
+[D-AUD-006]: aud-006-the-server-reports-the-exclusion-that-happened-and-the-installer-keeps-the-line-it-did-not-write.md
 [D-AUD-004]: aud-004-every-client-is-offered-every-tool-and-the-answer-obliges.md
 [D-AUD-003]: aud-003-the-instructions-carry-the-entry-point.md
 [D-AUD-001]: aud-001-the-outward-description-stays-core-first-until-there-is-more.md

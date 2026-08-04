@@ -99,10 +99,11 @@ nowhere.
 ## Since then
 
 "The one tool that writes" in the **Evidence** and in the second **Wrong if**
-means two things, and this entry was read as if it meant one. `typo3_feedback_record`
-writes into this checkout and never into the caller's installation, which is
-where the read-only posture lives, so its being appended past the filter is not
-the hole that sentence describes. It is a named exception —
+means two things, and this entry was read as if it meant one.
+`typo3_feedback_record` writes into this checkout and never into the caller's
+installation, which is where the read-only posture lives, so its being appended
+past the filter is not the hole that sentence describes. It is a named exception
+—
 [`R-SCO-009`](../../requirements/scope/sco-009-individual-tools-can-be-excluded.md),
 under
 [`D-FBK-042`](../feedback/fbk-042-the-read-only-boundary-is-the-installation-and-the-channel-writes-on-this-side-of-it.md),
@@ -113,7 +114,19 @@ What is left of that reading is this entry's own open half, and it turns out to
 reach further than the renamed tools. Measured on 2026-08-04 with
 `TYPO3_MCP_EXCLUDE_TOOLS=typo3_feedback_record` in this checkout: 26 tools
 offered including that one, while `typo3_server_scope` reported it under
-`excludedTools.names` and the initialize instructions opened "typo3_feedback_record
-is left out of your tool list". A name that is real but unexcludable tells the
-client the same falsehood an unknown one does, and `ExcludedTools::all()` staying
-what the caller wrote is what both have in common.
+`excludedTools.names` and the initialize instructions opened
+"typo3_feedback_record is left out of your tool list". A name that is real but
+unexcludable tells the client the same falsehood an unknown one does, and
+`ExcludedTools::all()` staying what the caller wrote is what both have in
+common.
+
+That half was closed the same day by
+[`D-AUD-006`](aud-006-the-server-reports-the-exclusion-that-happened-and-the-installer-keeps-the-line-it-did-not-write.md),
+which trims `all()` to what the offered list is actually missing and reports the
+rest as having taken nothing away. Two bullets here are superseded by it: the
+last of **Decided**, which left `all()` as the caller wrote it, and the one
+above it, which left the TOML section rewritten whole. The third **Wrong if**
+was not waited for — the report is in-band now as well, under
+`excludedTools.ignored`, so a client that captures stderr and shows it to nobody
+is no longer the case that loses it. What this entry still holds on its own is
+the statement: the warning is a warning and the server starts.

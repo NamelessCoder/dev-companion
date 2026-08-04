@@ -88,6 +88,45 @@ final class EntrypointTest extends TestCase
     }
 
     /**
+     * The other name that takes nothing away: one of the three `R-SCO-009` says
+     * a caller cannot exclude. It said nothing at all before, on either stream,
+     * while the instructions claimed the tool was gone — measured 2026-08-04
+     * with `TYPO3_MCP_EXCLUDE_TOOLS=typo3_feedback_record`, 26 tools offered
+     * including it.
+     */
+    #[Test]
+    public function anExcludedNameThisServerOffersAnywayIsSaidOnStderrToo(): void
+    {
+        $stderr = '';
+        $stdout = '';
+        $status = $this->execute([], $stdout, $stderr, [
+            'TYPO3_MCP_EXCLUDE_TOOLS' => 'typo3_server_scope',
+        ], implode("\n", [
+            '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2025-11-25",'
+                . '"capabilities":{},"clientInfo":{"name":"phpunit","version":"1"}}}',
+            '{"jsonrpc":"2.0","method":"notifications/initialized"}',
+            '{"jsonrpc":"2.0","id":2,"method":"tools/list"}',
+        ]) . "\n");
+
+        self::assertSame(0, $status, $stderr);
+        self::assertStringContainsString('offers whatever the variable says', $stderr);
+        self::assertStringContainsString('typo3_server_scope', $stderr);
+
+        $instructions = [];
+        foreach (explode("\n", trim($stdout)) as $line) {
+            $decoded = json_decode(trim($line), true);
+            self::assertIsArray($decoded, 'the server wrote a non-JSON line: ' . $line);
+            $instructions[] = $decoded['result']['instructions'] ?? '';
+        }
+
+        self::assertStringNotContainsString(
+            'left out of your tool list',
+            implode('', $instructions),
+            'the instructions claimed a tool was gone that the same server had just offered',
+        );
+    }
+
+    /**
      * @param array<int, string> $arguments
      * @param array<string, string> $environment
      */

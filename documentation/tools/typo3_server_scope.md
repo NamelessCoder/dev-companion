@@ -63,9 +63,14 @@ answersFrom:
     # both.
     tools: [string]
 excludedTools:
-  # The tools the caller asked not to be offered, and the only reason the list
-  # is ever shorter than the documented one. Empty unless the variable is set.
+  # The tools that are really gone, and the only reason the list is ever shorter
+  # than the documented one. Empty unless the variable is set.
   names: [string]
+  # Names in the variable that took nothing away: no tool answers to the name,
+  # or it is one of the three this server offers whatever the variable says.
+  # Each of them is in the tool list. Absent means nothing to report, which is
+  # the ordinary case.
+  ignored: [string]  # optional
   # Environment variable that names them.
   variable: string
 installation:

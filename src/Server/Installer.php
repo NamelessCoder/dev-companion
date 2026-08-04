@@ -489,19 +489,10 @@ final class Installer
         $configuration = is_file($path) ? (string) file_get_contents($path) : '';
         $section = $this->tomlSection($configuration, $key);
         if ($section !== null) {
-            preg_match_all('/"([^"]*)"/', $section, $quoted);
-            if (!$this->namesThisServer($quoted[1])) {
-                throw new \RuntimeException(
-                    $relativePath . ' already has a different typo3-cms-mcp server; refusing to replace it',
-                );
-            }
-            // The blank lines below the section separate it from whatever
-            // follows and belong to the file, not to the section, so they are
-            // put back as they were found.
-            $trailing = substr($section, strlen(rtrim($section, "\n")));
+            $header = substr_count(substr($configuration, 0, (int) strpos($configuration, $section)), "\n") + 1;
             $configuration = str_replace(
                 $section,
-                rtrim($this->expectedTomlSection($key), "\n") . ($trailing === '' ? "\n" : $trailing),
+                $this->rewrittenTomlSection($section, $key, $relativePath, $header),
                 $configuration,
             );
         } else {
@@ -512,6 +503,125 @@ final class Installer
         }
 
         return $this->message($this->write($path, $configuration), $path);
+    }
+
+    /**
+     * The section as it should read, with every line this package does not own
+     * kept where the caller wrote it.
+     *
+     * The two lines this package owns are `command` and `args`, which are a
+     * property of the project and are rewritten on every run. Everything else
+     * in the section is the caller's — `env` above all, since it is the only
+     * place a TOML client can carry `TYPO3_MCP_EXCLUDE_TOOLS`, and it was being
+     * deleted by the `install` that was supposed to keep the entry current
+     * (measured 2026-08-04 in a fixture project, `D-AUD-006`).
+     *
+     * @param int $number which line of the file the section header is, so a
+     *     refusal can name the line in the file rather than in the section
+     */
+    private function rewrittenTomlSection(string $section, string $key, string $relativePath, int $number): string
+    {
+        $lines = preg_split('/(?<=\n)/', $section) ?: [];
+        $header = (string) array_shift($lines);
+
+        $body = [];
+        $words = [];
+        foreach ($lines as $index => $line) {
+            $name = $this->tomlKey($line, $relativePath, $key, $number + $index + 1);
+            if ($name === 'command' || $name === 'args') {
+                preg_match_all('/["\']([^"\']*)["\']/', $line, $quoted);
+                $words = [...$words, ...$quoted[1]];
+            }
+            $body[$index] = ['name' => $name, 'text' => $line];
+        }
+        // An entry starting something else is somebody's own, and which command
+        // it starts is the only thing that says so — the caller's own keys say
+        // nothing about whose server this is.
+        if ($words !== [] && !$this->namesThisServer($words)) {
+            throw new \RuntimeException(
+                $relativePath . ' already has a different typo3-cms-mcp server; refusing to replace it',
+            );
+        }
+
+        // Each of the two goes back where the caller has it, so the section
+        // keeps its order; one the section does not carry goes under the
+        // header, which is where a section this writes from scratch has it.
+        $ours = $this->ownTomlLines($key);
+        $unwritten = $ours;
+        $rewritten = '';
+        foreach ($body as $line) {
+            $name = $line['name'];
+            if ($name !== null && isset($ours[$name])) {
+                $rewritten .= $unwritten[$name] ?? '';
+                unset($unwritten[$name]);
+
+                continue;
+            }
+            $rewritten .= $line['text'];
+        }
+
+        return $header . implode('', $unwritten) . $rewritten;
+    }
+
+    /**
+     * The key a line in a section assigns, null where it assigns none.
+     *
+     * A blank line and a comment carry no key and are kept as they are. Every
+     * other line has to be a whole `key = value`: this path rewrites two lines
+     * of a section and keeps the rest by copying them, and a value continued on
+     * the next line would be copied without the key that opens it. Refusing is
+     * what is left, because the alternative on record is deleting it.
+     */
+    private function tomlKey(string $line, string $relativePath, string $key, int $number): ?string
+    {
+        $trimmed = trim($line);
+        if ($trimmed === '' || str_starts_with($trimmed, '#')) {
+            return null;
+        }
+        $matched = preg_match('/^([A-Za-z0-9_-]+|"[^"]*")\s*=\s*(\S.*)$/', $trimmed, $assignment) === 1;
+        if (!$matched || !$this->isWholeTomlValue($assignment[2])) {
+            throw new \RuntimeException(sprintf(
+                '%s line %d, in [%s.%s], is not a key and a value on one line, so this cannot rewrite the '
+                . 'section without dropping it; refusing. Put the value on one line, or take the section out '
+                . 'and run this again',
+                $relativePath,
+                $number,
+                $key,
+                self::SERVER,
+            ));
+        }
+
+        return trim($assignment[1], '"');
+    }
+
+    /** Whether a value ends on the line it started on: no open string, array or inline table. */
+    private function isWholeTomlValue(string $value): bool
+    {
+        $bare = (string) preg_replace('/"(?:[^"\\\\]|\\\\.)*"|\'[^\']*\'/', '', $value);
+        if (str_contains($bare, '"') || str_contains($bare, "'")) {
+            return false;
+        }
+        $bare = (string) preg_replace('/#.*$/', '', $bare);
+
+        return substr_count($bare, '[') === substr_count($bare, ']')
+            && substr_count($bare, '{') === substr_count($bare, '}');
+    }
+
+    /**
+     * The two lines this package writes, by the key each one assigns.
+     *
+     * @return array<string, string>
+     */
+    private function ownTomlLines(string $key): array
+    {
+        $lines = [];
+        foreach (explode("\n", trim($this->expectedTomlSection($key), "\n")) as $line) {
+            if (str_contains($line, '=')) {
+                $lines[trim(strstr($line, '=', true) ?: '')] = $line . "\n";
+            }
+        }
+
+        return $lines;
     }
 
     private function message(bool $written, string $path): string

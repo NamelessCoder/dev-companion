@@ -35,7 +35,7 @@ final class Entrypoint
 
         if ($command === null) {
             Instance::discoverFrom(getcwd() ?: null);
-            self::reportUnknownExclusions();
+            self::reportExclusionsThatTookNothingAway();
             Factory::create()->run(new StdioTransport());
 
             return 0;
@@ -53,8 +53,8 @@ final class Entrypoint
     }
 
     /**
-     * An excluded name no tool answers to, said on stderr before the transport
-     * starts.
+     * An excluded name that took no tool away, said on stderr before the
+     * transport starts.
      *
      * stdout is the protocol from the next line on, so stderr is the one
      * channel a started server has left — which is where the stdio transport
@@ -67,21 +67,35 @@ final class Entrypoint
      * rename would otherwise take every tool down with it. What it costs
      * meanwhile is one tool in the list that the caller did not want, which is
      * context rather than harm — `D-AUD-005`.
+     *
+     * The two reasons are said apart because what somebody has to change
+     * differs: a name no tool answers to is corrected, a name this server keeps
+     * offering is dropped from the variable. `typo3_server_scope` says the same
+     * thing in-band, for the client that shows this stream to nobody.
      */
-    private static function reportUnknownExclusions(): void
+    private static function reportExclusionsThatTookNothingAway(): void
     {
         $unknown = ExcludedTools::unknown();
-        if ($unknown === []) {
-            return;
+        if ($unknown !== []) {
+            fwrite(STDERR, sprintf(
+                'typo3-cms-mcp: %s names %s, which this server does not offer, so %s excluded nothing. '
+                . "typo3_server_scope lists the tools it does offer.\n",
+                ExcludedTools::VARIABLE,
+                implode(', ', $unknown),
+                count($unknown) === 1 ? 'it' : 'they',
+            ));
         }
 
-        fwrite(STDERR, sprintf(
-            'typo3-cms-mcp: %s names %s, which this server does not offer, so %s excluded nothing. '
-            . "typo3_server_scope lists the tools it does offer.\n",
-            ExcludedTools::VARIABLE,
-            implode(', ', $unknown),
-            count($unknown) === 1 ? 'it' : 'they',
-        ));
+        $offeredAnyway = ExcludedTools::offeredAnyway();
+        if ($offeredAnyway !== []) {
+            fwrite(STDERR, sprintf(
+                'typo3-cms-mcp: %s names %s, which this server offers whatever the variable says, so %s '
+                . "excluded nothing. typo3_server_scope says which tools are really gone.\n",
+                ExcludedTools::VARIABLE,
+                implode(', ', $offeredAnyway),
+                count($offeredAnyway) === 1 ? 'it' : 'they',
+            ));
+        }
     }
 
     /**

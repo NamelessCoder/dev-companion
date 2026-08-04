@@ -410,6 +410,62 @@ final class InstallerTest extends TestCase
         }
     }
 
+    /**
+     * The TOML half of what `453e439` fixed for JSON. The section was replaced
+     * whole, so the `env` block that is the only place a TOML client can carry
+     * `TYPO3_MCP_EXCLUDE_TOOLS` was gone after an `install` — measured
+     * 2026-08-04, `D-AUD-006`.
+     */
+    #[Test]
+    public function codexInstallKeepsTheLinesOfTheSectionItDoesNotOwn(): void
+    {
+        $directory = $this->directory();
+        self::assertTrue(mkdir($directory . '/.codex', 0777, true));
+        $original = "model = \"gpt-5\"\n\n[mcp_servers.typo3-cms-mcp]\n# kept\ncommand = \"php\"\n"
+            . "args = [\"/elsewhere/bin/typo3-cms-mcp\"]\n"
+            . "env = { TYPO3_MCP_EXCLUDE_TOOLS = \"typo3_icon_lookup\" }\nstartup_timeout_sec = 30\n\n"
+            . "[features]\nweb_search = true\n";
+        file_put_contents($directory . '/.codex/config.toml', $original);
+
+        try {
+            $stderr = '';
+            self::assertSame(0, $this->execute($directory, ['install', '--agent=codex'], $stderr), $stderr);
+            self::assertSame(
+                str_replace('/elsewhere/bin/typo3-cms-mcp', Paths::root() . '/bin/typo3-cms-mcp', $original),
+                file_get_contents($directory . '/.codex/config.toml'),
+            );
+        } finally {
+            Directory::remove($directory);
+        }
+    }
+
+    /**
+     * A value continued on the next line is the reason this path replaced the
+     * section rather than editing it: keeping a line means knowing where one
+     * ends. Refusing is what is left, because the alternative on record is
+     * deleting the caller's lines without saying so.
+     */
+    #[Test]
+    public function codexInstallRefusesASectionItCannotRewriteWithoutDropping(): void
+    {
+        $directory = $this->directory();
+        self::assertTrue(mkdir($directory . '/.codex', 0777, true));
+        $original = "[mcp_servers.typo3-cms-mcp]\ncommand = \"php\"\nargs = [\n"
+            . "  \"/elsewhere/bin/typo3-cms-mcp\"\n]\n";
+        file_put_contents($directory . '/.codex/config.toml', $original);
+
+        try {
+            $stderr = '';
+            self::assertSame(1, $this->execute($directory, ['install', '--agent=codex'], $stderr));
+            self::assertStringContainsString('line 3', $stderr);
+            self::assertStringContainsString('refusing', $stderr);
+            self::assertSame($original, file_get_contents($directory . '/.codex/config.toml'));
+            self::assertDirectoryDoesNotExist($directory . '/.agents');
+        } finally {
+            Directory::remove($directory);
+        }
+    }
+
     #[Test]
     public function codexUpdateReplacesAModifiedGeneratedSkill(): void
     {

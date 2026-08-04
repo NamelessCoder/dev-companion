@@ -183,27 +183,21 @@ final class EnvironmentsTest extends TestCase
     }
 
     /**
-     * Every line is set up on sqlite and none of them starts a database
+     * A build nobody asks a database of is on sqlite, and starts no database
      * container. The two halves are one fact and have to move together: an
      * installation left on a database driver with `--omit-containers=db` in
      * front of it builds its containers, installs a hundred packages and dies
      * at the setup step against a service that was never started.
-     *
-     * What made the choice concrete was the development line, where `setup`
-     * cannot finish against MariaDB at all — `getDatabaseList()` asks a
-     * connection with no database selected for a schema manager, and
-     * `doctrine/dbal` 4.4.4 throws `DatabaseRequired` before anything is
-     * written — and what it buys on every other line is the second container.
      */
     #[Test]
     public function everyLineIsSetUpOnAFileRatherThanOnAContainerOfItsOwn(): void
     {
-        self::assertSame('sqlite', Environments::DRIVER);
+        self::assertSame('sqlite', Environments::DEFAULT_DRIVER);
 
         foreach (Environments::branches() as $branch) {
             $build = implode(' ', array_merge(...array_values(Environments::build($branch))));
 
-            self::assertStringContainsString('--driver=' . Environments::DRIVER, $build, $branch);
+            self::assertStringContainsString('--driver=sqlite', $build, $branch);
             self::assertStringContainsString('--omit-containers=db', $build, $branch . ' starts a database it does not use');
             foreach (['--host=db', '--port=3306', '--dbname=db', '--username=db', '--password=db'] as $option) {
                 self::assertStringNotContainsString(
@@ -213,6 +207,113 @@ final class EnvironmentsTest extends TestCase
                 );
             }
         }
+    }
+
+    /**
+     * Every database an installation can be made on, and the values the two
+     * tools take for it.
+     *
+     * The tools disagree on every name, which is what this holds: `ddev config
+     * --database` takes a `type:version` and refuses a bare type, while
+     * `vendor/bin/typo3 setup --driver` takes a connection type out of
+     * `SetupCommand::$connectionLabels` — `mysqli` for both MySQL lines,
+     * `postgres` for PostgreSQL — and not the DBAL driver it resolves to. A
+     * table that passed one where the other belongs configures cleanly and
+     * fails minutes later, at the step that has already installed a hundred
+     * packages.
+     *
+     * The connection values are DDEV's own, measured on 2026-08-04 against
+     * v1.25.1 by building a project on each and reading it back: host `db`,
+     * database `db`, user `db`, password `db`, and only the port moves.
+     *
+     * @param array<int, string> $expected
+     */
+    #[Test]
+    #[DataProvider('everyDatabaseAnInstallationCanBeMadeOn')]
+    public function eachDriverPassesTheValuesItsOwnToolsTake(
+        string $driver,
+        string $configured,
+        array $expected,
+    ): void {
+        $build = Environments::build(Environments::branch(), $driver);
+        $configure = $build[array_key_first($build)];
+        $setup = [];
+        foreach ($build as $command) {
+            if (in_array('setup', $command, true)) {
+                $setup = $command;
+            }
+        }
+
+        self::assertContains($configured, $configure, $driver . ' configures the container for another database');
+        foreach ($expected as $option) {
+            self::assertContains($option, $setup, $driver . ' does not pass ' . $option . ' to the setup');
+        }
+    }
+
+    /** @return array<string, array{0: string, 1: string, 2: array<int, string>}> */
+    public static function everyDatabaseAnInstallationCanBeMadeOn(): array
+    {
+        $connection = ['--host=db', '--dbname=db', '--username=db', '--password=db'];
+
+        return [
+            // No connection options at all: `sqliteManualConfigurationOptions`
+            // carries the driver alone, and there is no service for a host to
+            // name.
+            'sqlite is a file, so no container is started' => [
+                'sqlite',
+                '--omit-containers=db',
+                ['--driver=sqlite'],
+            ],
+            'mariadb, on the newest version 12.4 also accepts' => [
+                'mariadb',
+                '--database=mariadb:11.4',
+                ['--driver=mysqli', '--port=3306', ...$connection],
+            ],
+            'mysql, whose connection type is the same one' => [
+                'mysql',
+                '--database=mysql:8.4',
+                ['--driver=mysqli', '--port=3306', ...$connection],
+            ],
+            'postgres, the one service driver every line can be built on today' => [
+                'postgres',
+                '--database=postgres:16',
+                ['--driver=postgres', '--port=5432', ...$connection],
+            ],
+        ];
+    }
+
+    /**
+     * Every driver this offers is one both tools have, and a name neither of
+     * them takes is refused rather than configured.
+     *
+     * The version half is what this is written against. `ddev config` accepts
+     * `--database=mariadb:99.9` and writes it, and `ddev start` is where it
+     * fails — measured on 2026-08-04 against v1.25.1 — so a version that is
+     * wrong here costs the whole configure step before it says so.
+     */
+    #[Test]
+    public function aDatabaseNothingIsMadeOnIsRefusedWithTheOnesThereAre(): void
+    {
+        self::assertContains(Environments::DEFAULT_DRIVER, Environments::drivers());
+
+        foreach (Environments::drivers() as $driver) {
+            $database = Environments::driver($driver);
+            self::assertNotSame('', $database['setup'], $driver . ' names no connection type');
+            if ($database['ddev'] === null) {
+                self::assertNull($database['port'], $driver . ' has no container and a port to reach it on');
+
+                continue;
+            }
+            self::assertMatchesRegularExpression(
+                '/^(mariadb|mysql|postgres):\d/',
+                $database['ddev'],
+                $driver . ' is not a type and a version DDEV takes',
+            );
+            self::assertIsInt($database['port']);
+        }
+
+        $this->expectExceptionMessage('no installation is made on "mssql"');
+        Environments::driver('mssql');
     }
 
     /**
@@ -235,6 +336,43 @@ final class EnvironmentsTest extends TestCase
             self::assertSame(
                 Environments::project($branch),
                 str_replace('.', '-', 'typo3-mcp-e-site-' . $branch),
+                'a DDEV project name carries a character DDEV does not take',
+            );
+        }
+    }
+
+    /**
+     * An installation on a second database is a second installation, so it is
+     * its own DDEV project and its own directory — and the default one keeps
+     * the name it has.
+     *
+     * Both halves matter. Without the first, the MariaDB 13.4 and the sqlite
+     * 13.4 are one project, which is the state `D-EVI-006` was written against
+     * one version earlier. Without the second, every environment on this
+     * machine and every path `todo/reference/` names is renamed to say what
+     * asking for nothing already means.
+     */
+    #[Test]
+    public function anInstallationOnASecondDatabaseIsItsOwnProjectAndItsOwnDirectory(): void
+    {
+        $branch = Environments::branch();
+
+        self::assertSame(Environments::project($branch), Environments::project($branch, 'sqlite'));
+        self::assertSame(Environments::path('E-SITE', $branch), Environments::path('E-SITE', $branch, 'sqlite'));
+
+        $names = [];
+        $paths = [];
+        foreach (Environments::drivers() as $driver) {
+            $names[] = Environments::project($branch, $driver);
+            $paths[] = Environments::path('E-SITE', $branch, $driver);
+        }
+
+        self::assertSame($names, array_unique($names), 'two databases of one line share a DDEV project name');
+        self::assertSame($paths, array_unique($paths), 'two databases of one line share a directory');
+        foreach ($names as $name) {
+            self::assertMatchesRegularExpression(
+                '/^[a-z0-9-]+$/',
+                $name,
                 'a DDEV project name carries a character DDEV does not take',
             );
         }

@@ -49,6 +49,8 @@ final class EnvironmentCreate
         string $environment = 'E-SITE',
         #[Argument('which covered version to install it on, where the environment has one')]
         string $version = '',
+        #[Argument('which database to install it on: sqlite, mariadb, mysql or postgres')]
+        string $database = Environments::DEFAULT_DRIVER,
     ): int {
         $id = strtoupper(trim($environment));
         $sources = Environments::sources();
@@ -74,7 +76,18 @@ final class EnvironmentCreate
             return $this->nothing($output);
         }
 
-        return $this->site($output, trim($version) === '' ? Environments::branch() : trim($version));
+        $driver = strtolower(trim($database));
+        if (!in_array($driver, Environments::drivers(), true)) {
+            Cli::errors($output)->writeln(sprintf(
+                "%s is no database an installation is made on. There is:\n    %s",
+                $database,
+                implode(', ', Environments::drivers()),
+            ));
+
+            return 1;
+        }
+
+        return $this->site($output, trim($version) === '' ? Environments::branch() : trim($version), $driver);
     }
 
     /**
@@ -119,7 +132,7 @@ final class EnvironmentCreate
     }
 
     /** The DDEV project with a TYPO3 installation of one covered line in it. */
-    private function site(OutputInterface $output, string $branch): int
+    private function site(OutputInterface $output, string $branch, string $driver): int
     {
         $refusal = Environments::refusal($branch);
         if ($refusal !== '') {
@@ -128,8 +141,8 @@ final class EnvironmentCreate
             return 1;
         }
 
-        $path = Environments::path('E-SITE', $branch);
-        $project = Environments::project($branch);
+        $path = Environments::path('E-SITE', $branch, $driver);
+        $project = Environments::project($branch, $driver);
         if (!Environments::ddev()) {
             Cli::errors($output)->writeln(
                 "There is no `ddev` on this machine, and an E-SITE is a DDEV project.\n"
@@ -175,8 +188,8 @@ final class EnvironmentCreate
             return 1;
         }
 
-        if (Environments::installed($branch)) {
-            return $this->resume($output, $branch, $registered['status'] ?? null);
+        if (Environments::installed($branch, $driver)) {
+            return $this->resume($output, $branch, $driver, $registered['status'] ?? null);
         }
 
         if (!is_dir($path) && !mkdir($path, 0o777, true) && !is_dir($path)) {
@@ -185,7 +198,7 @@ final class EnvironmentCreate
             return 2;
         }
 
-        foreach (Environments::build($branch) as $what => $command) {
+        foreach (Environments::build($branch, $driver) as $what => $command) {
             $output->writeln($what);
             $output->writeln('    ' . implode(' ', $command));
             [$exitCode, $said] = Environments::run($command, $path);
@@ -202,20 +215,29 @@ final class EnvironmentCreate
                 Cli::errors($output)->writeln(
                     'A database an earlier installation populated is the exception: its tables',
                 );
-                Cli::errors($output)->writeln('are refused by the setup whatever is passed. On sqlite that database is');
-                Cli::errors($output)->writeln('a file in the directory, so clearing it is');
+                Cli::errors($output)->writeln('are refused by the setup whatever is passed. Taking the project and the');
+                Cli::errors($output)->writeln('directory away is what clears it, on a file and on a service alike:');
                 Cli::errors($output)->writeln(sprintf(
                     '    %s && rm -rf %s',
                     implode(' ', Environments::discard($project)),
                     $path,
                 ));
+                if ($driver !== Environments::DEFAULT_DRIVER) {
+                    // The one failure this repository already knows the reason
+                    // for, and it is not the recipe. `D-EVI-006` carries the
+                    // report and what is waiting on it.
+                    Cli::errors($output)->writeln('');
+                    Cli::errors($output)->writeln('A setup that died asking for the database list on mariadb or mysql is');
+                    Cli::errors($output)->writeln('Forge #110258, which is on main, 14.3 and 13.4 and unfixed. postgres is');
+                    Cli::errors($output)->writeln('the service database every covered line can be built on while it stands.');
+                }
 
                 return 1;
             }
         }
 
         $output->writeln('');
-        $this->where($output, $branch);
+        $this->where($output, $branch, $driver);
 
         return 0;
     }
@@ -228,12 +250,12 @@ final class EnvironmentCreate
      * asking for it again costs the seconds. DDEV pauses an idle project by
      * itself, which is the state this meets most of the time.
      */
-    private function resume(OutputInterface $output, string $branch, ?string $status): int
+    private function resume(OutputInterface $output, string $branch, string $driver, ?string $status): int
     {
-        $path = Environments::path('E-SITE', $branch);
+        $path = Environments::path('E-SITE', $branch, $driver);
         $resume = Environments::resume($status);
         if ($resume === null) {
-            $this->where($output, $branch);
+            $this->where($output, $branch, $driver);
 
             return 0;
         }
@@ -250,19 +272,20 @@ final class EnvironmentCreate
         }
 
         $output->writeln('');
-        $this->where($output, $branch);
+        $this->where($output, $branch, $driver);
 
         return 0;
     }
 
     /** Where the environment is, and what it takes to open it. */
-    private function where(OutputInterface $output, string $branch): void
+    private function where(OutputInterface $output, string $branch, string $driver): void
     {
-        $project = Environments::project($branch);
+        $project = Environments::project($branch, $driver);
         $output->writeln(sprintf(
-            'E-SITE on TYPO3 %s is %s, as DDEV project %s.',
+            'E-SITE on TYPO3 %s, on %s, is %s, as DDEV project %s.',
             $branch,
-            Environments::path('E-SITE', $branch),
+            $driver,
+            Environments::path('E-SITE', $branch, $driver),
             $project,
         ));
         $output->writeln(sprintf('    https://%s.ddev.site/typo3 — admin / %s', $project, Environments::ADMIN_PASSWORD));
@@ -270,7 +293,7 @@ final class EnvironmentCreate
         $output->writeln(sprintf(
             '    ddev delete --omit-snapshot -y %s && rm -rf %s',
             $project,
-            Environments::path('E-SITE', $branch),
+            Environments::path('E-SITE', $branch, $driver),
         ));
         $output->writeln('is what takes it away, and this command then makes it again.');
     }

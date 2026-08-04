@@ -44,8 +44,19 @@ final class EnvironmentStatus
                 foreach (Versions::covered() as $version) {
                     $branch = $version['branch'];
                     $output->writeln(sprintf('    %-8s %s', $branch, Environments::refusal($branch) === ''
-                        ? $this->site($branch, $projects)
+                        ? $this->site($branch, Environments::DEFAULT_DRIVER, $projects)
                         : 'not made here — `bin/cli environment:create E-SITE ' . $branch . '` says why'));
+                    // One row per database that has actually been made. Every
+                    // covered line on every driver would be four rows of
+                    // "missing" per version for something almost nobody asks
+                    // for, and what this command answers is "which of these do
+                    // I have" rather than "which could I have".
+                    foreach (Environments::drivers() as $driver) {
+                        if ($driver === Environments::DEFAULT_DRIVER || !Environments::installed($branch, $driver)) {
+                            continue;
+                        }
+                        $output->writeln(sprintf('    %-8s %s', '  ' . $driver, $this->site($branch, $driver, $projects)));
+                    }
                 }
 
                 continue;
@@ -55,8 +66,12 @@ final class EnvironmentStatus
         }
 
         $output->writeln('');
-        $output->writeln('`bin/cli environment:create <id> [version]` makes the ones this repository');
-        $output->writeln('makes, and says where the rest come from.');
+        $output->writeln('`bin/cli environment:create <id> [version] [database]` makes the ones this');
+        $output->writeln('repository makes, and says where the rest come from. The database defaults');
+        $output->writeln(sprintf('to %s; %s are the rest.', Environments::DEFAULT_DRIVER, implode(', ', array_filter(
+            Environments::drivers(),
+            static fn(string $driver): bool => $driver !== Environments::DEFAULT_DRIVER,
+        ))));
 
         return 0;
     }
@@ -80,12 +95,12 @@ final class EnvironmentStatus
     /**
      * @param array<string, array{name: string, status: string, approot: string, url: string}> $projects
      */
-    private function site(string $branch, array $projects): string
+    private function site(string $branch, string $driver, array $projects): string
     {
-        $path = Environments::path('E-SITE', $branch);
-        $name = Environments::project($branch);
+        $path = Environments::path('E-SITE', $branch, $driver);
+        $name = Environments::project($branch, $driver);
         $project = $projects[$name] ?? null;
-        if (!Environments::installed($branch)) {
+        if (!Environments::installed($branch, $driver)) {
             // Where another live checkout holds the name, `create` refuses, so
             // naming it is the answer rather than the command that would. One
             // held for a checkout that is gone is not reported here: `create`

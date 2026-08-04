@@ -97,13 +97,16 @@ covered line would be answered was shown by nothing.
 - The development line's installation is never refreshed, so what a case run in
   it measures is a `main` from whenever somebody last built it. Nothing here
   dates it and `status` reports it like any other row.
-- The sqlite workaround outlives the defect that bought it, so the development
-  line goes on being the one installation whose database is not the one every
-  other line runs — and a case that turns on the database is answered from it as
-  if it were.
+- A case that turns on what the database does is run in an environment where no
+  line has one. Every covered line is on sqlite since `c27f8bd`, and an
+  installation on sqlite answers what a console question asks and says nothing
+  about what MariaDB does under the same schema.
 
 ## Covered by
 
+- `EnvironmentsTest::eachDriverPassesTheValuesItsOwnToolsTake`
+- `EnvironmentsTest::aDatabaseNothingIsMadeOnIsRefusedWithTheOnesThereAre`
+- `EnvironmentsTest::anInstallationOnASecondDatabaseIsItsOwnProjectAndItsOwnDirectory`
 - `EnvironmentsTest::everyCoveredLineIsOneAnInstallationIsMadeOf`
 - `EnvironmentsTest::aVersionNoInstallationIsMadeOfSaysWhyRatherThanNothing`
 - `EnvironmentsTest::eachCoveredLineIsItsOwnProjectAndItsOwnDirectory`
@@ -225,14 +228,82 @@ It is unreported and unfixed. Five differently worded Forge searches return
 #110258 and nothing else, and `file:SetupDatabaseService.php after:2026-08-01`
 in Gerrit is the three merged backports and no fourth change. The report is
 written and waiting on somebody with an account, on
-`todo/progress/2026-08-03-104500-report-the-setup-that-cannot-finish-on-main-and-take-the-workaround-back-out.md`.
+`todo/waiting/2026-08-03-104500-file-the-setup-defect-that-cannot-finish-on-main.md`.
 
-The workaround the **Wrong if** watches is no longer one. `c27f8bd` removed
+The workaround the **Wrong if** watched is no longer one. `c27f8bd` removed
 `Environments::DEVELOPMENT_DRIVER` and put every covered line on sqlite, for a
 reason the defect did not buy: no database container, no volume named after the
-project, and `rm -rf` is the whole of taking an environment away. What the
+project, and `rm -rf` is the whole of taking an environment away. What that
 **Wrong if** was written to catch — an installation whose database is not the
 one every other line runs — cannot happen now, and what replaced it is that no
-line's database is MariaDB. Whether that is reversed is a question about what
-these environments are for rather than about the defect, and it is on the card
-above.
+line's database is MariaDB.
+
+### 2026-08-04 — sqlite stays on every line, and the reversal is not a question any more
+
+Put to the person who queued the card, with the defect and the driver priced
+apart: the answer is that sqlite stays. So the second half of that card is gone
+rather than deferred, and the **Wrong if** above is rewritten to the risk that
+is actually carried — every covered line is on sqlite, and none of them says
+what MariaDB does.
+
+What settles it is that the two are no longer one question. The defect bought
+sqlite on the development line for a day; `c27f8bd` bought it on all four for
+reasons of its own — no database container, no volume, and a directory that is
+removed by deleting it. Reversing now would be putting four lines back on
+MariaDB against that decision rather than taking a workaround out, and `main`
+would not install at all until the defect is fixed.
+
+The report itself is unchanged and still unfiled. It needs an authenticated
+Forge account, this repository holds credentials for none, and the card is
+trimmed to that one act.
+
+### 2026-08-04 — the database is the third argument, because sqlite alone answers nothing about a database
+
+The answer above settled which database an environment gets by default and left
+the **Wrong if** it replaced with: every covered line is on sqlite, so a case
+turning on what a database server does has nowhere to be run. Put back the same
+day, the answer was that the environments cover more than one — so `sqlite`
+stops being one constant and becomes the default of four.
+
+`bin/cli environment:create E-SITE <version> <database>` is what asks for
+another, and the driver joins the version in the DDEV project name and the
+directory for the reason the version is in them: one name for two installations
+is one installation. Only a non-default driver adds a suffix, so every
+environment that exists and every path `todo/reference/` names is untouched.
+`environment:status` gains a row per database actually made, rather than four
+rows of "missing" per version for something almost nobody asks for.
+
+**The two tools disagree on every name, which is the whole of what the table
+buys.** `ddev config --database` takes a `type:version`, refuses a bare type,
+and does not check the version until `ddev start` — `mariadb:99.9` configures
+cleanly and fails minutes later, measured against DDEV v1.25.1 on 2026-08-04.
+`vendor/bin/typo3 setup --driver` takes a connection type out of
+`SetupCommand::$connectionLabels`, which is not the DBAL driver it resolves to:
+`mysqli` stays `mysqli`, `postgres` becomes `pdo_pgsql`, `sqlite` becomes
+`pdo_sqlite`. A value passed where the other belongs is a build that installs a
+hundred packages before it says so.
+
+**The versions are the newest every covered line accepts**, intersected across
+all four `Build/Scripts/runTests.sh` in `.checkouts/` on 2026-08-04: mariadb
+10.4–11.8 above 12.4 and 10.3–11.4 there, mysql 8.0–8.4 on all four, postgres
+10–18 above 12.4 and 10–16 there. So `mariadb:11.4`, `mysql:8.4` and
+`postgres:16`, and it is 12.4 that decides each of them.
+
+**The connection is one set of values for both services**, measured by building
+a DDEV project on each and reading it back on 2026-08-04: host `db`, database
+`db`, user `db`, password `db`, and only the port moves — 3306 and 5432. The
+password is passed as an option rather than left to `TYPO3_DB_PASSWORD`, because
+`SetupCommand` forces the password question even under `--no-interaction` where
+neither is set, and `getFallbackValueEnvOrOption` reads the option first.
+
+**Postgres is the one service database every covered line can be built on
+today.** The defect above is MySQL's alone:
+`PostgreSQLMetadataProvider::__construct` has an empty body where
+`MySQLMetadataProvider::__construct` reads `SELECT DATABASE()`, read in
+`doctrine/dbal` 4.4.3 on 2026-08-04. So mariadb and mysql are in the table and
+cannot be built on `main`, `14.3` or `13.4` until the report above is fixed,
+which `environment:create` says in its own words when a build dies there.
+
+Nothing has been built on a service database yet. What is held is the values
+each one is passed, over every driver, and that is what the tests above cover —
+a build is a container start and a hundred packages, which no test here does.

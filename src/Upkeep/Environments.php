@@ -58,10 +58,28 @@ final class Environments
      * naming the directory that already holds it. The version is in the name
      * because it is in the installation: one name for all of them is one
      * installation for all of them, which is what `D-EVI-006` is about.
+     *
+     * The database is in it for the same reason and only where it is not the
+     * default one. A name that carried `-sqlite` would rename every environment
+     * that exists and every path `todo/reference/` names, to say what asking for
+     * nothing already means; a name that carried nothing would make the MariaDB
+     * 13.4 and the sqlite 13.4 one project, which is the state this whole
+     * paragraph is about.
      */
-    public static function project(string $branch): string
+    public static function project(string $branch, string $driver = self::DEFAULT_DRIVER): string
     {
-        return 'typo3-mcp-e-site-' . str_replace('.', '-', $branch);
+        return 'typo3-mcp-e-site-' . str_replace('.', '-', $branch) . self::suffix($driver);
+    }
+
+    /**
+     * What a driver adds to the name and the directory, which is nothing for
+     * the default one.
+     */
+    private static function suffix(string $driver): string
+    {
+        self::driver($driver);
+
+        return $driver === self::DEFAULT_DRIVER ? '' : '-' . $driver;
     }
 
     /**
@@ -188,18 +206,20 @@ final class Environments
     /**
      * Where one environment lives, whether or not it is there yet.
      *
-     * An `E-SITE` is one directory per covered line, because it is one
-     * installation per covered line. `E-NONE` has no version to be of.
+     * An `E-SITE` is one directory per covered line and per database, because
+     * it is one installation per covered line and per database. `E-NONE` has
+     * neither to be of.
      */
-    public static function path(string $id, ?string $branch = null): string
+    public static function path(string $id, ?string $branch = null, string $driver = self::DEFAULT_DRIVER): string
     {
-        return self::directory() . '/' . strtolower($id) . ($branch === null ? '' : '-' . $branch);
+        return self::directory() . '/' . strtolower($id)
+            . ($branch === null ? '' : '-' . $branch . self::suffix($driver));
     }
 
     /** Whether the installation of a covered line is there to be run in. */
-    public static function installed(string $branch): bool
+    public static function installed(string $branch, string $driver = self::DEFAULT_DRIVER): bool
     {
-        return is_file(self::path('E-SITE', $branch) . '/config/system/settings.php');
+        return is_file(self::path('E-SITE', $branch, $driver) . '/config/system/settings.php');
     }
 
     /**
@@ -267,7 +287,8 @@ final class Environments
     }
 
     /**
-     * The database every installation is set up against, on every line.
+     * The database an installation is set up against where nobody asks for
+     * another.
      *
      * sqlite is a file below `var/sqlite/` in the project directory, so an
      * environment is its directory and nothing else: no database container to
@@ -276,26 +297,99 @@ final class Environments
      * build is paying for — the second container of every line, on a machine
      * that holds four.
      *
-     * The development line is what made the choice concrete rather than
-     * cheaper: `vendor/bin/typo3 setup` cannot finish against MariaDB there at
-     * all. `SetupDatabaseService::getDatabaseList()` builds a connection with
-     * `dbname` unset on purpose — so that a wrong database name can still be
-     * corrected — and then asks it for a schema manager, which
-     * `doctrine/dbal` 4.4.4 refuses: `MySQLMetadataProvider::__construct` reads
-     * `SELECT DATABASE()`, gets null, and throws `DatabaseRequired`.
-     * `SetupCommand::selectAndImportDatabase()` runs that for every driver but
-     * sqlite, before anything is written.
-     *
-     * That is Forge #110258 rather than a property of the development line: it
-     * was merged to `14.3` and `13.4` on the same day, and reaches them as soon
-     * as either releases. `D-EVI-006` carries the reading and what is still
-     * open on it.
-     *
-     * What it costs is real and is `D-EVI-006`'s to carry: an installation on
-     * sqlite answers what a console question asks and says nothing about what
-     * MariaDB does under the same schema.
+     * What it costs is that an installation on sqlite answers what a console
+     * question asks and says nothing about what a database server does under
+     * the same schema. That is why it is a default rather than the only one —
+     * `self::DRIVERS` is what a case turning on the database is run against,
+     * and `D-EVI-006` carries both halves.
      */
-    public const DRIVER = 'sqlite';
+    public const DEFAULT_DRIVER = 'sqlite';
+
+    /**
+     * The databases an installation can be made on, and what each one is
+     * called by the two tools that have to agree about it.
+     *
+     * They disagree on every name, which is the whole reason this table exists
+     * rather than one string passed through. `ddev config --database` takes a
+     * `type:version` — a bare type is refused, and the version is checked at
+     * `ddev start` rather than at `config`, so a wrong one configures cleanly
+     * and fails minutes later. `vendor/bin/typo3 setup --driver` takes a
+     * connection *type* out of `SetupCommand::$connectionLabels`, which is not
+     * the DBAL driver it resolves to: `mysqli` becomes `mysqli`, `postgres`
+     * becomes `pdo_pgsql`, and `sqlite` becomes `pdo_sqlite`.
+     *
+     * The versions are the newest each covered line accepts, read off every
+     * `Build/Scripts/runTests.sh` in `.checkouts/` on 2026-08-04 and
+     * intersected: mariadb is 10.4 to 11.8 on the three newer lines and 10.3 to
+     * 11.4 on 12.4, mysql is 8.0 to 8.4 on all four, postgres is 10 to 18 above
+     * 12.4 and 10 to 16 there. So one version per driver covers every line, and
+     * it is the older branch that decides each of them.
+     *
+     * `port` is what the connection needs and `null` is what says there is no
+     * service to connect to. The rest of the connection is one set of values
+     * for both service drivers, measured on 2026-08-04 against DDEV v1.25.1 by
+     * building a project on each and reading it back: host `db`, database `db`,
+     * user `db`, password `db`, on 3306 for mariadb and 5432 for postgres.
+     *
+     * MySQL and MariaDB cannot be built on `main`, `14.3` or `13.4` today, and
+     * the reason is not this table. Forge #110258 put
+     * `introspectDatabaseNames()` into `SetupDatabaseService::getDatabaseList()`
+     * on all three, and `MySQLMetadataProvider::__construct` reads
+     * `SELECT DATABASE()` on a connection whose database is unset on purpose
+     * and throws `DatabaseRequired` before anything is written. Postgres is
+     * untouched by it — `PostgreSQLMetadataProvider::__construct` has an empty
+     * body, read in `doctrine/dbal` 4.4.3 on 2026-08-04 — so it is the one
+     * service driver an installation of every covered line can be made on while
+     * that stands. `D-EVI-006` carries the report and where it is waiting.
+     *
+     * @var array<string, array{setup: string, ddev: ?string, port: ?int}>
+     */
+    private const DRIVERS = [
+        'sqlite' => ['setup' => 'sqlite', 'ddev' => null, 'port' => null],
+        'mariadb' => ['setup' => 'mysqli', 'ddev' => 'mariadb:11.4', 'port' => 3306],
+        'mysql' => ['setup' => 'mysqli', 'ddev' => 'mysql:8.4', 'port' => 3306],
+        'postgres' => ['setup' => 'postgres', 'ddev' => 'postgres:16', 'port' => 5432],
+    ];
+
+    /**
+     * What the connection is, on either database service.
+     *
+     * One set of values for both, because DDEV gives every project the same
+     * ones and only the port moves. Written down rather than read out of the
+     * container, because the build has to pass them to a `setup` that runs
+     * before there is a project to ask.
+     */
+    private const SERVICE_HOST = 'db';
+    private const SERVICE_DATABASE = 'db';
+    private const SERVICE_USER = 'db';
+    private const SERVICE_PASSWORD = 'db';
+
+    /**
+     * The databases an installation can be asked for, for the command's own
+     * help and for whoever typed one that is not among them.
+     *
+     * @return array<int, string>
+     */
+    public static function drivers(): array
+    {
+        return array_keys(self::DRIVERS);
+    }
+
+    /**
+     * The one a name stands for, or a refusal naming the ones there are.
+     *
+     * @return array{setup: string, ddev: ?string, port: ?int}
+     */
+    public static function driver(string $driver): array
+    {
+        if (!isset(self::DRIVERS[$driver])) {
+            throw new \RuntimeException(
+                'no installation is made on "' . $driver . '"; there is ' . implode(', ', self::drivers()),
+            );
+        }
+
+        return self::DRIVERS[$driver];
+    }
 
     /**
      * What Composer is asked for on one line, of the distribution and of every
@@ -509,8 +603,9 @@ final class Environments
      *
      * @return array<string, array<int, string>>
      */
-    public static function build(string $branch): array
+    public static function build(string $branch, string $driver = self::DEFAULT_DRIVER): array
     {
+        $database = self::driver($driver);
         $project = self::project($branch);
         $constraint = self::constraint($branch);
         $create = ['ddev', 'composer', 'create-project', self::DISTRIBUTION . ':' . $constraint];
@@ -527,19 +622,27 @@ final class Environments
             $create[] = '--no-install';
         }
 
+        $configure = [
+            'ddev', 'config', '--auto',
+            '--project-name=' . $project,
+            '--project-type=typo3',
+            '--docroot=public',
+            '--php-version=' . self::php($branch),
+            '--disable-upload-dirs-warning',
+        ];
+        // The two halves of the driver are one fact and have to move together.
+        // An installation left on a database driver with `--omit-containers=db`
+        // in front of it builds its containers, installs a hundred packages and
+        // dies at the setup step against a service that was never started; one
+        // on sqlite with a database container started pays for a second
+        // container on every line, on a machine that holds one per covered
+        // version.
+        $configure[] = $database['ddev'] === null
+            ? '--omit-containers=db'
+            : '--database=' . $database['ddev'];
+
         $steps = [
-            'A DDEV project of the type TYPO3, serving from public/, with no database container' => [
-                'ddev', 'config', '--auto',
-                '--project-name=' . $project,
-                '--project-type=typo3',
-                '--docroot=public',
-                '--php-version=' . self::php($branch),
-                // The second container of every line, on a machine that holds
-                // one per covered version. The installation is on sqlite, so
-                // nothing in it reaches a database service — see self::DRIVER.
-                '--omit-containers=db',
-                '--disable-upload-dirs-warning',
-            ],
+            'A DDEV project of the type TYPO3, serving from public/, on ' . $driver => $configure,
             'The container it serves from' => ['ddev', 'start', '-y'],
             'TYPO3 ' . $branch . ', from its own base distribution' => $create,
         ];
@@ -567,7 +670,7 @@ final class Environments
             ];
         }
 
-        $steps['The installation itself: database, admin user, site configuration'] = [
+        $setup = [
             'ddev', 'exec', 'vendor/bin/typo3', 'setup',
             '--no-interaction',
             // The settings file and nothing else. This is what lets a
@@ -575,10 +678,31 @@ final class Environments
             // file the first attempt wrote, and it does not reach the database
             // an earlier installation populated.
             '--force',
-            // No host, port, dbname, username or password beside it: sqlite is
-            // a file the installation places below `var/sqlite/` itself, and
-            // there is no database service for those to name.
-            '--driver=' . self::DRIVER,
+            // The connection type out of `SetupCommand::$connectionLabels`,
+            // which is not the DBAL driver it resolves to — see self::DRIVERS.
+            '--driver=' . $database['setup'],
+        ];
+        // What the connection needs, and only where there is one to make.
+        // sqlite is a file the installation places below `var/sqlite/` itself,
+        // and `SetupCommand` skips every one of these for it: its
+        // `sqliteManualConfigurationOptions` carry the driver alone, so a host
+        // passed there names a service that does not exist.
+        if ($database['port'] !== null) {
+            $setup = [...$setup,
+                '--host=' . self::SERVICE_HOST,
+                '--port=' . $database['port'],
+                '--dbname=' . self::SERVICE_DATABASE,
+                '--username=' . self::SERVICE_USER,
+                // Passed rather than left to `TYPO3_DB_PASSWORD`, because the
+                // setup forces the password question even under
+                // `--no-interaction` where neither the option nor the variable
+                // is set: `getFallbackValueEnvOrOption` reads the option first,
+                // so the flag is what keeps the build unattended.
+                '--password=' . self::SERVICE_PASSWORD,
+            ];
+        }
+
+        $steps['The installation itself: database, admin user, site configuration'] = [...$setup,
             '--admin-username=admin',
             '--admin-user-password=' . self::ADMIN_PASSWORD,
             '--admin-email=admin@example.com',

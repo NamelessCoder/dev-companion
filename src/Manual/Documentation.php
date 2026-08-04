@@ -78,10 +78,32 @@ final class Documentation
     /** @param \Closure(string): ?string|null $fetch */
     private readonly Fetch $reader;
 
+    /**
+     * What leaves this process, and the seam a unit test takes instead.
+     *
+     * `DocumentationLookup` builds its own instance, so a test driving the tool
+     * itself — its text half, which is where a caller reads the coverage — has
+     * nowhere else to hand a transport in. `R-COD-003`.
+     *
+     * @var (\Closure(string): ?string)|null
+     */
+    private static ?\Closure $transport = null;
+
     /** @param (\Closure(string): ?string)|null $fetch */
     public function __construct(?\Closure $fetch = null)
     {
-        $this->reader = new Fetch($fetch);
+        $this->reader = new Fetch($fetch ?? self::$transport);
+    }
+
+    /**
+     * What a test hands in, so nothing it drives reaches docs.typo3.org. Null
+     * puts the host back.
+     *
+     * @param (\Closure(string): ?string)|null $reader
+     */
+    public static function useReader(?\Closure $reader): void
+    {
+        self::$transport = $reader;
     }
 
     /**
@@ -101,6 +123,7 @@ final class Documentation
      *     section: string,
      *     excerpt: string,
      *     content: string,
+     *     coverage: float|null,
      *     matched: list<array{term: string, field: string}>
      *   }>,
      *   unavailable: array{cause: string, reason: string}|null
@@ -123,6 +146,7 @@ final class Documentation
             foreach ($this->links($html, $base) as $link) {
                 $pages[$document . '|' . $link['url']] = [
                     'score' => 0,
+                    'coverage' => 0.0,
                     'matched' => [],
                     'title' => $link['title'],
                     'url' => $link['url'],
@@ -151,13 +175,15 @@ final class Documentation
         foreach ($queries as $query) {
             $book = self::book($query, $indexed);
             $weights = TermSearch::weights(TermSearch::terms(self::split($query)), $searchable);
+            $askedFor = array_sum($weights);
             $scores = [];
+            $covered = [];
             $matched = [];
             foreach ($pages as $key => $page) {
                 if ($book !== null && $page['document'] !== $book) {
                     continue;
                 }
-                [$scores[$key], , $matched[$key]] = TermSearch::score(
+                [$scores[$key], $covered[$key], $matched[$key]] = TermSearch::score(
                     $page['searchable'],
                     $weights,
                     self::FIELD_WEIGHTS,
@@ -180,9 +206,13 @@ final class Documentation
                 }
                 // The match reported is the one of the question the page is
                 // kept for, so it is the words of that query rather than of
-                // whichever one was passed last.
+                // whichever one was passed last. The coverage is that query's
+                // too: the share of its weight this page carries, which the
+                // score has always returned and this lookup discarded in the
+                // destructuring. It labels rather than filters — `D-ANS-051`.
                 $pages[$key]['score'] = $relative;
                 $pages[$key]['matched'] = $matched[$key];
+                $pages[$key]['coverage'] = $askedFor > 0.0 ? $covered[$key] / $askedFor : 0.0;
             }
         }
 
@@ -200,6 +230,7 @@ final class Documentation
                 'section' => $candidate['title'],
                 'excerpt' => $page === null ? '' : $this->excerpt($page),
                 'content' => '',
+                'coverage' => round($candidate['coverage'], 3),
                 'matched' => self::matched($candidate['matched']),
             ];
         }
@@ -225,6 +256,7 @@ final class Documentation
      *     section: string,
      *     excerpt: string,
      *     content: string,
+     *     coverage: float|null,
      *     matched: list<array{term: string, field: string}>
      *   }>,
      *   unavailable: array{cause: string, reason: string}|null
@@ -269,6 +301,10 @@ final class Documentation
             'section' => $title,
             'excerpt' => substr($content, 0, 700),
             'content' => $content,
+            // Nothing was asked, so there is no query to cover — the null
+            // beside the empty match, rather than a zero that says this page
+            // answers nothing.
+            'coverage' => null,
             'matched' => [],
         ]], null);
     }
@@ -502,7 +538,7 @@ final class Documentation
      * @param 'answered'|'empty'|'unavailable' $status
      * @param list<string> $queries
      * @param 'search'|'page' $mode
-     * @param list<array{title: string, url: string, document: string, documentTitle: string, documentVersion: string, section: string, excerpt: string, content: string, matched: list<array{term: string, field: string}>}> $results
+     * @param list<array{title: string, url: string, document: string, documentTitle: string, documentVersion: string, section: string, excerpt: string, content: string, coverage: float|null, matched: list<array{term: string, field: string}>}> $results
      * @param array{cause: string, reason: string}|null $unavailable
      * @return array{
      *   mode: 'search'|'page',
@@ -510,7 +546,7 @@ final class Documentation
      *   targetVersion: string,
      *   source: string,
      *   queries: list<string>,
-     *   results: list<array{title: string, url: string, document: string, documentTitle: string, documentVersion: string, section: string, excerpt: string, content: string, matched: list<array{term: string, field: string}>}>,
+     *   results: list<array{title: string, url: string, document: string, documentTitle: string, documentVersion: string, section: string, excerpt: string, content: string, coverage: float|null, matched: list<array{term: string, field: string}>}>,
      *   unavailable: array{cause: string, reason: string}|null
      * }
      */

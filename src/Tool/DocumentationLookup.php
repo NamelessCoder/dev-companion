@@ -15,6 +15,18 @@ use Typo3CmsMcp\Result\ToolResult;
  */
 final class DocumentationLookup extends ReadOnlyTool
 {
+    /**
+     * The share of a query a result carries before the answer warns about it.
+     * It is the value `Documents::search()` drops a section below, so the two
+     * corpora this server matches prose against say "half the query" in one
+     * number.
+     *
+     * Here it drops nothing. Over a table of contents no value of it both
+     * empties the collisions a six-word question returns and keeps the page
+     * that answers a three-word one — `D-ANS-051`.
+     */
+    private const COVERS_THE_QUESTION = 0.5;
+
     public static function name(): string
     {
         return 'typo3_documentation_lookup';
@@ -85,11 +97,19 @@ final class DocumentationLookup extends ReadOnlyTool
                 'section' => Schema::string(),
                 'excerpt' => Schema::string('Short route into the source, empty only when the result page could not be read after its index matched.'),
                 'content' => Schema::string('The selected page as text in page mode; empty in search mode.'),
+                'coverage' => [
+                    'type' => ['number', 'null'],
+                    'description' => 'Share of the query\'s weight this page carries, 0 to 1, for the query it is '
+                        . 'returned for. Below 0.5 the page carries some words of the question and not its subject, '
+                        . 'and the answer says so above the results — it is returned anyway, because over a table of '
+                        . 'contents the page that answers a three-word question covers about a third of it. Null in '
+                        . 'page mode, where nothing was searched for.',
+                ],
                 'matched' => Schema::listOf(Schema::object([
                     'term' => Schema::string('The query word, reduced to the stem that was searched for.'),
                     'field' => ['type' => 'string', 'enum' => ['title', 'path', 'manual'], 'description' => 'Where it was found: the page title, the section path it sits in, or the name of the manual.'],
                 ], ['term', 'field']), 'What this page was matched on. Every query word missing from it reached this page nowhere, so a result whose match is made of the words around the subject is an aimed answer rather than one about the subject; ask again with the subject alone. Empty in page mode.'),
-            ], ['title', 'url', 'document', 'documentTitle', 'documentVersion', 'section', 'excerpt', 'content', 'matched'])),
+            ], ['title', 'url', 'document', 'documentTitle', 'documentVersion', 'section', 'excerpt', 'content', 'coverage', 'matched'])),
             'unavailable' => [
                 'type' => ['object', 'null'],
                 'description' => 'Why nothing was answered, where status says unavailable. Null otherwise.',
@@ -170,14 +190,33 @@ final class DocumentationLookup extends ReadOnlyTool
             // and not an answer. Said per result, because that is where the
             // caller reads it (`R-DOC-002`).
             $lines[] = 'Matched against page titles and section paths, never the text of a page.';
+            $covered = array_map(
+                static fn(array $result): float => (float) ($result['coverage'] ?? 0.0),
+                $answer['results'],
+            );
+            // The share is on every result; this is the sentence, because a
+            // number in a payload is not a warning and the answer that reads as
+            // "the manual has nothing on this" is the one made of six results
+            // each carrying one word of the question (`D-ANS-051`).
+            if ($covered !== [] && max($covered) < self::COVERS_THE_QUESTION) {
+                $lines[] = sprintf(
+                    'Nothing found covers half of a query asked: the best carries %d%% of its weight.',
+                    (int) round(max($covered) * 100),
+                );
+                $lines[] = 'These pages carry words of the question rather than its subject; ask again with the subject alone.';
+            }
             foreach ($answer['results'] as $result) {
                 $lines[] = '';
                 $lines[] = '## ' . $result['title'];
                 $lines[] = sprintf('%s · %s · %s', $result['document'], $result['documentVersion'], $result['url']);
-                $lines[] = 'Matched on: ' . implode(', ', array_map(
-                    static fn(array $matched): string => $matched['term'] . ' (' . $matched['field'] . ')',
-                    $result['matched'],
-                ));
+                $lines[] = sprintf(
+                    'Matched on: %s — covers %d%% of the query.',
+                    implode(', ', array_map(
+                        static fn(array $matched): string => $matched['term'] . ' (' . $matched['field'] . ')',
+                        $result['matched'],
+                    )),
+                    (int) round((float) ($result['coverage'] ?? 0.0) * 100),
+                );
                 if ($result['excerpt'] !== '') {
                     $lines[] = $result['excerpt'];
                 }

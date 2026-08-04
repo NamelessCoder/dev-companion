@@ -11,20 +11,23 @@ directory: /home/benji/projects/ext-guidedtour
 
 ## Observation
 
-Task: full conformance audit of the project extension EXT:guidedtour against a TYPO3 14.3.5 installation; the extension ships a fork of the core backend login Fluid layout.
+Trimmed on 2026-08-04 to the part that is left. Two of its three findings are
+answered. Matching page bodies would not have helped: TYPO3 Explained 14.3
+writes `.fluid.html` in 49 code-example captions and states the convention in no
+sentence, so the corpus this asks for does not carry two of these three
+questions either — `D-ANS-046`. And every result now carries the share of the
+query it covers, with a sentence above the results where nothing covers half, so
+these six no longer arrive in the shape of a good answer — `D-ANS-051`.
 
-I asked typo3_documentation_lookup for the v14 Fluid template file-extension convention (the core renamed its templates to *.fluid.html in v14) and for how a layout root path override on the login screen is meant to work. Three queries returned six results, none on either subject:
-
-- "Multi-language Fluid templates" (ExtensionArchitecture/HowTo/Localization/Fluid.html)
-- "Naming" (extension key / vendor naming conventions)
-- "be.pagePath" (ViewHelper reference)
-- "Rootline / Breadcrumb" (TypoScript menu processing)
-- "Override service registration" (DI service configuration)
-- "Backend layout" (page backend layouts, an unrelated concept that merely shares the word)
-
-The `matched` field returned with each result shows the mechanism: "fluid." and "extens" matched against the URL **path**, "templa" against the title, and for the third query "layout"/"root"/"overri" matched three unrelated titles in three different manuals. So the ranking is substring matching over URL path segments and titles, and a query whose words happen to occur as substrings of unrelated URL segments outranks the page that answers it. "layout root path" reliably collides with "backend layout" and "rootline", which are different subjects that share tokens.
-
-The cost is not the wasted call. Six confidently formatted, version-stamped, canonically-URL'd results read as "the official manual has nothing on this", when what actually happened is that the query never reached any page text. For an audit that is the expensive kind of wrong answer: it invites recording a surface as documented-nowhere when it may be documented well. I ended up settling the question by reading typo3fluid/fluid's TemplatePaths::resolveFileInPaths() in the installed vendor tree instead.
+What is left is the second half of the suggestion. The six collisions are still
+returned: re-run on 2026-08-04, `Fluid template file naming convention v14`
+comes back with *Naming* at 40% and `layout root paths login screen override`
+with *be.pagePath* at 22%, both now labelled and neither withheld. Dropping them
+needs a floor, and no value of one both empties these queries and keeps
+`login screen layout`, where the page that answers it — *LoginProvider* — covers
+34%. The task the audit was doing is unaffected either way: the version boundary
+it was after is `Feature-108166-FluidFileExtensionAndTemplateResolving`, which
+`typo3_changelog_lookup` returns alone for `fluid file extension`.
 
 ## Query
 
@@ -32,4 +35,4 @@ typo3_documentation_lookup {queries: ["fluid.html file extension templates", "Fl
 
 ## Suggestion
 
-Match against page body text, not only URL path segments and titles — or at minimum weight a title or body hit far above a path-substring hit, and drop path-only matches below a relevance threshold. Where nothing clears the threshold, return that fact rather than the best six substring collisions: typo3_changelog_lookup already does the honest version of this by naming the largest part of a query that did reach entries, and the same convention here would let a caller distinguish "the manual does not cover this" from "your query did not reach the manual".
+Where nothing clears a relevance threshold, return that fact rather than the best six substring collisions: typo3_changelog_lookup already does the honest version of this by naming the largest part of a query that did reach entries, and the same convention here would let a caller distinguish "the manual does not cover this" from "your query did not reach the manual".

@@ -13,6 +13,11 @@ use Typo3CmsMcp\Tool\Registry;
 
 final class DocumentationTest extends TestCase
 {
+    protected function tearDown(): void
+    {
+        Documentation::useReader(null);
+    }
+
     #[Test]
     public function itSearchesTheRequestedVersionAndKeepsProvenanceOnEveryResult(): void
     {
@@ -305,6 +310,110 @@ final class DocumentationTest extends TestCase
         );
 
         self::assertSame([], $documentation->page($url, '14.3')['results'][0]['matched']);
+    }
+
+    /**
+     * And it covers no query either, which is null rather than zero: nothing
+     * was asked, so there is no share to report (`D-ANS-051`).
+     */
+    #[Test]
+    public function aPageReadBackCoversNoQuery(): void
+    {
+        $url = 'https://docs.typo3.org/m/typo3/reference-coreapi/14.3/en-us/ApiOverview/Assets/Index.html';
+        $documentation = new Documentation(
+            static fn(string $requested): string => '<html><article role="main"><p>What this page says.</p></article></html>',
+        );
+
+        self::assertNull($documentation->page($url, '14.3')['results'][0]['coverage']);
+    }
+
+    /**
+     * How much of the question a result carries, on the result. The page whose
+     * title is the query covers all of it; the ones that carry one word of a
+     * five-word question say so in a number rather than in a rank
+     * (`D-ANS-051`).
+     */
+    #[Test]
+    public function everySearchResultSaysHowMuchOfTheQueryItCovers(): void
+    {
+        $answer = (new Documentation($this->manuals()))->lookup(['inline'], '14.3', 2);
+
+        self::assertSame(1.0, $answer['results'][0]['coverage']);
+        self::assertLessThan(1.0, $answer['results'][1]['coverage']);
+        self::assertGreaterThan(0.0, $answer['results'][1]['coverage']);
+    }
+
+    /**
+     * The coverage reported is the one of the question the page is kept for,
+     * like the match beside it — not of whichever query was passed last. Both
+     * pages here are returned for the query that names them.
+     */
+    #[Test]
+    public function aResultCoversTheQueryItIsKeptFor(): void
+    {
+        $answer = (new Documentation($this->manuals()))->lookup(['inline', 'tcaDescription'], '14.3', 4);
+
+        $coverage = array_column($answer['results'], 'coverage', 'title');
+        self::assertSame(1.0, $coverage['IRRE / inline']);
+        self::assertSame(1.0, $coverage['tcaDescription']);
+    }
+
+    /**
+     * A thin answer is labelled and not emptied. The floor the rule search
+     * drops a section below has no value here that both empties the six
+     * collisions `feedback/2026-08-03-164734` reported and returns the page
+     * that answers a three-word question, so this page keeps answering while
+     * the number says how little of the question it carries (`D-ANS-051`).
+     */
+    #[Test]
+    public function aResultCoveringLessThanHalfTheQueryIsStillReturned(): void
+    {
+        $answer = (new Documentation($this->manuals()))->lookup(
+            ['TCA inline foreign_field foreign_sortby localization children'],
+            '14.3',
+            3,
+        );
+
+        self::assertSame('answered', $answer['status']);
+        self::assertSame('IRRE / inline', $answer['results'][0]['title']);
+        self::assertLessThan(0.5, $answer['results'][0]['coverage']);
+    }
+
+    /**
+     * And the caller is told in the text, because a share in a payload is not a
+     * warning: the answer this feedback reported as the expensive kind of wrong
+     * one was six results in the shape a good answer has.
+     */
+    #[Test]
+    public function theAnswerSaysWhereNothingCoversHalfTheQuery(): void
+    {
+        Documentation::useReader($this->manuals());
+
+        $text = Registry::call('typo3_documentation_lookup', [
+            'queries' => ['TCA inline foreign_field foreign_sortby localization children'],
+            'targetVersion' => '14.3',
+            'limit' => 3,
+        ])->text;
+
+        self::assertStringContainsString('Nothing found covers half of a query asked', $text);
+        self::assertStringContainsString('ask again with the subject alone', $text);
+        self::assertMatchesRegularExpression('/Matched on: .+ — covers \d+% of the query\./', $text);
+    }
+
+    /** And says nothing of the kind where a page does cover the question. */
+    #[Test]
+    public function anAnswerThatCoversTheQuestionCarriesNoSuchSentence(): void
+    {
+        Documentation::useReader($this->manuals());
+
+        $text = Registry::call('typo3_documentation_lookup', [
+            'queries' => ['inline'],
+            'targetVersion' => '14.3',
+            'limit' => 2,
+        ])->text;
+
+        self::assertStringNotContainsString('Nothing found covers half', $text);
+        self::assertStringContainsString('covers 100% of the query.', $text);
     }
 
     #[Test]

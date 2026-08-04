@@ -32,9 +32,13 @@ against the candidate; and whether the package is resolved from its declared
 dependencies somewhere other than the working tree, which already has them.
 Nothing here has measured or decided any of the four.
 
-Extension release is intended to come back. The piece being worked first is
-[the card](../../todo/open/2026-08-04-140100-work-out-how-typo3-tailor-is-installed-and-set-up-for-an-extension.md),
-which is `typo3/tailor` setup for an extension rather than the whole subject.
+Extension release is intended to come back, and what it comes back as is open.
+`typo3/tailor` setup was worked first and turned out not to be the piece: what
+it asks of an extension is four facts, carried by `extension-ter-release` in
+`knowledge/hints/extension.json`, and nothing in them is an order a workflow
+would keep. What
+[the card](../../todo/waiting/2026-08-04-140100-work-out-how-typo3-tailor-is-installed-and-set-up-for-an-extension.md)
+waits on is whether the release run earns one instead.
 
 ## From
 

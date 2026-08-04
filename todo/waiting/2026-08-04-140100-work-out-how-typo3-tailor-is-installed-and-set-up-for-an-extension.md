@@ -2,21 +2,26 @@
 
 **Serves:** R-SKL-009
 **Priority:** normal
+**Waiting on:** whether extension release gets a skill at all, and whether it is
+    the release run rather than the setup. The card was written to produce a
+    skill ordering Tailor setup, and the setup that was measured does not carry
+    one: it is four facts, two of which other tooling already enforces, and the
+    choice between an `.env` and CI secrets follows from where Tailor is
+    installed rather than from any order of steps. What has steps and an order —
+    and what the range named for this covers, tagging through changelog and
+    version numbers to publishing — is the release run: `set-version`, commit,
+    tag, push, `ter:publish`. Whether that earns a skill is the question, and
+    `writing-a-skill.md` settles a domain with a run rather than with a shape,
+    which this has not got: the `E-EXT` run behind `R-SKL-009` is the gap and
+    not a run of the workflow.
 
-Write a hint entry of its own in `knowledge/hints/extension.json` for what
-`typo3/tailor` requires of an extension, keyed on the words a release question
-is asked in — *release*, *publish*, *TER*, *tailor*, *artefact*, *extension key*
-— rather than on the manifest words the existing `extension-manifest` entry
-already answers, so that a session asking about publishing reaches it. What it
-has to carry is the four requirements measured below, and the one that matters
-most is that Tailor refuses to package an extension without `ext_emconf.php`
-whose version equals the version being released: an extension that publishes to
-the TER keeps that file on every TYPO3 version, which is not what the
-deprecation in 14 and the removal of the fallback in 15 would otherwise lead a
-session to say. The existing entry's sentence — Tailor and the TER read
-`ext_emconf.php` — stays where it is and is not the place for this, because it
-answers what makes a directory an extension and this answers what a release
-needs.
+The hint this card owed is written. `extension-ter-release` in
+`knowledge/hints/extension.json` carries the four measured requirements and is
+what a release question reaches —
+`bin/cli hints:probe "release the extension with tailor"` ranks it first and
+alone. The existing `extension-manifest` sentence about Tailor and the TER
+reading `ext_emconf.php` is untouched, because it answers what makes a directory
+an extension and this answers what a release needs.
 
 ## What was measured, 2026-08-04
 
@@ -61,18 +66,3 @@ other tooling:
   `conf/ExcludeFromPackaging.php`.
 
 The packaging findings are evidence for `R-SKL-009` and are recorded there.
-
-## The open question
-
-The card was written to produce a skill ordering Tailor setup. The setup that
-was found does not carry one: it is four facts, two of which other tooling
-already enforces, and the choice between `.env` and CI secrets follows from
-where Tailor is installed rather than from any order of steps. What has steps
-and an order is the release run — `set-version`, commit, tag, push,
-`ter:publish` — and this card does not own it.
-
-So what is put back to the maintainer is whether extension release gets a skill
-at all, and whether it is the release run rather than setup, given that the
-range named for it — tagging, changelog, version numbers, publishing — lives
-entirely on the run side. The hint above is worth writing either way and does
-not wait for the answer.

@@ -8,9 +8,9 @@ See [the decisions readme](../readme.md) for how an entry is written and when
 one is added.
 
 - [`D-DIS-011`][D-DIS-011] — What was read from the installation lives as long as the call · 2026-08-04
+- [`D-DIS-012`][D-DIS-012] — The driver decides whether the derived columns need the database server · 2026-08-04
 - [`D-DIS-010`][D-DIS-010] — What this package writes into a project ignores itself · 2026-08-03
 - [`D-DIS-007`][D-DIS-007] — The DDEV console is named by the mount, not by the variable · 2026-08-02 · confirmed
-- [`D-DIS-008`][D-DIS-008] — The columns TYPO3 derives are reachable where the database server is · 2026-08-02 · confirmed
 - [`D-DIS-009`][D-DIS-009] — Installed is one step short of callable, and the install is what says so · 2026-08-02 · confirmed
 - [`D-DIS-006`][D-DIS-006] — The installation stays worked out from the directory the server was started in · 2026-08-01
 - [`D-DIS-005`][D-DIS-005] — A registry with no console command is read by booting the installation · 2026-07-31 · confirmed
@@ -18,9 +18,9 @@ one is added.
 - [`D-DIS-004`][D-DIS-004] — The version comes from the core package, not from the console · 2026-07-29 · confirmed
 
 [D-DIS-011]: dis-011-what-was-read-from-the-installation-lives-as-long-as-the-call.md
+[D-DIS-012]: dis-012-the-driver-decides-whether-the-derived-columns-need-the-database-server.md
 [D-DIS-010]: dis-010-what-this-package-writes-into-a-project-ignores-itself.md
 [D-DIS-007]: dis-007-the-ddev-console-is-named-by-the-mount-not-by-the-variable.md
-[D-DIS-008]: dis-008-the-columns-typo3-derives-are-reachable-where-the-database-is.md
 [D-DIS-009]: dis-009-installed-is-one-step-short-of-callable-and-the-install-is-what-says-so.md
 [D-DIS-006]: dis-006-the-installation-stays-worked-out-from-the-start-directory.md
 [D-DIS-005]: dis-005-a-registry-with-no-command-is-read-by-booting-the-installation.md
@@ -29,8 +29,10 @@ one is added.
 
 ### Revoked, and kept as the record
 
+- [`D-DIS-008`][D-DIS-008] — The columns TYPO3 derives are reachable where the database server is · 2026-08-02 → D-DIS-012
 - [`D-DIS-002`][D-DIS-002] — Discovery honours the declared vendor-dir and bin-dir · 2026-07-29
 - [`D-DIS-003`][D-DIS-003] — A label query is words, and the console is asked with a regex · 2026-07-29
 
+[D-DIS-008]: dis-008-the-columns-typo3-derives-are-reachable-where-the-database-is.md
 [D-DIS-002]: dis-002-discovery-honours-the-declared-vendor-dir-and-bin-dir.md
 [D-DIS-003]: dis-003-a-label-query-is-words-and-the-console-is-asked-with-a-regex.md

@@ -4,10 +4,9 @@ List the columns TYPO3 derives for a table from its TCA — uid, pid, the
 timestamps, the delete and disable fields, the language and versioning columns,
 and one column per TCA field. Those are exactly the columns an ext_tables.sql
 does not have to declare, so this is what a redundant declaration is checked
-against. The core is asked for them by booting the installation, which needs its
-database server to answer; it says so rather than answering empty when it
-cannot. It describes what TYPO3 would create, never what the database currently
-has. Answers from: installation.
+against. The core is asked for them by booting the installation; it says so
+rather than answering empty when it cannot. It describes what TYPO3 would
+create, never what the database currently has. Answers from: installation.
 
 `readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: false`
 

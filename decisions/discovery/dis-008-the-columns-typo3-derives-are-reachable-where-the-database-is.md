@@ -1,7 +1,8 @@
 ---
 id: D-DIS-008
 date: 2026-08-02
-status: confirmed
+status: revoked
+revokedBy: D-DIS-012
 ---
 
 # D-DIS-008 — The columns TYPO3 derives are reachable where the database server is
@@ -127,3 +128,20 @@ condition the other runtime answers do not have. Where the platform really does
 need the server, the shape is the one that bullet promised: the enrichment
 throws, `probe.php` reports the topic `unavailable`, and `SchemaLookup` answers
 `unsupported` carrying the exception.
+
+## Revoked on 2026-08-04
+
+By the reading above, once it was acted on. The title and the statement both
+name a responding database server as the condition this answer has, and that is
+what turned out to belong to the driver: a listing shows the title and the
+status, so `confirmed` beside this sentence reads as a claim that every
+installation pays it.
+
+What holds from here is
+[`D-DIS-012`](dis-012-the-driver-decides-whether-the-derived-columns-need-the-database-server.md),
+which names the split and drops the condition from `typo3_schema_lookup`'s
+description. The evidence and the confirmation above stay: the answer exists,
+needs no schema and no SQL, and the run of 2026-08-02 is what showed it. The
+successor's **Wrong if** is a different list — what can go wrong now is a driver
+that starts connecting or an installation running one nobody read — and this
+entry's first two could no longer be gone back to.

@@ -115,8 +115,8 @@ try {
     // ext_tables.sql may leave out. DefaultTcaSchema is handed one empty table
     // per TCA table — it throws where one is missing — so everything it comes
     // back with was derived rather than declared. It reaches the ConnectionPool
-    // for the platform of each table, which needs a database server that
-    // answers and not a schema in it (D-DIS-008).
+    // for the platform of each table, which the MySQL, MariaDB and PostgreSQL
+    // drivers ask the server for and the SQLite one does not (D-DIS-012).
     //
     // In a try of its own: a failure here is one topic, and the icons and the
     // TCA above have already been read.

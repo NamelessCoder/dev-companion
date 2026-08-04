@@ -89,4 +89,32 @@ and `todo/open/2026-08-01-200601` is what carries it. The fourth channel moved
 on the same day: the two core skills were published and both name the tool, and
 the seven the reading above counted still do not. A session in an extension
 checkout reaches for one of those seven, so the hole the run has to be designed
-around is where it was. The entry stays open until that run exists.
+around is where it was.
+
+That run happened on 2026-08-04, in `/home/benji/projects/syntax`, and it
+answers the first claim in a way this **Wrong if** did not anticipate. A session
+was handed a bug report against that extension and told to reproduce it, fix it
+and commit it. It had this server on stdio, all 26 tools in its context and the
+nine published skills beside them. It made 37 tool calls, every one of them
+Bash, Read, Edit or Write, and called none of the 26. No skill activated. It
+reproduced the defect in a headless browser against the DDEV frontend, fixed one
+line of TypoScript, ran the two checks that repository declares, and committed
+`[BUGFIX] Load Prism toolbar plugin before show-language` over a wrapped body
+with no `Releases:`, no Forge trailer and no `Change-Id`.
+
+So the argument was left out, and the hard error the second claim measured never
+appeared, because the tool was never called. The route decides this before the
+default does. `typo3_task_guide` handing the workflow to the commit guide — the
+next step this entry proposes — is reached only by a session that calls
+`typo3_task_guide`, and this one did not. Naming the tool where an extension
+author already is, rather than in the two core skills alone, is what
+`feedback/2026-08-04-012644` asks for from the same run.
+
+Two readings from that day stand beside it. The default is unchanged: called
+with `changeType` and `summary` and no `workflow`, the guide still answers with
+`Resolves: #ISSUE_NUMBER`, `Releases: RELEASE_TARGET` and the hard
+`missing-issue` error, re-measured over stdio against the build the run used.
+And the message that landed is what `R-AUD-003` and `R-GUI-002` exist to
+produce, reached from the session's own habits, so it is not evidence for this
+server. The entry stays open, and what would settle the claim it was written
+about is a session that reaches the commit guide in a project repository at all.

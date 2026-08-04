@@ -48,14 +48,28 @@ works in, which is where a patch to review comes from.
   `.mcp.json`. Repeat it after any skill change — the published skills are a
   copy and nothing reports it when they are older than the server. The generated
   ignore block in each `.gitignore` and the untracked `.mcp.json` are from that
-  install and stay.
+  install and stay. What `.mcp.json` names is the checkout the install was run
+  from, so one run from a worktree points the client at that worktree until the
+  install is repeated from here — which is what the run of 2026-08-04 did, and
+  undid afterwards. Repeating it in `/home/benji/projects/syntax` that day took
+  the checkout from five published skills to nine. The ignore block it had
+  still names the five, and the four that arrived carry a `.gitignore` of their
+  own, so the block being short of them leaves nothing untracked.
   - `/home/benji/projects/syntax` — `bk2k/syntax` 5.0.0, TYPO3 14.3.0 below
     `.build/vendor`, DDEV project `syntax` on PHP 8.2, declared
     `^13.4 || ^14.3`. **Static quality infrastructure is incomplete**:
     php-cs-fixer and phplint in CI, no PHPStan, no `Tests/` at all. `REVIEW-02`
     ran here twice on 2026-07-31, `covered` at 12:21 and `covered` again at
     13:32 — the second against the server that runs the checks, and the first
-    run of any kind to reach the console half from an extension checkout.
+    run of any kind to reach the console half from an extension checkout. **It
+    is committed in**, which is what the run of 2026-08-04 for `D-GUI-002` left
+    behind: `bc0946c` on `master`, one line of TypoScript, unpushed and
+    untagged, so the tree is clean again and `master` is one ahead of the
+    5.0.0 release commit. That run also started the DDEV project and left it
+    up, and rewrote `tt_content` uid 1 in its database into a PHP snippet to
+    have something to render — the record was `syntax_language=none` with
+    placeholder text before. Both are outside git, and a run that needs the
+    fixture back is the one that restores it.
   - `/home/benji/projects/bootstrap_package` — TYPO3 14.3.0 below
     `.build/vendor`, DDEV project `bootstrap-package` on PHP 8.5. **Complete**
     infrastructure, which is what it plays. `REVIEW-02` ran here twice on

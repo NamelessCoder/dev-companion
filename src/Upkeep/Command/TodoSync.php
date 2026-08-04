@@ -80,8 +80,20 @@ final class TodoSync
             // the card's age is when the report arrived rather than when
             // somebody got round to writing it down.
             $path = 'todo/open/' . basename($feedback['file']);
-            file_put_contents(
-                Paths::root() . '/' . $path,
+            $file = Paths::root() . '/' . $path;
+
+            // The queue is a directory git does not keep when it is empty, so a
+            // run that empties it takes it with it and the next card has
+            // nowhere to land. Reported written and not written is the worst of
+            // the three outcomes: the hook stages nothing, says nothing, and
+            // the missing card surfaces in CI as somebody else's failure.
+            $directory = dirname($file);
+            if (!is_dir($directory) && !mkdir($directory, 0775, true) && !is_dir($directory)) {
+                throw new \RuntimeException(sprintf('Cannot create the queue directory: %s', $directory));
+            }
+
+            $bytes = file_put_contents(
+                $file,
                 sprintf(
                     "# %s\n\n**Serves:** %s\n**Priority:** %s\n\n%s\n",
                     $feedback['title'],
@@ -90,6 +102,9 @@ final class TodoSync
                     self::STEP,
                 ),
             );
+            if ($bytes === false) {
+                throw new \RuntimeException(sprintf('Cannot write the card: %s', $file));
+            }
             $output->writeln($path);
             ++$written;
         }

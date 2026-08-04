@@ -197,6 +197,28 @@ final class ProseTest extends TestCase
                 "- The first of them, long enough that it has to be wrapped somewhere near 5432.\n"
                 . '  Nothing on that path reads it.',
             ],
+            // What `1830ee9` did to `typo3-core-patch-development`: steps 4, 5
+            // and 6 stood under a sub-bullet of step 3, and read against that
+            // bullet alone each of them is a figure at the head of a line. The
+            // list they belong to is the one at their own indent, which is open
+            // the whole time and two levels up from the paragraph above them.
+            'a step after a nested bullet is the outer list\'s next item' => [
+                "3. The step, with a reading under it:\n"
+                . "   - The reading, long enough that it has to be wrapped somewhere near the end of it.\n"
+                . '4. The step after it.',
+                "3. The step, with a reading under it:\n"
+                . "   - The reading, long enough that it has to be wrapped somewhere near the end\n"
+                . "     of it.\n"
+                . '4. The step after it.',
+            ],
+            'a figure after a nested bullet of another list is prose still' => [
+                "- The item, with a reading under it:\n"
+                . "  - The reading, long enough that it has to be wrapped somewhere near\n"
+                . '    5432. Nothing on that path reads it.',
+                "- The item, with a reading under it:\n"
+                . "  - The reading, long enough that it has to be wrapped somewhere near 5432.\n"
+                . '    Nothing on that path reads it.',
+            ],
             'a marker with nothing after it opens no item' => [
                 "-\n- The item, long enough that it has to be wrapped somewhere near the end of it all.",
                 "-\n"

@@ -59,6 +59,8 @@ final class Wrap
         $out = [];
         $paragraph = [];
         $open = null;
+        /** @var array<int, string> the marker of each list still open, by the indent it stands at */
+        $lists = [];
 
         $fence = null;
         $verbatim = false;
@@ -97,7 +99,7 @@ final class Wrap
             }
 
             $marker = self::marker($line);
-            $item = $marker !== null && ($paragraph === [] || self::interrupts($marker, $open));
+            $item = $marker !== null && ($paragraph === [] || self::interrupts($marker, $lists));
 
             // An indented code block opens after a blank line and nowhere else.
             // Inside a list, four spaces is the continuation of the item above.
@@ -138,6 +140,21 @@ final class Wrap
             if ($paragraph === []) {
                 $open = $item ? $marker : null;
             }
+            // An item opens a list at its own indent and closes every list
+            // deeper than it; a paragraph that is nobody's item closes the ones
+            // at its indent too. What is left is the lists this line stands
+            // inside, which is what the next marker is read against.
+            if ($item || $paragraph === []) {
+                $indent = self::indent($line);
+                $lists = array_filter(
+                    $lists,
+                    static fn(int $at): bool => $at < $indent,
+                    ARRAY_FILTER_USE_KEY,
+                );
+                if ($item) {
+                    $lists[$indent] = $marker[1];
+                }
+            }
             $paragraph[] = $line;
             $blank = false;
         }
@@ -166,23 +183,31 @@ final class Wrap
      * Markdown lets a bullet and a `1.` interrupt a paragraph and no other
      * number, which would otherwise open an item wherever a wrapped line
      * happens to begin with a figure — `D-KNW-049` has one starting `5432.`.
-     * The exception is the list already running: its next item stands at the
-     * same indent and closes with the same delimiter, which is what `2.` under
-     * `1.` is and a stray figure is not.
+     * The exception is a list already running: its next item stands at the same
+     * indent and closes with the same delimiter, which is what `2.` under `1.`
+     * is and a stray figure is not.
      *
-     * @param array{string, string}      $marker
-     * @param array{string, string}|null $open
+     * The list it is read against is any of the ones still open, not only the
+     * paragraph directly above. A step that follows a nested bullet is the
+     * outer list's next item, and read against the bullet alone it is a figure
+     * at the head of a line: `1830ee9` joined three steps of
+     * `typo3-core-patch-development` into the sub-bullet above them that way,
+     * and nothing reported it because no word moved.
+     *
+     * @param array{string, string}  $marker
+     * @param array<int, string>     $lists
      */
-    private static function interrupts(array $marker, ?array $open): bool
+    private static function interrupts(array $marker, array $lists): bool
     {
         if (!ctype_digit($marker[1][0]) || in_array($marker[1], ['1.', '1)'], true)) {
             return true;
         }
 
+        $open = $lists[mb_strlen($marker[0])] ?? null;
+
         return $open !== null
-            && ctype_digit($open[1][0])
-            && $open[0] === $marker[0]
-            && substr($open[1], -1) === substr($marker[1], -1);
+            && ctype_digit($open[0])
+            && substr($open, -1) === substr($marker[1], -1);
     }
 
     /** How far a line is indented. */

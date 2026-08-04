@@ -188,7 +188,12 @@
       "spec.ts",
       "codeception",
       "smoke test",
-      "browser coverage"
+      "browser coverage",
+      "iframe",
+      "page module",
+      "backend module",
+      "selector",
+      "locator"
     ],
     "hints": [
       "Playwright is where a browser is involved, and the core is the worked example: Build/playwright.config.ts declares the projects and their dependencies, Build/tests/playwright/ holds the suite.",
@@ -204,6 +209,7 @@
         "text": "Codeception acceptance tests still sit next to it under typo3/sysext/core/Tests/Acceptance/. New specs are written in Playwright; the two suites are not merged, they replace each other module by module.",
         "until": 13
       },
+      "A backend module renders inside an iframe — id typo3-contentIframe, name list_frame — so every locator in a backend spec goes through page.frameLocator('#typo3-contentIframe'), and one that does not simply matches nothing.",
       "Two neighbours: browser-test-accessibility for what the same spec can assert, browser-tests-outside-core for the site they run against."
     ]
   },

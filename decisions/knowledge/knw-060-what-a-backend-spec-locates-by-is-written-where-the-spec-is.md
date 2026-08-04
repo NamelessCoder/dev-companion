@@ -69,3 +69,21 @@ says so.
 - The tile markup turns out to differ between the covered majors and the
   statement carries no binding. Then this belonged in a catalog that is checked
   against `.checkouts/` after all.
+
+**Since then**, on 2026-08-04, the selectors were read off the core rather than
+off the report, and the assumption above did not hold as written.
+
+`typo3-contentIframe` and `name="list_frame"` are in the shipped
+`typo3-iframe-module` element —
+`backend/Resources/Public/JavaScript/module/iframe.js` — and in the same file on
+12.4, 13.4 and `main`, so the statement needs no binding. The tile is
+`Partials/PageLayout/Record.fluid.html`: `role="group"`,
+`class="t3-page-ce … t3js-page-ce t3js-page-ce-sortable"`,
+`id="element-{table}-{uid}"`, `data-table`, `data-uid`, with the preview in
+`.t3-page-ce-body`. `t3js-page-ce-sortable` is in all four checkouts too.
+
+The module menu is where the report is worth correcting rather than copying.
+`Partials/Backend/ModuleMenu.fluid.html` is a `nav` with `id="modulemenu"` whose
+`aria-label` is `modulemenu.label`, translated — "Module Menu" is the English
+source. So the accessible name the session used asserts the backend's language
+along with the element, and the document names the id instead.

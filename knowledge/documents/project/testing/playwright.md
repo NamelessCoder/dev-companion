@@ -169,6 +169,26 @@ test('the page module opens for an authenticated editor', async ({ page }) => {
 });
 ```
 
+## Reaching into a module
+
+The spec above asserts the URL and nothing in the page, which is why it holds on
+any installation. A spec that asserts what a module renders needs one more fact:
+the backend shell puts the module into an iframe with the id
+`typo3-contentIframe`, named `list_frame`, so a locator on `page` finds nothing
+inside a module and `page.frameLocator('#typo3-contentIframe')` is where such a
+spec starts. Nothing says so when it is missing — the locators simply match no
+element.
+
+Inside the page module, one content element is `.t3-page-ce`, carrying
+`id="element-tt_content-<uid>"` with `data-table` and `data-uid` beside it, and
+its preview is `.t3-page-ce-body`. The header the page module draws for a record
+is inside that body, which is what makes "is the header there once or twice" an
+assertion a preview template can be held to.
+
+The module menu is the `nav` with the id `modulemenu`. Its accessible name is a
+translated label, so a spec that addresses it by name asserts the backend's
+language along with it, and the id does not.
+
 ## The environment the suite reads
 
 ```dotenv

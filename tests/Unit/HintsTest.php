@@ -1219,7 +1219,7 @@ final class HintsTest extends TestCase
         // The branch is not something the server is blind to where an
         // installation answers, which is where the changelog is read from.
         self::assertStringNotContainsString('does not know your branch', $written);
-        self::assertStringContainsString('typo3_project_scope', $written);
+        self::assertStringContainsString('typo3_project_describe', $written);
     }
 
     #[Test]
@@ -1552,7 +1552,7 @@ final class HintsTest extends TestCase
         // Not the setup command, which is what a boot query used to be
         // answered with once it reached the corpus at all.
         self::assertStringContainsString('refuses an existing config/system/settings.php', $text);
-        self::assertStringContainsString('typo3_project_scope reports the DDEV hooks', $text);
+        self::assertStringContainsString('typo3_project_describe reports the DDEV hooks', $text);
 
         // What closes the gap between an imported database and the code in
         // front of it, and what it deliberately leaves standing.
@@ -3993,7 +3993,7 @@ final class HintsTest extends TestCase
         self::assertStringContainsString('id=frontend-records', $checklist);
 
         $when = array_column($result->data['nextTools'], 'when', 'tool');
-        self::assertStringContainsString('architecture this extension already has', $when['typo3_extension_scope'] ?? '');
+        self::assertStringContainsString('architecture this extension already has', $when['typo3_extension_describe'] ?? '');
     }
 
     /**

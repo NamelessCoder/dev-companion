@@ -695,7 +695,7 @@ final class ScopeTest extends TestCase
         ));
         self::assertCount(1, $declined, 'nothing in the orientation declines writing a site configuration');
         self::assertStringContainsString('docs.typo3.org', $declined[0]['instead']);
-        self::assertStringContainsString('typo3_project_scope', $declined[0]['instead']);
+        self::assertStringContainsString('typo3_project_describe', $declined[0]['instead']);
 
         // The neighbouring subject is not declined with it: a set is a
         // convention, and the boundary runs between the mechanism and the
@@ -733,7 +733,7 @@ final class ScopeTest extends TestCase
      * in.
      *
      * The half that reads the installation is what makes each of them false —
-     * `typo3_project_scope` answers `kind: core-checkout` for a core checkout
+     * `typo3_project_describe` answers `kind: core-checkout` for a core checkout
      * and reads the commands out of its `composer.json`, and
      * `typo3_schema_lookup` answers a table as the container assembles it.
      *
@@ -741,7 +741,7 @@ final class ScopeTest extends TestCase
      */
     private const NOT_TRUE_OF_THIS_SERVER = [
         'never reads' => 'the installation half reads the directory it was started in',
-        'cannot be pointed at' => 'typo3_project_scope is pointed at one and answers what kind it is',
+        'cannot be pointed at' => 'typo3_project_describe is pointed at one and answers what kind it is',
         'answers from its own bundled knowledge and never' => 'two of the four sources are outside this package',
         'no index of it is bundled' => '',
     ];
@@ -753,7 +753,7 @@ final class ScopeTest extends TestCase
      * The first `doesNotCover` entry told every client this server "never
      * reads, inspects, or runs anything against a TYPO3 core checkout. It
      * cannot be pointed at one." Started in a core checkout,
-     * `typo3_project_scope` answers with its kind, its TYPO3 version, its PHP
+     * `typo3_project_describe` answers with its kind, its TYPO3 version, its PHP
      * constraint and the commands it declares. The topic was the only field
      * anything read, and the sentence was in the `why`.
      */

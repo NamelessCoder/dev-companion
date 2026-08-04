@@ -9,9 +9,7 @@ The rules stay in [AGENTS.md](../../AGENTS.md); what a change assumed is in
 [decisions/discovery/](../../decisions/discovery/readme.md). This is the
 procedure.
 
-![An installation lookup uses a TYPO3 console command where one exists, boots
-the runtime where none does, and falls back to package files with the reason
-and limitations stated.](../images/installation-fallback.svg)
+![An installation lookup uses a TYPO3 console command where one exists, boots the runtime where none does, and falls back to package files with the reason and limitations stated.](../images/installation-fallback.svg)
 
 ## The order
 
@@ -94,7 +92,7 @@ complete is what makes a review report defects nobody has.
 The reason is half of it. The other half is which files it cost: a section a
 tool leaves out because it is empty says the same nothing whether the file does
 not exist or exists and builds its list while it runs, and only the second is a
-casualty of the degradation. `typo3_extension_scope` carries those in
+casualty of the degradation. `typo3_extension_describe` carries those in
 `notReadStatically` and names them in its text; anything else that parses a
 declaration file owes its callers the same distinction.
 

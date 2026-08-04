@@ -310,7 +310,7 @@ final class VersionsTest extends TestCase
     public function aStatedMajorSaysWhichOtherOneItLeftOut(): void
     {
         // How the widening is switched off in practice: a session reads 14.3.0
-        // out of typo3_project_scope and states it, because restating what the
+        // out of typo3_project_describe and states it, because restating what the
         // repository runs looks like the accurate thing to do. Narrowing is
         // then correct — it was asked for — but invisible, and what comes back
         // is the answer this filtering was changed to stop giving. So the

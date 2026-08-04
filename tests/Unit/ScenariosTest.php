@@ -203,7 +203,7 @@ final class ScenariosTest extends TestCase
         // three are in the arguments and nowhere else in the record.
         $recorded = $this->record('REVIEW-01', static function (array $run): array {
             $run['toolTrace'] = [
-                ['tool' => 'typo3_project_scope', 'arguments' => []],
+                ['tool' => 'typo3_project_describe', 'arguments' => []],
                 ['tool' => 'typo3_hint_lookup'],
                 ['arguments' => ['query' => 'icons']],
             ];
@@ -219,7 +219,7 @@ final class ScenariosTest extends TestCase
         // Recorded as a bare name, the way every run was written before the
         // arguments were part of one.
         $named = $this->record('REVIEW-01', static function (array $run): array {
-            $run['toolTrace'] = ['typo3_project_scope'];
+            $run['toolTrace'] = ['typo3_project_describe'];
 
             return $run;
         });

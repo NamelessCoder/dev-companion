@@ -141,7 +141,7 @@ final class ToolSurface
     /**
      * The first sentence, and the colon or dash before an enumeration counts as
      * its end. What follows one of those is the detail the index is dropping,
-     * and read whole `typo3_extension_scope` opens with ten lines of it.
+     * and read whole `typo3_extension_describe` opens with ten lines of it.
      */
     private static function opening(string $description): string
     {

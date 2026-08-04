@@ -122,7 +122,7 @@ final class SkillTest extends TestCase
         $base = (string) file_get_contents(Paths::root() . '/skills/base.md');
 
         $position = -1;
-        foreach (['typo3_project_scope', 'typo3_extension_scope', 'typo3_task_guide', 'typo3_hint_lookup'] as $tool) {
+        foreach (['typo3_project_describe', 'typo3_extension_describe', 'typo3_task_guide', 'typo3_hint_lookup'] as $tool) {
             $next = strpos($base, $tool);
             self::assertNotFalse($next, $tool . ' is not part of the base');
             self::assertGreaterThan($position, $next, $tool . ' is stated out of order in the base');
@@ -205,7 +205,7 @@ final class SkillTest extends TestCase
         $precondition = strpos($base, '## Nothing starts until the server answers');
         self::assertNotFalse($precondition, 'the base lets a task start without the server');
         self::assertLessThan(
-            (int) strpos($base, 'typo3_project_scope'),
+            (int) strpos($base, 'typo3_project_describe'),
             $precondition,
             'the base reaches for its first call before it establishes there is one',
         );
@@ -1545,8 +1545,8 @@ final class SkillTest extends TestCase
         // It starts from the base's sweep and states only what it adds, so the
         // two scope calls that order already fixes appear nowhere here.
         self::assertStringContainsString('starts from the result of that sweep rather than restating it', $skill);
-        self::assertStringNotContainsString('typo3_project_scope', $skill);
-        self::assertStringNotContainsString('typo3_extension_scope', $skill);
+        self::assertStringNotContainsString('typo3_project_describe', $skill);
+        self::assertStringNotContainsString('typo3_extension_describe', $skill);
 
         // What it adds to the sweep is the two sources a changelog query cannot
         // reach. The scanner because the run never touched it, and the
@@ -1619,7 +1619,7 @@ final class SkillTest extends TestCase
         $flat = self::flat($skill);
 
         // The entry condition, and the one place this skill contradicts the
-        // base's first instruction: `typo3_project_scope` in a repository with
+        // base's first instruction: `typo3_project_describe` in a repository with
         // no installation answers `unsupported: no-installation`, which reads
         // like the disconnected server the base stops for and is the task.
         self::assertStringContainsString(

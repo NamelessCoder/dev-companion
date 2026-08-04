@@ -13,7 +13,7 @@ nothing checks what it finds against the checkout it is standing in.
 
 ## From
 
-A session in a core checkout told by `typo3_project_scope` that "the core's
+A session in a core checkout told by `typo3_project_describe` that "the core's
 testing suites do not" exist among its declared commands, and given no tool that
 has them: it reported preferring a `Build/bin/phpunit` that checkout has no
 directory for (`feedback/2026-08-01-114807`, 2026-08-01). The same gap from the

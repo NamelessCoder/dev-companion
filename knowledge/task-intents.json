@@ -238,7 +238,7 @@
     "tools": [
       "typo3_hint_lookup with id=extension-coding-standards, for what typo3/coding-standards ships, what its setup command writes, what the configuration already excludes and which run is the check",
       "typo3_hint_lookup with id=extension-static-analysis, for the analyser half of the same layer",
-      "typo3_project_scope, for the TYPO3 and PHP range the package declares and the commands it already has"
+      "typo3_project_describe, for the TYPO3 and PHP range the package declares and the commands it already has"
     ]
   },
   {
@@ -290,8 +290,8 @@
     ],
     "checks": [],
     "tools": [
-      "typo3_project_scope, for the TYPO3 and PHP versions this repository supports and the commands it declares",
-      "typo3_extension_scope, for what each extension in scope registers"
+      "typo3_project_describe, for the TYPO3 and PHP versions this repository supports and the commands it declares",
+      "typo3_extension_describe, for what each extension in scope registers"
     ]
   },
   {
@@ -321,7 +321,7 @@
     ],
     "checks": [],
     "tools": [
-      "typo3_project_scope, for what the installation around this repository already is",
+      "typo3_project_describe, for what the installation around this repository already is",
       "typo3_hint_lookup with id=installation-setup, for what typo3 setup accepts, what it refuses, and which of its options are inert in Composer mode",
       "typo3_hint_lookup with id=sitepackage-initial-content, for what a sitepackage seeds an empty installation with and why the order of the two setup commands decides it"
     ]
@@ -342,7 +342,7 @@
     "condition": "only if the task is about an installation rather than about the code in it",
     "rulesQuery": "",
     "checklist": [
-      "Establish where you are before changing anything: typo3_project_scope for the installed TYPO3 and PHP and for which extensions are the project's own, typo3_changelog_lookup with type=breaking for what the target version did to them.",
+      "Establish where you are before changing anything: typo3_project_describe for the installed TYPO3 and PHP and for which extensions are the project's own, typo3_changelog_lookup with type=breaking for what the target version did to them.",
       "Check every third-party extension for a release that supports the target major. One that has none decides the schedule, and Composer reports it as a conflict rather than as advice.",
       "Dump the database and work on a copy. From the first schema change on, the upgrade cannot be reverted with git.",
       "Raise the PHP version where the target requires it — in composer.json and in the environment that runs it — then require the new TYPO3 constraints together with every extension in one composer call.",
@@ -351,7 +351,7 @@
     ],
     "checks": [],
     "tools": [
-      "typo3_project_scope, for what this installation is and which commands this repository declares",
+      "typo3_project_describe, for what this installation is and which commands this repository declares",
       "typo3_changelog_lookup with type=breaking or deprecation and the target version",
       "typo3_hint_lookup with id=installation-upgrade, for the order of operations and why it is that order"
     ]
@@ -380,7 +380,7 @@
     "condition": "only if the task is bringing an installation up or running one rather than changing the code in it",
     "rulesQuery": "",
     "checklist": [
-      "In a DDEV project the lifecycle hooks in .ddev/config.yaml — post-start, post-import-db, pre-pull, post-pull — and the pull providers under .ddev/providers/ are the install and the import: they are what installs the dependencies, updates the schema and creates the backend user, so equivalent commands typed beside them boot something this repository does not describe. typo3_project_scope reports the environment and the composer scripts, and those hooks are read from the file itself.",
+      "In a DDEV project the lifecycle hooks in .ddev/config.yaml — post-start, post-import-db, pre-pull, post-pull — and the pull providers under .ddev/providers/ are the install and the import: they are what installs the dependencies, updates the schema and creates the backend user, so equivalent commands typed beside them boot something this repository does not describe. typo3_project_describe reports the environment and the composer scripts, and those hooks are read from the file itself.",
       "Where no installation exists yet, the order is typo3 setup for config/system/settings.php, the admin user and the schema, then typo3 extension:setup for the extension setup and the content a required distribution package imports, then typo3 cache:flush. The setup command refuses a database that already holds tables, so a script that runs a second time needs its own guard on settings.php — --force rewrites the settings files and not the schema.",
       "Seed a distribution by requiring its package and running typo3 extension:setup. Since v14 the setup command's --distribution and --create-site are inert in Composer mode as soon as a required package ships Initialisation/data.xml: every Composer-required package counts as an active distribution, so the command reports that the options have no effect and writes no site configuration at all.",
       "Since v14 a site configuration that arrives with an import lands on base /<identifier>/, because Import::processSiteConfigurations() overwrites what the export carried — the importer cannot know the URL of the installation it is importing into. A seeded installation therefore answers 404 at its own root until that base is corrected in config/sites/<identifier>/config.yaml, and the cause is not in the distribution package.",
@@ -389,7 +389,7 @@
     ],
     "checks": [],
     "tools": [
-      "typo3_project_scope, for what this repository declares: the TYPO3 and PHP it runs, the environment it ships, and the commands in its composer.json",
+      "typo3_project_describe, for what this repository declares: the TYPO3 and PHP it runs, the environment it ships, and the commands in its composer.json",
       "typo3_hint_lookup with id=installation-boot, for what a clone owes the installation before it answers: the schema an imported database is behind on, the caches it brought with it, the backend user nobody has the password for, the host the site configuration names, and where the files were expected",
       "typo3_hint_lookup with id=project-configuration-files, for which file configures what in an installation, and with id=extension-asset-build for the build a repository declares"
     ]
@@ -416,7 +416,7 @@
     "checklist": [
       "Describe the editor workflow before naming a single field: who creates each piece of this element, in which order, and what translating, hiding and deleting the element does to it. The data model is the answer to that, not a choice made afterwards.",
       "Settle whether this element needs Extbase before its rendering is designed. It is not the choice between a content element and a plugin: since v14 registerPlugin() puts a plugin into the same CType selector as any other element, and configurePlugin() renders it as lib.contentElement with an EXTBASEPLUGIN at 20. What the fork asks is whether a controller has to answer the request — reading records into a template needs no model, no repository and no controller, and pagination, a search with arguments, validation and forms are what Extbase is for. Both sides of it are their own hint: typo3_hint_lookup with id=extbase, and with id=frontend-records.",
-      "Read the answer to that off the extension rather than deciding it alone: typo3_extension_scope reports each content element with a kind of element or plugin, and a kind of plugin is the architecture this extension already has — models, repositories, controllers. Building the next element on TCA and a data processor departs from that convention, which is a decision to state rather than one to make by not noticing.",
+      "Read the answer to that off the extension rather than deciding it alone: typo3_extension_describe reports each content element with a kind of element or plugin, and a kind of plugin is the architecture this extension already has — models, repositories, controllers. Building the next element on TCA and a data processor departs from that convention, which is a decision to state rather than one to make by not noticing.",
       "Own repeatable content in a child table of its own with type=inline. Referencing existing records is right where reuse was asked for and nesting arbitrary tt_content where nesting was; neither is a way to store a list of slides, and both are technically possible, which is why an element that skipped the workflow question ends up with one of them.",
       "Register this element in a file of its own under Configuration/TCA/Overrides/ and give it its own TypoScript file and template, so the generic files stay what is genuinely shared.",
       "Load the CSS and JavaScript only this element needs through the Fluid AssetCollector in its template, rather than on every page of the site.",
@@ -425,7 +425,7 @@
     "checks": [],
     "tools": [
       "typo3_hint_lookup with id=content-elements, for what the element owns and how the record type is registered, then with id=extbase and id=frontend-records for the two sides of the Extbase fork",
-      "typo3_extension_scope, for the architecture this extension already has: each content element it registers with a kind of element or plugin, and the templates they render through"
+      "typo3_extension_describe, for the architecture this extension already has: each content element it registers with a kind of element or plugin, and the templates they render through"
     ]
   }
 ]

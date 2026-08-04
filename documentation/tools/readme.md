@@ -79,9 +79,9 @@ a page here says what one tool is for, what goes in and what shape comes back.
   working in.
 - [`typo3_changelog_lookup`](typo3_changelog_lookup.md) — Search the TYPO3
   changelog of the installation you are working in.
-- [`typo3_project_scope`](typo3_project_scope.md) — Describe the project around
-  the TYPO3 installation this server was started in.
-- [`typo3_extension_scope`](typo3_extension_scope.md) — Describe what one
+- [`typo3_project_describe`](typo3_project_describe.md) — Describe the project
+  around the TYPO3 installation this server was started in.
+- [`typo3_extension_describe`](typo3_extension_describe.md) — Describe what one
   installed extension registers.
 - [`typo3_catalog_scope`](typo3_catalog_scope.md) — Report whether component
   contracts come from the active installation or the bundled fallback, which

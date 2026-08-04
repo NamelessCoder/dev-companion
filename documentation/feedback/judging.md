@@ -79,9 +79,7 @@ expensive answer and regularly the right one; the cheap rungs exist so that a
 rule which was already written and never arrived is not rebuilt, not so that the
 answer stays small. `bin/cli feedback:list` tells the two apart in one call.
 
-![A feedback is diagnosed from gap through delivery, routing and wording to a
-design decision, stopping at the first step supported by repository
-evidence.](../images/feedback-judging-ladder.svg)
+![A feedback is diagnosed from gap through delivery, routing and wording to a design decision, stopping at the first step supported by repository evidence.](../images/feedback-judging-ladder.svg)
 
 ### 1. Gap — the answer is not here
 
@@ -108,11 +106,11 @@ established this from my own knowledge", every call repeated with different
 arguments. The debrief prompt asks for those, so almost every feedback states
 them.
 
-*Missing tool.* The five verbs in [AGENTS.md](../../AGENTS.md) make the
-diagnosis precise, since the verb is what tells a caller the shape of an answer.
-The bootstrap_package sweep is exactly this: `typo3_changelog_lookup` matches
-title words, and enumerating every deprecation of a version is a `list`. Not a
-broken lookup — a missing verb.
+*Missing tool.* The six verbs in [AGENTS.md](../../AGENTS.md) make the diagnosis
+precise, since the verb is what tells a caller the shape of an answer. The
+bootstrap_package sweep is exactly this: `typo3_changelog_lookup` matches title
+words, and enumerating every deprecation of a version is a `list`. Not a broken
+lookup — a missing verb.
 
 *Missing skill.* Three signals, and the third is the strongest because no single
 feedback carries it: a session that invented the right order itself; a session

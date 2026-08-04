@@ -193,6 +193,26 @@ final class StdioServerTest extends TestCase
         self::assertContains('typo3-core-rules', array_column($index['documents'], 'id'));
     }
 
+    /**
+     * The list a host picks from, on the wire that carries it. What the
+     * definitions say is `ResourceSurfaceTest`; this is that the SDK passes the
+     * fields on rather than dropping the ones it does not use itself.
+     */
+    #[Test]
+    public function theResourceListCarriesWhatAPickerChoosesBy(): void
+    {
+        $result = $this->session([$this->request(2, 'resources/list')])[2]['result'];
+
+        $offered = array_column($result['resources'], null, 'uri');
+        $coreOnly = $offered['typo3://core/typo3-core-rules'];
+        self::assertStringContainsString('does not transfer', $coreOnly['description']);
+        self::assertGreaterThan(0, $coreOnly['size']);
+        self::assertLessThan(
+            $offered['typo3://core/typo3-commit-messages']['annotations']['priority'],
+            $coreOnly['annotations']['priority'],
+        );
+    }
+
     #[Test]
     public function aKnowledgeDocumentIsServedAsMarkdown(): void
     {

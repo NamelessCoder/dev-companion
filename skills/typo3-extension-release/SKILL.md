@@ -69,7 +69,7 @@ next is worth:
    states them and consistent with the tag being prepared.
 3. Its installability: resolve it from its declared dependencies in a clean
    place, not in the working tree that already has them.
-4. The commands `typo3_project_scope` reported as checks, run against the
+4. The commands `typo3_project_describe` reported as checks, run against the
    candidate. They hand the code back as it was, so a preparation told to change
    nothing runs them. A check that passes in the checkout and fails on the
    artifact is the highest-value finding this workflow produces.

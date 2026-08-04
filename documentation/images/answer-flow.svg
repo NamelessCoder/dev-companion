@@ -34,7 +34,7 @@
     <circle cx="91" cy="240" r="16" fill="#ff8700"/>
     <text x="91" y="245" text-anchor="middle" class="number">1</text>
     <text x="119" y="246" class="whiteLabel">Read the project</text>
-    <text x="86" y="280" class="whiteCode">typo3_project_scope</text>
+    <text x="86" y="280" class="whiteCode">typo3_project_describe</text>
     <text x="86" y="303" class="whiteCopy">version · extensions · commands</text>
   </g>
 

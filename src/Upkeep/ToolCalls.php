@@ -166,8 +166,8 @@ final class ToolCalls
             'changelog: hit' => ['typo3_changelog_lookup', ['query' => 'ext_tables.php']],
             'changelog: swept by tag' => ['typo3_changelog_lookup', ['type' => 'deprecation', 'tag' => 'FullyScanned']],
             'changelog: miss' => ['typo3_changelog_lookup', ['query' => 'quantumflux']],
-            'project' => ['typo3_project_scope', []],
-            'extension' => ['typo3_extension_scope', ['extension' => 'backend']],
+            'project' => ['typo3_project_describe', []],
+            'extension' => ['typo3_extension_describe', ['extension' => 'backend']],
             'catalog scope' => ['typo3_catalog_scope', []],
             'commit: from parts' => ['typo3_commit_message_guide', [
                 'changeType' => 'BUGFIX',

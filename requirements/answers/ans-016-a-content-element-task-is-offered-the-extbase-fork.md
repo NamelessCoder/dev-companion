@@ -22,7 +22,7 @@ plugin is a `CType` like any other since v14, registered into the same selector
 as any other element, so a wording that offers "a content element or an Extbase
 plugin" offers two categories that are one.
 
-The other half is what the extension already does. `typo3_extension_scope`
+The other half is what the extension already does. `typo3_extension_describe`
 reports each content element with a `kind` of `element` or `plugin` and
 `skills/base.md` orders that call before the checkout is read, so the convention
 is in the session's hands already. What this requires is that it read as

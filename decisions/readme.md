@@ -266,6 +266,8 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 
 ### scope
 
+- [`D-SCO-010`][D-SCO-010] — All three `typo3` namespaces are kept, and the scheme is raised in the RFC's comment period · 2026-08-04
+- [`D-SCO-011`][D-SCO-011] — A tool that describes one thing carries `describe`, and `scope` stays with the sources · 2026-08-04
 - [`D-SCO-009`][D-SCO-009] — The brief is one brief, and names the paths a step is not for · 2026-08-02
 - [`D-SCO-007`][D-SCO-007] — The signals are combined per call, and a call is not a path · 2026-08-01
 - [`D-SCO-002`][D-SCO-002] — A core-only intent asks for evidence, not for silence · 2026-07-29 · confirmed
@@ -273,6 +275,8 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-SCO-005`][D-SCO-005] — The installation is evidence about the task, and the weakest kind · 2026-07-29
 - [`D-SCO-006`][D-SCO-006] — Why "project work is out of scope" kept coming back · 2026-07-29
 
+[D-SCO-010]: scope/sco-010-all-three-typo3-namespaces-are-kept-and-the-scheme-is-raised.md
+[D-SCO-011]: scope/sco-011-a-tool-that-describes-one-thing-carries-describe-and-scope-stays-with-the-sources.md
 [D-SCO-009]: scope/sco-009-the-brief-is-one-brief-and-names-the-paths-a-step.md
 [D-SCO-007]: scope/sco-007-the-signals-are-combined-per-call-and-a-call-is-not-a-path.md
 [D-SCO-002]: scope/sco-002-a-core-only-intent-asks-for-evidence-not-for-silence.md

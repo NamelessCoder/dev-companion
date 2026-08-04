@@ -6,7 +6,7 @@ restsOn: [D-ANS-045]
 
 # R-ANS-020 — The Classes section covers the directory it names
 
-**`typo3_extension_scope` names every directory below `Classes/` and counts
+**`typo3_extension_describe` names every directory below `Classes/` and counts
 every PHP file under it, and nothing it reads off the file tree is presented as
 a registration.**
 

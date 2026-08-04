@@ -175,8 +175,8 @@ final class ToolContractTest extends TestCase
         'typo3_changelog_lookup' => ['query' => 'deprecation'],
         'typo3_fluid_namespace_list' => [],
         'typo3_schema_lookup' => ['table' => 'tt_content'],
-        'typo3_project_scope' => [],
-        'typo3_extension_scope' => ['extension' => 'news'],
+        'typo3_project_describe' => [],
+        'typo3_extension_describe' => ['extension' => 'news'],
     ];
 
     /**
@@ -262,7 +262,7 @@ final class ToolContractTest extends TestCase
 
     /**
      * The unsupported answer is built in one place, so no path can reach the
-     * shape without a reason to hand over. typo3_extension_scope reported every
+     * shape without a reason to hand over. typo3_extension_describe reported every
      * miss as unanswerable, including against an installation that had just
      * listed its packages, because the constant it filled from carried the
      * value.

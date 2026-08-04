@@ -20,10 +20,11 @@ no claim that everything was read.
 
 ## From
 
-The third `REVIEW-01` run (2026-07-31), where `typo3_extension_scope` reported
-three content elements of four. The fourth wrote `$contentType = '…'` above its
-`addRecordType()` call, and an earlier run had already read the omission as a
-template with no registration — a defect the extension does not have.
+The third `REVIEW-01` run (2026-07-31), where `typo3_extension_describe`
+reported three content elements of four. The fourth wrote `$contentType = '…'`
+above its `addRecordType()` call, and an earlier run had already read the
+omission as a template with no registration — a defect the extension does not
+have.
 
 ## Held by
 

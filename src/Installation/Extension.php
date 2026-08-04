@@ -10,7 +10,7 @@ use Symfony\Component\Yaml\Yaml;
 /**
  * What one installed extension registers, read from its own files.
  *
- * typo3_project_scope names the extensions and where they are. A maintenance
+ * typo3_project_describe names the extensions and where they are. A maintenance
  * question is almost never about that — it is about what is inside one of them:
  * which tables its TCA defines and which it extends, which backend modules and
  * icons it brings, which site sets it ships, what it hangs into the container.

@@ -1,4 +1,4 @@
-# `typo3_extension_scope`
+# `typo3_extension_describe`
 
 Describe what one installed extension registers: the tables its TCA defines and
 the ones it extends, the content elements it adds to tt_content with the Fluid
@@ -23,8 +23,8 @@ ext_emconf.php beside a composer.json declaring neither providesPackages nor a
 version — is reported with what it costs, because that predicate is the file
 rather than anything the extension calls and no changelog search over its code
 reaches it. That is those two files and nothing else, so it is not an upgrade
-check. typo3_project_scope names the extensions this can be called for. Answers
-from: installation, packages.
+check. typo3_project_describe names the extensions this can be called for.
+Answers from: installation, packages.
 
 `readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: false`
 
@@ -34,7 +34,7 @@ Answers from [`installation`](answer-sources.md#installation),
 ## Takes
 
 ```yaml
-# The extension key, as typo3_project_scope reports it, for example
+# The extension key, as typo3_project_describe reports it, for example
 # "my_sitepackage" or "news".
 extension: string
 ```
@@ -268,6 +268,7 @@ The answer carries exactly one of these sets of fields: `key`, `path`, `origin`,
 
 ## Answered
 
+The tool was called `typo3_extension_scope` when this was recorded.
 Recorded on 2026-08-03 by `bin/cli tools:record`. Of two working directories,
 because what this server answers depends on which one a client is standing in,
 and neither fills the whole surface. Answered against core-checkout, TYPO3

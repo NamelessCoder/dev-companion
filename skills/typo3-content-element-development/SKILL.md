@@ -80,8 +80,8 @@ changing a content element.
   CSS, measure layout or prove interaction. Report that boundary explicitly.
 - Add browser coverage when JavaScript interaction, editor workflow or
   accessibility is part of the feature.
-- Re-run `typo3_extension_scope` after the change and report parser blind spots
-  separately from implementation defects.
+- Re-run `typo3_extension_describe` after the change and report parser blind
+  spots separately from implementation defects.
 
 ## Commit the element
 

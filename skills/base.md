@@ -24,15 +24,16 @@ carries a condition for skipping it, that condition is narrow on purpose: a
 prescription that gets skipped teaches the next reader to skip the ones that
 matter too.
 
-1. **`typo3_project_scope`** — the installation, its TYPO3 and PHP version, the
-   extensions that are the project's own, its sites, and the commands this
+1. **`typo3_project_describe`** — the installation, its TYPO3 and PHP version,
+   the extensions that are the project's own, its sites, and the commands this
    repository actually declares. Every later answer is filtered by that version,
    and a check the repository does not declare is a wrong answer however
    sensible it sounds.
-2. **`typo3_extension_scope`** for each extension in scope — what it registers,
-   and what it ships beside that: its manual, its README, its test layers, its
-   XLF files with the source language each one declares. What it does *not* ship
-   is answered too, and that is the half no file listing can give you.
+2. **`typo3_extension_describe`** for each extension in scope — what it
+   registers, and what it ships beside that: its manual, its README, its test
+   layers, its XLF files with the source language each one declares. What it
+   does *not* ship is answered too, and that is the half no file listing can
+   give you.
 3. **`typo3_task_guide`** with a short English task, the paths it touches, the
    target version and the change type — the workflow this task belongs to and
    the checks that come with it.
@@ -151,7 +152,7 @@ out of a CI file the weight of one with a verified line, and the reader has no
 way to separate them again.
 
 Where one of the project's own commands would settle it, run it.
-`typo3_project_scope` marks each command it lists **check**, **change** or
+`typo3_project_describe` marks each command it lists **check**, **change** or
 **unknown**, read off the declared body: a check reports and hands the code back
 as it was, so even a task told not to change files runs it, and the linter the
 repository already declares is the cheapest evidence in it. A change is not run

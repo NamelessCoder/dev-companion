@@ -32,7 +32,7 @@ A surface is in scope because the checklist names it, not because the file tree
 shows it. Listing the files first inverts that: `find` cannot show a manual that
 was never written, a test that does not exist, or a documentation tree that is
 absent, so the surfaces it hides are exactly the ones whose absence is the
-finding. Derive the list from the checklist and `typo3_extension_scope`, then
+finding. Derive the list from the checklist and `typo3_extension_describe`, then
 let reading answer it.
 
 ## Ask before judging, on every surface in scope
@@ -102,12 +102,12 @@ nor disproved, which is reported as open rather than dropped.
 
 For a requested audit, stop after findings unless fixes were also requested.
 Stopping at findings is not stopping at reading: the commands
-`typo3_project_scope` marks as checks hand the code back as it was, and an audit
-told not to change files runs them and reports what they printed. For requested
-improvements, make the smallest coherent changes, preserve local project
-conventions, and run the commands declared by `typo3_project_scope`, the ones
-that change files included. Where that leaves something to commit, the message
-comes from `typo3_commit_message_guide` with `workflow="project"`: the
+`typo3_project_describe` marks as checks hand the code back as it was, and an
+audit told not to change files runs them and reports what they printed. For
+requested improvements, make the smallest coherent changes, preserve local
+project conventions, and run the commands declared by `typo3_project_describe`,
+the ones that change files included. Where that leaves something to commit, the
+message comes from `typo3_commit_message_guide` with `workflow="project"`: the
 repository being assessed is the one it lands in. An audit asked for findings
 alone changed nothing and has no message to write.
 

@@ -71,8 +71,8 @@ its path and line, a command that was run, or a mechanism traced into an
 installed package — and requires the finding to say which of them it is, because
 not saying so gives a derived finding the weight of an established one. And it
 sends the session to the second of the three where the repository already
-declares it: the commands `typo3_project_scope` marks as checks are run even by
-a task told not to change files, the ones it marks as changes are not, and an
+declares it: the commands `typo3_project_describe` marks as checks are run even
+by a task told not to change files, the ones it marks as changes are not, and an
 unknown is named as evidence that is available rather than run unasked.
 
 ## From

@@ -108,6 +108,7 @@ test. Both are legitimate, nothing fails on either, and
 - [`R-ANS-019`][R-ANS-019] — A rendered-verification question reaches the layer that verifies it · held
 - [`R-ANS-020`][R-ANS-020] — The Classes section covers the directory it names · held
 - [`R-ANS-021`][R-ANS-021] — The review answer says which patch set it is about · held
+- [`R-ANS-022`][R-ANS-022] — A resource is picked out of a list · **open**
 
 [R-ANS-001]: answers/ans-001-could-not-ask-never-looks-like-does-not-exist.md
 [R-ANS-002]: answers/ans-002-the-reason-is-in-the-data-not-only-in-the-text.md
@@ -131,6 +132,7 @@ test. Both are legitimate, nothing fails on either, and
 [R-ANS-019]: answers/ans-019-a-rendered-verification-question-reaches-the-layer-that-verifies-it.md
 [R-ANS-020]: answers/ans-020-the-classes-section-covers-the-directory-it-names.md
 [R-ANS-021]: answers/ans-021-the-review-answer-says-which-patch-set-it-is-about.md
+[R-ANS-022]: answers/ans-022-a-resource-is-picked-out-of-a-list.md
 
 ### documentation
 

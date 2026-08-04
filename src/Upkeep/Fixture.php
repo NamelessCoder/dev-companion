@@ -585,7 +585,7 @@ final class Fixture
      * One installed package's manifest, with what it requires where something
      * here reads that.
      *
-     * `typo3_project_scope` reports the installed core's PHP floor out of this
+     * `typo3_project_describe` reports the installed core's PHP floor out of this
      * file, so the core package states the one TYPO3 14.3 really declares:
      * `^8.2`, read in `.checkouts/14.3` on 2026-08-04. It is written rather
      * than composed from the branch beside it, because the floor does not

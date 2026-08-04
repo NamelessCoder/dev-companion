@@ -38,7 +38,7 @@ final class VersionScope
 
         // The narrowing is invisible from inside the answer, and that is how a
         // widened default gets switched off by a caller being careful: a
-        // session reads the installed version out of typo3_project_scope,
+        // session reads the installed version out of typo3_project_describe,
         // states it because it looks like the accurate thing to do, and gets
         // back exactly the answer this filtering was changed to stop giving.
         // So the one case where the two disagree says so.

@@ -1,6 +1,6 @@
 {
   "purpose": "A development companion for coding agents working with TYPO3, for the three audiences that do: the core contributor, the extension author, and the site developer. It establishes the project and installation the agent is working in, supplies current, version-bound TYPO3 knowledge, and hands task-specific workflows to the skills that own them so the agent can implement, review, and verify the work. Scope answers describe what is present without treating it as correct; the knowledge and skills supply the conventions that apply, so code found in one installation is not repeated as a pattern merely because it runs. They cover how TYPO3's subsystems are used, the core's own contribution process — the rules, the Gerrit workflow, the scripts and test suites — and a searchable index of backend UI components whose contract is read from the active installation where possible. The server also answers what is registered in the installation it was started in, which no bundled snapshot could get right. Where that installation does not boot, or does not exist yet, the bundled knowledge and the installed packages answer instead, and the answer says which of them it came from and what that leaves out. Every answer says which TYPO3 versions it holds for and which of the three kinds of work it belongs to.",
-  "instructions": "Start every task with typo3_project_scope: the installation's TYPO3 version, the extensions that are the project's own, the sites it configures, and the commands the repository actually declares — a check you recommend that the repository does not declare is a wrong answer however sensible it sounds. typo3_task_guide then gives the workflow the task belongs to, and hands the parts that have their own workflow to the skill that owns them. The coding agent writes the patch; this server supplies the task knowledge and workflows around it. What changed, which branch you are on, and whether a path still exists are yours to read in the checkout.\n\nBefore writing backend markup or CSS classes, call typo3_component_lookup with the targetVersion. Before choosing or emitting a backend icon identifier, call typo3_icon_lookup against the installation. Before adding or rewording a label, pass the XLF resource used at the consuming code to typo3_label_lookup — a match in another resource is not reusable there. Guessed, these three fail only at runtime.\n\nWhat is a property of an installation rather than of TYPO3 is asked of that installation instead of answered from the catalogue. Answers are filtered by targetVersion or by the version read, and a statement that does not hold on every covered line carries the range it does.\n\nQuery this server in English whatever language you speak with the user: its knowledge is English and its matching lexical, so a query in another language reaches only the loanwords. Translate the subject before you call, and the answer back.\n\ntypo3_server_scope says what is covered, at which depth, by which tool, and which installation is read.",
+  "instructions": "Start every task with typo3_project_describe: the installation's TYPO3 version, the extensions that are the project's own, the sites it configures, and the commands the repository actually declares — a check you recommend that the repository does not declare is a wrong answer however sensible it sounds. typo3_task_guide then gives the workflow the task belongs to, and hands the parts that have their own workflow to the skill that owns them. The coding agent writes the patch; this server supplies the task knowledge and workflows around it. What changed, which branch you are on, and whether a path still exists are yours to read in the checkout.\n\nBefore writing backend markup or CSS classes, call typo3_component_lookup with the targetVersion. Before choosing or emitting a backend icon identifier, call typo3_icon_lookup against the installation. Before adding or rewording a label, pass the XLF resource used at the consuming code to typo3_label_lookup — a match in another resource is not reusable there. Guessed, these three fail only at runtime.\n\nWhat is a property of an installation rather than of TYPO3 is asked of that installation instead of answered from the catalogue. Answers are filtered by targetVersion or by the version read, and a statement that does not hold on every covered line carries the range it does.\n\nQuery this server in English whatever language you speak with the user: its knowledge is English and its matching lexical, so a query in another language reaches only the loanwords. Translate the subject before you call, and the answer back.\n\ntypo3_server_scope says what is covered, at which depth, by which tool, and which installation is read.",
   "covers": [
     {
       "topic": "Contribution rules and review readiness",
@@ -161,8 +161,8 @@
       "topic": "The project around the installation: its extensions, its sites and their sets, its own commands, the environment it declares and what that environment runs by itself, and what one of those extensions registers",
       "depth": "Read from the repository's files — composer.json, package.json, config/sites, and the .ddev configuration where there is one — so it answers on a fresh clone, before anything is installed or migrated. The declared commands are what a caller may run; a DDEV project also states the PHP its container runs, the hooks that fire at a stage of their own with the command each runs, and the pull recipes its database and files come from. It describes what is there and does not rate it; the one thing it volunteers is a core deprecation whose predicate is a registration file the extension ships, because nothing a caller would think to search for reaches that. Per extension: the tables its TCA defines and extends, the content elements it adds to tt_content with the Fluid template each renders through and the FlexForm each binds, its backend modules and routes, its icons, its site sets and the files core reads each set for, the form configurations it registers and the definitions they store, its service tags, its middlewares, which of the Fluid root directories it ships and the namespaces it registers globally, the shape of its Classes/ directory, and which of the registration files it ships a deprecation names. Its tables, content elements and icons come from the booted installation where there is one; the rest is read from files, and where the installation could not be booted the answer says what a file-read list leaves out.",
       "tools": [
-        "typo3_project_scope",
-        "typo3_extension_scope"
+        "typo3_project_describe",
+        "typo3_extension_describe"
       ],
       "source": "the discovered project — read from the installation being worked in, not from a bundled snapshot.",
       "scope": "any"
@@ -211,12 +211,12 @@
     {
       "topic": "What someone else's extension does: the API, the options and the documentation of a package the core does not ship",
       "why": "Writing an extension is covered — the extension author is one of the three audiences this exists for, and the registration files, the subsystem conventions, the sitepackage layout and the test suite are all here. What is not here is the inside of somebody else's package: it has its own API, its own release cycle and its own documentation, and none of them is read by this server. Whether a name belongs to the core at all is a different question, and typo3_system_extension_lookup answers it.",
-      "instead": "Read that extension's own documentation. What an installed extension registers — yours or a third party's — is answered by typo3_extension_scope from the files it ships."
+      "instead": "Read that extension's own documentation. What an installed extension registers — yours or a third party's — is answered by typo3_extension_describe from the files it ships."
     },
     {
       "topic": "Deciding one site's configuration: its languages, its base and the variants per environment, its error handling, and the steps that install it",
-      "why": "A site set is a convention and is covered; what one installation writes into config/sites/<identifier>/config.yaml is that site's decision, and nothing here would make one answer to it more right than another. The file is read rather than composed — typo3_project_scope reports the sites a repository configures and the sets they depend on.",
-      "instead": "Read what the project already has with typo3_project_scope, ask typo3_hint_lookup with id=site-sets for what a set ships and how its settings resolve against a site's own, and take the configuration format and the language setup from https://docs.typo3.org/."
+      "why": "A site set is a convention and is covered; what one installation writes into config/sites/<identifier>/config.yaml is that site's decision, and nothing here would make one answer to it more right than another. The file is read rather than composed — typo3_project_describe reports the sites a repository configures and the sets they depend on.",
+      "instead": "Read what the project already has with typo3_project_describe, ask typo3_hint_lookup with id=site-sets for what a set ships and how its settings resolve against a site's own, and take the configuration format and the language setup from https://docs.typo3.org/."
     },
     {
       "topic": "Running an installation: server and container setup, deployment, backups, the editorial use of the backend",
@@ -253,7 +253,7 @@
   "routing": [
     {
       "when": "Asked to review, audit or assess a project, a site package or an extension — before opening the first file, because what a finding is worth depends on the version and the commands this repository has",
-      "call": "typo3_project_scope, then typo3_task_guide for the workflow and typo3_extension_scope for each extension in scope"
+      "call": "typo3_project_describe, then typo3_task_guide for the workflow and typo3_extension_describe for each extension in scope"
     },
     {
       "when": "Taking a Forge issue on, before believing what it describes — an issue can be stale, already fixed, or closed on a decision that is not in its description",
@@ -329,7 +329,7 @@
     },
     {
       "when": "About to recommend a command, or asking what this project consists of",
-      "call": "typo3_project_scope"
+      "call": "typo3_project_describe"
     },
     {
       "when": "Starting work on a TYPO3 major you have not built on recently — before asking what a version changed",
@@ -341,11 +341,11 @@
     },
     {
       "when": "Upgrading or maintaining an installation, and needing the order of operations",
-      "call": "typo3_task_guide, then typo3_project_scope and typo3_changelog_lookup for what this one is and what the target version changed"
+      "call": "typo3_task_guide, then typo3_project_describe and typo3_changelog_lookup for what this one is and what the target version changed"
     },
     {
       "when": "Working in one extension and needing what it registers",
-      "call": "typo3_extension_scope with its key"
+      "call": "typo3_extension_describe with its key"
     },
     {
       "when": "About to claim that an extension is (or is not) part of the core, or to require one",

@@ -29,7 +29,7 @@ this package cannot have is answered by saying so.
   whether they belong in the archive or are rebuilt by whoever installs it.
 - **Exclusions.** What the archive must not carry, which is the surface with two
   owners; see below.
-- **Checks.** The commands `typo3_project_scope` reports, run against the
+- **Checks.** The commands `typo3_project_describe` reports, run against the
   candidate rather than against the working tree.
 - **Publication steps.** Named, ordered, and not taken.
 

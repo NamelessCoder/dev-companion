@@ -22,7 +22,7 @@
   are read from it rather than bundled.
 - **judge** — to work out what should become of one open feedback, on evidence.
 - **knowledge** — everything below `knowledge/`: what the tools answer from.
-- **record** — the verb a feedback comes into being by, and one of the five tool
+- **record** — the verb a feedback comes into being by, and one of the six tool
   verbs.
 - **requirement** — what must be true from now on, and what holds it there: one
   file in `requirements/`.
@@ -39,6 +39,6 @@
 - **tool** — one `typo3_<subject>_<verb>` this server offers its callers: the
   MCP primitive of that name, one class in `src/Tool/`, listed in
   `Typo3CmsMcp\Tools`.
-- **tool verb** — one of `lookup`, `guide`, `list`, `scope`, `record`: what
-  tells a caller the shape of the answer.
+- **tool verb** — one of `lookup`, `guide`, `list`, `scope`, `describe`,
+  `record`: what tells a caller the shape of the answer.
 - **verdict** — how a recorded run came out: `covered`, `partial`, `gap`.

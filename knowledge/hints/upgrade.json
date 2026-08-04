@@ -25,7 +25,7 @@
       "upgrade wizard"
     ],
     "hints": [
-      "The order is: find out what breaks, move the code, then the database, then the caches. Reading first is what makes it one pass instead of three — typo3_project_scope says which TYPO3 and PHP this installation is on and which extensions are its own, and typo3_changelog_lookup with type breaking or deprecation says what the target version did to them.",
+      "The order is: find out what breaks, move the code, then the database, then the caches. Reading first is what makes it one pass instead of three — typo3_project_describe says which TYPO3 and PHP this installation is on and which extensions are its own, and typo3_changelog_lookup with type breaking or deprecation says what the target version did to them.",
       "The third-party extensions decide when the upgrade can happen, not whether it should. One without a release for the target major blocks the whole step, and Composer's own resolution is where that surfaces — so require the new constraints for typo3/cms-* and for every extension in one call rather than one at a time, and read the conflict it reports as the list of what has to be replaced, patched or dropped.",
       "Raise the PHP version the target requires before the TYPO3 constraint, in composer.json and in the environment that actually runs it — a DDEV project states its own in .ddev/config.yaml. Resolving against a PHP nobody runs produces a lock file that installs and an installation that does not boot.",
       "Everything up to here is revertible with git and everything after it is not. Take a database dump before the first command that writes, and do the pass on a copy: the schema changes and the upgrade wizards are what makes an upgrade one-way.",
@@ -80,7 +80,7 @@
       "is this breaking"
     ],
     "hints": [
-      "Whether an API is deprecated is a property of the branch you work on, not of TYPO3 as a whole. Where you work in an installation the server reads that branch: typo3_project_scope names the TYPO3 version installed there, and typo3_changelog_lookup answers from the changelog its core package ships.",
+      "Whether an API is deprecated is a property of the branch you work on, not of TYPO3 as a whole. Where you work in an installation the server reads that branch: typo3_project_describe names the TYPO3 version installed there, and typo3_changelog_lookup answers from the changelog its core package ships.",
       "Read the declaration itself: an @deprecated annotation together with a trigger_error(..., E_USER_DEPRECATED) call is what marks one. The core marks nothing with PHP's #[\\Deprecated] attribute, so finding none says nothing about what is deprecated.",
       "The trigger does not have to sit in the declaring body, so a file without one settles nothing. A method, a property or a class can raise from its caller, from the __get() and __call() of PublicPropertyDeprecationTrait and PublicMethodDeprecationTrait where the member was made protected and listed there, or from whatever resolves the class.",
       "A class constant and an enum case are where the docblock stands alone: nothing runs when one is read, so no trigger_error can be attached to it anywhere. Such a deprecation raises nothing — no deprecation log entry, nothing for a test suite running with failOnDeprecation — and the call site turns into a fatal error in the major that removes it. What finds it is the extension scanner, through the ClassConstantMatcher entry the deprecating patch owes it, rather than anything at runtime.",

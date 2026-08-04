@@ -114,6 +114,9 @@ installation:
 
 ## Answered
 
+`typo3_project_describe` and `typo3_extension_describe` were called
+`typo3_project_scope` and `typo3_extension_scope` when this was recorded, and
+the routing below names them by those spellings.
 Recorded on 2026-08-04 by `bin/cli tools:record`. Answered against
 core-checkout, TYPO3 14.3.6-dev, the 14.3 core checkout below .checkouts/,
 whose console could not be reached: <installation> has no TYPO3 console —

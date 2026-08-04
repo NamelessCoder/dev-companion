@@ -29,9 +29,9 @@ and a client that twice concluded an extension registered no icons and no labels
 (2026-07-29). Reading the tools against it on 2026-08-02 found the shape still
 being made: `typo3_icon_lookup` answered a directory with no installation with
 `matchCount: 0`, `suggestionCount: 0` and `exactMatch: false` — field for field
-the miss it emits against a reachable one — and `typo3_extension_scope` reported
-`answeredBy: "nothing"` for every miss, including against an installation that
-had just listed 27 packages.
+the miss it emits against a reachable one — and `typo3_extension_describe`
+reported `answeredBy: "nothing"` for every miss, including against an
+installation that had just listed 27 packages.
 
 ## Held by
 

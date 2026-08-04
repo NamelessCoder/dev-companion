@@ -257,8 +257,8 @@ diff to make.
 ## Tool names
 
 Every tool is named `typo3_<subject>_<verb>`. The prefix never varies, the
-subject is what the tool is about, and the verb comes from a closed list of
-five, because the verb is what tells a caller which shape the answer has:
+subject is what the tool is about, and the verb comes from a closed list of six,
+because the verb is what tells a caller which shape the answer has:
 
 - `lookup` — a query goes in, matching entries come out, and finding nothing is
   a legitimate answer: `typo3_component_lookup`, `typo3_rule_lookup`.
@@ -268,12 +268,19 @@ five, because the verb is what tells a caller which shape the answer has:
   `typo3_feedback_list`.
 - `scope` — what a source covers and where its boundary runs:
   `typo3_server_scope`, `typo3_catalog_scope`.
+- `describe` — what one thing the caller names is and what it registers:
+  `typo3_project_describe`, `typo3_extension_describe`.
 - `record` — the tool writes something: `typo3_feedback_record`.
 
+`scope` and `describe` are the pair that gets confused. A scope answers for a
+source and states the boundary of what it can be asked; a describe answers for
+one thing the caller named and states what that thing is. `D-SCO-010` is why the
+two project and extension tools carry the second.
+
 A new tool takes the verb whose answer shape it already has, and two tools
-sharing an output schema share their verb. When none of the five fits, the tool
-is probably doing two things at once — split it before inventing a sixth verb.
-If a sixth is genuinely needed, add it to `ToolNamingTest` in the same commit,
+sharing an output schema share their verb. When none of the six fits, the tool
+is probably doing two things at once — split it before inventing a seventh verb.
+If a seventh is genuinely needed, add it to `ToolNamingTest` in the same commit,
 so that list stays the only place the vocabulary is defined.
 
 Leave `core` out of a name: this server is about the TYPO3 core throughout, so

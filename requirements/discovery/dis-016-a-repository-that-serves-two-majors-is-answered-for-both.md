@@ -27,8 +27,8 @@ the installed 14, so
 `ext_emconf.php is what makes a directory an extension outside Composer` — bound
 `until: 13` — never reached the session, and the file it is about was reported
 as accumulated drift (2026-07-31). The run of that afternoon then never reached
-the widened answer: the session read `14.3.0` out of `typo3_project_scope` and
-stated it, which the input description invited by promising the installed
+the widened answer: the session read `14.3.0` out of `typo3_project_describe`
+and stated it, which the input description invited by promising the installed
 version as the default, and the narrowing said nothing about itself
 (2026-07-31).
 

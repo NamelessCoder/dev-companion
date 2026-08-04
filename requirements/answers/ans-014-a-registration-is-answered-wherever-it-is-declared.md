@@ -6,7 +6,7 @@ restsOn: [D-ANS-014, D-ANS-019]
 
 # R-ANS-014 — A registration is answered wherever it is declared
 
-**What `typo3_extension_scope` reports is every registration the extension
+**What `typo3_extension_describe` reports is every registration the extension
 declares in a file that stands still, and not only the ones declared in the
 files the answer was first built around.**
 

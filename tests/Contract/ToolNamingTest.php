@@ -23,10 +23,14 @@ final class ToolNamingTest extends TestCase
      * @var array<string, string>
      */
     private const VERBS = [
+        // `scope` and `describe` are the pair a reader gets wrong: a scope
+        // answers for a source and states what it covers, a describe answers
+        // for one thing the caller named and states what it is — D-SCO-010.
         'lookup' => 'a query goes in, matching entries come out, and finding nothing is a legitimate answer',
         'guide' => 'an answer composed for the task at hand, which always exists',
         'list' => 'an enumeration of what is there, no query needed',
         'scope' => 'what a source covers and where its boundary runs',
+        'describe' => 'what one thing the caller names is and what it registers',
         'record' => 'the tool writes something',
     ];
 

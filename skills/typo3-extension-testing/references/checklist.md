@@ -66,7 +66,7 @@ reported defect. Record why a higher layer is necessary.
    it before wiring CI.
 3. Use a direct PHPUnit or browser-runner invocation only when its executable,
    configuration, and target path exist in the checkout.
-4. Then run the containing command declared by `typo3_project_scope` or the
+4. Then run the containing command declared by `typo3_project_describe` or the
    repository's documented test setup.
 5. Never translate TYPO3 core commands into extension commands by analogy.
 6. Separate missing infrastructure or environment prerequisites from a failing

@@ -22,7 +22,7 @@ final class ProjectDescribe extends ReadOnlyTool
 {
     public static function name(): string
     {
-        return 'typo3_project_scope';
+        return 'typo3_project_describe';
     }
 
     /** @return array<int, Source> */

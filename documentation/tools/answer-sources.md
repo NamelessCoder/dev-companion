@@ -22,7 +22,7 @@ at all where it cannot be reached.
 [`typo3_schema_lookup`](typo3_schema_lookup.md),
 [`typo3_backend_module_lookup`](typo3_backend_module_lookup.md),
 [`typo3_icon_lookup`](typo3_icon_lookup.md),
-[`typo3_extension_scope`](typo3_extension_scope.md).
+[`typo3_extension_describe`](typo3_extension_describe.md).
 
 ## packages
 
@@ -35,8 +35,8 @@ not in it.
 [`typo3_fluid_namespace_list`](typo3_fluid_namespace_list.md),
 [`typo3_icon_lookup`](typo3_icon_lookup.md),
 [`typo3_changelog_lookup`](typo3_changelog_lookup.md),
-[`typo3_project_scope`](typo3_project_scope.md),
-[`typo3_extension_scope`](typo3_extension_scope.md),
+[`typo3_project_describe`](typo3_project_describe.md),
+[`typo3_extension_describe`](typo3_extension_describe.md),
 [`typo3_catalog_scope`](typo3_catalog_scope.md).
 
 ## knowledge

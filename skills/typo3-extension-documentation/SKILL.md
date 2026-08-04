@@ -13,9 +13,9 @@ reference material into it.
 
 Work through [references/base.md](references/base.md) first — it fixes the order
 every task here starts in and why that order is not interchangeable. Its second
-step is the one this workflow leans on hardest: `typo3_extension_scope` reports
-whether a manual and a README exist at all, and which XLF files there are with
-the source language each declares.
+step is the one this workflow leans on hardest: `typo3_extension_describe`
+reports whether a manual and a README exist at all, and which XLF files there
+are with the source language each declares.
 
 Then, for this workflow:
 

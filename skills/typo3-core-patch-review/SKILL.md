@@ -128,7 +128,7 @@ on this change and the targeted invocation for each. That is the verification a
 review proposes: the narrowest applicable suite first, the broader ones named
 after it.
 
-The core's suites are not among the commands `typo3_project_scope` declares —
+The core's suites are not among the commands `typo3_project_describe` declares —
 that answer is about the repository's own composer scripts, and the test runner
 is a script rather than one of them. Take the commands from
 `typo3_test_run_guide` and `typo3_script_lookup`, never from memory and never

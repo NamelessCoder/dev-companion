@@ -1,4 +1,4 @@
-# `typo3_project_scope`
+# `typo3_project_describe`
 
 Describe the project around the TYPO3 installation this server was started in:
 its TYPO3 and PHP constraints, including the PHP floor the installed core
@@ -179,6 +179,7 @@ The answer carries exactly one of these sets of fields: `root`, `environment`,
 
 ## Answered
 
+The tool was called `typo3_project_scope` when this was recorded.
 Recorded on 2026-08-04 by `bin/cli tools:record`. Of two working directories,
 because what this server answers depends on which one a client is standing in,
 and neither fills the whole surface. Answered against core-checkout, TYPO3

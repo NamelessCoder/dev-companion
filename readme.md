@@ -122,8 +122,9 @@ writes anything, and then only a new file.
 
 Names are `typo3_<subject>_<verb>`, with the verb taken from a fixed set —
 `lookup` finds and may find nothing, `guide` composes an answer for a task,
-`list` enumerates, `scope` states what a source covers, `record` writes. So the
-name already says what shape the answer has.
+`list` enumerates, `scope` states what a source covers, `describe` states what
+one thing you name is, `record` writes. So the name already says what shape the
+answer has.
 
 Every tool also declares which sources can answer it, and says so at the foot of
 its own description: the installation, the files its packages ship, the bundled
@@ -158,8 +159,8 @@ grouped by where an answer comes from.
   revision they were taken from.
 - **The installation you are working in.** What no bundled answer could be right
   about, because it is a property of the packages and the version that are
-  active: `typo3_project_scope`, `typo3_extension_scope`, `typo3_label_lookup`,
-  `typo3_icon_lookup`, `typo3_backend_module_lookup`,
+  active: `typo3_project_describe`, `typo3_extension_describe`,
+  `typo3_label_lookup`, `typo3_icon_lookup`, `typo3_backend_module_lookup`,
   `typo3_fluid_namespace_list`, `typo3_schema_lookup`,
   `typo3_configuration_lookup` and `typo3_changelog_lookup`. Where the
   installation cannot be booted the packages are read instead, and the answer

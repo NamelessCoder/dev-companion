@@ -110,7 +110,7 @@ final class ProjectTest extends TestCase
             'providers' => [],
         ], $project['environment']);
 
-        $text = Registry::call('typo3_project_scope', [])->text;
+        $text = Registry::call('typo3_project_describe', [])->text;
         self::assertStringContainsString('PHP ^8.4 declared and 8.4 in DDEV', $text);
         // The command list is what a task is sent to run, and nothing beside
         // it said the shell it has is not where these run.
@@ -148,7 +148,7 @@ final class ProjectTest extends TestCase
         self::assertStringContainsString(
             'PHP unconstrained declared and 8.4 in DDEV, and the installed core requires ^8.2 — the lowest a '
                 . 'package here may declare',
-            Registry::call('typo3_project_scope', [])->text,
+            Registry::call('typo3_project_describe', [])->text,
         );
 
         // The other shape: a project whose own floor is above the core's. Both
@@ -171,7 +171,7 @@ final class ProjectTest extends TestCase
         self::assertNull(Project::describe()['corePhpConstraint']);
         self::assertStringNotContainsString(
             'the installed core requires',
-            Registry::call('typo3_project_scope', [])->text,
+            Registry::call('typo3_project_describe', [])->text,
         );
     }
 
@@ -191,7 +191,7 @@ final class ProjectTest extends TestCase
         self::assertNull(Project::describe()['environment']['php']);
         self::assertStringContainsString(
             'states no php_version',
-            Registry::call('typo3_project_scope', [])->text,
+            Registry::call('typo3_project_describe', [])->text,
         );
 
         // Unquoted it is a YAML float, and casting that to a string would
@@ -250,7 +250,7 @@ final class ProjectTest extends TestCase
             Project::describe()['environment']['hooks'],
         );
 
-        $text = Registry::call('typo3_project_scope', [])->text;
+        $text = Registry::call('typo3_project_describe', [])->text;
         self::assertStringContainsString('runs without being asked', $text);
         self::assertStringContainsString('- post-start, in the web container: composer install', $text);
         // The two that are not the web container, and the pair that would read
@@ -268,7 +268,7 @@ final class ProjectTest extends TestCase
         self::assertSame([], Project::describe()['environment']['hooks']);
         self::assertStringContainsString(
             'declares no hooks',
-            Registry::call('typo3_project_scope', [])->text,
+            Registry::call('typo3_project_describe', [])->text,
         );
     }
 
@@ -346,7 +346,7 @@ final class ProjectTest extends TestCase
             Project::describe()['environment']['providers'],
         );
 
-        $text = Registry::call('typo3_project_scope', [])->text;
+        $text = Registry::call('typo3_project_describe', [])->text;
         self::assertStringContainsString('- ddev pull dump (.ddev/providers/dump.yaml)', $text);
         // A recipe with no push command is one nothing can be pushed upstream
         // with, and the difference is worth the word.
@@ -376,7 +376,7 @@ final class ProjectTest extends TestCase
         ], Project::describe()['environment']);
         self::assertStringContainsString(
             'nothing readable here says which PHP that is',
-            Registry::call('typo3_project_scope', [])->text,
+            Registry::call('typo3_project_describe', [])->text,
         );
 
         // An interpreter on this machine is not another environment: it is the
@@ -386,7 +386,7 @@ final class ProjectTest extends TestCase
         self::assertNull(Project::describe()['environment']);
         self::assertStringContainsString(
             'Nothing in this repository configures an environment of its own',
-            Registry::call('typo3_project_scope', [])->text,
+            Registry::call('typo3_project_describe', [])->text,
         );
     }
 
@@ -413,7 +413,7 @@ final class ProjectTest extends TestCase
 
         self::assertNull(Project::describe());
 
-        $result = Registry::call('typo3_project_scope', []);
+        $result = Registry::call('typo3_project_describe', []);
         self::assertSame(['unsupported'], array_keys($result->data));
     }
 
@@ -424,7 +424,7 @@ final class ProjectTest extends TestCase
         $this->manifest($root, ['scripts' => ['ci' => 'phpunit']]);
         Instance::discoverFrom($root);
 
-        $text = Registry::call('typo3_project_scope', [])->text;
+        $text = Registry::call('typo3_project_describe', [])->text;
 
         self::assertStringContainsString('composer ci', $text);
         self::assertStringContainsString('testing suites do not', $text);
@@ -445,7 +445,7 @@ final class ProjectTest extends TestCase
         $this->manifest($root, ['scripts' => ['gerrit:setup' => 'Acme\\Scripts::install']]);
         Instance::discoverFrom($root);
 
-        $text = Registry::call('typo3_project_scope', [])->text;
+        $text = Registry::call('typo3_project_describe', [])->text;
 
         self::assertStringContainsString('testing suites do not', $text);
         self::assertStringContainsString('Build/Scripts/runTests.sh', $text);
@@ -458,7 +458,7 @@ final class ProjectTest extends TestCase
 
         self::assertStringContainsString(
             'typo3_test_run_guide',
-            Registry::call('typo3_project_scope', [])->text,
+            Registry::call('typo3_project_describe', [])->text,
         );
     }
 
@@ -507,7 +507,7 @@ final class ProjectTest extends TestCase
             'npm run build' => Project::RUNS_AS_CHANGE,
         ], $runs);
 
-        $text = Registry::call('typo3_project_scope', [])->text;
+        $text = Registry::call('typo3_project_describe', [])->text;
         self::assertStringContainsString('composer cgl:ci (composer.json) — check: php-cs-fixer --diff -v --dry-run fix', $text);
         self::assertStringContainsString('A task told not to change files can run the checks and nothing else', $text);
     }
@@ -575,7 +575,7 @@ final class ProjectTest extends TestCase
         // it is part of what running the command means.
         self::assertStringContainsString(
             'composer cs (composer.json) — check: PHP_CS_FIXER_IGNORE_ENV=1 php',
-            Registry::call('typo3_project_scope', [])->text,
+            Registry::call('typo3_project_describe', [])->text,
         );
     }
 
@@ -656,7 +656,7 @@ final class ProjectTest extends TestCase
             [['package' => 'typo3/cms-core', 'description' => 'Keep the old redirect behaviour', 'file' => 'patches/core-redirects.patch']],
             Project::describe()['patches'],
         );
-        self::assertStringContainsString('Patched dependencies', Registry::call('typo3_project_scope', [])->text);
+        self::assertStringContainsString('Patched dependencies', Registry::call('typo3_project_describe', [])->text);
     }
 
     #[Test]
@@ -696,7 +696,7 @@ final class ProjectTest extends TestCase
         $this->declare($extension . '/ext_localconf.php', "<?php\n");
         Instance::discoverFrom($root);
 
-        $result = Registry::call('typo3_extension_scope', ['extension' => 'my_sitepackage']);
+        $result = Registry::call('typo3_extension_describe', ['extension' => 'my_sitepackage']);
 
         self::assertSame(['tx_acme_event'], $result->data['tcaTables']);
         self::assertSame(
@@ -739,7 +739,7 @@ final class ProjectTest extends TestCase
         $this->declare($extension . '/Classes/Updates/Criteria/HasBackendLayout.php', "<?php\n");
         Instance::discoverFrom($root);
 
-        $result = Registry::call('typo3_extension_scope', ['extension' => 'my_sitepackage']);
+        $result = Registry::call('typo3_extension_describe', ['extension' => 'my_sitepackage']);
 
         self::assertSame(
             ['directories' => [['name' => 'Updates', 'files' => 3]], 'looseFiles' => 0, 'total' => 3],
@@ -764,7 +764,7 @@ final class ProjectTest extends TestCase
         $this->declare($extension . '/Classes/SingletonInterface.php', "<?php\n");
         Instance::discoverFrom($root);
 
-        $result = Registry::call('typo3_extension_scope', ['extension' => 'my_sitepackage']);
+        $result = Registry::call('typo3_extension_describe', ['extension' => 'my_sitepackage']);
 
         self::assertSame(
             [
@@ -796,7 +796,7 @@ final class ProjectTest extends TestCase
         $this->declare($extension . '/Resources/Private/Layouts/Login.html', '');
         Instance::discoverFrom($root);
 
-        $result = Registry::call('typo3_extension_scope', ['extension' => 'my_sitepackage']);
+        $result = Registry::call('typo3_extension_describe', ['extension' => 'my_sitepackage']);
 
         self::assertSame(['Resources/Private/Layouts/'], $result->data['fluidRoots']);
         self::assertStringContainsString(
@@ -855,7 +855,7 @@ final class ProjectTest extends TestCase
         );
         Instance::discoverFrom($root);
 
-        $result = Registry::call('typo3_extension_scope', ['extension' => 'my_sitepackage']);
+        $result = Registry::call('typo3_extension_describe', ['extension' => 'my_sitepackage']);
 
         self::assertSame(
             [
@@ -918,7 +918,7 @@ final class ProjectTest extends TestCase
         );
         Instance::discoverFrom($root);
 
-        $result = Registry::call('typo3_extension_scope', ['extension' => 'my_sitepackage']);
+        $result = Registry::call('typo3_extension_describe', ['extension' => 'my_sitepackage']);
 
         self::assertSame(
             [[
@@ -972,7 +972,7 @@ final class ProjectTest extends TestCase
         );
         Instance::discoverFrom($root);
 
-        $result = Registry::call('typo3_extension_scope', ['extension' => 'my_sitepackage']);
+        $result = Registry::call('typo3_extension_describe', ['extension' => 'my_sitepackage']);
 
         self::assertSame(
             [
@@ -1046,7 +1046,7 @@ final class ProjectTest extends TestCase
         );
         Instance::discoverFrom($root);
 
-        $result = Registry::call('typo3_extension_scope', ['extension' => 'my_sitepackage']);
+        $result = Registry::call('typo3_extension_describe', ['extension' => 'my_sitepackage']);
 
         self::assertSame(
             ['acme_hero_carousel'],
@@ -1089,7 +1089,7 @@ final class ProjectTest extends TestCase
         );
         Instance::discoverFrom($root);
 
-        $result = Registry::call('typo3_extension_scope', ['extension' => 'my_sitepackage']);
+        $result = Registry::call('typo3_extension_describe', ['extension' => 'my_sitepackage']);
 
         self::assertSame(
             ['FILE:EXT:my_sitepackage/Configuration/FlexForms/Catalogue.xml', null],
@@ -1132,7 +1132,7 @@ final class ProjectTest extends TestCase
         );
         Instance::discoverFrom($root);
 
-        $result = Registry::call('typo3_extension_scope', ['extension' => 'my_sitepackage']);
+        $result = Registry::call('typo3_extension_describe', ['extension' => 'my_sitepackage']);
 
         self::assertSame([], $result->data['contentElements']);
         self::assertSame(
@@ -1165,7 +1165,7 @@ final class ProjectTest extends TestCase
         $this->declare($extension . '/Configuration/Sets/Acme/tsconfig.yaml', "x: 1\n");
         Instance::discoverFrom($root);
 
-        $result = Registry::call('typo3_extension_scope', ['extension' => 'my_sitepackage']);
+        $result = Registry::call('typo3_extension_describe', ['extension' => 'my_sitepackage']);
 
         self::assertSame(
             [[
@@ -1222,7 +1222,7 @@ final class ProjectTest extends TestCase
         );
         Instance::discoverFrom($root);
 
-        $result = Registry::call('typo3_extension_scope', ['extension' => 'my_sitepackage']);
+        $result = Registry::call('typo3_extension_describe', ['extension' => 'my_sitepackage']);
 
         self::assertSame(
             [
@@ -1293,7 +1293,7 @@ final class ProjectTest extends TestCase
         );
         Instance::discoverFrom($root);
 
-        $result = Registry::call('typo3_extension_scope', ['extension' => 'my_sitepackage']);
+        $result = Registry::call('typo3_extension_describe', ['extension' => 'my_sitepackage']);
 
         self::assertSame(
             [],
@@ -1326,7 +1326,7 @@ final class ProjectTest extends TestCase
         );
         Instance::discoverFrom($root);
 
-        $result = Registry::call('typo3_extension_scope', ['extension' => 'my_sitepackage']);
+        $result = Registry::call('typo3_extension_describe', ['extension' => 'my_sitepackage']);
 
         self::assertSame([], $result->data['fluidNamespaces']);
         // The file is not a casualty of the degradation: no reading of it ever
@@ -1372,7 +1372,7 @@ final class ProjectTest extends TestCase
         );
         Instance::discoverFrom($root);
 
-        $result = Registry::call('typo3_extension_scope', ['extension' => 'my_sitepackage']);
+        $result = Registry::call('typo3_extension_describe', ['extension' => 'my_sitepackage']);
 
         self::assertSame('installation', $result->data['answeredBy']);
         self::assertSame(['acme-teaser'], $result->data['icons'], 'the loop-built list the parser cannot follow');
@@ -1408,7 +1408,7 @@ final class ProjectTest extends TestCase
         );
         Instance::discoverFrom($root);
 
-        $result = Registry::call('typo3_extension_scope', ['extension' => 'my_sitepackage']);
+        $result = Registry::call('typo3_extension_describe', ['extension' => 'my_sitepackage']);
 
         self::assertSame('installation', $result->data['answeredBy']);
         self::assertSame(
@@ -1444,7 +1444,7 @@ final class ProjectTest extends TestCase
         );
         Instance::discoverFrom($root);
 
-        $result = Registry::call('typo3_extension_scope', ['extension' => 'my_sitepackage']);
+        $result = Registry::call('typo3_extension_describe', ['extension' => 'my_sitepackage']);
 
         self::assertSame(
             [
@@ -1472,7 +1472,7 @@ final class ProjectTest extends TestCase
         // the one artifact the reporting session was praising was the one an
         // extension shipping none said nothing about. The fixture's system
         // extension is the package that ships none of the four.
-        $bare = Registry::call('typo3_extension_scope', ['extension' => 'core']);
+        $bare = Registry::call('typo3_extension_describe', ['extension' => 'core']);
 
         self::assertSame(
             ['manual' => null, 'readme' => null, 'tests' => [], 'languageFiles' => []],
@@ -1500,7 +1500,7 @@ final class ProjectTest extends TestCase
         $this->declare($extension . '/ext_emconf.php', "<?php\n\$EM_CONF[\$_EXTKEY] = [];\n");
         Instance::discoverFrom($root);
 
-        $result = Registry::call('typo3_extension_scope', ['extension' => 'my_sitepackage']);
+        $result = Registry::call('typo3_extension_describe', ['extension' => 'my_sitepackage']);
 
         // One entry, because the package ships no ext_tables.php — the case
         // that was reported.
@@ -1521,7 +1521,7 @@ final class ProjectTest extends TestCase
         $root = $this->composerProject();
         Instance::discoverFrom($root);
 
-        $result = Registry::call('typo3_extension_scope', ['extension' => 'news']);
+        $result = Registry::call('typo3_extension_describe', ['extension' => 'news']);
 
         self::assertNull($result->data['path']);
         self::assertContains('my_sitepackage', $result->data['installed']);

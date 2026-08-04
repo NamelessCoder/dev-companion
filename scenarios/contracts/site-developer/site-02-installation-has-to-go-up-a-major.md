@@ -2,7 +2,7 @@
 
 **Environment:** `E-SITE` on the previous major · **Contract:** `held` —
 `R-PRJ-004`: `typo3_task_guide` recognises the task and composes the order of
-operations with what `typo3_project_scope` and `typo3_changelog_lookup` know
+operations with what `typo3_project_describe` and `typo3_changelog_lookup` know
 **Held by:**
 `HintsTest::upgradingAnInstallationIsAnsweredAsAnOrderOfOperations`,
 `PackageSourcesTest::theChangelogIsNarrowedByTypeAndVersion`,

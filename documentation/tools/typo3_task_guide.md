@@ -191,6 +191,8 @@ nextTools:
 
 ## Answered
 
+`typo3_project_describe` was called `typo3_project_scope` when this was
+recorded, and the answers below name it by that spelling.
 Recorded on 2026-08-03 by `bin/cli tools:record`. Answered against
 core-checkout, TYPO3 14.3.6-dev, the 14.3 core checkout below .checkouts/,
 whose console could not be reached: <installation> has no TYPO3 console —

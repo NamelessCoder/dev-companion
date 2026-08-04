@@ -16,9 +16,10 @@ installation or checkout owns.
 Work through [references/base.md](references/base.md) first — it fixes the order
 every task here starts in and why that order is not interchangeable. Two of its
 answers decide this workflow before any test is written: the commands
-`typo3_project_scope` reports are the only ones that exist in this repository,
-and the layers `typo3_extension_scope` reports below `Tests/` are what the
-extension has today — an empty list is the answer that there is no harness yet.
+`typo3_project_describe` reports are the only ones that exist in this
+repository, and the layers `typo3_extension_describe` reports below `Tests/` are
+what the extension has today — an empty list is the answer that there is no
+harness yet.
 
 Then, for this workflow:
 

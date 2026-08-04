@@ -20,7 +20,9 @@ Absence of an optional subsystem is not a defect.
   and paths, and secret exposure. Every one of them is a value and a sink, and
   the finding gate below is how one is established.
 - Quality: the test suite and the supported TYPO3 versions it runs on, the check
-  layer, documentation, deprecations, and upgrade readiness.
+  layer, documentation — `typo3_hint_lookup` with `id=extension-documentation`,
+  which says what a manual consists of and that it ships with the package —
+  deprecations, and upgrade readiness.
 
 ## The check layer
 

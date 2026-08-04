@@ -51,6 +51,22 @@ that green checkout said so. The counts the report gives, 1558 against 1559, do
 not square with the two files it names as the difference; the mechanism is what
 the run established and the arithmetic is not re-checkable from here.
 
+The mechanism was reproduced outside that checkout on 2026-08-04, against
+`typo3/tailor` 1.7.0 installed into a scratch project and run over a fixture
+extension: an `export-ignore` attribute on a tracked directory took it out of
+`git archive` and left it in the artefact, and no occurrence of `gitattributes`
+or `export-ignore` exists anywhere in Tailor's source outside the filename it
+excludes from packaging. The same fixture established that the exclusion list
+does not mean what it reads as. Its entries are interpolated into patterns
+unquoted — directories matched `/^<entry>/i` against the path relative to the
+extension root, files `/<entry>$/i` against the filename alone — so a top-level
+directory whose name merely begins with a listed one is dropped, `binx/` and
+`publicity/` going out for `bin` and `public`, while the same name nested deeper
+survives; and any regular-expression character in an entry keeps its meaning,
+the `.` in `phpstan.neon` taking `phpstanXneon` with it. That is a second way
+one commit hands two registries different file sets, and it is readable neither
+in the archive nor in the list a maintainer would go and read.
+
 ## Held by
 
 Nothing. No skill orders this task, no tool answers it, and no scenario states

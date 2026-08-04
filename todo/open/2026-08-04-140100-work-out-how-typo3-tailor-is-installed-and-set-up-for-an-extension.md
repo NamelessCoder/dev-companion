@@ -1,62 +1,78 @@
 # Work out how `typo3/tailor` is installed and set up for an extension
 
 **Serves:** R-SKL-009
-**Priority:** high
+**Priority:** normal
 
-Extension release is a subject this server does not serve, and it is intended to
-return. What such a task is at all was the question: help carry a release out,
-describe the procedure so the person does it, or set `typo3/tailor` up so that
-releasing is possible in the first place. That question is answered, and the
-answer is the third. By this repository's own vocabulary — a tool answers a
-question, a skill orders a task
-([judging.md](../../documentation/feedback/judging.md)) — the third is a
-different task from the other two, so it is a different skill rather than a
-section of one. **It applies to extensions only**, not to projects and not to
-sitepackages.
+Write a hint entry of its own in `knowledge/hints/extension.json` for what
+`typo3/tailor` requires of an extension, keyed on the words a release question
+is asked in — *release*, *publish*, *TER*, *tailor*, *artefact*, *extension key*
+— rather than on the manifest words the existing `extension-manifest` entry
+already answers, so that a session asking about publishing reaches it. What it
+has to carry is the four requirements measured below, and the one that matters
+most is that Tailor refuses to package an extension without `ext_emconf.php`
+whose version equals the version being released: an extension that publishes to
+the TER keeps that file on every TYPO3 version, which is not what the
+deprecation in 14 and the removal of the fallback in 15 would otherwise lead a
+session to say. The existing entry's sentence — Tailor and the TER read
+`ext_emconf.php` — stays where it is and is not the place for this, because it
+answers what makes a directory an extension and this answers what a release
+needs.
 
-So the step is: establish how `typo3/tailor` is installed and configured for an
-extension, and what a skill ordering that task would look like. **Do not write
-an account of Tailor from what you remember.** It is not vendored here — no
-`composer.json` and no `composer.lock` in this checkout requires it, checked on
-2026-08-04, and the only mention anywhere is one hint in
-`knowledge/hints/extension.json` saying that Tailor and the TER read
-`ext_emconf.php`. One thing about it was measured rather than recalled and is
-worth starting from: `tailor create-artefact` filters by its own
-`conf/ExcludeFromPackaging.php` and never reads `.gitattributes`, so it keeps
-files a `git archive` of the same commit drops for an `export-ignore` attribute
-— which is how one commit hands two registries different file sets, and it is
-the only property of the tool this repository has established. The rest of its
-commands and the order they run in are part of the work and come from its own
-documentation and release notes, which is what
-[working-a-todo.md](../../documentation/feedback/working-a-todo.md) prescribes
-for a tool this repository does not own. Getting that wrong here is how a guess
-ends up in a file no release of this server corrects.
+## What was measured, 2026-08-04
 
-What the answer has to distribute is the range the maintainer named: simple
-tagging, generating a changelog, adjusting version numbers, through to
-publishing — via `typo3/tailor`, git tags, and Composer/Packagist. That is the
-material rather than the question. Setup is what this card owns; whichever of
-those steps setup does not reach is what the next question is about, and it is
-not answered here.
+`typo3/tailor` 1.7.0, the newest release on Packagist, installed into a scratch
+project and run against a fixture extension. It is not vendored in this
+repository and nothing here requires it. `tailor --version` reports `1.6.0`
+because the string is hardcoded in `bin/tailor`; `composer show` is what says
+which version is in play.
 
-`R-SKL-009` is what this serves and is where the reading starts: what a release
-answer is about, and the four things a workflow around it still has to settle.
-The priority above is `high` because the need is measured and unserved — a run
-in `E-EXT` made forty-one `Bash` calls, activated no skill and called no tool.
-Lower it if the hole is acceptable while the setup question is worked, and say
-so in the file rather than in a session.
+**It is a CLI, and the release path its own documentation prescribes is CI.**
+The README's installation section names one install —
+`composer req --dev typo3/tailor` — while every CI example in the same README
+installs it globally and throwaway at job time and calls `ter:publish`. The
+TYPO3 documentation prescribes nothing itself: it names Tailor as the REST route
+preferable for automated publishing and delegates to that README. So the dev
+dependency is the only install that is a setup act on the extension, and the
+release path the tool documents does not need it.
 
-**The copies of a skill already in other people's projects.**
-`Installer::publishSkills()` removes a skill that has left `Installer::SKILLS`:
-it diffs the list against `skills` in the project's own
-`.typo3-cms-mcp/state.json` and deletes the directory of each name the list no
-longer carries, which
-`InstallerTest::codexUpdateRemovesSkillsTrackedByThePreviousCentralState` holds.
-So a project that runs `bin/typo3-cms-mcp install` or `update` again is brought
-into line, and the ordinary case needs no change to the installer. Two cases are
-left and neither is fixed by anything here: a project that runs neither command
-keeps its copy forever, and one whose `state.json` is missing or predates the
-skills record has nothing to diff against, because `readState()` answers an
-absent file with an empty list. Nothing reports either. Whether that is worth a
-change to the installer is the maintainer's, and it needs a decision of its own
-before anybody writes one.
+**Where `.env` is read depends on which install was chosen.** `bin/tailor` looks
+for `.env` at three paths relative to itself — `../.env`, `../../../../.env`,
+`../../../../../.env`. Installed as the extension's dev dependency, the second
+is the extension root, and a key placed only there was picked up: the artefact
+came out named from it. Installed globally, those paths are the Composer home
+instead and the extension's `.env` is never read, which is why the CI examples
+pass secrets as environment variables. The file holds the API token either way.
+
+**Four things the extension itself has to carry**, and two are already forced by
+other tooling:
+
+- The extension key, resolved in that order from the argument,
+  `TYPO3_EXTENSION_KEY`, and `extra.typo3/cms.extension-key`. Not a setup step
+  in practice: `composer install` on a `typo3-cms-extension` package without it
+  already fails in `ExtensionKeyResolver`.
+- `ext_emconf.php`, with a `version` equal to the version argument and a
+  `constraints.depends.typo3` entry. `create-artefact` against a mismatched
+  version fails, against a missing file fails, and `set-version` fails without
+  it too.
+- `.gitignore` for `tailor-version-artefact/`. The zip is written into the
+  working directory, and the fixture's own `git archive` shipped the archive it
+  had just produced.
+- Optionally `TYPO3_EXCLUDE_FROM_PACKAGING`, naming a replacement for
+  `conf/ExcludeFromPackaging.php`.
+
+The packaging findings are evidence for `R-SKL-009` and are recorded there.
+
+## The open question
+
+The card was written to produce a skill ordering Tailor setup. The setup that
+was found does not carry one: it is four facts, two of which other tooling
+already enforces, and the choice between `.env` and CI secrets follows from
+where Tailor is installed rather than from any order of steps. What has steps
+and an order is the release run — `set-version`, commit, tag, push,
+`ter:publish` — and this card does not own it.
+
+So what is put back to the maintainer is whether extension release gets a skill
+at all, and whether it is the release run rather than setup, given that the
+range named for it — tagging, changelog, version numbers, publishing — lives
+entirely on the run side. The hint above is worth writing either way and does
+not wait for the answer.

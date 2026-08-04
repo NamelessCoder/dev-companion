@@ -44,7 +44,11 @@
       "encryptionKey",
       "encryption key",
       "application context",
-      "deployment secret"
+      "deployment secret",
+      "symfony/dotenv",
+      "usePutenv",
+      "loadEnv",
+      ".env.local"
     ],
     "hints": [
       "Three environment variables reach TYPO3 with no project code behind them, and SystemEnvironmentBuilder is the only thing that reads them: TYPO3_CONTEXT selects the application context, TYPO3_PATH_ROOT names the document root and TYPO3_PATH_APP the project root above it. Each is also accepted with a REDIRECT_ prefix, which is what a web server forwards into FastCGI, and the context additionally as HTTP_TYPO3_CONTEXT for Apache suexec. No other key of TYPO3_CONF_VARS has an environment variable behind it.",
@@ -53,6 +57,8 @@
         "text": "Setting the encryption key from an extension's ext_localconf.php stops working. The empty-key check moved ahead of extension loading in the bootstrap, so the installation throws \"TYPO3 Encryption is empty\" before the assignment is ever evaluated. Both config/system/settings.php and config/system/additional.php are evaluated before that check, and reading the variable there is the migration.",
         "since": 15
       },
+      "A repository whose .gitignore lists .env has promised a reader nothing in TYPO3 provides, and symfony/dotenv is the usual one: loadEnv() reads the file and populates $_ENV and $_SERVER only. getenv() — the form config/system/additional.php reads a variable in — answers false until usePutenv() has been called on the Dotenv instance, which is off by default, so the file parses and configures nothing.",
+      "loadEnv() leaves a variable that is already in the process environment alone, which is what lets a real environment variable beat the committed file; overrideExistingVars inverts that and a deployment does not want it.",
       "Where a placeholder is written instead is environment-placeholders, and what reads the environment while it runs is environment-runtime-readers."
     ]
   },

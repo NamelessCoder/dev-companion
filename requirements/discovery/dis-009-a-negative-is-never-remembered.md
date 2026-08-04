@@ -20,3 +20,4 @@ installation until the client was restarted (2026-07-29).
 ## Held by
 
 - `InstanceTest::anInstallationThatAppearsDuringTheSessionIsFound`
+- `Typo3CliTest::aStoppedProjectNoInterpreterHereCanRunIsAskedAgainAfterItStarts`

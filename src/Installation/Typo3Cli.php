@@ -724,8 +724,36 @@ final class Typo3Cli
     }
 
     /**
-     * The lowest PHP the installation accepts, taken from what it declares:
-     * the pinned Composer platform first, then the requirement itself.
+     * The lowest PHP the installation accepts: the pinned Composer platform
+     * first, then what the install itself was resolved to, then the root's own
+     * requirement.
+     *
+     * The manifest alone was not enough, and the base distribution is why. Its
+     * `composer.json` carries `"platform": {}` and no `require.php` at all —
+     * the PHP bound lives in the packages it pulls in, not in the file that
+     * pulls them — so this read `null`, every interpreter satisfied it, and
+     * host PHP 8.3 was accepted for an installation whose dependencies require
+     * 8.5.0. `typo3_server_scope` then reported that console reachable while
+     * every boot through it aborted in Composer's own platform check.
+     *
+     * That check is where the bound actually is. `composer install` writes the
+     * lower bound over every non-dev package it installed into
+     * `vendor/composer/platform_check.php`, and the autoloader includes it, so
+     * it is not a second opinion about whether the console runs — it is the
+     * code that stops it. Read against Composer 2.9.5 on 2026-08-04, both in
+     * its own `AutoloadGenerator::getPlatformCheck()` and in the four
+     * installations under `.environments/`: the expression is
+     * `PHP_VERSION_ID >= 80500`, an integer of major*10000 + minor*100 + patch,
+     * with `>` instead of `>=` where the bound is exclusive — which is why an
+     * exclusive one is read as the next id up rather than the same one.
+     *
+     * It goes above `require.php` and below the pin, which is what each of the
+     * three knows. `config.platform.php` is what Composer resolves against and
+     * will resolve against again, and the generated check cannot be higher than
+     * it in an install that check came out of. `require.php` is the root
+     * package's own bound and says nothing about the twenty-five packages it
+     * requires, so it is the weakest of the three and only answers where
+     * nothing has been installed to read.
      */
     private static function requiredPhpVersion(string $root): ?string
     {
@@ -736,12 +764,49 @@ final class Typo3Cli
             return $platform;
         }
 
+        $installed = self::installedPhpBound($root);
+        if ($installed !== null) {
+            return $installed;
+        }
+
         $required = $decoded['require']['php'] ?? null;
         if (!is_string($required) || preg_match('/(\d+)\.(\d+)/', $required, $matches) !== 1) {
             return null;
         }
 
         return $matches[1] . '.' . $matches[2] . '.0';
+    }
+
+    /**
+     * The bound Composer wrote into the install, or null where there is none to
+     * read.
+     *
+     * Absent is a real answer and not a failure: Composer leaves the file out
+     * when nothing requires a PHP version, and deletes it where `platform-check`
+     * is off or the platform requirements were ignored. In all of those the
+     * console will not abort on a version, so nothing here should say it might.
+     *
+     * The vendor directory is asked for the same way the autoloader is, because
+     * an installation that moved one moved the other — the file sits beside it.
+     */
+    private static function installedPhpBound(string $root): ?string
+    {
+        $path = $root . '/' . dirname(self::autoloader($root)) . '/composer/platform_check.php';
+        if (!is_file($path)) {
+            return null;
+        }
+
+        $generated = (string) file_get_contents($path);
+        if (preg_match('/PHP_VERSION_ID\s*(>=|>)\s*(\d+)/', $generated, $matches) !== 1) {
+            return null;
+        }
+
+        // PHP_VERSION_ID is an integer, so "greater than 80500" is "at least
+        // 80501" exactly rather than approximately, and the operator does not
+        // have to be carried any further than this line.
+        $id = (int) $matches[2] + ($matches[1] === '>' ? 1 : 0);
+
+        return $id <= 0 ? null : sprintf('%d.%d.%d', intdiv($id, 10000), intdiv($id % 10000, 100), $id % 100);
     }
 
     /**

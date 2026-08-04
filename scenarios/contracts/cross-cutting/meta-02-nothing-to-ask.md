@@ -6,6 +6,7 @@
 `Typo3CliTest::aDdevProjectThatIsNotRunningIsReportedRatherThanStarted`,
 `Typo3CliTest::aMissingConsoleNamesEveryPathThatWasProbed`,
 `InstanceTest::anInstallationThatAppearsDuringTheSessionIsFound`,
+`Typo3CliTest::aStoppedProjectNoInterpreterHereCanRunIsAskedAgainAfterItStarts`,
 `LabelSearchTest::aConsoleThatCannotRunIsStillUnanswered`
 
 > Which icons can I use for a "publish" action, and is there already a label for

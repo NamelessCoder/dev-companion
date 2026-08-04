@@ -2,6 +2,8 @@
 
 **Serves:** R-DIS-010
 **Priority:** normal
+**Branch:** todo/hold-the-stopped-project-caveat-to-what-cannot-be-asked
+**Claimed:** 2026-08-04
 
 The caveat `Typo3Cli` sets for a project reached through host PHP says "the
 label, module and Fluid namespace lookups need the database", and a caller reads

@@ -3,6 +3,8 @@
 **Serves:** decisions/
 **Priority:** normal
 **Run:** bin/cli scenarios:contract EXT-03
+**Branch:** todo/commit-in-a-project-repository-and-see-whether-d-gui-2
+**Claimed:** 2026-08-04
 
 Both halves of what this waited on were answered on 2026-08-03. A session may
 change code and commit in one of the `E-EXT` checkouts, and this server may not

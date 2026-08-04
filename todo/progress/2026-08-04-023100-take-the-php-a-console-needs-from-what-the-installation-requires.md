@@ -2,6 +2,8 @@
 
 **Serves:** R-DIS-010, R-DIS-009, META-02
 **Priority:** high
+**Branch:** todo/take-the-php-a-console-needs-from-what-the-installation-requires
+**Claimed:** 2026-08-04
 
 `Typo3Cli::requiredPhpVersion()` reads `config.platform.php` and then
 `require.php` out of the installation's own `composer.json`, and the base

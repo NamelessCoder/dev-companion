@@ -2,6 +2,8 @@
 
 **Serves:** decisions/
 **Priority:** normal
+**Branch:** todo/a-needle-matches-a-word-it-only-starts
+**Claimed:** 2026-08-04
 
 `Text::containsWord()` anchors a needle at a word boundary on the left and
 nowhere on the right, so `test` matches "testimonials". That is deliberate for

@@ -320,6 +320,11 @@ final class Hints
         }
 
         $task = trim($task);
+        // Kept apart as well as together: a pattern is matched against the two
+        // halves by different rules, because only one of them ends its words —
+        // scoreKeywords().
+        $pathsText = mb_strtolower(implode("\n", $paths));
+        $taskText = mb_strtolower($task);
         $haystack = mb_strtolower(implode("\n", array_merge($paths, [$task])));
         $backendModule = Domains::namesBackendModule($paths, $task);
         $backendOnly = $backendModule || Domains::namesOnlyTheBackend($paths, $task);
@@ -390,7 +395,7 @@ final class Hints
 
         $scored = [];
         foreach ($candidates as $index => $hint) {
-            $keywords = self::scoreKeywords($hint, $haystack);
+            $keywords = self::scoreKeywords($hint, $taskText, $pathsText);
             [$score, $covered, $matchedTerms] = TermSearch::score(
                 $searchable[$index],
                 $weights,
@@ -603,9 +608,19 @@ final class Hints
      * `/Service/` — and what makes it a match is the caller naming it. A longer
      * pattern is the more specific claim and counts for more.
      *
+     * The two halves of the query are asked differently, and that is the whole
+     * of what `D-ANS-050` left here. A sentence ends its words, so a bare
+     * pattern is held to being one: `boot`, which the extension's boot files are
+     * written down under, otherwise matched "Bootstrap transition in backend
+     * CSS". A path does not end anything — `ThumbnailViewHelper.php` is one run
+     * of letters once it is lowercased, and the `thumbnail` of the image
+     * processing hint reaches it only by running past its own end. So the
+     * sentence is asked for the word and the paths are asked for the prefix,
+     * and a pattern in both is still one match.
+     *
      * @param array{appliesTo: array<int, string>} $hint
      */
-    private static function scoreKeywords(array $hint, string $haystack): int
+    private static function scoreKeywords(array $hint, string $task, string $paths): int
     {
         $score = 0;
         foreach ($hint['appliesTo'] as $pattern) {
@@ -619,8 +634,8 @@ final class Hints
             // and handed the File Abstraction Layer to a question about a
             // label.
             $matched = preg_match('/^[\p{L}\p{N} ]+$/u', $normalized) === 1
-                ? TermSearch::carries($haystack, $normalized)
-                : str_contains($haystack, $normalized);
+                ? TermSearch::carriesWord($task, $normalized) || TermSearch::carries($paths, $normalized)
+                : str_contains($task, $normalized) || str_contains($paths, $normalized);
             if ($matched) {
                 $score += strlen($normalized);
             }

@@ -3206,6 +3206,12 @@ final class HintsTest extends TestCase
      * that cost: a session in `site-new` built a content element with a custom
      * backend preview, loaded no skill, and guessed at facts
      * `typo3-content-element-development` exists to route.
+     *
+     * It is named alone, which is the half `D-ANS-050` closed: "testimonials"
+     * matched the `test` of the tests intent, so the same call named
+     * `typo3-extension-testing` ahead of the skill that owns the task, and an
+     * assertion that the right name is among them holds just as well when a
+     * whole workflow the task has nothing to do with is loaded first.
      */
     #[Test]
     public function aBriefNamesTheSkillThatOwnsTheWork(): void
@@ -3217,8 +3223,10 @@ final class HintsTest extends TestCase
             'targetVersion' => '14',
         ]);
 
-        self::assertContains('typo3-content-element-development', $element->data['skills']);
+        self::assertSame(['typo3-content-element-development'], $element->data['skills']);
         self::assertStringContainsString('typo3-content-element-development', $element->text);
+        self::assertStringNotContainsString('typo3-extension-testing', $element->text);
+        self::assertNotContains('tests', array_column($element->data['intents'], 'id'));
         // Above the payload, because a caller in the wrong workflow is in it
         // for the whole answer.
         self::assertLessThan(

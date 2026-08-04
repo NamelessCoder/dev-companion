@@ -261,19 +261,36 @@ final class TermSearch
      * Whether the text carries the term: as a word prefix from
      * PREFIX_FROM_LENGTH characters up, as a whole word below it.
      *
-     * Public because the curated vocabulary needs the same rule for the same
-     * reason. It is matched the other way round — the pattern is looked for in
-     * the query rather than the query in the document — but "needle occurs in
-     * haystack" is the same question, and a bare short pattern goes wrong there
-     * in exactly the same way.
+     * A term is what stem() left of a query word, so the prefix is the whole
+     * point of it — "deprecated" is searched for as "deprec" and reaches the
+     * "Deprecations" section by running past its own end. That is why this is
+     * `Text::startsWord()` and carriesWord() beside it is not.
      */
     public static function carries(string $text, string $term): bool
     {
         if (strlen($term) >= self::PREFIX_FROM_LENGTH) {
-            return Text::containsWord($text, $term);
+            return Text::startsWord($text, $term);
         }
 
         return preg_match('/\b' . preg_quote($term, '/') . '\b/i', $text) === 1;
+    }
+
+    /**
+     * The same question asked of a curated pattern, which is a word.
+     *
+     * The vocabulary needs the length floor for the same reason a query does —
+     * `fal`, the File Abstraction Layer, prefix-matched seven hints through
+     * "fallback" and "false" — and it needs the other half of the rule for the
+     * opposite reason: nobody truncated these, so a pattern that runs past its
+     * own end is matching a word it only starts. `D-ANS-050`.
+     */
+    public static function carriesWord(string $text, string $word): bool
+    {
+        if (strlen($word) >= self::PREFIX_FROM_LENGTH) {
+            return Text::containsWord($text, $word);
+        }
+
+        return preg_match('/\b' . preg_quote($word, '/') . '\b/i', $text) === 1;
     }
 
     /**

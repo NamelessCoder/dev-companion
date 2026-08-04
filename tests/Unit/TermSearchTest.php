@@ -7,6 +7,7 @@ namespace Typo3CmsMcp\Tests\Unit;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Typo3CmsMcp\Search\TermSearch;
+use Typo3CmsMcp\Search\Text;
 
 /**
  * Which words of a query are searched for at all.
@@ -84,5 +85,46 @@ final class TermSearchTest extends TestCase
         self::assertTrue(TermSearch::carries('if', 'if'));
         self::assertTrue(TermSearch::carries('be.security.if Authenticated', 'if'));
         self::assertFalse(TermSearch::carries('a different ifPresent check', 'if'));
+    }
+
+    /**
+     * A stem is asked for its prefix and a word is asked for its word, and
+     * which of the two a needle is, is what the caller knows (`D-ANS-050`).
+     *
+     * The same string proves both sides here: `stem()` cuts "testimonials" to
+     * "testim", which reaches the word it was cut from and nothing else,
+     * while `test` — a word, and the tests intent's own needle — does not
+     * reach it at all.
+     */
+    #[Test]
+    public function aStemRunsPastItsOwnEndAndACuratedWordDoesNot(): void
+    {
+        $text = 'build a testimonials content element';
+
+        self::assertSame(['build', 'testim', 'conten', 'elemen'], TermSearch::terms($text));
+        self::assertTrue(TermSearch::carries($text, 'testim'));
+        self::assertFalse(TermSearch::carriesWord($text, 'test'));
+
+        // What the open side is there for, and it is the same call.
+        self::assertTrue(TermSearch::carriesWord('add tests for it', 'test'));
+        self::assertTrue(TermSearch::carriesWord('deprecate the method', 'deprecat'));
+        self::assertTrue(TermSearch::carriesWord('a deprecation in v14', 'deprecat'));
+        // And a word it only starts, one layer down from the route: `boot` is
+        // what the extension boot files are written down under.
+        self::assertFalse(TermSearch::carriesWord('bootstrap 5 in the theme', 'boot'));
+        self::assertTrue(TermSearch::carriesWord('booting the installation', 'boot'));
+    }
+
+    /**
+     * The right side closes on a letter and not on a word character, so an
+     * identifier a needle is the head of is still reached — `D-ANS-006`'s side
+     * of the same question.
+     */
+    #[Test]
+    public function aNeedleThatRunsIntoASeparatorIsLeftAsItWas(): void
+    {
+        self::assertTrue(TermSearch::carriesWord('resolve a sys_file_reference', 'sys_file'));
+        self::assertTrue(Text::containsWord('what does f:if do', 'f:'));
+        self::assertTrue(Text::containsWord('typo3/sysext/core/Classes', 'typo3/sysext/'));
     }
 }

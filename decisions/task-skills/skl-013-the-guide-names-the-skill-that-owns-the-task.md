@@ -116,3 +116,22 @@ this entry.
 
 - `HintsTest::aBriefNamesTheSkillThatOwnsTheWork`
 - `SkillTest::everySkillNamedInKnowledgeIsPublished`
+
+## Since then
+
+The second **Wrong if** was the one that happened, and it is closed rather than
+observed: the matcher ends a curated needle where its word ends, so
+"testimonials" no longer matches the `tests` intent's `test` and the
+testimonials task names `typo3-content-element-development` alone —
+[`D-ANS-050`](../answers/ans-050-a-curated-needle-matches-the-word-it-is-and-a-stem-matches-past-its-end.md)
+has what the sweep found, including three more false intents on the same rule
+and one, `lit` reaching "Literals", a layer below the route where nothing acts
+on it. `HintsTest::aBriefNamesTheSkillThatOwnsTheWork` asserts the name alone
+from the same commit, because an assertion that the right skill is among them
+holds just as well while a whole workflow the task has nothing to do with is
+loaded first.
+
+The first and third are where they were. No build session in `site-new` has been
+filed since — the three open feedbacks are from `ext-guidedtour` and
+`typo3-cms`, none of them newer than the day this was decided — and the mapping
+is still the same five intents.

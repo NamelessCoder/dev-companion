@@ -1,7 +1,8 @@
 ---
 date: 2026-08-04T18:01:33+00:00
 category: idea
-status: open
+status: closed
+closed: 2026-08-04
 model: claude-opus-5
 tool: typo3_commit_message_guide, typo3_server_scope, ListMcpResourcesTool
 directory: /home/benji/projects/site-new

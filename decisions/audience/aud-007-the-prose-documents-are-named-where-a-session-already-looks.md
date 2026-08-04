@@ -62,3 +62,16 @@ tool list and finished without learning whether there was anything to read.
   enumeration has to be callable.
 - The line has to be edited whenever a document is added. Then it named the
   documents rather than the index, which is what this entry decided against.
+
+**Since then**, on 2026-08-04, the line was written and it is one clause rather
+than the paragraph this entry imagined. The `instructions` carry a budget —
+`ScopeTest::theInstructionsFitWhatAClientKeeps` holds them to 2048 characters,
+including the prefix that grows when a caller excludes tools — and a first draft
+naming four documents and what reading one saves put the excluded-tools case
+over it by 75.
+
+What survived is the clause on the sentence that was already there: what
+`typo3_server_scope` answers now reads as including the whole procedures served
+as `typo3://guides` resources, which the client may not list at all. That keeps
+the entry's own decision — the index rather than the documents — and the budget
+is why it could not have gone the other way.

@@ -66,19 +66,22 @@ final class TodoTest extends TestCase
      * It holds what `bin/cli todo:sync` leaves behind rather than the command
      * itself. A feedback recorded since the last run of it is exactly the case
      * this would catch, and the answer is to run it.
+     *
+     * One assertion over the set rather than one per feedback, because an empty
+     * `feedback/` is the state the board is in whenever everything is worked
+     * off — `D-FBK-013` — and a loop asserts nothing there, which PHPUnit
+     * reports as risky and CI reads as a failure.
      */
     #[Test]
     public function everyOpenFeedbackIsOnTheBoard(): void
     {
         $served = Todo::serves();
 
-        foreach (OpenFeedback::all() as $feedback) {
-            self::assertContains(
-                $feedback['file'],
-                $served,
-                $feedback['file'] . ' is open and no todo answers for it — `bin/cli todo:sync`',
-            );
-        }
+        self::assertSame(
+            [],
+            array_values(array_diff(array_column(OpenFeedback::all(), 'file'), $served)),
+            'a feedback is open and no todo answers for it — `bin/cli todo:sync`',
+        );
     }
 
     /**

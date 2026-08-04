@@ -18,7 +18,7 @@ use Typo3CmsMcp\Result\Unsupported;
  * recommendation is only worth as much as its fit: a check that is not declared
  * here does not exist here, whatever the core does with the same name.
  */
-final class ProjectScope extends ReadOnlyTool
+final class ProjectDescribe extends ReadOnlyTool
 {
     public static function name(): string
     {

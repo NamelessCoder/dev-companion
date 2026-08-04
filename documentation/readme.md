@@ -1,9 +1,11 @@
 # How the work is done
 
-One page per procedure that is long enough to get wrong from memory. One thing
-is no procedure and is written by nobody: `tools/` is the tool surface, rendered
-from the classes that declare it, each page carrying what that tool answered
-once.
+One page per procedure that is long enough to get wrong from memory. Two things
+are no procedure. `tools/` is the tool surface, rendered from the classes that
+declare it and written by nobody, each page carrying what that tool answered
+once. `interface-contract/` is what this repository says outward into somebody
+else's process, and it sits here because every other tree a check reads holds
+entries of a fixed shape.
 
 `requirements/` and `decisions/` are working directories, and the whole of what
 one of their entries is — what it states, where it goes, how it is written — is
@@ -89,6 +91,14 @@ order by, and the launch two of the subjects below share.
 
 - [forward-runs.md](evidence/forward-runs.md) — running a forward review,
   judging it, and what to do when one stops without an error.
+
+## [interface-contract/](interface-contract/comment-on-the-uniform-scheme.md) — what this server says into somebody else's process
+
+- [comment-on-the-uniform-scheme.md](interface-contract/comment-on-the-uniform-scheme.md)
+  — the comment drafted for the comment period of the TYPO3 Association's draft
+  RFC on an MCP interface contract, on the scheme that draft leaves unnamed and
+  this server already serves under. What it rests on is
+  [`D-SCO-010`](../decisions/scope/sco-010-all-three-typo3-namespaces-are-kept-and-the-scheme-is-raised.md).
 
 What does **not** belong here are the entries themselves: what must hold is
 [requirements/](../requirements/readme.md), what a change assumed is

@@ -14,7 +14,7 @@ use Typo3CmsMcp\Result\Unsupported;
 /**
  * What one extension registers, from its own files.
  */
-final class ExtensionScope extends ReadOnlyTool
+final class ExtensionDescribe extends ReadOnlyTool
 {
     /**
      * The fields the extension schema requires, empty. A miss answers with the

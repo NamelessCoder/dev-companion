@@ -49,8 +49,8 @@ final class Registry
         BackendModuleLookup::class,
         IconLookup::class,
         ChangelogLookup::class,
-        ProjectScope::class,
-        ExtensionScope::class,
+        ProjectDescribe::class,
+        ExtensionDescribe::class,
         CatalogScope::class,
         CommitMessageGuide::class,
     ];

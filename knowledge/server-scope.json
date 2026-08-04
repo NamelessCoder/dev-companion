@@ -79,6 +79,24 @@
       "scope": "any"
     },
     {
+      "topic": "Task workflows for extension, sitepackage and project work: backend modules, content elements, conformance review, documentation, a release, tests and static analysis, and carrying a package to another TYPO3 version",
+      "depth": "The skills this server publishes, one resource per workflow: the order the steps are taken in, with the lookup that owns each fact named at the step that needs it. A skill is followed while the work is done rather than read, and what it states about TYPO3 itself is a lookup instead of a sentence, so a published copy cannot go stale. bin/typo3-cms-mcp install writes the same files into the client's own skills directory; the resource is the route for a client that never ran it. What a workflow hands over at a step — the order every task starts in, a checklist, an implementation guide — is served under the same URI as that workflow and is read when it sends you there.",
+      "tools": [
+        "typo3_task_guide"
+      ],
+      "source": "typo3://skill/typo3-backend-module-development/SKILL.md, typo3://skill/typo3-content-element-development/SKILL.md, typo3://skill/typo3-extension-conformance/SKILL.md, typo3://skill/typo3-extension-documentation/SKILL.md, typo3://skill/typo3-extension-release/SKILL.md, typo3://skill/typo3-extension-testing/SKILL.md, typo3://skill/typo3-extension-upgrade/SKILL.md",
+      "scope": "any"
+    },
+    {
+      "topic": "The core's own task workflows: writing a patch and carrying it to review, and reviewing somebody else's patch set",
+      "depth": "The same shape as the workflows beside them, with the steps that stop at the core repository: the Forge issue, the suites of runTests.sh, the changelog entry a change owes, and the Gerrit push.",
+      "tools": [
+        "typo3_task_guide"
+      ],
+      "source": "typo3://skill/typo3-core-patch-development/SKILL.md, typo3://skill/typo3-core-patch-review/SKILL.md",
+      "scope": "core"
+    },
+    {
       "topic": "Official TYPO3 API, reference and tutorial documentation",
       "depth": "Live lookup in the public tables of contents of TYPO3 Explained, TypoScript Explained, the TCA Reference and the Fluid ViewHelper Reference, bound to one covered documentation release. Every result keeps its canonical URL, document, version and section; pass that URL back with the same target version to read the page as text, including headings and code examples. An unreachable service is not an empty search.",
       "tools": [

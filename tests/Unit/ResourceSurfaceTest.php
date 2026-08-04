@@ -4,12 +4,19 @@ declare(strict_types=1);
 
 namespace Typo3CmsMcp\Tests\Unit;
 
+use Mcp\Capability\Registry\ResourceTemplateReference;
 use Mcp\Schema\ResourceDefinition;
+use Mcp\Server\ClientGateway;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Finder\Finder;
 use Typo3CmsMcp\Knowledge\Documents;
+use Typo3CmsMcp\Paths;
 use Typo3CmsMcp\Sdk\ResourceHandler;
+use Typo3CmsMcp\Sdk\SkillReferenceHandler;
+use Typo3CmsMcp\Sdk\Skills;
 use Typo3CmsMcp\Server\Factory;
+use Typo3CmsMcp\Server\Installer;
 
 /**
  * The typo3:// resources as a host reads them, which is before anything of
@@ -41,11 +48,12 @@ final class ResourceSurfaceTest extends TestCase
 
     /**
      * The order is the whole of what a priority says, so it is what is held:
-     * the index above the documents it lists, and a document that holds
-     * wherever the caller is working above one that stops at the core.
+     * the index above everything it lists, and what holds wherever the caller
+     * is working above what stops at the core. It runs over both families,
+     * because a picker sorts one list.
      */
     #[Test]
-    public function whatADocumentIsWorthOutsideTheCoreDecidesWhereAPickerPutsIt(): void
+    public function whatAResourceIsWorthOutsideTheCoreDecidesWhereAPickerPutsIt(): void
     {
         $priorities = [];
         foreach (Factory::resources() as $resource) {
@@ -56,17 +64,16 @@ final class ResourceSurfaceTest extends TestCase
 
         $coreOnly = [];
         $transferable = [];
-        foreach (Documents::documents() as $document) {
-            $priority = $priorities[ResourceHandler::DOCUMENT_PREFIX . $document['id']];
+        foreach (self::offeredBelowTheIndex() as $uri => $stopsAtTheCore) {
             self::assertLessThan(
                 $priorities[ResourceHandler::INDEX_URI],
-                $priority,
-                $document['id'] . ' is offered above the index that says what it is',
+                $priorities[$uri],
+                $uri . ' is offered above the index that says what it is',
             );
-            if (Documents::isCoreOnly($document['id'])) {
-                $coreOnly[] = $priority;
+            if ($stopsAtTheCore) {
+                $coreOnly[] = $priorities[$uri];
             } else {
-                $transferable[] = $priority;
+                $transferable[] = $priorities[$uri];
             }
         }
 
@@ -75,7 +82,7 @@ final class ResourceSurfaceTest extends TestCase
         self::assertLessThan(
             min($transferable),
             max($coreOnly),
-            'a document that stops at the core is offered as high as one that holds anywhere',
+            'a resource that stops at the core is offered as high as one that holds anywhere',
         );
     }
 
@@ -92,6 +99,133 @@ final class ResourceSurfaceTest extends TestCase
     }
 
     /**
+     * The same for the second family, plus the difference between the two: a
+     * document is prose to read and a skill is an order to follow, and the one
+     * place a host can be told which of the two it is picking up is the card
+     * it picks from — the card is all it has.
+     */
+    #[Test]
+    public function aSkillSaysThatItIsAWorkflowAndWhoItsStepsOblige(): void
+    {
+        foreach (Skills::skills() as $skill) {
+            $description = (string) Skills::description($skill['id']);
+
+            self::assertStringContainsString(
+                'not a page to read',
+                $description,
+                $skill['id'] . ' is offered as though it were a page a host serves for selection',
+            );
+            self::assertStringContainsString(
+                Skills::isCoreOnly($skill['id']) ? 'does not transfer' : "Not the core's own workflow",
+                $description,
+                $skill['id'] . ' is offered without saying who its steps oblige',
+            );
+        }
+    }
+
+    /**
+     * What the skill says about itself is what it already said, so the two
+     * cannot come apart: a description written a second time here would be
+     * corrected in the front matter and stay wrong in the resource list.
+     */
+    #[Test]
+    public function whatASkillIsOfferedAsIsWhatItsOwnFrontMatterSays(): void
+    {
+        foreach (Skills::skills() as $skill) {
+            $frontMatter = [];
+            preg_match('/^description:[ \t]*(\S.*)$/m', Skills::read($skill['id']), $frontMatter);
+
+            self::assertStringContainsString(
+                trim($frontMatter[1] ?? 'no description in the front matter'),
+                (string) Skills::description($skill['id']),
+                $skill['id'] . ' is described twice, and the two can disagree',
+            );
+            self::assertSame($skill['id'], Skills::name($skill['id']), 'the name is not the id it is published as');
+        }
+    }
+
+    /**
+     * A skill is offered because it is published, which is the list
+     * `Server\Installer` writes into a client. A draft is a file in `skills/`
+     * that nobody may load yet — `typo3-development-installation`, `D-SKL-013`
+     * — and offering it as a resource would publish it by the back door.
+     */
+    #[Test]
+    public function onlyAPublishedSkillIsOffered(): void
+    {
+        $offered = array_column(Factory::resources(), 'uri');
+
+        foreach (Installer::SKILLS as $skill) {
+            self::assertContains(ResourceHandler::skillUri($skill), $offered);
+        }
+
+        $published = Finder::create()->directories()->in(Paths::root() . '/skills')->depth(0);
+        foreach ($published as $directory) {
+            if (in_array($directory->getFilename(), Installer::SKILLS, true)) {
+                continue;
+            }
+            self::assertNotContains(
+                ResourceHandler::skillUri($directory->getFilename()),
+                $offered,
+                $directory->getFilename() . ' is not published to any client and is offered here',
+            );
+        }
+    }
+
+    /**
+     * What a workflow hands over at a step is addressable without being in the
+     * list a picker sorts. A checklist offered beside the workflow that owns it
+     * is an entry nobody can choose between, and it is read at the step that
+     * sends the reader to it — which is what the priority under all of them
+     * says for the client that does sort templates.
+     */
+    #[Test]
+    public function whatASkillHandsOverAtAStepIsOfferedAsATemplateRatherThanInTheList(): void
+    {
+        $template = Factory::skillReferences();
+        self::assertNotNull($template->description, 'the reference template says nothing about what it answers');
+        self::assertNotNull($template->mimeType);
+
+        $priority = $template->annotations?->priority;
+        self::assertNotNull($priority);
+
+        $offered = array_column(Factory::resources(), 'uri');
+        foreach (Skills::skills() as $skill) {
+            foreach (Skills::references($skill['id']) as $reference) {
+                self::assertNotContains(
+                    ResourceHandler::skillReferenceUri($skill['id'], $reference),
+                    $offered,
+                    $reference . ' of ' . $skill['id'] . ' is in the list a host offers for selection',
+                );
+            }
+        }
+
+        $priorities = array_map(
+            static fn(ResourceDefinition $resource): float => (float) $resource->annotations?->priority,
+            Factory::resources(),
+        );
+        self::assertLessThan(min($priorities), $priority);
+    }
+
+    /**
+     * Every resource that is not the index, and whether it stops at the core.
+     *
+     * @return array<string, bool>
+     */
+    private static function offeredBelowTheIndex(): array
+    {
+        $offered = [];
+        foreach (Documents::documents() as $document) {
+            $offered[ResourceHandler::DOCUMENT_PREFIX . $document['id']] = Documents::isCoreOnly($document['id']);
+        }
+        foreach (Skills::skills() as $skill) {
+            $offered[ResourceHandler::skillUri($skill['id'])] = Skills::isCoreOnly($skill['id']);
+        }
+
+        return $offered;
+    }
+
+    /**
      * The protocol's `audience` is the user of the client or the model reading
      * the resource, and it is neither of the three audiences `R-AUD-001` names
      * — those are not values it takes. Everything served here is for both
@@ -105,11 +239,84 @@ final class ResourceSurfaceTest extends TestCase
         }
     }
 
+    /**
+     * The defect a body served on its own has, and the one nothing about a
+     * description can catch: every skill opens by sending the reader to
+     * `references/base.md`, which is a file in no skill in this checkout —
+     * `Installer` writes it at publication. A client that never ran that
+     * install is exactly the client this family exists for, so the link has to
+     * land on something it can read.
+     *
+     * What is asserted is the resolution a reader performs, not a promise that
+     * it works: the target is resolved against the URI the body is served at,
+     * the way a relative reference is resolved against any other URI, and the
+     * result has to be a URI this server answers.
+     */
+    #[Test]
+    public function everyLinkASkillWritesResolvesToAResourceThisServerServes(): void
+    {
+        foreach (Skills::skills() as $skill) {
+            $uri = ResourceHandler::skillUri($skill['id']);
+            preg_match_all('/\]\(\s*([^)\s#][^)\s]*)\s*\)/', Skills::read($skill['id']), $links);
+
+            $written = array_values(array_filter(
+                array_unique($links[1]),
+                static fn(string $target): bool => preg_match('#^[a-z][a-z0-9+.-]*:|^//#i', $target) !== 1,
+            ));
+            self::assertNotSame([], $written, $skill['id'] . ' links to nothing, and every skill links to its base');
+
+            foreach ($written as $target) {
+                self::assertNotSame(
+                    '',
+                    self::read(dirname($uri) . '/' . $target),
+                    $skill['id'] . ' sends its reader to ' . $target . ', which resolves to nothing served',
+                );
+            }
+        }
+    }
+
+    #[Test]
+    public function whatNoSkillLinksToIsNotServedUnderItsUri(): void
+    {
+        $this->expectException(\RuntimeException::class);
+
+        (new SkillReferenceHandler())->read(
+            ResourceHandler::skillReferenceUri('typo3-extension-testing', 'references/invented.md'),
+            ['skill' => 'typo3-extension-testing', 'reference' => 'invented.md'],
+            self::createStub(ClientGateway::class),
+        );
+    }
+
     /** What a client gets when it reads the resource, which is what its size counts. */
     private static function served(ResourceDefinition $resource): string
     {
-        return $resource->uri === ResourceHandler::INDEX_URI
-            ? ResourceHandler::index()
-            : Documents::read(substr($resource->uri, strlen(ResourceHandler::DOCUMENT_PREFIX)));
+        return self::read($resource->uri);
+    }
+
+    /**
+     * One URI read the way the server reads it: the registered resources
+     * first, then the template — matched by the SDK's own compiled template
+     * rather than by a pattern written a second time here.
+     */
+    private static function read(string $uri): string
+    {
+        $gateway = self::createStub(ClientGateway::class);
+
+        foreach (Factory::resources() as $resource) {
+            if ($resource->uri === $uri) {
+                return (new ResourceHandler())->read($uri, $gateway);
+            }
+        }
+
+        $template = new ResourceTemplateReference(Factory::skillReferences(), static fn(): string => '');
+        if ($template->matches($uri)) {
+            return (new SkillReferenceHandler())->read(
+                $uri,
+                array_map('strval', $template->extractVariables($uri)),
+                $gateway,
+            );
+        }
+
+        self::fail($uri . ' is served by nothing this server registers');
     }
 }

@@ -2,10 +2,18 @@
 
 **Serves:** documentation/tools/
 **Priority:** normal
-**Waiting on:** may the tool pages be built against a second fixture standing in
-    for the core checkout, when `typo3_component_lookup` then answers from the
-    bundled catalog rather than from an installed backend? Three answers below,
-    and the reading behind them is here.
+**Waiting on:** put to the maintainer on 2026-08-04 with the three answers
+    priced, and deferred rather than left unread — so a session reaching this
+    card is not the first to look at it. Nothing is broken while it waits: the
+    derived half of every page is checked today and the recorded half is what
+    goes unheld. What would make it worth answering is the checkout becoming a
+    problem somebody has rather than one the reading found — a CI run that needs
+    the answered half, or `typo3_component_lookup` gaining a source that does
+    not need an installed backend. The question as it stands: may the tool pages
+    be built against a second fixture standing in for the core checkout, when
+    `typo3_component_lookup` then answers from the bundled catalog rather than
+    from an installed backend? Three answers below, and the reading behind them
+    is here.
 
 Half of it is done. `Upkeep\Fixture` writes a Composer project below
 `.fixtures/` whose console answers and whose container boots full, and

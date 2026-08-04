@@ -179,10 +179,19 @@ grouped by where an answer comes from.
 
 ## Resources
 
-- `typo3://core`: knowledge index — the server's scope and routing, plus the
-  available knowledge documents.
+- `typo3://core`: knowledge index — the server's scope and routing, plus every
+  document and skill it serves.
 - `typo3://core/{documentId}`: Markdown resource for a single knowledge
   document, for example `typo3://core/typo3-core-rules`.
+- `typo3://skill/{skillId}/SKILL.md`: one published task workflow, for example
+  `typo3://skill/typo3-extension-testing/SKILL.md`. `install` writes the same
+  files into the client's own skills directory; this is the route for a client
+  that never ran it.
+- `typo3://skill/{skillId}/references/{file}`: what that workflow hands over at
+  a step, at the path its own text links to it by — `references/base.md`
+  included, which exists as a file only once a skill is published. A resource
+  template rather than a listed resource: it is followed from the workflow, not
+  picked out of the list.
 
 ## Knowledge base
 

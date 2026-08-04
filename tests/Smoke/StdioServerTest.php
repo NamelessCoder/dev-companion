@@ -223,6 +223,45 @@ final class StdioServerTest extends TestCase
         self::assertStringContainsString('# TYPO3 Core Contribution Rules', $result['contents'][0]['text']);
     }
 
+    /**
+     * The second family on the same wire: a task workflow, and the file it
+     * opens by sending its reader to.
+     *
+     * That second read is what the URI shape exists for. `references/base.md`
+     * is a file in no skill in this checkout — `Installer` writes it when it
+     * publishes one — and the client this family is for is precisely the one
+     * that never ran that install. Resolved against the URI the body is served
+     * at, the link the body writes is the URI read here, and the SDK matches it
+     * against the registered template.
+     */
+    #[Test]
+    public function aTaskWorkflowIsServedWithWhatItSendsItsReaderTo(): void
+    {
+        $body = 'typo3://skill/typo3-extension-testing/SKILL.md';
+        $responses = $this->session([
+            $this->request(2, 'resources/list'),
+            $this->request(3, 'resources/read', ['uri' => $body]),
+            $this->request(4, 'resources/read', ['uri' => dirname($body) . '/references/base.md']),
+        ]);
+
+        $offered = array_column($responses[2]['result']['resources'], null, 'uri');
+        self::assertStringContainsString('not a page to read', $offered[$body]['description']);
+        self::assertGreaterThan(0, $offered[$body]['size']);
+        self::assertLessThan(
+            $offered[$body]['annotations']['priority'],
+            $offered['typo3://skill/typo3-core-patch-review/SKILL.md']['annotations']['priority'],
+        );
+
+        self::assertStringContainsString(
+            '](references/base.md)',
+            $responses[3]['result']['contents'][0]['text'],
+        );
+        self::assertStringContainsString(
+            'typo3_project_describe',
+            $responses[4]['result']['contents'][0]['text'],
+        );
+    }
+
     #[Test]
     public function invalidArgumentsAreRejectedBeforeTheToolRuns(): void
     {

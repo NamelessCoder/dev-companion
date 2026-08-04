@@ -6,12 +6,15 @@ namespace Typo3CmsMcp\Server;
 
 use Mcp\Schema\Annotations;
 use Mcp\Schema\ResourceDefinition;
+use Mcp\Schema\ResourceTemplate;
 use Mcp\Schema\Tool;
 use Mcp\Schema\ToolAnnotations;
 use Mcp\Server;
 use Typo3CmsMcp\Knowledge\Coverage;
 use Typo3CmsMcp\Knowledge\Documents;
 use Typo3CmsMcp\Sdk\ResourceHandler;
+use Typo3CmsMcp\Sdk\SkillReferenceHandler;
+use Typo3CmsMcp\Sdk\Skills;
 use Typo3CmsMcp\Sdk\ToolHandler;
 use Typo3CmsMcp\Tool\Registry;
 
@@ -32,13 +35,26 @@ final class Factory
      * so what carries meaning is the order rather than the number.
      *
      * The index says what all the others are and is the one to take where only
-     * one is taken. Below it, a document that holds whatever the caller is
-     * working on is worth more than one that holds inside a core checkout
-     * alone, which most sessions are not in — `R-AUD-001`.
+     * one is taken. Below it, what holds whatever the caller is working on is
+     * worth more than what holds inside a core checkout alone, which most
+     * sessions are not in — `R-AUD-001`.
+     *
+     * That audience is the whole of the axis, so a document and a skill that
+     * both hold anywhere are offered at the same height. Which of the two a
+     * picker should take first is nothing this server knows: one is prose to
+     * read, the other an order to follow, and the descriptions say which is
+     * which.
      */
     private const INDEX_PRIORITY = 1.0;
     private const TRANSFERABLE_PRIORITY = 0.8;
     private const CORE_ONLY_PRIORITY = 0.4;
+
+    /**
+     * Under both, because a reference is worth reading at the step that sends
+     * the reader to it and not before — which is also why they are a template
+     * rather than entries in the list a picker sorts.
+     */
+    private const REFERENCE_PRIORITY = 0.2;
 
     public static function create(): Server
     {
@@ -90,6 +106,7 @@ final class Factory
         foreach (self::resources() as $resource) {
             $builder->add($resource, $resourceHandler);
         }
+        $builder->add(self::skillReferences(), new SkillReferenceHandler());
 
         return $builder->build();
     }
@@ -102,6 +119,10 @@ final class Factory
      * application or by the user, who have the list and nothing else. So
      * `description`, `annotations.priority` and `size` are what a resource is
      * chosen by rather than decoration — `R-ANS-022`.
+     *
+     * Two families, because the knowledge documents are mostly the core's own
+     * process and the skills are mostly extension and site work. Offering both
+     * is what leaves all three audiences of `R-AUD-001` something to pick.
      *
      * Two fields the spec has stay absent. `annotations.audience` is the
      * client's user or the model rather than the three audiences of
@@ -118,7 +139,8 @@ final class Factory
                 uri: ResourceHandler::INDEX_URI,
                 name: 'typo3-core-knowledge-index',
                 title: 'TYPO3 core knowledge index',
-                description: 'What this server covers, which tool answers what, and every document it serves. The one to read first.',
+                description: 'What this server covers, which tool answers what, and every document and skill it '
+                    . 'serves. The one to read first.',
                 mimeType: 'application/json',
                 annotations: new Annotations(priority: self::INDEX_PRIORITY),
                 size: strlen(ResourceHandler::index()),
@@ -139,6 +161,46 @@ final class Factory
             );
         }
 
+        foreach (Skills::skills() as $skill) {
+            $resources[] = new ResourceDefinition(
+                uri: ResourceHandler::skillUri($skill['id']),
+                name: Skills::name($skill['id']),
+                title: $skill['title'],
+                description: Skills::description($skill['id']),
+                mimeType: 'text/markdown',
+                annotations: new Annotations(priority: Skills::isCoreOnly($skill['id'])
+                    ? self::CORE_ONLY_PRIORITY
+                    : self::TRANSFERABLE_PRIORITY),
+                size: (int) filesize($skill['path']),
+            );
+        }
+
         return $resources;
+    }
+
+    /**
+     * What a skill's body sends the reader to, offered as the one shape they
+     * share rather than as a list entry each.
+     *
+     * A skill is a directory: its body is short routing and the file it hands
+     * over at a step is beside it, `references/base.md` above all, which is in
+     * every one of them and is a file in none of them until the skill is
+     * published. Served under `typo3://skill/{id}/SKILL.md`, those links
+     * resolve to exactly the URIs this template answers — so a client that
+     * never ran the install can follow the workflow it picked instead of
+     * reading an instruction that points at nothing.
+     */
+    public static function skillReferences(): ResourceTemplate
+    {
+        return new ResourceTemplate(
+            uriTemplate: ResourceHandler::SKILL_REFERENCE_TEMPLATE,
+            name: 'typo3-skill-reference',
+            title: 'What a TYPO3 task workflow hands over at a step',
+            description: 'The files a skill under typo3://skill/ links to: the order every task starts in, the '
+                . 'checklist it works through, and the implementation guide for the layer it settled on. Read the '
+                . 'one its body sends you to, at the step that sends you.',
+            mimeType: 'text/markdown',
+            annotations: new Annotations(priority: self::REFERENCE_PRIORITY),
+        );
     }
 }

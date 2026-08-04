@@ -29,7 +29,7 @@ when it is added.
 - [`R-ANS-019`][R-ANS-019] — A rendered-verification question reaches the layer that verifies it · held
 - [`R-ANS-020`][R-ANS-020] — The Classes section covers the directory it names · held
 - [`R-ANS-021`][R-ANS-021] — The review answer says which patch set it is about · held
-- [`R-ANS-022`][R-ANS-022] — A resource is picked out of a list · **open**
+- [`R-ANS-022`][R-ANS-022] — A resource is picked out of a list · held
 
 [R-ANS-001]: ans-001-could-not-ask-never-looks-like-does-not-exist.md
 [R-ANS-002]: ans-002-the-reason-is-in-the-data-not-only-in-the-text.md

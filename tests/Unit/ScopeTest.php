@@ -17,6 +17,7 @@ use Typo3CmsMcp\Knowledge\Scope;
 use Typo3CmsMcp\Paths;
 use Typo3CmsMcp\Result\ToolResult;
 use Typo3CmsMcp\Server\ExcludedTools;
+use Typo3CmsMcp\Server\Installer;
 use Typo3CmsMcp\Tests\Support\TemporaryInstallation;
 use Typo3CmsMcp\Tool\Registry;
 
@@ -1216,6 +1217,40 @@ final class ScopeTest extends TestCase
             );
             self::assertContains($named[$document['id']], [Scope::Core, Scope::Any]);
         }
+    }
+
+    /**
+     * The same obligation for the second resource family, and it carries more
+     * here than it does for a document: what a skill is worth outside the core
+     * is read off the coverage and nowhere else, so a published skill no topic
+     * names is offered as core-only — to every extension author who picks it.
+     */
+    #[Test]
+    public function everyPublishedSkillIsAnnouncedByTheScope(): void
+    {
+        $named = [];
+        foreach (Coverage::read()['covers'] as $entry) {
+            if (preg_match_all('#typo3://skill/([a-z0-9-]+)/SKILL\.md#', $entry['source'], $matches) === 0) {
+                continue;
+            }
+            foreach ($matches[1] as $id) {
+                $named[$id] = $entry['scope'];
+            }
+        }
+
+        foreach (Installer::SKILLS as $skill) {
+            self::assertArrayHasKey(
+                $skill,
+                $named,
+                $skill . ' is published and served, and no covered topic names it',
+            );
+            self::assertContains($named[$skill], [Scope::Core, Scope::Any]);
+        }
+        self::assertSame(
+            [],
+            array_diff(array_keys($named), Installer::SKILLS),
+            'a covered topic names a skill this server does not publish',
+        );
     }
 
     #[Test]

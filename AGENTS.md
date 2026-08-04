@@ -29,7 +29,7 @@ src/Contribution/  # the fourth source: the services the core's own process runs
 src/Http/Fetch.php # the one way this server reads a host outside itself: the timeouts, the redirect limit and the agent, once
 src/Search/        # the lexical matching every prose and label lookup goes through
 src/Feedback/      # the feedback channel: what `typo3_feedback_record` writes and `bin/cli feedback` reads
-src/Sdk/           # the adapters onto mcp/sdk: tool dispatch and typo3://core resources
+src/Sdk/           # the adapters onto mcp/sdk: tool dispatch and the typo3:// resources, documents and skills
 src/Paths.php      # where this checkout keeps things; the one class both halves share
 src/bootstrap.php  # locates the Composer autoloader
 src/Upkeep/        # what `bin/cli` runs on this repository, and nothing the server answers with
@@ -44,7 +44,7 @@ scenarios/         # user prompts and what has to come out of them, one case per
 scenarios/forward/ # open forward reviews: a repository review and nothing more; the only kind that is run and recorded
 scenarios/contracts/ # targeted cases per audience, task skill and cross-cutting situation: one named task shape each
 scenarios/runs/    # one recorded forward run per review: where it ran, against which server, which skills and tools it reached for, and the judgment per criterion
-skills/            # canonical task skills installed into supported agent clients
+skills/            # canonical task skills installed into supported agent clients, and served as typo3://skill resources
 skills/base.md     # the order every task starts in, copied into each published skill as references/base.md
 requirements/      # what must hold, and what holds it there: one requirement per file, grouped by what it is about; open ones are not built yet
 decisions/         # what a change assumed, and what would show it to be wrong: one decision per file, grouped by what it is about

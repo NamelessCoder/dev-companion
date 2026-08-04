@@ -1,7 +1,8 @@
 ---
 date: 2026-08-04T18:00:35+00:00
 category: idea
-status: open
+status: closed
+closed: 2026-08-04
 model: claude-opus-5
 tool: typo3_hint_lookup, typo3_changelog_lookup, typo3_extension_describe, typo3_icon_lookup
 directory: /home/benji/projects/site-new

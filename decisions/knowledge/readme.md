@@ -14,6 +14,7 @@ one is added.
 - [`D-KNW-059`][D-KNW-059] — One place spells how a document is addressed · 2026-08-04
 - [`D-KNW-060`][D-KNW-060] — What a backend spec locates by is written where the spec is · 2026-08-04
 - [`D-KNW-061`][D-KNW-061] — The manual scaffold is a document and the hint keeps the policy · 2026-08-04
+- [`D-KNW-062`][D-KNW-062] — What a hint pays with is the mechanism and the file it is read in · 2026-08-04
 - [`D-KNW-029`][D-KNW-029] — A hint names the domains it is asked from, and the file names the subject · 2026-08-03
 - [`D-KNW-030`][D-KNW-030] — A hint is one question, and the DataHandler family is six of them · 2026-08-03
 - [`D-KNW-031`][D-KNW-031] — A suite is a property of the domain, not of the hint · 2026-08-03
@@ -69,6 +70,7 @@ one is added.
 [D-KNW-059]: knw-059-one-place-spells-how-a-document-is-addressed.md
 [D-KNW-060]: knw-060-what-a-backend-spec-locates-by-is-written-where-the-spec-is.md
 [D-KNW-061]: knw-061-the-manual-scaffold-is-a-document-and-the-hint-keeps-the-policy.md
+[D-KNW-062]: knw-062-what-a-hint-pays-with-is-the-mechanism-and-the-file-it-is-read-in.md
 [D-KNW-029]: knw-029-a-hint-names-the-domains-it-is-asked-from-and-the-file-names-the-subject.md
 [D-KNW-030]: knw-030-a-hint-is-one-question-and-the-datahandler-family-is-six.md
 [D-KNW-031]: knw-031-a-suite-is-a-property-of-the-domain-not-of-the-hint.md

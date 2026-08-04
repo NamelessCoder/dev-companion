@@ -114,6 +114,14 @@ read the model identifier rather than remember it — belongs to
 documentation a client actually reads. A prompt that restates it is a second
 copy that ages, and it would only reach the sessions somebody handed it to.
 
+Half of what it asks about did not happen. The calls a session made are in front
+of it; the skill that never activated, the tool it passed over and the question
+it never asked leave nothing behind. A list that asks only what happened
+confirms the surface the server already has —
+[`D-AUD-003`](../../decisions/audience/aud-003-the-instructions-carry-the-entry-point.md)
+is a session the published skill's body would have carried, which never loaded
+it and went through Bash instead.
+
 ```text
 The work is done. What follows is a debrief about the TYPO3 knowledge server you
 had available, not about the repository you just worked in. Change no files.
@@ -127,11 +135,27 @@ your window is not the same as what did not happen.
 - Which of its skills you activated, whether the skill fitted the task, and what
   in it you would keep or drop. Name the skill. If none activated, say so — that
   is a result.
+- Which part of the task no skill carried: the step you worked out for yourself
+  and would work out again in the next session. Say what you were doing at the
+  moment one would have had to activate, and in which words — the request, the
+  symptom, the files you had open. A skill is chosen on its description alone,
+  so one that exists and stayed shut is a different finding from one that is
+  not there.
 - Which tool calls the task actually needed, in the order you made them, and how
   many round trips each answer cost. Name the ones you would not make again: a
   lookup that returned nothing usable, one you had to repeat with different
   arguments to get an answer, one that only restated what the previous answer
   already said.
+- What you never put to it. A question you took elsewhere because you did not
+  expect an answer, or a tool you read and passed over, is a finding the server
+  has no other way of learning — it sees the calls that were made and nothing
+  else. Name what you assumed, and whether it held.
+- Where a name did not mean what it said: a tool whose name or description
+  promised another answer, one you would not have found from its name, a word
+  you searched with that the server spells another way. Say how you found the
+  tools you did reach — from the list, from what the server told you at the
+  start, or from a guess that landed. A name is what a client installed months
+  ago still calls it by.
 - Where something went wrong: an error, an answer that was incorrect, an
   argument or a schema you had to guess at, a call you could not complete.
 - What the server saved you from — a wrong path you did not take, a file you did
@@ -140,6 +164,7 @@ your window is not the same as what did not happen.
   later.
 - What you had to establish elsewhere — from the checkout, from your own
   knowledge, from the web — that this server should have answered.
+- What this list did not ask you about, and you would report anyway.
 
 File what you find with that tool. What each of its parameters wants, it says
 itself — read them there and fill in every one you can, including the model you

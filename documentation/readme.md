@@ -1,9 +1,11 @@
 # How the work is done
 
-One page per procedure that is long enough to get wrong from memory. Two things
-are no procedure. `tools/` is the tool surface, rendered from the classes that
-declare it and written by nobody, each page carrying what that tool answered
-once. `interface-contract/` is what somebody else's draft would mean for this
+One page per procedure that is long enough to get wrong from memory. Three
+things are no procedure. `tools/` is the tool surface, rendered from the classes
+that declare it and written by nobody, each page carrying what that tool
+answered once. `resources/` is the other surface a client is offered, and one
+page rather than a tree, because a resource is picked out of a list instead of
+called. `interface-contract/` is what somebody else's draft would mean for this
 server, and it sits here because every other tree a check reads holds entries of
 a fixed shape.
 
@@ -86,6 +88,13 @@ order by, and the launch two of the subjects below share.
   the installation decides, against one this repository writes — evidence rather
   than a derivation, so nothing checks it. The two tools that are not recorded
   say why in its place.
+
+## [resources/](resources/readme.md) — the surface that is picked rather than called
+
+- [readme.md](resources/readme.md) — what a `typo3://` resource is, the two
+  families and who each serves, what `description`, `priority` and `size` carry,
+  which two fields of the spec are left empty and why, and why this page is
+  written rather than generated.
 
 ## [evidence/](evidence/forward-runs.md) — how the server is measured
 

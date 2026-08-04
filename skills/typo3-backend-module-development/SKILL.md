@@ -37,6 +37,19 @@ If an installation-backed lookup is unavailable, report that gap and its
 diagnosis. Do not turn it into an empty registry or replace it with memory. If
 live documentation is unavailable, keep the failure distinct from no match.
 
+## Settle the module's shape before the first file
+
+Where the module hangs, what it is called, who may open it and what it keeps per
+user are one decision rather than four, because each of them constrains the next
+— and `typo3_task_guide` returns what each costs to get wrong. Take them from
+what this installation already registers rather than from the extension being
+copied.
+
+What neither answers is the user's: which parent an editor should find this
+under, and whom it is for. Ask before registering rather than after, because a
+module is placed for as long as it exists and a rename is carried by the
+registration afterwards rather than undone.
+
 ## Implement and verify
 
 - Read the existing extension and nearby working modules before editing. Tool
@@ -55,8 +68,23 @@ live documentation is unavailable, keep the failure distinct from no match.
 - Re-run the lookups when the target version, extension, or implementation
   choice changes; do not treat an earlier result as universal.
 
+## Prove it by opening it
+
+The work is done when the module has been opened, not when its files are
+written. Five things fail there and nowhere earlier: the entry appears where it
+was placed, the route answers, the icon renders, the labels resolve instead of
+showing their keys, and the access declared lets in whom it claims to. A green
+suite reports none of the five, and a registration file has no schema behind it
+to fail against.
+
+Opening it needs a backend that runs. Where this repository has none, that is a
+prerequisite of the task rather than a part of it: establish it, or report the
+module as written and unproven and say which of the five is unestablished.
+Correcting a mistake from a test afterwards is what the lookups above are there
+to make unnecessary.
+
 This skill owns backend module registration, controllers, routes, and backend UI
-implementation.
+implementation, up to the module being opened.
 
 When implementation is verified and only documentation remains, stop this
 workflow. Activate `typo3-extension-documentation` before editing documentation.
@@ -65,6 +93,7 @@ let that skill select the documentation surface. Documentation for functionality
 encapsulated in an extension belongs to that extension, not to the project
 around it.
 
-Stop and activate the testing skill before changing test infrastructure, the
-conformance skill before broadening into an audit, and the content-element skill
-before implementing a content element or its backend preview.
+Stop and activate `typo3-extension-testing` before changing test infrastructure,
+`typo3-extension-conformance` before broadening into an audit, and
+`typo3-content-element-development` before implementing a content element or its
+backend preview.

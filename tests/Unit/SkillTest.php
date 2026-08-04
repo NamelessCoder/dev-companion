@@ -1058,12 +1058,14 @@ final class SkillTest extends TestCase
         self::assertStringNotContainsString('other TYPO3 backend UI work', $module);
         self::assertStringContainsString('is not a module', $module);
         // The crossing in its body says the same, or the file contradicts its
-        // own description in somebody else's project.
+        // own description in somebody else's project. Read flat, because what is
+        // asserted is the sentence and `prose:format` decides where its lines
+        // break.
         self::assertStringContainsString(
             'before implementing a content element or its backend preview',
-            (string) file_get_contents(
+            self::flat((string) file_get_contents(
                 Paths::root() . '/skills/typo3-backend-module-development/SKILL.md',
-            ),
+            )),
         );
     }
 
@@ -1410,9 +1412,13 @@ final class SkillTest extends TestCase
         ] as $owner) {
             self::assertStringContainsString($owner, $skill, $owner . ' is not named where the upgrade stops');
         }
-        self::assertMatchesRegularExpression(
-            '/What the sweep\s+returned goes to `typo3-extension-upgrade` whole/',
-            (string) file_get_contents(Paths::root() . '/skills/typo3-extension-conformance/SKILL.md'),
+        // Read flat: what is asserted is the sentence, and `prose:format`
+        // decides where its lines break.
+        self::assertStringContainsString(
+            'What the sweep returned goes to `typo3-extension-upgrade` whole',
+            self::flat((string) file_get_contents(
+                Paths::root() . '/skills/typo3-extension-conformance/SKILL.md',
+            )),
         );
     }
 

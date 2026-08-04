@@ -17,6 +17,11 @@ installation — that pointer may not be written before the skill is published,
 because it would name a skill nobody has installed. Then run the installer in
 the checkout that plays the environment, which `todo/reference/` names.
 
+`typo3-backend-module-development` owes the same pointer and for the same
+reason: since 2026-08-04 it ends on the module being opened, which needs a
+backend that runs, and it names the prerequisite without an owner because that
+owner is this draft.
+
 Publishing also gains the route into it. `knowledge/task-intents.json` carries
 the skill that owns each recognized task since
 [`D-SKL-013`](../../decisions/task-skills/skl-013-the-guide-names-the-skill-that-owns-the-task.md),

@@ -41,8 +41,19 @@ final class Unsupported
     public static function because(string $reason, array $echo = []): ToolResult
     {
         $diagnosis = Typo3Cli::diagnose($reason);
-        if ($diagnosis === '' && Typo3Cli::caveat() !== '') {
-            $diagnosis = 'What is known about this console: ' . Typo3Cli::caveat() . '.';
+        // Read once, and only where the failure did not diagnose itself.
+        // `caveat()` re-enters `resolve()`, which does not remember a caveated
+        // resolution (`R-DIS-009`), so every read of it costs a
+        // `ddev describe -j` while the project is stopped — the guard and the
+        // interpolation were two of them. Measured against
+        // `.environments/e-site-13.4` with its project down on 2026-08-04:
+        // three describes and 1.35s per unanswerable tool call, one for the run
+        // and two here, at 0.25s each. It is also the pair that could disagree,
+        // since each resolved for itself: a project coming up between them left
+        // the guard true and nothing to interpolate.
+        $caveat = $diagnosis === '' ? Typo3Cli::caveat() : '';
+        if ($caveat !== '') {
+            $diagnosis = 'What is known about this console: ' . $caveat . '.';
         }
 
         $misconfiguration = Instance::misconfiguration();

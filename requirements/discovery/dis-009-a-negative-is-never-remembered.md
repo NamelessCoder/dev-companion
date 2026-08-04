@@ -20,6 +20,14 @@ by the `ddev start` the caveat asked the caller for. What it costs is one
 `.environments/e-site-13.4` on 2026-08-04, which is what a failing resolution on
 that same path already pays.
 
+That price is paid per read, so a caller reads the state once and writes its
+whole answer from it rather than resolving per sentence. Two is where that
+stops: `reason()` and `caveat()` each resolve for themselves, so one resolution
+answers for the invocation and a second for whichever of the two applies. A
+fourth accessor handing all three back from one resolve was weighed on
+2026-08-04 and not taken. The saving is 0.25s on one tool in one state, against
+a fourth way to ask a class whose three accessors each mean one thing.
+
 ## From
 
 A session lost to a cached negative — the agent ran `composer install`, started
@@ -31,3 +39,5 @@ installation until the client was restarted (2026-07-29).
 - `InstanceTest::anInstallationThatAppearsDuringTheSessionIsFound`
 - `Typo3CliTest::aStoppedProjectNoInterpreterHereCanRunIsAskedAgainAfterItStarts`
 - `Typo3CliTest::aStoppedProjectThisMachineCanRunIsAskedAgainAfterItStarts`
+- `Typo3CliTest::theScopeAnswerDescribesAStoppedProjectOncePerHalfRatherThanPerSentence`
+- `Typo3CliTest::anUnsupportedAnswerReadsTheCaveatOnceRatherThanPerSentence`

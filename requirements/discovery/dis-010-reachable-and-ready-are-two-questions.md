@@ -21,10 +21,10 @@ meets that limit is a property of the installation rather than of the tool
 asked. It is reported with **both** steps that end the state, the start and the
 call after it: an answer given from the weaker source is not revised where it
 stands, so a caller told only to start the project acts on that and works on
-from what it was just told to stop trusting. A server already running inside that project's DDEV web container is
-ready through its direct PHP and must not be diagnosed as a host with an
-unreachable DDEV project merely because the container has no nested `ddev`
-binary.
+from what it was just told to stop trusting. A server already running inside
+that project's DDEV web container is ready through its direct PHP and must not
+be diagnosed as a host with an unreachable DDEV project merely because the
+container has no nested `ddev` binary.
 
 ## From
 
@@ -41,7 +41,7 @@ all — a query from it comes back "could not find driver" — so not one of the
 had put a query anywhere, and booting TYPO3 is not what a stopped project takes
 away. Only `typo3_schema_lookup` asks the connection for anything, and only for
 the platform, which `pdo_sqlite` supplies with no server and `pdo_mysql` fetches
-by connecting unless `serverVersion` is configured (`D-DIS-008`).
+by connecting unless `serverVersion` is configured (`D-DIS-012`).
 
 The same report one layer down, against `.environments/e-site-main` on
 2026-08-04: that console was not reachable at all. The base distribution states

@@ -233,7 +233,7 @@ final class Typo3Cli
      * tool answered, and only `typo3_schema_lookup` asks the connection for
      * anything at all — the platform, which `pdo_sqlite` supplies with no
      * server and `pdo_mysql` fetches by connecting unless `serverVersion` is
-     * configured (`D-DIS-008`). So which answer a stopped project costs depends
+     * configured (`D-DIS-012`). So which answer a stopped project costs depends
      * on the installation, and a sentence naming tools is wrong somewhere.
      */
     public static function caveat(): string

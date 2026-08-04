@@ -12,6 +12,7 @@ use PHPUnit\Framework\TestCase;
 use Typo3CmsMcp\Installation\Instance;
 use Typo3CmsMcp\Installation\Typo3Cli;
 use Typo3CmsMcp\Process\CommandRunner;
+use Typo3CmsMcp\Result\Unsupported;
 use Typo3CmsMcp\Tests\Support\TemporaryInstallation;
 use Typo3CmsMcp\Tool\Registry;
 
@@ -504,6 +505,59 @@ final class Typo3CliTest extends TestCase
             2,
             count(array_keys($commands, 'ddev describe -j', true)),
             'both halves of the answer are written from one reading of the console state',
+        );
+    }
+
+    /**
+     * The same cost one caller over, and every `unsupported` answer paid it:
+     * the guard that asks whether a caveat exists and the sentence that names
+     * it were two reads, so a failing lookup against a stopped project resolved
+     * twice for one sentence. It stays behind the diagnosis, which is what
+     * decides whether the caveat is wanted at all — resolving before that
+     * would charge the failure that diagnosed itself for a sentence it does
+     * not print.
+     */
+    #[Test]
+    public function anUnsupportedAnswerReadsTheCaveatOnceRatherThanPerSentence(): void
+    {
+        $root = $this->installation();
+        $this->console($root);
+        mkdir($root . '/.ddev');
+        file_put_contents($root . '/.ddev/config.yaml', "name: fixture\ntype: typo3\n");
+        Typo3Cli::useRunner($this->ddevThatStartsAfterTheFirstLook($status, $commands));
+        $this->discover($root);
+
+        $answer = Unsupported::because('the console answered with something other than JSON');
+
+        self::assertStringContainsString('What is known about this console', $answer->text, 'the state this is about');
+        self::assertSame(
+            1,
+            count(array_keys($commands, 'ddev describe -j', true)),
+            'the caveat this answer names is resolved once',
+        );
+    }
+
+    /**
+     * A diagnosis of its own is what the caveat would have stood in for, so the
+     * console is not resolved a second time to fetch one nothing prints.
+     */
+    #[Test]
+    public function aFailureThatDiagnosesItselfDoesNotAskWhatLimitsTheConsole(): void
+    {
+        $root = $this->installation();
+        $this->console($root);
+        mkdir($root . '/.ddev');
+        file_put_contents($root . '/.ddev/config.yaml', "name: fixture\ntype: typo3\n");
+        Typo3Cli::useRunner($this->ddevThatStartsAfterTheFirstLook($status, $commands));
+        $this->discover($root);
+
+        $answer = Unsupported::because("Table 'db.pages' doesn't exist");
+
+        self::assertStringContainsString('no TYPO3 schema yet', $answer->text);
+        self::assertSame(
+            0,
+            count(array_keys($commands, 'ddev describe -j', true)),
+            'a diagnosis of its own asked nothing about the console',
         );
     }
 

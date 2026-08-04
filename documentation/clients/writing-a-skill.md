@@ -169,19 +169,19 @@ directory by `bin/typo3-cms-mcp install`, it is served as a `typo3://skill`
 resource, and `knowledge/task-intents.json` may name it. Nothing this server
 answers with may name a skill before that — a route into one nobody has
 installed is worse than none, because the caller cannot tell the two apart — and
-`SkillTest::everySkillNamedInKnowledgeIsPublished` holds every name there to what
-is published. The intent that routes to it is written in the same commit and
-never before it
+`SkillTest::everySkillNamedInKnowledgeIsPublished` holds every name there to
+what is published. The intent that routes to it is written in the same commit
+and never before it
 ([`D-SKL-013`](../../decisions/task-skills/skl-013-the-guide-names-the-skill-that-owns-the-task.md)).
 
 Two things the skill does not carry itself are supplied at publication. The
 installer copies `skills/base.md` into the new directory as `references/base.md`
 — one copy per skill, because each of them lands in another project alone and a
-link out of its own directory would resolve here and nowhere it is actually read.
-And `knowledge/server-scope.json` has to name the workflow among what the server
-covers, or `ScopeTest::everyPublishedSkillIsAnnouncedByTheScope` fails: a skill
-served to a client that the scope does not announce is one nothing tells the
-caller about.
+link out of its own directory would resolve here and nowhere it is actually
+read. And `knowledge/server-scope.json` has to name the workflow among what the
+server covers, or `ScopeTest::everyPublishedSkillIsAnnouncedByTheScope` fails: a
+skill served to a client that the scope does not announce is one nothing tells
+the caller about.
 
 Then run the installer in the checkout that plays the environment the skill is
 for, before any run that is meant to measure it. The published skills are a copy

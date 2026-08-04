@@ -16,10 +16,11 @@ That is the one run that decides this card, and it is the run nobody has made.
 is the only covered line on which the prompt's own lookup can separate a stopped
 project from a running one. If it does, the case keeps the reason it was written
 for and gains a second prompt with the environment named beside it; if the
-answers are identical there too, criteria 1, 2, 4 and 6 are rewritten to what the
-server actually promises, and criterion 6 is worded against `typo3_server_scope`
-alone. Put to the maintainer on 2026-08-04 with both options priced, and this run
-is what the answer asked for before either is written.
+answers are identical there too, criteria 1, 2, 4 and 6 are rewritten to what
+the server actually promises, and criterion 6 is worded against
+`typo3_server_scope` alone. Put to the maintainer on 2026-08-04 with both
+options priced, and this run is what the answer asked for before either is
+written.
 
 Nothing in the reading below changes that. What it establishes is why the
 question could not be answered off the environment it was asked in.
@@ -53,8 +54,8 @@ What that leaves open is whether the change reaches the **prompt's own two
 lookups** rather than only `typo3_server_scope`. In these three a stopped
 project's console runs, so `typo3_icon_lookup` and `typo3_label_lookup` answer
 from the console rather than from the package files `R-ANS-008` falls back to,
-and what the `ddev start` alters may be the caveat and the source rather than the
-icons and labels themselves. `e-site-13.4` was driven that way and could not
+and what the `ddev start` alters may be the caveat and the source rather than
+the icons and labels themselves. `e-site-13.4` was driven that way and could not
 answer it, for the reason the last section below gives; `e-site-14.3` is the
 environment that can, and is what this card now asks for.
 

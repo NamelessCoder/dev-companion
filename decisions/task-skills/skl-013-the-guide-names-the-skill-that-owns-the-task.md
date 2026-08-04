@@ -167,12 +167,13 @@ What it also buys is the reason it was asked for: a session opening a workflow
 in `skills/` can now see that nobody has reviewed it, without holding the
 directory against a constant in another file.
 `SkillTest::aDraftSaysSoInItsOwnFrontMatter` holds the derivation in both
-directions, and the three published-skill lists in `tests/Smoke/InstallerTest.php`
-are derived from the same call — the state file's list is the one kept literal,
-because what it asserts is what was written.
+directions, and the three published-skill lists in
+`tests/Smoke/InstallerTest.php` are derived from the same call — the state
+file's list is the one kept literal, because what it asserts is what was
+written.
 
 `typo3-development-installation` and `typo3-extension-cleanup` were published in
-the same commit, which is what the paragraph above about `installation-setup` and
-`installation-operations` was waiting for. Both take `skill` and neither takes
-`skillCore`: setting a development installation up and putting a repository right
-are not core work.
+the same commit, which is what the paragraph above about `installation-setup`
+and `installation-operations` was waiting for. Both take `skill` and neither
+takes `skillCore`: setting a development installation up and putting a
+repository right are not core work.

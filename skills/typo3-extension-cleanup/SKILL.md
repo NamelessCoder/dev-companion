@@ -53,11 +53,11 @@ versioned TYPO3 facts.
    before editing files another owner has — the crossing is the transition
    itself, not a detail of the item.
 10. Where an item has no owning workflow, it is worked here only where the
-    project's own suite, linter or static analysis proves the change: the change,
-    the check that covers it, and nothing wider than the finding. An item nothing
-    here can prove goes back unassigned in the closing report instead. A finding
-    no workflow owns and no check covers is a hole in the map, and changing it on
-    judgement is what hides the hole.
+    project's own suite, linter or static analysis proves the change: the
+    change, the check that covers it, and nothing wider than the finding. An
+    item nothing here can prove goes back unassigned in the closing report
+    instead. A finding no workflow owns and no check covers is a hole in the
+    map, and changing it on judgement is what hides the hole.
 11. Commit per item, or per group of items in one owner's area, and say which
     item that commit closed — the message from `typo3_commit_message_guide` with
     `workflow="project"`. A session that ends halfway is read out of the log,
@@ -72,8 +72,8 @@ versioned TYPO3 facts.
     cleanup that grades its own work has no evidence the finding is gone.
 13. Report what is left: the items still open, the items dropped with what
     dropped them, the ones sent back unassigned, and every finding the audit
-    reported as open or unassessed that this work did not settle. A finished list
-    and an abandoned one read alike in a summary.
+    reported as open or unassessed that this work did not settle. A finished
+    list and an abandoned one read alike in a summary.
 
 This skill owns the entry point for a request worded as a change, the order the
 findings are worked in, and staying with the list until it is empty. It does not

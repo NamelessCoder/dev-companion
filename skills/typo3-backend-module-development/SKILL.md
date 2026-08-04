@@ -83,9 +83,8 @@ prerequisite of the task rather than a part of it, and it has an owner:
 repository declares. Cross to it at the verified point — the module is written
 and registered, and nothing has been opened — and come back to these five. Where
 that is not wanted, report the module as written and unproven and say which of
-the five is unestablished.
-Correcting a mistake from a test afterwards is what the lookups above are there
-to make unnecessary.
+the five is unestablished. Correcting a mistake from a test afterwards is what
+the lookups above are there to make unnecessary.
 
 ## Commit it
 

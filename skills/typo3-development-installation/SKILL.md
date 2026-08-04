@@ -156,9 +156,9 @@ The installation a suite boots is not this one, and the difference is what each
 is for rather than how it is laid out. This workflow produces a site somebody
 opens in a browser and clicks through, which is why the package's own manifest
 becomes the Composer root. A package whose TYPO3 is installed below a build
-directory, with the package linked in and no site to visit, is a test fixture and
-belongs to `typo3-extension-testing` — a repository can have both, and asking
-which one the task needs is the first thing that decides the layout.
+directory, with the package linked in and no site to visit, is a test fixture
+and belongs to `typo3-extension-testing` — a repository can have both, and
+asking which one the task needs is the first thing that decides the layout.
 
 Tests and static checks are `typo3-extension-testing`, and the crossing is
 explicit in both directions. Going out: state the verified point — the document

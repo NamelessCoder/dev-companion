@@ -21,19 +21,19 @@ suspected. On 2026-08-04 over the live 14.3 index, a floor returning
 while one emptying `Fluid template file naming convention v14` is above the 0.40
 its top collision reaches. Over a corpus whose ordinary field is 2.66 words, the
 page that answers a three-word question covers a third of it and the collisions
-sit in the same band. Two further queries `DocumentationTest` holds go with them,
-both ranking their page first today: *IRRE / inline* at 0.43 and *Functional
-tests* at 0.19.
+sit in the same band. Two further queries `DocumentationTest` holds go with
+them, both ranking their page first today: *IRRE / inline* at 0.43 and
+*Functional tests* at 0.19.
 
-Put to the maintainer on 2026-08-04 with three answers priced — close it out, try
-a different measure, or keep waiting — the answer was to try the rank gap. So
-this is a reading first, and a card in the queue rather than a blocked one.
+Put to the maintainer on 2026-08-04 with three answers priced — close it out,
+try a different measure, or keep waiting — the answer was to try the rank gap.
+So this is a reading first, and a card in the queue rather than a blocked one.
 
-What makes the gap worth trying is that both failing cases are about shape rather
-than level: a query that is answered has one page well clear of the rest, and a
-query that is not has six pages within a few hundredths of each other. Nothing
-has measured that, and the six collisions may turn out to sit as far apart as the
-answers do.
+What makes the gap worth trying is that both failing cases are about shape
+rather than level: a query that is answered has one page well clear of the rest,
+and a query that is not has six pages within a few hundredths of each other.
+Nothing has measured that, and the six collisions may turn out to sit as far
+apart as the answers do.
 
 ## What is built if it separates, and what holds it
 

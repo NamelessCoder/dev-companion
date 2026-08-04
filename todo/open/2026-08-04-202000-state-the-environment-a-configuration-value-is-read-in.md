@@ -11,5 +11,6 @@ with a variable set, with `IS_DDEV_PROJECT` unset — is `configuration:show` on
 the project's own console. Say it where the call is composed rather than in the
 answer, and check `documentation/tools/typo3_configuration_lookup.md` is
 regenerated with `bin/cli tools:index`. The `env` map the feedback proposes is
-not part of this step; it waits on the maintainer's answer, which `D-ANS-052`
-states.
+answered and is not built: the maintainer settled on 2026-08-04 that this tool
+reports the running instance and what is in it, so say that as what the tool is
+for rather than as what it cannot do.

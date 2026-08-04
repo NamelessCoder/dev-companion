@@ -56,3 +56,13 @@ used the console six, and was right to.
   is answered by the corpus.
 - The `env` map is built and the six-run shape does not recur. Then this was one
   audit's convenience.
+
+**Since then**, on 2026-08-04, the maintainer answered the half this entry put
+up: no `env` map. What the tool reports is the running instance and what is in
+it, and a value that only exists under another environment is not a
+configuration this server has been asked about.
+
+So the description states that positively rather than as a limitation, and the
+console keeps the conditional half because it is the project's own. The second
+**Wrong if** above is settled with it: the shape does not have to recur for the
+map to be wrong, since what it would answer is not what this lookup is for.

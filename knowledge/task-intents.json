@@ -204,6 +204,33 @@
     ]
   },
   {
+    "id": "browser-tests",
+    "title": "Browser tests",
+    "skill": "typo3-extension-testing",
+    "skillCore": "typo3-core-patch-development",
+    "match": [
+      "playwright",
+      "browser test",
+      "e2e",
+      "end-to-end",
+      "end to end",
+      "spec.ts",
+      "acceptance test",
+      "codeception",
+      "visual regression"
+    ],
+    "rulesQuery": "browser tests playwright",
+    "checklist": [
+      "Read skills/typo3-extension-testing/references/playwright.md before writing the first spec. It is the implementation guide for this layer and this brief does not repeat what it carries.",
+      "Keep the suite with what is deployed rather than with the package: a spec needs a served site and a real URL, which an extension package alone does not have."
+    ],
+    "checks": [],
+    "tools": [
+      "typo3_hint_lookup id=browser-tests, for the layout the core's own suite established and what a backend spec has to locate through",
+      "typo3_hint_lookup id=browser-tests-outside-core, for the site a suite outside the core runs against"
+    ]
+  },
+  {
     "id": "coding-standards",
     "title": "Coding standards and the code style fixer",
     "skill": "typo3-extension-testing",

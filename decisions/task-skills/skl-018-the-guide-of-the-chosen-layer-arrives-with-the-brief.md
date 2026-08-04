@@ -63,3 +63,22 @@ which is the file that work is for.
   and the pointer was never the lever.
 - The intent matches tasks that are not browser work, and briefs start carrying
   a guide nobody needs. Then the layer is not readable off a task's words.
+
+**Since then**, on 2026-08-04, the intent was written and the brief was run.
+`knowledge/task-intents.json` carries `browser-tests` — matching "playwright",
+"e2e", "spec.ts" and their neighbours — whose checklist opens with
+`skills/typo3-extension-testing/references/playwright.md` by name and whose
+`tools` name the two hints that exist. Called over stdio with "add a Playwright
+spec that proves the backend preview of a content element" and a `spec.ts` path,
+the answer recognizes `browser-tests` beside `content-element` and returns the
+guide as its first checklist line.
+
+What that took was data and no code: the brief already renders an intent's
+checklist, so naming a file there needs no field of its own, and
+`bin/cli links:check` holds the path like every other one this repository
+writes. The narrower reading of this entry — a `guide` field beside `skill` —
+was not built, because nothing needs to tell the two apart yet.
+
+The match list deliberately avoids the bare word "test", which `tests` already
+carries. A browser task matches both, which is correct: what the layer adds is a
+guide and a served site, not a different way of testing.

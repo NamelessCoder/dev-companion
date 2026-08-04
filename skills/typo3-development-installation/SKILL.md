@@ -23,7 +23,10 @@ Then, before anything is created:
 
 - `typo3_server_scope` for whether an installation and a console can be reached
   at all. That is what separates a repository with nothing installed from one
-  whose installation is merely not running.
+  whose installation is merely not running. Skip it only where the base's
+  installation lookup already described a booted installation, because that
+  answer contains this one; everywhere else it is run, since a prescription that
+  gets skipped teaches the next reader to skip the steps that matter.
 - The calls in the base that read the installation are asked again once it
   exists. Asked before, they are unanswerable; asked after, they are what says
   the work succeeded.

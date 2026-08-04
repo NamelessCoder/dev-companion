@@ -62,3 +62,16 @@ and the measurement it records is that the cost is the ordinary answer there.
   argument out.
 - The routes that are supposed to state `core` stop stating it, so the default
   decides a case it was never meant to.
+
+**Since then**, on 2026-08-04, a session measured what the project workflow is
+worth over twelve commits. `feedback/2026-08-04-180133` called
+`typo3_commit_message_guide` once, for the first commit, and hand-wrote the
+other eleven: the answer was correct — a wrapped draft and a warning that the
+summary ran to 68 characters against the preferred 52 — and once the shape of an
+accepted message was in the session, the round trip stopped paying.
+
+That is the default working rather than failing. The core workflow carries the
+Forge issue and the Releases trailer, which cannot be recalled from the last
+commit; the project workflow carries two widths and a wrap, which can. Nothing
+is changed for it, and it is written here because a usage curve that drops after
+the first call reads as a tool nobody wants when it is a tool that taught.

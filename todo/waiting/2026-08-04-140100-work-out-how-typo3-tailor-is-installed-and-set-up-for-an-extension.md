@@ -3,17 +3,27 @@
 **Serves:** R-SKL-009
 **Priority:** normal
 **Waiting on:** whether extension release gets a skill at all, and whether it is
-    the release run rather than the setup. The card was written to produce a
-    skill ordering Tailor setup, and the setup that was measured does not carry
-    one: it is four facts, two of which other tooling already enforces, and the
-    choice between an `.env` and CI secrets follows from where Tailor is
-    installed rather than from any order of steps. What has steps and an order —
-    and what the range named for this covers, tagging through changelog and
-    version numbers to publishing — is the release run: `set-version`, commit,
-    tag, push, `ter:publish`. Whether that earns a skill is the question, and
+    the release run rather than the setup. Put to the maintainer on 2026-08-04
+    with three answers priced — measure the run first, write the skill from the
+    measured facts, or delete the card — and deliberately kept for later rather
+    than left unread, so a session reaching this is not the first to look at it
+    and re-deriving the question buys nothing. Nothing is broken while it waits:
+    `extension-ter-release` answers a release question today and is what a
+    caller reaches. What would move it is a filed session bringing the wording,
+    or somebody wanting the release run driven end to end.
+
+    The question as it stands: the card was written to produce a skill ordering
+    Tailor setup, and the setup that was measured does not carry one — it is
+    four facts, two of which other tooling already enforces, and the choice
+    between an `.env` and CI secrets follows from where Tailor is installed
+    rather than from any order of steps. What has steps and an order, and what
+    the range named for this covers from tagging through changelog and version
+    numbers to publishing, is the release run: `set-version`, commit, tag, push,
+    `ter:publish`. Whether that earns a skill is what is open, and
     `writing-a-skill.md` settles a domain with a run rather than with a shape,
-    which this has not got: the `E-EXT` run behind `R-SKL-009` is the gap and
-    not a run of the workflow.
+    which this has not got: the `E-EXT` run behind `R-SKL-009` established the
+    gap and is not a run of the workflow. A run of it would stop short of
+    `ter:publish`, which needs a TER token nothing here holds.
 
 The hint this card owed is written. `extension-ter-release` in
 `knowledge/hints/extension.json` carries the four measured requirements and is

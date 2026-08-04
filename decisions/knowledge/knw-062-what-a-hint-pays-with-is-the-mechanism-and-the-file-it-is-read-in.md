@@ -6,9 +6,8 @@ status: open
 
 # D-KNW-062 — What a hint pays with is the mechanism and the file it is read in
 
-**Every statement that produced a finding in one session did it with one
-sentence naming a mechanism and the class it lives in, so a condensation that
-keeps the advice and drops that sentence is what would end it.**
+**A hint pays with the sentence naming the mechanism and the class it lives in;
+the advice around it produced none of one session's findings.**
 
 A "fix this project" run recorded what paid rather than what failed, and the
 four hints it names all paid the same way.

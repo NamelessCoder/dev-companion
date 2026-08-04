@@ -127,9 +127,9 @@ final class TaskIntents
      * The detected intents, with the core-only ones held to the evidence there
      * is for them.
      *
-     * The words that select a core-only intent are ordinary ones — "review",
-     * "push", "submit" — and they occur in every description of maintenance
-     * work. Reading one of them as a Gerrit patch submission put the whole core
+     * The words that select a core-only intent are ordinary ones — "push",
+     * "submit" — and they occur in every description of maintenance work.
+     * Reading one of them as a Gerrit patch submission put the whole core
      * contribution workflow into an answer about a third-party extension, which
      * is not a partly wrong answer but a wholly wrong one.
      *

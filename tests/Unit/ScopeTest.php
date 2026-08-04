@@ -569,15 +569,15 @@ final class ScopeTest extends TestCase
     #[Test]
     public function maintainingAnExtensionIsNotSubmittingAPatchToTheCore(): void
     {
-        // "review", "push", "submit" describe maintenance work as readily as
-        // they describe Gerrit. Reading one of them as a patch submission put
-        // the entire core contribution workflow into an answer about a
-        // third-party extension. Nothing here says which side this is, so the
-        // intent is offered under its condition rather than stated.
+        // "push" and "submit" describe maintenance work as readily as they
+        // describe Gerrit. Reading one of them as a patch submission put the
+        // entire core contribution workflow into an answer about a third-party
+        // extension. Nothing here says which side this is, so the intent is
+        // offered under its condition rather than stated.
         $result = Registry::call('typo3_task_guide', [
             'task' => 'Maintain and extend the third-party TYPO3 extension bk2k/bootstrap-package for '
-                . 'TYPO3 13.4 and 14.3: review TCA, TypoScript, Fluid templates, data processors and '
-                . 'upgrade wizards for compatibility and choose tests',
+                . 'TYPO3 13.4 and 14.3: check TCA, TypoScript, Fluid templates, data processors and '
+                . 'upgrade wizards for compatibility, choose tests and push the next release',
         ]);
 
         $confidence = array_column($result->data['intents'], 'confidence', 'id');

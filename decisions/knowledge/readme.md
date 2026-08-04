@@ -12,6 +12,7 @@ one is added.
 - [`D-KNW-057`][D-KNW-057] — A document declares what it is and when to reach for it · 2026-08-04
 - [`D-KNW-058`][D-KNW-058] — The document namespace is scope first and derived from the file · 2026-08-04
 - [`D-KNW-059`][D-KNW-059] — One place spells how a document is addressed · 2026-08-04
+- [`D-KNW-060`][D-KNW-060] — What a backend spec locates by is written where the spec is · 2026-08-04
 - [`D-KNW-029`][D-KNW-029] — A hint names the domains it is asked from, and the file names the subject · 2026-08-03
 - [`D-KNW-030`][D-KNW-030] — A hint is one question, and the DataHandler family is six of them · 2026-08-03
 - [`D-KNW-031`][D-KNW-031] — A suite is a property of the domain, not of the hint · 2026-08-03
@@ -65,6 +66,7 @@ one is added.
 [D-KNW-057]: knw-057-a-document-declares-what-it-is-and-when-to-reach-for-it.md
 [D-KNW-058]: knw-058-the-document-namespace-is-scope-first-and-derived-from-the-file.md
 [D-KNW-059]: knw-059-one-place-spells-how-a-document-is-addressed.md
+[D-KNW-060]: knw-060-what-a-backend-spec-locates-by-is-written-where-the-spec-is.md
 [D-KNW-029]: knw-029-a-hint-names-the-domains-it-is-asked-from-and-the-file-names-the-subject.md
 [D-KNW-030]: knw-030-a-hint-is-one-question-and-the-datahandler-family-is-six.md
 [D-KNW-031]: knw-031-a-suite-is-a-property-of-the-domain-not-of-the-hint.md

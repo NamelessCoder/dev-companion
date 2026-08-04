@@ -150,7 +150,12 @@ final class Factory
         foreach (Documents::documents() as $document) {
             $resources[] = new ResourceDefinition(
                 uri: ResourceHandler::DOCUMENT_PREFIX . $document['id'],
-                name: $document['id'],
+                // The id is a path since `D-KNW-058` and a resource name may not
+                // be: the SDK holds a name to alphanumerics, underscores and
+                // hyphens, and rejects the definition outright. Only the URI is
+                // free-form, so the separator is flattened here and the address
+                // keeps its segments.
+                name: str_replace('/', '-', $document['id']),
                 title: $document['title'],
                 description: Documents::description($document['id']),
                 mimeType: 'text/markdown',

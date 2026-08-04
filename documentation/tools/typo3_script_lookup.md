@@ -35,7 +35,7 @@ matches:
   - documentId: string
     # Title of the knowledge document.
     title: string
-    # typo3://core resource holding the full document.
+    # typo3://guides resource holding the full document.
     uri: string
     # Heading of the matched section.
     heading: string
@@ -96,7 +96,7 @@ Text:
 A section carries the range it holds for where it has one. What is bound elsewhere: call typo3_hint_lookup with targetVersion for a convention, and typo3_test_run_guide with targetVersion for a runTests.sh command.
 
 ## Invoking runTests.sh
-Source: TYPO3 Core Script Help (typo3://core/typo3-core-scripts) — matches 100% of the query terms
+Source: TYPO3 Core Script Help (typo3://guides/core/testing/scripts) — matches 100% of the query terms
 
 `Build/Scripts/runTests.sh` runs every suite inside a container and is started
 from the core checkout root.
@@ -139,7 +139,7 @@ Frequently needed options:
 - `-b docker|podman` selects the container runtime; podman is the default.
 
 ## Common Commands
-Source: TYPO3 Core Script Help (typo3://core/typo3-core-scripts) — matches 69% of the query terms
+Source: TYPO3 Core Script Help (typo3://guides/core/testing/scripts) — matches 69% of the query terms
 
 ### Install Dependencies
 
@@ -207,7 +207,7 @@ Useful for type-sensitive PHP changes and API contract changes.
 
 ### Check ReST Documentation
 
-(section truncated — read typo3://core/typo3-core-scripts for the rest)
+(section truncated — read typo3://guides/core/testing/scripts for the rest)
 
 These commands run in a TYPO3 core checkout. In any other repository, what to run is declared in its own composer.json, package.json and CI configuration.
 ````
@@ -220,9 +220,9 @@ Data:
     "matchCount": 2,
     "matches": [
         {
-            "documentId": "typo3-core-scripts",
+            "documentId": "core/testing/scripts",
             "title": "TYPO3 Core Script Help",
-            "uri": "typo3://core/typo3-core-scripts",
+            "uri": "typo3://guides/core/testing/scripts",
             "heading": "Invoking runTests.sh",
             "body": "`Build/Scripts/runTests.sh` runs every suite inside a container and is started\nfrom the core checkout root.\n\n- Prefix scripted or non-interactive runs with `CI=true`. It drops the\n  interactive container flags, skips the SIGINT trap, and picks the CI phpstan\n  configuration. Without a TTY the script removes the interactive flags on its\n  own, but `CI=true` is the explicit form.\n- Everything after `--` is passed through unchanged: to phpunit for the test\n  suites, to npm for `-s npm`, to composer for `-s composer`.\n- Run one file or one method while iterating; a full suite costs minutes per\n  round.\n- `./Build/Scripts/runTests.sh -h` lists the suites and option values the\n  checked-out branch supports.\n\n```bash\n# one unit test file\nCI=true ./Build/Scripts/runTests.sh -s unit -- typo3/sysext/core/Tests/Unit/Utility/GeneralUtilityTest.php\n\n# one unit test method\nCI=true ./Build/Scripts/runTests.sh -s unit -- --filter fixPermissionsSetsGroup typo3/sysext/core/Tests/Unit/Utility/GeneralUtilityTest.php\n\n# one functional test file, sqlite (default)\nCI=true ./Build/Scripts/runTests.sh -s functional -- typo3/sysext/impexp/Tests/Functional/Export/ExportTest.php\n```\n\nFrequently needed options:\n\n- `-d sqlite|mariadb|mysql|postgres` selects the database for `-s functional`\n  and for whichever installer suite the branch carries. sqlite is the default\n  and the fastest.\n- `-a mysqli|pdo_mysql` selects the driver for mysql and mariadb.\n- `-i <version>` pins a database version, for example `-d mariadb -i 11.4`.\n- `-p <php minor>` selects the PHP version of the container.\n- `-n` turns the `cgl` suites, and any other suite the branch lists under it,\n  into a dry run that only reports.\n- `-c <chunk>/<total>` splits `-s functional`, and the browser suite where the\n  branch has one, into chunks.\n- `-x` (with optional `-y <port>`) enables xdebug towards a listening IDE.\n- `-b docker|podman` selects the container runtime; podman is the default.",
             "versions": "",
@@ -231,9 +231,9 @@ Data:
             "truncated": false
         },
         {
-            "documentId": "typo3-core-scripts",
+            "documentId": "core/testing/scripts",
             "title": "TYPO3 Core Script Help",
-            "uri": "typo3://core/typo3-core-scripts",
+            "uri": "typo3://guides/core/testing/scripts",
             "heading": "Common Commands",
             "body": "### Install Dependencies\n\n```bash\nCI=true ./Build/Scripts/runTests.sh -s composerInstall\n```\n\nA suite runs against the `vendor/` and `bin/` of the directory it is started\nfrom, because `runTests.sh` mounts that directory and nothing else. A fresh\nclone has neither, and so does a git worktree of a checkout that has them:\n`/vendor/*` and `/bin/*` are gitignored, so git never brings them. The first\nsuite there stops at `exec: line 9: bin/phpunit: not found`, which names phpunit\nrather than the directory, so the cause is not readable from the symptom. Run\nthe install once in that directory first.\n\nSymlinking `vendor/` and `bin/` from another checkout does not stand in for it.\nThe target sits outside the one mount and does not resolve inside the container,\nwhether the link is absolute or relative.\n\n`composer install` on the host installs the same dependencies, but it wants the\nPHP the branch requires; the containerised form is why `runTests.sh` exists.\nEither way this is a precondition and not a step: a checkout that already has\n`vendor/` needs it again only after `composer.json` or `composer.lock` changed.\n\n### Run PHP Unit Tests\n\n```bash\nCI=true ./Build/Scripts/runTests.sh -s unit\n```\n\nRuns the TYPO3 core unit test suite. Add a path or `--filter` after `--` when\nworking on a narrow area.\n\n### Run Functional Tests\n\n```bash\nCI=true ./Build/Scripts/runTests.sh -s functional\n```\n\nRuns functional tests. Use these for changes that touch TYPO3 services,\npersistence, configuration, or integrations. Add `-d mariadb` or `-d postgres`\nto reproduce DBMS-specific behaviour.\n\n### Run Coding Standards\n\n```bash\nCI=true ./Build/Scripts/runTests.sh -s cgl -n\n```\n\nChecks coding guidelines for all core PHP files and reports without changing\nthem; drop `-n` to have them fixed. `-s cglGit` runs\n`Build/Scripts/cglFixMyCommit.sh` over the latest commit alone and is quicker,\nbut only from a normal checkout: that script asks git for its file list inside\nthe container, and a git worktree keeps its gitdir outside the mounted\ndirectory, so git fails, the list comes back empty and the suite reports SUCCESS\nhaving read no file. `-s cgl` asks git nothing and works from either.\n\n### Run PHPStan\n\n```bash\nCI=true ./Build/Scripts/runTests.sh -s phpstan\n```\n\nUseful for type-sensitive PHP changes and API contract changes.\n\n### Check ReST Documentation",
             "versions": "",

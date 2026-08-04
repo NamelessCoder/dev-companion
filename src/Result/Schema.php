@@ -177,7 +177,7 @@ final class Schema
         return self::object([
             'documentId' => self::string(),
             'title' => self::string('Title of the knowledge document.'),
-            'uri' => self::string('typo3://core resource holding the full document.'),
+            'uri' => self::string('typo3://guides resource holding the full document.'),
             'heading' => self::string('Heading of the matched section.'),
             'body' => self::string('The section as written, formatting included.'),
             'versions' => self::string('The TYPO3 majors this section holds for, in words. Empty means every covered major, which is what a section that declares nothing says.'),

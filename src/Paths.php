@@ -27,12 +27,14 @@ final class Paths
 
     /**
      * The prose corpus: the markdown documents searched by typo3_rule_lookup
-     * and served as typo3://core resources.
+     * and served as typo3://guides resources.
      *
-     * They have a directory of their own because being one is what publishes
-     * them. Every file here becomes a resource named after it, so a readme laid
-     * beside the knowledge base used to become `typo3://core/readme` without
-     * anybody deciding that.
+     * They have a directory of their own because lying in it is what publishes
+     * them, and a readme laid beside the knowledge base became
+     * `typo3://guides/readme` without anybody deciding that. What publishes one
+     * today is the shape below this directory rather than the directory alone
+     * — `<scope>/<topic>/<name>.md`, so a file at any other depth is read by
+     * nobody.
      */
     public static function documents(): string
     {

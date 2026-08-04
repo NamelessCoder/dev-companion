@@ -146,11 +146,11 @@ Covered, and how deeply. Each topic says which kind of work its answers are for:
 ## Contribution rules and review readiness
 Curated prose. The rules a patch is judged by, not a full style guide.
 Tools: typo3_rule_lookup, typo3_task_guide
-Source: typo3://core/typo3-core-rules (core)
+Source: typo3://guides/core/contribution/rules (core)
 ## Gerrit workflow: setup, pushing, amending, backports
 Curated prose, command level. Covers the local git side; it cannot talk to the Gerrit server.
 Tools: typo3_rule_lookup
-Source: typo3://core/typo3-gerrit-workflow (core)
+Source: typo3://guides/core/contribution/gerrit-workflow (core)
 ## What a Forge issue says and what was decided about it, and which other issues describe the same thing
 The tracker's own API, read live. By number: subject, tracker, status, target version, the TYPO3 and PHP versions it was reported against, related issues, and the comments — the description is what the reporter saw, the comments are where a maintainer said what will happen. By words: the issues whose text matches them, each with its number, subject, tracker, status and URL, in the tracker's own order and unranked. An issue worded differently is invisible to a word search, so words that match nothing are an answer about the words and not about whether the thing was reported.
 Tools: typo3_forge_lookup
@@ -162,15 +162,15 @@ Source: https://review.typo3.org (network) (core)
 ## Commit messages
 Rules plus a working draft and check, including 72-character body wrapping. The subject and body conventions are also served without the core workflow, for a commit in a repository that has no Forge issue and no release branches: workflow="project". The same guide is exposed as the user-invoked prompt commit_message.
 Tools: typo3_commit_message_guide, typo3_rule_lookup
-Source: typo3://core/typo3-commit-messages (any)
+Source: typo3://guides/core/contribution/commit-messages (any)
 ## Core testing suites: runTests.sh options and targeted invocation
 Every suite this knowledge base knows, with the command, the targeted form, and when to use it. The script is part of the core repository, so paths that read as a project or third-party extension get the boundary stated instead of a command.
 Tools: typo3_test_run_guide, typo3_script_lookup
-Source: knowledge/test-suite-hints.json, typo3://core/typo3-core-scripts (core)
+Source: knowledge/test-suite-hints.json, typo3://guides/core/testing/scripts (core)
 ## Where the upstream contribution documentation is
 The official contribution workflow guide is not bundled: this names its entry points, so a question past what the local documents answer is sent to the source rather than guessed at. The local policy that sits beside it is this repository's own.
 Tools: typo3_rule_lookup
-Source: typo3://core/typo3-contribution-sources (core)
+Source: typo3://guides/core/contribution/sources (core)
 ## Core conventions: DI, events and hooks, TCA and FormEngine, FormEngine data providers, DataHandler, routing, Fluid templates and ViewHelpers, frontend page rendering with PAGEVIEW, how a sitepackage is laid out, records in the frontend and the routing for them, registering a content element, Extbase plugins, TypoScript site sets and TSconfig, language files, upgrade wizards, frontend DataProcessors, upgrading an installation, testing strategy, assembling a test suite for a project extension, setting up static analysis for an extension, browser and accessibility tests with Playwright
 Conventions per subsystem, matched by path or topic, from both angles: what a change to the subsystem has to satisfy, and how the mechanism is used. It describes how the core is built, never what your checkout contains.
 Tools: typo3_hint_lookup, typo3_task_guide
@@ -243,7 +243,7 @@ The active installation supplies the contract for curated component entries, but
 Instead: Call typo3_catalog_scope to see which source answered, then inspect the installed backend CSS or the target checkout when the class is outside the curated index.
 ## Gerrit review state beyond what an anonymous read answers: votes, CI results, the comments and the diff of a patch set, and anything a private change carries
 The review API is read without a credential, so what a reviewer sees and what a private change contains are outside it. Nothing here writes to Gerrit at all.
-Instead: typo3_gerrit_lookup answers whether a change exists, what it is called, which branch it targets, whether it is still open, and which patch set is current with the commit it is — hold that commit against your own HEAD. Votes, comments, CI and the diff of a patch set belong in the web UI; pushing and amending are git, and typo3://core/typo3-gerrit-workflow carries those.
+Instead: typo3_gerrit_lookup answers whether a change exists, what it is called, which branch it targets, whether it is still open, and which patch set is current with the commit it is — hold that commit against your own HEAD. Votes, comments, CI and the diff of a patch set belong in the web UI; pushing and amending are git, and typo3://guides/core/contribution/gerrit-workflow carries those.
 ## What someone else's extension does: the API, the options and the documentation of a package the core does not ship
 Writing an extension is covered — the extension author is one of the three audiences this exists for, and the registration files, the subsystem conventions, the sitepackage layout and the test suite are all here. What is not here is the inside of somebody else's package: it has its own API, its own release cycle and its own documentation, and none of them is read by this server. Whether a name belongs to the core at all is a different question, and typo3_system_extension_lookup answers it.
 Instead: Read that extension's own documentation. What an installed extension registers — yours or a third party's — is answered by typo3_extension_scope from the files it ships.
@@ -320,7 +320,7 @@ Data:
                 "typo3_rule_lookup",
                 "typo3_task_guide"
             ],
-            "source": "typo3://core/typo3-core-rules",
+            "source": "typo3://guides/core/contribution/rules",
             "scope": "core"
         },
         {
@@ -329,7 +329,7 @@ Data:
             "tools": [
                 "typo3_rule_lookup"
             ],
-            "source": "typo3://core/typo3-gerrit-workflow",
+            "source": "typo3://guides/core/contribution/gerrit-workflow",
             "scope": "core"
         },
         {
@@ -357,7 +357,7 @@ Data:
                 "typo3_commit_message_guide",
                 "typo3_rule_lookup"
             ],
-            "source": "typo3://core/typo3-commit-messages",
+            "source": "typo3://guides/core/contribution/commit-messages",
             "scope": "any"
         },
         {
@@ -367,7 +367,7 @@ Data:
                 "typo3_test_run_guide",
                 "typo3_script_lookup"
             ],
-            "source": "knowledge/test-suite-hints.json, typo3://core/typo3-core-scripts",
+            "source": "knowledge/test-suite-hints.json, typo3://guides/core/testing/scripts",
             "scope": "core"
         },
         {
@@ -376,7 +376,7 @@ Data:
             "tools": [
                 "typo3_rule_lookup"
             ],
-            "source": "typo3://core/typo3-contribution-sources",
+            "source": "typo3://guides/core/contribution/sources",
             "scope": "core"
         },
         {
@@ -517,7 +517,7 @@ Data:
         {
             "topic": "Gerrit review state beyond what an anonymous read answers: votes, CI results, the comments and the diff of a patch set, and anything a private change carries",
             "why": "The review API is read without a credential, so what a reviewer sees and what a private change contains are outside it. Nothing here writes to Gerrit at all.",
-            "instead": "typo3_gerrit_lookup answers whether a change exists, what it is called, which branch it targets, whether it is still open, and which patch set is current with the commit it is — hold that commit against your own HEAD. Votes, comments, CI and the diff of a patch set belong in the web UI; pushing and amending are git, and typo3://core/typo3-gerrit-workflow carries those."
+            "instead": "typo3_gerrit_lookup answers whether a change exists, what it is called, which branch it targets, whether it is still open, and which patch set is current with the commit it is — hold that commit against your own HEAD. Votes, comments, CI and the diff of a patch set belong in the web UI; pushing and amending are git, and typo3://guides/core/contribution/gerrit-workflow carries those."
         },
         {
             "topic": "What someone else's extension does: the API, the options and the documentation of a package the core does not ship",

@@ -32,6 +32,14 @@ every client under a prefix that says the opposite.
 - The rename reaches prose rather than code. The URIs are written into the
   corpus, into skills and into `server-scope.json`, and `bin/cli links:check`
   and `ToolNamingTest` are what find the ones a sweep misses.
+- A resource **name** may not carry the path. `Mcp\Schema\ResourceDefinition`
+  holds one to alphanumerics, underscores and hyphens and rejects the definition
+  outright, so the server does not start. Only the URI is free-form, which is
+  what the protocol addresses a resource by.
+- The move found a document wearing the wrong scope. `commit-messages` was
+  declared as holding everywhere and is the core's process throughout —
+  `Resolves:`, `Change-Id:`, the changelog files, the Security Team — so the
+  label was corrected rather than carried into a directory.
 
 ## Decided
 
@@ -57,6 +65,14 @@ every client under a prefix that says the opposite.
 - The five existing documents move and their URIs change with them. A URI a
   client holds in a note goes stale, and the alternative is a prefix that lies
   about every document that is not the core's.
+- The resource name is the id with its separators flattened, because the
+  protocol will not take the path there. The URI keeps its segments, and that is
+  the identifier anything outside this checkout addresses a document by.
+- Withholding a core document outside the core now leaves a hole where that
+  document used to transfer, and the hole is filled by naming the tool that owns
+  the subject rather than by a shortened copy of the page. `D-DOC-013` already
+  settled that the commit conventions are one measure and it is
+  `typo3_commit_message_guide`.
 
 ## Assumed
 

@@ -1136,11 +1136,14 @@ final class ScopeTest extends TestCase
         $result = Registry::call('typo3_rule_lookup', ['query' => 'commit message sitepackage']);
 
         self::assertTrue(Scope::from($result->data['scope'])->isOutsideTheCore());
-        self::assertSame(
-            ['typo3-commit-messages'],
-            array_values(array_unique(array_column($result->data['matches'], 'documentId'))),
-            'a section that holds anywhere was withheld, or one that does not was handed over',
-        );
+        // The commit conventions were this corpus's transferable half until the
+        // document was read: it is the core's process throughout — Resolves,
+        // Change-Id, the changelog files — and it was labelled as holding
+        // everywhere. Outside the core the prose now answers nothing here, and
+        // what a project caller needs is a tool rather than a second copy of
+        // this page.
+        self::assertSame([], $result->data['matches']);
+        self::assertStringContainsString('typo3_commit_message_guide', $result->text);
         // That a miss on the boundary is named is held by
         // whatARuleAnswerWithheldIsNamedRatherThanMissing, on a query that
         // still reaches both halves. This one no longer does: since D-ANS-037
@@ -1173,11 +1176,11 @@ final class ScopeTest extends TestCase
     {
         $outside = Registry::call('typo3_rule_lookup', ['query' => 'code style rules for my site package']);
 
-        self::assertContains('typo3-core-rules', array_column($outside->data['withheldDocuments'], 'id'));
+        self::assertContains('core/contribution/rules', array_column($outside->data['withheldDocuments'], 'id'));
         self::assertStringStartsWith('This reads as work outside the TYPO3 core', $outside->text);
         // The resource stays reachable: withholding is about what an answer
         // volunteers, not about what a caller may deliberately read.
-        self::assertStringContainsString('typo3://core/', $outside->text);
+        self::assertStringContainsString('typo3://guides/', $outside->text);
     }
 
     #[Test]
@@ -1187,21 +1190,21 @@ final class ScopeTest extends TestCase
 
         self::assertFalse(Scope::from($inside->data['scope'])->isOutsideTheCore());
         self::assertSame([], $inside->data['withheldDocuments']);
-        self::assertContains('typo3-core-rules', array_column($inside->data['matches'], 'documentId'));
+        self::assertContains('core/contribution/rules', array_column($inside->data['matches'], 'documentId'));
     }
 
     /**
      * Which of the two a document is comes from the scope rather than from a
      * second list, so a document the coverage does not announce has no scope to
      * read — and is served as a resource and searched by the rule lookup all
-     * the same. `typo3-contribution-sources` was exactly that.
+     * the same. `core/contribution/sources` was exactly that.
      */
     #[Test]
     public function everyKnowledgeDocumentIsAnnouncedByTheScope(): void
     {
         $named = [];
         foreach (Coverage::read()['covers'] as $entry) {
-            if (preg_match_all('#typo3://core/([a-z0-9-]+)#', $entry['source'], $matches) === 0) {
+            if (preg_match_all('#typo3://guides/([a-z0-9/-]+)#', $entry['source'], $matches) === 0) {
                 continue;
             }
             foreach ($matches[1] as $id) {

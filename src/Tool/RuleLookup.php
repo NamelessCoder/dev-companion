@@ -59,7 +59,7 @@ final class RuleLookup extends ReadOnlyTool
             'id' => Schema::string(),
             'title' => Schema::string(),
         ], ['id', 'title']), 'Documents that matched and were left out because they answer for the core repository '
-            . 'alone. Empty inside the core. Each is still readable in full as its typo3://core resource, which is '
+            . 'alone. Empty inside the core. Each is still readable in full as its typo3://guides resource, which is '
             . 'the way to get one deliberately rather than by accident.');
         $schema['required'][] = 'scope';
 
@@ -112,7 +112,15 @@ final class RuleLookup extends ReadOnlyTool
             $lines[] = 'Withheld for that reason: ' . implode(', ', array_map(
                 static fn(array $document): string => $document['title'],
                 $withheld,
-            )) . '. Each is readable in full as typo3://core/<id> where the work really is a core patch.';
+            )) . '. Each is readable in full as typo3://guides/<id> where the work really is a core patch.';
+            $lines[] = '';
+            // What is withheld here has a counterpart outside the core, and it
+            // is a tool rather than a second copy of the page: the commit
+            // conventions of a repository of your own are what
+            // typo3_commit_message_guide composes for workflow="project", which
+            // is the one measure this repository writes by as well — D-DOC-013.
+            $lines[] = 'For a repository of your own, the same subjects are answered by '
+                . 'typo3_commit_message_guide with workflow="project" and by typo3_hint_lookup.';
             $lines[] = '';
         }
         $lines[] = $results === []

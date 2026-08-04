@@ -20,9 +20,9 @@ final class TaskIntents
 {
     /** Knowledge documents an intent may pull rule sections from. */
     private const RULE_DOCUMENTS = [
-        'typo3-core-rules',
-        'typo3-commit-messages',
-        'typo3-gerrit-workflow',
+        'core/contribution/rules',
+        'core/contribution/commit-messages',
+        'core/contribution/gerrit-workflow',
     ];
 
     /**

@@ -12,16 +12,16 @@ use Typo3CmsMcp\Knowledge\Documents;
 /**
  * Serves the typo3:// resources from what this package ships.
  *
- * One instance backs every registered resource: the typo3://core index (what
+ * One instance backs every registered resource: the typo3://guides index (what
  * this server covers, plus a JSON listing of what it serves), each
- * typo3://core/{id} knowledge document, and each typo3://skill/{id} task
+ * typo3://guides/{id} knowledge document, and each typo3://skill/{id} task
  * workflow. The SDK wraps the returned string with the mime type declared on
  * the matching resource definition.
  */
 final class ResourceHandler implements ResourceHandlerInterface
 {
-    public const INDEX_URI = 'typo3://core';
-    public const DOCUMENT_PREFIX = 'typo3://core/';
+    public const INDEX_URI = 'typo3://guides';
+    public const DOCUMENT_PREFIX = 'typo3://guides/';
     public const SKILL_PREFIX = 'typo3://skill/';
 
     /**

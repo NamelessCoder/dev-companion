@@ -18,7 +18,7 @@ cannot reach, and it is what decides what may stay as prose at all.
 ## From
 
 «Since TYPO3 v14.1 a label marked that way raises an `E_USER_DEPRECATED`» in
-`typo3-core-rules.md`, handed unqualified to a caller on 13.4 by
+`core/contribution/rules.md`, handed unqualified to a caller on 13.4 by
 `typo3_rule_lookup`, which has no `targetVersion` and searches every document
 (2026-07-30).
 

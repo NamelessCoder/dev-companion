@@ -147,7 +147,7 @@ rules:  # optional
   - documentId: string
     # Title of the knowledge document.
     title: string
-    # typo3://core resource holding the full document.
+    # typo3://guides resource holding the full document.
     uri: string
     # Heading of the matched section.
     heading: string
@@ -264,7 +264,7 @@ Rules that apply to this task:
 A section carries the range it holds for where it has one. What is bound elsewhere: call typo3_hint_lookup with targetVersion for a convention, and typo3_test_run_guide with targetVersion for a runTests.sh command.
 
 ## Deprecations
-Source: TYPO3 Core Commit Message Rules (typo3://core/typo3-commit-messages) — matches 100% of the query terms
+Source: TYPO3 Core Commit Message Rules (typo3://guides/core/contribution/commit-messages) — matches 100% of the query terms
 
 - Deprecations must not use `[!!!]`.
 - Deprecations may only use `[TASK]` or `[FEATURE]`.
@@ -280,7 +280,7 @@ Source: TYPO3 Core Commit Message Rules (typo3://core/typo3-commit-messages) —
   with a Composer installation.
 
 ## Breaking Changes
-Source: TYPO3 Core Commit Message Rules (typo3://core/typo3-commit-messages) — matches 100% of the query terms
+Source: TYPO3 Core Commit Message Rules (typo3://guides/core/contribution/commit-messages) — matches 100% of the query terms
 
 - Breaking changes must use `[!!!]` before the keyword.
 - Breaking changes must be documented with a changelog RST file.
@@ -588,9 +588,9 @@ Data:
     "omittedHints": [],
     "rules": [
         {
-            "documentId": "typo3-commit-messages",
+            "documentId": "core/contribution/commit-messages",
             "title": "TYPO3 Core Commit Message Rules",
-            "uri": "typo3://core/typo3-commit-messages",
+            "uri": "typo3://guides/core/contribution/commit-messages",
             "heading": "Deprecations",
             "body": "- Deprecations must not use `[!!!]`.\n- Deprecations may only use `[TASK]` or `[FEATURE]`.\n- Deprecations must be documented with a changelog RST file.\n- Deprecations need migration guidance and may need extension scanner\n  considerations.\n- All of the above is the authoring side. Reading it — what a given version\n  deprecated, and what that means for code that uses it — works the other way\n  round: the changelog files below `Documentation/Changelog/` of the core\n  package and the matchers below the install package's\n  `Configuration/ExtensionScanner/Php/` are what an installation is checked\n  against, by the Extension Scanner in the Install Tool. Both directories ship\n  with a Composer installation.",
             "versions": "",
@@ -599,9 +599,9 @@ Data:
             "truncated": false
         },
         {
-            "documentId": "typo3-commit-messages",
+            "documentId": "core/contribution/commit-messages",
             "title": "TYPO3 Core Commit Message Rules",
-            "uri": "typo3://core/typo3-commit-messages",
+            "uri": "typo3://guides/core/contribution/commit-messages",
             "heading": "Breaking Changes",
             "body": "- Breaking changes must use `[!!!]` before the keyword.\n- Breaking changes must be documented with a changelog RST file.\n- Breaking changes should usually target `main`.\n- A removed or narrowed PHP API gets an extension scanner matcher entry in the\n  same patch, below `typo3/sysext/install/Configuration/ExtensionScanner/Php/`.\n  How the removed member is written where it is used decides the file:\n  - `MethodCallMatcher.php` — an instance method.\n  - `MethodCallStaticMatcher.php` — a static method.\n  - `PropertyPublicMatcher.php` — a removed public property.\n  - `PropertyProtectedMatcher.php` — a public property that became protected.\n  - `ClassNameMatcher.php` — a whole class or interface.\n- Visibility routes a property and never a method. The method matchers are a\n  weak match on the method name where it is used, and they do not resolve the\n  class, so they cannot see one. A method that is protected, or that has become\n  protected, is entered where a public one is.\n  `RendererRegistry->getRendererInstances` went from public to protected in\n  `Breaking-110277`, and it stands in `MethodCallMatcher.php`. The list above\n  has no row for a protected method because none is needed, and that absence\n  says nothing about whether an entry is owed.\n- An entry is keyed by the fully qualified name with `->` or `::` and carries\n  `restFiles`, naming the changelog file that removed it. The method matchers\n  add `numberOfMandatoryArguments` and `maximumNumberOfArguments`. A member\n  deprecated before it was removed lists both changelog files.\n- Every Breaking and Deprecation entry carries exactly one of `NotScanned`,\n  `PartiallyScanned` and `FullyScanned` in its `.. index::` line, and that tag\n  is the claim those entries have to back: `FullyScanned` says every item the\n  changelog entry names can be found. The scanner reads PHP, so what an entry\n  changes in TypoScript, TCA, YAML or JavaScript is what leaves it partially\n  scanned.\n- `./Build/Scripts/runTests.sh -s checkExtensionScannerRst` checks that the\n  changelog files the matchers name exist, and nothing checks the other\n  direction. A missing entry surfaces when somebody audits the matcher files\n  against the changelog.",
             "versions": "",
@@ -774,7 +774,7 @@ Rules that apply to this task:
 A section carries the range it holds for where it has one. What is bound elsewhere: call typo3_hint_lookup with targetVersion for a convention, and typo3_test_run_guide with targetVersion for a runTests.sh command.
 
 ## Testing
-Source: TYPO3 Core Contribution Rules (typo3://core/typo3-core-rules) — matches 50% of the query terms
+Source: TYPO3 Core Contribution Rules (typo3://guides/core/contribution/rules) — matches 50% of the query terms
 
 - Unit tests are expected for isolated behavior.
 - Functional tests are expected for persistence, configuration, routing, backend
@@ -857,9 +857,9 @@ Data:
     "omittedHints": [],
     "rules": [
         {
-            "documentId": "typo3-core-rules",
+            "documentId": "core/contribution/rules",
             "title": "TYPO3 Core Contribution Rules",
-            "uri": "typo3://core/typo3-core-rules",
+            "uri": "typo3://guides/core/contribution/rules",
             "heading": "Testing",
             "body": "- Unit tests are expected for isolated behavior.\n- Functional tests are expected for persistence, configuration, routing, backend\n  behavior, or integration with TYPO3 services.\n- End-to-end tests, the `e2e` suite, are useful when the change affects editor\n  or administrator workflows and only breaks in the assembled backend. They\n  replaced the former acceptance suites.\n- Document tests that could not be executed and why.",
             "versions": "",

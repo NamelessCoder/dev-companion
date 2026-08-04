@@ -65,14 +65,34 @@ final class Documents
      */
     private const BINDING = '/^\*\*(Since|Until):\*\*\s*(\d+)\s*$/';
 
+    /**
+     * How deep a document sits: the scope, one topic, one name — `D-KNW-058`.
+     *
+     * The depth is what publishes a file rather than the directory alone. Lying
+     * below `knowledge/documents/` used to be the whole condition, and a readme
+     * laid beside the corpus became a resource without anybody deciding it; a
+     * readme laid inside a topic directory would do the same.
+     */
+    private const DEPTH = 2;
+
     /** @return array<int, array{id: string, title: string, path: string}> */
     public static function documents(): array
     {
         $documents = [];
-        foreach (Finder::create()->files()->in(Paths::documents())->depth(0)->name('*.md')->sortByName() as $file) {
+        $root = Paths::documents();
+        if (!is_dir($root)) {
+            return $documents;
+        }
+
+        foreach (Finder::create()->files()->in($root)->depth(self::DEPTH)->name('*.md')->sortByName() as $file) {
+            $id = substr($file->getPathname(), strlen($root) + 1, -strlen('.md'));
+            if (Scope::tryFrom(strtok($id, '/')) === null) {
+                continue;
+            }
+
             $content = (string) file_get_contents($file->getPathname());
             $documents[] = [
-                'id' => $file->getBasename('.md'),
+                'id' => $id,
                 'title' => self::readTitle($content) ?? $file->getFilename(),
                 'path' => $file->getPathname(),
             ];
@@ -82,25 +102,21 @@ final class Documents
     }
 
     /**
-     * Whether a document is the core repository's own, derived rather than
-     * declared twice.
+     * Who a document answers for, which is the directory it sits in.
      *
-     * `knowledge/server-scope.json` already says what every topic's answers are
-     * worth outside the core, and every covered topic names the file behind it.
-     * A second list here would be the same statement in a place that can
-     * disagree with the first, so the scope is read off the coverage: a document
-     * is core-only when the topic naming it is, and `ScopeTest` holds every
-     * document to being named by one.
+     * Declared once and in the one place a move cannot leave behind —
+     * `D-KNW-058`. It was the coverage row before that, and the file name
+     * carried the same word beside it.
      */
+    public static function scopeOf(string $id): Scope
+    {
+        return Scope::tryFrom(strtok($id, '/')) ?? Scope::Uncertain;
+    }
+
+    /** Whether a document is the core repository's own. */
     public static function isCoreOnly(string $id): bool
     {
-        $covered = self::covered($id);
-
-        // A document the coverage does not announce. Held against by ScopeTest, so
-        // this is what an unnoticed one gets in the meantime: withheld outside
-        // the core, because the corpus is the contribution material by default
-        // and handing it over is the mistake worth avoiding.
-        return $covered === null || $covered['scope'] === Scope::Core;
+        return self::scopeOf($id) === Scope::Core;
     }
 
     /**
@@ -109,9 +125,8 @@ final class Documents
      *
      * A resource is picked out of a list rather than called mid-task, so the
      * list is the whole of what the choice is made on — `R-ANS-022`. It says
-     * the subject and who the answers oblige, and both are read off the
-     * coverage rather than written a second time here, for the reason
-     * isCoreOnly is.
+     * the subject and who the answers oblige; the subject comes from the
+     * coverage row and the audience from the directory the file sits in.
      */
     public static function description(string $id): ?string
     {
@@ -120,7 +135,7 @@ final class Documents
             return null;
         }
 
-        return $covered['topic'] . '. ' . match ($covered['scope']) {
+        return $covered['topic'] . '. ' . match (self::scopeOf($id)) {
             Scope::Core => "The TYPO3 core's own process, which does not transfer to extension or site work.",
             // Named rather than folded into the sentence below it: a document
             // about setting a package up answers for the package, and telling a
@@ -140,7 +155,7 @@ final class Documents
     private static function covered(string $id): ?array
     {
         foreach (Coverage::read()['covers'] as $entry) {
-            if (str_contains($entry['source'], 'typo3://core/' . $id)) {
+            if (str_contains($entry['source'], 'typo3://guides/' . $id)) {
                 return $entry;
             }
         }

@@ -41,15 +41,15 @@ namespace the draft leaves unnamed is the one that actually collides.
 This server serves four shapes under `typo3://`, and the first two predate the
 draft:
 
-- `typo3://core` — the index: what the server covers, how it routes a question,
+- `typo3://guides` — the index: what the server covers, how it routes a question,
   and a listing of the documents below it.
-- `typo3://core/{id}` — one markdown document per entry in the knowledge base.
+- `typo3://guides/{id}` — one markdown document per entry in the knowledge base.
 - `typo3://skill/{id}/SKILL.md` — the body of each published task skill.
 - `typo3://skill/{id}/references/{file}` — a resource template for the files a
   skill's body links to.
 
 The scheme is not an implementation detail this server could quietly change.
-Every prose answer carries the `typo3://core/{id}` of the document it matched,
+Every prose answer carries the `typo3://guides/{id}` of the document it matched,
 the shared record shape declares that field, and two tool descriptions send the
 calling model to the resource. The skills make the point stronger rather than
 different: a skill body is served at a URI ending in its own file name so that
@@ -59,7 +59,7 @@ the scheme and those links resolve nowhere.
 
 If a contract's uniform scheme turned out to be `typo3://`, a conformant client
 could not tell a TCA resource from something else by the URI alone. It would
-read `typo3://core` expecting a machine-readable content model and get a
+read `typo3://guides` expecting a machine-readable content model and get a
 documentation index. That is worse than a clean failure, because nothing errors
 — the model receives the wrong kind of document and proceeds. One sentence
 prevents it, and the draft already contains the template: applying to schemes
@@ -86,7 +86,7 @@ no claim is made on it here.
   published skill body, whose relative links resolve against the URI it is
   served at.
 - **A fixed authority segment inside it**, such as `typo3://tca/…`. Then
-  `typo3://core` and `typo3://skill/` stay as they are, and the cost is nothing.
+  `typo3://guides` and `typo3://skill/` stay as they are, and the cost is nothing.
 - **A reservation catching `typo3_`** — a rule about the string `typo3` under
   any separator, or a conformance suite that rejects a non-contract tool whose
   name begins with it. Then all 26 tool names go.

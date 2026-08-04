@@ -43,7 +43,7 @@ final class Prose
             $heading = $result['heading'] === '' ? $result['title'] : $result['heading'];
             $versions = Versions::label($result['since'] ?? null, $result['until'] ?? null);
             $source = sprintf(
-                'Source: %s (typo3://core/%s)%s — matches %d%% of the query terms',
+                'Source: %s (typo3://guides/%s)%s — matches %d%% of the query terms',
                 $result['title'],
                 $result['id'],
                 $versions === '' ? '' : ' [' . $versions . ']',
@@ -52,7 +52,7 @@ final class Prose
 
             $body = $result['body'];
             if ($result['truncated']) {
-                $body .= "\n\n(section truncated — read typo3://core/" . $result['id'] . ' for the rest)';
+                $body .= "\n\n(section truncated — read typo3://guides/" . $result['id'] . ' for the rest)';
             }
 
             return '## ' . $heading . "\n" . $source . "\n\n" . $body;
@@ -71,7 +71,7 @@ final class Prose
         return array_map(static fn(array $result): array => [
             'documentId' => $result['id'],
             'title' => $result['title'],
-            'uri' => 'typo3://core/' . $result['id'],
+            'uri' => 'typo3://guides/' . $result['id'],
             'heading' => $result['heading'] === '' ? $result['title'] : $result['heading'],
             'body' => $result['body'],
             'versions' => Versions::label($result['since'] ?? null, $result['until'] ?? null),

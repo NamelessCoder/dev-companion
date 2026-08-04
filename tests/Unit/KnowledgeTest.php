@@ -41,9 +41,18 @@ final class KnowledgeTest extends TestCase
     protected function tearDown(): void
     {
         Paths::useDocuments(null);
+        $directories = [];
         if ($this->corpus !== null) {
             foreach (Finder::create()->files()->in($this->corpus) as $file) {
                 unlink($file->getPathname());
+            }
+            foreach (iterator_to_array(Finder::create()->directories()->in($this->corpus), false) as $directory) {
+                // Deepest first, because a directory only goes once it is empty.
+                $directories[] = $directory->getPathname();
+            }
+            rsort($directories);
+            foreach ($directories as $directory) {
+                rmdir($directory);
             }
             rmdir($this->corpus);
             $this->corpus = null;
@@ -65,7 +74,7 @@ final class KnowledgeTest extends TestCase
     {
         $this->corpus = sys_get_temp_dir() . '/typo3-mcp-documents-' . bin2hex(random_bytes(6));
         mkdir($this->corpus);
-        $documents['contrast'] = <<<'MD'
+        $documents['core/contribution/contrast'] = <<<'MD'
             # Contrast
 
             ## Pushing a patch
@@ -77,7 +86,11 @@ final class KnowledgeTest extends TestCase
             which keyword opens it and how long a body line may be
             MD;
         foreach ($documents as $id => $content) {
-            file_put_contents($this->corpus . '/' . $id . '.md', $content);
+            $file = $this->corpus . '/' . $id . '.md';
+            if (!is_dir(dirname($file))) {
+                mkdir(dirname($file), 0777, true);
+            }
+            file_put_contents($file, $content);
         }
         Paths::useDocuments($this->corpus);
     }
@@ -85,7 +98,7 @@ final class KnowledgeTest extends TestCase
     #[Test]
     public function aBoundSectionIsKeptOnTheMajorItHoldsFor(): void
     {
-        $this->useCorpus(['bound' => <<<'MD'
+        $this->useCorpus(['extension/testing/bound' => <<<'MD'
             # Bound
 
             ## Build/UnitTests.xml
@@ -131,7 +144,7 @@ final class KnowledgeTest extends TestCase
     #[Test]
     public function theBindingDoesNotReachTheCallerAsPartOfWhatItBinds(): void
     {
-        $this->useCorpus(['bound' => <<<'MD'
+        $this->useCorpus(['extension/testing/bound' => <<<'MD'
             # Bound
 
             ## Build/UnitTests.xml
@@ -159,7 +172,7 @@ final class KnowledgeTest extends TestCase
         // The declaration has one place, so a reader never has to search a
         // section for the range it holds on — and a sentence that happens to
         // start that way stays prose.
-        $this->useCorpus(['loose' => <<<'MD'
+        $this->useCorpus(['extension/testing/loose' => <<<'MD'
             # Loose
 
             ## A section
@@ -181,9 +194,9 @@ final class KnowledgeTest extends TestCase
         $documents = Documents::documents();
         $ids = array_column($documents, 'id');
 
-        self::assertContains('typo3-core-rules', $ids);
-        self::assertContains('typo3-core-scripts', $ids);
-        self::assertContains('typo3-gerrit-workflow', $ids);
+        self::assertContains('core/contribution/rules', $ids);
+        self::assertContains('core/testing/scripts', $ids);
+        self::assertContains('core/contribution/gerrit-workflow', $ids);
 
         foreach ($documents as $document) {
             self::assertNotSame('', $document['title'], $document['id'] . ' has no title');
@@ -194,7 +207,7 @@ final class KnowledgeTest extends TestCase
     #[Test]
     public function readReturnsTheDocumentAndRejectsUnknownIds(): void
     {
-        self::assertStringContainsString('# TYPO3 Core Contribution Rules', Documents::read('typo3-core-rules'));
+        self::assertStringContainsString('# TYPO3 Core Contribution Rules', Documents::read('core/contribution/rules'));
 
         $this->expectException(\RuntimeException::class);
         Documents::read('does-not-exist');
@@ -433,7 +446,7 @@ final class KnowledgeTest extends TestCase
         $results = Documents::search('commit message summary line length');
 
         self::assertSame(
-            ['typo3-commit-messages', 'Summary Line'],
+            ['core/contribution/commit-messages', 'Summary Line'],
             [$results[0]['id'] ?? null, $results[0]['heading'] ?? null],
         );
     }
@@ -480,18 +493,18 @@ final class KnowledgeTest extends TestCase
     #[Test]
     public function theSearchCanBeRestrictedToDocuments(): void
     {
-        $results = Documents::search('functional tests', ['typo3-core-scripts']);
+        $results = Documents::search('functional tests', ['core/testing/scripts']);
 
         self::assertNotSame([], $results);
         foreach ($results as $result) {
-            self::assertSame('typo3-core-scripts', $result['id']);
+            self::assertSame('core/testing/scripts', $result['id']);
         }
     }
 
     #[Test]
     public function codeFencesSurviveTheSectionSplit(): void
     {
-        $results = Documents::search('unit tests', ['typo3-core-scripts']);
+        $results = Documents::search('unit tests', ['core/testing/scripts']);
 
         $bodies = implode("\n", array_column($results, 'body'));
         self::assertStringContainsString('```', $bodies, 'commands are only usable with their code fence intact');
@@ -544,7 +557,7 @@ final class KnowledgeTest extends TestCase
         ]);
 
         self::assertSame(0, $result->data['matchCount']);
-        self::assertSame(['typo3-gerrit-workflow'], array_column($result->data['withheldDocuments'], 'id'));
+        self::assertSame(['core/contribution/gerrit-workflow'], array_column($result->data['withheldDocuments'], 'id'));
         self::assertStringContainsString('No section that holds outside the core matched', $result->text);
     }
 
@@ -696,7 +709,7 @@ final class KnowledgeTest extends TestCase
         // "after cloning TYPO3 core or changing PHP dependencies", which is
         // neither of the two cases that actually stop a run.
         $section = '';
-        foreach (preg_split('/^#{2,3} /m', Documents::read('typo3-core-scripts')) ?: [] as $candidate) {
+        foreach (preg_split('/^#{2,3} /m', Documents::read('core/testing/scripts')) ?: [] as $candidate) {
             if (str_starts_with($candidate, 'Install Dependencies')) {
                 $section = $candidate;
             }

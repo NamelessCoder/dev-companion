@@ -335,7 +335,7 @@ final class ServerScope extends ReadOnlyTool
             '%s %s missing from the tool list, and so is every entry below that routed to one of them, because %s '
             . 'asked for that. Unset it to be offered them again. Nothing else here is withheld: what an answer is '
             . 'worth outside the core is stated per topic below, and every prose document is readable as a '
-            . 'typo3://core resource whatever the tool list holds.',
+            . 'typo3://guides resource whatever the tool list holds.',
             implode(', ', ExcludedTools::all()),
             count(ExcludedTools::all()) === 1 ? 'is' : 'are',
             ExcludedTools::VARIABLE,

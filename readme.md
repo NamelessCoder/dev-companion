@@ -179,10 +179,10 @@ grouped by where an answer comes from.
 
 ## Resources
 
-- `typo3://core`: knowledge index — the server's scope and routing, plus every
+- `typo3://guides`: knowledge index — the server's scope and routing, plus every
   document and skill it serves.
-- `typo3://core/{documentId}`: Markdown resource for a single knowledge
-  document, for example `typo3://core/typo3-core-rules`.
+- `typo3://guides/{documentId}`: Markdown resource for a single knowledge
+  document, for example `typo3://guides/core/contribution/rules`.
 - `typo3://skill/{skillId}/SKILL.md`: one published task workflow, for example
   `typo3://skill/typo3-extension-testing/SKILL.md`. `install` writes the same
   files into the client's own skills directory; this is the route for a client
@@ -197,10 +197,10 @@ grouped by where an answer comes from.
 
 Everything the tools and resources answer from lives in `knowledge/`:
 
-- `documents/` — the prose corpus `typo3://core/{documentId}` serves and
-  `typo3_rule_lookup` searches: `typo3-core-rules.md`, `typo3-core-scripts.md`,
-  `typo3-commit-messages.md`, `typo3-gerrit-workflow.md`,
-  `typo3-contribution-sources.md`
+- `documents/` — the prose corpus `typo3://guides/{documentId}` serves and
+  `typo3_rule_lookup` searches: `core/contribution/rules.md`, `core/testing/scripts.md`,
+  `core/contribution/commit-messages.md`, `core/contribution/gerrit-workflow.md`,
+  `core/contribution/sources.md`
 - `hints/` — one file per subject: `datahandler.json`, `fal.json`,
   `labels.json`, `site-sets.json` and many more. Each entry names the domains it
   is asked from in its own `domains` field, so the file says what the hint is

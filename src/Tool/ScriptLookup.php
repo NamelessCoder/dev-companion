@@ -76,7 +76,7 @@ final class ScriptLookup extends ReadOnlyTool
             );
         }
 
-        $results = Documents::search($task, ['typo3-core-scripts'], 6, $targets);
+        $results = Documents::search($task, ['core/testing/scripts'], 6, $targets);
 
         if ($results !== []) {
             $text = Prose::sections($results);
@@ -100,7 +100,7 @@ final class ScriptLookup extends ReadOnlyTool
         $message = sprintf(
             'No section of the TYPO3 core script notes matched "%s". They cover: %s.',
             $task,
-            Prose::topics('typo3-core-scripts')
+            Prose::topics('core/testing/scripts')
         );
 
         $elsewhere = Documents::search($task, [], 6, $targets);

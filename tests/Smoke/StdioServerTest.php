@@ -184,13 +184,13 @@ final class StdioServerTest extends TestCase
     #[Test]
     public function theKnowledgeIndexIsServedWithTheScope(): void
     {
-        $result = $this->session([$this->request(2, 'resources/read', ['uri' => 'typo3://core'])])[2]['result'];
+        $result = $this->session([$this->request(2, 'resources/read', ['uri' => 'typo3://guides'])])[2]['result'];
 
         $index = json_decode($result['contents'][0]['text'], true);
         self::assertIsArray($index);
         self::assertArrayHasKey('purpose', $index);
         self::assertArrayHasKey('documents', $index);
-        self::assertContains('typo3-core-rules', array_column($index['documents'], 'id'));
+        self::assertContains('core/contribution/rules', array_column($index['documents'], 'id'));
     }
 
     /**
@@ -204,11 +204,11 @@ final class StdioServerTest extends TestCase
         $result = $this->session([$this->request(2, 'resources/list')])[2]['result'];
 
         $offered = array_column($result['resources'], null, 'uri');
-        $coreOnly = $offered['typo3://core/typo3-core-rules'];
+        $coreOnly = $offered['typo3://guides/core/contribution/rules'];
         self::assertStringContainsString('does not transfer', $coreOnly['description']);
         self::assertGreaterThan(0, $coreOnly['size']);
         self::assertLessThan(
-            $offered['typo3://core/typo3-commit-messages']['annotations']['priority'],
+            $offered['typo3://guides/extension/testing/phpunit']['annotations']['priority'],
             $coreOnly['annotations']['priority'],
         );
     }
@@ -217,7 +217,7 @@ final class StdioServerTest extends TestCase
     public function aKnowledgeDocumentIsServedAsMarkdown(): void
     {
         $result = $this->session([$this->request(2, 'resources/read', [
-            'uri' => 'typo3://core/typo3-core-rules',
+            'uri' => 'typo3://guides/core/contribution/rules',
         ])])[2]['result'];
 
         self::assertStringContainsString('# TYPO3 Core Contribution Rules', $result['contents'][0]['text']);
@@ -374,7 +374,7 @@ final class StdioServerTest extends TestCase
     #[Test]
     public function anUnknownResourceIsAnError(): void
     {
-        $response = $this->session([$this->request(2, 'resources/read', ['uri' => 'typo3://core/nope'])])[2];
+        $response = $this->session([$this->request(2, 'resources/read', ['uri' => 'typo3://guides/nope'])])[2];
 
         self::assertArrayHasKey('error', $response);
     }

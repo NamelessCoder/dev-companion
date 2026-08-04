@@ -11,7 +11,7 @@ installation and no network.
 The [tool surface](../tools/readme.md) is the other thing a client is offered,
 and it has a page per tool because a tool has a schema and a recorded answer.
 This is one page, because what a resource obliges is the same for every entry
-and the entries themselves are enumerated live under `typo3://core`.
+and the entries themselves are enumerated live under `typo3://guides`.
 
 ## Picked out of a list, not called mid-task
 
@@ -30,10 +30,10 @@ workflow that owns the task it recognized.
 
 ## The four shapes
 
-- **`typo3://core`** — the index: the purpose, coverage and routing this client
+- **`typo3://guides`** — the index: the purpose, coverage and routing this client
   is offered, plus every document and skill with its URI, and each skill's
   references. The one to read first, and the one that enumerates the rest.
-- **`typo3://core/{documentId}`** — one document from `knowledge/documents/`,
+- **`typo3://guides/{documentId}`** — one document from `knowledge/documents/`,
   which is also the corpus `typo3_rule_lookup` searches. Mostly the core's own
   process.
 - **`typo3://skill/{skillId}/SKILL.md`** — one published task workflow from
@@ -118,7 +118,7 @@ Two fields the spec has stay absent, and the first is where the confusion is:
 description and two schemas that a class declares, and a hand copy stops
 describing the answer at the first change nobody carried across. The same
 generator here would have one line per entry to write, and those entries are
-already enumerated where they cannot go stale: the `typo3://core` index is built
+already enumerated where they cannot go stale: the `typo3://guides` index is built
 from the same functions and its declared size is asserted against what is
 served, and `knowledge/server-scope.json` names every document and every skill
 with the scope it is offered under. A generated table would be a third copy, and

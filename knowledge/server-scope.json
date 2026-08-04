@@ -9,7 +9,7 @@
         "typo3_rule_lookup",
         "typo3_task_guide"
       ],
-      "source": "typo3://core/typo3-core-rules",
+      "source": "typo3://guides/core/contribution/rules",
       "scope": "core"
     },
     {
@@ -18,7 +18,7 @@
       "tools": [
         "typo3_rule_lookup"
       ],
-      "source": "typo3://core/typo3-gerrit-workflow",
+      "source": "typo3://guides/core/contribution/gerrit-workflow",
       "scope": "core"
     },
     {
@@ -46,8 +46,8 @@
         "typo3_commit_message_guide",
         "typo3_rule_lookup"
       ],
-      "source": "typo3://core/typo3-commit-messages",
-      "scope": "any"
+      "source": "typo3://guides/core/contribution/commit-messages",
+      "scope": "core"
     },
     {
       "topic": "Core testing suites: runTests.sh options and targeted invocation",
@@ -56,7 +56,7 @@
         "typo3_test_run_guide",
         "typo3_script_lookup"
       ],
-      "source": "knowledge/test-suite-hints.json, typo3://core/typo3-core-scripts",
+      "source": "knowledge/test-suite-hints.json, typo3://guides/core/testing/scripts",
       "scope": "core"
     },
     {
@@ -66,7 +66,7 @@
         "typo3_rule_lookup",
         "typo3_hint_lookup"
       ],
-      "source": "typo3://core/typo3-extension-phpunit-setup",
+      "source": "typo3://guides/extension/testing/phpunit",
       "scope": "extension"
     },
     {
@@ -75,7 +75,7 @@
       "tools": [
         "typo3_rule_lookup"
       ],
-      "source": "typo3://core/typo3-contribution-sources",
+      "source": "typo3://guides/core/contribution/sources",
       "scope": "core"
     },
     {
@@ -234,7 +234,7 @@
     {
       "topic": "Gerrit review state beyond what an anonymous read answers: votes, CI results, the comments and the diff of a patch set, and anything a private change carries",
       "why": "The review API is read without a credential, so what a reviewer sees and what a private change contains are outside it. Nothing here writes to Gerrit at all.",
-      "instead": "typo3_gerrit_lookup answers whether a change exists, what it is called, which branch it targets, whether it is still open, and which patch set is current with the commit it is — hold that commit against your own HEAD. Votes, comments, CI and the diff of a patch set belong in the web UI; pushing and amending are git, and typo3://core/typo3-gerrit-workflow carries those."
+      "instead": "typo3_gerrit_lookup answers whether a change exists, what it is called, which branch it targets, whether it is still open, and which patch set is current with the commit it is — hold that commit against your own HEAD. Votes, comments, CI and the diff of a patch set belong in the web UI; pushing and amending are git, and typo3://guides/core/contribution/gerrit-workflow carries those."
     },
     {
       "topic": "What someone else's extension does: the API, the options and the documentation of a package the core does not ship",

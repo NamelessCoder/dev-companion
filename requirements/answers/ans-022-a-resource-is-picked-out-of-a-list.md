@@ -19,7 +19,7 @@ nobody picks.
 
 Who does the picking is the second half. The tool list serves the three
 audiences of [`R-AUD-001`](../audience/aud-001-three-audiences-not-one.md), and
-the document corpus behind `typo3://core/{id}` serves one, because most of it is
+the document corpus behind `typo3://guides/{id}` serves one, because most of it is
 the core repository's own and says so. The published task skills are the other
 way round: most of them are extension, sitepackage and project work, and two are
 the core's, which `knowledge/server-scope.json` is where to read off. Both

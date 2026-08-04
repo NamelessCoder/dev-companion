@@ -33,7 +33,7 @@ matches:
   - documentId: string
     # Title of the knowledge document.
     title: string
-    # typo3://core resource holding the full document.
+    # typo3://guides resource holding the full document.
     uri: string
     # Heading of the matched section.
     heading: string
@@ -69,8 +69,8 @@ alsoInHints:  # optional
 scope: string
 # Documents that matched and were left out because they answer for the core
 # repository alone. Empty inside the core. Each is still readable in full as its
-# typo3://core resource, which is the way to get one deliberately rather than by
-# accident.
+# typo3://guides resource, which is the way to get one deliberately rather than
+# by accident.
 withheldDocuments:  # optional
   - id: string
     title: string
@@ -101,7 +101,7 @@ Text:
 A section carries the range it holds for where it has one. What is bound elsewhere: call typo3_hint_lookup with targetVersion for a convention, and typo3_test_run_guide with targetVersion for a runTests.sh command.
 
 ## Deprecations
-Source: TYPO3 Core Commit Message Rules (typo3://core/typo3-commit-messages) — matches 100% of the query terms
+Source: TYPO3 Core Commit Message Rules (typo3://guides/core/contribution/commit-messages) — matches 100% of the query terms
 
 - Deprecations must not use `[!!!]`.
 - Deprecations may only use `[TASK]` or `[FEATURE]`.
@@ -117,7 +117,7 @@ Source: TYPO3 Core Commit Message Rules (typo3://core/typo3-commit-messages) —
   with a Composer installation.
 
 ## Breaking Changes
-Source: TYPO3 Core Commit Message Rules (typo3://core/typo3-commit-messages) — matches 100% of the query terms
+Source: TYPO3 Core Commit Message Rules (typo3://guides/core/contribution/commit-messages) — matches 100% of the query terms
 
 - Breaking changes must use `[!!!]` before the keyword.
 - Breaking changes must be documented with a changelog RST file.
@@ -154,7 +154,7 @@ Source: TYPO3 Core Commit Message Rules (typo3://core/typo3-commit-messages) —
   against the changelog.
 
 ## Changelog Files
-Source: TYPO3 Core Commit Message Rules (typo3://core/typo3-commit-messages) — matches 100% of the query terms
+Source: TYPO3 Core Commit Message Rules (typo3://guides/core/contribution/commit-messages) — matches 100% of the query terms
 
 - Changelog entries live below `typo3/sysext/core/Documentation/Changelog/`, in
   the directory of the minor version the change is released in. A backport goes
@@ -182,7 +182,7 @@ Source: TYPO3 Core Commit Message Rules (typo3://core/typo3-commit-messages) —
   `typo3 upgrade:run` are what acts on the migrations behind them.
 
 ## Review Readiness
-Source: TYPO3 Core Contribution Rules (typo3://core/typo3-core-rules) — matches 100% of the query terms
+Source: TYPO3 Core Contribution Rules (typo3://guides/core/contribution/rules) — matches 100% of the query terms
 
 - The change should be reproducible from the issue or task description.
 - The patch should include a concise explanation of the problem and the chosen
@@ -202,9 +202,9 @@ Data:
     "matchCount": 4,
     "matches": [
         {
-            "documentId": "typo3-commit-messages",
+            "documentId": "core/contribution/commit-messages",
             "title": "TYPO3 Core Commit Message Rules",
-            "uri": "typo3://core/typo3-commit-messages",
+            "uri": "typo3://guides/core/contribution/commit-messages",
             "heading": "Deprecations",
             "body": "- Deprecations must not use `[!!!]`.\n- Deprecations may only use `[TASK]` or `[FEATURE]`.\n- Deprecations must be documented with a changelog RST file.\n- Deprecations need migration guidance and may need extension scanner\n  considerations.\n- All of the above is the authoring side. Reading it — what a given version\n  deprecated, and what that means for code that uses it — works the other way\n  round: the changelog files below `Documentation/Changelog/` of the core\n  package and the matchers below the install package's\n  `Configuration/ExtensionScanner/Php/` are what an installation is checked\n  against, by the Extension Scanner in the Install Tool. Both directories ship\n  with a Composer installation.",
             "versions": "",
@@ -213,9 +213,9 @@ Data:
             "truncated": false
         },
         {
-            "documentId": "typo3-commit-messages",
+            "documentId": "core/contribution/commit-messages",
             "title": "TYPO3 Core Commit Message Rules",
-            "uri": "typo3://core/typo3-commit-messages",
+            "uri": "typo3://guides/core/contribution/commit-messages",
             "heading": "Breaking Changes",
             "body": "- Breaking changes must use `[!!!]` before the keyword.\n- Breaking changes must be documented with a changelog RST file.\n- Breaking changes should usually target `main`.\n- A removed or narrowed PHP API gets an extension scanner matcher entry in the\n  same patch, below `typo3/sysext/install/Configuration/ExtensionScanner/Php/`.\n  How the removed member is written where it is used decides the file:\n  - `MethodCallMatcher.php` — an instance method.\n  - `MethodCallStaticMatcher.php` — a static method.\n  - `PropertyPublicMatcher.php` — a removed public property.\n  - `PropertyProtectedMatcher.php` — a public property that became protected.\n  - `ClassNameMatcher.php` — a whole class or interface.\n- Visibility routes a property and never a method. The method matchers are a\n  weak match on the method name where it is used, and they do not resolve the\n  class, so they cannot see one. A method that is protected, or that has become\n  protected, is entered where a public one is.\n  `RendererRegistry->getRendererInstances` went from public to protected in\n  `Breaking-110277`, and it stands in `MethodCallMatcher.php`. The list above\n  has no row for a protected method because none is needed, and that absence\n  says nothing about whether an entry is owed.\n- An entry is keyed by the fully qualified name with `->` or `::` and carries\n  `restFiles`, naming the changelog file that removed it. The method matchers\n  add `numberOfMandatoryArguments` and `maximumNumberOfArguments`. A member\n  deprecated before it was removed lists both changelog files.\n- Every Breaking and Deprecation entry carries exactly one of `NotScanned`,\n  `PartiallyScanned` and `FullyScanned` in its `.. index::` line, and that tag\n  is the claim those entries have to back: `FullyScanned` says every item the\n  changelog entry names can be found. The scanner reads PHP, so what an entry\n  changes in TypoScript, TCA, YAML or JavaScript is what leaves it partially\n  scanned.\n- `./Build/Scripts/runTests.sh -s checkExtensionScannerRst` checks that the\n  changelog files the matchers name exist, and nothing checks the other\n  direction. A missing entry surfaces when somebody audits the matcher files\n  against the changelog.",
             "versions": "",
@@ -224,9 +224,9 @@ Data:
             "truncated": false
         },
         {
-            "documentId": "typo3-commit-messages",
+            "documentId": "core/contribution/commit-messages",
             "title": "TYPO3 Core Commit Message Rules",
-            "uri": "typo3://core/typo3-commit-messages",
+            "uri": "typo3://guides/core/contribution/commit-messages",
             "heading": "Changelog Files",
             "body": "- Changelog entries live below `typo3/sysext/core/Documentation/Changelog/`, in\n  the directory of the minor version the change is released in. A backport goes\n  into the `<lts>.x` directory of the oldest branch it reaches, in every branch\n  that carries it.\n- The file is named `<Type>-<forgeIssueNumber>-<UpperCamelCaseDescription>.rst`.\n- The type is the first of four that describes the change: `Breaking` where it\n  moves or removes core functionality third-party code may use, `Deprecation`\n  where it marks core functionality for a planned removal, `Feature` where it\n  adds functionality, and `Important` for anything else that may require manual\n  action. `Important` is the last resort, and the only one of the four an LTS\n  release may carry.\n- A casual bug fix owes no entry, because its commit message carries the\n  information.\n- `Task` is a commit message keyword and not a changelog type. Those four are\n  the whole list, and `checkRst` fails a title opening with anything else.\n- `Documentation/Changelog/Howto.rst` in the core checkout is the authority on\n  all of this, and `Build/Scripts/validateRstFiles.php` is what reports the\n  piece a file is missing.\n- The skeleton the file has to have, down to the tags it ends on, is\n  `typo3_hint_lookup` with the id `documentation-changelog`.\n- Run `./Build/Scripts/runTests.sh -s checkRst` for ReST changes.\n- These rules are for writing an entry. An installation reads them instead: the\n  same files ship with the core package, and `typo3 upgrade:list` and\n  `typo3 upgrade:run` are what acts on the migrations behind them.",
             "versions": "",
@@ -235,9 +235,9 @@ Data:
             "truncated": false
         },
         {
-            "documentId": "typo3-core-rules",
+            "documentId": "core/contribution/rules",
             "title": "TYPO3 Core Contribution Rules",
-            "uri": "typo3://core/typo3-core-rules",
+            "uri": "typo3://guides/core/contribution/rules",
             "heading": "Review Readiness",
             "body": "- The change should be reproducible from the issue or task description.\n- The patch should include a concise explanation of the problem and the chosen\n  fix.\n- Breaking changes, migrations, and deprecations need clear notes.\n- Security-sensitive behavior needs extra care and focused tests.",
             "versions": "",
@@ -274,11 +274,11 @@ No knowledge section matched "quantum entanglement pineapple".
 
 This knowledge base covers:
 - TYPO3 Core Commit Message Rules: Summary Line, Work in Progress, Body, Relationships, Breaking Changes, Deprecations, Changelog Files
-- TYPO3 Contribution Sources: Core Contribution Guide, Local Policy
+- TYPO3 Gerrit Workflow: One-Time Setup, Where This Checkout Pushes, Push a Patch for Review, Push a Private or Work in Progress Change, Pushing From a Git Worktree, Update an Existing Patch, The Forge Issue a Change Hangs Off, Release Branches and Backports
 - TYPO3 Core Contribution Rules: Contribution Flow, Code Style, Testing, Review Readiness
+- TYPO3 Contribution Sources: Core Contribution Guide, Local Policy
 - TYPO3 Core Script Help: Invoking runTests.sh, Common Commands, Script Notes
 - Setting Up PHPUnit in a TYPO3 Extension: Build/UnitTests.xml, Build/FunctionalTests.xml, What was changed in the copied files, Running the suites, Database credentials for the functional suite, What is left after a run
-- TYPO3 Gerrit Workflow: One-Time Setup, Where This Checkout Pushes, Push a Patch for Review, Push a Private or Work in Progress Change, Pushing From a Git Worktree, Update an Existing Patch, The Forge Issue a Change Hangs Off, Release Branches and Backports
 
 For backend UI components use typo3_component_lookup, and call typo3_server_scope for what this server covers at all. If the topic should be covered here, leave a feedback with typo3_feedback_record.
 ```
@@ -295,7 +295,7 @@ Data:
     "alsoInHints": [],
     "documents": [
         {
-            "id": "typo3-commit-messages",
+            "id": "core/contribution/commit-messages",
             "title": "TYPO3 Core Commit Message Rules",
             "topics": [
                 "Summary Line",
@@ -308,46 +308,7 @@ Data:
             ]
         },
         {
-            "id": "typo3-contribution-sources",
-            "title": "TYPO3 Contribution Sources",
-            "topics": [
-                "Core Contribution Guide",
-                "Local Policy"
-            ]
-        },
-        {
-            "id": "typo3-core-rules",
-            "title": "TYPO3 Core Contribution Rules",
-            "topics": [
-                "Contribution Flow",
-                "Code Style",
-                "Testing",
-                "Review Readiness"
-            ]
-        },
-        {
-            "id": "typo3-core-scripts",
-            "title": "TYPO3 Core Script Help",
-            "topics": [
-                "Invoking runTests.sh",
-                "Common Commands",
-                "Script Notes"
-            ]
-        },
-        {
-            "id": "typo3-extension-phpunit-setup",
-            "title": "Setting Up PHPUnit in a TYPO3 Extension",
-            "topics": [
-                "Build/UnitTests.xml",
-                "Build/FunctionalTests.xml",
-                "What was changed in the copied files",
-                "Running the suites",
-                "Database credentials for the functional suite",
-                "What is left after a run"
-            ]
-        },
-        {
-            "id": "typo3-gerrit-workflow",
+            "id": "core/contribution/gerrit-workflow",
             "title": "TYPO3 Gerrit Workflow",
             "topics": [
                 "One-Time Setup",
@@ -358,6 +319,45 @@ Data:
                 "Update an Existing Patch",
                 "The Forge Issue a Change Hangs Off",
                 "Release Branches and Backports"
+            ]
+        },
+        {
+            "id": "core/contribution/rules",
+            "title": "TYPO3 Core Contribution Rules",
+            "topics": [
+                "Contribution Flow",
+                "Code Style",
+                "Testing",
+                "Review Readiness"
+            ]
+        },
+        {
+            "id": "core/contribution/sources",
+            "title": "TYPO3 Contribution Sources",
+            "topics": [
+                "Core Contribution Guide",
+                "Local Policy"
+            ]
+        },
+        {
+            "id": "core/testing/scripts",
+            "title": "TYPO3 Core Script Help",
+            "topics": [
+                "Invoking runTests.sh",
+                "Common Commands",
+                "Script Notes"
+            ]
+        },
+        {
+            "id": "extension/testing/phpunit",
+            "title": "Setting Up PHPUnit in a TYPO3 Extension",
+            "topics": [
+                "Build/UnitTests.xml",
+                "Build/FunctionalTests.xml",
+                "What was changed in the copied files",
+                "Running the suites",
+                "Database credentials for the functional suite",
+                "What is left after a run"
             ]
         }
     ]

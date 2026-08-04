@@ -89,8 +89,9 @@ final class Typo3Cli
      */
     public static function resolve(): ?array
     {
-        // Only a success is remembered. A failure is retried on the next call,
-        // because the usual reason is a DDEV project that is not running yet —
+        // Only a success with nothing limiting it is remembered. A failure and
+        // a caveated success are both retried on the next call, because the
+        // usual reason for either is a DDEV project that is not running yet —
         // and the caller who reads that and starts it has to be able to ask
         // again in the same session.
         if (is_array(self::$resolved)) {
@@ -170,6 +171,19 @@ final class Typo3Cli
             . 'project declares. What TYPO3 assembles from its own files answers as it would there; what needs '
             . 'the services that runtime brings, its database first of all, may not. An answer that needs one '
             . 'says so rather than coming back thin';
+
+        // A caveated resolution is the weaker of two and the stronger one
+        // arrives during the session, so it is not remembered — `R-DIS-009`,
+        // one state over from the negative it was written for. Measured in one
+        // process against `.environments/e-site-13.4` stopped on 2026-08-04:
+        // host PHP 8.3 satisfies the 8.2.0 that installation pins, so the
+        // resolution succeeded through it, was remembered, and `ddev start`
+        // changed nothing until the process ended. What it costs is one
+        // `ddev describe -j` per call while the project is stopped, 0.25s
+        // there, which is what a failing resolution already pays on that path.
+        if (self::$caveat !== '') {
+            return $invocation;
+        }
 
         return self::$resolved = $invocation;
     }

@@ -58,3 +58,13 @@ shape that looks exactly like the answer it is there to give.
 ## Covered by
 
 - `IconLookupTest::anIdentifierRegisteredSinceTheLastCallIsFound`
+
+## Since then
+
+The console resolution is still not dropped with the reading, and what it
+memoizes has narrowed: only a success with nothing limiting it. A caveated one —
+the console of a stopped DDEV project, reached through an interpreter of this
+machine — is asked again on every call, because there the second `ddev describe`
+is not paid for nothing: it is what catches the `ddev start` the caveat asked
+the caller for, measured in one process against `.environments/e-site-13.4` on
+2026-08-04. `R-DIS-009` carries the rule and what it costs.

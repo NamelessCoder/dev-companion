@@ -408,6 +408,42 @@ final class Typo3CliTest extends TestCase
         self::assertSame('', Typo3Cli::caveat());
     }
 
+    /**
+     * The same state one step weaker, and the one the three released
+     * environments are in: an interpreter here does satisfy what the
+     * installation pins, so the stopped project resolves through it and the
+     * answer carries the caveat that says to start the containers. Remembering
+     * that remembers the weaker of two answers.
+     *
+     * Measured in one process against `.environments/e-site-13.4` on
+     * 2026-08-04, where host PHP 8.3 satisfies the 8.2.0 it pins: the first
+     * resolution came back through host PHP with the caveat, `ddev start` in
+     * the same process changed nothing, and every later call was answered from
+     * the memo until the process ended — `META-02`'s third **How it fails**.
+     */
+    #[Test]
+    public function aStoppedProjectThisMachineCanRunIsAskedAgainAfterItStarts(): void
+    {
+        $root = $this->installation();
+        $this->console($root);
+        mkdir($root . '/.ddev');
+        file_put_contents($root . '/.ddev/config.yaml', "name: fixture\ntype: typo3\n");
+        Typo3Cli::useRunner($this->ddevThatStartsAfterTheFirstLook($status));
+        $this->discover($root);
+
+        self::assertSame(Typo3Cli::VIA_PHP, Typo3Cli::resolve()['via']);
+        self::assertStringContainsString('ddev start', Typo3Cli::caveat());
+
+        $status = 'running';
+
+        self::assertSame(
+            Typo3Cli::VIA_DDEV,
+            Typo3Cli::resolve()['via'],
+            'the caveated resolution was asked again rather than remembered',
+        );
+        self::assertSame('', Typo3Cli::caveat());
+    }
+
     #[Test]
     public function aConsoleAlreadyInsideDdevIsReadyThroughItsDirectPhp(): void
     {

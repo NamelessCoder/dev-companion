@@ -141,8 +141,10 @@ does.
 
 ## Commit and push
 
-`typo3_commit_message_guide` with the drafted message and the change type
-reports what is still wrong with it before the hook does. Then
+`typo3_commit_message_guide` with `workflow="core"`, the drafted message and the
+change type reports what is still wrong with it before the hook does. State the
+workflow: its default is a repository of your own, which demands neither the
+Forge issue nor the `Releases:` trailer a patch here owes. Then
 `typo3_rule_lookup` for the Gerrit workflow: what the push actually is, how a
 change is amended into a new patch set rather than a second commit, and what
 must not be edited between patch sets.

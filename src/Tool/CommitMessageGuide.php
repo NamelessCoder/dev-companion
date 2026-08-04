@@ -26,7 +26,7 @@ final class CommitMessageGuide extends ReadOnlyTool
 
     public static function description(): string
     {
-        return 'Draft and check a TYPO3 commit message. Either assemble one from parts (changeType plus summary) or pass an existing message to check and correct it. The returned draft is ready to commit: the body is wrapped at 72 characters, and the checks name every run of lines the wrapping joined and every line it could not bring under the width. Defaults to the core contribution rules; pass workflow="project" in a project or extension repository of your own, where the subject and body conventions apply but the Forge issue, the Releases: trailer and the changelog do not.';
+        return 'Draft and check a TYPO3 commit message. Either assemble one from parts (changeType plus summary) or pass an existing message to check and correct it. The returned draft is ready to commit: the body is wrapped at 72 characters, and the checks name every run of lines the wrapping joined and every line it could not bring under the width. Defaults to a repository of your own, where the subject and body conventions apply but the Forge issue, the Releases: trailer and the changelog do not; pass workflow="core" for a patch against the TYPO3 core.';
     }
 
     public static function inputSchema(): array
@@ -35,7 +35,7 @@ final class CommitMessageGuide extends ReadOnlyTool
             'type' => 'object',
             'properties' => [
                 'message' => ['type' => 'string', 'minLength' => 1, 'description' => 'A complete existing commit message to check, subject and trailers included. Unknown trailers such as Change-Id are kept, so an amended patch set stays valid.'],
-                'workflow' => ['type' => 'string', 'enum' => ['core', 'project'], 'default' => 'core', 'description' => 'Which rules to apply. "core": a patch against the TYPO3 core, with the Forge issue and the Releases: trailer required. "project": any other repository — the keyword, the 52/72 character limits and the wrapping are checked, no trailer is added or demanded, and [SECURITY] is allowed.'],
+                'workflow' => ['type' => 'string', 'enum' => ['core', 'project'], 'default' => 'project', 'description' => 'Which rules to apply. "project", the default: any repository of your own — the keyword, the 52/72 character limits and the wrapping are checked, no trailer is added or demanded, and [SECURITY] is allowed. "core": a patch against the TYPO3 core, with the Forge issue and the Releases: trailer required.'],
                 'changeType' => ['type' => 'string', 'enum' => ['BUGFIX', 'FEATURE', 'TASK', 'DOCS', 'SECURITY'], 'description' => 'TYPO3 commit message keyword. [SECURITY] is reserved for the TYPO3 Security Team and is only accepted with workflow="project".'],
                 'summary' => ['type' => 'string', 'minLength' => 1, 'description' => 'Summary text without the TYPO3 keyword prefix.'],
                 'issue' => ['type' => 'string', 'description' => 'Forge issue number, with or without leading #.'],

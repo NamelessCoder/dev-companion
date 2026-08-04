@@ -210,9 +210,13 @@ final class CommitMessage
      */
     public static function workflow(mixed $workflow): string
     {
-        return strtolower(trim((string) $workflow)) === self::WORKFLOW_PROJECT
-            ? self::WORKFLOW_PROJECT
-            : self::WORKFLOW_CORE;
+        // Core is stated rather than fallen back to — `D-GUI-010`. Three
+        // audiences reach this server and one of them has a Forge issue, so the
+        // unstated call is the project one, and the core routes name the
+        // argument where a contributor already is.
+        return strtolower(trim((string) $workflow)) === self::WORKFLOW_CORE
+            ? self::WORKFLOW_CORE
+            : self::WORKFLOW_PROJECT;
     }
 
     /**

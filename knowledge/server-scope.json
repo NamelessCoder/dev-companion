@@ -289,7 +289,7 @@
     },
     {
       "when": "Reviewing a TYPO3 core patch — the current changes in a core checkout, a commit, or a change fetched from Gerrit — rather than a project or an extension",
-      "call": "typo3_rule_lookup per obligation the diff raises, typo3_changelog_lookup for the precedent, typo3_test_run_guide with the changed paths, then typo3_commit_message_guide"
+      "call": "typo3_rule_lookup per obligation the diff raises, typo3_changelog_lookup for the precedent, typo3_test_run_guide with the changed paths, then typo3_commit_message_guide with workflow=\"core\""
     },
     {
       "when": "Writing a core patch: taking a Forge issue on, fixing a core bug, deprecating or removing core API, or amending a patch after review",
@@ -321,7 +321,7 @@
     },
     {
       "when": "Writing or amending the commit message",
-      "call": "typo3_commit_message_guide with workflow=\"project\" outside a core checkout"
+      "call": "typo3_commit_message_guide, whose default is a repository of your own"
     },
     {
       "when": "Pushing for review, amending a patch set, or backporting",

@@ -558,10 +558,10 @@ final class TaskGuide extends ReadOnlyTool
         }
         if (!$changesNothing) {
             $checklist[] = $outsideCore
-                ? 'Write the commit message with typo3_commit_message_guide and workflow="project": '
+                ? 'Write the commit message with typo3_commit_message_guide: '
                     . 'summarize the changed behavior, the affected area and the commands you ran, and it '
                     . 'hands back a draft that is wrapped and checked.'
-                : 'Write the commit message with typo3_commit_message_guide: summarize the changed behavior, '
+                : 'Write the commit message with typo3_commit_message_guide and workflow="core": summarize the changed behavior, '
                     . 'the affected area and the commands you ran, and it hands back a draft that carries '
                     . 'the keyword, the trailers and the wrapping.';
         }
@@ -764,9 +764,10 @@ final class TaskGuide extends ReadOnlyTool
         // review, whose checklist ends without it, does not point at it either.
         if (!$changesNothing) {
             $candidates[] = $outsideCore
-                ? 'typo3_commit_message_guide with workflow="project", before committing — the default is the '
-                    . 'core\'s own and demands an issue number and a release trailer this repository has none of'
-                : 'typo3_commit_message_guide, before committing';
+                ? 'typo3_commit_message_guide, before committing — its default is this repository\'s case and '
+                    . 'demands neither an issue number nor a release trailer'
+                : 'typo3_commit_message_guide with workflow="core", before committing — the default is a '
+                    . 'repository of your own and adds no Forge issue or release trailer';
         }
         if (Channel::isAvailable()) {
             $candidates[] = 'typo3_feedback_record, when one of these answers was wrong or incomplete';

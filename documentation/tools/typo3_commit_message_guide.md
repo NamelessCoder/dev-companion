@@ -4,10 +4,10 @@ Draft and check a TYPO3 commit message. Either assemble one from parts
 (changeType plus summary) or pass an existing message to check and correct it.
 The returned draft is ready to commit: the body is wrapped at 72 characters, and
 the checks name every run of lines the wrapping joined and every line it could
-not bring under the width. Defaults to the core contribution rules; pass
-workflow="project" in a project or extension repository of your own, where the
+not bring under the width. Defaults to a repository of your own, where the
 subject and body conventions apply but the Forge issue, the Releases: trailer
-and the changelog do not. Answers from: knowledge.
+and the changelog do not; pass workflow="core" for a patch against the TYPO3
+core. Answers from: knowledge.
 
 `readOnlyHint: true` · `destructiveHint: false` · `idempotentHint: true` · `openWorldHint: false`
 
@@ -20,10 +20,11 @@ Answers from [`knowledge`](answer-sources.md#knowledge).
 # Unknown trailers such as Change-Id are kept, so an amended patch set stays
 # valid.
 message: string  # optional
-# One of: core, project. Which rules to apply. "core": a patch against the TYPO3
-# core, with the Forge issue and the Releases: trailer required. "project": any
-# other repository — the keyword, the 52/72 character limits and the wrapping
-# are checked, no trailer is added or demanded, and [SECURITY] is allowed.
+# One of: core, project. Which rules to apply. "project", the default: any
+# repository of your own — the keyword, the 52/72 character limits and the
+# wrapping are checked, no trailer is added or demanded, and [SECURITY] is
+# allowed. "core": a patch against the TYPO3 core, with the Forge issue and the
+# Releases: trailer required.
 workflow: string  # optional
 # One of: BUGFIX, FEATURE, TASK, DOCS, SECURITY. TYPO3 commit message keyword.
 # [SECURITY] is reserved for the TYPO3 Security Team and is only accepted with
@@ -98,34 +99,27 @@ Commit message draft:
 [BUGFIX] Show hidden records in the import preview
 
 Resolves: #106123
-Releases: RELEASE_TARGET
 ```
 
 Checks:
-- WARNING: The draft carries "Releases: RELEASE_TARGET". Replace it with the target versions, for example "Releases: main, 13.4".
-- INFO: The subject carries no [!!!] and the call passed no isBreaking, so the classification was assumed rather than checked. It is a property of the diff, which this tool never sees: a removed or narrowed public or protected member makes the change breaking. A breaking change owes [!!!], a Breaking changelog entry and an extension scanner matcher. isDeprecation is assumed the same way. Confirm both against the diff and call again with what you found; typo3_rule_lookup(query "breaking change") has the rules.
+- INFO: No commit message readiness issues found by the local checks.
 
-Checked against the core contribution rules, trailers included. workflow="project" applies the same subject and body rules without the Forge issue and the Releases: trailer.
+Checked without the core workflow: keyword, 52/72 limits and wrapping apply, the Forge issue and the Releases: trailer do not. workflow="core" for a patch against the TYPO3 core.
 ````
 
 Data:
 
 ```json
 {
-    "message": "[BUGFIX] Show hidden records in the import preview\n\nResolves: #106123\nReleases: RELEASE_TARGET",
+    "message": "[BUGFIX] Show hidden records in the import preview\n\nResolves: #106123",
     "checks": [
         {
-            "level": "warning",
-            "code": "missing-releases",
-            "message": "The draft carries \"Releases: RELEASE_TARGET\". Replace it with the target versions, for example \"Releases: main, 13.4\"."
-        },
-        {
             "level": "info",
-            "code": "breaking-not-assessed",
-            "message": "The subject carries no [!!!] and the call passed no isBreaking, so the classification was assumed rather than checked. It is a property of the diff, which this tool never sees: a removed or narrowed public or protected member makes the change breaking. A breaking change owes [!!!], a Breaking changelog entry and an extension scanner matcher. isDeprecation is assumed the same way. Confirm both against the diff and call again with what you found; typo3_rule_lookup(query \"breaking change\") has the rules."
+            "code": "no-issues-found",
+            "message": "No commit message readiness issues found by the local checks."
         }
     ],
-    "workflow": "core"
+    "workflow": "project"
 }
 ```
 
@@ -154,9 +148,8 @@ Releases: main
 
 Checks:
 - INFO: No commit message readiness issues found by the local checks.
-- INFO: The subject carries no [!!!] and the call passed no isBreaking, so the classification was assumed rather than checked. It is a property of the diff, which this tool never sees: a removed or narrowed public or protected member makes the change breaking. A breaking change owes [!!!], a Breaking changelog entry and an extension scanner matcher. isDeprecation is assumed the same way. Confirm both against the diff and call again with what you found; typo3_rule_lookup(query "breaking change") has the rules.
 
-Checked against the core contribution rules, trailers included. workflow="project" applies the same subject and body rules without the Forge issue and the Releases: trailer.
+Checked without the core workflow: keyword, 52/72 limits and wrapping apply, the Forge issue and the Releases: trailer do not. workflow="core" for a patch against the TYPO3 core.
 ````
 
 Data:
@@ -169,13 +162,8 @@ Data:
             "level": "info",
             "code": "no-issues-found",
             "message": "No commit message readiness issues found by the local checks."
-        },
-        {
-            "level": "info",
-            "code": "breaking-not-assessed",
-            "message": "The subject carries no [!!!] and the call passed no isBreaking, so the classification was assumed rather than checked. It is a property of the diff, which this tool never sees: a removed or narrowed public or protected member makes the change breaking. A breaking change owes [!!!], a Breaking changelog entry and an extension scanner matcher. isDeprecation is assumed the same way. Confirm both against the diff and call again with what you found; typo3_rule_lookup(query \"breaking change\") has the rules."
         }
     ],
-    "workflow": "core"
+    "workflow": "project"
 }
 ```

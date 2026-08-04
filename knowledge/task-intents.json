@@ -23,7 +23,7 @@
       "CI=true ./Build/Scripts/runTests.sh -s checkExtensionScannerRst"
     ],
     "tools": [
-      "typo3_commit_message_guide with isDeprecation=true, to get the keyword and prefix rules checked"
+      "typo3_commit_message_guide with workflow=\"core\" and isDeprecation=true, to get the keyword and prefix rules checked"
     ]
   },
   {
@@ -55,7 +55,7 @@
       "CI=true ./Build/Scripts/runTests.sh -s checkExtensionScannerRst"
     ],
     "tools": [
-      "typo3_commit_message_guide with isBreaking=true"
+      "typo3_commit_message_guide with workflow=\"core\" and isBreaking=true"
     ]
   },
   {
@@ -262,7 +262,7 @@
       "CI=true ./Build/Scripts/runTests.sh -s cgl -n"
     ],
     "tools": [
-      "typo3_commit_message_guide, to check the message before pushing"
+      "typo3_commit_message_guide with workflow=\"core\", to check the message before pushing"
     ]
   },
   {

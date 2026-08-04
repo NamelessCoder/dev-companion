@@ -1,7 +1,8 @@
 ---
 id: D-GUI-002
 date: 2026-07-29
-status: open
+status: revoked
+revokedBy: D-GUI-010
 ---
 
 # D-GUI-002 — The commit workflow is asked for, not inferred
@@ -123,3 +124,20 @@ That feedback was judged on 2026-08-04 as a delivery failure rather than a wrong
 default, and
 [`D-SKL-014`](../task-skills/skl-014-the-commit-step-is-named-where-a-skills-workflow-ends-in-a-change.md)
 is where the placement it asks for is decided.
+
+## Revoked on 2026-08-04
+
+The first half of the **Wrong if** is what this entry was revoked on, and the
+measurement recorded above is what settled it: without the argument the answer
+in a project repository is `Resolves: #ISSUE_NUMBER`, `Releases:
+RELEASE_TARGET` and a hard `missing-issue` error. The judgement of 2026-08-04
+read that as a delivery failure rather than a wrong default, and the maintainer
+read it the other way — three audiences reach this server and one of them has a
+Forge issue.
+
+What holds instead is
+[`D-GUI-010`](gui-010-the-commit-workflow-defaults-to-the-repository-most-callers-are-in.md),
+whose **Wrong if** is a different list: what can go wrong now is a core patch
+whose missing trailer nobody names, not a project message nobody can commit.
+The argument itself survives — the workflow is still asked for and still not
+inferred from the subject text.

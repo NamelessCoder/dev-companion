@@ -299,6 +299,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 ### guides
 
 - [`D-GUI-009`][D-GUI-009] — A stated change type keeps the skeleton and the words keep their surface · 2026-08-04
+- [`D-GUI-010`][D-GUI-010] — The commit workflow defaults to the repository most callers are in · 2026-08-04
 - [`D-GUI-003`][D-GUI-003] — The wrapping conflict is resolved in the answer rather than in silence · 2026-08-03
 - [`D-GUI-004`][D-GUI-004] — A review brief states the removal surface rather than matching it · 2026-08-03
 - [`D-GUI-005`][D-GUI-005] — The product premise is one statement, on the brief every task passes through · 2026-08-03
@@ -306,9 +307,9 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-GUI-007`][D-GUI-007] — The brief carries a selection of the hints and says whose they are · 2026-08-03 · confirmed
 - [`D-GUI-008`][D-GUI-008] — Operating an installation is a change type of its own · 2026-08-03
 - [`D-GUI-001`][D-GUI-001] — A missing release target becomes a placeholder, not `main` · 2026-07-29
-- [`D-GUI-002`][D-GUI-002] — The commit workflow is asked for, not inferred · 2026-07-29
 
 [D-GUI-009]: guides/gui-009-a-stated-change-type-keeps-the-skeleton-and-the-words-keep-their-surface.md
+[D-GUI-010]: guides/gui-010-the-commit-workflow-defaults-to-the-repository-most-callers-are-in.md
 [D-GUI-003]: guides/gui-003-the-wrapping-conflict-is-resolved-in-the-answer-rather-than-in-silence.md
 [D-GUI-004]: guides/gui-004-a-review-brief-states-the-removal-surface-rather-than-matching-it.md
 [D-GUI-005]: guides/gui-005-the-product-premise-is-one-statement-on-the-brief-every-task-passes-through.md
@@ -316,7 +317,6 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 [D-GUI-007]: guides/gui-007-the-brief-carries-a-selection-of-the-hints-and-says-whose-they-are.md
 [D-GUI-008]: guides/gui-008-operating-an-installation-is-a-change-type-of-its-own.md
 [D-GUI-001]: guides/gui-001-a-missing-release-target-becomes-a-placeholder-not-main.md
-[D-GUI-002]: guides/gui-002-the-commit-workflow-is-asked-for-not-inferred.md
 
 ### evidence
 
@@ -502,6 +502,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 - [`D-CAT-002`][D-CAT-002] — The index of worked examples is curated, and existence is all that is checked · 2026-07-29
 - [`D-DIS-002`][D-DIS-002] — Discovery honours the declared vendor-dir and bin-dir · 2026-07-29
 - [`D-DIS-003`][D-DIS-003] — A label query is words, and the console is asked with a regex · 2026-07-29
+- [`D-GUI-002`][D-GUI-002] — The commit workflow is asked for, not inferred · 2026-07-29 → D-GUI-010
 - [`D-KNW-001`][D-KNW-001] — Sitepackage work is answered from the General category · 2026-07-29
 - [`D-KNW-002`][D-KNW-002] — A hint about typo3/testing-framework is verified against tags, not against the checkouts · 2026-07-29
 - [`D-SCO-001`][D-SCO-001] — Outside the core the core test guide declines rather than adapts · 2026-07-29
@@ -526,6 +527,7 @@ and not a defect. What was decided lately is `bin/cli decisions:list`.
 [D-CAT-002]: catalog/cat-002-the-index-of-worked-examples-is-curated.md
 [D-DIS-002]: discovery/dis-002-discovery-honours-the-declared-vendor-dir-and-bin-dir.md
 [D-DIS-003]: discovery/dis-003-a-label-query-is-words-and-the-console-is-asked-with-a-regex.md
+[D-GUI-002]: guides/gui-002-the-commit-workflow-is-asked-for-not-inferred.md
 [D-KNW-001]: knowledge/knw-001-sitepackage-work-is-answered-from-the-general-category.md
 [D-KNW-002]: knowledge/knw-002-a-hint-about-typo3-testing-framework-is-verified-against-tags.md
 [D-SCO-001]: scope/sco-001-outside-the-core-the-core-test-guide-declines-rather-than-adapts.md

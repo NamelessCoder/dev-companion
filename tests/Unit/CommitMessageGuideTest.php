@@ -38,6 +38,9 @@ final class CommitMessageGuideTest extends TestCase
     {
         $result = CommitMessageGuide::answer([
             'message' => "Fix the thing\n\nBody.\n\nResolves: #1\nReleases: main\n",
+            // The changelog obligation this is about is the core's, and the
+            // core is stated since `D-GUI-010`.
+            'workflow' => 'core',
         ]);
 
         $codes = array_column($result->data['checks'], 'code');

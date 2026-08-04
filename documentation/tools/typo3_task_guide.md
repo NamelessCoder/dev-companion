@@ -360,7 +360,7 @@ Suggested checklist:
 - Work an item in the workflow that owns it, and stop before editing files another owner has. An item no workflow owns is worked here only where the project's own suite, linter or static analysis proves the change — anything else goes back unassigned, because a finding nobody owns and no check covers is a hole in the workflow map and quietly filling it hides the hole.
 - Hand the worked list back for the re-check rather than grading it. A cleanup that declares its own findings gone has no evidence for it, and the audit kept that responsibility when it handed each finding over.
 - Report the items still open, the ones dropped with what dropped them, and the ones sent back unassigned. A finished list and an abandoned one read alike in a summary.
-- Write the commit message with typo3_commit_message_guide: summarize the changed behavior, the affected area and the commands you ran, and it hands back a draft that carries the keyword, the trailers and the wrapping.
+- Write the commit message with typo3_commit_message_guide and workflow="core": summarize the changed behavior, the affected area and the commands you ran, and it hands back a draft that carries the keyword, the trailers and the wrapping.
 
 Establish in your checkout — this server cannot see it:
 - Which files the task actually touches
@@ -377,7 +377,7 @@ Establish in your checkout — this server cannot see it:
   Identify the XLF resource already used at the consuming code, then ask typo3_label_lookup with that resource. It applies the installation's resource overrides, but a match from another module or package is not reusable in this context. Where the console cannot be reached it reads the installed package's XLF file instead and says so; only where there is no installation at all is there nothing to ask.
 
 Next lookups for this task:
-- typo3_commit_message_guide — with isDeprecation=true, to get the keyword and prefix rules checked
+- typo3_commit_message_guide — with workflow="core" and isDeprecation=true, to get the keyword and prefix rules checked
 - typo3_project_describe — for what the repository is before anything in it is changed
 - typo3_extension_describe — for what each extension in scope registers
 - typo3_changelog_lookup — for what 14 changed about this area — the first stop when you have not built on it recently, not only a lookup after the fact
@@ -687,7 +687,7 @@ Data:
         "Work an item in the workflow that owns it, and stop before editing files another owner has. An item no workflow owns is worked here only where the project's own suite, linter or static analysis proves the change — anything else goes back unassigned, because a finding nobody owns and no check covers is a hole in the workflow map and quietly filling it hides the hole.",
         "Hand the worked list back for the re-check rather than grading it. A cleanup that declares its own findings gone has no evidence for it, and the audit kept that responsibility when it handed each finding over.",
         "Report the items still open, the ones dropped with what dropped them, and the ones sent back unassigned. A finished list and an abandoned one read alike in a summary.",
-        "Write the commit message with typo3_commit_message_guide: summarize the changed behavior, the affected area and the commands you ran, and it hands back a draft that carries the keyword, the trailers and the wrapping."
+        "Write the commit message with typo3_commit_message_guide and workflow=\"core\": summarize the changed behavior, the affected area and the commands you ran, and it hands back a draft that carries the keyword, the trailers and the wrapping."
     ],
     "checkoutDiscovery": [
         {
@@ -718,7 +718,7 @@ Data:
     "nextTools": [
         {
             "tool": "typo3_commit_message_guide",
-            "when": "with isDeprecation=true, to get the keyword and prefix rules checked"
+            "when": "with workflow=\"core\" and isDeprecation=true, to get the keyword and prefix rules checked"
         },
         {
             "tool": "typo3_project_describe",
@@ -803,7 +803,7 @@ Suggested checklist:
 - Run targeted tests first; broaden to CGL, functional, or npm checks when relevant.
 - Use the existing backend component classes and their documented markup instead of new ad-hoc classes.
 - Check the styleguide demo of the component for the canonical structure.
-- Write the commit message with typo3_commit_message_guide: summarize the changed behavior, the affected area and the commands you ran, and it hands back a draft that carries the keyword, the trailers and the wrapping.
+- Write the commit message with typo3_commit_message_guide and workflow="core": summarize the changed behavior, the affected area and the commands you ran, and it hands back a draft that carries the keyword, the trailers and the wrapping.
 
 Establish in your checkout — this server cannot see it:
 - Which files the task actually touches
@@ -824,7 +824,7 @@ Next lookups for this task:
 - typo3_changelog_lookup — for what 14 changed about this area — the first stop when you have not built on it recently, not only a lookup after the fact
 - typo3_hint_lookup — with the concrete file paths, once they are known
 - typo3_test_run_guide — for the targeted runTests.sh invocation
-- typo3_commit_message_guide — before committing
+- typo3_commit_message_guide — with workflow="core", before committing — the default is a repository of your own and adds no Forge issue or release trailer
 - typo3_feedback_record — when one of these answers was wrong or incomplete
 ```
 
@@ -897,7 +897,7 @@ Data:
         "Run targeted tests first; broaden to CGL, functional, or npm checks when relevant.",
         "Use the existing backend component classes and their documented markup instead of new ad-hoc classes.",
         "Check the styleguide demo of the component for the canonical structure.",
-        "Write the commit message with typo3_commit_message_guide: summarize the changed behavior, the affected area and the commands you ran, and it hands back a draft that carries the keyword, the trailers and the wrapping."
+        "Write the commit message with typo3_commit_message_guide and workflow=\"core\": summarize the changed behavior, the affected area and the commands you ran, and it hands back a draft that carries the keyword, the trailers and the wrapping."
     ],
     "checkoutDiscovery": [
         {
@@ -944,7 +944,7 @@ Data:
         },
         {
             "tool": "typo3_commit_message_guide",
-            "when": "before committing"
+            "when": "with workflow=\"core\", before committing — the default is a repository of your own and adds no Forge issue or release trailer"
         },
         {
             "tool": "typo3_feedback_record",
@@ -1037,7 +1037,7 @@ Suggested checklist:
 - Run targeted tests first; broaden to CGL, functional, or npm checks when relevant.
 - Reproduce the bug first, ideally with a failing test that the fix turns green.
 - Check whether the bug also affects maintained older release branches.
-- Write the commit message with typo3_commit_message_guide: summarize the changed behavior, the affected area and the commands you ran, and it hands back a draft that carries the keyword, the trailers and the wrapping.
+- Write the commit message with typo3_commit_message_guide and workflow="core": summarize the changed behavior, the affected area and the commands you ran, and it hands back a draft that carries the keyword, the trailers and the wrapping.
 
 Establish in your checkout — this server cannot see it:
 - Which files the task actually touches
@@ -1057,7 +1057,7 @@ Next lookups for this task:
 - typo3_changelog_lookup — for what 14 changed about this area — the first stop when you have not built on it recently, not only a lookup after the fact
 - typo3_hint_lookup — with the concrete file paths, once they are known
 - typo3_test_run_guide — for the targeted runTests.sh invocation
-- typo3_commit_message_guide — before committing
+- typo3_commit_message_guide — with workflow="core", before committing — the default is a repository of your own and adds no Forge issue or release trailer
 - typo3_feedback_record — when one of these answers was wrong or incomplete
 ```
 
@@ -1261,7 +1261,7 @@ Data:
         "Run targeted tests first; broaden to CGL, functional, or npm checks when relevant.",
         "Reproduce the bug first, ideally with a failing test that the fix turns green.",
         "Check whether the bug also affects maintained older release branches.",
-        "Write the commit message with typo3_commit_message_guide: summarize the changed behavior, the affected area and the commands you ran, and it hands back a draft that carries the keyword, the trailers and the wrapping."
+        "Write the commit message with typo3_commit_message_guide and workflow=\"core\": summarize the changed behavior, the affected area and the commands you ran, and it hands back a draft that carries the keyword, the trailers and the wrapping."
     ],
     "checkoutDiscovery": [
         {
@@ -1304,7 +1304,7 @@ Data:
         },
         {
             "tool": "typo3_commit_message_guide",
-            "when": "before committing"
+            "when": "with workflow=\"core\", before committing — the default is a repository of your own and adds no Forge issue or release trailer"
         },
         {
             "tool": "typo3_feedback_record",

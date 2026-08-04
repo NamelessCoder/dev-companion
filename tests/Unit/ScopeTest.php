@@ -965,24 +965,24 @@ final class ScopeTest extends TestCase
             'typo3_commit_message_guide',
             implode("\n", $core->data['checklist'])
         );
-        self::assertStringNotContainsString('workflow=', self::followUp($core, 'typo3_commit_message_guide'));
+        self::assertStringContainsString('workflow="core"', self::followUp($core, 'typo3_commit_message_guide'));
 
-        // And with the workflow that repository needs, because the default is
-        // the core's and demands a Forge issue nobody there has.
+        // And outside the core the call is listed bare, because the default is
+        // that repository's own case since `D-GUI-010`.
         $project = Registry::call('typo3_task_guide', [
             'task' => 'Add a search to the product plugin',
             'paths' => ['packages/my_sitepackage/Classes/Controller/ProductController.php'],
         ]);
         self::assertTrue(Scope::from($project->data['scope'])->isOutsideTheCore());
-        self::assertStringContainsString('workflow="project"', implode("\n", $project->data['checklist']));
+        self::assertStringContainsString('typo3_commit_message_guide', implode("\n", $project->data['checklist']));
 
         // Both halves of the same answer, because they are read at different
         // moments: the checklist while planning, the follow-up calls at the
         // step itself. A call listed without the workflow is the default one,
-        // and the default is the core's — which is the hard missing-issue
-        // error, in a repository that has no issue to give it (`D-GUI-002`).
-        self::assertStringContainsString(
-            'workflow="project"',
+        // and the default is this repository's case — the core is what has to
+        // be stated (`D-GUI-010`).
+        self::assertStringNotContainsString(
+            'workflow="core"',
             self::followUp($project, 'typo3_commit_message_guide')
         );
     }

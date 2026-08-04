@@ -144,10 +144,12 @@ suite is the same sentence with the words taken out.
 
 ## Commit shape and target branch
 
-`typo3_commit_message_guide` with the message and the change type says whether
-the message is submittable. Read its answer against the diff rather than on its
-own: the subject that describes the wrong action, the missing issue reference,
-the marker a breaking change needs and this one does not carry.
+`typo3_commit_message_guide` with `workflow="core"`, the message and the change
+type says whether the message is submittable. Without that argument it checks
+the message as a repository of its own and asks for no Forge issue. Read its
+answer against the diff rather than on its own: the subject that describes the
+wrong action, the missing issue reference, the marker a breaking change needs
+and this one does not carry.
 
 The branch the patch targets decides which conventions apply and which findings
 matter, so a patch whose target is stated and whose diff does not fit it is a

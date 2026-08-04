@@ -66,12 +66,20 @@ ship is absent for a reason rather than missing.
   manifest and its agreement with what the extension declares about itself
   elsewhere, `composer audit` for advisories against what it requires, and
   `ergebnis/composer-normalize` where the project keeps its manifest normalised.
-- **Shipped configuration and data** — the files the package actually ships: XML
-  well-formedness for the XLIFF files, a YAML lint such as `j13k/yaml-lint` or
-  the framework's own `lint:yaml` for configuration, and
-  `helmich/typo3-typoscript-lint` for TypoScript. Fluid templates have no
-  established linter — they are proven by the functional tests that render them,
-  and saying so is better than inventing a check for them.
+- **Shipped configuration and data** — the files the package actually ships: the
+  XLIFF linter `symfony/translation` ships, which a TYPO3 project usually
+  already has installed and which validates against the schema rather than only
+  parsing the XML; a YAML lint such as `j13k/yaml-lint` or the framework's own
+  `lint:yaml` for configuration; and `helmich/typo3-typoscript-lint` for
+  TypoScript. Two of them have to be told about this project before their
+  verdict is worth anything: `typo3_hint_lookup` with `id=language-files` says
+  what the XLIFF linter needs before it accepts a file named the way TYPO3 names
+  one, and a linter ships a configuration of its own that yours is merged over,
+  so what it reports and what it advises are its defaults rather than this
+  project's conventions — advice written for an older TYPO3 is still advice the
+  tool gives today. Fluid templates have no established linter — they are proven
+  by the functional tests that render them, and saying so is better than
+  inventing a check for them.
 - **Shipped frontend assets** — where the package ships JavaScript, TypeScript
   or CSS. `eslint` for the scripts, with `@typescript-eslint` where the sources
   are TypeScript; `stylelint` for the stylesheets, with `stylelint-scss` and
@@ -82,6 +90,10 @@ ship is absent for a reason rather than missing.
   it. Declare each of them as a script in the package's own `package.json`, so
   the same one command exists locally and in CI, and take the Node version from
   what the project declares rather than from the machine that happens to run it.
+  Run each one over the files it guards before reporting the entry as covered: a
+  linter that finds nothing in the only sources the package ships is a gap
+  dressed as coverage, which is the standard this page already applies to a
+  matrix whose cells run only version-independent steps.
 
 Read the names as the default per check where the checkout covers it with
 nothing, never as a replacement for what it already runs: a project with another
@@ -112,6 +124,14 @@ with what it costs and what it does not buy.
    another one. Every added package is a further thing that has to stay current
    across the whole declared range, which is what an abandoned one stops doing.
 4. Keep every one of them in the development requirements.
+5. Where the solver refuses one, read what it refused rather than which TYPO3
+   version is installed. A check tool has to meet what this project resolved,
+   and a package nothing here pins can sit a major ahead of what the framework
+   asks for, so the same tool goes into one project and not into the next. Where
+   it cannot meet it, the tool gets an installation of its own — a second
+   manifest below the build directory with its own vendor directory, and the
+   project-owned command calls that binary. The check exists either way; what
+   moves is where the tool's own dependencies live.
 
 ## Establish one command per check
 

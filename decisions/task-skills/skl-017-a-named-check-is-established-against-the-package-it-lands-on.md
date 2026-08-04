@@ -80,3 +80,34 @@ own source.
 - A fourth session installs a named tool without resolving it after the sentence
   is there. Then the naming is what misleads, and the row drops the tool rather
   than qualifying it.
+
+**Since then**, on 2026-08-04, the two measurements that decide the wording were
+made and the third was dropped.
+
+`helmich/typo3-typoscript-lint` v3.3.0 installs on TYPO3 14.3.5: a real require
+against `.environments/e-site-14.3`, which carries `symfony/event-dispatcher`
+v7.4.15. `typo3/cms-core` 14.3.5 requires that package nowhere — only
+`event-dispatcher-contracts ^3.6.0` — and `composer why` in the reporting
+project names `friendsofphp/php-cs-fixer` and `symfony/mailer` as what pulled
+its 8.1.2. So the page says what a tool has to meet is what the project
+resolved, and never that a tool fails on a TYPO3 version.
+
+`XliffLintCommand` was run over a locale-prefixed `de.locallang.xlf` declaring
+`target-language="de"`, from the same installation's `symfony/translation`. At
+the default it exits 1 with "a mismatch between the language included in the
+file name and the `de` value used in the `target-language` attribute"; with
+`requireStrictFileNames` false it exits 0. That is in `language-files` rather
+than in the page, with what the linter does not establish beside it.
+
+Two of the feedback's own claims did not survive. Only `RepeatingRValue` advises
+extracting a repeated value into a constant — `DuplicateAssignment` reports an
+overwritten value and advises nothing — and what the page carries instead is
+that a linter's shipped configuration is merged under the project's, which
+`ConfigurationLocator.php:53` does, and that its advice is its own rather than
+this project's. The corpus already contradicts the advice: `site-set-settings`
+says settings replaced constants.
+
+The frontend measurement was dropped rather than deferred. What the page gains
+there is the instruction to run a named linter over the files it guards, and
+that sentence is the same whichever tool wins on one small package — which this
+entry had already decided against naming.

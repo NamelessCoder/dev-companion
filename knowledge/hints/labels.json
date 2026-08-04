@@ -44,6 +44,8 @@
         "text": "No schema check reports this. XLIFF 1.2 requires original, source-language and datatype on the file element and leaves target-language optional, so the file that loses its translations is valid XLIFF. Read the attribute off each locale-prefixed file itself.",
         "since": 14
       },
+      "The XLIFF linter symfony/translation ships is what these files are checked with, and a TYPO3 installation already has the package: it validates against the XLIFF schema rather than only parsing the XML. Its requireStrictFileNames constructor argument defaults to true, which is Symfony's own locale-suffix convention — messages.de.xlf — so at the default it rejects every locale-prefixed file with a mismatch between the file name and the target-language attribute. Pass false.",
+      "Schema validity is the whole of what that linter establishes. That a translation declares target-language at all, that a source file is authored in English, and that a translation carries no unit its source has dropped are checks the project owns.",
       "Two neighbours: translation-domain for how a label is referenced, label-retirement for one that is no longer used."
     ]
   },

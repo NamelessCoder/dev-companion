@@ -106,7 +106,10 @@ Stopping at findings is not stopping at reading: the commands
 told not to change files runs them and reports what they printed. For requested
 improvements, make the smallest coherent changes, preserve local project
 conventions, and run the commands declared by `typo3_project_scope`, the ones
-that change files included.
+that change files included. Where that leaves something to commit, the message
+comes from `typo3_commit_message_guide` with `workflow="project"`: the
+repository being assessed is the one it lands in. An audit asked for findings
+alone changed nothing and has no message to write.
 
 Close on coverage rather than on a summary: the surface list written in step 3,
 every entry marked assessed, unassessed or not requested, clean ones briefly. It

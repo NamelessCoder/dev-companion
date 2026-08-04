@@ -119,6 +119,9 @@ different range.
    did not, and the matrix cell by cell. A cell nobody ran is named as unrun
    rather than left out — the matrix is the claim the package makes about
    itself, and an unrun cell is the part of that claim nothing stands behind.
+5. Draft the message with `typo3_commit_message_guide` and `workflow="project"`.
+   The crossing lands in the package's own repository, and the range it now
+   declares is what the message is about.
 
 This skill owns crossing a package from one supported range to another: the
 sweep that says what breaks, the constraints that say what may be declared, the

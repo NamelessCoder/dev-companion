@@ -83,6 +83,12 @@ changing a content element.
 - Re-run `typo3_extension_scope` after the change and report parser blind spots
   separately from implementation defects.
 
+## Commit the element
+
+`typo3_commit_message_guide` with `workflow="project"` drafts the message and
+checks it. The element lands in an extension or a sitepackage, which is the
+workflow that argument names; the default is the core's.
+
 This skill owns content-element architecture and implementation. Activate
 `typo3-extension-testing` for test infrastructure,
 `typo3-extension-documentation` for manuals, and `typo3-extension-conformance`

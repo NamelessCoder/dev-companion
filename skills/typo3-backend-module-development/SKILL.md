@@ -83,6 +83,13 @@ module as written and unproven and say which of the five is unestablished.
 Correcting a mistake from a test afterwards is what the lookups above are there
 to make unnecessary.
 
+## Commit it
+
+`typo3_commit_message_guide` with `workflow="project"` drafts the message and
+checks it. The scope settled before the first file is what picks that argument:
+a module in an extension, a sitepackage or a site project is committed in that
+repository, and only an actual core patch leaves the argument at its default.
+
 This skill owns backend module registration, controllers, routes, and backend UI
 implementation, up to the module being opened.
 

@@ -66,6 +66,9 @@ stable public API.
   or the task establishes them.
 - Report the files updated, validation performed, and any behavior that could
   not be verified from the installation or project.
+- Draft the message for what was written with `typo3_commit_message_guide` and
+  `workflow="project"`. A manual ships from the repository it documents, which
+  is the workflow that argument names.
 
 This skill owns documentation and user-facing wording changes. Test
 implementation is `typo3-extension-testing`, conformance assessment is

@@ -125,6 +125,11 @@ for a review-only request, report the defect without changing it.
    working tree for files the fixer touched outside the intended scope.
 6. Report the exact commands run, results, files added or changed, and checks
    not run with the reason.
+7. Draft the message for each commit with `typo3_commit_message_guide` and
+   `workflow="project"`.
+   [references/static-quality.md](references/static-quality.md) says where a
+   formatting pass is split off and in which order the commits go; what each of
+   them says is this tool's answer.
 
 This skill owns testing and static-quality infrastructure, the changes they
 require, and the execution of both. A broad conformance audit is

@@ -19,8 +19,7 @@ the guide's own answer is what named the skill the session is in: the call has
 been made and its brief is in the session. A skill reached from its own
 description keeps the step, because the brief is built from the caller's paths
 as well as the task text and no skill knows those paths — so a skip there costs
-the hints and core checks they match, and the commit step the guide names for
-every task that changes a file. The deprecation sweep is skipped where the
+the hints and core checks they match. The deprecation sweep is skipped where the
 change touches no TYPO3 API, because a deprecation is a statement about API the
 package calls and a change that calls none leaves the sweep empty before it is
 run. Which side a change falls on is read off the files it touches rather than

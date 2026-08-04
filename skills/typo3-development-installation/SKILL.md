@@ -130,6 +130,10 @@ what the installation runs on.
    that answered, and the database it is on. `typo3_task_guide` carries what a
    finished setup owes its user beyond that, credentials included; report what
    it names rather than a second version of it.
+5. Draft the message for what the setup added to the repository with
+   `typo3_commit_message_guide` and `workflow="project"`. The manifest, the
+   container declaration and the ignore rules are that repository's own files,
+   which is the workflow that argument names.
 
 ## Where this stops
 

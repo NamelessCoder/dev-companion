@@ -97,3 +97,48 @@ that came from those habits is not something this server may be credited with.
 - The routing entry changes nothing because nobody reads it. It sits behind
   `typo3_server_scope`, and `D-AUD-003` measured what that costs: a tool has to
   be called to learn that tools should be called.
+
+## Covered by
+
+- `SkillTest::theCommitStepIsNamedWhereASkillsWorkflowEndsInAChange`
+
+## Since then
+
+Implemented on 2026-08-04, and the reading this entry left open came out at
+eight skills rather than seven. Each body was read for where its own workflow
+ends. Six of the seven extension-facing ones end in files that are written and
+take the step unconditionally: `typo3-backend-module-development` once the
+module opens, `typo3-content-element-development` after the element is verified,
+`typo3-extension-documentation` as the last thing it writes,
+`typo3-extension-release` for the version and the notes preparation leaves in
+the working tree, `typo3-extension-testing` beside the commit split
+`references/static-quality.md` already prescribes, and `typo3-extension-upgrade`
+for the crossing its work list justified.
+
+`typo3-extension-conformance` is the seventh and the one the second **Wrong if**
+is about. It is not a skill that only reviews: its own body says "For requested
+improvements, make the smallest coherent changes … and run the commands declared
+by `typo3_project_scope`, the ones that change files included", and that branch
+ends in a change. So the step is written into that branch and nowhere else in
+the file, and the sentence after it says an audit asked for findings alone has
+no message to write. Left out altogether, this skill would send a session that
+made the fixes it was asked for to the commit with no route at all, which is the
+gap this entry exists to close.
+
+The eighth is `typo3-development-installation`, which is not published yet and
+is the draft `D-SKL-012` queued for review. Its step 5 decides what the install
+wrote into the repository and says the ignore rules are written "before the
+first commit", so its workflow ends in a change by its own account. It carries
+the step into that review rather than being published without it.
+
+The two core skills were left alone. Both already name
+`typo3_commit_message_guide`, both commit in the core, and `workflow="project"`
+in either of them would drop the rules a core patch is held to.
+`typo3-core-patch-review` is the review that the second **Wrong if** protects,
+and the assertion above holds it to naming the guide without the argument.
+
+`R-SKL-017` is what holds the placement from now on, the routing entry in
+`knowledge/server-scope.json` names the argument, and `skills/base.md` no longer
+does — `D-SKL-015`. The entry stays open: what it was written against is
+behaviour, and nothing has watched a session commit in an extension with these
+bodies in front of it. The first **Wrong if** is what that run would answer.

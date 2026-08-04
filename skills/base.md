@@ -43,9 +43,7 @@ matter too.
    arrived without that answer, and there the step stays: the brief is built
    from the paths as well as the task text, and no skill knows which paths the
    caller is holding. Skipping it there costs the hints and the core checks
-   those paths match. It costs the commit step with them, because the guide
-   names `typo3_commit_message_guide` with `workflow="project"` for every task
-   that changes a file and the skills that own extension work do not.
+   those paths match.
 4. **`typo3_hint_lookup`** for each subsystem in scope, with its concrete paths.
    One query per subsystem; a single broad query is not subsystem evidence.
 5. **`typo3_changelog_lookup` with `type: deprecation`**, at each major the

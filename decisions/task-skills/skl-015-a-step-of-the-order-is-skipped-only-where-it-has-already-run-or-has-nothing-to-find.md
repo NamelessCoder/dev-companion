@@ -104,3 +104,27 @@ wanted, and the maintainer answered it on 2026-08-04.
 
 - `SkillTest::theWorkflowStepIsSkippedOnlyWhereTheGuideNamedThisSkill`
 - `SkillTest::theDeprecationSweepIsSkippedOnlyWhereTheChangeTouchesNoTypo3Api`
+
+## Since then
+
+The fourth **Wrong if** fired on 2026-08-04, on the commit that implemented
+`D-SKL-014`. Step 3 said what a wrong skip costs in two halves: the hints and
+core checks the caller's paths match, and "the commit step with them, because
+the guide names `typo3_commit_message_guide` with `workflow="project"` for every
+task that changes a file and the skills that own extension work do not". The
+skills that own extension work now do, so that sentence is gone from
+`skills/base.md` and from `R-SKL-005`, which carries the same conditions in
+prose. The path-specific brief — the hints and the core checks — is the whole of
+what the condition rests on afterwards, which is what this entry said would
+happen.
+
+The condition itself is unchanged, and so is the first **Wrong if**: what makes
+step 3 already done is still the route rather than the coverage. What moved is
+one of the costs it named. `skills/base.md` now names the tools its own order is
+made of and no others, which is the shape a file copied into all nine skills has
+to have — the two core ones commit in the core, and a review-only one commits
+nothing at all (`R-GUI-006`).
+
+The third **Wrong if** is still the one to watch, and nothing has read it yet:
+no session has been observed skipping step 3 after matching a skill on its
+`description`.

@@ -29,19 +29,23 @@ final class SkillTest extends TestCase
             'typo3_translation_domain_lookup',
             'typo3_component_lookup',
             'typo3_documentation_lookup',
+            'typo3_commit_message_guide',
         ],
         'typo3-content-element-development' => [
             'typo3_documentation_lookup',
             'typo3_label_lookup',
             'typo3_icon_lookup',
+            'typo3_commit_message_guide',
         ],
         'typo3-extension-testing' => [
             'typo3_documentation_lookup',
+            'typo3_commit_message_guide',
         ],
         'typo3-development-installation' => [
             'typo3_server_scope',
             'typo3_documentation_lookup',
             'typo3_configuration_lookup',
+            'typo3_commit_message_guide',
         ],
         'typo3-core-patch-review' => [
             'typo3_hint_lookup',
@@ -65,21 +69,45 @@ final class SkillTest extends TestCase
         'typo3-extension-conformance' => [
             'typo3_hint_lookup',
             'typo3_documentation_lookup',
+            'typo3_commit_message_guide',
         ],
         'typo3-extension-documentation' => [
             'typo3_documentation_lookup',
             'typo3_label_lookup',
             'typo3_translation_domain_lookup',
+            'typo3_commit_message_guide',
         ],
         'typo3-extension-release' => [
             'typo3_documentation_lookup',
+            'typo3_commit_message_guide',
         ],
         'typo3-extension-upgrade' => [
             'typo3_changelog_lookup',
             'typo3_system_extension_lookup',
             'typo3_hint_lookup',
             'typo3_documentation_lookup',
+            'typo3_commit_message_guide',
         ],
+    ];
+
+    /**
+     * The skills whose workflow ends in a change to a repository that is not
+     * the core's, read off each body on 2026-08-04 — `D-SKL-014`. The two core
+     * skills are not among them: both name the guide already and both commit in
+     * the core, where the argument's default is the right one.
+     * `typo3-extension-conformance` is here because its own body makes the
+     * changes a requested improvement asks for; the step is written into that
+     * branch alone, and the audit that reports findings has nothing to commit.
+     */
+    private const COMMITTING_SKILLS = [
+        'typo3-backend-module-development',
+        'typo3-content-element-development',
+        'typo3-development-installation',
+        'typo3-extension-conformance',
+        'typo3-extension-documentation',
+        'typo3-extension-release',
+        'typo3-extension-testing',
+        'typo3-extension-upgrade',
     ];
 
     #[Test]
@@ -227,15 +255,79 @@ final class SkillTest extends TestCase
             'the brief is built from the paths as well as the task text, and no skill knows which paths the caller is holding',
             self::flat($base),
         );
-        // And the step a skip loses with it until `D-SKL-014` is in the bodies
-        // of the skills that own extension work.
-        self::assertStringContainsString('`typo3_commit_message_guide` with `workflow="project"`', $base);
+        // What a skip costs is the path-specific brief and nothing else. The
+        // commit step was named here as the other half of that cost while
+        // `D-SKL-014` was queued, and stopped being one on the commit that put
+        // it into the bodies of the skills that own extension work — the fourth
+        // **Wrong if** of `D-SKL-015`, fired 2026-08-04. The base is copied into
+        // all nine skills, the review-only ones included, which is why the step
+        // is theirs and not this file's.
+        self::assertStringNotContainsString('typo3_commit_message_guide', $base);
 
         // A condition that reads as an invitation is taken as one, so the order
         // says once what a skipped prescription costs the steps around it.
         self::assertStringContainsString(
             'a prescription that gets skipped teaches the next reader to skip the ones that matter too',
             self::flat($base),
+        );
+    }
+
+    #[Test]
+    public function theCommitStepIsNamedWhereASkillsWorkflowEndsInAChange(): void
+    {
+        // A session in `/home/benji/projects/syntax` was told to reproduce a
+        // frontend defect in the extension it stood in, fix it and commit it. It
+        // made 37 calls, all of them Bash, Read, Edit or Write, activated no
+        // skill and called none of the 26 tools — `feedback/2026-08-04-012644`.
+        // The two skills that named the commit guide were the core ones, and the
+        // seven an extension author reaches for named no commit step at all,
+        // which is the fourth and worst of the channels `D-GUI-002` counted.
+        // `D-SKL-014` is the placement; which bodies get it was read off each
+        // one.
+        foreach (self::COMMITTING_SKILLS as $name) {
+            $skill = (string) file_get_contents(Paths::root() . '/skills/' . $name . '/SKILL.md');
+            self::assertStringContainsString(
+                'typo3_commit_message_guide',
+                $skill,
+                $name . ' ends in a change and names no commit step',
+            );
+            self::assertStringContainsString(
+                'workflow="project"',
+                self::flat($skill),
+                $name . ' names the commit guide without the workflow it commits in',
+            );
+        }
+
+        // The other side, and the one that would make this wrong: a review
+        // changes nothing and commits nothing, so a commit line in it is the
+        // patch checklist `R-GUI-006` exists to keep out of a review's answer.
+        // `typo3-core-patch-review` reads the message a patch already carries,
+        // which is why it names the guide at all, and it reads it against the
+        // core's rules.
+        $review = (string) file_get_contents(
+            Paths::root() . '/skills/typo3-core-patch-review/SKILL.md',
+        );
+        self::assertStringNotContainsString('workflow="project"', self::flat($review));
+
+        // Conformance is the one of the eight that is a review first. Its own
+        // body makes the changes a requested improvement asks for, so the step
+        // is written into that branch and the audit that was asked for findings
+        // is left as it was.
+        $conformance = self::flat((string) file_get_contents(
+            Paths::root() . '/skills/typo3-extension-conformance/SKILL.md',
+        ));
+        self::assertStringContainsString(
+            'For requested improvements, make the smallest coherent changes',
+            $conformance,
+        );
+        self::assertStringContainsString(
+            'An audit asked for findings alone changed nothing and has no message to write.',
+            $conformance,
+        );
+        self::assertLessThan(
+            (int) strpos($conformance, 'typo3_commit_message_guide'),
+            (int) strpos($conformance, 'For requested improvements'),
+            'the commit step stands outside the branch that makes the changes',
         );
     }
 

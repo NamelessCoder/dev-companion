@@ -210,3 +210,24 @@ separates them, and the remaining lever is the index rather than the threshold.
 TYPO3 Explained 14.3 writes `.fluid.html` in 49 code-example captions and states
 the convention in no sentence, so a corpus of page bodies does not carry the
 answer either.
+
+### The drop is closed out
+
+Put to the maintainer on 2026-08-04 with the two options priced — close it out,
+or keep the card open against a change of index that nothing has costed — and
+the answer was to close it out. So the floor is not deferred any more: nothing
+is left waiting on a measure, and building one would start from the reading
+above rather than from this entry's fourth **Wrong if**.
+
+`feedback/2026-08-03-164734` is archived with that, which supersedes the
+**Decided** bullet saying it is not. Its "at minimum" half shipped in this
+entry's change; its second sentence — return the fact that nothing clears a
+threshold, rather than the best six collisions — is what is now declined, on the
+grounds that no threshold over this index can tell the two cases apart. The card
+that carried it is deleted.
+
+What holds from here is what the change already ships: every result carries the
+share of the query it covers, and the answer says above the results where
+nothing covers half. The fourth **Wrong if** stays as it stands, because it is
+still what somebody setting a floor would have to satisfy — the difference is
+that it is now a bar rather than an errand.

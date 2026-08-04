@@ -76,6 +76,14 @@ final class SkillTest extends TestCase
             'typo3_translation_domain_lookup',
             'typo3_commit_message_guide',
         ],
+        // One tool of its own, because what this skill contributes is an order
+        // rather than evidence: the findings are the audit's and every change
+        // is made in the workflow that owns it. What is left for it to route to
+        // is the commit, and the commit is the whole of the checkpoint the
+        // order turns on — `D-SKL-016`.
+        'typo3-extension-remediation' => [
+            'typo3_commit_message_guide',
+        ],
         'typo3-extension-upgrade' => [
             'typo3_changelog_lookup',
             'typo3_system_extension_lookup',
@@ -101,6 +109,7 @@ final class SkillTest extends TestCase
         'typo3-content-element-development',
         'typo3-development-installation',
         'typo3-extension-documentation',
+        'typo3-extension-remediation',
         'typo3-extension-testing',
         'typo3-extension-upgrade',
     ];
@@ -1343,7 +1352,12 @@ final class SkillTest extends TestCase
      * installation into existence is the fourth, and the one where a rubric
      * would be furthest from the evidence: its work list is the order the five
      * steps' dependencies force, and what it would otherwise judge — whether the
-     * installation is right — is what a cold start answers.
+     * installation is right — is what a cold start answers. Remediation is the
+     * fifth, and it is the upgrade's case exactly: its work list is produced by
+     * the conformance report rather than read off a rubric, and what it would
+     * otherwise judge — whether a finding is one, what it is worth, who owns it
+     * — is the checklist one directory away, whose report it is forbidden from
+     * re-deriving (`D-SKL-016`).
      */
     #[Test]
     public function judgmentHeavySkillsKeepTheirChecklistBesideThem(): void
@@ -1355,6 +1369,7 @@ final class SkillTest extends TestCase
                 'typo3-extension-upgrade',
                 'typo3-core-patch-development',
                 'typo3-development-installation',
+                'typo3-extension-remediation',
             ],
         );
 

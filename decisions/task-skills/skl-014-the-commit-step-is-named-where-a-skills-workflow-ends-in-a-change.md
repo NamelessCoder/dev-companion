@@ -136,8 +136,11 @@ the skill was loaded for change requests whatever the body said. All three are
 gone and the file agrees with `R-GUI-006` rather than carrying an exception to
 it. What that opens — a task worded as a change reaching no skill at all — is
 measured and written into
-[a card](../../todo/open/2026-08-04-140000-a-task-that-asks-for-a-repository-to-be-put-right-reaches-no-skill.md)
-rather than answered here.
+[a card](../../todo/waiting/2026-08-04-140000-a-task-that-asks-for-a-repository-to-be-put-right-reaches-no-skill.md)
+rather than answered here, and it is answered by
+[`D-SKL-016`](skl-016-acting-on-a-conformance-report-earns-a-task-skill-of-its-own.md):
+a task skill of its own, which starts from this skill's report and takes the
+changes it is forbidden from making.
 
 `R-SKL-017` is what holds the placement from now on, the routing entry in
 `knowledge/server-scope.json` names the argument, and `skills/base.md` no longer

@@ -6,9 +6,9 @@ status: open
 
 # D-SKL-016 — Acting on a conformance report earns a task skill of its own
 
-**A task that asks for a repository to be put right gets a task skill of its
-own: it starts from the conformance report, writes the findings into a worklist
-it commits, and then works that list off.**
+**Putting a repository right is a task skill of its own: it starts from the
+conformance report, commits a worklist derived from it, then works that list
+off.**
 
 The change half of that request had one route, that route was the wrong one, and
 removing it left the work with no owner at all.

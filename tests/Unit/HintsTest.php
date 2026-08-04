@@ -187,10 +187,11 @@ final class HintsTest extends TestCase
         self::assertStringContainsString('extra.typo3/cms.extension-key', $text);
         self::assertStringContainsString('--rule-set defaults to both sets', $text);
 
-        // What the shipped configuration already excludes, and the two claims
-        // that decide whether the template needs correcting.
+        // What the shipped configuration already excludes, and the case the
+        // template does have to be corrected for. That `.build/` is not that
+        // case is why the report's correction was dropped, and it is stated in
+        // `D-KNW-055` rather than here.
         self::assertStringContainsString('directory name matched at any depth and case-sensitively', $text);
-        self::assertStringContainsString('covered twice over', $text);
         self::assertStringContainsString('neither hidden nor one of the excluded names', $text);
 
         // The verdict is the dry run's, because the fixing run has none.

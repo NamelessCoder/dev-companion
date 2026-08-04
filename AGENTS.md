@@ -28,7 +28,7 @@ src/Manual/        # the third source: the public index and pages of the version
 src/Contribution/  # the fourth source: the services the core's own process runs through, read over their APIs
 src/Http/Fetch.php # the one way this server reads a host outside itself: the timeouts, the redirect limit and the agent, once
 src/Search/        # the lexical matching every prose and label lookup goes through
-src/Feedback/      # the feedback channel: what `typo3_feedback_record` writes and `bin/cli feedback` reads
+src/Feedback/      # the feedback channel: what `typo3_feedback_record` writes into this checkout and `bin/cli feedback` reads; a development tool, offered from a standalone checkout alone
 src/Sdk/           # the adapters onto mcp/sdk: tool dispatch and the typo3:// resources, documents and skills
 src/Paths.php      # where this checkout keeps things; the one class both halves share
 src/bootstrap.php  # locates the Composer autoloader
@@ -270,7 +270,13 @@ because the verb is what tells a caller which shape the answer has:
   `typo3_server_scope`, `typo3_catalog_scope`.
 - `describe` — what one thing the caller names is and what it registers:
   `typo3_project_describe`, `typo3_extension_describe`.
-- `record` — the tool writes something: `typo3_feedback_record`.
+- `record` — the tool writes into this server's own checkout:
+  `typo3_feedback_record`.
+
+Nothing here writes into the TYPO3 installation it read, and that boundary is
+what "read-only" means throughout this repository. `record` is the other kind of
+writing and says so, because one word for both is how `453e439` read the feedback
+channel as a hole in the posture — `D-FBK-042`.
 
 `scope` and `describe` are the pair that gets confused. A scope answers for a
 source and states the boundary of what it can be asked; a describe answers for
@@ -399,6 +405,14 @@ environment and never the subject of a recorded review (`D-EVI-004`).
 
 Agents using this server record improvement feedback through
 `typo3_feedback_record`, one markdown file per feedback below `feedback/`.
+
+**The channel is a development tool for building this server, not part of using
+it.** `Channel::isAvailable()` offers the two tools only where this package is
+the Composer root package, so a project that installed the server as a
+dependency never sees them. That is also why `TYPO3_MCP_EXCLUDE_TOOLS` does not
+reach them — `R-SCO-009` names them beside `typo3_server_scope` as what a caller
+cannot take away.
+
 `scenarios/` holds the sessions those came out of, so they can be run again:
 open forward reviews in `scenarios/forward/`, targeted contract cases in
 `scenarios/contracts/`. A prompt names a kind of project, never one installation

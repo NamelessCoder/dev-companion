@@ -11,6 +11,11 @@ use Typo3CmsMcp\Result\ToolResult;
 /**
  * This server's only write: one markdown feedback per call, in its own
  * checkout, never touching an existing one.
+ *
+ * In its own checkout is the load-bearing half. Nothing here reaches the TYPO3
+ * installation the server was reading, so this tool is not an exception to the
+ * read-only posture — D-FBK-042, where reading it as one is the recorded
+ * mistake.
  */
 final class FeedbackRecord implements Tool
 {

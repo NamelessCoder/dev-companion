@@ -8,6 +8,7 @@ use PHPUnit\Framework\Attributes\After;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
+use Typo3CmsMcp\Feedback\Channel;
 use Typo3CmsMcp\Installation\Instance;
 use Typo3CmsMcp\Knowledge\Coverage;
 use Typo3CmsMcp\Knowledge\Scope;
@@ -169,6 +170,27 @@ final class ExcludedToolsTest extends TestCase
 
         self::assertSame([], ExcludedTools::all());
         self::assertContains('typo3_server_scope', $this->toolNames());
+    }
+
+    /**
+     * The other exception, and the one `453e439` read as a hole: the feedback
+     * tools are offered wherever the channel is and the variable does not reach
+     * them — R-SCO-009, D-FBK-042. What they write is this checkout, not the
+     * installation the server read.
+     */
+    #[Test]
+    public function theFeedbackToolsFollowTheChannelAndNoExclusionReachesThem(): void
+    {
+        putenv(ExcludedTools::VARIABLE . '=typo3_feedback_record, typo3_feedback_list, typo3_icon_lookup');
+
+        $offered = $this->toolNames();
+        self::assertNotContains('typo3_icon_lookup', $offered);
+        self::assertSame(
+            Channel::isAvailable(),
+            in_array('typo3_feedback_record', $offered, true),
+            'the channel decides whether the feedback tools are offered, and nothing else does',
+        );
+        self::assertSame(Channel::isAvailable(), in_array('typo3_feedback_list', $offered, true));
     }
 
     /** @return array<int, string> */

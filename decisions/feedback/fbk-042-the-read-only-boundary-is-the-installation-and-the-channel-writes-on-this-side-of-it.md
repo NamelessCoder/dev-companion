@@ -1,0 +1,93 @@
+---
+id: D-FBK-042
+date: 2026-08-04
+status: open
+---
+
+# D-FBK-042 — The read-only boundary is the installation, and the feedback channel writes on this side of it
+
+**"Write" without a target means into the caller's TYPO3 installation, and
+nothing this server does reaches one.**
+
+`typo3_feedback_record` writes into this repository's own checkout, which is the
+other side of that line and a development tool for building this server rather
+than part of using it.
+
+## Evidence
+
+- `453e439` (2026-08-04) reported the exemption as a defect: `Registry::offered()`
+  appends the feedback tools after the exclusion filter, so `typo3_feedback_record`
+  — "the one tool that writes" — cannot be excluded, which it read as a violation
+  of [`R-SCO-009`](../../requirements/scope/sco-009-individual-tools-can-be-excluded.md).
+  Nothing in that reading was about an installation, and the tool it named goes
+  nowhere near one. One word carried both meanings and the security conclusion
+  came out of the wrong one.
+- [`D-AUD-005`](../audience/aud-005-an-exclusion-naming-no-tool-is-reported-on-stderr.md)
+  rests on the same word. Its **Wrong if** says an exclusion must never guard
+  "a tool that writes"; under the installation meaning that holds today, under
+  the checkout meaning it does not, and the entry cannot say which it meant.
+- [AGENTS.md](../../AGENTS.md) defines the sixth tool verb as "the tool writes
+  something" and the `VERBS` list in `ToolNamingTest` repeats it. Neither says
+  where, and where is the whole of the distinction.
+- `Channel::isAvailable()` is
+  `InstalledVersions::getRootPackage()['name'] === 'typo3/cms-mcp'`. Installed as
+  a dependency the channel is not offered at all, so the exemption reaches
+  nobody who is using this server — only somebody working on it, in a checkout
+  they own.
+- Measured on 2026-08-04 in this checkout with
+  `TYPO3_MCP_EXCLUDE_TOOLS=typo3_feedback_record`: 26 tools offered, the named
+  one among them, `typo3_server_scope` reporting it under `excludedTools.names`
+  and the initialize instructions opening "typo3_feedback_record is left out of
+  your tool list".
+
+## Decided
+
+- The two kinds of writing are named apart wherever the coarse word was doing
+  both jobs: the verb list in [AGENTS.md](../../AGENTS.md) and in
+  `ToolNamingTest`, the `Channel` docblock, and `Registry`.
+- The feedback channel is a development tool for building this server. That is
+  what `isAvailable()` has always enforced and what nothing wrote down.
+- The feedback tools stay outside the exclusion filter, and
+  [`R-SCO-009`](../../requirements/scope/sco-009-individual-tools-can-be-excluded.md)
+  names them as the exception with its reason. What a caller could exclude there
+  is the only route by which a session hands back what it found, and the caller
+  is the person maintaining this repository.
+- The exception stays where it is in `offered()` — the feedback tools appended
+  past the filter — with a comment naming the requirement. Making it a second
+  filter over `ExcludedTools::ALWAYS_OFFERED` was weighed: it would put both
+  exceptions in one list and stop `typo3_server_scope` claiming a tool is gone
+  that is offered, at the cost of a class in `src/Server/` knowing two tool names
+  that only exist in one checkout. What the report actually costs a client is
+  the in-band half of
+  [`D-AUD-005`](../audience/aud-005-an-exclusion-naming-no-tool-is-reported-on-stderr.md),
+  which is carded and reaches every unknown name, not only these two.
+
+## Assumed
+
+- Nobody excludes a feedback tool for a reason this does not cover. The variable
+  is read in a standalone checkout only, where whoever set it is working on this
+  repository.
+- The channel stays a development tool. A published server that accepted feedback
+  from callers who do not own the checkout would be writing on somebody else's
+  behalf, and this entry would be about a different channel.
+
+## Wrong if
+
+- The feedback channel is ever offered outside a standalone checkout. Then a tool
+  writing into a directory the caller does not own is offered to somebody who
+  cannot see it, and the exemption becomes a real hole rather than a named one.
+- Anything below `src/` writes into the installation it read. The posture is the
+  boundary, not the tool count, and one such write makes every "read-only"
+  sentence in this repository false at once.
+- Another reader draws the same conclusion `453e439` did after this entry exists.
+  Then the distinction was written in the wrong places, and the tool description
+  a client reads is the next one to carry it.
+
+## Covered by
+
+- `ExcludedToolsTest::theFeedbackToolsFollowTheChannelAndNoExclusionReachesThem`
+
+Nothing covers the first **Wrong if**. `Channel::isAvailable()` reads
+`InstalledVersions::getRootPackage()` through no seam, and every test runs in the
+standalone checkout where it answers true.
+

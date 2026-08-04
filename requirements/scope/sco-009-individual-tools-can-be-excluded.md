@@ -1,15 +1,34 @@
 ---
 id: R-SCO-009
 status: held
-restsOn: [D-AUD-004]
+restsOn: [D-AUD-004, D-FBK-042]
 ---
 
 # R-SCO-009 — Individual tools can be excluded
 
-**A caller can exclude individual tools with `TYPO3_MCP_EXCLUDE_TOOLS`.**
+**A caller can exclude individual tools with `TYPO3_MCP_EXCLUDE_TOOLS`, except
+the three the server names.**
 
 The scope answer names the resulting omissions, so a shorter tool list carries
 its reason.
+
+Every tool that answers about TYPO3 can go. Three cannot, and both reasons are
+about what the caller would be left holding:
+
+- `typo3_server_scope`, because it is what tells a client why the list is
+  shorter than the documentation says. A client that lost it cannot tell a
+  configured server from a broken one.
+- `typo3_feedback_record` and `typo3_feedback_list`, because the feedback
+  channel is a development tool for building this server rather than part of
+  using it. `Channel::isAvailable()` offers them from a standalone checkout
+  alone, so the caller who could exclude them is whoever is working on this
+  repository, and what they would be excluding is the only route by which a
+  session hands back what it found.
+
+Neither exception weakens the read-only posture, and reading it as one is the
+mistake [`D-FBK-042`](../../decisions/feedback/fbk-042-the-read-only-boundary-is-the-installation-and-the-channel-writes-on-this-side-of-it.md)
+was written for: `typo3_feedback_record` writes into this server's own checkout
+and never into the installation being read.
 
 ## From
 
@@ -18,7 +37,14 @@ all of them (2026-07-30). The profiles were removed on 2026-08-02 under
 [`D-AUD-004`](../../decisions/audience/aud-004-every-client-is-offered-every-tool-and-the-answer-obliges.md)
 and this is what is left of them: the subtraction the caller declares.
 
+The exceptions were added on 2026-08-04, after `453e439` read the feedback one
+as a defect. What holds the status at `held` is that the code and this entry now
+say the same thing — `Registry::offered()` filters `TOOLS` and appends the
+feedback tools past the filter, which is exactly the list above.
+
 ## Held by
 
-- `ExcludedToolsTest::onlyTheCallerShortensTheList` and
+- `ExcludedToolsTest::onlyTheCallerShortensTheList`
 - `ExcludedToolsTest::theScopeNamesWhatTheCallerExcluded`
+- `ExcludedToolsTest::theToolThatExplainsAShortListCannotBeExcluded`
+- `ExcludedToolsTest::theFeedbackToolsFollowTheChannelAndNoExclusionReachesThem`

@@ -31,7 +31,11 @@ final class ToolNamingTest extends TestCase
         'list' => 'an enumeration of what is there, no query needed',
         'scope' => 'what a source covers and where its boundary runs',
         'describe' => 'what one thing the caller names is and what it registers',
-        'record' => 'the tool writes something',
+        // Where, not just that: writing into this server's own checkout is not
+        // writing into the installation it read, and one word for both is how
+        // the feedback channel got read as a hole in the read-only posture —
+        // D-FBK-042.
+        'record' => 'the tool writes into this server\'s own checkout',
     ];
 
     /** Segments that separate nothing, because they hold for every tool here. */

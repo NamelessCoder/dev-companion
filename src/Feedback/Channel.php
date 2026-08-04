@@ -14,10 +14,18 @@ use Typo3CmsMcp\Paths;
  * Stores improvement feedback left by agents using this server, so gaps in the
  * knowledge base can be worked off later.
  *
- * Writing is deliberately limited to a standalone checkout. Installed as a
- * dependency the package lives in vendor/, where anything written is lost on
- * the next composer install — so the feedback tools are not offered at all in
- * that mode and the server stays strictly read-only.
+ * What this writes into is this repository, never the TYPO3 installation the
+ * server was reading — those are the two kinds of writing D-FBK-042 keeps
+ * apart, and "read-only" throughout this repository is about the second. The
+ * server's posture is untouched by anything below here.
+ *
+ * A development tool for building this server rather than part of using it.
+ * isAvailable() is what enforces that: the tools exist only where this package
+ * is the Composer root package, so whoever can reach them owns the checkout
+ * they write into. Installed as a dependency the package lives in vendor/,
+ * where anything written is lost on the next composer install, and the two
+ * tools are not offered at all. TYPO3_MCP_EXCLUDE_TOOLS does not reach them
+ * either — R-SCO-009.
  *
  * One feedback per file: concurrent agents never touch the same file, so no
  * read-modify-write races and no merge conflicts on a shared log.

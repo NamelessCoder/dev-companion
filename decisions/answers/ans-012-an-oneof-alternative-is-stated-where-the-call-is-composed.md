@@ -120,3 +120,15 @@ lands in the descriptions and the reference, and a session still calls with
 tried first, and the answer it names if it fails is dropping the keyword. So the
 second candidate is not discarded; it is what this entry is now waiting to find
 out about.
+
+**Since then**, on 2026-08-04, a session hit the same rejection without the
+**Wrong if** holding. `feedback/2026-08-04-175819` composed a search and spelled
+its argument `query`, which this tool does not have: the unknown property was
+ignored, the `oneOf` failed on both branches, and the message named `queries`
+and `page` exactly as this entry describes. The session read it and called
+correctly on the second attempt.
+
+So the wording is not what failed, and the falsification above is not satisfied
+— a call that carries a query under another name is not a call composed with
+`targetVersion` alone. What that report is about is the name rather than the
+alternative, and it is `D-ANS-053`.

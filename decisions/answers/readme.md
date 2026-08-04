@@ -12,6 +12,7 @@ one is added.
 - [`D-ANS-050`][D-ANS-050] — A curated needle matches the word it is, and a stem matches past its end · 2026-08-04
 - [`D-ANS-051`][D-ANS-051] — A manual result carries how much of the question it covers, and no page is taken away for covering little · 2026-08-04
 - [`D-ANS-052`][D-ANS-052] — The configuration lookup answers for the installation as it stands · 2026-08-04
+- [`D-ANS-053`][D-ANS-053] — A rejected call names the argument that was not understood · 2026-08-04
 - [`D-ANS-033`][D-ANS-033] — The review server is read anonymously, and the answer says what that leaves out · 2026-08-03 · confirmed
 - [`D-ANS-034`][D-ANS-034] — A source outside this package answers JSON, or it did not answer · 2026-08-03
 - [`D-ANS-035`][D-ANS-035] — The matcher entry is owed to what the changelog tag claims · 2026-08-03 · confirmed
@@ -61,6 +62,7 @@ one is added.
 [D-ANS-050]: ans-050-a-curated-needle-matches-the-word-it-is-and-a-stem-matches-past-its-end.md
 [D-ANS-051]: ans-051-a-manual-result-carries-how-much-of-the-question-it-covers.md
 [D-ANS-052]: ans-052-the-configuration-lookup-answers-for-the-installation-as-it-stands.md
+[D-ANS-053]: ans-053-a-rejected-call-names-the-argument-that-was-not-understood.md
 [D-ANS-033]: ans-033-the-review-server-is-read-anonymously-and-the-answer-says-what-that-leaves-out.md
 [D-ANS-034]: ans-034-a-source-outside-this-package-answers-json-or-it-did-not-answer.md
 [D-ANS-035]: ans-035-the-matcher-entry-is-owed-to-what-the-changelog-tag-claims.md

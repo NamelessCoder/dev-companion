@@ -1,19 +1,28 @@
-# Decide what the stopped half of `META-02` has to produce
+# Run the `META-02` prompt across a `ddev start` in `e-site-14.3`
 
 **Serves:** META-02
 **Priority:** normal
-**Waiting on:** what does the `E-STOPPED` run of `META-02` have to produce, now
-    that a stopped project answers its prompt whole — the icons from the booted
-    installation, the labels from the package files — and neither answer moves
-    when DDEV starts? Rewriting criteria 1, 2, 4 and 6 to what the server
-    promises there keeps the case and gives up the "found but not running"
-    reason it was written for, and leaves criterion 6 with only
-    `typo3_server_scope` to be worded against. Giving the case a second prompt,
-    one whose answer needs the services the declared runtime brings, keeps that
-    reason and makes the case two prompts, which is the shape
-    `scenarios/readme.md` says one file may not have — and it has to name the
-    environment with the prompt, because the measurement below shows the case's
-    current one cannot hold either option.
+
+Drive the case's own prompt against `.environments/e-site-14.3` with its DDEV
+project stopped, in one stdio session, across a real `ddev start`, and record
+whether `typo3_icon_lookup` and `typo3_label_lookup` themselves answer
+differently on either side of it. The same five calls as the 13.4 run below —
+`typo3_project_describe`, the two icon queries, the label query, and
+`typo3_server_scope` — before and after, compared byte for byte with
+`structuredContent` included, and `answeredBy` reported for each.
+
+That is the one run that decides this card, and it is the run nobody has made.
+14.3 is where `typo3_label_lookup` reaches a console command that exists, so it
+is the only covered line on which the prompt's own lookup can separate a stopped
+project from a running one. If it does, the case keeps the reason it was written
+for and gains a second prompt with the environment named beside it; if the
+answers are identical there too, criteria 1, 2, 4 and 6 are rewritten to what the
+server actually promises, and criterion 6 is worded against `typo3_server_scope`
+alone. Put to the maintainer on 2026-08-04 with both options priced, and this run
+is what the answer asked for before either is written.
+
+Nothing in the reading below changes that. What it establishes is why the
+question could not be answered off the environment it was asked in.
 
 The `E-NONE` half ran on 2026-08-04 and came out as the case asks; what it
 settled is on `D-ANS-005`. The other half never reached the state it names.
@@ -40,15 +49,14 @@ with a stale caveat before, 0.503s `via=ddev` php=8.4 with none after. So
 something does change in one session in those three, which is what criterion 6
 asks about, and the answer to this todo cannot be read off `e-site-main`.
 
-What that leaves open, and what nobody has run: whether the change reaches the
-**prompt's own two lookups** rather than only `typo3_server_scope`. In these
-three a stopped project's console runs, so `typo3_icon_lookup` and
-`typo3_label_lookup` answer from the console rather than from the package files
-`R-ANS-008` falls back to, and what the `ddev start` alters may be the caveat
-and the source rather than the icons and labels themselves. Driving the prompt
-against `.environments/e-site-13.4` stopped, in one session, across a real
-`ddev start` is what says which — and it is a different run from the one that
-produced the paragraph above.
+What that leaves open is whether the change reaches the **prompt's own two
+lookups** rather than only `typo3_server_scope`. In these three a stopped
+project's console runs, so `typo3_icon_lookup` and `typo3_label_lookup` answer
+from the console rather than from the package files `R-ANS-008` falls back to,
+and what the `ddev start` alters may be the caveat and the source rather than the
+icons and labels themselves. `e-site-13.4` was driven that way and could not
+answer it, for the reason the last section below gives; `e-site-14.3` is the
+environment that can, and is what this card now asks for.
 
 ## Measured on 2026-08-04, in `.environments/e-site-13.4`
 

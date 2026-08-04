@@ -559,4 +559,71 @@ final class EnvironmentsTest extends TestCase
             Environments::path('E-SITE', Environments::branch()),
         );
     }
+
+    #[Test]
+    public function theGeneratedDatabaseBlockIsTakenOutAndTheRestIsKept(): void
+    {
+        // What DDEV writes for a project running omit_containers: [db]. The
+        // block names a container that is not there, and it is merged over the
+        // connection settings.php carries, so the installation talks to
+        // nothing and the backend refuses every login without saying why.
+        $path = sys_get_temp_dir() . '/typo3-mcp-environment-' . bin2hex(random_bytes(6));
+        mkdir($path . '/config/system', 0777, true);
+        file_put_contents($path . '/config/system/additional.php', <<<'PHP'
+            <?php
+
+            /**
+             * #ddev-generated: Automatically generated TYPO3 additional.php file.
+             */
+
+            if (getenv('IS_DDEV_PROJECT') == 'true') {
+                $GLOBALS['TYPO3_CONF_VARS'] = array_replace_recursive(
+                    $GLOBALS['TYPO3_CONF_VARS'],
+                    [
+                        'DB' => [
+                            'Connections' => [
+                                'Default' => [
+                                    'driver' => 'mysqli',
+                                    'host' => 'db',
+                                ],
+                            ],
+                        ],
+                        'GFX' => [
+                            'processor' => 'ImageMagick',
+                        ],
+                        'SYS' => [
+                            'trustedHostsPattern' => '.*.*',
+                        ],
+                    ]
+                );
+            }
+            PHP);
+
+        $said = Environments::takeOverGeneratedSettings($path);
+        $written = (string) file_get_contents($path . '/config/system/additional.php');
+
+        self::assertNotNull($said);
+        self::assertStringNotContainsString("'DB' =>", $written);
+        // The whole block, not its first line. A pattern that ends at the
+        // first `],` in the file stops two levels in and leaves brackets
+        // behind that do not parse — which is what happened on 2026-08-04, and
+        // what the assertions below this one did not see.
+        self::assertStringNotContainsString('Connections', $written);
+        self::assertSame(
+            substr_count($written, '['),
+            substr_count($written, ']'),
+            'the file it left behind does not parse',
+        );
+        self::assertStringNotContainsString('#ddev-generated', $written, 'DDEV owns it and regenerates the block');
+        // The three sections DDEV knows and this does not: without the trusted
+        // hosts pattern TYPO3 refuses the host name the router forwards.
+        self::assertStringContainsString("'GFX' =>", $written);
+        self::assertStringContainsString('trustedHostsPattern', $written);
+        self::assertNull(Environments::takeOverGeneratedSettings($path), 'a file already taken over is left alone');
+
+        unlink($path . '/config/system/additional.php');
+        rmdir($path . '/config/system');
+        rmdir($path . '/config');
+        rmdir($path);
+    }
 }

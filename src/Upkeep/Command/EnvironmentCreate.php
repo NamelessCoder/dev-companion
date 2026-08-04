@@ -236,6 +236,15 @@ final class EnvironmentCreate
             }
         }
 
+        // DDEV owns config/system/additional.php until this, and what it writes
+        // there is wrong for the driver this environment was built on. Left
+        // alone, the installation talks to a database container that is not
+        // running and the backend refuses every login without saying why.
+        $takenOver = Environments::takeOverGeneratedSettings($path);
+        if ($takenOver !== null) {
+            $output->writeln($takenOver);
+        }
+
         $output->writeln('');
         $this->where($output, $branch, $driver);
 

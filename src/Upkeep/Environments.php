@@ -49,6 +49,9 @@ final class Environments
     /** What `knowledge/versions.json` calls the line that has no release. */
     private const DEVELOPMENT = 'development';
 
+    /** What DDEV writes into a file it owns and regenerates. */
+    private const DDEV_MARKER = '#ddev-generated';
+
     /**
      * What DDEV registers a created project under, one name per covered line.
      *
@@ -389,6 +392,59 @@ final class Environments
         }
 
         return self::DRIVERS[$driver];
+    }
+
+    /**
+     * Takes DDEV's generated `additional.php` over where its database block is
+     * wrong, and says what it did.
+     *
+     * DDEV writes that block from its own database container and has no variant
+     * that reads the driver the installation was set up with. An installation
+     * on SQLite runs with `omit_containers: [db]`, so the block points `mysqli`
+     * at a host that does not exist — and because it is merged over the
+     * connection `settings.php` carries, the installation talks to nothing. The
+     * backend then answers "your login attempt did not succeed" to correct
+     * credentials, which names neither the file nor the container.
+     *
+     * The block goes and the rest stays. GFX, MAIL and SYS are what DDEV knows
+     * and this does not: the ImageMagick in that container, its mail catcher,
+     * and the trusted hosts pattern without which TYPO3 refuses the host name
+     * the router forwards. Disabling settings management would end the same
+     * collision and leave all three to be written by hand.
+     *
+     * The marker goes with it, because a file DDEV still owns is regenerated on
+     * the next start and the block comes back.
+     */
+    public static function takeOverGeneratedSettings(string $path): ?string
+    {
+        $file = $path . '/config/system/additional.php';
+        if (!is_file($file)) {
+            return null;
+        }
+
+        $before = (string) file_get_contents($file);
+        if (!str_contains($before, self::DDEV_MARKER)) {
+            return null;
+        }
+
+        // The closing bracket is matched at the indentation the block opened
+        // at. Without that backreference the first `],` in the file ends the
+        // match, which is two levels in, and what is left behind does not
+        // parse — measured on 2026-08-04, on two environments this repaired.
+        $after = preg_replace("/^(\h*)'DB' => \[\R(?:.*\R)*?\\1\],\R/m", '', $before, 1);
+        if ($after === null || $after === $before) {
+            return null;
+        }
+
+        $after = str_replace(
+            self::DDEV_MARKER,
+            'Taken over by bin/cli environment:create: the generated DB block named a'
+                . "\n * database container this project does not run.",
+            $after,
+        );
+        file_put_contents($file, $after);
+
+        return 'config/system/additional.php: the generated DB block is gone and DDEV no longer owns the file';
     }
 
     /**

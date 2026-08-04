@@ -84,3 +84,17 @@ The report's second item is answered without a change. It asks whether
 `missing-knowledge`; it should not, because the ladder is walked from the
 observation and never from the front matter, and that feedback was judged as
 `1a` regardless of what its category says — `D-KNW-061`.
+
+The repair was made the same day. `Channel::toolNames()` keeps the case it was
+given, `Channel::comparable()` folds it, and the corpus carried exactly one name
+the fold had damaged — `listmcpresourcestool` in `feedback/2026-08-04-180133`,
+rewritten to `ListMcpResourcesTool`, which is the spelling the session passed
+and which its client's transcript still holds. Every other stored name this
+server does not register is lower case as it was written, the wrapper
+`mcp_typo3cmsmcp_typo3_feedback_record` among them.
+
+What made this cheap to miss is worth naming: everything this server registers
+is lower case, so nothing in its own vocabulary could show the fold. The one
+kind of name that could is a name from outside it, which is also the kind a
+session writes down when it reached for something else instead — the report this
+channel is least able to afford losing.

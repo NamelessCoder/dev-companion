@@ -26,3 +26,4 @@ hyphenated one (2026-08-02).
 - `FeedbackTest::aRecordedNameKeepsTheSpellingItWasGivenIn`
 - `FeedbackTest::aNameIsFoundHoweverItsSeparatorsAreSpelled`
 - `FeedbackTest::everyNameTheCorpusCarriesIsSpelledTheWayThisProjectSpellsIt`
+- `FeedbackTest::aNameFromOutsideThisServerKeepsItsCapitals`

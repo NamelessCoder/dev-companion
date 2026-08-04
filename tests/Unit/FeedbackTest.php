@@ -752,6 +752,31 @@ final class FeedbackTest extends TestCase
         );
     }
 
+    /**
+     * A name this server does not register is the only kind that carries
+     * capitals, and it is the kind that arrives because a session reached for
+     * somebody else's tool instead of one of these — `D-FBK-039`.
+     */
+    #[Test]
+    public function aNameFromOutsideThisServerKeepsItsCapitals(): void
+    {
+        $file = $this->recordFeedback([
+            'observation' => self::MARKER . ' the resources were never enumerated',
+            'tool' => 'typo3_server_scope, ListMcpResourcesTool',
+        ]);
+
+        self::assertStringContainsString(
+            'tool: typo3_server_scope, ListMcpResourcesTool',
+            (string) file_get_contents($this->inStore($file))
+        );
+        self::assertSame(['typo3_server_scope', 'ListMcpResourcesTool'], self::noteFor($file)['tools']);
+        self::assertContains(
+            $file,
+            array_column(Channel::all('open', null, 200, 'listmcpresourcestool'), 'file'),
+            'the filter no longer finds a name it stored',
+        );
+    }
+
     #[Test]
     #[DataProvider('theSpellingsOneNameArrivesIn')]
     public function aNameIsFoundHoweverItsSeparatorsAreSpelled(string $spelling): void
@@ -776,6 +801,7 @@ final class FeedbackTest extends TestCase
         return [
             'underscores, which is how this project writes it' => ['typo3_extension_conformance'],
             'no separator at all' => ['typo3extensionconformance'],
+            'shouted, which is neither' => ['TYPO3_Extension_Conformance'],
         ];
     }
 

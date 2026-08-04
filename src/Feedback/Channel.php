@@ -742,6 +742,13 @@ final class Channel
      * an identifier the project carries nowhere — invisible to the grep that is
      * the obvious way to ask what was reported about it (`R-FBK-013`).
      *
+     * The case is kept for the same reason and was not, until 2026-08-04:
+     * everything this server registers is lower case, so the fold showed on the
+     * one kind of name that is not ours — a client's own tool, named because a
+     * session reached for it instead. `comparable()` is where two spellings
+     * meet, so folding there costs nothing and folding here cost the name
+     * (`D-FBK-039`).
+     *
      * @return array<int, string>
      */
     private static function toolNames(mixed $value): array
@@ -755,7 +762,7 @@ final class Channel
             if (!is_string($candidate)) {
                 continue;
             }
-            $name = (string) preg_replace('/[^a-z0-9_-]/', '', strtolower(trim($candidate)));
+            $name = (string) preg_replace('/[^A-Za-z0-9_-]/', '', trim($candidate));
             if ($name !== '') {
                 $names[] = $name;
             }
@@ -776,6 +783,6 @@ final class Channel
      */
     private static function comparable(string $name): string
     {
-        return (string) preg_replace('/[^a-z0-9]/', '', $name);
+        return (string) preg_replace('/[^a-z0-9]/', '', strtolower($name));
     }
 }

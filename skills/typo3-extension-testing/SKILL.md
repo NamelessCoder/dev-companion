@@ -127,6 +127,9 @@ for a review-only request, report the defect without changing it.
    not run with the reason.
 
 This skill owns testing and static-quality infrastructure, the changes they
-require, and the execution of both. For a broad conformance audit, documentation
-rewrite, or backend-module implementation, hand that work to the corresponding
-skill and retain only the testing part.
+require, and the execution of both. A broad conformance audit is
+`typo3-extension-conformance`, a documentation rewrite is
+`typo3-extension-documentation`, a backend module is
+`typo3-backend-module-development` and a content element is
+`typo3-content-element-development`. Hand that work to its owner at the verified
+point, stop before editing its files, and retain only the testing part.

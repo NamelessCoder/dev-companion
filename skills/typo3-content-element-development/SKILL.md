@@ -83,6 +83,9 @@ changing a content element.
 - Re-run `typo3_extension_scope` after the change and report parser blind spots
   separately from implementation defects.
 
-This skill owns content-element architecture and implementation. Use the testing
-skill for test infrastructure, the documentation skill for manuals, and the
-conformance skill for a broader extension audit.
+This skill owns content-element architecture and implementation. Activate
+`typo3-extension-testing` for test infrastructure,
+`typo3-extension-documentation` for manuals, and `typo3-extension-conformance`
+for a broader extension audit — stop before editing that owner's files, and
+carry across the extension key, the target version and the behaviour already
+verified.

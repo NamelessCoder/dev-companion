@@ -67,6 +67,9 @@ stable public API.
 - Report the files updated, validation performed, and any behavior that could
   not be verified from the installation or project.
 
-This skill owns documentation and user-facing wording changes. Delegate test
-implementation, conformance assessment, and backend-module code to their
-respective skills, then document only their verified public behavior.
+This skill owns documentation and user-facing wording changes. Test
+implementation is `typo3-extension-testing`, conformance assessment is
+`typo3-extension-conformance`, backend-module code is
+`typo3-backend-module-development` and a content element is
+`typo3-content-element-development`. Activate the owner rather than making the
+change here, and document only the public behaviour it hands back verified.

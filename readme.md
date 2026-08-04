@@ -1,13 +1,17 @@
 # TYPO3 CMS MCP
 
-A local MCP server (plain PHP) that gives MCP-enabled clients a curated TYPO3
-**knowledge base**, for the three audiences that work with TYPO3: the core
-contributor, the extension author, and the site developer. It holds the
-conventions each subsystem is built on and how its mechanisms are used, the
-core's own contribution process — rules, the Gerrit workflow, script and core
-testing suite feedback, commit message conventions — and a catalog of backend UI
-components: context that is otherwise spread across project knowledge, core
-conventions, and the official documentation.
+A local MCP server (plain PHP) that helps coding agents implement, review and
+verify TYPO3 work for the three audiences that do it: the core contributor, the
+extension author and the site developer. It establishes the project and
+installation the agent is working in, supplies current, version-bound TYPO3
+knowledge, and hands task-specific workflows to the skills that own them.
+
+Scope answers describe what is present without treating it as correct. The
+knowledge and skills supply the conventions that apply, so code found in one
+installation is not repeated as a pattern merely because it runs. They cover how
+TYPO3's subsystems are used, the core's own contribution process, and a catalog
+of backend UI components: context otherwise spread across project files, core
+conventions and the official documentation.
 
 ![The three TYPO3 audiences ask a local MCP server, which routes each question to bundled knowledge, the active project and installation, or an official live source.](documentation/images/system-overview.svg)
 
@@ -40,12 +44,12 @@ translates the subject before calling and the answer back afterwards; the server
 states this in the instructions it sends at initialize and in
 `typo3_server_scope`.
 
-**It writes no patch; it is what one is written from.** Which files changed,
-which branch you are on and which tests cover them stay in the checkout and are
-read there. What the writing needs is here: which conventions govern a concrete
-path, which markup, icon identifier and XLF resource have to be literally right,
-which deprecation lands in between, which check the change has to survive, and
-what the commit message says.
+**It supports the patch without writing it.** The coding agent keeps the
+checkout: which files changed, which branch it is on and which tests cover them
+are read there. The server supplies what the work needs around that reading:
+which conventions govern a concrete path, which markup, icon identifier and XLF
+resource have to be literally right, which deprecation lands in between, which
+check the change has to survive, and what the commit message says.
 
 **The conventions are the core's own**, and several of them have no counterpart
 in a project or an extension — the changelog, the Gerrit workflow, the core

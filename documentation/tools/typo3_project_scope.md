@@ -268,7 +268,7 @@ Data:
 Text:
 
 ```
-<installation> — composer-project, TYPO3 14.3.0, PHP ^8.2
+<installation> — composer-project, TYPO3 14.3.0, PHP ^8.2, and the installed core requires ^8.2 — the lowest a package here may declare
 
 Extensions that are not TYPO3's own:
 - acme_events (project) — packages/acme_events
@@ -292,7 +292,7 @@ Data:
     "typo3Version": "14.3.0",
     "phpConstraint": "^8.2",
     "coreConstraint": "^14.3",
-    "corePhpConstraint": null,
+    "corePhpConstraint": "^8.2",
     "environment": null,
     "extensions": [
         {

@@ -282,7 +282,12 @@ final class Fixture
                     'extra' => ['typo3/cms' => ['extension-key' => self::EXTENSION]],
                 ],
             ]]),
-            'vendor/typo3/cms-core/composer.json' => self::manifest('typo3/cms-core', 'core', 'typo3-cms-framework'),
+            'vendor/typo3/cms-core/composer.json' => self::manifest(
+                'typo3/cms-core',
+                'core',
+                'typo3-cms-framework',
+                ['php' => '^8.2'],
+            ),
             'vendor/typo3/cms-core/Classes/Information/Typo3Version.php' => sprintf(
                 "<?php\n\nnamespace TYPO3\\CMS\\Core\\Information;\n\n"
                 . "class Typo3Version\n{\n    protected const VERSION = '%s';\n}\n",
@@ -576,12 +581,26 @@ final class Fixture
             . "    </body>\n  </file>\n</xliff>\n";
     }
 
-    private static function manifest(string $name, string $key, string $type): string
+    /**
+     * One installed package's manifest, with what it requires where something
+     * here reads that.
+     *
+     * `typo3_project_scope` reports the installed core's PHP floor out of this
+     * file, so the core package states the one TYPO3 14.3 really declares:
+     * `^8.2`, read in `.checkouts/14.3` on 2026-08-04. It is written rather
+     * than composed from the branch beside it, because the floor does not
+     * follow the major — 12.4 requires `^8.1`, 13.4 and 14.3 both `^8.2`, main
+     * `^8.5`.
+     *
+     * @param array<string, string> $require
+     */
+    private static function manifest(string $name, string $key, string $type, array $require = []): string
     {
         return self::json([
             'name' => $name,
             'type' => $type,
             'description' => sprintf('The fixture installation\'s %s package.', $key),
+            ...($require === [] ? [] : ['require' => $require]),
             'extra' => ['typo3/cms' => ['extension-key' => $key]],
         ]);
     }

@@ -1,3 +1,11 @@
+---
+description: >-
+  The subject line, the body and the trailers a core commit message carries, Gerrit's own among them.
+whenToUse: >-
+  When writing or amending the message of a patch to the core, which is the only repository these rules describe.
+hints: []
+---
+
 # TYPO3 Core Commit Message Rules
 
 Source:

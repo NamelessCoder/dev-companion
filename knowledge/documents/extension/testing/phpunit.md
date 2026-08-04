@@ -1,3 +1,13 @@
+---
+description: >-
+  The PHPUnit configuration files a package writes into Build/, whole, and what each one needs after it is written out.
+whenToUse: >-
+  When a package has no test harness yet, or its configuration has to be repaired. The conventions the tests themselves are written by are the hints below.
+hints:
+  - project-extension-tests
+  - unit-test-doubles
+---
+
 # Setting Up PHPUnit in a TYPO3 Extension
 
 The files a package needs to run its own unit and functional tests, and what to

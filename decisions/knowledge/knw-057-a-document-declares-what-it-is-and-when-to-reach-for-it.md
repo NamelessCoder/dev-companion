@@ -74,3 +74,10 @@ to the hints is a sentence somebody remembered to write.
   that no hint names and is reachable only by guessing its words.
 - A fourth field arrives that repeats what the coverage row or the directory
   already says.
+
+## Covered by
+
+- `KnowledgeTest::theFrontMatterDescribesTheDocumentAndReachesNoAnswer`
+- `KnowledgeTest::theResourceCardIsWhatTheDocumentDeclaresPlusWhoItIsFor`
+- `KnowledgeTest::everyHintADocumentSaysItExpandsExists`
+- `KnowledgeTest::aHintAnswerNamesTheDocumentThatExpandsIt`

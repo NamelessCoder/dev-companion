@@ -1,3 +1,11 @@
+---
+description: >-
+  How a core patch reaches review: the one-time git setup, pushing, amending a patch set, and backporting.
+whenToUse: >-
+  When a change is ready to leave the checkout, or a patch already under review has to be changed.
+hints: []
+---
+
 # TYPO3 Gerrit Workflow
 
 Source: https://docs.typo3.org/m/typo3/guide-contributionworkflow/main/en-us/

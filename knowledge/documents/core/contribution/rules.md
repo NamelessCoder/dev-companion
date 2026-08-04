@@ -1,3 +1,11 @@
+---
+description: >-
+  The rules a core patch is judged by: what one change contains, which tests it owes, and what a reviewer looks at.
+whenToUse: >-
+  Before writing or reviewing a patch to the TYPO3 core, to know what makes it merge-ready.
+hints: []
+---
+
 # TYPO3 Core Contribution Rules
 
 This file is the first local knowledge base for the TYPO3 CMS MCP server. Keep

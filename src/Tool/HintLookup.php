@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Typo3CmsMcp\Tool;
 
+use Typo3CmsMcp\Knowledge\Documents;
 use Typo3CmsMcp\Knowledge\Hints;
 use Typo3CmsMcp\Knowledge\Scope;
 use Typo3CmsMcp\Knowledge\Versions;
@@ -68,7 +69,11 @@ final class HintLookup extends ReadOnlyTool
             'withheldCategories' => Schema::listOf(Schema::string(), 'Categories that matched the domains but were left out because the task names the frontend. "Backend CSS" and "Backend TypeScript and JavaScript" describe the TYPO3 backend interface and are wrong advice for what a website renders; see docs.typo3.org for frontend theming.'),
             'hints' => Schema::listOf(Schema::hintRecord()),
             'availableHints' => Schema::listOf(Schema::hintReference(), 'The hints that exist in the searched domains, minus the ones returned above. Carried on every answer rather than on an empty one: a query that matched three hints about something else is where naming an id is worth most. An id lookup lists what stands beside the hint it returned.'),
-        ], ['paths', 'domains', 'withheldCategories', 'scopes', 'hints', 'availableHints']);
+            'documents' => Schema::listOf(Schema::object([
+                'uri' => Schema::string(),
+                'hint' => Schema::string('The returned hint this document is the long form of.'),
+            ], ['uri', 'hint']), 'Knowledge documents declaring themselves the long form of a hint above. A hint is the convention in short; the document is the same subject at length, and where it hands over a file it is the file itself.'),
+        ], ['paths', 'domains', 'withheldCategories', 'scopes', 'hints', 'availableHints', 'documents']);
     }
 
     public static function answer(array $args): ToolResult
@@ -177,6 +182,24 @@ final class HintLookup extends ReadOnlyTool
             $lines[] = 'No hint matched. Name a path or a more specific topic, or ask for one of the ids below.';
         }
 
+        // The long form of a returned hint, where a document declares itself as
+        // one — `D-KNW-057`. Declared on the document rather than written into
+        // every hint that has one, so the crossing `D-KNW-008` describes is one
+        // statement instead of a sentence per cell.
+        $expanding = [];
+        foreach ($result['matchedHints'] as $hint) {
+            foreach (Documents::forHint($hint['id']) as $document) {
+                $expanding[$document['id']] = $hint['id'] . ' — ' . $document['title'];
+            }
+        }
+        if ($expanding !== []) {
+            $lines[] = '';
+            $lines[] = 'Read at length, as a resource:';
+            foreach ($expanding as $documentId => $label) {
+                $lines[] = '- typo3://guides/' . $documentId . ' (' . $label . ')';
+            }
+        }
+
         // The index is the difference between "nothing matched your words" and
         // "nobody wrote this down". Without it both answers read the same, and
         // the caller tries another phrasing for a subject that does not exist —
@@ -207,6 +230,13 @@ final class HintLookup extends ReadOnlyTool
             'withheldCategories' => $result['withheldCategories'],
             'hints' => MatchedHints::records($result['matchedHints']),
             'availableHints' => $result['availableHints'],
+            'documents' => array_map(
+                static fn(string $documentId): array => [
+                    'uri' => 'typo3://guides/' . $documentId,
+                    'hint' => strtok($expanding[$documentId], ' '),
+                ],
+                array_keys($expanding),
+            ),
         ]);
     }
 }

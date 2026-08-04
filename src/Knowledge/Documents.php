@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Typo3CmsMcp\Knowledge;
 
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\Yaml\Yaml;
 use Typo3CmsMcp\Paths;
 use Typo3CmsMcp\Search\Subsets;
 use Typo3CmsMcp\Search\TermSearch;
@@ -75,7 +76,7 @@ final class Documents
      */
     private const DEPTH = 2;
 
-    /** @return array<int, array{id: string, title: string, path: string}> */
+    /** @return array<int, array{id: string, title: string, path: string, description: string, whenToUse: string, hints: array<int, string>}> */
     public static function documents(): array
     {
         $documents = [];
@@ -95,7 +96,7 @@ final class Documents
                 'id' => $id,
                 'title' => self::readTitle($content) ?? $file->getFilename(),
                 'path' => $file->getPathname(),
-            ];
+            ] + self::declared($content);
         }
 
         return $documents;
@@ -120,22 +121,71 @@ final class Documents
     }
 
     /**
+     * What a document declares about itself — `D-KNW-057`.
+     *
+     * Absent fields come back empty rather than missing, so a caller reads one
+     * shape whether the file declares anything or not.
+     *
+     * @return array{description: string, whenToUse: string, hints: array<int, string>}
+     */
+    private static function declared(string $content): array
+    {
+        preg_match('/\A---\R(.*?)\R---\R/s', $content, $matches);
+        // Yaml rather than a value per key, the way a decision is read: a
+        // description is a sentence and a sentence carries colons.
+        $declared = $matches === [] ? [] : Yaml::parse($matches[1]);
+        $declared = is_array($declared) ? $declared : [];
+
+        return [
+            'description' => is_string($declared['description'] ?? null) ? trim($declared['description']) : '',
+            'whenToUse' => is_string($declared['whenToUse'] ?? null) ? trim($declared['whenToUse']) : '',
+            'hints' => array_values(array_filter(
+                array_map('strval', is_array($declared['hints'] ?? null) ? $declared['hints'] : []),
+            )),
+        ];
+    }
+
+    /**
+     * The documents declaring themselves the long form of this hint.
+     *
+     * @return array<int, array{id: string, title: string, path: string, description: string, whenToUse: string, hints: array<int, string>}>
+     */
+    public static function forHint(string $hintId): array
+    {
+        return array_values(array_filter(
+            self::documents(),
+            static fn(array $document): bool => in_array($hintId, $document['hints'], true),
+        ));
+    }
+
+    /**
      * What a client reads to understand what it is being offered, for a
      * document offered as a resource.
      *
      * A resource is picked out of a list rather than called mid-task, so the
      * list is the whole of what the choice is made on — `R-ANS-022`. It says
-     * the subject and who the answers oblige; the subject comes from the
-     * coverage row and the audience from the directory the file sits in.
+     * what the page is and when to reach for it, which the file declares, and
+     * who the answers oblige, which is the directory it sits in.
      */
     public static function description(string $id): ?string
     {
-        $covered = self::covered($id);
-        if ($covered === null) {
+        $declared = null;
+        foreach (self::documents() as $document) {
+            if ($document['id'] === $id) {
+                $declared = $document;
+                break;
+            }
+        }
+        if ($declared === null || $declared['description'] === '') {
             return null;
         }
 
-        return $covered['topic'] . '. ' . match (self::scopeOf($id)) {
+        $card = $declared['description'];
+        if ($declared['whenToUse'] !== '') {
+            $card .= ' ' . $declared['whenToUse'];
+        }
+
+        return $card . ' ' . match (self::scopeOf($id)) {
             Scope::Core => "The TYPO3 core's own process, which does not transfer to extension or site work.",
             // Named rather than folded into the sentence below it: a document
             // about setting a package up answers for the package, and telling a
@@ -145,22 +195,6 @@ final class Documents
             Scope::Project => 'Answers for the repository around an installation rather than for the core repository.',
             default => 'Holds for core contribution, extension development and site work alike.',
         };
-    }
-
-    /**
-     * The covered topic naming this document as its source, where one does.
-     *
-     * @return array{topic: string, depth: string, tools: array<int, string>, source: string, scope: Scope}|null
-     */
-    private static function covered(string $id): ?array
-    {
-        foreach (Coverage::read()['covers'] as $entry) {
-            if (str_contains($entry['source'], 'typo3://guides/' . $id)) {
-                return $entry;
-            }
-        }
-
-        return null;
     }
 
     public static function read(string $id): string
@@ -373,6 +407,11 @@ final class Documents
      */
     private static function sections(string $content): array
     {
+        // The front matter describes the document rather than answering a
+        // query — `D-KNW-057`. Left in, it matches words about a page instead
+        // of words in it, and it lands in the body of the section above the
+        // first heading, which is one this corpus returns.
+        $content = (string) preg_replace('/\A---\R.*?\R---\R/s', '', $content);
         $lines = preg_split('/\R/', $content) ?: [];
 
         $sections = [];

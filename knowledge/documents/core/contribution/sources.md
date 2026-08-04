@@ -1,3 +1,11 @@
+---
+description: >-
+  Where the upstream contribution documentation lives, as links to it.
+whenToUse: >-
+  When a question goes past what the bundled documents answer and the official guide has to be read.
+hints: []
+---
+
 # TYPO3 Contribution Sources
 
 Official upstream documentation behind this knowledge base. The guide itself is

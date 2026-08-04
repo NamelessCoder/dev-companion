@@ -1,3 +1,12 @@
+---
+description: >-
+  What runTests.sh starts, what an argument after -- reaches, and the options one run takes.
+whenToUse: >-
+  When running a suite inside a core checkout. Which suite a change actually needs is typo3_test_run_guide, which filters them by version.
+hints:
+  - core-tests
+---
+
 # TYPO3 Core Script Help
 
 Commands for working on a TYPO3 core checkout. All paths are relative to the

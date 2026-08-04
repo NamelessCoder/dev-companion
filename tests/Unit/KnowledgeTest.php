@@ -189,6 +189,83 @@ final class KnowledgeTest extends TestCase
     }
 
     #[Test]
+    public function theFrontMatterDescribesTheDocumentAndReachesNoAnswer(): void
+    {
+        $this->useCorpus(['extension/testing/declared' => <<<'MD'
+            ---
+            description: >-
+              What the page is, in one sentence.
+            whenToUse: >-
+              When the harness has to be established.
+            hints:
+              - project-extension-tests
+            ---
+
+            # Declared
+
+            ## Build/UnitTests.xml
+
+            ```xml
+            <phpunit/>
+            ```
+            MD]);
+
+        $document = array_values(array_filter(
+            Documents::documents(),
+            static fn(array $candidate): bool => $candidate['id'] === 'extension/testing/declared',
+        ))[0];
+        self::assertSame('What the page is, in one sentence.', $document['description']);
+        self::assertSame(['project-extension-tests'], $document['hints']);
+
+        // It says what the page is rather than answering a query, so a query
+        // about it must not reach it — the section above the first heading is
+        // one this corpus returns, and the front matter lands in it.
+        foreach (Documents::search('description whenToUse hints') as $match) {
+            self::assertStringNotContainsString('whenToUse', $match['body']);
+        }
+        self::assertStringNotContainsString(
+            'description:',
+            Documents::search('build unittests xml')[0]['body'],
+        );
+    }
+
+    #[Test]
+    public function theResourceCardIsWhatTheDocumentDeclaresPlusWhoItIsFor(): void
+    {
+        $card = (string) Documents::description('extension/testing/phpunit');
+
+        self::assertStringContainsString('PHPUnit configuration files a package writes', $card);
+        self::assertStringContainsString('no test harness yet', $card);
+        self::assertStringContainsString('Answers for a package', $card);
+    }
+
+    #[Test]
+    public function everyHintADocumentSaysItExpandsExists(): void
+    {
+        // A document naming an id nothing answers to is a crossing that goes
+        // nowhere, and nothing but this would report it — `D-KNW-057`.
+        $ids = array_column(Hints::load(), 'id');
+
+        foreach (Documents::documents() as $document) {
+            foreach ($document['hints'] as $hint) {
+                self::assertContains($hint, $ids, $document['id'] . ' says it expands ' . $hint);
+            }
+        }
+    }
+
+    #[Test]
+    public function aHintAnswerNamesTheDocumentThatExpandsIt(): void
+    {
+        $result = Registry::call('typo3_hint_lookup', ['id' => 'project-extension-tests']);
+
+        self::assertSame(
+            [['uri' => 'typo3://guides/extension/testing/phpunit', 'hint' => 'project-extension-tests']],
+            $result->data['documents'],
+        );
+        self::assertStringContainsString('typo3://guides/extension/testing/phpunit', $result->text);
+    }
+
+    #[Test]
     public function everyBundledDocumentIsListedWithATitle(): void
     {
         $documents = Documents::documents();

@@ -116,6 +116,13 @@ availableHints:
     title: string
     # PHP, TypeScript, JavaScript, CSS, or General.
     category: string
+# Knowledge documents declaring themselves the long form of a hint above. A hint
+# is the convention in short; the document is the same subject at length, and
+# where it hands over a file it is the file itself.
+documents:
+  - uri: string
+    # The returned hint this document is the long form of.
+    hint: string
 ```
 
 ## Answered
@@ -771,7 +778,8 @@ Data:
             "title": "Upgrade Wizards",
             "category": "PHP"
         }
-    ]
+    ],
+    "documents": []
 }
 ```
 
@@ -1278,7 +1286,8 @@ Data:
             "title": "Checking Accessibility and Contrast From the Same Spec",
             "category": "PHP"
         }
-    ]
+    ],
+    "documents": []
 }
 ```
 
@@ -1820,6 +1829,7 @@ Data:
             "title": "Upgrade Wizards",
             "category": "PHP"
         }
-    ]
+    ],
+    "documents": []
 }
 ```

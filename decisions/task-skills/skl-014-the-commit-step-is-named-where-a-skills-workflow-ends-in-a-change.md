@@ -142,3 +142,38 @@ and the assertion above holds it to naming the guide without the argument.
 does — `D-SKL-015`. The entry stays open: what it was written against is
 behaviour, and nothing has watched a session commit in an extension with these
 bodies in front of it. The first **Wrong if** is what that run would answer.
+
+Corrected the same day. The maintainer read the eight passages — the review
+[writing-a-skill.md](../../documentation/clients/writing-a-skill.md) asks for
+before a published skill goes out — and rejected two of them, for different
+reasons. Six stand unchanged. The reading above is what was wrong, not the
+statement: it is six skills and not eight, and both errors were in reading which
+bodies end in a change.
+
+`typo3-extension-conformance` is the second **Wrong if**, and it fired. "A skill
+that only reviews gains the step" is exactly what happened. The reading above
+took the skill's own improvement branch as proof that it is not review-only; the
+maintainer's answer is that the branch should not have been there — conformance
+is pure analysis, and that is the intent even where the text said otherwise. It
+said otherwise in three places, and the first is the one no body could have
+corrected: the `description` opened "Review, audit, or improve", which is the
+line a client selects on, so the skill was loaded for change requests whatever
+the body said. All three are gone and the file now agrees with `R-GUI-006`
+rather than carrying an exception to it. What the removal opens — a task worded
+as a change reaching no skill at all — is measured and written into
+[a card](../../todo/open/2026-08-04-140000-a-task-that-asks-for-a-repository-to-be-put-right-reaches-no-skill.md)
+rather than answered here.
+
+`typo3-extension-release` came out because its workflow is not defined and not
+tested. What it covers ranges from tagging, a changelog and version numbers
+through to publishing — `typo3/tailor`, git tags, Composer and Packagist — and
+what the skill is *for* across that range was never settled. A commit step
+settles a detail of an order nobody has fixed, which is the wrong end to start
+at. So the passage is gone and the skill is unpublished with it: out of
+`Installer::SKILLS`, which is also the list the resource surface reads, keeping
+its file in `skills/` in the state `typo3-development-installation` is in.
+[The card](../../todo/open/2026-08-04-140100-work-out-how-typo3-tailor-is-installed-and-set-up-for-an-extension.md)
+carries what is settled and what is not.
+
+Nothing here touches the placement or the statement, and the entry stays open on
+the first **Wrong if** for the same reason as before.

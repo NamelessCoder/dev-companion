@@ -1,6 +1,6 @@
 ---
 name: typo3-extension-conformance
-description: Review, audit, or improve a TYPO3 project, sitepackage, or extension against its checkout and active installation, and report what is wrong with it in priority order. Use for any open-ended request to look over a repository and say what matters — reviews, readiness, quality and security assessments, modernization, compatibility with the active TYPO3 version, suspicious registration or configuration, TCA, services, backend modules, content elements, site sets, TypoScript, Fluid, labels, icons, security boundaries, deprecated APIs, and before or after a TYPO3 upgrade.
+description: Review or audit a TYPO3 project, sitepackage, or extension against its checkout and active installation, and report what is wrong with it in priority order. Use for any open-ended request to look over a repository and say what matters — reviews, readiness, quality and security assessments, modernization, compatibility with the active TYPO3 version, suspicious registration or configuration, TCA, services, backend modules, content elements, site sets, TypoScript, Fluid, labels, icons, security boundaries, deprecated APIs, and before or after a TYPO3 upgrade.
 ---
 
 # TYPO3 Extension Conformance
@@ -84,7 +84,7 @@ covered. A sweep that is only visible when it produces a finding cannot be told
 apart from one that never ran, and the surface it covers is the one whose
 silence reads as a clean bill for the next major.
 
-## Report and improve
+## Report
 
 Order findings by severity and include:
 
@@ -100,16 +100,11 @@ trace in the report, and the checklist's *What a dropped candidate owes* is the
 bar each one is held to — including the one that could be neither established
 nor disproved, which is reported as open rather than dropped.
 
-For a requested audit, stop after findings unless fixes were also requested.
-Stopping at findings is not stopping at reading: the commands
+Stop after findings. This skill changes nothing, whatever the request asked for:
+the fixes are the next workflow's, and the skill that owns each finding's area
+is named below. Stopping at findings is not stopping at reading: the commands
 `typo3_project_describe` marks as checks hand the code back as it was, and an
-audit told not to change files runs them and reports what they printed. For
-requested improvements, make the smallest coherent changes, preserve local
-project conventions, and run the commands declared by `typo3_project_describe`,
-the ones that change files included. Where that leaves something to commit, the
-message comes from `typo3_commit_message_guide` with `workflow="project"`: the
-repository being assessed is the one it lands in. An audit asked for findings
-alone changed nothing and has no message to write.
+audit told not to change files runs them and reports what they printed.
 
 Close on coverage rather than on a summary: the surface list written in step 3,
 every entry marked assessed, unassessed or not requested, clean ones briefly. It
@@ -125,12 +120,12 @@ left out. Say which of the two per entry, and let neither read as clean.
 This skill owns assessment and prioritization, and it owns saying who takes each
 finding onward. Name the workflow the follow-up belongs to —
 `typo3-extension-testing`, `typo3-extension-documentation`,
-`typo3-backend-module-development`, `typo3-content-element-development`,
-`typo3-extension-release` or `typo3-extension-upgrade` — in the result itself,
-whether or not fixes were requested: a reader deciding what to do next needs
-that as much as a session that was told to do it. When fixes are requested, hand
-over to that skill for the changes in its area and keep conformance responsible
-for re-checking the resulting finding. What the sweep returned goes to
-`typo3-extension-upgrade` whole: it owns crossing the package to another
-supported range, and a review that hands over one deprecation at a time has
-decided the order that workflow exists to establish.
+`typo3-backend-module-development`, `typo3-content-element-development` or
+`typo3-extension-upgrade` — in the result itself, whether or not fixes were
+requested: a reader deciding what to do next needs that as much as a session
+that was told to do it. When fixes are requested, hand over to that skill for
+the changes in its area and keep conformance responsible for re-checking the
+resulting finding. What the sweep returned goes to `typo3-extension-upgrade`
+whole: it owns crossing the package to another supported range, and a review
+that hands over one deprecation at a time has decided the order that workflow
+exists to establish.

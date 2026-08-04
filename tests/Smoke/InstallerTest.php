@@ -133,7 +133,6 @@ final class InstallerTest extends TestCase
                     'typo3-core-patch-review',
                     'typo3-extension-conformance',
                     'typo3-extension-documentation',
-                    'typo3-extension-release',
                     'typo3-extension-testing',
                     'typo3-extension-upgrade',
                 ],
@@ -149,7 +148,6 @@ final class InstallerTest extends TestCase
                 'typo3-core-patch-review',
                 'typo3-extension-conformance',
                 'typo3-extension-documentation',
-                'typo3-extension-release',
                 'typo3-extension-testing',
                 'typo3-extension-upgrade',
             ] as $publishedSkill) {
@@ -164,7 +162,6 @@ final class InstallerTest extends TestCase
                 'typo3-core-patch-review',
                 'typo3-extension-conformance',
                 'typo3-extension-documentation',
-                'typo3-extension-release',
                 'typo3-extension-testing',
                 'typo3-extension-upgrade',
             ] as $publishedSkill) {
@@ -190,7 +187,6 @@ final class InstallerTest extends TestCase
                 'typo3-core-patch-review',
                 'typo3-extension-conformance',
                 'typo3-extension-documentation',
-                'typo3-extension-release',
                 'typo3-extension-testing',
                 'typo3-extension-upgrade',
             ] as $publishedSkill) {

@@ -27,7 +27,6 @@ final class Installer
         'typo3-core-patch-review',
         'typo3-extension-conformance',
         'typo3-extension-documentation',
-        'typo3-extension-release',
         'typo3-extension-testing',
         'typo3-extension-upgrade',
     ];

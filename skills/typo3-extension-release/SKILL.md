@@ -86,12 +86,6 @@ and excludes per registry, the verification results with what was run and what
 it printed, the blockers that remain, and the publication steps deliberately not
 taken — written concretely enough to be carried out, and not carried out.
 
-What preparation leaves in the working tree — the version every file states, the
-release notes, whatever a blocker was fixed by — is the first of those steps.
-Draft its message with `typo3_commit_message_guide` and `workflow="project"` and
-report it with the rest: a step is written concretely enough when the person
-taking it has the message in front of them.
-
 Tagging, pushing and publishing to a registry change state other people depend
 on and cannot be undone by this workflow. They happen in a separate step, on an
 explicit request, with the repository, the version and the credentials confirmed

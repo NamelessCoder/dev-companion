@@ -31,6 +31,12 @@ people depend on and cannot be undone by this workflow. An unclear target is
 therefore a question rather than an assumption, because it is the one place
 where continuing on an assumption publishes it.
 
+Since 2026-08-04 no session can reach any of that. `typo3-extension-release` is
+out of `Installer::SKILLS` until its workflow is defined, so it is neither
+installed nor served, and the tests below hold a file nobody loads. What is
+being worked out instead is in
+[the card](../../todo/open/2026-08-04-140100-work-out-how-typo3-tailor-is-installed-and-set-up-for-an-extension.md).
+
 ## From
 
 The feedback of 2026-07-30 17:44 and its re-run in `E-EXT` on 2026-07-31, seven

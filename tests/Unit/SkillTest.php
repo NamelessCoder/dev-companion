@@ -69,7 +69,6 @@ final class SkillTest extends TestCase
         'typo3-extension-conformance' => [
             'typo3_hint_lookup',
             'typo3_documentation_lookup',
-            'typo3_commit_message_guide',
         ],
         'typo3-extension-documentation' => [
             'typo3_documentation_lookup',
@@ -79,7 +78,6 @@ final class SkillTest extends TestCase
         ],
         'typo3-extension-release' => [
             'typo3_documentation_lookup',
-            'typo3_commit_message_guide',
         ],
         'typo3-extension-upgrade' => [
             'typo3_changelog_lookup',
@@ -95,17 +93,21 @@ final class SkillTest extends TestCase
      * the core's, read off each body on 2026-08-04 — `D-SKL-014`. The two core
      * skills are not among them: both name the guide already and both commit in
      * the core, where the argument's default is the right one.
-     * `typo3-extension-conformance` is here because its own body makes the
-     * changes a requested improvement asks for; the step is written into that
-     * branch alone, and the audit that reports findings has nothing to commit.
+     *
+     * The maintainer's review the same day took two more out.
+     * `typo3-extension-conformance` is pure analysis and its body no longer
+     * makes a change of any kind, which is the second **Wrong if** of
+     * `D-SKL-014` firing — a skill that only reviews had gained the step, and a
+     * commit line in a review's answer is what `R-GUI-006` exists to keep out
+     * of one. `typo3-extension-release` is unpublished until its workflow is
+     * defined, so a commit step in it settles a detail of an order nobody has
+     * fixed yet.
      */
     private const COMMITTING_SKILLS = [
         'typo3-backend-module-development',
         'typo3-content-element-development',
         'typo3-development-installation',
-        'typo3-extension-conformance',
         'typo3-extension-documentation',
-        'typo3-extension-release',
         'typo3-extension-testing',
         'typo3-extension-upgrade',
     ];
@@ -309,26 +311,24 @@ final class SkillTest extends TestCase
         );
         self::assertStringNotContainsString('workflow="project"', self::flat($review));
 
-        // Conformance is the one of the eight that is a review first. Its own
-        // body makes the changes a requested improvement asks for, so the step
-        // is written into that branch and the audit that was asked for findings
-        // is left as it was.
+        // Conformance is the case the second **Wrong if** describes, and it
+        // fired: the step went into the branch its body kept for requested
+        // improvements, and the maintainer's reading is that the skill makes no
+        // change at all. The branch is gone with it, so what holds here is the
+        // absence — a review that names the guide is naming the step
+        // `R-GUI-006` keeps out of a review's answer.
         $conformance = self::flat((string) file_get_contents(
             Paths::root() . '/skills/typo3-extension-conformance/SKILL.md',
         ));
+        self::assertStringNotContainsString('typo3_commit_message_guide', $conformance);
         self::assertStringContainsString(
-            'For requested improvements, make the smallest coherent changes',
+            'Stop after findings. This skill changes nothing, whatever the request asked for',
             $conformance,
         );
-        self::assertStringContainsString(
-            'An audit asked for findings alone changed nothing and has no message to write.',
-            $conformance,
-        );
-        self::assertLessThan(
-            (int) strpos($conformance, 'typo3_commit_message_guide'),
-            (int) strpos($conformance, 'For requested improvements'),
-            'the commit step stands outside the branch that makes the changes',
-        );
+        // And the description it is chosen on, which is the half a body cannot
+        // correct: while it offered to improve a repository, the skill was
+        // loaded for change requests whatever the body said.
+        self::assertStringNotContainsString('improve', self::description('typo3-extension-conformance'));
     }
 
     #[Test]

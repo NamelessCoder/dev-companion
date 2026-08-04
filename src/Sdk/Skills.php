@@ -21,8 +21,9 @@ use Typo3CmsMcp\Server\Installer;
  * one route there is (`R-ANS-022`).
  *
  * What is offered is `Installer::SKILLS` and never the directory listing.
- * Publication is that list, so a skill still being drafted — currently
- * `typo3-development-installation`, `D-SKL-013` — is not served here either.
+ * Publication is that list, so a skill the list leaves out is not served here
+ * either — `D-SKL-013`. Two are out today for different reasons: one still
+ * being drafted, and one withdrawn until what it should do is settled.
  */
 final class Skills
 {

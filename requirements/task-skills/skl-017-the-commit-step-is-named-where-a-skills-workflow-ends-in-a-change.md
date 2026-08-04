@@ -16,13 +16,17 @@ go with them — and a session committing in an extension has none of those. Whi
 repository the commit lands in is the one thing the message itself cannot say,
 so it is the skill that is standing in that repository which says it.
 
-Eight skills carry the step, read off each body: backend modules, content
-elements, the development installation, documentation, the release, testing and
-the upgrade end in files that are written, and conformance ends there whenever
-the improvements it was asked for are made. In conformance the step is written
-into that branch alone. An audit that was asked for findings changed nothing and
+Six skills carry the step, read off each body: backend modules, content
+elements, the development installation, documentation, testing and the upgrade
+all end in files that are written.
+
+Two more carried it for a day and the maintainer's review took both out —
+`D-SKL-014`, **Since then**. `typo3-extension-conformance` is pure analysis: it
+reports findings and hands every change to the skill that owns the area, so it
 has no message to write, and a commit line in a review's answer is the patch
-checklist `R-GUI-006` exists to keep out of one.
+checklist `R-GUI-006` exists to keep out of one. `typo3-extension-release` is
+unpublished until its workflow is defined, and a commit step in it settles a
+detail of an order nobody has fixed.
 
 The two core skills are not among them. Both name the guide already, both commit
 in the core, and the argument's default is the answer there.
